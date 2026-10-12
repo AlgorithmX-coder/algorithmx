@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-12T18:50:42.653Z",
+  "generatedAt": "2026-10-12T19:04:27.403Z",
   "model": "eleven_v4",
   "voiceSettings": {
     "stability": 0.6,
@@ -33,16 +33,6 @@
         "Can you finish the rule?"
       ],
       "file": "/audio/voice/1f0f8b9a2cb124e9.mp3"
-    },
-    {
-      "key": "1a138f21b4a7d36c",
-      "speaker": "adam",
-      "voice": "Sarah",
-      "text": "Which power did that move use? Tap its dial.",
-      "lines": [
-        "Which power did that move use? Tap its dial."
-      ],
-      "file": "/audio/voice/1a138f21b4a7d36c.mp3"
     },
     {
       "key": "7b9ce2b983b69784",
@@ -1171,6 +1161,16 @@
         "Which power did that move use? Tap its dial."
       ],
       "file": "/audio/voice/3cfd61ea154f1c7a.mp3"
+    },
+    {
+      "key": "c5c91028d7ddb168",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Which power did that move use? Tap its dial.",
+      "lines": [
+        "Which power did that move use? Tap its dial."
+      ],
+      "file": "/audio/voice/c5c91028d7ddb168.mp3"
     },
     {
       "key": "ae55306aa50ac28f",
@@ -40649,708 +40649,708 @@
       "file": "/audio/voice/6b6cbfac811266e7.mp3"
     },
     {
-      "key": "15bfea59642cb624",
+      "key": "072bbde3dd227d64",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "That's right! A password is the secret key that unlocks your account and proves it's really you.",
       "lines": [
         "That's right!",
         "A password is the secret key that unlocks your account and proves it's really you."
       ],
-      "file": "/audio/voice/15bfea59642cb624.mp3"
+      "file": "/audio/voice/072bbde3dd227d64.mp3"
     },
     {
-      "key": "c8fcbb9dc35dacd1",
+      "key": "89e8a8ae4c483134",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "That's right! A strong password is so long and mixed up that a cracking machine gives up.",
       "lines": [
         "That's right!",
         "A strong password is so long and mixed up that a cracking machine gives up."
       ],
-      "file": "/audio/voice/c8fcbb9dc35dacd1.mp3"
+      "file": "/audio/voice/89e8a8ae4c483134.mp3"
     },
     {
-      "key": "7eddd7e2be5d41e6",
+      "key": "c1037181c4e46ba7",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "That's right! A hacker is someone who guesses passwords to sneak into accounts that aren't theirs.",
       "lines": [
         "That's right!",
         "A hacker is someone who guesses passwords to sneak into accounts that aren't theirs."
       ],
-      "file": "/audio/voice/7eddd7e2be5d41e6.mp3"
+      "file": "/audio/voice/c1037181c4e46ba7.mp3"
     },
     {
-      "key": "87161f47b54fc394",
+      "key": "33308b42e0841ac1",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "That's right! A secret password stays secret; the moment you tell someone, it isn't your key anymore.",
       "lines": [
         "That's right!",
         "A secret password stays secret; the moment you tell someone, it isn't your key anymore."
       ],
-      "file": "/audio/voice/87161f47b54fc394.mp3"
+      "file": "/audio/voice/33308b42e0841ac1.mp3"
     },
     {
-      "key": "3319e375d55f63e3",
+      "key": "e1c8432b88dd2c2e",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Not quite. A password isn't for robots; it's the secret that shows who is really typing.",
       "lines": [
         "Not quite.",
         "A password isn't for robots; it's the secret that shows who is really typing."
       ],
-      "file": "/audio/voice/3319e375d55f63e3.mp3"
+      "file": "/audio/voice/e1c8432b88dd2c2e.mp3"
     },
     {
-      "key": "be307f08668ac4f7",
+      "key": "88d8d66b21110ffb",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Not quite. A hacker is exactly who the password keeps out.",
       "lines": [
         "Not quite.",
         "A hacker is exactly who the password keeps out."
       ],
-      "file": "/audio/voice/be307f08668ac4f7.mp3"
+      "file": "/audio/voice/88d8d66b21110ffb.mp3"
     },
     {
-      "key": "480a8499ee8e2a46",
+      "key": "4c532a953ab837b9",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Not quite. Your friend shouldn't know your password at all; it proves one person only.",
       "lines": [
         "Not quite.",
         "Your friend shouldn't know your password at all; it proves one person only."
       ],
-      "file": "/audio/voice/480a8499ee8e2a46.mp3"
+      "file": "/audio/voice/4c532a953ab837b9.mp3"
     },
     {
-      "key": "a6b49a68494a8109",
+      "key": "75c1c335a186c16a",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "That's right! Three random words make a long passphrase: easy for you to remember, and years of guessing for the Raccoon.",
       "lines": [
         "That's right!",
         "Three random words make a long passphrase: easy for you to remember, and years of guessing for the Raccoon."
       ],
-      "file": "/audio/voice/a6b49a68494a8109.mp3"
+      "file": "/audio/voice/75c1c335a186c16a.mp3"
     },
     {
-      "key": "ce5d8e2870d537a7",
+      "key": "b2ef2744d90f4cb1",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Not quite. Cat is three little letters; a cracking machine guesses that in a blink.",
       "lines": [
         "Not quite.",
         "Cat is three little letters; a cracking machine guesses that in a blink."
       ],
-      "file": "/audio/voice/ce5d8e2870d537a7.mp3"
+      "file": "/audio/voice/b2ef2744d90f4cb1.mp3"
     },
     {
-      "key": "7e708a02f927ac6d",
+      "key": "b75ca68da00c5603",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Not quite. One word and one number is still a quick guess; hackers try a name plus a number first.",
       "lines": [
         "Not quite.",
         "One word and one number is still a quick guess; hackers try a name plus a number first."
       ],
-      "file": "/audio/voice/7e708a02f927ac6d.mp3"
+      "file": "/audio/voice/b75ca68da00c5603.mp3"
     },
     {
-      "key": "8ad63c19a5bd63e1",
+      "key": "316b5d479ab22077",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Not quite. Sun is a tiny common word; it would be cracked in a second.",
       "lines": [
         "Not quite.",
         "Sun is a tiny common word; it would be cracked in a second."
       ],
-      "file": "/audio/voice/8ad63c19a5bd63e1.mp3"
+      "file": "/audio/voice/316b5d479ab22077.mp3"
     },
     {
-      "key": "0d941298f49ad3cf",
+      "key": "f1d0b1930c98d4aa",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "That's right! 'tiger' is just a plain word - no capitals, numbers or symbols. The Raccoon guesses plain words first.",
       "lines": [
         "That's right!",
         "'tiger' is just a plain word - no capitals, numbers or symbols. The Raccoon guesses plain words first."
       ],
-      "file": "/audio/voice/0d941298f49ad3cf.mp3"
+      "file": "/audio/voice/f1d0b1930c98d4aa.mp3"
     },
     {
-      "key": "ecd0cf88cd29c1fa",
+      "key": "8d8e7a6b451c60c4",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Not quite. 'tiger' is just a plain word - no capitals, numbers or symbols. The Raccoon guesses plain words first.",
       "lines": [
         "Not quite.",
         "'tiger' is just a plain word - no capitals, numbers or symbols. The Raccoon guesses plain words first."
       ],
-      "file": "/audio/voice/ecd0cf88cd29c1fa.mp3"
+      "file": "/audio/voice/8d8e7a6b451c60c4.mp3"
     },
     {
-      "key": "10caadef2927f31d",
+      "key": "1ee1144a967baafb",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "That's right! Only 3 letters - far too short. Short passwords are cracked in seconds. It needs to be much longer.",
       "lines": [
         "That's right!",
         "Only 3 letters - far too short. Short passwords are cracked in seconds. It needs to be much longer."
       ],
-      "file": "/audio/voice/10caadef2927f31d.mp3"
+      "file": "/audio/voice/1ee1144a967baafb.mp3"
     },
     {
-      "key": "e3f5f06b19b445a5",
+      "key": "4b238998cf220517",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Not quite. Only 3 letters - far too short. Short passwords are cracked in seconds. It needs to be much longer.",
       "lines": [
         "Not quite.",
         "Only 3 letters - far too short. Short passwords are cracked in seconds. It needs to be much longer."
       ],
-      "file": "/audio/voice/e3f5f06b19b445a5.mp3"
+      "file": "/audio/voice/4b238998cf220517.mp3"
     },
     {
-      "key": "f59716f676a1a832",
+      "key": "47f39809c8638aa6",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "That's right! Those letters sit in a row on the keyboard. It's the FIRST pattern any hacker tries.",
       "lines": [
         "That's right!",
         "Those letters sit in a row on the keyboard. It's the FIRST pattern any hacker tries."
       ],
-      "file": "/audio/voice/f59716f676a1a832.mp3"
+      "file": "/audio/voice/47f39809c8638aa6.mp3"
     },
     {
-      "key": "d70223866fa14f9f",
+      "key": "95e19745ae95a020",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Not quite. Those letters sit in a row on the keyboard. It's the FIRST pattern any hacker tries.",
       "lines": [
         "Not quite.",
         "Those letters sit in a row on the keyboard. It's the FIRST pattern any hacker tries."
       ],
-      "file": "/audio/voice/d70223866fa14f9f.mp3"
+      "file": "/audio/voice/95e19745ae95a020.mp3"
     },
     {
-      "key": "e45b2c350e874f0b",
+      "key": "fc31b9de4cf5f35a",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "That's right! It's a name and a year. Anyone who knows you could guess this in a few tries. Take the personal bits out.",
       "lines": [
         "That's right!",
         "It's a name and a year. Anyone who knows you could guess this in a few tries. Take the personal bits out."
       ],
-      "file": "/audio/voice/e45b2c350e874f0b.mp3"
+      "file": "/audio/voice/fc31b9de4cf5f35a.mp3"
     },
     {
-      "key": "ae870a1807a92d29",
+      "key": "92c21c8426a3aff2",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Not quite. It's a name and a year. Anyone who knows you could guess this in a few tries. Take the personal bits out.",
       "lines": [
         "Not quite.",
         "It's a name and a year. Anyone who knows you could guess this in a few tries. Take the personal bits out."
       ],
-      "file": "/audio/voice/ae870a1807a92d29.mp3"
+      "file": "/audio/voice/92c21c8426a3aff2.mp3"
     },
     {
-      "key": "31f3ecbb5d81c13f",
+      "key": "c020cc8dd27f79ee",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "That's right! 'dragon' is one of everyone's favorite words to use. No capitals, no numbers, no symbols.",
       "lines": [
         "That's right!",
         "'dragon' is one of everyone's favorite words to use. No capitals, no numbers, no symbols."
       ],
-      "file": "/audio/voice/31f3ecbb5d81c13f.mp3"
+      "file": "/audio/voice/c020cc8dd27f79ee.mp3"
     },
     {
-      "key": "9cee9cb1685bf081",
+      "key": "1c00bce124afe844",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Not quite. 'dragon' is one of everyone's favorite words to use. No capitals, no numbers, no symbols.",
       "lines": [
         "Not quite.",
         "'dragon' is one of everyone's favorite words to use. No capitals, no numbers, no symbols."
       ],
-      "file": "/audio/voice/9cee9cb1685bf081.mp3"
+      "file": "/audio/voice/1c00bce124afe844.mp3"
     },
     {
-      "key": "a6e04e6b4f94305a",
+      "key": "d1f3542442c5a6b3",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "That's right! Only 3 characters, and they're numbers in a row. Cracked in less than a second.",
       "lines": [
         "That's right!",
         "Only 3 characters, and they're numbers in a row. Cracked in less than a second."
       ],
-      "file": "/audio/voice/a6e04e6b4f94305a.mp3"
+      "file": "/audio/voice/d1f3542442c5a6b3.mp3"
     },
     {
-      "key": "2330bfa8aab0c323",
+      "key": "0d370e0b12183dd0",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Not quite. Only 3 characters, and they're numbers in a row. Cracked in less than a second.",
       "lines": [
         "Not quite.",
         "Only 3 characters, and they're numbers in a row. Cracked in less than a second."
       ],
-      "file": "/audio/voice/2330bfa8aab0c323.mp3"
+      "file": "/audio/voice/0d370e0b12183dd0.mp3"
     },
     {
-      "key": "7a43707bdd437c0b",
+      "key": "8d9ffd73f90b60cd",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Not quite. Small letters only is easy to guess; mixing in capitals, numbers and symbols is what makes it strong.",
       "lines": [
         "Not quite.",
         "Small letters only is easy to guess; mixing in capitals, numbers and symbols is what makes it strong."
       ],
-      "file": "/audio/voice/7a43707bdd437c0b.mp3"
+      "file": "/audio/voice/8d9ffd73f90b60cd.mp3"
     },
     {
-      "key": "fd9c1414f9cedb49",
+      "key": "0cadea8a3de2b0fb",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Not quite. There was no free gift. They wanted the account, and now it is theirs.",
       "lines": [
         "Not quite.",
         "There was no free gift. They wanted the account, and now it is theirs."
       ],
-      "file": "/audio/voice/fd9c1414f9cedb49.mp3"
+      "file": "/audio/voice/0cadea8a3de2b0fb.mp3"
     },
     {
-      "key": "ca7d5b53871c3c87",
+      "key": "0e452a6e6e506203",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "That's right! Good. A real gift never needs your password, so that was never a gift.",
       "lines": [
         "That's right!",
         "Good. A real gift never needs your password, so that was never a gift."
       ],
-      "file": "/audio/voice/ca7d5b53871c3c87.mp3"
+      "file": "/audio/voice/0e452a6e6e506203.mp3"
     },
     {
-      "key": "a93e2f46a758e217",
+      "key": "5609752fff4ade85",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Not quite. A friend cannot get it back for you, and now they might know it. There is a better person to ask.",
       "lines": [
         "Not quite.",
         "A friend cannot get it back for you, and now they might know it. There is a better person to ask."
       ],
-      "file": "/audio/voice/a93e2f46a758e217.mp3"
+      "file": "/audio/voice/5609752fff4ade85.mp3"
     },
     {
-      "key": "09342d5834532c8c",
+      "key": "d1491a4849a7f5d2",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "That's right! That is the one. A trusted grown-up is the only person who helps you with your password.",
       "lines": [
         "That's right!",
         "That is the one. A trusted grown-up is the only person who helps you with your password."
       ],
-      "file": "/audio/voice/09342d5834532c8c.mp3"
+      "file": "/audio/voice/d1491a4849a7f5d2.mp3"
     },
     {
-      "key": "d0577d5e668543ea",
+      "key": "53e30efc7b72c66f",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Not quite. That box checks nothing. It keeps whatever you type.",
       "lines": [
         "Not quite.",
         "That box checks nothing. It keeps whatever you type."
       ],
-      "file": "/audio/voice/d0577d5e668543ea.mp3"
+      "file": "/audio/voice/53e30efc7b72c66f.mp3"
     },
     {
-      "key": "d5786fe698efc3e7",
+      "key": "2d51864a15a24b19",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "That's right! Closed, and quite right. A real checker never asks for your actual password.",
       "lines": [
         "That's right!",
         "Closed, and quite right. A real checker never asks for your actual password."
       ],
-      "file": "/audio/voice/d5786fe698efc3e7.mp3"
+      "file": "/audio/voice/2d51864a15a24b19.mp3"
     },
     {
-      "key": "5e03863fff7278ea",
+      "key": "b966cf018f3062e8",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Not quite. Even a best friend should not know it. If their account is broken into, yours goes with it.",
       "lines": [
         "Not quite.",
         "Even a best friend should not know it. If their account is broken into, yours goes with it."
       ],
-      "file": "/audio/voice/5e03863fff7278ea.mp3"
+      "file": "/audio/voice/b966cf018f3062e8.mp3"
     },
     {
-      "key": "c33829b5fffff985",
+      "key": "bfa9bb3e854eb3d4",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "That's right! You kept it. Nobody else needs your password, and that includes a best friend.",
       "lines": [
         "That's right!",
         "You kept it. Nobody else needs your password, and that includes a best friend."
       ],
-      "file": "/audio/voice/c33829b5fffff985.mp3"
+      "file": "/audio/voice/bfa9bb3e854eb3d4.mp3"
     },
     {
-      "key": "2024c90fb65840c3",
+      "key": "bd7f4aeb2136f847",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "That's right! Yes. Your own login screen is the one place it belongs. Just check that nobody is watching.",
       "lines": [
         "That's right!",
         "Yes. Your own login screen is the one place it belongs. Just check that nobody is watching."
       ],
-      "file": "/audio/voice/2024c90fb65840c3.mp3"
+      "file": "/audio/voice/bd7f4aeb2136f847.mp3"
     },
     {
-      "key": "4988541d01cc418a",
+      "key": "2268650b050aa5c4",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Not quite. It has to go somewhere, and your own login is exactly where. It is strangers, pop-ups and friends who never get it.",
       "lines": [
         "Not quite.",
         "It has to go somewhere, and your own login is exactly where. It is strangers, pop-ups and friends who never get it."
       ],
-      "file": "/audio/voice/4988541d01cc418a.mp3"
+      "file": "/audio/voice/2268650b050aa5c4.mp3"
     },
     {
-      "key": "098762612dbf13e0",
+      "key": "1149254118082cb5",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Not quite. Even a best friend shouldn't know it; a secret shared is a secret that can leak.",
       "lines": [
         "Not quite.",
         "Even a best friend shouldn't know it; a secret shared is a secret that can leak."
       ],
-      "file": "/audio/voice/098762612dbf13e0.mp3"
+      "file": "/audio/voice/1149254118082cb5.mp3"
     },
     {
-      "key": "57404d3afe1a7e55",
+      "key": "733471b6a51aaa6b",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Not quite. A whole class is a lot of people; a password is for you alone.",
       "lines": [
         "Not quite.",
         "A whole class is a lot of people; a password is for you alone."
       ],
-      "file": "/audio/voice/57404d3afe1a7e55.mp3"
+      "file": "/audio/voice/733471b6a51aaa6b.mp3"
     },
     {
-      "key": "0826a18782cdec6c",
+      "key": "113e75355ed7e0e1",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Not quite. Anyone who asks is exactly who must not get it; the Raccoon asks nicely too.",
       "lines": [
         "Not quite.",
         "Anyone who asks is exactly who must not get it; the Raccoon asks nicely too."
       ],
-      "file": "/audio/voice/0826a18782cdec6c.mp3"
+      "file": "/audio/voice/113e75355ed7e0e1.mp3"
     },
     {
-      "key": "49910d3eb9840aa2",
+      "key": "817fc7c90fe3c7c8",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "That's right! Only 3 letters - far too tiny to keep anything safe.",
       "lines": [
         "That's right!",
         "Only 3 letters - far too tiny to keep anything safe."
       ],
-      "file": "/audio/voice/49910d3eb9840aa2.mp3"
+      "file": "/audio/voice/817fc7c90fe3c7c8.mp3"
     },
     {
-      "key": "b63483fec2ddc52c",
+      "key": "a95b44bf852ee1f7",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Not quite. Only 3 letters - far too tiny to keep anything safe.",
       "lines": [
         "Not quite.",
         "Only 3 letters - far too tiny to keep anything safe."
       ],
-      "file": "/audio/voice/b63483fec2ddc52c.mp3"
+      "file": "/audio/voice/a95b44bf852ee1f7.mp3"
     },
     {
-      "key": "b1d4ad1fe0a6fba8",
+      "key": "4e9a7f8c9090883a",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "That's right! A word from the dictionary - hackers try common words first.",
       "lines": [
         "That's right!",
         "A word from the dictionary - hackers try common words first."
       ],
-      "file": "/audio/voice/b1d4ad1fe0a6fba8.mp3"
+      "file": "/audio/voice/4e9a7f8c9090883a.mp3"
     },
     {
-      "key": "21fe586145936a57",
+      "key": "e873cda5279c4539",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Not quite. A word from the dictionary - hackers try common words first.",
       "lines": [
         "Not quite.",
         "A word from the dictionary - hackers try common words first."
       ],
-      "file": "/audio/voice/21fe586145936a57.mp3"
+      "file": "/audio/voice/e873cda5279c4539.mp3"
     },
     {
-      "key": "05b857851078ff51",
+      "key": "57b3cc8f5ef58ae0",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "That's right! A name and a birthday - the easiest things to guess about you.",
       "lines": [
         "That's right!",
         "A name and a birthday - the easiest things to guess about you."
       ],
-      "file": "/audio/voice/05b857851078ff51.mp3"
+      "file": "/audio/voice/57b3cc8f5ef58ae0.mp3"
     },
     {
-      "key": "13ad5b965ba766a6",
+      "key": "69b325909b8acac4",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Not quite. A name and a birthday - the easiest things to guess about you.",
       "lines": [
         "Not quite.",
         "A name and a birthday - the easiest things to guess about you."
       ],
-      "file": "/audio/voice/13ad5b965ba766a6.mp3"
+      "file": "/audio/voice/69b325909b8acac4.mp3"
     },
     {
-      "key": "02056e2e931cf8e2",
+      "key": "44d60fc09a673c69",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "That's right! These letters sit in a row on the keyboard - the FIRST pattern hackers try.",
       "lines": [
         "That's right!",
         "These letters sit in a row on the keyboard - the FIRST pattern hackers try."
       ],
-      "file": "/audio/voice/02056e2e931cf8e2.mp3"
+      "file": "/audio/voice/44d60fc09a673c69.mp3"
     },
     {
-      "key": "ffaef222b25eaa7a",
+      "key": "688d32022130c403",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Not quite. These letters sit in a row on the keyboard - the FIRST pattern hackers try.",
       "lines": [
         "Not quite.",
         "These letters sit in a row on the keyboard - the FIRST pattern hackers try."
       ],
-      "file": "/audio/voice/ffaef222b25eaa7a.mp3"
+      "file": "/audio/voice/688d32022130c403.mp3"
     },
     {
-      "key": "ad40fa3f71d572ff",
+      "key": "1b582986027a18fe",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "That's right! Only 3 characters, and numbers in order - cracked in under a second.",
       "lines": [
         "That's right!",
         "Only 3 characters, and numbers in order - cracked in under a second."
       ],
-      "file": "/audio/voice/ad40fa3f71d572ff.mp3"
+      "file": "/audio/voice/1b582986027a18fe.mp3"
     },
     {
-      "key": "0c42b579598ba704",
+      "key": "c0cd047379689abc",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Not quite. Only 3 characters, and numbers in order - cracked in under a second.",
       "lines": [
         "Not quite.",
         "Only 3 characters, and numbers in order - cracked in under a second."
       ],
-      "file": "/audio/voice/0c42b579598ba704.mp3"
+      "file": "/audio/voice/c0cd047379689abc.mp3"
     },
     {
-      "key": "efae462368c02c82",
+      "key": "c4ae76d4e5636814",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "That's right! A popular word - 'dragon' is in every hacker's top-100 list.",
       "lines": [
         "That's right!",
         "A popular word - 'dragon' is in every hacker's top-100 list."
       ],
-      "file": "/audio/voice/efae462368c02c82.mp3"
+      "file": "/audio/voice/c4ae76d4e5636814.mp3"
     },
     {
-      "key": "b824e09e53d0aa7c",
+      "key": "2d97a1f063f9a73c",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Not quite. A popular word - 'dragon' is in every hacker's top-100 list.",
       "lines": [
         "Not quite.",
         "A popular word - 'dragon' is in every hacker's top-100 list."
       ],
-      "file": "/audio/voice/b824e09e53d0aa7c.mp3"
+      "file": "/audio/voice/2d97a1f063f9a73c.mp3"
     },
     {
-      "key": "6126678330213588",
+      "key": "e41ed5caa1258d03",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "That's right! A name plus what looks like a date - quick to guess if someone knows you.",
       "lines": [
         "That's right!",
         "A name plus what looks like a date - quick to guess if someone knows you."
       ],
-      "file": "/audio/voice/6126678330213588.mp3"
+      "file": "/audio/voice/e41ed5caa1258d03.mp3"
     },
     {
-      "key": "7ada497ff397c05e",
+      "key": "f0aa30250edc7b72",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Not quite. A name plus what looks like a date - quick to guess if someone knows you.",
       "lines": [
         "Not quite.",
         "A name plus what looks like a date - quick to guess if someone knows you."
       ],
-      "file": "/audio/voice/7ada497ff397c05e.mp3"
+      "file": "/audio/voice/f0aa30250edc7b72.mp3"
     },
     {
-      "key": "a16aaac602fc51bc",
+      "key": "6ec0f47b1ebe4bec",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "That's right! Another row of keys in order - just like qwerty.",
       "lines": [
         "That's right!",
         "Another row of keys in order - just like qwerty."
       ],
-      "file": "/audio/voice/a16aaac602fc51bc.mp3"
+      "file": "/audio/voice/6ec0f47b1ebe4bec.mp3"
     },
     {
-      "key": "c1f550ecf2d1dfba",
+      "key": "918a7ce9aa4f4d63",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Not quite. Another row of keys in order - just like qwerty.",
       "lines": [
         "Not quite.",
         "Another row of keys in order - just like qwerty."
       ],
-      "file": "/audio/voice/c1f550ecf2d1dfba.mp3"
+      "file": "/audio/voice/918a7ce9aa4f4d63.mp3"
     },
     {
-      "key": "f190ff22752d3c36",
+      "key": "c1363bb41c24204e",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Not quite. Dragon-Pickle9! is long and mixed up; a hacker would take years, so it's not a first guess.",
       "lines": [
         "Not quite.",
         "Dragon-Pickle9! is long and mixed up; a hacker would take years, so it's not a first guess."
       ],
-      "file": "/audio/voice/f190ff22752d3c36.mp3"
+      "file": "/audio/voice/c1363bb41c24204e.mp3"
     },
     {
-      "key": "59d5978be0a71140",
+      "key": "1e66efbeec8ad4ae",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Not quite. Comet$Turtle3 mixes words, a symbol and a number; that's a hard one, not a first guess.",
       "lines": [
         "Not quite.",
         "Comet$Turtle3 mixes words, a symbol and a number; that's a hard one, not a first guess."
       ],
-      "file": "/audio/voice/59d5978be0a71140.mp3"
+      "file": "/audio/voice/1e66efbeec8ad4ae.mp3"
     },
     {
-      "key": "e889dae10f23744d",
+      "key": "532b3e43db5dbb2b",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Not quite. Waffle!Ninja6 is long and mixed; a hacker would never start there.",
       "lines": [
         "Not quite.",
         "Waffle!Ninja6 is long and mixed; a hacker would never start there."
       ],
-      "file": "/audio/voice/e889dae10f23744d.mp3"
+      "file": "/audio/voice/532b3e43db5dbb2b.mp3"
     },
     {
-      "key": "b50ed21735a1b3f9",
+      "key": "3265eb724f2636d4",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "That's right! Four random words, so his cracker runs out of time. That is the long power.",
       "lines": [
         "That's right!",
         "Four random words, so his cracker runs out of time. That is the long power."
       ],
-      "file": "/audio/voice/b50ed21735a1b3f9.mp3"
+      "file": "/audio/voice/3265eb724f2636d4.mp3"
     },
     {
-      "key": "475b13aebde6c0dd",
+      "key": "410384c3bff436c1",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Not quite. Mia used four random words. That makes a password long, so this one is the long power.",
       "lines": [
         "Not quite.",
         "Mia used four random words. That makes a password long, so this one is the long power."
       ],
-      "file": "/audio/voice/475b13aebde6c0dd.mp3"
+      "file": "/audio/voice/410384c3bff436c1.mp3"
     },
     {
-      "key": "7e98aab3084cc4c8",
+      "key": "42534e52c03fc5ad",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "That's right! A capital, a number and a symbol, and the plain word is gone. The mix-it-up power.",
       "lines": [
         "That's right!",
         "A capital, a number and a symbol, and the plain word is gone. The mix-it-up power."
       ],
-      "file": "/audio/voice/7e98aab3084cc4c8.mp3"
+      "file": "/audio/voice/42534e52c03fc5ad.mp3"
     },
     {
-      "key": "145b56e2fc2456ba",
+      "key": "0a500312d6963e9c",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Not quite. Ben mixed a capital, a number and a symbol through his. That is the mix-it-up power.",
       "lines": [
         "Not quite.",
         "Ben mixed a capital, a number and a symbol through his. That is the mix-it-up power."
       ],
-      "file": "/audio/voice/145b56e2fc2456ba.mp3"
+      "file": "/audio/voice/0a500312d6963e9c.mp3"
     },
     {
-      "key": "7f7de42aa4be3526",
+      "key": "2c20b9bd25152120",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "That's right! Ada told a grown-up and nobody else. That is keeping it secret.",
       "lines": [
         "That's right!",
         "Ada told a grown-up and nobody else. That is keeping it secret."
       ],
-      "file": "/audio/voice/7f7de42aa4be3526.mp3"
+      "file": "/audio/voice/2c20b9bd25152120.mp3"
     },
     {
-      "key": "bde0736f6ede9921",
+      "key": "87f07fa2f7d2dbf7",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Not quite. Ada did not share it with anybody. That is the keep-it-secret power.",
       "lines": [
         "Not quite.",
         "Ada did not share it with anybody. That is the keep-it-secret power."
       ],
-      "file": "/audio/voice/bde0736f6ede9921.mp3"
+      "file": "/audio/voice/87f07fa2f7d2dbf7.mp3"
     },
     {
-      "key": "5b46c7b2ae650208",
+      "key": "1597a9c314a607a0",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "That's right! Nothing about Sam that anyone could guess. Nothing obvious, every time.",
       "lines": [
         "That's right!",
         "Nothing about Sam that anyone could guess. Nothing obvious, every time."
       ],
-      "file": "/audio/voice/5b46c7b2ae650208.mp3"
+      "file": "/audio/voice/1597a9c314a607a0.mp3"
     },
     {
-      "key": "30cb815426d30441",
+      "key": "a32935e66da3db41",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Not quite. No name and no birthday, nothing anyone could guess. That is the nothing-obvious power.",
       "lines": [
         "Not quite.",
         "No name and no birthday, nothing anyone could guess. That is the nothing-obvious power."
       ],
-      "file": "/audio/voice/30cb815426d30441.mp3"
+      "file": "/audio/voice/a32935e66da3db41.mp3"
     },
     {
       "key": "3a53afe5d197177a",
