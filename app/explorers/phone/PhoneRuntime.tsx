@@ -14,7 +14,7 @@
 import { useEffect, useReducer, useRef, useState } from "react";
 import { MatrixRain } from "../MatrixRain";
 import { BlockBackdrop } from "../BlockBackdrop";
-import { playWren, stopWren, useWrenSpeaking } from "../engine/audio";
+import { playWren, setVoiceRate, stopWren, useVoiceRate, useWrenSpeaking, VOICE_RATES } from "../engine/audio";
 import { useArrowAdvance, SkipButton } from "../engine/arrowAdvance";
 import { playBGM, stopBGM } from "@/app/lib/sounds";
 import { type CaseStage, readProgress, saveProgress, clearProgress, markCaseComplete, isResumable, stageLabel } from "../engine/caseProgress";
@@ -101,6 +101,8 @@ export default function PhoneRuntime({ phoneCase, onExit, onNextCase }: { phoneC
   const [voiceOn, setVoiceOn] = useState(!fast);
   const voiceRef = useRef(!fast);
   const speaking = useWrenSpeaking();
+  const voiceRate = useVoiceRate();
+  const cycleVoiceRate = () => setVoiceRate(VOICE_RATES[(VOICE_RATES.indexOf(voiceRate) + 1) % VOICE_RATES.length]);
   const [, force] = useReducer((n) => n + 1, 0);
 
   const reduce = fast || (typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches);
@@ -354,6 +356,7 @@ export default function PhoneRuntime({ phoneCase, onExit, onNextCase }: { phoneC
       <SkipButton />
       <button className="ph-btn" onClick={onExit} style={{ position: "fixed", top: 14, left: 14, zIndex: 20, fontFamily: UI, fontSize: 12.5, fontWeight: 600, color: C.dim, background: "rgba(255,255,255,0.05)", border: `1px solid ${C.line}`, borderRadius: 999, padding: "6px 13px", cursor: "pointer" }}>← Leave</button>
       <button className="ph-btn" onClick={() => { const v = !voiceOn; setVoiceOn(v); if (!v) stopWren(); }} aria-pressed={voiceOn} style={{ position: "fixed", top: 14, right: 14, zIndex: 20, fontFamily: UI, fontSize: 12.5, fontWeight: 700, color: voiceOn ? C.wren : C.dim, background: "rgba(255,255,255,0.05)", border: `1px solid ${voiceOn ? "rgba(43,212,180,.5)" : C.line}`, borderRadius: 999, padding: "6px 13px", cursor: "pointer" }}>{voiceOn ? "🔊 WREN on" : "🔇 WREN off"}</button>
+      <button className="ph-btn" onClick={cycleVoiceRate} aria-label={`WREN's talking speed: ${voiceRate}×. Tap to change.`} style={{ position: "fixed", top: 54, right: 14, zIndex: 20, fontFamily: UI, fontSize: 12, fontWeight: 700, color: voiceRate !== 1 ? C.wren : C.dim, background: "rgba(255,255,255,0.05)", border: `1px solid ${voiceRate !== 1 ? "rgba(43,212,180,.5)" : C.line}`, borderRadius: 999, padding: "6px 13px", cursor: "pointer" }}>{voiceRate}×</button>
 
       <div style={{ width: "100%", maxWidth: 384, height: 780, maxHeight: "calc(100dvh - 30px)", background: C.phone, borderRadius: 42, padding: 10, boxShadow: `0 0 0 2px #2a2a34, 0 30px 80px rgba(0,0,0,.6)`, position: "relative", zIndex: 1 }}>
         <div style={{ position: "relative", height: "100%", background: C.chat, borderRadius: 33, overflow: "hidden", display: "flex", flexDirection: "column" }}>

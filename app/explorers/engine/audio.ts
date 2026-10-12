@@ -35,6 +35,41 @@ export function useWrenSpeaking() {
   return useSyncExternalStore(subscribeSpeaking, isWrenSpeaking, () => false);
 }
 
+/* ---- playback speed, persisted. A kid who reads faster than WREN talks
+   (or slower) can match her pace to their own — the rate applies live, even
+   mid-line, so switching doesn't wait for the next clip. ------------------ */
+export const VOICE_RATES = [0.75, 1, 1.25, 1.5] as const;
+export type VoiceRate = (typeof VOICE_RATES)[number];
+let voiceRate: VoiceRate = 1;
+const rateListeners = new Set<() => void>();
+function readStoredRate(): VoiceRate {
+  try {
+    const raw = Number(localStorage.getItem("explorers:voiceRate"));
+    if (VOICE_RATES.includes(raw as VoiceRate)) return raw as VoiceRate;
+  } catch {}
+  return 1;
+}
+if (typeof window !== "undefined") voiceRate = readStoredRate();
+export function getVoiceRate() {
+  return voiceRate;
+}
+export function setVoiceRate(r: VoiceRate) {
+  voiceRate = r;
+  try {
+    localStorage.setItem("explorers:voiceRate", String(r));
+  } catch {}
+  if (wrenEl) wrenEl.playbackRate = r; // takes effect mid-line, not just on the next clip
+  rateListeners.forEach((l) => l());
+}
+function subscribeRate(l: () => void) {
+  rateListeners.add(l);
+  return () => { rateListeners.delete(l); };
+}
+/** React hook: the persisted voice playback rate, live-updating. */
+export function useVoiceRate() {
+  return useSyncExternalStore(subscribeRate, getVoiceRate, () => 1 as VoiceRate);
+}
+
 /*
  * WREN voice player. Deliberately self-implements the two rules that
  * make raw `new Audio()` safe here (the documented Heroes trap):
@@ -118,6 +153,7 @@ export function playWren(url: string, enabled: boolean, onEnded?: () => void) {
     el.onloadedmetadata = null;
     el.src = url;
     el.volume = 0.55;
+    el.playbackRate = voiceRate;
     setSpeaking(true); // lock the UI while she talks
     const done = () => { setSpeaking(false); clearSafety(); };
     // Narrator-led lessons advance when the clip finishes. `ended` fires only on
