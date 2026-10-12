@@ -617,7 +617,10 @@ export default function SchoolsGlobe({ tone = "night" }: { tone?: "night" | "san
     } catch {}
     let isPaused = stored === "paused" || (stored !== "playing" && reduceMotion);
 
-    const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+    // Render at the device's real pixel density (integer, capped at 2) so the
+    // dots and the label text are crisp and don't crawl. A non-integer scale
+    // (the old 1.5) made small text shimmer as the globe turned.
+    const dpr = Math.min(Math.max(1, Math.round(window.devicePixelRatio || 1)), 2);
     let disposed = false;
 
     const GLOW = {
@@ -1051,8 +1054,8 @@ export default function SchoolsGlobe({ tone = "night" }: { tone?: "night" | "san
       const gap = 9 * base;
       const rise = (1 - ge) * 12 * base;
       const cardBottomY = py0 - gap + rise;
-      const spriteTop = cardBottomY - ((CARD.pad + CARD.h) / totalH) * dispH;
-      const spriteLeft = px0 - dispW / 2;
+      const spriteTop = Math.round(cardBottomY - ((CARD.pad + CARD.h) / totalH) * dispH);
+      const spriteLeft = Math.round(px0 - dispW / 2);
 
       // Beam of light from the pin up to the card.
       const ct = cardTheme();
@@ -1179,12 +1182,13 @@ export default function SchoolsGlobe({ tone = "night" }: { tone?: "night" | "san
        * earth on night, a pale glass globe on paper. */
       const Ro = R * 1.4;
       const f = R / Ro; // where the sphere edge falls inside the halo
-      const halo = ctx.createRadialGradient(cx, cy, R * 0.6, cx, cy, Ro);
+      const halo = ctx.createRadialGradient(cx, cy, R * 0.55, cx, cy, Ro);
       halo.addColorStop(0, onSand ? "rgba(10,112,133,0)" : "rgba(110,210,255,0)");
-      halo.addColorStop(Math.max(0, f - 0.04), onSand ? "rgba(10,112,133,0)" : "rgba(110,210,255,0)");
-      halo.addColorStop(f + 0.012, onSand ? "rgba(10,112,133,0.2)" : "rgba(120,220,255,0.42)");
-      halo.addColorStop(f + 0.11, onSand ? "rgba(10,112,133,0.06)" : "rgba(90,170,255,0.12)");
-      halo.addColorStop(1, onSand ? "rgba(10,112,133,0)" : "rgba(90,170,255,0)");
+      halo.addColorStop(Math.max(0, f - 0.05), onSand ? "rgba(10,112,133,0)" : "rgba(110,210,255,0)");
+      halo.addColorStop(f + 0.008, onSand ? "rgba(10,112,133,0.28)" : "rgba(132,228,255,0.55)");
+      halo.addColorStop(f + 0.06, onSand ? "rgba(10,112,133,0.12)" : "rgba(100,188,255,0.24)");
+      halo.addColorStop(f + 0.15, onSand ? "rgba(10,112,133,0.04)" : "rgba(80,152,255,0.08)");
+      halo.addColorStop(1, onSand ? "rgba(10,112,133,0)" : "rgba(80,152,255,0)");
       ctx.fillStyle = halo;
       ctx.beginPath();
       ctx.arc(cx, cy, Ro, 0, Math.PI * 2);
@@ -1194,30 +1198,36 @@ export default function SchoolsGlobe({ tone = "night" }: { tone?: "night" | "san
       ctx.beginPath();
       ctx.arc(cx, cy, R, 0, Math.PI * 2);
       ctx.clip();
-      // Body: lit from the upper-left.
+      // Body: lit from the upper-left, with a little more depth top-to-limb.
       const body = ctx.createRadialGradient(cx - R * 0.32, cy - R * 0.34, R * 0.04, cx, cy, R * 1.06);
       if (onSand) {
-        body.addColorStop(0, "rgba(234,240,245,0.82)");
-        body.addColorStop(0.6, "rgba(206,219,230,0.62)");
-        body.addColorStop(1, "rgba(182,200,215,0.5)");
+        body.addColorStop(0, "rgba(239,244,248,0.86)");
+        body.addColorStop(0.58, "rgba(203,217,229,0.66)");
+        body.addColorStop(1, "rgba(170,191,208,0.56)");
       } else {
-        body.addColorStop(0, "rgba(28,64,114,0.96)");
-        body.addColorStop(0.58, "rgba(12,32,72,0.95)");
-        body.addColorStop(1, "rgba(4,12,34,0.98)");
+        body.addColorStop(0, "rgba(33,74,128,0.97)");
+        body.addColorStop(0.56, "rgba(12,34,78,0.96)");
+        body.addColorStop(1, "rgba(3,10,30,0.99)");
       }
       ctx.fillStyle = body;
       ctx.fillRect(cx - R, cy - R, R * 2, R * 2);
-      // Limb vignette for roundness.
-      const limb = ctx.createRadialGradient(cx, cy, R * 0.52, cx, cy, R);
+      // Limb vignette for roundness (deeper = more 3D).
+      const limb = ctx.createRadialGradient(cx, cy, R * 0.5, cx, cy, R);
       limb.addColorStop(0, "rgba(0,0,0,0)");
-      limb.addColorStop(1, onSand ? "rgba(120,140,162,0.32)" : "rgba(2,6,22,0.6)");
+      limb.addColorStop(1, onSand ? "rgba(110,132,156,0.4)" : "rgba(2,6,20,0.74)");
       ctx.fillStyle = limb;
       ctx.fillRect(cx - R, cy - R, R * 2, R * 2);
-      // Specular sheen near the light.
-      const spec = ctx.createRadialGradient(cx - R * 0.33, cy - R * 0.36, 0, cx - R * 0.33, cy - R * 0.36, R * 0.58);
-      spec.addColorStop(0, onSand ? "rgba(255,255,255,0.32)" : "rgba(150,210,255,0.16)");
+      // Specular sheen near the light, plus a tight gloss highlight.
+      const spec = ctx.createRadialGradient(cx - R * 0.32, cy - R * 0.36, 0, cx - R * 0.32, cy - R * 0.36, R * 0.62);
+      spec.addColorStop(0, onSand ? "rgba(255,255,255,0.42)" : "rgba(170,222,255,0.22)");
+      spec.addColorStop(0.5, onSand ? "rgba(255,255,255,0.1)" : "rgba(150,210,255,0.06)");
       spec.addColorStop(1, "rgba(255,255,255,0)");
       ctx.fillStyle = spec;
+      ctx.fillRect(cx - R, cy - R, R * 2, R * 2);
+      const gloss = ctx.createRadialGradient(cx - R * 0.38, cy - R * 0.42, 0, cx - R * 0.38, cy - R * 0.42, R * 0.2);
+      gloss.addColorStop(0, onSand ? "rgba(255,255,255,0.5)" : "rgba(210,240,255,0.36)");
+      gloss.addColorStop(1, "rgba(255,255,255,0)");
+      ctx.fillStyle = gloss;
       ctx.fillRect(cx - R, cy - R, R * 2, R * 2);
 
       // Graticule (meridians + parallels), inside the clip, front side only.
@@ -1477,8 +1487,9 @@ export default function SchoolsGlobe({ tone = "night" }: { tone?: "night" | "san
             const chipW = 10 + (flagReady ? fw + 5 : 0) + nameW;
             const chipH = th + 7;
             const flip = pin[0] > w - chipW - 20;
-            const cxp = flip ? pin[0] - 7 - chipW : pin[0] + 7;
-            const cyp = pin[1] + 4;
+            // Snap to whole pixels so the chip + its text don't shimmer as the pin drifts.
+            const cxp = Math.round(flip ? pin[0] - 7 - chipW : pin[0] + 7);
+            const cyp = Math.round(pin[1] + 4);
             const nameBox: [number, number, number, number] = [cxp, cyp, cxp + chipW, cyp + chipH];
             if (free(nameBox)) {
               taken.push(nameBox);
