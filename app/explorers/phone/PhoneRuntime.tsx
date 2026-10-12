@@ -24,6 +24,7 @@ import { ClosingCeremony } from "../engine/closingCeremony";
 import { LEVERS, type LeverId, type PhoneCase, type PhoneStep, type PhoneTest, type TagSegment } from "./case06";
 import { addJournalEntry, loadJournal, type JournalEntry } from "./journal";
 import { CaseJournal } from "./CaseJournal";
+import { PropField } from "./PropField";
 
 const C = {
   page: "#0d0d12", ink: "#F3F4F7", dim: "#9A9AA6", faint: "#7a7a88",
@@ -366,6 +367,7 @@ export default function PhoneRuntime({ phoneCase, onExit, onNextCase }: { phoneC
         <MatrixRain reduced={!!reduce} opacity={0.13} colors={["#FF3D8A", "#FF74AE", "#C355FF"]} head="#FFE3EE" />
       )}
 
+      <PropField caseId={phoneCase.id} accent={OUT} />
       <SkipButton />
       <CaseJournal entries={journal} accent={OUT} caseTitle={phoneCase.title} />
       <button className="ph-btn" onClick={onExit} style={{ position: "fixed", top: 14, left: 14, zIndex: 20, fontFamily: UI, fontSize: 12.5, fontWeight: 600, color: C.dim, background: "rgba(255,255,255,0.05)", border: `1px solid ${C.line}`, borderRadius: 999, padding: "6px 13px", cursor: "pointer" }}>← Leave</button>
