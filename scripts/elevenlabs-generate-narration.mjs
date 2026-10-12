@@ -66,6 +66,29 @@ const VOICE = {
   narrator: { id: "JBFqnCBsd6RMkjVDRZzb", name: "George" },
 };
 
+/* The narrator, per week.
+ *
+ * The owner picked Brittney over Sarah after hearing both read the same
+ * cycle through the same pipeline. Changing her globally would re-hash all
+ * 5,166 blocks at once and silence the whole course, so the switch runs week
+ * by week: week 1 moves now and is listened to in context on the real site,
+ * and the rest follow in one batch once it holds up. A course must never be
+ * left half migrated - two narrators across twenty weeks is worse than
+ * either voice on its own.
+ */
+const BRITTNEY = { id: "2EUn20N7uqcXUxqGrJEF", name: "Brittney" };
+const NARRATOR_BY_WEEK = {
+  "week1.ts": BRITTNEY,
+};
+
+/** The voice for a block: the week's narrator if it has its own, else the
+ *  speaker's usual one. Shared lines stay on the default. */
+function voiceFor(speaker, source) {
+  const perWeek = source && NARRATOR_BY_WEEK[source];
+  if (perWeek && VOICE[speaker] && VOICE[speaker].name === "Sarah") return perWeek;
+  return VOICE[speaker];
+}
+
 // v9-expressive tune. The flat "reading-from-a-script" delivery came
 // from high stability + ZERO style. For a children's STORYTELLER we want
 // flow, natural pauses, and clear question/emphasis intonation - so we
@@ -910,7 +933,10 @@ function speakBlock(lines) {
  * SOLVES for the target pace rather than being a fixed number, because the
  * model's own speed drifts about 10 wpm between generations of identical text.
  */
-const SPEC_GAP = { comma: 0.20, stop: 0.55, thought: 0.90, reveal: 1.20 };
+// JOIN is for a silence the punctuation never asked for: an artefact of
+// articulation rather than a pause. Not zero, because butting two spans
+// hard together clicks; just short enough to read as continuous speech.
+const SPEC_GAP = { join: 0.05, comma: 0.20, stop: 0.55, thought: 0.90, reveal: 1.20 };
 const SPEC_TAIL = 0.30;
 /* Hold her ARTICULATION constant, not the overall words-per-minute.
  *
@@ -926,7 +952,24 @@ const SPEC_TAIL = 0.30;
  * clip with more sentence breaks simply has more silence in it, which is what
  * a person does anyway.
  */
-const TARGET_ARTICULATION = 190;
+// 180, not 190. Once the manufactured pauses went, total silence fell from
+// 28% of a clip to 19%, which pushed the overall pace from 141 to 157 wpm -
+// near the 162 the owner judged too fast. Less silence means the words have to
+// come down to keep the same felt pace.
+const TARGET_ARTICULATION = 180;
+// The slowest a finished clip may read overall, once its silence is counted.
+const MIN_OVERALL_WPM = 138;
+/* Every clip is brought to the same loudness, whoever is reading.
+ *
+ * Voices differ by several dB at identical settings: Brittney records at
+ * -18.9 dB where Sarah sits at -14.8. Four dB is plainly audible, and the
+ * course mixes narration against music and effects at fixed levels, so a
+ * quieter narrator does not merely sound quieter, she sounds weak under the
+ * bed. This also keeps the handful of lines shared across all twenty weeks
+ * level with the week's own narration.
+ */
+const TARGET_MEAN_DB = -15.0;
+const PEAK_CEILING_DB = -1.0;
 
 function mediaDuration(file) {
   const r = runFfmpeg(["-i", file, "-f", "null", "-"]);
@@ -1002,36 +1045,97 @@ function shapeToSpec(file, lines) {
       const trimmed = sp.to - end / SR;
       if (trimmed >= 0.06) sp.to = end / SR;
     }
+
+    /* Drop any span the trim has reduced to nothing.
+     *
+     * A span that was only ever a breath comes out of the trim near zero. Left
+     * in, it separates two silences that then both get their own spec length,
+     * and the pair reads as ONE long pause: measured on week 1's Learn clip,
+     * two 1.45s silences where the longest the spec allows is 1.20s. Removing
+     * the empty span merges those neighbouring silences into one, which is
+     * what they always were.
+     */
+    const MIN_SPAN = 0.12;
+    for (let i = spans.length - 1; i >= 0; i--) {
+      if (spans[i].to - spans[i].from >= MIN_SPAN) continue;
+      spans.splice(i, 1);
+      // sil[i] follows spans[i]; removing the span merges the silence around it
+      if (i < sil.length) sil.splice(i, 1);
+      else if (sil.length) sil.pop();
+    }
+    if (spans.length < 1) return false;
   }
 
   const spanLen = spans.map((s) => s.to - s.from);
   const rawGaps = [];
   for (let i = 0; i + 1 < spans.length; i++) rawGaps.push(sil[i] ? sil[i].end - sil[i].start : 0);
 
-  // A short gap between two SHORT fragments is a staccato beat ("Dragon. Taco.
-  // Comet."), not a comma. Those must land as full stops or the three words
-  // read as one hurried list, which is exactly what the transcript showed.
-  const staccato = rawGaps.findIndex((g, i) => g < 0.30 && spanLen[i] < 1.1 && spanLen[i + 1] < 1.1);
-  // The long pause goes BEFORE the important word. The model will not place it
-  // reliably - identical text gave 1.14s on one generation and 0.53s on the
-  // next - so it is placed here, exactly once.
-  //
-  // Only on a clip with room for one. A reveal is a dramatic beat, and on a
-  // three-word line like "Off you go." a 1.20s pause plus the tail left the
-  // clip two thirds silence, reading as 47 wpm. A pause that long has to be
-  // earning its place in a passage, not padding a sentence.
-  const roomForReveal = words >= 14 && rawGaps.length >= 3;
-  let revealAt = roomForReveal && staccato > 0 ? staccato - 1 : -1;
-  if (revealAt < 0 && roomForReveal) revealAt = rawGaps.indexOf(Math.max(...rawGaps));
+  /* Pause where the TEXT says to, and nowhere else.
+   *
+   * This used to classify each gap purely by how long it happened to be, which
+   * meant anything the detector found at 80ms or more became a pause. Ordinary
+   * speech is full of those: the tiny closures on p, t and k, and the join
+   * between words. They were being stretched to 0.20s each, so the shaper was
+   * MANUFACTURING breaks. Measured on week 1's Learn clip, the text asked for
+   * 12 pauses and the audio was given 14, five of them 0.20s in a passage
+   * containing two commas. That is the "unnecessary breaks between words" the
+   * owner heard, and it was mine, not the model's.
+   *
+   * So the plan now comes from the punctuation, and each detected gap is
+   * matched to the nearest punctuation mark by position. A gap that matches
+   * one gets that mark's length. A gap that matches nothing is collapsed to a
+   * hairline, so the words run together as written.
+   */
+  const spokenText = lines.join("\n").replace(/\[[a-z ]*\]/gi, "");
+  const marks = [];
+  const markRe = /(,)|([.!?]+)(?=\s|$)|(\n+)/g;
+  for (let mm = markRe.exec(spokenText); mm; mm = markRe.exec(spokenText)) {
+    marks.push({ at: mm.index, kind: mm[1] ? "comma" : mm[2] ? "stop" : "thought" });
+  }
+  // The final mark is the end of the clip, not a pause inside it.
+  while (marks.length && marks[marks.length - 1].at >= spokenText.trimEnd().length - 1) marks.pop();
 
-  const kinds = rawGaps.map((g, i) => {
-    if (i === revealAt) return "reveal";
-    if (g < 0.30 && spanLen[i] < 1.1 && spanLen[i + 1] < 1.1) return "stop";
-    if (g < 0.30) return "comma";
-    if (g < 0.50) return "stop";
-    if (g < 0.95) return "thought";
-    return roomForReveal ? "reveal" : "thought";
-  });
+  const rawSpeech0 = spanLen.reduce((a, b) => a + b, 0);
+  const textLen = Math.max(1, spokenText.length);
+  // Where each mark is expected to fall in time, assuming she reads at a steady
+  // rate: good enough to tell a real pause from an artefact of articulation.
+  const markTime = marks.map((m) => (m.at / textLen) * rawSpeech0);
+  // Where each detected gap falls, measured in speech time.
+  const gapTime = [];
+  let acc = 0;
+  for (let i = 0; i + 1 < spans.length; i++) { acc += spanLen[i]; gapTime.push(acc); }
+
+  // Marks and gaps are both in reading order, so the match has to be too: a
+  // later gap must never claim an earlier mark. The old version picked the
+  // nearest free mark for each gap with a 0.9s tolerance, which was loose
+  // enough that almost any gap found something to claim. On Sarah that was
+  // harmless because she only pauses about 11 times in this passage. On a
+  // more deliberate reader it was not: Brittney pauses 22 times, 17 of those
+  // claimed a mark, and a third of the clip became silence at 120 wpm.
+  const tolerance = Math.max(0.35, rawSpeech0 * 0.05);
+  const kinds = new Array(rawGaps.length).fill(null);
+  let nextMark = 0;
+  for (let i = 0; i < rawGaps.length; i++) {
+    let best = -1, bestDist = Infinity;
+    for (let k = nextMark; k < marks.length; k++) {
+      const d = Math.abs(markTime[k] - gapTime[i]);
+      if (d < bestDist) { bestDist = d; best = k; }
+      if (markTime[k] > gapTime[i] + tolerance) break;   // ordered, so stop looking
+    }
+    if (best < 0 || bestDist > tolerance) continue;      // a join, not a pause
+    kinds[i] = marks[best].kind;
+    nextMark = best + 1;
+  }
+
+  // The reveal: the one long beat, placed before the important word. Still
+  // placed here because the model will not do it reliably, but only on a
+  // passage with room for it, and only on a gap the text actually asked for.
+  const roomForReveal = words >= 14 && kinds.filter(Boolean).length >= 3;
+  if (roomForReveal) {
+    const staccato = kinds.findIndex((k, i) => k === "stop" && spanLen[i] < 1.1 && spanLen[i + 1] < 1.1);
+    const at = staccato > 0 && kinds[staccato - 1] ? staccato - 1 : kinds.findIndex((k) => k === "thought");
+    if (at >= 0) kinds[at] = "reveal";
+  }
 
   const rawSpeech = spanLen.reduce((a, b) => a + b, 0);
   const targetSpeech = (words / TARGET_ARTICULATION) * 60;
@@ -1040,7 +1144,31 @@ function shapeToSpec(file, lines) {
   // A tight clamp on purpose. Stretching one clip hard to hit a number is
   // itself audible, and a clip that needs more than this is better left
   // slightly off than obviously processed.
-  tempo = Math.min(1.18, Math.max(0.88, tempo));
+  // The floor was 0.88 and it was binding: asking for 180 wpm produced a mean
+  // of 188, because the model generates faster than that and the clamp would
+  // not let the slower clips reach the target. Every clip that hits the clamp
+  // lands wherever it lands, which is what widens the spread. 0.80 is still
+  // well inside what atempo handles cleanly.
+  tempo = Math.min(1.15, Math.max(0.80, tempo));
+
+  /* A floor on the overall pace.
+   *
+   * Articulation is held constant, but a voice that pauses at many more
+   * points accumulates far more silence, and the clip drags however fast the
+   * words are. Brittney came out at 120 wpm overall, slower than the 127 the
+   * owner had already called too slow, purely on pause count. So if the
+   * planned silence would drop the clip below the floor, every gap is scaled
+   * back together, which keeps their relative shape intact.
+   */
+  const plannedSpeech = rawSpeech / tempo;
+  let gapScale = 1;
+  {
+    const gapTotal = kinds.reduce((t, k) => t + SPEC_GAP[k || "join"], 0) + SPEC_TAIL;
+    const floorTotal = (words / MIN_OVERALL_WPM) * 60;
+    if (plannedSpeech + gapTotal > floorTotal && gapTotal > 0.2) {
+      gapScale = Math.max(0.45, (floorTotal - plannedSpeech) / gapTotal);
+    }
+  }
 
   const parts = [];
   const filters = [];
@@ -1049,8 +1177,11 @@ function shapeToSpec(file, lines) {
       `[0:a]atrim=${sp.from.toFixed(3)}:${sp.to.toFixed(3)},asetpts=PTS-STARTPTS,atempo=${tempo.toFixed(4)}[s${i}]`,
     );
     parts.push(`[s${i}]`);
-    if (kinds[i]) {
-      filters.push(`anullsrc=r=44100:cl=mono,atrim=0:${SPEC_GAP[kinds[i]].toFixed(3)}[g${i}]`);
+    if (i < spans.length - 1) {
+      // No kind means the punctuation never asked for a pause here, so the two
+      // spans are joined rather than separated.
+      const secs = SPEC_GAP[kinds[i] || "join"] * gapScale;
+      filters.push(`anullsrc=r=44100:cl=mono,atrim=0:${secs.toFixed(3)}[g${i}]`);
       parts.push(`[g${i}]`);
     }
   });
@@ -1066,6 +1197,21 @@ function shapeToSpec(file, lines) {
     tmp,
   ]);
   if (r.status !== 0) return false;
+
+  // Bring the clip to the shared loudness target.
+  //
+  // A plain gain change cannot do this: Brittney reads at -18.9 dB mean with
+  // peaks already at -1.4, so lifting her to Sarah's -15.7 would clip. EBU
+  // R128 normalisation manages the dynamics instead. Measured, I=-14 lands
+  // this voice at -15.4 dB mean / -1.6 peak against Sarah's -15.7 / -1.0, so
+  // any narrator arrives at the same place.
+  const leveled = tmp + '.lvl.mp3';
+  const g = runFfmpeg([
+    '-hide_banner', '-y', '-i', tmp,
+    '-af', 'loudnorm=I=-14:TP=-1.5:LRA=11',
+    '-c:a', 'libmp3lame', '-b:a', '128k', '-ar', '44100', leveled,
+  ]);
+  if (g.status === 0) { try { renameSync(leveled, tmp); } catch { /* keep the unleveled clip */ } }
   try {
     renameSync(tmp, file);
   } catch {
@@ -1078,8 +1224,8 @@ function shapeToSpec(file, lines) {
 // we don't re-attempt v3 for every block once we know it's unavailable.
 let acceptedModel = null;
 
-async function generateBlock(speaker, lines) {
-  const voice = VOICE[speaker];
+async function generateBlock(speaker, lines, source) {
+  const voice = voiceFor(speaker, source);
   const blockText = joinBlock(lines);
   const key = hashKey(speaker, voice.id, blockText);
   const filename = `${key}.mp3`;
@@ -1201,7 +1347,7 @@ for (let i = 0; i < blocks.length; i++) {
     );
   }
   try {
-    const r = await generateBlock(block.speaker, block.lines);
+    const r = await generateBlock(block.speaker, block.lines, block.source);
     if (r.missing) {
       unrecorded.push({ speaker: r.speaker, file: r.filename, text: r.blockText, source: block.source });
       continue;
