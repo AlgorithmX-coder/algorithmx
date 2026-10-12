@@ -967,7 +967,7 @@ function speakBlock(lines) {
  * trimmed out. 0.50s was not enough to feel like one; 0.65 is. The paragraph
  * break grows with it so the hierarchy still reads. The join is only used now
  * where the audio is genuinely cut, which is rare. */
-const SPEC_GAP = { join: 0.05, comma: 0.22, stop: 0.65, thought: 0.85, reveal: 0.85 };
+const SPEC_GAP = { butt: 0, join: 0.05, comma: 0.22, stop: 0.65, thought: 0.85, reveal: 0.85 };
 const SPEC_TAIL = 0.30;
 /* Hold her ARTICULATION constant, not the overall words-per-minute.
  *
@@ -1246,8 +1246,34 @@ function shapeToSpec(file, lines) {
    *
    * Merging here means an untouched clip passes through as one piece.
    */
+  /* An unmatched gap is left alone only while it is SHORT.
+   *
+   * Owner, once the splicing was fixed: "'Long, strong, and easy to remember'
+   * - after 'and' there was a break", and "there was a break after 'snap' as
+   * well". There is no punctuation at either, so neither break was mine: they
+   * are the model's own hesitations, which the old version collapsed to 0.05s
+   * and which now survived at full length. One artificial fault traded for a
+   * natural one.
+   *
+   * So a gap the punctuation never asked for is shortened rather than kept -
+   * by trimming the MIDDLE out of it and butting the two halves together,
+   * keeping a little of the real ambience on each side. The words still run on
+   * through genuine room tone, which is what stopped the clicking, and the
+   * hesitation goes.
+   */
+  const NATURAL_KEEP = 0.16;   // below this, inaudible as a pause: leave it
+  const ROOM = 0.05;           // real ambience kept either side of a trim
   for (let i = kinds.length - 1; i >= 0; i--) {
     if (kinds[i] !== null) continue;
+    const g = sil[i];
+    if (g && g.end - g.start > NATURAL_KEEP) {
+      spans[i] = { from: spans[i].from, to: Math.min(g.start + ROOM, g.end) };
+      spans[i + 1] = { from: Math.max(g.end - ROOM, g.start), to: spans[i + 1].to };
+      kinds[i] = "butt";       // no silence inserted; the two halves meet
+      spanLen[i] = spans[i].to - spans[i].from;
+      spanLen[i + 1] = spans[i + 1].to - spans[i + 1].from;
+      continue;
+    }
     spans[i] = { from: spans[i].from, to: spans[i + 1].to };
     spans.splice(i + 1, 1);
     kinds.splice(i, 1);
