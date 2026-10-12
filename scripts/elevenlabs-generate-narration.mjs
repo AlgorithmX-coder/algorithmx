@@ -960,7 +960,14 @@ function speakBlock(lines) {
  * dramatic beat, which is a stage pause rather than a teaching one. Half a
  * second is what a person actually leaves at a full stop, and a paragraph gets
  * a little more without becoming a silence. */
-const SPEC_GAP = { join: 0.05, comma: 0.20, stop: 0.50, thought: 0.70, reveal: 0.70 };
+/* Owner: "there is no pause after the sentence has stopped, after a full stop,
+ * so she needs to take a breath - and I do not want to hear the breath."
+ *
+ * That is a silence long enough to read AS a breath, with the inhale itself
+ * trimmed out. 0.50s was not enough to feel like one; 0.65 is. The paragraph
+ * break grows with it so the hierarchy still reads. The join is only used now
+ * where the audio is genuinely cut, which is rare. */
+const SPEC_GAP = { join: 0.05, comma: 0.22, stop: 0.65, thought: 0.85, reveal: 0.85 };
 const SPEC_TAIL = 0.30;
 /* Hold her ARTICULATION constant, not the overall words-per-minute.
  *
@@ -980,9 +987,11 @@ const SPEC_TAIL = 0.30;
 // 28% of a clip to 19%, which pushed the overall pace from 141 to 157 wpm -
 // near the 162 the owner judged too fast. Less silence means the words have to
 // come down to keep the same felt pace.
-const TARGET_ARTICULATION = 180;
+/* 165, not 180. Owner: "she is racing through it." 180 is a confident adult
+ * reading rate; a teacher landing an idea on a six year old is slower. */
+const TARGET_ARTICULATION = 165;
 // The slowest a finished clip may read overall, once its silence is counted.
-const MIN_OVERALL_WPM = 138;
+const MIN_OVERALL_WPM = 118;
 /* Every clip is brought to the same loudness, whoever is reading.
  *
  * Voices differ by several dB at identical settings: Brittney records at
@@ -1062,12 +1071,26 @@ function shapeToSpec(file, lines) {
     for (let i = 0; i + win < samples; i += win) loud = Math.max(loud, levelAt(i));
     const floor = loud * 0.06;                               // about 24dB down
     const MAX_TRIM = 0.45;
+    /* A breath is long. A final consonant is short.
+     *
+     * Owner: "on the last word of a sentence it almost cuts out that last
+     * letter." It did: the quiet tail this walks back through is a breath on
+     * most sentences, but on one ending in s, t, k or p it is the consonant
+     * itself, which carries barely more energy. Trimming at 0.06s took the
+     * consonant with it and the word lost its ending.
+     *
+     * A breath runs 0.2s or more; no final consonant does. So nothing shorter
+     * than MIN_TRIM is touched, and whatever is removed leaves KEEP_TAIL of
+     * the decay behind so the consonant is never clipped at its edge either.
+     */
+    const MIN_TRIM = 0.20;
+    const KEEP_TAIL = 0.05;
     for (const sp of spans) {
       let end = Math.floor(sp.to * SR);
       const limit = Math.max(Math.floor(sp.from * SR), end - Math.floor(MAX_TRIM * SR));
       while (end - win > limit && levelAt(end - win) < floor) end -= win;
       const trimmed = sp.to - end / SR;
-      if (trimmed >= 0.06) sp.to = end / SR;
+      if (trimmed >= MIN_TRIM) sp.to = Math.min(sp.to, end / SR + KEEP_TAIL);
     }
 
     /* Drop any span the trim has reduced to nothing.
@@ -1149,20 +1172,88 @@ function shapeToSpec(file, lines) {
   // harmless because she only pauses about 11 times in this passage. On a
   // more deliberate reader it was not: Brittney pauses 22 times, 17 of those
   // claimed a mark, and a third of the clip became silence at 120 wpm.
-  const tolerance = Math.max(0.35, rawSpeech0 * 0.05);
-  const kinds = new Array(rawGaps.length).fill(null);
-  let nextMark = 0;
-  for (let i = 0; i < rawGaps.length; i++) {
-    let best = -1, bestDist = Infinity;
-    for (let k = nextMark; k < marks.length; k++) {
-      const d = Math.abs(markTime[k] - gapTime[i]);
-      if (d < bestDist) { bestDist = d; best = k; }
-      if (markTime[k] > gapTime[i] + tolerance) break;   // ordered, so stop looking
+  /* Align the gaps to the marks properly, rather than nearest-within-a-window.
+   *
+   * Both are in reading order, so this is a sequence alignment, and solving it
+   * as one is far steadier than deciding each gap on its own. The greedy
+   * version kept failing at the edges: too tight a window and a real sentence
+   * break was collapsed, leaving no pause after a full stop; too loose and
+   * ordinary articulation gaps claimed marks and she stopped between words.
+   * Worst of all, "Dragon. Taco. Comet." - three one-word sentences whose gaps
+   * sit nowhere near where a steady-rate estimate puts them - lost all three
+   * and ran together into one word.
+   *
+   * The position estimate is only a hint here, not a gate. Cost is distance
+   * when a gap takes a mark, a flat penalty when a gap is left as a join, and
+   * a flat penalty when a mark goes unspoken because she simply did not pause
+   * there. The cheapest arrangement over the WHOLE clip wins.
+   */
+  /* Leaving a gap alone has to be CHEAP, and a wild match impossible.
+   *
+   * Owner: "when it says 'and the easiest', there's a pause after 'the'."
+   * There is no punctuation after "the", so that gap should have been left
+   * alone - but skipping it cost 0.9 while matching it to a mark half a second
+   * away cost only 0.5, so the solver bought the mark. Every ordinary breath
+   * between words could be dragged onto a full stop that way.
+   *
+   * So: skipping is cheap, and a match further than MAX_MATCH from where the
+   * mark is expected is not allowed at all, however tempting the arithmetic.
+   */
+  const SKIP_GAP = 0.35;   // leaving a detected gap unpaused, as most should be
+  const SKIP_MARK = 0.7;   // a mark the reader ran straight through
+  const MAX_MATCH = 1.1;   // seconds; beyond this a gap cannot be that mark
+  const G = rawGaps.length, M = marks.length;
+  const cost = Array.from({ length: G + 1 }, () => new Float64Array(M + 1).fill(Infinity));
+  const back = Array.from({ length: G + 1 }, () => new Int8Array(M + 1));
+  cost[0][0] = 0;
+  for (let i = 0; i <= G; i++) {
+    for (let j = 0; j <= M; j++) {
+      const c = cost[i][j];
+      if (!Number.isFinite(c)) continue;
+      if (i < G && c + SKIP_GAP < cost[i + 1][j]) { cost[i + 1][j] = c + SKIP_GAP; back[i + 1][j] = 1; }
+      if (j < M && c + SKIP_MARK < cost[i][j + 1]) { cost[i][j + 1] = c + SKIP_MARK; back[i][j + 1] = 2; }
+      if (i < G && j < M) {
+        const away = Math.abs(markTime[j] - gapTime[i]);
+        if (away <= MAX_MATCH) {
+          const d = c + away;
+          if (d < cost[i + 1][j + 1]) { cost[i + 1][j + 1] = d; back[i + 1][j + 1] = 3; }
+        }
+      }
     }
-    if (best < 0 || bestDist > tolerance) continue;      // a join, not a pause
-    kinds[i] = marks[best].kind;
-    nextMark = best + 1;
   }
+  const kinds = new Array(G).fill(null);
+  for (let i = G, j = M; i > 0 || j > 0; ) {
+    const b = back[i][j];
+    if (b === 3) { kinds[i - 1] = marks[j - 1].kind; i--; j--; }
+    else if (b === 1) i--;
+    else if (b === 2) j--;
+    else break;
+  }
+
+  /* Only CUT the audio where a pause is actually going.
+   *
+   * Everywhere else, the two spans and the silence between them are left as
+   * one continuous piece of the original recording.
+   *
+   * This used to split at every silence the detector found - dozens per clip,
+   * since ordinary speech is full of 80ms closures on p, t and k - and splice
+   * the pieces back together with 0.05s of DIGITAL silence. Natural speech has
+   * room tone and sounds running into one another, not pure silence, so each
+   * of those splices was a tiny hard edge. Dozens of them per clip is exactly
+   * what "she is stopping in between words" describes, and no amount of
+   * retuning the pause lengths could fix it, because the damage was in the
+   * cutting rather than in the gaps.
+   *
+   * Merging here means an untouched clip passes through as one piece.
+   */
+  for (let i = kinds.length - 1; i >= 0; i--) {
+    if (kinds[i] !== null) continue;
+    spans[i] = { from: spans[i].from, to: spans[i + 1].to };
+    spans.splice(i + 1, 1);
+    kinds.splice(i, 1);
+    spanLen.splice(i, 2, spans[i].to - spans[i].from);
+  }
+  if (!spans.length) return false;
 
   // The reveal: the one long beat, placed before the important word. Still
   // placed here because the model will not do it reliably, but only on a
@@ -1174,7 +1265,12 @@ function shapeToSpec(file, lines) {
     if (at >= 0) kinds[at] = "reveal";
   }
 
-  const rawSpeech = spanLen.reduce((a, b) => a + b, 0);
+  // rawSpeech0 is the speech measured BEFORE the spans were merged, so it
+  // excludes the natural gaps that now sit inside them. Using the merged total
+  // would stretch those gaps as well as the words, and the words themselves
+  // would come out faster than asked for: targeting 165 wpm that way produced
+  // 179, which is still the rate the owner called racing.
+  const rawSpeech = rawSpeech0;
   const targetSpeech = (words / TARGET_ARTICULATION) * 60;
   let tempo = rawSpeech / Math.max(0.3, targetSpeech);
   if (!Number.isFinite(tempo)) return false;
