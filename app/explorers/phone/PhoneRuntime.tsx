@@ -21,10 +21,11 @@ import { type CaseStage, readProgress, saveProgress, clearProgress, markCaseComp
 import { saveExplorersProgress } from "@/app/lib/explorersProgress.actions";
 import { ResumePrompt } from "../engine/ResumePrompt";
 import { ClosingCeremony } from "../engine/closingCeremony";
-import { LEVERS, type LeverId, type PhoneCase, type PhoneStep, type PhoneTest, type TagSegment } from "./case06";
+import { LEVERS, type LeverId, type PhoneAppKind, type PhoneCase, type PhoneStep, type PhoneTest, type TagSegment } from "./case06";
 import { addJournalEntry, loadJournal, type JournalEntry } from "./journal";
 import { CaseJournal } from "./CaseJournal";
 import { PropField } from "./PropField";
+import { HomeScreen } from "./HomeScreen";
 
 const C = {
   page: "#0d0d12", ink: "#F3F4F7", dim: "#9A9AA6", faint: "#7a7a88",
@@ -52,6 +53,8 @@ const CSS = `
 @keyframes ph-blink{0%,80%,100%{opacity:.3;transform:translateY(0)}40%{opacity:1;transform:translateY(-3px)}}
 @keyframes ph-eq{0%,100%{transform:scaleY(.5)}50%{transform:scaleY(1)}}
 @keyframes ph-shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+.ph-pulse-dot{animation:phPulseDot 1.4s ease-in-out infinite}
+@keyframes phPulseDot{0%,100%{opacity:1}50%{opacity:.35}}
 .ph-row{animation:ph-pop .28s cubic-bezier(.2,.8,.2,1) both}
 .ph-lever{transition:transform .1s,border-color .15s,background .15s}
 .ph-lever:hover:not(:disabled){border-color:${C.wren};transform:translateY(-2px)}
@@ -96,7 +99,7 @@ export default function PhoneRuntime({ phoneCase, onExit, onNextCase }: { phoneC
   // Fast test mode (?fast=1): skip the narrator wait so the owner can click
   // through quickly. Real users never set it, so the anti-skip stays on.
   const fast = typeof window !== "undefined" && new URLSearchParams(window.location.search).get("fast") === "1";
-  const [phase, setPhase] = useState<"lock" | "play" | "test" | "debrief">("lock");
+  const [phase, setPhase] = useState<"home" | "lock" | "play" | "test" | "debrief">("home");
   const [header, setHeader] = useState<Header>(WREN_HEADER);
   const [items, setItems] = useState<Item[]>([]);
   const [dock, setDock] = useState<Dock>(null);
@@ -129,6 +132,9 @@ export default function PhoneRuntime({ phoneCase, onExit, onNextCase }: { phoneC
   const startedRef = useRef(false);
   const threadRef = useRef<HTMLDivElement>(null);
   const [resumeStage] = useState<CaseStage | null>(() => readProgress(phoneCase.id));
+  // The home-screen zoom-in is a cold-open beat, once per case — a returning
+  // player goes straight to the resume prompt, not through it again.
+  useEffect(() => { if (isResumable(resumeStage)) setPhase("lock"); }, [resumeStage]);
 
   const nextId = () => ++idRef.current;
   const wait = (ms: number) => new Promise<void>((r) => setTimeout(r, reduce ? Math.min(ms, 120) : ms));
@@ -386,7 +392,9 @@ export default function PhoneRuntime({ phoneCase, onExit, onNextCase }: { phoneC
             </span>
           </div>
 
-          {phase === "lock" ? (
+          {phase === "home" ? (
+            <HomeScreen appName={APP} kind={phoneCase.app?.kind ?? "messaging"} accent={OUT} reduced={!!reduce} onDone={() => setPhase("lock")} />
+          ) : phase === "lock" ? (
             isResumable(resumeStage) ? (
               <ResumePrompt caseNumber={phoneCase.caseNumber} title={phoneCase.title} acc={OUT} atLabel={stageLabel(resumeStage, phoneCase.skills)} onContinue={beginResume} onRestart={beginFresh} />
             ) : (
@@ -411,11 +419,21 @@ export default function PhoneRuntime({ phoneCase, onExit, onNextCase }: { phoneC
                 </div>
                 <span style={{ marginLeft: "auto", flex: "0 0 auto", fontSize: 9.5, fontWeight: 800, letterSpacing: ".14em", textTransform: "uppercase", color: OUT, opacity: 0.8 }}>{APP}</span>
               </div>
+              {phoneCase.app?.kind === "wallet" && (
+                <div style={{ flex: "0 0 auto", display: "flex", alignItems: "center", gap: 7, padding: "7px 13px", background: "rgba(255,122,77,.08)", borderBottom: `1px solid ${C.line}`, fontSize: 11.5, fontWeight: 700, color: OUT }}>
+                  <span aria-hidden>💰</span> Wallet: <span style={{ color: C.ink }}>2,400 Glint Coins</span>
+                </div>
+              )}
+              {phoneCase.app?.kind === "call" && (
+                <div style={{ flex: "0 0 auto", display: "flex", alignItems: "center", justifyContent: "center", gap: 7, padding: "6px 13px", background: "rgba(53,199,119,.1)", borderBottom: `1px solid ${C.line}`, fontSize: 11, fontWeight: 700, letterSpacing: ".06em", color: OUT }}>
+                  <span aria-hidden className="ph-pulse-dot" style={{ width: 7, height: 7, borderRadius: "50%", background: OUT, display: "inline-block" }} /> ON CALL · CONNECTED
+                </div>
+              )}
 
               {/* thread */}
               <div ref={threadRef} className="ph-thread" style={{ flex: "1 1 auto", overflowY: "auto", padding: "14px 13px 8px", display: "flex", flexDirection: "column", gap: 3, background: WALL }}>
                 <div style={{ textAlign: "center", color: C.faint, fontSize: 11, margin: "2px 0 8px" }}>Today 9:41</div>
-                {items.map((it) => <ItemView key={it.id} it={it} wrenAvatar={renderWrenAvatar(speaking && it.id === lastWrenRef.current)} accent={OUT} onTagSegment={tapTagSegment} />)}
+                {items.map((it) => <ItemView key={it.id} it={it} wrenAvatar={renderWrenAvatar(speaking && it.id === lastWrenRef.current)} accent={OUT} kind={phoneCase.app?.kind ?? "messaging"} onTagSegment={tapTagSegment} />)}
               </div>
 
               {/* dock */}
@@ -430,7 +448,7 @@ export default function PhoneRuntime({ phoneCase, onExit, onNextCase }: { phoneC
   );
 }
 
-function ItemView({ it, wrenAvatar, accent, onTagSegment }: { it: Item; wrenAvatar: React.ReactNode; accent: string; onTagSegment: (itemId: number, idx: number) => void }) {
+function ItemView({ it, wrenAvatar, accent, kind, onTagSegment }: { it: Item; wrenAvatar: React.ReactNode; accent: string; kind: PhoneAppKind; onTagSegment: (itemId: number, idx: number) => void }) {
   if (it.kind === "typing") {
     return (
       <div className="ph-row" style={{ display: "flex", marginTop: 7 }}>
@@ -516,9 +534,17 @@ function ItemView({ it, wrenAvatar, accent, onTagSegment }: { it: Item; wrenAvat
     );
   }
   if (it.kind === "tagmsg") {
+    const isCall = kind === "call";
     return (
-      <div className="ph-row" style={{ display: "flex", marginTop: 7 }}>
-        <div style={{ maxWidth: "88%", padding: "10px 13px", borderRadius: 19, borderBottomLeftRadius: 6, fontSize: 15, lineHeight: 1.55, background: C.inc, color: C.ink, whiteSpace: "pre-line" }}>
+      <div className="ph-row" style={{ display: "flex", flexDirection: "column", gap: isCall ? 3 : 0, marginTop: isCall ? 10 : 7, marginLeft: isCall ? 10 : 0 }}>
+        {isCall && <div style={{ fontSize: 9.5, letterSpacing: ".1em", color: accent, fontWeight: 700, textTransform: "uppercase" }}>))) live transcript</div>}
+        <div
+          style={
+            isCall
+              ? { maxWidth: "92%", fontSize: 15, lineHeight: 1.55, color: C.ink, fontStyle: "italic", whiteSpace: "pre-line" }
+              : { maxWidth: "88%", padding: "10px 13px", borderRadius: 19, borderBottomLeftRadius: 6, fontSize: 15, lineHeight: 1.55, background: C.inc, color: C.ink, whiteSpace: "pre-line" }
+          }
+        >
           {it.segments.map((seg, i) => {
             if (!seg.tellId) return <span key={i}>{seg.text}</span>;
             const on = it.selected.includes(seg.tellId);
@@ -568,12 +594,50 @@ function ItemView({ it, wrenAvatar, accent, onTagSegment }: { it: Item; wrenAvat
     );
   }
   const me = it.kind === "you";
+  const tag = "tag" in it ? it.tag : undefined;
+
+  // CALL skin (m10): no bubbles — a waveform transcript line, like reading
+  // back what a voice actually said, which is exactly what this case's
+  // content already is (every "con" line here IS a voice message).
+  if (kind === "call") {
+    return (
+      <div className="ph-row" style={{ display: "flex", gap: 9, alignItems: "flex-start", margin: "10px 10px 0", justifyContent: me ? "flex-end" : "flex-start" }}>
+        {!me && <span aria-hidden style={{ fontSize: 14, color: accent, flex: "0 0 auto", marginTop: 1 }}>))) </span>}
+        <div style={{ maxWidth: "82%", textAlign: me ? "right" : "left" }}>
+          {!me && <div style={{ fontSize: 9.5, letterSpacing: ".1em", color: accent, fontWeight: 700, textTransform: "uppercase", marginBottom: 2 }}>live transcript</div>}
+          <div style={{ fontSize: 15, lineHeight: 1.4, color: me ? "#fff" : C.ink, fontStyle: me ? "normal" : "italic" }}>{it.text}</div>
+          {tag && <span style={{ display: "inline-flex", alignItems: "center", gap: 4, marginTop: 5, fontSize: 10.5, fontWeight: 700, letterSpacing: ".05em", color: C.mint, background: "rgba(49,217,160,.12)", border: `1px solid rgba(49,217,160,.4)`, padding: "1px 7px", borderRadius: 999 }}>⚑ {tag} · called</span>}
+        </div>
+      </div>
+    );
+  }
+
+  // GAME CHAT skin (m09): blocky, monospace, username-prefixed — a
+  // Minecraft/Xbox/PlayStation party-chat lookalike, not a DM thread.
+  if (kind === "gamechat") {
+    return (
+      <div className="ph-row" style={{ display: "flex", marginTop: 6, justifyContent: me ? "flex-end" : "flex-start" }}>
+        <div style={{ maxWidth: "84%" }}>
+          <div style={{ fontFamily: "ui-monospace, Consolas, monospace", fontSize: 10, fontWeight: 700, letterSpacing: ".04em", color: me ? C.mint : accent, marginBottom: 2, textAlign: me ? "right" : "left" }}>
+            {me ? "YOU" : "PLAYER"}
+          </div>
+          <div style={{ padding: "7px 11px", borderRadius: 5, fontFamily: "ui-monospace, Consolas, monospace", fontSize: 13.5, lineHeight: 1.4, background: me ? `${accent}26` : "rgba(255,255,255,0.05)", color: C.ink, border: `1px solid ${me ? accent + "55" : C.chipedge}`, boxShadow: (it as { ask?: boolean }).ask ? `0 0 0 1.5px ${C.red}` : "none" }}>
+            {it.text}
+          </div>
+          {tag && (
+            <span style={{ display: "flex", width: "fit-content", alignItems: "center", gap: 4, marginTop: 5, marginLeft: me ? "auto" : 0, fontSize: 10.5, fontWeight: 700, letterSpacing: ".05em", color: C.mint, background: "rgba(49,217,160,.12)", border: `1px solid rgba(49,217,160,.4)`, padding: "1px 7px", borderRadius: 999 }}>⚑ {tag} · called</span>
+          )}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="ph-row" style={{ display: "flex", marginTop: 7, justifyContent: me ? "flex-end" : "flex-start" }}>
       <div style={{ maxWidth: "80%", padding: "9px 13px", borderRadius: 19, fontSize: 15, lineHeight: 1.34, background: me ? accent : C.inc, color: me ? "#fff" : C.ink, borderBottomRightRadius: me ? 6 : 19, borderBottomLeftRadius: me ? 19 : 6, boxShadow: (it as { ask?: boolean }).ask ? `0 0 0 1.5px ${C.red}` : "none" }}>
         {it.text}
-        {"tag" in it && it.tag && (
-          <span style={{ display: "flex", width: "fit-content", alignItems: "center", gap: 4, marginTop: 6, fontSize: 10.5, fontWeight: 700, letterSpacing: ".05em", color: C.mint, background: "rgba(49,217,160,.12)", border: `1px solid rgba(49,217,160,.4)`, padding: "1px 7px", borderRadius: 999 }}>⚑ {it.tag} · called</span>
+        {tag && (
+          <span style={{ display: "flex", width: "fit-content", alignItems: "center", gap: 4, marginTop: 6, fontSize: 10.5, fontWeight: 700, letterSpacing: ".05em", color: C.mint, background: "rgba(49,217,160,.12)", border: `1px solid rgba(49,217,160,.4)`, padding: "1px 7px", borderRadius: 999 }}>⚑ {tag} · called</span>
         )}
       </div>
     </div>
