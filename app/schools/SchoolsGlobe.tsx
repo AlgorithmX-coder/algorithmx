@@ -1513,11 +1513,17 @@ export default function SchoolsGlobe({ tone = "night" }: { tone?: "night" | "san
             layout to keep clear of the bright side. */}
         <div className="sg-veil" aria-hidden />
         <div className="sg-label" ref={labelRef} aria-hidden>
-          <span className="sg-label-head">UNITED KINGDOM</span>
-          <span className="sg-label-sub">
-            <span className="sg-label-lead">SOURCE</span>
-            <span className="sg-label-dot" />
-            <span className="sg-label-brand">ALGORITHMX</span>
+          <span className="sg-label-radar" aria-hidden>
+            <span className="sg-radar-sweep" />
+            <span className="sg-radar-dot" />
+          </span>
+          <span className="sg-label-text">
+            <span className="sg-label-head">UNITED KINGDOM</span>
+            <span className="sg-label-sub">
+              <span className="sg-label-lead">SOURCE</span>
+              <span className="sg-label-dot" />
+              <span className="sg-label-brand">ALGORITHMX</span>
+            </span>
           </span>
         </div>
       </div>
@@ -1580,12 +1586,16 @@ export default function SchoolsGlobe({ tone = "night" }: { tone?: "night" | "san
         }
         .sg-root-dim .sg-veil { opacity: 1; }
 
+        /* A live radar/scanner mark beside the source wordmark (owner pick).
+           No plate: the text carries a soft halo so it reads over the dots,
+           and the dish sweeps like a monitoring station. Tone-aware. */
         .sg-label {
           transition: opacity 0.35s ease;
           position: absolute;
           display: none;
-          flex-direction: column;
-          gap: calc(var(--sg-label-px, 18px) * 0.34);
+          flex-direction: row;
+          align-items: center;
+          gap: calc(var(--sg-label-px, 18px) * 0.62);
           font-family: var(--lv2-font-mono, ui-monospace, monospace);
           line-height: 1;
           white-space: nowrap;
@@ -1597,12 +1607,49 @@ export default function SchoolsGlobe({ tone = "night" }: { tone?: "night" | "san
           .sg-label { display: flex; }
         }
         .sg-label-gone { opacity: 0; }
+        .sg-label-radar {
+          position: relative;
+          flex-shrink: 0;
+          width: calc(var(--sg-label-px, 18px) * 2.1);
+          height: calc(var(--sg-label-px, 18px) * 2.1);
+          border-radius: 50%;
+          overflow: hidden;
+          border: 1px solid ${onSand ? "rgba(10,112,133,0.5)" : "rgba(125,220,255,0.45)"};
+          background: radial-gradient(circle, ${onSand ? "rgba(10,112,133,0.1)" : "rgba(46,230,255,0.12)"}, transparent 72%);
+          filter: drop-shadow(0 0 ${onSand ? "3px rgba(10,112,133,0.25)" : "6px rgba(46,230,255,0.45)"});
+        }
+        .sg-radar-sweep {
+          position: absolute;
+          inset: 0;
+          border-radius: inherit;
+          background: conic-gradient(from 0deg, ${onSand ? "rgba(10,112,133,0.6)" : "rgba(46,230,255,0.6)"}, transparent 66%);
+          animation: sgRadar 2.6s linear infinite;
+        }
+        .sg-radar-dot {
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          width: calc(var(--sg-label-px, 18px) * 0.26);
+          height: calc(var(--sg-label-px, 18px) * 0.26);
+          transform: translate(-50%, -50%);
+          border-radius: 50%;
+          background: ${onSand ? "#0e7a45" : "#9cff8a"};
+          box-shadow: 0 0 7px ${onSand ? "rgba(14,122,69,0.7)" : "rgba(156,255,138,0.95)"};
+        }
+        @keyframes sgRadar { to { transform: rotate(360deg); } }
+        .sg-label-text {
+          display: flex;
+          flex-direction: column;
+          gap: calc(var(--sg-label-px, 18px) * 0.32);
+        }
         .sg-label-head {
           font-size: var(--sg-label-px, 18px);
           font-weight: 700;
-          letter-spacing: 0.13em;
-          color: #8a5400;
-          text-shadow: 0 0 calc(var(--sg-label-px, 18px) * 0.75) rgba(255,181,84,0.7), 0 0 2px rgba(3,8,26,0.95);
+          letter-spacing: 0.14em;
+          color: ${onSand ? "#8a5400" : "#ffd27a"};
+          text-shadow: ${onSand
+            ? "0 0 6px rgba(248,244,236,0.95), 0 1px 1px rgba(255,255,255,0.7)"
+            : "0 0 9px rgba(3,8,26,0.9), 0 0 16px rgba(255,181,84,0.3)"};
         }
         .sg-label-sub {
           display: flex;
@@ -1612,15 +1659,19 @@ export default function SchoolsGlobe({ tone = "night" }: { tone?: "night" | "san
           font-weight: 700;
           letter-spacing: 0.15em;
         }
-        .sg-label-lead { color: #3f5a78; }
+        .sg-label-lead {
+          color: ${onSand ? "#5a6a7d" : "#9fb3c9"};
+          text-shadow: ${onSand ? "0 0 6px rgba(248,244,236,0.9)" : "0 0 8px rgba(3,8,26,0.85)"};
+        }
         .sg-label-dot {
-          width: calc(var(--sg-label-px, 18px) * 0.16);
-          height: calc(var(--sg-label-px, 18px) * 0.16);
-          background: rgb(10,112,133);
+          width: calc(var(--sg-label-px, 18px) * 0.17);
+          height: calc(var(--sg-label-px, 18px) * 0.17);
+          border-radius: 50%;
+          background: ${onSand ? "rgb(10,112,133)" : "#7df0ff"};
         }
         .sg-label-brand {
-          color: #14161d;
-          text-shadow: 0 0 calc(var(--sg-label-px, 18px) * 0.62) rgba(110,230,255,0.85), 0 0 2px rgba(3,8,26,0.95);
+          color: ${onSand ? "#0a6675" : "#7df0ff"};
+          text-shadow: ${onSand ? "0 0 6px rgba(248,244,236,0.9)" : "0 0 10px rgba(46,230,255,0.5)"};
         }
 
         .sg-scrim {
