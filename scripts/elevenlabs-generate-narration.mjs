@@ -76,9 +76,15 @@ const VOICE = {
  * left half migrated - two narrators across twenty weeks is worse than
  * either voice on its own.
  */
-const BRITTNEY = { id: "2EUn20N7uqcXUxqGrJEF", name: "Brittney" };
+/* Owner's pick after hearing the shortlist: a bright kids educator rather
+ * than an audiobook narrator. Every earlier candidate - Sarah, Brittney,
+ * Emma Warm, Carolyn, Heather, Liz, Talia, Cozy - was calm, measured and
+ * intimate, which is the register for reading a novel to an adult. A teacher
+ * of six year olds is brighter and carries more lift, because she is holding
+ * a room rather than confiding in one listener. */
+const KIDS_EDUCATOR = { id: "oClOrzqamOXmtcB8iqTj", name: "Emma (Kids Educator)" };
 const NARRATOR_BY_WEEK = {
-  "week1.ts": BRITTNEY,
+  "week1.ts": KIDS_EDUCATOR,
 };
 
 /** The voice for a block: the week's narrator if it has its own, else the
@@ -141,7 +147,17 @@ const VOICE_SETTINGS = {
 // ElevenLabs' own guidance for "doesn't sound AI"). If the plan
 // rejects it, fall back to eleven_multilingual_v2 (the proven
 // premium model that worked in v1-v6).
-const MODELS_IN_PRIORITY_ORDER = ["eleven_v3", "eleven_multilingual_v2"];
+/* eleven_v4 first. The course was recorded on v3 throughout; v4 is a
+ * generation newer and audibly less synthetic on the same voice and the same
+ * script. Verified before adopting it: it CONSUMES the [warmly] and [proud]
+ * tags rather than reading them aloud, which is what ruled out going
+ * backwards to multilingual_v2. It honours `speed` no better than v3 (5.07s
+ * against 5.15s for a 30% change), so the delivery spec still does the pacing.
+ *
+ * The model is NOT part of the clip hash, so adopting it does not invalidate
+ * a single existing recording - the other nineteen weeks stay exactly as they
+ * are until they are deliberately re-recorded. */
+const MODELS_IN_PRIORITY_ORDER = ["eleven_v4", "eleven_v3", "eleven_multilingual_v2"];
 const OUTPUT_FORMAT = "mp3_44100_128";
 
 const GENERATION_VERSION = "v15-sarah-slower";
@@ -936,7 +952,15 @@ function speakBlock(lines) {
 // JOIN is for a silence the punctuation never asked for: an artefact of
 // articulation rather than a pause. Not zero, because butting two spans
 // hard together clicks; just short enough to read as continuous speech.
-const SPEC_GAP = { join: 0.05, comma: 0.20, stop: 0.55, thought: 0.90, reveal: 1.20 };
+/* Owner: "it only stops at the commas and the full stops, and there is a good
+ * break between the next sentence, not too long, just enough for it not to
+ * sound abnormal."
+ *
+ * So the vocabulary is small and short. The old set ran to 1.20s for a
+ * dramatic beat, which is a stage pause rather than a teaching one. Half a
+ * second is what a person actually leaves at a full stop, and a paragraph gets
+ * a little more without becoming a silence. */
+const SPEC_GAP = { join: 0.05, comma: 0.20, stop: 0.50, thought: 0.70, reveal: 0.70 };
 const SPEC_TAIL = 0.30;
 /* Hold her ARTICULATION constant, not the overall words-per-minute.
  *
@@ -1090,7 +1114,20 @@ function shapeToSpec(file, lines) {
   const marks = [];
   const markRe = /(,)|([.!?]+)(?=\s|$)|(\n+)/g;
   for (let mm = markRe.exec(spokenText); mm; mm = markRe.exec(spokenText)) {
-    marks.push({ at: mm.index, kind: mm[1] ? "comma" : mm[2] ? "stop" : "thought" });
+    // A single newline between authored lines is just a sentence break; only a
+    // BLANK line is a change of thought.
+    const kind = mm[1] ? "comma" : mm[2] ? "stop" : (mm[3] && mm[3].length > 1 ? "thought" : "stop");
+    const prev = marks[marks.length - 1];
+    // One boundary, one mark. An authored line ends "." and is followed by a
+    // newline, so the same boundary was found TWICE, one character apart. The
+    // matcher then spent two marks on one pause and pushed the second onto the
+    // NEXT gap, landing a long break where a short one belonged and shifting
+    // every pause after it. That is the "weird pause in the wrong place".
+    if (prev && mm.index - prev.at <= 2) {
+      if (kind === "thought") prev.kind = "thought";
+      continue;
+    }
+    marks.push({ at: mm.index, kind });
   }
   // The final mark is the end of the clip, not a pause inside it.
   while (marks.length && marks[marks.length - 1].at >= spokenText.trimEnd().length - 1) marks.pop();
