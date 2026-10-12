@@ -85,6 +85,10 @@ const VOICE = {
 const KIDS_EDUCATOR = { id: "oClOrzqamOXmtcB8iqTj", name: "Emma (Kids Educator)" };
 const NARRATOR_BY_WEEK = {
   "week1.ts": KIDS_EDUCATOR,
+  // Not a week: the one shared line QuickCheck speaks on every finish-mode
+  // screen. See the note on that blocks.push for why a cross-week line is
+  // pinned to week 1's narrator.
+  "shared:quickcheck-finish": KIDS_EDUCATOR,
 };
 
 /** The voice for a block: the week's narrator if it has its own, else the
@@ -229,10 +233,24 @@ const senderRoundPromptRe = /prompt:\s*"((?:[^"\\]|\\.)*)"\s*,\s*senders:/g;
 const blocks = [];
 
 // Shared, non-week-specific lines. Finish-mode quick-checks speak a fixed
-// instruction (Sarah must not read the gapped sentence, which came out as
+// instruction (she must not read the gapped sentence, which came out as
 // "...proves it's blank"); one recording, reused by every week's finish
-// quick-check. speaker "adam" = Sarah, matching QuickCheck's promptLines.
-blocks.push({ speaker: "adam", lines: ["Can you fill in the missing word?"], source: "shared" });
+// quick-check. speaker "adam" = the narrator, matching QuickCheck's promptLines.
+//
+// This string MUST stay byte-identical to promptLines in
+// app/components/exercises/QuickCheck.tsx. The manifest is keyed on the exact
+// text, so when the wording changed there (#385: "Can you fill in the missing
+// word?" -> "Can you finish the rule?") and not here, the recording became an
+// orphan and InfoNarration fell through to the browser's SpeechSynthesis
+// voice - a MAN on Windows - on one screen in every one of the 20 weeks.
+// scripts/audit-shared-narration.mjs now fails on exactly that drift.
+//
+// Pinned to the week-1 narrator rather than left on the default: the lookup
+// key is (speaker, text) with no week in it, so one text can only ever carry
+// one voice. Week 1 is the week being tuned, and an Emma line inside a Sarah
+// week is a far smaller seam than the robotic male voice every week plays
+// today. It stops being a seam at all when weeks 2-20 migrate.
+blocks.push({ speaker: "adam", lines: ["Can you finish the rule?"], source: "shared:quickcheck-finish" });
 // SignBingo vault skin: the per-move prompt Sarah reads after each scene (W1 Vault Door bingo).
 blocks.push({ speaker: "adam", lines: ["Which power did that move use? Tap its dial."], source: "shared" });
 // VerdictVoice leads (owner 2026-09-12: Sarah speaks EVERY verdict with its reason):
