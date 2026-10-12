@@ -22,6 +22,8 @@ import { saveExplorersProgress } from "@/app/lib/explorersProgress.actions";
 import { ResumePrompt } from "../engine/ResumePrompt";
 import { ClosingCeremony } from "../engine/closingCeremony";
 import { LEVERS, type LeverId, type PhoneCase, type PhoneStep, type PhoneTest, type TagSegment } from "./case06";
+import { addJournalEntry, loadJournal, type JournalEntry } from "./journal";
+import { CaseJournal } from "./CaseJournal";
 
 const C = {
   page: "#0d0d12", ink: "#F3F4F7", dim: "#9A9AA6", faint: "#7a7a88",
@@ -103,6 +105,10 @@ export default function PhoneRuntime({ phoneCase, onExit, onNextCase }: { phoneC
   const speaking = useWrenSpeaking();
   const voiceRate = useVoiceRate();
   const cycleVoiceRate = () => setVoiceRate(VOICE_RATES[(VOICE_RATES.indexOf(voiceRate) + 1) % VOICE_RATES.length]);
+  // Starts empty and hydrates from localStorage in an effect (not the
+  // initializer), so the server + first client render agree.
+  const [journal, setJournal] = useState<JournalEntry[]>([]);
+  useEffect(() => { setJournal(loadJournal(phoneCase.id)); }, [phoneCase.id]);
   const [, force] = useReducer((n) => n + 1, 0);
 
   const reduce = fast || (typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches);
@@ -229,6 +235,7 @@ export default function PhoneRuntime({ phoneCase, onExit, onNextCase }: { phoneC
     // PRACTICE
     if (sk.who) { setHeader({ who: sk.who, avatar: sk.avatar!, tag: sk.tag, sub: sk.sub! }); await wait(500); }
     await runSteps(sk.practice);
+    setJournal(addJournalEntry(phoneCase.id, { skillN: sk.n, title: sk.title, note: sk.goal }));
     setDock({ type: "clear", text: `Skill ${sk.n} clear ✓` });
     await awaitUser();
   };
@@ -354,6 +361,7 @@ export default function PhoneRuntime({ phoneCase, onExit, onNextCase }: { phoneC
       )}
 
       <SkipButton />
+      <CaseJournal entries={journal} accent={OUT} caseTitle={phoneCase.title} />
       <button className="ph-btn" onClick={onExit} style={{ position: "fixed", top: 14, left: 14, zIndex: 20, fontFamily: UI, fontSize: 12.5, fontWeight: 600, color: C.dim, background: "rgba(255,255,255,0.05)", border: `1px solid ${C.line}`, borderRadius: 999, padding: "6px 13px", cursor: "pointer" }}>← Leave</button>
       <button className="ph-btn" onClick={() => { const v = !voiceOn; setVoiceOn(v); if (!v) stopWren(); }} aria-pressed={voiceOn} style={{ position: "fixed", top: 14, right: 14, zIndex: 20, fontFamily: UI, fontSize: 12.5, fontWeight: 700, color: voiceOn ? C.wren : C.dim, background: "rgba(255,255,255,0.05)", border: `1px solid ${voiceOn ? "rgba(43,212,180,.5)" : C.line}`, borderRadius: 999, padding: "6px 13px", cursor: "pointer" }}>{voiceOn ? "🔊 WREN on" : "🔇 WREN off"}</button>
       <button className="ph-btn" onClick={cycleVoiceRate} aria-label={`WREN's talking speed: ${voiceRate}×. Tap to change.`} style={{ position: "fixed", top: 54, right: 14, zIndex: 20, fontFamily: UI, fontSize: 12, fontWeight: 700, color: voiceRate !== 1 ? C.wren : C.dim, background: "rgba(255,255,255,0.05)", border: `1px solid ${voiceRate !== 1 ? "rgba(43,212,180,.5)" : C.line}`, borderRadius: 999, padding: "6px 13px", cursor: "pointer" }}>{voiceRate}×</button>
