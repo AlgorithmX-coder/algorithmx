@@ -12,7 +12,7 @@ import { FadeUp } from "@/app/components/landing-v2/utilities";
 import CourseLockup, { COURSE_HREF, type LockupId } from "@/app/components/CourseLockup";
 import { sectionMark, sectionMarkBare } from "@/app/components/sectionMark";
 import EnquiryForm from "./EnquiryForm";
-import ProductTabs, { shotSet, shotSrc } from "./ProductTabs";
+import ProductTabs from "./ProductTabs";
 import { PHASES, type Phase } from "./phases";
 
 /**
@@ -85,13 +85,6 @@ const pillGhost: React.CSSProperties = {
   textDecoration: "none",
   whiteSpace: "nowrap",
 };
-
-/* Real screens fanned in the hero: front, middle, back. */
-const STACK = [
-  { img: "explorers-map", url: "algorithmx.io/explorers" },
-  { img: "heroes-learn", url: "algorithmx.io/lesson/1" },
-  { img: "explorers-meter", url: "algorithmx.io/explorers" },
-];
 
 const SECTIONS: ReadonlyArray<readonly [id: string, label: string, cta?: boolean]> = [
   ["phase", "Your phase"],
@@ -322,17 +315,6 @@ export default function SchoolsLanding() {
               </FadeUp>
             </div>
 
-            <FadeUp delay={0.15} y={30}>
-              <div className="sch-stack" aria-hidden>
-                {STACK.map((s, i) => (
-                  <div key={s.img} className={`sch-stack-card sch-stack-${i}`}>
-                    <div className="sch-stack-bar"><i /><i /><i /><span>{s.url}</span></div>
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={shotSrc(s.img)} srcSet={shotSet(s.img)} sizes="(max-width: 980px) 90vw, 520px" alt="" />
-                  </div>
-                ))}
-              </div>
-            </FadeUp>
           </div>
         </section>
 
@@ -692,31 +674,6 @@ export default function SchoolsLanding() {
         }
         .sch-trust li::before { content: ""; position: absolute; left: 0; top: 4px; width: 8px; height: 8px; border-radius: 50%; background: #0e7a45; box-shadow: 0 0 10px #0e7a45; }
 
-        .sch-stack { position: relative; width: 100%; aspect-ratio: 5 / 4; }
-        .sch-stack::before {
-          content: ""; position: absolute; inset: -6%; z-index: 0; border-radius: 40%;
-          background: radial-gradient(closest-side at 35% 35%, rgba(10,112,133,0.32), transparent 70%),
-                      radial-gradient(closest-side at 75% 75%, rgba(185,139,255,0.36), transparent 70%),
-                      radial-gradient(closest-side at 70% 20%, rgba(255,138,212,0.2), transparent 70%);
-          filter: blur(18px);
-        }
-        .sch-stack-card {
-          position: absolute; width: 72%; border-radius: 14px; overflow: hidden; background: #fffdf8;
-          border: 1px solid rgba(20,22,29,0.35);
-          box-shadow: 0 30px 70px -30px rgba(10,112,133,0.55), 0 30px 60px -20px rgba(0,0,0,0.85);
-          transition: transform .5s var(--lv2-ease-soft);
-        }
-        .sch-stack-bar { height: 24px; display: flex; align-items: center; gap: 5px; padding: 0 10px; background: #f4efe7; font-family: var(--lv2-font-mono); font-size: 9.5px; color: rgba(17,22,38,0.65); }
-        .sch-stack-bar i { width: 7px; height: 7px; border-radius: 50%; background: rgba(244,239,231,0.26); }
-        .sch-stack-bar i:nth-child(1) { background: #ff5f57; } .sch-stack-bar i:nth-child(2) { background: #febc2e; } .sch-stack-bar i:nth-child(3) { background: #28c840; }
-        .sch-stack-bar span { margin-left: 6px; }
-        .sch-stack-card img { display: block; width: 100%; aspect-ratio: 16 / 10; object-fit: cover; object-position: top center; }
-        .sch-stack-2 { left: 0; top: 0; z-index: 1; transform: rotate(-7deg) scale(0.92); opacity: 0.92; }
-        .sch-stack-1 { right: 0; top: 10%; z-index: 2; transform: rotate(4deg) scale(0.96); }
-        .sch-stack-0 { left: 9%; top: 28%; z-index: 3; transform: rotate(-2deg); border-color: rgba(20,22,29,0.55); }
-        .sch-stack:hover .sch-stack-0 { transform: rotate(-1deg) translateY(-6px); }
-        .sch-stack:hover .sch-stack-1 { transform: rotate(5deg) scale(0.96) translateY(-4px); }
-
         /* section nav */
         .sch-subnav-wrap { margin-top: 68px; position: sticky; top: 68px; z-index: 30; background: rgba(255,253,248,0.68); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-top: 1px solid rgba(10,112,133,0.1); border-bottom: 1px solid rgba(10,112,133,0.1); }
         .sch-subnav { max-width: 1180px; margin: 0 auto; padding: 10px var(--lv2-rail); display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; scroll-behavior: smooth; }
@@ -781,7 +738,6 @@ export default function SchoolsLanding() {
         .sch-grid-2-form { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); }
         @media (max-width: 980px) {
           .sch-hero-grid { grid-template-columns: 1fr; gap: 30px; }
-          .sch-stack { max-width: 560px; margin: 10px auto 0; }
           .sch-grid-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
           .sch-grid-3 { grid-template-columns: 1fr; }
         }
@@ -1139,7 +1095,7 @@ export default function SchoolsLanding() {
         .sch-form-grid { position: relative; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 18px; }
         .sch-form-span { grid-column: 1 / -1; }
         @media (max-width: 640px) { .sch-form-grid { grid-template-columns: 1fr; } }
-        @media (prefers-reduced-motion: reduce) { .sch-stack-card, .sch-phase-art { transition: none; } }
+        @media (prefers-reduced-motion: reduce) { .sch-phase-art { transition: none; } }
       `}</style>
     </div>
   );
