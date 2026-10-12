@@ -15,7 +15,7 @@
 
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import type { CSSProperties } from "react";
-import { playWren, stopWren, useSignalAudio, useWrenSpeaking } from "./audio";
+import { playWren, setVoiceRate, stopWren, useSignalAudio, useVoiceRate, useWrenSpeaking, VOICE_RATES } from "./audio";
 import { useArrowAdvance, useSkipToComplete, SkipButton } from "./arrowAdvance";
 import { playBGM, stopBGM } from "@/app/lib/sounds";
 import { saveExplorersProgress } from "@/app/lib/explorersProgress.actions";
@@ -442,6 +442,8 @@ export default function MissionRuntime({ manifest, devStartBeat, onExit, onNextC
       return n;
     });
   };
+  const voiceRate = useVoiceRate();
+  const cycleVoiceRate = () => setVoiceRate(VOICE_RATES[(VOICE_RATES.indexOf(voiceRate) + 1) % VOICE_RATES.length]);
   const atStart = intro && (pos.beat === "transmission" || pos.beat === "briefing");
   useIsoLayoutEffect(() => {
     if (resumeOffer || filmToPlay) {
@@ -553,6 +555,13 @@ export default function MissionRuntime({ manifest, devStartBeat, onExit, onNextC
               style={{ fontFamily: MONO, fontSize: 9.5, letterSpacing: "0.1em", color: voiceOn ? T.arcCyan : T.textDisabled, background: "transparent", border: `1px solid ${voiceOn ? `${T.arcCyan}66` : T.hairline}`, borderRadius: 2, padding: "4px 8px", cursor: "pointer" }}
             >
               VOICE {voiceOn ? "ON" : "OFF"}
+            </button>
+            <button
+              onClick={cycleVoiceRate}
+              aria-label={`WREN's talking speed: ${voiceRate}×. Tap to change.`}
+              style={{ fontFamily: MONO, fontSize: 9.5, letterSpacing: "0.1em", color: voiceRate !== 1 ? T.arcCyan : T.textDisabled, background: "transparent", border: `1px solid ${voiceRate !== 1 ? `${T.arcCyan}66` : T.hairline}`, borderRadius: 2, padding: "4px 8px", cursor: "pointer" }}
+            >
+              {voiceRate}×
             </button>
           </span>
           <span style={{ fontFamily: MONO, fontSize: 12, letterSpacing: "0.06em", color: T.textSecondary, position: "relative" }}>

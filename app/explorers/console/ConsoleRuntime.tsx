@@ -11,7 +11,7 @@
 import { useEffect, useReducer, useRef, useState } from "react";
 import { MatrixRain } from "../MatrixRain";
 import { BlockBackdrop } from "../BlockBackdrop";
-import { playWren, stopWren, useWrenSpeaking } from "../engine/audio";
+import { playWren, setVoiceRate, stopWren, useVoiceRate, useWrenSpeaking, VOICE_RATES } from "../engine/audio";
 import { useArrowAdvance, SkipButton } from "../engine/arrowAdvance";
 import { playBGM, stopBGM } from "@/app/lib/sounds";
 import { type CaseStage, readProgress, saveProgress, clearProgress, markCaseComplete, isResumable, stageLabel } from "../engine/caseProgress";
@@ -95,6 +95,8 @@ export default function ConsoleRuntime({ consoleCase, onExit, onNextCase }: { co
   const [nudge, setNudge] = useState<string | null>(null);
   const [voiceOn, setVoiceOn] = useState(!fast);
   const voiceRef = useRef(!fast);
+  const voiceRate = useVoiceRate();
+  const cycleVoiceRate = () => setVoiceRate(VOICE_RATES[(VOICE_RATES.indexOf(voiceRate) + 1) % VOICE_RATES.length]);
   useWrenSpeaking();
   const [, force] = useReducer((n) => n + 1, 0);
   const acc = consoleCase.accent ?? C.amber;
@@ -241,6 +243,7 @@ export default function ConsoleRuntime({ consoleCase, onExit, onNextCase }: { co
       <SkipButton />
       <button className="cn-btn" onClick={onExit} style={{ position: "fixed", top: 14, left: 14, zIndex: 20, fontFamily: MONO, fontSize: 11.5, fontWeight: 600, color: C.dim, background: "rgba(255,255,255,0.04)", border: `1px solid ${C.edge}`, borderRadius: 6, padding: "6px 12px", cursor: "pointer" }}>← Leave</button>
       <button className="cn-btn" onClick={() => { const v = !voiceOn; setVoiceOn(v); if (!v) stopWren(); }} aria-pressed={voiceOn} style={{ position: "fixed", top: 14, right: 14, zIndex: 20, fontFamily: MONO, fontSize: 11.5, fontWeight: 700, color: voiceOn ? C.wren : C.dim, background: "rgba(255,255,255,0.04)", border: `1px solid ${voiceOn ? "rgba(43,212,180,.5)" : C.edge}`, borderRadius: 6, padding: "6px 12px", cursor: "pointer" }}>{voiceOn ? "🔊 WREN on" : "🔇 WREN off"}</button>
+      <button className="cn-btn" onClick={cycleVoiceRate} aria-label={`WREN's talking speed: ${voiceRate}×. Tap to change.`} style={{ position: "fixed", top: 54, right: 14, zIndex: 20, fontFamily: MONO, fontSize: 11, fontWeight: 700, color: voiceRate !== 1 ? C.wren : C.dim, background: "rgba(255,255,255,0.04)", border: `1px solid ${voiceRate !== 1 ? "rgba(43,212,180,.5)" : C.edge}`, borderRadius: 6, padding: "6px 12px", cursor: "pointer" }}>{voiceRate}×</button>
 
       <div style={{ width: "100%", maxWidth: 640, height: 760, maxHeight: "calc(100dvh - 30px)", background: C.panel, borderRadius: 14, border: `1px solid ${C.edge}`, boxShadow: `0 0 0 1px #000, 0 24px 70px rgba(0,0,0,.6), inset 0 0 60px rgba(255,178,62,.03)`, position: "relative", zIndex: 1, display: "flex", flexDirection: "column", overflow: "hidden" }}>
         {/* console readout bar */}
