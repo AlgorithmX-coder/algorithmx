@@ -39,6 +39,9 @@ import { useReducedMotion } from "./engine/primitives";
 import { MONO } from "./engine/tokens";
 import type { AwardEvent, MissionManifest } from "./engine/types";
 import { checkpointStorageKey, xpForEvent } from "./engine/types";
+import { getExplorersRank, type ExplorersRankInfo } from "./engine/rank";
+import { getStreak, recordDailyActivity } from "./engine/streak";
+import { RankUpMoment } from "./engine/RankUpMoment";
 import { loadExplorersProgress } from "@/app/lib/explorersProgress.actions";
 import { CaseGlyph } from "./CaseGlyphs";
 import { MatrixRain } from "./MatrixRain";
@@ -228,6 +231,8 @@ export default function ExplorersPage() {
   const [active, setActive] = useState<MissionManifest | null>(null);
   const [status, setStatus] = useState<Record<string, string>>({});
   const [totalXp, setTotalXp] = useState(0);
+  const [streak, setStreak] = useState(0);
+  const [rankUp, setRankUp] = useState<{ from: ExplorersRankInfo; to: ExplorersRankInfo } | null>(null);
   // Which case (if any) the dev deep-link jumped straight to the boss on. Scoped
   // to that one case so Next-case navigation always starts the next mission fresh.
   const [devBossId, setDevBossId] = useState<string | null>(null);
@@ -273,6 +278,19 @@ export default function ExplorersPage() {
     }
     setStatus(s);
     setTotalXp(xp);
+    setStreak(getStreak().count);
+    // Real new progress since the last visit (not just reopening the board)
+    // is what counts a day toward the streak and can trigger a rank-up.
+    try {
+      const lastKnown = Number(localStorage.getItem("explorers:lastKnownXP") ?? 0);
+      if (xp > lastKnown) {
+        setStreak(recordDailyActivity().count);
+        const before = getExplorersRank(lastKnown).current;
+        const after = getExplorersRank(xp).current;
+        if (after.name !== before.name) setRankUp({ from: before, to: after });
+        localStorage.setItem("explorers:lastKnownXP", String(xp));
+      }
+    } catch {}
   }, []);
 
   // Re-read on mount and whenever we return from a mission, so a just-closed
@@ -338,6 +356,7 @@ export default function ExplorersPage() {
     return { ...b, cases, closed, total: cases.length, done: closed > 0 && closed === cases.length };
   });
   const ladder = blockStats.map((b) => (b.done ? "■" : "□")).join(" ");
+  const rank = useMemo(() => getExplorersRank(totalXp), [totalXp]);
 
   if (active) {
     const activeIdx = CASES.findIndex((m) => m.id === active.id);
@@ -473,6 +492,8 @@ export default function ExplorersPage() {
       <div className="tc-scan" aria-hidden />
       <div className="tc-vig" aria-hidden />
 
+      {rankUp && <RankUpMoment from={rankUp.from} to={rankUp.to} reduced={reduced} onDone={() => setRankUp(null)} />}
+
       <div style={{ position: "relative", zIndex: 2, maxWidth: 1080, margin: "0 auto", padding: "36px 22px 90px" }}>
         {/* terminal window */}
         <div className="tc-bar">
@@ -492,9 +513,19 @@ export default function ExplorersPage() {
             PICK YOUR CASE, <span style={{ color: SYS }}>AGENT</span>
           </h1>
           <div style={{ color: TXT, opacity: 0.9, fontSize: 13, marginTop: 8 }}>
-            agent: <span style={{ color: SYS }}>TRAINEE</span> &nbsp;·&nbsp; cases solved:{" "}
+            agent: <span style={{ color: rank.current.colour, fontWeight: 700, letterSpacing: "0.06em" }}>{rank.current.name}</span>
+            {rank.next && (
+              <span style={{ color: DIM, fontSize: 11 }}> ({rank.next.minXP - totalXp} xp to {rank.next.name})</span>
+            )}
+            &nbsp;·&nbsp; cases solved:{" "}
             <span style={{ color: "#3BF57E" }}>{closedCount}</span>
-            <span style={{ color: DIM }}>/20</span> &nbsp;·&nbsp; xp: <span style={{ color: AMBER }}>{totalXp}</span> &nbsp;·&nbsp; rank:{" "}
+            <span style={{ color: DIM }}>/20</span> &nbsp;·&nbsp; xp: <span style={{ color: AMBER }}>{totalXp}</span>
+            {streak > 0 && (
+              <>
+                &nbsp;·&nbsp; streak: <span style={{ color: "#FF8A3D" }}>🔥 {streak}d</span>
+              </>
+            )}
+            &nbsp;·&nbsp; clearance:{" "}
             <span style={{ color: SYS, letterSpacing: "0.18em" }}>{ladder}</span>
           </div>
 
