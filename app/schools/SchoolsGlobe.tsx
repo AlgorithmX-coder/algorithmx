@@ -333,6 +333,16 @@ const CITIES: [string, number, number][] = [
 ];
 const LONDON: [number, number] = [51.5, -0.12];
 
+/* Country of each destination city, ISO 3166-1 alpha-2, for the flag on the
+ * landing chip. Flags are at /schools/flags/<iso>.png (from flagcdn). */
+const CITY_ISO: Record<string, string> = {
+  DUBAI: "ae", "ABU DHABI": "ae", DOHA: "qa", RIYADH: "sa", CAIRO: "eg",
+  NAIROBI: "ke", LAGOS: "ng", "CAPE TOWN": "za", MADRID: "es", GENEVA: "ch",
+  MUMBAI: "in", BANGKOK: "th", SINGAPORE: "sg", "KUALA LUMPUR": "my",
+  "HONG KONG": "hk", SHANGHAI: "cn", TOKYO: "jp", SYDNEY: "au",
+  AUCKLAND: "nz", TORONTO: "ca", "NEW YORK": "us",
+};
+
 type Vec = [number, number, number];
 interface Arc {
   name: string;
@@ -612,6 +622,15 @@ export default function SchoolsGlobe({ tone = "night" }: { tone?: "night" | "san
     // Baked holographic lesson-card sprites (a few variants), drawn when a
     // lesson lands on a school. See buildScreenSprites / drawScreen.
     let screenSprites: HTMLCanvasElement[] = [];
+    // Country flags for the city chips, loaded once and blitted.
+    const flagImgs: Record<string, HTMLImageElement> = {};
+    // Load each country's flag once; when one arrives, repaint a paused frame.
+    for (const iso of new Set(Object.values(CITY_ISO))) {
+      const im = new Image();
+      im.onload = () => { if (isPaused) draw(performance.now() / 1000, 0); };
+      im.src = `/schools/flags/${iso}.png`;
+      flagImgs[iso] = im;
+    }
     // Where the label element ended up, so the leader can reach out of it.
     let labelX = 0;
     let labelY = 0;
@@ -640,7 +659,8 @@ export default function SchoolsGlobe({ tone = "night" }: { tone?: "night" | "san
       /* The city names and the drifting code were light glyphs with a
          green halo, built to sit on a black sphere. On paper they are ink
          with no halo at all. */
-      cityAtlas = makeAtlas(px, onSand ? "#0e5c37" : "#c2ffb2", "700", onSand ? { track: px * 0.1 } : { glow: "rgba(120,255,130,0.8)", track: px * 0.1 });
+      // City name = clean near-white on the dark chip (no more green), lightly tracked.
+      cityAtlas = makeAtlas(px, "#eef4ff", "700", { track: px * 0.08 });
       codeAtlas = makeAtlas(Math.max(9, Math.round(R / 26)), onSand ? "#3f5a78" : "#eafcff", "600");
     };
 
@@ -1017,6 +1037,49 @@ export default function SchoolsGlobe({ tone = "night" }: { tone?: "night" | "san
       ctx.globalAlpha = 1;
     };
 
+    const roundRect = (x: number, y: number, rw: number, rh: number, r: number) => {
+      ctx.beginPath();
+      if (typeof ctx.roundRect === "function") ctx.roundRect(x, y, rw, rh, r);
+      else ctx.rect(x, y, rw, rh);
+    };
+
+    /**
+     * City label as a location chip: a small dark-glass pill with the
+     * country's flag and the city name (clean near-white, no more green).
+     * Geometry is measured by the caller so it can reserve space first.
+     */
+    const drawCityChip = (
+      name: string, x: number, y: number, cw2: number, ch2: number,
+      img: HTMLImageElement | null, fw: number, fh: number, alpha: number,
+    ) => {
+      if (!cityAtlas) return;
+      ctx.save();
+      ctx.globalAlpha = alpha;
+      roundRect(x, y, cw2, ch2, 6);
+      ctx.fillStyle = "rgba(9,16,34,0.74)";
+      ctx.fill();
+      ctx.strokeStyle = onSand ? "rgba(10,112,133,0.55)" : "rgba(125,240,255,0.32)";
+      ctx.lineWidth = 1;
+      ctx.stroke();
+      const midY = y + ch2 / 2;
+      let tx = x + 5;
+      if (img && fw > 0) {
+        const fy = Math.round(midY - fh / 2);
+        ctx.save();
+        roundRect(tx, fy, fw, fh, 2);
+        ctx.clip();
+        ctx.drawImage(img, tx, fy, fw, fh);
+        ctx.restore();
+        ctx.strokeStyle = "rgba(255,255,255,0.3)";
+        ctx.lineWidth = 1;
+        roundRect(tx + 0.5, fy + 0.5, fw - 1, fh - 1, 2);
+        ctx.stroke();
+        tx += fw + 5;
+      }
+      text(cityAtlas, name, tx, Math.round(midY - cityAtlas.ch / 2), alpha);
+      ctx.restore();
+    };
+
     const draw = (t: number, dt: number) => {
       ctx.clearRect(bx, by, bw, bh);
       if (!cityAtlas || !codeAtlas) return;
@@ -1294,15 +1357,23 @@ export default function SchoolsGlobe({ tone = "night" }: { tone?: "night" | "san
               taken.push(screenBox);
               drawScreen(pin[0], pin[1], Math.min(1, arc.lit * 2.4), arc.name.length, grow, t);
             }
-            // The name goes BELOW the pin, since the screen has the space above.
+            // The city chip (flag + name) goes BELOW the pin; the screen has the space above.
+            const iso = CITY_ISO[arc.name] || "";
+            const fimg = flagImgs[iso];
+            const flagReady = !!(fimg && fimg.complete && fimg.naturalWidth > 0);
+            const th = cityAtlas.ch;
+            const fh = Math.round(th * 0.8);
+            const fw = flagReady ? Math.round(fh * (fimg.naturalWidth / fimg.naturalHeight)) : 0;
             const nameW = arc.name.length * cityAtlas.cw;
-            const flip = pin[0] > w - nameW - 24;
-            const lx = flip ? pin[0] - 7 - nameW : pin[0] + 7;
-            const ly = pin[1] + 5;
-            const nameBox: [number, number, number, number] = [lx - 4, ly - 2, lx + nameW + 4, ly + cityAtlas.ch + 2];
+            const chipW = 10 + (flagReady ? fw + 5 : 0) + nameW;
+            const chipH = th + 7;
+            const flip = pin[0] > w - chipW - 20;
+            const cxp = flip ? pin[0] - 7 - chipW : pin[0] + 7;
+            const cyp = pin[1] + 4;
+            const nameBox: [number, number, number, number] = [cxp, cyp, cxp + chipW, cyp + chipH];
             if (free(nameBox)) {
               taken.push(nameBox);
-              text(cityAtlas, arc.name, lx, ly, 1);
+              drawCityChip(arc.name, cxp, cyp, chipW, chipH, flagReady ? fimg : null, fw, fh, Math.min(1, arc.lit * 2.4));
             }
           }
         }
