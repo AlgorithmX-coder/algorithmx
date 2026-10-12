@@ -76,6 +76,7 @@ type Item =
   | { id: number; kind: "divider"; kicker: string; title: string; sub?: string; boss?: boolean }
   | { id: number; kind: "phase"; label: string }
   | { id: number; kind: "roadmap"; title: string; actor: string; skills: { n: number; title: string; goal: string }[] }
+  | { id: number; kind: "recap"; text: string }
   | { id: number; kind: "typing" };
 
 type Header = { who: string; avatar: string; tag?: string; sub: string };
@@ -269,7 +270,12 @@ export default function PhoneRuntime({ phoneCase, onExit, onNextCase }: { phoneC
     setItems([]);
     const total = phoneCase.skills.length;
     if (from.kind === "skill") {
-      if (from.index === 0) { // fresh run: play the opening + roadmap
+      if (from.index === 0) { // fresh run: recap, then the opening + roadmap
+        if (phoneCase.recap) {
+          push({ id: nextId(), kind: "recap", text: phoneCase.recap.text });
+          await speak(phoneCase.recap.text, phoneCase.recap.voice);
+          await wait(400);
+        }
         for (let i = 0; i < phoneCase.open.length; i++) { const line = phoneCase.open[i]; push({ id: nextId(), kind: "wren", text: line }); await speak(line, phoneCase.openVoice?.[i]); }
         // The roadmap: every skill you'll learn, up front (like Block 1's mission map).
         push({ id: nextId(), kind: "roadmap", title: phoneCase.title, actor: phoneCase.actor, skills: phoneCase.skills.map((s) => ({ n: s.n, title: s.title, goal: s.goal })) });
@@ -442,6 +448,31 @@ function ItemView({ it, wrenAvatar, accent, onTagSegment }: { it: Item; wrenAvat
       </div>
     );
   }
+  if (it.kind === "recap") {
+    return (
+      <div
+        className="ph-row"
+        style={{
+          margin: "6px 2px 10px",
+          background: "linear-gradient(180deg, #0f1812 0%, #0b100c 100%)",
+          border: "1px solid rgba(124,255,196,.35)",
+          borderRadius: 14,
+          padding: "16px 17px",
+          position: "relative",
+          overflow: "hidden",
+        }}
+      >
+        <div
+          aria-hidden
+          style={{ position: "absolute", inset: 0, backgroundImage: "repeating-linear-gradient(0deg, rgba(255,255,255,0.02) 0 1px, transparent 1px 24px)", pointerEvents: "none" }}
+        />
+        <div style={{ fontSize: 10, letterSpacing: ".2em", textTransform: "uppercase", color: "#7CFFC4", fontWeight: 800, marginBottom: 6 }}>
+          📓 previously...
+        </div>
+        <TypewriterText text={it.text} />
+      </div>
+    );
+  }
   if (it.kind === "roadmap") {
     return (
       <div className="ph-row" style={{ margin: "10px 2px 4px", background: "linear-gradient(180deg, rgba(255,61,138,.10), rgba(255,61,138,.03))", border: `1px solid rgba(255,61,138,.45)`, borderRadius: 16, padding: "14px 15px" }}>
@@ -544,6 +575,30 @@ function ItemView({ it, wrenAvatar, accent, onTagSegment }: { it: Item; wrenAvat
         )}
       </div>
     </div>
+  );
+}
+
+/** Reveals `text` a few characters at a time, like a notebook typing itself
+ *  out — the visual half of the "previously on" recap. Paced close to the
+ *  no-voice reading timer elsewhere in this file (~40ms/char) so it tracks
+ *  WREN's reading speed whether or not her clip is actually playing; jumps
+ *  straight to the full line under reduced motion. */
+function TypewriterText({ text }: { text: string }) {
+  const reduced = typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+  const [shown, setShown] = useState(reduced ? text.length : 0);
+  useEffect(() => {
+    if (reduced) { setShown(text.length); return; }
+    setShown(0);
+    const id = setInterval(() => {
+      setShown((n) => (n >= text.length ? (clearInterval(id), n) : n + 1));
+    }, 32);
+    return () => clearInterval(id);
+  }, [text, reduced]);
+  return (
+    <p style={{ margin: 0, fontSize: 13.5, lineHeight: 1.6, color: "#D7E6DD" }}>
+      {text.slice(0, shown)}
+      {shown < text.length && <span aria-hidden style={{ opacity: 0.6 }}>▊</span>}
+    </p>
   );
 }
 

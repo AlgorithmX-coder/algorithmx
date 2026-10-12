@@ -23,6 +23,10 @@ export const case09Phone: PhoneCase = {
   title: "The Long Game",
   actor: "SIREN",
   app: { name: "Bond", accent: "#FFB13D", wall: "radial-gradient(130% 90% at 50% 0%, #2a2110 0%, #0d0c0a 62%)", theme: { backdrop: "bond", matrix: ["#FFB13D", "#FFD27A", "#FF9A3D"], accentHi: "#FFD27A" } },
+  recap: {
+    text: "Previously... GHOSTWRITER used AI to write you a flawless message, no mistakes to catch, no clumsy tells. You learned that perfect writing isn't proof of anything. Today: someone's been messaging you for weeks. Slowly. Patiently. On purpose.",
+    voice: "/audio/wren/m09p-recap.mp3",
+  },
   open: [
     "Toughest case yet, Agent. SIREN is back, and this time there's no rush, no quick trick. This is the long con.",
     "SIREN doesn't want your password today. SIREN spends weeks being your best friend, so that one day, when the ask finally comes, saying no feels impossible.",

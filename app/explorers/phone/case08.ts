@@ -21,6 +21,10 @@ export const case08Phone: PhoneCase = {
   title: "The Perfect Message",
   actor: "GHOSTWRITER",
   app: { name: "Glint", accent: "#FF7A4D", wall: "radial-gradient(130% 90% at 50% 0%, #2a1710 0%, #0d0b0a 62%)", theme: { backdrop: "glint", matrix: ["#FF7A4D", "#FFB088", "#FF9A4D"], accentHi: "#FFB088" } },
+  recap: {
+    text: "Previously... MIMIC hijacked a friend's account and messaged you from inside it, borrowing a face you trusted. You learned to verify a weird ask on a different channel before you ever believe it. Today: a message with zero typos, perfectly written. Too perfectly.",
+    voice: "/audio/wren/m08p-recap.mp3",
+  },
   open: [
     "New case, Agent. This villain is called GHOSTWRITER, and GHOSTWRITER doesn't type. It uses a machine.",
     "Everything you were taught about spotting scams, bad spelling, dodgy grammar, is out of date. AI now writes perfect, warm, friendly messages by the thousand, each one tweaked to feel like it was made just for you.",

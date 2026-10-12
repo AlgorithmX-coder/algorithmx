@@ -132,6 +132,10 @@ export interface PhoneCase {
   title: string;
   actor: string;
   app?: PhoneApp;
+  /** "Previously on" retrieval beat: a digital-notebook recap of the last
+   *  case's lesson, played before the opening line (fresh runs only, never
+   *  on resume). Omit for a case with no prior case in this block to recap. */
+  recap?: { text: string; voice: string };
   open: string[];
   openVoice?: string[];
   skills: PhoneSkill[];
