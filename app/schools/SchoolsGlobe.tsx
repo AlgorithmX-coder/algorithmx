@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 
+import { COUNTRY_POLY } from "./countryPoly";
+
 /**
  * SchoolsGlobe: the environment behind /schools and /schools/login.
  *
@@ -343,6 +345,31 @@ const CITY_ISO: Record<string, string> = {
   AUCKLAND: "nz", TORONTO: "ca", "NEW YORK": "us",
 };
 
+/* Destination countries that have a boundary shape big enough to read on the
+ * globe (from countryPoly.ts); the index drives the "light up the country"
+ * effect. Tiny ones (Singapore, Hong Kong, Qatar) are absent and bloom. */
+const COUNTRY_ISOS = Object.keys(COUNTRY_POLY);
+const COUNTRY_INDEX: Record<string, number> = {};
+COUNTRY_ISOS.forEach((iso, i) => { COUNTRY_INDEX[iso] = i; });
+const COUNTRY_BOX = COUNTRY_ISOS.map((iso) => COUNTRY_POLY[iso].map(bounds));
+/* One origin city per country, the ripple's start point. */
+const ISO_CITY: Record<string, [number, number]> = {};
+for (const c of CITIES) { const iso = CITY_ISO[c[0]]; if (iso && !(iso in ISO_CITY)) ISO_CITY[iso] = [c[1], c[2]]; }
+
+/** Which destination country a lat/lon falls in (index into COUNTRY_ISOS), or -1. */
+function countryAt(lat: number, lon: number): number {
+  for (let c = 0; c < COUNTRY_ISOS.length; c++) {
+    const rings = COUNTRY_POLY[COUNTRY_ISOS[c]];
+    const boxes = COUNTRY_BOX[c];
+    for (let r = 0; r < rings.length; r++) {
+      const b = boxes[r];
+      if (lat < b[0] || lat > b[1] || lon < b[2] || lon > b[3]) continue;
+      if (inPoly(lat, lon, rings[r])) return c;
+    }
+  }
+  return -1;
+}
+
 type Vec = [number, number, number];
 interface Arc {
   name: string;
@@ -615,6 +642,15 @@ export default function SchoolsGlobe({ tone = "night" }: { tone?: "night" | "san
     let dotY = new Float32Array(0);
     let dotSize = new Float32Array(0);
     let dotBucket = new Uint8Array(0);
+    // Country tagging for the land dots + the "light up the country" state.
+    let landCountry = new Int8Array(0);   // per land dot: country index or -1
+    let landCityDist = new Float32Array(0); // per land dot: angle to its city
+    let dotCountryV = new Int8Array(0);   // same, compacted to visible dots
+    let dotDistV = new Float32Array(0);
+    const countryLit = new Float32Array(COUNTRY_ISOS.length).fill(999); // s since landing
+    const countryVisited = new Uint8Array(COUNTRY_ISOS.length);
+    const countryEnv = new Float32Array(COUNTRY_ISOS.length);  // per-frame fade 1->0
+    const countryFront = new Float32Array(COUNTRY_ISOS.length); // per-frame ripple radius
     let arcs: Arc[] = [];
     let flashes: Flash[] = [];
     let cityAtlas: Atlas | null = null;
@@ -711,6 +747,8 @@ export default function SchoolsGlobe({ tone = "night" }: { tone?: "night" | "san
       const step = w < 700 ? 2.2 : w < 1100 ? 1.6 : 1.4;
       const boxes = LAND.map(bounds);
       land = [];
+      const landC: number[] = []; // country index per land dot, tagged as we sample
+      const landD: number[] = []; // angle from the dot to its country's city
       for (let lat = -56; lat <= 80; lat += step) {
         const ring = Math.max(6, Math.round((360 * Math.cos(lat * D2R)) / step));
         const lonStep = 360 / ring;
@@ -720,12 +758,23 @@ export default function SchoolsGlobe({ tone = "night" }: { tone?: "night" | "san
             const b = boxes[i];
             if (lat < b[0] || lat > b[1] || lon < b[2] || lon > b[3]) continue;
             if (inPoly(lat, lon, LAND[i])) {
-              land.push(vec(lat, lon));
+              const v = vec(lat, lon);
+              land.push(v);
+              const ci = countryAt(lat, lon);
+              landC.push(ci);
+              if (ci >= 0) {
+                const cc = ISO_CITY[COUNTRY_ISOS[ci]];
+                const cv = vec(cc[0], cc[1]);
+                const d = Math.max(-1, Math.min(1, v[0] * cv[0] + v[1] * cv[1] + v[2] * cv[2]));
+                landD.push(Math.acos(d));
+              } else landD.push(0);
               break;
             }
           }
         }
       }
+      landCountry = Int8Array.from(landC);
+      landCityDist = Float32Array.from(landD);
       uk = [];
       for (let lat = 49.8; lat <= 59; lat += 0.4) {
         for (let lon = -8; lon <= 2.2; lon += 0.4) {
@@ -736,6 +785,8 @@ export default function SchoolsGlobe({ tone = "night" }: { tone?: "night" | "san
       dotY = new Float32Array(land.length);
       dotSize = new Float32Array(land.length);
       dotBucket = new Uint8Array(land.length);
+      dotCountryV = new Int8Array(land.length);
+      dotDistV = new Float32Array(land.length);
       stars = [];
       for (let i = 0; i < 46; i++) {
         stars.push({ x: bx + Math.random() * bw, y: by + Math.random() * bh, r: 0.6 + Math.random() * 1.2, p: Math.random() * 6 });
@@ -1093,6 +1144,17 @@ export default function SchoolsGlobe({ tone = "night" }: { tone?: "night" | "san
       const sr = Math.sin(rot);
       const ct = Math.cos(tilt);
       const st = Math.sin(tilt);
+
+      // Country light-up timers: on a landing the country's dots glow gold and
+      // a wavefront ripples out from its city, then fades over LIT_DUR.
+      const LIT_DUR = 2.4;
+      const RIPPLE_SPEED = 0.7; // radians/sec the light-front crosses the shape
+      for (let c = 0; c < countryLit.length; c++) {
+        if (countryLit[c] < LIT_DUR) countryLit[c] += dt;
+        const lt = countryLit[c];
+        countryEnv[c] = lt < LIT_DUR ? 1 - lt / LIT_DUR : 0;
+        countryFront[c] = lt * RIPPLE_SPEED;
+      }
       const project = (v: Vec): [number, number, number] => {
         const x = v[0] * cr + v[2] * sr;
         const z0 = -v[0] * sr + v[2] * cr;
@@ -1217,6 +1279,8 @@ export default function SchoolsGlobe({ tone = "night" }: { tone?: "night" | "san
         dotY[visible] = cy - y * R;
         dotSize[visible] = dotBase * (0.7 + 0.44 * z);
         dotBucket[visible] = Math.min(NB - 1, Math.max(0, Math.floor(a * NB)));
+        dotCountryV[visible] = landCountry[i];
+        dotDistV[visible] = landCityDist[i];
         visible++;
       }
       ctx.fillStyle = LAND_DOT;
@@ -1231,6 +1295,45 @@ export default function SchoolsGlobe({ tone = "night" }: { tone?: "night" | "san
         }
         ctx.fill();
       }
+
+      /* ── Country light-up ────────────────────────────────────────────────
+       * When a lesson lands, the dots of that country light gold and a
+       * wavefront ripples out from the city across its shape. Pass A is a
+       * faint, batched persistent tint on every country that has received a
+       * lesson (the map fills in); pass B is the live ripple on the one or
+       * two countries currently lit. Big countries read as a shape; the tiny
+       * ones with no boundary (Singapore, Hong Kong, Qatar) get the pin bloom
+       * from the landing instead. */
+      const GOLD = onSand ? "rgb(212,132,20)" : "#ffd27a";
+      ctx.fillStyle = GOLD;
+      ctx.globalAlpha = onSand ? 0.16 : 0.13;
+      ctx.beginPath();
+      for (let i = 0; i < visible; i++) {
+        const c = dotCountryV[i];
+        if (c < 0 || !countryVisited[c]) continue;
+        const r = dotSize[i];
+        ctx.moveTo(dotX[i] + r, dotY[i]);
+        ctx.arc(dotX[i], dotY[i], r, 0, Math.PI * 2);
+      }
+      ctx.fill();
+      for (let i = 0; i < visible; i++) {
+        const c = dotCountryV[i];
+        if (c < 0) continue;
+        const env = countryEnv[c];
+        if (env <= 0) continue;
+        const phase = countryFront[c] - dotDistV[i];
+        if (phase <= 0) continue;
+        const litG = (0.5 + 0.5 * Math.exp(-phase * 3.2)) * env;
+        if (litG < 0.04) continue;
+        const r = dotSize[i] * (1 + litG * 0.8);
+        ctx.globalAlpha = litG;
+        ctx.beginPath();
+        ctx.moveTo(dotX[i] + r, dotY[i]);
+        ctx.arc(dotX[i], dotY[i], r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+
       // Britain, lit and a touch larger so it reads as the home nation.
       ctx.fillStyle = UK_DOT;
       ctx.globalAlpha = 0.92;
@@ -1332,6 +1435,12 @@ export default function SchoolsGlobe({ tone = "night" }: { tone?: "night" | "san
           arc.landed = true;
           arc.lit = 1;
           flashes.push({ v: arc.b, t: 0 });
+          // Light up the destination country (if it has a shape on the globe).
+          const lci = COUNTRY_INDEX[CITY_ISO[arc.name]];
+          if (lci !== undefined) {
+            countryLit[lci] = 0;
+            countryVisited[lci] = 1;
+          }
         }
         if (arc.t < 0.05) arc.landed = false;
         if (arc.lit > 0) arc.lit = Math.max(0, arc.lit - dt * 0.26);
