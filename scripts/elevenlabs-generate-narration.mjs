@@ -251,8 +251,9 @@ const blocks = [];
 // week is a far smaller seam than the robotic male voice every week plays
 // today. It stops being a seam at all when weeks 2-20 migrate.
 blocks.push({ speaker: "adam", lines: ["Can you finish the rule?"], source: "shared:quickcheck-finish" });
-// SignBingo vault skin: the per-move prompt Sarah reads after each scene (W1 Vault Door bingo).
-blocks.push({ speaker: "adam", lines: ["Which power did that move use? Tap its dial."], source: "shared" });
+// (The SignBingo vault per-move prompt used to be recorded here as a shared
+// line, which forced it to the default voice inside whatever week authored it.
+// It is now scanned from the week file itself, next to its one-take chain.)
 // VerdictVoice leads (owner 2026-09-12: Sarah speaks EVERY verdict with its reason):
 // the two shared leads play before the per-item reason on every exercise, all weeks.
 // Keep identical to VERDICT_LEADS in app/components/lesson/VerdictVoice.tsx.
@@ -373,6 +374,12 @@ for (const fname of weekFiles) {
         const scene = sm[1].replace(/\\"/g, '"').replace(/\\\\/g, "\\").trim();
         if (scene) { blocks.push({ speaker: "adam", lines: [scene, promptText], source: fname }); fileBlocks++; }
       }
+      // The same prompt on its own: the fallback the board plays when the
+      // one-take chain above is missing. Recorded from the week file rather
+      // than the shared table so it carries the WEEK's narrator; as a shared
+      // line it was Sarah, inside an otherwise-Emma week 1.
+      blocks.push({ speaker: "adam", lines: [promptText], source: fname });
+      fileBlocks++;
     }
     const pnm = src.match(/promptNarration:\s*\{\s*speaker:\s*"[a-z]+",\s*lines:\s*\[([\s\S]*?)\]/);
     if (pnm) {
@@ -791,11 +798,22 @@ for (const fname of weekFiles) {
   }
   // Only where the reason itself is recorded; an un-recorded reason is silent
   // by design (recordedOnly), so there is no join to hear.
-  const recordedReasons = new Set(blocks.filter((b) => b.lines.length === 1).map((b) => joinBlock(b.lines)));
+  //
+  // The one-take INHERITS the source of the reason it wraps, so it is recorded
+  // in that week's narrator. A flat "verdict-one-take" tag sent every one of
+  // these to the default voice, which is how week 1 kept answering in Sarah on
+  // every teach panel while the rest of the week was Emma: the leadless reason
+  // was Emma, the "Not quite." + same reason one-take that actually plays was
+  // Sarah, and the two clips are indistinguishable in the manifest.
+  const reasonSource = new Map();
+  for (const b of blocks) {
+    if (b.lines.length === 1) reasonSource.set(joinBlock(b.lines), b.source);
+  }
   let oneTakes = 0;
   for (const { verdict, why } of verdictPairs) {
-    if (!recordedReasons.has(joinBlock([why]))) continue;
-    blocks.push({ speaker: "adam", lines: [LEADS[verdict], why], source: "verdict-one-take" });
+    const key = joinBlock([why]);
+    if (!reasonSource.has(key)) continue;
+    blocks.push({ speaker: "adam", lines: [LEADS[verdict], why], source: reasonSource.get(key) });
     oneTakes++;
   }
   console.log(`  one-take verdicts: ${oneTakes} block(s) (of ${verdictPairs.length} audited pairs, all weeks)`);
