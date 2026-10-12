@@ -284,8 +284,16 @@ export default function HeroCinematicV3({ overlay = true, staticOpen = false }: 
             className="hv3-bottomFade"
             style={{ position: "absolute", inset: 0, pointerEvents: "none" }}
           >
-            <div className="hv3-nebulaA" />
-            <div className="hv3-nebulaB" />
+            {/* PREMIUM-MINIMAL GROUND (owner 2026-10-12: make the
+             *  background flatter the machine, not compete with it).
+             *  The blue nebula fog is gone; this is a studio set: one
+             *  directional gradient, a warm key light over the copy, a
+             *  faint cool pool so the machine separates from the ground,
+             *  and a soft vignette to hold the eye centre. All static. */}
+            <div style={{ position: "absolute", inset: 0, background: "linear-gradient(152deg, #faf6ee 0%, #f4eee2 44%, #ece6d8 76%, #e3dccd 100%)" }} />
+            <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse 58% 52% at 22% 16%, rgba(255,251,243,0.9), transparent 62%)" }} />
+            <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse 42% 46% at 74% 46%, rgba(120,138,165,0.12), transparent 72%)" }} />
+            <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse 118% 100% at 50% 44%, transparent 56%, rgba(58,64,80,0.16) 100%)" }} />
           </div>
         )}
 
@@ -326,58 +334,44 @@ export default function HeroCinematicV3({ overlay = true, staticOpen = false }: 
               transformStyle: "preserve-3d",
             }}
           >
-            {/* GALAXY FLOOR POOL — layered nebula + faint spiral swirl
-             *  under the deck (all static gradients; the single opacity
-             *  is the only animated value). Echoes the old hero's galaxy
-             *  floor at zero per-frame cost. Hidden when composited into
-             *  another hero (staticOpen), where it reads as fog. */}
-            <motion.div
-              style={{
-                position: "absolute",
-                left: "50%",
-                top: "50%",
-                width: 1150,
-                height: 1150,
-                transform: "translate(-50%, -46%)",
-                borderRadius: "50%",
-                opacity: staticOpen ? 0 : floorGlow,
-                display: staticOpen ? "none" : undefined,
-              }}
-            >
-              <div
+            {/* CONTACT SHADOW — the blue galaxy pool retired in the
+             *  premium-minimal pass (owner 2026-10-12). A soft grounding
+             *  shade below the deck, thrown down-and-right to obey the
+             *  warm key light coming from the top-left, so the machine
+             *  reads as sitting on the studio set rather than floating.
+             *  Rides floorGlow so it deepens as the lid opens. */}
+            {!staticOpen && (
+              <motion.div
                 style={{
                   position: "absolute",
-                  inset: 0,
+                  left: "50%",
+                  top: "50%",
+                  width: 980,
+                  height: 560,
+                  transform: "translate(-46%, -24%)",
                   borderRadius: "50%",
+                  opacity: floorGlow,
                   background:
-                    "radial-gradient(circle at 50% 50%, rgba(0,229,255,0.15) 0%, rgba(60,120,255,0.08) 28%, rgba(0,229,255,0.03) 52%, transparent 70%), " +
-                    "radial-gradient(ellipse 55% 38% at 38% 58%, rgba(120,80,220,0.10) 0%, transparent 65%), " +
-                    "radial-gradient(ellipse 48% 30% at 66% 40%, rgba(40,160,235,0.10) 0%, transparent 65%)",
+                    "radial-gradient(ellipse 40% 24% at 50% 52%, rgba(34,30,24,0.26), rgba(34,30,24,0.1) 48%, transparent 68%), " +
+                    "radial-gradient(ellipse 62% 36% at 50% 50%, rgba(34,30,24,0.08), transparent 70%)",
+                  filter: "blur(4px)",
                 }}
               />
-              <div
-                style={{
-                  position: "absolute",
-                  inset: "12%",
-                  borderRadius: "50%",
-                  background:
-                    "conic-gradient(from 210deg at 50% 50%, transparent 0deg, rgba(90,180,255,0.05) 40deg, transparent 90deg, rgba(140,120,255,0.05) 150deg, transparent 210deg, rgba(0,229,255,0.06) 280deg, transparent 340deg)",
-                  filter: "blur(6px)",
-                }}
-              />
-            </motion.div>
+            )}
+            {/* soft lit ground directly under the machine — a gentle
+             *  bright bloom so the deck sits on light, not a hard edge. */}
             {!staticOpen && (
               <div
                 style={{
                   position: "absolute",
                   left: "50%",
                   top: "50%",
-                  width: 780,
-                  height: 560,
-                  transform: "translate(-50%, -48%)",
+                  width: 760,
+                  height: 520,
+                  transform: "translate(-52%, -50%)",
                   borderRadius: "50%",
                   background:
-                    "radial-gradient(ellipse at 50% 50%, rgba(238,240,243,0.55) 0%, rgba(238,240,243,0.25) 45%, transparent 70%)",
+                    "radial-gradient(ellipse at 48% 46%, rgba(255,253,247,0.6) 0%, rgba(255,253,247,0.22) 44%, transparent 70%)",
                 }}
               />
             )}
@@ -987,25 +981,9 @@ export default function HeroCinematicV3({ overlay = true, staticOpen = false }: 
           mask-image: linear-gradient(to bottom,
             #000 0%, #000 82%, rgba(0,0,0,0.72) 88%, rgba(0,0,0,0.38) 94%, transparent 100%);
         }
-        .hv3-nebulaA, .hv3-nebulaB {
-          position: absolute; border-radius: 50%; pointer-events: none;
-          filter: blur(70px);
-        }
-        /* Nebula opacities raised (0.5 -> 0.7 / 0.4 -> 0.55) so the
-         * opening frame has visible cosmic atmosphere before the first
-         * scroll (reviewer pass: frame read as near-black). */
-        .hv3-nebulaA {
-          width: 55vw; height: 42vw; left: 8vw; top: 12vh; opacity: 0.7;
-          background: radial-gradient(ellipse, rgba(40,90,190,0.26), rgba(0,229,255,0.06) 55%, transparent 75%);
-          animation: hv3DriftA 26s ease-in-out infinite alternate;
-        }
-        .hv3-nebulaB {
-          width: 48vw; height: 40vw; right: 2vw; bottom: 4vh; opacity: 0.55;
-          background: radial-gradient(ellipse, rgba(90,60,200,0.21), rgba(63,208,255,0.06) 55%, transparent 75%);
-          animation: hv3DriftB 32s ease-in-out infinite alternate;
-        }
-        @keyframes hv3DriftA { from { transform: translate3d(0,0,0); } to { transform: translate3d(3vw,2vh,0); } }
-        @keyframes hv3DriftB { from { transform: translate3d(0,0,0); } to { transform: translate3d(-2.5vw,-2vh,0); } }
+        /* (The blue nebula fog layers were removed 2026-10-12 for the
+           premium-minimal studio ground; see the inline ambient layers
+           at the top of the pinned frame.) */
         .hv3-ledBreathe { animation: hv3Led 2.6s ease-in-out infinite; }
         @keyframes hv3Led { 0%,100% { filter: brightness(0.7); } 50% { filter: brightness(1.3); } }
         .hv3-blink { animation: hv3Blink 1.1s steps(2, start) infinite; }
@@ -1020,7 +998,7 @@ export default function HeroCinematicV3({ overlay = true, staticOpen = false }: 
         .hv3-radarBlip { animation: hv3BlipPulse 3.3s ease-in-out infinite; }
         @keyframes hv3BlipPulse { 0%, 100% { opacity: 0.2; } 50% { opacity: 1; } }
         @media (prefers-reduced-motion: reduce) {
-          .hv3-nebulaA, .hv3-nebulaB, .hv3-ledBreathe, .hv3-blink, .hv3-ring, .hv3-sweep, .hv3-radarBlip { animation: none; }
+          .hv3-ledBreathe, .hv3-blink, .hv3-ring, .hv3-sweep, .hv3-radarBlip { animation: none; }
         }
       `}</style>
     </section>
