@@ -9,6 +9,11 @@
  * before a single message is read, instead of every case opening on the
  * same generic chat screen. Never replays on a resumed case (see
  * PhoneRuntime).
+ *
+ * Icons are drawn SVG, not emoji: an emoji's own glyph metrics vary (the
+ * camera emoji in particular sits visibly off-centre in its box on
+ * Windows/Edge), so centering it with CSS alone isn't reliable. A 24x24
+ * viewBox centers itself by construction.
  */
 
 import { useState } from "react";
@@ -16,25 +21,135 @@ import type { PhoneAppKind } from "./case06";
 
 const UI = `-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, system-ui, sans-serif`;
 
-const KIND_ICON: Record<PhoneAppKind, string> = {
-  messaging: "💬",
-  social: "📸",
-  wallet: "💰",
-  gamechat: "🎮",
-  call: "📞",
+type GlyphKey = "camera" | "photos" | "settings" | "clock" | "weather" | "notes" | "calc" | "maps" | "messaging" | "social" | "wallet" | "gamechat" | "call";
+
+function Glyph({ k }: { k: GlyphKey }) {
+  switch (k) {
+    case "camera":
+      return (
+        <>
+          <path d="M8.5 7l.8-1.6A1 1 0 0 1 10.2 5h3.6a1 1 0 0 1 .9.6L15.5 7" />
+          <rect x="3" y="7" width="18" height="12.5" rx="2.4" />
+          <circle cx="12" cy="13.2" r="3.4" />
+        </>
+      );
+    case "photos":
+      return (
+        <>
+          <rect x="3" y="4" width="18" height="16" rx="2.2" />
+          <circle cx="8.3" cy="9.3" r="1.6" fill="currentColor" stroke="none" />
+          <path d="M4 16.5l5-5 3.5 3.5 2.5-2.5 5 4.5" />
+        </>
+      );
+    case "settings":
+      return (
+        <>
+          <circle cx="12" cy="12" r="3.2" />
+          <path d="M12 3.5v2.3M12 18.2v2.3M20.5 12h-2.3M5.8 12H3.5M18 6l-1.6 1.6M7.6 16.4L6 18M18 18l-1.6-1.6M7.6 7.6L6 6" />
+        </>
+      );
+    case "clock":
+      return (
+        <>
+          <circle cx="12" cy="12" r="9" />
+          <path d="M12 7v5l3.5 2" />
+        </>
+      );
+    case "weather":
+      return (
+        <>
+          <circle cx="12" cy="12" r="5" fill="currentColor" fillOpacity={0.2} />
+          <circle cx="12" cy="12" r="5" />
+          <path d="M12 2.5v2.3M12 19.2v2.3M21.5 12h-2.3M4.8 12H2.5M18.8 5.2l-1.6 1.6M6.8 17.2l-1.6 1.6M18.8 18.8l-1.6-1.6M6.8 6.8L5.2 5.2" />
+        </>
+      );
+    case "notes":
+      return (
+        <>
+          <rect x="5" y="3" width="14" height="18" rx="2" />
+          <path d="M8.5 8.5h7M8.5 12h7M8.5 15.5h4.5" />
+        </>
+      );
+    case "calc":
+      return (
+        <>
+          <rect x="5" y="3" width="14" height="18" rx="2" />
+          <rect x="7.3" y="5.3" width="9.4" height="3.6" rx="0.8" fill="currentColor" fillOpacity={0.25} />
+          <circle cx="8.3" cy="13" r="0.9" fill="currentColor" stroke="none" />
+          <circle cx="12" cy="13" r="0.9" fill="currentColor" stroke="none" />
+          <circle cx="15.7" cy="13" r="0.9" fill="currentColor" stroke="none" />
+          <circle cx="8.3" cy="16.4" r="0.9" fill="currentColor" stroke="none" />
+          <circle cx="12" cy="16.4" r="0.9" fill="currentColor" stroke="none" />
+          <circle cx="15.7" cy="16.4" r="0.9" fill="currentColor" stroke="none" />
+        </>
+      );
+    case "maps":
+      return (
+        <>
+          <path d="M12 21s7-6.5 7-12a7 7 0 0 0-14 0c0 5.5 7 12 7 12z" />
+          <circle cx="12" cy="9" r="2.6" fill="currentColor" fillOpacity={0.25} />
+        </>
+      );
+    case "messaging":
+      return (
+        <>
+          <path d="M4 6.5A2.5 2.5 0 0 1 6.5 4h11A2.5 2.5 0 0 1 20 6.5v8A2.5 2.5 0 0 1 17.5 17H10l-4.5 3.5V17h-1A2.5 2.5 0 0 1 2 14.5" />
+          <circle cx="8.3" cy="10.3" r="1" fill="currentColor" stroke="none" />
+          <circle cx="12" cy="10.3" r="1" fill="currentColor" stroke="none" />
+          <circle cx="15.7" cy="10.3" r="1" fill="currentColor" stroke="none" />
+        </>
+      );
+    case "social":
+      return (
+        <>
+          <rect x="3" y="3" width="18" height="18" rx="5.5" />
+          <circle cx="12" cy="12" r="4.2" />
+          <circle cx="17.1" cy="6.9" r="1.1" fill="currentColor" stroke="none" />
+        </>
+      );
+    case "wallet":
+      return (
+        <>
+          <rect x="3" y="6" width="18" height="13" rx="2.2" />
+          <path d="M3 10.5h18" />
+          <circle cx="16.8" cy="14.2" r="1.3" fill="currentColor" stroke="none" />
+        </>
+      );
+    case "gamechat":
+      return (
+        <>
+          <path d="M6.5 9h11a3.5 3.5 0 0 1 3.4 4.3l-.6 2.4a2 2 0 0 1-3.6.6l-1-1.6a1.6 1.6 0 0 0-1.3-.7h-3.8a1.6 1.6 0 0 0-1.3.7l-1 1.6a2 2 0 0 1-3.6-.6l-.6-2.4A3.5 3.5 0 0 1 6.5 9z" />
+          <path d="M8.3 11.3v2.6M7 12.6h2.6" />
+          <circle cx="16" cy="12" r="0.9" fill="currentColor" stroke="none" />
+          <circle cx="17.6" cy="13.6" r="0.9" fill="currentColor" stroke="none" />
+        </>
+      );
+    case "call":
+      return (
+        <path d="M6.6 10.8c1.4 2.8 3.8 5.2 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25l3.1 1a1 1 0 0 1 .7.95v3.1a1 1 0 0 1-1.1 1C10.4 20.6 3.4 13.6 3 5.1A1 1 0 0 1 4 4h3.1a1 1 0 0 1 .95.7l1 3.1a1 1 0 0 1-.25 1z" />
+      );
+  }
+}
+
+const KIND_ICON: Record<PhoneAppKind, GlyphKey> = {
+  messaging: "messaging",
+  social: "social",
+  wallet: "wallet",
+  gamechat: "gamechat",
+  call: "call",
 };
 
 // Each filler app gets its own believable icon colour (a real home screen
 // is never one flat grey tint repeated eight times).
-const FILLER_APPS = [
-  { icon: "📷", label: "Camera", bg: "linear-gradient(160deg, #3a3a42, #1c1c20)" },
-  { icon: "🖼️", label: "Photos", bg: "linear-gradient(135deg, #FFD66B, #FF6B6B 55%, #C86DD7)" },
-  { icon: "⚙️", label: "Settings", bg: "linear-gradient(160deg, #9a9aa4, #6c6c76)" },
-  { icon: "🕐", label: "Clock", bg: "linear-gradient(160deg, #2c2c32, #111114)" },
-  { icon: "☀️", label: "Weather", bg: "linear-gradient(180deg, #5FD0FB, #1D7FD6)" },
-  { icon: "📝", label: "Notes", bg: "linear-gradient(160deg, #FFDE59, #F5B700)" },
-  { icon: "🧮", label: "Calc", bg: "linear-gradient(160deg, #3a3a42, #1c1c20)" },
-  { icon: "🗺️", label: "Maps", bg: "linear-gradient(135deg, #4ADE80, #0EA5E9)" },
+const FILLER_APPS: { icon: GlyphKey; label: string; bg: string }[] = [
+  { icon: "camera", label: "Camera", bg: "linear-gradient(160deg, #3a3a42, #1c1c20)" },
+  { icon: "photos", label: "Photos", bg: "linear-gradient(135deg, #FFD66B, #FF6B6B 55%, #C86DD7)" },
+  { icon: "settings", label: "Settings", bg: "linear-gradient(160deg, #9a9aa4, #6c6c76)" },
+  { icon: "clock", label: "Clock", bg: "linear-gradient(160deg, #2c2c32, #111114)" },
+  { icon: "weather", label: "Weather", bg: "linear-gradient(180deg, #5FD0FB, #1D7FD6)" },
+  { icon: "notes", label: "Notes", bg: "linear-gradient(160deg, #FFDE59, #F5B700)" },
+  { icon: "calc", label: "Calc", bg: "linear-gradient(160deg, #3a3a42, #1c1c20)" },
+  { icon: "maps", label: "Maps", bg: "linear-gradient(135deg, #4ADE80, #0EA5E9)" },
 ];
 
 export function HomeScreen({
@@ -111,8 +226,7 @@ export function HomeScreen({
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  lineHeight: 1,
-                  fontSize: 30,
+                  color: "#fff",
                   background: isReal ? `linear-gradient(145deg, ${accent}, ${accent}aa)` : a.bg,
                   boxShadow: isReal
                     ? !reduced
@@ -122,7 +236,9 @@ export function HomeScreen({
                   animation: isReal && !reduced && !zooming ? "homePulse 1.6s ease-in-out infinite" : "none",
                 }}
               >
-                <span style={{ transform: "translateY(0.5px)" }}>{a.icon}</span>
+                <svg viewBox="0 0 24 24" width={30} height={30} fill="none" stroke="currentColor" strokeWidth={1.7} strokeLinecap="round" strokeLinejoin="round">
+                  <Glyph k={a.icon} />
+                </svg>
               </span>
               <span style={{ fontFamily: UI, fontSize: 11, color: isReal ? "#fff" : "#B8B8C2", fontWeight: isReal ? 700 : 500 }}>{a.label}</span>
             </button>
