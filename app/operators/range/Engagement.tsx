@@ -33,6 +33,10 @@ export type ModuleDef = {
   lesson: {
     blocks: LessonBlock[];
     example?: { caption: string; lines: ExampleLine[] };
+    /** Optional hands-on teaching widget (the "depth standard"). When present,
+     *  the learner must finish it AND pass the check before signing the scope.
+     *  Modules without it are unchanged. */
+    Interactive?: React.ComponentType<{ onDone: () => void }>;
     check: Check;
   };
   scope: { target: string; inScope: string; offLimits: string; timebox: string };
@@ -40,7 +44,13 @@ export type ModuleDef = {
   hint: string;
   Act: React.ComponentType<{ onCapture: () => void }>;
   flag: string;
-  defend: { blocks: LessonBlock[]; check: Check };
+  defend: {
+    blocks: LessonBlock[];
+    /** Optional "apply the fix" widget. When present, the learner must finish
+     *  it AND pass the check before filing the report. */
+    Interactive?: React.ComponentType<{ onDone: () => void }>;
+    check: Check;
+  };
   finding: { title: string; where: string; severity: string; cvss: string; impact: string; fix: string };
   rep: number;
   repRank: string;
@@ -93,6 +103,10 @@ export default function Engagement({
   const [callsign, setCallsign] = useState("NIGHTJAR");
   const [lessonOk, setLessonOk] = useState(false);
   const [defendOk, setDefendOk] = useState(false);
+  const [lessonLabOk, setLessonLabOk] = useState(false);
+  const [defendLabOk, setDefendLabOk] = useState(false);
+  const lessonReady = lessonOk && (!mod.lesson.Interactive || lessonLabOk);
+  const defendReady = defendOk && (!mod.defend.Interactive || defendLabOk);
   const [hint, setHint] = useState(false);
   const idx = BEATS.findIndex((b) => b.id === phase);
 
@@ -146,9 +160,14 @@ export default function Engagement({
                 <p style={{ color: C.mute, fontSize: 13, lineHeight: 1.55, marginTop: 8 }}>{mod.lesson.example.caption}</p>
               </div>
             )}
+            {mod.lesson.Interactive && (
+              <div style={{ margin: "4px 0 18px" }}>
+                <mod.lesson.Interactive onDone={() => setLessonLabOk(true)} />
+              </div>
+            )}
             <CheckBox check={mod.lesson.check} onPass={() => setLessonOk(true)} />
             <div style={{ marginTop: 20 }}>
-              <Btn tone="i" disabled={!lessonOk} onClick={() => setPhase("authorize")}>Sign the scope →</Btn>
+              <Btn tone="i" disabled={!lessonReady} onClick={() => setPhase("authorize")}>Sign the scope →</Btn>
             </div>
           </Panel>
         )}
@@ -206,9 +225,14 @@ export default function Engagement({
                   <p style={{ color: C.soft, fontSize: 14.5, lineHeight: 1.62, marginTop: 6 }}>{b.body}</p>
                 </div>
               ))}
+              {mod.defend.Interactive && (
+                <div style={{ margin: "4px 0 18px" }}>
+                  <mod.defend.Interactive onDone={() => setDefendLabOk(true)} />
+                </div>
+              )}
               <CheckBox check={mod.defend.check} onPass={() => setDefendOk(true)} />
               <div style={{ marginTop: 20 }}>
-                <Btn tone="i" disabled={!defendOk} onClick={goToReport}>File your report →</Btn>
+                <Btn tone="i" disabled={!defendReady} onClick={goToReport}>File your report →</Btn>
               </div>
             </Panel>
           </div>
