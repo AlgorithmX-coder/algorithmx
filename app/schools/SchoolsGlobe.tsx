@@ -603,11 +603,15 @@ export default function SchoolsGlobe({ tone = "night" }: { tone?: "night" | "san
     let stars: { x: number; y: number; r: number; p: number }[] = [];
     let dotX = new Float32Array(0);
     let dotY = new Float32Array(0);
+    let dotSize = new Float32Array(0);
     let dotBucket = new Uint8Array(0);
     let arcs: Arc[] = [];
     let flashes: Flash[] = [];
     let cityAtlas: Atlas | null = null;
     let codeAtlas: Atlas | null = null;
+    // Baked holographic lesson-card sprites (a few variants), drawn when a
+    // lesson lands on a school. See buildScreenSprites / drawScreen.
+    let screenSprites: HTMLCanvasElement[] = [];
     // Where the label element ended up, so the leader can reach out of it.
     let labelX = 0;
     let labelY = 0;
@@ -639,6 +643,10 @@ export default function SchoolsGlobe({ tone = "night" }: { tone?: "night" | "san
       cityAtlas = makeAtlas(px, onSand ? "#0e5c37" : "#c2ffb2", "700", onSand ? { track: px * 0.1 } : { glow: "rgba(120,255,130,0.8)", track: px * 0.1 });
       codeAtlas = makeAtlas(Math.max(9, Math.round(R / 26)), onSand ? "#3f5a78" : "#eafcff", "600");
     };
+
+    // Tone-aware continent / Britain dot colours (drawn as batched round paths).
+    const LAND_DOT = onSand ? "rgb(47,96,120)" : "rgb(120,196,255)";
+    const UK_DOT = onSand ? "rgb(182,120,24)" : "rgb(255,206,130)";
 
     const build = () => {
       w = window.innerWidth;
@@ -676,10 +684,11 @@ export default function SchoolsGlobe({ tone = "night" }: { tone?: "night" | "san
       ctx.setTransform(dpr, 0, 0, dpr, -bx * dpr, -by * dpr);
 
       buildAtlases();
+      buildScreenSprites();
 
       // Even spacing ON THE SPHERE: a fixed lon step bunches dots at the
       // poles and thins them at the equator, which distorts every coastline.
-      const step = w < 700 ? 2.6 : 1.6;
+      const step = w < 700 ? 2.2 : w < 1100 ? 1.6 : 1.4;
       const boxes = LAND.map(bounds);
       land = [];
       for (let lat = -56; lat <= 80; lat += step) {
@@ -705,6 +714,7 @@ export default function SchoolsGlobe({ tone = "night" }: { tone?: "night" | "san
       }
       dotX = new Float32Array(land.length);
       dotY = new Float32Array(land.length);
+      dotSize = new Float32Array(land.length);
       dotBucket = new Uint8Array(land.length);
       stars = [];
       for (let i = 0; i < 46; i++) {
@@ -760,138 +770,250 @@ export default function SchoolsGlobe({ tone = "night" }: { tone?: "night" | "san
       arc.t = -FLIGHT * (4 + Math.random() * 10);
     };
 
-    /** rounded rect that degrades to a square one where roundRect is missing */
-    const rr = (rx: number, ry: number, rw: number, rh: number, rad: number) => {
-      ctx.beginPath();
-      if (typeof ctx.roundRect === "function") ctx.roundRect(rx, ry, rw, rh, rad);
-      else ctx.rect(rx, ry, rw, rh);
+    /* ── High-class landing screen (owner 2026-10-12) ────────────────────
+     * When a lesson reaches a school, a holographic lesson card is
+     * projected up off the pin on a beam of light: a glass panel with a
+     * live dot, a progress ring, lesson rows and the badge earned. The
+     * panel art is baked once into a few sprites (crisp, cheap to blit on
+     * school hardware); only the beam, the rise and the landing ring are
+     * drawn per frame. Replaces the old 36x26 vector monitor that read as
+     * a sticky note. The glass stays dark in both tones so the screen
+     * reads as switched on; only the outer glow, the drop shadow and the
+     * beam change between night and paper.
+     * ──────────────────────────────────────────────────────────────────── */
+    const CARD = { w: 74, h: 56, pad: 17 };
+    const SCREEN_SS = 3;
+    const SANS = 'system-ui, -apple-system, "Segoe UI", sans-serif';
+
+    type CardTheme = {
+      glassTop: string; glassBot: string; border: string;
+      fillShadow: string; fillBlur: number; fillY: number;
+      rimGlow: string; beam: string;
+    };
+    const cardTheme = (): CardTheme =>
+      onSand
+        ? {
+            glassTop: "rgba(20,40,70,0.98)", glassBot: "rgba(9,20,40,0.99)",
+            border: "rgba(10,112,133,0.85)",
+            fillShadow: "rgba(16,26,38,0.5)", fillBlur: 9, fillY: 4,
+            rimGlow: "rgba(10,112,133,0.75)", beam: "10,112,133",
+          }
+        : {
+            glassTop: "rgba(22,48,88,0.94)", glassBot: "rgba(10,24,50,0.96)",
+            border: "rgba(125,240,255,0.55)",
+            fillShadow: "rgba(0,180,255,0.4)", fillBlur: 8, fillY: 0,
+            rimGlow: "rgba(125,240,255,0.6)", beam: "125,240,255",
+          };
+
+    const miniShield = (g: CanvasRenderingContext2D, ox: number, oy: number, s: number) => {
+      const P = (px: number, py: number): [number, number] => [ox + (px / 24) * s, oy + (py / 24) * s];
+      g.beginPath();
+      let p = P(12, 2); g.moveTo(p[0], p[1]);
+      p = P(20, 5); g.lineTo(p[0], p[1]);
+      p = P(20, 12); g.lineTo(p[0], p[1]);
+      p = P(12, 22); g.lineTo(p[0], p[1]);
+      p = P(4, 12); g.lineTo(p[0], p[1]);
+      p = P(4, 5); g.lineTo(p[0], p[1]);
+      g.closePath();
+      g.fillStyle = "#ffd88f";
+      g.fill();
+      // bolt
+      g.beginPath();
+      for (const [bx2, by2, first] of [[13.2, 6, 1], [8.6, 13, 0], [11.4, 13, 0], [10.6, 18, 0], [15.6, 11, 0], [12.6, 11, 0]] as [number, number, number][]) {
+        const q = P(bx2, by2);
+        if (first) g.moveTo(q[0], q[1]); else g.lineTo(q[0], q[1]);
+      }
+      g.closePath();
+      g.fillStyle = "#0a1830";
+      g.fill();
+    };
+
+    const drawCardArt = (g: CanvasRenderingContext2D, ct: CardTheme, pct: number, rows: number[]) => {
+      const x = CARD.pad, y = CARD.pad, w = CARD.w, h = CARD.h, rad = 8;
+      const panel = (gx: number, gy: number, gw: number, gh: number, r: number) => {
+        g.beginPath();
+        if (typeof g.roundRect === "function") g.roundRect(gx, gy, gw, gh, r);
+        else g.rect(gx, gy, gw, gh);
+      };
+      // Panel fill with a baked drop shadow / bloom.
+      g.save();
+      g.shadowColor = ct.fillShadow;
+      g.shadowBlur = ct.fillBlur;
+      g.shadowOffsetY = ct.fillY;
+      const grad = g.createLinearGradient(x, y, x, y + h);
+      grad.addColorStop(0, ct.glassTop);
+      grad.addColorStop(1, ct.glassBot);
+      g.fillStyle = grad;
+      panel(x, y, w, h, rad);
+      g.fill();
+      g.restore();
+      // A lit rim: stroke the border twice, once with a coloured glow.
+      g.save();
+      g.shadowColor = ct.rimGlow;
+      g.shadowBlur = 5;
+      g.strokeStyle = ct.border;
+      g.lineWidth = 1.1;
+      panel(x + 0.6, y + 0.6, w - 1.2, h - 1.2, rad);
+      g.stroke();
+      g.restore();
+      // top inner highlight
+      g.strokeStyle = "rgba(255,255,255,0.12)";
+      g.lineWidth = 1;
+      g.beginPath();
+      g.moveTo(x + rad, y + 1.2);
+      g.lineTo(x + w - rad, y + 1.2);
+      g.stroke();
+
+      g.save();
+      panel(x, y, w, h, rad);
+      g.clip();
+      const ix = x + 8;
+
+      // Header: live dot + label.
+      g.fillStyle = "#9cff8a";
+      g.beginPath();
+      g.arc(ix + 1.6, y + 9, 2.2, 0, Math.PI * 2);
+      g.fill();
+      g.shadowColor = "rgba(156,255,138,0.9)";
+      g.shadowBlur = 4;
+      g.fill();
+      g.shadowBlur = 0;
+      g.textBaseline = "middle";
+      g.textAlign = "left";
+      g.font = `700 6.5px ${MONO}`;
+      g.fillStyle = "#7df0ff";
+      g.fillText("LIVE LESSON", ix + 6.5, y + 9.4);
+      // signal bars, top right
+      for (let i = 0; i < 3; i++) {
+        g.fillStyle = `rgba(125,240,255,${0.4 + i * 0.22})`;
+        g.fillRect(x + w - 15 + i * 3.4, y + 11 - i * 2.4 - 2.4, 2.1, 2.4 + i * 2.4);
+      }
+
+      // Progress ring.
+      const cxr = ix + 9.5, cyr = y + 30, rr2 = 9;
+      g.lineWidth = 2.6;
+      g.strokeStyle = "rgba(125,240,255,0.16)";
+      g.beginPath();
+      g.arc(cxr, cyr, rr2, 0, Math.PI * 2);
+      g.stroke();
+      g.strokeStyle = "#2ee6ff";
+      g.lineCap = "round";
+      g.beginPath();
+      g.arc(cxr, cyr, rr2, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * pct);
+      g.stroke();
+      g.lineCap = "butt";
+      g.textAlign = "center";
+      g.fillStyle = "#ffffff";
+      g.font = `800 7.5px ${SANS}`;
+      g.fillText(`${Math.round(pct * 100)}`, cxr, cyr - 0.5);
+      g.font = `700 3.6px ${MONO}`;
+      g.fillStyle = "rgba(190,220,245,0.72)";
+      g.fillText("WEEK 5", cxr, cyr + 5.5);
+      g.textAlign = "left";
+
+      // Lesson rows to the right of the ring.
+      const rx = cxr + rr2 + 6;
+      const rw = x + w - 8 - rx;
+      const rowCol = ["109,224,255", "156,255,138", "255,216,143"];
+      for (let i = 0; i < 3; i++) {
+        const ry = y + 23 + i * 7;
+        const rgrad = g.createLinearGradient(rx, 0, rx + rw, 0);
+        rgrad.addColorStop(0, `rgba(${rowCol[i]},0.85)`);
+        rgrad.addColorStop(1, `rgba(${rowCol[i]},0.14)`);
+        g.fillStyle = rgrad;
+        panel(rx, ry, rw * rows[i], 3.3, 1.6);
+        g.fill();
+      }
+
+      // Divider + badge.
+      const dy = y + h - 13;
+      g.strokeStyle = "rgba(125,240,255,0.2)";
+      g.lineWidth = 1;
+      g.beginPath();
+      g.moveTo(ix, dy);
+      g.lineTo(x + w - 8, dy);
+      g.stroke();
+      miniShield(g, ix, dy + 2.5, 8.5);
+      g.fillStyle = "rgba(220,235,255,0.78)";
+      g.font = `700 4.8px ${MONO}`;
+      g.textBaseline = "middle";
+      g.fillText("BADGE EARNED", ix + 11, dy + 6.6);
+      g.restore();
+    };
+
+    const buildScreenSprites = () => {
+      const variants: [number, number[]][] = [
+        [0.72, [1, 0.76, 0.58]],
+        [0.58, [0.9, 0.62, 0.72]],
+        [0.86, [0.82, 0.68, 0.5]],
+      ];
+      const ct = cardTheme();
+      const SS = SCREEN_SS;
+      const W = CARD.w + CARD.pad * 2;
+      const H = CARD.h + CARD.pad * 2;
+      screenSprites = variants.map(([pct, rows]) => {
+        const c = document.createElement("canvas");
+        c.width = Math.round(W * SS);
+        c.height = Math.round(H * SS);
+        const g = c.getContext("2d");
+        if (g) {
+          g.scale(SS, SS);
+          drawCardArt(g, ct, pct, rows);
+        }
+        return c;
+      });
     };
 
     /**
-     * A school machine coming on at a city.
-     *
-     * Owner 2026-09-22: the old one was a pale rectangle with three dots on
-     * a stick and read as a sticky note. It is now a monitor: a bezel with
-     * a lit dark screen inside it, on a neck and a foot, inside HUD
-     * brackets, with a scan line crossing the glass and a caret working at
-     * the end of the last line. A ring pulses off the pin as the lesson
-     * touches down.
-     *
-     * Everything here is silhouette, contrast or motion, because at 36 by
-     * 26 physical pixels nothing else survives. The glass stays dark in
-     * both tones for the same reason: it is the only way a screen reads as
-     * switched on.
+     * Blit a baked lesson card above a landed pin: a beam of light from the
+     * pin, the card rising and easing to rest, and a ring off the pin.
      */
-    const classroom = (
-      x: number,
-      y: number,
-      scale: number,
-      alpha: number,
-      seed: number,
-      grow: number,
-      time: number,
-    ) => {
-      const cw2 = 36 * scale;
-      const ch2 = 26 * scale;
-      const left = Math.round(x - cw2 / 2);
-      const top = Math.round(y - ch2 - 13 * scale);
-      const rad = Math.max(1.4, 2.4 * scale);
-      ctx.save();
-      ctx.globalAlpha = alpha;
-      ctx.lineWidth = 1;
+    const drawScreen = (px0: number, py0: number, alpha: number, seed: number, grow: number, time: number) => {
+      if (screenSprites.length === 0 || alpha <= 0.01) return;
+      const sprite = screenSprites[seed % screenSprites.length] || screenSprites[0];
+      const base = Math.max(0.72, Math.min(1.3, R / 340));
+      const ge = 1 - Math.pow(1 - Math.min(1, grow), 3); // ease-out rise
+      const totalH = CARD.h + CARD.pad * 2;
+      const totalW = CARD.w + CARD.pad * 2;
+      const dispW = (50 + 16 * ge) * base;
+      const dispH = (dispW / totalW) * totalH;
+      const gap = 9 * base;
+      const rise = (1 - ge) * 12 * base;
+      const cardBottomY = py0 - gap + rise;
+      const spriteTop = cardBottomY - ((CARD.pad + CARD.h) / totalH) * dispH;
+      const spriteLeft = px0 - dispW / 2;
 
-      /* the lesson landing: one ring off the pin, gone in a moment */
+      // Beam of light from the pin up to the card.
+      const ct = cardTheme();
+      const flick = 0.55 + 0.35 * Math.sin(time * 3.2 + seed);
+      const beamBotW = dispW * 0.4;
+      const beamTopW = 3.4 * base;
+      const bg = ctx.createLinearGradient(0, py0, 0, cardBottomY);
+      bg.addColorStop(0, `rgba(${ct.beam},0)`);
+      bg.addColorStop(1, `rgba(${ct.beam},${0.3 * alpha * flick})`);
+      ctx.fillStyle = bg;
+      ctx.beginPath();
+      ctx.moveTo(px0 - beamTopW / 2, py0);
+      ctx.lineTo(px0 + beamTopW / 2, py0);
+      ctx.lineTo(px0 + beamBotW / 2, cardBottomY);
+      ctx.lineTo(px0 - beamBotW / 2, cardBottomY);
+      ctx.closePath();
+      ctx.fill();
+
+      // Landing ring off the pin.
       const pulse = 1 - Math.min(1, grow * 1.3);
       if (pulse > 0.03) {
         ctx.beginPath();
-        ctx.arc(x, y, (1 - pulse) * 24 * scale + 3, 0, Math.PI * 2);
+        ctx.arc(px0, py0, (1 - pulse) * 24 * base + 3, 0, Math.PI * 2);
         ctx.strokeStyle = GL.spark(pulse * 0.8);
         ctx.lineWidth = 1.3;
         ctx.stroke();
         ctx.lineWidth = 1;
       }
 
-      /* stand: a splayed neck and a foot, so it stands on something */
-      const neckH = 5.5 * scale;
-      ctx.fillStyle = GL.classroomShell;
-      ctx.strokeStyle = GL.arcHot;
-      ctx.beginPath();
-      ctx.moveTo(x - 2.6 * scale, top + ch2);
-      ctx.lineTo(x + 2.6 * scale, top + ch2);
-      ctx.lineTo(x + 4.6 * scale, top + ch2 + neckH);
-      ctx.lineTo(x - 4.6 * scale, top + ch2 + neckH);
-      ctx.closePath();
-      ctx.fill();
-      ctx.stroke();
-      rr(x - 9 * scale, top + ch2 + neckH, 18 * scale, Math.max(1.6, 2.1 * scale), 1);
-      ctx.fill();
-      ctx.stroke();
-
-      /* bezel */
-      ctx.fillStyle = GL.classroomShell;
-      rr(left, top, cw2, ch2, rad);
-      ctx.fill();
-      ctx.stroke();
-
-      /* the glass */
-      const pad = Math.max(1.6, 2.4 * scale);
-      const sx = left + pad;
-      const sy = top + pad;
-      const sw = cw2 - pad * 2;
-      const sh = ch2 - pad * 2;
-      ctx.fillStyle = GL.classroomWell;
-      rr(sx, sy, sw, sh, rad * 0.6);
-      ctx.fill();
-
-      ctx.save();
-      ctx.clip();
-
-      /* a status strip: one live dot and two read-outs */
-      const u = Math.max(0.6, scale);
-      ctx.fillStyle = "rgba(110,255,180,0.95)";
-      ctx.fillRect(sx + 2 * u, sy + 2.4 * u, 1.7 * u, 1.7 * u);
-      ctx.fillStyle = "rgba(170,205,225,0.4)";
-      ctx.fillRect(sx + 5 * u, sy + 2.8 * u, 6.5 * u, 1 * u);
-      ctx.fillRect(sx + sw - 7.5 * u, sy + 2.8 * u, 5 * u, 1 * u);
-
-      /* three ragged lines of code and a caret working the last one */
-      const lineY = (i: number) => sy + 7.4 * u + i * 4.2 * u;
-      for (let i = 0; i < 3; i++) {
-        const n = (seed + i * 7) % 5;
-        const wid = (0.26 + n * 0.15) * (sw - 5 * u);
-        ctx.fillStyle = GL.classroomDot(i);
-        ctx.fillRect(sx + 2 * u, lineY(i), wid, Math.max(1, 1.5 * u));
-        if (i === 2 && Math.sin(time * 6 + seed) > 0) {
-          ctx.fillStyle = "rgba(150,255,200,0.9)";
-          ctx.fillRect(sx + 2 * u + wid + 1.2 * u, lineY(i) - 0.5 * u, 1.4 * u, 2.4 * u);
-        }
-      }
-
-      /* the scan line, the cheapest thing that says "running" */
-      const sweep = ((time * 0.45 + seed * 0.13) % 1) * sh;
-      ctx.fillStyle = "rgba(120,255,195,0.13)";
-      ctx.fillRect(sx, sy + sweep, sw, Math.max(1, 2 * u));
-      ctx.restore();
-
-      /* HUD brackets, drawn last so they sit over the bezel edge */
-      const b = 5 * scale;
-      const o = 1.6;
-      ctx.strokeStyle = GL.arcHot;
-      ctx.lineWidth = 1.2;
-      ctx.beginPath();
-      for (const [cx, cy, dx, dy] of [
-        [left - o, top - o, 1, 1],
-        [left + cw2 + o, top - o, -1, 1],
-        [left - o, top + ch2 + o, 1, -1],
-        [left + cw2 + o, top + ch2 + o, -1, -1],
-      ] as Array<[number, number, number, number]>) {
-        ctx.moveTo(cx + dx * b, cy);
-        ctx.lineTo(cx, cy);
-        ctx.lineTo(cx, cy + dy * b);
-      }
-      ctx.stroke();
-
-      ctx.restore();
+      // The card.
+      ctx.globalAlpha = alpha;
+      ctx.drawImage(sprite, spriteLeft, spriteTop, dispW, dispH);
       ctx.globalAlpha = 1;
     };
 
@@ -925,35 +1047,98 @@ export default function SchoolsGlobe({ tone = "night" }: { tone?: "night" | "san
       }
       ctx.globalAlpha = 1;
 
-      // Atmosphere and sphere.
-      ctx.drawImage(GLOW.cyan, cx - R * 1.7, cy - R * 1.7, R * 3.4, R * 3.4);
+      /* ── HD sphere: a lit globe, not a flat disc ─────────────────────────
+       * Atmosphere halo ring, a body gradient offset toward a key light so
+       * the sphere has volume, a limb vignette for roundness, a soft
+       * specular sheen, then a crisp rim. Tone-aware: a glowing holographic
+       * earth on night, a pale glass globe on paper. */
+      const Ro = R * 1.4;
+      const f = R / Ro; // where the sphere edge falls inside the halo
+      const halo = ctx.createRadialGradient(cx, cy, R * 0.6, cx, cy, Ro);
+      halo.addColorStop(0, onSand ? "rgba(10,112,133,0)" : "rgba(110,210,255,0)");
+      halo.addColorStop(Math.max(0, f - 0.04), onSand ? "rgba(10,112,133,0)" : "rgba(110,210,255,0)");
+      halo.addColorStop(f + 0.012, onSand ? "rgba(10,112,133,0.2)" : "rgba(120,220,255,0.42)");
+      halo.addColorStop(f + 0.11, onSand ? "rgba(10,112,133,0.06)" : "rgba(90,170,255,0.12)");
+      halo.addColorStop(1, onSand ? "rgba(10,112,133,0)" : "rgba(90,170,255,0)");
+      ctx.fillStyle = halo;
+      ctx.beginPath();
+      ctx.arc(cx, cy, Ro, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.save();
       ctx.beginPath();
       ctx.arc(cx, cy, R, 0, Math.PI * 2);
-      ctx.fillStyle = GL.ocean;
-      ctx.fill();
-      ctx.strokeStyle = GL.landLine;
+      ctx.clip();
+      // Body: lit from the upper-left.
+      const body = ctx.createRadialGradient(cx - R * 0.32, cy - R * 0.34, R * 0.04, cx, cy, R * 1.06);
+      if (onSand) {
+        body.addColorStop(0, "rgba(234,240,245,0.82)");
+        body.addColorStop(0.6, "rgba(206,219,230,0.62)");
+        body.addColorStop(1, "rgba(182,200,215,0.5)");
+      } else {
+        body.addColorStop(0, "rgba(28,64,114,0.96)");
+        body.addColorStop(0.58, "rgba(12,32,72,0.95)");
+        body.addColorStop(1, "rgba(4,12,34,0.98)");
+      }
+      ctx.fillStyle = body;
+      ctx.fillRect(cx - R, cy - R, R * 2, R * 2);
+      // Limb vignette for roundness.
+      const limb = ctx.createRadialGradient(cx, cy, R * 0.52, cx, cy, R);
+      limb.addColorStop(0, "rgba(0,0,0,0)");
+      limb.addColorStop(1, onSand ? "rgba(120,140,162,0.32)" : "rgba(2,6,22,0.6)");
+      ctx.fillStyle = limb;
+      ctx.fillRect(cx - R, cy - R, R * 2, R * 2);
+      // Specular sheen near the light.
+      const spec = ctx.createRadialGradient(cx - R * 0.33, cy - R * 0.36, 0, cx - R * 0.33, cy - R * 0.36, R * 0.58);
+      spec.addColorStop(0, onSand ? "rgba(255,255,255,0.32)" : "rgba(150,210,255,0.16)");
+      spec.addColorStop(1, "rgba(255,255,255,0)");
+      ctx.fillStyle = spec;
+      ctx.fillRect(cx - R, cy - R, R * 2, R * 2);
+
+      // Graticule (meridians + parallels), inside the clip, front side only.
+      ctx.strokeStyle = onSand ? "rgba(10,112,133,0.1)" : "rgba(125,215,255,0.09)";
+      ctx.lineWidth = 1;
+      const grat = () => {
+        for (let lat = -60; lat <= 60; lat += 30) {
+          ctx.beginPath();
+          let started = false;
+          for (let lon = -180; lon <= 180; lon += 6) {
+            const p = project(vec(lat, lon));
+            if (p[2] < 0.02) { started = false; continue; }
+            if (!started) { ctx.moveTo(p[0], p[1]); started = true; } else ctx.lineTo(p[0], p[1]);
+          }
+          ctx.stroke();
+        }
+        for (let lon = -180; lon < 180; lon += 30) {
+          ctx.beginPath();
+          let started = false;
+          for (let lat = -80; lat <= 80; lat += 5) {
+            const p = project(vec(lat, lon));
+            if (p[2] < 0.02) { started = false; continue; }
+            if (!started) { ctx.moveTo(p[0], p[1]); started = true; } else ctx.lineTo(p[0], p[1]);
+          }
+          ctx.stroke();
+        }
+      };
+      grat();
+      ctx.restore();
+
+      // Rim.
+      ctx.beginPath();
+      ctx.arc(cx, cy, R, 0, Math.PI * 2);
+      ctx.strokeStyle = onSand ? "rgba(10,112,133,0.34)" : "rgba(140,220,255,0.5)";
       ctx.lineWidth = 1;
       ctx.stroke();
 
-      // Graticule.
-      ctx.strokeStyle = GL.arc;
-      for (let lat = -60; lat <= 60; lat += 30) {
-        ctx.beginPath();
-        for (let lon = -180; lon <= 180; lon += 6) {
-          const p = project(vec(lat, lon));
-          if (p[2] < 0) {
-            ctx.stroke();
-            ctx.beginPath();
-            continue;
-          }
-          ctx.lineTo(p[0], p[1]);
-        }
-        ctx.stroke();
-      }
-
-      // Land, then Britain lit on top of it.
-      const dot = Math.max(1.1, R / 105);
-      ctx.fillStyle = "#67b6e6";
+      /* ── HD continents: round dots, shaded by a key light + depth ────────
+       * Each dot is an arc; one fill() per shade bucket draws thousands at
+       * once (far cheaper than a blit per dot, so it stays smooth on school
+       * hardware). Brightness comes from the dot normal against a key light,
+       * radius from depth, so the continents read as a lit, rounded sphere. */
+      const dotBase = Math.max(0.85, R / 176); // dot radius at the equator
+      const Lx = -0.445, Ly = 0.544, Lz = 0.712; // view-space key light (unit)
+      const BUCKET_ALPHA = [0.16, 0.3, 0.44, 0.58, 0.74, 0.9]; // 6 buckets
+      const NB = BUCKET_ALPHA.length;
       let visible = 0;
       for (let i = 0; i < land.length; i++) {
         const v = land[i];
@@ -961,27 +1146,40 @@ export default function SchoolsGlobe({ tone = "night" }: { tone?: "night" | "san
         const z0 = -v[0] * sr + v[2] * cr;
         const y = v[1] * ct - z0 * st;
         const z = v[1] * st + z0 * ct;
-        if (z < 0.04) continue;
+        if (z < 0.02) continue;
+        const lit = x * Lx + y * Ly + z * Lz; // normal . light
+        const edge = z < 0.12 ? z / 0.12 : 1; // fade in at the limb
+        const a = (0.3 + 0.7 * Math.max(0, lit)) * edge;
         dotX[visible] = cx + x * R;
         dotY[visible] = cy - y * R;
-        dotBucket[visible] = z < 0.3 ? 0 : z < 0.6 ? 1 : z < 0.85 ? 2 : 3;
+        dotSize[visible] = dotBase * (0.7 + 0.44 * z);
+        dotBucket[visible] = Math.min(NB - 1, Math.max(0, Math.floor(a * NB)));
         visible++;
       }
-      const BUCKET_ALPHA = [0.32, 0.5, 0.67, 0.81];
-      for (let b = 0; b < 4; b++) {
+      ctx.fillStyle = LAND_DOT;
+      for (let b = 0; b < NB; b++) {
         ctx.globalAlpha = BUCKET_ALPHA[b];
+        ctx.beginPath();
         for (let i = 0; i < visible; i++) {
           if (dotBucket[i] !== b) continue;
-          ctx.fillRect(dotX[i], dotY[i], dot, dot);
+          const r = dotSize[i];
+          ctx.moveTo(dotX[i] + r, dotY[i]);
+          ctx.arc(dotX[i], dotY[i], r, 0, Math.PI * 2);
         }
+        ctx.fill();
       }
-      ctx.fillStyle = GL.britain;
+      // Britain, lit and a touch larger so it reads as the home nation.
+      ctx.fillStyle = UK_DOT;
+      ctx.globalAlpha = 0.92;
+      ctx.beginPath();
+      const ur = dotBase * 0.62;
       for (const v of uk) {
         const p = project(v);
-        if (p[2] < 0.04) continue;
-        ctx.globalAlpha = 0.5 + p[2] * 0.5;
-        ctx.fillRect(p[0], p[1], dot * 0.95, dot * 0.95);
+        if (p[2] < 0.03) continue;
+        ctx.moveTo(p[0] + ur, p[1]);
+        ctx.arc(p[0], p[1], ur, 0, Math.PI * 2);
       }
+      ctx.fill();
       ctx.globalAlpha = 1;
 
       // Every name drawn this frame, so the next one can avoid them.
@@ -1088,13 +1286,13 @@ export default function SchoolsGlobe({ tone = "night" }: { tone?: "night" | "san
           if (hot && w >= 1100) {
             const free = (b: [number, number, number, number]) =>
               !taken.some((o) => b[0] < o[2] && b[2] > o[0] && b[1] < o[3] && b[3] > o[1]);
-            // The screen grows as the lesson arrives and sits above the pin.
+            // The card grows as the lesson arrives and sits above the pin.
             const grow = Math.min(1, (1 - arc.lit) * 7);
-            const k = (0.55 + 0.45 * grow) * Math.max(0.7, Math.min(1.25, R / 340));
-            const screenBox: [number, number, number, number] = [pin[0] - 20 * k, pin[1] - 38 * k, pin[0] + 20 * k, pin[1] - 6];
+            const sBase = Math.max(0.72, Math.min(1.3, R / 340));
+            const screenBox: [number, number, number, number] = [pin[0] - 34 * sBase, pin[1] - 62 * sBase, pin[0] + 34 * sBase, pin[1] - 4];
             if (free(screenBox)) {
               taken.push(screenBox);
-              classroom(pin[0], pin[1], k, Math.min(1, arc.lit * 2.4), arc.name.length, grow, t);
+              drawScreen(pin[0], pin[1], Math.min(1, arc.lit * 2.4), arc.name.length, grow, t);
             }
             // The name goes BELOW the pin, since the screen has the space above.
             const nameW = arc.name.length * cityAtlas.cw;
@@ -1202,6 +1400,7 @@ export default function SchoolsGlobe({ tone = "night" }: { tone?: "night" | "san
       document.fonts.ready.then(() => {
         if (disposed) return;
         buildAtlases();
+        buildScreenSprites();
         if (isPaused) draw(performance.now() / 1000, 0);
       });
     }
