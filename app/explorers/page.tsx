@@ -42,6 +42,7 @@ import { checkpointStorageKey, xpForEvent } from "./engine/types";
 import { getExplorersRank, type ExplorersRankInfo } from "./engine/rank";
 import { getStreak, recordDailyActivity } from "./engine/streak";
 import { RankUpMoment } from "./engine/RankUpMoment";
+import { VillainGallery } from "./VillainGallery";
 import { loadExplorersProgress } from "@/app/lib/explorersProgress.actions";
 import { CaseGlyph } from "./CaseGlyphs";
 import { MatrixRain } from "./MatrixRain";
@@ -233,6 +234,7 @@ export default function ExplorersPage() {
   const [totalXp, setTotalXp] = useState(0);
   const [streak, setStreak] = useState(0);
   const [rankUp, setRankUp] = useState<{ from: ExplorersRankInfo; to: ExplorersRankInfo } | null>(null);
+  const [showWatchlist, setShowWatchlist] = useState(false);
   // Which case (if any) the dev deep-link jumped straight to the boss on. Scoped
   // to that one case so Next-case navigation always starts the next mission fresh.
   const [devBossId, setDevBossId] = useState<string | null>(null);
@@ -493,6 +495,18 @@ export default function ExplorersPage() {
       <div className="tc-vig" aria-hidden />
 
       {rankUp && <RankUpMoment from={rankUp.from} to={rankUp.to} reduced={reduced} onDone={() => setRankUp(null)} />}
+      {showWatchlist && (
+        <VillainGallery
+          cases={CASES}
+          status={status}
+          onOpenCase={(id) => {
+            setShowWatchlist(false);
+            const m = CASES.find((c) => c.id === id);
+            if (m) openCase(m);
+          }}
+          onClose={() => setShowWatchlist(false)}
+        />
+      )}
 
       <div style={{ position: "relative", zIndex: 2, maxWidth: 1080, margin: "0 auto", padding: "36px 22px 90px" }}>
         {/* terminal window */}
@@ -529,10 +543,16 @@ export default function ExplorersPage() {
             <span style={{ color: SYS, letterSpacing: "0.18em" }}>{ladder}</span>
           </div>
 
-          <div style={{ marginTop: 18 }}>
+          <div style={{ marginTop: 18, display: "flex", gap: 12, flexWrap: "wrap", alignItems: "center" }}>
             <button className="tc-cta" onClick={() => nextCase && openCase(nextCase)} disabled={!nextCase}>
               {nextCase ? "▶ " : "✓ "}
               {continueLabel}
+            </button>
+            <button
+              onClick={() => setShowWatchlist(true)}
+              style={{ fontFamily: MONO, fontSize: 12.5, fontWeight: 700, letterSpacing: "0.06em", color: SYS, background: "rgba(52,225,255,0.07)", border: `1px solid ${SYS}55`, borderRadius: 3, padding: "11px 18px", cursor: "pointer" }}
+            >
+              🗂 THE WATCHLIST
             </button>
           </div>
 
