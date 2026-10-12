@@ -1,11 +1,6 @@
 {
-<<<<<<< Updated upstream
-  "generatedAt": "2026-10-12T10:03:28.429Z",
-  "model": "eleven_v3",
-=======
-  "generatedAt": "2026-10-12T12:21:48.226Z",
+  "generatedAt": "2026-10-12T13:05:29.131Z",
   "model": "eleven_v4",
->>>>>>> Stashed changes
   "voiceSettings": {
     "stability": 0.6,
     "similarity_boost": 0.75,
@@ -280,11 +275,7 @@
     {
       "key": "29d5ab6498365122",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Cyber Hero, come and look at this. The Hacker Raccoon is trying to steal Adam and Layla's passwords. If he cracks even one, he gets into all their games and all their messages. [warmly] By the end of this week you will know how to build a password he can NEVER break. Mission Command has the details. Let's go.",
       "lines": [
         "Cyber Hero, come and look at this.",
@@ -298,11 +289,7 @@
     {
       "key": "3d683bca4e9b0bad",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Let's start with the big question. What IS a password? Your password is like a key, and it belongs to nobody but you. When you type it in, the computer knows the real you has arrived. A weak key lets the Raccoon walk straight in. [warmly] A strong one keeps him outside, every single time. Before we build one, we need the words that heroes use. In a moment you will play Cyber Word Match and learn them.",
       "lines": [
         "Let's start with the big question. What IS a password?",
@@ -318,11 +305,7 @@
     {
       "key": "51c17c7babbfdddd",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "The cards are face down. Tap one, then tap another to find its pair. Match every pair and you will know the four words heroes use. [warmly] Off you go.",
       "lines": [
         "The cards are face down. Tap one, then tap another to find its pair.",
@@ -334,11 +317,7 @@
     {
       "key": "f0bfe0877c65083f",
       "speaker": "layla",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Good matching. Now a memory round. You have ten seconds to learn where each card sits. Then they flip over, and you tap where you think they are.",
       "lines": [
         "Good matching. Now a memory round.",
@@ -350,11 +329,7 @@
     {
       "key": "cdee2766ba5c949b",
       "speaker": "layla",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "[proud] Every pair matched. You now know the words: password, strong, hacker, secret. [warmly] When a grown-up uses one of those, you will know exactly what they mean.",
       "lines": [
         "[proud] Every pair matched. You now know the words: password, strong, hacker, secret.",
@@ -365,11 +340,7 @@
     {
       "key": "3b138dcaab0eabb5",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "That's right. A password proves it's YOU. It is a key only you have, so the computer lets you in and keeps everybody else out. [proud] Good start, Cyber Hero.",
       "lines": [
         "That's right. A password proves it's YOU.",
@@ -381,11 +352,7 @@
     {
       "key": "02569abbccbc3cb1",
       "speaker": "layla",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "First power learned. A password is your own secret key, and it proves it is really you. Nobody can pretend to be you, so the Raccoon stays out of your things. [warmly] Now, one thing makes a key hard to crack more than anything else, and it is simply how LONG it is.",
       "lines": [
         "First power learned. A password is your own secret key, and it proves it is really you.",
@@ -397,11 +364,7 @@
     {
       "key": "d73a749c7f1fdc39",
       "speaker": "layla",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Length. That is the whole trick. Every extra letter gives the Raccoon's guessing machine more work to do. A short password takes him a blink. A long one takes him YEARS. And the easiest way to make a long one is to glue three silly words together. Dragon. Taco. Comet. [warmly] Long, strong, and easy to remember. In a moment you will build one of your own.",
       "lines": [
         "Length. That is the whole trick.",
@@ -417,11 +380,7 @@
     {
       "key": "c364d94807d55f9c",
       "speaker": "layla",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "There is a wall of silly words in front of you. Tap any three to snap them together. The sillier your three, the harder they are to guess. [warmly] Build yours now.",
       "lines": [
         "There is a wall of silly words in front of you. Tap any three to snap them together.",
@@ -433,11 +392,7 @@
     {
       "key": "1d69621c8b1a8406",
       "speaker": "layla",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Tap any word you like to begin.",
       "lines": [
         "Tap any word you like to begin."
@@ -447,11 +402,7 @@
     {
       "key": "140e90974932d2f7",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "[proud] Look at the length of that! His machine would still be guessing next year. [warmly] Three silly words. That is all it takes.",
       "lines": [
         "[proud] Look at the length of that! His machine would still be guessing next year.",
@@ -462,11 +413,7 @@
     {
       "key": "982f29c8d925343b",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Yes. Dragon-taco-comet is the one. The more letters there are, the more guesses his machine has to make, and it simply runs out of TIME. [proud] Nicely worked out.",
       "lines": [
         "Yes. Dragon-taco-comet is the one.",
@@ -478,11 +425,7 @@
     {
       "key": "8af8e6aefb83ef82",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Second power learned. You make a password long with three random words. The guessing machine runs and runs, and it never gets there. [warmly] But length on its own is not quite enough. A long password made of plain words still has a weak spot.",
       "lines": [
         "Second power learned. You make a password long with three random words.",
@@ -494,11 +437,7 @@
     {
       "key": "6092f838f5bea064",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Here is the weak spot. A plain word is a word the Raccoon already has on his LIST. So we mix it up. Big letters, small letters, numbers, and symbols. Tiger is a word he knows. A tiger with a capital, a number and a symbol mixed through it is not a word at all. Once there is no plain word left inside, he has nothing to look up. In a moment you will take some weak passwords into the Password Hospital and make them strong.",
       "lines": [
         "Here is the weak spot. A plain word is a word the Raccoon already has on his LIST.",
@@ -512,11 +451,7 @@
     {
       "key": "6194577c56c8f0fa",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Each patient is a weak password. Tap what is wrong with it, then use your tools to fix it. Watch the strength meter climb as you go. [warmly] Heal them all, Cyber Hero.",
       "lines": [
         "Each patient is a weak password. Tap what is wrong with it, then use your tools to fix it.",
@@ -528,11 +463,7 @@
     {
       "key": "824aeca2ee220df8",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Look at this patient. What is wrong with this password?",
       "lines": [
         "Look at this patient. What is wrong with this password?"
@@ -542,11 +473,7 @@
     {
       "key": "434abd24c4fba7ee",
       "speaker": "layla",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "[proud] Every patient healed. A capital, a number and a symbol, and the plain word is gone. [warmly] Nothing left in there for him to look up.",
       "lines": [
         "[proud] Every patient healed. A capital, a number and a symbol, and the plain word is gone.",
@@ -557,11 +484,7 @@
     {
       "key": "87b5d209f888dc57",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Not true, and you spotted it. All small letters is an easy job for him. Add capitals, numbers and symbols and there are so many MORE guesses to make that his machine gives up. [proud] Sharp eyes, Cyber Hero.",
       "lines": [
         "Not true, and you spotted it.",
@@ -573,11 +496,7 @@
     {
       "key": "c5bf1515b34d04dc",
       "speaker": "layla",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Third power learned. You mix in capitals, numbers and symbols, so no plain word is left inside. Long, and mixed up. That is a very hard password to crack. [warmly] But there is one way he gets a password without cracking anything at all, and it is the thing we most need to talk about.",
       "lines": [
         "Third power learned. You mix in capitals, numbers and symbols, so no plain word is left inside.",
@@ -589,11 +508,7 @@
     {
       "key": "d322da9bf612684e",
       "speaker": "layla",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "He ASKS for it. That is his favorite trick, because a password you hand over needs no cracking at all. [warmly] So here is the rule. Your password stays secret. Not your best friend. Not somebody in your game. Not a message that says it is urgent. The only place you ever type it is your own real login screen. [whispers] And the only person who ever helps you with it is a trusted grown-up. In a moment you will meet some of his tricks and decide what to do.",
       "lines": [
         "He ASKS for it.",
@@ -609,11 +524,7 @@
     {
       "key": "cedd105108c4d064",
       "speaker": "layla",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "You will see one moment at a time. Read it, think, then tap the card that keeps your secret safe. [warmly] Take your time. There is no rush on this one.",
       "lines": [
         "You will see one moment at a time. Read it, think, then tap the card that keeps your secret safe.",
@@ -624,11 +535,7 @@
     {
       "key": "2cd5cafbc4cf1e48",
       "speaker": "layla",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "[proud] You kept it secret every single time! [warmly] A stranger asked, a pop-up asked, a best friend asked, and he still has nothing.",
       "lines": [
         "[proud] You kept it secret every single time!",
@@ -639,11 +546,7 @@
     {
       "key": "d1f4c59355024edd",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Correct. You, and a trusted grown-up at home. Not your best friend, not your class, not ANYBODY who asks nicely. [proud] Exactly right.",
       "lines": [
         "Correct. You, and a trusted grown-up at home.",
@@ -655,11 +558,7 @@
     {
       "key": "a9deb7b73b3ebedc",
       "speaker": "layla",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Fourth power learned. You keep your password secret, even from a best friend. So nobody can ever be talked into handing it over. [warmly] One power left. He does not guess at random. He has a list, and he tries the same things FIRST.",
       "lines": [
         "Fourth power learned. You keep your password secret, even from a best friend.",
@@ -671,11 +570,7 @@
     {
       "key": "6645faf8c2595c96",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Let's look at his list. Your name. Your birthday. Your pet. Your favorite team. And right at the top, one two three four five six. These are the first things he tries, because they are the things people pick MOST. [warmly] So we pick something that is on nobody's list. In a moment you will sort some weak passwords and work out why each one is weak.",
       "lines": [
         "Let's look at his list.",
@@ -690,11 +585,7 @@
     {
       "key": "e32cadd420d9e386",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Look at each weak password and tap the reason it is weak. Too short. A real word. Something about you. Or just keys in a row. [warmly] Sort them all, Cyber Hero.",
       "lines": [
         "Look at each weak password and tap the reason it is weak.",
@@ -706,11 +597,7 @@
     {
       "key": "d7fb78b42f74fdd6",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "[proud] All sorted. You can see why a password is weak before you ever choose one. [warmly] No names, no birthdays, no numbers in a row.",
       "lines": [
         "[proud] All sorted. You can see why a password is weak before you ever choose one.",
@@ -721,11 +608,7 @@
     {
       "key": "1948127b1d3ca50b",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Yes. The word password is the most popular password there is, so it is the FIRST thing he tries. The safe ones are random words with nothing to do with you. [proud] Nothing gets past you.",
       "lines": [
         "Yes. The word password is the most popular password there is, so it is the FIRST thing he tries.",
@@ -737,11 +620,7 @@
     {
       "key": "f272a82dd0c04b6b",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "[proud] That is all five powers, Cyber Hero! A key that proves it is you. Long. Mixed up. Secret. Nothing obvious. [warmly] Before we face him, let's put all five together one more time in Power Bingo.",
       "lines": [
         "[proud] That is all five powers, Cyber Hero!",
@@ -753,11 +632,7 @@
     {
       "key": "4223fa32d398772a",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Listen to the move, then tap the dial for the power it used.",
       "lines": [
         "Listen to the move, then tap the dial for the power it used."
@@ -767,11 +642,7 @@
     {
       "key": "41398721934943a4",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "I will read out something a person did. You tap the dial for the power they used, and the bolt slides into the vault door. Then I will tell you why it worked. [warmly] Four bolts home and the vault is sealed.",
       "lines": [
         "I will read out something a person did. You tap the dial for the power they used, and the bolt slides into the vault door.",
@@ -783,11 +654,7 @@
     {
       "key": "0f9d8165ce76e73d",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "[excited] Bingo! Every power spotted. [warmly] Long, mixed up, secret, nothing obvious. Now let's go and lock him out.",
       "lines": [
         "[excited] Bingo! Every power spotted.",
@@ -798,11 +665,7 @@
     {
       "key": "77dfacec646138f7",
       "speaker": "layla",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "[warmly] Look at what you can do now, Cyber Hero. You know your password is a key that proves it is you. You make it long with three random words. You mix in capitals, numbers and symbols. You keep it secret. And you never pick the obvious. [proud] That is a password the Hacker Raccoon cannot beat. Time to claim your stickers!",
       "lines": [
         "[warmly] Look at what you can do now, Cyber Hero.",
@@ -818,11 +681,7 @@
     {
       "key": "012e23b0cf5fdd0d",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "A player messages you: \"Send me your password and I'll give you FREE stuff!\"",
       "lines": [
         "A player messages you: \"Send me your password and I'll give you FREE stuff!\""
@@ -832,11 +691,7 @@
     {
       "key": "fd2465e0665d6ec8",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Uh oh - you forgot your password and can't log in. What's the smart thing to do?",
       "lines": [
         "Uh oh - you forgot your password and can't log in. What's the smart thing to do?"
@@ -846,11 +701,7 @@
     {
       "key": "f2fc452412eaefc6",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "A website pops up: \"Type your password here and we'll tell you how STRONG it is!\"",
       "lines": [
         "A website pops up: \"Type your password here and we'll tell you how STRONG it is!\""
@@ -860,11 +711,7 @@
     {
       "key": "540fdb593f7cd5c7",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Your best friend texts: \"Tell me your password so I can log in and get you cool stuff!\"",
       "lines": [
         "Your best friend texts: \"Tell me your password so I can log in and get you cool stuff!\""
@@ -874,11 +721,7 @@
     {
       "key": "c1c1849cf61f4905",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "You open YOUR game on the family tablet. The real login screen asks for your password so you can play.",
       "lines": [
         "You open YOUR game on the family tablet. The real login screen asks for your password so you can play."
@@ -888,11 +731,7 @@
     {
       "key": "f1f61eb5f0c34a17",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "There was no free gift. They wanted the account, and now it is theirs.",
       "lines": [
         "There was no free gift. They wanted the account, and now it is theirs."
@@ -902,11 +741,7 @@
     {
       "key": "fde9f55c22401ec7",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Good. A real gift never needs your password, so that was never a gift.",
       "lines": [
         "Good. A real gift never needs your password, so that was never a gift."
@@ -916,11 +751,7 @@
     {
       "key": "4cef7d1ef8fcfcac",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "A friend cannot get it back for you, and now they might know it. There is a better person to ask.",
       "lines": [
         "A friend cannot get it back for you, and now they might know it. There is a better person to ask."
@@ -930,11 +761,7 @@
     {
       "key": "96be90abe589b80a",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "That is the one. A trusted grown-up is the only person who helps you with your password.",
       "lines": [
         "That is the one. A trusted grown-up is the only person who helps you with your password."
@@ -944,11 +771,7 @@
     {
       "key": "407fe909fa69f444",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "That box checks nothing. It keeps whatever you type.",
       "lines": [
         "That box checks nothing. It keeps whatever you type."
@@ -958,11 +781,7 @@
     {
       "key": "726b42cf0a0ef76f",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Closed, and quite right. A real checker never asks for your actual password.",
       "lines": [
         "Closed, and quite right. A real checker never asks for your actual password."
@@ -972,11 +791,7 @@
     {
       "key": "79a076bce4ea034a",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Even a best friend should not know it. If their account is broken into, yours goes with it.",
       "lines": [
         "Even a best friend should not know it. If their account is broken into, yours goes with it."
@@ -986,11 +801,7 @@
     {
       "key": "8b72285927e0d666",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "You kept it. Nobody else needs your password, and that includes a best friend.",
       "lines": [
         "You kept it. Nobody else needs your password, and that includes a best friend."
@@ -1000,11 +811,7 @@
     {
       "key": "d7ce597174021e4a",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Yes. Your own login screen is the one place it belongs. Just check that nobody is watching.",
       "lines": [
         "Yes. Your own login screen is the one place it belongs. Just check that nobody is watching."
@@ -1014,11 +821,7 @@
     {
       "key": "2bbbce889848753f",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "It has to go somewhere, and your own login is exactly where. It is strangers, pop-ups and friends who never get it.",
       "lines": [
         "It has to go somewhere, and your own login is exactly where. It is strangers, pop-ups and friends who never get it."
@@ -1028,11 +831,7 @@
     {
       "key": "85a48d44b46668d4",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "A password proves it's blank.",
       "lines": [
         "A password proves it's blank."
@@ -1042,11 +841,7 @@
     {
       "key": "e6f8355051913259",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Which password would take the Raccoon YEARS to crack?",
       "lines": [
         "Which password would take the Raccoon YEARS to crack?"
@@ -1056,11 +851,7 @@
     {
       "key": "2fb5fd8ce5feaa81",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Is that true?",
       "lines": [
         "Is that true?"
@@ -1070,11 +861,7 @@
     {
       "key": "e153ed3168053751",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Who should know your password?",
       "lines": [
         "Who should know your password?"
@@ -1084,11 +871,7 @@
     {
       "key": "f30f9025124e066d",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Which password would a hacker guess FIRST?",
       "lines": [
         "Which password would a hacker guess FIRST?"
@@ -1098,11 +881,7 @@
     {
       "key": "b99763716499ea1c",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Mia's password is otter-lamp-rocket-comet. The Raccoon's cracker runs for a MILLION years and still can't open it!",
       "lines": [
         "Mia's password is otter-lamp-rocket-comet. The Raccoon's cracker runs for a MILLION years and still can't open it!"
@@ -1112,11 +891,7 @@
     {
       "key": "63c628e57eed56fb",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Ben took his word and popped in a big capital, a 9 and a $ sign. Now it's a jumble the Raccoon can't read.",
       "lines": [
         "Ben took his word and popped in a big capital, a 9 and a $ sign. Now it's a jumble the Raccoon can't read."
@@ -1126,11 +901,7 @@
     {
       "key": "dbf76c69ce57bc7c",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "A stranger in chat begs Ada for her password. She zips her lips and tells a grown-up instead.",
       "lines": [
         "A stranger in chat begs Ada for her password. She zips her lips and tells a grown-up instead."
@@ -1140,11 +911,7 @@
     {
       "key": "87be19e935ebee0c",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Sam nearly used his birthday... then picked something no one could EVER guess about him.",
       "lines": [
         "Sam nearly used his birthday... then picked something no one could EVER guess about him."
@@ -1154,11 +921,7 @@
     {
       "key": "0a7551585be2fcac",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "A password is the secret key that unlocks your account and proves it's really you.",
       "lines": [
         "A password is the secret key that unlocks your account and proves it's really you."
@@ -1168,11 +931,7 @@
     {
       "key": "135a181509426e25",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "A strong password is so long and mixed up that a cracking machine gives up.",
       "lines": [
         "A strong password is so long and mixed up that a cracking machine gives up."
@@ -1182,11 +941,7 @@
     {
       "key": "de52248eb50e2b8c",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "A hacker is someone who guesses passwords to sneak into accounts that aren't theirs.",
       "lines": [
         "A hacker is someone who guesses passwords to sneak into accounts that aren't theirs."
@@ -1196,11 +951,7 @@
     {
       "key": "a5887ca28bcf3bb1",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "A secret password stays secret; the moment you tell someone, it isn't your key anymore.",
       "lines": [
         "A secret password stays secret; the moment you tell someone, it isn't your key anymore."
@@ -1210,11 +961,7 @@
     {
       "key": "0944e59c5266224d",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "A password isn't for robots; it's the secret that shows who is really typing.",
       "lines": [
         "A password isn't for robots; it's the secret that shows who is really typing."
@@ -1224,11 +971,7 @@
     {
       "key": "093af1c0e8dc5649",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "A hacker is exactly who the password keeps out.",
       "lines": [
         "A hacker is exactly who the password keeps out."
@@ -1238,11 +981,7 @@
     {
       "key": "f73164b88779c28d",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Your friend shouldn't know your password at all; it proves one person only.",
       "lines": [
         "Your friend shouldn't know your password at all; it proves one person only."
@@ -1252,11 +991,7 @@
     {
       "key": "b7ac25390b0b7472",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Cat is three little letters; a cracking machine guesses that in a blink.",
       "lines": [
         "Cat is three little letters; a cracking machine guesses that in a blink."
@@ -1266,11 +1001,7 @@
     {
       "key": "226b7fec2f9ae185",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "One word and one number is still a quick guess; hackers try a name plus a number first.",
       "lines": [
         "One word and one number is still a quick guess; hackers try a name plus a number first."
@@ -1280,11 +1011,7 @@
     {
       "key": "8305b656ecfdc1f7",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Sun is a tiny common word; it would be cracked in a second.",
       "lines": [
         "Sun is a tiny common word; it would be cracked in a second."
@@ -1294,11 +1021,7 @@
     {
       "key": "daf4ba8e68e68f97",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Small letters only is easy to guess; mixing in capitals, numbers and symbols is what makes it strong.",
       "lines": [
         "Small letters only is easy to guess; mixing in capitals, numbers and symbols is what makes it strong."
@@ -1308,11 +1031,7 @@
     {
       "key": "4143fdd97f5b0540",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Even a best friend shouldn't know it; a secret shared is a secret that can leak.",
       "lines": [
         "Even a best friend shouldn't know it; a secret shared is a secret that can leak."
@@ -1322,11 +1041,7 @@
     {
       "key": "0f6ee2828c3f4654",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "A whole class is a lot of people; a password is for you alone.",
       "lines": [
         "A whole class is a lot of people; a password is for you alone."
@@ -1336,11 +1051,7 @@
     {
       "key": "c4cd39da412fdc6d",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Anyone who asks is exactly who must not get it; the Raccoon asks nicely too.",
       "lines": [
         "Anyone who asks is exactly who must not get it; the Raccoon asks nicely too."
@@ -1350,11 +1061,7 @@
     {
       "key": "0eef87b93902c920",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Dragon-Pickle9! is long and mixed up; a hacker would take years, so it's not a first guess.",
       "lines": [
         "Dragon-Pickle9! is long and mixed up; a hacker would take years, so it's not a first guess."
@@ -1364,11 +1071,7 @@
     {
       "key": "c3184ef490dda43f",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Comet$Turtle3 mixes words, a symbol and a number; that's a hard one, not a first guess.",
       "lines": [
         "Comet$Turtle3 mixes words, a symbol and a number; that's a hard one, not a first guess."
@@ -1378,11 +1081,7 @@
     {
       "key": "35ff14dfcbf76b51",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Waffle!Ninja6 is long and mixed; a hacker would never start there.",
       "lines": [
         "Waffle!Ninja6 is long and mixed; a hacker would never start there."
@@ -1392,11 +1091,7 @@
     {
       "key": "e070002045f5a250",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Four random words, so his cracker runs out of time. That is the long power.",
       "lines": [
         "Four random words, so his cracker runs out of time. That is the long power."
@@ -1406,11 +1101,7 @@
     {
       "key": "de13e9b41de38413",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "A capital, a number and a symbol, and the plain word is gone. The mix-it-up power.",
       "lines": [
         "A capital, a number and a symbol, and the plain word is gone. The mix-it-up power."
@@ -1420,11 +1111,7 @@
     {
       "key": "f8bacefad80bd88e",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Ada told a grown-up and nobody else. That is keeping it secret.",
       "lines": [
         "Ada told a grown-up and nobody else. That is keeping it secret."
@@ -1434,11 +1121,7 @@
     {
       "key": "21b6aab2b9a4a9c6",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Nothing about Sam that anyone could guess. Nothing obvious, every time.",
       "lines": [
         "Nothing about Sam that anyone could guess. Nothing obvious, every time."
@@ -1448,11 +1131,7 @@
     {
       "key": "f99c926ebe948ab1",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Mia's password is otter-lamp-rocket-comet. The Raccoon's cracker runs for a MILLION years and still can't open it! Which power did that move use? Tap its dial.",
       "lines": [
         "Mia's password is otter-lamp-rocket-comet. The Raccoon's cracker runs for a MILLION years and still can't open it!",
@@ -1463,11 +1142,7 @@
     {
       "key": "f585fbe14517ca4d",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Ben took his word and popped in a big capital, a 9 and a $ sign. Now it's a jumble the Raccoon can't read. Which power did that move use? Tap its dial.",
       "lines": [
         "Ben took his word and popped in a big capital, a 9 and a $ sign. Now it's a jumble the Raccoon can't read.",
@@ -1478,11 +1153,7 @@
     {
       "key": "b2efef37a1d07a9a",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "A stranger in chat begs Ada for her password. She zips her lips and tells a grown-up instead. Which power did that move use? Tap its dial.",
       "lines": [
         "A stranger in chat begs Ada for her password. She zips her lips and tells a grown-up instead.",
@@ -1493,11 +1164,7 @@
     {
       "key": "3cfd61ea154f1c7a",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Sam nearly used his birthday... then picked something no one could EVER guess about him. Which power did that move use? Tap its dial.",
       "lines": [
         "Sam nearly used his birthday... then picked something no one could EVER guess about him.",
@@ -1508,11 +1175,7 @@
     {
       "key": "ae55306aa50ac28f",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Adam left his tablet on the bus seat. What actually keeps his stuff safe? Is it option A... A secret code only he knows. Option B... Keeping it in a secret hiding spot. Or is it option C... Only using it in his own room. So, what do you think?",
       "lines": [
         "Adam left his tablet on the bus seat. What actually keeps his stuff safe?",
@@ -1529,11 +1192,7 @@
     {
       "key": "3cd8bae2860923b9",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "My guessing robot tries millions of passwords every second. Which one would take it the LONGEST to crack? Take a close look at options A, B and C. So, what do you think?",
       "lines": [
         "My guessing robot tries millions of passwords every second. Which one would take it the LONGEST to crack?",
@@ -1545,11 +1204,7 @@
     {
       "key": "9a0c2ea92a0c6132",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "All three of these have a trick or two in them. Which one is HARDEST for a hacker to crack? Take a close look at options A, B and C. So, what do you think?",
       "lines": [
         "All three of these have a trick or two in them. Which one is HARDEST for a hacker to crack?",
@@ -1561,11 +1216,7 @@
     {
       "key": "9f42b27581d7b21e",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "A website says: type your password here and we will tell you how strong it is! What do you do? Is it option A... Keep it secret. Option B... Type it in to get the free reward. Or is it option C... Tell only your best friend. So, what do you think?",
       "lines": [
         "A website says: type your password here and we will tell you how strong it is! What do you do?",
@@ -1582,11 +1233,7 @@
     {
       "key": "bfdd194284da9d5d",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "I always guess everyone's favorites first! Which one of these could I NEVER guess? Take a close look at options A, B, C and D. So, what do you think?",
       "lines": [
         "I always guess everyone's favorites first! Which one of these could I NEVER guess?",
@@ -1598,11 +1245,7 @@
     {
       "key": "885f1ea8a0bffaad",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "That's right! Hiding a tablet will not stop anyone who finds it, and nor will a house rule. A password is the one thing that actually locks it.",
       "lines": [
         "That's right!",
@@ -1613,11 +1256,7 @@
     {
       "key": "c132e3b7b77899dc",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Not quite. Hiding a tablet will not stop anyone who finds it, and nor will a house rule. A password is the one thing that actually locks it.",
       "lines": [
         "Not quite.",
@@ -1628,11 +1267,7 @@
     {
       "key": "af71eeb1d3b49968",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "That's right! His robot cracks a short password in a blink, and the same word over and over is just as easy once it spots the pattern. Three DIFFERENT random words give it the most to chew through.",
       "lines": [
         "That's right!",
@@ -1643,11 +1278,7 @@
     {
       "key": "e44785a98ba6f741",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Not quite. His robot cracks a short password in a blink, and the same word over and over is just as easy once it spots the pattern. Three DIFFERENT random words give it the most to chew through.",
       "lines": [
         "Not quite.",
@@ -1658,11 +1289,7 @@
     {
       "key": "dadacff42e4fcb58",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "That's right! A capital, a number and a symbol mixed all the way through beats one extra stuck on the end. A word plus a year is still mostly that word.",
       "lines": [
         "That's right!",
@@ -1673,11 +1300,7 @@
     {
       "key": "80e535c3a93ceb9f",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Not quite. A capital, a number and a symbol mixed all the way through beats one extra stuck on the end. A word plus a year is still mostly that word.",
       "lines": [
         "Not quite.",
@@ -1688,11 +1311,7 @@
     {
       "key": "56f9e3f3bc25ed0a",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "That's right! A checker box, a free reward, even a best friend. None of them ever gets your real password. The only person who helps you is a trusted grown-up at home.",
       "lines": [
         "That's right!",
@@ -1703,11 +1322,7 @@
     {
       "key": "8a84141fd30813d2",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Not quite. A checker box, a free reward, even a best friend. None of them ever gets your real password. The only person who helps you is a trusted grown-up at home.",
       "lines": [
         "Not quite.",
@@ -1718,11 +1333,7 @@
     {
       "key": "71caabc1d357491f",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "That's right! Password with a one on the end, keyboard rows like qwerty, and a hero's name with a birthday year are all near the top of his LIST. The safe one is random words with nothing to do with you.",
       "lines": [
         "That's right!",
@@ -1733,11 +1344,7 @@
     {
       "key": "37e192342c1a588f",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Not quite. Password with a one on the end, keyboard rows like qwerty, and a hero's name with a birthday year are all near the top of his LIST. The safe one is random words with nothing to do with you.",
       "lines": [
         "Not quite.",
@@ -1748,11 +1355,7 @@
     {
       "key": "0a7551585be2fcac",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "A password is the secret key that unlocks your account and proves it's really you.",
       "lines": [
         "A password is the secret key that unlocks your account and proves it's really you."
@@ -1762,11 +1365,7 @@
     {
       "key": "135a181509426e25",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "A strong password is so long and mixed up that a cracking machine gives up.",
       "lines": [
         "A strong password is so long and mixed up that a cracking machine gives up."
@@ -1776,11 +1375,7 @@
     {
       "key": "de52248eb50e2b8c",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "A hacker is someone who guesses passwords to sneak into accounts that aren't theirs.",
       "lines": [
         "A hacker is someone who guesses passwords to sneak into accounts that aren't theirs."
@@ -1790,11 +1385,7 @@
     {
       "key": "a5887ca28bcf3bb1",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "A secret password stays secret; the moment you tell someone, it isn't your key anymore.",
       "lines": [
         "A secret password stays secret; the moment you tell someone, it isn't your key anymore."
@@ -1804,11 +1395,7 @@
     {
       "key": "0944e59c5266224d",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "A password isn't for robots; it's the secret that shows who is really typing.",
       "lines": [
         "A password isn't for robots; it's the secret that shows who is really typing."
@@ -1818,11 +1405,7 @@
     {
       "key": "093af1c0e8dc5649",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "A hacker is exactly who the password keeps out.",
       "lines": [
         "A hacker is exactly who the password keeps out."
@@ -1832,11 +1415,7 @@
     {
       "key": "f73164b88779c28d",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Your friend shouldn't know your password at all; it proves one person only.",
       "lines": [
         "Your friend shouldn't know your password at all; it proves one person only."
@@ -1846,11 +1425,7 @@
     {
       "key": "14c35ad8418de1a1",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Three random words make a long passphrase: easy for you to remember, and years of guessing for the Raccoon.",
       "lines": [
         "Three random words make a long passphrase: easy for you to remember, and years of guessing for the Raccoon."
@@ -1860,11 +1435,7 @@
     {
       "key": "b7ac25390b0b7472",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Cat is three little letters; a cracking machine guesses that in a blink.",
       "lines": [
         "Cat is three little letters; a cracking machine guesses that in a blink."
@@ -1874,11 +1445,7 @@
     {
       "key": "226b7fec2f9ae185",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "One word and one number is still a quick guess; hackers try a name plus a number first.",
       "lines": [
         "One word and one number is still a quick guess; hackers try a name plus a number first."
@@ -1888,11 +1455,7 @@
     {
       "key": "8305b656ecfdc1f7",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Sun is a tiny common word; it would be cracked in a second.",
       "lines": [
         "Sun is a tiny common word; it would be cracked in a second."
@@ -1902,11 +1465,7 @@
     {
       "key": "03bb46b050340a12",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "'tiger' is just a plain word - no capitals, numbers or symbols. The Raccoon guesses plain words first.",
       "lines": [
         "'tiger' is just a plain word - no capitals, numbers or symbols. The Raccoon guesses plain words first."
@@ -1916,11 +1475,7 @@
     {
       "key": "d6d4bed021d49d45",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Only 3 letters - far too short. Short passwords are cracked in seconds. It needs to be much longer.",
       "lines": [
         "Only 3 letters - far too short. Short passwords are cracked in seconds. It needs to be much longer."
@@ -1930,11 +1485,7 @@
     {
       "key": "c35b77938640d5ca",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Those letters sit in a row on the keyboard. It's the FIRST pattern any hacker tries.",
       "lines": [
         "Those letters sit in a row on the keyboard. It's the FIRST pattern any hacker tries."
@@ -1944,11 +1495,7 @@
     {
       "key": "52dfe95f6e1a7aeb",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "It's a name and a year. Anyone who knows you could guess this in a few tries. Take the personal bits out.",
       "lines": [
         "It's a name and a year. Anyone who knows you could guess this in a few tries. Take the personal bits out."
@@ -1958,11 +1505,7 @@
     {
       "key": "b1c749074b62e046",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "'dragon' is one of everyone's favorite words to use. No capitals, no numbers, no symbols.",
       "lines": [
         "'dragon' is one of everyone's favorite words to use. No capitals, no numbers, no symbols."
@@ -1972,11 +1515,7 @@
     {
       "key": "ccdcc82f9862308c",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Only 3 characters, and they're numbers in a row. Cracked in less than a second.",
       "lines": [
         "Only 3 characters, and they're numbers in a row. Cracked in less than a second."
@@ -1986,11 +1525,7 @@
     {
       "key": "daf4ba8e68e68f97",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Small letters only is easy to guess; mixing in capitals, numbers and symbols is what makes it strong.",
       "lines": [
         "Small letters only is easy to guess; mixing in capitals, numbers and symbols is what makes it strong."
@@ -2000,11 +1535,7 @@
     {
       "key": "e26674960c3344d5",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Think - what did the cyber-doctor add to heal those passwords?",
       "lines": [
         "Think - what did the cyber-doctor add to heal those passwords?"
@@ -2014,11 +1545,7 @@
     {
       "key": "4143fdd97f5b0540",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Even a best friend shouldn't know it; a secret shared is a secret that can leak.",
       "lines": [
         "Even a best friend shouldn't know it; a secret shared is a secret that can leak."
@@ -2028,11 +1555,7 @@
     {
       "key": "0f6ee2828c3f4654",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "A whole class is a lot of people; a password is for you alone.",
       "lines": [
         "A whole class is a lot of people; a password is for you alone."
@@ -2042,11 +1565,7 @@
     {
       "key": "c4cd39da412fdc6d",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Anyone who asks is exactly who must not get it; the Raccoon asks nicely too.",
       "lines": [
         "Anyone who asks is exactly who must not get it; the Raccoon asks nicely too."
@@ -2056,11 +1575,7 @@
     {
       "key": "0eef87b93902c920",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Dragon-Pickle9! is long and mixed up; a hacker would take years, so it's not a first guess.",
       "lines": [
         "Dragon-Pickle9! is long and mixed up; a hacker would take years, so it's not a first guess."
@@ -2070,11 +1585,7 @@
     {
       "key": "c3184ef490dda43f",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Comet$Turtle3 mixes words, a symbol and a number; that's a hard one, not a first guess.",
       "lines": [
         "Comet$Turtle3 mixes words, a symbol and a number; that's a hard one, not a first guess."
@@ -2084,11 +1595,7 @@
     {
       "key": "35ff14dfcbf76b51",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Waffle!Ninja6 is long and mixed; a hacker would never start there.",
       "lines": [
         "Waffle!Ninja6 is long and mixed; a hacker would never start there."
@@ -2098,11 +1605,7 @@
     {
       "key": "e070002045f5a250",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Four random words, so his cracker runs out of time. That is the long power.",
       "lines": [
         "Four random words, so his cracker runs out of time. That is the long power."
@@ -2112,11 +1615,7 @@
     {
       "key": "de13e9b41de38413",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "A capital, a number and a symbol, and the plain word is gone. The mix-it-up power.",
       "lines": [
         "A capital, a number and a symbol, and the plain word is gone. The mix-it-up power."
@@ -2126,11 +1625,7 @@
     {
       "key": "f8bacefad80bd88e",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Ada told a grown-up and nobody else. That is keeping it secret.",
       "lines": [
         "Ada told a grown-up and nobody else. That is keeping it secret."
@@ -2140,11 +1635,7 @@
     {
       "key": "21b6aab2b9a4a9c6",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Nothing about Sam that anyone could guess. Nothing obvious, every time.",
       "lines": [
         "Nothing about Sam that anyone could guess. Nothing obvious, every time."
@@ -2154,11 +1645,7 @@
     {
       "key": "97f57876abd946f6",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Only 3 letters - far too tiny to keep anything safe.",
       "lines": [
         "Only 3 letters - far too tiny to keep anything safe."
@@ -2168,11 +1655,7 @@
     {
       "key": "181af9ad0109e412",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "A word from the dictionary - hackers try common words first.",
       "lines": [
         "A word from the dictionary - hackers try common words first."
@@ -2182,11 +1665,7 @@
     {
       "key": "d7d6aac689533262",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "A name and a birthday - the easiest things to guess about you.",
       "lines": [
         "A name and a birthday - the easiest things to guess about you."
@@ -2196,11 +1675,7 @@
     {
       "key": "de126564c36320bf",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "These letters sit in a row on the keyboard - the FIRST pattern hackers try.",
       "lines": [
         "These letters sit in a row on the keyboard - the FIRST pattern hackers try."
@@ -2210,11 +1685,7 @@
     {
       "key": "c6d3f05758025b46",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Only 3 characters, and numbers in order - cracked in under a second.",
       "lines": [
         "Only 3 characters, and numbers in order - cracked in under a second."
@@ -2224,11 +1695,7 @@
     {
       "key": "2f596d1ca630eced",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "A popular word - 'dragon' is in every hacker's top-100 list.",
       "lines": [
         "A popular word - 'dragon' is in every hacker's top-100 list."
@@ -2238,11 +1705,7 @@
     {
       "key": "570fa9b23e674499",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "A name plus what looks like a date - quick to guess if someone knows you.",
       "lines": [
         "A name plus what looks like a date - quick to guess if someone knows you."
@@ -2252,11 +1715,7 @@
     {
       "key": "347558b85528188c",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Another row of keys in order - just like qwerty.",
       "lines": [
         "Another row of keys in order - just like qwerty."
@@ -2266,11 +1725,7 @@
     {
       "key": "c9e1a7278278851b",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Mia used four random words. That makes a password long, so this one is the long power.",
       "lines": [
         "Mia used four random words. That makes a password long, so this one is the long power."
@@ -2280,11 +1735,7 @@
     {
       "key": "d6da1ce911f78f58",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Ben mixed a capital, a number and a symbol through his. That is the mix-it-up power.",
       "lines": [
         "Ben mixed a capital, a number and a symbol through his. That is the mix-it-up power."
@@ -2294,11 +1745,7 @@
     {
       "key": "f4777801672cc051",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Ada did not share it with anybody. That is the keep-it-secret power.",
       "lines": [
         "Ada did not share it with anybody. That is the keep-it-secret power."
@@ -2308,11 +1755,7 @@
     {
       "key": "e9d7084564938e8e",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "No name and no birthday, nothing anyone could guess. That is the nothing-obvious power.",
       "lines": [
         "No name and no birthday, nothing anyone could guess. That is the nothing-obvious power."
@@ -2322,11 +1765,7 @@
     {
       "key": "f95bed6c20aa09c5",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Hiding a tablet will not stop anyone who finds it, and nor will a house rule. A password is the one thing that actually locks it.",
       "lines": [
         "Hiding a tablet will not stop anyone who finds it, and nor will a house rule. A password is the one thing that actually locks it."
@@ -2336,11 +1775,7 @@
     {
       "key": "a02da0c5d6ca18cd",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "His robot cracks a short password in a blink, and the same word over and over is just as easy once it spots the pattern. Three DIFFERENT random words give it the most to chew through.",
       "lines": [
         "His robot cracks a short password in a blink, and the same word over and over is just as easy once it spots the pattern. Three DIFFERENT random words give it the most to chew through."
@@ -2350,11 +1785,7 @@
     {
       "key": "5bdbe4a08eaf94d7",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "A capital, a number and a symbol mixed all the way through beats one extra stuck on the end. A word plus a year is still mostly that word.",
       "lines": [
         "A capital, a number and a symbol mixed all the way through beats one extra stuck on the end. A word plus a year is still mostly that word."
@@ -2364,11 +1795,7 @@
     {
       "key": "7b95a72cfa50d70e",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "A checker box, a free reward, even a best friend. None of them ever gets your real password. The only person who helps you is a trusted grown-up at home.",
       "lines": [
         "A checker box, a free reward, even a best friend. None of them ever gets your real password. The only person who helps you is a trusted grown-up at home."
@@ -2378,11 +1805,7 @@
     {
       "key": "a32b261f7d04e6e1",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Password with a one on the end, keyboard rows like qwerty, and a hero's name with a birthday year are all near the top of his LIST. The safe one is random words with nothing to do with you.",
       "lines": [
         "Password with a one on the end, keyboard rows like qwerty, and a hero's name with a birthday year are all near the top of his LIST. The safe one is random words with nothing to do with you."
@@ -2392,11 +1815,7 @@
     {
       "key": "20be5cd5e334326f",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Three long words give the robot far more to guess than one short word, so it lasts longest.",
       "lines": [
         "Three long words give the robot far more to guess than one short word, so it lasts longest."
@@ -2406,11 +1825,7 @@
     {
       "key": "bc9cc6ecd906c889",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "One letter barely helps. Real strength comes from lots more length.",
       "lines": [
         "One letter barely helps. Real strength comes from lots more length."
@@ -2420,11 +1835,7 @@
     {
       "key": "fc78198c402d0d0f",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Four long words beat two words or one short one every time.",
       "lines": [
         "Four long words beat two words or one short one every time."
@@ -2434,11 +1845,7 @@
     {
       "key": "2654a016fe004f75",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Extra random words add length, and length is what stumps the guesser. Capitals or backwards keep it the same length.",
       "lines": [
         "Extra random words add length, and length is what stumps the guesser. Capitals or backwards keep it the same length."
@@ -2448,11 +1855,7 @@
     {
       "key": "517935a58b899e49",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Everything else adds length. A shorter word does the opposite.",
       "lines": [
         "Everything else adds length. A shorter word does the opposite."
@@ -2462,11 +1865,7 @@
     {
       "key": "de14228d0e31ba1b",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "It has capitals, small letters, a number and a symbol, a full mix.",
       "lines": [
         "It has capitals, small letters, a number and a symbol, a full mix."
@@ -2476,11 +1875,7 @@
     {
       "key": "530c9acaa3b786ce",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Same length, but the mixed-up one has far more surprises to guess.",
       "lines": [
         "Same length, but the mixed-up one has far more surprises to guess."
@@ -2490,11 +1885,7 @@
     {
       "key": "647c26831d7482fe",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Hackers try whole words from a list. Mix it up so yours isn't just a word.",
       "lines": [
         "Hackers try whole words from a list. Mix it up so yours isn't just a word."
@@ -2504,11 +1895,7 @@
     {
       "key": "0dd0f285bcfb94f0",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "'biscuitbiscuit' is just one word twice, no capitals, numbers or symbols.",
       "lines": [
         "'biscuitbiscuit' is just one word twice, no capitals, numbers or symbols."
@@ -2518,11 +1905,7 @@
     {
       "key": "c07c9d9e2d9ad19f",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "A real mix: extra words, capitals, a number and a symbol, not just one small change.",
       "lines": [
         "A real mix: extra words, capitals, a number and a symbol, not just one small change."
@@ -2532,11 +1915,7 @@
     {
       "key": "470b7065c76360a8",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Never type your real password into a stranger's box. That's just a way to steal it.",
       "lines": [
         "Never type your real password into a stranger's box. That's just a way to steal it."
@@ -2546,11 +1925,7 @@
     {
       "key": "202972fa87d934cf",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "A promise doesn't make it safe. Your password stays yours alone.",
       "lines": [
         "A promise doesn't make it safe. Your password stays yours alone."
@@ -2560,11 +1935,7 @@
     {
       "key": "3d7a54ecf23d6f6b",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Only a grown-up you trust helps with passwords, never an online stranger.",
       "lines": [
         "Only a grown-up you trust helps with passwords, never an online stranger."
@@ -2574,11 +1945,7 @@
     {
       "key": "03ffead2b33f13d5",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Said out loud, a secret isn't a secret. Type it yourself, quietly.",
       "lines": [
         "Said out loud, a secret isn't a secret. Type it yourself, quietly."
@@ -2588,11 +1955,7 @@
     {
       "key": "7522bd0be1af0bc4",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "When you're unsure where a password gets saved, check with a grown-up first.",
       "lines": [
         "When you're unsure where a password gets saved, check with a grown-up first."
@@ -2602,11 +1965,7 @@
     {
       "key": "041544da73b37938",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "'iloveyou' is on every hacker's top-guess list. The others are random and mixed.",
       "lines": [
         "'iloveyou' is on every hacker's top-guess list. The others are random and mixed."
@@ -2616,11 +1975,7 @@
     {
       "key": "31c9be44abf4301f",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "If people can guess it from what you love, it isn't secret enough.",
       "lines": [
         "If people can guess it from what you love, it isn't secret enough."
@@ -2630,11 +1985,7 @@
     {
       "key": "ff331bc2e61ce905",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "The same letter six times is one of the first patterns a hacker tries.",
       "lines": [
         "The same letter six times is one of the first patterns a hacker tries."
@@ -2644,11 +1995,7 @@
     {
       "key": "e1d0f764a67cc3f1",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Anything a person could learn about you makes a weak password.",
       "lines": [
         "Anything a person could learn about you makes a weak password."
@@ -2658,11 +2005,7 @@
     {
       "key": "f79ee9a1dc3ec2c0",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Names of people close to you are easy guesses. Random and mixed is the way.",
       "lines": [
         "Names of people close to you are easy guesses. Random and mixed is the way."
@@ -2672,11 +2015,7 @@
     {
       "key": "4881e3c33a4680a8",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Long random words plus a capital, number and symbol, and nothing about you.",
       "lines": [
         "Long random words plus a capital, number and symbol, and nothing about you."
@@ -2686,11 +2025,7 @@
     {
       "key": "5de644dadad73a11",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "No real helper ever needs your password. That's always a trick.",
       "lines": [
         "No real helper ever needs your password. That's always a trick."
@@ -2700,11 +2035,7 @@
     {
       "key": "b9d89e82d7e11534",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Exciting personal news spreads. Keep pets, names and years OUT.",
       "lines": [
         "Exciting personal news spreads. Keep pets, names and years OUT."
@@ -2714,11 +2045,7 @@
     {
       "key": "2b9b397ed890c6ba",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Even a hint or the length helps a guesser. He gets nothing.",
       "lines": [
         "Even a hint or the length helps a guesser. He gets nothing."
@@ -2728,11 +2055,7 @@
     {
       "key": "61fecb481ae74df5",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Four random words plus a capital, number and symbol, unbeatable and nothing obvious.",
       "lines": [
         "Four random words plus a capital, number and symbol, unbeatable and nothing obvious."
@@ -2742,11 +2065,7 @@
     {
       "key": "e6e0f978e9ba6a27",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "A password is your secret code to log in.",
       "lines": [
         "A password is your secret code to log in."
@@ -2756,11 +2075,7 @@
     {
       "key": "3b860578017f50c6",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Three random words make a long, hard-to-crack password.",
       "lines": [
         "Three random words make a long, hard-to-crack password."
@@ -2770,11 +2085,7 @@
     {
       "key": "ddcfcd08881d4efb",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Three random words make it long and strong!",
       "lines": [
         "Three random words make it long and strong!"
@@ -2784,11 +2095,7 @@
     {
       "key": "4474fba46ac5bd59",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Capitals, small letters, numbers AND symbols.",
       "lines": [
         "Capitals, small letters, numbers AND symbols."
@@ -2798,11 +2105,7 @@
     {
       "key": "c4e810f598fb033d",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Passwords are always secret, even from friends.",
       "lines": [
         "Passwords are always secret, even from friends."
@@ -2812,11 +2115,7 @@
     {
       "key": "1df2ae07e4af416c",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "'password' is the most-guessed password in the world.",
       "lines": [
         "'password' is the most-guessed password in the world."
@@ -2826,11 +2125,7 @@
     {
       "key": "ae674f38a8d0c449",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Long, mixed, nothing obvious.",
       "lines": [
         "Long, mixed, nothing obvious."
@@ -2840,11 +2135,7 @@
     {
       "key": "791bb2d001dcae33",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Your password stays completely secret.",
       "lines": [
         "Your password stays completely secret."
@@ -2854,11 +2145,7 @@
     {
       "key": "03c465ab9501faa8",
       "speaker": "adam",
-<<<<<<< Updated upstream
       "voice": "Sarah",
-=======
-      "voice": "Emma (Kids Educator)",
->>>>>>> Stashed changes
       "text": "Birthdays are easy to guess about you.",
       "lines": [
         "Birthdays are easy to guess about you."
