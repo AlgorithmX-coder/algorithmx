@@ -1392,7 +1392,15 @@ for (let i = 0; i < blocks.length; i++) {
     entries.push({
       key: r.key,
       speaker: r.speaker,
-      voice: VOICE[r.speaker].name,
+      // The voice that actually read it, not the speaker default. Week 1 is
+      // narrated by the kids educator while the rest of the course is still
+      // Sarah; taking the name from the default map labelled every week 1
+      // entry "Sarah" even though someone else had recorded them. The audio
+      // was always right, because the voice id is part of the hash and the
+      // filenames changed accordingly - but this file is what a migration
+      // reads to decide which clips still need re-recording, so a wrong label
+      // would have it skip a week or do one twice.
+      voice: voiceFor(r.speaker, block.source).name,
       text: r.blockText,
       lines: r.lines,
       file: `/audio/voice/${r.filename}`,
