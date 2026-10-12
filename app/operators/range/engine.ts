@@ -125,3 +125,92 @@ export async function bootNorthwind(): Promise<NorthwindSession> {
     },
   };
 }
+
+/* ============================================================
+ * Northwind RANGE — the richer, multi-stage injection target.
+ *
+ * Module 5 (depth standard) runs a full engagement against this: probe the
+ * vuln, bypass auth, pull the staff table out through a UNION, then crack the
+ * vault (a secrets table). Two genuinely-injectable surfaces (a login and a
+ * product search), three tables, and errors are surfaced (not swallowed) so
+ * the learner can do real error-based recon. Everything is still wasm SQLite,
+ * client-side, zero egress — the learner's own payloads execute verbatim.
+ * ============================================================ */
+
+/** Result of running one (deliberately vulnerable) query for real. */
+export type RangeRunResult = {
+  /** The exact SQL string that was built from the learner's input. */
+  sql: string;
+  /** Column names of the result set (from the leading SELECT). */
+  columns: string[];
+  rows: (string | number)[][];
+  /** Non-null when the query threw — real SQL error text (error-based recon). */
+  error: string | null;
+};
+
+export type NorthwindRange = {
+  loginFlag: string;
+  vaultFlag: string;
+  /** The vulnerable login: SELECT … WHERE email = '<input>' AND pass = '<input>'. */
+  attemptLogin: (email: string, password: string) => RangeRunResult & { authed: boolean; asAdmin: boolean };
+  /** The vulnerable product search: … WHERE name LIKE '%<input>%'. The UNION surface. */
+  search: (term: string) => RangeRunResult;
+};
+
+export async function bootNorthwindRange(): Promise<NorthwindRange> {
+  const initSqlJs = (await import("sql.js")).default;
+  const wasmBinary = await fetch("/operators/sql-wasm.wasm").then((r) => {
+    if (!r.ok) throw new Error(`range wasm failed to load (${r.status})`);
+    return r.arrayBuffer();
+  });
+  const SQL = await initSqlJs({ wasmBinary });
+  const db = new SQL.Database() as unknown as SqlDb;
+
+  db.run(`CREATE TABLE products (id INTEGER PRIMARY KEY, name TEXT, price TEXT);`);
+  db.run(
+    `INSERT INTO products (name, price) VALUES
+       ('Olive Oil 1L','6.50'), ('Sea Salt 500g','2.20'),
+       ('Basmati Rice 5kg','9.99'), ('Smoked Paprika','3.40');`,
+  );
+  db.run(`CREATE TABLE users (id INTEGER PRIMARY KEY, email TEXT, pass TEXT, role TEXT);`);
+  db.run(
+    `INSERT INTO users (email, pass, role) VALUES
+       ('a.morgan@northwind.range','W1nter!Aud1t','admin'),
+       ('d.brooks@northwind.range','hunter2','staff'),
+       ('sec@northwind.range','p@ssw0rd','staff');`,
+  );
+  db.run(`CREATE TABLE secrets (id INTEGER PRIMARY KEY, label TEXT, value TEXT);`);
+  db.run(
+    `INSERT INTO secrets (label, value) VALUES
+       ('master_reset_key','flag{un10n_t0_the_v4ult}');`,
+  );
+
+  function run(sql: string): RangeRunResult {
+    try {
+      const res = db.exec(sql);
+      if (!res.length) return { sql, columns: [], rows: [], error: null };
+      return { sql, columns: res[0].columns, rows: res[0].values, error: null };
+    } catch (e) {
+      return { sql, columns: [], rows: [], error: (e as Error).message };
+    }
+  }
+
+  return {
+    loginFlag: "flag{n0rthwind_p0rtal_0wn3d}",
+    vaultFlag: "flag{un10n_t0_the_v4ult}",
+    attemptLogin(email, password) {
+      // DELIBERATELY vulnerable: the learner's input is concatenated verbatim.
+      const sql = `SELECT id, email, role FROM users WHERE email = '${email}' AND pass = '${password}'`;
+      const r = run(sql);
+      return {
+        ...r,
+        authed: r.rows.length > 0,
+        asAdmin: r.rows.some((row) => row[2] === "admin"),
+      };
+    },
+    search(term) {
+      // DELIBERATELY vulnerable: the UNION surface. 3 columns: id, name, price.
+      return run(`SELECT id, name, price FROM products WHERE name LIKE '%${term}%'`);
+    },
+  };
+}
