@@ -1355,7 +1355,14 @@ for (let i = 0; i < blocks.length; i++) {
     entries.push({
       key: r.key,
       speaker: r.speaker,
-      voice: VOICE[r.speaker].name,
+      // The voice that actually read it, not the speaker default. Week 1 is
+      // narrated by Brittney while the rest of the course is still Sarah, and
+      // taking the name from the default map labelled every week 1 entry
+      // "Sarah" even though Brittney had recorded them. The audio was always
+      // right, because the hash includes the voice id and the filenames
+      // changed accordingly, but the metadata lied - and this file is what
+      // decides which clips a voice migration needs to re-record.
+      voice: voiceFor(r.speaker, block.source).name,
       text: r.blockText,
       lines: r.lines,
       file: `/audio/voice/${r.filename}`,
