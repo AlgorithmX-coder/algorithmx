@@ -945,8 +945,12 @@ function ArtifactReveal({ art, voiceOn, reduced, audio, onDone }: {
           <Bubble who="wren" tone={T.confirmedGreen} speaking={speaking}>{art.doneLine}</Bubble>
           <div style={{ marginTop: 14 }}>
             {locked ? (
+              // Text dropped — the global "WREN IS SPEAKING" pill (the hard
+              // lock's own affordance) already says this; having both on
+              // screen at once read as a duplicate. TypingDots alone still
+              // gives this spot its own "something's happening" cue.
               <span style={{ display: "inline-flex", gap: 10, alignItems: "center", fontFamily: MONO, fontSize: 11.5, letterSpacing: "0.08em", color: T.textDisabled }}>
-                <TypingDots /> WREN IS SPEAKING...
+                <TypingDots />
               </span>
             ) : (
               <AmberButton label="I'VE GOT IT →" onClick={() => { audio.click(); stopWren(); onDone(); }} />
@@ -1078,8 +1082,11 @@ function LearnStage({ cycle, cycleIndex, reduced, audio, emit, onNext, voiceOn }
             <TypingDots /> TAP FOR MORE
           </button>
         ) : narrated ? (
+          // Text dropped (see the matching note in ArtifactReveal) — the
+          // global "WREN IS SPEAKING" pill already covers it; this is now
+          // just the local TypingDots cue, no duplicate label.
           <div style={{ justifySelf: "start", display: "flex", gap: 10, alignItems: "center", color: T.textDisabled, fontFamily: MONO, fontSize: 11.5, letterSpacing: "0.08em" }} aria-label="WREN is speaking">
-            <TypingDots /> WREN IS SPEAKING...
+            <TypingDots />
           </div>
         ) : (
           <div style={{ justifySelf: "start", display: "flex", flexDirection: "column", gap: 7, width: 210 }} aria-label="read the message">
@@ -1477,8 +1484,10 @@ function CatchThemStage({ def, actor, reduced, audio, emit, onPass, onResit, voi
         {canStart ? (
           <AmberButton label="START THE TEST →" onClick={begin} />
         ) : (
+          // Text dropped — this is the exact screen the duplicate was
+          // reported on (global pill + this label, both visible at once).
           <span style={{ display: "inline-flex", gap: 10, alignItems: "center", fontFamily: MONO, fontSize: 11.5, letterSpacing: "0.08em", color: T.textDisabled }}>
-            <TypingDots /> WREN IS SPEAKING...
+            <TypingDots />
           </span>
         )}
       </section>
@@ -1630,12 +1639,16 @@ function BossScene({ manifest, reduced, audio, emit, onNext }: { manifest: Missi
         <h1 style={{ fontFamily: BODY, fontSize: "clamp(28px, 5vw, 44px)", fontWeight: 800, letterSpacing: "-0.01em", margin: "12px 0 26px", textShadow: `0 0 40px ${T.threatRed}33` }}>
           <Resolve text={manifest.incident.title} reduced={reduced} />
         </h1>
-        <div className="sr-panel sr-brackets" style={{ background: `${T.panelRaised}D9`, border: `1px solid ${T.threatRed}44`, padding: "26px 20px 22px" }}>
-          <div style={{ display: "flex", gap: 18, alignItems: "center", marginBottom: 16 }}>
+        {/* Padding bumped up (owner: this panel reads as too small/cramped
+            on the boss intro specifically) — scoped here via inline style
+            rather than the shared .sr-panel/.sr-brackets rule, which the
+            skill-complete map moment also uses and shouldn't change. */}
+        <div className="sr-panel sr-brackets" style={{ background: `${T.panelRaised}D9`, border: `1px solid ${T.threatRed}44`, padding: "38px 32px 32px" }}>
+          <div style={{ display: "flex", gap: 24, alignItems: "center", marginBottom: 20 }}>
             {manifest.actor.portrait && (
               <div className={reduced ? undefined : "sr-takeover"} style={{ position: "relative", flexShrink: 0 }}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={manifest.actor.portrait} alt={manifest.actor.codename} style={{ width: 118, height: 148, objectFit: "cover", borderRadius: 4, border: `2px solid ${T.threatRed}88`, boxShadow: `0 0 30px ${T.threatRed}44` }} />
+                <img src={manifest.actor.portrait} alt={manifest.actor.codename} style={{ width: 140, height: 176, objectFit: "cover", borderRadius: 4, border: `2px solid ${T.threatRed}88`, boxShadow: `0 0 30px ${T.threatRed}44` }} />
                 <span aria-hidden className="sr-blink" style={{ position: "absolute", top: 6, right: 6, width: 8, height: 8, borderRadius: "50%", background: T.threatRed, boxShadow: `0 0 10px ${T.threatRed}` }} />
               </div>
             )}
