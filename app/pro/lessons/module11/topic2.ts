@@ -108,10 +108,10 @@ const topic2: TopicManifest = {
       {
         q: "Why is a released patch described as a 'starting gun'?",
         options: [
-          "It means the danger is over",
+          "Once released, the patch instantly protects every system",
           "Making the flaw public also informs attackers, who race to exploit everyone who has not yet patched",
-          "It starts a countdown to the next version",
-          "Patches are released at the start of the day",
+          "It signals the vendor will stop supporting the old version",
+          "It gives defenders a long, relaxed window to update",
         ],
         answer: 1,
         why: "Disclosure cuts both ways: defenders must apply the fix before attackers, who now know the flaw exists, reach them.",
@@ -119,10 +119,10 @@ const topic2: TopicManifest = {
       {
         q: "Which systems must be patched most urgently, and why?",
         options: [
-          "Isolated test machines, because they are easy",
+          "The oldest machines, because they break most often",
           "Internet-facing systems, because the whole world can reach and attack them immediately",
-          "It does not matter which order",
-          "Only systems with no important data",
+          "Isolated internal systems, because they hold the data",
+          "Whichever systems are easiest to take offline",
         ],
         answer: 1,
         why: "Exposure drives urgency. Internet-facing systems are reachable by everyone, so a public flaw in them is an immediate, worldwide risk.",
@@ -130,10 +130,10 @@ const topic2: TopicManifest = {
       {
         q: "If you cannot apply a critical patch instantly, the right move is to:",
         options: [
-          "Do nothing until you can patch",
+          "Wait for the next scheduled maintenance window to patch",
           "Reduce exposure now, restrict access, apply a workaround, add monitoring, then patch as soon as you safely can",
-          "Take the entire business offline indefinitely",
-          "Disable all future updates",
+          "Apply the untested patch immediately to every system",
+          "Turn off the affected software permanently",
         ],
         answer: 1,
         why: "You lower the risk immediately with interim mitigations, then patch properly. Doing nothing leaves the door open in the most dangerous window.",

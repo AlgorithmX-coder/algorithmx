@@ -119,10 +119,10 @@ const topic3: TopicManifest = {
       {
         q: "Why are supply-chain attacks especially insidious?",
         options: [
-          "They are extremely rare",
+          "They can be blocked simply by vetting every supplier once",
           "They defeat the instinct to be careful: the malware arrives inside software you are right to trust and install",
-          "They only affect suppliers, not customers",
-          "Antivirus always catches them",
+          "They only reach customers who skip their security updates",
+          "They are easy to spot because the software behaves oddly at once",
         ],
         answer: 1,
         why: "You did nothing wrong by installing a trusted update, which is exactly the trust the attacker abuses. Defence relies on layers, not just caution.",
@@ -130,10 +130,10 @@ const topic3: TopicManifest = {
       {
         q: "Why is it reassuring that malware's entry routes are few and known?",
         options: [
-          "It means malware is harmless",
+          "Because a single antivirus product can cover every route at once",
           "Because 'defend against malware' decomposes into closing a handful of specific, achievable doors",
-          "Because you can ignore the ones you have not seen",
-          "It is not reassuring; there are infinite routes",
+          "Because you only need to defend the one route attackers use most",
+          "Because closing the common routes makes the rare ones irrelevant",
         ],
         answer: 1,
         why: "A short, known list of vectors turns a vague worry into a concrete checklist: phishing awareness, download control, media control, patching, supply-chain hardening.",

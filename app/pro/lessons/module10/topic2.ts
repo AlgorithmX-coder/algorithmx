@@ -108,10 +108,10 @@ const topic2: TopicManifest = {
       {
         q: "What is an 'evil twin' in Wi-Fi security?",
         options: [
-          "A duplicate password",
+          "A hidden network that does not broadcast its name",
           "A fake access point impersonating a legitimate network by using the same or a similar name",
-          "A second router for backup",
-          "A type of malware",
+          "A rogue access point secretly plugged into a company network",
+          "A device that jams the real Wi-Fi signal",
         ],
         answer: 1,
         why: "Anyone can name a network anything, so an attacker names theirs like the real one to lure you onto a network they control.",
@@ -119,10 +119,10 @@ const topic2: TopicManifest = {
       {
         q: "Once you have connected to an evil twin, what still protects your data?",
         options: [
-          "Nothing can help",
+          "Switching to a stronger Wi-Fi password",
           "Strong encryption (HTTPS, a trustworthy VPN) keeps your traffic's contents unreadable to the attacker",
-          "Only antivirus",
-          "Turning the screen brightness down",
+          "Forgetting the network after you disconnect",
+          "Lowering your device's Wi-Fi signal strength",
         ],
         answer: 1,
         why: "Encryption protects content even on a hostile network. The twin's prize is whatever is unencrypted, or users who click past warnings.",
@@ -130,10 +130,10 @@ const topic2: TopicManifest = {
       {
         q: "Which is a genuinely safe public-Wi-Fi habit?",
         options: [
-          "Auto-connecting to any familiar-looking open network",
+          "Auto-connecting to any network with a familiar name",
           "Verifying the exact network name and using a VPN (or mobile data) for sensitive tasks",
-          "Trusting any network named 'Free WiFi'",
-          "Doing banking on unknown open Wi-Fi to save mobile data",
+          "Connecting to the open network with the strongest signal",
+          "Doing your banking on open Wi-Fi to save mobile data",
         ],
         answer: 1,
         why: "Verifying the real name defeats lookalikes, and a VPN encrypts your traffic regardless of whose network it is.",

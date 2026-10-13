@@ -109,10 +109,10 @@ const topic4: TopicManifest = {
       {
         q: "What does a denial-of-service attack target?",
         options: [
-          "Confidentiality: it steals secrets",
+          "Confidentiality: it steals the service's secret data",
           "Availability: it makes a service unavailable to real users, without stealing data",
-          "Integrity: it alters data",
-          "Physical hardware only",
+          "Integrity: it quietly alters the stored data",
+          "Authentication: it cracks the login passwords",
         ],
         answer: 1,
         why: "A DoS/DDoS goes purely after availability, the 'A' of CIA. Nothing is stolen; the service is simply overwhelmed.",
@@ -120,10 +120,10 @@ const topic4: TopicManifest = {
       {
         q: "Why is a DDoS harder to stop than a simple DoS from one machine?",
         options: [
-          "It is not harder",
+          "It targets a single weak point with one powerful machine",
           "It is distributed across many sources (often a botnet), so you cannot just block one address",
-          "It uses encryption",
-          "It only happens at night",
+          "It encrypts its traffic so filters cannot read it",
+          "It can only be launched by skilled nation-states",
         ],
         answer: 1,
         why: "The flood comes from everywhere at once, and amplification scales it further, which is why dedicated mitigation is needed.",
@@ -131,10 +131,10 @@ const topic4: TopicManifest = {
       {
         q: "The GitHub case shows that against DDoS, the right defence is:",
         options: [
-          "Encrypting the database",
+          "Encrypting the database to protect its contents",
           "Availability-specific mitigation: scrubbing services, CDNs and filtering that absorb and divert the flood",
-          "Phishing-awareness training",
-          "Nothing works; you just wait",
+          "Training staff to spot phishing emails",
+          "Enforcing strong passwords on every account",
         ],
         answer: 1,
         why: "Defence must match the attack. Record floods are survivable in minutes with proper DDoS mitigation; unrelated controls do nothing.",

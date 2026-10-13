@@ -125,10 +125,10 @@ const topic4: TopicManifest = {
       {
         q: "Why is an exposed port described as 'attack surface'?",
         options: [
-          "It makes the server run slower",
+          "Open ports reveal the server's physical location to attackers",
           "It is a door an attacker can reach and try, so fewer open doors means less to attack",
-          "Ports are always dangerous and should all be closed",
-          "It uses up the machine's memory",
+          "Ports are always dangerous, so all of them should be closed",
+          "An open port leaks the server's stored data to anyone scanning",
         ],
         answer: 1,
         why: "Each internet-facing port is something an attacker can probe. Reducing attack surface means closing the doors you do not need.",
@@ -136,10 +136,10 @@ const topic4: TopicManifest = {
       {
         q: "What is the safe way to run Remote Desktop (3389)?",
         options: [
-          "Expose it to the internet but use a long password",
+          "Expose it to the internet but protect it with a very long password",
           "Put it behind a VPN or access gateway, with MFA, never directly on the internet",
-          "Leave it open; attackers cannot find it unless you tell them",
-          "Rename the port to hide it",
+          "Leave it open, since scanners cannot find it unless you advertise it",
+          "Move it to a different, non-standard port number to hide it",
         ],
         answer: 1,
         why: "RDP is for trusted internal admins. It belongs behind a VPN with a second factor. Exposing it directly, however long the password, invites the mass-scanners straight in.",

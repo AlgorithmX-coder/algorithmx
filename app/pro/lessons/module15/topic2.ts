@@ -107,10 +107,10 @@ const topic2: TopicManifest = {
       {
         q: "What is an indicator of compromise (IOC)?",
         options: [
-          "A feeling that something is wrong",
+          "A prediction of which attack an organisation will face next",
           "A concrete, observable, shareable sign of an attack, like a malware hash or malicious address",
-          "A type of firewall",
-          "A security certificate",
+          "A rule that automatically blocks suspicious network traffic",
+          "A score rating how secure an organisation is overall",
         ],
         answer: 1,
         why: "IOCs are concrete evidence you can search for and share, the raw material of signature detection and collaborative defence.",
@@ -118,10 +118,10 @@ const topic2: TopicManifest = {
       {
         q: "Why is sharing IOCs so valuable?",
         options: [
-          "It helps attackers",
+          "It lets each organisation keep its findings private for competitive advantage",
           "One organisation's discovery becomes everyone's protection: an attack seen once can be blocked everywhere",
-          "It is legally required",
-          "It slows down defence",
+          "It guarantees an organisation will never be breached again",
+          "It removes the need for any behaviour-based detection",
         ],
         answer: 1,
         why: "Shared IOCs let defenders detect and block the same threat, often before it reaches them, as the WannaCry response showed.",
@@ -129,10 +129,10 @@ const topic2: TopicManifest = {
       {
         q: "What is the fundamental limit of IOCs?",
         options: [
-          "They are too expensive",
+          "They take too long to load into a detection tool to be useful",
           "They describe the known, so they cannot catch genuinely new threats, and attackers can change them easily",
-          "They never work",
-          "They only exist for large companies",
+          "They can only ever be shared between two organisations at a time",
+          "They reveal the victim's identity whenever they are shared",
         ],
         answer: 1,
         why: "An IOC exists only after an attack is observed, and a hash or address is easily swapped, which is why behaviour and TTP detection are also needed.",

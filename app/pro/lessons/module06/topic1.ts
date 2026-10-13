@@ -109,17 +109,17 @@ const topic1: TopicManifest = {
     quiz: [
       {
         q: "A patient, well-resourced attacker quietly steals research from a defence firm over many months. This is most likely a:",
-        options: ["Hacktivist", "Nation-state actor", "Opportunistic criminal", "Script kiddie"],
+        options: ["Hacktivist", "Nation-state actor", "Opportunistic criminal", "Organised crime group"],
         answer: 1,
         why: "Patience, resources, stealth and a strategic target (defence research) are the signature of nation-state espionage, an advanced persistent threat.",
       },
       {
         q: "Why does knowing an attacker's motive help a defender?",
         options: [
-          "It does not; all attackers are the same",
+          "It reveals the exact tools and malware they will use",
           "Motive predicts behaviour, which guides what to protect and how to respond",
-          "It tells you exactly who the individual is",
-          "It replaces the need for technical controls",
+          "It identifies the specific individual behind the keyboard",
+          "It removes the need for technical security controls",
         ],
         answer: 1,
         why: "Motive shapes method. Profit-driven crime moves loud and fast for payment; espionage moves quiet and slow. Reading the behaviour helps you respond correctly.",
@@ -129,8 +129,8 @@ const topic1: TopicManifest = {
         options: [
           "Nation-state APTs using rare zero-day exploits",
           "Opportunistic attackers exploiting unpatched systems and weak passwords at scale",
-          "Hacktivists only",
-          "Nobody; attacks are rare",
+          "Skilled insiders deliberately stealing data from within",
+          "Targeted hacktivist campaigns aimed at their brand",
         ],
         answer: 1,
         why: "The opportunistic end, automated attacks against whatever is left open, is the common reality, which is exactly why the basics stop so much.",

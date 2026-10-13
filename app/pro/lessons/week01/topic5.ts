@@ -103,10 +103,10 @@ const topic5: TopicManifest = {
       {
         q: "Which account should you secure first, and why?",
         options: [
-          "Social media, because it is public",
+          "Social media, because your profile is public",
           "Email, because it can reset the passwords on everything else",
-          "A shopping site, because it has your card",
-          "It does not matter which order",
+          "A shopping site, because it stores your card details",
+          "Whichever account you log into most often",
         ],
         answer: 1,
         why: "Email is the master key: control it and you can reset almost every other account. Secure it first with a unique password and strong MFA.",
@@ -114,10 +114,10 @@ const topic5: TopicManifest = {
       {
         q: "What is the main advantage of a passkey over a password?",
         options: [
-          "It is shorter to type",
+          "You can safely use the same passkey on every site",
           "There is no shared secret to steal, and it cannot be given to a fake site",
-          "It never expires",
-          "It works without any device",
+          "It never expires, so you set it once and forget it",
+          "It can never be lost or forgotten by the user",
         ],
         answer: 1,
         why: "A passkey keeps its secret on your device and only works with the real site, so there is nothing to leak in a breach and nothing to phish.",
@@ -125,10 +125,10 @@ const topic5: TopicManifest = {
       {
         q: "What does 'shrinking the blast radius' mean in practice?",
         options: [
-          "Using antivirus software",
+          "Running antivirus software on all your devices",
           "Making sure one breached site cannot unlock your other accounts",
-          "Deleting old accounts",
-          "Turning off your computer at night",
+          "Logging out of every account as soon as you finish",
+          "Keeping all your accounts under a single login for convenience",
         ],
         answer: 1,
         why: "Unique passwords, MFA and passkeys all ensure that when one site is breached, the damage stops there instead of cascading across your accounts.",

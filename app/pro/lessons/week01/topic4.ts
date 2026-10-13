@@ -119,10 +119,10 @@ const topic4: TopicManifest = {
       {
         q: "Why does MFA stop most account takeovers?",
         options: [
-          "It makes your password longer",
+          "It makes your password much harder to guess",
           "It blocks the attacker who has your password but not your second factor",
-          "It hides your username",
-          "It encrypts your hard drive",
+          "It emails you a warning whenever someone logs in",
+          "It changes your password automatically after each login",
         ],
         answer: 1,
         why: "Most takeovers use a password the attacker already has. MFA demands a second factor they do not have, breaking that chain even when the password is correct.",
@@ -130,10 +130,10 @@ const topic4: TopicManifest = {
       {
         q: "Why is SMS the weakest form of MFA?",
         options: [
-          "Texts cost money",
+          "The six-digit codes are too short to be secure",
           "The code can be intercepted or stolen via a SIM swap",
-          "It only works on old phones",
-          "It uses too much data",
+          "SMS codes can be reused again and again by anyone",
+          "Text messages are stored forever on the phone network",
         ],
         answer: 1,
         why: "SMS codes can be intercepted, or redirected by tricking the phone company into a SIM swap. App-based and hardware-key MFA remove that weakness. And as Uber showed, even push-approval MFA can be worn down, so phishing-resistant methods are strongest.",

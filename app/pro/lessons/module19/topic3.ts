@@ -107,10 +107,10 @@ const topic3: TopicManifest = {
       {
         q: "What does RTO (Recovery Time Objective) set?",
         options: [
-          "How much data you can lose",
+          "How much recent data you can afford to lose",
           "How quickly a system must be restored after a disruption",
-          "How many backups to keep",
-          "The cost of the system",
+          "How often backups should be taken each day",
+          "How long backups must be retained before deletion",
         ],
         answer: 1,
         why: "RTO is about time, how fast back, set by tolerable downtime, and it drives the recovery design.",
@@ -118,10 +118,10 @@ const topic3: TopicManifest = {
       {
         q: "What drives how often you must back up?",
         options: [
-          "The RTO",
+          "The RTO (how fast the system must be restored)",
           "The RPO (how much recent data you can afford to lose)",
-          "The size of the office",
-          "The number of staff",
+          "The total amount of data the system stores",
+          "The age of the hardware the system runs on",
         ],
         answer: 1,
         why: "A tight RPO (little data loss tolerated) demands frequent backups or continuous replication.",
@@ -129,10 +129,10 @@ const topic3: TopicManifest = {
       {
         q: "Why set RTO and RPO per system?",
         options: [
-          "To make things complicated",
+          "Because every system must be given the same tight targets to be safe",
           "Because systems differ in criticality, so the targets direct resilience effort and spend to what matters",
-          "So every system is treated identically",
-          "They are only for banks",
+          "Because regulators require identical recovery targets across all systems",
+          "Because the targets are set by the vendor, not by the business",
         ],
         answer: 1,
         why: "Per-system targets turn resilience into a prioritised, affordable plan, protecting the critical properly without over-protecting everything.",

@@ -109,10 +109,10 @@ const topic3: TopicManifest = {
       {
         q: "What is an 'alert', precisely?",
         options: [
-          "A confirmed breach",
+          "A confirmed incident that has already breached security",
           "Something a rule flagged as worth a human look: a question to triage, not a confirmed problem",
-          "A routine login",
-          "A type of malware",
+          "A routine, expected event that needs no action",
+          "An automated control that blocks the suspicious activity itself",
         ],
         answer: 1,
         why: "An alert prompts investigation. It becomes an incident only once confirmed as real harm.",
@@ -120,10 +120,10 @@ const topic3: TopicManifest = {
       {
         q: "When does an alert become an incident?",
         options: [
-          "After 24 hours automatically",
+          "As soon as a detection rule fires on the activity",
           "When investigation confirms it is real, malicious or harmful activity that has breached security",
-          "Never; they are the same",
-          "When a manager says so for no reason",
+          "When several alerts about the same thing fire at once",
+          "When the activity is first recorded in the logs",
         ],
         answer: 1,
         why: "Confirmation of real harm is the line. Declaring an incident triggers the response process and obligations.",

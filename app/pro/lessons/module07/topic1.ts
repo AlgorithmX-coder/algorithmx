@@ -108,10 +108,10 @@ const topic1: TopicManifest = {
       {
         q: "Why do attackers so often target people rather than technology?",
         options: [
-          "People are stupid",
+          "People always hold more valuable data than the servers do",
           "Because people cannot be patched: trust, helpfulness and fear are permanent and exploitable, even when the technology is strong",
-          "Because technology is always perfectly secure",
-          "Because it is illegal to attack computers but not people",
+          "Because social engineering requires no technical skill at all",
+          "Because deceiving a person carries far less legal risk than hacking",
         ],
         answer: 1,
         why: "Social engineering goes around strong technology by exploiting human qualities that cannot be patched away.",
@@ -119,10 +119,10 @@ const topic1: TopicManifest = {
       {
         q: "What is the most professional attitude toward someone who fell for a social-engineering attack?",
         options: [
-          "Mock them so they learn",
+          "Quietly move them to a role with no computer access",
           "Recognise it exploits good qualities, design so one mistake is survivable, and make reporting safe and easy",
-          "Punish them to deter others",
-          "Ban them from using email",
+          "Require them to repeat security training as a penalty",
+          "Make a public example of the incident so others stay alert",
         ],
         answer: 1,
         why: "Blame hides mistakes; a safe-to-report culture surfaces them fast, so they can be contained. Good design assumes people will sometimes be fooled.",
@@ -130,10 +130,10 @@ const topic1: TopicManifest = {
       {
         q: "The Twitter 2020 breach is a landmark example because it shows that:",
         options: [
-          "Only small companies fall for social engineering",
+          "A strong engineering team prevents social-engineering breaches",
           "Even a technically sophisticated organisation can be breached through its people",
-          "Social engineering never works on real companies",
-          "Firewalls stop all attacks",
+          "Attackers always prefer exploiting code over people",
+          "Internal admin tools are safe as long as their code is secure",
         ],
         answer: 1,
         why: "World-class engineering did not help, because the attackers targeted staff, not code. If it can happen to Twitter, the human layer matters everywhere.",

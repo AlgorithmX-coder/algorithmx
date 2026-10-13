@@ -109,10 +109,10 @@ const topic3: TopicManifest = {
       {
         q: "What is the fundamental difference between hashing and encryption?",
         options: [
-          "They are the same",
+          "They are really two names for the same process",
           "Encryption is reversible (with the key); hashing is one-way (cannot be reversed)",
-          "Hashing is reversible; encryption is not",
-          "Only encryption uses computers",
+          "Hashing is reversible with a key; encryption is one-way",
+          "Hashing needs a secret key, but encryption does not",
         ],
         answer: 1,
         why: "Encryption you can undo with the key; a hash is a one-way fingerprint you cannot reverse. That decides which to use.",
@@ -120,10 +120,10 @@ const topic3: TopicManifest = {
       {
         q: "Why must passwords be hashed, not encrypted?",
         options: [
-          "Hashing is faster",
+          "Hashing is quicker to run than encryption",
           "A site only needs to check a match, not recover the password; hashing has no key to reverse it, so a breach doesn't directly reveal passwords",
-          "Encryption is illegal for passwords",
-          "There is no reason",
+          "Encryption can only be applied to files, never to passwords",
+          "Hashed passwords take up far less storage space",
         ],
         answer: 1,
         why: "Encryption has a key that can reverse all passwords if stolen; hashing is one-way, so even stolen hashes don't directly give up the passwords.",
@@ -131,10 +131,10 @@ const topic3: TopicManifest = {
       {
         q: "What was Adobe's core cryptographic mistake in 2013?",
         options: [
-          "Using hashing instead of encryption for messages",
+          "Using one-way hashing where reversible encryption was needed",
           "Using reversible encryption (plus plaintext hints) for passwords, where irreversible hashing was needed",
-          "Encrypting too strongly",
-          "Not using computers",
+          "Storing the passwords with no protection at all",
+          "Choosing an encryption method that was far too strong",
         ],
         answer: 1,
         why: "Reversible storage plus plaintext hints meant passwords could be worked out, the classic 'encrypted where it should have hashed' error.",

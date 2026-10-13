@@ -108,10 +108,10 @@ const topic4: TopicManifest = {
       {
         q: "In MITRE ATT&CK, what is a 'tactic'?",
         options: [
-          "A specific piece of malware",
+          "A specific way of achieving a goal, such as phishing",
           "The attacker's goal at a stage of an attack, such as initial access or exfiltration",
-          "A type of firewall rule",
-          "A password policy",
+          "A concrete indicator like a file hash or malicious address",
+          "A detection rule written to catch a known attack",
         ],
         answer: 1,
         why: "Tactics are the goals; techniques are the specific ways of achieving them. Together they map how attacks unfold.",
@@ -119,10 +119,10 @@ const topic4: TopicManifest = {
       {
         q: "How does mapping activity to ATT&CK help an analyst?",
         options: [
-          "It slows down investigation",
+          "It automatically removes any attacker it identifies from the network",
           "It turns a jumble of events into a clear attack story in a shared language, and hints at what comes next",
-          "It replaces the need to investigate",
-          "It only helps managers",
+          "It guarantees you will detect every future attack",
+          "It assigns a monetary cost to each stage of the attack",
         ],
         answer: 1,
         why: "Mapping each action to its tactic reveals the attack's progress precisely and helps anticipate the attacker's next move.",
@@ -130,10 +130,10 @@ const topic4: TopicManifest = {
       {
         q: "How does ATT&CK help a team find detection blind spots?",
         options: [
-          "It does not",
+          "By blocking every technique in the framework by default",
           "By mapping your detections onto its techniques, you can see which attacker behaviours you could not catch, and prioritise those",
-          "By deleting old alerts",
-          "By buying more tools automatically",
+          "By ranking your analysts on how many alerts they close",
+          "By automatically writing new detection rules for you",
         ],
         answer: 1,
         why: "Coverage mapping reveals, against a shared standard, exactly where you are blind, turning detection into a measurable, improvable programme.",

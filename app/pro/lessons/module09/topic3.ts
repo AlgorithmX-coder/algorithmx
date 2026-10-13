@@ -108,10 +108,10 @@ const topic3: TopicManifest = {
       {
         q: "What does cross-site scripting (XSS) do?",
         options: [
-          "Crashes the database",
+          "Rewrites the database query to dump its tables",
           "Gets a website to run the attacker's script in other visitors' browsers",
-          "Floods a server with traffic",
-          "Steals the physical server",
+          "Floods a server with traffic until it goes down",
+          "Tricks a user into approving a hidden request",
         ],
         answer: 1,
         why: "XSS smuggles the attacker's code into a page so it runs in victims' browsers, attacking the site's users.",
@@ -119,10 +119,10 @@ const topic3: TopicManifest = {
       {
         q: "Why is XSS especially dangerous?",
         options: [
-          "It only affects the attacker",
+          "It gives the attacker direct control of the web server",
           "It rides on the users' trust in the site and can steal sessions, take over accounts, and even spread like a worm",
-          "It is harmless by design",
-          "It only works on old browsers",
+          "It can only read data, never act on the user's behalf",
+          "It works only if the victim downloads a file",
         ],
         answer: 1,
         why: "Victims trust the site, so their browsers run the smuggled script, enabling account takeover and, as with Samy, self-propagation.",
@@ -130,10 +130,10 @@ const topic3: TopicManifest = {
       {
         q: "What principle defeats XSS?",
         options: [
-          "Hoping users behave",
+          "Blocking the word 'script' from every input",
           "Treat user content as data to display, never as code to run, by escaping output",
-          "Making the page load faster",
-          "Hiding the comment box",
+          "Forcing every visitor to log in first",
+          "Serving the whole site over HTTPS",
         ],
         answer: 1,
         why: "Escaping output shows any script as harmless text. Modern frameworks do this by default; the mindset is 'content is data, not instructions'.",

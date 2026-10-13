@@ -108,10 +108,10 @@ const topic2: TopicManifest = {
       {
         q: "How does a SIEM help you investigate a pile of logs?",
         options: [
-          "It deletes the logs",
+          "It cuts the logs down by permanently deleting the routine entries",
           "It lets you search and filter the logs to find what matters, instead of drowning in volume",
-          "It writes the report for you",
-          "It blocks all attacks automatically",
+          "It decides on its own which alerts are real incidents",
+          "It automatically blocks any attack it finds in the logs",
         ],
         answer: 1,
         why: "A SIEM turns raw log volume into answerable questions via search and filters, the core investigation skill.",
@@ -119,10 +119,10 @@ const topic2: TopicManifest = {
       {
         q: "What is the best way to approach a SIEM investigation?",
         options: [
-          "Scroll through every line by hand",
+          "Read every log line in order from the beginning to be thorough",
           "Orient, then narrow with filters (time, source, event type), and look for the attack story",
-          "Guess the conclusion immediately",
-          "Ignore the time of the event",
+          "Start from a conclusion and search only for logs that confirm it",
+          "Filter only by event type and ignore the time window entirely",
         ],
         answer: 1,
         why: "Orient and filter to isolate the relevant activity, then reconstruct the story. The process is the skill.",
@@ -130,10 +130,10 @@ const topic2: TopicManifest = {
       {
         q: "What does the Mirai login pattern in the logs teach about defence?",
         options: [
-          "That attacks are unstoppable",
+          "That only advanced, expensive tools could have stopped a botnet like Mirai",
           "That changing default passwords would have stopped it: the basic defence is visible in the evidence",
-          "That logs are useless",
-          "That defaults are safe",
+          "That the attackers used a sophisticated zero-day no one could have patched",
+          "That the real problem was weak firewall rules, not the passwords",
         ],
         answer: 1,
         why: "Mirai worked on unchanged default credentials; the repeated default-login attempts in the logs point straight to the fix.",

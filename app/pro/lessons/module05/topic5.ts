@@ -108,10 +108,10 @@ const topic5: TopicManifest = {
       {
         q: "What makes a personal security audit worth putting in a portfolio?",
         options: [
-          "It is long and full of jargon",
+          "It lists every security tool and technique you know",
           "It is a real artefact showing you can assess, prioritise and communicate risk, on something genuine",
-          "It requires access to a company's systems",
-          "It proves you can break into things",
+          "It requires access to a real company's systems",
+          "It proves you can break into systems",
         ],
         answer: 1,
         why: "Employers hire on demonstrated skill. A clear audit of your own security shows the core analyst act on real stakes, with no one else's systems needed.",
@@ -119,10 +119,10 @@ const topic5: TopicManifest = {
       {
         q: "How should you structure each item in a professional audit write-up?",
         options: [
-          "Just a tick, with no explanation",
+          "A long technical description of every tool you used",
           "Finding, risk, action, and status, ordered with the most serious first",
-          "Only the things that went well",
-          "A single sentence saying you improved security",
+          "Only the items that went well, leaving out the problems",
+          "A single sentence saying that you improved your security",
         ],
         answer: 1,
         why: "Finding, risk, action, status, prioritised by risk, mirrors how real reports read and shows exactly how you think.",

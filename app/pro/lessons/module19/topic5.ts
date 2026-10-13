@@ -108,10 +108,10 @@ const topic5: TopicManifest = {
       {
         q: "Why do untested backups so often fail when needed?",
         options: [
-          "Backups never fail",
+          "A backup job reporting success guarantees the data can be restored",
           "They are rarely tested until a real disaster, so corruption, gaps or unrestorable data are discovered too late",
-          "Because testing causes failures",
-          "Because backups are unnecessary",
+          "Backups stored offsite always become corrupt while being moved there",
+          "Modern backup software no longer needs any testing at all",
         ],
         answer: 1,
         why: "A real disaster is the worst time to find the hole. 'Backup succeeded' is not 'we can recover'; only a tested restore proves it.",
@@ -119,10 +119,10 @@ const topic5: TopicManifest = {
       {
         q: "What does proper recovery testing involve?",
         options: [
-          "Just checking the backup files exist",
+          "Confirming the backup job finished with no error messages",
           "Actually restoring to a test environment, confirming data and systems work, and measuring against RTO and RPO",
-          "Assuming it will be fine",
-          "Reading the plan once",
+          "Checking that the backup files are present and the right size",
+          "Trusting that the backup will restore because it always has before",
         ],
         answer: 1,
         why: "A real, verified, timed restore is the only true test, and it exercises the plan too, finding gaps in calm, not crisis.",
@@ -130,10 +130,10 @@ const topic5: TopicManifest = {
       {
         q: "Why must recovery testing be ongoing?",
         options: [
-          "It does not; once is enough",
+          "Because a backup that passed one restore test can never fail afterwards",
           "Because systems, data and teams change, so a plan that worked before may not work now; regular testing keeps it real",
-          "To waste time",
-          "Because backups expire daily",
+          "Because backup files physically wear out and expire after a few days",
+          "Because auditors require a fresh test every single day without exception",
         ],
         answer: 1,
         why: "Environments drift constantly. An old one-off test gives false confidence; regular testing keeps resilience honest.",

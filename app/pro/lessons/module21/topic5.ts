@@ -107,10 +107,10 @@ const topic5: TopicManifest = {
       {
         q: "What is the capstone?",
         options: [
-          "A certification exam",
+          "A final written exam covering every module in the course",
           "One complete investigation, written up two ways: a technical write-up and an executive summary",
-          "A list of all the modules",
-          "A single multiple-choice quiz",
+          "A short slideshow summarising what you enjoyed in the course",
+          "A single technical report written only for security specialists",
         ],
         answer: 1,
         why: "It is one real piece of security work communicated to two audiences, the culminating portfolio piece.",
@@ -118,10 +118,10 @@ const topic5: TopicManifest = {
       {
         q: "Why write the capstone for two audiences?",
         options: [
-          "To make more work",
+          "Because longer submissions always impress employers more",
           "It exercises both halves of being valuable: doing the technical work, and communicating it to anyone who needs it",
-          "Because leaders read technical detail",
-          "Because summaries need no substance",
+          "Because technical readers and leaders both want the same deep detail",
+          "Because the executive summary can skip the real findings entirely",
         ],
         answer: 1,
         why: "A finding only matters if the right people can understand and act on it. Serving both audiences proves you serve the whole organisation.",
@@ -129,10 +129,10 @@ const topic5: TopicManifest = {
       {
         q: "Why is the capstone a fitting end to the course?",
         options: [
-          "It is easy",
+          "It focuses only on the content of the final module",
           "It draws on all four acts and mirrors the real job: do security work, and tell its story to anyone",
-          "It ignores everything you learned",
-          "It is unrelated to getting hired",
+          "It tests your memory of the course rather than any practical skill",
+          "It replaces the need for a portfolio or any other work",
         ],
         answer: 1,
         why: "It proves the journey from curious beginner to job-ready, combining investigation and communication, exactly what the job needs.",

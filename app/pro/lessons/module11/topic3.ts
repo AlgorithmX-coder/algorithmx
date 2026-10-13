@@ -113,7 +113,7 @@ const topic3: TopicManifest = {
           "Which flaw is it, and does it affect systems I run?",
           "How severe, and how urgent (exploited?) is it?",
           "What do I do (patch or workaround)?",
-          "Who discovered it and where do they live?",
+          "Which researcher discovered it, and how they found it",
         ],
         answer: 3,
         why: "The discoverer's identity is irrelevant to your decision. You read for: which/applies-to-me, severity, urgency, and action.",
@@ -121,10 +121,10 @@ const topic3: TopicManifest = {
       {
         q: "Why can a lower-CVSS flaw sometimes be more urgent than a higher-scored one?",
         options: [
-          "CVSS is meaningless",
+          "Because a lower score always means a simpler, easier exploit",
           "Because active exploitation in the wild (or public exploit code) is a powerful urgency signal beyond the raw severity",
-          "Lower scores are always worse",
-          "It cannot; the score decides everything",
+          "Because the CVSS score is recalculated every day",
+          "Because lower-scored flaws affect more systems on average",
         ],
         answer: 1,
         why: "Severity is the flaw's badness in principle; urgency also weighs whether attackers are actually using it right now.",
@@ -132,10 +132,10 @@ const topic3: TopicManifest = {
       {
         q: "The PrintNightmare case shows that when an advisory is confusing, you should:",
         options: [
-          "Pick an interpretation at random and move on",
+          "Wait for the media to explain it clearly before acting",
           "Read precisely, confirm from authoritative sources, apply mitigations, and monitor until it is clear",
-          "Assume a single patch fixed everything",
-          "Ignore it until it is clarified",
+          "Assume one patch has resolved every related flaw",
+          "Apply every available patch and consider it closed",
         ],
         answer: 1,
         why: "Ambiguity is a reason for careful reading and conservative, well-monitored interim action, not for guessing or complacency.",

@@ -108,10 +108,10 @@ const topic3: TopicManifest = {
       {
         q: "What is the first principle of handling digital evidence?",
         options: [
-          "Investigate the live machine thoroughly",
+          "Log into the live machine and investigate it directly for speed",
           "Do not alter the original: make a forensic copy and work on that",
-          "Reboot the machine to clear the malware",
-          "Let everyone take a look",
+          "Reboot the machine first to clear any running malware",
+          "Immediately delete the malware to stop it spreading",
         ],
         answer: 1,
         why: "Using the original alters it. Work on a forensic copy so the original stays intact and credible.",
@@ -119,10 +119,10 @@ const topic3: TopicManifest = {
       {
         q: "What is chain of custody?",
         options: [
-          "A type of encryption",
+          "An exact forensic copy of a disk made for investigation",
           "The documented, unbroken record of who handled evidence, when, and how, proving it was not tampered with",
-          "A backup schedule",
-          "A firewall rule",
+          "The order in which the response team tackles the incident stages",
+          "A secure room where evidence is physically stored",
         ],
         answer: 1,
         why: "It makes evidence credible and admissible. A broken chain can make even genuine evidence worthless.",
@@ -130,10 +130,10 @@ const topic3: TopicManifest = {
       {
         q: "Why must even a front-line analyst understand evidence handling?",
         options: [
-          "They never touch evidence",
+          "A forensic specialist is always on the scene from the very first moment",
           "Critical early actions (or mistakes) happen before a specialist arrives, and you rarely know which incident will have consequences",
-          "It is only the manager's job",
-          "Evidence never matters",
+          "Only serious incidents ever lead to legal action, and those are obvious upfront",
+          "Digital evidence can always be recovered later, even after mistakes",
         ],
         answer: 1,
         why: "The crucial first moves often fall to the first responder. Careful handling from the start can make or break a later case.",

@@ -108,10 +108,10 @@ const topic4: TopicManifest = {
       {
         q: "Why is prioritisation essential in vulnerability management?",
         options: [
-          "Because all vulnerabilities are equally dangerous",
+          "Because every vulnerability carries exactly the same risk",
           "Because you cannot fix everything at once, so you must decide, with good reasons, what to fix first",
-          "Because scanners are always wrong",
-          "Because vulnerabilities do not matter",
+          "Because scanners usually miss the most serious flaws",
+          "Because fixing one flaw often creates several new ones",
         ],
         answer: 1,
         why: "Real scans return far more than you can fix immediately, so risk-ranking the list is the core skill.",
@@ -119,10 +119,10 @@ const topic4: TopicManifest = {
       {
         q: "Which three factors should drive patching priority?",
         options: [
-          "Colour, size, and age of the system",
+          "The system's age, brand, and physical location",
           "Severity (CVSS), exposure (how reachable), and exploitation (is it being used now)",
-          "Only the CVSS score",
-          "Who reported it, when, and why",
+          "Only the raw CVSS severity score",
+          "The number of findings the scanner returned",
         ],
         answer: 1,
         why: "Blending severity, exposure and real-world exploitation gives a far better order than raw score alone.",
@@ -130,10 +130,10 @@ const topic4: TopicManifest = {
       {
         q: "Why does the CISA KEV catalogue lead with actively-exploited flaws?",
         options: [
-          "Because exploited flaws are the least dangerous",
+          "Because actively-exploited flaws always have the highest CVSS scores",
           "Because real-world exploitation turns theoretical risk into present danger, so fixing those most directly prevents real attacks",
-          "Because it is easier than reading CVSS",
-          "Because exploited flaws cannot be patched",
+          "Because exploited flaws are the quickest and cheapest to patch",
+          "Because a flaw being exploited means a patch must already exist",
         ],
         answer: 1,
         why: "Flaws being used today are causing breaches today. Starting there focuses limited effort where it most reduces actual risk.",

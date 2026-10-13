@@ -108,10 +108,10 @@ const topic3: TopicManifest = {
       {
         q: "What is the difference between data and intelligence?",
         options: [
-          "There is none",
+          "Intelligence is simply a larger quantity of the same raw data",
           "Data is raw fact; intelligence is data analysed and given context so it can drive a decision",
-          "Intelligence is always secret",
-          "Data is more useful than intelligence",
+          "Intelligence is any information that comes from a government source",
+          "Data is already actionable, so analysing it adds nothing",
         ],
         answer: 1,
         why: "Context and analysis turn a fact into something you can act on. 'Attacks are rising' is data; a specific, relevant, timely warning is intelligence.",
@@ -119,10 +119,10 @@ const topic3: TopicManifest = {
       {
         q: "What makes threat intelligence genuinely useful?",
         options: [
-          "It is long and technical",
+          "It is long, detailed and full of technical depth",
           "It is relevant, actionable and timely",
-          "It comes from a famous company",
-          "It is kept secret",
+          "It comes from a well-known, respected security vendor",
+          "It covers every possible threat in existence",
         ],
         answer: 1,
         why: "Relevant (applies to you), actionable (you can do something), and timely (while you can still act) are the three qualities. Otherwise it is noise.",
@@ -130,10 +130,10 @@ const topic3: TopicManifest = {
       {
         q: "Why was the Mandiant APT1 report a landmark?",
         options: [
-          "It was the first antivirus",
+          "It was the first tool to automatically block a nation-state attack",
           "It published deep intelligence on a specific adversary openly, turning private knowledge into collective defence",
-          "It was a type of malware",
-          "It proved threat intelligence is useless",
+          "It created the MITRE ATT&CK framework of attacker techniques",
+          "It introduced the first law requiring breach notification",
         ],
         answer: 1,
         why: "Detailing a real adversary's methods in public helped defenders everywhere and moved serious threat intelligence into the shared domain.",

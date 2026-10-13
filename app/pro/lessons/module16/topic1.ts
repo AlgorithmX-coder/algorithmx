@@ -120,10 +120,10 @@ const topic1: TopicManifest = {
       {
         q: "Why is the IR lifecycle described as a cycle?",
         options: [
-          "Because incidents repeat on a schedule",
+          "Because the same attacker always returns at regular intervals",
           "Because lessons learned feed back into preparation, making you better prepared for the next incident",
-          "Because you do the stages in a random order",
-          "It is not a cycle",
+          "Because every stage is repeated several times within one incident",
+          "Because recovery must always be done before containment",
         ],
         answer: 1,
         why: "Each incident's lessons improve preparation, so the organisation gets stronger over time.",
@@ -131,10 +131,10 @@ const topic1: TopicManifest = {
       {
         q: "What does Maersk's NotPetya recovery best illustrate?",
         options: [
-          "That recovery is impossible after a serious attack",
+          "That paying the ransom is the fastest way to recover",
           "That organised incident response and recovery can turn a catastrophe into a survivable event",
-          "That preparation does not matter",
-          "That backups are useless",
+          "That prevention is the only thing that matters, not response",
+          "That a single offline backup is all the preparation any organisation needs",
         ],
         answer: 1,
         why: "Rebuilding a vast IT estate in around ten days shows how much good response and recovery can achieve, and how pivotal preparation (a surviving backup) is.",

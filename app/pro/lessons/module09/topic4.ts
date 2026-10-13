@@ -108,10 +108,10 @@ const topic4: TopicManifest = {
       {
         q: "What is broken access control?",
         options: [
-          "A slow login page",
+          "A login page that accepts weak passwords",
           "The failure to stop users reaching data or actions they are not allowed to",
-          "A type of encryption",
-          "A flooding attack",
+          "A flaw that lets input become part of a command",
+          "Sensitive data sent without any encryption",
         ],
         answer: 1,
         why: "It is simply failing to enforce who-can-do-what, and it is OWASP's most common serious web risk.",
@@ -119,10 +119,10 @@ const topic4: TopicManifest = {
       {
         q: "Why must access control be enforced on the server?",
         options: [
-          "Servers are faster",
+          "Because the server is physically more secure than a laptop",
           "Anything decided in the browser can be bypassed by the user; only the server can truly enforce permissions",
-          "Browsers cannot show buttons",
-          "It does not need to be; the browser is enough",
+          "Because browsers are too slow to check permissions",
+          "Because only the server has a copy of the user's password",
         ],
         answer: 1,
         why: "Hiding UI or trusting client-side values fails because users can edit them. The server must check every request.",

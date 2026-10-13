@@ -108,10 +108,10 @@ const topic4: TopicManifest = {
       {
         q: "What does 'payload' mean in the context of malware?",
         options: [
-          "How the malware got in",
+          "How the malware first got onto the machine",
           "What the malware actually does once it has a foothold: its real goal",
-          "The size of the malware file",
-          "The company that made the antivirus",
+          "The technique it uses to survive a reboot",
+          "The channel it uses to receive instructions",
         ],
         answer: 1,
         why: "The payload is the end, not the means: stealing, extorting, controlling, spying or destroying. The behaviour reveals it.",
@@ -119,10 +119,10 @@ const topic4: TopicManifest = {
       {
         q: "Why do defenders increasingly watch behaviour rather than only known signatures?",
         options: [
-          "Signatures are illegal",
+          "Signature detection is too slow for modern networks",
           "Attackers tweak malware to dodge signature detection, but behaviour (encrypting, phoning home, stealing passwords) is much harder to disguise",
-          "Behaviour is easier to fake than files",
-          "Signatures catch everything already",
+          "A malware file's signature can never be altered by its author",
+          "Behaviour-based detection never raises a false alarm",
         ],
         answer: 1,
         why: "A new variant can slip past a file-matching scanner, but its malicious behaviour still stands out, so watching behaviour catches unknown threats.",
@@ -130,10 +130,10 @@ const topic4: TopicManifest = {
       {
         q: "Zeus shows that a quiet, stealthy payload can be devastating because:",
         options: [
-          "It is louder than ransomware",
+          "It works faster and louder than any ransomware",
           "Long dwell time lets it keep stealing (here, banking credentials) unnoticed, causing huge cumulative losses",
-          "Quiet malware is always harmless",
-          "It destroys systems immediately",
+          "It immediately alerts the victim to demand a payment",
+          "It wipes the hard drive the moment it lands",
         ],
         answer: 1,
         why: "Stealth and persistence maximise dwell time, and the longer a stealer operates unseen, the more it takes. Shrinking dwell time is key.",

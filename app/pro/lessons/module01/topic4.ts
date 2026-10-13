@@ -109,10 +109,10 @@ const topic4: TopicManifest = {
       {
         q: "What does 'defence in depth' mean?",
         options: [
-          "Building one very strong wall",
+          "Building a single, very strong outer wall",
           "Using multiple independent layers so one failure is not fatal",
-          "Hiring more security staff",
-          "Encrypting everything twice",
+          "Concentrating your whole budget on the most likely attack",
+          "Replacing several older tools with one stronger tool",
         ],
         answer: 1,
         why: "Depth assumes a layer will fail and puts more behind it, so a single breach does not hand the attacker everything.",
@@ -120,10 +120,10 @@ const topic4: TopicManifest = {
       {
         q: "What is 'least privilege'?",
         options: [
-          "Giving everyone admin access to be efficient",
+          "Giving staff broad access so their work is never blocked",
           "Giving each person and system only the access it needs",
-          "Removing all access from everyone",
-          "Changing passwords often",
+          "Granting access based on each person's seniority",
+          "Making everyone change their passwords regularly",
         ],
         answer: 1,
         why: "Least privilege limits what each account or system can reach, so a compromise inherits as little as possible and the blast radius stays small.",
@@ -131,10 +131,10 @@ const topic4: TopicManifest = {
       {
         q: "Why did the Change Healthcare attack spread so far?",
         options: [
-          "The attack was unstoppable by design",
+          "A zero-day flaw for which no patch yet existed anywhere",
           "One login with no second factor, and too little segmentation to stop the spread",
-          "They had no antivirus at all",
-          "It targeted their customers, not them",
+          "The ransomware spread by itself before any human logged in",
+          "Staff were tricked by a phishing email into installing the malware",
         ],
         answer: 1,
         why: "A missing second factor let attackers in with just a password, and a lack of segmentation and least privilege let that one foothold reach everything. Depth at each layer would have contained it.",

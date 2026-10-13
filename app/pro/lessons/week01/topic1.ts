@@ -109,9 +109,9 @@ const topic1: TopicManifest = {
       {
         q: "Why can a website check your login without storing your actual password?",
         options: [
-          "It stores the password encrypted and decrypts it each time",
+          "It stores the password encrypted and decrypts it to compare each time",
           "It stores a one-way hash and compares the hash of what you typed",
-          "It emails you to confirm the password every time",
+          "It sends your password to an outside verification service each time",
           "It keeps the password in a hidden file only staff can read",
         ],
         answer: 1,
@@ -120,10 +120,10 @@ const topic1: TopicManifest = {
       {
         q: "When attackers stole LastPass's encrypted vaults, what decided whether a customer's passwords were safe?",
         options: [
-          "How often they changed their password",
+          "How often they changed the passwords stored inside the vault",
           "The strength of their one master password",
-          "Whether they used the mobile app",
-          "How many passwords were in the vault",
+          "Whether they had logged out of the app before the breach",
+          "How recently they had last opened their vault",
         ],
         answer: 1,
         why: "The vaults were encrypted, so a strong master password kept them locked. Short or reused master passwords could be cracked offline once the files were stolen. How your store is protected, and by what, is everything.",

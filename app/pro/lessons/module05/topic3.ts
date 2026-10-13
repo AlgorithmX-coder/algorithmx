@@ -109,10 +109,10 @@ const topic3: TopicManifest = {
       {
         q: "What makes security testing lawful, as opposed to an offence?",
         options: [
-          "Being highly skilled",
+          "Being highly skilled at the techniques",
           "Explicit written permission, from someone entitled to give it, for a defined scope",
-          "Only testing at night",
-          "Reporting what you find afterwards",
+          "Using only tools the industry considers legitimate",
+          "Reporting whatever you find once you have finished",
         ],
         answer: 1,
         why: "Authorisation and scope are what separate a profession from a crime. Skill, timing and later reporting do not substitute for permission.",
@@ -120,10 +120,10 @@ const topic3: TopicManifest = {
       {
         q: "Mid-test, you spot an easy flaw on a system that is not in your written scope. What do you do?",
         options: [
-          "Test it; you are already authorised for the engagement",
+          "Test it; the engagement already authorises you",
           "Leave it, note it, and raise it with the client to consider adding to scope in writing",
-          "Test it quietly and only mention it if it matters",
-          "Delete the flaw to be safe",
+          "Test it quietly and only mention it if it turns out to matter",
+          "Exploit it fully to prove how serious it is",
         ],
         answer: 1,
         why: "Out of scope is out of bounds. You flag it and let the client extend the scope in writing if they choose; touching it yourself could be unauthorised access.",
@@ -131,10 +131,10 @@ const topic3: TopicManifest = {
       {
         q: "The deeper lesson of the Coalfire case is that:",
         options: [
-          "Physical testing is always illegal",
-          "A contract is worthless",
+          "Physical penetration testing is too risky to ever attempt",
+          "A signed contract by itself fully protects the testers",
           "Authorisation must come from the right authority and reach everyone who might respond, not just exist on paper",
-          "Testers should never be arrested",
+          "Local police must personally approve every security test",
         ],
         answer: 2,
         why: "The gap was in the authorisation chain. Permission has to come from someone with real authority over the target and be known to those who could respond.",

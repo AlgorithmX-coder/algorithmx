@@ -108,10 +108,10 @@ const topic4: TopicManifest = {
       {
         q: "What is OSINT?",
         options: [
-          "A hacking tool for breaking into systems",
+          "Intelligence gathered by secretly intercepting a target's communications",
           "Open-source intelligence: information gathered from publicly available sources, no break-in needed",
-          "A type of firewall",
-          "An encryption standard",
+          "Information obtained by breaking into the target's systems",
+          "Information obtained only from an insider who leaks it",
         ],
         answer: 1,
         why: "OSINT is the legal, public-source research attackers (and defenders) use: profiles, exposed systems, breach data, and more.",
@@ -119,10 +119,10 @@ const topic4: TopicManifest = {
       {
         q: "Why is a spear-phishing email so much more dangerous than generic spam?",
         options: [
-          "It is sent to more people",
+          "It is sent to far more people at once",
           "It is tailored using research, so it is far more convincing to its specific target",
-          "It always carries a zero-day exploit",
-          "It bypasses all email filters by design",
+          "It always carries a previously unknown zero-day exploit",
+          "It is built to slip past every email filter automatically",
         ],
         answer: 1,
         why: "The tailoring comes from reconnaissance: a message that names real people and projects is much harder to dismiss than 'Dear Customer'.",
@@ -130,10 +130,10 @@ const topic4: TopicManifest = {
       {
         q: "A defender who wants to reduce the risk of research-driven attacks should first:",
         options: [
-          "Do nothing; recon cannot be affected",
+          "Block all inbound email from senders outside the company",
           "Shrink the attack surface: limit exposed information, remove unnecessary systems, watch for leaked data",
-          "Publish more about the company to seem transparent",
-          "Only buy more antivirus",
+          "Publish more company information to appear open and trustworthy",
+          "Install antivirus on every employee device",
         ],
         answer: 1,
         why: "You cannot hide everything, but reducing what is discoverable makes the attacker's homework harder and their lures less convincing.",

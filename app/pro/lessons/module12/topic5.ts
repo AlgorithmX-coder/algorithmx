@@ -107,10 +107,10 @@ const topic5: TopicManifest = {
       {
         q: "Why is a hardening checklist so effective?",
         options: [
-          "It looks professional",
+          "It automatically fixes any insecure settings it finds on a system",
           "It turns principles into consistent, repeatable action so nothing is forgotten, and anyone can apply the same baseline",
-          "It replaces the need for any other control",
-          "It is required by law",
+          "It lets an organisation skip the slower work of patching and monitoring",
+          "It proves to customers that a system can never be breached",
         ],
         answer: 1,
         why: "Consistency and completeness are the point, as in aviation and surgery: a checklist does not forget steps the way humans do.",
@@ -118,21 +118,21 @@ const topic5: TopicManifest = {
       {
         q: "Which of these belongs on a hardening checklist?",
         options: [
-          "Pick a nicer desktop wallpaper",
+          "Install every available software package in case it is needed later",
           "Change or remove all default passwords and accounts",
-          "Increase the screen brightness",
-          "Add more browser bookmarks",
+          "Give all users administrator rights so nothing is ever blocked",
+          "Leave remote access open so support can always connect",
         ],
         answer: 1,
-        why: "Removing defaults is a core hardening step. Cosmetic choices are not about reducing risk.",
+        why: "Removing defaults is a core hardening step. The others increase the attack surface, the opposite of hardening.",
       },
       {
         q: "Why start from a baseline like the CIS Benchmarks?",
         options: [
-          "They are expensive and exclusive",
+          "They are legally mandated, so every system must match them exactly",
           "They are free, expert, consensus-built hardening baselines you can adopt, tailor and check against, rather than guessing",
-          "They only work for large companies",
-          "They replace the need to patch",
+          "They are tailored specifically to your organisation before you receive them",
+          "They remove the need to monitor or log a system once applied",
         ],
         answer: 1,
         why: "You benefit from the whole community's expertise and can verify systems against the benchmark, turning hardening into a repeatable, checkable process.",

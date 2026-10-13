@@ -109,10 +109,10 @@ const topic4: TopicManifest = {
       {
         q: "Why is a supplier's security weakness your risk?",
         options: [
-          "It is not; only your own systems matter",
+          "Because a breach at a supplier automatically publishes all of your data online",
           "Because trusted suppliers have access to your systems or data, so an attacker can reach you through them",
-          "Because suppliers are always malicious",
-          "Only if the supplier is small",
+          "Because suppliers are generally far less careful with security than your own team",
+          "Because an attacker who breaches one supplier can then breach any company at random",
         ],
         answer: 1,
         why: "Trusted relationships are a route in. An attacker will happily come through your weakest supplier, bypassing your own defences.",
@@ -120,10 +120,10 @@ const topic4: TopicManifest = {
       {
         q: "Which is a way to MANAGE third-party risk?",
         options: [
-          "Assume big-name vendors must be secure",
+          "Grant trusted suppliers full standing access so their work is never delayed",
           "Do due diligence, set security requirements in contracts, apply least privilege, and monitor suppliers",
-          "Give suppliers broad standing access forever",
-          "Never track who can reach your data",
+          "Rely on a supplier's good reputation instead of checking their security",
+          "Assess a supplier once at onboarding and then never review them again",
         ],
         answer: 1,
         why: "Verified, limited, monitored trust, not blind trust, is how third-party risk is managed.",
@@ -131,10 +131,10 @@ const topic4: TopicManifest = {
       {
         q: "What does the MOVEit attack show about supply-chain risk?",
         options: [
-          "That it only affects one company at a time",
+          "That only the software vendor itself suffers any real harm from such a flaw",
           "That one flaw in one widely-used supplier can cascade to hundreds of organisations and millions of people at once",
-          "That suppliers are never a risk",
-          "That patching does not matter",
+          "That file-transfer tools are the only kind of software attackers target this way",
+          "That organisations stay safe as long as their own staff make no mistakes",
         ],
         answer: 1,
         why: "A flaw in a widely-used tool reaches all its customers, a force multiplier that makes supply-chain risk uniquely damaging.",

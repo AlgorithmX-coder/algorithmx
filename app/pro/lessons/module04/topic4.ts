@@ -109,10 +109,10 @@ const topic4: TopicManifest = {
       {
         q: "What TWO things does HTTPS (TLS) guarantee?",
         options: [
-          "Speed and storage",
+          "Anonymity online and protection from malware",
           "Encryption of the conversation, and proof of the server's identity",
-          "Only encryption",
-          "Only identity",
+          "Only encryption of the conversation, nothing more",
+          "Only proof of the server's identity, nothing more",
         ],
         answer: 1,
         why: "Privacy (encryption) and identity (certificates) together are what the padlock means. Encryption alone could be with an impostor.",
@@ -120,10 +120,10 @@ const topic4: TopicManifest = {
       {
         q: "What does a certificate do?",
         options: [
-          "Encrypts the whole internet",
+          "Encrypts all of the data stored on the website's server",
           "Binds a public key to a website's identity, vouched for by a trusted Certificate Authority",
-          "Stores your password",
-          "Speeds up the connection",
+          "Keeps a backup copy of the site's private key",
+          "Scans the website for malware before you connect",
         ],
         answer: 1,
         why: "Certificates provide the identity half of HTTPS via the chain of trust: you trust the CA, the CA vouches for the site.",
@@ -131,10 +131,10 @@ const topic4: TopicManifest = {
       {
         q: "Why was the DigiNotar compromise so damaging?",
         options: [
-          "It slowed the internet down",
+          "It deleted the certificates of thousands of legitimate sites",
           "A compromised CA issued fraudulent certificates that could impersonate real sites with a valid padlock",
-          "It only affected one website",
-          "Certificates are unimportant",
+          "It exposed the private encryption keys inside every browser",
+          "It affected only a single website and nothing more",
         ],
         answer: 1,
         why: "HTTPS trust rests on CAs being secure. A compromised CA can make the padlock lie for everyone who trusts it.",

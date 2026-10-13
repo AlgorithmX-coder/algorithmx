@@ -110,10 +110,10 @@ const topic3: TopicManifest = {
       {
         q: "What is the underlying goal of almost every social-engineering attack?",
         options: [
-          "To be technically impressive",
+          "To defeat the target's antivirus and firewalls directly",
           "To make you act before you think, by triggering a fast emotional response",
-          "To make you laugh",
-          "To test your typing speed",
+          "To gather public information about the target quietly",
+          "To install malware the victim will never notice",
         ],
         answer: 1,
         why: "Attacks engineer pressure so your fast, instinctive reaction fires before your slow, sceptical judgement can catch up.",
@@ -121,10 +121,10 @@ const topic3: TopicManifest = {
       {
         q: "'This is the director, I need this payment in the next hour or we lose the contract.' Which levers are being pulled?",
         options: [
-          "Only liking",
+          "Authority and liking only",
           "Authority, urgency, and fear together",
-          "None; this is a normal request",
-          "Only scarcity",
+          "Urgency and scarcity only",
+          "Liking and trust only",
         ],
         answer: 1,
         why: "It impersonates power (authority), imposes a deadline (urgency), and threatens a loss (fear): three levers at once, a classic combination.",
@@ -132,10 +132,10 @@ const topic3: TopicManifest = {
       {
         q: "As fakes (voices, caller IDs, branding) get more convincing, the durable defence is:",
         options: [
-          "Getting better at spotting fakes",
+          "Training yourself to spot the fakes more reliably",
           "Verifying important requests out-of-band, through a trusted channel the attacker does not control",
-          "Trusting anything that looks official",
-          "Acting faster to beat the deadline",
+          "Deploying software that detects synthetic voices and images",
+          "Trusting a request once the caller ID and branding look right",
         ],
         answer: 1,
         why: "Detection fails against good fakes. Verification through an independent, trusted channel works regardless of how convincing the fake is.",

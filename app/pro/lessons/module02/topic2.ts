@@ -120,10 +120,10 @@ const topic2: TopicManifest = {
       {
         q: "A resolver has been tricked into caching a false answer for a bank's name. What happens?",
         options: [
-          "Nothing, browsers notice false answers automatically",
-          "Only the attacker's own lookups are affected",
+          "Nothing happens, because browsers detect and reject false DNS answers",
+          "Only the attacker's own lookups go to the wrong address, nobody else's",
           "Everyone using that resolver is sent to the attacker's address while the entry lasts, with the real name in their address bar",
-          "The bank's website goes offline",
+          "The bank's real website is knocked offline for everyone until it expires",
         ],
         answer: 2,
         why: "Caching spreads the lie: every user of that resolver gets the poisoned answer until it expires, and nothing looks wrong on their screen. That is cache poisoning.",

@@ -107,10 +107,10 @@ const topic1: TopicManifest = {
       {
         q: "What is the difference between business continuity and disaster recovery?",
         options: [
-          "They are the same",
+          "Disaster recovery keeps the business running, while continuity rebuilds the IT systems",
           "Continuity keeps the business running through a disruption; disaster recovery restores the IT systems afterwards",
-          "Continuity is only about hackers",
-          "Disaster recovery is about marketing",
+          "Continuity covers cyber attacks, while disaster recovery covers only fires and floods",
+          "Continuity is a short-term fix and disaster recovery is the same plan renamed",
         ],
         answer: 1,
         why: "Continuity is 'keep operating'; recovery is 'restore the systems'. You need both, since recovery takes time.",
@@ -118,10 +118,10 @@ const topic1: TopicManifest = {
       {
         q: "What does 'all-hazards' resilience thinking mean?",
         options: [
-          "Only planning for cyber attacks",
+          "Writing a separate recovery plan for every possible individual cause",
           "Planning for the impact (lost systems, site or data) regardless of the cause, cyber or physical",
-          "Ignoring physical disasters",
-          "Assuming nothing will go wrong",
+          "Focusing only on the single most likely hazard and ignoring the rest",
+          "Preventing every possible disaster so that none can ever occur",
         ],
         answer: 1,
         why: "Many of the worst disruptions are not attacks. A resilient organisation plans for the impact whatever causes it.",
@@ -129,10 +129,10 @@ const topic1: TopicManifest = {
       {
         q: "What is the key lesson of the OVHcloud fire?",
         options: [
-          "Cloud data is always automatically safe",
+          "Keeping data with a large cloud provider removes the need for your own backups",
           "Resilience must be deliberate: assuming data is safe, with no offsite backup, is how it is lost in a disaster",
-          "Only hackers cause data loss",
-          "Backups are unnecessary in the cloud",
+          "Physical disasters like fire cannot destroy data once it is stored digitally",
+          "A second copy in the same data centre is enough to survive any disaster",
         ],
         answer: 1,
         why: "A physical fire destroyed data that customers assumed was safe. Cloud is not automatically a backup; resilience must be ensured.",

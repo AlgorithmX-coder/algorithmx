@@ -108,10 +108,10 @@ const topic5: TopicManifest = {
       {
         q: "Why is reporting a phishing email more valuable than just spotting and deleting it?",
         options: [
-          "It is not; deleting is enough",
+          "Deleting it protects you just as well as reporting does",
           "Reporting lets the security team warn everyone, block the sender and investigate, protecting the whole organisation",
-          "Reporting gets the sender arrested immediately",
-          "Deleting spreads the attack",
+          "Reporting it recovers any money or data already lost",
+          "Deleting it without reporting lets the attack spread to others",
         ],
         answer: 1,
         why: "Spotting protects you; reporting protects everyone. The team can act organisation-wide only if incidents are reported.",
@@ -119,10 +119,10 @@ const topic5: TopicManifest = {
       {
         q: "What makes a reporting culture effective?",
         options: [
-          "Punishing anyone who clicks a phish",
+          "Publishing the names of staff who fall for phishing tests",
           "Making reporting easy and safe, thanking people even for false alarms, and never punishing honest mistakes",
-          "Keeping incidents secret",
-          "Only letting managers report",
+          "Keeping each reported incident confidential within the team",
+          "Requiring staff to prove a message is malicious before reporting",
         ],
         answer: 1,
         why: "Blame drives mistakes underground. Easy, safe, appreciated reporting keeps the reports flowing, so incidents are caught early.",
@@ -130,10 +130,10 @@ const topic5: TopicManifest = {
       {
         q: "An authorised phishing simulation is acceptable because it is:",
         options: [
-          "A way to catch and punish careless staff",
+          "A surprise test designed to catch staff who are careless",
           "Internal, sanctioned and organisationally consented, and done kindly to build resilience, not to humiliate",
-          "A real attack on your own company",
-          "Sent to customers without telling them",
+          "An external test run without the company's knowledge",
+          "A mock phishing email sent to the company's customers",
         ],
         answer: 1,
         why: "It is lawful and ethical only because it is authorised and internal (the Module 5 principle), and it works only when done supportively, as practice, not a trap.",

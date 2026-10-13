@@ -108,10 +108,10 @@ const topic5: TopicManifest = {
       {
         q: "What is the OWASP Top 10?",
         options: [
-          "A list of the ten best hacking tools",
+          "A ranked list of the ten most common web-security tools",
           "A community-maintained, data-driven list of the most critical web-application security risks, used as a shared checklist",
-          "A ranking of the ten biggest companies",
-          "A type of firewall",
+          "A certification exam for web-security professionals",
+          "A set of laws governing web-application security",
         ],
         answer: 1,
         why: "It is the industry's shared, prioritised map of the worst web risks, referenced everywhere from development to interviews.",
@@ -119,10 +119,10 @@ const topic5: TopicManifest = {
       {
         q: "Why understand the fix mindsets rather than just memorise the ten risks?",
         options: [
-          "Memorising is impossible",
+          "Because the Top 10 list changes completely every year",
           "Because most risks reduce to a few principles (respect input, enforce access server-side, protect data, strong auth, patch), which lets you reason about new flaws too",
-          "The mindsets are unrelated to the risks",
-          "You should memorise them instead",
+          "Because the ten risks never appear in real applications",
+          "Because each risk needs a completely different, unrelated fix",
         ],
         answer: 1,
         why: "A handful of recurring principles cover most of the Top 10 and generalise to flaws you have never seen, which rote memorisation cannot do.",
@@ -130,10 +130,10 @@ const topic5: TopicManifest = {
       {
         q: "'Secure by design' means:",
         options: [
-          "Adding security only after a breach",
+          "Adding security controls only once the app is live",
           "Building security principles in from the start, rather than bolting them on after flaws appear",
-          "Designing a pretty interface",
-          "Hiring more testers only",
+          "Running a security scan just before each release",
+          "Relying on penetration testers to find every flaw",
         ],
         answer: 1,
         why: "Building security in from the beginning is cheaper and more effective than finding and fixing flaws in production.",

@@ -112,10 +112,10 @@ const topic1: TopicManifest = {
       {
         q: "What does encryption primarily protect?",
         options: [
-          "Availability: keeping systems online",
+          "Availability: keeping systems online and reachable",
           "Confidentiality: keeping data secret from those without the key",
-          "Your identity in an interview",
-          "Against phishing emails",
+          "Integrity: proving that data has not been altered",
+          "Protection against phishing emails and scams",
         ],
         answer: 1,
         why: "Encryption makes data unreadable to anyone without the key, protecting confidentiality in transit and at rest.",
@@ -134,10 +134,10 @@ const topic1: TopicManifest = {
       {
         q: "Why is a lost encrypted laptop a non-event, but an unencrypted one a breach?",
         options: [
-          "Encrypted laptops are never lost",
+          "An encrypted laptop wipes its own data the moment it is stolen",
           "Encryption makes the data unreadable without the key, so a stolen encrypted device exposes nothing",
-          "Unencrypted laptops are more valuable",
-          "There is no difference",
+          "Encryption lets the owner track where the laptop has gone",
+          "An encrypted laptop cannot be switched on without the owner",
         ],
         answer: 1,
         why: "Same loss, opposite outcome: encryption at rest turns a readable disaster into an unreadable non-event.",

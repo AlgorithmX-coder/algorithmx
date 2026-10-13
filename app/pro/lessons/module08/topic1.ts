@@ -110,10 +110,10 @@ const topic1: TopicManifest = {
       {
         q: "What distinguishes a worm from a virus?",
         options: [
-          "A worm is harmless; a virus is not",
+          "A worm only infects servers, while a virus infects desktops",
           "A worm spreads by itself across networks with no user action; a virus needs a host file and an opening",
-          "They are the same thing",
-          "A virus spreads faster than a worm",
+          "A worm hides in memory, while a virus writes to disk",
+          "A virus spreads itself automatically, while a worm needs a host file",
         ],
         answer: 1,
         why: "Self-spread with no user needed is the worm's defining, and dangerous, trait. A virus rides along in a file that must be opened.",
@@ -121,10 +121,10 @@ const topic1: TopicManifest = {
       {
         q: "A trojan infects a machine by:",
         options: [
-          "Spreading automatically across the network",
+          "Spreading automatically across the network with no user action",
           "Tricking the user into installing it by pretending to be something useful",
-          "Exploiting a hardware flaw",
-          "Encrypting files on contact",
+          "Exploiting an unpatched software flaw to force entry",
+          "Hiding deep in the system to avoid detection",
         ],
         answer: 1,
         why: "A trojan relies on disguise and the user's choice to run it, not on self-spreading or a specific payload.",
@@ -132,10 +132,10 @@ const topic1: TopicManifest = {
       {
         q: "Why should no malware infection be treated as 'minor'?",
         options: [
-          "All malware is equally harmless",
+          "A single infection can only affect the one machine it lands on",
           "Modern malware is often a platform: one foothold is used or sold to deliver far worse, like ransomware",
-          "Because antivirus always removes it",
-          "Minor infections fix themselves",
+          "Antivirus fully removes any trace once it detects the malware",
+          "A quick reinstall of the affected machine ends the incident",
         ],
         answer: 1,
         why: "Modular malware turns a small foothold into a gateway. Treating any infection as a potential beachhead is the professional stance.",

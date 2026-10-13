@@ -108,10 +108,10 @@ const topic1: TopicManifest = {
       {
         q: "What is a SOC?",
         options: [
-          "A type of firewall",
+          "A team of ethical hackers hired to attack a company's defences",
           "The team that continuously monitors an organisation for threats and responds to them",
-          "A kind of malware",
-          "A compliance certificate",
+          "The set of written policies that define an organisation's security rules",
+          "A government body that investigates and prosecutes cybercrime",
         ],
         answer: 1,
         why: "The Security Operations Centre is defence in motion: the eyes and hands that watch and respond. The SOC analyst is the common entry role.",
@@ -119,10 +119,10 @@ const topic1: TopicManifest = {
       {
         q: "Why is monitoring (visibility) so essential?",
         options: [
-          "It makes systems faster",
+          "Because it stops attacks from ever reaching the network in the first place",
           "Because you cannot respond to an attack you cannot see; prevention sometimes fails, so you must be able to detect",
-          "It is legally required to look pretty",
-          "It replaces the need for any prevention",
+          "Because it blocks malicious traffic automatically before it arrives",
+          "Because it removes the need to patch or harden systems",
         ],
         answer: 1,
         why: "Assume breach: you need eyes to detect what gets through, so you can respond before the damage mounts.",
@@ -130,10 +130,10 @@ const topic1: TopicManifest = {
       {
         q: "What made the Marriott breach so severe, beyond its scale?",
         options: [
-          "It was a denial-of-service attack",
+          "The attackers demanded a large ransom to unlock the data",
           "The dwell time: attackers were inside undetected for around four years",
-          "It only lasted a few minutes",
-          "No data was exposed",
+          "The breach was caused by a brand-new flaw no patch existed for",
+          "Customers were tricked into handing over their own passwords",
         ],
         answer: 1,
         why: "Years of undetected access let the attackers operate freely. Catastrophic dwell time is exactly what a SOC's monitoring exists to prevent.",

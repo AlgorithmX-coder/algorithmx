@@ -111,7 +111,7 @@ const topic1: TopicManifest = {
         options: [
           "One unbroken stream, like water through a single pipe",
           "Many addressed packets that may travel different routes and are reassembled at the far end",
-          "A copy placed on every computer on the internet",
+          "A single whole file pulled from the nearest server",
           "A direct cable connection reserved just for you",
         ],
         answer: 1,
@@ -121,9 +121,9 @@ const topic1: TopicManifest = {
         q: "What does a router actually do with a packet?",
         options: [
           "Reads its destination address and passes it to the best next neighbour",
-          "Opens it and checks the message is polite",
-          "Stores it permanently in case it is needed again",
-          "Translates it into English",
+          "Opens the packet and scans its contents for viruses",
+          "Keeps a copy of every packet in case it is needed again",
+          "Encrypts every packet before passing it onward",
         ],
         answer: 0,
         why: "A router makes one decision per packet: which neighbour gets it next. Billions of those small decisions per second are what the internet is.",
@@ -131,10 +131,10 @@ const topic1: TopicManifest = {
       {
         q: "During the October 2021 outage, Facebook's servers were mostly healthy. So why could nobody reach them?",
         options: [
-          "Every server had been encrypted by ransomware",
+          "Their internet provider had blocked all traffic to Facebook",
           "The routes telling the internet how to reach Facebook's network had been withdrawn",
-          "Too many users tried to log in at once",
-          "The domain name had expired",
+          "The site's security certificates had all expired at once",
+          "The domain name had expired that morning",
         ],
         answer: 1,
         why: "The faulty change removed Facebook's routes from the internet's shared map. Healthy servers with no directions to them are, in practice, offline.",

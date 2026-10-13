@@ -115,10 +115,10 @@ const topic3: TopicManifest = {
       {
         q: "What was the core lesson of the MGM 2023 breach?",
         options: [
-          "Casinos should not use computers",
+          "Stronger technology alone would have stopped the attackers",
           "A control is only as strong as the people and process behind it",
-          "Firewalls do not work",
-          "Only physical controls matter",
+          "Help desks should never be allowed to reset any account",
+          "Attackers always need advanced malware to break in",
         ],
         answer: 1,
         why: "MGM's technology was strong, but the help-desk process let an attacker reset access with a phone call. A control needs a solid, verified process behind it, or it can be bypassed with no hacking at all.",

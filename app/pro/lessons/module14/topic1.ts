@@ -108,10 +108,10 @@ const topic1: TopicManifest = {
       {
         q: "Why are logs described as the foundation of investigation?",
         options: [
-          "They make systems faster",
+          "They automatically block any suspicious activity they record",
           "They are the recorded evidence of what happened, which you read to reconstruct events",
-          "They replace the need for any security",
-          "They are only for billing",
+          "They predict which attacks will happen next",
+          "They are mainly kept to measure staff productivity",
         ],
         answer: 1,
         why: "Every action leaves a log footprint; investigating means reading those footprints to understand what occurred.",
@@ -119,10 +119,10 @@ const topic1: TopicManifest = {
       {
         q: "What does 'you cannot investigate what was never logged' mean?",
         options: [
-          "Logs are optional",
+          "You can always recover an action later, even if it was never logged",
           "If an action left no record, you have no evidence of it, so logging is a prerequisite for investigation",
-          "Investigations never need logs",
-          "Attackers always leave logs",
+          "Any gap in the logs can be filled in by guessing what probably happened",
+          "Attackers are unable to delete or disable logging",
         ],
         answer: 1,
         why: "No record means no evidence, which is why logging must be on and kept safely, and why attackers try to delete logs.",
@@ -130,10 +130,10 @@ const topic1: TopicManifest = {
       {
         q: "Where would you look to answer 'who tried to log in, and did it succeed?'",
         options: [
-          "The DNS log",
+          "The DNS lookup log",
           "The authentication (login) log",
-          "The web server log",
-          "The marketing report",
+          "The web server request log",
+          "The firewall connection log",
         ],
         answer: 1,
         why: "Authentication logs record sign-in attempts and their success, the first place to look for account attacks.",

@@ -108,10 +108,10 @@ const topic5: TopicManifest = {
       {
         q: "Why is a non-technical background often an asset in cyber?",
         options: [
-          "It is always a handicap",
+          "Because cyber roles rarely need any technical knowledge at all",
           "Many professionals come from other fields, and transferable strengths (communication, detail, business sense) are genuinely valued",
-          "Because cyber needs no technical skill",
-          "It is irrelevant either way",
+          "Because employers prefer candidates with no technical training to mould",
+          "Because a non-technical past lets you skip learning the fundamentals",
         ],
         answer: 1,
         why: "The field needs more than technical skill, and often lacks exactly the strengths other careers build. Your background can complete a team.",
@@ -119,10 +119,10 @@ const topic5: TopicManifest = {
       {
         q: "Which is a genuinely transferable strength for cyber?",
         options: [
-          "Your favourite colour",
+          "Having used computers since you were a young child",
           "Clear communication, explaining things to non-technical people",
-          "Nothing from other fields transfers",
-          "Only coding experience counts",
+          "Owning the newest and most powerful personal computer",
+          "Knowing the names of many famous hacking tools",
         ],
         answer: 1,
         why: "Communication is one of the most valued and scarce skills in cyber, especially in GRC and when explaining risk.",
@@ -130,10 +130,10 @@ const topic5: TopicManifest = {
       {
         q: "How should you present your non-technical background to an employer?",
         options: [
-          "Hide it and apologise for it",
+          "Mention it only briefly and move past it as quickly as you can",
           "Frame it as an asset, connecting its genuine strengths explicitly to what the cyber role needs",
-          "Never mention it",
-          "Pretend you have always been technical",
+          "List your old job titles without linking them to the role",
+          "Claim your old career was secretly technical all along",
         ],
         answer: 1,
         why: "Confident, honest reframing, your strengths tied to the role's needs, turns 'someone like me' into 'exactly who we need'.",

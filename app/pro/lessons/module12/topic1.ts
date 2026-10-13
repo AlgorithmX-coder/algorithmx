@@ -108,10 +108,10 @@ const topic1: TopicManifest = {
       {
         q: "What is the premise behind Cyber Essentials' focus on five basic controls?",
         options: [
-          "Advanced attacks are the main threat to everyone",
+          "Sophisticated, advanced attacks are the main threat most organisations face, so the controls target those",
           "Most attacks are opportunistic and exploit basic weaknesses, so getting the basics right stops the majority",
-          "Basics do not really matter",
-          "Only large companies need security",
+          "The controls mainly exist to satisfy auditors and win contracts, rather than to actually stop attacks",
+          "Large organisations are targeted far more than small ones, so only big firms really need the basics",
         ],
         answer: 1,
         why: "The scheme targets the common weaknesses most attacks exploit, which is why the basics, done well, block the large majority.",
@@ -119,10 +119,10 @@ const topic1: TopicManifest = {
       {
         q: "Which of these is one of the Cyber Essentials five controls?",
         options: [
-          "A nice office layout",
+          "Regular staff security-awareness training",
           "Security update management (patching promptly)",
-          "A large marketing budget",
-          "Fast internet",
+          "Encrypting data with full-disk encryption",
+          "Keeping tested offline backups",
         ],
         answer: 1,
         why: "The five are firewalls, secure configuration, access control, update management, and malware protection.",
@@ -130,10 +130,10 @@ const topic1: TopicManifest = {
       {
         q: "Why do the basics give more risk reduction than an expensive tool?",
         options: [
-          "Expensive tools never work",
+          "Because advanced tools defend only against rare threats most organisations never actually meet",
           "Because most real incidents exploit the basics being wrong; a tool on weak foundations leaves those gaps open",
-          "The basics are more expensive",
-          "They do not; always buy the tool first",
+          "Because fixing the basics is legally required, whereas buying security tools is entirely optional",
+          "Because a powerful enough tool removes the need to patch or control access at all",
         ],
         answer: 1,
         why: "Thorough basics defeat most of what actually comes at you. A tool bolted onto weak foundations leaves the common gaps attackers use.",

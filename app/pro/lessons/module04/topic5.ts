@@ -109,10 +109,10 @@ const topic5: TopicManifest = {
       {
         q: "What does a digital signature provide?",
         options: [
-          "Secrecy (hiding the contents)",
+          "Secrecy, by hiding the contents from everyone",
           "Authenticity (who sent it) and integrity (that it was not changed)",
-          "Faster downloads",
-          "A password reset",
+          "A guarantee that the message is delivered on time",
+          "Compression, so the message takes up less space",
         ],
         answer: 1,
         why: "Signatures prove origin and that the content is unaltered, a different job from encryption's secrecy.",
@@ -120,10 +120,10 @@ const topic5: TopicManifest = {
       {
         q: "How does signing use a key pair?",
         options: [
-          "Sign with the public key, verify with the private key",
+          "Sign with the public key, and verify with the private key",
           "Sign with your private key; anyone verifies with your public key",
-          "There are no keys in signing",
-          "The same single shared key",
+          "Both signing and verifying use your private key",
+          "A single shared key is used for both signing and verifying",
         ],
         answer: 1,
         why: "Only your private key could produce a signature your public key verifies, so a valid signature proves it came from you.",
@@ -131,10 +131,10 @@ const topic5: TopicManifest = {
       {
         q: "How did Stuxnet abuse the signature trust model?",
         options: [
-          "It broke the encryption mathematically",
+          "It broke the signature encryption mathematically",
           "It used stolen, legitimate signing certificates to make its malware appear trusted",
-          "It did not use cryptography",
-          "It guessed the private keys",
+          "It disabled the systems' signature checks completely",
+          "It guessed the companies' secret private keys",
         ],
         answer: 1,
         why: "By stealing real signing certificates, Stuxnet's components passed as genuine. Signatures are only as safe as the signing keys.",

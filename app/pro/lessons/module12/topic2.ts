@@ -108,10 +108,10 @@ const topic2: TopicManifest = {
       {
         q: "What is a secure baseline?",
         options: [
-          "The minimum internet speed a system needs",
+          "A one-off security scan run when a system is first installed",
           "A defined, known-good configuration that makes a system safe by default, applied consistently",
-          "The cheapest possible setup",
-          "A list of passwords",
+          "The default settings a system ships with out of the box",
+          "A record of every change ever made to a system's configuration",
         ],
         answer: 1,
         why: "Building systems to a consistent, hardened baseline removes forgotten defaults and odd one-off configurations.",
@@ -119,10 +119,10 @@ const topic2: TopicManifest = {
       {
         q: "Why does reducing attack surface improve security?",
         options: [
-          "It makes systems look nicer",
+          "It hides the system from attackers so they cannot find it at all",
           "The less there is (features, ports, accounts, exposure), the less there is for an attacker to target",
-          "It speeds up the internet",
-          "It does not; more features are safer",
+          "It encrypts the remaining services so attackers cannot read them",
+          "It guarantees a system can never be breached",
         ],
         answer: 1,
         why: "Every unnecessary component is a potential door. A minimal, purpose-built system is far easier to secure.",
@@ -130,10 +130,10 @@ const topic2: TopicManifest = {
       {
         q: "The Capital One breach is a classic example of:",
         options: [
-          "An unstoppable nation-state zero-day",
+          "A zero-day flaw in the firewall software that no patch existed for",
           "Misconfiguration, a preventable, self-inflicted exposure that a secure baseline and review would target",
-          "A denial-of-service attack",
-          "Physical theft of servers",
+          "A phishing email that tricked an employee into handing over credentials",
+          "A malicious insider copying data to a personal device",
         ],
         answer: 1,
         why: "A misconfigured firewall plus over-broad access exposed 100M+ records. Misconfiguration is one of the biggest, most preventable risks.",

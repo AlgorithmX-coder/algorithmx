@@ -107,10 +107,10 @@ const topic2: TopicManifest = {
       {
         q: "What is the difference between containment and eradication?",
         options: [
-          "They are the same",
+          "Containment removes the threat completely; eradication just slows its spread",
           "Containment limits damage and stops the spread now; eradication fully removes the threat and root cause afterwards",
-          "Eradication comes before containment",
-          "Containment is about backups",
+          "Eradication stops the spread quickly; containment fixes the root cause later",
+          "Containment restores systems from backup; eradication monitors for new attacks",
         ],
         answer: 1,
         why: "Stop the bleeding (containment, fast), then cure the wound (eradication, thorough). You contain first.",
@@ -118,10 +118,10 @@ const topic2: TopicManifest = {
       {
         q: "Why must eradication be thorough?",
         options: [
-          "To look professional",
+          "Because reconnecting systems quickly matters more than removing the threat fully",
           "Attackers leave multiple footholds, so removing the obvious malware is not enough; a missed backdoor lets them resume",
-          "It does not need to be thorough",
-          "Because thorough eradication is faster",
+          "Because containment already removed every trace of the attacker",
+          "Because the fastest clean-up is always the most complete one",
         ],
         answer: 1,
         why: "Incomplete eradication is a classic mistake: declare victory, reconnect, and the still-present attacker resumes. Remove everything and fix the root cause.",
@@ -129,10 +129,10 @@ const topic2: TopicManifest = {
       {
         q: "The Colonial Pipeline shutdown illustrates that containment:",
         options: [
-          "Is always easy and cost-free",
+          "Can always be done without affecting the business at all",
           "Often involves a hard trade-off, where the fastest way to stop the spread can itself cause major harm",
-          "Should always be avoided",
-          "Is the same as recovery",
+          "Should be delayed until the threat is fully understood",
+          "Is only ever about isolating a single laptop",
         ],
         answer: 1,
         why: "Shutting the pipeline contained the threat but halted fuel supply: a painful trade-off weighed under pressure, exactly what containment decisions involve.",

@@ -107,10 +107,10 @@ const topic4: TopicManifest = {
       {
         q: "What is the honest state of the cyber job market?",
         options: [
-          "Millions of unfilled jobs; you'll walk straight in",
+          "Huge demand at every level, so any beginner is hired within weeks",
           "Real demand, but entry-level is genuinely competitive and takes effort and persistence",
-          "Impossible to break into",
-          "No jobs exist at all",
+          "Strong demand, but only for people who already hold advanced certs",
+          "Shrinking demand, with fewer cyber jobs created each year",
         ],
         answer: 1,
         why: "The truth is between hype and gloom: the door is open, but there is a queue, and a smart, persistent approach works.",
@@ -118,10 +118,10 @@ const topic4: TopicManifest = {
       {
         q: "Why treat 'millions of unfilled cyber jobs' with scepticism?",
         options: [
-          "Because there is no demand at all",
+          "Because those figures secretly count only unpaid volunteer positions",
           "Because those headline figures are widely debated/debunked and don't match beginners' competitive reality",
-          "Because all the jobs are fake",
-          "Because cyber is not a real field",
+          "Because the figures were invented and there is no real demand at all",
+          "Because cyber jobs are being replaced by automation each year",
         ],
         answer: 1,
         why: "Demand is real but much of it is for experienced people; beginners face genuine competition, not an effortless gold rush.",
@@ -129,10 +129,10 @@ const topic4: TopicManifest = {
       {
         q: "What actually helps a beginner get hired?",
         options: [
-          "Waiting to be discovered",
+          "Sending the same generic CV to as many jobs as possible",
           "A portfolio, the right certs in order, networking, and persistence",
-          "Only luck and connections",
-          "Believing the hype",
+          "Holding out until a perfect dream role is finally advertised",
+          "Collecting as many advanced certifications as you can afford",
         ],
         answer: 1,
         why: "These are largely within your control: demonstrable ability, sensible certs, genuine networking, and dogged persistence.",

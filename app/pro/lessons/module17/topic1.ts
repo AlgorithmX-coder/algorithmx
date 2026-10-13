@@ -109,10 +109,10 @@ const topic1: TopicManifest = {
       {
         q: "Why is GRC often an accessible entry lane for career-changers?",
         options: [
-          "It requires no skills at all",
+          "Because GRC roles need no understanding of the business they protect",
           "Its roles draw on communication, organisation and business understanding, so non-technical backgrounds can be an asset",
-          "It is not really part of cyber security",
-          "It pays nothing",
+          "Because GRC is now mostly automated, leaving little for people to do",
+          "Because GRC asks for no analysis, writing or organisation at all",
         ],
         answer: 1,
         why: "GRC values process, people and business sense, so experience from other fields transfers well, making it a natural entry point for many.",
@@ -120,10 +120,10 @@ const topic1: TopicManifest = {
       {
         q: "What is the core of risk management?",
         options: [
-          "Eliminating all risk entirely",
+          "Buying enough security tools to remove every possible threat",
           "Treating cyber risk as business risk: weighing likelihood and impact and deciding to reduce, transfer, avoid or accept it",
-          "Saying no to everything",
-          "Ignoring risk until it happens",
+          "Transferring every risk to an insurer so the business carries none",
+          "Ranking threats by how technically advanced each attack is",
         ],
         answer: 1,
         why: "Risk management is about taking the right risks knowingly and protecting what matters proportionately, not eliminating all risk (impossible).",
@@ -131,10 +131,10 @@ const topic1: TopicManifest = {
       {
         q: "What does the Uber 2016 cover-up primarily illustrate?",
         options: [
-          "A clever technical exploit",
+          "That attackers will always get past even strong technical defences",
           "That governance and accountability, how leadership handles risk and its obligations, has serious legal and personal consequences",
-          "That breaches should be hidden",
-          "That GRC does not matter",
+          "That paying attackers off is an effective way to keep a breach quiet",
+          "That the main risk in a breach is the cost of fixing the flaw",
         ],
         answer: 1,
         why: "It was a governance failure: concealing the breach led to penalties and an executive's conviction. How risk is governed matters enormously.",

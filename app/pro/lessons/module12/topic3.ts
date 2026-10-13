@@ -108,10 +108,10 @@ const topic3: TopicManifest = {
       {
         q: "What does least privilege most directly limit?",
         options: [
-          "How fast systems run",
+          "How attackers first break in to a network",
           "The blast radius: how much damage any single compromise can do",
-          "The number of employees",
-          "The cost of software",
+          "How many alerts the monitoring tools generate",
+          "How long patches take to apply across the estate",
         ],
         answer: 1,
         why: "By keeping each account's access minimal, a stolen account or compromised machine can reach very little.",
@@ -119,10 +119,10 @@ const topic3: TopicManifest = {
       {
         q: "What is 'access creep'?",
         options: [
-          "Slowly logging in",
+          "Granting broad access upfront 'to be safe' rather than working out the minimum",
           "People accumulating permissions over role changes without old access being removed",
-          "A type of malware",
-          "Access that is too restrictive",
+          "Powerful admin access left switched on permanently when it is only needed occasionally",
+          "An attacker slowly escalating their privileges after breaking in",
         ],
         answer: 1,
         why: "Old access is rarely removed, so long-serving accounts end up able to reach far more than they need: a gift to an attacker.",
@@ -130,10 +130,10 @@ const topic3: TopicManifest = {
       {
         q: "A key lesson of the Uber 2022 breach is that:",
         options: [
-          "Keeping attackers out is the only thing that matters",
+          "Strong perimeter defences alone are enough to stop a determined attacker",
           "Limiting what a foothold can reach (least privilege, protected credentials) often decides how bad a breach becomes",
-          "Hard-coded credentials are fine if hidden well",
-          "MFA is useless",
+          "Hard-coded credentials are safe as long as they are stored inside the network",
+          "Multi-factor authentication removes the need for least privilege and credential hygiene",
         ],
         answer: 1,
         why: "The foothold became serious because of broad access and embedded credentials. Blast radius matters as much as entry.",

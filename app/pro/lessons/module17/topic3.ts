@@ -108,10 +108,10 @@ const topic3: TopicManifest = {
       {
         q: "In the GRC hierarchy, what is a 'control'?",
         options: [
-          "A high-level statement of intent",
+          "A high-level statement of intent (e.g. 'we will protect customer data')",
           "The actual safeguard that delivers protection (e.g. the MFA system enforcing a second factor)",
-          "A step-by-step how-to",
-          "A specific measurable rule",
+          "A step-by-step how-to (e.g. the exact steps to onboard a user)",
+          "A specific, measurable rule (e.g. 'passwords must be 12+ characters')",
         ],
         answer: 1,
         why: "Policy is intent, standard is the rule, procedure is the steps, and the control is the real safeguard doing the protecting.",
@@ -119,10 +119,10 @@ const topic3: TopicManifest = {
       {
         q: "Why are controls 'where security actually happens'?",
         options: [
-          "Because documents protect you",
+          "Because a well-written policy automatically puts the right safeguards in place",
           "Because however good the policy, nothing is protected unless the real safeguard is in place and working",
-          "Because policies are more important",
-          "They are not; paperwork is enough",
+          "Because auditors only ever check that the documents exist, not the controls",
+          "Because standards and procedures matter more than the safeguards themselves",
         ],
         answer: 1,
         why: "Documents describe and require security; controls deliver it. The whole point of policies and standards is to drive working controls.",
@@ -130,10 +130,10 @@ const topic3: TopicManifest = {
       {
         q: "What is the 'policy on paper' trap?",
         options: [
-          "Having too few policies",
+          "Having so many policies that staff cannot possibly follow them all",
           "Having the right documents but controls that are not actually in place, enforced or tested, creating false assurance",
-          "Writing policies on actual paper",
-          "A type of phishing",
+          "Enforcing controls strictly even though they were never written into a policy",
+          "Writing policies in language too vague for an auditor to measure",
         ],
         answer: 1,
         why: "It looks secure and compliant on paper while being exposed in reality, which is exactly what audits and sceptical GRC professionals exist to catch.",

@@ -107,10 +107,10 @@ const topic3: TopicManifest = {
       {
         q: "Why can't you just read through all the logs?",
         options: [
-          "Logs are secret",
+          "Logs are written in a format humans cannot read at all",
           "The volume is enormous (millions or billions a day), so you search and filter instead of reading",
-          "Logs are always empty",
-          "Reading logs is illegal",
+          "Most log entries are deleted within a few seconds of being created",
+          "Only automated tools are permitted to open log files",
         ],
         answer: 1,
         why: "At real scale, finding, not reading, is the challenge. You query logs like a database.",
@@ -118,10 +118,10 @@ const topic3: TopicManifest = {
       {
         q: "Which is the single strongest filter in most investigations?",
         options: [
-          "The colour of the log",
+          "The severity label the entry was given",
           "The time window around the suspected event",
-          "The length of the log file",
-          "The font of the entries",
+          "The total size of the log file",
+          "The order the entries were written in",
         ],
         answer: 1,
         why: "Narrowing by time instantly cuts millions of lines to a manageable slice; it is usually the most powerful filter.",
@@ -129,10 +129,10 @@ const topic3: TopicManifest = {
       {
         q: "Why start a search with a precise question?",
         options: [
-          "It is not necessary",
+          "Because a broad search across everything always finds the problem fastest",
           "A precise question tells you exactly what to filter; a vague one gives you nothing to narrow on",
-          "Questions slow you down",
-          "Searches work better with no goal",
+          "Because the tool answers general questions better than specific ones",
+          "Because you should decide the conclusion before you start searching",
         ],
         answer: 1,
         why: "The search is only as good as the question. Precise questions translate directly into effective filters.",

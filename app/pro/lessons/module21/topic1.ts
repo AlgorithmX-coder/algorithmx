@@ -107,10 +107,10 @@ const topic1: TopicManifest = {
       {
         q: "Why is a portfolio so powerful for a beginner?",
         options: [
-          "It replaces the need for any skill",
+          "It proves to an employer that you have years of professional experience",
           "Employers skills-test, so demonstrable work proves ability and breaks the 'experience trap'",
-          "It is only for artists",
-          "Claims are more convincing than work",
+          "It removes any need to attend an interview at all",
+          "It matters far more than actually understanding the work you show",
         ],
         answer: 1,
         why: "Proof of what you can do lets a beginner demonstrate ability before anyone hires them, out-competing longer CVs with nothing to show.",
@@ -118,10 +118,10 @@ const topic1: TopicManifest = {
       {
         q: "Which is a genuine portfolio piece you built in this course?",
         options: [
-          "A statement that you are passionate",
+          "A certificate of completion for finishing the course",
           "A Personal Security Audit, or an incident report, with real findings",
-          "A list of cyber words",
-          "Nothing; the course had no deliverables",
+          "A screenshot of your final score in every lesson",
+          "A list of the security tools mentioned in the course",
         ],
         answer: 1,
         why: "The course produced real artefacts (audit, phishing guide, vuln note, hardening checklist, incident report, risk assessment, script), exactly the credible pieces.",
@@ -129,10 +129,10 @@ const topic1: TopicManifest = {
       {
         q: "How should you present your portfolio?",
         options: [
-          "A cluttered pile of half-finished work",
+          "As many pieces as possible, finished or not, to show sheer volume",
           "A handful of clear, genuine pieces, tidied and shareable, honest enough to discuss",
-          "Hidden so no one can see it",
-          "Padded with work you did not do",
+          "Pieces packed with jargon so they look advanced to a stranger",
+          "Polished pieces that someone else actually built for you",
         ],
         answer: 1,
         why: "Quality over quantity, clearly presented and shareable, and honest, because you may be asked to discuss each piece.",

@@ -109,10 +109,10 @@ const topic5: TopicManifest = {
       {
         q: "Why is 'more alerts' not the same as 'more security'?",
         options: [
-          "It is the same thing",
+          "More alerts always mean more attacks are being stopped",
           "A flood of false positives causes alert fatigue, so real threats get missed in the noise",
-          "Alerts are always accurate",
-          "Because alerts slow down computers",
+          "Each extra alert makes the detection rules more accurate",
+          "A high alert count proves the SOC is working well",
         ],
         answer: 1,
         why: "Too many false alarms train analysts to ignore alerts, so the real one is missed, exactly the Target lesson.",
@@ -120,10 +120,10 @@ const topic5: TopicManifest = {
       {
         q: "What is tuning?",
         options: [
-          "Deleting all detection rules for quiet",
+          "Switching off any rule that has ever produced a false positive",
           "Refining rules to reduce false positives so real alerts stand out and can be trusted, without going blind",
-          "Generating as many alerts as possible",
-          "Turning off monitoring at night",
+          "Making every rule as broad as possible to catch more",
+          "Forwarding every alert straight to senior management",
         ],
         answer: 1,
         why: "Tuning sharpens detections to improve signal-to-noise, keeping what catches real threats and reducing what wastes time.",
@@ -131,10 +131,10 @@ const topic5: TopicManifest = {
       {
         q: "Why does signal-to-noise determine whether threats are caught?",
         options: [
-          "It does not matter",
+          "Because the tool with the most alerts always catches the most threats",
           "A trusted alert gets acted on; one lost in noise is ignored, and a missed alert has the same consequence as no alert",
-          "Because noisy SOCs are always best",
-          "Because signal-to-noise is only about speed",
+          "Because analysts can always investigate every single alert they receive",
+          "Because a louder alert is automatically a more serious one",
         ],
         answer: 1,
         why: "Analysts act on alerts they can trust. If real alerts are buried in false ones, they are effectively absent.",

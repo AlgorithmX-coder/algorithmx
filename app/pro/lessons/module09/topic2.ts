@@ -109,10 +109,10 @@ const topic2: TopicManifest = {
       {
         q: "Why does SQL injection work?",
         options: [
-          "The database is too slow",
+          "The database stores its passwords without encrypting them",
           "The website glues user input straight into the SQL command, so crafted input can change the command itself",
-          "The attacker guesses the password",
-          "The server runs out of memory",
+          "The attacker steals the database administrator's login",
+          "The website sends the database too many requests at once",
         ],
         answer: 1,
         why: "When input becomes part of the command rather than just data, the attacker can rewrite the query the database runs.",
@@ -120,10 +120,10 @@ const topic2: TopicManifest = {
       {
         q: "What is the definitive fix for SQL injection?",
         options: [
-          "Banning certain words from inputs",
+          "Filtering out dangerous words like 'DROP' from inputs",
           "Parameterised queries: keep the command and the user's data strictly separate",
-          "Hiding the login page",
-          "Making passwords longer",
+          "Encrypting the database so its contents are unreadable",
+          "Hiding the database behind a firewall",
         ],
         answer: 1,
         why: "Parameterised queries structurally prevent input from becoming part of the command. It is not a filter to bypass; it removes the possibility.",
@@ -131,10 +131,10 @@ const topic2: TopicManifest = {
       {
         q: "Why did the ICO treat the TalkTalk breach as especially avoidable?",
         options: [
-          "The attackers were a nation-state",
+          "The attack used a brand-new, undiscovered technique",
           "It was a well-known flaw with a standard, long-available fix, left on a neglected legacy page",
-          "No data was actually exposed",
-          "SQL injection had never been seen before",
+          "The attackers were a highly skilled organised gang",
+          "The breach affected only a handful of customers",
         ],
         answer: 1,
         why: "The flaw and its fix were old and standard. Leaving it unfixed on an old page was a failure of basic, routine web security.",

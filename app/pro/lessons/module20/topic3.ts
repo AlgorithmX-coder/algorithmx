@@ -108,10 +108,10 @@ const topic3: TopicManifest = {
       {
         q: "What is a sensible certification order for a beginner?",
         options: [
-          "An expensive advanced cert first",
+          "An advanced specialist cert first, then Security+, then a foundational cert",
           "A foundational cert, then CompTIA Security+, then a specialism, with advanced certs later",
-          "Only prestige certs, in any order",
-          "No certs ever",
+          "A specialism first, before any general entry-level certification",
+          "Whichever certification your first employer happens to pay for",
         ],
         answer: 1,
         why: "Build the base before chasing prestige names: foundation, the recognised entry standard (Security+), then specialise.",
@@ -119,10 +119,10 @@ const topic3: TopicManifest = {
       {
         q: "Do certifications guarantee a job?",
         options: [
-          "Yes, a cert guarantees employment",
+          "Yes, holding CompTIA Security+ guarantees you a junior role",
           "No; they help and open doors, but employers skills-test, so demonstrable ability matters as much",
-          "Certs are worthless",
-          "Only advanced certs count",
+          "No, because employers ignore certifications entirely these days",
+          "Only if you hold several advanced certifications all at once",
         ],
         answer: 1,
         why: "A cert plus a portfolio and real skill is far stronger than a cert alone. Certs are one part of your case, not a golden ticket.",
@@ -130,10 +130,10 @@ const topic3: TopicManifest = {
       {
         q: "What does 'this course is aligned to certification objectives' mean?",
         options: [
-          "Finishing the course awards you a certification",
+          "Finishing the course automatically awards you CompTIA Security+",
           "It covers the knowledge certs like Security+ test (good preparation), but is not itself a certification",
-          "Certifications are not needed",
-          "The course replaces all exams",
+          "The course lets you skip the Security+ exam and still be certified",
+          "Completing the course counts as official exam credit towards a cert",
         ],
         answer: 1,
         why: "Aligned means excellent preparation and real understanding; earning a cert still means passing that cert's own exam.",

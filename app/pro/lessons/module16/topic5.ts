@@ -108,10 +108,10 @@ const topic5: TopicManifest = {
       {
         q: "What is a tabletop exercise?",
         options: [
-          "A real attack on your systems",
+          "A live, hands-on simulated attack run against real production systems",
           "A discussion-based rehearsal of an incident scenario that tests the plan and team without affecting real systems",
-          "A type of malware",
-          "A hardware inventory",
+          "A penetration test carried out by an outside security firm",
+          "A written inventory of every device the organisation owns",
         ],
         answer: 1,
         why: "It is a fire drill for cyber incidents: cheap, low-risk, and it surfaces gaps in calm before a real crisis does.",
@@ -119,10 +119,10 @@ const topic5: TopicManifest = {
       {
         q: "What makes a good incident report?",
         options: [
-          "Vague and reassuring, playing down what happened",
+          "Reassuring and brief, playing down the impact to avoid alarm",
           "Clear, factual, structured and honest: what happened, impact, timeline, root cause, and lessons",
-          "So technical no one reads it",
-          "Focused on who to blame",
+          "Packed with technical detail so only experts can follow it",
+          "Centred on identifying which individual was at fault",
         ],
         answer: 1,
         why: "A clear, honest, readable report lets others understand, act on the lessons, and stands up to scrutiny.",
@@ -130,10 +130,10 @@ const topic5: TopicManifest = {
       {
         q: "Why must the post-incident review be blameless?",
         options: [
-          "To make everyone feel good",
+          "Because punishing people would breach employment law in every case",
           "Because blame makes people hide mistakes and information, so the organisation learns nothing and repeats the incident",
-          "It should not be; blame is best",
-          "Because it is faster",
+          "Because no individual ever contributes to an incident",
+          "Because a blameless review can skip the technical detail",
         ],
         answer: 1,
         why: "Blameless review surfaces the real causes honestly, mirroring the reporting-culture lesson. Blame drives the truth underground.",

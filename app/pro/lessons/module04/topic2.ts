@@ -113,10 +113,10 @@ const topic2: TopicManifest = {
       {
         q: "What is the main challenge with symmetric encryption?",
         options: [
-          "It is too slow for any use",
+          "It is far too slow for encrypting large amounts of data",
           "Getting the shared secret key to the other person securely (the key-distribution problem)",
-          "It cannot encrypt text",
-          "It needs no key at all",
+          "It can only protect data in transit, never data at rest",
+          "It needs a brand-new key for every single message",
         ],
         answer: 1,
         why: "Symmetric is fast, but sharing the single key safely, especially with a stranger, is the hard part asymmetric solves.",
@@ -124,10 +124,10 @@ const topic2: TopicManifest = {
       {
         q: "How does asymmetric encryption solve key distribution?",
         options: [
-          "By using no keys",
+          "By hiding the single shared key inside the message itself",
           "A public key anyone can use to encrypt, and a private key only you hold to decrypt, so no prior shared secret is needed",
-          "By sending the key in plain text",
-          "By making the key shorter",
+          "By sending the shared key openly across the network first",
+          "By using one key that both locks and unlocks the data",
         ],
         answer: 1,
         why: "You publish your public key; anyone encrypts with it, only your private key decrypts. Strangers can share secrets safely.",
@@ -135,10 +135,10 @@ const topic2: TopicManifest = {
       {
         q: "How does HTTPS use the two together?",
         options: [
-          "Only symmetric, always",
+          "Only symmetric encryption, for the whole connection",
           "Asymmetric to safely agree a shared symmetric key, then fast symmetric for the conversation",
-          "Only asymmetric, for everything",
-          "Neither; HTTPS uses no encryption",
+          "Only asymmetric encryption, for the whole connection",
+          "Symmetric to agree the key, then asymmetric for the conversation",
         ],
         answer: 1,
         why: "It combines the stranger-friendly key exchange of asymmetric with the speed of symmetric: the hybrid that powers secure browsing.",
