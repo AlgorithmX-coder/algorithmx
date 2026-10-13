@@ -214,3 +214,62 @@ export async function bootNorthwindRange(): Promise<NorthwindRange> {
     },
   };
 }
+
+/* ============================================================
+ * Generic scenario range — powers the Module 5 consolidation DRILLS.
+ *
+ * Each drill is a fresh client with its own tables and ONE vulnerable surface
+ * (a login or a search), seeded from a spec so new scenarios cost a few lines,
+ * not a new boot. Same wasm SQLite, same real injection, zero egress.
+ * ============================================================ */
+
+export type ScenarioSpec = {
+  /** Raw CREATE/INSERT SQL that seeds this scenario's tables. */
+  setup: string;
+  /** A vulnerable login: SELECT <select> FROM <table> WHERE <emailCol> = '<input>' AND <passCol> = '<input>'. */
+  login?: { table: string; select: string; emailCol: string; passCol: string; adminRole?: string; roleIdx?: number };
+  /** A vulnerable search: SELECT <select> FROM <table> WHERE <searchCol> LIKE '%<input>%'. */
+  search?: { table: string; select: string; searchCol: string };
+};
+
+export type ScenarioRange = {
+  attemptLogin: (email: string, password: string) => RangeRunResult & { authed: boolean; asAdmin: boolean };
+  search: (term: string) => RangeRunResult;
+};
+
+export async function bootScenario(spec: ScenarioSpec): Promise<ScenarioRange> {
+  const initSqlJs = (await import("sql.js")).default;
+  const wasmBinary = await fetch("/operators/sql-wasm.wasm").then((r) => {
+    if (!r.ok) throw new Error(`range wasm failed to load (${r.status})`);
+    return r.arrayBuffer();
+  });
+  const SQL = await initSqlJs({ wasmBinary });
+  const db = new SQL.Database() as unknown as SqlDb;
+  db.run(spec.setup);
+
+  const run = (sql: string): RangeRunResult => {
+    try {
+      const res = db.exec(sql);
+      if (!res.length) return { sql, columns: [], rows: [], error: null };
+      return { sql, columns: res[0].columns, rows: res[0].values, error: null };
+    } catch (e) {
+      return { sql, columns: [], rows: [], error: (e as Error).message };
+    }
+  };
+
+  return {
+    attemptLogin(email, password) {
+      const l = spec.login;
+      if (!l) return { sql: "", columns: [], rows: [], error: "no login surface", authed: false, asAdmin: false };
+      const sql = `SELECT ${l.select} FROM ${l.table} WHERE ${l.emailCol} = '${email}' AND ${l.passCol} = '${password}'`;
+      const r = run(sql);
+      const ri = l.roleIdx ?? -1;
+      return { ...r, authed: r.rows.length > 0, asAdmin: l.adminRole != null && ri >= 0 ? r.rows.some((row) => row[ri] === l.adminRole) : false };
+    },
+    search(term) {
+      const s = spec.search;
+      if (!s) return { sql: "", columns: [], rows: [], error: "no search surface" };
+      return run(`SELECT ${s.select} FROM ${s.table} WHERE ${s.searchCol} LIKE '%${term}%'`);
+    },
+  };
+}
