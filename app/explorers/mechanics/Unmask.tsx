@@ -101,7 +101,12 @@ export default function Unmask({ payload, audio, onEvent, voiceOn }: MechanicPro
                   onClick={() => reveal(it.id)}
                   className="sr-btn"
                   disabled={submitted || locked}
-                  style={{ width: "100%", textAlign: "left", fontFamily: MONO, fontSize: 12.5, color: T.actionAmber, background: `${T.actionAmber}12`, border: "none", borderTop: `1px dashed ${T.actionAmber}`, padding: "12px 14px", cursor: "pointer" }}
+                  // Bumped from a ~7% amber tint to this — reported as too
+                  // dark to read on the theme's darker card backgrounds
+                  // ("crack", "storm", "prize"); a visible border + bolder
+                  // weight make it read as an obviously tappable control on
+                  // any of them, not just the lighter ones.
+                  style={{ width: "100%", textAlign: "left", fontFamily: MONO, fontSize: 12.5, fontWeight: 700, color: T.actionAmber, background: `${T.actionAmber}26`, border: `1px solid ${T.actionAmber}66`, borderTop: `1px dashed ${T.actionAmber}`, padding: "12px 14px", cursor: "pointer" }}
                 >
                   {payload.revealText ?? "▸ TAP TO REVEAL THE REAL ADDRESS"}
                 </button>
