@@ -190,8 +190,13 @@ export default function PhoneRuntime({ phoneCase, onExit, onNextCase }: { phoneC
         if (step.ok) { push({ id: nextId(), kind: "wren", text: step.ok }); await speak(step.ok, step.okVoice); }
       } else if (step.t === "choose") {
         let done = false;
+        // Shuffled once per presentation, not per render — matched by label,
+        // not index, so reordering is always safe. Without this the correct
+        // option sat in the same authored slot (almost always first) every
+        // single time, which a kid (or a UAT tester) learns to exploit fast.
+        const choiceOptions = shuffled(step.options.length).map((i) => step.options[i]);
         while (!done) {
-          setDock({ type: "choose", prompt: step.prompt, options: step.options });
+          setDock({ type: "choose", prompt: step.prompt, options: choiceOptions });
           const picked = await awaitUser();
           setDock(null);
           const opt = step.options.find((o) => o.label === picked)!;
