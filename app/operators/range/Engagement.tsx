@@ -11,7 +11,7 @@
  * learning. Each module supplies its teaching content + target as a ModuleDef;
  * the only bespoke code is the Act surface. */
 
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 
 export type LessonBlock = { h: string; body: string };
 export type ExampleLine = { t: string; leak?: boolean };
@@ -19,6 +19,9 @@ export type Check = {
   q: string;
   options: { text: string; correct?: boolean; feedback: string }[];
 };
+/** A technical term the learner can hover (desktop) or tap (mobile) to see a
+ *  plain, friendly definition. Auto-wrapped into lesson/defend text. */
+export type GlossaryEntry = { term: string; definition: string };
 
 // A learner-facing unit is a "Module" (Module 01…16). The in-fiction activity
 // you run inside one is still "the engagement". The persistence layer keys off
@@ -37,8 +40,17 @@ export type ModuleDef = {
      *  the learner must finish it AND pass the check before signing the scope.
      *  Modules without it are unchanged. */
     Interactive?: React.ComponentType<{ onDone: () => void }>;
+    /** Optional end-of-lesson recap bullets, shown as a "Recap" callout. */
+    summary?: string[];
     check: Check;
   };
+  /** Optional glossary: technical terms get a hover/tap definition, auto-wrapped
+   *  into lesson + defend text (first occurrence of each term). A teaching
+   *  standard — anything a 14-17 learner wouldn't just know gets explained. */
+  glossary?: GlossaryEntry[];
+  /** Optional consolidation drills (scenario-based practice applying the skill
+   *  to new clients). When present, a "Drills" beat runs after the capture. */
+  Consolidation?: React.ComponentType<{ onDone: () => void }>;
   scope: { target: string; inScope: string; offLimits: string; timebox: string };
   handler: string;
   hint: string;
@@ -74,10 +86,62 @@ export const DISP = "var(--font-chakra),'Chakra Petch','Segoe UI',system-ui,sans
 export const MONO = "var(--font-plex-mono),'IBM Plex Mono',ui-monospace,'JetBrains Mono',Menlo,Consolas,monospace";
 export const SANS = "var(--font-plex-sans),'IBM Plex Sans',system-ui,-apple-system,'Segoe UI',sans-serif";
 
-type Phase = "brief" | "lesson" | "authorize" | "act" | "defend" | "report";
-const BEATS: { id: Phase; label: string }[] = [
+/* ───────── glossary: hover/tap-to-explain technical terms ─────────
+ * Modelled on Cyber Pro's, dialled up for the younger audience: a glowing
+ * dotted term with a ✦ spark, and a popover that pops in. Teaching standard. */
+export function GlossaryTerm({ term, definition }: { term: string; definition: string }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <span style={{ position: "relative", display: "inline-block" }}>
+      <button
+        type="button"
+        onClick={() => setOpen((o) => !o)}
+        onMouseEnter={() => setOpen(true)} onMouseLeave={() => setOpen(false)}
+        onFocus={() => setOpen(true)} onBlur={() => setOpen(false)}
+        aria-expanded={open}
+        style={{ font: "inherit", color: C.indigo2, fontWeight: 600, background: "transparent", border: "none", padding: 0, cursor: "help", borderBottom: `1.5px dotted ${C.indigo}`, textShadow: open ? `0 0 10px ${C.indigo}` : "none", transition: "text-shadow .15s" }}
+      >
+        {term}<span aria-hidden style={{ fontSize: ".7em", color: C.indigo2, verticalAlign: "super", marginLeft: 1 }}>✦</span>
+      </button>
+      {open && (
+        <span role="tooltip" className="co-anim co-pop" style={{ position: "absolute", left: 0, bottom: "calc(100% + 9px)", zIndex: 40, width: 272, maxWidth: "82vw", background: C.raise, border: `1px solid ${C.indigo}66`, borderRadius: 12, padding: "12px 14px", boxShadow: `0 14px 34px rgba(0,0,0,.6), 0 0 0 1px ${C.indigo}22`, fontFamily: SANS, fontSize: 13.5, fontWeight: 400, lineHeight: 1.55, color: C.soft, whiteSpace: "normal", letterSpacing: "normal", textTransform: "none" }}>
+          <span style={{ display: "block", fontFamily: MONO, fontSize: 10.5, fontWeight: 700, letterSpacing: ".08em", color: C.indigo2, marginBottom: 5 }}>✦ {term.toUpperCase()}</span>
+          {definition}
+        </span>
+      )}
+    </span>
+  );
+}
+
+function escapeRegExp(s: string): string { return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); }
+
+/** Wrap the first unseen occurrence of each glossary term in `text`. `seen`
+ *  is shared across a block so a term lights up once, not on every mention. */
+export function withGlossary(text: string, glossary: GlossaryEntry[] | undefined, seen: Set<string>, keyPrefix: string): ReactNode {
+  if (!glossary || glossary.length === 0) return text;
+  const sorted = [...glossary].sort((a, b) => b.term.length - a.term.length);
+  const pattern = new RegExp(`\\b(${sorted.map((g) => escapeRegExp(g.term)).join("|")})\\b`, "gi");
+  const out: ReactNode[] = [];
+  let last = 0;
+  let m: RegExpExecArray | null;
+  while ((m = pattern.exec(text)) !== null) {
+    const matched = m[0];
+    const key = matched.toLowerCase();
+    const entry = sorted.find((g) => g.term.toLowerCase() === key);
+    if (!entry || seen.has(key)) continue;
+    seen.add(key);
+    if (m.index > last) out.push(text.slice(last, m.index));
+    out.push(<GlossaryTerm key={`${keyPrefix}-${m.index}`} term={matched} definition={entry.definition} />);
+    last = m.index + matched.length;
+  }
+  if (last < text.length) out.push(text.slice(last));
+  return out.length ? out : text;
+}
+
+type Phase = "brief" | "lesson" | "authorize" | "act" | "drills" | "defend" | "report";
+const BASE_BEATS: { id: Phase; label: string }[] = [
   { id: "brief", label: "Brief" }, { id: "lesson", label: "Lesson" }, { id: "authorize", label: "Scope" },
-  { id: "act", label: "Capture" }, { id: "defend", label: "Defend" }, { id: "report", label: "Report" },
+  { id: "act", label: "Capture" }, { id: "drills", label: "Drills" }, { id: "defend", label: "Defend" }, { id: "report", label: "Report" },
 ];
 
 export default function Engagement({
@@ -108,8 +172,12 @@ export default function Engagement({
   const lessonReady = lessonOk && (!mod.lesson.Interactive || lessonLabOk);
   const defendReady = defendOk && (!mod.defend.Interactive || defendLabOk);
   const [hint, setHint] = useState(false);
+  const BEATS = BASE_BEATS.filter((b) => b.id !== "drills" || !!mod.Consolidation);
   const idx = BEATS.findIndex((b) => b.id === phase);
 
+  function afterCapture() {
+    setPhase(mod.Consolidation ? "drills" : "defend");
+  }
   function goToReport() {
     onReport?.(callsign);
     setPhase("report");
@@ -143,12 +211,15 @@ export default function Engagement({
         {phase === "lesson" && (
           <Panel>
             <Eyebrow>◆ Lesson · learn the ground</Eyebrow>
-            {mod.lesson.blocks.map((b, i) => (
-              <div key={i} style={{ marginBottom: 18 }}>
-                <h3 style={h3}>{b.h}</h3>
-                <p style={{ color: C.soft, fontSize: 14.5, lineHeight: 1.62, marginTop: 6 }}>{b.body}</p>
-              </div>
-            ))}
+            {mod.lesson.blocks.map((b, i) => {
+              const seen = new Set<string>();
+              return (
+                <div key={i} style={{ marginBottom: 18 }}>
+                  <h3 style={h3}>{b.h}</h3>
+                  <p style={{ color: C.soft, fontSize: 14.5, lineHeight: 1.62, marginTop: 6 }}>{withGlossary(b.body, mod.glossary, seen, `lb${i}`)}</p>
+                </div>
+              );
+            })}
             {mod.lesson.example && (
               <div style={{ margin: "6px 0 20px" }}>
                 <div style={{ fontFamily: MONO, fontSize: 11, letterSpacing: ".08em", textTransform: "uppercase", color: C.mute, marginBottom: 8 }}>Worked example</div>
@@ -163,6 +234,14 @@ export default function Engagement({
             {mod.lesson.Interactive && (
               <div style={{ margin: "4px 0 18px" }}>
                 <mod.lesson.Interactive onDone={() => setLessonLabOk(true)} />
+              </div>
+            )}
+            {mod.lesson.summary && mod.lesson.summary.length > 0 && (
+              <div style={{ margin: "6px 0 18px", padding: "14px 16px", borderRadius: 12, background: "rgba(95,230,255,0.05)", border: "1px solid rgba(95,230,255,0.3)" }}>
+                <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: ".12em", textTransform: "uppercase", color: C.cyan, fontWeight: 700, marginBottom: 8 }}>✦ Recap</div>
+                <ul style={{ margin: 0, paddingLeft: 18, display: "grid", gap: 5 }}>
+                  {mod.lesson.summary.map((s, i) => <li key={i} style={{ color: C.soft, fontSize: 13.5, lineHeight: 1.5 }}>{s}</li>)}
+                </ul>
               </div>
             )}
             <CheckBox check={mod.lesson.check} onPass={() => setLessonOk(true)} />
@@ -201,11 +280,22 @@ export default function Engagement({
               <span style={handlerTag}>HANDLER</span>
               <span style={{ fontSize: 14, lineHeight: 1.5 }}>{mod.handler}</span>
             </div>
-            <mod.Act onCapture={() => setPhase("defend")} />
+            <mod.Act onCapture={afterCapture} />
             <div>
               <button onClick={() => setHint(!hint)} style={{ background: "none", border: "none", color: C.indigo2, fontFamily: MONO, fontSize: 12, cursor: "pointer", textDecoration: "underline", textUnderlineOffset: 3, padding: "4px 0" }}>{hint ? "hide hint" : "hint"}</button>
               {hint && <div style={{ marginTop: 6, padding: "12px 14px", borderLeft: `2px solid ${C.indigo}`, background: "rgba(139,123,255,0.05)", fontSize: 13.5, color: C.soft, lineHeight: 1.55 }}>{mod.hint}</div>}
             </div>
+          </div>
+        )}
+
+        {/* DRILLS (consolidation — apply the skill to new client scenarios) */}
+        {phase === "drills" && mod.Consolidation && (
+          <div style={{ display: "grid", gap: 14 }}>
+            <div style={handlerBox}>
+              <span style={handlerTag}>HANDLER</span>
+              <span style={{ fontSize: 14, lineHeight: 1.5 }}>Good capture. Before we write it up, two quick field jobs — new clients, same skill, less hand-holding. This is how it sticks.</span>
+            </div>
+            <mod.Consolidation onDone={() => setPhase("defend")} />
           </div>
         )}
 
@@ -219,12 +309,15 @@ export default function Engagement({
             </div>
             <Panel>
               <Eyebrow>◆ Debrief · now defend it</Eyebrow>
-              {mod.defend.blocks.map((b, i) => (
-                <div key={i} style={{ marginBottom: 16 }}>
-                  <h3 style={h3}>{b.h}</h3>
-                  <p style={{ color: C.soft, fontSize: 14.5, lineHeight: 1.62, marginTop: 6 }}>{b.body}</p>
-                </div>
-              ))}
+              {mod.defend.blocks.map((b, i) => {
+                const seen = new Set<string>();
+                return (
+                  <div key={i} style={{ marginBottom: 16 }}>
+                    <h3 style={h3}>{b.h}</h3>
+                    <p style={{ color: C.soft, fontSize: 14.5, lineHeight: 1.62, marginTop: 6 }}>{withGlossary(b.body, mod.glossary, seen, `db${i}`)}</p>
+                  </div>
+                );
+              })}
               {mod.defend.Interactive && (
                 <div style={{ margin: "4px 0 18px" }}>
                   <mod.defend.Interactive onDone={() => setDefendLabOk(true)} />
@@ -245,10 +338,18 @@ export default function Engagement({
   );
 }
 
-/* ---------- comprehension check ---------- */
+/* ---------- comprehension check ----------
+ * Options are SHUFFLED once on mount, so the correct answer is never in a
+ * predictable position (no "always pick the middle one" tell). Selection is
+ * tracked by the option object, not its index, so shuffling is safe. */
 function CheckBox({ check, onPass }: { check: Check; onPass: () => void }) {
   const [picked, setPicked] = useState<number | null>(null);
   const [done, setDone] = useState(false);
+  const [opts] = useState(() => {
+    const a = check.options.map((o, i) => ({ ...o, _i: i }));
+    for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+    return a;
+  });
   return (
     <div style={{ marginTop: 8, padding: "16px 18px", borderRadius: 12, border: `1px solid ${C.line}`, background: "rgba(139,123,255,0.04)" }}>
       <div style={{ display: "flex", gap: 8, alignItems: "baseline", marginBottom: 12 }}>
@@ -256,7 +357,7 @@ function CheckBox({ check, onPass }: { check: Check; onPass: () => void }) {
         <span style={{ fontFamily: DISP, fontWeight: 600, fontSize: 15.5, color: C.ink }}>{check.q}</span>
       </div>
       <div style={{ display: "grid", gap: 8 }}>
-        {check.options.map((o, i) => {
+        {opts.map((o, i) => {
           const isPicked = picked === i;
           const border = isPicked ? (o.correct ? C.green : C.red) : C.line;
           return (
