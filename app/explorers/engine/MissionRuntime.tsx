@@ -241,7 +241,10 @@ function MissionMap({ manifest, pos, stampNew }: { manifest: MissionManifest; po
               </span>
             )}
             {justStamped && (
-              <StampMark text="DONE" visible reduced={false} style={{ position: "absolute", right: 14, top: -8 }} />
+              // Vertically centered on the card (not `top: -8`, which poked
+              // the stamp up past the card's own edge into the 10px gap
+              // between rows — misaligned against whichever row sat above).
+              <StampMark text="DONE" visible reduced={false} style={{ position: "absolute", right: 14, top: "50%", transform: "translateY(-50%) rotate(-3deg)" }} />
             )}
           </div>
         );
@@ -453,8 +456,12 @@ export default function MissionRuntime({ manifest, devStartBeat, onExit, onNextC
     const clip = atStart ? manifest.voice?.transmission : pos.beat === "debrief" ? manifest.voice?.debrief : undefined;
     if (clip) playWren(clip, voiceOn);
     // During a cycle the LEARN/PLAY stages own WREN (narrator-led lessons +
-    // exercise set-ups); stopping here would race and cut them off on entry.
-    else if (pos.beat !== "cycle") stopWren();
+    // exercise set-ups), and CatchThemStage owns its own test-intro clip —
+    // both fire their own child layout effect on mount, which runs BEFORE
+    // this parent one in the same commit; stopping here would always win
+    // the race and cut them off on entry (this is why "Time for the Test"
+    // never actually played, even with voice on).
+    else if (pos.beat !== "cycle" && pos.beat !== "catch") stopWren();
   }, [atStart, pos.beat, resumeOffer, filmToPlay, voiceOn, manifest.voice]);
   useEffect(() => () => stopWren(), []);
 
