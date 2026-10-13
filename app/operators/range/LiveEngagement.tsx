@@ -1,12 +1,12 @@
 "use client";
 
-/* LiveEngagement — the Engagement shell wired to persistence.
+/* LiveEngagement - the Engagement shell wired to persistence.
  *
  * Wraps the pure <Engagement> (which the /dev + preview routes use without a
  * backend) and, when the learner reaches the report beat, files the module's
  * finding + saves progress/reputation via the fileEngagement server action.
- * The save is fire-and-forget from the UI's point of view — the celebration
- * never waits on the network — but a soft note appears if nothing could be
+ * The save is fire-and-forget from the UI's point of view - the celebration
+ * never waits on the network - but a soft note appears if nothing could be
  * saved (e.g. the family account has no learner profile yet). */
 
 import { useState } from "react";
@@ -52,7 +52,7 @@ export default function LiveEngagement({ mod }: { mod: ModuleDef }) {
       } else {
         setNote(
           res.reason === "no_learner"
-            ? "Heads up — add a learner profile to save this to a portfolio."
+            ? "Heads up - add a learner profile to save this to a portfolio."
             : "Your capture stands, but progress couldn't be saved just now.",
         );
       }

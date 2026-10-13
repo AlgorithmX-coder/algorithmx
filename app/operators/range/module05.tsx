@@ -1,6 +1,6 @@
 "use client";
 
-/* Module 5 — Injection (DEPTH STANDARD v2).
+/* Module 5 - Injection (DEPTH STANDARD v2).
  *
  * The full engagement, roughly doubled, built to the standard the owner set
  * from UAT: hover/tap glossary on every technical term, de-biased + tougher
@@ -19,20 +19,20 @@ import {
 /* ───────────────────────── glossary ───────────────────────── */
 
 const GLOSSARY: GlossaryEntry[] = [
-  { term: "database", definition: "A giant, organised store of information — picture a stack of spreadsheets the website reads from and writes to." },
-  { term: "query", definition: "A question the app asks the database, written in SQL — like 'give me the user whose email is this'." },
-  { term: "SQL", definition: "Structured Query Language — the language websites use to talk to their database." },
+  { term: "database", definition: "A giant, organised store of information - picture a stack of spreadsheets the website reads from and writes to." },
+  { term: "query", definition: "A question the app asks the database, written in SQL - like 'give me the user whose email is this'." },
+  { term: "SQL", definition: "Structured Query Language - the language websites use to talk to their database." },
   { term: "injection", definition: "Sneaking your own commands into an app's input so they run as code instead of being treated as plain text." },
-  { term: "payload", definition: "The crafted input you send to pull off an attack — your 'ammo'." },
+  { term: "payload", definition: "The crafted input you send to pull off an attack - your 'ammo'." },
   { term: "parameterised query", definition: "The safe way to talk to a database: the query has blanks, and your input is slotted in as pure data that can never run as commands." },
-  { term: "UNION", definition: "A SQL move that staples a second query's results onto the first — letting you pull data from a whole different table." },
-  { term: "column", definition: "One field in a table — like a single column in a spreadsheet, e.g. 'email'." },
-  { term: "table", definition: "A set of same-shaped rows in a database — like one sheet in a spreadsheet, e.g. the 'users' table." },
+  { term: "UNION", definition: "A SQL move that staples a second query's results onto the first - letting you pull data from a whole different table." },
+  { term: "column", definition: "One field in a table - like a single column in a spreadsheet, e.g. 'email'." },
+  { term: "table", definition: "A set of same-shaped rows in a database - like one sheet in a spreadsheet, e.g. the 'users' table." },
   { term: "schema", definition: "The blueprint of a database: the list of its tables and what columns each one has." },
   { term: "hash", definition: "A scrambled fingerprint of a password. One-way by design: easy to make, meant to be impossible to reverse." },
-  { term: "authentication", definition: "Proving you are who you say you are — usually with a password. The front door of an app." },
-  { term: "enumerate", definition: "To list things out one by one — here, discovering what tables and columns a database has." },
-  { term: "syntax error", definition: "The database complaining that your query is written wrong — often a clue that it's taking your input literally." },
+  { term: "authentication", definition: "Proving you are who you say you are - usually with a password. The front door of an app." },
+  { term: "enumerate", definition: "To list things out one by one - here, discovering what tables and columns a database has." },
+  { term: "syntax error", definition: "The database complaining that your query is written wrong - often a clue that it's taking your input literally." },
 ];
 const G = (text: string, keyPrefix: string) => withGlossary(text, GLOSSARY, new Set<string>(), keyPrefix);
 
@@ -123,7 +123,7 @@ function InputBecomesCodeLab({ onDone }: { onDone: () => void }) {
       </pre>
       {broke && (
         <div style={{ marginTop: 11, padding: "10px 13px", borderRadius: 9, background: "rgba(242,109,114,.08)", border: `1px solid ${C.red}55`, fontSize: 13, color: C.ink, lineHeight: 1.5 }}>
-          See it? Your <b style={{ fontFamily: MONO }}>&apos;</b> closed the string early. Everything after it is now read as <b>commands, not data</b>. That&rsquo;s the whole of injection — and you just did it.
+          See it? Your <b style={{ fontFamily: MONO }}>&apos;</b> closed the string early. Everything after it is now read as <b>commands, not data</b>. That&rsquo;s the whole of injection - and you just did it.
         </div>
       )}
     </div>
@@ -135,9 +135,9 @@ function InputBecomesCodeLab({ onDone }: { onDone: () => void }) {
 function PickSafeQueryLab({ onDone }: { onDone: () => void }) {
   const [picked, setPicked] = useState<number | null>(null);
   const opts = [
-    { code: `"… WHERE email = '" + email + "'"`, ok: false, why: "This is the bug itself — gluing input into the string. Exactly what you just exploited." },
-    { code: `"… WHERE email = '" + email.replace("'", "") + "'"`, ok: false, why: "Stripping quotes is a blocklist — bypassable, and it still builds the query by hand. Not the real fix." },
-    { code: `"… WHERE email = ?"  +  bind([email])`, ok: true, why: "Parameterised: the ? is a placeholder and the value is sent separately, so the database treats it as data — never as SQL. This is the fix." },
+    { code: `"… WHERE email = '" + email + "'"`, ok: false, why: "This is the bug itself - gluing input into the string. Exactly what you just exploited." },
+    { code: `"… WHERE email = '" + email.replace("'", "") + "'"`, ok: false, why: "Stripping quotes is a blocklist - bypassable, and it still builds the query by hand. Not the real fix." },
+    { code: `"… WHERE email = ?"  +  bind([email])`, ok: true, why: "Parameterised: the ? is a placeholder and the value is sent separately, so the database treats it as data - never as SQL. This is the fix." },
   ];
   return (
     <div style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: 12, padding: "15px 16px" }}>
@@ -170,7 +170,7 @@ type Stage = {
 const STAGES: Stage[] = [
   {
     key: "probe", title: "Probe", surface: "login",
-    goal: "Confirm the login is injectable. Make it error by breaking the query — put a single quote in the email and log in. A syntax error means it's taking your input literally.",
+    goal: "Confirm the login is injectable. Make it error by breaking the query - put a single quote in the email and log in. A syntax error means it's taking your input literally.",
     tokens: ["'"],
     hints: ["A valid query won't error. Feed it something that breaks the SQL syntax.", "Put a single quote ' in the email field and submit. The extra quote makes the query invalid and it throws."],
     reveal: "'", done: (r) => r.error != null,
@@ -192,9 +192,9 @@ const STAGES: Stage[] = [
   },
   {
     key: "enumerate", title: "Map the schema", surface: "search",
-    goal: "You don't know what else is in the database yet. Every SQLite database lists its own tables in a built-in table called sqlite_master — UNION it out to enumerate the schema and find what's hidden.",
+    goal: "You don't know what else is in the database yet. Every SQLite database lists its own tables in a built-in table called sqlite_master - UNION it out to enumerate the schema and find what's hidden.",
     tokens: ["'", " UNION SELECT ", "name", "sql", "type", ",", " FROM sqlite_master", "--"],
-    hints: ["Same UNION, 3 columns again — but this time SELECT from sqlite_master.", "Try: ' UNION SELECT name, sql, type FROM sqlite_master-- and read the table names that come back. One of them is interesting."],
+    hints: ["Same UNION, 3 columns again - but this time SELECT from sqlite_master.", "Try: ' UNION SELECT name, sql, type FROM sqlite_master-- and read the table names that come back. One of them is interesting."],
     reveal: "' UNION SELECT name, sql, type FROM sqlite_master--",
     done: (r) => r.rows.some((row) => row.some((c) => c === "secrets")),
   },
@@ -265,7 +265,7 @@ function InjectionAct({ onCapture }: { onCapture: () => void }) {
           {stage.surface === "login" ? (
             <>
               <div style={{ marginBottom: 12 }}><label style={lab}>email</label><input style={inp} value={email} onChange={(e) => setEmail(e.target.value)} placeholder="name@northwind.range" /></div>
-              <div style={{ marginBottom: 14 }}><label style={lab}>password</label><input style={inp} value={pass} onChange={(e) => setPass(e.target.value)} placeholder="(leave blank — go around it)" /></div>
+              <div style={{ marginBottom: 14 }}><label style={lab}>password</label><input style={inp} value={pass} onChange={(e) => setPass(e.target.value)} placeholder="(leave blank - go around it)" /></div>
             </>
           ) : (
             <div style={{ marginBottom: 14 }}><label style={lab}>search products</label><input style={inp} value={term} onChange={(e) => setTerm(e.target.value)} placeholder="e.g. oil" /></div>
@@ -300,8 +300,8 @@ type DrillCfg = {
 
 const DRILLS: DrillCfg[] = [
   {
-    client: "Harborlight — children's charity",
-    brief: "Harborlight's donor portal goes live Monday. They've asked Redoubt for a quick smoke test of the login first. No step-by-step this time — you've done this move on Northwind. Prove a stranger can't walk in without a password.",
+    client: "Harborlight - children's charity",
+    brief: "Harborlight's donor portal goes live Monday. They've asked Redoubt for a quick smoke test of the login first. No step-by-step this time - you've done this move on Northwind. Prove a stranger can't walk in without a password.",
     surface: "login", host: "give.harborlight.range · donor login",
     spec: {
       setup: `CREATE TABLE donors (id INTEGER PRIMARY KEY, email TEXT, pass TEXT, role TEXT);
@@ -315,7 +315,7 @@ const DRILLS: DrillCfg[] = [
     hint: "Same front-door move as Northwind: close the string, force it true, comment out the rest. Email field; password blank. ' OR 1=1--",
     reveal: "' OR 1=1--",
     done: (r) => !!r.authed,
-    success: "Signed in with no password — Harborlight's login trusts user input exactly like Northwind's did. Finding logged for them.",
+    success: "Signed in with no password - Harborlight's login trusts user input exactly like Northwind's did. Finding logged for them.",
   },
   {
     client: "Meridian Library",
@@ -387,7 +387,7 @@ function DrillSurface({ cfg, onSolved }: { cfg: DrillCfg; onSolved: () => void }
               <button onClick={() => setShowReveal(true)} style={{ background: "none", border: "none", color: C.indigo2, fontFamily: MONO, fontSize: 12, cursor: "pointer", textDecoration: "underline", textUnderlineOffset: 3 }}>hint</button>
             ) : (
               <div style={{ padding: "9px 12px", borderLeft: `2px solid ${C.indigo}`, background: "rgba(139,123,255,0.05)", fontSize: 13, color: C.soft, lineHeight: 1.5 }}>
-                {cfg.hint} <button onClick={() => setVal(cfg.reveal)} style={{ background: "none", border: "none", color: C.mute, fontFamily: MONO, fontSize: 12, cursor: "pointer" }}>— fill it</button>
+                {cfg.hint} <button onClick={() => setVal(cfg.reveal)} style={{ background: "none", border: "none", color: C.mute, fontFamily: MONO, fontSize: 12, cursor: "pointer" }}>- fill it</button>
               </div>
             )}
           </div>
@@ -433,25 +433,25 @@ export const MODULE5: ModuleDef = {
     "A deep engagement. Northwind Foods' staff portal and product shop both build their database queries straight from whatever you type. Your job is the full job: prove the weakness, break in, read out the staff records, map what else is in there, and reach the one secret they really didn't want found. Then two field jobs for new clients. All for real.",
   lesson: {
     blocks: [
-      { h: "First — what's a database?", body: "Almost every app stores its information in a database: an organised store you can picture as a stack of spreadsheets. Each table is one sheet (a 'users' table, a 'products' table), and each row is one record. The app reads and writes it constantly — your login, your messages, your scores all live there. The app talks to the database in a language called SQL, by sending it a query." },
-      { h: "How a login actually checks you", body: "When you log in, the app builds a query that means 'find the user whose email is X and whose password is Y'. If a row comes back, you're let in. Simple — but everything depends on HOW the app builds that query. If it glues your typed-in email straight into the SQL text, you're about to see what goes wrong." },
-      { h: "Injection: when your words become commands", body: "Injection happens when your input is mixed into a command the app runs. If the app doesn't keep your input strictly as data, you can add characters that end the data and start new commands — so your input runs as code. SQL injection aims this at the database, and it's been one of the most damaging web weaknesses for twenty years." },
+      { h: "First - what's a database?", body: "Almost every app stores its information in a database: an organised store you can picture as a stack of spreadsheets. Each table is one sheet (a 'users' table, a 'products' table), and each row is one record. The app reads and writes it constantly - your login, your messages, your scores all live there. The app talks to the database in a language called SQL, by sending it a query." },
+      { h: "How a login actually checks you", body: "When you log in, the app builds a query that means 'find the user whose email is X and whose password is Y'. If a row comes back, you're let in. Simple - but everything depends on HOW the app builds that query. If it glues your typed-in email straight into the SQL text, you're about to see what goes wrong." },
+      { h: "Injection: when your words become commands", body: "Injection happens when your input is mixed into a command the app runs. If the app doesn't keep your input strictly as data, you can add characters that end the data and start new commands - so your input runs as code. SQL injection aims this at the database, and it's been one of the most damaging web weaknesses for twenty years." },
       { h: "Breaking out of the string", body: "Your email sits inside quotes in the query: …WHERE email = '<your input>'. Type a quote and you close that string early. Add OR 1=1 and you've bolted on a condition that is always true. Finish with -- and the database ignores the rest of the line, including the password check. The query returns rows it never should, and the app lets you in." },
-      { h: "Reading other tables with UNION", body: "Breaking in is only stage one. The deeper move is UNION, which staples a second query onto the first and returns its results through the same page — so an injectable search box can be made to hand you entirely different tables: staff accounts, password hashes, secrets. The one rule: your UNION must select the same number of columns as the original query, which is why you count columns first." },
+      { h: "Reading other tables with UNION", body: "Breaking in is only stage one. The deeper move is UNION, which staples a second query onto the first and returns its results through the same page - so an injectable search box can be made to hand you entirely different tables: staff accounts, password hashes, secrets. The one rule: your UNION must select the same number of columns as the original query, which is why you count columns first." },
     ],
     Interactive: InputBecomesCodeLab,
     summary: [
       "A database is tables of rows; the app talks to it in SQL by sending a query.",
       "Injection = your input gets run as code because it's glued into the query.",
       "The break-in combo: a quote to close the string, OR 1=1 to force it true, -- to comment out the rest.",
-      "UNION staples a second query on to read other tables — the column counts must match.",
+      "UNION staples a second query on to read other tables - the column counts must match.",
       "The cure is always the same: keep input as data, never code.",
     ],
     check: {
       q: "An app builds its login query by joining your typed email straight into the SQL text. Why is that the dangerous part?",
       options: [
-        { text: "Characters in your input (like a quote) can end the 'data' and let the rest run as commands.", correct: true, feedback: "Exactly. Once your input can change the query's structure, it's no longer just data — it's code." },
-        { text: "Joining lots of text together is slow, so the login times out and lets anyone through.", feedback: "Performance isn't the issue — a fast query is just as injectable. The problem is input becoming code." },
+        { text: "Characters in your input (like a quote) can end the 'data' and let the rest run as commands.", correct: true, feedback: "Exactly. Once your input can change the query's structure, it's no longer just data - it's code." },
+        { text: "Joining lots of text together is slow, so the login times out and lets anyone through.", feedback: "Performance isn't the issue - a fast query is just as injectable. The problem is input becoming code." },
         { text: "The email gets stored in plain text, so an attacker can read it from the database later.", feedback: "Storing data in the clear is a different weakness. Here the danger is the query being built from your input." },
         { text: "A very long email overflows the database and corrupts the rows next to it.", feedback: "That's mixing up a different class of bug. SQL injection is about your input changing what the query does." },
       ],
@@ -464,25 +464,25 @@ export const MODULE5: ModuleDef = {
     offLimits: "DROP/DELETE/UPDATE, other Northwind hosts, real data",
     timebox: "this session",
   },
-  handler: "Five stages, then two field jobs. Confirm it's injectable, walk in the front door, turn the search box into a window onto the whole database, map what's in there, then take the prize. Try each yourself before the hints — that's how it sticks. Password field stays empty throughout; you're going around it.",
-  hint: "This is a multi-stage engagement — work the stages in order. Each has its own hint ladder and a last-resort reveal. The password field can stay empty; you're going around it, not guessing it.",
+  handler: "Five stages, then two field jobs. Confirm it's injectable, walk in the front door, turn the search box into a window onto the whole database, map what's in there, then take the prize. Try each yourself before the hints - that's how it sticks. Password field stays empty throughout; you're going around it.",
+  hint: "This is a multi-stage engagement - work the stages in order. Each has its own hint ladder and a last-resort reveal. The password field can stay empty; you're going around it, not guessing it.",
   Act: InjectionAct,
   Consolidation: ConsolidationDrills,
   flag: "flag{un10n_t0_the_v4ult}",
   defend: {
     blocks: [
-      { h: "The fix: parameterised queries", body: "Never build a query by gluing strings together. Use a parameterised query: write the query with placeholders, then hand the database your input separately. The database treats that input strictly as a value — never as part of the command — so ' OR 1=1-- becomes a (failed) login with a very odd email, and UNION payloads are just strange search terms." },
-      { h: "Why 'just block bad words' fails", body: "A tempting shortcut is to strip quotes or ban the word UNION. It doesn't hold: attackers slip past blocklists with different encodings, odd capitalisation, or by splitting words — and meanwhile you've broken real input like the name O'Brien. Blocklists are a game of whack-a-mole. Parameterisation removes the whole category at once, which is why it's the real fix." },
-      { h: "Defence in depth", body: "Parameterisation is the cure; these are the seatbelts. Give the app's database account only the permissions it needs, so even a successful injection can't read tables it shouldn't or delete anything. Validate input where it genuinely makes sense. And never show raw database errors to users — that error you triggered in stage one is exactly what tells an attacker the door is open." },
+      { h: "The fix: parameterised queries", body: "Never build a query by gluing strings together. Use a parameterised query: write the query with placeholders, then hand the database your input separately. The database treats that input strictly as a value - never as part of the command - so ' OR 1=1-- becomes a (failed) login with a very odd email, and UNION payloads are just strange search terms." },
+      { h: "Why 'just block bad words' fails", body: "A tempting shortcut is to strip quotes or ban the word UNION. It doesn't hold: attackers slip past blocklists with different encodings, odd capitalisation, or by splitting words - and meanwhile you've broken real input like the name O'Brien. Blocklists are a game of whack-a-mole. Parameterisation removes the whole category at once, which is why it's the real fix." },
+      { h: "Defence in depth", body: "Parameterisation is the cure; these are the seatbelts. Give the app's database account only the permissions it needs, so even a successful injection can't read tables it shouldn't or delete anything. Validate input where it genuinely makes sense. And never show raw database errors to users - that error you triggered in stage one is exactly what tells an attacker the door is open." },
     ],
     Interactive: PickSafeQueryLab,
     check: {
       q: "A developer 'fixes' the login by deleting any single quotes from the input before building the query the same old way. Is that enough?",
       options: [
-        { text: "No — it's a blocklist. Attackers bypass it, it breaks real names like O'Brien, and the query is still built by hand. Use parameterised queries.", correct: true, feedback: "Right. Stripping characters is whack-a-mole; parameterisation removes the whole class of bug." },
-        { text: "Yes — with no quotes in the input, the string can't be closed, so injection is impossible.", feedback: "Not quite. Quotes aren't the only way in (numeric fields, encodings), and the query is still built by concatenation." },
+        { text: "No - it's a blocklist. Attackers bypass it, it breaks real names like O'Brien, and the query is still built by hand. Use parameterised queries.", correct: true, feedback: "Right. Stripping characters is whack-a-mole; parameterisation removes the whole class of bug." },
+        { text: "Yes - with no quotes in the input, the string can't be closed, so injection is impossible.", feedback: "Not quite. Quotes aren't the only way in (numeric fields, encodings), and the query is still built by concatenation." },
         { text: "Yes, as long as they also hide the database error messages from users.", feedback: "Hiding errors removes a clue, but the injection still works. The build-by-gluing approach is the real problem." },
-        { text: "No, but only because it breaks names like O'Brien — add an exception for apostrophes and it's then safe.", feedback: "The broken-names point is real, but 'add an exception' keeps the blocklist and its bypasses. Parameterise instead." },
+        { text: "No, but only because it breaks names like O'Brien - add an exception for apostrophes and it's then safe.", feedback: "The broken-names point is real, but 'add an exception' keeps the blocklist and its bypasses. Parameterise instead." },
       ],
     },
   },
@@ -491,7 +491,7 @@ export const MODULE5: ModuleDef = {
     where: "portal.northwind.range /login + shop.northwind.range /search",
     severity: "Critical",
     cvss: "9.8",
-    impact: "Both the login and the product search build SQL from raw input. An attacker can log in with no password, read every staff record (emails and password hashes), enumerate the whole schema, and extract secrets from other tables via UNION — a complete compromise of the database.",
+    impact: "Both the login and the product search build SQL from raw input. An attacker can log in with no password, read every staff record (emails and password hashes), enumerate the whole schema, and extract secrets from other tables via UNION - a complete compromise of the database.",
     fix: "Use parameterised queries everywhere; never concatenate input into SQL. Add least-privilege database accounts and suppress raw error output as defence in depth.",
   },
   rep: 70,

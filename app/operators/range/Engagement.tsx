@@ -1,6 +1,6 @@
 "use client";
 
-/* Engagement — the reusable module shell (the locked template).
+/* Engagement - the reusable module shell (the locked template).
  *
  * A module here is a PROPER LESSON, not a CTF with a story. The anatomy:
  *   brief -> LESSON (teach: concept -> how it works -> worked example ->
@@ -28,7 +28,7 @@ export type GlossaryEntry = { term: string; definition: string };
 // `moduleNo`, which maps to the shared Progress.week column at the DB boundary.
 export type ModuleDef = {
   code: string;
-  /** Numeric module (1-16) — the key for Progress + the portfolio finding. */
+  /** Numeric module (1-16) - the key for Progress + the portfolio finding. */
   moduleNo: number;
   title: string;
   client: string;
@@ -46,7 +46,7 @@ export type ModuleDef = {
   };
   /** Optional glossary: technical terms get a hover/tap definition, auto-wrapped
    *  into lesson + defend text (first occurrence of each term). A teaching
-   *  standard — anything a 14-17 learner wouldn't just know gets explained. */
+   *  standard - anything a 14-17 learner wouldn't just know gets explained. */
   glossary?: GlossaryEntry[];
   /** Optional consolidation drills (scenario-based practice applying the skill
    *  to new clients). When present, a "Drills" beat runs after the capture. */
@@ -151,7 +151,7 @@ export default function Engagement({
   liveRank,
 }: {
   mod: ModuleDef;
-  /** Fired once when the learner reaches the report beat — the completion
+  /** Fired once when the learner reaches the report beat - the completion
    *  signal the live lesson uses to persist progress + file the finding.
    *  Omitted by the preview/dev routes, which don't persist. */
   onReport?: (callsign: string) => void;
@@ -189,7 +189,7 @@ export default function Engagement({
       <div style={{ width: "100%", maxWidth: 720 }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 10, marginBottom: 8 }}>
           <div style={{ fontFamily: MONO, fontSize: 11, letterSpacing: ".26em", textTransform: "uppercase", color: C.indigo, fontWeight: 600 }}>Redoubt · Module {String(mod.moduleNo).padStart(2, "0")} · {mod.title}</div>
-          <div style={{ fontFamily: MONO, fontSize: 11, color: C.mute }}>operator <span style={{ color: C.indigo2 }}>{callsign || "—"}</span></div>
+          <div style={{ fontFamily: MONO, fontSize: 11, color: C.mute }}>operator <span style={{ color: C.indigo2 }}>{callsign || "-"}</span></div>
         </div>
         <div style={{ display: "flex", gap: 6, marginBottom: 22 }}>
           {BEATS.map((b, i) => (
@@ -256,7 +256,7 @@ export default function Engagement({
           <Panel style={{ borderColor: "rgba(74,222,128,0.3)" }}>
             <Eyebrow tone={C.green}>◆ Authorization required</Eyebrow>
             <h2 style={h2}>Scope of engagement</h2>
-            <p style={{ color: C.soft, fontSize: 14.5, lineHeight: 1.55, margin: "0 0 16px" }}>You may only touch what the scope authorizes. Acting outside it fails the engagement — that&apos;s the job, and the law.</p>
+            <p style={{ color: C.soft, fontSize: 14.5, lineHeight: 1.55, margin: "0 0 16px" }}>You may only touch what the scope authorizes. Acting outside it fails the engagement - that&apos;s the job, and the law.</p>
             <div style={scopeTbl}>
               <SRow k="Target" v={mod.scope.target} />
               <SRow k="In scope" v={mod.scope.inScope} tone={C.green} />
@@ -288,12 +288,12 @@ export default function Engagement({
           </div>
         )}
 
-        {/* DRILLS (consolidation — apply the skill to new client scenarios) */}
+        {/* DRILLS (consolidation - apply the skill to new client scenarios) */}
         {phase === "drills" && mod.Consolidation && (
           <div style={{ display: "grid", gap: 14 }}>
             <div style={handlerBox}>
               <span style={handlerTag}>HANDLER</span>
-              <span style={{ fontSize: 14, lineHeight: 1.5 }}>Good capture. Before we write it up, two quick field jobs — new clients, same skill, less hand-holding. This is how it sticks.</span>
+              <span style={{ fontSize: 14, lineHeight: 1.5 }}>Good capture. Before we write it up, two quick field jobs - new clients, same skill, less hand-holding. This is how it sticks.</span>
             </div>
             <mod.Consolidation onDone={() => setPhase("defend")} />
           </div>
@@ -389,7 +389,7 @@ function Report({ mod, callsign, onExit, liveRank }: { mod: ModuleDef; callsign:
     try {
       if (typeof navigator !== "undefined" && navigator.clipboard) navigator.clipboard.writeText(text).catch(() => {});
     } catch {
-      /* clipboard blocked (permissions/insecure context) — the label still confirms the action */
+      /* clipboard blocked (permissions/insecure context) - the label still confirms the action */
     }
     setShare(true);
   }
@@ -426,7 +426,7 @@ function Report({ mod, callsign, onExit, liveRank }: { mod: ModuleDef; callsign:
         <div style={{ display: "flex", gap: 20, marginTop: 18, flexWrap: "wrap" }}>
           <Stat n="✓" l={`module ${String(mod.moduleNo).padStart(2, "0")}`} /><Stat n={`+${mod.rep}`} l="reputation" /><Stat n={f.cvss} l={`CVSS · ${f.severity.toLowerCase()}`} />
         </div>
-        <Btn tone="i" onClick={shareCapture} style={{ marginTop: 20, fontSize: 12.5 }}>{share ? "✓ copied — go flex" : "SHARE CAPTURE →"}</Btn>
+        <Btn tone="i" onClick={shareCapture} style={{ marginTop: 20, fontSize: 12.5 }}>{share ? "✓ copied - go flex" : "SHARE CAPTURE →"}</Btn>
       </div>
       <Btn tone="ghost" onClick={onExit}>{mod.next}</Btn>
     </div>
