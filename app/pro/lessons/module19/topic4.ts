@@ -107,10 +107,10 @@ const topic4: TopicManifest = {
       {
         q: "What is redundancy?",
         options: [
-          "Having extra unnecessary features",
+          "Running one very powerful server built to be extremely reliable",
           "Having no single point of failure: duplication so any single component's failure is survivable",
-          "Deleting old data",
-          "A type of backup software",
+          "Keeping several historical copies of data for compliance",
+          "Removing duplicate systems to simplify the network",
         ],
         answer: 1,
         why: "Redundancy means a spare can take over, so one failure does not stop everything.",
@@ -118,10 +118,10 @@ const topic4: TopicManifest = {
       {
         q: "Which of these can be a single point of failure?",
         options: [
-          "Only a server",
+          "Only physical hardware like a server or a disk drive",
           "A key person, a single supplier or a shared credential, not just hardware",
-          "Nothing; SPOFs do not exist",
-          "Only the internet connection",
+          "Only components that have no warranty or vendor support",
+          "Only systems that are already old and starting to fail",
         ],
         answer: 1,
         why: "SPOFs hide in people, process and suppliers too. Resilience hunts for the 'one-of-anything' whose loss is fatal.",
@@ -129,10 +129,10 @@ const topic4: TopicManifest = {
       {
         q: "What does a major cloud-region outage show about resilience?",
         options: [
-          "That the cloud is always reliable",
+          "That large cloud providers are too big to suffer a serious outage",
           "That concentration is a single point of failure: many services on one region fail together, so redundancy and failover matter",
-          "That redundancy is pointless",
-          "That outages never cascade",
+          "That moving everything to a single trusted provider removes all risk",
+          "That only the cloud provider, not its customers, is affected by an outage",
         ],
         answer: 1,
         why: "Services concentrated in one region went down together; multi-region-redundant ones stayed up. Concentration is a SPOF at scale.",

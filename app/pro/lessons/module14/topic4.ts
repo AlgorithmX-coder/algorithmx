@@ -108,10 +108,10 @@ const topic4: TopicManifest = {
       {
         q: "Why does a single log entry rarely tell you much?",
         options: [
-          "Logs are always wrong",
+          "A single entry is usually a false positive that can be ignored",
           "Each entry is an isolated fact; meaning emerges when you connect entries into a story",
-          "Single entries are secret",
-          "One entry tells you everything",
+          "One entry is always too technical for an analyst to read",
+          "A single entry already contains the attacker's full plan",
         ],
         answer: 1,
         why: "Ordinary facts happen constantly; the attack appears only when you correlate related entries.",
@@ -119,10 +119,10 @@ const topic4: TopicManifest = {
       {
         q: "Why is correlation across different logs so powerful?",
         options: [
-          "It is not; use one log only",
+          "Because one carefully chosen log almost always contains the entire attack",
           "No single log shows the whole attack, but connected across sources (firewall, auth, system, DNS) the full story appears",
-          "Different logs never relate",
-          "It deletes irrelevant logs",
+          "Because it lets you discard every log except the firewall log",
+          "Because it merges all the logs into one entry to save space",
         ],
         answer: 1,
         why: "An attacker leaves footprints in different systems; correlating across them (why SIEMs aggregate) reveals the complete picture.",
@@ -130,10 +130,10 @@ const topic4: TopicManifest = {
       {
         q: "What does correlation ultimately produce?",
         options: [
-          "A random list of logs",
+          "A single alert flagging that something is wrong",
           "A timeline: the attack reconstructed in order, which you can act on",
-          "Just more alerts",
-          "Nothing useful",
+          "A blocklist of every address seen in the logs",
+          "A score rating how noisy each detection rule is",
         ],
         answer: 1,
         why: "Correlated events form the timeline (Module 16), the understanding that enables scoping, eradication and the finding.",

@@ -107,10 +107,10 @@ const topic1: TopicManifest = {
       {
         q: "Why is it useful to realise cyber security is 'many jobs, not one'?",
         options: [
-          "It is not useful",
+          "Because every cyber role in fact needs exactly the same skills anyway",
           "Because there are many doors in, and the right entry role for you may not be the one you first pictured",
-          "Because all the jobs are identical",
-          "Because only hacking matters",
+          "Because it means you must master all the roles before you can apply",
+          "Because the non-technical roles are not really cyber security jobs",
         ],
         answer: 1,
         why: "The variety means multiple accessible entry points; aiming at the right one for you is a big advantage.",
@@ -118,10 +118,10 @@ const topic1: TopicManifest = {
       {
         q: "Which are the realistic entry roles into cyber security?",
         options: [
-          "Only penetration testing",
+          "Penetration tester and malware reverse-engineer",
           "SOC analyst, GRC/risk, and security-focused IT roles",
-          "Only chief information security officer",
-          "There are no entry roles",
+          "Chief information security officer and security architect",
+          "Incident response lead and red-team operator",
         ],
         answer: 1,
         why: "These need solid fundamentals and the right attitude, and are where the volume of accessible first jobs is.",
@@ -129,10 +129,10 @@ const topic1: TopicManifest = {
       {
         q: "Why is penetration testing usually not a first job?",
         options: [
-          "It is illegal",
+          "It can only be done by people with a formal computer-science degree",
           "It typically requires deep skill and experience, usually built first in roles like SOC or IT",
-          "Nobody does it",
-          "It pays nothing",
+          "There is very little demand for penetration testers anywhere",
+          "Employers are legally barred from hiring junior penetration testers",
         ],
         answer: 1,
         why: "Pen testing is a later-career destination. The realistic path is in through an accessible role, then specialise toward it.",

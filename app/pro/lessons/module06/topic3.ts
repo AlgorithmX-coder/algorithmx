@@ -109,10 +109,10 @@ const topic3: TopicManifest = {
       {
         q: "What is the defender's key advantage in the kill-chain model?",
         options: [
-          "The defender must be perfect at every stage",
+          "The defender must place a control at every single stage",
           "The attacker must succeed at every stage, but the defender only has to break the chain at one",
-          "Only the final stage can be defended",
-          "The stages happen in a random order",
+          "Defences only work at the final actions-on-objectives stage",
+          "Breaking the chain requires catching the attacker at reconnaissance",
         ],
         answer: 1,
         why: "That asymmetry is the whole point: find the easiest link to break, before the attacker reaches their objective.",
@@ -120,10 +120,10 @@ const topic3: TopicManifest = {
       {
         q: "How do the kill chain and MITRE ATT&CK relate?",
         options: [
-          "They are competing models; you pick one",
+          "The kill chain lists the techniques; ATT&CK gives the broad stages",
           "The kill chain gives the broad stages; ATT&CK catalogues the specific techniques within them",
-          "ATT&CK replaced the kill chain entirely",
-          "They are both purely theoretical",
+          "ATT&CK is a paid tool that has replaced the free kill chain",
+          "Both describe defensive controls rather than attacker behaviour",
         ],
         answer: 1,
         why: "Kill chain = chapter headings (stages); ATT&CK = detailed contents (real techniques), giving defenders a shared, precise language.",
@@ -131,10 +131,10 @@ const topic3: TopicManifest = {
       {
         q: "In the Target breach, the attackers first got in through:",
         options: [
-          "A zero-day in Target's website",
+          "A zero-day flaw in Target's public website",
           "A compromised third-party HVAC contractor with network access",
-          "A rogue Target employee",
-          "A stolen physical server",
+          "A malicious insider on Target's payment team",
+          "Stolen login details phished from a Target executive",
         ],
         answer: 1,
         why: "The entry point was a third party with too much access. It shows why the earliest stage, limiting who can reach what, is often the cheapest place to defend.",

@@ -108,10 +108,10 @@ const topic2: TopicManifest = {
       {
         q: "What is 'ransomware-as-a-service'?",
         options: [
-          "A security product that protects against ransomware",
+          "Buying ready-stolen data dumps to resell to other criminals",
           "Renting ready-made ransomware and infrastructure in exchange for a share of the profits",
-          "A government programme to recover ransoms",
-          "Insurance against ransomware",
+          "Paying an access broker for a ready-made foothold into a target",
+          "A single gang that writes, runs and profits from its own ransomware",
         ],
         answer: 1,
         why: "It lets low-skilled affiliates use professional criminal tools for a cut, which is why so many groups can run attacks at scale.",
@@ -119,10 +119,10 @@ const topic2: TopicManifest = {
       {
         q: "An 'access broker' in the cybercrime economy:",
         options: [
-          "Negotiates ransoms on victims' behalf",
+          "Negotiates the ransom amount on the gang's behalf",
           "Specialises in breaking in, then sells that foothold to other criminals",
-          "Brokers cyber-insurance policies",
-          "Reports vulnerabilities responsibly",
+          "Launders the cryptocurrency paid in ransoms",
+          "Writes and maintains the malware the gang deploys",
         ],
         answer: 1,
         why: "Access brokers do the breaking-in, then sell the access, often to ransomware groups. It is specialisation in a criminal marketplace.",
@@ -130,10 +130,10 @@ const topic2: TopicManifest = {
       {
         q: "Why do the 'boring basics' defeat most real attacks?",
         options: [
-          "Because attackers are not very good",
+          "Because most attackers lack the skill to beat basic controls",
           "Because a profit-driven industry chases the easiest targets, so being harder sends them elsewhere",
-          "Because the basics stop every possible attack",
-          "Because most attacks are not real",
+          "Because the basics block every known attack technique",
+          "Because attackers are legally deterred by visible security",
         ],
         answer: 1,
         why: "Efficiency-seeking crime follows the easy money. Patching, MFA and backups raise your cost above the easy payoff, so the industry moves on.",

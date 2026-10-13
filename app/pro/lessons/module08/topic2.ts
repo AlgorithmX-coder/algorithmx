@@ -107,10 +107,10 @@ const topic2: TopicManifest = {
       {
         q: "How does ransomware hold a victim hostage?",
         options: [
-          "By physically stealing the computers",
+          "By permanently deleting the victim's files unless they pay",
           "By encrypting the victim's files with a key only the attacker holds, then demanding payment",
-          "By slowing the internet down",
-          "By deleting the operating system only",
+          "By locking the victim out with a changed login password",
+          "By flooding the victim's network with junk traffic",
         ],
         answer: 1,
         why: "The data remains but is unreadable without the attacker's key. Many groups also steal a copy to threaten a leak: double extortion.",
@@ -118,10 +118,10 @@ const topic2: TopicManifest = {
       {
         q: "Why is paying the ransom a poor first response?",
         options: [
-          "It is the fastest guaranteed fix",
+          "It is the fastest and most reliable way to recover",
           "No guarantee of a working key, it funds crime, may breach sanctions, and marks you as a payer; preparation beats payment",
-          "It is always illegal and never works",
-          "Paying spreads the ransomware further",
+          "It is always illegal and guarantees prosecution",
+          "Paying immediately reinfects every machine on the network",
         ],
         answer: 1,
         why: "Paying is fraught and uncertain. Tested offline backups, fast patching and segmentation are what actually make ransomware survivable.",
@@ -129,10 +129,10 @@ const topic2: TopicManifest = {
       {
         q: "What made WannaCry so devastating, and so preventable?",
         options: [
-          "It used an unknown, unstoppable zero-day",
+          "It used an unknown zero-day with no patch available",
           "It was wormable through a known flaw that already had a patch, so patched systems were safe and unpatched ones were hit en masse",
-          "It only affected one hospital",
-          "There was no way to defend against it",
+          "It spread only through phishing emails that staff opened",
+          "It could only be stopped by paying the ransom",
         ],
         answer: 1,
         why: "A fix existed before the outbreak. The damage spread through unpatched (and old, unsupported) systems, which is why the patch race matters so much.",

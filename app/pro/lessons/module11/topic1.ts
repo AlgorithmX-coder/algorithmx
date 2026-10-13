@@ -110,10 +110,10 @@ const topic1: TopicManifest = {
       {
         q: "What is the difference between a vulnerability and an exploit?",
         options: [
-          "They are the same thing",
+          "Both are different words for the same security patch",
           "A vulnerability is the weakness; an exploit is the code or technique that actually takes advantage of it",
-          "An exploit is a weakness; a vulnerability is the attack",
-          "A vulnerability only exists after an attack",
+          "An exploit is the weakness; a vulnerability is the attack that uses it",
+          "A vulnerability is only real once an exploit has been written",
         ],
         answer: 1,
         why: "The flaw (vulnerability) exists on its own; the exploit is what turns it into a real attack. A public exploit makes a flaw urgent.",
@@ -121,10 +121,10 @@ const topic1: TopicManifest = {
       {
         q: "What does a CVE identifier like CVE-2014-0160 provide?",
         options: [
-          "A severity score from 0 to 10",
+          "A severity score from 0 to 10 for the flaw",
           "A unique public name for a specific known flaw, so everyone refers to the same thing",
-          "A patch for the flaw",
-          "The attacker's identity",
+          "A ready-made patch that fixes the flaw",
+          "A detailed guide to exploiting the flaw",
         ],
         answer: 1,
         why: "CVE is the naming system. CVSS is the separate scoring system; the two work together.",
@@ -132,10 +132,10 @@ const topic1: TopicManifest = {
       {
         q: "A 'zero-day' vulnerability is dangerous because:",
         options: [
-          "It scores zero on CVSS",
+          "It automatically scores the maximum 10 on CVSS",
           "Attackers know and use it before the vendor has a fix, so defenders have zero days to prepare",
-          "It only lasts one day",
-          "It cannot actually be exploited",
+          "The vendor must fix it within a single day by law",
+          "It affects only software released in the last day",
         ],
         answer: 1,
         why: "No patch exists yet, so defenders are caught out. It is the feared case where the exploit precedes the fix.",

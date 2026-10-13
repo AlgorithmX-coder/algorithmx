@@ -109,10 +109,10 @@ const topic2: TopicManifest = {
       {
         q: "What distinguishes spear phishing from mass phishing?",
         options: [
-          "Spear phishing is sent to more people",
+          "Spear phishing is sent to far more recipients at once",
           "Spear phishing is tailored to a specific person using research, trading volume for much higher success",
-          "Spear phishing always uses the phone",
-          "There is no difference",
+          "Spear phishing is always delivered by phone rather than email",
+          "Spear phishing always carries a malicious attachment",
         ],
         answer: 1,
         why: "Spear phishing is mass phishing plus homework: fewer targets, far more convincing because it is personalised.",
@@ -120,10 +120,10 @@ const topic2: TopicManifest = {
       {
         q: "Why is business email compromise (BEC) so hard to stop with technology alone?",
         options: [
-          "It uses an undetectable virus",
+          "It hides malware inside an encrypted attachment scanners cannot open",
           "It often carries no malware at all: it is a convincing message and a plausible request, so the defence is verification and process",
-          "It only targets small companies",
-          "It is actually easy to stop with antivirus",
+          "It exploits an unpatched flaw in the email server itself",
+          "It encrypts its messages so spam filters cannot read them",
         ],
         answer: 1,
         why: "With no malware to detect, there is nothing for a scanner to catch. BEC is beaten by verifying payment changes out-of-band and building suspicion into the process.",

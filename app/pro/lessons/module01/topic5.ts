@@ -108,10 +108,10 @@ const topic5: TopicManifest = {
       {
         q: "What is the core of the 'attacker mindset' for a defender?",
         options: [
-          "Breaking into other companies to learn",
+          "Practising break-ins on other companies to build your skill",
           "Looking at your own systems the way an attacker would, to find weak spots first",
-          "Ignoring attackers and focusing on tools",
-          "Trusting that strong walls are enough",
+          "Learning attackers' tools so you can run the same attacks yourself",
+          "Building higher walls so that no attacker can ever get in",
         ],
         answer: 1,
         why: "It means seeing your own environment through an attacker's eyes to find and fix the weakest point before they exploit it, used strictly for defence.",
@@ -119,10 +119,10 @@ const topic5: TopicManifest = {
       {
         q: "What does 'assume breach' change about how you defend?",
         options: [
-          "You give up on prevention",
+          "You give up on prevention and only react to incidents",
           "You also plan for detection and limiting damage, not just keeping attackers out",
-          "You trust internal systems completely",
-          "You stop using passwords",
+          "You trust everything already inside the network completely",
+          "You replace internal monitoring with a single stronger firewall",
         ],
         answer: 1,
         why: "Assume breach adds the questions 'how will I detect them?' and 'how do I limit what they reach?' on top of prevention, because some attacks will get in.",
@@ -130,10 +130,10 @@ const topic5: TopicManifest = {
       {
         q: "Why was the 3CX attack such a wake-up call?",
         options: [
-          "The software was badly written",
+          "A single employee's weak, reused password let the attackers straight in",
           "A trusted, signed vendor update was the attack, breaking the assumption that trusted software is safe",
-          "The attackers used a weak password",
-          "It only affected one company",
+          "The vendor had carelessly skipped signing that software update",
+          "A flaw in the update's encryption let attackers read and alter it",
         ],
         answer: 1,
         why: "The attack rode in through a legitimate, signed update everyone trusted, and even the vendor had been compromised through another supplier. It reinforced 'verify, do not simply trust'.",

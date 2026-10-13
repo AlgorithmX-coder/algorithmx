@@ -108,10 +108,10 @@ const topic5: TopicManifest = {
       {
         q: "Why must an investigation be written up?",
         options: [
-          "It does not need to be",
+          "Because the written report is what detects the next attack",
           "Because a brilliant investigation that is not clearly communicated helps no one; the finding is how it becomes useful",
-          "To make it longer",
-          "Only managers need findings",
+          "Because regulators require every log line to be printed out",
+          "Because only the analyst who did the work will ever read it",
         ],
         answer: 1,
         why: "The write-up is the deliverable: it lets others understand, act and learn. Clear writing is a top analyst skill.",
@@ -119,10 +119,10 @@ const topic5: TopicManifest = {
       {
         q: "What does a good finding contain?",
         options: [
-          "Just a list of raw logs",
+          "A raw export of every log line, with no explanation",
           "What happened, the evidence (logs, timeline), the impact, and the recommendation",
-          "Only the analyst's opinion",
-          "Blame for whoever caused it",
+          "The analyst's best guesses about what probably happened",
+          "A clear statement of which individual was at fault",
         ],
         answer: 1,
         why: "Clear statement, supporting evidence, impact, and an actionable recommendation, so it leads to action, not just description.",

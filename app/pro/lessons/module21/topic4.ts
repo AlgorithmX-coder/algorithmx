@@ -107,10 +107,10 @@ const topic4: TopicManifest = {
       {
         q: "Where can you safely and lawfully practise attack and defence skills?",
         options: [
-          "On any real website you find interesting",
+          "On any public website, as long as you do no actual damage",
           "In your own isolated home lab and on deliberately-vulnerable training apps",
-          "On your employer's systems without asking",
-          "On a stranger's network",
+          "On your employer's live systems, since you already work there",
+          "On any system, provided you report the flaws you find afterwards",
         ],
         answer: 1,
         why: "Your own isolated lab and purpose-built vulnerable apps are the lawful playgrounds. Testing systems you do not own is a crime.",
@@ -118,10 +118,10 @@ const topic4: TopicManifest = {
       {
         q: "Does the authorisation line relax once you are skilled?",
         options: [
-          "Yes, skill grants permission",
+          "Yes, experts are trusted to test systems without asking first",
           "No; you only ever test systems you own or are explicitly authorised to test, however skilled or curious you are",
-          "Only on weekends",
-          "Only for small websites",
+          "Yes, as long as you intend only to help and report what you find",
+          "Yes, once you hold a recognised penetration-testing certification",
         ],
         answer: 1,
         why: "Unauthorised testing is always a crime; good intentions are no defence. The rule is permanent and non-negotiable.",
@@ -129,10 +129,10 @@ const topic4: TopicManifest = {
       {
         q: "What does staying current involve?",
         options: [
-          "Nothing; skills never go out of date",
+          "Learning everything once thoroughly, then relying on it for your career",
           "Following reputable news and advisories, engaging with communities, and continuous practice and learning",
-          "Memorising everything once",
-          "Avoiding any new information",
+          "Waiting for your employer to send you on a course every few years",
+          "Only reading about threats after they have affected you directly",
         ],
         answer: 1,
         why: "The field changes constantly, so continuous, curious learning is a permanent, and often enjoyable, part of the job.",

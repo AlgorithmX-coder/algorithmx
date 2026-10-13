@@ -109,10 +109,10 @@ const topic5: TopicManifest = {
       {
         q: "Why is end-of-life software especially dangerous?",
         options: [
-          "It runs slowly",
+          "It is slower and uses more power than modern software",
           "It no longer gets security patches, so new flaws in it are never fixed: a permanent open door",
-          "It is always infected already",
-          "It cannot connect to the internet",
+          "It is guaranteed to already be infected with malware",
+          "It can no longer run modern applications",
         ],
         answer: 1,
         why: "Unlike a merely out-of-date system, an EOL one cannot be patched at all, so it accumulates unfixable weaknesses over time.",
@@ -120,10 +120,10 @@ const topic5: TopicManifest = {
       {
         q: "Why do organisations often get stuck running end-of-life software?",
         options: [
-          "They simply do not care about security",
+          "Because upgrading would always make them less secure",
           "Real pressures: cost and disruption, critical software or equipment that only runs on it, hard-to-update embedded devices, and inertia",
-          "It is illegal to upgrade",
-          "There is never a replacement available",
+          "Because older software is inherently safer than new software",
+          "Because end-of-life software costs more to license",
         ],
         answer: 1,
         why: "The reasons are usually practical, not ignorance, which is why realistic defenders find workable paths rather than just saying 'upgrade'.",
@@ -131,10 +131,10 @@ const topic5: TopicManifest = {
       {
         q: "For a legacy system that genuinely cannot be replaced yet, the right approach is to:",
         options: [
-          "Leave it exposed to the internet; it still works",
+          "Install extra antivirus on it and carry on as normal",
           "Contain it: isolate and segment it, restrict access, and monitor closely while planning migration",
-          "Assume it is fine because it always has been",
-          "Ignore its end-of-life date",
+          "Connect it to the internet so it can fetch any updates",
+          "Rely on staff being careful when they use it",
         ],
         answer: 1,
         why: "Containment limits the blast radius and buys time. It does not 'solve' the problem, but it is far safer than leaving an unpatchable system exposed.",

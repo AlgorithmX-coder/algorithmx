@@ -109,10 +109,10 @@ const topic4: TopicManifest = {
       {
         q: "What is the most reliable thing to check about an email's sender?",
         options: [
-          "That the display name looks right",
+          "That the display name shows a name you recognise",
           "The actual email address behind the display name, read carefully for lookalike tricks",
-          "Whether it has a company logo",
-          "That it is addressed to you by name",
+          "That the message carries the company's logo and branding",
+          "That the message greets you correctly by your full name",
         ],
         answer: 1,
         why: "Display names, logos and your correct name are all trivial to fake. The real address, read character by character, is the dependable check.",
@@ -120,10 +120,10 @@ const topic4: TopicManifest = {
       {
         q: "Before clicking a link in an email, you should:",
         options: [
-          "Click it quickly to see where it goes",
+          "Copy the link into a browser and open it carefully",
           "Hover (desktop) or long-press (mobile) to preview the true destination first",
-          "Trust it if the link text mentions a known company",
-          "Forward it to a colleague to click",
+          "Trust it if the visible link text names a company you know",
+          "Check the visible link text is spelled correctly, then click it",
         ],
         answer: 1,
         why: "Link text can say anything; previewing the real destination reveals mismatches and lookalike domains before any harm is done.",
@@ -131,10 +131,10 @@ const topic4: TopicManifest = {
       {
         q: "The FACC case shows that the most important check for a high-value request is:",
         options: [
-          "Whether the email looks professional",
+          "Whether the email looks professional and well written",
           "Verifying it out-of-band through a trusted channel before acting, regardless of how genuine it appears",
-          "How quickly you respond",
-          "Whether antivirus flagged it",
+          "How quickly you can action the request",
+          "Whether antivirus or the spam filter flagged it",
         ],
         answer: 1,
         why: "With no malware to catch, only verification stops BEC. An unusual, high-value instruction must be confirmed independently before any money moves.",

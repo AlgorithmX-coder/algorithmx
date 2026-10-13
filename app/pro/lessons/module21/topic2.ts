@@ -106,10 +106,10 @@ const topic2: TopicManifest = {
       {
         q: "What most makes a CV stand out?",
         options: [
-          "Vague, impressive-sounding buzzwords",
+          "A long list of every security buzzword you have ever heard",
           "Specificity (concrete work you can show) and linking to your portfolio",
-          "Being as long as possible",
-          "Claiming skills you lack",
+          "Using the most advanced technical jargon all the way through",
+          "Listing every job you have ever had in full detail",
         ],
         answer: 1,
         why: "Specific, proof-backed statements turn claims into a demonstrable case, exactly what a beginner needs.",
@@ -117,10 +117,10 @@ const topic2: TopicManifest = {
       {
         q: "Why tailor each application?",
         options: [
-          "It wastes time with no benefit",
+          "One strong generic CV sent everywhere saves time and works just as well",
           "A tailored CV matching the role's requirements gets noticed; a few targeted applications beat many generic ones",
-          "Because generic CVs always work",
-          "To hide your lack of skills",
+          "It lets you apply to far more jobs in the same amount of time",
+          "Employers only read the covering letter, so the CV need not change",
         ],
         answer: 1,
         why: "Employers can tell whether you engaged with their specific role. Targeted beats generic, every time.",
@@ -128,10 +128,10 @@ const topic2: TopicManifest = {
       {
         q: "What is the rule on honesty in applications?",
         options: [
-          "Inflate your skills to compete",
+          "A little exaggeration is fine as long as you can learn it later",
           "Never claim certifications, skills or experience you do not have; dishonesty is caught and costly, and unnecessary",
-          "Honesty does not matter",
-          "Claim years of experience you lack",
+          "Claim certifications you are currently studying for as already held",
+          "List skills you have only read about as hands-on experience",
         ],
         answer: 1,
         why: "Your genuine work and strengths are enough. Dishonesty is easily exposed in interviews, tests and references, and unethical.",

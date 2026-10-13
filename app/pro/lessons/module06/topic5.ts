@@ -109,10 +109,10 @@ const topic5: TopicManifest = {
       {
         q: "What is 'threat-informed defence'?",
         options: [
-          "Hoping attackers do not target you",
+          "Buying every available security product to cover all risks",
           "Designing defences specifically around how real attackers behave, using the same maps they do",
-          "Only using antivirus",
-          "Attacking back when breached",
+          "Keeping your defences secret so attackers cannot study them",
+          "Striking back at attackers once you detect a breach",
         ],
         answer: 1,
         why: "It means studying real attacker behaviour, stages and techniques, and placing your defences and detections accordingly.",
@@ -120,10 +120,10 @@ const topic5: TopicManifest = {
       {
         q: "Why does sharing threat intelligence make defenders collectively stronger?",
         options: [
-          "It does not; sharing only helps attackers",
+          "It mainly tips attackers off about which methods defenders have spotted",
           "No one organisation sees every attack, so sharing lets one team's discovery protect many others",
-          "Because it is legally required",
-          "Because attackers also share, so it evens out",
+          "Because the law requires every company to publish its breaches",
+          "Because attackers freely share their methods too, so it balances out",
         ],
         answer: 1,
         why: "Shared signatures and techniques mean an attack seen once can be blocked everywhere. Defence scales by sharing; attackers guard their methods and cannot match it.",
@@ -131,10 +131,10 @@ const topic5: TopicManifest = {
       {
         q: "The deeper lesson of FireEye's response to its own breach is that:",
         options: [
-          "Breached companies should always stay silent",
+          "Breached firms should disclose only to their own customers",
           "Publishing attacker techniques and detections turns one victim's loss into many organisations' protection",
-          "Supply-chain attacks are impossible to defend against",
-          "Only governments can respond to attacks",
+          "Supply-chain attacks can only be stopped by the software vendor",
+          "Detection tools should be sold rather than shared, to fund defence",
         ],
         answer: 1,
         why: "By sharing rather than hoarding, FireEye let the whole community detect and defend against the same campaign. That is the defender's map as a shared asset.",

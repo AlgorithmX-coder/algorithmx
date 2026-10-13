@@ -108,10 +108,10 @@ const topic2: TopicManifest = {
       {
         q: "What is the 3-2-1 backup rule?",
         options: [
-          "3 passwords, 2 firewalls, 1 antivirus",
+          "3 copies, all on the same drive, backed up twice a week",
           "3 copies of data, on 2 different media/locations, with 1 kept offsite",
-          "Back up 3 times a day",
-          "Keep data for 321 days",
+          "2 copies of data, on 1 drive, kept for 3 years",
+          "3 copies, all kept together in one secure location",
         ],
         answer: 1,
         why: "Three copies, two media/locations, one offsite: multiple independent copies so no single failure destroys all of them.",
@@ -119,10 +119,10 @@ const topic2: TopicManifest = {
       {
         q: "Why is 3-2-1 alone not fully enough against ransomware?",
         options: [
-          "Ransomware cannot touch backups",
+          "Three copies are simply too few to survive a modern ransomware attack",
           "Modern ransomware deliberately finds and encrypts reachable (online) backups too",
-          "3-2-1 is outdated and useless",
-          "Backups are irrelevant to ransomware",
+          "Ransomware spreads faster than any backup schedule can keep up with",
+          "An offsite backup is always online, so 3-2-1 can never include one",
         ],
         answer: 1,
         why: "Attackers hunt backups because they enable recovery without paying. A reachable backup gets encrypted along with the data.",
@@ -130,10 +130,10 @@ const topic2: TopicManifest = {
       {
         q: "What makes a backup genuinely survive ransomware?",
         options: [
-          "Keeping it always online for convenience",
+          "Setting the backup to run automatically every single hour",
           "Having at least one copy offline (disconnected) or immutable, as well as offsite",
-          "Storing it on the same server",
-          "Backing up more often to the same place",
+          "Keeping the backup on a networked drive that staff can always reach",
+          "Running antivirus on the backup drive every single night",
         ],
         answer: 1,
         why: "A backup the ransomware cannot reach, offline or immutable, is what reliably survives, turning catastrophe into inconvenience.",

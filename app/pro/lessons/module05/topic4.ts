@@ -109,10 +109,10 @@ const topic4: TopicManifest = {
       {
         q: "What is the first thing to do when you find a real security flaw you were not hunting for?",
         options: [
-          "Post it on social media to warn people fast",
+          "Post it on social media so people are warned quickly",
           "Stop, document it with minimal proof, and avoid accessing more than you need",
-          "Exploit it fully to measure the impact",
-          "Sell the details to the highest bidder",
+          "Exploit it fully to measure exactly how bad it is",
+          "Keep probing to find every other flaw on the system",
         ],
         answer: 1,
         why: "You confirm it with the least intrusion possible, then report privately. Digging deeper or going public first risks users and your own legal standing.",
@@ -120,10 +120,10 @@ const topic4: TopicManifest = {
       {
         q: "Why give an organisation a window (often around 90 days) before publishing details?",
         options: [
-          "To make them pay you",
+          "To give yourself time to claim a reward for the find",
           "So they have a fair chance to fix it before attackers can use the public details",
-          "Because the law requires exactly 90 days",
-          "There is no reason; publish immediately",
+          "Because the law requires a window of exactly 90 days",
+          "To build public pressure on them before any fix is ready",
         ],
         answer: 1,
         why: "Coordinated timing protects users: the fix lands before the recipe is public. The window is convention, balancing pressure to fix against safety.",

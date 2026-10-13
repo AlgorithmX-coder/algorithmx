@@ -106,10 +106,10 @@ const topic3: TopicManifest = {
       {
         q: "What do scenario interview questions mainly test?",
         options: [
-          "How much you have memorised",
+          "Whether you can recall the one textbook-correct answer",
           "How you think: your reasoning and approach to a situation",
-          "How fast you can type",
-          "Your favourite tools",
+          "How many security tools and acronyms you can name",
+          "Whether you have memorised the company's security policies",
         ],
         answer: 1,
         why: "They test your reasoning process, so thinking aloud through your approach is what impresses, great news for a thoughtful beginner.",
@@ -117,10 +117,10 @@ const topic3: TopicManifest = {
       {
         q: "How should you handle a question you genuinely cannot answer?",
         options: [
-          "Bluff convincingly",
+          "Give a confident guess and present it as fact",
           "Be honest that you are not sure, and explain how you would find out",
-          "Refuse to answer",
-          "Claim you know it anyway",
+          "Change the subject to something you do know well",
+          "Say the question is unfair and decline to engage",
         ],
         answer: 1,
         why: "Honesty plus a method shows integrity and problem-solving. Bluffing is spotted instantly and destroys trust.",
@@ -128,10 +128,10 @@ const topic3: TopicManifest = {
       {
         q: "How do you best demonstrate ability in an interview?",
         options: [
-          "Insist you are passionate",
+          "Describe how passionate and hard-working you are",
           "Point to real portfolio pieces and discuss what you did, why, and what you learned",
-          "List every tool you have heard of",
-          "Claim experience you lack",
+          "Recite the definitions of as many security terms as you can",
+          "Talk about advanced projects you read about but did not do",
         ],
         answer: 1,
         why: "Discussing genuine work you understand proves ability far better than claims. Your portfolio is your evidence in the room.",

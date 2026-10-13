@@ -108,10 +108,10 @@ const topic4: TopicManifest = {
       {
         q: "What does a SIEM primarily do?",
         options: [
-          "Watches a single laptop",
+          "Watches the processes and files on a single device and can isolate it",
           "Aggregates logs from across the organisation and correlates them into alerts, the central console",
-          "Blocks network traffic at the boundary",
-          "Encrypts files",
+          "Filters connections at the network boundary, allowing or blocking them",
+          "Scans files against a list of known malware signatures",
         ],
         answer: 1,
         why: "The SIEM's superpowers are aggregation (all logs searchable in one place) and correlation (connecting related events into a story).",
@@ -119,10 +119,10 @@ const topic4: TopicManifest = {
       {
         q: "What distinguishes EDR from a SIEM?",
         options: [
-          "Nothing; they are identical",
+          "EDR aggregates logs from across the whole organisation, while the SIEM watches one device",
           "EDR watches and can respond on individual devices (depth); the SIEM gives the broad, org-wide picture (breadth)",
-          "EDR only filters traffic",
-          "EDR is a type of firewall",
+          "EDR stores logs for the long term, while the SIEM only shows live data",
+          "EDR blocks traffic at the network boundary, while the SIEM scans email",
         ],
         answer: 1,
         why: "EDR gives the close-up view and response on each endpoint; the SIEM gives breadth across everything. They are complementary.",
@@ -130,10 +130,10 @@ const topic4: TopicManifest = {
       {
         q: "What does the FireEye discovery illustrate about tools and analysts?",
         options: [
-          "Tools make analysts unnecessary",
+          "Good enough tools can detect and respond to attacks with no human involvement",
           "Tools surface the signal, but skilled humans investigating and acting on it are what catch even sophisticated attacks",
-          "Analysts should ignore tool alerts",
-          "Only tools matter, never people",
+          "Small, unusual anomalies are almost always false positives and safe to dismiss",
+          "Only very expensive tooling can ever catch a sophisticated attacker",
         ],
         answer: 1,
         why: "Tooling flagged a small anomaly; humans pulled the thread to uncover a huge campaign. Tool plus attentive analyst, together.",

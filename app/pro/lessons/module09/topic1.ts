@@ -107,10 +107,10 @@ const topic1: TopicManifest = {
       {
         q: "What is the single most important rule in web security?",
         options: [
-          "Use a fast server",
+          "Encrypt every page with HTTPS and nothing more",
           "Never trust input that came from the user",
-          "Always show a professional-looking page",
-          "Keep the database small",
+          "Keep the server software fully patched",
+          "Use strong passwords for every account",
         ],
         answer: 1,
         why: "Nearly every web vulnerability traces back to trusting input you should not have. Treat all user-supplied data as potentially hostile.",
@@ -120,8 +120,8 @@ const topic1: TopicManifest = {
         options: [
           "A setting hard-coded in your own server config",
           "A value in the URL (like ?id=42) that a user can edit",
-          "A fixed list of options your code defines",
-          "None of these",
+          "A fixed list of options your own code defines",
+          "A default value your program sets automatically",
         ],
         answer: 1,
         why: "Users can freely change URL parameters and hidden fields, so they are untrusted, just like form fields and uploads.",
@@ -129,10 +129,10 @@ const topic1: TopicManifest = {
       {
         q: "Why was the Exactis exposure preventable without defeating any attack?",
         options: [
-          "It used unbreakable encryption",
+          "A clever new exploit defeated its strong encryption",
           "The database was simply left reachable on the internet; basic hygiene (no direct exposure, strong auth) would have prevented it",
-          "The attackers were very unskilled",
-          "It was not actually a breach",
+          "Attackers phished an employee to steal the credentials",
+          "A malicious insider copied the database out",
         ],
         answer: 1,
         why: "It was a breach by exposure, not a clever exploit. A database of personal records should never be directly reachable from the internet.",

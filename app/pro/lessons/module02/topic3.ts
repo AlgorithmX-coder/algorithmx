@@ -114,10 +114,10 @@ const topic3: TopicManifest = {
       {
         q: "In a server log you see a run of 404 responses for pages like /admin and /backup that are not linked anywhere. What is the likely story?",
         options: [
-          "The server is broken",
+          "The server itself is failing on those requests",
           "Someone is probing for hidden pages that do not exist",
-          "Normal users mistyping the address",
-          "The site has run out of memory",
+          "Ordinary visitors are mistyping the web address",
+          "A search engine is busy indexing the whole site",
         ],
         answer: 1,
         why: "404 means 'not found'. A burst aimed at guessable admin paths that are not linked is classic reconnaissance: an attacker fishing for a forgotten door.",
@@ -125,10 +125,10 @@ const topic3: TopicManifest = {
       {
         q: "Why does a stolen session cookie let an attacker in without your password?",
         options: [
-          "The cookie contains your password in plain text",
+          "The cookie contains your password written in plain text",
           "The cookie is the token that proves you are the already-logged-in user, so presenting it is enough",
-          "Cookies disable the site's security",
-          "The site emails the attacker your password",
+          "The cookie stores the answers to your security questions",
+          "The cookie lets the attacker reset your password by email",
         ],
         answer: 1,
         why: "After login the cookie stands in for you on every request. Whoever holds a valid one is treated as you, which is why it must only ever travel encrypted.",
@@ -136,10 +136,10 @@ const topic3: TopicManifest = {
       {
         q: "A phishing site shows a padlock in the address bar. What does that tell you?",
         options: [
-          "It is definitely safe; the padlock proves it is trustworthy",
+          "It is definitely safe; the padlock proves the site is trustworthy",
           "Only that the connection to it is encrypted and the server matched a certificate, nothing about whether the site is honest",
-          "The padlock must be fake",
-          "The site is run by the real company",
+          "The browser has confirmed the site is free of malware",
+          "The site is run by the real, legitimate company",
         ],
         answer: 1,
         why: "HTTPS secures the channel, not the intentions. Scam sites get certificates too. The padlock means private and genuine connection, never trustworthy business.",

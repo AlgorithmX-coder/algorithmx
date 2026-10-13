@@ -118,10 +118,10 @@ const topic3: TopicManifest = {
       {
         q: "Why is reusing one password across sites so dangerous?",
         options: [
-          "It slows your computer down",
-          "It makes the password easier to forget",
+          "A reused password is easier for cracking tools to guess",
+          "Each site you reuse it on can then see your other logins",
           "One breached site lets attackers unlock all the others (credential stuffing)",
-          "It uses more storage",
+          "It forces you to reset every account whenever one changes",
         ],
         answer: 2,
         why: "Attackers take leaked email-and-password pairs and try them everywhere. Reuse turns one site's breach into a master key for your other accounts.",
@@ -129,10 +129,10 @@ const topic3: TopicManifest = {
       {
         q: "What is the main job of a password manager?",
         options: [
-          "To make one strong password you use everywhere",
+          "To create one very strong password you can use everywhere",
           "To generate and store a unique strong password for every site",
-          "To hide your passwords from the website",
-          "To type your password faster",
+          "To stop any website from ever seeing your password",
+          "To back up and encrypt the files on your computer",
         ],
         answer: 1,
         why: "A manager gives every site its own unique, strong password and remembers them all behind one master password, so a breach of one site can never unlock the others.",

@@ -107,10 +107,10 @@ const topic2: TopicManifest = {
       {
         q: "What is ISO 27001?",
         options: [
-          "A UK law on data protection",
+          "A UK law requiring companies to report breaches to a regulator",
           "An international, certifiable standard for an information-security management system",
-          "A type of malware",
-          "A free basic-controls checklist",
+          "A US framework of five functions for structuring a security programme",
+          "The UK's free baseline scheme of five basic security controls",
         ],
         answer: 1,
         why: "ISO 27001 is the certifiable ISMS standard, often required in enterprise contracts. Cyber Essentials is the basic-controls baseline; GDPR is law.",
@@ -118,10 +118,10 @@ const topic2: TopicManifest = {
       {
         q: "How does UK GDPR differ from a framework like the NIST CSF?",
         options: [
-          "It does not differ",
+          "GDPR applies only to government bodies, while frameworks apply to companies",
           "GDPR is mandatory law; a framework is a structured approach you choose to adopt",
-          "The CSF is a law too",
-          "GDPR is a certification you buy",
+          "The NIST CSF is legally binding in the UK, while GDPR is optional guidance",
+          "GDPR is a certification you earn by audit, while a framework is just advice",
         ],
         answer: 1,
         why: "Law is compulsory; frameworks are adopted (some certifiable). Keeping the two separate is important GRC literacy.",
@@ -129,10 +129,10 @@ const topic2: TopicManifest = {
       {
         q: "Why does security certification matter commercially?",
         options: [
-          "It is just paperwork with no value",
+          "It exempts the organisation from having to follow data-protection law",
           "Certification (especially ISO 27001) is often required to win enterprise and government contracts, so it enables business",
-          "It makes systems slower",
-          "Only regulators care about it",
+          "It shifts all legal liability for a breach onto the auditor who certified it",
+          "It guarantees the organisation can never suffer a breach once certified",
         ],
         answer: 1,
         why: "Demonstrable, certified security is frequently a precondition for deals, turning security into a business enabler.",

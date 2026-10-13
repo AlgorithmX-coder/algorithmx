@@ -113,17 +113,17 @@ const topic1: TopicManifest = {
       },
       {
         q: "Ransomware that locks a hospital's files but never copies them mainly breaks which pillar?",
-        options: ["Confidentiality", "Integrity", "Availability", "None of them"],
+        options: ["Confidentiality", "Integrity", "Availability", "Authentication"],
         answer: 2,
         why: "The data is not stolen or altered, it is just unreachable when staff need it. That is an availability failure, and it can be life-threatening.",
       },
       {
         q: "Why is security described as a set of trade-offs?",
         options: [
-          "Because tools are expensive",
+          "Because the strongest security tools are too expensive for most firms",
           "Because the three pillars pull against each other, so you balance them per system",
-          "Because attackers always win",
-          "Because availability is the only one that matters",
+          "Because you cannot defend against every possible attacker at once",
+          "Because availability usually matters more than the other two pillars",
         ],
         answer: 1,
         why: "Maximising one pillar often costs another (lock it down and it gets unusable). The skill is deciding what each system needs most and balancing deliberately.",

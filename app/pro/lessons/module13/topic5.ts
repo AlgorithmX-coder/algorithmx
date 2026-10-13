@@ -108,10 +108,10 @@ const topic5: TopicManifest = {
       {
         q: "What best describes good triage?",
         options: [
-          "Reacting fast and dramatically to everything",
+          "Reacting to every alert immediately as if it were an emergency",
           "Calm, evidence-led judgement that knows when to escalate and is clearly documented",
-          "Ignoring alerts to avoid overreacting",
-          "Guessing quickly to clear the queue",
+          "Clearing alerts quickly by dismissing the ones that look unlikely",
+          "Escalating every alert to senior analysts to be safe",
         ],
         answer: 1,
         why: "An alert is a question; you gather context, judge on evidence, escalate appropriately, and document, the craft at the heart of the job.",
@@ -119,10 +119,10 @@ const topic5: TopicManifest = {
       {
         q: "What does a realistic SOC analyst's day mostly involve?",
         options: [
-          "Constant dramatic real-time battles",
+          "Constant, fast-paced real-time battles against live hackers",
           "Steady, methodical triage and judgement, with occasional bursts of genuine urgency",
-          "Writing new software all day",
-          "Nothing; it is automated",
+          "Mostly building and tuning detection rules and dashboards",
+          "Responding to major confirmed incidents almost every shift",
         ],
         answer: 1,
         why: "The job is mostly careful, consistent triage, punctuated by the real incidents that make the watching worthwhile.",
@@ -130,10 +130,10 @@ const topic5: TopicManifest = {
       {
         q: "Why does research on internet exposure justify continuous monitoring?",
         options: [
-          "Because attacks are rare and slow",
+          "Because attacks mostly happen during office hours, when analysts are watching",
           "Because exposed systems are attacked within minutes by constant automated scanning, there is no quiet internet",
-          "Because only big companies are targeted",
-          "Because monitoring is legally required to look busy",
+          "Because attackers carefully research each target for weeks before striking",
+          "Because an exposed system is safe until someone manually finds it",
         ],
         answer: 1,
         why: "The permanent background storm of automated probing means something is always attacking, so monitoring, and the SOC, never stop.",

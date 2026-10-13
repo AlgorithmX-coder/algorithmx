@@ -108,10 +108,10 @@ const topic4: TopicManifest = {
       {
         q: "What is the foundation of a reliable patch-management process?",
         options: [
-          "Buying the newest hardware",
+          "Testing every patch in a lab before applying it anywhere",
           "An asset inventory: you cannot patch what you do not know you run",
-          "Patching only when forced to by a crisis",
-          "Turning off updates",
+          "Applying every available patch the moment it is released",
+          "Automating updates for every system without exception",
         ],
         answer: 1,
         why: "Knowing what you run is the starting point. Unknown systems are unpatched systems waiting to be breached.",
@@ -119,10 +119,10 @@ const topic4: TopicManifest = {
       {
         q: "What is the mature pattern for patching at scale?",
         options: [
-          "Patch everything manually, all at once",
+          "Automate every patch everywhere and remove humans from the process entirely",
           "Automate the routine updates, and reserve human judgement for critical, exposed or sensitive cases",
-          "Never automate anything",
-          "Only patch once a year",
+          "Apply patches manually one by one so every change is reviewed",
+          "Wait for a scheduled annual maintenance window to apply all patches together",
         ],
         answer: 1,
         why: "Automation handles the volume reliably; humans focus where decisions and testing genuinely matter.",
@@ -130,10 +130,10 @@ const topic4: TopicManifest = {
       {
         q: "Why does the Kaseya attack make management tools a special concern?",
         options: [
-          "They are cheap",
+          "They are used by nearly every organisation, so flaws in them are very common",
           "They have deep access to many systems, so compromising one can reach everything (and everyone) it manages",
-          "They are never targeted",
-          "They do not need patching",
+          "They sit outside the network perimeter, where firewalls cannot protect them",
+          "They run automatically without any human oversight, so attacks go unnoticed",
         ],
         answer: 1,
         why: "A trusted tool or supplier with broad access is a high-value target; its compromise is a supply-chain attack reaching all it can touch.",

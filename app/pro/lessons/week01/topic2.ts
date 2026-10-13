@@ -108,10 +108,10 @@ const topic2: TopicManifest = {
       {
         q: "How does an attacker actually 'crack' a stolen hash?",
         options: [
-          "They run the hash backwards to reveal the password",
+          "They run the hash backwards to reveal the original password",
           "They guess candidate passwords, hash each one, and look for a match",
-          "They email the user asking for the password",
-          "They decrypt it with the website's key",
+          "They trick the website into handing over its stored passwords",
+          "They decrypt it using the website's secret key",
         ],
         answer: 1,
         why: "Hashes cannot be reversed. Cracking is guessing at huge speed: hash a candidate, compare to the stolen file, repeat billions of times a second.",
@@ -119,10 +119,10 @@ const topic2: TopicManifest = {
       {
         q: "What does a unique salt per user prevent?",
         options: [
-          "It stops the database from being stolen",
-          "It makes identical passwords share one fingerprint",
+          "It stops the stored password database from being stolen",
+          "It makes identical passwords produce the same fingerprint",
           "It makes pre-computed tables (rainbow tables) useless",
-          "It encrypts the whole hard drive",
+          "It slows down how long each password guess takes",
         ],
         answer: 2,
         why: "Salt makes every hash unique even for identical passwords, so attackers cannot pre-compute one table of common passwords and match everyone at once.",
@@ -130,10 +130,10 @@ const topic2: TopicManifest = {
       {
         q: "Why is bcrypt a better choice than MD5 for passwords?",
         options: [
-          "It is faster, so logins are quicker",
+          "It is faster, so logins complete more quickly",
           "It is deliberately slow, so guessing is far harder",
-          "It cannot be stolen",
-          "It does not need a salt",
+          "It produces a far longer hash that is harder to crack",
+          "It does not need a salt to stay secure",
         ],
         answer: 1,
         why: "Fast hashes let attackers try billions of guesses a second. bcrypt is intentionally slow and tunable, turning a minutes-long cracking run into a lifetimes-long one.",

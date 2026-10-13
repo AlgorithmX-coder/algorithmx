@@ -108,10 +108,10 @@ const topic2: TopicManifest = {
       {
         q: "Which tier is typically the entry-level SOC role?",
         options: [
-          "Tier 3 (threat hunting / IR)",
+          "Tier 3 (senior threat hunting and incident response)",
           "Tier 1 (front-line triage and escalation)",
-          "SOC manager",
-          "There are no tiers",
+          "The SOC manager who oversees the whole team",
+          "Tier 2 (deeper investigation of escalated alerts)",
         ],
         answer: 1,
         why: "Tier 1 analysts are first to see and triage alerts and escalate what matters: the common starting point and the job this course prepares you for.",
@@ -119,10 +119,10 @@ const topic2: TopicManifest = {
       {
         q: "What is the escalation path for?",
         options: [
-          "Making the SOC bigger",
+          "Ranking analysts by how many alerts they close each day",
           "Moving a concern to whoever needs to handle it, so the right people act fast",
-          "Deleting alerts",
-          "Slowing down response",
+          "Automatically closing alerts that look like false positives",
+          "Deciding which security tools the SOC should buy",
         ],
         answer: 1,
         why: "It routes concerns to the right level, balancing not sitting on serious things against not raising every trivial one.",
@@ -130,10 +130,10 @@ const topic2: TopicManifest = {
       {
         q: "The deeper lesson of Target's SOC-process failure is that:",
         options: [
-          "Monitoring tools are useless",
+          "The monitoring tools must have failed to generate any alerts at all",
           "Accurate alerts are worthless if they are not acted upon; the process of triage and escalation is the point",
-          "Alerts should always be ignored",
-          "Only Tier 3 matters",
+          "Buying more detection tools would have prevented the breach",
+          "The attack was too sophisticated for any process to have caught it",
         ],
         answer: 1,
         why: "Detection without a working process to act on it is wasted. A missed alert has the same consequence as no alert at all.",

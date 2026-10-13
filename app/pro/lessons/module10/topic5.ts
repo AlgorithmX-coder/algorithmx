@@ -111,9 +111,9 @@ const topic5: TopicManifest = {
         q: "What is lateral movement?",
         options: [
           "An attacker moving from their first foothold to other, more valuable systems inside the network",
-          "Moving a server to a new building",
-          "A type of encryption",
-          "Updating software across machines",
+          "An attacker escalating to administrator rights on one machine",
+          "Spreading malware to external partner organisations",
+          "Copying stolen data out of the network to the attacker",
         ],
         answer: 0,
         why: "Attackers rarely land on the target; they land somewhere reachable and move sideways toward what they want.",
@@ -121,10 +121,10 @@ const topic5: TopicManifest = {
       {
         q: "Why is a 'flat' network so dangerous?",
         options: [
-          "It is slower",
+          "It exposes every internal machine directly to the public internet",
           "Once inside, an attacker can reach everything, so a single foothold becomes a path to the whole network",
-          "It uses more electricity",
-          "It is actually the safest design",
+          "It forces all traffic through one slow chokepoint",
+          "It prevents administrators from applying patches",
         ],
         answer: 1,
         why: "Flat networks give a foothold free rein. Segmentation divides the network so a foothold in one zone cannot reach another.",
@@ -132,10 +132,10 @@ const topic5: TopicManifest = {
       {
         q: "What does an 'assume breach' mindset add to perimeter defence?",
         options: [
-          "Nothing; the perimeter is enough",
+          "Building a single, much stronger perimeter wall",
           "Planning for an attacker getting in: limiting how far a foothold can reach, and monitoring internal movement to catch it",
-          "Giving up on security",
-          "Only buying more firewalls",
+          "Assuming attackers will never get past the firewall",
+          "Encrypting all data so a breach reveals nothing",
         ],
         answer: 1,
         why: "Perimeters sometimes fail. Assume-breach limits the blast radius (segmentation, least privilege) and detects lateral movement early.",

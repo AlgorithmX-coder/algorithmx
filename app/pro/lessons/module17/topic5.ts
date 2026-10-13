@@ -108,10 +108,10 @@ const topic5: TopicManifest = {
       {
         q: "What is the guiding principle of an audit?",
         options: [
-          "Trust what people tell you",
+          "Accept management's assurances, since they know their own systems best",
           "'Prove it': require evidence that controls genuinely exist and work, not just claims",
-          "Make security look good on paper",
-          "Find someone to blame",
+          "Check that every required policy has been written and signed off",
+          "Identify who to hold responsible when a control eventually fails",
         ],
         answer: 1,
         why: "Audits verify reality through evidence, catching the gap between documented and actual security.",
@@ -119,10 +119,10 @@ const topic5: TopicManifest = {
       {
         q: "Which is good audit evidence that a control works?",
         options: [
-          "Someone saying 'yes, we definitely do that'",
+          "A written policy stating that the control is required",
           "Logs and configuration showing the control is actually enforced",
-          "A policy document that is never followed",
-          "A general feeling of being secure",
+          "An email promising the control will be switched on next quarter",
+          "A vendor brochure describing what the security tool can do",
         ],
         answer: 1,
         why: "Verifiable, concrete records are evidence. Verbal assurance and unfollowed policies are not.",
@@ -130,10 +130,10 @@ const topic5: TopicManifest = {
       {
         q: "How do audits keep security improving?",
         options: [
-          "They do not; they just certify",
+          "They replace the need for controls once a certificate is issued",
           "They surface gaps (findings) that become a prioritised list of fixes, and they recur, so improvement is ongoing",
-          "By punishing staff",
-          "By reducing the number of controls",
+          "They freeze the security setup so nothing can change after certification",
+          "They hand all security decisions over to the external auditor",
         ],
         answer: 1,
         why: "A good audit is a recurring health check that drives genuine, continual improvement, closing the GRC loop.",

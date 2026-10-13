@@ -109,10 +109,10 @@ const topic4: TopicManifest = {
       {
         q: "What is an incident timeline?",
         options: [
-          "A schedule of future security tasks",
+          "A schedule of when future patches and scans are due",
           "The chronological reconstruction of an attack, assembled from evidence, showing what the attacker did and when",
-          "A list of staff shifts",
-          "A type of firewall log",
+          "A live feed of alerts as they arrive during an attack",
+          "A single log file that records every event in order",
         ],
         answer: 1,
         why: "It turns scattered fragments of evidence into a clear story of the attack, the heart of an investigation.",
@@ -120,10 +120,10 @@ const topic4: TopicManifest = {
       {
         q: "How is a timeline primarily built?",
         options: [
-          "By guessing what probably happened",
+          "By writing down the most likely story and filling any gaps with assumptions",
           "By correlating evidence from different sources by timestamp and logic, staying evidence-led",
-          "By asking the attacker",
-          "By ignoring the logs",
+          "By relying on a single system's log and trusting it completely",
+          "By listing events in the order the tool happens to display them",
         ],
         answer: 1,
         why: "Connecting fragments by time and relationship reveals the attacker's path. Good logging and synchronised clocks make it possible.",
@@ -131,10 +131,10 @@ const topic4: TopicManifest = {
       {
         q: "Why is the timeline so essential to a response?",
         options: [
-          "It is not; it is just paperwork",
+          "It is useful only for the final report, not for the response itself",
           "It reveals how they got in (root cause), how far they went (scope), and what they did (impact), driving eradication, notification and prevention",
-          "It only matters for small incidents",
-          "It replaces the need to contain the incident",
+          "It matters only when the attack reaches the news",
+          "It lets you reconnect systems immediately without checking the threat is gone",
         ],
         answer: 1,
         why: "You cannot eradicate, scope or prevent what you do not understand. The timeline answers the essential questions and backbones the report.",

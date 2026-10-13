@@ -108,17 +108,17 @@ const topic5: TopicManifest = {
     quiz: [
       {
         q: "A cache-poisoning attack belongs to which stage of the flow?",
-        options: ["The lookup", "The journey", "The destination", "None of them"],
+        options: ["The lookup", "The journey", "The destination", "The handshake"],
         answer: 0,
         why: "Cache poisoning corrupts the name-to-address step (DNS), so it is a lookup attack. Everything after it dutifully delivers the victim to the wrong place.",
       },
       {
         q: "In the 2018 crypto hijack, what did the attackers actually seize?",
         options: [
-          "The victims' passwords by phishing email",
+          "The victims' passwords, harvested by a phishing email",
           "The journey: they made a false route announcement and pulled traffic through networks they controlled",
-          "The destination server's database",
-          "The users' physical devices",
+          "The destination: they broke into the wallet site's own database",
+          "The victims' devices, through malware hidden in the fake site",
         ],
         answer: 1,
         why: "They abused the internet's trust-based routing to reroute traffic mid-journey, then served a fake site. It is the clearest 'attack the journey' example there is.",
@@ -126,9 +126,9 @@ const topic5: TopicManifest = {
       {
         q: "Why is 'which stage of the flow?' a useful first question for an analyst?",
         options: [
-          "It is not; the stage never matters",
+          "Because it tells you how long the attack has been going on",
           "Because naming the stage immediately narrows the kind of attack and where to investigate",
-          "Because every attack is really the same",
+          "Because it reveals the exact tool the attacker used",
           "Because it tells you exactly who the attacker is",
         ],
         answer: 1,

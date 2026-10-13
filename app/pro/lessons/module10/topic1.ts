@@ -113,10 +113,10 @@ const topic1: TopicManifest = {
       {
         q: "What can a man-in-the-middle attacker do that a pure eavesdropper cannot?",
         options: [
-          "Nothing; they are the same",
+          "Capture the traffic faster than an eavesdropper can",
           "Alter the traffic and impersonate the other side, not just read it",
-          "Only slow the connection down",
-          "Only attack wired networks",
+          "Break the strong encryption protecting the traffic",
+          "Steal data directly from the victim's hard drive",
         ],
         answer: 1,
         why: "A middleman relays the conversation and can change it or impersonate a party, while an eavesdropper only listens.",
@@ -124,10 +124,10 @@ const topic1: TopicManifest = {
       {
         q: "What is the real defence against eavesdropping on an untrusted network?",
         options: [
-          "Choosing a professional-looking website",
+          "Using a website that displays a trust seal or badge",
           "Encryption in transit: HTTPS and a trustworthy VPN, so captured traffic is unreadable",
-          "Connecting to the busiest Wi-Fi",
-          "Typing quickly",
+          "Connecting only to networks with many other users",
+          "Clearing your browser history regularly",
         ],
         answer: 1,
         why: "Only encryption makes captured traffic useless to a listener. Appearance and popularity are irrelevant.",
@@ -135,10 +135,10 @@ const topic1: TopicManifest = {
       {
         q: "Why was Superfish able to intercept HTTPS traffic without warnings?",
         options: [
-          "HTTPS is fundamentally broken",
+          "It exploited a flaw that breaks HTTPS encryption everywhere",
           "It installed its own trusted root certificate, so the device trusted its impersonation of sites",
-          "It only affected plain HTTP",
-          "Users turned off all security",
+          "It only worked when users visited plain HTTP sites",
+          "It stole the certificates directly from each website's server",
         ],
         answer: 1,
         why: "By subverting the device's trust store, it could impersonate any site warning-free: your security depends on what your device trusts.",

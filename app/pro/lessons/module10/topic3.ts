@@ -108,10 +108,10 @@ const topic3: TopicManifest = {
       {
         q: "What is the common idea behind all forms of spoofing?",
         options: [
-          "Encrypting data",
+          "Intercepting and reading traffic as it crosses a network",
           "Faking a trusted identifier (a number, name or address) to impersonate a trusted source",
-          "Flooding a network with traffic",
-          "Stealing physical devices",
+          "Flooding a service with traffic until it fails",
+          "Guessing a password by trying many combinations",
         ],
         answer: 1,
         why: "Whether it is a phone number, email sender, or network address, spoofing forges an identifier you instinctively trust.",
@@ -119,10 +119,10 @@ const topic3: TopicManifest = {
       {
         q: "Why is 'the caller ID showed my bank's number' not proof the call is genuine?",
         options: [
-          "Caller ID is always accurate",
+          "The phone network verifies every number before displaying it",
           "Caller ID is not strongly verified and can be spoofed, as services like iSpoof sold",
-          "Banks never call customers",
-          "It is proof; always trust it",
+          "A spoofed number would show as withheld or unknown",
+          "Only landlines can be spoofed, not mobile numbers",
         ],
         answer: 1,
         why: "Displayed numbers are claims the network relays, not verified facts, which is exactly what spoofing services exploit.",
@@ -130,10 +130,10 @@ const topic3: TopicManifest = {
       {
         q: "What reliably defeats a spoofed identity on anything important?",
         options: [
-          "Trusting it because it looks official",
+          "Checking the number matches the one on their website",
           "Verifying out-of-band: independently contacting the organisation through a known, trusted channel",
-          "Replying to the spoofed message",
-          "Acting faster before it expires",
+          "Calling back on the number the message provided",
+          "Looking for spelling mistakes in the message",
         ],
         answer: 1,
         why: "Out-of-band verification bypasses the forged identifier entirely, so whatever was spoofed no longer matters.",

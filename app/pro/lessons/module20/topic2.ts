@@ -107,10 +107,10 @@ const topic2: TopicManifest = {
       {
         q: "What does a SOC analyst's day mostly involve?",
         options: [
-          "Constant dramatic hacking battles",
+          "Constantly chasing live intruders through networks in real time",
           "Steady, methodical triage, investigation and documentation, with occasional real incidents",
-          "Writing marketing copy",
-          "Only attending meetings",
+          "Mostly writing and approving the company's security policies",
+          "Hands-on hardening and patching of servers all day long",
         ],
         answer: 1,
         why: "The real day is calm watchfulness and judgement, suiting patient, detail-oriented people, not non-stop drama.",
@@ -118,10 +118,10 @@ const topic2: TopicManifest = {
       {
         q: "What surprises many people about the penetration tester's day?",
         options: [
-          "It is frantic and chaotic",
+          "It is mostly improvised, high-speed hacking with little planning",
           "It is careful, scoped testing followed by a lot of clear report-writing",
-          "It involves no computers",
-          "It is illegal",
+          "It rarely involves writing anything down for the client",
+          "It is done without permission, to keep the test realistic",
         ],
         answer: 1,
         why: "Even the most glamorous role is disciplined, documented work; a finding nobody can act on is worthless.",
@@ -129,10 +129,10 @@ const topic2: TopicManifest = {
       {
         q: "Why choose a role by fit rather than title?",
         options: [
-          "Titles are all that matter",
+          "A senior-sounding title guarantees the highest salary from day one",
           "The right role plays to your strengths and temperament, which shapes both getting hired and thriving",
-          "Fit is irrelevant to happiness",
-          "To avoid ever being promoted",
+          "The job title is the only thing employers judge you on in interviews",
+          "Any role will feel much the same once you are actually doing it",
         ],
         answer: 1,
         why: "Matching the real daily work to who you are makes for better applications and interviews, and a sustainable career.",

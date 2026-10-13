@@ -108,10 +108,10 @@ const topic5: TopicManifest = {
       {
         q: "What is the first rule of examining suspicious malware?",
         options: [
-          "Run it on your work laptop to see what it does",
+          "Run it on a spare computer that is still on the network",
           "Never run it on a real, connected machine: use an isolated sandbox or disposable VM",
-          "Email it to colleagues first",
-          "Plug it into every machine to test them",
+          "Open it after disabling the antivirus to see it clearly",
+          "Rename the file to something harmless before opening it",
         ],
         answer: 1,
         why: "Isolation is everything. Analysts observe malware in a contained, disposable environment so it cannot spread or harm real systems.",
@@ -119,10 +119,10 @@ const topic5: TopicManifest = {
       {
         q: "How does safely analysing malware protect people who never encounter it?",
         options: [
-          "It does not help anyone else",
+          "Only the analyst's own organisation becomes protected by it",
           "Observed behaviour becomes shareable indicators and detections, so tools everywhere can block the same threat",
-          "It makes the malware stronger",
-          "Only by deleting the analyst's own copy",
+          "It protects people only after they have been infected once",
+          "It removes the malware from the internet entirely",
         ],
         answer: 1,
         why: "Analysis produces the detections shared through threat intelligence, so one contained study protects many who never see the malware.",
@@ -130,10 +130,10 @@ const topic5: TopicManifest = {
       {
         q: "What does the No More Ransom project demonstrate?",
         options: [
-          "That paying the ransom is the best option",
+          "That victims should always restore from backups instead of analysing",
           "That safe analysis of ransomware can produce free decryptors, letting victims recover without paying and undercutting the crime",
-          "That ransomware cannot be studied",
-          "That only governments can fight malware",
+          "That decryptors already exist for every ransomware family",
+          "That studying ransomware is too risky to be worthwhile",
         ],
         answer: 1,
         why: "Careful analysis of how ransomware encrypts can yield free recovery tools, the constructive flip side of malware study, helping victims and starving the crime.",

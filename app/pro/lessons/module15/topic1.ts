@@ -108,10 +108,10 @@ const topic1: TopicManifest = {
       {
         q: "What is the key limitation of signature-based detection?",
         options: [
-          "It is too slow",
+          "It is too slow to keep up with network traffic in real time",
           "It only catches known threats; anything new or tweaked has an unknown signature and slips past",
-          "It cannot run on computers",
-          "It produces too many false alarms",
+          "It needs a human to approve every match before it acts",
+          "It produces far more false alarms than behaviour detection",
         ],
         answer: 1,
         why: "Signatures match the known-bad, so novel or modified threats evade them. That is why behaviour detection is needed too.",
@@ -119,10 +119,10 @@ const topic1: TopicManifest = {
       {
         q: "What is the main strength of behaviour-based detection?",
         options: [
-          "It never produces false alarms",
+          "It identifies the exact name and family of each malware file",
           "It catches novel and disguised threats by watching what they do, which is hard to fake",
-          "It is always cheaper",
-          "It needs no tuning",
+          "It matches threats instantly against a shared list of known-bad files",
+          "It removes the need for signature-based detection entirely",
         ],
         answer: 1,
         why: "Behaviour is hard to disguise, so a brand-new variant still gives itself away by acting maliciously.",
@@ -130,10 +130,10 @@ const topic1: TopicManifest = {
       {
         q: "Why do living-off-the-land attacks defeat signature detection?",
         options: [
-          "They are too large to scan",
+          "They change their file's fingerprint faster than signatures can be written",
           "They use legitimate tools already on the system, so there is no malicious file to match a signature",
-          "They encrypt the signatures",
-          "They only attack at night",
+          "They overwhelm the scanner with too much traffic to inspect",
+          "They disable the antivirus before they run",
         ],
         answer: 1,
         why: "No malware file means no fingerprint to match, so only behaviour detection, noticing trusted tools used abnormally, can catch them.",
