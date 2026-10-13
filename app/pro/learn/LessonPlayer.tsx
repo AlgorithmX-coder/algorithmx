@@ -15,6 +15,29 @@ import {
   type LessonPhase,
 } from "./types";
 
+/* Deterministic per-question option shuffle. The quiz answers were authored
+ * with the correct option in slot 2 on 94% of checks, which a learner soon
+ * pattern-matches. This re-orders each question's options so the correct one
+ * lands in a varied slot, while staying STABLE across reloads (seeded by the
+ * lesson id + question index) so a saved answer still points at the same
+ * option. The authored `answer` index is never touched; only the display
+ * order changes, and the chosen original index is what gets stored. */
+function hashStr(s: string): number {
+  let h = 2166136261;
+  for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); }
+  return h >>> 0;
+}
+function seededOrder(n: number, seed: number): number[] {
+  const order = Array.from({ length: n }, (_, i) => i);
+  let s = seed || 1;
+  for (let i = n - 1; i > 0; i--) {
+    s = (Math.imul(s, 1664525) + 1013904223) >>> 0; // LCG step
+    const j = s % (i + 1);
+    [order[i], order[j]] = [order[j], order[i]];
+  }
+  return order;
+}
+
 /* The engine that runs one lesson through Learn -> See -> Try -> Check.
  * Structure only; every word of content comes from the manifest.
  * Warm, spacious, adult-beginner tone. Resume via localStorage.
@@ -394,6 +417,11 @@ export default function LessonPlayer({ lesson, topicIndex, topicCount, weekTitle
   const heroCase = lesson.cases[0];
 
   const quizDone = useMemo(() => quizAnswers.every((a) => a !== null), [quizAnswers]);
+  /* Per-question display order of the options (see seededOrder above). */
+  const quizOrder = useMemo(
+    () => lesson.check.quiz.map((q, qi) => seededOrder(q.options.length, hashStr(`${lesson.id}:${qi}`))),
+    [lesson.id, lesson.check.quiz],
+  );
   const inLesson = phase !== "intro" && phase !== "done";
 
   /* The teaching material for this topic, compiled for the AI tutor so it
@@ -755,19 +783,19 @@ export default function LessonPlayer({ lesson, topicIndex, topicCount, weekTitle
                     <div key={qi} style={{ background: T.panel, border: `1px solid ${T.edge}`, borderRadius: 12, padding: "16px 18px" }}>
                       <div style={{ fontSize: 15.5, fontWeight: 700, color: T.ink, marginBottom: 12 }}>{que.q}</div>
                       <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                        {que.options.map((opt, oi) => {
+                        {quizOrder[qi].map((origIdx) => {
                           const answered = chosen !== null;
-                          const isChosen = chosen === oi;
-                          const isCorrect = oi === que.answer;
+                          const isChosen = chosen === origIdx;
+                          const isCorrect = origIdx === que.answer;
                           let border: string = T.edgeSoft, bg: string = T.panelSoft, fg: string = T.ink;
                           if (answered && isCorrect) { border = T.green; bg = T.greenSoft; fg = T.ink; }
                           else if (answered && isChosen && !isCorrect) { border = T.red; bg = T.redSoft; fg = T.ink; }
                           else if (answered) { fg = T.muted; }
                           return (
-                            <button key={oi} className="quiz-opt" onClick={() => { if (chosen === null) setQuizAnswers((a) => a.map((v, i) => i === qi ? oi : v)); }}
+                            <button key={origIdx} className="quiz-opt" onClick={() => { if (chosen === null) setQuizAnswers((a) => a.map((v, i) => i === qi ? origIdx : v)); }}
                               disabled={answered}
                               style={{ textAlign: "left", fontFamily: T.sans, fontSize: 15, fontWeight: 600, lineHeight: 1.45, color: fg, background: bg, border: `1px solid ${border}`, borderRadius: 9, padding: "12px 15px", cursor: answered ? "default" : "pointer" }}>
-                              {opt}
+                              {que.options[origIdx]}
                             </button>
                           );
                         })}
