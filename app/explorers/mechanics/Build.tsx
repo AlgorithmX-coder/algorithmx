@@ -16,19 +16,32 @@ import { AmberButton, Eyebrow } from "../engine/primitives";
 import { MONO, T } from "../engine/tokens";
 import type { BuildPayload, MechanicProps } from "../engine/types";
 
+/** Options are matched by `id`, never by position, so reordering is always
+ *  safe — without this the correct option sat in the same authored slot
+ *  (almost always first) every single time. */
+function shuffled<T>(arr: T[]): T[] {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
 export default function Build({ payload, reduced, audio, onEvent, voiceOn }: MechanicProps<BuildPayload>) {
   useSkipToComplete(() => onEvent({ kind: "COMPLETED", mastery: true })); // UAT Skip
+  const [slots] = useState(() => payload.slots.map((s) => ({ ...s, options: shuffled(s.options) })));
   const [picks, setPicks] = useState<Record<string, string>>({});
   const [misses, setMisses] = useState(0);
   const [tested, setTested] = useState(false);
 
-  const allGood = payload.slots.every((s) => {
+  const allGood = slots.every((s) => {
     const p = picks[s.id];
     return p && s.options.find((o) => o.id === p)?.good;
   });
 
   const pick = (slotId: string, optId: string) => {
-    const slot = payload.slots.find((s) => s.id === slotId);
+    const slot = slots.find((s) => s.id === slotId);
     if (!slot || tested) return;
     const current = picks[slotId];
     if (current && slot.options.find((o) => o.id === current)?.good) return;
@@ -64,7 +77,7 @@ export default function Build({ payload, reduced, audio, onEvent, voiceOn }: Mec
       </p>
 
       <div style={{ display: "grid", gap: 16 }}>
-        {payload.slots.map((slot) => {
+        {slots.map((slot) => {
           const chosen = picks[slot.id];
           const chosenOpt = slot.options.find((o) => o.id === chosen);
           const locked = !!chosenOpt?.good;

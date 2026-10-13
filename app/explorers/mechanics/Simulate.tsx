@@ -17,15 +17,28 @@ import { AmberButton, Bubble, Eyebrow } from "../engine/primitives";
 import { MONO, T } from "../engine/tokens";
 import type { MechanicProps, SimulatePayload } from "../engine/types";
 
+/** Options are indexed, so a shuffle has to remap `answer` to the correct
+ *  option's new position — without this the right prediction sat in the
+ *  same authored slot (almost always first) every single time. */
+function shuffleStep<S extends { options: string[]; answer: number }>(step: S): S {
+  const order = step.options.map((_, i) => i);
+  for (let i = order.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [order[i], order[j]] = [order[j], order[i]];
+  }
+  return { ...step, options: order.map((i) => step.options[i]), answer: order.indexOf(step.answer) };
+}
+
 export default function Simulate({ payload, reduced, audio, onEvent }: MechanicProps<SimulatePayload>) {
   useSkipToComplete(() => onEvent({ kind: "COMPLETED", mastery: true })); // UAT Skip
+  const [steps] = useState(() => payload.steps.map(shuffleStep));
   const [stepIdx, setStepIdx] = useState(0);
   const [chosen, setChosen] = useState<number | null>(null);
   const [misses, setMisses] = useState(0);
   const [finished, setFinished] = useState(false);
 
-  const step = payload.steps[stepIdx];
-  const last = stepIdx === payload.steps.length - 1;
+  const step = steps[stepIdx];
+  const last = stepIdx === steps.length - 1;
   const revealed = chosen !== null;
 
   const predict = (i: number) => {
@@ -62,7 +75,7 @@ export default function Simulate({ payload, reduced, audio, onEvent }: MechanicP
 
       {/* live-con progress */}
       <div style={{ display: "flex", gap: 8, margin: "12px 0 14px" }}>
-        {payload.steps.map((_, i) => (
+        {steps.map((_, i) => (
           <span
             key={i}
             style={{

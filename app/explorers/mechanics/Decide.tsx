@@ -12,15 +12,28 @@ import { AmberButton, GhostButton } from "../engine/primitives";
 import { MONO, T } from "../engine/tokens";
 import type { DecidePayload, MechanicProps } from "../engine/types";
 
+/** Options are matched by `id`, never by position, so reordering is always
+ *  safe — without this the correct option sat in the same authored slot
+ *  (almost always first) every single time. */
+function shuffled<T>(arr: T[]): T[] {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
 export default function Decide({ payload, audio, onEvent }: MechanicProps<DecidePayload>) {
   useSkipToComplete(() => onEvent({ kind: "COMPLETED", mastery: true })); // UAT Skip
+  const [options] = useState(() => shuffled(payload.options));
   const [chosen, setChosen] = useState<string | null>(null);
   const [wrongOnce, setWrongOnce] = useState(false);
-  const option = payload.options.find((o) => o.id === chosen) ?? null;
+  const option = options.find((o) => o.id === chosen) ?? null;
 
   const choose = (id: string) => {
     if (chosen) return;
-    const o = payload.options.find((x) => x.id === id);
+    const o = options.find((x) => x.id === id);
     if (!o) return;
     setChosen(id);
     if (o.correct) {
@@ -45,7 +58,7 @@ export default function Decide({ payload, audio, onEvent }: MechanicProps<Decide
       </div>
 
       <div style={{ display: "grid", gap: 10, marginTop: 14 }}>
-        {payload.options.map((o) => {
+        {options.map((o) => {
           const isChosen = chosen === o.id;
           const showState = isChosen;
           const stateColor = o.correct ? T.confirmedGreen : T.threatRed;

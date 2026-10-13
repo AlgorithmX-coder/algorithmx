@@ -116,8 +116,13 @@ export default function WarRoomRuntime({ warCase, onExit, onNextCase }: { warCas
       else if (step.t === "note") { await working(step.text.length > 40 ? 700 : 450); push({ id: nextId(), kind: "note", text: step.text }); await wait(500); }
       else if (step.t === "choose") {
         let done = false;
+        // Shuffled once per presentation, not per render — matched by label,
+        // not index, so reordering is always safe. Without this the correct
+        // option sat in the same authored slot (almost always first) every
+        // single time.
+        const choiceOptions = shuffled(step.options.length).map((i) => step.options[i]);
         while (!done) {
-          setNudge(null); setDock({ type: "choose", prompt: step.prompt, options: step.options });
+          setNudge(null); setDock({ type: "choose", prompt: step.prompt, options: choiceOptions });
           const picked = await awaitUser(); setDock(null);
           const opt = step.options.find((o) => o.label === picked)!;
           if (opt.then) await runSteps(opt.then);

@@ -137,9 +137,14 @@ export default function ConsoleRuntime({ consoleCase, onExit, onNextCase }: { co
         push({ id: nextId(), kind: "sys", text: step.text }); await wait(500);
       } else if (step.t === "choose") {
         let done = false;
+        // Shuffled once per presentation, not per render — matched by label,
+        // not index, so reordering is always safe. Without this the correct
+        // option sat in the same authored slot (almost always first) every
+        // single time.
+        const choiceOptions = shuffled(step.options.length).map((i) => step.options[i]);
         while (!done) {
           setNudge(null);
-          setDock({ type: "choose", prompt: step.prompt, options: step.options });
+          setDock({ type: "choose", prompt: step.prompt, options: choiceOptions });
           const picked = await awaitUser(); setDock(null);
           const opt = step.options.find((o) => o.label === picked)!;
           if (opt.then) await runSteps(opt.then);
