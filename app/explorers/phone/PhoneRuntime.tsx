@@ -393,7 +393,15 @@ export default function PhoneRuntime({ phoneCase, onExit, onNextCase }: { phoneC
             <span>9:41</span>
             <span style={{ display: "flex", gap: 6, alignItems: "center", fontSize: 11 }}>
               <span aria-hidden>●●●</span><span aria-hidden>Wi‑Fi</span>
-              <span aria-hidden style={{ width: 22, height: 11, border: `1.4px solid ${C.ink}`, borderRadius: 3, position: "relative", opacity: 0.9 }}><i style={{ position: "absolute", left: 1.5, top: 1.5, bottom: 1.5, width: "70%", background: C.mint, borderRadius: 1, display: "block" }} /></span>
+              {/* Was missing the terminal nub every real status-bar battery
+                  icon has, which is what made it "look off" — just a plain
+                  rounded rect otherwise, not obviously a battery. */}
+              <span aria-hidden style={{ display: "inline-flex", alignItems: "center" }}>
+                <span style={{ width: 22, height: 11, border: `1.4px solid ${C.ink}`, borderRadius: 3, position: "relative", opacity: 0.9 }}>
+                  <i style={{ position: "absolute", left: 1.5, top: 1.5, bottom: 1.5, width: "82%", background: C.mint, borderRadius: 1, display: "block" }} />
+                </span>
+                <span style={{ width: 1.6, height: 4.5, background: C.ink, opacity: 0.9, borderRadius: "0 1.5px 1.5px 0", marginLeft: 1.5 }} />
+              </span>
             </span>
           </div>
 
@@ -417,8 +425,13 @@ export default function PhoneRuntime({ phoneCase, onExit, onNextCase }: { phoneC
                 <span aria-hidden style={{ width: 37, height: 37, borderRadius: "50%", background: header.who === "WREN" ? "radial-gradient(circle at 40% 35%,#1c5248,#0c2f29)" : "linear-gradient(135deg,#7a49c9,#c9497f)", border: header.who === "WREN" ? `1.5px solid ${C.wren}` : "none", display: "grid", placeItems: "center", fontWeight: 700, fontSize: 14, color: "#fff" }}>{header.avatar}</span>
                 <div style={{ minWidth: 0 }}>
                   <div style={{ fontWeight: 600, fontSize: 15.5, lineHeight: 1.15, color: header.who === "WREN" ? C.wren : C.ink }}>{header.who}</div>
-                  <div style={{ fontSize: 11.5, color: header.tag ? C.warn : C.dim, display: "flex", alignItems: "center", gap: 5 }}>
-                    {header.tag && <b style={{ fontSize: 9.5, background: "rgba(245,166,35,.16)", border: `1px solid rgba(245,166,35,.5)`, color: C.warn, padding: "1px 6px", borderRadius: 999, fontWeight: 700, letterSpacing: ".03em" }}>{header.tag}</b>}
+                  {/* marginTop added: the name and this badge+sub row sat
+                      with zero gap between them, reading as packed together
+                      (owner: "need a gap in between"). The badge itself also
+                      got a touch more breathing room so a longer tag like
+                      "6 WEEKS" doesn't look squashed. */}
+                  <div style={{ fontSize: 11.5, color: header.tag ? C.warn : C.dim, display: "flex", alignItems: "center", gap: 6, marginTop: 3 }}>
+                    {header.tag && <b style={{ fontSize: 10, background: "rgba(245,166,35,.16)", border: `1px solid rgba(245,166,35,.5)`, color: C.warn, padding: "2px 8px", borderRadius: 999, fontWeight: 700, letterSpacing: ".03em", whiteSpace: "nowrap" }}>{header.tag}</b>}
                     {header.sub}
                   </div>
                 </div>
@@ -833,7 +846,11 @@ function LockScreen({ caseNumber, open, title, onOpen }: { caseNumber: string; o
 function Debrief({ data, caseId, xp, reduced, onExit, onNext }: { data: PhoneCase["debrief"]; caseId: string; xp: number; reduced: boolean; onExit?: () => void; onNext?: () => void }) {
   const [revealed, setRevealed] = useState(false);
   return (
-    <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", padding: "0 24px 26px" }}>
+    // justifyContent:"center" only works while content is shorter than the
+    // viewport; the closing ceremony pushes it past that on short phones, so
+    // this needs to scroll (matches LockScreen's pattern above) or the
+    // bottom (incl. "Next case") is unreachable with no scrollbar shown.
+    <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", overflowY: "auto", padding: "0 24px 26px" }}>
       <div style={{ fontSize: 24, fontWeight: 700, color: C.mint, marginBottom: 14, textAlign: "center", lineHeight: 1.2 }}>{data.title}</div>
       <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 18 }}>
         {data.lines.map((l, i) => (
