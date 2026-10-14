@@ -208,7 +208,7 @@ export const WEEK_5: WeekContent = {
         lines: [
           "[excited] On your first challenge, we weigh chat moments on the Laughing Scales!",
           "This game is all about telling a joke from bullying.",
-          "Out in the real world, a mean message often hides behind the word joke, and the test tells you the truth.",
+          "Out in the real world, a mean message often hides behind the word joke. The test tells you the truth.",
           "Here is what you do. A chat moment appears in the gold card. Read it, and ask: is everyone laughing, or is someone hurting? Then tap the card that says what it is.",
           "[warmly] Weigh all five, and nobody will ever fool you with the word joke. Ready? Let's weigh!",
         ],
@@ -221,7 +221,8 @@ export const WEEK_5: WeekContent = {
         speaker: "layla",
         lines: [
           "[proud] Every moment weighed! Joke or bullying, you can tell them apart now.",
-          "[warmly] Out in the real world, when someone says it was just a joke, you know the test: is everyone laughing, or is someone hurting?",
+          "[warmly] Out in the real world, when someone says it was just a joke, you know the test.",
+          "Is everyone laughing? Or is someone hurting?",
         ],
       },
     },
@@ -367,7 +368,8 @@ export const WEEK_5: WeekContent = {
         speaker: "adam",
         lines: [
           "[proud] The whole ring is glowing, Cyber Hero. Every stone told the truth.",
-          "[warmly] Out in the real world, if a gray thought whispers that it was your fault, you know four true things that say it never was.",
+          "[warmly] Out in the real world, a gray thought might whisper that it was your fault.",
+          "And you know four true things that say it never was.",
         ],
       },
     },
@@ -505,7 +507,7 @@ export const WEEK_5: WeekContent = {
         lines: [
           "[excited] On your third challenge, mean sparks are landing by our campfire!",
           "This game is all about not feeding the fire.",
-          "Out in the real world, the itch to fire back is the fire asking for wood, and you can say no.",
+          "Out in the real world, the itch to fire back is the fire asking for wood. And you can say no.",
           "Here is what you do. A spark lands with a big red REPLY button. Do not tap it. Press and HOLD the cool blue river stone until the spark fizzles into ash. On the last round a friend is picked on, so tap the green STAND UP button instead.",
           "[warmly] Starve three sparks and stand up for one friend, and you are the calm one. Ready? Here comes the first spark.",
         ],
@@ -634,7 +636,8 @@ export const WEEK_5: WeekContent = {
         speaker: "adam",
         lines: [
           "[warmly] You tried so hard, Cyber Hero, and the embers still got away. That is not your fault. That is how copies work.",
-          "Out in the real world, the only time you can stop a message is BEFORE you pass it on. So you don't. You check on the person instead.",
+          "Out in the real world, the only time you can stop a message is BEFORE you pass it on.",
+          "So you don't. You check on the person instead.",
         ],
       },
     },
@@ -823,14 +826,14 @@ export const WEEK_5: WeekContent = {
         speaker: "adam",
         lines: [
           "[excited] That's all FIVE powers, Cyber Hero!",
-          "You can weigh a moment, you know it is never your fault, you starve the fire, you stop the chain...",
+          "You can weigh a moment. You know it is never your fault. You starve the fire. You stop the chain...",
           "[warmly] and you never carry heavy words alone.",
           // The sign-off ran straight off the end of the sentence and was gone
           // before the child registered it (Abdullah, W5 6d: end rushed). The
           // [excited] tag is what changes the delivery; the split is not a
           // pause (a narration block is ONE clip) but it does give the line its
           // own bullet on screen.
-          "One quick review to make it all stick, then the Raccoon's Echo Machine meets a heart it can't copy.",
+          "One quick review to make it all stick. Then the Raccoon's Echo Machine meets a heart it can't copy.",
           "[excited] Come on!",
         ],
       },
@@ -1058,7 +1061,7 @@ export const WEEK_5: WeekContent = {
         correctIndex: 0,
         teachOnWrong: {
           title: "Angry replies are wood!",
-          explanation: "Mean messages are a fire, and firing back is wood: the chat just gets hotter and Layla feels worse, not better. Don't reply, that's what stops the fire growing.",
+          explanation: "Mean messages are a fire, and firing back is wood. The chat just gets hotter, and Layla feels worse. Don't reply. That is what stops the fire growing.",
         },
         villainRight: {
           slug: "quiz-w5-right-c3-1",
@@ -1112,7 +1115,7 @@ export const WEEK_5: WeekContent = {
         correctIndex: 0,
         teachOnWrong: {
           title: "Keep it, don't delete it!",
-          explanation: "Deleting feels better for a second, but the proof vanishes with it. Keep the message, don't reply, and show it to a trusted grown-up, that's how real help arrives.",
+          explanation: "Deleting feels better for a second, but the proof vanishes with it. Keep the message. Don't reply. Show it to a trusted grown-up. That is how real help arrives.",
         },
         villainRight: {
           slug: "quiz-w5-right-c5-1",
