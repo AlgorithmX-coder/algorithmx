@@ -98,6 +98,10 @@ const NARRATOR_BY_WEEK = {
   "week2.ts": KIDS_EDUCATOR,
   "week3.ts": KIDS_EDUCATOR,
   "week4.ts": KIDS_EDUCATOR,
+  "week5.ts": KIDS_EDUCATOR,
+  "week6.ts": KIDS_EDUCATOR,
+  "week7.ts": KIDS_EDUCATOR,
+  "week8.ts": KIDS_EDUCATOR,
   // Not a week: the one shared line QuickCheck speaks on every finish-mode
   // screen, pinned so it does not play the old voice inside a migrated week.
   "shared:quickcheck-finish": KIDS_EDUCATOR,

@@ -54,14 +54,14 @@ export const WEEK_6: WeekContent = {
       photoSrc: "/cyberheroes/alerts/week-06.png",
       title: "ALERT INCOMING",
       badge: "Incident Report",
-      caption: "The Raccoon slipped into a game lobby with a friendly username, fished for real names and schools - then asked kids to 'chat somewhere else'. Your game zone needs DEFENDING!",
+      caption: "The Raccoon slipped into a game lobby with a friendly username. He fished for real names and schools. Then he asked kids to 'chat somewhere else'. Your game zone needs DEFENDING!",
       photoCaption: "Wk 6 - The Lobby Intruder",
       ctaLabel: "See the Mission →",
       narration: {
         speaker: "adam",
         lines: [
           "[nervous] Cyber Hero, grab your controller and read this incident report with me.",
-          "The Raccoon slipped into a game lobby with a friendly username, fished for real names and schools - then asked kids to 'chat somewhere else'. Your game zone needs DEFENDING!",
+          "The Raccoon slipped into a game lobby with a friendly username. He fished for real names and schools. Then he asked kids to 'chat somewhere else'. Your game zone needs DEFENDING!",
           "[whispers] A friendly username. That is all it took to get in.",
           "[warmly] By the end of today, your lobby will have guards on every door.",
           "Let's see what Mission Command has for us!",
@@ -208,7 +208,9 @@ export const WEEK_6: WeekContent = {
           "[excited] On your first challenge, you fix chat messages before they fly!",
           "This game is all about keeping real-life info out of game chat.",
           "Out in the real world, a leak is usually one little word in a friendly message.",
-          "Here is what you do. Your message appears as word tiles. Read it. If a word gives away who you are or where you are, tap it, then tap the safer swap. If it is all game talk, just tap SEND.",
+          "Here is what you do. Your message appears as word tiles. Read it.",
+          "If a word gives away who you are or where you are, tap it. Then tap the safer swap.",
+          "If it is all game talk, just tap SEND.",
           "[warmly] Send every message clean, and the lobby learns nothing about you. Ready? First message!",
         ],
       },
@@ -350,7 +352,7 @@ export const WEEK_6: WeekContent = {
         lines: [
           "[excited] On your second challenge, you stand at the Lobby Doors!",
           "This game is all about letting friends in and keeping strangers out.",
-          "Out in the real world, a lobby door with no lock lets anyone walk in with a friendly name.",
+          "Out in the real world, a lobby door with no lock lets anyone walk in. Anyone with a friendly name.",
           "Here is what you do. A player comes to the door. I will tell you who it is. If they wear the team badge, tap LET IN. No badge? Tap DENY. After the first few players, a settings card appears. Tap it to switch the lobby to friends only, and watch what changes.",
           "[warmly] Guard the door, then let the setting guard it for you. Ready? First player!",
         ],
@@ -567,7 +569,7 @@ export const WEEK_6: WeekContent = {
         lines: [
           "[excited] On your third challenge, you count the guards in Guard Count!",
           "This game is all about spotting when a chat is trying to move you away from the guards.",
-          "Out in the real world, the move always comes with a friendly reason: laggy chat, a secret trick, a private server.",
+          "Out in the real world, the move always comes with a friendly reason. Laggy chat. A secret trick. A private server.",
           "Here is what you do. A player asks you to chat somewhere else. Two places appear. Tap each guard slot in both places to see if that guard is there or missing. When you have checked them all, tap STAY HERE under the place you would stay in.",
           "[warmly] Count first, then choose, and no trickster can talk you out of the guarded playground. Ready? First invite!",
         ],
@@ -708,7 +710,7 @@ export const WEEK_6: WeekContent = {
             "Report first, always. Asking for a photo is exactly what the game's guards need to hear about.",
             "Block before you tell. Once they have vanished, a grown-up hears the whole story.",
           ],
-          why: "Asking a kid for a photo is a red flag from Week 3, and you answered it with report, block, tell. Perfect order.",
+          why: "Asking a kid for a photo is a red flag from Week 3. You answered it with report, block, tell. Perfect order.",
         },
         {
           id: "spam",
@@ -739,7 +741,7 @@ export const WEEK_6: WeekContent = {
         lines: [
           "[excited] On your fourth challenge, you take on the Power Panel!",
           "This game is all about finding report and block, fast, in any game.",
-          "Out in the real world, every game hides these buttons in a different spot, so you look for the WORD, not the place.",
+          "Out in the real world, every game hides these buttons in a different spot. So you look for the WORD, not the place.",
           "Here is what you do. A nasty message sits at the top. Below it, a menu full of buttons. Tap REPORT first. Then tap BLOCK. Then tap TELL A GROWN-UP. If you tap something else, I will tell you why it does not help, and you try again.",
           "[warmly] Three menus, and three times through it. Report. Block. Tell. Ready? First menu!",
         ],
@@ -908,8 +910,10 @@ export const WEEK_6: WeekContent = {
         lines: [
           "[excited] On your last challenge, downloads arrive at the Download Dock!",
           "This game is all about telling a real in-game shop from a free-download trap.",
-          "Out in the real world, the trap always looks like the better deal, and it always asks for one thing too many.",
-          "Here is what you do. A download page appears. Tap each magnifying glass to inspect a clue: who made it, what it wants, whether the real game would do this, and what happens if you install it. Then tap your verdict: looks safe, ask a grown-up first, or it's a trap, close it.",
+          "Out in the real world, the trap always looks like the better deal. And it always asks for one thing too many.",
+          "Here is what you do. A download page appears. Tap each magnifying glass to inspect a clue.",
+          "Who made it. What it wants. Whether the real game would do this. What happens if you install it.",
+          "Then tap your verdict. Looks safe. Ask a grown-up first. Or it is a trap, close it.",
           "[warmly] Inspect every clue before you decide, and no free skin will ever cost you your account. Ready? First download!",
         ],
       },
@@ -1051,7 +1055,7 @@ export const WEEK_6: WeekContent = {
         lines: [
           "[excited] Time for your review: Game Zone Bingo!",
           "This game is all about matching each lobby moment to its hero move.",
-          "Out in the real world, the moments come mixed up, so the moves have to be ready in any order.",
+          "Out in the real world, the moments come mixed up. So the moves have to be ready in any order.",
           "Here is what you do. A lobby moment appears above the bingo card. I will read it. Then tap the square with the hero move that answers it. Fill the card and it is bingo.",
           "[warmly] Six moments, six moves, one fortress. Ready? First moment!",
         ],
@@ -1150,7 +1154,7 @@ export const WEEK_6: WeekContent = {
         correctIndex: 0,
         teachOnWrong: {
           title: "Real-life info stays out!",
-          explanation: "Your school, your town, your street, they all point to the real you, and a stranger can follow even one crumb. A lobby stranger gets game talk and nothing else. Tactics in, real-life info out.",
+          explanation: "Your school. Your town. Your street. They all point to the real you, and a stranger can follow even one crumb. A lobby stranger gets game talk and nothing else. Tactics in, real-life info out.",
         },
         villainRight: {
           slug: "quiz-w6-right-c1-1",
@@ -1258,7 +1262,7 @@ export const WEEK_6: WeekContent = {
         correctIndex: 0,
         teachOnWrong: {
           title: "Your login is the loot!",
-          explanation: "No real site needs your password to give you a gift, and 'changing it after' can be too late. The skin was the bait, the login was the whole plan. Close it and tell a trusted grown-up.",
+          explanation: "No real site needs your password to give you a gift. And 'changing it after' can be too late. The skin was the bait, the login was the whole plan. Close it and tell a trusted grown-up.",
         },
         villainRight: {
           slug: "quiz-w6-right-c5-1",

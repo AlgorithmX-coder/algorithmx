@@ -183,7 +183,8 @@ export const WEEK_7: WeekContent = {
         speaker: "adam",
         lines: [
           "[proud] Every pack counted, Cyber Hero! You saw the real coins behind every gem.",
-          "[warmly] Out in the real world, when a shop shows you gems, count them back into coins in your head. The price is always real money.",
+          "[warmly] Out in the real world, when a shop shows you gems, count them back into coins in your head.",
+          "The price is always real money.",
         ],
       },
     },
@@ -318,7 +319,7 @@ export const WEEK_7: WeekContent = {
         lines: [
           "[excited] On your second challenge, you open the Odds Jar!",
           "This game is all about seeing that the odds never move, however many boxes you open.",
-          "Out in the real world, the jar is hidden inside the box, so the spent counter is the only thing you see growing.",
+          "Out in the real world, the jar is hidden inside the box. So the spent counter is the only thing you see growing.",
           "Here is what you do. Tap OPEN. A marble rolls out and the spent counter climbs. Keep tapping until the OPEN button stops. Then three cards appear. Tap the one that is TRUE.",
           "[warmly] Watch the gold marble the whole time. Ready? First jar!",
         ],
@@ -466,7 +467,7 @@ export const WEEK_7: WeekContent = {
           stamp: "TRICK!",
           rightMove: "walk",
           readAloud: "Next: a Golden Cape, gone forever in three minutes, says the sign. Pull the lever and see if the clock is real.",
-          why: "The clock was paint. Gone forever capes come back all the time, and a deal that cannot wait for you was never a real deal.",
+          why: "The clock was paint. Gone forever capes come back all the time. And a deal that cannot wait for you was never a real deal.",
           teach: {
             title: "The clock made the choice",
             body: "A countdown on a shop is there to stop your thinking. The receipt showed it was fake and the cape comes back. Buying under a rush is the trick working.",
@@ -523,7 +524,7 @@ export const WEEK_7: WeekContent = {
           stamp: "TRICK!",
           rightMove: "walk",
           readAloud: "Last deal: the Mega Pass, only one coin a day, and only four left. Pull the lever and add up the days.",
-          why: "Tiny prices grow huge. A coin every day is seven coins in a week, and the four left sign is just the rush trick in new paint.",
+          why: "Tiny prices grow huge. A coin every day is seven coins in a week. And the four left sign is just the rush trick in new paint.",
           teach: {
             title: "Tiny prices grow HUGE!",
             body: "A coin every day sounds tiny, but the drip never stops. In one week it costs more than your whole pouch, and the four left sign is there to hurry you.",
@@ -553,7 +554,7 @@ export const WEEK_7: WeekContent = {
         speaker: "adam",
         lines: [
           "[proud] Every true price printed, Cyber Hero! The clock never rushed you once.",
-          "[warmly] Out in the real world, when a shop counts down at you, that is your signal to slow down and read the real price.",
+          "[warmly] Out in the real world, when a shop counts down at you, that is your signal. Slow down, and read the real price.",
         ],
       },
     },
@@ -649,7 +650,7 @@ export const WEEK_7: WeekContent = {
           wrongTip: "A saved card is real money with a shortcut button. Nobody said yes to THIS buy yet.",
           choices: [
             { text: "Tap YES, the card is already saved", isSafe: false, consequence: "That saved card is a real person's real money, and they did not get a say. Saved does not mean allowed." },
-            { text: "Pause the game and ask first", isSafe: true, consequence: "Hero move! Maybe they say yes, maybe no, but it was THEIR call, and the shop stays fun." },
+            { text: "Pause the game and ask first", isSafe: true, consequence: "Hero move! Maybe they say yes, maybe no. But it was THEIR call, and the shop stays fun." },
           ],
         },
         {
@@ -810,7 +811,7 @@ export const WEEK_7: WeekContent = {
           text: "Daily reward: 50 coins for logging in, inside the game",
           readAloud: "A gold coin floats up: daily reward, fifty coins for logging in, inside the game. Where does its string lead?",
           wants: "nothing",
-          why: "It lives inside the real game, it asks for nothing, and fifty coins a day is the kind of small reward real games give. That one is real.",
+          why: "It lives inside the real game. It asks for nothing. And fifty coins a day is the kind of small reward real games give. That one is real.",
           nudge: "A daily reward that lives inside the game and pays you for logging in. Does it ask you for anything before you get it?",
         },
         {
@@ -856,7 +857,8 @@ export const WEEK_7: WeekContent = {
           "[excited] On your last challenge, you follow the Free-Coin Strings!",
           "This game is all about seeing what a free offer really wants.",
           "Out in the real world, the word FREE is printed big and the string is printed small.",
-          "Here is what you do. Three offers float over the counter. Tap one, and I will read it. Then tap the token its string really leads to: your password, a grown-up's card, your tap, or nothing because it is real. Right, and the string snaps to the truth. Wrong, and I help you look again.",
+          "Here is what you do. Three offers float over the counter. Tap one, and I will read it.",
+          "Then tap the token its string really leads to. Your password. A grown-up's card. Your tap. Or nothing, because it is real. Right, and the string snaps to the truth. Wrong, and I help you look again.",
           "[warmly] Follow every string, and free will never fool you. Ready? First offer!",
         ],
       },
@@ -937,7 +939,7 @@ export const WEEK_7: WeekContent = {
         lines: [
           "[excited] Time for your review: the Till Match!",
           "This game is all about pairing each shop trick with its hero move.",
-          "Out in the real world, the tricks come one at a time, so the moves have to be ready in any order.",
+          "Out in the real world, the tricks come one at a time. So the moves have to be ready in any order.",
           "Here is what you do. The cards are face down. Flip two. If a shop trick meets its hero move, they stay up and I tell you why. If not, they flip back and you try again. Fewer flips, more stars.",
           "[warmly] Six pairs, one till, one fortress. Ready? Flip a card!",
         ],
@@ -950,7 +952,7 @@ export const WEEK_7: WeekContent = {
         speaker: "layla",
         lines: [
           "[proud] Till matched, Cyber Hero! Every shop trick met its hero move.",
-          "[warmly] Out in the real world, your wallet has a guard on every trick now, and you know which move to make.",
+          "[warmly] Out in the real world, your wallet has a guard on every trick now. And you know which move to make.",
         ],
       },
     },
