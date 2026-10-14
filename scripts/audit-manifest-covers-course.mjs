@@ -61,6 +61,28 @@ async function coverage(manifest, sources) {
 const sources = {};
 for (let w = 1; w <= WEEKS; w++) sources[w] = await readFile(`app/lesson/weekContent/week${w}.ts`, "utf8");
 
+/* A migrated week must be ENTIRELY the new narrator.
+ *
+ * The course is moving to one voice a few weeks at a time, and "this week is
+ * done" has to mean something a machine can check. A week is done when the
+ * generator lists it in NARRATOR_BY_WEEK; from that moment every clip it can
+ * reach must be the new voice, or a line was edited without being re-recorded,
+ * or a clip was inherited from the old voice and nobody heard it.
+ *
+ * When the last week lands, the table goes away and the new narrator becomes
+ * the default - and then this reads the default and holds the whole course to
+ * it, with nothing left pointing at the old voice.
+ */
+const generator = await readFile("scripts/elevenlabs-generate-narration.mjs", "utf8");
+const expectedVoice =
+  (generator.match(/const KIDS_EDUCATOR = \{[^}]*name:\s*"([^"]+)"/) || [])[1] || null;
+const migrated = new Set(
+  [...generator.matchAll(/"week(\d+)\.ts":\s*KIDS_EDUCATOR/g)].map((m) => Number(m[1])),
+);
+// no table left means the narrator is the default: every week is migrated
+const tableGone = !/const NARRATOR_BY_WEEK/.test(generator);
+if (tableGone) for (let w = 1; w <= WEEKS; w++) migrated.add(w);
+
 const manifest = JSON.parse(await readFile("public/audio/voice/manifest.json", "utf8"));
 const now = await coverage(manifest, sources);
 
@@ -108,6 +130,16 @@ for (let w = 1; w <= WEEKS; w++) {
     if (minor > 3) {
       problems.push(`week ${w} is split between ${names.join(" and ")}`);
       note += "   <-- SPLIT";
+    }
+  }
+
+  // a week the generator calls migrated must be wholly the new narrator
+  if (expectedVoice && migrated.has(w) && c.clips > 0) {
+    const wrong = names.filter((v) => v !== expectedVoice);
+    if (wrong.length) {
+      const n = wrong.reduce((a, v) => a + c.voices[v], 0);
+      problems.push(`week ${w} is migrated but ${n} clip(s) are ${wrong.join("/")}, not ${expectedVoice}`);
+      note += "   <-- NOT MIGRATED";
     }
   }
   console.log(`  ${String(w).padStart(4)}   ${String(c.clips).padStart(5)}   ${label}${note}`);
