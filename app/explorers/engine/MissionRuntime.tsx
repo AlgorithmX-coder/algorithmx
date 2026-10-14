@@ -945,13 +945,15 @@ function ArtifactReveal({ art, voiceOn, reduced, audio, onDone }: {
           <Bubble who="wren" tone={T.confirmedGreen} speaking={speaking}>{art.doneLine}</Bubble>
           <div style={{ marginTop: 14 }}>
             {locked ? (
-              // Text dropped — the global "WREN IS SPEAKING" pill (the hard
-              // lock's own affordance) already says this; having both on
-              // screen at once read as a duplicate. TypingDots alone still
-              // gives this spot its own "something's happening" cue.
-              <span style={{ display: "inline-flex", gap: 10, alignItems: "center", fontFamily: MONO, fontSize: 11.5, letterSpacing: "0.08em", color: T.textDisabled }}>
-                <TypingDots />
-              </span>
+              // Render nothing here: this branch is only ever reached while
+              // `locked` is true, which is exactly when the global "WREN IS
+              // SPEAKING" pill (the hard lock's own affordance) is already
+              // on screen. An earlier pass dropped the duplicate TEXT here
+              // but kept a second animated dots indicator, which still read
+              // as two things visibly pulsing on screen at once (UAT: Week
+              // 5 "double speaking animation"). The global pill alone is
+              // the single source of truth for this state everywhere now.
+              null
             ) : (
               <AmberButton label="I'VE GOT IT →" onClick={() => { audio.click(); stopWren(); onDone(); }} />
             )}
@@ -1082,12 +1084,14 @@ function LearnStage({ cycle, cycleIndex, reduced, audio, emit, onNext, voiceOn }
             <TypingDots /> TAP FOR MORE
           </button>
         ) : narrated ? (
-          // Text dropped (see the matching note in ArtifactReveal) — the
-          // global "WREN IS SPEAKING" pill already covers it; this is now
-          // just the local TypingDots cue, no duplicate label.
-          <div style={{ justifySelf: "start", display: "flex", gap: 10, alignItems: "center", color: T.textDisabled, fontFamily: MONO, fontSize: 11.5, letterSpacing: "0.08em" }} aria-label="WREN is speaking">
-            <TypingDots />
-          </div>
+          // Render nothing: this branch covers the entire window the clip
+          // is arming/playing, which is the same window the global "WREN IS
+          // SPEAKING" pill is already up for. An earlier pass dropped the
+          // duplicate TEXT here but kept a second animated dots indicator —
+          // still two things visibly pulsing on screen at once (UAT: Week 5
+          // "double speaking animation"). The global pill is the single
+          // source of truth for this state everywhere now.
+          null
         ) : (
           <div style={{ justifySelf: "start", display: "flex", flexDirection: "column", gap: 7, width: 210 }} aria-label="read the message">
             <span style={{ fontFamily: MONO, fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", color: T.arcCyan }}>READ THE MESSAGE...</span>
@@ -1484,11 +1488,14 @@ function CatchThemStage({ def, actor, reduced, audio, emit, onPass, onResit, voi
         {canStart ? (
           <AmberButton label="START THE TEST →" onClick={begin} />
         ) : (
-          // Text dropped — this is the exact screen the duplicate was
-          // reported on (global pill + this label, both visible at once).
-          <span style={{ display: "inline-flex", gap: 10, alignItems: "center", fontFamily: MONO, fontSize: 11.5, letterSpacing: "0.08em", color: T.textDisabled }}>
-            <TypingDots />
-          </span>
+          // Render nothing: this is the exact "Time for the Test" screen
+          // the duplicate was originally reported on. !canStart only ever
+          // overlaps with the global hard lock being up (intro narration
+          // arming or actively playing), so the global "WREN IS SPEAKING"
+          // pill is always the one already on screen here. An earlier pass
+          // dropped the duplicate TEXT but kept a second animated dots
+          // indicator, which still reads as two things pulsing at once.
+          null
         )}
       </section>
     );
