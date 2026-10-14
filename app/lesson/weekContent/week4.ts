@@ -118,7 +118,7 @@ export const WEEK_4: WeekContent = {
         lines: [
           "[warmly] Welcome back, Cyber Hero. This week we hunt SCAMS.",
           "A scam is a trick... wearing a costume.",
-          "[whispers] Under the costume, it always wants something back: your password, your money, or your tap.",
+          "[whispers] Under the costume, it always wants something back. Your password. Your money. Or your tap.",
           "[excited] And that is how you catch one. Real messages want NOTHING from you.",
           "Every prize at the Raccoon's fair has a string attached. Come and see where the strings lead!",
         ],
@@ -160,7 +160,7 @@ export const WEEK_4: WeekContent = {
           text: "You WON a puppy! Tap here to claim it",
           readAloud: "You won a puppy! Tap here to claim it.",
           wants: "tap",
-          why: "You never entered a puppy contest. The prize is bait, and the tap is the hook: pressing that button is how the trick gets in.",
+          why: "You never entered a puppy contest. The prize is bait. The tap is the hook. Pressing that button is how the trick gets in.",
           nudge: "This prize doesn't ask for money or a password. So what is the one thing it wants you to DO?",
         },
         {
@@ -176,7 +176,7 @@ export const WEEK_4: WeekContent = {
           text: "A billionaire is giving away money! Reply with a card number",
           readAloud: "A billionaire is giving away money! Reply with a card number to get yours.",
           wants: "money",
-          why: "Billionaires don't message kids. The giveaway is the costume, and a card number is money, so money is what the string is tied to.",
+          why: "Billionaires don't message kids. The giveaway is the costume. A card number is money, so money is what the string is tied to.",
           nudge: "Nobody gives money away to strangers. Look at what it wants you to send BACK.",
         },
         {
@@ -197,7 +197,8 @@ export const WEEK_4: WeekContent = {
         lines: [
           "[excited] On your first challenge, we visit the Raccoon's carnival. Every prize there is tied to a string!",
           "This game is all about what a scam really WANTS from you.",
-          "Out in the real world, a message that offers you something amazing is often fishing for your password, your money, or one quick tap.",
+          "Out in the real world, a message that offers you something amazing is often fishing.",
+          "Fishing for your password. Your money. Or one quick tap.",
           "Here is what you do. Tap a prize balloon and I'll read its offer.",
           "Then tap the token on the counter that its string really leads to.",
           "Your password... your money... your tap... or nothing at all, because some offers are real.",
@@ -212,7 +213,9 @@ export const WEEK_4: WeekContent = {
         speaker: "layla",
         lines: [
           "[proud] Every string followed! You can see what a scam really wants, so the Raccoon's prizes can't hook you.",
-          "[warmly] Out in the real world, the moment a message asks for your password, your money or a quick tap, you'll spot the string. And a message with no strings? That one's real.",
+          "[warmly] Out in the real world, you will spot the string the moment a message asks.",
+          "Your password. Your money. A quick tap.",
+          "And a message with no strings? That one is real.",
         ],
       },
     },
@@ -223,7 +226,7 @@ export const WEEK_4: WeekContent = {
       prompt: "A scam is a ___ in a costume.",
       choices: [
         { text: "trick", isCorrect: true },
-        { text: "game", isCorrect: false, why: "A game is something you play for fun; a scam is pretending to be nice to get something from you." },
+        { text: "game", isCorrect: false, why: "A game is something you play for fun. A scam is pretending to be nice to get something from you." },
         { text: "prize", isCorrect: false, why: "The prize is the costume, not the thing hiding underneath it." },
         { text: "friend", isCorrect: false, why: "A scam might act friendly, but a real friend wants nothing from you." },
       ],
@@ -310,7 +313,7 @@ export const WEEK_4: WeekContent = {
           from: "Mega Deals",
           readAloud: "Free tablet for the first ten kids! From: Mega Deals.",
           answer: "noway",
-          why: "A free tablet from a shop you've never heard of, for doing nothing, is too good to be true. That is bait.",
+          why: "A free tablet, from a shop you have never heard of, for doing nothing. That is too good to be true. That is bait.",
           whyWrong: "Ask: would a real shop give tablets to strangers for free? A prize that big, from a stranger, is never real.",
         },
         {
@@ -328,7 +331,7 @@ export const WEEK_4: WeekContent = {
           from: "Mega Blasters",
           readAloud: "Free weekend skin! Log in to grab it. From: Mega Blasters.",
           answer: "hmm",
-          why: "Games really do give away a free skin sometimes, so it could be real, but it could be a copycat too. Not sure means check with a grown-up first.",
+          why: "Games really do give away a free skin sometimes. So it could be real. But it could be a copycat too. Not sure means check with a grown-up first.",
           whyWrong: "Games do give away a free skin sometimes, but you can't be sure this is really your game. When you can't tell, the needle points to check first.",
         },
         {
@@ -346,7 +349,7 @@ export const WEEK_4: WeekContent = {
           from: "Library",
           readAloud: "You finished ten books! A free bookmark is waiting for you. From: the Library.",
           answer: "real",
-          why: "You really joined the reading challenge, the library is a place you know, and a bookmark is a tiny prize. That is believable.",
+          why: "You really joined the reading challenge. The library is a place you know. And a bookmark is a tiny prize. That is believable.",
           whyWrong: "Look at the prize and the sender. A tiny bookmark from your own library, for reading you actually did, is not bait.",
         },
         {
@@ -355,7 +358,7 @@ export const WEEK_4: WeekContent = {
           from: "Game Rewards Team",
           readAloud: "A five dollar gift card for filling in a quick survey. From: Game Rewards Team.",
           answer: "hmm",
-          why: "A small gift card could be real, but a survey often asks for private info, and you don't know this sender. Not sure means check first.",
+          why: "A small gift card could be real. But a survey often asks for private info, and you don't know this sender. Not sure means check first.",
           whyWrong: "It's small, so it might be real, but you don't know this sender and a survey asks questions. When you can't be sure, the needle points to check first.",
         },
       ],
@@ -367,8 +370,8 @@ export const WEEK_4: WeekContent = {
         speaker: "adam",
         lines: [
           "[excited] On your second challenge, you take charge of the Believe-o-Meter!",
-          "This game is all about how believable an offer is: could be real, hmm, check first, or no way.",
-          "Out in the real world, most offers land on one of those three, and the enormous ones from strangers are always no way.",
+          "This game is all about how believable an offer is. Could be real. Hmm, check first. Or no way.",
+          "Out in the real world, most offers land on one of those three. And the enormous ones from strangers are always no way.",
           "Here is what you do. A poster hangs above the dial and I'll read it.",
           "Tap the arrows to move the needle to one of three stops... Could be real... Hmm, check first... or No way.",
           "Then tap LOCK IT IN.",
@@ -383,7 +386,8 @@ export const WEEK_4: WeekContent = {
         speaker: "layla",
         lines: [
           "[proud] Every offer measured! You can tell a real prize from bait, so the Raccoon's giant giveaways can't dazzle you.",
-          "[warmly] Out in the real world, enormous prizes from strangers go straight to no way, and when you're not sure, you check with a grown-up first.",
+          "[warmly] Out in the real world, enormous prizes from strangers go straight to no way.",
+          "And when you are not sure, you check with a grown-up first.",
         ],
       },
     },
@@ -539,7 +543,7 @@ export const WEEK_4: WeekContent = {
           body: "You were chosen! Claim your FREE tablet before MIDNIGHT or it goes to someone else. Hurry!!!",
           isPhishing: true,
           readAloud: "From PrizeBot three thousand. Last chance! Your free tablet expires tonight! You were chosen. Claim your free tablet before midnight or it goes to someone else. Hurry!",
-          why: "Expires tonight, claim now, a stranger who chose you and a free tablet: the hurry and the bait in one message. A trick.",
+          why: "Expires tonight. Claim now. A stranger who chose you, and a free tablet. The hurry and the bait in one message. A trick.",
           whyWrong: "Check the clock clue: expires tonight is a deadline built to rush you, and a free tablet from PrizeBot is bait on top.",
           inspections: {
             senderNote: "PrizeBot 3000? You've never heard of it, and it chose you out of nowhere.",
@@ -584,7 +588,7 @@ export const WEEK_4: WeekContent = {
         lines: [
           "[excited] On your third challenge, you step up to the Barker's Booth, where every message is SHOUTING.",
           "This game is all about the hurry-up trick: countdowns, threats and big panic buttons.",
-          "Out in the real world, a scary message wants you to act before you think, and slowing down is what beats it.",
+          "Out in the real world, a scary message wants you to act before you think. Slowing down is what beats it.",
           "Here is what you do. A message opens.",
           "Tap its four clues one at a time... who sent it... the button... the clock... and the promise.",
           "I'll read what each clue shows.",
@@ -600,7 +604,8 @@ export const WEEK_4: WeekContent = {
         speaker: "layla",
         lines: [
           "[proud] Every message inspected, and not one countdown rushed you!",
-          "[warmly] Out in the real world, when a message makes your heart race, you'll know that racing feeling is the red flag. Slow down, check the four clues, and the trick falls apart.",
+          "[warmly] Out in the real world, when a message makes your heart race, you will know that racing feeling is the red flag.",
+          "Slow down. Check the four clues. The trick falls apart.",
         ],
       },
     },
@@ -751,7 +756,7 @@ export const WEEK_4: WeekContent = {
         lines: [
           "[excited] On your fourth challenge, you run the Name Tag Check!",
           "This game is all about lookalike senders, and the tiny swaps that give them away.",
-          "Out in the real world, a copycat picks a name that is ALMOST right, hoping you never look closely.",
+          "Out in the real world, a copycat picks a name that is ALMOST right. It is hoping you never look closely.",
           "Here is what you do. The real sender's name tag is on top.",
           "The sender to check hangs underneath, split into the same pieces.",
           "Compare each piece with the one above it.",
@@ -768,7 +773,8 @@ export const WEEK_4: WeekContent = {
         speaker: "adam",
         lines: [
           "[proud] Every tag checked! You read names letter by letter, so the Raccoon's copycats can't fool you.",
-          "[warmly] Out in the real world, a one where an L should be, or a strange ending, will jump out at you. Almost-right is all-wrong, and you'll know it.",
+          "[warmly] Out in the real world, a one where an L should be will jump out at you. So will a strange ending.",
+          "Almost-right is all-wrong, and you will know it.",
         ],
       },
     },
@@ -880,7 +886,7 @@ export const WEEK_4: WeekContent = {
         lines: [
           "[excited] On your last challenge, you build the No-Bite Wall!",
           "This game is all about the three steps that beat every scam: stop, check, show.",
-          "Out in the real world, a scam only works if you bite, so every safe habit you keep is another brick between you and the Raccoon.",
+          "Out in the real world, a scam only works if you bite. Every safe habit you keep is another brick between you and the Raccoon.",
           "Here is what you do. A brick arrives in the tray and I'll read it.",
           "If it's a safe habit, tap a column of the wall to lay it in.",
           "If it's a bad habit, tap the bin to throw it out.",
@@ -894,8 +900,8 @@ export const WEEK_4: WeekContent = {
       completeNarration: {
         speaker: "layla",
         lines: [
-          "[proud] The wall is built! Stop, check, show, and every safe habit is a brick the Raccoon can't get through.",
-          "[warmly] Out in the real world, when a tricky message lands, you'll stop, you'll check, and you'll show a grown-up. No bite, no trick. That's the golden move.",
+          "[proud] The wall is built! Stop. Check. Show. Every safe habit is a brick the Raccoon can't get through.",
+          "[warmly] Out in the real world, when a tricky message lands, you will stop. You will check. And you will show a grown-up. No bite, no trick. That's the golden move.",
         ],
       },
     },
@@ -935,7 +941,7 @@ export const WEEK_4: WeekContent = {
         speaker: "adam",
         lines: [
           "[excited] That's all FIVE trick-beating powers, Cyber Hero!",
-          "You follow the strings, you measure the bait, you never rush, you catch every copycat...",
+          "You follow the strings. You measure the bait. You never rush. You catch every copycat...",
           "[whispers] and you never, ever bite.",
           "[warmly] Now, the Raccoon has one last attraction: a hall of mirrors, with a fake hiding in every one.",
           "One quick final drill to make it all stick, then the Raccoon gets what's coming. Come on!",
@@ -974,7 +980,7 @@ export const WEEK_4: WeekContent = {
           choices: [
             { text: "It wants something back: your password", isCorrect: true, explanation: "That's the giveaway.", why: "Quiet or loud, a scam always wants something back. This one wants your password, and that is the giveaway." },
             { text: "It's too short to be a scam", isCorrect: false, explanation: "Scams can be short and quiet. Look at what it WANTS, not how loud it is." },
-            { text: "Game bags really do get full", isCorrect: false, explanation: "Even if a bag was full, no real game asks you to type your password into a message to fix it." },
+            { text: "Game bags really do get full", isCorrect: false, explanation: "Even if a bag was full, no real game does this. None asks you to type your password into a message." },
           ],
           recap: "Follow the string",
         },
@@ -1036,7 +1042,7 @@ export const WEEK_4: WeekContent = {
         lines: [
           "[excited] Final drill, Cyber Hero! Every trick you beat this week is hiding in the Hall of Mirrors.",
           "This drill mixes up all five powers you learned about scams.",
-          "Out in the real world, tricks don't come one at a time, so a hero keeps every power ready at once.",
+          "Out in the real world, tricks don't come one at a time. A hero keeps every power ready at once.",
           "Here is what you do. Tap a glowing mirror and it asks you a question. I'll read it.",
           "Tap the answer you believe.",
           "Get it right and the mirror clears. Clear all five, and the hall is yours.",
@@ -1051,7 +1057,7 @@ export const WEEK_4: WeekContent = {
         speaker: "adam",
         lines: [
           "[proud] Hall cleared! Every mirror showed a fake, and you saw straight through all five.",
-          "[warmly] You follow the strings, you measure the bait, you never rush, you catch the copycats and you never bite. The Raccoon's carnival is closed for good. Time for the final test!",
+          "[warmly] You follow the strings. You measure the bait. You never rush. You catch the copycats, and you never bite. The Raccoon's carnival is closed for good. Time for the final test!",
         ],
       },
     },
@@ -1078,7 +1084,7 @@ export const WEEK_4: WeekContent = {
         speaker: "layla",
         lines: [
           "[excited] Look at EVERYTHING you mastered this week!",
-          "You follow every string, no giant prize can dazzle you, no countdown can rush you,",
+          "You follow every string. No giant prize can dazzle you. No countdown can rush you,",
           "no copycat can fool you...",
           "[laughs] and you never, ever bite!",
           "[excited] Every scam went straight back to sender. Sticker time!",
@@ -1140,7 +1146,7 @@ export const WEEK_4: WeekContent = {
         correctIndex: 0,
         teachOnWrong: {
           title: "Scams always WANT something!",
-          explanation: "The library and the coach just tell Adam things and ask for nothing. The bag message wants his password, and wanting something back is how you smell a scam, however quiet it sounds.",
+          explanation: "The library and the coach just tell Adam things. They ask for nothing. The bag message wants his password, and wanting something back is how you smell a scam, however quiet it sounds.",
         },
         villainRight: {
           slug: "quiz-w4-right-c1-1",
