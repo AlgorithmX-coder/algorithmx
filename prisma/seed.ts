@@ -132,7 +132,9 @@ const products = [
     ageMax: 99,
     priceGBP: 9900,
     weeks: 0,
-    status: ProductStatus.COMING_SOON,
+    // Live 2026-10: the course ships at /pro. The paid checkout is held
+    // behind the landing waitlist (PURCHASE_OPEN) until consumer Stripe lands.
+    status: ProductStatus.ACTIVE,
     emoji: "🎓",
     ageRange: "18+",
     duration: "2 hrs/week",
