@@ -1002,12 +1002,14 @@ function RoadmapCard({ stream, idx }: { stream: Stream; idx: number }) {
           position: "relative",
           /* Near-opaque (was 0.6/0.72): the global typed-code backdrop
            * showed through the glass and cut across the ciphertext. */
-          /* Classified cards are pressed into the paper rather than
-           * raised out of it: locked reads as recessed, live reads as
-           * lifted, and the shade alone tells you which is which. */
-          background: "linear-gradient(180deg, #e8dfd0, #e1d7c4)",
-          border: `1px solid ${a}44`,
-          boxShadow: "inset 0 2px 5px -2px rgba(70,58,44,0.3), inset 0 0 0 1px rgba(255,255,255,0.35)",
+          /* Owner 2026-10-14: the classified cards blended into the paper.
+           * They now stand off it — a visible accent border, a faint accent
+           * sheen in the fill, an outer drop shadow that lifts the card and
+           * a thin accent ring just outside the edge. The accent colour still
+           * tells each card apart; it just reads as a card now, not a smudge. */
+          background: `linear-gradient(180deg, ${a}14, #ece2cf 46%, #e4d9c4)`,
+          border: `1.5px solid ${a}99`,
+          boxShadow: `0 18px 38px -20px rgba(70,58,44,0.6), 0 0 0 1px ${a}26, inset 0 1px 0 rgba(255,255,255,0.6)`,
           borderRadius: 14,
           padding: "22px 20px",
           display: "flex",
@@ -1022,17 +1024,17 @@ function RoadmapCard({ stream, idx }: { stream: Stream; idx: number }) {
       }
       onMouseOver={(e) => {
         const el = e.currentTarget as HTMLDivElement;
-        el.style.transform = "translateY(-3px)";
+        el.style.transform = "translateY(-4px)";
         el.style.opacity = "1";
-        el.style.borderColor = `${a}66`;
-        el.style.boxShadow = `0 16px 40px rgba(0,0,0,0.4), inset 0 0 34px ${a}12`;
+        el.style.borderColor = a;
+        el.style.boxShadow = `0 24px 50px -22px rgba(70,58,44,0.7), 0 0 0 1px ${a}55, inset 0 0 40px ${a}14, inset 0 1px 0 rgba(255,255,255,0.7)`;
       }}
       onMouseOut={(e) => {
         const el = e.currentTarget as HTMLDivElement;
         el.style.transform = "translateY(0)";
-        el.style.opacity = "0.9";
-        el.style.borderColor = `${a}2e`;
-        el.style.boxShadow = "none";
+        el.style.opacity = "1";
+        el.style.borderColor = `${a}99`;
+        el.style.boxShadow = `0 18px 38px -20px rgba(70,58,44,0.6), 0 0 0 1px ${a}26, inset 0 1px 0 rgba(255,255,255,0.6)`;
       }}
     >
       <span aria-hidden className="lv2-scanline" style={desync(1)} />
