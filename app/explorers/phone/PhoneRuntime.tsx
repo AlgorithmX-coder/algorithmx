@@ -504,8 +504,8 @@ function ItemView({ it, wrenAvatar, accent, kind, onTagSegment }: { it: Item; wr
           aria-hidden
           style={{ position: "absolute", inset: 0, backgroundImage: "repeating-linear-gradient(0deg, rgba(255,255,255,0.02) 0 1px, transparent 1px 24px)", pointerEvents: "none" }}
         />
-        <div style={{ fontSize: 10, letterSpacing: ".2em", textTransform: "uppercase", color: "#7CFFC4", fontWeight: 800, marginBottom: 6 }}>
-          📓 previously...
+        <div style={{ fontSize: 10, letterSpacing: ".2em", textTransform: "uppercase", color: "#7CFFC4", fontWeight: 800, lineHeight: 1.4, marginBottom: 10 }}>
+          📓 previously on Cyber Explorers...
         </div>
         <TypewriterText text={it.text} />
       </div>
@@ -679,7 +679,11 @@ function TypewriterText({ text }: { text: string }) {
     return () => clearInterval(id);
   }, [text, reduced]);
   return (
-    <p style={{ margin: 0, fontSize: 13.5, lineHeight: 1.6, color: "#D7E6DD" }}>
+    // minHeight reserves one full line up front — otherwise, right as this
+    // mounts (shown=0, only the cursor glyph visible), the card collapses
+    // tight around the label above it and the label reads as jammed against
+    // the card's bottom edge for the first beat of the typewriter animation.
+    <p style={{ margin: 0, minHeight: 21.6, fontSize: 13.5, lineHeight: 1.6, color: "#D7E6DD" }}>
       {text.slice(0, shown)}
       {shown < text.length && <span aria-hidden style={{ opacity: 0.6 }}>▊</span>}
     </p>

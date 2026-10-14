@@ -66,15 +66,6 @@ export function CaseJournal({ entries, accent, caseTitle }: { entries: JournalEn
           overflow: "hidden",
         }}
       >
-        <div
-          aria-hidden
-          style={{
-            position: "absolute",
-            inset: 0,
-            backgroundImage: "repeating-linear-gradient(0deg, rgba(255,255,255,0.025) 0 1px, transparent 1px 28px)",
-            pointerEvents: "none",
-          }}
-        />
         <div style={{ position: "relative", padding: "20px 18px 14px", borderBottom: `1px solid ${accent}2E` }}>
           <div style={{ fontFamily: MONO, fontSize: 10, letterSpacing: "0.22em", color: accent }}>CASE LOG</div>
           <div style={{ fontFamily: MONO, fontSize: 14, fontWeight: 700, color: "#F3F4F7", marginTop: 4 }}>{caseTitle}</div>
@@ -83,19 +74,33 @@ export function CaseJournal({ entries, accent, caseTitle }: { entries: JournalEn
           </div>
         </div>
 
-        <div style={{ position: "relative", flex: 1, overflowY: "auto", padding: "14px 18px 24px" }}>
+        {/* Ruled lines scoped to just the notebook body (not the header) and
+            pitched to match the body text's own line-height below, with a
+            top padding that's an exact multiple of that pitch — so each
+            line of running text actually sits on a rule instead of the
+            lines passing through text at an unrelated offset. */}
+        <div style={{ position: "relative", flex: 1, overflowY: "auto", padding: "28px 18px 24px" }}>
+          <div
+            aria-hidden
+            style={{
+              position: "absolute",
+              inset: 0,
+              backgroundImage: "repeating-linear-gradient(0deg, rgba(255,255,255,0.025) 0 1px, transparent 1px 28px)",
+              pointerEvents: "none",
+            }}
+          />
           {entries.length === 0 ? (
-            <p style={{ fontFamily: MONO, fontSize: 12, lineHeight: 1.6, color: "#7a7a88" }}>
+            <p style={{ position: "relative", fontFamily: MONO, fontSize: 14, fontWeight: 600, lineHeight: "28px", color: "#9a9ca8" }}>
               Nothing logged yet. Clear your first skill and it'll show up here.
             </p>
           ) : (
-            <div style={{ display: "grid", gap: 14 }}>
+            <div style={{ position: "relative", display: "grid", gap: 28 }}>
               {entries.map((e) => (
                 <div key={e.skillN} style={{ borderLeft: `2px solid ${accent}77`, paddingLeft: 10 }}>
-                  <div style={{ fontFamily: MONO, fontSize: 10, letterSpacing: "0.08em", color: accent }}>
+                  <div style={{ fontFamily: MONO, fontSize: 10, letterSpacing: "0.08em", color: accent, lineHeight: "28px" }}>
                     ✓ SKILL {e.skillN} — {e.title.toUpperCase()}
                   </div>
-                  <p style={{ margin: "4px 0 0", fontSize: 12.5, lineHeight: 1.55, color: "#D7DAE2" }}>{e.note}</p>
+                  <p style={{ margin: 0, fontFamily: MONO, fontSize: 14, fontWeight: 600, lineHeight: "28px", color: "#E4E6EC" }}>{e.note}</p>
                 </div>
               ))}
             </div>
