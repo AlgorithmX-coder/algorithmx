@@ -66,35 +66,47 @@ export function CaseJournal({ entries, accent, caseTitle }: { entries: JournalEn
           overflow: "hidden",
         }}
       >
-        <div style={{ position: "relative", padding: "20px 18px 14px", borderBottom: `1px solid ${accent}2E` }}>
-          <div style={{ fontFamily: MONO, fontSize: 10, letterSpacing: "0.22em", color: accent }}>CASE LOG</div>
-          <div style={{ fontFamily: MONO, fontSize: 14, fontWeight: 700, color: "#F3F4F7", marginTop: 4 }}>{caseTitle}</div>
-          <div style={{ fontFamily: MONO, fontSize: 10.5, color: "#7a7a88", marginTop: 6 }}>
-            {entries.length} / {Math.max(entries.length, 7)} skills logged
+        {/* ONE continuous ruled-paper grid for the whole panel — header
+            included. Previously this only covered the body (the header's
+            own title/label rows had no rule anywhere near them at all,
+            which is why "The Perfect Message" never looked like it sat on
+            a line — there was no line there to sit on) and was rendered at
+            2.5% opacity, which is invisible against this background. Every
+            text row below is a fixed 28px band with its text bottom-
+            aligned inside it, so each row's text sits right on the rule at
+            the bottom of its own band, not just "within the same box" as
+            a rule drawn from un-related padding math. */}
+        <div
+          aria-hidden
+          style={{
+            position: "absolute",
+            inset: 0,
+            backgroundImage: "repeating-linear-gradient(0deg, rgba(255,255,255,0.09) 0 1px, transparent 1px 28px)",
+            pointerEvents: "none",
+          }}
+        />
+
+        <div style={{ position: "relative", padding: "0 18px" }}>
+          <div style={{ height: 28, display: "flex", alignItems: "flex-end", paddingBottom: 3 }}>
+            <span style={{ fontFamily: MONO, fontSize: 10, letterSpacing: "0.22em", color: accent }}>CASE LOG</span>
+          </div>
+          <div style={{ height: 28, display: "flex", alignItems: "flex-end", paddingBottom: 3 }}>
+            <span style={{ fontFamily: MONO, fontSize: 14, fontWeight: 700, color: "#F3F4F7" }}>{caseTitle}</span>
+          </div>
+          <div style={{ height: 28, display: "flex", alignItems: "flex-end", paddingBottom: 3, borderBottom: `1px solid ${accent}55` }}>
+            <span style={{ fontFamily: MONO, fontSize: 10.5, color: "#9a9ca8" }}>
+              {entries.length} / {Math.max(entries.length, 7)} skills logged
+            </span>
           </div>
         </div>
 
-        {/* Ruled lines scoped to just the notebook body (not the header) and
-            pitched to match the body text's own line-height below, with a
-            top padding that's an exact multiple of that pitch — so each
-            line of running text actually sits on a rule instead of the
-            lines passing through text at an unrelated offset. */}
-        <div style={{ position: "relative", flex: 1, overflowY: "auto", padding: "28px 18px 24px" }}>
-          <div
-            aria-hidden
-            style={{
-              position: "absolute",
-              inset: 0,
-              backgroundImage: "repeating-linear-gradient(0deg, rgba(255,255,255,0.025) 0 1px, transparent 1px 28px)",
-              pointerEvents: "none",
-            }}
-          />
+        <div style={{ position: "relative", flex: 1, overflowY: "auto", padding: "0 18px 24px" }}>
           {entries.length === 0 ? (
-            <p style={{ position: "relative", fontFamily: MONO, fontSize: 14, fontWeight: 600, lineHeight: "28px", color: "#9a9ca8" }}>
+            <p style={{ fontFamily: MONO, fontSize: 14, fontWeight: 600, lineHeight: "28px", color: "#9a9ca8" }}>
               Nothing logged yet. Clear your first skill and it'll show up here.
             </p>
           ) : (
-            <div style={{ position: "relative", display: "grid", gap: 28 }}>
+            <div style={{ display: "grid", gap: 28 }}>
               {entries.map((e) => (
                 <div key={e.skillN} style={{ borderLeft: `2px solid ${accent}77`, paddingLeft: 10 }}>
                   <div style={{ fontFamily: MONO, fontSize: 10, letterSpacing: "0.08em", color: accent, lineHeight: "28px" }}>
