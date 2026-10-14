@@ -18,6 +18,14 @@ import { AmberButton, Bubble, Eyebrow, GhostButton } from "../engine/primitives"
 import { MONO, T } from "../engine/tokens";
 import type { IncidentProps } from "../engine/types";
 
+// Checked by a field on the option itself (id, rank, correct...), never by
+// position, so shuffling render order is always safe.
+function shuffled<T>(arr: T[]): T[] {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+  return a;
+}
+
 interface Door {
   id: string;
   label: string;
@@ -26,8 +34,10 @@ interface Door {
   rank: number;
 }
 
-/* Laid out in a scrambled order on purpose — the child has to read the keys,
-   not just tap top-to-bottom. */
+/* Declared here in a non-sequential order, but that was a static scramble —
+   the same order every single playthrough. Actual per-mount shuffling
+   happens below (shuffled(DOORS)), which is what the child reading the keys
+   (not tapping top-to-bottom) actually depends on. */
 const DOORS: Door[] = [
   { id: "email", label: "Email — Biscuit2013!", note: "name + birth year + a !", rank: 3 },
   { id: "bank", label: "Parent's bank — velvet-otter-cannon-77", note: "four random words", rank: 4 },
@@ -48,12 +58,13 @@ const WALLS = [
 ];
 
 export default function Mission03Incident({ reduced, audio, onPhaseCleared, onComplete }: IncidentProps) {
+  const [doors] = useState(() => shuffled(DOORS));
   const [phase, setPhase] = useState(1);
   const [order, setOrder] = useState<string[]>([]);
   const [wrongDoor, setWrongDoor] = useState<string | null>(null);
 
   const nextRank = order.length + 1;
-  const queueDone = order.length === DOORS.length;
+  const queueDone = order.length === doors.length;
 
   const tapDoor = (d: Door) => {
     if (queueDone || order.includes(d.id)) return;
@@ -61,7 +72,7 @@ export default function Mission03Incident({ reduced, audio, onPhaseCleared, onCo
       setOrder((o) => [...o, d.id]);
       setWrongDoor(null);
       audio.latch();
-      if (nextRank === DOORS.length) audio.stamp();
+      if (nextRank === doors.length) audio.stamp();
     } else {
       setWrongDoor(d.id);
       audio.thud();
@@ -93,11 +104,11 @@ export default function Mission03Incident({ reduced, audio, onPhaseCleared, onCo
         <div>
           <Eyebrow text="Phase 1. The rig is hammering four doors at once. It always cracks the weakest first. Tap the doors in the order they'll fall." color={T.actionAmber} />
           <div style={{ marginTop: 14, display: "grid", gap: 10 }}>
-            {DOORS.map((d) => {
+            {doors.map((d) => {
               const idx = order.indexOf(d.id);
               const cracked = idx !== -1;
               const isWrong = wrongDoor === d.id;
-              const last = cracked && idx === DOORS.length - 1;
+              const last = cracked && idx === doors.length - 1;
               return (
                 <button
                   key={d.id}
@@ -149,9 +160,10 @@ export default function Mission03Incident({ reduced, audio, onPhaseCleared, onCo
 /* -------------------------------------------------- phase 2: cut the master key */
 
 function CutKeyPhase({ audio, onDone }: { audio: IncidentProps["audio"]; onDone: () => void }) {
+  const [cuts] = useState(() => shuffled(CUTS));
   const [chosen, setChosen] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState(false);
-  const option = CUTS.find((o) => o.id === chosen) ?? null;
+  const option = cuts.find((o) => o.id === chosen) ?? null;
   const choose = (id: string) => { if (submitted) return; audio.click(); setChosen(id); };
   const submit = () => { if (!chosen) return; setSubmitted(true); if (option?.correct) audio.latch(); else audio.thud(); };
 
@@ -162,7 +174,7 @@ function CutKeyPhase({ audio, onDone }: { audio: IncidentProps["audio"]; onDone:
       </div>
       <Eyebrow text="Phase 2 · Cut the master key: one move stops one leak opening every door. Make your call, then submit." color={T.actionAmber} />
       <div style={{ display: "grid", gap: 10, marginTop: 14 }}>
-        {CUTS.map((o) => {
+        {cuts.map((o) => {
           const isChosen = chosen === o.id;
           const col = submitted && isChosen ? (o.correct ? T.confirmedGreen : T.threatRed) : isChosen ? T.arcCyan : T.hairline;
           return (
@@ -192,10 +204,11 @@ function CutKeyPhase({ audio, onDone }: { audio: IncidentProps["audio"]; onDone:
 /* -------------------------------------------------- phase 3: hold the wall */
 
 function WallPhase({ reduced, audio, onDone }: { reduced: boolean; audio: IncidentProps["audio"]; onDone: () => void }) {
+  const [walls] = useState(() => shuffled(WALLS));
   const [chosen, setChosen] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState(false);
   const [raised, setRaised] = useState(false);
-  const option = WALLS.find((o) => o.id === chosen) ?? null;
+  const option = walls.find((o) => o.id === chosen) ?? null;
   const choose = (id: string) => { if (submitted) return; audio.click(); setChosen(id); };
   const submit = () => { if (!chosen) return; setSubmitted(true); if (option?.correct) audio.latch(); else audio.thud(); };
 
@@ -203,7 +216,7 @@ function WallPhase({ reduced, audio, onDone }: { reduced: boolean; audio: Incide
     <div style={{ maxWidth: 640 }}>
       <Eyebrow text="Phase 3 · Hold the wall: pick the new key that actually stops the rig, then raise it." color={T.actionAmber} />
       <div style={{ display: "grid", gap: 10, marginTop: 14 }}>
-        {WALLS.map((o) => {
+        {walls.map((o) => {
           const isChosen = chosen === o.id;
           const col = submitted && isChosen ? (o.correct ? T.confirmedGreen : T.threatRed) : isChosen ? T.arcCyan : T.hairline;
           return (

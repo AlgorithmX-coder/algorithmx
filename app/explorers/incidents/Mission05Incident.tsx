@@ -18,6 +18,14 @@ import { AmberButton, Bubble, Eyebrow, GhostButton } from "../engine/primitives"
 import { MONO, T } from "../engine/tokens";
 import type { IncidentProps } from "../engine/types";
 
+// Checked by a field on the option itself (id, spear, correct...), never by
+// position, so shuffling render order is always safe.
+function shuffled<T>(arr: T[]): T[] {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+  return a;
+}
+
 /* Phase 1 — the wall. Four storm messages share the fingerprints
    (countdown / verify-domain / login ask); two are genuinely fine. */
 const WALL = [
@@ -63,6 +71,8 @@ const TRACES = [
 ];
 
 export default function Mission05Incident({ reduced, audio, onPhaseCleared, onComplete }: IncidentProps) {
+  const [storm] = useState(() => shuffled(STORM));
+  const [traces] = useState(() => shuffled(TRACES));
   const [phase, setPhase] = useState(1);
   const [held, setHeld] = useState<string[]>([]);
   const [wallMiss, setWallMiss] = useState<string | null>(null);
@@ -104,14 +114,14 @@ export default function Mission05Incident({ reduced, audio, onPhaseCleared, onCo
   };
 
   const chooseTrace = (id: string) => {
-    if (trace && TRACES.find((t) => t.id === trace)?.correct) return;
+    if (trace && traces.find((t) => t.id === trace)?.correct) return;
     setTrace(id);
-    const t = TRACES.find((x) => x.id === id);
+    const t = traces.find((x) => x.id === id);
     if (t?.correct) audio.latch();
     else audio.thud();
   };
 
-  const traceChoice = TRACES.find((t) => t.id === trace) ?? null;
+  const traceChoice = traces.find((t) => t.id === trace) ?? null;
 
   return (
     <div>
@@ -189,7 +199,7 @@ export default function Mission05Incident({ reduced, audio, onPhaseCleared, onCo
         <div style={{ maxWidth: 640 }}>
           <Eyebrow text="Phase 2: Four storm messages. Three are spray. One did its homework. Tap the spear." color={T.actionAmber} />
           <div style={{ display: "grid", gap: 10, marginTop: 14 }}>
-            {STORM.map((s) => (
+            {storm.map((s) => (
               <button
                 key={s.id}
                 onClick={() => tapSpear(s)}
@@ -231,7 +241,7 @@ export default function Mission05Incident({ reduced, audio, onPhaseCleared, onCo
         <div style={{ maxWidth: 640 }}>
           <Eyebrow text="Phase 3: The spear knew your form and your teacher. Where did that data COME from?" color={T.actionAmber} />
           <div style={{ display: "grid", gap: 10, marginTop: 14 }}>
-            {TRACES.map((t) => {
+            {traces.map((t) => {
               const isChosen = trace === t.id;
               const stateColor = t.correct ? T.confirmedGreen : T.threatRed;
               return (
