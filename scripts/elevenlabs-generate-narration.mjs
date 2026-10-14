@@ -1251,10 +1251,31 @@ function shapeToSpec(file, lines, heard) {
      */
     const MIN_TRIM = 0.20;
     const KEEP_TAIL = 0.05;
+    /* Loudness alone cannot tell a breath from a final consonant.
+     *
+     * Measured on "...secret wish list!": the t release sits at 1 to 2.6% of
+     * the clip's peak, and a breath occupies the same band. The speech floor
+     * is 6%, so the walk-back read the consonant as silence and went straight
+     * through it, and the child heard "lis". Dropping the floor far enough to
+     * save the t would stop breaths being trimmed at all.
+     *
+     * What separates them is LENGTH. A breath runs 0.2s or more; a t, k, p or
+     * s release is under 0.1s. So walk back through true silence first - which
+     * is genuinely empty, 0.0000 against the t's 0.0109 - then look at the
+     * quiet-but-not-empty stretch in front of it. Short means consonant: stop
+     * there and keep it. Long means breath: carry on through it.
+     */
+    const silence = loud * 0.008;        // true room silence, well under the t
+    const CONSONANT_MAX = 0.12;          // nothing longer than this is a consonant
     for (const sp of spans) {
       let end = Math.floor(sp.to * SR);
       const limit = Math.max(Math.floor(sp.from * SR), end - Math.floor(MAX_TRIM * SR));
-      while (end - win > limit && levelAt(end - win) < floor) end -= win;
+      while (end - win > limit && levelAt(end - win) < silence) end -= win;
+      // the quiet stretch immediately before: consonant, or breath?
+      let quiet = end;
+      while (quiet - win > limit && levelAt(quiet - win) < floor) quiet -= win;
+      const quietLen = (end - quiet) / SR;
+      if (quietLen > CONSONANT_MAX) end = quiet;   // a breath: take it as well
       const trimmed = sp.to - end / SR;
       if (trimmed >= MIN_TRIM) sp.to = Math.min(sp.to, end / SR + KEEP_TAIL);
     }
