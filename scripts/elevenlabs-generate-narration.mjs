@@ -58,8 +58,8 @@ if (!KEY && !CHECK_ONLY) {
 //   teachery".) Both content speakers map to Sarah = one consistent mentor;
 //   the speaker tag is preserved for any future second-voice move.
 const VOICE = {
-  adam:  { id: "oClOrzqamOXmtcB8iqTj", name: "Emma (Kids Educator)" },
-  layla: { id: "oClOrzqamOXmtcB8iqTj", name: "Emma (Kids Educator)" },
+  adam:  { id: "EXAVITQu4vr4xnSDxMaL", name: "Sarah" },
+  layla: { id: "EXAVITQu4vr4xnSDxMaL", name: "Sarah" },
   // Storyteller NARRATOR — a deliberately DIFFERENT voice (ElevenLabs "George",
   // warm mature male) that reads the "Choose Your Path" scenario setups aloud,
   // so Sarah (the coach) can then jump in and ask "which one do you think?".
@@ -85,8 +85,27 @@ const VOICE = {
  * narrators across twenty weeks is worse than either voice on its own.
  */
 
-/** The voice for a block. `source` is kept for a future per-week override. */
+/* Until a week has actually been re-recorded, it must keep resolving to the
+ * clips it HAS. Making the new narrator the global default changed every
+ * block's hash at once, so nineteen unmigrated weeks suddenly pointed at Emma
+ * recordings that did not exist, vanished from the manifest, and fell back to
+ * the browser's robot voice. The table goes back until the last week lands,
+ * and then the default changes once, with nothing left to point at the old
+ * voice. */
+const KIDS_EDUCATOR = { id: "oClOrzqamOXmtcB8iqTj", name: "Emma (Kids Educator)" };
+const NARRATOR_BY_WEEK = {
+  "week1.ts": KIDS_EDUCATOR,
+  "week2.ts": KIDS_EDUCATOR,
+  // Not a week: the one shared line QuickCheck speaks on every finish-mode
+  // screen, pinned so it does not play the old voice inside a migrated week.
+  "shared:quickcheck-finish": KIDS_EDUCATOR,
+};
+
+/** The voice for a block: the week's narrator if it has its own, else the
+ *  speaker's usual one. */
 function voiceFor(speaker, source) {
+  const perWeek = source && NARRATOR_BY_WEEK[source];
+  if (perWeek && VOICE[speaker] && VOICE[speaker].name === "Sarah") return perWeek;
   return VOICE[speaker];
 }
 
@@ -819,14 +838,27 @@ for (const fname of weekFiles) {
  * recorded and listened to on the real site on its own, and the rest follow
  * once the writing is settled.
  */
+/* NEVER remove the other weeks' blocks here.
+ *
+ * The manifest is written from this list, so filtering it rebuilt the manifest
+ * out of one week and dropped the other 4,900 entries. Every other week then
+ * found no clip for any line and fell back to the browser's speech synthesis -
+ * a robot voice across nineteen weeks - while the deploy was green, the
+ * manifest was valid JSON and the week being worked on was perfect. It shipped
+ * exactly that way once.
+ *
+ * So the flag marks the other weeks as "do not record" and leaves them in the
+ * manifest, pointing at the clips they already have.
+ */
 const ONLY_WEEK = (process.argv.find((a) => a.startsWith("--week=")) || "").split("=")[1];
 if (ONLY_WEEK) {
   const want = `week${ONLY_WEEK}.ts`;
-  const before = blocks.length;
-  for (let i = blocks.length - 1; i >= 0; i--) {
-    if (blocks[i].source !== want) blocks.splice(i, 1);
+  let selected = 0;
+  for (const b of blocks) {
+    b.skipRecord = b.source !== want;
+    if (!b.skipRecord) selected++;
   }
-  console.log(`--week=${ONLY_WEEK}: ${blocks.length} of ${before} blocks (the rest are left untouched)`);
+  console.log(`--week=${ONLY_WEEK}: recording ${selected} of ${blocks.length} blocks; the rest keep the clips they have`);
 }
 
 console.log(`Found ${blocks.length} narration blocks (${blocks.reduce((n, b) => n + b.lines.length, 0)} lines)`);
@@ -1359,6 +1391,32 @@ function shapeToSpec(file, lines, heard) {
   } else {
     markTime = marks.map(estimate);
   }
+
+  /* Two marks on one boundary are still one breath.
+   *
+   * The character-distance dedup above catches "word." immediately followed by
+   * a newline, but not a boundary written with more between the marks. A line
+   * ending "your street..." followed by one opening "...that goes straight in
+   * the vault" puts an ellipsis, a newline and another ellipsis within five
+   * characters: too far apart to merge by position, and all three land on the
+   * end of the same word.
+   *
+   * The extra mark then had to go somewhere, and the matcher gave it to the
+   * next gap along - the one after "that" - so the child heard a break in the
+   * middle of the sentence. Word timings make this easy to see: marks that
+   * resolve to the same moment ARE the same boundary, so they collapse to the
+   * longest pause among them.
+   */
+  if (heard && heard.length && marks.length > 1) {
+    const rank = { butt: 0, join: 1, comma: 2, dash: 3, colon: 4, trail: 5, stop: 6, thought: 7, reveal: 7 };
+    for (let i = marks.length - 1; i > 0; i--) {
+      if (Math.abs(markTime[i] - markTime[i - 1]) > 0.05) continue;
+      if ((rank[marks[i].kind] ?? 0) > (rank[marks[i - 1].kind] ?? 0)) marks[i - 1].kind = marks[i].kind;
+      marks.splice(i, 1);
+      markTime.splice(i, 1);
+    }
+  }
+
   // Where each detected gap falls, measured in speech time.
   const gapTime = [];
   let acc = 0;
@@ -1413,7 +1471,21 @@ function shapeToSpec(file, lines, heard) {
       if (j < M && c + SKIP_MARK < cost[i][j + 1]) { cost[i][j + 1] = c + SKIP_MARK; back[i][j + 1] = 2; }
       if (i < G && j < M) {
         const away = Math.abs(markTime[j] - gapTime[i]);
-        if (away <= MAX_MATCH) {
+        /* A mark sits at the END of a word, so its pause can only be a silence
+         * that starts there. A silence starting EARLIER is inside the word -
+         * the closure on a p, t or k - and can never be that mark however near
+         * it falls.
+         *
+         * Without this, a mark whose own pause the reader ran straight through
+         * is handed to the next reachable gap instead. On week 2 the comma in
+         * "Oh no, look what happened!" got no silence of its own, so it landed
+         * on the double-p inside "happened" and the child heard "ha... ppened".
+         * The wide window only became safe to tighten once mark times were
+         * measured from the recording rather than estimated, so the two
+         * clocks genuinely agree.
+         */
+        const inWord = heard && heard.length && gapTime[i] < markTime[j] - 0.10;
+        if (away <= MAX_MATCH && !inWord) {
           const d = c + away;
           if (d < cost[i + 1][j + 1]) { cost[i + 1][j + 1] = d; back[i + 1][j + 1] = 3; }
         }
@@ -1582,7 +1654,7 @@ function shapeToSpec(file, lines, heard) {
 // we don't re-attempt v3 for every block once we know it's unavailable.
 let acceptedModel = null;
 
-async function generateBlock(speaker, lines, source) {
+async function generateBlock(speaker, lines, source, skipRecord) {
   const voice = voiceFor(speaker, source);
   const blockText = joinBlock(lines);
   const key = hashKey(speaker, voice.id, blockText);
@@ -1597,6 +1669,13 @@ async function generateBlock(speaker, lines, source) {
 
   // --check reports the gap rather than buying a recording for it.
   if (CHECK_ONLY) {
+    return { key, filename, missing: true, speaker, blockText, lines };
+  }
+
+  // --week=N: another week's block, already handled above if its clip exists.
+  // Reaching here means it has none, so report it rather than record it - the
+  // point of the flag is to touch one week's audio and nothing else.
+  if (skipRecord) {
     return { key, filename, missing: true, speaker, blockText, lines };
   }
 
@@ -1705,7 +1784,7 @@ for (let i = 0; i < blocks.length; i++) {
     );
   }
   try {
-    const r = await generateBlock(block.speaker, block.lines, block.source);
+    const r = await generateBlock(block.speaker, block.lines, block.source, block.skipRecord);
     if (r.missing) {
       unrecorded.push({ speaker: r.speaker, file: r.filename, text: r.blockText, source: block.source });
       continue;
