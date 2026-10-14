@@ -39,6 +39,15 @@ jobs:
 
       - run: npm test
 
+      # Every week still has its audio. A narration change rebuilds the
+      # manifest that all twenty weeks read, and a bad rebuild drops the weeks
+      # it did not touch: they find no clip for any line and fall back to the
+      # browser's speech synthesis, a robot voice, with the build green and the
+      # manifest valid JSON. That shipped once (#535). This is the check that
+      # would have stopped it, and it needs the base to spot a partial drop.
+      - run: git fetch --depth=1 origin "${{ github.base_ref || 'main' }}"
+      - run: node scripts/audit-manifest-covers-course.mjs --base=FETCH_HEAD
+
   # ────────────────────────────────────────────────────────────
   # End-to-end tests against a real production build.  Slower than
   # the static job (production build + browser launch) so it runs
