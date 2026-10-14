@@ -20,6 +20,14 @@ import { AmberButton, Bubble, Eyebrow, GhostButton } from "../engine/primitives"
 import { MONO, T } from "../engine/tokens";
 import type { IncidentProps } from "../engine/types";
 
+// Checked by a field on the option itself (id, correct...), never by
+// position, so shuffling render order is always safe.
+function shuffled<T>(arr: T[]): T[] {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+  return a;
+}
+
 type Verdict = "THREAT" | "SAFE";
 
 interface WaveMessage {
@@ -280,9 +288,10 @@ function TriagePhase({ reduced, audio, onDone }: { reduced: boolean; audio: Inci
 /* -------------------------------------------------- phase 2: containment */
 
 function ContainmentPhase({ audio, onDone }: { audio: IncidentProps["audio"]; onDone: () => void }) {
+  const [containment] = useState(() => shuffled(CONTAINMENT));
   const [chosen, setChosen] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState(false);
-  const option = CONTAINMENT.find((o) => o.id === chosen) ?? null;
+  const option = containment.find((o) => o.id === chosen) ?? null;
 
   // Blind: pick and change freely; the outcome only shows after you submit.
   const choose = (id: string) => {
@@ -300,7 +309,7 @@ function ContainmentPhase({ audio, onDone }: { audio: IncidentProps["audio"]; on
     <div style={{ maxWidth: 640 }}>
       <Eyebrow text="Phase 2 · Cut the hook: the group is still getting hit. Make your call, then submit." color={T.actionAmber} />
       <div style={{ display: "grid", gap: 10, marginTop: 14 }}>
-        {CONTAINMENT.map((o) => {
+        {containment.map((o) => {
           const isChosen = chosen === o.id;
           // Pre-submit: neutral highlight on your pick. Post-submit: green if it
           // was right, red if it was wrong.

@@ -15,6 +15,14 @@ import { AmberButton, Bubble, Eyebrow, GhostButton } from "../engine/primitives"
 import { MONO, T } from "../engine/tokens";
 import type { IncidentProps } from "../engine/types";
 
+// Checked by a field on the option itself (id, correct...), never by
+// position, so shuffling render order is always safe.
+function shuffled<T>(arr: T[]): T[] {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+  return a;
+}
+
 interface Node {
   id: string;
   label: string;
@@ -117,9 +125,10 @@ export default function Mission02Incident({ reduced, audio, onPhaseCleared, onCo
 /* -------------------------------------------------- phase 2: cut the hub */
 
 function CutPhase({ audio, onDone }: { audio: IncidentProps["audio"]; onDone: () => void }) {
+  const [cuts] = useState(() => shuffled(CUTS));
   const [chosen, setChosen] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState(false);
-  const option = CUTS.find((o) => o.id === chosen) ?? null;
+  const option = cuts.find((o) => o.id === chosen) ?? null;
   const choose = (id: string) => { if (submitted) return; audio.click(); setChosen(id); };
   const submit = () => { if (!chosen) return; setSubmitted(true); if (option?.correct) audio.latch(); else audio.thud(); };
 
@@ -127,7 +136,7 @@ function CutPhase({ audio, onDone }: { audio: IncidentProps["audio"]; onDone: ()
     <div style={{ maxWidth: 640 }}>
       <Eyebrow text="Phase 2 · Cut the hub: one move shuts the whole factory. Make your call, then submit." color={T.actionAmber} />
       <div style={{ display: "grid", gap: 10, marginTop: 14 }}>
-        {CUTS.map((o) => {
+        {cuts.map((o) => {
           const isChosen = chosen === o.id;
           const col = submitted && isChosen ? (o.correct ? T.confirmedGreen : T.threatRed) : isChosen ? T.arcCyan : T.hairline;
           return (
@@ -157,10 +166,11 @@ function CutPhase({ audio, onDone }: { audio: IncidentProps["audio"]; onDone: ()
 /* -------------------------------------------------- phase 3: warn everyone */
 
 function WarnPhase({ reduced, audio, onDone }: { reduced: boolean; audio: IncidentProps["audio"]; onDone: () => void }) {
+  const [warnings] = useState(() => shuffled(WARNINGS));
   const [chosen, setChosen] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState(false);
   const [sent, setSent] = useState(false);
-  const option = WARNINGS.find((o) => o.id === chosen) ?? null;
+  const option = warnings.find((o) => o.id === chosen) ?? null;
   const choose = (id: string) => { if (submitted) return; audio.click(); setChosen(id); };
   const submit = () => { if (!chosen) return; setSubmitted(true); if (option?.correct) audio.latch(); else audio.thud(); };
 
@@ -168,7 +178,7 @@ function WarnPhase({ reduced, audio, onDone }: { reduced: boolean; audio: Incide
     <div style={{ maxWidth: 640 }}>
       <Eyebrow text="Phase 3 · Warn everyone: some kids already typed things. Pick the message that actually helps, then submit." color={T.actionAmber} />
       <div style={{ display: "grid", gap: 10, marginTop: 14 }}>
-        {WARNINGS.map((o) => {
+        {warnings.map((o) => {
           const isChosen = chosen === o.id;
           const col = submitted && isChosen ? (o.correct ? T.confirmedGreen : T.threatRed) : isChosen ? T.arcCyan : T.hairline;
           return (

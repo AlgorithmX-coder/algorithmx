@@ -17,6 +17,17 @@ import { AmberButton, Bubble, Eyebrow, GhostButton } from "../engine/primitives"
 import { MONO, T } from "../engine/tokens";
 import type { IncidentProps } from "../engine/types";
 
+// Every option list below is checked by a field on the option itself (id,
+// order, correct...), never by its position in the array, so shuffling
+// render order is always safe — and necessary, since these were rendered in
+// fixed declaration order every single playthrough (UAT: the boss's "order
+// the sources" step always showed the same sequence).
+function shuffled<T>(arr: T[]): T[] {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+  return a;
+}
+
 /* Phase 1 — the auction listing's claims, each traced to a crumb. */
 const CLAIMS = [
   { id: "team", label: "“Plays goalie for a Riverdale team”, from the handle and bio", danger: false },
@@ -66,6 +77,9 @@ const MOVES = [
 ];
 
 export default function Mission04Incident({ reduced, audio, onPhaseCleared, onComplete }: IncidentProps) {
+  const [claims] = useState(() => shuffled(CLAIMS));
+  const [sources] = useState(() => shuffled(SOURCES));
+  const [moves] = useState(() => shuffled(MOVES));
   const [phase, setPhase] = useState(1);
   const [wrongClaim, setWrongClaim] = useState<string | null>(null);
   const [dangerFound, setDangerFound] = useState(false);
@@ -107,14 +121,14 @@ export default function Mission04Incident({ reduced, audio, onPhaseCleared, onCo
   };
 
   const chooseMove = (id: string) => {
-    if (move && MOVES.find((m) => m.id === move)?.correct) return;
+    if (move && moves.find((m) => m.id === move)?.correct) return;
     setMove(id);
-    const m = MOVES.find((x) => x.id === id);
+    const m = moves.find((x) => x.id === id);
     if (m?.correct) audio.latch();
     else audio.thud();
   };
 
-  const moveChoice = MOVES.find((m) => m.id === move) ?? null;
+  const moveChoice = moves.find((m) => m.id === move) ?? null;
 
   return (
     <div>
@@ -141,7 +155,7 @@ export default function Mission04Incident({ reduced, audio, onPhaseCleared, onCo
         <div style={{ maxWidth: 640 }}>
           <Eyebrow text="Phase 1. The listing: four claims, each built from a crumb. Tap the claim that puts Priya in real-world danger." color={T.actionAmber} />
           <div style={{ display: "grid", gap: 10, marginTop: 14 }}>
-            {CLAIMS.map((c) => (
+            {claims.map((c) => (
               <button
                 key={c.id}
                 onClick={() => tapClaim(c)}
@@ -186,7 +200,7 @@ export default function Mission04Incident({ reduced, audio, onPhaseCleared, onCo
         <div style={{ maxWidth: 640 }}>
           <Eyebrow text="Phase 2. The auction closes in minutes. Scrub the live sources in the RIGHT ORDER." color={T.actionAmber} />
           <div style={{ display: "grid", gap: 10, marginTop: 14 }}>
-            {SOURCES.map((s) => {
+            {sources.map((s) => {
               const done = scrubbed.includes(s.id);
               const missed = scrubMiss === s.id;
               return (
@@ -234,7 +248,7 @@ export default function Mission04Incident({ reduced, audio, onPhaseCleared, onCo
         <div style={{ maxWidth: 640 }}>
           <Eyebrow text="Phase 3. The file still exists in the nest. Make it WORTHLESS. Pick the finishing move." color={T.actionAmber} />
           <div style={{ display: "grid", gap: 10, marginTop: 14 }}>
-            {MOVES.map((m) => {
+            {moves.map((m) => {
               const isChosen = move === m.id;
               const stateColor = m.correct ? T.confirmedGreen : T.threatRed;
               return (
