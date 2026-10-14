@@ -91,13 +91,18 @@ function Glyph({ k }: { k: GlyphKey }) {
         </>
       );
     case "messaging":
+      // The speech-bubble tail pulls the drawn shape's own bounding box
+      // left of the 24x24 frame's center (measured: 2px margin left, 4px
+      // right), unlike every other glyph here which lands dead-centered —
+      // that's what read as "not fixed" next to the others. Shifting the
+      // whole glyph +1 right re-centers it without reshaping the bubble.
       return (
-        <>
+        <g transform="translate(1, 0)">
           <path d="M4 6.5A2.5 2.5 0 0 1 6.5 4h11A2.5 2.5 0 0 1 20 6.5v8A2.5 2.5 0 0 1 17.5 17H10l-4.5 3.5V17h-1A2.5 2.5 0 0 1 2 14.5" />
           <circle cx="8.3" cy="10.3" r="1" fill="currentColor" stroke="none" />
           <circle cx="12" cy="10.3" r="1" fill="currentColor" stroke="none" />
           <circle cx="15.7" cy="10.3" r="1" fill="currentColor" stroke="none" />
-        </>
+        </g>
       );
     case "social":
       return (
@@ -108,25 +113,34 @@ function Glyph({ k }: { k: GlyphKey }) {
         </>
       );
     case "wallet":
+      // Measured bbox sat 1px low in its 24x24 frame (same off-center class
+      // of bug as "messaging" below) — shifted up to re-center.
       return (
-        <>
+        <g transform="translate(0, -0.5)">
           <rect x="3" y="6" width="18" height="13" rx="2.2" />
           <path d="M3 10.5h18" />
           <circle cx="16.8" cy="14.2" r="1.3" fill="currentColor" stroke="none" />
-        </>
+        </g>
       );
     case "gamechat":
+      // Measured bbox sat ~1px left and ~2px high in its frame — the
+      // controller's handles don't balance the body the way they look like
+      // they should; shifted to re-center the actual drawn ink.
       return (
-        <>
+        <g transform="translate(-0.5, -1.1)">
           <path d="M6.5 9h11a3.5 3.5 0 0 1 3.4 4.3l-.6 2.4a2 2 0 0 1-3.6.6l-1-1.6a1.6 1.6 0 0 0-1.3-.7h-3.8a1.6 1.6 0 0 0-1.3.7l-1 1.6a2 2 0 0 1-3.6-.6l-.6-2.4A3.5 3.5 0 0 1 6.5 9z" />
           <path d="M8.3 11.3v2.6M7 12.6h2.6" />
           <circle cx="16" cy="12" r="0.9" fill="currentColor" stroke="none" />
           <circle cx="17.6" cy="13.6" r="0.9" fill="currentColor" stroke="none" />
-        </>
+        </g>
       );
     case "call":
+      // Measured bbox sat slightly left and low in its frame — shifted to
+      // re-center.
       return (
+        <g transform="translate(0.4, -0.5)">
         <path d="M6.6 10.8c1.4 2.8 3.8 5.2 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25l3.1 1a1 1 0 0 1 .7.95v3.1a1 1 0 0 1-1.1 1C10.4 20.6 3.4 13.6 3 5.1A1 1 0 0 1 4 4h3.1a1 1 0 0 1 .95.7l1 3.1a1 1 0 0 1-.25 1z" />
+        </g>
       );
   }
 }
