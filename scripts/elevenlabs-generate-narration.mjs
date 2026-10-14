@@ -1003,7 +1003,13 @@ function speakBlock(lines) {
  * trimmed out. 0.50s was not enough to feel like one; 0.65 is. The paragraph
  * break grows with it so the hierarchy still reads. The join is only used now
  * where the audio is genuinely cut, which is rare. */
-const SPEC_GAP = { butt: 0, join: 0.05, comma: 0.22, stop: 0.65, thought: 0.85, reveal: 0.85 };
+const SPEC_GAP = {
+  butt: 0, join: 0.05, comma: 0.22,
+  dash: 0.30,    // " - " and ";" read as a dash: a beat longer than a comma
+  colon: 0.35,   // ":" leans forward into what it introduces
+  trail: 0.55,   // "..." is a trailing thought, just short of a full stop
+  stop: 0.65, thought: 0.85, reveal: 0.85,
+};
 const SPEC_TAIL = 0.30;
 /* Hold her ARTICULATION constant, not the overall words-per-minute.
  *
@@ -1051,7 +1057,89 @@ function mediaDuration(file) {
  * re-cut. Returns false and leaves the file exactly as it was if anything
  * about the clip makes reshaping unsafe.
  */
-function shapeToSpec(file, lines) {
+/* Where every word actually falls, from the recording itself.
+ *
+ * The shaper has to know when each punctuation mark happens so it can tell a
+ * real pause from an artefact of articulation. It used to estimate that by
+ * character position, assuming every letter takes the same time to say. It
+ * does not: "Dragon. Taco. Comet." and "the easiest way to make a long one"
+ * occupy wildly different time per character, so the estimate drifts and a
+ * mark gets attached to the wrong silence. That is how "Not quite." came out
+ * as "Not ... quite." with two thirds of a second in the middle, on every
+ * wrong answer in the course.
+ *
+ * So ask the recording. Scribe returns a start and end for every word, which
+ * pins each mark to the word it follows instead of guessing. Cached against
+ * the AUDIO's own bytes, so a re-shape of an unchanged clip costs nothing and
+ * a re-recorded clip is never read from a stale transcript.
+ */
+const STT_CACHE = ".stt-cache";
+async function transcribeWords(file) {
+  try {
+    const buf = await readFile(file);
+    const key = createHash("sha1").update(buf).digest("hex").slice(0, 20);
+    const cached = join(STT_CACHE, `${key}.json`);
+    if (await fileExists(cached)) return JSON.parse(await readFile(cached, "utf8"));
+    const fd = new FormData();
+    fd.append("model_id", "scribe_v1");
+    fd.append("file", new Blob([buf], { type: "audio/mpeg" }), "clip.mp3");
+    const r = await fetch("https://api.elevenlabs.io/v1/speech-to-text", {
+      method: "POST", headers: { "xi-api-key": KEY }, body: fd,
+    });
+    if (!r.ok) return null;
+    const j = await r.json();
+    const words = (j.words || [])
+      .filter((w) => w.type === "word" && Number.isFinite(w.start) && Number.isFinite(w.end))
+      .map((w) => ({ text: w.text, start: w.start, end: w.end }));
+    if (!words.length) return null;
+    await mkdir(STT_CACHE, { recursive: true });
+    await writeFile(cached, JSON.stringify(words));
+    return words;
+  } catch {
+    return null;   // never let a transcript failure cost a paid recording
+  }
+}
+
+const normWord = (s) => s.toLowerCase().replace(/[^a-z0-9']/g, "");
+
+/* Line the script's words up with the recording's words.
+ *
+ * Needleman-Wunsch rather than position-by-position: Scribe drops a word now
+ * and then, splits "Comet$Turtle3" differently, or writes a number as digits,
+ * and a straight zip would then be one word out for the rest of the clip -
+ * which is the very error this exists to remove.
+ */
+function alignWords(script, heard) {
+  const n = script.length, m = heard.length;
+  if (!n || !m) return [];
+  const S = Array.from({ length: n + 1 }, () => new Float64Array(m + 1));
+  const P = Array.from({ length: n + 1 }, () => new Uint8Array(m + 1));
+  for (let i = 1; i <= n; i++) { S[i][0] = -i; P[i][0] = 1; }
+  for (let j = 1; j <= m; j++) { S[0][j] = -j; P[0][j] = 2; }
+  for (let i = 1; i <= n; i++) {
+    for (let j = 1; j <= m; j++) {
+      const a = normWord(script[i - 1].t), b = normWord(heard[j - 1].text);
+      const same = a && b && (a === b || a.startsWith(b) || b.startsWith(a));
+      const diag = S[i - 1][j - 1] + (same ? 2 : -1);
+      const up = S[i - 1][j] - 1;
+      const left = S[i][j - 1] - 1;
+      if (diag >= up && diag >= left) { S[i][j] = diag; P[i][j] = 0; }
+      else if (up >= left) { S[i][j] = up; P[i][j] = 1; }
+      else { S[i][j] = left; P[i][j] = 2; }
+    }
+  }
+  const map = new Array(n).fill(-1);
+  let i = n, j = m;
+  while (i > 0 && j > 0) {
+    const p = P[i][j];
+    if (p === 0) { map[i - 1] = j - 1; i--; j--; }
+    else if (p === 1) i--;
+    else j--;
+  }
+  return map;
+}
+
+function shapeToSpec(file, lines, heard) {
   const words = lines.join(" ").replace(/\[[a-z ]*\]/gi, "").trim().split(/\s+/).filter(Boolean).length;
   if (!words) return false;
   const total = mediaDuration(file);
@@ -1171,11 +1259,39 @@ function shapeToSpec(file, lines) {
    */
   const spokenText = lines.join("\n").replace(/\[[a-z ]*\]/gi, "");
   const marks = [];
-  const markRe = /(,)|([.!?]+)(?=\s|$)|(\n+)/g;
+  /* Every mark a READER pauses on, not just the four this used to know.
+   *
+   * It counted only , . ! ? and newlines. Week 1's script also contains 32
+   * spaced hyphens, 26 semicolons, 4 colons and 2 ellipses - 64 places where
+   * the voice takes a breath because the writing told it to, and the shaper
+   * had no mark to explain the silence it then measured.
+   *
+   * That did two kinds of damage. The gap itself was treated as unexplained
+   * and squeezed to a hairline, deleting a pause the writing asked for. Worse,
+   * every mark AFTER it was now matched to the wrong gap, so the whole plan
+   * slid along the clip: measured across week 1, 102 pairings sat more than
+   * 0.7s from where the mark was predicted. A pause landing one gap late is
+   * precisely "she stops between words that belong together".
+   *
+   * An ellipsis is a trailing thought and gets the longest of these; a colon
+   * introduces what follows and gets a touch more than a semicolon, which is
+   * a touch more than a comma. A spaced hyphen is read as a dash, so it takes
+   * the same beat as a semicolon. A hyphen INSIDE a word (cyber-doctor) is not
+   * a mark and is left alone, which is why the pattern requires the spaces.
+   */
+  // The ellipsis alternative comes FIRST: "[.!?]+" would otherwise swallow
+  // "..." and bill it as a full stop.
+  const markRe = /(\.\.\.|…)|(,)|([.!?]+)(?=\s|$)|(\n+)|(\s[-–—]\s)|(;)|(:)/g;
   for (let mm = markRe.exec(spokenText); mm; mm = markRe.exec(spokenText)) {
     // A single newline between authored lines is just a sentence break; only a
     // BLANK line is a change of thought.
-    const kind = mm[1] ? "comma" : mm[2] ? "stop" : (mm[3] && mm[3].length > 1 ? "thought" : "stop");
+    const kind = mm[1] ? "trail"
+      : mm[2] ? "comma"
+      : mm[3] ? "stop"
+      : mm[4] ? (mm[4].length > 1 ? "thought" : "stop")
+      : mm[5] ? "dash"
+      : mm[6] ? "dash"
+      : "colon";
     const prev = marks[marks.length - 1];
     // One boundary, one mark. An authored line ends "." and is followed by a
     // newline, so the same boundary was found TWICE, one character apart. The
@@ -1193,9 +1309,46 @@ function shapeToSpec(file, lines) {
 
   const rawSpeech0 = spanLen.reduce((a, b) => a + b, 0);
   const textLen = Math.max(1, spokenText.length);
-  // Where each mark is expected to fall in time, assuming she reads at a steady
-  // rate: good enough to tell a real pause from an artefact of articulation.
-  const markTime = marks.map((m) => (m.at / textLen) * rawSpeech0);
+
+  /* Where each mark falls in time.
+   *
+   * Measured from the recording where a transcript is available: every mark is
+   * pinned to the END of the word it follows, converted from clip time into
+   * speech time so it can be compared with the gaps. Falls back to the old
+   * steady-rate estimate per mark, so a clip whose transcript failed, or a
+   * word the alignment could not place, still gets shaped rather than skipped.
+   */
+  const estimate = (m) => (m.at / textLen) * rawSpeech0;
+  // clip time -> speech time: the same clock the gaps are measured on
+  const toSpeechTime = (t) => {
+    let acc = 0;
+    for (const s of spans) {
+      if (t <= s.from) break;
+      acc += Math.min(t, s.to) - s.from;
+    }
+    return acc;
+  };
+
+  let markTime;
+  if (heard && heard.length) {
+    const scriptWords = [];
+    const wre = /[A-Za-z0-9'’$]+/g;
+    for (let w = wre.exec(spokenText); w; w = wre.exec(spokenText)) {
+      scriptWords.push({ t: w[0], end: w.index + w[0].length });
+    }
+    const map = alignWords(scriptWords, heard);
+    markTime = marks.map((m) => {
+      // the last script word that ends at or before this mark
+      let k = -1;
+      for (let i = 0; i < scriptWords.length; i++) {
+        if (scriptWords[i].end <= m.at + 1) k = i; else break;
+      }
+      const j = k >= 0 ? map[k] : -1;
+      return j >= 0 ? toSpeechTime(heard[j].end) : estimate(m);
+    });
+  } else {
+    markTime = marks.map(estimate);
+  }
   // Where each detected gap falls, measured in speech time.
   const gapTime = [];
   let acc = 0;
@@ -1498,7 +1651,7 @@ async function generateBlock(speaker, lines, source) {
       // Re-cut the silences to the delivery spec. Leaves the clip exactly as
       // recorded if it cannot do that safely, so a failure here never costs a
       // recording we have already paid for.
-      shapeToSpec(filepath, lines);
+      shapeToSpec(filepath, lines, await transcribeWords(filepath));
       const buf = await readFile(filepath);
       return {
         key,
