@@ -710,7 +710,11 @@ export default function SchoolsLanding() {
         .sch-chip-cta:hover, .sch-chip-cta.on { color: #04050d; background: linear-gradient(135deg, #5ff5ff 0%, #1fd8ff 55%, #14c2f8 100%); border-color: transparent; }
         /* fade the trailing edge when the strip scrolls (narrow screens) */
         @media (max-width: 1100px) {
-          .sch-subnav { -webkit-mask-image: linear-gradient(90deg, #000 0, #000 calc(100% - 44px), transparent); mask-image: linear-gradient(90deg, #000 0, #000 calc(100% - 44px), transparent); padding-right: calc(var(--lv2-rail) + 32px); }
+          /* Phone/tablet: the pills ride in a horizontal scroll strip. Give
+             them a wider gap and a little more inner padding so they read as
+             separate tabs instead of one squashed run. */
+          .sch-subnav { gap: 14px; -webkit-mask-image: linear-gradient(90deg, #000 0, #000 calc(100% - 44px), transparent); mask-image: linear-gradient(90deg, #000 0, #000 calc(100% - 44px), transparent); padding-right: calc(var(--lv2-rail) + 32px); }
+          .sch-chip-link { padding: 0 18px; }
           .sch-chip-cta { margin-left: 0; }
         }
 

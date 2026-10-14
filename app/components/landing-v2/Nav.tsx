@@ -182,7 +182,7 @@ export default function Nav({ centre, cta, aside, showTelemetry = true, showSite
         {showTelemetry ? <TrustStrip isLight={isLight} /> : null}
         {centre}
 
-        <div className="lv2-nav-links">
+        <div className={cta === null ? "lv2-nav-links lv2-nav-links-nocta" : "lv2-nav-links"}>
           {showSiteLinks ? (
             <>
               {/* Root-relative on purpose: this Nav also renders on
@@ -780,6 +780,18 @@ export default function Nav({ centre, cta, aside, showTelemetry = true, showSite
           }
           :global(.lv2-nav-secondary)::after {
             bottom: 6px;
+          }
+          /* The homepage bar carries no CTA (cta={null}), so its three site
+             links own the whole right side. The tight sizing above exists for
+             the four-item pages (the links PLUS a Get Started pill); without
+             that pill the links get readable size and real separation so they
+             never read as one squashed block. */
+          .lv2-nav-links-nocta {
+            gap: 16px !important;
+          }
+          .lv2-nav-links-nocta :global(.lv2-nav-secondary) {
+            font-size: 11.5px !important;
+            letter-spacing: 0.09em !important;
           }
           :global(.lv2-nav-cta) {
             padding: 11px 10px !important;
