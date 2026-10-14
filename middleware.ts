@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 /* Paths that never see the launch password. `/verify` and `/api` are
  * already outside the matcher below. */
-const OPEN_PREFIXES = ["/corporate", "/ai-cleared", "/ai-fluent", "/login", "/signup", "/forgot-password", "/reset-password", "/privacy", "/terms"];
+const OPEN_PREFIXES = ["/corporate", "/ai-cleared", "/ai-fluent", "/pro", "/login", "/signup", "/forgot-password", "/reset-password", "/privacy", "/terms"];
 
 export function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
@@ -22,8 +22,11 @@ export function middleware(req: NextRequest) {
 
   // The corporate line is on sale: its pages, both courses (including the
   // join links and certificates under them) and the sign-in pages a learner
-  // needs are open to everyone. The rest of the site stays behind the
-  // launch password until the owner lifts it.
+  // needs are open to everyone. The adult Cyber Pro course (/pro, incl.
+  // /pro/course and the module pages) is live and public too; its paid
+  // checkout is held behind a waitlist on the landing until Stripe is wired,
+  // so opening the route gives nothing away. The rest of the site stays
+  // behind the launch password until the owner lifts it.
   if (OPEN_PREFIXES.some((p) => pathname === p || pathname.startsWith(p + "/"))) return NextResponse.next();
 
   const authed = req.cookies.get("site_auth")?.value === "true";

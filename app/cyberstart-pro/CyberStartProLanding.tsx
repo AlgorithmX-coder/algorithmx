@@ -14,9 +14,10 @@ import WaitlistForm from "@/app/components/WaitlistForm";
  * honest password cracker, a genuine slice of Module 3) to build desire,
  * then drives to a single purchase.
  *
- * Primary CTA is status-aware: a buy button into /purchase once the
- * Product is ACTIVE; while it is COMING_SOON (checkout not live yet) the
- * CTA points at the enrol band, which offers a "be first in" waitlist.
+ * Primary CTA is status-aware: a buy button into /purchase only once the
+ * Product is ACTIVE *and* the paid checkout is wired (PURCHASE_OPEN). Until
+ * then — including while the course is live but the sale is held — the CTA
+ * points at the enrol band, which offers a "be first in" waitlist.
  * PRICE is catalogue-driven (the owner's live lever). Age is 18+, a fixed
  * fact, in copy.
  *
@@ -38,6 +39,14 @@ const SANS = "var(--font-pro-sans), 'Nunito', sans-serif";
 const MONO = "var(--font-pro-mono), ui-monospace, 'Cascadia Code', Consolas, monospace";
 
 const ENROL_ANCHOR = "#enrol";
+
+/* Whether the paid checkout is live. The consumer Stripe flow for Cyber Pro
+ * is not wired yet (app/purchase/[slug]/actions.ts still grants the
+ * entitlement for free as a stub), so while this is false the course shows
+ * as live but every buy action routes to the enrol-band waitlist instead of
+ * /purchase, which would otherwise give the course away. Flip to true in the
+ * same change that lands the real Stripe checkout. */
+const PURCHASE_OPEN = false;
 
 /* ---------------- the live hero demo: a real password cracker ---------------- */
 
@@ -194,13 +203,18 @@ export default function CyberStartProLanding({ product }: { product: Product }) 
   const isActive = product.status === "ACTIVE";
   const priceLine = `£${Math.round(product.priceGBP / 100)}`;
   const buyHref = `/purchase/${product.slug}`;
+  // Only send people into checkout when the course is live AND the paid flow
+  // is actually wired (see PURCHASE_OPEN). While the course is live but the
+  // sale is held, every CTA points at the enrol band's waitlist instead of
+  // the (free-stub) /purchase page.
+  const canBuy = isActive && PURCHASE_OPEN;
 
-  // One paid call to action. Buy straight into checkout when the course is
+  // One paid call to action. Buy straight into checkout when the sale is
   // live; otherwise point at the enrol band, which carries the waitlist.
   function Cta({ size = "lg", label }: { size?: "lg" | "md"; label?: string }) {
     const big = size === "lg";
-    const href = isActive ? buyHref : ENROL_ANCHOR;
-    const text = label ?? (isActive ? `Get the course for ${priceLine}` : "Enrol now");
+    const href = canBuy ? buyHref : ENROL_ANCHOR;
+    const text = label ?? (canBuy ? `Get the course for ${priceLine}` : isActive ? "Get the course" : "Enrol now");
     return (
       <a href={href} className="cypro-start" style={{ padding: big ? "16px 34px" : "13px 26px", fontSize: big ? 18 : 15, background: GRAD, boxShadow: `0 10px 38px ${PRIMARY}55` }}>
         {text}
@@ -258,7 +272,7 @@ export default function CyberStartProLanding({ product }: { product: Product }) 
             <div className="flex items-center gap-4">
               <a href="/pro/login" className="text-sm font-bold text-gray-300 hover:text-white transition-colors hidden sm:block">Sign in</a>
               <a href="/pro/course" className="text-sm font-bold text-gray-300 hover:text-white transition-colors hidden sm:block">See the course</a>
-              <a href={isActive ? buyHref : ENROL_ANCHOR} className="cypro-ghost px-5 py-2.5 rounded-2xl text-sm font-black text-white" style={{ background: GRAD, boxShadow: `0 4px 20px ${PRIMARY}50` }}>
+              <a href={canBuy ? buyHref : ENROL_ANCHOR} className="cypro-ghost px-5 py-2.5 rounded-2xl text-sm font-black text-white" style={{ background: GRAD, boxShadow: `0 4px 20px ${PRIMARY}50` }}>
                 {isActive ? "Get the course" : "Enrol"}
               </a>
             </div>
@@ -483,11 +497,11 @@ export default function CyberStartProLanding({ product }: { product: Product }) 
                 ))}
               </div>
               <div className="flex flex-col items-center gap-4">
-                {isActive ? (
+                {canBuy ? (
                   <Cta label={`Get the course for ${priceLine}`} />
                 ) : (
                   <div className="flex flex-col items-center gap-3">
-                    <span className="disp font-black text-white text-base">Opening very soon.</span>
+                    <span className="disp font-black text-white text-base">{isActive ? "The course is live. Buying opens any day now." : "Opening very soon."}</span>
                     <span className="text-sm" style={{ color: "rgba(255,255,255,0.55)" }}>Leave your email and be first in line.</span>
                     <WaitlistForm courseSlug={product.slug as "cyberstart-pro"} accent={PRIMARY} accentSoft={ACCENT} buttonGradient={GRAD} buttonShadow={`0 8px 32px ${PRIMARY}50`} source="enrol" />
                   </div>
