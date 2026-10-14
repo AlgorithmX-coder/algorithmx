@@ -96,6 +96,7 @@ const KIDS_EDUCATOR = { id: "oClOrzqamOXmtcB8iqTj", name: "Emma (Kids Educator)"
 const NARRATOR_BY_WEEK = {
   "week1.ts": KIDS_EDUCATOR,
   "week2.ts": KIDS_EDUCATOR,
+  "week3.ts": KIDS_EDUCATOR,
   // Not a week: the one shared line QuickCheck speaks on every finish-mode
   // screen, pinned so it does not play the old voice inside a migrated week.
   "shared:quickcheck-finish": KIDS_EDUCATOR,

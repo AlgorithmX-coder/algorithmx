@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-14T18:42:35.192Z",
+  "generatedAt": "2026-10-14T19:23:17.879Z",
   "model": "eleven_v4",
   "voiceSettings": {
     "stability": 0.6,
@@ -26267,23 +26267,24 @@
       "file": "/audio/voice/c610605f5b6fc22c.mp3"
     },
     {
-      "key": "23ad01a9f4f9f90b",
+      "key": "e3e9285f1e08e1d0",
       "speaker": "adam",
-      "voice": "Sarah",
-      "text": "[nervous] Oh no, Cyber Hero, look at this incident report! The Raccoon built a FAKE kid profile, with a copied photo, a typed age and a made-up name, and tricked a hero into telling him secrets. [whispers] He's sending friend requests right now, to more kids. [warmly] But YOU are about to see straight through every disguise he owns. Let's see what Mission Command has for us!",
+      "voice": "Emma (Kids Educator)",
+      "text": "[nervous] Oh no, Cyber Hero, look at this incident report! The Raccoon built a FAKE kid profile. A copied photo, a typed age, a made-up name. Then he tricked a hero into telling him secrets. [whispers] He's sending friend requests right now, to more kids. [warmly] But YOU are about to see straight through every disguise he owns. Let's see what Mission Command has for us!",
       "lines": [
         "[nervous] Oh no, Cyber Hero, look at this incident report!",
-        "The Raccoon built a FAKE kid profile, with a copied photo, a typed age and a made-up name, and tricked a hero into telling him secrets.",
+        "The Raccoon built a FAKE kid profile. A copied photo, a typed age, a made-up name.",
+        "Then he tricked a hero into telling him secrets.",
         "[whispers] He's sending friend requests right now, to more kids.",
         "[warmly] But YOU are about to see straight through every disguise he owns.",
         "Let's see what Mission Command has for us!"
       ],
-      "file": "/audio/voice/23ad01a9f4f9f90b.mp3"
+      "file": "/audio/voice/e3e9285f1e08e1d0.mp3"
     },
     {
-      "key": "89b430f41899815b",
+      "key": "c0050d3a9f1520a6",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "[warmly] Welcome back, Cyber Hero. Today we learn something big: online, you can't SEE who's typing. A friendly kid's photo can be copied from anywhere. An age? Anyone can type a nine. [whispers] And a kid-sounding name is just picked, not proved. [excited] So heroes never judge by the mask. They check what a claim really PROVES. Let's go and peek behind some masks!",
       "lines": [
         "[warmly] Welcome back, Cyber Hero. Today we learn something big: online, you can't SEE who's typing.",
@@ -26293,47 +26294,49 @@
         "[excited] So heroes never judge by the mask. They check what a claim really PROVES.",
         "Let's go and peek behind some masks!"
       ],
-      "file": "/audio/voice/89b430f41899815b.mp3"
+      "file": "/audio/voice/c0050d3a9f1520a6.mp3"
     },
     {
-      "key": "5a22058b6cc24fcd",
+      "key": "d8207745e17a4d6d",
       "speaker": "adam",
-      "voice": "Sarah",
-      "text": "[excited] On your first challenge, you learn to peek behind the mask! This game is all about what a friend's claim really proves. A photo, an age, a name... or knowing them in real life. Out in the real world, new friends pop up in games and chats all the time, each one saying who they are. Here is what you do. A friend request arrives wearing a claim. Tap PEEK BEHIND THE MASK to see what that claim really proves. Then tap REAL PROOF, or PROVES NOTHING. [excited] Six friends are waiting. Ready? You've got this!",
+      "voice": "Emma (Kids Educator)",
+      "text": "[excited] On your first challenge, you learn to peek behind the mask! This game is all about what a friend's claim really proves. A photo, an age, a name... or knowing them in real life. Out in the real world, new friends pop up in games and chats all the time. Each one says who they are. Here is what you do. A friend request arrives wearing a claim. Tap PEEK BEHIND THE MASK to see what that claim really proves. Then tap REAL PROOF, or PROVES NOTHING. [excited] Six friends are waiting. Ready? You've got this!",
       "lines": [
         "[excited] On your first challenge, you learn to peek behind the mask!",
         "This game is all about what a friend's claim really proves. A photo, an age, a name... or knowing them in real life.",
-        "Out in the real world, new friends pop up in games and chats all the time, each one saying who they are.",
-        "Here is what you do. A friend request arrives wearing a claim. Tap PEEK BEHIND THE MASK to see what that claim really proves. Then tap REAL PROOF, or PROVES NOTHING.",
+        "Out in the real world, new friends pop up in games and chats all the time. Each one says who they are.",
+        "Here is what you do. A friend request arrives wearing a claim.",
+        "Tap PEEK BEHIND THE MASK to see what that claim really proves.",
+        "Then tap REAL PROOF, or PROVES NOTHING.",
         "[excited] Six friends are waiting. Ready? You've got this!"
       ],
-      "file": "/audio/voice/5a22058b6cc24fcd.mp3"
+      "file": "/audio/voice/d8207745e17a4d6d.mp3"
     },
     {
-      "key": "866f63252a2dd1bb",
+      "key": "cafa636f81234371",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "First, tap PEEK BEHIND THE MASK. Then make your call: real proof, or proves nothing?",
       "lines": [
         "First, tap PEEK BEHIND THE MASK. Then make your call: real proof, or proves nothing?"
       ],
-      "file": "/audio/voice/866f63252a2dd1bb.mp3"
+      "file": "/audio/voice/cafa636f81234371.mp3"
     },
     {
-      "key": "7d89b07a7b30caa3",
+      "key": "0960f30b0ee0fe49",
       "speaker": "layla",
-      "voice": "Sarah",
-      "text": "[proud] Every mask peeked! You can tell real proof from a mask in a heartbeat. [warmly] Out in the real world, a photo or a typed age will never fool you again, and the Raccoon's disguise kit just got useless.",
+      "voice": "Emma (Kids Educator)",
+      "text": "[proud] Every mask peeked! You can tell real proof from a mask in a heartbeat. [warmly] Out in the real world, a photo or a typed age will never fool you again. The Raccoon's disguise kit just got useless.",
       "lines": [
         "[proud] Every mask peeked! You can tell real proof from a mask in a heartbeat.",
-        "[warmly] Out in the real world, a photo or a typed age will never fool you again, and the Raccoon's disguise kit just got useless."
+        "[warmly] Out in the real world, a photo or a typed age will never fool you again. The Raccoon's disguise kit just got useless."
       ],
-      "file": "/audio/voice/7d89b07a7b30caa3.mp3"
+      "file": "/audio/voice/0960f30b0ee0fe49.mp3"
     },
     {
-      "key": "d1e1d66af2b2da69",
+      "key": "3ddb9b88ecb4c6e1",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "[warmly] Busted! That was a fib. A photo can be copied, and a nine takes one second to type. Neither one shows who is really at the keyboard. The only real proof is knowing someone in real life. [excited] Judge the proof, never the mask. Nice catch!",
       "lines": [
         "[warmly] Busted! That was a fib.",
@@ -26341,12 +26344,12 @@
         "The only real proof is knowing someone in real life.",
         "[excited] Judge the proof, never the mask. Nice catch!"
       ],
-      "file": "/audio/voice/d1e1d66af2b2da69.mp3"
+      "file": "/audio/voice/3ddb9b88ecb4c6e1.mp3"
     },
     {
-      "key": "5dfde142b3de336b",
+      "key": "4da22683181f822c",
       "speaker": "layla",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "[warmly] Awesome start, Cyber Hero! You peeked behind six masks and called every one. Copied photo, typed age, picked name... proves nothing. Your cousin, your classmate... real proof. Next, we'll learn the four clues that give a fake profile away. Come and see!",
       "lines": [
         "[warmly] Awesome start, Cyber Hero!",
@@ -26354,12 +26357,12 @@
         "Copied photo, typed age, picked name... proves nothing. Your cousin, your classmate... real proof.",
         "Next, we'll learn the four clues that give a fake profile away. Come and see!"
       ],
-      "file": "/audio/voice/5dfde142b3de336b.mp3"
+      "file": "/audio/voice/4da22683181f822c.mp3"
     },
     {
-      "key": "5baebd8e1b5fa569",
+      "key": "b66a456e29ec2cdd",
       "speaker": "layla",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "[excited] Detective time! Fake profiles leave four clues behind. Clue one: WHEN did it join? Brand new, joined yesterday? Sneaky. Clue two: WHO are its friends? Nobody you actually know? Sneaky. Clue three: HOW does it talk? Best friends after five minutes? Sneaky. [whispers] And clue four, the giveaway: WHAT does it ask for? Your school, or a private chat. [excited] Real friends check out on all four. Let's go and stamp some clues!",
       "lines": [
         "[excited] Detective time! Fake profiles leave four clues behind.",
@@ -26369,47 +26372,50 @@
         "[whispers] And clue four, the giveaway: WHAT does it ask for? Your school, or a private chat.",
         "[excited] Real friends check out on all four. Let's go and stamp some clues!"
       ],
-      "file": "/audio/voice/5baebd8e1b5fa569.mp3"
+      "file": "/audio/voice/b66a456e29ec2cdd.mp3"
     },
     {
-      "key": "15ffb0375b99fb9d",
+      "key": "eed89a7a4d70fa85",
       "speaker": "layla",
-      "voice": "Sarah",
-      "text": "[excited] Your second challenge, Cyber Hero! Friend requests are landing, and you are the one who checks them. Every profile leaves four clues: when it joined, who its friends are, how it talks, and what it asks for. A fake gives itself away on at least one clue. A real friend checks out on all four. The Raccoon thinks his costume works every time. Not on your watch. [warmly] Read all four clues, stamp the sneaky ones, then close the case. Ready? Let's go!",
+      "voice": "Emma (Kids Educator)",
+      "text": "[excited] Your second challenge, Cyber Hero! Friend requests are landing, and you are the one who checks them. Every profile leaves four clues. When it joined. Who its friends are. How it talks. What it asks for. A fake gives itself away on at least one clue. A real friend checks out on all four. The Raccoon thinks his costume works every time. Not on your watch. [warmly] Read all four clues, stamp the sneaky ones, then close the case. Ready? Let's go!",
       "lines": [
         "[excited] Your second challenge, Cyber Hero! Friend requests are landing, and you are the one who checks them.",
-        "Every profile leaves four clues: when it joined, who its friends are, how it talks, and what it asks for.",
+        "Every profile leaves four clues. When it joined. Who its friends are. How it talks. What it asks for.",
         "A fake gives itself away on at least one clue. A real friend checks out on all four.",
         "The Raccoon thinks his costume works every time. Not on your watch.",
         "[warmly] Read all four clues, stamp the sneaky ones, then close the case. Ready? Let's go!"
       ],
-      "file": "/audio/voice/15ffb0375b99fb9d.mp3"
+      "file": "/audio/voice/eed89a7a4d70fa85.mp3"
     },
     {
-      "key": "91969522d6a35b37",
+      "key": "34d89cc0b95b48e6",
       "speaker": "layla",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Here is a friend request. Read all four clues. If a clue looks sneaky, tap it to stamp it. Tap it again to lift the stamp. Nothing sneaky? Stamp nothing. When you have checked all four, tap Close the case.",
       "lines": [
-        "Here is a friend request. Read all four clues. If a clue looks sneaky, tap it to stamp it. Tap it again to lift the stamp. Nothing sneaky? Stamp nothing. When you have checked all four, tap Close the case."
+        "Here is a friend request. Read all four clues.",
+        "If a clue looks sneaky, tap it to stamp it. Tap it again to lift the stamp.",
+        "Nothing sneaky? Stamp nothing.",
+        "When you have checked all four, tap Close the case."
       ],
-      "file": "/audio/voice/91969522d6a35b37.mp3"
+      "file": "/audio/voice/34d89cc0b95b48e6.mp3"
     },
     {
-      "key": "10452dc135120149",
+      "key": "83970c7bd447429a",
       "speaker": "adam",
-      "voice": "Sarah",
-      "text": "[proud] Every case closed! You can read a profile's clues, so the Raccoon's fake friends can't fool you. [warmly] Out in the real world, a brand new account that rushes at you never gets past you, and real friends still get a warm hello.",
+      "voice": "Emma (Kids Educator)",
+      "text": "[proud] Every case closed! You can read a profile's clues, so the Raccoon's fake friends can't fool you. [warmly] Out in the real world, a brand new account that rushes at you never gets past you. And real friends still get a warm hello.",
       "lines": [
         "[proud] Every case closed! You can read a profile's clues, so the Raccoon's fake friends can't fool you.",
-        "[warmly] Out in the real world, a brand new account that rushes at you never gets past you, and real friends still get a warm hello."
+        "[warmly] Out in the real world, a brand new account that rushes at you never gets past you. And real friends still get a warm hello."
       ],
-      "file": "/audio/voice/10452dc135120149.mp3"
+      "file": "/audio/voice/83970c7bd447429a.mp3"
     },
     {
-      "key": "0903b74810c84bfe",
+      "key": "dd9e8bfa2bdeb948",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "[excited] Spotted in seconds! Best friends after one day is the biggest fake-profile clue there is. Real friendship grows slowly. Your cousin and your classmate? You know them in real life, so they check out. [warmly] Clues first, trust second. That's the detective way!",
       "lines": [
         "[excited] Spotted in seconds!",
@@ -26417,12 +26423,12 @@
         "Your cousin and your classmate? You know them in real life, so they check out.",
         "[warmly] Clues first, trust second. That's the detective way!"
       ],
-      "file": "/audio/voice/0903b74810c84bfe.mp3"
+      "file": "/audio/voice/dd9e8bfa2bdeb948.mp3"
     },
     {
-      "key": "1b26684386c3ca49",
+      "key": "94464e4918fdf1d0",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "[excited] Two powers down! You're a certified Profile Detective. Joined yesterday? Nobody you know? Best friends in five minutes? Asks for your school? Stamp, stamp, stamp, stamp. [warmly] But some tricksters get past the profile check. So they start ASKING for things... Next, we'll learn the red-flag requests every hero must know. Come and see!",
       "lines": [
         "[excited] Two powers down! You're a certified Profile Detective.",
@@ -26430,12 +26436,12 @@
         "[warmly] But some tricksters get past the profile check. So they start ASKING for things...",
         "Next, we'll learn the red-flag requests every hero must know. Come and see!"
       ],
-      "file": "/audio/voice/1b26684386c3ca49.mp3"
+      "file": "/audio/voice/94464e4918fdf1d0.mp3"
     },
     {
-      "key": "c0a187a43b8cdd70",
+      "key": "8290f1609158b016",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "[warmly] Here's a hero secret: some asks are ALWAYS red flags, no matter how nice the person seems. Asking you to keep secrets. Asking for photos of you. Offering gifts... if you just share a little info. [whispers] And the biggest red flag in the whole world... [nervous] 'Don't tell your parents.' [excited] Game chat and friendly hellos are totally fine. Let's go and judge some requests!",
       "lines": [
         "[warmly] Here's a hero secret: some asks are ALWAYS red flags, no matter how nice the person seems.",
@@ -26445,47 +26451,50 @@
         "[nervous] 'Don't tell your parents.'",
         "[excited] Game chat and friendly hellos are totally fine. Let's go and judge some requests!"
       ],
-      "file": "/audio/voice/c0a187a43b8cdd70.mp3"
+      "file": "/audio/voice/8290f1609158b016.mp3"
     },
     {
-      "key": "a178ece979558d48",
+      "key": "131a04c9c567b1e8",
       "speaker": "adam",
-      "voice": "Sarah",
-      "text": "[excited] On your third challenge, the requests start rolling in! This game is all about telling a friendly ask from a red flag. Out in the real world, a chat friend might ask you a hundred things, and most are fine. A few are not. Here is what you do. A request pops up. Read it, or listen to me read it. Then tap one of the two buttons: RED FLAG, or FRIENDLY ASK. Watch out, the buttons swap sides! [warmly] Secrets, photos, gifts for info, and don't tell your parents... those are the flags. Ready? Let's judge!",
+      "voice": "Emma (Kids Educator)",
+      "text": "[excited] On your third challenge, the requests start rolling in! This game is all about telling a friendly ask from a red flag. Out in the real world, a chat friend might ask you a hundred things, and most are fine. A few are not. Here is what you do. A request pops up. Read it, or listen to me read it. Then tap one of the two buttons. RED FLAG, or FRIENDLY ASK. Watch out. The buttons swap sides! [warmly] Secrets, photos, gifts for info, and don't tell your parents... those are the flags. Ready? Let's judge!",
       "lines": [
         "[excited] On your third challenge, the requests start rolling in!",
         "This game is all about telling a friendly ask from a red flag.",
         "Out in the real world, a chat friend might ask you a hundred things, and most are fine. A few are not.",
-        "Here is what you do. A request pops up. Read it, or listen to me read it. Then tap one of the two buttons: RED FLAG, or FRIENDLY ASK. Watch out, the buttons swap sides!",
+        "Here is what you do. A request pops up. Read it, or listen to me read it.",
+        "Then tap one of the two buttons. RED FLAG, or FRIENDLY ASK.",
+        "Watch out. The buttons swap sides!",
         "[warmly] Secrets, photos, gifts for info, and don't tell your parents... those are the flags. Ready? Let's judge!"
       ],
-      "file": "/audio/voice/a178ece979558d48.mp3"
+      "file": "/audio/voice/131a04c9c567b1e8.mp3"
     },
     {
-      "key": "3775ffca74519bfa",
+      "key": "0422acb550b3a752",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Listen to the request, then tap: red flag, or friendly ask?",
       "lines": [
         "Listen to the request, then tap: red flag, or friendly ask?"
       ],
-      "file": "/audio/voice/3775ffca74519bfa.mp3"
+      "file": "/audio/voice/0422acb550b3a752.mp3"
     },
     {
-      "key": "18a72d326396e4d2",
+      "key": "71504fb9b83245aa",
       "speaker": "layla",
-      "voice": "Sarah",
-      "text": "[proud] Every request judged! Your red-flag radar is switched on for good. [warmly] Out in the real world, the second someone asks for a secret, a photo, or says don't tell your parents, you'll know, and you'll tell a grown-up.",
+      "voice": "Emma (Kids Educator)",
+      "text": "[proud] Every request judged! Your red-flag radar is switched on for good. [warmly] Out in the real world, you will know the second someone asks for a secret or a photo. You will know when they say don't tell your parents. And you will tell a grown-up.",
       "lines": [
         "[proud] Every request judged! Your red-flag radar is switched on for good.",
-        "[warmly] Out in the real world, the second someone asks for a secret, a photo, or says don't tell your parents, you'll know, and you'll tell a grown-up."
+        "[warmly] Out in the real world, you will know the second someone asks for a secret or a photo.",
+        "You will know when they say don't tell your parents. And you will tell a grown-up."
       ],
-      "file": "/audio/voice/18a72d326396e4d2.mp3"
+      "file": "/audio/voice/71504fb9b83245aa.mp3"
     },
     {
-      "key": "53f3fbb4ecb7b37c",
+      "key": "8ae97376835e404d",
       "speaker": "layla",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "[excited] Yes! That's the biggest red flag there is. Rematches, favorite colors and nice moves are all about the game. Friendly and fine. But don't tell your parents? Safe friends never need to hide from your grown-ups. [warmly] The moment you hear it, stop and tell. Perfect radar!",
       "lines": [
         "[excited] Yes! That's the biggest red flag there is.",
@@ -26493,12 +26502,12 @@
         "But don't tell your parents? Safe friends never need to hide from your grown-ups.",
         "[warmly] The moment you hear it, stop and tell. Perfect radar!"
       ],
-      "file": "/audio/voice/53f3fbb4ecb7b37c.mp3"
+      "file": "/audio/voice/8ae97376835e404d.mp3"
     },
     {
-      "key": "9b98bf0ebc42c7b5",
+      "key": "cbd7e814fb4242dc",
       "speaker": "layla",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "[excited] Three powers! Your red-flag radar is ON. Secrets, photos, gifts, and don't tell your parents... you flagged every single one. [warmly] But what if a friend asks to MEET you, or wants a photo just this once? For that, heroes have two rules that never, ever bend. Next, we'll learn the two never-rules that keep every hero safe. Come and see!",
       "lines": [
         "[excited] Three powers! Your red-flag radar is ON.",
@@ -26506,12 +26515,12 @@
         "[warmly] But what if a friend asks to MEET you, or wants a photo just this once? For that, heroes have two rules that never, ever bend.",
         "Next, we'll learn the two never-rules that keep every hero safe. Come and see!"
       ],
-      "file": "/audio/voice/9b98bf0ebc42c7b5.mp3"
+      "file": "/audio/voice/cbd7e814fb4242dc.mp3"
     },
     {
-      "key": "29c827173c8361e2",
+      "key": "b8567757ab4d3b39",
       "speaker": "layla",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "[warmly] These two rules are hero armor, and they have zero exceptions. Rule one. NEVER meet up with someone you only know online. Not at the park. Not at the library. Not 'just quickly'. Never. Rule two. NEVER send photos of yourself. [whispers] Not even if they send one first. [excited] And if someone asks? You tell a trusted grown-up. Let's go and find the way out of the Meet-Up Maze!",
       "lines": [
         "[warmly] These two rules are hero armor, and they have zero exceptions.",
@@ -26521,47 +26530,51 @@
         "[whispers] Not even if they send one first.",
         "[excited] And if someone asks? You tell a trusted grown-up. Let's go and find the way out of the Meet-Up Maze!"
       ],
-      "file": "/audio/voice/29c827173c8361e2.mp3"
+      "file": "/audio/voice/b8567757ab4d3b39.mp3"
     },
     {
-      "key": "2bcb80df35cc65b1",
+      "key": "5aaa9cf24691f6e4",
       "speaker": "layla",
-      "voice": "Sarah",
-      "text": "[excited] On your fourth challenge, a maze full of meet-up traps is waiting! This game is all about the two never-rules: never meet, never send. Out in the real world, a fake friend won't ask once. They'll ask in five different ways, and every one sounds friendly. Here is what you do. Tap a glowing square next to your hero to move. When a gate blocks the way, the fake friend makes an offer, and three replies appear. Tap the hero reply to open the gate. Collect the shields on the way, and find the exit at the bottom right. [warmly] Never meet, never send, and tell a grown-up who asked. Ready? Into the maze!",
+      "voice": "Emma (Kids Educator)",
+      "text": "[excited] On your fourth challenge, a maze full of meet-up traps is waiting! This game is all about the two never-rules: never meet, never send. Out in the real world, a fake friend won't ask once. They'll ask in five different ways, and every one sounds friendly. Here is what you do. Tap a glowing square next to your hero to move. When a gate blocks the way, the fake friend makes an offer. Three replies appear. Tap the hero reply to open the gate. Collect the shields on the way. The exit is at the bottom right. [warmly] Never meet, never send, and tell a grown-up who asked. Ready? Into the maze!",
       "lines": [
         "[excited] On your fourth challenge, a maze full of meet-up traps is waiting!",
         "This game is all about the two never-rules: never meet, never send.",
         "Out in the real world, a fake friend won't ask once. They'll ask in five different ways, and every one sounds friendly.",
-        "Here is what you do. Tap a glowing square next to your hero to move. When a gate blocks the way, the fake friend makes an offer, and three replies appear. Tap the hero reply to open the gate. Collect the shields on the way, and find the exit at the bottom right.",
+        "Here is what you do. Tap a glowing square next to your hero to move.",
+        "When a gate blocks the way, the fake friend makes an offer. Three replies appear.",
+        "Tap the hero reply to open the gate.",
+        "Collect the shields on the way. The exit is at the bottom right.",
         "[warmly] Never meet, never send, and tell a grown-up who asked. Ready? Into the maze!"
       ],
-      "file": "/audio/voice/2bcb80df35cc65b1.mp3"
+      "file": "/audio/voice/5aaa9cf24691f6e4.mp3"
     },
     {
-      "key": "a7da4ab41d8686b1",
+      "key": "ae29b1c5b32e3511",
       "speaker": "layla",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Tap a glowing square beside your hero to move. Head for the exit at the bottom right!",
       "lines": [
         "Tap a glowing square beside your hero to move. Head for the exit at the bottom right!"
       ],
-      "file": "/audio/voice/a7da4ab41d8686b1.mp3"
+      "file": "/audio/voice/ae29b1c5b32e3511.mp3"
     },
     {
-      "key": "f5ce278ff42a2fb1",
+      "key": "7720b827e6e81432",
       "speaker": "adam",
-      "voice": "Sarah",
-      "text": "[proud] You found the way out! Five gates, five hero replies, zero exceptions. [warmly] Out in the real world, no park, no party, no photo swap will ever get past you, and a trusted grown-up is always waiting at the exit.",
+      "voice": "Emma (Kids Educator)",
+      "text": "[proud] You found the way out! Five gates, five hero replies, zero exceptions. [warmly] Out in the real world, no park, no party, no photo swap will ever get past you. And a trusted grown-up is always waiting at the exit.",
       "lines": [
         "[proud] You found the way out! Five gates, five hero replies, zero exceptions.",
-        "[warmly] Out in the real world, no park, no party, no photo swap will ever get past you, and a trusted grown-up is always waiting at the exit."
+        "[warmly] Out in the real world, no park, no party, no photo swap will ever get past you.",
+        "And a trusted grown-up is always waiting at the exit."
       ],
-      "file": "/audio/voice/f5ce278ff42a2fb1.mp3"
+      "file": "/audio/voice/7720b827e6e81432.mp3"
     },
     {
-      "key": "8de7537919e38134",
+      "key": "996628a32537971a",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "[warmly] Never meet, never SEND. That's the hero armor. Meeting an online-only friend? No, not anywhere. Sending a photo of yourself? No, not even one. And when someone asks, you tell a trusted grown-up. [excited] Two rules, zero exceptions. Armor on!",
       "lines": [
         "[warmly] Never meet, never SEND. That's the hero armor.",
@@ -26569,12 +26582,12 @@
         "And when someone asks, you tell a trusted grown-up.",
         "[excited] Two rules, zero exceptions. Armor on!"
       ],
-      "file": "/audio/voice/8de7537919e38134.mp3"
+      "file": "/audio/voice/996628a32537971a.mp3"
     },
     {
-      "key": "0f532432c7c89b51",
+      "key": "8655ab26faf88580",
       "speaker": "layla",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "[excited] Four powers! The two never-rules are locked in. Never meet. Never send. You said no to five traps in a row. [warmly] But sometimes a chat feels wrong before anyone breaks a rule. For that, you have a secret weapon. Next, we'll learn about the uh-oh feeling, your secret weapon. Come and see!",
       "lines": [
         "[excited] Four powers! The two never-rules are locked in.",
@@ -26582,12 +26595,12 @@
         "[warmly] But sometimes a chat feels wrong before anyone breaks a rule. For that, you have a secret weapon.",
         "Next, we'll learn about the uh-oh feeling, your secret weapon. Come and see!"
       ],
-      "file": "/audio/voice/0f532432c7c89b51.mp3"
+      "file": "/audio/voice/8655ab26faf88580.mp3"
     },
     {
-      "key": "8378e8250b89ec20",
+      "key": "d654cfabc8aaf65b",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "[warmly] Last power, and it lives in your tummy. When a chat feels weird, or icky, or... uh-oh... that's your hero sense talking. You don't need to know WHY it feels wrong. [excited] Just feel it. Stop chatting. And tell a trusted grown-up. Telling is never wrong, and it's never too late. [excited] Let's go and practise with a real chat!",
       "lines": [
         "[warmly] Last power, and it lives in your tummy.",
@@ -26597,37 +26610,40 @@
         "Telling is never wrong, and it's never too late.",
         "[excited] Let's go and practise with a real chat!"
       ],
-      "file": "/audio/voice/8378e8250b89ec20.mp3"
+      "file": "/audio/voice/d654cfabc8aaf65b.mp3"
     },
     {
-      "key": "d6df395f49cea364",
+      "key": "d8c69999b7c6647e",
       "speaker": "adam",
-      "voice": "Sarah",
-      "text": "[excited] On your last challenge, a chat request is about to pop up! This game is all about your uh-oh feeling, and the three hero steps: feel it, stop, tell. Out in the real world, a chat can start friendly and slowly turn icky, and your tummy notices before your brain does. Here is what you do. Watch the meter at the top of the phone. Messages arrive, and I'll read each one. When the reply buttons appear, tap the reply a hero would send. When the meter says UH-OH... you know what to do. [warmly] Trust the feeling. Ready? Here comes the chat!",
+      "voice": "Emma (Kids Educator)",
+      "text": "[excited] On your last challenge, a chat request is about to pop up! This game is all about your uh-oh feeling. And the three hero steps. Feel it. Stop. Tell. Out in the real world, a chat can start friendly and slowly turn icky. Your tummy notices before your brain does. Here is what you do. Watch the meter at the top of the phone. Messages arrive, and I'll read each one. When the reply buttons appear, tap the reply a hero would send. And when the meter says UH-OH... you know what to do. [warmly] Trust the feeling. Ready? Here comes the chat!",
       "lines": [
         "[excited] On your last challenge, a chat request is about to pop up!",
-        "This game is all about your uh-oh feeling, and the three hero steps: feel it, stop, tell.",
-        "Out in the real world, a chat can start friendly and slowly turn icky, and your tummy notices before your brain does.",
-        "Here is what you do. Watch the meter at the top of the phone. Messages arrive, and I'll read each one. When the reply buttons appear, tap the reply a hero would send. When the meter says UH-OH... you know what to do.",
+        "This game is all about your uh-oh feeling. And the three hero steps. Feel it. Stop. Tell.",
+        "Out in the real world, a chat can start friendly and slowly turn icky. Your tummy notices before your brain does.",
+        "Here is what you do. Watch the meter at the top of the phone.",
+        "Messages arrive, and I'll read each one.",
+        "When the reply buttons appear, tap the reply a hero would send.",
+        "And when the meter says UH-OH... you know what to do.",
         "[warmly] Trust the feeling. Ready? Here comes the chat!"
       ],
-      "file": "/audio/voice/d6df395f49cea364.mp3"
+      "file": "/audio/voice/d8c69999b7c6647e.mp3"
     },
     {
-      "key": "6eaaa5c8cc345630",
+      "key": "ff870473c72b039c",
       "speaker": "layla",
-      "voice": "Sarah",
-      "text": "[proud] Chat over, and you did exactly what a hero does: felt the uh-oh, stopped, and told. [warmly] Out in the real world, you never need a reason you can explain. The feeling is enough, and a trusted grown-up takes it from there.",
+      "voice": "Emma (Kids Educator)",
+      "text": "[proud] Chat over. And you did exactly what a hero does. Felt the uh-oh. Stopped. Told. [warmly] Out in the real world, you never need a reason you can explain. The feeling is enough, and a trusted grown-up takes it from there.",
       "lines": [
-        "[proud] Chat over, and you did exactly what a hero does: felt the uh-oh, stopped, and told.",
+        "[proud] Chat over. And you did exactly what a hero does. Felt the uh-oh. Stopped. Told.",
         "[warmly] Out in the real world, you never need a reason you can explain. The feeling is enough, and a trusted grown-up takes it from there."
       ],
-      "file": "/audio/voice/6eaaa5c8cc345630.mp3"
+      "file": "/audio/voice/ff870473c72b039c.mp3"
     },
     {
-      "key": "4ea9dd2a9728f7b3",
+      "key": "93eb54e9f1145f50",
       "speaker": "layla",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "[excited] Feel it. Stop. Tell. That's the order, every single time. First you notice the uh-oh feeling. Then you stop chatting. Then you tell a trusted grown-up. You never need to explain why it felt wrong. [warmly] Three steps, and the Raccoon's chat goes nowhere. Brilliant!",
       "lines": [
         "[excited] Feel it. Stop. Tell. That's the order, every single time.",
@@ -26635,12 +26651,12 @@
         "You never need to explain why it felt wrong.",
         "[warmly] Three steps, and the Raccoon's chat goes nowhere. Brilliant!"
       ],
-      "file": "/audio/voice/4ea9dd2a9728f7b3.mp3"
+      "file": "/audio/voice/93eb54e9f1145f50.mp3"
     },
     {
-      "key": "9559fe70b8859c5c",
+      "key": "d802c2663a281507",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "[excited] That's all FIVE powers, Cyber Hero! You see through masks, spot fake profiles, catch red flags, hold the two never-rules... [whispers] and you trust your uh-oh feeling. [warmly] Now, a real detective pins every clue to the case board before closing a case. One quick final drill to make it all stick, then the Raccoon gets what's coming. Come on!",
       "lines": [
         "[excited] That's all FIVE powers, Cyber Hero!",
@@ -26649,110 +26665,115 @@
         "[warmly] Now, a real detective pins every clue to the case board before closing a case.",
         "One quick final drill to make it all stick, then the Raccoon gets what's coming. Come on!"
       ],
-      "file": "/audio/voice/9559fe70b8859c5c.mp3"
+      "file": "/audio/voice/d802c2663a281507.mp3"
     },
     {
-      "key": "bc2abf72c78bd282",
+      "key": "4327de9cc1ac161b",
       "speaker": "layla",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "[excited] Final drill, Cyber Hero! Every clue you found this week goes on the Case Board. This drill mixes up all five powers you learned about fake friends. Out in the real world, a detective checks every clue before closing a case, and so do you. Here is what you do. The tray below the board holds clue cards. Some are real clues from this week. Some are the Raccoon's decoys. Tap a real clue and it pins to the board. Tap a decoy and I'll explain why it stays in the tray. [warmly] Five pins closes the case. Ready? Let's pin!",
       "lines": [
         "[excited] Final drill, Cyber Hero! Every clue you found this week goes on the Case Board.",
         "This drill mixes up all five powers you learned about fake friends.",
         "Out in the real world, a detective checks every clue before closing a case, and so do you.",
-        "Here is what you do. The tray below the board holds clue cards. Some are real clues from this week. Some are the Raccoon's decoys. Tap a real clue and it pins to the board. Tap a decoy and I'll explain why it stays in the tray.",
+        "Here is what you do. The tray below the board holds clue cards.",
+        "Some are real clues from this week. Some are the Raccoon's decoys.",
+        "Tap a real clue and it pins to the board.",
+        "Tap a decoy and I'll explain why it stays in the tray.",
         "[warmly] Five pins closes the case. Ready? Let's pin!"
       ],
-      "file": "/audio/voice/bc2abf72c78bd282.mp3"
+      "file": "/audio/voice/4327de9cc1ac161b.mp3"
     },
     {
-      "key": "cb973395f1268769",
+      "key": "05799f23e8f5c38f",
       "speaker": "layla",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Tap a clue card that's TRUE. Real clues get pinned, decoys stay in the tray.",
       "lines": [
         "Tap a clue card that's TRUE. Real clues get pinned, decoys stay in the tray."
       ],
-      "file": "/audio/voice/cb973395f1268769.mp3"
+      "file": "/audio/voice/05799f23e8f5c38f.mp3"
     },
     {
-      "key": "cac9e66978e3e9bf",
+      "key": "54306de78852cefd",
       "speaker": "adam",
-      "voice": "Sarah",
-      "text": "[proud] Case closed! Every real clue pinned, every decoy left behind. [warmly] You see through masks, check the clues, flag the asks, hold the never-rules and trust your tummy. The Raccoon's disguise kit is officially useless. Time for the final test!",
+      "voice": "Emma (Kids Educator)",
+      "text": "[proud] Case closed! Every real clue pinned, every decoy left behind. [warmly] You see through masks. You check the clues. You flag the asks. You hold the never-rules, and you trust your tummy. The Raccoon's disguise kit is officially useless. Time for the final test!",
       "lines": [
         "[proud] Case closed! Every real clue pinned, every decoy left behind.",
-        "[warmly] You see through masks, check the clues, flag the asks, hold the never-rules and trust your tummy. The Raccoon's disguise kit is officially useless. Time for the final test!"
+        "[warmly] You see through masks. You check the clues. You flag the asks.",
+        "You hold the never-rules, and you trust your tummy.",
+        "The Raccoon's disguise kit is officially useless. Time for the final test!"
       ],
-      "file": "/audio/voice/cac9e66978e3e9bf.mp3"
+      "file": "/audio/voice/54306de78852cefd.mp3"
     },
     {
-      "key": "9e712cf98c0994eb",
+      "key": "9337b3a8af24c47b",
       "speaker": "layla",
-      "voice": "Sarah",
-      "text": "[excited] Look at EVERYTHING you mastered this week! You see through every disguise, check every profile, catch every red flag, hold the two never-rules... [laughs] and your uh-oh feeling is officially unbeatable! [excited] The Raccoon's mask fell right off. Time for stickers!",
+      "voice": "Emma (Kids Educator)",
+      "text": "[excited] Look at EVERYTHING you mastered this week! You see through every disguise. You check every profile. You catch every red flag. You hold the two never-rules... [laughs] and your uh-oh feeling is officially unbeatable! [excited] The Raccoon's mask fell right off. Time for stickers!",
       "lines": [
         "[excited] Look at EVERYTHING you mastered this week!",
-        "You see through every disguise, check every profile, catch every red flag, hold the two never-rules...",
+        "You see through every disguise. You check every profile. You catch every red flag. You hold the two never-rules...",
         "[laughs] and your uh-oh feeling is officially unbeatable!",
         "[excited] The Raccoon's mask fell right off. Time for stickers!"
       ],
-      "file": "/audio/voice/9e712cf98c0994eb.mp3"
+      "file": "/audio/voice/9337b3a8af24c47b.mp3"
     },
     {
-      "key": "7f9176e7dd690d31",
+      "key": "2fb5fd8ce5feaa81",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Is that true?",
       "lines": [
         "Is that true?"
       ],
-      "file": "/audio/voice/7f9176e7dd690d31.mp3"
+      "file": "/audio/voice/2fb5fd8ce5feaa81.mp3"
     },
     {
-      "key": "ad2c48fcc23b9083",
+      "key": "9ed3f1e9ac24492f",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Quick! Which one is FAKE?",
       "lines": [
         "Quick! Which one is FAKE?"
       ],
-      "file": "/audio/voice/ad2c48fcc23b9083.mp3"
+      "file": "/audio/voice/9ed3f1e9ac24492f.mp3"
     },
     {
-      "key": "12fff9ae34e90d5a",
+      "key": "4696538ec75ea5df",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Which of these is a RED FLAG?",
       "lines": [
         "Which of these is a RED FLAG?"
       ],
-      "file": "/audio/voice/12fff9ae34e90d5a.mp3"
+      "file": "/audio/voice/4696538ec75ea5df.mp3"
     },
     {
-      "key": "d96ec08b5ee5613d",
+      "key": "daa4292638ebc118",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Never meet. Never blank.",
       "lines": [
         "Never meet. Never blank."
       ],
-      "file": "/audio/voice/d96ec08b5ee5613d.mp3"
+      "file": "/audio/voice/daa4292638ebc118.mp3"
     },
     {
-      "key": "df62f32051f4fb72",
+      "key": "c0f8cfd5b14cdcc7",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "A chat feels icky. Tap the hero steps IN ORDER:",
       "lines": [
         "A chat feels icky. Tap the hero steps IN ORDER:"
       ],
-      "file": "/audio/voice/df62f32051f4fb72.mp3"
+      "file": "/audio/voice/c0f8cfd5b14cdcc7.mp3"
     },
     {
-      "key": "616b2553158eb6b7",
+      "key": "a66e0c7358c867e9",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "A new player's profile shows a smiling kid photo, says AGE 9, and is called SkateKid_Riley. What do those three things prove about who's typing? Is it option A... Nothing, all three can be faked. Option B... The photo proves it's a kid at least. Or is it option C... The age proves it. Games check ages. So, what do you think?",
       "lines": [
         "A new player's profile shows a smiling kid photo, says AGE 9, and is called SkateKid_Riley. What do those three things prove about who's typing?",
@@ -26764,12 +26785,12 @@
         "The age proves it. Games check ages.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/616b2553158eb6b7.mp3"
+      "file": "/audio/voice/a66e0c7358c867e9.mp3"
     },
     {
-      "key": "061a0ed1812c9e85",
+      "key": "e6366957197550d0",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Two profiles sent Adam friend requests, and he's checking them like a detective. Which clue points to a FAKE? Is it option A... The account has a cat in its picture. Option B... The account loves the same game as him. Or is it option C... The account was made yesterday. So, what do you think?",
       "lines": [
         "Two profiles sent Adam friend requests, and he's checking them like a detective. Which clue points to a FAKE?",
@@ -26781,12 +26802,12 @@
         "The account was made yesterday.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/061a0ed1812c9e85.mp3"
+      "file": "/audio/voice/e6366957197550d0.mp3"
     },
     {
-      "key": "6499da72c1ffba91",
+      "key": "ec90858a000f63fb",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Adam's team chat is buzzing after a big win. Which message should set off his red-flag radar? Is it option A... Same team again tomorrow after school? Option B... This chat is our little secret, delete it after reading. Or is it option C... That last goal was absolutely incredible. So, what do you think?",
       "lines": [
         "Adam's team chat is buzzing after a big win. Which message should set off his red-flag radar?",
@@ -26798,12 +26819,12 @@
         "That last goal was absolutely incredible.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/6499da72c1ffba91.mp3"
+      "file": "/audio/voice/ec90858a000f63fb.mp3"
     },
     {
-      "key": "6a2cff48e615aa40",
+      "key": "f51b835c0e75b41e",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "An online teammate says: 'Meet me at the library tomorrow, it's the safest place in town!' The library really is safe. So what's the answer? Is it option A... Still no, online-only friends are never met. Option B... Yes, libraries are full of grown-ups. Or is it option C... Yes, but only for five minutes. So, what do you think?",
       "lines": [
         "An online teammate says: 'Meet me at the library tomorrow, it's the safest place in town!' The library really is safe. So what's the answer?",
@@ -26815,12 +26836,12 @@
         "Yes, but only for five minutes.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/6a2cff48e615aa40.mp3"
+      "file": "/audio/voice/f51b835c0e75b41e.mp3"
     },
     {
-      "key": "bca80d3b90e9a393",
+      "key": "390b451898f799ad",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Mid-chat, Layla's tummy suddenly feels weird and uh-oh, but she can't explain WHY. What does a hero do with a feeling like that? Is it option A... Ignore it until she can explain it properly. Option B... Keep chatting, just a bit more carefully. Or is it option C... Trust it: stop chatting and tell a trusted grown-up. So, what do you think?",
       "lines": [
         "Mid-chat, Layla's tummy suddenly feels weird and uh-oh, but she can't explain WHY. What does a hero do with a feeling like that?",
@@ -26832,1337 +26853,1337 @@
         "Trust it: stop chatting and tell a trusted grown-up.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/bca80d3b90e9a393.mp3"
+      "file": "/audio/voice/390b451898f799ad.mp3"
     },
     {
-      "key": "a45b0ad7af4d1360",
+      "key": "b0a44180c9c2d01f",
       "speaker": "adam",
-      "voice": "Sarah",
-      "text": "That's right! A photo can be copied from anywhere, an age takes one second to type, and names get picked on purpose. None of them shows who's really at the keyboard, so the hero rules stay on.",
+      "voice": "Emma (Kids Educator)",
+      "text": "That's right! A photo can be copied from anywhere. An age takes one second to type. Names get picked on purpose. None of them shows who is really at the keyboard, so the hero rules stay on.",
       "lines": [
         "That's right!",
-        "A photo can be copied from anywhere, an age takes one second to type, and names get picked on purpose. None of them shows who's really at the keyboard, so the hero rules stay on."
+        "A photo can be copied from anywhere. An age takes one second to type. Names get picked on purpose. None of them shows who is really at the keyboard, so the hero rules stay on."
       ],
-      "file": "/audio/voice/a45b0ad7af4d1360.mp3"
+      "file": "/audio/voice/b0a44180c9c2d01f.mp3"
     },
     {
-      "key": "829abd648af934a3",
+      "key": "d3f1e0b9f2eb0ff4",
       "speaker": "adam",
-      "voice": "Sarah",
-      "text": "Not quite. A photo can be copied from anywhere, an age takes one second to type, and names get picked on purpose. None of them shows who's really at the keyboard, so the hero rules stay on.",
+      "voice": "Emma (Kids Educator)",
+      "text": "Not quite. A photo can be copied from anywhere. An age takes one second to type. Names get picked on purpose. None of them shows who is really at the keyboard, so the hero rules stay on.",
       "lines": [
         "Not quite.",
-        "A photo can be copied from anywhere, an age takes one second to type, and names get picked on purpose. None of them shows who's really at the keyboard, so the hero rules stay on."
+        "A photo can be copied from anywhere. An age takes one second to type. Names get picked on purpose. None of them shows who is really at the keyboard, so the hero rules stay on."
       ],
-      "file": "/audio/voice/829abd648af934a3.mp3"
+      "file": "/audio/voice/d3f1e0b9f2eb0ff4.mp3"
     },
     {
-      "key": "9d5484c8cc6d8e50",
+      "key": "838f46cdbcc61857",
       "speaker": "adam",
-      "voice": "Sarah",
-      "text": "That's right! Liking your game and having a cat picture are perfectly normal. A brand-new account that comes rushing at you is the classic fake-profile clue, so check everything else extra carefully.",
+      "voice": "Emma (Kids Educator)",
+      "text": "That's right! Liking your game and having a cat picture are perfectly normal. A brand-new account that comes rushing at you is the classic fake-profile clue. So check everything else extra carefully.",
       "lines": [
         "That's right!",
-        "Liking your game and having a cat picture are perfectly normal. A brand-new account that comes rushing at you is the classic fake-profile clue, so check everything else extra carefully."
+        "Liking your game and having a cat picture are perfectly normal. A brand-new account that comes rushing at you is the classic fake-profile clue. So check everything else extra carefully."
       ],
-      "file": "/audio/voice/9d5484c8cc6d8e50.mp3"
+      "file": "/audio/voice/838f46cdbcc61857.mp3"
     },
     {
-      "key": "0d6270697c7b75bc",
+      "key": "29b8f7929d794258",
       "speaker": "adam",
-      "voice": "Sarah",
-      "text": "Not quite. Liking your game and having a cat picture are perfectly normal. A brand-new account that comes rushing at you is the classic fake-profile clue, so check everything else extra carefully.",
+      "voice": "Emma (Kids Educator)",
+      "text": "Not quite. Liking your game and having a cat picture are perfectly normal. A brand-new account that comes rushing at you is the classic fake-profile clue. So check everything else extra carefully.",
       "lines": [
         "Not quite.",
-        "Liking your game and having a cat picture are perfectly normal. A brand-new account that comes rushing at you is the classic fake-profile clue, so check everything else extra carefully."
+        "Liking your game and having a cat picture are perfectly normal. A brand-new account that comes rushing at you is the classic fake-profile clue. So check everything else extra carefully."
       ],
-      "file": "/audio/voice/0d6270697c7b75bc.mp3"
+      "file": "/audio/voice/29b8f7929d794258.mp3"
     },
     {
-      "key": "1ce369f55d699b6a",
+      "key": "8c26ce684a3fd64a",
       "speaker": "adam",
-      "voice": "Sarah",
-      "text": "That's right! Compliments and rematch plans are friendly game talk. Any ask to keep secrets or delete chats is a red flag: safe friends never need hiding from anyone.",
+      "voice": "Emma (Kids Educator)",
+      "text": "That's right! Compliments and rematch plans are friendly game talk. Any ask to keep secrets or delete chats is a red flag. Safe friends never need hiding from anyone.",
       "lines": [
         "That's right!",
-        "Compliments and rematch plans are friendly game talk. Any ask to keep secrets or delete chats is a red flag: safe friends never need hiding from anyone."
+        "Compliments and rematch plans are friendly game talk. Any ask to keep secrets or delete chats is a red flag. Safe friends never need hiding from anyone."
       ],
-      "file": "/audio/voice/1ce369f55d699b6a.mp3"
+      "file": "/audio/voice/8c26ce684a3fd64a.mp3"
     },
     {
-      "key": "54992e8da986fd24",
+      "key": "686d2fe274ce93bc",
       "speaker": "adam",
-      "voice": "Sarah",
-      "text": "Not quite. Compliments and rematch plans are friendly game talk. Any ask to keep secrets or delete chats is a red flag: safe friends never need hiding from anyone.",
+      "voice": "Emma (Kids Educator)",
+      "text": "Not quite. Compliments and rematch plans are friendly game talk. Any ask to keep secrets or delete chats is a red flag. Safe friends never need hiding from anyone.",
       "lines": [
         "Not quite.",
-        "Compliments and rematch plans are friendly game talk. Any ask to keep secrets or delete chats is a red flag: safe friends never need hiding from anyone."
+        "Compliments and rematch plans are friendly game talk. Any ask to keep secrets or delete chats is a red flag. Safe friends never need hiding from anyone."
       ],
-      "file": "/audio/voice/54992e8da986fd24.mp3"
+      "file": "/audio/voice/686d2fe274ce93bc.mp3"
     },
     {
-      "key": "728b3f8a59b965e3",
+      "key": "224b9ddcb2b05865",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "That's right! Safe building, busy park, five little minutes, none of it changes rule one. Never meet someone you only know online, and tell a trusted grown-up that someone asked.",
       "lines": [
         "That's right!",
         "Safe building, busy park, five little minutes, none of it changes rule one. Never meet someone you only know online, and tell a trusted grown-up that someone asked."
       ],
-      "file": "/audio/voice/728b3f8a59b965e3.mp3"
+      "file": "/audio/voice/224b9ddcb2b05865.mp3"
     },
     {
-      "key": "2e90d5450a40108d",
+      "key": "2109e9b30550bf9a",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Not quite. Safe building, busy park, five little minutes, none of it changes rule one. Never meet someone you only know online, and tell a trusted grown-up that someone asked.",
       "lines": [
         "Not quite.",
         "Safe building, busy park, five little minutes, none of it changes rule one. Never meet someone you only know online, and tell a trusted grown-up that someone asked."
       ],
-      "file": "/audio/voice/2e90d5450a40108d.mp3"
+      "file": "/audio/voice/2109e9b30550bf9a.mp3"
     },
     {
-      "key": "6b5171b84d59db4c",
+      "key": "2469b2516bf5ab42",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "That's right! Heroes never need a reason they can put into words. A weird, icky, uh-oh feeling is the hero sense working: stop the chat and tell a trusted grown-up.",
       "lines": [
         "That's right!",
         "Heroes never need a reason they can put into words. A weird, icky, uh-oh feeling is the hero sense working: stop the chat and tell a trusted grown-up."
       ],
-      "file": "/audio/voice/6b5171b84d59db4c.mp3"
+      "file": "/audio/voice/2469b2516bf5ab42.mp3"
     },
     {
-      "key": "e2acf062468abfc0",
+      "key": "8bef6a9b47d97ae6",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Not quite. Heroes never need a reason they can put into words. A weird, icky, uh-oh feeling is the hero sense working: stop the chat and tell a trusted grown-up.",
       "lines": [
         "Not quite.",
         "Heroes never need a reason they can put into words. A weird, icky, uh-oh feeling is the hero sense working: stop the chat and tell a trusted grown-up."
       ],
-      "file": "/audio/voice/e2acf062468abfc0.mp3"
+      "file": "/audio/voice/8bef6a9b47d97ae6.mp3"
     },
     {
-      "key": "ee83d411af690359",
+      "key": "08412b58f931f287",
       "speaker": "adam",
-      "voice": "Sarah",
-      "text": "A photo can be copied and an age takes one second to type; neither shows who is really typing.",
+      "voice": "Emma (Kids Educator)",
+      "text": "A photo can be copied. An age takes one second to type. Neither shows who is really typing.",
       "lines": [
-        "A photo can be copied and an age takes one second to type; neither shows who is really typing."
+        "A photo can be copied. An age takes one second to type. Neither shows who is really typing."
       ],
-      "file": "/audio/voice/ee83d411af690359.mp3"
+      "file": "/audio/voice/08412b58f931f287.mp3"
     },
     {
-      "key": "a1e6f7507c9d9521",
+      "key": "47b4b2ebeff671c9",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Think about the masks you just peeked behind...",
       "lines": [
         "Think about the masks you just peeked behind..."
       ],
-      "file": "/audio/voice/a1e6f7507c9d9521.mp3"
+      "file": "/audio/voice/47b4b2ebeff671c9.mp3"
     },
     {
-      "key": "2f323bcc38877e73",
+      "key": "fab86b5379cd6451",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Your cousin is someone you know in real life; that's real proof, not fake.",
       "lines": [
         "Your cousin is someone you know in real life; that's real proof, not fake."
       ],
-      "file": "/audio/voice/2f323bcc38877e73.mp3"
+      "file": "/audio/voice/fab86b5379cd6451.mp3"
     },
     {
-      "key": "813a3e3261c929f3",
+      "key": "aa704fa1189c6927",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "A classmate you see at school is real proof; you know them offline.",
       "lines": [
         "A classmate you see at school is real proof; you know them offline."
       ],
-      "file": "/audio/voice/813a3e3261c929f3.mp3"
+      "file": "/audio/voice/aa704fa1189c6927.mp3"
     },
     {
-      "key": "205c7b737c0bbe9b",
+      "key": "114ac1c504af317e",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Game talk is fine; a rematch invite doesn't pull you anywhere secret.",
       "lines": [
         "Game talk is fine; a rematch invite doesn't pull you anywhere secret."
       ],
-      "file": "/audio/voice/205c7b737c0bbe9b.mp3"
+      "file": "/audio/voice/114ac1c504af317e.mp3"
     },
     {
-      "key": "e77ea87963ede366",
+      "key": "89eec9ca7559f42d",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "A favorite color is safe small talk; it isn't private and it isn't a secret.",
       "lines": [
         "A favorite color is safe small talk; it isn't private and it isn't a secret."
       ],
-      "file": "/audio/voice/e77ea87963ede366.mp3"
+      "file": "/audio/voice/89eec9ca7559f42d.mp3"
     },
     {
-      "key": "8065e20214e745ce",
+      "key": "1bb708bef3bce974",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "A compliment about the game is just game talk; no secret, no pressure.",
       "lines": [
         "A compliment about the game is just game talk; no secret, no pressure."
       ],
-      "file": "/audio/voice/8065e20214e745ce.mp3"
+      "file": "/audio/voice/1bb708bef3bce974.mp3"
     },
     {
-      "key": "d8797c0102bbe66d",
+      "key": "65af4aad881f50e4",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Meeting up with an online-only friend is rule one, and it never bends. No park, no meet-up, and a grown-up gets told.",
       "lines": [
         "Meeting up with an online-only friend is rule one, and it never bends. No park, no meet-up, and a grown-up gets told."
       ],
-      "file": "/audio/voice/d8797c0102bbe66d.mp3"
+      "file": "/audio/voice/65af4aad881f50e4.mp3"
     },
     {
-      "key": "2713e6d59b10e781",
+      "key": "53d5c2d0961a51b1",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Rule two: never send photos of yourself, not one, not to check anything. Your picture stays with you.",
       "lines": [
         "Rule two: never send photos of yourself, not one, not to check anything. Your picture stays with you."
       ],
-      "file": "/audio/voice/2713e6d59b10e781.mp3"
+      "file": "/audio/voice/53d5c2d0961a51b1.mp3"
     },
     {
-      "key": "ba2e58774862f7de",
+      "key": "d86219ae3985874e",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "A party with a mum there is still a meet-up with someone you only know online. You can't see who is really typing, so the answer stays no.",
       "lines": [
         "A party with a mum there is still a meet-up with someone you only know online. You can't see who is really typing, so the answer stays no."
       ],
-      "file": "/audio/voice/ba2e58774862f7de.mp3"
+      "file": "/audio/voice/d86219ae3985874e.mp3"
     },
     {
-      "key": "fa1e2e0d5d16a1a0",
+      "key": "6ce930d02ed9f752",
       "speaker": "adam",
-      "voice": "Sarah",
-      "text": "Their photo proves nothing, remember the mask peek, and an old photo of you is still a photo of you. Never send, not even for fair.",
+      "voice": "Emma (Kids Educator)",
+      "text": "Their photo proves nothing. Remember the mask peek. And an old photo of you is still a photo of you. Never send, not even for fair.",
       "lines": [
-        "Their photo proves nothing, remember the mask peek, and an old photo of you is still a photo of you. Never send, not even for fair."
+        "Their photo proves nothing. Remember the mask peek. And an old photo of you is still a photo of you. Never send, not even for fair."
       ],
-      "file": "/audio/voice/fa1e2e0d5d16a1a0.mp3"
+      "file": "/audio/voice/6ce930d02ed9f752.mp3"
     },
     {
-      "key": "01ae4ab751de0e9f",
+      "key": "20cdbb2fb090b193",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "An arcade trip is a meet-up AND a where-you-are grab in one. Never meet, never share where you are, and a grown-up gets told.",
       "lines": [
         "An arcade trip is a meet-up AND a where-you-are grab in one. Never meet, never share where you are, and a grown-up gets told."
       ],
-      "file": "/audio/voice/01ae4ab751de0e9f.mp3"
+      "file": "/audio/voice/20cdbb2fb090b193.mp3"
     },
     {
-      "key": "64b3008ab1b24b41",
+      "key": "621a39061c746209",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Playing the game online is fine; the rule is about something of yours leaving your phone.",
       "lines": [
         "Playing the game online is fine; the rule is about something of yours leaving your phone."
       ],
-      "file": "/audio/voice/64b3008ab1b24b41.mp3"
+      "file": "/audio/voice/621a39061c746209.mp3"
     },
     {
-      "key": "736837231656275b",
+      "key": "6903857870958d17",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Smiling is fine; the rule is about pictures of you leaving your hands.",
       "lines": [
         "Smiling is fine; the rule is about pictures of you leaving your hands."
       ],
-      "file": "/audio/voice/736837231656275b.mp3"
+      "file": "/audio/voice/6903857870958d17.mp3"
     },
     {
-      "key": "1f7ed7d3be9b5ca1",
+      "key": "d9d4738ab99c1808",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Winning is fine; the rule is about what you never hand over.",
       "lines": [
         "Winning is fine; the rule is about what you never hand over."
       ],
-      "file": "/audio/voice/1f7ed7d3be9b5ca1.mp3"
+      "file": "/audio/voice/d9d4738ab99c1808.mp3"
     },
     {
-      "key": "c6f557ca2a845acb",
+      "key": "fbe4936165ece0b5",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Photos of you... what's the rule?",
       "lines": [
         "Photos of you... what's the rule?"
       ],
-      "file": "/audio/voice/c6f557ca2a845acb.mp3"
+      "file": "/audio/voice/fbe4936165ece0b5.mp3"
     },
     {
-      "key": "0ddb0e4ccccb2ecd",
+      "key": "70d19982bdbfab42",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "What comes FIRST: the feeling, the stopping, or the telling?",
       "lines": [
         "What comes FIRST: the feeling, the stopping, or the telling?"
       ],
-      "file": "/audio/voice/0ddb0e4ccccb2ecd.mp3"
+      "file": "/audio/voice/70d19982bdbfab42.mp3"
     },
     {
-      "key": "164f04cc944a01ee",
+      "key": "5fe154ea386f5646",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "A copied photo looks exactly like a real one. It can't show you who's at the keyboard, so it proves nothing.",
       "lines": [
         "A copied photo looks exactly like a real one. It can't show you who's at the keyboard, so it proves nothing."
       ],
-      "file": "/audio/voice/164f04cc944a01ee.mp3"
+      "file": "/audio/voice/5fe154ea386f5646.mp3"
     },
     {
-      "key": "6dcdf62924078562",
+      "key": "82a3ec5b538cf650",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "You know Maya offline, in real life. Knowing someone in the real world is the proof that actually counts.",
       "lines": [
         "You know Maya offline, in real life. Knowing someone in the real world is the proof that actually counts."
       ],
-      "file": "/audio/voice/6dcdf62924078562.mp3"
+      "file": "/audio/voice/82a3ec5b538cf650.mp3"
     },
     {
-      "key": "253d07dd58c097af",
+      "key": "a9fedf9de00c0e2f",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "An age is just typed. A grown-up can type nine as easily as you can, so the age proves nothing.",
       "lines": [
         "An age is just typed. A grown-up can type nine as easily as you can, so the age proves nothing."
       ],
-      "file": "/audio/voice/253d07dd58c097af.mp3"
+      "file": "/audio/voice/a9fedf9de00c0e2f.mp3"
     },
     {
-      "key": "28771e170af3d7fc",
+      "key": "22a75fa6683e82e8",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Names are chosen on purpose. A kid-sounding name is the easiest mask of all, so it proves nothing.",
       "lines": [
         "Names are chosen on purpose. A kid-sounding name is the easiest mask of all, so it proves nothing."
       ],
-      "file": "/audio/voice/28771e170af3d7fc.mp3"
+      "file": "/audio/voice/22a75fa6683e82e8.mp3"
     },
     {
-      "key": "3f379fa8b90bd969",
+      "key": "935cc13012c503c6",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "You sat next to Sam today. Someone you know in real life is real proof, the only kind there is.",
       "lines": [
         "You sat next to Sam today. Someone you know in real life is real proof, the only kind there is."
       ],
-      "file": "/audio/voice/3f379fa8b90bd969.mp3"
+      "file": "/audio/voice/935cc13012c503c6.mp3"
     },
     {
-      "key": "722b07bbee8cb9ce",
+      "key": "5adbc360c559d1be",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Tricksters do their homework. Cartoon facts can be learned by anyone, so knowing kid stuff proves nothing.",
       "lines": [
         "Tricksters do their homework. Cartoon facts can be learned by anyone, so knowing kid stuff proves nothing."
       ],
-      "file": "/audio/voice/722b07bbee8cb9ce.mp3"
+      "file": "/audio/voice/5adbc360c559d1be.mp3"
     },
     {
-      "key": "2b60913295335094",
+      "key": "d8e8bd6efa941959",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Never meet up with someone you only know online, not even at a park you know. A clear NO and a grown-up who knows is the hero reply.",
       "lines": [
         "Never meet up with someone you only know online, not even at a park you know. A clear NO and a grown-up who knows is the hero reply."
       ],
-      "file": "/audio/voice/2b60913295335094.mp3"
+      "file": "/audio/voice/d8e8bd6efa941959.mp3"
     },
     {
-      "key": "062445eb225322c3",
+      "key": "ab9ecdc9655da6ea",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "There's no such thing as just one photo. Never send photos of yourself, and their photo proves nothing either. Rule two, zero exceptions.",
       "lines": [
         "There's no such thing as just one photo. Never send photos of yourself, and their photo proves nothing either. Rule two, zero exceptions."
       ],
-      "file": "/audio/voice/062445eb225322c3.mp3"
+      "file": "/audio/voice/ab9ecdc9655da6ea.mp3"
     },
     {
-      "key": "e9356432e1e45ea0",
+      "key": "4181596a1350ae16",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Somebody's mum being there is still just words on a screen. Never meet someone you only know online, and tell a trusted grown-up they asked.",
       "lines": [
         "Somebody's mum being there is still just words on a screen. Never meet someone you only know online, and tell a trusted grown-up they asked."
       ],
-      "file": "/audio/voice/e9356432e1e45ea0.mp3"
+      "file": "/audio/voice/4181596a1350ae16.mp3"
     },
     {
-      "key": "3da49247a12879dd",
+      "key": "c0c4a09485819d82",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "That swap is a trick. Their photo could be anyone's, and yours stays with you. Never send photos of yourself, no swaps.",
       "lines": [
         "That swap is a trick. Their photo could be anyone's, and yours stays with you. Never send photos of yourself, no swaps."
       ],
-      "file": "/audio/voice/3da49247a12879dd.mp3"
+      "file": "/audio/voice/c0c4a09485819d82.mp3"
     },
     {
-      "key": "eec92dd7f3bb2a55",
+      "key": "72b29b364144f487",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Free games are the bait. A pick-up means a meet-up and telling a stranger where to find you. Never meet, never share where you are, tell a grown-up.",
       "lines": [
         "Free games are the bait. A pick-up means a meet-up and telling a stranger where to find you. Never meet, never share where you are, tell a grown-up."
       ],
-      "file": "/audio/voice/eec92dd7f3bb2a55.mp3"
+      "file": "/audio/voice/72b29b364144f487.mp3"
     },
     {
-      "key": "6c7094883fed5ca4",
+      "key": "a3ed2939893e05e8",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Pinned! You can't see who's typing, so a photo, an age or a name proves nothing.",
       "lines": [
         "Pinned! You can't see who's typing, so a photo, an age or a name proves nothing."
       ],
-      "file": "/audio/voice/6c7094883fed5ca4.mp3"
+      "file": "/audio/voice/a3ed2939893e05e8.mp3"
     },
     {
-      "key": "90e117d136d87402",
+      "key": "c9feda40716d3dea",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Decoy! A photo can be copied from anywhere, so a kid photo proves nothing about who's typing.",
       "lines": [
         "Decoy! A photo can be copied from anywhere, so a kid photo proves nothing about who's typing."
       ],
-      "file": "/audio/voice/90e117d136d87402.mp3"
+      "file": "/audio/voice/c9feda40716d3dea.mp3"
     },
     {
-      "key": "9b8837f32d29f823",
+      "key": "32ed02819ace3064",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Pinned! A brand-new account with no friends you know is the classic fake-profile clue.",
       "lines": [
         "Pinned! A brand-new account with no friends you know is the classic fake-profile clue."
       ],
-      "file": "/audio/voice/9b8837f32d29f823.mp3"
+      "file": "/audio/voice/32ed02819ace3064.mp3"
     },
     {
-      "key": "578849f39c674144",
+      "key": "e6a55accc0813a34",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Decoy! Best friends in five minutes is the oldest trick in the disguise kit. Real friendship grows slowly.",
       "lines": [
         "Decoy! Best friends in five minutes is the oldest trick in the disguise kit. Real friendship grows slowly."
       ],
-      "file": "/audio/voice/578849f39c674144.mp3"
+      "file": "/audio/voice/e6a55accc0813a34.mp3"
     },
     {
-      "key": "96b3a23f9510acce",
+      "key": "d6d1cd20355d564f",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Pinned! Secrets, photos and gifts for info are always red flags, and don't tell your parents is the biggest.",
       "lines": [
         "Pinned! Secrets, photos and gifts for info are always red flags, and don't tell your parents is the biggest."
       ],
-      "file": "/audio/voice/96b3a23f9510acce.mp3"
+      "file": "/audio/voice/d6d1cd20355d564f.mp3"
     },
     {
-      "key": "20ce298c1a6d62ae",
+      "key": "cb6c84cb481f358b",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Decoy! Meeting an online-only friend is never fine, busy place or not. Rule one never bends.",
       "lines": [
         "Decoy! Meeting an online-only friend is never fine, busy place or not. Rule one never bends."
       ],
-      "file": "/audio/voice/20ce298c1a6d62ae.mp3"
+      "file": "/audio/voice/cb6c84cb481f358b.mp3"
     },
     {
-      "key": "ab97665a9ace19e7",
+      "key": "2e001c069a29b052",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Pinned! Never meet an online-only friend, never send a photo of yourself. Zero exceptions.",
       "lines": [
         "Pinned! Never meet an online-only friend, never send a photo of yourself. Zero exceptions."
       ],
-      "file": "/audio/voice/ab97665a9ace19e7.mp3"
+      "file": "/audio/voice/2e001c069a29b052.mp3"
     },
     {
-      "key": "e56873921f0eae39",
+      "key": "287f030ff232c0b0",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Decoy! Safe friends never need secrets from your grown-ups. Don't tell your parents is the biggest red flag.",
       "lines": [
         "Decoy! Safe friends never need secrets from your grown-ups. Don't tell your parents is the biggest red flag."
       ],
-      "file": "/audio/voice/e56873921f0eae39.mp3"
+      "file": "/audio/voice/287f030ff232c0b0.mp3"
     },
     {
-      "key": "ea92eb836d155f70",
+      "key": "f297a78f94215481",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Pinned! An uh-oh feeling means stop chatting and tell a trusted grown-up, no reason needed.",
       "lines": [
         "Pinned! An uh-oh feeling means stop chatting and tell a trusted grown-up, no reason needed."
       ],
-      "file": "/audio/voice/ea92eb836d155f70.mp3"
+      "file": "/audio/voice/f297a78f94215481.mp3"
     },
     {
-      "key": "37e14e25fec5c606",
+      "key": "a706be9a9b5e98f6",
       "speaker": "adam",
-      "voice": "Sarah",
-      "text": "A photo can be copied from anywhere, an age takes one second to type, and names get picked on purpose. None of them shows who's really at the keyboard, so the hero rules stay on.",
+      "voice": "Emma (Kids Educator)",
+      "text": "A photo can be copied from anywhere. An age takes one second to type. Names get picked on purpose. None of them shows who is really at the keyboard, so the hero rules stay on.",
       "lines": [
-        "A photo can be copied from anywhere, an age takes one second to type, and names get picked on purpose. None of them shows who's really at the keyboard, so the hero rules stay on."
+        "A photo can be copied from anywhere. An age takes one second to type. Names get picked on purpose. None of them shows who is really at the keyboard, so the hero rules stay on."
       ],
-      "file": "/audio/voice/37e14e25fec5c606.mp3"
+      "file": "/audio/voice/a706be9a9b5e98f6.mp3"
     },
     {
-      "key": "8bca58c1dddbd558",
+      "key": "5529c257bb0849dd",
       "speaker": "adam",
-      "voice": "Sarah",
-      "text": "Liking your game and having a cat picture are perfectly normal. A brand-new account that comes rushing at you is the classic fake-profile clue, so check everything else extra carefully.",
+      "voice": "Emma (Kids Educator)",
+      "text": "Liking your game and having a cat picture are perfectly normal. A brand-new account that comes rushing at you is the classic fake-profile clue. So check everything else extra carefully.",
       "lines": [
-        "Liking your game and having a cat picture are perfectly normal. A brand-new account that comes rushing at you is the classic fake-profile clue, so check everything else extra carefully."
+        "Liking your game and having a cat picture are perfectly normal. A brand-new account that comes rushing at you is the classic fake-profile clue. So check everything else extra carefully."
       ],
-      "file": "/audio/voice/8bca58c1dddbd558.mp3"
+      "file": "/audio/voice/5529c257bb0849dd.mp3"
     },
     {
-      "key": "73d8d57bff1ad7d9",
+      "key": "142c3ad7213e06c0",
       "speaker": "adam",
-      "voice": "Sarah",
-      "text": "Compliments and rematch plans are friendly game talk. Any ask to keep secrets or delete chats is a red flag: safe friends never need hiding from anyone.",
+      "voice": "Emma (Kids Educator)",
+      "text": "Compliments and rematch plans are friendly game talk. Any ask to keep secrets or delete chats is a red flag. Safe friends never need hiding from anyone.",
       "lines": [
-        "Compliments and rematch plans are friendly game talk. Any ask to keep secrets or delete chats is a red flag: safe friends never need hiding from anyone."
+        "Compliments and rematch plans are friendly game talk. Any ask to keep secrets or delete chats is a red flag. Safe friends never need hiding from anyone."
       ],
-      "file": "/audio/voice/73d8d57bff1ad7d9.mp3"
+      "file": "/audio/voice/142c3ad7213e06c0.mp3"
     },
     {
-      "key": "d0cb022f0ffbd09e",
+      "key": "ba68e2bc5838b43a",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Safe building, busy park, five little minutes, none of it changes rule one. Never meet someone you only know online, and tell a trusted grown-up that someone asked.",
       "lines": [
         "Safe building, busy park, five little minutes, none of it changes rule one. Never meet someone you only know online, and tell a trusted grown-up that someone asked."
       ],
-      "file": "/audio/voice/d0cb022f0ffbd09e.mp3"
+      "file": "/audio/voice/ba68e2bc5838b43a.mp3"
     },
     {
-      "key": "a8c80ceedb23423a",
+      "key": "57c71f27bb7201bb",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Heroes never need a reason they can put into words. A weird, icky, uh-oh feeling is the hero sense working: stop the chat and tell a trusted grown-up.",
       "lines": [
         "Heroes never need a reason they can put into words. A weird, icky, uh-oh feeling is the hero sense working: stop the chat and tell a trusted grown-up."
       ],
-      "file": "/audio/voice/a8c80ceedb23423a.mp3"
+      "file": "/audio/voice/57c71f27bb7201bb.mp3"
     },
     {
-      "key": "6856792fc50df73a",
+      "key": "0df60824184ab38c",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Typing isn't proof - you can't see who's really at the keyboard.",
       "lines": [
         "Typing isn't proof - you can't see who's really at the keyboard."
       ],
-      "file": "/audio/voice/6856792fc50df73a.mp3"
+      "file": "/audio/voice/0df60824184ab38c.mp3"
     },
     {
-      "key": "1d90c1e9ddfce34d",
+      "key": "2048e85d4f40f3ec",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Rule one has zero exceptions: never meet online-only friends.",
       "lines": [
         "Rule one has zero exceptions: never meet online-only friends."
       ],
-      "file": "/audio/voice/1d90c1e9ddfce34d.mp3"
+      "file": "/audio/voice/2048e85d4f40f3ec.mp3"
     },
     {
-      "key": "fd5beeeb82137b37",
+      "key": "f8fed4483ee8cd30",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Safe friends never need secrets from your grown-ups.",
       "lines": [
         "Safe friends never need secrets from your grown-ups."
       ],
-      "file": "/audio/voice/fd5beeeb82137b37.mp3"
+      "file": "/audio/voice/f8fed4483ee8cd30.mp3"
     },
     {
-      "key": "c3baf38c5628bf62",
+      "key": "502eeeb924835308",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Real friendship grows slowly - 'best friends in five minutes' is a classic fake tell.",
       "lines": [
         "Real friendship grows slowly - 'best friends in five minutes' is a classic fake tell."
       ],
-      "file": "/audio/voice/c3baf38c5628bf62.mp3"
+      "file": "/audio/voice/502eeeb924835308.mp3"
     },
     {
-      "key": "49d984921e72e7e6",
+      "key": "2d7df7b8e720ec9a",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Rule two: never send photos of yourself. Their photo proves nothing either!",
       "lines": [
         "Rule two: never send photos of yourself. Their photo proves nothing either!"
       ],
-      "file": "/audio/voice/49d984921e72e7e6.mp3"
+      "file": "/audio/voice/2d7df7b8e720ec9a.mp3"
     },
     {
-      "key": "1a56fae656faacf1",
+      "key": "127d8b8f943e077a",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Feel it, stop, tell. You never need to explain WHY it feels wrong.",
       "lines": [
         "Feel it, stop, tell. You never need to explain WHY it feels wrong."
       ],
-      "file": "/audio/voice/1a56fae656faacf1.mp3"
+      "file": "/audio/voice/127d8b8f943e077a.mp3"
     },
     {
-      "key": "e44c282f5b72b49e",
+      "key": "14f4352d244bb692",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Nobody real trades gifts for your address. Refuse it AND tell a grown-up.",
       "lines": [
         "Nobody real trades gifts for your address. Refuse it AND tell a grown-up."
       ],
-      "file": "/audio/voice/e44c282f5b72b49e.mp3"
+      "file": "/audio/voice/14f4352d244bb692.mp3"
     },
     {
-      "key": "c25417cc0356f2ae",
+      "key": "eb77c99f5df4f02b",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Anyone who needs hiding from your parents is hiding something bad.",
       "lines": [
         "Anyone who needs hiding from your parents is hiding something bad."
       ],
-      "file": "/audio/voice/c25417cc0356f2ae.mp3"
+      "file": "/audio/voice/eb77c99f5df4f02b.mp3"
     },
     {
-      "key": "c138061f4e076d16",
+      "key": "3a97162f61719535",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "The disguise kit is useless against a hero who follows the rules no matter who's asking.",
       "lines": [
         "The disguise kit is useless against a hero who follows the rules no matter who's asking."
       ],
-      "file": "/audio/voice/c138061f4e076d16.mp3"
+      "file": "/audio/voice/3a97162f61719535.mp3"
     },
     {
-      "key": "75cb7dc992146121",
+      "key": "6885fbbe09e06bc0",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Look, here's my photo! See? I'm a kid just like you.",
       "lines": [
         "Look, here's my photo! See? I'm a kid just like you."
       ],
-      "file": "/audio/voice/75cb7dc992146121.mp3"
+      "file": "/audio/voice/6885fbbe09e06bc0.mp3"
     },
     {
-      "key": "e0b99915a7497788",
+      "key": "0eff4dbeb8f6b63e",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Hey, it's your cousin Maya! Grandma said to say hi.",
       "lines": [
         "Hey, it's your cousin Maya! Grandma said to say hi."
       ],
-      "file": "/audio/voice/e0b99915a7497788.mp3"
+      "file": "/audio/voice/0eff4dbeb8f6b63e.mp3"
     },
     {
-      "key": "c91fe5f5f43114ad",
+      "key": "f7e9a3d25192d845",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "I'm 9 too! Same age as you!",
       "lines": [
         "I'm 9 too! Same age as you!"
       ],
-      "file": "/audio/voice/c91fe5f5f43114ad.mp3"
+      "file": "/audio/voice/f7e9a3d25192d845.mp3"
     },
     {
-      "key": "969bde8aa7e4e46a",
+      "key": "df4d0088422b3ae7",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "My name's KidGamer99, so obviously I'm a kid!",
       "lines": [
         "My name's KidGamer99, so obviously I'm a kid!"
       ],
-      "file": "/audio/voice/969bde8aa7e4e46a.mp3"
+      "file": "/audio/voice/df4d0088422b3ae7.mp3"
     },
     {
-      "key": "1701182f3cc654b1",
+      "key": "280e46d484e25dbf",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "It's Sam from your class! I sat next to you at lunch today.",
       "lines": [
         "It's Sam from your class! I sat next to you at lunch today."
       ],
-      "file": "/audio/voice/1701182f3cc654b1.mp3"
+      "file": "/audio/voice/280e46d484e25dbf.mp3"
     },
     {
-      "key": "1ef54a453c80d46a",
+      "key": "8aea51770391186b",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Quiz me! I know every cartoon and every game. Only a real kid knows kid stuff!",
       "lines": [
         "Quiz me! I know every cartoon and every game. Only a real kid knows kid stuff!"
       ],
-      "file": "/audio/voice/1ef54a453c80d46a.mp3"
+      "file": "/audio/voice/8aea51770391186b.mp3"
     },
     {
-      "key": "86f16e1456592c05",
+      "key": "d1815c8231307cd2",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "A photo can be copied from anywhere on the internet. It shows a kid exists somewhere, not who is typing.",
       "lines": [
         "A photo can be copied from anywhere on the internet. It shows a kid exists somewhere, not who is typing."
       ],
-      "file": "/audio/voice/86f16e1456592c05.mp3"
+      "file": "/audio/voice/d1815c8231307cd2.mp3"
     },
     {
-      "key": "066c6e67b3efbfe4",
+      "key": "2655a3c9d2c728d5",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "You know your cousin in real life, you've sat at Grandma's table together. That is real proof of who is typing.",
       "lines": [
         "You know your cousin in real life, you've sat at Grandma's table together. That is real proof of who is typing."
       ],
-      "file": "/audio/voice/066c6e67b3efbfe4.mp3"
+      "file": "/audio/voice/2655a3c9d2c728d5.mp3"
     },
     {
-      "key": "8caed0e187021024",
+      "key": "462094d2195c1b08",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Typing a nine takes one second, and anyone can type any age. It proves nothing about who is typing.",
       "lines": [
         "Typing a nine takes one second, and anyone can type any age. It proves nothing about who is typing."
       ],
-      "file": "/audio/voice/8caed0e187021024.mp3"
+      "file": "/audio/voice/462094d2195c1b08.mp3"
     },
     {
-      "key": "691d3fb42dbb8cb6",
+      "key": "0a48c24fd8bd1552",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "A name is picked, not proved. Anyone can type kid into a name, so it says nothing about who is typing.",
       "lines": [
         "A name is picked, not proved. Anyone can type kid into a name, so it says nothing about who is typing."
       ],
-      "file": "/audio/voice/691d3fb42dbb8cb6.mp3"
+      "file": "/audio/voice/0a48c24fd8bd1552.mp3"
     },
     {
-      "key": "e872c8f1c1babf59",
+      "key": "3ac9e0691e4b8bce",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "You saw Sam at school today, in real life. That is real proof of who is typing.",
       "lines": [
         "You saw Sam at school today, in real life. That is real proof of who is typing."
       ],
-      "file": "/audio/voice/e872c8f1c1babf59.mp3"
+      "file": "/audio/voice/3ac9e0691e4b8bce.mp3"
     },
     {
-      "key": "5f975b59d0129c3c",
+      "key": "872ea563272e161c",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Anyone can watch cartoons and learn game names. Knowing kid stuff proves nothing about who is typing.",
       "lines": [
         "Anyone can watch cartoons and learn game names. Knowing kid stuff proves nothing about who is typing."
       ],
-      "file": "/audio/voice/5f975b59d0129c3c.mp3"
+      "file": "/audio/voice/872ea563272e161c.mp3"
     },
     {
-      "key": "06c23abbebaffcb0",
+      "key": "4610f84febfb69ba",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "SkaterKid Max says: Hey, you seem so cool. Best friends? When did it join? Yesterday. Who are its friends? None you know. How does it talk? Best friends already. What does it ask for? A private chat.",
       "lines": [
         "SkaterKid Max says: Hey, you seem so cool. Best friends? When did it join? Yesterday. Who are its friends? None you know. How does it talk? Best friends already. What does it ask for? A private chat."
       ],
-      "file": "/audio/voice/06c23abbebaffcb0.mp3"
+      "file": "/audio/voice/4610f84febfb69ba.mp3"
     },
     {
-      "key": "ae43732f8a5c1272",
+      "key": "db4b2b062439391f",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "DoodleDragon Sam says: Dragon drawings and Mega Blasters. Rematch Saturday? When did it join? Two years ago. Who are its friends? Kids from your class. How does it talk? Rematch on Saturday. What does it ask for? Nothing private.",
       "lines": [
         "DoodleDragon Sam says: Dragon drawings and Mega Blasters. Rematch Saturday? When did it join? Two years ago. Who are its friends? Kids from your class. How does it talk? Rematch on Saturday. What does it ask for? Nothing private."
       ],
-      "file": "/audio/voice/ae43732f8a5c1272.mp3"
+      "file": "/audio/voice/db4b2b062439391f.mp3"
     },
     {
-      "key": "9e0eca575a190537",
+      "key": "5508ed34ac5ae9b5",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "PuppyFan Ellie says: Hi! I love puppies. Which school do you go to? When did it join? Two days ago. Who are its friends? None you know. How does it talk? I love puppies, do you? What does it ask for? Which school you go to.",
       "lines": [
         "PuppyFan Ellie says: Hi! I love puppies. Which school do you go to? When did it join? Two days ago. Who are its friends? None you know. How does it talk? I love puppies, do you? What does it ask for? Which school you go to."
       ],
-      "file": "/audio/voice/9e0eca575a190537.mp3"
+      "file": "/audio/voice/5508ed34ac5ae9b5.mp3"
     },
     {
-      "key": "565e79bc52f472f1",
+      "key": "54ef8ad8d2225b91",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "RocketRacer Ben says: gg, good race! You won a prize! When did it join? Three years ago. Who are its friends? Two kids from football. How does it talk? gg, good race. What does it ask for? Your home address.",
       "lines": [
         "RocketRacer Ben says: gg, good race! You won a prize! When did it join? Three years ago. Who are its friends? Two kids from football. How does it talk? gg, good race. What does it ask for? Your home address."
       ],
-      "file": "/audio/voice/565e79bc52f472f1.mp3"
+      "file": "/audio/voice/54ef8ad8d2225b91.mp3"
     },
     {
-      "key": "a31179c839f5bc8f",
+      "key": "c1a259a778341181",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Brand new, no friends you know, best friends in five minutes, and a private chat. Four sneaky clues. That is the Raccoon in a costume!",
       "lines": [
         "Brand new, no friends you know, best friends in five minutes, and a private chat. Four sneaky clues. That is the Raccoon in a costume!"
       ],
-      "file": "/audio/voice/a31179c839f5bc8f.mp3"
+      "file": "/audio/voice/c1a259a778341181.mp3"
     },
     {
-      "key": "f672135faabd1f42",
+      "key": "c46cfcc0b71d87bf",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Two years old, your real classmates, normal game talk, and asks for nothing. Every clue checks out, so no stamps. A real friend!",
       "lines": [
         "Two years old, your real classmates, normal game talk, and asks for nothing. Every clue checks out, so no stamps. A real friend!"
       ],
-      "file": "/audio/voice/f672135faabd1f42.mp3"
+      "file": "/audio/voice/c46cfcc0b71d87bf.mp3"
     },
     {
-      "key": "25f85e03ff07afaa",
+      "key": "74a1ba4a3c56f2c4",
       "speaker": "adam",
-      "voice": "Sarah",
-      "text": "Two days old, nobody you know, and she asks which school. Puppy chat was fine, but asking where you are is the giveaway. Three sneaky clues means a fake.",
+      "voice": "Emma (Kids Educator)",
+      "text": "Two days old. Nobody you know. And she asks which school. Puppy chat was fine, but asking where you are is the giveaway. Three sneaky clues means a fake.",
       "lines": [
-        "Two days old, nobody you know, and she asks which school. Puppy chat was fine, but asking where you are is the giveaway. Three sneaky clues means a fake."
+        "Two days old. Nobody you know. And she asks which school. Puppy chat was fine, but asking where you are is the giveaway. Three sneaky clues means a fake."
       ],
-      "file": "/audio/voice/25f85e03ff07afaa.mp3"
+      "file": "/audio/voice/74a1ba4a3c56f2c4.mp3"
     },
     {
-      "key": "e76511331162a729",
+      "key": "bc179372a4266ae6",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Three clues looked fine, but nobody online ever needs your home address. One sneaky clue is enough. Say no and tell a grown-up.",
       "lines": [
         "Three clues looked fine, but nobody online ever needs your home address. One sneaky clue is enough. Say no and tell a grown-up."
       ],
-      "file": "/audio/voice/e76511331162a729.mp3"
+      "file": "/audio/voice/bc179372a4266ae6.mp3"
     },
     {
-      "key": "3700152e711606f9",
+      "key": "0a4c1402a8058683",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Look at when it joined. Yesterday! A brand new account that rushes at you is sneaky.",
       "lines": [
         "Look at when it joined. Yesterday! A brand new account that rushes at you is sneaky."
       ],
-      "file": "/audio/voice/3700152e711606f9.mp3"
+      "file": "/audio/voice/0a4c1402a8058683.mp3"
     },
     {
-      "key": "d6a064bf3ff21dee",
+      "key": "61695d024eb25d97",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Look at who its friends are. Not one kid you know in real life. That is sneaky.",
       "lines": [
         "Look at who its friends are. Not one kid you know in real life. That is sneaky."
       ],
-      "file": "/audio/voice/d6a064bf3ff21dee.mp3"
+      "file": "/audio/voice/61695d024eb25d97.mp3"
     },
     {
-      "key": "c69af97637a2d5cd",
+      "key": "37954404b1bab0f1",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Look at how it talks. Best friends after one message? Real friends are never that fast. That is sneaky.",
       "lines": [
         "Look at how it talks. Best friends after one message? Real friends are never that fast. That is sneaky."
       ],
-      "file": "/audio/voice/c69af97637a2d5cd.mp3"
+      "file": "/audio/voice/37954404b1bab0f1.mp3"
     },
     {
-      "key": "4655a27777012be6",
+      "key": "ccd1a0be9d595e98",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Look at the ask. It wants to chat somewhere secret, away from the game. That is sneaky.",
       "lines": [
         "Look at the ask. It wants to chat somewhere secret, away from the game. That is sneaky."
       ],
-      "file": "/audio/voice/4655a27777012be6.mp3"
+      "file": "/audio/voice/ccd1a0be9d595e98.mp3"
     },
     {
-      "key": "e4a3c8bde064c2c8",
+      "key": "23f114ae7fbc6a5b",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Two years ago is a real history, not a pop up account. That clue checks out, so lift the stamp.",
       "lines": [
         "Two years ago is a real history, not a pop up account. That clue checks out, so lift the stamp."
       ],
-      "file": "/audio/voice/e4a3c8bde064c2c8.mp3"
+      "file": "/audio/voice/23f114ae7fbc6a5b.mp3"
     },
     {
-      "key": "3bc177989ddb2b29",
+      "key": "323d594519d3538a",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Kids from your own class are real friends you know offline. That clue checks out, so lift the stamp.",
       "lines": [
         "Kids from your own class are real friends you know offline. That clue checks out, so lift the stamp."
       ],
-      "file": "/audio/voice/3bc177989ddb2b29.mp3"
+      "file": "/audio/voice/323d594519d3538a.mp3"
     },
     {
-      "key": "71fec03fa71c2a37",
+      "key": "1eb8e60c02211497",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Game chat about a Saturday rematch is normal friend talk. That clue checks out, so lift the stamp.",
       "lines": [
         "Game chat about a Saturday rematch is normal friend talk. That clue checks out, so lift the stamp."
       ],
-      "file": "/audio/voice/71fec03fa71c2a37.mp3"
+      "file": "/audio/voice/1eb8e60c02211497.mp3"
     },
     {
-      "key": "eb5b76be06bd0260",
+      "key": "36eaa99c872dcc4a",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Sam asks for nothing private, just a game. That clue checks out, so lift the stamp.",
       "lines": [
         "Sam asks for nothing private, just a game. That clue checks out, so lift the stamp."
       ],
-      "file": "/audio/voice/eb5b76be06bd0260.mp3"
+      "file": "/audio/voice/36eaa99c872dcc4a.mp3"
     },
     {
-      "key": "6acc0ace73ca2468",
+      "key": "66e2662281e25d17",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Look at when it joined. Two days ago, and already asking you questions. Brand new is sneaky.",
       "lines": [
         "Look at when it joined. Two days ago, and already asking you questions. Brand new is sneaky."
       ],
-      "file": "/audio/voice/6acc0ace73ca2468.mp3"
+      "file": "/audio/voice/66e2662281e25d17.mp3"
     },
     {
-      "key": "fa24408ea8b8857d",
+      "key": "d79610bd040e6e7a",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Look at who its friends are. Nobody you know, just one puppy photo. That is sneaky.",
       "lines": [
         "Look at who its friends are. Nobody you know, just one puppy photo. That is sneaky."
       ],
-      "file": "/audio/voice/fa24408ea8b8857d.mp3"
+      "file": "/audio/voice/d79610bd040e6e7a.mp3"
     },
     {
-      "key": "dae720898d1145da",
+      "key": "451aa204b17456f4",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Saying hi and asking if you like puppies is normal chat. That clue checks out, so lift the stamp.",
       "lines": [
         "Saying hi and asking if you like puppies is normal chat. That clue checks out, so lift the stamp."
       ],
-      "file": "/audio/voice/dae720898d1145da.mp3"
+      "file": "/audio/voice/451aa204b17456f4.mp3"
     },
     {
-      "key": "3cb51988f68b0763",
+      "key": "e03b5050ff804dbd",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Look at what it asks for. Your school is where you are. A stranger never needs that. That is sneaky.",
       "lines": [
         "Look at what it asks for. Your school is where you are. A stranger never needs that. That is sneaky."
       ],
-      "file": "/audio/voice/3cb51988f68b0763.mp3"
+      "file": "/audio/voice/e03b5050ff804dbd.mp3"
     },
     {
-      "key": "572207e96a14226f",
+      "key": "4fbe9c321a0789d5",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Three years ago is a real history. That clue checks out, so lift the stamp.",
       "lines": [
         "Three years ago is a real history. That clue checks out, so lift the stamp."
       ],
-      "file": "/audio/voice/572207e96a14226f.mp3"
+      "file": "/audio/voice/4fbe9c321a0789d5.mp3"
     },
     {
-      "key": "707344035756278a",
+      "key": "03c0f4ef19a4df5a",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Two kids from your football team are real friends you know. That clue checks out, so lift the stamp.",
       "lines": [
         "Two kids from your football team are real friends you know. That clue checks out, so lift the stamp."
       ],
-      "file": "/audio/voice/707344035756278a.mp3"
+      "file": "/audio/voice/03c0f4ef19a4df5a.mp3"
     },
     {
-      "key": "69a68d96eaceba82",
+      "key": "ba48c94e0c6859c2",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Saying good race after a game is normal chat. That clue checks out, so lift the stamp.",
       "lines": [
         "Saying good race after a game is normal chat. That clue checks out, so lift the stamp."
       ],
-      "file": "/audio/voice/69a68d96eaceba82.mp3"
+      "file": "/audio/voice/ba48c94e0c6859c2.mp3"
     },
     {
-      "key": "163a7010e3c322e8",
+      "key": "941c0cb4da96fe86",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Look at the ask. It wants to know where you live. Nobody online ever needs that, even someone who seems nice. That is sneaky.",
       "lines": [
         "Look at the ask. It wants to know where you live. Nobody online ever needs that, even someone who seems nice. That is sneaky."
       ],
-      "file": "/audio/voice/163a7010e3c322e8.mp3"
+      "file": "/audio/voice/941c0cb4da96fe86.mp3"
     },
     {
-      "key": "c0dc67b1648df01b",
+      "key": "06127598ba6076fd",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "What's your favorite game? Mine's Mega Blasters!",
       "lines": [
         "What's your favorite game? Mine's Mega Blasters!"
       ],
-      "file": "/audio/voice/c0dc67b1648df01b.mp3"
+      "file": "/audio/voice/06127598ba6076fd.mp3"
     },
     {
-      "key": "588d1fa43cbafb6f",
+      "key": "0273e237687ac5cf",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Send me a photo of yourself! I just want to see what you look like.",
       "lines": [
         "Send me a photo of yourself! I just want to see what you look like."
       ],
-      "file": "/audio/voice/588d1fa43cbafb6f.mp3"
+      "file": "/audio/voice/0273e237687ac5cf.mp3"
     },
     {
-      "key": "4acb3771868359d5",
+      "key": "5d63074439edfe14",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Let's keep our chats secret. Don't tell your parents about me, OK?",
       "lines": [
         "Let's keep our chats secret. Don't tell your parents about me, OK?"
       ],
-      "file": "/audio/voice/4acb3771868359d5.mp3"
+      "file": "/audio/voice/5d63074439edfe14.mp3"
     },
     {
-      "key": "05eba35554a69fb6",
+      "key": "af3ca6e79b9ac0c6",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Good game! Want to play again tomorrow after school?",
       "lines": [
         "Good game! Want to play again tomorrow after school?"
       ],
-      "file": "/audio/voice/05eba35554a69fb6.mp3"
+      "file": "/audio/voice/af3ca6e79b9ac0c6.mp3"
     },
     {
-      "key": "0423d153a968fd45",
+      "key": "708200579791f57a",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "I'll send you FREE game coins! Just tell me your address so I can post the card.",
       "lines": [
         "I'll send you FREE game coins! Just tell me your address so I can post the card."
       ],
-      "file": "/audio/voice/0423d153a968fd45.mp3"
+      "file": "/audio/voice/708200579791f57a.mp3"
     },
     {
-      "key": "20e06303eebd82c9",
+      "key": "ab862429e8246c7b",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Whoa, that last move was amazing! How did you do that?",
       "lines": [
         "Whoa, that last move was amazing! How did you do that?"
       ],
-      "file": "/audio/voice/20e06303eebd82c9.mp3"
+      "file": "/audio/voice/ab862429e8246c7b.mp3"
     },
     {
-      "key": "775f3b8ddfb05073",
+      "key": "c1d05e0bf5c31a78",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Which school do you go to? I bet it's near mine!",
       "lines": [
         "Which school do you go to? I bet it's near mine!"
       ],
-      "file": "/audio/voice/775f3b8ddfb05073.mp3"
+      "file": "/audio/voice/c1d05e0bf5c31a78.mp3"
     },
     {
-      "key": "81d88b87c8c39b1f",
+      "key": "b81d44840258fd24",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "A favorite game is about the GAME, not about you. That's a friendly ask, and it's fine to answer.",
       "lines": [
         "A favorite game is about the GAME, not about you. That's a friendly ask, and it's fine to answer."
       ],
-      "file": "/audio/voice/81d88b87c8c39b1f.mp3"
+      "file": "/audio/voice/b81d44840258fd24.mp3"
     },
     {
-      "key": "2c0f27cb77d851f6",
+      "key": "5de8c4495ae1cbbf",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Asking for a photo of you is always a red flag. Never send photos of yourself, not even one.",
       "lines": [
         "Asking for a photo of you is always a red flag. Never send photos of yourself, not even one."
       ],
-      "file": "/audio/voice/2c0f27cb77d851f6.mp3"
+      "file": "/audio/voice/5de8c4495ae1cbbf.mp3"
     },
     {
-      "key": "cee804d326956708",
+      "key": "eb070ad0dd128292",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Asking you to hide a chat from your parents is the biggest red flag in the world. Safe friends never need secrets from your grown-ups.",
       "lines": [
         "Asking you to hide a chat from your parents is the biggest red flag in the world. Safe friends never need secrets from your grown-ups."
       ],
-      "file": "/audio/voice/cee804d326956708.mp3"
+      "file": "/audio/voice/eb070ad0dd128292.mp3"
     },
     {
-      "key": "508fce7adbb3d48f",
+      "key": "87e7f550cbc8153b",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "A rematch is normal game chat. Playing the same game again is a friendly ask, nothing more.",
       "lines": [
         "A rematch is normal game chat. Playing the same game again is a friendly ask, nothing more."
       ],
-      "file": "/audio/voice/508fce7adbb3d48f.mp3"
+      "file": "/audio/voice/87e7f550cbc8153b.mp3"
     },
     {
-      "key": "83493040452360b0",
+      "key": "a7c5b53ad2229604",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Gifts for info is a classic trick. Nobody real pays coins for your address, so that's a red flag.",
       "lines": [
         "Gifts for info is a classic trick. Nobody real pays coins for your address, so that's a red flag."
       ],
-      "file": "/audio/voice/83493040452360b0.mp3"
+      "file": "/audio/voice/a7c5b53ad2229604.mp3"
     },
     {
-      "key": "ab8661535f799b69",
+      "key": "702767a6b603e904",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "A compliment about your move is friendly and safe. Talking about the game is always fine.",
       "lines": [
         "A compliment about your move is friendly and safe. Talking about the game is always fine."
       ],
-      "file": "/audio/voice/ab8661535f799b69.mp3"
+      "file": "/audio/voice/702767a6b603e904.mp3"
     },
     {
-      "key": "c482098c7387b9e6",
+      "key": "0bbda3c30665fc0e",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Your school is where-you-are info. A friend from the game never needs to know your school, so that's a red flag.",
       "lines": [
         "Your school is where-you-are info. A friend from the game never needs to know your school, so that's a red flag."
       ],
-      "file": "/audio/voice/c482098c7387b9e6.mp3"
+      "file": "/audio/voice/0bbda3c30665fc0e.mp3"
     },
     {
-      "key": "64ad20e5e026be10",
+      "key": "d22d09a1d26bfdab",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "You're the best teammate ever! Let's meet at the park after school and play for real!",
       "lines": [
         "You're the best teammate ever! Let's meet at the park after school and play for real!"
       ],
-      "file": "/audio/voice/64ad20e5e026be10.mp3"
+      "file": "/audio/voice/d22d09a1d26bfdab.mp3"
     },
     {
-      "key": "4511f5d741ac0424",
+      "key": "afc4d9d1c87cbc65",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Send me a photo of you! I just want to check you're a real kid and not a robot, lol.",
       "lines": [
         "Send me a photo of you! I just want to check you're a real kid and not a robot, lol."
       ],
-      "file": "/audio/voice/4511f5d741ac0424.mp3"
+      "file": "/audio/voice/afc4d9d1c87cbc65.mp3"
     },
     {
-      "key": "c9482b11f1d07b4c",
+      "key": "9ab4312cc8acfa91",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "It's my birthday party on Saturday! Come over, my mum will be there, so it's totally safe.",
       "lines": [
         "It's my birthday party on Saturday! Come over, my mum will be there, so it's totally safe."
       ],
-      "file": "/audio/voice/c9482b11f1d07b4c.mp3"
+      "file": "/audio/voice/9ab4312cc8acfa91.mp3"
     },
     {
-      "key": "916d7255d967b3b6",
+      "key": "79302803b77bec63",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Here's a photo of me! Your turn, fair is fair!",
       "lines": [
         "Here's a photo of me! Your turn, fair is fair!"
       ],
-      "file": "/audio/voice/916d7255d967b3b6.mp3"
+      "file": "/audio/voice/79302803b77bec63.mp3"
     },
     {
-      "key": "c48e6133351fdee8",
+      "key": "a4dea63dd5760df8",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "My big brother can drive us to the arcade. Free games all day, just tell me where to pick you up!",
       "lines": [
         "My big brother can drive us to the arcade. Free games all day, just tell me where to pick you up!"
       ],
-      "file": "/audio/voice/c48e6133351fdee8.mp3"
+      "file": "/audio/voice/a4dea63dd5760df8.mp3"
     },
     {
-      "key": "d8797c0102bbe66d",
+      "key": "65af4aad881f50e4",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Meeting up with an online-only friend is rule one, and it never bends. No park, no meet-up, and a grown-up gets told.",
       "lines": [
         "Meeting up with an online-only friend is rule one, and it never bends. No park, no meet-up, and a grown-up gets told."
       ],
-      "file": "/audio/voice/d8797c0102bbe66d.mp3"
+      "file": "/audio/voice/65af4aad881f50e4.mp3"
     },
     {
-      "key": "2713e6d59b10e781",
+      "key": "53d5c2d0961a51b1",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Rule two: never send photos of yourself, not one, not to check anything. Your picture stays with you.",
       "lines": [
         "Rule two: never send photos of yourself, not one, not to check anything. Your picture stays with you."
       ],
-      "file": "/audio/voice/2713e6d59b10e781.mp3"
+      "file": "/audio/voice/53d5c2d0961a51b1.mp3"
     },
     {
-      "key": "ba2e58774862f7de",
+      "key": "d86219ae3985874e",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "A party with a mum there is still a meet-up with someone you only know online. You can't see who is really typing, so the answer stays no.",
       "lines": [
         "A party with a mum there is still a meet-up with someone you only know online. You can't see who is really typing, so the answer stays no."
       ],
-      "file": "/audio/voice/ba2e58774862f7de.mp3"
+      "file": "/audio/voice/d86219ae3985874e.mp3"
     },
     {
-      "key": "fa1e2e0d5d16a1a0",
+      "key": "6ce930d02ed9f752",
       "speaker": "adam",
-      "voice": "Sarah",
-      "text": "Their photo proves nothing, remember the mask peek, and an old photo of you is still a photo of you. Never send, not even for fair.",
+      "voice": "Emma (Kids Educator)",
+      "text": "Their photo proves nothing. Remember the mask peek. And an old photo of you is still a photo of you. Never send, not even for fair.",
       "lines": [
-        "Their photo proves nothing, remember the mask peek, and an old photo of you is still a photo of you. Never send, not even for fair."
+        "Their photo proves nothing. Remember the mask peek. And an old photo of you is still a photo of you. Never send, not even for fair."
       ],
-      "file": "/audio/voice/fa1e2e0d5d16a1a0.mp3"
+      "file": "/audio/voice/6ce930d02ed9f752.mp3"
     },
     {
-      "key": "01ae4ab751de0e9f",
+      "key": "20cdbb2fb090b193",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "An arcade trip is a meet-up AND a where-you-are grab in one. Never meet, never share where you are, and a grown-up gets told.",
       "lines": [
         "An arcade trip is a meet-up AND a where-you-are grab in one. Never meet, never share where you are, and a grown-up gets told."
       ],
-      "file": "/audio/voice/01ae4ab751de0e9f.mp3"
+      "file": "/audio/voice/20cdbb2fb090b193.mp3"
     },
     {
-      "key": "ce447cff09ac0009",
+      "key": "ec158b389e99de98",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Hi!! I saw you win that race. You're AMAZING at this game!",
       "lines": [
         "Hi!! I saw you win that race. You're AMAZING at this game!"
       ],
-      "file": "/audio/voice/ce447cff09ac0009.mp3"
+      "file": "/audio/voice/ec158b389e99de98.mp3"
     },
     {
-      "key": "c41424c79ebf4a82",
+      "key": "3ab18297408873df",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "I'm Jess, I play this game every day. We should totally be best friends!",
       "lines": [
         "I'm Jess, I play this game every day. We should totally be best friends!"
       ],
-      "file": "/audio/voice/c41424c79ebf4a82.mp3"
+      "file": "/audio/voice/3ab18297408873df.mp3"
     },
     {
-      "key": "b83078372bb8060a",
+      "key": "b8e8243238f7738d",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Best friends should know stuff about each other. Do you live near the big park? I go there aaaall the time!",
       "lines": [
         "Best friends should know stuff about each other. Do you live near the big park? I go there aaaall the time!"
       ],
-      "file": "/audio/voice/b83078372bb8060a.mp3"
+      "file": "/audio/voice/b8e8243238f7738d.mp3"
     },
     {
-      "key": "884df621a5bb96dc",
+      "key": "431b5b1475b8ea80",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "You're so cool. Our park chats can be our special secret, OK? Don't tell your parents about me!",
       "lines": [
         "You're so cool. Our park chats can be our special secret, OK? Don't tell your parents about me!"
       ],
-      "file": "/audio/voice/884df621a5bb96dc.mp3"
+      "file": "/audio/voice/431b5b1475b8ea80.mp3"
     },
     {
-      "key": "613b18b5ec0d5a6b",
+      "key": "8dc448e8eb070576",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Feel that? Secret chats, hiding things from your parents... your tummy just went UH-OH. That's your hero sense.",
       "lines": [
         "Feel that? Secret chats, hiding things from your parents... your tummy just went UH-OH. That's your hero sense."
       ],
-      "file": "/audio/voice/613b18b5ec0d5a6b.mp3"
+      "file": "/audio/voice/8dc448e8eb070576.mp3"
     },
     {
-      "key": "f13ca980a94ce7fa",
+      "key": "cf2028470e20c359",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Game talk is fine, but this is still a stranger you've never met. Keep it about the game, radar on.",
       "lines": [
         "Game talk is fine, but this is still a stranger you've never met. Keep it about the game, radar on."
       ],
-      "file": "/audio/voice/f13ca980a94ce7fa.mp3"
+      "file": "/audio/voice/cf2028470e20c359.mp3"
     },
     {
-      "key": "769f7cec968a8181",
+      "key": "a0b7bf59d13ce297",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Whoa, slow down. You met Jess one message ago, and real friends never happen that fast.",
       "lines": [
         "Whoa, slow down. You met Jess one message ago, and real friends never happen that fast."
       ],
-      "file": "/audio/voice/769f7cec968a8181.mp3"
+      "file": "/audio/voice/a0b7bf59d13ce297.mp3"
     },
     {
-      "key": "e1dc717076695ae7",
+      "key": "448de40522835ea3",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Perfect. Where you live is private, always, and from everyone online.",
       "lines": [
         "Perfect. Where you live is private, always, and from everyone online."
       ],
-      "file": "/audio/voice/e1dc717076695ae7.mp3"
+      "file": "/audio/voice/448de40522835ea3.mp3"
     },
     {
-      "key": "a95e74559167cd3d",
+      "key": "bc181ab9f2322890",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Careful. A stranger just learned the park you go to, and where you are stays private.",
       "lines": [
         "Careful. A stranger just learned the park you go to, and where you are stays private."
       ],
-      "file": "/audio/voice/a95e74559167cd3d.mp3"
+      "file": "/audio/voice/bc181ab9f2322890.mp3"
     },
     {
-      "key": "9e2f1a6627954e0f",
+      "key": "c7587a281294ab05",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "HERO MOVE! Don't tell your parents is the biggest red flag in the world. You felt the uh-oh, you stopped, you told.",
       "lines": [
         "HERO MOVE! Don't tell your parents is the biggest red flag in the world. You felt the uh-oh, you stopped, you told."
       ],
-      "file": "/audio/voice/9e2f1a6627954e0f.mp3"
+      "file": "/audio/voice/c7587a281294ab05.mp3"
     },
     {
-      "key": "8b4489d4a5a850f6",
+      "key": "486cf1885d837fd9",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Never keep an online friend secret from your grown-ups. Telling them is always the hero move.",
       "lines": [
         "Never keep an online friend secret from your grown-ups. Telling them is always the hero move."
       ],
-      "file": "/audio/voice/8b4489d4a5a850f6.mp3"
+      "file": "/audio/voice/486cf1885d837fd9.mp3"
     },
     {
       "key": "6ffd09eb4048747b",
@@ -41971,884 +41992,884 @@
       "file": "/audio/voice/2e1cda59bba9c30c.mp3"
     },
     {
-      "key": "66817f9a9bc02321",
+      "key": "0878bc137f36562f",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "That's right! A copied photo looks exactly like a real one. It can't show you who's at the keyboard, so it proves nothing.",
       "lines": [
         "That's right!",
         "A copied photo looks exactly like a real one. It can't show you who's at the keyboard, so it proves nothing."
       ],
-      "file": "/audio/voice/66817f9a9bc02321.mp3"
+      "file": "/audio/voice/0878bc137f36562f.mp3"
     },
     {
-      "key": "40001844e092944f",
+      "key": "9cdab48502e8481b",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Not quite. A copied photo looks exactly like a real one. It can't show you who's at the keyboard, so it proves nothing.",
       "lines": [
         "Not quite.",
         "A copied photo looks exactly like a real one. It can't show you who's at the keyboard, so it proves nothing."
       ],
-      "file": "/audio/voice/40001844e092944f.mp3"
+      "file": "/audio/voice/9cdab48502e8481b.mp3"
     },
     {
-      "key": "37dd056483d9ec54",
+      "key": "d81db2db85377907",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "That's right! You know Maya offline, in real life. Knowing someone in the real world is the proof that actually counts.",
       "lines": [
         "That's right!",
         "You know Maya offline, in real life. Knowing someone in the real world is the proof that actually counts."
       ],
-      "file": "/audio/voice/37dd056483d9ec54.mp3"
+      "file": "/audio/voice/d81db2db85377907.mp3"
     },
     {
-      "key": "9614c27f2eefb41a",
+      "key": "5dab6a4f26461f73",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Not quite. You know Maya offline, in real life. Knowing someone in the real world is the proof that actually counts.",
       "lines": [
         "Not quite.",
         "You know Maya offline, in real life. Knowing someone in the real world is the proof that actually counts."
       ],
-      "file": "/audio/voice/9614c27f2eefb41a.mp3"
+      "file": "/audio/voice/5dab6a4f26461f73.mp3"
     },
     {
-      "key": "b66e05b34e38a6d1",
+      "key": "dd74aa74f85814e8",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "That's right! An age is just typed. A grown-up can type nine as easily as you can, so the age proves nothing.",
       "lines": [
         "That's right!",
         "An age is just typed. A grown-up can type nine as easily as you can, so the age proves nothing."
       ],
-      "file": "/audio/voice/b66e05b34e38a6d1.mp3"
+      "file": "/audio/voice/dd74aa74f85814e8.mp3"
     },
     {
-      "key": "deea84c2b52c27e5",
+      "key": "43e786f46b46eaec",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Not quite. An age is just typed. A grown-up can type nine as easily as you can, so the age proves nothing.",
       "lines": [
         "Not quite.",
         "An age is just typed. A grown-up can type nine as easily as you can, so the age proves nothing."
       ],
-      "file": "/audio/voice/deea84c2b52c27e5.mp3"
+      "file": "/audio/voice/43e786f46b46eaec.mp3"
     },
     {
-      "key": "2a2acf1117eda113",
+      "key": "0530ca898376f613",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "That's right! Names are chosen on purpose. A kid-sounding name is the easiest mask of all, so it proves nothing.",
       "lines": [
         "That's right!",
         "Names are chosen on purpose. A kid-sounding name is the easiest mask of all, so it proves nothing."
       ],
-      "file": "/audio/voice/2a2acf1117eda113.mp3"
+      "file": "/audio/voice/0530ca898376f613.mp3"
     },
     {
-      "key": "9991a82d433a8871",
+      "key": "5c8086865d6c2fa7",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Not quite. Names are chosen on purpose. A kid-sounding name is the easiest mask of all, so it proves nothing.",
       "lines": [
         "Not quite.",
         "Names are chosen on purpose. A kid-sounding name is the easiest mask of all, so it proves nothing."
       ],
-      "file": "/audio/voice/9991a82d433a8871.mp3"
+      "file": "/audio/voice/5c8086865d6c2fa7.mp3"
     },
     {
-      "key": "abcd9c42c86c2753",
+      "key": "14008b46d1dbeed6",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "That's right! You sat next to Sam today. Someone you know in real life is real proof, the only kind there is.",
       "lines": [
         "That's right!",
         "You sat next to Sam today. Someone you know in real life is real proof, the only kind there is."
       ],
-      "file": "/audio/voice/abcd9c42c86c2753.mp3"
+      "file": "/audio/voice/14008b46d1dbeed6.mp3"
     },
     {
-      "key": "d0e47fd5fe4ccb8f",
+      "key": "3a40f2f908325a62",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Not quite. You sat next to Sam today. Someone you know in real life is real proof, the only kind there is.",
       "lines": [
         "Not quite.",
         "You sat next to Sam today. Someone you know in real life is real proof, the only kind there is."
       ],
-      "file": "/audio/voice/d0e47fd5fe4ccb8f.mp3"
+      "file": "/audio/voice/3a40f2f908325a62.mp3"
     },
     {
-      "key": "6fa07f1391da8664",
+      "key": "353536cc0f3b71fc",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "That's right! Tricksters do their homework. Cartoon facts can be learned by anyone, so knowing kid stuff proves nothing.",
       "lines": [
         "That's right!",
         "Tricksters do their homework. Cartoon facts can be learned by anyone, so knowing kid stuff proves nothing."
       ],
-      "file": "/audio/voice/6fa07f1391da8664.mp3"
+      "file": "/audio/voice/353536cc0f3b71fc.mp3"
     },
     {
-      "key": "275f9ad30f7d2f4e",
+      "key": "210fde9bcbbf4554",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Not quite. Tricksters do their homework. Cartoon facts can be learned by anyone, so knowing kid stuff proves nothing.",
       "lines": [
         "Not quite.",
         "Tricksters do their homework. Cartoon facts can be learned by anyone, so knowing kid stuff proves nothing."
       ],
-      "file": "/audio/voice/275f9ad30f7d2f4e.mp3"
+      "file": "/audio/voice/210fde9bcbbf4554.mp3"
     },
     {
-      "key": "f292e54440633de9",
+      "key": "1146052d59c6a545",
       "speaker": "adam",
-      "voice": "Sarah",
-      "text": "Not quite. A photo can be copied and an age takes one second to type; neither shows who is really typing.",
+      "voice": "Emma (Kids Educator)",
+      "text": "Not quite. A photo can be copied. An age takes one second to type. Neither shows who is really typing.",
       "lines": [
         "Not quite.",
-        "A photo can be copied and an age takes one second to type; neither shows who is really typing."
+        "A photo can be copied. An age takes one second to type. Neither shows who is really typing."
       ],
-      "file": "/audio/voice/f292e54440633de9.mp3"
+      "file": "/audio/voice/1146052d59c6a545.mp3"
     },
     {
-      "key": "6dd36f53ee2a2bd9",
+      "key": "c0e7ed68aec26a11",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "That's right! Brand new, no friends you know, best friends in five minutes, and a private chat. Four sneaky clues. That is the Raccoon in a costume!",
       "lines": [
         "That's right!",
         "Brand new, no friends you know, best friends in five minutes, and a private chat. Four sneaky clues. That is the Raccoon in a costume!"
       ],
-      "file": "/audio/voice/6dd36f53ee2a2bd9.mp3"
+      "file": "/audio/voice/c0e7ed68aec26a11.mp3"
     },
     {
-      "key": "8b041daab3acc830",
+      "key": "b77e77037fefbc24",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Not quite. Look at when it joined. Yesterday! A brand new account that rushes at you is sneaky.",
       "lines": [
         "Not quite.",
         "Look at when it joined. Yesterday! A brand new account that rushes at you is sneaky."
       ],
-      "file": "/audio/voice/8b041daab3acc830.mp3"
+      "file": "/audio/voice/b77e77037fefbc24.mp3"
     },
     {
-      "key": "cc6257468056b0c3",
+      "key": "00df0c0bd84c9b70",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Not quite. Look at who its friends are. Not one kid you know in real life. That is sneaky.",
       "lines": [
         "Not quite.",
         "Look at who its friends are. Not one kid you know in real life. That is sneaky."
       ],
-      "file": "/audio/voice/cc6257468056b0c3.mp3"
+      "file": "/audio/voice/00df0c0bd84c9b70.mp3"
     },
     {
-      "key": "67b1834bbaeeed57",
+      "key": "fa073dc8ac59e6a5",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Not quite. Look at how it talks. Best friends after one message? Real friends are never that fast. That is sneaky.",
       "lines": [
         "Not quite.",
         "Look at how it talks. Best friends after one message? Real friends are never that fast. That is sneaky."
       ],
-      "file": "/audio/voice/67b1834bbaeeed57.mp3"
+      "file": "/audio/voice/fa073dc8ac59e6a5.mp3"
     },
     {
-      "key": "9dd887bd7a4d862a",
+      "key": "90c17100a4908c3f",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Not quite. Look at the ask. It wants to chat somewhere secret, away from the game. That is sneaky.",
       "lines": [
         "Not quite.",
         "Look at the ask. It wants to chat somewhere secret, away from the game. That is sneaky."
       ],
-      "file": "/audio/voice/9dd887bd7a4d862a.mp3"
+      "file": "/audio/voice/90c17100a4908c3f.mp3"
     },
     {
-      "key": "bcd44a085c39b664",
+      "key": "0d825749d43a75de",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "That's right! Two years old, your real classmates, normal game talk, and asks for nothing. Every clue checks out, so no stamps. A real friend!",
       "lines": [
         "That's right!",
         "Two years old, your real classmates, normal game talk, and asks for nothing. Every clue checks out, so no stamps. A real friend!"
       ],
-      "file": "/audio/voice/bcd44a085c39b664.mp3"
+      "file": "/audio/voice/0d825749d43a75de.mp3"
     },
     {
-      "key": "82e9ccb9ce9ad1fb",
+      "key": "d1d02f70ec336e62",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Not quite. Two years ago is a real history, not a pop up account. That clue checks out, so lift the stamp.",
       "lines": [
         "Not quite.",
         "Two years ago is a real history, not a pop up account. That clue checks out, so lift the stamp."
       ],
-      "file": "/audio/voice/82e9ccb9ce9ad1fb.mp3"
+      "file": "/audio/voice/d1d02f70ec336e62.mp3"
     },
     {
-      "key": "ebfd0b3a33fd71de",
+      "key": "3303150491621893",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Not quite. Kids from your own class are real friends you know offline. That clue checks out, so lift the stamp.",
       "lines": [
         "Not quite.",
         "Kids from your own class are real friends you know offline. That clue checks out, so lift the stamp."
       ],
-      "file": "/audio/voice/ebfd0b3a33fd71de.mp3"
+      "file": "/audio/voice/3303150491621893.mp3"
     },
     {
-      "key": "f4eafc4f985d950d",
+      "key": "a79a19eaa2afb826",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Not quite. Game chat about a Saturday rematch is normal friend talk. That clue checks out, so lift the stamp.",
       "lines": [
         "Not quite.",
         "Game chat about a Saturday rematch is normal friend talk. That clue checks out, so lift the stamp."
       ],
-      "file": "/audio/voice/f4eafc4f985d950d.mp3"
+      "file": "/audio/voice/a79a19eaa2afb826.mp3"
     },
     {
-      "key": "cd5ceefe55d114f8",
+      "key": "d1f9ebe947983066",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Not quite. Sam asks for nothing private, just a game. That clue checks out, so lift the stamp.",
       "lines": [
         "Not quite.",
         "Sam asks for nothing private, just a game. That clue checks out, so lift the stamp."
       ],
-      "file": "/audio/voice/cd5ceefe55d114f8.mp3"
+      "file": "/audio/voice/d1f9ebe947983066.mp3"
     },
     {
-      "key": "15f621c0adaad9f7",
+      "key": "9c6c311b4e13dda4",
       "speaker": "adam",
-      "voice": "Sarah",
-      "text": "That's right! Two days old, nobody you know, and she asks which school. Puppy chat was fine, but asking where you are is the giveaway. Three sneaky clues means a fake.",
+      "voice": "Emma (Kids Educator)",
+      "text": "That's right! Two days old. Nobody you know. And she asks which school. Puppy chat was fine, but asking where you are is the giveaway. Three sneaky clues means a fake.",
       "lines": [
         "That's right!",
-        "Two days old, nobody you know, and she asks which school. Puppy chat was fine, but asking where you are is the giveaway. Three sneaky clues means a fake."
+        "Two days old. Nobody you know. And she asks which school. Puppy chat was fine, but asking where you are is the giveaway. Three sneaky clues means a fake."
       ],
-      "file": "/audio/voice/15f621c0adaad9f7.mp3"
+      "file": "/audio/voice/9c6c311b4e13dda4.mp3"
     },
     {
-      "key": "eb59e2dc99bf8ec8",
+      "key": "d843e2cb5866382d",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Not quite. Look at when it joined. Two days ago, and already asking you questions. Brand new is sneaky.",
       "lines": [
         "Not quite.",
         "Look at when it joined. Two days ago, and already asking you questions. Brand new is sneaky."
       ],
-      "file": "/audio/voice/eb59e2dc99bf8ec8.mp3"
+      "file": "/audio/voice/d843e2cb5866382d.mp3"
     },
     {
-      "key": "127ca7ef127693c8",
+      "key": "b96efcfd86394938",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Not quite. Look at who its friends are. Nobody you know, just one puppy photo. That is sneaky.",
       "lines": [
         "Not quite.",
         "Look at who its friends are. Nobody you know, just one puppy photo. That is sneaky."
       ],
-      "file": "/audio/voice/127ca7ef127693c8.mp3"
+      "file": "/audio/voice/b96efcfd86394938.mp3"
     },
     {
-      "key": "ba73d9845df5de8a",
+      "key": "4a61ff9309dc099d",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Not quite. Saying hi and asking if you like puppies is normal chat. That clue checks out, so lift the stamp.",
       "lines": [
         "Not quite.",
         "Saying hi and asking if you like puppies is normal chat. That clue checks out, so lift the stamp."
       ],
-      "file": "/audio/voice/ba73d9845df5de8a.mp3"
+      "file": "/audio/voice/4a61ff9309dc099d.mp3"
     },
     {
-      "key": "6f4e919558a09f36",
+      "key": "9139983700571f7e",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Not quite. Look at what it asks for. Your school is where you are. A stranger never needs that. That is sneaky.",
       "lines": [
         "Not quite.",
         "Look at what it asks for. Your school is where you are. A stranger never needs that. That is sneaky."
       ],
-      "file": "/audio/voice/6f4e919558a09f36.mp3"
+      "file": "/audio/voice/9139983700571f7e.mp3"
     },
     {
-      "key": "5d8debfd1eb3c7ae",
+      "key": "f2bfd8de641830eb",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "That's right! Three clues looked fine, but nobody online ever needs your home address. One sneaky clue is enough. Say no and tell a grown-up.",
       "lines": [
         "That's right!",
         "Three clues looked fine, but nobody online ever needs your home address. One sneaky clue is enough. Say no and tell a grown-up."
       ],
-      "file": "/audio/voice/5d8debfd1eb3c7ae.mp3"
+      "file": "/audio/voice/f2bfd8de641830eb.mp3"
     },
     {
-      "key": "e7cf34faccb8fe89",
+      "key": "f67ff414d635f4fd",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Not quite. Three years ago is a real history. That clue checks out, so lift the stamp.",
       "lines": [
         "Not quite.",
         "Three years ago is a real history. That clue checks out, so lift the stamp."
       ],
-      "file": "/audio/voice/e7cf34faccb8fe89.mp3"
+      "file": "/audio/voice/f67ff414d635f4fd.mp3"
     },
     {
-      "key": "72cc1e1255258441",
+      "key": "f2802d2fb6e3fd3c",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Not quite. Two kids from your football team are real friends you know. That clue checks out, so lift the stamp.",
       "lines": [
         "Not quite.",
         "Two kids from your football team are real friends you know. That clue checks out, so lift the stamp."
       ],
-      "file": "/audio/voice/72cc1e1255258441.mp3"
+      "file": "/audio/voice/f2802d2fb6e3fd3c.mp3"
     },
     {
-      "key": "ec8c0344222c2810",
+      "key": "386d0e876400217e",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Not quite. Saying good race after a game is normal chat. That clue checks out, so lift the stamp.",
       "lines": [
         "Not quite.",
         "Saying good race after a game is normal chat. That clue checks out, so lift the stamp."
       ],
-      "file": "/audio/voice/ec8c0344222c2810.mp3"
+      "file": "/audio/voice/386d0e876400217e.mp3"
     },
     {
-      "key": "ece710bdf68675e3",
+      "key": "c7396ec60ecd4bbc",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Not quite. Look at the ask. It wants to know where you live. Nobody online ever needs that, even someone who seems nice. That is sneaky.",
       "lines": [
         "Not quite.",
         "Look at the ask. It wants to know where you live. Nobody online ever needs that, even someone who seems nice. That is sneaky."
       ],
-      "file": "/audio/voice/ece710bdf68675e3.mp3"
+      "file": "/audio/voice/c7396ec60ecd4bbc.mp3"
     },
     {
-      "key": "670c387ada013781",
+      "key": "a0edb42190b295f0",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Not quite. Your cousin is someone you know in real life; that's real proof, not fake.",
       "lines": [
         "Not quite.",
         "Your cousin is someone you know in real life; that's real proof, not fake."
       ],
-      "file": "/audio/voice/670c387ada013781.mp3"
+      "file": "/audio/voice/a0edb42190b295f0.mp3"
     },
     {
-      "key": "3e259e4c8a4b5380",
+      "key": "875a66d87de37def",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Not quite. A classmate you see at school is real proof; you know them offline.",
       "lines": [
         "Not quite.",
         "A classmate you see at school is real proof; you know them offline."
       ],
-      "file": "/audio/voice/3e259e4c8a4b5380.mp3"
+      "file": "/audio/voice/875a66d87de37def.mp3"
     },
     {
-      "key": "3bbcaf3c7be75e1b",
+      "key": "e9cce67b7f8d4469",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "That's right! A favorite game is about the GAME, not about you. That's a friendly ask, and it's fine to answer.",
       "lines": [
         "That's right!",
         "A favorite game is about the GAME, not about you. That's a friendly ask, and it's fine to answer."
       ],
-      "file": "/audio/voice/3bbcaf3c7be75e1b.mp3"
+      "file": "/audio/voice/e9cce67b7f8d4469.mp3"
     },
     {
-      "key": "c031cc325e315d38",
+      "key": "fe6e3165406d4e6e",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Not quite. A favorite game is about the GAME, not about you. That's a friendly ask, and it's fine to answer.",
       "lines": [
         "Not quite.",
         "A favorite game is about the GAME, not about you. That's a friendly ask, and it's fine to answer."
       ],
-      "file": "/audio/voice/c031cc325e315d38.mp3"
+      "file": "/audio/voice/fe6e3165406d4e6e.mp3"
     },
     {
-      "key": "35274ed500049cb8",
+      "key": "bed108388bff7fcb",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "That's right! Asking for a photo of you is always a red flag. Never send photos of yourself, not even one.",
       "lines": [
         "That's right!",
         "Asking for a photo of you is always a red flag. Never send photos of yourself, not even one."
       ],
-      "file": "/audio/voice/35274ed500049cb8.mp3"
+      "file": "/audio/voice/bed108388bff7fcb.mp3"
     },
     {
-      "key": "73d3edd65d4fc7ef",
+      "key": "a6227c18c7bb79de",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Not quite. Asking for a photo of you is always a red flag. Never send photos of yourself, not even one.",
       "lines": [
         "Not quite.",
         "Asking for a photo of you is always a red flag. Never send photos of yourself, not even one."
       ],
-      "file": "/audio/voice/73d3edd65d4fc7ef.mp3"
+      "file": "/audio/voice/a6227c18c7bb79de.mp3"
     },
     {
-      "key": "8ec02cc7694da150",
+      "key": "a7c2cc5a77a34ffe",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "That's right! Asking you to hide a chat from your parents is the biggest red flag in the world. Safe friends never need secrets from your grown-ups.",
       "lines": [
         "That's right!",
         "Asking you to hide a chat from your parents is the biggest red flag in the world. Safe friends never need secrets from your grown-ups."
       ],
-      "file": "/audio/voice/8ec02cc7694da150.mp3"
+      "file": "/audio/voice/a7c2cc5a77a34ffe.mp3"
     },
     {
-      "key": "c89db7acccd77c09",
+      "key": "61ea5ccee2927162",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Not quite. Asking you to hide a chat from your parents is the biggest red flag in the world. Safe friends never need secrets from your grown-ups.",
       "lines": [
         "Not quite.",
         "Asking you to hide a chat from your parents is the biggest red flag in the world. Safe friends never need secrets from your grown-ups."
       ],
-      "file": "/audio/voice/c89db7acccd77c09.mp3"
+      "file": "/audio/voice/61ea5ccee2927162.mp3"
     },
     {
-      "key": "cef2493ea3ee24cf",
+      "key": "bf1e33a2186ec9a3",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "That's right! A rematch is normal game chat. Playing the same game again is a friendly ask, nothing more.",
       "lines": [
         "That's right!",
         "A rematch is normal game chat. Playing the same game again is a friendly ask, nothing more."
       ],
-      "file": "/audio/voice/cef2493ea3ee24cf.mp3"
+      "file": "/audio/voice/bf1e33a2186ec9a3.mp3"
     },
     {
-      "key": "2698fa678ad8c6dc",
+      "key": "38df18cedd6aaa15",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Not quite. A rematch is normal game chat. Playing the same game again is a friendly ask, nothing more.",
       "lines": [
         "Not quite.",
         "A rematch is normal game chat. Playing the same game again is a friendly ask, nothing more."
       ],
-      "file": "/audio/voice/2698fa678ad8c6dc.mp3"
+      "file": "/audio/voice/38df18cedd6aaa15.mp3"
     },
     {
-      "key": "88e3abdd510044bf",
+      "key": "1d83972047595018",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "That's right! Gifts for info is a classic trick. Nobody real pays coins for your address, so that's a red flag.",
       "lines": [
         "That's right!",
         "Gifts for info is a classic trick. Nobody real pays coins for your address, so that's a red flag."
       ],
-      "file": "/audio/voice/88e3abdd510044bf.mp3"
+      "file": "/audio/voice/1d83972047595018.mp3"
     },
     {
-      "key": "d786cedb177ba141",
+      "key": "6d1d23186bc268a9",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Not quite. Gifts for info is a classic trick. Nobody real pays coins for your address, so that's a red flag.",
       "lines": [
         "Not quite.",
         "Gifts for info is a classic trick. Nobody real pays coins for your address, so that's a red flag."
       ],
-      "file": "/audio/voice/d786cedb177ba141.mp3"
+      "file": "/audio/voice/6d1d23186bc268a9.mp3"
     },
     {
-      "key": "92a2155962ae0598",
+      "key": "2511b8d46f181adb",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "That's right! A compliment about your move is friendly and safe. Talking about the game is always fine.",
       "lines": [
         "That's right!",
         "A compliment about your move is friendly and safe. Talking about the game is always fine."
       ],
-      "file": "/audio/voice/92a2155962ae0598.mp3"
+      "file": "/audio/voice/2511b8d46f181adb.mp3"
     },
     {
-      "key": "31c58bdad15467cf",
+      "key": "6f61ba4180e38af1",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Not quite. A compliment about your move is friendly and safe. Talking about the game is always fine.",
       "lines": [
         "Not quite.",
         "A compliment about your move is friendly and safe. Talking about the game is always fine."
       ],
-      "file": "/audio/voice/31c58bdad15467cf.mp3"
+      "file": "/audio/voice/6f61ba4180e38af1.mp3"
     },
     {
-      "key": "c50e36b7c7ba81d7",
+      "key": "4e372820da7e63fa",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "That's right! Your school is where-you-are info. A friend from the game never needs to know your school, so that's a red flag.",
       "lines": [
         "That's right!",
         "Your school is where-you-are info. A friend from the game never needs to know your school, so that's a red flag."
       ],
-      "file": "/audio/voice/c50e36b7c7ba81d7.mp3"
+      "file": "/audio/voice/4e372820da7e63fa.mp3"
     },
     {
-      "key": "070c74bfe1767e05",
+      "key": "a73727016ac13613",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Not quite. Your school is where-you-are info. A friend from the game never needs to know your school, so that's a red flag.",
       "lines": [
         "Not quite.",
         "Your school is where-you-are info. A friend from the game never needs to know your school, so that's a red flag."
       ],
-      "file": "/audio/voice/070c74bfe1767e05.mp3"
+      "file": "/audio/voice/a73727016ac13613.mp3"
     },
     {
-      "key": "e1c95ba94df27a94",
+      "key": "8b0b3acc62adab3a",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Not quite. Game talk is fine; a rematch invite doesn't pull you anywhere secret.",
       "lines": [
         "Not quite.",
         "Game talk is fine; a rematch invite doesn't pull you anywhere secret."
       ],
-      "file": "/audio/voice/e1c95ba94df27a94.mp3"
+      "file": "/audio/voice/8b0b3acc62adab3a.mp3"
     },
     {
-      "key": "d2308753d03e018b",
+      "key": "8e124d3081a4c9a7",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Not quite. A favorite color is safe small talk; it isn't private and it isn't a secret.",
       "lines": [
         "Not quite.",
         "A favorite color is safe small talk; it isn't private and it isn't a secret."
       ],
-      "file": "/audio/voice/d2308753d03e018b.mp3"
+      "file": "/audio/voice/8e124d3081a4c9a7.mp3"
     },
     {
-      "key": "a959096624c8b470",
+      "key": "f104e95fb257c2fa",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Not quite. A compliment about the game is just game talk; no secret, no pressure.",
       "lines": [
         "Not quite.",
         "A compliment about the game is just game talk; no secret, no pressure."
       ],
-      "file": "/audio/voice/a959096624c8b470.mp3"
+      "file": "/audio/voice/f104e95fb257c2fa.mp3"
     },
     {
-      "key": "3004484f4926b36b",
+      "key": "6fa1def5e29e7458",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "That's right! Meeting up with an online-only friend is rule one, and it never bends. No park, no meet-up, and a grown-up gets told.",
       "lines": [
         "That's right!",
         "Meeting up with an online-only friend is rule one, and it never bends. No park, no meet-up, and a grown-up gets told."
       ],
-      "file": "/audio/voice/3004484f4926b36b.mp3"
+      "file": "/audio/voice/6fa1def5e29e7458.mp3"
     },
     {
-      "key": "eb53d48466296f60",
+      "key": "21ec258d5629bb98",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Not quite. Never meet up with someone you only know online, not even at a park you know. A clear NO and a grown-up who knows is the hero reply.",
       "lines": [
         "Not quite.",
         "Never meet up with someone you only know online, not even at a park you know. A clear NO and a grown-up who knows is the hero reply."
       ],
-      "file": "/audio/voice/eb53d48466296f60.mp3"
+      "file": "/audio/voice/21ec258d5629bb98.mp3"
     },
     {
-      "key": "5a47098438915b31",
+      "key": "ae35db6b1e1036db",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "That's right! Rule two: never send photos of yourself, not one, not to check anything. Your picture stays with you.",
       "lines": [
         "That's right!",
         "Rule two: never send photos of yourself, not one, not to check anything. Your picture stays with you."
       ],
-      "file": "/audio/voice/5a47098438915b31.mp3"
+      "file": "/audio/voice/ae35db6b1e1036db.mp3"
     },
     {
-      "key": "f3cd4286a65c840b",
+      "key": "1001442e10f8addb",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Not quite. There's no such thing as just one photo. Never send photos of yourself, and their photo proves nothing either. Rule two, zero exceptions.",
       "lines": [
         "Not quite.",
         "There's no such thing as just one photo. Never send photos of yourself, and their photo proves nothing either. Rule two, zero exceptions."
       ],
-      "file": "/audio/voice/f3cd4286a65c840b.mp3"
+      "file": "/audio/voice/1001442e10f8addb.mp3"
     },
     {
-      "key": "4aff52599c7abf38",
+      "key": "497de84a2380696d",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "That's right! A party with a mum there is still a meet-up with someone you only know online. You can't see who is really typing, so the answer stays no.",
       "lines": [
         "That's right!",
         "A party with a mum there is still a meet-up with someone you only know online. You can't see who is really typing, so the answer stays no."
       ],
-      "file": "/audio/voice/4aff52599c7abf38.mp3"
+      "file": "/audio/voice/497de84a2380696d.mp3"
     },
     {
-      "key": "9d1b84a015b3d8f7",
+      "key": "332bbef45587e11e",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Not quite. Somebody's mum being there is still just words on a screen. Never meet someone you only know online, and tell a trusted grown-up they asked.",
       "lines": [
         "Not quite.",
         "Somebody's mum being there is still just words on a screen. Never meet someone you only know online, and tell a trusted grown-up they asked."
       ],
-      "file": "/audio/voice/9d1b84a015b3d8f7.mp3"
+      "file": "/audio/voice/332bbef45587e11e.mp3"
     },
     {
-      "key": "5b5b528e78613047",
+      "key": "b35a42272bc93ab5",
       "speaker": "adam",
-      "voice": "Sarah",
-      "text": "That's right! Their photo proves nothing, remember the mask peek, and an old photo of you is still a photo of you. Never send, not even for fair.",
+      "voice": "Emma (Kids Educator)",
+      "text": "That's right! Their photo proves nothing. Remember the mask peek. And an old photo of you is still a photo of you. Never send, not even for fair.",
       "lines": [
         "That's right!",
-        "Their photo proves nothing, remember the mask peek, and an old photo of you is still a photo of you. Never send, not even for fair."
+        "Their photo proves nothing. Remember the mask peek. And an old photo of you is still a photo of you. Never send, not even for fair."
       ],
-      "file": "/audio/voice/5b5b528e78613047.mp3"
+      "file": "/audio/voice/b35a42272bc93ab5.mp3"
     },
     {
-      "key": "4786b2c19f8494de",
+      "key": "c717ed91628591c5",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Not quite. That swap is a trick. Their photo could be anyone's, and yours stays with you. Never send photos of yourself, no swaps.",
       "lines": [
         "Not quite.",
         "That swap is a trick. Their photo could be anyone's, and yours stays with you. Never send photos of yourself, no swaps."
       ],
-      "file": "/audio/voice/4786b2c19f8494de.mp3"
+      "file": "/audio/voice/c717ed91628591c5.mp3"
     },
     {
-      "key": "7e476760c83d54ba",
+      "key": "bd4ba0b687b9cdc0",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "That's right! An arcade trip is a meet-up AND a where-you-are grab in one. Never meet, never share where you are, and a grown-up gets told.",
       "lines": [
         "That's right!",
         "An arcade trip is a meet-up AND a where-you-are grab in one. Never meet, never share where you are, and a grown-up gets told."
       ],
-      "file": "/audio/voice/7e476760c83d54ba.mp3"
+      "file": "/audio/voice/bd4ba0b687b9cdc0.mp3"
     },
     {
-      "key": "43ca7098e8b22f2a",
+      "key": "ca14e95a3396687c",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Not quite. Free games are the bait. A pick-up means a meet-up and telling a stranger where to find you. Never meet, never share where you are, tell a grown-up.",
       "lines": [
         "Not quite.",
         "Free games are the bait. A pick-up means a meet-up and telling a stranger where to find you. Never meet, never share where you are, tell a grown-up."
       ],
-      "file": "/audio/voice/43ca7098e8b22f2a.mp3"
+      "file": "/audio/voice/ca14e95a3396687c.mp3"
     },
     {
-      "key": "495b325058ca437f",
+      "key": "786e6afcdca490bd",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Not quite. Playing the game online is fine; the rule is about something of yours leaving your phone.",
       "lines": [
         "Not quite.",
         "Playing the game online is fine; the rule is about something of yours leaving your phone."
       ],
-      "file": "/audio/voice/495b325058ca437f.mp3"
+      "file": "/audio/voice/786e6afcdca490bd.mp3"
     },
     {
-      "key": "22ad767f4c32e7ba",
+      "key": "f80d11b1e14c7646",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Not quite. Smiling is fine; the rule is about pictures of you leaving your hands.",
       "lines": [
         "Not quite.",
         "Smiling is fine; the rule is about pictures of you leaving your hands."
       ],
-      "file": "/audio/voice/22ad767f4c32e7ba.mp3"
+      "file": "/audio/voice/f80d11b1e14c7646.mp3"
     },
     {
-      "key": "f26f5f1949fa2cba",
+      "key": "1dee29da4f9bfff9",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Not quite. Winning is fine; the rule is about what you never hand over.",
       "lines": [
         "Not quite.",
         "Winning is fine; the rule is about what you never hand over."
       ],
-      "file": "/audio/voice/f26f5f1949fa2cba.mp3"
+      "file": "/audio/voice/1dee29da4f9bfff9.mp3"
     },
     {
-      "key": "f85f882bf581a2e3",
+      "key": "9236b8de6257909c",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "That's right! Game talk is fine, but this is still a stranger you've never met. Keep it about the game, radar on.",
       "lines": [
         "That's right!",
         "Game talk is fine, but this is still a stranger you've never met. Keep it about the game, radar on."
       ],
-      "file": "/audio/voice/f85f882bf581a2e3.mp3"
+      "file": "/audio/voice/9236b8de6257909c.mp3"
     },
     {
-      "key": "d9f99ccba760d856",
+      "key": "e77ffd78212df799",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Not quite. Whoa, slow down. You met Jess one message ago, and real friends never happen that fast.",
       "lines": [
         "Not quite.",
         "Whoa, slow down. You met Jess one message ago, and real friends never happen that fast."
       ],
-      "file": "/audio/voice/d9f99ccba760d856.mp3"
+      "file": "/audio/voice/e77ffd78212df799.mp3"
     },
     {
-      "key": "49850d6c4e76fd7d",
+      "key": "0afd6cbe477b5034",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "That's right! Perfect. Where you live is private, always, and from everyone online.",
       "lines": [
         "That's right!",
         "Perfect. Where you live is private, always, and from everyone online."
       ],
-      "file": "/audio/voice/49850d6c4e76fd7d.mp3"
+      "file": "/audio/voice/0afd6cbe477b5034.mp3"
     },
     {
-      "key": "f36828798fb17952",
+      "key": "38cef2473b08cadc",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Not quite. Careful. A stranger just learned the park you go to, and where you are stays private.",
       "lines": [
         "Not quite.",
         "Careful. A stranger just learned the park you go to, and where you are stays private."
       ],
-      "file": "/audio/voice/f36828798fb17952.mp3"
+      "file": "/audio/voice/38cef2473b08cadc.mp3"
     },
     {
-      "key": "8d0e7c754dac91d2",
+      "key": "d3dcfb2e0ee54eb4",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "That's right! HERO MOVE! Don't tell your parents is the biggest red flag in the world. You felt the uh-oh, you stopped, you told.",
       "lines": [
         "That's right!",
         "HERO MOVE! Don't tell your parents is the biggest red flag in the world. You felt the uh-oh, you stopped, you told."
       ],
-      "file": "/audio/voice/8d0e7c754dac91d2.mp3"
+      "file": "/audio/voice/d3dcfb2e0ee54eb4.mp3"
     },
     {
-      "key": "45944a674e474ea7",
+      "key": "830c51b3d714a24e",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Not quite. Never keep an online friend secret from your grown-ups. Telling them is always the hero move.",
       "lines": [
         "Not quite.",
         "Never keep an online friend secret from your grown-ups. Telling them is always the hero move."
       ],
-      "file": "/audio/voice/45944a674e474ea7.mp3"
+      "file": "/audio/voice/830c51b3d714a24e.mp3"
     },
     {
-      "key": "bbb85e97ca039437",
+      "key": "eaef8c08d9cfed44",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "That's right! Pinned! You can't see who's typing, so a photo, an age or a name proves nothing.",
       "lines": [
         "That's right!",
         "Pinned! You can't see who's typing, so a photo, an age or a name proves nothing."
       ],
-      "file": "/audio/voice/bbb85e97ca039437.mp3"
+      "file": "/audio/voice/eaef8c08d9cfed44.mp3"
     },
     {
-      "key": "d85a369290ab32e2",
+      "key": "c0e36f961e919651",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Not quite. Decoy! A photo can be copied from anywhere, so a kid photo proves nothing about who's typing.",
       "lines": [
         "Not quite.",
         "Decoy! A photo can be copied from anywhere, so a kid photo proves nothing about who's typing."
       ],
-      "file": "/audio/voice/d85a369290ab32e2.mp3"
+      "file": "/audio/voice/c0e36f961e919651.mp3"
     },
     {
-      "key": "32e48652f82f5500",
+      "key": "23f9cdef61dde535",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "That's right! Pinned! A brand-new account with no friends you know is the classic fake-profile clue.",
       "lines": [
         "That's right!",
         "Pinned! A brand-new account with no friends you know is the classic fake-profile clue."
       ],
-      "file": "/audio/voice/32e48652f82f5500.mp3"
+      "file": "/audio/voice/23f9cdef61dde535.mp3"
     },
     {
-      "key": "2c98daa36e1142bb",
+      "key": "950a60c58e0ee4ae",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Not quite. Decoy! Best friends in five minutes is the oldest trick in the disguise kit. Real friendship grows slowly.",
       "lines": [
         "Not quite.",
         "Decoy! Best friends in five minutes is the oldest trick in the disguise kit. Real friendship grows slowly."
       ],
-      "file": "/audio/voice/2c98daa36e1142bb.mp3"
+      "file": "/audio/voice/950a60c58e0ee4ae.mp3"
     },
     {
-      "key": "ca3e90b16628d5a1",
+      "key": "9b76986bbb35be79",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "That's right! Pinned! Secrets, photos and gifts for info are always red flags, and don't tell your parents is the biggest.",
       "lines": [
         "That's right!",
         "Pinned! Secrets, photos and gifts for info are always red flags, and don't tell your parents is the biggest."
       ],
-      "file": "/audio/voice/ca3e90b16628d5a1.mp3"
+      "file": "/audio/voice/9b76986bbb35be79.mp3"
     },
     {
-      "key": "fbf16ab1994b5147",
+      "key": "ee740ed62d986f1a",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Not quite. Decoy! Meeting an online-only friend is never fine, busy place or not. Rule one never bends.",
       "lines": [
         "Not quite.",
         "Decoy! Meeting an online-only friend is never fine, busy place or not. Rule one never bends."
       ],
-      "file": "/audio/voice/fbf16ab1994b5147.mp3"
+      "file": "/audio/voice/ee740ed62d986f1a.mp3"
     },
     {
-      "key": "23f59bd862006afc",
+      "key": "172007ca29e721cc",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "That's right! Pinned! Never meet an online-only friend, never send a photo of yourself. Zero exceptions.",
       "lines": [
         "That's right!",
         "Pinned! Never meet an online-only friend, never send a photo of yourself. Zero exceptions."
       ],
-      "file": "/audio/voice/23f59bd862006afc.mp3"
+      "file": "/audio/voice/172007ca29e721cc.mp3"
     },
     {
-      "key": "8fe5cb73c24f9efc",
+      "key": "9352ce00d0d1f8e5",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "Not quite. Decoy! Safe friends never need secrets from your grown-ups. Don't tell your parents is the biggest red flag.",
       "lines": [
         "Not quite.",
         "Decoy! Safe friends never need secrets from your grown-ups. Don't tell your parents is the biggest red flag."
       ],
-      "file": "/audio/voice/8fe5cb73c24f9efc.mp3"
+      "file": "/audio/voice/9352ce00d0d1f8e5.mp3"
     },
     {
-      "key": "9900102ca3275805",
+      "key": "7593732027b58c3c",
       "speaker": "adam",
-      "voice": "Sarah",
+      "voice": "Emma (Kids Educator)",
       "text": "That's right! Pinned! An uh-oh feeling means stop chatting and tell a trusted grown-up, no reason needed.",
       "lines": [
         "That's right!",
         "Pinned! An uh-oh feeling means stop chatting and tell a trusted grown-up, no reason needed."
       ],
-      "file": "/audio/voice/9900102ca3275805.mp3"
+      "file": "/audio/voice/7593732027b58c3c.mp3"
     },
     {
       "key": "98c272f68fb81fa8",

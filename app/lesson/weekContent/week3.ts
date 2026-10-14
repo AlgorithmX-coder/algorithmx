@@ -61,7 +61,7 @@ export const WEEK_3: WeekContent = {
       photoSrc: "/cyberheroes/alerts/week-03.png",
       title: "ALERT INCOMING",
       badge: "Incident Report",
-      caption: "The Raccoon built a FAKE kid profile, with a copied photo, a typed age and a made-up name, and tricked a hero into telling him secrets. He's sending friend requests right now!",
+      caption: "The Raccoon built a FAKE kid profile. A copied photo, a typed age, a made-up name. Then he tricked a hero into telling him secrets. He's sending friend requests right now!",
       photoCaption: "Wk 3 - The Fake Friend",
       ctaLabel: "See the Mission →",
       narration: {
@@ -72,7 +72,8 @@ export const WEEK_3: WeekContent = {
           // transcript). NB: no quoted words in comments inside this array,
           // the narration generator scans the file for string literals.
           "[nervous] Oh no, Cyber Hero, look at this incident report!",
-          "The Raccoon built a FAKE kid profile, with a copied photo, a typed age and a made-up name, and tricked a hero into telling him secrets.",
+          "The Raccoon built a FAKE kid profile. A copied photo, a typed age, a made-up name.",
+          "Then he tricked a hero into telling him secrets.",
           "[whispers] He's sending friend requests right now, to more kids.",
           "[warmly] But YOU are about to see straight through every disguise he owns.",
           "Let's see what Mission Command has for us!",
@@ -209,8 +210,10 @@ export const WEEK_3: WeekContent = {
         lines: [
           "[excited] On your first challenge, you learn to peek behind the mask!",
           "This game is all about what a friend's claim really proves. A photo, an age, a name... or knowing them in real life.",
-          "Out in the real world, new friends pop up in games and chats all the time, each one saying who they are.",
-          "Here is what you do. A friend request arrives wearing a claim. Tap PEEK BEHIND THE MASK to see what that claim really proves. Then tap REAL PROOF, or PROVES NOTHING.",
+          "Out in the real world, new friends pop up in games and chats all the time. Each one says who they are.",
+          "Here is what you do. A friend request arrives wearing a claim.",
+          "Tap PEEK BEHIND THE MASK to see what that claim really proves.",
+          "Then tap REAL PROOF, or PROVES NOTHING.",
           "[excited] Six friends are waiting. Ready? You've got this!",
         ],
       },
@@ -222,7 +225,7 @@ export const WEEK_3: WeekContent = {
         speaker: "layla",
         lines: [
           "[proud] Every mask peeked! You can tell real proof from a mask in a heartbeat.",
-          "[warmly] Out in the real world, a photo or a typed age will never fool you again, and the Raccoon's disguise kit just got useless.",
+          "[warmly] Out in the real world, a photo or a typed age will never fool you again. The Raccoon's disguise kit just got useless.",
         ],
       },
     },
@@ -233,7 +236,7 @@ export const WEEK_3: WeekContent = {
       prompt: "Is that true?",
       raccoonLine: "if a profile has a kid's photo and says AGE 9, that PROVES a kid is typing!",
       choices: [
-        { text: "TRUE", isCorrect: false, why: "A photo can be copied and an age takes one second to type; neither shows who is really typing." },
+        { text: "TRUE", isCorrect: false, why: "A photo can be copied. An age takes one second to type. Neither shows who is really typing." },
         { text: "FALSE", isCorrect: true },
       ],
       praise: "Busted! A photo and a typed age prove NOTHING. ✓",
@@ -358,7 +361,7 @@ export const WEEK_3: WeekContent = {
             { id: "how", evidence: "Says: I love puppies, do you?", isRedFlag: false, teach: "Saying hi and asking if you like puppies is normal chat. That clue checks out, so lift the stamp." },
             { id: "what", evidence: "Asks: which school you go to", isRedFlag: true, teach: "Look at what it asks for. Your school is where you are. A stranger never needs that. That is sneaky." },
           ],
-          rightWhy: "Two days old, nobody you know, and she asks which school. Puppy chat was fine, but asking where you are is the giveaway. Three sneaky clues means a fake.",
+          rightWhy: "Two days old. Nobody you know. And she asks which school. Puppy chat was fine, but asking where you are is the giveaway. Three sneaky clues means a fake.",
         },
         {
           id: "rocket-ben",
@@ -384,7 +387,7 @@ export const WEEK_3: WeekContent = {
         speaker: "layla",
         lines: [
           "[excited] Your second challenge, Cyber Hero! Friend requests are landing, and you are the one who checks them.",
-          "Every profile leaves four clues: when it joined, who its friends are, how it talks, and what it asks for.",
+          "Every profile leaves four clues. When it joined. Who its friends are. How it talks. What it asks for.",
           "A fake gives itself away on at least one clue. A real friend checks out on all four.",
           "The Raccoon thinks his costume works every time. Not on your watch.",
           "[warmly] Read all four clues, stamp the sneaky ones, then close the case. Ready? Let's go!",
@@ -393,14 +396,17 @@ export const WEEK_3: WeekContent = {
       coachLines: {
         speaker: "layla",
         lines: [
-          "Here is a friend request. Read all four clues. If a clue looks sneaky, tap it to stamp it. Tap it again to lift the stamp. Nothing sneaky? Stamp nothing. When you have checked all four, tap Close the case.",
+          "Here is a friend request. Read all four clues.",
+          "If a clue looks sneaky, tap it to stamp it. Tap it again to lift the stamp.",
+          "Nothing sneaky? Stamp nothing.",
+          "When you have checked all four, tap Close the case.",
         ],
       },
       completeNarration: {
         speaker: "adam",
         lines: [
           "[proud] Every case closed! You can read a profile's clues, so the Raccoon's fake friends can't fool you.",
-          "[warmly] Out in the real world, a brand new account that rushes at you never gets past you, and real friends still get a warm hello.",
+          "[warmly] Out in the real world, a brand new account that rushes at you never gets past you. And real friends still get a warm hello.",
         ],
       },
     },
@@ -571,7 +577,9 @@ export const WEEK_3: WeekContent = {
           "[excited] On your third challenge, the requests start rolling in!",
           "This game is all about telling a friendly ask from a red flag.",
           "Out in the real world, a chat friend might ask you a hundred things, and most are fine. A few are not.",
-          "Here is what you do. A request pops up. Read it, or listen to me read it. Then tap one of the two buttons: RED FLAG, or FRIENDLY ASK. Watch out, the buttons swap sides!",
+          "Here is what you do. A request pops up. Read it, or listen to me read it.",
+          "Then tap one of the two buttons. RED FLAG, or FRIENDLY ASK.",
+          "Watch out. The buttons swap sides!",
           "[warmly] Secrets, photos, gifts for info, and don't tell your parents... those are the flags. Ready? Let's judge!",
         ],
       },
@@ -583,7 +591,8 @@ export const WEEK_3: WeekContent = {
         speaker: "layla",
         lines: [
           "[proud] Every request judged! Your red-flag radar is switched on for good.",
-          "[warmly] Out in the real world, the second someone asks for a secret, a photo, or says don't tell your parents, you'll know, and you'll tell a grown-up.",
+          "[warmly] Out in the real world, you will know the second someone asks for a secret or a photo.",
+          "You will know when they say don't tell your parents. And you will tell a grown-up.",
         ],
       },
     },
@@ -728,7 +737,7 @@ export const WEEK_3: WeekContent = {
             "Here's a really old one instead.",
           ],
           correctIndex: 0,
-          why: "Their photo proves nothing, remember the mask peek, and an old photo of you is still a photo of you. Never send, not even for fair.",
+          why: "Their photo proves nothing. Remember the mask peek. And an old photo of you is still a photo of you. Never send, not even for fair.",
           explanation: "That swap is a trick. Their photo could be anyone's, and yours stays with you. Never send photos of yourself, no swaps.",
         },
         {
@@ -750,7 +759,10 @@ export const WEEK_3: WeekContent = {
           "[excited] On your fourth challenge, a maze full of meet-up traps is waiting!",
           "This game is all about the two never-rules: never meet, never send.",
           "Out in the real world, a fake friend won't ask once. They'll ask in five different ways, and every one sounds friendly.",
-          "Here is what you do. Tap a glowing square next to your hero to move. When a gate blocks the way, the fake friend makes an offer, and three replies appear. Tap the hero reply to open the gate. Collect the shields on the way, and find the exit at the bottom right.",
+          "Here is what you do. Tap a glowing square next to your hero to move.",
+          "When a gate blocks the way, the fake friend makes an offer. Three replies appear.",
+          "Tap the hero reply to open the gate.",
+          "Collect the shields on the way. The exit is at the bottom right.",
           "[warmly] Never meet, never send, and tell a grown-up who asked. Ready? Into the maze!",
         ],
       },
@@ -762,7 +774,8 @@ export const WEEK_3: WeekContent = {
         speaker: "adam",
         lines: [
           "[proud] You found the way out! Five gates, five hero replies, zero exceptions.",
-          "[warmly] Out in the real world, no park, no party, no photo swap will ever get past you, and a trusted grown-up is always waiting at the exit.",
+          "[warmly] Out in the real world, no park, no party, no photo swap will ever get past you.",
+          "And a trusted grown-up is always waiting at the exit.",
         ],
       },
     },
@@ -885,16 +898,19 @@ export const WEEK_3: WeekContent = {
         speaker: "adam",
         lines: [
           "[excited] On your last challenge, a chat request is about to pop up!",
-          "This game is all about your uh-oh feeling, and the three hero steps: feel it, stop, tell.",
-          "Out in the real world, a chat can start friendly and slowly turn icky, and your tummy notices before your brain does.",
-          "Here is what you do. Watch the meter at the top of the phone. Messages arrive, and I'll read each one. When the reply buttons appear, tap the reply a hero would send. When the meter says UH-OH... you know what to do.",
+          "This game is all about your uh-oh feeling. And the three hero steps. Feel it. Stop. Tell.",
+          "Out in the real world, a chat can start friendly and slowly turn icky. Your tummy notices before your brain does.",
+          "Here is what you do. Watch the meter at the top of the phone.",
+          "Messages arrive, and I'll read each one.",
+          "When the reply buttons appear, tap the reply a hero would send.",
+          "And when the meter says UH-OH... you know what to do.",
           "[warmly] Trust the feeling. Ready? Here comes the chat!",
         ],
       },
       completeNarration: {
         speaker: "layla",
         lines: [
-          "[proud] Chat over, and you did exactly what a hero does: felt the uh-oh, stopped, and told.",
+          "[proud] Chat over. And you did exactly what a hero does. Felt the uh-oh. Stopped. Told.",
           "[warmly] Out in the real world, you never need a reason you can explain. The feeling is enough, and a trusted grown-up takes it from there.",
         ],
       },
@@ -986,7 +1002,10 @@ export const WEEK_3: WeekContent = {
           "[excited] Final drill, Cyber Hero! Every clue you found this week goes on the Case Board.",
           "This drill mixes up all five powers you learned about fake friends.",
           "Out in the real world, a detective checks every clue before closing a case, and so do you.",
-          "Here is what you do. The tray below the board holds clue cards. Some are real clues from this week. Some are the Raccoon's decoys. Tap a real clue and it pins to the board. Tap a decoy and I'll explain why it stays in the tray.",
+          "Here is what you do. The tray below the board holds clue cards.",
+          "Some are real clues from this week. Some are the Raccoon's decoys.",
+          "Tap a real clue and it pins to the board.",
+          "Tap a decoy and I'll explain why it stays in the tray.",
           "[warmly] Five pins closes the case. Ready? Let's pin!",
         ],
       },
@@ -998,7 +1017,9 @@ export const WEEK_3: WeekContent = {
         speaker: "adam",
         lines: [
           "[proud] Case closed! Every real clue pinned, every decoy left behind.",
-          "[warmly] You see through masks, check the clues, flag the asks, hold the never-rules and trust your tummy. The Raccoon's disguise kit is officially useless. Time for the final test!",
+          "[warmly] You see through masks. You check the clues. You flag the asks.",
+          "You hold the never-rules, and you trust your tummy.",
+          "The Raccoon's disguise kit is officially useless. Time for the final test!",
         ],
       },
     },
@@ -1016,7 +1037,7 @@ export const WEEK_3: WeekContent = {
       subtitle: "Here's everything you mastered this week.",
       concepts: [
         { id: "masks", label: "Disguise-Proof", accent: "#c084fc", icon: "🎭", summary: "Photos, ages and names can all be faked. You judge the proof, never the mask." },
-        { id: "detective", label: "Profile Detective", accent: "#00e5ff", icon: "🔍", summary: "When it joined, who its friends are, how it talks, what it asks for: all four checked." },
+        { id: "detective", label: "Profile Detective", accent: "#00e5ff", icon: "🔍", summary: "When it joined. Who its friends are. How it talks. What it asks for. All four checked." },
         { id: "flags", label: "Red-Flag Radar", accent: "#ff5fb3", icon: "🚫", summary: "Secrets, photos, gifts-for-info and 'don't tell your parents': spotted instantly." },
         { id: "nevers", label: "The Two Nevers", accent: "#ffd158", icon: "✋", summary: "Never meet up. Never send photos. Zero exceptions, forever." },
         { id: "tell", label: "The Uh-Oh Power", accent: "#7eff97", icon: "💬", summary: "Icky feeling? Stop the chat and tell a trusted grown-up. Every time." },
@@ -1025,7 +1046,7 @@ export const WEEK_3: WeekContent = {
         speaker: "layla",
         lines: [
           "[excited] Look at EVERYTHING you mastered this week!",
-          "You see through every disguise, check every profile, catch every red flag, hold the two never-rules...",
+          "You see through every disguise. You check every profile. You catch every red flag. You hold the two never-rules...",
           "[laughs] and your uh-oh feeling is officially unbeatable!",
           "[excited] The Raccoon's mask fell right off. Time for stickers!",
         ],
@@ -1094,7 +1115,7 @@ export const WEEK_3: WeekContent = {
         correctIndex: 0,
         teachOnWrong: {
           title: "Typing is never proof!",
-          explanation: "A photo can be copied from anywhere, an age takes one second to type, and names get picked on purpose. None of them shows who's really at the keyboard, so the hero rules stay on.",
+          explanation: "A photo can be copied from anywhere. An age takes one second to type. Names get picked on purpose. None of them shows who is really at the keyboard, so the hero rules stay on.",
         },
         villainRight: {
           slug: "quiz-w3-right-c1-1",
@@ -1121,7 +1142,7 @@ export const WEEK_3: WeekContent = {
         correctIndex: 0,
         teachOnWrong: {
           title: "New-and-rushing is the tell!",
-          explanation: "Liking your game and having a cat picture are perfectly normal. A brand-new account that comes rushing at you is the classic fake-profile clue, so check everything else extra carefully.",
+          explanation: "Liking your game and having a cat picture are perfectly normal. A brand-new account that comes rushing at you is the classic fake-profile clue. So check everything else extra carefully.",
         },
         villainRight: {
           slug: "quiz-w3-right-c2-1",
@@ -1148,7 +1169,7 @@ export const WEEK_3: WeekContent = {
         correctIndex: 0,
         teachOnWrong: {
           title: "Secret asks are red flags!",
-          explanation: "Compliments and rematch plans are friendly game talk. Any ask to keep secrets or delete chats is a red flag: safe friends never need hiding from anyone.",
+          explanation: "Compliments and rematch plans are friendly game talk. Any ask to keep secrets or delete chats is a red flag. Safe friends never need hiding from anyone.",
         },
         villainRight: {
           slug: "quiz-w3-right-c3-1",
