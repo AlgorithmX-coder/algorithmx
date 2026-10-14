@@ -63,7 +63,8 @@ export const WEEK_2: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[nervous] Oh no, look what happened! The Raccoon tricked Adam and Layla into typing their address, their school, even their phone number.",
+          "[nervous] Oh no, look what happened!",
+          "The Raccoon tricked Adam and Layla into typing their address. Their school. Even their phone number.",
           "[whispers] Now he knows exactly where they are... yikes.",
           "[warmly] But YOUR secrets? He is getting nothing.",
           "[excited] By the end of this week, you'll guard every private treasure like a hero. Come on, let's see the mission!",
@@ -193,7 +194,8 @@ export const WEEK_2: WeekContent = {
           "[excited] On your very first challenge, we raid the Raccoon's secret wish list!",
           "This game is all about knowing which bits of YOU are private treasure.",
           "Out in the real world, the Raccoon collects these little clues to find you and trick you.",
-          "Here is what you do. Tap each golden card to see his sneaky plan, then slam it shut with a shield.",
+          "Here is what you do. Tap each golden card to see his sneaky plan.",
+          "Then slam it shut with a shield.",
           "[excited] Foil every plan and his wish list is worthless. Ready? Let's peek!",
         ],
       },
@@ -205,7 +207,8 @@ export const WEEK_2: WeekContent = {
         speaker: "layla",
         lines: [
           "[proud] Every card slammed shut! You just learned the five private treasures the Raccoon hunts for.",
-          "[warmly] Out in the real world, keep your name, address, school, phone and where-you-are locked away, and he can never find you.",
+          "[warmly] Out in the real world, keep all five locked away. Your name. Your address. Your school. Your phone. Where you are.",
+          "Do that, and he can never find you.",
         ],
       },
     },
@@ -226,7 +229,7 @@ export const WEEK_2: WeekContent = {
         lines: [
           "[warmly] Exactly right. Your home address is PRIVATE.",
           "It tells a stranger WHERE you live, and that's one of your five treasures.",
-          "A favorite pizza or a favorite color says nothing about who or where you are, so those are fine to share.",
+          "A favorite pizza or a favorite color says nothing about who or where you are. Those are fine to share.",
           "[excited] Keep the treasures locked and the Raccoon can never find you. Well done!",
         ],
       },
@@ -311,7 +314,9 @@ export const WEEK_2: WeekContent = {
           "[excited] On your next challenge, you're the guard at the Treasure Table!",
           "This game is all about sorting what's safe to share from what stays locked away.",
           "Out in the real world, mixing those two up is exactly how the Raccoon grabs a clue about you.",
-          "Here is what you do. Grab each card and drag it. Favorites go up to the share board. Who-you-are and where-you-are drop straight into the vault.",
+          "Here is what you do. Grab each card and drag it.",
+          "Favorites go up to the share board.",
+          "Who-you-are and where-you-are drop straight into the vault.",
           "[excited] Guard every treasure and he gets nothing. Ready? Let's sort!",
         ],
       },
@@ -467,7 +472,9 @@ export const WEEK_2: WeekContent = {
           "[excited] On your next challenge, you become a form detective!",
           "This game is all about asking one hero question before you type: WHY are they asking?",
           "Out in the real world, sneaky apps ask for far more than they need, and that's the Raccoon's trap.",
-          "Here is what you do. Tap all four magnifying glasses on each form, who's asking, what they want, whether they NEED it, and what happens next. Then make the call: fair ask, or too nosy?",
+          "Here is what you do. Tap all four magnifying glasses on each form.",
+          "Who is asking. What they want. Whether they NEED it. What happens next.",
+          "Then make the call. Fair ask, or too nosy?",
           "[excited] Catch every nosy form and no trick gets past you. Ready? Let's inspect!",
         ],
       },
@@ -479,7 +486,7 @@ export const WEEK_2: WeekContent = {
         speaker: "layla",
         lines: [
           "[proud] Case closed, Cyber Hero! Now you can ask WHY any app wants your info.",
-          "[warmly] If it asks for more than it needs to work, it's too nosy, so you close it and tell a grown-up.",
+          "[warmly] If it asks for more than it needs to work, it is too nosy. So you close it and tell a grown-up.",
         ],
       },
     },
@@ -490,7 +497,7 @@ export const WEEK_2: WeekContent = {
       prompt: "Is that true?",
       raccoonLine: "a quiz app NEEDS your home address, or the quiz won't work!",
       choices: [
-        { text: "TRUE", isCorrect: false, why: "A quiz has no use for your address; it's private info, and an app that asks for it is up to something." },
+        { text: "TRUE", isCorrect: false, why: "A quiz has no use for your address. It is private info, and an app that asks for it is up to something." },
         { text: "FALSE", isCorrect: true },
       ],
       praise: "Busted! A quiz needs ZERO of that to work. ✓",
@@ -594,8 +601,9 @@ export const WEEK_2: WeekContent = {
         lines: [
           "[excited] On your next challenge, we fire up the Secret Identity Machine!",
           "This game is all about building a username that's a perfect mask, with none of the real you inside.",
-          "Out in the real world, a username with your name or birthday is a mask with a hole in it, and the Raccoon peeks right through.",
-          "Here is what you do. Tap a hero word, a sidekick, and a lucky number for each reel, and dodge any part that leaks the real you.",
+          "Out in the real world, a username with your name or birthday is a mask with a hole in it. The Raccoon peeks right through.",
+          "Here is what you do. Tap a hero word, a sidekick and a lucky number for each reel.",
+          "Dodge any part that leaks the real you.",
           "[excited] Fill the disguise meter and stamp your hero badge. Ready? Let's forge!",
         ],
       },
@@ -607,7 +615,8 @@ export const WEEK_2: WeekContent = {
         speaker: "adam",
         lines: [
           "[proud] Hero name forged! Now you can build a username that's a mask with no holes.",
-          "[warmly] No real name, no age, no birthday, no school, so the Raccoon can stare all day and learn nothing.",
+          "[warmly] No real name. No age. No birthday. No school.",
+          "The Raccoon can stare all day and learn nothing.",
         ],
       },
     },
@@ -720,7 +729,8 @@ export const WEEK_2: WeekContent = {
           "[excited] On your LAST challenge, you learn the Hero Pause!",
           "This game is all about what to do when you're just not sure: stop, and ask a grown-up.",
           "Out in the real world, tricky pop-ups appear all the time, and the smartest heroes never guess.",
-          "Here is what you do. Four hero moves are jumbled up below. Tap them in the order a hero does them, and each one lights up on the path.",
+          "Here is what you do. Four hero moves are jumbled up below.",
+          "Tap them in the order a hero does them. Each one lights up on the path.",
           "[excited] Get the whole Hero Pause in order and no trick can catch you. Ready? You've got this!",
         ],
       },
@@ -732,7 +742,8 @@ export const WEEK_2: WeekContent = {
         speaker: "layla",
         lines: [
           "[proud] Golden rule mastered! When you're not sure, you stop and ask a trusted grown-up.",
-          "[warmly] A parent, a carer, a teacher, your backup team, so you never have to guess and the Raccoon never wins.",
+          "[warmly] A parent. A carer. A teacher. That is your backup team.",
+          "So you never have to guess, and the Raccoon never wins.",
         ],
       },
     },
@@ -837,7 +848,9 @@ export const WEEK_2: WeekContent = {
           "[excited] Final drill, Cyber Hero! The Raccoon has emptied his whole grab bag at you.",
           "This one mixes up everything you learned about guarding your secrets.",
           "Out in the real world, grabs for your private info and perfectly safe messages fly past you all the time.",
-          "Here is what you do. Messages fly toward your device. Tap a grab for private info to ZAP it. Leave the safe ones alone and they land in your vault.",
+          "Here is what you do. Messages fly toward your device.",
+          "Tap a grab for private info to ZAP it. Leave the safe ones alone.",
+          "Those land in your vault.",
           "[warmly] Trust your training, you guard this vault now. Ready? Let's zap!",
         ],
       },
@@ -944,7 +957,7 @@ export const WEEK_2: WeekContent = {
         correctIndex: 0,
         teachOnWrong: {
           title: "Who-you-are and where-you-are stay locked!",
-          explanation: "A favorite game and a favorite dinosaur only say what Adam LIKES. His school says where he is five days a week, and that's one of the five private treasures.",
+          explanation: "A favorite game and a favorite dinosaur only say what Adam LIKES. His school says where he is five days a week. That is one of the five private treasures.",
         },
         villainRight: {
           slug: "quiz-w2-right-c1-1",
@@ -971,7 +984,7 @@ export const WEEK_2: WeekContent = {
         correctIndex: 0,
         teachOnWrong: {
           title: "Favorites yes, places no!",
-          explanation: "All three sound like favorites, but only the pancakes are really about what she likes. A best school or a best street quietly tells a stranger where to find her.",
+          explanation: "All three sound like favorites. Only the pancakes are really about what she likes. A best school or a best street tells a stranger where to find her.",
         },
         villainRight: {
           slug: "quiz-w2-right-c2-1",
@@ -998,7 +1011,7 @@ export const WEEK_2: WeekContent = {
         correctIndex: 0,
         teachOnWrong: {
           title: "Ask what the app NEEDS!",
-          explanation: "A nickname labels his art and a favorite color picks his paints, those asks match the app. Coloring never rings anybody, so a phone number is an over-ask. Too nosy!",
+          explanation: "A nickname labels his art. A favorite color picks his paints. Those asks match the app. But coloring never rings anybody, so a phone number is an over-ask. Too nosy!",
         },
         villainRight: {
           slug: "quiz-w2-right-c3-1",
@@ -1026,7 +1039,7 @@ export const WEEK_2: WeekContent = {
         correctIndex: 0,
         teachOnWrong: {
           title: "No real-you clues in the mask!",
-          explanation: "A real first name, a school, or a birth year pokes a hole in the mask, even inside a cool-sounding name. Hero words plus a number that means nothing keep the real Layla invisible.",
+          explanation: "A real first name pokes a hole in the mask. So does a school, or a birth year. Hero words plus a number that means nothing keep the real Layla invisible.",
         },
         villainRight: {
           slug: "quiz-w2-right-c4-1",
@@ -1053,7 +1066,7 @@ export const WEEK_2: WeekContent = {
         correctIndex: 0,
         teachOnWrong: {
           title: "Heroes don't guess!",
-          explanation: "The help robot works for the app, and typing to see what happens is just guessing. When you're not sure, hit pause and call your backup: a trusted grown-up.",
+          explanation: "The help robot works for the app. Typing to see what happens is just guessing. When you are not sure, hit pause and call your backup. A trusted grown-up.",
         },
         villainRight: {
           slug: "quiz-w2-right-c5-1",
