@@ -70,3 +70,7 @@ art-review/
 
 # local Claude settings (contains secrets — never commit)
 .claude/settings.local.json
+
+# transcript caches for the narration shaper (audio-content keyed, local only)
+.stt-cache/
+.pause-cache/
