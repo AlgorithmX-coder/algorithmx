@@ -58,44 +58,35 @@ if (!KEY && !CHECK_ONLY) {
 //   teachery".) Both content speakers map to Sarah = one consistent mentor;
 //   the speaker tag is preserved for any future second-voice move.
 const VOICE = {
-  adam:  { id: "EXAVITQu4vr4xnSDxMaL", name: "Sarah" },
-  layla: { id: "EXAVITQu4vr4xnSDxMaL", name: "Sarah" },
+  adam:  { id: "oClOrzqamOXmtcB8iqTj", name: "Emma (Kids Educator)" },
+  layla: { id: "oClOrzqamOXmtcB8iqTj", name: "Emma (Kids Educator)" },
   // Storyteller NARRATOR — a deliberately DIFFERENT voice (ElevenLabs "George",
   // warm mature male) that reads the "Choose Your Path" scenario setups aloud,
   // so Sarah (the coach) can then jump in and ask "which one do you think?".
   narrator: { id: "JBFqnCBsd6RMkjVDRZzb", name: "George" },
 };
 
-/* The narrator, per week.
+/* The narrator.
  *
- * The owner picked Brittney over Sarah after hearing both read the same
- * cycle through the same pipeline. Changing her globally would re-hash all
- * 5,166 blocks at once and silence the whole course, so the switch runs week
- * by week: week 1 moves now and is listened to in context on the real site,
- * and the rest follow in one batch once it holds up. A course must never be
- * left half migrated - two narrators across twenty weeks is worse than
- * either voice on its own.
+ * Owner's pick after hearing the shortlist: a bright kids educator rather than
+ * an audiobook narrator. Every earlier candidate - Sarah, Brittney, Emma Warm,
+ * Carolyn, Heather, Liz, Talia, Cozy - was calm, measured and intimate, which
+ * is the register for reading a novel to an adult. A teacher of six year olds
+ * is brighter and carries more lift, because she is holding a room rather than
+ * confiding in one listener.
+ *
+ * The switch ran week by week on purpose: week 1 moved first and was listened
+ * to in context on the real site, and the rest followed in one batch once it
+ * held up. That is finished, so there is no longer a per-week narrator table -
+ * she is simply the voice, which is also what keeps the SHARED lines ("That's
+ * right!", "Not quite.", the quick-check prompt) in step. While the table
+ * existed those lines stayed on the default voice and leaked the old narrator
+ * into migrated weeks. A course must never be left half migrated: two
+ * narrators across twenty weeks is worse than either voice on its own.
  */
-/* Owner's pick after hearing the shortlist: a bright kids educator rather
- * than an audiobook narrator. Every earlier candidate - Sarah, Brittney,
- * Emma Warm, Carolyn, Heather, Liz, Talia, Cozy - was calm, measured and
- * intimate, which is the register for reading a novel to an adult. A teacher
- * of six year olds is brighter and carries more lift, because she is holding
- * a room rather than confiding in one listener. */
-const KIDS_EDUCATOR = { id: "oClOrzqamOXmtcB8iqTj", name: "Emma (Kids Educator)" };
-const NARRATOR_BY_WEEK = {
-  "week1.ts": KIDS_EDUCATOR,
-  // Not a week: the one shared line QuickCheck speaks on every finish-mode
-  // screen. See the note on that blocks.push for why a cross-week line is
-  // pinned to week 1's narrator.
-  "shared:quickcheck-finish": KIDS_EDUCATOR,
-};
 
-/** The voice for a block: the week's narrator if it has its own, else the
- *  speaker's usual one. Shared lines stay on the default. */
+/** The voice for a block. `source` is kept for a future per-week override. */
 function voiceFor(speaker, source) {
-  const perWeek = source && NARRATOR_BY_WEEK[source];
-  if (perWeek && VOICE[speaker] && VOICE[speaker].name === "Sarah") return perWeek;
   return VOICE[speaker];
 }
 
@@ -817,6 +808,25 @@ for (const fname of weekFiles) {
     oneTakes++;
   }
   console.log(`  one-take verdicts: ${oneTakes} block(s) (of ${verdictPairs.length} audited pairs, all weeks)`);
+}
+
+/* --week=N records one week and leaves the rest alone.
+ *
+ * The move to one narrator re-hashes every block in the course, which is a
+ * single run of several thousand recordings. That is the wrong unit of work
+ * while the scripts are still being rewritten week by week: a week recorded
+ * before its rewrite is a week paid for twice. So a week can be finished,
+ * recorded and listened to on the real site on its own, and the rest follow
+ * once the writing is settled.
+ */
+const ONLY_WEEK = (process.argv.find((a) => a.startsWith("--week=")) || "").split("=")[1];
+if (ONLY_WEEK) {
+  const want = `week${ONLY_WEEK}.ts`;
+  const before = blocks.length;
+  for (let i = blocks.length - 1; i >= 0; i--) {
+    if (blocks[i].source !== want) blocks.splice(i, 1);
+  }
+  console.log(`--week=${ONLY_WEEK}: ${blocks.length} of ${before} blocks (the rest are left untouched)`);
 }
 
 console.log(`Found ${blocks.length} narration blocks (${blocks.reduce((n, b) => n + b.lines.length, 0)} lines)`);
