@@ -493,8 +493,14 @@ export function EngineStyles() {
       @keyframes srMsgIn { from { opacity: 0; transform: translateY(10px) scale(0.98); } to { opacity: 1; transform: none; } }
       .sr-typedot { animation: srTypeDot 1s ease-in-out infinite; }
       @keyframes srTypeDot { 0%,60%,100% { opacity: 0.25; transform: none; } 30% { opacity: 1; transform: translateY(-3px); } }
+      {/* Owner: the red faded background on the boss intro/battle screens
+          reads as too small. It's this inset glow, fading in from the
+          viewport edges — the 130px spread only reaches a thin band near
+          the edges on anything wider than a phone. Bumped the spread so
+          the red actually fills most of the screen, plus a touch more
+          opacity so it's legible as a background, not just an edge tint. */}
       .sr-alert-edge { position: fixed; inset: 0; pointer-events: none; z-index: 1;
-        box-shadow: inset 0 0 130px ${T.threatRed}30; animation: srAlert 2.6s ease-in-out infinite; }
+        box-shadow: inset 0 0 260px ${T.threatRed}42; animation: srAlert 2.6s ease-in-out infinite; }
       @keyframes srAlert { 0%,100% { opacity: 0.5; } 50% { opacity: 1; } }
 
       /* XP pop — the reward flies */
