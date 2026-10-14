@@ -1803,14 +1803,14 @@ export default function SchoolsGlobe({ tone = "night" }: { tone?: "night" | "san
             : `linear-gradient(180deg, rgba(3,7,26,0.93) 0px, rgba(3,7,26,0.88) 130px, rgba(3,7,26,0.64) 205px, rgba(3,7,26,0.22) 310px, rgba(3,7,26,0) 420px),
             radial-gradient(ellipse 52% 62% at 26% 50%, rgba(3,7,26,0.86) 0%, rgba(3,7,26,0.46) 58%, rgba(3,7,26,0) 84%)`};
         }
-        /* Below 1100 the page's copy runs the full width over the globe, so
-           the veil is even rather than a column: the same width at which the
-           labels and city names stand down. */
+        /* Below 1100 the chips, labels and light-ups all stand down, so the
+           globe is only a decorative texture; the page's copy runs full-width
+           over it, so hold the veil strong and even so the text always reads. */
         @media (max-width: 1099px) {
           .sg-scrim {
             background: ${onSand
-              ? "linear-gradient(180deg, rgba(248,244,236,0.92) 0%, rgba(248,244,236,0.8) 38%, rgba(248,244,236,0.66) 70%, rgba(248,244,236,0.62) 100%)"
-              : "linear-gradient(180deg, rgba(3,7,26,0.9) 0%, rgba(3,7,26,0.76) 38%, rgba(3,7,26,0.62) 70%, rgba(3,7,26,0.58) 100%)"};
+              ? "linear-gradient(180deg, rgba(248,244,236,0.95) 0%, rgba(248,244,236,0.9) 40%, rgba(248,244,236,0.86) 72%, rgba(248,244,236,0.85) 100%)"
+              : "linear-gradient(180deg, rgba(3,7,26,0.93) 0%, rgba(3,7,26,0.86) 40%, rgba(3,7,26,0.8) 72%, rgba(3,7,26,0.78) 100%)"};
           }
         }
 
