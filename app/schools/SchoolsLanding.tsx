@@ -743,6 +743,16 @@ export default function SchoolsLanding() {
         }
         @media (max-width: 820px) { .sch-grid-2, .sch-grid-2-form { grid-template-columns: 1fr; } }
         @media (max-width: 560px) { .sch-grid-4 { grid-template-columns: 1fr; } }
+        /* Phone: looser side gutters and vertical rhythm so the hero breathes,
+           and stack the trust points so they read over the globe. */
+        @media (max-width: 640px) {
+          .sch-section { padding-left: 20px; padding-right: 20px; }
+          .sch-hero-section { padding-top: 20px; padding-bottom: 48px; }
+          .sch-toprow { margin-bottom: 22px; }
+          .sch-h1 { margin-top: 14px; }
+          .sch-cta-row { margin-top: 30px; gap: 12px; }
+          .sch-trust { margin-top: 34px; gap: 14px; flex-direction: column; }
+        }
 
         /* phase picker */
         .sch-phase-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; margin-top: 34px; }
