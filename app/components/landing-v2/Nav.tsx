@@ -182,7 +182,15 @@ export default function Nav({ centre, cta, aside, showTelemetry = true, showSite
         {showTelemetry ? <TrustStrip isLight={isLight} /> : null}
         {centre}
 
-        <div className={cta === null ? "lv2-nav-links lv2-nav-links-nocta" : "lv2-nav-links"}>
+        <div
+          className={[
+            "lv2-nav-links",
+            cta === null ? "lv2-nav-links-nocta" : "",
+            !showSiteLinks ? "lv2-nav-links-compact" : "",
+          ]
+            .filter(Boolean)
+            .join(" ")}
+        >
           {showSiteLinks ? (
             <>
               {/* Root-relative on purpose: this Nav also renders on
@@ -792,6 +800,17 @@ export default function Nav({ centre, cta, aside, showTelemetry = true, showSite
           .lv2-nav-links-nocta :global(.lv2-nav-secondary) {
             font-size: 11.5px !important;
             letter-spacing: 0.09em !important;
+          }
+          /* Schools and corporate hide the site links and show only one page
+             link (School login / AI Cleared) beside the CTA. Two items have
+             the room, so give the bar a real gap and a readable label rather
+             than the tight four-item sizing. */
+          .lv2-nav-links-compact {
+            gap: 16px !important;
+          }
+          .lv2-nav-links-compact :global(.lv2-nav-secondary) {
+            font-size: 11px !important;
+            letter-spacing: 0.06em !important;
           }
           :global(.lv2-nav-cta) {
             padding: 11px 10px !important;
