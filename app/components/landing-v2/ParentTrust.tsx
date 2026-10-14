@@ -71,7 +71,7 @@ const PILLARS: Pillar[] = [
 ];
 
 function PillarIconSvg({ name, color }: { name: PillarIcon; color: string }) {
-  const c = { width: 24, height: 24, viewBox: "0 0 24 24", fill: "none", stroke: color, strokeWidth: 1.7, strokeLinecap: "round" as const, strokeLinejoin: "round" as const };
+  const c = { width: 24, height: 24, viewBox: "0 0 24 24", fill: "none", stroke: color, strokeWidth: 1.9, strokeLinecap: "round" as const, strokeLinejoin: "round" as const };
   switch (name) {
     case "shield":
       return (<svg {...c}><path d="M12 3l7 3v5c0 4.4-3 7.3-7 8.5C8 18.3 5 15.4 5 11V6l7-3z" /></svg>);
@@ -180,9 +180,14 @@ export default function ParentTrust() {
                       width: 52,
                       height: 52,
                       borderRadius: "50%",
-                      border: `1.5px solid ${p.accent}66`,
-                      background: `radial-gradient(circle at 50% 38%, ${p.accent}1f, rgba(255,253,250,0.6))`,
-                      boxShadow: `0 0 22px ${p.accent}33, inset 0 0 12px ${p.accent}1a`,
+                      /* Owner 2026-10-14: richer, better-produced badge. The
+                         accent now reads as a lit glass chip - a diagonal
+                         accent gradient, a crisp accent ring with a faint
+                         outer hairline, a glossy top highlight and a soft lift
+                         - instead of a pale tinted circle. */
+                      border: `1.5px solid ${p.accent}99`,
+                      background: `linear-gradient(145deg, ${p.accent}3a, ${p.accent}14 58%, rgba(255,253,250,0.72))`,
+                      boxShadow: `0 9px 18px -8px ${p.accent}66, 0 0 0 1px ${p.accent}1f, inset 0 1.5px 1px rgba(255,255,255,0.9), inset 0 0 14px ${p.accent}1f`,
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",

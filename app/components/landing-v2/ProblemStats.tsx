@@ -229,9 +229,14 @@ function StatCard({ stat }: { stat: (typeof STATS)[number] }) {
             placeItems: "center",
             width: 44,
             height: 44,
-            borderRadius: 11,
-            border: `1px solid ${stat.color}3a`,
-            background: `${stat.color}12`,
+            borderRadius: 12,
+            /* Owner 2026-10-14: richer, better-produced icon chip - a lit
+               glass square (accent gradient, crisp accent ring + outer
+               hairline, glossy top highlight, soft lift) to match the
+               "Our promises" badges. */
+            border: `1.5px solid ${stat.color}8c`,
+            background: `linear-gradient(145deg, ${stat.color}33, ${stat.color}12 60%, rgba(255,253,250,0.68))`,
+            boxShadow: `0 8px 16px -8px ${stat.color}59, 0 0 0 1px ${stat.color}1c, inset 0 1.5px 1px rgba(255,255,255,0.85)`,
             color: stat.color,
           }}
         >
