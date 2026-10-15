@@ -267,6 +267,10 @@ export default function CorporateLanding({ checkoutLive = false, fluentLive = fa
       <main className="corp-main" style={{ position: "relative", color: "var(--lv2-ink)", minHeight: "100vh", overflowX: "clip" }}>
         <div className="corp-subnav-wrap">
           <nav ref={subnavRef} className="corp-subnav" aria-label="On this page">
+            <span className="corp-subnav-lead" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M6 9l6 6 6-6" /></svg>
+              On this page
+            </span>
             {SECTIONS.filter(([, , cta]) => !cta).map(sectionChip)}
           </nav>
         </div>
@@ -586,14 +590,27 @@ export default function CorporateLanding({ checkoutLive = false, fluentLive = fa
         .corp-hero-band .corp-hero-ghost { background: rgba(255,255,255,0.08) !important; border-color: rgba(255,255,255,0.3) !important; color: #ffffff !important; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
         .corp-hero-band .corp-trust li { color: rgba(238,242,245,0.72); }
         .corp-hero-band .corp-trust li::before { background: #4cc38a; box-shadow: 0 0 10px #4cc38a; }
-        /* the section chips wear night while the nav does */
-        .corp-page-dark .corp-navsections .corp-chip-link { border-color: rgba(255,255,255,0.22); background: rgba(255,255,255,0.06); color: #ffffff; text-shadow: none; box-shadow: none; }
-        .corp-page-dark .corp-navsections .corp-chip-link:hover { border-color: rgba(255,255,255,0.5); background: rgba(255,255,255,0.12); color: #ffffff; }
-        .corp-page-dark .corp-navsections .corp-chip-link.on { border-color: #46b7bf; background: #46b7bf; color: #06181b; }
+        /* the section chips wear night while the nav does - raised glassy
+           tab-buttons on the dark band, current section a lit cyan button */
+        .corp-page-dark .corp-navsections .corp-chip-link,
+        .corp-page-dark .corp-subnav .corp-chip-link {
+          border-color: rgba(130,215,235,0.38);
+          background: linear-gradient(180deg, rgba(255,255,255,0.11), rgba(255,255,255,0.045));
+          color: #dce9ef; text-shadow: none;
+          box-shadow: 0 3px 8px -4px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.12);
+        }
+        .corp-page-dark .corp-navsections .corp-chip-link:hover,
+        .corp-page-dark .corp-subnav .corp-chip-link:hover {
+          border-color: rgba(143,240,250,0.6); background: linear-gradient(180deg, rgba(255,255,255,0.16), rgba(255,255,255,0.07)); color: #ffffff; transform: translateY(-1px);
+        }
+        .corp-page-dark .corp-navsections .corp-chip-link.on,
+        .corp-page-dark .corp-subnav .corp-chip-link.on {
+          border-color: #8ff0fa; background: linear-gradient(180deg, #67e6f2, #32c8da); color: #06181b;
+          box-shadow: 0 11px 22px -9px rgba(48,198,216,0.65), inset 0 1px 0 rgba(255,255,255,0.4); transform: translateY(-1px);
+        }
         /* the subnav strip (below 1180px) sits under the nav on the dark band too */
         .corp-page-dark .corp-subnav-wrap { background: rgba(11,17,23,0.72); border-color: rgba(255,255,255,0.1); }
-        .corp-page-dark .corp-subnav .corp-chip-link { border-color: rgba(255,255,255,0.22); background: rgba(255,255,255,0.06); color: #ffffff; text-shadow: none; box-shadow: none; }
-        .corp-page-dark .corp-subnav .corp-chip-link.on { border-color: #46b7bf; background: #46b7bf; color: #06181b; }
+        .corp-page-dark .corp-subnav-lead { color: #64e3f0; }
 
         .corp-section {
           position: relative;
@@ -734,21 +751,24 @@ export default function CorporateLanding({ checkoutLive = false, fluentLive = fa
           .corp-subnav-wrap { display: none; }
           .corp-section { scroll-margin-top: 88px; }
         }
+        /* Owner 2026-10-15: raised tab-buttons so they read as clickable,
+           with the current section a solid lifted accent button and an
+           "On this page" lead cue on the strip. */
         .corp-chip-link {
-          flex: 0 0 auto; display: inline-flex; align-items: center; min-height: 36px; padding: 0 14px; border-radius: 999px; text-decoration: none;
-          border: 1px solid rgba(10,112,133,0.42); background: rgba(10,112,133,0.16);
-          font-family: var(--lv2-font-mono); font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
-          color: #075a6b;
-          text-shadow: 0 0 10px rgba(10,112,133,0.55), 0 1px 0 rgba(255,255,255,0.6);
-          box-shadow: 0 6px 16px -12px rgba(10,112,133,0.9), inset 0 1px 0 rgba(255,255,255,0.7);
-          transition: border-color .2s ease, color .2s ease, background .2s ease, box-shadow .2s ease;
+          flex: 0 0 auto; display: inline-flex; align-items: center; min-height: 38px; padding: 0 17px; border-radius: 12px; text-decoration: none;
+          border: 1px solid rgba(10,112,133,0.32); background: linear-gradient(180deg, #ffffff, #f1e9db);
+          font-family: var(--lv2-font-mono); font-size: 11.5px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase;
+          color: #0a5663;
+          box-shadow: 0 3px 7px -4px rgba(10,112,133,0.55), inset 0 1px 0 rgba(255,255,255,0.95);
+          transition: transform .15s ease, border-color .2s ease, color .2s ease, background .2s ease, box-shadow .2s ease;
         }
-        .corp-chip-link:hover { border-color: rgba(10,112,133,0.75); color: #05454f; background: rgba(10,112,133,0.26); text-shadow: 0 0 14px rgba(10,112,133,0.85), 0 1px 0 rgba(255,255,255,0.6); }
-        .corp-chip-link.on { border-color: #0a7085; color: #fffdfa; background: #0a7085; text-shadow: none; box-shadow: 0 8px 20px -12px rgba(10,112,133,1), inset 0 1px 0 rgba(255,255,255,0.28); }
+        .corp-chip-link:hover { transform: translateY(-1px); border-color: rgba(10,112,133,0.55); color: #05454f; box-shadow: 0 7px 13px -5px rgba(10,112,133,0.6), inset 0 1px 0 rgba(255,255,255,0.95); }
+        .corp-chip-link.on { color: #fffdfa; background: linear-gradient(180deg, #0e8299, #0a7085); border-color: #0a7085; box-shadow: 0 11px 20px -9px rgba(10,112,133,0.95), inset 0 1px 0 rgba(255,255,255,0.3); transform: translateY(-1px); }
+        .corp-subnav-lead { flex: 0 0 auto; display: inline-flex; align-items: center; gap: 6px; padding-right: 4px; color: #0a7085; font-family: var(--lv2-font-mono); font-size: 10px; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase; white-space: nowrap; }
         .corp-chip-cta { border-color: transparent; color: #04050d; background: linear-gradient(135deg, #2af0ff 0%, #00cfff 55%, #00b4f0 100%); margin-left: auto; }
         .corp-chip-cta:hover, .corp-chip-cta.on { color: #04050d; background: linear-gradient(135deg, #5ff5ff 0%, #1fd8ff 55%, #14c2f8 100%); border-color: transparent; }
         @media (max-width: 1100px) {
-          .corp-subnav { -webkit-mask-image: linear-gradient(90deg, #000 0, #000 calc(100% - 44px), transparent); mask-image: linear-gradient(90deg, #000 0, #000 calc(100% - 44px), transparent); padding-right: calc(var(--lv2-rail) + 32px); }
+          .corp-subnav { gap: 14px; -webkit-mask-image: linear-gradient(90deg, #000 0, #000 calc(100% - 44px), transparent); mask-image: linear-gradient(90deg, #000 0, #000 calc(100% - 44px), transparent); padding-right: calc(var(--lv2-rail) + 32px); }
           .corp-chip-cta { margin-left: 0; }
         }
 
