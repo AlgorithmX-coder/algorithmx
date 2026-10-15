@@ -45,14 +45,14 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "AlgorithmX - Technology Education for Every Age",
-  description: "Six subjects, four age tracks each. Interactive cybersecurity, game development, AI, app development, entrepreneurship, and robotics courses for ages 6 to adult. UK-based, accreditation aligned, lifetime access.",
+  title: "AlgorithmX - Cyber and AI Skills for Every Age",
+  description: "Cyber and AI skills for people, schools and firms. Interactive cybersecurity courses from age 6 to adult, plus AI training for every member of staff. UK-based and accreditation aligned.",
   icons: {
     icon: "/favicon.svg",
   },
   openGraph: {
-    title: "AlgorithmX - Technology Education for Every Age",
-    description: "Six subjects, four age tracks each. Interactive cybersecurity, game development, AI, app development, entrepreneurship, and robotics courses for ages 6 to adult. UK-based, accreditation aligned, lifetime access.",
+    title: "AlgorithmX - Cyber and AI Skills for Every Age",
+    description: "Cyber and AI skills for people, schools and firms. Interactive cybersecurity courses from age 6 to adult, plus AI training for every member of staff. UK-based and accreditation aligned.",
     type: "website",
     url: "https://algorithmx.io",
   },
