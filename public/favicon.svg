@@ -1,10 +1,33 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
   <defs>
-    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#8b5cf6"/>
-      <stop offset="100%" stop-color="#3b82f6"/>
+    <linearGradient id="tile" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0c1430"/>
+      <stop offset="100%" stop-color="#05070f"/>
     </linearGradient>
+    <linearGradient id="topf" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#27e0ff" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#27e0ff" stop-opacity="0.22"/>
+    </linearGradient>
+    <linearGradient id="leftf" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1aa7cc" stop-opacity="0.30"/>
+      <stop offset="100%" stop-color="#0e5f78" stop-opacity="0.16"/>
+    </linearGradient>
+    <linearGradient id="rightf" x1="1" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#7c5cff" stop-opacity="0.30"/>
+      <stop offset="100%" stop-color="#3a2f8f" stop-opacity="0.16"/>
+    </linearGradient>
+    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="0.7" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
   </defs>
-  <rect width="32" height="32" rx="7" fill="url(#g)"/>
-  <text x="16" y="22" text-anchor="middle" font-family="Arial,sans-serif" font-weight="900" font-size="14" fill="white">AX</text>
+  <rect width="32" height="32" rx="7" fill="url(#tile)"/>
+  <polygon points="16,5 26,10.5 16,16 6,10.5" fill="url(#topf)"/>
+  <polygon points="6,10.5 16,16 16,27 6,21.5" fill="url(#leftf)"/>
+  <polygon points="26,10.5 16,16 16,27 26,21.5" fill="url(#rightf)"/>
+  <g fill="none" stroke="#5df0ff" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" filter="url(#glow)">
+    <polygon points="16,5 26,10.5 26,21.5 16,27 6,21.5 6,10.5"/>
+    <path d="M16,16 L16,5 M16,16 L26,10.5 M16,16 L6,10.5"/>
+  </g>
+  <text x="16" y="20.4" text-anchor="middle" font-family="ui-monospace,Menlo,Consolas,monospace" font-weight="700" font-size="7.2" fill="#ffffff" filter="url(#glow)">&lt;/&gt;</text>
 </svg>

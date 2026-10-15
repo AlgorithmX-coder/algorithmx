@@ -255,6 +255,10 @@ export default function SchoolsLanding() {
         {/* SECTION NAV ────────────────────────────────────── */}
         <div className="sch-subnav-wrap">
           <nav ref={subnavRef} className="sch-subnav" aria-label="On this page">
+            <span className="sch-subnav-lead" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M6 9l6 6 6-6" /></svg>
+              On this page
+            </span>
             {SECTIONS.map(sectionChip)}
           </nav>
         </div>
@@ -695,17 +699,21 @@ export default function SchoolsLanding() {
            and a glow off the letterforms. The white ink these used on hover
            and when current was a dark-page value and disappeared entirely on
            a pale wash, which is why the current section read as blank. */
+        /* Owner 2026-10-15: a tester didn't realise these were clickable.
+           They are now raised tab-buttons (solid fill, border, lift) that
+           read as pressable, with the current section a solid lifted accent
+           button, plus an "On this page" lead cue on the strip below. */
         .sch-chip-link {
-          flex: 0 0 auto; display: inline-flex; align-items: center; min-height: 36px; padding: 0 14px; border-radius: 999px; text-decoration: none;
-          border: 1px solid rgba(10,112,133,0.42); background: rgba(10,112,133,0.16);
-          font-family: var(--lv2-font-mono); font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
-          color: #075a6b;
-          text-shadow: 0 0 10px rgba(10,112,133,0.55), 0 1px 0 rgba(255,255,255,0.6);
-          box-shadow: 0 6px 16px -12px rgba(10,112,133,0.9), inset 0 1px 0 rgba(255,255,255,0.7);
-          transition: border-color .2s ease, color .2s ease, background .2s ease, box-shadow .2s ease;
+          flex: 0 0 auto; display: inline-flex; align-items: center; min-height: 38px; padding: 0 17px; border-radius: 12px; text-decoration: none;
+          border: 1px solid rgba(10,112,133,0.32); background: linear-gradient(180deg, #ffffff, #f1e9db);
+          font-family: var(--lv2-font-mono); font-size: 11.5px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase;
+          color: #0a5663;
+          box-shadow: 0 3px 7px -4px rgba(10,112,133,0.55), inset 0 1px 0 rgba(255,255,255,0.95);
+          transition: transform .15s ease, border-color .2s ease, color .2s ease, background .2s ease, box-shadow .2s ease;
         }
-        .sch-chip-link:hover { border-color: rgba(10,112,133,0.75); color: #05454f; background: rgba(10,112,133,0.26); text-shadow: 0 0 14px rgba(10,112,133,0.85), 0 1px 0 rgba(255,255,255,0.6); }
-        .sch-chip-link.on { border-color: #0a7085; color: #fffdfa; background: #0a7085; text-shadow: none; box-shadow: 0 8px 20px -12px rgba(10,112,133,1), inset 0 1px 0 rgba(255,255,255,0.28); }
+        .sch-chip-link:hover { transform: translateY(-1px); border-color: rgba(10,112,133,0.55); color: #05454f; box-shadow: 0 7px 13px -5px rgba(10,112,133,0.6), inset 0 1px 0 rgba(255,255,255,0.95); }
+        .sch-chip-link.on { color: #fffdfa; background: linear-gradient(180deg, #0e8299, #0a7085); border-color: #0a7085; box-shadow: 0 11px 20px -9px rgba(10,112,133,0.95), inset 0 1px 0 rgba(255,255,255,0.3); transform: translateY(-1px); }
+        .sch-subnav-lead { flex: 0 0 auto; display: inline-flex; align-items: center; gap: 6px; padding-right: 4px; color: #0a7085; font-family: var(--lv2-font-mono); font-size: 10px; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase; white-space: nowrap; }
         .sch-chip-cta { border-color: transparent; color: #04050d; background: linear-gradient(135deg, #2af0ff 0%, #00cfff 55%, #00b4f0 100%); margin-left: auto; }
         .sch-chip-cta:hover, .sch-chip-cta.on { color: #04050d; background: linear-gradient(135deg, #5ff5ff 0%, #1fd8ff 55%, #14c2f8 100%); border-color: transparent; }
         /* fade the trailing edge when the strip scrolls (narrow screens) */

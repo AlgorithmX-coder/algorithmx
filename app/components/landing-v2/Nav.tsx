@@ -657,23 +657,28 @@ export default function Nav({ centre, cta, aside, showTelemetry = true, showSite
              top-light - and hover inverts to a solid teal pill so
              interactivity is unmistakable. #075a6b on the 0.12 wash
              clears 4.5:1 with room. */
-          border-color: rgba(10, 112, 133, 0.55) !important;
-          background: rgba(10, 112, 133, 0.12) !important;
+          /* Owner 2026-10-15: raised tab-buttons so they clearly read as
+             clickable. A paper gradient fill, a firm teal edge and a soft
+             lift; hover inverts to a solid teal button. */
+          border-color: rgba(10, 112, 133, 0.5) !important;
+          background: linear-gradient(180deg, #ffffff, #eef6f7) !important;
           color: #075a6b !important;
-          font-weight: 700;
+          font-weight: 800;
           font-size: 13px !important;
           letter-spacing: 0.16em !important;
           padding: 9px 19px !important;
           text-shadow: none !important;
-          box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.75), 0 2px 6px -4px rgba(10, 112, 133, 0.5) !important;
+          box-shadow: 0 4px 10px -5px rgba(10, 112, 133, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.95) !important;
+          transition: transform .15s ease, border-color .2s ease, background .2s ease, color .2s ease, box-shadow .2s ease !important;
         }
         nav[data-tone="sand"] :global(.lv2-nav-secondary:not(.lv2-nav-aside):hover),
         nav[data-tone="sand"] :global(.lv2-nav-secondary:not(.lv2-nav-aside):focus-visible) {
           border-color: #0a7085 !important;
-          background: #0a7085 !important;
+          background: linear-gradient(180deg, #0e8299, #0a7085) !important;
           color: #fbf9f4 !important;
           text-shadow: none !important;
-          box-shadow: 0 10px 22px -10px rgba(10, 112, 133, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+          transform: translateY(-1px) !important;
+          box-shadow: 0 11px 22px -10px rgba(10, 112, 133, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.25) !important;
         }
         }
         :global(.lv2-nav-secondary) {
