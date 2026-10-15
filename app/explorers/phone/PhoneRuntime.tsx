@@ -107,6 +107,11 @@ export default function PhoneRuntime({ phoneCase, onExit, onNextCase }: { phoneC
   const [nudge, setNudge] = useState<string | null>(null);
   const [voiceOn, setVoiceOn] = useState(!fast);
   const voiceRef = useRef(!fast);
+  // UAT skip: one click fast-forwards through whatever's left of the CURRENT
+  // skill only (narration + any dock waiting on input), then clears itself
+  // so the next skill plays at normal pace unless skipped again — same
+  // one-click-per-skill contract as MissionRuntime's "Skip this whole skill".
+  const [skipRequested, setSkipRequested] = useState(false);
   const speaking = useWrenSpeaking();
   const voiceRate = useVoiceRate();
   const cycleVoiceRate = () => setVoiceRate(VOICE_RATES[(VOICE_RATES.indexOf(voiceRate) + 1) % VOICE_RATES.length]);
@@ -116,7 +121,7 @@ export default function PhoneRuntime({ phoneCase, onExit, onNextCase }: { phoneC
   useEffect(() => { setJournal(loadJournal(phoneCase.id)); }, [phoneCase.id]);
   const [, force] = useReducer((n) => n + 1, 0);
 
-  const reduce = fast || (typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches);
+  const reduce = fast || skipRequested || (typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches);
   // Per-case app skin (wallpaper + accent + name) so each case feels like a
   // different app; falls back to the block pink if a case sets none.
   const OUT = phoneCase.app?.accent ?? C.out;
@@ -151,6 +156,22 @@ export default function PhoneRuntime({ phoneCase, onExit, onNextCase }: { phoneC
     removeItem(id);
   };
   const awaitUser = () => new Promise<string>((res) => { resolveRef.current = res; });
+
+  // While a skip is in flight, immediately resolve whatever dock is currently
+  // blocking (as if the correct input had just been given) instead of
+  // waiting for a real tap. Resolves with the same values each dock's own
+  // real handler would (tapLever/tapReply/submitTag/tapContinue), so no
+  // in-flight runSteps/runSkill logic needs to know skip even happened.
+  useEffect(() => {
+    if (!skipRequested || !dock) return;
+    if (dock.type === "call" || dock.type === "tag") { resolveRef.current?.("ok"); return; }
+    if (dock.type === "choose") {
+      const safe = dock.options.find((o) => o.outcome !== "bad") ?? dock.options[0];
+      resolveRef.current?.(safe.label);
+      return;
+    }
+    if (dock.type === "clear") { resolveRef.current?.("go"); return; }
+  }, [dock, skipRequested]);
 
   // WREN speaks a line and the thread WAITS for her to finish before anything
   // advances — the anti-whizz. Voice off = a read-timer instead.
@@ -295,7 +316,11 @@ export default function PhoneRuntime({ phoneCase, onExit, onNextCase }: { phoneC
         setDock({ type: "clear", text: "Ready? Skill 1 first." });
         await awaitUser();
       }
-      for (let i = from.index; i < total; i++) { saveProgress(phoneCase.id, { kind: "skill", index: i }); await runSkill(phoneCase.skills[i], total); }
+      for (let i = from.index; i < total; i++) {
+        saveProgress(phoneCase.id, { kind: "skill", index: i });
+        await runSkill(phoneCase.skills[i], total);
+        setSkipRequested(false); // one skip = exactly one skill, even mid-run
+      }
     }
     if (from.kind === "skill" || from.kind === "boss") { saveProgress(phoneCase.id, { kind: "boss" }); await runBoss(); }
     // hand off to the must-pass test
@@ -380,6 +405,34 @@ export default function PhoneRuntime({ phoneCase, onExit, onNextCase }: { phoneC
 
       <PropField caseId={phoneCase.id} accent={OUT} />
       <SkipButton />
+      {/* UAT skip: fast-forwards the rest of the current skill in one click
+          (narration + any dock resolved as if answered correctly), same
+          one-click-per-skill contract as MissionRuntime's own "Skip this
+          whole skill". Disabled once there's nothing left to skip into. */}
+      <button
+        onClick={() => setSkipRequested(true)}
+        disabled={phase !== "play"}
+        aria-label="Skip this whole skill (testing)"
+        style={{
+          position: "fixed",
+          bottom: 60,
+          right: 14,
+          zIndex: 70,
+          fontFamily: "ui-monospace, Consolas, monospace",
+          fontSize: 11.5,
+          fontWeight: 700,
+          letterSpacing: "0.03em",
+          color: phase === "play" ? "#7CFFC4" : "rgba(124,255,196,0.35)",
+          background: "rgba(0,0,0,0.6)",
+          border: `1px solid ${phase === "play" ? "rgba(124,255,196,0.55)" : "rgba(124,255,196,0.2)"}`,
+          borderRadius: 999,
+          padding: "8px 14px",
+          cursor: phase === "play" ? "pointer" : "default",
+          boxShadow: "0 6px 18px rgba(0,0,0,0.45)",
+        }}
+      >
+        Skip skill ⏭
+      </button>
       <CaseJournal entries={journal} accent={OUT} caseTitle={phoneCase.title} />
       <button className="ph-btn" onClick={onExit} style={{ position: "fixed", top: 14, left: 14, zIndex: 20, fontFamily: UI, fontSize: 12.5, fontWeight: 600, color: C.dim, background: "rgba(255,255,255,0.05)", border: `1px solid ${C.line}`, borderRadius: 999, padding: "6px 13px", cursor: "pointer" }}>← Leave</button>
       <button className="ph-btn" onClick={() => { const v = !voiceOn; setVoiceOn(v); if (!v) stopWren(); }} aria-pressed={voiceOn} style={{ position: "fixed", top: 14, right: 14, zIndex: 20, fontFamily: UI, fontSize: 12.5, fontWeight: 700, color: voiceOn ? C.wren : C.dim, background: "rgba(255,255,255,0.05)", border: `1px solid ${voiceOn ? "rgba(43,212,180,.5)" : C.line}`, borderRadius: 999, padding: "6px 13px", cursor: "pointer" }}>{voiceOn ? "🔊 WREN on" : "🔇 WREN off"}</button>
