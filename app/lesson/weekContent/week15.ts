@@ -50,7 +50,7 @@ export const WEEK_15: WeekContent = {
       photoSrc: "/cyberheroes/alerts/week-15.png",
       title: "ALERT INCOMING",
       badge: "Incident Report",
-      caption: "The Raccoon's newest gadget: a smooth-talking Know-It-All bot that sounds SO sure about everything... even when it's making things up. He loves kids who believe every confident robot voice - and tell it their secrets. This week you out-smart the smart machine: spot the robot, check the book, zip the jar, catch the fakes - and use the tool for GOOD.",
+      caption: "The Raccoon's newest gadget. A smooth-talking Know-It-All bot that sounds SO sure about everything... even when it's making things up. He loves kids who believe every confident robot voice - and tell it their secrets. This week you out-smart the smart machine: spot the robot, check the book, zip the jar, catch the fakes - and use the tool for GOOD.",
       photoCaption: "Wk 15 - The Know-It-All",
       ctaLabel: "See the Mission →",
       narration: {
@@ -185,9 +185,9 @@ export const WEEK_15: WeekContent = {
         lines: [
           "[warmly] On your next challenge, we visit the Message Belt!",
           "This game is all about telling a REAL person apart from a robot.",
-          "Out in the real world, chatbots try to sound just like people, so this is how we catch them.",
+          "Out in the real world, chatbots try to sound just like people. So this is how we catch them.",
           "Here is what you do. One at a time, a little speech bubble slides along the belt. Read it, then decide who is talking.",
-          "If it has a body or feelings, like a sore tummy or a loose tooth, tap the REAL PERSON booth.",
+          "If it has a body or feelings, tap the REAL PERSON booth. A sore tummy. A loose tooth.",
           "If it does instant, endless things no real person could, tap the ROBOT booth.",
           "[excited] Get good at this and no robot message can trick you. Ready? Let's read!",
         ],
@@ -201,7 +201,7 @@ export const WEEK_15: WeekContent = {
         lines: [
           "[excited] Brilliant! You sorted every message.",
           "Now you can tell the difference between a robot and a real person.",
-          "[warmly] Out in the real world, if a message online feels too instant or too perfect, you'll stop and ask: is this even a real person?",
+          "[warmly] Out in the real world, if a message online feels too instant or too perfect, you will stop and ask. Is this even a real person?",
           "That's your first fact-checker power. Well done!",
         ],
       },
@@ -272,7 +272,7 @@ export const WEEK_15: WeekContent = {
         speaker: "adam",
         lines: [
           "[whispers] Ready for the Know-It-All's secret?",
-          "[warmly] Today we're learning that a chatbot like ChatGPT can sound sure but be wrong - so we check it.",
+          "[warmly] Today we are learning that a chatbot like ChatGPT can sound sure but be wrong. So we check it.",
           "Sometimes... it makes things up.",
           "Not fibbing on purpose - just guessing out loud,",
           "in the same big confident voice as its facts.",
@@ -355,7 +355,7 @@ export const WEEK_15: WeekContent = {
         lines: [
           "[warmly] On your next challenge, you become a fact-checker!",
           "This game is all about checking if something is really true.",
-          "In real life, a chatbot can sound totally sure and STILL be making things up, so we always check it.",
+          "In real life, a chatbot can sound totally sure and STILL be making things up. So we always check it.",
           "Here is what you do. The robot's report is on the desk, and the REAL book sits beside it.",
           "Tap each line of the report to hold it up against the book. The book tells you: true, or made up?",
           "When all four lines are checked, tap your answer at the bottom.",
@@ -371,7 +371,7 @@ export const WEEK_15: WeekContent = {
         lines: [
           "[excited] Amazing checking! You caught the made-up line.",
           "You just proved that sounding sure is NOT the same as being true.",
-          "[warmly] In the real world, when something online sounds super confident, you'll check it against a real book or a grown-up before you believe it.",
+          "[warmly] In the real world, when something online sounds super confident, you will check it. Against a real book, or a grown-up, before you believe it.",
           "That's what a fact-checker does. Great work!",
         ],
       },
@@ -383,7 +383,7 @@ export const WEEK_15: WeekContent = {
       prompt: "Is that true?",
       raccoonLine: "the bot sounded REALLY sure about the ice-cream volcano... so it must be true. Confident means correct!",
       choices: [
-        { text: "TRUE", isCorrect: false, why: "Sounding sure isn't the same as being right; a bot can say a made-up thing in a very confident voice." },
+        { text: "TRUE", isCorrect: false, why: "Sounding sure isn't the same as being right. A bot can say a made-up thing in a very confident voice." },
         { text: "FALSE", isCorrect: true },
       ],
       praise: "Busted! Sounding sure isn't being right - the book is the judge, not the voice. ✓",
@@ -511,7 +511,7 @@ export const WEEK_15: WeekContent = {
         lines: [
           "[warmly] On your next challenge, YOU make the smart choice!",
           "This game is all about keeping your private things private.",
-          "In real life, a friendly bot might ask for your name, your school or your photos, and you get to decide what to share.",
+          "In real life, a friendly bot might ask for your name, your school or your photos. And you get to decide what to share.",
           "Here is what you do. Read the chat, then two doors will open.",
           "One door keeps your private things safe. The other gives them away.",
           "Tap the door that keeps YOU safe and keeps the jar empty. You will do this three times.",
@@ -526,7 +526,7 @@ export const WEEK_15: WeekContent = {
         speaker: "layla",
         lines: [
           "[excited] Wonderful choosing! You kept your secrets zipped in the jar.",
-          "[warmly] In the real world, when anything online asks for your name, your school, or a photo, you'll keep it private and check with a grown-up.",
+          "[warmly] In the real world, when anything online asks for your name, your school, or a photo, you will keep it private. And check with a grown-up.",
           "Real secrets belong with real people. I'm proud of you!",
         ],
       },
@@ -599,7 +599,7 @@ export const WEEK_15: WeekContent = {
           "[warmly] Okay, today we're learning to spot a picture that a computer made up.",
           "AI tools like ChatGPT can paint things that never happened, and they can look SO real.",
           "But the machine doesn't really understand hands, shadows or writing, so fakes leave little clues.",
-          "Look for shadows the wrong way, too many fingers, melty edges, or signs with scrambled letters.",
+          "Look for shadows the wrong way. Too many fingers. Melty edges. Signs with scrambled letters.",
           "[warmly] So when a photo looks amazing, we don't just believe it. We look twice.",
           "[excited] Come on, Cyber Hero, let's line up the photos!",
         ],
@@ -675,7 +675,7 @@ export const WEEK_15: WeekContent = {
         lines: [
           "[excited] Sharp eyes! You caught every AI fake.",
           "You checked shadows, counted fingers, and read the signs.",
-          "[warmly] In the real world, when a photo online looks amazing, you'll look twice and ask: could this really happen, and who took it?",
+          "[warmly] In the real world, when a photo online looks amazing, you will look twice and ask. Could this really happen? And who took it?",
           "That keeps fake pictures from ever fooling you. Well spotted!",
         ],
       },
@@ -688,7 +688,7 @@ export const WEEK_15: WeekContent = {
       speedMs: 5000,
       choices: [
         { text: "A hand with SIX fingers", isCorrect: true },
-        { text: "A torn chip bag", isCorrect: false, why: "A torn bag is an ordinary thing in a real photo; look for something a real camera would never see." },
+        { text: "A torn chip bag", isCorrect: false, why: "A torn bag is an ordinary thing in a real photo. Look for something a real camera would never see." },
         { text: "A slightly blurry photo", isCorrect: false, why: "Real photos are blurry all the time; a blur isn't a tell." },
       ],
       praise: "Counted at fact-checker speed - six fingers means machine-made! ✓",
@@ -719,7 +719,7 @@ export const WEEK_15: WeekContent = {
           "You can spot an AI-made picture by its little clues, like wrong shadows or extra fingers.",
           "[warmly] Remember: when a photo looks amazing, we always look twice.",
           "[warmly] One power left now, and it's the biggest of all.",
-          "Next, we'll learn how the very same tool can grow kind things or mean things, and how YOU choose. Let's finish strong!",
+          "Next, we will learn how the very same tool can grow kind things or mean things. And how YOU choose. Let us finish strong!",
         ],
       },
     },
@@ -787,7 +787,7 @@ export const WEEK_15: WeekContent = {
           id: "homework",
           prompt: "The volcano project is due Friday...",
           options: [
-            { label: "'Explain it simply' - then check the book and write it YOUR way", why: "You let the bot explain, checked the book, and wrote it your way; that's learning, not copying.", icon: "🌱", isProud: true, note: "" },
+            { label: "'Explain it simply' - then check the book and write it YOUR way", why: "You let the bot explain, checked the book, and wrote it your way. That is learning, not copying.", icon: "🌱", isProud: true, note: "" },
             { label: "Copy the bot's whole answer and hand it in as yours", icon: "🌱", isProud: false, note: "That's not your work - and remember the ice-cream volcano? Copied fibs become YOUR fibs." },
           ],
         },
@@ -841,7 +841,7 @@ export const WEEK_15: WeekContent = {
         lines: [
           "[excited] You planted a whole garden of kind choices!",
           "[warmly] AI is a tool, and YOU decide how to use it.",
-          "In the real world, before you ask AI for anything, you'll ask: will this grow something kind for a real person?",
+          "In the real world, before you ask AI for anything, you will ask one thing. Will this grow something kind for a real person?",
           "Grow flowers, never thorns. That's the mark of a true Cyber Hero!",
         ],
       },
@@ -881,7 +881,7 @@ export const WEEK_15: WeekContent = {
         speaker: "adam",
         lines: [
           "[excited] You've earned all FIVE powers!",
-          "You can hear the robot, check the book, zip the jar, spot the fakes, and plant a kind garden.",
+          "You can hear the robot. Check the book. Zip the jar. Spot the fakes. And plant a kind garden.",
           "[warmly] Everything you learned this week keeps you safe from the Know-It-All's tricks.",
           "[whispers] Now, one quick review to make it all stick...",
           "[excited] then we close his booth for good. Come on!",

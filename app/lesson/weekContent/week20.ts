@@ -180,8 +180,8 @@ export const WEEK_20: WeekContent = {
           prompt: "Which one is built the way you were taught in Week 1?",
           speaker: "adam",
           choices: [
-            { text: "otter-lamp-thunder", isCorrect: true, why: "Three words that have nothing to do with each other, easy for you to remember and horrible for a machine to guess.", explanation: "Count the words, and check they have nothing to do with each other." },
-            { text: "football-football-football", isCorrect: false, explanation: "It is built from words, yes, but it is one word said three times, so there is far less to guess." },
+            { text: "otter-lamp-thunder", isCorrect: true, why: "Three words that have nothing to do with each other. Easy for you to remember, and horrible for a machine to guess.", explanation: "Count the words, and check they have nothing to do with each other." },
+            { text: "football-football-football", isCorrect: false, explanation: "It is built from words, yes. But it is one word said three times, so there is far less to guess." },
             { text: "mydogsname2014", isCorrect: false, explanation: "That is a fact about you plus a year, and both of those are on your profile somewhere." },
           ],
         },
@@ -193,7 +193,7 @@ export const WEEK_20: WeekContent = {
           speaker: "adam",
           choices: [
             { text: "Nowhere else at all", isCorrect: true, why: "If one place ever leaks it, everywhere else stays shut. That is the whole reason for the rule.", explanation: "Think about what happens to the OTHER accounts if one place leaks." },
-            { text: "On your email too, to remember it", isCorrect: false, explanation: "Email is the one that can reset all the others, so it is the worst possible place to repeat it." },
+            { text: "On your email too, to remember it", isCorrect: false, explanation: "Email is the one that can reset all the others. So it is the worst possible place to repeat it." },
             { text: "Everywhere, it is a strong one", isCorrect: false, explanation: "Strong does not help once somebody else has it. Then it is just one key to everything you own." },
           ],
         },
@@ -660,7 +660,7 @@ export const WEEK_20: WeekContent = {
           icon: "🏫",
           readAloud: "First thing in the photo. A school badge, right there on the jumper.",
           options: [
-            { id: "b-right", label: "Which school they go to", icon: "🏫", isRight: true, why: "A badge is a building with a name on it, and anybody can look up where that building is.", explanation: "Think about what a badge is FOR. It says which school, to everybody who sees it." },
+            { id: "b-right", label: "Which school they go to", icon: "🏫", isRight: true, why: "A badge is a building with a name on it. Anybody can look up where that building is.", explanation: "Think about what a badge is FOR. It says which school, to everybody who sees it." },
             { id: "b-colour", label: "Their favourite colour", icon: "🎨", isRight: false, explanation: "The colours belong to the school, not to them, and the colours are not the useful bit." },
             { id: "b-nothing", label: "Nothing at all", icon: "🚫", isRight: false, explanation: "A badge names a school. That is the one thing it definitely does." },
           ],
@@ -693,7 +693,7 @@ export const WEEK_20: WeekContent = {
           icon: "🌍",
           readAloud: "And last, a bus going past in the background.",
           options: [
-            { id: "u-right", label: "Roughly which part of town", icon: "🌍", isRight: true, why: "A bus number only runs on one route, so it narrows the town down without anybody meaning it to.", explanation: "Think about where a bus with that number actually goes. It only runs one route." },
+            { id: "u-right", label: "Roughly which part of town", icon: "🌍", isRight: true, why: "A bus number only runs on one route. So it narrows the town down without anybody meaning it to.", explanation: "Think about where a bus with that number actually goes. It only runs one route." },
             { id: "u-rich", label: "Whether their family has a car", icon: "💎", isRight: false, explanation: "A bus in the background says nothing about anybody's car." },
             { id: "u-nothing", label: "Nothing, buses go everywhere", icon: "🚫", isRight: false, explanation: "Each numbered bus runs one route, so it quietly narrows down the area." },
           ],
@@ -923,7 +923,7 @@ export const WEEK_20: WeekContent = {
         speaker: "adam",
         lines: [
           "[proud] Listen to them. That is all for you.",
-          "Twenty weeks ago you could not have done one of tonight's five missions, and you did all of them without stopping to think.",
+          "Twenty weeks ago you could not have done one of tonight's five missions. And you did all of them without stopping to think.",
           "[excited] Caps in the air, Cyber Hero. You did it.",
         ],
       },
@@ -1033,7 +1033,7 @@ export const WEEK_20: WeekContent = {
         correctIndex: 0,
         teachOnWrong: {
           title: "Real-life info stays home!",
-          explanation: "Your name, school, and address are real-life clues that point straight to the real you, and typed words CAN travel. A quiz doesn't need any of them. A made-up hero name works fine.",
+          explanation: "Your name. Your school. Your address. Real-life clues that point straight to the real you, and typed words CAN travel. A quiz doesn't need any of them. A made-up hero name works fine.",
         },
         villainRight: {
           slug: "quiz-w20-right-c2-1",
@@ -1060,7 +1060,7 @@ export const WEEK_20: WeekContent = {
         correctIndex: 0,
         teachOnWrong: {
           title: "Safe friends don't snoop!",
-          explanation: "A real friend learns about you by talking WITH you, not by digging behind your back. Someone who arrives already knowing your private things is a warning sign, and a trusted grown-up should hear about it today.",
+          explanation: "A real friend learns about you by talking WITH you. Not by digging behind your back. Someone who arrives already knowing your private things is a warning sign, and a trusted grown-up should hear about it today.",
         },
         villainRight: {
           slug: "quiz-w20-right-c3-1",
@@ -1087,7 +1087,7 @@ export const WEEK_20: WeekContent = {
         correctIndex: 0,
         teachOnWrong: {
           title: "Don't feed the bully!",
-          explanation: "A comeback, and even a polite please-stop, are both reactions, and reactions are exactly what a waiting bully eats. No reply, block, and tell a trusted grown-up, and the meanness starves.",
+          explanation: "A comeback is a reaction. So is a polite please-stop. And reactions are exactly what a waiting bully eats. No reply, block, and tell a trusted grown-up, and the meanness starves.",
         },
         villainRight: {
           slug: "quiz-w20-right-c4-1",
@@ -1145,12 +1145,12 @@ export const WEEK_20: WeekContent = {
     easy: [
       { question: "An 'URGENT - reset your password in 10 minutes!' message is...", answers: ["A trick - don't tap it", "Real - better reset fast, just to be safe", "From your best friend", "A prize"], correctIndex: 0, explanation: "The panic clock exists to stop you thinking - real games and banks never rush a reset." },
       { question: "A brand-new account says 'let's chat on a different app instead'. That's...", answers: ["The somewhere-else trick - refuse and tell", "Fine - as long as you know the other app", "Totally normal", "A reward"], correctIndex: 0, explanation: "Moving you somewhere quieter is Week 6's oldest flag - real friends are happy where you are." },
-      { question: "A machine offers FREE coins if you type your password. You...", answers: ["Never - walk away", "Only if the coins show up first", "Type it fast", "Share it with the lobby"], correctIndex: 0, explanation: "Any ask for your password IS the trap - it wants to BE you, and real free asks for nothing back." },
+      { question: "A machine offers FREE coins if you type your password. You...", answers: ["Never - walk away", "Only if the coins show up first", "Type it fast", "Share it with the lobby"], correctIndex: 0, explanation: "Any ask for your password IS the trap. It wants to BE you. Real free asks for nothing back." },
     ],
     medium: [
       { question: "Which of tonight's posts was safe to share?", answers: ["The dragon drawing", "The school-gates meetup time", "The map-pinned park photo", "The school-name comment"], correctIndex: 0, explanation: "Posting isn't the danger, clues are - proud and clue-free tracks are the good kind." },
-      { question: "The full protocol, in order, is...", answers: ["Stop → screenshot → block → tell", "Stop → block → screenshot → tell", "Tap → panic → hide → forget", "Share → like → follow → wave"], correctIndex: 0, explanation: "Give it nothing, freeze the evidence FIRST - blocking can make the message vanish - then slam the door and never carry it alone." },
-      { question: "How do you check where a QR code or link-door really goes?", answers: ["Lift the plaque - check the real address before walking through", "Read the words on the sign carefully", "Trust the pretty sign", "Scan it quickly"], correctIndex: 0, explanation: "A link is a door - Week 16's rule holds forever: words can be paint, so no plaque, no walk-through." },
+      { question: "The full protocol, in order, is...", answers: ["Stop → screenshot → block → tell", "Stop → block → screenshot → tell", "Tap → panic → hide → forget", "Share → like → follow → wave"], correctIndex: 0, explanation: "Give it nothing. Freeze the evidence FIRST, because blocking can make the message vanish. Then slam the door and never carry it alone." },
+      { question: "How do you check where a QR code or link-door really goes?", answers: ["Lift the plaque - check the real address before walking through", "Read the words on the sign carefully", "Trust the pretty sign", "Scan it quickly"], correctIndex: 0, explanation: "A link is a door. Week 16's rule holds forever. Words can be paint, so no plaque, no walk-through." },
     ],
     hard: [
       { question: "The fake reset email had fastp1ay with a number 1 in the sender. Why does that matter?", answers: ["Lookalike senders wear a real name's costume - one swapped letter is the tell", "It only matters if the link looks strange too", "It loads faster", "It doesn't"], correctIndex: 0, explanation: "Week 4's lookalike lineup: the costume is one character deep, and checking the sender unmasks it." },
