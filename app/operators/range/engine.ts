@@ -62,7 +62,7 @@ export const NORTHWIND: RangeTarget = {
   client: "Northwind Foods",
   host: "portal.northwind.range",
   endpoint: "POST /login",
-  recon: "The staff portal login reflects raw database errors — a sign it may be trusting its inputs.",
+  recon: "The staff portal login reflects raw database errors - a sign it may be trusting its inputs.",
   handlerHint: "The login builds its query straight from what you type. See if it trusts you more than it should.",
   conceptHint:
     "The query is: …WHERE email = '<your input>'. Close the quote yourself, then add a condition that's always true, and comment out the rest with -- .",
@@ -178,6 +178,11 @@ export async function bootNorthwindRange(): Promise<NorthwindRange> {
        ('a.morgan@northwind.range','W1nter!Aud1t','admin'),
        ('d.brooks@northwind.range','hunter2','staff'),
        ('sec@northwind.range','p@ssw0rd','staff');`,
+  );
+  db.run(`CREATE TABLE orders (id INTEGER PRIMARY KEY, customer TEXT, card_last4 TEXT);`);
+  db.run(
+    `INSERT INTO orders (customer, card_last4) VALUES
+       ('Rowan Webb','4417'), ('Nadia Khan','9032'), ('Tom Fielding','7781');`,
   );
   db.run(`CREATE TABLE secrets (id INTEGER PRIMARY KEY, label TEXT, value TEXT);`);
   db.run(

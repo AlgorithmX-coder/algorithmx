@@ -293,7 +293,7 @@ export default function Engagement({
           <div style={{ display: "grid", gap: 14 }}>
             <div style={handlerBox}>
               <span style={handlerTag}>HANDLER</span>
-              <span style={{ fontSize: 14, lineHeight: 1.5 }}>Good capture. Before we write it up, two quick field jobs - new clients, same skill, less hand-holding. This is how it sticks.</span>
+              <span style={{ fontSize: 14, lineHeight: 1.5 }}>Good capture. Before we write it up, a few field jobs - new clients, same skill, less hand-holding. This is how it sticks.</span>
             </div>
             <mod.Consolidation onDone={() => setPhase("defend")} />
           </div>

