@@ -20,6 +20,13 @@ export function middleware(req: NextRequest) {
     return NextResponse.next();
   }
 
+  // The marketing homepage is public (owner 2026-10-15) so search engines
+  // and visitors who click a search result reach the real page instead of
+  // the password gate. Only the exact "/" is opened here; every deeper page
+  // (/schools, /cyberhq, /lesson, the course landings) still falls through
+  // to the launch password below.
+  if (pathname === "/") return NextResponse.next();
+
   // The corporate line is on sale: its pages, both courses (including the
   // join links and certificates under them) and the sign-in pages a learner
   // needs are open to everyone. The adult Cyber Pro course (/pro, incl.
