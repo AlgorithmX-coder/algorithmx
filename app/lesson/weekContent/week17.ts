@@ -78,14 +78,14 @@ export const WEEK_17: WeekContent = {
       photoSrc: "/cyberheroes/alerts/week-17.png",
       title: "ALERT INCOMING",
       badge: "Incident Report",
-      caption: "The Raccoon has opened a Hall of Mirrors: endless perfect posts, follower numbers spinning round and round, and unlocked profiles anyone at all can stand and stare into. He wants kids dazzled, comparing, and wide open. This week you forge the Profile Shield: read the number on the room, frost your own mirror, tell gold from glitter, check a post before it goes, and see what is really backstage.",
+      caption: "The Raccoon has opened a Hall of Mirrors. Endless perfect posts. Follower numbers spinning round and round. Unlocked profiles anyone at all can stand and stare into. He wants kids dazzled, comparing, and wide open. This week you forge the Profile Shield: read the number on the room, frost your own mirror, tell gold from glitter, check a post before it goes, and see what is really backstage.",
       photoCaption: "Wk 17 - The Hall of Mirrors",
       ctaLabel: "See the Mission →",
       narration: {
         speaker: "adam",
         lines: [
           "[nervous] Cyber Hero, mind your reflection, and read this incident report with me.",
-          "The Raccoon has opened a Hall of Mirrors: endless perfect posts, follower numbers spinning round and round, and unlocked profiles anyone at all can stand and stare into.",
+          "The Raccoon has opened a Hall of Mirrors. Endless perfect posts. Follower numbers spinning round and round. Unlocked profiles anyone at all can stand and stare into.",
           "This week you forge the Profile Shield, so the mirror shows only what you choose.",
           "[whispers] Dazzled, comparing, and wide open. That is exactly how he likes them.",
           "[warmly] By the end of today, you will look into any mirror he builds and see straight through it.",
@@ -185,7 +185,7 @@ export const WEEK_17: WeekContent = {
           inside: "Thousands of strangers, all talking to each other at once, with nobody checking.",
           readAloud: "This one is loud. Thousands of people who have never met, all talking at once, and nobody checking any of it.",
           plate: "13",
-          why: "Strangers can say anything to anybody in there and nobody is checking, so that room waits until you are older.",
+          why: "Strangers can say anything to anybody in there, and nobody is checking. So that room waits until you are older.",
           explanation: "Count the strangers in there, and then count the people checking what they say. Nobody. That is what the number is for.",
         },
         {
@@ -205,7 +205,7 @@ export const WEEK_17: WeekContent = {
           inside: "Adverts everywhere asking for a card number to buy things right now.",
           readAloud: "Look at all the adverts in this one. Every single one is asking for a card number to buy something right now.",
           plate: "13",
-          why: "That room is asking for a bank card, and a bank card belongs to a grown-up, so the room does too.",
+          why: "That room is asking for a bank card. A bank card belongs to a grown-up. So the room does too.",
           explanation: "Follow what the room is ASKING for. It wants a card number, and that is a grown-up thing to hand over.",
         },
         {
@@ -270,7 +270,7 @@ export const WEEK_17: WeekContent = {
         lines: [
           "[proud] One power down, Cyber Hero. You read the room now, not the telling off.",
           "A number is a label. A label is a fact. Facts are easy to walk past.",
-          "[whispers] But there is one room you are already standing in, and it has no door on it at all...",
+          "[whispers] But there is one room you are already standing in. And it has no door on it at all...",
           "Next, we'll learn how to choose who is allowed to look at your own profile. Come and see!",
         ],
       },
@@ -365,7 +365,7 @@ export const WEEK_17: WeekContent = {
           shows: "14 March, and I will be 9",
           readAloud: "This one is your birthday. The day, and how old you are turning.",
           frost: true,
-          why: "Your birthday is one of the answers grown-ups use to prove who they are, so it stays with people you know.",
+          why: "Your birthday is one of the answers grown-ups use to prove who they are. So it stays with people you know.",
           explanation: "Think about who asks for a date of birth. Banks and schools do. That makes it worth keeping close.",
         },
         {
@@ -385,7 +385,7 @@ export const WEEK_17: WeekContent = {
           shows: "A photo of my front door and the number on it",
           readAloud: "Look at this one carefully. It is a photo of your front door, with the number showing.",
           frost: true,
-          why: "A front door with its number on it is an address, even without a single word written under it.",
+          why: "A front door with its number on it is an address. Even without a single word written under it.",
           explanation: "Look past the photo to what is IN it. That number is your address, sitting there in a picture.",
         },
         {
@@ -395,7 +395,7 @@ export const WEEK_17: WeekContent = {
           shows: "I walk home past the big park every day at 3:30",
           readAloud: "This one says how you get home. Past the big park, and what time you do it.",
           frost: true,
-          why: "A route and a time is the easiest thing in the world for a stranger to wait in, so that one goes to friends only.",
+          why: "A route and a time is the easiest thing in the world for a stranger to wait in. So that one goes to friends only.",
           explanation: "Put the two halves together. A place, and a time you are always there. That is somewhere to wait.",
         },
       ],
@@ -523,7 +523,7 @@ export const WEEK_17: WeekContent = {
           id: "scoop-1",
           label: "First scoop",
           readAloud: "First scoop out of the river. Four of them. Have a good look at each one.",
-          why: "Maya sits next to you and Nana is your nana. SuperFan2000 and the star sender are lovely, but you could not say where either of them is standing right now.",
+          why: "Maya sits next to you, and Nana is your nana. SuperFan2000 and the star sender are lovely. But you could not say where either of them is standing right now.",
           explanation: "Go along the little lines underneath. Two of them name a real place. Two of them only name something nice.",
           pebbles: [
             { id: "p-maya", name: "Maya", who: "Sits next to you in Class 4B", icon: "🏫", gold: true },
@@ -640,7 +640,7 @@ export const WEEK_17: WeekContent = {
           "[warmly] So you have written a post. Lovely. And here is the best bit: it has not gone anywhere.",
           "There is a little gap between writing a thing and sending it, and that gap is all yours.",
           "[thinking] So we read it back with a highlighter, hunting for two words. Where, and when.",
-          "Those two stuck together make a map, and a map is the only part a stranger can actually use.",
+          "Those two stuck together make a map. And a map is the only part a stranger can actually use.",
           "And listen, we are not deleting your news. We swap the map out and keep every bit of the fun.",
           "[excited] Come and run the highlighter over a draft with me!",
         ],
@@ -700,7 +700,7 @@ export const WEEK_17: WeekContent = {
           text: "I did a whole length without stopping!",
           safe: true,
           readAloud: "Third line. I did a whole length without stopping.",
-          why: "That is the proudest bit of the whole post and there is nothing in it but you being brilliant.",
+          why: "That is the proudest bit of the whole post. And there is nothing in it but you being brilliant.",
           explanation: "Read it once more. A whole length is a thing you DID, not a place anybody could stand.",
         },
         {
@@ -920,7 +920,7 @@ export const WEEK_17: WeekContent = {
         speaker: "adam",
         lines: [
           "[warmly] Five frames, and not one of them was a whole day.",
-          "Behind every single one there was a bin, or an argument, or eleven misses, or a floor covered in stuff.",
+          "Behind every single one there was a bin. Or an argument. Or eleven misses. Or a floor covered in stuff.",
           "[proud] So the next time a feed makes you feel small, you already know what you are looking at. A minute, Cyber Hero. Not a life.",
         ],
       },
@@ -960,7 +960,7 @@ export const WEEK_17: WeekContent = {
         speaker: "layla",
         lines: [
           "[proud] Five powers down, Cyber Hero. Every single one of them earned.",
-          "Room numbers, frosted panes, gold in the pan, a scrubbed draft, and the backstage truth.",
+          "Room numbers. Frosted panes. Gold in the pan. A scrubbed draft. And the backstage truth.",
           "[warmly] Now let's put the whole lot together at once.",
           "Next, we'll walk the hall once more and check a profile all the way round. Come and see!",
         ],

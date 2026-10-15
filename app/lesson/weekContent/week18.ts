@@ -78,7 +78,7 @@ export const WEEK_18: WeekContent = {
       photoSrc: "/cyberheroes/alerts/week-18.png",
       title: "ALERT INCOMING",
       badge: "Incident Report",
-      caption: "The Raccoon does not need to crack anything this week. He just waits. A family tablet left signed in on the kitchen shelf, a school computer still wearing the last kid's name, SAVE PASSWORD balloons bobbing over every login. Every left open screen is a door he can stroll through wearing YOUR face. This week you become the Lock Master: spot which screens are shared, close down like a relay runner, find the front door on any device, leave other people's things alone, and pop every sticky balloon.",
+      caption: "The Raccoon does not need to crack anything this week. He just waits. A family tablet left signed in on the kitchen shelf. A school computer still wearing the last kid's name, SAVE PASSWORD balloons bobbing over every login. Every left open screen is a door he can stroll through wearing YOUR face. This week you become the Lock Master: spot which screens are shared, close down like a relay runner, find the front door on any device, leave other people's things alone, and pop every sticky balloon.",
       photoCaption: "Wk 18 - The Family Tablet",
       ctaLabel: "See the Mission →",
       narration: {
@@ -180,7 +180,7 @@ export const WEEK_18: WeekContent = {
           icon: "📱",
           isScam: true,
           readAloud: "Here comes one. The tablet that lives on the kitchen shelf, and everyone in the house uses it.",
-          why: "Everyone in the house picks that one up, so everything you leave on it is sitting there for the next person.",
+          why: "Everyone in the house picks that one up. So everything you leave on it is sitting there for the next person.",
           explanation: "Read it again. It says everyone uses it, and that is the whole test.",
         },
         {
@@ -189,7 +189,7 @@ export const WEEK_18: WeekContent = {
           icon: "🏫",
           isScam: true,
           readAloud: "Look at this one. The computer at school, the one you sit at on Tuesdays.",
-          why: "A different child sits there on every other day of the week, so it is about as shared as a screen gets.",
+          why: "A different child sits there on every other day of the week. So it is about as shared as a screen gets.",
           explanation: "Think about Wednesday. Somebody else is sitting at that exact computer.",
         },
         {
@@ -198,7 +198,7 @@ export const WEEK_18: WeekContent = {
           icon: "🔒",
           isScam: false,
           readAloud: "Here is one of yours. Your own phone, with your own lock code on it.",
-          why: "Your phone with your code on it really is yours alone, and it is fine to be relaxed on that one.",
+          why: "Your phone with your code on it really is yours alone. It is fine to be relaxed on that one.",
           explanation: "Look at what it says. Your phone, your code, and nobody else has either.",
         },
         {
@@ -216,7 +216,7 @@ export const WEEK_18: WeekContent = {
           icon: "🎮",
           isScam: true,
           readAloud: "This one. The games console in the living room.",
-          why: "Everyone who sits on that sofa can play as whoever is still logged in, and that is usually you.",
+          why: "Everyone who sits on that sofa can play as whoever is still logged in. And that is usually you.",
           explanation: "Picture who else sits on that sofa. They can play as whoever is still signed in.",
         },
         {
@@ -811,7 +811,7 @@ export const WEEK_18: WeekContent = {
           message: "Save your password on this tablet?",
           readAloud: "Look at this balloon. You are on the family tablet, the one from the kitchen shelf.",
           replies: [
-            { text: "No thank you", isSafe: true, why: "Everyone in the house picks that tablet up, so a saved password would let any of them be you.", explanation: "Who else picks up the family tablet? All of them, and a saved password lets any of them in." },
+            { text: "No thank you", isSafe: true, why: "Everyone in the house picks that tablet up. So a saved password would let any of them be you.", explanation: "Who else picks up the family tablet? All of them, and a saved password lets any of them in." },
             { text: "Yes, it is only family", isSafe: false, explanation: "Family is lovely, but the tablet cannot tell family from anybody else who picks it up." },
             { text: "Yes, nobody else uses it", isSafe: false, explanation: "It is the family tablet. Everybody uses it, which is what makes it the family tablet." },
           ],
@@ -851,7 +851,7 @@ export const WEEK_18: WeekContent = {
       prompt: "The school computer asks if it should remember your password. Finish the rule: on a borrowed screen...",
       choices: [
         { text: "the answer is always no thank you", isCorrect: true },
-        { text: "the answer is yes if you are in a hurry", isCorrect: false, why: "Being in a hurry is exactly when it happens, which is why the rule has no exceptions in it." },
+        { text: "the answer is yes if you are in a hurry", isCorrect: false, why: "Being in a hurry is exactly when it happens. That is why the rule has no exceptions in it." },
         { text: "the answer is yes if you trust the people", isCorrect: false, why: "The screen cannot tell who it is handing your account to. It just hands it over." },
         { text: "the answer depends on the password", isCorrect: false, why: "It makes no difference how good the password is if the screen types it in for somebody else." },
       ],
@@ -879,7 +879,7 @@ export const WEEK_18: WeekContent = {
         speaker: "layla",
         lines: [
           "[proud] Five powers down, Cyber Hero. Every single one of them earned.",
-          "Shared screens spotted, a clean leave, a front door fitted, lids put down, balloons popped.",
+          "Shared screens spotted. A clean leave. A front door fitted. Lids put down. Balloons popped.",
           "[warmly] Now here is the best bit. All five of those happen in an order.",
           "Next, we'll put them together into the routine you do every time. Come and see!",
         ],
@@ -903,7 +903,7 @@ export const WEEK_18: WeekContent = {
         lines: [
           "[excited] Last job of the week, Cyber Hero, and it is the one that ties the lot together.",
           "Six moves. They are all things you already know how to do.",
-          "Put them on the rail in the order you would actually do them, from the moment you sit down.",
+          "Put them on the rail in the order you would actually do them. Start from the moment you sit down.",
         ],
       },
       threat: {

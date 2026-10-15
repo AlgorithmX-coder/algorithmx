@@ -58,8 +58,8 @@ if (!KEY && !CHECK_ONLY) {
 //   teachery".) Both content speakers map to Sarah = one consistent mentor;
 //   the speaker tag is preserved for any future second-voice move.
 const VOICE = {
-  adam:  { id: "EXAVITQu4vr4xnSDxMaL", name: "Sarah" },
-  layla: { id: "EXAVITQu4vr4xnSDxMaL", name: "Sarah" },
+  adam:  { id: "oClOrzqamOXmtcB8iqTj", name: "Emma (Kids Educator)" },
+  layla: { id: "oClOrzqamOXmtcB8iqTj", name: "Emma (Kids Educator)" },
   // Storyteller NARRATOR — a deliberately DIFFERENT voice (ElevenLabs "George",
   // warm mature male) that reads the "Choose Your Path" scenario setups aloud,
   // so Sarah (the coach) can then jump in and ask "which one do you think?".
@@ -92,30 +92,23 @@ const VOICE = {
  * the browser's robot voice. The table goes back until the last week lands,
  * and then the default changes once, with nothing left to point at the old
  * voice. */
-const KIDS_EDUCATOR = { id: "oClOrzqamOXmtcB8iqTj", name: "Emma (Kids Educator)" };
-const NARRATOR_BY_WEEK = {
-  "week1.ts": KIDS_EDUCATOR,
-  "week2.ts": KIDS_EDUCATOR,
-  "week3.ts": KIDS_EDUCATOR,
-  "week4.ts": KIDS_EDUCATOR,
-  "week5.ts": KIDS_EDUCATOR,
-  "week6.ts": KIDS_EDUCATOR,
-  "week7.ts": KIDS_EDUCATOR,
-  "week8.ts": KIDS_EDUCATOR,
-  "week9.ts": KIDS_EDUCATOR,
-  "week10.ts": KIDS_EDUCATOR,
-  "week11.ts": KIDS_EDUCATOR,
-  "week12.ts": KIDS_EDUCATOR,
-  // Not a week: the one shared line QuickCheck speaks on every finish-mode
-  // screen, pinned so it does not play the old voice inside a migrated week.
-  "shared:quickcheck-finish": KIDS_EDUCATOR,
-};
+/* One narrator, no table.
+ *
+ * The move ran week by week on purpose: each week was rewritten, recorded and
+ * listened to on the real site before the next, because making her the default
+ * early re-hashed every block at once and left nineteen unmigrated weeks
+ * pointing at recordings that did not exist. All twenty are recorded now, so
+ * she is simply the voice - which is also what finally moves the SHARED lines
+ * ("That's right!", "Not quite.", the quick-check prompt) that sit outside any
+ * week and kept the old narrator alive inside migrated ones.
+ *
+ * scripts/audit-manifest-covers-course.mjs reads this and now holds all twenty
+ * weeks to her, so nothing can be left behind.
+ */
 
 /** The voice for a block: the week's narrator if it has its own, else the
  *  speaker's usual one. */
 function voiceFor(speaker, source) {
-  const perWeek = source && NARRATOR_BY_WEEK[source];
-  if (perWeek && VOICE[speaker] && VOICE[speaker].name === "Sarah") return perWeek;
   return VOICE[speaker];
 }
 

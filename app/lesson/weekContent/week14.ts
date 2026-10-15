@@ -85,7 +85,7 @@ export const WEEK_14: WeekContent = {
           "[nervous] Cyber Hero, keep your voice down and read this incident report with me.",
           "The Raccoon has found a lazy new trick: he listens through the gadgets already sitting in your house. Speakers, tellies, even talking toys. None of them are out to get you, and that is the point. This week you become a Settings Scout. Know which things have ears, know what they keep, and flip the switches with a grown-up.",
           "[whispers] Speakers, tellies, even talking toys. Already sitting in the house.",
-          "[warmly] By the end of today, you will know which things have ears, and how to flip the switches with a grown-up.",
+          "[warmly] By the end of today, you will know which things have ears. And how to flip the switches with a grown-up.",
           "Let's see what Mission Command has for us!",
         ],
       },
@@ -176,7 +176,7 @@ export const WEEK_14: WeekContent = {
         { id: "console", text: "The games console headset", icon: "🎮", isScam: true,
           readAloud: "The games console, with the headset plugged in.",
           why: "The headset is a microphone, so the console can hear the room while you play.",
-          explanation: "Look at the headset again. The bit that curves round to your mouth is a microphone, and it is switched on while you play." },
+          explanation: "Look at the headset again. The bit that curves round to your mouth is a microphone. It is switched on while you play." },
         { id: "lamp", text: "The reading lamp", icon: "💡", isScam: false,
           readAloud: "The reading lamp beside the chair.",
           why: "A lamp makes light and nothing else. It has no way to hear a single thing.",
@@ -325,7 +325,7 @@ export const WEEK_14: WeekContent = {
           readAloud: "Second entry, and nobody in the room said anything to Nova at all.",
           wrote: "'...ova, and the weather tomorrow...' - 6:30pm",
           options: [
-            { id: "mistake2", label: "It woke up by mistake", icon: "❓", isRight: true, why: "A word on the telly sounded close enough to Nova's name, so it woke up and wrote down what came next.", explanation: "" },
+            { id: "mistake2", label: "It woke up by mistake", icon: "❓", isRight: true, why: "A word on the telly sounded close enough to Nova's name. So it woke up and wrote down what came next.", explanation: "" },
             { id: "asked2", label: "Somebody asked it something", icon: "👆", isRight: false, why: "", explanation: "Nobody spoke to Nova this time. The telly said something that sounded like its name, and that was enough." },
             { id: "broken", label: "The speaker is broken", icon: "🏠", isRight: false, why: "", explanation: "Nova is not broken. Waking on a word that sounds close is just what listening for a name is like." },
           ],
@@ -337,7 +337,7 @@ export const WEEK_14: WeekContent = {
           readAloud: "Third entry. Somebody said its name during a loud disagreement about the washing up.",
           wrote: "'Nova, stop! ...no, YOU said you would do it...' - 7:05pm",
           options: [
-            { id: "kept", label: "It kept what came after its name", icon: "📋", isRight: true, why: "Its name got said in the middle of the washing up row, so it woke and wrote the next bit down. It cannot tell what is private.", explanation: "" },
+            { id: "kept", label: "It kept what came after its name", icon: "📋", isRight: true, why: "Its name got said in the middle of the washing up row. So it woke and wrote the next bit down. It cannot tell what is private.", explanation: "" },
             { id: "listening", label: "It was recording the whole row", icon: "⏱️", isRight: false, why: "", explanation: "It was not taking down the whole row. It woke on its name and kept what came next, which was enough of it." },
             { id: "nothing", label: "Nothing, rows do not count", icon: "🚫", isRight: false, why: "", explanation: "It cannot tell a row from a song request. Its name was said, so the diary got a line." },
           ],
@@ -478,10 +478,10 @@ export const WEEK_14: WeekContent = {
           readAloud: "The hallway, a moment ago and right now. Something in here has woken up.",
           spots: [
             { id: "doorbell", label: "The video doorbell", icon: "🚪", woke: true,
-              why: "In the hallway its little light has come on, so the doorbell lens is awake and watching the step. That is exactly its job.",
+              why: "In the hallway its little light has come on. So the doorbell lens is awake and watching the step. That is exactly its job.",
               explanation: "" },
             { id: "coats", label: "The coat hooks", icon: "🏠", woke: false, why: "",
-              explanation: "Coat hooks in the hallway look the same in both pictures, and they have no lens to wake up." },
+              explanation: "Coat hooks in the hallway look the same in both pictures. And they have no lens to wake up." },
             { id: "post", label: "The pile of post", icon: "📋", woke: false, why: "",
               explanation: "That pile of post in the hallway has not moved and it never could. Compare the two pictures again." },
             { id: "mirror", label: "The hall mirror", icon: "👀", woke: false, why: "",
@@ -495,10 +495,10 @@ export const WEEK_14: WeekContent = {
           readAloud: "The living room now. Look carefully at both pictures.",
           spots: [
             { id: "tablet", label: "The tablet on the arm", icon: "📱", woke: true,
-              why: "Over on the living room sofa arm, the tablet has its little green dot on, which means its camera just woke up. Somebody started a video call.",
+              why: "Over on the living room sofa arm, the tablet has its little green dot on. That means its camera just woke up. Somebody started a video call.",
               explanation: "" },
             { id: "lamp", label: "The standing lamp", icon: "💡", woke: false, why: "",
-              explanation: "That lamp in the living room is lit in both pictures, so it did not change, and a bulb is not a lens." },
+              explanation: "That lamp in the living room is lit in both pictures, so it did not change. And a bulb is not a lens." },
             { id: "plant", label: "The big plant", icon: "🏠", woke: false, why: "",
               explanation: "Nothing has moved the living room plant, and nothing on it can wake up." },
             { id: "speaker", label: "The smart speaker", icon: "🔔", woke: false, why: "",
@@ -688,7 +688,7 @@ export const WEEK_14: WeekContent = {
               why: "Typing it sends it straight to your friend and to nobody else in the room. Same answer, quieter route.",
               explanation: "" },
             { text: "Read it out clearly so they get it right", isSafe: false, explanation: "Clear is exactly the problem here. Every word lands in the room and the room has ears." },
-            { text: "Say just the street, not the number", isSafe: false, explanation: "Half an address out loud is still half an address on the record, and your friend still has to ask again." },
+            { text: "Say just the street, not the number", isSafe: false, explanation: "Half an address out loud is still half an address on the record. And your friend still has to ask again." },
           ],
         },
         {
@@ -700,7 +700,7 @@ export const WEEK_14: WeekContent = {
           keptLabel: "Empty house dates",
           replies: [
             { text: "Nod, and sort the details in the kitchen", isSafe: true,
-              why: "An empty house and the dates for it is exactly the sort of thing that does not need saying near a diary.",
+              why: "An empty house, and the dates for it. Exactly the sort of thing that does not need saying near a diary.",
               explanation: "" },
             { text: "Say the dates out loud so nobody forgets", isSafe: false, explanation: "Saying them out loud is how they end up written down. Nobody needs to forget, they just need to be said elsewhere." },
             { text: "Ask Nova to put it in the calendar", isSafe: false, explanation: "That hands it over on purpose. Handy, and it is still the one thing you would rather not say in here." },
@@ -863,7 +863,7 @@ export const WEEK_14: WeekContent = {
           safeValue: "Mute button on when not in use",
           icon: "🤫",
           isRisky: true,
-          why: "The speaker's microphone was always listening. There is a mute button on the top of nearly every speaker, and pressing it when nobody is using it costs nothing at all.",
+          why: "The speaker's microphone was always listening. There is a mute button on the top of nearly every speaker. Pressing it when nobody is using it costs nothing at all.",
           explanation: "",
         },
         {
@@ -873,7 +873,7 @@ export const WEEK_14: WeekContent = {
           safeValue: "Deletes itself every 3 months",
           icon: "📋",
           isRisky: true,
-          why: "The voice diary was keeping everything, forever. One setting makes it tidy itself every three months, and that is the same speaker, just as helpful, with a much shorter diary.",
+          why: "The voice diary was keeping everything, forever. One setting makes it tidy itself every three months. Same speaker, just as helpful, with a much shorter diary.",
           explanation: "",
         },
         {
@@ -883,7 +883,7 @@ export const WEEK_14: WeekContent = {
           safeValue: "Off",
           icon: "💬",
           isRisky: true,
-          why: "Send my recordings off to help improve the service was switched on. That is the one that sends actual recordings away to be listened to, and turning it off changes nothing you would notice.",
+          why: "Send my recordings off to help improve the service was switched on. That is the one that sends actual recordings away to be listened to. Turning it off changes nothing you would notice.",
           explanation: "",
         },
         {
@@ -894,7 +894,7 @@ export const WEEK_14: WeekContent = {
           icon: "🚪",
           isRisky: false,
           why: "",
-          explanation: "The doorbell camera is watching the front step, and that is exactly the job it was put there for. It points at a doorstep, not at anybody's bed. Leave it be.",
+          explanation: "The doorbell camera is watching the front step. That is exactly the job it was put there for. It points at a doorstep, not at anybody's bed. Leave it be.",
         },
         {
           id: "tellymic",
@@ -903,7 +903,7 @@ export const WEEK_14: WeekContent = {
           safeValue: "Off until you want it",
           icon: "🔔",
           isRisky: true,
-          why: "The telly's voice button was switched on, sitting there waiting. Almost nobody uses the telly by talking to it, so off until the day you want it, and the telly stops listening entirely.",
+          why: "The telly's voice button was switched on, sitting there waiting. Almost nobody uses the telly by talking to it. So off until the day you want it, and the telly stops listening entirely.",
           explanation: "",
         },
         {
@@ -925,7 +925,7 @@ export const WEEK_14: WeekContent = {
         lines: [
           "[excited] Last challenge of the week, Cyber Hero. Flip It Together!",
           "This game is all about the switches a Scout is allowed to use.",
-          "Out in the real world, this is a ten minute job with a grown-up, and hardly anybody does it.",
+          "Out in the real world, this is a ten minute job with a grown-up. And hardly anybody does it.",
           "So here is what you do.",
           "Six switches on the house plate, and I will read each one out as you tap it.",
           "Flip the ones that are still wide open. Leave the ones already doing their job.",
@@ -1027,7 +1027,7 @@ export const WEEK_14: WeekContent = {
           scene: "Somebody said the speaker's name in the middle of a row, and now there is a line about it saved on the app.",
           sceneIcon: "📋",
           signId: "diary",
-          why: "It woke on its name and kept what came next, which is the diary doing what a diary does. And a grown-up can clear it.",
+          why: "It woke on its name and kept what came next. That is the diary doing what a diary does. And a grown-up can clear it.",
           note: "Nothing here is about ears or lenses. This is what the speaker KEPT once it woke up.",
         },
         {
@@ -1043,7 +1043,7 @@ export const WEEK_14: WeekContent = {
           scene: "Mum shouts through for the wifi password and the speaker is right there in the middle of the kitchen.",
           sceneIcon: "🤫",
           signId: "outloud",
-          why: "Saying it out loud records it just as surely as typing it, so you walk through and tell her in the other room.",
+          why: "Saying it out loud records it just as surely as typing it. So you walk through and tell her in the other room.",
           note: "You already know a password is private. This is about the room you say it in.",
         },
         {
@@ -1051,7 +1051,7 @@ export const WEEK_14: WeekContent = {
           scene: "The speaker has kept every single voice note since the day it came out of the box, two years ago.",
           sceneIcon: "⚙️",
           signId: "switches",
-          why: "One setting makes that speaker tidy its own diary every three months, and you flip it with a grown-up in about ten minutes.",
+          why: "One setting makes that speaker tidy its own diary every three months. And you flip it with a grown-up in about ten minutes.",
           note: "Knowing that speaker keeps a diary is one power. Doing something about it is this one.",
         },
       ],
@@ -1064,7 +1064,7 @@ export const WEEK_14: WeekContent = {
         lines: [
           "[excited] Time for your review, Cyber Hero. The Scout's Check-Card!",
           "This game is all about using every Scout power, one moment at a time.",
-          "Out in the real world, these moments turn up in any order, so all five have to be ready.",
+          "Out in the real world, these moments turn up in any order. So all five have to be ready.",
           "So here is what you do.",
           "A moment from somewhere in the house comes up on a paper note.",
           "Then press the brass stamp onto the power that answers it.",
@@ -1189,7 +1189,7 @@ export const WEEK_14: WeekContent = {
         correctIndex: 0,
         teachOnWrong: {
           title: "The name is the ON switch!",
-          explanation: "Smart speakers doze until they hear their special name. It isn't Grandma's name and it isn't one person's voice, it's the wake word, and once awake, the speaker can hear everything that comes next.",
+          explanation: "Smart speakers doze until they hear their special name. It isn't Grandma's name. And it isn't one person's voice, it's the wake word, and once awake, the speaker can hear everything that comes next.",
         },
         villainRight: {
           slug: "quiz-w14-right-c2-1",
@@ -1216,7 +1216,7 @@ export const WEEK_14: WeekContent = {
         correctIndex: 0,
         teachOnWrong: {
           title: "Mystery lens? Ask first!",
-          explanation: "Covering it in secret or waving at it leaves the mystery a mystery. A little glass circle nobody explained might be a camera, and a trusted grown-up can find out for sure.",
+          explanation: "Covering it in secret leaves the mystery a mystery. So does waving at it. A little glass circle nobody explained might be a camera, and a trusted grown-up can find out for sure.",
         },
         villainRight: {
           slug: "quiz-w14-right-c3-1",
@@ -1309,7 +1309,7 @@ export const WEEK_14: WeekContent = {
       { question: "Why is push-to-talk better than always-on?", answers: ["The ear only opens while YOU hold the button", "It makes the TV louder", "It isn't better", "It records more"], correctIndex: 0, explanation: "Push-to-talk hands the ON switch to you - the ear hears only when you choose." },
     ],
     hard: [
-      { question: "You said a password out loud near an awake speaker. What's the Scout move?", answers: ["Tell a grown-up and change the password", "Nothing - speakers forget instantly", "Whisper the same password next time", "Unplug every device forever"], correctIndex: 0, explanation: "A password in a recording isn't fully yours - change it, and keep the next one off the air." },
+      { question: "You said a password out loud near an awake speaker. What's the Scout move?", answers: ["Tell a grown-up and change the password", "Nothing - speakers forget instantly", "Whisper the same password next time", "Unplug every device forever"], correctIndex: 0, explanation: "A password in a recording isn't fully yours. Change it, and keep the next one off the air." },
       { question: "Why do Scouts flip switches WITH a grown-up instead of alone?", answers: ["Together you pick the right settings - and they stay picked", "Alone is fine if you're really careful", "So the grown-up takes the blame", "Scouts never flip anything"], correctIndex: 0, explanation: "Patrol, point, flip together - that's how settings get right AND stay right." },
       { question: "Robo-Pup answers when you talk to it. What does a Scout know?", answers: ["It has ears - so it counts as a smart device, switches and all", "Toys can't listen", "It's magic", "Only phones can hear"], correctIndex: 0, explanation: "Answering back = ears. Even toys join the ears list - the Scout surprise of the week." },
     ],

@@ -61,14 +61,14 @@ export const WEEK_16: WeekContent = {
       photoSrc: "/cyberheroes/alerts/week-16.png",
       title: "ALERT INCOMING",
       badge: "Incident Report",
-      caption: "The Raccoon's Doorway Trick is everywhere. Links and QR codes are doors, and he paints their signs with parties and prizes while the doors open onto his slide. He is even pasting his own sticker-codes over real ones on posters and menus. This week you become a Door Checker. Read the address. Run the peel test. Know which doors you simply cannot see through. And when you cannot tell, wheel out the barrier and ask.",
+      caption: "The Raccoon's Doorway Trick is everywhere. Links and QR codes are doors. He paints their signs with parties and prizes while the doors open onto his slide. He is even pasting his own sticker-codes over real ones on posters and menus. This week you become a Door Checker. Read the address. Run the peel test. Know which doors you simply cannot see through. And when you cannot tell, wheel out the barrier and ask.",
       photoCaption: "Wk 16 - The Doorway Maze",
       ctaLabel: "See the Mission →",
       narration: {
         speaker: "adam",
         lines: [
           "[nervous] Cyber Hero, do not touch anything yet. Read this incident report with me.",
-          "The Raccoon's Doorway Trick is everywhere. Links and QR codes are doors, and he paints their signs with parties and prizes while the doors open onto his slide.",
+          "The Raccoon's Doorway Trick is everywhere. Links and QR codes are doors. He paints their signs with parties and prizes while the doors open onto his slide.",
           "This week you become a Door Checker, and learn to read a door before you walk through it.",
           "[whispers] His own stickers, stuck straight over the real ones. On a poster. On a menu.",
           "[warmly] By the end of today, no painted sign gets you through a door you did not choose.",
@@ -185,7 +185,7 @@ export const WEEK_16: WeekContent = {
           body: "You have been chosen! Tap within 10 minutes or your free tablet goes to somebody else!",
           isPhishing: true,
           readAloud: "A door from Prize Club. Claim your free tablet now! You have been chosen, tap within ten minutes or your free tablet goes to somebody else.",
-          why: "A prize nobody entered, a ten minute countdown, and a plate that is not a single place you know. That door is all paint.",
+          why: "A prize nobody entered. A ten minute countdown. A plate that is not a single place you know. That door is all paint.",
           whyWrong: "Look at Prize Club's plate and its clock. The address is a stranger and there is a countdown on it, which is the hurry-up trick doing its job.",
           inspections: {
             senderNote: "Prize Club is on nobody's keyring, and you never entered anything.",
@@ -206,7 +206,7 @@ export const WEEK_16: WeekContent = {
           body: "Your reading club starts Saturday at ten. Ask a grown-up to bring you along.",
           isPhishing: false,
           readAloud: "A door from the library. Summer reading club starts Saturday. Your reading club starts Saturday at ten, ask a grown-up to bring you along.",
-          why: "The library is on your ring, the plate says the library, and it points you at a grown-up rather than away from one.",
+          why: "The library is on your ring. The plate says the library. And it points you at a grown-up rather than away from one.",
           whyWrong: "Have another look at the plate. It says the library, which is a place you know, and it asks you to bring a grown-up along.",
           inspections: {
             senderNote: "The library is a real place you go to, and it is on your keyring.",
@@ -372,7 +372,7 @@ export const WEEK_16: WeekContent = {
           icon: "🏠",
           readAloud: "Here is a door. It says it is from Mum, with photos from the weekend.",
           keyId: "mum",
-          why: "Mum is right there on your ring, so there is a key for this one and the door opens.",
+          why: "Mum is right there on your ring. So there is a key for this one, and the door opens.",
           explanation: "Look along the ring again. Mum is on it, so this door does have a key.",
         },
         {
@@ -402,7 +402,7 @@ export const WEEK_16: WeekContent = {
           icon: "🎮",
           readAloud: "A door from Games Hub, with a code for five hundred free coins.",
           keyId: null,
-          why: "Games Hub is not on your ring, so it never gets a key, however good five hundred coins sounds.",
+          why: "Games Hub is not on your ring. So it never gets a key, however good five hundred coins sounds.",
           explanation: "Games Hub is not one of yours. Nothing on the ring matches it, so there is no key to lift.",
         },
         {
@@ -1208,7 +1208,7 @@ export const WEEK_16: WeekContent = {
         correctIndex: 0,
         teachOnWrong: {
           title: "The peel test tells!",
-          explanation: "Old menus wrinkle all over, not in one perfect square, and real restaurants don't hide bonus codes on top of their own. Crooked, bubbly, liftable means STICKER, and a sticker over a code means the door was swapped.",
+          explanation: "Old menus wrinkle all over, not in one perfect square. And real restaurants don't hide bonus codes on top of their own. Crooked, bubbly, liftable means STICKER, and a sticker over a code means the door was swapped.",
         },
         villainRight: {
           slug: "quiz-w16-right-c3-1",
@@ -1235,7 +1235,7 @@ export const WEEK_16: WeekContent = {
         correctIndex: 0,
         teachOnWrong: {
           title: "Clear glass can be read!",
-          explanation: "Short doesn't mean checkable, a bit.ly link hides its whole destination behind scrambled letters. The long clear address can be READ from end to end, so it's the one that can be checked.",
+          explanation: "Short doesn't mean checkable. A bit.ly link hides its whole destination behind scrambled letters. The long clear address can be READ from end to end, so it's the one that can be checked.",
         },
         villainRight: {
           slug: "quiz-w16-right-c4-1",

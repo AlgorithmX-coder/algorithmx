@@ -71,14 +71,14 @@ export const WEEK_13: WeekContent = {
       photoSrc: "/cyberheroes/alerts/week-13.png",
       title: "ALERT INCOMING",
       badge: "Incident Report",
-      caption: "The Raccoon has a new hobby: battery thieving. Not phone batteries, KID batteries. He loves heroes drained and glued to the glow, because a tired hero is an easy hero to trick. This week you take your power back. Screens stay in your life. You just get to say how big they are.",
+      caption: "The Raccoon has a new hobby. Battery thieving. Not phone batteries, KID batteries. He loves heroes drained and glued to the glow, because a tired hero is an easy hero to trick. This week you take your power back. Screens stay in your life. You just get to say how big they are.",
       photoCaption: "Wk 13 - The Battery Thief",
       ctaLabel: "See the Mission →",
       narration: {
         speaker: "adam",
         lines: [
           "[nervous] Cyber Hero, read this incident report with me.",
-          "The Raccoon has a new hobby: battery thieving. Not phone batteries, KID batteries. He loves heroes drained and glued to the glow, because a tired hero is an easy hero to trick. This week you take your power back. Screens stay in your life. You just get to say how big they are.",
+          "The Raccoon has a new hobby. Battery thieving. Not phone batteries, KID batteries. He loves heroes drained and glued to the glow, because a tired hero is an easy hero to trick. This week you take your power back. Screens stay in your life. You just get to say how big they are.",
           "[whispers] A tired hero is an easy hero to trick. That is the entire plan.",
           "[warmly] By the end of today, YOU are the one who says how big the screens get.",
           "Let's see what Mission Command has for us!",
@@ -182,7 +182,7 @@ export const WEEK_13: WeekContent = {
           blockIcon: "🌀",
           readAloud: "Half past eight, and one more episode is running with the light off. Swap the last block and the see-saw might just sit level.",
           options: [
-            { label: "A story, then lights out", icon: "🌠", isBalancing: true, note: "", why: "A story at half past eight winds you down instead of winding you up, and the night gets its full run at you." },
+            { label: "A story, then lights out", icon: "🌠", isBalancing: true, note: "", why: "A story at half past eight winds you down instead of winding you up. And the night gets its full run at you." },
             { label: "Scrolling with the brightness down", icon: "📱", isBalancing: false, note: "Dimmer is still light, and your brain still reads it as daytime. The block stays put." },
             { label: "Falling asleep to autoplay", icon: "🔀", isBalancing: false, note: "Autoplay keeps going long after you stop watching. That is the heaviest block on the plank." },
           ],
@@ -320,7 +320,7 @@ export const WEEK_13: WeekContent = {
           icon: "📋",
           readAloud: "Thursday. There is homework, and the family film starts at seven. It is six o'clock now.",
           options: [
-            { id: "first", label: "Homework now, film at seven", icon: "✅", isRight: true, why: "The film is at seven whatever you do, so the hour before it is the only one homework can have.", explanation: "" },
+            { id: "first", label: "Homework now, film at seven", icon: "✅", isRight: true, why: "The film is at seven whatever you do. So the hour before it is the only one homework can have.", explanation: "" },
             { id: "after", label: "Film first, homework after", icon: "🌀", isRight: false, why: "", explanation: "After the film it is bedtime, so that pour quietly empties the homework cup and borrows from sleep as well." },
             { id: "during", label: "Homework during the film", icon: "📱", isRight: false, why: "", explanation: "Doing two things at once pours into both cups badly. You end up with half a film and half a homework." },
           ],
@@ -331,7 +331,7 @@ export const WEEK_13: WeekContent = {
           icon: "👪",
           readAloud: "Sunday. Gran wants a video call, your friend wants you online, and you want to finish your model. There is one hour left in the jug.",
           options: [
-            { id: "choose", label: "Pick one, and say when for the others", icon: "⏱️", isRight: true, why: "One hour only pours one way, so you choose it, and the others get a real time instead of a maybe.", explanation: "" },
+            { id: "choose", label: "Pick one, and say when for the others", icon: "⏱️", isRight: true, why: "One hour only pours one way. So you choose it, and the others get a real time instead of a maybe.", explanation: "" },
             { id: "all3", label: "Squeeze all three into the hour", icon: "🔀", isRight: false, why: "", explanation: "Three things in one hour gives everybody twenty rushed minutes. The jug does not get bigger for being hurried." },
             { id: "avoid", label: "Do none of them and scroll", icon: "📱", isRight: false, why: "", explanation: "That still pours the hour out, it just pours it where nobody chose. The jug empties either way." },
           ],
@@ -342,7 +342,7 @@ export const WEEK_13: WeekContent = {
           icon: "🌠",
           readAloud: "It is late. You are enjoying yourself and the jug is empty, so this hour has to come from somewhere else.",
           options: [
-            { id: "stop", label: "Stop. Tomorrow's jug is not mine to spend", icon: "⏸️", isRight: true, why: "An hour borrowed from tonight comes straight out of tomorrow, and you are the one who pays it back.", explanation: "" },
+            { id: "stop", label: "Stop. Tomorrow's jug is not mine to spend", icon: "⏸️", isRight: true, why: "An hour borrowed from tonight comes straight out of tomorrow. And you are the one who pays it back.", explanation: "" },
             { id: "borrow", label: "Borrow it from sleep, just tonight", icon: "🌀", isRight: false, why: "", explanation: "Sleep is the cup that refills all the others, so borrowing from it makes tomorrow's whole jug smaller." },
             { id: "morning", label: "Borrow it and lie in tomorrow", icon: "⏱️", isRight: false, why: "", explanation: "A lie-in pours tomorrow morning away to pay for tonight. The hour still came out of the jug, just later." },
           ],
@@ -488,7 +488,7 @@ export const WEEK_13: WeekContent = {
             ],
           },
           why: "An hour, then swimming, and Dad knows. Every dial has a real answer in it, so there is nothing left to argue about later.",
-          explanation: "A plan needs all three. See how it goes is not a how long, not thought about it is not a what after, and a plan nobody else heard is just a thought.",
+          explanation: "A plan needs all three. See how it goes is not a how long. Not thought about it is not a what after. And a plan nobody else heard is just a thought.",
         },
         {
           id: "afterschool",
@@ -512,7 +512,7 @@ export const WEEK_13: WeekContent = {
             ],
           },
           why: "Half an hour, then homework at the table, and Mum heard it first. That plan survives the moment you do not feel like stopping.",
-          explanation: "Until it feels done never arrives, telly after a game is a screen after a screen, and telling her afterwards is not a plan, it is a report.",
+          explanation: "Until it feels done never arrives. Telly after a game is a screen after a screen. And telling her afterwards is not a plan, it is a report.",
         },
         {
           id: "sleepover",
@@ -535,8 +535,8 @@ export const WEEK_13: WeekContent = {
               { id: "mine", label: "My mum, at home", icon: "💬", isGood: false },
             ],
           },
-          why: "A real stopping time, something good to do after, and the grown-up who is actually in the house knows it. That is a plan that works away from home.",
-          explanation: "Until we get tired always means later than you think, a film after a game is still a screen, and the grown-up who can help is the one in THIS house, not the one at home.",
+          why: "A real stopping time. Something good to do after. And the grown-up who is actually in the house knows it. That is a plan that works away from home.",
+          explanation: "Until we get tired always means later than you think. A film after a game is still a screen. And the grown-up who can help is the one in THIS house, not the one at home.",
         },
       ],
       hints: {
@@ -907,7 +907,7 @@ export const WEEK_13: WeekContent = {
         lines: [
           "[warmly] Last challenge of the week, Cyber Hero. Night Fall.",
           "This game is all about giving the night a clear run at you.",
-          "Out in the real world, this is a two minute job you do once, and then it is just how your room works.",
+          "Out in the real world, this is a two minute job you do once. Then it is just how your room works.",
           "So here is what you do.",
           "Your room is up on the board, with things dotted around it.",
           "Tap anything that should go out for the night, and the sky gets a little darker.",
@@ -981,7 +981,7 @@ export const WEEK_13: WeekContent = {
         { term: "'There's time for all of it'", match: "The jug never gets bigger", colour: "#ffd158", why: "Every hour you pour into one thing is an hour not going into another. That is just how much a jug holds." },
         { term: "'Stop when it feels finished'", match: "Set it before you start", colour: "#c084fc", why: "A game never feels finished, because they are built that way. So you decide how long while you are still outside it." },
         { term: "Screen yanked off mid-level", match: "Save, say bye, plug in", colour: "#ff5fb3", why: "Stopping badly is what makes stopping hurt. Landing it takes twenty seconds and there is no fight." },
-        { term: "A phone face down by your pillow", match: "Screens sleep on charge", colour: "#00e5ff", why: "Face down and silent is still one more look away, and screen light tells your brain it is daytime." },
+        { term: "A phone face down by your pillow", match: "Screens sleep on charge", colour: "#00e5ff", why: "Face down and silent is still one more look away. And screen light tells your brain it is daytime." },
         { term: "'Balance means no screens'", match: "Balance means SOME, not none", colour: "#ff7a59", why: "Nobody is taking your screens away. A hero with a level day gets the game AND the park AND the sleep." },
       ],
       narration: {
@@ -989,7 +989,7 @@ export const WEEK_13: WeekContent = {
         lines: [
           "[excited] Time for your review, Cyber Hero. The Power Station Match!",
           "This game is all about using every Battery Keeper power at once.",
-          "Out in the real world, the Thief's tricks turn up in any order, so all five have to be ready.",
+          "Out in the real world, the Thief's tricks turn up in any order. So all five have to be ready.",
           "So here is what you do.",
           "Tap a card to flip it, then find the card that goes with it.",
           "Each trick has one hero move hiding somewhere on the board.",

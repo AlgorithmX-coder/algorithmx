@@ -87,14 +87,14 @@ export const WEEK_19: WeekContent = {
       photoSrc: "/cyberheroes/alerts/week-19.png",
       title: "ALERT INCOMING",
       badge: "Incident Report",
-      caption: "The Raccoon has given up on YOU. Eighteen weeks of walls, locks and popped balloons taught him that lesson. So he has turned his tricks on your FAMILY: a prize text for Gran, an urgent parcel message for Dad, a free-coins machine for your little brother. Same tricks, bigger letters. But he has forgotten the most important thing in the whole house. It has an EXPERT in it now. This week the roles flip: you explain, you spot, you speak up, and together you raise the Family Firewall.",
+      caption: "The Raccoon has given up on YOU. Eighteen weeks of walls, locks and popped balloons taught him that lesson. So he has turned his tricks on your FAMILY. A prize text for Gran, an urgent parcel message for Dad, a free-coins machine for your little brother. Same tricks, bigger letters. But he has forgotten the most important thing in the whole house. It has an EXPERT in it now. This week the roles flip: you explain, you spot, you speak up, and together you raise the Family Firewall.",
       photoCaption: "Wk 19 - The Expert in the House",
       ctaLabel: "See the Mission →",
       narration: {
         speaker: "adam",
         lines: [
           "[nervous] Cyber Hero, this incident report is not about you. Read it with me.",
-          "The Raccoon has given up on YOU. Eighteen weeks of walls, locks and popped balloons taught him that lesson. So he has turned his tricks on your FAMILY: a prize text for Gran, an urgent parcel message for Dad, a free-coins machine for your little brother.",
+          "The Raccoon has given up on YOU. Eighteen weeks of walls, locks and popped balloons taught him that lesson. So he has turned his tricks on your FAMILY. A prize text for Gran, an urgent parcel message for Dad, a free-coins machine for your little brother.",
           "But he has forgotten the most important thing in that house. It has an EXPERT in it now.",
           "[whispers] Same tricks. He has only changed who he points them at.",
           "[warmly] By the end of today, your whole family will be as hard to trick as you are.",
@@ -180,13 +180,13 @@ export const WEEK_19: WeekContent = {
           who: "GRAN",
           icon: "👪",
           asks: "This text says I've won a prize draw I don't remember entering. Is that bad?",
-          readAloud: "Gran has a text about a prize draw she does not remember entering, and she is asking you if it is bad.",
+          readAloud: "Gran has a text about a prize draw she does not remember entering. She is asking you if it is bad.",
           answers: [
             {
               id: "a-gran-kind",
               text: "You can't win something you never entered. That one's a trick.",
               good: true,
-              why: "Short, and it is a test Gran can run herself on the next one without you in the room.",
+              why: "Short. And it is a test Gran can run herself on the next one, without you in the room.",
             },
             {
               id: "a-gran-tech",
@@ -211,7 +211,7 @@ export const WEEK_19: WeekContent = {
               id: "a-dad-kind",
               text: "If one place leaks it, they can open all the others with it.",
               good: true,
-              why: "One sentence, and it gives Dad the reason rather than the rule, so he can work out the next one himself.",
+              why: "One sentence. And it gives Dad the reason rather than the rule. So he can work out the next one himself.",
             },
             {
               id: "a-dad-tech",
@@ -230,7 +230,7 @@ export const WEEK_19: WeekContent = {
           who: "YOUR LITTLE BROTHER",
           icon: "🦸",
           asks: "This website says I can get free coins for my game. Can I?",
-          readAloud: "Your little brother has found a website promising free coins for his game, and he wants to know if he can have them.",
+          readAloud: "Your little brother has found a website promising free coins for his game. He wants to know if he can have them.",
           answers: [
             {
               id: "a-bro-kind",
@@ -462,7 +462,7 @@ export const WEEK_19: WeekContent = {
       prompt: "The Raccoon says: 'Just tell them it's fake and delete it. They don't need to know why!' Is he right?",
       choices: [
         { text: "No. Showing them why means they can spot the next one", isCorrect: true },
-        { text: "Yes, it saves everyone time", isCorrect: false, why: "It saves time once, and costs it every time after, because they will need you again for every single message." },
+        { text: "Yes, it saves everyone time", isCorrect: false, why: "It saves time once, and costs it every time after. They will need you again for every single message." },
         { text: "Yes, they would not understand anyway", isCorrect: false, why: "They understood perfectly when you pointed at the tells. Nobody had ever pointed before." },
         { text: "Yes, as long as you delete it fast", isCorrect: false, why: "Deleting this one changes nothing about the next one, and there is always a next one." },
       ],
@@ -595,7 +595,7 @@ export const WEEK_19: WeekContent = {
           icon: "⏱️",
           readAloud: "Here is one nobody will admit to suggesting. Children put devices away at eight, and grown-ups keep theirs.",
           fair: false,
-          why: "Sensible and safe, and it splits the house in two, so the children will spend all their time arguing about it instead of keeping it.",
+          why: "Sensible and safe. But it splits the house in two. The children will spend all their time arguing about it instead of keeping it.",
           explanation: "Read the second half. The grown-ups kept theirs. That is the bit that will sink it.",
         },
         {
@@ -621,7 +621,7 @@ export const WEEK_19: WeekContent = {
           // Week 11's Evidence Tray. No position word, no connective.
           readAloud: "This square is from Mum, who is hopefully joking. She can read everybody's messages whenever she likes.",
           fair: false,
-          why: "Safe as houses, and only one person in the house is exempt from it, which is the thing that makes it unfair.",
+          why: "Safe as houses. But only one person in the house is exempt from it. That is the thing that makes it unfair.",
           explanation: "Ask who does NOT have to follow that one. Only the person who wrote it, and that is the test it fails.",
         },
       ],
@@ -635,7 +635,7 @@ export const WEEK_19: WeekContent = {
         speaker: "adam",
         lines: [
           "[proud] Look at that quilt. Every square in it covers the whole house, grown-ups and all.",
-          "And the ones that singled somebody out never went in, which is why this quilt will still be here at Christmas.",
+          "And the ones that singled somebody out never went in. That is why this quilt will still be here at Christmas.",
           "[warmly] Gran's square is my favourite. Anybody can say they got tricked, and nobody laughs.",
         ],
       },
@@ -748,7 +748,7 @@ export const WEEK_19: WeekContent = {
           text: "Tell Mum straight away, tonight",
           good: true,
           readAloud: "Here is a brick. Tell Mum straight away, tonight, in the very first hour.",
-          why: "The first hour is worth more than everything else put together, and Dad should not be carrying this on his own.",
+          why: "The first hour is worth more than everything else put together. And Dad should not be carrying this on his own.",
           whyWrong: "Have another think about telling somebody tonight. Who else in the house could actually do something about it?",
         },
         {
@@ -772,7 +772,7 @@ export const WEEK_19: WeekContent = {
           text: "Ring the bank if any money went anywhere",
           good: true,
           readAloud: "This brick says: ring the bank if any money went anywhere.",
-          why: "Banks can stop and reverse money, and they are far better at it in the first hour than the next day.",
+          why: "Banks can stop and reverse money. And they are far better at it in the first hour than the next day.",
           whyWrong: "Think about who has the power to actually undo a payment. It is not anybody in your house.",
         },
         {
@@ -952,7 +952,7 @@ export const WEEK_19: WeekContent = {
               id: "s2-works",
               says: "Dad, hang on. Were you expecting a parcel?",
               works: true,
-              why: "One short question, about the parcel rather than about him, and it is the exact question that makes the whole thing fall over.",
+              why: "One short question, about the parcel rather than about him. And it is the exact question that makes the whole thing fall over.",
             },
             {
               id: "s2-quiet",
@@ -987,7 +987,7 @@ export const WEEK_19: WeekContent = {
             {
               id: "s3-mock",
               says: "Ha, you're not actually falling for that, are you?",
-              explanation: "He was, and now he is embarrassed as well, so he will do it later when you are not in the room.",
+              explanation: "He was. And now he is embarrassed as well. So he will do it later, when you are not in the room.",
             },
           ],
         },
@@ -1002,7 +1002,7 @@ export const WEEK_19: WeekContent = {
               id: "s4-works",
               says: "Mum, can we crop the gate out first?",
               works: true,
-              why: "It is a small ask about the photo, so she can say yes without any of it being a big deal. Nobody had to be wrong.",
+              why: "It is a small ask about the photo. So she can say yes without any of it being a big deal. Nobody had to be wrong.",
             },
             {
               id: "s4-quiet",
@@ -1041,7 +1041,7 @@ export const WEEK_19: WeekContent = {
         { text: "short, about the thing, and asks rather than tells", isCorrect: true },
         { text: "long, so they understand properly", isCorrect: false, why: "They will have tapped it before you finish. Long is the same as silent when the thumb is moving." },
         { text: "loud, so they definitely stop", isCorrect: false, why: "Loud makes people jump and then defend themselves. Short does the job without any of that." },
-        { text: "about how they always do this", isCorrect: false, why: "That is about them rather than the screen, and it is the fastest way to lose the argument you were not having." },
+        { text: "about how they always do this", isCorrect: false, why: "That is about them rather than the screen. And it is the fastest way to lose the argument you were not having." },
       ],
       praise: "Short, about the thing, and asks rather than tells. ✓",
       nudge: "Think about the six words that stopped Gran.",
@@ -1110,7 +1110,7 @@ export const WEEK_19: WeekContent = {
           icon: "👪",
           readAloud: "Gran has a text she is not sure about, and she has not tapped anything yet. She is asking you what you think.",
           correctMoveId: "m-tells",
-          why: "Nothing has happened to that text yet, so this is the moment to show her the tells and let her spot it herself.",
+          why: "Nothing has happened to that text yet. So this is the moment to show her the tells, and let her spot it herself.",
           whyWrong: "Look at that text again. She is still deciding whether to tap, so what does she need from you right now?",
         },
         {
@@ -1119,7 +1119,7 @@ export const WEEK_19: WeekContent = {
           icon: "👤",
           readAloud: "Dad already typed his password into the parcel page. It has happened, and he is quite embarrassed about it.",
           correctMoveId: "m-after",
-          why: "It has already happened, so it is the fast moves: tell somebody, change it, ring the bank, and not one word of I told you so.",
+          why: "It has already happened. So it is the fast moves. Tell somebody. Change it. Ring the bank. And not one word of I told you so.",
           whyWrong: "Read what happened to Dad again. He has already typed it in, so showing him the tells is a day too late.",
         },
         {
@@ -1147,7 +1147,7 @@ export const WEEK_19: WeekContent = {
         speaker: "adam",
         lines: [
           "[proud] Gran got the tells, your brother got the sentence, and Dad got the morning after.",
-          "Same house, same week, three completely different moments, and you read every one of them right.",
+          "Same house. Same week. Three completely different moments. And you read every one of them right.",
           "[excited] Which is just as well, because there is somebody waiting at the end of the hall.",
         ],
       },
@@ -1285,7 +1285,7 @@ export const WEEK_19: WeekContent = {
         correctIndex: 0,
         teachOnWrong: {
           title: "No holes in the firewall!",
-          explanation: "Dad's unlocked phone is a door into the family, same as anyone's, and flipping who gets left out doesn't fix that. A real family rule covers every single person, grown-ups included.",
+          explanation: "Dad's unlocked phone is a door into the family, same as anyone's. And flipping who gets left out doesn't fix that. A real family rule covers every single person, grown-ups included.",
         },
         villainRight: {
           slug: "quiz-w19-right-c3-1",
@@ -1312,7 +1312,7 @@ export const WEEK_19: WeekContent = {
         correctIndex: 0,
         teachOnWrong: {
           title: "Friends-only shuts the window!",
-          explanation: "He shouldn't have to lose his favorite game to be safe, and open-to-everyone leaves a window any stranger can climb through. Friends-only keeps the fun and shuts the window. Flip it together!",
+          explanation: "He shouldn't have to lose his favorite game to be safe. And open-to-everyone leaves a window any stranger can climb through. Friends-only keeps the fun and shuts the window. Flip it together!",
         },
         villainRight: {
           slug: "quiz-w19-right-c4-1",
@@ -1339,7 +1339,7 @@ export const WEEK_19: WeekContent = {
         correctIndex: 0,
         teachOnWrong: {
           title: "Freeze the moment!",
-          explanation: "After the tap, the card number is already gone, and bedtime is hours too late. Some traps need a hero in the room at the exact right second: notice it, speak up kindly, freeze it.",
+          explanation: "After the tap, the card number is already gone. And bedtime is hours too late. Some traps need a hero in the room at the exact right second: notice it, speak up kindly, freeze it.",
         },
         villainRight: {
           slug: "quiz-w19-right-c5-1",
