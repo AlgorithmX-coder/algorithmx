@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import AuthBackdrop from "@/app/components/auth/AuthBackdrop";
+import CubeMark from "@/app/components/CubeMark";
 import { AuthReactorScene, type AuthMachinePhase, type AuthMachineState } from "@/app/components/auth-reactor";
 import AuthField from "@/app/components/auth/AuthField";
 import AuthButton, { type AuthButtonState } from "@/app/components/auth/AuthButton";
@@ -161,7 +162,7 @@ function ResetPasswordInner() {
             <div className="mb-9">
               <Link href="/" className="inline-flex items-center gap-2.5">
                 <div className="flex items-center justify-center" style={{ width: 38, height: 38, borderRadius: 10, background: ACCESS_GRAD.brand, boxShadow: `0 0 18px ${rgba(ACCESS.cyan, 0.3)}` }}>
-                  <span style={{ color: "#06080f", fontFamily: ACCESS_FONT.display, fontWeight: 800, fontSize: 14 }}>AX</span>
+                  <CubeMark size={22} color="#06080f" code />
                 </div>
                 <span style={{ color: ACCESS.textBright, fontFamily: ACCESS_FONT.display, fontWeight: 800, fontSize: 19, letterSpacing: "-0.01em" }}>
                   Algorithm<span style={{ background: ACCESS_GRAD.brand, WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent" }}>X</span>
