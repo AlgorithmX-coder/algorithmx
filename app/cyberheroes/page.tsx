@@ -5,6 +5,7 @@ import Link from "next/link";
 import { CSSProperties, useEffect, useRef, useState } from "react";
 import { CyberIconOrEmoji } from "@/app/components/CyberIcon";
 import CyberHeroesPlayfulBackdrop from "@/app/components/CyberHeroesPlayfulBackdrop";
+import CubeMark from "@/app/components/CubeMark";
 
 /* ─── CONSTANTS ─── */
 const GRAD = "linear-gradient(135deg, #7c5cff, #00e5ff)";
@@ -1869,7 +1870,7 @@ export default function HomePage() {
           <div className="max-w-[1200px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-2">
               <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: GRAD }}>
-                <span className="text-[9px] font-black text-white">AX</span>
+                <CubeMark size={17} color="#ffffff" />
               </div>
               <div className="flex flex-col">
                 <span className="text-sm font-bold text-gray-500">&copy; 2026 AlgorithmX. All rights reserved.</span>
