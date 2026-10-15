@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-15T11:14:21.194Z",
+  "generatedAt": "2026-10-15T14:35:46.605Z",
   "model": "eleven_v4",
   "voiceSettings": {
     "stability": 0.6,
@@ -277,10 +277,10 @@
       "file": "/audio/voice/29d5ab6498365122.mp3"
     },
     {
-      "key": "3d683bca4e9b0bad",
+      "key": "4ffd612002a2c6df",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "Let's start with the big question. What IS a password? Your password is like a key, and it belongs to nobody but you. When you type it in, the computer knows the real you has arrived. A weak key lets the Raccoon walk straight in. [warmly] A strong one keeps him outside, every single time. Before we build one, we need the words that heroes use. In a moment you will play Cyber Word Match and learn them.",
+      "text": "Let's start with the big question. What IS a password? Your password is like a key, and it belongs to nobody but you. When you type it in, the computer knows the real you has arrived. A weak key lets the Raccoon walk straight in. [warmly] A strong one keeps him outside, every single time. Before we build one, we need the words that heroes use. Let's play Cyber Word Match, and learn them.",
       "lines": [
         "Let's start with the big question. What IS a password?",
         "Your password is like a key, and it belongs to nobody but you.",
@@ -288,9 +288,9 @@
         "A weak key lets the Raccoon walk straight in.",
         "[warmly] A strong one keeps him outside, every single time.",
         "Before we build one, we need the words that heroes use.",
-        "In a moment you will play Cyber Word Match and learn them."
+        "Let's play Cyber Word Match, and learn them."
       ],
-      "file": "/audio/voice/3d683bca4e9b0bad.mp3"
+      "file": "/audio/voice/4ffd612002a2c6df.mp3"
     },
     {
       "key": "51c17c7babbfdddd",
@@ -352,10 +352,10 @@
       "file": "/audio/voice/02569abbccbc3cb1.mp3"
     },
     {
-      "key": "d73a749c7f1fdc39",
+      "key": "367e1e2c143f97ca",
       "speaker": "layla",
       "voice": "Emma (Kids Educator)",
-      "text": "Length. That is the whole trick. Every extra letter gives the Raccoon's guessing machine more work to do. A short password takes him a blink. A long one takes him YEARS. And the easiest way to make a long one is to glue three silly words together. Dragon. Taco. Comet. [warmly] Long, strong, and easy to remember. In a moment you will build one of your own.",
+      "text": "Length. That is the whole trick. Every extra letter gives the Raccoon's guessing machine more work to do. A short password takes him a blink. A long one takes him YEARS. And the easiest way to make a long one is to glue three silly words together. Dragon. Taco. Comet. [warmly] Long, strong, and easy to remember. Let's go and build one of your own!",
       "lines": [
         "Length. That is the whole trick.",
         "Every extra letter gives the Raccoon's guessing machine more work to do.",
@@ -363,9 +363,9 @@
         "And the easiest way to make a long one is to glue three silly words together.",
         "Dragon. Taco. Comet.",
         "[warmly] Long, strong, and easy to remember.",
-        "In a moment you will build one of your own."
+        "Let's go and build one of your own!"
       ],
-      "file": "/audio/voice/d73a749c7f1fdc39.mp3"
+      "file": "/audio/voice/367e1e2c143f97ca.mp3"
     },
     {
       "key": "c364d94807d55f9c",
@@ -425,18 +425,18 @@
       "file": "/audio/voice/8af8e6aefb83ef82.mp3"
     },
     {
-      "key": "6092f838f5bea064",
+      "key": "877f3c27be4c5572",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "Here is the weak spot. A plain word is a word the Raccoon already has on his LIST. So we mix it up. Big letters, small letters, numbers, and symbols. Tiger is a word he knows. A tiger with a capital, a number and a symbol mixed through it is not a word at all. Once there is no plain word left inside, he has nothing to look up. In a moment you will take some weak passwords into the Password Hospital and make them strong.",
+      "text": "Here is the weak spot. A plain word is a word the Raccoon already has on his LIST. So we mix it up. Big letters, small letters, numbers, and symbols. Tiger is a word he knows. A tiger with a capital, a number and a symbol mixed through it is not a word at all. Once there is no plain word left inside, he has nothing to look up. Time to take some weak passwords into the Password Hospital and make them strong.",
       "lines": [
         "Here is the weak spot. A plain word is a word the Raccoon already has on his LIST.",
         "So we mix it up. Big letters, small letters, numbers, and symbols.",
         "Tiger is a word he knows. A tiger with a capital, a number and a symbol mixed through it is not a word at all.",
         "Once there is no plain word left inside, he has nothing to look up.",
-        "In a moment you will take some weak passwords into the Password Hospital and make them strong."
+        "Time to take some weak passwords into the Password Hospital and make them strong."
       ],
-      "file": "/audio/voice/6092f838f5bea064.mp3"
+      "file": "/audio/voice/877f3c27be4c5572.mp3"
     },
     {
       "key": "6194577c56c8f0fa",
@@ -496,10 +496,10 @@
       "file": "/audio/voice/c5bf1515b34d04dc.mp3"
     },
     {
-      "key": "d322da9bf612684e",
+      "key": "ba5844dfbffe2da7",
       "speaker": "layla",
       "voice": "Emma (Kids Educator)",
-      "text": "He ASKS for it. That is his favorite trick, because a password you hand over needs no cracking at all. [warmly] So here is the rule. Your password stays secret. Not your best friend. Not somebody in your game. Not a message that says it is urgent. The only place you ever type it is your own real login screen. [whispers] And the only person who ever helps you with it is a trusted grown-up. In a moment you will meet some of his tricks and decide what to do.",
+      "text": "He ASKS for it. That is his favorite trick, because a password you hand over needs no cracking at all. [warmly] So here is the rule. Your password stays secret. Not your best friend. Not somebody in your game. Not a message that says it is urgent. The only place you ever type it is your own real login screen. [whispers] And the only person who ever helps you with it is a trusted grown-up. Come and meet some of his tricks, and decide what to do!",
       "lines": [
         "He ASKS for it.",
         "That is his favorite trick, because a password you hand over needs no cracking at all.",
@@ -507,9 +507,9 @@
         "Not your best friend. Not somebody in your game. Not a message that says it is urgent.",
         "The only place you ever type it is your own real login screen.",
         "[whispers] And the only person who ever helps you with it is a trusted grown-up.",
-        "In a moment you will meet some of his tricks and decide what to do."
+        "Come and meet some of his tricks, and decide what to do!"
       ],
-      "file": "/audio/voice/d322da9bf612684e.mp3"
+      "file": "/audio/voice/ba5844dfbffe2da7.mp3"
     },
     {
       "key": "cedd105108c4d064",
@@ -558,19 +558,19 @@
       "file": "/audio/voice/a9deb7b73b3ebedc.mp3"
     },
     {
-      "key": "6645faf8c2595c96",
+      "key": "4c96ae66f121baef",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "Let's look at his list. Your name. Your birthday. Your pet. Your favorite team. And right at the top, one two three four five six. These are the first things he tries, because they are the things people pick MOST. [warmly] So we pick something that is on nobody's list. In a moment you will sort some weak passwords and work out why each one is weak.",
+      "text": "Let's look at his list. Your name. Your birthday. Your pet. Your favorite team. And right at the top, one two three four five six. These are the first things he tries, because they are the things people pick MOST. [warmly] So we pick something that is on nobody's list. Your turn to sort some weak passwords, and work out why each one is weak.",
       "lines": [
         "Let's look at his list.",
         "Your name. Your birthday. Your pet. Your favorite team.",
         "And right at the top, one two three four five six.",
         "These are the first things he tries, because they are the things people pick MOST.",
         "[warmly] So we pick something that is on nobody's list.",
-        "In a moment you will sort some weak passwords and work out why each one is weak."
+        "Your turn to sort some weak passwords, and work out why each one is weak."
       ],
-      "file": "/audio/voice/6645faf8c2595c96.mp3"
+      "file": "/audio/voice/4c96ae66f121baef.mp3"
     },
     {
       "key": "e32cadd420d9e386",
@@ -22148,19 +22148,19 @@
       "file": "/audio/voice/65f85e6075a3c2a9.mp3"
     },
     {
-      "key": "8ff47d6d10d2ae17",
+      "key": "bf76a55679571cff",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "[excited] On your very first challenge, we raid the Raccoon's secret wish list! This game is all about knowing which bits of YOU are private treasure. Out in the real world, the Raccoon collects these little clues to find you and trick you. Here is what you do. Tap each golden card to see his sneaky plan. Then slam it shut with a shield. [excited] Foil every plan and his wish list is worthless. Ready? Let's peek!",
+      "text": "[excited] On your very first challenge, we raid the Raccoon's secret wish list! Which bits of YOU are private treasure? That is what this one asks. Away from this screen, the Raccoon collects these little clues to find you and trick you. Tap each golden card to see his sneaky plan. Then slam it shut with a shield. [excited] Foil every plan and his wish list is worthless. Ready? Let's peek!",
       "lines": [
         "[excited] On your very first challenge, we raid the Raccoon's secret wish list!",
-        "This game is all about knowing which bits of YOU are private treasure.",
-        "Out in the real world, the Raccoon collects these little clues to find you and trick you.",
-        "Here is what you do. Tap each golden card to see his sneaky plan.",
+        "Which bits of YOU are private treasure? That is what this one asks.",
+        "Away from this screen, the Raccoon collects these little clues to find you and trick you.",
+        "Tap each golden card to see his sneaky plan.",
         "Then slam it shut with a shield.",
         "[excited] Foil every plan and his wish list is worthless. Ready? Let's peek!"
       ],
-      "file": "/audio/voice/8ff47d6d10d2ae17.mp3"
+      "file": "/audio/voice/bf76a55679571cff.mp3"
     },
     {
       "key": "f6739dcd3356162c",
@@ -22226,20 +22226,20 @@
       "file": "/audio/voice/0e6d88fa9acb2bbe.mp3"
     },
     {
-      "key": "a7fcff0ef5b47857",
+      "key": "ac64d865b35b3d3e",
       "speaker": "layla",
       "voice": "Emma (Kids Educator)",
-      "text": "[excited] On your next challenge, you're the guard at the Treasure Table! This game is all about sorting what's safe to share from what stays locked away. Out in the real world, mixing those two up is exactly how the Raccoon grabs a clue about you. Here is what you do. Grab each card and drag it. Favorites go up to the share board. Who-you-are and where-you-are drop straight into the vault. [excited] Guard every treasure and he gets nothing. Ready? Let's sort!",
+      "text": "[excited] On your next challenge, you're the guard at the Treasure Table! You are going to sort what is safe to share from what stays locked away. When it happens for real, mixing those two up is exactly how the Raccoon grabs a clue about you. So: grab each card and drag it. Favorites go up to the share board. Who-you-are and where-you-are drop straight into the vault. [excited] Guard every treasure and he gets nothing. Ready? Let's sort!",
       "lines": [
         "[excited] On your next challenge, you're the guard at the Treasure Table!",
-        "This game is all about sorting what's safe to share from what stays locked away.",
-        "Out in the real world, mixing those two up is exactly how the Raccoon grabs a clue about you.",
-        "Here is what you do. Grab each card and drag it.",
+        "You are going to sort what is safe to share from what stays locked away.",
+        "When it happens for real, mixing those two up is exactly how the Raccoon grabs a clue about you.",
+        "So: grab each card and drag it.",
         "Favorites go up to the share board.",
         "Who-you-are and where-you-are drop straight into the vault.",
         "[excited] Guard every treasure and he gets nothing. Ready? Let's sort!"
       ],
-      "file": "/audio/voice/a7fcff0ef5b47857.mp3"
+      "file": "/audio/voice/ac64d865b35b3d3e.mp3"
     },
     {
       "key": "c05cad575bf95d1b",
@@ -22305,20 +22305,20 @@
       "file": "/audio/voice/e727fe14c93b1754.mp3"
     },
     {
-      "key": "274359d45cce23ab",
+      "key": "be05a6ffc6029b39",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "[excited] On your next challenge, you become a form detective! This game is all about asking one hero question before you type: WHY are they asking? Out in the real world, sneaky apps ask for far more than they need, and that's the Raccoon's trap. Here is what you do. Tap all four magnifying glasses on each form. Who is asking. What they want. Whether they NEED it. What happens next. Then make the call. Fair ask, or too nosy? [excited] Catch every nosy form and no trick gets past you. Ready? Let's inspect!",
+      "text": "[excited] On your next challenge, you become a form detective! One hero question before you type. WHY are they asking? In real life, sneaky apps ask for far more than they need. That is the Raccoon's trap. Tap all four magnifying glasses on each form. Who is asking. What they want. Whether they NEED it. What happens next. Then make the call. Fair ask, or too nosy? [excited] Catch every nosy form and no trick gets past you. Ready? Let's inspect!",
       "lines": [
         "[excited] On your next challenge, you become a form detective!",
-        "This game is all about asking one hero question before you type: WHY are they asking?",
-        "Out in the real world, sneaky apps ask for far more than they need, and that's the Raccoon's trap.",
-        "Here is what you do. Tap all four magnifying glasses on each form.",
+        "One hero question before you type. WHY are they asking?",
+        "In real life, sneaky apps ask for far more than they need. That is the Raccoon's trap.",
+        "Tap all four magnifying glasses on each form.",
         "Who is asking. What they want. Whether they NEED it. What happens next.",
         "Then make the call. Fair ask, or too nosy?",
         "[excited] Catch every nosy form and no trick gets past you. Ready? Let's inspect!"
       ],
-      "file": "/audio/voice/274359d45cce23ab.mp3"
+      "file": "/audio/voice/be05a6ffc6029b39.mp3"
     },
     {
       "key": "c3ed0b53ccf5cbe5",
@@ -22383,19 +22383,19 @@
       "file": "/audio/voice/7f838869bdccae05.mp3"
     },
     {
-      "key": "f9004316df45e173",
+      "key": "e40276377c5d1eda",
       "speaker": "layla",
       "voice": "Emma (Kids Educator)",
-      "text": "[excited] On your next challenge, we fire up the Secret Identity Machine! This game is all about building a username that's a perfect mask, with none of the real you inside. Out in the real world, a username with your name or birthday is a mask with a hole in it. The Raccoon peeks right through. Here is what you do. Tap a hero word, a sidekick and a lucky number for each reel. Dodge any part that leaks the real you. [excited] Fill the disguise meter and stamp your hero badge. Ready? Let's forge!",
+      "text": "[excited] On your next challenge, we fire up the Secret Identity Machine! Now you build a username. A perfect mask, with none of the real you inside. Out there, a username with your name or birthday is a mask with a hole in it. The Raccoon peeks right through. Tap a hero word, a sidekick and a lucky number for each reel. Dodge any part that leaks the real you. [excited] Fill the disguise meter and stamp your hero badge. Ready? Let's forge!",
       "lines": [
         "[excited] On your next challenge, we fire up the Secret Identity Machine!",
-        "This game is all about building a username that's a perfect mask, with none of the real you inside.",
-        "Out in the real world, a username with your name or birthday is a mask with a hole in it. The Raccoon peeks right through.",
-        "Here is what you do. Tap a hero word, a sidekick and a lucky number for each reel.",
+        "Now you build a username. A perfect mask, with none of the real you inside.",
+        "Out there, a username with your name or birthday is a mask with a hole in it. The Raccoon peeks right through.",
+        "Tap a hero word, a sidekick and a lucky number for each reel.",
         "Dodge any part that leaks the real you.",
         "[excited] Fill the disguise meter and stamp your hero badge. Ready? Let's forge!"
       ],
-      "file": "/audio/voice/f9004316df45e173.mp3"
+      "file": "/audio/voice/e40276377c5d1eda.mp3"
     },
     {
       "key": "b7aeeac16552f22e",
@@ -22463,19 +22463,19 @@
       "file": "/audio/voice/2638d936d9514658.mp3"
     },
     {
-      "key": "3fef59d3828a28e7",
+      "key": "30d4c69f2327ef60",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "[excited] On your LAST challenge, you learn the Hero Pause! This game is all about what to do when you're just not sure: stop, and ask a grown-up. Out in the real world, tricky pop-ups appear all the time, and the smartest heroes never guess. Here is what you do. Four hero moves are jumbled up below. Tap them in the order a hero does them. Each one lights up on the path. [excited] Get the whole Hero Pause in order and no trick can catch you. Ready? You've got this!",
+      "text": "[excited] On your LAST challenge, you learn the Hero Pause! What do you do when you are just not sure? Stop, and ask a grown-up. On a real phone, tricky pop-ups appear all the time. The smartest heroes never guess. Four hero moves are jumbled up below. Tap them in the order a hero does them. Each one lights up on the path. [excited] Get the whole Hero Pause in order and no trick can catch you. Ready? You've got this!",
       "lines": [
         "[excited] On your LAST challenge, you learn the Hero Pause!",
-        "This game is all about what to do when you're just not sure: stop, and ask a grown-up.",
-        "Out in the real world, tricky pop-ups appear all the time, and the smartest heroes never guess.",
-        "Here is what you do. Four hero moves are jumbled up below.",
+        "What do you do when you are just not sure? Stop, and ask a grown-up.",
+        "On a real phone, tricky pop-ups appear all the time. The smartest heroes never guess.",
+        "Four hero moves are jumbled up below.",
         "Tap them in the order a hero does them. Each one lights up on the path.",
         "[excited] Get the whole Hero Pause in order and no trick can catch you. Ready? You've got this!"
       ],
-      "file": "/audio/voice/3fef59d3828a28e7.mp3"
+      "file": "/audio/voice/30d4c69f2327ef60.mp3"
     },
     {
       "key": "3660d6ede810d402",
@@ -22527,20 +22527,20 @@
       "file": "/audio/voice/4fb5e42c90f608bd.mp3"
     },
     {
-      "key": "70ee9ff04fa91a73",
+      "key": "cd32540851d0e6e4",
       "speaker": "layla",
       "voice": "Emma (Kids Educator)",
-      "text": "[excited] Final drill, Cyber Hero! The Raccoon has emptied his whole grab bag at you. This one mixes up everything you learned about guarding your secrets. Out in the real world, grabs for your private info and perfectly safe messages fly past you all the time. Here is what you do. Messages fly toward your device. Tap a grab for private info to ZAP it. Leave the safe ones alone. Those land in your vault. [warmly] Trust your training, you guard this vault now. Ready? Let's zap!",
+      "text": "[excited] Final drill, Cyber Hero! The Raccoon has emptied his whole grab bag at you. This one mixes up everything you learned about guarding your secrets. Back in the real world, grabs for your private info and perfectly safe messages fly past you all the time. Messages fly toward your device. Tap a grab for private info to ZAP it. Leave the safe ones alone. Those land in your vault. [warmly] Trust your training, you guard this vault now. Ready? Let's zap!",
       "lines": [
         "[excited] Final drill, Cyber Hero! The Raccoon has emptied his whole grab bag at you.",
         "This one mixes up everything you learned about guarding your secrets.",
-        "Out in the real world, grabs for your private info and perfectly safe messages fly past you all the time.",
-        "Here is what you do. Messages fly toward your device.",
+        "Back in the real world, grabs for your private info and perfectly safe messages fly past you all the time.",
+        "Messages fly toward your device.",
         "Tap a grab for private info to ZAP it. Leave the safe ones alone.",
         "Those land in your vault.",
         "[warmly] Trust your training, you guard this vault now. Ready? Let's zap!"
       ],
-      "file": "/audio/voice/70ee9ff04fa91a73.mp3"
+      "file": "/audio/voice/cd32540851d0e6e4.mp3"
     },
     {
       "key": "96fd6cb69ccb7148",
@@ -26298,20 +26298,20 @@
       "file": "/audio/voice/c0050d3a9f1520a6.mp3"
     },
     {
-      "key": "d8207745e17a4d6d",
+      "key": "f6193d53b6715194",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "[excited] On your first challenge, you learn to peek behind the mask! This game is all about what a friend's claim really proves. A photo, an age, a name... or knowing them in real life. Out in the real world, new friends pop up in games and chats all the time. Each one says who they are. Here is what you do. A friend request arrives wearing a claim. Tap PEEK BEHIND THE MASK to see what that claim really proves. Then tap REAL PROOF, or PROVES NOTHING. [excited] Six friends are waiting. Ready? You've got this!",
+      "text": "[excited] On your first challenge, you learn to peek behind the mask! What does a friend's claim really prove? A photo, an age, a name... or knowing them in real life. Away from this screen, new friends pop up in games and chats all the time. Each one says who they are. A friend request arrives, wearing a claim. Tap PEEK BEHIND THE MASK to see what that claim really proves. Then tap REAL PROOF, or PROVES NOTHING. [excited] Six friends are waiting. Ready? You've got this!",
       "lines": [
         "[excited] On your first challenge, you learn to peek behind the mask!",
-        "This game is all about what a friend's claim really proves. A photo, an age, a name... or knowing them in real life.",
-        "Out in the real world, new friends pop up in games and chats all the time. Each one says who they are.",
-        "Here is what you do. A friend request arrives wearing a claim.",
+        "What does a friend's claim really prove? A photo, an age, a name... or knowing them in real life.",
+        "Away from this screen, new friends pop up in games and chats all the time. Each one says who they are.",
+        "A friend request arrives, wearing a claim.",
         "Tap PEEK BEHIND THE MASK to see what that claim really proves.",
         "Then tap REAL PROOF, or PROVES NOTHING.",
         "[excited] Six friends are waiting. Ready? You've got this!"
       ],
-      "file": "/audio/voice/d8207745e17a4d6d.mp3"
+      "file": "/audio/voice/f6193d53b6715194.mp3"
     },
     {
       "key": "cafa636f81234371",
@@ -26324,15 +26324,15 @@
       "file": "/audio/voice/cafa636f81234371.mp3"
     },
     {
-      "key": "0960f30b0ee0fe49",
+      "key": "9f063cfdaa54157e",
       "speaker": "layla",
       "voice": "Emma (Kids Educator)",
-      "text": "[proud] Every mask peeked! You can tell real proof from a mask in a heartbeat. [warmly] Out in the real world, a photo or a typed age will never fool you again. The Raccoon's disguise kit just got useless.",
+      "text": "[proud] Every mask peeked! You can tell real proof from a mask in a heartbeat. [warmly] In real life, a photo or a typed age will never fool you again. The Raccoon's disguise kit just got useless.",
       "lines": [
         "[proud] Every mask peeked! You can tell real proof from a mask in a heartbeat.",
-        "[warmly] Out in the real world, a photo or a typed age will never fool you again. The Raccoon's disguise kit just got useless."
+        "[warmly] In real life, a photo or a typed age will never fool you again. The Raccoon's disguise kit just got useless."
       ],
-      "file": "/audio/voice/0960f30b0ee0fe49.mp3"
+      "file": "/audio/voice/9f063cfdaa54157e.mp3"
     },
     {
       "key": "3ddb9b88ecb4c6e1",
@@ -26348,17 +26348,17 @@
       "file": "/audio/voice/3ddb9b88ecb4c6e1.mp3"
     },
     {
-      "key": "4da22683181f822c",
+      "key": "c5d72483d2bb4001",
       "speaker": "layla",
       "voice": "Emma (Kids Educator)",
-      "text": "[warmly] Awesome start, Cyber Hero! You peeked behind six masks and called every one. Copied photo, typed age, picked name... proves nothing. Your cousin, your classmate... real proof. Next, we'll learn the four clues that give a fake profile away. Come and see!",
+      "text": "[warmly] Awesome start, Cyber Hero! You peeked behind six masks and called every one. Copied photo, typed age, picked name... proves nothing. Your cousin, your classmate... real proof. Up next: the four clues that give a fake profile away. Come and see!",
       "lines": [
         "[warmly] Awesome start, Cyber Hero!",
         "You peeked behind six masks and called every one.",
         "Copied photo, typed age, picked name... proves nothing. Your cousin, your classmate... real proof.",
-        "Next, we'll learn the four clues that give a fake profile away. Come and see!"
+        "Up next: the four clues that give a fake profile away. Come and see!"
       ],
-      "file": "/audio/voice/4da22683181f822c.mp3"
+      "file": "/audio/voice/c5d72483d2bb4001.mp3"
     },
     {
       "key": "b66a456e29ec2cdd",
@@ -26403,15 +26403,15 @@
       "file": "/audio/voice/34d89cc0b95b48e6.mp3"
     },
     {
-      "key": "83970c7bd447429a",
+      "key": "c08a5a285d29131f",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "[proud] Every case closed! You can read a profile's clues, so the Raccoon's fake friends can't fool you. [warmly] Out in the real world, a brand new account that rushes at you never gets past you. And real friends still get a warm hello.",
+      "text": "[proud] Every case closed! You can read a profile's clues, so the Raccoon's fake friends can't fool you. [warmly] Out there, a brand new account that rushes at you never gets past you. And real friends still get a warm hello.",
       "lines": [
         "[proud] Every case closed! You can read a profile's clues, so the Raccoon's fake friends can't fool you.",
-        "[warmly] Out in the real world, a brand new account that rushes at you never gets past you. And real friends still get a warm hello."
+        "[warmly] Out there, a brand new account that rushes at you never gets past you. And real friends still get a warm hello."
       ],
-      "file": "/audio/voice/83970c7bd447429a.mp3"
+      "file": "/audio/voice/c08a5a285d29131f.mp3"
     },
     {
       "key": "dd9e8bfa2bdeb948",
@@ -26427,17 +26427,17 @@
       "file": "/audio/voice/dd9e8bfa2bdeb948.mp3"
     },
     {
-      "key": "94464e4918fdf1d0",
+      "key": "f6b3addb03b5a671",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "[excited] Two powers down! You're a certified Profile Detective. Joined yesterday? Nobody you know? Best friends in five minutes? Asks for your school? Stamp, stamp, stamp, stamp. [warmly] But some tricksters get past the profile check. So they start ASKING for things... Next, we'll learn the red-flag requests every hero must know. Come and see!",
+      "text": "[excited] Two powers down! You're a certified Profile Detective. Joined yesterday? Nobody you know? Best friends in five minutes? Asks for your school? Stamp, stamp, stamp, stamp. [warmly] But some tricksters get past the profile check. So they start ASKING for things... Now for the red-flag requests every hero must know. Come and see!",
       "lines": [
         "[excited] Two powers down! You're a certified Profile Detective.",
         "Joined yesterday? Nobody you know? Best friends in five minutes? Asks for your school? Stamp, stamp, stamp, stamp.",
         "[warmly] But some tricksters get past the profile check. So they start ASKING for things...",
-        "Next, we'll learn the red-flag requests every hero must know. Come and see!"
+        "Now for the red-flag requests every hero must know. Come and see!"
       ],
-      "file": "/audio/voice/94464e4918fdf1d0.mp3"
+      "file": "/audio/voice/f6b3addb03b5a671.mp3"
     },
     {
       "key": "8290f1609158b016",
@@ -26455,20 +26455,20 @@
       "file": "/audio/voice/8290f1609158b016.mp3"
     },
     {
-      "key": "131a04c9c567b1e8",
+      "key": "a5e7eb183201bfd5",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "[excited] On your third challenge, the requests start rolling in! This game is all about telling a friendly ask from a red flag. Out in the real world, a chat friend might ask you a hundred things, and most are fine. A few are not. Here is what you do. A request pops up. Read it, or listen to me read it. Then tap one of the two buttons. RED FLAG, or FRIENDLY ASK. Watch out. The buttons swap sides! [warmly] Secrets, photos, gifts for info, and don't tell your parents... those are the flags. Ready? Let's judge!",
+      "text": "[excited] On your third challenge, the requests start rolling in! Your job now: tell a friendly ask from a red flag. When it happens for real, a chat friend might ask you a hundred things. Most are fine. A few are not. A request pops up. Read it, or listen to me read it. Then tap one of the two buttons. RED FLAG, or FRIENDLY ASK. Watch out. The buttons swap sides! [warmly] Secrets, photos, gifts for info, and don't tell your parents... those are the flags. Ready? Let's judge!",
       "lines": [
         "[excited] On your third challenge, the requests start rolling in!",
-        "This game is all about telling a friendly ask from a red flag.",
-        "Out in the real world, a chat friend might ask you a hundred things, and most are fine. A few are not.",
-        "Here is what you do. A request pops up. Read it, or listen to me read it.",
+        "Your job now: tell a friendly ask from a red flag.",
+        "When it happens for real, a chat friend might ask you a hundred things. Most are fine. A few are not.",
+        "A request pops up. Read it, or listen to me read it.",
         "Then tap one of the two buttons. RED FLAG, or FRIENDLY ASK.",
         "Watch out. The buttons swap sides!",
         "[warmly] Secrets, photos, gifts for info, and don't tell your parents... those are the flags. Ready? Let's judge!"
       ],
-      "file": "/audio/voice/131a04c9c567b1e8.mp3"
+      "file": "/audio/voice/a5e7eb183201bfd5.mp3"
     },
     {
       "key": "0422acb550b3a752",
@@ -26481,16 +26481,16 @@
       "file": "/audio/voice/0422acb550b3a752.mp3"
     },
     {
-      "key": "71504fb9b83245aa",
+      "key": "858510f4077a8d80",
       "speaker": "layla",
       "voice": "Emma (Kids Educator)",
-      "text": "[proud] Every request judged! Your red-flag radar is switched on for good. [warmly] Out in the real world, you will know the second someone asks for a secret or a photo. You will know when they say don't tell your parents. And you will tell a grown-up.",
+      "text": "[proud] Every request judged! Your red-flag radar is switched on for good. [warmly] On a real phone, you will know the second someone asks for a secret or a photo. You will know when they say don't tell your parents. And you will tell a grown-up.",
       "lines": [
         "[proud] Every request judged! Your red-flag radar is switched on for good.",
-        "[warmly] Out in the real world, you will know the second someone asks for a secret or a photo.",
+        "[warmly] On a real phone, you will know the second someone asks for a secret or a photo.",
         "You will know when they say don't tell your parents. And you will tell a grown-up."
       ],
-      "file": "/audio/voice/71504fb9b83245aa.mp3"
+      "file": "/audio/voice/858510f4077a8d80.mp3"
     },
     {
       "key": "8ae97376835e404d",
@@ -26506,17 +26506,17 @@
       "file": "/audio/voice/8ae97376835e404d.mp3"
     },
     {
-      "key": "cbd7e814fb4242dc",
+      "key": "cf38657935a2e90b",
       "speaker": "layla",
       "voice": "Emma (Kids Educator)",
-      "text": "[excited] Three powers! Your red-flag radar is ON. Secrets, photos, gifts, and don't tell your parents... you flagged every single one. [warmly] But what if a friend asks to MEET you, or wants a photo just this once? For that, heroes have two rules that never, ever bend. Next, we'll learn the two never-rules that keep every hero safe. Come and see!",
+      "text": "[excited] Three powers! Your red-flag radar is ON. Secrets, photos, gifts, and don't tell your parents... you flagged every single one. [warmly] But what if a friend asks to MEET you, or wants a photo just this once? For that, heroes have two rules that never, ever bend. Two never-rules come next, and they keep every hero safe. Come and see!",
       "lines": [
         "[excited] Three powers! Your red-flag radar is ON.",
         "Secrets, photos, gifts, and don't tell your parents... you flagged every single one.",
         "[warmly] But what if a friend asks to MEET you, or wants a photo just this once? For that, heroes have two rules that never, ever bend.",
-        "Next, we'll learn the two never-rules that keep every hero safe. Come and see!"
+        "Two never-rules come next, and they keep every hero safe. Come and see!"
       ],
-      "file": "/audio/voice/cbd7e814fb4242dc.mp3"
+      "file": "/audio/voice/cf38657935a2e90b.mp3"
     },
     {
       "key": "b8567757ab4d3b39",
@@ -26534,21 +26534,21 @@
       "file": "/audio/voice/b8567757ab4d3b39.mp3"
     },
     {
-      "key": "5aaa9cf24691f6e4",
+      "key": "81adac3af9cc30f4",
       "speaker": "layla",
       "voice": "Emma (Kids Educator)",
-      "text": "[excited] On your fourth challenge, a maze full of meet-up traps is waiting! This game is all about the two never-rules: never meet, never send. Out in the real world, a fake friend won't ask once. They'll ask in five different ways, and every one sounds friendly. Here is what you do. Tap a glowing square next to your hero to move. When a gate blocks the way, the fake friend makes an offer. Three replies appear. Tap the hero reply to open the gate. Collect the shields on the way. The exit is at the bottom right. [warmly] Never meet, never send, and tell a grown-up who asked. Ready? Into the maze!",
+      "text": "[excited] On your fourth challenge, a maze full of meet-up traps is waiting! Two never-rules to practise. Never meet. Never send. Back in the real world, a fake friend won't ask once. They will ask in five different ways, and every one sounds friendly. Tap a glowing square next to your hero to move. When a gate blocks the way, the fake friend makes an offer. Three replies appear. Tap the hero reply to open the gate. Collect the shields on the way. The exit is at the bottom right. [warmly] Never meet, never send, and tell a grown-up who asked. Ready? Into the maze!",
       "lines": [
         "[excited] On your fourth challenge, a maze full of meet-up traps is waiting!",
-        "This game is all about the two never-rules: never meet, never send.",
-        "Out in the real world, a fake friend won't ask once. They'll ask in five different ways, and every one sounds friendly.",
-        "Here is what you do. Tap a glowing square next to your hero to move.",
+        "Two never-rules to practise. Never meet. Never send.",
+        "Back in the real world, a fake friend won't ask once. They will ask in five different ways, and every one sounds friendly.",
+        "Tap a glowing square next to your hero to move.",
         "When a gate blocks the way, the fake friend makes an offer. Three replies appear.",
         "Tap the hero reply to open the gate.",
         "Collect the shields on the way. The exit is at the bottom right.",
         "[warmly] Never meet, never send, and tell a grown-up who asked. Ready? Into the maze!"
       ],
-      "file": "/audio/voice/5aaa9cf24691f6e4.mp3"
+      "file": "/audio/voice/81adac3af9cc30f4.mp3"
     },
     {
       "key": "ae29b1c5b32e3511",
@@ -26561,16 +26561,16 @@
       "file": "/audio/voice/ae29b1c5b32e3511.mp3"
     },
     {
-      "key": "7720b827e6e81432",
+      "key": "c034d145fffb8e91",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "[proud] You found the way out! Five gates, five hero replies, zero exceptions. [warmly] Out in the real world, no park, no party, no photo swap will ever get past you. And a trusted grown-up is always waiting at the exit.",
+      "text": "[proud] You found the way out! Five gates, five hero replies, zero exceptions. [warmly] Away from here, nothing gets past you. No park. No party. No photo swap. And a trusted grown-up is always waiting at the exit.",
       "lines": [
         "[proud] You found the way out! Five gates, five hero replies, zero exceptions.",
-        "[warmly] Out in the real world, no park, no party, no photo swap will ever get past you.",
+        "[warmly] Away from here, nothing gets past you. No park. No party. No photo swap.",
         "And a trusted grown-up is always waiting at the exit."
       ],
-      "file": "/audio/voice/7720b827e6e81432.mp3"
+      "file": "/audio/voice/c034d145fffb8e91.mp3"
     },
     {
       "key": "996628a32537971a",
@@ -26586,17 +26586,17 @@
       "file": "/audio/voice/996628a32537971a.mp3"
     },
     {
-      "key": "8655ab26faf88580",
+      "key": "92e0b1d7d14f1307",
       "speaker": "layla",
       "voice": "Emma (Kids Educator)",
-      "text": "[excited] Four powers! The two never-rules are locked in. Never meet. Never send. You said no to five traps in a row. [warmly] But sometimes a chat feels wrong before anyone breaks a rule. For that, you have a secret weapon. Next, we'll learn about the uh-oh feeling, your secret weapon. Come and see!",
+      "text": "[excited] Four powers! The two never-rules are locked in. Never meet. Never send. You said no to five traps in a row. [warmly] But sometimes a chat feels wrong before anyone breaks a rule. For that, you have a secret weapon. Last of all: the uh-oh feeling, your secret weapon. Come and see!",
       "lines": [
         "[excited] Four powers! The two never-rules are locked in.",
         "Never meet. Never send. You said no to five traps in a row.",
         "[warmly] But sometimes a chat feels wrong before anyone breaks a rule. For that, you have a secret weapon.",
-        "Next, we'll learn about the uh-oh feeling, your secret weapon. Come and see!"
+        "Last of all: the uh-oh feeling, your secret weapon. Come and see!"
       ],
-      "file": "/audio/voice/8655ab26faf88580.mp3"
+      "file": "/audio/voice/92e0b1d7d14f1307.mp3"
     },
     {
       "key": "d654cfabc8aaf65b",
@@ -26614,32 +26614,32 @@
       "file": "/audio/voice/d654cfabc8aaf65b.mp3"
     },
     {
-      "key": "d8c69999b7c6647e",
+      "key": "99fc33b733e7b915",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "[excited] On your last challenge, a chat request is about to pop up! This game is all about your uh-oh feeling. And the three hero steps. Feel it. Stop. Tell. Out in the real world, a chat can start friendly and slowly turn icky. Your tummy notices before your brain does. Here is what you do. Watch the meter at the top of the phone. Messages arrive, and I'll read each one. When the reply buttons appear, tap the reply a hero would send. And when the meter says UH-OH... you know what to do. [warmly] Trust the feeling. Ready? Here comes the chat!",
+      "text": "[excited] On your last challenge, a chat request is about to pop up! Now your uh-oh feeling, and the three hero steps. Feel it. Stop. Tell. Out in the real world, a chat can start friendly and slowly turn icky. Your tummy notices before your brain does. Watch the meter at the top of the phone. Messages arrive, and I'll read each one. When the reply buttons appear, tap the reply a hero would send. And when the meter says UH-OH... you know what to do. [warmly] Trust the feeling. Ready? Here comes the chat!",
       "lines": [
         "[excited] On your last challenge, a chat request is about to pop up!",
-        "This game is all about your uh-oh feeling. And the three hero steps. Feel it. Stop. Tell.",
+        "Now your uh-oh feeling, and the three hero steps. Feel it. Stop. Tell.",
         "Out in the real world, a chat can start friendly and slowly turn icky. Your tummy notices before your brain does.",
-        "Here is what you do. Watch the meter at the top of the phone.",
+        "Watch the meter at the top of the phone.",
         "Messages arrive, and I'll read each one.",
         "When the reply buttons appear, tap the reply a hero would send.",
         "And when the meter says UH-OH... you know what to do.",
         "[warmly] Trust the feeling. Ready? Here comes the chat!"
       ],
-      "file": "/audio/voice/d8c69999b7c6647e.mp3"
+      "file": "/audio/voice/99fc33b733e7b915.mp3"
     },
     {
-      "key": "ff870473c72b039c",
+      "key": "d1c35e3a3c2cf72b",
       "speaker": "layla",
       "voice": "Emma (Kids Educator)",
-      "text": "[proud] Chat over. And you did exactly what a hero does. Felt the uh-oh. Stopped. Told. [warmly] Out in the real world, you never need a reason you can explain. The feeling is enough, and a trusted grown-up takes it from there.",
+      "text": "[proud] Chat over. And you did exactly what a hero does. Felt the uh-oh. Stopped. Told. [warmly] In real life, you never need a reason you can explain. The feeling is enough, and a trusted grown-up takes it from there.",
       "lines": [
         "[proud] Chat over. And you did exactly what a hero does. Felt the uh-oh. Stopped. Told.",
-        "[warmly] Out in the real world, you never need a reason you can explain. The feeling is enough, and a trusted grown-up takes it from there."
+        "[warmly] In real life, you never need a reason you can explain. The feeling is enough, and a trusted grown-up takes it from there."
       ],
-      "file": "/audio/voice/ff870473c72b039c.mp3"
+      "file": "/audio/voice/d1c35e3a3c2cf72b.mp3"
     },
     {
       "key": "93eb54e9f1145f50",
@@ -26669,21 +26669,21 @@
       "file": "/audio/voice/d802c2663a281507.mp3"
     },
     {
-      "key": "4327de9cc1ac161b",
+      "key": "57cdb148855d1beb",
       "speaker": "layla",
       "voice": "Emma (Kids Educator)",
-      "text": "[excited] Final drill, Cyber Hero! Every clue you found this week goes on the Case Board. This drill mixes up all five powers you learned about fake friends. Out in the real world, a detective checks every clue before closing a case, and so do you. Here is what you do. The tray below the board holds clue cards. Some are real clues from this week. Some are the Raccoon's decoys. Tap a real clue and it pins to the board. Tap a decoy and I'll explain why it stays in the tray. [warmly] Five pins closes the case. Ready? Let's pin!",
+      "text": "[excited] Final drill, Cyber Hero! Every clue you found this week goes on the Case Board. This drill mixes up all five powers you learned about fake friends. Out there, a detective checks every clue before closing a case. And so do you. The tray below the board holds clue cards. Some are real clues from this week. Some are the Raccoon's decoys. Tap a real clue and it pins to the board. Tap a decoy and I'll explain why it stays in the tray. [warmly] Five pins closes the case. Ready? Let's pin!",
       "lines": [
         "[excited] Final drill, Cyber Hero! Every clue you found this week goes on the Case Board.",
         "This drill mixes up all five powers you learned about fake friends.",
-        "Out in the real world, a detective checks every clue before closing a case, and so do you.",
-        "Here is what you do. The tray below the board holds clue cards.",
+        "Out there, a detective checks every clue before closing a case. And so do you.",
+        "The tray below the board holds clue cards.",
         "Some are real clues from this week. Some are the Raccoon's decoys.",
         "Tap a real clue and it pins to the board.",
         "Tap a decoy and I'll explain why it stays in the tray.",
         "[warmly] Five pins closes the case. Ready? Let's pin!"
       ],
-      "file": "/audio/voice/4327de9cc1ac161b.mp3"
+      "file": "/audio/voice/57cdb148855d1beb.mp3"
     },
     {
       "key": "05799f23e8f5c38f",
@@ -28215,21 +28215,21 @@
       "file": "/audio/voice/45e948e110ad2f5b.mp3"
     },
     {
-      "key": "0ea3f19cfb08a94f",
+      "key": "539d6a272b17e427",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "[excited] On your first challenge, we visit the Raccoon's carnival. Every prize there is tied to a string! This game is all about what a scam really WANTS from you. Out in the real world, a message that offers you something amazing is often fishing. Fishing for your password. Your money. Or one quick tap. Here is what you do. Tap a prize balloon and I'll read its offer. Then tap the token on the counter that its string really leads to. Your password... your money... your tap... or nothing at all, because some offers are real. [warmly] Follow every string and no prize can hook you. Ready? Let's follow the strings!",
+      "text": "[excited] On your first challenge, we visit the Raccoon's carnival. Every prize there is tied to a string! What does a scam really WANT from you? That is what this one shows. Away from this screen, a message that offers you something amazing is often fishing. Fishing for your password. Your money. Or one quick tap. Tap a prize balloon and I'll read its offer. Then tap the token on the counter that its string really leads to. Your password... your money... your tap... or nothing at all, because some offers are real. [warmly] Follow every string and no prize can hook you. Ready? Let's follow the strings!",
       "lines": [
         "[excited] On your first challenge, we visit the Raccoon's carnival. Every prize there is tied to a string!",
-        "This game is all about what a scam really WANTS from you.",
-        "Out in the real world, a message that offers you something amazing is often fishing.",
+        "What does a scam really WANT from you? That is what this one shows.",
+        "Away from this screen, a message that offers you something amazing is often fishing.",
         "Fishing for your password. Your money. Or one quick tap.",
-        "Here is what you do. Tap a prize balloon and I'll read its offer.",
+        "Tap a prize balloon and I'll read its offer.",
         "Then tap the token on the counter that its string really leads to.",
         "Your password... your money... your tap... or nothing at all, because some offers are real.",
         "[warmly] Follow every string and no prize can hook you. Ready? Let's follow the strings!"
       ],
-      "file": "/audio/voice/0ea3f19cfb08a94f.mp3"
+      "file": "/audio/voice/539d6a272b17e427.mp3"
     },
     {
       "key": "bcc98cec20d73174",
@@ -28242,17 +28242,17 @@
       "file": "/audio/voice/bcc98cec20d73174.mp3"
     },
     {
-      "key": "b4c8070db5fac38b",
+      "key": "d124b617cfe71e62",
       "speaker": "layla",
       "voice": "Emma (Kids Educator)",
-      "text": "[proud] Every string followed! You can see what a scam really wants, so the Raccoon's prizes can't hook you. [warmly] Out in the real world, you will spot the string the moment a message asks. Your password. Your money. A quick tap. And a message with no strings? That one is real.",
+      "text": "[proud] Every string followed! You can see what a scam really wants, so the Raccoon's prizes can't hook you. [warmly] In real life, you will spot the string the moment a message asks. Your password. Your money. A quick tap. And a message with no strings? That one is real.",
       "lines": [
         "[proud] Every string followed! You can see what a scam really wants, so the Raccoon's prizes can't hook you.",
-        "[warmly] Out in the real world, you will spot the string the moment a message asks.",
+        "[warmly] In real life, you will spot the string the moment a message asks.",
         "Your password. Your money. A quick tap.",
         "And a message with no strings? That one is real."
       ],
-      "file": "/audio/voice/b4c8070db5fac38b.mp3"
+      "file": "/audio/voice/d124b617cfe71e62.mp3"
     },
     {
       "key": "0d09d3d1d69cc65e",
@@ -28268,18 +28268,18 @@
       "file": "/audio/voice/0d09d3d1d69cc65e.mp3"
     },
     {
-      "key": "5273674b71e2d474",
+      "key": "e0b3dc5f685a24ea",
       "speaker": "layla",
       "voice": "Emma (Kids Educator)",
-      "text": "[warmly] Great start, Cyber Hero! You followed every string, and you saw what each prize really wanted. Real messages ask for nothing. Scams always want something back. [whispers] But the Raccoon's biggest booth is still open, and its prizes are ENORMOUS... Next, we'll learn the shiniest bait of all: too good to be true. Come and see!",
+      "text": "[warmly] Great start, Cyber Hero! You followed every string, and you saw what each prize really wanted. Real messages ask for nothing. Scams always want something back. [whispers] But the Raccoon's biggest booth is still open, and its prizes are ENORMOUS... Up next: the shiniest bait of all. Too good to be true. Come and see!",
       "lines": [
         "[warmly] Great start, Cyber Hero!",
         "You followed every string, and you saw what each prize really wanted.",
         "Real messages ask for nothing. Scams always want something back.",
         "[whispers] But the Raccoon's biggest booth is still open, and its prizes are ENORMOUS...",
-        "Next, we'll learn the shiniest bait of all: too good to be true. Come and see!"
+        "Up next: the shiniest bait of all. Too good to be true. Come and see!"
       ],
-      "file": "/audio/voice/5273674b71e2d474.mp3"
+      "file": "/audio/voice/e0b3dc5f685a24ea.mp3"
     },
     {
       "key": "110785661b5b46e7",
@@ -28297,20 +28297,20 @@
       "file": "/audio/voice/110785661b5b46e7.mp3"
     },
     {
-      "key": "fa5cd0d989829e31",
+      "key": "d9ebdad7c935bbdc",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "[excited] On your second challenge, you take charge of the Believe-o-Meter! This game is all about how believable an offer is. Could be real. Hmm, check first. Or no way. Out in the real world, most offers land on one of those three. And the enormous ones from strangers are always no way. Here is what you do. A poster hangs above the dial and I'll read it. Tap the arrows to move the needle to one of three stops... Could be real... Hmm, check first... or No way. Then tap LOCK IT IN. [warmly] Get the needle right and no giant prize can dazzle you. Ready? Let's measure!",
+      "text": "[excited] On your second challenge, you take charge of the Believe-o-Meter! Now you weigh how believable an offer is. Could be real. Hmm, check first. Or no way. Out there, most offers land on one of those three. And the enormous ones from strangers are always no way. A poster hangs above the dial, and I'll read it. Tap the arrows to move the needle to one of three stops... Could be real... Hmm, check first... or No way. Then tap LOCK IT IN. [warmly] Get the needle right and no giant prize can dazzle you. Ready? Let's measure!",
       "lines": [
         "[excited] On your second challenge, you take charge of the Believe-o-Meter!",
-        "This game is all about how believable an offer is. Could be real. Hmm, check first. Or no way.",
-        "Out in the real world, most offers land on one of those three. And the enormous ones from strangers are always no way.",
-        "Here is what you do. A poster hangs above the dial and I'll read it.",
+        "Now you weigh how believable an offer is. Could be real. Hmm, check first. Or no way.",
+        "Out there, most offers land on one of those three. And the enormous ones from strangers are always no way.",
+        "A poster hangs above the dial, and I'll read it.",
         "Tap the arrows to move the needle to one of three stops... Could be real... Hmm, check first... or No way.",
         "Then tap LOCK IT IN.",
         "[warmly] Get the needle right and no giant prize can dazzle you. Ready? Let's measure!"
       ],
-      "file": "/audio/voice/fa5cd0d989829e31.mp3"
+      "file": "/audio/voice/d9ebdad7c935bbdc.mp3"
     },
     {
       "key": "d23eafab2bb8f125",
@@ -28323,16 +28323,16 @@
       "file": "/audio/voice/d23eafab2bb8f125.mp3"
     },
     {
-      "key": "e61f4d221034a1b1",
+      "key": "e141839b77afb6cb",
       "speaker": "layla",
       "voice": "Emma (Kids Educator)",
-      "text": "[proud] Every offer measured! You can tell a real prize from bait, so the Raccoon's giant giveaways can't dazzle you. [warmly] Out in the real world, enormous prizes from strangers go straight to no way. And when you are not sure, you check with a grown-up first.",
+      "text": "[proud] Every offer measured! You can tell a real prize from bait, so the Raccoon's giant giveaways can't dazzle you. [warmly] When it happens for real, enormous prizes from strangers go straight to no way. And when you are not sure, you check with a grown-up first.",
       "lines": [
         "[proud] Every offer measured! You can tell a real prize from bait, so the Raccoon's giant giveaways can't dazzle you.",
-        "[warmly] Out in the real world, enormous prizes from strangers go straight to no way.",
+        "[warmly] When it happens for real, enormous prizes from strangers go straight to no way.",
         "And when you are not sure, you check with a grown-up first."
       ],
-      "file": "/audio/voice/e61f4d221034a1b1.mp3"
+      "file": "/audio/voice/e141839b77afb6cb.mp3"
     },
     {
       "key": "405383c2a11eee9a",
@@ -28348,17 +28348,17 @@
       "file": "/audio/voice/405383c2a11eee9a.mp3"
     },
     {
-      "key": "4965c950f13050a8",
+      "key": "330d560b02b70d24",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "[excited] Two powers down! Your believe-o-meter is perfectly tuned. Giant prizes from strangers? No way. A little prize you really earned? Could be real. Not sure? Check first. [whispers] But the Raccoon's next trick doesn't offer you anything. It SCARES you, and it makes you hurry... Next, we'll learn the trick that makes your heart race. Come and see!",
+      "text": "[excited] Two powers down! Your believe-o-meter is perfectly tuned. Giant prizes from strangers? No way. A little prize you really earned? Could be real. Not sure? Check first. [whispers] But the Raccoon's next trick doesn't offer you anything. It SCARES you, and it makes you hurry... Now for the trick that makes your heart race. Come and see!",
       "lines": [
         "[excited] Two powers down! Your believe-o-meter is perfectly tuned.",
         "Giant prizes from strangers? No way. A little prize you really earned? Could be real. Not sure? Check first.",
         "[whispers] But the Raccoon's next trick doesn't offer you anything. It SCARES you, and it makes you hurry...",
-        "Next, we'll learn the trick that makes your heart race. Come and see!"
+        "Now for the trick that makes your heart race. Come and see!"
       ],
-      "file": "/audio/voice/4965c950f13050a8.mp3"
+      "file": "/audio/voice/330d560b02b70d24.mp3"
     },
     {
       "key": "ab2450633acb0d60",
@@ -28376,21 +28376,21 @@
       "file": "/audio/voice/ab2450633acb0d60.mp3"
     },
     {
-      "key": "d5a122a86f2c54af",
+      "key": "ded7390ce5aa4051",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "[excited] On your third challenge, you step up to the Barker's Booth, where every message is SHOUTING. This game is all about the hurry-up trick: countdowns, threats and big panic buttons. Out in the real world, a scary message wants you to act before you think. Slowing down is what beats it. Here is what you do. A message opens. Tap its four clues one at a time... who sent it... the button... the clock... and the promise. I'll read what each clue shows. When all four are open, tap TRICK to zap it, or tap REAL to keep it. [warmly] Slow down, check the clues, and no countdown can rush you. Ready? Let's inspect!",
+      "text": "[excited] On your third challenge, you step up to the Barker's Booth, where every message is SHOUTING. Time for the hurry-up trick. Countdowns, threats and big panic buttons. On a real phone, a scary message wants you to act before you think. Slowing down is what beats it. A message opens. Tap its four clues one at a time... who sent it... the button... the clock... and the promise. I'll read what each clue shows. When all four are open, tap TRICK to zap it, or tap REAL to keep it. [warmly] Slow down, check the clues, and no countdown can rush you. Ready? Let's inspect!",
       "lines": [
         "[excited] On your third challenge, you step up to the Barker's Booth, where every message is SHOUTING.",
-        "This game is all about the hurry-up trick: countdowns, threats and big panic buttons.",
-        "Out in the real world, a scary message wants you to act before you think. Slowing down is what beats it.",
-        "Here is what you do. A message opens.",
+        "Time for the hurry-up trick. Countdowns, threats and big panic buttons.",
+        "On a real phone, a scary message wants you to act before you think. Slowing down is what beats it.",
+        "A message opens.",
         "Tap its four clues one at a time... who sent it... the button... the clock... and the promise.",
         "I'll read what each clue shows.",
         "When all four are open, tap TRICK to zap it, or tap REAL to keep it.",
         "[warmly] Slow down, check the clues, and no countdown can rush you. Ready? Let's inspect!"
       ],
-      "file": "/audio/voice/d5a122a86f2c54af.mp3"
+      "file": "/audio/voice/ded7390ce5aa4051.mp3"
     },
     {
       "key": "4f6a7e9e833a85a3",
@@ -28403,16 +28403,16 @@
       "file": "/audio/voice/4f6a7e9e833a85a3.mp3"
     },
     {
-      "key": "c8cb2b4050114377",
+      "key": "b02653241c6d45f9",
       "speaker": "layla",
       "voice": "Emma (Kids Educator)",
-      "text": "[proud] Every message inspected, and not one countdown rushed you! [warmly] Out in the real world, when a message makes your heart race, you will know that racing feeling is the red flag. Slow down. Check the four clues. The trick falls apart.",
+      "text": "[proud] Every message inspected, and not one countdown rushed you! [warmly] Back in the real world, when a message makes your heart race, you will know that racing feeling is the red flag. Slow down. Check the four clues. The trick falls apart.",
       "lines": [
         "[proud] Every message inspected, and not one countdown rushed you!",
-        "[warmly] Out in the real world, when a message makes your heart race, you will know that racing feeling is the red flag.",
+        "[warmly] Back in the real world, when a message makes your heart race, you will know that racing feeling is the red flag.",
         "Slow down. Check the four clues. The trick falls apart."
       ],
-      "file": "/audio/voice/c8cb2b4050114377.mp3"
+      "file": "/audio/voice/b02653241c6d45f9.mp3"
     },
     {
       "key": "103e931fc9168c5c",
@@ -28428,17 +28428,17 @@
       "file": "/audio/voice/103e931fc9168c5c.mp3"
     },
     {
-      "key": "993c871f2edfcae9",
+      "key": "4dbd2d7ff0d23677",
       "speaker": "layla",
       "voice": "Emma (Kids Educator)",
-      "text": "[excited] Three powers down! Countdowns, threats, panic buttons... you inspected them all and never once got rushed. [whispers] But the Raccoon has a costume that fools almost everyone. He dresses up as someone you TRUST... Next, we'll learn the sneakiest disguise: senders that look real but aren't. Come and see!",
+      "text": "[excited] Three powers down! Countdowns, threats, panic buttons... you inspected them all and never once got rushed. [whispers] But the Raccoon has a costume that fools almost everyone. He dresses up as someone you TRUST... The sneakiest disguise comes next. Senders that look real but aren't. Come and see!",
       "lines": [
         "[excited] Three powers down!",
         "Countdowns, threats, panic buttons... you inspected them all and never once got rushed.",
         "[whispers] But the Raccoon has a costume that fools almost everyone. He dresses up as someone you TRUST...",
-        "Next, we'll learn the sneakiest disguise: senders that look real but aren't. Come and see!"
+        "The sneakiest disguise comes next. Senders that look real but aren't. Come and see!"
       ],
-      "file": "/audio/voice/993c871f2edfcae9.mp3"
+      "file": "/audio/voice/4dbd2d7ff0d23677.mp3"
     },
     {
       "key": "88356ae7a7549400",
@@ -28456,22 +28456,22 @@
       "file": "/audio/voice/88356ae7a7549400.mp3"
     },
     {
-      "key": "17b2154b7de10977",
+      "key": "0a3dc1b8b514acb7",
       "speaker": "layla",
       "voice": "Emma (Kids Educator)",
-      "text": "[excited] On your fourth challenge, you run the Name Tag Check! This game is all about lookalike senders, and the tiny swaps that give them away. Out in the real world, a copycat picks a name that is ALMOST right. It is hoping you never look closely. Here is what you do. The real sender's name tag is on top. The sender to check hangs underneath, split into the same pieces. Compare each piece with the one above it. If a piece doesn't match, tap it to mark it SWAPPED. Tap it again to lift the mark. Then tap CLOSE THE BOOTH. [warmly] Sometimes the sender is the real one, so no marks is a real answer too. Ready? Let's compare!",
+      "text": "[excited] On your fourth challenge, you run the Name Tag Check! Lookalike senders now, and the tiny swaps that give them away. Out in the real world, a copycat picks a name that is ALMOST right. It is hoping you never look closely. The real sender's name tag is on top. The sender to check hangs underneath, split into the same pieces. Compare each piece with the one above it. If a piece doesn't match, tap it to mark it SWAPPED. Tap it again to lift the mark. Then tap CLOSE THE BOOTH. [warmly] Sometimes the sender is the real one, so no marks is a real answer too. Ready? Let's compare!",
       "lines": [
         "[excited] On your fourth challenge, you run the Name Tag Check!",
-        "This game is all about lookalike senders, and the tiny swaps that give them away.",
+        "Lookalike senders now, and the tiny swaps that give them away.",
         "Out in the real world, a copycat picks a name that is ALMOST right. It is hoping you never look closely.",
-        "Here is what you do. The real sender's name tag is on top.",
+        "The real sender's name tag is on top.",
         "The sender to check hangs underneath, split into the same pieces.",
         "Compare each piece with the one above it.",
         "If a piece doesn't match, tap it to mark it SWAPPED. Tap it again to lift the mark.",
         "Then tap CLOSE THE BOOTH.",
         "[warmly] Sometimes the sender is the real one, so no marks is a real answer too. Ready? Let's compare!"
       ],
-      "file": "/audio/voice/17b2154b7de10977.mp3"
+      "file": "/audio/voice/0a3dc1b8b514acb7.mp3"
     },
     {
       "key": "123b6163c0bc2c49",
@@ -28484,16 +28484,16 @@
       "file": "/audio/voice/123b6163c0bc2c49.mp3"
     },
     {
-      "key": "3d0551764806e49c",
+      "key": "a8e3e03313a11d4c",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "[proud] Every tag checked! You read names letter by letter, so the Raccoon's copycats can't fool you. [warmly] Out in the real world, a one where an L should be will jump out at you. So will a strange ending. Almost-right is all-wrong, and you will know it.",
+      "text": "[proud] Every tag checked! You read names letter by letter, so the Raccoon's copycats can't fool you. [warmly] Away from here, a one where an L should be will jump out at you. So will a strange ending. Almost-right is all-wrong, and you will know it.",
       "lines": [
         "[proud] Every tag checked! You read names letter by letter, so the Raccoon's copycats can't fool you.",
-        "[warmly] Out in the real world, a one where an L should be will jump out at you. So will a strange ending.",
+        "[warmly] Away from here, a one where an L should be will jump out at you. So will a strange ending.",
         "Almost-right is all-wrong, and you will know it."
       ],
-      "file": "/audio/voice/3d0551764806e49c.mp3"
+      "file": "/audio/voice/a8e3e03313a11d4c.mp3"
     },
     {
       "key": "2f16dccbe0d7bad8",
@@ -28509,17 +28509,17 @@
       "file": "/audio/voice/2f16dccbe0d7bad8.mp3"
     },
     {
-      "key": "aee94298d7cabb1b",
+      "key": "5a8e302c4b8c47b3",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "[excited] Four powers! Nothing gets past you. Ones for L's, zeros for O's, strange endings... you read every disguise like a book. [warmly] Now, what if a tricky message lands and you're just not sure? There's one move that works on EVERY scam ever made... Next, we'll learn the golden move that beats every scam at once. Come and see!",
+      "text": "[excited] Four powers! Nothing gets past you. Ones for L's, zeros for O's, strange endings... you read every disguise like a book. [warmly] Now, what if a tricky message lands and you're just not sure? There's one move that works on EVERY scam ever made... Last of all, the golden move that beats every scam at once. Come and see!",
       "lines": [
         "[excited] Four powers! Nothing gets past you.",
         "Ones for L's, zeros for O's, strange endings... you read every disguise like a book.",
         "[warmly] Now, what if a tricky message lands and you're just not sure? There's one move that works on EVERY scam ever made...",
-        "Next, we'll learn the golden move that beats every scam at once. Come and see!"
+        "Last of all, the golden move that beats every scam at once. Come and see!"
       ],
-      "file": "/audio/voice/aee94298d7cabb1b.mp3"
+      "file": "/audio/voice/5a8e302c4b8c47b3.mp3"
     },
     {
       "key": "f79131d0c34988ab",
@@ -28537,20 +28537,20 @@
       "file": "/audio/voice/f79131d0c34988ab.mp3"
     },
     {
-      "key": "f8f46e872c2250c4",
+      "key": "47ca2c03cf0664ee",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "[excited] On your last challenge, you build the No-Bite Wall! This game is all about the three steps that beat every scam: stop, check, show. Out in the real world, a scam only works if you bite. Every safe habit you keep is another brick between you and the Raccoon. Here is what you do. A brick arrives in the tray and I'll read it. If it's a safe habit, tap a column of the wall to lay it in. If it's a bad habit, tap the bin to throw it out. [warmly] Lay every safe brick and nothing bites through. Ready? Let's build!",
+      "text": "[excited] On your last challenge, you build the No-Bite Wall! Three steps beat every scam. Stop. Check. Show. In real life, a scam only works if you bite. Every safe habit you keep is another brick between you and the Raccoon. A brick arrives in the tray, and I'll read it. If it's a safe habit, tap a column of the wall to lay it in. If it's a bad habit, tap the bin to throw it out. [warmly] Lay every safe brick and nothing bites through. Ready? Let's build!",
       "lines": [
         "[excited] On your last challenge, you build the No-Bite Wall!",
-        "This game is all about the three steps that beat every scam: stop, check, show.",
-        "Out in the real world, a scam only works if you bite. Every safe habit you keep is another brick between you and the Raccoon.",
-        "Here is what you do. A brick arrives in the tray and I'll read it.",
+        "Three steps beat every scam. Stop. Check. Show.",
+        "In real life, a scam only works if you bite. Every safe habit you keep is another brick between you and the Raccoon.",
+        "A brick arrives in the tray, and I'll read it.",
         "If it's a safe habit, tap a column of the wall to lay it in.",
         "If it's a bad habit, tap the bin to throw it out.",
         "[warmly] Lay every safe brick and nothing bites through. Ready? Let's build!"
       ],
-      "file": "/audio/voice/f8f46e872c2250c4.mp3"
+      "file": "/audio/voice/47ca2c03cf0664ee.mp3"
     },
     {
       "key": "f68bb8ed4459b6b2",
@@ -28563,15 +28563,15 @@
       "file": "/audio/voice/f68bb8ed4459b6b2.mp3"
     },
     {
-      "key": "763c7ad41ff8d108",
+      "key": "ad0c38ec788d4032",
       "speaker": "layla",
       "voice": "Emma (Kids Educator)",
-      "text": "[proud] The wall is built! Stop. Check. Show. Every safe habit is a brick the Raccoon can't get through. [warmly] Out in the real world, when a tricky message lands, you will stop. You will check. And you will show a grown-up. No bite, no trick. That's the golden move.",
+      "text": "[proud] The wall is built! Stop. Check. Show. Every safe habit is a brick the Raccoon can't get through. [warmly] Out there, when a tricky message lands, you will stop. You will check. And you will show a grown-up. No bite, no trick. That's the golden move.",
       "lines": [
         "[proud] The wall is built! Stop. Check. Show. Every safe habit is a brick the Raccoon can't get through.",
-        "[warmly] Out in the real world, when a tricky message lands, you will stop. You will check. And you will show a grown-up. No bite, no trick. That's the golden move."
+        "[warmly] Out there, when a tricky message lands, you will stop. You will check. And you will show a grown-up. No bite, no trick. That's the golden move."
       ],
-      "file": "/audio/voice/763c7ad41ff8d108.mp3"
+      "file": "/audio/voice/ad0c38ec788d4032.mp3"
     },
     {
       "key": "b6efbc0b6acedd4d",
@@ -28601,20 +28601,20 @@
       "file": "/audio/voice/60c61d3ef60d3741.mp3"
     },
     {
-      "key": "6faf1981641ce16f",
+      "key": "35481b21928911e3",
       "speaker": "layla",
       "voice": "Emma (Kids Educator)",
-      "text": "[excited] Final drill, Cyber Hero! Every trick you beat this week is hiding in the Hall of Mirrors. This drill mixes up all five powers you learned about scams. Out in the real world, tricks don't come one at a time. A hero keeps every power ready at once. Here is what you do. Tap a glowing mirror and it asks you a question. I'll read it. Tap the answer you believe. Get it right and the mirror clears. Clear all five, and the hall is yours. [warmly] Five mirrors, five powers. Ready? Let's clear the hall!",
+      "text": "[excited] Final drill, Cyber Hero! Every trick you beat this week is hiding in the Hall of Mirrors. This drill mixes up all five powers you learned about scams. When it happens for real, tricks don't come one at a time. A hero keeps every power ready at once. Tap a glowing mirror and it asks you a question. I'll read it. Tap the answer you believe. Get it right and the mirror clears. Clear all five, and the hall is yours. [warmly] Five mirrors, five powers. Ready? Let's clear the hall!",
       "lines": [
         "[excited] Final drill, Cyber Hero! Every trick you beat this week is hiding in the Hall of Mirrors.",
         "This drill mixes up all five powers you learned about scams.",
-        "Out in the real world, tricks don't come one at a time. A hero keeps every power ready at once.",
-        "Here is what you do. Tap a glowing mirror and it asks you a question. I'll read it.",
+        "When it happens for real, tricks don't come one at a time. A hero keeps every power ready at once.",
+        "Tap a glowing mirror and it asks you a question. I'll read it.",
         "Tap the answer you believe.",
         "Get it right and the mirror clears. Clear all five, and the hall is yours.",
         "[warmly] Five mirrors, five powers. Ready? Let's clear the hall!"
       ],
-      "file": "/audio/voice/6faf1981641ce16f.mp3"
+      "file": "/audio/voice/35481b21928911e3.mp3"
     },
     {
       "key": "44f1480f882c7bbd",
@@ -30548,18 +30548,18 @@
       "file": "/audio/voice/9d9df2c577183b5d.mp3"
     },
     {
-      "key": "895faddfcda25aaa",
+      "key": "eed07590de3561b5",
       "speaker": "layla",
       "voice": "Emma (Kids Educator)",
-      "text": "[excited] On your first challenge, we weigh chat moments on the Laughing Scales! This game is all about telling a joke from bullying. Out in the real world, a mean message often hides behind the word joke. The test tells you the truth. Here is what you do. A chat moment appears in the gold card. Read it, and ask: is everyone laughing, or is someone hurting? Then tap the card that says what it is. [warmly] Weigh all five, and nobody will ever fool you with the word joke. Ready? Let's weigh!",
+      "text": "[excited] On your first challenge, we weigh chat moments on the Laughing Scales! Can you tell a joke from bullying? That is what this one asks. Away from this screen, a mean message often hides behind the word joke. The test tells you the truth. A chat moment appears in the gold card. Read it, and ask: is everyone laughing, or is someone hurting? Then tap the card that says what it is. [warmly] Weigh all five, and nobody will ever fool you with the word joke. Ready? Let's weigh!",
       "lines": [
         "[excited] On your first challenge, we weigh chat moments on the Laughing Scales!",
-        "This game is all about telling a joke from bullying.",
-        "Out in the real world, a mean message often hides behind the word joke. The test tells you the truth.",
-        "Here is what you do. A chat moment appears in the gold card. Read it, and ask: is everyone laughing, or is someone hurting? Then tap the card that says what it is.",
+        "Can you tell a joke from bullying? That is what this one asks.",
+        "Away from this screen, a mean message often hides behind the word joke. The test tells you the truth.",
+        "A chat moment appears in the gold card. Read it, and ask: is everyone laughing, or is someone hurting? Then tap the card that says what it is.",
         "[warmly] Weigh all five, and nobody will ever fool you with the word joke. Ready? Let's weigh!"
       ],
-      "file": "/audio/voice/895faddfcda25aaa.mp3"
+      "file": "/audio/voice/eed07590de3561b5.mp3"
     },
     {
       "key": "3246fe8edd1b085c",
@@ -30572,16 +30572,16 @@
       "file": "/audio/voice/3246fe8edd1b085c.mp3"
     },
     {
-      "key": "37a3b4bf0db2c3f3",
+      "key": "abd4fdaab409ab36",
       "speaker": "layla",
       "voice": "Emma (Kids Educator)",
-      "text": "[proud] Every moment weighed! Joke or bullying, you can tell them apart now. [warmly] Out in the real world, when someone says it was just a joke, you know the test. Is everyone laughing? Or is someone hurting?",
+      "text": "[proud] Every moment weighed! Joke or bullying, you can tell them apart now. [warmly] In real life, when someone says it was just a joke, you know the test. Is everyone laughing? Or is someone hurting?",
       "lines": [
         "[proud] Every moment weighed! Joke or bullying, you can tell them apart now.",
-        "[warmly] Out in the real world, when someone says it was just a joke, you know the test.",
+        "[warmly] In real life, when someone says it was just a joke, you know the test.",
         "Is everyone laughing? Or is someone hurting?"
       ],
-      "file": "/audio/voice/37a3b4bf0db2c3f3.mp3"
+      "file": "/audio/voice/abd4fdaab409ab36.mp3"
     },
     {
       "key": "6326c721fde9216f",
@@ -30625,18 +30625,18 @@
       "file": "/audio/voice/ec7f60fc9a2dd990.mp3"
     },
     {
-      "key": "e49e7a6f1739916c",
+      "key": "68be90291c416566",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "[warmly] On your second challenge, four stones wait for you around the campfire. This game is all about one truth: mean words are never your fault. Out in the real world, after a mean message, a gray little doubt can sneak in. This ring is how you answer it. Here is what you do. Four stones sit around the fire. Tap the glowing one nearest the middle, and I will read the true thing written on it. Then the next stone lights up. There are no wrong taps in this game. [warmly] Light all four, and the doubt has nowhere left to hide. Ready? Tap the first stone.",
+      "text": "[warmly] On your second challenge, four stones wait for you around the campfire. One truth to hold on to. Mean words are never your fault. Out there, after a mean message, a gray little doubt can sneak in. This ring is how you answer it. Four stones sit around the fire. Tap the glowing one nearest the middle, and I will read the true thing written on it. Then the next stone lights up. There are no wrong taps in this game. [warmly] Light all four, and the doubt has nowhere left to hide. Ready? Tap the first stone.",
       "lines": [
         "[warmly] On your second challenge, four stones wait for you around the campfire.",
-        "This game is all about one truth: mean words are never your fault.",
-        "Out in the real world, after a mean message, a gray little doubt can sneak in. This ring is how you answer it.",
-        "Here is what you do. Four stones sit around the fire. Tap the glowing one nearest the middle, and I will read the true thing written on it. Then the next stone lights up. There are no wrong taps in this game.",
+        "One truth to hold on to. Mean words are never your fault.",
+        "Out there, after a mean message, a gray little doubt can sneak in. This ring is how you answer it.",
+        "Four stones sit around the fire. Tap the glowing one nearest the middle, and I will read the true thing written on it. Then the next stone lights up. There are no wrong taps in this game.",
         "[warmly] Light all four, and the doubt has nowhere left to hide. Ready? Tap the first stone."
       ],
-      "file": "/audio/voice/e49e7a6f1739916c.mp3"
+      "file": "/audio/voice/68be90291c416566.mp3"
     },
     {
       "key": "3376460a8ee0eb78",
@@ -30649,16 +30649,16 @@
       "file": "/audio/voice/3376460a8ee0eb78.mp3"
     },
     {
-      "key": "b73133882a701c61",
+      "key": "c97513f140784556",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "[proud] The whole ring is glowing, Cyber Hero. Every stone told the truth. [warmly] Out in the real world, a gray thought might whisper that it was your fault. And you know four true things that say it never was.",
+      "text": "[proud] The whole ring is glowing, Cyber Hero. Every stone told the truth. [warmly] When it happens for real, a gray thought might whisper that it was your fault. And you know four true things that say it never was.",
       "lines": [
         "[proud] The whole ring is glowing, Cyber Hero. Every stone told the truth.",
-        "[warmly] Out in the real world, a gray thought might whisper that it was your fault.",
+        "[warmly] When it happens for real, a gray thought might whisper that it was your fault.",
         "And you know four true things that say it never was."
       ],
-      "file": "/audio/voice/b73133882a701c61.mp3"
+      "file": "/audio/voice/c97513f140784556.mp3"
     },
     {
       "key": "a22f9021ba83c788",
@@ -30674,17 +30674,17 @@
       "file": "/audio/voice/a22f9021ba83c788.mp3"
     },
     {
-      "key": "ede92efd10028658",
+      "key": "4debf2d9d7ed8452",
       "speaker": "layla",
       "voice": "Emma (Kids Educator)",
-      "text": "[proud] That truth is your armour now, Cyber Hero. Not your fault. Not ever. [whispers] But what do you actually DO when mean words land and your face goes hot? Next, we'll learn the clever move for that exact moment. Come and see!",
+      "text": "[proud] That truth is your armour now, Cyber Hero. Not your fault. Not ever. [whispers] But what do you actually DO when mean words land and your face goes hot? Up next: the clever move for that exact moment. Come and see!",
       "lines": [
         "[proud] That truth is your armour now, Cyber Hero.",
         "Not your fault. Not ever.",
         "[whispers] But what do you actually DO when mean words land and your face goes hot?",
-        "Next, we'll learn the clever move for that exact moment. Come and see!"
+        "Up next: the clever move for that exact moment. Come and see!"
       ],
-      "file": "/audio/voice/ede92efd10028658.mp3"
+      "file": "/audio/voice/4debf2d9d7ed8452.mp3"
     },
     {
       "key": "2c30024f1f8a1d92",
@@ -30702,18 +30702,18 @@
       "file": "/audio/voice/2c30024f1f8a1d92.mp3"
     },
     {
-      "key": "8349be13e351bdb6",
+      "key": "0b6f3f62d5465f17",
       "speaker": "layla",
       "voice": "Emma (Kids Educator)",
-      "text": "[excited] On your third challenge, mean sparks are landing by our campfire! This game is all about not feeding the fire. Out in the real world, the itch to fire back is the fire asking for wood. And you can say no. Here is what you do. A spark lands with a big red REPLY button. Do not tap it. Press and HOLD the cool blue river stone until the spark fizzles into ash. On the last round a friend is picked on, so tap the green STAND UP button instead. [warmly] Starve three sparks and stand up for one friend, and you are the calm one. Ready? Here comes the first spark.",
+      "text": "[excited] On your third challenge, mean sparks are landing by our campfire! Now you practise not feeding the fire. On a real phone, the itch to fire back is the fire asking for wood. And you can say no. A spark lands with a big red REPLY button. Do not tap it. Press and HOLD the cool blue river stone until the spark fizzles into ash. On the last round a friend is picked on, so tap the green STAND UP button instead. [warmly] Starve three sparks and stand up for one friend, and you are the calm one. Ready? Here comes the first spark.",
       "lines": [
         "[excited] On your third challenge, mean sparks are landing by our campfire!",
-        "This game is all about not feeding the fire.",
-        "Out in the real world, the itch to fire back is the fire asking for wood. And you can say no.",
-        "Here is what you do. A spark lands with a big red REPLY button. Do not tap it. Press and HOLD the cool blue river stone until the spark fizzles into ash. On the last round a friend is picked on, so tap the green STAND UP button instead.",
+        "Now you practise not feeding the fire.",
+        "On a real phone, the itch to fire back is the fire asking for wood. And you can say no.",
+        "A spark lands with a big red REPLY button. Do not tap it. Press and HOLD the cool blue river stone until the spark fizzles into ash. On the last round a friend is picked on, so tap the green STAND UP button instead.",
         "[warmly] Starve three sparks and stand up for one friend, and you are the calm one. Ready? Here comes the first spark."
       ],
-      "file": "/audio/voice/8349be13e351bdb6.mp3"
+      "file": "/audio/voice/0b6f3f62d5465f17.mp3"
     },
     {
       "key": "506e2db8f4df7a6a",
@@ -30726,15 +30726,15 @@
       "file": "/audio/voice/506e2db8f4df7a6a.mp3"
     },
     {
-      "key": "6053aa2c7d081b82",
+      "key": "bea12af08eb7b06c",
       "speaker": "layla",
       "voice": "Emma (Kids Educator)",
-      "text": "[proud] The fire went quiet, Cyber Hero. Three sparks, no firewood, and a friend who is not alone. [warmly] Out in the real world, when your face goes hot, remember the stone. Stay calm, and then tell a grown-up.",
+      "text": "[proud] The fire went quiet, Cyber Hero. Three sparks, no firewood, and a friend who is not alone. [warmly] Back in the real world, when your face goes hot, remember the stone. Stay calm, and then tell a grown-up.",
       "lines": [
         "[proud] The fire went quiet, Cyber Hero. Three sparks, no firewood, and a friend who is not alone.",
-        "[warmly] Out in the real world, when your face goes hot, remember the stone. Stay calm, and then tell a grown-up."
+        "[warmly] Back in the real world, when your face goes hot, remember the stone. Stay calm, and then tell a grown-up."
       ],
-      "file": "/audio/voice/6053aa2c7d081b82.mp3"
+      "file": "/audio/voice/bea12af08eb7b06c.mp3"
     },
     {
       "key": "f54f868d067edcac",
@@ -30750,17 +30750,17 @@
       "file": "/audio/voice/f54f868d067edcac.mp3"
     },
     {
-      "key": "1876c311ca07472d",
+      "key": "9065cd7854cadc1a",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "[proud] Three powers, Cyber Hero. You kept your cool in the hottest moments. No wood for the fire. Not one stick. [whispers] Now, here is something huge: you can join a pile-on without typing a single word. Next, we'll learn why passing a message on is joining in. Come and see!",
+      "text": "[proud] Three powers, Cyber Hero. You kept your cool in the hottest moments. No wood for the fire. Not one stick. [whispers] Now, here is something huge: you can join a pile-on without typing a single word. Now for why passing a message on is joining in. Come and see!",
       "lines": [
         "[proud] Three powers, Cyber Hero. You kept your cool in the hottest moments.",
         "No wood for the fire. Not one stick.",
         "[whispers] Now, here is something huge: you can join a pile-on without typing a single word.",
-        "Next, we'll learn why passing a message on is joining in. Come and see!"
+        "Now for why passing a message on is joining in. Come and see!"
       ],
-      "file": "/audio/voice/1876c311ca07472d.mp3"
+      "file": "/audio/voice/9065cd7854cadc1a.mp3"
     },
     {
       "key": "1e0d6c71a48838b7",
@@ -30778,18 +30778,18 @@
       "file": "/audio/voice/1e0d6c71a48838b7.mp3"
     },
     {
-      "key": "f9735b211bbb3dc1",
+      "key": "82151b0d2f575da0",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "[excited] On your fourth challenge, we watch one message fly in the Ember Chase. This game is all about what happens when a mean message gets passed on. Out in the real world, one forward makes copies you can never get back. Here is what you do. A mean message sits in the card with a PASS IT ON button. Tap it once, just this once, to see what happens. Embers scatter across the field. Tap every ember you can to catch it back. [warmly] Try your hardest, and watch what the embers do. Ready? Tap the button.",
+      "text": "[excited] On your fourth challenge, we watch one message fly in the Ember Chase. Watch what happens when a mean message gets passed on. In real life, one forward makes copies you can never get back. A mean message sits in the card with a PASS IT ON button. Tap it once, just this once, to see what happens. Embers scatter across the field. Tap every ember you can to catch it back. [warmly] Try your hardest, and watch what the embers do. Ready? Tap the button.",
       "lines": [
         "[excited] On your fourth challenge, we watch one message fly in the Ember Chase.",
-        "This game is all about what happens when a mean message gets passed on.",
-        "Out in the real world, one forward makes copies you can never get back.",
-        "Here is what you do. A mean message sits in the card with a PASS IT ON button. Tap it once, just this once, to see what happens. Embers scatter across the field. Tap every ember you can to catch it back.",
+        "Watch what happens when a mean message gets passed on.",
+        "In real life, one forward makes copies you can never get back.",
+        "A mean message sits in the card with a PASS IT ON button. Tap it once, just this once, to see what happens. Embers scatter across the field. Tap every ember you can to catch it back.",
         "[warmly] Try your hardest, and watch what the embers do. Ready? Tap the button."
       ],
-      "file": "/audio/voice/f9735b211bbb3dc1.mp3"
+      "file": "/audio/voice/82151b0d2f575da0.mp3"
     },
     {
       "key": "1d6889e9fa265a48",
@@ -30827,17 +30827,17 @@
       "file": "/audio/voice/cac4aa257f21839f.mp3"
     },
     {
-      "key": "2f2d367336b3d14b",
+      "key": "eb7ebf84a9138963",
       "speaker": "layla",
       "voice": "Emma (Kids Educator)",
-      "text": "[proud] Four powers, Cyber Hero. You know what one forward really does. No forwards, no laughing along. One kind message instead. [whispers] There is one more power, and it is the warmest one of all. Next, we'll learn how heroes never carry heavy words alone. Come and see!",
+      "text": "[proud] Four powers, Cyber Hero. You know what one forward really does. No forwards, no laughing along. One kind message instead. [whispers] There is one more power, and it is the warmest one of all. Last of all, how heroes never carry heavy words alone. Come and see!",
       "lines": [
         "[proud] Four powers, Cyber Hero. You know what one forward really does.",
         "No forwards, no laughing along. One kind message instead.",
         "[whispers] There is one more power, and it is the warmest one of all.",
-        "Next, we'll learn how heroes never carry heavy words alone. Come and see!"
+        "Last of all, how heroes never carry heavy words alone. Come and see!"
       ],
-      "file": "/audio/voice/2f2d367336b3d14b.mp3"
+      "file": "/audio/voice/eb7ebf84a9138963.mp3"
     },
     {
       "key": "48bec6986e00df53",
@@ -30855,29 +30855,29 @@
       "file": "/audio/voice/48bec6986e00df53.mp3"
     },
     {
-      "key": "bee522677c66c1c0",
+      "key": "1314899e8f5981f0",
       "speaker": "layla",
       "voice": "Emma (Kids Educator)",
-      "text": "[excited] On your last challenge, we cross the stream on the Stepping Stones! This game is all about the three hero steps when mean words land. Out in the real world, the steps go in order, and each one makes the next one easier. Here is what you do. Three stones are offered for each step across the stream. Read all three, then tap the safe one. A wobbly stone teaches you why, and you try again. [warmly] Cross all three, and you never carry it alone. Ready? First stone!",
+      "text": "[excited] On your last challenge, we cross the stream on the Stepping Stones! Three hero steps, for when mean words land. Away from here, the steps go in order, and each one makes the next one easier. Three stones are offered for each step across the stream. Read all three, then tap the safe one. A wobbly stone teaches you why, and you try again. [warmly] Cross all three, and you never carry it alone. Ready? First stone!",
       "lines": [
         "[excited] On your last challenge, we cross the stream on the Stepping Stones!",
-        "This game is all about the three hero steps when mean words land.",
-        "Out in the real world, the steps go in order, and each one makes the next one easier.",
-        "Here is what you do. Three stones are offered for each step across the stream. Read all three, then tap the safe one. A wobbly stone teaches you why, and you try again.",
+        "Three hero steps, for when mean words land.",
+        "Away from here, the steps go in order, and each one makes the next one easier.",
+        "Three stones are offered for each step across the stream. Read all three, then tap the safe one. A wobbly stone teaches you why, and you try again.",
         "[warmly] Cross all three, and you never carry it alone. Ready? First stone!"
       ],
-      "file": "/audio/voice/bee522677c66c1c0.mp3"
+      "file": "/audio/voice/1314899e8f5981f0.mp3"
     },
     {
-      "key": "1ede4e5bd667405b",
+      "key": "2c7d5d87ed4ecdd7",
       "speaker": "layla",
       "voice": "Emma (Kids Educator)",
-      "text": "[proud] You're across, Cyber Hero! Don't reply, keep it, tell. [warmly] Out in the real world, those three stones are always there. Step on them in order, and you never carry heavy words alone.",
+      "text": "[proud] You're across, Cyber Hero! Don't reply, keep it, tell. [warmly] Out there, those three stones are always there. Step on them in order, and you never carry heavy words alone.",
       "lines": [
         "[proud] You're across, Cyber Hero! Don't reply, keep it, tell.",
-        "[warmly] Out in the real world, those three stones are always there. Step on them in order, and you never carry heavy words alone."
+        "[warmly] Out there, those three stones are always there. Step on them in order, and you never carry heavy words alone."
       ],
-      "file": "/audio/voice/1ede4e5bd667405b.mp3"
+      "file": "/audio/voice/2c7d5d87ed4ecdd7.mp3"
     },
     {
       "key": "901908e40bb55d67",
@@ -30907,18 +30907,18 @@
       "file": "/audio/voice/9c127fdc1e234b44.mp3"
     },
     {
-      "key": "b43b390e7051928d",
+      "key": "dabb78df5b8938d4",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "[excited] Time for your review: the Kind Moves Board! This game is all about picking the right hero move for each moment. Out in the real world, moments are different, and so are the moves. Here is what you do. Three chat moments sit on the board. Tap a moment, and I will read it. Then tap the hero move that fits it from the moves below. Every moment needs its OWN move, so no move can be used twice. [warmly] Match all three and the board is complete. Ready? Tap the first moment.",
+      "text": "[excited] Time for your review: the Kind Moves Board! Now you pick the right hero move for each moment. When it happens for real, moments are different. And so are the moves. Three chat moments sit on the board. Tap a moment, and I will read it. Then tap the hero move that fits it from the moves below. Every moment needs its OWN move, so no move can be used twice. [warmly] Match all three and the board is complete. Ready? Tap the first moment.",
       "lines": [
         "[excited] Time for your review: the Kind Moves Board!",
-        "This game is all about picking the right hero move for each moment.",
-        "Out in the real world, moments are different, and so are the moves.",
-        "Here is what you do. Three chat moments sit on the board. Tap a moment, and I will read it. Then tap the hero move that fits it from the moves below. Every moment needs its OWN move, so no move can be used twice.",
+        "Now you pick the right hero move for each moment.",
+        "When it happens for real, moments are different. And so are the moves.",
+        "Three chat moments sit on the board. Tap a moment, and I will read it. Then tap the hero move that fits it from the moves below. Every moment needs its OWN move, so no move can be used twice.",
         "[warmly] Match all three and the board is complete. Ready? Tap the first moment."
       ],
-      "file": "/audio/voice/b43b390e7051928d.mp3"
+      "file": "/audio/voice/dabb78df5b8938d4.mp3"
     },
     {
       "key": "597576b4640f620c",
@@ -30931,15 +30931,15 @@
       "file": "/audio/voice/597576b4640f620c.mp3"
     },
     {
-      "key": "bdd921149e383ce0",
+      "key": "e11a45a02826314d",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "[proud] Every moment answered, Cyber Hero. Three moments, three different hero moves. [warmly] Out in the real world, you will meet all three. Now you know which move each one needs, and the Raccoon's echo has nothing to copy.",
+      "text": "[proud] Every moment answered, Cyber Hero. Three moments, three different hero moves. [warmly] In real life, you will meet all three. Now you know which move each one needs, and the Raccoon's echo has nothing to copy.",
       "lines": [
         "[proud] Every moment answered, Cyber Hero. Three moments, three different hero moves.",
-        "[warmly] Out in the real world, you will meet all three. Now you know which move each one needs, and the Raccoon's echo has nothing to copy."
+        "[warmly] In real life, you will meet all three. Now you know which move each one needs, and the Raccoon's echo has nothing to copy."
       ],
-      "file": "/audio/voice/bdd921149e383ce0.mp3"
+      "file": "/audio/voice/e11a45a02826314d.mp3"
     },
     {
       "key": "2fa72f6a051a923a",
@@ -32060,20 +32060,20 @@
       "file": "/audio/voice/e22b3c7002ff44b1.mp3"
     },
     {
-      "key": "85cd792b283a8575",
+      "key": "d7408bb56eb8b4f9",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "[excited] On your first challenge, you fix chat messages before they fly! This game is all about keeping real-life info out of game chat. Out in the real world, a leak is usually one little word in a friendly message. Here is what you do. Your message appears as word tiles. Read it. If a word gives away who you are or where you are, tap it. Then tap the safer swap. If it is all game talk, just tap SEND. [warmly] Send every message clean, and the lobby learns nothing about you. Ready? First message!",
+      "text": "[excited] On your first challenge, you fix chat messages before they fly! Keep real-life info out of game chat. That is the whole job here. Away from this screen, a leak is usually one little word in a friendly message. Your message appears as word tiles. Read it. If a word gives away who you are or where you are, tap it. Then tap the safer swap. If it is all game talk, just tap SEND. [warmly] Send every message clean, and the lobby learns nothing about you. Ready? First message!",
       "lines": [
         "[excited] On your first challenge, you fix chat messages before they fly!",
-        "This game is all about keeping real-life info out of game chat.",
-        "Out in the real world, a leak is usually one little word in a friendly message.",
-        "Here is what you do. Your message appears as word tiles. Read it.",
+        "Keep real-life info out of game chat. That is the whole job here.",
+        "Away from this screen, a leak is usually one little word in a friendly message.",
+        "Your message appears as word tiles. Read it.",
         "If a word gives away who you are or where you are, tap it. Then tap the safer swap.",
         "If it is all game talk, just tap SEND.",
         "[warmly] Send every message clean, and the lobby learns nothing about you. Ready? First message!"
       ],
-      "file": "/audio/voice/85cd792b283a8575.mp3"
+      "file": "/audio/voice/d7408bb56eb8b4f9.mp3"
     },
     {
       "key": "0489d4a40ffe4c6b",
@@ -32086,15 +32086,15 @@
       "file": "/audio/voice/0489d4a40ffe4c6b.mp3"
     },
     {
-      "key": "505a2fd0537344fe",
+      "key": "a175efd7846059ff",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "[proud] Every message sent safely, Cyber Hero! You caught every leak. [warmly] Out in the real world, read your message once before you send it. Game talk flies, real-life info stays home.",
+      "text": "[proud] Every message sent safely, Cyber Hero! You caught every leak. [warmly] In real life, read your message once before you send it. Game talk flies, real-life info stays home.",
       "lines": [
         "[proud] Every message sent safely, Cyber Hero! You caught every leak.",
-        "[warmly] Out in the real world, read your message once before you send it. Game talk flies, real-life info stays home."
+        "[warmly] In real life, read your message once before you send it. Game talk flies, real-life info stays home."
       ],
-      "file": "/audio/voice/505a2fd0537344fe.mp3"
+      "file": "/audio/voice/a175efd7846059ff.mp3"
     },
     {
       "key": "90be1ea97d2f7d1c",
@@ -32110,17 +32110,17 @@
       "file": "/audio/voice/90be1ea97d2f7d1c.mp3"
     },
     {
-      "key": "dac1308967229086",
+      "key": "e762c570db04093e",
       "speaker": "layla",
       "voice": "Emma (Kids Educator)",
-      "text": "[proud] What a fixer, Cyber Hero. Not one leak got past you. Game talk flew, real-life info stayed home. [whispers] But checking every message is hard work. What if the lobby could guard itself? Next, we'll learn the setting that does exactly that. Come and see!",
+      "text": "[proud] What a fixer, Cyber Hero. Not one leak got past you. Game talk flew, real-life info stayed home. [whispers] But checking every message is hard work. What if the lobby could guard itself? Up next: the setting that does exactly that. Come and see!",
       "lines": [
         "[proud] What a fixer, Cyber Hero. Not one leak got past you.",
         "Game talk flew, real-life info stayed home.",
         "[whispers] But checking every message is hard work. What if the lobby could guard itself?",
-        "Next, we'll learn the setting that does exactly that. Come and see!"
+        "Up next: the setting that does exactly that. Come and see!"
       ],
-      "file": "/audio/voice/dac1308967229086.mp3"
+      "file": "/audio/voice/e762c570db04093e.mp3"
     },
     {
       "key": "f8330bcd2c916ced",
@@ -32138,18 +32138,18 @@
       "file": "/audio/voice/f8330bcd2c916ced.mp3"
     },
     {
-      "key": "c4b34c794fe542ed",
+      "key": "7ba5e2544d2f6cf6",
       "speaker": "layla",
       "voice": "Emma (Kids Educator)",
-      "text": "[excited] On your second challenge, you stand at the Lobby Doors! This game is all about letting friends in and keeping strangers out. Out in the real world, a lobby door with no lock lets anyone walk in. Anyone with a friendly name. Here is what you do. A player comes to the door. I will tell you who it is. If they wear the team badge, tap LET IN. No badge? Tap DENY. After the first few players, a settings card appears. Tap it to switch the lobby to friends only, and watch what changes. [warmly] Guard the door, then let the setting guard it for you. Ready? First player!",
+      "text": "[excited] On your second challenge, you stand at the Lobby Doors! Now you let friends in and keep strangers out. Out there, a lobby door with no lock lets anyone walk in. Anyone with a friendly name. A player comes to the door. I will tell you who it is. If they wear the team badge, tap LET IN. No badge? Tap DENY. After the first few players, a settings card appears. Tap it to switch the lobby to friends only, and watch what changes. [warmly] Guard the door, then let the setting guard it for you. Ready? First player!",
       "lines": [
         "[excited] On your second challenge, you stand at the Lobby Doors!",
-        "This game is all about letting friends in and keeping strangers out.",
-        "Out in the real world, a lobby door with no lock lets anyone walk in. Anyone with a friendly name.",
-        "Here is what you do. A player comes to the door. I will tell you who it is. If they wear the team badge, tap LET IN. No badge? Tap DENY. After the first few players, a settings card appears. Tap it to switch the lobby to friends only, and watch what changes.",
+        "Now you let friends in and keep strangers out.",
+        "Out there, a lobby door with no lock lets anyone walk in. Anyone with a friendly name.",
+        "A player comes to the door. I will tell you who it is. If they wear the team badge, tap LET IN. No badge? Tap DENY. After the first few players, a settings card appears. Tap it to switch the lobby to friends only, and watch what changes.",
         "[warmly] Guard the door, then let the setting guard it for you. Ready? First player!"
       ],
-      "file": "/audio/voice/c4b34c794fe542ed.mp3"
+      "file": "/audio/voice/7ba5e2544d2f6cf6.mp3"
     },
     {
       "key": "766e970f82bc1f0e",
@@ -32162,15 +32162,15 @@
       "file": "/audio/voice/766e970f82bc1f0e.mp3"
     },
     {
-      "key": "2ef7e56634d4edb7",
+      "key": "6013cae64586ca68",
       "speaker": "layla",
       "voice": "Emma (Kids Educator)",
-      "text": "[proud] Lobby locked, Cyber Hero! Friends in, strangers out. [warmly] Out in the real world, ask a grown-up to flip friends only with you once. After that, the lobby does the checking for you, every game.",
+      "text": "[proud] Lobby locked, Cyber Hero! Friends in, strangers out. [warmly] When it happens for real, ask a grown-up to flip friends only with you once. After that, the lobby does the checking for you, every game.",
       "lines": [
         "[proud] Lobby locked, Cyber Hero! Friends in, strangers out.",
-        "[warmly] Out in the real world, ask a grown-up to flip friends only with you once. After that, the lobby does the checking for you, every game."
+        "[warmly] When it happens for real, ask a grown-up to flip friends only with you once. After that, the lobby does the checking for you, every game."
       ],
-      "file": "/audio/voice/2ef7e56634d4edb7.mp3"
+      "file": "/audio/voice/6013cae64586ca68.mp3"
     },
     {
       "key": "dc3137f2fedb5558",
@@ -32186,17 +32186,17 @@
       "file": "/audio/voice/dc3137f2fedb5558.mp3"
     },
     {
-      "key": "3e1644922c10a6b3",
+      "key": "07e5aa80bdc80419",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "[proud] Lobby locked, Cyber Hero. Friends only, hero name, friends-only mic. The doors check the badges for you now. [whispers] But every so often a trickster still slips in, and they all try one sneaky move. Next, we'll learn what 'let's chat somewhere else' really means. Come and see!",
+      "text": "[proud] Lobby locked, Cyber Hero. Friends only, hero name, friends-only mic. The doors check the badges for you now. [whispers] But every so often a trickster still slips in, and they all try one sneaky move. Now for what 'let's chat somewhere else' really means. Come and see!",
       "lines": [
         "[proud] Lobby locked, Cyber Hero. Friends only, hero name, friends-only mic.",
         "The doors check the badges for you now.",
         "[whispers] But every so often a trickster still slips in, and they all try one sneaky move.",
-        "Next, we'll learn what 'let's chat somewhere else' really means. Come and see!"
+        "Now for what 'let's chat somewhere else' really means. Come and see!"
       ],
-      "file": "/audio/voice/3e1644922c10a6b3.mp3"
+      "file": "/audio/voice/07e5aa80bdc80419.mp3"
     },
     {
       "key": "c0d7126c8e79d087",
@@ -32214,18 +32214,18 @@
       "file": "/audio/voice/c0d7126c8e79d087.mp3"
     },
     {
-      "key": "931ec5be77539f62",
+      "key": "94d2befabc96dcf5",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "[excited] On your third challenge, you count the guards in Guard Count! This game is all about spotting when a chat is trying to move you away from the guards. Out in the real world, the move always comes with a friendly reason. Laggy chat. A secret trick. A private server. Here is what you do. A player asks you to chat somewhere else. Two places appear. Tap each guard slot in both places to see if that guard is there or missing. When you have checked them all, tap STAY HERE under the place you would stay in. [warmly] Count first, then choose, and no trickster can talk you out of the guarded playground. Ready? First invite!",
+      "text": "[excited] On your third challenge, you count the guards in Guard Count! Spot it when a chat tries to move you away from the guards. On a real phone, the move always comes with a friendly reason. Laggy chat. A secret trick. A private server. A player asks you to chat somewhere else. Two places appear. Tap each guard slot in both places to see if that guard is there or missing. When you have checked them all, tap STAY HERE under the place you would stay in. [warmly] Count first, then choose, and no trickster can talk you out of the guarded playground. Ready? First invite!",
       "lines": [
         "[excited] On your third challenge, you count the guards in Guard Count!",
-        "This game is all about spotting when a chat is trying to move you away from the guards.",
-        "Out in the real world, the move always comes with a friendly reason. Laggy chat. A secret trick. A private server.",
-        "Here is what you do. A player asks you to chat somewhere else. Two places appear. Tap each guard slot in both places to see if that guard is there or missing. When you have checked them all, tap STAY HERE under the place you would stay in.",
+        "Spot it when a chat tries to move you away from the guards.",
+        "On a real phone, the move always comes with a friendly reason. Laggy chat. A secret trick. A private server.",
+        "A player asks you to chat somewhere else. Two places appear. Tap each guard slot in both places to see if that guard is there or missing. When you have checked them all, tap STAY HERE under the place you would stay in.",
         "[warmly] Count first, then choose, and no trickster can talk you out of the guarded playground. Ready? First invite!"
       ],
-      "file": "/audio/voice/931ec5be77539f62.mp3"
+      "file": "/audio/voice/94d2befabc96dcf5.mp3"
     },
     {
       "key": "874afbd3f2aad42c",
@@ -32238,15 +32238,15 @@
       "file": "/audio/voice/874afbd3f2aad42c.mp3"
     },
     {
-      "key": "e8b2d3302022d12b",
+      "key": "49a4225cf648a914",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "[proud] Every guard counted, Cyber Hero! You stayed where they are, every time. [warmly] Out in the real world, when someone says let's chat somewhere else, count the guards. If they would be left behind, so would your safety.",
+      "text": "[proud] Every guard counted, Cyber Hero! You stayed where they are, every time. [warmly] Back in the real world, when someone says let's chat somewhere else, count the guards. If they would be left behind, so would your safety.",
       "lines": [
         "[proud] Every guard counted, Cyber Hero! You stayed where they are, every time.",
-        "[warmly] Out in the real world, when someone says let's chat somewhere else, count the guards. If they would be left behind, so would your safety."
+        "[warmly] Back in the real world, when someone says let's chat somewhere else, count the guards. If they would be left behind, so would your safety."
       ],
-      "file": "/audio/voice/e8b2d3302022d12b.mp3"
+      "file": "/audio/voice/49a4225cf648a914.mp3"
     },
     {
       "key": "eea872acb8570453",
@@ -32262,17 +32262,17 @@
       "file": "/audio/voice/eea872acb8570453.mp3"
     },
     {
-      "key": "fd281dd87159ed11",
+      "key": "355f04df1ddd2b38",
       "speaker": "layla",
       "voice": "Emma (Kids Educator)",
-      "text": "[proud] Three powers, Cyber Hero. The somewhere-else trick bounced right off you. You counted the guards and you stayed with them. [whispers] Speaking of guards, two of them live in every game, hiding in a menu. Next, we'll learn where the report and block buttons live. Come and see!",
+      "text": "[proud] Three powers, Cyber Hero. The somewhere-else trick bounced right off you. You counted the guards and you stayed with them. [whispers] Speaking of guards, two of them live in every game, hiding in a menu. Report and block come next. Where do they live? Come and see!",
       "lines": [
         "[proud] Three powers, Cyber Hero. The somewhere-else trick bounced right off you.",
         "You counted the guards and you stayed with them.",
         "[whispers] Speaking of guards, two of them live in every game, hiding in a menu.",
-        "Next, we'll learn where the report and block buttons live. Come and see!"
+        "Report and block come next. Where do they live? Come and see!"
       ],
-      "file": "/audio/voice/fd281dd87159ed11.mp3"
+      "file": "/audio/voice/355f04df1ddd2b38.mp3"
     },
     {
       "key": "937206a3d94d7efa",
@@ -32290,18 +32290,18 @@
       "file": "/audio/voice/937206a3d94d7efa.mp3"
     },
     {
-      "key": "4e189e10f6ae1398",
+      "key": "6bc50a4d1d7a3dec",
       "speaker": "layla",
       "voice": "Emma (Kids Educator)",
-      "text": "[excited] On your fourth challenge, you take on the Power Panel! This game is all about finding report and block, fast, in any game. Out in the real world, every game hides these buttons in a different spot. So you look for the WORD, not the place. Here is what you do. A nasty message sits at the top. Below it, a menu full of buttons. Tap REPORT first. Then tap BLOCK. Then tap TELL A GROWN-UP. If you tap something else, I will tell you why it does not help, and you try again. [warmly] Three menus, and three times through it. Report. Block. Tell. Ready? First menu!",
+      "text": "[excited] On your fourth challenge, you take on the Power Panel! Find report and block. Fast, in any game. In real life, every game hides these buttons in a different spot. So you look for the WORD, not the place. A nasty message sits at the top. Below it, a menu full of buttons. Tap REPORT first. Then tap BLOCK. Then tap TELL A GROWN-UP. If you tap something else, I will tell you why it does not help, and you try again. [warmly] Three menus, and three times through it. Report. Block. Tell. Ready? First menu!",
       "lines": [
         "[excited] On your fourth challenge, you take on the Power Panel!",
-        "This game is all about finding report and block, fast, in any game.",
-        "Out in the real world, every game hides these buttons in a different spot. So you look for the WORD, not the place.",
-        "Here is what you do. A nasty message sits at the top. Below it, a menu full of buttons. Tap REPORT first. Then tap BLOCK. Then tap TELL A GROWN-UP. If you tap something else, I will tell you why it does not help, and you try again.",
+        "Find report and block. Fast, in any game.",
+        "In real life, every game hides these buttons in a different spot. So you look for the WORD, not the place.",
+        "A nasty message sits at the top. Below it, a menu full of buttons. Tap REPORT first. Then tap BLOCK. Then tap TELL A GROWN-UP. If you tap something else, I will tell you why it does not help, and you try again.",
         "[warmly] Three menus, and three times through it. Report. Block. Tell. Ready? First menu!"
       ],
-      "file": "/audio/voice/4e189e10f6ae1398.mp3"
+      "file": "/audio/voice/6bc50a4d1d7a3dec.mp3"
     },
     {
       "key": "1ababcf4ff36440d",
@@ -32314,15 +32314,15 @@
       "file": "/audio/voice/1ababcf4ff36440d.mp3"
     },
     {
-      "key": "4710722dab1aa746",
+      "key": "0c64ebb3a13bdcbf",
       "speaker": "layla",
       "voice": "Emma (Kids Educator)",
-      "text": "[proud] Every button found, Cyber Hero! Three menus, three times report, block, tell. [warmly] Out in the real world, the buttons move around but the words stay the same. Look for the word, and the order never changes.",
+      "text": "[proud] Every button found, Cyber Hero! Three menus, three times report, block, tell. [warmly] Away from here, the buttons move around but the words stay the same. Look for the word, and the order never changes.",
       "lines": [
         "[proud] Every button found, Cyber Hero! Three menus, three times report, block, tell.",
-        "[warmly] Out in the real world, the buttons move around but the words stay the same. Look for the word, and the order never changes."
+        "[warmly] Away from here, the buttons move around but the words stay the same. Look for the word, and the order never changes."
       ],
-      "file": "/audio/voice/4710722dab1aa746.mp3"
+      "file": "/audio/voice/0c64ebb3a13bdcbf.mp3"
     },
     {
       "key": "9c2768e3034f3a2a",
@@ -32338,17 +32338,17 @@
       "file": "/audio/voice/9c2768e3034f3a2a.mp3"
     },
     {
-      "key": "5fdcde96c32c2079",
+      "key": "48f6a93dc727dbaa",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "[proud] Four powers, Cyber Hero. You found both buttons in every menu. Report. Block. Tell. [whispers] One last trap guards the game zone, and it comes wrapped as a gift. Next, we'll learn why a free download is never free. Come and see!",
+      "text": "[proud] Four powers, Cyber Hero. You found both buttons in every menu. Report. Block. Tell. [whispers] One last trap guards the game zone, and it comes wrapped as a gift. Last of all, why a free download is never free. Come and see!",
       "lines": [
         "[proud] Four powers, Cyber Hero. You found both buttons in every menu.",
         "Report. Block. Tell.",
         "[whispers] One last trap guards the game zone, and it comes wrapped as a gift.",
-        "Next, we'll learn why a free download is never free. Come and see!"
+        "Last of all, why a free download is never free. Come and see!"
       ],
-      "file": "/audio/voice/5fdcde96c32c2079.mp3"
+      "file": "/audio/voice/48f6a93dc727dbaa.mp3"
     },
     {
       "key": "77922d16809c62b5",
@@ -32366,20 +32366,20 @@
       "file": "/audio/voice/77922d16809c62b5.mp3"
     },
     {
-      "key": "497115b4f3a69ec9",
+      "key": "9ee4ff79e0107424",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "[excited] On your last challenge, downloads arrive at the Download Dock! This game is all about telling a real in-game shop from a free-download trap. Out in the real world, the trap always looks like the better deal. And it always asks for one thing too many. Here is what you do. A download page appears. Tap each magnifying glass to inspect a clue. Who made it. What it wants. Whether the real game would do this. What happens if you install it. Then tap your verdict. Looks safe. Ask a grown-up first. Or it is a trap, close it. [warmly] Inspect every clue before you decide, and no free skin will ever cost you your account. Ready? First download!",
+      "text": "[excited] On your last challenge, downloads arrive at the Download Dock! Tell a real in-game shop from a free-download trap. Out in the real world, the trap always looks like the better deal. And it always asks for one thing too many. A download page appears. Tap each magnifying glass to inspect a clue. Who made it. What it wants. Whether the real game would do this. What happens if you install it. Then tap your verdict. Looks safe. Ask a grown-up first. Or it is a trap, close it. [warmly] Inspect every clue before you decide, and no free skin will ever cost you your account. Ready? First download!",
       "lines": [
         "[excited] On your last challenge, downloads arrive at the Download Dock!",
-        "This game is all about telling a real in-game shop from a free-download trap.",
+        "Tell a real in-game shop from a free-download trap.",
         "Out in the real world, the trap always looks like the better deal. And it always asks for one thing too many.",
-        "Here is what you do. A download page appears. Tap each magnifying glass to inspect a clue.",
+        "A download page appears. Tap each magnifying glass to inspect a clue.",
         "Who made it. What it wants. Whether the real game would do this. What happens if you install it.",
         "Then tap your verdict. Looks safe. Ask a grown-up first. Or it is a trap, close it.",
         "[warmly] Inspect every clue before you decide, and no free skin will ever cost you your account. Ready? First download!"
       ],
-      "file": "/audio/voice/497115b4f3a69ec9.mp3"
+      "file": "/audio/voice/9ee4ff79e0107424.mp3"
     },
     {
       "key": "5cc56d382804fab3",
@@ -32392,15 +32392,15 @@
       "file": "/audio/voice/5cc56d382804fab3.mp3"
     },
     {
-      "key": "b4369c5036a59e68",
+      "key": "3d58ad99c59bf53a",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "[proud] Every download inspected, Cyber Hero! Two traps closed, one real pack spotted. [warmly] Out in the real world, real games sell their stuff inside the game. Anything outside gets a grown-up check first, every time.",
+      "text": "[proud] Every download inspected, Cyber Hero! Two traps closed, one real pack spotted. [warmly] Out there, real games sell their stuff inside the game. Anything outside gets a grown-up check first, every time.",
       "lines": [
         "[proud] Every download inspected, Cyber Hero! Two traps closed, one real pack spotted.",
-        "[warmly] Out in the real world, real games sell their stuff inside the game. Anything outside gets a grown-up check first, every time."
+        "[warmly] Out there, real games sell their stuff inside the game. Anything outside gets a grown-up check first, every time."
       ],
-      "file": "/audio/voice/b4369c5036a59e68.mp3"
+      "file": "/audio/voice/3d58ad99c59bf53a.mp3"
     },
     {
       "key": "8042b6f3d6ae2792",
@@ -32429,18 +32429,18 @@
       "file": "/audio/voice/5b410f7f63193492.mp3"
     },
     {
-      "key": "3dd7dd793c4f063a",
+      "key": "bfcc741b918382f5",
       "speaker": "layla",
       "voice": "Emma (Kids Educator)",
-      "text": "[excited] Time for your review: Game Zone Bingo! This game is all about matching each lobby moment to its hero move. Out in the real world, the moments come mixed up. So the moves have to be ready in any order. Here is what you do. A lobby moment appears above the bingo card. I will read it. Then tap the square with the hero move that answers it. Fill the card and it is bingo. [warmly] Six moments, six moves, one fortress. Ready? First moment!",
+      "text": "[excited] Time for your review: Game Zone Bingo! Match each lobby moment to its hero move. When it happens for real, the moments come mixed up. So the moves have to be ready in any order. A lobby moment appears above the bingo card. I will read it. Then tap the square with the hero move that answers it. Fill the card and it is bingo. [warmly] Six moments, six moves, one fortress. Ready? First moment!",
       "lines": [
         "[excited] Time for your review: Game Zone Bingo!",
-        "This game is all about matching each lobby moment to its hero move.",
-        "Out in the real world, the moments come mixed up. So the moves have to be ready in any order.",
-        "Here is what you do. A lobby moment appears above the bingo card. I will read it. Then tap the square with the hero move that answers it. Fill the card and it is bingo.",
+        "Match each lobby moment to its hero move.",
+        "When it happens for real, the moments come mixed up. So the moves have to be ready in any order.",
+        "A lobby moment appears above the bingo card. I will read it. Then tap the square with the hero move that answers it. Fill the card and it is bingo.",
         "[warmly] Six moments, six moves, one fortress. Ready? First moment!"
       ],
-      "file": "/audio/voice/3dd7dd793c4f063a.mp3"
+      "file": "/audio/voice/bfcc741b918382f5.mp3"
     },
     {
       "key": "954413b8b751ff00",
@@ -32453,15 +32453,15 @@
       "file": "/audio/voice/954413b8b751ff00.mp3"
     },
     {
-      "key": "164d5040d4676af4",
+      "key": "2a09d0f129d98595",
       "speaker": "layla",
       "voice": "Emma (Kids Educator)",
-      "text": "[proud] Bingo, Cyber Hero! Every lobby moment met its hero move. [warmly] Out in the real world, your game zone has a guard on every door now, and you know which one to call.",
+      "text": "[proud] Bingo, Cyber Hero! Every lobby moment met its hero move. [warmly] In real life, your game zone has a guard on every door now. And you know which one to call.",
       "lines": [
         "[proud] Bingo, Cyber Hero! Every lobby moment met its hero move.",
-        "[warmly] Out in the real world, your game zone has a guard on every door now, and you know which one to call."
+        "[warmly] In real life, your game zone has a guard on every door now. And you know which one to call."
       ],
-      "file": "/audio/voice/164d5040d4676af4.mp3"
+      "file": "/audio/voice/2a09d0f129d98595.mp3"
     },
     {
       "key": "8902a37fb5acda9f",
