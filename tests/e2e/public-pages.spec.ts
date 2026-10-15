@@ -131,12 +131,13 @@ test.describe("Critical UI invariants", () => {
   });
 });
 
-/* The launch password gate. The corporate line is on sale, so its pages,
- * both courses and the sign-in pages are open to a visitor with no cookie,
- * as is the adult Cyber Pro course (/pro); everything else still goes to
- * /password. `bare` carries no site_auth cookie. */
+/* The launch password gate. The marketing homepage ("/") is public so
+ * search engines and visitors reach it; the corporate line is on sale, so
+ * its pages, both courses and the sign-in pages are open to a visitor with
+ * no cookie, as is the adult Cyber Pro course (/pro); everything deeper
+ * still goes to /password. `bare` carries no site_auth cookie. */
 bare.describe("Launch gate", () => {
-  for (const path of ["/corporate", "/corporate/buy", "/ai-cleared", "/ai-fluent", "/pro", "/pro/course", "/ai-cleared/join/not-a-real-token", "/verify/AXC-0000-0000", "/login", "/signup", "/forgot-password", "/privacy", "/terms"]) {
+  for (const path of ["/", "/corporate", "/corporate/buy", "/ai-cleared", "/ai-fluent", "/pro", "/pro/course", "/ai-cleared/join/not-a-real-token", "/verify/AXC-0000-0000", "/login", "/signup", "/forgot-password", "/privacy", "/terms"]) {
     bare(`${path} is open without the site password`, async ({ page }) => {
       const res = await page.goto(path);
       expect(res?.status(), "answers rather than errors").toBeLessThan(500);
@@ -144,7 +145,7 @@ bare.describe("Launch gate", () => {
     });
   }
 
-  for (const path of ["/", "/cyberheroes", "/schools", "/dashboard"]) {
+  for (const path of ["/cyberheroes", "/schools", "/dashboard"]) {
     bare(`${path} still needs the site password`, async ({ page }) => {
       await page.goto(path);
       expect(new URL(page.url()).pathname).toBe("/password");
