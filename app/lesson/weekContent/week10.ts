@@ -56,14 +56,14 @@ export const WEEK_10: WeekContent = {
       photoSrc: "/cyberheroes/alerts/week-10.png",
       title: "ALERT INCOMING",
       badge: "Incident Report",
-      caption: "The Raccoon rigged the video app so the next video ALWAYS starts by itself. Kids sat down for ONE video and looked up two hours later, and some of what they watched wasn't even true. This week you learn to notice the pull, and climb out.",
+      caption: "The Raccoon rigged the video app so the next video ALWAYS starts by itself. Kids sat down for ONE video and looked up two hours later. And some of what they watched wasn't even true. This week you learn to notice the pull, and climb out.",
       photoCaption: "Wk 10 - Escape the Rabbit Hole",
       ctaLabel: "See the Mission →",
       narration: {
         speaker: "adam",
         lines: [
           "[nervous] Cyber Hero, sit down with me and read this incident report.",
-          "The Raccoon rigged the video app so the next video ALWAYS starts by itself. Kids sat down for ONE video and looked up two hours later, and some of what they watched wasn't even true. This week you learn to notice the pull, and climb out.",
+          "The Raccoon rigged the video app so the next video ALWAYS starts by itself. Kids sat down for ONE video and looked up two hours later. And some of what they watched wasn't even true. This week you learn to notice the pull, and climb out.",
           "[whispers] Two hours. And after the first one, nobody chose a single video.",
           "[warmly] By the end of today, you will feel the pull coming and climb out whenever you want.",
           "Let's see what Mission Command has for us!",
@@ -641,7 +641,7 @@ export const WEEK_10: WeekContent = {
           author: "BrickBuilder22",
           text: "I built this set too! Took me two whole days and a lost piece.",
           wantId: "nothing",
-          why: "Nothing at all. That one is chatting about the set it built, and a friendly stranger still gets no reply and no information.",
+          why: "Nothing at all. That one is chatting about the set it built. And a friendly stranger still gets no reply and no information.",
           explanation: "Check what it asks for: nothing. It's chatting about the set in the video, not about you.",
         },
         {
@@ -786,8 +786,8 @@ export const WEEK_10: WeekContent = {
           bell: "a jiggly leg",
           cards: [
             { id: "still", label: "Sit still and keep watching", icon: "🔀", isMine: false, why: "", explanation: "The jiggle doesn't stop on video six, it just gets louder. Your body already told you what it needs." },
-            { id: "outside", label: "Stretch, and go out while the sun's up", icon: "🌍", isMine: true, why: "A stretch and some daylight is exactly what a jiggly leg is asking for, and it takes about two minutes.", explanation: "" },
-            { id: "snack", label: "Snack and a drink, then decide", icon: "🍌", isMine: true, why: "Standing up for a snack gives that jiggly leg and stiff neck what they're asking for, and you decide properly once you've moved.", explanation: "" },
+            { id: "outside", label: "Stretch, and go out while the sun's up", icon: "🌍", isMine: true, why: "A stretch and some daylight is exactly what a jiggly leg is asking for. It takes about two minutes.", explanation: "" },
+            { id: "snack", label: "Snack and a drink, then decide", icon: "🍌", isMine: true, why: "Standing up for a snack gives that jiggly leg and stiff neck what they are asking for. And you decide properly once you have moved.", explanation: "" },
           ],
         },
         {
@@ -1011,7 +1011,7 @@ export const WEEK_10: WeekContent = {
         correctIndex: 0,
         teachOnWrong: {
           title: "The belt picks, not you!",
-          explanation: "You only tapped play on the FIRST video, and video makers can't choose what plays after theirs. When the next one starts all by itself, that's autoplay, a machine whose whole job is keeping you watching.",
+          explanation: "You only tapped play on the FIRST video. Video makers can't choose what plays after theirs. When the next one starts all by itself, that's autoplay, a machine whose whole job is keeping you watching.",
         },
         villainRight: {
           slug: "quiz-w10-right-c1-1",
@@ -1065,7 +1065,7 @@ export const WEEK_10: WeekContent = {
         correctIndex: 0,
         teachOnWrong: {
           title: "Never your fault!",
-          explanation: "The belt rolled that video in, you never asked for it, and there's no 'picking carefully' when a machine chooses. Pause it, back out with one calm tap, and tell a trusted grown-up if it felt icky.",
+          explanation: "The belt rolled that video in. You never asked for it. There is no 'picking carefully' when a machine chooses. Pause it, back out with one calm tap, and tell a trusted grown-up if it felt icky.",
         },
         villainRight: {
           slug: "quiz-w10-right-c3-1",
@@ -1092,7 +1092,7 @@ export const WEEK_10: WeekContent = {
         correctIndex: 0,
         teachOnWrong: {
           title: "No information is the whole rule!",
-          explanation: "Even just your town points a stranger toward you, and asking about their school starts a chat you don't want. Comments are strangers, so scroll on past, no replies, no information.",
+          explanation: "Even just your town points a stranger toward you. And asking about their school starts a chat you don't want. Comments are strangers, so scroll on past, no replies, no information.",
         },
         villainRight: {
           slug: "quiz-w10-right-c4-1",
@@ -1119,7 +1119,7 @@ export const WEEK_10: WeekContent = {
         correctIndex: 0,
         teachOnWrong: {
           title: "That's your bell!",
-          explanation: "The sky doesn't sneak, and screen brightness can't change what's outside the window. When time disappears like that, it's your body's friendly bell saying 'been here a while', so pause and pick what's next yourself.",
+          explanation: "The sky doesn't sneak. Screen brightness can't change what is outside the window. When time disappears like that, it's your body's friendly bell saying 'been here a while', so pause and pick what's next yourself.",
         },
         villainRight: {
           slug: "quiz-w10-right-c5-1",
