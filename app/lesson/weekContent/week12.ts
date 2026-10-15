@@ -62,14 +62,14 @@ export const WEEK_12: WeekContent = {
       photoSrc: "/cyberheroes/alerts/week-12.png",
       title: "ALERT INCOMING",
       badge: "Incident Report",
-      caption: "The Raccoon has been reading kids' trails like a map: school names in bios, park times in captions, grumpy posts to giggle at. This week you get the ranger kit. See the prints you leave, learn why copies cannot be caught, and stamp a trail you are proud of.",
+      caption: "The Raccoon has been reading kids' trails like a map. School names in bios. Park times in captions. Grumpy posts to giggle at. This week you get the ranger kit. See the prints you leave, learn why copies cannot be caught, and stamp a trail you are proud of.",
       photoCaption: "Wk 12 - Tracks in the Snow",
       ctaLabel: "See the Mission →",
       narration: {
         speaker: "adam",
         lines: [
           "[nervous] Cyber Hero, look at the tracks on this incident report.",
-          "The Raccoon has been reading kids' trails like a map: school names in bios, park times in captions, grumpy posts to giggle at. This week you get the ranger kit. See the prints you leave, learn why copies cannot be caught, and stamp a trail you are proud of.",
+          "The Raccoon has been reading kids' trails like a map. School names in bios. Park times in captions. Grumpy posts to giggle at. This week you get the ranger kit. See the prints you leave, learn why copies cannot be caught, and stamp a trail you are proud of.",
           "[whispers] A school name, a park time, a grumpy post. He never had to crack a thing.",
           "[warmly] By the end of today, you will see every print you leave BEFORE you leave it.",
           "Let's see what Mission Command has for us!",
@@ -225,7 +225,8 @@ export const WEEK_12: WeekContent = {
       completeNarration: {
         speaker: "adam",
         lines: [
-          "[proud] Look at that, Cyber Hero. Nobody introduced themselves, and you know their game, their team, their Saturday, their class and their street.",
+          "[proud] Look at that, Cyber Hero. Nobody introduced themselves.",
+          "And you know their game. Their team. Their Saturday. Their class. And their street.",
           "Not one of those taps felt like telling anybody anything.",
           "[warmly] That is what a trail does. It adds up.",
         ],
@@ -448,7 +449,7 @@ export const WEEK_12: WeekContent = {
           viewer: "a coach picking a team, five years from now",
           proud: true,
           why: "It shows somebody who sticks at a hard thing all afternoon. That is a print worth leaving.",
-          explanation: "There is nothing here to hide. It shows somebody who sticks at a hard thing, and that is exactly what a coach hopes to find.",
+          explanation: "There is nothing here to hide. It shows somebody who sticks at a hard thing. That is exactly what a coach hopes to find.",
         },
         {
           id: "rage",
@@ -497,7 +498,7 @@ export const WEEK_12: WeekContent = {
           readAloud: "This one is yours. Raised forty pounds for the shelter with my bake sale.",
           viewer: "someone offering you a first job",
           proud: true,
-          why: "A bake sale for the shelter still reads well years from now, and that is exactly what a lasting print should do.",
+          why: "A bake sale for the shelter still reads well years from now. That is exactly what a lasting print should do.",
           explanation: "This is what permanence is FOR. A print like this one keeps working for you years after you press it.",
         },
       ],
@@ -525,7 +526,7 @@ export const WEEK_12: WeekContent = {
         speaker: "adam",
         lines: [
           "[proud] Beautifully done, Cyber Hero. You did not ask whether those posts were funny.",
-          "You asked whether older you would be glad, and that is a different question with a much better answer.",
+          "You asked whether older you would be glad. That is a different question, with a much better answer.",
           "[warmly] The mirror takes one second. Prints last a great deal longer.",
         ],
       },
@@ -835,7 +836,7 @@ export const WEEK_12: WeekContent = {
           icon: "🧩",
           readAloud: "Almost home. Your marble run video from last summer, with the jump that took four goes.",
           options: [
-            { id: "keepgold", label: "Leave it. That one is golden", icon: "🥇", isRight: true, why: "A trail check is not a clear-out, and that jump is the reason you have a trail at all.", explanation: "A trail check is not a clear-out. This print shows somebody who kept going, and it should still be there in ten years." },
+            { id: "keepgold", label: "Leave it. That one is golden", icon: "🥇", isRight: true, why: "A trail check is not a clear-out. That jump is the reason you have a trail at all.", explanation: "A trail check is not a clear-out. This print shows somebody who kept going, and it should still be there in ten years." },
             { id: "tidyall", label: "Take it down with the rest", icon: "🗑️", isRight: false, why: "", explanation: "Nothing about that marble run is pointy. Taking the good prints down too would leave you an empty field and nothing to be proud of." },
             { id: "addschool", label: "Add your school name so people know", icon: "🏫", isRight: false, why: "", explanation: "The video already speaks for itself. Adding the school would press a pointy print onto a golden one." },
           ],
@@ -861,7 +862,7 @@ export const WEEK_12: WeekContent = {
         lines: [
           "[excited] Last challenge of the week, Cyber Hero. The Trail Planner!",
           "This game is all about reading your own trail the way a stranger would.",
-          "Out in the real world, this is the ten minutes you spend with a trusted grown-up every now and then.",
+          "Out in the real world, this is the ten minutes you spend with a trusted grown-up. Every now and then.",
           "So here is what you do.",
           "A stretch of your trail lights up, and I will read what is on it.",
           "Then three cards appear. Tap the one that says what you would do with it.",
@@ -877,7 +878,7 @@ export const WEEK_12: WeekContent = {
         lines: [
           "[proud] All the way home, Cyber Hero, and look at what you did NOT do.",
           "You did not panic, and you did not wipe the whole field clean.",
-          "You tidied the pointy prints, handed over the one on somebody else's page, and left the golden ones shining.",
+          "You tidied the pointy prints. You handed over the one on somebody else's page. And you left the golden ones shining.",
           "[warmly] Ten calm minutes. That is a trail check.",
         ],
       },
@@ -957,7 +958,7 @@ export const WEEK_12: WeekContent = {
             "Only if you searched it more than once.",
           ],
           correctIndex: 0,
-          why: "A search goes into a box that keeps it, so the print is there whether or not anything was posted.",
+          why: "A search goes into a box that keeps it. So the print is there whether or not anything was posted.",
           explanation: "Closing a tab tidies your screen and nothing else. The question you typed was kept the moment you typed it.",
         },
         {
@@ -969,7 +970,7 @@ export const WEEK_12: WeekContent = {
             "None, because sending moves it instead of copying it.",
           ],
           correctIndex: 0,
-          why: "Sending copies a thing instead of moving it, so one send already makes three before anybody passes it on.",
+          why: "Sending copies a thing instead of moving it. So one send already makes three, before anybody passes it on.",
           explanation: "Nothing left your side when you sent it. Yours stayed, theirs arrived, and the app kept one of its own.",
         },
         {
@@ -981,7 +982,7 @@ export const WEEK_12: WeekContent = {
             "Post it, because you are right about the ref.",
           ],
           correctIndex: 0,
-          why: "The fury fades by breakfast and the print does not, so the mirror question comes before the post, not after.",
+          why: "The fury fades by breakfast. The print does not. So the mirror question comes before the post, not after.",
           explanation: "Being right does not make it golden, and deleting tomorrow only reaches your own copy. One look in the mirror first.",
         },
         {
@@ -993,7 +994,7 @@ export const WEEK_12: WeekContent = {
             "Say it was no thanks to our defenders.",
           ],
           correctIndex: 0,
-          why: "Proud and kind, with the person who made the save named, is the post that still reads beautifully a year from now.",
+          why: "Proud and kind, with the person who made the save named. That is the post that still reads beautifully a year from now.",
           explanation: "The win is brilliant either way. Aimed at somebody, at their team or at your own, it goes into the snow stained.",
         },
         {
@@ -1005,8 +1006,8 @@ export const WEEK_12: WeekContent = {
             "Argue about it in the comments until they take it down.",
           ],
           correctIndex: 0,
-          why: "A print you cannot reach, on a page that is not yours, is exactly the one a ranger hands to a trusted grown-up.",
-          explanation: "You cannot reach that print yourself, and arguing in the comments only sends more people to look at it.",
+          why: "A print you cannot reach, on a page that is not yours. That is exactly the one a ranger hands to a trusted grown-up.",
+          explanation: "You cannot reach that print yourself. Arguing in the comments only sends more people to look at it.",
         },
       ],
       narration: {
@@ -1014,7 +1015,7 @@ export const WEEK_12: WeekContent = {
         lines: [
           "[excited] Time for your review, Cyber Hero. The Snow Maze!",
           "This game is all about using every ranger power, one gate at a time.",
-          "Out in the real world, trail choices turn up in any order, so all five have to be ready.",
+          "Out in the real world, trail choices turn up in any order. So all five have to be ready.",
           "So here is what you do.",
           "Tap a glowing square next to your hero to move.",
           "When a gate blocks the way, a friend brings a trail choice and three replies appear. Tap the ranger move to open it.",
@@ -1166,7 +1167,7 @@ export const WEEK_12: WeekContent = {
         correctIndex: 0,
         teachOnWrong: {
           title: "The fume melts, the track doesn't!",
-          explanation: "By breakfast you won't even mean it anymore, but deleting later only cleans YOUR snow, and being right doesn't make an angry post golden. One mirror look first: will future-me smile at this?",
+          explanation: "By breakfast you won't even mean it anymore. Deleting later only cleans YOUR snow. And being right doesn't make an angry post golden. One mirror look first: will future-me smile at this?",
         },
         villainRight: {
           slug: "quiz-w12-right-c3-1",
@@ -1193,7 +1194,7 @@ export const WEEK_12: WeekContent = {
         correctIndex: 0,
         teachOnWrong: {
           title: "Win it kind!",
-          explanation: "A win posted loud and mean, at the other team or your own, turns a golden day into a stain. Proud AND kind is the champion stamp, and it gleams for years.",
+          explanation: "A win posted loud and mean turns a golden day into a stain. At the other team, or your own. Proud AND kind is the champion stamp, and it gleams for years.",
         },
         villainRight: {
           slug: "quiz-w12-right-c4-1",
@@ -1220,7 +1221,7 @@ export const WEEK_12: WeekContent = {
         correctIndex: 0,
         teachOnWrong: {
           title: "That bio is pointy!",
-          explanation: "Real friends already know where to find you, so a bio doesn't need your school, and bios print just like posts do. Name plus age plus school points a stranger straight at you. Tidy it with a trusted grown-up.",
+          explanation: "Real friends already know where to find you. So a bio doesn't need your school. And bios print just like posts do. Name plus age plus school points a stranger straight at you. Tidy it with a trusted grown-up.",
         },
         villainRight: {
           slug: "quiz-w12-right-c5-1",
