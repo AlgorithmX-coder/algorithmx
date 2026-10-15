@@ -34,9 +34,20 @@ interface WeekIntroSceneProps {
   onBegin: () => void;
 }
 
-// A safety net: if the audio never loads/ends (blocked autoplay + no tap,
-// network, etc.), unlock "Let's go!" after this long so a child is never stuck.
-const UNLOCK_SAFETY_MS = 30000;
+/* A safety net: if the audio never loads or never ends (blocked autoplay with
+ * no tap, a network stall), unlock "Let's go!" so a child is never stuck.
+ *
+ * This used to be a flat 30s, which is SHORTER THAN THE BRIEFING on twenty of
+ * the twenty-four ATLAS clips. Week 16 runs 73s, so the button went live 43
+ * seconds before he stopped talking and the child could walk out mid-sentence.
+ * The owner caught it on week 1: 40s of audio, button live at 30s.
+ *
+ * So the net is now taken from the audio itself once its metadata arrives -
+ * its real length plus a margin. The flat value is only the fallback for when
+ * the duration never becomes known, which is the case the net exists for.
+ */
+const UNLOCK_FALLBACK_MS = 30000;
+const UNLOCK_MARGIN_MS = 4000;
 
 // One L-shaped HUD corner bracket for the briefing frame.
 function HudBracket({ pos, accent }: { pos: "tl" | "tr" | "bl" | "br"; accent: string }) {
@@ -130,10 +141,22 @@ export default function WeekIntroScene({
     const events: (keyof WindowEventMap)[] = ["pointerdown", "keydown", "touchstart", "click"];
     const onGesture = () => tryPlay();
     events.forEach((e) => window.addEventListener(e, onGesture, true));
-    const safety = window.setTimeout(() => setHeard(true), UNLOCK_SAFETY_MS);
+    // Re-arm the net against the clip's real length as soon as it is known, so
+    // it can never fire while ATLAS is still speaking.
+    let safety = window.setTimeout(() => setHeard(true), UNLOCK_FALLBACK_MS);
+    const armFromDuration = () => {
+      if (!Number.isFinite(a.duration) || a.duration <= 0) return;
+      window.clearTimeout(safety);
+      safety = window.setTimeout(() => setHeard(true), a.duration * 1000 + UNLOCK_MARGIN_MS);
+    };
+    armFromDuration();
+    a.addEventListener("loadedmetadata", armFromDuration);
+    a.addEventListener("durationchange", armFromDuration);
     return () => {
       a.removeEventListener("canplay", tryPlay);
       a.removeEventListener("loadeddata", tryPlay);
+      a.removeEventListener("loadedmetadata", armFromDuration);
+      a.removeEventListener("durationchange", armFromDuration);
       events.forEach((e) => window.removeEventListener(e, onGesture, true));
       window.clearTimeout(safety);
     };

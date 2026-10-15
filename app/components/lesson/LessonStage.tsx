@@ -298,12 +298,18 @@ export default function LessonStage({
         // on air above and below a board that already does not fit. Reclaimed
         // first, because losing padding costs nothing and shrinking the type
         // costs a six-year-old their reading.
+        /* The VERTICAL padding is part of the fit budget: avail = window - HUD
+         * - bottom pad - this - headroom. On the owner's 1414x771 the old
+         * clamp resolved to 40px top and bottom, 80px of chrome, which held
+         * the Learn card at 0.77 and made its type read small. Trimmed to 24px
+         * a side, which is still clear of the HUD and buys the type back.
+         * Horizontal padding is untouched - width was never the constraint. */
         padding: shortViewport
           ? "8px clamp(12px, 3vw, 24px)"
-          : "clamp(16px, 3vw, 40px) clamp(12px, 3vw, 24px)",
+          : "clamp(12px, 2vw, 24px) clamp(12px, 3vw, 24px)",
         paddingBottom: shortViewport
           ? "max(8px, calc(env(safe-area-inset-bottom, 0px) + 6px))"
-          : "max(clamp(16px, 3vw, 40px), calc(env(safe-area-inset-bottom, 0px) + 16px))",
+          : "max(clamp(12px, 2vw, 24px), calc(env(safe-area-inset-bottom, 0px) + 12px))",
         // Allow internal scroll as a fallback. Better than clipping.
         // overflowX:hidden keeps decorative glows from forcing a
         // horizontal scrollbar.

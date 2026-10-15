@@ -64,13 +64,13 @@ const VARIANTS: Record<
   { bg: string; color: string; border: string; shadow: string }
 > = {
   primary: {
-    bg: "linear-gradient(135deg, #f97316, #f59e0b)",
+    bg: "linear-gradient(90deg, #f97316, #f59e0b)",
     color: "#fff",
     border: "transparent",
     shadow: "0 6px 22px rgba(249,115,22,0.45)",
   },
   secondary: {
-    bg: "linear-gradient(135deg, #00e5ff, #7c5cff)",
+    bg: "linear-gradient(90deg, #00e5ff, #7c5cff)",
     color: "#0f1530",
     border: "transparent",
     shadow: "0 6px 22px rgba(0,229,255,0.4)",
@@ -92,14 +92,14 @@ const VARIANTS: Record<
   },
   // Big positive action - ZAP, FIX, RESCUE. Green forward energy.
   success: {
-    bg: "linear-gradient(135deg, #34d399, #10b981)",
+    bg: "linear-gradient(90deg, #34d399, #10b981)",
     color: "#062019",
     border: "transparent",
     shadow: "0 6px 22px rgba(52,211,153,0.45)",
   },
   // Stop / close / dismiss. Pink coral edge for "this is a no".
   danger: {
-    bg: "linear-gradient(135deg, #ff5fb3, #ef4444)",
+    bg: "linear-gradient(90deg, #ff5fb3, #ef4444)",
     color: "#fff",
     border: "transparent",
     shadow: "0 6px 22px rgba(239,68,68,0.45)",
@@ -134,7 +134,7 @@ export default function GameButton({
   // Only the PRIMARY hero CTA themes to the accent — secondary/success keep
   // their own colours so states like "not ready yet" (secondary) stay distinct.
   const themed = !!themeAccent && variant === "primary";
-  const bg = themed ? `linear-gradient(135deg, ${themeAccent}, ${themeAccent}cc)` : v.bg;
+  const bg = themed ? `linear-gradient(90deg, ${themeAccent}, ${themeAccent}cc)` : v.bg;
   const fg = themed ? readableInk(themeAccent!) : v.color;
   const shadow = themed ? `0 6px 22px ${themeAccent}55` : v.shadow;
   const hoverShadow = themed ? `0 10px 30px ${themeAccent}88` : v.shadow.replace("0.45", "0.65").replace("0.4", "0.6");
