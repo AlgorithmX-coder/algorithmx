@@ -51,6 +51,9 @@ export type ModuleDef = {
   /** Optional consolidation drills (scenario-based practice applying the skill
    *  to new clients). When present, a "Drills" beat runs after the capture. */
   Consolidation?: React.ComponentType<{ onDone: () => void }>;
+  /** Optional capstone: a longer, unguided end-to-end challenge. When present,
+   *  a "Challenge" beat runs after the drills (or after the capture). */
+  Capstone?: React.ComponentType<{ onDone: () => void }>;
   scope: { target: string; inScope: string; offLimits: string; timebox: string };
   handler: string;
   hint: string;
@@ -138,10 +141,10 @@ export function withGlossary(text: string, glossary: GlossaryEntry[] | undefined
   return out.length ? out : text;
 }
 
-type Phase = "brief" | "lesson" | "authorize" | "act" | "drills" | "defend" | "report";
+type Phase = "brief" | "lesson" | "authorize" | "act" | "drills" | "challenge" | "defend" | "report";
 const BASE_BEATS: { id: Phase; label: string }[] = [
   { id: "brief", label: "Brief" }, { id: "lesson", label: "Lesson" }, { id: "authorize", label: "Scope" },
-  { id: "act", label: "Capture" }, { id: "drills", label: "Drills" }, { id: "defend", label: "Defend" }, { id: "report", label: "Report" },
+  { id: "act", label: "Capture" }, { id: "drills", label: "Drills" }, { id: "challenge", label: "Challenge" }, { id: "defend", label: "Defend" }, { id: "report", label: "Report" },
 ];
 
 export default function Engagement({
@@ -172,11 +175,12 @@ export default function Engagement({
   const lessonReady = lessonOk && (!mod.lesson.Interactive || lessonLabOk);
   const defendReady = defendOk && (!mod.defend.Interactive || defendLabOk);
   const [hint, setHint] = useState(false);
-  const BEATS = BASE_BEATS.filter((b) => b.id !== "drills" || !!mod.Consolidation);
+  const BEATS = BASE_BEATS.filter((b) => (b.id !== "drills" || !!mod.Consolidation) && (b.id !== "challenge" || !!mod.Capstone));
   const idx = BEATS.findIndex((b) => b.id === phase);
 
+  const afterDrills: Phase = mod.Capstone ? "challenge" : "defend";
   function afterCapture() {
-    setPhase(mod.Consolidation ? "drills" : "defend");
+    setPhase(mod.Consolidation ? "drills" : afterDrills);
   }
   function goToReport() {
     onReport?.(callsign);
@@ -295,7 +299,18 @@ export default function Engagement({
               <span style={handlerTag}>HANDLER</span>
               <span style={{ fontSize: 14, lineHeight: 1.5 }}>Good capture. Before we write it up, a few field jobs - new clients, same skill, less hand-holding. This is how it sticks.</span>
             </div>
-            <mod.Consolidation onDone={() => setPhase("defend")} />
+            <mod.Consolidation onDone={() => setPhase(afterDrills)} />
+          </div>
+        )}
+
+        {/* CHALLENGE (capstone - a longer unguided end-to-end engagement) */}
+        {phase === "challenge" && mod.Capstone && (
+          <div style={{ display: "grid", gap: 14 }}>
+            <div style={handlerBox}>
+              <span style={handlerTag}>HANDLER</span>
+              <span style={{ fontSize: 14, lineHeight: 1.5 }}>Last one, and it's the real test. A full engagement, start to finish, no stage-by-stage hand-holding. Everything you've learned, chained together. Take your time.</span>
+            </div>
+            <mod.Capstone onDone={() => setPhase("defend")} />
           </div>
         )}
 
