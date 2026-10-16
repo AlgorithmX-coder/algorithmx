@@ -4,7 +4,13 @@ import ReadinessMeter from "./ReadinessMeter";
 
 /* The Cyber Pro course hub: every module, grouped into the four acts, with
  * a clear route into the ones that are built. Static and link-based so it
- * stays fast and robust. */
+ * stays fast and robust.
+ *
+ * Structure pass (owner 2026-10-16: "make the module structure clearer,
+ * headings standing out more"): each act now opens with a bold, accent-
+ * banded header (a large numbered tile, an "ACT n · N modules" kicker, a
+ * real h2 name) and a quick-nav jumps between the four acts. Module titles
+ * are h3s with accent number badges, so the hierarchy reads at a glance. */
 
 type Status = "live" | "preview" | "soon";
 type Mod = { n: number; title: string; blurb: string; tag: string; href?: string; status: Status };
@@ -90,46 +96,75 @@ export default function CourseHub() {
         .hub-cta:hover svg { transform: translateX(3px); }
         .hub-cta-note { font-size: 13.5px; color: ${T.faint}; }
 
-        /* act header */
-        .act { margin-top: 46px; }
-        .act-head { display: flex; align-items: flex-start; gap: 14px; padding-bottom: 16px; margin-bottom: 18px; border-bottom: 1px solid ${T.edge}; }
-        .act-tag { flex-shrink: 0; font-family: ${T.mono}; font-size: 12px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; padding: 7px 12px; border-radius: 8px; }
-        .act-name { font-family: ${T.display}; font-size: 24px; font-weight: 800; color: ${T.ink}; letter-spacing: -0.015em; line-height: 1.15; }
-        .act-focus { font-size: 14px; color: ${T.muted}; margin-top: 4px; }
-        .a1 .act-tag { color: ${T.primary}; background: ${T.primarySoft}; border: 1px solid ${T.primary}66; }
-        .a2 .act-tag { color: ${T.red}; background: ${T.redSoft}; border: 1px solid ${T.red}66; }
-        .a3 .act-tag { color: ${T.cyan}; background: ${T.cyanSoft}; border: 1px solid ${T.cyan}66; }
-        .a4 .act-tag { color: ${T.green}; background: ${T.greenSoft}; border: 1px solid ${T.green}66; }
+        /* act quick-nav: a compact map of the four acts, each in its accent */
+        .act-nav { display: grid; grid-template-columns: 1fr; gap: 9px; margin: 34px 0 6px; }
+        @media (min-width: 620px) { .act-nav { grid-template-columns: 1fr 1fr; } }
+        @media (min-width: 900px) { .act-nav { grid-template-columns: repeat(4, 1fr); } }
+        .nav-item { display: flex; align-items: center; gap: 11px; text-decoration: none; background: ${T.panel}; border: 1px solid ${T.edge}; border-radius: 12px; padding: 11px 13px; transition: transform 150ms ease, border-color 150ms ease, background 150ms ease; }
+        .nav-item:hover { transform: translateY(-2px); background: ${T.bgRaise}; }
+        .nav-num { flex-shrink: 0; width: 28px; height: 28px; border-radius: 8px; display: grid; place-items: center; font-family: ${T.mono}; font-size: 12.5px; font-weight: 800; }
+        .nav-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+        .nav-kicker { font-family: ${T.mono}; font-size: 9.5px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: ${T.faint}; }
+        .nav-name { font-family: ${T.display}; font-size: 13.5px; font-weight: 700; color: ${T.ink}; line-height: 1.18; letter-spacing: -0.01em; }
+        .a1 .nav-num, .a1.nav-item .nav-num { color: ${T.primary}; background: ${T.primarySoft}; border: 1px solid ${T.primary}55; }
+        .a2 .nav-num, .a2.nav-item .nav-num { color: ${T.red}; background: ${T.redSoft}; border: 1px solid ${T.red}55; }
+        .a3 .nav-num, .a3.nav-item .nav-num { color: ${T.cyan}; background: ${T.cyanSoft}; border: 1px solid ${T.cyan}55; }
+        .a4 .nav-num, .a4.nav-item .nav-num { color: ${T.green}; background: ${T.greenSoft}; border: 1px solid ${T.green}55; }
+        .a1.nav-item:hover { border-color: ${T.primary}; }
+        .a2.nav-item:hover { border-color: ${T.red}; }
+        .a3.nav-item:hover { border-color: ${T.cyan}; }
+        .a4.nav-item:hover { border-color: ${T.green}; }
+
+        /* act section + header: a bold, accent-banded block so each act stands out */
+        .act { margin-top: 52px; scroll-margin-top: 16px; }
+        .act-head { display: flex; align-items: center; gap: 16px; padding: 15px 18px; border-radius: 16px; margin-bottom: 20px; position: relative; overflow: hidden; }
+        .a1 .act-head { background: linear-gradient(100deg, ${T.primarySoft} 0%, transparent 72%); border: 1px solid ${T.primary}33; }
+        .a2 .act-head { background: linear-gradient(100deg, ${T.redSoft} 0%, transparent 72%); border: 1px solid ${T.red}33; }
+        .a3 .act-head { background: linear-gradient(100deg, ${T.cyanSoft} 0%, transparent 72%); border: 1px solid ${T.cyan}33; }
+        .a4 .act-head { background: linear-gradient(100deg, ${T.greenSoft} 0%, transparent 72%); border: 1px solid ${T.green}33; }
+        .act-num { flex-shrink: 0; width: 56px; height: 56px; border-radius: 14px; display: grid; place-items: center; font-family: ${T.display}; font-size: 26px; font-weight: 800; line-height: 1; }
+        .a1 .act-num { color: ${T.primary}; background: ${T.primarySoft}; border: 1px solid ${T.primary}55; box-shadow: inset 0 1px 0 ${T.primary}33; }
+        .a2 .act-num { color: ${T.red}; background: ${T.redSoft}; border: 1px solid ${T.red}55; box-shadow: inset 0 1px 0 ${T.red}33; }
+        .a3 .act-num { color: ${T.cyan}; background: ${T.cyanSoft}; border: 1px solid ${T.cyan}55; box-shadow: inset 0 1px 0 ${T.cyan}33; }
+        .a4 .act-num { color: ${T.green}; background: ${T.greenSoft}; border: 1px solid ${T.green}55; box-shadow: inset 0 1px 0 ${T.green}33; }
+        .act-meta { flex: 1; min-width: 0; }
+        .act-kicker { font-family: ${T.mono}; font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; }
+        .a1 .act-kicker { color: ${T.primary}; } .a2 .act-kicker { color: ${T.red}; } .a3 .act-kicker { color: ${T.cyan}; } .a4 .act-kicker { color: ${T.green}; }
+        .act-name { font-family: ${T.display}; font-size: clamp(21px, 3vw, 27px); font-weight: 800; color: ${T.ink}; letter-spacing: -0.015em; line-height: 1.14; margin: 3px 0 0; }
+        .act-focus { font-size: 14px; color: ${T.muted}; margin: 5px 0 0; }
 
         /* module cards */
         .mods { display: grid; grid-template-columns: 1fr; gap: 13px; }
         @media (min-width: 720px) { .mods { grid-template-columns: 1fr 1fr; } }
-        .mod { position: relative; display: flex; flex-direction: column; text-decoration: none; background: ${T.panel}; border: 1px solid ${T.edge}; border-radius: 15px; padding: 17px 19px 15px; overflow: hidden; min-height: 132px; }
-        .mod::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; opacity: 0.9; }
+        .mod { position: relative; display: flex; flex-direction: column; text-decoration: none; background: ${T.panel}; border: 1px solid ${T.edge}; border-radius: 15px; padding: 17px 19px 15px 22px; overflow: hidden; min-height: 136px; }
+        .mod::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; opacity: 0.95; }
         .a1 .mod::before { background: linear-gradient(${T.primary}, transparent); }
         .a2 .mod::before { background: linear-gradient(${T.red}, transparent); }
         .a3 .mod::before { background: linear-gradient(${T.cyan}, transparent); }
         .a4 .mod::before { background: linear-gradient(${T.green}, transparent); }
 
         a.mod { cursor: pointer; transition: border-color 160ms ease, transform 160ms ease, background 160ms ease, box-shadow 160ms ease; }
-        a.mod.live { border-color: ${T.green}55; }
+        a.mod.live { border-color: ${T.green}44; }
         a.mod:hover { transform: translateY(-3px); background: ${T.bgRaise}; box-shadow: 0 14px 30px rgba(0,0,0,0.34); }
         a.mod.live:hover { border-color: ${T.green}; }
         a.mod.preview:hover { border-color: ${T.cyan}; }
         .mod.soon { opacity: 0.5; }
         .mod.soon::before { opacity: 0.4; }
 
-        .mod-top { display: flex; align-items: center; gap: 11px; margin-bottom: 11px; }
-        .mod-n { flex-shrink: 0; width: 30px; height: 30px; border-radius: 8px; background: ${T.bgRaise}; border: 1px solid ${T.edge}; font-family: ${T.mono}; font-size: 13px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; }
-        .a1 .mod-n { color: ${T.primary}; } .a2 .mod-n { color: ${T.red}; } .a3 .mod-n { color: ${T.cyan}; } .a4 .mod-n { color: ${T.green}; }
-        .mod-title { flex: 1; min-width: 0; font-family: ${T.display}; font-size: 17px; font-weight: 700; color: ${T.ink}; line-height: 1.2; letter-spacing: -0.01em; }
+        .mod-top { display: flex; align-items: center; gap: 12px; margin-bottom: 11px; }
+        .mod-n { flex-shrink: 0; width: 34px; height: 34px; border-radius: 9px; font-family: ${T.mono}; font-size: 14px; font-weight: 800; display: inline-flex; align-items: center; justify-content: center; }
+        .a1 .mod-n { color: ${T.primary}; background: ${T.primarySoft}; border: 1px solid ${T.primary}44; }
+        .a2 .mod-n { color: ${T.red}; background: ${T.redSoft}; border: 1px solid ${T.red}44; }
+        .a3 .mod-n { color: ${T.cyan}; background: ${T.cyanSoft}; border: 1px solid ${T.cyan}44; }
+        .a4 .mod-n { color: ${T.green}; background: ${T.greenSoft}; border: 1px solid ${T.green}44; }
+        .mod-title { flex: 1; min-width: 0; font-family: ${T.display}; font-size: 18px; font-weight: 800; color: ${T.ink}; line-height: 1.2; letter-spacing: -0.01em; margin: 0; }
         .mod-blurb { flex: 1; font-size: 13.5px; line-height: 1.5; color: ${T.muted}; margin: 0 0 12px; }
         .mod-foot { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
         .mod-tag { font-family: ${T.mono}; font-size: 10.5px; letter-spacing: 0.03em; color: ${T.faint}; }
         .mod-go { display: inline-flex; align-items: center; gap: 5px; font-family: ${T.display}; font-size: 13px; font-weight: 700; }
         a.mod.live .mod-go { color: ${T.green}; } a.mod.preview .mod-go { color: ${T.cyan}; }
 
-        @media (prefers-reduced-motion: reduce) { a.mod, .hub-cta, .hub-cta svg { transition: none; } a.mod:hover, .hub-cta:hover { transform: none; } }
+        @media (prefers-reduced-motion: reduce) { a.mod, .hub-cta, .hub-cta svg, .nav-item { transition: none; } a.mod:hover, .hub-cta:hover, .nav-item:hover { transform: none; } }
       `}</style>
 
       <CodeRainBg />
@@ -162,13 +197,27 @@ export default function CourseHub() {
 
           <ReadinessMeter />
 
-          {ACTS.map((a) => (
-            <section key={a.tag} className={`act ${a.cls}`}>
+          {/* Quick-nav: the four acts at a glance, each jumping to its section. */}
+          <nav className="act-nav" aria-label="The four acts">
+            {ACTS.map((a, ai) => (
+              <a key={a.tag} className={`nav-item ${a.cls}`} href={`#act-${ai + 1}`}>
+                <span className="nav-num" aria-hidden>{ai + 1}</span>
+                <span className="nav-text">
+                  <span className="nav-kicker">Act {ai + 1}</span>
+                  <span className="nav-name">{a.name}</span>
+                </span>
+              </a>
+            ))}
+          </nav>
+
+          {ACTS.map((a, ai) => (
+            <section key={a.tag} id={`act-${ai + 1}`} className={`act ${a.cls}`} aria-labelledby={`act-${ai + 1}-name`}>
               <div className="act-head">
-                <span className="act-tag">{a.tag}</span>
-                <div>
-                  <div className="act-name">{a.name}</div>
-                  <div className="act-focus">{a.focus}</div>
+                <span className="act-num" aria-hidden>{String(ai + 1).padStart(2, "0")}</span>
+                <div className="act-meta">
+                  <div className="act-kicker">Act {ai + 1} &middot; {a.modules.length} modules</div>
+                  <h2 id={`act-${ai + 1}-name`} className="act-name">{a.name}</h2>
+                  <p className="act-focus">{a.focus}</p>
                 </div>
               </div>
               <div className="mods">
@@ -176,8 +225,8 @@ export default function CourseHub() {
                   const inner = (
                     <>
                       <div className="mod-top">
-                        <span className="mod-n">{m.n}</span>
-                        <span className="mod-title">{m.title}</span>
+                        <span className="mod-n" aria-hidden>{m.n}</span>
+                        <h3 className="mod-title">{m.title}</h3>
                         <Pill status={m.status} />
                       </div>
                       <p className="mod-blurb">{m.blurb}</p>
