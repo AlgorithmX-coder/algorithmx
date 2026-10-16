@@ -6,9 +6,10 @@
  * glossary, de-biased checks with near-miss distractors, a taught lesson with a
  * recap, a SEVEN-stage capture (probe -> bypass -> count columns -> extract
  * staff -> map the schema -> lift the card data -> crack the vault), a hint
- * ladder that can drop a fill-in-the-blanks STRUCTURE into the box, and THREE
- * scenario drills on fresh clients (the last one unguided, four columns). All
- * injection runs for real against wasm SQLite, zero egress. */
+ * ladder that can drop a fill-in-the-blanks STRUCTURE into the box, and FOUR
+ * scenario drills on fresh clients (the last one combines a login bypass and a
+ * search UNION on one target - two surfaces, one database). All injection runs
+ * for real against wasm SQLite, zero egress. */
 
 import { useEffect, useState } from "react";
 import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary } from "./Engagement";
@@ -384,7 +385,7 @@ const DRILLS: DrillCfg[] = [
   },
   {
     client: "Fenwick Forums",
-    brief: "Last field job, and the trickiest. Fenwick's community forum has a thread search wired to the same database that stores member logins - but this search is a different shape. No walkthrough: work out the columns, then pull the members out.",
+    brief: "Another field job, and the trickiest search shape yet. Fenwick's community forum has a thread search wired to the same database that stores member logins - but this search is a different shape. No walkthrough: work out the columns, then pull the members out.",
     host: "forum.fenwick.range · thread search",
     spec: {
       setup: `CREATE TABLE threads (id INTEGER PRIMARY KEY, title TEXT, author TEXT, posted TEXT);
@@ -412,6 +413,45 @@ const DRILLS: DrillCfg[] = [
       },
     ],
     success: "Credentials pulled from a forum search - you counted a different column shape and adapted. That's the real skill. Finding logged.",
+  },
+  {
+    client: "Tollgate Transit",
+    brief: "The full field job to finish on. Tollgate's driver portal and its public parcel-tracking search sit on the same database - two injectable surfaces, one target. No walkthrough: walk in the front door first, then turn the tracking box into a driver-records leak. Everything you've practised, in one engagement.",
+    host: "fleet.tollgate.range · driver portal",
+    spec: {
+      setup: `CREATE TABLE parcels (id INTEGER PRIMARY KEY, tracking TEXT, status TEXT);
+              INSERT INTO parcels (tracking,status) VALUES ('TG-4471','in transit'),('TG-8820','delivered'),('TG-1093','at depot');
+              CREATE TABLE drivers (id INTEGER PRIMARY KEY, email TEXT, pass TEXT, role TEXT);
+              INSERT INTO drivers (email,pass,role) VALUES
+                ('j.okafor@tollgate.range','R0ute66!','admin'),
+                ('m.silva@tollgate.range','depot2026','driver');`,
+      login: { table: "drivers", select: "id, email, role", emailCol: "email", passCol: "pass", adminRole: "admin", roleIdx: 2 },
+      search: { table: "parcels", select: "id, tracking, status", searchCol: "tracking" },
+    },
+    steps: [
+      {
+        surface: "login", goal: "First, the driver portal. Log in with no valid password.",
+        palette: ["'", " OR 1=1", "--"],
+        hint: "The front-door move: close the string, force it true, comment out the rest. Email field; password blank.",
+        skeleton: "' OR ___ --", reveal: "' OR 1=1--",
+        done: (r) => !!r.authed,
+      },
+      {
+        surface: "search", goal: "Now the public parcel-tracking search on the same database. Count its columns before you UNION.",
+        palette: ["'", " ORDER BY 1", " ORDER BY 2", " ORDER BY 3", " ORDER BY 4", "--"],
+        hint: "' ORDER BY 4-- errors (no 4th column), ' ORDER BY 3-- works - so 3 columns.",
+        skeleton: "' ORDER BY ___ --", reveal: "' ORDER BY 3--",
+        done: (r, input) => /order\s+by\s+3\b/i.test(input) && r.error == null,
+      },
+      {
+        surface: "search", goal: "Three columns. UNION the drivers table out through the tracking box - email, pass, role.",
+        palette: ["'", " UNION SELECT ", "email", "pass", "role", ",", " FROM drivers", "--"],
+        hint: "Match the three columns, from the drivers table: email, pass, role.",
+        skeleton: "' UNION SELECT ___, ___, ___ FROM ___ --", reveal: "' UNION SELECT email, pass, role FROM drivers--",
+        done: (r) => r.rows.some((row) => row.some((c) => typeof c === "string" && c.endsWith("@tollgate.range"))),
+      },
+    ],
+    success: "A login bypass AND a UNION leak on one target - you chained both surfaces into a full database read, start to finish, unguided. That's the whole job. Finding logged.",
   },
 ];
 
@@ -693,7 +733,7 @@ export const MODULE5: ModuleDef = {
   title: "Injection",
   client: "Northwind Foods",
   brief:
-    "A deep engagement. Northwind Foods' staff portal and product shop both build their database queries straight from whatever you type. Your job is the full job: prove the weakness, break in, work out the shape of the data, read out the staff records, map what else is in there, lift the customer card data, and reach the one secret they really didn't want found. Then three field jobs for new clients, and a final challenge you run start to finish on your own. All for real.",
+    "A deep engagement. Northwind Foods' staff portal and product shop both build their database queries straight from whatever you type. Your job is the full job: prove the weakness, break in, work out the shape of the data, read out the staff records, map what else is in there, lift the customer card data, and reach the one secret they really didn't want found. Then four field jobs for new clients, and a final challenge you run start to finish on your own. All for real.",
   lesson: {
     blocks: [
       { h: "First - what's a database?", body: "Almost every app stores its information in a database: an organised store you can picture as a stack of spreadsheets. Each table is one sheet (a 'users' table, a 'products' table), and each row is one record. The app reads and writes it constantly - your login, your messages, your scores all live there. The app talks to the database in a language called SQL, by sending it a query." },
@@ -727,7 +767,7 @@ export const MODULE5: ModuleDef = {
     offLimits: "DROP/DELETE/UPDATE, other Northwind hosts, real data",
     timebox: "this session",
   },
-  handler: "Seven stages, three field jobs, then one full challenge. Confirm it's injectable, walk in the front door, work out the shape of the data, then turn the search box into a window onto the whole database - staff, card records, and the vault. Try each yourself before the hints; if the typing trips you up, 'show the structure' drops a skeleton in for you to fill. Password field stays empty throughout; you're going around it.",
+  handler: "Seven stages, four field jobs, then one full challenge. Confirm it's injectable, walk in the front door, work out the shape of the data, then turn the search box into a window onto the whole database - staff, card records, and the vault. Try each yourself before the hints; if the typing trips you up, 'show the structure' drops a skeleton in for you to fill. Password field stays empty throughout; you're going around it.",
   hint: "This is a multi-stage engagement - work the stages in order. Each has a hint ladder, a 'show the structure' scaffold, and a last-resort reveal. The password field can stay empty; you're going around it, not guessing it.",
   Act: InjectionAct,
   Consolidation: ConsolidationDrills,
