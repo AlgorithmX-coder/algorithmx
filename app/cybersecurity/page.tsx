@@ -82,24 +82,35 @@ const TRACK_DISPLAY_OVERRIDES: Record<
  * the card to signal the story-led, animated format. Other tracks
  * omit this and keep their abstract emoji identifier. */
 const TRACK_CHARACTER_IMAGES: Record<string, string> = {
-  "cyber-heroes": "/characters/adam-layla-happy.png",
-  /* v3 card art: sunny, kid-friendly ARC command room (kid in a hoodie
-   * at a holo-desk, daylight + colorful screens) — v2's dark-silhouette
-   * scene read too scary for 10–13 per owner review. */
-  cyberexplorers: "/explorers/scenes/explorers-card-v3.jpg",
-  /* Ops (owner call 2026-08-16: bottom cards ALIGN with the top two -
-   * art embedded across the whole card). Cropped LOW so the source's
-   * baked caption strip stays out of frame; the split scrim keeps the
-   * copy column solid. */
-  cyberstart: "/operators/cyberops-card.jpg",
+  /* Heroes card art (owner pick 2026-10-16, "HA5"): a cinematic scene of
+   * Adam & Layla as the heroes — carried on-model from the existing
+   * render via a reference generation so the brand cast stays intact,
+   * now in a cleaner warm world that matches the other three cards.
+   * (The original render at /characters/adam-layla-happy.png is still
+   * used across the lessons and /cyberheroes; only the browse card moved.) */
+  "cyber-heroes": "/characters/cyberheroes-card.jpg",
+  /* v4 card art (owner pick 2026-10-16): a bright, kid-friendly spy
+   * gadget lab — young agents around a glowing holographic globe. Keeps
+   * v3's sunny register (v2's dark-silhouette scene read too scary for
+   * 10–13); the light scrim holds the copy on the left. */
+  cyberexplorers: "/explorers/scenes/explorers-card-v4.jpg",
+  /* Ops v2 card art (owner pick 2026-10-16): an over-the-shoulder
+   * hands-on hacking-lab rig — a teen operator at a dense multi-monitor
+   * wall. 16:9 with no baked chrome, so it crops on cover; the split
+   * scrim keeps the copy column solid on the left. */
+  cyberstart: "/operators/cyberops-card-v2.jpg",
+  /* Pro card art (owner pick 2026-10-16, "PR6"): a REAL photograph, not
+   * a render — a professional at a night workstation over a lit city.
+   * Owner call: for an 18+ into-work audience the card must read as
+   * authentic, so Pro drops its CSS code terminal for this photo. The
+   * subject sits on the right; the dark left holds the copy. */
+  "cyberstart-pro": "/characters/cyberpro-card.jpg",
 };
 
-/* Cyber Pro runs TrackCard's black coding-theme backdrop instead of
- * scene art (owner call 2026-08-16: "black coding theme") - a full-card
- * CSS terminal in Pro's own accent. */
-const TRACK_CODE_BACKDROP: Record<string, boolean> = {
-  "cyberstart-pro": true,
-};
+/* Cyber Pro used TrackCard's black coding-theme backdrop until 2026-10-16;
+ * it now carries the real photo above instead, so no track runs the CSS
+ * terminal. Kept as an (empty) hook in case a future track wants it. */
+const TRACK_CODE_BACKDROP: Record<string, boolean> = {};
 
 /* Ops gets the drawn network-diagram overlay on top of its scene art
  * (owner call: "more diagram") - extends the map into the card's quiet
@@ -303,27 +314,43 @@ const TRACK_LOCKUPS: Record<string, React.ReactNode> = {
  * the copy is capped to a left column (contentMaxWidth) so it never runs
  * over the code. This is what keeps it bright AND readable at once. */
 const TRACK_IMAGE_FILTER: Record<string, string> = {
+  "cyber-heroes": "saturate(1.08) brightness(1.04)",
   cyberexplorers: "saturate(1.12) brightness(1.05)",
   cyberstart: "saturate(1.06) brightness(1.03)",
 };
 const TRACK_IMAGE_OPACITY: Record<string, number> = {
+  /* Heroes & Pro now carry full scenes like the other two, so they show
+   * near-full rather than the old 0.48 ghost treatment. */
+  "cyber-heroes": 0.95,
   cyberexplorers: 0.95,
   cyberstart: 1,
+  "cyberstart-pro": 1,
 };
 const TRACK_IMAGE_POSITION: Record<string, string> = {
-  cyberexplorers: "62% 38%",
-  /* Zoomed framing (with TRACK_IMAGE_SIZE): the source bakes terminal
-   * chrome into its upper band and a flags strip low; zooming past
-   * cover and centring on the map region keeps only the clean star-map
-   * visual in frame. */
-  cyberstart: "62% 72%",
+  /* Heroes HA5: Adam & Layla sit centre; bias right so they clear the
+   * copy column, which the light scrim darkens. */
+  "cyber-heroes": "64% 46%",
+  /* v4 globe-lab: bias right so the glowing globe and agents settle
+   * centre-right, clear of the copy column on the left. */
+  cyberexplorers: "60% 42%",
+  /* v2 hacking rig (16:9, cover): bias right so the bright monitor wall
+   * sits on the right and the operator's darker side falls under the
+   * split scrim on the left. No zoom needed — the source has no baked
+   * chrome to crop away. */
+  cyberstart: "66% 48%",
+  /* PR6 photo: the professional and lit city sit right; hold a touch
+   * right of centre so the dark left stays clear for the copy. */
+  "cyberstart-pro": "58% 50%",
 };
-const TRACK_IMAGE_SIZE: Record<string, string> = {
-  cyberstart: "185%",
-};
+const TRACK_IMAGE_SIZE: Record<string, string> = {};
 const TRACK_SCRIM: Record<string, "default" | "light" | "split"> = {
+  /* Heroes HA5 is a bright scene, so the light scrim (fast falloff +
+   * a copy-area pool) keeps it bright while the title stays legible. */
+  "cyber-heroes": "light",
   cyberexplorers: "light",
   cyberstart: "split",
+  /* Pro keeps the default scrim: the photo is already dark on the left
+   * where the copy sits, and the strong left gradient guarantees it. */
 };
 const TRACK_CONTENT_MAX_WIDTH: Record<string, number> = {
   cyberstart: 265,
@@ -407,8 +434,10 @@ export default async function CybersecurityPage() {
         <section
           style={{
             position: "relative",
+            /* Owner 2026-10-16: tightened so all four track cards clear the
+               fold in one screen (1366x768). Hero 597->~478px. */
             padding:
-              "calc(var(--lv2-rail) * 4.0) var(--lv2-rail) calc(var(--lv2-rail) * 1.4)",
+              "calc(var(--lv2-rail) * 2.1) var(--lv2-rail) calc(var(--lv2-rail) * 0.9)",
             maxWidth: 1180,
             margin: "0 auto",
             textAlign: "center",
@@ -527,7 +556,7 @@ export default async function CybersecurityPage() {
           style={{
             position: "relative",
             padding:
-              "calc(var(--lv2-rail) * 1.2) var(--lv2-rail) calc(var(--lv2-rail) * 3)",
+              "calc(var(--lv2-rail) * 0.5) var(--lv2-rail) calc(var(--lv2-rail) * 3)",
             maxWidth: 1180,
             margin: "0 auto",
           }}
@@ -615,7 +644,7 @@ export default async function CybersecurityPage() {
         .lv2-cyber-tracks-grid {
           display: grid;
           grid-template-columns: repeat(2, minmax(0, 1fr));
-          gap: 34px;
+          gap: 22px;
         }
         @media (max-width: 820px) {
           .lv2-cyber-tracks-grid {
