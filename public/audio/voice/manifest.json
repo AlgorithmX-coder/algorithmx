@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-16T15:49:05.840Z",
+  "generatedAt": "2026-10-16T19:41:16.046Z",
   "model": "eleven_v4",
   "voiceSettings": {
     "stability": 0.6,
@@ -1281,26 +1281,26 @@
       "file": "/audio/voice/bbb6779a790127b3.mp3"
     },
     {
-      "key": "f0c73af8375b69df",
+      "key": "d6cef8a027614cc5",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "That's right! One extra thing stuck on the end is not enough. Mix a capital, a number AND a symbol all the way through. A word plus a year is still mostly a word.",
+      "text": "That's right! One extra thing stuck on the end is not enough. The mix has to run all the way through. A word plus a year is still mostly a word.",
       "lines": [
         "That's right!",
-        "One extra thing stuck on the end is not enough. Mix a capital, a number AND a symbol all the way through. A word plus a year is still mostly a word."
+        "One extra thing stuck on the end is not enough. The mix has to run all the way through. A word plus a year is still mostly a word."
       ],
-      "file": "/audio/voice/f0c73af8375b69df.mp3"
+      "file": "/audio/voice/d6cef8a027614cc5.mp3"
     },
     {
-      "key": "3db9838b23cffe9d",
+      "key": "63553cb65094ee27",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "Not quite. One extra thing stuck on the end is not enough. Mix a capital, a number AND a symbol all the way through. A word plus a year is still mostly a word.",
+      "text": "Not quite. One extra thing stuck on the end is not enough. The mix has to run all the way through. A word plus a year is still mostly a word.",
       "lines": [
         "Not quite.",
-        "One extra thing stuck on the end is not enough. Mix a capital, a number AND a symbol all the way through. A word plus a year is still mostly a word."
+        "One extra thing stuck on the end is not enough. The mix has to run all the way through. A word plus a year is still mostly a word."
       ],
-      "file": "/audio/voice/3db9838b23cffe9d.mp3"
+      "file": "/audio/voice/63553cb65094ee27.mp3"
     },
     {
       "key": "56f9e3f3bc25ed0a",
@@ -1777,14 +1777,14 @@
       "file": "/audio/voice/b4f14d1785fb0a99.mp3"
     },
     {
-      "key": "4212c71fbd6aad0b",
+      "key": "92e03af7ee3de7a9",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "One extra thing stuck on the end is not enough. Mix a capital, a number AND a symbol all the way through. A word plus a year is still mostly a word.",
+      "text": "One extra thing stuck on the end is not enough. The mix has to run all the way through. A word plus a year is still mostly a word.",
       "lines": [
-        "One extra thing stuck on the end is not enough. Mix a capital, a number AND a symbol all the way through. A word plus a year is still mostly a word."
+        "One extra thing stuck on the end is not enough. The mix has to run all the way through. A word plus a year is still mostly a word."
       ],
-      "file": "/audio/voice/4212c71fbd6aad0b.mp3"
+      "file": "/audio/voice/92e03af7ee3de7a9.mp3"
     },
     {
       "key": "7b95a72cfa50d70e",

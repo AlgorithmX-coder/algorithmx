@@ -4624,29 +4624,55 @@ function DynamicLessonInner({
                 transition={{ type: "spring", stiffness: 220, damping: 13 }}
                 style={{
                   position: "relative",
-                  width: 140,
-                  height: 140,
+                  /* The gold plate exists to give a flat ICON something to sit
+                   * on. A week's medal brings its own rim and ribbon, so the
+                   * plate just puts a second gold ring around the first and
+                   * shrinks the artwork inside it. Where there is a medal, it
+                   * stands on its own and gets the room instead. */
+                  width: content.badgeArt ? 168 : 140,
+                  height: content.badgeArt ? 168 : 140,
                   margin: "8px auto 14px",
                   borderRadius: "50%",
                   display: "grid",
                   placeItems: "center",
-                  background:
-                    "radial-gradient(circle at 30% 28%, #fff8dc 0%, #fde047 40%, #ff7a59 80%, #b8862a 100%)",
-                  border: "4px solid #fff8dc",
-                  boxShadow:
-                    "0 18px 38px rgba(253, 224, 71, 0.55), inset 0 0 0 5px rgba(255,255,255,0.18), 0 0 60px rgba(253, 224, 71, 0.35)",
+                  background: content.badgeArt
+                    ? "none"
+                    : "radial-gradient(circle at 30% 28%, #fff8dc 0%, #fde047 40%, #ff7a59 80%, #b8862a 100%)",
+                  border: content.badgeArt ? "none" : "4px solid #fff8dc",
+                  boxShadow: content.badgeArt
+                    ? "0 0 70px rgba(253, 224, 71, 0.35)"
+                    : "0 18px 38px rgba(253, 224, 71, 0.55), inset 0 0 0 5px rgba(255,255,255,0.18), 0 0 60px rgba(253, 224, 71, 0.35)",
                   fontSize: 72,
                 }}
               >
-                <span
-                  style={{
-                    display: "grid",
-                    placeItems: "center",
-                    transform: `translate(${BADGE_OPTICAL_NUDGE[content.badgeIcon]?.[0] ?? 0}%, ${BADGE_OPTICAL_NUDGE[content.badgeIcon]?.[1] ?? 0}%)`,
-                  }}
-                >
-                  <PixIcon emoji={content.badgeIcon} size={84} />
-                </span>
+                {/* The week's own medal, where the week has one.
+                  *
+                  * This showed PixIcon(badgeIcon) - the shared 3D padlock -
+                  * so week 1's new gold-and-black medal with Adam and Layla
+                  * on it never reached the screen that announces it. Owner:
+                  * "it doesn't look like it's updated with the new Badge."
+                  *
+                  * badgeArt is per week and already on disk for all twenty.
+                  * The optical nudge only applies to the icon: it exists to
+                  * centre a glyph that is not centred in its own box, and a
+                  * medal is drawn centred. */}
+                {content.badgeArt ? (
+                  <img
+                    src={content.badgeArt}
+                    alt=""
+                    style={{ width: "100%", height: "100%", objectFit: "contain", display: "block" }}
+                  />
+                ) : (
+                  <span
+                    style={{
+                      display: "grid",
+                      placeItems: "center",
+                      transform: `translate(${BADGE_OPTICAL_NUDGE[content.badgeIcon]?.[0] ?? 0}%, ${BADGE_OPTICAL_NUDGE[content.badgeIcon]?.[1] ?? 0}%)`,
+                    }}
+                  >
+                    <PixIcon emoji={content.badgeIcon} size={84} />
+                  </span>
+                )}
               </motion.div>
               {/* "Week N badge unlocked" tag */}
               <div
