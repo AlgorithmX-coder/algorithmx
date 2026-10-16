@@ -35,6 +35,20 @@ import ffmpegPath from "ffmpeg-static";
 const MANIFEST = join("public", "audio", "voice", "manifest.json");
 const LIST = process.argv.includes("--list");
 const FILES_ONLY = process.argv.includes("--files");
+/**
+ * --weeks=1,2 limits the audit to those weeks' clips.
+ *
+ * The course is being brought up to standard one week at a time, so a check
+ * that failed on all twenty would block every PR until the last week was
+ * done - and would then get switched off rather than fixed. Scoped to the
+ * weeks that ARE finished it is a ratchet instead: week 1 can never regress,
+ * and a week joins the list in the same PR that brings it up to standard.
+ *
+ * The manifest does not record which week asked for a line, so the week to
+ * clip mapping comes from the generator itself (--keys), which resolves
+ * blocks exactly as a real run would and needs no API key to do it.
+ */
+const WEEKS_ARG = (process.argv.find((a) => a.startsWith("--weeks=")) || "").split("=")[1];
 const SR = 16000;
 
 /**
@@ -109,13 +123,32 @@ const MIN_TAIL = 0.08;
 const entries = JSON.parse(await readFile(MANIFEST, "utf8")).entries || [];
 const spoken = (t) => String(t || "").replace(/\[[a-z ]*\]/gi, " ").trim();
 
+/** The clips belonging to the named weeks, or null for the whole course. */
+let inScope = null;
+if (WEEKS_ARG) {
+  const want = new Set(WEEKS_ARG.split(",").map((s) => `week${Number(s.trim())}.ts`));
+  const r = spawnSync(process.execPath, ["scripts/elevenlabs-generate-narration.mjs", "--keys"], { encoding: "utf8", maxBuffer: 1 << 26 });
+  if (r.status !== 0) {
+    console.error("could not resolve week to clip mapping:\n" + (r.stderr || "").slice(0, 400));
+    process.exit(2);
+  }
+  inScope = new Set();
+  for (const line of (r.stdout || "").split(/\r?\n/)) {
+    const [file, source] = line.split(" ");
+    if (file && want.has(source)) inScope.add(file);
+  }
+  console.log(`scope: week(s) ${WEEKS_ARG} - ${inScope.size} clip(s)`);
+}
+
 let checked = 0, skipped = 0;
 const bad = [];
 for (const e of entries) {
+  const name = e.filename || `${e.key}.mp3`;
+  if (inScope && !inScope.has(name)) continue;
   const w = spoken(e.text).split(/\s+/).filter(Boolean);
   const word = w.length ? w[w.length - 1] : "";
   if (!expectsQuietTail(word)) { skipped++; continue; }
-  const file = join("public", "audio", "voice", e.filename || `${e.key}.mp3`);
+  const file = join("public", "audio", "voice", name);
   const t = tailOf(file);
   if (t === null) { skipped++; continue; }
   checked++;

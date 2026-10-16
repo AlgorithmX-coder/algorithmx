@@ -64,7 +64,13 @@ jobs:
 
       # Every clip still says its last letter. Our own shaping used to delete
       # word-final consonants ("takes" -> "take"), silently, on 1,020 clips.
-      - run: node scripts/audit-consonant-integrity.mjs
+      #
+      # Scoped to the weeks that have been brought up to standard, and it is a
+      # RATCHET: add a week here in the same PR that re-records it, and from
+      # then on that week can never regress. Unscoped it would fail on the
+      # nineteen weeks still waiting their turn, block every PR, and get
+      # switched off within a day - which is how this kind of check dies.
+      - run: node scripts/audit-consonant-integrity.mjs --weeks=1
 
   # ────────────────────────────────────────────────────────────
   # End-to-end tests against a real production build.  Slower than

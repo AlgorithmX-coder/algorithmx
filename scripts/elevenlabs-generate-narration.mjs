@@ -69,7 +69,7 @@ const FORCE = process.argv.includes("--force");
 const LIST_KEYS = process.argv.includes("--keys");
 
 const KEY = process.env.ELEVENLABS_API_KEY;
-if (!KEY && !CHECK_ONLY) {
+if (!KEY && !CHECK_ONLY && !LIST_KEYS) {
   console.error("ELEVENLABS_API_KEY missing - run with --env-file=.env.local");
   process.exit(1);
 }
