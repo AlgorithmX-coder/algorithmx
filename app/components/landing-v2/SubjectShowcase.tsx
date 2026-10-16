@@ -129,7 +129,8 @@ const STREAMS: Stream[] = [
     accent: "#0e7a45",
     icon: "M12 2l8 3v6c0 5-3.5 8-8 11-4.5-3-8-6-8-11V5l8-3z",
     href: "/cybersecurity",
-    cta: "View course",
+    /* Plural: the link lands on the 4-track hub, not a single course. */
+    cta: "View courses",
   },
   {
     id: "game-dev",
