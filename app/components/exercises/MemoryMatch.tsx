@@ -600,17 +600,28 @@ export default function MemoryMatch({
           parent.getBoundingClientRect() positioning math. The wrapper
           fills its parent so the calculated coords match what they
           were when the outer div carried the attribute itself. */}
+      {/* Once the game is over the card is no longer holding a game.
+        *
+        * Owner, 2026-10-16, on the result: "look at the bottom of that card,
+        * it's not being filled in." It was not: the root fills the stage so
+        * the BOARD has room, which is right while the board is the content.
+        * The result is a title, two lines and two buttons, and it was
+        * inheriting a game's worth of height - so it floated in the middle
+        * with a dead band under it.
+        *
+        * Finished, the board is hidden and the result sits in normal flow,
+        * so the card is exactly as tall as the result. */}
       <div
         data-mm-root
         style={{
           position: "relative",
           width: "100%",
-          height: "100%",
+          height: finished ? "auto" : "100%",
         }}
       >
       {isStation ? <StationBackdrop /> : <PixarBackdrop />}
 
-      <div style={{ position: "relative", zIndex: 1, padding: "0 18px" }}>
+      <div style={{ position: "relative", zIndex: 1, padding: "0 18px", display: finished ? "none" : undefined }}>
         <ExerciseHowTo
           title="Memory Match"
           steps={[
@@ -1751,8 +1762,11 @@ function FinishOverlay({
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.4 }}
       style={{
-        position: "absolute",
-        inset: 0,
+        /* In flow, not pinned across the board: the board is hidden by the
+         * time this renders, so inset:0 would stretch it over nothing and
+         * leave the same dead band it was meant to remove. */
+        position: "relative",
+        width: "100%",
         background: station
           ? "linear-gradient(180deg, rgba(40, 33, 26, 0.95) 0%, rgba(10, 8, 6, 0.97) 100%)"
           : "linear-gradient(180deg, rgba(15, 21, 48, 0.95) 0%, rgba(4, 5, 13, 0.96) 100%)",

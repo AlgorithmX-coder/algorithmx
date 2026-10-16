@@ -50,7 +50,35 @@ Week 1 at 1414x771: **0 screens overflow, 25 of 30 at full size, lowest zoom
 |---|---|---|
 | B9 | Debrief "You learned" icons | Already bespoke 3D art, not emoji. Owner: leave them. |
 | D3 | Recap screens at 0.87-0.90 | Their bulk is a 320px art panel; trimming it is a design call, not a measurement. |
-| D4 | Result cards after an exercise | The fill audit reads a screen at rest. Reaching post-interaction states needs per-engine driving. |
+| D4 | Result cards after an exercise | Partly addressed, see below. |
+
+### D8: a finished exercise must not keep a game's worth of height
+
+Owner, 2026-10-16, on the Memory Match result: "look at the bottom of that
+card, it's not being filled in. Check this for all of the pages in all of the
+weeks."
+
+The pattern: an engine's root fills the stage so the BOARD has room, which is
+right while the board is the content. The result is then drawn as an overlay
+pinned across that root (`position: absolute; inset: 0`) with its content
+centred - so a title, two lines and two buttons inherit a game's height and
+float in the middle, with a dead band beneath.
+
+**37 of the 82 engines** contain an `inset: 0` overlay, so this needs checking
+one engine at a time; not all of those are result cards.
+
+Fixed so far: **MemoryMatch**. Finished, the board is hidden, the root stops
+filling the stage, and the result sits in normal flow, so the card is exactly
+as tall as the result.
+
+`audit-result-card-fill.mjs` plays an exercise and measures the dead band under
+its result. **Known limitation, stated rather than hidden:** it drives by
+clicking plausible targets, which is not enough to finish engines that need
+correct answers, pairs or drag-and-drop - on week 1 it finished none of the
+five. What it cannot reach, it reports as "could not finish" rather than as a
+pass. Until it can drive them, this one is caught by eye.
+
+`resultCardFill.test.ts` holds the shape of the fix where it has been made.
 
 ---
 
