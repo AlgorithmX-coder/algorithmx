@@ -82,6 +82,29 @@ pass. Until it can drive them, this one is caught by eye.
 
 ---
 
+## Week 2 status
+
+Brought up to the same standard, prose FIRST this time so nothing was
+recorded twice.
+
+| Item | Proof |
+|---|---|
+| Consonants | **0 of 97** clips missing one |
+| Prose | heavy lines **10 -> 2**; flow 0 flags |
+| Echoes | **0** (2 found and fixed) |
+| Boss read-out | flowing phrasing; drift test passes |
+| ATLAS briefing | **21 of 28** gaps re-cut, 0 credits, voiced audio unchanged |
+| Sprites | 11 repaired; attack pose was missing 9,232px, Layla's celebrate 8,573 |
+| Stickers | 3 bespoke, cast in the forge apron |
+| Badge | bronze medal with the cast |
+| Layout | **0 of 30** screens overflow, 25 at full size, lowest zoom 0.83 |
+| Frame audit | 28 screens, **0 flagged** |
+| D8 result cards | does NOT apply: week 2's engines have no stage-filling root |
+
+Week 2 is on the CI ratchet with week 1.
+
+---
+
 ## What every other week still needs
 
 Same list, same order, one week at a time. The tools are built; the work per

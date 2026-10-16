@@ -486,7 +486,7 @@ export const WEEK_2: WeekContent = {
         speaker: "layla",
         lines: [
           "[proud] Case closed, Cyber Hero! Now you can ask WHY any app wants your info.",
-          "[warmly] If it asks for more than it needs to work, it is too nosy. So you close it and tell a grown-up.",
+          "[warmly] If it asks for more than it needs to work, it is too nosy. So you close it. Then you tell a grown-up.",
         ],
       },
     },
@@ -497,7 +497,7 @@ export const WEEK_2: WeekContent = {
       prompt: "Is that true?",
       raccoonLine: "a quiz app NEEDS your home address, or the quiz won't work!",
       choices: [
-        { text: "TRUE", isCorrect: false, why: "A quiz has no use for your address. It is private info, and an app that asks for it is up to something." },
+        { text: "TRUE", isCorrect: false, why: "A quiz has no use for your address. That is private info. An app that asks for it is up to something." },
         { text: "FALSE", isCorrect: true },
       ],
       praise: "Busted! A quiz needs ZERO of that to work. ✓",
@@ -601,7 +601,7 @@ export const WEEK_2: WeekContent = {
         lines: [
           "[excited] On your next challenge, we fire up the Secret Identity Machine!",
           "Now you build a username. A perfect mask, with none of the real you inside.",
-          "Out there, a username with your name or birthday is a mask with a hole in it. The Raccoon peeks right through.",
+          "Out there, a username with your name in it is a mask with a hole. So is one with your birthday. The Raccoon peeks right through.",
           "Tap a hero word, a sidekick and a lucky number for each reel.",
           "Dodge any part that leaks the real you.",
           "[excited] Fill the disguise meter and stamp your hero badge. Ready? Let's forge!",
@@ -898,9 +898,9 @@ export const WEEK_2: WeekContent = {
       type: "stickerUnlock",
       title: "Stickers Unlocked!",
       stickers: [
-        { id: "info-guardian", name: "Info Guardian", icon: "🛡️", description: "Guards the five private treasures." },
-        { id: "master-of-disguise", name: "Master of Disguise", icon: "🎭", description: "Forged a hero name with zero leaks." },
-        { id: "ask-first-ace", name: "Ask-First Ace", icon: "⏸️", description: "Hits pause and calls for backup." },
+        { id: "info-guardian", name: "Info Guardian", icon: "🛡️", art: "/cyberheroes/stickers/w02/info-guardian.png", description: "Guards the five private treasures." },
+        { id: "master-of-disguise", name: "Master of Disguise", icon: "🎭", art: "/cyberheroes/stickers/w02/master-of-disguise.png", description: "Forged a hero name with zero leaks." },
+        { id: "ask-first-ace", name: "Ask-First Ace", icon: "⏸️", art: "/cyberheroes/stickers/w02/ask-first-ace.png", description: "Hits pause and calls for backup." },
       ],
     },
 
@@ -957,7 +957,7 @@ export const WEEK_2: WeekContent = {
         correctIndex: 0,
         teachOnWrong: {
           title: "Who-you-are and where-you-are stay locked!",
-          explanation: "A favorite game and a favorite dinosaur only say what Adam LIKES. His school says where he is five days a week. That is one of the five private treasures.",
+          explanation: "A favorite game says what Adam LIKES. So does a favorite dinosaur. But his school says WHERE he is, five days a week. That is one of the five private treasures.",
         },
         villainRight: {
           slug: "quiz-w2-right-c1-1",
@@ -984,7 +984,7 @@ export const WEEK_2: WeekContent = {
         correctIndex: 0,
         teachOnWrong: {
           title: "Favorites yes, places no!",
-          explanation: "All three sound like favorites. Only the pancakes are really about what she likes. A best school or a best street tells a stranger where to find her.",
+          explanation: "All three sound like favorites. Only the pancakes are really about what she likes. A best school tells a stranger where to find her. So does a best street.",
         },
         villainRight: {
           slug: "quiz-w2-right-c2-1",
@@ -1011,7 +1011,7 @@ export const WEEK_2: WeekContent = {
         correctIndex: 0,
         teachOnWrong: {
           title: "Ask what the app NEEDS!",
-          explanation: "A nickname labels his art. A favorite color picks his paints. Those asks match the app. But coloring never rings anybody, so a phone number is an over-ask. Too nosy!",
+          explanation: "A nickname labels his art. A favorite color picks his paints. Those asks match the app. But coloring never rings anybody. A phone number is an over-ask. Too nosy!",
         },
         villainRight: {
           slug: "quiz-w2-right-c3-1",
@@ -1039,7 +1039,7 @@ export const WEEK_2: WeekContent = {
         correctIndex: 0,
         teachOnWrong: {
           title: "No real-you clues in the mask!",
-          explanation: "A real first name pokes a hole in the mask. So does a school, or a birth year. Hero words plus a number that means nothing keep the real Layla invisible.",
+          explanation: "A real first name pokes a hole in the mask. So does a school. So does a birth year. Hero words, plus a number that means nothing, keep the real Layla invisible.",
         },
         villainRight: {
           slug: "quiz-w2-right-c4-1",
@@ -1047,7 +1047,7 @@ export const WEEK_2: WeekContent = {
         },
         villainWrong: {
           slug: "quiz-w2-wrong-c4-1",
-          text: "A name, a school, a birth year... that's not a mask, that's a name tag! I LOVE name tags!",
+          text: "Call that a mask? That's a name tag! I LOVE name tags!",
         },
       },
       {
@@ -1066,7 +1066,7 @@ export const WEEK_2: WeekContent = {
         correctIndex: 0,
         teachOnWrong: {
           title: "Heroes don't guess!",
-          explanation: "The help robot works for the app. Typing to see what happens is just guessing. When you are not sure, hit pause and call your backup. A trusted grown-up.",
+          explanation: "The help robot works for the app. Typing to see what happens is just guessing. When you are not sure, hit pause. Then call your backup, a trusted grown-up.",
         },
         villainRight: {
           slug: "quiz-w2-right-c5-1",

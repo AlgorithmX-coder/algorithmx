@@ -265,7 +265,7 @@ function isCodeLikeOption(text) {
  * drop them onto the browser's robot voice with a green build - exactly the
  * regression in PR #539. A week joins this set in the same commit that
  * re-records it. KEEP IDENTICAL in QuizBoss.tsx and the generator. */
-const FLOWING_ASK_WEEKS = new Set([1]);
+const FLOWING_ASK_WEEKS = new Set([1, 2]);
 
 /** "...believing it" -> "...believing it." KEEP IDENTICAL to closeSentence in QuizBoss.tsx. */
 function closeSentence(text) {
@@ -1419,9 +1419,42 @@ function shapeToSpec(file, lines, heard) {
      * fading THROUGH it. These clips are digitally silent between words
      * (measured 0.0000), so the floor can go this low without room tone
      * holding the walk-back up, and a breath is still taken by its length.
-     */
     const silence = loud * 0.002;
     const CONSONANT_MAX = 0.12;          // nothing longer than this is a consonant
+     */
+    /* Reach forward for a release the DETECTOR could not see.
+     *
+     * silencedetect works to one threshold for the whole clip. Lowering it
+     * far enough for every consonant means breaths stop being detected at
+     * all, so there is a floor below which a quiet release is simply outside
+     * every span - and atrim then never includes it. Traced on week 2's
+     * "Ready? Let's inspect!": 300ms of /kt/ in the delivery, 60ms in the
+     * clip, and the trim never touched it. The span had already ended.
+     *
+     * So instead of moving the threshold for the whole clip, reach forward
+     * from a span that ENDS on a quiet consonant, through audio that is
+     * still above true silence, and take what is there. A word that ends
+     * loud is not extended, so a breath after it is still trimmed normally,
+     * and the gap that follows is re-synthesised to spec either way - the
+     * only thing this changes is how much of the word survives.
+     */
+    const REACH = 0.35;   // no consonant runs longer than this
+    for (let i = 0; i < spans.length; i++) {
+      const sp = spans[i];
+      if (!endsQuiet(wordEndingAt(sp.to))) continue;
+      const stopAt = Math.min(
+        sp.to + REACH,
+        i + 1 < spans.length ? spans[i + 1].from : total,
+      );
+      let end = Math.floor(sp.to * SR);
+      const hardStop = Math.floor(stopAt * SR);
+      let last = end;
+      for (let p = end; p + win < hardStop; p += win) {
+        if (levelAt(p) > silence) last = p + win;
+      }
+      if (last > end) sp.to = Math.min(stopAt, last / SR);
+    }
+
     for (const sp of spans) {
       let end = Math.floor(sp.to * SR);
       const limit = Math.max(Math.floor(sp.from * SR), end - Math.floor(MAX_TRIM * SR));

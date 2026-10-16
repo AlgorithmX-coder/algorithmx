@@ -136,7 +136,7 @@ function closeSentence(text: string): string {
  * drop them onto the browser's robot voice with a green build - exactly the
  * regression in PR #539. A week joins this set in the same commit that
  * re-records it. KEEP IDENTICAL in QuizBoss.tsx and the generator. */
-export const FLOWING_ASK_WEEKS = new Set([1]);
+export const FLOWING_ASK_WEEKS = new Set([1, 2]);
 
 /** Same-every-week how-to line (the whole format IS the instruction). */
 const HOW_TO_PLAY = "Tap the right answer to beat him!";
