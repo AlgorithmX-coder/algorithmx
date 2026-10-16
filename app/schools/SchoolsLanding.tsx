@@ -727,13 +727,24 @@ export default function SchoolsLanding() {
         }
 
         /* cards */
+        /* Owner 2026-10-16: richer cards. They stood as near-transparent
+           glass on the sand (fill 0.78, faint shadow) and read flat; now
+           they are a clean, near-opaque paper surface with a crisp hairline,
+           a glossy top light and a real drop shadow that lifts them off the
+           page, plus a per-card accent ring + lift on hover. */
         .sch-card {
           position: relative; height: 100%; box-sizing: border-box;
           padding: 26px 24px; border-radius: 18px;
-          background: linear-gradient(180deg, rgba(244,239,231,0.78), rgba(255,253,248,0.78));
-          border: 1px solid rgba(20,22,29,0.24);
-          box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), 0 20px 50px -30px rgba(10,112,133,0.35);
-          backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+          background: linear-gradient(180deg, rgba(255,253,248,0.96), rgba(247,241,233,0.96));
+          border: 1px solid rgba(20,22,29,0.15);
+          box-shadow: inset 0 1.5px 0 rgba(255,255,255,0.9), 0 20px 44px -26px rgba(86,68,45,0.5), 0 2px 10px -6px rgba(10,112,133,0.16);
+          backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+          transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+        }
+        .sch-card:hover {
+          transform: translateY(-3px);
+          border-color: color-mix(in srgb, var(--sch-accent, #0a7085) 35%, rgba(20,22,29,0.15));
+          box-shadow: inset 0 1.5px 0 rgba(255,255,255,0.95), 0 30px 58px -26px rgba(86,68,45,0.55), 0 0 0 1px color-mix(in srgb, var(--sch-accent, #0a7085) 26%, transparent);
         }
         .sch-chip {
           display: inline-flex; align-items: center; height: 22px; padding: 0 9px;
@@ -946,7 +957,10 @@ export default function SchoolsLanding() {
         .sch-step-top { display: flex; justify-content: space-between; align-items: center; }
         .sch-step-n {
           display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 50%;
-          background: var(--sch-accent); color: #04050d; box-shadow: 0 0 22px -4px var(--sch-accent);
+          background: var(--sch-accent);
+          background: radial-gradient(circle at 50% 32%, color-mix(in srgb, var(--sch-accent) 72%, #ffffff), var(--sch-accent) 76%);
+          color: #04050d;
+          box-shadow: 0 7px 15px -5px var(--sch-accent), inset 0 1.5px 1px rgba(255,255,255,0.55), inset 0 -2px 3px rgba(0,0,0,0.12);
           font-family: var(--lv2-font-mono); font-size: 12px; font-weight: 800; letter-spacing: 0.06em;
         }
         .sch-step h3, .sch-pillar h3, .sch-pilot h3 { margin: 0; font-family: var(--lv2-font-display); font-size: 1.2rem; font-weight: 500; letter-spacing: -0.01em; }
@@ -1048,7 +1062,13 @@ export default function SchoolsLanding() {
         .sch-pillar { border-top: 2px solid var(--sch-accent); }
         .sch-pillar-icon { display: inline-flex; width: 44px; height: 44px; border-radius: 12px; margin-bottom: 14px; align-items: center; justify-content: center; color: var(--sch-accent); background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.18); }
         @supports (background: color-mix(in srgb, red 10%, transparent)) {
-          .sch-pillar-icon { background: color-mix(in srgb, var(--sch-accent) 14%, transparent); border-color: color-mix(in srgb, var(--sch-accent) 40%, transparent); }
+          /* Owner 2026-10-16: richer icon badge - a lit glass chip (accent
+             gradient, crisp accent ring, glossy top light, soft lift). */
+          .sch-pillar-icon {
+            background: linear-gradient(145deg, color-mix(in srgb, var(--sch-accent) 32%, transparent), color-mix(in srgb, var(--sch-accent) 10%, rgba(255,253,250,0.72)));
+            border: 1.5px solid color-mix(in srgb, var(--sch-accent) 62%, transparent);
+            box-shadow: 0 8px 16px -8px color-mix(in srgb, var(--sch-accent) 55%, transparent), 0 0 0 1px color-mix(in srgb, var(--sch-accent) 16%, transparent), inset 0 1.5px 1px rgba(255,255,255,0.9);
+          }
         }
         .sch-pillar-icon svg { width: 22px; height: 22px; }
         .sch-pillar ul, .sch-pilot ul, .sch-receive { list-style: none; margin: 14px 0 0; padding: 0; display: flex; flex-direction: column; gap: 9px; }
