@@ -53,6 +53,21 @@ export interface InfoNarrationProps {
   /** Short lines read in order. Keep each ≤ 12 words. */
   lines: string[];
   /**
+   * Show only these lines on screen, while SPEAKING all of `lines`.
+   *
+   * For the mission debrief, where the middle of the narration restates the
+   * five concept cards sitting directly beneath it, word for word. Printing
+   * both put 216px of duplicate text on a board that was already 250px too
+   * tall, so the whole screen was being scaled to 0.72 and a six-year-old
+   * read 17px titles at 12px.
+   *
+   * Indices into `lines`. Omit it and every line is shown, which is what
+   * every other screen does. The AUDIO is untouched either way - the owner's
+   * rule for this trim was that the spoken narration does not change, so no
+   * clip is re-recorded.
+   */
+  showOnly?: number[];
+  /**
    * Voice selection: which character's recorded voice to use. Also
    * drives the synth-voice pitch when falling back to browser TTS.
    * "narrator" = the storyteller voice (a different voice from Sarah).
@@ -265,6 +280,7 @@ export async function hasRecordedBlock(
 
 export default function InfoNarration({
   lines,
+  showOnly,
   speaker = "adam",
   autoPlay = true,
   accent,
@@ -675,7 +691,7 @@ export default function InfoNarration({
             lineHeight: 1.28,
           }}
         >
-          {lines.map((l, i) => (
+          {lines.map((l, i) => (showOnly && !showOnly.includes(i) ? null : (
             <li
               key={i}
               style={{
@@ -700,7 +716,7 @@ export default function InfoNarration({
               />
               {stripTags(l)}
             </li>
-          ))}
+          )))}
         </ul>
       </div>
     </div>

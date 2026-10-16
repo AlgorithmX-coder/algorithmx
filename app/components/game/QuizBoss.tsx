@@ -99,6 +99,12 @@ function isCodeLikeOption(text: string): boolean {
   return !/\s/.test(text) && (/[$@#%&*^~+=<>|\\/_]/.test(text) || (/\d/.test(text) && /[A-Za-z]/.test(text)) || /[!?]./.test(text));
 }
 /** "A, B and C" / "A, B, C and D". KEEP IDENTICAL to the recorder. */
+/** "three", "four" - how many options there are, in words.
+ * KEEP IDENTICAL to countWord in the generator. */
+function countWord(n: number): string {
+  return ["zero", "one", "two", "three", "four", "five", "six"][n] ?? String(n);
+}
+
 function optionLetterList(count: number): string {
   const letters = ["A", "B", "C", "D", "E"].slice(0, count);
   return letters.length > 1 ? `${letters.slice(0, -1).join(", ")} and ${letters[letters.length - 1]}` : letters.join("");
@@ -296,7 +302,18 @@ export default function QuizBoss({ quiz, onEnd, onQuestionAnswered }: QuizBossPr
     const ordered = seededShuffle(question.options, qIdx * 47 + 5);
     const lines: string[] = [question.ask.text];
     if (question.options.some((o) => isCodeLikeOption(o.text))) {
-      lines.push(`Take a close look at options ${optionLetterList(ordered.length)}.`, "So, what do you think?");
+      /* The lettered list is a comma list, and a comma list is the one
+       * thing the pause shaper gets wrong: it has to choose which detected
+       * silence each comma owns, and on week 1 it gave the gap after "A," an
+       * 850ms thought beat where the writing asks for 220ms. A sentence with
+       * no list has nothing to mis-assign. Week-scoped for the usual reason:
+       * changing the text changes the clip hash. */
+      lines.push(
+        FLOWING_ASK_WEEKS.has(week ?? 0)
+          ? `Take a close look at all ${countWord(ordered.length)}.`
+          : `Take a close look at options ${optionLetterList(ordered.length)}.`,
+        "So, what do you think?",
+      );
       return lines;
     }
     ordered.forEach((o, i) => {

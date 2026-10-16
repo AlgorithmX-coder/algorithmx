@@ -141,22 +141,43 @@ export default function WeekIntroScene({
     const events: (keyof WindowEventMap)[] = ["pointerdown", "keydown", "touchstart", "click"];
     const onGesture = () => tryPlay();
     events.forEach((e) => window.addEventListener(e, onGesture, true));
-    // Re-arm the net against the clip's real length as soon as it is known, so
-    // it can never fire while ATLAS is still speaking.
+    /* The net is armed from where playback actually IS, not from mount.
+     *
+     * Owner, 2026-10-16: "the let's go I want you to bring it in at the end
+     * after he's been finished speaking."
+     *
+     * "ended" is what normally lifts the lock and that was always correct.
+     * The bug was the safety net behind it: it was armed when this effect
+     * ran, for the clip's whole length plus a margin. ATLAS does not
+     * necessarily start then - autoplay is blocked until a gesture, and the
+     * listeners above retry on canplay, loadeddata and the first tap. A clip
+     * that starts ten seconds late had its net fire ten seconds before he
+     * stopped talking, and "Let's go!" appeared mid-sentence.
+     *
+     * Arming from (duration - currentTime) and re-arming whenever playback
+     * actually starts or seeks means the net always sits a margin BEHIND the
+     * end of the audio, however late it begins. A child is still never
+     * trapped: if the clip never plays at all, the full-length fallback is
+     * what remains. */
     let safety = window.setTimeout(() => setHeard(true), UNLOCK_FALLBACK_MS);
     const armFromDuration = () => {
       if (!Number.isFinite(a.duration) || a.duration <= 0) return;
       window.clearTimeout(safety);
-      safety = window.setTimeout(() => setHeard(true), a.duration * 1000 + UNLOCK_MARGIN_MS);
+      const remainingMs = Math.max(0, (a.duration - (a.currentTime || 0)) * 1000);
+      safety = window.setTimeout(() => setHeard(true), remainingMs + UNLOCK_MARGIN_MS);
     };
     armFromDuration();
     a.addEventListener("loadedmetadata", armFromDuration);
     a.addEventListener("durationchange", armFromDuration);
+    a.addEventListener("playing", armFromDuration);
+    a.addEventListener("seeked", armFromDuration);
     return () => {
       a.removeEventListener("canplay", tryPlay);
       a.removeEventListener("loadeddata", tryPlay);
       a.removeEventListener("loadedmetadata", armFromDuration);
       a.removeEventListener("durationchange", armFromDuration);
+      a.removeEventListener("playing", armFromDuration);
+      a.removeEventListener("seeked", armFromDuration);
       events.forEach((e) => window.removeEventListener(e, onGesture, true));
       window.clearTimeout(safety);
     };

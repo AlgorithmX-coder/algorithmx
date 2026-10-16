@@ -272,6 +272,12 @@ function closeSentence(text) {
   const t = text.trim();
   return /[.!?…]$/.test(t) ? t : t + ".";
 }
+/** "three", "four" - how many options there are, in words.
+ * KEEP IDENTICAL to countWord in QuizBoss.tsx. */
+function countWord(n) {
+  return ["zero", "one", "two", "three", "four", "five", "six"][n] ?? String(n);
+}
+
 function optionLetterList(count) {
   const letters = ["A", "B", "C", "D", "E"].slice(0, count);
   return letters.length > 1 ? `${letters.slice(0, -1).join(", ")} and ${letters[letters.length - 1]}` : letters.join("");
@@ -476,7 +482,15 @@ for (const fname of weekFiles) {
       const LETTERS = ["A", "B", "C", "D", "E"];
       const lines = [askText];
       if (opts.some(isCodeLikeOption)) {
-        lines.push(`Take a close look at options ${optionLetterList(ordered.length)}.`, "So, what do you think?");
+        /* See the matching comment in QuizBoss.tsx: a comma list is what the
+         * pause shaper mis-assigns, so a flowing week says "all three". */
+        const wkNum = Number((fname.match(/week([0-9]+)/) || [])[1]);
+        lines.push(
+          FLOWING_ASK_WEEKS.has(wkNum)
+            ? `Take a close look at all ${countWord(ordered.length)}.`
+            : `Take a close look at options ${optionLetterList(ordered.length)}.`,
+          "So, what do you think?",
+        );
         blocks.push({ speaker: "adam", lines, source: fname });
         fileBlocks++;
         bossQ++;
