@@ -6,6 +6,7 @@
  * them to <ParentView>. Source of truth is the flat Progress table.
  */
 
+import { landingRouteFor } from "@/app/lib/courseLandings";
 import { CATALOGUE } from "@/app/lib/courseIntent";
 import { auth } from "@/app/lib/auth";
 import { prisma } from "@/app/lib/prisma";
@@ -79,10 +80,16 @@ export default async function ParentDashboard() {
     return { id: c.id, name: c.name, age: getAge(c.dateOfBirth), completedCount, totalStars, weeks };
   });
 
+  /* Logging out of Cyber Heroes lands on Cyber Heroes, not the AlgorithmX
+   * home page (owner, 2026-10-16). A parent who signs out of their child's
+   * course wants that course's page in front of them, with its own log-in on
+   * it - not the top of a multi-product company site they then have to
+   * navigate back down. The route comes from the shared landing map rather
+   * than a literal, so it cannot drift from the card that links there. */
   async function handleLogout() {
     "use server";
     const { signOut } = await import("@/app/lib/auth");
-    await signOut({ redirectTo: "/" });
+    await signOut({ redirectTo: landingRouteFor(PRODUCT_SLUG) ?? "/" });
   }
 
   return <ParentView productName={product.name} weeksCount={weeksCount} summaries={summaries} onLogout={handleLogout} />;
