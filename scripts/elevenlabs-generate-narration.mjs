@@ -35,6 +35,7 @@
 import { createHash } from "node:crypto";
 import { spawnSync } from "node:child_process";
 import ffmpegPath from "ffmpeg-static";
+import { SPEC_GAP, SPEC_TAIL } from "./lib/pause-spec.mjs";
 import { renameSync } from "node:fs";
 import { mkdir, readdir, readFile, stat, unlink, writeFile } from "node:fs/promises";
 import { join } from "node:path";
@@ -1048,14 +1049,10 @@ function speakBlock(lines) {
  * trimmed out. 0.50s was not enough to feel like one; 0.65 is. The paragraph
  * break grows with it so the hierarchy still reads. The join is only used now
  * where the audio is genuinely cut, which is rare. */
-const SPEC_GAP = {
-  butt: 0, join: 0.05, comma: 0.22,
-  dash: 0.30,    // " - " and ";" read as a dash: a beat longer than a comma
-  colon: 0.35,   // ":" leans forward into what it introduces
-  trail: 0.55,   // "..." is a trailing thought, just short of a full stop
-  stop: 0.65, thought: 0.85, reveal: 0.85,
-};
-const SPEC_TAIL = 0.30;
+/* The pause table moved to scripts/lib/pause-spec.mjs so the ATLAS
+ * briefings can be cut to the same spec as the lessons. One copy: two would
+ * drift, and then a comma would be a different beat depending on who was
+ * speaking. */
 /* Hold her ARTICULATION constant, not the overall words-per-minute.
  *
  * Targeting overall pace was the wrong quantity: it counts the silence, so
