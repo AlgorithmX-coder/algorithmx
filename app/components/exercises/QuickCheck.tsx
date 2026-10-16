@@ -454,7 +454,7 @@ export default function QuickCheck({
               border: "1px solid rgba(192,132,252,0.45)",
               color: "#e9d5ff",
               fontStyle: "italic",
-              fontSize: 18,
+              fontSize: 20,
               fontWeight: 600,
               lineHeight: 1.35,
             }}
@@ -507,7 +507,7 @@ export default function QuickCheck({
               border: "1px solid rgba(125,240,255,0.45)",
               color: "#dff6ff",
               fontWeight: 700,
-              fontSize: 17,
+              fontSize: 19,
               lineHeight: 1.3,
             }}
           >
@@ -527,7 +527,7 @@ export default function QuickCheck({
           textAlign: "center",
           margin: "20px auto 6px",
           maxWidth: 720,
-          fontSize: "clamp(1.5rem, 3.2vw, 2.1rem)",
+          fontSize: "clamp(1.8rem, 3.7vw, 2.5rem)",
           fontWeight: 900,
           lineHeight: 1.2,
           color: "#fff",
@@ -544,7 +544,7 @@ export default function QuickCheck({
           position: "relative",
           zIndex: 2,
           marginBottom: 18,
-          fontSize: 15,
+          fontSize: 17,
           fontWeight: 700,
           color: solved ? "#7eff97" : "#ff9bcb",
         }}
@@ -607,7 +607,7 @@ export default function QuickCheck({
                   : `linear-gradient(160deg, ${accent}28, ${accent}0c)`,
                 color: "#fff",
                 fontWeight: 800,
-                fontSize: choices.length <= 2 ? 20 : 17,
+                fontSize: choices.length <= 2 ? 23 : 20,
                 cursor: solved ? "default" : "pointer",
                 fontFamily:
                   "ui-rounded, 'Fredoka', 'Quicksand', system-ui, sans-serif",
