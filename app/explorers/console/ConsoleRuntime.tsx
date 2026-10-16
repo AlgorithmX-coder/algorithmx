@@ -153,13 +153,20 @@ export default function ConsoleRuntime({ consoleCase, onExit, onNextCase }: { co
         }
       } else if (step.t === "toggle") {
         setNudge(null);
-        setDock({ type: "toggle", prompt: step.prompt, switches: step.switches });
+        // Checked by each switch's own `want` flag, never by position, so
+        // shuffling render order is safe — without it the correct switches
+        // sat in the same first slots every time (UAT: Week 11).
+        const switches = shuffled(step.switches.length).map((i) => step.switches[i]);
+        setDock({ type: "toggle", prompt: step.prompt, switches });
         await awaitUser(); // resolves only when the switches match
         setDock(null);
         if (step.ok) { push({ id: nextId(), kind: "wren", text: step.ok }); await speak(step.ok, step.okVoice); }
       } else if (step.t === "build") {
         setNudge(null);
-        setDock({ type: "build", prompt: step.prompt, parts: step.parts, need: step.need });
+        // Checked by each part's own `good` flag, never by position — same
+        // fix as "toggle" above.
+        const parts = shuffled(step.parts.length).map((i) => step.parts[i]);
+        setDock({ type: "build", prompt: step.prompt, parts, need: step.need });
         await awaitUser(); // resolves only when the right parts are chosen
         setDock(null);
         if (step.ok) { push({ id: nextId(), kind: "wren", text: step.ok }); await speak(step.ok, step.okVoice); }
@@ -547,7 +554,12 @@ function BootScreen({ title, caseNumber, open, acc, onBoot }: { title: string; c
 function Debrief({ data, acc, caseId, xp, reduced, onExit, onNext }: { data: ConsoleCase["debrief"]; acc: string; caseId: string; xp: number; reduced: boolean; onExit?: () => void; onNext?: () => void }) {
   const [revealed, setRevealed] = useState(false);
   return (
-    <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", padding: "0 26px 26px" }}>
+    // justifyContent:"center" only works while content is shorter than the
+    // viewport; the closing ceremony pushes it past that on short windows,
+    // so this needs to scroll (same fix as Phone's Debrief) or the bottom
+    // (incl. "Next case") is unreachable with no scrollbar shown (UAT:
+    // Week 11, "squashed at the end, make it bigger and add a scroll").
+    <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", overflowY: "auto", padding: "0 26px 26px" }}>
       <div style={{ fontSize: 24, fontWeight: 800, color: C.mint, marginBottom: 14, textAlign: "center", lineHeight: 1.2, fontFamily: MONO }}>{data.title}</div>
       <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 18 }}>
         {data.lines.map((l, i) => <div key={i} style={{ display: "flex", gap: 10, fontSize: 14, lineHeight: 1.45, color: C.ink }}><span style={{ color: C.mint, flex: "0 0 auto" }}>✓</span><span>{l}</span></div>)}
