@@ -24,6 +24,7 @@
  * real payments land.
  */
 
+import { CATALOGUE, courseHomeFor, safeCourseSlug } from "@/app/lib/courseIntent";
 import { auth } from "@/app/lib/auth";
 import { prisma } from "@/app/lib/prisma";
 import { hasEntitlement } from "@/app/lib/entitlements";
@@ -44,12 +45,11 @@ interface PageProps {
   searchParams: Promise<{ status?: string }>;
 }
 
-/* Cyber-heroes is the only product with a live lesson entry today.
- * When a second track becomes enterable, replace this with a real
- * slug → route map (mirrors COURSE_LANDING_ROUTES). */
+/* One slug -> portal map for the whole product, in courseIntent.ts.
+ * This used to keep a second copy here that fell back to the hub; with
+ * the hub gone the two would have disagreed, so it now defers. */
 function entryRouteFor(slug: string): string {
-  if (slug === "cyber-heroes") return "/dashboard";
-  return "/hub";
+  return courseHomeFor(safeCourseSlug(slug));
 }
 
 function formatPrice(pence: number): string {
@@ -81,11 +81,11 @@ export default async function PurchasePage({ params, searchParams }: PageProps) 
       status: true,
     },
   });
-  if (!product) redirect("/hub");
+  if (!product) redirect(CATALOGUE);
 
   // Only ACTIVE products are purchasable. COMING_SOON tracks have a
-  // waitlist instead — kicking back to /hub is the right behaviour.
-  if (product.status !== "ACTIVE") redirect("/hub");
+  // waitlist instead — kicking back to the catalogue is right here.
+  if (product.status !== "ACTIVE") redirect(CATALOGUE);
 
   /* ──────────────────── state routing ──────────────────── */
   const owned = await hasEntitlement(session.user.id, product.slug);
@@ -99,8 +99,9 @@ export default async function PurchasePage({ params, searchParams }: PageProps) 
   }
 
   // Not the success state and the user already owns the product —
-  // there's nothing to sell them. Push them to the hub.
-  if (owned) redirect("/hub");
+  // there's nothing to sell them, so put them straight inside the course
+  // they own (owner 2026-10-16: no hub, log in and you are in the course).
+  if (owned) redirect(courseHomeFor(safeCourseSlug(product.slug)));
 
   return <OrderSummary product={product} />;
 }
@@ -324,14 +325,14 @@ function OrderSummary({
           >
             <span>One-time payment · No subscription · Lifetime access.</span>
             <Link
-              href="/hub"
+              href={CATALOGUE}
               style={{
                 color: C.cyanSoft,
                 fontWeight: 800,
                 textDecoration: "none",
               }}
             >
-              ← Back to hub
+              ← Back to all courses
             </Link>
           </div>
         </article>
@@ -458,7 +459,7 @@ function SuccessView({
           </Link>
 
           <Link
-            href="/hub"
+            href={CATALOGUE}
             style={{
               color: C.cyanSoft,
               fontWeight: 700,
@@ -467,7 +468,7 @@ function SuccessView({
               fontFamily: "'DM Sans', system-ui, sans-serif",
             }}
           >
-            ← Back to hub
+            ← Back to all courses
           </Link>
         </section>
       </FadeIn>

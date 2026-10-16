@@ -537,9 +537,9 @@ export default async function CybersecurityPage() {
               /* landingRouteFor returns null for products without a
                * landing page, but all four cyber tracks DO have one
                * (verified at the top of courseLandings.ts). Fall back
-               * to /hub if a future schema change ever breaks this so
-               * we never render a dead href. */
-              const landingHref = landingRouteFor(p.slug) ?? "/hub";
+               * to this catalogue if a future schema change ever breaks
+               * this so we never render a dead href. */
+              const landingHref = landingRouteFor(p.slug) ?? "/cybersecurity";
               const accent = TRACK_ACCENTS[p.slug] ?? "#5fffa3";
               const blurb =
                 TRACK_BLURBS[p.slug] ??
@@ -592,7 +592,7 @@ export default async function CybersecurityPage() {
               }}
             >
                             <Link
-                href="/hub"
+                href="/login"
                 style={{
                   color: "var(--lv2-cyan-soft)",
                   textDecoration: "underline",
@@ -600,7 +600,7 @@ export default async function CybersecurityPage() {
                   textUnderlineOffset: 3,
                 }}
               >
-                Already enrolled? Go to your hub
+                Already enrolled? Log in
               </Link>
               .
             </p>

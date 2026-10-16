@@ -6,7 +6,7 @@ import type { Entitlement, EntitlementSource } from "@prisma/client";
  *
  * Every gated route/server-action must call `hasEntitlement` before
  * surfacing product content. Returns boolean — the caller decides
- * what to do on false (typically `redirect('/hub')`).
+ * what to do on false (typically `redirect(CATALOGUE)`).
  *
  * NEVER call from client components — the prisma import would leak
  * the secret key. Always run on the server (server components,

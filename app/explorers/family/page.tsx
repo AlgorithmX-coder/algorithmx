@@ -161,7 +161,6 @@ export default async function ExplorersFamilyPage() {
 
         <div style={{ marginTop: 44, paddingTop: 20, borderTop: `1px solid ${EDGE}`, display: "flex", gap: 16, flexWrap: "wrap" }}>
           <a href="/explorers" style={{ fontFamily: MONO, fontSize: 13, color: CYAN, textDecoration: "none" }}>← Back to the mission board</a>
-          <a href="/hub" style={{ fontFamily: MONO, fontSize: 13, color: FAINT, textDecoration: "none" }}>Account hub</a>
         </div>
       </div>
     </main>

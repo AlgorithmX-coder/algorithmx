@@ -25,7 +25,7 @@ const inter = Inter({
   display: "swap",
 });
 
-// Space Grotesk + DM Sans power the /hub family dashboard (and the
+// Space Grotesk + DM Sans power the family dashboard (and the
 // auth/dashboard cyber surfaces that reference them). They were
 // previously named in inline font-family strings but never loaded, so
 // those surfaces silently fell back to system-ui. Loading them here as

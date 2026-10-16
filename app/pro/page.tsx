@@ -1,3 +1,4 @@
+import { CATALOGUE } from "@/app/lib/courseIntent";
 import { prisma } from "@/app/lib/prisma";
 import { redirect } from "next/navigation";
 import CyberStartProLanding from "@/app/cyberstart-pro/CyberStartProLanding";
@@ -20,6 +21,6 @@ export default async function ProLandingPage() {
   const product = await prisma.product.findUnique({
     where: { slug: "cyberstart-pro" },
   });
-  if (!product) redirect("/hub");
+  if (!product) redirect(CATALOGUE);
   return <CyberStartProLanding product={product} />;
 }

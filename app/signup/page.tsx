@@ -11,7 +11,7 @@ import AuthButton, { type AuthButtonState } from "@/app/components/auth/AuthButt
 import AuthTerminalPanel from "@/app/components/auth/AuthTerminalPanel";
 import AccessGrantedOverlay from "@/app/components/auth/AccessGrantedOverlay";
 import { useIsDesktop } from "@/app/components/auth/useIsDesktop";
-import { safeCourseSlug, hubTargetFor } from "@/app/lib/courseIntent";
+import { safeCourseSlug, courseHomeFor } from "@/app/lib/courseIntent";
 import { ACCESS, ACCESS_FONT, ACCESS_GRAD, rgba } from "@/app/components/auth/accessTokens";
 import {
   IconIdentity,
@@ -173,7 +173,7 @@ function SignupPageInner() {
       setPhase("success");
       // Account created but not signed in — route through /login, carrying
       // the intended hub destination (with any selected course).
-      const loginUrl = `/login?registered=true&callbackUrl=${encodeURIComponent(safeCallback ?? hubTargetFor(course))}`;
+      const loginUrl = `/login?registered=true&callbackUrl=${encodeURIComponent(safeCallback ?? courseHomeFor(course))}`;
       // Slightly longer than the old 800ms so the core's unlock/portal
       // moment lands before we route. Still snappy.
       window.setTimeout(() => {

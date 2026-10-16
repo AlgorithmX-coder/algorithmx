@@ -13,7 +13,7 @@ import AuthButton, { type AuthButtonState } from "@/app/components/auth/AuthButt
 import AuthTerminalPanel from "@/app/components/auth/AuthTerminalPanel";
 import AccessGrantedOverlay from "@/app/components/auth/AccessGrantedOverlay";
 import { useIsDesktop } from "@/app/components/auth/useIsDesktop";
-import { safeCourseSlug, hubTargetFor } from "@/app/lib/courseIntent";
+import { safeCourseSlug, courseHomeFor } from "@/app/lib/courseIntent";
 import { ACCESS, ACCESS_FONT, ACCESS_GRAD, rgba } from "@/app/components/auth/accessTokens";
 import { IconCredentials, IconKey, IconHub, IconEye, IconEyeOff } from "@/app/components/auth/icons";
 
@@ -29,12 +29,12 @@ function LoginPageInner() {
 
   /* Post-login destination. Priority:
    *   1. ?callbackUrl=… — same-origin guard ("/" but not "//").
-   *   2. ?course=<slug> — hub with that course pre-selected.
-   *   3. /hub           — platform home base. */
+   *   2. ?course=<slug> — straight into that course's own portal.
+   *   3. the catalogue  — no course context, so let them pick. */
   const callbackRaw = searchParams.get("callbackUrl");
   const course = safeCourseSlug(searchParams.get("course"));
   const safeCallback =
-    callbackRaw && callbackRaw.startsWith("/") && !callbackRaw.startsWith("//") ? callbackRaw : hubTargetFor(course);
+    callbackRaw && callbackRaw.startsWith("/") && !callbackRaw.startsWith("//") ? callbackRaw : courseHomeFor(course);
 
   const justRegistered = searchParams.get("registered") === "true";
   const forCourse = safeCallback.startsWith("/ai-cleared") || safeCallback.startsWith("/ai-fluent");

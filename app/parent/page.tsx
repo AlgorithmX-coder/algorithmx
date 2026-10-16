@@ -6,6 +6,7 @@
  * them to <ParentView>. Source of truth is the flat Progress table.
  */
 
+import { CATALOGUE } from "@/app/lib/courseIntent";
 import { auth } from "@/app/lib/auth";
 import { prisma } from "@/app/lib/prisma";
 import { redirect } from "next/navigation";
@@ -21,7 +22,7 @@ export default async function ParentDashboard() {
   const session = await auth();
   if (!session?.user?.id) redirect("/login");
   const ok = await hasEntitlement(session.user.id, PRODUCT_SLUG);
-  if (!ok) redirect("/hub");
+  if (!ok) redirect(CATALOGUE);
   const userId = session.user.id;
 
   /* ── DATA ───────────────────────────────────────────────────── */
@@ -36,7 +37,7 @@ export default async function ParentDashboard() {
       orderBy: { createdAt: "asc" },
     }),
   ]);
-  if (!product) redirect("/hub");
+  if (!product) redirect(CATALOGUE);
   const weeksCount = product.weeksCount;
 
   const childIds = childProfiles.map((c) => c.id);

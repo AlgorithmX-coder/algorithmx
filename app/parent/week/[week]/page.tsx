@@ -14,7 +14,7 @@
  * Gating:
  *   - auth() guards the route; unauthenticated → /login.
  *   - hasEntitlement(userId, "cyber-heroes") guards the content;
- *     non-entitled → /hub. PAYWALL_ENFORCED is GONE — entitlement
+ *     non-entitled → the catalogue. PAYWALL_ENFORCED is GONE — entitlement
  *     IS the gate now.
  *   - Every Prisma query is filtered by session.user.id, so a leaked
  *     week URL cannot expose another family's data.
@@ -26,6 +26,7 @@
  *     (defensive: shouldn't happen if the seed is healthy).
  */
 
+import { CATALOGUE } from "@/app/lib/courseIntent";
 import { auth } from "@/app/lib/auth";
 import { prisma } from "@/app/lib/prisma";
 import { hasEntitlement, getAge } from "@/app/lib/entitlements";
@@ -80,7 +81,7 @@ export default async function ParentWeekDetail({ params }: PageProps) {
 
   // 2. ENTITLEMENT GATE
   const entitled = await hasEntitlement(userId, "cyber-heroes");
-  if (!entitled) redirect("/hub");
+  if (!entitled) redirect(CATALOGUE);
 
   // 3. PARSE & VALIDATE WEEK
   const { week: weekParam } = await params;

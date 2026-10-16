@@ -16,7 +16,7 @@ import { Suspense, useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { signIn } from "next-auth/react";
-import { hubTargetFor, safeCourseSlug } from "@/app/lib/courseIntent";
+import { courseHomeFor, safeCourseSlug } from "@/app/lib/courseIntent";
 import { COURSE_AUTH_THEMES, type CourseAuthKey } from "./themes";
 
 type Mode = "login" | "signup";
@@ -32,7 +32,7 @@ function Inner({ course, mode }: { course: CourseAuthKey; mode: Mode }) {
   const destination =
     callbackRaw && callbackRaw.startsWith("/") && !callbackRaw.startsWith("//")
       ? callbackRaw
-      : hubTargetFor(safeCourseSlug(t.slug));
+      : courseHomeFor(safeCourseSlug(t.slug));
   const justRegistered = searchParams.get("registered") === "true";
 
   const [name, setName] = useState("");

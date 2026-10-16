@@ -1,3 +1,4 @@
+import { CATALOGUE } from "@/app/lib/courseIntent";
 import { Nunito } from "next/font/google";
 import { auth } from "@/app/lib/auth";
 import { prisma } from "@/app/lib/prisma";
@@ -14,7 +15,7 @@ export default async function LessonPage() {
   if (!session?.user?.id) redirect("/login");
 
   const ok = await hasEntitlement(session.user.id, "cyber-heroes");
-  if (!ok) redirect("/hub");
+  if (!ok) redirect(CATALOGUE);
 
   // Fetch the cyber-heroes week-1 CourseContent. We resolve via the
   // product slug so we never hard-code productIds in the page layer.
