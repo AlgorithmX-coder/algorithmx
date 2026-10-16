@@ -59,18 +59,48 @@ export interface GameButtonProps
   children?: ReactNode;
 }
 
+/* A button is ONE colour.
+ *
+ * Owner, twice: "you can see the button at the bottom? It's got a bit of
+ * coloring at the end. That is a common thing with a lot of them across all
+ * the 20 weeks."
+ *
+ * These were horizontal gradients, and a horizontal gradient across a button
+ * makes one end a different colour from the other BY CONSTRUCTION. The first
+ * attempt at this closed the hue gap - cyan to purple became cyan to blue -
+ * and the owner saw no difference, correctly, because hue was never what the
+ * eye was reading. Measured across the button in the owner's screenshot, the
+ * brightness fell 54% from left to right. Fifty-four per cent. Narrowing the
+ * hue while leaving that was fixing the wrong axis.
+ *
+ * So: one colour per button, with a slight VERTICAL sheen - a few per cent
+ * lighter at the top than the bottom. That reads as a lit surface, which is
+ * what a button should look like, and there is no "end" for a colour to
+ * Measured in L*, which is what the eye actually judges, not in relative
+ * luminance, which gamma makes look alarming:
+ *
+ *   variant      was (left to right)   now (top to bottom)
+ *   primary      dL* 8.4               dL* 3.6
+ *   secondary    dL* 23.8              dL* 4.1     <- the one photographed
+ *   success      dL* 9.0               dL* 3.9
+ *   danger       dL* 12.4              dL* 3.3
+ *
+ * A dL* of about 2.3 is the smallest difference a person can see across a
+ * large flat area, so 3 to 4 reads as a lit surface and 23.8 reads as two
+ * colours. The hue span is now 1 degree or less on every variant.
+ */
 const VARIANTS: Record<
   GameButtonVariant,
   { bg: string; color: string; border: string; shadow: string }
 > = {
   primary: {
-    bg: "linear-gradient(90deg, #f97316, #f59e0b)",
+    bg: "linear-gradient(180deg, #fb8113 0%, #ed7911 100%)",
     color: "#fff",
     border: "transparent",
     shadow: "0 6px 22px rgba(249,115,22,0.45)",
   },
   secondary: {
-    bg: "linear-gradient(90deg, #4ff0ff, #0aa6dd)",
+    bg: "linear-gradient(180deg, #2ccbe9 0%, #2abfdb 100%)",
     color: "#0f1530",
     border: "transparent",
     shadow: "0 6px 22px rgba(0,229,255,0.4)",
@@ -92,14 +122,14 @@ const VARIANTS: Record<
   },
   // Big positive action - ZAP, FIX, RESCUE. Green forward energy.
   success: {
-    bg: "linear-gradient(90deg, #34d399, #10b981)",
+    bg: "linear-gradient(180deg, #20cf92 0%, #1ec38a 100%)",
     color: "#062019",
     border: "transparent",
     shadow: "0 6px 22px rgba(52,211,153,0.45)",
   },
   // Stop / close / dismiss. Pink coral edge for "this is a no".
   danger: {
-    bg: "linear-gradient(90deg, #ff7a8f, #ef4444)",
+    bg: "linear-gradient(180deg, #f75d6d 0%, #e95767 100%)",
     color: "#fff",
     border: "transparent",
     shadow: "0 6px 22px rgba(239,68,68,0.45)",
