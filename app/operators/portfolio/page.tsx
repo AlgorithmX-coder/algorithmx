@@ -16,18 +16,32 @@ export const metadata: Metadata = {
  * component doesn't import the "use client" Engagement module). */
 const C = {
   carbon: "#16181f", panel: "#1d212c", line: "rgba(139,123,255,0.20)", lineSoft: "rgba(166,178,214,0.12)",
-  ink: "#dce2ee", soft: "#a8b2cc", mute: "#79839f", indigo: "#8b7bff", indigo2: "#b3a8ff",
-  green: "#55d98c", red: "#f26d72", amber: "#e8a33d",
+  ink: "#eef2fb", soft: "#c3cce0", mute: "#8e98b4", indigo: "#8b7bff", indigo2: "#c2b8ff",
+  cyan: "#5fe6ff", green: "#55d98c", red: "#f26d72", amber: "#e8a33d",
 };
-/* Glass surfaces: translucent panels that let the live terminal read faintly
- * through while staying legible. backdropFilter frosts the busy background. */
-const GLASS = "rgba(23,26,36,0.72)";
-const GLASS_SOFT = "rgba(23,26,36,0.58)";
-const GLASS_NEXT = "rgba(42,37,78,0.70)";
-const BLUR = "blur(7px)";
+/* Glass surfaces: translucent panels, now with enough body to hold the type
+ * clear of the live terminal behind them. backdropFilter frosts the backdrop. */
+const GLASS = "rgba(20,23,33,0.90)";
+const GLASS_SOFT = "rgba(20,23,33,0.82)";
+const BLUR = "blur(8px)";
+/* Cool glowing theme for the NEXT module - electric cyan over indigo. */
+const NEXT_BG = "linear-gradient(135deg, rgba(18,46,64,0.92), rgba(38,32,80,0.92))";
+/* Shadow for text sitting directly on the backdrop (no panel behind it), so it
+ * stays legible over the terminal chatter. */
+const TSHADOW = "0 1px 12px rgba(6,8,14,0.9), 0 0 3px rgba(6,8,14,0.7)";
 const DISP = "var(--font-chakra),'Chakra Petch',system-ui,sans-serif";
 const MONO = "var(--font-plex-mono),ui-monospace,Menlo,monospace";
 const SANS = "var(--font-plex-sans),system-ui,sans-serif";
+
+/* Pulse for the NEXT card's glow; disabled under reduced motion. */
+const GLOW_CSS = `
+@keyframes opsNextPulse {
+  0%,100% { box-shadow: 0 0 0 1px rgba(95,230,255,0.30), 0 0 20px rgba(95,230,255,0.24), 0 10px 28px rgba(0,0,0,0.45); }
+  50%     { box-shadow: 0 0 0 1px rgba(95,230,255,0.55), 0 0 34px rgba(95,230,255,0.48), 0 10px 28px rgba(0,0,0,0.5); }
+}
+.ops-next { animation: opsNextPulse 2.6s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) { .ops-next { animation: none; box-shadow: 0 0 0 1px rgba(95,230,255,0.4), 0 0 26px rgba(95,230,255,0.33), 0 10px 28px rgba(0,0,0,0.45); } }
+`;
 
 const SEV_COLOR: Record<string, string> = { LOW: C.soft, MEDIUM: C.amber, HIGH: C.red, CRITICAL: C.red };
 const SEV_LABEL: Record<string, string> = { LOW: "Low", MEDIUM: "Medium", HIGH: "High", CRITICAL: "Critical" };
@@ -45,11 +59,12 @@ export default async function OperatorsPortfolioPage() {
   return (
     <main style={{ position: "relative", minHeight: "100vh", background: "transparent", color: C.ink, fontFamily: SANS, display: "grid", placeItems: "start center", padding: "56px 20px 100px" }}>
       <OpsBackdrop />
+      <style>{GLOW_CSS}</style>
       <div style={{ position: "relative", zIndex: 1, width: "100%", maxWidth: 760 }}>
         {/* header */}
-        <div style={{ fontFamily: MONO, fontSize: 11.5, letterSpacing: ".26em", textTransform: "uppercase", color: C.indigo, fontWeight: 600 }}>Redoubt · Operator file</div>
-        <h1 style={{ fontFamily: DISP, fontSize: "clamp(28px,5vw,40px)", fontWeight: 700, margin: "12px 0 6px", letterSpacing: "-.01em" }}>Your portfolio</h1>
-        <p style={{ color: C.soft, fontSize: 15, lineHeight: 1.6, margin: "0 0 28px", maxWidth: "58ch" }}>
+        <div style={{ fontFamily: MONO, fontSize: 11.5, letterSpacing: ".26em", textTransform: "uppercase", color: C.cyan, fontWeight: 700, textShadow: TSHADOW }}>Redoubt · Operator file</div>
+        <h1 style={{ fontFamily: DISP, fontSize: "clamp(28px,5vw,40px)", fontWeight: 700, margin: "12px 0 6px", letterSpacing: "-.01em", color: "#ffffff", textShadow: TSHADOW }}>Your portfolio</h1>
+        <p style={{ color: C.ink, fontSize: 15, lineHeight: 1.6, margin: "0 0 28px", maxWidth: "58ch", textShadow: TSHADOW }}>
           Every module you clear files a professional-grade finding here. This is the real thing you walk away with: show a teacher, a UCAS form, or a first employer.
         </p>
 
@@ -61,7 +76,7 @@ export default async function OperatorsPortfolioPage() {
         </div>
         {rank && rank.next && (
           <div style={{ marginBottom: 34 }}>
-            <div style={{ display: "flex", justifyContent: "space-between", fontFamily: MONO, fontSize: 11.5, color: C.mute, marginBottom: 7 }}>
+            <div style={{ display: "flex", justifyContent: "space-between", fontFamily: MONO, fontSize: 11.5, color: C.soft, marginBottom: 7, textShadow: TSHADOW }}>
               <span style={{ color: C.indigo2 }}>{rank.rank}</span><span>{rank.label}</span>
             </div>
             <div style={{ height: 8, borderRadius: 999, background: "rgba(255,255,255,0.07)", overflow: "hidden" }}>
@@ -73,22 +88,22 @@ export default async function OperatorsPortfolioPage() {
         {/* course map — the full posting, status per module */}
         <div style={{ marginBottom: 34 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 12, margin: "0 0 14px" }}>
-            <span style={{ width: 18, height: 2, background: C.indigo, borderRadius: 2 }} />
-            <span style={{ fontFamily: MONO, fontSize: 11.5, letterSpacing: ".14em", textTransform: "uppercase", color: C.soft, fontWeight: 600 }}>The posting · {done.size}/16 modules cleared</span>
+            <span style={{ width: 18, height: 2, background: C.cyan, borderRadius: 2, boxShadow: `0 0 8px ${C.cyan}` }} />
+            <span style={{ fontFamily: MONO, fontSize: 11.5, letterSpacing: ".14em", textTransform: "uppercase", color: C.ink, fontWeight: 700, textShadow: TSHADOW }}>The posting · {done.size}/16 modules cleared</span>
           </div>
           {PHASE_ORDER.map((phase) => (
             <div key={phase} style={{ marginBottom: 14 }}>
-              <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: ".1em", textTransform: "uppercase", color: C.mute, marginBottom: 7 }}>{phase}</div>
+              <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: ".1em", textTransform: "uppercase", color: C.soft, marginBottom: 7, fontWeight: 600, textShadow: TSHADOW }}>{phase}</div>
               <div style={{ display: "grid", gap: 6 }}>
                 {CURRICULUM.filter((m) => m.phase === phase).map((m) => {
                   const isDone = done.has(m.no);
                   const isNext = m.no === nextModule;
                   const playable = m.no <= HIGHEST_BUILT_MODULE;
                   const inner = (
-                    <div style={{ display: "flex", gap: 11, alignItems: "center", padding: "10px 13px", borderRadius: 10, background: isNext ? GLASS_NEXT : GLASS_SOFT, backdropFilter: BLUR, WebkitBackdropFilter: BLUR, border: `1px solid ${isNext ? C.indigo : C.lineSoft}`, boxShadow: isNext ? `0 0 0 1px ${C.indigo}22, 0 6px 20px rgba(0,0,0,0.3)` : "0 4px 14px rgba(0,0,0,0.22)" }}>
-                      <span style={{ fontFamily: MONO, fontSize: 12, fontWeight: 700, color: isDone ? C.green : isNext ? C.indigo2 : C.mute, minWidth: 30 }}>{isDone ? "✓" : `M${String(m.no).padStart(2, "0")}`}</span>
-                      <span style={{ fontSize: 13.5, color: playable ? C.ink : C.mute, flex: 1 }}>{m.title}</span>
-                      {isNext && <span style={{ fontFamily: MONO, fontSize: 10, fontWeight: 700, letterSpacing: ".08em", color: C.indigo, border: `1px solid ${C.indigo}66`, borderRadius: 5, padding: "2px 7px" }}>NEXT</span>}
+                    <div className={isNext ? "ops-next" : undefined} style={{ display: "flex", gap: 11, alignItems: "center", padding: isNext ? "13px 14px" : "10px 13px", borderRadius: 10, background: isNext ? NEXT_BG : GLASS_SOFT, backdropFilter: BLUR, WebkitBackdropFilter: BLUR, border: `1px solid ${isNext ? "rgba(95,230,255,0.55)" : C.lineSoft}`, boxShadow: isNext ? undefined : "0 4px 14px rgba(0,0,0,0.22)" }}>
+                      <span style={{ fontFamily: MONO, fontSize: 12, fontWeight: 700, color: isDone ? C.green : isNext ? C.cyan : C.mute, minWidth: 30, textShadow: isNext ? `0 0 12px ${C.cyan}` : undefined }}>{isDone ? "✓" : `M${String(m.no).padStart(2, "0")}`}</span>
+                      <span style={{ fontSize: isNext ? 14.5 : 13.5, fontWeight: isNext ? 600 : 400, color: isNext ? "#ffffff" : playable ? C.ink : C.mute, flex: 1 }}>{m.title}</span>
+                      {isNext && <span style={{ fontFamily: MONO, fontSize: 10, fontWeight: 700, letterSpacing: ".1em", color: "#eafbff", background: "rgba(95,230,255,0.16)", border: "1px solid rgba(95,230,255,0.7)", borderRadius: 5, padding: "3px 9px", boxShadow: `0 0 12px ${C.cyan}66`, textShadow: `0 0 8px ${C.cyan}` }}>NEXT ▸</span>}
                       {isDone && !isNext && <span style={{ fontFamily: MONO, fontSize: 10.5, color: C.green }}>filed</span>}
                       {!playable && <span style={{ fontFamily: MONO, fontSize: 10.5, color: C.mute }}>soon</span>}
                     </div>
@@ -106,8 +121,8 @@ export default async function OperatorsPortfolioPage() {
 
         {/* findings */}
         <div style={{ display: "flex", alignItems: "center", gap: 12, margin: "0 0 14px" }}>
-          <span style={{ width: 18, height: 2, background: C.indigo, borderRadius: 2 }} />
-          <span style={{ fontFamily: MONO, fontSize: 11.5, letterSpacing: ".14em", textTransform: "uppercase", color: C.soft, fontWeight: 600 }}>Findings filed</span>
+          <span style={{ width: 18, height: 2, background: C.cyan, borderRadius: 2, boxShadow: `0 0 8px ${C.cyan}` }} />
+          <span style={{ fontFamily: MONO, fontSize: 11.5, letterSpacing: ".14em", textTransform: "uppercase", color: C.ink, fontWeight: 700, textShadow: TSHADOW }}>Findings filed</span>
         </div>
         {findings.length === 0 ? (
           <div style={{ padding: "40px 28px", textAlign: "center", background: GLASS, backdropFilter: BLUR, WebkitBackdropFilter: BLUR, border: `1px dashed ${C.line}`, borderRadius: 16, boxShadow: "0 10px 30px rgba(0,0,0,0.3)" }}>
@@ -115,7 +130,7 @@ export default async function OperatorsPortfolioPage() {
             <p style={{ color: C.soft, fontSize: 14, lineHeight: 1.6, maxWidth: "42ch", margin: "0 auto 20px" }}>
               Clear your first module to file your first finding. It takes about an hour, and you act for real on day one.
             </p>
-            <Link href="/operators/play/1" style={{ display: "inline-block", padding: "12px 22px", borderRadius: 9, background: C.indigo, color: "#0f0c26", fontFamily: MONO, fontWeight: 700, fontSize: 13, letterSpacing: ".06em", textDecoration: "none" }}>
+            <Link href="/operators/play/1" className="ops-next" style={{ display: "inline-block", padding: "12px 22px", borderRadius: 9, background: "linear-gradient(135deg, #5fe6ff, #8b7bff)", color: "#071018", fontFamily: MONO, fontWeight: 700, fontSize: 13, letterSpacing: ".06em", textDecoration: "none" }}>
               Begin Module 01 →
             </Link>
           </div>
