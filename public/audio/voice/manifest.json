@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-16T11:33:40.003Z",
+  "generatedAt": "2026-10-16T15:49:05.840Z",
   "model": "eleven_v4",
   "voiceSettings": {
     "stability": 0.6,
@@ -1187,28 +1187,28 @@
       "file": "/audio/voice/bd3c62a5707327ff.mp3"
     },
     {
-      "key": "3cd8bae2860923b9",
+      "key": "f27755cabec3a6cb",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "My guessing robot tries millions of passwords every second. Which one would take it the LONGEST to crack? Take a close look at options A, B and C. So, what do you think?",
+      "text": "My guessing robot tries millions of passwords every second. Which one would take it the LONGEST to crack? Take a close look at all three. So, what do you think?",
       "lines": [
         "My guessing robot tries millions of passwords every second. Which one would take it the LONGEST to crack?",
-        "Take a close look at options A, B and C.",
+        "Take a close look at all three.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/3cd8bae2860923b9.mp3"
+      "file": "/audio/voice/f27755cabec3a6cb.mp3"
     },
     {
-      "key": "9a0c2ea92a0c6132",
+      "key": "b2d2a8124193f4ae",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "All three of these have a trick or two in them. Which one is HARDEST for a hacker to crack? Take a close look at options A, B and C. So, what do you think?",
+      "text": "All three of these have a trick or two in them. Which one is HARDEST for a hacker to crack? Take a close look at all three. So, what do you think?",
       "lines": [
         "All three of these have a trick or two in them. Which one is HARDEST for a hacker to crack?",
-        "Take a close look at options A, B and C.",
+        "Take a close look at all three.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/9a0c2ea92a0c6132.mp3"
+      "file": "/audio/voice/b2d2a8124193f4ae.mp3"
     },
     {
       "key": "7192f363cb636df3",
@@ -1225,16 +1225,16 @@
       "file": "/audio/voice/7192f363cb636df3.mp3"
     },
     {
-      "key": "bfdd194284da9d5d",
+      "key": "9a259ae98cf0e2a5",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "I always guess everyone's favorites first! Which one of these could I NEVER guess? Take a close look at options A, B, C and D. So, what do you think?",
+      "text": "I always guess everyone's favorites first! Which one of these could I NEVER guess? Take a close look at all four. So, what do you think?",
       "lines": [
         "I always guess everyone's favorites first! Which one of these could I NEVER guess?",
-        "Take a close look at options A, B, C and D.",
+        "Take a close look at all four.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/bfdd194284da9d5d.mp3"
+      "file": "/audio/voice/9a259ae98cf0e2a5.mp3"
     },
     {
       "key": "85d0a7caa27c6701",

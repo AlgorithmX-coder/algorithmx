@@ -153,10 +153,27 @@ export default function MissionDebrief({
         )}
       </div>
 
-      {/* Narration block (drives Layla's "you learned X" track). */}
+      {/* Narration block (drives Layla's "you learned X" track).
+        *
+        * She SPEAKS every line; the board PRINTS the first and the last. The
+        * lines between them restate the five concept cards sitting directly
+        * underneath, one for one, word for word - "You keep it secret" above
+        * a card titled "Keep It Secret". Printing both put 216px of duplicate
+        * text on a board already 250px too tall for the owner's window, so
+        * the fit was shrinking the whole screen to 0.72 and a six-year-old
+        * was reading 17px titles at 12px.
+        *
+        * The opener and the closer are the two that are NOT on a card, so
+        * they are the two that stay. The audio is untouched, which was the
+        * owner's condition for this trim: no clip is re-recorded. */}
       {narration && (
         <InfoNarration
           lines={narration.lines}
+          showOnly={
+            narration.lines.length > 3
+              ? [0, narration.lines.length - 1]
+              : undefined
+          }
           speaker={narration.speaker ?? "layla"}
         />
       )}
@@ -201,8 +218,8 @@ export default function MissionDebrief({
           // bottom. A narrower track puts all five on one row. Untouched at or
           // above STAGE_FIT_HEIGHT.
           gridTemplateColumns: shortViewport
-            ? "repeat(auto-fit, minmax(150px, 1fr))"
-            : "repeat(auto-fit, minmax(220px, 1fr))",
+            ? "repeat(auto-fit, minmax(132px, 1fr))"
+            : "repeat(auto-fit, minmax(165px, 1fr))",
           gap: 14,
           marginBottom: 18,
         }}
@@ -232,7 +249,7 @@ export default function MissionDebrief({
                   : { type: "spring", stiffness: 280, damping: 22 }
               }
               style={{
-                padding: "20px 18px",
+                padding: "15px 11px",
                 borderRadius: 18,
                 background: `linear-gradient(180deg, ${c.accent}22, rgba(15, 21, 48, 0.85))`,
                 border: `2px solid ${c.accent}88`,
@@ -244,7 +261,7 @@ export default function MissionDebrief({
             >
               <div
                 style={{
-                  fontSize: 44,
+                  fontSize: 36,
                   lineHeight: 1,
                   marginBottom: 8,
                   filter: visible ? `drop-shadow(0 0 14px ${c.accent}88)` : undefined,

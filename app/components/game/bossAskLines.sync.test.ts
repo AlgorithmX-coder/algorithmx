@@ -60,6 +60,46 @@ describe("the boss read-out is built identically in both places", () => {
     expect(grab(COMPONENT)).toEqual(grab(GENERATOR));
   });
 
+  /* The code-like branch is a SECOND place the two files build a spoken line,
+   * and the construction comparison above does not reach it. Week 1 needed
+   * "all three" there where the other weeks still say "options A, B and C",
+   * and getting that wrong in one file only would orphan every code-like boss
+   * ask in the course. */
+  it("the code-like read-out line matches on both sides", () => {
+    const grab = (file: string) => {
+      const src = readFileSync(file, "utf8");
+      /* Just the expression, not a window around it. A fixed-size window
+       * starts mid-comment, so the comment strippers have no opening /* to
+       * match and leave prose behind; and the lines either side differ
+       * legitimately (the generator pushes a block, the component returns). */
+      const i = src.indexOf("Take a close look at all");
+      expect(i, `no code-like read-out in ${file}`).toBeGreaterThan(-1);
+      const start = src.lastIndexOf("FLOWING_ASK_WEEKS.has(", i);
+      const endMark = "optionLetterList(ordered.length)}.`";
+      const end = src.indexOf(endMark, i);
+      expect(start, `no FLOWING check before the read-out in ${file}`).toBeGreaterThan(-1);
+      expect(end, `no fallback read-out in ${file}`).toBeGreaterThan(i);
+      return src.slice(start, end + endMark.length)
+        .replace(/week \?\? 0/g, "wkNum")
+        .replace(/\s+/g, " ")
+        .trim();
+    };
+    expect(grab(COMPONENT)).toBe(grab(GENERATOR));
+  });
+
+  it("countWord is the same function on both sides", () => {
+    const grab = (file: string) => {
+      const src = readFileSync(file, "utf8");
+      const i = src.indexOf("function countWord");
+      expect(i, `no countWord in ${file}`).toBeGreaterThan(-1);
+      return src.slice(i, src.indexOf("\n}", i))
+        .replace(/: number|: string/g, "")
+        .replace(/\s+/g, " ")
+        .trim();
+    };
+    expect(grab(COMPONENT)).toBe(grab(GENERATOR));
+  });
+
   it("closeSentence is the same function on both sides", () => {
     const grab = (file: string) => {
       const src = readFileSync(file, "utf8");
