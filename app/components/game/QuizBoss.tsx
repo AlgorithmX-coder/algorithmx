@@ -675,6 +675,39 @@ export default function QuizBoss({ quiz, onEnd, onQuestionAnswered }: QuizBossPr
           screens render their own centered hero, so this shows just on ask. */}
       {stage === "ask" && (
         <>
+          {/* He HOSTS this quiz, so he stands at a host's station.
+            *
+            * Owner, 2026-10-16: "I'm not too sure on the raccoon being there
+            * on the bottom right... maybe it needs to be more suited to the
+            * actual quiz. Either we remove him or we better design him into
+            * the quiz." Redesign, chosen by the owner.
+            *
+            * He used to be a sprite floating in the bottom-right corner with
+            * a glow behind him, which is why "he isn't grounded" and "fix this
+            * shadow problem, it is consistent" came back on nearly every week
+            * from 3 to 20. Nothing in the scene said what he was standing on.
+            *
+            * The station is built here rather than drawn into the art on
+            * purpose: it then works for all five moods and all twenty weeks
+            * without regenerating a hundred sprites, and it takes the week's
+            * own accent so each week's host desk is that week's colour.
+            *
+            * Sprite and desk live in ONE positioned box, so the desk tracks
+            * him whatever width his pose happens to be - the mistake the old
+            * fixed-width ground ellipse made, which left it sitting beside
+            * him instead of under him. He keeps his idle bob; the desk is
+            * still, so he bobs BEHIND it, which is what sells him standing
+            * at it. */}
+          <div
+            style={{
+              position: "absolute",
+              right: "6%",
+              bottom: "11%",
+              height: "26%",
+              zIndex: 3,
+              pointerEvents: "none",
+            }}
+          >
           <motion.img
             key={raccoonMood}
             src={weekCharacterSrc(week, "raccoon", raccoonMood)}
@@ -692,11 +725,11 @@ export default function QuizBoss({ quiz, onEnd, onQuestionAnswered }: QuizBossPr
             }
             transition={raccoonMood === "idle" || raccoonMood === "taunt" ? { duration: 3, repeat: Infinity, ease: "easeInOut" } : { duration: 0.28 }}
             style={{
-              position: "absolute",
-              right: "6%",
-              bottom: "11%",
-              height: "26%",
-              zIndex: 3,
+              display: "block",
+              height: "100%",
+              width: "auto",
+              position: "relative",
+              zIndex: 1,
               // De-offset: 0 0, never 0 12px. An offset drop-shadow IS the
               // "shadow beneath him" the testers keep reporting - it follows
               // the sprite's pixels, so it reads as a cast shadow on the
@@ -708,6 +741,56 @@ export default function QuizBoss({ quiz, onEnd, onQuestionAnswered }: QuizBossPr
               filter: "drop-shadow(0 0 16px rgba(5,10,30,0.6))",
             }}
           />
+          {/* The host desk. Drawn AFTER the sprite and above it, so it
+              occludes his legs and he reads as standing behind it rather
+              than in front of it. */}
+          <div
+            aria-hidden
+            style={{
+              position: "absolute",
+              left: "-14%",
+              right: "-14%",
+              bottom: "-42%",
+              height: "80%",
+              zIndex: 2,
+              borderRadius: "10px 10px 6px 6px",
+              background: `linear-gradient(180deg, ${accent}2e 0%, rgba(8,12,28,0.96) 22%, rgba(5,8,20,0.99) 100%)`,
+              border: `1px solid ${accent}66`,
+              borderBottom: "none",
+              boxShadow: `0 -2px 0 ${accent}aa inset, 0 18px 34px -14px rgba(2,4,12,0.9)`,
+              backdropFilter: "blur(3px)",
+              WebkitBackdropFilter: "blur(3px)",
+            }}
+          >
+            {/* A row of host's buttons, so the desk reads as quiz furniture
+                and not as a plain block. */}
+            <div
+              style={{
+                position: "absolute",
+                left: "14%",
+                right: "14%",
+                top: "18%",
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              {[0, 1, 2, 3].map((i) => (
+                <span
+                  key={i}
+                  style={{
+                    width: 7,
+                    height: 7,
+                    borderRadius: "50%",
+                    background: i === 1 ? accent : `${accent}4d`,
+                    boxShadow: i === 1 ? `0 0 8px ${accent}` : "none",
+                  }}
+                />
+              ))}
+            </div>
+          </div>
+          </div>
+
           {/* The raccoon's ground shadow used to be drawn here as a separate
               ellipse pinned to right:6% at a fixed 16% width. It could not
               track the sprite, whose width follows its own aspect ratio, so
