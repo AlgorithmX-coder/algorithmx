@@ -765,10 +765,10 @@ export default function QuizBoss({ quiz, onEnd, onQuestionAnswered }: QuizBossPr
             aria-hidden
             style={{
               position: "absolute",
-              left: "-14%",
-              right: "-14%",
-              bottom: "-42%",
-              height: "80%",
+              left: "-8%",
+              right: "-8%",
+              bottom: "-7%",
+              height: "30%",
               zIndex: 2,
               borderRadius: "10px 10px 6px 6px",
               background: `linear-gradient(180deg, ${accent}2e 0%, rgba(8,12,28,0.96) 22%, rgba(5,8,20,0.99) 100%)`,
@@ -786,7 +786,7 @@ export default function QuizBoss({ quiz, onEnd, onQuestionAnswered }: QuizBossPr
                 position: "absolute",
                 left: "14%",
                 right: "14%",
-                top: "18%",
+                top: "30%",
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "center",

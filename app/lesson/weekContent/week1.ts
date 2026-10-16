@@ -976,7 +976,7 @@ export const WEEK_1: WeekContent = {
         correctIndex: 0,
         teachOnWrong: {
           title: "Mix in all three!",
-          explanation: "One extra thing stuck on the end is not enough. Mix a capital, a number AND a symbol all the way through. A word plus a year is still mostly a word.",
+          explanation: "One extra thing stuck on the end is not enough. The mix has to run all the way through. A word plus a year is still mostly a word.",
         },
         villainRight: {
           slug: "quiz-w1-right-mix-1",
