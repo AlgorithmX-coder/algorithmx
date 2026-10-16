@@ -70,7 +70,7 @@ const VARIANTS: Record<
     shadow: "0 6px 22px rgba(249,115,22,0.45)",
   },
   secondary: {
-    bg: "linear-gradient(90deg, #00e5ff, #7c5cff)",
+    bg: "linear-gradient(90deg, #4ff0ff, #0aa6dd)",
     color: "#0f1530",
     border: "transparent",
     shadow: "0 6px 22px rgba(0,229,255,0.4)",
@@ -99,7 +99,7 @@ const VARIANTS: Record<
   },
   // Stop / close / dismiss. Pink coral edge for "this is a no".
   danger: {
-    bg: "linear-gradient(90deg, #ff5fb3, #ef4444)",
+    bg: "linear-gradient(90deg, #ff7a8f, #ef4444)",
     color: "#fff",
     border: "transparent",
     shadow: "0 6px 22px rgba(239,68,68,0.45)",
