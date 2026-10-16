@@ -5,6 +5,7 @@ import Link from "next/link";
 import { getPortfolio } from "@/app/lib/opsPortfolio.actions";
 import { HIGHEST_BUILT_MODULE } from "@/app/operators/range/modules";
 import { CURRICULUM, PHASE_ORDER } from "@/app/operators/range/curriculum";
+import OpsBackdrop from "@/app/operators/range/OpsBackdrop";
 
 export const metadata: Metadata = {
   title: "Cyber Ops · Portfolio",
@@ -18,6 +19,12 @@ const C = {
   ink: "#dce2ee", soft: "#a8b2cc", mute: "#79839f", indigo: "#8b7bff", indigo2: "#b3a8ff",
   green: "#55d98c", red: "#f26d72", amber: "#e8a33d",
 };
+/* Glass surfaces: translucent panels that let the live terminal read faintly
+ * through while staying legible. backdropFilter frosts the busy background. */
+const GLASS = "rgba(23,26,36,0.72)";
+const GLASS_SOFT = "rgba(23,26,36,0.58)";
+const GLASS_NEXT = "rgba(42,37,78,0.70)";
+const BLUR = "blur(7px)";
 const DISP = "var(--font-chakra),'Chakra Petch',system-ui,sans-serif";
 const MONO = "var(--font-plex-mono),ui-monospace,Menlo,monospace";
 const SANS = "var(--font-plex-sans),system-ui,sans-serif";
@@ -36,13 +43,14 @@ export default async function OperatorsPortfolioPage() {
   const nextModule = CURRICULUM.find((m) => !done.has(m.no) && m.no <= HIGHEST_BUILT_MODULE)?.no ?? null;
 
   return (
-    <main style={{ minHeight: "100vh", background: C.carbon, color: C.ink, fontFamily: SANS, display: "grid", placeItems: "start center", padding: "56px 20px 100px" }}>
-      <div style={{ width: "100%", maxWidth: 760 }}>
+    <main style={{ position: "relative", minHeight: "100vh", background: "transparent", color: C.ink, fontFamily: SANS, display: "grid", placeItems: "start center", padding: "56px 20px 100px" }}>
+      <OpsBackdrop />
+      <div style={{ position: "relative", zIndex: 1, width: "100%", maxWidth: 760 }}>
         {/* header */}
         <div style={{ fontFamily: MONO, fontSize: 11.5, letterSpacing: ".26em", textTransform: "uppercase", color: C.indigo, fontWeight: 600 }}>Redoubt · Operator file</div>
         <h1 style={{ fontFamily: DISP, fontSize: "clamp(28px,5vw,40px)", fontWeight: 700, margin: "12px 0 6px", letterSpacing: "-.01em" }}>Your portfolio</h1>
         <p style={{ color: C.soft, fontSize: 15, lineHeight: 1.6, margin: "0 0 28px", maxWidth: "58ch" }}>
-          Every module you clear files a professional-grade finding here. This is the real thing you walk away with — show a teacher, a UCAS form, or a first employer.
+          Every module you clear files a professional-grade finding here. This is the real thing you walk away with: show a teacher, a UCAS form, or a first employer.
         </p>
 
         {/* standing */}
@@ -77,7 +85,7 @@ export default async function OperatorsPortfolioPage() {
                   const isNext = m.no === nextModule;
                   const playable = m.no <= HIGHEST_BUILT_MODULE;
                   const inner = (
-                    <div style={{ display: "flex", gap: 11, alignItems: "center", padding: "10px 13px", borderRadius: 10, background: isNext ? "rgba(139,123,255,0.07)" : C.panel, border: `1px solid ${isNext ? C.indigo : C.lineSoft}` }}>
+                    <div style={{ display: "flex", gap: 11, alignItems: "center", padding: "10px 13px", borderRadius: 10, background: isNext ? GLASS_NEXT : GLASS_SOFT, backdropFilter: BLUR, WebkitBackdropFilter: BLUR, border: `1px solid ${isNext ? C.indigo : C.lineSoft}`, boxShadow: isNext ? `0 0 0 1px ${C.indigo}22, 0 6px 20px rgba(0,0,0,0.3)` : "0 4px 14px rgba(0,0,0,0.22)" }}>
                       <span style={{ fontFamily: MONO, fontSize: 12, fontWeight: 700, color: isDone ? C.green : isNext ? C.indigo2 : C.mute, minWidth: 30 }}>{isDone ? "✓" : `M${String(m.no).padStart(2, "0")}`}</span>
                       <span style={{ fontSize: 13.5, color: playable ? C.ink : C.mute, flex: 1 }}>{m.title}</span>
                       {isNext && <span style={{ fontFamily: MONO, fontSize: 10, fontWeight: 700, letterSpacing: ".08em", color: C.indigo, border: `1px solid ${C.indigo}66`, borderRadius: 5, padding: "2px 7px" }}>NEXT</span>}
@@ -102,7 +110,7 @@ export default async function OperatorsPortfolioPage() {
           <span style={{ fontFamily: MONO, fontSize: 11.5, letterSpacing: ".14em", textTransform: "uppercase", color: C.soft, fontWeight: 600 }}>Findings filed</span>
         </div>
         {findings.length === 0 ? (
-          <div style={{ padding: "40px 28px", textAlign: "center", background: C.panel, border: `1px dashed ${C.line}`, borderRadius: 16 }}>
+          <div style={{ padding: "40px 28px", textAlign: "center", background: GLASS, backdropFilter: BLUR, WebkitBackdropFilter: BLUR, border: `1px dashed ${C.line}`, borderRadius: 16, boxShadow: "0 10px 30px rgba(0,0,0,0.3)" }}>
             <div style={{ fontFamily: DISP, fontWeight: 700, fontSize: 19, marginBottom: 8 }}>No findings yet.</div>
             <p style={{ color: C.soft, fontSize: 14, lineHeight: 1.6, maxWidth: "42ch", margin: "0 auto 20px" }}>
               Clear your first module to file your first finding. It takes about an hour, and you act for real on day one.
@@ -114,7 +122,7 @@ export default async function OperatorsPortfolioPage() {
         ) : (
           <div style={{ display: "grid", gap: 12 }}>
             {findings.map((f) => (
-              <div key={f.module} style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: 14, padding: "18px 20px" }}>
+              <div key={f.module} style={{ background: GLASS, backdropFilter: BLUR, WebkitBackdropFilter: BLUR, border: `1px solid ${C.line}`, borderRadius: 14, padding: "18px 20px", boxShadow: "0 8px 24px rgba(0,0,0,0.28)" }}>
                 <div style={{ display: "flex", alignItems: "baseline", gap: 10, flexWrap: "wrap" }}>
                   <span style={{ fontFamily: MONO, fontSize: 11.5, color: C.indigo, fontWeight: 600 }}>M-{String(f.module).padStart(2, "0")}</span>
                   <span style={{ fontFamily: DISP, fontWeight: 700, fontSize: 16.5 }}>{f.title}</span>
@@ -129,7 +137,7 @@ export default async function OperatorsPortfolioPage() {
               </div>
             ))}
             {HIGHEST_BUILT_MODULE > findings.length && (
-              <Link href={`/operators/play/${Math.min(HIGHEST_BUILT_MODULE, (findings[findings.length - 1]?.module ?? 0) + 1)}`} style={{ textAlign: "center", padding: "14px", borderRadius: 11, border: `1px solid ${C.line}`, color: C.indigo2, fontFamily: MONO, fontSize: 13, fontWeight: 600, textDecoration: "none" }}>
+              <Link href={`/operators/play/${Math.min(HIGHEST_BUILT_MODULE, (findings[findings.length - 1]?.module ?? 0) + 1)}`} style={{ textAlign: "center", padding: "14px", borderRadius: 11, background: GLASS_SOFT, backdropFilter: BLUR, WebkitBackdropFilter: BLUR, border: `1px solid ${C.line}`, color: C.indigo2, fontFamily: MONO, fontSize: 13, fontWeight: 600, textDecoration: "none" }}>
                 Continue the posting →
               </Link>
             )}
@@ -142,7 +150,7 @@ export default async function OperatorsPortfolioPage() {
 
 function Stat({ label, value, tone }: { label: string; value: string; tone: string }) {
   return (
-    <div style={{ background: C.panel, border: `1px solid ${C.lineSoft}`, borderRadius: 13, padding: "16px 18px" }}>
+    <div style={{ background: GLASS, backdropFilter: BLUR, WebkitBackdropFilter: BLUR, border: `1px solid ${C.lineSoft}`, borderRadius: 13, padding: "16px 18px", boxShadow: "0 6px 20px rgba(0,0,0,0.28)" }}>
       <div style={{ fontFamily: DISP, fontWeight: 700, fontSize: 22, color: tone, lineHeight: 1.1 }}>{value}</div>
       <div style={{ fontFamily: MONO, fontSize: 10.5, color: C.mute, letterSpacing: ".08em", textTransform: "uppercase", marginTop: 5 }}>{label}</div>
     </div>
