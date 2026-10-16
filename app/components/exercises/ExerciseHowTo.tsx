@@ -81,6 +81,11 @@ export default function ExerciseHowTo({
         style={{
           display: "flex",
           flexWrap: "wrap",
+          /* Centred, because these wrap. Left-aligned, a three-step panel puts
+           * two chips on one row and one hanging under them at the left edge,
+           * which reads as broken rather than as a wrapped row. Centring makes
+           * the short last row look deliberate at any width. */
+          justifyContent: "center",
           gap: 8,
         }}
       >

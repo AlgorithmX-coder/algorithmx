@@ -1268,7 +1268,21 @@ function shapeToSpec(file, lines, heard) {
      * quiet-but-not-empty stretch in front of it. Short means consonant: stop
      * there and keep it. Long means breath: carry on through it.
      */
-    const silence = loud * 0.008;        // true room silence, well under the t
+    /* 0.2% of peak, not 0.8%.
+     *
+     * The length test below can only save a consonant the walk-back actually
+     * STOPS at, and a fricative does not hold one level - it decays. Measured
+     * on "That is all it takes.", the final s runs 2.5% of peak, then 0.9%,
+     * then nothing. At a 0.8% floor the walk-back stepped through its tail as
+     * if it were silence, so the s was cut to 40ms where a real one runs 100
+     * to 150ms, and the owner heard "take".
+     *
+     * The earlier fix caught a consonant sitting ABOVE the floor; this is one
+     * fading THROUGH it. These clips are digitally silent between words
+     * (measured 0.0000), so the floor can go this low without room tone
+     * holding the walk-back up, and a breath is still taken by its length.
+     */
+    const silence = loud * 0.002;
     const CONSONANT_MAX = 0.12;          // nothing longer than this is a consonant
     for (const sp of spans) {
       let end = Math.floor(sp.to * SR);
