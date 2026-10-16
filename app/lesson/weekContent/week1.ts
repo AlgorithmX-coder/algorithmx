@@ -880,9 +880,9 @@ export const WEEK_1: WeekContent = {
       type: "stickerUnlock",
       title: "Stickers Unlocked!",
       stickers: [
-        { id: "password-protector", name: "Password Protector", icon: "🔐", description: "Built passwords the Raccoon can't crack." },
-        { id: "key-master", name: "Key Master", icon: "🗝️", description: "Knows a password is your secret key." },
-        { id: "secret-keeper", name: "Secret Keeper", icon: "🤐", description: "Stood firm when asked to share." },
+        { id: "password-protector", name: "Password Protector", icon: "🔐", art: "/cyberheroes/stickers/w01/password-protector.png", description: "Built passwords the Raccoon can't crack." },
+        { id: "key-master", name: "Key Master", icon: "🗝️", art: "/cyberheroes/stickers/w01/key-master.png", description: "Knows a password is your secret key." },
+        { id: "secret-keeper", name: "Secret Keeper", icon: "🤐", art: "/cyberheroes/stickers/w01/secret-keeper.png", description: "Stood firm when asked to share." },
       ],
     },
 

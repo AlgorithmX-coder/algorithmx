@@ -63,6 +63,7 @@ export async function getEarnedBadges(): Promise<EarnedBadgeDTO[]> {
       id: badge.id,
       name: badge.name,
       icon: badge.icon,
+      art: badge.art,
       earnedAt,
     });
   }
