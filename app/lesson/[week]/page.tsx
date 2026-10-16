@@ -1,3 +1,4 @@
+import { CATALOGUE } from "@/app/lib/courseIntent";
 import { auth } from "@/app/lib/auth";
 import { redirect } from "next/navigation";
 import { hasEntitlement } from "@/app/lib/entitlements";
@@ -35,7 +36,7 @@ export default async function WeekRoutePage() {
 
   if (!BYPASS_ENTITLEMENT_FOR_TESTING) {
     const ok = await hasEntitlement(session.user.id, "cyber-heroes");
-    if (!ok) redirect("/hub");
+    if (!ok) redirect(CATALOGUE);
   }
 
   // E2E_TESTS (set only by the Playwright webServer) re-enables the

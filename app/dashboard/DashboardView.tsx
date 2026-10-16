@@ -247,7 +247,7 @@ export default function DashboardView({
         {/* ── NAV ── */}
         <div className="sticky top-0 z-50 px-4 sm:px-6 pt-4">
           <nav className="max-w-[1200px] mx-auto flex items-center justify-between gap-3 rounded-2xl px-4 sm:px-5 py-3" style={{ background: "rgba(10, 14, 32, 0.82)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", border: `1px solid ${C.border}`, boxShadow: "0 18px 40px -22px rgba(2,4,12,0.9)" }}>
-            <a href="/hub" className="flex items-center gap-2.5" style={{ textDecoration: "none" }}>
+            <a href="/dashboard" className="flex items-center gap-2.5" style={{ textDecoration: "none" }}>
               <div className="flex items-center justify-center" style={{ width: 40, height: 40, borderRadius: 12, background: "rgba(54,214,255,0.1)", border: `1px solid ${C.borderStrong}`, boxShadow: "0 0 18px rgba(54,214,255,0.3)" }}>
                 <ShieldLogo size={22} />
               </div>
@@ -265,7 +265,6 @@ export default function DashboardView({
                 )}
                 </span>
               </div>
-              <a href="/hub" className="hidden sm:inline-flex items-center lift" style={{ background: "rgba(54,214,255,0.08)", border: `1px solid ${C.borderStrong}`, borderRadius: 100, padding: "8px 18px", fontSize: 13, fontWeight: 800, color: C.cyan, textDecoration: "none" }}>Hub</a>
               <a href="/cyberhq" className="hidden sm:inline-flex items-center gap-1.5 lift" style={{ background: "rgba(139,108,255,0.1)", border: `1px solid rgba(139,108,255,0.45)`, borderRadius: 100, padding: "8px 18px", fontSize: 13, fontWeight: 800, color: C.violetSoft, textDecoration: "none" }}>
                 <TrophyIcon size={15} /> Cyber HQ
               </a>

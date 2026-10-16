@@ -12,7 +12,7 @@ import LearningCore, { type CoreStage } from "./LearningCore";
 
 /**
  * Stream Orrery — the AlgorithmX auth centrepiece (Batch 2: static object
- * + state wiring; choreography polish, the success open/hub reveal and the
+ * + state wiring; choreography polish, the success open reveal and the
  * camera dolly are later batches).
  *
  * A precision instrument, not a reactor:

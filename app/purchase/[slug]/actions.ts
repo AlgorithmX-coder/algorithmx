@@ -1,5 +1,6 @@
 "use server";
 
+import { CATALOGUE } from "@/app/lib/courseIntent";
 import { redirect } from "next/navigation";
 import { auth } from "@/app/lib/auth";
 import { prisma } from "@/app/lib/prisma";
@@ -39,11 +40,11 @@ export async function startCheckoutAction(slug: string): Promise<void> {
     where: { slug },
     select: { id: true, slug: true, status: true },
   });
-  if (!product) redirect("/hub");
+  if (!product) redirect(CATALOGUE);
 
   // COMING_SOON tracks are listed for waitlist sign-ups only; rejecting
   // here means even a hand-crafted POST can't smuggle one through.
-  if (product.status !== "ACTIVE") redirect("/hub");
+  if (product.status !== "ACTIVE") redirect(CATALOGUE);
 
   // Idempotency belt-and-braces: if they already own it (eg double-
   // submit), skip the grant and head straight to the success view.

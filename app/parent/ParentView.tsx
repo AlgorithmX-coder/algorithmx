@@ -96,7 +96,7 @@ export default function ParentView({ productName, weeksCount, summaries, onLogou
         {/* ── NAV ── */}
         <div style={{ position: "sticky", top: 0, zIndex: 50, padding: "16px 16px 0" }}>
           <nav style={{ maxWidth: 1080, margin: "0 auto", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, borderRadius: 16, padding: "12px 18px", background: "rgba(10, 14, 32, 0.82)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", border: `1px solid ${C.border}`, boxShadow: "0 18px 40px -22px rgba(2,4,12,0.9)" }}>
-            <Link href="/hub" style={{ display: "flex", alignItems: "center", gap: 10, textDecoration: "none" }}>
+            <Link href="/parent" style={{ display: "flex", alignItems: "center", gap: 10, textDecoration: "none" }}>
               <span style={{ width: 40, height: 40, borderRadius: 12, background: "rgba(54,214,255,0.1)", border: `1px solid ${C.borderStrong}`, display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 0 18px rgba(54,214,255,0.3)" }}>
                 <ShieldLogo size={22} />
               </span>
@@ -106,7 +106,6 @@ export default function ParentView({ productName, weeksCount, summaries, onLogou
               </span>
             </Link>
             <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
-              <Link href="/hub" className="lift p-hub" style={{ color: C.cyan, fontSize: 13, fontWeight: 800, textDecoration: "none", padding: "8px 18px", borderRadius: 999, border: `1px solid ${C.borderStrong}`, background: "rgba(54,214,255,0.08)" }}>Hub</Link>
               {onLogout ? (
                 <form action={onLogout}>
                   <button type="submit" style={{ background: "transparent", color: C.textSoft, fontSize: 13, fontWeight: 800, padding: "8px 16px", borderRadius: 999, border: `1px solid ${C.border}`, cursor: "pointer", fontFamily: "inherit" }}>Log out</button>
