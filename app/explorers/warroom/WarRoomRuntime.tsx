@@ -130,11 +130,20 @@ export default function WarRoomRuntime({ warCase, onExit, onNextCase }: { warCas
           done = true;
         }
       } else if (step.t === "connect") {
-        setNudge(null); setDock({ type: "connect", prompt: step.prompt, left: step.left, right: step.right, pairs: step.pairs });
+        setNudge(null);
+        // Matched by id via step.pairs, never by position, so shuffling
+        // left/right independently is safe (UAT: Week 11, same bug class
+        // as Console's toggle/build).
+        const left = shuffled(step.left.length).map((i) => step.left[i]);
+        const right = shuffled(step.right.length).map((i) => step.right[i]);
+        setDock({ type: "connect", prompt: step.prompt, left, right, pairs: step.pairs });
         await awaitUser(); setDock(null);
         if (step.ok) { push({ id: nextId(), kind: "wren", text: step.ok }); await speak(step.ok, step.okVoice); }
       } else if (step.t === "pin") {
-        setNudge(null); setDock({ type: "pin", prompt: step.prompt, cards: step.cards, need: step.need });
+        setNudge(null);
+        // Checked by each card's own `good` flag, never by position.
+        const cards = shuffled(step.cards.length).map((i) => step.cards[i]);
+        setDock({ type: "pin", prompt: step.prompt, cards, need: step.need });
         await awaitUser(); setDock(null);
         if (step.ok) { push({ id: nextId(), kind: "wren", text: step.ok }); await speak(step.ok, step.okVoice); }
       } else if (step.t === "sequence") {
@@ -485,7 +494,10 @@ function BootScreen({ title, caseNumber, open, acc, onBoot }: { title: string; c
 function Debrief({ data, acc, caseId, xp, reduced, onExit, onNext }: { data: WarCase["debrief"]; acc: string; caseId: string; xp: number; reduced: boolean; onExit?: () => void; onNext?: () => void }) {
   const [revealed, setRevealed] = useState(false);
   return (
-    <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", padding: "0 26px 26px" }}>
+    // Same fix as Phone/Console's Debrief: without overflowY the closing
+    // ceremony can push past a short window with no way to scroll down to
+    // "Next case".
+    <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", overflowY: "auto", padding: "0 26px 26px" }}>
       <div style={{ fontSize: 24, fontWeight: 800, color: C.mint, marginBottom: 14, textAlign: "center", lineHeight: 1.2, fontFamily: MONO }}>{data.title}</div>
       <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 18 }}>
         {data.lines.map((l, i) => <div key={i} style={{ display: "flex", gap: 10, fontSize: 14, lineHeight: 1.45, color: C.ink }}><span style={{ color: C.mint, flex: "0 0 auto" }}>✓</span><span>{l}</span></div>)}
