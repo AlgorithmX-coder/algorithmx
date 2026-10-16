@@ -493,7 +493,7 @@ export default function PasscodeForge({
           statLines={[
             stones
               ? `Path: ${forgedText.join(" · ")}`
-              : `Code forged: ${forgedText.join(" · ")} — ${firstTryCount}/${rounds.length} clean strikes`,
+              : `Code forged: ${forgedText.join(" · ")}. ${firstTryCount}/${rounds.length} clean strikes`,
             completeLine ?? "A device with a front door - and a code nobody can stumble into.",
           ]}
           narration={completeNarration}

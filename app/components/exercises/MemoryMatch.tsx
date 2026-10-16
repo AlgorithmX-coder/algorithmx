@@ -1166,7 +1166,7 @@ function PhaseTransitionCard({
             }}
           >
             First, take 10 seconds to memorise where all the cards are! Then
-            they flip over and we&apos;ll test you — tap the card you remember
+            they flip over and we&apos;ll test you, so tap the card you remember
             holds each meaning. Hit them all in one go for a 3-star finish!
           </p>
         )}

@@ -181,7 +181,7 @@ export const WORLD_MOTES: Record<MissionMotes, MoteStyle> = {
   pulses: { count: 22, chars: ["◉", "◎", "•"], colours: ["#45e3ff", "#9ff0ff", "#ffffff"], glows: ["rgba(69,227,255,0.9)", "rgba(159,240,255,0.8)", "rgba(255,255,255,0.7)"], sizes: [7, 13], twinkle: true },
   orchid: { count: 24, chars: null, colours: ["#b44dff", "#e0b3ff", "#ff9bff"], glows: ["rgba(180,77,255,0.8)", "rgba(224,179,255,0.7)", "rgba(255,155,255,0.7)"], sizes: [2, 5], twinkle: true },
   likes: { count: 22, chars: ["♥", "★", "+1"], colours: ["#38b6ff", "#ff5fb3", "#ffffff"], glows: ["rgba(56,182,255,0.8)", "rgba(255,95,179,0.8)", "rgba(255,255,255,0.7)"], sizes: [9, 15], twinkle: false },
-  scan: { count: 18, chars: ["▬", "▪", "—"], colours: ["#62b6cb", "#bfe9f2", "#ffffff"], glows: ["rgba(98,182,203,0.8)", "rgba(191,233,242,0.7)", "rgba(255,255,255,0.6)"], sizes: [8, 14], twinkle: false },
+  scan: { count: 18, chars: ["▬", "▪", "═"], colours: ["#62b6cb", "#bfe9f2", "#ffffff"], glows: ["rgba(98,182,203,0.8)", "rgba(191,233,242,0.7)", "rgba(255,255,255,0.6)"], sizes: [8, 14], twinkle: false },
   confetti: { count: 34, chars: ["▮", "▬", "●", "▲"], colours: ["#ffd158", "#ff5fb3", "#7df0ff", "#5b76ff", "#7eff97"], glows: ["rgba(255,209,88,0.7)", "rgba(255,95,179,0.7)", "rgba(125,240,255,0.7)", "rgba(91,118,255,0.7)", "rgba(126,255,151,0.7)"], sizes: [7, 13], twinkle: false },
 };
 

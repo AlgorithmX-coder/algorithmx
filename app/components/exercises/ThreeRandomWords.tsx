@@ -339,7 +339,7 @@ export default function ThreeRandomWords({
           </span>
         </h2>
         <p style={{ margin: 0, fontSize: 14, color: "#94a3b8" }}>
-          Glue silly random words together — long, memorable, hard to crack!{" "}
+          Glue silly random words together. Long, memorable, hard to crack!{" "}
           <span aria-hidden>✦</span>
         </p>
       </div>

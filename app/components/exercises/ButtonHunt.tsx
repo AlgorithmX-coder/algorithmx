@@ -134,7 +134,7 @@ export default function ButtonHunt({
     });
     if (wasCorrect) {
       audio.correct();
-      fx.correct({ xp: 25, text: `${btn.label.toUpperCase()} — FOUND!` });
+      fx.correct({ xp: 25, text: `${btn.label.toUpperCase()} FOUND!` });
       onCorrect?.();
       const nextIds = new Set(foundIds);
       nextIds.add(btn.id);

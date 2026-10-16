@@ -374,7 +374,7 @@ export default function UsernameBuilder({
 
       {badgeStamped && (
         <ExerciseCompleteBeat
-          title={`${forgedName} — identity sealed!`}
+          title={`${forgedName}: identity sealed!`}
           stars={stars}
           statLines={[
             "No real name. No school. No birthday.",

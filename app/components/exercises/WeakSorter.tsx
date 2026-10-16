@@ -372,7 +372,7 @@ export default function WeakSorter({
           </span>
         </h2>
         <p style={{ margin: 0, fontSize: 14, color: "#94a3b8" }}>
-          Each password came in weak — work out why! <span aria-hidden>✦</span>
+          Each password came in weak. Work out why! <span aria-hidden>✦</span>
         </p>
       </div>
 
