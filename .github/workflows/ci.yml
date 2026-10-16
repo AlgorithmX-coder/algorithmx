@@ -70,7 +70,7 @@ jobs:
       # then on that week can never regress. Unscoped it would fail on the
       # nineteen weeks still waiting their turn, block every PR, and get
       # switched off within a day - which is how this kind of check dies.
-      - run: node scripts/audit-consonant-integrity.mjs --weeks=1
+      - run: node scripts/audit-consonant-integrity.mjs --weeks=1,2
 
       # No em-dashes in anything a child reads. A standing owner rule, and an
       # easy one to break by accident - five had crept into the six engines
@@ -78,6 +78,15 @@ jobs:
       # happened to be in a screenshot. Comments are exempt; there are over a
       # thousand of those and none of them are read by a six-year-old.
       - run: node scripts/audit-no-em-dashes.mjs
+
+      # Two things on screen together must not say the same thing. The
+      # Raccoon reacted with "Capitals, numbers AND symbols all at once" and
+      # the verdict printed under it said "Mix a capital, a number AND a
+      # symbol" - a child heard the same list twice. The two lines live in
+      # different fields a long way apart, so it is easy to write and hard
+      # to see. Scoped to the weeks brought up to standard, like the
+      # consonant audit, because 65 of these exist across the other weeks.
+      - run: node scripts/audit-echoed-lines.mjs 1 2
 
   # ────────────────────────────────────────────────────────────
   # End-to-end tests against a real production build.  Slower than
