@@ -158,10 +158,12 @@ export default function TrackCard({
              needs a real one or it floats. */
         border: onSand ? `1px solid ${accent}4d` : "1px solid rgba(232,237,255,0.06)",
         borderRadius: 24,
-        padding: "34px 30px 30px",
+        /* Owner 2026-10-16: tightened (34/30 -> 22/26, gap 16 -> 12) so the
+           four-card grid clears the fold in one screen on a 1366x768 laptop. */
+        padding: "22px 26px 22px",
         display: "flex",
         flexDirection: "column",
-        gap: 16,
+        gap: 12,
         /* Diffuse, spread-negative shadows: a soft dark seat with no crisp
          *  edge + a gentle accent aura that melts into the space behind. */
         /* Paper casts a warm shadow, not a black one, and the accent aura
