@@ -17,6 +17,7 @@
  */
 
 import { useState } from "react";
+import { primeAudio } from "../engine/audio";
 import type { PhoneAppKind } from "./case06";
 
 const UI = `-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, system-ui, sans-serif`;
@@ -184,6 +185,11 @@ export function HomeScreen({
 
   const open = () => {
     if (zooming) return;
+    // Synchronous, inside this exact tap handler — some mobile browsers only
+    // honour an autoplay unlock when it runs in the same gesture that
+    // triggers it, and this tap is the first one on a fresh case, well
+    // before any narration tries to play.
+    primeAudio();
     setZooming(true);
     setTimeout(onDone, duration);
   };

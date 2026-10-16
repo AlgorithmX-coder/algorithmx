@@ -108,7 +108,17 @@ const SILENT_WAV =
 let audioPrimed = false;
 /** A first line blocked before any gesture; replayed for real on the priming tap. */
 let pendingFirst: { url: string; enabled: boolean; onEnded?: () => void } | null = null;
-function primeAudio() {
+// Exported so a screen that's about to start a case's very first narration
+// (the exact moment this unlock matters most) can call it directly, inside
+// its own click handler, instead of only relying on the window-level
+// pointerdown/touchstart listener below. Some mobile browsers only honour
+// an autoplay unlock when play() runs synchronously inside the gesture's own
+// handler — the global listener still covers every other tap, but a few
+// React state updates can land between a click and this module hearing
+// about it, which is enough to lose the "same gesture" window on those
+// browsers. No-ops instantly if already primed, so calling it redundantly
+// from multiple places is always safe.
+export function primeAudio() {
   if (audioPrimed || typeof window === "undefined") return;
   audioPrimed = true;
   if (pendingFirst) {
