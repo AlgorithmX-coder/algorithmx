@@ -5,71 +5,101 @@ change that must land across **all 20 weeks**, or across Cyber HQ, not just in
 the week it was spotted in. Week 1 is built first and signed off; the rest
 follow week by week against this list.
 
-Nothing on this list is "done" because the code changed. It is done when it has
-been **measured**, and the measurement is named in the Proof column.
+Nothing here is "done" because the code changed. It is done when it has been
+**measured**, and the measurement is named.
 
 ---
 
-## 1. Audio
+## Week 1 status
 
-| # | Change | Scope | Proof |
+### Done
+
+| # | Change | Proof | PR |
 |---|---|---|---|
-| A1 | Final consonants no longer cut. Two bugs in `shapeToSpec`: `silencedetect` used an ABSOLUTE `-36dB` against takes ranging `-8.2` to `-16.4 dBFS`, and `MIN_SPAN` deleted stop releases as breaths. | Generator, so every clip recorded from now on | `audit-consonant-integrity.mjs` exits 0 |
-| A2 | Consonant audit wired into CI | Whole course | CI job fails on a cut consonant |
-| A3 | Exercise and boss prose rewritten for punctuation and flow. The Oct 2026 "rescript" changed **419 of 11,312 prose lines (3.7%)**, of which only 112 were exercise copy. The exercises were effectively never rewritten. | 20 weeks, one at a time | `audit-narration-flow.mjs --week=N` reads 0 flags |
-| A4 | Pauses land where the writing puts them, inside exercises and boss too ("take a ... closer look", "option ... A") | 20 weeks | `audit-pause-words.mjs` names no unasked-for pause |
-| A5 | Stop the chanted openers | Weeks 7, 8, 9, 12, 13, 14, 15, 16 | `audit-stock-phrases.mjs` |
-| A6 | ATLAS week-intro briefings scripted and re-recorded. ATLAS has NO shaping stage, so its "Cyber ... Hero" break is punctuation or delivery, not the A1 bug. | 20 intros | listen + pause audit |
-| A7 | "Let's go" stays locked until ATLAS stops speaking | 20 intros | timed in a harness |
+| A1 | Final consonants no longer cut | **0 of 221** week 1 clips missing one (course-wide 1,020 -> 56) | #565 |
+| A2 | Consonant audit in CI, ratcheted per week | build fails if week 1 regresses | #565 |
+| A3 | Heavy prose rewritten | heavy lines 16 -> 7; flow audit 0 flags | #565 |
+| A4 | Pauses land where the writing puts them | 850ms between "A," and "B" found and removed | #583 |
+| A6 | ATLAS briefing on the lesson pause spec | 21 of 28 gaps re-cut, 0 credits | #563 |
+| A7 | "Let's go" waits for ATLAS | net armed from playback, not from mount | #583 |
+| B1 | Raccoon hosts the quiz from a desk | grounded, tracks his pose width | #580 |
+| B2 | `raccoon-defeated` plate edge | bottom-band pale 47.8% -> clean | #562 |
+| B3 | Ground shadow under the attack pose | 83.1% -> 1.6% | #562 |
+| B4 | Face holes from the white key | 536 punched + 547 feathered, restored | #562 |
+| B5/B6 | Win and lose raccoon are one set | lose screen was using the SHARED sprite | #562 |
+| B7 | Badge is the week's own | gold/black, cast in costume | #569 |
+| B8 | Custom stickers | three, cast in costume, upper body | #567 |
+| B11 | Emoji swept where art exists | vault pill, sticker wall, badge case | #567, #571 |
+| C1-C4 | Cyber HQ reads one list with the real art | catalogue derived from the weeks; 5 tests | #567 |
+| D1 | Buttons are one colour | hue span closed | #559 |
+| D2 | How-to-play chips centred | | #576 |
+| D3 | Bigger type, still one screen | Learn + Prove-it at zoom 1.00 | #574 |
+| D4 | Debrief fits | 876px -> 654px, zoom 0.72 -> 0.96 | #583 |
+| D5 | Vault dial leaves when open | | #571 |
+| D6 | Frame audit | week 1: 28 screens, 0 flagged | #576 |
+| D7 | Hub decommissioned | nothing may route to /hub (test) | #561 |
+| - | No em-dashes in child-facing copy | 11 fixed, CI enforces | #570 |
+| - | Logout lands on Cyber Heroes | | #575 |
 
-## 2. Art, themed per week
+Week 1 at 1414x771: **0 screens overflow, 25 of 30 at full size, lowest zoom
+0.82** (was 0.70).
 
-The raccoon sprites are shared by all 20 weeks (`bossArena.tsx`), so one fix
-covers the course. Badges, stickers and costumes are per week.
+### Left open, deliberately
 
-| # | Change | Scope |
+| # | Item | Why |
 |---|---|---|
-| B1 | Raccoon redesigned to belong in the quiz rather than standing beside it | 1 shared set, all 20 weeks |
-| B2 | `raccoon-defeated.png` plate edge removed. Measured: 920x920, subject fills the canvas, **47.8% pale pixels in the bottom band** | shared |
-| B3 | Ground-shadow line under the attacking raccoon removed | shared |
-| B4 | Face defect fixed | shared |
-| B5 | Boss lose art ("SO CLOSE!") replaced; it does not suit the moment | shared |
-| B6 | Boss win art ("YOU WIN!") redrawn as a matched set with the lose art | shared |
-| B7 | Badge scene designed in that week's theme, with Adam, Layla and the raccoon in that week's costume. Week 1 = gold and black, matching the videos and existing art. | 20 badges |
-| B8 | Custom stickers replacing the emoji, cast in that week's uniform | **82 stickers** |
-| B9 | Debrief "You learned" cards use the new art | 5 per week |
-| B10 | Every generated image inspected on magenta before install | every image |
-| B11 | No emoji left anywhere once the art exists | course-wide sweep |
+| B9 | Debrief "You learned" icons | Already bespoke 3D art, not emoji. Owner: leave them. |
+| D3 | Recap screens at 0.87-0.90 | Their bulk is a 320px art panel; trimming it is a design call, not a measurement. |
+| D4 | Result cards after an exercise | The fill audit reads a screen at rest. Reaching post-interaction states needs per-engine driving. |
 
-## 3. Cyber HQ
+---
 
-Cyber HQ reads `STICKER_CATALOGUE` (`app/lib/stickers-data.ts`) and each week's
-`badgeIcon`, so it inherits B7 and B8 only if both data sources move from emoji
-to art paths and the renderers switch from text to images.
+## What every other week still needs
 
-| # | Change |
+Same list, same order, one week at a time. The tools are built; the work per
+week is running them and fixing what they report.
+
+**Audio** - A1 is in the generator, so any week re-recorded gets it; add the
+week to the CI ratchet in the same PR. A3 prose, A4 pauses and A5 de-chanting
+(weeks 7, 8, 9, 12-16) are per week. A6/A7 are per week.
+
+**Art** - B2/B3/B4 run `strip-sprite-ground-shadow.mjs` and
+`fill-sprite-key-holes.mjs` over `w{NN}`. B1 and B5/B6 are shared and already
+cover all twenty. B7 badge and B8 stickers are per week, 4 images each.
+
+**Cyber HQ** - inherits automatically now, as soon as a week's content carries
+`art` paths.
+
+**Layout** - D1, D2, D5, D7 are shared and done. D3 and D4 are per week; run
+`audit-card-fill.mjs` and `audit-frame-fit.mjs` for the week first.
+
+---
+
+## The tools
+
+| Script | Answers |
 |---|---|
-| C1 | Badge case: 20 week badges use the new badge art, not emoji |
-| C2 | Sticker wall: the new custom stickers |
-| C3 | Locked silhouettes restyled to match |
-| C4 | `STICKER_CATALOGUE` and `badgeIcon` carry image paths, so lesson and HQ cannot drift apart |
+| `audit-consonant-integrity.mjs --weeks=N` | does every clip still say its last letter |
+| `audit-pause-placement.mjs --weeks=N` | does every pause sit where the writing put one |
+| `elevenlabs-generate-narration.mjs --check` | does every spoken line have a clip |
+| `audit-no-em-dashes.mjs` | any em-dash in copy a child reads |
+| `audit-card-fill.mjs N` | how much of the stage each card fills |
+| `audit-frame-fit.mjs N` | anything past the fold, out of frame, or clipped |
+| `audit-narration-flow.mjs --week=N` | do the screens and beats read as one script |
+| `qa-server.mjs --build` | serve THIS checkout, and prove it |
+| `key-character-art.mjs`, `fill-sprite-key-holes.mjs`, `strip-sprite-ground-shadow.mjs` | get generated art onto a dark ground without defects |
 
-## 4. Layout and shell
-
-| # | Change | Scope |
-|---|---|---|
-| D1 | Buttons: one hue per gradient, no discolouration at the end | every button (#559) |
-| D2 | How-to-play chips centred | every exercise (#560) |
-| D3 | Bigger type with the card still on one screen, no scrolling | every card |
-| D4 | Sparse cards filled so they do not read as empty | per week |
-| D5 | The vault wheel leaves the screen once fully open | week 1, then any engine with the same pattern |
-| D6 | Frame audit covers all 560 screens, and a screen that fails to load is reported, not skipped | 20 weeks |
-| D7 | Hub decommissioned: no `/hub` page, no tab. Each course login lands straight inside that course's portal. | global |
+Generator flags worth knowing: `--week=N --force` re-records one week on the
+current engine, `--keys` prints the week-to-clip mapping the manifest does not
+store, `--keep-raw` leaves the untouched delivery beside the finished clip.
 
 ---
 
 ## Working rules the owner has set
 
-- ElevenLabs spend is **week by week**. Week 1 only, signed off, before any other week is recorded.
-- Every fix is proven by measurement before it is called done. No assurances.
-- Images are screenshotted and inspected before install, not after the owner finds the defect.
+- ElevenLabs spend is **week by week**, signed off before the next.
+- Every fix is proven by measurement before it is called done.
+- Images are screenshotted and inspected before install, not after the owner
+  finds the defect.
+- No em-dashes in user-visible copy.
+- One concern, one branch, one PR. CI green means merge.
