@@ -1044,7 +1044,17 @@ export default function QuizBoss({ quiz, onEnd, onQuestionAnswered }: QuizBossPr
             <motion.div key="failed" initial={reduce ? false : { opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} style={{ margin: "auto", display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", maxWidth: 540, maxHeight: "100%", overflowY: "auto", zIndex: 15 }}>
               <div style={{ position: "relative", marginBottom: 2, display: "flex", justifyContent: "center" }}>
                 <div aria-hidden style={{ position: "absolute", left: "50%", top: "6%", transform: "translateX(-50%)", width: 230, height: 230, background: `radial-gradient(circle, ${accent}33, transparent 60%)`, filter: "blur(4px)", pointerEvents: "none" }} />
-                <motion.img src={RACCOON.taunt} alt={quiz.villain.name} initial={reduce ? false : { scale: 0.85, opacity: 0 }} animate={reduce ? { scale: 1, opacity: 1 } : { scale: 1, opacity: 1, y: [0, -7, 0] }} transition={reduce ? { duration: 0.3 } : { duration: 2.6, repeat: Infinity, ease: "easeInOut" }} style={{ position: "relative", height: 128, filter: `drop-shadow(0 0 16px rgba(5,10,30,0.45)) drop-shadow(0 0 18px ${accent}66)`, willChange: "transform" }} />
+                {/* Week-costumed, like every other raccoon in this component.
+                 *
+                 * This one said RACCOON.taunt - the SHARED sprite - so the
+                 * lose screen showed a generic raccoon while the win screen
+                 * two hundred lines down showed the week's costumed one.
+                 * Owner, 2026-10-16, on the "SO CLOSE!" card: "I'm not sure
+                 * that's an appropriate image to use for that", and on the
+                 * win card: "if we are changing the losing picture then we
+                 * also need to change the winning one, create a theme for
+                 * them both". They were never meant to differ. All 20 weeks. */}
+                <motion.img src={weekCharacterSrc(week, "raccoon", "taunt")} onError={fallbackToShared("raccoon", "taunt")} alt={quiz.villain.name} initial={reduce ? false : { scale: 0.85, opacity: 0 }} animate={reduce ? { scale: 1, opacity: 1 } : { scale: 1, opacity: 1, y: [0, -7, 0] }} transition={reduce ? { duration: 0.3 } : { duration: 2.6, repeat: Infinity, ease: "easeInOut" }} style={{ position: "relative", height: 128, filter: `drop-shadow(0 0 16px rgba(5,10,30,0.45)) drop-shadow(0 0 18px ${accent}66)`, willChange: "transform" }} />
               </div>
               <motion.div initial={reduce ? false : { scale: 1.6, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ type: "spring", stiffness: 200, damping: 16 }} style={{ margin: "4px 0 0", fontSize: "clamp(30px, 5.2vw, 46px)", fontWeight: 900, lineHeight: 1, textTransform: "uppercase", background: `linear-gradient(180deg, #fffbe9 0%, ${accent} 60%, ${accent}88 100%)`, WebkitBackgroundClip: "text", backgroundClip: "text", WebkitTextFillColor: "transparent", filter: `drop-shadow(0 0 18px ${accent}66)` }}>
                 So Close!
