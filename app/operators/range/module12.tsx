@@ -1,93 +1,356 @@
 "use client";
 
-/* Module 12 — Incident Response. Full defender seat. The Act is a live breach the
- * learner handles by choosing the right action at each stage of the IR lifecycle:
- * contain first, then eradicate, then recover — in order. Picking out-of-order or
- * destructive actions is corrected. Authored decisions, no engine. */
+/* Module 12 - Incident Response (DEPTH STANDARD, built to the M5 framework).
+ *
+ * Full defender seat. Judgment under pressure, modelled in-browser: triage the
+ * real incident out of the noise, make the containment call, order the IR
+ * lifecycle, and close out safely. Shape mirrors M5: hover glossary, interactive
+ * lesson lab, de-biased check, a FOUR-stage capture with a hint ladder, FOUR
+ * drills, and a chained capstone. */
 
-import { useState } from "react";
-import Engagement, { type ModuleDef, C, MONO } from "./Engagement";
+import { useEffect, useState } from "react";
+import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary } from "./Engagement";
 
-type Opt = { text: string; ok: boolean; why: string };
-type Stage = { title: string; prompt: string; options: Opt[] };
+/* ───────────────────────── glossary ───────────────────────── */
 
-const STAGES: Stage[] = [
-  {
-    title: "Stage 1 · Contain",
-    prompt: "It's live: an attacker session is active on the portal and exporting data right now. What's your FIRST action?",
-    options: [
-      { text: "Block the attacker's IP and kill the active session.", ok: true, why: "Right — contain first. Stop the bleeding before anything else, without destroying evidence." },
-      { text: "Pull the whole server offline and wipe it immediately.", ok: false, why: "Too far, too fast — you'd destroy the evidence you need and cause an outage. Contain the attacker, don't nuke the host." },
-      { text: "Start a week-long root-cause investigation.", ok: false, why: "Later. While you investigate, they're still exfiltrating. Contain now; investigate after." },
-      { text: "Email all staff to warn them.", ok: false, why: "Not first — it tips off nobody useful and wastes the minutes that matter. Contain the active attacker." },
-    ],
-  },
-  {
-    title: "Stage 2 · Eradicate",
-    prompt: "The attacker is locked out. Now remove their foothold for good. What do you do?",
-    options: [
-      { text: "Reset the compromised credentials, revoke all sessions, and close the hole they used.", ok: true, why: "Right — eradicate: kill every way back in and fix the vulnerability, or they'll simply return." },
-      { text: "Just change the one password and move on.", ok: false, why: "Not enough — other sessions may be live and the original hole is still open. Revoke all sessions and fix the root cause." },
-      { text: "Assume they're gone now that the IP is blocked.", ok: false, why: "A blocked IP is trivially changed. If you don't remove the foothold and fix the hole, they're back within the hour." },
-    ],
-  },
-  {
-    title: "Stage 3 · Recover & learn",
-    prompt: "Threat removed. How do you close out the incident properly?",
-    options: [
-      { text: "Restore from clean backups, monitor closely, and run a lessons-learned review.", ok: true, why: "Right — recover safely, watch for a return, and feed the lessons back in so it can't recur." },
-      { text: "Delete the logs so the breach never happened.", ok: false, why: "Never — that destroys evidence, breaks any legal duty, and throws away the lessons. Keep the logs." },
-      { text: "Say nothing to anyone and hope it's over.", ok: false, why: "Hiding it risks a worse outcome and often breaches disclosure obligations. Close out properly and review." },
-    ],
-  },
+const GLOSSARY: GlossaryEntry[] = [
+  { term: "incident response", definition: "The disciplined process for handling a security breach: detect, contain, eradicate, recover, and learn - in order." },
+  { term: "incident", definition: "A confirmed security event that needs a response - a real breach, not just a noisy alert." },
+  { term: "triage", definition: "Sorting incoming alerts to separate a genuine incident from benign noise and false positives, fast." },
+  { term: "false positive", definition: "An alert that looks suspicious but turns out to be harmless - most alerts are these, which is why triage matters." },
+  { term: "containment", definition: "The first response to a live attack: stop the damage spreading (block, isolate, kill the session) without destroying evidence." },
+  { term: "eradicate", definition: "Remove the attacker's foothold for good - reset credentials, revoke sessions, and close the vulnerability they used." },
+  { term: "recover", definition: "Restore systems safely from known-clean backups and watch closely for the attacker's return." },
+  { term: "lessons learned", definition: "The review after an incident that feeds the findings back in, so the same hole can't be used twice." },
+  { term: "IR plan", definition: "A written incident-response plan with roles and steps, prepared before anything happens, so response is executed not invented." },
+  { term: "tabletop exercise", definition: "A rehearsed, pretend breach the team walks through, so the real response becomes muscle memory." },
+  { term: "chain of custody", definition: "Keeping evidence intact and accounted for during a response, so findings hold up and nothing is lost." },
 ];
+const G = (text: string, keyPrefix: string) => withGlossary(text, GLOSSARY, new Set<string>(), keyPrefix);
 
-function IncidentAct({ onCapture }: { onCapture: () => void }) {
-  const [stage, setStage] = useState(0);
-  const [picked, setPicked] = useState<number | null>(null);
-  const [msg, setMsg] = useState<string | null>(null);
+/* ───────────────────────── shared surface bits ───────────────────────── */
 
-  const s = STAGES[stage];
-  function pick(i: number) {
-    const o = s.options[i];
-    setPicked(i);
-    setMsg(o.why);
-    if (o.ok) {
-      setTimeout(() => {
-        if (stage + 1 < STAGES.length) { setStage(stage + 1); setPicked(null); setMsg(null); }
-        else onCapture();
-      }, 650);
-    }
-  }
-
+function Hints({ hints, revealLabel, onReveal }: { hints: string[]; revealLabel?: string; onReveal?: () => void }) {
+  const [shown, setShown] = useState(0);
   return (
-    <div style={{ display: "grid", gap: 14 }}>
-      <div style={{ display: "flex", gap: 6 }}>
-        {STAGES.map((st, i) => (
-          <div key={i} title={st.title} style={{ flex: 1, height: 3, borderRadius: 2, background: i < stage ? C.green : i === stage ? C.indigo : "rgba(255,255,255,.08)" }} />
-        ))}
-      </div>
-      <div style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: 14, padding: 18 }}>
-        <div style={{ fontFamily: MONO, fontSize: 11, letterSpacing: ".12em", color: C.indigo, fontWeight: 700 }}>{s.title.toUpperCase()}</div>
-        <p style={{ color: C.soft, fontSize: 14.5, lineHeight: 1.55, margin: "8px 0 14px" }}>{s.prompt}</p>
-        <div style={{ display: "grid", gap: 8 }}>
-          {s.options.map((o, i) => {
-            const isPicked = picked === i;
-            const border = isPicked ? (o.ok ? C.green : C.red) : C.line;
-            return (
-              <button key={i} onClick={() => pick(i)} disabled={picked !== null && s.options[picked]?.ok} className="co-opt"
-                style={{ textAlign: "left", padding: "11px 13px", borderRadius: 9, border: `1px solid ${border}`, background: isPicked ? (o.ok ? "rgba(74,222,128,.08)" : "rgba(255,91,98,.06)") : C.carbon, color: C.ink, fontFamily: "var(--font-plex-sans),system-ui", fontSize: 14, cursor: "pointer" }}>
-                <span style={{ fontFamily: MONO, fontSize: 12, color: isPicked ? (o.ok ? C.green : C.red) : C.mute, marginRight: 9 }}>{isPicked ? (o.ok ? "✓" : "✗") : String.fromCharCode(65 + i)}</span>
-                {o.text}
-              </button>
-            );
-          })}
-        </div>
-        {msg && <div style={{ marginTop: 12, fontSize: 13, color: picked !== null && s.options[picked]?.ok ? "#bff3d3" : C.soft, lineHeight: 1.5 }}>{msg}</div>}
+    <div style={{ marginTop: 12 }}>
+      {Array.from({ length: shown }).map((_, i) => (
+        <div key={i} style={{ marginBottom: 6, padding: "9px 12px", borderLeft: `2px solid ${C.indigo}`, background: "rgba(139,123,255,0.05)", fontSize: 13, color: C.soft, lineHeight: 1.5 }}>{hints[i]}</div>
+      ))}
+      <div style={{ display: "flex", gap: 14, alignItems: "center", flexWrap: "wrap" }}>
+        {shown < hints.length && <button onClick={() => setShown(shown + 1)} style={{ background: "none", border: "none", color: C.indigo2, fontFamily: MONO, fontSize: 12, cursor: "pointer", textDecoration: "underline", textUnderlineOffset: 3 }}>{shown === 0 ? "hint" : "another hint"}</button>}
+        {shown >= hints.length && revealLabel && onReveal && <button onClick={onReveal} style={{ background: "none", border: "none", color: C.mute, fontFamily: MONO, fontSize: 12, cursor: "pointer" }}>{revealLabel}</button>}
       </div>
     </div>
   );
 }
+
+/* ── triage: classify each alert as real incident or benign ── */
+type Alert = { label: string; real: boolean; note: string };
+function TriageSurface({ alerts, hint, onSolved }: { alerts: Alert[]; hint: string; onSolved: () => void }) {
+  const [pick, setPick] = useState<Record<string, "real" | "noise">>({});
+  const [checked, setChecked] = useState(false);
+  const [solved, setSolved] = useState(false);
+  const all = alerts.every((a) => pick[a.label]);
+  function check() { setChecked(true); if (alerts.every((a) => (pick[a.label] === "real") === a.real)) { setSolved(true); onSolved(); } }
+  return (
+    <div style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: 14, padding: 18 }}>
+      <div style={{ fontFamily: MONO, fontSize: 11.5, color: C.mute, marginBottom: 12 }}>// the alert queue is noisy. Mark each as a real incident or benign noise.</div>
+      <div style={{ display: "grid", gap: 10 }}>
+        {alerts.map((a) => {
+          const p = pick[a.label]; const right = checked && (p === "real") === a.real; const wrong = checked && p && (p === "real") !== a.real;
+          return (
+            <div key={a.label} style={{ display: "flex", gap: 10, alignItems: "center", flexWrap: "wrap", padding: "9px 12px", borderRadius: 9, background: C.carbon, border: `1px solid ${right ? C.green : wrong ? C.red : C.lineSoft}` }}>
+              <span style={{ flex: "1 1 200px", fontSize: 13.5, color: C.ink }}>{a.label}</span>
+              <button onClick={() => { setPick((x) => ({ ...x, [a.label]: "real" })); setChecked(false); }} className="co-opt" style={{ padding: "4px 10px", borderRadius: 7, border: `1px solid ${p === "real" ? C.red : C.line}`, background: "transparent", color: p === "real" ? C.red : C.soft, fontFamily: MONO, fontSize: 11.5, cursor: "pointer" }}>real incident</button>
+              <button onClick={() => { setPick((x) => ({ ...x, [a.label]: "noise" })); setChecked(false); }} className="co-opt" style={{ padding: "4px 10px", borderRadius: 7, border: `1px solid ${p === "noise" ? C.green : C.line}`, background: "transparent", color: p === "noise" ? C.green : C.soft, fontFamily: MONO, fontSize: 11.5, cursor: "pointer" }}>benign noise</button>
+              {checked && wrong && <div style={{ flexBasis: "100%", fontFamily: MONO, fontSize: 11.5, color: C.amber }}>↳ {a.note}</div>}
+            </div>
+          );
+        })}
+      </div>
+      <div style={{ marginTop: 14 }}><Btn tone="g" onClick={check} disabled={!all || solved}>CONFIRM TRIAGE →</Btn></div>
+      {checked && !solved && <div style={{ marginTop: 10, fontFamily: MONO, fontSize: 12.5, color: C.red }}>Some are wrong (red). Look for the one with real impact.</div>}
+      {solved && <div style={{ marginTop: 10, fontFamily: MONO, fontSize: 12.5, color: C.green }}>✓ Triaged - now you're working the real incident, not chasing noise.</div>}
+      <Hints hints={[hint]} />
+    </div>
+  );
+}
+
+/* ── decision ── */
+type Decision = { prompt: string; options: { text: string; correct?: boolean; feedback: string }[] };
+function DecisionCard({ decision, onSolved }: { decision: Decision; onSolved: () => void }) {
+  const [opts] = useState(() => { const a = [...decision.options]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; });
+  const [picked, setPicked] = useState<number | null>(null);
+  const [solved, setSolved] = useState(false);
+  return (
+    <div style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: 14, padding: 18 }}>
+      <div style={{ fontSize: 14, color: C.ink, lineHeight: 1.55, marginBottom: 12, fontFamily: DISP, fontWeight: 600 }}>{decision.prompt}</div>
+      <div style={{ display: "grid", gap: 8 }}>
+        {opts.map((o, i) => {
+          const isP = picked === i;
+          return (
+            <div key={i}>
+              <button onClick={() => { setPicked(i); if (o.correct) { setSolved(true); onSolved(); } }} disabled={solved} className="co-opt" style={{ width: "100%", textAlign: "left", padding: "11px 13px", borderRadius: 9, border: `1px solid ${isP ? (o.correct ? C.green : C.red) : C.line}`, background: isP ? (o.correct ? "rgba(85,217,140,.08)" : "rgba(242,109,114,.06)") : C.carbon, color: C.ink, fontFamily: "var(--font-plex-sans),system-ui,sans-serif", fontSize: 14, cursor: solved ? "default" : "pointer" }}>
+                <span style={{ fontFamily: MONO, fontSize: 12, color: isP ? (o.correct ? C.green : C.red) : C.mute, marginRight: 9 }}>{isP ? (o.correct ? "✓" : "✗") : String.fromCharCode(65 + i)}</span>{o.text}
+              </button>
+              {isP && <div style={{ padding: "8px 13px 2px", fontSize: 13, color: o.correct ? "#bff3d3" : C.soft, lineHeight: 1.5 }}>{o.feedback}</div>}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+/* ── order: sequence the IR lifecycle ── */
+type OrderItem = { label: string; pos: number };
+function OrderSurface({ items, hint, onSolved }: { items: OrderItem[]; hint: string; onSolved: () => void }) {
+  const [shuffled] = useState(() => { const a = [...items]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; });
+  const [seq, setSeq] = useState<string[]>([]);
+  const [checked, setChecked] = useState<null | boolean>(null);
+  const [solved, setSolved] = useState(false);
+  const avail = shuffled.filter((it) => !seq.includes(it.label));
+  function add(l: string) { setSeq((s) => [...s, l]); setChecked(null); }
+  function removeAt(i: number) { setSeq((s) => s.filter((_, k) => k !== i)); setChecked(null); }
+  function check() { const ok = seq.length === items.length && seq.every((l, i) => items.find((x) => x.label === l)!.pos === i); setChecked(ok); if (ok) { setSolved(true); onSolved(); } }
+  return (
+    <div style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: 14, padding: 18 }}>
+      <div style={{ fontFamily: MONO, fontSize: 11.5, color: C.mute, marginBottom: 12 }}>// tap the steps in the order you'd run them; tap a placed one to remove it</div>
+      <div style={{ fontFamily: MONO, fontSize: 10, letterSpacing: ".1em", color: C.indigo, marginBottom: 7 }}>STEPS</div>
+      <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginBottom: 14 }}>
+        {avail.length ? avail.map((it) => <button key={it.label} onClick={() => add(it.label)} className="co-opt" style={{ padding: "7px 11px", borderRadius: 8, border: `1px solid ${C.line}`, background: C.carbon, color: C.soft, fontFamily: MONO, fontSize: 12, cursor: "pointer" }}>{it.label}</button>) : <span style={{ fontFamily: MONO, fontSize: 11.5, color: C.mute }}>(all placed)</span>}
+      </div>
+      <div style={{ fontFamily: MONO, fontSize: 10, letterSpacing: ".1em", color: C.indigo, marginBottom: 7 }}>YOUR PLAN</div>
+      <div style={{ display: "grid", gap: 5, minHeight: 40 }}>
+        {seq.map((l, i) => { const wrong = checked === false && items.find((x) => x.label === l)!.pos !== i; return (
+          <button key={i} onClick={() => removeAt(i)} className="co-opt" style={{ textAlign: "left", padding: "8px 11px", borderRadius: 8, border: `1px solid ${checked === true ? C.green : wrong ? C.red : C.lineSoft}`, background: C.carbon, color: C.ink, fontFamily: MONO, fontSize: 12, cursor: "pointer" }}><span style={{ color: C.indigo2, marginRight: 8 }}>{i + 1}.</span>{l}</button>
+        ); })}
+      </div>
+      <div style={{ marginTop: 14 }}><Btn tone="g" onClick={check} disabled={seq.length !== items.length || solved}>CHECK ORDER →</Btn></div>
+      {checked === false && <div style={{ marginTop: 10, fontFamily: MONO, fontSize: 12.5, color: C.red }}>Not quite - the red ones are out of order.</div>}
+      {solved && <div style={{ marginTop: 10, fontFamily: MONO, fontSize: 12.5, color: C.green }}>✓ Correct lifecycle - that order is what keeps a response calm and effective.</div>}
+      <Hints hints={[hint]} />
+    </div>
+  );
+}
+
+/* ── a stage ── */
+type Stage =
+  | { kind: "triage"; title: string; goal: string; alerts: Alert[]; hint: string }
+  | { kind: "decision"; title: string; goal: string; decision: Decision }
+  | { kind: "order"; title: string; goal: string; items: OrderItem[]; hint: string };
+
+function StageView({ stage, onSolved }: { stage: Stage; onSolved: () => void }) {
+  return (
+    <div style={{ display: "grid", gap: 12 }}>
+      <div style={{ fontSize: 14, color: C.soft, lineHeight: 1.55, padding: "11px 14px", borderRadius: 10, background: "rgba(139,123,255,0.05)", border: `1px solid ${C.line}` }}>{G(stage.goal, `stage-${stage.title}`)}</div>
+      {stage.kind === "triage" && <TriageSurface alerts={stage.alerts} hint={stage.hint} onSolved={onSolved} />}
+      {stage.kind === "decision" && <DecisionCard decision={stage.decision} onSolved={onSolved} />}
+      {stage.kind === "order" && <OrderSurface items={stage.items} hint={stage.hint} onSolved={onSolved} />}
+    </div>
+  );
+}
+
+/* ───────────────────────── the main capture (Harbour live incident) ───────────────────────── */
+
+const ACT_STAGES: Stage[] = [
+  { kind: "triage", title: "Triage", goal: "Stage 1 - Triage the queue. Alerts are flooding in. Separate the one real incident from the benign noise before you act.",
+    alerts: [
+      { label: "A staff laptop's antivirus quarantined a test file", real: false, note: "Routine - AV did its job on a harmless sample. Noise." },
+      { label: "Active session from an unknown IP bulk-exporting the customer database right now", real: true, note: "This is the real incident - live exfiltration. Everything else is secondary." },
+      { label: "A user mistyped their password twice this morning", real: false, note: "Two fat-fingered attempts is normal. Noise." },
+      { label: "Scheduled backup job completed successfully", real: false, note: "A successful routine job - not an incident at all." },
+    ],
+    hint: "Most alerts are noise. The real incident is the one causing active harm right now: live data exfiltration from an unknown IP." },
+  { kind: "decision", title: "Contain", goal: "Stage 2 - The first move. The attacker's session is live and exporting data. What's your FIRST action?",
+    decision: { prompt: "An attacker session is active and exfiltrating right now. First action?", options: [
+      { text: "Block the attacker's IP and kill the active session - stop the bleeding while preserving evidence.", correct: true, feedback: "Right - contain first. Stop the active harm without destroying what you'll need to investigate." },
+      { text: "Pull the whole server offline and wipe it immediately.", feedback: "Too far, too fast - you'd destroy evidence and cause an outage. Contain the attacker, don't nuke the host." },
+      { text: "Start a week-long root-cause investigation.", feedback: "Later. While you investigate, they're still exfiltrating. Contain now, investigate after." },
+      { text: "Email all staff to warn them.", feedback: "Not first - it wastes the minutes that matter while the attacker is live. Contain the session." },
+    ] } },
+  { kind: "order", title: "Lifecycle", goal: "Stage 3 - Work the lifecycle. The session is contained. Put the remaining response steps in the right order.",
+    items: [
+      { label: "Contain (block + kill session)", pos: 0 },
+      { label: "Eradicate (reset creds, revoke sessions, close the hole)", pos: 1 },
+      { label: "Recover (restore from clean backups, monitor)", pos: 2 },
+      { label: "Lessons learned (review, feed fixes back)", pos: 3 },
+    ],
+    hint: "Contain -> eradicate -> recover -> lessons. Stop it, remove it, restore safely, then learn so it can't recur." },
+  { kind: "decision", title: "Close out", goal: "Stage 4 - Close it properly. The threat is removed. How do you finish the incident?",
+    decision: { prompt: "Threat eradicated. How do you close out the incident?", options: [
+      { text: "Restore from known-clean backups, monitor for a return, and run a lessons-learned review - keeping all the logs.", correct: true, feedback: "Right - recover safely, watch for a comeback, and feed the lessons back in. Evidence stays intact." },
+      { text: "Delete the logs so there's no record the breach happened.", feedback: "Never - that destroys evidence, breaks legal duties, and throws away the lessons. Keep the logs." },
+      { text: "Say nothing to anyone and hope it's over.", feedback: "Hiding it risks a worse outcome and often breaches disclosure obligations. Close out properly and review." },
+      { text: "Restore from a backup taken during the breach to save time.", feedback: "That backup may contain the attacker's implant - you'd reinfect yourself. Restore from a known-clean point." },
+    ] } },
+];
+
+function IncidentAct({ onCapture }: { onCapture: () => void }) {
+  const [si, setSi] = useState(0);
+  const [cleared, setCleared] = useState<boolean[]>(ACT_STAGES.map(() => false));
+  const stage = ACT_STAGES[si];
+  function solved() { setCleared((c) => { const n = [...c]; n[si] = true; return n; }); }
+  function advance() { if (si + 1 < ACT_STAGES.length) setSi(si + 1); else onCapture(); }
+  return (
+    <div style={{ display: "grid", gap: 14 }}>
+      <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+        {ACT_STAGES.map((s, i) => (
+          <div key={i} style={{ display: "flex", alignItems: "center", gap: 7, padding: "5px 11px", borderRadius: 999, border: `1px solid ${i === si ? C.indigo : C.lineSoft}`, background: cleared[i] ? "rgba(85,217,140,.08)" : i === si ? "rgba(139,123,255,.07)" : "transparent" }}>
+            <span style={{ fontFamily: MONO, fontSize: 10.5, color: cleared[i] ? C.green : i === si ? C.indigo2 : C.mute, fontWeight: 700 }}>{cleared[i] ? "✓" : i + 1}</span>
+            <span style={{ fontFamily: MONO, fontSize: 11, color: i === si ? C.ink : C.mute }}>{s.title}</span>
+          </div>
+        ))}
+      </div>
+      <StageView key={si} stage={stage} onSolved={solved} />
+      {cleared[si] && (
+        <div className="co-anim co-pop" style={{ display: "flex", alignItems: "center", gap: 14, flexWrap: "wrap", padding: "13px 16px", borderRadius: 12, background: "rgba(85,217,140,.08)", border: `1px solid ${C.green}55` }}>
+          <span style={{ fontFamily: MONO, fontSize: 12.5, color: C.green, fontWeight: 700 }}>✓ Stage {si + 1} cleared</span>
+          <Btn tone="g" onClick={advance} style={{ marginLeft: "auto" }}>{si + 1 < ACT_STAGES.length ? "Next stage →" : "Capture the engagement →"}</Btn>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ───────────────────────── lesson lab: pick the real incident ───────────────────────── */
+
+function TriageLab({ onDone }: { onDone: () => void }) {
+  const ALERTS = [
+    { t: "Daily backup finished OK", real: false },
+    { t: "Ransomware encrypting the file server right now", real: true },
+    { t: "One user locked out after typos", real: false },
+  ];
+  const [picked, setPicked] = useState<number | null>(null);
+  const correct = picked !== null && ALERTS[picked].real;
+  useEffect(() => { if (correct) onDone(); }, [correct, onDone]);
+  return (
+    <div style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: 12, padding: "15px 16px" }}>
+      <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: ".1em", color: C.indigo, fontWeight: 700, marginBottom: 9 }}>▶ TRY IT · which is the real incident?</div>
+      <div style={{ fontSize: 13.5, color: C.soft, lineHeight: 1.5, marginBottom: 10 }}>Three alerts land at once. Click the one that actually needs an incident response.</div>
+      <div style={{ display: "grid", gap: 5 }}>
+        {ALERTS.map((a, i) => <button key={i} onClick={() => setPicked(i)} className="co-opt" style={{ textAlign: "left", padding: "9px 12px", borderRadius: 8, border: `1px solid ${picked === i ? (a.real ? C.green : C.red) : C.lineSoft}`, background: C.carbon, color: C.soft, fontFamily: "var(--font-plex-sans),system-ui,sans-serif", fontSize: 13.5, cursor: "pointer" }}>{a.t}</button>)}
+      </div>
+      {picked !== null && <div style={{ marginTop: 10, fontSize: 13, color: correct ? "#bff3d3" : C.soft, lineHeight: 1.5 }}>{correct ? "✓ Right - active harm in progress is the incident. The other two are routine noise." : "Look for active harm happening now, not a routine event or a minor slip."}</div>}
+    </div>
+  );
+}
+
+/* ───────────────────────── defend lab: what matters most ───────────────────────── */
+
+function PrepLab({ onDone }: { onDone: () => void }) {
+  const [picked, setPicked] = useState<number | null>(null);
+  const opts = [
+    { code: "Buy the most expensive firewall on the market", ok: false, why: "Tools help, but a breach in progress is won or lost on process and practice, not on one shiny box." },
+    { code: "Plan to figure out the response when a breach happens", ok: false, why: "The worst time to invent a plan is during a live incident. You execute a plan then; you don't write one." },
+    { code: "A tested IR plan, clean backups, central logging, and rehearsed roles (tabletops)", ok: true, why: "Preparation is what separates a minutes-long response from a months-long one. This is the real work, done before anything happens." },
+  ];
+  return (
+    <div style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: 12, padding: "15px 16px" }}>
+      <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: ".1em", color: C.indigo, fontWeight: 700, marginBottom: 10 }}>▶ APPLY THE STANDARD · what most determines how well a breach is handled?</div>
+      <div style={{ display: "grid", gap: 8 }}>
+        {opts.map((o, i) => {
+          const isP = picked === i;
+          return (
+            <div key={i}>
+              <button onClick={() => { setPicked(i); if (o.ok) onDone(); }} className="co-opt" style={{ width: "100%", textAlign: "left", padding: "10px 12px", borderRadius: 9, border: `1px solid ${isP ? (o.ok ? C.green : C.red) : C.line}`, background: isP ? (o.ok ? "rgba(85,217,140,.08)" : "rgba(242,109,114,.06)") : C.carbon, color: C.ink, fontFamily: "var(--font-plex-sans),system-ui,sans-serif", fontSize: 13.5, cursor: "pointer", lineHeight: 1.4 }}>
+                <span style={{ fontFamily: MONO, color: isP ? (o.ok ? C.green : C.red) : C.mute, marginRight: 8 }}>{isP ? (o.ok ? "✓" : "✗") : String.fromCharCode(65 + i)}</span>{o.code}
+              </button>
+              {isP && <div style={{ padding: "7px 12px 2px", fontSize: 12.5, color: o.ok ? "#bff3d3" : C.soft, lineHeight: 1.5 }}>{o.why}</div>}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+/* ───────────────────────── consolidation drills ───────────────────────── */
+
+type DrillCfg = { client: string; brief: string; stages: Stage[]; success: string };
+const DRILLS: DrillCfg[] = [
+  { client: "Brightpost Media", brief: "Triage Brightpost's alert queue. No walkthrough.", stages: [{ kind: "triage", title: "Triage", goal: "Mark the real incident vs noise.", alerts: [ { label: "CMS auto-update installed overnight", real: false, note: "Routine maintenance." }, { label: "Admin account logging in from two countries at once", real: true, note: "Impossible travel = a real account-takeover incident." }, { label: "Spam filter blocked 400 emails", real: false, note: "Doing its job - noise." } ], hint: "Impossible-travel logins are a classic real incident." }], success: "Triaged correctly - you're on the real incident. Finding logged." },
+  { client: "Tideway Council", brief: "A live attack is contained. Order the rest of the response.", stages: [{ kind: "order", title: "Lifecycle", goal: "Order the remaining IR steps.", items: [ { label: "Eradicate the foothold", pos: 0 }, { label: "Recover from clean backups", pos: 1 }, { label: "Lessons learned review", pos: 2 } ], hint: "Eradicate -> recover -> learn." }], success: "Ran the lifecycle in the right order. Finding logged." },
+  { client: "Flux Fitness", brief: "A judgment call mid-incident. Make it. Trickier.", stages: [{ kind: "decision", title: "Call", goal: "The containment decision.", decision: { prompt: "Malware is spreading across Flux's network right now. First move?", options: [ { text: "Isolate the affected segment from the rest of the network immediately.", correct: true, feedback: "Right - contain the spread first, preserving evidence." }, { text: "Wipe every machine at once.", feedback: "Destroys evidence and causes a huge outage - contain, don't nuke." } ] } }], success: "Contained the spread without over-reacting. Finding logged." },
+  { client: "Oakline Store", brief: "The full field job. Triage, then close out correctly. Chain it yourself.", stages: [
+    { kind: "triage", title: "Triage", goal: "Step 1: find the real incident.", alerts: [ { label: "Card data being exfiltrated to an unknown host now", real: true, note: "Active exfiltration - the incident." }, { label: "A printer went offline", real: false, note: "Not security - noise." } ], hint: "Active data theft is the incident." },
+    { kind: "decision", title: "Close out", goal: "Step 2: close it properly.", decision: { prompt: "Threat removed. How do you close out?", options: [ { text: "Restore from clean backups, monitor, review, keep the logs.", correct: true, feedback: "Right - safe recovery and lessons, evidence intact." }, { text: "Delete the logs to avoid bad press.", feedback: "Never - destroys evidence and breaches disclosure duties." } ] } },
+  ], success: "Triaged and closed out the incident correctly - the whole response. Finding logged." },
+];
+
+function DrillRunner({ stages, success, onSolved }: { stages: Stage[]; success: string; onSolved: () => void }) {
+  const [si, setSi] = useState(0);
+  const [done, setDone] = useState(false);
+  function stepSolved() { if (si + 1 < stages.length) setTimeout(() => setSi((n) => n + 1), 650); else { setDone(true); onSolved(); } }
+  return (
+    <div style={{ display: "grid", gap: 12 }}>
+      {stages.length > 1 && <div style={{ fontFamily: MONO, fontSize: 11.5, color: C.indigo2 }}>Step {si + 1} of {stages.length}</div>}
+      {!done && <StageView key={si} stage={stages[si]} onSolved={stepSolved} />}
+      {done && <div className="co-anim co-pop" style={{ padding: "11px 14px", borderRadius: 10, background: "rgba(85,217,140,.08)", border: `1px solid ${C.green}55`, fontSize: 13, color: "#bff3d3", lineHeight: 1.5 }}>✓ {success}</div>}
+    </div>
+  );
+}
+
+function ConsolidationDrills({ onDone }: { onDone: () => void }) {
+  const [i, setI] = useState(0);
+  const [solved, setSolved] = useState<boolean[]>(DRILLS.map(() => false));
+  const d = DRILLS[i];
+  function onSolved() { setSolved((s) => { const n = [...s]; n[i] = true; return n; }); }
+  return (
+    <div style={{ display: "grid", gap: 14 }}>
+      <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+        {DRILLS.map((dr, k) => (
+          <div key={dr.client} style={{ display: "flex", alignItems: "center", gap: 7, padding: "5px 11px", borderRadius: 999, border: `1px solid ${k === i ? C.indigo : C.lineSoft}`, background: solved[k] ? "rgba(85,217,140,.08)" : k === i ? "rgba(139,123,255,.07)" : "transparent" }}>
+            <span style={{ fontFamily: MONO, fontSize: 10.5, color: solved[k] ? C.green : k === i ? C.indigo2 : C.mute, fontWeight: 700 }}>{solved[k] ? "✓" : `drill ${k + 1}`}</span>
+          </div>
+        ))}
+      </div>
+      <div style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: 14, padding: "14px 16px" }}>
+        <div style={{ fontFamily: DISP, fontWeight: 700, fontSize: 15.5, color: C.ink }}>{d.client}</div>
+        <p style={{ color: C.soft, fontSize: 13.5, lineHeight: 1.55, margin: "6px 0 0" }}>{d.brief}</p>
+      </div>
+      <DrillRunner key={d.client} stages={d.stages} success={d.success} onSolved={onSolved} />
+      {solved[i] && (
+        <div style={{ display: "flex" }}>
+          <Btn tone="g" onClick={() => { if (i + 1 < DRILLS.length) setI(i + 1); else onDone(); }} style={{ marginLeft: "auto" }}>{i + 1 < DRILLS.length ? "Next drill →" : "On to the debrief →"}</Btn>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ───────────────────────── capstone ───────────────────────── */
+
+const CAP_STAGES: Stage[] = [
+  { kind: "triage", title: "Triage", goal: "Sableline's SOC is lit up. Find the real incident.", alerts: [ { label: "Domain admin account created at 3am by an unknown source", real: true, note: "A rogue admin account at 3am is a serious live incident." }, { label: "Weekly vulnerability scan completed", real: false, note: "Routine - noise." }, { label: "A user changed their own password", real: false, note: "Normal self-service - noise." } ], hint: "A new domain-admin account at 3am is the incident." },
+  { kind: "decision", title: "Contain", goal: "Make the containment call.", decision: { prompt: "A rogue domain-admin account is active. First move?", options: [ { text: "Disable the rogue account and revoke its sessions immediately, preserving logs.", correct: true, feedback: "Right - contain the account first, keep the evidence." }, { text: "Rebuild the domain controller from scratch right now.", feedback: "Drastic and destroys evidence - contain the account first." } ] } },
+  { kind: "order", title: "Lifecycle", goal: "Finish it: order the full response.", items: [ { label: "Contain the rogue account", pos: 0 }, { label: "Eradicate (find how it was made, close the hole)", pos: 1 }, { label: "Recover and verify from clean state", pos: 2 }, { label: "Lessons learned", pos: 3 } ], hint: "Contain -> eradicate -> recover -> learn." },
+];
+
+function CapstoneChallenge({ onDone }: { onDone: () => void }) {
+  const [phase, setPhase] = useState(0);
+  const [won, setWon] = useState(false);
+  function solved() { if (phase + 1 < CAP_STAGES.length) setTimeout(() => setPhase((p) => p + 1), 650); else setWon(true); }
+  const pct = (phase / CAP_STAGES.length) * 100;
+  return (
+    <div style={{ display: "grid", gap: 14 }}>
+      <div style={{ fontFamily: MONO, fontSize: 11, color: C.mute }}>Sableline · full response · step {Math.min(phase + 1, CAP_STAGES.length)} of {CAP_STAGES.length}</div>
+      <div style={{ height: 6, borderRadius: 999, background: "rgba(255,255,255,0.07)", overflow: "hidden" }}><div style={{ height: "100%", width: `${won ? 100 : pct}%`, background: `linear-gradient(90deg, ${C.indigo}, ${C.amber})`, transition: "width .4s" }} /></div>
+      {!won && <StageView key={phase} stage={CAP_STAGES[phase]} onSolved={solved} />}
+      {won && (
+        <div className="co-anim co-pop" style={{ textAlign: "center", padding: "20px", borderRadius: 14, background: "rgba(85,217,140,.08)", border: `1px solid ${C.green}55` }}>
+          <div style={{ fontFamily: MONO, fontSize: 11, letterSpacing: ".2em", color: C.green, fontWeight: 700 }}>CHALLENGE COMPLETE</div>
+          <div style={{ fontFamily: MONO, fontSize: 13.5, color: C.green, marginTop: 8 }}>flag{"{"}incident_run_by_the_b00k{"}"}</div>
+          <p style={{ fontSize: 13.5, color: C.soft, lineHeight: 1.5, margin: "10px auto 14px", maxWidth: "48ch" }}>Triaged, contained, and ran the full lifecycle under pressure - a real incident handled calmly, start to finish.</p>
+          <Btn tone="g" onClick={onDone}>Continue to the debrief →</Btn>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ───────────────────────── module def ───────────────────────── */
 
 export const MODULE12: ModuleDef = {
   code: "M-12",
@@ -95,62 +358,70 @@ export const MODULE12: ModuleDef = {
   title: "Incident Response",
   client: "Harbour Systems",
   brief:
-    "The breach you reconstructed last time? It’s happening again — right now, live. Harbour’s called you in not to attack, but to run the response. Everything you learned breaking in now tells you exactly how to shut an attacker down. Stay calm and work the stages in order.",
+    "A deep engagement in the defender's seat under pressure. The breach you reconstructed last time is happening again - live. Harbour has called you in to run the response. The full job: triage the real incident out of the noise, make the containment call, work the lifecycle in the right order, and close out safely. Then four field jobs for new clients, and a final challenge you run start to finish. Everything you learned breaking in now tells you exactly how to shut an attacker down.",
   lesson: {
     blocks: [
-      { h: "Incident response has a shape", body: "When a breach is underway, you don’t improvise — you follow a lifecycle: Prepare, Detect, Contain, Eradicate, Recover, and Lessons Learned. The order matters enormously. The instinct to ‘fix everything at once’ or ‘wipe it and start over’ usually makes things worse. Calm, staged action is the whole discipline." },
-      { h: "Contain before you cure", body: "The first priority once you’ve detected a live attack is containment: stop the damage spreading without destroying what you’ll need later. Block the attacker, isolate the affected account or host, kill their session. You are not yet trying to understand everything or rebuild anything — you’re stopping the bleeding while preserving the evidence." },
-      { h: "Eradicate, then recover", body: "Only once contained do you eradicate: remove every foothold (reset credentials, revoke all sessions) and close the vulnerability they used, or they’ll just come back. Then recover from known-clean backups, watch closely for a return, and finally run a lessons-learned review so the same hole can’t be used twice. Never destroy the logs — they’re evidence and the source of those lessons." },
+      { h: "Incident response has a shape", body: "When a breach is underway you don't improvise - you follow a lifecycle: prepare, detect, contain, eradicate, recover, and lessons learned. The order matters enormously. The instinct to fix everything at once, or wipe it and start over, usually makes things worse. Calm, staged action is the whole discipline." },
+      { h: "Detect and triage", body: "Real responses start buried in noise. A security team gets a flood of alerts, most of them harmless - a backup that ran, an antivirus doing its job, a user who mistyped a password. Triage is separating the one genuine incident from the false positives, fast, so you spend your minutes on the thing that's actually causing harm." },
+      { h: "Contain before you cure", body: "The first priority once you've found a live attack is containment: stop the damage spreading without destroying what you'll need later. Block the attacker, isolate the affected account or host, kill their session. You are not yet trying to understand everything or rebuild anything - you're stopping the bleeding while preserving the evidence." },
+      { h: "Eradicate, then recover", body: "Only once contained do you eradicate: remove every foothold - reset credentials, revoke all sessions - and close the vulnerability they used, or they'll just come back. Then recover from known-clean backups (never one taken during the breach, which may carry their implant), watch closely for a return, and run a lessons-learned review. Never destroy the logs; they're evidence and the source of the lessons." },
+      { h: "Preparation is the real work", body: "The reason some teams handle a breach in minutes and others in months is almost entirely preparation. A written plan, known roles, tested backups, central logging, and the ability to revoke sessions and block addresses quickly are all built before anything happens. Teams rehearse with tabletop exercises so the stages are muscle memory. In the moment you execute a plan; you don't invent one." },
     ],
-    example: {
-      caption: "The right order. Each step has a job: stop it, remove it, restore safely, learn from it.",
-      lines: [
-        { t: "1. CONTAIN    block IP, kill session   (stop the bleeding)" },
-        { t: "2. ERADICATE  reset creds, fix the hole (remove the foothold)" },
-        { t: "3. RECOVER    clean backups, monitor     (restore safely)" },
-        { t: "4. LEARN      review, feed back          (so it can't recur)" },
-      ],
-    },
+    Interactive: TriageLab,
+    summary: [
+      "IR follows a lifecycle: prepare, detect, contain, eradicate, recover, lessons learned - in order.",
+      "Triage first: separate the one real incident from the flood of benign noise.",
+      "Contain before you cure: stop the harm spreading without destroying evidence.",
+      "Eradicate the foothold and close the hole, then recover from known-clean backups.",
+      "Preparation (plan, backups, logging, tabletops) is what makes a response fast and calm.",
+    ],
     check: {
-      q: "Why contain before investigating the root cause?",
+      q: "Why contain a live attack before investigating the root cause?",
       options: [
-        { text: "Root cause doesn’t matter in a breach.", feedback: "It matters a lot — but later. If you investigate first, the attacker keeps causing harm meanwhile." },
-        { text: "Containment stops ongoing damage; you can investigate safely once the bleeding has stopped.", correct: true, feedback: "Right — stop the harm first, preserving evidence, then dig into why." },
-        { text: "Investigating first is illegal.", feedback: "It’s not illegal — it’s just the wrong order while an attacker is still active." },
+        { text: "Containment stops the ongoing damage; you can investigate safely once the bleeding has stopped.", correct: true, feedback: "Right - stop the harm first (preserving evidence), then dig into why." },
+        { text: "Root cause doesn't matter in a breach.", feedback: "It matters a lot - but later. Investigate first and the attacker keeps causing harm meanwhile." },
+        { text: "Investigating first is illegal.", feedback: "It's not illegal - it's just the wrong order while an attacker is still active." },
+        { text: "You should always wipe everything before anything else.", feedback: "Wiping destroys evidence and causes outages - contain precisely, don't nuke." },
       ],
     },
   },
+  glossary: GLOSSARY,
+  Consolidation: ConsolidationDrills,
+  Capstone: CapstoneChallenge,
   scope: {
     target: "Harbour Systems portal · live incident",
-    inScope: "response actions on the affected account/host",
+    inScope: "triage and response actions on the affected account/host; the consolidation clients in each drill",
     offLimits: "destroying logs/evidence, unneeded outages, retaliating against the source",
     timebox: "the incident window",
   },
-  handler: "You’re defending now. Don’t lunge for the big dramatic fix. Contain, then eradicate, then recover — in that order. Work the stages.",
-  hint: "Stage order is everything: first contain (block + kill session), then eradicate (reset creds + fix the hole), then recover (clean backups + review). Never delete the logs.",
+  handler: "You're defending now, under pressure. Don't lunge for the big dramatic fix. Triage to the real incident, contain, then work the lifecycle in order - eradicate, recover, learn. Keep the evidence. Calm and staged beats fast and destructive every time.",
+  hint: "Work the stages in order. Most alerts are noise - the real incident is the one causing active harm. Contain first (block + kill session), never wipe. Then order the lifecycle: contain, eradicate, recover, lessons. Keep the logs.",
   Act: IncidentAct,
   flag: "flag{c0nt41n_th3n_3rad1cate}",
   defend: {
     blocks: [
-      { h: "Preparation is the real work", body: "The reason some teams handle a breach in minutes and others in months is almost entirely preparation. A written incident-response plan, known roles, tested backups, central logging, and the ability to revoke sessions and block addresses quickly — all of that is built before anything happens. In the moment you execute a plan; you don’t invent one." },
-      { h: "Practise before it’s real", body: "Teams run tabletop exercises — walking through a pretend breach exactly as you just did — so that when a real one hits, the stages are muscle memory. The calm, ordered response you just gave is a skill, and like any skill it comes from rehearsal. The worst time to first think about containment is during a live incident." },
+      { h: "Preparation beats everything", body: "A breach is won or lost before it starts. A written incident-response plan with clear roles, backups you've actually tested restoring, central logging you can search, and the technical ability to revoke sessions and block addresses in seconds - that groundwork is what turns a potential catastrophe into a controlled, hours-long event. Buy the fancy firewall if you like, but the plan and the practice matter more." },
+      { h: "Practise before it's real", body: "Teams run tabletop exercises - walking through a pretend breach exactly as you just did - so that when a real one hits, the lifecycle is muscle memory and nobody freezes. The calm, ordered response you just gave is a skill, and like any skill it comes from rehearsal. The worst time to first think about containment is during a live incident." },
+      { h: "Close the loop", body: "The last phase feeds the first. Every incident's lessons-learned review should produce concrete changes - the vulnerability patched, detection improved so the next one is caught sooner, the plan updated where it slowed you down. An incident you don't learn from is one you'll repeat; done right, each response makes the next one faster." },
     ],
+    Interactive: PrepLab,
     check: {
       q: "What most determines how well an organisation handles a breach?",
       options: [
+        { text: "Preparation - a tested plan, clean backups, central logging, and rehearsed roles.", correct: true, feedback: "Right. The response is executed, not invented, in the moment." },
         { text: "How powerful their newest firewall is.", feedback: "Tools help, but a breach in progress is won or lost on process and practice." },
-        { text: "Preparation — a tested plan, backups, logging, and rehearsed roles.", correct: true, feedback: "Right. The response is executed, not invented, in the moment." },
-        { text: "How quickly they can delete the evidence.", feedback: "Never delete evidence — that’s both counterproductive and often unlawful." },
+        { text: "How quickly they can delete the evidence.", feedback: "Never delete evidence - that's both counterproductive and often unlawful." },
+        { text: "Whether they keep the incident secret from everyone.", feedback: "Secrecy often breaches disclosure duties and prevents help; a prepared, honest response is what matters." },
       ],
     },
   },
   finding: {
-    title: "Live breach contained, eradicated, and recovered",
+    title: "Live breach triaged, contained, eradicated, and recovered",
     where: "Harbour Systems portal · incident response engagement",
     severity: "High",
     cvss: "8.1",
-    impact: "An active account-takeover breach was handled end to end: the attacker was contained, their foothold eradicated and the entry vulnerability closed, systems recovered from clean backups, and a lessons-learned review initiated — with evidence preserved throughout.",
-    fix: "Maintain a tested IR plan, central append-only logging, rapid session-revocation and IP-blocking, and regular tabletop exercises so response is executed, not improvised.",
+    impact: "An active account-takeover breach was handled end to end: the real incident was triaged out of the noise, the attacker contained, their foothold eradicated and the entry vulnerability closed, systems recovered from clean backups, and a lessons-learned review run - with evidence preserved throughout.",
+    fix: "Maintain a tested IR plan, central append-only logging, rapid session-revocation and IP-blocking, clean tested backups, and regular tabletop exercises so response is executed, not improvised.",
   },
   rep: 65,
   repRank: "Lead Operator",
