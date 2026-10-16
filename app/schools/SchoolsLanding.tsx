@@ -1126,8 +1126,11 @@ export default function SchoolsLanding() {
         /* faq */
         .sch-faq-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 18px; margin-top: 30px; }
         @media (max-width: 820px) { .sch-faq-grid { grid-template-columns: 1fr; } }
-        .sch-faq { border-radius: 14px; border: 1px solid rgba(20,22,29,0.2); background: linear-gradient(180deg, rgba(244,239,231,0.7), rgba(255,253,248,0.7)); padding: 0 18px; }
-        .sch-faq[open] { border-color: rgba(20,22,29,0.45); }
+        /* Owner 2026-10-16: the FAQ rows were flat; give them the same clean
+           paper + lift as the other cards so the page reads consistent. */
+        .sch-faq { border-radius: 14px; border: 1px solid rgba(20,22,29,0.14); background: linear-gradient(180deg, rgba(255,253,248,0.96), rgba(247,241,233,0.96)); box-shadow: inset 0 1.5px 0 rgba(255,255,255,0.9), 0 14px 32px -26px rgba(86,68,45,0.45); padding: 0 18px; transition: border-color .2s ease, box-shadow .2s ease; }
+        .sch-faq:hover { border-color: rgba(10,112,133,0.3); box-shadow: inset 0 1.5px 0 rgba(255,255,255,0.95), 0 18px 36px -26px rgba(86,68,45,0.5); }
+        .sch-faq[open] { border-color: rgba(10,112,133,0.4); box-shadow: inset 0 1.5px 0 rgba(255,255,255,0.95), 0 18px 38px -24px rgba(86,68,45,0.55); }
         .sch-faq summary { cursor: pointer; list-style: none; padding: 16px 28px 16px 0; position: relative; font-family: var(--lv2-font-display); font-size: 15.5px; font-weight: 600; color: #14161d; }
         .sch-faq summary::-webkit-details-marker { display: none; }
         .sch-faq summary::after { content: "+"; position: absolute; right: 2px; top: 12px; font-size: 22px; color: var(--lv2-cyan-soft); transition: transform .2s ease; }
