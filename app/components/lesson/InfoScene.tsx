@@ -225,7 +225,7 @@ export default function InfoScene({
             </motion.div>
             <span aria-hidden style={{ color: gold, fontSize: 14, opacity: 0.85, textShadow: `0 0 10px ${gold}99` }}>✦</span>
           </div>
-          <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 11, fontWeight: 800, letterSpacing: "0.24em", textTransform: "uppercase", color: themeAccent ?? "#9fe9ff", margin: shortViewport ? "6px 0 4px" : "7px 0 5px" }}>
+          <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 12, fontWeight: 800, letterSpacing: "0.24em", textTransform: "uppercase", color: themeAccent ?? "#9fe9ff", margin: shortViewport ? "6px 0 4px" : "7px 0 5px" }}>
             {conceptNumber && conceptTotal
               ? `◇ Power ${conceptNumber} of ${conceptTotal} · Learn ◇`
               : "◇ Learn ◇"}
@@ -240,7 +240,7 @@ export default function InfoScene({
             // W12 1a). The padding extends the paint box without moving the
             // text, so every week's title keeps its exact position.
             paddingBottom: 6,
-            fontSize: "clamp(1.6rem, 3.4vw, 2.2rem)", fontWeight: 900, lineHeight: 1.12,
+            fontSize: "clamp(1.9rem, 3.9vw, 2.6rem)", fontWeight: 900, lineHeight: 1.12,
             background: themeAccent
               ? `linear-gradient(180deg, #ffffff 0%, ${themeAccent} 100%)`
               : "linear-gradient(180deg, #fff4cf 0%, #ffd86b 55%, #f3b13a 100%)",
@@ -258,7 +258,7 @@ export default function InfoScene({
 
         {/* Content fallback (only when no narration) */}
         {!narration && content && (
-          <p style={{ color: "#cbd5e1", fontSize: 16, lineHeight: 1.65, textAlign: "center", maxWidth: 620, margin: shortViewport ? "8px auto 12px" : "10px auto 14px" }}>
+          <p style={{ color: "#cbd5e1", fontSize: 19, lineHeight: 1.6, textAlign: "center", maxWidth: 720, margin: shortViewport ? "8px auto 12px" : "10px auto 14px" }}>
             {content}
           </p>
         )}
@@ -333,7 +333,7 @@ export default function InfoScene({
                         ? `inset 0 1px 0 ${accent}88, inset 0 -7px 14px -8px rgba(0,0,0,0.55), 0 6px 16px -10px ${accent}aa`
                         : "inset 0 -6px 12px -8px rgba(0,0,0,0.4)",
                       color: on ? "#f2f6ff" : "#aebadb",
-                      fontSize: 15, fontWeight: 650, lineHeight: 1.3,
+                      fontSize: 17, fontWeight: 650, lineHeight: 1.3,
                       transition: "background 300ms ease, border 300ms ease, color 300ms ease",
                     }}
                   >
