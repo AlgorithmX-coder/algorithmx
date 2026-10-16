@@ -740,7 +740,7 @@ export default function SettingsSwitch({
               color: "#7d8cc9",
             }}
           >
-            Tap the RISKY settings to flip them safe — the green ones are already fine
+            Tap the RISKY settings to flip them safe. The green ones are already fine
           </div>
         </>
       )}

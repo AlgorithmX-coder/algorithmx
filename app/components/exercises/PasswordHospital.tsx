@@ -729,7 +729,7 @@ export default function PasswordHospital({
             <PixIcon emoji="💡" size={24} />
           </span>
           <span style={{ fontSize: 13.5, color: "#e9d8a6", lineHeight: 1.4 }}>
-            Strong passwords mix letters, numbers, and symbols — the longer and
+            Strong passwords mix letters, numbers, and symbols. The longer and
             more random, the stronger!
           </span>
         </div>
@@ -1209,7 +1209,7 @@ function RepairToolbox({
               fontFamily: "inherit",
             }}
           >
-            This one&apos;s tricky — skip to the next patient →
+            This one&apos;s tricky, skip to the next patient →
           </button>
         </div>
       )}

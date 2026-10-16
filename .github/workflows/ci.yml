@@ -72,6 +72,13 @@ jobs:
       # switched off within a day - which is how this kind of check dies.
       - run: node scripts/audit-consonant-integrity.mjs --weeks=1
 
+      # No em-dashes in anything a child reads. A standing owner rule, and an
+      # easy one to break by accident - five had crept into the six engines
+      # week 1 uses, and the only reason they were found is that one of them
+      # happened to be in a screenshot. Comments are exempt; there are over a
+      # thousand of those and none of them are read by a six-year-old.
+      - run: node scripts/audit-no-em-dashes.mjs
+
   # ────────────────────────────────────────────────────────────
   # End-to-end tests against a real production build.  Slower than
   # the static job (production build + browser launch) so it runs

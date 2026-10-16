@@ -1062,7 +1062,7 @@ function MissionCard({
       type="button"
       onClick={onFlip}
       aria-pressed={flipped}
-      aria-label={flipped ? mission.text : `Objective ${index + 1} — tap to reveal`}
+      aria-label={flipped ? mission.text : `Objective ${index + 1}, tap to reveal`}
       initial={{ opacity: 0, y: 50, scale: 0.6, rotateX: 30 }}
       animate={
         visible
