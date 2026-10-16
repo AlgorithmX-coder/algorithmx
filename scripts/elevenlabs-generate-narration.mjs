@@ -36,12 +36,37 @@ import { createHash } from "node:crypto";
 import { spawnSync } from "node:child_process";
 import ffmpegPath from "ffmpeg-static";
 import { SPEC_GAP, SPEC_TAIL } from "./lib/pause-spec.mjs";
-import { renameSync } from "node:fs";
+import { copyFileSync, renameSync } from "node:fs";
 import { mkdir, readdir, readFile, stat, unlink, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 
 const CHECK_ONLY = process.argv.includes("--check");
 const QUIET = process.argv.includes("--quiet");
+/* --keep-raw: leave the clip exactly as ElevenLabs delivered it beside the
+ * finished one, as <key>.mp3.preshape.mp3.
+ *
+ * Every "it didn't pronounce the last letter" diagnosis until now argued about
+ * what shapeToSpec does to a consonant WITHOUT ever measuring that consonant
+ * before it ran. Raw is deleted the moment the clip is padded, so there was
+ * nothing to compare against. With this flag there is. */
+const KEEP_RAW = process.argv.includes("--keep-raw");
+/* --force: with --week=N, re-record that week even where a clip exists.
+ *
+ * The shaping engine improves, and a clip recorded under an older version of
+ * it is not wrong enough to be missing - it is just not as good. Caching is
+ * by file existence, so without this there is no way to rebuild a week short
+ * of deleting its files by hand, and no way to do it for ONE week, which is
+ * how the owner wants the course brought up to standard: "we're gonna do it
+ * week by week because I don't have credits to waste." */
+const FORCE = process.argv.includes("--force");
+/* --keys: print "<file> <source>" for every block and stop.
+ *
+ * The manifest records what was said and by whom, but not which week asked
+ * for it, so there is no way to ask "is week 1 clean" of any audit that works
+ * off clip files. This resolves blocks exactly as a real run would and prints
+ * the mapping, so an audit can be scoped to one week - which is how the
+ * course is being brought up to standard. */
+const LIST_KEYS = process.argv.includes("--keys");
 
 const KEY = process.env.ELEVENLABS_API_KEY;
 if (!KEY && !CHECK_ONLY) {
@@ -221,6 +246,27 @@ const bossAskRe = /ask:\s*\{\s*slug:\s*"[^"]*",\s*text:\s*"((?:[^"\\]|\\.)*)"\s*
 function isCodeLikeOption(text) {
   return !/\s/.test(text) && (/[$@#%&*^~+=<>|\\/_]/.test(text) || (/\d/.test(text) && /[A-Za-z]/.test(text)) || /[!?]./.test(text));
 }
+/* Weeks whose quiz read-out uses the FLOWING phrasing.
+ *
+ * The old read-out put each option lead on its own line and ended it with an
+ * ellipsis: "Is it option A..." then a new line for the answer. That is two
+ * marks in a row - a 0.55s trail and a 0.65s sentence stop - so the voice
+ * said "Is it option A" and then stopped dead before reading the option.
+ * Owner, 2026-10-16: "there was a break after option, then a break, and then
+ * it said A."
+ *
+ * The fix is one line per option with a comma: "Is it option A, hedgehog-
+ * hedgehog-hedgehog." A comma is a 0.22s beat, and the stop between whole
+ * options stays, which is the pause that was actually wanted.
+ *
+ * It is per-week ON PURPOSE. Changing the phrasing changes the text, which
+ * changes the clip hash, which orphans the clip. A global change plus a
+ * week-scoped re-record would leave nineteen weeks with no clip at all and
+ * drop them onto the browser's robot voice with a green build - exactly the
+ * regression in PR #539. A week joins this set in the same commit that
+ * re-records it. KEEP IDENTICAL in QuizBoss.tsx and the generator. */
+const FLOWING_ASK_WEEKS = new Set([1]);
+
 /** "...believing it" -> "...believing it." KEEP IDENTICAL to closeSentence in QuizBoss.tsx. */
 function closeSentence(text) {
   const t = text.trim();
@@ -436,16 +482,19 @@ for (const fname of weekFiles) {
         bossQ++;
         continue;
       }
+      const flowing = FLOWING_ASK_WEEKS.has(Number((fname.match(/week([0-9]+)/) || [])[1]));
+      const askTail = flowing ? "," : "...";
       ordered.forEach((text, i) => {
         const last = i === ordered.length - 1;
         const lead = i === 0
-          ? `Is it option ${LETTERS[i]}...`
+          ? `Is it option ${LETTERS[i]}${askTail}`
           : last
-            ? `Or is it option ${LETTERS[i]}...`
-            : `Option ${LETTERS[i]}...`;
+            ? `Or is it option ${LETTERS[i]}${askTail}`
+            : `Option ${LETTERS[i]}${askTail}`;
         // Closed as a sentence so the voice pauses before the next option
         // (UAT W10 6c); mirrors QuizBoss askLines exactly.
-        lines.push(lead, closeSentence(text));
+        if (flowing) lines.push(`${lead} ${closeSentence(text)}`);
+        else lines.push(lead, closeSentence(text));
       });
       lines.push("So, what do you think?");
       blocks.push({ speaker: "adam", lines, source: fname });
@@ -865,6 +914,10 @@ if (ONLY_WEEK) {
   console.log(`--week=${ONLY_WEEK}: recording ${selected} of ${blocks.length} blocks; the rest keep the clips they have`);
 }
 
+if (FORCE && !ONLY_WEEK) {
+  console.error("--force needs --week=N. On its own it would re-record all 5,166 clips.");
+  process.exit(2);
+}
 console.log(`Found ${blocks.length} narration blocks (${blocks.reduce((n, b) => n + b.lines.length, 0)} lines)`);
 
 // Existing manifest for caching on re-runs.
@@ -1144,6 +1197,40 @@ async function transcribeWords(file) {
 
 const normWord = (s) => s.toLowerCase().replace(/[^a-z0-9']/g, "");
 
+/**
+ * Could this word end in a sound that is quiet but is still SPEECH?
+ *
+ * This is the question the breath trim has been getting wrong, and it is a
+ * question about spelling, not about energy. Measured on the raw ElevenLabs
+ * delivery of "That is all it takes." (scripts kept the raw with --keep-raw):
+ * the vowel ends, there is a 60ms dip for the k closure, and then the final s
+ * runs for over 200ms at 2 to 3.5% of the clip's peak. The speech floor is 6%,
+ * so the ENTIRE final consonant cluster sits below it, looking exactly like a
+ * breath - which is why three attempts to separate the two by level or by
+ * length all failed, and why the owner kept hearing "take", "wee", "tet",
+ * "ye", "lis".
+ *
+ * A breath cannot be told from a fricative by energy. But the script says
+ * which word is ending, and the word says whether anything quiet is due:
+ *   - ends in a vowel, or in m n l r w, or in -ng  ->  that sound is LOUD, so
+ *     a quiet stretch after it is a breath and can go.
+ *   - anything else (s z t d k g p b f v x, ch sh th ck) -> a quiet consonant
+ *     is due, and the quiet stretch is that consonant, possibly with a breath
+ *     behind it. We cannot say where one ends and the other starts, so we keep
+ *     all of it. A breath left in sounds like a person; a cut consonant sounds
+ *     like a mistake.
+ * Unknown word -> keep. The trim never gambles with a consonant.
+ */
+function endsQuiet(word) {
+  let w = String(word || "").toLowerCase().replace(/[^a-z']/g, "");
+  if (!w) return true;                        // nothing identified: keep
+  if (/'(s|t|ve|ll|re|d)$/.test(w)) return true;
+  w = w.replace(/'/g, "").replace(/e$/, "");  // silent e: take -> tak, house -> hous
+  if (!w) return true;
+  if (/ng$/.test(w)) return false;            // -ing, song: a loud nasal
+  return !/[aeiouymnlrw]$/.test(w);
+}
+
 /* Line the script's words up with the recording's words.
  *
  * Needleman-Wunsch rather than position-by-position: Scribe drops a word now
@@ -1187,13 +1274,52 @@ function shapeToSpec(file, lines, heard) {
   const total = mediaDuration(file);
   if (total <= 0) return false;
 
-  const probe = runFfmpeg(["-i", file, "-af", "silencedetect=noise=-36dB:d=0.08", "-f", "null", "-"]);
+  /* Where the silences are - measured against THIS clip's own peak.
+   *
+   * This line is the root cause of every "it didn't pronounce the last letter"
+   * report, and it took four attempts to find because the three fixes before
+   * it were all downstream of it. noise=-36dB is an ABSOLUTE threshold, and
+   * these clips do not arrive at one level: measured across seven raw
+   * deliveries, peaks run from -8.2 to -16.4 dBFS. So -36dB means 5.6% of peak
+   * on a loud clip and 10.5% on a quiet one - and on the quiet one that is
+   * ABOVE the speech floor, so the final consonant is classified as silence.
+   *
+   * A span then ends where the consonant begins, atrim cuts there, and the
+   * consonant is not merely trimmed, it is never inside a span at all. That is
+   * why adjusting the trim's thresholds could never fix it, and why it struck
+   * at random: it depended on how loud the take happened to be. Proved on
+   * "Not quite." - peak -16.4 dBFS, 180ms of t in the raw, silence_start at
+   * 1.269s, and 0ms of it in the shipped clip.
+   *
+   * So take the threshold from the clip. 48dB below peak is 0.4% of it: a
+   * final consonant sits at 1 to 3.5% of peak and stays speech, while the gaps
+   * between words are digital zero (measured -120 dBFS on every clip) and are
+   * still silence. Wide margin on both sides, which an absolute number cannot
+   * have while the takes vary.
+   */
+  let noiseDb = -36;
+  const vol = runFfmpeg(["-i", file, "-af", "volumedetect", "-f", "null", "-"]);
+  const maxV = Number(((vol.stderr || "") + (vol.stdout || "")).match(/max_volume: (-?[0-9.]+) dB/)?.[1]);
+  if (Number.isFinite(maxV)) noiseDb = Math.round(maxV - 54);
+  const probe = runFfmpeg(["-i", file, "-af", `silencedetect=noise=${noiseDb}dB:d=0.08`, "-f", "null", "-"]);
   const log = (probe.stderr || "") + (probe.stdout || "");
   const starts = [...log.matchAll(/silence_start: ([\d.]+)/g)].map((m) => Number(m[1]));
   const ends = [...log.matchAll(/silence_end: ([\d.]+)/g)].map((m) => Number(m[1]));
   const sil = starts
     .map((s, i) => ({ start: s, end: ends[i] ?? total }))
     .filter((s) => s.end > s.start && s.start > 0.02);
+
+  /* Which script word finishes at this moment, per the recording's own
+   * transcript. Used to decide whether a quiet tail is a consonant. */
+  const wordEndingAt = (t) => {
+    if (!heard || !heard.length) return null;
+    let best = null;
+    for (const w of heard) {
+      if (w.end <= t + 0.08 && (!best || w.end > best.end)) best = w;
+    }
+    if (!best || t - best.end > 0.6) return null;
+    return best.text;
+  };
 
   const spans = [];
   let cursor = 0;
@@ -1203,6 +1329,7 @@ function shapeToSpec(file, lines, heard) {
   }
   if (total - cursor > 0.04) spans.push({ from: cursor, to: total });
   if (!spans.length) return false;
+  if (process.env.AX_TRIM_DEBUG) console.log(`    [spans] noise=${noiseDb}dB total=${total.toFixed(3)} :: ` + spans.map((x) => `${x.from.toFixed(3)}-${x.to.toFixed(3)}`).join(" "));
 
   /* Trim the breath off the end of each span.
    *
@@ -1265,7 +1392,21 @@ function shapeToSpec(file, lines, heard) {
      * quiet-but-not-empty stretch in front of it. Short means consonant: stop
      * there and keep it. Long means breath: carry on through it.
      */
-    const silence = loud * 0.008;        // true room silence, well under the t
+    /* 0.2% of peak, not 0.8%.
+     *
+     * The length test below can only save a consonant the walk-back actually
+     * STOPS at, and a fricative does not hold one level - it decays. Measured
+     * on "That is all it takes.", the final s runs 2.5% of peak, then 0.9%,
+     * then nothing. At a 0.8% floor the walk-back stepped through its tail as
+     * if it were silence, so the s was cut to 40ms where a real one runs 100
+     * to 150ms, and the owner heard "take".
+     *
+     * The earlier fix caught a consonant sitting ABOVE the floor; this is one
+     * fading THROUGH it. These clips are digitally silent between words
+     * (measured 0.0000), so the floor can go this low without room tone
+     * holding the walk-back up, and a breath is still taken by its length.
+     */
+    const silence = loud * 0.002;
     const CONSONANT_MAX = 0.12;          // nothing longer than this is a consonant
     for (const sp of spans) {
       let end = Math.floor(sp.to * SR);
@@ -1274,8 +1415,26 @@ function shapeToSpec(file, lines, heard) {
       // the quiet stretch immediately before: consonant, or breath?
       let quiet = end;
       while (quiet - win > limit && levelAt(quiet - win) < floor) quiet -= win;
+      /* Cut the quiet stretch only when the WORD says nothing quiet is due.
+       *
+       * The old line was `if (quietLen > CONSONANT_MAX) end = quiet`, and it
+       * is the whole of the "it didn't pronounce the last letter" bug: takes
+       * -> take, texts -> tet, week -> wee, Yep -> ye, list -> lis. Every one
+       * of those words sits immediately before a pause, which is exactly
+       * where a span ends and this runs.
+       *
+       * Proved by keeping the raw delivery (--keep-raw) and profiling both:
+       * the s of "takes" is 200ms of real speech at 2-3.5% of peak, the shipped
+       * clip had 40ms of it and then digital silence. The audio was never bad.
+       * We deleted it, because consonant and breath occupy the same level band
+       * and the same durations, so neither a level test nor a length test can
+       * separate them. endsQuiet() asks the script instead. */
       const quietLen = (end - quiet) / SR;
-      if (quietLen > CONSONANT_MAX) end = quiet;   // a breath: take it as well
+      if (quietLen > CONSONANT_MAX && !endsQuiet(wordEndingAt(sp.to))) end = quiet;
+      if (process.env.AX_TRIM_DEBUG) {
+        const dw = wordEndingAt(sp.to);
+        console.log(`    [trim] ${sp.from.toFixed(3)}-${sp.to.toFixed(3)} quiet=${quietLen.toFixed(3)} word="${dw}" keep=${endsQuiet(dw)} newEnd=${(end / SR).toFixed(3)} willTrim=${(sp.to - end / SR) >= 0.20}`);
+      }
       const trimmed = sp.to - end / SR;
       if (trimmed >= MIN_TRIM) sp.to = Math.min(sp.to, end / SR + KEEP_TAIL);
     }
@@ -1290,13 +1449,44 @@ function shapeToSpec(file, lines, heard) {
      * what they always were.
      */
     const MIN_SPAN = 0.12;
+    /* A stop release is a short span too, and it is not a breath.
+     *
+     * This cull is where the consonants were actually going. A word like
+     * "quite" ends in a closure - a moment of near-silence while the tongue
+     * sits on the ridge - and then the t release. The detector reads the
+     * closure as a silence, so the release becomes a span of its OWN, 40 to
+     * 110ms long, which is under MIN_SPAN. The old loop deleted it as "a span
+     * that was only ever a breath", and the child heard "qui".
+     *
+     * Traced with AX_TRIM_DEBUG on "Not quite.":
+     *   [spans] 0.000-0.526  0.618-1.025  1.112-1.209
+     *   [after] 0.000-0.526  0.618-1.025          <- the t, gone
+     * and on "Great catch!", "...password?", "...is weak." the same shape:
+     * one short span at the end of the clip, removed.
+     *
+     * What separates the two cases is the gap in FRONT of the short span. A
+     * breath stands alone inside a real pause. A release sits one closure
+     * behind its own word - 150ms at most - and that word is one that ends in
+     * a quiet consonant. So merge that one back into its word, which restores
+     * the consonant and also removes a micro-pause the spec never asked for.
+     * Anything else is still a breath and still goes, so the pause lengths
+     * already signed off do not move. */
+    const CLOSURE_GAP = 0.15;
     for (let i = spans.length - 1; i >= 0; i--) {
       if (spans[i].to - spans[i].from >= MIN_SPAN) continue;
+      const prev = i > 0 ? spans[i - 1] : null;
+      if (prev && spans[i].from - prev.to <= CLOSURE_GAP && endsQuiet(wordEndingAt(spans[i].to))) {
+        prev.to = spans[i].to;              // the release rejoins its word
+        spans.splice(i, 1);
+        if (i - 1 < sil.length) sil.splice(i - 1, 1);
+        continue;
+      }
       spans.splice(i, 1);
       // sil[i] follows spans[i]; removing the span merges the silence around it
       if (i < sil.length) sil.splice(i, 1);
       else if (sil.length) sil.pop();
     }
+    if (process.env.AX_TRIM_DEBUG) console.log("    [after] :: " + spans.map((x) => `${x.from.toFixed(3)}-${x.to.toFixed(3)}`).join(" "));
     if (spans.length < 1) return false;
   }
 
@@ -1684,7 +1874,7 @@ async function generateBlock(speaker, lines, source, skipRecord) {
 
   // A file named by this exact hash IS this block's recording, so it counts as
   // cached even when an interrupted run never wrote its manifest entry.
-  if (await fileExists(filepath)) {
+  if (await fileExists(filepath) && !(FORCE && !skipRecord)) {
     return { key, filename, cached: true, speaker, blockText, lines };
   }
 
@@ -1761,6 +1951,7 @@ async function generateBlock(speaker, lines, source, skipRecord) {
       // Re-cut the silences to the delivery spec. Leaves the clip exactly as
       // recorded if it cannot do that safely, so a failure here never costs a
       // recording we have already paid for.
+      if (KEEP_RAW) copyFileSync(filepath, `${filepath}.preshape.mp3`);
       shapeToSpec(filepath, lines, await transcribeWords(filepath));
       const buf = await readFile(filepath);
       return {
@@ -1788,6 +1979,14 @@ async function generateBlock(speaker, lines, source, skipRecord) {
   }
 
   throw new Error(`TTS failed for all models. Last error: ${lastError}`);
+}
+
+if (LIST_KEYS) {
+  for (const b of blocks) {
+    const voice = voiceFor(b.speaker, b.source);
+    console.log(`${hashKey(b.speaker, voice.id, joinBlock(b.lines))}.mp3 ${b.source}`);
+  }
+  process.exit(0);
 }
 
 const entries = [];

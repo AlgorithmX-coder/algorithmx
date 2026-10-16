@@ -351,7 +351,7 @@ export const WEEK_1: WeekContent = {
         lines: [
           "Here is the weak spot. A plain word is a word the Raccoon already has on his LIST.",
           "So we mix it up. Big letters, small letters, numbers, and symbols.",
-          "Tiger is a word he knows. A tiger with a capital, a number and a symbol mixed through it is not a word at all.",
+          "Tiger is a word he knows. But put in a capital, a number and a symbol, and it is not a word at all.",
           "Once there is no plain word left inside, he has nothing to look up.",
           "Time to take some weak passwords into the Password Hospital and make them strong.",
         ],
@@ -469,7 +469,7 @@ export const WEEK_1: WeekContent = {
         speaker: "adam",
         lines: [
           "Not true, and you spotted it.",
-          "All small letters is an easy job for him. Add capitals, numbers and symbols and there are so many MORE guesses to make that his machine gives up.",
+          "All small letters is an easy job for him. Add capitals, numbers and symbols. Now there are so many MORE guesses to make that his machine gives up.",
           "[proud] Sharp eyes, Cyber Hero.",
         ],
       },
@@ -489,7 +489,7 @@ export const WEEK_1: WeekContent = {
         lines: [
           "Third power learned. You mix in capitals, numbers and symbols, so no plain word is left inside.",
           "Long, and mixed up. That is a very hard password to crack.",
-          "[warmly] But there is one way he gets a password without cracking anything at all, and it is the thing we most need to talk about.",
+          "[warmly] But there is one way he gets a password without cracking anything at all. That is the thing we most need to talk about.",
         ],
       },
     },
@@ -582,7 +582,7 @@ export const WEEK_1: WeekContent = {
           safeKind: "go",
           choices: [
             { text: "Type it in - it's my own login", isSafe: true, consequence: "Yes. Your own login screen is the one place it belongs. Just check that nobody is watching." },
-            { text: "PAUSE - never type it anywhere", isSafe: false, consequence: "It has to go somewhere, and your own login is exactly where. It is strangers, pop-ups and friends who never get it." },
+            { text: "PAUSE - never type it anywhere", isSafe: false, consequence: "It has to go somewhere, and your own login is exactly where it goes. Strangers, pop-ups and friends never get it." },
           ],
         },
       ],
@@ -829,7 +829,7 @@ export const WEEK_1: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "I will read out something a person did. You tap the dial for the power they used, and the bolt slides into the vault door.",
+          "I will read out something a person did. You tap the dial for the power they used. Then the bolt slides into the vault door.",
           "Then I will tell you why it worked.",
           "[warmly] Four bolts home and the vault is sealed.",
         ],
@@ -922,7 +922,7 @@ export const WEEK_1: WeekContent = {
         correctIndex: 0,
         teachOnWrong: {
           title: "Only a secret code locks it!",
-          explanation: "Hiding a tablet will not stop anyone who finds it, and nor will a house rule. A password is the one thing that actually locks it.",
+          explanation: "Hiding a tablet will not stop someone who finds it. A house rule will not stop them either. A password is the one thing that really locks it.",
         },
         villainRight: {
           slug: "quiz-w1-right-what-1",
@@ -949,7 +949,7 @@ export const WEEK_1: WeekContent = {
         correctIndex: 0,
         teachOnWrong: {
           title: "Long AND different is strong!",
-          explanation: "His robot cracks a short password in a blink, and the same word over and over is just as easy once it spots the pattern. Three DIFFERENT random words give it the most to chew through.",
+          explanation: "A short password? His robot cracks it in a blink. The same word three times? Just as easy, once he spots the pattern. Three DIFFERENT words give him the most to chew through.",
         },
         villainRight: {
           slug: "quiz-w1-right-length-1",
@@ -976,7 +976,7 @@ export const WEEK_1: WeekContent = {
         correctIndex: 0,
         teachOnWrong: {
           title: "Mix in all three!",
-          explanation: "A capital, a number and a symbol mixed all the way through beats one extra stuck on the end. A word plus a year is still mostly that word.",
+          explanation: "One extra thing stuck on the end is not enough. Mix a capital, a number AND a symbol all the way through. A word plus a year is still mostly a word.",
         },
         villainRight: {
           slug: "quiz-w1-right-mix-1",
@@ -1031,7 +1031,7 @@ export const WEEK_1: WeekContent = {
         correctIndex: 0,
         teachOnWrong: {
           title: "Don't pick the obvious!",
-          explanation: "Password with a one on the end, keyboard rows like qwerty, and a hero's name with a birthday year are all near the top of his LIST. The safe one is random words with nothing to do with you.",
+          explanation: "Password with a one on the end. Keyboard rows like qwerty. A hero's name with a birthday year. They are all near the top of his LIST. A safe password is random words that have nothing to do with you.",
         },
         villainRight: {
           slug: "quiz-w1-right-obvious-1",

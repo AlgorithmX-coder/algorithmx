@@ -111,6 +111,27 @@ function closeSentence(text: string): string {
   return /[.!?…]$/.test(t) ? t : t + ".";
 }
 
+/* Weeks whose quiz read-out uses the FLOWING phrasing.
+ *
+ * The old read-out put each option lead on its own line and ended it with an
+ * ellipsis: "Is it option A..." then a new line for the answer. That is two
+ * marks in a row - a 0.55s trail and a 0.65s sentence stop - so the voice
+ * said "Is it option A" and then stopped dead before reading the option.
+ * Owner, 2026-10-16: "there was a break after option, then a break, and then
+ * it said A."
+ *
+ * The fix is one line per option with a comma: "Is it option A, hedgehog-
+ * hedgehog-hedgehog." A comma is a 0.22s beat, and the stop between whole
+ * options stays, which is the pause that was actually wanted.
+ *
+ * It is per-week ON PURPOSE. Changing the phrasing changes the text, which
+ * changes the clip hash, which orphans the clip. A global change plus a
+ * week-scoped re-record would leave nineteen weeks with no clip at all and
+ * drop them onto the browser's robot voice with a green build - exactly the
+ * regression in PR #539. A week joins this set in the same commit that
+ * re-records it. KEEP IDENTICAL in QuizBoss.tsx and the generator. */
+export const FLOWING_ASK_WEEKS = new Set([1]);
+
 /** Same-every-week how-to line (the whole format IS the instruction). */
 const HOW_TO_PLAY = "Tap the right answer to beat him!";
 
@@ -280,16 +301,19 @@ export default function QuizBoss({ quiz, onEnd, onQuestionAnswered }: QuizBossPr
     }
     ordered.forEach((o, i) => {
       const last = i === ordered.length - 1;
+      const flowing = FLOWING_ASK_WEEKS.has(week ?? 0);
+      const tail = flowing ? "," : "...";
       const lead = i === 0
-        ? `Is it option ${OPTION_LETTERS[i]}...`
+        ? `Is it option ${OPTION_LETTERS[i]}${tail}`
         : last
-          ? `Or is it option ${OPTION_LETTERS[i]}...`
-          : `Option ${OPTION_LETTERS[i]}...`;
+          ? `Or is it option ${OPTION_LETTERS[i]}${tail}`
+          : `Option ${OPTION_LETTERS[i]}${tail}`;
       // An option is authored without a full stop (272 of 303 are), and the
       // whole ask is ONE clip, so the voice ran option A straight into "Or is
       // it option B" with no pause (UAT W10 6c). Close each option as a
       // sentence for the reader; the label on screen is untouched.
-      lines.push(lead, closeSentence(o.text));
+      if (flowing) lines.push(`${lead} ${closeSentence(o.text)}`);
+      else lines.push(lead, closeSentence(o.text));
     });
     lines.push("So, what do you think?");
     return lines;
