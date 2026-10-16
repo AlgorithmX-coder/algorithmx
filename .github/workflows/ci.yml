@@ -48,6 +48,30 @@ jobs:
       - run: git fetch --depth=1 origin "${{ github.base_ref || 'main' }}"
       - run: node scripts/audit-manifest-covers-course.mjs --base=FETCH_HEAD
 
+      # Every line the product SPEAKS has a clip.
+      #
+      # The audit above compares week totals against the base, so it catches a
+      # week collapsing. It does not catch a few lines per week going missing,
+      # and that is the easy mistake to make: edit a shared spoken-line builder
+      # (the boss read-out, a verdict lead) and every week's text changes, so
+      # every hash changes, so every clip is orphaned. Four lines a week is far
+      # under any percentage threshold and lands on the robot voice anyway.
+      #
+      # --check resolves every block the way the runtime does and exits 1 if a
+      # single one has no recording. No API calls, no credits - it only looks
+      # for files that should already be in the repo.
+      - run: node scripts/elevenlabs-generate-narration.mjs --check
+
+      # Every clip still says its last letter. Our own shaping used to delete
+      # word-final consonants ("takes" -> "take"), silently, on 1,020 clips.
+      #
+      # Scoped to the weeks that have been brought up to standard, and it is a
+      # RATCHET: add a week here in the same PR that re-records it, and from
+      # then on that week can never regress. Unscoped it would fail on the
+      # nineteen weeks still waiting their turn, block every PR, and get
+      # switched off within a day - which is how this kind of check dies.
+      - run: node scripts/audit-consonant-integrity.mjs --weeks=1
+
   # ────────────────────────────────────────────────────────────
   # End-to-end tests against a real production build.  Slower than
   # the static job (production build + browser launch) so it runs

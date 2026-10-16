@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-15T14:35:46.605Z",
+  "generatedAt": "2026-10-16T11:33:40.003Z",
   "model": "eleven_v4",
   "voiceSettings": {
     "stability": 0.6,
@@ -425,18 +425,18 @@
       "file": "/audio/voice/8af8e6aefb83ef82.mp3"
     },
     {
-      "key": "877f3c27be4c5572",
+      "key": "64347c738fe9ae5e",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "Here is the weak spot. A plain word is a word the Raccoon already has on his LIST. So we mix it up. Big letters, small letters, numbers, and symbols. Tiger is a word he knows. A tiger with a capital, a number and a symbol mixed through it is not a word at all. Once there is no plain word left inside, he has nothing to look up. Time to take some weak passwords into the Password Hospital and make them strong.",
+      "text": "Here is the weak spot. A plain word is a word the Raccoon already has on his LIST. So we mix it up. Big letters, small letters, numbers, and symbols. Tiger is a word he knows. But put in a capital, a number and a symbol, and it is not a word at all. Once there is no plain word left inside, he has nothing to look up. Time to take some weak passwords into the Password Hospital and make them strong.",
       "lines": [
         "Here is the weak spot. A plain word is a word the Raccoon already has on his LIST.",
         "So we mix it up. Big letters, small letters, numbers, and symbols.",
-        "Tiger is a word he knows. A tiger with a capital, a number and a symbol mixed through it is not a word at all.",
+        "Tiger is a word he knows. But put in a capital, a number and a symbol, and it is not a word at all.",
         "Once there is no plain word left inside, he has nothing to look up.",
         "Time to take some weak passwords into the Password Hospital and make them strong."
       ],
-      "file": "/audio/voice/877f3c27be4c5572.mp3"
+      "file": "/audio/voice/64347c738fe9ae5e.mp3"
     },
     {
       "key": "6194577c56c8f0fa",
@@ -472,28 +472,28 @@
       "file": "/audio/voice/434abd24c4fba7ee.mp3"
     },
     {
-      "key": "87b5d209f888dc57",
+      "key": "86453bcadfface71",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "Not true, and you spotted it. All small letters is an easy job for him. Add capitals, numbers and symbols and there are so many MORE guesses to make that his machine gives up. [proud] Sharp eyes, Cyber Hero.",
+      "text": "Not true, and you spotted it. All small letters is an easy job for him. Add capitals, numbers and symbols. Now there are so many MORE guesses to make that his machine gives up. [proud] Sharp eyes, Cyber Hero.",
       "lines": [
         "Not true, and you spotted it.",
-        "All small letters is an easy job for him. Add capitals, numbers and symbols and there are so many MORE guesses to make that his machine gives up.",
+        "All small letters is an easy job for him. Add capitals, numbers and symbols. Now there are so many MORE guesses to make that his machine gives up.",
         "[proud] Sharp eyes, Cyber Hero."
       ],
-      "file": "/audio/voice/87b5d209f888dc57.mp3"
+      "file": "/audio/voice/86453bcadfface71.mp3"
     },
     {
-      "key": "c5bf1515b34d04dc",
+      "key": "a9a6f68a247ec879",
       "speaker": "layla",
       "voice": "Emma (Kids Educator)",
-      "text": "Third power learned. You mix in capitals, numbers and symbols, so no plain word is left inside. Long, and mixed up. That is a very hard password to crack. [warmly] But there is one way he gets a password without cracking anything at all, and it is the thing we most need to talk about.",
+      "text": "Third power learned. You mix in capitals, numbers and symbols, so no plain word is left inside. Long, and mixed up. That is a very hard password to crack. [warmly] But there is one way he gets a password without cracking anything at all. That is the thing we most need to talk about.",
       "lines": [
         "Third power learned. You mix in capitals, numbers and symbols, so no plain word is left inside.",
         "Long, and mixed up. That is a very hard password to crack.",
-        "[warmly] But there is one way he gets a password without cracking anything at all, and it is the thing we most need to talk about."
+        "[warmly] But there is one way he gets a password without cracking anything at all. That is the thing we most need to talk about."
       ],
-      "file": "/audio/voice/c5bf1515b34d04dc.mp3"
+      "file": "/audio/voice/a9a6f68a247ec879.mp3"
     },
     {
       "key": "ba5844dfbffe2da7",
@@ -630,16 +630,16 @@
       "file": "/audio/voice/4223fa32d398772a.mp3"
     },
     {
-      "key": "41398721934943a4",
+      "key": "5404f38a3ace7b8d",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "I will read out something a person did. You tap the dial for the power they used, and the bolt slides into the vault door. Then I will tell you why it worked. [warmly] Four bolts home and the vault is sealed.",
+      "text": "I will read out something a person did. You tap the dial for the power they used. Then the bolt slides into the vault door. Then I will tell you why it worked. [warmly] Four bolts home and the vault is sealed.",
       "lines": [
-        "I will read out something a person did. You tap the dial for the power they used, and the bolt slides into the vault door.",
+        "I will read out something a person did. You tap the dial for the power they used. Then the bolt slides into the vault door.",
         "Then I will tell you why it worked.",
         "[warmly] Four bolts home and the vault is sealed."
       ],
-      "file": "/audio/voice/41398721934943a4.mp3"
+      "file": "/audio/voice/5404f38a3ace7b8d.mp3"
     },
     {
       "key": "0f9d8165ce76e73d",
@@ -809,14 +809,14 @@
       "file": "/audio/voice/d7ce597174021e4a.mp3"
     },
     {
-      "key": "2bbbce889848753f",
+      "key": "00ff9d0085f5bc0c",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "It has to go somewhere, and your own login is exactly where. It is strangers, pop-ups and friends who never get it.",
+      "text": "It has to go somewhere, and your own login is exactly where it goes. Strangers, pop-ups and friends never get it.",
       "lines": [
-        "It has to go somewhere, and your own login is exactly where. It is strangers, pop-ups and friends who never get it."
+        "It has to go somewhere, and your own login is exactly where it goes. Strangers, pop-ups and friends never get it."
       ],
-      "file": "/audio/voice/2bbbce889848753f.mp3"
+      "file": "/audio/voice/00ff9d0085f5bc0c.mp3"
     },
     {
       "key": "85a48d44b46668d4",
@@ -1173,21 +1173,18 @@
       "file": "/audio/voice/c5c91028d7ddb168.mp3"
     },
     {
-      "key": "ae55306aa50ac28f",
+      "key": "bd3c62a5707327ff",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "Adam left his tablet on the bus seat. What actually keeps his stuff safe? Is it option A... A secret code only he knows. Option B... Keeping it in a secret hiding spot. Or is it option C... Only using it in his own room. So, what do you think?",
+      "text": "Adam left his tablet on the bus seat. What actually keeps his stuff safe? Is it option A, A secret code only he knows. Option B, Keeping it in a secret hiding spot. Or is it option C, Only using it in his own room. So, what do you think?",
       "lines": [
         "Adam left his tablet on the bus seat. What actually keeps his stuff safe?",
-        "Is it option A...",
-        "A secret code only he knows.",
-        "Option B...",
-        "Keeping it in a secret hiding spot.",
-        "Or is it option C...",
-        "Only using it in his own room.",
+        "Is it option A, A secret code only he knows.",
+        "Option B, Keeping it in a secret hiding spot.",
+        "Or is it option C, Only using it in his own room.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/ae55306aa50ac28f.mp3"
+      "file": "/audio/voice/bd3c62a5707327ff.mp3"
     },
     {
       "key": "3cd8bae2860923b9",
@@ -1214,21 +1211,18 @@
       "file": "/audio/voice/9a0c2ea92a0c6132.mp3"
     },
     {
-      "key": "9f42b27581d7b21e",
+      "key": "7192f363cb636df3",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "A website says: type your password here and we will tell you how strong it is! What do you do? Is it option A... Keep it secret. Option B... Type it in to get the free reward. Or is it option C... Tell only your best friend. So, what do you think?",
+      "text": "A website says: type your password here and we will tell you how strong it is! What do you do? Is it option A, Keep it secret. Option B, Type it in to get the free reward. Or is it option C, Tell only your best friend. So, what do you think?",
       "lines": [
         "A website says: type your password here and we will tell you how strong it is! What do you do?",
-        "Is it option A...",
-        "Keep it secret.",
-        "Option B...",
-        "Type it in to get the free reward.",
-        "Or is it option C...",
-        "Tell only your best friend.",
+        "Is it option A, Keep it secret.",
+        "Option B, Type it in to get the free reward.",
+        "Or is it option C, Tell only your best friend.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/9f42b27581d7b21e.mp3"
+      "file": "/audio/voice/7192f363cb636df3.mp3"
     },
     {
       "key": "bfdd194284da9d5d",
@@ -1243,70 +1237,70 @@
       "file": "/audio/voice/bfdd194284da9d5d.mp3"
     },
     {
-      "key": "885f1ea8a0bffaad",
+      "key": "85d0a7caa27c6701",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "That's right! Hiding a tablet will not stop anyone who finds it, and nor will a house rule. A password is the one thing that actually locks it.",
+      "text": "That's right! Hiding a tablet will not stop someone who finds it. A house rule will not stop them either. A password is the one thing that really locks it.",
       "lines": [
         "That's right!",
-        "Hiding a tablet will not stop anyone who finds it, and nor will a house rule. A password is the one thing that actually locks it."
+        "Hiding a tablet will not stop someone who finds it. A house rule will not stop them either. A password is the one thing that really locks it."
       ],
-      "file": "/audio/voice/885f1ea8a0bffaad.mp3"
+      "file": "/audio/voice/85d0a7caa27c6701.mp3"
     },
     {
-      "key": "c132e3b7b77899dc",
+      "key": "a49e34fb01ecd408",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "Not quite. Hiding a tablet will not stop anyone who finds it, and nor will a house rule. A password is the one thing that actually locks it.",
+      "text": "Not quite. Hiding a tablet will not stop someone who finds it. A house rule will not stop them either. A password is the one thing that really locks it.",
       "lines": [
         "Not quite.",
-        "Hiding a tablet will not stop anyone who finds it, and nor will a house rule. A password is the one thing that actually locks it."
+        "Hiding a tablet will not stop someone who finds it. A house rule will not stop them either. A password is the one thing that really locks it."
       ],
-      "file": "/audio/voice/c132e3b7b77899dc.mp3"
+      "file": "/audio/voice/a49e34fb01ecd408.mp3"
     },
     {
-      "key": "af71eeb1d3b49968",
+      "key": "f5bd5235cc796d14",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "That's right! His robot cracks a short password in a blink, and the same word over and over is just as easy once it spots the pattern. Three DIFFERENT random words give it the most to chew through.",
+      "text": "That's right! A short password? His robot cracks it in a blink. The same word three times? Just as easy, once he spots the pattern. Three DIFFERENT words give him the most to chew through.",
       "lines": [
         "That's right!",
-        "His robot cracks a short password in a blink, and the same word over and over is just as easy once it spots the pattern. Three DIFFERENT random words give it the most to chew through."
+        "A short password? His robot cracks it in a blink. The same word three times? Just as easy, once he spots the pattern. Three DIFFERENT words give him the most to chew through."
       ],
-      "file": "/audio/voice/af71eeb1d3b49968.mp3"
+      "file": "/audio/voice/f5bd5235cc796d14.mp3"
     },
     {
-      "key": "e44785a98ba6f741",
+      "key": "bbb6779a790127b3",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "Not quite. His robot cracks a short password in a blink, and the same word over and over is just as easy once it spots the pattern. Three DIFFERENT random words give it the most to chew through.",
+      "text": "Not quite. A short password? His robot cracks it in a blink. The same word three times? Just as easy, once he spots the pattern. Three DIFFERENT words give him the most to chew through.",
       "lines": [
         "Not quite.",
-        "His robot cracks a short password in a blink, and the same word over and over is just as easy once it spots the pattern. Three DIFFERENT random words give it the most to chew through."
+        "A short password? His robot cracks it in a blink. The same word three times? Just as easy, once he spots the pattern. Three DIFFERENT words give him the most to chew through."
       ],
-      "file": "/audio/voice/e44785a98ba6f741.mp3"
+      "file": "/audio/voice/bbb6779a790127b3.mp3"
     },
     {
-      "key": "dadacff42e4fcb58",
+      "key": "f0c73af8375b69df",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "That's right! A capital, a number and a symbol mixed all the way through beats one extra stuck on the end. A word plus a year is still mostly that word.",
+      "text": "That's right! One extra thing stuck on the end is not enough. Mix a capital, a number AND a symbol all the way through. A word plus a year is still mostly a word.",
       "lines": [
         "That's right!",
-        "A capital, a number and a symbol mixed all the way through beats one extra stuck on the end. A word plus a year is still mostly that word."
+        "One extra thing stuck on the end is not enough. Mix a capital, a number AND a symbol all the way through. A word plus a year is still mostly a word."
       ],
-      "file": "/audio/voice/dadacff42e4fcb58.mp3"
+      "file": "/audio/voice/f0c73af8375b69df.mp3"
     },
     {
-      "key": "80e535c3a93ceb9f",
+      "key": "3db9838b23cffe9d",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "Not quite. A capital, a number and a symbol mixed all the way through beats one extra stuck on the end. A word plus a year is still mostly that word.",
+      "text": "Not quite. One extra thing stuck on the end is not enough. Mix a capital, a number AND a symbol all the way through. A word plus a year is still mostly a word.",
       "lines": [
         "Not quite.",
-        "A capital, a number and a symbol mixed all the way through beats one extra stuck on the end. A word plus a year is still mostly that word."
+        "One extra thing stuck on the end is not enough. Mix a capital, a number AND a symbol all the way through. A word plus a year is still mostly a word."
       ],
-      "file": "/audio/voice/80e535c3a93ceb9f.mp3"
+      "file": "/audio/voice/3db9838b23cffe9d.mp3"
     },
     {
       "key": "56f9e3f3bc25ed0a",
@@ -1331,26 +1325,26 @@
       "file": "/audio/voice/8a84141fd30813d2.mp3"
     },
     {
-      "key": "71caabc1d357491f",
+      "key": "ab71bda83b1c2d9c",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "That's right! Password with a one on the end, keyboard rows like qwerty, and a hero's name with a birthday year are all near the top of his LIST. The safe one is random words with nothing to do with you.",
+      "text": "That's right! Password with a one on the end. Keyboard rows like qwerty. A hero's name with a birthday year. They are all near the top of his LIST. A safe password is random words that have nothing to do with you.",
       "lines": [
         "That's right!",
-        "Password with a one on the end, keyboard rows like qwerty, and a hero's name with a birthday year are all near the top of his LIST. The safe one is random words with nothing to do with you."
+        "Password with a one on the end. Keyboard rows like qwerty. A hero's name with a birthday year. They are all near the top of his LIST. A safe password is random words that have nothing to do with you."
       ],
-      "file": "/audio/voice/71caabc1d357491f.mp3"
+      "file": "/audio/voice/ab71bda83b1c2d9c.mp3"
     },
     {
-      "key": "37e192342c1a588f",
+      "key": "e0cd6f555950b8d6",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "Not quite. Password with a one on the end, keyboard rows like qwerty, and a hero's name with a birthday year are all near the top of his LIST. The safe one is random words with nothing to do with you.",
+      "text": "Not quite. Password with a one on the end. Keyboard rows like qwerty. A hero's name with a birthday year. They are all near the top of his LIST. A safe password is random words that have nothing to do with you.",
       "lines": [
         "Not quite.",
-        "Password with a one on the end, keyboard rows like qwerty, and a hero's name with a birthday year are all near the top of his LIST. The safe one is random words with nothing to do with you."
+        "Password with a one on the end. Keyboard rows like qwerty. A hero's name with a birthday year. They are all near the top of his LIST. A safe password is random words that have nothing to do with you."
       ],
-      "file": "/audio/voice/37e192342c1a588f.mp3"
+      "file": "/audio/voice/e0cd6f555950b8d6.mp3"
     },
     {
       "key": "0a7551585be2fcac",
@@ -1763,34 +1757,34 @@
       "file": "/audio/voice/e9d7084564938e8e.mp3"
     },
     {
-      "key": "f95bed6c20aa09c5",
+      "key": "377aeac90bbae0cf",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "Hiding a tablet will not stop anyone who finds it, and nor will a house rule. A password is the one thing that actually locks it.",
+      "text": "Hiding a tablet will not stop someone who finds it. A house rule will not stop them either. A password is the one thing that really locks it.",
       "lines": [
-        "Hiding a tablet will not stop anyone who finds it, and nor will a house rule. A password is the one thing that actually locks it."
+        "Hiding a tablet will not stop someone who finds it. A house rule will not stop them either. A password is the one thing that really locks it."
       ],
-      "file": "/audio/voice/f95bed6c20aa09c5.mp3"
+      "file": "/audio/voice/377aeac90bbae0cf.mp3"
     },
     {
-      "key": "a02da0c5d6ca18cd",
+      "key": "b4f14d1785fb0a99",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "His robot cracks a short password in a blink, and the same word over and over is just as easy once it spots the pattern. Three DIFFERENT random words give it the most to chew through.",
+      "text": "A short password? His robot cracks it in a blink. The same word three times? Just as easy, once he spots the pattern. Three DIFFERENT words give him the most to chew through.",
       "lines": [
-        "His robot cracks a short password in a blink, and the same word over and over is just as easy once it spots the pattern. Three DIFFERENT random words give it the most to chew through."
+        "A short password? His robot cracks it in a blink. The same word three times? Just as easy, once he spots the pattern. Three DIFFERENT words give him the most to chew through."
       ],
-      "file": "/audio/voice/a02da0c5d6ca18cd.mp3"
+      "file": "/audio/voice/b4f14d1785fb0a99.mp3"
     },
     {
-      "key": "5bdbe4a08eaf94d7",
+      "key": "4212c71fbd6aad0b",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "A capital, a number and a symbol mixed all the way through beats one extra stuck on the end. A word plus a year is still mostly that word.",
+      "text": "One extra thing stuck on the end is not enough. Mix a capital, a number AND a symbol all the way through. A word plus a year is still mostly a word.",
       "lines": [
-        "A capital, a number and a symbol mixed all the way through beats one extra stuck on the end. A word plus a year is still mostly that word."
+        "One extra thing stuck on the end is not enough. Mix a capital, a number AND a symbol all the way through. A word plus a year is still mostly a word."
       ],
-      "file": "/audio/voice/5bdbe4a08eaf94d7.mp3"
+      "file": "/audio/voice/4212c71fbd6aad0b.mp3"
     },
     {
       "key": "7b95a72cfa50d70e",
@@ -1803,14 +1797,14 @@
       "file": "/audio/voice/7b95a72cfa50d70e.mp3"
     },
     {
-      "key": "a32b261f7d04e6e1",
+      "key": "60f9fb8d9a4e616f",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "Password with a one on the end, keyboard rows like qwerty, and a hero's name with a birthday year are all near the top of his LIST. The safe one is random words with nothing to do with you.",
+      "text": "Password with a one on the end. Keyboard rows like qwerty. A hero's name with a birthday year. They are all near the top of his LIST. A safe password is random words that have nothing to do with you.",
       "lines": [
-        "Password with a one on the end, keyboard rows like qwerty, and a hero's name with a birthday year are all near the top of his LIST. The safe one is random words with nothing to do with you."
+        "Password with a one on the end. Keyboard rows like qwerty. A hero's name with a birthday year. They are all near the top of his LIST. A safe password is random words that have nothing to do with you."
       ],
-      "file": "/audio/voice/a32b261f7d04e6e1.mp3"
+      "file": "/audio/voice/60f9fb8d9a4e616f.mp3"
     },
     {
       "key": "20be5cd5e334326f",
@@ -41067,15 +41061,15 @@
       "file": "/audio/voice/bd7f4aeb2136f847.mp3"
     },
     {
-      "key": "2268650b050aa5c4",
+      "key": "7490856c0b32fec5",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "Not quite. It has to go somewhere, and your own login is exactly where. It is strangers, pop-ups and friends who never get it.",
+      "text": "Not quite. It has to go somewhere, and your own login is exactly where it goes. Strangers, pop-ups and friends never get it.",
       "lines": [
         "Not quite.",
-        "It has to go somewhere, and your own login is exactly where. It is strangers, pop-ups and friends who never get it."
+        "It has to go somewhere, and your own login is exactly where it goes. Strangers, pop-ups and friends never get it."
       ],
-      "file": "/audio/voice/2268650b050aa5c4.mp3"
+      "file": "/audio/voice/7490856c0b32fec5.mp3"
     },
     {
       "key": "1149254118082cb5",
