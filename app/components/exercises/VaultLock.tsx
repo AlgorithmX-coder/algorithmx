@@ -86,11 +86,30 @@ function VaultDoor({
 }) {
   const completed = phase === "complete";
 
+  /* The dial leaves once the vault is open.
+   *
+   * Owner, 2026-10-16: "once the vault is opened completely, remove it from
+   * the screen." It was a 160px ring spinning forever next to a door that
+   * was already open, and as the result content grew underneath it the ring
+   * ended up stranded in the bottom right corner. The unlock flourish is
+   * worth watching, so it plays first (vaultLockSwap, 0.8s) and the dial
+   * then fades and leaves the layout. The status pill carries the state
+   * from there, which is all the child needs once it is open. */
+  const [dialGone, setDialGone] = useState(false);
+  useEffect(() => {
+    if (!completed) { setDialGone(false); return; }
+    const reduced = typeof window !== "undefined"
+      && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    if (reduced) { setDialGone(true); return; }
+    const t = setTimeout(() => setDialGone(true), 1100);
+    return () => clearTimeout(t);
+  }, [completed]);
+
   const status =
     phase === "complete"
-      ? { text: "VAULT OPENED 🔓", color: "#7eff97", bg: "rgba(168,227,187,0.12)" }
+      ? { text: "VAULT OPENED", color: "#7eff97", bg: "rgba(168,227,187,0.12)" }
       : phase === "intro"
-        ? { text: "LOCKED 🔒", color: "#ef4444", bg: "rgba(239,68,68,0.12)" }
+        ? { text: "LOCKED", color: "#ef4444", bg: "rgba(239,68,68,0.12)" }
         : { text: "UNLOCKING…", color: "#f97316", bg: "rgba(249,115,22,0.12)" };
 
   return (
@@ -111,6 +130,7 @@ function VaultDoor({
         {status.text}
       </span>
 
+      {!dialGone && (
       <div
         key={`vault-${pulseKey}-${completed ? "c" : "o"}`}
         style={{
@@ -118,6 +138,9 @@ function VaultDoor({
           width: 160,
           height: 160,
           animation: pulseKey > 0 ? "vaultRingPulse 0.6s ease-out" : undefined,
+          opacity: completed ? 0 : 1,
+          transform: completed ? "scale(0.92)" : "none",
+          transition: "opacity 0.45s ease 0.65s, transform 0.45s ease 0.65s",
         }}
       >
         {/* Rotating conic ring */}
@@ -160,6 +183,7 @@ function VaultDoor({
           </span>
         </div>
       </div>
+      )}
 
       {/* Security level segments */}
       <div
