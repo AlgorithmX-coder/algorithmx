@@ -590,13 +590,18 @@ export default function InfoNarration({
         display: "flex",
         gap: 12,
         alignItems: "flex-start",
-        padding: 14,
+        /* Tightened from 14/16 so a Learn card fits its window without the
+         * stage shrinking the whole board. At the owner's 1414x771 that card
+         * measured 874px natural and was scaled to 0.69, so authored 15px type
+         * landed at about 10px and read as small. Height reclaimed here is
+         * spent on the words being readable rather than on whitespace. */
+        padding: 11,
         // See `onLight`: dark navy is right on the lesson's dark screens and
         // wrong inside a cream verdict card (UAT W14 5a).
         background: onLight ? "rgba(255, 252, 244, 0.72)" : "rgba(15, 21, 48, 0.65)",
         border: `1px solid ${A}${onLight ? "66" : "40"}`,
         borderRadius: 14,
-        marginBottom: 16,
+        marginBottom: 11,
       }}
     >
       <div
@@ -666,8 +671,8 @@ export default function InfoNarration({
             color: onLight ? "#4a3a22" : "#e7ecff",
             fontFamily:
               "ui-rounded, 'Fredoka', 'Quicksand', system-ui, -apple-system, sans-serif",
-            fontSize: 14,
-            lineHeight: 1.4,
+            fontSize: 15,
+            lineHeight: 1.28,
           }}
         >
           {lines.map((l, i) => (

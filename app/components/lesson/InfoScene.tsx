@@ -166,8 +166,18 @@ export default function InfoScene({
           // losing padding costs nothing, shrinking the type costs a child
           // their reading. 18+26+28 -> 10+14+16 frees 32px, more than the worst
           // overflow measured.
-          margin: shortViewport ? 10 : 18,
-          padding: shortViewport ? "14px 20px 16px" : "26px 26px 28px",
+          /* The roomy branch was still too roomy on an ordinary laptop. The
+           * tightening above only applies under 640px, but the owner's window
+           * is 771px, where this card measured 874px natural and the stage
+           * shrank the WHOLE board to 0.69 to fit - so authored 15px type
+           * rendered at about 10px and the owner asked for bigger text.
+           *
+           * Height taken back from padding and gaps raises the fit instead,
+           * which makes every word on the card bigger at once. Same trade as
+           * the note above: losing padding costs nothing, shrinking the type
+           * costs a child their reading. */
+          margin: shortViewport ? 10 : 14,
+          padding: shortViewport ? "14px 20px 16px" : "18px 24px 20px",
           borderRadius: 22,
           // World weeks: a more translucent console so the week's scene shows
           // through the panel, not only at its edges (copy stays on the
@@ -196,7 +206,7 @@ export default function InfoScene({
         {/* Emblem + sparkles + LEARN kicker + title. Above the decoration:
             once the emblem's entrance settles it is a plain block, and the
             absolutely-positioned decoration painted over it (UAT W5 3a). */}
-        <div style={{ position: "relative", zIndex: 1, textAlign: "center", marginBottom: shortViewport ? 10 : 16 }}>
+        <div style={{ position: "relative", zIndex: 1, textAlign: "center", marginBottom: shortViewport ? 10 : 10 }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 14 }}>
             <span aria-hidden style={{ color: gold, fontSize: 14, opacity: 0.85, textShadow: `0 0 10px ${gold}99` }}>✦</span>
             <motion.div
@@ -215,7 +225,7 @@ export default function InfoScene({
             </motion.div>
             <span aria-hidden style={{ color: gold, fontSize: 14, opacity: 0.85, textShadow: `0 0 10px ${gold}99` }}>✦</span>
           </div>
-          <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 11, fontWeight: 800, letterSpacing: "0.24em", textTransform: "uppercase", color: themeAccent ?? "#9fe9ff", margin: shortViewport ? "6px 0 4px" : "12px 0 6px" }}>
+          <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 11, fontWeight: 800, letterSpacing: "0.24em", textTransform: "uppercase", color: themeAccent ?? "#9fe9ff", margin: shortViewport ? "6px 0 4px" : "7px 0 5px" }}>
             {conceptNumber && conceptTotal
               ? `◇ Power ${conceptNumber} of ${conceptTotal} · Learn ◇`
               : "◇ Learn ◇"}
@@ -248,7 +258,7 @@ export default function InfoScene({
 
         {/* Content fallback (only when no narration) */}
         {!narration && content && (
-          <p style={{ color: "#cbd5e1", fontSize: 16, lineHeight: 1.65, textAlign: "center", maxWidth: 620, margin: shortViewport ? "8px auto 12px" : "14px auto 22px" }}>
+          <p style={{ color: "#cbd5e1", fontSize: 16, lineHeight: 1.65, textAlign: "center", maxWidth: 620, margin: shortViewport ? "8px auto 12px" : "10px auto 14px" }}>
             {content}
           </p>
         )}
@@ -257,7 +267,7 @@ export default function InfoScene({
             each one; lighting all of them unlocks the advance. */}
         {bullets && (
           <>
-            <div style={{ textAlign: "center", fontFamily: "'Space Grotesk', sans-serif", fontSize: 11.5, fontWeight: 800, letterSpacing: "0.18em", color: "#9fe9ff", margin: shortViewport ? "2px 0 6px" : "2px 0 10px" }}>
+            <div style={{ textAlign: "center", fontFamily: "'Space Grotesk', sans-serif", fontSize: 11.5, fontWeight: 800, letterSpacing: "0.18em", color: "#9fe9ff", margin: shortViewport ? "2px 0 6px" : "2px 0 7px" }}>
               <PixIcon emoji="👆" size={15} style={{ verticalAlign: "-3px", marginRight: 4 }} />TAP EACH CLUE TO POWER IT UP · {Math.min(lit.size, total)} / {total}
             </div>
             {/* Two-up on a short window. Five clue rows stacked are ~355px of
@@ -267,7 +277,7 @@ export default function InfoScene({
                 The fit alone cannot rescue that: it would have to go to 0.45,
                 which puts body text under 8px for a six-year-old. Untouched at
                 or above STAGE_FIT_HEIGHT. */}
-            <div style={{ display: "grid", gridTemplateColumns: shortViewport ? "1fr 1fr" : "1fr", gap: shortViewport ? 8 : 11, maxWidth: 600, margin: shortViewport ? "0 auto 12px" : "0 auto 22px" }}>
+            <div style={{ display: "grid", gridTemplateColumns: shortViewport ? "1fr 1fr" : "1fr", gap: shortViewport ? 8 : 9, maxWidth: 600, margin: shortViewport ? "0 auto 12px" : "0 auto 12px" }}>
               {bullets.map((b, i) => {
                 const accent = themeAccent ?? ROW_COLOURS[i % ROW_COLOURS.length];
                 const icon = bulletIcons?.[i];
@@ -304,7 +314,7 @@ export default function InfoScene({
                     data-nudge={nudgeNonce}
                     style={{
                       display: "flex", alignItems: "center", gap: 13, width: "100%",
-                      padding: "12px 14px 12px 13px", borderRadius: 999,
+                      padding: "9px 14px 9px 13px", borderRadius: 999,
                       cursor: on ? "default" : "pointer", touchAction: "manipulation",
                       fontFamily: "inherit", textAlign: "left",
                       // The clue sits on an OPAQUE base, with the accent tint
