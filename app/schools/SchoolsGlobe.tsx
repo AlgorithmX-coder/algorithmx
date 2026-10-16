@@ -704,7 +704,10 @@ export default function SchoolsGlobe({ tone = "night" }: { tone?: "night" | "san
     };
 
     // Tone-aware continent / Britain dot colours (drawn as batched round paths).
-    const LAND_DOT = onSand ? "rgb(47,96,120)" : "rgb(120,196,255)";
+    /* Owner pick 2026-10-16: /schools globe reads as a real Earth on the sand
+       page - green land dots over a blue ocean, Britain still gold as the
+       source ("Vivid Earth", palette 7 of the 10-way board). */
+    const LAND_DOT = onSand ? "rgb(84,166,92)" : "rgb(120,196,255)";
     const UK_DOT = onSand ? "rgb(182,120,24)" : "rgb(255,206,130)";
 
     const build = () => {
@@ -1183,12 +1186,12 @@ export default function SchoolsGlobe({ tone = "night" }: { tone?: "night" | "san
       const Ro = R * 1.4;
       const f = R / Ro; // where the sphere edge falls inside the halo
       const halo = ctx.createRadialGradient(cx, cy, R * 0.55, cx, cy, Ro);
-      halo.addColorStop(0, onSand ? "rgba(10,112,133,0)" : "rgba(110,210,255,0)");
-      halo.addColorStop(Math.max(0, f - 0.05), onSand ? "rgba(10,112,133,0)" : "rgba(110,210,255,0)");
-      halo.addColorStop(f + 0.008, onSand ? "rgba(10,112,133,0.28)" : "rgba(132,228,255,0.55)");
-      halo.addColorStop(f + 0.06, onSand ? "rgba(10,112,133,0.12)" : "rgba(100,188,255,0.24)");
-      halo.addColorStop(f + 0.15, onSand ? "rgba(10,112,133,0.04)" : "rgba(80,152,255,0.08)");
-      halo.addColorStop(1, onSand ? "rgba(10,112,133,0)" : "rgba(80,152,255,0)");
+      halo.addColorStop(0, onSand ? "rgba(70,146,212,0)" : "rgba(110,210,255,0)");
+      halo.addColorStop(Math.max(0, f - 0.05), onSand ? "rgba(70,146,212,0)" : "rgba(110,210,255,0)");
+      halo.addColorStop(f + 0.008, onSand ? "rgba(70,146,212,0.28)" : "rgba(132,228,255,0.55)");
+      halo.addColorStop(f + 0.06, onSand ? "rgba(70,146,212,0.12)" : "rgba(100,188,255,0.24)");
+      halo.addColorStop(f + 0.15, onSand ? "rgba(70,146,212,0.04)" : "rgba(80,152,255,0.08)");
+      halo.addColorStop(1, onSand ? "rgba(70,146,212,0)" : "rgba(80,152,255,0)");
       ctx.fillStyle = halo;
       ctx.beginPath();
       ctx.arc(cx, cy, Ro, 0, Math.PI * 2);
@@ -1201,9 +1204,9 @@ export default function SchoolsGlobe({ tone = "night" }: { tone?: "night" | "san
       // Body: lit from the upper-left, with a little more depth top-to-limb.
       const body = ctx.createRadialGradient(cx - R * 0.32, cy - R * 0.34, R * 0.04, cx, cy, R * 1.06);
       if (onSand) {
-        body.addColorStop(0, "rgba(239,244,248,0.86)");
-        body.addColorStop(0.58, "rgba(203,217,229,0.66)");
-        body.addColorStop(1, "rgba(170,191,208,0.56)");
+        body.addColorStop(0, "rgba(147,192,233,0.9)");
+        body.addColorStop(0.58, "rgba(92,160,222,0.78)");
+        body.addColorStop(1, "rgba(77,134,186,0.72)");
       } else {
         body.addColorStop(0, "rgba(33,74,128,0.97)");
         body.addColorStop(0.56, "rgba(12,34,78,0.96)");
@@ -1214,7 +1217,7 @@ export default function SchoolsGlobe({ tone = "night" }: { tone?: "night" | "san
       // Limb vignette for roundness (deeper = more 3D).
       const limb = ctx.createRadialGradient(cx, cy, R * 0.5, cx, cy, R);
       limb.addColorStop(0, "rgba(0,0,0,0)");
-      limb.addColorStop(1, onSand ? "rgba(110,132,156,0.4)" : "rgba(2,6,20,0.74)");
+      limb.addColorStop(1, onSand ? "rgba(61,106,147,0.46)" : "rgba(2,6,20,0.74)");
       ctx.fillStyle = limb;
       ctx.fillRect(cx - R, cy - R, R * 2, R * 2);
       // Specular sheen near the light, plus a tight gloss highlight.
@@ -1231,7 +1234,7 @@ export default function SchoolsGlobe({ tone = "night" }: { tone?: "night" | "san
       ctx.fillRect(cx - R, cy - R, R * 2, R * 2);
 
       // Graticule (meridians + parallels), inside the clip, front side only.
-      ctx.strokeStyle = onSand ? "rgba(10,112,133,0.1)" : "rgba(125,215,255,0.09)";
+      ctx.strokeStyle = onSand ? "rgba(70,146,212,0.1)" : "rgba(125,215,255,0.09)";
       ctx.lineWidth = 1;
       const grat = () => {
         for (let lat = -60; lat <= 60; lat += 30) {
@@ -1261,7 +1264,7 @@ export default function SchoolsGlobe({ tone = "night" }: { tone?: "night" | "san
       // Rim.
       ctx.beginPath();
       ctx.arc(cx, cy, R, 0, Math.PI * 2);
-      ctx.strokeStyle = onSand ? "rgba(10,112,133,0.34)" : "rgba(140,220,255,0.5)";
+      ctx.strokeStyle = onSand ? "rgba(70,146,212,0.34)" : "rgba(140,220,255,0.5)";
       ctx.lineWidth = 1;
       ctx.stroke();
 
