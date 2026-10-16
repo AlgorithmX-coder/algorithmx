@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { K } from "@/app/ai-cleared/engine/tokens";
 import { COURSE_BLURB, COURSE_NAME, FLUENT_NEEDS_CLEARED_FIRM, type CorporateProductSlug, type VatMode } from "@/app/lib/corporateProducts";
 
@@ -74,6 +75,7 @@ export default function BuyForm({ course: initialCourse, courses, seats: initial
         </div>
         <label>Admin email, where the invite goes <input id="bf-admin" type="email" value={f.adminEmail} onChange={(e) => set("adminEmail", e.target.value)} placeholder="you@yourfirm.co.uk" /></label>
         <p className="cf-note">The admin runs the course for the firm: invites staff, sees the register, edits the firm profile. It can be you. Already run a firm with us? Use the same admin email and the seats are added to that firm.</p>
+        <p className="cf-note">By paying you accept the <Link href="/corporate/terms">terms for firms</Link> and the <Link href="/corporate/dpa">data processing agreement</Link>; the <Link href="/corporate/security">security page</Link> says where your people's data lives.</p>
         {err && <div className="bf-err">{err}</div>}
         <button type="button" className="cf-btn cf-btn-pri" onClick={pay} disabled={busy || !f.firmName.trim() || !f.adminEmail.trim()}>{busy ? "Opening secure checkout…" : `Pay ${gbp(total)} by card`}</button>
         <p className="cf-note">Payment is taken by Stripe on a secure page. You receive {vatMode === "none" ? "an invoice" : "a VAT invoice"} by email; enter your firm's VAT number there and it appears on the invoice.</p>

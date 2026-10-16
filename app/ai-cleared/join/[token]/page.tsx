@@ -52,6 +52,7 @@ export default async function JoinPage({ params }: { params: Promise<{ token: st
           <Link href={`/login?callbackUrl=${encodeURIComponent(here)}`} className="cf-btn">I already have one</Link>
         </div>
         <p className="cf-note" style={{ marginTop: 18 }}>{fluent ? "Sign in with the account that holds your AI Cleared certificate." : "Use your work email, so your certificate carries the right name."}</p>
+        <p className="cf-note">Before you type anything in the course: what you write in the practice sandbox is sent to our AI model provider to grade it and to reply, under our <Link href="/corporate/dpa">processor terms</Link>, and is never used to train it. Every practice uses invented data; do not type anything real. Your firm&rsquo;s admin sees your progress and your certificate, never your prompts.</p>
       </Frame>
     );
   }
