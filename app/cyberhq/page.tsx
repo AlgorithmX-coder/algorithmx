@@ -19,6 +19,7 @@ import Link from "next/link";
 // non-async exports from "use server" files). Actions stay in
 // stickers.actions.ts.
 import { STICKER_CATALOGUE } from "@/app/lib/stickers-data";
+import StickerArt from "@/app/components/lesson/StickerArt";
 import { getEarnedStickers } from "@/app/lib/stickers.actions";
 import { BADGE_CATALOGUE } from "@/app/lib/badges-data";
 import { getEarnedBadges } from "@/app/lib/badges.actions";
@@ -364,7 +365,7 @@ export default async function CyberHQPage() {
                   }}
                   aria-hidden
                 >
-                  <PixIcon emoji={isEarned ? b.icon : "🔒"} size={44} />
+                  <StickerArt icon={b.icon} art={b.art} locked={!isEarned} size={54} alt="" />
                 </div>
                 <div
                   style={{
@@ -448,7 +449,7 @@ export default async function CyberHQPage() {
                   }}
                   aria-hidden
                 >
-                  <PixIcon emoji={isEarned ? s.icon : "🔒"} size={60} />
+                  <StickerArt icon={s.icon} art={s.art} locked={!isEarned} size={72} />
                 </div>
                 <div
                   style={{

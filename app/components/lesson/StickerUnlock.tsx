@@ -24,13 +24,15 @@ import {
 } from "@/app/lib/gameEngine";
 import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
 import GameButton from "@/app/components/lesson/GameButton";
-import PixIcon from "@/app/components/lesson/PixIcon";
+import StickerArt from "@/app/components/lesson/StickerArt";
 import { WorldBackdrop } from "@/app/components/game/missionWorldStyles";
 
 export interface StickerData {
   id: string;
   name: string;
   icon: string;
+  /** Bespoke art for weeks that have it; falls back to the PixIcon. */
+  art?: string;
   description: string;
 }
 
@@ -291,12 +293,22 @@ export default function StickerUnlock({
                     fontSize: 64,
                     lineHeight: 1,
                     marginBottom: 8,
+                    /* The art is a character, not a square glyph, and each
+                     * pose is a different width - Layla with a key held high
+                     * is far wider than Adam standing square. So centre it
+                     * here rather than letting a block image sit left while
+                     * the halo behind it stays centred, which left a glowing
+                     * blank circle beside each sticker. */
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "flex-end",
+                    minHeight: 104,
                     filter: visible
                       ? "drop-shadow(0 0 24px rgba(253, 224, 71, 0.7))"
                       : undefined,
                   }}
                 >
-                  <PixIcon emoji={s.icon} size={64} />
+                  <StickerArt icon={s.icon} art={s.art} size={104} alt={s.name} />
                 </div>
                 <div
                   style={{

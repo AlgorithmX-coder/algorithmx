@@ -546,6 +546,20 @@ export type ScreenDef = (
         id: string;
         name: string;
         icon: string;
+        /**
+         * Bespoke sticker art: the week's own cast, in that week's costume,
+         * doing the thing the sticker is for.
+         *
+         * Owner, 2026-10-16: "I think the emojis look boring. If we have Adam
+         * and Layla, in that same uniform costume outfit, doing it... I think
+         * these would be cool ones to collect." A generic padlock icon is the
+         * same padlock every child sees in every course; Adam holding it in
+         * his week 1 locksmith vest is theirs.
+         *
+         * Optional, so a week that has not been given art yet keeps rendering
+         * its PixIcon rather than a broken image. Path under /public.
+         */
+        art?: string;
         /** Tagline shown under the sticker. */
         description: string;
       }[];
