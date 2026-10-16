@@ -79,28 +79,62 @@ const CYBER_FLAGSHIPS: ReadonlyArray<{ id: LockupId; take: string; how: string; 
   {
     id: "heroes",
     take: "A Certified Cyber Hero certificate",
-    how: "Earned by beating the Hacker Raccoon at his own playbook in week 20.",
+    how: "Beat the Hacker Raccoon at his own game in week 20.",
     accent: "#8a5400",
   },
   {
     id: "explorers",
     take: "A closed case file",
-    how: "Twenty cases of breadcrumbs, one coordinator unmasked, the dossier handed over.",
+    how: "Twenty cases, one coordinator unmasked, dossier handed over.",
     accent: "#0a6675",
   },
   {
     id: "ops",
     take: "A written critical finding",
-    how: "A real break-in on the range, reported the way a professional reports it.",
+    how: "A real break-in on the range, reported like a professional.",
     accent: "#5744c9",
   },
   {
     id: "pro",
     take: "A database you broke and fixed",
-    how: "One line of SQL empties it, then you ship the fix that stops it cold.",
+    how: "Break a live database, then ship the fix that stops it.",
     accent: "#a63a08",
   },
 ];
+
+/* Each proof's course mark — the same glyphs CourseLockup draws, in the
+   sand-tone colours — so a proof reads as coming from that track. Sits in
+   a tinted chip on the proof card. */
+function FlagshipIcon({ id }: { id: LockupId }) {
+  if (id === "heroes")
+    return (
+      <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden style={{ transform: "rotate(-7deg)" }}>
+        <path d="M12 2 L20 5 V12 C20 17 16.5 20.5 12 22 C7.5 20.5 4 17 4 12 V5 Z" fill="#8a5400" />
+        <path d="M13.2 6 L8.6 13 H11.4 L10.6 18 L15.6 11 H12.6 Z" fill="#fffdf8" />
+      </svg>
+    );
+  if (id === "explorers")
+    return (
+      <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#0a6675" strokeWidth="1.8" aria-hidden>
+        <circle cx="12" cy="12" r="6.4" />
+        <path d="M12 2.6 V6 M12 18 V21.4 M2.6 12 H6 M18 12 H21.4" />
+        <circle cx="12" cy="12" r="1.6" fill="#0a6675" stroke="none" />
+      </svg>
+    );
+  if (id === "ops")
+    return (
+      <svg width="21" height="21" viewBox="0 0 24 24" aria-hidden>
+        <rect x="6" y="6" width="12" height="12" rx="3.2" fill="#5744c9" />
+      </svg>
+    );
+  return (
+    <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#a63a08" strokeWidth="2" aria-hidden>
+      <path d="M4 4 H14.5 L20 9.5 V20 H4 Z" strokeLinejoin="round" />
+      <path d="M8 9.5 L11.2 12.5 L8 15.5" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M13 15.5 H16.2" strokeLinecap="round" />
+    </svg>
+  );
+}
 
 /* The ages come from CYBER_COURSES rather than being typed twice, so the
    panel and the track chips in the same card can never drift apart. */
@@ -799,13 +833,89 @@ function FeaturedStreamCard({ stream }: { stream: Stream }) {
           {stream.id === "cybersecurity" ? (
             /* One per track, so the panel answers "what will I actually
                do" four times over instead of once. */
-            <ul className="lv2-flagships">
+            <ul
+              style={{
+                listStyle: "none",
+                margin: "4px 0 0",
+                padding: 0,
+                display: "flex",
+                flexDirection: "column",
+                gap: 10,
+              }}
+            >
               {CYBER_FLAGSHIPS.map((f) => (
-                <li key={f.id} style={{ ["--lv2-flag" as string]: f.accent }}>
-                  <span className="lv2-flagship-take">{f.take}</span>
-                  <span className="lv2-flagship-how">{f.how}</span>
-                  <span className="lv2-flagship-who">
-                    {`Cyber ${f.id[0].toUpperCase()}${f.id.slice(1)} · Ages ${AGES_BY_ID[f.id]}`}
+                /* Each proof is its own little credential card: the course
+                   mark in a tinted chip, a track-colour bar down the left,
+                   so the panel reads as four badges rather than a flat list. */
+                <li
+                  key={f.id}
+                  style={{
+                    display: "flex",
+                    gap: 12,
+                    alignItems: "flex-start",
+                    background:
+                      "linear-gradient(180deg, rgba(255,255,255,0.74), rgba(255,253,248,0.46))",
+                    border: `1px solid ${f.accent}2b`,
+                    borderLeft: `3px solid ${f.accent}`,
+                    borderRadius: 12,
+                    padding: "11px 13px",
+                    boxShadow:
+                      "0 6px 16px -12px rgba(86,68,45,0.42), inset 0 1px 0 rgba(255,255,255,0.75)",
+                  }}
+                >
+                  <span
+                    aria-hidden
+                    style={{
+                      flex: "0 0 auto",
+                      width: 38,
+                      height: 38,
+                      borderRadius: 10,
+                      background: `${f.accent}14`,
+                      border: `1px solid ${f.accent}30`,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <FlagshipIcon id={f.id} />
+                  </span>
+                  <span style={{ display: "flex", flexDirection: "column", gap: 2, paddingTop: 1 }}>
+                    <span
+                      style={{
+                        fontFamily: "var(--lv2-font-display)",
+                        fontSize: "1rem",
+                        fontWeight: 600,
+                        letterSpacing: "-0.01em",
+                        lineHeight: 1.26,
+                        color: f.accent,
+                      }}
+                    >
+                      {f.take}
+                    </span>
+                    <span
+                      style={{
+                        fontFamily: "var(--lv2-font-display)",
+                        fontSize: "0.8125rem",
+                        lineHeight: 1.4,
+                        color: "rgba(17,22,38,0.72)",
+                      }}
+                    >
+                      {f.how}
+                    </span>
+                    <span
+                      style={{
+                        fontFamily: "var(--lv2-font-mono)",
+                        fontSize: 9,
+                        fontWeight: 700,
+                        letterSpacing: "0.09em",
+                        textTransform: "uppercase",
+                        color: f.accent,
+                        opacity: 0.85,
+                        marginTop: 2,
+                      }}
+                    >
+                      {`Cyber ${f.id[0].toUpperCase()}${f.id.slice(1)} · Ages ${AGES_BY_ID[f.id]}`}
+                    </span>
                   </span>
                 </li>
               ))}
@@ -885,74 +995,10 @@ function FeaturedStreamCard({ stream }: { stream: Stream }) {
         }
         .lv2-course-mark-soon { opacity: 1; }
 
-        /* Owner picked this treatment from a board of ten (2026-09-20):
-           the artefact leads and the activity supports it, because what a
-           buyer is buying is the certificate, the case file, the finding
-           and the fixed database. Hairlines rather than coloured bars, so
-           the four read as one list with the colour carried by the name of
-           the thing you get. */
-        .lv2-flagships {
-          list-style: none;
-          margin: 4px 0 0;
-          padding: 0;
-          display: flex;
-          flex-direction: column;
-          gap: 13px;
-        }
-        .lv2-flagships li {
-          display: flex;
-          flex-direction: column;
-          gap: 4px;
-          padding-bottom: 13px;
-          /* was a neon hairline at 9%, which is nothing on paper */
-          border-bottom: 1px solid rgba(86,68,45,0.18);
-        }
-        .lv2-flagships li:last-child {
-          padding-bottom: 0;
-          border-bottom: 0;
-        }
-        .lv2-flagship-take {
-          font-family: var(--lv2-font-display);
-          font-size: 1rem;
-          font-weight: 600;
-          letter-spacing: -0.01em;
-          line-height: 1.3;
-          color: var(--lv2-flag);
-        }
-        .lv2-flagship-how {
-          font-family: var(--lv2-font-display);
-          font-size: 0.8125rem;
-          line-height: 1.45;
-          color: rgba(17,22,38,0.76);
-        }
-        /* Owner 2026-09-21: highlight the course name a little, in grey.
-           A grey plate rather than a brighter colour, so the track colour
-           stays on the artefact and this stays a label. align-self keeps
-           it hugging its text: the row is a flex column, which would
-           otherwise stretch the plate the full width. */
-        .lv2-flagship-who {
-          align-self: flex-start;
-          margin-top: 2px;
-          padding: 3px 8px;
-          border-radius: 6px;
-          /* The plate was a pale wash at 8%, built to sit on black. On
-             the recessed panel it needs to come the other way: paper
-             raised off the cut-in ground, with an edge to prove it. */
-          background: #fffdf8;
-          border: 1px solid rgba(86,68,45,0.2);
-          box-shadow: 0 1px 2px rgba(86,68,45,0.12);
-          font-family: var(--lv2-font-mono);
-          font-size: 7.5px;
-          font-weight: 700;
-          letter-spacing: 0.16em;
-          text-transform: uppercase;
-          color: rgba(17,22,38,0.65);
-        }
-        @media (max-width: 900px) {
-          .lv2-flagships { gap: 11px; }
-          .lv2-flagships li { padding-bottom: 11px; }
-          .lv2-flagship-take { font-size: 0.9375rem; }
-        }
+        /* Owner 2026-10-16: the four proofs became individual credential
+           cards (a course mark in a tinted chip + a track-colour bar down
+           the left), styled inline on each <li>, so they no longer share a
+           class here. */
 
         .lv2-featured-card {
           will-change: transform;
