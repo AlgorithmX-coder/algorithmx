@@ -1576,7 +1576,7 @@ export default function SchoolsGlobe({ tone = "night" }: { tone?: "night" | "san
         labelOn = show;
         labelRef.current?.classList.toggle("sg-label-gone", !show);
       }
-      const dim = y > 220;
+      const dim = y > 560;
       if (dim !== dimmed) {
         dimmed = dim;
         root.classList.toggle("sg-root-dim", dim);
@@ -1703,7 +1703,7 @@ export default function SchoolsGlobe({ tone = "night" }: { tone?: "night" | "san
         .sg-veil {
           position: absolute;
           inset: 0;
-          background: ${onSand ? "rgba(248,244,236,0.62)" : "rgba(3,7,26,0.55)"};
+          background: ${onSand ? "rgba(243,237,228,0.93)" : "rgba(3,7,26,0.78)"};
           opacity: 0;
           transition: opacity 0.4s ease;
         }

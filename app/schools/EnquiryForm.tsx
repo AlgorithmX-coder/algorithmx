@@ -61,11 +61,14 @@ const field: React.CSSProperties = {
   fontFamily: "var(--lv2-font-display)",
   fontSize: 16.5,
   fontWeight: 500,
-  color: "#f2f6ff",
-  background: "rgba(6,9,20,0.86)",
-  border: "1.5px solid rgba(10,112,133,0.4)",
+  color: "#14161d",
+  /* Owner 2026-10-16: the fields were near-black and read as a cold slab on
+     the warm-sand page; they are light paper now, to match the card. */
+  background: "linear-gradient(180deg, #ffffff, #f7f1e8)",
+  border: "1.5px solid rgba(10,112,133,0.42)",
   outline: "none",
   boxSizing: "border-box",
+  boxShadow: "inset 0 1px 0 rgba(255,255,255,0.9), 0 1px 3px -1px rgba(86,68,45,0.14)",
   transition: "border-color .2s ease, box-shadow .2s ease",
 };
 
@@ -74,8 +77,8 @@ function focus(e: React.FocusEvent<HTMLElement>) {
   e.currentTarget.style.boxShadow = `0 0 0 3px rgba(10,112,133,0.14)`;
 }
 function blur(e: React.FocusEvent<HTMLElement>) {
-  e.currentTarget.style.borderColor = "rgba(10,112,133,0.4)";
-  e.currentTarget.style.boxShadow = "none";
+  e.currentTarget.style.borderColor = "rgba(10,112,133,0.42)";
+  e.currentTarget.style.boxShadow = "inset 0 1px 0 rgba(255,255,255,0.9), 0 1px 3px -1px rgba(86,68,45,0.14)";
 }
 
 export default function EnquiryForm({
@@ -195,9 +198,10 @@ export default function EnquiryForm({
                     flex: 1,
                     height: 50,
                     borderRadius: 12,
-                    border: `1.5px solid ${on ? ACCENT : "rgba(10,112,133,0.28)"}`,
-                    background: on ? "rgba(10,112,133,0.14)" : "rgba(8,10,22,0.78)",
-                    color: on ? "#14161d" : "rgba(17,22,38,0.76)",
+                    border: `1.5px solid ${on ? ACCENT : "rgba(10,112,133,0.32)"}`,
+                    background: on ? "rgba(10,112,133,0.16)" : "linear-gradient(180deg, #ffffff, #f6efe6)",
+                    color: on ? "#0a5663" : "rgba(17,22,38,0.72)",
+                    boxShadow: on ? "none" : "inset 0 1px 0 rgba(255,255,255,0.9)",
                     fontFamily: "var(--lv2-font-display)",
                     fontSize: 14.5,
                     fontWeight: 600,
