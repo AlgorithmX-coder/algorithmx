@@ -798,6 +798,12 @@ export const MODULE5: ModuleDef = {
     impact: "Both the login and the product search build SQL from raw input. An attacker can log in with no password, read every staff record (emails and password hashes), enumerate the whole schema, and extract secrets from other tables via UNION - a complete compromise of the database.",
     fix: "Use parameterised queries everywhere; never concatenate input into SQL. Add least-privilege database accounts and suppress raw error output as defence in depth.",
   },
+  outcome: [
+    "Spot an injectable field by breaking its query with a single quote and reading the SQL error it throws back.",
+    "Bypass a login with no password by closing the string and commenting out the check, such as ' OR 1=1 --.",
+    "Count a query's columns with ORDER BY, then UNION a different table out through a search box - staff records, card data, or a hidden secrets table.",
+    "Explain why parameterised queries kill injection for good where stripping quotes or banning 'UNION' never will.",
+  ],
   rep: 70,
   repRank: "Junior Operator",
   repTo: "205 / 300 to Operator",

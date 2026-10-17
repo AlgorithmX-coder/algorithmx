@@ -378,6 +378,12 @@ export const MODULE15: ModuleDef = {
     impact: "robots.txt names a database backup served with no access control; the dump contains plaintext admin credentials, which are reused to log into the console and export the entire customer database - a minor info-leak and a misconfiguration chained into full administrative access and a complete data breach.",
     fix: "Remove backups from web-reachable locations and encrypt them with access control; stop referencing sensitive paths in robots.txt; never store credentials in plaintext; rotate the exposed credentials; apply least privilege so a single leak reaches less.",
   },
+  outcome: [
+    "Recon a target's public surface and read a robots.txt that advertises the very paths it is meant to hide.",
+    "Loot an exposed, unprotected backup and lift the admin credentials sitting in plain sight in the dump.",
+    "Chain small findings into full compromise - reuse a looted credential to log in, then escalate to the crown jewels.",
+    "Break a chained attack at any single link with defence in depth, knowing why one small fix collapses the whole route.",
+  ],
   rep: 80,
   repRank: "Lead Operator",
   repTo: "760 / 1000 to Principal",

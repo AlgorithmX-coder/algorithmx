@@ -470,6 +470,12 @@ export const MODULE2: ModuleDef = {
     impact: "The email scheme, the internal portal URL, the admin's identity and username, and a live test password are all derivable from public sources alone. An attacker can build a complete footprint - a valid login at a named portal, with a working credential - without ever touching a Caldera system.",
     fix: "Use role-based email addresses; keep internal URLs out of public ads; scrub document metadata; monitor certificate-transparency and paste sites for leaks and rotate any exposed secret; footprint yourself regularly.",
   },
+  outcome: [
+    "Build a valid staff login from public sources alone - pairing an email format on an About page with a name from a new-starter post, without touching a thing.",
+    "Surface internal subdomains that were never linked anywhere by reading a company's certificate-transparency logs.",
+    "Lift an author's username from a published document's metadata, and dork out a pasted secret with a precise operator like 'filetype:env'.",
+    "Tell passive recon apart from active - and explain why reading only already-public sources stays invisible and in scope.",
+  ],
   rep: 30,
   repRank: "Recruit",
   repTo: "55 / 100 to Junior Operator",

@@ -484,6 +484,12 @@ export const MODULE6: ModuleDef = {
     impact: "Multiple fields render user input as raw HTML, so attacker JavaScript runs in victims' browsers. A reflected payload executes from the search box and steals the session; a naive filter is bypassed with alternative event handlers; and a stored payload runs in staff and admin browsers, allowing session theft and full account impersonation.",
     fix: "Output-encode all user content so it renders as text, not HTML; never use innerHTML with raw input. Add a Content-Security-Policy, mark session cookies HttpOnly, and use a trusted sanitiser where some HTML must be allowed.",
   },
+  outcome: [
+    "Get your own JavaScript to run in a page by injecting an event handler like '<img src=x onerror=...>' where a plain script tag is ignored.",
+    "Steal a victim's session cookie with a reflected payload and exfiltrate it to a collector you control.",
+    "Beat a naive filter that strips 'onerror' by switching to another handler such as '<svg onload=...>'.",
+    "Plant a stored payload that fires in an admin's browser when they open the page - and explain why encoding output as text, not blocklists, is the fix.",
+  ],
   rep: 55,
   repRank: "Junior Operator",
   repTo: "240 / 300 to Operator",

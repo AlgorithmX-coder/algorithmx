@@ -425,6 +425,12 @@ export const MODULE16: ModuleDef = {
     impact: "The capstone engagement is documented end to end: a chained recon-to-admin compromise, reconstructed in order, scored Critical, written into an actionable report, and delivered with a debrief and an attack-path recommendation - the closing piece of a sixteen-finding portfolio spanning attack and defence.",
     fix: "Remove web-reachable backups and enforce access control + encryption; rotate exposed credentials; and adopt attack-path review so low-severity issues aren't allowed to chain into critical ones.",
   },
+  outcome: [
+    "Reconstruct a full attack chain in order - recon, loot, break in, impact - so the report tells the true story.",
+    "Score a chained compromise honestly and write a report a client can act on - title, location, severity, impact, reproduce, remediation.",
+    "Deliver and debrief an engagement professionally - privately, with a concrete fix and attack-path recommendation, keeping to least harm.",
+    "Close a season into a portfolio - sixteen ethical findings across attack and defence that prove real, hands-on skill.",
+  ],
   rep: 90,
   repRank: "Principal",
   repTo: "Top rank reached",

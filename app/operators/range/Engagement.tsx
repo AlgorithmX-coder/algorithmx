@@ -68,6 +68,9 @@ export type ModuleDef = {
     check: Check;
   };
   finding: { title: string; where: string; severity: string; cvss: string; impact: string; fix: string };
+  /** What the learner can now do, shown as a "Module outcome" block on the report
+   *  screen. 2-4 concrete "you can now..." capabilities. */
+  outcome?: string[];
   rep: number;
   repRank: string;
   repTo: string;
@@ -440,6 +443,21 @@ function Report({ mod, callsign, onExit, liveRank }: { mod: ModuleDef; callsign:
         <p style={{ fontSize: 14, color: C.soft, marginTop: 10, lineHeight: 1.55 }}><b style={{ color: C.ink }}>Impact.</b> {f.impact}</p>
         <p style={{ fontSize: 14, color: C.soft, marginTop: 6, lineHeight: 1.55 }}><b style={{ color: C.ink }}>Fix.</b> {f.fix}</p>
       </Panel>
+      {mod.outcome && mod.outcome.length > 0 && (
+        <div style={{ padding: "18px 18px 16px", borderRadius: 16, background: "rgba(85,217,140,0.05)", border: `1px solid ${C.green}3a` }}>
+          <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: ".16em", textTransform: "uppercase", color: C.green, fontWeight: 700, display: "flex", alignItems: "center", gap: 9 }}>
+            <span style={{ width: 16, height: 2, background: C.green, borderRadius: 2 }} />Module outcome · what you can now do
+          </div>
+          <div style={{ display: "grid", gap: 8, marginTop: 13 }}>
+            {mod.outcome.map((o, i) => (
+              <div key={i} style={{ display: "flex", gap: 11, alignItems: "flex-start", padding: "11px 14px", borderRadius: 11, background: "rgba(13,15,22,0.5)", border: `1px solid ${C.green}2e` }}>
+                <span aria-hidden style={{ color: C.green, fontFamily: MONO, fontWeight: 700, fontSize: 14, lineHeight: 1.5 }}>✓</span>
+                <span style={{ fontSize: 14, color: C.ink, lineHeight: 1.5 }}>{o}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
       <div style={{ position: "relative", padding: 22, borderRadius: 16, overflow: "hidden", background: "linear-gradient(150deg, #14122e, #0d1030 55%, #0a0b16)", border: `1px solid ${C.line}`, boxShadow: `0 0 46px -18px ${C.indigo}` }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: ".3em", textTransform: "uppercase", color: C.indigo2, fontWeight: 600 }}>Capture card</div>

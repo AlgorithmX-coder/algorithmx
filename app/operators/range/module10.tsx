@@ -446,6 +446,12 @@ export const MODULE10: ModuleDef = {
     impact: "Remote Desktop is reachable from the entire internet (continuously brute-forced and exploited), a production database is reachable across the internal network, and outdated services (vsftpd 2.3.4, Apache 2.4.49) carry known exploits - together a direct path to full compromise.",
     fix: "Remove RDP from the open internet (VPN/allow-list); segment the network so the prod database isn't broadly reachable; close unused ports; patch or retire outdated services; scan the perimeter regularly.",
   },
+  outcome: [
+    "Run a port scan of a host and flag the dangerous open door, such as Remote Desktop (3389) left facing the whole internet.",
+    "Enumerate service versions and match an old one like vsftpd 2.3.4 or Apache 2.4.49 to its known published vulnerabilities.",
+    "Sweep a subnet to discover live hosts and spot one that should never be reachable, such as a production database.",
+    "Prioritise the findings for the report - take exposed management services off the open internet first, then patch the outdated ones.",
+  ],
   rep: 55,
   repRank: "Operator",
   repTo: "450 / 600 to Lead Operator",
