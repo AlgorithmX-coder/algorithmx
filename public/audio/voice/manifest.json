@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-17T15:53:37.930Z",
+  "generatedAt": "2026-10-17T20:15:51.943Z",
   "model": "eleven_v4",
   "voiceSettings": {
     "stability": 0.6,
@@ -29521,14 +29521,14 @@
       "file": "/audio/voice/9107ec002c748475.mp3"
     },
     {
-      "key": "2a028132716799d3",
+      "key": "dec9897203e8518b",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "Real companies never give you a scary countdown. Two minutes left is the hurry-up trick, and feeling rushed is the red flag.",
+      "text": "Two minutes left is the hurry-up trick, and feeling rushed is the red flag every single time.",
       "lines": [
-        "Real companies never give you a scary countdown. Two minutes left is the hurry-up trick, and feeling rushed is the red flag."
+        "Two minutes left is the hurry-up trick, and feeling rushed is the red flag every single time."
       ],
-      "file": "/audio/voice/2a028132716799d3.mp3"
+      "file": "/audio/voice/dec9897203e8518b.mp3"
     },
     {
       "key": "65e2e5bc1edeacbb",
@@ -43766,15 +43766,15 @@
       "file": "/audio/voice/196bf658a9396384.mp3"
     },
     {
-      "key": "cae4da2adf6038b4",
+      "key": "4291226d3d090613",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "That's right! Real companies never give you a scary countdown. Two minutes left is the hurry-up trick, and feeling rushed is the red flag.",
+      "text": "That's right! Two minutes left is the hurry-up trick, and feeling rushed is the red flag every single time.",
       "lines": [
         "That's right!",
-        "Real companies never give you a scary countdown. Two minutes left is the hurry-up trick, and feeling rushed is the red flag."
+        "Two minutes left is the hurry-up trick, and feeling rushed is the red flag every single time."
       ],
-      "file": "/audio/voice/cae4da2adf6038b4.mp3"
+      "file": "/audio/voice/4291226d3d090613.mp3"
     },
     {
       "key": "53f8cf482a8cdfc4",

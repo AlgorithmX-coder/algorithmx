@@ -419,7 +419,7 @@ export const WEEK_4: WeekContent = {
       type: "recap",
       concept: 2,
       total: 5,
-      learned: "If it sounds too good to be true, it isn't true. Giant prizes from strangers are bait, and when you're not sure, you check with a grown-up first.",
+      learned: "If it sounds too good to be true, it isn't true. Giant prizes from strangers are bait, so you check with a grown-up before you believe one.",
       next: "the trick that makes your heart race",
       emblem: "🎁",
       narration: {
@@ -1004,7 +1004,7 @@ export const WEEK_4: WeekContent = {
           prompt: "A pop-up shouts: 'ONLY 2 MINUTES LEFT to keep your photos!' What do real companies do?",
           readAloud: "A pop-up shouts: only two minutes left to keep your photos! What do real companies do?",
           choices: [
-            { text: "Never give you a scary countdown", isCorrect: true, explanation: "Never.", why: "Real companies never give you a scary countdown. Two minutes left is the hurry-up trick, and feeling rushed is the red flag." },
+            { text: "Never give you a scary countdown", isCorrect: true, explanation: "Never.", why: "Two minutes left is the hurry-up trick, and feeling rushed is the red flag every single time." },
             { text: "Count down too, it's helpful", isCorrect: false, explanation: "A countdown that scares you is never helpful. It exists to stop you thinking." },
             { text: "Delete your photos if you're slow", isCorrect: false, explanation: "Nothing real disappears because you took a minute. The threat is the trick." },
           ],
