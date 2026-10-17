@@ -978,7 +978,7 @@ export const WEEK_4: WeekContent = {
           prompt: "A quiet message says: 'Game bag full! Type your password to make space.' What gives it away as a scam?",
           readAloud: "A quiet message says: game bag full, type your password to make space. What gives it away as a scam?",
           choices: [
-            { text: "It wants something back: your password", isCorrect: true, explanation: "That's the giveaway.", why: "Quiet or loud, a scam always wants something back. This one wants your password, and that is the giveaway." },
+            { text: "It wants something back: your password", isCorrect: true, explanation: "That's the giveaway.", why: "Scams can be quiet and polite. The tell is always the same: it needs something from you. A password is yours alone, and nothing real asks you to type it into a message." },
             { text: "It's too short to be a scam", isCorrect: false, explanation: "Scams can be short and quiet. Look at what it WANTS, not how loud it is." },
             { text: "Game bags really do get full", isCorrect: false, explanation: "Even if a bag was full, no real game does this. None asks you to type your password into a message." },
           ],
@@ -1014,11 +1014,11 @@ export const WEEK_4: WeekContent = {
           id: "copycat",
           ruleLabel: "THE COPYCAT",
           icon: "🎭",
-          prompt: "Two messages say they're from PetPals. One is hello@petpals.com. The other is gift@petpa1s.win. Which is the copycat?",
+          prompt: "Two messages say they're from PetPals. Look closely at both addresses. Which one is the copycat?",
           readAloud: "Two messages say they're from PetPals. Look closely at the two addresses in the mirror. Which one is the copycat?",
           choices: [
-            { text: "gift@petpa1s.win, a 1 where the l should be", isCorrect: true, explanation: "Copycat.", why: "A one hiding where the L should be, and a weird dot win ending. Almost-right is all-wrong, so that's the copycat." },
-            { text: "hello@petpals.com, it's too plain", isCorrect: false, explanation: "Plain is good. The real address is spelled exactly right, with a normal ending." },
+            { text: "gift@petpa1s.win", isCorrect: true, explanation: "Copycat.", why: "A one hiding where the L should be, and a weird dot win ending. Almost-right is all-wrong, so that's the copycat." },
+            { text: "hello@petpals.com", isCorrect: false, explanation: "Plain is good. The real address is spelled exactly right, with a normal ending." },
             { text: "Neither, they're both PetPals", isCorrect: false, explanation: "Read the letters one by one. One address has a number one where the L should be. That's a swap, and a swap means a copycat." },
           ],
           recap: "Almost-right = all-wrong",
@@ -1228,7 +1228,7 @@ export const WEEK_4: WeekContent = {
         correctIndex: 0,
         teachOnWrong: {
           title: "Read it letter by letter!",
-          explanation: "Real senders can be checked: inside the app, a saved contact, the school's own address. The imposter hid a number one where the L should be and picked a weird address ending. Almost-right is all-wrong!",
+          explanation: "Real senders can be checked: inside the app, a saved contact, the school's own address. A costume address can't be checked anywhere, and that is what gives it away. Almost-right is all-wrong!",
         },
         villainRight: {
           slug: "quiz-w4-right-c4-1",
