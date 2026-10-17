@@ -409,6 +409,12 @@ export const MODULE13: ModuleDef = {
     impact: "Convincing phishing, CEO-fraud and supplier bank-change messages are reaching staff inboxes. A single click or compliant employee could hand over credentials or make an irreversible payment, bypassing technical controls entirely.",
     fix: "Enforce SPF/DKIM/DMARC, banner external mail, add a report-phishing button, mandate out-of-band verification for money/credential and bank-detail requests, require MFA, and run blame-free awareness training.",
   },
+  outcome: [
+    "Triage an inbox into phishing and legitimate mail, telling a lookalike sender and credential bait from a genuine message.",
+    "Name the tells in a suspicious message - urgency, authority, a lookalike or personal sender, a mismatched link, an irreversible request.",
+    "Defeat a CEO-fraud or supplier bank-change request by verifying it out-of-band on a known number rather than replying to the message.",
+    "Harden the human layer with SPF, DKIM and DMARC, a report-phishing button, external-mail banners and blame-free training.",
+  ],
   rep: 50,
   repRank: "Lead Operator",
   repTo: "625 / 1000 to Principal",

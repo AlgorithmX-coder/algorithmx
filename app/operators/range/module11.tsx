@@ -438,6 +438,11 @@ export const MODULE11: ModuleDef = {
     impact: "An external IP brute-forced a portal account (failures then success at 02:03:14), reached the admin panel, bulk-exported data, and left a disguised implant running from /tmp for persistence - a full account takeover, data breach and foothold, all visible in the evidence but undetected at the time.",
     fix: "Add lockout/rate-limiting and MFA to close the brute-force path; alert on failed-login bursts and odd-hour access; ship logs to an append-only store; remove the implant, rotate credentials, and block the source IP.",
   },
+  outcome: [
+    "Read an auth log and pinpoint the moment of compromise - the one success that follows a burst of failed logins from an odd IP at an odd hour.",
+    "Spot an attacker's persistence implant in a process list by its tells, a hidden random name running from a temp folder like /tmp.",
+    "Reconstruct an intrusion as an ordered timeline from recon to break-in to exfiltration, then scope what actually happened for the report.",
+  ],
   rep: 60,
   repRank: "Operator",
   repTo: "510 / 600 to Lead Operator",

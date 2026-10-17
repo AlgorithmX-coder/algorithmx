@@ -572,6 +572,12 @@ export const MODULE4: ModuleDef = {
     impact: "The login reveals which accounts exist and never locks, so accounts are enumerable and brute-forceable. The session cookie is an unsigned base64 blob whose role field can be rewritten to gain admin. The password-reset codes are sequential and guessable, allowing takeover of any account including the owner - a complete authentication bypass and privilege escalation.",
     fix: "Enforce strong and breached-password checks, rate-limiting/lockout and generic login errors; require MFA; make sessions a random server-side id (or a signed token); and issue long, random, single-use, expiring reset codes.",
   },
+  outcome: [
+    "Enumerate valid accounts from a login that answers differently for real and fake emails.",
+    "Brute-force a weak password when nothing locks or rate-limits the login - a company name plus a year is the usual pattern.",
+    "Decode an unsigned base64 session token, rewrite 'staff' to 'admin', and hand it back for instant privilege escalation.",
+    "Hijack an account through a 'forgot password' flow whose reset codes run in sequence - request your own, then guess the next.",
+  ],
   rep: 50,
   repRank: "Junior Operator",
   repTo: "135 / 300 to Operator",

@@ -423,6 +423,12 @@ export const MODULE12: ModuleDef = {
     impact: "An active account-takeover breach was handled end to end: the real incident was triaged out of the noise, the attacker contained, their foothold eradicated and the entry vulnerability closed, systems recovered from clean backups, and a lessons-learned review run - with evidence preserved throughout.",
     fix: "Maintain a tested IR plan, central append-only logging, rapid session-revocation and IP-blocking, clean tested backups, and regular tabletop exercises so response is executed, not improvised.",
   },
+  outcome: [
+    "Triage a flooded alert queue down to the one real incident and set the benign noise aside.",
+    "Contain a live attacker first - block the source and kill the session - without destroying the evidence you will need.",
+    "Run the incident lifecycle in order - contain, eradicate, recover, lessons learned - recovering only from known-clean backups.",
+    "Prepare so a breach is handled in minutes, not months - a tested IR plan, central logging, clean backups and rehearsed tabletops.",
+  ],
   rep: 65,
   repRank: "Lead Operator",
   repTo: "575 / 600 to Lead Operator",

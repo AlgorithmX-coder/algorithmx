@@ -511,6 +511,11 @@ export const MODULE1: ModuleDef = {
     impact: "A working setup account was left in a source comment; anyone who reads the page can sign in. Found through in-scope passive recon and handled without accessing any real data.",
     fix: "Strip comments and test data from production builds; store secrets in a secrets manager; rotate the exposed account immediately and treat it as compromised.",
   },
+  outcome: [
+    "Tell authorised, legal testing apart from a crime - and explain why a signed scope comes before anyone touches a keyboard.",
+    "Read a scope and stay inside it, leaving anything out of scope untouched however reachable or tempting it looks.",
+    "Work an engagement in the right order - recon, exploit, report - and prove a weakness with the least possible impact.",
+  ],
   rep: 25,
   repRank: "Recruit",
   repTo: "25 / 100 to Junior Operator",
