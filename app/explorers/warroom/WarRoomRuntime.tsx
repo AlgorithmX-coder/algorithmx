@@ -12,7 +12,7 @@
 import { useEffect, useReducer, useRef, useState } from "react";
 import { MatrixRain } from "../MatrixRain";
 import { BlockBackdrop } from "../BlockBackdrop";
-import { playWren, setVoiceRate, stopWren, useVoiceRate, useWrenSpeaking, VOICE_RATES } from "../engine/audio";
+import { playWren, primeAudio, setVoiceRate, stopWren, useVoiceRate, useWrenSpeaking, VOICE_RATES } from "../engine/audio";
 import { useArrowAdvance, SkipButton } from "../engine/arrowAdvance";
 import { playBGM, stopBGM } from "@/app/lib/sounds";
 import { type CaseStage, readProgress, saveProgress, clearProgress, markCaseComplete, isResumable, stageLabel } from "../engine/caseProgress";
@@ -192,7 +192,11 @@ export default function WarRoomRuntime({ warCase, onExit, onNextCase }: { warCas
     setPhase("test");
   };
 
-  const start = (from: CaseStage = { kind: "skill", index: 0 }) => { if (startedRef.current) return; startedRef.current = true; setPhase("play"); run(from); };
+  // Synchronous, inside this exact tap — same fix as Phone's cold-open audio
+  // (PR #572): the real narration starts moments later inside run()'s async
+  // chain, which is one tick too late for some mobile browsers' autoplay
+  // unlock to still count as "the same gesture".
+  const start = (from: CaseStage = { kind: "skill", index: 0 }) => { if (startedRef.current) return; startedRef.current = true; primeAudio(); setPhase("play"); run(from); };
   const beginFresh = () => { clearProgress(warCase.id); start({ kind: "skill", index: 0 }); };
   const beginResume = () => start(resumeStage ?? { kind: "skill", index: 0 });
 
