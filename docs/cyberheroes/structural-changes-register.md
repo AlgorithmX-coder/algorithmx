@@ -900,6 +900,31 @@ Checks no script does yet, so they are done by eye at 1414x771:
 R1 is shared and already done for all twenty weeks; it only needs re-running
 if a week ADDS an icon.
 
+### 5b. The boss result screens
+
+`node scripts/audit-boss-sprite-clip.mjs N` - the raccoon must be whole on
+the victory AND failed panels.
+
+Owner, 2026-10-17: "as you zoom out, the raccoon's head gets chopped off at
+the top. This is something that we need to push across all the weeks."
+
+Neither the artwork nor a container was at fault. Both panels are centred
+boxes that scroll, the sprite is their FIRST child, and it bobs 7px upward on
+a loop - so it crosses the clip edge even when the layout fits. On top of
+that, a centred box whose content outgrows it spills EQUALLY both ways, and
+the half above the top edge is clipped AND unreachable by scrolling. That is
+why it depends on zoom: clean at 1414x771, 3px of head gone at 2560x1440.
+
+Fixed in QuizBoss for all twenty bosses (clearance derived from the bob, plus
+`safe` centring). The audit is slow - minutes per run, because every answer
+waits on a narration gate - so it is NOT in CI. Run it when a result screen
+changes.
+
+Two traps it was written around, both of which made it report a clean pass
+while the head was being cut: the first raccoon in the DOM is the 16px HUD
+icon beside "BOSS INTEGRITY", and the boss gate's button says "Initiate Test"
+rather than anything a generic start matcher looks for.
+
 ### 6. Gameplay feel, by playing it
 
 No script measures these. They came out of week 2 and they apply to any

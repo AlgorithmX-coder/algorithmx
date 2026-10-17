@@ -147,6 +147,31 @@ const HOW_TO_PLAY = "Tap the right answer to beat him!";
  *  qIdx*47+5), so the letters always line up. */
 const OPTION_LETTERS = ["A", "B", "C", "D", "E"];
 
+/**
+ * How far the raccoon rises on his idle bob, and therefore how much clearance
+ * the result panels have to leave above him.
+ *
+ * Owner, 2026-10-17, on the "SO CLOSE!" screen: "as you zoom out, the
+ * raccoon's head gets chopped off at the top. This is something that we need
+ * to push across all the weeks."
+ *
+ * Measured at 2560x1440: the sprite sat 3px ABOVE the clip edge of its own
+ * panel, which is a centred flex item that scrolls (`margin: auto`,
+ * `maxHeight: 100%`, `overflowY: auto`). Two things conspire there:
+ *
+ *   - the sprite is the panel's FIRST child and animates y: [0, -7, 0], so it
+ *     crosses the top edge on every cycle even when the layout fits;
+ *   - a centred box whose content outgrows it spills EQUALLY in both
+ *     directions, and the part above the top edge is clipped AND unreachable
+ *     by scrolling. That is why it appears as the viewport changes rather
+ *     than all the time.
+ *
+ * So the panels now reserve this much above their content, and centre with
+ * `safe`, which falls back to top-alignment rather than overflowing both
+ * ways. Both the victory and the failed panel, so all twenty bosses.
+ */
+const SPRITE_BOB = 7;
+
 // "#e3b341" -> "227,179,65" so the canvas rain can be tinted to the week accent.
 function hexRgb(hex: string): string {
   const h = hex.replace("#", "");
@@ -1170,7 +1195,7 @@ export default function QuizBoss({ quiz, onEnd, onQuestionAnswered }: QuizBossPr
           )}
 
           {stage === "victory" && (
-            <motion.div key="victory" initial={reduce ? false : { opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} style={{ margin: "auto", display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", maxWidth: 540, maxHeight: "100%", overflowY: "auto", zIndex: 15 }}>
+            <motion.div key="victory" initial={reduce ? false : { opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} style={{ margin: "auto", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "safe center", textAlign: "center", maxWidth: 540, maxHeight: "100%", overflowY: "auto", paddingTop: SPRITE_BOB + 4, zIndex: 15 }}>
               <div style={{ position: "relative", marginBottom: 2, display: "flex", justifyContent: "center" }}>
                 <div aria-hidden style={{ position: "absolute", left: "50%", top: "8%", transform: "translateX(-50%)", width: 230, height: 230, background: `radial-gradient(circle, ${accent}33, transparent 60%)`, filter: "blur(4px)", pointerEvents: "none" }} />
                 <motion.img src={weekCharacterSrc(week, "raccoon", "defeated")} onError={fallbackToShared("raccoon", "defeated")} alt={quiz.villain.name} initial={reduce ? false : { scale: 0.8, opacity: 0, y: -6, rotate: -8 }} animate={{ scale: 1, opacity: 1, y: 0, rotate: -8 }} transition={{ type: "spring", stiffness: 180, damping: 14 }} style={{ position: "relative", height: 122, filter: "drop-shadow(0 0 16px rgba(5,10,30,0.45))", willChange: "transform" }} />
@@ -1252,7 +1277,7 @@ export default function QuizBoss({ quiz, onEnd, onQuestionAnswered }: QuizBossPr
           )}
 
           {stage === "failed" && (
-            <motion.div key="failed" initial={reduce ? false : { opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} style={{ margin: "auto", display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", maxWidth: 540, maxHeight: "100%", overflowY: "auto", zIndex: 15 }}>
+            <motion.div key="failed" initial={reduce ? false : { opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} style={{ margin: "auto", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "safe center", textAlign: "center", maxWidth: 540, maxHeight: "100%", overflowY: "auto", paddingTop: SPRITE_BOB + 4, zIndex: 15 }}>
               <div style={{ position: "relative", marginBottom: 2, display: "flex", justifyContent: "center" }}>
                 <div aria-hidden style={{ position: "absolute", left: "50%", top: "6%", transform: "translateX(-50%)", width: 230, height: 230, background: `radial-gradient(circle, ${accent}33, transparent 60%)`, filter: "blur(4px)", pointerEvents: "none" }} />
                 {/* Week-costumed, like every other raccoon in this component.
