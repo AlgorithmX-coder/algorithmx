@@ -267,8 +267,24 @@ export default function RevealBoard({
     }
   };
 
-  // 3 + 2 layout for five cards; flows naturally for other counts.
-  const gridCols = useMemo(() => (items.length <= 4 ? 2 : 3), [items.length]);
+  /**
+   * How wide each card is, as a share of the row.
+   *
+   * Owner, 2026-10-17, on week 2's five-card board: "this empty card at the
+   * bottom. Why wasn't this fixed? Or why wasn't it picked up in the checks?"
+   *
+   * This used to be `gridTemplateColumns: repeat(3, 1fr)` for five items,
+   * which lays them out 3 + 2 and leaves a card-sized hole in the bottom
+   * right. The board filled its card, so the fill audits passed it; what they
+   * cannot see is a grid whose own last row is half empty, and to a child a
+   * hole the size and shape of a card reads as a card that failed to load.
+   *
+   * A grid cannot centre a short last row, so the row is a centred flex wrap
+   * instead: whatever is left over sits in the middle of the final row and
+   * reads as deliberate. That holds for ANY item count, which matters because
+   * five is prime - no 2 or 3 column grid was ever going to divide it evenly.
+   */
+  const cardBasis = useMemo(() => (items.length <= 4 ? "calc(50% - 6px)" : "calc(33.333% - 8px)"), [items.length]);
 
   return (
     <ExerciseFrame maxWidth={760} decor>
@@ -328,8 +344,10 @@ export default function RevealBoard({
 
         <div
           style={{
-            display: "grid",
-            gridTemplateColumns: `repeat(${gridCols}, minmax(0, 1fr))`,
+            display: "flex",
+            flexWrap: "wrap",
+            justifyContent: "center",
+            alignContent: "flex-start",
             gap: 12,
           }}
         >
@@ -347,6 +365,14 @@ export default function RevealBoard({
                 }
                 style={{
                   position: "relative",
+                  // The row is a centred wrap, so each card states its own
+                  // width rather than inheriting a grid track. `flexBasis`
+                  // plus `flexGrow: 0` keeps a short last row the same card
+                  // size as a full one; letting them grow would stretch two
+                  // leftover cards across the whole width.
+                  flex: `0 0 ${cardBasis}`,
+                  maxWidth: cardBasis,
+                  minWidth: 0,
                   display: "flex",
                   flexDirection: "column",
                   alignItems: "center",
