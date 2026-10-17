@@ -18,18 +18,18 @@ import CourseIntro from "./CourseIntro";
 /* ───────────────────────── glossary ───────────────────────── */
 
 const GLOSSARY: GlossaryEntry[] = [
-  { term: "penetration test", definition: "Authorised, ethical hacking: finding the weaknesses in a client's systems before criminals do, then reporting them to be fixed." },
-  { term: "authorization", definition: "Explicit, written permission to test a specific system. Without it, the same actions are a crime - this is rule zero." },
-  { term: "scope", definition: "The exact list of what you may test, when and how. Anything not in scope is off limits, full stop." },
-  { term: "rules of engagement", definition: "The agreed ground rules for a test: the scope, the timing, what's forbidden, and who to contact. You sign it before you start." },
-  { term: "Computer Misuse Act", definition: "The UK law (1990) that makes accessing a computer without permission a crime. It's why authorisation comes first, every time." },
-  { term: "responsible disclosure", definition: "Reporting a weakness privately to the owner so they can fix it, instead of exploiting it or making it public." },
-  { term: "methodology", definition: "The ordered phases of an engagement: recon, scanning, exploitation, post-exploitation, then reporting." },
-  { term: "reconnaissance", definition: "Gathering information about a target before touching it - the first phase of any engagement." },
-  { term: "exploitation", definition: "Actually using a weakness to prove it's real - only ever within scope and with authorisation." },
-  { term: "in scope", definition: "A system or action the client has authorised you to test." },
-  { term: "out of scope", definition: "Anything the client has NOT authorised - you must not touch it, however tempting." },
-  { term: "least impact", definition: "Prove the weakness with the smallest, safest action; never damage data or disrupt the business." },
+  { term: "penetration test", definition: "Authorised, ethical hacking: finding the weaknesses in a client's systems before criminals do, then reporting them to be fixed.", example: "A shop hires a tester to attack its own website before Black Friday, so any holes are found and fixed before real criminals get there." },
+  { term: "authorization", definition: "Explicit, written permission to test a specific system. Without it, the same actions are a crime - this is rule zero.", example: "A signed letter saying 'you may test shop.example.com, 9am-5pm this week'. Without that letter, the exact same test is illegal." },
+  { term: "scope", definition: "The exact list of what you may test, when and how. Anything not in scope is off limits, full stop.", example: "Scope lets you test the login page but not the live payment system - so you leave payments alone, even if they look weak." },
+  { term: "rules of engagement", definition: "The agreed ground rules for a test: the scope, the timing, what's forbidden, and who to contact. You sign it before you start.", example: "The document that says: test only the staff portal, only at night, never phone staff, and call this number if something breaks." },
+  { term: "Computer Misuse Act", definition: "The UK law (1990) that makes accessing a computer without permission a crime. It's why authorisation comes first, every time.", example: "People have been prosecuted under it for logging into others' accounts 'just to look' - it's the line between a pentester and a criminal." },
+  { term: "responsible disclosure", definition: "Reporting a weakness privately to the owner so they can fix it, instead of exploiting it or making it public.", example: "A researcher finds a bug in a hospital app, emails them privately, and waits for a fix before telling anyone - not posting it online." },
+  { term: "methodology", definition: "The ordered phases of an engagement: recon, scanning, exploitation, post-exploitation, then reporting.", example: "Like a surgeon's checklist: recon, scan, exploit, report - in that order every time, so nothing important gets skipped." },
+  { term: "reconnaissance", definition: "Gathering information about a target before touching it - the first phase of any engagement.", example: "Before touching a company, a tester reads its public website, job ads and LinkedIn to map its staff and tech - no hacking yet." },
+  { term: "exploitation", definition: "Actually using a weakness to prove it's real - only ever within scope and with authorisation.", example: "Spotting a weak password is recon; actually logging in with it to prove it works is exploitation." },
+  { term: "in scope", definition: "A system or action the client has authorised you to test.", example: "The client's test site shop-test.example.com is listed in scope - you're cleared to attack it." },
+  { term: "out of scope", definition: "Anything the client has NOT authorised - you must not touch it, however tempting.", example: "The CEO's personal email is out of scope - hands off, even though it would be an easy and tempting target." },
+  { term: "least impact", definition: "Prove the weakness with the smallest, safest action; never damage data or disrupt the business.", example: "To prove you can read the database, you grab one harmless test record - you don't download all the real customer data." },
 ];
 const G = (text: string, keyPrefix: string) => withGlossary(text, GLOSSARY, new Set<string>(), keyPrefix);
 
