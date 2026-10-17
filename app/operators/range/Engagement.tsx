@@ -225,46 +225,38 @@ export default function Engagement({
 
         {/* LESSON */}
         {phase === "lesson" && (
-          <Panel>
+          <div style={{ display: "grid", gap: 14 }}>
             <Eyebrow>◆ Lesson · learn the ground</Eyebrow>
-            {mod.lesson.blocks.map((b, i) => {
-              const seen = new Set<string>();
-              return (
-                <div key={i} style={{ marginBottom: 18 }}>
-                  <h3 style={h3}>{b.h}</h3>
-                  <p style={{ color: C.soft, fontSize: 14.5, lineHeight: 1.62, marginTop: 6 }}>{withGlossary(b.body, mod.glossary, seen, `lb${i}`)}</p>
-                </div>
-              );
-            })}
+            {mod.lesson.blocks.map((b, i) => <LessonBlock key={i} h={b.h} body={b.body} i={i} glossary={mod.glossary} keyPrefix={`lb${i}`} />)}
             {mod.lesson.example && (
-              <div style={{ margin: "6px 0 20px" }}>
+              <div>
                 <div style={{ fontFamily: MONO, fontSize: 11, letterSpacing: ".08em", textTransform: "uppercase", color: C.mute, marginBottom: 8 }}>Worked example</div>
                 <pre style={preBox}>
                   {mod.lesson.example.lines.map((ln, i) => (
-                    <span key={i} style={ln.leak ? { display: "block", color: C.amber, background: "rgba(232,163,61,.10)", borderRadius: 4, padding: "1px 4px" } : { display: "block", color: "#8fa0c8" }}>{ln.t || " "}</span>
+                    <span key={i} style={ln.leak ? { display: "block", color: C.amber, background: "rgba(232,163,61,.10)", borderRadius: 4, padding: "1px 4px" } : { display: "block", color: "#9fb0d8" }}>{ln.t || " "}</span>
                   ))}
                 </pre>
-                <p style={{ color: C.mute, fontSize: 13, lineHeight: 1.55, marginTop: 8 }}>{mod.lesson.example.caption}</p>
+                <p style={{ color: C.soft, fontSize: 13, lineHeight: 1.55, marginTop: 8 }}>{mod.lesson.example.caption}</p>
               </div>
             )}
             {mod.lesson.Interactive && (
-              <div style={{ margin: "4px 0 18px" }}>
+              <div style={{ borderRadius: 14, padding: 6, background: "rgba(139,123,255,0.05)", border: `1.5px dashed ${C.indigo}`, boxShadow: `0 0 30px -16px ${C.indigo}` }}>
                 <mod.lesson.Interactive onDone={() => setLessonLabOk(true)} />
               </div>
             )}
             {mod.lesson.summary && mod.lesson.summary.length > 0 && (
-              <div style={{ margin: "6px 0 18px", padding: "14px 16px", borderRadius: 12, background: "rgba(95,230,255,0.05)", border: "1px solid rgba(95,230,255,0.3)" }}>
-                <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: ".12em", textTransform: "uppercase", color: C.cyan, fontWeight: 700, marginBottom: 8 }}>✦ Recap</div>
-                <ul style={{ margin: 0, paddingLeft: 18, display: "grid", gap: 5 }}>
-                  {mod.lesson.summary.map((s, i) => <li key={i} style={{ color: C.soft, fontSize: 13.5, lineHeight: 1.5 }}>{s}</li>)}
+              <div style={{ padding: "15px 17px", borderRadius: 14, background: "rgba(95,230,255,0.06)", border: "1px solid rgba(95,230,255,0.38)", borderLeft: "3px solid #5FE6FF" }}>
+                <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: ".14em", textTransform: "uppercase", color: C.cyan, fontWeight: 700, marginBottom: 9 }}>✦ Recap</div>
+                <ul style={{ margin: 0, padding: 0, listStyle: "none", display: "grid", gap: 7 }}>
+                  {mod.lesson.summary.map((s, i) => <li key={i} style={{ color: "#C7CEDD", fontSize: 13.5, lineHeight: 1.5, display: "flex", gap: 9 }}><span aria-hidden style={{ color: C.cyan }}>✦</span><span>{s}</span></li>)}
                 </ul>
               </div>
             )}
             <CheckBox check={mod.lesson.check} onPass={() => setLessonOk(true)} />
-            <div style={{ marginTop: 20 }}>
+            <div style={{ marginTop: 6 }}>
               <Btn tone="i" disabled={!lessonReady} onClick={() => setPhase("authorize")}>Sign the scope →</Btn>
             </div>
-          </Panel>
+          </div>
         )}
 
         {/* AUTHORIZE */}
@@ -334,27 +326,19 @@ export default function Engagement({
               <div className="co-anim co-glow" style={{ fontFamily: DISP, fontSize: "clamp(22px,5vw,34px)", fontWeight: 700, margin: "10px 0 6px" }}>Case cracked</div>
               <div style={{ fontFamily: MONO, fontSize: 14.5, color: C.green, background: "rgba(74,222,128,0.08)", display: "inline-block", padding: "7px 15px", borderRadius: 8, border: "1px solid rgba(74,222,128,0.3)" }}>{mod.flag}</div>
             </div>
-            <Panel>
+            <div style={{ display: "grid", gap: 14 }}>
               <Eyebrow>◆ Debrief · now defend it</Eyebrow>
-              {mod.defend.blocks.map((b, i) => {
-                const seen = new Set<string>();
-                return (
-                  <div key={i} style={{ marginBottom: 16 }}>
-                    <h3 style={h3}>{b.h}</h3>
-                    <p style={{ color: C.soft, fontSize: 14.5, lineHeight: 1.62, marginTop: 6 }}>{withGlossary(b.body, mod.glossary, seen, `db${i}`)}</p>
-                  </div>
-                );
-              })}
+              {mod.defend.blocks.map((b, i) => <LessonBlock key={i} h={b.h} body={b.body} i={i} glossary={mod.glossary} keyPrefix={`db${i}`} />)}
               {mod.defend.Interactive && (
-                <div style={{ margin: "4px 0 18px" }}>
+                <div style={{ borderRadius: 14, padding: 6, background: "rgba(139,123,255,0.05)", border: `1.5px dashed ${C.indigo}`, boxShadow: `0 0 30px -16px ${C.indigo}` }}>
                   <mod.defend.Interactive onDone={() => setDefendLabOk(true)} />
                 </div>
               )}
               <CheckBox check={mod.defend.check} onPass={() => setDefendOk(true)} />
-              <div style={{ marginTop: 20 }}>
+              <div style={{ marginTop: 6 }}>
                 <Btn tone="i" disabled={!defendReady} onClick={goToReport}>File your report →</Btn>
               </div>
-            </Panel>
+            </div>
           </div>
         )}
 
@@ -378,10 +362,10 @@ function CheckBox({ check, onPass }: { check: Check; onPass: () => void }) {
     return a;
   });
   return (
-    <div style={{ marginTop: 8, padding: "16px 18px", borderRadius: 12, border: `1px solid ${C.line}`, background: "rgba(139,123,255,0.04)" }}>
-      <div style={{ display: "flex", gap: 8, alignItems: "baseline", marginBottom: 12 }}>
-        <span style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: ".1em", color: done ? C.green : C.indigo, fontWeight: 700 }}>{done ? "✓ CHECK" : "CHECK"}</span>
-        <span style={{ fontFamily: DISP, fontWeight: 600, fontSize: 15.5, color: C.ink }}>{check.q}</span>
+    <div style={{ marginTop: 8, padding: "16px 18px", borderRadius: 14, border: `1px solid ${done ? C.green : C.indigo}66`, background: "rgba(139,123,255,0.06)", boxShadow: `0 0 26px -16px ${done ? C.green : C.indigo}` }}>
+      <div style={{ display: "flex", gap: 10, alignItems: "baseline", marginBottom: 12, flexWrap: "wrap" }}>
+        <span style={{ fontFamily: MONO, fontSize: 10, letterSpacing: ".12em", fontWeight: 700, color: "#0a0a12", background: done ? C.green : C.indigo2, borderRadius: 6, padding: "3px 9px" }}>{done ? "✓ CHECK" : "CHECK"}</span>
+        <span style={{ fontFamily: DISP, fontWeight: 600, fontSize: 15.5, color: "#fff" }}>{check.q}</span>
       </div>
       <div style={{ display: "grid", gap: 8 }}>
         {opts.map((o, i) => {
@@ -477,13 +461,33 @@ function Report({ mod, callsign, onExit, liveRank }: { mod: ModuleDef; callsign:
 
 /* ---------- primitives ---------- */
 const h2: React.CSSProperties = { fontFamily: DISP, fontSize: 22, margin: 0, fontWeight: 700 };
-const h3: React.CSSProperties = { fontFamily: DISP, fontSize: 16, margin: 0, fontWeight: 600, color: C.ink };
 const scopeTbl: React.CSSProperties = { display: "grid", gap: 1, background: C.lineSoft, border: `1px solid ${C.lineSoft}`, borderRadius: 10, overflow: "hidden", fontFamily: MONO, fontSize: 12.5 };
 const lbl: React.CSSProperties = { fontFamily: MONO, fontSize: 11, letterSpacing: ".12em", textTransform: "uppercase", color: C.mute };
 const input: React.CSSProperties = { width: "100%", padding: "11px 13px", borderRadius: 9, background: C.carbon, color: C.ink, border: `1px solid ${C.line}`, fontFamily: MONO, fontSize: 14 };
 const preBox: React.CSSProperties = { margin: 0, padding: "14px 16px", background: C.carbon, border: `1px solid ${C.lineSoft}`, borderRadius: 10, fontFamily: MONO, fontSize: 12, lineHeight: 1.7, whiteSpace: "pre-wrap", overflowX: "auto" };
 const handlerBox: React.CSSProperties = { display: "flex", gap: 12, alignItems: "flex-start", padding: "13px 16px", background: "rgba(139,123,255,0.06)", border: `1px solid ${C.line}`, borderRadius: 12 };
 const handlerTag: React.CSSProperties = { fontFamily: MONO, fontSize: 10.5, color: C.indigo, fontWeight: 700, letterSpacing: ".1em", paddingTop: 2 };
+
+// A lesson/defend block with a distinct design per index (owner: "a different
+// design for each block"), on brighter body text so it reads clearly over the
+// module backdrop. Treatments cycle: accent rail, framed card, top-line card.
+const LB_CYCLE: { kind: "rail" | "framed" | "topline"; accent: string }[] = [
+  { kind: "rail", accent: C.indigo },
+  { kind: "framed", accent: C.cyan },
+  { kind: "topline", accent: C.amber },
+  { kind: "rail", accent: C.green },
+  { kind: "framed", accent: "#FF7BD5" },
+];
+function LessonBlock({ h, body, i, glossary, keyPrefix }: { h: string; body: string; i: number; glossary?: GlossaryEntry[]; keyPrefix: string }) {
+  const t = LB_CYCLE[i % LB_CYCLE.length];
+  const seen = new Set<string>();
+  const hc = t.kind === "framed" ? t.accent : "#ffffff";
+  const heading = <h3 style={{ fontFamily: DISP, fontWeight: 700, fontSize: 18.5, margin: 0, color: hc, lineHeight: 1.22, letterSpacing: ".005em" }}>{h}</h3>;
+  const para = <p style={{ color: "#C7CEDD", fontSize: 14.5, lineHeight: 1.64, marginTop: 8 }}>{withGlossary(body, glossary, seen, keyPrefix)}</p>;
+  if (t.kind === "rail") return <div style={{ padding: "2px 2px 2px 18px", borderLeft: `3px solid ${t.accent}` }}>{heading}{para}</div>;
+  if (t.kind === "framed") return <div style={{ position: "relative", padding: "16px 18px", borderRadius: 14, background: "rgba(18,20,29,0.82)", border: `1px solid ${t.accent}55`, overflow: "hidden" }}><span aria-hidden style={{ position: "absolute", top: 0, left: 22, right: 22, height: 2, background: `linear-gradient(90deg,transparent,${t.accent},transparent)` }} />{heading}{para}</div>;
+  return <div style={{ padding: "15px 18px 16px", borderRadius: 14, background: "rgba(18,20,29,0.82)", border: `1px solid ${C.line}`, borderTop: `3px solid ${t.accent}` }}>{heading}{para}</div>;
+}
 
 function Panel({ children, style }: { children: React.ReactNode; style?: React.CSSProperties }) {
   return <div style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: 16, padding: 24, ...style }}>{children}</div>;
