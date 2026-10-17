@@ -520,6 +520,25 @@ that is the part worth making beautiful rather than replacing.
 
 ### W2-13 - the choir on the badge screen
 
+**DECIDED 17 October: left as it is, revisit after the week 2 re-test.**
+
+Identified first, since it was never confirmed which sound it was. The badge
+screen plays `badge-earned.mp3` (1.54s) and the win screen just before it
+plays `victory.mp3` (2.27s), so the owner is hearing about 3.8 seconds of
+a-cappella vocal back to back. `bgm-victory.mp3` (11.4s) is NOT in
+BGM_ALLOWLIST and never plays at all, so it was never a candidate.
+
+Both stings are a-cappella because that is the owner's own standing mandate
+for boss audio, which is why this was put to them rather than changed. Their
+call: hear the week with everything else fixed first, then decide. Nothing
+spent on new audio until then.
+
+Original note follows.
+
+---
+
+
+
 Owner: "it has like this choir singing Cyberheroes. I'm not sure if I like it.
 Maybe we should have something else. That's more like less from the choir and
 more suited for kids."
@@ -641,6 +660,144 @@ Standing constraint, from `weekThemes.ts` and repeated on every item above:
 a theme only ever changes NEUTRAL chrome. Green stays correct, red stays
 wrong, gold stays reward. The badge art, the sticker art and the XP figure
 keep their own meaning in every week.
+
+---
+
+## THE PRE-TEST CHECKLIST
+
+**This is the part to read.** Everything above is how each check came to
+exist; this is what to run before the owner is told a week is ready.
+
+The rule the owner set on 17 October: a fault found in one week is a fault to
+look for in every week, and the sweep happens BEFORE they test, not after.
+Week 2 cost thirteen reports. Week 3 should cost far fewer, and the only way
+that happens is by running this list first.
+
+Order matters. Content before audio, because recording a line you are about
+to rewrite is how week 1 ended up recording nine blocks twice. Audio before
+layout, because narration panels change screen heights. Layout before art.
+
+### 1. Content, before a single clip is recorded
+
+| # | Run | Must say |
+|---|---|---|
+| C1 | `node scripts/audit-narration-flow.mjs --week=N` | 0 seam flags, 0 beat-chain flags |
+| C2 | `node scripts/audit-echoed-lines.mjs N` | 0 echoes (villain line vs the verdict beside it) |
+| C3 | `node scripts/audit-framing-echoes.mjs N` | 0 stock phrases setting up a question AND closing it |
+| C4 | `node scripts/audit-no-em-dashes.mjs` | none in child-facing copy |
+| C5 | `node scripts/audit-engine-reuse.mjs --week=N` | no engine this week may not use |
+
+C3 is new from week 2: "not sure" set up the last boss question and closed
+it. C2 could not hear it, because it drops stop words and needs three content
+words in common. If C3 reports something that is the week's SUBJECT rather
+than its framing - week 2's "too nosy" is the model - leave it; the list in
+the script is deliberately only generic set-up phrases.
+
+**Read the flow dump top to bottom as one script.** No audit can tell you a
+recap promises an activity when a Learn comes next.
+
+### 2. The printed page must not repeat the spoken one
+
+New from week 2 (W2-3), and no script catches it yet: every echo check
+compares spoken against spoken. Nothing compares a screen's PRINTED chrome
+against the narration printed inches below it.
+
+ConceptRecap now drops a line that restates its own "Up next" pill
+automatically, so recaps are covered. **Any OTHER screen that prints a label
+and a narration line together has to be read by eye.**
+
+### 3. Audio
+
+| # | Run | Must say |
+|---|---|---|
+| A1 | `node --env-file=.env.local scripts/elevenlabs-generate-narration.mjs` | records only what changed |
+| A2 | `node scripts/elevenlabs-generate-narration.mjs --check` | 0 SILENT |
+| A3 | `node scripts/audit-consonant-integrity.mjs --weeks=N` | every clip keeps its last letter |
+| A4 | `node scripts/audit-pause-placement.mjs --weeks=N` | pauses where the writing put them |
+| A5 | add week N to the CI ratchets | `--weeks=1,2,N` and `audit-framing-echoes.mjs 1 2 N` |
+
+Years are handled in the generator now (W2-5), so any week re-recorded gets
+them. Nothing to do per week except notice if a week has digits that are NOT
+a year - a password, a phone number, a count - and check how they are read.
+
+**A3 is the one to treat carefully.** It was recalibrated in week 2 to stop
+mis-reading stop endings, and that moved a safety net. If it reports a clip,
+listen before re-recording; if it passes a clip you can hear is cut, say so
+rather than trusting the number.
+
+### 4. Layout, at the owner's window
+
+| # | Run | Must say |
+|---|---|---|
+| L1 | `node scripts/qa-server.mjs --build` | serving THIS checkout, BUILD_ID verified |
+| L2 | `node scripts/audit-stage-overflow.mjs N` | 0px on every screen |
+| L3 | `node scripts/audit-card-fill.mjs N` | no card leaving a band of empty stage |
+| L4 | `node scripts/audit-frame-fit.mjs N` | nothing past the fold or clipped |
+
+L2 is new from week 2 (W2-4) and asks a different question from L3: L3 asks
+whether the CARD fills the STAGE, L2 asks whether the stage overflows ITSELF.
+A card can fill its stage perfectly and the stage still be a few pixels too
+tall, and only the second puts a scroll bar on the screen.
+
+**Measuring nothing is not passing.** L2 exits non-zero if it never found a
+screen. If any of these report zero screens measured, the gate was shut and
+the run proved nothing.
+
+Checks no script does yet, so they are done by eye at 1414x771:
+
+- **A grid's last row.** Five items in a three-column grid leaves a
+  card-sized hole (W2-1). RevealBoard centres a short row now; any OTHER
+  grid in the week needs looking at.
+- **A result card after the exercise is finished**, not at rest. Most engines
+  draw the result over the finished board and inherit its height.
+- **Anything pinned with a z-index.** A hint, a coach banner or an overlay
+  must never cover live gameplay (W2-6). If the board has nowhere to put it,
+  hold the game while it is up rather than letting it sit on top.
+
+### 5. Art
+
+| # | Run | Must say |
+|---|---|---|
+| R1 | `node scripts/pad-lesson-icons.mjs --check` | 0 icons running to the canvas edge |
+| R2 | sprite pass over `w{NN}` | `fill-sprite-key-holes.mjs`, `strip-sprite-ground-shadow.mjs` |
+| R3 | magenta contact sheet of every icon the week shows | no stray pixels, nothing clipped |
+
+R1 is shared and already done for all twenty weeks; it only needs re-running
+if a week ADDS an icon.
+
+### 6. Gameplay feel, by playing it
+
+No script measures these. They came out of week 2 and they apply to any
+engine with motion:
+
+- **Can the child READ the thing they are deciding about?** Week 2 truncated
+  nine of eleven subject lines, so the decision rested on text that was not
+  shown (W2-9).
+- **Is anything racing them?** The build standard says nothing should. Check
+  the speed ramp, how many things share the screen, and whether the gap
+  between them scales with how much there is to read.
+- **Is the same number on screen twice?** Week 2 showed "KEPT SAFE 2/5" three
+  times at once (W2-8).
+
+### 7. The closing four screens
+
+They are one themed suite now (W2-17), reading `weekThemes.ts`:
+
+  boss Mission Report -> Mission Debrief -> Stickers Unlocked -> Week Complete
+
+A week with a theme entry gets its own colour for free. **A week with NO
+entry in weekThemes.ts falls back to the house look**, which is correct but
+means that week ends like every other un-themed week. Worth adding a theme
+entry when a week is brought up to standard.
+
+Theme the chrome, never the meaning: green stays correct, red stays wrong,
+gold stays reward.
+
+### 8. Before saying "ready to test"
+
+- CI green on the PR, and merged - testers only ever see production.
+- A screenshot of each screen CHANGED, at 1414x771, looked at.
+- Anything deliberately left open said out loud, not left to be discovered.
 
 ---
 
