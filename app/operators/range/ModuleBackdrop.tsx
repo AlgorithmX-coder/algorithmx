@@ -34,8 +34,6 @@ const THEMES: Record<number, Theme> = {
     const bx = (Math.sin(t * 0.5) * 0.5 + 0.5) * w; const grad = x.createLinearGradient(bx - 90, 0, bx + 90, 0);
     grad.addColorStop(0, rgba(C[2], 0)); grad.addColorStop(0.5, rgba(C[2], 0.14)); grad.addColorStop(1, rgba(C[2], 0));
     x.fillStyle = grad; x.fillRect(bx - 90, 0, 180, h);
-    const p = 0.5 + 0.5 * Math.sin(t * 1.6); x.strokeStyle = rgba(C[0], 0.25 + p * 0.3); x.lineWidth = 1.5; x.setLineDash([9, 8]);
-    x.strokeRect(w * 0.1, h * 0.14, w * 0.8, h * 0.72); x.setLineDash([]);
   } },
   2: { C: ["#5FE6FF", "#2DD4BF", "#8B7BFF"], draw: (x, w, h, t, C, S) => {
     if (!S.n) { S.n = []; const N = Math.round((w * h) / 46000); for (let i = 0; i < N; i++) S.n.push({ x: Math.random() * w, y: Math.random() * h, vx: (Math.random() - 0.5) * 12, vy: (Math.random() - 0.5) * 12, p: Math.random() * TAU }); }
