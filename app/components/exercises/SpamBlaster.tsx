@@ -671,16 +671,33 @@ export default function SpamBlaster({
       if (aliveCount >= cap) return;
       if (now < s.nextSpawnAt) return;
       const em = list[s.spawnedIdx];
+      /* The band a side-entering packet may fly through.
+       *
+       * It used to start at y=60 with the card's own half-height added on
+       * top, so a card's top edge could reach y=21 - straight across the goal
+       * headline drawn at y=56. Caught on the first frame of a verification
+       * run: "Kitten Quiz" sitting over "ZAP THE RACCOON'S GRABS!". The
+       * taller card from W2-9 made it worse, because the half-height grew
+       * with it.
+       *
+       * So the band is derived from the real geometry rather than a literal:
+       * it begins below the headline with clearance and ends above the vault,
+       * so a packet can never spawn on top of either. */
+      const HEADLINE_BOTTOM = 56 + 14;
+      const laneTop = HEADLINE_BOTTOM + EMAIL_H / 2 + 10;
+      const laneBottom = MONITOR_Y - MONITOR_H / 2 - EMAIL_H / 2 - 10;
+      const laneSpan = Math.max(40, laneBottom - laneTop);
+
       // random edge spawn
       const edge = Math.floor(Math.random() * 4);
       let x = 0;
       let y = 0;
       if (edge === 0) {
         x = -EMAIL_W;
-        y = 60 + Math.random() * (CANVAS_H - 220);
+        y = laneTop + Math.random() * laneSpan;
       } else if (edge === 1) {
         x = CANVAS_W + EMAIL_W;
-        y = 60 + Math.random() * (CANVAS_H - 220);
+        y = laneTop + Math.random() * laneSpan;
       } else if (edge === 2) {
         x = 60 + Math.random() * (CANVAS_W - 120);
         y = -EMAIL_H;
@@ -720,155 +737,161 @@ export default function SpamBlaster({
         now + spawnGapMs(s.spawnedIdx, (em.subject ?? "").length) * (comfortRef.current ? 1.4 : 1);
     };
 
+    /**
+     * The Hero Vault.
+     *
+     * Owner, 2026-10-17: "The Hero Vault, I think we can make it look much
+     * cooler. And much more modern."
+     *
+     * It used to be a fake app window: a bezel, a title bar with three
+     * traffic-light dots, placeholder "message rows" drawn as grey stripes,
+     * and a footer status bar. That is a 2010 screenshot of a mail client,
+     * and none of it meant anything - the stripes were decoration standing in
+     * for messages the child never reads.
+     *
+     * It is now a DEVICE: a glass shell with a lit aperture at the top where
+     * packets actually land, a segmented capacity meter that fills as
+     * treasures are kept safe, and an under-glow that reacts when a grab gets
+     * through. Everything drawn now carries information.
+     *
+     * The readout stays - it is the diegetic one kept when the duplicate
+     * third counter was removed - but it reads as part of the device rather
+     * than as a window's chrome.
+     */
     const drawMonitor = (now: number) => {
       const s = state.current;
       const flashing = s.monitorFlashColour && now < s.monitorFlashUntil;
-      const shakeAmt =
-        now < s.monitorShakeUntil ? (Math.random() - 0.5) * 6 : 0;
+      const shakeAmt = now < s.monitorShakeUntil ? (Math.random() - 0.5) * 6 : 0;
       const mx = MONITOR_X + shakeAmt;
       const my = MONITOR_Y + (now < s.monitorShakeUntil ? (Math.random() - 0.5) * 4 : 0);
-      const sx = mx - MONITOR_W / 2 + 10;
-      const sy = my - MONITOR_H / 2 + 10;
-      const sw = MONITOR_W - 20;
-      const sh = MONITOR_H - 20;
+      const left = mx - MONITOR_W / 2;
+      const top = my - MONITOR_H / 2;
+      /* `monitorFlashColour` is nullable and `flashing` already proves it is
+         set; the fallback keeps the type honest without a non-null assertion. */
+      const accentHue = (flashing && s.monitorFlashColour) || "#00e5ff";
+      const breathe = 0.5 + 0.5 * Math.sin(now * 0.0016);
 
-      // frame
-      const frameColour = flashing ? s.monitorFlashColour! : "#3a1a3e";
-      ctx.fillStyle = "#0f1530";
-      roundRect(ctx, mx - MONITOR_W / 2, my - MONITOR_H / 2, MONITOR_W, MONITOR_H, 14);
+      /* Under-glow: the vault sits in its own pool of light, so it reads as
+       * an object standing on the floor rather than a rectangle pasted on. */
+      const pool = ctx.createRadialGradient(mx, my + MONITOR_H / 2, 4, mx, my + MONITOR_H / 2, MONITOR_W * 0.95);
+      pool.addColorStop(0, flashing ? "rgba(239,68,68,0.34)" : "rgba(0,229,255,0.22)");
+      pool.addColorStop(1, "rgba(0,0,0,0)");
+      ctx.fillStyle = pool;
+      ctx.fillRect(mx - MONITOR_W, my - 10, MONITOR_W * 2, MONITOR_H);
+
+      /* Shell: a soft vertical gradient with a lit top edge, which is what
+       * separates a modern device from a flat box. */
+      const shell = ctx.createLinearGradient(0, top, 0, top + MONITOR_H);
+      shell.addColorStop(0, "rgba(38,52,104,0.97)");
+      shell.addColorStop(0.5, "rgba(17,24,56,0.98)");
+      shell.addColorStop(1, "rgba(9,13,30,0.99)");
+      ctx.fillStyle = shell;
+      roundRect(ctx, left, top, MONITOR_W, MONITOR_H, 20);
       ctx.fill();
-      ctx.strokeStyle = frameColour;
-      ctx.lineWidth = 4;
-      roundRect(ctx, mx - MONITOR_W / 2, my - MONITOR_H / 2, MONITOR_W, MONITOR_H, 14);
+
+      ctx.strokeStyle = flashing ? accentHue : "rgba(125,240,255,0.55)";
+      ctx.lineWidth = flashing ? 3 : 1.6;
+      roundRect(ctx, left, top, MONITOR_W, MONITOR_H, 20);
       ctx.stroke();
 
-      // screen background
-      const screenGrad = ctx.createLinearGradient(0, my - MONITOR_H / 2, 0, my + MONITOR_H / 2);
-      screenGrad.addColorStop(0, "rgba(20,30,80,0.95)");
-      screenGrad.addColorStop(1, "rgba(8,12,24,0.98)");
-      ctx.fillStyle = screenGrad;
-      roundRect(ctx, sx, sy, sw, sh, 8);
-      ctx.fill();
-
-      // Clip subsequent drawing to inside the screen so the AlgorithmX
-      // mock-app can't bleed past the bezel.
-      ctx.save();
-      roundRect(ctx, sx, sy, sw, sh, 8);
-      ctx.clip();
-
-      // App title bar
-      ctx.fillStyle = "rgba(15,23,42,0.95)";
-      ctx.fillRect(sx, sy, sw, 18);
-      // Traffic-light dots
-      ["#ef4444", "#fbbf24", "#7eff97"].forEach((c, i) => {
-        ctx.fillStyle = c;
-        ctx.beginPath();
-        ctx.arc(sx + 8 + i * 7, sy + 9, 2, 0, Math.PI * 2);
-        ctx.fill();
-      });
-      // Brand mark "AX" badge
-      ctx.fillStyle = "#00e5ff";
-      ctx.font = "900 9px 'Space Grotesk', sans-serif";
-      ctx.textAlign = "left";
-      ctx.textBaseline = "middle";
-      ctx.fillText(cp.deviceTitle, sx + 32, sy + 9);
-      // Status dot (live)
-      ctx.fillStyle = "#7eff97";
+      /* A highlight along the top edge only - the cheapest way to say glass. */
+      ctx.strokeStyle = "rgba(255,255,255,0.22)";
+      ctx.lineWidth = 1;
       ctx.beginPath();
-      ctx.arc(sx + sw - 8, sy + 9, 2, 0, Math.PI * 2);
+      ctx.moveTo(left + 18, top + 1.5);
+      ctx.lineTo(left + MONITOR_W - 18, top + 1.5);
+      ctx.stroke();
+
+      /* THE APERTURE. Packets fly at the vault and vanish; there was never
+       * anywhere for them to GO. This is the slot they land in, and it
+       * brightens as it accepts one. */
+      const slotW = MONITOR_W * 0.56;
+      const slotX = mx - slotW / 2;
+      const slotY = top + 13;
+      ctx.fillStyle = "rgba(4,8,22,0.95)";
+      roundRect(ctx, slotX, slotY, slotW, 9, 5);
+      ctx.fill();
+      const slotGlow = ctx.createLinearGradient(slotX, 0, slotX + slotW, 0);
+      slotGlow.addColorStop(0, "rgba(0,229,255,0)");
+      slotGlow.addColorStop(0.5, `rgba(125,240,255,${0.5 + breathe * 0.4})`);
+      slotGlow.addColorStop(1, "rgba(0,229,255,0)");
+      ctx.fillStyle = slotGlow;
+      roundRect(ctx, slotX + 2, slotY + 2.5, slotW - 4, 4, 2);
       ctx.fill();
 
-      // Inbox header (inside app)
-      ctx.fillStyle = "rgba(160,106,255,0.18)";
-      ctx.fillRect(sx, sy + 18, sw, 16);
-      ctx.fillStyle = "#7c5cff";
-      ctx.font = "900 9px 'Courier New', monospace";
-      ctx.textAlign = "left";
-      ctx.fillText(`▸ ${cp.inboxLabel}`, sx + 8, sy + 26);
-      ctx.fillStyle = "#a0ffb0";
-      ctx.textAlign = "right";
-      ctx.fillText(`${s.inbox}/${s.totalSafe}`, sx + sw - 8, sy + 26);
+      /* Label, set in the lesson's own face rather than Courier. */
+      ctx.font = "800 11px 'Space Grotesk', sans-serif";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "top";
+      ctx.fillStyle = "rgba(190,214,255,0.92)";
+      ctx.fillText(cp.deviceTitle.replace(/^[^A-Za-z]+/, ""), mx, slotY + 17);
 
-      // Recent message rows (one per email already in inbox, max 3)
-      const rowH = 14;
-      for (let i = 0; i < Math.min(s.inbox, 3); i++) {
-        const ry = sy + 38 + i * rowH;
-        // Row background
-        ctx.fillStyle = i === 0 ? "rgba(0,229,255,0.1)" : "rgba(255,255,255,0.03)";
-        ctx.fillRect(sx + 4, ry, sw - 8, rowH - 2);
-        // Avatar dot
-        const dotC = ["#00e5ff", "#7c5cff", "#fbbf24"][i % 3];
-        ctx.fillStyle = dotC;
-        ctx.beginPath();
-        ctx.arc(sx + 12, ry + (rowH - 2) / 2, 3, 0, Math.PI * 2);
+      /* CAPACITY METER: one segment per treasure that can be kept safe, so
+       * the child can see how much is secured at a glance. This replaces
+       * three grey placeholder "message rows" that stood for nothing. */
+      const total = Math.max(1, s.totalSafe);
+      const gap = 3;
+      const meterW = MONITOR_W - 44;
+      const segW = (meterW - gap * (total - 1)) / total;
+      const meterX = mx - meterW / 2;
+      const meterY = top + MONITOR_H * 0.56;
+      for (let i = 0; i < total; i++) {
+        const on = i < s.inbox;
+        const x = meterX + i * (segW + gap);
+        ctx.fillStyle = on ? "rgba(126,255,151,0.92)" : "rgba(125,240,255,0.13)";
+        roundRect(ctx, x, meterY, segW, 7, 3);
         ctx.fill();
-        // Sender stripe
-        ctx.fillStyle = "rgba(255,255,255,0.6)";
-        ctx.fillRect(sx + 20, ry + 3, sw * 0.45, 2);
-        // Subject stripe
-        ctx.fillStyle = "rgba(255,255,255,0.3)";
-        ctx.fillRect(sx + 20, ry + 7, sw * 0.6, 1.5);
-      }
-      // Empty-state placeholders
-      for (let i = s.inbox; i < 3; i++) {
-        const ry = sy + 38 + i * rowH;
-        ctx.fillStyle = "rgba(255,255,255,0.02)";
-        ctx.fillRect(sx + 4, ry, sw - 8, rowH - 2);
-        ctx.strokeStyle = "rgba(255,255,255,0.06)";
-        ctx.setLineDash([2, 2]);
-        ctx.strokeRect(sx + 4, ry, sw - 8, rowH - 2);
-        ctx.setLineDash([]);
+        if (on) {
+          ctx.strokeStyle = "rgba(126,255,151,0.5)";
+          ctx.lineWidth = 1;
+          roundRect(ctx, x, meterY, segW, 7, 3);
+          ctx.stroke();
+        }
       }
 
-      // Footer status bar
-      ctx.fillStyle = "rgba(15,23,42,0.95)";
-      ctx.fillRect(sx, sy + sh - 14, sw, 14);
-      ctx.fillStyle = s.viruses > 0 ? "#ef4444" : "#7eff97";
-      ctx.beginPath();
-      ctx.arc(sx + 8, sy + sh - 7, 2.4, 0, Math.PI * 2);
+      /* The readout. Kept because it is the device showing its own contents;
+       * the duplicate floating copy above the vault was removed separately. */
+      ctx.font = "800 10px 'Space Grotesk', sans-serif";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "top";
+      ctx.fillStyle = "rgba(126,255,151,0.95)";
+      ctx.fillText(`${cp.inboxLabel} ${s.inbox}/${s.totalSafe}`, mx, meterY + 13);
+
+      /* Breach line: only drawn when something actually got through, so a
+       * clean run shows a clean device rather than a permanent status bar. */
+      if (s.viruses > 0) {
+        ctx.font = "800 9px 'Space Grotesk', sans-serif";
+        ctx.fillStyle = "rgba(252,165,165,0.95)";
+        ctx.fillText(
+          `${s.viruses} ${s.viruses > 1 ? cp.missWordPlural : cp.missWord} GOT IN`,
+          mx,
+          meterY + 27,
+        );
+      }
+
+      /* Feet, so it stands on the floor grid instead of floating. */
+      ctx.fillStyle = "rgba(125,240,255,0.22)";
+      roundRect(ctx, mx - 46, my + MONITOR_H / 2, 92, 7, 3);
       ctx.fill();
-      ctx.fillStyle = s.viruses > 0 ? "#fca5a5" : "#a0ffb0";
-      ctx.font = "700 8px 'Courier New', monospace";
-      ctx.textAlign = "left";
-      ctx.fillText(
-        s.viruses > 0 ? `${s.viruses} ${s.viruses > 1 ? cp.missWordPlural : cp.missWord} DETECTED` : cp.clearLabel,
-        sx + 14, sy + sh - 7
-      );
-      ctx.textAlign = "right";
-      ctx.fillStyle = "#7c5cff";
-      ctx.fillText(`STREAK ${s.streak}`, sx + sw - 6, sy + sh - 7);
+      ctx.fillStyle = "rgba(125,240,255,0.12)";
+      roundRect(ctx, mx - 68, my + MONITOR_H / 2 + 7, 136, 5, 2);
+      ctx.fill();
 
-      // Subtle scanlines on top of everything
-      ctx.fillStyle = "rgba(255,255,255,0.025)";
-      for (let yL = 0; yL < sh; yL += 3) {
-        ctx.fillRect(sx, sy + yL, sw, 1);
-      }
-
-      ctx.restore();
-
-      // Glow ring if flashing
       if (flashing) {
-        ctx.shadowColor = s.monitorFlashColour!;
-        ctx.shadowBlur = 28;
-        roundRect(ctx, mx - MONITOR_W / 2, my - MONITOR_H / 2, MONITOR_W, MONITOR_H, 14);
+        ctx.shadowColor = accentHue;
+        ctx.shadowBlur = 30;
+        ctx.strokeStyle = accentHue;
+        ctx.lineWidth = 3;
+        roundRect(ctx, left, top, MONITOR_W, MONITOR_H, 20);
         ctx.stroke();
         ctx.shadowBlur = 0;
       }
 
-      // base
-      ctx.fillStyle = "#3a1a3e";
-      ctx.fillRect(mx - 40, my + MONITOR_H / 2, 80, 12);
-      ctx.fillRect(mx - 70, my + MONITOR_H / 2 + 12, 140, 8);
-
-      // There used to be a third "KEPT SAFE 2/5" floating here, above the
-      // monitor. The same figure was already in the HUD top-right AND on the
-      // vault's own screen just below, so one board carried it three times
-      // over - noise on a game a child is reading at speed. Removed, the same
-      // way the duplicate streak readout was.
-      //
-      // The two that remain each do a different job: the HUD line is the
-      // scoreboard beside ZAPPED and GRABS, and the line inside the vault is
-      // the device showing its own contents.
+      // There used to be a third "KEPT SAFE 2/5" floating above the vault.
+      // The same figure was already in the HUD top-right AND on the device
+      // itself, so one board carried it three times over - noise on a game a
+      // child is reading at speed. Removed, as the duplicate streak readout
+      // was before it.
     };
 
     const drawEmail = (em: LiveEmail) => {
@@ -1101,72 +1124,103 @@ export default function SpamBlaster({
 
       // ── DRAW ──
       ctx.clearRect(0, 0, CANVAS_W, CANVAS_H);
-      // Cyber-arcade background: radial nebula + drifting binary rain +
-      // pulsing scan ring around the monitor + perspective floor grid.
-      const bgGrad = ctx.createRadialGradient(CANVAS_W / 2, CANVAS_H * 0.7, 0, CANVAS_W / 2, CANVAS_H * 0.7, Math.max(CANVAS_W, CANVAS_H));
-      bgGrad.addColorStop(0, "#1a2147");
-      bgGrad.addColorStop(0.45, "#0f1530");
-      bgGrad.addColorStop(1, "#080a16");
-      ctx.fillStyle = bgGrad;
+      /**
+       * The arena behind the vault.
+       *
+       * Owner, 2026-10-17: "the TV behind it, we could do a better job of
+       * creating it."
+       *
+       * It was a flat radial wash, a field of drifting 1s and 0s, a wire
+       * grid of straight lines meeting at a point, and two expanding rings.
+       * Four effects all at the same brightness, none of them describing the
+       * space the packets travel through, and the binary rain competed with
+       * the one thing the child has to read - the cards.
+       *
+       * What it draws now is DEPTH, quietly: a deep ground, a horizon bloom
+       * sitting behind the vault so the vault is the brightest thing on the
+       * board, a floor whose lines fade with distance, and a soft converging
+       * lane that shows where the packets are heading. Everything is dimmer
+       * than a packet card, deliberately, because the card is the content.
+       */
+      const horizonY = CANVAS_H * 0.46;
+
+      /* Ground: sky above the horizon, floor below, so there is a world
+       * rather than a wash. */
+      const sky = ctx.createLinearGradient(0, 0, 0, horizonY);
+      sky.addColorStop(0, "#070a1c");
+      sky.addColorStop(1, "#141d45");
+      ctx.fillStyle = sky;
+      ctx.fillRect(0, 0, CANVAS_W, horizonY);
+
+      const floor = ctx.createLinearGradient(0, horizonY, 0, CANVAS_H);
+      floor.addColorStop(0, "#16204e");
+      floor.addColorStop(1, "#070a18");
+      ctx.fillStyle = floor;
+      ctx.fillRect(0, horizonY, CANVAS_W, CANVAS_H - horizonY);
+
+      /* Horizon bloom, centred on the vault. This is what makes the vault
+       * read as the destination instead of just another object. */
+      const bloom = ctx.createRadialGradient(MONITOR_X, horizonY, 0, MONITOR_X, horizonY, CANVAS_W * 0.62);
+      bloom.addColorStop(0, "rgba(64,120,255,0.34)");
+      bloom.addColorStop(0.45, "rgba(40,70,170,0.14)");
+      bloom.addColorStop(1, "rgba(0,0,0,0)");
+      ctx.fillStyle = bloom;
       ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
 
-      // Drifting warm "spam stream" digits
-      ctx.font = "700 14px ui-monospace, 'JetBrains Mono', Menlo, monospace";
-      ctx.textAlign = "left";
-      ctx.textBaseline = "top";
-      for (let i = 0; i < 26; i++) {
-        const baseX = (i * 41) % CANVAS_W;
-        const speed = 30 + (i % 5) * 12;
-        const y = ((now / 18) * speed / 60 + i * 73) % (CANVAS_H + 30) - 30;
-        const alpha = 0.18 + 0.5 * (0.5 + 0.5 * Math.sin(now * 0.002 + i));
-        ctx.fillStyle = `rgba(124, 92, 255, ${alpha * 0.5})`;
-        ctx.fillText(((i * 73 + Math.floor(now / 240)) & 1).toString(), baseX, y);
-      }
+      /* A bright seam along the horizon itself. */
+      const seam = ctx.createLinearGradient(0, 0, CANVAS_W, 0);
+      seam.addColorStop(0, "rgba(125,240,255,0)");
+      seam.addColorStop(0.5, "rgba(125,240,255,0.5)");
+      seam.addColorStop(1, "rgba(125,240,255,0)");
+      ctx.fillStyle = seam;
+      ctx.fillRect(0, horizonY - 1, CANVAS_W, 1.6);
 
-      // Perspective floor grid lines drawing toward the monitor - warm
-      ctx.strokeStyle = "rgba(124, 92, 255, 0.22)";
-      ctx.lineWidth = 1;
-      const horizonY = CANVAS_H * 0.55;
-      for (let i = -10; i <= 10; i++) {
+      /* Floor lines that FADE with distance. The old grid drew every line at
+       * one alpha, which is why it read as a flat diagram rather than a
+       * surface going away from you. */
+      for (let i = -9; i <= 9; i++) {
+        const t = Math.abs(i) / 9;
+        ctx.strokeStyle = `rgba(104,150,255,${0.20 * (1 - t * 0.72)})`;
+        ctx.lineWidth = 1;
         ctx.beginPath();
-        ctx.moveTo(CANVAS_W / 2, horizonY);
-        ctx.lineTo(CANVAS_W / 2 + i * 80, CANVAS_H + 8);
+        ctx.moveTo(MONITOR_X, horizonY);
+        ctx.lineTo(MONITOR_X + i * 118, CANVAS_H + 10);
         ctx.stroke();
       }
-      // Horizontal floor lines (perspective) - warm
-      const driftPhase = (now / 30) % 36;
-      for (let i = 0; i < 8; i++) {
-        const t = (i + driftPhase / 36) / 8;
+      const drift = (now / 2600) % 1;
+      for (let i = 0; i < 9; i++) {
+        const t = (i + drift) / 9;
         const yLine = horizonY + t * t * (CANVAS_H - horizonY);
-        const alpha = 0.2 - i * 0.015;
-        ctx.strokeStyle = `rgba(124, 92, 255, ${alpha})`;
+        ctx.strokeStyle = `rgba(104,150,255,${0.045 + t * 0.16})`;
+        ctx.lineWidth = t < 0.5 ? 1 : 1.3;
         ctx.beginPath();
         ctx.moveTo(0, yLine);
         ctx.lineTo(CANVAS_W, yLine);
         ctx.stroke();
       }
 
-      // Pulsing warm scan rings around the monitor (highlights the "danger zone")
-      const ringPhase = (now / 1800) % 1;
-      for (let k = 0; k < 2; k++) {
-        const phase = (ringPhase + k * 0.5) % 1;
-        const radius = 30 + phase * 200;
-        ctx.strokeStyle = `rgba(124, 92, 255, ${0.5 * (1 - phase)})`;
-        ctx.lineWidth = 2;
+      /* Quiet drifting motes, replacing the field of 1s and 0s. Binary rain
+       * says "computer" at the cost of legibility; these say "space" and
+       * stay well under the cards. */
+      for (let i = 0; i < 16; i++) {
+        const seed = i * 97;
+        const x = (seed * 7.3) % CANVAS_W;
+        const y = ((now / 26 + seed * 3) % (CANVAS_H + 40)) - 20;
+        const a = 0.05 + 0.08 * (0.5 + 0.5 * Math.sin(now * 0.0011 + i));
+        ctx.fillStyle = `rgba(170,205,255,${a})`;
         ctx.beginPath();
-        ctx.arc(MONITOR_X, MONITOR_Y, radius, 0, Math.PI * 2);
-        ctx.stroke();
+        ctx.arc(x, y, i % 3 === 0 ? 1.6 : 1, 0, Math.PI * 2);
+        ctx.fill();
       }
 
-      // Subtle scanlines (lighter than before, kept for retro-terminal feel)
-      ctx.strokeStyle = "rgba(124, 92, 255, 0.06)";
-      ctx.lineWidth = 1;
-      for (let y = 0; y < CANVAS_H; y += 4) {
-        ctx.beginPath();
-        ctx.moveTo(0, y);
-        ctx.lineTo(CANVAS_W, y);
-        ctx.stroke();
-      }
+      /* One slow ring at the vault, instead of two racing ones. It marks
+       * where packets are going without pulling the eye off them. */
+      const ringPhase = (now / 2600) % 1;
+      ctx.strokeStyle = `rgba(125,240,255,${0.26 * (1 - ringPhase)})`;
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.arc(MONITOR_X, MONITOR_Y - MONITOR_H * 0.1, 34 + ringPhase * 190, 0, Math.PI * 2);
+      ctx.stroke();
 
       drawMonitor(now);
 
