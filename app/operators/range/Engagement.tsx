@@ -12,6 +12,7 @@
  * the only bespoke code is the Act surface. */
 
 import { useState, type ReactNode } from "react";
+import ModuleBackdrop from "./ModuleBackdrop";
 
 export type LessonBlock = { h: string; body: string };
 export type ExampleLine = { t: string; leak?: boolean };
@@ -188,9 +189,10 @@ export default function Engagement({
   }
 
   return (
-    <div style={{ minHeight: "100vh", background: C.carbon, color: C.ink, fontFamily: SANS, display: "grid", placeItems: "start center", padding: "44px 20px 100px" }}>
+    <div style={{ minHeight: "100vh", background: "transparent", color: C.ink, fontFamily: SANS, display: "grid", placeItems: "start center", padding: "44px 20px 100px" }}>
+      <ModuleBackdrop theme={mod.moduleNo} />
       <style>{styles}</style>
-      <div style={{ width: "100%", maxWidth: 720 }}>
+      <div style={{ width: "100%", maxWidth: 720, position: "relative", zIndex: 1 }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 10, marginBottom: 8 }}>
           <div style={{ fontFamily: MONO, fontSize: 11, letterSpacing: ".26em", textTransform: "uppercase", color: C.indigo, fontWeight: 600 }}>Redoubt · Module {String(mod.moduleNo).padStart(2, "0")} · {mod.title}</div>
           <div style={{ fontFamily: MONO, fontSize: 11, color: C.mute }}>operator <span style={{ color: C.indigo2 }}>{callsign || "-"}</span></div>
