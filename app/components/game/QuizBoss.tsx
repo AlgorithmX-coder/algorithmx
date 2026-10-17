@@ -239,6 +239,22 @@ export default function QuizBoss({ quiz, onEnd, onQuestionAnswered }: QuizBossPr
   /** Per-concept correct/total, snapshotted when the test ends (so the report
    *  screens never read the stats ref during render). */
   const [report, setReport] = useState<{ phaseId: string; label: string; correct: number; total: number }[]>([]);
+  /**
+   * How each question went, by question index, for the host's lectern.
+   *
+   * Owner, 2026-10-17: "the dots, I think there should be five dots, just how
+   * many questions they are. And they should have like a green tick or an X
+   * cross if they got it wrong. I think it's just good encouragement."
+   *
+   * The lectern used to draw four hard-coded dots with the second one always
+   * lit, purely so the desk did not read as a plain block, while the quiz had
+   * five questions. Nothing ever connected the two.
+   *
+   * A later attempt on the same question overwrites its mark, so a child who
+   * comes back and gets it right sees the dot turn. That is the encouraging
+   * reading, and it is the one the owner asked for.
+   */
+  const [marks, setMarks] = useState<("right" | "wrong")[]>([]);
   const [shakeNonce, setShakeNonce] = useState(0);
   const [popups, setPopups] = useState<{ id: number; text: string; colour: string; x: number; y: number }[]>([]);
   // The teach Sarah reads on the reveal (right AND wrong), mirrored on screen.
@@ -471,6 +487,11 @@ export default function QuizBoss({ quiz, onEnd, onQuestionAnswered }: QuizBossPr
       if (wasCorrect) stat.correctCount += 1;
       else stat.wrongCount += 1;
     }
+    setMarks((m) => {
+      const next = m.slice();
+      next[qIdx] = wasCorrect ? "right" : "wrong";
+      return next;
+    });
     position.current += 1;
     onQuestionAnswered?.({
       key: `${question.key}-a${n}`,
@@ -588,6 +609,7 @@ export default function QuizBoss({ quiz, onEnd, onQuestionAnswered }: QuizBossPr
     setQIdx(0);
     setPicked(null);
     setReport([]);
+    setMarks([]);
     setRaccoonLine(null);
     setRaccoonMood("taunt");
     setAttemptNonce((a) => a + 1);
@@ -779,9 +801,25 @@ export default function QuizBoss({ quiz, onEnd, onQuestionAnswered }: QuizBossPr
               WebkitBackdropFilter: "blur(3px)",
             }}
           >
-            {/* A row of host's buttons, so the desk reads as quiz furniture
-                and not as a plain block. */}
+            {/* The host's scorecard: ONE lamp per question in this boss, each
+                showing how that question went.
+
+                Owner, 2026-10-17: "there should be five dots, just how many
+                questions they are. And they should have like a green tick or
+                an X cross if they got it wrong... it's just good
+                encouragement."
+
+                Driven off the real question count, never a literal, so a boss
+                that asks a different number still reads correctly. Semantic
+                colours only - green is right and red is wrong everywhere else
+                in the lesson, so they mean the same thing here.
+
+                The wrong mark is deliberately the quietest thing on the desk:
+                no glow, a dimmer red, and the same size as the others. The
+                child-safety checklist rules out guilt, and a bright cross
+                sitting there for the rest of the fight would read that way. */}
             <div
+              aria-hidden
               style={{
                 position: "absolute",
                 left: "14%",
@@ -790,20 +828,37 @@ export default function QuizBoss({ quiz, onEnd, onQuestionAnswered }: QuizBossPr
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "center",
+                gap: 4,
               }}
             >
-              {[0, 1, 2, 3].map((i) => (
-                <span
-                  key={i}
-                  style={{
-                    width: 7,
-                    height: 7,
-                    borderRadius: "50%",
-                    background: i === 1 ? accent : `${accent}4d`,
-                    boxShadow: i === 1 ? `0 0 8px ${accent}` : "none",
-                  }}
-                />
-              ))}
+              {quiz.questions.map((q, i) => {
+                const mark = marks[i];
+                const isNow = i === qIdx && !mark;
+                const fill =
+                  mark === "right" ? "#34d399" : mark === "wrong" ? "#b4566a" : isNow ? accent : `${accent}4d`;
+                return (
+                  <span
+                    key={q.key ?? i}
+                    style={{
+                      width: 11,
+                      height: 11,
+                      lineHeight: "11px",
+                      textAlign: "center",
+                      fontSize: 9,
+                      fontWeight: 900,
+                      color: "#06121c",
+                      borderRadius: "50%",
+                      background: fill,
+                      /* Only the question in play glows. A finished mark is
+                         information, not a celebration, and the win screen is
+                         where the celebrating belongs. */
+                      boxShadow: isNow ? `0 0 8px ${accent}` : "none",
+                    }}
+                  >
+                    {mark === "right" ? "✓" : mark === "wrong" ? "✕" : ""}
+                  </span>
+                );
+              })}
             </div>
           </div>
           </div>
