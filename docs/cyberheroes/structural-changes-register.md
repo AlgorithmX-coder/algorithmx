@@ -708,6 +708,96 @@ keep their own meaning in every week.
 
 ---
 
+## WHEN A FIX CREATES A NEW PROBLEM
+
+Owner, 17 October, after a fix put a man's voice into week 2: "make sure that
+they don't create new issues. I don't know what procedures you have to put in
+place in order to achieve that."
+
+Two fixes in the week 2 round broke something else. Both failed the same way,
+and the rule below comes from what they had in common.
+
+### What actually went wrong, twice
+
+**The year fix put a robot voice on week 2.** The pronunciation was applied to
+the text stored in the MANIFEST as well as the text sent to the model. The app
+finds a clip by matching that stored text against the lines exactly as
+written, so the match failed, and InfoNarration fell back to the browser's
+speech synthesis - "Microsoft David" on Windows. The recordings were always
+Emma and always fine; they measured 184-219 Hz throughout.
+
+**The success sting rang.** QuickCheck played correct.mp3 directly and then
+called a helper that plays it again on the very next line. Two copies of a
+one-second sample milliseconds apart comb-filter into a metallic ring, and it
+landed immediately before a quiet spoken verdict.
+
+### The one thing both had in common
+
+In each case a value is shared by TWO systems, and the change was verified on
+one side only.
+
+  the year      generator writes it  /  the app reads it
+  the sting     the engine plays it  /  the helper plays it too
+
+Nothing was individually wrong. The generator produced a valid file with a
+valid hash, and both sound calls were correct calls. What was wrong was the
+RELATIONSHIP, and no type checker, test or existing audit had an opinion
+about that.
+
+### So, before shipping any fix
+
+**1. Name the other side.** Ask out loud: who else reads this value, plays
+this sound, computes this key? If the answer is "something else does", the
+fix is not done until that side is checked too.
+
+**2. Verify the way the CONSUMER does it, not the way the producer does.**
+The generator's --check asked "does every block have a FILE", keyed by hash,
+and passed happily while the app could not find a single one of them. A check
+written from the producer's point of view will keep agreeing with the
+producer. The audit that caught it does exactly what the runtime does and
+nothing else.
+
+**3. Prove the guard FAILS on the bug.** A new audit that passes proves
+nothing. Run it against the broken state and watch it report the fault, then
+against the fixed state. Both of this round's guards were proved this way:
+audit-manifest-lookup against the manifest then on production, and
+audit-double-sound by putting the duplicate back.
+
+**4. Expect the first version of a guard to be wrong.** audit-double-sound
+reported the fix as the bug, twice, because it did not understand an else
+branch. A guard that has never produced a false positive has probably never
+been tested.
+
+**5. Search for the whole class, not the reported instance.** The owner
+reported one screen. The sting was doubled in five places, and only two were
+found by reading; the audit found the rest. Fixing the reported one and
+stopping would have earned another report.
+
+**6. Re-run everything, not the thing you changed.** The full sweep is cheap:
+179 unit tests, tsc, and the gates below. Both regressions this round would
+have been caught by a gate that did not exist yet, which is why a new gate is
+part of the fix rather than a follow-up.
+
+### The gates, and what each one actually asks
+
+| Gate | The question it asks |
+|---|---|
+| `audit-manifest-lookup.mjs` | can the APP find every clip, by its own key |
+| `elevenlabs-generate-narration.mjs --check` | does every block have a file, by hash |
+| `audit-double-sound.mjs` | does one handler start the same sound twice |
+| `audit-consonant-integrity.mjs` | does every clip still say its last letter |
+| `audit-stage-overflow.mjs` | does any screen scroll when it fits |
+| `audit-framing-echoes.mjs` | is a stock phrase said twice on one screen |
+| `audit-echoed-lines.mjs` | does a villain line repeat its own verdict |
+| `pad-lesson-icons.mjs --check` | can any icon be sliced by a container |
+| `audit-no-em-dashes.mjs` | any em-dash in copy a child reads |
+
+The first two look similar and are not. One asks the producer's question and
+one asks the consumer's, and it was the gap between them that reached the
+owner.
+
+---
+
 ## THE PRE-TEST CHECKLIST
 
 **This is the part to read.** Everything above is how each check came to

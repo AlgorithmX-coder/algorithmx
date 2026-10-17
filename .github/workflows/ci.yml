@@ -116,6 +116,14 @@ jobs:
       # synthesis - a man's voice on week 2, with CI green. Same gap as #539.
       - run: node scripts/audit-manifest-lookup.mjs
 
+      # One handler must not start the same sound twice. QuickCheck played
+      # correct.mp3 directly and then called a helper that plays it again on
+      # the next line; two copies of a one-second sample milliseconds apart
+      # comb-filter into a metallic ring, right in front of a spoken verdict.
+      # Both calls were individually correct - only their proximity was wrong,
+      # which nothing else has an opinion about.
+      - run: node scripts/audit-double-sound.mjs
+
   # ────────────────────────────────────────────────────────────
   # End-to-end tests against a real production build.  Slower than
   # the static job (production build + browser launch) so it runs

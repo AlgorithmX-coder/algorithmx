@@ -293,11 +293,20 @@ export default function PasswordLab({
     if (added.length === 5 && !completed) {
       setCompleted(true);
       playSound("confetti");
-      audio.badgeEarned();
       // Big-FX helpers intensity-gated for strict reduced-motion.
+      //
+      // badgeEarnedCelebration() plays "badge-earned" itself, so calling
+      // audio.badgeEarned() as well started the same sample twice,
+      // milliseconds apart, and the two comb-filtered into a metallic ring
+      // (owner, 2026-10-17, on the equivalent fault in QuickCheck).
+      //
+      // An else rather than a deletion: the helper is gated, so a child on
+      // strict reduced-motion would otherwise lose the sound entirely.
       if (intensity > 0) {
         void correctAnswerBurst();
         void badgeEarnedCelebration();
+      } else {
+        audio.badgeEarned();
       }
       spawnSplash("#fbbf24", 28);
     }
