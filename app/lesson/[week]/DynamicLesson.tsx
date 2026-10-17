@@ -131,6 +131,7 @@ import UsernameBuilder from "@/app/components/exercises/UsernameBuilder";
 import PauseDecide from "@/app/components/exercises/PauseDecide";
 import VaultDrop from "@/app/components/exercises/VaultDrop";
 import MissionDebrief from "@/app/components/lesson/MissionDebrief";
+import { closingGround } from "@/app/components/lesson/closingSuite";
 import ExerciseIntroBeat from "@/app/components/lesson/ExerciseBeats";
 import ConceptRecap from "@/app/components/lesson/ConceptRecap";
 import { LessonWeekContext } from "@/app/components/lesson/LessonWeekContext";
@@ -4455,7 +4456,7 @@ function DynamicLessonInner({
 
       case "missionDebrief":
         return (
-          <FullScene bg="linear-gradient(180deg, #050a1a 0%, #1a1f4d 100%)">
+          <FullScene bg={closingGround(weekTheme, "#1a1f4d")}>
             <MissionDebrief
               title={def.title}
               subtitle={def.subtitle}
@@ -4468,7 +4469,7 @@ function DynamicLessonInner({
 
       case "stickerUnlock":
         return (
-          <FullScene bg="linear-gradient(180deg, #050a1a 0%, #1f1240 100%)">
+          <FullScene bg={closingGround(weekTheme, "#1f1240")}>
             <StickerUnlock
               title={def.title}
               stickers={def.stickers}

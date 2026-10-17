@@ -1196,16 +1196,48 @@ export default function QuizBoss({ quiz, onEnd, onQuestionAnswered }: QuizBossPr
               <div style={{ marginTop: 8, fontFamily: MONO, fontSize: 14, fontWeight: 900, letterSpacing: "0.08em", color: "#eef4ff" }}>
                 YOU SCORED <span style={{ color: "#7eff97" }}>{beaten}</span> / {total}
               </div>
-              <div style={{ marginTop: 13, width: "100%", maxWidth: 420, borderRadius: 12, overflow: "hidden", background: `linear-gradient(180deg, ${accent}14, rgba(9,13,28,0.95))`, border: `1px solid ${accent}66`, boxShadow: "0 18px 40px -18px #000" }}>
-                <div style={{ fontFamily: MONO, fontSize: 9.5, fontWeight: 700, letterSpacing: "0.2em", color: accent, padding: "7px 14px", borderBottom: `1px solid ${accent}42`, textAlign: "left", background: `${accent}12`, textTransform: "uppercase" }}>Mission Report</div>
-                <div style={{ padding: "9px 14px", display: "flex", flexDirection: "column", gap: 7 }}>
+              {/* The Mission Report.
+                *
+                * Owner, 2026-10-17: "make this mission report look better. It
+                * looks very boring. Again, this could be pushed across all
+                * weeks." It was a mono terminal readout at the proudest
+                * moment of the week, sitting under a 3D raccoon and a glowing
+                * YOU WIN.
+                *
+                * What is KEPT is the thing that made it worth having: the
+                * per-concept breakdown, so a child can see which power they
+                * dropped, by name. That is the part made legible rather than
+                * replaced - bigger rows, real spacing, the label in the
+                * lesson's own voice instead of uppercase monospace, and the
+                * score as a filled pip per question rather than a fraction.
+                *
+                * Colour: the frame takes the WEEK's accent, the marks keep
+                * their meaning. Green is right everywhere else in the lesson
+                * so it is right here, and the "dropped" state is amber rather
+                * than red - this screen is a win, and nothing on a win screen
+                * should read as a telling-off. */}
+              <div style={{ marginTop: 14, width: "100%", maxWidth: 440, borderRadius: 16, overflow: "hidden", background: `linear-gradient(180deg, ${accent}1c, rgba(8,12,28,0.94))`, border: `1.5px solid ${accent}5c`, boxShadow: `0 20px 48px -20px #000, 0 0 0 1px ${accent}1a inset` }}>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "10px 16px", borderBottom: `1px solid ${accent}3a`, background: `${accent}14` }}>
+                  <span style={{ fontSize: 11, fontWeight: 900, letterSpacing: "0.2em", color: accent, textTransform: "uppercase" }}>Mission Report</span>
+                  <span style={{ fontSize: 11, fontWeight: 800, letterSpacing: "0.1em", color: "rgba(223,231,255,0.72)" }}>
+                    {report.filter((r) => r.total > 0 && r.correct === r.total).length}/{report.length} POWERS
+                  </span>
+                </div>
+                <div style={{ padding: "10px 16px 13px", display: "flex", flexDirection: "column", gap: 2 }}>
                   {report.map((r) => {
                     const good = r.total > 0 && r.correct === r.total;
+                    const mark = good ? "#34d399" : "#f0b450";
                     return (
-                      <div key={r.phaseId} style={{ display: "flex", alignItems: "center", gap: 10, fontFamily: MONO, fontSize: 12, fontWeight: 700 }}>
-                        <span style={{ color: good ? "#57e08a" : "#ffcf5c", width: 14, textAlign: "center" }}>{good ? "✓" : "!"}</span>
-                        <span style={{ flex: 1, textAlign: "left", color: "#dfe7ff", textTransform: "uppercase", letterSpacing: "0.04em" }}>{r.label}</span>
-                        <span style={{ color: good ? "#57e08a" : "#ffcf5c" }}>{r.correct}/{r.total}</span>
+                      <div key={r.phaseId} style={{ display: "flex", alignItems: "center", gap: 11, padding: "7px 0", borderBottom: `1px solid ${accent}14` }}>
+                        <span aria-hidden style={{ width: 18, height: 18, borderRadius: "50%", flex: "0 0 18px", display: "grid", placeItems: "center", background: mark, color: "#06121c", fontSize: 11, fontWeight: 900, lineHeight: 1 }}>
+                          {good ? "✓" : "!"}
+                        </span>
+                        <span style={{ flex: 1, textAlign: "left", color: "#e8edff", fontSize: 14, fontWeight: 700, letterSpacing: "0.01em" }}>{r.label}</span>
+                        <span aria-label={`${r.correct} of ${r.total}`} style={{ display: "flex", gap: 4 }}>
+                          {Array.from({ length: Math.max(1, r.total) }).map((_, i) => (
+                            <span key={i} style={{ width: 8, height: 8, borderRadius: "50%", background: i < r.correct ? mark : `${accent}33` }} />
+                          ))}
+                        </span>
                       </div>
                     );
                   })}

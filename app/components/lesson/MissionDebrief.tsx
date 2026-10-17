@@ -33,6 +33,8 @@ import GameButton from "@/app/components/lesson/GameButton";
 import InfoNarration from "@/app/components/lesson/InfoNarration";
 import PixIcon from "@/app/components/lesson/PixIcon";
 import { WorldBackdrop } from "@/app/components/game/missionWorldStyles";
+import { useClosingPalette, cardShade, REWARD } from "@/app/components/lesson/closingSuite";
+import { useLessonTheme } from "@/app/components/lesson/LessonThemeContext";
 import { useShortViewport } from "@/app/components/lesson/LessonStage";
 
 export interface DebriefConcept {
@@ -62,6 +64,14 @@ export default function MissionDebrief({
   onComplete,
 }: MissionDebriefProps) {
   const intensity = useMotionIntensity();
+  /* The week's own colour, instead of five unrelated authored accents. The
+   * authored one stays as the fallback for a week with no theme, so nothing
+   * changes for those. See closingSuite.ts for why the four closing screens
+   * share this. */
+  const pal = useClosingPalette();
+  const theme = useLessonTheme();
+  const shadeFor = (authored: string, i: number) =>
+    theme ? cardShade(pal.accent, i, concepts.length) : authored;
   const fx = useExerciseFeedback();
   const audio = useGameAudio();
   const shortViewport = useShortViewport();
@@ -198,9 +208,9 @@ export default function MissionDebrief({
                 height: 6,
                 borderRadius: 3,
                 background: on
-                  ? `linear-gradient(90deg, ${c.accent}, #fde047)`
+                  ? `linear-gradient(90deg, ${shadeFor(c.accent, i)}, ${REWARD})`
                   : "rgba(255,255,255,0.12)",
-                boxShadow: on ? `0 0 8px ${c.accent}aa` : "none",
+                boxShadow: on ? `0 0 8px ${shadeFor(c.accent, i)}` : "none",
                 transition: "background 240ms ease, box-shadow 240ms ease",
               }}
             />
@@ -251,9 +261,13 @@ export default function MissionDebrief({
               style={{
                 padding: "15px 11px",
                 borderRadius: 18,
-                background: `linear-gradient(180deg, ${c.accent}22, rgba(15, 21, 48, 0.85))`,
-                border: `2px solid ${c.accent}88`,
-                boxShadow: visible ? `0 12px 36px ${c.accent}33` : "none",
+                /* The card ground is the week's tint, not the shade itself:
+                   shadeFor returns an hsl() string, so a hex alpha suffix
+                   cannot be appended to it. The shade does the identifying
+                   work on the border, the icon and the label. */
+                background: `linear-gradient(180deg, rgba(${pal.accentRGB}, 0.20), rgba(10, 14, 36, 0.88))`,
+                border: `2px solid ${shadeFor(c.accent, i)}`,
+                boxShadow: visible ? `0 12px 36px rgba(${pal.accentRGB}, 0.22)` : "none",
                 textAlign: "center",
                 fontFamily:
                   "ui-rounded, 'Fredoka', 'Quicksand', system-ui, -apple-system, sans-serif",
@@ -264,7 +278,7 @@ export default function MissionDebrief({
                   fontSize: 36,
                   lineHeight: 1,
                   marginBottom: 8,
-                  filter: visible ? `drop-shadow(0 0 14px ${c.accent}88)` : undefined,
+                  filter: visible ? `drop-shadow(0 0 14px ${shadeFor(c.accent, i)})` : undefined,
                 }}
               >
                 <PixIcon emoji={c.icon} size={50} />
@@ -274,11 +288,11 @@ export default function MissionDebrief({
                   fontFamily: "'JetBrains Mono', monospace",
                   fontSize: 10,
                   letterSpacing: "0.18em",
-                  color: c.accent,
+                  color: shadeFor(c.accent, i),
                   textTransform: "uppercase",
                   fontWeight: 800,
                   marginBottom: 4,
-                  textShadow: `0 0 12px ${c.accent}55`,
+                  textShadow: "none",
                 }}
               >
                 You learned
