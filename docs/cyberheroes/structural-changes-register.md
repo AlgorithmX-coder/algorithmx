@@ -109,8 +109,20 @@ Week 2 is on the CI ratchet with week 1.
 
 Every item raised on weeks 1 and 2 was run against weeks 3-5 before the owner
 sees them. All ten instant gates pass (`node scripts/audit-week.mjs 3 4 5`),
-and the boss result screens are confirmed whole on weeks 3, 4 and 5 at both
-viewports.
+and all four browser stages pass:
+
+| Stage | Result |
+|---|---|
+| stage overflow (L2) | 90 screens, no screen scrolls - confirmed by two runs in a row |
+| card fill (L3) | 90 screens, none with a quarter of the card empty below the content |
+| frame fit (L4) | 83 screens across the three weeks, 0 flagged |
+| boss result screens (5b) | the raccoon is whole on all three weeks, both viewports |
+
+**Two of those four were lying before they passed.** The scroll-bar gate named
+a different pair of screens on each run and both pairs were fine; it now waits
+for the layout to stop moving. Frame-fit read only the first week argument, so
+the `3 4 5` the checklist prints graded week 3 and reported a clean run. Rules
+7 and 10 came out of those.
 
 **What the sweep actually found and fixed:**
 
@@ -841,6 +853,15 @@ speech. A test whose control passes unchanged is measuring nothing. And when
 the measurement will not settle it, change what you VARY instead - recording
 the same line twice separated the bad takes, which cleared, from the voice's
 own phonetics, which sat at 60ms and would not move.
+
+**10. Run a new or changed gate TWICE before believing either answer.** The
+scroll-bar gate named week 3 screen 12 and week 4 screen 20. Fixed, it named
+week 5 screens 8 and 12 instead, on a build that had not changed. Each run
+read as authoritative on its own, and either one alone would have sent
+somebody to redesign a screen that was never broken. Two runs that disagree
+tell you the measurement is wrong before the content gets blamed; two that
+agree are the cheapest evidence available that it is not. This applies to any
+gate that drives a browser, where the answer depends on when you look.
 
 ### The gates, and what each one actually asks
 
