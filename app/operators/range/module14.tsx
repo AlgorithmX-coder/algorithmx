@@ -14,17 +14,17 @@ import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, wit
 /* ───────────────────────── glossary ───────────────────────── */
 
 const GLOSSARY: GlossaryEntry[] = [
-  { term: "finding", definition: "A single reported weakness: what it is, where it is, how serious, its impact, and how to fix it." },
-  { term: "severity", definition: "How serious a vulnerability is - what to fix first. Usually banded Low, Medium, High, Critical." },
-  { term: "CVSS", definition: "The Common Vulnerability Scoring System - the industry standard that scores a flaw on exploitability and impact (0-10)." },
-  { term: "impact", definition: "What an attacker actually gains - read a record, take over an account, dump the whole database. It drives severity." },
-  { term: "remediation", definition: "The fix: the concrete change that closes the vulnerability (parameterise the query, add MFA, patch the version)." },
-  { term: "reproduction steps", definition: "The exact steps to trigger the bug, so the team can see it for themselves and confirm the fix." },
-  { term: "responsible disclosure", definition: "Reporting a flaw privately to the owner and giving reasonable time to fix before any public detail. Also called coordinated disclosure." },
-  { term: "coordinated disclosure", definition: "Working with the vendor (or a CERT) on timing, so the fix and the public detail land together." },
-  { term: "bug bounty", definition: "A programme that pays researchers for reporting vulnerabilities - inviting findings rather than fearing them." },
-  { term: "vulnerability disclosure policy", definition: "A published policy and security contact that tells researchers how to report safely. Often shortened to VDP." },
-  { term: "CERT", definition: "A Computer Emergency Response Team - a neutral body that can coordinate disclosure when a vendor won't respond." },
+  { term: "finding", definition: "A single reported weakness: what it is, where it is, how serious, its impact, and how to fix it.", example: "One line in your report reads 'the login page lets you reset anyone's password without a code' - that single entry is one finding." },
+  { term: "severity", definition: "How serious a vulnerability is - what to fix first. Usually banded Low, Medium, High, Critical.", example: "A broken 'forgot password' that hands over any account is Critical and gets fixed tonight; a missing cookie flag is Low and can wait for next sprint." },
+  { term: "CVSS", definition: "The Common Vulnerability Scoring System - the industry standard that scores a flaw on exploitability and impact (0-10).", example: "The Log4Shell bug scored 10.0, the maximum, which is why companies worldwide dropped everything to patch it over one weekend." },
+  { term: "impact", definition: "What an attacker actually gains - read a record, take over an account, dump the whole database. It drives severity.", example: "A spelling mistake on a page is annoying; being able to download every customer's name, address and card number is the impact that makes the news." },
+  { term: "remediation", definition: "The fix: the concrete change that closes the vulnerability (parameterise the query, add MFA, patch the version).", example: "Instead of 'make the site safer' you write 'update the library from version 2.14 to 2.17', so a developer knows exactly what to change." },
+  { term: "reproduction steps", definition: "The exact steps to trigger the bug, so the team can see it for themselves and confirm the fix.", example: "'1. open /account, 2. change the id in the URL from 51 to 52, 3. you now see another user's profile' - anyone can follow that and watch it happen." },
+  { term: "responsible disclosure", definition: "Reporting a flaw privately to the owner and giving reasonable time to fix before any public detail. Also called coordinated disclosure.", example: "You email the company the bug and wait 90 days for a patch before you post about it, rather than tweeting the exploit the moment you find it." },
+  { term: "coordinated disclosure", definition: "Working with the vendor (or a CERT) on timing, so the fix and the public detail land together.", example: "A researcher and Apple agree to announce a flaw on the same day the iOS update ships, so users can patch before criminals learn the trick." },
+  { term: "bug bounty", definition: "A programme that pays researchers for reporting vulnerabilities - inviting findings rather than fearing them.", example: "Google and other firms have paid teenagers thousands of pounds through platforms like HackerOne for reporting real bugs responsibly." },
+  { term: "vulnerability disclosure policy", definition: "A published policy and security contact that tells researchers how to report safely. Often shortened to VDP.", example: "Many sites keep a /security.txt file or a security@ email that says 'found something? tell us here', so you are not left guessing who to contact." },
+  { term: "CERT", definition: "A Computer Emergency Response Team - a neutral body that can coordinate disclosure when a vendor won't respond.", example: "If a company ignores your emails about a serious flaw, the UK's NCSC can step in as a neutral go-between to make sure it gets fixed." },
 ];
 const G = (text: string, keyPrefix: string) => withGlossary(text, GLOSSARY, new Set<string>(), keyPrefix);
 

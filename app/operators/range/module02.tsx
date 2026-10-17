@@ -16,18 +16,18 @@ import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, wit
 /* ───────────────────────── glossary ───────────────────────── */
 
 const GLOSSARY: GlossaryEntry[] = [
-  { term: "reconnaissance", definition: "Gathering information about a target before touching it. The first phase of any real engagement." },
-  { term: "OSINT", definition: "Open-source intelligence: intelligence built entirely from publicly available sources - websites, social posts, job ads, documents." },
-  { term: "footprint", definition: "Everything an organisation exposes publicly - its people, addresses, systems and leaks. Mapping it is 'footprinting'." },
-  { term: "passive", definition: "Recon that only reads already-public information and never interacts with the target's systems - invisible and in-scope." },
-  { term: "active", definition: "Recon that touches the target directly (scanning, probing a login). Louder, and needs explicit authorisation." },
-  { term: "subdomain", definition: "A named part of a domain, like portal.acme.range - often where internal tools hide." },
-  { term: "DNS", definition: "The system that maps names like acme.range to servers. Its records reveal which subdomains exist." },
-  { term: "certificate transparency", definition: "Public logs of every HTTPS certificate ever issued. Searching them lists a company's subdomains - including ones never linked anywhere." },
-  { term: "metadata", definition: "Hidden data saved inside a file - who made it, with what software, and sometimes the internal path it came from." },
-  { term: "Google dork", definition: "A precise search using operators (site:, filetype:) to surface things that were published by accident, like leaked files." },
-  { term: "attack surface", definition: "Everything an attacker could reach - every person, subdomain, document and leak the organisation exposes." },
-  { term: "enumeration", definition: "Listing things out one by one - here, the accounts, subdomains and systems a target exposes." },
+  { term: "reconnaissance", definition: "Gathering information about a target before touching it. The first phase of any real engagement.", example: "Before a tester even loads the target site, they map its staff, email format and public systems - like studying a shop's layout and opening hours before you ever walk in." },
+  { term: "OSINT", definition: "Open-source intelligence: intelligence built entirely from publicly available sources - websites, social posts, job ads, documents.", example: "You work out someone's gym, school and hometown just from the cafes and landmarks tagged in their holiday photos - no hacking, only what they posted themselves." },
+  { term: "footprint", definition: "Everything an organisation exposes publicly - its people, addresses, systems and leaks. Mapping it is 'footprinting'.", example: "Acme Ltd's footprint is its staff on LinkedIn, its office on Google Maps, its portal.acme.range login and an old file leaked online - add them up and you see the whole organisation." },
+  { term: "passive", definition: "Recon that only reads already-public information and never interacts with the target's systems - invisible and in-scope.", example: "Reading a company's job ads to learn it runs Windows servers is passive - the firm can never tell you looked, because you only read what was already public." },
+  { term: "active", definition: "Recon that touches the target directly (scanning, probing a login). Louder, and needs explicit authorisation.", example: "Typing names into the login page to see which ones say 'wrong password' is active recon - it touches their server and lands in their logs, so you need written permission first." },
+  { term: "subdomain", definition: "A named part of a domain, like portal.acme.range - often where internal tools hide.", example: "shop.acme.range is the public store, but vpn.acme.range is the staff login sitting on the same domain - subdomains are where the interesting tools often hide." },
+  { term: "DNS", definition: "The system that maps names like acme.range to servers. Its records reveal which subdomains exist.", example: "DNS is the internet's phone book: you type acme.range and it looks up the number (the server's address) so your browser knows where to knock." },
+  { term: "certificate transparency", definition: "Public logs of every HTTPS certificate ever issued. Searching them lists a company's subdomains - including ones never linked anywhere.", example: "A company never links to test.acme.range anywhere, but because it bought an HTTPS certificate for it, the name turns up in the public certificate logs for anyone to find." },
+  { term: "metadata", definition: "Hidden data saved inside a file - who made it, with what software, and sometimes the internal path it came from.", example: "A PDF the school published still lists 'Author: j.smith' and the software it was made with inside it - the file has quietly handed you a real username." },
+  { term: "Google dork", definition: "A precise search using operators (site:, filetype:) to surface things that were published by accident, like leaked files.", example: "Searching 'site:acme.range filetype:pdf password' can surface a spreadsheet of logins that someone uploaded by accident and forgot was public." },
+  { term: "attack surface", definition: "Everything an attacker could reach - every person, subdomain, document and leak the organisation exposes.", example: "Acme's attack surface is everything you could aim at: 40 staff emails, three subdomains, a leaked document and an old password paste - the longer that list, the more ways in." },
+  { term: "enumeration", definition: "Listing things out one by one - here, the accounts, subdomains and systems a target exposes.", example: "Noting that admin@acme.range and ceo@acme.range are real accounts but test@acme.range isn't is enumeration - building the list one confirmed item at a time." },
 ];
 const G = (text: string, keyPrefix: string) => withGlossary(text, GLOSSARY, new Set<string>(), keyPrefix);
 

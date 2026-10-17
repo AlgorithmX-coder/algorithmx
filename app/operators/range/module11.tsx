@@ -15,18 +15,18 @@ import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, wit
 /* ───────────────────────── glossary ───────────────────────── */
 
 const GLOSSARY: GlossaryEntry[] = [
-  { term: "digital forensics", definition: "Reading the trails a system records - logs, files, processes - to reconstruct what happened after an incident." },
-  { term: "log", definition: "A record a system keeps of what happened: who connected, when, from where, what they did, and whether it worked." },
-  { term: "timeline", definition: "Events put in order so the shape of an attack becomes clear - recon, break-in, actions, impact." },
-  { term: "indicator of compromise", definition: "A specific clue that something is wrong: an unknown IP, activity at an odd hour, a spike of errors, access to sensitive data." },
-  { term: "artifact", definition: "Any trace left on a system - a log entry, a file, a running process, a scheduled task - that forensics examines." },
-  { term: "process", definition: "A running program. An attacker's implant often hides as a process with an odd name or running from an unusual location." },
-  { term: "implant", definition: "Malware an attacker leaves behind to keep access - often disguised, often launched from a temp folder or a sneaky scheduled task." },
-  { term: "exfiltration", definition: "Stealing data out of a system - the bulk export or upload that marks the real damage of a breach." },
-  { term: "brute force", definition: "Trying password after password until one works - in a log it looks like a burst of failed logins then a sudden success." },
-  { term: "append-only", definition: "A log store that can be added to but not edited or deleted - so an attacker can't quietly erase their tracks." },
-  { term: "chain of custody", definition: "Keeping evidence intact and accounted for, so your findings hold up - don't alter what you're investigating." },
-  { term: "attribution", definition: "Working out who (or which account/host) was responsible from the evidence - carefully, because trails can mislead." },
+  { term: "digital forensics", definition: "Reading the trails a system records - logs, files, processes - to reconstruct what happened after an incident.", example: "After a break-in, investigators piece together CCTV, door logs and fingerprints; digital forensics does the same with a computer's logs and files." },
+  { term: "log", definition: "A record a system keeps of what happened: who connected, when, from where, what they did, and whether it worked.", example: "Like the sign-in book at a reception desk, a login log shows 'user_asad signed in at 02:14 from an address abroad' - one line that can expose a break-in." },
+  { term: "timeline", definition: "Events put in order so the shape of an attack becomes clear - recon, break-in, actions, impact.", example: "Laid out in order, a scan at 01:50, a successful login at 02:14, then a 2GB upload at 02:40 suddenly reads like the story of the whole break-in." },
+  { term: "indicator of compromise", definition: "A specific clue that something is wrong: an unknown IP, activity at an odd hour, a spike of errors, access to sensitive data.", example: "A login at 3am from a country where the company has no staff is a classic indicator of compromise." },
+  { term: "artifact", definition: "Any trace left on a system - a log entry, a file, a running process, a scheduled task - that forensics examines.", example: "A mysterious file called 'update.exe' sitting in a temp folder is an artifact that could turn out to be the attacker's tool." },
+  { term: "process", definition: "A running program. An attacker's implant often hides as a process with an odd name or running from an unusual location.", example: "In the task list, 'svch0st.exe' with a zero instead of an o, running from a downloads folder, stands out as a fake imitating a real Windows process." },
+  { term: "implant", definition: "Malware an attacker leaves behind to keep access - often disguised, often launched from a temp folder or a sneaky scheduled task.", example: "Like a burglar quietly unlocking a back window to climb in again later, an implant is hidden software that lets the attacker return after the first break-in." },
+  { term: "exfiltration", definition: "Stealing data out of a system - the bulk export or upload that marks the real damage of a breach.", example: "A log showing 5GB uploaded at 3am to an unknown server is exfiltration - the moment the customer database actually walked out the door." },
+  { term: "brute force", definition: "Trying password after password until one works - in a log it looks like a burst of failed logins then a sudden success.", example: "600 failed logins in two minutes followed by one success is the classic footprint of password guessing in a log." },
+  { term: "append-only", definition: "A log store that can be added to but not edited or deleted - so an attacker can't quietly erase their tracks.", example: "Like a pen-and-ink ledger where entries cannot be rubbed out, an append-only log stops an attacker deleting the lines that caught them." },
+  { term: "chain of custody", definition: "Keeping evidence intact and accounted for, so your findings hold up - don't alter what you're investigating.", example: "Just as police bag and label evidence so it holds up in court, you work on a copy of the hard drive and leave the original untouched." },
+  { term: "attribution", definition: "Working out who (or which account/host) was responsible from the evidence - carefully, because trails can mislead.", example: "The logs point to Priya's account, but attribution means checking whether it was really her or an attacker who stole her password." },
 ];
 const G = (text: string, keyPrefix: string) => withGlossary(text, GLOSSARY, new Set<string>(), keyPrefix);
 

@@ -15,16 +15,16 @@ import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, wit
 /* ───────────────────────── glossary ───────────────────────── */
 
 const GLOSSARY: GlossaryEntry[] = [
-  { term: "engagement", definition: "A full, authorised security test of a client - from first recon through exploitation to the report." },
-  { term: "attack chain", definition: "A sequence of small findings combined into a big impact - each harmless alone, devastating together." },
-  { term: "reconnaissance", definition: "Gathering information about a target before touching it - the first step of any chain." },
-  { term: "robots.txt", definition: "A file that tells crawlers which paths to skip - which quietly advertises exactly those paths to an attacker." },
-  { term: "misconfiguration", definition: "A setting left wrong - like a database backup served with no access control - that opens a door nobody meant to." },
-  { term: "backup exposure", definition: "A database dump left web-reachable. It contains everything, often including credentials in plain sight." },
-  { term: "credential reuse", definition: "Using a credential found in one place (a leaked backup) to log in somewhere else - a key step in many chains." },
-  { term: "privilege escalation", definition: "Turning limited access into more - here, a looted login into full administrative control." },
-  { term: "defence in depth", definition: "Layering controls so that fixing any one link breaks the whole chain - which is why small fixes matter." },
-  { term: "crown jewels", definition: "The most valuable data or access an attacker is ultimately after - the goal the chain leads to." },
+  { term: "engagement", definition: "A full, authorised security test of a client - from first recon through exploitation to the report.", example: "A bank hires your team for a two-week engagement to attack its online banking exactly like a real criminal would, then hand over everything you found." },
+  { term: "attack chain", definition: "A sequence of small findings combined into a big impact - each harmless alone, devastating together.", example: "A leaked folder path, an old backup file and a reused password together walk you into the admin panel, yet not one of them mattered on its own." },
+  { term: "reconnaissance", definition: "Gathering information about a target before touching it - the first step of any chain.", example: "Before touching the site you read its public pages, job adverts and robots.txt to learn what software it runs and where the login hides." },
+  { term: "robots.txt", definition: "A file that tells crawlers which paths to skip - which quietly advertises exactly those paths to an attacker.", example: "A line like 'Disallow: /admin-backup/' is meant to hide that folder from Google, but it is the very first place a tester looks." },
+  { term: "misconfiguration", definition: "A setting left wrong - like a database backup served with no access control - that opens a door nobody meant to.", example: "Leaving a cloud storage bucket set to 'public' has exposed millions of real records, simply because someone forgot to tick 'private'." },
+  { term: "backup exposure", definition: "A database dump left web-reachable. It contains everything, often including credentials in plain sight.", example: "Downloading backup.sql from a forgotten URL can hand you every username and password in one file, with no real hacking required." },
+  { term: "credential reuse", definition: "Using a credential found in one place (a leaked backup) to log in somewhere else - a key step in many chains.", example: "The admin password you spotted in the leaked backup also unlocks the live control panel, because staff used the same one twice." },
+  { term: "privilege escalation", definition: "Turning limited access into more - here, a looted login into full administrative control.", example: "You log in as an ordinary user, change your own role from 'member' to 'admin', and suddenly you can delete any account on the site." },
+  { term: "defence in depth", definition: "Layering controls so that fixing any one link breaks the whole chain - which is why small fixes matter.", example: "Even if the backup leaks, a unique password plus two-factor login would each stop the attacker cold, like a castle with a moat, walls and a locked keep." },
+  { term: "crown jewels", definition: "The most valuable data or access an attacker is ultimately after - the goal the chain leads to.", example: "For an online shop the crown jewels are the customer card database; every other step in the attack is just a route to reach it." },
 ];
 const G = (text: string, keyPrefix: string) => withGlossary(text, GLOSSARY, new Set<string>(), keyPrefix);
 

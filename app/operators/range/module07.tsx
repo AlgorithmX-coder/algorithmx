@@ -20,20 +20,20 @@ import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, wit
 /* ───────────────────────── glossary ───────────────────────── */
 
 const GLOSSARY: GlossaryEntry[] = [
-  { term: "authentication", definition: "Proving who you are - usually with a password. The login. It answers 'who are you?'." },
-  { term: "authorization", definition: "Deciding what you're ALLOWED to do once you're logged in. It answers 'are you permitted to do this?' - and must be checked on every action." },
-  { term: "access control", definition: "The rules and checks that decide who can see or do what. 'Broken' access control means those checks are missing or wrong." },
-  { term: "IDOR", definition: "Insecure Direct Object Reference: the app looks up whatever id you ask for without checking it belongs to you, so changing the number hands you someone else's data." },
-  { term: "object reference", definition: "How an app points at one thing - usually an id in the request, like record?id=1042." },
-  { term: "endpoint", definition: "A single address the app answers requests on, like /api/record or /admin/users." },
-  { term: "parameter", definition: "A value you send with a request - an id, a role, a flag. The server reads it to decide what to do." },
-  { term: "forced browsing", definition: "Reaching a page or endpoint directly (by typing its address) that was only ever hidden from the menu, not actually protected." },
-  { term: "privilege escalation", definition: "Ending up with more access than intended - reaching another user's data (horizontal) or gaining admin powers (vertical)." },
-  { term: "mass assignment", definition: "When a request is allowed to set fields it shouldn't - like including role=admin in a profile update the server blindly trusts." },
-  { term: "deny by default", definition: "Start by refusing everything, and only allow an action when a check explicitly says the user is permitted. The safe default." },
-  { term: "least privilege", definition: "Give each user and system only the access they actually need - nothing spare to abuse." },
-  { term: "role", definition: "What kind of user you are (driver, manager, admin), which decides what you're allowed to do." },
-  { term: "server-side", definition: "Done on the server, where the user can't tamper with it - the only place an access check can be trusted." },
+  { term: "authentication", definition: "Proving who you are - usually with a password. The login. It answers 'who are you?'.", example: "Typing your password to unlock Instagram is authentication: the app is checking you really are the account owner." },
+  { term: "authorization", definition: "Deciding what you're ALLOWED to do once you're logged in. It answers 'are you permitted to do this?' - and must be checked on every action.", example: "You are logged into a school portal, but when you try to open the teacher's gradebook it blocks you, because authorisation decides a pupil isn't allowed in." },
+  { term: "access control", definition: "The rules and checks that decide who can see or do what. 'Broken' access control means those checks are missing or wrong.", example: "A cinema worker can scan tickets but can't open the safe; broken access control is like the ticket scanner somehow unlocking the safe too." },
+  { term: "IDOR", definition: "Insecure Direct Object Reference: the app looks up whatever id you ask for without checking it belongs to you, so changing the number hands you someone else's data.", example: "Your e-receipt link ends in invoice?id=3007, so you try id=3008 and up pops a total stranger's order, because the site never checked it was yours." },
+  { term: "object reference", definition: "How an app points at one thing - usually an id in the request, like record?id=1042.", example: "The number 1042 in profile?id=1042 is the object reference: it tells the app exactly which profile to fetch." },
+  { term: "endpoint", definition: "A single address the app answers requests on, like /api/record or /admin/users.", example: "When a chat app loads your messages it calls an endpoint like /api/messages, one specific address the server listens on." },
+  { term: "parameter", definition: "A value you send with a request - an id, a role, a flag. The server reads it to decide what to do.", example: "In a search link like shop?category=shoes, the 'category=shoes' part is a parameter telling the server what to show you." },
+  { term: "forced browsing", definition: "Reaching a page or endpoint directly (by typing its address) that was only ever hidden from the menu, not actually protected.", example: "An admin page isn't linked anywhere in the menu, but you guess the address /admin, type it in, and it opens anyway because nobody locked the door." },
+  { term: "privilege escalation", definition: "Ending up with more access than intended - reaching another user's data (horizontal) or gaining admin powers (vertical).", example: "A normal player edits a request to flip their account to 'moderator' and can suddenly ban other players, and that jump in power is privilege escalation." },
+  { term: "mass assignment", definition: "When a request is allowed to set fields it shouldn't - like including role=admin in a profile update the server blindly trusts.", example: "A profile form is only meant to change your nickname, but you sneak role=admin into the request and the server saves that extra field too." },
+  { term: "deny by default", definition: "Start by refusing everything, and only allow an action when a check explicitly says the user is permitted. The safe default.", example: "A nightclub where the bouncer turns everyone away unless their name is on the guest list, rather than letting people in unless they're on a banned list." },
+  { term: "least privilege", definition: "Give each user and system only the access they actually need - nothing spare to abuse.", example: "A new shop assistant gets a till login but not the manager's refund keys, because they only need what the job requires." },
+  { term: "role", definition: "What kind of user you are (driver, manager, admin), which decides what you're allowed to do.", example: "On a Discord server you might be a 'member', a 'mod' or the 'owner', and your role decides whether you can delete other people's messages." },
+  { term: "server-side", definition: "Done on the server, where the user can't tamper with it - the only place an access check can be trusted.", example: "A game checks your score on its own servers, so editing the number in your browser does nothing, because only the server's copy counts." },
 ];
 const G = (text: string, keyPrefix: string) => withGlossary(text, GLOSSARY, new Set<string>(), keyPrefix);
 

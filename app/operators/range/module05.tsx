@@ -21,20 +21,20 @@ import {
 /* ───────────────────────── glossary ───────────────────────── */
 
 const GLOSSARY: GlossaryEntry[] = [
-  { term: "database", definition: "A giant, organised store of information - picture a stack of spreadsheets the website reads from and writes to." },
-  { term: "query", definition: "A question the app asks the database, written in SQL - like 'give me the user whose email is this'." },
-  { term: "SQL", definition: "Structured Query Language - the language websites use to talk to their database." },
-  { term: "injection", definition: "Sneaking your own commands into an app's input so they run as code instead of being treated as plain text." },
-  { term: "payload", definition: "The crafted input you send to pull off an attack - your 'ammo'." },
-  { term: "parameterised query", definition: "The safe way to talk to a database: the query has blanks, and your input is slotted in as pure data that can never run as commands." },
-  { term: "UNION", definition: "A SQL move that staples a second query's results onto the first - letting you pull data from a whole different table." },
-  { term: "column", definition: "One field in a table - like a single column in a spreadsheet, e.g. 'email'." },
-  { term: "table", definition: "A set of same-shaped rows in a database - like one sheet in a spreadsheet, e.g. the 'users' table." },
-  { term: "schema", definition: "The blueprint of a database: the list of its tables and what columns each one has." },
-  { term: "hash", definition: "A scrambled fingerprint of a password. One-way by design: easy to make, meant to be impossible to reverse." },
-  { term: "authentication", definition: "Proving you are who you say you are - usually with a password. The front door of an app." },
-  { term: "enumerate", definition: "To list things out one by one - here, discovering what tables and columns a database has." },
-  { term: "syntax error", definition: "The database complaining that your query is written wrong - often a clue that it's taking your input literally." },
+  { term: "database", definition: "A giant, organised store of information - picture a stack of spreadsheets the website reads from and writes to.", example: "When you search a shop for 'trainers', the site asks its database - a huge set of linked spreadsheets holding every product, order and customer - and shows you the matching rows." },
+  { term: "query", definition: "A question the app asks the database, written in SQL - like 'give me the user whose email is this'.", example: "A login runs a query like 'find the user whose email is this and whose password is that' - the app's question put to the database in SQL." },
+  { term: "SQL", definition: "Structured Query Language - the language websites use to talk to their database.", example: "SQL is the language almost every website uses to talk to its data: 'SELECT name FROM users' simply means 'give me the names from the users table'." },
+  { term: "injection", definition: "Sneaking your own commands into an app's input so they run as code instead of being treated as plain text.", example: "A search box expects a word, but you type a word plus your own SQL command; if the site drops it straight into its query, your command runs - that is injection." },
+  { term: "payload", definition: "The crafted input you send to pull off an attack - your 'ammo'.", example: "The payload is the exact text you paste to pull off the attack, like ' OR '1'='1 - your ammo, crafted to break the query." },
+  { term: "parameterised query", definition: "The safe way to talk to a database: the query has blanks, and your input is slotted in as pure data that can never run as commands.", example: "A parameterised query is like a form with labelled slots: whatever you type drops into the 'email' slot as plain data and can never be read as a command - the fix that kills injection." },
+  { term: "UNION", definition: "A SQL move that staples a second query's results onto the first - letting you pull data from a whole different table.", example: "A UNION lets your injected query staple on a second request, so a product search can be tricked into also returning every row from the passwords table under the trainers." },
+  { term: "column", definition: "One field in a table - like a single column in a spreadsheet, e.g. 'email'.", example: "In a 'users' table, email is one column and password_hash is another - each column is one kind of fact stored about every row." },
+  { term: "table", definition: "A set of same-shaped rows in a database - like one sheet in a spreadsheet, e.g. the 'users' table.", example: "A shop's database might have a 'products' table, an 'orders' table and a 'users' table - each table is one spreadsheet of same-shaped rows." },
+  { term: "schema", definition: "The blueprint of a database: the list of its tables and what columns each one has.", example: "The schema is the database's map: it tells you there's a 'users' table with columns email and password_hash - exactly what you need before you can lift anything from it." },
+  { term: "hash", definition: "A scrambled fingerprint of a password. One-way by design: easy to make, meant to be impossible to reverse.", example: "Sites store your password as a hash like '5f4dcc3b...' instead of the real word; you can turn a password into that fingerprint, but you can't turn the fingerprint back into the password." },
+  { term: "authentication", definition: "Proving you are who you say you are - usually with a password. The front door of an app.", example: "Typing your password to log in is authentication - the site checking you really are who you claim before it lets you in." },
+  { term: "enumerate", definition: "To list things out one by one - here, discovering what tables and columns a database has.", example: "By probing the database table by table and column by column, you enumerate its whole layout - building the list of what's inside one name at a time." },
+  { term: "syntax error", definition: "The database complaining that your query is written wrong - often a clue that it's taking your input literally.", example: "Type a lone quote ' into a login box and the page throws a database syntax error - that error is a gift, because it proves your input is reaching the query as code." },
 ];
 const G = (text: string, keyPrefix: string) => withGlossary(text, GLOSSARY, new Set<string>(), keyPrefix);
 
