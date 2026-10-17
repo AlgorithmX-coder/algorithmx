@@ -1347,8 +1347,11 @@ function TrustStrip({ isLight }: { isLight: boolean }) {
         }
         /* Hide the strip below this width: with the brand, strip and links
            all flex-shrink:0 (so nothing wraps), the strip is the optional
-           piece that goes first to keep the bar from overflowing. */
-        @media (max-width: 1300px) {
+           piece that goes first to keep the bar from overflowing.
+           Owner 2026-10-17: raised 1300 -> 1580 — at ~1300-1530 the strip
+           still fit but squeezed the Get Started CTA off the right edge on
+           a 1440 laptop. It now drops until there is real room for the CTA. */
+        @media (max-width: 1580px) {
           .lv2-telemetry {
             display: none !important;
           }
