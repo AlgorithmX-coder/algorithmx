@@ -26,6 +26,7 @@ import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
 import GameButton from "@/app/components/lesson/GameButton";
 import StickerArt from "@/app/components/lesson/StickerArt";
 import { WorldBackdrop } from "@/app/components/game/missionWorldStyles";
+import { useClosingPalette, REWARD } from "@/app/components/lesson/closingSuite";
 
 export interface StickerData {
   id: string;
@@ -51,6 +52,9 @@ export default function StickerUnlock({
 }: StickerUnlockProps) {
   const router = useRouter();
   const intensity = useMotionIntensity();
+  /* The week's own colour, shared with the Mission Debrief and the week
+   * complete screen so the closing run reads as one suite. */
+  const pal = useClosingPalette();
   const fx = useExerciseFeedback();
   const audio = useGameAudio();
 
@@ -217,22 +221,46 @@ export default function StickerUnlock({
                   // Fill the column so every card in a row is the same height
                   // whatever its description's line count (polish 2026-09-12).
                   flex: 1,
-                  padding: "20px 18px 18px",
-                  borderRadius: 22,
+                  overflow: "hidden",
+                  padding: "26px 16px 16px",
+                  borderRadius: 16,
+                  /* Same shape as the Mission Debrief card, so the two
+                     screens a child sees seconds apart read as one design
+                     rather than two. The 2.5px gold box all the way round
+                     was the loudest thing on the screen and competed with
+                     the sticker art, which IS the reward. */
                   background: visible
-                    ? "linear-gradient(180deg, rgba(255, 209, 88, 0.22), rgba(15, 21, 48, 0.85))"
-                    : "rgba(15, 21, 48, 0.55)",
+                    ? `linear-gradient(180deg, rgba(${pal.accentRGB}, 0.16), rgba(9, 13, 32, 0.92))`
+                    : "rgba(9, 13, 32, 0.55)",
                   border: visible
-                    ? "2.5px solid rgba(253, 224, 71, 0.8)"
-                    : "2px dashed rgba(148, 163, 184, 0.3)",
+                    ? `1px solid rgba(${pal.accentRGB}, 0.38)`
+                    : "1px dashed rgba(148, 163, 184, 0.28)",
                   boxShadow: visible
-                    ? "0 14px 40px rgba(253, 224, 71, 0.28), 0 0 0 1px rgba(255, 209, 88, 0.4) inset"
+                    ? "0 14px 34px -14px rgba(0,0,0,0.75), inset 0 1px 0 rgba(255,255,255,0.07)"
                     : "none",
                   textAlign: "center",
                   fontFamily:
                     "ui-rounded, 'Fredoka', 'Quicksand', system-ui, -apple-system, sans-serif",
                 }}
               >
+                {/* The reward rail. Gold, deliberately: the chrome around it
+                    takes the week's colour but gold stays the reward colour
+                    in all twenty weeks, so a child who learns that gold means
+                    "you earned this" never finds it meaning something else. */}
+                {visible && (
+                  <span
+                    aria-hidden
+                    style={{
+                      position: "absolute",
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      height: 4,
+                      background: REWARD,
+                    }}
+                  />
+                )}
+
                 {/* Halo behind the sticker icon when visible */}
                 {visible && (
                   <span
@@ -303,21 +331,12 @@ export default function StickerUnlock({
                 </div>
               </motion.div>
               {/* Gold pedestal disc beneath each card */}
-              <span
-                aria-hidden
-                style={{
-                  alignSelf: "center",
-                  marginTop: -6,
-                  width: "70%",
-                  height: 12,
-                  borderRadius: "50%",
-                  background: visible
-                    ? "radial-gradient(ellipse at center, rgba(253,224,71,0.9) 0%, rgba(184,134,42,0.55) 55%, transparent 100%)"
-                    : "radial-gradient(ellipse at center, rgba(148,163,184,0.35) 0%, transparent 100%)",
-                  filter: "blur(2px)",
-                  transition: "background 280ms ease",
-                }}
-              />
+              {/* The gold ground-pad under each card is GONE.
+                  It sat OUTSIDE the card (marginTop: -6) as a blurred
+                  ellipse, and against the quieter card it read as a stray
+                  gold smear hanging below the row rather than as light. The
+                  card carries its own shadow now, so the pad was doing no
+                  work. Same species as the lamp cone removed above it. */}
             </div>
           );
         })}

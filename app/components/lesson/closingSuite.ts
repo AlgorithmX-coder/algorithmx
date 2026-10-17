@@ -167,14 +167,28 @@ function hslToCss(h: number, s: number, l: number) {
 export function cardShade(accent: string, index: number, count: number): string {
   const m = accent.match(/^#?([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i);
   if (!m) return accent;
-  const { h, s, l } = rgbToHsl(parseInt(m[1], 16), parseInt(m[2], 16), parseInt(m[3], 16));
+  const { h, s } = rgbToHsl(parseInt(m[1], 16), parseInt(m[2], 16), parseInt(m[3], 16));
   const span = Math.max(1, count - 1);
   const t = index / span;
-  /* Keep well inside the legible band: too dark and the label on it stops
-   * reading, too light and it stops looking like the week's colour. */
-  const lightness = Math.min(0.74, Math.max(0.42, l - 0.1 + t * 0.26));
-  const hue = (h + (t - 0.5) * 26 + 360) % 360;
-  const sat = Math.min(0.95, Math.max(0.35, s));
+
+  /**
+   * Owner, 2026-10-17, looking at the themed debrief: "look at the second
+   * screenshot. It still looks like its the same one."
+   *
+   * They were right, and the cause was arithmetic. The first version walked
+   * lightness from the accent's own value and then clamped at 0.74. Week 2's
+   * accent (#9d7bff) is already light, so cards 3, 4 and 5 all pinned to the
+   * ceiling and resolved to the SAME colour - five cards in one flat violet,
+   * which reads as less designed than the rainbow it replaced.
+   *
+   * So the walk no longer starts from the accent's lightness. It spans a
+   * fixed, deliberately wide band, which guarantees five distinguishable
+   * steps whatever the week's accent happens to be, and the hue rotates far
+   * enough that the ends do not read as one colour dimmed.
+   */
+  const lightness = 0.46 + t * 0.26;        // 46% -> 72%, always five steps
+  const hue = (h + (t - 0.5) * 54 + 360) % 360;
+  const sat = Math.min(0.92, Math.max(0.52, s));
   return hslToCss(hue, sat, lightness);
 }
 

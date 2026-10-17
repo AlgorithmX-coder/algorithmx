@@ -131,7 +131,7 @@ import UsernameBuilder from "@/app/components/exercises/UsernameBuilder";
 import PauseDecide from "@/app/components/exercises/PauseDecide";
 import VaultDrop from "@/app/components/exercises/VaultDrop";
 import MissionDebrief from "@/app/components/lesson/MissionDebrief";
-import { closingGround } from "@/app/components/lesson/closingSuite";
+import { closingGround, REWARD } from "@/app/components/lesson/closingSuite";
 import ExerciseIntroBeat from "@/app/components/lesson/ExerciseBeats";
 import ConceptRecap from "@/app/components/lesson/ConceptRecap";
 import { LessonWeekContext } from "@/app/components/lesson/LessonWeekContext";
@@ -4701,8 +4701,16 @@ function DynamicLessonInner({
                   margin: "0 0 6px",
                   fontSize: "clamp(28px, 5vw, 38px)",
                   fontWeight: 900,
-                  background:
-                    "linear-gradient(135deg, #fde047 0%, #ff7a59 60%, #ff5fb3 100%)",
+                  /* Gold into the WEEK's accent.
+                   *
+                   * It used to run gold -> coral -> pink, three colours that
+                   * belong to no week in the course, which is part of why
+                   * every week ended on an identical screen. Gold leads,
+                   * because gold is the reward colour in all twenty weeks and
+                   * must never become a week colour; the tail is the week's
+                   * own, so the badge name belongs to the world the child has
+                   * just spent forty-five minutes in. */
+                  background: `linear-gradient(135deg, ${REWARD} 0%, ${REWARD} 38%, ${weekTheme?.accent ?? "#ff7a59"} 100%)`,
                   WebkitBackgroundClip: "text",
                   WebkitTextFillColor: "transparent",
                   backgroundClip: "text",
