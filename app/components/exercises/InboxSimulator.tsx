@@ -200,7 +200,9 @@ export default function InboxSimulator({
       setHighlightClues(!isCorrect);
 
       if (isCorrect) {
-        playSound("correct");
+        /* The burst below plays "correct" itself - calling it here too
+         * started the same sample twice, milliseconds apart, which
+         * comb-filters into a metallic ring (owner, 2026-10-17). */
         void correctAnswerBurst();
       } else {
         playSound("wrong");

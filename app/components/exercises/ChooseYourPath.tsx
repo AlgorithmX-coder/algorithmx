@@ -290,9 +290,17 @@ export default function ChooseYourPath({
     const choice = scenario.choices[choiceIdx];
     audio.select();
     if (choice.isSafe) {
-      audio.correct();
-      // Kept helper - intensity-gated so strict reduced-motion skips it.
+      /* ONE success sound, not two. The burst plays correct.mp3 itself, so
+       * calling audio.correct() as well started the same one-second sample
+       * twice, milliseconds apart, and the two comb-filtered into a metallic
+       * ring. Owner reported it on QuickCheck, 2026-10-17; this is the same
+       * fault in a second engine.
+       *
+       * An else rather than a deletion: the burst is intensity-gated, so a
+       * child on strict reduced-motion would otherwise lose the sound
+       * altogether. This way exactly one plays in either mode. */
       if (intensity > 0) void correctAnswerBurst();
+      else audio.correct();
       setCorrectCount((n) => n + 1);
       onCorrect?.();
       const burst: Particle[] = [];

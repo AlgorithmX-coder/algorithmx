@@ -336,7 +336,9 @@ export default function ChatSimulator({
       verdict.say(opt.isSafe ? "right" : "wrong", opt.feedback);
 
       if (opt.isSafe) {
-        playSound("correct");
+        /* The burst below plays "correct" itself - calling it here too
+         * started the same sample twice, milliseconds apart, which
+         * comb-filters into a metallic ring (owner, 2026-10-17). */
         void correctAnswerBurst();
         setScore((s) => s + 1);
       } else {

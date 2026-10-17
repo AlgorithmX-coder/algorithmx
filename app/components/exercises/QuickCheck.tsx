@@ -192,7 +192,19 @@ export default function QuickCheck({
     if (solved) return;
     setSolved(true);
     setNudgeText(null);
-    audio.correct();
+    /* ONE success sound, not two.
+     *
+     * Owner, 2026-10-17, on this screen: "I hear a very weird sound. Before
+     * Emma starts speaking, what is that and how did it turn up?"
+     *
+     * `audio.correct()` played correct.mp3 and `correctAnswerBurst()` on the
+     * very next line played it AGAIN. Two copies of a one-second sample
+     * starting milliseconds apart comb-filter against each other, which is
+     * the metallic ring - and it lands immediately before a quiet spoken
+     * verdict, which is where it is most audible.
+     *
+     * The burst keeps the sound: fourteen other callers rely on it for
+     * theirs. The duplicate here is the one that goes. */
     void correctAnswerBurst();
     onCorrect?.();
     // With a spoken teacher explanation, wait on the "Got it!" button so the
