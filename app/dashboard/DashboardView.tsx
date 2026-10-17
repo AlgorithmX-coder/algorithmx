@@ -48,16 +48,11 @@ const WEEK_BG_AVAILABLE = new Set<number>([
 /* ───────────────── ICONS ───────────────── */
 function ShieldLogo({ size = 22 }: { size?: number }) {
   return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden style={{ filter: "drop-shadow(0 0 8px rgba(54, 214, 255, 0.65))" }}>
-      <defs>
-        <linearGradient id="shieldLogoGrad" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor={C.cyan} />
-          <stop offset="100%" stopColor={C.violet} />
-        </linearGradient>
-      </defs>
-      <path d="M12 2.5L3.5 5.6V12c0 5.4 3.7 8.6 8.5 9.5 4.8-.9 8.5-4.1 8.5-9.5V5.6L12 2.5z" stroke="url(#shieldLogoGrad)" strokeWidth={1.6} fill="rgba(54, 214, 255, 0.14)" strokeLinejoin="round" />
-      <path d="M12 8v8M8 12h8" stroke="url(#shieldLogoGrad)" strokeWidth={1.4} strokeLinecap="round" />
-      <circle cx="12" cy="12" r="1.3" fill="url(#shieldLogoGrad)" />
+    /* Cyber Heroes brand mark (owner 2026-10-17): the amber shield + bolt
+       from the course pages, replacing the old generic cyan shield-plus. */
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden style={{ filter: "drop-shadow(0 0 8px rgba(255, 179, 71, 0.6))" }}>
+      <path d="M12 2 L20 5 V12 C20 17 16.5 20.5 12 22 C7.5 20.5 4 17 4 12 V5 Z" fill="#ffb347" />
+      <path d="M13.2 6 L8.6 13 H11.4 L10.6 18 L15.6 11 H12.6 Z" fill="#08101f" />
     </svg>
   );
 }
@@ -248,7 +243,7 @@ export default function DashboardView({
         <div className="sticky top-0 z-50 px-4 sm:px-6 pt-4">
           <nav className="max-w-[1200px] mx-auto flex items-center justify-between gap-3 rounded-2xl px-4 sm:px-5 py-3" style={{ background: "rgba(10, 14, 32, 0.82)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", border: `1px solid ${C.border}`, boxShadow: "0 18px 40px -22px rgba(2,4,12,0.9)" }}>
             <a href="/dashboard" className="flex items-center gap-2.5" style={{ textDecoration: "none" }}>
-              <div className="flex items-center justify-center" style={{ width: 40, height: 40, borderRadius: 12, background: "rgba(54,214,255,0.1)", border: `1px solid ${C.borderStrong}`, boxShadow: "0 0 18px rgba(54,214,255,0.3)" }}>
+              <div className="flex items-center justify-center" style={{ width: 40, height: 40, borderRadius: 12, background: "rgba(255,179,71,0.12)", border: "1px solid rgba(255,179,71,0.42)", boxShadow: "0 0 18px rgba(255,179,71,0.3)" }}>
                 <ShieldLogo size={22} />
               </div>
               <span className="display text-lg font-bold" style={{ color: C.text, letterSpacing: "-0.01em" }}>CyberHeroes</span>
