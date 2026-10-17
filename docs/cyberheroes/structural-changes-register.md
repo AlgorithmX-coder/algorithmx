@@ -147,26 +147,32 @@ signed off before most of these were known.
 
 ### Where each item stands, end of 17 October
 
+Every item raised in the week 2 pass is now closed. Nothing is outstanding
+for the owner's re-test.
+
 | # | State | Note |
 |---|---|---|
-| W2-1 | DONE | short last row centres; works for any count |
+| W2-1 | DONE | short last row centres; measured 122px either side |
 | W2-2 | DONE | all 86 icons given a 6% margin; --check in CI |
 | W2-3 | DONE | pill kept, duplicate PRINT dropped; no audio changed |
-| W2-4 | OPEN | needs the browser measurement; audit written |
+| W2-4 | DONE | the glow was 50px over on every screen; 0px now, weeks 1/7/14/20 too |
 | W2-5 | DONE | 7 clips re-recorded; printed text unchanged |
-| W2-6 | DONE | game holds while the hint is up |
-| W2-7 | NOT STARTED | Blaster screen + vault art is a design pass |
+| W2-6 | DONE | the game holds while the hint is up |
+| W2-7 | DONE | vault rebuilt as a device, arena rebuilt for depth |
 | W2-8 | DONE | third counter removed |
-| W2-9 | DONE | card fits its text; speed, parallelism and gap all eased |
+| W2-9 | DONE | full subject wraps onto two lines; pace eased on all four fronts |
 | W2-10 | DONE | one lamp per real question, three states |
 | W2-11 | DONE | ask reworded; curated audit, 4 left in weeks 18-20 |
-| W2-12 | PART OF W2-17 | Mission Report not yet redesigned |
-| W2-13 | HELD | reverses the owner's a-cappella mandate; needs a decision |
-| W2-17 | PARTIAL | shared palette built; debrief themed, lamp cone removed, closing grounds themed. Mission Report and the badge screen still to do |
+| W2-12 | DONE | Mission Report rebuilt, keeps the per-concept breakdown |
+| W2-13 | DECIDED | owner: leave it, revisit after the re-test |
+| W2-17 | DONE | closing four screens share one palette, themed per week |
 
-Nothing here is finished until it has been seen rendered. The code-level
-items are committed and type-checked; the visual ones are not claimed until
-the screenshots exist.
+Still open elsewhere, NOT week 2, and carried to the per-week sweep:
+
+- 4 framing echoes in weeks 18, 19 and 20.
+- 26 consonant failures across the weeks not yet brought up to standard.
+- The "ALERT INCOMING" opener overflows the PAGE in weeks 7, 14 and 20
+  (53px, 116px, 158px). Different cause from W2-4, which was the stage.
 
 ### Corrections found while fixing, 17 October
 
@@ -385,6 +391,45 @@ this one, because any panel pinned to an edge with a z-index is the same bug
 waiting for the right board.
 
 ### W2-7 - the Blaster's screen and the Hero Vault
+
+**DONE 17 October.**
+
+THE VAULT was a fake app window: a bezel, a title bar with three
+traffic-light dots, three "message rows" drawn as grey placeholder stripes,
+and a footer status bar. A 2010 screenshot of a mail client, and none of it
+carried information - the stripes stood in for messages a child never reads.
+
+It is a DEVICE now. A glass shell with a lit aperture at the top where
+packets actually land (they used to simply vanish into a rectangle), a
+segmented capacity meter with one segment per treasure that can be kept safe,
+an under-glow pool so it stands on the floor, and feet. The breach line only
+appears when something has got through, so a clean run shows a clean device
+instead of a permanent status bar. Everything drawn now means something.
+
+THE ARENA was four effects at one brightness: a flat radial wash, a field of
+drifting 1s and 0s, a wire grid of straight lines meeting at a point, and two
+expanding rings. None described the space, and the binary rain competed with
+the only thing the child has to read.
+
+It draws depth quietly now: sky above a horizon and floor below it, a bloom
+centred on the vault so the vault is the brightest thing on the board, floor
+lines that FADE with distance rather than all drawing at one alpha, soft
+motes in place of the binary, and one slow ring instead of two racing ones.
+Everything is deliberately dimmer than a packet card, because the card is the
+content.
+
+FOUND WHILE VERIFYING: a packet could spawn with its top edge at y=21, across
+the goal headline at y=56 - visible on the first frame captured. The taller
+card from W2-9 made it worse, since the half-height grew with it. The spawn
+lane is now derived from the real geometry (below the headline, above the
+vault) instead of the literal 60 it used before, with 10px clearance each
+side.
+
+Original note follows.
+
+---
+
+
 
 Owner: "the TV behind it, we could do a better job of creating it. The Hero
 Vault, I think we can make it look much cooler. And much more modern."
