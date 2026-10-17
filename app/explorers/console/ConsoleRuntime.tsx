@@ -242,15 +242,18 @@ export default function ConsoleRuntime({ consoleCase, onExit, onNextCase }: { co
   const wrenDot = <span aria-hidden style={{ display: "flex", gap: 2, alignItems: "flex-end", height: 12 }}>{[4, 10, 6].map((h, i) => <i key={i} style={{ width: 2.5, height: h, background: C.wren, borderRadius: 2, display: "block" }} />)}</span>;
 
   return (
-    <main className="cn" style={{ minHeight: "100dvh", background: `radial-gradient(900px 520px at 50% -8%, #2a1e08 0%, rgba(42,30,8,0) 60%), ${C.page}`, color: C.ink, fontFamily: UI, display: "flex", alignItems: "center", justifyContent: "center", padding: "18px 14px", overflow: "hidden", ["--amber" as string]: acc }}>
+    <main className="cn" style={{ minHeight: "100dvh", background: `radial-gradient(900px 520px at 50% -8%, ${acc}14 0%, transparent 62%), ${C.page}`, color: C.ink, fontFamily: UI, display: "flex", alignItems: "center", justifyContent: "center", padding: "18px 14px", overflow: "hidden", ["--amber" as string]: acc }}>
       <style>{CSS}</style>
       {/* Per-case living world behind the console (owner standard). Falls back
           to the block's plain amber matrix if a case hasn't set a theme. */}
       {THEME ? (
-        <BlockBackdrop variant={THEME.backdrop} colors={THEME.matrix} accent={acc} accentHi={THEME.accentHi} reduced={!!reduce} opacity={0.5} />
+        <BlockBackdrop variant={THEME.backdrop} colors={THEME.matrix} accent={acc} accentHi={THEME.accentHi} reduced={!!reduce} opacity={0.2} />
       ) : (
-        <MatrixRain reduced={!!reduce} opacity={0.12} colors={["#FFB23E", "#FFD27A", "#FF7A3E"]} head="#FFF0D6" />
+        <MatrixRain reduced={!!reduce} opacity={0.1} colors={["#FFB23E", "#FFD27A", "#FF7A3E"]} head="#FFF0D6" />
       )}
+      {/* Readability scrim: keeps the per-case living world as calm ambience so it
+          never competes with the console text (owner: too busy / conflicting). */}
+      <div aria-hidden style={{ position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none", background: "radial-gradient(760px 880px at 50% 50%, rgba(8,7,4,0.74), rgba(8,7,4,0.42) 68%, rgba(8,7,4,0.66))" }} />
 
       <SkipButton />
       <button className="cn-btn" onClick={onExit} style={{ position: "fixed", top: 14, left: 14, zIndex: 20, fontFamily: MONO, fontSize: 11.5, fontWeight: 600, color: C.dim, background: "rgba(255,255,255,0.04)", border: `1px solid ${C.edge}`, borderRadius: 6, padding: "6px 12px", cursor: "pointer" }}>← Leave</button>
