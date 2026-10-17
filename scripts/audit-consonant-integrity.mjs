@@ -145,15 +145,45 @@ function tailOf(file) {
   return measured;
 }
 
-/* How far back to look for a stop's closure-then-burst. Long enough to span a
- * closure and its release, short enough that it cannot reach back into the
- * vowel before it. */
-const RELEASE_WINDOW = 0.30;
-
 /* 80ms. Measured: across this voice the shortest healthy unvoiced final seen
  * is just over 100ms, and a cut leaves 40ms or less. 80ms sits between them
- * with room on both sides. */
+ * with room on both sides. This is the FRICATIVE floor; see below. */
 const MIN_TAIL = 0.08;
+
+/* A STOP IS NOT A FRICATIVE, and one threshold for both is why this check
+ * stayed red on healthy audio.
+ *
+ * /s/ and /f/ are sustained noise: they run 100-250ms, and 80ms is a fair
+ * floor for them. /t/, /p/ and /k/ are a closure - silence - and then a burst
+ * of a few milliseconds. There is no sustained sound to measure, so a
+ * perfectly complete "Brilliant!" reads short and gets reported.
+ *
+ * Calibrated on the weeks 3-5 sweep and not on the phonetics alone, which is
+ * what separates this from the stop-release rescue that had to be removed:
+ *
+ *   - 11 clips were flagged. One retake of all 11 cleared 6. A second,
+ *     independent retake of the 5 survivors cleared 2 more.
+ *   - Everything that cleared had measured 20-40ms. The 3 that persist across
+ *     two takes all measure exactly 60ms, and all three end in a stop
+ *     ("OK?", "Brilliant!", "bait.").
+ *
+ * So for a stop, 40ms or less is a bad take - it goes away when re-recorded -
+ * and 60ms is this voice's floor, which no amount of re-recording moves. 50ms
+ * sits between the two.
+ *
+ * KNOWN LIMIT: a stop genuinely cut to 50-60ms now passes. That is the price
+ * of the gate reading green on good audio, and it is the cheaper of the two
+ * errors, because a gate that is permanently red tells nobody anything. */
+const MIN_TAIL_STOP = 0.05;
+
+/** Does this word end in a stop or an affricate, rather than a fricative? */
+function endsOnStop(word) {
+  const w = String(word || "").toLowerCase().replace(/[^a-z']/g, "").replace(/'/g, "");
+  if (!w) return false;
+  if (/([pkfxs]|ss|ch|sh)ed$/.test(w)) return true;   // -ed after an unvoiced sound is /t/
+  if (/(ch|tch)$/.test(w)) return true;               // the affricate carries a stop
+  return /(ck|[tpk])$/.test(w);
+}
 
 const entries = JSON.parse(await readFile(MANIFEST, "utf8")).entries || [];
 const spoken = (t) => String(t || "").replace(/\[[a-z ]*\]/gi, " ").trim();
@@ -187,8 +217,9 @@ for (const e of entries) {
   const t = tailOf(file);
   if (t === null) { skipped++; continue; }
   checked++;
-  if (LIST) console.log(`  ${(t * 1000).toFixed(0).padStart(4)}ms  ${word}`);
-  if (t < MIN_TAIL) bad.push({ file: e.filename || `${e.key}.mp3`, word, ms: Math.round(t * 1000), text: spoken(e.text).slice(-58) });
+  const floor = endsOnStop(word) ? MIN_TAIL_STOP : MIN_TAIL;
+  if (LIST) console.log(`  ${(t * 1000).toFixed(0).padStart(4)}ms  ${word}  (floor ${Math.round(floor * 1000)}ms, ${endsOnStop(word) ? "stop" : "fricative"})`);
+  if (t < floor) bad.push({ file: e.filename || `${e.key}.mp3`, word, ms: Math.round(t * 1000), text: spoken(e.text).slice(-58) });
 }
 
 if (FILES_ONLY) {
