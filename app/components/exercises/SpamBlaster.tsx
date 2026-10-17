@@ -130,8 +130,24 @@ const DEFAULT_EMAILS: SpamEmail[] = [
 
 const CANVAS_W = 720;
 const CANVAS_H = 500;
-const EMAIL_W = 180;
-const EMAIL_H = 60;
+/**
+ * Owner, 2026-10-17: "the messages are coming in too quick and you can't see
+ * them all as well, so you struggle to read... make it clear on the message
+ * on what it's saying so they can see it And to have a bit more time to
+ * decide."
+ *
+ * The card was 180x60, which fits about 26 characters on its one subject
+ * line. Week 2's subjects run to a median of 37 characters and a longest of
+ * 44, so NINE of its eleven cards were drawn truncated: "Use your REAL NAME
+ * a...". The cut-off half is the entire basis of the decision, and the child
+ * was being asked to judge a message they were not shown.
+ *
+ * So the card now fits the text instead of cutting it: wider, taller, and the
+ * subject wraps to two lines. Sized against the real content (44 characters
+ * at 11px is ~2 lines here), not guessed.
+ */
+const EMAIL_W = 236;
+const EMAIL_H = 78;
 const MONITOR_X = CANVAS_W / 2;
 const MONITOR_Y = CANVAS_H - 95;
 const MONITOR_W = 200;
@@ -194,18 +210,60 @@ interface ClueBubble {
   bornAt: number;
 }
 
+/**
+ * How fast a packet crosses the screen.
+ *
+ * Owner, 2026-10-17: "the messages are coming in too quick... so you struggle
+ * to read. So maybe slow them down... And to have a bit more time to decide."
+ *
+ * This used to ramp 0.75, 1, 1.4, 1.8, so by the eighth packet they travelled
+ * 2.4 times as fast as the opening one. Week 2 authors eleven of them, so a
+ * child spent the last four at full speed. Together with three cards on
+ * screen at once (below) and a flat spawn gap, that is a game that races a
+ * six-year-old, which the kid-first contract in the build standard rules out
+ * in as many words.
+ *
+ * The ramp stays - it should still build - but it tops out at 1.2 rather than
+ * 1.8, so the last packet is a third faster than the first instead of nearly
+ * two and a half times.
+ */
 function speedForIndex(i: number) {
   // First email flies slower than base - a learning lap after the intro.
-  if (i === 0) return 0.75;
-  if (i < 4) return 1;
-  if (i < 7) return 1.4;
-  return 1.8;
+  if (i === 0) return 0.7;
+  if (i < 4) return 0.85;
+  if (i < 7) return 1;
+  return 1.2;
 }
 
+/**
+ * How many packets may share the screen.
+ *
+ * Was 1, then 2, then 3. Three cards on a 720x500 canvas is what buried "Dad
+ * - Pizza for dinner tonig..." underneath "...nder - Share your location
+ * so...", with neither readable. Two is the ceiling now, and the cards are
+ * larger than they were, so even two need the extra spacing below.
+ */
 function maxParallel(i: number) {
   if (i < 4) return 1;
-  if (i < 7) return 2;
-  return 3;
+  return 2;
+}
+
+/**
+ * How long to wait before sending the next one.
+ *
+ * Was a flat 2500ms however fast the packets were travelling, so as the speed
+ * ramped the distance between them closed and they bunched. Scaling the gap
+ * by the speed keeps the SPACING even all the way through, which is what a
+ * child actually experiences.
+ *
+ * Reading time also scales with how much there is to read: a 44-character
+ * subject needs longer than a 12-character one, and giving every packet the
+ * same flight regardless was part of why the long ones felt impossible.
+ */
+function spawnGapMs(i: number, subjectLength: number) {
+  const base = 2600 / speedForIndex(i);
+  const toRead = Math.min(1200, Math.max(0, subjectLength - 20) * 26);
+  return Math.round(base + toRead);
 }
 
 export default function SpamBlaster({
@@ -266,10 +324,46 @@ export default function SpamBlaster({
   // game holds while she speaks, exactly as it does for the panel.
   const verdict = useVerdictVoice();
   const pausedRef = useRef(false);
-  useEffect(() => {
-    pausedRef.current = !!feedback || verdict.speaking;
-  }, [feedback, verdict.speaking]);
   const [wrongCount, setWrongCount] = useState(0);
+
+  /**
+   * The hint gets a reading window, and the game holds while it is up.
+   *
+   * Owner, 2026-10-17: "The bigger hint is blocking the screen."
+   *
+   * It was pinned `bottom: 12` across the full width, which is exactly where
+   * the Hero Vault sits. Worse than the overlap was the timing: the hint
+   * arrives BECAUSE the child is struggling, it lands on the thing they are
+   * being asked to watch, and the grabs keep flying while it is up. The help
+   * actively cost them the round.
+   *
+   * Moving it is not available - the canvas has a HUD on top, the vault at
+   * the bottom and the packets in between, so every position covers
+   * something. So the rule from the register applies the other way round: it
+   * may not cover LIVE gameplay, so while it is up there is no live
+   * gameplay. The game holds, exactly as it already does for the wrong-answer
+   * panel and for a spoken verdict, then the hint clears and play resumes.
+   *
+   * The window scales with how much there is to read, for the same reason
+   * the spawn gap does.
+   */
+  const [hintHolding, setHintHolding] = useState(false);
+  useEffect(() => {
+    pausedRef.current = !!feedback || verdict.speaking || hintHolding;
+  }, [feedback, verdict.speaking, hintHolding]);
+
+  useEffect(() => {
+    if (wrongCount === 0 || feedback) return;
+    const tierText =
+      wrongCount === 1 ? hints?.tier1 : wrongCount === 2 ? hints?.tier2 : hints?.tier3 ?? hints?.tier2;
+    /* ~55ms a character is an unhurried read-aloud pace for this age, with a
+     * floor so a short hint still lands and a ceiling so the hold never feels
+     * like the game has frozen. */
+    const ms = Math.min(9000, Math.max(3600, (tierText ?? "").length * 55));
+    setHintHolding(true);
+    const t = window.setTimeout(() => setHintHolding(false), ms);
+    return () => window.clearTimeout(t);
+  }, [wrongCount, feedback, hints]);
 
   // Hint-tier emission. Same convention as CyberScanner: tier 1 at
   // first wrong, tier 2 at second, tier 3 at third or more. Hook
@@ -619,7 +713,11 @@ export default function SpamBlaster({
         scale: 1,
       });
       s.spawnedIdx += 1;
-      s.nextSpawnAt = now + 2500;
+      // Gap scales with BOTH the speed and how much there is to read, so the
+      // spacing a child sees stays even and a long subject gets longer to be
+      // read in. Comfort mode stretches it further, as it does the speed.
+      s.nextSpawnAt =
+        now + spawnGapMs(s.spawnedIdx, (em.subject ?? "").length) * (comfortRef.current ? 1.4 : 1);
     };
 
     const drawMonitor = (now: number) => {
@@ -762,16 +860,15 @@ export default function SpamBlaster({
       ctx.fillRect(mx - 40, my + MONITOR_H / 2, 80, 12);
       ctx.fillRect(mx - 70, my + MONITOR_H / 2 + 12, 140, 8);
 
-      // External inbox label above the monitor
-      ctx.fillStyle = "#93c5fd";
-      ctx.font = "900 13px 'Space Grotesk', sans-serif";
-      ctx.textAlign = "center";
-      ctx.textBaseline = "bottom";
-      ctx.fillText(
-        `${cp.inboxLabel} ${s.inbox}/${s.totalSafe}`,
-        MONITOR_X,
-        MONITOR_Y - MONITOR_H / 2 - 8
-      );
+      // There used to be a third "KEPT SAFE 2/5" floating here, above the
+      // monitor. The same figure was already in the HUD top-right AND on the
+      // vault's own screen just below, so one board carried it three times
+      // over - noise on a game a child is reading at speed. Removed, the same
+      // way the duplicate streak readout was.
+      //
+      // The two that remain each do a different job: the HUD line is the
+      // scoreboard beside ZAPPED and GRABS, and the line inside the vault is
+      // the device showing its own contents.
     };
 
     const drawEmail = (em: LiveEmail) => {
@@ -865,11 +962,44 @@ export default function SpamBlaster({
         while (t.length > 1 && ctx.measureText(t.trimEnd() + "…").width > maxW) t = t.slice(0, -1);
         return t.trimEnd() + "…";
       };
+      /**
+       * Break the subject on WORD boundaries across at most two lines.
+       *
+       * The old code cut the subject mid-word with an ellipsis, which hid the
+       * half the child needed ("Use your REAL NAME a..."). Wrapping keeps the
+       * whole message on the card. Only if a subject still will not fit in
+       * two lines does the second line get trimmed, and that is a signal the
+       * line was authored too long rather than something to paper over.
+       */
+      const wrapText = (text: string, maxW: number, maxLines: number) => {
+        const words = text.split(/\s+/).filter(Boolean);
+        const lines: string[] = [];
+        let line = "";
+        for (const word of words) {
+          const next = line ? `${line} ${word}` : word;
+          if (ctx.measureText(next).width <= maxW || !line) {
+            line = next;
+          } else {
+            lines.push(line);
+            line = word;
+            if (lines.length === maxLines) break;
+          }
+        }
+        if (lines.length < maxLines && line) lines.push(line);
+        // Anything that did not fit gets folded into the last line, trimmed.
+        if (lines.length === maxLines) {
+          const used = lines.join(" ").length;
+          if (used < text.length) lines[maxLines - 1] = fitText(lines[maxLines - 1] + " " + text.slice(used).trim(), maxW);
+        }
+        return lines;
+      };
       ctx.font = "700 13px 'Space Grotesk', sans-serif";
-      ctx.fillText(fitText(em.sender, textMaxW), -EMAIL_W / 2 + 44, -8);
+      ctx.fillText(fitText(em.sender, textMaxW), -EMAIL_W / 2 + 44, -EMAIL_H / 2 + 20);
       ctx.fillStyle = "rgba(197, 205, 240, 0.85)";
       ctx.font = "500 11px 'Space Grotesk', sans-serif";
-      ctx.fillText(fitText(em.subject, textMaxW), -EMAIL_W / 2 + 44, 8);
+      wrapText(em.subject, textMaxW, 2).forEach((line, i) => {
+        ctx.fillText(line, -EMAIL_W / 2 + 44, -EMAIL_H / 2 + 40 + i * 14);
+      });
 
       // Bottom-edge "scanning..." progress shimmer (animated thin bar)
       const scanLen = (Math.abs(Math.sin(phase * 0.6)) * (EMAIL_W - 16));
@@ -1452,7 +1582,10 @@ export default function SpamBlaster({
         ))}
 
       {/* Tiered hint - shown below the canvas after wrong tries */}
-      {wrongCount > 0 && !feedback && !s.finished && (
+      {/* Only while the game is HELD for it (see hintHolding). Once play
+          resumes the hint clears, so it can never sit on top of a packet the
+          child is trying to read or the vault they are defending. */}
+      {hintHolding && wrongCount > 0 && !feedback && !s.finished && (
         <div style={{ position: "absolute", left: 12, right: 12, bottom: 12, zIndex: 10 }}>
           {wrongCount === 1 && (
             <HintBubble
