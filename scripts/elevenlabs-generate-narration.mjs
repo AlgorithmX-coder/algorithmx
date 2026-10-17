@@ -33,6 +33,7 @@
 //   --check --quiet   just the count
 
 import { createHash } from "node:crypto";
+import { sayYears } from "./lib/say-years.mjs";
 import { spawnSync } from "node:child_process";
 import ffmpegPath from "ffmpeg-static";
 import { SPEC_GAP, SPEC_TAIL } from "./lib/pause-spec.mjs";
@@ -1071,7 +1072,7 @@ function padEnding(inFile, outFile) {
  * model will produce natural sentence-end pauses from the punctuation.
  */
 function joinBlock(lines) {
-  return lines.join(" ").replace(/\s+/g, " ").trim();
+  return sayYears(lines.join(" ").replace(/\s+/g, " ").trim());
 }
 
 /**
@@ -1085,7 +1086,11 @@ function joinBlock(lines) {
  * not invalidate a single existing recording.
  */
 function speakBlock(lines) {
-  return lines.map((l) => l.trim()).filter(Boolean).join("\n");
+  // Same year handling as joinBlock, so what the model is given matches what
+  // the hash was taken of. Keep these two in step: if one says "twenty
+  // seventeen" and the other says "2017", every clip's name stops describing
+  // its own audio.
+  return sayYears(lines.map((l) => l.trim()).filter(Boolean).join("\n"));
 }
 
 /* ── Delivery spec ──────────────────────────────────────────────────────────
@@ -1419,9 +1424,17 @@ function shapeToSpec(file, lines, heard) {
      * fading THROUGH it. These clips are digitally silent between words
      * (measured 0.0000), so the floor can go this low without room tone
      * holding the walk-back up, and a breath is still taken by its length.
+     *
+     * NOTE, 2026-10-17: these two declarations were INSIDE this comment - the
+     * closing marker sat two lines below them instead of above - so both were
+     * commented out and shapeToSpec threw ReferenceError the moment it ran.
+     * Nothing caught it because the shaper only runs on a NEWLY RECORDED
+     * clip; every cached clip skips it. So the whole course could be rebuilt
+     * from cache and CI could stay green while recording a single new line
+     * was impossible. Found on the first new recording since.
+     */
     const silence = loud * 0.002;
     const CONSONANT_MAX = 0.12;          // nothing longer than this is a consonant
-     */
     /* Reach forward for a release the DETECTOR could not see.
      *
      * silencedetect works to one threshold for the whole clip. Lowering it
