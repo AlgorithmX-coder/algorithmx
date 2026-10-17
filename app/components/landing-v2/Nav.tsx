@@ -41,6 +41,10 @@ type NavProps = {
   /** The CTA's look: the consumer site's neon pill, or the corporate
    * page's plain teal one with no glow or sweep. */
   ctaTone?: "neon" | "teal";
+  /** Replaces the default AlgorithmX cube + wordmark lockup with a
+   * page-owned brand (the Cyber School / Cyber Corporate marks). Left unset
+   * everywhere else, so the homepage and every other page keep the cube. */
+  brand?: ReactNode;
 };
 
 /**
@@ -62,7 +66,7 @@ const MARK_SIZE = (height: number): React.CSSProperties => ({
   height,
 });
 
-export default function Nav({ centre, cta, aside, showTelemetry = true, showSiteLinks = true, tone = "night", homeHref = "/", ctaTone = "neon" }: NavProps) {
+export default function Nav({ centre, cta, aside, showTelemetry = true, showSiteLinks = true, tone = "night", homeHref = "/", ctaTone = "neon", brand }: NavProps) {
   const onSand = tone === "sand";
   /* PERF (2026-07-17): store the >24px BOOLEAN, not the raw scrollY.
    * Under Lenis, scroll events fire every rAF — storing the pixel value
@@ -172,11 +176,15 @@ export default function Nav({ centre, cta, aside, showTelemetry = true, showSite
             flexShrink: 0,
           }}
         >
-          <BrandCube />
-          <span className="lv2-wordmark">
-            <span className="lv2-wordmark-main">ALGORITHM</span>
-            <span className="lv2-wordmark-x">X</span>
-          </span>
+          {brand ?? (
+            <>
+              <BrandCube />
+              <span className="lv2-wordmark">
+                <span className="lv2-wordmark-main">ALGORITHM</span>
+                <span className="lv2-wordmark-x">X</span>
+              </span>
+            </>
+          )}
         </Link>
 
         {showTelemetry ? <TrustStrip isLight={isLight} /> : null}

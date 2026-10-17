@@ -155,6 +155,37 @@ const FAQS = [
 const PHASE_KEY = "ax-schools-phase";
 const isPhase = (v: unknown): v is Phase => v === "primary" || v === "secondary";
 
+/* The /schools header mark: the Learning Atom in one-colour teal (the page
+ * is warm sand, so a flat multi-colour atom reads better than a neon glow),
+ * with "CYBER SCHOOL / by AlgorithmX" in the nav's tone-aware ink. Passed to
+ * the shared Nav as its `brand`, so only this page changes. */
+function SchoolBrand() {
+  return (
+    <>
+      <svg width="30" height="30" viewBox="0 0 72 72" aria-hidden="true" style={{ display: "block", flexShrink: 0, filter: "drop-shadow(0 0 5px rgba(15,150,139,0.3))" }}>
+        <g fill="none" strokeWidth="2.8">
+          <ellipse cx="36" cy="36" rx="28" ry="11" stroke="#0ea5a0" />
+          <ellipse cx="36" cy="36" rx="28" ry="11" stroke="#1f9bd0" transform="rotate(60 36 36)" />
+          <ellipse cx="36" cy="36" rx="28" ry="11" stroke="#35b56a" transform="rotate(120 36 36)" />
+        </g>
+        <circle cx="63.5" cy="36" r="2.8" fill="#35b56a" />
+        <circle cx="22" cy="11.8" r="2.8" fill="#0ea5a0" />
+        <circle cx="50" cy="11.8" r="2.8" fill="#1f9bd0" />
+        <circle cx="36" cy="36" r="8" fill="#0f968b" />
+        <circle cx="33.4" cy="33" r="2.6" fill="#bdeee6" />
+      </svg>
+      <span style={{ display: "flex", flexDirection: "column", gap: 2, lineHeight: 1 }}>
+        <span style={{ fontFamily: "var(--lv2-font-mono)", fontWeight: 700, fontSize: 14, letterSpacing: "0.2em", textTransform: "uppercase", color: "var(--lv2-word-mark, #14243a)" }}>
+          CYBER <span style={{ color: "#0f968b" }}>SCHOOL</span>
+        </span>
+        <span style={{ fontFamily: "var(--lv2-font-mono)", fontWeight: 500, fontSize: 8.5, letterSpacing: "0.24em", textTransform: "uppercase", color: "var(--lv2-word-mark, #14243a)", opacity: 0.6 }}>
+          by AlgorithmX
+        </span>
+      </span>
+    </>
+  );
+}
+
 export default function SchoolsLanding() {
   const [phase, setPhase] = useState<Phase>("primary");
   const [activeSection, setActiveSection] = useState("");
@@ -236,6 +267,7 @@ export default function SchoolsLanding() {
           is the way back home, and the section links ride in the bar itself
           wherever there is room for them. */}
       <Nav
+        brand={<SchoolBrand />}
         tone="sand"
         showTelemetry={false}
         showSiteLinks={false}
