@@ -1,5 +1,4 @@
 import { describe, it, expect } from "vitest";
-// @ts-expect-error - the audio scripts are plain ESM JavaScript, not typed
 import { sayYears } from "../../scripts/lib/say-years.mjs";
 
 /**

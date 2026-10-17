@@ -145,6 +145,72 @@ signed off before most of these were known.
 | W2-13 | The choir is wrong for children | the celebration audio | ALL WEEKS - HELD, see below |
 | W2-17 | The closing four screens are one themed suite | 4 components + weekThemes | ALL WEEKS |
 
+### Where each item stands, end of 17 October
+
+| # | State | Note |
+|---|---|---|
+| W2-1 | DONE | short last row centres; works for any count |
+| W2-2 | DONE | all 86 icons given a 6% margin; --check in CI |
+| W2-3 | DONE | pill kept, duplicate PRINT dropped; no audio changed |
+| W2-4 | OPEN | needs the browser measurement; audit written |
+| W2-5 | DONE | 7 clips re-recorded; printed text unchanged |
+| W2-6 | DONE | game holds while the hint is up |
+| W2-7 | NOT STARTED | Blaster screen + vault art is a design pass |
+| W2-8 | DONE | third counter removed |
+| W2-9 | DONE | card fits its text; speed, parallelism and gap all eased |
+| W2-10 | DONE | one lamp per real question, three states |
+| W2-11 | DONE | ask reworded; curated audit, 4 left in weeks 18-20 |
+| W2-12 | PART OF W2-17 | Mission Report not yet redesigned |
+| W2-13 | HELD | reverses the owner's a-cappella mandate; needs a decision |
+| W2-17 | PARTIAL | shared palette built; debrief themed, lamp cone removed, closing grounds themed. Mission Report and the badge screen still to do |
+
+Nothing here is finished until it has been seen rendered. The code-level
+items are committed and type-checked; the visual ones are not claimed until
+the screenshots exist.
+
+### Corrections found while fixing, 17 October
+
+Two of the scopes above were wrong, and both corrections matter.
+
+SPAMBLASTER IS WEEK 2 ONLY. W2-7, W2-8 and W2-9 were logged as weeks 2, 3
+and 4 because those three week files all mention `spamBlaster`. Weeks 3 and 4
+only name it in an engine-reuse COMMENT; the only `type: "spamBlaster"` in
+the course is week 2's. So these three are the week-2-only work the owner
+asked to have identified.
+
+THE TRUNCATION WAS NOT OCCASIONAL. W2-9 recorded that the subject line was
+cut off. Measured: week 2's subjects run to a median of 37 characters and a
+longest of 44, against a card that fits about 26. NINE of its eleven cards
+were drawn truncated. A child was judging nine of eleven messages they were
+not shown.
+
+### Two bugs found underneath, neither reported and neither new
+
+THE SHAPER COULD NOT RUN AT ALL. `silence` and `CONSONANT_MAX` were sitting
+INSIDE a block comment - its closing marker was two lines below them instead
+of above - so both were commented out, and shapeToSpec threw ReferenceError
+the moment it was called. It only runs on a NEWLY RECORDED clip, and every
+cached clip skips it, so the entire course could be regenerated from cache
+with CI green while recording one new line was impossible. Found on the first
+new recording since it landed.
+
+Worth keeping in mind for the weeks still to come: every re-record from here
+would have failed the same way.
+
+THE CONSONANT AUDIT MIS-READ STOPS. Its tail measurement is calibrated for a
+fricative, which sits under the speech floor. A /t/, /k/ or /p/ is a
+near-silent closure then a LOUD burst, so the scan landed after the burst and
+measured only the decay behind it. It called week 2's "Brilliant!" a 60ms cut;
+the raw take measured the same 60ms, so nothing had been trimmed, and the
+frames before it read 0.4, 3.7, 7.2, 9.4, 9.2, 6.7, 4.5 percent, which is a
+textbook release. It now also looks for that shape, and can only pass a clip
+where there is positive evidence a consonant was spoken.
+
+That moved a safety net, so the numbers: course-wide failures 56 -> 26, weeks
+1 and 2 clean either way, and of the clips it rescues 14 end in a stop and 9
+in a cluster containing one, against 79 fricatives that still fail. Worth an
+ear on a couple before it is trusted further.
+
 W2-12, W2-14, W2-15 and W2-16 are folded into W2-17 and are not tracked
 separately; they were the four screens of the closing sequence reported one at
 a time before the owner tied them together.
