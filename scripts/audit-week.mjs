@@ -89,10 +89,26 @@ for (const [id, cmd, why] of BROWSER) {
   console.log(`         ${why}`);
 }
 
+/* These two read the source and report CANDIDATES, not faults, so they cannot
+ * pass or fail: a pinned hint is correct when play is held, and a pinned
+ * result is correct when the board is hidden. They run here anyway, because
+ * what they replace is remembering to look through all 82 engines by hand. */
+const READS = [
+  ["D8", "audit-result-overlay.mjs", "a result overlay inheriting a game's height (W1 D8)"],
+  ["W2-6", "audit-pinned-overlays.mjs", "a hint pinned over live gameplay (W2-6)"],
+];
+console.log("\n  Candidates to read, from the source:");
+for (const [id, script, why] of READS) {
+  const r = spawnSync("node", [`scripts/${script}`], { encoding: "utf8", maxBuffer: 1 << 28 });
+  const out = (r.stdout || "").trimEnd().split("\n").filter((l) => l.trim());
+  const verdict = (out.find((l) => /to look at\.?$/.test(l.trim())) || out[out.length - 1] || "(no output)").trim();
+  console.log(`    ${id.padEnd(5)} ${why}`);
+  console.log(`          ${verdict.slice(0, 76)}`);
+  console.log(`          node scripts/${script}`);
+}
+
 console.log("\n  And by eye, because no script does these yet:");
 console.log("    - a grid's last row (W2-1): five items in three columns leaves a hole");
-console.log("    - a result card AFTER the exercise finishes, not at rest (W1 D8)");
-console.log("    - anything pinned with a z-index over live gameplay (W2-6)");
 console.log("    - can the child READ what they are deciding about (W2-9)");
 console.log("    - is the same number on screen twice (W2-8)");
 
