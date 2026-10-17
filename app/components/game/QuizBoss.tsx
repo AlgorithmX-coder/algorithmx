@@ -239,6 +239,22 @@ export default function QuizBoss({ quiz, onEnd, onQuestionAnswered }: QuizBossPr
   /** Per-concept correct/total, snapshotted when the test ends (so the report
    *  screens never read the stats ref during render). */
   const [report, setReport] = useState<{ phaseId: string; label: string; correct: number; total: number }[]>([]);
+  /**
+   * How each question went, by question index, for the host's lectern.
+   *
+   * Owner, 2026-10-17: "the dots, I think there should be five dots, just how
+   * many questions they are. And they should have like a green tick or an X
+   * cross if they got it wrong. I think it's just good encouragement."
+   *
+   * The lectern used to draw four hard-coded dots with the second one always
+   * lit, purely so the desk did not read as a plain block, while the quiz had
+   * five questions. Nothing ever connected the two.
+   *
+   * A later attempt on the same question overwrites its mark, so a child who
+   * comes back and gets it right sees the dot turn. That is the encouraging
+   * reading, and it is the one the owner asked for.
+   */
+  const [marks, setMarks] = useState<("right" | "wrong")[]>([]);
   const [shakeNonce, setShakeNonce] = useState(0);
   const [popups, setPopups] = useState<{ id: number; text: string; colour: string; x: number; y: number }[]>([]);
   // The teach Sarah reads on the reveal (right AND wrong), mirrored on screen.
@@ -471,6 +487,11 @@ export default function QuizBoss({ quiz, onEnd, onQuestionAnswered }: QuizBossPr
       if (wasCorrect) stat.correctCount += 1;
       else stat.wrongCount += 1;
     }
+    setMarks((m) => {
+      const next = m.slice();
+      next[qIdx] = wasCorrect ? "right" : "wrong";
+      return next;
+    });
     position.current += 1;
     onQuestionAnswered?.({
       key: `${question.key}-a${n}`,
@@ -588,6 +609,7 @@ export default function QuizBoss({ quiz, onEnd, onQuestionAnswered }: QuizBossPr
     setQIdx(0);
     setPicked(null);
     setReport([]);
+    setMarks([]);
     setRaccoonLine(null);
     setRaccoonMood("taunt");
     setAttemptNonce((a) => a + 1);
@@ -779,9 +801,25 @@ export default function QuizBoss({ quiz, onEnd, onQuestionAnswered }: QuizBossPr
               WebkitBackdropFilter: "blur(3px)",
             }}
           >
-            {/* A row of host's buttons, so the desk reads as quiz furniture
-                and not as a plain block. */}
+            {/* The host's scorecard: ONE lamp per question in this boss, each
+                showing how that question went.
+
+                Owner, 2026-10-17: "there should be five dots, just how many
+                questions they are. And they should have like a green tick or
+                an X cross if they got it wrong... it's just good
+                encouragement."
+
+                Driven off the real question count, never a literal, so a boss
+                that asks a different number still reads correctly. Semantic
+                colours only - green is right and red is wrong everywhere else
+                in the lesson, so they mean the same thing here.
+
+                The wrong mark is deliberately the quietest thing on the desk:
+                no glow, a dimmer red, and the same size as the others. The
+                child-safety checklist rules out guilt, and a bright cross
+                sitting there for the rest of the fight would read that way. */}
             <div
+              aria-hidden
               style={{
                 position: "absolute",
                 left: "14%",
@@ -790,20 +828,37 @@ export default function QuizBoss({ quiz, onEnd, onQuestionAnswered }: QuizBossPr
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "center",
+                gap: 4,
               }}
             >
-              {[0, 1, 2, 3].map((i) => (
-                <span
-                  key={i}
-                  style={{
-                    width: 7,
-                    height: 7,
-                    borderRadius: "50%",
-                    background: i === 1 ? accent : `${accent}4d`,
-                    boxShadow: i === 1 ? `0 0 8px ${accent}` : "none",
-                  }}
-                />
-              ))}
+              {quiz.questions.map((q, i) => {
+                const mark = marks[i];
+                const isNow = i === qIdx && !mark;
+                const fill =
+                  mark === "right" ? "#34d399" : mark === "wrong" ? "#b4566a" : isNow ? accent : `${accent}4d`;
+                return (
+                  <span
+                    key={q.key ?? i}
+                    style={{
+                      width: 11,
+                      height: 11,
+                      lineHeight: "11px",
+                      textAlign: "center",
+                      fontSize: 9,
+                      fontWeight: 900,
+                      color: "#06121c",
+                      borderRadius: "50%",
+                      background: fill,
+                      /* Only the question in play glows. A finished mark is
+                         information, not a celebration, and the win screen is
+                         where the celebrating belongs. */
+                      boxShadow: isNow ? `0 0 8px ${accent}` : "none",
+                    }}
+                  >
+                    {mark === "right" ? "✓" : mark === "wrong" ? "✕" : ""}
+                  </span>
+                );
+              })}
             </div>
           </div>
           </div>
@@ -1141,16 +1196,48 @@ export default function QuizBoss({ quiz, onEnd, onQuestionAnswered }: QuizBossPr
               <div style={{ marginTop: 8, fontFamily: MONO, fontSize: 14, fontWeight: 900, letterSpacing: "0.08em", color: "#eef4ff" }}>
                 YOU SCORED <span style={{ color: "#7eff97" }}>{beaten}</span> / {total}
               </div>
-              <div style={{ marginTop: 13, width: "100%", maxWidth: 420, borderRadius: 12, overflow: "hidden", background: `linear-gradient(180deg, ${accent}14, rgba(9,13,28,0.95))`, border: `1px solid ${accent}66`, boxShadow: "0 18px 40px -18px #000" }}>
-                <div style={{ fontFamily: MONO, fontSize: 9.5, fontWeight: 700, letterSpacing: "0.2em", color: accent, padding: "7px 14px", borderBottom: `1px solid ${accent}42`, textAlign: "left", background: `${accent}12`, textTransform: "uppercase" }}>Mission Report</div>
-                <div style={{ padding: "9px 14px", display: "flex", flexDirection: "column", gap: 7 }}>
+              {/* The Mission Report.
+                *
+                * Owner, 2026-10-17: "make this mission report look better. It
+                * looks very boring. Again, this could be pushed across all
+                * weeks." It was a mono terminal readout at the proudest
+                * moment of the week, sitting under a 3D raccoon and a glowing
+                * YOU WIN.
+                *
+                * What is KEPT is the thing that made it worth having: the
+                * per-concept breakdown, so a child can see which power they
+                * dropped, by name. That is the part made legible rather than
+                * replaced - bigger rows, real spacing, the label in the
+                * lesson's own voice instead of uppercase monospace, and the
+                * score as a filled pip per question rather than a fraction.
+                *
+                * Colour: the frame takes the WEEK's accent, the marks keep
+                * their meaning. Green is right everywhere else in the lesson
+                * so it is right here, and the "dropped" state is amber rather
+                * than red - this screen is a win, and nothing on a win screen
+                * should read as a telling-off. */}
+              <div style={{ marginTop: 14, width: "100%", maxWidth: 440, borderRadius: 16, overflow: "hidden", background: `linear-gradient(180deg, ${accent}1c, rgba(8,12,28,0.94))`, border: `1.5px solid ${accent}5c`, boxShadow: `0 20px 48px -20px #000, 0 0 0 1px ${accent}1a inset` }}>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "10px 16px", borderBottom: `1px solid ${accent}3a`, background: `${accent}14` }}>
+                  <span style={{ fontSize: 11, fontWeight: 900, letterSpacing: "0.2em", color: accent, textTransform: "uppercase" }}>Mission Report</span>
+                  <span style={{ fontSize: 11, fontWeight: 800, letterSpacing: "0.1em", color: "rgba(223,231,255,0.72)" }}>
+                    {report.filter((r) => r.total > 0 && r.correct === r.total).length}/{report.length} POWERS
+                  </span>
+                </div>
+                <div style={{ padding: "10px 16px 13px", display: "flex", flexDirection: "column", gap: 2 }}>
                   {report.map((r) => {
                     const good = r.total > 0 && r.correct === r.total;
+                    const mark = good ? "#34d399" : "#f0b450";
                     return (
-                      <div key={r.phaseId} style={{ display: "flex", alignItems: "center", gap: 10, fontFamily: MONO, fontSize: 12, fontWeight: 700 }}>
-                        <span style={{ color: good ? "#57e08a" : "#ffcf5c", width: 14, textAlign: "center" }}>{good ? "✓" : "!"}</span>
-                        <span style={{ flex: 1, textAlign: "left", color: "#dfe7ff", textTransform: "uppercase", letterSpacing: "0.04em" }}>{r.label}</span>
-                        <span style={{ color: good ? "#57e08a" : "#ffcf5c" }}>{r.correct}/{r.total}</span>
+                      <div key={r.phaseId} style={{ display: "flex", alignItems: "center", gap: 11, padding: "7px 0", borderBottom: `1px solid ${accent}14` }}>
+                        <span aria-hidden style={{ width: 18, height: 18, borderRadius: "50%", flex: "0 0 18px", display: "grid", placeItems: "center", background: mark, color: "#06121c", fontSize: 11, fontWeight: 900, lineHeight: 1 }}>
+                          {good ? "✓" : "!"}
+                        </span>
+                        <span style={{ flex: 1, textAlign: "left", color: "#e8edff", fontSize: 14, fontWeight: 700, letterSpacing: "0.01em" }}>{r.label}</span>
+                        <span aria-label={`${r.correct} of ${r.total}`} style={{ display: "flex", gap: 4 }}>
+                          {Array.from({ length: Math.max(1, r.total) }).map((_, i) => (
+                            <span key={i} style={{ width: 8, height: 8, borderRadius: "50%", background: i < r.correct ? mark : `${accent}33` }} />
+                          ))}
+                        </span>
                       </div>
                     );
                   })}

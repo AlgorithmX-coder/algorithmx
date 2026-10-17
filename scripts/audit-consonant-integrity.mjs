@@ -112,8 +112,52 @@ function tailOf(file) {
   if (loudEnd < 0) return null;
   let tail = loudEnd;
   for (let i = loudEnd; i + win < n; i += win) { if (lvl(i) > peak * 0.004) tail = i + win; }
-  return (tail - loudEnd) / SR;
+  const measured = (tail - loudEnd) / SR;
+
+  /**
+   * Did the word end on a STOP RELEASE this measurement cannot see?
+   *
+   * The tail above is calibrated for a FRICATIVE. An /s/ or /f/ sits entirely
+   * under the 6% speech floor, so `loudEnd` lands in front of it and the
+   * whole consonant gets measured. A STOP - /t/, /k/, /p/ - does not work
+   * that way: it is a near-silent CLOSURE followed by a short, relatively
+   * LOUD burst. The burst IS the consonant and it sits above the floor, so
+   * `loudEnd` lands after it, and all that gets measured is the decay behind
+   * it, which is naturally short.
+   *
+   * Found on week 2's "...gives the Raccoon nothing. Brilliant!", which this
+   * called a 60ms cut. Profiling the raw take and the shipped clip gave the
+   * same 60ms, so nothing had been trimmed, and the frames just before read
+   * 0.4%, 3.7%, 7.2%, 9.4%, 9.2%, 6.7%, 4.5% - a textbook closure and
+   * release. The t was there; the instrument was wrong for that sound.
+   *
+   * So this looks for exactly that shape and nothing else: a dip to near
+   * silence, then a rise back above the speech floor, inside the final
+   * stretch. It can only turn a fail into a pass where there is POSITIVE
+   * evidence that a consonant was spoken. A genuinely cut ending has no
+   * burst - the audio simply stops - so this cannot hide the bug it guards.
+   */
+  const from = Math.max(0, tail - Math.round(RELEASE_WINDOW * SR));
+  let sawClosure = false;
+  let releaseAt = -1;
+  for (let i = from; i + win < tail; i += win) {
+    const v = lvl(i);
+    if (v < peak * 0.01) { sawClosure = true; continue; }
+    if (sawClosure && v > peak * 0.06) releaseAt = i;
+  }
+  if (releaseAt < 0) return measured;
+
+  // The whole gesture: from the burst through to true silence, which is what
+  // a listener hears as the consonant.
+  let end = releaseAt;
+  for (let i = releaseAt; i + win < n; i += win) { if (lvl(i) > peak * 0.004) end = i + win; }
+  return Math.max(measured, (end - releaseAt) / SR);
 }
+
+/* How far back to look for a stop's closure-then-burst. Long enough to span a
+ * closure and its release, short enough that it cannot reach back into the
+ * vowel before it. */
+const RELEASE_WINDOW = 0.30;
 
 /* 80ms. Measured: across this voice the shortest healthy unvoiced final seen
  * is just over 100ms, and a cut leaves 40ms or less. 80ms sits between them

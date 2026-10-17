@@ -320,25 +320,48 @@ export default function LessonStage({
       }}
     >
       {glowValue && (
+        /* The glow is CLIPPED to the stage, and that is what stops every
+         * screen offering a scroll bar.
+         *
+         * Owner, 2026-10-17, on Power 3 of 5: "when the card fits into the
+         * actual screen, there's no reason to have a scroll bar."
+         *
+         * The arithmetic cause was fixed once already, for a tester's report
+         * on W17 2a, and the comment on minHeight above records it. This is
+         * the SECOND cause, and it is this decoration: absolutely placed at
+         * top 20% with a fixed height of 600. At the owner's 1414x771 the
+         * stage is 771 - 64 (HUD) - 20 (pad) = 687 tall, 20% of that is 137,
+         * and 137 + 600 = 737. Measured across all thirty screens of week 2:
+         * every one overflowed by exactly 50px while the PAGE overflowed by
+         * none. A constant that ignores the content is never the content.
+         *
+         * So it now sits in a box pinned to the stage with its own overflow
+         * hidden. It looks the same - a 120px blur at 0.3 opacity, already
+         * clipped horizontally - but it can no longer extend the scrollable
+         * area. One fix, every screen, all twenty weeks. */
         <div
-          key={glowValue}
           aria-hidden
-          style={{
-            position: "absolute",
-            top: "20%",
-            left: "50%",
-            transform: "translateX(-50%)",
-            width: 600,
-            height: 600,
-            borderRadius: "50%",
-            background: glowValue,
-            filter: "blur(120px)",
-            opacity: 0.3,
-            pointerEvents: "none",
-            animation: "fullSceneGlowIn 420ms ease-out both",
-            willChange: "opacity",
-          }}
-        />
+          style={{ position: "absolute", inset: 0, overflow: "hidden", pointerEvents: "none", zIndex: 0 }}
+        >
+          <div
+            key={glowValue}
+            style={{
+              position: "absolute",
+              top: "20%",
+              left: "50%",
+              transform: "translateX(-50%)",
+              width: 600,
+              height: 600,
+              borderRadius: "50%",
+              background: glowValue,
+              filter: "blur(120px)",
+              opacity: 0.3,
+              pointerEvents: "none",
+              animation: "fullSceneGlowIn 420ms ease-out both",
+              willChange: "opacity",
+            }}
+          />
+        </div>
       )}
       <div
         ref={contentRef}

@@ -173,52 +173,20 @@ export default function StickerUnlock({
                 alignItems: "stretch",
               }}
             >
-              {/* Light beam from above - fades in once the sticker lands.
-                  zIndex 0 keeps it under the sticker cards AND under the
-                  header copy it pokes up towards. */}
-              {/* Owner 2026-09-12: the shaft is PROPORTIONAL to its card (a
-                  cone from a narrow lamp point above the card to the card's
-                  full width at its top edge), identical on every card, and it
-                  stops at the card so it never washes over the header copy. */}
-              <span
-                aria-hidden
-                style={{
-                  position: "absolute",
-                  // Kept BELOW the header band. At -54 with a 58 height the
-                  // cone climbed into the title and subtitle: the copy still
-                  // painted on top (zIndex 2) but sat in a wash of light,
-                  // and with the base at 8%/92% the blurred, screen-blended
-                  // edges of neighbouring cards met in the gaps. Abdullah saw
-                  // both as the lights overlapping each other and the text.
-                  // Shorter reach, narrower base, same lamp-cone shape.
-                  //
-                  // UAT W16 9b ("the lantern illuminating the second badge
-                  // always cuts into the words above", reported as recurring
-                  // on every week): -30 was still 10px too tall. The header
-                  // block above clears exactly marginBottom: 20, so a beam
-                  // reaching 30px up HAS to land inside the subtitle - not a
-                  // viewport quirk, true on every week at every size. Measured
-                  // at the tester's 1093x525: cone top 173.7 against subtitle
-                  // 164-182.4, an 8.7px overlap. The reach now fits the gap it
-                  // has (14 up, 6px of clearance) instead of overshooting it.
-                  // Keep reach + clearance <= that 20, or this comes straight
-                  // back. zIndex 2 on the copy does NOT save it: the wash sits
-                  // behind the letters, which is exactly what was reported.
-                  top: -14,
-                  left: "15%",
-                  right: "15%",
-                  height: 18,
-                  zIndex: 0,
-                  clipPath: "polygon(42% 0%, 58% 0%, 100% 100%, 0% 100%)",
-                  background:
-                    "linear-gradient(180deg, rgba(255,248,220,0.85) 0%, rgba(253,224,71,0.5) 55%, rgba(253,224,71,0.18) 100%)",
-                  filter: "blur(3px)",
-                  opacity: visible ? 0.85 : 0,
-                  transition: `opacity ${intensity === 0 ? 80 : 420}ms ease-out`,
-                  mixBlendMode: "screen",
-                  pointerEvents: "none",
-                }}
-              />
+              {/* The lamp cone above each card is GONE.
+
+                  Owner, 2026-10-17, on this screen: it reads as a pale wedge
+                  hanging over each card, attached to nothing. It had already
+                  been shrunk twice for that same reason, W16 9b being the
+                  last (the lantern over the second badge cutting into the
+                  words above, reported as recurring on every week), and the
+                  comments it left behind are a record of a shape fighting its
+                  own layout: reach cut to 14px, base narrowed to 15%, blend
+                  mode screened, all to stop it touching the copy above.
+
+                  A decoration that has to be made smaller every time somebody
+                  reviews it is not earning its place. The sticker art is the
+                  reward and it carries the moment on its own. */}
               <motion.div
                 initial={
                   intensity === 0

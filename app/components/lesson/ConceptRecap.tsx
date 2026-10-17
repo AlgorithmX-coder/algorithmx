@@ -24,6 +24,7 @@ import InfoNarration from "@/app/components/lesson/InfoNarration";
 import GameButton from "@/app/components/lesson/GameButton";
 import PixIcon from "@/app/components/lesson/PixIcon";
 import { useLessonTheme } from "@/app/components/lesson/LessonThemeContext";
+import { printableRecapLines } from "@/app/lib/recapEcho";
 import { WorldBackdrop } from "@/app/components/game/missionWorldStyles";
 
 export interface ConceptRecapProps {
@@ -274,7 +275,17 @@ export default function ConceptRecap({
       {/* narration (Sarah reads the takeaway aloud) */}
       {narration && narration.lines.length > 0 && (
         <div style={{ maxWidth: 520, margin: "0 auto 8px", textAlign: "left" }}>
-          <InfoNarration lines={narration.lines} speaker={narration.speaker ?? "layla"} />
+          {/* Every line is still SPOKEN; `showOnly` governs what is printed.
+              The line that restates the "Up next" pill is dropped from the
+              page so the child does not read the same sentence twice. If that
+              would leave nothing on the page (a one-line recap whose only line
+              is the bridge), print the lot - a silent-looking panel is worse
+              than a repeat. */}
+          <InfoNarration
+            lines={narration.lines}
+            speaker={narration.speaker ?? "layla"}
+            showOnly={printableRecapLines(narration.lines, next)}
+          />
         </div>
       )}
 

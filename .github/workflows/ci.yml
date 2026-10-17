@@ -88,6 +88,25 @@ jobs:
       # consonant audit, because 65 of these exist across the other weeks.
       - run: node scripts/audit-echoed-lines.mjs 1 2
 
+      # The same screen must not say a STOCK PHRASE twice either. Owner,
+      # 2026-10-17, on week 2's last boss question: "it said, if you are not
+      # sure twice". The audit above could not hear it - it needs three shared
+      # CONTENT words and drops stop words first, so "not sure" collapsed to
+      # "sure". Lowering that threshold is the WRONG fix: at two words it
+      # flags 40 of the 100 questions, nearly all of them teach lines
+      # correctly naming what was at stake. This checks a curated list of
+      # generic SET-UP phrases instead, leaving every subject noun free to
+      # repeat. Same per-week ratchet: four remain in weeks 18, 19 and 20.
+      - run: node scripts/audit-framing-echoes.mjs 1 2
+
+      # Every lesson icon keeps a transparent margin. Owner, 2026-10-17: "All
+      # emojis need to look full and complete. As you can see, this eye is cut
+      # off." The art was fine; what made it fragile is that the icons are
+      # trimmed hard to their ink, so 86 of 92 touched the canvas edge and any
+      # container that clips could shave a flat slice off one. A margin means
+      # tangency can never reach a clipping edge.
+      - run: node scripts/pad-lesson-icons.mjs --check
+
   # ────────────────────────────────────────────────────────────
   # End-to-end tests against a real production build.  Slower than
   # the static job (production build + browser launch) so it runs

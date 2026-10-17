@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-16T20:53:15.613Z",
+  "generatedAt": "2026-10-17T09:29:18.825Z",
   "model": "eleven_v4",
   "voiceSettings": {
     "stability": 0.6,
@@ -1347,6 +1347,76 @@
       "file": "/audio/voice/e0cd6f555950b8d6.mp3"
     },
     {
+      "key": "0a7551585be2fcac",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "A password is the secret key that unlocks your account and proves it's really you.",
+      "lines": [
+        "A password is the secret key that unlocks your account and proves it's really you."
+      ],
+      "file": "/audio/voice/0a7551585be2fcac.mp3"
+    },
+    {
+      "key": "135a181509426e25",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "A strong password is so long and mixed up that a cracking machine gives up.",
+      "lines": [
+        "A strong password is so long and mixed up that a cracking machine gives up."
+      ],
+      "file": "/audio/voice/135a181509426e25.mp3"
+    },
+    {
+      "key": "de52248eb50e2b8c",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "A hacker is someone who guesses passwords to sneak into accounts that aren't theirs.",
+      "lines": [
+        "A hacker is someone who guesses passwords to sneak into accounts that aren't theirs."
+      ],
+      "file": "/audio/voice/de52248eb50e2b8c.mp3"
+    },
+    {
+      "key": "a5887ca28bcf3bb1",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "A secret password stays secret; the moment you tell someone, it isn't your key anymore.",
+      "lines": [
+        "A secret password stays secret; the moment you tell someone, it isn't your key anymore."
+      ],
+      "file": "/audio/voice/a5887ca28bcf3bb1.mp3"
+    },
+    {
+      "key": "0944e59c5266224d",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "A password isn't for robots; it's the secret that shows who is really typing.",
+      "lines": [
+        "A password isn't for robots; it's the secret that shows who is really typing."
+      ],
+      "file": "/audio/voice/0944e59c5266224d.mp3"
+    },
+    {
+      "key": "093af1c0e8dc5649",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "A hacker is exactly who the password keeps out.",
+      "lines": [
+        "A hacker is exactly who the password keeps out."
+      ],
+      "file": "/audio/voice/093af1c0e8dc5649.mp3"
+    },
+    {
+      "key": "f73164b88779c28d",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Your friend shouldn't know your password at all; it proves one person only.",
+      "lines": [
+        "Your friend shouldn't know your password at all; it proves one person only."
+      ],
+      "file": "/audio/voice/f73164b88779c28d.mp3"
+    },
+    {
       "key": "14c35ad8418de1a1",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
@@ -1355,6 +1425,36 @@
         "Three random words make a long passphrase: easy for you to remember, and years of guessing for the Raccoon."
       ],
       "file": "/audio/voice/14c35ad8418de1a1.mp3"
+    },
+    {
+      "key": "b7ac25390b0b7472",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Cat is three little letters; a cracking machine guesses that in a blink.",
+      "lines": [
+        "Cat is three little letters; a cracking machine guesses that in a blink."
+      ],
+      "file": "/audio/voice/b7ac25390b0b7472.mp3"
+    },
+    {
+      "key": "226b7fec2f9ae185",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "One word and one number is still a quick guess; hackers try a name plus a number first.",
+      "lines": [
+        "One word and one number is still a quick guess; hackers try a name plus a number first."
+      ],
+      "file": "/audio/voice/226b7fec2f9ae185.mp3"
+    },
+    {
+      "key": "8305b656ecfdc1f7",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Sun is a tiny common word; it would be cracked in a second.",
+      "lines": [
+        "Sun is a tiny common word; it would be cracked in a second."
+      ],
+      "file": "/audio/voice/8305b656ecfdc1f7.mp3"
     },
     {
       "key": "03bb46b050340a12",
@@ -1417,6 +1517,16 @@
       "file": "/audio/voice/ccdcc82f9862308c.mp3"
     },
     {
+      "key": "daf4ba8e68e68f97",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Small letters only is easy to guess; mixing in capitals, numbers and symbols is what makes it strong.",
+      "lines": [
+        "Small letters only is easy to guess; mixing in capitals, numbers and symbols is what makes it strong."
+      ],
+      "file": "/audio/voice/daf4ba8e68e68f97.mp3"
+    },
+    {
       "key": "e26674960c3344d5",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
@@ -1425,6 +1535,106 @@
         "Think - what did the cyber-doctor add to heal those passwords?"
       ],
       "file": "/audio/voice/e26674960c3344d5.mp3"
+    },
+    {
+      "key": "4143fdd97f5b0540",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Even a best friend shouldn't know it; a secret shared is a secret that can leak.",
+      "lines": [
+        "Even a best friend shouldn't know it; a secret shared is a secret that can leak."
+      ],
+      "file": "/audio/voice/4143fdd97f5b0540.mp3"
+    },
+    {
+      "key": "0f6ee2828c3f4654",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "A whole class is a lot of people; a password is for you alone.",
+      "lines": [
+        "A whole class is a lot of people; a password is for you alone."
+      ],
+      "file": "/audio/voice/0f6ee2828c3f4654.mp3"
+    },
+    {
+      "key": "c4cd39da412fdc6d",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Anyone who asks is exactly who must not get it; the Raccoon asks nicely too.",
+      "lines": [
+        "Anyone who asks is exactly who must not get it; the Raccoon asks nicely too."
+      ],
+      "file": "/audio/voice/c4cd39da412fdc6d.mp3"
+    },
+    {
+      "key": "0eef87b93902c920",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Dragon-Pickle9! is long and mixed up; a hacker would take years, so it's not a first guess.",
+      "lines": [
+        "Dragon-Pickle9! is long and mixed up; a hacker would take years, so it's not a first guess."
+      ],
+      "file": "/audio/voice/0eef87b93902c920.mp3"
+    },
+    {
+      "key": "c3184ef490dda43f",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Comet$Turtle3 mixes words, a symbol and a number; that's a hard one, not a first guess.",
+      "lines": [
+        "Comet$Turtle3 mixes words, a symbol and a number; that's a hard one, not a first guess."
+      ],
+      "file": "/audio/voice/c3184ef490dda43f.mp3"
+    },
+    {
+      "key": "35ff14dfcbf76b51",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Waffle!Ninja6 is long and mixed; a hacker would never start there.",
+      "lines": [
+        "Waffle!Ninja6 is long and mixed; a hacker would never start there."
+      ],
+      "file": "/audio/voice/35ff14dfcbf76b51.mp3"
+    },
+    {
+      "key": "e070002045f5a250",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Four random words, so his cracker runs out of time. That is the long power.",
+      "lines": [
+        "Four random words, so his cracker runs out of time. That is the long power."
+      ],
+      "file": "/audio/voice/e070002045f5a250.mp3"
+    },
+    {
+      "key": "de13e9b41de38413",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "A capital, a number and a symbol, and the plain word is gone. The mix-it-up power.",
+      "lines": [
+        "A capital, a number and a symbol, and the plain word is gone. The mix-it-up power."
+      ],
+      "file": "/audio/voice/de13e9b41de38413.mp3"
+    },
+    {
+      "key": "f8bacefad80bd88e",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Ada told a grown-up and nobody else. That is keeping it secret.",
+      "lines": [
+        "Ada told a grown-up and nobody else. That is keeping it secret."
+      ],
+      "file": "/audio/voice/f8bacefad80bd88e.mp3"
+    },
+    {
+      "key": "21b6aab2b9a4a9c6",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Nothing about Sam that anyone could guess. Nothing obvious, every time.",
+      "lines": [
+        "Nothing about Sam that anyone could guess. Nothing obvious, every time."
+      ],
+      "file": "/audio/voice/21b6aab2b9a4a9c6.mp3"
     },
     {
       "key": "97f57876abd946f6",
@@ -2427,6 +2637,16 @@
         "When the next video starts all by itself, the thing that picked it is called blank."
       ],
       "file": "/audio/voice/01f179f2df0adbc8.mp3"
+    },
+    {
+      "key": "2fb5fd8ce5feaa81",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Is that true?",
+      "lines": [
+        "Is that true?"
+      ],
+      "file": "/audio/voice/2fb5fd8ce5feaa81.mp3"
     },
     {
       "key": "52b08f04e90de6a4",
@@ -4074,6 +4294,36 @@
       "file": "/audio/voice/e429d62a8c3b76ea.mp3"
     },
     {
+      "key": "78529bd70f0087f6",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "You said \"just one more\" three videos ago, and the next one is loading all by itself.",
+      "lines": [
+        "You said \"just one more\" three videos ago, and the next one is loading all by itself."
+      ],
+      "file": "/audio/voice/78529bd70f0087f6.mp3"
+    },
+    {
+      "key": "ebda62eb45094b7c",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "You catch your reflection in the dark screen: a jiggly leg and a neck that has gone stiff.",
+      "lines": [
+        "You catch your reflection in the dark screen: a jiggly leg and a neck that has gone stiff."
+      ],
+      "file": "/audio/voice/ebda62eb45094b7c.mp3"
+    },
+    {
+      "key": "8dc938ddec6a2523",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Dinner is on the table, and the screen flashes NEXT EPISODE.",
+      "lines": [
+        "Dinner is on the table, and the screen flashes NEXT EPISODE."
+      ],
+      "file": "/audio/voice/8dc938ddec6a2523.mp3"
+    },
+    {
       "key": "309c3fbd4f2a7253",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
@@ -4631,6 +4881,16 @@
         "The best time to name your team is blank."
       ],
       "file": "/audio/voice/4ca6b7e0206acf19.mp3"
+    },
+    {
+      "key": "2fb5fd8ce5feaa81",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Is that true?",
+      "lines": [
+        "Is that true?"
+      ],
+      "file": "/audio/voice/2fb5fd8ce5feaa81.mp3"
     },
     {
       "key": "98568e0d07a85685",
@@ -8104,6 +8364,56 @@
       "file": "/audio/voice/4b1ab6141d6369bd.mp3"
     },
     {
+      "key": "8191addab0f79bd6",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "A search goes into a box that keeps it. So the print is there whether or not anything was posted.",
+      "lines": [
+        "A search goes into a box that keeps it. So the print is there whether or not anything was posted."
+      ],
+      "file": "/audio/voice/8191addab0f79bd6.mp3"
+    },
+    {
+      "key": "7504bdefb6d7b946",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Sending copies a thing instead of moving it. So one send already makes three, before anybody passes it on.",
+      "lines": [
+        "Sending copies a thing instead of moving it. So one send already makes three, before anybody passes it on."
+      ],
+      "file": "/audio/voice/7504bdefb6d7b946.mp3"
+    },
+    {
+      "key": "4929c8050f74f336",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "The fury fades by breakfast. The print does not. So the mirror question comes before the post, not after.",
+      "lines": [
+        "The fury fades by breakfast. The print does not. So the mirror question comes before the post, not after."
+      ],
+      "file": "/audio/voice/4929c8050f74f336.mp3"
+    },
+    {
+      "key": "8232a38b4d55030b",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Proud and kind, with the person who made the save named. That is the post that still reads beautifully a year from now.",
+      "lines": [
+        "Proud and kind, with the person who made the save named. That is the post that still reads beautifully a year from now."
+      ],
+      "file": "/audio/voice/8232a38b4d55030b.mp3"
+    },
+    {
+      "key": "dd6a1f87edf66a80",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "A print you cannot reach, on a page that is not yours. That is exactly the one a ranger hands to a trusted grown-up.",
+      "lines": [
+        "A print you cannot reach, on a page that is not yours. That is exactly the one a ranger hands to a trusted grown-up."
+      ],
+      "file": "/audio/voice/dd6a1f87edf66a80.mp3"
+    },
+    {
       "key": "82984b31b5996262",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
@@ -11191,6 +11501,116 @@
       "file": "/audio/voice/baa8ed5f31e9ac77.mp3"
     },
     {
+      "key": "d57843dd98145b86",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "That is the easy one, and it is the one everybody thinks of. Ears, definitely.",
+      "lines": [
+        "That is the easy one, and it is the one everybody thinks of. Ears, definitely."
+      ],
+      "file": "/audio/voice/d57843dd98145b86.mp3"
+    },
+    {
+      "key": "73d3876953a3dcc7",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "A kettle boils water and that is the whole of its job. No microphone, no ears, nothing to check.",
+      "lines": [
+        "A kettle boils water and that is the whole of its job. No microphone, no ears, nothing to check."
+      ],
+      "file": "/audio/voice/73d3876953a3dcc7.mp3"
+    },
+    {
+      "key": "c01be0d352a9d8d7",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "That voice button is a microphone, so the telly has ears. Most people never think of the telly.",
+      "lines": [
+        "That voice button is a microphone, so the telly has ears. Most people never think of the telly."
+      ],
+      "file": "/audio/voice/c01be0d352a9d8d7.mp3"
+    },
+    {
+      "key": "e9c1da63b27e3fd5",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "An ordinary teddy is stuffing and stitching. No batteries, no microphone, and no ears at all.",
+      "lines": [
+        "An ordinary teddy is stuffing and stitching. No batteries, no microphone, and no ears at all."
+      ],
+      "file": "/audio/voice/e9c1da63b27e3fd5.mp3"
+    },
+    {
+      "key": "b8d734e8f761ba11",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "The headset is a microphone, so the console can hear the room while you play.",
+      "lines": [
+        "The headset is a microphone, so the console can hear the room while you play."
+      ],
+      "file": "/audio/voice/b8d734e8f761ba11.mp3"
+    },
+    {
+      "key": "97a256bfa4fc6d6e",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "A lamp makes light and nothing else. It has no way to hear a single thing.",
+      "lines": [
+        "A lamp makes light and nothing else. It has no way to hear a single thing."
+      ],
+      "file": "/audio/voice/97a256bfa4fc6d6e.mp3"
+    },
+    {
+      "key": "a3cb9cce3a8b6028",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Anything that answers you has to hear you first. A talking toy has ears, and that surprises most grown-ups too.",
+      "lines": [
+        "Anything that answers you has to hear you first. A talking toy has ears, and that surprises most grown-ups too."
+      ],
+      "file": "/audio/voice/a3cb9cce3a8b6028.mp3"
+    },
+    {
+      "key": "0b13df326e6572cc",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "You wind it and it ticks. There is no microphone inside a clock with a key in the back.",
+      "lines": [
+        "You wind it and it ticks. There is no microphone inside a clock with a key in the back."
+      ],
+      "file": "/audio/voice/0b13df326e6572cc.mp3"
+    },
+    {
+      "key": "719ebd5f35e83f2c",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "A kettle boils water. There is no microphone anywhere in it.",
+      "lines": [
+        "A kettle boils water. There is no microphone anywhere in it."
+      ],
+      "file": "/audio/voice/719ebd5f35e83f2c.mp3"
+    },
+    {
+      "key": "616efa9b5d942aae",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "A lamp makes light and that is all. Nothing to hear with.",
+      "lines": [
+        "A lamp makes light and that is all. Nothing to hear with."
+      ],
+      "file": "/audio/voice/616efa9b5d942aae.mp3"
+    },
+    {
+      "key": "727967e9a75fd41c",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "You wind it up and it ticks. No microphone in there at all.",
+      "lines": [
+        "You wind it up and it ticks. No microphone in there at all."
+      ],
+      "file": "/audio/voice/727967e9a75fd41c.mp3"
+    },
+    {
       "key": "ea0b10d0f0ed31b6",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
@@ -11199,6 +11619,76 @@
         "Which one can you talk TO and get an answer from?"
       ],
       "file": "/audio/voice/ea0b10d0f0ed31b6.mp3"
+    },
+    {
+      "key": "7e13c70017bb741e",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "That is the helping part working exactly as it should. You asked, it wrote it down, it played the song.",
+      "lines": [
+        "That is the helping part working exactly as it should. You asked, it wrote it down, it played the song."
+      ],
+      "file": "/audio/voice/7e13c70017bb741e.mp3"
+    },
+    {
+      "key": "ddb9c9187d6dda28",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "A word on the telly sounded close enough to Nova's name. So it woke up and wrote down what came next.",
+      "lines": [
+        "A word on the telly sounded close enough to Nova's name. So it woke up and wrote down what came next."
+      ],
+      "file": "/audio/voice/ddb9c9187d6dda28.mp3"
+    },
+    {
+      "key": "3db0e7f2802ae188",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Its name got said in the middle of the washing up row. So it woke and wrote the next bit down. It cannot tell what is private.",
+      "lines": [
+        "Its name got said in the middle of the washing up row. So it woke and wrote the next bit down. It cannot tell what is private."
+      ],
+      "file": "/audio/voice/3db0e7f2802ae188.mp3"
+    },
+    {
+      "key": "6afa3446770f57f9",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "The diary is not locked away. A grown-up can open it, read it and clear the lot, and that is worth knowing.",
+      "lines": [
+        "The diary is not locked away. A grown-up can open it, read it and clear the lot, and that is worth knowing."
+      ],
+      "file": "/audio/voice/6afa3446770f57f9.mp3"
+    },
+    {
+      "key": "ed7073399146c3f7",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "It does keep a copy once it wakes up. Pretending otherwise is not the fix.",
+      "lines": [
+        "It does keep a copy once it wakes up. Pretending otherwise is not the fix."
+      ],
+      "file": "/audio/voice/ed7073399146c3f7.mp3"
+    },
+    {
+      "key": "7ee808277b0c3f5e",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "That is backwards. Without wifi it cannot do its job at all.",
+      "lines": [
+        "That is backwards. Without wifi it cannot do its job at all."
+      ],
+      "file": "/audio/voice/7ee808277b0c3f5e.mp3"
+    },
+    {
+      "key": "50ccfbf1b3bf8051",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "It is half-awake for its name, not taking down your whole day. The diary shows what it actually kept.",
+      "lines": [
+        "It is half-awake for its name, not taking down your whole day. The diary shows what it actually kept."
+      ],
+      "file": "/audio/voice/50ccfbf1b3bf8051.mp3"
     },
     {
       "key": "d9973903b173c240",
@@ -11211,6 +11701,76 @@
       "file": "/audio/voice/d9973903b173c240.mp3"
     },
     {
+      "key": "ebf36a2662aeb0cf",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "In the hallway its little light has come on. So the doorbell lens is awake and watching the step. That is exactly its job.",
+      "lines": [
+        "In the hallway its little light has come on. So the doorbell lens is awake and watching the step. That is exactly its job."
+      ],
+      "file": "/audio/voice/ebf36a2662aeb0cf.mp3"
+    },
+    {
+      "key": "e2b4a8ac3a706906",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Over on the living room sofa arm, the tablet has its little green dot on. That means its camera just woke up. Somebody started a video call.",
+      "lines": [
+        "Over on the living room sofa arm, the tablet has its little green dot on. That means its camera just woke up. Somebody started a video call."
+      ],
+      "file": "/audio/voice/e2b4a8ac3a706906.mp3"
+    },
+    {
+      "key": "a2f30678ed6e294d",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "In the kitchen a little cover has slid back off the laptop's lens. A cover moving is the clearest sign there is.",
+      "lines": [
+        "In the kitchen a little cover has slid back off the laptop's lens. A cover moving is the clearest sign there is."
+      ],
+      "file": "/audio/voice/a2f30678ed6e294d.mp3"
+    },
+    {
+      "key": "b6cd181f1d279779",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "That is a lens in a bedroom, pointing at a bed with its light on. This is the one you tell a grown-up about, straight away, every time.",
+      "lines": [
+        "That is a lens in a bedroom, pointing at a bed with its light on. This is the one you tell a grown-up about, straight away, every time."
+      ],
+      "file": "/audio/voice/b6cd181f1d279779.mp3"
+    },
+    {
+      "key": "694c7899d5f54ed3",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Covering it hides it from you, and the grown-up who can actually sort it never finds out.",
+      "lines": [
+        "Covering it hides it from you, and the grown-up who can actually sort it never finds out."
+      ],
+      "file": "/audio/voice/694c7899d5f54ed3.mp3"
+    },
+    {
+      "key": "24024a501b3f24fd",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Unplugging it quietly leaves the same question unanswered: who put it there, and why?",
+      "lines": [
+        "Unplugging it quietly leaves the same question unanswered: who put it there, and why?"
+      ],
+      "file": "/audio/voice/24024a501b3f24fd.mp3"
+    },
+    {
+      "key": "46bf20bb3af4ebfc",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "This is the one thing in the week that is never a maybe. A lens at a bed always gets told.",
+      "lines": [
+        "This is the one thing in the week that is never a maybe. A lens at a bed always gets told."
+      ],
+      "file": "/audio/voice/46bf20bb3af4ebfc.mp3"
+    },
+    {
       "key": "d63764893c8ae069",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
@@ -11221,6 +11781,106 @@
       "file": "/audio/voice/d63764893c8ae069.mp3"
     },
     {
+      "key": "8d71a1b65db2fdd4",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Same answer, different room, and Nova never hears it. That is the whole habit in one move.",
+      "lines": [
+        "Same answer, different room, and Nova never hears it. That is the whole habit in one move."
+      ],
+      "file": "/audio/voice/8d71a1b65db2fdd4.mp3"
+    },
+    {
+      "key": "ff547bee238ca0e9",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Typing it sends it straight to your friend and to nobody else in the room. Same answer, quieter route.",
+      "lines": [
+        "Typing it sends it straight to your friend and to nobody else in the room. Same answer, quieter route."
+      ],
+      "file": "/audio/voice/ff547bee238ca0e9.mp3"
+    },
+    {
+      "key": "752c009475857fcd",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "An empty house, and the dates for it. Exactly the sort of thing that does not need saying near a diary.",
+      "lines": [
+        "An empty house, and the dates for it. Exactly the sort of thing that does not need saying near a diary."
+      ],
+      "file": "/audio/voice/752c009475857fcd.mp3"
+    },
+    {
+      "key": "a8a8c31d9dd02cd0",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "This one is fine. Gran knows your school, the speaker is already on for the call, and not every answer needs moving.",
+      "lines": [
+        "This one is fine. Gran knows your school, the speaker is already on for the call, and not every answer needs moving."
+      ],
+      "file": "/audio/voice/a8a8c31d9dd02cd0.mp3"
+    },
+    {
+      "key": "f35be04641443f15",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Tea is not a secret. The rule is for the private sort, not for everything.",
+      "lines": [
+        "Tea is not a secret. The rule is for the private sort, not for everything."
+      ],
+      "file": "/audio/voice/f35be04641443f15.mp3"
+    },
+    {
+      "key": "ece73424b62fe17b",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Gran already knows, and she is on the call anyway. That one stays where it is.",
+      "lines": [
+        "Gran already knows, and she is on the call anyway. That one stays where it is."
+      ],
+      "file": "/audio/voice/ece73424b62fe17b.mp3"
+    },
+    {
+      "key": "4ac697f355f4264c",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "The speaker's microphone was always listening. There is a mute button on the top of nearly every speaker. Pressing it when nobody is using it costs nothing at all.",
+      "lines": [
+        "The speaker's microphone was always listening. There is a mute button on the top of nearly every speaker. Pressing it when nobody is using it costs nothing at all."
+      ],
+      "file": "/audio/voice/4ac697f355f4264c.mp3"
+    },
+    {
+      "key": "51bb76f59b0f1340",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "The voice diary was keeping everything, forever. One setting makes it tidy itself every three months. Same speaker, just as helpful, with a much shorter diary.",
+      "lines": [
+        "The voice diary was keeping everything, forever. One setting makes it tidy itself every three months. Same speaker, just as helpful, with a much shorter diary."
+      ],
+      "file": "/audio/voice/51bb76f59b0f1340.mp3"
+    },
+    {
+      "key": "9cb9d72a181aa3b5",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Send my recordings off to help improve the service was switched on. That is the one that sends actual recordings away to be listened to. Turning it off changes nothing you would notice.",
+      "lines": [
+        "Send my recordings off to help improve the service was switched on. That is the one that sends actual recordings away to be listened to. Turning it off changes nothing you would notice."
+      ],
+      "file": "/audio/voice/9cb9d72a181aa3b5.mp3"
+    },
+    {
+      "key": "f2d70d300de1685f",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "The telly's voice button was switched on, sitting there waiting. Almost nobody uses the telly by talking to it. So off until the day you want it, and the telly stops listening entirely.",
+      "lines": [
+        "The telly's voice button was switched on, sitting there waiting. Almost nobody uses the telly by talking to it. So off until the day you want it, and the telly stops listening entirely."
+      ],
+      "file": "/audio/voice/f2d70d300de1685f.mp3"
+    },
+    {
       "key": "93f00bd5bf9946aa",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
@@ -11229,6 +11889,56 @@
         "Which one can you not start without?"
       ],
       "file": "/audio/voice/93f00bd5bf9946aa.mp3"
+    },
+    {
+      "key": "4d4198b358a6b306",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Anything that answers you has to hear you first, so a talking toy has ears. That is knowing what listens.",
+      "lines": [
+        "Anything that answers you has to hear you first, so a talking toy has ears. That is knowing what listens."
+      ],
+      "file": "/audio/voice/4d4198b358a6b306.mp3"
+    },
+    {
+      "key": "bae5bd6d99be57bc",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "It woke on its name and kept what came next. That is the diary doing what a diary does. And a grown-up can clear it.",
+      "lines": [
+        "It woke on its name and kept what came next. That is the diary doing what a diary does. And a grown-up can clear it."
+      ],
+      "file": "/audio/voice/bae5bd6d99be57bc.mp3"
+    },
+    {
+      "key": "4aa0280360078d6e",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "A little light coming on beside a lens means a camera just woke up. Comparing a moment ago with right now is how you catch it.",
+      "lines": [
+        "A little light coming on beside a lens means a camera just woke up. Comparing a moment ago with right now is how you catch it."
+      ],
+      "file": "/audio/voice/4aa0280360078d6e.mp3"
+    },
+    {
+      "key": "e97f46c2528d8373",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Saying it out loud records it just as surely as typing it. So you walk through and tell her in the other room.",
+      "lines": [
+        "Saying it out loud records it just as surely as typing it. So you walk through and tell her in the other room."
+      ],
+      "file": "/audio/voice/e97f46c2528d8373.mp3"
+    },
+    {
+      "key": "cd834491142778fa",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "One setting makes that speaker tidy its own diary every three months. And you flip it with a grown-up in about ten minutes.",
+      "lines": [
+        "One setting makes that speaker tidy its own diary every three months. And you flip it with a grown-up in about ten minutes."
+      ],
+      "file": "/audio/voice/cd834491142778fa.mp3"
     },
     {
       "key": "70072bfba707556d",
@@ -12567,6 +13277,16 @@
         "AI is a blank, not a friend."
       ],
       "file": "/audio/voice/b28b856b9fddf1b0.mp3"
+    },
+    {
+      "key": "2fb5fd8ce5feaa81",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Is that true?",
+      "lines": [
+        "Is that true?"
+      ],
+      "file": "/audio/voice/2fb5fd8ce5feaa81.mp3"
     },
     {
       "key": "7ea8208050437333",
@@ -16297,14 +17017,14 @@
       "file": "/audio/voice/92c91eb3ff6ff4cf.mp3"
     },
     {
-      "key": "4fb0f99638fb3860",
+      "key": "5996ab8de55d4a91",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "Maya sits next to you, and Nana is your nana. SuperFan2000 and the star sender are lovely. But you could not say where either of them is standing right now.",
+      "text": "Maya sits next to you, and Nana is your nana. SuperFan two thousand and the star sender are lovely. But you could not say where either of them is standing right now.",
       "lines": [
         "Maya sits next to you, and Nana is your nana. SuperFan2000 and the star sender are lovely. But you could not say where either of them is standing right now."
       ],
-      "file": "/audio/voice/4fb0f99638fb3860.mp3"
+      "file": "/audio/voice/5996ab8de55d4a91.mp3"
     },
     {
       "key": "d70b2b208b78b977",
@@ -17585,6 +18305,36 @@
         "The last post A photo of a sunken cake. No place in it and no time in it."
       ],
       "file": "/audio/voice/bd168da9522fa92f.mp3"
+    },
+    {
+      "key": "5fefbae10cc44a45",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Four checks open, and not a road or a clock among them. Is there a single one that hands anything over?",
+      "lines": [
+        "Four checks open, and not a road or a clock among them. Is there a single one that hands anything over?"
+      ],
+      "file": "/audio/voice/5fefbae10cc44a45.mp3"
+    },
+    {
+      "key": "4b74cdcfe57fd596",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Four checks open. Put the last post together with the public setting. What could a stranger do with that?",
+      "lines": [
+        "Four checks open. Put the last post together with the public setting. What could a stranger do with that?"
+      ],
+      "file": "/audio/voice/4b74cdcfe57fd596.mp3"
+    },
+    {
+      "key": "09e7e7d6dc88a5e5",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Four checks open. Three came back fine. Go back and read the panes one more time.",
+      "lines": [
+        "Four checks open. Three came back fine. Go back and read the panes one more time."
+      ],
+      "file": "/audio/voice/09e7e7d6dc88a5e5.mp3"
     },
     {
       "key": "c5fac4c891646a96",
@@ -21612,10 +22362,10 @@
       "file": "/audio/voice/6a7ed765bce34de4.mp3"
     },
     {
-      "key": "7f838869bdccae05",
+      "key": "b05f638430cf00c5",
       "speaker": "layla",
       "voice": "Emma (Kids Educator)",
-      "text": "[whispers] Every hero has a secret identity... [excited] and online, your username IS your mask! But careful. Put your real name or birthday in it... [nervous] and the mask has a hole in it. [laughs] emma2017? The Raccoon reads that like a name tag! [excited] Come on, your hero mask is waiting!",
+      "text": "[whispers] Every hero has a secret identity... [excited] and online, your username IS your mask! But careful. Put your real name or birthday in it... [nervous] and the mask has a hole in it. [laughs] emma twenty seventeen? The Raccoon reads that like a name tag! [excited] Come on, your hero mask is waiting!",
       "lines": [
         "[whispers] Every hero has a secret identity...",
         "[excited] and online, your username IS your mask!",
@@ -21624,7 +22374,7 @@
         "[laughs] emma2017? The Raccoon reads that like a name tag!",
         "[excited] Come on, your hero mask is waiting!"
       ],
-      "file": "/audio/voice/7f838869bdccae05.mp3"
+      "file": "/audio/voice/b05f638430cf00c5.mp3"
     },
     {
       "key": "d5855d3b85bd8750",
@@ -21664,17 +22414,17 @@
       "file": "/audio/voice/c264eb01e10af10c.mp3"
     },
     {
-      "key": "8eac3470b14b4247",
+      "key": "f37fa6a38fa17732",
       "speaker": "layla",
       "voice": "Emma (Kids Educator)",
-      "text": "[warmly] Fast and sharp! PixelPanda42 is the safe one. No real name, no age, no school, nothing that points at the real you. emma2017, Jake underscore Age9 and MapleHill underscore Star each leak a clue, so the mask has a hole. [excited] A true hero name gives the Raccoon nothing. Brilliant!",
+      "text": "[warmly] Fast and sharp! PixelPanda42 is the safe one. No real name, no age, no school, nothing that points at the real you. emma twenty seventeen, Jake underscore Age9 and MapleHill underscore Star each leak a clue, so the mask has a hole. [excited] A true hero name gives the Raccoon nothing. Brilliant!",
       "lines": [
         "[warmly] Fast and sharp! PixelPanda42 is the safe one.",
         "No real name, no age, no school, nothing that points at the real you.",
         "emma2017, Jake underscore Age9 and MapleHill underscore Star each leak a clue, so the mask has a hole.",
         "[excited] A true hero name gives the Raccoon nothing. Brilliant!"
       ],
-      "file": "/audio/voice/8eac3470b14b4247.mp3"
+      "file": "/audio/voice/f37fa6a38fa17732.mp3"
     },
     {
       "key": "2108846baf3df79d",
@@ -21832,6 +22582,16 @@
       "file": "/audio/voice/4c6ff425452582bd.mp3"
     },
     {
+      "key": "2fb5fd8ce5feaa81",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Is that true?",
+      "lines": [
+        "Is that true?"
+      ],
+      "file": "/audio/voice/2fb5fd8ce5feaa81.mp3"
+    },
+    {
       "key": "0bf78f28abe87f04",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
@@ -21906,18 +22666,18 @@
       "file": "/audio/voice/8a6c280f64eb5844.mp3"
     },
     {
-      "key": "4b12d6f3c36e7dac",
+      "key": "94d42e199e9796e5",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "A pop-up in Adam's game asks him something he's never seen before, and he's not sure if it's safe to answer. What's the hero move? Is it option A, Type an answer and see what happens. Option B, Ask the app's help robot instead. Or is it option C, Pause and ask a trusted grown-up. So, what do you think?",
+      "text": "A pop-up in Adam's game asks him something he's never seen before, and he can't tell if it's safe to answer. What's the hero move? Is it option A, Type an answer and see what happens. Option B, Ask the app's help robot instead. Or is it option C, Pause and ask a trusted grown-up. So, what do you think?",
       "lines": [
-        "A pop-up in Adam's game asks him something he's never seen before, and he's not sure if it's safe to answer. What's the hero move?",
+        "A pop-up in Adam's game asks him something he's never seen before, and he can't tell if it's safe to answer. What's the hero move?",
         "Is it option A, Type an answer and see what happens.",
         "Option B, Ask the app's help robot instead.",
         "Or is it option C, Pause and ask a trusted grown-up.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/4b12d6f3c36e7dac.mp3"
+      "file": "/audio/voice/94d42e199e9796e5.mp3"
     },
     {
       "key": "dfdc879d6ea116c0",
@@ -22230,14 +22990,14 @@
       "file": "/audio/voice/635fa32f03c45797.mp3"
     },
     {
-      "key": "c06ca00cfe61f1a7",
+      "key": "f3a2bbd5951d7637",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "emma2017 gives away a real name and a birth year; that's two private things.",
+      "text": "emma twenty seventeen gives away a real name and a birth year; that's two private things.",
       "lines": [
         "emma2017 gives away a real name and a birth year; that's two private things."
       ],
-      "file": "/audio/voice/c06ca00cfe61f1a7.mp3"
+      "file": "/audio/voice/f3a2bbd5951d7637.mp3"
     },
     {
       "key": "7df0a54da7e02c35",
@@ -23374,6 +24134,36 @@
         "If I type it in? A stranger learns where you are every weekday - for some stickers."
       ],
       "file": "/audio/voice/b3ed1a83a5a6a0bc.mp3"
+    },
+    {
+      "key": "115fdba693bd42ef",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Think. It's only a kitten quiz. Does it really need your name and your address?",
+      "lines": [
+        "Think. It's only a kitten quiz. Does it really need your name and your address?"
+      ],
+      "file": "/audio/voice/115fdba693bd42ef.mp3"
+    },
+    {
+      "key": "732794fa9a216814",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Think. It's a drawing app. Does a nickname and a favorite color give anything away?",
+      "lines": [
+        "Think. It's a drawing app. Does a nickname and a favorite color give anything away?"
+      ],
+      "file": "/audio/voice/732794fa9a216814.mp3"
+    },
+    {
+      "key": "152192f0159ec44d",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Think. They're stickers. Do stickers need your school and your phone number?",
+      "lines": [
+        "Think. They're stickers. Do stickers need your school and your phone number?"
+      ],
+      "file": "/audio/voice/152192f0159ec44d.mp3"
     },
     {
       "key": "8440a29c8d101f9b",
@@ -25210,6 +26000,36 @@
       "file": "/audio/voice/0ca5ecff5b375b30.mp3"
     },
     {
+      "key": "2f70b6d7593edd7d",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "All four windows are open. Line up what the torch DOES against what it is asking for.",
+      "lines": [
+        "All four windows are open. Line up what the torch DOES against what it is asking for."
+      ],
+      "file": "/audio/voice/2f70b6d7593edd7d.mp3"
+    },
+    {
+      "key": "123e39a28b9cfad2",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "All four windows are open, and nothing else was asked for. Is there anything on that list it does not need?",
+      "lines": [
+        "All four windows are open, and nothing else was asked for. Is there anything on that list it does not need?"
+      ],
+      "file": "/audio/voice/123e39a28b9cfad2.mp3"
+    },
+    {
+      "key": "cb3a133e5e52f2e4",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "All four windows are open. Which of those actually helps a racing car round a corner?",
+      "lines": [
+        "All four windows are open. Which of those actually helps a racing car round a corner?"
+      ],
+      "file": "/audio/voice/cb3a133e5e52f2e4.mp3"
+    },
+    {
       "key": "c3e6b07ca44e5a6f",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
@@ -25882,6 +26702,16 @@
         "[excited] The Raccoon's mask fell right off. Time for stickers!"
       ],
       "file": "/audio/voice/9337b3a8af24c47b.mp3"
+    },
+    {
+      "key": "2fb5fd8ce5feaa81",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Is that true?",
+      "lines": [
+        "Is that true?"
+      ],
+      "file": "/audio/voice/2fb5fd8ce5feaa81.mp3"
     },
     {
       "key": "9ed3f1e9ac24492f",
@@ -27179,6 +28009,56 @@
       "file": "/audio/voice/a4dea63dd5760df8.mp3"
     },
     {
+      "key": "65af4aad881f50e4",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Meeting up with an online-only friend is rule one, and it never bends. No park, no meet-up, and a grown-up gets told.",
+      "lines": [
+        "Meeting up with an online-only friend is rule one, and it never bends. No park, no meet-up, and a grown-up gets told."
+      ],
+      "file": "/audio/voice/65af4aad881f50e4.mp3"
+    },
+    {
+      "key": "53d5c2d0961a51b1",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Rule two: never send photos of yourself, not one, not to check anything. Your picture stays with you.",
+      "lines": [
+        "Rule two: never send photos of yourself, not one, not to check anything. Your picture stays with you."
+      ],
+      "file": "/audio/voice/53d5c2d0961a51b1.mp3"
+    },
+    {
+      "key": "d86219ae3985874e",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "A party with a mum there is still a meet-up with someone you only know online. You can't see who is really typing, so the answer stays no.",
+      "lines": [
+        "A party with a mum there is still a meet-up with someone you only know online. You can't see who is really typing, so the answer stays no."
+      ],
+      "file": "/audio/voice/d86219ae3985874e.mp3"
+    },
+    {
+      "key": "6ce930d02ed9f752",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Their photo proves nothing. Remember the mask peek. And an old photo of you is still a photo of you. Never send, not even for fair.",
+      "lines": [
+        "Their photo proves nothing. Remember the mask peek. And an old photo of you is still a photo of you. Never send, not even for fair."
+      ],
+      "file": "/audio/voice/6ce930d02ed9f752.mp3"
+    },
+    {
+      "key": "20cdbb2fb090b193",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "An arcade trip is a meet-up AND a where-you-are grab in one. Never meet, never share where you are, and a grown-up gets told.",
+      "lines": [
+        "An arcade trip is a meet-up AND a where-you-are grab in one. Never meet, never share where you are, and a grown-up gets told."
+      ],
+      "file": "/audio/voice/20cdbb2fb090b193.mp3"
+    },
+    {
       "key": "ec158b389e99de98",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
@@ -27772,6 +28652,16 @@
         "Quick! Which one is BAIT?"
       ],
       "file": "/audio/voice/e23851617c228726.mp3"
+    },
+    {
+      "key": "2fb5fd8ce5feaa81",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Is that true?",
+      "lines": [
+        "Is that true?"
+      ],
+      "file": "/audio/voice/2fb5fd8ce5feaa81.mp3"
     },
     {
       "key": "78471e4d533a3796",
@@ -30068,6 +30958,16 @@
       "file": "/audio/voice/5f6a3bc8ca76286c.mp3"
     },
     {
+      "key": "2fb5fd8ce5feaa81",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Is that true?",
+      "lines": [
+        "Is that true?"
+      ],
+      "file": "/audio/voice/2fb5fd8ce5feaa81.mp3"
+    },
+    {
       "key": "423b050adc3f277d",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
@@ -31580,6 +32480,16 @@
       "file": "/audio/voice/9c462201fed7bbd3.mp3"
     },
     {
+      "key": "2fb5fd8ce5feaa81",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Is that true?",
+      "lines": [
+        "Is that true?"
+      ],
+      "file": "/audio/voice/2fb5fd8ce5feaa81.mp3"
+    },
+    {
       "key": "be38444ef9bf3155",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
@@ -32225,6 +33135,16 @@
       "file": "/audio/voice/584d55e373ebfd06.mp3"
     },
     {
+      "key": "b0a9309f66a41ae6",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Nothing in that message gives you away. Pure game talk, so it flies as it is.",
+      "lines": [
+        "Nothing in that message gives you away. Pure game talk, so it flies as it is."
+      ],
+      "file": "/audio/voice/b0a9309f66a41ae6.mp3"
+    },
+    {
       "key": "b00bd9ab1f74760e",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
@@ -32253,6 +33173,16 @@
         "That is still the school's name, just shorter. A stranger can look it up."
       ],
       "file": "/audio/voice/d07f1b219d844802.mp3"
+    },
+    {
+      "key": "61101116a2941836",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Your school says where you are every weekday. Level 4 keeps it about the game, and the message still works.",
+      "lines": [
+        "Your school says where you are every weekday. Level 4 keeps it about the game, and the message still works."
+      ],
+      "file": "/audio/voice/61101116a2941836.mp3"
     },
     {
       "key": "8dc39b4672138f1f",
@@ -32285,6 +33215,16 @@
       "file": "/audio/voice/ab9900d59ced898b.mp3"
     },
     {
+      "key": "ffb994e05c3ebfd2",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "When you are home alone is the one thing a stranger must never know. I'm free till 6 says the same about the game and nothing about you.",
+      "lines": [
+        "When you are home alone is the one thing a stranger must never know. I'm free till 6 says the same about the game and nothing about you."
+      ],
+      "file": "/audio/voice/ffb994e05c3ebfd2.mp3"
+    },
+    {
       "key": "34229469bf1375b0",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
@@ -32293,6 +33233,16 @@
         "Home alone tells a stranger there is no grown-up with you. That never goes in chat, not ever."
       ],
       "file": "/audio/voice/34229469bf1375b0.mp3"
+    },
+    {
+      "key": "fd66e5c8d9e18a05",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "The left bridge is a tactic. Nothing in there gives you away, so it flies.",
+      "lines": [
+        "The left bridge is a tactic. Nothing in there gives you away, so it flies."
+      ],
+      "file": "/audio/voice/fd66e5c8d9e18a05.mp3"
     },
     {
       "key": "0f661b456069a9e7",
@@ -32325,6 +33275,16 @@
       "file": "/audio/voice/e1957a76508ef612.mp3"
     },
     {
+      "key": "cb256ac2c902f01d",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Your birthday is a real-life clue, and with your age it is two. This week keeps the happy news and drops the date.",
+      "lines": [
+        "Your birthday is a real-life clue, and with your age it is two. This week keeps the happy news and drops the date."
+      ],
+      "file": "/audio/voice/cb256ac2c902f01d.mp3"
+    },
+    {
       "key": "98bc9d9cb24c11b9",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
@@ -32355,6 +33315,16 @@
       "file": "/audio/voice/ea797bb0842d28c9.mp3"
     },
     {
+      "key": "40eba2744d318a9f",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "A phone number reaches you outside the game. Planning here in game chat keeps the plan and keeps the guards.",
+      "lines": [
+        "A phone number reaches you outside the game. Planning here in game chat keeps the plan and keeps the guards."
+      ],
+      "file": "/audio/voice/40eba2744d318a9f.mp3"
+    },
+    {
       "key": "6dabd642c726248a",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
@@ -32363,6 +33333,36 @@
         "A phone number lets a stranger reach you anywhere. It never goes in chat."
       ],
       "file": "/audio/voice/6dabd642c726248a.mp3"
+    },
+    {
+      "key": "61ed47fa8417bdc6",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "That is game talk. Nothing about who you are or where you are.",
+      "lines": [
+        "That is game talk. Nothing about who you are or where you are."
+      ],
+      "file": "/audio/voice/61ed47fa8417bdc6.mp3"
+    },
+    {
+      "key": "3834cbc263ec7b4b",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "A tactic. It says nothing about you, so it is safe to send.",
+      "lines": [
+        "A tactic. It says nothing about you, so it is safe to send."
+      ],
+      "file": "/audio/voice/3834cbc263ec7b4b.mp3"
+    },
+    {
+      "key": "dc6e516254ba7c35",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "The team badge means a friend you actually know. Let them in and play.",
+      "lines": [
+        "The team badge means a friend you actually know. Let them in and play."
+      ],
+      "file": "/audio/voice/dc6e516254ba7c35.mp3"
     },
     {
       "key": "8183c30cd4ef9405",
@@ -32375,6 +33375,16 @@
       "file": "/audio/voice/8183c30cd4ef9405.mp3"
     },
     {
+      "key": "94b00034cbd012db",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "A friendly name is not a badge. No badge means a stranger, however nice the name sounds.",
+      "lines": [
+        "A friendly name is not a badge. No badge means a stranger, however nice the name sounds."
+      ],
+      "file": "/audio/voice/94b00034cbd012db.mp3"
+    },
+    {
       "key": "a7537a3a4f1dc404",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
@@ -32383,6 +33393,16 @@
         "Look for the badge, not the name. GoldRush Gary has no badge, so he is a stranger."
       ],
       "file": "/audio/voice/a7537a3a4f1dc404.mp3"
+    },
+    {
+      "key": "a783fd45d332fdcc",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Badge on, friend in. That is what the doors are for.",
+      "lines": [
+        "Badge on, friend in. That is what the doors are for."
+      ],
+      "file": "/audio/voice/a783fd45d332fdcc.mp3"
     },
     {
       "key": "fe0c6acf67dd3071",
@@ -32395,6 +33415,16 @@
       "file": "/audio/voice/fe0c6acf67dd3071.mp3"
     },
     {
+      "key": "5235bdff5b81d740",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Nobody knows the name and there is no badge. Strangers stay outside the lobby.",
+      "lines": [
+        "Nobody knows the name and there is no badge. Strangers stay outside the lobby."
+      ],
+      "file": "/audio/voice/5235bdff5b81d740.mp3"
+    },
+    {
       "key": "e22e786532ed8ff7",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
@@ -32403,6 +33433,16 @@
         "No badge and nobody knows the name. That is a stranger, and strangers stay out."
       ],
       "file": "/audio/voice/e22e786532ed8ff7.mp3"
+    },
+    {
+      "key": "8ceb8eeb2dea859d",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Friends only did the checking for you. Only badges reach the door now.",
+      "lines": [
+        "Friends only did the checking for you. Only badges reach the door now."
+      ],
+      "file": "/audio/voice/8ceb8eeb2dea859d.mp3"
     },
     {
       "key": "7c2b5cf8155e8ffb",
@@ -32415,6 +33455,16 @@
       "file": "/audio/voice/7c2b5cf8155e8ffb.mp3"
     },
     {
+      "key": "ef9f3b56edb884df",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Another badge, another friend. The setting keeps the strangers away before they even knock.",
+      "lines": [
+        "Another badge, another friend. The setting keeps the strangers away before they even knock."
+      ],
+      "file": "/audio/voice/ef9f3b56edb884df.mp3"
+    },
+    {
       "key": "35fa19208aaa61f7",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
@@ -32423,6 +33473,56 @@
         "NightHawk has the team badge. With friends only on, everyone at the door is a friend."
       ],
       "file": "/audio/voice/35fa19208aaa61f7.mp3"
+    },
+    {
+      "key": "29b8757af095c723",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Friends only. Now the lobby checks the badges for you, before anyone even reaches the door.",
+      "lines": [
+        "Friends only. Now the lobby checks the badges for you, before anyone even reaches the door."
+      ],
+      "file": "/audio/voice/29b8757af095c723.mp3"
+    },
+    {
+      "key": "ef1b0af08f5d5b53",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Your real name on screen shows strangers who you are. That is the opposite of a guard.",
+      "lines": [
+        "Your real name on screen shows strangers who you are. That is the opposite of a guard."
+      ],
+      "file": "/audio/voice/ef1b0af08f5d5b53.mp3"
+    },
+    {
+      "key": "8b12c1dcf5a50aed",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "An open mic lets strangers listen in. Friends only is the safe mic too.",
+      "lines": [
+        "An open mic lets strangers listen in. Friends only is the safe mic too."
+      ],
+      "file": "/audio/voice/8b12c1dcf5a50aed.mp3"
+    },
+    {
+      "key": "ff7a67add8642fbe",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Anyone can send means any stranger can knock. Friends only is the lock.",
+      "lines": [
+        "Anyone can send means any stranger can knock. Friends only is the lock."
+      ],
+      "file": "/audio/voice/ff7a67add8642fbe.mp3"
+    },
+    {
+      "key": "2f47eb655d065327",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Four guards here, none over there. A laggy chat is not the real reason for the move. Stay where the guards are.",
+      "lines": [
+        "Four guards here, none over there. A laggy chat is not the real reason for the move. Stay where the guards are."
+      ],
+      "file": "/audio/voice/2f47eb655d065327.mp3"
     },
     {
       "key": "cf98b0e58d32d31d",
@@ -32435,6 +33535,16 @@
       "file": "/audio/voice/cf98b0e58d32d31d.mp3"
     },
     {
+      "key": "41e4f169dccc564b",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Four guards here, three missing on the private server. A map trick that only works over there was never about the map. Stay here.",
+      "lines": [
+        "Four guards here, three missing on the private server. A map trick that only works over there was never about the map. Stay here."
+      ],
+      "file": "/audio/voice/41e4f169dccc564b.mp3"
+    },
+    {
       "key": "8a62c185ca3c4acc",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
@@ -32443,6 +33553,16 @@
         "Look at the private server: no report button, no friends only, no grown-ups. A secret trick is not worth losing three guards."
       ],
       "file": "/audio/voice/8a62c185ca3c4acc.mp3"
+    },
+    {
+      "key": "9578bd330ef526ae",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Party chat is still inside the game, with every guard in place. Moving rooms inside the game is fine. Leaving the game is the red flag.",
+      "lines": [
+        "Party chat is still inside the game, with every guard in place. Moving rooms inside the game is fine. Leaving the game is the red flag."
+      ],
+      "file": "/audio/voice/9578bd330ef526ae.mp3"
     },
     {
       "key": "26e02310cce2c8b6",
@@ -32455,6 +33575,16 @@
       "file": "/audio/voice/26e02310cce2c8b6.mp3"
     },
     {
+      "key": "14f2751cffae0754",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Real gaming friends are happy where the guards are. Only tricksters need you to leave.",
+      "lines": [
+        "Real gaming friends are happy where the guards are. Only tricksters need you to leave."
+      ],
+      "file": "/audio/voice/14f2751cffae0754.mp3"
+    },
+    {
       "key": "c81bb03927e09826",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
@@ -32463,6 +33593,36 @@
         "Who benefits when the chat leaves the guarded playground?"
       ],
       "file": "/audio/voice/c81bb03927e09826.mp3"
+    },
+    {
+      "key": "19fc675d3d501890",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Report called the guards, block made him vanish, and a grown-up knows. Three taps and the lobby is yours again.",
+      "lines": [
+        "Report called the guards, block made him vanish, and a grown-up knows. Three taps and the lobby is yours again."
+      ],
+      "file": "/audio/voice/19fc675d3d501890.mp3"
+    },
+    {
+      "key": "73e75db7a1cf1846",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Asking a kid for a photo is a red flag from Week 3. You answered it with report, block, tell. Perfect order.",
+      "lines": [
+        "Asking a kid for a photo is a red flag from Week 3. You answered it with report, block, tell. Perfect order."
+      ],
+      "file": "/audio/voice/73e75db7a1cf1846.mp3"
+    },
+    {
+      "key": "a2af41026dde5af9",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Three different menus, and you found the buttons in every one. Report calls the guards, block clears your game, tell brings help.",
+      "lines": [
+        "Three different menus, and you found the buttons in every one. Report calls the guards, block clears your game, tell brings help."
+      ],
+      "file": "/audio/voice/a2af41026dde5af9.mp3"
     },
     {
       "key": "a4fcff70765a86d5",
@@ -32495,6 +33655,16 @@
       "file": "/audio/voice/47e0117adb741616.mp3"
     },
     {
+      "key": "dc969b00b0aa2e44",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Your login is the whole prize, and switching the virus checker off opens the door for the rest. Close it and tell a grown-up.",
+      "lines": [
+        "Your login is the whole prize, and switching the virus checker off opens the door for the rest. Close it and tell a grown-up."
+      ],
+      "file": "/audio/voice/dc969b00b0aa2e44.mp3"
+    },
+    {
       "key": "cce58abfd0ac28ee",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
@@ -32513,6 +33683,16 @@
         "The real game's own shop, and nothing but your family's OK. That is the safe way to get new stuff."
       ],
       "file": "/audio/voice/45353bcb12227afd.mp3"
+    },
+    {
+      "key": "540270119c9ffaec",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "It lives inside the real game and asks for nothing but a grown-up's OK. That is how real games sell things.",
+      "lines": [
+        "It lives inside the real game and asks for nothing but a grown-up's OK. That is how real games sell things."
+      ],
+      "file": "/audio/voice/540270119c9ffaec.mp3"
     },
     {
       "key": "de7c4c7759da79cf",
@@ -32535,6 +33715,46 @@
       "file": "/audio/voice/65c71161ef34724e.mp3"
     },
     {
+      "key": "a9beaad39a294801",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Nothing can generate free skins, so the password box is the real reason the page exists. Close it and tell a grown-up.",
+      "lines": [
+        "Nothing can generate free skins, so the password box is the real reason the page exists. Close it and tell a grown-up."
+      ],
+      "file": "/audio/voice/a9beaad39a294801.mp3"
+    },
+    {
+      "key": "fa622a9201772a6c",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Outside the game is where the traps live. Real games sell inside their own shop.",
+      "lines": [
+        "Outside the game is where the traps live. Real games sell inside their own shop."
+      ],
+      "file": "/audio/voice/fa622a9201772a6c.mp3"
+    },
+    {
+      "key": "ddc986520b6e85b9",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Not beside. Inside the real game's own shop, with a grown-up's OK.",
+      "lines": [
+        "Not beside. Inside the real game's own shop, with a grown-up's OK."
+      ],
+      "file": "/audio/voice/ddc986520b6e85b9.mp3"
+    },
+    {
+      "key": "efcda6f054ab8621",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Not under. Inside the game is the only safe shop.",
+      "lines": [
+        "Not under. Inside the game is the only safe shop."
+      ],
+      "file": "/audio/voice/efcda6f054ab8621.mp3"
+    },
+    {
       "key": "690c63a8905ba895",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
@@ -32543,6 +33763,66 @@
         "Where does the real game's own shop live?"
       ],
       "file": "/audio/voice/690c63a8905ba895.mp3"
+    },
+    {
+      "key": "435c44c2903f29b6",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "School is real-life info, so the hero move is game talk only. Nice try, back to the game.",
+      "lines": [
+        "School is real-life info, so the hero move is game talk only. Nice try, back to the game."
+      ],
+      "file": "/audio/voice/435c44c2903f29b6.mp3"
+    },
+    {
+      "key": "c14a2cd7fbc64ef8",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Strangers keep dropping into your lobby because the door is open. Flipping friends only locks it once, for every game after.",
+      "lines": [
+        "Strangers keep dropping into your lobby because the door is open. Flipping friends only locks it once, for every game after."
+      ],
+      "file": "/audio/voice/c14a2cd7fbc64ef8.mp3"
+    },
+    {
+      "key": "59f8920efb05ff50",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "SnapTalk has none of the guards this chat has. The hero move is to stay right where they are.",
+      "lines": [
+        "SnapTalk has none of the guards this chat has. The hero move is to stay right where they are."
+      ],
+      "file": "/audio/voice/59f8920efb05ff50.mp3"
+    },
+    {
+      "key": "e635882c002ddfe4",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Report calls the guards, block clears your game, and a grown-up hears about it. Report, block, tell.",
+      "lines": [
+        "Report calls the guards, block clears your game, and a grown-up hears about it. Report, block, tell."
+      ],
+      "file": "/audio/voice/e635882c002ddfe4.mp3"
+    },
+    {
+      "key": "d3d287185bc6ae1b",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Your login is the loot on that free-skin page. Close it, tell a grown-up, and your account stays yours.",
+      "lines": [
+        "Your login is the loot on that free-skin page. Close it, tell a grown-up, and your account stays yours."
+      ],
+      "file": "/audio/voice/d3d287185bc6ae1b.mp3"
+    },
+    {
+      "key": "343df9dbc210156f",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Home alone tells strangers there is no grown-up with you. Swap it before SEND, and the message flies clean.",
+      "lines": [
+        "Home alone tells strangers there is no grown-up with you. Swap it before SEND, and the message flies clean."
+      ],
+      "file": "/audio/voice/343df9dbc210156f.mp3"
     },
     {
       "key": "b0566bbdf834c33d",
@@ -33275,6 +34555,36 @@
       "file": "/audio/voice/9080fccc1eac1d08.mp3"
     },
     {
+      "key": "dff3fe596bafe7e8",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Report button: here.",
+      "lines": [
+        "Report button: here."
+      ],
+      "file": "/audio/voice/dff3fe596bafe7e8.mp3"
+    },
+    {
+      "key": "2009abd9228eae58",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Block button: here.",
+      "lines": [
+        "Block button: here."
+      ],
+      "file": "/audio/voice/2009abd9228eae58.mp3"
+    },
+    {
+      "key": "86ca9c68fe1c535c",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Friends only: here.",
+      "lines": [
+        "Friends only: here."
+      ],
+      "file": "/audio/voice/86ca9c68fe1c535c.mp3"
+    },
+    {
       "key": "a12142c2b526ca01",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
@@ -33293,6 +34603,16 @@
         "Report button: here. Party chat is still inside the game."
       ],
       "file": "/audio/voice/8bcd11d427f84d5d.mp3"
+    },
+    {
+      "key": "2009abd9228eae58",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Block button: here.",
+      "lines": [
+        "Block button: here."
+      ],
+      "file": "/audio/voice/2009abd9228eae58.mp3"
     },
     {
       "key": "445d9f38ecfe6abf",
@@ -33523,6 +34843,36 @@
         "If you use it? You type your password... and the account is not yours any more."
       ],
       "file": "/audio/voice/35a67481b28362e3.mp3"
+    },
+    {
+      "key": "5f5c2a4ecf7f1daa",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Stolen account, sick computer. So who does a mod like this really help?",
+      "lines": [
+        "Stolen account, sick computer. So who does a mod like this really help?"
+      ],
+      "file": "/audio/voice/5f5c2a4ecf7f1daa.mp3"
+    },
+    {
+      "key": "cce58abfd0ac28ee",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Inside the real game, and it only wants a grown-up's OK. Does that sound like a trap?",
+      "lines": [
+        "Inside the real game, and it only wants a grown-up's OK. Does that sound like a trap?"
+      ],
+      "file": "/audio/voice/cce58abfd0ac28ee.mp3"
+    },
+    {
+      "key": "de7c4c7759da79cf",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "It promises free skins, but it asks for your password. What is it really after?",
+      "lines": [
+        "It promises free skins, but it asks for your password. What is it really after?"
+      ],
+      "file": "/audio/voice/de7c4c7759da79cf.mp3"
     },
     {
       "key": "4880a04fb0001f79",
@@ -34088,6 +35438,16 @@
         "Game coins are really blank."
       ],
       "file": "/audio/voice/7a7213827517a378.mp3"
+    },
+    {
+      "key": "2fb5fd8ce5feaa81",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Is that true?",
+      "lines": [
+        "Is that true?"
+      ],
+      "file": "/audio/voice/2fb5fd8ce5feaa81.mp3"
     },
     {
       "key": "46f1f029657cfacf",
@@ -35550,6 +36910,16 @@
       "file": "/audio/voice/73beaf9b615eef26.mp3"
     },
     {
+      "key": "2fb5fd8ce5feaa81",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Is that true?",
+      "lines": [
+        "Is that true?"
+      ],
+      "file": "/audio/voice/2fb5fd8ce5feaa81.mp3"
+    },
+    {
       "key": "b523d13ce95a04d0",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
@@ -36955,6 +38325,56 @@
       "file": "/audio/voice/3b26606a91744e20.mp3"
     },
     {
+      "key": "f00a2489410a6c80",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Delete only clears your copy. Every copy on other phones stays put, so heroes think before they post.",
+      "lines": [
+        "Delete only clears your copy. Every copy on other phones stays put, so heroes think before they post."
+      ],
+      "file": "/audio/voice/f00a2489410a6c80.mp3"
+    },
+    {
+      "key": "bff1e6bbe88a8477",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Her face, her call. Zara gets asked before her photo goes anywhere, and asleep means she can't say yes.",
+      "lines": [
+        "Her face, her call. Zara gets asked before her photo goes anywhere, and asleep means she can't say yes."
+      ],
+      "file": "/audio/voice/bff1e6bbe88a8477.mp3"
+    },
+    {
+      "key": "6fece5037f1c9be6",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "The house number points straight to your home. Move, or crop it out, and the photo stops talking.",
+      "lines": [
+        "The house number points straight to your home. Move, or crop it out, and the photo stops talking."
+      ],
+      "file": "/audio/voice/6fece5037f1c9be6.mp3"
+    },
+    {
+      "key": "b368d0adafdeb6a6",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Photos of your body are private. They are Just Me photos, and they go through no door, not even a small one.",
+      "lines": [
+        "Photos of your body are private. They are Just Me photos, and they go through no door, not even a small one."
+      ],
+      "file": "/audio/voice/b368d0adafdeb6a6.mp3"
+    },
+    {
+      "key": "d0fdc7b58a015fc7",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Look at every corner, think about who will see it, and ask the people in it. Three seconds beats any rush.",
+      "lines": [
+        "Look at every corner, think about who will see it, and ask the people in it. Three seconds beats any rush."
+      ],
+      "file": "/audio/voice/d0fdc7b58a015fc7.mp3"
+    },
+    {
       "key": "7e6d85f5ef8a7499",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
@@ -37419,6 +38839,16 @@
         "Quick! Which one is the COPYCAT?"
       ],
       "file": "/audio/voice/7051da4a960b8beb.mp3"
+    },
+    {
+      "key": "2fb5fd8ce5feaa81",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Is that true?",
+      "lines": [
+        "Is that true?"
+      ],
+      "file": "/audio/voice/2fb5fd8ce5feaa81.mp3"
     },
     {
       "key": "6672e894a83814a9",
@@ -40378,15 +41808,15 @@
       "file": "/audio/voice/a449733a953636ea.mp3"
     },
     {
-      "key": "78b6720ad748d93c",
+      "key": "517b588c4cde4eac",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "Not quite. emma2017 gives away a real name and a birth year; that's two private things.",
+      "text": "Not quite. emma twenty seventeen gives away a real name and a birth year; that's two private things.",
       "lines": [
         "Not quite.",
         "emma2017 gives away a real name and a birth year; that's two private things."
       ],
-      "file": "/audio/voice/78b6720ad748d93c.mp3"
+      "file": "/audio/voice/517b588c4cde4eac.mp3"
     },
     {
       "key": "7c713c8418a230e9",
@@ -40497,6 +41927,72 @@
         "The Raccoon is the one trying to trick you; never ask him."
       ],
       "file": "/audio/voice/9cd29e1312e1b37d.mp3"
+    },
+    {
+      "key": "8146b9aebcc3dc26",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "That's right! A quiz never needs your address",
+      "lines": [
+        "That's right!",
+        "A quiz never needs your address"
+      ],
+      "file": "/audio/voice/8146b9aebcc3dc26.mp3"
+    },
+    {
+      "key": "253664395dc3bd60",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "That's right! Your school says where you are every weekday",
+      "lines": [
+        "That's right!",
+        "Your school says where you are every weekday"
+      ],
+      "file": "/audio/voice/253664395dc3bd60.mp3"
+    },
+    {
+      "key": "aa16c25a506b8a04",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "That's right! Stickers never need to ring you",
+      "lines": [
+        "That's right!",
+        "Stickers never need to ring you"
+      ],
+      "file": "/audio/voice/aa16c25a506b8a04.mp3"
+    },
+    {
+      "key": "542f1e7f8810f0f7",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "That's right! Your full name is the first clue to finding you",
+      "lines": [
+        "That's right!",
+        "Your full name is the first clue to finding you"
+      ],
+      "file": "/audio/voice/542f1e7f8810f0f7.mp3"
+    },
+    {
+      "key": "a1d574c0d0f975c1",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "That's right! Where you are is nobody's business but yours",
+      "lines": [
+        "That's right!",
+        "Where you are is nobody's business but yours"
+      ],
+      "file": "/audio/voice/a1d574c0d0f975c1.mp3"
+    },
+    {
+      "key": "2e1cda59bba9c30c",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "That's right! A real name in a username is a mask with a hole",
+      "lines": [
+        "That's right!",
+        "A real name in a username is a mask with a hole"
+      ],
+      "file": "/audio/voice/2e1cda59bba9c30c.mp3"
     },
     {
       "key": "0878bc137f36562f",
@@ -51851,15 +53347,15 @@
       "file": "/audio/voice/5849366aa22003fc.mp3"
     },
     {
-      "key": "32ff3e01a5f00bb0",
+      "key": "fb42d62c022b802d",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "That's right! Maya sits next to you, and Nana is your nana. SuperFan2000 and the star sender are lovely. But you could not say where either of them is standing right now.",
+      "text": "That's right! Maya sits next to you, and Nana is your nana. SuperFan two thousand and the star sender are lovely. But you could not say where either of them is standing right now.",
       "lines": [
         "That's right!",
         "Maya sits next to you, and Nana is your nana. SuperFan2000 and the star sender are lovely. But you could not say where either of them is standing right now."
       ],
-      "file": "/audio/voice/32ff3e01a5f00bb0.mp3"
+      "file": "/audio/voice/fb42d62c022b802d.mp3"
     },
     {
       "key": "87f4343da65f4a4e",

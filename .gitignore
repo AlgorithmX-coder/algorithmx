@@ -74,3 +74,8 @@ art-review/
 # transcript caches for the narration shaper (audio-content keyed, local only)
 .stt-cache/
 .pause-cache/
+
+# QA screenshot output from the layout audits (regenerated on demand, never committed)
+.stage-overflow/
+.result-fill/
+.art-check/

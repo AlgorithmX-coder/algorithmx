@@ -1056,7 +1056,7 @@ export const WEEK_2: WeekContent = {
         label: "Ask First",
         ask: {
           slug: "quiz-w2-ask-c5-1",
-          text: "A pop-up in Adam's game asks him something he's never seen before, and he's not sure if it's safe to answer. What's the hero move?",
+          text: "A pop-up in Adam's game asks him something he's never seen before, and he can't tell if it's safe to answer. What's the hero move?",
         },
         options: [
           { text: "Pause and ask a trusted grown-up" },
