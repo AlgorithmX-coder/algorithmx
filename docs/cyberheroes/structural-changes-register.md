@@ -105,6 +105,479 @@ Week 2 is on the CI ratchet with week 1.
 
 ---
 
+---
+
+## Week 2 UAT intake, 17 October 2026
+
+Owner testing week 2 live. Everything raised is logged here FIRST and fixed
+in one pass at the end, rather than one fix per report - that is how week 1
+ended up re-recording nine blocks twice.
+
+Every item here then becomes a numbered check in the list below, because the
+owner's rule is that a fault found in one week is a fault to look for in all
+twenty BEFORE they test it. The point of this file is that the twentieth week
+should arrive with nothing left to find.
+
+### Which weeks each item goes to
+
+The owner's instruction, 17 October: "all of them are going to go through
+them, all the weeks. And even week one as well... Otherwise, there are some
+changes that are specific to week two only. So just know which ones they are
+as well."
+
+So the column that matters is the last one. ALL WEEKS means every week gets
+swept for it before the owner tests it, week 1 included, because week 1 was
+signed off before most of these were known.
+
+| # | Issue | Lives in | Goes to |
+|---|---|---|---|
+| W2-1 | Ragged last row leaves an empty cell | RevealBoard + every grid | ALL WEEKS |
+| W2-2 | Icons sliced by their container | the 92 shared icons | ALL WEEKS |
+| W2-3 | Up-next pill repeats the spoken bridge | ConceptRecap | ALL WEEKS (42 recaps, 14 weeks) |
+| W2-4 | Scroll bar on a screen that fits | LessonStage | ALL WEEKS |
+| W2-5 | A year read digit by digit | the narration generator | ALL WEEKS (25 strings; week 1 has 9) |
+| W2-6 | A hint covering live gameplay | every pinned overlay | ALL WEEKS |
+| W2-7 | Blaster screen + Hero Vault look dated | SpamBlaster | weeks 2, 3, 4 only |
+| W2-8 | The same counter three times | SpamBlaster | weeks 2, 3, 4 only |
+| W2-9 | Packets too fast, subject truncated | SpamBlaster | weeks 2, 3, 4 only |
+| W2-10 | Lectern dots mean nothing | QuizBoss | ALL WEEKS (all 20 bosses) |
+| W2-11 | A stock phrase said twice in one question | boss copy + the echo audit | ALL WEEKS (all 20 bosses) |
+| W2-13 | The choir is wrong for children | the celebration audio | ALL WEEKS - HELD, see below |
+| W2-17 | The closing four screens are one themed suite | 4 components + weekThemes | ALL WEEKS |
+
+W2-12, W2-14, W2-15 and W2-16 are folded into W2-17 and are not tracked
+separately; they were the four screens of the closing sequence reported one at
+a time before the owner tied them together.
+
+Week-2-only work: there is none at the mechanism level. Every item above is
+engine, generator or shared-component. What IS week 2 specific is the COPY
+that each shared fix lands on - week 2's own "not sure" line, its eleven
+usernames, its five-item reveal board. The fix is global; the text is local.
+
+HELD, needs an owner decision: W2-13 reverses a standing owner mandate that
+all boss music is a-cappella voices only. Not built until the owner confirms.
+
+### W2-1 - the empty cell at the bottom of a card
+
+Owner, screen 4 (The Raccoon's Wish List): "this empty card at the bottom.
+Why wasn't this fixed? Or why wasn't it picked up in the checks?"
+
+RevealBoard lays its items out as `repeat(gridCols, minmax(0, 1fr))`. Week 2
+gives it FIVE items across THREE columns, so the second row holds two and the
+third cell is a hole the width of a card, inside the board, with the count
+line sitting under it.
+
+Why no check caught it: the two fill audits both measure a WHOLE BOX against
+the one around it. `audit-card-fill.mjs` asks whether the card fills the
+stage, and this card does. `audit-result-card-fill.mjs` asks whether a
+FINISHED result fills its card, and this is a board at rest. Neither looks
+INSIDE a card at how its own items are distributed, so a grid whose last row
+is half empty passes both while reading, to a child, as a missing card.
+
+That is the real gap: a container can be full and its contents still ragged.
+The check this needs is a new one - every grid inside a card either fills its
+last row or picks a column count its item count divides into.
+
+### W2-2 - icons sliced by the box they sit in
+
+Owner: "All emojis need to look full and complete. As you can see, this eye is
+cut off. We need to go through all of the weeks and make sure that the emojis
+are being generated correctly and full with no issues."
+
+The ASSET is sound - `eye.png` renders as a whole round eye on a magenta
+plate. What is wrong is downstream: the icon is clipped where it is drawn.
+
+The reason it is so easy to clip, and why this will not be a one-icon fix:
+every icon is TRIMMED to its ink, so 86 of the 92 touch the canvas edge by
+design. A trimmed circle meets its top edge at a tangent with nothing to
+spare, so a parent that is a pixel short, or that sets `overflow: hidden`
+and a fixed height, takes a flat slice straight off the artwork - and the
+result still looks deliberate, which is why it survived review.
+
+Edge contact alone does not prove damage, so the sweep cannot just re-measure
+the files. Two things are needed: a transparent margin baked into the icons so
+tangency can never reach a clipping edge, and a rendered pass across all 20
+weeks that compares each icon's drawn box against its container's clip box.
+
+### W2-3 - the recap says "next" twice
+
+Owner, on the Concept 1 recap: "said next, next, twice. Why did it do that? We
+should have absolutely checked these kind of things."
+
+The recap carries a `next` field, which prints as the pill "Up next: what's
+fine to share and what stays locked away". The last spoken line is "Next,
+we'll learn what's fine to share and what stays locked away. Come and see!"
+The narration panel PRINTS its lines as well as speaking them, so the same
+clause sits on the screen twice, about two inches apart, with the word "next"
+opening both.
+
+Measured across the course: of 100 recaps carrying a pill, 42 restate it word
+for word, in fourteen weeks (3, 4, 7, 8, 9, 17, 18, 19 and 20 have three or
+more each). So this is not a week 2 slip, it is how the recap was built.
+
+Why no check caught it: every echo check so far compares like with like.
+`audit-narration-flow.mjs` compares one screen's closing line against the
+next screen's opener; `audit-echoed-lines.mjs` compares a boss villain line
+against the verdict beside it. Both are spoken-against-spoken. Nothing ever
+compared a screen's PRINTED chrome against the narration on that same screen,
+which is the one pairing a child actually takes in at a glance.
+
+Worth saying plainly, because it decides the fix: the spoken bridge is not a
+mistake. The build standard requires a recap to name the next concept out loud
+("Next, we'll learn how X. Come and see!") so the following Learn can open by
+naming X. The duplication is the printed pill repeating what is already being
+said. The resolution is therefore at the pill, not the script, and it is one
+change applied to all fourteen weeks rather than 42 separate rewrites.
+
+### W2-4 - no scroll bar when the card already fits
+
+Owner, on Power 3 of 5 (Why Are They Asking?): "when the card fits into the
+actual screen, there's no reason to have a scroll bar. Do you agree? If so,
+this is something that we can push across all of the weeks."
+
+Agreed, and it becomes a rule: a screen whose content fits the stage must not
+offer a scroll bar at all. A bar on a screen that fits tells a child there is
+something below worth reaching, and there is nothing there.
+
+What makes this one awkward, and worth writing down rather than quietly
+fixing: the obvious cause is already fixed. `<main>` reserves the HUD above
+the stage and `LESSON_BOTTOM_PAD` below it, and the stage's `minHeight`
+subtracts BOTH - a fix made for this very symptom when a tester reported it on
+W17 2a. The comment in LessonStage spells the arithmetic out. So the page is
+no longer taller than the window by construction, and yet the bar is back on a
+screen with clear air above and below the card.
+
+That means there is a SECOND cause, and reading the stylesheet again will not
+find it - the stylesheet is what says it cannot happen. It has to be measured
+in a browser: which element actually overflows, and whether the bar belongs to
+the window or to the stage's own `overflowY: auto`. The track in the owner's
+screenshot starts below the HUD, which points at the stage rather than the
+window, so the stage believes its content does not fit while the card visibly
+does. The decorative glow is a standing suspect - it is 600px tall, absolutely
+placed, and has already once been measured as if it were content.
+
+One caveat for whoever measures it: the owner's screenshot carries Edge's
+"controlled by automated test software" banner, which takes about 56px off the
+viewport. The fit has to be confirmed both with and without it, because a
+screen that only fits when that banner is absent is still broken for a tester.
+
+The check this needs: for every screen of every week, assert that the stage's
+scroll height does not exceed its client height. That is a different question
+from `audit-card-fill.mjs`, which asks whether the card fills the stage; a
+card can fill its stage and the stage still overflow by a few pixels.
+
+### W2-5 - say the year, do not spell it out
+
+Owner, on Power 4 of 5 (Your Secret Identity): "it said Emma 2 0 1 7 instead
+of pronouncing the year... if it's a year pronunciation, then say 2017,
+instead of separate numbers. Again, this is something that we can push across
+all weeks."
+
+The narration line is "emma2017? The Raccoon reads that like a name tag!" The
+text goes to the voice exactly as written, there is no pronunciation layer in
+the generator at all, and four digits glued to a name come back as four
+digits.
+
+Across the course: 826 strings carry a run of two or more digits, and 25 of
+those read as a year, in weeks 1, 2, 15, 17 and 20. Week 2 alone has eleven,
+because the whole concept is built on usernames.
+
+Two things make this more than a find-and-replace, and both have to hold:
+
+The printed word must not change. "emma2017" is the example a child is looking
+at; it has to stay spelled that way on screen while only the SPOKEN form
+becomes "emma twenty seventeen". The generator currently has one text for both,
+so this is a new spoken-only transform rather than an edit to the week files.
+
+Digits are not always a year, and the wrong rule would make things worse. In
+week 1 "123456" and "12345678" are bad passwords, and reading those digit by
+digit is RIGHT - turning them into words would destroy the point of the line.
+In week 15 "nearly 2000 years ago" is a quantity and wants "two thousand", not
+"twenty hundred". So the transform applies to a year in a date sense, including
+one glued to a name, and leaves a counted number and a digit string alone.
+
+Cost note: changing the spoken text changes the clip hash, so every line this
+touches is re-recorded. It is 25 strings at most, not a course re-record.
+
+### W2-6 - a hint must never cover the board
+
+Owner, on the Grab-Bag Blaster: "The bigger hint is blocking the screen."
+
+`SpamBlaster.tsx:1456` pins the hint panel `position: absolute; left: 12;
+right: 12; bottom: 12; zIndex: 10`, which is exactly where the Hero Vault
+device sits. The hint arrives because the child is struggling, and it lands on
+top of the thing they are being asked to look at. The grabs keep flying while
+it is up, so the help actively costs them the round.
+
+This is the rule to push everywhere, not just here: a hint, a coach banner or
+a result overlay may use space the board is not using, but it must never cover
+live gameplay. Either the board makes room for it, or it sits outside the
+play area.
+
+Needs a sweep of every absolutely-placed overlay in every engine, not just
+this one, because any panel pinned to an edge with a z-index is the same bug
+waiting for the right board.
+
+### W2-7 - the Blaster's screen and the Hero Vault
+
+Owner: "the TV behind it, we could do a better job of creating it. The Hero
+Vault, I think we can make it look much cooler. And much more modern."
+
+Two surfaces, one piece of chrome: the arena the packets fly through, and the
+device panel they land in. Both are plain flat boxes with a wire grid, and
+they date the whole screen next to the art everywhere else in the course.
+
+Scope: the engine is `spamBlaster`, used by weeks 2, 3 and 4, so one
+redesign covers three weeks. Week 2 calls the device a Hero Vault, so the
+chrome has to be themeable rather than week 2 specific - weeks 3 and 4 name it
+something else.
+
+### W2-8 - the same counter three times (my observation, not reported)
+
+Not raised by the owner; logged because it is the same fault as W2-3 and the
+sweep should catch it. On this one screen "KEPT SAFE 2/5" appears in the top
+right, again in the middle above the vault, and a third time on the vault's
+own display. One of the three is the real readout; the other two are noise on
+a board a child is trying to read at speed.
+
+### W2-9 - slow it down and let the message be read
+
+Owner: "the messages are coming in too quick and you can't see them all as
+well, so you struggle to read. So maybe slow them down and make it clear on
+the message on what it's saying so they can see it And to have a bit more time
+to decide."
+
+Four mechanisms stack up, and all four have to give:
+
+`speedForIndex` ramps 0.75, then 1, then 1.4, then 1.8 - by the eighth
+packet they travel 2.4 times as fast as the opening one.
+
+`maxParallel` ramps 1, then 2, then 3, so three packets share the screen at
+once. That is the overlap in the screenshot, where "Dad - Pizza for dinner
+tonig..." is sitting under "...nder - Share your location so...", and neither
+can be read.
+
+The spawn gap is a flat 2500ms no matter how fast the packets are moving, so
+as speed rises the distance between them closes and they bunch.
+
+Week 2 authors ELEVEN emails, so the child spends the last four of them at
+full speed with three on screen at once.
+
+Separately, and worse than the speed: `SpamBlaster.tsx:865` truncates the
+subject with an ellipsis to make it fit the card. "Use your REAL NAME a..." is
+the whole basis of the decision, and the child is asked to judge a message
+they are not shown. No amount of slowing down fixes that one; the card has to
+fit its text, or the text has to be authored to fit the card.
+
+Worth noting the lever already exists: `comfortRef` halves the speed and
+caps parallel packets at one. It is not the default. Whatever the new numbers
+are, reading time should scale with how long the subject actually is, rather
+than every packet getting the same flight regardless.
+
+This also runs against the kid-first contract in the week-builder standard,
+which says in as many words that nothing races the child. An exercise that
+ramps to 1.8 with three overlapping cards races them.
+
+### W2-10 - the raccoon's lectern dots should mean something
+
+Owner: "the bottom right, where the raccoon is, the dots, I think there should
+be five dots, just how many questions they are. And they should have like a
+green tick or an X cross if they got it wrong. I think it's just good
+encouragement. And this could be done across all the weeks."
+
+Today they are pure ornament. `QuizBoss.tsx:794` draws `[0, 1, 2, 3]` -
+four hard-coded dots with the second one permanently lit, there to stop the
+desk reading as a plain block. The quiz has five questions, which is why the
+count looks wrong: nothing ever connected the two.
+
+The change is to drive the row off `quiz.questions.length` rather than a
+literal, and give each dot three states: not yet reached, answered right,
+answered wrong. Driving it off the real length matters because the count must
+not be hard-coded to five either - it has to be whatever that week's boss
+actually asks.
+
+Not a duplicate of the counter above it, and worth saying why, since W2-3 and
+W2-8 are both about the same thing being said twice. The header reads
+"QUESTION 1/5 - CORRECT 0/4 TO PASS", which is a running tally. The dots would
+show WHICH questions went which way. Different information, so both can stay.
+
+One thing to weigh when building it: the child-safety checklist rules out
+guilt and pressure, and a red cross sitting on screen for the rest of the
+fight is the one part of this that could read that way. The owner's intent is
+encouragement, so the wrong-state wants to be matter-of-fact rather than
+punishing - and it should never be the loudest thing on the lectern.
+
+### W2-11 - "not sure" twice in the final boss question
+
+Owner: "In the last screen, or the last question, of the quiz, it said, if you
+are not sure twice, again, all of these duplications need to be addressed."
+
+Found it. Week 2's fifth and final boss question, `quiz-w2-c5-1`:
+
+  ask   : "...and he's NOT SURE if it's safe to answer. What's the hero move?"
+  teach : "...When you are NOT SURE, hit pause. Then call your backup..."
+
+Why `audit-echoed-lines.mjs` was blind to it, precisely: it needs THREE
+shared CONTENT words, and it drops stop words first. "not" is a stop word, so
+"not sure" collapses to "sure" - one content word, nowhere near the bar. The
+threshold was tuned on week 1's real echo, "capitals, numbers and symbols",
+and a long repeated list is the only shape it can hear.
+
+That assumption is the bug. A child does not get stop words for free. "not
+sure" is one idea, said twice, and it is as audible as a three-word list.
+
+A warning for whoever fixes the audit, because the obvious fix is wrong:
+dropping the threshold to two words flags 40 of the 100 boss questions, and
+most of those are CORRECT. When week 19's teach line repeats "card number",
+or week 20's repeats "name your school", it is naming what was at stake,
+which is the whole job of a teach line. The repetition that grates is the
+FRAMING, not the subject - "not sure", "after all", "extra care", "speak up",
+"keep it secret". So the check wants a curated list of stock framing phrases
+that may not appear twice on one screen, while the subject noun stays free to
+repeat. A blunt two-word rule would bury the real finding in 40 false ones.
+
+### W2-12 - the Mission Report is dull
+
+Owner: "make this mission report look better. It looks very boring. Again,
+this could be pushed across all weeks."
+
+`QuizBoss.tsx:1145`. A mono-type header over five rows of tick, label,
+score. It is a terminal readout at the single proudest moment in the week,
+sitting under a 3D raccoon and a glowing YOU WIN.
+
+One redesign covers everything: all 20 bosses render through this one
+component. It can also take the week's accent, which it already receives.
+
+Worth keeping when it is rebuilt: the per-concept breakdown is genuinely good.
+A child can see WHICH power they dropped, named - "SECRET IDENTITY 0/1" - and
+that is the part worth making beautiful rather than replacing.
+
+### W2-13 - the choir on the badge screen
+
+Owner: "it has like this choir singing Cyberheroes. I'm not sure if I like it.
+Maybe we should have something else. That's more like less from the choir and
+more suited for kids."
+
+The screen fires `badgeEarnedCelebration()`, which plays `badge-earned`
+(`/audio/sfx/badge-earned.mp3`, 24KB) plus confetti. Two neighbours could be
+bleeding in from the win screen just before it: `victory.mp3` (37KB) and
+`bgm-victory.mp3` (182KB, the long one and the likeliest choir). Which one
+the owner is actually hearing has to be settled by listening to all three
+against the real sequence, not by reading the code - the badge sting is only
+about a second and a half, which is short for what was described.
+
+DECISION NEEDED before this is built, because it reverses a locked rule. The
+build standard records an owner mandate that all boss music is a-cappella,
+voices only and very faint. The choir is not an accident, it is that rule
+being followed. Replacing it with something instrumental and playful is a
+reasonable change of mind, but it should be made knowingly rather than
+quietly undone, and it will want new audio rather than a volume tweak.
+
+### W2-14 - theme the badge screen per week
+
+Owner: "we could potentially design this screen better, like the square within
+it, we can design it according to the theme of the week... it can be done
+according to the theme of that week."
+
+Agreed, and it is cheaper than it looks, because the data already exists.
+`weekThemes.ts` gives every week a `deepBg`, `bgGradient`, `glow`,
+`frameBg`, `accent` and a set of ambience glows, and the lesson already
+reads it. The completion screen simply never asked for it, so twenty weeks all
+finish on the same purple card.
+
+One constraint carried over from that file, and it must hold here too: a theme
+only ever changes NEUTRAL chrome. Green stays correct, red stays wrong, gold
+stays reward. So the frame, ground and glow take the week's colour while the
+badge, the XP figure and the accuracy readout keep their own meaning.
+
+### W2-15 - the Mission Debrief cards
+
+Owner: "Again same for these. Design them better. and we can push them across
+the weeks... Maybe according to the week."
+
+`MissionDebrief.tsx`. Five "YOU LEARNED" cards in a row, each a flat
+gradient panel with an icon, a title and three lines of body.
+
+Two things to carry into the redesign, both learned the hard way on this
+screen:
+
+It is currently SQUEEZED. On 16 October the grid went from `minmax(220px)`
+to `minmax(165px)`, padding from 20/18 to 15/11 and the icon from 44 to 36,
+purely to get five cards onto one row at the owner's 1414x771 - it was 876px
+tall and zooming to 0.72. So "plain" is partly the fit fix showing. A redesign
+that makes the cards handsome again has to solve BOTH at once; anything that
+buys beauty with height puts the zoom straight back.
+
+Each card carries its OWN `accent`, which is where the rainbow comes from -
+cyan, green, gold, pink, purple - so five weeks' worth of palettes appear on
+one screen regardless of which week it is. That is the part the owner means by
+"according to the week": the row should read as week 2's world, with the five
+cards distinguished within that palette rather than by five unrelated hues.
+
+Same constraint as W2-14 applies: theme the chrome, never the meaning.
+
+Note the icons on this screen are PixIcons, so W2-2 covers them here too, and
+the owner's earlier instruction to leave the debrief ICONS as they are still
+stands - this item is the cards around them.
+
+### W2-16 - the Stickers Unlocked screen
+
+Owner: "Same with that."
+
+`StickerUnlock.tsx`. Three gold-bordered boxes, each with a pale cone of
+light hanging above it that does not belong to anything, and a yellow "ALL 3
+STICKERS EARNED" tag sitting off to the left on its own.
+
+The sticker ART is the good part of this screen and is not in scope - those
+are the bespoke Adam and Layla pieces made for week 2, and they are the
+reward. What dates it is everything around them: a flat box, a hard gold
+rule, and gold again on the tag, on a week whose world is teal and amber.
+
+So the same treatment as W2-15 and W2-14, and the three should be designed as
+one family rather than three separate passes - a child meets the debrief, the
+stickers and the badge screen back to back within about a minute, and right
+now each one looks like it came from a different product.
+
+Theme the chrome, never the meaning: gold is the reward colour and stays
+gold on the sticker itself.
+
+### W2-17 - the closing sequence is ONE design job, themed per week
+
+Owner, on the Week Complete screen: "and this one. So the last two, three
+screenshots that I've sent, maybe set up a theme with them. Because they
+always end up at the end of the week. So maybe have them all designed
+according to that week."
+
+This is the instruction that ties W2-12, W2-14, W2-15 and W2-16 together, and
+it changes them from four jobs into one. Every week ends with the same four
+screens in the same order, inside about a minute:
+
+  1. boss Mission Report      QuizBoss.tsx:1145
+  2. Mission Debrief          MissionDebrief.tsx
+  3. Stickers Unlocked        StickerUnlock.tsx
+  4. Badge / Week Complete    DynamicLesson.tsx:4722
+
+Four components, written at four different times, which is exactly why they
+look like four different products: a mono terminal readout, a rainbow card
+row, gold boxes under floating light cones, and a purple card. A child sees
+all four back to back and the week ends on a stylistic shrug.
+
+So this is designed ONCE as a closing suite - shared frame, shared rhythm,
+shared typography - and then takes its colour from `weekThemes.ts`, which
+already carries a palette for every week and which none of these four screens
+currently reads. Twenty weeks of distinct endings for the cost of one design
+plus a lookup.
+
+Doing it as four separate passes would be the expensive mistake here: four
+tasteful screens that still do not match are no better than four plain ones.
+
+Standing constraint, from `weekThemes.ts` and repeated on every item above:
+a theme only ever changes NEUTRAL chrome. Green stays correct, red stays
+wrong, gold stays reward. The badge art, the sticker art and the XP figure
+keep their own meaning in every week.
+
+---
+
 ## What every other week still needs
 
 Same list, same order, one week at a time. The tools are built; the work per
