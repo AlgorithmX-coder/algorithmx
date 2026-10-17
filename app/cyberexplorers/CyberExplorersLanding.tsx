@@ -23,6 +23,7 @@ import { MONO, BODY, T, BAND_BY_CLASSIFICATION } from "@/app/explorers/engine/to
 import { Resolve, useReducedMotion } from "@/app/explorers/engine/primitives";
 import { IntroVideo } from "./IntroVideo";
 import LiveBackground from "./LiveBackground";
+import CubeMark from "@/app/components/CubeMark";
 
 /* ================================================================ data */
 
@@ -746,7 +747,7 @@ export default function CyberExplorersLanding() {
           </svg>
           CYBER EXPLORERS
           <span className="cx-brand-by" style={{ fontSize: 9, fontWeight: 400, letterSpacing: "0.16em", color: T.textDisabled, marginLeft: 5 }}>
-            BY ALGORITHMX
+            BY <CubeMark size={13} color={T.arcCyan} code style={{ verticalAlign: "middle", margin: "0 3px", filter: `drop-shadow(0 0 5px ${T.arcCyan}aa)` }} />ALGORITHMX
           </span>
         </Link>
         <div style={{ display: "flex", alignItems: "center", gap: 18 }}>

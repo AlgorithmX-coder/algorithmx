@@ -5,6 +5,7 @@ import { useEffect, useMemo, useState } from "react";
 import type { Product } from "@prisma/client";
 import CodeRainBg from "@/app/pro/CodeRainBg";
 import WaitlistForm from "@/app/components/WaitlistForm";
+import CubeMark from "@/app/components/CubeMark";
 
 /* Cyber Pro landing (marketing / sales page for /pro).
  *
@@ -267,7 +268,7 @@ export default function CyberStartProLanding({ product }: { product: Product }) 
                 <path className="cypro-cursor" d="M13 15.5 H16.2" strokeLinecap="round" />
               </svg>
               <span className="disp" style={{ fontWeight: 700, fontSize: 18, letterSpacing: "0.07em", color: "#fff", whiteSpace: "nowrap" }}>CYBER PRO</span>
-              <span className="hidden sm:inline mono" style={{ fontSize: 9, letterSpacing: "0.16em", color: "rgba(255,255,255,0.4)", textTransform: "uppercase", whiteSpace: "nowrap" }}>by AlgorithmX</span>
+              <span className="hidden sm:inline mono" style={{ fontSize: 9, letterSpacing: "0.16em", color: "rgba(255,255,255,0.4)", textTransform: "uppercase", whiteSpace: "nowrap" }}>by <CubeMark size={13} color="#ff7a3d" code style={{ verticalAlign: "middle", margin: "0 3px", filter: "drop-shadow(0 0 6px rgba(255,122,61,0.55))" }} />AlgorithmX</span>
             </Link>
             <div className="flex items-center gap-4">
               <a href="/pro/login" className="text-sm font-bold text-gray-300 hover:text-white transition-colors hidden sm:block">Sign in</a>

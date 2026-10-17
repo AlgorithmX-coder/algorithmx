@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import CodeRainBackground from "@/app/components/CodeRainBackground";
+import CubeMark from "@/app/components/CubeMark";
 
 /**
  * Cyber Ops - the 14-17 tier landing page (route stays /cyberstart).
@@ -359,7 +360,7 @@ export default function CyberStartLanding() {
 
       <nav>
         <div className="wrap navrow">
-          <a href="#top" className="brand"><span className="dot" />CYBER OPS <small>by AlgorithmX</small></a>
+          <a href="#top" className="brand"><span className="dot" />CYBER OPS <small>by <CubeMark size={13} color="#8B7BFF" code style={{ verticalAlign: "middle", margin: "0 3px", filter: "drop-shadow(0 0 6px rgba(139,123,255,0.6))" }} />AlgorithmX</small></a>
           <div className="navlinks">
             <a href="#range">The Range</a>
             <a href="#curriculum">Curriculum</a>
@@ -593,7 +594,7 @@ export default function CyberStartLanding() {
       <footer>
         <div className="wrap">
           <div className="frow">
-            <a href="#top" className="brand"><span className="dot" />CYBER OPS <small>by AlgorithmX</small></a>
+            <a href="#top" className="brand"><span className="dot" />CYBER OPS <small>by <CubeMark size={13} color="#8B7BFF" code style={{ verticalAlign: "middle", margin: "0 3px", filter: "drop-shadow(0 0 6px rgba(139,123,255,0.6))" }} />AlgorithmX</small></a>
             <div className="fl">
               <a href="#range">The Range</a>
               <a href="#curriculum">Curriculum</a>
