@@ -27,3 +27,13 @@ export const CURRICULUM: CurriculumEntry[] = [
 ];
 
 export const PHASE_ORDER: Phase[] = ["Foundations", "Web Exploitation", "Data & Systems", "Role Flip", "Capstone"];
+
+/* A colour per phase, so the course map reads as five distinct zones (owner:
+ * each phase its own colour). Matches the module backdrops' hue families. */
+export const PHASE_COLOR: Record<Phase, string> = {
+  "Foundations": "#8B7BFF",
+  "Web Exploitation": "#FF7BD5",
+  "Data & Systems": "#5FE6FF",
+  "Role Flip": "#55D98C",
+  "Capstone": "#E8A33D",
+};

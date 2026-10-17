@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { getPortfolio } from "@/app/lib/opsPortfolio.actions";
 import { HIGHEST_BUILT_MODULE } from "@/app/operators/range/modules";
-import { CURRICULUM, PHASE_ORDER } from "@/app/operators/range/curriculum";
+import { CURRICULUM, PHASE_ORDER, PHASE_COLOR } from "@/app/operators/range/curriculum";
 import OpsBackdrop from "@/app/operators/range/OpsBackdrop";
 
 export const metadata: Metadata = {
@@ -91,17 +91,22 @@ export default async function OperatorsPortfolioPage() {
             <span style={{ width: 18, height: 2, background: C.cyan, borderRadius: 2, boxShadow: `0 0 8px ${C.cyan}` }} />
             <span style={{ fontFamily: MONO, fontSize: 11.5, letterSpacing: ".14em", textTransform: "uppercase", color: C.ink, fontWeight: 700, textShadow: TSHADOW }}>The posting · {done.size}/16 modules cleared</span>
           </div>
-          {PHASE_ORDER.map((phase) => (
-            <div key={phase} style={{ marginBottom: 14 }}>
-              <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: ".1em", textTransform: "uppercase", color: C.soft, marginBottom: 7, fontWeight: 600, textShadow: TSHADOW }}>{phase}</div>
+          {PHASE_ORDER.map((phase) => {
+            const pc = PHASE_COLOR[phase];
+            return (
+            <div key={phase} style={{ marginBottom: 20 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 9 }}>
+                <span style={{ width: 22, height: 3, borderRadius: 2, background: pc, boxShadow: `0 0 10px ${pc}` }} />
+                <span style={{ fontFamily: DISP, fontSize: 13, letterSpacing: ".14em", textTransform: "uppercase", color: pc, fontWeight: 700, textShadow: TSHADOW }}>{phase}</span>
+              </div>
               <div style={{ display: "grid", gap: 6 }}>
                 {CURRICULUM.filter((m) => m.phase === phase).map((m) => {
                   const isDone = done.has(m.no);
                   const isNext = m.no === nextModule;
                   const playable = m.no <= HIGHEST_BUILT_MODULE;
                   const inner = (
-                    <div className={isNext ? "ops-next" : undefined} style={{ display: "flex", gap: 11, alignItems: "center", padding: isNext ? "13px 14px" : "10px 13px", borderRadius: 10, background: isNext ? NEXT_BG : GLASS_SOFT, backdropFilter: BLUR, WebkitBackdropFilter: BLUR, border: `1px solid ${isNext ? "rgba(95,230,255,0.55)" : C.lineSoft}`, boxShadow: isNext ? undefined : "0 4px 14px rgba(0,0,0,0.22)" }}>
-                      <span style={{ fontFamily: MONO, fontSize: 12, fontWeight: 700, color: isDone ? C.green : isNext ? C.cyan : C.mute, minWidth: 30, textShadow: isNext ? `0 0 12px ${C.cyan}` : undefined }}>{isDone ? "✓" : `M${String(m.no).padStart(2, "0")}`}</span>
+                    <div className={isNext ? "ops-next" : undefined} style={{ display: "flex", gap: 11, alignItems: "center", padding: isNext ? "13px 14px" : "10px 13px", borderRadius: 10, background: isNext ? NEXT_BG : GLASS_SOFT, backdropFilter: BLUR, WebkitBackdropFilter: BLUR, border: `1px solid ${isNext ? "rgba(95,230,255,0.55)" : C.lineSoft}`, borderLeft: `3px solid ${isNext ? C.cyan : pc}`, boxShadow: isNext ? undefined : "0 4px 14px rgba(0,0,0,0.22)" }}>
+                      <span style={{ fontFamily: MONO, fontSize: 12, fontWeight: 700, color: isDone ? C.green : isNext ? C.cyan : pc, minWidth: 30, textShadow: isNext ? `0 0 12px ${C.cyan}` : undefined }}>{isDone ? "✓" : `M${String(m.no).padStart(2, "0")}`}</span>
                       <span style={{ fontSize: isNext ? 14.5 : 13.5, fontWeight: isNext ? 600 : 400, color: isNext ? "#ffffff" : playable ? C.ink : C.mute, flex: 1 }}>{m.title}</span>
                       {isNext && <span style={{ fontFamily: MONO, fontSize: 10, fontWeight: 700, letterSpacing: ".1em", color: "#eafbff", background: "rgba(95,230,255,0.16)", border: "1px solid rgba(95,230,255,0.7)", borderRadius: 5, padding: "3px 9px", boxShadow: `0 0 12px ${C.cyan}66`, textShadow: `0 0 8px ${C.cyan}` }}>NEXT ▸</span>}
                       {isDone && !isNext && <span style={{ fontFamily: MONO, fontSize: 10.5, color: C.green }}>filed</span>}
@@ -116,7 +121,8 @@ export default async function OperatorsPortfolioPage() {
                 })}
               </div>
             </div>
-          ))}
+            );
+          })}
         </div>
 
         {/* findings */}
