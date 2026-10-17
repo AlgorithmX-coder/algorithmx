@@ -107,6 +107,15 @@ jobs:
       # tangency can never reach a clipping edge.
       - run: node scripts/pad-lesson-icons.mjs --check
 
+      # Can the APP find every clip it will ask for? The generator's --check
+      # asks "does every block have a FILE", keyed by hash, and is happy when
+      # the file exists. It never asks whether the RUNTIME can find it, which
+      # is a different question with a different key: InfoNarration matches
+      # manifest.text against the raw lines, exactly. When those two drifted
+      # apart the app found nothing and fell back to the browser's speech
+      # synthesis - a man's voice on week 2, with CI green. Same gap as #539.
+      - run: node scripts/audit-manifest-lookup.mjs
+
   # ────────────────────────────────────────────────────────────
   # End-to-end tests against a real production build.  Slower than
   # the static job (production build + browser launch) so it runs

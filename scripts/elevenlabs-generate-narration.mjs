@@ -1071,8 +1071,12 @@ function padEnding(inFile, outFile) {
  * with punctuation (./!/?) so a space between them is enough - the
  * model will produce natural sentence-end pauses from the punctuation.
  */
+/* NO pronunciation here. This is the manifest's lookup text and has to match
+ * what the app builds from the raw lines, character for character. The
+ * pronunciation is applied where the text is SPOKEN (speakBlock) and where
+ * the clip is NAMED (hashText in generateBlock). */
 function joinBlock(lines) {
-  return sayYears(lines.join(" ").replace(/\s+/g, " ").trim());
+  return lines.join(" ").replace(/\s+/g, " ").trim();
 }
 
 /**
@@ -1927,8 +1931,28 @@ let acceptedModel = null;
 
 async function generateBlock(speaker, lines, source, skipRecord) {
   const voice = voiceFor(speaker, source);
+  /**
+   * TWO different texts, and confusing them put a man's voice in week 2.
+   *
+   * `blockText` is what goes in the MANIFEST, and it must be the lines
+   * exactly as written. InfoNarration finds a clip with
+   * `e.text === buildBlockKey(lines)` - an exact string match against the raw
+   * narration - so storing anything else means no entry is found and the
+   * component falls back to the browser's speech synthesis, which on Windows
+   * is "Microsoft David". The owner heard a man read Power 4 of week 2.
+   *
+   * `hashText` is what NAMES the file, and it carries the pronunciation, so
+   * changing how a line is SAID still produces a new clip instead of silently
+   * keeping the old audio under an unchanged name.
+   *
+   * Same failure as #539: the runtime asked for a key that was never
+   * recorded, found nothing, and fell back - on a green build with a valid
+   * manifest. Nothing was wrong with the audio; those Emma clips measured
+   * 184-219 Hz, squarely her range.
+   */
   const blockText = joinBlock(lines);
-  const key = hashKey(speaker, voice.id, blockText);
+  const hashText = sayYears(blockText);
+  const key = hashKey(speaker, voice.id, hashText);
   const filename = `${key}.mp3`;
   const filepath = join(OUT_DIR, filename);
 
