@@ -99,6 +99,14 @@ jobs:
       # repeat. Same per-week ratchet: four remain in weeks 18, 19 and 20.
       - run: node scripts/audit-framing-echoes.mjs 1 2
 
+      # Every lesson icon keeps a transparent margin. Owner, 2026-10-17: "All
+      # emojis need to look full and complete. As you can see, this eye is cut
+      # off." The art was fine; what made it fragile is that the icons are
+      # trimmed hard to their ink, so 86 of 92 touched the canvas edge and any
+      # container that clips could shave a flat slice off one. A margin means
+      # tangency can never reach a clipping edge.
+      - run: node scripts/pad-lesson-icons.mjs --check
+
   # ────────────────────────────────────────────────────────────
   # End-to-end tests against a real production build.  Slower than
   # the static job (production build + browser launch) so it runs
