@@ -23,7 +23,16 @@ import { mkdir } from "node:fs/promises";
 
 const ARG = process.argv.slice(2).filter((a) => !a.startsWith("--"));
 const KEEP_ALL = process.argv.includes("--shots");
-const WEEKS = ARG.length ? [Number(ARG[0])] : Array.from({ length: 20 }, (_, i) => i + 1);
+/* EVERY week asked for, not just the first.
+ *
+ * This read [Number(ARG[0])] and silently dropped the rest, so the
+ * `audit-frame-fit.mjs 3 4 5` that the checklist itself prints checked week 3
+ * and said "28 screens checked, 0 flagged" - a clean bill of health for one
+ * third of what was asked, with nothing to say two weeks had been skipped.
+ * The register already has the rule from audit-stage-overflow's first run: a
+ * check that cannot reach its subject has to say so, or it is worse than no
+ * check. Silently narrowing the subject is the same fault. */
+const WEEKS = ARG.length ? ARG.map(Number).filter((n) => Number.isFinite(n)) : Array.from({ length: 20 }, (_, i) => i + 1);
 const SCREENS = 29;
 const BASE = process.env.AUDIT_BASE || "http://localhost:3007";
 const VIEWPORT = { width: 1414, height: 771 };   // the owner's window
@@ -105,7 +114,10 @@ for (const w of WEEKS) {
   console.log(`week ${String(w).padStart(2)}  ${n ? `${n} screen(s) flagged` : "clean"}`);
 }
 
-console.log(`\n${checked} screens checked, ${problems.length} flagged\n`);
+/* Name the weeks in the verdict. The summary that hid the dropped arguments
+ * said only "28 screens checked", which reads like a pass however few weeks
+ * it actually covered. */
+console.log(`\n${checked} screens checked across week(s) ${WEEKS.join(", ")}, ${problems.length} flagged\n`);
 for (const p of problems) {
   const bits = [];
   if (p.fold > 0) bits.push(`FOLD +${p.fold}px`);

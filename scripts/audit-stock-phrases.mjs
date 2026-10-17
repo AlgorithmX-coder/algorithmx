@@ -16,8 +16,11 @@
  */
 import { readFile } from "node:fs/promises";
 
-const only = process.argv[2];
-const WEEKS = only ? [Number(only)] : Array.from({ length: 20 }, (_, i) => i + 1);
+/* Every week passed, not just the first: `... 3 4 5` used to check week 3 and
+ * report a clean run, saying nothing about the two it dropped. Same fault
+ * found in audit-frame-fit during the weeks 3-5 sweep. */
+const ARG = process.argv.slice(2).filter((a) => !a.startsWith("--"));
+const WEEKS = ARG.length ? ARG.map(Number).filter((n) => Number.isFinite(n)) : Array.from({ length: 20 }, (_, i) => i + 1);
 const MIN_WORDS = 4;
 const FLAG_AT = 3;   // three or more uses in one week is a formula, not an echo
 
