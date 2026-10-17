@@ -259,59 +259,112 @@ export default function MissionDebrief({
                   : { type: "spring", stiffness: 280, damping: 22 }
               }
               style={{
-                padding: "15px 11px",
-                borderRadius: 18,
-                /* The card ground is the week's tint, not the shade itself:
-                   shadeFor returns an hsl() string, so a hex alpha suffix
-                   cannot be appended to it. The shade does the identifying
-                   work on the border, the icon and the label. */
-                background: `linear-gradient(180deg, rgba(${pal.accentRGB}, 0.20), rgba(10, 14, 36, 0.88))`,
-                border: `2px solid ${shadeFor(c.accent, i)}`,
-                boxShadow: visible ? `0 12px 36px rgba(${pal.accentRGB}, 0.22)` : "none",
+                position: "relative",
+                overflow: "hidden",
+                padding: "30px 11px 13px",
+                borderRadius: 16,
+                /* The ground is the week's tint; the SHADE does the
+                   identifying work on the rail, the well and the number. A
+                   hex alpha cannot be appended to shadeFor's hsl() string. */
+                background: `linear-gradient(180deg, rgba(${pal.accentRGB}, 0.16), rgba(9, 13, 32, 0.92))`,
+                border: `1px solid rgba(${pal.accentRGB}, 0.38)`,
+                boxShadow: visible
+                  ? `0 14px 34px -14px rgba(0,0,0,0.75), inset 0 1px 0 rgba(255,255,255,0.07)`
+                  : "none",
                 textAlign: "center",
                 fontFamily:
                   "ui-rounded, 'Fredoka', 'Quicksand', system-ui, -apple-system, sans-serif",
               }}
             >
-              <div
+              {/* The rail. One saturated band per card, in that card's own
+                  shade, so the row reads as five distinct skills at a glance
+                  while still belonging to the week's colour. The previous
+                  version put the shade on a 2px border all the way round,
+                  which at five near-identical violets read as no difference
+                  at all. */}
+              <span
+                aria-hidden
                 style={{
-                  fontSize: 36,
-                  lineHeight: 1,
-                  marginBottom: 8,
-                  filter: visible ? `drop-shadow(0 0 14px ${shadeFor(c.accent, i)})` : undefined,
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  height: 4,
+                  background: shadeFor(c.accent, i),
                 }}
-              >
-                <PixIcon emoji={c.icon} size={50} />
-              </div>
-              <div
+              />
+
+              {/* The step number. The five concepts ARE a sequence - the week
+                  teaches them in this order and the recaps count through them
+                  - so numbering is information, not decoration. */}
+              <span
+                aria-hidden
                 style={{
+                  position: "absolute",
+                  top: 9,
+                  left: 10,
                   fontFamily: "'JetBrains Mono', monospace",
                   fontSize: 10,
-                  letterSpacing: "0.18em",
-                  color: shadeFor(c.accent, i),
-                  textTransform: "uppercase",
                   fontWeight: 800,
-                  marginBottom: 4,
-                  textShadow: "none",
+                  letterSpacing: "0.08em",
+                  color: shadeFor(c.accent, i),
+                  opacity: 0.95,
                 }}
               >
-                You learned
-              </div>
+                {String(i + 1).padStart(2, "0")}
+              </span>
+
+              {/* The icon sits in a lit well rather than floating, which is
+                  what stops the card reading as a plain box. */}
               <div
                 style={{
-                  fontSize: 17,
+                  width: 54,
+                  height: 54,
+                  margin: "0 auto 9px",
+                  borderRadius: "50%",
+                  display: "grid",
+                  placeItems: "center",
+                  background: `radial-gradient(circle at 50% 38%, rgba(${pal.accentRGB}, 0.30), rgba(5, 8, 22, 0.55) 70%)`,
+                  boxShadow: visible
+                    ? `inset 0 0 0 1px rgba(${pal.accentRGB}, 0.40)`
+                    : "none",
+                }}
+              >
+                <PixIcon emoji={c.icon} size={38} />
+              </div>
+
+              <div
+                style={{
+                  fontSize: 16,
                   fontWeight: 900,
                   color: "#fff7e6",
-                  marginBottom: 6,
+                  lineHeight: 1.15,
+                  marginBottom: 5,
                 }}
               >
                 {c.label}
               </div>
+
+              {/* A hairline in the card's shade, separating the name of the
+                  skill from what it actually means. */}
+              <span
+                aria-hidden
+                style={{
+                  display: "block",
+                  width: 26,
+                  height: 2,
+                  margin: "0 auto 7px",
+                  borderRadius: 2,
+                  background: shadeFor(c.accent, i),
+                  opacity: 0.75,
+                }}
+              />
+
               <div
                 style={{
                   fontSize: 12,
-                  color: "#cbd5e1",
-                  lineHeight: 1.45,
+                  color: "#c9d4ee",
+                  lineHeight: 1.42,
                 }}
               >
                 {c.summary}

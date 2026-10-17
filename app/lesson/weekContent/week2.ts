@@ -762,7 +762,7 @@ export const WEEK_2: WeekContent = {
       teachNarration: {
         speaker: "adam",
         lines: [
-          "[warmly] That's the golden rule. When you're not sure, you ask a grown-up.",
+          "[warmly] Exactly right, Cyber Hero. The answer is always a grown-up you trust.",
           "Not a guess, not a quick type, not the Raccoon. A parent, a carer or a teacher.",
           "They're your backup team, and asking first is the smartest hero move there is.",
           "[excited] Pause and ask, every single time. You've got this!",

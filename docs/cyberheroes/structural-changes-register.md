@@ -833,13 +833,33 @@ recap promises an activity when a Learn comes next.
 
 ### 2. The printed page must not repeat the spoken one
 
-New from week 2 (W2-3), and no script catches it yet: every echo check
-compares spoken against spoken. Nothing compares a screen's PRINTED chrome
-against the narration printed inches below it.
+| # | Run | Must say |
+|---|---|---|
+| P1 | `node scripts/audit-screen-echoes.mjs N` | 0 stock phrases both PRINTED and SPOKEN on one screen |
 
-ConceptRecap now drops a line that restates its own "Up next" pill
-automatically, so recaps are covered. **Any OTHER screen that prints a label
-and a narration line together has to be read by eye.**
+Every other echo check compares spoken against spoken. This one compares a
+screen's printed chrome - prompt, praise, title, learned, next - against the
+narration printed and spoken beside it.
+
+It exists because fixing the boss question was not enough. The owner, having
+seen that fix land: "It said when you are not sure twice again?????????
+I though you said you fixed this. Is there anywhere else this issue is
+occuring?" It was: week 2's Prove-it screen read "If you're not sure, ___"
+with the narration under it saying "When you're not sure, you ask a
+grown-up", AND its praise line and that narration both opened "That's the
+golden rule".
+
+TWO TRAPS IN IT, both of which made it report a clean week while the fault
+was on screen. The Prove-it screens speak through `teachNarration`, not
+`narration`, so anchoring on the lowercase word skipped every one of them.
+And `praise` was not in the list of fields a child reads.
+
+Its screen pairing is still approximate, so it is a HELPER, not proof, and
+not in CI. Read what it reports; do not assume a clean run means a clean
+week.
+
+ConceptRecap drops a line restating its own "Up next" pill automatically, so
+recaps are covered in code rather than by this.
 
 ### 3. Audio
 
@@ -849,7 +869,17 @@ and a narration line together has to be read by eye.**
 | A2 | `node scripts/elevenlabs-generate-narration.mjs --check` | 0 SILENT |
 | A3 | `node scripts/audit-consonant-integrity.mjs --weeks=N` | every clip keeps its last letter |
 | A4 | `node scripts/audit-pause-placement.mjs --weeks=N` | pauses where the writing put them |
-| A5 | add week N to the CI ratchets | `--weeks=1,2,N` and `audit-framing-echoes.mjs 1 2 N` |
+| A5 | `node scripts/audit-manifest-lookup.mjs` | every block findable BY THE APP |
+| A6 | add week N to the CI ratchets | `--weeks=1,2,N` and `audit-framing-echoes.mjs 1 2 N` |
+
+**A5 is the most important line in this document.** A2 asks "does every block
+have a FILE", keyed by hash. A5 asks "will the APP find it", which is a
+different question with a different key - InfoNarration matches the manifest
+text against the raw lines, exactly. When those drifted apart the app found
+nothing and fell back to the browser's speech synthesis: a MAN's voice on
+week 2, on a green build, with a valid manifest and every clip present. The
+recordings were perfect Emma throughout. Same gap put nineteen weeks on a
+robot voice in #539.
 
 Years are handled in the generator now (W2-5), so any week re-recorded gets
 them. Nothing to do per week except notice if a week has digits that are NOT
@@ -859,6 +889,26 @@ a year - a password, a phone number, a count - and check how they are read.
 mis-reading stop endings, and that moved a safety net. If it reports a clip,
 listen before re-recording; if it passes a clip you can hear is cut, say so
 rather than trusting the number.
+
+### 3b. Sound
+
+| # | Run | Must say |
+|---|---|---|
+| S1 | `node scripts/audit-double-sound.mjs` | no handler starts the same sound twice |
+
+The owner, on a Prove-it verdict: "I hear a very weird sound. Before Emma
+starts speaking, what is that and how did it turn up?" QuickCheck played
+correct.mp3 and then called a helper that plays it again on the next line.
+Two copies of a one-second sample milliseconds apart comb-filter into a
+metallic ring, landing right in front of a quiet spoken line.
+
+Both calls were individually correct. Only their PROXIMITY was wrong, which
+nothing else has an opinion about. It was in FIVE places, not the one
+reported.
+
+Where a helper is gated on motion intensity, keep the direct call in an
+`else` rather than deleting it, or a child on reduced motion loses the
+sound entirely.
 
 ### 4. Layout, at the owner's window
 
@@ -897,8 +947,18 @@ Checks no script does yet, so they are done by eye at 1414x771:
 | R2 | sprite pass over `w{NN}` | `fill-sprite-key-holes.mjs`, `strip-sprite-ground-shadow.mjs` |
 | R3 | magenta contact sheet of every icon the week shows | no stray pixels, nothing clipped |
 
+| R4 | `node scripts/strip-sticker-white-pockets.mjs --check` | 0 unkeyed white pockets in the week's stickers |
+
 R1 is shared and already done for all twenty weeks; it only needs re-running
 if a week ADDS an icon.
+
+R4 exists because the owner saw "the white spaces between Layla". The keying
+step floods inward from the image BORDER, so it only reaches white that
+touches an edge. A pocket enclosed by hair, a mask and a body never touches
+one, survives the key, and only shows up once the sticker is placed on
+something that is not white. Week 2's Master of Disguise carried 7,199 such
+pixels, 4.8% of the artwork; searching the class found week 1's key-master
+too, with the key's cut-outs filled white.
 
 ### 5b. The boss result screens
 

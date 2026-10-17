@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-17T13:57:33.967Z",
+  "generatedAt": "2026-10-17T15:53:37.930Z",
   "model": "eleven_v4",
   "voiceSettings": {
     "stability": 0.6,
@@ -22494,17 +22494,17 @@
       "file": "/audio/voice/a3e372066bd5d035.mp3"
     },
     {
-      "key": "f04f755f92703300",
+      "key": "acd40f01a590de11",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "[warmly] That's the golden rule. When you're not sure, you ask a grown-up. Not a guess, not a quick type, not the Raccoon. A parent, a carer or a teacher. They're your backup team, and asking first is the smartest hero move there is. [excited] Pause and ask, every single time. You've got this!",
+      "text": "[warmly] Exactly right, Cyber Hero. The answer is always a grown-up you trust. Not a guess, not a quick type, not the Raccoon. A parent, a carer or a teacher. They're your backup team, and asking first is the smartest hero move there is. [excited] Pause and ask, every single time. You've got this!",
       "lines": [
-        "[warmly] That's the golden rule. When you're not sure, you ask a grown-up.",
+        "[warmly] Exactly right, Cyber Hero. The answer is always a grown-up you trust.",
         "Not a guess, not a quick type, not the Raccoon. A parent, a carer or a teacher.",
         "They're your backup team, and asking first is the smartest hero move there is.",
         "[excited] Pause and ask, every single time. You've got this!"
       ],
-      "file": "/audio/voice/f04f755f92703300.mp3"
+      "file": "/audio/voice/acd40f01a590de11.mp3"
     },
     {
       "key": "4fb5e42c90f608bd",
