@@ -18,6 +18,7 @@
  */
 import { readFile, access } from "node:fs/promises";
 import { createHash } from "node:crypto";
+import { sayYears } from "./lib/say-years.mjs";
 
 const generator = await readFile("scripts/elevenlabs-generate-narration.mjs", "utf8");
 
@@ -38,8 +39,20 @@ for (const [k, v] of Object.entries(VOICE)) console.log(`  ${k.padEnd(9)} -> ${v
 const joinBlock = (lines) =>
   lines.map((l) => l.trim()).filter(Boolean).join(" ").replace(/\s+/g, " ").trim();
 
+/* THE FILENAME IS HASHED FROM THE PRONUNCIATION, NOT THE PRINTED TEXT.
+ *
+ * The generator keeps the two apart on purpose (generateBlock, ~line 1953):
+ * `blockText` is the raw lines and goes in the manifest, because the APP looks
+ * clips up by that; `hashText` is sayYears(blockText) and NAMES the file,
+ * because "emma2017" has to reach the voice as "emma twenty seventeen".
+ *
+ * Recomputing the expected name from the raw text therefore mismatches every
+ * block holding a year, and this check reported six of them as wrong-voice
+ * clips when the audio was correct. That is the worse kind of failure for a
+ * guard: red for a benign reason is red that gets ignored, and a genuinely
+ * wrong voice would then sit in the noise. Hash what the generator hashed. */
 const hashKey = (speaker, voiceId, text) =>
-  createHash("sha1").update(`${VERSION}::${speaker}::${voiceId}::${text}`).digest("hex").slice(0, 16);
+  createHash("sha1").update(`${VERSION}::${speaker}::${voiceId}::${sayYears(text)}`).digest("hex").slice(0, 16);
 
 const manifest = JSON.parse(await readFile("public/audio/voice/manifest.json", "utf8"));
 

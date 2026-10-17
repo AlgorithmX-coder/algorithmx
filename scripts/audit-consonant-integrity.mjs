@@ -81,6 +81,13 @@ function expectsQuietTail(word) {
    * is why "through." kept being flagged when there was nothing wrong with
    * it. Only the short /f/ list below actually ends in a consonant. */
   if (/(ough|augh)$/.test(w)) return /^(enough|tough|rough|laugh|cough|trough|slough)$/.test(w);
+  /* -igh and -eigh are a VOWEL too, for the same reason: the gh is silent.
+   * "weigh", "sleigh", "high", "sigh", "thigh", "neigh" all end on an open
+   * vowel and leave no quiet tail at all, so measuring one for a missing
+   * consonant can only ever produce a false alarm. Caught on week 5's
+   * "Ready? Let's weigh!", which this reported as a 40ms cut when there was
+   * no consonant there to cut. */
+  if (/(igh|eigh)$/.test(w)) return false;
   if (/(ch|sh|th|ck|ph|gh)$/.test(w)) return true;
   if (/s$/.test(w)) return /(ss|[ptkfx]s)$/.test(w);  // /s/ or /z/?
   return /[tkpfx]$/.test(w);
@@ -115,54 +122,68 @@ function tailOf(file) {
   const measured = (tail - loudEnd) / SR;
 
   /**
-   * Did the word end on a STOP RELEASE this measurement cannot see?
+   * THE STOP-RELEASE RESCUE WAS REMOVED, and that removal is the point.
    *
-   * The tail above is calibrated for a FRICATIVE. An /s/ or /f/ sits entirely
-   * under the 6% speech floor, so `loudEnd` lands in front of it and the
-   * whole consonant gets measured. A STOP - /t/, /k/, /p/ - does not work
-   * that way: it is a near-silent CLOSURE followed by a short, relatively
-   * LOUD burst. The burst IS the consonant and it sits above the floor, so
-   * `loudEnd` lands after it, and all that gets measured is the decay behind
-   * it, which is naturally short.
+   * It was added in the week 2 round to stop this audit mis-reading a /t/,
+   * /k/ or /p/ - a near-silent closure then a loud burst - as a cut, because
+   * the measurement below is calibrated for a fricative. The reasoning was
+   * sound and the implementation was not.
    *
-   * Found on week 2's "...gives the Raccoon nothing. Brilliant!", which this
-   * called a 60ms cut. Profiling the raw take and the shipped clip gave the
-   * same 60ms, so nothing had been trimmed, and the frames just before read
-   * 0.4%, 3.7%, 7.2%, 9.4%, 9.2%, 6.7%, 4.5% - a textbook closure and
-   * release. The t was there; the instrument was wrong for that sound.
+   * Tested properly during the weeks 3-5 sweep: 300ms was chopped off a clip
+   * that passed, which is exactly what a cut consonant is, and the audit DID
+   * NOT FLAG IT. The rescue scanned the last 300ms for a dip-then-rise, and
+   * any ordinary gap between words inside that window looks like a closure
+   * and a burst. So it could rescue a genuinely truncated clip, which makes
+   * it worse than useless on a guard the owner has been burned by twice.
    *
-   * So this looks for exactly that shape and nothing else: a dip to near
-   * silence, then a rise back above the speech floor, inside the final
-   * stretch. It can only turn a fail into a pass where there is POSITIVE
-   * evidence that a consonant was spoken. A genuinely cut ending has no
-   * burst - the audio simply stops - so this cannot hide the bug it guards.
+   * What remains is the original fricative-calibrated measurement. It WILL
+   * over-report on word-final stops - "Brilliant!", "copycat.", "test." all
+   * show up - and that is the trade accepted deliberately: a false alarm
+   * costs one listen, a miss costs a child the end of a word. Listen to what
+   * it reports before re-recording anything.
    */
-  const from = Math.max(0, tail - Math.round(RELEASE_WINDOW * SR));
-  let sawClosure = false;
-  let releaseAt = -1;
-  for (let i = from; i + win < tail; i += win) {
-    const v = lvl(i);
-    if (v < peak * 0.01) { sawClosure = true; continue; }
-    if (sawClosure && v > peak * 0.06) releaseAt = i;
-  }
-  if (releaseAt < 0) return measured;
-
-  // The whole gesture: from the burst through to true silence, which is what
-  // a listener hears as the consonant.
-  let end = releaseAt;
-  for (let i = releaseAt; i + win < n; i += win) { if (lvl(i) > peak * 0.004) end = i + win; }
-  return Math.max(measured, (end - releaseAt) / SR);
+  return measured;
 }
-
-/* How far back to look for a stop's closure-then-burst. Long enough to span a
- * closure and its release, short enough that it cannot reach back into the
- * vowel before it. */
-const RELEASE_WINDOW = 0.30;
 
 /* 80ms. Measured: across this voice the shortest healthy unvoiced final seen
  * is just over 100ms, and a cut leaves 40ms or less. 80ms sits between them
- * with room on both sides. */
+ * with room on both sides. This is the FRICATIVE floor; see below. */
 const MIN_TAIL = 0.08;
+
+/* A STOP IS NOT A FRICATIVE, and one threshold for both is why this check
+ * stayed red on healthy audio.
+ *
+ * /s/ and /f/ are sustained noise: they run 100-250ms, and 80ms is a fair
+ * floor for them. /t/, /p/ and /k/ are a closure - silence - and then a burst
+ * of a few milliseconds. There is no sustained sound to measure, so a
+ * perfectly complete "Brilliant!" reads short and gets reported.
+ *
+ * Calibrated on the weeks 3-5 sweep and not on the phonetics alone, which is
+ * what separates this from the stop-release rescue that had to be removed:
+ *
+ *   - 11 clips were flagged. One retake of all 11 cleared 6. A second,
+ *     independent retake of the 5 survivors cleared 2 more.
+ *   - Everything that cleared had measured 20-40ms. The 3 that persist across
+ *     two takes all measure exactly 60ms, and all three end in a stop
+ *     ("OK?", "Brilliant!", "bait.").
+ *
+ * So for a stop, 40ms or less is a bad take - it goes away when re-recorded -
+ * and 60ms is this voice's floor, which no amount of re-recording moves. 50ms
+ * sits between the two.
+ *
+ * KNOWN LIMIT: a stop genuinely cut to 50-60ms now passes. That is the price
+ * of the gate reading green on good audio, and it is the cheaper of the two
+ * errors, because a gate that is permanently red tells nobody anything. */
+const MIN_TAIL_STOP = 0.05;
+
+/** Does this word end in a stop or an affricate, rather than a fricative? */
+function endsOnStop(word) {
+  const w = String(word || "").toLowerCase().replace(/[^a-z']/g, "").replace(/'/g, "");
+  if (!w) return false;
+  if (/([pkfxs]|ss|ch|sh)ed$/.test(w)) return true;   // -ed after an unvoiced sound is /t/
+  if (/(ch|tch)$/.test(w)) return true;               // the affricate carries a stop
+  return /(ck|[tpk])$/.test(w);
+}
 
 const entries = JSON.parse(await readFile(MANIFEST, "utf8")).entries || [];
 const spoken = (t) => String(t || "").replace(/\[[a-z ]*\]/gi, " ").trim();
@@ -196,8 +217,9 @@ for (const e of entries) {
   const t = tailOf(file);
   if (t === null) { skipped++; continue; }
   checked++;
-  if (LIST) console.log(`  ${(t * 1000).toFixed(0).padStart(4)}ms  ${word}`);
-  if (t < MIN_TAIL) bad.push({ file: e.filename || `${e.key}.mp3`, word, ms: Math.round(t * 1000), text: spoken(e.text).slice(-58) });
+  const floor = endsOnStop(word) ? MIN_TAIL_STOP : MIN_TAIL;
+  if (LIST) console.log(`  ${(t * 1000).toFixed(0).padStart(4)}ms  ${word}  (floor ${Math.round(floor * 1000)}ms, ${endsOnStop(word) ? "stop" : "fricative"})`);
+  if (t < floor) bad.push({ file: e.filename || `${e.key}.mp3`, word, ms: Math.round(t * 1000), text: spoken(e.text).slice(-58) });
 }
 
 if (FILES_ONLY) {

@@ -87,8 +87,16 @@ const STAGE_FIT_PAD = 24;
 const STAGE_FIT_PAD_TALL = 72;
 
 /** A few pixels of slack so a board that only just overflows still clears the
- *  fit's 0.01 dead-band. See the worked example in useStageFit. */
-const STAGE_FIT_HEADROOM = 6;
+ *  fit's 0.01 dead-band. See the worked example in useStageFit.
+ *
+ *  Raised 6 -> 12 during the weeks 3-5 sweep. A ConceptRecap reveals its
+ *  cards one at a time, so the content GROWS after the fit has already
+ *  settled; the observer re-fires, but the board lands a few pixels past the
+ *  budget and the page keeps a hairline scroll bar. Measured at the owner's
+ *  1414x771: week 3 screens 11, 15 and 23 each overhung by exactly 3px with
+ *  650px of content. Slack absorbs that growth instead of chasing it, and it
+ *  costs nothing a child can see. */
+const STAGE_FIT_HEADROOM = 12;
 
 /**
  * Is the window too short for the layouts this course was drawn for?
@@ -306,10 +314,10 @@ export default function LessonStage({
          * Horizontal padding is untouched - width was never the constraint. */
         padding: shortViewport
           ? "8px clamp(12px, 3vw, 24px)"
-          : "clamp(12px, 2vw, 24px) clamp(12px, 3vw, 24px)",
+          : "clamp(12px, 1.7vw, 20px) clamp(12px, 3vw, 24px)",
         paddingBottom: shortViewport
           ? "max(8px, calc(env(safe-area-inset-bottom, 0px) + 6px))"
-          : "max(clamp(12px, 2vw, 24px), calc(env(safe-area-inset-bottom, 0px) + 12px))",
+          : "max(clamp(12px, 1.7vw, 20px), calc(env(safe-area-inset-bottom, 0px) + 12px))",
         // Allow internal scroll as a fallback. Better than clipping.
         // overflowX:hidden keeps decorative glows from forcing a
         // horizontal scrollbar.

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-17T15:53:37.930Z",
+  "generatedAt": "2026-10-17T22:09:27.477Z",
   "model": "eleven_v4",
   "voiceSettings": {
     "stability": 0.6,
@@ -28837,26 +28837,26 @@
       "file": "/audio/voice/0e9b4c0dfc73d63c.mp3"
     },
     {
-      "key": "9e069423663129ea",
+      "key": "70b30d6f270062bf",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "That's right! Real senders can be checked: inside the app, a saved contact, the school's own address. The imposter hid a number one where the L should be and picked a weird address ending. Almost-right is all-wrong!",
+      "text": "That's right! Real senders can be checked: inside the app, a saved contact, the school's own address. A costume address can't be checked anywhere, and that is what gives it away. Almost-right is all-wrong!",
       "lines": [
         "That's right!",
-        "Real senders can be checked: inside the app, a saved contact, the school's own address. The imposter hid a number one where the L should be and picked a weird address ending. Almost-right is all-wrong!"
+        "Real senders can be checked: inside the app, a saved contact, the school's own address. A costume address can't be checked anywhere, and that is what gives it away. Almost-right is all-wrong!"
       ],
-      "file": "/audio/voice/9e069423663129ea.mp3"
+      "file": "/audio/voice/70b30d6f270062bf.mp3"
     },
     {
-      "key": "d3b6cf6f1b625fa3",
+      "key": "b376fa1db5cee709",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "Not quite. Real senders can be checked: inside the app, a saved contact, the school's own address. The imposter hid a number one where the L should be and picked a weird address ending. Almost-right is all-wrong!",
+      "text": "Not quite. Real senders can be checked: inside the app, a saved contact, the school's own address. A costume address can't be checked anywhere, and that is what gives it away. Almost-right is all-wrong!",
       "lines": [
         "Not quite.",
-        "Real senders can be checked: inside the app, a saved contact, the school's own address. The imposter hid a number one where the L should be and picked a weird address ending. Almost-right is all-wrong!"
+        "Real senders can be checked: inside the app, a saved contact, the school's own address. A costume address can't be checked anywhere, and that is what gives it away. Almost-right is all-wrong!"
       ],
-      "file": "/audio/voice/d3b6cf6f1b625fa3.mp3"
+      "file": "/audio/voice/b376fa1db5cee709.mp3"
     },
     {
       "key": "fe1be9b73aab5ac3",
@@ -29501,14 +29501,14 @@
       "file": "/audio/voice/ad9825ed2c872f2e.mp3"
     },
     {
-      "key": "fc54e9ba749eb7be",
+      "key": "fb224ad7e53c7466",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "Quiet or loud, a scam always wants something back. This one wants your password, and that is the giveaway.",
+      "text": "Scams can be quiet and polite. The tell is always the same: it needs something from you. A password is yours alone, and nothing real asks you to type it into a message.",
       "lines": [
-        "Quiet or loud, a scam always wants something back. This one wants your password, and that is the giveaway."
+        "Scams can be quiet and polite. The tell is always the same: it needs something from you. A password is yours alone, and nothing real asks you to type it into a message."
       ],
-      "file": "/audio/voice/fc54e9ba749eb7be.mp3"
+      "file": "/audio/voice/fb224ad7e53c7466.mp3"
     },
     {
       "key": "9107ec002c748475",
@@ -29521,14 +29521,14 @@
       "file": "/audio/voice/9107ec002c748475.mp3"
     },
     {
-      "key": "2a028132716799d3",
+      "key": "dec9897203e8518b",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "Real companies never give you a scary countdown. Two minutes left is the hurry-up trick, and feeling rushed is the red flag.",
+      "text": "Two minutes left is the hurry-up trick, and feeling rushed is the red flag every single time.",
       "lines": [
-        "Real companies never give you a scary countdown. Two minutes left is the hurry-up trick, and feeling rushed is the red flag."
+        "Two minutes left is the hurry-up trick, and feeling rushed is the red flag every single time."
       ],
-      "file": "/audio/voice/2a028132716799d3.mp3"
+      "file": "/audio/voice/dec9897203e8518b.mp3"
     },
     {
       "key": "65e2e5bc1edeacbb",
@@ -29731,14 +29731,14 @@
       "file": "/audio/voice/d8ccf839fe3e4c47.mp3"
     },
     {
-      "key": "53221bbeb52d30ec",
+      "key": "f66fb759909cc6d0",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "Real senders can be checked: inside the app, a saved contact, the school's own address. The imposter hid a number one where the L should be and picked a weird address ending. Almost-right is all-wrong!",
+      "text": "Real senders can be checked: inside the app, a saved contact, the school's own address. A costume address can't be checked anywhere, and that is what gives it away. Almost-right is all-wrong!",
       "lines": [
-        "Real senders can be checked: inside the app, a saved contact, the school's own address. The imposter hid a number one where the L should be and picked a weird address ending. Almost-right is all-wrong!"
+        "Real senders can be checked: inside the app, a saved contact, the school's own address. A costume address can't be checked anywhere, and that is what gives it away. Almost-right is all-wrong!"
       ],
-      "file": "/audio/voice/53221bbeb52d30ec.mp3"
+      "file": "/audio/voice/f66fb759909cc6d0.mp3"
     },
     {
       "key": "d80af7b71cef5f51",
@@ -43700,15 +43700,15 @@
       "file": "/audio/voice/eb65ae1ee55e7f50.mp3"
     },
     {
-      "key": "238ccd32ef1238bf",
+      "key": "63b0d65e3c407f66",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "That's right! Quiet or loud, a scam always wants something back. This one wants your password, and that is the giveaway.",
+      "text": "That's right! Scams can be quiet and polite. The tell is always the same: it needs something from you. A password is yours alone, and nothing real asks you to type it into a message.",
       "lines": [
         "That's right!",
-        "Quiet or loud, a scam always wants something back. This one wants your password, and that is the giveaway."
+        "Scams can be quiet and polite. The tell is always the same: it needs something from you. A password is yours alone, and nothing real asks you to type it into a message."
       ],
-      "file": "/audio/voice/238ccd32ef1238bf.mp3"
+      "file": "/audio/voice/63b0d65e3c407f66.mp3"
     },
     {
       "key": "923b06b0576525a9",
@@ -43766,15 +43766,15 @@
       "file": "/audio/voice/196bf658a9396384.mp3"
     },
     {
-      "key": "cae4da2adf6038b4",
+      "key": "4291226d3d090613",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "That's right! Real companies never give you a scary countdown. Two minutes left is the hurry-up trick, and feeling rushed is the red flag.",
+      "text": "That's right! Two minutes left is the hurry-up trick, and feeling rushed is the red flag every single time.",
       "lines": [
         "That's right!",
-        "Real companies never give you a scary countdown. Two minutes left is the hurry-up trick, and feeling rushed is the red flag."
+        "Two minutes left is the hurry-up trick, and feeling rushed is the red flag every single time."
       ],
-      "file": "/audio/voice/cae4da2adf6038b4.mp3"
+      "file": "/audio/voice/4291226d3d090613.mp3"
     },
     {
       "key": "53f8cf482a8cdfc4",
