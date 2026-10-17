@@ -47,30 +47,31 @@ const CSS = `
 .cyops-root .ey{display:flex;align-items:center;gap:11px;margin-bottom:18px}
 .cyops-root .ey::before{content:"";width:26px;height:1px;background:var(--ind);opacity:.7}
 
-.cyops-root nav{position:sticky;top:0;z-index:40;backdrop-filter:blur(14px);background:rgba(10,11,15,.68);border-bottom:1px solid var(--hairline-soft)}
+.cyops-root nav{position:sticky;top:0;z-index:40;backdrop-filter:blur(16px);background:rgba(8,9,13,.9);border-bottom:1px solid rgba(139,123,255,.2);box-shadow:0 10px 30px -22px rgba(0,0,0,.95)}
 .cyops-root .navrow{display:flex;align-items:center;gap:20px;height:64px}
 .cyops-root .brand{display:flex;align-items:center;gap:11px;font-family:var(--display);font-weight:700;font-size:18px;letter-spacing:.16em}
 .cyops-root .brand .dot{width:11px;height:11px;border-radius:3px;background:var(--ind);box-shadow:0 0 14px var(--ind-glow)}
 .cyops-root .brand small{font-family:var(--sans);font-weight:400;font-size:10px;letter-spacing:.16em;color:var(--muted);text-transform:uppercase}
 .cyops-root .navlinks{display:flex;gap:26px;margin-left:auto}
-.cyops-root .navlinks a{font-family:var(--display);font-weight:500;font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-dim);transition:.15s}
-.cyops-root .navlinks a:hover{color:var(--text)}
+.cyops-root .navlinks a{font-family:var(--display);font-weight:600;font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--text);transition:.15s}
+.cyops-root .navlinks a:hover{color:var(--ind-soft)}
 .cyops-root .cta{font-family:var(--display);font-weight:700;font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;
   padding:10px 18px;border-radius:9px;background:var(--ind);color:#0a0a12;border:1px solid var(--ind);white-space:nowrap;cursor:pointer;transition:.15s;
   box-shadow:0 0 0 1px rgba(139,123,255,.2),0 8px 24px -10px var(--ind-glow)}
 .cyops-root .cta:hover{filter:brightness(1.08);transform:translateY(-1px)}
-.cyops-root .cta.ghost{background:transparent;color:var(--text);border-color:var(--hairline);box-shadow:none}
-.cyops-root .cta.ghost:hover{border-color:var(--ind);color:var(--ind-soft)}
+.cyops-root .cta.ghost{background:rgba(139,123,255,.08);color:var(--text);border-color:rgba(139,123,255,.5);box-shadow:0 0 0 1px rgba(139,123,255,.12)}
+.cyops-root .cta.ghost:hover{border-color:var(--ind);color:var(--ind-soft);background:rgba(139,123,255,.14)}
 @media(max-width:760px){.cyops-root .navlinks{display:none}}
 
 .cyops-root .hero{padding-top:clamp(30px,4vw,56px);padding-bottom:clamp(38px,5vw,64px)}
 .cyops-root .hgrid{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center}
 @media(max-width:940px){.cyops-root .hgrid{grid-template-columns:1fr;gap:36px}}
 .cyops-root .chiprow{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:22px}
-.cyops-root .chip{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:11.5px;letter-spacing:.04em;color:var(--text-dim);
-  padding:6px 11px;border:1px solid var(--hairline);border-radius:999px;background:var(--panel)}
-.cyops-root .chip .pip{width:7px;height:7px;border-radius:50%;background:var(--amber);box-shadow:0 0 8px rgba(232,163,61,.6)}
-.cyops-root .chip.range{color:var(--added)} .cyops-root .chip.range .pip{background:var(--added);box-shadow:0 0 8px rgba(74,222,128,.6)}
+.cyops-root .chip{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:12px;font-weight:500;letter-spacing:.04em;color:var(--text);
+  padding:7px 13px;border:1px solid rgba(139,123,255,.32);border-radius:999px;background:rgba(21,24,36,.72);backdrop-filter:blur(6px);
+  box-shadow:0 0 0 1px rgba(139,123,255,.06),0 6px 18px -12px rgba(0,0,0,.8),inset 0 1px 0 rgba(255,255,255,.05)}
+.cyops-root .chip .pip{width:7px;height:7px;border-radius:50%;background:var(--amber);box-shadow:0 0 10px rgba(232,163,61,.95)}
+.cyops-root .chip.range{color:var(--added);border-color:rgba(74,222,128,.34)} .cyops-root .chip.range .pip{background:var(--added);box-shadow:0 0 10px rgba(74,222,128,.95)}
 .cyops-root .hero h1{font-size:clamp(2.5rem,6vw,4.3rem);line-height:1.02;margin-bottom:22px}
 .cyops-root .hero h1 .g{color:transparent;background:linear-gradient(120deg,var(--ind-soft),var(--ind));-webkit-background-clip:text;background-clip:text}
 .cyops-root .hbtns{display:flex;flex-wrap:wrap;gap:14px;margin-top:32px}
