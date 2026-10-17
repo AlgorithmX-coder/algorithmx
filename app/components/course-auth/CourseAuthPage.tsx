@@ -82,7 +82,7 @@ function Inner({ course, mode }: { course: CourseAuthKey; mode: Mode }) {
         const res = await fetch("/api/signup", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ name: name.trim(), email: email.trim(), password }),
+          body: JSON.stringify({ name: name.trim(), email: email.trim(), password, course: t.slug }),
         });
         if (!res.ok) {
           const data = await res.json().catch(() => null);
