@@ -16,19 +16,19 @@ import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, wit
 /* ───────────────────────── glossary ───────────────────────── */
 
 const GLOSSARY: GlossaryEntry[] = [
-  { term: "port", definition: "A numbered door on a server. Each service listens on one - web on 80/443, SSH on 22, Remote Desktop on 3389." },
-  { term: "service", definition: "A program a server offers over the network - a web server, mail, remote login. Each listens on a port." },
-  { term: "port scan", definition: "Asking a host, port by port, 'is anything listening here?' The open ports map everything the machine offers." },
-  { term: "service enumeration", definition: "Going beyond 'a port is open' to identify exactly what software and which version is running on it." },
-  { term: "banner", definition: "The identifying text a service announces when you connect - often naming the software and version, a gift for recon." },
-  { term: "version", definition: "Which release of a piece of software is running. It matters because specific versions have specific known vulnerabilities." },
-  { term: "known vulnerability", definition: "A published weakness in a specific software version (a CVE). Match a version to its CVEs and you know exactly what to try." },
-  { term: "attack surface", definition: "Everything an attacker could reach - every open port, service and host the organisation exposes. Recon maps it; defence shrinks it." },
-  { term: "subnet", definition: "A block of network addresses, like 10.0.5.0/24 - a range of hosts you can sweep to find which are alive." },
-  { term: "host discovery", definition: "Sweeping a subnet to find which addresses have a live machine - mapping the network before probing individual hosts." },
-  { term: "RDP", definition: "Remote Desktop Protocol (port 3389) - remote control of a Windows machine. Exposing it to the internet is relentlessly attacked." },
-  { term: "VPN", definition: "A private tunnel into a network. Management services should sit behind one, not on the open internet." },
-  { term: "firewall", definition: "A control that decides which ports and hosts are reachable from where - the main tool for shrinking the attack surface." },
+  { term: "port", definition: "A numbered door on a server. Each service listens on one - web on 80/443, SSH on 22, Remote Desktop on 3389.", example: "Think of a block of flats where each flat number is a port: knock on 443 and the website answers, knock on 22 and the remote-login service answers." },
+  { term: "service", definition: "A program a server offers over the network - a web server, mail, remote login. Each listens on a port.", example: "The Minecraft server your mates join is a service listening on port 25565, and the game knocks on that exact port to connect." },
+  { term: "port scan", definition: "Asking a host, port by port, 'is anything listening here?' The open ports map everything the machine offers.", example: "Like walking a corridor trying every door handle to see which rooms are unlocked, a scan of a shop's server might reveal 80, 443 and an accidentally open 3389." },
+  { term: "service enumeration", definition: "Going beyond 'a port is open' to identify exactly what software and which version is running on it.", example: "Not just 'port 80 is open' but 'it is Apache 2.4.49 behind it' - the extra detail that tells you which attacks might work." },
+  { term: "banner", definition: "The identifying text a service announces when you connect - often naming the software and version, a gift for recon.", example: "Connecting to a mail server and seeing it reply 'Exim 4.92 ready' hands an attacker the exact software and version for free." },
+  { term: "version", definition: "Which release of a piece of software is running. It matters because specific versions have specific known vulnerabilities.", example: "Running an old phone on iOS 14 while everyone else is on iOS 18 - the outdated version still has holes that newer releases patched long ago." },
+  { term: "known vulnerability", definition: "A published weakness in a specific software version (a CVE). Match a version to its CVEs and you know exactly what to try.", example: "Looking up 'Apache 2.4.49' and finding CVE-2021-41773, a public flaw, gives an attacker a ready-made recipe for that exact version." },
+  { term: "attack surface", definition: "Everything an attacker could reach - every open port, service and host the organisation exposes. Recon maps it; defence shrinks it.", example: "A shop that puts its website, email and a forgotten test server all on the public internet has three times the attack surface of one that exposes only its website." },
+  { term: "subnet", definition: "A block of network addresses, like 10.0.5.0/24 - a range of hosts you can sweep to find which are alive.", example: "The 10.0.5.0/24 block holds 254 possible addresses, like a street of 254 houses you can go door to door checking which are occupied." },
+  { term: "host discovery", definition: "Sweeping a subnet to find which addresses have a live machine - mapping the network before probing individual hosts.", example: "Pinging every address on the office network and getting 12 replies tells you there are 12 live machines to investigate, not 254." },
+  { term: "RDP", definition: "Remote Desktop Protocol (port 3389) - remote control of a Windows machine. Exposing it to the internet is relentlessly attacked.", example: "A small firm left RDP open so staff could work from home, and within hours bots worldwide were hammering port 3389 trying common passwords." },
+  { term: "VPN", definition: "A private tunnel into a network. Management services should sit behind one, not on the open internet.", example: "Instead of exposing the office server to everyone, staff first connect through a VPN, like showing ID at a locked gate before the building doors are even visible." },
+  { term: "firewall", definition: "A control that decides which ports and hosts are reachable from where - the main tool for shrinking the attack surface.", example: "Setting the firewall to allow only ports 80 and 443 from the internet, and to block 3389, slams the door the RDP attackers were knocking on." },
 ];
 const G = (text: string, keyPrefix: string) => withGlossary(text, GLOSSARY, new Set<string>(), keyPrefix);
 

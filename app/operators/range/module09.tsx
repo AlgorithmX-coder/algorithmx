@@ -34,19 +34,19 @@ const T_LETMEIN = "9b0eb22aef89516d6fb4b31ccf008a68abe0d10a3fc606316389613eccf96
 /* ───────────────────────── glossary ───────────────────────── */
 
 const GLOSSARY: GlossaryEntry[] = [
-  { term: "hash", definition: "A one-way fingerprint of some data. Easy to compute, meant to be impossible to reverse - sites store a password's hash, not the password." },
-  { term: "one-way", definition: "You can turn a password into its hash, but you can't turn the hash back into the password - you can only guess and check." },
-  { term: "digest", definition: "The output of a hash - the fixed-length fingerprint string, like a 64-character SHA-256 value." },
-  { term: "MD5", definition: "An old, fast hash (32 hex characters). Far too fast and broken for passwords - crackable almost instantly." },
-  { term: "SHA-256", definition: "A modern general-purpose hash (64 hex characters). Strong for files, but too fast to be safe for passwords on its own." },
-  { term: "bcrypt", definition: "A password-hashing algorithm that salts automatically and is deliberately slow - one of the right choices for storing passwords." },
-  { term: "Argon2", definition: "A modern, deliberately slow and memory-hard password hash - a current best choice for storing passwords." },
-  { term: "rainbow table", definition: "A huge precomputed list of hash -> password. If a hash is unsalted, an attacker just looks it up." },
-  { term: "salt", definition: "A unique random value added to each password before hashing, so identical passwords get different hashes and precomputed tables fail." },
-  { term: "dictionary attack", definition: "Cracking by hashing a list of likely passwords and checking each against the target hash." },
-  { term: "brute force", definition: "Trying every possible combination. Feasible against fast hashes and short passwords; hopeless against slow, salted ones." },
-  { term: "plaintext", definition: "The actual password, unhashed. The thing you must never store, and the prize an attacker is cracking toward." },
-  { term: "avalanche effect", definition: "Changing one character of the input changes the whole hash - a property of good hash functions." },
+  { term: "hash", definition: "A one-way fingerprint of some data. Easy to compute, meant to be impossible to reverse - sites store a password's hash, not the password.", example: "When you set a password, a well-built site stores a scrambled fingerprint like 'a941a4...' instead of the word itself, so a leak doesn't hand over your actual password." },
+  { term: "one-way", definition: "You can turn a password into its hash, but you can't turn the hash back into the password - you can only guess and check.", example: "It's like mincing beef: trivial to turn the steak into mince, but no machine turns the mince back into a steak." },
+  { term: "digest", definition: "The output of a hash - the fixed-length fingerprint string, like a 64-character SHA-256 value.", example: "Hashing 'sunshine' always spits out the same 64-character digest like 'a941a4c4...', no matter how long or short the input was." },
+  { term: "MD5", definition: "An old, fast hash (32 hex characters). Far too fast and broken for passwords - crackable almost instantly.", example: "MD5 is so fast that a single gaming graphics card can test billions of guesses a second, so an MD5 password hash falls in moments." },
+  { term: "SHA-256", definition: "A modern general-purpose hash (64 hex characters). Strong for files, but too fast to be safe for passwords on its own.", example: "SHA-256 is perfect for checking a downloaded game file hasn't been tampered with, but it's far too fast to safely store passwords by itself." },
+  { term: "bcrypt", definition: "A password-hashing algorithm that salts automatically and is deliberately slow - one of the right choices for storing passwords.", example: "bcrypt is built to take a noticeable slice of a second per guess, so an attacker who could test billions a second is slowed to a crawl." },
+  { term: "Argon2", definition: "A modern, deliberately slow and memory-hard password hash - a current best choice for storing passwords.", example: "Argon2 deliberately hogs lots of memory as well as time, which makes the mega-fast cracking rigs attackers rent far less effective." },
+  { term: "rainbow table", definition: "A huge precomputed list of hash -> password. If a hash is unsalted, an attacker just looks it up.", example: "Because millions of people pick 'password123', a rainbow table already lists its hash, so an unsalted leak is cracked by a simple lookup." },
+  { term: "salt", definition: "A unique random value added to each password before hashing, so identical passwords get different hashes and precomputed tables fail.", example: "Add a random 'k3f9' to each password before hashing and two people who both chose 'dragon' end up with totally different hashes, so cracking one doesn't break the other." },
+  { term: "dictionary attack", definition: "Cracking by hashing a list of likely passwords and checking each against the target hash.", example: "An attacker feeds in a list of the 10 million most common passwords, hashes each one, and checks them against the stolen hash until something matches." },
+  { term: "brute force", definition: "Trying every possible combination. Feasible against fast hashes and short passwords; hopeless against slow, salted ones.", example: "Grinding through 'aaaa', 'aaab', 'aaac' and onward will crack 'cat' in a flash, but a 16-character passphrase would take longer than the age of the universe." },
+  { term: "plaintext", definition: "The actual password, unhashed. The thing you must never store, and the prize an attacker is cracking toward.", example: "'letmein123' is the plaintext password: the real word an attacker is working to recover from the leaked hash." },
+  { term: "avalanche effect", definition: "Changing one character of the input changes the whole hash - a property of good hash functions.", example: "Hash 'password' and then 'Password' and the two digests look completely unrelated, even though you only changed one letter to a capital." },
 ];
 const G = (text: string, keyPrefix: string) => withGlossary(text, GLOSSARY, new Set<string>(), keyPrefix);
 

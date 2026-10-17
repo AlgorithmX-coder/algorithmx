@@ -12,18 +12,18 @@ import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, wit
 /* ───────────────────────── glossary ───────────────────────── */
 
 const GLOSSARY: GlossaryEntry[] = [
-  { term: "social engineering", definition: "Manipulating people into doing something unsafe - handing over a password, clicking a link, paying a fake invoice. It targets the person, not the system." },
-  { term: "phishing", definition: "Fake messages sent at scale to trick people into clicking a link or giving up credentials." },
-  { term: "spear phishing", definition: "A phishing message tailored to one specific person or company, using real details to seem credible." },
-  { term: "pretexting", definition: "Inventing a believable story and role (a supplier, IT support, the CEO) to make a request seem legitimate." },
-  { term: "vishing", definition: "Social engineering by phone - a convincing caller pressuring you into acting before you can verify." },
-  { term: "CEO fraud", definition: "A pretext where the attacker poses as a senior leader to rush an employee into a payment or data transfer. Also called business email compromise." },
-  { term: "urgency", definition: "Manufactured time pressure ('in the next 2 hours') designed to stop you stopping to think." },
-  { term: "lookalike domain", definition: "A sender address that's almost-but-not-quite right (harbour-systems-security.com instead of harbour.range)." },
-  { term: "out-of-band verification", definition: "Confirming a request through a different, trusted channel - a phone call to a known number - rather than replying to the message." },
-  { term: "DMARC", definition: "An email-authentication standard (with SPF and DKIM) that lets a domain block messages that spoof its address." },
-  { term: "red flag", definition: "A tell that a message may be a con: urgency, authority, a lookalike sender, a mismatched link, an irreversible request." },
-  { term: "report phishing", definition: "A one-click button that sends a suspicious message to the security team - turning every employee into a sensor." },
+  { term: "social engineering", definition: "Manipulating people into doing something unsafe - handing over a password, clicking a link, paying a fake invoice. It targets the person, not the system.", example: "A caller pretending to be from your bank talks you into reading out your one-time code - no hacking needed, just a convincing story." },
+  { term: "phishing", definition: "Fake messages sent at scale to trick people into clicking a link or giving up credentials.", example: "A text claiming 'your parcel is held, pay 1.99 to release it' blasted to thousands of phones, hoping a few panic and enter their card details." },
+  { term: "spear phishing", definition: "A phishing message tailored to one specific person or company, using real details to seem credible.", example: "An email to one pupil that names their actual school and form tutor is far more convincing than a generic 'Dear customer' blast." },
+  { term: "pretexting", definition: "Inventing a believable story and role (a supplier, IT support, the CEO) to make a request seem legitimate.", example: "Someone phones reception claiming to be 'IT support fixing your email' and asks for your password - the helpful story is the con." },
+  { term: "vishing", definition: "Social engineering by phone - a convincing caller pressuring you into acting before you can verify.", example: "A caller says they are from your bank's fraud team and need your code 'right now to stop a payment' - the rush is the giveaway." },
+  { term: "CEO fraud", definition: "A pretext where the attacker poses as a senior leader to rush an employee into a payment or data transfer. Also called business email compromise.", example: "A new finance assistant gets an email that looks like it is from the CEO: 'I am in a meeting, urgently pay this supplier 40,000 and keep it quiet.'" },
+  { term: "urgency", definition: "Manufactured time pressure ('in the next 2 hours') designed to stop you stopping to think.", example: "'Your account will be deleted in 24 hours unless you log in here' - the countdown exists to rush you past checking the link." },
+  { term: "lookalike domain", definition: "A sender address that's almost-but-not-quite right (harbour-systems-security.com instead of harbour.range).", example: "An email from 'support@paypa1.com', with a number 1 standing in for the letter l, hoping you won't look closely at the spelling." },
+  { term: "out-of-band verification", definition: "Confirming a request through a different, trusted channel - a phone call to a known number - rather than replying to the message.", example: "Got an email asking to change a supplier's bank details? Ring the supplier on the number you already had, not the one printed in the email." },
+  { term: "DMARC", definition: "An email-authentication standard (with SPF and DKIM) that lets a domain block messages that spoof its address.", example: "With DMARC set up, an attacker's email pretending to come from your school's address gets binned before it ever reaches an inbox." },
+  { term: "red flag", definition: "A tell that a message may be a con: urgency, authority, a lookalike sender, a mismatched link, an irreversible request.", example: "An 'urgent' email from 'the boss', sent from a lookalike address and demanding gift-card codes, stacks up four red flags at once." },
+  { term: "report phishing", definition: "A one-click button that sends a suspicious message to the security team - turning every employee into a sensor.", example: "One employee hits the Report Phishing button on a dodgy email, and the security team pulls the same message from 200 other inboxes before anyone clicks." },
 ];
 const G = (text: string, keyPrefix: string) => withGlossary(text, GLOSSARY, new Set<string>(), keyPrefix);
 

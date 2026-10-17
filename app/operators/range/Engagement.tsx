@@ -22,7 +22,7 @@ export type Check = {
 };
 /** A technical term the learner can hover (desktop) or tap (mobile) to see a
  *  plain, friendly definition. Auto-wrapped into lesson/defend text. */
-export type GlossaryEntry = { term: string; definition: string };
+export type GlossaryEntry = { term: string; definition: string; example?: string };
 
 // A learner-facing unit is a "Module" (Module 01…16). The in-fiction activity
 // you run inside one is still "the engagement". The persistence layer keys off
@@ -93,7 +93,7 @@ export const SANS = "var(--font-plex-sans),'IBM Plex Sans',system-ui,-apple-syst
 /* ───────── glossary: hover/tap-to-explain technical terms ─────────
  * Modelled on Cyber Pro's, dialled up for the younger audience: a glowing
  * dotted term with a ✦ spark, and a popover that pops in. Teaching standard. */
-export function GlossaryTerm({ term, definition }: { term: string; definition: string }) {
+export function GlossaryTerm({ term, definition, example }: { term: string; definition: string; example?: string }) {
   const [open, setOpen] = useState(false);
   return (
     <span style={{ position: "relative", display: "inline-block" }}>
@@ -108,9 +108,16 @@ export function GlossaryTerm({ term, definition }: { term: string; definition: s
         {term}<span aria-hidden style={{ fontSize: ".7em", color: C.indigo2, verticalAlign: "super", marginLeft: 1 }}>✦</span>
       </button>
       {open && (
-        <span role="tooltip" className="co-anim co-pop" style={{ position: "absolute", left: 0, bottom: "calc(100% + 9px)", zIndex: 40, width: 272, maxWidth: "82vw", background: C.raise, border: `1px solid ${C.indigo}66`, borderRadius: 12, padding: "12px 14px", boxShadow: `0 14px 34px rgba(0,0,0,.6), 0 0 0 1px ${C.indigo}22`, fontFamily: SANS, fontSize: 13.5, fontWeight: 400, lineHeight: 1.55, color: C.soft, whiteSpace: "normal", letterSpacing: "normal", textTransform: "none" }}>
-          <span style={{ display: "block", fontFamily: MONO, fontSize: 10.5, fontWeight: 700, letterSpacing: ".08em", color: C.indigo2, marginBottom: 5 }}>✦ {term.toUpperCase()}</span>
-          {definition}
+        <span role="tooltip" className="co-anim co-pop" style={{ position: "absolute", left: 0, bottom: "calc(100% + 11px)", zIndex: 40, width: 304, maxWidth: "86vw", background: "linear-gradient(180deg, #1b1733, #130f20)", border: `1px solid ${C.indigo}`, borderRadius: 13, padding: "13px 15px 14px", boxShadow: `0 20px 46px rgba(0,0,0,.72), 0 0 26px -6px ${C.indigo}`, fontFamily: SANS, fontSize: 13.5, fontWeight: 400, lineHeight: 1.55, color: C.ink, whiteSpace: "normal", letterSpacing: "normal", textTransform: "none" }}>
+          <span style={{ display: "block", fontFamily: MONO, fontSize: 10.5, fontWeight: 700, letterSpacing: ".09em", color: C.indigo2, marginBottom: 6 }}>✦ {term.toUpperCase()}</span>
+          <span style={{ display: "block", color: C.soft }}>{definition}</span>
+          {example && (
+            <span style={{ display: "block", marginTop: 11, paddingTop: 10, borderTop: `1px solid ${C.indigo}3a` }}>
+              <span style={{ display: "block", fontFamily: MONO, fontSize: 9.5, fontWeight: 700, letterSpacing: ".1em", color: C.cyan, marginBottom: 4 }}>◆ IN THE REAL WORLD</span>
+              <span style={{ display: "block", color: C.soft, fontSize: 13 }}>{example}</span>
+            </span>
+          )}
+          <span aria-hidden style={{ position: "absolute", left: 20, bottom: -6, width: 11, height: 11, background: "#130f20", borderRight: `1px solid ${C.indigo}`, borderBottom: `1px solid ${C.indigo}`, transform: "rotate(45deg)" }} />
         </span>
       )}
     </span>
@@ -135,7 +142,7 @@ export function withGlossary(text: string, glossary: GlossaryEntry[] | undefined
     if (!entry || seen.has(key)) continue;
     seen.add(key);
     if (m.index > last) out.push(text.slice(last, m.index));
-    out.push(<GlossaryTerm key={`${keyPrefix}-${m.index}`} term={matched} definition={entry.definition} />);
+    out.push(<GlossaryTerm key={`${keyPrefix}-${m.index}`} term={matched} definition={entry.definition} example={entry.example} />);
     last = m.index + matched.length;
   }
   if (last < text.length) out.push(text.slice(last));

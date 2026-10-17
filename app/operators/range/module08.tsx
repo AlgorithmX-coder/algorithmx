@@ -32,20 +32,20 @@ const XOR_HEX = "4f535e1b5f49544b1b4b5452554f1b52481b4b525e491b5552555e"; // XOR
 /* ───────────────────────── glossary ───────────────────────── */
 
 const GLOSSARY: GlossaryEntry[] = [
-  { term: "encoding", definition: "Reformatting data so it travels safely (like base64). Reversible by anyone with no key - it protects nothing." },
-  { term: "hashing", definition: "A one-way fingerprint of data. You can't reverse it; used for passwords and integrity, not secrecy." },
-  { term: "encryption", definition: "Scrambling data so only someone with the secret key can get it back. The only one of the three that actually hides a secret." },
-  { term: "base64", definition: "An encoding that writes any data in plain letters, digits, + and /, often padded with =. Looks scrambled, isn't secret." },
-  { term: "cipher", definition: "A method of scrambling a message. Classic ones (Caesar, simple XOR) are weak because their keys are tiny." },
-  { term: "Caesar cipher", definition: "Shifts every letter by a fixed amount. Only 25 possible shifts, so you can just try them all." },
-  { term: "XOR", definition: "A bitwise operation used in simple ciphers. XORing with the same key twice returns the original - and a one-byte key has only 256 possibilities." },
-  { term: "key", definition: "The secret that encryption depends on. Security comes from the key being secret and the keyspace being huge - not from hiding the method." },
-  { term: "keyspace", definition: "How many possible keys there are. 25 (Caesar) or 256 (one-byte XOR) is trivially brute-forced; a real key has astronomically more." },
-  { term: "plaintext", definition: "The original, readable message - before encryption or after you've broken it." },
-  { term: "ciphertext", definition: "The scrambled output of a cipher - what you intercept and try to break." },
-  { term: "brute force", definition: "Trying every possible key until the output is readable. Devastating against small keyspaces, hopeless against real ones." },
-  { term: "AES", definition: "A modern, strong encryption algorithm with a huge keyspace - the right kind of tool when you genuinely need secrecy." },
-  { term: "key management", definition: "Keeping keys secret and separate from the data - the hard, important part. A key left in the code protects nothing." },
+  { term: "encoding", definition: "Reformatting data so it travels safely (like base64). Reversible by anyone with no key - it protects nothing.", example: "base64 is like writing a note in neat block capitals: anyone can read it straight back, it only changes the shape, it hides nothing." },
+  { term: "hashing", definition: "A one-way fingerprint of data. You can't reverse it; used for passwords and integrity, not secrecy.", example: "A hash is like blending a smoothie: easy to make from the fruit, impossible to get the whole fruit back out of the glass." },
+  { term: "encryption", definition: "Scrambling data so only someone with the secret key can get it back. The only one of the three that actually hides a secret.", example: "Locking a diary with a key only you own is encryption: without the key the pages are just useless scribble." },
+  { term: "base64", definition: "An encoding that writes any data in plain letters, digits, + and /, often padded with =. Looks scrambled, isn't secret.", example: "When you paste a picture into an email it often travels as a long base64 string of letters ending in '=' signs; it looks like gibberish but it is trivial to turn back into the image." },
+  { term: "cipher", definition: "A method of scrambling a message. Classic ones (Caesar, simple XOR) are weak because their keys are tiny.", example: "A secret-decoder ring that shifts every letter is a cipher, but with so few settings a friend could crack your note over breakfast." },
+  { term: "Caesar cipher", definition: "Shifts every letter by a fixed amount. Only 25 possible shifts, so you can just try them all.", example: "Shift every letter forward by 3 and 'HELLO' becomes 'KHOOR'; since there are only 25 shifts, you can simply try them all by hand." },
+  { term: "XOR", definition: "A bitwise operation used in simple ciphers. XORing with the same key twice returns the original - and a one-byte key has only 256 possibilities.", example: "XOR is like a flip switch: run the data through the same one-byte key a second time and it flips right back to the original, and there are only 256 keys to test." },
+  { term: "key", definition: "The secret that encryption depends on. Security comes from the key being secret and the keyspace being huge - not from hiding the method.", example: "A good padlock isn't a secret, everyone knows how padlocks work; the safety is entirely in your key being secret and hard to copy." },
+  { term: "keyspace", definition: "How many possible keys there are. 25 (Caesar) or 256 (one-byte XOR) is trivially brute-forced; a real key has astronomically more.", example: "A 4-digit phone PIN has a keyspace of only 10,000, which a thief can grind through; a real encryption key has so many that you couldn't test them all in a billion years." },
+  { term: "plaintext", definition: "The original, readable message - before encryption or after you've broken it.", example: "'the drop point is pier nine' is the plaintext: the plain readable message before it gets scrambled into code." },
+  { term: "ciphertext", definition: "The scrambled output of a cipher - what you intercept and try to break.", example: "The scrambled jumble '4f535e1b...' you grab off the wire is the ciphertext, meaningless to you until you crack it." },
+  { term: "brute force", definition: "Trying every possible key until the output is readable. Devastating against small keyspaces, hopeless against real ones.", example: "Trying 0000, then 0001, then 0002 on a bike lock until it clicks open is brute force: quick on 4 digits, impossible on a long key." },
+  { term: "AES", definition: "A modern, strong encryption algorithm with a huge keyspace - the right kind of tool when you genuinely need secrecy.", example: "When WhatsApp and online banking protect your data they reach for AES, whose keyspace is far too vast to ever brute-force." },
+  { term: "key management", definition: "Keeping keys secret and separate from the data - the hard, important part. A key left in the code protects nothing.", example: "Writing the safe's combination on a sticky note stuck to the safe defeats the point; key management is keeping the key somewhere the data isn't." },
 ];
 const G = (text: string, keyPrefix: string) => withGlossary(text, GLOSSARY, new Set<string>(), keyPrefix);
 

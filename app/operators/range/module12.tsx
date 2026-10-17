@@ -14,17 +14,17 @@ import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, wit
 /* ───────────────────────── glossary ───────────────────────── */
 
 const GLOSSARY: GlossaryEntry[] = [
-  { term: "incident response", definition: "The disciplined process for handling a security breach: detect, contain, eradicate, recover, and learn - in order." },
-  { term: "incident", definition: "A confirmed security event that needs a response - a real breach, not just a noisy alert." },
-  { term: "triage", definition: "Sorting incoming alerts to separate a genuine incident from benign noise and false positives, fast." },
-  { term: "false positive", definition: "An alert that looks suspicious but turns out to be harmless - most alerts are these, which is why triage matters." },
-  { term: "containment", definition: "The first response to a live attack: stop the damage spreading (block, isolate, kill the session) without destroying evidence." },
-  { term: "eradicate", definition: "Remove the attacker's foothold for good - reset credentials, revoke sessions, and close the vulnerability they used." },
-  { term: "recover", definition: "Restore systems safely from known-clean backups and watch closely for the attacker's return." },
-  { term: "lessons learned", definition: "The review after an incident that feeds the findings back in, so the same hole can't be used twice." },
-  { term: "IR plan", definition: "A written incident-response plan with roles and steps, prepared before anything happens, so response is executed not invented." },
-  { term: "tabletop exercise", definition: "A rehearsed, pretend breach the team walks through, so the real response becomes muscle memory." },
-  { term: "chain of custody", definition: "Keeping evidence intact and accounted for during a response, so findings hold up and nothing is lost." },
+  { term: "incident response", definition: "The disciplined process for handling a security breach: detect, contain, eradicate, recover, and learn - in order.", example: "Like a fire drill, the team follows set steps the moment a breach hits instead of panicking and making it worse." },
+  { term: "incident", definition: "A confirmed security event that needs a response - a real breach, not just a noisy alert.", example: "An antivirus pop-up is just an alert; ransomware actually encrypting the finance team's files is an incident." },
+  { term: "triage", definition: "Sorting incoming alerts to separate a genuine incident from benign noise and false positives, fast.", example: "Like an A&E nurse deciding who needs help now and who can wait, an analyst scans 200 alerts to find the one that is a real attack." },
+  { term: "false positive", definition: "An alert that looks suspicious but turns out to be harmless - most alerts are these, which is why triage matters.", example: "An alarm screaming 'malware!' about a file the IT team installed themselves yesterday is a false positive, like a smoke alarm set off by toast." },
+  { term: "containment", definition: "The first response to a live attack: stop the damage spreading (block, isolate, kill the session) without destroying evidence.", example: "Unplugging the one infected laptop from the network stops ransomware reaching the other 50 machines, the digital version of shutting a watertight door." },
+  { term: "eradicate", definition: "Remove the attacker's foothold for good - reset credentials, revoke sessions, and close the vulnerability they used.", example: "After pulling the infected laptop offline, you reset the stolen password and patch the hole they came through, so they cannot simply walk back in." },
+  { term: "recover", definition: "Restore systems safely from known-clean backups and watch closely for the attacker's return.", example: "You rebuild the server from last week's clean backup rather than the infected one, then watch the logs closely in case the attacker tries again." },
+  { term: "lessons learned", definition: "The review after an incident that feeds the findings back in, so the same hole can't be used twice.", example: "The review finds that nobody had switched on two-factor login, so the team turns it on for everyone and the same trick cannot work again." },
+  { term: "IR plan", definition: "A written incident-response plan with roles and steps, prepared before anything happens, so response is executed not invented.", example: "Like a school with a fire-evacuation plan on the wall, the team keeps a step-by-step breach playbook ready before anything goes wrong." },
+  { term: "tabletop exercise", definition: "A rehearsed, pretend breach the team walks through, so the real response becomes muscle memory.", example: "The team sits round a table and talks through 'ransomware just hit payroll, what does each of us do?' so the real thing feels rehearsed." },
+  { term: "chain of custody", definition: "Keeping evidence intact and accounted for during a response, so findings hold up and nothing is lost.", example: "You take a labelled copy of the infected laptop's drive and record who held it, just as police bag evidence so it stands up later." },
 ];
 const G = (text: string, keyPrefix: string) => withGlossary(text, GLOSSARY, new Set<string>(), keyPrefix);
 

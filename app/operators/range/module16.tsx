@@ -14,16 +14,16 @@ import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, wit
 /* ───────────────────────── glossary ───────────────────────── */
 
 const GLOSSARY: GlossaryEntry[] = [
-  { term: "engagement report", definition: "The written deliverable of a test: findings, severities, impact and fixes a client can act on. The actual product." },
-  { term: "deliverable", definition: "What the client pays for and receives - here, a clear report, not the break-in itself." },
-  { term: "debrief", definition: "The closing meeting where you walk the client through the findings and agree what happens next." },
-  { term: "severity", definition: "How serious a finding is, banded Low to Critical, scored on exploitability and impact." },
-  { term: "remediation", definition: "The concrete fix a developer can act on today - specific, not 'be more secure'." },
-  { term: "attack path", definition: "The chain of findings that combine into an impact. Reviewing systems by attack path catches dangerous combinations." },
-  { term: "post-exploitation", definition: "What you do once you're in - proving impact with least harm, never destroying or hoarding real data." },
-  { term: "least harm", definition: "Prove the impact with the smallest, safest action; a screenshot of access beats exfiltrating real records." },
-  { term: "coordinated disclosure", definition: "Delivering findings privately, giving time to fix before any public detail." },
-  { term: "portfolio", definition: "Your growing record of real, ethical findings - concrete proof of skill for a teacher, university or employer." },
+  { term: "engagement report", definition: "The written deliverable of a test: findings, severities, impact and fixes a client can act on. The actual product.", example: "After two weeks of hacking, what you actually hand the client is a 20-page PDF listing each flaw and its fix, not a pile of raw screenshots." },
+  { term: "deliverable", definition: "What the client pays for and receives - here, a clear report, not the break-in itself.", example: "The client does not pay to watch you break in; they pay for the tidy document that tells their developers exactly what to repair." },
+  { term: "debrief", definition: "The closing meeting where you walk the client through the findings and agree what happens next.", example: "You sit down with the company's team, talk through the three worst bugs on screen, and agree who fixes what and by when." },
+  { term: "severity", definition: "How serious a finding is, banded Low to Critical, scored on exploitability and impact.", example: "'Anyone can read every order' is Critical and tops the report; 'the site reveals its version number' is Low and sits near the bottom." },
+  { term: "remediation", definition: "The concrete fix a developer can act on today - specific, not 'be more secure'.", example: "You write 'add a server-side check that the logged-in user owns the order before showing it', not the useless advice 'improve security'." },
+  { term: "attack path", definition: "The chain of findings that combine into an impact. Reviewing systems by attack path catches dangerous combinations.", example: "Your report draws the route as a map: leaked path, then exposed backup, then reused password, then admin, so the client sees how the small bugs linked up." },
+  { term: "post-exploitation", definition: "What you do once you're in - proving impact with least harm, never destroying or hoarding real data.", example: "Once inside the admin panel you take one screenshot to prove access, then stop; you do not start deleting accounts or copying the customer list." },
+  { term: "least harm", definition: "Prove the impact with the smallest, safest action; a screenshot of access beats exfiltrating real records.", example: "To show you reached the database you copy a single dummy test row, rather than downloading all 50,000 real customers." },
+  { term: "coordinated disclosure", definition: "Delivering findings privately, giving time to fix before any public detail.", example: "You give the company 90 days to patch before you mention the flaw in a public write-up, so criminals do not learn it first." },
+  { term: "portfolio", definition: "Your growing record of real, ethical findings - concrete proof of skill for a teacher, university or employer.", example: "At a university or job interview you show three write-ups of bugs you reported responsibly, which proves far more than just saying 'I like hacking'." },
 ];
 const G = (text: string, keyPrefix: string) => withGlossary(text, GLOSSARY, new Set<string>(), keyPrefix);
 
