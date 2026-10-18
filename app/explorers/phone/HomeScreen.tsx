@@ -18,6 +18,7 @@
 
 import { useState } from "react";
 import { primeAudio } from "../engine/audio";
+import { caseClockTime } from "./clock";
 import type { PhoneAppKind } from "./case06";
 
 const UI = `-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, system-ui, sans-serif`;
@@ -173,12 +174,14 @@ export function HomeScreen({
   accent,
   reduced,
   onDone,
+  caseId,
 }: {
   appName: string;
   kind: PhoneAppKind;
   accent: string;
   reduced: boolean;
   onDone: () => void;
+  caseId: string;
 }) {
   const [zooming, setZooming] = useState(false);
   const duration = reduced ? 140 : 380;
@@ -209,7 +212,7 @@ export function HomeScreen({
       }}
     >
       <div style={{ textAlign: "center", marginBottom: 24, transition: "opacity 180ms ease", opacity: zooming ? 0 : 1 }}>
-        <div style={{ fontFamily: UI, fontSize: 30, fontWeight: 300, color: "#F3F4F7" }}>9:41</div>
+        <div style={{ fontFamily: UI, fontSize: 30, fontWeight: 300, color: "#F3F4F7" }}>{caseClockTime(caseId)}</div>
         <div style={{ fontFamily: UI, fontSize: 12.5, color: "#7a7a88", marginTop: 2 }}>Tuesday, 12 October</div>
       </div>
 
