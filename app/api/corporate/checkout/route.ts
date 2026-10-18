@@ -10,6 +10,8 @@ import { CORPORATE_PRODUCT_SLUGS, FIRM_TOOL_KEYS } from "@/app/lib/corporateProd
 const Body = z.object({
   course: z.enum(CORPORATE_PRODUCT_SLUGS),
   seats: z.number().int(),
+  /* Fluent seats bought in the same checkout as AI Cleared; 0 or absent otherwise. */
+  fluentSeats: z.number().int().min(0).max(249).optional(),
   firmName: z.string().min(2).max(120),
   sector: z.string().max(80).optional().nullable(),
   contactName: z.string().max(120).optional().nullable(),
