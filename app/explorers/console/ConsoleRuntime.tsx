@@ -102,8 +102,12 @@ export default function ConsoleRuntime({ consoleCase, onExit, onNextCase }: { co
   const acc = consoleCase.accent ?? C.amber;
   const THEME = consoleCase.theme;
   const [resumeStage] = useState<CaseStage | null>(() => readProgress(consoleCase.id));
+  // UAT skip: one click fast-forwards through whatever's left of the CURRENT
+  // skill only (narration + any dock waiting on input), then clears itself —
+  // same one-click-per-skill contract as Phone's "Skip this whole skill".
+  const [skipRequested, setSkipRequested] = useState(false);
 
-  const reduce = fast || (typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches);
+  const reduce = fast || skipRequested || (typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches);
   const idRef = useRef(0);
   const resolveRef = useRef<((v: string) => void) | null>(null);
   const startedRef = useRef(false);
@@ -116,6 +120,26 @@ export default function ConsoleRuntime({ consoleCase, onExit, onNextCase }: { co
 
   const working = async (ms: number) => { const id = nextId(); push({ id, kind: "working" }); await wait(ms); setItems((a) => a.filter((x) => x.id !== id)); };
   const awaitUser = () => new Promise<string>((res) => { resolveRef.current = res; });
+
+  // While a skip is in flight, immediately resolve whatever dock is currently
+  // blocking, as if the right input had just been given, instead of waiting
+  // for a real tap — same approach as Phone's identical effect. toggle/build/
+  // decode/spot all gate correctness inside DockView's own local submit
+  // handlers (the parent only ever awaits an "ok" string, never checks it),
+  // so resolving "ok" directly here is exactly what a correct submit sends.
+  useEffect(() => {
+    if (!skipRequested || !dock) return;
+    if (dock.type === "choose") {
+      const safe = dock.options.find((o) => o.outcome !== "bad") ?? dock.options[0];
+      resolveRef.current?.(safe.label);
+      return;
+    }
+    if (dock.type === "clear") { resolveRef.current?.("go"); return; }
+    if (dock.type === "toggle" || dock.type === "build" || dock.type === "decode" || dock.type === "spot") {
+      resolveRef.current?.("ok");
+      return;
+    }
+  }, [dock, skipRequested]);
 
   const speak = (text: string, voice?: string) =>
     new Promise<void>((res) => {
@@ -226,7 +250,7 @@ export default function ConsoleRuntime({ consoleCase, onExit, onNextCase }: { co
         await wait(650);
         setDock({ type: "clear", text: "Ready? Skill 1 first." }); await awaitUser();
       }
-      for (let i = from.index; i < total; i++) { saveProgress(consoleCase.id, { kind: "skill", index: i }); await runSkill(consoleCase.skills[i], total); }
+      for (let i = from.index; i < total; i++) { saveProgress(consoleCase.id, { kind: "skill", index: i }); await runSkill(consoleCase.skills[i], total); setSkipRequested(false); /* one skip = exactly one skill */ }
     }
     if (from.kind === "skill" || from.kind === "boss") { saveProgress(consoleCase.id, { kind: "boss" }); await runBoss(); }
     saveProgress(consoleCase.id, { kind: "test" });
@@ -269,6 +293,33 @@ export default function ConsoleRuntime({ consoleCase, onExit, onNextCase }: { co
       <div aria-hidden style={{ position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none", background: "radial-gradient(760px 880px at 50% 50%, rgba(8,7,4,0.74), rgba(8,7,4,0.42) 68%, rgba(8,7,4,0.66))" }} />
 
       <SkipButton />
+      {/* UAT skip: fast-forwards the rest of the current skill in one click
+          (narration + any dock resolved as if answered correctly), same
+          one-click-per-skill contract as Phone's "Skip this whole skill". */}
+      <button
+        onClick={() => setSkipRequested(true)}
+        disabled={phase !== "play"}
+        aria-label="Skip this whole skill (testing)"
+        style={{
+          position: "fixed",
+          bottom: 60,
+          right: 14,
+          zIndex: 70,
+          fontFamily: MONO,
+          fontSize: 11.5,
+          fontWeight: 700,
+          letterSpacing: "0.03em",
+          color: phase === "play" ? "#7CFFC4" : "rgba(124,255,196,0.35)",
+          background: "rgba(0,0,0,0.6)",
+          border: `1px solid ${phase === "play" ? "rgba(124,255,196,0.55)" : "rgba(124,255,196,0.2)"}`,
+          borderRadius: 999,
+          padding: "8px 14px",
+          cursor: phase === "play" ? "pointer" : "default",
+          boxShadow: "0 6px 18px rgba(0,0,0,0.45)",
+        }}
+      >
+        Skip skill ⏭
+      </button>
       <button className="cn-btn" onClick={onExit} style={{ position: "fixed", top: 14, left: 14, zIndex: 20, fontFamily: MONO, fontSize: 11.5, fontWeight: 600, color: C.dim, background: "rgba(255,255,255,0.04)", border: `1px solid ${C.edge}`, borderRadius: 6, padding: "6px 12px", cursor: "pointer" }}>← Leave</button>
       <button className="cn-btn" onClick={() => { const v = !voiceOn; setVoiceOn(v); if (!v) stopWren(); }} aria-pressed={voiceOn} style={{ position: "fixed", top: 14, right: 14, zIndex: 20, fontFamily: MONO, fontSize: 11.5, fontWeight: 700, color: voiceOn ? C.wren : C.dim, background: "rgba(255,255,255,0.04)", border: `1px solid ${voiceOn ? "rgba(43,212,180,.5)" : C.edge}`, borderRadius: 6, padding: "6px 12px", cursor: "pointer" }}>{voiceOn ? "🔊 WREN on" : "🔇 WREN off"}</button>
       <button className="cn-btn" onClick={cycleVoiceRate} aria-label={`WREN's talking speed: ${voiceRate}×. Tap to change.`} style={{ position: "fixed", top: 54, right: 14, zIndex: 20, fontFamily: MONO, fontSize: 11, fontWeight: 700, color: voiceRate !== 1 ? C.wren : C.dim, background: "rgba(255,255,255,0.04)", border: `1px solid ${voiceRate !== 1 ? "rgba(43,212,180,.5)" : C.edge}`, borderRadius: 6, padding: "6px 12px", cursor: "pointer" }}>{voiceRate}×</button>
