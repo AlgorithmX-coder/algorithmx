@@ -105,6 +105,51 @@ Week 2 is on the CI ratchet with week 1.
 
 ---
 
+## Weeks 3, 4 and 5 status - swept 17 October 2026
+
+Every item raised on weeks 1 and 2 was run against weeks 3-5 before the owner
+sees them. All ten instant gates pass (`node scripts/audit-week.mjs 3 4 5`),
+and all four browser stages pass:
+
+| Stage | Result |
+|---|---|
+| stage overflow (L2) | 90 screens, no screen scrolls - confirmed by two runs in a row |
+| card fill (L3) | 90 screens, none with a quarter of the card empty below the content |
+| frame fit (L4) | 83 screens across the three weeks, 0 flagged |
+| boss result screens (5b) | the raccoon is whole on all three weeks, both viewports |
+
+**Two of those four were lying before they passed.** The scroll-bar gate named
+a different pair of screens on each run and both pairs were fine; it now waits
+for the layout to stop moving. Frame-fit read only the first week argument, so
+the `3 4 5` the checklist prints graded week 3 and reported a clean run. Rules
+7 and 10 came out of those.
+
+**What the sweep actually found and fixed:**
+
+| | |
+|---|---|
+| nine recap screens | a scroll bar on a page that fits (W2-4's glow, 50px past the stage) |
+| week 4's copycat card | the only card that explained itself, so a child who could not read the address still picked it |
+| week 4, two verdicts | Sarah saying back what the child had just read |
+| eight clips | a final consonant short enough to re-record; two independent takes to be sure |
+
+**Three things were left as they are, deliberately**, and are in the echo
+audit's KEEP list with the reason: week 3's "tell a trusted grown-up" (the
+locked safety term, named every time on purpose), week 4's "Stop. Check.
+Show." (the week's mantra, drilled by repetition), and week 5's fire metaphor
+(the whole teaching device of Don't Feed The Fire). A repeat that IS the
+teaching is not a defect.
+
+**For the owner's ear, not the gates.** Three clips end on a stop at 60ms:
+"OK?" and "bait." in week 3, "Brilliant!" in week 5. Two separate retakes
+measured the same, so that is this voice saying a word-final /t/ and /k/
+rather than a cut. If any of them sounds clipped when you hear it, say so and
+they can be re-recorded with different wording.
+
+**Carried to other weeks' sweeps, not in scope here.** 29 echo pairs in weeks
+6-20, and 15 short consonants in weeks 6, 7, 9, 14, 15 and 19. Weeks 1-5 are
+clean on both.
+
 ---
 
 ## Week 2 UAT intake, 17 October 2026
@@ -778,6 +823,46 @@ stopping would have earned another report.
 have been caught by a gate that did not exist yet, which is why a new gate is
 part of the fix rather than a follow-up.
 
+**7. A guard that is red for a benign reason is worse than no guard.** Two
+did this in the weeks 3-5 round. `audit-every-clip-is-emma` recomputed each
+clip's name from the printed text when the generator names it from the
+PRONUNCIATION, so six clips holding a year came back as wrong-voice audio
+when every one was correct. `audit-echoed-lines` paired lines by how close
+they sat in the file and reported eight echoes on weeks 3-5, of which one was
+real. Both gates exist because the thing they check reached the owner once
+already - a robot voice, and a line said twice. A gate that cries wolf gets
+ignored, and the next real fault sits in the noise where nobody looks. Chase
+a false positive as seriously as the bug.
+
+**8. A check may only pair what the runtime shows TOGETHER.** Nearness in the
+source is not co-occurrence, in either direction. Two lines 800 characters
+apart can be different screens; two lines inside one object can be mutually
+exclusive branches a child never sees together. Reading the component is the
+only way to know which, and it pays: QuizBoss speaks
+`teachOnWrong.explanation` on EVERY answer despite the field name, so it does
+co-occur with `villainRight` - which is exactly the week 1 pair the owner
+caught - while one card's explanation never co-occurs with another card's.
+
+**9. Let the control kill the test.** Running a new measurement against a
+known-GOOD case only proves it is quiet. Build the known-BAD case and watch
+the measurement find it. Three attempts to separate a cut consonant from a
+short stop release failed here, and the third was killed by its own control:
+it chopped 300ms off a clip and read identically, because these clips carry
+about 0.3s of trailing silence, so the chop removed padding rather than
+speech. A test whose control passes unchanged is measuring nothing. And when
+the measurement will not settle it, change what you VARY instead - recording
+the same line twice separated the bad takes, which cleared, from the voice's
+own phonetics, which sat at 60ms and would not move.
+
+**10. Run a new or changed gate TWICE before believing either answer.** The
+scroll-bar gate named week 3 screen 12 and week 4 screen 20. Fixed, it named
+week 5 screens 8 and 12 instead, on a build that had not changed. Each run
+read as authoritative on its own, and either one alone would have sent
+somebody to redesign a screen that was never broken. Two runs that disagree
+tell you the measurement is wrong before the content gets blamed; two that
+agree are the cheapest evidence available that it is not. This applies to any
+gate that drives a browser, where the answer depends on when you look.
+
 ### The gates, and what each one actually asks
 
 | Gate | The question it asks |
@@ -789,6 +874,10 @@ part of the fix rather than a follow-up.
 | `audit-stage-overflow.mjs` | does any screen scroll when it fits |
 | `audit-framing-echoes.mjs` | is a stock phrase said twice on one screen |
 | `audit-echoed-lines.mjs` | does a villain line repeat its own verdict |
+| `audit-every-clip-is-emma.mjs` | does every clip's NAME prove the voice it claims |
+| `audit-result-overlay.mjs` | does a finished exercise still hold a game's height |
+| `audit-pinned-overlays.mjs` | is anything pinned over live gameplay |
+| `audit-week.mjs <week...>` | every instant gate above, for one week, as one command |
 | `pad-lesson-icons.mjs --check` | can any icon be sliced by a container |
 | `audit-no-em-dashes.mjs` | any em-dash in copy a child reads |
 

@@ -41,8 +41,6 @@ const FRAMING = [
   "after all",
   "extra care",
   "speak up",
-  "keep it secret",
-  "the golden rule",
   "the hero move",
   "what's the hero move",
   "hit pause",
