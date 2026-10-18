@@ -1467,24 +1467,37 @@ function CatchThemStage({ def, actor, reduced, audio, emit, onPass, onResit, voi
     }
   };
 
-  useIsoLayoutEffect(() => {
-    if (phase === "intro" && voiceOn && def.voice?.intro) {
-      playWren(def.voice.intro, true, () => setIntroEnded(true));
-      // Last resort well past the ~24s clip: if the end event never fires, START
-      // still frees so a child is never stuck on the intro.
-      const t = setTimeout(() => setIntroEnded(true), 30000);
-      return () => { stopWren(); clearTimeout(t); };
-    }
-    return () => stopWren();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  // The ~24s intro clip used to autoplay on mount. On a cold deep-link
+  // (&at=test, how testers retest this one screen) the browser blocks that
+  // autoplay before any gesture has happened; the engine's generic "replay
+  // the blocked line on the next tap" fallback then fired on the STUDENT'S
+  // next tap, which is "START THE TEST" — so the full clip played over
+  // question 1. Two targeted fixes around that replay both failed real
+  // verification (see UAT item #2). Fix at the root instead: never autoplay
+  // this clip. It only ever plays from a real, direct click on the button
+  // below, so there's nothing for the browser to block and nothing queued
+  // to misfire later.
+  const [introStarted, setIntroStarted] = useState(false);
+  const introVoiced = voiceOn && !!def.voice?.intro;
+  const startIntroVoice = () => {
+    if (introStarted) return;
+    setIntroStarted(true);
+    playWren(def.voice!.intro!, true, () => setIntroEnded(true));
+  };
+  useEffect(() => {
+    if (!introStarted) return;
+    // Last resort well past the ~24s clip: if the end event never fires, START
+    // still frees so a child is never stuck on the intro.
+    const t = setTimeout(() => setIntroEnded(true), 30000);
+    return () => clearTimeout(t);
+  }, [introStarted]);
+  useEffect(() => () => stopWren(), []); // stop any clip if this stage unmounts mid-line
   useEffect(() => { if (speaking) spokeRef.current = true; }, [speaking]);
 
   // Can only START once WREN has FINISHED the intro. onEnded is the exact signal
   // (the 24s clip runs longer than any lock timer, so we don't trust `speaking`
   // alone here). Fallbacks: no voiced intro, or a blocked/failed clip that
   // spoke-then-stopped, so a child is never trapped on the intro screen.
-  const introVoiced = voiceOn && !!def.voice?.intro;
   const canStart = !introVoiced || introEnded || (spokeRef.current && !speaking);
 
   if (phase === "intro") {
@@ -1502,15 +1515,18 @@ function CatchThemStage({ def, actor, reduced, audio, emit, onPass, onResit, voi
         </p>
         {canStart ? (
           <AmberButton label="START THE TEST →" onClick={begin} />
-        ) : (
+        ) : introStarted ? (
           // Render nothing: this is the exact "Time for the Test" screen
-          // the duplicate was originally reported on. !canStart only ever
-          // overlaps with the global hard lock being up (intro narration
-          // arming or actively playing), so the global "WREN IS SPEAKING"
-          // pill is always the one already on screen here. An earlier pass
-          // dropped the duplicate TEXT but kept a second animated dots
-          // indicator, which still reads as two things pulsing at once.
+          // the duplicate was originally reported on. !canStart while
+          // introStarted only ever overlaps with the global hard lock being
+          // up (intro narration actively playing), so the global "WREN IS
+          // SPEAKING" pill is always the one already on screen here. An
+          // earlier pass dropped the duplicate TEXT but kept a second
+          // animated dots indicator, which still reads as two things
+          // pulsing at once.
           null
+        ) : (
+          <GhostButton label="▶ Hear the briefing" onClick={startIntroVoice} />
         )}
       </section>
     );

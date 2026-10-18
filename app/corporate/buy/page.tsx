@@ -22,6 +22,7 @@ export default async function BuyPage({ searchParams }: { searchParams: Promise<
   const live = stripeConfigured();
   const courses = sellableCourses();
   const course = courses.find((c) => c === sp.course) ?? courses[0] ?? "ai-cleared";
+  const both = sp.course === "both";
   const seats = Math.min(249, Math.max(10, Math.round((Number(sp.seats) || 10) / 10) * 10));
 
   return (
@@ -30,7 +31,7 @@ export default async function BuyPage({ searchParams }: { searchParams: Promise<
       <h1 className="cf-h1">Seats for your firm, <span className="cf-grad">live the moment payment clears</span>.</h1>
       <p className="cf-lead">Per person, per year, in packs of ten. Your admin invite is emailed as soon as the card payment goes through; from that link you invite your staff. {VAT_LINE[vatMode()]}</p>
       {live ? (
-        <BuyForm course={course} courses={courses} seats={seats} prices={SEAT_PRICE_PENCE} vatPercent={vatPercentShown()} vatMode={vatMode()} />
+        <BuyForm course={course} courses={courses} seats={seats} both={both} prices={SEAT_PRICE_PENCE} vatPercent={vatPercentShown()} vatMode={vatMode()} />
       ) : (
         <div className="cf-card" style={{ display: "flex", flexDirection: "column", gap: 10 }}>
           <b>Card checkout is not switched on yet.</b>

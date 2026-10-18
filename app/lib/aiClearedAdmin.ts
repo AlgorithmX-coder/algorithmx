@@ -215,11 +215,12 @@ export async function sendAdminWelcome(args: { to: string; token: string; firmNa
 
 /* Seats bought by card by an admin who already runs a firm: no new firm,
  * no new invite, just the count going up and a note saying so. */
-export async function sendSeatsAdded(args: { to: string; firmName: string; course: CourseSlug; seats: number; origin: string; staffName: string; staffEmail: string | null }) {
+export async function sendSeatsAdded(args: { to: string; firmName: string; course: CourseSlug; seats: number; fluentSeats?: number; origin: string; staffName: string; staffEmail: string | null }) {
   const c = COURSES[args.course];
   const link = `${args.origin}/ai-cleared/admin`;
-  const seatLine = `${args.seats} ${c.name} ${args.seats === 1 ? "seat" : "seats"}`;
-  const claim = args.course === "ai-fluent" ? "Each AI Fluent seat is claimed by someone who holds a valid AI Cleared certificate; the invite tells them so." : "Each person you invite gets their own link and claims a seat on first sign-in.";
+  const fluentSeats = args.course === "ai-cleared" ? args.fluentSeats ?? 0 : 0;
+  const seatLine = `${args.seats} ${c.name} ${args.seats === 1 ? "seat" : "seats"}` + (fluentSeats > 0 ? ` and ${fluentSeats} AI Fluent ${fluentSeats === 1 ? "seat" : "seats"}` : "");
+  const claim = args.course === "ai-fluent" || fluentSeats > 0 ? "Each AI Fluent seat is claimed by someone who holds a valid AI Cleared certificate; the invite tells them so." : "Each person you invite gets their own link and claims a seat on first sign-in.";
   const html = `
     <div style="font-family:Inter,Segoe UI,Helvetica,Arial,sans-serif;color:#14161d;max-width:560px;margin:0 auto;padding:24px">
       <p style="font-family:ui-monospace,Consolas,monospace;font-size:11px;letter-spacing:.2em;color:#0a7085;margin:0 0 16px">${c.brand}</p>
