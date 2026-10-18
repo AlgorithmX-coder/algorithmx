@@ -103,7 +103,14 @@ export default function WarRoomRuntime({ warCase, onExit, onNextCase }: { warCas
     new Promise<void>((res) => {
       let done = false;
       const fin = () => { if (!done) { done = true; res(); } };
-      if (voice && voiceRef.current && !reduce) { playWren(voice, true, fin); setTimeout(fin, 16000); }
+      // Same fix as Console's identical speak() (UAT: "Module 3... the
+      // task often pops up before WREN has finished") — 16000 was too
+      // short for longer narration lines, letting the dock appear and a
+      // tap skip the rest of the audio while it was still playing. Not
+      // reported for this block specifically, but it's the exact same
+      // code, so swept it too rather than wait for a separate report.
+      // 30000 matches the value Phone's identical speak() already uses.
+      if (voice && voiceRef.current && !reduce) { playWren(voice, true, fin); setTimeout(fin, 30000); }
       else { if (voice && voiceRef.current) playWren(voice, true); setTimeout(fin, reduce ? 250 : Math.max(2400, text.length * 42)); }
     });
 
