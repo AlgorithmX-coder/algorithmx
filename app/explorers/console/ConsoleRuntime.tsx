@@ -566,7 +566,18 @@ function Debrief({ data, acc, caseId, xp, reduced, onExit, onNext }: { data: Con
     // so this needs to scroll (same fix as Phone's Debrief) or the bottom
     // (incl. "Next case") is unreachable with no scrollbar shown (UAT:
     // Week 11, "squashed at the end, make it bigger and add a scroll").
-    <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", overflowY: "auto", padding: "0 26px 26px" }}>
+    // minHeight:0 added defensively: this div is a flex child of the panel
+    // above (flex:1 there too), and a flex item's default min-height is
+    // `auto` ("never shrink below my own content"), which can silently
+    // override overflowY:auto. Re-tested this screen at real laptop window
+    // sizes down to 1414x560 after a UAT report that it was still squashed
+    // there — scrolling actually already worked correctly at every size
+    // tried (confirmed by scrolling the container and checking the "Next
+    // case" button's real on-screen position, not just element visibility),
+    // so that report most likely predates this fix's original deploy. This
+    // min-height addition is a genuine robustness fix regardless — it just
+    // isn't the thing that was reproduced broken here.
+    <div style={{ flex: 1, minHeight: 0, display: "flex", flexDirection: "column", justifyContent: "center", overflowY: "auto", padding: "0 26px 26px" }}>
       <div style={{ fontSize: 24, fontWeight: 800, color: C.mint, marginBottom: 14, textAlign: "center", lineHeight: 1.2, fontFamily: MONO }}>{data.title}</div>
       <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 18 }}>
         {data.lines.map((l, i) => <div key={i} style={{ display: "flex", gap: 10, fontSize: 14, lineHeight: 1.45, color: C.ink }}><span style={{ color: C.mint, flex: "0 0 auto" }}>✓</span><span>{l}</span></div>)}
