@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import CodeRainBackground from "@/app/components/CodeRainBackground";
 import CubeMark from "@/app/components/CubeMark";
 
@@ -94,7 +94,12 @@ const CSS = `
 .cyops-root .mln{white-space:pre-wrap;display:block}
 .cyops-root .mln .pr{color:var(--ind)} .cyops-root .mln .cm{color:#49526e} .cyops-root .mln .ok{color:var(--added)} .cyops-root .mln .er{color:var(--threat)} .cyops-root .mln .hi{color:var(--ind-soft)}
 .cyops-root .cur{display:inline-block;width:8px;height:15px;vertical-align:-2px;background:var(--ind);box-shadow:0 0 8px var(--ind-glow);animation:cyopsblink 1.05s steps(1) infinite}
-.cyops-root .reelframe{display:block;width:100%;aspect-ratio:16/9;border:0;background:#0a0b0f}
+.cyops-root .reelstage{position:relative;line-height:0}
+.cyops-root .reelframe{display:block;width:100%;aspect-ratio:16/9;border:0;background:#0a0b0f;object-fit:cover}
+.cyops-root .reelreplay{position:absolute;inset:0;margin:auto;width:fit-content;height:fit-content;z-index:3;
+  display:inline-flex;align-items:center;gap:8px;font-family:var(--display);font-weight:700;font-size:15px;
+  color:#0b0820;background:linear-gradient(180deg,#B4AAFF,#8B7BFF);border:none;border-radius:99px;
+  padding:11px 20px;cursor:pointer;box-shadow:0 14px 34px -12px rgba(139,123,255,.8)}
 
 .cyops-root .band{background:linear-gradient(180deg,rgba(15,17,25,.55),rgba(15,17,25,.15));border-top:1px solid var(--hairline-soft);border-bottom:1px solid var(--hairline-soft)}
 .cyops-root .two{display:grid;grid-template-columns:.9fr 1.1fr;gap:44px;align-items:start}
@@ -196,6 +201,8 @@ type TermLine = { c: string; t: string; k?: string };
 export default function CyberStartLanding() {
   const bgRef = useRef<HTMLCanvasElement>(null);
   const termRef = useRef<HTMLDivElement>(null);
+  const reelRef = useRef<HTMLVideoElement | null>(null);
+  const [reelDone, setReelDone] = useState(false);
 
   useEffect(() => {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -335,20 +342,29 @@ export default function CyberStartLanding() {
     };
   }, []);
 
-  // Forward the page's first interaction into the embedded film, so a click or
-  // tap ANYWHERE on the page turns its sound on (browsers still require that one
-  // gesture - this just means it doesn't have to land on the film itself).
+  // The reel autoplays MUTED (the only autoplay browsers allow), then turns its
+  // sound on at the page's FIRST strong gesture (tap / key / touch) anywhere -
+  // a move or scroll can't lift the block. Only a strong gesture can lift the
+  // browser's unmuted-autoplay block; if unmuted play is still refused we fall
+  // back to muted so the film keeps PLAYING instead of freezing on a frame.
   useEffect(() => {
-    let done = false;
+    const v = reelRef.current;
+    if (!v) return;
+    v.muted = true;
+    v.play().catch(() => {});
     const evs = ["pointerdown", "keydown", "touchstart"] as const;
-    const tryUnmute = () => {
-      if (done) return;
-      const f = document.querySelector<HTMLIFrameElement>("iframe.reelframe");
-      const fn = f?.contentWindow && (f.contentWindow as unknown as { __unmute?: () => void }).__unmute;
-      if (typeof fn === "function") { fn(); done = true; cleanup(); }
+    let soundOn = false;
+    const unmute = () => {
+      const vid = reelRef.current;
+      if (!vid || soundOn) { cleanup(); return; }
+      vid.muted = false;
+      vid.play().then(() => { soundOn = true; cleanup(); }).catch(() => {
+        vid.muted = true;
+        vid.play().catch(() => {});
+      });
     };
-    const cleanup = () => evs.forEach((e) => window.removeEventListener(e, tryUnmute));
-    evs.forEach((e) => window.addEventListener(e, tryUnmute, { passive: true }));
+    const cleanup = () => evs.forEach((e) => window.removeEventListener(e, unmute));
+    evs.forEach((e) => window.addEventListener(e, unmute, { passive: true }));
     return cleanup;
   }, []);
 
@@ -417,15 +433,38 @@ export default function CyberStartLanding() {
                 <div className="mbar">
                   <span className="dots"><i /><i /><i /></span>
                   <span className="t"><b>opr</b>@range . the reel</span>
-                  <span className="live">Film . 0:29</span>
+                  <span className="live">Film . 0:32</span>
                 </div>
-                <iframe
-                  className="reelframe"
-                  src="/operators/hero?embed=1"
-                  title="Cyber Ops - Get There First"
-                  loading="lazy"
-                  allow="autoplay; fullscreen"
-                />
+                <div className="reelstage">
+                  {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
+                  <video
+                    ref={reelRef}
+                    className="reelframe"
+                    src="/ops/cyberops-trailer.mp4"
+                    poster="/ops/cyberops-poster.jpg"
+                    playsInline
+                    muted
+                    preload="auto"
+                    aria-label="Cyber Ops concept trailer"
+                    onEnded={() => setReelDone(true)}
+                  />
+                  {reelDone && (
+                    <button
+                      type="button"
+                      className="reelreplay"
+                      onClick={() => {
+                        const v = reelRef.current;
+                        if (!v) return;
+                        v.currentTime = 0;
+                        v.muted = false;
+                        setReelDone(false);
+                        v.play().catch(() => {});
+                      }}
+                    >
+                      &#9654; Replay
+                    </button>
+                  )}
+                </div>
               </div>
             </div>
           </div>
