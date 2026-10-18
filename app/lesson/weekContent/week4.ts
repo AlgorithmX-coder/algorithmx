@@ -398,7 +398,7 @@ export const WEEK_4: WeekContent = {
       prompt: "Quick! Which one is BAIT?",
       speedMs: 5000,
       choices: [
-        { text: "FREE tablet, only 10 left!", isCorrect: true },
+        { text: "FREE tablet, only 10 left", isCorrect: true },
         { text: "Practice moved to 4pm", isCorrect: false, why: "A time change from your coach asks for nothing and promises nothing; that's a normal message." },
         { text: "Library book ready", isCorrect: false, why: "The library is just telling you something; there's no prize and no rush." },
       ],
@@ -445,7 +445,7 @@ export const WEEK_4: WeekContent = {
       bullets: [
         "Countdowns and deadlines = the rush trick",
         "Scary warnings = the fear trick",
-        "A racing heart doesn't stop to think",
+        "A racing heart can't think",
         "Real companies never threaten you",
         "Feeling rushed? That IS the red flag",
       ],
@@ -699,7 +699,9 @@ export const WEEK_4: WeekContent = {
       fakeToast: "BOOTH CLOSED: COPYCAT!",
       wrongTitle: "Compare the pieces again!",
       completeTitle: "Every tag checked!",
-      completeLine: "Copycats caught, real senders welcomed.",
+      /* NameTagCheck prints its own tally as "<n> copycats caught" directly
+       * above this, so the line may not use those words again. */
+      completeLine: "Every letter checked. The real ones got through.",
       cases: [
         {
           id: "mega",
@@ -991,7 +993,7 @@ export const WEEK_4: WeekContent = {
           prompt: "'You WON a family trip to the beach!' from LuckyMail. You never entered anything. Where does the needle go?",
           readAloud: "You won a family trip to the beach, says LuckyMail. You never entered anything. Where does the needle go?",
           choices: [
-            { text: "No way. You can't win what you never entered", isCorrect: true, explanation: "Straight to no way.", why: "A giant prize from a stranger, for a contest you never entered, is bait. The needle goes straight to no way." },
+            { text: "No way, I never entered", isCorrect: true, explanation: "Straight to no way.", why: "A giant prize from a stranger, for a contest you never entered, is bait. The needle goes straight to no way." },
             { text: "Could be real, beaches are real", isCorrect: false, explanation: "Beaches are real, but the prize isn't. Nobody hands a stranger a free holiday for a contest they never entered." },
             { text: "Hmm, maybe tap to see", isCorrect: false, explanation: "One tap to see is the bite the trick is waiting for. An enormous prize from a stranger needs no checking: it's no way." },
           ],
@@ -1030,7 +1032,7 @@ export const WEEK_4: WeekContent = {
           prompt: "A scary message sits on the screen and your finger hovers over its big red button. What's the no-bite rule?",
           readAloud: "A scary message sits on the screen, and your finger hovers over its big red button. What's the no-bite rule?",
           choices: [
-            { text: "Stop, check, show a grown-up", isCorrect: true, explanation: "Stop. Check. Show.", why: "Stop, so nothing gets in. Check who sent it and what it wants. Show a grown-up. A scam only works if you bite." },
+            { text: "Stop, check, show", isCorrect: true, explanation: "Stop. Check. Show.", why: "Stop, so nothing gets in. Check who sent it and what it wants. Show a grown-up. A scam only works if you bite." },
             { text: "Tap it once, then decide", isCorrect: false, explanation: "One tap is a bite, and a bite is all the trick needs. Stop comes first, before anything." },
             { text: "Delete it fast and forget it", isCorrect: false, explanation: "Deleting skips the checking and the showing. A grown-up can't help with a message they never see." },
           ],
@@ -1283,19 +1285,19 @@ export const WEEK_4: WeekContent = {
   // bossQuiz above is what the child plays).
   bossQuestions: {
     easy: [
-      { question: "What does a scam always WANT?", answers: ["Your password, money or tap", "To be your friend", "Nothing at all", "To give you a real prize"], correctIndex: 0, explanation: "Scams always want something back. That's how you spot them." },
-      { question: "'FREE tablet, you WON!' But you never entered anything. That's...", answers: ["Bait, too good to be true", "Your lucky day", "A nice surprise", "Worth one little tap"], correctIndex: 0, explanation: "You can't win a draw you never entered. Amazing prizes are bait." },
-      { question: "A message gives you a scary 10-minute countdown. Real companies...", answers: ["NEVER do that, it's the rush trick", "Do it all the time", "Only do it for big problems", "Do it to be helpful"], correctIndex: 0, explanation: "Countdowns exist to stop you thinking. Feeling rushed IS the red flag." },
+      { question: "What does a scam always WANT?", answers: ["Your password or money", "To be your friend", "Nothing at all", "To give you a real prize"], correctIndex: 0, explanation: "Scams always want something back. That's how you spot them." },
+      { question: "'FREE tablet, you WON!' But you never entered anything. That's...", answers: ["Bait, not a prize", "Just your lucky day", "A really nice surprise", "Worth one little tap"], correctIndex: 0, explanation: "You can't win a draw you never entered. Amazing prizes are bait." },
+      { question: "A message gives you a scary 10-minute countdown. Real companies...", answers: ["Never, it's the rush trick", "Do it all the time", "Only do it for big problems", "Do it to be helpful"], correctIndex: 0, explanation: "Countdowns exist to stop you thinking. Feeling rushed IS the red flag." },
     ],
     medium: [
-      { question: "Which sender is the copycat?", answers: ["R0BLOX Rewards, gift@roblox-rewards.club", "Roblox, inside the app", "Grandma, saved contact", "School Office, school address"], correctIndex: 0, explanation: "A zero for an O and a weird address. Almost-right is all-wrong." },
-      { question: "A pop-up screams 'You have 5 VIRUSES! Call NOW!' What is it?", answers: ["The trick itself: close it and show a grown-up", "A helpful warning", "A real virus checker", "A reason to call the number fast"], correctIndex: 0, explanation: "Scary pop-ups are ads in monster costumes. The panic IS the trick." },
-      { question: "What are the three no-bite steps?", answers: ["Stop, check, show a grown-up", "Click, read, delete", "Run, hide, wait", "Reply, ask, click"], correctIndex: 0, explanation: "Stop. Check. Show. A scam only works if you bite." },
+      { question: "Which sender is the copycat?", answers: ["R0BLOX Rewards, gift@roblox.club", "Roblox, inside the app itself", "Grandma, a saved contact", "School Office, school address"], correctIndex: 0, explanation: "A zero for an O and a weird address. Almost-right is all-wrong." },
+      { question: "A pop-up screams 'You have 5 VIRUSES! Call NOW!' What is it?", answers: ["The trick itself", "A helpful warning", "A real virus checker", "A reason to call the number fast"], correctIndex: 0, explanation: "Scary pop-ups are ads in monster costumes. The panic IS the trick." },
+      { question: "What are the three no-bite steps?", answers: ["Stop, check, show", "Click, read, delete", "Run, hide, wait", "Reply, ask, click"], correctIndex: 0, explanation: "Stop. Check. Show. A scam only works if you bite." },
     ],
     hard: [
-      { question: "Why do scams RUSH you on purpose?", answers: ["A racing heart doesn't stop to think", "They're in a hurry", "Their offers really expire", "They're just excited"], correctIndex: 0, explanation: "The rush is built in on purpose. Slow down and the whole trick falls apart." },
-      { question: "'Your parcel is stuck, pay $1 to release it.' What's really going on?", answers: ["A trick to grab the card number", "A real delivery problem", "A bargain", "A shipping discount"], correctIndex: 0, explanation: "The $1 isn't the prize, the card number is. Cards never go into surprise messages." },
-      { question: "What beats EVERY scam ever made?", answers: ["Not biting: stop, check, show", "Tapping really fast", "A strong password", "Turning the screen off"], correctIndex: 0, explanation: "Every trick needs a bite to work. No bite, no trick." },
+      { question: "Why do scams RUSH you on purpose?", answers: ["A racing heart can't think", "They're in a hurry", "Their offers really expire", "They're just excited"], correctIndex: 0, explanation: "The rush is built in on purpose. Slow down and the whole trick falls apart." },
+      { question: "'Your parcel is stuck, pay $1 to release it.' What's really going on?", answers: ["A trick for the card number", "A real delivery problem", "A genuine bargain", "A shipping discount"], correctIndex: 0, explanation: "The $1 isn't the prize, the card number is. Cards never go into surprise messages." },
+      { question: "What beats EVERY scam ever made?", answers: ["Not biting", "Tapping really fast", "A strong password", "Turning the screen off"], correctIndex: 0, explanation: "Every trick needs a bite to work. No bite, no trick." },
     ],
   },
 

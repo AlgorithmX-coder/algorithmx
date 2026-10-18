@@ -470,9 +470,13 @@ export default function ChatSimulator({
               />
             ))}
           </span>
-          {/* Wi-Fi */}
+          {/* Wi-Fi. Owner, 2026-10-18: "the wifi is missing the bottom signal
+              bar." It drew the dot, the middle arc and the outer arc - the
+              SMALL inner arc that sits just above the dot was never there, so
+              the icon read as two bars with a gap where the third belongs. */}
           <svg width="14" height="10" viewBox="0 0 14 10" aria-hidden>
             <path d="M7 9.5a1.1 1.1 0 1 0 0-2.2 1.1 1.1 0 0 0 0 2.2z" fill="#f8fafc" />
+            <path d="M4.4 7.0a3.6 3.6 0 0 1 5.2 0" stroke="#f8fafc" strokeWidth="1.2" fill="none" strokeLinecap="round" />
             <path d="M2.5 5.2a6.4 6.4 0 0 1 9 0" stroke="#f8fafc" strokeWidth="1.2" fill="none" strokeLinecap="round" />
             <path d="M0.6 3.2a9 9 0 0 1 12.8 0" stroke="#f8fafc" strokeWidth="1.2" fill="none" strokeLinecap="round" />
           </svg>
