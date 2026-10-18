@@ -14,14 +14,28 @@ type Props = {
   fixed?: boolean;
 };
 
+/* Low-end device: weak laptops, Chromebooks and old phones. We draw a single
+ * static frame for these instead of a per-frame loop, so a school computer
+ * never pays for a full-screen animation. */
+function isLowEndDevice(): boolean {
+  if (typeof navigator === "undefined") return false;
+  const cores = navigator.hardwareConcurrency;
+  const mem = (navigator as unknown as { deviceMemory?: number }).deviceMemory;
+  if (typeof cores === "number" && cores > 0 && cores <= 4) return true;
+  if (typeof mem === "number" && mem > 0 && mem <= 4) return true;
+  return false;
+}
+
 /**
  * Futuristic "live coding" backdrop — a fixed, full-viewport canvas of
  * streaming code glyphs with depth and the occasional accent stream. Kept
  * deliberately dim so foreground copy always wins; a veil sits above it.
  *
- * Cheap and well-behaved: capped DPR, single global fade for the trails,
- * pauses when the tab is hidden, and renders one static frame under
- * prefers-reduced-motion instead of animating.
+ * Built to stay cheap on every device: capped DPR, a single global fade for
+ * the trails, and it stops drawing whenever it can't help — a static frame
+ * (no loop) under prefers-reduced-motion OR on a low-end device, a 30fps cap
+ * on the live loop, a pause when the tab is hidden, and a pause when it is
+ * scrolled out of view.
  */
 export default function CodeRainBackground({
   bg = "#05070d",
@@ -38,6 +52,7 @@ export default function CodeRainBackground({
     const ctx = cv.getContext("2d");
     if (!ctx) return;
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const still = reduce || isLowEndDevice();
 
     // base colour -> "r,g,b" so the per-frame fade matches the ground exactly
     const hex = bg.replace("#", "");
@@ -74,7 +89,18 @@ export default function CodeRainBackground({
 
     const headColor = (a: Col) => (a.accent === 1 ? accentA : a.accent === 2 ? accentB : head);
 
-    function step() {
+    // Cap the live loop at ~30fps: the fall is slow ambient motion, so 30 is
+    // indistinguishable from 60 and roughly halves the per-frame paint cost.
+    const FRAME_MS = 1000 / 30;
+    let lastDraw = -Infinity;
+    let running = false;
+    let onScreen = true;
+
+    function step(now: number) {
+      if (!running) return;
+      raf = requestAnimationFrame(step);
+      if (now - lastDraw < FRAME_MS) return;
+      lastDraw = now;
       ctx!.fillStyle = `rgba(${rgb},0.085)`; // fade the trails
       ctx!.fillRect(0, 0, W, H);
       ctx!.font = `600 ${cell}px 'IBM Plex Mono', ui-monospace, Menlo, Consolas, monospace`;
@@ -88,7 +114,6 @@ export default function CodeRainBackground({
         d.y += d.speed;
         if (y > H && Math.random() > 0.972) drops[i] = newCol();
       }
-      raf = requestAnimationFrame(step);
     }
 
     function staticFrame() {
@@ -103,20 +128,50 @@ export default function CodeRainBackground({
       }
     }
 
-    resize();
-    if (reduce) staticFrame();
-    else raf = requestAnimationFrame(step);
-
-    const onResize = () => { resize(); if (reduce) staticFrame(); };
-    const onVis = () => {
-      if (reduce) return;
+    // The loop runs only while the canvas is on-screen AND the tab is
+    // visible. `onScreen` is tracked by the IntersectionObserver below; for a
+    // viewport-fixed canvas it is always true, so nothing is lost there.
+    function startLoop() {
+      if (still || running || !onScreen || document.hidden) return;
+      running = true;
+      lastDraw = -Infinity;
+      raf = requestAnimationFrame(step);
+    }
+    function stopLoop() {
+      running = false;
       cancelAnimationFrame(raf);
-      if (!document.hidden) raf = requestAnimationFrame(step);
+    }
+
+    resize();
+    if (still) staticFrame();
+    else startLoop();
+
+    const onResize = () => { resize(); if (still) staticFrame(); };
+    const onVis = () => {
+      if (still) return;
+      if (document.hidden) stopLoop();
+      else startLoop();
     };
+
+    const io =
+      typeof IntersectionObserver !== "undefined"
+        ? new IntersectionObserver(
+            (entries) => {
+              onScreen = entries.some((e) => e.isIntersecting);
+              if (still) return;
+              if (onScreen) startLoop();
+              else stopLoop();
+            },
+            { rootMargin: "120px" },
+          )
+        : null;
+    io?.observe(cv);
+
     window.addEventListener("resize", onResize);
     document.addEventListener("visibilitychange", onVis);
     return () => {
-      cancelAnimationFrame(raf);
+      stopLoop();
+      io?.disconnect();
       window.removeEventListener("resize", onResize);
       document.removeEventListener("visibilitychange", onVis);
     };

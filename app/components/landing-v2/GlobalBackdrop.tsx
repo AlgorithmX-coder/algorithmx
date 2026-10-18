@@ -130,6 +130,19 @@ export default function GlobalBackdrop({ tone = "night" }: { tone?: "night" | "s
       typeof window.matchMedia === "function" &&
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+    /* Weak laptops, Chromebooks and old phones get a single static frame
+     * instead of the per-frame loop, so a low-spec device never pays for a
+     * full-screen animation. */
+    const lowEnd = (() => {
+      if (typeof navigator === "undefined") return false;
+      const cores = navigator.hardwareConcurrency;
+      const mem = (navigator as unknown as { deviceMemory?: number }).deviceMemory;
+      if (typeof cores === "number" && cores > 0 && cores <= 4) return true;
+      if (typeof mem === "number" && mem > 0 && mem <= 4) return true;
+      return false;
+    })();
+    const still = reduceMotion || lowEnd;
+
     const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
     let w = 0;
     let h = 0;
@@ -301,7 +314,7 @@ export default function GlobalBackdrop({ tone = "night" }: { tone?: "night" | "s
       target.x = (e.clientX / window.innerWidth - 0.5) * 2;
       target.y = (e.clientY / window.innerHeight - 0.5) * 2;
     };
-    if (!reduceMotion) window.addEventListener("pointermove", onPointer, { passive: true });
+    if (!still) window.addEventListener("pointermove", onPointer, { passive: true });
 
     const hud = GB.hud;
 
@@ -522,7 +535,7 @@ export default function GlobalBackdrop({ tone = "night" }: { tone?: "night" | "s
       ctx.globalCompositeOperation = "source-over";
     };
 
-    if (reduceMotion) {
+    if (still) {
       render(0, 0);
       const onResizeStatic = () => {
         build();
@@ -540,9 +553,16 @@ export default function GlobalBackdrop({ tone = "night" }: { tone?: "night" | "s
     let running = true;
     let last = performance.now();
     let elapsed = 0;
+    // Cap the loop at ~30fps: the drift + twinkle is slow ambient motion, so
+    // 30 is indistinguishable from 60 and roughly halves the per-frame cost.
+    const FRAME_MS = 1000 / 30;
+    let lastFrameTs = -Infinity;
 
     const frame = (now: number) => {
       if (!running) return;
+      raf = requestAnimationFrame(frame);
+      if (now - lastFrameTs < FRAME_MS) return;
+      lastFrameTs = now;
       const dt = Math.min(64, now - last);
       last = now;
       elapsed += dt;
@@ -594,8 +614,6 @@ export default function GlobalBackdrop({ tone = "night" }: { tone?: "night" | "s
         }
       }
       ctx.globalCompositeOperation = "source-over";
-
-      raf = requestAnimationFrame(frame);
     };
 
     const onVisibility = () => {
