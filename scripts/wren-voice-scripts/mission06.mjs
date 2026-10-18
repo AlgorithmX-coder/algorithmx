@@ -201,4 +201,8 @@ export const mission06VoiceScripts = {
     "[excited] Yes! Six fresh scams, and you saw straight through every one, all on your own. [proud] Case closed, Agent. You've earned it.",
   "/audio/wren/m06p-test-fail.mp3":
     "[warm] So close. Don't sweat it. Even pros miss a couple. [encouraging] Take a breath and run it again. You know this.",
+
+  // debrief
+  "/audio/wren/m06p-debrief.mp3":
+    "[proud] You made it through the night.",
 };

@@ -473,7 +473,7 @@ export default function PhoneRuntime({ phoneCase, onExit, onNextCase }: { phoneC
           ) : phase === "test" ? (
             <TestView test={phoneCase.test} voiceOn={voiceOn} onPass={() => { markCaseComplete(phoneCase.id); clearProgress(phoneCase.id); void saveExplorersProgress(parseInt(phoneCase.caseNumber.replace(/\D/g, ""), 10) || 0, { completed: true, xp: 100, screen: 99 }); setPhase("debrief"); }} />
           ) : phase === "debrief" ? (
-            <Debrief data={phoneCase.debrief} caseId={phoneCase.id} xp={100} reduced={!!reduce} onExit={onExit} onNext={onNextCase} />
+            <Debrief data={phoneCase.debrief} caseId={phoneCase.id} xp={100} reduced={!!reduce} voiceOn={voiceOn} onExit={onExit} onNext={onNextCase} />
           ) : (
             <>
               {/* chat header */}
@@ -904,8 +904,16 @@ function LockScreen({ caseNumber, open, title, onOpen }: { caseNumber: string; o
   );
 }
 
-function Debrief({ data, caseId, xp, reduced, onExit, onNext }: { data: PhoneCase["debrief"]; caseId: string; xp: number; reduced: boolean; onExit?: () => void; onNext?: () => void }) {
+function Debrief({ data, caseId, xp, reduced, voiceOn, onExit, onNext }: { data: PhoneCase["debrief"]; caseId: string; xp: number; reduced: boolean; voiceOn: boolean; onExit?: () => void; onNext?: () => void }) {
   const [revealed, setRevealed] = useState(false);
+  // The closing title ("You made it through the night.") is written as WREN
+  // speaking to the player, but was shown as silent text — no case had a
+  // voice field for it at all.
+  useEffect(() => {
+    if (voiceOn && data.titleVoice) playWren(data.titleVoice, true);
+    return () => stopWren();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   return (
     // justifyContent:"center" only works while content is shorter than the
     // viewport; the closing ceremony pushes it past that on short phones, so

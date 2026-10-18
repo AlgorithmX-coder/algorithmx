@@ -532,6 +532,7 @@ export const case10Phone: PhoneCase = {
 
   debrief: {
     title: "SECRET clearance earned.",
+    titleVoice: "/audio/wren/m10p-debrief.mp3",
     lines: [
       "You've cleared the whole Human Factor block. Seven skills, a cloned-voice emergency, and a test, and not even your own ears could fool you.",
       "You learned that a voice is no longer proof, that spotting fakes is a losing race, and that the answer is to verify the person, not judge the media.",

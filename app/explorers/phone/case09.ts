@@ -530,6 +530,7 @@ export const case09Phone: PhoneCase = {
 
   debrief: {
     title: "You outlasted the long con.",
+    titleVoice: "/audio/wren/m09p-debrief.mp3",
     lines: [
       "Seven skills, a six-week trap, and a test, and SIREN's patience couldn't wear you down.",
       "You learned that a scam is a business, not a bond, and that weeks of gifts and warmth are trust being farmed to cash in.",

@@ -538,6 +538,7 @@ export const case07Phone: PhoneCase = {
 
   debrief: {
     title: "You saw through the mask.",
+    titleVoice: "/audio/wren/m07p-debrief.mp3",
     lines: [
       "Seven skills, a two-way trap, and a test, and MIMIC couldn't fool you with a single stolen face.",
       "You learned that trust belongs to your friend, not to the account, and that the weird ask always gives the thief away.",

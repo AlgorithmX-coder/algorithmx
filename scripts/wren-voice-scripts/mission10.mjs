@@ -178,4 +178,8 @@ export const mission10VoiceScripts = {
     "[excited] Yes! You cleared the whole Human Factor block without a single slip. [proud] SECRET clearance, Agent, you've truly earned it. I'm proud of you.",
   "/audio/wren/m10p-test-fail.mp3":
     "[warm] So close, and this one really matters. Don't sweat it. Even pros miss a couple. [encouraging] Take a breath and run it again. You've got this.",
+
+  // debrief
+  "/audio/wren/m10p-debrief.mp3":
+    "[proud] SECRET clearance earned.",
 };
