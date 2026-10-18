@@ -556,11 +556,12 @@ function CyberHeroesNav() {
         section[id] { scroll-margin-top: 92px; }
         .chnav-grid { width: 100%; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 12px; position: relative; z-index: 1; }
         .chnav-logo { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; justify-self: start; }
+        .chnav-stack { display: flex; flex-direction: column; gap: 2px; line-height: 1; align-items: flex-start; }
         .chnav-shield { display:inline-flex; transform:rotate(-7deg); filter:drop-shadow(0 0 10px rgba(255,179,71,0.4)); transition: transform 200ms cubic-bezier(0.16,1,0.3,1); }
         .chnav-logo:hover .chnav-shield { transform:rotate(-7deg) scale(1.1); }
         .chnav-word { font-family:var(--font-fredoka),system-ui,sans-serif; font-weight:700; font-size:19px; letter-spacing:0.02em; color:#eaf6ff; white-space:nowrap; }
         .chnav-word em { font-style:normal; color:#ffb347; }
-        .chnav-by { font-family:var(--font-nunito),sans-serif; font-weight:800; font-size:9px; letter-spacing:0.18em; text-transform:uppercase; color:#7df0ff; margin-left:6px; white-space:nowrap; text-shadow:0 0 8px rgba(0,229,255,0.4); }
+        .chnav-by { font-family:var(--font-nunito),sans-serif; font-weight:800; font-size:9px; letter-spacing:0.18em; text-transform:uppercase; color:#7df0ff; margin-left:0; white-space:nowrap; text-shadow:0 0 8px rgba(0,229,255,0.4); }
         @media (max-width: 639px) { .chnav-by { display:none; } }
         .chnav-links { display:flex; align-items:center; justify-content:center; gap:24px; justify-self:center; }
         .chnav-link { position:relative; font-weight:700; font-size:14px; letter-spacing:0.01em; color:rgba(234,246,255,0.72); padding:8px 4px; text-decoration:none; transition: color 180ms; }
@@ -616,8 +617,10 @@ function CyberHeroesNav() {
                   <path d="M13.2 6 L8.6 13 H11.4 L10.6 18 L15.6 11 H12.6 Z" fill="#08101f" />
                 </svg>
               </span>
-              <span className="chnav-word">CYBER <em>HEROES</em></span>
-              <span className="chnav-by">by <CubeMark size={13} color="#7df0ff" code style={{ display: "inline-block", verticalAlign: "middle", position: "relative", top: "-0.15em", margin: "0 3px 0 2px", filter: "drop-shadow(0 0 5px rgba(0,229,255,0.75))" }} />AlgorithmX</span>
+              <span className="chnav-stack">
+                <span className="chnav-word">CYBER <em>HEROES</em></span>
+                <span className="chnav-by">by <CubeMark size={13} color="#7df0ff" code style={{ display: "inline-block", verticalAlign: "middle", position: "relative", top: "-0.15em", margin: "0 3px 0 2px", filter: "drop-shadow(0 0 5px rgba(0,229,255,0.75))" }} />AlgorithmX</span>
+              </span>
             </Link>
 
             <div className="chnav-links">

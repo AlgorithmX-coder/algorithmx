@@ -745,9 +745,11 @@ export default function CyberExplorersLanding() {
             <path d="M12 2.6 V6 M12 18 V21.4 M2.6 12 H6 M18 12 H21.4" />
             <circle cx="12" cy="12" r="1.6" fill={T.arcCyan} stroke="none" />
           </svg>
-          CYBER EXPLORERS
-          <span className="cx-brand-by" style={{ fontSize: 9, fontWeight: 400, letterSpacing: "0.16em", color: T.textDisabled, marginLeft: 5 }}>
-            BY <CubeMark size={13} color={T.arcCyan} code style={{ display: "inline-block", verticalAlign: "middle", position: "relative", top: "-0.15em", margin: "0 3px", filter: `drop-shadow(0 0 5px ${T.arcCyan}aa)` }} />ALGORITHMX
+          <span style={{ display: "flex", flexDirection: "column", gap: 2, lineHeight: 1, alignItems: "flex-start" }}>
+            <span>CYBER EXPLORERS</span>
+            <span className="cx-brand-by" style={{ fontSize: 9, fontWeight: 400, letterSpacing: "0.16em", color: T.textDisabled }}>
+              BY <CubeMark size={13} color={T.arcCyan} code style={{ display: "inline-block", verticalAlign: "middle", position: "relative", top: "-0.15em", margin: "0 3px", filter: `drop-shadow(0 0 5px ${T.arcCyan}aa)` }} />ALGORITHMX
+            </span>
           </span>
         </Link>
         <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
