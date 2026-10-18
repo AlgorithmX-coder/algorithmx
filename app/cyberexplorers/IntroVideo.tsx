@@ -30,14 +30,21 @@ export function IntroVideo({ reduced }: { reduced: boolean }) {
     // If the browser blocks even muted autoplay, surface a play button
     // (otherwise there is no affordance to start it).
     v.play().catch(() => setEnded(true));
-    const events = ["pointerdown", "pointermove", "keydown", "wheel", "touchstart", "scroll"];
+    // Only STRONG gestures can lift the browser's unmuted-autoplay block; a
+    // move or scroll cannot, and trying to unmute on those used to PAUSE the
+    // video and leave it frozen. So listen for taps/keys only, and if the
+    // unmuted play is still refused, fall back to muted so the trailer keeps
+    // playing (captions are burned in) instead of freezing.
+    const events = ["pointerdown", "keydown", "touchstart"];
+    let soundOn = false;
     const unmute = () => {
       const vid = ref.current;
-      if (vid && !manual.current) {
-        vid.muted = false;
-        if (vid.paused) vid.play().catch(() => {});
-      }
-      remove();
+      if (!vid || manual.current || soundOn) { remove(); return; }
+      vid.muted = false;
+      vid.play().then(() => { soundOn = true; remove(); }).catch(() => {
+        vid.muted = true;
+        vid.play().catch(() => {});
+      });
     };
     const remove = () => events.forEach((e) => window.removeEventListener(e, unmute));
     events.forEach((e) => window.addEventListener(e, unmute, { passive: true }));
@@ -84,6 +91,7 @@ export function IntroVideo({ reduced }: { reduced: boolean }) {
         <video
           ref={ref}
           src={SRC}
+          poster="/explorers/trailer-poster.jpg"
           playsInline
           muted
           preload="auto"
