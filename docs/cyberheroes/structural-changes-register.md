@@ -863,6 +863,18 @@ tell you the measurement is wrong before the content gets blamed; two that
 agree are the cheapest evidence available that it is not. This applies to any
 gate that drives a browser, where the answer depends on when you look.
 
+**11. Measuring is not looking, and a wall of green is not a week.** Weeks
+3-5 passed ten instant gates and four browser stages, and week 4's Hall of
+Mirrors was live with its card pushed sideways and its bottom edge, border and
+start button cut off. Every gate was right about its own question and the
+screen was still broken, because no gate asks "is this screen right" - that
+question has no assertion, only an eye. Each gate here is a scar from
+something that already reached the owner, so a full set of them proves only
+that the known wounds have healed. Before calling anything ready, shoot every
+frame of every week in scope and look at all of them (stage 7b). The rule that
+let this through was scoped to screens CHANGED; this fault was older than the
+sweep and sat in a shared engine, so nobody had changed it.
+
 ### The gates, and what each one actually asks
 
 | Gate | The question it asks |
@@ -1102,10 +1114,70 @@ entry when a week is brought up to standard.
 Theme the chrome, never the meaning: green stays correct, red stays wrong,
 gold stays reward.
 
+### 7b. LOOK AT EVERY SCREEN. All thirty, not the ones you touched.
+
+```
+E2E_TESTS=1 npx next start -p 3007          # a BUILT server, see below
+node scripts/shoot-week.mjs 3 4 5           # 30 frames per week, settled
+```
+
+Then open every frame and look at it. This stage is not automatable and must
+not be skipped, and it is the stage that was missing when weeks 3-5 were
+declared ready with a broken screen in them.
+
+**What happened.** Weeks 3-5 passed ten instant gates and four browser
+stages. The owner asked: "can I confirm that you took screenshots and you
+checked to make sure that everything was looking correct?" The honest answer
+was no - two frames had been looked at, both to diagnose a false alarm. The
+review that followed found week 4 screen 24, the Hall of Mirrors, the last
+drill before the boss, rendering with its card shoved to one side and its
+bottom edge, border and start button cut off. It was already live.
+
+**Why the old wording let it through.** Stage 8 used to ask for "a screenshot
+of each screen CHANGED". Nobody had changed the Hall of Mirrors. The fault
+was older than the sweep, sitting in a shared engine, and a rule scoped to
+changed screens can only ever find faults somebody just made. A week is
+either looked at whole or it is not looked at.
+
+**Why no gate caught it.** Each gate measures the thing it was written for.
+The scroll-bar gate measured the page height: the page was fine, because the
+card had been pushed sideways rather than made taller. The card-fill gate
+measured the card against the stage: fine, for the same reason. Nothing asks
+"is this screen right", because that question has no assertion to make. Every
+gate here exists because something reached the owner; a gate is a scar, not a
+substitute for looking.
+
+**What to look for**, none of which any gate checks: art that is wrong,
+missing or off-model; text overlapping text; a card off-centre or clipped; a
+colour that makes words unreadable; the cast standing over gameplay; a panel
+with a dead band in it; anything that simply looks unfinished.
+
+**Judging what you see.** Two traps, both of which cost a full evening:
+
+- **A half-drawn screen is not a defect.** The debrief reveals its five skill
+  cards one at a time, the stickers panel fills over several seconds, the
+  briefing deals its objective cards in. Caught early, each looks exactly like
+  the "empty card" fault the owner has reported before. `shoot-week.mjs` waits
+  for the layout to stop moving and then waits again; if a frame still looks
+  half-built, re-shoot that one with `SETTLE=16000` before believing it.
+- **A missing frame is not a pass.** An earlier capture returned 85 of 90 and
+  reported "85 screen(s) measured". Five screens went unseen and the number
+  looked tidy. `shoot-week.mjs` names every frame it could not reach and exits
+  non-zero. Retry them; a screen that will not load twice is itself a finding.
+
+**The server must be a BUILT one** (`next build` then `next start`), because
+`next start` serves a fixed bundle: edit a component and the screenshots will
+still show the old one, and the fix you are verifying will look like it did
+nothing. Reaching the lesson also needs `E2E_TESTS=1` and the local-only
+`BYPASS_ENTITLEMENT_FOR_TESTING` flag in `app/lesson/[week]/page.tsx`, which
+is LOCAL ONLY and must never be committed - check `git status` on that file
+before every commit.
+
 ### 8. Before saying "ready to test"
 
 - CI green on the PR, and merged - testers only ever see production.
-- A screenshot of each screen CHANGED, at 1414x771, looked at.
+- Stage 7b done for EVERY week in scope: all thirty frames shot and looked
+  at, not only the screens that changed.
 - Anything deliberately left open said out loud, not left to be discovered.
 
 ---

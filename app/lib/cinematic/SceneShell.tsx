@@ -62,6 +62,24 @@ export interface SceneShellProps {
   children: ReactNode;
   /** Overlays rendered in the viewport, ABOVE/outside the camera transform. */
   overlay?: ReactNode;
+  /**
+   * Overlays that must cover the WINDOW, not the scene.
+   *
+   * The viewport below sets `perspective` for the camera, and a perspective
+   * makes that element the containing block for every `position: fixed`
+   * descendant - so a fixed overlay inside it stops being fixed to the window
+   * and is clipped by the viewport's `overflow: hidden` as well.
+   *
+   * Week 4's Hall of Mirrors showed both symptoms: the Spot-the-Danger card
+   * was offset to the scene's own origin (159, 99 instead of 0, 0), which
+   * pushed it right and 99px past the bottom of the window, where it lost its
+   * border and its start button. Weeks 9 and 20 use the same engine.
+   *
+   * Anything passed here renders as a SIBLING of the viewport, so it escapes
+   * both. `overlay` keeps its old meaning for scene-bound things - a verdict
+   * flash is supposed to be clipped to the 16:9 world.
+   */
+  screenOverlay?: ReactNode;
 }
 
 export default function SceneShell({
@@ -76,6 +94,7 @@ export default function SceneShell({
   reserve = 210,
   children,
   overlay,
+  screenOverlay,
 }: SceneShellProps) {
   const { intensity } = useTimingScaler();
 
@@ -144,6 +163,11 @@ export default function SceneShell({
         {/* Non-transformed overlays (panels, flash, reveal UI, toasts) */}
         {overlay}
       </div>
+
+      {/* Window-level overlays: OUTSIDE the viewport, so the perspective above
+          does not become their containing block and the overflow does not clip
+          them. See screenOverlay in the props. */}
+      {screenOverlay}
     </ExerciseFrame>
   );
 }
