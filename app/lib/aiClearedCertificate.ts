@@ -26,7 +26,7 @@ export const CERT_COPY: Record<CourseSlug, { tagline: string; completed: string;
     tagline: "Safe and effective AI use for staff",
     completed: "has completed AI Cleared, the five modules on safe and effective AI use, and passed the final assessment.",
     pdfBody: "has completed AI Cleared: the five modules on what happens to what you type, the paste test, the firm's approved tools, trust but verify, and shadow AI, and passed the final assessment.",
-    verifyValid: "Completed AI Cleared, the five-module course on safe and effective AI use for staff, and passed the final assessment.",
+    verifyValid: "Completed AI Cleared, the five-module course on safe and effective AI use for staff, including recognising and checking AI hallucination, and passed the final assessment.",
     verifyExpired: "Completed AI Cleared, but this certificate has passed its twelve-month validity. Renewal is on the refreshed course content.",
     chips: ["PUBLIC", "INTERNAL", "CONFIDENTIAL", "RESTRICTED"],
   },

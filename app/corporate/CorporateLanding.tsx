@@ -111,7 +111,7 @@ const COURSES = [
       "What happens to what you type: the four tiers of any AI tool and what each does with your data",
       "The paste test: four data classes, three questions before every send, context without the facts",
       "Your firm's approved tools, by name, and who to ask",
-      "Trust but verify: invented facts, hidden instructions, Copilot surfacing the wrong files",
+      "Trust but verify: AI hallucination (invented facts, figures and citations), hidden instructions, Copilot surfacing the wrong files",
       "Shadow AI, and what to do the moment something goes wrong",
     ],
     outcome: "A certificate per person and per firm, and every completion on the training register.",
@@ -180,6 +180,7 @@ const PACKS = [
 
 const FAQS = [
   { q: "Which AI tools do the courses cover?", a: "Microsoft 365 Copilot, ChatGPT, Gemini and Claude, at every tier from a free personal account to an enterprise workspace, plus a five minute method for checking any tool you have not seen before. Every vendor fact carries the date it was last verified." },
+  { q: "Does it cover AI hallucination?", a: "Yes, by name and by habit. AI Cleared module 4 shows the three shapes it takes (invented citations, invented figures, confident wrong answers), why it happens, and the two-minute check staff run before anything AI-written goes to a client. AI Fluent carries it into the work: the figure the tool guessed in a table, the source that reads perfectly and does not exist, and verification as a reflex." },
   { q: "How do you keep up with how fast the tools change?", a: "By treating it as part of the product, not an afterthought. Every fact about a tool carries the date it was last checked and is shown on screen. The whole course is reviewed every quarter, and within weeks of a major model release or a change to a vendor's data terms. Your admin gets a note saying what changed and why, and the annual renewal is on the refreshed content." },
   { q: "Do staff need AI Cleared before AI Fluent?", a: "Yes. AI Cleared is the ninety minute safety gate everyone passes; AI Fluent is the upskill for people who hold that certificate. Most firms clear everyone first and then put the people who use AI most through Fluent." },
   { q: "Does our data go into the courses?", a: "No real data is needed. Both courses run on invented firms, clients and people. The sandbox stops any send that contains something that looks like a real identifier and explains why, and transcripts are not kept. Your firm profile holds tool names and a contact, and that is all." },

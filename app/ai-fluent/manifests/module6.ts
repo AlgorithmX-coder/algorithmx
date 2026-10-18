@@ -27,7 +27,7 @@ export const FLUENT_MODULE_6: ModuleManifest = {
       kind: "intro",
       eyebrow: "Module 6 of 9 · about 22 minutes",
       heading: "\"Analyse this\" is not a question.",
-      lead: "Given a table and no question, the tool describes the table. Given a question, it answers it, and sometimes it answers with a figure that is not in the table. This module is the workflow for numbers: ask for the comparison you actually want, ask for the workings, and check the one figure that matters before it goes anywhere.",
+      lead: "Given a table and no question, the tool describes the table. Given a question, it answers it, and sometimes it answers with a figure that is not in the table: a hallucination with a decimal point. This module is the workflow for numbers: ask for the comparison you actually want, ask for the workings, and check the one figure that matters before it goes anywhere.",
       note: "The practice runs inside Excel, with the aged debtors sheet open and Copilot in the pane.",
       cta: "Show me the difference",
     },
