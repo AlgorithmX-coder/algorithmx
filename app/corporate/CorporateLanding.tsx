@@ -489,6 +489,7 @@ export default function CorporateLanding({ checkoutLive = false, fluentLive = fa
                     <>
                       <a href={`/corporate/buy?course=ai-cleared&seats=${k.name === "Firm" ? 50 : 10}`} className="corp-pack-cta">Buy AI Cleared seats <span aria-hidden>&rarr;</span></a>
                       {fluentLive ? <a href={`/corporate/buy?course=ai-fluent&seats=${k.name === "Firm" ? 50 : 10}`} className="corp-pack-cta">Buy AI Fluent seats <span aria-hidden>&rarr;</span></a> : null}
+                      {fluentLive ? <a href={`/corporate/buy?course=both&seats=${k.name === "Firm" ? 50 : 10}`} className="corp-pack-cta">Buy both together <span aria-hidden>&rarr;</span></a> : null}
                     </>
                   ) : (
                     <a href="#enquiry" className="corp-pack-cta">Get in touch <span aria-hidden>&rarr;</span></a>
