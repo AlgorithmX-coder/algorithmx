@@ -101,12 +101,15 @@ export default function Unmask({ payload, audio, onEvent, voiceOn }: MechanicPro
                   onClick={() => reveal(it.id)}
                   className="sr-btn"
                   disabled={submitted || locked}
-                  // Bumped from a ~7% amber tint to this — reported as too
-                  // dark to read on the theme's darker card backgrounds
-                  // ("crack", "storm", "prize"); a visible border + bolder
-                  // weight make it read as an obviously tappable control on
-                  // any of them, not just the lighter ones.
-                  style={{ width: "100%", textAlign: "left", fontFamily: MONO, fontSize: 12.5, fontWeight: 700, color: T.actionAmber, background: `${T.actionAmber}26`, border: `1px solid ${T.actionAmber}66`, borderTop: `1px dashed ${T.actionAmber}`, padding: "12px 14px", cursor: "pointer" }}
+                  // A low-alpha amber tint with amber text on it was still
+                  // reported as too dark to read, twice, on the theme's
+                  // darker card backgrounds ("crack", "storm", "prize") —
+                  // amber-on-amber-tint is low contrast even when the card
+                  // itself is visible. Switched to the same solid-amber /
+                  // dark-ink pairing the primary CTAs already use (proven
+                  // legible everywhere), so the text itself is never the
+                  // weak link.
+                  style={{ width: "100%", textAlign: "left", fontFamily: MONO, fontSize: 12.5, fontWeight: 700, color: T.inkBlack, background: `linear-gradient(180deg, #F5C169 0%, ${T.actionAmber} 55%, #D68F2C 100%)`, border: `1px solid ${T.actionAmber}`, padding: "12px 14px", cursor: "pointer" }}
                 >
                   {payload.revealText ?? "▸ TAP TO REVEAL THE REAL ADDRESS"}
                 </button>
