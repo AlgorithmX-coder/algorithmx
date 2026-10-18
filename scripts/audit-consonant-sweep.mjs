@@ -82,7 +82,23 @@ const SR = 16000;
  * share of peak - well under the 4% a quiet /s/ sits at, well over the 0% of
  * true silence. MIN_TAIL is how long it must sustain. */
 const FLOOR = 0.008;
-const MIN_TAIL = 0.06;
+/* 30ms, CALIBRATED BY THE OWNER'S EAR, not by my inference.
+ *
+ * Three points he confirmed by listening:
+ *
+ *   0ms   "...behind the mask!"  BROKEN  (a fresh generation)
+ *   20ms  "...behind the mask!"  BROKEN  (the live clip he reported as "MAS")
+ *   40ms  "...behind the mask!"  FINE    (filler appended, then trimmed)
+ *
+ * and 40ms read FINE on all three test words, not just one. So the boundary
+ * is between 20 and 40, and 30 sits in it.
+ *
+ * My own guesses before this were 60ms here and 80/50ms in the older gate,
+ * every one of them set from my inference rather than from anyone listening.
+ * At 60ms this reported 490 words in week 3 alone and would have condemned
+ * audio the owner says is fine. If this number ever moves again it moves
+ * because someone listened, not because a distribution looked tidy. */
+const MIN_TAIL = 0.03;
 const WINDOW_BEFORE = 0.02;
 const WINDOW_AFTER = 0.30;
 

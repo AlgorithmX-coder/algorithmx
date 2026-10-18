@@ -1089,6 +1089,131 @@ function joinBlock(lines) {
  * The hash deliberately stays on the space-joined text, so adopting this does
  * not invalidate a single existing recording.
  */
+/* ── Per-sentence delivery, so no consonant is ever phrase-final ───────────
+ *
+ * Owner, 2026-10-18: "it stops at MAS, instead of MASK."
+ *
+ * Measured with 5 takes per setting: the model drops the final consonant on
+ * 55-65% of consonant-final words, and the rate barely moves with speed (65%
+ * at 0.9, 55% at 1.0), with stability, or with the model. It is a property of
+ * generation, not of the shaping - proved separately by comparing a raw
+ * delivery against the shipped clip, both missing the same /k/.
+ *
+ * So retaking cannot fix it. A block holds ~20 consonant-final words; at 60%
+ * per word a clean block is effectively impossible, which is why re-recording
+ * 58 clips moved the count by one.
+ *
+ * What DOES fix it: the model only swallows a consonant when the word ends a
+ * phrase. Put a throwaway word after it, and the consonant is articulated
+ * properly; then cut the throwaway off. Owner confirmed by ear on the trimmed
+ * clip and on a four-sentence block stitched this way.
+ *
+ * It must be per SENTENCE, not once per block: the word he reported was in
+ * line 1 of 8, and a filler at the end of a block protects only its last
+ * word. */
+const FILLER = " Okay.";
+/* Silence kept after the real audio so the consonant is never clipped at its
+ * own edge. */
+const KEEP_AFTER = 0.05;
+
+/** The units that each get their own generation. */
+function sentencesForDelivery(text) {
+  return String(text)
+    .split(/\n+/)
+    .flatMap((line) => line.split(/(?<=[.!?])\s+(?=[A-Z"'[])/))
+    .map((s) => s.trim())
+    .filter(Boolean);
+}
+
+/** Speech spans, used to find where the sentence ends and FILLER begins. */
+function speechSpans(file) {
+  const r = runFfmpegBinary(["-v", "quiet", "-i", file, "-ac", "1", "-ar", "16000", "-f", "s16le", "-"]);
+  const pcm = r.stdout;
+  if (!pcm || pcm.length < 4) return [];
+  const SR = 16000, n = Math.floor(pcm.length / 2), win = Math.floor(SR * 0.02);
+  const lvl = (i0) => {
+    let s = 0, c = 0;
+    for (let i = i0; i < Math.min(n, i0 + win); i++) { const v = pcm.readInt16LE(i * 2) / 32768; s += v * v; c++; }
+    return c ? Math.sqrt(s / c) : 0;
+  };
+  let peak = 0;
+  for (let i = 0; i + win < n; i += win) peak = Math.max(peak, lvl(i));
+  if (peak <= 0) return [];
+  const loud = peak * 0.06, floor = peak * 0.008;
+  const out = [];
+  let i = 0;
+  while (i + win < n) {
+    while (i + win < n && lvl(i) <= loud) i += win;
+    if (i + win >= n) break;
+    while (i + win < n && lvl(i) > loud) i += win;
+    const loudEnd = i;
+    let t = loudEnd;
+    while (t + win < n && lvl(t) > floor) t += win;
+    out.push({ loudEnd: loudEnd / SR, end: t / SR });
+    i = Math.max(t, loudEnd + win);
+  }
+  return out;
+}
+
+/**
+ * Generate a block sentence by sentence, each protected by a filler that is
+ * then cut away, and concatenate the result.
+ *
+ * Returns a Buffer, or null if anything goes wrong - the caller falls back to
+ * the single-shot generation, so a failure here never costs a clip.
+ */
+async function fetchBlockPerSentence(url, init, text, tmpBase) {
+  const sentences = sentencesForDelivery(text);
+  if (!sentences.length) return null;
+  const made = [];
+  const scratch = [];
+  try {
+    for (let i = 0; i < sentences.length; i++) {
+      const body = JSON.parse(init.body);
+      body.text = sentences[i] + FILLER;
+      const resp = await fetchWithRetry(url, { ...init, body: JSON.stringify(body) });
+      if (!resp.ok) return null;
+      const raw = `${tmpBase}.s${i}.mp3`;
+      await writeFile(raw, Buffer.from(await resp.arrayBuffer()));
+      scratch.push(raw);
+      made.push(raw);
+
+      /* Cut the filler: it is the last span, so keep up to the end of the one
+       * before it. A sentence that came back as ONE span means the filler ran
+       * into it - keep the whole thing rather than guess where to cut, since
+       * cutting in the wrong place would take real words with it. */
+      const sp = speechSpans(raw);
+      if (sp.length >= 2) {
+        const cut = sp[sp.length - 2].end + KEEP_AFTER;
+        const trimmed = `${tmpBase}.s${i}.t.mp3`;
+        const t = runFfmpegBinary(["-v", "quiet", "-y", "-i", raw, "-t", String(cut), "-c:a", "libmp3lame", "-q:a", "2", trimmed]);
+        if (t.status === 0) { made[made.length - 1] = trimmed; scratch.push(trimmed); }
+      }
+    }
+
+    /* The concat FILTER, not the concat demuxer.
+     *
+     * The demuxer needs a list file of quoted paths, and these paths contain
+     * a space ("C:/Users/Asad Jalal/...") on this machine. It failed with
+     * exit -2 and no stderr, which is exactly the kind of silent failure the
+     * fallback then hides - the fix looked live for a whole run while every
+     * clip was still coming from the old path. The filter takes the inputs
+     * directly, so there is no list file and no quoting to get wrong. */
+    const joined = `${tmpBase}.joined.mp3`;
+    scratch.push(joined);
+    const inputs = made.flatMap((p) => ["-i", p]);
+    const filter = `${made.map((_, i) => `[${i}:a]`).join("")}concat=n=${made.length}:v=0:a=1[out]`;
+    const c = runFfmpegBinary(["-y", "-v", "error", ...inputs, "-filter_complex", filter, "-map", "[out]", "-c:a", "libmp3lame", "-q:a", "2", joined]);
+    if (c.status !== 0) { if (process.env.AX_PS_DEBUG) console.log(`\n    [per-sentence] concat exit ${c.status}: ${String(c.stderr || "").slice(0, 300)}`); return null; }
+    return await readFile(joined);
+  } catch (e) {
+    if (process.env.AX_PS_DEBUG) console.log(`\n    [per-sentence] ${String(e).slice(0, 300)}`);
+    return null;
+  } finally {
+    for (const f of scratch) await unlink(f).catch(() => {});
+  }
+}
+
 function speakBlock(lines) {
   // Same year handling as joinBlock, so what the model is given matches what
   // the hash was taken of. Keep these two in step: if one says "twenty
@@ -2011,7 +2136,17 @@ async function generateBlock(speaker, lines, source, skipRecord) {
         }
       }
       const rawPath = `${filepath}.raw.mp3`;
-      let bestBuf = Buffer.from(await resp.arrayBuffer());
+      /* Per-sentence delivery first (see FILLER above): it is the only thing
+       * that keeps a mid-block consonant off the phrase-final position, where
+       * the model swallows it 55-65% of the time. The single-shot response is
+       * already in hand and is used if that path fails for any reason, so a
+       * problem here never costs a paid recording. */
+      const perSentence = await fetchBlockPerSentence(url, init, body.text, rawPath);
+      /* Say which path ran. The fallback is silent by design so a failure
+       * never costs a paid clip, and a silent fallback is exactly how you end
+       * up believing a fix is live when it is not. */
+      process.stdout.write(perSentence ? "(per-sentence) " : "(SINGLE-SHOT fallback) ");
+      let bestBuf = perSentence ?? Buffer.from(await resp.arrayBuffer());
       await writeFile(rawPath, bestBuf);
       let bestDb = endingLoudnessDb(rawPath);
       for (let retake = 1; bestDb > CUT_OFF_DB && retake <= MAX_CUT_RETAKES; retake++) {
