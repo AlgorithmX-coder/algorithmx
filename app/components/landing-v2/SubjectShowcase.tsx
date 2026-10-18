@@ -580,11 +580,17 @@ function TrackMark({ id, accent }: { id: LockupId; accent: string }) {
   );
 }
 
-// Four real example units per track — weeks (Heroes), missions (Explorers) and
-// modules (Ops/Pro). Every one exists in the repo: Heroes week titles in
-// app/lesson/weekContent, Explorers in app/explorers/missions, Ops in
-// app/operators/range/curriculum.ts, Pro on the /pro course page. Picked to be
-// distinct across the four tracks; keep them real if the courses change.
+// Four example units per track. The label is worded for marketing, but each
+// maps to a REAL unit named by its `ref` — chosen to show range, not just the
+// obvious topics. Keep them truthful if the courses change:
+//   Heroes  (app/lesson/weekContent): W1 Passwords, W7 In-Game Spending,
+//     W13 Screen Time, W15 AI & Chatbots.
+//   Explorers (app/explorers/missions): M8 Catfish, M16 Data Brokers,
+//     M17 Deepfake, M20 Signal Zero (the finale).
+//   Ops (app/operators/range/curriculum.ts): M2 Recon & OSINT, M5 Injection,
+//     M11 Digital Forensics, M16 Full Engagement (capstone).
+//   Pro (/pro course page): M9 Web attacks & OWASP, M14 Logs & the SIEM,
+//     M16 Incident response, M21 capstone + CV.
 const CYBER_TRACK_CARDS: ReadonlyArray<{
   id: LockupId;
   label: string;
@@ -600,10 +606,10 @@ const CYBER_TRACK_CARDS: ReadonlyArray<{
     ages: "Ages 6 to 9",
     verb: "Play & learn",
     items: [
-      { ref: "Week 1", name: "Passwords" },
-      { ref: "Week 5", name: "Cyberbullying" },
-      { ref: "Week 15", name: "AI & chatbots" },
-      { ref: "Week 20", name: "Graduation Day" },
+      { ref: "Week 1", name: "Crack-proof passwords" },
+      { ref: "Week 7", name: "The in-game spending trap" },
+      { ref: "Week 13", name: "Screen-time superpowers" },
+      { ref: "Week 15", name: "Real human or AI bot?" },
     ],
   },
   {
@@ -613,10 +619,10 @@ const CYBER_TRACK_CARDS: ReadonlyArray<{
     ages: "Ages 10 to 13",
     verb: "Investigate",
     items: [
-      { ref: "Mission 1", name: "Phishing" },
-      { ref: "Mission 8", name: "Catfish" },
-      { ref: "Mission 17", name: "Deepfake" },
-      { ref: "Mission 20", name: "Signal Zero" },
+      { ref: "Mission 8", name: "Unmask the catfish" },
+      { ref: "Mission 16", name: "Who's selling your data?" },
+      { ref: "Mission 17", name: "Spot the deepfake" },
+      { ref: "Mission 20", name: "Signal Zero: the finale" },
     ],
   },
   {
@@ -626,10 +632,10 @@ const CYBER_TRACK_CARDS: ReadonlyArray<{
     ages: "Ages 14 to 17",
     verb: "Defend",
     items: [
-      { ref: "Module 2", name: "Recon & OSINT" },
-      { ref: "Module 5", name: "Injection" },
-      { ref: "Module 6", name: "Cross-Site Scripting" },
-      { ref: "Module 16", name: "Full Engagement" },
+      { ref: "Module 2", name: "Think like a hacker" },
+      { ref: "Module 5", name: "Break into the database" },
+      { ref: "Module 11", name: "Crack the crime scene" },
+      { ref: "Module 16", name: "Your first full-scale hack" },
     ],
   },
   {
@@ -639,10 +645,10 @@ const CYBER_TRACK_CARDS: ReadonlyArray<{
     ages: "Ages 18+",
     verb: "Build & break",
     items: [
-      { ref: "Module 4", name: "Cryptography" },
-      { ref: "Module 9", name: "Web attacks & OWASP" },
-      { ref: "Module 14", name: "Logs & the SIEM" },
-      { ref: "Module 16", name: "Incident response" },
+      { ref: "Module 9", name: "Break a real web app" },
+      { ref: "Module 14", name: "Hunt attackers in the logs" },
+      { ref: "Module 16", name: "Respond to a live breach" },
+      { ref: "Module 21", name: "Land the cyber job" },
     ],
   },
 ];
