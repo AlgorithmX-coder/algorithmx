@@ -24,8 +24,9 @@ import { FadeUp, useHoverCount } from "./utilities";
  *   82%  DCMS × Burning Glass, "No Longer Optional: Employer Demand
  *        for Digital Skills" (9M+ UK job ads analysed): 82% of
  *        advertised openings require digital skills.   gov.uk
- *   £60K ITJobsWatch, median advertised UK Cyber Security salary,
- *        6 months to 17 Jul 2026 (+6.19% YoY).  itjobswatch.co.uk
+ *   £65K ITJobsWatch, median advertised UK cyber security role salary
+ *        (Consultant / Senior Analyst / Info-Sec Officer all £65K),
+ *        6 months to Oct 2026.  itjobswatch.co.uk
  */
 
 const STATS = [
@@ -58,7 +59,7 @@ const STATS = [
     spark: [33, 30, 31, 25, 26, 18, 22, 14, 12, 8, 4],
   },
   {
-    value: 60,
+    value: 65,
     prefix: "£",
     suffix: "K",
     color: "#8a5a00",
@@ -66,7 +67,7 @@ const STATS = [
     label: "median advertised UK cyber security salary",
     badgeTop: "↑ +6%",
     badgeSub: "year on year",
-    source: "ITJobsWatch · Jul 2026",
+    source: "ITJobsWatch · 2026",
     /* Adult / career angle */
     spark: [31, 29, 30, 26, 24, 22, 20, 17, 15, 10, 6],
   },
@@ -123,20 +124,29 @@ export default function ProblemStats() {
       <style jsx>{`
         .lv2-stats-row {
           display: grid;
-          /* minmax(0, 1fr): grid items default to min-width auto, so the
-           * cards' unshrinkable content (72px number, nowrap badges) was
-           * blowing the row past the viewport on iPad portrait (~938px
-           * in an 819px viewport = sideways wobble). */
           grid-template-columns: repeat(3, minmax(0, 1fr));
-          gap: 22px;
+          gap: 16px;
         }
-        /* Was 760px — at 761–1000px three cards can't fit honestly, so
-         * stack them (single centred column) from 1000px down. */
+        /* Phone / tablet: a compact side-by-side swipe row instead of a tall
+         * stack, so all three read in one screen and you scroll across. */
         @media (max-width: 1000px) {
           .lv2-stats-row {
-            grid-template-columns: minmax(0, 1fr);
-            max-width: 620px;
-            margin: 0 auto;
+            display: flex;
+            grid-template-columns: none;
+            gap: 12px;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            padding: 4px 0 14px;
+            scrollbar-width: none;
+          }
+          .lv2-stats-row::-webkit-scrollbar {
+            display: none;
+          }
+          .lv2-stats-row > :global(*) {
+            flex: 0 0 auto;
+            width: min(76vw, 280px);
+            scroll-snap-align: center;
           }
         }
       `}</style>
@@ -182,8 +192,8 @@ function StatCard({ stat }: { stat: (typeof STATS)[number] }) {
         backdropFilter: "blur(14px) saturate(1.4)",
         WebkitBackdropFilter: "blur(14px) saturate(1.4)",
         borderTop: `2px solid ${stat.color}`,
-        borderRadius: 18,
-        padding: "26px 26px 22px",
+        borderRadius: 14,
+        padding: "18px 18px 15px",
         transition:
           "transform .35s cubic-bezier(0.16,1,0.3,1), box-shadow .35s cubic-bezier(0.16,1,0.3,1)",
         cursor: "default",
@@ -227,9 +237,9 @@ function StatCard({ stat }: { stat: (typeof STATS)[number] }) {
           style={{
             display: "grid",
             placeItems: "center",
-            width: 44,
-            height: 44,
-            borderRadius: 12,
+            width: 36,
+            height: 36,
+            borderRadius: 10,
             /* Owner 2026-10-14: richer, better-produced icon chip - a lit
                glass square (accent gradient, crisp accent ring + outer
                hairline, glossy top highlight, soft lift) to match the
@@ -240,7 +250,7 @@ function StatCard({ stat }: { stat: (typeof STATS)[number] }) {
             color: stat.color,
           }}
         >
-          <GlyphIcon name={stat.icon} size={22} color={stat.color} />
+          <GlyphIcon name={stat.icon} size={18} color={stat.color} />
         </div>
       </div>
 
@@ -248,12 +258,12 @@ function StatCard({ stat }: { stat: (typeof STATS)[number] }) {
       <p
         style={{
           fontFamily: "var(--lv2-font-display)",
-          fontSize: "clamp(48px, 6vw, 72px)",
+          fontSize: "clamp(34px, 4.4vw, 50px)",
           fontWeight: 700,
           color: stat.color,
           lineHeight: 1,
           letterSpacing: "-0.03em",
-          marginTop: 14,
+          marginTop: 10,
           textShadow: `0 6px 26px ${stat.color}3d`,
         }}
       >
@@ -266,10 +276,10 @@ function StatCard({ stat }: { stat: (typeof STATS)[number] }) {
       <p
         style={{
           color: "rgba(17,22,38,0.78)",
-          fontSize: 14.5,
-          lineHeight: 1.55,
-          marginTop: 14,
-          minHeight: 44,
+          fontSize: 13,
+          lineHeight: 1.5,
+          marginTop: 10,
+          minHeight: 34,
         }}
       >
         {stat.label}
@@ -281,8 +291,8 @@ function StatCard({ stat }: { stat: (typeof STATS)[number] }) {
           display: "flex",
           alignItems: "flex-end",
           justifyContent: "space-between",
-          gap: 14,
-          marginTop: 18,
+          gap: 12,
+          marginTop: 12,
         }}
       >
         <Sparkline points={stat.spark} color={stat.color} />
