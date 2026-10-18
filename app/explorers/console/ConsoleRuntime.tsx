@@ -121,7 +121,16 @@ export default function ConsoleRuntime({ consoleCase, onExit, onNextCase }: { co
     new Promise<void>((res) => {
       let done = false;
       const fin = () => { if (!done) { done = true; res(); } };
-      if (voice && voiceRef.current && !reduce) { playWren(voice, true, fin); setTimeout(fin, 16000); }
+      // 16000 was too short for this block's longer skill-intro lines
+      // (some run 300+ characters) — the dock could appear, and a tap
+      // skip the rest of the narration, while the real clip was still
+      // playing (UAT: "Module 3... the task often pops up before WREN
+      // has finished"). This backstop only exists for the case the
+      // native `ended` event never fires at all; playWren's own
+      // duration-aware safety timer doesn't call this callback, so it's
+      // not redundant with that. 30000 matches the value Phone's
+      // identical `speak()` already uses.
+      if (voice && voiceRef.current && !reduce) { playWren(voice, true, fin); setTimeout(fin, 30000); }
       else { if (voice && voiceRef.current) playWren(voice, true); setTimeout(fin, reduce ? 250 : Math.max(2400, text.length * 42)); }
     });
 
