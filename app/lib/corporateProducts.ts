@@ -31,6 +31,21 @@ export const VAT_PERCENT = 20;
 export type VatMode = "fixed" | "automatic" | "none";
 
 /* What the buyer sees on the page for each setting. */
+/* The AI tool a firm names at purchase. The label is what the buyer picks;
+ * the approved line is what both courses then call the firm's approved tool,
+ * and the key picks the simulator the practice screens are a copy of. */
+export const FIRM_TOOL_OPTIONS = [
+  { key: "copilot", label: "Microsoft 365 Copilot", approved: "Microsoft 365 Copilot on your work account" },
+  { key: "chatgpt", label: "ChatGPT (Team or Enterprise)", approved: "ChatGPT Team or Enterprise on your work account" },
+  { key: "claude", label: "Claude (Team or Enterprise)", approved: "Claude Team or Enterprise on your work account" },
+  { key: "gemini", label: "Gemini in Google Workspace", approved: "Gemini in Google Workspace on your work account" },
+] as const;
+export type FirmToolKey = (typeof FIRM_TOOL_OPTIONS)[number]["key"];
+export const FIRM_TOOL_KEYS = FIRM_TOOL_OPTIONS.map((o) => o.key) as [FirmToolKey, ...FirmToolKey[]];
+export function approvedToolLabel(key: string | null | undefined): string | null {
+  return FIRM_TOOL_OPTIONS.find((o) => o.key === key)?.approved ?? null;
+}
+
 export const VAT_LINE: Record<VatMode, string> = {
   fixed: `VAT at ${VAT_PERCENT}% is added at checkout and shown on your invoice.`,
   automatic: "VAT is worked out from your billing address at checkout and shown on your invoice.",

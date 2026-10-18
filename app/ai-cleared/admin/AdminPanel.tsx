@@ -22,6 +22,7 @@ export default function AdminPanel({
   rows,
   standing,
   profile,
+  profileSet = true,
   orgId,
   course = "ai-cleared",
   basePath = "/ai-cleared/admin",
@@ -33,6 +34,9 @@ export default function AdminPanel({
   rows: RegisterRow[];
   standing: Standing;
   profile: ProfileInput;
+  /* False while the firm has never saved a profile, so the courses are
+   * running on the built-in default (Copilot approved, personal ChatGPT not). */
+  profileSet?: boolean;
   /* Set when AlgorithmX staff act on a firm from the ops console. */
   orgId?: string;
   /* Which course the rows are for. */
@@ -132,6 +136,12 @@ export default function AdminPanel({
         </div>
       </div>
 
+      {!profileSet && role === "ADMIN" && tab !== "profile" && (
+        <div className="cf-card ad-nudge">
+          <span><b>Set your firm&rsquo;s tools before you invite anyone.</b> Until you do, both courses name Microsoft 365 Copilot as your approved tool and personal ChatGPT as not allowed. It takes two minutes.</span>
+          <button type="button" className="cf-btn" onClick={() => setTab("profile")}>Open the firm profile</button>
+        </div>
+      )}
       <div className="ad-tabs">
         {(["register", "invite", "profile"] as const).map((t) => (
           <button key={t} type="button" className={`ad-tab ${tab === t ? "on" : ""}`} onClick={() => setTab(t)}>{t === "register" ? `Register (${rows.length})` : t === "invite" ? "Invite people" : "Firm profile"}</button>
@@ -222,6 +232,7 @@ export default function AdminPanel({
         .ad-course { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
         .ad-course .cf-note { margin-left: 6px; }
         .ad-head { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; margin-bottom: 18px; }
+        .ad-nudge { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 16px; margin-bottom: 14px; font-size: 14px; line-height: 1.5; border-left: 4px solid #b45309; }
         .ad-tabs { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
         .ad-tab { font: inherit; font-size: 14px; font-weight: 600; color: ${K.ink}; background: ${K.glass}; border: 1px solid ${K.glassEdge}; border-radius: 999px; padding: 9px 15px; cursor: pointer; }
         .ad-tab.on { background: ${K.ink}; color: #fff; border-color: ${K.ink}; }

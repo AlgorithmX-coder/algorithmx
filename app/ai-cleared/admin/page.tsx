@@ -54,6 +54,7 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
         rows={rows}
         standing={standing}
         profile={profile}
+        profileSet={!!p}
         course={course}
         basePath="/ai-cleared/admin"
       />

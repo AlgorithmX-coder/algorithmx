@@ -5,6 +5,7 @@ import { FIRM_THRESHOLD, newInviteToken, sendAdminWelcome } from "@/app/lib/aiCl
 import { moduleListFor } from "@/app/lib/courseModules";
 import { COURSES, courseByKey, corporateCourse, courseOfSerial, type CourseSlug } from "@/app/ai-cleared/engine/courses";
 import type { OrgPlan } from "@prisma/client";
+import { DEFAULT_FIRM } from "@/app/ai-cleared/engine/types";
 
 /* The AlgorithmX side of both courses: every firm at a glance with its
  * Cleared and Fluent numbers, the totals, creating a firm by hand, and
@@ -108,6 +109,9 @@ export async function createFirm(args: {
   sector?: string | null;
   contactName?: string | null;
   contactRole?: string | null;
+  /* The approved-tool line named at purchase; the firm profile starts from
+   * it so the courses never default to Copilot for a Google or ChatGPT firm. */
+  approvedTool?: string | null;
   plan: OrgPlan;
   seatsPurchased: number;
   fluentSeatsPurchased?: number;
@@ -131,6 +135,18 @@ export async function createFirm(args: {
       fluentSeatsPurchased: args.fluentSeatsPurchased ?? 0,
     },
   });
+  if (args.approvedTool) {
+    await prisma.firmProfile.create({
+      data: {
+        orgId: org.id,
+        approvedTools: [args.approvedTool],
+        askFirstTools: [],
+        bannedTools: [...DEFAULT_FIRM.bannedTools],
+        escalationContact: args.contactName?.trim() || DEFAULT_FIRM.contactName,
+        escalationRole: args.contactRole?.trim() || null,
+      },
+    });
+  }
   const token = newInviteToken(slug.slice(0, 6));
   await prisma.seat.create({ data: { orgId: org.id, email: args.adminEmail.trim().toLowerCase(), inviteToken: token, team: "Admin", role: "ADMIN" } });
   let emailed = true;
