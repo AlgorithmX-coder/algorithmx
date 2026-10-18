@@ -4,7 +4,7 @@ import { createFirm } from "@/app/lib/aiClearedOps";
 import { sendSeatsAdded } from "@/app/lib/aiClearedAdmin";
 import { opsAlert } from "@/app/lib/opsAlert";
 import { COURSE_NAME, SEAT_MAX, SEAT_MIN, SEAT_STEP, planForSeats, priceIdFor, sellableCourses, stripe, stripeConfigured, vatMode, vatTaxRateId } from "@/app/lib/stripe";
-import { FLUENT_NEEDS_CLEARED_FIRM, type CorporateProductSlug } from "@/app/lib/corporateProducts";
+import { FLUENT_NEEDS_CLEARED_FIRM, type CorporateProductSlug, approvedToolLabel } from "@/app/lib/corporateProducts";
 
 /* Card checkout for a firm's seat pack, and the fulfilment that follows
  * the webhook. The checkout carries everything needed to create the firm
@@ -18,6 +18,8 @@ export interface CheckoutInput {
   sector?: string | null;
   contactName?: string | null;
   contactRole?: string | null;
+  /* One of FIRM_TOOL_KEYS, or empty for "not decided yet". */
+  tool?: string | null;
   adminEmail: string;
   origin: string;
 }
@@ -65,6 +67,7 @@ export async function createCorporateCheckout(input: CheckoutInput): Promise<{ u
       sector: (input.sector ?? "").trim().slice(0, 80),
       contactName: (input.contactName ?? "").trim().slice(0, 120),
       contactRole: (input.contactRole ?? "").trim().slice(0, 120),
+      tool: (input.tool ?? "").trim().slice(0, 20),
       adminEmail: input.adminEmail.trim().toLowerCase().slice(0, 200),
     },
     success_url: `${input.origin}/corporate/buy/thanks?session_id={CHECKOUT_SESSION_ID}`,
@@ -134,6 +137,7 @@ export async function fulfilCheckoutSession(session: Stripe.Checkout.Session, or
     sector: m.sector || null,
     contactName: m.contactName || null,
     contactRole: m.contactRole || null,
+    approvedTool: approvedToolLabel(m.tool),
     plan: planForSeats(seats),
     seatsPurchased: course === "ai-cleared" ? seats : 0,
     fluentSeatsPurchased: course === "ai-fluent" ? seats : 0,

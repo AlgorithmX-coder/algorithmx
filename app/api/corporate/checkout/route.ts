@@ -1,7 +1,7 @@
 import { NextRequest } from "next/server";
 import { z } from "zod";
 import { createCorporateCheckout } from "@/app/lib/aiClearedCheckout";
-import { CORPORATE_PRODUCT_SLUGS } from "@/app/lib/corporateProducts";
+import { CORPORATE_PRODUCT_SLUGS, FIRM_TOOL_KEYS } from "@/app/lib/corporateProducts";
 
 /* POST /api/corporate/checkout: start a Stripe Checkout for a seat pack.
  * No sign-in needed: the buyer is the firm's admin-to-be, and the seat
@@ -15,6 +15,7 @@ const Body = z.object({
   contactName: z.string().max(120).optional().nullable(),
   contactRole: z.string().max(120).optional().nullable(),
   adminEmail: z.string().email().max(200),
+  tool: z.enum(FIRM_TOOL_KEYS).or(z.literal("")).optional().nullable(),
   website: z.string().max(0).optional(),
 });
 

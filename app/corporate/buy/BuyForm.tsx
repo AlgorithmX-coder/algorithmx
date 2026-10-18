@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { K } from "@/app/ai-cleared/engine/tokens";
-import { COURSE_BLURB, COURSE_NAME, FLUENT_NEEDS_CLEARED_FIRM, type CorporateProductSlug, type VatMode } from "@/app/lib/corporateProducts";
+import { COURSE_BLURB, COURSE_NAME, FIRM_TOOL_OPTIONS, FLUENT_NEEDS_CLEARED_FIRM, type CorporateProductSlug, type VatMode } from "@/app/lib/corporateProducts";
 
 /* The seat-pack form: course, seats in tens, firm details, the admin's
  * email, then off to Stripe. Prices are the published ones; Stripe's
@@ -10,7 +10,7 @@ import { COURSE_BLURB, COURSE_NAME, FLUENT_NEEDS_CLEARED_FIRM, type CorporatePro
 export default function BuyForm({ course: initialCourse, courses, seats: initialSeats, prices, vatPercent, vatMode }: { course: CorporateProductSlug; courses: CorporateProductSlug[]; seats: number; prices: Record<CorporateProductSlug, Record<"TEAM" | "FIRM", number>>; vatPercent: number; vatMode: VatMode }) {
   const [course, setCourse] = useState<CorporateProductSlug>(initialCourse);
   const [seats, setSeats] = useState(initialSeats);
-  const [f, setF] = useState({ firmName: "", sector: "", contactName: "", contactRole: "", adminEmail: "" });
+  const [f, setF] = useState({ firmName: "", sector: "", contactName: "", contactRole: "", adminEmail: "", tool: "" });
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
 
@@ -72,6 +72,8 @@ export default function BuyForm({ course: initialCourse, courses, seats: initial
           <label>Who your staff ask about AI <input id="bf-contact" value={f.contactName} onChange={(e) => set("contactName", e.target.value)} placeholder="Amara Osei" /></label>
           <label>Their role <input id="bf-contact-role" value={f.contactRole} onChange={(e) => set("contactRole", e.target.value)} placeholder="Head of Compliance" /></label>
         </div>
+        <label>The AI tool your staff use <select id="bf-tool" value={f.tool} onChange={(e) => set("tool", e.target.value)}><option value="">Not decided yet</option>{FIRM_TOOL_OPTIONS.map((o) => <option key={o.key} value={o.key}>{o.label}</option>)}</select></label>
+        <p className="cf-note">Both courses name it as your approved tool and every practice screen is a copy of it. Your admin can change the list at any time.</p>
         <label>Admin email, where the invite goes <input id="bf-admin" type="email" value={f.adminEmail} onChange={(e) => set("adminEmail", e.target.value)} placeholder="you@yourfirm.co.uk" /></label>
         <p className="cf-note">The admin runs the course for the firm: invites staff, sees the register, edits the firm profile. It can be you. Already run a firm with us? Use the same admin email and the seats are added to that firm.</p>
         {err && <div className="bf-err">{err}</div>}
@@ -90,9 +92,9 @@ export default function BuyForm({ course: initialCourse, courses, seats: initial
         .bf-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
         .bf-row.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
         .bf-card label { display: flex; flex-direction: column; gap: 6px; font-size: 12.5px; color: ${K.muted}; }
-        .bf-card input { width: 100%; box-sizing: border-box; font: inherit; font-size: 14px; color: ${K.ink}; background: ${K.glassStrong}; border: 1px solid ${K.edge}; border-radius: 10px; padding: 9px 12px; }
+        .bf-card input, .bf-card select { width: 100%; box-sizing: border-box; font: inherit; font-size: 14px; color: ${K.ink}; background: ${K.glassStrong}; border: 1px solid ${K.edge}; border-radius: 10px; padding: 9px 12px; }
         .bf-card input:read-only { color: ${K.muted}; }
-        .bf-card input:focus { outline: none; border-color: rgba(87,68,201,0.5); box-shadow: 0 0 0 4px rgba(87,68,201,0.12); }
+        .bf-card input:focus, .bf-card select:focus { outline: none; border-color: rgba(87,68,201,0.5); box-shadow: 0 0 0 4px rgba(87,68,201,0.12); }
         .bf-total { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; padding: 12px 14px; border-radius: 12px; background: ${K.sunk}; font-size: 14px; color: ${K.muted}; }
         .bf-total b { font-family: ${K.display}; font-size: 20px; color: ${K.ink}; }
         .bf-err { padding: 10px 14px; border-radius: 10px; font-size: 14px; background: ${K.warnSoft}; color: ${K.warn}; }
