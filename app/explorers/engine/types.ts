@@ -427,6 +427,12 @@ export interface CycleDef {
   /** WREN's bridge into PRACTICE, shown on the LEARN→PRACTICE hand-off so the child
    *  knows what the next screen asks of them. Falls back to a line built from `instruction`. */
   practiceIntro?: string;
+  /** VO for `practiceIntro` (public/ path). Every other beat on this screen is
+   *  narrated when voiced; this bridge line never was (UAT: "the last speech
+   *  box... doesn't get read out", confirmed on every skill). Optional since a
+   *  cycle without explicit `practiceIntro` falls back to a generated line
+   *  with no matching recording. */
+  practiceIntroVoice?: string;
   intel: {
     beats: string[];
     /** Narrator-led lessons: WREN VO per beat (public/ paths), 1:1 with `beats`. When present the LEARN beats auto-advance as each clip ends; a tap always overrides. */

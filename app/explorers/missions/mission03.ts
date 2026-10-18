@@ -77,6 +77,7 @@ export const mission03: MissionManifest = {
       promise: "You'll learn why a weak password falls in seconds and a strong one doesn't.",
       instruction: "Sort each password: is it already on the rig's list, or does it make the rig work?",
       practiceIntro: "Now let's put it to work, Agent. A fresh batch of passwords is waiting on the next screen. Sort each one: already on the rig's list and gone in seconds, or long and random enough to make it actually work.",
+      practiceIntroVoice: "/audio/wren/m03-c1-practice.mp3",
       intel: {
         beats: [
           "Behind that glass is SKELETON KEY's rig. It's guessing passwords, millions a second, and it never gets tired, hungry, or bored.",
@@ -128,6 +129,7 @@ export const mission03: MissionManifest = {
       promise: "You'll learn to spot the guessable bits you've baked into a password.",
       instruction: "Tap every password the rig would crack from knowing Jake, plus the mistake that links them.",
       practiceIntro: "Now let's put it to work, Agent. Jake's agreed to an audit of his own passwords. Tap every one the rig would crack just from knowing him, plus the one mistake that puts all of them at risk.",
+      practiceIntroVoice: "/audio/wren/m03-c2-practice.mp3",
       intel: {
         beats: [
           "Where does a password like Jake2014! even come from? From Jake. His name, his birth year, a ! to feel safe. Every bit of it is about him.",
@@ -183,6 +185,7 @@ export const mission03: MissionManifest = {
       promise: "You'll learn why one leak can take every account, and which door to save first.",
       instruction: "Jake's reused password just leaked. Make the call.",
       practiceIntro: "Now let's put it to work, Agent. Jake's reused password just leaked, and he's only got time to fix one account before dinner. Read what's at stake, then make the call.",
+      practiceIntroVoice: "/audio/wren/m03-c3-practice.mp3",
       intel: {
         beats: [
           "Last month a little game forum got breached, and its whole list of passwords spilled out. SKELETON KEY bought that list for pennies.",
@@ -244,6 +247,7 @@ export const mission03: MissionManifest = {
       promise: "You'll SEE why a long dull password beats a short clever one.",
       instruction: "Drag the length up until the rig would give up, then lock it in.",
       practiceIntro: "Now let's put it to work, Agent. The rig's own clock is live on the next screen. Drag the length up and watch its crack-time move, then park it where the rig finally gives up.",
+      practiceIntroVoice: "/audio/wren/m03-c4-practice.mp3",
       intel: {
         beats: [
           "Here's the thing nobody tells you. The rig doesn't care how CLEVER your password looks. It cares how LONG it is.",
@@ -293,6 +297,7 @@ export const mission03: MissionManifest = {
       promise: "You'll build a passphrase that's long, strong, and sticks in your head.",
       instruction: "Build a passphrase the rig can't guess. Pick the safe part for each slot.",
       practiceIntro: "Now let's put it to work, Agent. Time to build Jake a passphrase the rig can't touch. For each slot, pick the part that's long, random, and has nothing to do with him.",
+      practiceIntroVoice: "/audio/wren/m03-c5-practice.mp3",
       intel: {
         beats: [
           "'Long' is great, but who remembers twenty random letters? Nobody. So here's the trick the pros actually use. Random WORDS.",
@@ -367,6 +372,7 @@ export const mission03: MissionManifest = {
       promise: "You'll learn SKELETON KEY's whole game, and the one thing that beats it.",
       instruction: "Tap the 3 moves that are really SKELETON KEY's.",
       practiceIntro: "Now let's put it to work, Agent. Here's tonight's evidence, laid out on the next screen. Tap the three moves that are really SKELETON KEY's, no more, no less.",
+      practiceIntroVoice: "/audio/wren/m03-c6-practice.mp3",
       intel: {
         beats: [
           "Let's name SKELETON KEY's game so you see it coming. Move one, THE LIST. He starts with the millions of most-common passwords. 123456, real words, names. Most people are somewhere on it.",
@@ -419,6 +425,7 @@ export const mission03: MissionManifest = {
       promise: "You'll build the exact plan to lock every door for good.",
       instruction: "Build the lock-down plan. Pick the right move for each step.",
       practiceIntro: "Now let's put it to work, Agent. Time to build Jake's lock-down plan properly. For each step, pick the move that actually holds, not just the one that sounds safe.",
+      practiceIntroVoice: "/audio/wren/m03-c7-practice.mp3",
       intel: {
         beats: [
           "So how do you actually lock every door, without a genius memory? A real plan, in four steps.",

@@ -71,6 +71,7 @@ export const mission01: MissionManifest = {
       promise: "You'll learn the feelings a scammer fakes, and how to catch it.",
       instruction: "Read this NEW message. Select every part that's trying to pressure you, then submit.",
       practiceIntro: "Now let's put it to work, Agent. On the next screen I'll show you a NEW message you haven't seen. Your job: tap every part that's trying to pressure you, then hit submit. Find them all and this skill is yours.",
+      practiceIntroVoice: "/audio/wren/m01-c1-practice.mp3",
       intel: {
         beats: [
           "A scammer can't reach through the screen and make you do anything. So they do the next best thing. They make you FEEL something strong, fast.",

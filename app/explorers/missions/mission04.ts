@@ -77,6 +77,7 @@ export const mission04: MissionManifest = {
       promise: "You'll learn how a stranger turns scattered posts into a profile.",
       instruction: "Pin every crumb that feeds the file, then chain them in order.",
       practiceIntro: "Now let's put it to work, Agent. The audit board is up next, a fresh trail of crumbs. Pin every one that feeds the file, then chain them in the order PACKRAT would.",
+      practiceIntroVoice: "/audio/wren/m04-c1-practice.mp3",
       intel: {
         beats: [
           "One post on its own? PACKRAT can't do a thing with it. A handle. A team photo. A birthday joke. Each one is harmless.",
@@ -125,6 +126,7 @@ export const mission04: MissionManifest = {
       promise: "You'll learn to see everything a photo quietly gives away.",
       instruction: "Tap every leak hiding in this photo. Some of it is just a nice picture.",
       practiceIntro: "Now let's put it to work, Agent. Priya's match-day photo is up next, straight from the audit. Tap every leak hiding in it, not just the obvious one.",
+      practiceIntroVoice: "/audio/wren/m04-c2-practice.mp3",
       intel: {
         beats: [
           "A photo shows what you pointed it at. It also shows everything BEHIND it, and you stopped looking the second the smile was good.",
@@ -181,6 +183,7 @@ export const mission04: MissionManifest = {
       promise: "You'll learn to spot the quiz that's really fishing for your secrets.",
       instruction: "Sort each quiz: harmless fun, or is it fishing for a real secret?",
       practiceIntro: "Now let's put it to work, Agent. A whole feed of 'fun' quizzes is waiting. Sort each one: harmless fun, or fishing for a real secret about you?",
+      practiceIntroVoice: "/audio/wren/m04-c3-practice.mp3",
       intel: {
         beats: [
           "PACKRAT's favourite trick isn't sneaky at all. It's FUN. 'Your superstar name is your first pet plus your street name!' Everyone joins in, laughing.",
@@ -232,6 +235,7 @@ export const mission04: MissionManifest = {
       promise: "You'll learn to scrub a post down to the bits that are actually safe to share.",
       instruction: "Black out everything a stranger could use to find Priya in person.",
       practiceIntro: "Now let's put it to work, Agent. Priya's about to post something new. Black out every bit a stranger could use to find her in person, and leave the harmless bits alone.",
+      practiceIntroVoice: "/audio/wren/m04-c4-practice.mp3",
       intel: {
         beats: [
           "Here's the good news. You don't have to go silent to stay safe. You just have to scrub. Read a post before it goes up, the way PACKRAT will.",
@@ -281,6 +285,7 @@ export const mission04: MissionManifest = {
       promise: "You'll learn what to scrub first, and why panic is the wrong move.",
       instruction: "Priya has five minutes. Make the call: what comes down first?",
       practiceIntro: "Now let's put it to work, Agent. The audit's just flagged three loud crumbs, and Priya's got five minutes before practice. Read what's at stake, then make the call.",
+      practiceIntroVoice: "/audio/wren/m04-c5-practice.mp3",
       intel: {
         beats: [
           "One thing makes assembly even easier for PACKRAT: the same handle everywhere. The same name on games, photos, and forums is one thread, tying every crumb together.",
@@ -342,6 +347,7 @@ export const mission04: MissionManifest = {
       promise: "You'll learn PACKRAT's whole game, and the one thing that starves him.",
       instruction: "Tap the 3 moves that are really PACKRAT's.",
       practiceIntro: "Now let's put it to work, Agent. Here's tonight's evidence, laid out on the next screen. Tap the three moves that are really PACKRAT's, no more, no less.",
+      practiceIntroVoice: "/audio/wren/m04-c6-practice.mp3",
       intel: {
         beats: [
           "Let's name PACKRAT's game so you see it coming. Move one, he COLLECTS. He never breaks into anything. He just saves every crumb you drop in public, and he keeps it forever.",
@@ -394,6 +400,7 @@ export const mission04: MissionManifest = {
       promise: "You'll build the exact plan to starve the nest for good.",
       instruction: "Build the footprint clean-up. Pick the right move for each step.",
       practiceIntro: "Now let's put it to work, Agent. Time to build Priya's footprint clean-up properly. For each step, pick the move that actually starves the nest.",
+      practiceIntroVoice: "/audio/wren/m04-c7-practice.mp3",
       intel: {
         beats: [
           "So how do you starve the nest for good? A footprint clean-up, in four steps, and you can do it this week.",
