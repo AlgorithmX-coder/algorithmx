@@ -64,8 +64,28 @@ export interface ExerciseFrameProps {
    */
   background?: string | null;
   /**
-   * Padding inside the frame. Default 0 (canvas-style exercises set
-   * their own internal padding). DOM exercises typically want 24.
+   * Padding inside the frame. Default 16: NOTHING TOUCHES THE LINE.
+   *
+   * Owner, 2026-10-18, after four screenshots of the same thing - the step
+   * dots sitting on the card's top edge, the HINT panel hanging outside it,
+   * the Case board "all too squashed in together":
+   *
+   *   "I don't want any of the cards within the box of the activity, which is
+   *   the thin lining around, to be on the line of the box. So everything
+   *   needs to be within it, spaced out well. I don't want anything touching
+   *   the line."
+   *
+   * This was 0, so every flow child sat flush against the border. One default
+   * here fixes the class across ~52 engines rather than patching four
+   * screens.
+   *
+   * It does NOT move absolutely positioned children: `inset: 0` resolves
+   * against the padding box, so the decor layer and full-bleed overlays still
+   * reach the frame's edges exactly as before. Only normal content is inset,
+   * which is the whole point.
+   *
+   * Kept modest because the owner's window is 1414x771 and vertical space is
+   * the scarce one; a canvas exercise that needs full bleed still passes 0.
    */
   padding?: number | string;
   /**
@@ -107,7 +127,7 @@ export default function ExerciseFrame({
   aspectRatio,
   reserve = 240,
   background = COSMIC_BG,
-  padding = 0,
+  padding = 16,
   touchActionNone = false,
   decor = true,
   floor = 420,

@@ -702,7 +702,7 @@ export const WEEK_3: WeekContent = {
           from: "NewFriend_Leo",
           question: "You're the best teammate ever! Let's meet at the park after school and play for real!",
           answers: [
-            "No thanks. I never meet people I only know online, and I'm telling a grown-up.",
+            "No thanks. I'm telling a grown-up.",
             "OK! Which park do you mean?",
             "Maybe... let me think about it.",
           ],
@@ -714,7 +714,7 @@ export const WEEK_3: WeekContent = {
           from: "StarGirl_Mia",
           question: "Send me a photo of you! I just want to check you're a real kid and not a robot, lol.",
           answers: [
-            "Nice try. I never send photos of myself.",
+            "Nice try. I never send photos.",
             "OK, just one little photo.",
             "Only if you send yours first!",
           ],
@@ -725,9 +725,14 @@ export const WEEK_3: WeekContent = {
         {
           from: "CoolKid_Jax",
           question: "It's my birthday party on Saturday! Come over, my mum will be there, so it's totally safe.",
+          /* Rule 13: the correct answer may not be the longest, nor the only
+           * one carrying its own reason. This was 79 characters against 34
+           * and 30, and the only one that explained itself - a child picks it
+           * without reading. Now all three are the same shape, and TWO of
+           * them mention a grown-up so that is no longer the tell either. */
           answers: [
-            "No thanks. I never meet online friends, and I'm telling my grown-up about this.",
-            "Yes! If your mum's there it's fine.",
+            "No thanks. I'm telling my grown-up.",
+            "Yes, if I ask my mum first.",
             "Maybe, if my friend comes too.",
           ],
           correctIndex: 0,
@@ -738,7 +743,7 @@ export const WEEK_3: WeekContent = {
           from: "PuppyFan_Ellie",
           question: "Here's a photo of me! Your turn, fair is fair!",
           answers: [
-            "I never send photos of me. Not even for fair.",
+            "No swaps. I don't send photos.",
             "OK, one photo for one photo.",
             "Here's a really old one instead.",
           ],
@@ -750,7 +755,7 @@ export const WEEK_3: WeekContent = {
           from: "NewFriend_Leo",
           question: "My big brother can drive us to the arcade. Free games all day, just tell me where to pick you up!",
           answers: [
-            "No way. I never meet online friends, and I never share where I live.",
+            "No way. And I'm not saying where I live.",
             "Yes! Free games! Pick me up at 42 Rainbow Road.",
             "OK, but pick me up at my school instead.",
           ],
@@ -1172,7 +1177,7 @@ export const WEEK_3: WeekContent = {
           text: "Adam's team chat is buzzing after a big win. Which message should set off his red-flag radar?",
         },
         options: [
-          { text: "This chat is our little secret, delete it after reading" },
+          { text: "Our little secret. Delete this after." },
           { text: "That last goal was absolutely incredible" },
           { text: "Same team again tomorrow after school?" },
         ],
@@ -1254,19 +1259,19 @@ export const WEEK_3: WeekContent = {
   // bossQuiz above is what the child plays).
   bossQuestions: {
     easy: [
-      { question: "Someone online says they're 9. How do you KNOW it's true?", answers: ["You can't - anyone can type any age", "Their profile says so", "They sound really nice", "They have a kid photo"], correctIndex: 0, explanation: "Typing isn't proof - you can't see who's really at the keyboard." },
-      { question: "An online friend asks to MEET at the park. What's the rule?", answers: ["Never meet - and tell a grown-up", "Meet them with a friend", "Meet somewhere busy", "Only meet on weekends"], correctIndex: 0, explanation: "Rule one has zero exceptions: never meet online-only friends." },
-      { question: "Which of these is a RED FLAG?", answers: ["'Don't tell your parents about me'", "'Good game!'", "'Want a rematch?'", "'What's your favorite game?'"], correctIndex: 0, explanation: "Safe friends never need secrets from your grown-ups." },
+      { question: "Someone online says they're 9. How do you KNOW it's true?", answers: ["You can't know for sure", "Their profile says so", "They sound really nice", "They have a kid photo"], correctIndex: 0, explanation: "Typing isn't proof - you can't see who's really at the keyboard." },
+      { question: "An online friend asks to MEET at the park. What's the rule?", answers: ["Never meet, and tell a grown-up", "Meet them with a friend along", "Meet somewhere nice and busy", "Only meet them on weekends"], correctIndex: 0, explanation: "Rule one has zero exceptions: never meet online-only friends." },
+      { question: "Which of these is a RED FLAG?", answers: ["'Don't tell your parents about me'", "'Good game, that was close!'", "'Want a rematch tomorrow?'", "'What's your favorite game?'"], correctIndex: 0, explanation: "Safe friends never need secrets from your grown-ups." },
     ],
     medium: [
-      { question: "A brand-new profile with zero friends wants to be your BEST friend. That's...", answers: ["Too friendly too fast - a fake-profile tell", "Totally normal", "OK if you both love the same game", "Fine if they seem nice"], correctIndex: 0, explanation: "Real friendship grows slowly - 'best friends in five minutes' is a classic fake tell." },
-      { question: "An online friend wants your photo 'to prove you're real'. You...", answers: ["Never send it - and tell a grown-up", "Send one old photo", "Send it if they send theirs first", "Send a blurry one"], correctIndex: 0, explanation: "Rule two: never send photos of yourself. Their photo proves nothing either!" },
+      { question: "A brand-new profile with zero friends wants to be your BEST friend. That's...", answers: ["Too friendly, too fast", "Totally normal", "OK if you both love the same game", "Fine if they seem nice"], correctIndex: 0, explanation: "Real friendship grows slowly - 'best friends in five minutes' is a classic fake tell." },
+      { question: "An online friend wants your photo 'to prove you're real'. You...", answers: ["Never send it, tell a grown-up", "Send just one old photo", "Send it if they send theirs first", "Send a blurry one instead"], correctIndex: 0, explanation: "Rule two: never send photos of yourself. Their photo proves nothing either!" },
       { question: "A chat gives you a weird, icky feeling. The hero move is...", answers: ["Stop chatting and tell a grown-up", "Keep chatting to be polite", "Ignore the feeling", "Ask them why it feels weird"], correctIndex: 0, explanation: "Feel it, stop, tell. You never need to explain WHY it feels wrong." },
     ],
     hard: [
-      { question: "'FREE gift card - just tell me your address!' What's REALLY happening?", answers: ["A gift-for-info trick - refuse and tell", "You won a prize", "A generous new friend", "A delivery mix-up"], correctIndex: 0, explanation: "Nobody real trades gifts for your address. Refuse it AND tell a grown-up." },
-      { question: "Why does 'keep our chat secret' make a chat UNSAFE?", answers: ["Safe friends never need secrets from your grown-ups", "Secrets are fun", "It doesn't - secrets are normal", "Only if they ask for photos too"], correctIndex: 0, explanation: "Anyone who needs hiding from your parents is hiding something bad." },
-      { question: "A fake profile can copy a photo, type an age and pick a name. What CAN'T it beat?", answers: ["Your rules - never meet, never send, always tell", "A really good password", "A cool username", "A private account"], correctIndex: 0, explanation: "The disguise kit is useless against a hero who follows the rules no matter who's asking." },
+      { question: "'FREE gift card - just tell me your address!' What's REALLY happening?", answers: ["A gift-for-info trick", "You won a prize", "A generous new friend", "A delivery mix-up"], correctIndex: 0, explanation: "Nobody real trades gifts for your address. Refuse it AND tell a grown-up." },
+      { question: "Why does 'keep our chat secret' make a chat UNSAFE?", answers: ["Safe friends never ask for secrets", "Secrets are part of being friends", "It doesn't - secrets are normal", "Only if they ask for photos too"], correctIndex: 0, explanation: "Anyone who needs hiding from your parents is hiding something bad." },
+      { question: "A fake profile can copy a photo, type an age and pick a name. What CAN'T it beat?", answers: ["Never meet, never send, always tell", "A really strong password", "A cool username nobody knows", "A private account setting"], correctIndex: 0, explanation: "The disguise kit is useless against a hero who follows the rules no matter who's asking." },
     ],
   },
 
