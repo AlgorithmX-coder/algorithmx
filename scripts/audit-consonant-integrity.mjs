@@ -65,11 +65,40 @@ const SR = 16000;
  *
  * Voiced finals (z d b g v j, and s after a vowel or a voiced consonant) carry
  * their energy above the speech floor, so they are excluded.
+ *
+ * "S AFTER A VOWEL IS /z/" IS NOT TRUE, and believing it put a cut clip in
+ * front of the owner. Week 3's Mask Peek ends "Ready? You've got this!" with
+ * the /s/ missing. This check never measured that clip, because "this" ends
+ * in a single s after a vowel and the rule above threw it away as a /z/.
+ *
+ * That rule holds for plurals and verb forms - proves, says, goes, his, was -
+ * and fails for a whole family that a children's course uses constantly:
+ *
+ *   -ous  famous, nervous, serious, DANGEROUS
+ *   -us   virus, bonus, campus, focus, minus, plus, bus, thus, us
+ *   odd   this, yes, gas
+ *
+ * All of those end in a voiceless /s/ that sustains for 100-250ms and can be
+ * cut. Nine such words were being skipped course-wide.
  */
+/** Final single s that is /s/ and not /z/, where the spelling cannot say so. */
+const VOICELESS_FINAL_S = new Set(["this", "yes", "gas", "bias", "atlas", "canvas", "chaos"]);
 function expectsQuietTail(word) {
   let w = String(word || "").toLowerCase().replace(/[^a-z']/g, "");
   if (!w) return false;
   w = w.replace(/'s$/, "s").replace(/'/g, "");
+
+  /* THE VOICELESS-/s/ TESTS RUN ON THE WHOLE WORD, BEFORE THE NORMALISING
+   * BELOW, because that normalising destroys exactly the endings they look
+   * for: the `es -> s` step turns "yes" into "ys" (missed) and "clues" into
+   * "clus", which then matches -us and gets reported as a cut /s/ when it is
+   * a perfectly ordinary /z/. Both were caught by testing the classifier in
+   * BOTH directions - words that must be measured, and words that must be
+   * skipped - which is the only way a change here can be trusted. */
+  const whole = w;
+  if (VOICELESS_FINAL_S.has(whole)) return true;
+  if (/(ous|us)$/.test(whole)) return true;
+
   w = w.replace(/e$/, "");                            // silent e: take -> tak
   if (!w) return false;
   if (/ng$/.test(w)) return false;                    // a loud nasal
@@ -89,7 +118,11 @@ function expectsQuietTail(word) {
    * no consonant there to cut. */
   if (/(igh|eigh)$/.test(w)) return false;
   if (/(ch|sh|th|ck|ph|gh)$/.test(w)) return true;
-  if (/s$/.test(w)) return /(ss|[ptkfx]s)$/.test(w);  // /s/ or /z/?
+  /* /s/ or /z/? Spelled -ss or after a voiceless consonant it is /s/. The
+   * -ous/-us family and VOICELESS_FINAL_S were already answered above, on the
+   * un-normalised word. Anything still here ending in a single s after a
+   * vowel is a plural or a verb form, and /z/. */
+  if (/s$/.test(w)) return /(ss|[ptkfx]s)$/.test(w);
   return /[tkpfx]$/.test(w);
 }
 
@@ -174,7 +207,25 @@ const MIN_TAIL = 0.08;
  * KNOWN LIMIT: a stop genuinely cut to 50-60ms now passes. That is the price
  * of the gate reading green on good audio, and it is the cheaper of the two
  * errors, because a gate that is permanently red tells nobody anything. */
-const MIN_TAIL_STOP = 0.05;
+/* REVERTED to the fricative floor, deliberately.
+ *
+ * This was 0.05, halving the bar for words ending in t, k or p. The argument
+ * was phonetic and sounded right - a stop is a burst, not a sustained sound -
+ * but the NUMBER came from three clips that measured 60ms across two retakes,
+ * and I read that as "60ms is natural for this voice". It was not evidence:
+ * I had no ground truth for what those clips should sound like, and the
+ * control that would have given it (--keep-raw, comparing against the raw
+ * delivery) existed the whole time and went unused.
+ *
+ * What it cost: the course-wide count fell from 43 to 15 on my own run, so
+ * about 28 findings were dismissed without anyone listening to one of them.
+ *
+ * So it goes back to the single floor until there IS ground truth. This
+ * over-reports on genuine short stops, and that is the safe direction: a
+ * false alarm costs a retake, a miss costs a child the end of a word. If the
+ * stop floor is ever lowered again it must be calibrated against raw
+ * deliveries, not against clips that are already in the product. */
+const MIN_TAIL_STOP = 0.08;
 
 /** Does this word end in a stop or an affricate, rather than a fricative? */
 function endsOnStop(word) {

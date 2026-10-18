@@ -152,6 +152,109 @@ clean on both.
 
 ---
 
+## Week 3 UAT intake, 18 October 2026
+
+Owner testing week 3 live, after I had declared weeks 3-5 ready. Fourteen
+checks were green. Everything below was still there.
+
+> "Honestly, it's like this whole document that you created, you didn't abide
+> by. This is getting absolutely ridiculous." ... "I am finding Emma repeat
+> things twice. I don't think you ran the document."
+
+I did run it, and it passed. That is worse than not running it, because it
+said the weeks were clean when they were not and the owner tested anyway.
+Every failure below has ONE shape: **the check read less than the product
+contains.** That is rule 12.
+
+### W3-A. Audio: the last letter is missing (ROOT CAUSED)
+
+Measured with word timings on the raw ElevenLabs delivery AND the shipped
+clip (`--keep-raw`):
+
+```
+raw    "peek behind the mask!"     1%  1%  0  0  0     <- no /k/ AT ALL
+shaped "peek behind the mask!"     2%  1%  0  0  0     <- unchanged
+raw    "TAP PEEK BEHIND THE MASK"  8% 16% 49% 41%      <- a real /k/
+```
+
+**The model under-articulates. The shaping is innocent here.** The same word
+has a good /k/ later in the same clip, so it is per-utterance and random,
+which is why re-recording fixes most (8 of 11 in an earlier round) and why
+work on trimming thresholds never closed it out.
+
+**Why it was invisible**: `audit-consonant-integrity.mjs` measured ONE word
+per clip (`w[w.length - 1]`) - about one word in forty, and "mask" is in line
+1 of 8. Replaced by `audit-consonant-sweep.mjs`, which checks EVERY word from
+cached word timings. First run: **80 missing consonants in weeks 3-5, against
+the old gate's 3.**
+
+A second gap in the same check: `expectsQuietTail` treated every `s` after a
+vowel as voiced /z/, so it skipped **this, yes, us, bus, gas, plus,
+dangerous, famous, virus**.
+
+DO NOT re-tune the stop floor to clips that measure short. An earlier round
+lowered it to 50ms because three clips survived two retakes at 60ms - but a
+retake re-applies the same pipeline, so that was never a control.
+
+### W3-B. Audio: a whole WORD is missing (ROOT CAUSED)
+
+> "It skipped a whole word out. It just said, and trust your uh-oh, and then
+> it didn't say feeling."
+
+Confirmed by `audit-missing-words.mjs` (new): `feeling` is absent from the
+transcript of `d802c2663a281507.mp3`. **It is a `[whispers]` line**, and that
+is the lead - every threshold here is relative to the clip's PEAK, and a
+whisper sits far below the peak of a clip that also holds normal speech. Week
+3 alone: **30 written words were never spoken.** Nothing had ever asked.
+
+### W3-C. Emma repeats what is already on screen
+
+The repetition is between ENGINE-generated and AUTHORED text, which is why C3
+and P1 both reported zero:
+
+- `ClueStamper.tsx:838` emits `"4/4 cases closed"`, `"3 fakes unmasked"`;
+  week 3's `completeLine` is *"Fakes unmasked, real friends welcomed."*
+- `CyberMaze.tsx:1761` emits `"5/5 gates opened with a hero reply"`;
+  `completeLine` is *"Five gates, five hero replies, zero exceptions."*
+
+Half of each pair lives in a `.tsx` engine. Both echo gates read only
+`week*.ts`, so neither could ever have seen it.
+
+### W3-D. LAYOUT: nothing may touch the activity box line
+
+The 1-6 step dots sit ON the card's top edge; the HINT panel falls outside
+the card; the Case board is "all too squashed in together"; cards sit against
+the border.
+
+> "I don't want any of the cards within the box of the activity, which is the
+> thin lining around, to be on the line of the box. So everything needs to be
+> within it, spaced out well. I don't want anything touching the line."
+
+ONE rule, not four bugs - stage 4b. Also: a stray blue line along the bottom
+under the modal, and the "cases closed" screen cut off at the top with an
+oversized Continue button.
+
+### W3-E. Every multiple choice must disguise its answer
+
+> "we need to disguise the correct answer better, every single optional choice
+> or multiple choice question... whether it's in the activities during the
+> week or whether it's in the final exam. So push this across every single
+> week."
+
+The meet-up trap's correct answer was the longest and most detailed option, a
+child picks it without reading. Same defect as week 4's copycat card and as
+Cyber Pro #525. Rule 13.
+
+### W3-F. Smaller items
+
+- The Detective Notebook gives no spoken instruction: Emma should say to tap
+  the clues you think are sneaky.
+- The phone mock's wifi icon is missing its bottom signal bar.
+- The closing screens must be themed per week, and the final badge must carry
+  Adam and Layla plus the week's theme. The Mask Spotter medal has neither.
+
+---
+
 ## Week 2 UAT intake, 17 October 2026
 
 Owner testing week 2 live. Everything raised is logged here FIRST and fixed
@@ -875,6 +978,27 @@ frame of every week in scope and look at all of them (stage 7b). The rule that
 let this through was scoped to screens CHANGED; this fault was older than the
 sweep and sat in a shared engine, so nobody had changed it.
 
+**12. A check must cover EVERY place the content comes from.** This is the
+single cause of the week 3 round, five separate times. The consonant gate
+read one word per clip and missed 77 of 80. Its word classifier skipped every
+voiceless /s/. Frame-fit read only the first week argument. The scroll gate
+sampled one moment. Both echo gates read only `week*.ts`, while half of every
+repetition the owner heard is generated in a `.tsx` engine. Each check was
+correct about the slice it looked at, and the product was broken anyway.
+Before trusting a gate, write down what it does NOT look at: which fields,
+which files, which words, which weeks. If that list is not short and
+deliberate, the gate is decoration. A green run over a slice is not a green
+run.
+
+**13. A multiple choice must not give itself away.** The correct answer may
+not be the longest option, the only one with a reason attached, the only one
+that explains itself, or the only one phrased unlike the rest. A child who
+cannot read the content must not be able to pick it on shape alone. This
+applies to every choice a child makes anywhere - learn beats, prove-its,
+consolidation drills, the boss, and the final exam - and across all twenty
+weeks. Found three times now: week 4's copycat card, week 3's meet-up trap,
+and Cyber Pro #525.
+
 ### The gates, and what each one actually asks
 
 | Gate | The question it asks |
@@ -1040,6 +1164,38 @@ Checks no script does yet, so they are done by eye at 1414x771:
   must never cover live gameplay (W2-6). If the board has nowhere to put it,
   hold the game while it is up rather than letting it sit on top.
 
+### 4b. NOTHING TOUCHES THE BOX LINE
+
+Owner, 2026-10-18, on week 3, after four separate screenshots of the same
+thing:
+
+> "I don't want any of the cards within the box of the activity, which is the
+> thin lining around, to be on the line of the box. So everything needs to be
+> within it, spaced out well. I don't want anything touching the line."
+
+Every activity sits inside a card with a thin border. That border is the
+frame of the picture, and nothing may sit on it, cross it or hang outside it.
+Reported as four bugs on one screen and they are one rule:
+
+- the 1-2-3-4-5-6 step dots sitting ON the card's top edge
+- the HINT panel falling outside the card below it
+- the Case board "all too squashed in together", cards against the border
+- the "Listening..." pill resting on the card's bottom border (week 4 s05)
+
+So, on every screen of every week:
+
+1. **Every child-facing element is INSIDE the border**, with clear space
+   between it and the line. Nothing straddles it, and nothing hangs below it.
+2. **The box grows to fit its content**, rather than the content being packed
+   to fit the box. If it will not fit at 1414x771, the content is too dense
+   for one screen.
+3. **Spacing is even.** A row of cards has the same gap to the border as to
+   each other.
+
+Checked by eye at stage 7b, on the settled frame. There is no gate for this
+yet: the browser gates measure whether a card OVERFLOWS its stage, which is a
+different question from whether it is crowding the line.
+
 ### 5. Art
 
 | # | Run | Must say |
@@ -1049,6 +1205,17 @@ Checks no script does yet, so they are done by eye at 1414x771:
 | R3 | magenta contact sheet of every icon the week shows | no stray pixels, nothing clipped |
 
 | R4 | `node scripts/strip-sticker-white-pockets.mjs --check` | 0 unkeyed white pockets in the week's stickers |
+
+**R5. The closing screens are THEMED PER WEEK, and the badge carries Adam and
+Layla.** Owner, 2026-10-18, on the Mask Spotter medal: "We are designing all
+of these according to the theme of the week. And the final badge I want it to
+have Adam and Layla in there and be themed around the week as well. I don't
+want it to be like this where it hasn't got Adam and Layla in there."
+
+So the debrief, the stickers screen and the week-complete badge all wear the
+week's world, the way the lesson screens already do - and the badge art is
+not a generic medal of the week's object. Adam and Layla are ON it, in that
+week's costume. Checked by eye at stage 7b, against the week's own theme.
 
 R1 is shared and already done for all twenty weeks; it only needs re-running
 if a week ADDS an icon.

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-17T22:09:27.477Z",
+  "generatedAt": "2026-10-18T17:19:43.363Z",
   "model": "eleven_v4",
   "voiceSettings": {
     "stability": 0.6,
@@ -26543,16 +26543,17 @@
       "file": "/audio/voice/ae29b1c5b32e3511.mp3"
     },
     {
-      "key": "c034d145fffb8e91",
+      "key": "f49427953392f0dd",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "[proud] You found the way out! Five gates, five hero replies, zero exceptions. [warmly] Away from here, nothing gets past you. No park. No party. No photo swap. And a trusted grown-up is always waiting at the exit.",
+      "text": "You found the way out! [proud] Five different tricks, and not one of them worked on you. [warmly] Away from here, nothing gets past you. No park. No party. No photo swap. And a trusted grown-up is always waiting at the exit.",
       "lines": [
-        "[proud] You found the way out! Five gates, five hero replies, zero exceptions.",
+        "You found the way out!",
+        "[proud] Five different tricks, and not one of them worked on you.",
         "[warmly] Away from here, nothing gets past you. No park. No party. No photo swap.",
         "And a trusted grown-up is always waiting at the exit."
       ],
-      "file": "/audio/voice/c034d145fffb8e91.mp3"
+      "file": "/audio/voice/f49427953392f0dd.mp3"
     },
     {
       "key": "996628a32537971a",
@@ -26788,21 +26789,21 @@
       "file": "/audio/voice/e6366957197550d0.mp3"
     },
     {
-      "key": "ec90858a000f63fb",
+      "key": "86cb2d1fdf6768c5",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "Adam's team chat is buzzing after a big win. Which message should set off his red-flag radar? Is it option A... Same team again tomorrow after school? Option B... This chat is our little secret, delete it after reading. Or is it option C... That last goal was absolutely incredible. So, what do you think?",
+      "text": "Adam's team chat is buzzing after a big win. Which message should set off his red-flag radar? Is it option A... Same team again tomorrow after school? Option B... Our little secret. Delete this after. Or is it option C... That last goal was absolutely incredible. So, what do you think?",
       "lines": [
         "Adam's team chat is buzzing after a big win. Which message should set off his red-flag radar?",
         "Is it option A...",
         "Same team again tomorrow after school?",
         "Option B...",
-        "This chat is our little secret, delete it after reading.",
+        "Our little secret. Delete this after.",
         "Or is it option C...",
         "That last goal was absolutely incredible.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/ec90858a000f63fb.mp3"
+      "file": "/audio/voice/86cb2d1fdf6768c5.mp3"
     },
     {
       "key": "f51b835c0e75b41e",
