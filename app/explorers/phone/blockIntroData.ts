@@ -38,6 +38,17 @@ export interface BlockIntroData {
   title: string[];
   thesis: string;
   audio: string;
+  /**
+   * The literal script fed to ElevenLabs for `audio` — NOT the same text as
+   * `thesis`/`realWorld`/`shift`/`handoff` (those are the on-screen reading
+   * copy). Until 2026-10-18 this script existed nowhere in the repo; the
+   * only record of what ATLAS actually says was baked into the mp3 itself,
+   * recovered here by transcription. Keep this in sync with `audio` so a
+   * future re-record never has to reverse-engineer the clip again.
+   * Bracketed words like [warm]/[serious] are ElevenLabs v3 delivery tags,
+   * not spoken text.
+   */
+  voiceScript: string;
   commander: { name: string; org: string; signoff: string };
   shift: { kicker: string; lede: string; body: string };
   /** A short real-world hook that ties the block to real stakes out there. */
@@ -59,12 +70,14 @@ export const block2Intro: BlockIntroData = {
   realWorld:
     "This is where nearly everyone gets caught, because it never feels like an attack. It feels like a friend. Learn how you're played, and you stop being the easy target.",
   audio: "/audio/atlas/block2.mp3",
+  voiceScript:
+    "[warm] Agent, you've earned your next clearance, and believe me, you're going to need it. Up to now, you've learned to read the machine. [serious] From here, you learn to read the person, because the best attackers in the world never touch your computer. They go after the one thing no firewall can protect: you. This is Block Two: The Human Factor. Six pressure levers, stolen faces, perfect lies, and a voice on the phone you would swear you knew. [determined] It is harder than anything you have done. It is personal, and it is where nearly everyone gets caught. [warm] WREN takes you into the field. I will be right here. [serious] Don't let them in.",
   commander: { name: "ATLAS", org: "ARC COMMAND", signoff: "ATLAS · ARC Command · I'll be watching" },
   shift: {
     kicker: "The shift",
     lede: "In Block One you audited the evidence. Here, <em>you are the evidence.</em>",
     body:
-      "Every case in this block is a person, not a file. They won't send you a dodgy link and hope. They'll message you like a friend, wait as long as it takes, and reach for a feeling instead of a password. <b>Polish won't save you and spelling won't give them away.</b> The only defence left is to know how you're being played, and to verify who you're really talking to.",
+      "Every case in this block is a person, not a file. They won't send you a dodgy link and hope. They'll message you like a friend, wait as long as it takes, and reach for a feeling instead of a password. <b>Polish won't save you, and spelling won't give them away.</b> The only defence left is to know how you're being played, and to verify who you're really talking to.",
   },
   filesKicker: "Five people are going to try to play you.",
   files: [
@@ -103,6 +116,8 @@ export const block1Intro: BlockIntroData = {
   realWorld:
     "Out there, this catches real people every single day, with nothing more than a message. You've dodged it so far. Now you'll understand it inside and out, so it never catches you for real.",
   audio: "/audio/atlas/block1.mp3",
+  voiceScript:
+    "[warm] Agent, welcome to the ARC. You're here because you can see what most people miss. Good, you're going to need it. [serious] Before anyone can steal a single thing from you, they have to reach you first, a message, a post, a link that looks completely normal. We call these signals. This is Block One: Signals. Five cases, and in every one, someone sends you something built to fool you. A fake message, a prize too good to be true, a password that falls in seconds. [determined] Your job is simple to say and hard to do. Read the signal, and spot the trap before it springs. [warm] Master this, and everything that comes after gets easier. WREN is waiting for you. [excited] Let's begin.",
   commander: { name: "ATLAS", org: "ARC COMMAND", signoff: "ATLAS · ARC Command · Start here" },
   shift: {
     kicker: "The job",
@@ -147,6 +162,8 @@ export const block3Intro: BlockIntroData = {
   realWorld:
     "Every account you own runs on systems like these. The people who break in understand exactly how they work. After this block, so do you.",
   audio: "/audio/atlas/block3.mp3",
+  voiceScript:
+    "[warm] Agent, you've learned to spot the trick, and to read the person. [serious] But every con eventually touches a machine, and machines have rules. This is Block Three: Systems. Five cases on how the technology actually works, the locks, the networks, the hidden doors, and exactly where each one can be forced. [determined] Stop trusting the surface. Start understanding the wiring. Because once you can see how a system really works, you can see how it breaks, and how to defend it. [excited] Top secret clearance from here. WREN is ready.",
   commander: { name: "ATLAS", org: "ARC COMMAND", signoff: "ATLAS · ARC Command · Top clearance" },
   shift: {
     kicker: "The shift",
@@ -191,6 +208,8 @@ export const block4Intro: BlockIntroData = {
   realWorld:
     "Real attacks are never one trick. They're patient, linked, and run by someone who planned the whole thing. This is how you read the entire board, and unmask the mind behind it.",
   audio: "/audio/atlas/block4.mp3",
+  voiceScript:
+    "[serious] Agent, everything until now, every message, every trick, every system, it was one person warming up. [warm] This is Block Four: The Long Game, the highest clearance we have. Five cases that pull it all together. Who is really buying your life? What is real, and what is faked? And the single mind coordinating every attack you have seen. [determined] This is where a trainee becomes an operator. Read the whole board, then find the one behind it. This is signal zero. [excited] Let's finish this.",
   commander: { name: "ATLAS", org: "ARC COMMAND", signoff: "ATLAS · ARC Command · Highest clearance" },
   shift: {
     kicker: "The endgame",
