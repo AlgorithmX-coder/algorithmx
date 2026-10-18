@@ -65,11 +65,40 @@ const SR = 16000;
  *
  * Voiced finals (z d b g v j, and s after a vowel or a voiced consonant) carry
  * their energy above the speech floor, so they are excluded.
+ *
+ * "S AFTER A VOWEL IS /z/" IS NOT TRUE, and believing it put a cut clip in
+ * front of the owner. Week 3's Mask Peek ends "Ready? You've got this!" with
+ * the /s/ missing. This check never measured that clip, because "this" ends
+ * in a single s after a vowel and the rule above threw it away as a /z/.
+ *
+ * That rule holds for plurals and verb forms - proves, says, goes, his, was -
+ * and fails for a whole family that a children's course uses constantly:
+ *
+ *   -ous  famous, nervous, serious, DANGEROUS
+ *   -us   virus, bonus, campus, focus, minus, plus, bus, thus, us
+ *   odd   this, yes, gas
+ *
+ * All of those end in a voiceless /s/ that sustains for 100-250ms and can be
+ * cut. Nine such words were being skipped course-wide.
  */
+/** Final single s that is /s/ and not /z/, where the spelling cannot say so. */
+const VOICELESS_FINAL_S = new Set(["this", "yes", "gas", "bias", "atlas", "canvas", "chaos"]);
 function expectsQuietTail(word) {
   let w = String(word || "").toLowerCase().replace(/[^a-z']/g, "");
   if (!w) return false;
   w = w.replace(/'s$/, "s").replace(/'/g, "");
+
+  /* THE VOICELESS-/s/ TESTS RUN ON THE WHOLE WORD, BEFORE THE NORMALISING
+   * BELOW, because that normalising destroys exactly the endings they look
+   * for: the `es -> s` step turns "yes" into "ys" (missed) and "clues" into
+   * "clus", which then matches -us and gets reported as a cut /s/ when it is
+   * a perfectly ordinary /z/. Both were caught by testing the classifier in
+   * BOTH directions - words that must be measured, and words that must be
+   * skipped - which is the only way a change here can be trusted. */
+  const whole = w;
+  if (VOICELESS_FINAL_S.has(whole)) return true;
+  if (/(ous|us)$/.test(whole)) return true;
+
   w = w.replace(/e$/, "");                            // silent e: take -> tak
   if (!w) return false;
   if (/ng$/.test(w)) return false;                    // a loud nasal
@@ -89,7 +118,11 @@ function expectsQuietTail(word) {
    * no consonant there to cut. */
   if (/(igh|eigh)$/.test(w)) return false;
   if (/(ch|sh|th|ck|ph|gh)$/.test(w)) return true;
-  if (/s$/.test(w)) return /(ss|[ptkfx]s)$/.test(w);  // /s/ or /z/?
+  /* /s/ or /z/? Spelled -ss or after a voiceless consonant it is /s/. The
+   * -ous/-us family and VOICELESS_FINAL_S were already answered above, on the
+   * un-normalised word. Anything still here ending in a single s after a
+   * vowel is a plural or a verb form, and /z/. */
+  if (/s$/.test(w)) return /(ss|[ptkfx]s)$/.test(w);
   return /[tkpfx]$/.test(w);
 }
 
