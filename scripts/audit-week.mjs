@@ -57,6 +57,7 @@ const BROWSER = [
   ["L3", "audit-card-fill.mjs N", "a card leaving a band of empty stage"],
   ["L4", "audit-frame-fit.mjs N", "anything past the fold or clipped"],
   ["5b", "audit-boss-sprite-clip.mjs N", "W2 raccoon's head on the result screens"],
+  ["7b", "shoot-week.mjs N", "EVERY frame, shot and LOOKED AT - see below"],
 ];
 
 let failed = 0;
@@ -111,6 +112,18 @@ console.log("\n  And by eye, because no script does these yet:");
 console.log("    - a grid's last row (W2-1): five items in three columns leaves a hole");
 console.log("    - can the child READ what they are deciding about (W2-9)");
 console.log("    - is the same number on screen twice (W2-8)");
+
+/* Printed last and loudest, because everything above can pass while a screen
+ * is plainly broken. Weeks 3-5 did exactly that: fourteen checks green, and
+ * week 4's Hall of Mirrors shipped with its card cut off. */
+console.log("\n  ** STAGE 7b IS NOT OPTIONAL **");
+console.log("     A green run above means the known faults are absent. It does NOT mean");
+console.log("     the week looks right - no check here asks that, because the question");
+console.log("     has no assertion, only an eye.");
+console.log(`     node scripts/shoot-week.mjs ${WEEKS.join(" ")}   then open all ${WEEKS.length * 30} frames and look.`);
+console.log("     EVERY screen, not just the ones you changed: the Hall of Mirrors was");
+console.log("     broken before the sweep began, which is how a 'changed screens only'");
+console.log("     rule let it reach production.");
 
 console.log(`\n${rows.length} gate(s) run, ${failed} failing.\n`);
 process.exit(failed ? 1 : 0);
