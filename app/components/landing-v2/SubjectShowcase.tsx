@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 
-import { COURSE_HREF, type LockupId } from "@/app/components/CourseLockup";
+import { type LockupId } from "@/app/components/CourseLockup";
 import { sectionMark } from "@/app/components/sectionMark";
 import { useEffect, useRef, useState } from "react";
 import { useInView } from "framer-motion";
@@ -697,10 +697,9 @@ function FeaturedStreamCard({ stream }: { stream: Stream }) {
             <div key={t.id} className="ssf-trk" style={{ ["--c" as string]: t.accent }}>
               <span aria-hidden className="ssf-topbar" />
               <span aria-hidden className="ssf-no">{`0${i + 1}`}</span>
-              <Link
-                href={COURSE_HREF[t.id]}
+              <div
                 className="ssf-trk-a"
-                style={{ display: "flex", flexDirection: "column", textDecoration: "none", padding: "18px 15px 15px", color: "inherit" }}
+                style={{ display: "flex", flexDirection: "column", padding: "18px 15px 15px", color: "inherit" }}
               >
                 <span className="ssf-trk-head">
                   <span className="ssf-badge">
@@ -724,7 +723,7 @@ function FeaturedStreamCard({ stream }: { stream: Stream }) {
                   ))}
                 </ul>
                 <span className="ssf-more">plus many more</span>
-              </Link>
+              </div>
             </div>
           ))}
         </div>
@@ -916,11 +915,6 @@ function FeaturedStreamCard({ stream }: { stream: Stream }) {
           text-align: left;
           background: linear-gradient(180deg, color-mix(in srgb, var(--c) 15%, #0a1813), #081210);
           border: 1px solid color-mix(in srgb, var(--c) 42%, transparent);
-          transition: transform 0.2s, box-shadow 0.2s;
-        }
-        .ssf-trk:hover {
-          transform: translateY(-4px);
-          box-shadow: 0 16px 34px -16px var(--c);
         }
         .ssf-topbar {
           position: absolute;
@@ -1068,11 +1062,6 @@ function FeaturedStreamCard({ stream }: { stream: Stream }) {
         :global(.ssf-cta:hover) {
           transform: translateY(-2px);
           box-shadow: 0 18px 34px -12px rgba(55, 224, 138, 0.75);
-        }
-        :global(.ssf-trk-a:focus-visible) {
-          outline: 2px solid var(--c);
-          outline-offset: 3px;
-          border-radius: 12px;
         }
         @keyframes ssfSpin {
           to {
