@@ -133,7 +133,7 @@ function CutPhase({ audio, onDone }: { audio: IncidentProps["audio"]; onDone: ()
   const submit = () => { if (!chosen) return; setSubmitted(true); if (option?.correct) audio.latch(); else audio.thud(); };
 
   return (
-    <div style={{ maxWidth: 640 }}>
+    <div style={{ maxWidth: 820 }}>
       <Eyebrow text="Phase 2 · Cut the hub: one move shuts the whole factory. Make your call, then submit." color={T.actionAmber} />
       <div style={{ display: "grid", gap: 10, marginTop: 14 }}>
         {cuts.map((o) => {
@@ -175,7 +175,7 @@ function WarnPhase({ reduced, audio, onDone }: { reduced: boolean; audio: Incide
   const submit = () => { if (!chosen) return; setSubmitted(true); if (option?.correct) audio.latch(); else audio.thud(); };
 
   return (
-    <div style={{ maxWidth: 640 }}>
+    <div style={{ maxWidth: 820 }}>
       <Eyebrow text="Phase 3 · Warn everyone: some kids already typed things. Pick the message that actually helps, then submit." color={T.actionAmber} />
       <div style={{ display: "grid", gap: 10, marginTop: 14 }}>
         {warnings.map((o) => {

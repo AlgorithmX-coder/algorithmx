@@ -145,7 +145,7 @@ export default function Mission18Incident({ reduced, audio, onPhaseCleared, onCo
     onAdvance: () => void,
     resetFn: () => void,
   ) => (
-    <div style={{ maxWidth: 640 }}>
+    <div style={{ maxWidth: 820 }}>
       <Eyebrow text={intro} color={T.actionAmber} />
       {sceneMono && (
         <div style={{ margin: "14px 0", background: T.paper, borderRadius: 2, padding: "14px 16px", boxShadow: "0 2px 0 rgba(0,0,0,0.5)" }}>
@@ -197,7 +197,7 @@ export default function Mission18Incident({ reduced, audio, onPhaseCleared, onCo
 
       {/* ------------------------------------------------ PHASE 1: stop the tape */}
       {phase === 1 && (
-        <div style={{ maxWidth: 640 }}>
+        <div style={{ maxWidth: 820 }}>
           <Eyebrow text="Phase 1. The pitch lands one line at a time. Read on, or walk. The sooner you walk, the less he gets." color={T.actionAmber} />
 
           {/* the recruiter's hook, rising with every line you let land */}

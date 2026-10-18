@@ -11,7 +11,7 @@
 import { useEffect, useReducer, useRef, useState } from "react";
 import { MatrixRain } from "../MatrixRain";
 import { BlockBackdrop } from "../BlockBackdrop";
-import { playWren, setVoiceRate, stopWren, useVoiceRate, useWrenSpeaking, VOICE_RATES } from "../engine/audio";
+import { playWren, primeAudio, setVoiceRate, stopWren, useVoiceRate, useWrenSpeaking, VOICE_RATES } from "../engine/audio";
 import { useArrowAdvance, SkipButton } from "../engine/arrowAdvance";
 import { playBGM, stopBGM } from "@/app/lib/sounds";
 import { type CaseStage, readProgress, saveProgress, clearProgress, markCaseComplete, isResumable, stageLabel } from "../engine/caseProgress";
@@ -121,7 +121,16 @@ export default function ConsoleRuntime({ consoleCase, onExit, onNextCase }: { co
     new Promise<void>((res) => {
       let done = false;
       const fin = () => { if (!done) { done = true; res(); } };
-      if (voice && voiceRef.current && !reduce) { playWren(voice, true, fin); setTimeout(fin, 16000); }
+      // 16000 was too short for this block's longer skill-intro lines
+      // (some run 300+ characters) — the dock could appear, and a tap
+      // skip the rest of the narration, while the real clip was still
+      // playing (UAT: "Module 3... the task often pops up before WREN
+      // has finished"). This backstop only exists for the case the
+      // native `ended` event never fires at all; playWren's own
+      // duration-aware safety timer doesn't call this callback, so it's
+      // not redundant with that. 30000 matches the value Phone's
+      // identical `speak()` already uses.
+      if (voice && voiceRef.current && !reduce) { playWren(voice, true, fin); setTimeout(fin, 30000); }
       else { if (voice && voiceRef.current) playWren(voice, true); setTimeout(fin, reduce ? 250 : Math.max(2400, text.length * 42)); }
     });
 
@@ -227,7 +236,11 @@ export default function ConsoleRuntime({ consoleCase, onExit, onNextCase }: { co
     setPhase("test");
   };
 
-  const start = (from: CaseStage = { kind: "skill", index: 0 }) => { if (startedRef.current) return; startedRef.current = true; setPhase("play"); run(from); };
+  // Synchronous, inside this exact tap — same fix as Phone's cold-open audio
+  // (PR #572): the real narration starts moments later inside run()'s async
+  // chain, which is one tick too late for some mobile browsers' autoplay
+  // unlock to still count as "the same gesture".
+  const start = (from: CaseStage = { kind: "skill", index: 0 }) => { if (startedRef.current) return; startedRef.current = true; primeAudio(); setPhase("play"); run(from); };
   const beginFresh = () => { clearProgress(consoleCase.id); start({ kind: "skill", index: 0 }); };
   const beginResume = () => start(resumeStage ?? { kind: "skill", index: 0 });
 
@@ -242,15 +255,18 @@ export default function ConsoleRuntime({ consoleCase, onExit, onNextCase }: { co
   const wrenDot = <span aria-hidden style={{ display: "flex", gap: 2, alignItems: "flex-end", height: 12 }}>{[4, 10, 6].map((h, i) => <i key={i} style={{ width: 2.5, height: h, background: C.wren, borderRadius: 2, display: "block" }} />)}</span>;
 
   return (
-    <main className="cn" style={{ minHeight: "100dvh", background: `radial-gradient(900px 520px at 50% -8%, #2a1e08 0%, rgba(42,30,8,0) 60%), ${C.page}`, color: C.ink, fontFamily: UI, display: "flex", alignItems: "center", justifyContent: "center", padding: "18px 14px", overflow: "hidden", ["--amber" as string]: acc }}>
+    <main className="cn" style={{ minHeight: "100dvh", background: `radial-gradient(900px 520px at 50% -8%, ${acc}14 0%, transparent 62%), ${C.page}`, color: C.ink, fontFamily: UI, display: "flex", alignItems: "center", justifyContent: "center", padding: "18px 14px", overflow: "hidden", ["--amber" as string]: acc }}>
       <style>{CSS}</style>
       {/* Per-case living world behind the console (owner standard). Falls back
           to the block's plain amber matrix if a case hasn't set a theme. */}
       {THEME ? (
-        <BlockBackdrop variant={THEME.backdrop} colors={THEME.matrix} accent={acc} accentHi={THEME.accentHi} reduced={!!reduce} opacity={0.5} />
+        <BlockBackdrop variant={THEME.backdrop} colors={THEME.matrix} accent={acc} accentHi={THEME.accentHi} reduced={!!reduce} opacity={0.2} />
       ) : (
-        <MatrixRain reduced={!!reduce} opacity={0.12} colors={["#FFB23E", "#FFD27A", "#FF7A3E"]} head="#FFF0D6" />
+        <MatrixRain reduced={!!reduce} opacity={0.1} colors={["#FFB23E", "#FFD27A", "#FF7A3E"]} head="#FFF0D6" />
       )}
+      {/* Readability scrim: keeps the per-case living world as calm ambience so it
+          never competes with the console text (owner: too busy / conflicting). */}
+      <div aria-hidden style={{ position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none", background: "radial-gradient(760px 880px at 50% 50%, rgba(8,7,4,0.74), rgba(8,7,4,0.42) 68%, rgba(8,7,4,0.66))" }} />
 
       <SkipButton />
       <button className="cn-btn" onClick={onExit} style={{ position: "fixed", top: 14, left: 14, zIndex: 20, fontFamily: MONO, fontSize: 11.5, fontWeight: 600, color: C.dim, background: "rgba(255,255,255,0.04)", border: `1px solid ${C.edge}`, borderRadius: 6, padding: "6px 12px", cursor: "pointer" }}>← Leave</button>
@@ -559,7 +575,18 @@ function Debrief({ data, acc, caseId, xp, reduced, onExit, onNext }: { data: Con
     // so this needs to scroll (same fix as Phone's Debrief) or the bottom
     // (incl. "Next case") is unreachable with no scrollbar shown (UAT:
     // Week 11, "squashed at the end, make it bigger and add a scroll").
-    <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", overflowY: "auto", padding: "0 26px 26px" }}>
+    // minHeight:0 added defensively: this div is a flex child of the panel
+    // above (flex:1 there too), and a flex item's default min-height is
+    // `auto` ("never shrink below my own content"), which can silently
+    // override overflowY:auto. Re-tested this screen at real laptop window
+    // sizes down to 1414x560 after a UAT report that it was still squashed
+    // there — scrolling actually already worked correctly at every size
+    // tried (confirmed by scrolling the container and checking the "Next
+    // case" button's real on-screen position, not just element visibility),
+    // so that report most likely predates this fix's original deploy. This
+    // min-height addition is a genuine robustness fix regardless — it just
+    // isn't the thing that was reproduced broken here.
+    <div style={{ flex: 1, minHeight: 0, display: "flex", flexDirection: "column", justifyContent: "center", overflowY: "auto", padding: "0 26px 26px" }}>
       <div style={{ fontSize: 24, fontWeight: 800, color: C.mint, marginBottom: 14, textAlign: "center", lineHeight: 1.2, fontFamily: MONO }}>{data.title}</div>
       <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 18 }}>
         {data.lines.map((l, i) => <div key={i} style={{ display: "flex", gap: 10, fontSize: 14, lineHeight: 1.45, color: C.ink }}><span style={{ color: C.mint, flex: "0 0 auto" }}>✓</span><span>{l}</span></div>)}

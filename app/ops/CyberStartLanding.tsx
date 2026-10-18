@@ -51,8 +51,9 @@ const CSS = `
 .cyops-root nav{position:sticky;top:0;z-index:40;backdrop-filter:blur(16px);background:rgba(8,9,13,.9);border-bottom:1px solid rgba(139,123,255,.2);box-shadow:0 10px 30px -22px rgba(0,0,0,.95)}
 .cyops-root .navrow{display:flex;align-items:center;gap:20px;height:64px}
 .cyops-root .brand{display:flex;align-items:center;gap:11px;font-family:var(--display);font-weight:700;font-size:18px;letter-spacing:.16em}
+.cyops-root .brand-stack{display:flex;flex-direction:column;gap:3px;line-height:1.1}
 .cyops-root .brand .dot{width:11px;height:11px;border-radius:3px;background:var(--ind);box-shadow:0 0 14px var(--ind-glow)}
-.cyops-root .brand small{font-family:var(--sans);font-weight:400;font-size:10px;letter-spacing:.16em;color:var(--muted);text-transform:uppercase}
+.cyops-root .brand small{display:block;font-family:var(--sans);font-weight:400;font-size:10px;letter-spacing:.16em;color:var(--muted);text-transform:uppercase}
 .cyops-root .navlinks{display:flex;gap:26px;margin-left:auto}
 .cyops-root .navlinks a{font-family:var(--display);font-weight:600;font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--text);transition:.15s}
 .cyops-root .navlinks a:hover{color:var(--ind-soft)}
@@ -360,7 +361,7 @@ export default function CyberStartLanding() {
 
       <nav>
         <div className="wrap navrow">
-          <a href="#top" className="brand"><span className="dot" />CYBER OPS <small>by <CubeMark size={13} color="#8B7BFF" code style={{ display: "inline-block", verticalAlign: "middle", position: "relative", top: "-0.15em", margin: "0 3px", filter: "drop-shadow(0 0 6px rgba(139,123,255,0.6))" }} />AlgorithmX</small></a>
+          <a href="#top" className="brand"><span className="dot" /><span className="brand-stack">CYBER OPS<small>by <CubeMark size={13} color="#5f8dff" code style={{ display: "inline-block", verticalAlign: "middle", position: "relative", top: "-0.15em", margin: "0 3px", filter: "drop-shadow(0 0 6px rgba(95,141,255,0.7))" }} />AlgorithmX</small></span></a>
           <div className="navlinks">
             <a href="#range">The Range</a>
             <a href="#curriculum">Curriculum</a>
@@ -594,7 +595,7 @@ export default function CyberStartLanding() {
       <footer>
         <div className="wrap">
           <div className="frow">
-            <a href="#top" className="brand"><span className="dot" />CYBER OPS <small>by <CubeMark size={13} color="#8B7BFF" code style={{ display: "inline-block", verticalAlign: "middle", position: "relative", top: "-0.15em", margin: "0 3px", filter: "drop-shadow(0 0 6px rgba(139,123,255,0.6))" }} />AlgorithmX</small></a>
+            <a href="#top" className="brand"><span className="dot" /><span className="brand-stack">CYBER OPS<small>by <CubeMark size={13} color="#5f8dff" code style={{ display: "inline-block", verticalAlign: "middle", position: "relative", top: "-0.15em", margin: "0 3px", filter: "drop-shadow(0 0 6px rgba(95,141,255,0.7))" }} />AlgorithmX</small></span></a>
             <div className="fl">
               <a href="#range">The Range</a>
               <a href="#curriculum">Curriculum</a>

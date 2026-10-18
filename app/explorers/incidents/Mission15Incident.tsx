@@ -120,7 +120,7 @@ export default function Mission15Incident({ reduced, audio, onPhaseCleared, onCo
 
       {/* ---------------- phase 1: the eyes test ---------------- */}
       {phase === 1 && (
-        <div style={{ maxWidth: 640 }}>
+        <div style={{ maxWidth: 820 }}>
           <Eyebrow text="Phase 1: Five identical login pages fill the wall. Find the real one… by looking?" color={T.actionAmber} />
           <div style={{ display: "grid", gap: 10, marginTop: 14 }}>
             {EYES.map((o) => {
@@ -151,7 +151,7 @@ export default function Mission15Incident({ reduced, audio, onPhaseCleared, onCo
 
       {/* ---------------- phase 2: read the addresses ---------------- */}
       {phase === 2 && (
-        <div style={{ maxWidth: 640 }}>
+        <div style={{ maxWidth: 820 }}>
           <Eyebrow text="Phase 2: The five address bars, side by side. Tap the ONLY real one." color={T.actionAmber} />
           <div style={{ display: "grid", gap: 10, marginTop: 14 }}>
             {ADDRESSES.map((a) => (
@@ -197,7 +197,7 @@ export default function Mission15Incident({ reduced, audio, onPhaseCleared, onCo
 
       {/* ---------------- phase 3: the lie detector + breadcrumb ---------------- */}
       {phase === 3 && (
-        <div style={{ maxWidth: 640 }}>
+        <div style={{ maxWidth: 820 }}>
           <div style={{ margin: "0 0 14px", background: T.paper, borderRadius: 2, padding: "14px 16px", boxShadow: "0 2px 0 rgba(0,0,0,0.5)" }}>
             <p style={{ margin: 0, fontFamily: MONO, fontSize: 13, lineHeight: 1.7, color: T.fileInk }}>
               VAULT AUTOFILL SWEEP: mirror 1 … silent. mirror 2 … silent. mirror 3 … silent. mirror 4 … silent. gamehub.com … FILLED.

@@ -306,7 +306,7 @@ function ContainmentPhase({ audio, onDone }: { audio: IncidentProps["audio"]; on
   };
 
   return (
-    <div style={{ maxWidth: 640 }}>
+    <div style={{ maxWidth: 820 }}>
       <Eyebrow text="Phase 2 · Cut the hook: the group is still getting hit. Make your call, then submit." color={T.actionAmber} />
       <div style={{ display: "grid", gap: 10, marginTop: 14 }}>
         {containment.map((o) => {

@@ -147,7 +147,7 @@ export default function Mission13Incident({ reduced, audio, onPhaseCleared, onCo
 
       {/* ------------------------------------------- PHASE 1: read his route */}
       {phase === 1 && (
-        <div style={{ maxWidth: 640 }}>
+        <div style={{ maxWidth: 820 }}>
           <Eyebrow text="Phase 1. The front door held, so SK went around it. Tap the door he is actually using." color={T.actionAmber} />
           <div style={{ margin: "14px 0", background: T.paper, borderRadius: 2, padding: "14px 16px", boxShadow: "0 2px 0 rgba(0,0,0,0.5)" }}>
             <p style={{ margin: 0, fontFamily: MONO, fontSize: 13, lineHeight: 1.6, color: T.fileInk }}>
@@ -192,7 +192,7 @@ export default function Mission13Incident({ reduced, audio, onPhaseCleared, onCo
 
       {/* ---------------------------------------------- PHASE 2: slam the door */}
       {phase === 2 && (
-        <div style={{ maxWidth: 640 }}>
+        <div style={{ maxWidth: 820 }}>
           <Eyebrow text="Phase 2. He is at the recovery questions now. One fix actually slams this door." color={T.actionAmber} />
           <div style={{ margin: "14px 0", background: T.paper, borderRadius: 2, padding: "14px 16px", boxShadow: "0 2px 0 rgba(0,0,0,0.5)" }}>
             <p style={{ margin: 0, fontFamily: MONO, fontSize: 13, lineHeight: 1.6, color: T.fileInk }}>
@@ -240,7 +240,7 @@ export default function Mission13Incident({ reduced, audio, onPhaseCleared, onCo
 
       {/* ------------------------------------------ PHASE 3: sweep the devices */}
       {phase === 3 && !swept && (
-        <div style={{ maxWidth: 640 }}>
+        <div style={{ maxWidth: 820 }}>
           <Eyebrow text="Phase 3. Last check: the devices signed in to Jake's account. Do not guess. Find the one that is not Jake and tap it to end that session." color={T.actionAmber} />
           <div style={{ margin: "14px 0", background: T.paper, borderRadius: 2, padding: "14px 16px", boxShadow: "0 2px 0 rgba(0,0,0,0.5)" }}>
             <p style={{ margin: 0, fontFamily: MONO, fontSize: 13, lineHeight: 1.6, color: T.fileInk }}>

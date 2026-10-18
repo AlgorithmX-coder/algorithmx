@@ -168,7 +168,7 @@ function CutKeyPhase({ audio, onDone }: { audio: IncidentProps["audio"]; onDone:
   const submit = () => { if (!chosen) return; setSubmitted(true); if (option?.correct) audio.latch(); else audio.thud(); };
 
   return (
-    <div style={{ maxWidth: 640 }}>
+    <div style={{ maxWidth: 820 }}>
       <div style={{ marginBottom: 12, fontSize: 13, lineHeight: 1.6, color: T.textSecondary }}>
         The rig cracked Jake's email in seconds, and the same key, <span style={{ fontFamily: MONO, color: T.threatRed }}>Biscuit2013!</span>, opens his game and his school login too. One key, three doors.
       </div>
@@ -213,7 +213,7 @@ function WallPhase({ reduced, audio, onDone }: { reduced: boolean; audio: Incide
   const submit = () => { if (!chosen) return; setSubmitted(true); if (option?.correct) audio.latch(); else audio.thud(); };
 
   return (
-    <div style={{ maxWidth: 640 }}>
+    <div style={{ maxWidth: 820 }}>
       <Eyebrow text="Phase 3 · Hold the wall: pick the new key that actually stops the rig, then raise it." color={T.actionAmber} />
       <div style={{ display: "grid", gap: 10, marginTop: 14 }}>
         {walls.map((o) => {

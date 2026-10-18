@@ -1019,6 +1019,21 @@ function LearnStage({ cycle, cycleIndex, reduced, audio, emit, onNext, voiceOn }
       } else if (predAudio?.question) {
         // Last beat finished — WREN asks the "your call" question out loud.
         playWren(predAudio.question, true);
+      } else if (cycle.practiceIntroVoice) {
+        // No prediction on this cycle (none of M1-5 use one today), so the
+        // last beat finishing IS the hand-off into the practiceIntro bubble.
+        // Chained here, not a separate effect watching `lessonDone` — that
+        // was tried first and lost a race: `lessonDone` flips true in the
+        // exact same render as this beat's own playWren call, and playWren
+        // always cuts whatever's already playing, so the two calls fought
+        // over the same render and the practice line silently lost.
+        // Chaining through this onEnded guarantees it only starts once the
+        // beat is actually done. (UAT: "the last speech box... doesn't get
+        // read out", confirmed on every skill — a cycle WITH a prediction
+        // still won't voice this line, since it only becomes `lessonDone`
+        // via `settled` from a correct "your call" answer, a path this fix
+        // doesn't touch.)
+        playWren(cycle.practiceIntroVoice, true);
       }
     });
     return () => {
@@ -1639,8 +1654,12 @@ function BossScene({ manifest, reduced, audio, emit, onNext }: { manifest: Missi
   const phaseNames = manifest.incident.phaseNames ?? Array.from({ length: manifest.incident.phases }, (_, i) => `PHASE ${i + 1}`);
 
   if (!started) {
+    // Widened from 640 (owner: boss intro/battle panels read as too
+    // small/squished, same report across every mission) — the page's own
+    // outer content column caps out around 830px, so this now fills it
+    // rather than leaving a narrow column inside a narrow column.
     return (
-      <section style={{ maxWidth: 640, margin: "0 auto" }}>
+      <section style={{ maxWidth: 820, margin: "0 auto" }}>
         {!reduced && <div className="sr-alert-edge" aria-hidden />}
         <Eyebrow text="Boss: live case" color={T.threatRed} />
         <h1 style={{ fontFamily: BODY, fontSize: "clamp(28px, 5vw, 44px)", fontWeight: 800, letterSpacing: "-0.01em", margin: "12px 0 26px", textShadow: `0 0 40px ${T.threatRed}33` }}>

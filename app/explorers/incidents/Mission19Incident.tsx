@@ -138,7 +138,7 @@ export default function Mission19Incident({ reduced, audio, onPhaseCleared, onCo
 
       {/* ---------------- phase 1: hold the lures ---------------- */}
       {phase === 1 && (
-        <div style={{ maxWidth: 640 }}>
+        <div style={{ maxWidth: 820 }}>
           <Eyebrow text="Phase 1: Five signals hit at once. Flag the THREE that are the wave. Leave the real ones." color={T.actionAmber} />
           <div style={{ display: "grid", gap: 10, marginTop: 14 }}>
             {WAVE.map((w) => {
@@ -189,7 +189,7 @@ export default function Mission19Incident({ reduced, audio, onPhaseCleared, onCo
 
       {/* ---------------- phase 2: contain the spread ---------------- */}
       {phase === 2 && (
-        <div style={{ maxWidth: 640 }}>
+        <div style={{ maxWidth: 820 }}>
           <Eyebrow text="Phase 2: A few accounts fell, and now they're messaging friends. Stop the spread." color={T.actionAmber} />
           <div style={{ display: "grid", gap: 10, marginTop: 14 }}>
             {CONTAINS.map((c) => {
@@ -220,7 +220,7 @@ export default function Mission19Incident({ reduced, audio, onPhaseCleared, onCo
 
       {/* ---------------- phase 3: read the cadence ---------------- */}
       {phase === 3 && (
-        <div style={{ maxWidth: 640 }}>
+        <div style={{ maxWidth: 820 }}>
           <div style={{ margin: "0 0 14px", background: T.paper, borderRadius: 2, padding: "14px 16px", boxShadow: "0 2px 0 rgba(0,0,0,0.5)" }}>
             <p style={{ margin: 0, fontFamily: MONO, fontSize: 12.5, lineHeight: 1.7, color: T.fileInk }}>
               WAVE TIMELINE: recon 14:00 · lures 15:00 · access 15:02 · spread 15:20 · probe 15:45. Timed to the second, like a machine.

@@ -12,7 +12,7 @@
 import { useEffect, useReducer, useRef, useState } from "react";
 import { MatrixRain } from "../MatrixRain";
 import { BlockBackdrop } from "../BlockBackdrop";
-import { playWren, setVoiceRate, stopWren, useVoiceRate, useWrenSpeaking, VOICE_RATES } from "../engine/audio";
+import { playWren, primeAudio, setVoiceRate, stopWren, useVoiceRate, useWrenSpeaking, VOICE_RATES } from "../engine/audio";
 import { useArrowAdvance, SkipButton } from "../engine/arrowAdvance";
 import { playBGM, stopBGM } from "@/app/lib/sounds";
 import { type CaseStage, readProgress, saveProgress, clearProgress, markCaseComplete, isResumable, stageLabel } from "../engine/caseProgress";
@@ -103,7 +103,14 @@ export default function WarRoomRuntime({ warCase, onExit, onNextCase }: { warCas
     new Promise<void>((res) => {
       let done = false;
       const fin = () => { if (!done) { done = true; res(); } };
-      if (voice && voiceRef.current && !reduce) { playWren(voice, true, fin); setTimeout(fin, 16000); }
+      // Same fix as Console's identical speak() (UAT: "Module 3... the
+      // task often pops up before WREN has finished") — 16000 was too
+      // short for longer narration lines, letting the dock appear and a
+      // tap skip the rest of the audio while it was still playing. Not
+      // reported for this block specifically, but it's the exact same
+      // code, so swept it too rather than wait for a separate report.
+      // 30000 matches the value Phone's identical speak() already uses.
+      if (voice && voiceRef.current && !reduce) { playWren(voice, true, fin); setTimeout(fin, 30000); }
       else { if (voice && voiceRef.current) playWren(voice, true); setTimeout(fin, reduce ? 250 : Math.max(2400, text.length * 42)); }
     });
 
@@ -192,7 +199,11 @@ export default function WarRoomRuntime({ warCase, onExit, onNextCase }: { warCas
     setPhase("test");
   };
 
-  const start = (from: CaseStage = { kind: "skill", index: 0 }) => { if (startedRef.current) return; startedRef.current = true; setPhase("play"); run(from); };
+  // Synchronous, inside this exact tap — same fix as Phone's cold-open audio
+  // (PR #572): the real narration starts moments later inside run()'s async
+  // chain, which is one tick too late for some mobile browsers' autoplay
+  // unlock to still count as "the same gesture".
+  const start = (from: CaseStage = { kind: "skill", index: 0 }) => { if (startedRef.current) return; startedRef.current = true; primeAudio(); setPhase("play"); run(from); };
   const beginFresh = () => { clearProgress(warCase.id); start({ kind: "skill", index: 0 }); };
   const beginResume = () => start(resumeStage ?? { kind: "skill", index: 0 });
 
