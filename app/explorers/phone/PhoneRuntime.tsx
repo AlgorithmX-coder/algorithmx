@@ -26,6 +26,7 @@ import { addJournalEntry, loadJournal, type JournalEntry } from "./journal";
 import { CaseJournal } from "./CaseJournal";
 import { PropField } from "./PropField";
 import { HomeScreen } from "./HomeScreen";
+import { caseClockTime } from "./clock";
 
 const C = {
   page: "#0d0d12", ink: "#F3F4F7", dim: "#9A9AA6", faint: "#7a7a88",
@@ -446,7 +447,7 @@ export default function PhoneRuntime({ phoneCase, onExit, onNextCase }: { phoneC
           <div aria-hidden style={{ position: "absolute", top: 0, left: "50%", transform: "translateX(-50%)", width: 148, height: 25, background: C.phone, borderRadius: "0 0 17px 17px", zIndex: 6 }} />
           {/* status bar */}
           <div style={{ height: 42, flex: "0 0 42px", display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 22px", fontSize: 13.5, fontWeight: 600, zIndex: 5 }}>
-            <span>9:41</span>
+            <span>{caseClockTime(phoneCase.id)}</span>
             <span style={{ display: "flex", gap: 6, alignItems: "center", fontSize: 11 }}>
               <span aria-hidden>●●●</span><span aria-hidden>Wi‑Fi</span>
               {/* Was missing the terminal nub every real status-bar battery
@@ -462,7 +463,7 @@ export default function PhoneRuntime({ phoneCase, onExit, onNextCase }: { phoneC
           </div>
 
           {phase === "home" ? (
-            <HomeScreen appName={APP} kind={phoneCase.app?.kind ?? "messaging"} accent={OUT} reduced={!!reduce} onDone={() => setPhase("lock")} />
+            <HomeScreen appName={APP} kind={phoneCase.app?.kind ?? "messaging"} accent={OUT} reduced={!!reduce} onDone={() => setPhase("lock")} caseId={phoneCase.id} />
           ) : phase === "lock" ? (
             isResumable(resumeStage) ? (
               <ResumePrompt caseNumber={phoneCase.caseNumber} title={phoneCase.title} acc={OUT} atLabel={stageLabel(resumeStage, phoneCase.skills)} onContinue={beginResume} onRestart={beginFresh} />
@@ -506,7 +507,7 @@ export default function PhoneRuntime({ phoneCase, onExit, onNextCase }: { phoneC
 
               {/* thread */}
               <div ref={threadRef} className="ph-thread" style={{ flex: "1 1 auto", overflowY: "auto", padding: "14px 13px 8px", display: "flex", flexDirection: "column", gap: 3, background: WALL }}>
-                <div style={{ textAlign: "center", color: C.faint, fontSize: 11, margin: "2px 0 8px" }}>Today 9:41</div>
+                <div style={{ textAlign: "center", color: C.faint, fontSize: 11, margin: "2px 0 8px" }}>Today {caseClockTime(phoneCase.id)}</div>
                 {items.map((it) => <ItemView key={it.id} it={it} wrenAvatar={renderWrenAvatar(speaking && it.id === lastWrenRef.current)} accent={OUT} kind={phoneCase.app?.kind ?? "messaging"} onTagSegment={tapTagSegment} />)}
               </div>
 
