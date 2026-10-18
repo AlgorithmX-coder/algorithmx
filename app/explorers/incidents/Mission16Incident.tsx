@@ -108,7 +108,7 @@ export default function Mission16Incident({ reduced, audio, onPhaseCleared, onCo
 
       {/* ---------------------------------------------- PHASE 1: read the lot */}
       {phase === 1 && (
-        <div style={{ maxWidth: 640 }}>
+        <div style={{ maxWidth: 820 }}>
           <Eyebrow text="Phase 1. The lot listing is up. Tap the one thing that makes it worth bidding on." color={T.actionAmber} />
           <div style={{ margin: "14px 0", background: T.paper, borderRadius: 2, padding: "14px 16px", boxShadow: "0 2px 0 rgba(0,0,0,0.5)" }}>
             <p style={{ margin: 0, fontFamily: MONO, fontSize: 13, lineHeight: 1.6, color: T.fileInk }}>
@@ -153,7 +153,7 @@ export default function Mission16Incident({ reduced, audio, onPhaseCleared, onCo
 
       {/* ------------------------------------------- PHASE 2: sever the links */}
       {phase === 2 && (
-        <div style={{ maxWidth: 640 }}>
+        <div style={{ maxWidth: 820 }}>
           <Eyebrow text="Phase 2. The gavel is in one hour. Cut every real link and crash the price." color={T.actionAmber} />
 
           {/* live linkage-integrity meter: the file's whole worth, falling */}
@@ -216,7 +216,7 @@ export default function Mission16Incident({ reduced, audio, onPhaseCleared, onCo
 
       {/* ------------------------------------------------- PHASE 3: the gavel */}
       {phase === 3 && !closed && (
-        <div style={{ maxWidth: 640 }}>
+        <div style={{ maxWidth: 820 }}>
           <Eyebrow text="Phase 3. The gavel falls. The honest ledger: what did the buyers actually get?" color={T.actionAmber} />
           <div style={{ margin: "14px 0", background: T.paper, borderRadius: 2, padding: "14px 16px", boxShadow: "0 2px 0 rgba(0,0,0,0.5)" }}>
             <p style={{ margin: 0, fontFamily: MONO, fontSize: 13, lineHeight: 1.6, color: T.fileInk }}>

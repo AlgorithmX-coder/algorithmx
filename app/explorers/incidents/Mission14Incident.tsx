@@ -134,7 +134,7 @@ export default function Mission14Incident({ reduced, audio, onPhaseCleared, onCo
 
       {/* ---------------- phase 1: sort the deliveries ---------------- */}
       {phase === 1 && (
-        <div style={{ maxWidth: 640 }}>
+        <div style={{ maxWidth: 820 }}>
           <Eyebrow text="Phase 1: Five installs waiting. Flag the TWO that don't pass the gate." color={T.actionAmber} />
           <div style={{ display: "grid", gap: 10, marginTop: 14 }}>
             {DELIVERIES.map((d) => {
@@ -185,7 +185,7 @@ export default function Mission14Incident({ reduced, audio, onPhaseCleared, onCo
 
       {/* ---------------- phase 2: handle the horse ---------------- */}
       {phase === 2 && (
-        <div style={{ maxWidth: 640 }}>
+        <div style={{ maxWidth: 820 }}>
           <Eyebrow text="Phase 2: The zip is sitting in downloads. What happens to a caught trojan?" color={T.actionAmber} />
           <div style={{ display: "grid", gap: 10, marginTop: 14 }}>
             {HANDLES.map((h) => {
@@ -216,7 +216,7 @@ export default function Mission14Incident({ reduced, audio, onPhaseCleared, onCo
 
       {/* ---------------- phase 3: raise the armor ---------------- */}
       {phase === 3 && (
-        <div style={{ maxWidth: 640 }}>
+        <div style={{ maxWidth: 820 }}>
           <Eyebrow text="Phase 3: The finishing sweep. Leave this tablet harder than you found it." color={T.actionAmber} />
           <div style={{ display: "grid", gap: 10, marginTop: 14 }}>
             {ARMORS.map((a) => {

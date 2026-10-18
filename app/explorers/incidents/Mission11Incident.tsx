@@ -200,7 +200,7 @@ function WatchRigPhase({ reduced, audio, onDone }: PhaseProps) {
   );
 
   return (
-    <div style={{ maxWidth: 640 }}>
+    <div style={{ maxWidth: 820 }}>
       <Eyebrow
         text="Phase 1. The rig opens on Jake's game account. Let it run. Watch what a strong, unique password plus 2FA does to it."
         color={T.actionAmber}
@@ -307,7 +307,7 @@ function ReusedKeysPhase({ audio, onDone }: PhaseProps) {
   };
 
   return (
-    <div style={{ maxWidth: 640 }}>
+    <div style={{ maxWidth: 820 }}>
       <Eyebrow
         text="Phase 2. SKELETON KEY has ONE stolen password from a forum leak. Tap every door of Jake's that same key still opens."
         color={T.actionAmber}
@@ -411,7 +411,7 @@ function VerdictPhase({ audio, onDone }: PhaseProps) {
   }
 
   return (
-    <div style={{ maxWidth: 640 }}>
+    <div style={{ maxWidth: 820 }}>
       <Eyebrow
         text="Phase 3. The last resort. SKELETON KEY stops guessing and starts asking. An email lands."
         color={T.actionAmber}

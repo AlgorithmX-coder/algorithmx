@@ -1639,8 +1639,12 @@ function BossScene({ manifest, reduced, audio, emit, onNext }: { manifest: Missi
   const phaseNames = manifest.incident.phaseNames ?? Array.from({ length: manifest.incident.phases }, (_, i) => `PHASE ${i + 1}`);
 
   if (!started) {
+    // Widened from 640 (owner: boss intro/battle panels read as too
+    // small/squished, same report across every mission) — the page's own
+    // outer content column caps out around 830px, so this now fills it
+    // rather than leaving a narrow column inside a narrow column.
     return (
-      <section style={{ maxWidth: 640, margin: "0 auto" }}>
+      <section style={{ maxWidth: 820, margin: "0 auto" }}>
         {!reduced && <div className="sr-alert-edge" aria-hidden />}
         <Eyebrow text="Boss: live case" color={T.threatRed} />
         <h1 style={{ fontFamily: BODY, fontSize: "clamp(28px, 5vw, 44px)", fontWeight: 800, letterSpacing: "-0.01em", margin: "12px 0 26px", textShadow: `0 0 40px ${T.threatRed}33` }}>

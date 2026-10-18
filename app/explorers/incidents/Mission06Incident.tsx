@@ -136,7 +136,7 @@ export default function Mission06Incident({ reduced, audio, onPhaseCleared, onCo
         ))}
       </div>
 
-      <div style={{ maxWidth: 640 }}>
+      <div style={{ maxWidth: 820 }}>
         <Eyebrow text={PHASE_INTROS[phase - 1]} color={T.actionAmber} />
 
         <div style={{ margin: "14px 0", background: T.paper, borderRadius: 2, padding: "14px 16px", boxShadow: "0 2px 0 rgba(0,0,0,0.5)" }}>

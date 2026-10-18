@@ -184,7 +184,7 @@ function HoldPhase({ reduced, audio, onDone }: { reduced: boolean; audio: Incide
         : "“…fine. FINE. Ask your silly code word then.”";
 
   return (
-    <div style={{ maxWidth: 640 }}>
+    <div style={{ maxWidth: 820 }}>
       <Eyebrow text="Phase 1. The voice sounds exactly like mum, and it wants a code right now." color={T.actionAmber} />
 
       {/* the incoming call — captured evidence */}
@@ -290,7 +290,7 @@ function WobblePhase({ audio, onDone }: { audio: IncidentProps["audio"]; onDone:
   };
 
   return (
-    <div style={{ maxWidth: 640 }}>
+    <div style={{ maxWidth: 820 }}>
       <Eyebrow text="Phase 2. The wobble. One thing the caller just did proves it is a clone, not mum. Call it." color={T.actionAmber} />
 
       <div style={{ margin: "14px 0", background: T.paper, borderRadius: 2, padding: "14px 16px", boxShadow: "0 2px 0 rgba(0,0,0,0.5)" }}>
@@ -372,7 +372,7 @@ function ChainPhase({ reduced, audio, onDone }: { reduced: boolean; audio: Incid
   }
 
   return (
-    <div style={{ maxWidth: 640 }}>
+    <div style={{ maxWidth: 820 }}>
       <Eyebrow text="Phase 3. ARC traced the call. Tap the 3 real players who built this attack. Leave the 2 fakes." color={T.actionAmber} />
 
       {/* the chain, assembling */}

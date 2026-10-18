@@ -128,7 +128,7 @@ export default function Mission17Incident({ reduced, audio, onPhaseCleared, onCo
 
       {/* ---------------- phase 1: find the source ---------------- */}
       {phase === 1 && (
-        <div style={{ maxWidth: 640 }}>
+        <div style={{ maxWidth: 820 }}>
           <Eyebrow text="Phase 1: a fake screenshot of Mr. Ortega is everywhere. Forwarders aren't sources. Find the SOURCE." color={T.actionAmber} />
           <div style={{ display: "grid", gap: 10, marginTop: 14 }}>
             {SOURCES.map((s) => (
@@ -173,7 +173,7 @@ export default function Mission17Incident({ reduced, audio, onPhaseCleared, onCo
 
       {/* ---------------- phase 2: break the claim ---------------- */}
       {phase === 2 && (
-        <div style={{ maxWidth: 640 }}>
+        <div style={{ maxWidth: 820 }}>
           <Eyebrow text="Phase 2: the screenshot looks perfect. Break the CLAIM, not the pixels." color={T.actionAmber} />
           <div style={{ display: "grid", gap: 10, marginTop: 14 }}>
             {BREAKS.map((b) => {
@@ -204,7 +204,7 @@ export default function Mission17Incident({ reduced, audio, onPhaseCleared, onCo
 
       {/* ---------------- phase 3: still the mill ---------------- */}
       {phase === 3 && (
-        <div style={{ maxWidth: 640 }}>
+        <div style={{ maxWidth: 820 }}>
           <Eyebrow text="Phase 3: forty kids are mid-forward. One message stops the mill. Choose it." color={T.actionAmber} />
           <div style={{ display: "grid", gap: 10, marginTop: 14 }}>
             {STILLS.map((s) => {
