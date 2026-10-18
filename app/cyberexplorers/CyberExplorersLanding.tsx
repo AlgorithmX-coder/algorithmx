@@ -748,7 +748,7 @@ export default function CyberExplorersLanding() {
           <span style={{ display: "flex", flexDirection: "column", gap: 2, lineHeight: 1, alignItems: "flex-start" }}>
             <span>CYBER EXPLORERS</span>
             <span className="cx-brand-by" style={{ fontSize: 9, fontWeight: 400, letterSpacing: "0.16em", color: T.textDisabled }}>
-              BY <CubeMark size={13} color={T.arcCyan} code style={{ display: "inline-block", verticalAlign: "middle", position: "relative", top: "-0.15em", margin: "0 3px", filter: `drop-shadow(0 0 5px ${T.arcCyan}aa)` }} />ALGORITHMX
+              BY <CubeMark size={13} color="#5f8dff" code style={{ display: "inline-block", verticalAlign: "middle", position: "relative", top: "-0.15em", margin: "0 3px", filter: "drop-shadow(0 0 5px rgba(95,141,255,0.7))" }} />ALGORITHMX
             </span>
           </span>
         </Link>

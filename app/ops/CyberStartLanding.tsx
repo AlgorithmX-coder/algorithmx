@@ -361,7 +361,7 @@ export default function CyberStartLanding() {
 
       <nav>
         <div className="wrap navrow">
-          <a href="#top" className="brand"><span className="dot" /><span className="brand-stack">CYBER OPS<small>by <CubeMark size={13} color="#8B7BFF" code style={{ display: "inline-block", verticalAlign: "middle", position: "relative", top: "-0.15em", margin: "0 3px", filter: "drop-shadow(0 0 6px rgba(139,123,255,0.6))" }} />AlgorithmX</small></span></a>
+          <a href="#top" className="brand"><span className="dot" /><span className="brand-stack">CYBER OPS<small>by <CubeMark size={13} color="#5f8dff" code style={{ display: "inline-block", verticalAlign: "middle", position: "relative", top: "-0.15em", margin: "0 3px", filter: "drop-shadow(0 0 6px rgba(95,141,255,0.7))" }} />AlgorithmX</small></span></a>
           <div className="navlinks">
             <a href="#range">The Range</a>
             <a href="#curriculum">Curriculum</a>
@@ -595,7 +595,7 @@ export default function CyberStartLanding() {
       <footer>
         <div className="wrap">
           <div className="frow">
-            <a href="#top" className="brand"><span className="dot" /><span className="brand-stack">CYBER OPS<small>by <CubeMark size={13} color="#8B7BFF" code style={{ display: "inline-block", verticalAlign: "middle", position: "relative", top: "-0.15em", margin: "0 3px", filter: "drop-shadow(0 0 6px rgba(139,123,255,0.6))" }} />AlgorithmX</small></span></a>
+            <a href="#top" className="brand"><span className="dot" /><span className="brand-stack">CYBER OPS<small>by <CubeMark size={13} color="#5f8dff" code style={{ display: "inline-block", verticalAlign: "middle", position: "relative", top: "-0.15em", margin: "0 3px", filter: "drop-shadow(0 0 6px rgba(95,141,255,0.7))" }} />AlgorithmX</small></span></a>
             <div className="fl">
               <a href="#range">The Range</a>
               <a href="#curriculum">Curriculum</a>

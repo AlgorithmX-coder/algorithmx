@@ -269,7 +269,7 @@ export default function CyberStartProLanding({ product }: { product: Product }) 
               </svg>
               <span className="flex flex-col gap-0.5 leading-none">
                 <span className="disp" style={{ fontWeight: 700, fontSize: 18, letterSpacing: "0.07em", color: "#fff", whiteSpace: "nowrap" }}>CYBER PRO</span>
-                <span className="hidden sm:inline mono" style={{ fontSize: 9, letterSpacing: "0.16em", color: "rgba(255,255,255,0.4)", textTransform: "uppercase", whiteSpace: "nowrap" }}>by <CubeMark size={13} color="#ff7a3d" code style={{ display: "inline-block", verticalAlign: "middle", position: "relative", top: "-0.15em", margin: "0 3px", filter: "drop-shadow(0 0 6px rgba(255,122,61,0.55))" }} />AlgorithmX</span>
+                <span className="hidden sm:inline mono" style={{ fontSize: 9, letterSpacing: "0.16em", color: "rgba(255,255,255,0.4)", textTransform: "uppercase", whiteSpace: "nowrap" }}>by <CubeMark size={13} color="#5f8dff" code style={{ display: "inline-block", verticalAlign: "middle", position: "relative", top: "-0.15em", margin: "0 3px", filter: "drop-shadow(0 0 6px rgba(95,141,255,0.7))" }} />AlgorithmX</span>
               </span>
             </Link>
             <div className="flex items-center gap-4">

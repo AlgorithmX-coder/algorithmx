@@ -619,7 +619,7 @@ function CyberHeroesNav() {
               </span>
               <span className="chnav-stack">
                 <span className="chnav-word">CYBER <em>HEROES</em></span>
-                <span className="chnav-by">by <CubeMark size={13} color="#7df0ff" code style={{ display: "inline-block", verticalAlign: "middle", position: "relative", top: "-0.15em", margin: "0 3px 0 2px", filter: "drop-shadow(0 0 5px rgba(0,229,255,0.75))" }} />AlgorithmX</span>
+                <span className="chnav-by">by <CubeMark size={13} color="#5f8dff" code style={{ display: "inline-block", verticalAlign: "middle", position: "relative", top: "-0.15em", margin: "0 3px 0 2px", filter: "drop-shadow(0 0 5px rgba(95,141,255,0.7))" }} />AlgorithmX</span>
               </span>
             </Link>
 

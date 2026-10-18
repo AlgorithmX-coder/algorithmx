@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 
 import Nav from "@/app/components/landing-v2/Nav";
+import CubeMark from "@/app/components/CubeMark";
 import Footer from "@/app/components/landing-v2/Footer";
 import ProofBand from "@/app/components/ProofBand";
 import { FadeUp } from "@/app/components/landing-v2/utilities";
@@ -210,8 +211,10 @@ function CorporateBrand() {
         <span style={{ fontFamily: "var(--lv2-font-mono)", fontWeight: 700, fontSize: 14, letterSpacing: "0.2em", textTransform: "uppercase", color: "var(--lv2-word-mark, #eaf1ff)" }}>
           CYBER <span style={{ color: "#5f8dff" }}>CORPORATE</span>
         </span>
-        <span style={{ fontFamily: "var(--lv2-font-mono)", fontWeight: 500, fontSize: 8.5, letterSpacing: "0.24em", textTransform: "uppercase", color: "var(--lv2-word-mark, #eaf1ff)", opacity: 0.6 }}>
-          by AlgorithmX
+        <span style={{ fontFamily: "var(--lv2-font-mono)", fontWeight: 500, fontSize: 8.5, letterSpacing: "0.24em", textTransform: "uppercase", color: "var(--lv2-word-mark, #eaf1ff)", display: "inline-flex", alignItems: "center" }}>
+          <span style={{ opacity: 0.6 }}>by</span>
+          <CubeMark size={12} color="#5f8dff" code style={{ display: "inline-block", margin: "0 3px", filter: "drop-shadow(0 0 4px rgba(95,141,255,0.7))" }} />
+          <span style={{ opacity: 0.6 }}>AlgorithmX</span>
         </span>
       </span>
     </>
