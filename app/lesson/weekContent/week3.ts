@@ -318,8 +318,12 @@ export const WEEK_3: WeekContent = {
       realToast: "CASE CLOSED: REAL FRIEND!",
       fakeToast: "CASE CLOSED: FAKE!",
       wrongTitle: "Check your stamps again!",
-      completeTitle: "Every case closed!",
-      completeLine: "Fakes unmasked, real friends welcomed.",
+      /* The engine prints its own tally directly above this (ClueStamper.tsx
+       * emits "4/4 cases closed" and "3 fakes unmasked"), so neither the
+       * title nor the line may use those words again. The owner heard this
+       * screen say the same thing twice. */
+      completeTitle: "Notebook shut!",
+      completeLine: "Three disguises came off. One real friend stayed.",
       cases: [
         {
           id: "skater-max",
@@ -686,7 +690,9 @@ export const WEEK_3: WeekContent = {
       wrongTitle: "That reply opens the trap, not the gate",
       wrongTip: "Never meet. Never send. And tell a trusted grown-up who asked.",
       completeTitle: "You found the way out!",
-      completeLine: "Five gates, five hero replies, zero exceptions.",
+      /* CyberMaze.tsx prints "5/5 gates opened with a hero reply" directly
+       * above this, so this line may not say gates, hero or replies again. */
+      completeLine: "No maybes. No swaps. No exceptions.",
       hints: {
         tier2: "The hero reply always says NO clearly, then tells a grown-up. No maybes, no swaps, no deals.",
         tier3: "Never meet: not at the park, not at a party, not for five minutes. Never send: not one photo, not even a swap.",
@@ -773,7 +779,11 @@ export const WEEK_3: WeekContent = {
       completeNarration: {
         speaker: "adam",
         lines: [
-          "[proud] You found the way out! Five gates, five hero replies, zero exceptions.",
+          /* Sarah must not read the screen back. "You found the way out!" is
+           * the printed title and the stat line already says five gates with
+           * a hero reply, so saying either aloud is the repetition the owner
+           * reported. She adds what the screen cannot: what it MEANT. */
+          "[proud] Five different tricks, and not one of them worked on you.",
           "[warmly] Away from here, nothing gets past you. No park. No party. No photo swap.",
           "And a trusted grown-up is always waiting at the exit.",
         ],
