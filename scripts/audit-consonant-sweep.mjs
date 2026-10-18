@@ -55,13 +55,36 @@ const MANIFEST = "public/audio/voice/manifest.json";
 const STT_CACHE = ".stt-cache";
 const SR = 16000;
 
-/* A consonant that is THERE reaches a few percent of the clip's peak in the
- * 140ms around the end of the word. Measured: a present /k/ runs 16-72%, an
- * absent one never leaves 0-4%. 6% is the speech floor used elsewhere in the
- * pipeline and sits clear of both. */
-const PRESENT = 0.06;
+/* MEASURE THE TAIL'S LENGTH, NOT ITS LOUDNESS.
+ *
+ * The first version of this took the peak level in the 140ms around the end
+ * of the word and called anything under 6% missing. That flagged 847 words in
+ * weeks 3-5, which would have meant 17.5% of every consonant in the course
+ * was gone - and the giveaway was the histogram: a smooth spread from 0 to
+ * 6%, not two populations with a gap. A real detector separates; mine was
+ * cutting through the middle of one distribution.
+ *
+ * Ground truth settled it. Three flagged clips were regenerated with
+ * --keep-raw and the words measured in both the raw delivery and the shipped
+ * clip:
+ *
+ *   "talks." PRESENT   4  4  4  5  4  2  1  1  0     a plateau, then decay
+ *   "mask."  ABSENT    1  1  0  0  0  0              straight to zero
+ *
+ * A real /s/ here lives at 4-5% of peak, UNDER the old line. Loudness scales
+ * with how loud the clip is; what separates present from absent is whether
+ * the low-level tail EXISTS and sustains. That is what the original
+ * audit-consonant-integrity.mjs measured, and its measurement was right - its
+ * coverage was the broken part (one word per clip). So: that measurement,
+ * this coverage.
+ *
+ * FLOOR is the level a tail has to stay above to count as sound at all, as a
+ * share of peak - well under the 4% a quiet /s/ sits at, well over the 0% of
+ * true silence. MIN_TAIL is how long it must sustain. */
+const FLOOR = 0.008;
+const MIN_TAIL = 0.06;
 const WINDOW_BEFORE = 0.02;
-const WINDOW_AFTER = 0.14;
+const WINDOW_AFTER = 0.30;
 
 const VOICELESS_FINAL_S = new Set(["this", "yes", "gas", "bias", "atlas", "canvas", "chaos"]);
 
@@ -175,12 +198,16 @@ for (const e of entries) {
     const bare = String(word.text || "").toLowerCase().replace(/[^a-z']/g, "");
     if (!expectsConsonant(bare)) continue;
     words++;
-    let best = 0;
+    /* How long sound continues after the vowel stops. Walk forward from just
+     * before the transcript's word end while the level stays above the noise
+     * floor; the distance covered is the consonant. */
+    let tail = 0;
     for (let t = word.end - WINDOW_BEFORE; t <= word.end + WINDOW_AFTER; t += 0.02) {
-      best = Math.max(best, lvl(Math.round(t * SR)) / peak);
+      if (lvl(Math.round(t * SR)) / peak > FLOOR) tail = t - (word.end - WINDOW_BEFORE);
+      else if (tail > 0) break;   // sound started and then stopped: that is the end of it
     }
-    if (LIST) console.log(`  ${(best * 100).toFixed(0).padStart(3)}%  ${word.text}  ${name} @${word.end.toFixed(2)}s`);
-    if (best < PRESENT) missing.push({ name, word: word.text, at: word.end, pct: best * 100 });
+    if (LIST) console.log(`  ${(tail * 1000).toFixed(0).padStart(4)}ms  ${word.text}  ${name} @${word.end.toFixed(2)}s`);
+    if (tail < MIN_TAIL) missing.push({ name, word: word.text, at: word.end, pct: tail * 1000 });
   }
 }
 
@@ -195,7 +222,21 @@ if (!missing.length) {
   process.exit(unchecked ? 1 : 0);
 }
 missing.sort((x, y) => x.pct - y.pct);
-console.log(`\n${missing.length} word(s) ARE MISSING their last sound:\n`);
+
+/* A HISTOGRAM, because the list below is capped and a capped list has been
+ * misread as a count once already: the printed 80 were taken for the total
+ * when the real figure was 846. The shape also says whether the threshold is
+ * doing real work - a pile at 0-1% is audio that is genuinely absent, a pile
+ * just under the line means the line is in the wrong place. */
+const buckets = new Array(7).fill(0);
+for (const m of missing) buckets[Math.min(6, Math.floor(m.pct/20))]++;
+console.log(`\nTail length of the flagged words (ms):`);
+for (let i = 0; i < 6; i++) {
+  const bar = "#".repeat(Math.round((buckets[i] / Math.max(1, missing.length)) * 50));
+  console.log(`  ${i*20}-${(i+1)*20}ms  ${String(buckets[i]).padStart(5)}  ${bar}`);
+}
+
+console.log(`\n${missing.length} word(s) ARE MISSING their last sound (showing the worst 80):\n`);
 for (const m of missing.slice(0, 80)) {
   console.log(`  ${m.pct.toFixed(0).padStart(3)}%  "${m.word}"  ${m.name} @${m.at.toFixed(2)}s`);
 }

@@ -207,7 +207,25 @@ const MIN_TAIL = 0.08;
  * KNOWN LIMIT: a stop genuinely cut to 50-60ms now passes. That is the price
  * of the gate reading green on good audio, and it is the cheaper of the two
  * errors, because a gate that is permanently red tells nobody anything. */
-const MIN_TAIL_STOP = 0.05;
+/* REVERTED to the fricative floor, deliberately.
+ *
+ * This was 0.05, halving the bar for words ending in t, k or p. The argument
+ * was phonetic and sounded right - a stop is a burst, not a sustained sound -
+ * but the NUMBER came from three clips that measured 60ms across two retakes,
+ * and I read that as "60ms is natural for this voice". It was not evidence:
+ * I had no ground truth for what those clips should sound like, and the
+ * control that would have given it (--keep-raw, comparing against the raw
+ * delivery) existed the whole time and went unused.
+ *
+ * What it cost: the course-wide count fell from 43 to 15 on my own run, so
+ * about 28 findings were dismissed without anyone listening to one of them.
+ *
+ * So it goes back to the single floor until there IS ground truth. This
+ * over-reports on genuine short stops, and that is the safe direction: a
+ * false alarm costs a retake, a miss costs a child the end of a word. If the
+ * stop floor is ever lowered again it must be calibrated against raw
+ * deliveries, not against clips that are already in the product. */
+const MIN_TAIL_STOP = 0.08;
 
 /** Does this word end in a stop or an affricate, rather than a fricative? */
 function endsOnStop(word) {
