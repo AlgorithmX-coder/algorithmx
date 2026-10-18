@@ -882,6 +882,15 @@ function ArtifactReveal({ art, voiceOn, reduced, audio, onDone }: {
     if (voiceOn && hs.audio) playWren(hs.audio, true);
   };
 
+  // Fires once, the instant the last hotspot is revealed — `art.doneLine` is
+  // shown as a WREN bubble right below (allDone && ...) but had no matching
+  // playback anywhere, so it was silent text every time a child finished an
+  // artifact lesson.
+  useEffect(() => {
+    if (allDone && voiceOn && art.doneAudio) playWren(art.doneAudio, true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [allDone]);
+
   return (
     <section>
       {/* bold YOUR MISSION banner (#5) */}
@@ -1045,6 +1054,18 @@ function LearnStage({ cycle, cycleIndex, reduced, audio, emit, onNext, voiceOn }
   // BEFORE the next stage's layout-effect playWren (e.g. PLAY's instructions),
   // or a passive cleanup would fire afterwards and cut the new narration + lock.
   useIsoLayoutEffect(() => () => stopWren(), []);
+  // The beats-driven hand-off above (onEnded, line ~1045) never runs for an
+  // artifact cycle — the artifact's own effect bails this whole hook out
+  // early (`if (artifact) return`). ArtifactReveal voices its own intro,
+  // hotspots, and doneLine, but the practiceIntro bubble below is rendered
+  // by THIS component once `lessonDone` flips true, so it needs its own
+  // voice trigger here, scoped to artifact cycles only (the beats path
+  // already has its own, and double-firing would race it — see the comment
+  // on the onEnded chain above).
+  useEffect(() => {
+    if (artifact && lessonDone && voiceOn && cycle.practiceIntroVoice) playWren(cycle.practiceIntroVoice, true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [lessonDone]);
   // Gate advancing whenever a new beat appears. Voice ON: the narrator paces it
   // and auto-advances when the clip ends — no early skip; a long safety fallback
   // only re-enables a manual tap if the audio can't play. Voice OFF: a slow

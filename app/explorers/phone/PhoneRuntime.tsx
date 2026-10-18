@@ -45,6 +45,10 @@ const NUDGE_TEXTS = [
   "Nope, look again. Which feeling is he pushing on you right there?",
   "Not quite. Read it once more. What's the con reaching for?",
 ];
+// WREN's generic "not quite" nudge for a wrong "tag" (checklist-style) submit,
+// when the step hasn't authored its own badVoice. Same clips MissionRuntime
+// already uses for its own checklist mechanic — content-free, so reusable.
+const CHK_NUDGES = ["/audio/wren/chk-nudge-1.mp3", "/audio/wren/chk-nudge-2.mp3", "/audio/wren/chk-nudge-3.mp3"];
 
 const CSS = `
 .ph{min-height:100vh;min-height:100dvh}
@@ -90,7 +94,7 @@ const WREN_HEADER: Header = { who: "WREN", avatar: "◈", sub: "in your ear" };
 type Dock =
   | { type: "call"; answer: LeverId }
   | { type: "choose"; prompt?: string; options: { label: string; outcome?: "good" | "bad"; then?: PhoneStep[] }[] }
-  | { type: "tag"; itemId: number; need: number; prompt?: string }
+  | { type: "tag"; itemId: number; need: number; prompt?: string; bad?: string; badVoice?: string }
   | { type: "clear"; text: string }
   | { type: "composer" }
   | null;
@@ -235,7 +239,7 @@ export default function PhoneRuntime({ phoneCase, onExit, onNextCase }: { phoneC
         push({ id: itemId, kind: "tagmsg", segments: step.segments, selected: [], locked: false });
         tagSubmitRef.current = { segments: step.segments };
         setNudge(null);
-        setDock({ type: "tag", itemId, need, prompt: step.prompt });
+        setDock({ type: "tag", itemId, need, prompt: step.prompt, bad: step.bad, badVoice: step.badVoice });
         // The dock stays mounted across a wrong submit (submitTag sets the nudge
         // and resolves "bad"); the child keeps adjusting the same taps and
         // resubmits, so the nudge is never cleared out from under them.
@@ -345,6 +349,7 @@ export default function PhoneRuntime({ phoneCase, onExit, onNextCase }: { phoneC
 
   // ---- interaction handlers ----
   const nudgeRef = useRef(0);
+  const chkNudgeRef = useRef(0);
   const tapLever = (id: LeverId) => {
     if (dock?.type !== "call") return;
     if (id === dock.answer) { setWrongId(null); setNudge(null); resolveRef.current?.("ok"); }
@@ -380,7 +385,17 @@ export default function PhoneRuntime({ phoneCase, onExit, onNextCase }: { phoneC
     const correct = want.size === got.size && [...want].every((l) => got.has(l));
     if (correct) { setNudge(null); resolveRef.current?.("ok"); }
     else {
-      setNudge(got.size === 0 ? "Tap the part of the message that's pulling on you, right where it sits." : "Not quite the full set yet, give it another look.");
+      const bad = dock?.type === "tag" ? dock.bad : undefined;
+      const badVoice = dock?.type === "tag" ? dock.badVoice : undefined;
+      setNudge(bad ?? (got.size === 0 ? "Tap the part of the message that's pulling on you, right where it sits." : "Not quite the full set yet, give it another look."));
+      // Wrong tag taps showed this correction as text with zero audio — reusing
+      // MissionRuntime's own chk-nudge clips (its equivalent checklist-tap
+      // mechanic), which fit any wrong-tap context since they name no specifics.
+      // A case's own badVoice (once authored) always takes priority.
+      if (voiceRef.current) {
+        if (badVoice) playWren(badVoice, true);
+        else { const i = chkNudgeRef.current++ % CHK_NUDGES.length; playWren(CHK_NUDGES[i], true); }
+      }
       resolveRef.current?.("bad");
     }
   };

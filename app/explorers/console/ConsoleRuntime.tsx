@@ -74,8 +74,8 @@ type Item =
 
 type Dock =
   | { type: "choose"; prompt?: string; options: { label: string; sub?: string; outcome?: "good" | "bad"; then?: ConsoleStep[] }[] }
-  | { type: "toggle"; prompt?: string; switches: { label: string; sub?: string; want: boolean }[] }
-  | { type: "build"; prompt?: string; parts: { label: string; good: boolean; sub?: string }[]; need: number }
+  | { type: "toggle"; prompt?: string; switches: { label: string; sub?: string; want: boolean }[]; bad?: string; badVoice?: string }
+  | { type: "build"; prompt?: string; parts: { label: string; good: boolean; sub?: string }[]; need: number; bad?: string; badVoice?: string }
   | { type: "decode"; ciphertext: string; shift: number; prompt?: string }
   | { type: "spot"; segments: { text: string; tellId?: string }[]; prompt?: string }
   | { type: "clear"; text: string }
@@ -190,7 +190,7 @@ export default function ConsoleRuntime({ consoleCase, onExit, onNextCase }: { co
         // shuffling render order is safe — without it the correct switches
         // sat in the same first slots every time (UAT: Week 11).
         const switches = shuffled(step.switches.length).map((i) => step.switches[i]);
-        setDock({ type: "toggle", prompt: step.prompt, switches });
+        setDock({ type: "toggle", prompt: step.prompt, switches, bad: step.bad, badVoice: step.badVoice });
         await awaitUser(); // resolves only when the switches match
         setDock(null);
         if (step.ok) { push({ id: nextId(), kind: "wren", text: step.ok }); await speak(step.ok, step.okVoice); }
@@ -199,7 +199,7 @@ export default function ConsoleRuntime({ consoleCase, onExit, onNextCase }: { co
         // Checked by each part's own `good` flag, never by position — same
         // fix as "toggle" above.
         const parts = shuffled(step.parts.length).map((i) => step.parts[i]);
-        setDock({ type: "build", prompt: step.prompt, parts, need: step.need });
+        setDock({ type: "build", prompt: step.prompt, parts, need: step.need, bad: step.bad, badVoice: step.badVoice });
         await awaitUser(); // resolves only when the right parts are chosen
         setDock(null);
         if (step.ok) { push({ id: nextId(), kind: "wren", text: step.ok }); await speak(step.ok, step.okVoice); }
@@ -269,10 +269,16 @@ export default function ConsoleRuntime({ consoleCase, onExit, onNextCase }: { co
   const beginResume = () => start(resumeStage ?? { kind: "skill", index: 0 });
 
   const nudgeRef = useRef(0);
-  const nudgeBad = (text?: string) => {
-    const i = nudgeRef.current++ % NUDGES.length;
+  // `voice`, when given, is the step's own authored badVoice (case-specific
+  // correction — previously dropped on the floor in favour of this generic
+  // rotation even when one existed). Falls back to the generic nudge clips
+  // for docks that don't carry a case-specific line (choose/decode/spot).
+  const nudgeBad = (text?: string, voice?: string) => {
     setNudge(text ?? "Not quite. Check it again."); force();
-    if (voiceRef.current) playWren(NUDGES[i], true);
+    if (!voiceRef.current) return;
+    if (voice) { playWren(voice, true); return; }
+    const i = nudgeRef.current++ % NUDGES.length;
+    playWren(NUDGES[i], true);
   };
 
   /* ------------------------------------------------------------ render */
@@ -411,7 +417,7 @@ function ItemView({ it, acc, wrenDot }: { it: Item; acc: string; wrenDot: React.
   );
 }
 
-function DockView({ dock, nudge, acc, onResolve, onBad }: { dock: Dock; nudge: string | null; acc: string; onResolve: (v: string) => void; onBad: (t?: string) => void }) {
+function DockView({ dock, nudge, acc, onResolve, onBad }: { dock: Dock; nudge: string | null; acc: string; onResolve: (v: string) => void; onBad: (t?: string, voice?: string) => void }) {
   const [sw, setSw] = useState<boolean[]>([]);
   const [sel, setSel] = useState<number[]>([]);
   const [dial, setDial] = useState(0);
@@ -451,7 +457,7 @@ function DockView({ dock, nudge, acc, onResolve, onBad }: { dock: Dock; nudge: s
     );
   }
   if (dock.type === "toggle") {
-    const submit = () => { if (dock.switches.every((s, i) => sw[i] === s.want)) onResolve("ok"); else onBad("Not quite. Set all the switches right and confirm."); };
+    const submit = () => { if (dock.switches.every((s, i) => sw[i] === s.want)) onResolve("ok"); else onBad(dock.bad ?? "Not quite. Set all the switches right and confirm.", dock.badVoice); };
     return (
       <>
         {nudge ? <p style={{ fontSize: 12.5, color: C.red, textAlign: "center", margin: "0 0 9px", fontWeight: 600 }}>{nudge}</p>
@@ -537,7 +543,7 @@ function DockView({ dock, nudge, acc, onResolve, onBad }: { dock: Dock; nudge: s
   // build
   const need = dock.need;
   const toggleSel = (i: number) => setSel((a) => (a.includes(i) ? a.filter((x) => x !== i) : a.length < need ? [...a, i] : a));
-  const submit = () => { const chosen = sel.map((i) => dock.parts[i]); if (chosen.length === need && chosen.every((p) => p.good)) onResolve("ok"); else onBad("Not quite. Pick only the strong, unguessable parts."); };
+  const submit = () => { const chosen = sel.map((i) => dock.parts[i]); if (chosen.length === need && chosen.every((p) => p.good)) onResolve("ok"); else onBad(dock.bad ?? "Not quite. Pick only the strong, unguessable parts.", dock.badVoice); };
   return (
     <>
       {nudge ? <p style={{ fontSize: 12.5, color: C.red, textAlign: "center", margin: "0 0 9px", fontWeight: 600 }}>{nudge}</p>
