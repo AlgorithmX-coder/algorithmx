@@ -907,6 +907,23 @@ function FeaturedStreamCard({ stream }: { stream: Stream }) {
           .ssf-tracks {
             grid-template-columns: repeat(2, 1fr);
           }
+          /* Two narrow columns on phones: stack the badge above the title so
+             the title + verb pill get the card's full width (otherwise the
+             nowrap pills overflow the card edge and get clipped). */
+          .ssf-trk-head {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 10px;
+          }
+          /* keep the title clear of the absolute corner number */
+          .ssf-nm {
+            padding-right: 26px;
+          }
+          /* last-resort: wrap the pill instead of clipping it on tiny phones */
+          .ssf-verb {
+            white-space: normal;
+            max-width: 100%;
+          }
         }
         .ssf-trk {
           position: relative;
