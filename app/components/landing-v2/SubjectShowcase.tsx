@@ -915,9 +915,13 @@ function FeaturedStreamCard({ stream }: { stream: Stream }) {
             align-items: stretch;
             gap: 10px;
           }
-          /* keep the title clear of the absolute corner number */
+          /* keep the title clear of the absolute corner number, and reserve a
+             consistent two-line height so the verb pill starts at the same
+             position whether the name fits one line (Heroes) or wraps to two
+             (Explorers) — otherwise the pills misalign across a row. */
           .ssf-nm {
             padding-right: 26px;
+            min-height: 2.1em;
           }
           /* last-resort: wrap the pill instead of clipping it on tiny phones */
           .ssf-verb {
