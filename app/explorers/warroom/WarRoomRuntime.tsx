@@ -60,9 +60,9 @@ type Item =
 
 type Dock =
   | { type: "choose"; prompt?: string; options: { label: string; sub?: string; outcome?: "good" | "bad"; then?: WarStep[] }[] }
-  | { type: "connect"; prompt?: string; left: { id: string; label: string }[]; right: { id: string; label: string }[]; pairs: [string, string][] }
-  | { type: "pin"; prompt?: string; cards: { label: string; good: boolean; sub?: string }[]; need: number }
-  | { type: "sequence"; prompt?: string; cards: { id: string; label: string; sub?: string }[] }
+  | { type: "connect"; prompt?: string; left: { id: string; label: string }[]; right: { id: string; label: string }[]; pairs: [string, string][]; bad?: string; badVoice?: string }
+  | { type: "pin"; prompt?: string; cards: { label: string; good: boolean; sub?: string }[]; need: number; bad?: string; badVoice?: string }
+  | { type: "sequence"; prompt?: string; cards: { id: string; label: string; sub?: string }[]; bad?: string; badVoice?: string }
   | { type: "clear"; text: string }
   | { type: "idle" }
   | null;
@@ -167,18 +167,18 @@ export default function WarRoomRuntime({ warCase, onExit, onNextCase }: { warCas
         // as Console's toggle/build).
         const left = shuffled(step.left.length).map((i) => step.left[i]);
         const right = shuffled(step.right.length).map((i) => step.right[i]);
-        setDock({ type: "connect", prompt: step.prompt, left, right, pairs: step.pairs });
+        setDock({ type: "connect", prompt: step.prompt, left, right, pairs: step.pairs, bad: step.bad, badVoice: step.badVoice });
         await awaitUser(); setDock(null);
         if (step.ok) { push({ id: nextId(), kind: "wren", text: step.ok }); await speak(step.ok, step.okVoice); }
       } else if (step.t === "pin") {
         setNudge(null);
         // Checked by each card's own `good` flag, never by position.
         const cards = shuffled(step.cards.length).map((i) => step.cards[i]);
-        setDock({ type: "pin", prompt: step.prompt, cards, need: step.need });
+        setDock({ type: "pin", prompt: step.prompt, cards, need: step.need, bad: step.bad, badVoice: step.badVoice });
         await awaitUser(); setDock(null);
         if (step.ok) { push({ id: nextId(), kind: "wren", text: step.ok }); await speak(step.ok, step.okVoice); }
       } else if (step.t === "sequence") {
-        setNudge(null); setDock({ type: "sequence", prompt: step.prompt, cards: step.cards });
+        setNudge(null); setDock({ type: "sequence", prompt: step.prompt, cards: step.cards, bad: step.bad, badVoice: step.badVoice });
         await awaitUser(); setDock(null);
         if (step.ok) { push({ id: nextId(), kind: "wren", text: step.ok }); await speak(step.ok, step.okVoice); }
       }
@@ -232,7 +232,17 @@ export default function WarRoomRuntime({ warCase, onExit, onNextCase }: { warCas
   const beginResume = () => start(resumeStage ?? { kind: "skill", index: 0 });
 
   const nudgeRef = useRef(0);
-  const nudgeBad = (text?: string) => { const i = nudgeRef.current++ % NUDGES.length; setNudge(text ?? "Not quite. Look again."); force(); if (voiceRef.current) playWren(NUDGES[i], true); };
+  // `voice`, when given, is the step's own authored badVoice (case-specific
+  // correction — previously dropped in favour of this generic rotation even
+  // when one existed). Falls back to the generic nudge clips for docks that
+  // don't carry a case-specific line (choose).
+  const nudgeBad = (text?: string, voice?: string) => {
+    setNudge(text ?? "Not quite. Look again."); force();
+    if (!voiceRef.current) return;
+    if (voice) { playWren(voice, true); return; }
+    const i = nudgeRef.current++ % NUDGES.length;
+    playWren(NUDGES[i], true);
+  };
 
   const wrenDot = <span aria-hidden style={{ display: "flex", gap: 2, alignItems: "flex-end", height: 12 }}>{[4, 10, 6].map((h, i) => <i key={i} style={{ width: 2.5, height: h, background: C.wren, borderRadius: 2, display: "block" }} />)}</span>;
 
@@ -360,7 +370,7 @@ function ItemView({ it, acc, wrenDot }: { it: Item; acc: string; wrenDot: React.
   );
 }
 
-function DockView({ dock, nudge, acc, onResolve, onBad }: { dock: Dock; nudge: string | null; acc: string; onResolve: (v: string) => void; onBad: (t?: string) => void }) {
+function DockView({ dock, nudge, acc, onResolve, onBad }: { dock: Dock; nudge: string | null; acc: string; onResolve: (v: string) => void; onBad: (t?: string, voice?: string) => void }) {
   const [sel, setSel] = useState<number[]>([]);        // pin: selected card indices
   const [selLeft, setSelLeft] = useState<string | null>(null); // connect: currently picked left id
   const [matched, setMatched] = useState<string[]>([]);        // connect: solved left ids
@@ -405,7 +415,7 @@ function DockView({ dock, nudge, acc, onResolve, onBad }: { dock: Dock; nudge: s
       if (rightIdForLeft(selLeft) === rid) {
         const nm = [...matched, selLeft]; setMatched(nm); setSelLeft(null);
         if (nm.length === total) setTimeout(() => onResolve("ok"), 350);
-      } else { setSelLeft(null); onBad("Not a match. Look again at what links to what."); }
+      } else { setSelLeft(null); onBad(dock.bad ?? "Not a match. Look again at what links to what.", dock.badVoice); }
     };
     return (
       <>
@@ -441,7 +451,7 @@ function DockView({ dock, nudge, acc, onResolve, onBad }: { dock: Dock; nudge: s
     const submit = () => {
       const ok = placed.every((idx, i) => dock.cards[idx].id === dock.cards[i]?.id) && placed.length === total;
       if (ok) onResolve("ok");
-      else { onBad("Not quite the right order. Have another look, then rebuild it."); setPlaced([]); setPool(shuffled(total)); }
+      else { onBad(dock.bad ?? "Not quite the right order. Have another look, then rebuild it.", dock.badVoice); setPlaced([]); setPool(shuffled(total)); }
     };
     return (
       <>
@@ -477,7 +487,7 @@ function DockView({ dock, nudge, acc, onResolve, onBad }: { dock: Dock; nudge: s
   // pin
   const need = dock.need;
   const toggle = (i: number) => setSel((a) => (a.includes(i) ? a.filter((x) => x !== i) : a.length < need ? [...a, i] : a));
-  const submit = () => { const chosen = sel.map((i) => dock.cards[i]); if (chosen.length === need && chosen.every((c) => c.good)) onResolve("ok"); else onBad("Not quite. Pin only the right cards."); };
+  const submit = () => { const chosen = sel.map((i) => dock.cards[i]); if (chosen.length === need && chosen.every((c) => c.good)) onResolve("ok"); else onBad(dock.bad ?? "Not quite. Pin only the right cards.", dock.badVoice); };
   return (
     <>
       {nudge ? <p style={{ fontSize: 12.5, color: C.red, textAlign: "center", margin: "0 0 9px", fontWeight: 600 }}>{nudge}</p>
