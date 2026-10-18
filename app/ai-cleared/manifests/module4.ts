@@ -170,7 +170,7 @@ export const MODULE_4: ModuleManifest = {
       kind: "intro",
       eyebrow: "Module 4 of 5 · about 20 minutes",
       heading: "The tool is confident. That is not the same as right.",
-      lead: "Modules 1 to 3 were about what goes in. This one is about what comes out: the citation that does not exist, the instruction that arrived inside a document, and the file the tool found because your permissions were wrong. By the end you will have a two-minute check you run before anything AI-written goes to a client.",
+      lead: "Modules 1 to 3 were about what goes in. This one is about what comes out: the citation that does not exist, which the industry calls hallucination, the instruction that arrived inside a document, and the file the tool found because your permissions were wrong. By the end you will have a two-minute check you run before anything AI-written goes to a client.",
       cta: "Start",
     },
     {
@@ -187,6 +187,20 @@ export const MODULE_4: ModuleManifest = {
         { label: "Consumer Rights Act 2015, section 57", real: true, note: "The Act and the section exist, but section 57 is about consumer contracts, not business-to-business cleaning contracts. Real and irrelevant is the other way a citation fails." },
       ],
       note: "The habit: a citation is not checked until you have opened the source yourself and read the sentence it claims to support.",
+    },
+    {
+      kind: "cards",
+      eyebrow: "Learn · hallucination",
+      heading: "The word for this is hallucination. It takes three shapes.",
+      lead: "The tool does not look anything up. It predicts the next plausible words, so a plausible source, figure or answer is produced the same way as a true one. Tap each card.",
+      reveal: true,
+      cards: [
+        { title: "Invented citations", tint: "R", body: "A real publisher, a plausible title, a volume number. No such document.", detail: "The most dangerous shape, because it survives a glance. The journal you just checked was one. The fix is never the tool: open the source yourself and read the sentence it is supposed to support." },
+        { title: "Invented figures", tint: "C", body: "A total, a date or a percentage that is not in anything you gave it.", detail: "Ask for a comparison and the tool may fill a gap with a number that looks right. Ask for the workings, then check the one figure that matters against the original before it goes anywhere." },
+        { title: "Confident wrong answers", tint: "warn", body: "A clear, fluent answer to a question the tool cannot actually answer.", detail: "The tone never changes. A reply about a contract it has not read sounds the same as one about a contract it has. Asking the tool if it is sure does not help; it will say yes. Only a source you trust settles it." },
+        { title: "Why it happens", tint: "I", body: "Fluency is what the model is built for. Truth is not what it is scored on.", detail: "A language model is trained to produce text that reads like text it has seen. That makes it excellent at drafting and summarising what you give it, and unreliable about anything it has to supply from memory. Give it the document; check anything it supplied." },
+      ],
+      note: "The habit: anything the tool supplied, rather than you, is a claim until you have checked it against a source you trust.",
     },
     {
       kind: "injection",

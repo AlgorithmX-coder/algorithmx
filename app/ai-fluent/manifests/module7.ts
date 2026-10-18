@@ -33,7 +33,7 @@ export const FLUENT_MODULE_7: ModuleManifest = {
       kind: "intro",
       eyebrow: "Module 7 of 9 · about 20 minutes",
       heading: "A citation is a claim until you open it.",
-      lead: "With web mode on, the tool can find out things you do not know and tell you where it found them. It can also give you a source that reads perfectly and does not exist. This module is research as a habit: ask with the reader and the constraints, ask for the sources, open two, and treat the rest as claims.",
+      lead: "With web mode on, the tool can find out things you do not know and tell you where it found them. It can also give you a source that reads perfectly and does not exist, which the industry calls hallucination. This module is research as a habit: ask with the reader and the constraints, ask for the sources, open two, and treat the rest as claims.",
       cta: "Show me a reply with sources",
     },
     {
