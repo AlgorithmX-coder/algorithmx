@@ -148,7 +148,7 @@ export interface PhoneCase {
   skills: PhoneSkill[];
   boss: PhoneBoss;
   test: PhoneTest;
-  debrief: { title: string; lines: string[]; move: string };
+  debrief: { title: string; titleVoice?: string; lines: string[]; move: string };
 }
 
 export const case06Phone: PhoneCase = {
@@ -714,6 +714,7 @@ export const case06Phone: PhoneCase = {
 
   debrief: {
     title: "You made it through the night.",
+    titleVoice: "/audio/wren/m06p-debrief.mp3",
     lines: [
       "Seven skills, a blind boss, and a test, and not one con got a thing out of you.",
       "You named every one of the six levers, found the real ask under the pressure, and read a two-week con before it landed.",

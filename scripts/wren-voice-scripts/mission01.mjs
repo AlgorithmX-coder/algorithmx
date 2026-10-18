@@ -42,6 +42,18 @@ export const mission01VoiceScripts = {
     "[proud] That's it. The feeling is the trap. Slowing down is how you beat it every single time.",
   "/audio/wren/m01-c1-practice.mp3":
     "[excited] Now let's put it to work, Agent. On the next screen I'll show you a NEW message you haven't seen. [encouraging] Your job, tap every part that's trying to pressure you, then hit submit. Find them all, and this skill is yours.",
+  "/audio/wren/m01-address-practice.mp3":
+    "[excited] Now let's put it to work, Agent. A whole batch of addresses is coming up next, every one claiming to be PixelPlay. [encouraging] Sort each one: really PixelPlay, or a disguise wearing the name? Use the rule, and the sneaky ones won't fool you.",
+  "/audio/wren/m01-sender-practice.mp3":
+    "[excited] Now let's put it to work, Agent. A pile of messages is up next, every one signed GameHub. [encouraging] Tap each sender to reveal the real address hiding behind the name, then call it real or fake. Some hide it well.",
+  "/audio/wren/m01-qrcode-practice.mp3":
+    "[curious] Now let's put it to work, Agent. Some QR codes just turned up, each one claiming to be PayZone, the parking app. [encouraging] Scan each code to reveal where it really goes, then call it real or fake.",
+  "/audio/wren/m01-download-practice.mp3":
+    "[excited] Now let's put it to work, Agent. A pile of downloads just showed up on the next screen. [encouraging] Sort each one: safe to get, or a trap? Remember where real apps actually come from.",
+  "/audio/wren/m01-actor-practice.mp3":
+    "[determined] Now let's put it to work, Agent. Time to build his file. [encouraging] From the evidence on the next screen, tap the three tricks that are really his, no more, no less.",
+  "/audio/wren/m01-recover-practice.mp3":
+    "[serious] Now let's put it to work, Agent. Someone just typed their password into a fake GameHub page. [encouraging] Build the rescue plan with me, one right move for each step.",
   "/audio/wren/m01-c1-art-intro.mp3":
     "[warm] This is the message that nearly caught Maya. [curious] Let me show you the three tricks hiding in it. Tap each highlighted part, and I'll explain exactly how it works on you.",
   "/audio/wren/m01-c1-art-threat.mp3":

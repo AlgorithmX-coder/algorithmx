@@ -181,4 +181,8 @@ export const mission09VoiceScripts = {
     "[excited] Yes! Six new tricks and all of SIREN's patience got you nowhere. [proud] Case closed, Agent. You've earned it.",
   "/audio/wren/m09p-test-fail.mp3":
     "[warm] So close. Don't sweat it. Even pros miss a couple. [encouraging] Take a breath and run it again. You know this.",
+
+  // debrief
+  "/audio/wren/m09p-debrief.mp3":
+    "[proud] You outlasted the long con.",
 };

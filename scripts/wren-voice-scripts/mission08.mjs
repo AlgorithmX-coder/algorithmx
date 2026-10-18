@@ -176,4 +176,8 @@ export const mission08VoiceScripts = {
     "[excited] Yes! Six perfect fakes and not one of them fooled you. [proud] Case closed, Agent. You've earned it.",
   "/audio/wren/m08p-test-fail.mp3":
     "[warm] So close. Don't sweat it. Even pros miss a couple. [encouraging] Take a breath and run it again. You know this.",
+
+  // debrief
+  "/audio/wren/m08p-debrief.mp3":
+    "[proud] You beat the machine.",
 };

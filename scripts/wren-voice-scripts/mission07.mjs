@@ -178,4 +178,8 @@ export const mission07VoiceScripts = {
     "[excited] Yes. Six new tricks and a stolen face didn't fool you once. [proud] Case closed, Agent. You've earned it.",
   "/audio/wren/m07p-test-fail.mp3":
     "[warm] So close. Don't sweat it. Even pros miss a couple. [encouraging] Take a breath and run it again. You know this.",
+
+  // debrief
+  "/audio/wren/m07p-debrief.mp3":
+    "[proud] You saw through the mask.",
 };

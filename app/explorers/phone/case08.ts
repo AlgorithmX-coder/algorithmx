@@ -536,6 +536,7 @@ export const case08Phone: PhoneCase = {
 
   debrief: {
     title: "You beat the machine.",
+    titleVoice: "/audio/wren/m08p-debrief.mp3",
     lines: [
       "Seven skills, a week-long trap, and a test, and GHOSTWRITER's perfect words didn't fool you once.",
       "You learned that polish and personal details prove nothing, and that the real clue is warmth with no history behind it.",

@@ -194,6 +194,8 @@ export const mission01: MissionManifest = {
       },
       promise: "You'll learn to find who a link REALLY goes to, even the sneaky ones.",
       instruction: "Sort each address: really the brand, or a disguise?",
+      practiceIntro: "Now let's put it to work, Agent. A whole batch of addresses is coming up next, every one claiming to be PixelPlay. Sort each one: really PixelPlay, or a disguise wearing the name? Use the rule, and the sneaky ones won't fool you.",
+      practiceIntroVoice: "/audio/wren/m01-address-practice.mp3",
       intel: {
         beats: [
           "Every web address has one part that can't lie: the real name. Everything else is decoration the scammer gets to choose.",
@@ -251,6 +253,8 @@ export const mission01: MissionManifest = {
       },
       promise: "You'll learn to see past the name and read who REALLY sent it.",
       instruction: "Unmask each sender, then call real or fake.",
+      practiceIntro: "Now let's put it to work, Agent. A pile of messages is up next, every one signed GameHub. Tap each sender to reveal the real address hiding behind the name, then call it real or fake. Some hide it well.",
+      practiceIntroVoice: "/audio/wren/m01-sender-practice.mp3",
       intel: {
         beats: [
           "Every message shows a name at the top, like GameHub Support. But that name is just a label. The sender can type whatever they want there.",
@@ -298,6 +302,8 @@ export const mission01: MissionManifest = {
       },
       promise: "You'll learn to see where a QR code REALLY takes you, before it opens.",
       instruction: "Scan each code, read the address, then call it.",
+      practiceIntro: "Now let's put it to work, Agent. Some QR codes just turned up, each one claiming to be PayZone, the parking app. Scan each code to reveal where it really goes, then call it real or fake.",
+      practiceIntroVoice: "/audio/wren/m01-qrcode-practice.mp3",
       intel: {
         beats: [
           "Here's a sneaky one. A QR code is just a link in disguise, a little pattern of squares your camera turns into a web address.",
@@ -346,6 +352,8 @@ export const mission01: MissionManifest = {
       },
       promise: "You'll learn why 'free' downloads are bait, and where safe ones really come from.",
       instruction: "Sort each download: safe to get, or a trap?",
+      practiceIntro: "Now let's put it to work, Agent. A pile of downloads just showed up on the next screen. Sort each one: safe to get, or a trap? Remember where real apps actually come from.",
+      practiceIntroVoice: "/audio/wren/m01-download-practice.mp3",
       intel: {
         beats: [
           "Ever seen a free Robux generator, or a game hack that promises unlimited coins? Here's the truth. Those don't exist.",
@@ -395,6 +403,8 @@ export const mission01: MissionManifest = {
       },
       promise: "You'll learn the pattern behind every disguise, and the one move that beats it.",
       instruction: "Tap the 3 tricks that are really his.",
+      practiceIntro: "Now let's put it to work, Agent. Time to build his file. From the evidence on the next screen, tap the three tricks that are really his, no more, no less.",
+      practiceIntroVoice: "/audio/wren/m01-actor-practice.mp3",
       intel: {
         beats: [
           "Here's the secret that makes you unbeatable. Every phishing scam, whatever it's dressed as, is built from the same three parts.",
@@ -450,6 +460,8 @@ export const mission01: MissionManifest = {
       },
       promise: "You'll learn the exact rescue steps if a scam ever catches you.",
       instruction: "Build the rescue plan: pick the right move for each step.",
+      practiceIntro: "Now let's put it to work, Agent. Someone just typed their password into a fake GameHub page. Build the rescue plan with me, one right move for each step.",
+      practiceIntroVoice: "/audio/wren/m01-recover-practice.mp3",
       intel: {
         beats: [
           "Even careful people get caught sometimes. If you ever tap a scam link or type your password into a fake page, don't panic. What you do NEXT matters most.",
