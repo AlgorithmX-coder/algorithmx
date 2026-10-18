@@ -1019,6 +1019,21 @@ function LearnStage({ cycle, cycleIndex, reduced, audio, emit, onNext, voiceOn }
       } else if (predAudio?.question) {
         // Last beat finished — WREN asks the "your call" question out loud.
         playWren(predAudio.question, true);
+      } else if (cycle.practiceIntroVoice) {
+        // No prediction on this cycle (none of M1-5 use one today), so the
+        // last beat finishing IS the hand-off into the practiceIntro bubble.
+        // Chained here, not a separate effect watching `lessonDone` — that
+        // was tried first and lost a race: `lessonDone` flips true in the
+        // exact same render as this beat's own playWren call, and playWren
+        // always cuts whatever's already playing, so the two calls fought
+        // over the same render and the practice line silently lost.
+        // Chaining through this onEnded guarantees it only starts once the
+        // beat is actually done. (UAT: "the last speech box... doesn't get
+        // read out", confirmed on every skill — a cycle WITH a prediction
+        // still won't voice this line, since it only becomes `lessonDone`
+        // via `settled` from a correct "your call" answer, a path this fix
+        // doesn't touch.)
+        playWren(cycle.practiceIntroVoice, true);
       }
     });
     return () => {

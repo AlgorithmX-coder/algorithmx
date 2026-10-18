@@ -74,6 +74,7 @@ export const mission05: MissionManifest = {
       promise: "You'll learn to see one scam wearing three costumes at once.",
       instruction: "Tap the 3 fingerprints every channel shares. One message is genuinely fine.",
       practiceIntro: "Now let's put it to work, Agent. The channel monitor's live on the next screen, last twenty minutes of traffic. Tap the three fingerprints every scam channel shares, and leave the one genuine alert alone.",
+      practiceIntroVoice: "/audio/wren/m05-c1-practice.mp3",
       intel: {
         beats: [
           "A text. A QR poster. A DM. Three different screens, three different costumes, and one very busy quick-change artist behind all of them.",
@@ -128,6 +129,7 @@ export const mission05: MissionManifest = {
       promise: "You'll learn why the sender's name proves absolutely nothing.",
       instruction: "Tap each sender to reveal the real address, then call REAL or FAKE.",
       practiceIntro: "Now let's put it to work, Agent. Five messages are waiting, all wearing the 'GameHub' name tag. Tap each one to read the real address underneath, then call it real or fake.",
+      practiceIntroVoice: "/audio/wren/m05-c2-practice.mp3",
       intel: {
         beats: [
           "Every message arrives wearing a name tag. 'GameHub Support.' 'Library Desk.' Even your head teacher's name. And you read the tag and relax.",
@@ -175,6 +177,7 @@ export const mission05: MissionManifest = {
       promise: "You'll learn to never trust a square you can't read.",
       instruction: "Tap each code to scan the real address, then call REAL or FAKE.",
       practiceIntro: "Now let's put it to work, Agent. Four canteen top-up QR codes are waiting, straight from around school. Scan each to preview the real address, then call it real or fake.",
+      practiceIntroVoice: "/audio/wren/m05-c3-practice.mp3",
       intel: {
         beats: [
           "Here's PHANTOM HOOK's newest costume. A QR code. A little square you point your camera at, and it whisks you off somewhere. But WHERE? You can't read a square.",
@@ -223,6 +226,7 @@ export const mission05: MissionManifest = {
       promise: "You'll learn why the quiet, personal message is the real threat.",
       instruction: "Three flagged messages, one of you. Make the call: which goes to the top?",
       practiceIntro: "Now let's put it to work, Agent. The storm's live and three messages just got flagged. The queue is yours, read them, then make the call.",
+      practiceIntroVoice: "/audio/wren/m05-c4-practice.mp3",
       intel: {
         beats: [
           "In a storm, every message is screaming for your attention. So an analyst doesn't answer the loudest one. They rank them by how dangerous they really are.",
@@ -284,6 +288,7 @@ export const mission05: MissionManifest = {
       promise: "You'll learn to handle the real threats first and let the noise wait.",
       instruction: "Sort the flood: handle now, or log and ignore?",
       practiceIntro: "Now let's put it to work, Agent. The flood's live on the next screen. Sort each message: a real threat to handle now, or just noise to log and ignore?",
+      practiceIntroVoice: "/audio/wren/m05-c5-practice.mp3",
       intel: {
         beats: [
           "When the storm hits, your inbox is a wall of noise, and every message wants to be first. Don't let the volume set your order. YOU set the order.",
@@ -335,6 +340,7 @@ export const mission05: MissionManifest = {
       promise: "You'll learn PHANTOM HOOK's whole play, and the upgrade that makes it a spear.",
       instruction: "Tap the 3 moves that are really PHANTOM HOOK's.",
       practiceIntro: "Now let's put it to work, Agent. Everything from tonight is on one board. Tap the three moves that are really PHANTOM HOOK's, no more, no less.",
+      practiceIntroVoice: "/audio/wren/m05-c6-practice.mp3",
       intel: {
         beats: [
           "Let's name PHANTOM HOOK's whole play, because you've now seen every part of it. Move one, MANY COSTUMES. The same hook by text, by QR, by DM, by email. Wherever you look, a costume is waiting.",
@@ -387,6 +393,7 @@ export const mission05: MissionManifest = {
       promise: "You'll build the ten-second drill that beats any costume on any channel.",
       instruction: "Build the storm drill. Pick the right move for each step.",
       practiceIntro: "Now let's put it to work, Agent. Time to build your storm drill properly. For each step, pick the move an analyst actually makes, not just the one that feels right.",
+      practiceIntroVoice: "/audio/wren/m05-c7-practice.mp3",
       intel: {
         beats: [
           "So how do you beat a storm that hits every channel at once? Not with panic. With a drill. The same four steps, every single time, no matter which costume it's wearing.",
