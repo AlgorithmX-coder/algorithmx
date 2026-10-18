@@ -2,9 +2,9 @@
 
 import Link from "next/link";
 
-import CourseLockup, { COURSE_HREF, type LockupId } from "@/app/components/CourseLockup";
+import { COURSE_HREF, type LockupId } from "@/app/components/CourseLockup";
 import { sectionMark } from "@/app/components/sectionMark";
-import { useEffect, useRef, useState, type CSSProperties } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useInView } from "framer-motion";
 import { FadeUp } from "./utilities";
 
@@ -43,113 +43,6 @@ interface Stream {
   unlockIn?: string;
 }
 
-/* Ages match the course landings; live matches the card's own count. */
-const CYBER_COURSES: ReadonlyArray<{ id: LockupId; ages: string; accent: string; live: boolean }> = [
-  /* All four flipped live 2026-10 (Ops #463, Pro #430 + themed auth). */
-  { id: "heroes", ages: "6 to 9", accent: "#8a5400", live: true },
-  { id: "explorers", ages: "10 to 13", accent: "#0a6675", live: true },
-  { id: "ops", ages: "14 to 17", accent: "#5744c9", live: true },
-  { id: "pro", ages: "18+", accent: "#a63a08", live: true },
-];
-
-/**
- * The one moment worth advertising from each track (owner 2026-09-20:
- * "the best case, week or module, the one that makes them go wow").
- *
- * Every line below describes something that exists in this repo. Keep it
- * that way: if a claim here stops matching what a learner can actually
- * reach, change the claim, not the course.
- *
- *   heroes     week 20 "Graduation Day", five missions then the final
- *              exam, and app/lib/certificates.ts really does generate
- *              the "Certified Cyber Hero" PDF.
- *   explorers  case 020 "Signal Zero": five breadcrumbs gathered across
- *              the season resolve to one coordinator, and the case is
- *              handed over rather than hacked back.
- *   ops        the range engine's first capture, Northwind E-05: the
- *              payload runs against a real in-browser database and the
- *              finding is drafted at CVSS 9.8. Live since 2026-10.
- *   pro        module 9 web attacks: a real injection against a live
- *              database, then the parameterised fix that defeats it.
- *              The old claim here said "ship the security report", and
- *              the report is still a written prompt rather than a built
- *              artefact, so the line stops where the build stops.
- */
-const CYBER_FLAGSHIPS: ReadonlyArray<{ id: LockupId; take: string; how: string; accent: string }> = [
-  {
-    id: "heroes",
-    take: "A Certified Cyber Hero certificate",
-    how: "Beat the Hacker Raccoon at his own game in week 20.",
-    accent: "#8a5400",
-  },
-  {
-    id: "explorers",
-    take: "A closed case file",
-    how: "Twenty cases, one coordinator unmasked, dossier handed over.",
-    accent: "#0a6675",
-  },
-  {
-    id: "ops",
-    take: "A written critical finding",
-    how: "A real break-in on the range, reported like a professional.",
-    accent: "#5744c9",
-  },
-  {
-    id: "pro",
-    take: "A database you broke and fixed",
-    how: "Break a live database, then ship the fix that stops it.",
-    accent: "#a63a08",
-  },
-];
-
-/* Each proof's course mark — the same glyphs CourseLockup draws, in the
-   sand-tone colours — so a proof reads as coming from that track. Sits in
-   a tinted chip on the proof card. */
-function FlagshipIcon({ id }: { id: LockupId }) {
-  if (id === "heroes")
-    return (
-      <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden style={{ transform: "rotate(-7deg)" }}>
-        <path d="M12 2 L20 5 V12 C20 17 16.5 20.5 12 22 C7.5 20.5 4 17 4 12 V5 Z" fill="#8a5400" />
-        <path d="M13.2 6 L8.6 13 H11.4 L10.6 18 L15.6 11 H12.6 Z" fill="#fffdf8" />
-      </svg>
-    );
-  if (id === "explorers")
-    return (
-      <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#0a6675" strokeWidth="1.8" aria-hidden>
-        <circle cx="12" cy="12" r="6.4" />
-        <path d="M12 2.6 V6 M12 18 V21.4 M2.6 12 H6 M18 12 H21.4" />
-        <circle cx="12" cy="12" r="1.6" fill="#0a6675" stroke="none" />
-      </svg>
-    );
-  if (id === "ops")
-    return (
-      <svg width="21" height="21" viewBox="0 0 24 24" aria-hidden>
-        <rect x="6" y="6" width="12" height="12" rx="3.2" fill="#5744c9" />
-      </svg>
-    );
-  return (
-    <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#a63a08" strokeWidth="2" aria-hidden>
-      <path d="M4 4 H14.5 L20 9.5 V20 H4 Z" strokeLinejoin="round" />
-      <path d="M8 9.5 L11.2 12.5 L8 15.5" strokeLinecap="round" strokeLinejoin="round" />
-      <path d="M13 15.5 H16.2" strokeLinecap="round" />
-    </svg>
-  );
-}
-
-/* The ages come from CYBER_COURSES rather than being typed twice, so the
-   panel and the track chips in the same card can never drift apart. */
-/* Inline, because styled-jsx cannot reach inside next/link. */
-const COURSE_CHIP_LINK: CSSProperties = {
-  display: "flex",
-  flexDirection: "column",
-  gap: 6,
-  padding: "10px 13px",
-  textDecoration: "none",
-  color: "inherit",
-};
-
-const AGES_BY_ID = Object.fromEntries(CYBER_COURSES.map((c) => [c.id, c.ages])) as Record<string, string>;
-
 const STREAMS: Stream[] = [
   {
     id: "cybersecurity",
@@ -175,7 +68,7 @@ const STREAMS: Stream[] = [
     blurb:
       "Pixel art, physics, state machines, and what makes a jump feel good. Scratch through Unity through Unreal.",
     project: "Ship a Pixel Platformer level",
-    accent: "#1565a8",
+    accent: "#3a9fff",
     icon: "M7 8h10a4 4 0 014 4 4 4 0 01-4 4H7a4 4 0 01-4-4 4 4 0 014-4z M8 12h3 M9.5 10.5v3 M15.5 11.5h.01 M17.5 13h.01",
     href: null,
     cta: "Coming 2026",
@@ -190,7 +83,7 @@ const STREAMS: Stream[] = [
     blurb:
       "Train a real model, inspect its bias, deploy it. Cuts through hype with hands-on intuition for how AI actually works.",
     project: "Train an Image Classifier",
-    accent: "#5744c9",
+    accent: "#9a7bff",
     icon: "M8 8h8v8H8z M5 10V8h2 M5 14v2h2 M17 8h2v2 M17 16h2v-2 M10 5V3h2 M14 5V3h-2 M10 21v-2 M14 19v2",
     href: null,
     cta: "Coming 2026",
@@ -205,7 +98,7 @@ const STREAMS: Stream[] = [
     blurb:
       "Real apps on real phones. State, persistence, notifications, design. Build something your friends actually install.",
     project: "Ship a Habit Tracker",
-    accent: "#8a5400",
+    accent: "#ffb84d",
     icon: "M7 2h10a1 1 0 011 1v18a1 1 0 01-1 1H7a1 1 0 01-1-1V3a1 1 0 011-1z M11 18h2",
     href: null,
     cta: "Coming 2027",
@@ -220,7 +113,7 @@ const STREAMS: Stream[] = [
     blurb:
       "Discovery interviews, market sizing, MVP design, pitch craft. The non-coding half of building a tech business.",
     project: "Pitch a 10-slide deck to a real VC panel",
-    accent: "#8a5a00",
+    accent: "#ffd24d",
     icon: "M13 2L3 14h7l-1 8 10-12h-7l1-8z",
     href: null,
     cta: "Coming 2027",
@@ -235,7 +128,7 @@ const STREAMS: Stream[] = [
     blurb:
       "Sensors, pathfinding, motor control, autonomy. Code virtual robots first, then graduate to physical kits.",
     project: "Code a Maze-Solver Bot",
-    accent: "#b3123d",
+    accent: "#ff5a78",
     icon: "M12 2v3 M5 8h14a1 1 0 011 1v9a1 1 0 01-1 1H5a1 1 0 01-1-1V9a1 1 0 011-1z M9 13h.01 M15 13h.01 M2 12v3 M22 12v3",
     href: null,
     cta: "Coming 2027",
@@ -408,12 +301,11 @@ export default function SubjectShowcase() {
           letter-spacing: 0.1em;
           white-space: nowrap;
           overflow: hidden;
-          color: rgba(52,42,28,0.72);
+          color: rgba(190,216,204,0.82);
         }
         .lv2-cipher-hot {
           color: var(--accent);
-          /* a glow reads as a smudge on paper */
-          text-shadow: none;
+          text-shadow: 0 0 10px var(--accent);
           font-weight: 700;
         }
         .lv2-scanline {
@@ -423,7 +315,7 @@ export default function SubjectShowcase() {
           top: 0;
           height: 38%;
           background: linear-gradient(180deg, transparent, var(--accent), transparent);
-          opacity: 0.055;
+          opacity: 0.14;
           pointer-events: none;
           animation: lv2ScanDrop 4.4s linear infinite;
         }
@@ -651,370 +543,403 @@ function StatusPill({ accent, status, live }: { accent: string; status: string; 
 }
 
 /* FEATURED — full-width, two-column hero panel for the live stream. */
-function FeaturedStreamCard({ stream }: { stream: Stream }) {
-  const a = stream.accent;
+/* The four live cyber tracks as designed mini-cards inside the featured
+ * card: accent theme, logo badge, name, age band and a verb for what you
+ * do there. Each links to its own course landing. */
+function TrackMark({ id, accent }: { id: LockupId; accent: string }) {
+  if (id === "heroes")
+    return (
+      <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden>
+        <path d="M12 2 L20 5 V12 C20 17 16.5 20.5 12 22 C7.5 20.5 4 17 4 12 V5 Z" fill={accent} />
+        <path d="M13.2 6 L8.6 13 H11.4 L10.6 18 L15.6 11 H12.6 Z" fill="#06120d" />
+      </svg>
+    );
+  if (id === "explorers")
+    return (
+      <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke={accent} strokeWidth="1.9" aria-hidden>
+        <circle cx="12" cy="12" r="6.4" />
+        <path d="M12 2.6 V6 M12 18 V21.4 M2.6 12 H6 M18 12 H21.4" />
+        <circle cx="12" cy="12" r="1.7" fill={accent} stroke="none" />
+      </svg>
+    );
+  if (id === "ops")
+    return (
+      <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke={accent} strokeWidth="1.9" aria-hidden>
+        <circle cx="12" cy="12" r="3" fill={accent} stroke="none" />
+        <path d="M12 9 V4 M12 20 V15 M9 12 H4 M20 12 H15" strokeLinecap="round" />
+        <circle cx="12" cy="4" r="1.5" fill={accent} stroke="none" />
+        <circle cx="20" cy="12" r="1.5" fill={accent} stroke="none" />
+      </svg>
+    );
   return (
-    <article
-      className="lv2-featured-card"
-      style={
-        {
-          "--accent": a,
-          position: "relative",
-          background: `radial-gradient(110% 130% at 12% -20%, ${a}24, transparent 55%), linear-gradient(180deg, rgba(255,253,250,0.94), rgba(255,253,250,0.96))`,
-          border: `1px solid ${a}66`,
-          borderRadius: 20,
-          overflow: "hidden",
-          boxShadow: `0 0 0 1px rgba(0,0,0,0.3), 0 26px 70px rgba(0,0,0,0.45), inset 0 0 70px ${a}14`,
-          transition: "transform .35s cubic-bezier(0.16,1,0.3,1), box-shadow .35s cubic-bezier(0.16,1,0.3,1)",
-        } as React.CSSProperties
-      }
-      onMouseOver={(e) => {
-        const el = e.currentTarget as HTMLDivElement;
-        el.style.transform = "translateY(-4px)";
-        el.style.boxShadow = `0 0 0 1px ${a}66, 0 34px 84px ${a}30, inset 0 0 84px ${a}20`;
-      }}
-      onMouseOut={(e) => {
-        const el = e.currentTarget as HTMLDivElement;
-        el.style.transform = "translateY(0)";
-        el.style.boxShadow = `0 0 0 1px rgba(0,0,0,0.3), 0 26px 70px rgba(0,0,0,0.45), inset 0 0 70px ${a}14`;
-      }}
-    >
-      <Bracket accent={a} corner="tl" size={22} off={14} />
-      <Bracket accent={a} corner="tr" size={22} off={14} />
-      <Bracket accent={a} corner="bl" size={22} off={14} />
-      <Bracket accent={a} corner="br" size={22} off={14} />
+    <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke={accent} strokeWidth="2" strokeLinejoin="round" aria-hidden>
+      <path d="M4 4 H14.5 L20 9.5 V20 H4 Z" />
+      <path d="M8 9.5 L11.2 12.5 L8 15.5" strokeLinecap="round" />
+      <path d="M13 15.5 H16.2" strokeLinecap="round" />
+    </svg>
+  );
+}
 
-      <div className="lv2-featured-inner">
-        {/* Left: hero copy + CTA */}
-        <div className="lv2-featured-copy">
-          <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-            <HexIcon accent={a} icon={stream.icon} size={58} />
-            <svg width="60" height="20" viewBox="0 0 60 20" style={{ opacity: 0.6 }} aria-hidden>
-              <path d="M0 10h40l8-6" fill="none" stroke={a} strokeWidth="1.4" />
-              <circle cx="48" cy="4" r="2.5" fill={a} />
-            </svg>
-            <span style={{ marginLeft: "auto" }}>
-              <StatusPill accent={a} status={stream.status} live />
-            </span>
-          </div>
+const CYBER_TRACK_CARDS: ReadonlyArray<{ id: LockupId; label: string; accent: string; ages: string; verb: string }> = [
+  { id: "heroes", label: "Heroes", accent: "#e0981f", ages: "Ages 6 to 9", verb: "Play & learn" },
+  { id: "explorers", label: "Explorers", accent: "#2bbdd0", ages: "Ages 10 to 13", verb: "Investigate" },
+  { id: "ops", label: "Ops", accent: "#8b7bff", ages: "Ages 14 to 17", verb: "Defend" },
+  { id: "pro", label: "Pro", accent: "#ff7a3d", ages: "Ages 18+", verb: "Build & break" },
+];
 
-          <h3
-            style={{
-              fontFamily: "var(--lv2-font-display)",
-              fontSize: "clamp(2rem, 3.4vw, 2.7rem)",
-              fontWeight: 500,
-              color: "var(--lv2-ink)",
-              margin: "18px 0 0",
-              letterSpacing: "-0.022em",
-              lineHeight: 1.05,
-            }}
-          >
-            {stream.name}
-          </h3>
-
-          <div
-            style={{
-              fontFamily: "var(--lv2-font-mono)",
-              fontSize: 12,
-              fontWeight: 600,
-              letterSpacing: "0.18em",
-              textTransform: "uppercase",
-              color: "rgba(17,22,38,0.58)",
-              marginTop: 10,
-            }}
-          >
-            {stream.ages}
-          </div>
-
-          <p
-            style={{
-              fontFamily: "var(--lv2-font-display)",
-              fontSize: "clamp(0.95rem, 1.15vw, 1.0625rem)",
-              lineHeight: 1.6,
-              color: "rgba(17,22,38,0.82)",
-              margin: "18px 0 0",
-              maxWidth: 460,
-            }}
-          >
-            {stream.blurb}
-          </p>
-
-          {stream.href && (
-            <Link href={stream.href} style={ctaStyle(a)}>
-              {stream.cta}
-              <span aria-hidden style={{ marginLeft: 2 }}>→</span>
-            </Link>
-          )}
-
-          {/* Aligned with the NCSC — scoped to the cybersecurity card only,
-              framed as alignment (the NCSC runs no endorsement scheme). */}
-          {stream.id === "cybersecurity" && (
-            <div style={{ marginTop: 22 }}>
-              <span
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: 12,
-                  padding: "9px 16px",
-                  borderRadius: 999,
-                  background: "rgba(255,255,255,0.03)",
-                  border: `1px solid ${a}44`,
-                  boxShadow: `0 0 22px -14px ${a}`,
-                }}
+/* Featured Cybersecurity card — dark "cyber ops" console (owner 2026-10-18):
+ * a HUD status line, a cyber grid, an animated reticle logo, the centred
+ * title + blurb, the NCSC alignment strip and four designed track cards that
+ * each link to a course. */
+function FeaturedStreamCard({ stream }: { stream: Stream }) {
+  return (
+    <article className="ssf-card">
+      <span aria-hidden className="ssf-grid" />
+      <Bracket accent="#37e08a" corner="tl" size={24} off={16} />
+      <Bracket accent="#37e08a" corner="tr" size={24} off={16} />
+      <Bracket accent="#37e08a" corner="bl" size={24} off={16} />
+      <Bracket accent="#37e08a" corner="br" size={24} off={16} />
+      <div className="ssf-inner">
+        <div className="ssf-hud">
+          <span>AX // CYBER.SEC</span>
+          <span>ENC:256 · STATUS:SECURE · TRACKS:4/4</span>
+        </div>
+        <span className="ssf-scope" aria-hidden>
+          <span className="ssf-cbk a" />
+          <span className="ssf-cbk b" />
+          <span className="ssf-cbk c" />
+          <span className="ssf-cbk d" />
+          <span className="ssf-ring r1" />
+          <span className="ssf-ring r2" />
+          <span className="ssf-pulse" />
+          <svg width="50" height="54" viewBox="0 0 24 26" fill="none" stroke="#5ff0a8" strokeWidth="1.8" strokeLinejoin="round">
+            <path d="M12 2l8 3v6c0 5-3.5 8-8 11-4.5-3-8-6-8-11V5l8-3z" />
+            <path d="M8.5 12.5 L11 15 L15.5 9.5" stroke="#8ff6ff" strokeWidth="2" />
+          </svg>
+        </span>
+        <h3 className="ssf-ttl">{stream.name}</h3>
+        <div className="ssf-ages">{stream.ages}</div>
+        <p className="ssf-blurb">{stream.blurb}</p>
+        <span className="ssf-ncsc">Aligned with UK&rsquo;s National Cyber Security Centre</span>
+        <div className="ssf-tracks">
+          {CYBER_TRACK_CARDS.map((t, i) => (
+            <div key={t.id} className="ssf-trk" style={{ ["--c" as string]: t.accent }}>
+              <span aria-hidden className="ssf-topbar" />
+              <span aria-hidden className="ssf-no">{`0${i + 1}`}</span>
+              <Link
+                href={COURSE_HREF[t.id]}
+                className="ssf-trk-a"
+                style={{ display: "flex", flexDirection: "column", textDecoration: "none", padding: "18px 15px 15px", color: "inherit" }}
               >
-                <span
-                  style={{
-                    fontFamily: "var(--lv2-font-mono)",
-                    fontSize: 10,
-                    fontWeight: 700,
-                    letterSpacing: "0.22em",
-                    textTransform: "uppercase",
-                    color: a,
-                  }}
-                >
-                  Aligned with UK&rsquo;s National Cyber Security Centre
+                <span className="ssf-badge">
+                  <TrackMark id={t.id} accent={t.accent} />
                 </span>
-                <span aria-hidden style={{ width: 1, height: 20, background: "rgba(244,239,231,0.19)" }} />
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/logos/ncsc.svg" alt="National Cyber Security Centre" loading="lazy" style={{ height: 26, width: "auto" }} />
-              </span>
-
-              <ul className="lv2-course-marks">
-                {CYBER_COURSES.map((c) => (
-                  /* Owner: put the actual links to these courses' landing
-                     pages on the chips.
-
-                     The class stays on the li. styled-jsx scopes its rules
-                     to elements it can stamp, and next/link renders its own
-                     anchor, so a class handed to Link matches nothing: the
-                     chips came out as bare inline text. The li keeps the
-                     styling and the anchor fills it, so the whole chip is
-                     still the click target. */
-                  <li
-                    key={c.id}
-                    className={c.live ? "lv2-course-mark" : "lv2-course-mark lv2-course-mark-soon"}
-                    style={{ ["--lv2-mark" as string]: c.accent }}
-                  >
-                    <Link href={COURSE_HREF[c.id]} style={COURSE_CHIP_LINK}>
-                      <CourseLockup id={c.id} size={0.74} tone="sand" />
-                      <span>{c.live ? `Ages ${c.ages}` : `Ages ${c.ages} · soon`}</span>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
+                <span className="ssf-nm">
+                  Cyber <em>{t.label}</em>
+                </span>
+                <span className="ssf-ag">{t.ages}</span>
+                <span className="ssf-verb">{t.verb}</span>
+              </Link>
             </div>
-          )}
+          ))}
         </div>
-
-        {/* Right: flagship-project showcase */}
-        <div
-          className="lv2-featured-project"
-          style={{
-            /* Owner: it all seems too white and it is not clear. An 8%
-               accent wash on a near-white card is not a second surface, so
-               the panel is cut into the card instead: recessed ground, a
-               real edge, and an inner shadow at the top so it reads as
-               depth rather than another tint. */
-            border: `1px solid ${a}33`,
-            background: "linear-gradient(180deg, #f1e9dc, #ede4d4)",
-            boxShadow: `inset 0 2px 5px -2px rgba(86,68,45,0.3), inset 0 0 0 1px rgba(255,255,255,0.5)`,
-            borderRadius: 16,
-            padding: "26px 24px",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            gap: 14,
-          }}
-        >
-          <span style={{ ...sectionMark, alignSelf: "flex-start", background: a }}>
-            {stream.id === "cybersecurity" ? "// Proof you can show" : "// Flagship project"}
-          </span>
-
-          {stream.id === "cybersecurity" ? (
-            /* One per track, so the panel answers "what will I actually
-               do" four times over instead of once. */
-            <ul
-              style={{
-                listStyle: "none",
-                margin: "4px 0 0",
-                padding: 0,
-                display: "flex",
-                flexDirection: "column",
-                gap: 10,
-              }}
-            >
-              {CYBER_FLAGSHIPS.map((f) => (
-                /* Each proof is its own little credential card: the course
-                   mark in a tinted chip, a track-colour bar down the left,
-                   so the panel reads as four badges rather than a flat list. */
-                <li
-                  key={f.id}
-                  style={{
-                    display: "flex",
-                    gap: 12,
-                    alignItems: "flex-start",
-                    background:
-                      "linear-gradient(180deg, rgba(255,255,255,0.74), rgba(255,253,248,0.46))",
-                    border: `1px solid ${f.accent}2b`,
-                    borderLeft: `3px solid ${f.accent}`,
-                    borderRadius: 12,
-                    padding: "11px 13px",
-                    boxShadow:
-                      "0 6px 16px -12px rgba(86,68,45,0.42), inset 0 1px 0 rgba(255,255,255,0.75)",
-                  }}
-                >
-                  <span
-                    aria-hidden
-                    style={{
-                      flex: "0 0 auto",
-                      width: 38,
-                      height: 38,
-                      borderRadius: 10,
-                      background: `${f.accent}14`,
-                      border: `1px solid ${f.accent}30`,
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                  >
-                    <FlagshipIcon id={f.id} />
-                  </span>
-                  <span style={{ display: "flex", flexDirection: "column", gap: 2, paddingTop: 1 }}>
-                    <span
-                      style={{
-                        fontFamily: "var(--lv2-font-display)",
-                        fontSize: "1rem",
-                        fontWeight: 600,
-                        letterSpacing: "-0.01em",
-                        lineHeight: 1.26,
-                        color: f.accent,
-                      }}
-                    >
-                      {f.take}
-                    </span>
-                    <span
-                      style={{
-                        fontFamily: "var(--lv2-font-display)",
-                        fontSize: "0.8125rem",
-                        lineHeight: 1.4,
-                        color: "rgba(17,22,38,0.72)",
-                      }}
-                    >
-                      {f.how}
-                    </span>
-                    <span
-                      style={{
-                        fontFamily: "var(--lv2-font-mono)",
-                        fontSize: 9,
-                        fontWeight: 700,
-                        letterSpacing: "0.09em",
-                        textTransform: "uppercase",
-                        color: f.accent,
-                        opacity: 0.85,
-                        marginTop: 2,
-                      }}
-                    >
-                      {`Cyber ${f.id[0].toUpperCase()}${f.id.slice(1)} · Ages ${AGES_BY_ID[f.id]}`}
-                    </span>
-                  </span>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <span
-              style={{
-                fontFamily: "var(--lv2-font-display)",
-                fontSize: "clamp(1.15rem, 1.7vw, 1.45rem)",
-                fontWeight: 500,
-                color: "var(--lv2-ink)",
-                lineHeight: 1.32,
-              }}
-            >
-              {stream.project}
-            </span>
-          )}
-
-          {stream.id !== "cybersecurity" && (
-            <span
-              style={{
-                fontFamily: "var(--lv2-font-mono)",
-                fontSize: 11.5,
-                lineHeight: 1.6,
-                color: "rgba(17,22,38,0.53)",
-                marginTop: 2,
-              }}
-            >
-              Every stream ends in a real, shippable project.
-            </span>
-          )}
-        </div>
+        {stream.href && (
+          <Link href={stream.href} className="ssf-cta">
+            {stream.cta}
+            <span aria-hidden style={{ marginLeft: 2 }}>→</span>
+          </Link>
+        )}
       </div>
 
       <style jsx>{`
-        .lv2-course-marks {
-          list-style: none;
-          margin: 16px 0 0;
-          padding: 0;
+        .ssf-card {
+          position: relative;
+          border-radius: 24px;
+          overflow: hidden;
+          color: #37e08a;
+          background: radial-gradient(130% 120% at 50% -10%, rgba(21, 155, 138, 0.14), transparent 55%),
+            linear-gradient(180deg, #0b1d16, #060f0b);
+          border: 1px solid rgba(21, 200, 160, 0.3);
+          box-shadow: 0 26px 70px rgba(0, 0, 0, 0.55);
+        }
+        .ssf-grid {
+          position: absolute;
+          inset: 0;
+          pointer-events: none;
+          opacity: 0.8;
+          background-image: linear-gradient(rgba(55, 224, 138, 0.055) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(55, 224, 138, 0.055) 1px, transparent 1px);
+          background-size: 30px 30px;
+          -webkit-mask: radial-gradient(130% 90% at 50% -10%, #000, transparent 64%);
+          mask: radial-gradient(130% 90% at 50% -10%, #000, transparent 64%);
+        }
+        .ssf-inner {
+          position: relative;
+          z-index: 1;
+          padding: 18px 36px 40px;
           display: flex;
-          flex-wrap: wrap;
+          flex-direction: column;
+          align-items: center;
+          text-align: center;
+        }
+        @media (max-width: 680px) {
+          .ssf-inner {
+            padding: 14px 20px 32px;
+          }
+        }
+        .ssf-hud {
+          display: flex;
+          justify-content: space-between;
+          width: 100%;
           gap: 8px;
-        }
-        .lv2-course-mark {
-          cursor: pointer;
-          transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
-            box-shadow 0.2s ease, border-color 0.2s ease;
-          display: flex;
-          /* the padding lives on the anchor, so the whole chip is clickable */
-          border-radius: 12px;
-          background: linear-gradient(180deg, #fffdf8, #fdf9f2);
-          box-shadow: 0 12px 30px -20px rgba(86,68,45,0.5), inset 0 1px 0 rgba(255,255,255,0.85);
-          border: 1px solid rgba(70,58,44,0.14);
-          border-left: 2px solid var(--lv2-mark);
-        }
-        .lv2-course-mark span {
           font-family: var(--lv2-font-mono);
-          font-size: 9.5px;
+          font-size: 9px;
+          letter-spacing: 0.2em;
+          text-transform: uppercase;
+          color: #5f8778;
+          border-bottom: 1px solid rgba(55, 224, 138, 0.14);
+          padding: 10px 2px 18px;
+        }
+        .ssf-hud span:last-child {
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+        .ssf-scope {
+          position: relative;
+          width: 112px;
+          height: 112px;
+          margin-top: 18px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 50%;
+          background: radial-gradient(60% 60% at 50% 42%, rgba(23, 160, 94, 0.22), #06130e 72%);
+          box-shadow: 0 8px 24px -8px rgba(14, 122, 69, 0.6), inset 0 0 14px rgba(21, 155, 138, 0.18);
+          border: 1px solid rgba(21, 200, 160, 0.35);
+        }
+        .ssf-ring {
+          position: absolute;
+          border-radius: 50%;
+          border: 1.6px solid transparent;
+          animation: ssfSpin 5s linear infinite;
+        }
+        .ssf-ring.r1 {
+          inset: 12px;
+          border-top-color: #35e0ff;
+          border-right-color: rgba(53, 224, 255, 0.2);
+        }
+        .ssf-ring.r2 {
+          inset: 26px;
+          border-bottom-color: #37e08a;
+          border-left-color: rgba(55, 224, 138, 0.2);
+          animation-duration: 7s;
+          animation-direction: reverse;
+        }
+        .ssf-cbk {
+          position: absolute;
+          width: 11px;
+          height: 11px;
+          margin: 9px;
+          border-color: #35e0ff;
+        }
+        .ssf-cbk.a { left: 0; top: 0; border-left: 2px solid; border-top: 2px solid; }
+        .ssf-cbk.b { right: 0; top: 0; border-right: 2px solid; border-top: 2px solid; }
+        .ssf-cbk.c { left: 0; bottom: 0; border-left: 2px solid; border-bottom: 2px solid; }
+        .ssf-cbk.d { right: 0; bottom: 0; border-right: 2px solid; border-bottom: 2px solid; }
+        .ssf-pulse {
+          position: absolute;
+          inset: 30px;
+          border-radius: 50%;
+          border: 1.5px solid rgba(55, 224, 138, 0.5);
+          animation: ssfPulse 2.8s ease-out infinite;
+        }
+        .ssf-scope svg {
+          position: relative;
+          z-index: 2;
+          filter: drop-shadow(0 0 8px rgba(55, 224, 138, 0.7));
+        }
+        .ssf-ttl {
+          font-family: var(--lv2-font-display);
+          font-weight: 500;
+          letter-spacing: -0.022em;
+          font-size: clamp(2rem, 4.4vw, 2.9rem);
+          margin: 18px 0 0;
+          color: #eafff5;
+          line-height: 1.02;
+        }
+        .ssf-ages {
+          font-family: var(--lv2-font-mono);
+          font-size: 11px;
+          font-weight: 600;
+          letter-spacing: 0.17em;
+          text-transform: uppercase;
+          margin-top: 11px;
+          color: #7bbfa4;
+        }
+        .ssf-blurb {
+          font-family: var(--lv2-font-display);
+          font-size: clamp(0.95rem, 1.15vw, 1.0625rem);
+          line-height: 1.6;
+          max-width: 560px;
+          margin: 15px auto 0;
+          color: #c3e3d5;
+        }
+        .ssf-ncsc {
+          display: inline-flex;
+          align-items: center;
+          gap: 10px;
+          margin-top: 20px;
+          padding: 8px 15px;
+          border-radius: 999px;
+          border: 1px solid rgba(55, 224, 138, 0.3);
+          background: rgba(55, 224, 138, 0.05);
+          font-family: var(--lv2-font-mono);
+          font-size: 10px;
           font-weight: 700;
+          letter-spacing: 0.2em;
+          text-transform: uppercase;
+          color: #8ff3c4;
+        }
+        .ssf-tracks {
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          gap: 14px;
+          margin: 28px 0 0;
+          width: 100%;
+        }
+        @media (max-width: 680px) {
+          .ssf-tracks {
+            grid-template-columns: repeat(2, 1fr);
+          }
+        }
+        .ssf-trk {
+          position: relative;
+          border-radius: 16px;
+          overflow: hidden;
+          text-align: left;
+          background: linear-gradient(180deg, color-mix(in srgb, var(--c) 15%, #0a1813), #081210);
+          border: 1px solid color-mix(in srgb, var(--c) 42%, transparent);
+          transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .ssf-trk:hover {
+          transform: translateY(-4px);
+          box-shadow: 0 16px 34px -16px var(--c);
+        }
+        .ssf-topbar {
+          position: absolute;
+          left: 0;
+          right: 0;
+          top: 0;
+          height: 3px;
+          background: var(--c);
+          z-index: 2;
+        }
+        .ssf-no {
+          position: absolute;
+          right: 13px;
+          top: 13px;
+          font-family: var(--lv2-font-mono);
+          font-size: 10px;
+          font-weight: 600;
+          color: var(--c);
+          opacity: 0.6;
+          z-index: 2;
+        }
+        .ssf-badge {
+          width: 42px;
+          height: 42px;
+          border-radius: 12px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-bottom: 14px;
+          background: color-mix(in srgb, var(--c) 22%, #06120d);
+          box-shadow: inset 0 0 10px color-mix(in srgb, var(--c) 30%, transparent), 0 0 14px -4px var(--c);
+        }
+        .ssf-nm {
+          font-family: var(--lv2-font-display);
+          font-weight: 600;
+          font-size: 14px;
+          color: #eafff5;
+          line-height: 1.1;
+        }
+        .ssf-nm em {
+          font-style: normal;
+          color: var(--c);
+        }
+        .ssf-ag {
+          font-family: var(--lv2-font-mono);
+          font-size: 9px;
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+          color: #8fb3a4;
+          margin-top: 4px;
+        }
+        .ssf-verb {
+          font-family: var(--lv2-font-mono);
+          font-size: 9px;
+          font-weight: 600;
           letter-spacing: 0.16em;
           text-transform: uppercase;
-          color: rgba(17,22,38,0.63);
+          color: var(--c);
+          margin-top: 12px;
+          display: flex;
+          align-items: center;
+          gap: 6px;
         }
-        /* Ops and Pro used to sit at 0.55 opacity, which the owner read
-           as the lighting failing on that half of the row. They are lit
-           like the other two now; the word "soon" in each chip is what
-           says they are not open yet. */
-        .lv2-course-mark:hover {
+        .ssf-verb::before {
+          content: "";
+          width: 5px;
+          height: 5px;
+          border-radius: 50%;
+          background: var(--c);
+          box-shadow: 0 0 7px var(--c);
+        }
+        :global(.ssf-cta) {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          font-family: var(--lv2-font-display);
+          font-weight: 600;
+          font-size: 15px;
+          text-decoration: none;
+          border-radius: 12px;
+          padding: 14px 28px;
+          margin-top: 30px;
+          background: linear-gradient(180deg, #1fd089, #0f9a5c);
+          color: #04140d;
+          box-shadow: 0 12px 28px -10px rgba(55, 224, 138, 0.6);
+          transition: transform 0.18s, box-shadow 0.18s;
+        }
+        :global(.ssf-cta:hover) {
           transform: translateY(-2px);
-          border-color: var(--lv2-mark);
-          box-shadow: 0 16px 34px -20px rgba(86,68,45,0.7), inset 0 1px 0 rgba(255,255,255,0.9);
+          box-shadow: 0 18px 34px -12px rgba(55, 224, 138, 0.75);
         }
-        .lv2-course-mark :global(a:focus-visible) {
-          outline: 2px solid var(--lv2-mark);
+        :global(.ssf-trk-a:focus-visible) {
+          outline: 2px solid var(--c);
           outline-offset: 3px;
           border-radius: 12px;
         }
-        .lv2-course-mark-soon { opacity: 1; }
-
-        /* Owner 2026-10-16: the four proofs became individual credential
-           cards (a course mark in a tinted chip + a track-colour bar down
-           the left), styled inline on each <li>, so they no longer share a
-           class here. */
-
-        .lv2-featured-card {
-          will-change: transform;
+        @keyframes ssfSpin {
+          to {
+            transform: rotate(360deg);
+          }
         }
-        .lv2-featured-inner {
-          display: grid;
-          grid-template-columns: 1.35fr 1fr;
-          gap: 34px;
-          align-items: stretch;
-          padding: 38px 40px;
+        @keyframes ssfPulse {
+          0% {
+            transform: scale(0.6);
+            opacity: 0.6;
+          }
+          100% {
+            transform: scale(1.5);
+            opacity: 0;
+          }
         }
-        @media (max-width: 820px) {
-          .lv2-featured-inner {
-            grid-template-columns: 1fr;
-            gap: 24px;
-            padding: 30px 26px;
+        @media (prefers-reduced-motion: reduce) {
+          .ssf-ring,
+          .ssf-pulse {
+            animation: none;
           }
         }
       `}</style>
@@ -1054,9 +979,9 @@ function RoadmapCard({ stream, idx }: { stream: Stream; idx: number }) {
            * sheen in the fill, an outer drop shadow that lifts the card and
            * a thin accent ring just outside the edge. The accent colour still
            * tells each card apart; it just reads as a card now, not a smudge. */
-          background: `linear-gradient(180deg, ${a}14, #ece2cf 46%, #e4d9c4)`,
+          background: `linear-gradient(180deg, ${a}26, #0a1712 52%, #060f0b)`,
           border: `1.5px solid ${a}99`,
-          boxShadow: `0 18px 38px -20px rgba(70,58,44,0.6), 0 0 0 1px ${a}26, inset 0 1px 0 rgba(255,255,255,0.6)`,
+          boxShadow: `0 18px 38px -22px rgba(0,0,0,0.6), 0 0 0 1px ${a}33`,
           borderRadius: 14,
           padding: "22px 20px",
           display: "flex",
@@ -1074,14 +999,14 @@ function RoadmapCard({ stream, idx }: { stream: Stream; idx: number }) {
         el.style.transform = "translateY(-4px)";
         el.style.opacity = "1";
         el.style.borderColor = a;
-        el.style.boxShadow = `0 24px 50px -22px rgba(70,58,44,0.7), 0 0 0 1px ${a}55, inset 0 0 40px ${a}14, inset 0 1px 0 rgba(255,255,255,0.7)`;
+        el.style.boxShadow = `0 24px 50px -22px rgba(0,0,0,0.7), 0 0 0 1px ${a}66, inset 0 0 40px ${a}12`;
       }}
       onMouseOut={(e) => {
         const el = e.currentTarget as HTMLDivElement;
         el.style.transform = "translateY(0)";
         el.style.opacity = "1";
         el.style.borderColor = `${a}99`;
-        el.style.boxShadow = `0 18px 38px -20px rgba(70,58,44,0.6), 0 0 0 1px ${a}26, inset 0 1px 0 rgba(255,255,255,0.6)`;
+        el.style.boxShadow = `0 18px 38px -22px rgba(0,0,0,0.6), 0 0 0 1px ${a}33`;
       }}
     >
       <span aria-hidden className="lv2-scanline" style={desync(1)} />
@@ -1157,29 +1082,4 @@ function RoadmapCard({ stream, idx }: { stream: Stream; idx: number }) {
       `}</style>
     </article>
   );
-}
-
-function ctaStyle(a: string): React.CSSProperties {
-  return {
-    alignSelf: "flex-start",
-    marginTop: 26,
-    padding: "15px 26px",
-    borderRadius: 11,
-    fontFamily: "var(--lv2-font-mono)",
-    fontSize: 12,
-    fontWeight: 700,
-    letterSpacing: "0.18em",
-    textTransform: "uppercase",
-    textDecoration: "none",
-    display: "inline-flex",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: 8,
-    background: a,
-    /* the accents are dark on sand, so the label is paper */
-    color: "#fffdfa",
-    border: "none",
-    boxShadow: `0 8px 26px ${a}55, 0 0 18px ${a}66`,
-    cursor: "pointer",
-  };
 }
