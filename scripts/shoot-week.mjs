@@ -36,10 +36,22 @@
  *   SETTLE=12000 node scripts/shoot-week.mjs 4        slower reveals
  *   OUT=.look node scripts/shoot-week.mjs 4
  *
- * Needs a built server with the lesson gate open:
- *   E2E_TESTS=1 npx next start -p 3007
- * and, locally only, BYPASS_ENTITLEMENT_FOR_TESTING in app/lesson/[week]/page.tsx.
- * That flag is LOCAL ONLY and must never be committed.
+ * Needs a BUILT server with the QA deep-links on:
+ *   npx next build
+ *   AUTH_TRUST_HOST=true E2E_TESTS=1 npx next start -p 3007
+ *
+ * `next start` serves a FIXED bundle, so rebuild after any source change or
+ * the frames will show the old code and a fix will look like it did nothing.
+ *
+ * It signs in for you. /lesson/[week] redirects anyone without a session, so
+ * this does what tests/e2e/global-setup.ts does: seed the test user through
+ * /api/test/seed (only live when E2E_TESTS=1) and sign in through the real
+ * login form. LOCAL ONLY - it refuses to run against anything but localhost.
+ *
+ * The test user also needs to get past the entitlement check, which is what
+ * BYPASS_ENTITLEMENT_FOR_TESTING in app/lesson/[week]/page.tsx is for. That
+ * flag is LOCAL ONLY and must never be committed - check `git status` on that
+ * file before every commit.
  */
 import { chromium } from "playwright";
 import { mkdir } from "node:fs/promises";
@@ -60,11 +72,43 @@ const VIEWPORT = { width: 1414, height: 771 };
  * its five skill cards one at a time and settles around 8s. */
 const SETTLE = Number(process.env.SETTLE || 9000);
 
+/* Same credentials the e2e suite seeds and signs in with. */
+const EMAIL = process.env.SHOOT_EMAIL || "e2e@algorithmx.test";
+const PASSWORD = process.env.SHOOT_PASSWORD || "e2e-test-pw";
+
+if (!/^http:\/\/localhost[:/]/.test(BASE)) {
+  console.error(`refusing to sign in against ${BASE} - this script is local only`);
+  process.exit(2);
+}
+
 await mkdir(OUT, { recursive: true });
 const browser = await chromium.launch({ channel: "msedge" });
 const ctx = await browser.newContext({ viewport: VIEWPORT });
 await ctx.addCookies([{ name: "site_auth", value: "true", domain: "localhost", path: "/" }]);
 const page = await ctx.newPage();
+
+/* Seed the test user, then sign in through the real form so the session
+ * cookie is genuine. A 500 here usually just means the user already exists
+ * from an earlier run, so the login below is what actually decides. */
+const seeded = await fetch(`${BASE}/api/test/seed`, { method: "POST", headers: { cookie: "site_auth=true" } })
+  .then((r) => r.status)
+  .catch(() => "unreachable");
+console.log(`seed: ${seeded}`);
+
+await page.goto(`${BASE}/login`, { waitUntil: "domcontentloaded", timeout: 30000 });
+await page.fill('input[type="email"], input[name="email"]', EMAIL);
+await page.fill('input[type="password"], input[name="password"]', PASSWORD);
+await Promise.all([
+  page.waitForURL((u) => !u.pathname.startsWith("/login"), { timeout: 30000 }).catch(() => {}),
+  page.click('button[type="submit"]'),
+]);
+if (page.url().includes("/login")) {
+  console.error(`\nSTILL ON /login - no session, so every frame would be the login page.`);
+  console.error(`Is the server running with E2E_TESTS=1 and AUTH_TRUST_HOST=true?`);
+  await browser.close();
+  process.exit(2);
+}
+console.log(`signed in, landed on ${new URL(page.url()).pathname}`);
 
 /** Wait until the page stops changing height, then let reveals finish. */
 async function settle() {

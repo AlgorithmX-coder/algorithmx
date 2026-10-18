@@ -528,25 +528,32 @@ export default function PasswordVault({
       shakeClass={shakeClass}
       maxWidth={1480}
       reserve={140}
+      /* Learn-Loop intro: the Raccoon's boast + Sarah's mission, one "I'm
+         ready" gate. It covers the WINDOW, so it cannot sit inside the scene
+         viewport - that element sets `perspective` for the camera, which makes
+         it the containing block for a position:fixed child and clips it with
+         overflow:hidden. On week 4's Hall of Mirrors the card was pushed to
+         the scene's own origin and lost its bottom edge and start button. */
+      screenOverlay={
+        showIntro ? (
+          <ExerciseIntroBeat
+            title={introTitle ?? (mirrors ? "The Hall of Mirrors" : warehouse ? "The Warehouse" : "The Password Vault")}
+            subtitle={introSubtitle}
+            icon={introIcon}
+            narration={introNarration}
+            threat={threat}
+            overlay
+            character={introNarration?.speaker}
+            onDismiss={() => {
+              setShowIntro(false);
+              setNarr(isAudioMuted() ? "idle" : coachLines ? "howto" : "idle");
+            }}
+          />
+        ) : null
+      }
       overlay={
         <>
           {verdict.element}
-          {/* Learn-Loop intro: the Raccoon's boast + Sarah's mission, one "I'm ready" gate. */}
-          {showIntro && (
-            <ExerciseIntroBeat
-              title={introTitle ?? (mirrors ? "The Hall of Mirrors" : warehouse ? "The Warehouse" : "The Password Vault")}
-              subtitle={introSubtitle}
-              icon={introIcon}
-              narration={introNarration}
-              threat={threat}
-              overlay
-              character={introNarration?.speaker}
-              onDismiss={() => {
-                setShowIntro(false);
-                setNarr(isAudioMuted() ? "idle" : coachLines ? "howto" : "idle");
-              }}
-            />
-          )}
           {/* Sarah's read-alouds (audio only): the how-to once, each hotspot as it opens, the payoff at the end. */}
           {!showIntro && (
             <div aria-hidden style={AUDIO_ONLY_STYLE}>
