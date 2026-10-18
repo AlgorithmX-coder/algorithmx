@@ -124,7 +124,7 @@ export default function Mission09Incident({ reduced, audio, onPhaseCleared, onCo
 
       {/* ---------------- phase 1: spot the farm ---------------- */}
       {phase === 1 && (
-        <div style={{ maxWidth: 640 }}>
+        <div style={{ maxWidth: 820 }}>
           <Eyebrow text="Phase 1: Five very generous messages. One card PROVES it's a script. Tap it." color={T.actionAmber} />
           <div style={{ display: "grid", gap: 10, marginTop: 14 }}>
             {FARM.map((f) => (
@@ -169,7 +169,7 @@ export default function Mission09Incident({ reduced, audio, onPhaseCleared, onCo
 
       {/* ---------------- phase 2: find the turn ---------------- */}
       {phase === 2 && (
-        <div style={{ maxWidth: 640 }}>
+        <div style={{ maxWidth: 820 }}>
           <Eyebrow text="Phase 2: Zaid's month with the collector. Tap the message where giving became TAKING." color={T.actionAmber} />
           <div style={{ display: "grid", gap: 10, marginTop: 14 }}>
             {TIMELINE.map((z) => (
@@ -211,7 +211,7 @@ export default function Mission09Incident({ reduced, audio, onPhaseCleared, onCo
 
       {/* ---------------- phase 3: coach the exit ---------------- */}
       {phase === 3 && (
-        <div style={{ maxWidth: 640 }}>
+        <div style={{ maxWidth: 820 }}>
           <Eyebrow text="Phase 3: Zaid asks you what to do. Your coaching decides how this ends." color={T.actionAmber} />
           <div style={{ display: "grid", gap: 10, marginTop: 14 }}>
             {EXITS.map((e) => {

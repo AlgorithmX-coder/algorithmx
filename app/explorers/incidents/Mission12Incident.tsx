@@ -141,7 +141,7 @@ export default function Mission12Incident({ reduced, audio, onPhaseCleared, onCo
 
       {/* ---------------- phase 1: the sniffer ---------------- */}
       {phase === 1 && (
-        <div style={{ maxWidth: 640 }}>
+        <div style={{ maxWidth: 820 }}>
           <Eyebrow text="Phase 1: PACKRAT's view of the café. Tap every line he can actually READ." color={T.actionAmber} />
           <div style={{ display: "grid", gap: 10, marginTop: 14 }}>
             {TRAFFIC.map((t) => {
@@ -192,7 +192,7 @@ export default function Mission12Incident({ reduced, audio, onPhaseCleared, onCo
 
       {/* ---------------- phase 2: seal the channel ---------------- */}
       {phase === 2 && (
-        <div style={{ maxWidth: 640 }}>
+        <div style={{ maxWidth: 820 }}>
           <Eyebrow text="Phase 2: Three postcards are still flowing. Pick the fix that seals them." color={T.actionAmber} />
           <div style={{ display: "grid", gap: 10, marginTop: 14 }}>
             {SEALS.map((s) => {
@@ -223,7 +223,7 @@ export default function Mission12Incident({ reduced, audio, onPhaseCleared, onCo
 
       {/* ---------------- phase 3: the gibberish prize ---------------- */}
       {phase === 3 && (
-        <div style={{ maxWidth: 640 }}>
+        <div style={{ maxWidth: 820 }}>
           <Eyebrow text="Phase 3: the honest ledger. What did PACKRAT's nest actually collect tonight?" color={T.actionAmber} />
           <div style={{ display: "grid", gap: 10, marginTop: 14 }}>
             {PRIZES.map((p) => {

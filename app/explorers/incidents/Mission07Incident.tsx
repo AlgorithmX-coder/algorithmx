@@ -180,7 +180,7 @@ export default function Mission07Incident({ reduced, audio, onPhaseCleared, onCo
 
       {/* ------------------------------------------ PHASE 1: read the twins */}
       {phase === 1 && (
-        <div style={{ maxWidth: 640 }}>
+        <div style={{ maxWidth: 820 }}>
           <Eyebrow
             text="Phase 1. Both chats sound like Leo. Mark each line: TELL (a clue someone is working you) or STYLE (just how Leo talks)."
             color={T.actionAmber}
@@ -272,7 +272,7 @@ export default function Mission07Incident({ reduced, audio, onPhaseCleared, onCo
 
       {/* ------------------------------------------- PHASE 2: run protocol */}
       {phase === 2 && (
-        <div style={{ maxWidth: 640 }}>
+        <div style={{ maxWidth: 820 }}>
           <Eyebrow
             text="Phase 2. Reading is out. Run the check neither chat can fake. Tap the steps in the RIGHT ORDER."
             color={T.actionAmber}
@@ -330,7 +330,7 @@ export default function Mission07Incident({ reduced, audio, onPhaseCleared, onCo
 
       {/* --------------------------------------------- PHASE 3: the rescue */}
       {phase === 3 && !done && (
-        <div style={{ maxWidth: 640 }}>
+        <div style={{ maxWidth: 820 }}>
           <Eyebrow
             text="Phase 3. CHAT A is MIMIC, mid-trick on half the class. Make the rescue call."
             color={T.actionAmber}

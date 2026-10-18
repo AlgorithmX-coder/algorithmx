@@ -138,7 +138,7 @@ export default function Mission08Incident({ reduced, audio, onPhaseCleared, onCo
 
       {/* ---------------- phase 1: read the timeline ---------------- */}
       {phase === 1 && (
-        <div style={{ maxWidth: 640 }}>
+        <div style={{ maxWidth: 820 }}>
           <Eyebrow text="Phase 1: Two weeks of friendship on one board. Tap where the scam turned." color={T.actionAmber} />
           <div style={{ display: "grid", gap: 10, marginTop: 14 }}>
             {TIMELINE.map((d) => (
@@ -185,7 +185,7 @@ export default function Mission08Incident({ reduced, audio, onPhaseCleared, onCo
 
       {/* ---------------- phase 2: hold the line ---------------- */}
       {phase === 2 && (
-        <div style={{ maxWidth: 640 }}>
+        <div style={{ maxWidth: 820 }}>
           <Eyebrow text="Phase 2: The ask is live and the guilt is stacked. Choose your reply." color={T.actionAmber} />
           <div style={{ display: "grid", gap: 10, marginTop: 14 }}>
             {ASKS.map((a) => {
@@ -216,7 +216,7 @@ export default function Mission08Incident({ reduced, audio, onPhaseCleared, onCo
 
       {/* ---------------- phase 3: the unmasking ---------------- */}
       {phase === 3 && (
-        <div style={{ maxWidth: 640 }}>
+        <div style={{ maxWidth: 820 }}>
           <Eyebrow text="Phase 3: ARC's trace is back. What WAS the pen pal?" color={T.actionAmber} />
           <div style={{ display: "grid", gap: 10, marginTop: 14 }}>
             {VERDICTS.map((v) => {
