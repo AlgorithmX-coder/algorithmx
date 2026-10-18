@@ -155,25 +155,45 @@ const FAQS = [
 const PHASE_KEY = "ax-schools-phase";
 const isPhase = (v: unknown): v is Phase => v === "primary" || v === "secondary";
 
-/* The /schools header mark: the Learning Atom in one-colour teal (the page
- * is warm sand, so a flat multi-colour atom reads better than a neon glow),
- * with "CYBER SCHOOL / by AlgorithmX" in the nav's tone-aware ink. Passed to
- * the shared Nav as its `brand`, so only this page changes. */
+/* The /schools header mark: the glowing Learning Atom (teal/lime/cyan orbits,
+ * white-hot core) on its own dark chip, so it keeps its colour and glow on the
+ * warm-sand nav instead of flattening out. "CYBER SCHOOL / by AlgorithmX" sits
+ * in the nav's tone-aware ink. Passed to the shared Nav as its `brand`, so only
+ * this page changes. */
 function SchoolBrand() {
   return (
     <>
-      <svg width="30" height="30" viewBox="0 0 72 72" aria-hidden="true" style={{ display: "block", flexShrink: 0, filter: "drop-shadow(0 0 5px rgba(15,150,139,0.3))" }}>
-        <g fill="none" strokeWidth="2.8">
-          <ellipse cx="36" cy="36" rx="28" ry="11" stroke="#0ea5a0" />
-          <ellipse cx="36" cy="36" rx="28" ry="11" stroke="#1f9bd0" transform="rotate(60 36 36)" />
-          <ellipse cx="36" cy="36" rx="28" ry="11" stroke="#35b56a" transform="rotate(120 36 36)" />
-        </g>
-        <circle cx="63.5" cy="36" r="2.8" fill="#35b56a" />
-        <circle cx="22" cy="11.8" r="2.8" fill="#0ea5a0" />
-        <circle cx="50" cy="11.8" r="2.8" fill="#1f9bd0" />
-        <circle cx="36" cy="36" r="8" fill="#0f968b" />
-        <circle cx="33.4" cy="33" r="2.6" fill="#bdeee6" />
-      </svg>
+      <span
+        aria-hidden
+        style={{
+          width: 38,
+          height: 38,
+          borderRadius: 11,
+          flex: "0 0 auto",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          background: "radial-gradient(90% 90% at 50% 38%, rgba(31,214,200,0.28), #06201d 72%)",
+          border: "1px solid rgba(31,214,200,0.5)",
+          boxShadow: "0 6px 18px -6px rgba(16,160,150,0.7), inset 0 0 12px rgba(31,214,200,0.15)",
+        }}
+      >
+        <svg width="28" height="28" viewBox="0 0 72 72" style={{ display: "block", filter: "drop-shadow(0 0 3px rgba(60,230,200,0.9)) drop-shadow(0 0 8px rgba(60,230,200,0.5))" }}>
+          <defs>
+            <linearGradient id="schAtomTeal" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#8bffe8" /><stop offset="100%" stopColor="#11b6c6" /></linearGradient>
+            <linearGradient id="schAtomLime" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#d6ff8f" /><stop offset="100%" stopColor="#23e2a2" /></linearGradient>
+            <linearGradient id="schAtomCyan" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#9ff8ff" /><stop offset="100%" stopColor="#2bb2ff" /></linearGradient>
+            <radialGradient id="schAtomCore" cx="50%" cy="42%" r="56%"><stop offset="0" stopColor="#ffffff" /><stop offset="45%" stopColor="#9affe0" /><stop offset="100%" stopColor="#14b8b4" /></radialGradient>
+          </defs>
+          <ellipse cx="36" cy="36" rx="28" ry="11" fill="none" stroke="url(#schAtomTeal)" strokeWidth="2.8" />
+          <ellipse cx="36" cy="36" rx="28" ry="11" fill="none" stroke="url(#schAtomLime)" strokeWidth="2.8" transform="rotate(60 36 36)" />
+          <ellipse cx="36" cy="36" rx="28" ry="11" fill="none" stroke="url(#schAtomCyan)" strokeWidth="2.8" transform="rotate(120 36 36)" />
+          <circle cx="63.5" cy="36" r="2.8" fill="#d6ff8f" />
+          <circle cx="22" cy="11.8" r="2.8" fill="#8bffe8" />
+          <circle cx="50" cy="11.8" r="2.8" fill="#9affe0" />
+          <circle cx="36" cy="36" r="8.5" fill="url(#schAtomCore)" />
+        </svg>
+      </span>
       <span style={{ display: "flex", flexDirection: "column", gap: 2, lineHeight: 1 }}>
         <span style={{ fontFamily: "var(--lv2-font-mono)", fontWeight: 700, fontSize: 14, letterSpacing: "0.2em", textTransform: "uppercase", color: "var(--lv2-word-mark, #14243a)" }}>
           CYBER <span style={{ color: "#0f968b" }}>SCHOOL</span>
