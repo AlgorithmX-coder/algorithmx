@@ -529,18 +529,24 @@ const LB_CYCLE: { kind: "rail" | "framed" | "topline"; accent: string }[] = [
 function LessonBlock({ h, body, i, glossary, keyPrefix }: { h: string; body: string; i: number; glossary?: GlossaryEntry[]; keyPrefix: string }) {
   const t = LB_CYCLE[i % LB_CYCLE.length];
   const [open, setOpen] = useState(i === 0);
+  // `expanded` is the fully-open state (set once the open animation ends). While
+  // collapsed or mid-animation the body is clipped with overflow:hidden for a
+  // clean open/close; once fully open we switch to overflow:visible so a glossary
+  // hover popover (which pops ABOVE its term) isn't clipped by the block.
+  const [expanded, setExpanded] = useState(i === 0);
+  const toggle = () => { setExpanded(false); setOpen((o) => !o); };
   const seen = new Set<string>();
   const hc = t.kind === "framed" ? t.accent : "#ffffff";
   const trigger = (
-    <button type="button" onClick={() => setOpen((o) => !o)} aria-expanded={open}
+    <button type="button" onClick={toggle} aria-expanded={open}
       style={{ width: "100%", display: "flex", alignItems: "center", gap: 12, background: "transparent", border: "none", padding: 0, cursor: "pointer", textAlign: "left", font: "inherit" }}>
       <span style={{ flex: 1, fontFamily: DISP, fontWeight: 700, fontSize: 18.5, color: hc, lineHeight: 1.22, letterSpacing: ".005em" }}>{h}</span>
       <span aria-hidden style={{ flexShrink: 0, width: 25, height: 25, borderRadius: 7, border: `1px solid ${t.accent}66`, color: t.accent, display: "grid", placeItems: "center", fontSize: 10, fontFamily: MONO, lineHeight: 1, transform: open ? "rotate(90deg)" : "none", transition: "transform .25s ease" }}>▶</span>
     </button>
   );
   const panel = (
-    <div style={{ display: "grid", gridTemplateRows: open ? "1fr" : "0fr", transition: "grid-template-rows .28s ease" }}>
-      <div style={{ overflow: "hidden", minHeight: 0 }}>
+    <div style={{ display: "grid", gridTemplateRows: open ? "1fr" : "0fr", transition: "grid-template-rows .28s ease" }} onTransitionEnd={() => { if (open) setExpanded(true); }}>
+      <div style={{ overflow: expanded ? "visible" : "hidden", minHeight: 0 }}>
         <p style={{ color: "#C7CEDD", fontSize: 14.5, lineHeight: 1.64, margin: "8px 0 0" }}>{withGlossary(body, glossary, seen, keyPrefix)}</p>
       </div>
     </div>
@@ -548,7 +554,7 @@ function LessonBlock({ h, body, i, glossary, keyPrefix }: { h: string; body: str
   // All three treatments share the same box sizing + horizontal padding, so the
   // caret toggles line up in one column however the accent styling differs.
   if (t.kind === "rail") return <div style={{ boxSizing: "border-box", padding: "14px 18px 14px 18px", borderLeft: `3px solid ${t.accent}` }}>{trigger}{panel}</div>;
-  if (t.kind === "framed") return <div style={{ boxSizing: "border-box", position: "relative", padding: "15px 18px", borderRadius: 14, background: "rgba(18,20,29,0.82)", border: `1px solid ${t.accent}55`, overflow: "hidden" }}><span aria-hidden style={{ position: "absolute", top: 0, left: 22, right: 22, height: 2, background: `linear-gradient(90deg,transparent,${t.accent},transparent)` }} />{trigger}{panel}</div>;
+  if (t.kind === "framed") return <div style={{ boxSizing: "border-box", position: "relative", padding: "15px 18px", borderRadius: 14, background: "rgba(18,20,29,0.82)", border: `1px solid ${t.accent}55`, overflow: expanded ? "visible" : "hidden" }}><span aria-hidden style={{ position: "absolute", top: 0, left: 22, right: 22, height: 2, background: `linear-gradient(90deg,transparent,${t.accent},transparent)` }} />{trigger}{panel}</div>;
   return <div style={{ boxSizing: "border-box", padding: "15px 18px", borderRadius: 14, background: "rgba(18,20,29,0.82)", border: `1px solid ${C.line}`, borderTop: `3px solid ${t.accent}` }}>{trigger}{panel}</div>;
 }
 
