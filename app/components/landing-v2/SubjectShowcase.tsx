@@ -145,7 +145,7 @@ export default function SubjectShowcase() {
       id="subjects"
       style={{
         position: "relative",
-        padding: "calc(var(--lv2-rail) * 2.4) var(--lv2-rail)",
+        padding: "calc(var(--lv2-rail) * 1.25) var(--lv2-rail)",
         overflow: "hidden",
         color: "var(--lv2-ink)",
       }}
@@ -234,7 +234,7 @@ export default function SubjectShowcase() {
                   textShadow: "0 2px 18px rgba(255,255,255,0.90), 0 0 6px rgba(255,255,255,0.76)",
                 }}
               >
-                Five new courses. Releasing soon.
+                Five new streams. Releasing soon.
               </h3>
               <p
                 style={{
@@ -247,7 +247,7 @@ export default function SubjectShowcase() {
                   textShadow: "0 2px 14px rgba(255,255,255,0.90), 0 0 5px rgba(255,255,255,0.76)",
                 }}
               >
-                Every card below is a real course in development, locked and
+                Every card below is a real stream in development, locked and
                 encrypted until launch day.
               </p>
             </div>

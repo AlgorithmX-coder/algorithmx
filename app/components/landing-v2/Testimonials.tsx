@@ -22,7 +22,7 @@ export default function Testimonials() {
       id="testimonials"
       style={{
         position: "relative",
-        padding: "calc(var(--lv2-rail) * 2.2) 0",
+        padding: "calc(var(--lv2-rail) * 1.25) 0",
         color: "var(--lv2-ink)",
       }}
     >

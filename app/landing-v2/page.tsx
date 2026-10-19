@@ -5,7 +5,6 @@ import Nav from "@/app/components/landing-v2/Nav";
 import ProofBand from "@/app/components/ProofBand";
 import ProblemStats from "@/app/components/landing-v2/ProblemStats";
 import SubjectShowcase from "@/app/components/landing-v2/SubjectShowcase";
-import ParentTrust from "@/app/components/landing-v2/ParentTrust";
 import Testimonials from "@/app/components/landing-v2/Testimonials";
 import FAQ from "@/app/components/landing-v2/FAQ";
 import Footer from "@/app/components/landing-v2/Footer";
@@ -24,10 +23,13 @@ import ScrollFormObjects from "@/app/components/backgrounds/ScrollFormObjects";
  *   3. ProofBand - the four accreditations, one line of copy each
  *   4. ProblemStats - 3 stat cards
  *   5. SubjectShowcase - 6 subject tabs + course cards
- *   6. ParentTrust - safety + safeguarding messaging
- *   7. Testimonials + trust logos marquee
- *   8. FAQ
- *   9. Footer - 4-col dark
+ *   6. Testimonials + trust logos marquee
+ *   7. FAQ
+ *   8. Footer - 4-col dark
+ *
+ *   ParentTrust ("Our promises to every learner") removed 2026-10-19 on the
+ *   owner's call; the AI positioning it carried is now in the hero subhead.
+ *   Component kept on disk.
  *
  * Previous batches removed four sections: "Who is this for?", "One
  * platform, four stages of growth", "What you'll actually build", and
@@ -235,7 +237,6 @@ export default function LandingV2() {
         <ProofBand />
         <ProblemStats />
         <SubjectShowcase />
-        <ParentTrust />
         <Testimonials />
         <FAQ />
       </main>

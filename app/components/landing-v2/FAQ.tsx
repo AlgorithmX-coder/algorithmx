@@ -103,7 +103,7 @@ export default function FAQ() {
       style={{
         position: "relative",
         padding:
-          "calc(var(--lv2-rail) * 2.2) var(--lv2-rail) calc(var(--lv2-rail) * 2.0)",
+          "calc(var(--lv2-rail) * 1.3) var(--lv2-rail) calc(var(--lv2-rail) * 1.4)",
         color: "var(--lv2-ink)",
       }}
     >
