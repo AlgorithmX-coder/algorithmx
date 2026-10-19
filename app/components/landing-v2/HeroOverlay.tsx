@@ -31,7 +31,7 @@ const HEADLINE_ACCENT = "people, schools and firms.";
    real tools, including the AI tools shaping every industry"), so the
    hero is not promising something the page does not back up. */
 const SUBLINE =
-  "Cyber security taught properly, from age 6 all the way through to adulthood. One platform that grows with the learner, built on real projects with the AI tools that are rewriting every industry.";
+  "A new kind of platform, built for the age of AI. As AI rewrites every industry, we teach the cyber and AI skills that keep you a step ahead, from age 6 right through to adulthood, on real projects not videos.";
 
 export default function HeroOverlay() {
   /* The persistent ALGORITHMX wordmark previously rendered here was

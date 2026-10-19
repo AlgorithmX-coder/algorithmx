@@ -79,7 +79,7 @@ export default function ProblemStats() {
       id="the-state-of-play"
       style={{
         position: "relative",
-        padding: "calc(var(--lv2-rail) * 2.2) var(--lv2-rail)",
+        padding: "calc(var(--lv2-rail) * 1.2) var(--lv2-rail)",
         color: "var(--lv2-ink)",
       }}
     >
@@ -109,7 +109,7 @@ export default function ProblemStats() {
               fontWeight: 500,
               color: "var(--lv2-ink)",
               maxWidth: 760,
-              margin: "calc(var(--lv2-rail) * 1.3) auto calc(var(--lv2-rail) * 1.1)",
+              margin: "calc(var(--lv2-rail) * 0.6) auto calc(var(--lv2-rail) * 0.1)",
               lineHeight: 1.4,
               letterSpacing: "-0.01em",
             }}
@@ -125,28 +125,16 @@ export default function ProblemStats() {
         .lv2-stats-row {
           display: grid;
           grid-template-columns: repeat(3, minmax(0, 1fr));
-          gap: 16px;
+          gap: 14px;
         }
-        /* Phone / tablet: a compact side-by-side swipe row instead of a tall
-         * stack, so all three read in one screen and you scroll across. */
-        @media (max-width: 1000px) {
+        /* Phone: stack the three cards vertically, one under another, kept
+         * small and centred (owner 2026-10-18). */
+        @media (max-width: 760px) {
           .lv2-stats-row {
-            display: flex;
-            grid-template-columns: none;
-            gap: 12px;
-            overflow-x: auto;
-            scroll-snap-type: x mandatory;
-            -webkit-overflow-scrolling: touch;
-            padding: 4px 0 14px;
-            scrollbar-width: none;
-          }
-          .lv2-stats-row::-webkit-scrollbar {
-            display: none;
-          }
-          .lv2-stats-row > :global(*) {
-            flex: 0 0 auto;
-            width: min(76vw, 280px);
-            scroll-snap-align: center;
+            grid-template-columns: 1fr;
+            gap: 14px;
+            max-width: 330px;
+            margin-inline: auto;
           }
         }
       `}</style>
@@ -192,8 +180,8 @@ function StatCard({ stat }: { stat: (typeof STATS)[number] }) {
         backdropFilter: "blur(14px) saturate(1.4)",
         WebkitBackdropFilter: "blur(14px) saturate(1.4)",
         borderTop: `2px solid ${stat.color}`,
-        borderRadius: 14,
-        padding: "18px 18px 15px",
+        borderRadius: 12,
+        padding: "13px 14px 11px",
         transition:
           "transform .35s cubic-bezier(0.16,1,0.3,1), box-shadow .35s cubic-bezier(0.16,1,0.3,1)",
         cursor: "default",
@@ -237,9 +225,9 @@ function StatCard({ stat }: { stat: (typeof STATS)[number] }) {
           style={{
             display: "grid",
             placeItems: "center",
-            width: 36,
-            height: 36,
-            borderRadius: 10,
+            width: 29,
+            height: 29,
+            borderRadius: 9,
             /* Owner 2026-10-14: richer, better-produced icon chip - a lit
                glass square (accent gradient, crisp accent ring + outer
                hairline, glossy top highlight, soft lift) to match the
@@ -250,7 +238,7 @@ function StatCard({ stat }: { stat: (typeof STATS)[number] }) {
             color: stat.color,
           }}
         >
-          <GlyphIcon name={stat.icon} size={18} color={stat.color} />
+          <GlyphIcon name={stat.icon} size={15} color={stat.color} />
         </div>
       </div>
 
@@ -258,12 +246,12 @@ function StatCard({ stat }: { stat: (typeof STATS)[number] }) {
       <p
         style={{
           fontFamily: "var(--lv2-font-display)",
-          fontSize: "clamp(34px, 4.4vw, 50px)",
+          fontSize: "clamp(26px, 3.2vw, 37px)",
           fontWeight: 700,
           color: stat.color,
           lineHeight: 1,
           letterSpacing: "-0.03em",
-          marginTop: 10,
+          marginTop: 8,
           textShadow: `0 6px 26px ${stat.color}3d`,
         }}
       >
@@ -276,10 +264,10 @@ function StatCard({ stat }: { stat: (typeof STATS)[number] }) {
       <p
         style={{
           color: "rgba(17,22,38,0.78)",
-          fontSize: 13,
-          lineHeight: 1.5,
-          marginTop: 10,
-          minHeight: 34,
+          fontSize: 12,
+          lineHeight: 1.45,
+          marginTop: 8,
+          minHeight: 28,
         }}
       >
         {stat.label}
@@ -291,8 +279,8 @@ function StatCard({ stat }: { stat: (typeof STATS)[number] }) {
           display: "flex",
           alignItems: "flex-end",
           justifyContent: "space-between",
-          gap: 12,
-          marginTop: 12,
+          gap: 10,
+          marginTop: 10,
         }}
       >
         <Sparkline points={stat.spark} color={stat.color} />
@@ -301,15 +289,15 @@ function StatCard({ stat }: { stat: (typeof STATS)[number] }) {
             flexShrink: 0,
             textAlign: "right",
             border: `1px solid ${stat.color}33`,
-            borderRadius: 9,
-            padding: "6px 10px",
+            borderRadius: 8,
+            padding: "5px 8px",
             background: `${stat.color}0f`,
           }}
         >
           <span
             style={{
               fontFamily: "var(--lv2-font-mono)",
-              fontSize: 12.5,
+              fontSize: 11.5,
               fontWeight: 700,
               color: stat.color,
               display: "block",
@@ -341,7 +329,7 @@ function StatCard({ stat }: { stat: (typeof STATS)[number] }) {
           letterSpacing: "0.14em",
           textTransform: "uppercase",
           color: "rgba(17,22,38,0.40)",
-          margin: "14px 0 0",
+          margin: "11px 0 0",
         }}
       >
         Source: {stat.source}
