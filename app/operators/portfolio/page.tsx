@@ -60,7 +60,7 @@ export default async function OperatorsPortfolioPage() {
     <main style={{ position: "relative", minHeight: "100vh", background: "transparent", color: C.ink, fontFamily: SANS, display: "grid", placeItems: "start center", padding: "56px 20px 100px" }}>
       <OpsBackdrop />
       <style>{GLOW_CSS}</style>
-      <div style={{ position: "relative", zIndex: 1, width: "100%", maxWidth: 760 }}>
+      <div style={{ position: "relative", zIndex: 1, width: "100%", maxWidth: 880 }}>
         {/* header */}
         <div style={{ fontFamily: MONO, fontSize: 11.5, letterSpacing: ".26em", textTransform: "uppercase", color: C.cyan, fontWeight: 700, textShadow: TSHADOW }}>Redoubt · Operator file</div>
         <h1 style={{ fontFamily: DISP, fontSize: "clamp(28px,5vw,40px)", fontWeight: 700, margin: "12px 0 6px", letterSpacing: "-.01em", color: "#ffffff", textShadow: TSHADOW }}>Your portfolio</h1>
@@ -68,22 +68,8 @@ export default async function OperatorsPortfolioPage() {
           Every module you clear files a professional-grade finding here. This is the real thing you walk away with: show a teacher, a UCAS form, or a first employer.
         </p>
 
-        {/* standing */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10, marginBottom: 30 }}>
-          <Stat label="Rank" value={rank?.rank ?? "Recruit"} tone={C.indigo2} />
-          <Stat label="Reputation" value={String(p?.totalRep ?? 0)} tone={C.amber} />
-          <Stat label="Findings filed" value={`${findings.length}`} tone={C.green} />
-        </div>
-        {rank && rank.next && (
-          <div style={{ marginBottom: 34 }}>
-            <div style={{ display: "flex", justifyContent: "space-between", fontFamily: MONO, fontSize: 11.5, color: C.soft, marginBottom: 7, textShadow: TSHADOW }}>
-              <span style={{ color: C.indigo2 }}>{rank.rank}</span><span>{rank.label}</span>
-            </div>
-            <div style={{ height: 8, borderRadius: 999, background: "rgba(255,255,255,0.07)", overflow: "hidden" }}>
-              <div style={{ height: "100%", width: `${Math.round(rank.fraction * 100)}%`, borderRadius: 999, background: `linear-gradient(90deg, ${C.indigo}, ${C.amber})`, boxShadow: `0 0 12px ${C.amber}` }} />
-            </div>
-          </div>
-        )}
+        {/* operator standing - the hero dashboard (stats stand out, not a plain row) */}
+        <OperatorCard rank={rank} rep={p?.totalRep ?? 0} findingsCount={findings.length} cleared={done.size} />
 
         {/* course map — the full posting, status per module */}
         <div style={{ marginBottom: 34 }}>
@@ -93,32 +79,19 @@ export default async function OperatorsPortfolioPage() {
           </div>
           {PHASE_ORDER.map((phase) => {
             const pc = PHASE_COLOR[phase];
+            const mods = CURRICULUM.filter((m) => m.phase === phase);
+            const clearedN = mods.filter((m) => done.has(m.no)).length;
             return (
-            <div key={phase} style={{ marginBottom: 20 }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 9 }}>
+            <div key={phase} style={{ marginBottom: 22 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 11, marginBottom: 11 }}>
                 <span style={{ width: 22, height: 3, borderRadius: 2, background: pc, boxShadow: `0 0 10px ${pc}` }} />
                 <span style={{ fontFamily: DISP, fontSize: 13, letterSpacing: ".14em", textTransform: "uppercase", color: pc, fontWeight: 700, textShadow: TSHADOW }}>{phase}</span>
+                <span style={{ fontFamily: MONO, fontSize: 10.5, color: C.mute }}>{clearedN}/{mods.length}</span>
               </div>
-              <div style={{ display: "grid", gap: 6 }}>
-                {CURRICULUM.filter((m) => m.phase === phase).map((m) => {
-                  const isDone = done.has(m.no);
-                  const isNext = m.no === nextModule;
-                  const playable = m.no <= HIGHEST_BUILT_MODULE;
-                  const inner = (
-                    <div className={isNext ? "ops-next" : undefined} style={{ display: "flex", gap: 11, alignItems: "center", padding: isNext ? "13px 14px" : "10px 13px", borderRadius: 10, background: isNext ? NEXT_BG : GLASS_SOFT, backdropFilter: BLUR, WebkitBackdropFilter: BLUR, border: `1px solid ${isNext ? "rgba(95,230,255,0.55)" : C.lineSoft}`, borderLeft: `3px solid ${isNext ? C.cyan : pc}`, boxShadow: isNext ? undefined : "0 4px 14px rgba(0,0,0,0.22)" }}>
-                      <span style={{ fontFamily: MONO, fontSize: 12, fontWeight: 700, color: isDone ? C.green : isNext ? C.cyan : pc, minWidth: 30, textShadow: isNext ? `0 0 12px ${C.cyan}` : undefined }}>{isDone ? "✓" : `M${String(m.no).padStart(2, "0")}`}</span>
-                      <span style={{ fontSize: isNext ? 14.5 : 13.5, fontWeight: isNext ? 600 : 400, color: isNext ? "#ffffff" : playable ? C.ink : C.mute, flex: 1 }}>{m.title}</span>
-                      {isNext && <span style={{ fontFamily: MONO, fontSize: 10, fontWeight: 700, letterSpacing: ".1em", color: "#eafbff", background: "rgba(95,230,255,0.16)", border: "1px solid rgba(95,230,255,0.7)", borderRadius: 5, padding: "3px 9px", boxShadow: `0 0 12px ${C.cyan}66`, textShadow: `0 0 8px ${C.cyan}` }}>NEXT ▸</span>}
-                      {isDone && !isNext && <span style={{ fontFamily: MONO, fontSize: 10.5, color: C.green }}>filed</span>}
-                      {!playable && <span style={{ fontFamily: MONO, fontSize: 10.5, color: C.mute }}>soon</span>}
-                    </div>
-                  );
-                  return playable ? (
-                    <Link key={m.no} href={`/operators/play/${m.no}`} style={{ textDecoration: "none" }}>{inner}</Link>
-                  ) : (
-                    <div key={m.no}>{inner}</div>
-                  );
-                })}
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(170px, 1fr))", gap: 10 }}>
+                {mods.map((m) => (
+                  <ModuleTile key={m.no} no={m.no} title={m.title} pc={pc} isDone={done.has(m.no)} isNext={m.no === nextModule} playable={m.no <= HIGHEST_BUILT_MODULE} />
+                ))}
               </div>
             </div>
             );
@@ -169,11 +142,72 @@ export default async function OperatorsPortfolioPage() {
   );
 }
 
-function Stat({ label, value, tone }: { label: string; value: string; tone: string }) {
+/* ---------- operator dashboard (the hero: stats stand out) ---------- */
+function OperatorCard({ rank, rep, findingsCount, cleared }: { rank?: { rank: string; next?: unknown; label?: string; fraction?: number } | null; rep: number; findingsCount: number; cleared: number }) {
+  const rankName = rank?.rank ?? "Recruit";
+  const pct = Math.round((rank?.fraction ?? 0) * 100);
   return (
-    <div style={{ background: GLASS, backdropFilter: BLUR, WebkitBackdropFilter: BLUR, border: `1px solid ${C.lineSoft}`, borderRadius: 13, padding: "16px 18px", boxShadow: "0 6px 20px rgba(0,0,0,0.28)" }}>
-      <div style={{ fontFamily: DISP, fontWeight: 700, fontSize: 22, color: tone, lineHeight: 1.1 }}>{value}</div>
-      <div style={{ fontFamily: MONO, fontSize: 10.5, color: C.mute, letterSpacing: ".08em", textTransform: "uppercase", marginTop: 5 }}>{label}</div>
+    <div style={{ position: "relative", overflow: "hidden", borderRadius: 22, padding: "26px 28px", marginBottom: 30, background: `radial-gradient(120% 150% at 0% 0%, rgba(139,123,255,0.30), transparent 55%), radial-gradient(120% 150% at 100% 0%, rgba(95,230,255,0.22), transparent 52%), linear-gradient(150deg, rgba(22,25,34,0.92), #0c0e16)`, border: `1px solid ${C.indigo}66`, boxShadow: `0 30px 70px -34px #000, 0 0 60px -30px ${C.indigo}`, backdropFilter: BLUR, WebkitBackdropFilter: BLUR }}>
+      <div style={{ display: "flex", gap: 22, alignItems: "center", justifyContent: "space-between", flexWrap: "wrap" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 16, minWidth: 200 }}>
+          <RankBadge rank={rankName} />
+          <div>
+            <div style={{ fontFamily: MONO, fontSize: 10, letterSpacing: ".22em", textTransform: "uppercase", color: C.cyan, fontWeight: 700 }}>Current rank</div>
+            <div style={{ fontFamily: DISP, fontSize: "clamp(26px,5vw,38px)", fontWeight: 700, color: "#fff", lineHeight: 1, marginTop: 4, textShadow: `0 0 20px ${C.indigo}55` }}>{rankName}</div>
+          </div>
+        </div>
+        <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
+          <StatBig n={String(rep)} l="reputation" tone={C.amber} />
+          <StatBig n={String(findingsCount)} l="findings filed" tone={C.green} />
+          <StatBig n={`${cleared}/16`} l="modules cleared" tone={C.cyan} />
+        </div>
+      </div>
+      {rank?.next ? (
+        <div style={{ marginTop: 22 }}>
+          <div style={{ display: "flex", justifyContent: "space-between", fontFamily: MONO, fontSize: 11, color: C.soft, marginBottom: 7 }}>
+            <span style={{ color: C.indigo2 }}>{rankName}</span><span>{rank?.label}</span>
+          </div>
+          <div style={{ height: 10, borderRadius: 999, background: "rgba(255,255,255,0.08)", overflow: "hidden" }}>
+            <div style={{ height: "100%", width: `${pct}%`, borderRadius: 999, background: `linear-gradient(90deg, ${C.indigo}, ${C.cyan}, ${C.amber})`, boxShadow: `0 0 16px ${C.cyan}` }} />
+          </div>
+        </div>
+      ) : null}
     </div>
   );
+}
+function RankBadge({ rank }: { rank: string }) {
+  return (
+    <div style={{ position: "relative", width: 64, height: 70, flexShrink: 0, display: "grid", placeItems: "center" }}>
+      <svg width="64" height="70" viewBox="0 0 64 70" style={{ position: "absolute", inset: 0 }} aria-hidden>
+        <polygon points="32,2 60,17 60,53 32,68 4,53 4,17" fill="rgba(139,123,255,0.14)" stroke="#8b7bff" strokeWidth="1.5" />
+        <polygon points="32,10 53,21 53,49 32,60 11,49 11,21" fill="none" stroke="rgba(95,230,255,0.55)" strokeWidth="1" />
+      </svg>
+      <span style={{ position: "relative", fontFamily: DISP, fontWeight: 700, fontSize: 25, color: "#fff", textShadow: `0 0 16px ${C.indigo}` }}>{rank.charAt(0).toUpperCase()}</span>
+    </div>
+  );
+}
+function StatBig({ n, l, tone }: { n: string; l: string; tone: string }) {
+  return (
+    <div style={{ minWidth: 96, padding: "13px 17px", borderRadius: 14, background: "rgba(0,0,0,0.32)", border: `1px solid ${tone}3a` }}>
+      <div style={{ fontFamily: DISP, fontWeight: 700, fontSize: "clamp(26px,4vw,34px)", color: tone, lineHeight: 1, textShadow: `0 0 18px ${tone}55` }}>{n}</div>
+      <div style={{ fontFamily: MONO, fontSize: 9.5, letterSpacing: ".1em", textTransform: "uppercase", color: C.mute, marginTop: 7 }}>{l}</div>
+    </div>
+  );
+}
+/* ---------- a module tile on the mission board ---------- */
+function ModuleTile({ no, title, pc, isDone, isNext, playable }: { no: number; title: string; pc: string; isDone: boolean; isNext: boolean; playable: boolean }) {
+  const inner = (
+    <div className={isNext ? "ops-next" : undefined} style={{ position: "relative", height: "100%", minHeight: 96, display: "flex", flexDirection: "column", padding: "13px 14px", borderRadius: 13, background: isNext ? NEXT_BG : GLASS_SOFT, backdropFilter: BLUR, WebkitBackdropFilter: BLUR, border: `1px solid ${isNext ? "rgba(95,230,255,0.55)" : C.lineSoft}`, borderTop: `3px solid ${isDone ? C.green : isNext ? C.cyan : pc}`, boxShadow: isNext ? undefined : "0 6px 18px rgba(0,0,0,0.26)", opacity: playable ? 1 : 0.6 }}>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8 }}>
+        <span style={{ fontFamily: MONO, fontSize: 12, fontWeight: 700, color: isDone ? C.green : isNext ? C.cyan : pc, textShadow: isNext ? `0 0 12px ${C.cyan}` : undefined }}>M{String(no).padStart(2, "0")}</span>
+        {isDone ? <span aria-hidden style={{ color: C.green, fontSize: 14, fontWeight: 700 }}>✓</span>
+          : isNext ? <span style={{ fontFamily: MONO, fontSize: 9, fontWeight: 700, letterSpacing: ".1em", color: "#eafbff", background: "rgba(95,230,255,0.16)", border: "1px solid rgba(95,230,255,0.7)", borderRadius: 5, padding: "2px 7px" }}>NEXT ▸</span>
+          : !playable ? <span style={{ fontFamily: MONO, fontSize: 9.5, color: C.mute }}>soon</span> : null}
+      </div>
+      <span style={{ fontFamily: DISP, fontWeight: 700, fontSize: 14.5, color: isNext ? "#fff" : playable ? C.ink : C.mute, lineHeight: 1.25, marginTop: 9 }}>{title}</span>
+      {isDone && <span style={{ marginTop: "auto", paddingTop: 10, fontFamily: MONO, fontSize: 10, letterSpacing: ".06em", color: C.green }}>FINDING FILED</span>}
+      {isNext && <span style={{ marginTop: "auto", paddingTop: 10, fontFamily: MONO, fontSize: 10, letterSpacing: ".06em", color: C.cyan }}>START HERE</span>}
+    </div>
+  );
+  return playable ? <Link href={`/operators/play/${no}`} style={{ textDecoration: "none", height: "100%" }}>{inner}</Link> : <div style={{ height: "100%" }}>{inner}</div>;
 }
