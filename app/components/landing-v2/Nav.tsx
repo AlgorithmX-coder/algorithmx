@@ -212,7 +212,7 @@ export default function Nav({ centre, cta, aside, showTelemetry = true, showSite
                 href="/#subjects"
                 style={onSand ? { ...navLink, color: "#075a6b" } : navLink}
               >
-                Courses
+                Streams
               </a>
               <Link
                 className="lv2-nav-secondary"
