@@ -1381,12 +1381,45 @@ cover all twenty. B7 badge and B8 stickers are per week, 4 images each.
 | `audit-card-fill.mjs N` | how much of the stage each card fills |
 | `audit-frame-fit.mjs N` | anything past the fold, out of frame, or clipped |
 | `audit-narration-flow.mjs --week=N` | do the screens and beats read as one script |
+| `audit-answer-giveaway.mjs N` | can the right answer be picked without reading it |
 | `qa-server.mjs --build` | serve THIS checkout, and prove it |
 | `key-character-art.mjs`, `fill-sprite-key-holes.mjs`, `strip-sprite-ground-shadow.mjs` | get generated art onto a dark ground without defects |
 
 Generator flags worth knowing: `--week=N --force` re-records one week on the
-current engine, `--keys` prints the week-to-clip mapping the manifest does not
+current engine, `--redo=<file>` re-records exactly the clips an audit named and
+nothing else, `--keys` prints the week-to-clip mapping the manifest does not
 store, `--keep-raw` leaves the untouched delivery beside the finished clip.
+
+---
+
+## Rule 14 - a re-record reaches only the lines whose WORDS changed
+
+A clip is named after the text in it, and the generator records a block only
+when it has no file by that name. So "I re-recorded week 4" means, exactly:
+every line whose wording I edited got a new clip, and every line I left alone
+kept the clip it already had, made whichever way it was made the first time.
+
+Found 18 October 2026, after both week 3 and week 4 had been reported fixed and
+week 3 had been merged and tested. The consonant audit over weeks 3 and 4
+flagged **67 clips of the 209 that end on an unvoiced consonant**. Week 5, which
+the sweep never touched, flagged **1 of 183**. The two weeks that had been
+worked on were the two weeks in a bad state, which is the signature of a fix
+that reached only part of what it claimed to.
+
+Two things follow, and both are now gates rather than intentions:
+
+1. **A re-record is finished when the audit over that whole week passes**, not
+   when the lines that were rewritten sound right. The unit of proof is the
+   week, not the diff.
+2. **The week joins the CI ratchet in the same PR that finishes it.** Weeks 3
+   and 4 were re-recorded on 17 October and the ratchet still read
+   `--weeks=1,2` the next day, so nothing in CI was ever going to notice. A
+   ratchet that trails the work by a release protects nothing.
+
+The fix for a flagged list is `--redo=<file>`, straight from the audit's own
+`--files` output. Before that flag the only routes were deleting the clips, a
+destructive step over the one asset here that costs money to replace, or
+`--week=N --force`, which buys 558 recordings to replace 68.
 
 ---
 

@@ -307,27 +307,49 @@ export default function QuickCheck({
   );
 
   // render the prompt with the blank emphasised for `finish`
-  const promptNode =
-    mode === "finish" && prompt.includes("___") ? (
+  //
+  // The blank is glued to the word that follows it. Week 5 asks "If someone is
+  // mean to you, it's ___ your fault." and at the owner's 1414px window it
+  // wrapped straight after the blank, so the screen read:
+  //
+  //     If someone is mean to you, it's ____
+  //     your fault.
+  //
+  // A child sees a finished sentence ending in a gap, and "your fault." sitting
+  // underneath as its own line - the opposite of what the rule teaches. The
+  // blank must never be the last thing on a line while words still follow it.
+  //
+  // Only the break immediately after the blank is suppressed, so the rest of
+  // the sentence wraps normally. Five weeks have words after the blank (4, 5,
+  // 6, 8, 15); the others end on it, where this changes nothing.
+  const promptNode = (() => {
+    if (mode !== "finish" || !prompt.includes("___")) return prompt;
+    const [before, after = ""] = prompt.split("___");
+    const glue = /^(\s*\S+)([\s\S]*)$/.exec(after);
+    const nextWord = glue ? glue[1] : after;
+    const rest = glue ? glue[2] : "";
+    return (
       <>
-        {prompt.split("___")[0]}
-        <span
-          style={{
-            display: "inline-block",
-            minWidth: 84,
-            margin: "0 6px",
-            color: "#7df0ff",
-            borderBottom: "3px solid #7df0ff",
-            textShadow: "0 0 16px rgba(125,240,255,0.75)",
-          }}
-        >
-          ____
+        {before}
+        <span style={{ whiteSpace: "nowrap" }}>
+          <span
+            style={{
+              display: "inline-block",
+              minWidth: 84,
+              margin: "0 6px",
+              color: "#7df0ff",
+              borderBottom: "3px solid #7df0ff",
+              textShadow: "0 0 16px rgba(125,240,255,0.75)",
+            }}
+          >
+            ____
+          </span>
+          {nextWord}
         </span>
-        {prompt.split("___")[1]}
+        {rest}
       </>
-    ) : (
-      prompt
     );
+  })();
 
   return (
     <ExerciseFrame

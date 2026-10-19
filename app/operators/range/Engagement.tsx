@@ -158,6 +158,23 @@ const BASE_BEATS: { id: Phase; label: string }[] = [
   { id: "act", label: "Capture" }, { id: "drills", label: "Drills" }, { id: "challenge", label: "Challenge" }, { id: "defend", label: "Defend" }, { id: "report", label: "Report" },
 ];
 
+// Each curriculum phase is a distinct "console world" (owner: make each module
+// feel like a different level). The world sets the header identity + the accent
+// that flows through the beat bar, eyebrows, handler and primary buttons (via
+// the --world CSS var), so a Recon module and a Defence module read as different
+// consoles - while the lesson content and the per-module backdrop stay as they are.
+type World = { bar: string; accent: string; soft: string };
+const WORLDS: Record<string, World> = {
+  foundations: { bar: "Case File", accent: "#8B7BFF", soft: "rgba(139,123,255,0.07)" },
+  web: { bar: "root@range", accent: "#55D98C", soft: "rgba(85,217,140,0.07)" },
+  data: { bar: "Analysis Bench", accent: "#5FE6FF", soft: "rgba(95,230,255,0.07)" },
+  roleflip: { bar: "SOC · Live", accent: "#FF7BD5", soft: "rgba(255,123,213,0.08)" },
+  capstone: { bar: "Mission Control", accent: "#E8A33D", soft: "rgba(232,163,61,0.08)" },
+};
+function worldOf(n: number): World {
+  return WORLDS[n <= 3 ? "foundations" : n <= 7 ? "web" : n <= 11 ? "data" : n <= 14 ? "roleflip" : "capstone"];
+}
+
 export default function Engagement({
   mod,
   onReport,
@@ -188,6 +205,8 @@ export default function Engagement({
   const [hint, setHint] = useState(false);
   const BEATS = BASE_BEATS.filter((b) => (b.id !== "drills" || !!mod.Consolidation) && (b.id !== "challenge" || !!mod.Capstone));
   const idx = BEATS.findIndex((b) => b.id === phase);
+  const world = worldOf(mod.moduleNo);
+  const soc = mod.moduleNo >= 12 && mod.moduleNo <= 14;
 
   const afterDrills: Phase = mod.Capstone ? "challenge" : "defend";
   function afterCapture() {
@@ -199,17 +218,35 @@ export default function Engagement({
   }
 
   return (
-    <div style={{ minHeight: "100vh", background: "transparent", color: C.ink, fontFamily: SANS, display: "grid", placeItems: "start center", padding: "44px 20px 100px" }}>
+    <div style={{ minHeight: "100vh", background: "transparent", color: C.ink, fontFamily: SANS, display: "grid", placeItems: "start center", padding: "44px 20px 100px", ["--world" as string]: world.accent, ["--world-soft" as string]: world.soft }}>
       <ModuleBackdrop theme={mod.moduleNo} />
       <style>{styles}</style>
       <div style={{ width: "100%", maxWidth: 720, position: "relative", zIndex: 1 }}>
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 10, marginBottom: 8 }}>
-          <div style={{ fontFamily: MONO, fontSize: 11, letterSpacing: ".26em", textTransform: "uppercase", color: C.indigo, fontWeight: 600 }}>Redoubt · Module {String(mod.moduleNo).padStart(2, "0")} · {mod.title}</div>
-          <div style={{ fontFamily: MONO, fontSize: 11, color: C.mute }}>operator <span style={{ color: C.indigo2 }}>{callsign || "-"}</span></div>
-        </div>
+        {soc ? (
+          // SOC watch-floor: a live status strip, so the defence modules read as a blue-team console room.
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 10, marginBottom: 8, padding: "8px 13px", border: `1px solid ${world.accent}44`, borderRadius: 9, background: world.soft, fontFamily: MONO, fontSize: 11, letterSpacing: ".14em", textTransform: "uppercase", fontWeight: 600 }}>
+            <span style={{ display: "flex", alignItems: "center", gap: 8 }}>
+              <span aria-hidden style={{ width: 7, height: 7, borderRadius: "50%", background: world.accent, boxShadow: `0 0 8px ${world.accent}`, animation: "cn-led 1.6s infinite", display: "inline-block" }} />
+              <span style={{ color: world.accent }}>SOC Watch-Floor</span>
+              <span style={{ color: C.mute }}>· M{String(mod.moduleNo).padStart(2, "0")} · <span style={{ color: C.soft }}>{mod.title}</span></span>
+            </span>
+            <span style={{ display: "flex", alignItems: "center", gap: 10, color: C.mute }}>
+              <span style={{ color: world.accent, display: "flex", alignItems: "center", gap: 6 }}><span aria-hidden style={{ width: 6, height: 6, borderRadius: "50%", background: world.accent, animation: "cn-led 1.6s infinite", display: "inline-block" }} />Monitoring</span>
+              <span>· {callsign || "-"}</span>
+            </span>
+          </div>
+        ) : (
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 10, marginBottom: 8 }}>
+            <div style={{ fontFamily: MONO, fontSize: 11, letterSpacing: ".2em", textTransform: "uppercase", fontWeight: 600, display: "flex", alignItems: "center", gap: 8 }}>
+              <span style={{ color: world.accent }}>{world.bar}</span>
+              <span style={{ color: C.mute }}>· M{String(mod.moduleNo).padStart(2, "0")} · <span style={{ color: C.soft }}>{mod.title}</span></span>
+            </div>
+            <div style={{ fontFamily: MONO, fontSize: 11, color: C.mute }}>operator <span style={{ color: world.accent }}>{callsign || "-"}</span></div>
+          </div>
+        )}
         <div style={{ display: "flex", gap: 6, marginBottom: 22 }}>
           {BEATS.map((b, i) => (
-            <div key={b.id} title={b.label} style={{ flex: 1, height: 3, borderRadius: 2, background: i <= idx ? C.indigo : "rgba(255,255,255,.08)", boxShadow: i === idx ? `0 0 8px ${C.indigo}` : "none", transition: "background .3s" }} />
+            <div key={b.id} title={b.label} style={{ flex: 1, height: 3, borderRadius: 2, background: i <= idx ? world.accent : "rgba(255,255,255,.08)", boxShadow: i === idx ? `0 0 8px ${world.accent}` : "none", transition: "background .3s" }} />
           ))}
         </div>
 
@@ -465,8 +502,8 @@ const scopeTbl: React.CSSProperties = { display: "grid", gap: 1, background: C.l
 const lbl: React.CSSProperties = { fontFamily: MONO, fontSize: 11, letterSpacing: ".12em", textTransform: "uppercase", color: C.mute };
 const input: React.CSSProperties = { width: "100%", padding: "11px 13px", borderRadius: 9, background: C.carbon, color: C.ink, border: `1px solid ${C.line}`, fontFamily: MONO, fontSize: 14 };
 const preBox: React.CSSProperties = { margin: 0, padding: "14px 16px", background: C.carbon, border: `1px solid ${C.lineSoft}`, borderRadius: 10, fontFamily: MONO, fontSize: 12, lineHeight: 1.7, whiteSpace: "pre-wrap", overflowX: "auto" };
-const handlerBox: React.CSSProperties = { display: "flex", gap: 12, alignItems: "flex-start", padding: "13px 16px", background: "rgba(139,123,255,0.06)", border: `1px solid ${C.line}`, borderRadius: 12 };
-const handlerTag: React.CSSProperties = { fontFamily: MONO, fontSize: 10.5, color: C.indigo, fontWeight: 700, letterSpacing: ".1em", paddingTop: 2 };
+const handlerBox: React.CSSProperties = { display: "flex", gap: 12, alignItems: "flex-start", padding: "13px 16px", background: "var(--world-soft, rgba(139,123,255,0.06))", border: `1px solid ${C.line}`, borderLeft: "3px solid var(--world, #8B7BFF)", borderRadius: 12 };
+const handlerTag: React.CSSProperties = { fontFamily: MONO, fontSize: 10.5, color: "var(--world, #8B7BFF)", fontWeight: 700, letterSpacing: ".1em", paddingTop: 2 };
 
 // A lesson/defend block with a distinct design per index (owner: "a different
 // design for each block"), on brighter body text so it reads clearly over the
@@ -492,7 +529,7 @@ function LessonBlock({ h, body, i, glossary, keyPrefix }: { h: string; body: str
 function Panel({ children, style }: { children: React.ReactNode; style?: React.CSSProperties }) {
   return <div style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: 16, padding: 24, ...style }}>{children}</div>;
 }
-function Eyebrow({ children, tone = C.indigo }: { children: React.ReactNode; tone?: string }) {
+function Eyebrow({ children, tone = "var(--world, #8B7BFF)" }: { children: React.ReactNode; tone?: string }) {
   return <div style={{ fontFamily: MONO, fontSize: 11, letterSpacing: ".2em", textTransform: "uppercase", color: tone, fontWeight: 600, marginBottom: 14 }}>{children}</div>;
 }
 function SRow({ k, v, tone = C.soft }: { k: string; v: string; tone?: string }) {
@@ -504,7 +541,7 @@ function Stat({ n, l }: { n: string; l: string }) {
 export function Btn({ children, onClick, tone = "i", disabled, style }: { children: React.ReactNode; onClick?: () => void; tone?: "i" | "g" | "ghost"; disabled?: boolean; style?: React.CSSProperties }) {
   const base: React.CSSProperties = { padding: "11px 22px", borderRadius: 9, border: "none", fontFamily: MONO, fontWeight: 700, fontSize: 13, letterSpacing: ".06em", cursor: disabled ? "default" : "pointer" };
   const tones: Record<string, React.CSSProperties> = {
-    i: { background: C.indigo, color: "#0f0c26" }, g: { background: C.green, color: "#07130c" },
+    i: { background: "var(--world, #8B7BFF)", color: "#0f0c26" }, g: { background: C.green, color: "#07130c" },
     ghost: { background: "transparent", color: C.indigo2, border: `1px solid ${C.line}`, fontWeight: 600 },
   };
   return <button className="co-btn" onClick={onClick} disabled={disabled} style={{ ...base, ...tones[tone], opacity: disabled ? 0.45 : 1, ...style }}>{children}</button>;
@@ -521,5 +558,6 @@ const styles = `
   @keyframes coPop{from{opacity:0;transform:scale(.94)}to{opacity:1;transform:scale(1)}}
   @keyframes coGlow{to{text-shadow:0 0 26px rgba(139,123,255,.5)}}
   @keyframes coBar{to{width:26%}}
-  @media (prefers-reduced-motion: reduce){.co-pop,.co-glow{animation:none}.co-bar{width:26%;animation:none}}
+  @keyframes cn-led{0%,100%{opacity:1}50%{opacity:.4}}
+  @media (prefers-reduced-motion: reduce){.co-pop,.co-glow{animation:none}.co-bar{width:26%;animation:none}*{animation-duration:0s!important}}
 `;

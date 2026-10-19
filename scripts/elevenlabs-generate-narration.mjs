@@ -68,6 +68,37 @@ const FORCE = process.argv.includes("--force");
  * the mapping, so an audit can be scoped to one week - which is how the
  * course is being brought up to standard. */
 const LIST_KEYS = process.argv.includes("--keys");
+/* --redo=<file>: re-record exactly the clips named in that file, nothing else.
+ *
+ * The audits print the clips they object to, one filename per line, and the
+ * fix for every one of them is the same: record it again under the current
+ * shaping. Until now the only way to act on that list was to delete the files
+ * and re-run, which is a destructive step over the one asset in this repo that
+ * costs money to replace, or --week=N --force, which re-records the whole week
+ * - 558 clips to replace 68 of them.
+ *
+ * So the list goes in directly:
+ *   node scripts/audit-consonant-integrity.mjs --weeks=3,4 --files > redo.txt
+ *   node --env-file=.env.local scripts/elevenlabs-generate-narration.mjs --redo=redo.txt
+ *
+ * A named clip is re-recorded and overwritten whatever week it belongs to,
+ * because a clip can be shared and the week that broke it is not always the
+ * week that reads it. Lines that are not named are not touched.
+ */
+const REDO_FILE = (process.argv.find((a) => a.startsWith("--redo=")) || "").split("=")[1];
+const REDO = new Set();
+if (REDO_FILE) {
+  const { readFileSync } = await import("node:fs");
+  for (const line of readFileSync(REDO_FILE, "utf8").split("\n")) {
+    const m = /^([0-9a-f]{16})(\.mp3)?$/.exec(line.trim());
+    if (m) REDO.add(`${m[1]}.mp3`);
+  }
+  if (!REDO.size) {
+    console.error(`--redo=${REDO_FILE} named no clips. Expecting one <hash>.mp3 per line.`);
+    process.exit(2);
+  }
+  console.log(`--redo: ${REDO.size} clip(s) will be recorded again; every other clip is left alone.`);
+}
 
 const KEY = process.env.ELEVENLABS_API_KEY;
 if (!KEY && !CHECK_ONLY && !LIST_KEYS) {
@@ -1125,11 +1156,28 @@ function sentencesForDelivery(text) {
     .filter(Boolean);
 }
 
-/** Speech spans, used to find where the sentence ends and FILLER begins. */
+/* How far before the filler a sound still counts as part of the sentence. The
+ * filler's own onset must never be mistaken for the sentence's last
+ * consonant. */
+const FILLER_STANDOFF = 0.08;
+
+/**
+ * Speech spans, used to find where the sentence ends and FILLER begins.
+ *
+ * Returns the per-window levels and the floor as well as the spans, because
+ * the spans alone cannot answer the question the cut actually needs: a span
+ * ends where the signal falls below the floor, and a STOP (p, t, k) is a
+ * closure - silence - followed by a burst. The closure ends the span and the
+ * burst lands after it. Cutting from the end of the span therefore deletes
+ * exactly the consonant this whole mechanism exists to protect. Measured
+ * 18 October 2026: "Brilliant!" had its burst 120ms past the end of its span,
+ * at 4.8% of peak, and 36 clips were still failing the audit after a full
+ * per-sentence re-record because of it.
+ */
 function speechSpans(file) {
   const r = runFfmpegBinary(["-v", "quiet", "-i", file, "-ac", "1", "-ar", "16000", "-f", "s16le", "-"]);
   const pcm = r.stdout;
-  if (!pcm || pcm.length < 4) return [];
+  if (!pcm || pcm.length < 4) return { spans: [], levels: [], floor: 0 };
   const SR = 16000, n = Math.floor(pcm.length / 2), win = Math.floor(SR * 0.02);
   const lvl = (i0) => {
     let s = 0, c = 0;
@@ -1138,21 +1186,24 @@ function speechSpans(file) {
   };
   let peak = 0;
   for (let i = 0; i + win < n; i += win) peak = Math.max(peak, lvl(i));
-  if (peak <= 0) return [];
+  if (peak <= 0) return { spans: [], levels: [], floor: 0 };
   const loud = peak * 0.06, floor = peak * 0.008;
+  const levels = [];
+  for (let i = 0; i + win < n; i += win) levels.push({ t: i / SR, rms: lvl(i) });
   const out = [];
   let i = 0;
   while (i + win < n) {
     while (i + win < n && lvl(i) <= loud) i += win;
     if (i + win >= n) break;
+    const start = i;
     while (i + win < n && lvl(i) > loud) i += win;
     const loudEnd = i;
     let t = loudEnd;
     while (t + win < n && lvl(t) > floor) t += win;
-    out.push({ loudEnd: loudEnd / SR, end: t / SR });
+    out.push({ start: start / SR, loudEnd: loudEnd / SR, end: t / SR });
     i = Math.max(t, loudEnd + win);
   }
-  return out;
+  return { spans: out, levels, floor };
 }
 
 /**
@@ -1178,13 +1229,21 @@ async function fetchBlockPerSentence(url, init, text, tmpBase) {
       scratch.push(raw);
       made.push(raw);
 
-      /* Cut the filler: it is the last span, so keep up to the end of the one
-       * before it. A sentence that came back as ONE span means the filler ran
-       * into it - keep the whole thing rather than guess where to cut, since
-       * cutting in the wrong place would take real words with it. */
-      const sp = speechSpans(raw);
+      /* Cut the filler. It is the last span, so the cut goes between the
+       * sentence and it - but NOT at the end of the sentence's span, which is
+       * where the closure of a final stop puts it, with the burst still to
+       * come. Keep up to the last window before the filler that has any sound
+       * in it at all. A sentence that came back as ONE span means the filler
+       * ran into it - keep the whole thing rather than guess where to cut,
+       * since cutting in the wrong place would take real words with it. */
+      const { spans: sp, levels, floor } = speechSpans(raw);
       if (sp.length >= 2) {
-        const cut = sp[sp.length - 2].end + KEEP_AFTER;
+        const filler = sp[sp.length - 1];
+        let lastSound = sp[sp.length - 2].end;
+        for (const x of levels) {
+          if (x.t < filler.start - FILLER_STANDOFF && x.rms > floor) lastSound = x.t;
+        }
+        const cut = Math.min(lastSound + KEEP_AFTER, filler.start - 0.03);
         const trimmed = `${tmpBase}.s${i}.t.mp3`;
         const t = runFfmpegBinary(["-v", "quiet", "-y", "-i", raw, "-t", String(cut), "-c:a", "libmp3lame", "-q:a", "2", trimmed]);
         if (t.status === 0) { made[made.length - 1] = trimmed; scratch.push(trimmed); }
@@ -2081,9 +2140,13 @@ async function generateBlock(speaker, lines, source, skipRecord) {
   const filename = `${key}.mp3`;
   const filepath = join(OUT_DIR, filename);
 
+  // A clip named by --redo is recorded again whatever else is true of it: it
+  // exists, and that is exactly the problem being fixed.
+  const redo = REDO.has(filename);
+
   // A file named by this exact hash IS this block's recording, so it counts as
   // cached even when an interrupted run never wrote its manifest entry.
-  if (await fileExists(filepath) && !(FORCE && !skipRecord)) {
+  if (await fileExists(filepath) && !(FORCE && !skipRecord) && !redo) {
     return { key, filename, cached: true, speaker, blockText, lines };
   }
 
@@ -2095,7 +2158,7 @@ async function generateBlock(speaker, lines, source, skipRecord) {
   // --week=N: another week's block, already handled above if its clip exists.
   // Reaching here means it has none, so report it rather than record it - the
   // point of the flag is to touch one week's audio and nothing else.
-  if (skipRecord) {
+  if (skipRecord && !redo) {
     return { key, filename, missing: true, speaker, blockText, lines };
   }
 
