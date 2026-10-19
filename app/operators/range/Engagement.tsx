@@ -222,14 +222,28 @@ export default function Engagement({
       <ModuleBackdrop theme={mod.moduleNo} />
       <style>{styles}</style>
       <div style={{ width: "100%", maxWidth: 720, position: "relative", zIndex: 1 }}>
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 10, marginBottom: 8 }}>
-          <div style={{ fontFamily: MONO, fontSize: 11, letterSpacing: ".2em", textTransform: "uppercase", fontWeight: 600, display: "flex", alignItems: "center", gap: 8 }}>
-            {soc && <span aria-hidden style={{ width: 7, height: 7, borderRadius: "50%", background: world.accent, boxShadow: `0 0 8px ${world.accent}`, animation: "cn-led 1.6s infinite", display: "inline-block" }} />}
-            <span style={{ color: world.accent }}>{world.bar}</span>
-            <span style={{ color: C.mute }}>· M{String(mod.moduleNo).padStart(2, "0")} · <span style={{ color: C.soft }}>{mod.title}</span></span>
+        {soc ? (
+          // SOC watch-floor: a live status strip, so the defence modules read as a blue-team console room.
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 10, marginBottom: 8, padding: "8px 13px", border: `1px solid ${world.accent}44`, borderRadius: 9, background: world.soft, fontFamily: MONO, fontSize: 11, letterSpacing: ".14em", textTransform: "uppercase", fontWeight: 600 }}>
+            <span style={{ display: "flex", alignItems: "center", gap: 8 }}>
+              <span aria-hidden style={{ width: 7, height: 7, borderRadius: "50%", background: world.accent, boxShadow: `0 0 8px ${world.accent}`, animation: "cn-led 1.6s infinite", display: "inline-block" }} />
+              <span style={{ color: world.accent }}>SOC Watch-Floor</span>
+              <span style={{ color: C.mute }}>· M{String(mod.moduleNo).padStart(2, "0")} · <span style={{ color: C.soft }}>{mod.title}</span></span>
+            </span>
+            <span style={{ display: "flex", alignItems: "center", gap: 10, color: C.mute }}>
+              <span style={{ color: world.accent, display: "flex", alignItems: "center", gap: 6 }}><span aria-hidden style={{ width: 6, height: 6, borderRadius: "50%", background: world.accent, animation: "cn-led 1.6s infinite", display: "inline-block" }} />Monitoring</span>
+              <span>· {callsign || "-"}</span>
+            </span>
           </div>
-          <div style={{ fontFamily: MONO, fontSize: 11, color: C.mute }}>operator <span style={{ color: world.accent }}>{callsign || "-"}</span></div>
-        </div>
+        ) : (
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 10, marginBottom: 8 }}>
+            <div style={{ fontFamily: MONO, fontSize: 11, letterSpacing: ".2em", textTransform: "uppercase", fontWeight: 600, display: "flex", alignItems: "center", gap: 8 }}>
+              <span style={{ color: world.accent }}>{world.bar}</span>
+              <span style={{ color: C.mute }}>· M{String(mod.moduleNo).padStart(2, "0")} · <span style={{ color: C.soft }}>{mod.title}</span></span>
+            </div>
+            <div style={{ fontFamily: MONO, fontSize: 11, color: C.mute }}>operator <span style={{ color: world.accent }}>{callsign || "-"}</span></div>
+          </div>
+        )}
         <div style={{ display: "flex", gap: 6, marginBottom: 22 }}>
           {BEATS.map((b, i) => (
             <div key={b.id} title={b.label} style={{ flex: 1, height: 3, borderRadius: 2, background: i <= idx ? world.accent : "rgba(255,255,255,.08)", boxShadow: i === idx ? `0 0 8px ${world.accent}` : "none", transition: "background .3s" }} />
