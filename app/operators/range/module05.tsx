@@ -11,7 +11,7 @@
  * search UNION on one target - two surfaces, one database). All injection runs
  * for real against wasm SQLite, zero egress. */
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, type CSSProperties } from "react";
 import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary } from "./Engagement";
 import {
   bootNorthwindRange, bootScenario,
@@ -109,24 +109,36 @@ function Palette({ tokens, onInsert }: { tokens: string[]; onInsert: (t: string)
   );
 }
 
+// Progressive help the owner signed off on: have a go -> stuck? a hint -> still
+// stuck? another hint -> the structure scaffold -> last resort, the full answer.
+// The actions are bright, standout pill-buttons (no dull grey links that look
+// dead), and revealing the answer gives a clear confirmation - so even a short
+// stage-1 answer visibly "lands" in the box.
 function HintLadder({ hints, onSkeleton, onReveal }: { hints: string[]; onSkeleton: () => void; onReveal: () => void }) {
   const [shown, setShown] = useState(0);
   const [structured, setStructured] = useState(false);
+  const [revealed, setRevealed] = useState(false);
+  const pill = (fg: string): CSSProperties => ({ display: "inline-flex", alignItems: "center", gap: 7, padding: "9px 15px", borderRadius: 9, border: `1px solid ${fg}`, background: `${fg}22`, color: fg, fontFamily: MONO, fontSize: 12.5, fontWeight: 700, letterSpacing: ".02em", cursor: "pointer" });
   return (
-    <div style={{ marginTop: 12 }}>
+    <div style={{ marginTop: 14 }}>
       {Array.from({ length: shown }).map((_, i) => (
-        <div key={i} style={{ marginBottom: 6, padding: "9px 12px", borderLeft: `2px solid ${C.indigo}`, background: "rgba(139,123,255,0.05)", fontSize: 13, color: C.soft, lineHeight: 1.5 }}>{hints[i]}</div>
+        <div key={i} style={{ marginBottom: 7, padding: "10px 13px", borderLeft: `3px solid ${C.indigo}`, borderRadius: "0 8px 8px 0", background: "rgba(139,123,255,0.08)", fontSize: 13.5, color: "#D9E0EE", lineHeight: 1.55 }}><b style={{ color: C.indigo2, fontFamily: MONO, fontSize: 11 }}>HINT {i + 1} · </b>{hints[i]}</div>
       ))}
       {shown >= hints.length && (
-        <div style={{ marginBottom: 6, padding: "9px 12px", borderLeft: `2px solid ${C.cyan}`, background: "rgba(95,230,255,0.05)", fontSize: 13, color: C.soft, lineHeight: 1.5 }}>
-          Stuck on how to type it? Drop the structure into the box and fill in the blanks (the column and table names).
+        <div style={{ marginBottom: 7, padding: "10px 13px", borderLeft: `3px solid ${C.cyan}`, borderRadius: "0 8px 8px 0", background: "rgba(95,230,255,0.08)", fontSize: 13.5, color: "#D9E0EE", lineHeight: 1.55 }}>
+          <b style={{ color: C.cyan, fontFamily: MONO, fontSize: 11 }}>SCAFFOLD · </b>Stuck on how to type it? Drop the structure into the box and fill in the blanks (the column and table names).
         </div>
       )}
-      <div style={{ display: "flex", gap: 14, alignItems: "center", flexWrap: "wrap" }}>
-        {shown < hints.length && <button onClick={() => setShown(shown + 1)} style={{ background: "none", border: "none", color: C.indigo2, fontFamily: MONO, fontSize: 12, cursor: "pointer", textDecoration: "underline", textUnderlineOffset: 3 }}>{shown === 0 ? "hint" : "another hint"}</button>}
-        {shown >= hints.length && !structured && <button onClick={() => { onSkeleton(); setStructured(true); }} style={{ background: "none", border: "none", color: C.cyan, fontFamily: MONO, fontSize: 12, cursor: "pointer", textDecoration: "underline", textUnderlineOffset: 3 }}>show the structure</button>}
-        {shown >= hints.length && <button onClick={onReveal} style={{ background: "none", border: "none", color: C.mute, fontFamily: MONO, fontSize: 12, cursor: "pointer" }}>stuck? reveal the full answer</button>}
+      <div style={{ display: "flex", gap: 10, alignItems: "center", flexWrap: "wrap", marginTop: 4 }}>
+        {shown < hints.length && <button className="co-btn" onClick={() => setShown(shown + 1)} style={pill(C.indigo2)}>{shown === 0 ? "Have a go. Stuck? Get a hint →" : "Still stuck? Another hint →"}</button>}
+        {shown >= hints.length && !structured && <button className="co-btn" onClick={() => { onSkeleton(); setStructured(true); }} style={pill(C.cyan)}>Show me the structure</button>}
+        {shown >= hints.length && !revealed && <button className="co-btn" onClick={() => { onReveal(); setRevealed(true); }} style={pill(C.amber)}>Still really struggling? Reveal the answer</button>}
       </div>
+      {revealed && (
+        <div className="co-anim co-pop" style={{ marginTop: 11, padding: "10px 13px", borderRadius: 9, border: `1px solid ${C.amber}66`, background: "rgba(232,163,61,0.10)", fontSize: 13.5, color: C.ink, lineHeight: 1.55 }}>
+          <b style={{ color: C.amber }}>✓ Answer dropped into the box.</b> Read it so you can see why it works, then press RUN.
+        </div>
+      )}
     </div>
   );
 }
