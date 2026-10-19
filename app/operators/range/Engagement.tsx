@@ -45,6 +45,13 @@ export type ModuleDef = {
     now: { stat: string; body: string };
     ahead: string;
     role: string;
+    /** Editorial extras for the flagship intro (owner: make it vibrant, a magazine
+     *  feature, not a card stack): the database engines as a colourful showcase, a
+     *  real past breach as a newspaper clipping, a recent at-scale case, careers. */
+    roles?: string[];
+    engines?: { name: string; color: string; blurb: string; here?: boolean }[];
+    headline?: { masthead: string; dateline: string; title: string; body: string; stat: string; statLabel: string };
+    recent?: { year: string; title: string; body: string };
   };
   lesson: {
     blocks: LessonBlock[];
@@ -675,50 +682,145 @@ function BriefChip({ k, v, accent }: { k: string; v: string; accent: string }) {
 // mod.industry. Themed to the module world.
 function IntroPage({ mod, world, onContinue }: { mod: ModuleDef; world: World; onContinue: () => void }) {
   const ind = mod.industry!;
+  const A = world.accent;
   return (
-    <div style={{ display: "grid", gap: 15 }}>
-      <div style={{ position: "relative", borderRadius: 18, overflow: "hidden", background: "linear-gradient(160deg, rgba(23,26,36,0.97), rgba(15,17,25,0.97))", border: `1px solid ${world.accent}44`, boxShadow: `0 26px 64px -32px #000, 0 0 44px -26px ${world.accent}` }}>
-        <div aria-hidden style={{ height: 3, background: `linear-gradient(90deg, transparent, ${world.accent}, transparent)` }} />
-        <div style={{ padding: "23px 25px 25px" }}>
-          <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: ".2em", textTransform: "uppercase", fontWeight: 700, color: world.accent, display: "flex", alignItems: "center", gap: 8 }}>
-            <span aria-hidden style={{ width: 7, height: 7, borderRadius: 2, background: world.accent, boxShadow: `0 0 8px ${world.accent}` }} />Industry brief · why this matters
+    <div style={{ display: "grid", gap: 20 }}>
+      {/* HERO - big, vibrant, off the uniform card look */}
+      <div style={{ position: "relative", borderRadius: 20, overflow: "hidden", border: `1px solid ${A}55`, background: `radial-gradient(130% 120% at 0% 0%, ${A}26, transparent 55%), radial-gradient(130% 130% at 100% 0%, ${C.cyan}20, transparent 52%), linear-gradient(160deg, rgba(22,25,34,0.9), #0b0d15)`, boxShadow: `0 30px 72px -34px #000, 0 0 62px -30px ${A}` }}>
+        <div aria-hidden style={{ position: "absolute", inset: 0, opacity: 0.4, backgroundImage: `repeating-linear-gradient(90deg, ${A}12 0 1px, transparent 1px 44px)` }} />
+        <div style={{ position: "relative", padding: "26px 26px 28px" }}>
+          <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: ".22em", textTransform: "uppercase", fontWeight: 700, color: A, display: "flex", alignItems: "center", gap: 9, flexWrap: "wrap" }}>
+            <span aria-hidden style={{ width: 8, height: 8, borderRadius: "50%", background: A, boxShadow: `0 0 10px ${A}`, animation: "cn-led 1.6s infinite", display: "inline-block" }} />Field feature · Module 05
+            <span style={{ color: C.mute }}>· a 2 minute read before you break in</span>
           </div>
-          <h2 style={{ fontFamily: DISP, fontSize: "clamp(23px,4.6vw,30px)", fontWeight: 700, margin: "13px 0 0", lineHeight: 1.2 }}>{mod.title}</h2>
-          <p style={{ color: "#E2E8F4", fontSize: 16, lineHeight: 1.6, margin: "10px 0 0", fontWeight: 600 }}>{ind.tag}</p>
+          <h1 style={{ fontFamily: DISP, fontSize: "clamp(42px,11vw,78px)", fontWeight: 700, margin: "8px 0 0", lineHeight: 0.92, letterSpacing: "-.01em", background: `linear-gradient(100deg, #ffffff, ${A})`, WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent" }}>{mod.title}</h1>
+          <p style={{ color: "#EAF0FB", fontSize: "clamp(16px,2.6vw,20px)", lineHeight: 1.45, margin: "14px 0 0", fontWeight: 600, maxWidth: 560 }}>{ind.tag}</p>
+          <div style={{ marginTop: 18, fontFamily: MONO, fontSize: "clamp(11px,2.3vw,13.5px)", lineHeight: 1.7, background: "rgba(0,0,0,0.38)", border: `1px solid ${A}33`, borderRadius: 10, padding: "12px 14px", overflowX: "auto", whiteSpace: "nowrap" }}>
+            <span style={{ color: C.mute }}>WHERE email = &apos;</span><span style={{ color: A, background: `${A}22`, padding: "1px 5px", borderRadius: 4, fontWeight: 700 }}>&apos; OR 1=1 --</span><span style={{ color: C.mute }}>&apos;</span><span style={{ color: C.red, marginLeft: 12 }}>you just walked in, no password</span>
+          </div>
         </div>
       </div>
-      <IntroCard accent={world.accent} eyebrow="What you'll learn">
-        <ul style={{ margin: 0, padding: 0, listStyle: "none", display: "grid", gap: 9 }}>
-          {ind.learn.map((l, i) => <li key={i} style={{ display: "flex", gap: 11, alignItems: "flex-start", fontSize: 14.5, color: "#D9E0EE", lineHeight: 1.5 }}><span aria-hidden style={{ color: world.accent, fontWeight: 700 }}>→</span><span>{l}</span></li>)}
-        </ul>
-      </IntroCard>
-      <IntroCard accent={world.accent} eyebrow="Why it matters in the real world">
-        <p style={{ margin: 0, fontSize: 14.5, color: "#D9E0EE", lineHeight: 1.65 }}>{ind.realWorld}</p>
-      </IntroCard>
-      <IntroCard accent={C.cyan} eyebrow="In the industry right now">
-        <div style={{ display: "flex", gap: 16, alignItems: "center", flexWrap: "wrap" }}>
-          <div style={{ flexShrink: 0, fontFamily: DISP, fontWeight: 700, fontSize: 26, color: C.cyan, lineHeight: 1.1, padding: "9px 15px", borderRadius: 12, background: "rgba(95,230,255,0.08)", border: `1px solid ${C.cyan}3a` }}>{ind.now.stat}</div>
-          <p style={{ margin: 0, flex: 1, minWidth: 220, fontSize: 14.5, color: "#D9E0EE", lineHeight: 1.6 }}>{ind.now.body}</p>
+
+      {/* WHAT YOU'LL LEARN - compact numbered grid */}
+      <div>
+        <SectionLabel color={A}>In this module you will</SectionLabel>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(230px, 1fr))", gap: 10 }}>
+          {ind.learn.map((l, i) => (
+            <div key={i} style={{ display: "flex", gap: 11, alignItems: "flex-start", padding: "12px 14px", borderRadius: 12, background: "rgba(18,20,29,0.82)", border: `1px solid ${C.line}`, borderTop: `2px solid ${A}` }}>
+              <span aria-hidden style={{ fontFamily: DISP, fontWeight: 700, color: A, fontSize: 15 }}>{String(i + 1).padStart(2, "0")}</span>
+              <span style={{ fontSize: 13.5, color: "#D9E0EE", lineHeight: 1.45 }}>{l}</span>
+            </div>
+          ))}
         </div>
-      </IntroCard>
-      <IntroCard accent={C.amber} eyebrow="Where it's heading">
-        <p style={{ margin: 0, fontSize: 14.5, color: "#D9E0EE", lineHeight: 1.65 }}>{ind.ahead}</p>
-      </IntroCard>
-      <IntroCard accent={world.accent} eyebrow="Where it takes you">
-        <p style={{ margin: 0, fontSize: 14.5, color: "#D9E0EE", lineHeight: 1.6 }}>{ind.role}</p>
-      </IntroCard>
-      <div style={{ display: "flex", alignItems: "center", gap: 16, flexWrap: "wrap" }}>
-        <Btn tone="i" onClick={onContinue}>Start the engagement →</Btn>
+      </div>
+
+      {/* ENGINE SHOWCASE - colourful */}
+      {ind.engines && ind.engines.length > 0 && (
+        <div>
+          <SectionLabel color={C.cyan}>The engines you&apos;ll be breaking (safely)</SectionLabel>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))", gap: 10 }}>
+            {ind.engines.map((e) => <EngineCard key={e.name} {...e} />)}
+          </div>
+        </div>
+      )}
+
+      {/* SPLIT - why it matters (left) + newspaper clipping (right) */}
+      <div style={{ display: "flex", gap: 18, flexWrap: "wrap", alignItems: "flex-start" }}>
+        <div style={{ flex: "1 1 280px", minWidth: 258 }}>
+          <SectionLabel color={A}>Why it matters</SectionLabel>
+          <p style={{ margin: 0, fontSize: 15, color: "#E2E8F4", lineHeight: 1.7 }}>{ind.realWorld}</p>
+          <div style={{ marginTop: 16, paddingLeft: 16, borderLeft: `3px solid ${A}`, fontFamily: DISP, fontWeight: 700, fontSize: 19, color: "#fff", lineHeight: 1.3 }}>Cheap to fix. Devastating to miss.</div>
+        </div>
+        {ind.headline && <div style={{ flex: "1 1 280px", minWidth: 258 }}><Newspaper h={ind.headline} /></div>}
+      </div>
+
+      {/* STAT BAND + recent case */}
+      <div style={{ display: "flex", gap: 16, flexWrap: "wrap" }}>
+        <div style={{ flex: "1 1 220px", minWidth: 220, borderRadius: 16, padding: "20px 22px", background: `linear-gradient(145deg, ${C.cyan}1e, rgba(12,14,21,0.6))`, border: `1px solid ${C.cyan}44` }}>
+          <SectionLabel color={C.cyan}>Right now in the industry</SectionLabel>
+          <div style={{ display: "flex", alignItems: "baseline", gap: 11 }}>
+            <span style={{ fontFamily: DISP, fontWeight: 700, fontSize: "clamp(46px,11vw,66px)", color: C.cyan, lineHeight: 0.9 }}>{ind.now.stat}</span>
+            <span style={{ fontFamily: MONO, fontSize: 12, color: C.soft, lineHeight: 1.35 }}>on the OWASP<br />Top 10, 2025</span>
+          </div>
+          <p style={{ margin: "13px 0 0", fontSize: 13.5, color: "#D9E0EE", lineHeight: 1.6 }}>{ind.now.body}</p>
+        </div>
+        {ind.recent && (
+          <div style={{ flex: "1 1 220px", minWidth: 220, borderRadius: 16, padding: "20px 22px", background: "rgba(18,20,29,0.82)", border: `1px solid ${C.line}` }}>
+            <span style={{ display: "inline-block", fontFamily: MONO, fontSize: 11.5, fontWeight: 700, color: "#0f0c26", background: C.red, padding: "3px 11px", borderRadius: 999, letterSpacing: ".06em" }}>{ind.recent.year}</span>
+            <div style={{ fontFamily: DISP, fontWeight: 700, fontSize: 18, color: "#fff", margin: "11px 0 0", lineHeight: 1.25 }}>{ind.recent.title}</div>
+            <p style={{ margin: "8px 0 0", fontSize: 13.5, color: "#D9E0EE", lineHeight: 1.6 }}>{ind.recent.body}</p>
+          </div>
+        )}
+      </div>
+
+      {/* FUTURE / AI twist - vibrant */}
+      <div style={{ position: "relative", overflow: "hidden", borderRadius: 18, padding: "22px 24px", background: `radial-gradient(130% 150% at 100% 0%, ${C.amber}26, transparent 55%), linear-gradient(150deg, #1b1630, #0d0b18)`, border: `1px solid ${C.amber}55` }}>
+        <SectionLabel color={C.amber}>Where it&apos;s heading · the AI twist</SectionLabel>
+        <p style={{ margin: 0, fontSize: 15, color: "#EAF0FB", lineHeight: 1.7, maxWidth: 620 }}>{ind.ahead}</p>
+      </div>
+
+      {/* CAREERS */}
+      <div>
+        <SectionLabel color={A}>Where it takes you</SectionLabel>
+        <p style={{ margin: "0 0 12px", fontSize: 14.5, color: "#D9E0EE", lineHeight: 1.6 }}>{ind.role}</p>
+        {ind.roles && ind.roles.length > 0 && (
+          <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+            {ind.roles.map((r) => <span key={r} style={{ fontFamily: MONO, fontSize: 12, color: A, border: `1px solid ${A}55`, background: `${A}16`, padding: "6px 12px", borderRadius: 999 }}>{r}</span>)}
+          </div>
+        )}
+      </div>
+
+      {/* CTA */}
+      <div style={{ display: "flex", alignItems: "center", gap: 16, flexWrap: "wrap", marginTop: 2 }}>
+        <Btn tone="i" onClick={onContinue} style={{ fontSize: 14, padding: "13px 26px" }}>Start the engagement →</Btn>
         <span style={{ fontFamily: MONO, fontSize: 11.5, color: C.mute }}>then meet the client and learn the ground</span>
       </div>
     </div>
   );
 }
-function IntroCard({ accent, eyebrow, children }: { accent: string; eyebrow: string; children: React.ReactNode }) {
+function SectionLabel({ color, children }: { color: string; children: React.ReactNode }) {
   return (
-    <div style={{ borderRadius: 16, padding: "16px 18px 17px", background: "rgba(18,20,29,0.82)", border: `1px solid ${C.line}`, borderLeft: `3px solid ${accent}` }}>
-      <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: ".14em", textTransform: "uppercase", fontWeight: 700, color: accent, marginBottom: 10 }}>{eyebrow}</div>
-      {children}
+    <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
+      <span aria-hidden style={{ width: 20, height: 2, background: color, borderRadius: 2 }} />
+      <span style={{ fontFamily: MONO, fontSize: 11, letterSpacing: ".16em", textTransform: "uppercase", fontWeight: 700, color }}>{children}</span>
+    </div>
+  );
+}
+function DbCyl({ color }: { color: string }) {
+  return (
+    <svg width="30" height="34" viewBox="0 0 34 40" aria-hidden style={{ display: "block" }}>
+      <path d="M4 7 V33 C4 35.6 10 37.7 17 37.7 C24 37.7 30 35.6 30 33 V7" fill={color} opacity="0.32" />
+      <path d="M4 7 V20 C4 22.6 10 24.7 17 24.7 C24 24.7 30 22.6 30 20 V7" fill={color} opacity="0.55" />
+      <ellipse cx="17" cy="7" rx="13" ry="4.8" fill={color} />
+      <ellipse cx="17" cy="7" rx="13" ry="4.8" fill="none" stroke="#fff" strokeOpacity="0.35" strokeWidth="1" />
+    </svg>
+  );
+}
+function EngineCard({ name, color, blurb, here }: { name: string; color: string; blurb: string; here?: boolean }) {
+  return (
+    <div style={{ position: "relative", borderRadius: 14, padding: "15px 15px 16px", background: `linear-gradient(160deg, ${color}22, rgba(12,14,21,0.72))`, border: `1px solid ${color}${here ? "aa" : "40"}`, boxShadow: here ? `0 0 26px -10px ${color}` : "none" }}>
+      {here && <span style={{ position: "absolute", top: 10, right: 10, fontFamily: MONO, fontSize: 8.5, fontWeight: 700, letterSpacing: ".08em", color: "#0f0c26", background: color, padding: "3px 7px", borderRadius: 999 }}>YOU&apos;RE HERE</span>}
+      <DbCyl color={color} />
+      <div style={{ fontFamily: DISP, fontWeight: 700, fontSize: 16, color: "#fff", marginTop: 10 }}>{name}</div>
+      <div style={{ fontSize: 12, color: "#C2CADA", lineHeight: 1.45, marginTop: 4 }}>{blurb}</div>
+    </div>
+  );
+}
+function Newspaper({ h }: { h: { masthead: string; dateline: string; title: string; body: string; stat: string; statLabel: string } }) {
+  return (
+    <div style={{ borderRadius: 10, overflow: "hidden", background: "#efe9db", border: "1px solid #c9bda4", boxShadow: "0 20px 44px -22px #000", transform: "rotate(-0.7deg)", fontFamily: "Georgia, 'Times New Roman', serif", color: "#20201c" }}>
+      <div style={{ padding: "13px 16px 15px" }}>
+        <div style={{ textAlign: "center", borderBottom: "2px solid #20201c", paddingBottom: 7 }}>
+          <div style={{ fontWeight: 700, fontSize: 20, letterSpacing: ".02em" }}>{h.masthead}</div>
+          <div style={{ fontFamily: MONO, fontSize: 8, letterSpacing: ".1em", textTransform: "uppercase", color: "#5a5445", marginTop: 3 }}>{h.dateline}</div>
+        </div>
+        <div style={{ fontWeight: 700, fontSize: 20, lineHeight: 1.15, margin: "11px 0 8px" }}>{h.title}</div>
+        <p style={{ margin: 0, fontSize: 12.5, lineHeight: 1.55, color: "#33322b" }}>{h.body}</p>
+        <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginTop: 11, paddingTop: 9, borderTop: "1px solid #c9bda4" }}>
+          <span style={{ fontWeight: 700, fontSize: 23, color: "#9a2b23" }}>{h.stat}</span>
+          <span style={{ fontFamily: MONO, fontSize: 9, textTransform: "uppercase", letterSpacing: ".08em", color: "#5a5445" }}>{h.statLabel}</span>
+        </div>
+      </div>
     </div>
   );
 }

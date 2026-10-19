@@ -785,6 +785,27 @@ export const MODULE5: ModuleDef = {
       "AI is bringing it back. Studies across 2025 and 2026 found that a large share of AI-generated code ships with known vulnerabilities, and that SQL written by language models is measurably exploitable. A newer attack, prompt-to-SQL, even turns an AI assistant's own answers into database attacks. As more code is written by AI, knowing how injection works, and how to shut it down, is becoming more valuable, not less.",
     role:
       "This is day-one knowledge for penetration testers, bug-bounty hunters and secure-code reviewers. Find and fix injection, and you protect the data of everyone who uses the app.",
+    roles: ["Penetration tester", "Bug-bounty hunter", "Secure-code reviewer", "Security engineer"],
+    engines: [
+      { name: "SQLite", color: "#4FB8E8", blurb: "The whole database in a single file. It is running right here inside this range.", here: true },
+      { name: "MySQL", color: "#E8A33D", blurb: "Powers a huge share of the world's websites and apps." },
+      { name: "PostgreSQL", color: "#6AA6E0", blurb: "The advanced open-source database engineers reach for." },
+      { name: "SQL Server", color: "#E5534B", blurb: "Microsoft's database behind countless business systems." },
+      { name: "Oracle", color: "#F0685C", blurb: "Runs some of the largest corporate and government systems." },
+    ],
+    headline: {
+      masthead: "THE CYBER DISPATCH",
+      dateline: "London · 2016 · on the ICO ruling",
+      title: "Teenagers breach a broadband giant with one old flaw",
+      body: "A SQL injection attack on TalkTalk reached the personal data of 156,959 customers, with bank account details taken in more than 15,000 cases. The vulnerable page was missing a security fix released three years earlier. The regulator called the breach avoidable and handed down a record £400,000 fine. Several of the people later arrested were teenagers.",
+      stat: "156,959",
+      statLabel: "customers exposed",
+    },
+    recent: {
+      year: "2023",
+      title: "The same flaw, tens of millions of people",
+      body: "A single SQL injection hole in MOVEit, a file-transfer tool, let one gang reach the data of over 2,000 organisations and tens of millions of people worldwide. Decades old, and still one of the biggest breaches of the year.",
+    },
   },
   lesson: {
     blocks: [
