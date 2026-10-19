@@ -3,7 +3,7 @@
 import Link from "next/link";
 
 import { type LockupId } from "@/app/components/CourseLockup";
-import { sectionMark } from "@/app/components/sectionMark";
+import { SectionTag } from "@/app/components/SectionTag";
 import { useEffect, useRef, useState } from "react";
 import { useInView } from "framer-motion";
 import { FadeUp } from "./utilities";
@@ -168,7 +168,7 @@ export default function SubjectShowcase() {
         <div style={{ textAlign: "center", marginBottom: 56 }}>
           <FadeUp>
             <p style={{ margin: "0 0 18px", textAlign: "center" }}>
-              <span style={sectionMark}>{"// SIX STREAMS //"}</span>
+              <SectionTag>six streams</SectionTag>
             </p>
           </FadeUp>
           <FadeUp delay={0.05}>
@@ -220,21 +220,31 @@ export default function SubjectShowcase() {
           <FadeUp delay={0.22}>
             <div style={{ margin: "0 0 26px" }}>
               <p style={{ margin: "0 0 18px", textAlign: "left" }}>
-                <span style={sectionMark}>{"// INCOMING · NEW STREAMS DETECTED"}</span>
+                <SectionTag>new streams being launched this year</SectionTag>
               </p>
               <h3
                 style={{
                   fontFamily: "var(--lv2-font-display)",
-                  fontSize: "clamp(1.35rem, 2.2vw, 1.8rem)",
-                  fontWeight: 500,
-                  letterSpacing: "-0.018em",
-                  lineHeight: 1.15,
+                  fontSize: "clamp(1.7rem, 3vw, 2.4rem)",
+                  fontWeight: 700,
+                  letterSpacing: "-0.022em",
+                  lineHeight: 1.1,
                   color: "var(--lv2-ink)",
                   margin: "12px 0 0",
                   textShadow: "0 2px 18px rgba(255,255,255,0.90), 0 0 6px rgba(255,255,255,0.76)",
                 }}
               >
-                Five new streams. Releasing soon.
+                <span
+                  style={{
+                    background: "linear-gradient(120deg, var(--lv2-cyan), var(--lv2-cosmic))",
+                    WebkitBackgroundClip: "text",
+                    backgroundClip: "text",
+                    color: "transparent",
+                  }}
+                >
+                  Five new streams.
+                </span>{" "}
+                Releasing soon.
               </h3>
               <p
                 style={{
@@ -518,11 +528,12 @@ function StatusPill({ accent, status, live }: { accent: string; status: string; 
         fontWeight: 700,
         letterSpacing: "0.16em",
         textTransform: "uppercase",
-        color: live ? accent : "rgba(17,22,38,0.63)",
-        background: live ? `${accent}1f` : "transparent",
-        border: `1px solid ${live ? `${accent}77` : "rgba(17,22,38,0.23)"}`,
+        color: accent,
+        background: live ? `${accent}1f` : `${accent}18`,
+        border: `1px solid ${live ? `${accent}77` : `${accent}66`}`,
         padding: "5px 12px",
         borderRadius: 999,
+        boxShadow: live ? "none" : `0 0 14px -6px ${accent}`,
       }}
     >
       {live && (
