@@ -5,6 +5,7 @@ import Link from "next/link";
 import { getPortfolio } from "@/app/lib/opsPortfolio.actions";
 import { HIGHEST_BUILT_MODULE } from "@/app/operators/range/modules";
 import { CURRICULUM, PHASE_ORDER, PHASE_COLOR } from "@/app/operators/range/curriculum";
+import { OPS_RANKS } from "@/app/lib/opsRank";
 import OpsBackdrop from "@/app/operators/range/OpsBackdrop";
 
 export const metadata: Metadata = {
@@ -175,14 +176,21 @@ function OperatorCard({ rank, rep, findingsCount, cleared }: { rank?: { rank: st
     </div>
   );
 }
+/* Rank insignia: a hexagon with chevrons (one per rank tier you've reached), so
+ * it reads as a real rank emblem rather than a single placeholder letter. */
 function RankBadge({ rank }: { rank: string }) {
+  const tier = Math.max(0, OPS_RANKS.findIndex((r) => r.name === rank));
   return (
     <div style={{ position: "relative", width: 64, height: 70, flexShrink: 0, display: "grid", placeItems: "center" }}>
       <svg width="64" height="70" viewBox="0 0 64 70" style={{ position: "absolute", inset: 0 }} aria-hidden>
-        <polygon points="32,2 60,17 60,53 32,68 4,53 4,17" fill="rgba(139,123,255,0.14)" stroke="#8b7bff" strokeWidth="1.5" />
-        <polygon points="32,10 53,21 53,49 32,60 11,49 11,21" fill="none" stroke="rgba(95,230,255,0.55)" strokeWidth="1" />
+        <polygon points="32,2 60,17 60,53 32,68 4,53 4,17" fill="rgba(139,123,255,0.16)" stroke="#8b7bff" strokeWidth="1.5" />
+        <polygon points="32,10 53,21 53,49 32,60 11,49 11,21" fill="none" stroke="rgba(95,230,255,0.4)" strokeWidth="1" />
       </svg>
-      <span style={{ position: "relative", fontFamily: DISP, fontWeight: 700, fontSize: 25, color: "#fff", textShadow: `0 0 16px ${C.indigo}` }}>{rank.charAt(0).toUpperCase()}</span>
+      <div style={{ position: "relative", display: "flex", flexDirection: "column", gap: 3.5, alignItems: "center", filter: `drop-shadow(0 0 4px ${C.indigo}aa)` }} aria-hidden>
+        {Array.from({ length: tier + 1 }).map((_, i) => (
+          <svg key={i} width="23" height="7" viewBox="0 0 23 7"><path d="M2 6 L11.5 1.6 L21 6" fill="none" stroke="#c2b8ff" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" /></svg>
+        ))}
+      </div>
     </div>
   );
 }
