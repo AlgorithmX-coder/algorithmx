@@ -34,6 +34,18 @@ export type ModuleDef = {
   title: string;
   client: string;
   brief: string;
+  /** Optional industry intro - the standard opener that tells the learner what
+   *  they'll learn, why it matters in the real world, what the industry looks like
+   *  now, and where it's heading. Shown as the first "Industry" beat. Content must
+   *  be real and current (sourced), tied to the AI-forward positioning. */
+  industry?: {
+    tag: string;
+    learn: string[];
+    realWorld: string;
+    now: { stat: string; body: string };
+    ahead: string;
+    role: string;
+  };
   lesson: {
     blocks: LessonBlock[];
     example?: { caption: string; lines: ExampleLine[] };
@@ -160,8 +172,9 @@ export function withGlossary(text: string, glossary: GlossaryEntry[] | undefined
   return out.length ? out : text;
 }
 
-type Phase = "brief" | "lesson" | "authorize" | "act" | "drills" | "challenge" | "defend" | "report";
+type Phase = "intro" | "brief" | "lesson" | "authorize" | "act" | "drills" | "challenge" | "defend" | "report";
 const BASE_BEATS: { id: Phase; label: string }[] = [
+  { id: "intro", label: "Industry" },
   { id: "brief", label: "Brief" }, { id: "lesson", label: "Lesson" }, { id: "authorize", label: "Scope" },
   { id: "act", label: "Capture" }, { id: "drills", label: "Drills" }, { id: "challenge", label: "Challenge" }, { id: "defend", label: "Defend" }, { id: "report", label: "Report" },
 ];
@@ -202,7 +215,7 @@ export default function Engagement({
    *  matches the portfolio. Previews pass nothing and show the designed text. */
   liveRank?: { rank: string; label: string; fraction: number } | null;
 }) {
-  const [phase, setPhase] = useState<Phase>("brief");
+  const [phase, setPhase] = useState<Phase>(mod.industry ? "intro" : "brief");
   const [callsign, setCallsign] = useState("NIGHTJAR");
   const [lessonOk, setLessonOk] = useState(false);
   const [defendOk, setDefendOk] = useState(false);
@@ -212,7 +225,7 @@ export default function Engagement({
   const defendReady = defendOk && (!mod.defend.Interactive || defendLabOk);
   const [hint, setHint] = useState(false);
   const [mapOpen, setMapOpen] = useState(false);
-  const BEATS = BASE_BEATS.filter((b) => (b.id !== "drills" || !!mod.Consolidation) && (b.id !== "challenge" || !!mod.Capstone));
+  const BEATS = BASE_BEATS.filter((b) => (b.id !== "intro" || !!mod.industry) && (b.id !== "drills" || !!mod.Consolidation) && (b.id !== "challenge" || !!mod.Capstone));
   const idx = BEATS.findIndex((b) => b.id === phase);
   const world = worldOf(mod.moduleNo);
   const soc = mod.moduleNo >= 12 && mod.moduleNo <= 14;
@@ -262,6 +275,11 @@ export default function Engagement({
             <div key={b.id} title={b.label} style={{ flex: 1, height: 3, borderRadius: 2, background: i <= idx ? world.accent : "rgba(255,255,255,.08)", boxShadow: i === idx ? `0 0 8px ${world.accent}` : "none", transition: "background .3s" }} />
           ))}
         </div>
+
+        {/* INDUSTRY INTRO */}
+        {phase === "intro" && mod.industry && (
+          <IntroPage mod={mod} world={world} onContinue={() => setPhase("brief")} />
+        )}
 
         {/* BRIEF */}
         {phase === "brief" && (
@@ -644,6 +662,60 @@ function BriefChip({ k, v, accent }: { k: string; v: string; accent: string }) {
       <span style={{ color: accent, fontWeight: 700, letterSpacing: ".06em", textTransform: "uppercase", fontSize: 9.5 }}>{k}</span>
       <span style={{ color: C.soft }}>{v}</span>
     </span>
+  );
+}
+
+// The standard module opener (owner: every module must say what it is, why it
+// matters, what the industry looks like now, and where it's heading - we're an
+// AI/future-forward platform). Shown as the first "Industry" beat; content from
+// mod.industry. Themed to the module world.
+function IntroPage({ mod, world, onContinue }: { mod: ModuleDef; world: World; onContinue: () => void }) {
+  const ind = mod.industry!;
+  return (
+    <div style={{ display: "grid", gap: 15 }}>
+      <div style={{ position: "relative", borderRadius: 18, overflow: "hidden", background: "linear-gradient(160deg, rgba(23,26,36,0.97), rgba(15,17,25,0.97))", border: `1px solid ${world.accent}44`, boxShadow: `0 26px 64px -32px #000, 0 0 44px -26px ${world.accent}` }}>
+        <div aria-hidden style={{ height: 3, background: `linear-gradient(90deg, transparent, ${world.accent}, transparent)` }} />
+        <div style={{ padding: "23px 25px 25px" }}>
+          <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: ".2em", textTransform: "uppercase", fontWeight: 700, color: world.accent, display: "flex", alignItems: "center", gap: 8 }}>
+            <span aria-hidden style={{ width: 7, height: 7, borderRadius: 2, background: world.accent, boxShadow: `0 0 8px ${world.accent}` }} />Industry brief · why this matters
+          </div>
+          <h2 style={{ fontFamily: DISP, fontSize: "clamp(23px,4.6vw,30px)", fontWeight: 700, margin: "13px 0 0", lineHeight: 1.2 }}>{mod.title}</h2>
+          <p style={{ color: "#E2E8F4", fontSize: 16, lineHeight: 1.6, margin: "10px 0 0", fontWeight: 600 }}>{ind.tag}</p>
+        </div>
+      </div>
+      <IntroCard accent={world.accent} eyebrow="What you'll learn">
+        <ul style={{ margin: 0, padding: 0, listStyle: "none", display: "grid", gap: 9 }}>
+          {ind.learn.map((l, i) => <li key={i} style={{ display: "flex", gap: 11, alignItems: "flex-start", fontSize: 14.5, color: "#D9E0EE", lineHeight: 1.5 }}><span aria-hidden style={{ color: world.accent, fontWeight: 700 }}>→</span><span>{l}</span></li>)}
+        </ul>
+      </IntroCard>
+      <IntroCard accent={world.accent} eyebrow="Why it matters in the real world">
+        <p style={{ margin: 0, fontSize: 14.5, color: "#D9E0EE", lineHeight: 1.65 }}>{ind.realWorld}</p>
+      </IntroCard>
+      <IntroCard accent={C.cyan} eyebrow="In the industry right now">
+        <div style={{ display: "flex", gap: 16, alignItems: "center", flexWrap: "wrap" }}>
+          <div style={{ flexShrink: 0, fontFamily: DISP, fontWeight: 700, fontSize: 26, color: C.cyan, lineHeight: 1.1, padding: "9px 15px", borderRadius: 12, background: "rgba(95,230,255,0.08)", border: `1px solid ${C.cyan}3a` }}>{ind.now.stat}</div>
+          <p style={{ margin: 0, flex: 1, minWidth: 220, fontSize: 14.5, color: "#D9E0EE", lineHeight: 1.6 }}>{ind.now.body}</p>
+        </div>
+      </IntroCard>
+      <IntroCard accent={C.amber} eyebrow="Where it's heading">
+        <p style={{ margin: 0, fontSize: 14.5, color: "#D9E0EE", lineHeight: 1.65 }}>{ind.ahead}</p>
+      </IntroCard>
+      <IntroCard accent={world.accent} eyebrow="Where it takes you">
+        <p style={{ margin: 0, fontSize: 14.5, color: "#D9E0EE", lineHeight: 1.6 }}>{ind.role}</p>
+      </IntroCard>
+      <div style={{ display: "flex", alignItems: "center", gap: 16, flexWrap: "wrap" }}>
+        <Btn tone="i" onClick={onContinue}>Start the engagement →</Btn>
+        <span style={{ fontFamily: MONO, fontSize: 11.5, color: C.mute }}>then meet the client and learn the ground</span>
+      </div>
+    </div>
+  );
+}
+function IntroCard({ accent, eyebrow, children }: { accent: string; eyebrow: string; children: React.ReactNode }) {
+  return (
+    <div style={{ borderRadius: 16, padding: "16px 18px 17px", background: "rgba(18,20,29,0.82)", border: `1px solid ${C.line}`, borderLeft: `3px solid ${accent}` }}>
+      <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: ".14em", textTransform: "uppercase", fontWeight: 700, color: accent, marginBottom: 10 }}>{eyebrow}</div>
+      {children}
+    </div>
   );
 }
 

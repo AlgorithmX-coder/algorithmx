@@ -767,6 +767,25 @@ export const MODULE5: ModuleDef = {
   client: "Northwind Foods",
   brief:
     "A deep engagement. Northwind Foods' staff portal and product shop both build their database queries straight from whatever you type. Your job is the full job: prove the weakness, break in, work out the shape of the data, read out the staff records, map what else is in there, lift the customer card data, and reach the one secret they really didn't want found. Then four field jobs for new clients, and a final challenge you run start to finish on your own. All for real.",
+  industry: {
+    tag: "One missed text box can hand an attacker a company's entire database. This is the flaw that does it.",
+    learn: [
+      "Spot a field where your text gets treated as part of the database's own commands.",
+      "Walk past a login with no password, then read whole tables out through a search box.",
+      "Chain small steps into a full database breach, the way a real engagement runs.",
+      "The one fix that actually works, parameterised queries, and why filters never do.",
+    ],
+    realWorld:
+      "Injection has sat behind some of the largest data breaches on record. A single field that builds its query from your text can expose every account, password and payment record a company holds. The flaw is cheap to fix and devastating to miss, which is why it has its own place on the OWASP Top 10, the industry's standard list of the most critical web risks.",
+    now: {
+      stat: "#5",
+      body: "In OWASP's 2025 Top 10, injection ranks fifth, down from third in 2021. It has fallen because modern frameworks parameterise queries for you by default, but it is far from gone: it still turns up in older systems and anywhere queries are built by hand.",
+    },
+    ahead:
+      "AI is bringing it back. Studies across 2025 and 2026 found that a large share of AI-generated code ships with known vulnerabilities, and that SQL written by language models is measurably exploitable. A newer attack, prompt-to-SQL, even turns an AI assistant's own answers into database attacks. As more code is written by AI, knowing how injection works, and how to shut it down, is becoming more valuable, not less.",
+    role:
+      "This is day-one knowledge for penetration testers, bug-bounty hunters and secure-code reviewers. Find and fix injection, and you protect the data of everyone who uses the app.",
+  },
   lesson: {
     blocks: [
       { h: "First - what's a database?", body: "Almost every app stores its information in a database: an organised store you can picture as a stack of spreadsheets. Each table is one sheet (a 'users' table, a 'products' table), and each row is one record. The app reads and writes it constantly - your login, your messages, your scores all live there. The app talks to the database in a language called SQL, by sending it a query." },
