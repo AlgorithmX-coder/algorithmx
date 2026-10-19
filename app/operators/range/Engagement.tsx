@@ -48,9 +48,12 @@ export type ModuleDef = {
     /** Editorial extras for the flagship intro (owner: make it vibrant, a magazine
      *  feature, not a card stack): the database engines as a colourful showcase, a
      *  real past breach as a newspaper clipping, a recent at-scale case, careers. */
+    /** Groundwork for a total beginner (owner: never throw them in cold): plain
+     *  "what this even is" + a real worked example, shown near the top of the intro. */
+    primer?: { term: string; what: string; example: string; returns: string };
     roles?: string[];
     engines?: { name: string; color: string; blurb: string; here?: boolean }[];
-    headline?: { masthead: string; dateline: string; title: string; body: string; stat: string; statLabel: string };
+    headline?: { masthead: string; dateline: string; title: string; body: string; stat: string; statLabel: string; why?: string };
     recent?: { year: string; title: string; body: string };
   };
   lesson: {
@@ -701,6 +704,24 @@ function IntroPage({ mod, world, onContinue }: { mod: ModuleDef; world: World; o
         </div>
       </div>
 
+      {/* BASICS PRIMER - never throw a beginner in cold: what it is + a real example */}
+      {ind.primer && (
+        <div style={{ borderRadius: 16, padding: "18px 20px", background: `linear-gradient(150deg, ${C.cyan}16, rgba(18,20,29,0.85))`, border: `1px solid ${C.cyan}44` }}>
+          <SectionLabel color={C.cyan}>New to this? Start with the basics</SectionLabel>
+          <p style={{ margin: 0, fontSize: 14.5, color: "#E2E8F4", lineHeight: 1.65 }}><b style={{ color: "#fff" }}>{ind.primer.term}.</b> {ind.primer.what}</p>
+          <div style={{ marginTop: 13, borderRadius: 10, overflow: "hidden", border: `1px solid ${C.cyan}33`, background: "rgba(0,0,0,0.38)" }}>
+            <div style={{ fontFamily: MONO, fontSize: 9.5, letterSpacing: ".14em", textTransform: "uppercase", color: C.cyan, fontWeight: 700, padding: "8px 13px", borderBottom: `1px solid ${C.cyan}22` }}>A real example</div>
+            <div style={{ padding: "12px 13px" }}>
+              <div style={{ fontFamily: MONO, fontSize: 13, color: "#9fe8c6", lineHeight: 1.5, whiteSpace: "pre-wrap" }}>{ind.primer.example}</div>
+              <div style={{ display: "flex", gap: 9, marginTop: 10 }}>
+                <span aria-hidden style={{ color: C.cyan, fontFamily: MONO, fontWeight: 700 }}>&rarr;</span>
+                <span style={{ fontSize: 13, color: "#C7CEDD", lineHeight: 1.55 }}>{ind.primer.returns}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* WHAT YOU'LL LEARN - compact numbered grid */}
       <div>
         <SectionLabel color={A}>In this module you will</SectionLabel>
@@ -806,20 +827,22 @@ function EngineCard({ name, color, blurb, here }: { name: string; color: string;
     </div>
   );
 }
-function Newspaper({ h }: { h: { masthead: string; dateline: string; title: string; body: string; stat: string; statLabel: string } }) {
+function Newspaper({ h }: { h: { masthead: string; dateline: string; title: string; body: string; stat: string; statLabel: string; why?: string } }) {
   return (
-    <div style={{ borderRadius: 10, overflow: "hidden", background: "#efe9db", border: "1px solid #c9bda4", boxShadow: "0 20px 44px -22px #000", transform: "rotate(-0.7deg)", fontFamily: "Georgia, 'Times New Roman', serif", color: "#20201c" }}>
+    <div style={{ position: "relative", borderRadius: 10, overflow: "hidden", background: "#efe9db", border: "1px solid #c9bda4", boxShadow: "0 20px 44px -22px #000", transform: "rotate(-0.7deg)", fontFamily: "Georgia, 'Times New Roman', serif", color: "#20201c" }}>
       <div style={{ padding: "13px 16px 15px" }}>
         <div style={{ textAlign: "center", borderBottom: "2px solid #20201c", paddingBottom: 7 }}>
           <div style={{ fontWeight: 700, fontSize: 20, letterSpacing: ".02em" }}>{h.masthead}</div>
           <div style={{ fontFamily: MONO, fontSize: 8, letterSpacing: ".1em", textTransform: "uppercase", color: "#5a5445", marginTop: 3 }}>{h.dateline}</div>
         </div>
-        <div style={{ fontWeight: 700, fontSize: 20, lineHeight: 1.15, margin: "11px 0 8px" }}>{h.title}</div>
+        <div style={{ fontFamily: MONO, fontSize: 8.5, fontWeight: 700, letterSpacing: ".12em", textTransform: "uppercase", color: "#9a2b23", marginTop: 8 }}>★ This really happened</div>
+        <div style={{ fontWeight: 700, fontSize: 20, lineHeight: 1.15, margin: "5px 0 8px" }}>{h.title}</div>
         <p style={{ margin: 0, fontSize: 12.5, lineHeight: 1.55, color: "#33322b" }}>{h.body}</p>
         <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginTop: 11, paddingTop: 9, borderTop: "1px solid #c9bda4" }}>
           <span style={{ fontWeight: 700, fontSize: 23, color: "#9a2b23" }}>{h.stat}</span>
           <span style={{ fontFamily: MONO, fontSize: 9, textTransform: "uppercase", letterSpacing: ".08em", color: "#5a5445" }}>{h.statLabel}</span>
         </div>
+        {h.why && <p style={{ margin: "11px 0 0", paddingTop: 9, borderTop: "1px solid #c9bda4", fontSize: 11.5, lineHeight: 1.5, color: "#44423a", fontStyle: "italic" }}>{h.why}</p>}
       </div>
     </div>
   );
