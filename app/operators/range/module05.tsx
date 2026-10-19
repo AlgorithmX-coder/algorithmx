@@ -785,6 +785,12 @@ export const MODULE5: ModuleDef = {
       "AI is bringing it back. Studies across 2025 and 2026 found that a large share of AI-generated code ships with known vulnerabilities, and that SQL written by language models is measurably exploitable. A newer attack, prompt-to-SQL, even turns an AI assistant's own answers into database attacks. As more code is written by AI, knowing how injection works, and how to shut it down, is becoming more valuable, not less.",
     role:
       "This is day-one knowledge for penetration testers, bug-bounty hunters and secure-code reviewers. Find and fix injection, and you protect the data of everyone who uses the app.",
+    primer: {
+      term: "SQL",
+      what: "Almost every app keeps its information in a database, and it talks to that database in a language called SQL (Structured Query Language). The app sends a query, the database runs it, and it sends matching rows back. That is all a query is: a question asked of the data.",
+      example: "SELECT name, email FROM users WHERE id = 42",
+      returns: "This asks for the name and email of the user whose id is 42, and gets back that one row. Injection is sneaking your own text into a query like this so it does something it was never meant to, which is exactly what you will do next.",
+    },
     roles: ["Penetration tester", "Bug-bounty hunter", "Secure-code reviewer", "Security engineer"],
     engines: [
       { name: "SQLite", color: "#4FB8E8", blurb: "The whole database in a single file. It is running right here inside this range.", here: true },
@@ -795,11 +801,12 @@ export const MODULE5: ModuleDef = {
     ],
     headline: {
       masthead: "THE CYBER DISPATCH",
-      dateline: "London · 2016 · on the ICO ruling",
+      dateline: "London · 2016 · UK regulator (ICO) public record",
       title: "Teenagers breach a broadband giant with one old flaw",
-      body: "A SQL injection attack on TalkTalk reached the personal data of 156,959 customers, with bank account details taken in more than 15,000 cases. The vulnerable page was missing a security fix released three years earlier. The regulator called the breach avoidable and handed down a record £400,000 fine. Several of the people later arrested were teenagers.",
+      body: "A SQL injection attack on TalkTalk, a real UK broadband company, reached the personal data of 156,959 customers, with bank account details taken in more than 15,000 cases. The vulnerable page was missing a security fix released three years earlier. The regulator called the breach avoidable and handed down a record £400,000 fine. Several of the people later arrested were teenagers.",
       stat: "156,959",
       statLabel: "customers exposed",
+      why: "Why it matters: this is not a one-off. The very same flaw has breached banks, retailers, telecoms, hospitals and government bodies for over twenty years, which is exactly why learning to find and stop it is worth your time.",
     },
     recent: {
       year: "2023",
