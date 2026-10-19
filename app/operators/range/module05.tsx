@@ -78,13 +78,31 @@ function ResultView({ r }: { r: RangeRunResult }) {
   );
 }
 
+// Each payload piece explains, in plain English, what it does - so a learner
+// building an injection knows why the apostrophe, the comment (--), OR 1=1 etc.
+// go in, instead of tapping symbols they don't understand.
+function tokenHelp(raw: string): string {
+  const k = raw.trim();
+  if (k === "'") return "closes the text, so the rest runs as commands";
+  if (k === "--") return "comment: ignores the rest of the line";
+  if (k === "OR 1=1") return "a test that is always true, so it lets you in";
+  if (k === "UNION SELECT") return "staple on a second query to pull other data";
+  if (k === ",") return "separates the columns you ask for";
+  if (k === "NULL") return "empty filler, to match the column count";
+  if (k.startsWith("ORDER BY")) return "sort by that column number (errors if there is none)";
+  if (k.startsWith("FROM ")) return `read from the ${k.slice(5)} table`;
+  return "a column to read out";
+}
 function Palette({ tokens, onInsert }: { tokens: string[]; onInsert: (t: string) => void }) {
   return (
     <div style={{ marginTop: 10 }}>
-      <div style={{ fontFamily: MONO, fontSize: 10, letterSpacing: ".1em", color: C.mute, marginBottom: 7 }}>PAYLOAD PIECES · tap to add</div>
-      <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+      <div style={{ fontFamily: MONO, fontSize: 10, letterSpacing: ".1em", color: C.mute, marginBottom: 7 }}>PAYLOAD PIECES · tap to add (each does one job)</div>
+      <div style={{ display: "flex", gap: 7, flexWrap: "wrap" }}>
         {tokens.map((t) => (
-          <button key={t} onClick={() => onInsert(t)} className="co-opt" style={{ padding: "5px 9px", borderRadius: 7, border: `1px solid ${C.line}`, background: C.panel, color: C.indigo2, fontFamily: MONO, fontSize: 12, cursor: "pointer", whiteSpace: "pre" }}>{t.trim()}</button>
+          <button key={t} onClick={() => onInsert(t)} className="co-opt" style={{ display: "inline-flex", flexDirection: "column", alignItems: "flex-start", gap: 3, padding: "7px 11px", borderRadius: 8, border: `1px solid ${C.line}`, background: C.panel, cursor: "pointer", textAlign: "left", maxWidth: 200 }}>
+            <span style={{ fontFamily: MONO, fontSize: 13, color: C.indigo2, fontWeight: 700, whiteSpace: "pre" }}>{t.trim()}</span>
+            <span style={{ fontSize: 10.5, color: C.mute, lineHeight: 1.3 }}>{tokenHelp(t)}</span>
+          </button>
         ))}
       </div>
     </div>
@@ -299,6 +317,9 @@ function InjectionAct({ onCapture }: { onCapture: () => void }) {
           ) : (
             <div style={{ marginBottom: 14 }}><label style={lab}>search products</label><input style={inp} value={term} onChange={(e) => setTerm(e.target.value)} placeholder="e.g. oil" /></div>
           )}
+          <div style={{ marginTop: 14, fontSize: 12.5, color: C.soft, lineHeight: 1.55, padding: "10px 13px", borderRadius: 9, background: "rgba(95,230,255,0.05)", border: "1px solid rgba(95,230,255,0.28)" }}>
+            <b style={{ color: C.cyan }}>How to do it: </b>tap the pieces below to drop them into the {stage.surface === "login" ? "email" : "search"} box, in order. Each piece does one job (shown under it).{stage.surface === "login" ? " Leave the password blank." : ""} When your line looks right, press RUN {stage.surface === "login" ? "LOGIN" : "SEARCH"}. Not sure where to start? Tap a hint under the button.
+          </div>
           <Palette tokens={stage.tokens} onInsert={(t) => setField(field + t)} />
           <div style={{ display: "flex", gap: 12, alignItems: "center", flexWrap: "wrap", marginTop: 14 }}>
             <Btn tone="i" onClick={run}>{stage.surface === "login" ? "RUN LOGIN →" : "RUN SEARCH →"}</Btn>
