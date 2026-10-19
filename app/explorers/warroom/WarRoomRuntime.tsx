@@ -289,12 +289,21 @@ export default function WarRoomRuntime({ warCase, onExit, onNextCase }: { warCas
       <button className="wr-btn" onClick={() => { const v = !voiceOn; setVoiceOn(v); if (!v) stopWren(); }} aria-pressed={voiceOn} style={{ position: "fixed", top: 14, right: 14, zIndex: 20, fontFamily: MONO, fontSize: 11.5, fontWeight: 700, color: voiceOn ? C.wren : C.dim, background: "rgba(255,255,255,0.04)", border: `1px solid ${voiceOn ? "rgba(43,212,180,.5)" : C.edge}`, borderRadius: 6, padding: "6px 12px", cursor: "pointer" }}>{voiceOn ? "🔊 WREN on" : "🔇 WREN off"}</button>
       <button className="wr-btn" onClick={cycleVoiceRate} aria-label={`WREN's talking speed: ${voiceRate}×. Tap to change.`} style={{ position: "fixed", top: 54, right: 14, zIndex: 20, fontFamily: MONO, fontSize: 11, fontWeight: 700, color: voiceRate !== 1 ? C.wren : C.dim, background: "rgba(255,255,255,0.04)", border: `1px solid ${voiceRate !== 1 ? "rgba(43,212,180,.5)" : C.edge}`, borderRadius: 6, padding: "6px 12px", cursor: "pointer" }}>{voiceRate}×</button>
 
-      <div style={{ width: "100%", maxWidth: 660, height: 760, maxHeight: "calc(100dvh - 30px)", background: C.panel, borderRadius: 14, border: `1px solid ${C.edge}`, boxShadow: `0 0 0 1px #000, 0 24px 70px rgba(0,0,0,.6), inset 0 0 60px rgba(185,139,255,.03)`, position: "relative", zIndex: 1, display: "flex", flexDirection: "column", overflow: "hidden" }}>
-        <div style={{ flex: "0 0 auto", display: "flex", alignItems: "center", gap: 10, padding: "10px 15px", borderBottom: `1px solid ${C.edge}`, background: "linear-gradient(180deg,#1b1533,#130f22)", fontFamily: MONO }}>
+      <div style={{ width: "100%", maxWidth: 660, height: 760, maxHeight: "calc(100dvh - 30px)", background: "rgba(19,15,34,0.58)", backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)", borderRadius: 14, border: `1px solid ${acc}55`, boxShadow: `0 0 0 1px #000, 0 24px 70px rgba(0,0,0,.6), inset 0 0 60px ${acc}08`, position: "relative", zIndex: 1, display: "flex", flexDirection: "column", overflow: "hidden" }}>
+        <div style={{ flex: "0 0 auto", display: "flex", alignItems: "center", gap: 10, padding: "10px 15px", borderBottom: `1px solid ${C.edge}`, background: "linear-gradient(180deg,rgba(27,21,51,0.75),rgba(19,15,34,0.55))", fontFamily: MONO }}>
           <span aria-hidden style={{ width: 8, height: 8, borderRadius: "50%", background: acc, boxShadow: `0 0 8px ${acc}`, animation: reduce ? "none" : "wr-led 1.6s infinite", display: "block" }} />
           <span style={{ fontSize: 11.5, letterSpacing: ".16em", color: acc, fontWeight: 600 }}>ARC · WAR ROOM</span>
           <span style={{ marginLeft: "auto", fontSize: 10.5, letterSpacing: ".12em", color: C.faint }}>{warCase.caseNumber} · {board}</span>
         </div>
+        {/* persistent case identity — shown through every phase of play so a
+            case reads as itself, not just a recolour of the last one (owner:
+            every case should look unmistakably different, not just at boot) */}
+        {phase === "play" && (
+          <div style={{ flex: "0 0 auto", padding: "10px 15px 8px", borderBottom: `1px solid ${C.edge}`, display: "flex", alignItems: "baseline", gap: 10 }}>
+            <span style={{ fontFamily: UI, fontWeight: 800, fontSize: 19, letterSpacing: "-.01em", color: acc, textShadow: `0 2px 18px ${acc}40` }}>{warCase.title}</span>
+            <span style={{ fontFamily: MONO, fontSize: 10.5, color: C.faint, letterSpacing: ".04em" }}>vs {warCase.actor}</span>
+          </div>
+        )}
 
         {phase === "boot" ? (
           isResumable(resumeStage) ? (
