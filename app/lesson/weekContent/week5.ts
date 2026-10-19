@@ -1135,19 +1135,19 @@ export const WEEK_5: WeekContent = {
   // is what renders.
   bossQuestions: {
     easy: [
-      { question: "What makes something BULLYING instead of a joke?", answers: ["Mean on purpose, again and again", "Any joke at all", "Losing a game", "A silly nickname you like"], correctIndex: 0, explanation: "The test: is everyone laughing, or is someone hurting, over and over?" },
-      { question: "Someone is mean to you online. Whose fault is it?", answers: ["Theirs, never yours", "Yours for posting", "Both of yours", "Nobody's"], correctIndex: 0, explanation: "Mean words describe the person typing them. Never your fault." },
+      { question: "What makes something BULLYING instead of a joke?", answers: ["On purpose, again and again", "Any joke that makes you laugh", "Losing a game you wanted to win", "A silly nickname you like"], correctIndex: 0, explanation: "The test: is everyone laughing, or is someone hurting, over and over?" },
+      { question: "Someone is mean to you online. Whose fault is it?", answers: ["Theirs, never yours", "Yours, for posting at all", "Both of yours, equally", "Nobody's, it just happens"], correctIndex: 0, explanation: "Mean words describe the person typing them. Never your fault." },
       { question: "A mean message lands. What do you do FIRST?", answers: ["Don't reply", "Reply in capitals", "Delete everything", "Forward it for advice"], correctIndex: 0, explanation: "No wood for the fire: don't reply, keep it, then tell." },
     ],
     medium: [
-      { question: "Why shouldn't you fire back a meaner reply?", answers: ["It feeds the fire and makes it all worse", "Because you might lose", "It takes too long", "You might get in trouble too"], correctIndex: 0, explanation: "Angry replies are wood, the fire grows. Calm stops it growing." },
+      { question: "Why shouldn't you fire back a meaner reply?", answers: ["It feeds the fire", "Because you might lose", "It takes too long to type", "You might get in trouble too"], correctIndex: 0, explanation: "Angry replies are wood, the fire grows. Calm stops it growing." },
       { question: "Adding one laughing emoji to a pile-on is...", answers: ["Joining in", "Totally harmless", "Being friendly", "Staying neutral"], correctIndex: 0, explanation: "Even one emoji tells the bully 'more please', and the hurt kid sees it." },
-      { question: "Why KEEP a mean message instead of deleting it?", answers: ["So a grown-up can see it and help properly", "To read it again", "To forward it later", "To reply when you're calmer"], correctIndex: 0, explanation: "Proof helps grown-ups stop it. Keep it, don't delete it." },
+      { question: "Why KEEP a mean message instead of deleting it?", answers: ["A grown-up can see it", "To read it again later", "To forward it to friends", "To reply when you're calmer"], correctIndex: 0, explanation: "Proof helps grown-ups stop it. Keep it, don't delete it." },
     ],
     hard: [
       { question: "Your friend is being piled on in the chat. The STRONGEST move is...", answers: ["One kind message + tell a grown-up", "A meaner message at the bullies", "Leaving the chat quietly", "Waiting for it to blow over"], correctIndex: 0, explanation: "Kindness out loud plus real help on the way: that's the upstander move." },
-      { question: "Is telling a trusted adult 'snitching'?", answers: ["No, telling is how the hurting stops", "Yes, always", "Only if you could fix it yourself", "Only if it's about you"], correctIndex: 0, explanation: "Snitching gets someone IN trouble. Telling gets someone OUT of it." },
-      { question: "What does a pile-on need to keep growing?", answers: ["More people joining in, so don't", "Nothing at all", "One really mean kid", "A faster phone"], correctIndex: 0, explanation: "Pile-ons starve when nobody joins. Your NO is powerful." },
+      { question: "Is telling a trusted adult 'snitching'?", answers: ["No, telling stops it", "Yes, always and everywhere", "Only if you could fix it yourself", "Only if it is about you"], correctIndex: 0, explanation: "Snitching gets someone IN trouble. Telling gets someone OUT of it." },
+      { question: "What does a pile-on need to keep growing?", answers: ["More people joining in", "Nothing at all, it just grows", "One really mean kid, alone", "A faster phone or tablet"], correctIndex: 0, explanation: "Pile-ons starve when nobody joins. Your NO is powerful." },
     ],
   },
 
