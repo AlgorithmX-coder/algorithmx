@@ -409,6 +409,7 @@ export const MODULE13: ModuleDef = {
     impact: "Convincing phishing, CEO-fraud and supplier bank-change messages are reaching staff inboxes. A single click or compliant employee could hand over credentials or make an irreversible payment, bypassing technical controls entirely.",
     fix: "Enforce SPF/DKIM/DMARC, banner external mail, add a report-phishing button, mandate out-of-band verification for money/credential and bank-detail requests, require MFA, and run blame-free awareness training.",
   },
+  takeaway: "No technical control stops a convincing message. Verify any money, credential or bank-change request out-of-band, on a number you already trust.",
   outcome: [
     "Triage an inbox into phishing and legitimate mail, telling a lookalike sender and credential bait from a genuine message.",
     "Name the tells in a suspicious message - urgency, authority, a lookalike or personal sender, a mismatched link, an irreversible request.",

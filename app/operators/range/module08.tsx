@@ -463,6 +463,7 @@ export const MODULE8: ModuleDef = {
     impact: "An admin credential is stored as base64 and labelled 'encrypted', and other values use a Caesar and a one-byte-XOR cipher. All are reversible by anyone who reads them - with no key - yielding working credentials and sensitive messages.",
     fix: "Never use encoding or home-grown ciphers as protection. Store secrets in a secrets manager; encrypt data at rest with a strong algorithm (AES-GCM) and a separately-managed key; rotate exposed credentials.",
   },
+  takeaway: "Encoding is not encryption. If it reverses with no key it protects nothing: use a strong algorithm and keep the key out of the code.",
   outcome: [
     "Decode a base64 'token' in a single step and recognise that encoding protects nothing, because it needs no key.",
     "Break a Caesar cipher by trying all 25 shifts, then crack a single-byte XOR key by brute-forcing all 256 and scoring each output for readable text.",

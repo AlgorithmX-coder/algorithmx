@@ -478,6 +478,7 @@ export const MODULE7: ModuleDef = {
     impact: "The record endpoint returns any id with no ownership check, exposing other staff records including a manager's salary, home address and admin key. Admin pages are only hidden, not protected, so they are reachable by forced browsing. The profile update trusts a role field from the request, letting any user escalate to admin. Together these allow full data exposure and account takeover.",
     fix: "Enforce authorization server-side on every object and action, deny by default; derive role and permissions from the session, never from request fields (no mass assignment); and never rely on unguessable ids or hidden links.",
   },
+  takeaway: "Hiding a link or an id is not access control. Check ownership and permission on the server for every object and action.",
   outcome: [
     "Spot and exploit an IDOR by changing an object id in a request to read records that were never yours, because the server never checks ownership.",
     "Reach an unlinked admin page by forced-browsing straight to its address, proving that hiding a link is not access control.",
