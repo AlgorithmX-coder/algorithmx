@@ -290,13 +290,15 @@ export default function ConsoleRuntime({ consoleCase, onExit, onNextCase }: { co
       {/* Per-case living world behind the console (owner standard). Falls back
           to the block's plain amber matrix if a case hasn't set a theme. */}
       {THEME ? (
-        <BlockBackdrop variant={THEME.backdrop} colors={THEME.matrix} accent={acc} accentHi={THEME.accentHi} reduced={!!reduce} opacity={0.2} />
+        <BlockBackdrop variant={THEME.backdrop} colors={THEME.matrix} accent={acc} accentHi={THEME.accentHi} reduced={!!reduce} opacity={0.4} />
       ) : (
         <MatrixRain reduced={!!reduce} opacity={0.1} colors={["#FFB23E", "#FFD27A", "#FF7A3E"]} head="#FFF0D6" />
       )}
-      {/* Readability scrim: keeps the per-case living world as calm ambience so it
-          never competes with the console text (owner: too busy / conflicting). */}
-      <div aria-hidden style={{ position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none", background: "radial-gradient(760px 880px at 50% 50%, rgba(8,7,4,0.74), rgba(8,7,4,0.42) 68%, rgba(8,7,4,0.66))" }} />
+      {/* Readability scrim: calms the per-case living world outside the console
+          panel, but stays light enough that the world still reads through the
+          panel itself (owner: every case should look unmistakably different
+          during play, not just on the boot screen). */}
+      <div aria-hidden style={{ position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none", background: "radial-gradient(760px 880px at 50% 50%, rgba(8,7,4,0.5), rgba(8,7,4,0.22) 68%, rgba(8,7,4,0.42))" }} />
 
       <SkipButton />
       {/* UAT skip: fast-forwards the rest of the current skill in one click
@@ -330,13 +332,22 @@ export default function ConsoleRuntime({ consoleCase, onExit, onNextCase }: { co
       <button className="cn-btn" onClick={() => { const v = !voiceOn; setVoiceOn(v); if (!v) stopWren(); }} aria-pressed={voiceOn} style={{ position: "fixed", top: 14, right: 14, zIndex: 20, fontFamily: MONO, fontSize: 11.5, fontWeight: 700, color: voiceOn ? C.wren : C.dim, background: "rgba(255,255,255,0.04)", border: `1px solid ${voiceOn ? "rgba(43,212,180,.5)" : C.edge}`, borderRadius: 6, padding: "6px 12px", cursor: "pointer" }}>{voiceOn ? "🔊 WREN on" : "🔇 WREN off"}</button>
       <button className="cn-btn" onClick={cycleVoiceRate} aria-label={`WREN's talking speed: ${voiceRate}×. Tap to change.`} style={{ position: "fixed", top: 54, right: 14, zIndex: 20, fontFamily: MONO, fontSize: 11, fontWeight: 700, color: voiceRate !== 1 ? C.wren : C.dim, background: "rgba(255,255,255,0.04)", border: `1px solid ${voiceRate !== 1 ? "rgba(43,212,180,.5)" : C.edge}`, borderRadius: 6, padding: "6px 12px", cursor: "pointer" }}>{voiceRate}×</button>
 
-      <div style={{ width: "100%", maxWidth: 640, height: 760, maxHeight: "calc(100dvh - 30px)", background: C.panel, borderRadius: 14, border: `1px solid ${C.edge}`, boxShadow: `0 0 0 1px #000, 0 24px 70px rgba(0,0,0,.6), inset 0 0 60px rgba(255,178,62,.03)`, position: "relative", zIndex: 1, display: "flex", flexDirection: "column", overflow: "hidden" }}>
+      <div style={{ width: "100%", maxWidth: 640, height: 760, maxHeight: "calc(100dvh - 30px)", background: "rgba(20,16,9,0.58)", backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)", borderRadius: 14, border: `1px solid ${acc}55`, boxShadow: `0 0 0 1px #000, 0 24px 70px rgba(0,0,0,.6), inset 0 0 60px ${acc}08`, position: "relative", zIndex: 1, display: "flex", flexDirection: "column", overflow: "hidden" }}>
         {/* console readout bar */}
-        <div style={{ flex: "0 0 auto", display: "flex", alignItems: "center", gap: 10, padding: "10px 15px", borderBottom: `1px solid ${C.edge}`, background: "linear-gradient(180deg,#1c160c,#141009)", fontFamily: MONO }}>
+        <div style={{ flex: "0 0 auto", display: "flex", alignItems: "center", gap: 10, padding: "10px 15px", borderBottom: `1px solid ${C.edge}`, background: "linear-gradient(180deg,rgba(28,22,12,0.75),rgba(20,16,9,0.55))", fontFamily: MONO }}>
           <span aria-hidden style={{ width: 8, height: 8, borderRadius: "50%", background: acc, boxShadow: `0 0 8px ${acc}`, animation: reduce ? "none" : "cn-led 1.6s infinite", display: "block" }} />
           <span style={{ fontSize: 11.5, letterSpacing: ".16em", color: acc, fontWeight: 600 }}>ARC · SYSTEMS CONSOLE</span>
           <span style={{ marginLeft: "auto", fontSize: 10.5, letterSpacing: ".12em", color: C.faint }}>{consoleCase.caseNumber} · {panel}</span>
         </div>
+        {/* persistent case identity — shown through every phase of play so a
+            case reads as itself, not just a recolour of the last one (owner:
+            every case should look unmistakably different, not just at boot) */}
+        {phase === "play" && (
+          <div style={{ flex: "0 0 auto", padding: "10px 15px 8px", borderBottom: `1px solid ${C.edge}`, display: "flex", alignItems: "baseline", gap: 10 }}>
+            <span style={{ fontFamily: UI, fontWeight: 800, fontSize: 19, letterSpacing: "-.01em", color: acc, textShadow: `0 2px 18px ${acc}40` }}>{consoleCase.title}</span>
+            <span style={{ fontFamily: MONO, fontSize: 10.5, color: C.faint, letterSpacing: ".04em" }}>vs {consoleCase.actor}</span>
+          </div>
+        )}
 
         {phase === "boot" ? (
           isResumable(resumeStage) ? (
