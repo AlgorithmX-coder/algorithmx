@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 import { useInView } from "framer-motion";
-import { sectionMark } from "@/app/components/sectionMark";
+import { SectionTag } from "@/app/components/SectionTag";
 import { FadeUp, useHoverCount } from "./utilities";
 
 /**
@@ -86,7 +86,7 @@ export default function ProblemStats() {
       <div style={{ position: "relative", maxWidth: 1180, margin: "0 auto" }}>
         <FadeUp>
           <p style={{ textAlign: "center", margin: "0 0 30px" }}>
-            <span style={sectionMark}>{"// Today's risks, tomorrow's jobs"}</span>
+            <SectionTag>{"Today's risks, tomorrow's jobs"}</SectionTag>
           </p>
         </FadeUp>
 
@@ -125,15 +125,15 @@ export default function ProblemStats() {
         .lv2-stats-row {
           display: grid;
           grid-template-columns: repeat(3, minmax(0, 1fr));
-          gap: 14px;
+          gap: 12px;
         }
         /* Phone: stack the three cards vertically, one under another, kept
          * small and centred (owner 2026-10-18). */
         @media (max-width: 760px) {
           .lv2-stats-row {
             grid-template-columns: 1fr;
-            gap: 14px;
-            max-width: 330px;
+            gap: 12px;
+            max-width: 300px;
             margin-inline: auto;
           }
         }
@@ -180,8 +180,8 @@ function StatCard({ stat }: { stat: (typeof STATS)[number] }) {
         backdropFilter: "blur(14px) saturate(1.4)",
         WebkitBackdropFilter: "blur(14px) saturate(1.4)",
         borderTop: `2px solid ${stat.color}`,
-        borderRadius: 12,
-        padding: "13px 14px 11px",
+        borderRadius: 11,
+        padding: "10px 12px 9px",
         transition:
           "transform .35s cubic-bezier(0.16,1,0.3,1), box-shadow .35s cubic-bezier(0.16,1,0.3,1)",
         cursor: "default",
@@ -225,9 +225,9 @@ function StatCard({ stat }: { stat: (typeof STATS)[number] }) {
           style={{
             display: "grid",
             placeItems: "center",
-            width: 29,
-            height: 29,
-            borderRadius: 9,
+            width: 25,
+            height: 25,
+            borderRadius: 8,
             /* Owner 2026-10-14: richer, better-produced icon chip - a lit
                glass square (accent gradient, crisp accent ring + outer
                hairline, glossy top highlight, soft lift) to match the
@@ -238,7 +238,7 @@ function StatCard({ stat }: { stat: (typeof STATS)[number] }) {
             color: stat.color,
           }}
         >
-          <GlyphIcon name={stat.icon} size={15} color={stat.color} />
+          <GlyphIcon name={stat.icon} size={13} color={stat.color} />
         </div>
       </div>
 
@@ -246,12 +246,12 @@ function StatCard({ stat }: { stat: (typeof STATS)[number] }) {
       <p
         style={{
           fontFamily: "var(--lv2-font-display)",
-          fontSize: "clamp(26px, 3.2vw, 37px)",
+          fontSize: "clamp(21px, 2.5vw, 30px)",
           fontWeight: 700,
           color: stat.color,
           lineHeight: 1,
           letterSpacing: "-0.03em",
-          marginTop: 8,
+          marginTop: 6,
           textShadow: `0 6px 26px ${stat.color}3d`,
         }}
       >
@@ -264,10 +264,10 @@ function StatCard({ stat }: { stat: (typeof STATS)[number] }) {
       <p
         style={{
           color: "rgba(17,22,38,0.78)",
-          fontSize: 12,
-          lineHeight: 1.45,
-          marginTop: 8,
-          minHeight: 28,
+          fontSize: 11,
+          lineHeight: 1.4,
+          marginTop: 7,
+          minHeight: 22,
         }}
       >
         {stat.label}
@@ -279,8 +279,8 @@ function StatCard({ stat }: { stat: (typeof STATS)[number] }) {
           display: "flex",
           alignItems: "flex-end",
           justifyContent: "space-between",
-          gap: 10,
-          marginTop: 10,
+          gap: 8,
+          marginTop: 8,
         }}
       >
         <Sparkline points={stat.spark} color={stat.color} />
@@ -289,8 +289,8 @@ function StatCard({ stat }: { stat: (typeof STATS)[number] }) {
             flexShrink: 0,
             textAlign: "right",
             border: `1px solid ${stat.color}33`,
-            borderRadius: 8,
-            padding: "5px 8px",
+            borderRadius: 7,
+            padding: "4px 7px",
             background: `${stat.color}0f`,
           }}
         >
@@ -329,7 +329,7 @@ function StatCard({ stat }: { stat: (typeof STATS)[number] }) {
           letterSpacing: "0.14em",
           textTransform: "uppercase",
           color: "rgba(17,22,38,0.40)",
-          margin: "11px 0 0",
+          margin: "9px 0 0",
         }}
       >
         Source: {stat.source}

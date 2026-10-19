@@ -1,7 +1,7 @@
 "use client";
 
 import { TRUST_LOGOS } from "./data";
-import { sectionMark } from "@/app/components/sectionMark";
+import { SectionTag } from "@/app/components/SectionTag";
 import { FadeUp, Marquee } from "./utilities";
 
 /**
@@ -48,7 +48,7 @@ export default function Testimonials() {
       >
         <FadeUp>
           <p style={{ margin: "0 0 18px", textAlign: "center" }}>
-            <span style={sectionMark}>{"// THE REAL TOOLKIT"}</span>
+            <SectionTag>the real toolkit</SectionTag>
           </p>
         </FadeUp>
         <FadeUp delay={0.05}>

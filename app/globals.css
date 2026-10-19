@@ -56,3 +56,30 @@
     transition-duration: 0.001ms !important;
   }
 }
+
+/* ───────────────────────────────────────────────────────────────
+   Section tag — the "live ticker" eyebrow (owner pick 2026-10-19,
+   concept 3). Status dot + label + a gradient bar that sweeps under
+   it. Rendered by <SectionTag>. Colours use the lv2 tokens so it
+   works on the sand homepage and the dark pages; the pink is a fixed
+   accent in the sweep. */
+.lv2-smark { display: inline-flex; flex-direction: column; align-items: flex-start; gap: 7px; vertical-align: middle; }
+.lv2-smark-row { display: inline-flex; align-items: center; gap: 9px; }
+.lv2-smark-dot {
+  width: 8px; height: 8px; border-radius: 50%; flex: 0 0 auto;
+  background: #b81e86; box-shadow: 0 0 10px #b81e86;
+}
+.lv2-smark-txt {
+  font-family: var(--lv2-font-mono); font-weight: 700; font-size: 12.5px;
+  letter-spacing: 0.2em; text-transform: uppercase; color: var(--lv2-ink);
+  white-space: nowrap;
+}
+.lv2-smark-bar {
+  align-self: stretch; height: 3px; border-radius: 3px;
+  background: linear-gradient(90deg, var(--lv2-cyan), var(--lv2-cosmic), #b81e86, var(--lv2-cyan));
+  background-size: 300% 100%;
+  animation: lv2-smark-slide 3.6s linear infinite;
+}
+@keyframes lv2-smark-slide { to { background-position: -300% 0; } }
+@media (prefers-reduced-motion: reduce) { .lv2-smark-bar { animation: none; } }
+@media (max-width: 460px) { .lv2-smark-txt { font-size: 11px; letter-spacing: 0.14em; white-space: normal; } }

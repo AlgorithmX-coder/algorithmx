@@ -126,6 +126,7 @@ export default function Nav({ centre, cta, aside, showTelemetry = true, showSite
   return (
     <nav
       data-tone={tone}
+      data-cta={cta ? "on" : "off"}
       style={{
         position: "fixed",
         top: 0,
@@ -1362,6 +1363,18 @@ function TrustStrip({ isLight }: { isLight: boolean }) {
         @media (max-width: 1580px) {
           .lv2-telemetry {
             display: none !important;
+          }
+        }
+        /* The homepage nav has no "Get Started" CTA (cta=null), so the centre
+           has real room: keep the trust strip down to a normal desktop width.
+           Owner 2026-10-19: on a display scaled below ~1580 effective px the
+           strip had vanished even though there was space. */
+        @media (min-width: 1200px) and (max-width: 1580px) {
+          /* :global on the nav because the <nav> and this telemetry strip are
+             in different styled-jsx scopes; without it the scoped nav selector
+             matches nothing and the strip stays hidden. */
+          :global(nav[data-cta="off"]) .lv2-telemetry {
+            display: flex !important;
           }
         }
       `}</style>
