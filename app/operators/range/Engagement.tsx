@@ -545,9 +545,11 @@ function LessonBlock({ h, body, i, glossary, keyPrefix }: { h: string; body: str
       </div>
     </div>
   );
-  if (t.kind === "rail") return <div style={{ padding: "2px 2px 2px 18px", borderLeft: `3px solid ${t.accent}` }}>{trigger}{panel}</div>;
-  if (t.kind === "framed") return <div style={{ position: "relative", padding: "16px 18px", borderRadius: 14, background: "rgba(18,20,29,0.82)", border: `1px solid ${t.accent}55`, overflow: "hidden" }}><span aria-hidden style={{ position: "absolute", top: 0, left: 22, right: 22, height: 2, background: `linear-gradient(90deg,transparent,${t.accent},transparent)` }} />{trigger}{panel}</div>;
-  return <div style={{ padding: "15px 18px 16px", borderRadius: 14, background: "rgba(18,20,29,0.82)", border: `1px solid ${C.line}`, borderTop: `3px solid ${t.accent}` }}>{trigger}{panel}</div>;
+  // All three treatments share the same box sizing + horizontal padding, so the
+  // caret toggles line up in one column however the accent styling differs.
+  if (t.kind === "rail") return <div style={{ boxSizing: "border-box", padding: "14px 18px 14px 18px", borderLeft: `3px solid ${t.accent}` }}>{trigger}{panel}</div>;
+  if (t.kind === "framed") return <div style={{ boxSizing: "border-box", position: "relative", padding: "15px 18px", borderRadius: 14, background: "rgba(18,20,29,0.82)", border: `1px solid ${t.accent}55`, overflow: "hidden" }}><span aria-hidden style={{ position: "absolute", top: 0, left: 22, right: 22, height: 2, background: `linear-gradient(90deg,transparent,${t.accent},transparent)` }} />{trigger}{panel}</div>;
+  return <div style={{ boxSizing: "border-box", padding: "15px 18px", borderRadius: 14, background: "rgba(18,20,29,0.82)", border: `1px solid ${C.line}`, borderTop: `3px solid ${t.accent}` }}>{trigger}{panel}</div>;
 }
 
 // A one-line consolidation takeaway at the top of the debrief: the single thing
