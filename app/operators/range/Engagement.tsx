@@ -58,6 +58,10 @@ export type ModuleDef = {
   scope: { target: string; inScope: string; offLimits: string; timebox: string };
   handler: string;
   hint: string;
+  /** Optional capture plan - the staged objectives, shown as a visual "mission
+   *  map" the learner can open from the handler (a different way in for people
+   *  who don't learn from a wall of text). */
+  plan?: { label: string; goal: string }[];
   Act: React.ComponentType<{ onCapture: () => void }>;
   flag: string;
   defend: {
@@ -207,10 +211,15 @@ export default function Engagement({
   const lessonReady = lessonOk && (!mod.lesson.Interactive || lessonLabOk);
   const defendReady = defendOk && (!mod.defend.Interactive || defendLabOk);
   const [hint, setHint] = useState(false);
+  const [mapOpen, setMapOpen] = useState(false);
   const BEATS = BASE_BEATS.filter((b) => (b.id !== "drills" || !!mod.Consolidation) && (b.id !== "challenge" || !!mod.Capstone));
   const idx = BEATS.findIndex((b) => b.id === phase);
   const world = worldOf(mod.moduleNo);
   const soc = mod.moduleNo >= 12 && mod.moduleNo <= 14;
+  // M5 design prototype (owner retest): a richer themed brief, brighter body text,
+  // and a "view as map" plan in the handler. Scoped to M5 until the look is agreed.
+  const preview = mod.moduleNo === 5;
+  const bodyBright = preview ? "#D9E0EE" : "#C7CEDD";
 
   const afterDrills: Phase = mod.Capstone ? "challenge" : "defend";
   function afterCapture() {
@@ -256,19 +265,23 @@ export default function Engagement({
 
         {/* BRIEF */}
         {phase === "brief" && (
-          <Panel>
-            <Eyebrow>◆ New engagement</Eyebrow>
-            <h2 style={h2}>{mod.client}</h2>
-            <p style={{ color: C.soft, fontSize: 15, lineHeight: 1.6, margin: "10px 0 20px" }}>{mod.brief}</p>
-            <Btn tone="i" onClick={() => setPhase("lesson")}>Start the briefing →</Btn>
-          </Panel>
+          preview ? (
+            <BriefCard mod={mod} world={world} onStart={() => setPhase("lesson")} />
+          ) : (
+            <Panel>
+              <Eyebrow>◆ New engagement</Eyebrow>
+              <h2 style={h2}>{mod.client}</h2>
+              <p style={{ color: C.soft, fontSize: 15, lineHeight: 1.6, margin: "10px 0 20px" }}>{mod.brief}</p>
+              <Btn tone="i" onClick={() => setPhase("lesson")}>Start the briefing →</Btn>
+            </Panel>
+          )
         )}
 
         {/* LESSON */}
         {phase === "lesson" && (
           <div style={{ display: "grid", gap: 14 }}>
             <Eyebrow>◆ Lesson · learn the ground</Eyebrow>
-            {mod.lesson.blocks.map((b, i) => <LessonBlock key={i} h={b.h} body={b.body} i={i} glossary={mod.glossary} keyPrefix={`lb${i}`} />)}
+            {mod.lesson.blocks.map((b, i) => <LessonBlock key={i} h={b.h} body={b.body} i={i} glossary={mod.glossary} keyPrefix={`lb${i}`} bodyColor={bodyBright} />)}
             {mod.lesson.example && (
               <div>
                 <div style={{ fontFamily: MONO, fontSize: 11, letterSpacing: ".08em", textTransform: "uppercase", color: C.mute, marginBottom: 8 }}>Worked example</div>
@@ -289,7 +302,7 @@ export default function Engagement({
               <div style={{ padding: "15px 17px", borderRadius: 14, background: "rgba(95,230,255,0.06)", border: "1px solid rgba(95,230,255,0.38)", borderLeft: "3px solid #5FE6FF" }}>
                 <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: ".14em", textTransform: "uppercase", color: C.cyan, fontWeight: 700, marginBottom: 9 }}>✦ Recap</div>
                 <ul style={{ margin: 0, padding: 0, listStyle: "none", display: "grid", gap: 7 }}>
-                  {mod.lesson.summary.map((s, i) => <li key={i} style={{ color: "#C7CEDD", fontSize: 13.5, lineHeight: 1.5, display: "flex", gap: 9 }}><span aria-hidden style={{ color: C.cyan }}>✦</span><span>{s}</span></li>)}
+                  {mod.lesson.summary.map((s, i) => <li key={i} style={{ color: bodyBright, fontSize: 13.5, lineHeight: 1.5, display: "flex", gap: 9 }}><span aria-hidden style={{ color: C.cyan }}>✦</span><span>{s}</span></li>)}
                 </ul>
               </div>
             )}
@@ -327,8 +340,11 @@ export default function Engagement({
           <div style={{ display: "grid", gap: 14 }}>
             <div style={handlerBox}>
               <span style={handlerTag}>HANDLER</span>
-              <span style={{ fontSize: 14, lineHeight: 1.5 }}>{mod.handler}</span>
+              <span style={{ fontSize: 14, lineHeight: 1.5, color: bodyBright }}>{mod.handler}</span>
             </div>
+            {mod.plan && mod.plan.length > 0 && (
+              <StuckHelp accent={world.accent} open={mapOpen} onToggle={() => setMapOpen((o) => !o)} plan={mod.plan} bodyColor={bodyBright} />
+            )}
             <mod.Act onCapture={afterCapture} />
             <div>
               <button onClick={() => setHint(!hint)} style={{ background: "none", border: "none", color: C.indigo2, fontFamily: MONO, fontSize: 12, cursor: "pointer", textDecoration: "underline", textUnderlineOffset: 3, padding: "4px 0" }}>{hint ? "hide hint" : "hint"}</button>
@@ -370,7 +386,7 @@ export default function Engagement({
             <div style={{ display: "grid", gap: 14 }}>
               {mod.takeaway && <TakeawayStrip text={mod.takeaway} />}
               <Eyebrow>◆ Debrief · now defend it</Eyebrow>
-              {mod.defend.blocks.map((b, i) => <LessonBlock key={i} h={b.h} body={b.body} i={i} glossary={mod.glossary} keyPrefix={`db${i}`} />)}
+              {mod.defend.blocks.map((b, i) => <LessonBlock key={i} h={b.h} body={b.body} i={i} glossary={mod.glossary} keyPrefix={`db${i}`} bodyColor={bodyBright} />)}
               {mod.defend.Interactive && (
                 <div style={{ borderRadius: 14, padding: 6, background: "rgba(139,123,255,0.05)", border: `1.5px dashed ${C.indigo}`, boxShadow: `0 0 30px -16px ${C.indigo}` }}>
                   <mod.defend.Interactive onDone={() => setDefendLabOk(true)} />
@@ -526,7 +542,7 @@ const LB_CYCLE: { kind: "rail" | "framed" | "topline"; accent: string }[] = [
 // opens at their own pace. The FIRST block opens by default, so there's always
 // something to read; the rest expand on click. The per-index treatment
 // (rail/framed/topline) is kept - it's now the look of the section header.
-function LessonBlock({ h, body, i, glossary, keyPrefix }: { h: string; body: string; i: number; glossary?: GlossaryEntry[]; keyPrefix: string }) {
+function LessonBlock({ h, body, i, glossary, keyPrefix, bodyColor = "#C7CEDD" }: { h: string; body: string; i: number; glossary?: GlossaryEntry[]; keyPrefix: string; bodyColor?: string }) {
   const t = LB_CYCLE[i % LB_CYCLE.length];
   const [open, setOpen] = useState(i === 0);
   // `expanded` is the fully-open state (set once the open animation ends). While
@@ -547,7 +563,7 @@ function LessonBlock({ h, body, i, glossary, keyPrefix }: { h: string; body: str
   const panel = (
     <div style={{ display: "grid", gridTemplateRows: open ? "1fr" : "0fr", transition: "grid-template-rows .28s ease" }} onTransitionEnd={() => { if (open) setExpanded(true); }}>
       <div style={{ overflow: expanded ? "visible" : "hidden", minHeight: 0 }}>
-        <p style={{ color: "#C7CEDD", fontSize: 14.5, lineHeight: 1.64, margin: "8px 0 0" }}>{withGlossary(body, glossary, seen, keyPrefix)}</p>
+        <p style={{ color: bodyColor, fontSize: 14.5, lineHeight: 1.64, margin: "8px 0 0" }}>{withGlossary(body, glossary, seen, keyPrefix)}</p>
       </div>
     </div>
   );
@@ -584,6 +600,98 @@ function EthicsNote() {
         <div style={{ fontFamily: MONO, fontSize: 10, letterSpacing: ".16em", textTransform: "uppercase", color: C.amber, fontWeight: 700, marginBottom: 6 }}>For the record · stay legal</div>
         <p style={{ fontSize: 13.5, color: C.soft, lineHeight: 1.58, margin: 0 }}>{ETHICS_NOTE}</p>
       </div>
+    </div>
+  );
+}
+
+/* ---------- M5 design prototype (owner retest) ---------- */
+
+// A richer "engagement dossier" brief, keyed off the module's world so it matches
+// the backdrop: a terminal case file with a target line, the client as a display
+// title, meta chips and better-set brief copy. Replaces the plain Panel on M5.
+function BriefCard({ mod, world, onStart }: { mod: ModuleDef; world: World; onStart: () => void }) {
+  const target = mod.scope.target.split(/[\s/]+/)[0];
+  return (
+    <div style={{ position: "relative", borderRadius: 18, overflow: "hidden", background: "linear-gradient(160deg, rgba(23,26,36,0.97), rgba(15,17,25,0.97))", border: `1px solid ${world.accent}44`, boxShadow: `0 26px 64px -32px #000, 0 0 44px -26px ${world.accent}` }}>
+      <div aria-hidden style={{ height: 3, background: `linear-gradient(90deg, transparent, ${world.accent}, transparent)` }} />
+      <div style={{ padding: "22px 24px 24px" }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 8, fontFamily: MONO, fontSize: 10.5, letterSpacing: ".18em", textTransform: "uppercase", fontWeight: 700 }}>
+          <span style={{ color: world.accent, display: "flex", alignItems: "center", gap: 8 }}>
+            <span aria-hidden style={{ width: 7, height: 7, borderRadius: 2, background: world.accent, boxShadow: `0 0 8px ${world.accent}` }} />Engagement brief
+          </span>
+          <span style={{ color: C.mute }}>M{String(mod.moduleNo).padStart(2, "0")} · {mod.title}</span>
+        </div>
+        <h2 style={{ fontFamily: DISP, fontSize: "clamp(24px,5.2vw,33px)", fontWeight: 700, margin: "16px 0 0", letterSpacing: ".01em" }}>{mod.client}</h2>
+        <div aria-hidden style={{ width: 54, height: 3, borderRadius: 2, background: world.accent, margin: "11px 0 0", boxShadow: `0 0 10px ${world.accent}` }} />
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 8, margin: "17px 0 0" }}>
+          <BriefChip k="target" v={target} accent={world.accent} />
+          <BriefChip k="vector" v={mod.title} accent={world.accent} />
+          {mod.plan && mod.plan.length > 0 && <BriefChip k="plan" v={`${mod.plan.length} stages`} accent={world.accent} />}
+        </div>
+        <p style={{ color: "#D9E0EE", fontSize: 15.5, lineHeight: 1.72, margin: "18px 0 0" }}>{mod.brief}</p>
+        <div aria-hidden style={{ height: 1, background: C.lineSoft, margin: "20px 0 18px" }} />
+        <div style={{ display: "flex", alignItems: "center", gap: 16, flexWrap: "wrap" }}>
+          <Btn tone="i" onClick={onStart}>Start the briefing →</Btn>
+          <span style={{ fontFamily: MONO, fontSize: 11.5, color: C.mute }}>read the ground, then sign the scope</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+function BriefChip({ k, v, accent }: { k: string; v: string; accent: string }) {
+  return (
+    <span style={{ display: "inline-flex", alignItems: "baseline", gap: 7, padding: "5px 11px", borderRadius: 999, background: `${accent}12`, border: `1px solid ${accent}30`, fontFamily: MONO, fontSize: 11.5 }}>
+      <span style={{ color: accent, fontWeight: 700, letterSpacing: ".06em", textTransform: "uppercase", fontSize: 9.5 }}>{k}</span>
+      <span style={{ color: C.soft }}>{v}</span>
+    </span>
+  );
+}
+
+// "Not clicking yet?" - a warm, caring nudge under the handler. If the wall of
+// text isn't landing, the learner clicks and gets the same mission a DIFFERENT
+// way: a visual step-by-step map (dual-coding, for people who don't learn by
+// reading). The map is revealed by the link, not shown by default.
+function StuckHelp({ accent, open, onToggle, plan, bodyColor }: { accent: string; open: boolean; onToggle: () => void; plan: { label: string; goal: string }[]; bodyColor: string }) {
+  return (
+    <div>
+      <div style={{ padding: "14px 16px", borderRadius: 14, background: `${accent}0d`, border: `1px dashed ${accent}59` }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 14, flexWrap: "wrap" }}>
+          <div style={{ minWidth: 220, flex: 1 }}>
+            <div style={{ fontFamily: DISP, fontWeight: 700, fontSize: 15.5, color: "#fff", display: "flex", alignItems: "center", gap: 8 }}><span aria-hidden style={{ color: accent }}>✦</span>Not clicking yet? We&rsquo;ve got you.</div>
+            <div style={{ fontSize: 13.5, color: bodyColor, lineHeight: 1.55, marginTop: 5 }}>This is proper tradecraft and everyone finds it fiddly at first, so no stress. Here&rsquo;s the whole mission a different way, one simple step at a time.</div>
+          </div>
+          <button onClick={onToggle} className="co-btn" style={{ flexShrink: 0, display: "inline-flex", alignItems: "center", gap: 7, background: accent, color: "#0f0c26", border: "none", fontFamily: MONO, fontSize: 12, fontWeight: 700, letterSpacing: ".03em", padding: "10px 16px", borderRadius: 9, cursor: "pointer" }}>{open ? "Hide it" : "Show me a simpler way →"}</button>
+        </div>
+      </div>
+      <div style={{ display: "grid", gridTemplateRows: open ? "1fr" : "0fr", transition: "grid-template-rows .3s ease" }}>
+        <div style={{ overflow: "hidden", minHeight: 0 }}>
+          <div style={{ marginTop: 12 }}><PlanMap plan={plan} accent={accent} bodyColor={bodyColor} /></div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// The visual "mission map": the capture plan as a numbered, connected roadmap -
+// a scannable, different-way-in to the same objectives the handler describes.
+function PlanMap({ plan, accent, bodyColor }: { plan: { label: string; goal: string }[]; accent: string; bodyColor: string }) {
+  return (
+    <div style={{ borderRadius: 14, padding: "17px 19px", background: "rgba(12,14,21,0.72)", border: `1px solid ${accent}44` }}>
+      <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: ".14em", textTransform: "uppercase", color: accent, fontWeight: 700, marginBottom: 15, display: "flex", alignItems: "center", gap: 8 }}><span aria-hidden>▦</span>The mission, as a map · {plan.length} stages</div>
+      <ol style={{ listStyle: "none", margin: 0, padding: 0 }}>
+        {plan.map((s, i) => (
+          <li key={i} style={{ display: "grid", gridTemplateColumns: "auto 1fr", gap: 14, paddingBottom: i < plan.length - 1 ? 15 : 0 }}>
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+              <span style={{ width: 28, height: 28, flexShrink: 0, borderRadius: "50%", border: `1.5px solid ${accent}`, color: accent, display: "grid", placeItems: "center", fontFamily: MONO, fontSize: 12, fontWeight: 700, background: "rgba(12,14,21,0.95)" }}>{i + 1}</span>
+              {i < plan.length - 1 && <span aria-hidden style={{ width: 2, flex: 1, background: `${accent}3a`, marginTop: 4 }} />}
+            </div>
+            <div style={{ paddingTop: 2 }}>
+              <div style={{ fontFamily: DISP, fontWeight: 700, fontSize: 15, color: "#fff" }}>{s.label}</div>
+              <div style={{ fontSize: 13, color: bodyColor, lineHeight: 1.5, marginTop: 3 }}>{s.goal}</div>
+            </div>
+          </li>
+        ))}
+      </ol>
     </div>
   );
 }
