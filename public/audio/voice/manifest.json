@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-19T11:56:13.148Z",
+  "generatedAt": "2026-10-19T12:50:36.968Z",
   "model": "eleven_v4",
   "voiceSettings": {
     "stability": 0.6,
@@ -263,18 +263,19 @@
       "file": "/audio/voice/f696b9c2c81764eb.mp3"
     },
     {
-      "key": "29d5ab6498365122",
+      "key": "e6b9edd8a26576fb",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "Cyber Hero, come and look at this. The Hacker Raccoon is trying to steal Adam and Layla's passwords. If he cracks even one, he gets into all their games and all their messages. [warmly] By the end of this week you will know how to build a password he can NEVER break. Mission Command has the details. Let's go.",
+      "text": "Cyber Hero, did you see that? That glowing lock is Adam and Layla's password. The Hacker Raccoon had both paws on it, and he is coming back for it. If that lock opens, he walks into every game and every message they have. [warmly] By the end of this week you will build him a lock he can NEVER open. Mission Command is waiting for us. Come on.",
       "lines": [
-        "Cyber Hero, come and look at this.",
-        "The Hacker Raccoon is trying to steal Adam and Layla's passwords.",
-        "If he cracks even one, he gets into all their games and all their messages.",
-        "[warmly] By the end of this week you will know how to build a password he can NEVER break.",
-        "Mission Command has the details. Let's go."
+        "Cyber Hero, did you see that?",
+        "That glowing lock is Adam and Layla's password.",
+        "The Hacker Raccoon had both paws on it, and he is coming back for it.",
+        "If that lock opens, he walks into every game and every message they have.",
+        "[warmly] By the end of this week you will build him a lock he can NEVER open.",
+        "Mission Command is waiting for us. Come on."
       ],
-      "file": "/audio/voice/29d5ab6498365122.mp3"
+      "file": "/audio/voice/e6b9edd8a26576fb.mp3"
     },
     {
       "key": "4ffd612002a2c6df",

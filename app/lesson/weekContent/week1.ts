@@ -34,26 +34,37 @@ export const WEEK_1: WeekContent = {
   ],
 
   screens: [
-    // 0 - OPENING VIDEO: "The Break-In" (Raccoon cracks a weak password)
-    { type: "video", videoPlaceholder: "Week 1: The Break-In", videoSrc: "/videos/module-01-intro.mp4" },
+    // 0 - OPENING VIDEO: "One Night" - the heroes and their lock, then the
+    // Raccoon gets both paws on it and grins down the lens.
+    { type: "video", videoPlaceholder: "Week 1: One Night", videoSrc: "/videos/module-01-intro.mp4" },
 
     // 1 - ALERT: incident report with this week's topic image (comes FIRST now,
     // so the incident lands before Mission Command briefs the plan - owner 2026-09-10)
+    //
+    // Both the words AND the picture answer the VIDEO the child has just
+    // watched. Owner, 2026-10-18: "the scripting needs to be according to the
+    // video." The old script described a break-in the opener does not show, and
+    // the old picture was a different world again - a caped grey raccoon
+    // stealing a key in a tropical street, with the children out of costume.
+    // The picture is now the closing moment of the video itself: the same
+    // workshop, the same lock, both paws on it. The incident the child just
+    // saw is the incident the report shows.
     {
       type: "alert",
       photoSrc: "/cyberheroes/alerts/week-01.png",
       title: "ALERT INCOMING",
       badge: "Incident Report",
-      caption: "The Hacker Raccoon is hunting for Adam and Layla's passwords. They need YOUR help!",
+      caption: "Both paws on Adam and Layla's lock. They need YOUR help!",
       ctaLabel: "See the Mission →",
       narration: {
         speaker: "adam",
         lines: [
-          "Cyber Hero, come and look at this.",
-          "The Hacker Raccoon is trying to steal Adam and Layla's passwords.",
-          "If he cracks even one, he gets into all their games and all their messages.",
-          "[warmly] By the end of this week you will know how to build a password he can NEVER break.",
-          "Mission Command has the details. Let's go.",
+          "Cyber Hero, did you see that?",
+          "That glowing lock is Adam and Layla's password.",
+          "The Hacker Raccoon had both paws on it, and he is coming back for it.",
+          "If that lock opens, he walks into every game and every message they have.",
+          "[warmly] By the end of this week you will build him a lock he can NEVER open.",
+          "Mission Command is waiting for us. Come on.",
         ],
       },
     },
