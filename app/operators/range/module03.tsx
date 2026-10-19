@@ -502,6 +502,7 @@ export const MODULE3: ModuleDef = {
     impact: "Responses leak internal endpoints in HTML comments and server versions in headers; robots.txt advertises hidden staff paths that are reachable directly; the checkout trusts a client-supplied price (buy for GBP 0); and staff tools grant access from a client-supplied X-Role header. Together these allow free purchases and unauthorised access to staff functionality.",
     fix: "Decide all security-relevant values server-side: look up prices by item id, derive roles from the session, and validate every field. Strip version banners, debug headers and developer comments from responses, and treat robots.txt as public.",
   },
+  takeaway: "A server can never trust what the client sends. Decide every price, role and permission on the server, every time.",
   outcome: [
     "Read an HTTP response for what it leaks - a backend version in a header, or an internal endpoint a developer left in an HTML comment.",
     "Map a site's hidden paths from robots.txt and reach a staff page that nothing on the site links to.",

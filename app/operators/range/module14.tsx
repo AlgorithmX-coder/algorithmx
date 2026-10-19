@@ -432,6 +432,7 @@ export const MODULE14: ModuleDef = {
     impact: "A set of findings was triaged to correct severities, written up in a clear, actionable report structure, and routed through responsible coordinated disclosure - including the hard case of an unresponsive vendor - so each flaw gets fixed without arming attackers or breaking the law.",
     fix: "For organisations: publish a vulnerability-disclosure policy and security contact, acknowledge and fix on a sensible timeline, and consider a bug-bounty programme. For researchers: score honestly, report privately first, and escalate through a CERT rather than weaponising a flaw.",
   },
+  takeaway: "A finding only matters if it gets fixed. Score it honestly, write it so a busy team can act, and disclose privately first.",
   outcome: [
     "Score a finding to the right severity band by weighing exploitability against impact - remote, unauthenticated, total impact is Critical.",
     "Structure a finding report a busy team can act on - title, location, severity, impact, reproduction steps, remediation.",

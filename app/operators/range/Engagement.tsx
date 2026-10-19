@@ -68,6 +68,10 @@ export type ModuleDef = {
     check: Check;
   };
   finding: { title: string; where: string; severity: string; cvss: string; impact: string; fix: string };
+  /** One line to hold onto. Shown as a bold "take this away" strip at the very
+   *  top of the debrief - the single thing to remember once the dense reading is
+   *  done, for consolidation and reinforcement. */
+  takeaway?: string;
   /** What the learner can now do, shown as a "Module outcome" block on the report
    *  screen. 2-4 concrete "you can now..." capabilities. */
   outcome?: string[];
@@ -364,6 +368,7 @@ export default function Engagement({
               <div style={{ fontFamily: MONO, fontSize: 14.5, color: C.green, background: "rgba(74,222,128,0.08)", display: "inline-block", padding: "7px 15px", borderRadius: 8, border: "1px solid rgba(74,222,128,0.3)" }}>{mod.flag}</div>
             </div>
             <div style={{ display: "grid", gap: 14 }}>
+              {mod.takeaway && <TakeawayStrip text={mod.takeaway} />}
               <Eyebrow>◆ Debrief · now defend it</Eyebrow>
               {mod.defend.blocks.map((b, i) => <LessonBlock key={i} h={b.h} body={b.body} i={i} glossary={mod.glossary} keyPrefix={`db${i}`} />)}
               {mod.defend.Interactive && (
@@ -491,6 +496,7 @@ function Report({ mod, callsign, onExit, liveRank }: { mod: ModuleDef; callsign:
         </div>
         <Btn tone="i" onClick={shareCapture} style={{ marginTop: 20, fontSize: 12.5 }}>{share ? "✓ copied - go flex" : "SHARE CAPTURE →"}</Btn>
       </div>
+      <EthicsNote />
       <Btn tone="ghost" onClick={onExit}>{mod.next}</Btn>
     </div>
   );
@@ -515,15 +521,63 @@ const LB_CYCLE: { kind: "rail" | "framed" | "topline"; accent: string }[] = [
   { kind: "rail", accent: C.green },
   { kind: "framed", accent: "#FF7BD5" },
 ];
+// Each block is a collapsible section (owner: "a collapsible tab for each
+// subheading"), so a dense screen reads as a tidy stack of headings the learner
+// opens at their own pace. The FIRST block opens by default, so there's always
+// something to read; the rest expand on click. The per-index treatment
+// (rail/framed/topline) is kept - it's now the look of the section header.
 function LessonBlock({ h, body, i, glossary, keyPrefix }: { h: string; body: string; i: number; glossary?: GlossaryEntry[]; keyPrefix: string }) {
   const t = LB_CYCLE[i % LB_CYCLE.length];
+  const [open, setOpen] = useState(i === 0);
   const seen = new Set<string>();
   const hc = t.kind === "framed" ? t.accent : "#ffffff";
-  const heading = <h3 style={{ fontFamily: DISP, fontWeight: 700, fontSize: 18.5, margin: 0, color: hc, lineHeight: 1.22, letterSpacing: ".005em" }}>{h}</h3>;
-  const para = <p style={{ color: "#C7CEDD", fontSize: 14.5, lineHeight: 1.64, marginTop: 8 }}>{withGlossary(body, glossary, seen, keyPrefix)}</p>;
-  if (t.kind === "rail") return <div style={{ padding: "2px 2px 2px 18px", borderLeft: `3px solid ${t.accent}` }}>{heading}{para}</div>;
-  if (t.kind === "framed") return <div style={{ position: "relative", padding: "16px 18px", borderRadius: 14, background: "rgba(18,20,29,0.82)", border: `1px solid ${t.accent}55`, overflow: "hidden" }}><span aria-hidden style={{ position: "absolute", top: 0, left: 22, right: 22, height: 2, background: `linear-gradient(90deg,transparent,${t.accent},transparent)` }} />{heading}{para}</div>;
-  return <div style={{ padding: "15px 18px 16px", borderRadius: 14, background: "rgba(18,20,29,0.82)", border: `1px solid ${C.line}`, borderTop: `3px solid ${t.accent}` }}>{heading}{para}</div>;
+  const trigger = (
+    <button type="button" onClick={() => setOpen((o) => !o)} aria-expanded={open}
+      style={{ width: "100%", display: "flex", alignItems: "center", gap: 12, background: "transparent", border: "none", padding: 0, cursor: "pointer", textAlign: "left", font: "inherit" }}>
+      <span style={{ flex: 1, fontFamily: DISP, fontWeight: 700, fontSize: 18.5, color: hc, lineHeight: 1.22, letterSpacing: ".005em" }}>{h}</span>
+      <span aria-hidden style={{ flexShrink: 0, width: 25, height: 25, borderRadius: 7, border: `1px solid ${t.accent}66`, color: t.accent, display: "grid", placeItems: "center", fontSize: 10, fontFamily: MONO, lineHeight: 1, transform: open ? "rotate(90deg)" : "none", transition: "transform .25s ease" }}>▶</span>
+    </button>
+  );
+  const panel = (
+    <div style={{ display: "grid", gridTemplateRows: open ? "1fr" : "0fr", transition: "grid-template-rows .28s ease" }}>
+      <div style={{ overflow: "hidden", minHeight: 0 }}>
+        <p style={{ color: "#C7CEDD", fontSize: 14.5, lineHeight: 1.64, margin: "8px 0 0" }}>{withGlossary(body, glossary, seen, keyPrefix)}</p>
+      </div>
+    </div>
+  );
+  if (t.kind === "rail") return <div style={{ padding: "2px 2px 2px 18px", borderLeft: `3px solid ${t.accent}` }}>{trigger}{panel}</div>;
+  if (t.kind === "framed") return <div style={{ position: "relative", padding: "16px 18px", borderRadius: 14, background: "rgba(18,20,29,0.82)", border: `1px solid ${t.accent}55`, overflow: "hidden" }}><span aria-hidden style={{ position: "absolute", top: 0, left: 22, right: 22, height: 2, background: `linear-gradient(90deg,transparent,${t.accent},transparent)` }} />{trigger}{panel}</div>;
+  return <div style={{ padding: "15px 18px 16px", borderRadius: 14, background: "rgba(18,20,29,0.82)", border: `1px solid ${C.line}`, borderTop: `3px solid ${t.accent}` }}>{trigger}{panel}</div>;
+}
+
+// A one-line consolidation takeaway at the top of the debrief: the single thing
+// to hold onto once the dense reading is done.
+function TakeawayStrip({ text }: { text: string }) {
+  return (
+    <div style={{ padding: "14px 17px", borderRadius: 14, background: "linear-gradient(90deg, rgba(232,163,61,0.14), rgba(232,163,61,0.03))", border: `1px solid ${C.amber}55`, borderLeft: `3px solid ${C.amber}` }}>
+      <div style={{ fontFamily: MONO, fontSize: 10, letterSpacing: ".16em", textTransform: "uppercase", color: C.amber, fontWeight: 700, marginBottom: 6, display: "flex", alignItems: "center", gap: 7 }}>
+        <span aria-hidden>✦</span>Take this away
+      </div>
+      <div style={{ fontFamily: DISP, fontSize: 16.5, fontWeight: 700, color: "#fff", lineHeight: 1.4 }}>{text}</div>
+    </div>
+  );
+}
+
+// A short, consistent legal/ethics reminder at the very end of every module.
+// The range is a walled practice world; the same moves against real systems are
+// a crime. Kept identical across all 16 so it reads as a familiar closing beat.
+const ETHICS_NOTE =
+  "You practised this inside a walled training range built for it, on systems that exist only to be broken safely. The same move against a real computer, account or website you do not own is a criminal offence under the Computer Misuse Act 1990. These skills are legal only with the owner's written permission: here you learn to find and fix flaws so you can protect people, never harm them.";
+function EthicsNote() {
+  return (
+    <div style={{ display: "flex", gap: 14, alignItems: "flex-start", padding: "15px 17px", borderRadius: 14, background: "rgba(232,163,61,0.05)", border: `1px solid ${C.amber}38`, borderLeft: `3px solid ${C.amber}` }}>
+      <span aria-hidden style={{ fontSize: 19, lineHeight: 1.2, color: C.amber, flexShrink: 0 }}>⚖</span>
+      <div>
+        <div style={{ fontFamily: MONO, fontSize: 10, letterSpacing: ".16em", textTransform: "uppercase", color: C.amber, fontWeight: 700, marginBottom: 6 }}>For the record · stay legal</div>
+        <p style={{ fontSize: 13.5, color: C.soft, lineHeight: 1.58, margin: 0 }}>{ETHICS_NOTE}</p>
+      </div>
+    </div>
+  );
 }
 
 function Panel({ children, style }: { children: React.ReactNode; style?: React.CSSProperties }) {

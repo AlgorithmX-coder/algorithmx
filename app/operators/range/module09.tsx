@@ -471,6 +471,7 @@ export const MODULE9: ModuleDef = {
     impact: "Most password hashes are fast and unsalted, and crack instantly against a dictionary of common passwords, exposing plaintext passwords for reuse across accounts and services. A leaked per-record salt provided no protection.",
     fix: "Rehash all passwords with a salted, slow algorithm (bcrypt/scrypt/Argon2) on next login; store a fresh random salt per password; force resets for cracked accounts; add MFA and breached-password checks.",
   },
+  takeaway: "A fast, unsalted hash is a password waiting to be read. Store passwords with a slow, salted algorithm like bcrypt or Argon2.",
   outcome: [
     "Identify a leaked hash from its length and prefix - 32 hex is MD5, 64 is SHA-256, a $2b$ prefix is bcrypt.",
     "Crack a fast, unsalted hash by hashing a wordlist until a digest matches, recovering the plaintext password.",
