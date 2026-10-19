@@ -335,7 +335,7 @@ function InjectionAct({ onCapture }: { onCapture: () => void }) {
           <Palette tokens={stage.tokens} onInsert={(t) => setField(field + t)} />
           <div style={{ display: "flex", gap: 12, alignItems: "center", flexWrap: "wrap", marginTop: 14 }}>
             <Btn tone="i" onClick={run}>{stage.surface === "login" ? "RUN LOGIN →" : "RUN SEARCH →"}</Btn>
-            <button onClick={() => setField("")} style={{ background: "none", border: "none", color: C.mute, fontFamily: MONO, fontSize: 12, cursor: "pointer" }}>clear</button>
+            <button onClick={() => setField("")} style={{ background: "none", border: "none", color: C.soft, fontFamily: MONO, fontSize: 12, cursor: "pointer", textDecoration: "underline", textUnderlineOffset: 3 }}>clear</button>
           </div>
           {res && <ResultView r={res} />}
           {!stageCleared && <HintLadder key={stage.key} hints={stage.hints} onSkeleton={() => setField(stage.skeleton)} onReveal={() => setField(stage.reveal)} />}
@@ -536,7 +536,7 @@ function DrillSurface({ cfg, onSolved }: { cfg: DrillCfg; onSolved: () => void }
         <Palette tokens={step.palette} onInsert={(t) => setVal(val + t)} />
         <div style={{ display: "flex", gap: 12, alignItems: "center", flexWrap: "wrap", marginTop: 14 }}>
           <Btn tone="i" onClick={run} disabled={!sc || solved}>{step.surface === "login" ? "RUN LOGIN →" : "RUN SEARCH →"}</Btn>
-          <button onClick={() => setVal("")} style={{ background: "none", border: "none", color: C.mute, fontFamily: MONO, fontSize: 12, cursor: "pointer" }}>clear</button>
+          <button onClick={() => setVal("")} style={{ background: "none", border: "none", color: C.soft, fontFamily: MONO, fontSize: 12, cursor: "pointer", textDecoration: "underline", textUnderlineOffset: 3 }}>clear</button>
         </div>
         {res && <ResultView r={res} />}
         {!solved && (
@@ -689,7 +689,7 @@ function CapstoneChallenge({ onDone }: { onDone: () => void }) {
               <Palette tokens={step.palette} onInsert={(t) => setField(field + t)} />
               <div style={{ display: "flex", gap: 12, alignItems: "center", flexWrap: "wrap", marginTop: 14 }}>
                 <Btn tone="i" onClick={runStep}>{step.surface === "login" ? "RUN LOGIN →" : "RUN SEARCH →"}</Btn>
-                <button onClick={() => setField("")} style={{ background: "none", border: "none", color: C.mute, fontFamily: MONO, fontSize: 12, cursor: "pointer" }}>clear</button>
+                <button onClick={() => setField("")} style={{ background: "none", border: "none", color: C.soft, fontFamily: MONO, fontSize: 12, cursor: "pointer", textDecoration: "underline", textUnderlineOffset: 3 }}>clear</button>
               </div>
               {res && <ResultView r={res} />}
               <div style={{ marginTop: 12, display: "flex", gap: 14, alignItems: "center", flexWrap: "wrap" }}>

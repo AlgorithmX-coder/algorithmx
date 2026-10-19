@@ -333,24 +333,28 @@ export default function Engagement({
 
         {/* AUTHORIZE */}
         {phase === "authorize" && (
-          <Panel style={{ borderColor: "rgba(74,222,128,0.3)" }}>
-            <Eyebrow tone={C.green}>◆ Authorization required</Eyebrow>
-            <h2 style={h2}>Scope of engagement</h2>
-            <p style={{ color: C.soft, fontSize: 14.5, lineHeight: 1.55, margin: "0 0 16px" }}>You may only touch what the scope authorizes. Acting outside it fails the engagement - that&apos;s the job, and the law.</p>
-            <div style={scopeTbl}>
-              <SRow k="Target" v={mod.scope.target} />
-              <SRow k="In scope" v={mod.scope.inScope} tone={C.green} />
-              <SRow k="Off limits" v={mod.scope.offLimits} tone={C.red} />
-              <SRow k="Timebox" v={mod.scope.timebox} />
-            </div>
-            <div style={{ marginTop: 18 }}>
-              <label style={lbl}>Sign as</label>
-              <div style={{ display: "flex", gap: 10, marginTop: 7, flexWrap: "wrap" }}>
-                <input value={callsign} onChange={(e) => setCallsign(e.target.value.toUpperCase().slice(0, 14))} placeholder="YOUR CALLSIGN" style={{ ...input, flex: "1 1 200px", letterSpacing: ".08em" }} />
-                <Btn tone="g" disabled={!callsign.trim()} onClick={() => setPhase("act")}>SIGN &amp; AUTHORIZE →</Btn>
+          preview ? (
+            <ScopeCard mod={mod} world={world} callsign={callsign} setCallsign={setCallsign} onAuthorize={() => setPhase("act")} />
+          ) : (
+            <Panel style={{ borderColor: "rgba(74,222,128,0.3)" }}>
+              <Eyebrow tone={C.green}>◆ Authorization required</Eyebrow>
+              <h2 style={h2}>Scope of engagement</h2>
+              <p style={{ color: C.soft, fontSize: 14.5, lineHeight: 1.55, margin: "0 0 16px" }}>You may only touch what the scope authorizes. Acting outside it fails the engagement - that&apos;s the job, and the law.</p>
+              <div style={scopeTbl}>
+                <SRow k="Target" v={mod.scope.target} />
+                <SRow k="In scope" v={mod.scope.inScope} tone={C.green} />
+                <SRow k="Off limits" v={mod.scope.offLimits} tone={C.red} />
+                <SRow k="Timebox" v={mod.scope.timebox} />
               </div>
-            </div>
-          </Panel>
+              <div style={{ marginTop: 18 }}>
+                <label style={lbl}>Sign as</label>
+                <div style={{ display: "flex", gap: 10, marginTop: 7, flexWrap: "wrap" }}>
+                  <input value={callsign} onChange={(e) => setCallsign(e.target.value.toUpperCase().slice(0, 14))} placeholder="YOUR CALLSIGN" style={{ ...input, flex: "1 1 200px", letterSpacing: ".08em" }} />
+                  <Btn tone="g" disabled={!callsign.trim()} onClick={() => setPhase("act")}>SIGN &amp; AUTHORIZE →</Btn>
+                </div>
+              </div>
+            </Panel>
+          )
         )}
 
         {/* ACT */}
@@ -365,8 +369,8 @@ export default function Engagement({
             )}
             <mod.Act onCapture={afterCapture} />
             <div>
-              <button onClick={() => setHint(!hint)} style={{ background: "none", border: "none", color: C.indigo2, fontFamily: MONO, fontSize: 12, cursor: "pointer", textDecoration: "underline", textUnderlineOffset: 3, padding: "4px 0" }}>{hint ? "hide hint" : "hint"}</button>
-              {hint && <div style={{ marginTop: 6, padding: "12px 14px", borderLeft: `2px solid ${C.indigo}`, background: "rgba(139,123,255,0.05)", fontSize: 13.5, color: C.soft, lineHeight: 1.55 }}>{mod.hint}</div>}
+              <button onClick={() => setHint(!hint)} className="co-btn" style={preview ? { display: "inline-flex", alignItems: "center", gap: 7, background: "rgba(139,123,255,0.12)", border: `1px solid ${C.indigo2}`, color: C.indigo2, fontFamily: MONO, fontSize: 12, fontWeight: 700, letterSpacing: ".02em", cursor: "pointer", padding: "8px 14px", borderRadius: 8 } : { background: "none", border: "none", color: C.indigo2, fontFamily: MONO, fontSize: 12, cursor: "pointer", textDecoration: "underline", textUnderlineOffset: 3, padding: "4px 0" }}>{hint ? "Hide hint" : "Need a hint?"}</button>
+              {hint && <div style={{ marginTop: 8, padding: "12px 14px", borderLeft: `2px solid ${C.indigo}`, background: "rgba(139,123,255,0.05)", fontSize: 13.5, color: preview ? bodyBright : C.soft, lineHeight: 1.55 }}>{mod.hint}</div>}
             </div>
           </div>
         )}
@@ -715,6 +719,48 @@ function IntroCard({ accent, eyebrow, children }: { accent: string; eyebrow: str
     <div style={{ borderRadius: 16, padding: "16px 18px 17px", background: "rgba(18,20,29,0.82)", border: `1px solid ${C.line}`, borderLeft: `3px solid ${accent}` }}>
       <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: ".14em", textTransform: "uppercase", fontWeight: 700, color: accent, marginBottom: 10 }}>{eyebrow}</div>
       {children}
+    </div>
+  );
+}
+
+// The scope / authorization screen, reworded so it reads as the real thing it is
+// (owner: it looked like gibberish learners skip). Plain-English labels + a "why"
+// on every row, framed as Rules of Engagement - the agreement that makes the work
+// legal. The technical target values are kept.
+function ScopeCard({ mod, world, callsign, setCallsign, onAuthorize }: { mod: ModuleDef; world: World; callsign: string; setCallsign: (v: string) => void; onAuthorize: () => void }) {
+  return (
+    <div style={{ display: "grid", gap: 13 }}>
+      <div style={{ borderRadius: 16, padding: "20px 22px", background: "rgba(85,217,140,0.05)", border: `1px solid ${C.green}44`, borderLeft: `3px solid ${C.green}` }}>
+        <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: ".2em", textTransform: "uppercase", fontWeight: 700, color: C.green, marginBottom: 11 }}>◆ Rules of engagement</div>
+        <h2 style={{ fontFamily: DISP, fontSize: 22, fontWeight: 700, margin: 0 }}>Sign before you touch anything</h2>
+        <p style={{ color: "#D9E0EE", fontSize: 14.5, lineHeight: 1.65, margin: "10px 0 0" }}>This is the part that makes it legal. Before any real test, a hacker signs a scope: a written agreement that says exactly what they are allowed to touch. Stay inside it and you are a professional doing a job. Step outside it, even once, and you have broken the law, not just the rules.</p>
+      </div>
+      <div style={{ display: "grid", gap: 10 }}>
+        <ScopeRow label="Where you're working" value={mod.scope.target} why="The systems this job is about." accent={world.accent} />
+        <ScopeRow label="Cleared to touch" value={mod.scope.inScope} why="Fair game. Everything here is yours to test." accent={C.green} mark="✓" />
+        <ScopeRow label="Hands off" value={mod.scope.offLimits} why="Off the table. In the real world these are destructive, out of bounds, or real people's data, and touching any of them ends the engagement." accent={C.red} mark="✗" />
+        <ScopeRow label="Time you have" value={mod.scope.timebox} why="Your window for this engagement." accent={world.accent} />
+      </div>
+      <div style={{ borderRadius: 16, padding: "18px 20px", background: C.panel, border: `1px solid ${C.line}` }}>
+        <label style={lbl}>Sign as</label>
+        <div style={{ display: "flex", gap: 10, marginTop: 8, flexWrap: "wrap", alignItems: "center" }}>
+          <input value={callsign} onChange={(e) => setCallsign(e.target.value.toUpperCase().slice(0, 14))} placeholder="YOUR CALLSIGN" style={{ ...input, flex: "1 1 200px", letterSpacing: ".08em" }} />
+          <Btn tone="g" disabled={!callsign.trim()} onClick={onAuthorize}>SIGN &amp; AUTHORIZE →</Btn>
+        </div>
+        <p style={{ fontSize: 12.5, color: C.soft, margin: "11px 0 0", lineHeight: 1.5 }}>By signing, you agree to stay inside this scope. This is exactly how a real engagement starts.</p>
+      </div>
+    </div>
+  );
+}
+function ScopeRow({ label, value, why, accent, mark }: { label: string; value: string; why: string; accent: string; mark?: string }) {
+  return (
+    <div style={{ borderRadius: 12, padding: "13px 15px", background: "rgba(18,20,29,0.82)", border: `1px solid ${C.line}`, borderLeft: `3px solid ${accent}` }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 5 }}>
+        {mark && <span aria-hidden style={{ color: accent, fontWeight: 700, fontFamily: MONO }}>{mark}</span>}
+        <span style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: ".12em", textTransform: "uppercase", fontWeight: 700, color: accent }}>{label}</span>
+      </div>
+      <div style={{ fontFamily: MONO, fontSize: 13, color: "#D9E0EE", lineHeight: 1.5 }}>{value}</div>
+      <div style={{ fontSize: 12.5, color: C.soft, lineHeight: 1.45, marginTop: 5 }}>{why}</div>
     </div>
   );
 }
