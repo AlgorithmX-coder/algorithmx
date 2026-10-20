@@ -967,8 +967,26 @@ function PlanMap({ plan, accent, bodyColor }: { plan: { label: string; goal: str
 
 // The cheat sheet: a full-screen, beginner-friendly quick reference the learner can
 // open from the side tab and minimise. Plain-English, applicable to the module.
+function CsEntry({ e, accent, pinned, onToggle }: { e: { code: string; what: string; example?: string }; accent: string; pinned: boolean; onToggle: () => void }) {
+  return (
+    <div style={{ position: "relative", borderRadius: 13, padding: "14px 15px", background: "rgba(18,20,29,0.9)", border: `1px solid ${pinned ? accent + "66" : C.line}` }}>
+      <button onClick={onToggle} aria-label={pinned ? "Unpin" : "Pin to top"} title={pinned ? "Unpin" : "Pin to top"} className="co-btn" style={{ position: "absolute", top: 9, right: 10, background: "transparent", border: "none", cursor: "pointer", fontSize: 16, lineHeight: 1, color: pinned ? accent : C.mute, padding: 2 }}>{pinned ? "★" : "☆"}</button>
+      <div style={{ fontFamily: MONO, fontSize: 14, fontWeight: 700, color: accent, paddingRight: 24 }}>{e.code}</div>
+      <div style={{ fontSize: 13.5, color: "#D9E0EE", lineHeight: 1.55, marginTop: 6 }}>{e.what}</div>
+      {e.example && <div style={{ fontFamily: MONO, fontSize: 12, color: "#9fb0d8", lineHeight: 1.5, marginTop: 9, padding: "8px 11px", borderRadius: 8, background: "rgba(0,0,0,0.4)", border: `1px solid ${C.lineSoft}`, whiteSpace: "pre-wrap", overflowX: "auto" }}>{e.example}</div>}
+    </div>
+  );
+}
 function CheatSheet({ cs, world, moduleNo, onClose }: { cs: NonNullable<ModuleDef["cheatsheet"]>; world: World; moduleNo: number; onClose: () => void }) {
   const A = world.accent;
+  const storeKey = `ops-cheat-pins-${moduleNo}`;
+  const [pins, setPins] = useState<string[]>(() => {
+    try { const v = JSON.parse(localStorage.getItem(storeKey) || "[]"); return Array.isArray(v) ? v : []; } catch { return []; }
+  });
+  useEffect(() => { try { localStorage.setItem(storeKey, JSON.stringify(pins)); } catch { /* storage blocked */ } }, [pins, storeKey]);
+  const toggle = (code: string) => setPins((p) => (p.includes(code) ? p.filter((c) => c !== code) : [...p, code]));
+  const allEntries = cs.groups.flatMap((g) => g.entries);
+  const pinned = pins.map((code) => allEntries.find((e) => e.code === code)).filter((e): e is NonNullable<typeof e> => !!e);
   return (
     <div role="dialog" aria-modal="true" onClick={onClose} className="co-anim co-pop" style={{ position: "fixed", inset: 0, zIndex: 120, background: "rgba(6,8,14,0.82)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)", overflowY: "auto" }}>
       <div onClick={(e) => e.stopPropagation()} style={{ position: "sticky", top: 0, zIndex: 2, background: `linear-gradient(180deg, rgba(10,12,19,0.98), rgba(10,12,19,0.88))`, borderBottom: `1px solid ${A}44`, backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)" }}>
@@ -981,7 +999,19 @@ function CheatSheet({ cs, world, moduleNo, onClose }: { cs: NonNullable<ModuleDe
         </div>
       </div>
       <div onClick={(e) => e.stopPropagation()} style={{ maxWidth: 880, margin: "0 auto", padding: "22px 22px 60px" }}>
-        <p style={{ color: "#D9E0EE", fontSize: 15, lineHeight: 1.65, margin: "0 0 22px", maxWidth: 640 }}>{cs.blurb}</p>
+        <p style={{ color: "#D9E0EE", fontSize: 15, lineHeight: 1.65, margin: "0 0 8px", maxWidth: 640 }}>{cs.blurb}</p>
+        <p style={{ color: C.mute, fontSize: 12.5, lineHeight: 1.5, margin: "0 0 22px" }}>Tip: tap <span style={{ color: A }}>☆</span> on any card to pin it to the top for quick access.</p>
+        {pinned.length > 0 && (
+          <div style={{ marginBottom: 28 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 13 }}>
+              <span style={{ width: 20, height: 2, background: A, borderRadius: 2 }} />
+              <span style={{ fontFamily: MONO, fontSize: 11.5, letterSpacing: ".14em", textTransform: "uppercase", fontWeight: 700, color: A }}>★ Your pins</span>
+            </div>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(262px, 1fr))", gap: 11 }}>
+              {pinned.map((e, ei) => <CsEntry key={ei} e={e} accent={A} pinned onToggle={() => toggle(e.code)} />)}
+            </div>
+          </div>
+        )}
         {cs.sample && (
           <div style={{ marginBottom: 28 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 11 }}>
@@ -1010,13 +1040,7 @@ function CheatSheet({ cs, world, moduleNo, onClose }: { cs: NonNullable<ModuleDe
               <span style={{ fontFamily: MONO, fontSize: 11.5, letterSpacing: ".14em", textTransform: "uppercase", fontWeight: 700, color: A }}>{g.heading}</span>
             </div>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(262px, 1fr))", gap: 11 }}>
-              {g.entries.map((e, ei) => (
-                <div key={ei} style={{ borderRadius: 13, padding: "14px 15px", background: "rgba(18,20,29,0.9)", border: `1px solid ${C.line}` }}>
-                  <div style={{ fontFamily: MONO, fontSize: 14, fontWeight: 700, color: A }}>{e.code}</div>
-                  <div style={{ fontSize: 13.5, color: "#D9E0EE", lineHeight: 1.55, marginTop: 6 }}>{e.what}</div>
-                  {e.example && <div style={{ fontFamily: MONO, fontSize: 12, color: "#9fb0d8", lineHeight: 1.5, marginTop: 9, padding: "8px 11px", borderRadius: 8, background: "rgba(0,0,0,0.4)", border: `1px solid ${C.lineSoft}`, whiteSpace: "pre-wrap", overflowX: "auto" }}>{e.example}</div>}
-                </div>
-              ))}
+              {g.entries.map((e, ei) => <CsEntry key={ei} e={e} accent={A} pinned={pins.includes(e.code)} onToggle={() => toggle(e.code)} />)}
             </div>
           </div>
         ))}
