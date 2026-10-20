@@ -734,6 +734,14 @@ function CapstoneChallenge({ onDone }: { onDone: () => void }) {
           <div style={{ fontSize: 14, color: C.soft, lineHeight: 1.55, padding: "11px 14px", borderRadius: 10, background: "rgba(139,123,255,0.05)", border: `1px solid ${C.line}` }}>
             <b style={{ color: C.indigo2, fontFamily: DISP }}>Reuse the credentials. </b>{G("The injection got you in, but now you have the admin's REAL password. Log in the normal way as the admin - that's credential reuse, and it works anywhere they used the same password.", "cap-reuse")}
           </div>
+          <div style={{ display: "flex", gap: 14, flexWrap: "wrap", alignItems: "center", padding: "13px 15px", borderRadius: 12, background: "rgba(85,217,140,0.06)", border: `1px solid ${C.green}44` }}>
+            <div style={{ flex: "1 1 240px", minWidth: 220 }}>
+              <div style={{ fontFamily: MONO, fontSize: 10, letterSpacing: ".1em", textTransform: "uppercase", color: C.green, fontWeight: 700, marginBottom: 7 }}>✓ What you recovered earlier</div>
+              <div style={{ fontFamily: MONO, fontSize: 12.5, color: C.ink, lineHeight: 1.75 }}>email · <span style={{ color: C.green }}>{ADMIN_EMAIL}</span><br />password · <span style={{ color: C.green }}>{ADMIN_PW}</span></div>
+              <div style={{ fontSize: 11.5, color: C.mute, marginTop: 6 }}>No need to memorise it, it is right here.</div>
+            </div>
+            <Btn tone="g" onClick={() => { setReEmail(ADMIN_EMAIL); setRePass(ADMIN_PW); setReMsg(null); }}>Fill these in →</Btn>
+          </div>
           <div style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: 14, overflow: "hidden" }}>
             <WinBar host="console.vantage.range · staff login" />
             <div style={{ padding: 18 }}>
