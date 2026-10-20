@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const SITE_PASSWORD = process.env.SITE_PASSWORD || "algorithmx2026";
+const SITE_PASSWORD = process.env.SITE_PASSWORD || "algorithmx2026!";
 const COOKIE_MAX_AGE = 60 * 60 * 24 * 30; // 30 days
 
 export async function POST(req: NextRequest) {
