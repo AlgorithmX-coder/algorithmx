@@ -298,6 +298,7 @@ function InjectionAct({ onCapture }: { onCapture: () => void }) {
   }
   function advance() {
     setRes(null);
+    setEmail(""); setPass(""); setTerm(""); // fresh box for the next stage
     if (si + 1 < STAGES.length) setSi(si + 1);
     else onCapture();
   }
@@ -511,7 +512,7 @@ function DrillSurface({ cfg, onSolved }: { cfg: DrillCfg; onSolved: () => void }
     const r = step.surface === "login" ? sc.attemptLogin(val, pass) : sc.search(val);
     setRes(r);
     if (step.done(r, val)) {
-      if (si + 1 < cfg.steps.length) setTimeout(() => { setSi(si + 1); setVal(""); setRes(null); setShowHint(false); }, 650);
+      if (si + 1 < cfg.steps.length) setTimeout(() => { setSi(si + 1); setVal(""); setPass(""); setRes(null); setShowHint(false); }, 650);
       else { setSolved(true); onSolved(); }
     }
   }
@@ -653,7 +654,7 @@ function CapstoneChallenge({ onDone }: { onDone: () => void }) {
     if (!sc || !step) return;
     const r = step.surface === "login" ? sc.attemptLogin(email, pass) : sc.search(term);
     setRes(r);
-    if (step.done(r)) setTimeout(() => { setRes(null); setShowHint(false); setPhase(phase + 1); }, 700);
+    if (step.done(r)) setTimeout(() => { setRes(null); setShowHint(false); setEmail(""); setPass(""); setTerm(""); setPhase(phase + 1); }, 700);
   }
   function tryWord(e: { word: string; hash: string }) {
     if (e.hash === ADMIN_HASH) { setCracked(true); setCrackMsg(`Cracked - ${ADMIN_EMAIL} : ${e.word}`); }
