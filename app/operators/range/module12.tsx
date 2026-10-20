@@ -359,6 +359,58 @@ export const MODULE12: ModuleDef = {
   client: "Harbour Systems",
   brief:
     "A deep engagement in the defender's seat under pressure. The breach you reconstructed last time is happening again - live. Harbour has called you in to run the response. The full job: triage the real incident out of the noise, make the containment call, work the lifecycle in the right order, and close out safely. Then four field jobs for new clients, and a final challenge you run start to finish. Everything you learned breaking in now tells you exactly how to shut an attacker down.",
+  industry: {
+    tag: "When the alarm goes off, speed and order decide how bad it gets.",
+    readLine: "a 2 minute read before the alarm",
+    enginesTitle: "The blue-team toolkit",
+    whyPunch: "Contain first. Clean second.",
+    motif: { pre: "attacker session live -> ", hit: "isolate the host", note: "contain first, never wipe: that destroys the evidence" },
+    primer: {
+      term: "Incident response",
+      what: "Incident response is the plan you run when an attack is actually happening. It follows a set order: prepare, detect, contain, eradicate, recover, and learn the lessons. The instinct is to wipe everything immediately, but good responders contain first (isolate the attacker, preserve the evidence), then clean, then restore from known-good backups.",
+      example: "alert storm -> find the ONE real incident -> isolate -> eradicate -> recover",
+      returns: "Most alerts are noise; the skill is finding the real one fast and acting in the right order. Panic and wipe, and you destroy the evidence and maybe the business. Work the lifecycle, and you shut the attacker down cleanly, which is exactly what you will do here.",
+    },
+    learn: [
+      "Triage the one real incident out of a flood of alerts.",
+      "Make the containment call with a live attacker on the wire.",
+      "Work the response lifecycle in the right order.",
+      "Close the incident out safely, with the lessons captured.",
+    ],
+    engines: [
+      { name: "Splunk (SIEM)", color: "#4ade80", blurb: "Collects logs from across an org and alerts on them: the SOC's radar screen.", here: true, icon: "server" },
+      { name: "Microsoft Sentinel", color: "#5fe6ff", blurb: "A cloud SIEM with built-in automation for spotting and responding to attacks.", icon: "server" },
+      { name: "CrowdStrike Falcon (EDR)", color: "#e5392f", blurb: "Watches every device for malicious behaviour and lets you isolate an infected one remotely.", icon: "shield" },
+      { name: "Microsoft Defender (EDR)", color: "#8b7bff", blurb: "The endpoint-defence equivalent built into Windows environments.", icon: "shield" },
+      { name: "SOAR + playbooks", color: "#ffb347", blurb: "Automates the repetitive response steps and runs a written recipe for each incident type.", icon: "tool" },
+    ],
+    headline: {
+      masthead: "THE RECOVERY WIRE",
+      dateline: "2017 · CONTEMPORARY REPORTING",
+      title: "A worm wiped a shipping giant, and one server in Ghana saved it",
+      body: "In 2017 the NotPetya worm tore through Maersk, the world's largest shipping company, wiping machines worldwide in minutes and freezing ports. Every one of its roughly 150 domain controllers was wiped, except one in a Ghana office that happened to be offline during a blackout. That single lucky backup seeded the rebuild. Staff rebuilt 4,000 servers and 45,000 PCs in about ten days; the hit was put at $250 to $300 million.",
+      stat: "10 days",
+      statLabel: "TO REBUILD 4,000 SERVERS",
+      why: "Attacks are a matter of when, not if. How fast and how calmly you respond, and whether you have a clean backup, decides whether it's a bad week or the end of the business.",
+    },
+    realWorld:
+      "Every organisation gets attacked; what separates a bad day from a catastrophe is the response. Incident response is detecting the real attack in a flood of alerts, containing it before it spreads, removing the attacker, and recovering from clean backups, all under pressure and against the clock. Done well it turns a breach into an incident report; done badly it turns one into a headline.",
+    now: {
+      stat: "$1.9M",
+      statLabel: "saved per breach by teams that automate response (IBM 2025)",
+      body: "Speed decides the cost. IBM's 2025 report found teams using AI and automation heavily cut their breach lifecycle by 80 days and saved $1.9 million per breach versus those that didn't. Responders work a standard lifecycle, prepare, detect, contain, eradicate, recover, learn, and the faster they move through it, the less it costs.",
+    },
+    recent: {
+      year: "2024",
+      title: "A bad update, a worldwide manual recovery",
+      body: "In July 2024 a faulty security-software update from CrowdStrike crashed about 8.5 million Windows machines worldwide, grounding flights and downing hospitals and banks. The recovery was largely by hand: each machine had to be booted and fixed individually. A reminder that response and recovery, not just prevention, keep the world running.",
+    },
+    ahead:
+      "AI is moving into the Security Operations Centre as auto-triage: AI agents sift the flood of alerts, build timelines and draft case summaries so human responders spend their time on the few threats that matter, which IBM links to big cuts in breach cost and time. The catch is that attackers use AI too, to move faster, so defenders increasingly have to automate just to keep pace.",
+    role:
+      "This is day-one knowledge for SOC analysts, incident responders and threat hunters. When an organisation is under attack, these are the people who stop the bleeding.",
+    roles: ["SOC analyst", "Incident responder", "Threat hunter", "Security engineer"],
+  },
   lesson: {
     blocks: [
       { h: "Incident response has a shape", body: "When a breach is underway you don't improvise - you follow a lifecycle: prepare, detect, contain, eradicate, recover, and lessons learned. The order matters enormously. The instinct to fix everything at once, or wipe it and start over, usually makes things worse. Calm, staged action is the whole discipline." },
@@ -396,6 +448,12 @@ export const MODULE12: ModuleDef = {
   },
   handler: "You're defending now, under pressure. Don't lunge for the big dramatic fix. Triage to the real incident, contain, then work the lifecycle in order - eradicate, recover, learn. Keep the evidence. Calm and staged beats fast and destructive every time.",
   hint: "Work the stages in order. Most alerts are noise - the real incident is the one causing active harm. Contain first (block + kill session), never wipe. Then order the lifecycle: contain, eradicate, recover, lessons. Keep the logs.",
+  plan: [
+    { label: "Triage", goal: "Separate the one real incident from the flood of benign alerts before you act." },
+    { label: "Contain", goal: "The attacker's session is live and exporting data. Make the right first move." },
+    { label: "Work the lifecycle", goal: "Session contained. Put the remaining response steps in the right order." },
+    { label: "Close out", goal: "The threat is removed. Finish the incident properly, with the lessons captured." },
+  ],
   Act: IncidentAct,
   flag: "flag{c0nt41n_th3n_3rad1cate}",
   defend: {
@@ -422,6 +480,48 @@ export const MODULE12: ModuleDef = {
     cvss: "8.1",
     impact: "An active account-takeover breach was handled end to end: the real incident was triaged out of the noise, the attacker contained, their foothold eradicated and the entry vulnerability closed, systems recovered from clean backups, and a lessons-learned review run - with evidence preserved throughout.",
     fix: "Maintain a tested IR plan, central append-only logging, rapid session-revocation and IP-blocking, clean tested backups, and regular tabletop exercises so response is executed, not improvised.",
+  },
+  cheatsheet: {
+    title: "Incident response quick reference",
+    blurb: "The response lifecycle, how to get it right under pressure, and the tools that run it, in plain words. You do not need to memorise any of it: it lives here, open it whenever you like.",
+    sample: {
+      caption: "Most of the job is telling a real incident from noise, fast. Here is the call on three typical alerts.",
+      cols: ["the alert", "real incident?", "what to do"],
+      rows: [
+        ["failed logins, then a success, new country", "yes: account takeover", "contain: isolate + kill the session"],
+        ["antivirus blocked a known test file", "no: noise", "note it, move on"],
+        ["a backup job ran at 2am", "no: routine", "ignore"],
+      ],
+    },
+    groups: [
+      {
+        heading: "The response lifecycle",
+        entries: [
+          { code: "prepare", what: "Before anything: have a plan, tested backups, logging and contacts ready.", example: "known-good backups + an on-call rota" },
+          { code: "detect + triage", what: "Find the real incident in the noise, and judge how serious it is.", example: "the login success after a brute-force storm" },
+          { code: "contain", what: "Stop it spreading FIRST: isolate the host, kill the session, block the account. Don't wipe yet.", example: "pull the machine off the network" },
+          { code: "eradicate + recover", what: "Remove the attacker and their implants, then restore from known-clean backups.", example: "rebuild from a backup taken before the breach" },
+        ],
+      },
+      {
+        heading: "Getting it right under pressure",
+        entries: [
+          { code: "contain before you clean", what: "Wiping first destroys the evidence you need and may miss persistence.", example: "isolate, preserve, THEN eradicate" },
+          { code: "preserve evidence", what: "Keep the logs and a copy of the affected systems for forensics and lessons.", example: "snapshot before you rebuild" },
+          { code: "clean backups only", what: "Restore from a backup made BEFORE the compromise, or you reinfect yourself.", example: "the Ghana server that saved Maersk" },
+          { code: "lessons learned", what: "After recovery, work out how it happened and fix the root cause.", example: "close the hole that let them in" },
+        ],
+      },
+      {
+        heading: "The tools",
+        entries: [
+          { code: "SIEM", what: "Collects logs from everywhere and alerts on suspicious activity: the SOC's radar.", example: "Splunk, Microsoft Sentinel" },
+          { code: "EDR", what: "Watches every device for malicious behaviour and lets you isolate one remotely.", example: "CrowdStrike Falcon, Microsoft Defender" },
+          { code: "SOAR + playbooks", what: "Automates the repetitive response steps and runs a written recipe for each incident type.", example: "auto-isolate a host on a high-confidence alert" },
+          { code: "the SOC", what: "The security operations centre: the team watching the screens around the clock.", example: "analysts triaging alerts 24/7" },
+        ],
+      },
+    ],
   },
   takeaway: "In a live breach, contain before you clean. Block and isolate the attacker first, preserve the evidence, recover only from known-clean backups.",
   outcome: [
