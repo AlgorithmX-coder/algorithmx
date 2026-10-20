@@ -406,6 +406,55 @@ export const MODULE2: ModuleDef = {
   client: "Caldera Freight",
   brief:
     "A deep engagement in pure reconnaissance - don't touch their systems at all. Caldera Freight wants to know how exposed they are before a new portal goes live. The full job, all from public sources: piece together the admin's login from people-intel, find the internal portal in the certificate-transparency logs, lift a username from a leaked document's metadata, then dork out a password a developer pasted in public. Then four field jobs for new clients, and a final challenge you run start to finish. Everything is modelled in your browser; nothing leaves your machine, and you never touch the target.",
+  industry: {
+    tag: "Before a single exploit, the attacker does their homework, and most of it is just public.",
+    motif: { pre: "crt.sh -> ", hit: "staging-admin.caldera.range", note: "an internal portal nobody linked, found in public cert logs" },
+    primer: {
+      term: "OSINT",
+      what: "OSINT is open-source intelligence: everything you can learn about a target from public sources, with no break-in at all. Company sites, social media, job ads, certificate logs, leaked files, document metadata. Attackers do this homework first, because the more they know, the easier everything after it becomes.",
+      example: 'filetype:env "API_KEY"',
+      returns: "That single search hunts for config files people accidentally left public, passwords and all. Recon turns scattered public clues into a map of who works there, what systems they run, and where the soft spots are, which is exactly what you will do here.",
+    },
+    learn: [
+      "Footprint the people and piece together an admin's likely login email.",
+      "Map infrastructure through certificate-transparency logs to find an unlinked internal portal.",
+      "Mine a published document's hidden metadata for an internal username.",
+      "Dork out a config file a developer pasted in public, and read the password.",
+    ],
+    engines: [
+      { name: "Google dorking", color: "#4285F4", blurb: "Precise search operators (site:, filetype:, intitle:) that surface files nobody meant to leave public.", here: true, icon: "scan" },
+      { name: "Shodan", color: "#e5392f", blurb: "A search engine for internet-connected devices: cameras, servers and databases exposed online.", icon: "server" },
+      { name: "theHarvester", color: "#4ade80", blurb: "Gathers emails, subdomains and employee names about a target from public sources.", icon: "mail" },
+      { name: "Maltego", color: "#5fe6ff", blurb: "Maps the links between people, emails, domains and companies on a visual graph.", icon: "scan" },
+      { name: "Have I Been Pwned", color: "#ffb347", blurb: "Checks whether an email or password has already appeared in a known breach.", icon: "key" },
+    ],
+    headline: {
+      masthead: "THE OPEN LEDGER",
+      dateline: "2020 · US REGULATOR (NY DFS) REPORT + COURT RECORD",
+      title: "A 17-year-old talked his way into the world's biggest Twitter accounts",
+      body: "The attackers didn't break any code. They researched Twitter's staff, phoned them pretending to be IT support, and talked employees into handing over logins, then used that access to seize verified accounts, Obama, Musk, Apple and more, and post a Bitcoin scam. 130 accounts were targeted and victims sent over $118,000. The ringleader was 17.",
+      stat: "130",
+      statLabel: "TOP ACCOUNTS HIJACKED, NO MALWARE USED",
+      why: "No exploit and no virus, just research and a phone call. Most attacks start exactly here, with public homework on people, which is why learning what you leak is worth your time.",
+    },
+    realWorld:
+      "Reconnaissance is the quiet first phase of almost every attack: before touching a system, an attacker gathers everything public about it, staff names and emails, subdomains, exposed services, files and their metadata, leaked secrets. None of it is illegal to collect, and together it hands them the map for everything that follows. Knowing what your own side leaks is the first defence.",
+    now: {
+      stat: "68%",
+      statLabel: "of breaches involve a human element (Verizon DBIR)",
+      body: "Reconnaissance is the opening phase on the industry's attack map, MITRE ATT&CK (tactic TA0043). And it feeds the human side of attacks: Verizon's 2024 report found 68% of breaches involved a non-malicious human element, exactly the staff, mistakes and stolen logins that public recon targets first.",
+    },
+    recent: {
+      year: "2024",
+      title: "Billions of records, scraped into one file",
+      body: "In 2024 a background-check broker called National Public Data was found to have built its database by scraping personal information, and it leaked: around 2.9 billion records including names, addresses and Social Security numbers. (That record count overstates the people affected, a useful reminder to check claimed numbers.) It shows how scattered public data gets aggregated into a ready-made profile of almost everyone.",
+    },
+    ahead:
+      "AI collapses the slowest part of an attack: the research. Security teams have shown tools that read a person's public profile and auto-write a convincing, tailored phishing message in minutes, and language models can profile a target's whole public footprint at a scale no human could match. Add voice and face matching from scraped photos, and an attacker can impersonate someone from public data alone. Knowing, and limiting, what you expose matters more every year.",
+    role:
+      "This is day-one knowledge for penetration testers, OSINT analysts and threat-intelligence analysts. The best operators win the engagement in recon, before they touch a thing.",
+    roles: ["Penetration tester", "OSINT analyst", "Threat intelligence analyst", "SOC analyst"],
+  },
   lesson: {
     blocks: [
       { h: "Recon comes first, always", body: "Before any real test, an operator maps the target. Reconnaissance is gathering information about a system or organisation. The more you know going in, the less you have to touch, and the less you touch, the quieter and safer you are. Every professional engagement starts here, building a footprint of everything the target exposes." },
@@ -443,6 +492,12 @@ export const MODULE2: ModuleDef = {
   },
   handler: "Four sources, four field jobs, then one full challenge, all hands-off. Derive the admin's login from the people-intel board, find the internal portal in the certificate-transparency log, lift the author's username from the leaked PDF's metadata, then dork out the password a developer pasted. Try each yourself before the hints. You never touch their systems - you only read what's already public.",
   hint: "Work the sources in order. On the board, combine the email format with the admin's name. For the subdomain, the job ad already named it. For metadata, read the Author field. For the leak, search with an operator like filetype:env plus the company name.",
+  plan: [
+    { label: "Footprint people", goal: "Read the public sources and piece together the new admin's most likely login email." },
+    { label: "Map infrastructure", goal: "Search certificate-transparency logs for a staff portal subdomain nobody ever linked." },
+    { label: "Mine a document", goal: "Read a published PDF's hidden metadata and lift the author's internal username." },
+    { label: "Dork out a leak", goal: "Use a precise search to surface a pasted config file and read the password it exposes." },
+  ],
   Act: ReconAct,
   flag: "flag{0s1nt_full_f00tpr1nt}",
   defend: {
@@ -469,6 +524,48 @@ export const MODULE2: ModuleDef = {
     cvss: "6.5",
     impact: "The email scheme, the internal portal URL, the admin's identity and username, and a live test password are all derivable from public sources alone. An attacker can build a complete footprint - a valid login at a named portal, with a working credential - without ever touching a Caldera system.",
     fix: "Use role-based email addresses; keep internal URLs out of public ads; scrub document metadata; monitor certificate-transparency and paste sites for leaks and rotate any exposed secret; footprint yourself regularly.",
+  },
+  cheatsheet: {
+    title: "Recon & OSINT quick reference",
+    blurb: "Where an attacker's clues live, what they build from them, and how to shrink your own footprint, in plain words. You do not need to memorise any of it: it lives here, open it whenever you like.",
+    sample: {
+      caption: "None of this is a break-in. It is all public, and it all adds up. Here are three everyday sources and what each one quietly hands over.",
+      cols: ["public source", "what you pull from it", "why it helps an attacker"],
+      rows: [
+        ["staff on LinkedIn", "names + the email pattern", "guess anyone's login: first.last@"],
+        ["crt.sh (cert logs)", "every subdomain ever certified", "finds staging/admin sites linked nowhere"],
+        ["a published PDF", "author, software, internal paths", "usernames the company never meant to share"],
+      ],
+    },
+    groups: [
+      {
+        heading: "Where the clues live",
+        entries: [
+          { code: "search dorks", what: "Precise operators (site:, filetype:, intitle:) surface files and pages nobody meant to leave public.", example: 'filetype:env "API_KEY" -> leaked configs' },
+          { code: "certificate transparency", what: "Public logs of every HTTPS certificate a company issues, so every subdomain is discoverable.", example: "crt.sh lists staging-admin.target.range" },
+          { code: "document metadata", what: "Files carry hidden info: author, software, sometimes internal file paths.", example: "a PDF's Author field = an internal username" },
+          { code: "breach data", what: "Past breaches are searchable, so an email or password may already be public.", example: "Have I Been Pwned shows which breaches hit an address" },
+        ],
+      },
+      {
+        heading: "What it builds",
+        entries: [
+          { code: "email pattern", what: "One known email reveals the format, so you can guess everyone's.", example: "j.smith@ -> every staff login" },
+          { code: "attack surface", what: "The full list of a target's domains, subdomains and exposed services.", example: "the forgotten staging site with weaker security" },
+          { code: "the human map", what: "Who works there, their roles, and who to impersonate or phish.", example: "the new IT admin, still finding their feet" },
+          { code: "a leaked secret", what: "A pasted key, password or config found in public is an instant way in.", example: "a .env file with a live password" },
+        ],
+      },
+      {
+        heading: "Shrinking your footprint (the defence)",
+        entries: [
+          { code: "publish less", what: "Don't put internal hostnames, emails or org charts in public where you don't have to.", example: "keep staging-admin.* out of public certs where you can" },
+          { code: "scrub metadata", what: "Strip author and path metadata from files before you publish them.", example: "clear document properties on export" },
+          { code: "scan yourself", what: "Run the same recon on your own org to find what leaks, before an attacker does.", example: "dork your own domain for exposed .env files" },
+          { code: "rotate leaked secrets", what: "Treat any key that has touched public code as compromised, and rotate it.", example: "a key seen in a paste -> revoke and reissue" },
+        ],
+      },
+    ],
   },
   takeaway: "Anything a company puts in public can be stitched into a way in. If it is out there, assume an attacker already has it.",
   outcome: [
