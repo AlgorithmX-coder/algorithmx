@@ -356,12 +356,24 @@ Screen these BEFORE shipping (sources: Abdullah UAT + owner reviews).
 
 ## 15. Per-module data to author (rollout checklist)
 
-**Status.** M5 = reference. M6 (XSS) = first pilot, shipped #726. The `moduleNo === 5`
-preview gate is now REMOVED (#725), so the designed brief/scope/bright-text/hint shell
-renders on all 16 automatically; the pin-tip is a standout callout (#724). The 14 still
-to roll: M1, M2, M3, M4, M7, M8, M9, M10, M11, M12, M13, M14, M15, M16.
+**Status: ROLLOUT COMPLETE (2026-10-20). All 16 modules are built to this standard.**
+M5 = reference; M6 (XSS) = pilot (#726); then M4/M7/M8/M9, M1/M2/M3/M10,
+M11/M12/M13/M14, M15/M16 shipped one PR each (#729-#744). The `moduleNo === 5` preview
+gate is removed (#725); the pin-tip is a standout callout (#724).
 
-For each remaining module, author in `moduleNN.tsx` (one surgical PR per module):
+Shell generalisations added so the single shared `IntroPage` fits every topic (keep these
+in mind when editing a module):
+- `EngineGlyph` set + `EngineIcon` type (#728): db, browser, tool, scan, key, lock, server,
+  shield, doc, mail. Pick the glyph that fits the field (§1a).
+- `industry.now.statLabel` (#733): non-OWASP/phase topics (recon, forensics, IR, disclosure)
+  label their headline stat correctly (MITRE ATT&CK, a Verizon DBIR %, CVE counts, etc.)
+  instead of the default "on the OWASP Top 10, 2025".
+- `industry.readLine` / `enginesTitle` / `whyPunch` (#738): defender and foundational
+  modules reword the three attacker-framed intro strings (the eyebrow, the engine-section
+  header, the "why it matters" punch line). All default to the red-team wording.
+- Per-module `industry.motif` (hero signature-move line) and `engines[].icon`.
+
+To ADD or EDIT a module, author in `moduleNN.tsx` (one surgical PR per module):
 - `industry { tag, motif, primer, learn[], engines[] (+icon), headline, realWorld,
   recent, now, ahead, role, roles[] }` - real + sourced per topic. Pick engine glyphs
   (§1a) that fit the topic; set the hero `motif` (§1); stat beside the OWASP label.
@@ -404,3 +416,11 @@ only, so send once merged + deployed).
 - Module 6 (Cross-Site Scripting) now opens with the full feature intro (what XSS is,
   a real 2005 case, where it ranks today, the AI angle, careers) and has its own XSS
   cheat sheet. The rest of the modules follow, one at a time.
+
+**2026-10-20 - all 16 modules complete:**
+- Every module now opens with its own full feature intro: a plain-English primer, the
+  real tools of its field, a true news story (a real breach or case), where it ranks or
+  stands today, the AI angle, and the careers it leads to.
+- Every module has its own topic cheat sheet (a worked sample plus three bands) on the
+  side tab, and a visual "mission map" of its stages.
+- The whole 16-module course is now one consistent, sourced, careers-forward experience.
