@@ -368,6 +368,58 @@ export const MODULE14: ModuleDef = {
   client: "Redoubt · tradecraft",
   brief:
     "A deep engagement in the craft that carries every finding - because a finding is only as good as the report that delivers it. Before the capstone, Redoubt wants you fluent in it: scoring how serious a vulnerability really is, structuring a report a busy team can act on, and disclosing the right way - the way that gets it fixed and keeps you on the right side of the law. The full job, then four field jobs, then a final challenge you run start to finish.",
+  industry: {
+    tag: "Finding the bug is half the job. A clear report, scored and disclosed right, is what gets it fixed.",
+    readLine: "a 2 minute read before you write it up",
+    enginesTitle: "The tools of the write-up",
+    whyPunch: "A bug unreported is a bug unfixed.",
+    motif: { pre: "report -> ", hit: "CVSS 10.0, Critical", note: "scored, evidenced, disclosed privately: now it gets fixed" },
+    primer: {
+      term: "Disclosure",
+      what: "Finding a vulnerability is only useful if it gets fixed, and that depends on the write-up. Disclosure and reporting is the craft of explaining a flaw clearly (what, where, how to reproduce, the impact), scoring how serious it is with CVSS (a 0 to 10 scale), and telling the right people the right way, privately first, so they can patch before attackers pounce.",
+      example: "CVE-2021-44228  |  CVSS 10.0 (Critical)  |  reported privately, then patched",
+      returns: "A good report turns a finding into a fix; a bad one, or going public too early, gets it ignored or exploited. Clear writing, a fair severity score, and coordinated disclosure are the whole skill, which is exactly what you will practise here.",
+    },
+    learn: [
+      "Score a finding's severity honestly with CVSS.",
+      "Structure a clear report a busy team can act on fast.",
+      "Disclose a real, critical flaw the responsible way.",
+      "Make the hard call when a vendor goes silent.",
+    ],
+    engines: [
+      { name: "CVSS", color: "#4ade80", blurb: "The 0 to 10 severity score everyone uses to rank how bad a bug is (9+ = critical).", here: true, icon: "doc" },
+      { name: "CVE / NVD", color: "#5fe6ff", blurb: "A unique public ID for each vulnerability, plus a national database of details and scores.", icon: "server" },
+      { name: "HackerOne / Bugcrowd", color: "#8b7bff", blurb: "Platforms where organisations invite and reward responsible bug reports.", icon: "shield" },
+      { name: "security.txt", color: "#ffb347", blurb: "A standard file telling researchers exactly where and how to report a flaw to a site.", icon: "doc" },
+      { name: "Report / VDP template", color: "#e535ab", blurb: "The structure that makes a finding actionable: what, where, reproduce, impact, fix.", icon: "doc" },
+    ],
+    headline: {
+      masthead: "THE PATCH LEDGER",
+      dateline: "2021 · VENDOR ADVISORY + CISA RECORD",
+      title: "A free logging tool held a 10/10 flaw, and quiet reporting saved the day",
+      body: "In late 2021 a researcher found a critical bug in Log4j, a tiny free logging component buried inside a huge share of the world's Java software, including Minecraft servers. He reported it privately to the maintainers, who built a fix before the flaw went public. Rated the maximum CVSS 10.0, it affected an estimated hundreds of millions of devices. Because it was disclosed responsibly, the world could patch instead of being caught cold.",
+      stat: "10.0",
+      statLabel: "CVSS: THE MAXIMUM SEVERITY",
+      why: "A flaw that could have been a catastrophe became a frantic but manageable patch, because one person reported it the right way. How you disclose decides whether a finding protects people or burns them.",
+    },
+    realWorld:
+      "A vulnerability only matters once it's fixed, and that hinges on the report. Reporting and disclosure is scoring a finding fairly (CVSS), writing it so a stranger can reproduce and prioritise it, and telling the right people privately first so they can patch before attackers exploit it. Do it well and you protect millions; do it badly, or publicly too soon, and you hand attackers a weapon.",
+    now: {
+      stat: "40,000+",
+      statLabel: "new CVEs published in 2024, and rising",
+      body: "The volume is enormous: more than 40,000 new vulnerabilities (CVEs) were published in 2024, up around 38% on the year, over a hundred a day. Each one needs scoring and triage, which is why CVSS (the 0 to 10 severity scale) and clear reporting are core skills, not paperwork.",
+    },
+    recent: {
+      year: "2025",
+      title: "The system that names every bug nearly went dark",
+      body: "In April 2025 the US funding that keeps the CVE program running, the shared ID system the whole industry uses to name and track vulnerabilities, was hours from lapsing before it was extended at the last minute, and a non-profit was set up as a backup. A reminder that the plumbing of disclosure is critical infrastructure in its own right.",
+    },
+    ahead:
+      "AI now finds and writes up bugs faster than humans can triage them, and the flood is straining disclosure programs: in early 2026 the curl project shut its bug bounty after an avalanche of AI-generated 'slop' reports, almost none of them real. Platforms are adding AI triage to cope. The flip side is that AI also finds genuine, exploitable bugs at machine speed, so clear, well-evidenced reporting and fast coordinated disclosure matter more than ever.",
+    role:
+      "This is the skill that turns every other module into impact: penetration testers, vulnerability analysts and bug-bounty hunters all live or die by the report. A finding nobody can act on is worth nothing.",
+    roles: ["Penetration tester", "Vulnerability analyst", "Bug-bounty hunter", "Security consultant"],
+  },
   lesson: {
     blocks: [
       { h: "A finding needs a report", body: "Discovering a vulnerability is half the job; communicating it is the other half. A good finding report says plainly what the issue is, where it lives, how serious it is, what the impact would be, how to reproduce it, and how to fix it - in language the people who must act on it can use. Every capture you've filed in your portfolio follows exactly this shape." },
@@ -405,6 +457,12 @@ export const MODULE14: ModuleDef = {
   },
   handler: "Four calls in sequence, then four field jobs and a full write-up. Score each finding honestly on the standard scale, structure the report so a busy team can act, choose the disclosure path that protects people and stays legal, and handle the hard case when a vendor goes quiet. Get these right and your reports are field-ready.",
   hint: "Work the stages in order. Remote + no login + whole database = Critical; a banner leak = Low. A report runs title, location, severity, impact, reproduce, remediation. Always disclose privately first; if a vendor won't engage, escalate through a CERT - never dump an exploit.",
+  plan: [
+    { label: "Score the severity", goal: "Score each finding to the right band: weigh how easy it is to exploit against how bad the impact is." },
+    { label: "Build the report", goal: "Put a finding report's sections in the order that lets a busy team act on it fast." },
+    { label: "Disclose it right", goal: "You found a real, critical flaw in a live company's system. Handle the disclosure responsibly." },
+    { label: "The hard call", goal: "You reported privately 90 days ago, the vendor has gone silent, and users are still exposed. Decide." },
+  ],
   Act: DisclosureAct,
   flag: "flag{d1sclosed_r3sponsibly}",
   defend: {
@@ -431,6 +489,48 @@ export const MODULE14: ModuleDef = {
     cvss: "N/A",
     impact: "A set of findings was triaged to correct severities, written up in a clear, actionable report structure, and routed through responsible coordinated disclosure - including the hard case of an unresponsive vendor - so each flaw gets fixed without arming attackers or breaking the law.",
     fix: "For organisations: publish a vulnerability-disclosure policy and security contact, acknowledge and fix on a sensible timeline, and consider a bug-bounty programme. For researchers: score honestly, report privately first, and escalate through a CERT rather than weaponising a flaw.",
+  },
+  cheatsheet: {
+    title: "Disclosure & reporting quick reference",
+    blurb: "How to score a finding, write it so a busy team can act, and disclose it the right way, in plain words. You do not need to memorise any of it: it lives here, open it whenever you like.",
+    sample: {
+      caption: "A report is only useful if someone can act on it. These three parts do the heavy lifting.",
+      cols: ["part of the report", "what goes in it", "why it matters"],
+      rows: [
+        ["severity (CVSS)", "a 0-10 score + the vector", "tells them what to fix first"],
+        ["steps to reproduce", "exact steps a stranger can follow", "proves it's real, lets them test the fix"],
+        ["impact", "what an attacker could actually do", "turns 'a bug' into a business decision"],
+      ],
+    },
+    groups: [
+      {
+        heading: "Scoring it",
+        entries: [
+          { code: "CVSS", what: "The industry 0 to 10 severity score (9+ = critical), from how easy and how damaging a bug is.", example: "CVSS 10.0 = drop everything and patch" },
+          { code: "CVE", what: "A unique public ID for a specific vulnerability, so everyone names it the same way.", example: "CVE-2021-44228 (Log4Shell)" },
+          { code: "the NVD", what: "The national database that adds details and scores to each CVE.", example: "look up a CVE's score and affected versions" },
+          { code: "prioritise by risk", what: "Severity times how reachable it is: fix the critical, reachable ones first.", example: "a 10.0 on the public internet beats a 7 on an internal box" },
+        ],
+      },
+      {
+        heading: "Writing it",
+        entries: [
+          { code: "what + where", what: "The flaw, its exact location, and the affected versions.", example: "IDOR on GET /record?id=, all versions" },
+          { code: "steps to reproduce", what: "Precise steps a stranger can follow to see it themselves.", example: "1. log in  2. change id to 1000  3. see another's record" },
+          { code: "impact", what: "What an attacker could actually do with it, in plain terms.", example: "read any customer's records without permission" },
+          { code: "the fix", what: "A clear, actionable recommendation.", example: "check ownership server-side on every record" },
+        ],
+      },
+      {
+        heading: "Disclosing it",
+        entries: [
+          { code: "coordinated disclosure", what: "Tell the maintainer privately, give them time to fix, then go public together.", example: "Log4Shell: reported, patched, then announced" },
+          { code: "security.txt / VDP", what: "A standard way for a site to publish where and how to report a flaw.", example: "/.well-known/security.txt with a contact" },
+          { code: "bug bounty", what: "Programs that invite and reward responsible reports (HackerOne, Bugcrowd).", example: "report via the program, get paid per valid bug" },
+          { code: "never cover it up", what: "Hiding a breach or flaw is worse, and can be a crime (the Uber cover-up conviction).", example: "disclose honestly; don't pay to bury it" },
+        ],
+      },
+    ],
   },
   takeaway: "A finding only matters if it gets fixed. Score it honestly, write it so a busy team can act, and disclose privately first.",
   outcome: [
