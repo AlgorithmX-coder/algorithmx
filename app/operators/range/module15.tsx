@@ -314,6 +314,55 @@ export const MODULE15: ModuleDef = {
   client: "Vantage Mutual",
   brief:
     "The capstone, part one: everything you've learned, chained. A real client, Vantage Mutual, and no training wheels. The full job: recon the public surface, loot an exposed backup, break in with what you loot, and escalate to full data access - seeing how small findings combine into total compromise. Then four field jobs for new clients, and a final challenge you run start to finish, unguided. This is a real engagement in miniature.",
+  industry: {
+    tag: "Four small, forgettable flaws. Chained together, they hand over everything.",
+    motif: { pre: "robots.txt -> backup -> ", hit: "reused admin password", post: " -> full export", note: "four minor flaws, total compromise" },
+    primer: {
+      term: "The kill chain",
+      what: "A real attack is rarely one big exploit; it's a chain of small steps. The attacker does passive recon to find something exposed, loots a credential or secret from it, reuses that to break in, then escalates to the crown jewels, the data that matters. Each link looks minor on its own; chained, they add up to total compromise.",
+      example: "recon -> loot a backup -> reuse its admin password -> export all the data",
+      returns: "No single step here is a dramatic zero-day; it's an exposed file, a credential left in a backup, a reused password. That's how most real breaches actually happen, and in this capstone you run the whole chain yourself.",
+    },
+    learn: [
+      "Recon the public surface for something exposed.",
+      "Loot a credential from an exposed backup.",
+      "Break in by reusing what you looted.",
+      "Escalate to full data access: the crown jewels.",
+    ],
+    engines: [
+      { name: "Kali Linux", color: "#5fe6ff", blurb: "The operator's platform: a Linux system that bundles every tool a full engagement needs.", here: true, icon: "tool" },
+      { name: "Nmap", color: "#4ade80", blurb: "Maps the target: which machines, ports and services are exposed. The classic recon step.", icon: "scan" },
+      { name: "Burp Suite", color: "#ff6633", blurb: "Sits between browser and site to inspect and tamper with requests while you find the way in.", icon: "tool" },
+      { name: "Metasploit", color: "#d63aff", blurb: "A framework of ready-made exploits and payloads for gaining a foothold.", icon: "tool" },
+      { name: "hashcat", color: "#ffb347", blurb: "Cracks looted password hashes back into working credentials.", icon: "key" },
+    ],
+    headline: {
+      masthead: "THE BREACH LEDGER",
+      dateline: "2019 · FBI AFFIDAVIT + REGULATOR RECORD",
+      title: "Four small cloud mistakes, chained into 100 million records",
+      body: "No dramatic single exploit. An attacker found a misconfigured firewall, tricked it into fetching the server's own cloud access key, reused that key against the company's storage, and copied out the data, an export of around 100 million people's records including 140,000 Social Security numbers. Each flaw was minor alone; chained, they were catastrophic. The attacker was arrested and convicted, and Capital One paid an $80 million fine and a $190 million settlement.",
+      stat: "100M",
+      statLabel: "RECORDS, FROM FOUR MINOR FLAWS CHAINED",
+      why: "Real breaches are rarely one big hole; they're small, dull mistakes that line up. Break any single link, the firewall config, the over-powered key, and the whole chain collapses, which is exactly why operators learn to see the whole route.",
+    },
+    realWorld:
+      "Almost no real breach is a single magic exploit. It's a chain: an exposed file leads to a looted credential, which is reused to log in, which is escalated to the data that matters. Each step is individually small and easy to miss, which is exactly why they get missed. Learning to find and chain those steps, and to see where a defender could cut the chain, is the whole job of an engagement.",
+    now: {
+      stat: "22%",
+      statLabel: "of breaches start with stolen credentials (Verizon DBIR 2025)",
+      body: "The chain usually starts with a login: Verizon's 2025 report found stolen credentials were the single most common way in, behind 22% of breaches. And it moves fast, security firms measure the average time from first foothold to spreading across a network in under an hour. Attacks are a sequence of chained steps (the 'kill chain'), and speed is what makes them dangerous.",
+    },
+    recent: {
+      year: "2024",
+      title: "One missing MFA, a national health crisis",
+      body: "In 2024 attackers logged into Change Healthcare through a remote-access portal that had no multi-factor authentication, using a stolen password, then spread, stole data, and launched ransomware. It disrupted pharmacies and hospitals across the US for months. One missing control on one portal, chained with a stolen login, became one of the largest healthcare breaches ever.",
+    },
+    ahead:
+      "AI is starting to run whole chains by itself. In 2025 an autonomous AI pentester, XBOW, reached number one on a US bug-bounty leaderboard, the first machine to top it, and a 2024 study showed AI agents exploiting most of a set of real vulnerabilities from just the public description. The recon-to-exploit work that needed a skilled human is being automated, which makes understanding the whole chain, and how to break it, more valuable, not less.",
+    role:
+      "This is the real job: penetration testers, red teamers and security consultants run exactly this chain, legally, to find the route before criminals do. Everything in the course so far was training for this.",
+    roles: ["Penetration tester", "Red teamer", "Security consultant", "Bug-bounty hunter"],
+  },
   lesson: {
     blocks: [
       { h: "Real attacks are chains", body: "A breach is rarely one spectacular flaw. It's usually a chain of small, dull problems - a file that shouldn't be reachable, a credential left where it doesn't belong - each harmless-looking alone, devastating together. The skill of a full engagement is seeing how findings combine, not just collecting them individually." },
@@ -351,6 +400,12 @@ export const MODULE15: ModuleDef = {
   },
   handler: "This is the real thing now - recon and exploitation across a whole engagement, no training wheels. Start with recon: read what they tell crawlers to avoid. Follow the thread it gives you - loot the backup, reuse the credential, escalate. One clue leads to the next; chain them to full access.",
   hint: "Work the chain in order. Fetch robots.txt and read the named backup path, fetch that backup for the admin credential, log into the console with it, then widen the export scope to 'all' to prove full access.",
+  plan: [
+    { label: "Recon", goal: "Start passively: read Vantage's robots.txt and find the path it shouldn't be advertising." },
+    { label: "Loot the backup", goal: "The exposed backup has no access control. Fetch it and lift the admin credential." },
+    { label: "Break in", goal: "Log into the console with the looted credential: credential reuse, straight from the backup." },
+    { label: "Crown jewels", goal: "As admin, pull the protected customer export to prove full impact and capture the flag." },
+  ],
   Act: EngagementAct,
   flag: "flag{ch41n3d_t0_adm1n}",
   defend: {
@@ -377,6 +432,48 @@ export const MODULE15: ModuleDef = {
     cvss: "9.1",
     impact: "robots.txt names a database backup served with no access control; the dump contains plaintext admin credentials, which are reused to log into the console and export the entire customer database - a minor info-leak and a misconfiguration chained into full administrative access and a complete data breach.",
     fix: "Remove backups from web-reachable locations and encrypt them with access control; stop referencing sensitive paths in robots.txt; never store credentials in plaintext; rotate the exposed credentials; apply least privilege so a single leak reaches less.",
+  },
+  cheatsheet: {
+    title: "Full engagement quick reference",
+    blurb: "How a real attack chains small flaws into total compromise, and where a defender cuts the chain, in plain words. You do not need to memorise any of it: it lives here, open it whenever you like.",
+    sample: {
+      caption: "No single step is dramatic. The danger is the sequence. Here is the chain you run, and the flaw each step abuses.",
+      cols: ["the step", "what you do", "the flaw it abuses"],
+      rows: [
+        ["recon", "read robots.txt / the public surface", "an exposed path nobody hid properly"],
+        ["loot", "fetch the exposed backup", "a backup served with no access control"],
+        ["break in + escalate", "reuse the looted password", "a password reused from the dump"],
+      ],
+    },
+    groups: [
+      {
+        heading: "The attack chain",
+        entries: [
+          { code: "recon", what: "Find something exposed, passively: a path, a file, a service.", example: "robots.txt names a /backup.sql" },
+          { code: "loot", what: "Pull a credential or secret out of what you found.", example: "an admin password inside the backup" },
+          { code: "break in", what: "Reuse the looted credential to log in for real.", example: "the backup's password still works on the console" },
+          { code: "escalate to impact", what: "Reach the crown jewels: the data or control that proves full compromise.", example: "export all customer records" },
+        ],
+      },
+      {
+        heading: "Why chains work",
+        entries: [
+          { code: "each link looks minor", what: "An exposed file, an unprotected backup, a reused password: dull alone, lethal together.", example: "none of them is a dramatic zero-day" },
+          { code: "credential reuse", what: "A password found in one place is tried everywhere; people and systems reuse them.", example: "the backup password = the admin password" },
+          { code: "least privilege matters", what: "An over-powered account turns a small foothold into total access.", example: "a key with far more permission than it needed" },
+          { code: "speed", what: "Attackers move from foothold to full access in minutes, not days.", example: "average breakout time under an hour" },
+        ],
+      },
+      {
+        heading: "Breaking the chain (the defence)",
+        entries: [
+          { code: "cut any one link", what: "Fix a single step and the whole route collapses: hide the backup, or stop the reuse.", example: "access-control the backup = no loot" },
+          { code: "no secrets in backups", what: "Never leave credentials in dumps, configs or exports that could be exposed.", example: "scrub and protect every backup" },
+          { code: "unique credentials + MFA", what: "Don't reuse passwords, and require a second factor so a looted one isn't enough.", example: "MFA on the console stops the reuse" },
+          { code: "least privilege", what: "Give every account and key only the access it needs, so a foothold stays small.", example: "scope the key to one bucket, not all" },
+        ],
+      },
+    ],
   },
   takeaway: "Small flaws chain into total compromise: a leaked path, an exposed backup, a reused password. Break any single link and the whole route collapses.",
   outcome: [
