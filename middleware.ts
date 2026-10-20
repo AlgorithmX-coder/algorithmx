@@ -15,12 +15,20 @@ export function middleware(req: NextRequest) {
     return NextResponse.next();
   }
 
-  // The launch password was lifted (owner, 2026-10-18): the whole site is
-  // public now. Member areas (dashboard, lessons, the school class + teacher
-  // tools) each keep their own account login underneath, so a signed-in
-  // account is the only password a visitor ever needs. To re-gate the site,
-  // restore the site_auth cookie check that redirected to /password here.
-  return NextResponse.next();
+  // Launch password is BACK ON (owner 2026-10-20): the whole site requires the
+  // site password before anything is reachable. /password, /api, /verify and
+  // static assets are excluded by the matcher below, so the gate page and its
+  // POST endpoint stay open to take the password. CI e2e runs with E2E_TESTS=1
+  // and bypasses the gate so the suite can drive the app directly.
+  if (process.env.E2E_TESTS === "1") return NextResponse.next();
+
+  const authed = req.cookies.get("site_auth")?.value === "true";
+  if (authed) return NextResponse.next();
+
+  const url = req.nextUrl.clone();
+  url.pathname = "/password";
+  url.search = "";
+  return NextResponse.redirect(url);
 }
 
 export const config = {
