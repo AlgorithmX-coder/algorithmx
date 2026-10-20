@@ -894,6 +894,47 @@ export const MODULE5: ModuleDef = {
     "Count a query's columns with ORDER BY, then UNION a different table out through a search box - staff records, card data, or a hidden secrets table.",
     "Explain why parameterised queries kill injection for good where stripping quotes or banning 'UNION' never will.",
   ],
+  cheatsheet: {
+    title: "SQL quick reference",
+    blurb: "Everything the app uses to talk to its database, in plain words. You do not need to memorise any of it: it lives here, open it whenever you like.",
+    groups: [
+      {
+        heading: "Reading data (the everyday stuff)",
+        entries: [
+          { code: "SELECT", what: "Asks for specific columns. The start of almost every query.", example: "SELECT name, email" },
+          { code: "FROM", what: "Says which table to read from.", example: "FROM users" },
+          { code: "WHERE", what: "Keeps only the rows that match a condition.", example: "WHERE id = 42" },
+          { code: "ORDER BY", what: "Sorts the results by a column, or by column number.", example: "ORDER BY name" },
+          { code: "LIMIT", what: "Returns only the first few rows.", example: "LIMIT 10" },
+        ],
+      },
+      {
+        heading: "Matching and combining",
+        entries: [
+          { code: "AND / OR", what: "Join conditions. AND needs both true, OR needs either one.", example: "WHERE age > 12 AND city = 'Leeds'" },
+          { code: "LIKE", what: "Matches a text pattern. The % sign means 'anything can go here'.", example: "WHERE email LIKE '%@school.uk'" },
+          { code: "UNION", what: "Glues a second SELECT's results onto the first. Both must return the same number of columns.", example: "... UNION SELECT a, b FROM other" },
+        ],
+      },
+      {
+        heading: "Changing data (you only READ in this range)",
+        entries: [
+          { code: "INSERT", what: "Adds a brand new row to a table.", example: "INSERT INTO users ..." },
+          { code: "UPDATE", what: "Changes rows that already exist.", example: "UPDATE users SET ..." },
+          { code: "DELETE", what: "Removes rows. Off-limits on a real job without written permission.", example: "DELETE FROM users WHERE ..." },
+        ],
+      },
+      {
+        heading: "The bits injection abuses",
+        entries: [
+          { code: "'  (a single quote)", what: "Ends a piece of text inside the query. Slip one in where the app did not expect it and the rest of your typing can become commands.", example: "email = '' OR 1=1" },
+          { code: "--  (two dashes)", what: "A comment. The database ignores everything after it on the line, so you can switch off the password check.", example: "' OR 1=1 --" },
+          { code: "OR 1=1", what: "A condition that is always true, so the query matches every row, or lets you straight in.", example: "' OR 1=1 --" },
+          { code: "sqlite_master", what: "A hidden built-in table that lists every other table. UNION it out to see what is really in the database.", example: "UNION SELECT name FROM sqlite_master" },
+        ],
+      },
+    ],
+  },
   rep: 70,
   repRank: "Junior Operator",
   repTo: "205 / 300 to Operator",

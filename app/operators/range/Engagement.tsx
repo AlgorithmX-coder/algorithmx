@@ -11,7 +11,7 @@
  * learning. Each module supplies its teaching content + target as a ModuleDef;
  * the only bespoke code is the Act surface. */
 
-import { useState, type ReactNode } from "react";
+import { useState, useEffect, type ReactNode } from "react";
 import ModuleBackdrop from "./ModuleBackdrop";
 
 export type LessonBlock = { h: string; body: string };
@@ -101,6 +101,15 @@ export type ModuleDef = {
   /** What the learner can now do, shown as a "Module outcome" block on the report
    *  screen. 2-4 concrete "you can now..." capabilities. */
   outcome?: string[];
+  /** Optional per-module cheat sheet: a beginner-friendly quick reference the
+   *  learner can open full-screen from a side tab at any time, applicable to this
+   *  module (e.g. the SQL statements and what each does). Plain enough for a
+   *  non-technical reader; the module itself stays more technical. */
+  cheatsheet?: {
+    title: string;
+    blurb: string;
+    groups: { heading: string; entries: { code: string; what: string; example?: string }[] }[];
+  };
   rep: number;
   repRank: string;
   repTo: string;
@@ -227,6 +236,13 @@ export default function Engagement({
 }) {
   const [phase, setPhase] = useState<Phase>(mod.industry ? "intro" : "brief");
   const [callsign, setCallsign] = useState("NIGHTJAR");
+  const [cheatOpen, setCheatOpen] = useState(false);
+  useEffect(() => {
+    if (!cheatOpen) return;
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setCheatOpen(false); };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [cheatOpen]);
   const [lessonOk, setLessonOk] = useState(false);
   const [defendOk, setDefendOk] = useState(false);
   const [lessonLabOk, setLessonLabOk] = useState(false);
@@ -257,6 +273,13 @@ export default function Engagement({
     <div style={{ minHeight: "100vh", background: "transparent", color: C.ink, fontFamily: SANS, display: "grid", placeItems: "start center", padding: "44px 20px 100px", ["--world" as string]: world.accent, ["--world-soft" as string]: world.soft }}>
       <ModuleBackdrop theme={mod.moduleNo} />
       <style>{styles}</style>
+      {/* cheat sheet: a side tab, open any time, into a full-screen beginner-friendly reference */}
+      {mod.cheatsheet && (
+        <button onClick={() => setCheatOpen(true)} className="co-btn" style={{ position: "fixed", right: 0, top: "42%", transform: "translateY(-50%)", zIndex: 60, display: "flex", alignItems: "center", gap: 8, writingMode: "vertical-rl", padding: "16px 9px", borderRadius: "10px 0 0 10px", border: `1px solid ${world.accent}`, borderRight: "none", background: "rgba(13,15,22,0.92)", color: world.accent, fontFamily: MONO, fontSize: 11.5, fontWeight: 700, letterSpacing: ".12em", textTransform: "uppercase", cursor: "pointer", boxShadow: `0 0 22px -6px ${world.accent}` }}>
+          <span aria-hidden style={{ writingMode: "horizontal-tb" }}>▦</span>Cheat sheet
+        </button>
+      )}
+      {mod.cheatsheet && cheatOpen && <CheatSheet cs={mod.cheatsheet} world={world} moduleNo={mod.moduleNo} onClose={() => setCheatOpen(false)} />}
       <div style={{ width: "100%", maxWidth: 720, position: "relative", zIndex: 1 }}>
         {soc ? (
           // SOC watch-floor: a live status strip, so the defence modules read as a blue-team console room.
@@ -935,6 +958,48 @@ function PlanMap({ plan, accent, bodyColor }: { plan: { label: string; goal: str
           </li>
         ))}
       </ol>
+    </div>
+  );
+}
+
+// The cheat sheet: a full-screen, beginner-friendly quick reference the learner can
+// open from the side tab and minimise. Plain-English, applicable to the module.
+function CheatSheet({ cs, world, moduleNo, onClose }: { cs: NonNullable<ModuleDef["cheatsheet"]>; world: World; moduleNo: number; onClose: () => void }) {
+  const A = world.accent;
+  return (
+    <div role="dialog" aria-modal="true" onClick={onClose} className="co-anim co-pop" style={{ position: "fixed", inset: 0, zIndex: 120, background: "rgba(6,8,14,0.82)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)", overflowY: "auto" }}>
+      <div onClick={(e) => e.stopPropagation()} style={{ position: "sticky", top: 0, zIndex: 2, background: `linear-gradient(180deg, rgba(10,12,19,0.98), rgba(10,12,19,0.88))`, borderBottom: `1px solid ${A}44`, backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)" }}>
+        <div style={{ maxWidth: 880, margin: "0 auto", padding: "18px 22px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 14, flexWrap: "wrap" }}>
+          <div>
+            <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: ".2em", textTransform: "uppercase", fontWeight: 700, color: A, display: "flex", alignItems: "center", gap: 8 }}><span aria-hidden>▦</span>Cheat sheet · M{String(moduleNo).padStart(2, "0")}</div>
+            <div style={{ fontFamily: DISP, fontSize: "clamp(22px,4vw,30px)", fontWeight: 700, color: "#fff", marginTop: 4 }}>{cs.title}</div>
+          </div>
+          <button onClick={onClose} className="co-btn" style={{ display: "inline-flex", alignItems: "center", gap: 8, background: A, color: "#0f0c26", border: "none", fontFamily: MONO, fontSize: 12.5, fontWeight: 700, letterSpacing: ".04em", padding: "11px 18px", borderRadius: 9, cursor: "pointer" }}>Minimise ✕</button>
+        </div>
+      </div>
+      <div onClick={(e) => e.stopPropagation()} style={{ maxWidth: 880, margin: "0 auto", padding: "22px 22px 60px" }}>
+        <p style={{ color: "#D9E0EE", fontSize: 15, lineHeight: 1.65, margin: "0 0 24px", maxWidth: 640 }}>{cs.blurb}</p>
+        {cs.groups.map((g, gi) => (
+          <div key={gi} style={{ marginBottom: 26 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 13 }}>
+              <span style={{ width: 20, height: 2, background: A, borderRadius: 2 }} />
+              <span style={{ fontFamily: MONO, fontSize: 11.5, letterSpacing: ".14em", textTransform: "uppercase", fontWeight: 700, color: A }}>{g.heading}</span>
+            </div>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(262px, 1fr))", gap: 11 }}>
+              {g.entries.map((e, ei) => (
+                <div key={ei} style={{ borderRadius: 13, padding: "14px 15px", background: "rgba(18,20,29,0.9)", border: `1px solid ${C.line}` }}>
+                  <div style={{ fontFamily: MONO, fontSize: 14, fontWeight: 700, color: A }}>{e.code}</div>
+                  <div style={{ fontSize: 13.5, color: "#D9E0EE", lineHeight: 1.55, marginTop: 6 }}>{e.what}</div>
+                  {e.example && <div style={{ fontFamily: MONO, fontSize: 12, color: "#9fb0d8", lineHeight: 1.5, marginTop: 9, padding: "8px 11px", borderRadius: 8, background: "rgba(0,0,0,0.4)", border: `1px solid ${C.lineSoft}`, whiteSpace: "pre-wrap", overflowX: "auto" }}>{e.example}</div>}
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+        <div style={{ textAlign: "center", paddingTop: 4 }}>
+          <button onClick={onClose} className="co-btn" style={{ background: "transparent", color: C.indigo2, border: `1px solid ${C.line}`, fontFamily: MONO, fontSize: 12.5, fontWeight: 600, padding: "11px 22px", borderRadius: 9, cursor: "pointer" }}>Back to the module →</button>
+        </div>
+      </div>
     </div>
   );
 }
