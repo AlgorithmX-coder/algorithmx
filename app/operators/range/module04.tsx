@@ -508,6 +508,54 @@ export const MODULE4: ModuleDef = {
   client: "Caldera Freight",
   brief:
     "A deep engagement on the front door itself. Caldera's driver portal has weak passwords, no lockout, a session cookie it forgot to sign, and a 'forgot password' flow with guessable codes. Your job is the full chain: find a real account, break in, promote yourself to admin by rewriting your own cookie, then seize the owner's account through the reset flow. Then four field jobs for new clients, and a final challenge you run start to finish. All for real, all in your browser.",
+  industry: {
+    tag: "A login is only as strong as its weakest step: the sign-in, the session, or the reset.",
+    motif: { pre: 'login token: {"user":"you","role":"', hit: "admin", post: '"}', note: "you edited your own unsigned token, no password" },
+    primer: {
+      term: "Authentication",
+      what: "Authentication is how a site proves you are you. You prove it once with a password (ideally plus a second step), the site hands your browser a session token that means 'this is you, logged in', and if you forget your password there is a reset flow to let you back in. Three steps, and an attacker only needs one of them to be weak.",
+      example: '{"user":"dispatch","role":"staff"}',
+      returns: "That is a real login token, just base64, not encrypted and not signed. If the site never checks a signature, you can change \"staff\" to \"admin\" and it believes you. Break any one step, the sign-in, the session, or the reset, and you are in, which is exactly what you will do here.",
+    },
+    learn: [
+      "Tell a real account from a fake one by how the login replies (user enumeration).",
+      "Spray a weak password at a login that never locks out.",
+      "Decode and edit an unsigned session token to promote yourself to admin.",
+      "Take over another account through guessable, sequential password-reset codes.",
+    ],
+    engines: [
+      { name: "Signed tokens (JWT)", color: "#d63aff", blurb: "A real login token is cryptographically signed, so it cannot be edited. This range's token isn't.", here: true, icon: "key" },
+      { name: "Multi-factor auth (2FA)", color: "#4ade80", blurb: "A second proof beyond the password: the one control that stops a stolen password.", icon: "shield" },
+      { name: "Account lockout", color: "#5fe6ff", blurb: "Locks or slows an account after too many wrong tries, which kills brute-force. This range never locks.", icon: "lock" },
+      { name: "Password hashing (bcrypt / Argon2)", color: "#ffb347", blurb: "Stores passwords scrambled and salted, so even a stolen database does not hand them over.", icon: "lock" },
+      { name: "Passkeys", color: "#8b7bff", blurb: "Replace passwords with a phishing-resistant device key: nothing to steal, guess or phish.", icon: "key" },
+    ],
+    headline: {
+      masthead: "THE SIGNAL LEDGER",
+      dateline: "WASHINGTON · 2021 · US SENATE TESTIMONY + DOJ RECORD",
+      title: "One password, no second step, shut a national fuel pipeline",
+      body: "Attackers walked into Colonial Pipeline through a single old VPN account protected by just a password, with no multi-factor second step. The leaked password was all they needed. The largest fuel pipeline on the US East Coast went down for days, sparking panic-buying and shortages across several states, and the company paid about $4.4 million in ransom (US investigators later clawed back roughly half).",
+      stat: "$4.4M",
+      statLabel: "RANSOM, FROM ONE PASSWORD",
+      why: "One missing second step took down a nation's fuel supply. Weak or stolen logins start more breaches than any other cause, which is exactly why hardening every step is worth your time.",
+    },
+    realWorld:
+      "Authentication is the front door of almost every system, and attackers go for it first because it is cheaper than finding a software bug. Guessable passwords, no lockout, tokens that can be edited, resets that can be predicted: any one weak step lets a stranger in as a real user. It is the most common way breaches start, and the fixes are well known and cheap.",
+    now: {
+      stat: "#7",
+      body: "Authentication Failures rank seventh (A07) on the 2025 OWASP Top 10, the industry's standard list of the most critical web risks. And in Verizon's 2025 Data Breach Investigations Report, abusing stolen or weak credentials was the single most common way attackers first got in, behind 22% of all breaches.",
+    },
+    recent: {
+      year: "2024",
+      title: "Stolen logins, no MFA, 100M+ exposed",
+      body: "In 2024, attackers used passwords that malware had harvested earlier to log straight into companies' Snowflake cloud accounts that had no multi-factor authentication. Snowflake itself was never hacked; the valid passwords were enough. Around 165 companies were hit, and for AT&T alone the call and text records of about 110 million people were taken. Turning on MFA would have blocked it.",
+    },
+    ahead:
+      "AI is making credential attacks faster and cheaper: it writes more convincing phishing, cracks weak passwords quicker, and runs smarter guessing that mimics real people and slips past CAPTCHAs. Analysts expect AI to roughly halve the time to break into an exposed account. The industry's answer is passkeys, a phishing-resistant device login with no shared secret to steal or guess; Google alone reports over 800 million accounts using them, and analysts expect passkeys to overtake passwords by around 2027.",
+    role:
+      "This is day-one knowledge for penetration testers, application-security engineers and identity (IAM) specialists. Lock down the login and you shut the door attackers try first.",
+    roles: ["Penetration tester", "Application security engineer", "SOC analyst", "Identity & access (IAM) engineer"],
+  },
   lesson: {
     blocks: [
       { h: "Authentication is the front door", body: "Authentication is how a system proves you are who you say you are, usually with a password. It is the single most-attacked part of any app, because everything valuable sits behind it. Get the door wrong and the strength of everything else barely matters." },
@@ -545,6 +593,12 @@ export const MODULE4: ModuleDef = {
   },
   handler: "Four stages, four field jobs, then one full challenge. Find a real account from how the login replies, spray a weak password it never locks, then rewrite your unsigned cookie to become admin, and finish by guessing the owner's sequential reset code. Try each yourself before the hints. The password field is only for stage two; everything else goes around it.",
   hint: "Work the stages in order. Enumerate from the login's different replies; brute-force the weak password; DECODE your session cookie and flip the role; for the reset, read your own code first - the codes count up by one.",
+  plan: [
+    { label: "Enumerate", goal: "Find a real staff account from the login's different replies: it admits which emails exist." },
+    { label: "Brute-force", goal: "Spray the weak-password list at that account; the login never locks out." },
+    { label: "Forge the session", goal: "Decode your unsigned login cookie, change your role to admin, and send it back." },
+    { label: "Hijack the reset", goal: "Request your own reset code, then work out the owner's from the sequential numbering." },
+  ],
   Act: BrokenAuthAct,
   flag: "flag{br0k3n_auth_full_ch41n}",
   defend: {
@@ -571,6 +625,48 @@ export const MODULE4: ModuleDef = {
     cvss: "9.8",
     impact: "The login reveals which accounts exist and never locks, so accounts are enumerable and brute-forceable. The session cookie is an unsigned base64 blob whose role field can be rewritten to gain admin. The password-reset codes are sequential and guessable, allowing takeover of any account including the owner - a complete authentication bypass and privilege escalation.",
     fix: "Enforce strong and breached-password checks, rate-limiting/lockout and generic login errors; require MFA; make sessions a random server-side id (or a signed token); and issue long, random, single-use, expiring reset codes.",
+  },
+  cheatsheet: {
+    title: "Authentication quick reference",
+    blurb: "Everything a login does to prove who you are, and the weak spots an attacker looks for, in plain words. You do not need to memorise any of it: it lives here, open it whenever you like.",
+    sample: {
+      caption: "Watch what a login quietly tells an attacker. Every example below is about reading these replies and the token behind them.",
+      cols: ["you try to log in with", "the login replies", "what it quietly tells you"],
+      rows: [
+        ["a REAL email + wrong password", "\"wrong password\"", "this account EXISTS - now attack it"],
+        ["a FAKE email", "\"no such account\"", "this one doesn't - move on"],
+        ["many wrong passwords in a row", "still lets you keep trying", "no lockout - brute-force is wide open"],
+      ],
+    },
+    groups: [
+      {
+        heading: "How a login should work",
+        entries: [
+          { code: "password + MFA", what: "You prove who you are with a password AND a second step, so a stolen password alone isn't enough.", example: "password + a 6-digit code from an app" },
+          { code: "session token", what: "After you log in, the site gives your browser a token that says 'this is you'. A safe one is signed so it can't be edited.", example: "a signed cookie the server checks on every request" },
+          { code: "account lockout", what: "After a few wrong passwords the account locks or slows down, so attackers can't keep guessing.", example: "5 wrong tries -> locked for 15 minutes" },
+          { code: "password reset", what: "Forgot your password? The site sends a one-time, random, expiring code to prove it's really you.", example: "a random code that expires in 10 minutes" },
+        ],
+      },
+      {
+        heading: "The weak spots you'll hit",
+        entries: [
+          { code: "user enumeration", what: "The login answers differently for real vs fake accounts, handing you a list of valid usernames.", example: "'wrong password' (real) vs 'no such account' (fake)" },
+          { code: "no lockout -> brute force", what: "Unlimited guesses let you spray common passwords until one lands.", example: "company name + year + a symbol: Caldera2024!" },
+          { code: "unsigned token", what: "A token that isn't signed can be decoded and edited; change the role and the server believes you.", example: '{"role":"staff"} -> {"role":"admin"}' },
+          { code: "sequential reset codes", what: "Reset codes handed out in order can be predicted: read yours, add one, take over the next account.", example: "yours RST-4417 -> the owner's RST-4418" },
+        ],
+      },
+      {
+        heading: "The fix",
+        entries: [
+          { code: "generic login errors", what: "Give the SAME reply for a wrong email and a wrong password, so attackers can't tell which accounts exist.", example: "'email or password is incorrect' for both" },
+          { code: "lockout + rate limit + MFA", what: "Lock after a few tries, slow repeated attempts, and require a second factor.", example: "lockout + 2FA stops brute-force and stolen passwords" },
+          { code: "sign + expire tokens", what: "Cryptographically sign session tokens and expire them, so they can't be edited or reused.", example: "a signed JWT the server verifies, with a short expiry" },
+          { code: "random reset tokens", what: "Use long, random, single-use, expiring reset codes that can't be guessed.", example: "a 128-bit random token, one use, 10-minute expiry" },
+        ],
+      },
+    ],
   },
   takeaway: "An attacker beats whichever step is weakest, login, session or reset. Harden all three, or you have hardened none.",
   outcome: [
