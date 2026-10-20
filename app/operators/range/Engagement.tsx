@@ -335,7 +335,7 @@ export default function Engagement({
         {phase === "lesson" && (
           <div style={{ display: "grid", gap: 14 }}>
             <Eyebrow>◆ Lesson · learn the ground</Eyebrow>
-            {mod.lesson.blocks.map((b, i) => <LessonBlock key={i} h={b.h} body={b.body} i={i} glossary={mod.glossary} keyPrefix={`lb${i}`} bodyColor={bodyBright} />)}
+            {mod.lesson.blocks.map((b, i) => <LessonBlock key={i} h={b.h} body={b.body} i={i} glossary={mod.glossary} keyPrefix={`lb${i}`} bodyColor={bodyBright} accent={world.accent} />)}
             {mod.lesson.example && (
               <div>
                 <div style={{ fontFamily: MONO, fontSize: 11, letterSpacing: ".08em", textTransform: "uppercase", color: C.mute, marginBottom: 8 }}>Worked example</div>
@@ -444,7 +444,7 @@ export default function Engagement({
             <div style={{ display: "grid", gap: 14 }}>
               {mod.takeaway && <TakeawayStrip text={mod.takeaway} />}
               <Eyebrow>◆ Debrief · now defend it</Eyebrow>
-              {mod.defend.blocks.map((b, i) => <LessonBlock key={i} h={b.h} body={b.body} i={i} glossary={mod.glossary} keyPrefix={`db${i}`} bodyColor={bodyBright} />)}
+              {mod.defend.blocks.map((b, i) => <LessonBlock key={i} h={b.h} body={b.body} i={i} glossary={mod.glossary} keyPrefix={`db${i}`} bodyColor={bodyBright} accent={world.accent} />)}
               {mod.defend.Interactive && (
                 <div style={{ borderRadius: 14, padding: 6, background: "rgba(139,123,255,0.05)", border: `1.5px dashed ${C.indigo}`, boxShadow: `0 0 30px -16px ${C.indigo}` }}>
                   <mod.defend.Interactive onDone={() => setDefendLabOk(true)} />
@@ -585,23 +585,19 @@ const preBox: React.CSSProperties = { margin: 0, padding: "14px 16px", backgroun
 const handlerBox: React.CSSProperties = { display: "flex", gap: 12, alignItems: "flex-start", padding: "13px 16px", background: "var(--world-soft, rgba(139,123,255,0.06))", border: `1px solid ${C.line}`, borderLeft: "3px solid var(--world, #8B7BFF)", borderRadius: 12 };
 const handlerTag: React.CSSProperties = { fontFamily: MONO, fontSize: 10.5, color: "var(--world, #8B7BFF)", fontWeight: 700, letterSpacing: ".1em", paddingTop: 2 };
 
-// A lesson/defend block with a distinct design per index (owner: "a different
-// design for each block"), on brighter body text so it reads clearly over the
-// module backdrop. Treatments cycle: accent rail, framed card, top-line card.
-const LB_CYCLE: { kind: "rail" | "framed" | "topline"; accent: string }[] = [
-  { kind: "rail", accent: C.indigo },
-  { kind: "framed", accent: C.cyan },
-  { kind: "topline", accent: C.amber },
-  { kind: "rail", accent: C.green },
-  { kind: "framed", accent: "#FF7BD5" },
-];
+// Lesson/defend blocks keep distinct SHAPES per index (rail / framed / top-line) for
+// visual variety, but all in TWO SHADES OF ONE COLOUR - the module's world accent - for
+// a clean, grown-up look (owner + Abdullah: a rainbow of colours reads as childish for
+// this age group). The lighter shade is mixed from the accent so it works per-world.
+const LB_SHAPES: ("rail" | "framed" | "topline")[] = ["rail", "framed", "topline", "rail", "framed"];
 // Each block is a collapsible section (owner: "a collapsible tab for each
 // subheading"), so a dense screen reads as a tidy stack of headings the learner
 // opens at their own pace. The FIRST block opens by default, so there's always
 // something to read; the rest expand on click. The per-index treatment
 // (rail/framed/topline) is kept - it's now the look of the section header.
-function LessonBlock({ h, body, i, glossary, keyPrefix, bodyColor = "#C7CEDD" }: { h: string; body: string; i: number; glossary?: GlossaryEntry[]; keyPrefix: string; bodyColor?: string }) {
-  const t = LB_CYCLE[i % LB_CYCLE.length];
+function LessonBlock({ h, body, i, glossary, keyPrefix, bodyColor = "#C7CEDD", accent = C.indigo }: { h: string; body: string; i: number; glossary?: GlossaryEntry[]; keyPrefix: string; bodyColor?: string; accent?: string }) {
+  const kind = LB_SHAPES[i % LB_SHAPES.length];
+  const light = `color-mix(in srgb, ${accent} 52%, #ffffff)`;
   const [open, setOpen] = useState(i === 0);
   // `expanded` is the fully-open state (set once the open animation ends). While
   // collapsed or mid-animation the body is clipped with overflow:hidden for a
@@ -610,12 +606,12 @@ function LessonBlock({ h, body, i, glossary, keyPrefix, bodyColor = "#C7CEDD" }:
   const [expanded, setExpanded] = useState(i === 0);
   const toggle = () => { setExpanded(false); setOpen((o) => !o); };
   const seen = new Set<string>();
-  const hc = t.kind === "framed" ? t.accent : "#ffffff";
+  const hc = kind === "framed" ? light : "#ffffff";
   const trigger = (
     <button type="button" onClick={toggle} aria-expanded={open}
       style={{ width: "100%", display: "flex", alignItems: "center", gap: 12, background: "transparent", border: "none", padding: 0, cursor: "pointer", textAlign: "left", font: "inherit" }}>
       <span style={{ flex: 1, fontFamily: DISP, fontWeight: 700, fontSize: 18.5, color: hc, lineHeight: 1.22, letterSpacing: ".005em" }}>{h}</span>
-      <span aria-hidden style={{ flexShrink: 0, width: 25, height: 25, borderRadius: 7, border: `1px solid ${t.accent}66`, color: t.accent, display: "grid", placeItems: "center", fontSize: 10, fontFamily: MONO, lineHeight: 1, transform: open ? "rotate(90deg)" : "none", transition: "transform .25s ease" }}>▶</span>
+      <span aria-hidden style={{ flexShrink: 0, width: 25, height: 25, borderRadius: 7, border: `1px solid ${accent}66`, color: accent, display: "grid", placeItems: "center", fontSize: 10, fontFamily: MONO, lineHeight: 1, transform: open ? "rotate(90deg)" : "none", transition: "transform .25s ease" }}>▶</span>
     </button>
   );
   const panel = (
@@ -627,9 +623,9 @@ function LessonBlock({ h, body, i, glossary, keyPrefix, bodyColor = "#C7CEDD" }:
   );
   // All three treatments share the same box sizing + horizontal padding, so the
   // caret toggles line up in one column however the accent styling differs.
-  if (t.kind === "rail") return <div style={{ boxSizing: "border-box", padding: "14px 18px 14px 18px", borderLeft: `3px solid ${t.accent}` }}>{trigger}{panel}</div>;
-  if (t.kind === "framed") return <div style={{ boxSizing: "border-box", position: "relative", padding: "15px 18px", borderRadius: 14, background: "rgba(18,20,29,0.82)", border: `1px solid ${t.accent}55`, overflow: expanded ? "visible" : "hidden" }}><span aria-hidden style={{ position: "absolute", top: 0, left: 22, right: 22, height: 2, background: `linear-gradient(90deg,transparent,${t.accent},transparent)` }} />{trigger}{panel}</div>;
-  return <div style={{ boxSizing: "border-box", padding: "15px 18px", borderRadius: 14, background: "rgba(18,20,29,0.82)", border: `1px solid ${C.line}`, borderTop: `3px solid ${t.accent}` }}>{trigger}{panel}</div>;
+  if (kind === "rail") return <div style={{ boxSizing: "border-box", padding: "14px 18px 14px 18px", borderLeft: `3px solid ${accent}` }}>{trigger}{panel}</div>;
+  if (kind === "framed") return <div style={{ boxSizing: "border-box", position: "relative", padding: "15px 18px", borderRadius: 14, background: "rgba(18,20,29,0.82)", border: `1px solid ${accent}55`, overflow: expanded ? "visible" : "hidden" }}><span aria-hidden style={{ position: "absolute", top: 0, left: 22, right: 22, height: 2, background: `linear-gradient(90deg,transparent,${light},transparent)` }} />{trigger}{panel}</div>;
+  return <div style={{ boxSizing: "border-box", padding: "15px 18px", borderRadius: 14, background: "rgba(18,20,29,0.82)", border: `1px solid ${C.line}`, borderTop: `3px solid ${light}` }}>{trigger}{panel}</div>;
 }
 
 // A one-line consolidation takeaway at the top of the debrief: the single thing
@@ -652,11 +648,11 @@ const ETHICS_NOTE =
   "You practised this inside a walled training range built for it, on systems that exist only to be broken safely. The same move against a real computer, account or website you do not own is a criminal offence under the Computer Misuse Act 1990. These skills are legal only with the owner's written permission: here you learn to find and fix flaws so you can protect people, never harm them.";
 function EthicsNote() {
   return (
-    <div style={{ display: "flex", gap: 14, alignItems: "flex-start", padding: "15px 17px", borderRadius: 14, background: "rgba(232,163,61,0.05)", border: `1px solid ${C.amber}38`, borderLeft: `3px solid ${C.amber}` }}>
-      <span aria-hidden style={{ fontSize: 19, lineHeight: 1.2, color: C.amber, flexShrink: 0 }}>⚖</span>
+    <div style={{ display: "flex", gap: 15, alignItems: "flex-start", padding: "18px 20px", borderRadius: 14, background: "rgba(232,163,61,0.09)", border: `1.5px solid ${C.amber}66`, borderLeft: `4px solid ${C.amber}`, boxShadow: `0 0 26px -14px ${C.amber}` }}>
+      <span aria-hidden style={{ fontSize: 26, lineHeight: 1.1, color: C.amber, flexShrink: 0 }}>⚖</span>
       <div>
-        <div style={{ fontFamily: MONO, fontSize: 10, letterSpacing: ".16em", textTransform: "uppercase", color: C.amber, fontWeight: 700, marginBottom: 6 }}>For the record · stay legal</div>
-        <p style={{ fontSize: 13.5, color: C.soft, lineHeight: 1.58, margin: 0 }}>{ETHICS_NOTE}</p>
+        <div style={{ fontFamily: MONO, fontSize: 11.5, letterSpacing: ".16em", textTransform: "uppercase", color: C.amber, fontWeight: 700, marginBottom: 7 }}>For the record · stay legal</div>
+        <p style={{ fontSize: 15.5, color: C.ink, lineHeight: 1.6, margin: 0, fontWeight: 600 }}>{ETHICS_NOTE}</p>
       </div>
     </div>
   );
