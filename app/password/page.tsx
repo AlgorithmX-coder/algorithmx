@@ -7,7 +7,6 @@ import AuthBackdrop from "@/app/components/auth/AuthBackdrop";
 import { AuthReactorScene, type AuthMachinePhase, type AuthMachineState } from "@/app/components/auth-reactor";
 import AuthField from "@/app/components/auth/AuthField";
 import AuthButton, { type AuthButtonState } from "@/app/components/auth/AuthButton";
-import AuthTerminalPanel from "@/app/components/auth/AuthTerminalPanel";
 import AccessGrantedOverlay from "@/app/components/auth/AccessGrantedOverlay";
 import { useIsDesktop } from "@/app/components/auth/useIsDesktop";
 import { ACCESS, ACCESS_FONT, ACCESS_GRAD, rgba } from "@/app/components/auth/accessTokens";
@@ -111,10 +110,10 @@ export default function PasswordGatePage() {
         }}
       >
         <div className="flex flex-col justify-center py-14">
-          <div className="w-full max-w-md">
-            <div className="mb-9">
+          <div className="w-full" style={{ maxWidth: 452 }}>
+            <div className="mb-6">
               <span className="inline-flex items-center gap-2.5">
-                <span className="flex items-center justify-center" style={{ width: 38, height: 38, borderRadius: 10, background: ACCESS_GRAD.brand, boxShadow: `0 0 18px ${rgba(ACCESS.cyan, 0.3)}` }}>
+                <span className="flex items-center justify-center" style={{ width: 38, height: 38, borderRadius: 11, background: ACCESS_GRAD.brand, boxShadow: `0 0 20px ${rgba(ACCESS.cyan, 0.32)}` }}>
                   <span style={{ color: "#06080f", fontFamily: ACCESS_FONT.display, fontWeight: 800, fontSize: 14 }}>AX</span>
                 </span>
                 <span style={{ color: ACCESS.textBright, fontFamily: ACCESS_FONT.display, fontWeight: 800, fontSize: 19, letterSpacing: "-0.01em" }}>
@@ -123,19 +122,31 @@ export default function PasswordGatePage() {
               </span>
             </div>
 
-            <AuthTerminalPanel>
+            <div
+              style={{
+                position: "relative",
+                borderRadius: 24,
+                padding: "30px 32px 28px",
+                background: `linear-gradient(177deg, ${rgba(ACCESS.indigo, 0.55)} 0%, ${rgba(ACCESS.abyss, 0.8)} 100%)`,
+                backdropFilter: "blur(18px) saturate(135%)",
+                WebkitBackdropFilter: "blur(18px) saturate(135%)",
+                border: `1px solid ${rgba(ACCESS.cyan, 0.16)}`,
+                boxShadow: `0 36px 90px -40px rgba(0,0,0,0.9), inset 0 1px 0 ${rgba(ACCESS.cyanSoft, 0.13)}`,
+              }}
+            >
               <div
-                className="inline-flex items-center gap-1.5 mb-4"
+                className="inline-flex items-center gap-1.5 mb-5"
                 style={{ padding: "4px 12px", borderRadius: 999, fontFamily: ACCESS_FONT.mono, fontSize: 10.5, fontWeight: 700, letterSpacing: 1.6, textTransform: "uppercase", color: ACCESS.cyanSoft, background: rgba(ACCESS.cyan, 0.08), border: `1px solid ${rgba(ACCESS.cyan, 0.35)}` }}
               >
                 <IconKey size={12} /> Invited guests only
               </div>
 
-              <h1 className="mb-2" style={{ fontFamily: ACCESS_FONT.display, fontSize: "clamp(1.9rem, 2.6vw, 2.3rem)", fontWeight: 800, color: ACCESS.textBright, letterSpacing: "-0.02em", lineHeight: 1.08 }}>
-                The gate is sealed
+              <h1 className="mb-2.5" style={{ fontFamily: ACCESS_FONT.display, fontSize: "clamp(2.2rem, 3.2vw, 2.9rem)", fontWeight: 800, color: ACCESS.textBright, letterSpacing: "-0.03em", lineHeight: 1.02 }}>
+                The gate is{" "}
+                <span style={{ background: ACCESS_GRAD.brand, WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent" }}>sealed</span>
               </h1>
-              <p className="mb-7" style={{ color: ACCESS.textSoft, fontSize: 15, fontWeight: 500, lineHeight: 1.5 }}>
-                AlgorithmX is still being built. Enter the access password to step inside.
+              <p className="mb-7" style={{ color: ACCESS.textSoft, fontSize: 15, fontWeight: 500, lineHeight: 1.55, maxWidth: 360 }}>
+                AlgorithmX is still being built. Enter your access password to step inside.
               </p>
 
               <AnimatePresence>
@@ -184,22 +195,15 @@ export default function PasswordGatePage() {
                   />
                 </div>
               </form>
-            </AuthTerminalPanel>
-
-            <p className="text-center mt-8" style={{ fontFamily: ACCESS_FONT.mono, fontSize: 11, letterSpacing: 2, color: ACCESS.textMuted }}>
-              Six streams. One key.
-            </p>
-            <div className="flex items-center justify-center gap-5 mt-6 flex-wrap">
-              {[
-                { icon: <IconCredentials size={14} />, label: "ENCRYPTED" },
-                { icon: <IconHub size={14} />, label: "UNDER CONSTRUCTION" },
-              ].map((b, i) => (
-                <span key={i} className="inline-flex items-center gap-1.5" style={{ color: ACCESS.textMuted, fontSize: 10.5, fontWeight: 700, fontFamily: ACCESS_FONT.mono, letterSpacing: 1.4 }}>
-                  {b.icon} {b.label}
-                </span>
-              ))}
             </div>
-            <p className="text-center mt-6" style={{ fontSize: 12.5 }}>
+
+            <div className="flex items-center justify-center gap-x-3.5 gap-y-2 mt-7 flex-wrap" style={{ fontFamily: ACCESS_FONT.mono, fontSize: 10.5, fontWeight: 700, letterSpacing: 1.4, color: ACCESS.textMuted }}>
+              <span>SIX STREAMS &middot; ONE KEY</span>
+              <span aria-hidden style={{ opacity: 0.35 }}>|</span>
+              <span className="inline-flex items-center gap-1.5"><IconCredentials size={13} /> ENCRYPTED</span>
+              <span className="inline-flex items-center gap-1.5"><IconHub size={13} /> UNDER CONSTRUCTION</span>
+            </div>
+            <p className="text-center mt-5" style={{ fontSize: 12.5 }}>
               <a href="mailto:support@algorithmx.co.uk" className="transition hover:opacity-80" style={{ color: ACCESS.cyanSoft, fontWeight: 600 }}>
                 Need help? support@algorithmx.co.uk
               </a>
