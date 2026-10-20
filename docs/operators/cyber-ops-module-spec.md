@@ -349,3 +349,20 @@ For each of M01–M16, author in `moduleNN.tsx`:
 - `takeaway`, `outcome[]`, `plan[]`.
 Then remove the `moduleNo === 5` preview gates in the shell so the shell features
 apply to all 16, and run §14 on each.
+
+---
+
+## 16. UAT changelog (tester-facing notes)
+
+Plain-English "what changed" lines to hand the tester each time something ships
+(owner rule: end every fix with a one-line tester-facing note; testers test prod
+only, so send once merged + deployed).
+
+**2026-10-20 - Abdullah redevelopment batch (Module 5):**
+- Cheat sheet: tap the ☆ on any card to pin it to a "Your pins" band at the top.
+  Your pins are remembered next time you open the sheet.
+- The payload box now clears itself when you move to the next stage, so you always
+  start on a clean line.
+- The "stay legal" note at the end is now bold and front-and-centre, not fine print.
+- The "Learn the ground" cards now use one colour in two shades, instead of a mix
+  of colours.
