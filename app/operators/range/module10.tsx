@@ -382,6 +382,55 @@ export const MODULE10: ModuleDef = {
   client: "Harbour Systems",
   brief:
     "A deep engagement mapping what a stranger on the internet can see. Harbour wants their perimeter measured before attackers measure it for them. The full job, all modelled in your browser: scan a gateway and flag the exposure, enumerate service versions and triage which are known-vulnerable, sweep the internal subnet to find a host that should never be reachable, and make the prioritisation call. Then four field jobs for new clients, and a final challenge you run start to finish. Authorized, in-scope, and nothing leaves your machine.",
+  industry: {
+    tag: "A machine left reachable on the open internet, with the door unlocked, is found by whoever scans for it.",
+    motif: { pre: "nmap gw.target -> ", hit: "3389/tcp open rdp", note: "remote desktop, facing the whole internet" },
+    primer: {
+      term: "Port scanning",
+      what: "Every networked machine has thousands of numbered 'ports', and a service (web, email, remote desktop, a database) can be listening on each. A port scan simply asks every port 'are you open?', then asks the open ones 'what are you, and what version?'. It is how both attackers and defenders find what a machine actually exposes.",
+      example: "nmap target.range  ->  22 ssh, 443 https, 3389 rdp (open!)",
+      returns: "An open port is a door; the version tells you whether the lock is any good. Scanning turns an unknown network into a map of every exposed service, which is exactly what you will do here, then decide which ones are dangerous.",
+    },
+    learn: [
+      "Scan a gateway and flag the one open door that should never face the internet.",
+      "Enumerate service versions and triage known-vulnerable against current.",
+      "Sweep a subnet for a host that should never be reachable from where you are.",
+      "Prioritise the exposure for the report: what gets fixed first.",
+    ],
+    engines: [
+      { name: "Nmap", color: "#4ade80", blurb: "The classic network mapper: finds live hosts, open ports, and the service and version behind each.", here: true, icon: "scan" },
+      { name: "Masscan", color: "#ffb347", blurb: "An ultra-fast scanner built for huge ranges, trading detail for internet-scale speed.", icon: "scan" },
+      { name: "Shodan", color: "#e5392f", blurb: "A search engine for internet-connected devices: you search for exposed services, not web pages.", icon: "server" },
+      { name: "Censys", color: "#5fe6ff", blurb: "An internet-wide scanning platform used to map and monitor exposed services and attack surface.", icon: "server" },
+      { name: "Wireshark", color: "#8b7bff", blurb: "A packet microscope: captures and reads the actual traffic flowing across a network.", icon: "scan" },
+    ],
+    headline: {
+      masthead: "THE PERIMETER POST",
+      dateline: "2017 · SECURITY RESEARCH + INCIDENT TRACKING",
+      title: "Tens of thousands of databases wiped, found by simply scanning for them",
+      body: "In early 2017, attackers scanned the internet for MongoDB databases left open on their default port with no password, then deleted the data and left a ransom note demanding Bitcoin. Within about a week the count of hijacked databases climbed from a couple of hundred to tens of thousands, and most victims held no usable backups. The only 'skill' required was scanning for an exposed service with the door left unlocked.",
+      stat: "~28,000",
+      statLabel: "DATABASES WIPED, DOORS LEFT OPEN",
+      why: "No exploit and no password-cracking, just scanning for something reachable that should never have been. Anything you put on the open internet will be found, usually within minutes, which is why mapping your own exposure first matters.",
+    },
+    realWorld:
+      "Network reconnaissance is mapping what a target actually exposes: which hosts are alive, which ports are open, and what service and version sits behind each. Attackers do it to find the weakest reachable door; defenders do it to find and shut that door first. Scanning the whole internet now takes minutes, so anything left reachable is found fast. Knowing how to map exposure, and read what's dangerous, is a core operator skill.",
+    now: {
+      stat: "1.8M",
+      statLabel: "remote-desktop servers exposed on the internet (Shodan)",
+      body: "Network recon is the discovery phase on the industry's attack map, MITRE ATT&CK. And there is plenty to find: security scans using Shodan count more than 1.8 million remote-desktop (RDP) servers sitting exposed on the internet, each a potential front door, exactly the kind of exposure this module teaches you to spot.",
+    },
+    recent: {
+      year: "2025",
+      title: "A top AI firm's database, open to anyone",
+      body: "In early 2025, researchers probing DeepSeek's internet-facing systems looked beyond the usual web ports and found an unauthenticated database wide open, exposing over a million log lines including chat history and secret keys. A leading AI company undone by one exposed service a simple scan could find. It was reported responsibly and closed quickly.",
+    },
+    ahead:
+      "Scanning is now effectively instant: open-source tools can sweep the entire public internet for an open port in minutes, and attackers typically start scanning for a newly announced vulnerability within about 15 minutes. The next step is AI triaging the results and auto-exploiting; in one 2024 study, AI agents exploited 87% of a set of real one-day vulnerabilities from just the public description. Defenders answer with continuous attack-surface management, scanning their own estate the way an attacker would.",
+    role:
+      "This is day-one knowledge for penetration testers, network security engineers and red teamers. You cannot defend an exposure you haven't mapped, and attackers map it in minutes.",
+    roles: ["Penetration tester", "Network security engineer", "Red teamer", "SOC analyst"],
+  },
   lesson: {
     blocks: [
       { h: "Services listen on ports", body: "A server offers services - web, email, remote login - and each listens on a numbered port. Web is usually 80 and 443, SSH is 22, Remote Desktop is 3389. A port scan asks a host, one port at a time, whether anything is listening. The list of open ports is a map of everything the machine offers to whoever can reach it." },
@@ -419,6 +468,12 @@ export const MODULE10: ModuleDef = {
   },
   handler: "Four stages, four field jobs, then one full challenge. Scan the gateway and flag the exposure, enumerate the versions and triage them, sweep the subnet for a host that shouldn't be reachable, then make the prioritisation call. Read the results like an attacker, then recommend like a defender. You map and report; you don't exploit.",
   hint: "Work the stages in order. 22/80/443 are expected; internet-facing RDP (3389) is the exposure. Old specific version numbers (vsftpd 2.3.4, Apache 2.4.49) are the vulnerable ones. On the sweep, a reachable production database is the find.",
+  plan: [
+    { label: "Port scan", goal: "Scan the gateway and flag the one open door that should never face the internet." },
+    { label: "Enumerate versions", goal: "Read each service's version and mark it known-vulnerable or current." },
+    { label: "Subnet sweep", goal: "Sweep the internal subnet for live hosts and flag the one that shouldn't be reachable." },
+    { label: "Prioritise", goal: "You've mapped the exposure. Decide what goes at the top of the report." },
+  ],
   Act: NetReconAct,
   flag: "flag{rdp_exp0sed_t0_w0rld}",
   defend: {
@@ -445,6 +500,48 @@ export const MODULE10: ModuleDef = {
     cvss: "8.6",
     impact: "Remote Desktop is reachable from the entire internet (continuously brute-forced and exploited), a production database is reachable across the internal network, and outdated services (vsftpd 2.3.4, Apache 2.4.49) carry known exploits - together a direct path to full compromise.",
     fix: "Remove RDP from the open internet (VPN/allow-list); segment the network so the prod database isn't broadly reachable; close unused ports; patch or retire outdated services; scan the perimeter regularly.",
+  },
+  cheatsheet: {
+    title: "Network recon quick reference",
+    blurb: "What a scan tells you, the exposures worth flagging, and how to shrink them, in plain words. You do not need to memorise any of it: it lives here, open it whenever you like.",
+    sample: {
+      caption: "A scan turns a mystery machine into a list like this. The whole skill is reading which lines are fine and which are a fire.",
+      cols: ["what you find", "what it means", "dangerous?"],
+      rows: [
+        ["443/tcp https (current)", "a web server, up to date", "no, expected"],
+        ["3389/tcp rdp, open to internet", "remote desktop, anyone can reach", "critical: get it off the internet"],
+        ["ProFTPD 1.3.3c", "an old, oddly specific version", "yes: that version shipped with a backdoor"],
+      ],
+    },
+    groups: [
+      {
+        heading: "What a scan tells you",
+        entries: [
+          { code: "port", what: "A numbered channel a service listens on. Open means something is reachable there.", example: "22=SSH, 443=HTTPS, 3389=RDP, 27017=MongoDB" },
+          { code: "open / filtered / closed", what: "Open = a service answers; filtered = a firewall blocks; closed = nothing listening.", example: "open 3389 -> remote desktop is reachable" },
+          { code: "service + version", what: "An open port is step one; the version tells you whether it's exploitable.", example: "OpenSSH 9.6 (current) vs ProFTPD 1.3.3c (backdoored)" },
+          { code: "subnet sweep", what: "Pinging a whole range to find which hosts are alive before scanning them.", example: "sweep 10.0.9.0/24 -> the live hosts" },
+        ],
+      },
+      {
+        heading: "The exposures you'll flag",
+        entries: [
+          { code: "internet-facing RDP/VNC", what: "Remote-desktop services open to the whole internet are a top ransomware doorway.", example: "3389 or 5900 reachable from anywhere" },
+          { code: "open database", what: "A database reachable with no password is an instant full-data leak.", example: "MongoDB 27017, no auth, open" },
+          { code: "old versions", what: "A known-vulnerable version of a service is a ready-made exploit target.", example: "ProFTPD 1.3.3c, Exim 4.87" },
+          { code: "reachable internals", what: "Internal hosts (backups, admin) that should never be reachable from where you are.", example: "an open backup share across the subnet" },
+        ],
+      },
+      {
+        heading: "Shrinking the exposure (the fix)",
+        entries: [
+          { code: "close / firewall ports", what: "Expose only what must be public; firewall or allow-list the rest.", example: "RDP behind a VPN, not on the open internet" },
+          { code: "patch + update", what: "Keep services current so an open port isn't also an exploitable one.", example: "upgrade the backdoored FTP version" },
+          { code: "segment the network", what: "Separate internal systems so a single foothold can't reach everything.", example: "backups unreachable from the web tier" },
+          { code: "scan yourself first", what: "Run attack-surface management: scan your own estate the way an attacker would.", example: "continuous external scans of your own IPs" },
+        ],
+      },
+    ],
   },
   takeaway: "Every open port is a door someone can try. Keep management services off the open internet and retire anything outdated.",
   outcome: [
