@@ -258,10 +258,9 @@ export default function Engagement({
   const idx = BEATS.findIndex((b) => b.id === phase);
   const world = worldOf(mod.moduleNo);
   const soc = mod.moduleNo >= 12 && mod.moduleNo <= 14;
-  // M5 design prototype (owner retest): a richer themed brief, brighter body text,
-  // and a "view as map" plan in the handler. Scoped to M5 until the look is agreed.
-  const preview = mod.moduleNo === 5;
-  const bodyBright = preview ? "#D9E0EE" : "#C7CEDD";
+  // Themed brief + scope cards, brighter body text, and a "view as map" plan in the
+  // handler. Rolled to every module (proven on M5).
+  const bodyBright = "#D9E0EE";
 
   const afterDrills: Phase = mod.Capstone ? "challenge" : "defend";
   function afterCapture() {
@@ -319,16 +318,7 @@ export default function Engagement({
 
         {/* BRIEF */}
         {phase === "brief" && (
-          preview ? (
-            <BriefCard mod={mod} world={world} onStart={() => setPhase("lesson")} />
-          ) : (
-            <Panel>
-              <Eyebrow>◆ New engagement</Eyebrow>
-              <h2 style={h2}>{mod.client}</h2>
-              <p style={{ color: C.soft, fontSize: 15, lineHeight: 1.6, margin: "10px 0 20px" }}>{mod.brief}</p>
-              <Btn tone="i" onClick={() => setPhase("lesson")}>Start the briefing →</Btn>
-            </Panel>
-          )
+          <BriefCard mod={mod} world={world} onStart={() => setPhase("lesson")} />
         )}
 
         {/* LESSON */}
@@ -369,28 +359,7 @@ export default function Engagement({
 
         {/* AUTHORIZE */}
         {phase === "authorize" && (
-          preview ? (
-            <ScopeCard mod={mod} world={world} callsign={callsign} setCallsign={setCallsign} onAuthorize={() => setPhase("act")} />
-          ) : (
-            <Panel style={{ borderColor: "rgba(74,222,128,0.3)" }}>
-              <Eyebrow tone={C.green}>◆ Authorization required</Eyebrow>
-              <h2 style={h2}>Scope of engagement</h2>
-              <p style={{ color: C.soft, fontSize: 14.5, lineHeight: 1.55, margin: "0 0 16px" }}>You may only touch what the scope authorizes. Acting outside it fails the engagement - that&apos;s the job, and the law.</p>
-              <div style={scopeTbl}>
-                <SRow k="Target" v={mod.scope.target} />
-                <SRow k="In scope" v={mod.scope.inScope} tone={C.green} />
-                <SRow k="Off limits" v={mod.scope.offLimits} tone={C.red} />
-                <SRow k="Timebox" v={mod.scope.timebox} />
-              </div>
-              <div style={{ marginTop: 18 }}>
-                <label style={lbl}>Sign as</label>
-                <div style={{ display: "flex", gap: 10, marginTop: 7, flexWrap: "wrap" }}>
-                  <input value={callsign} onChange={(e) => setCallsign(e.target.value.toUpperCase().slice(0, 14))} placeholder="YOUR CALLSIGN" style={{ ...input, flex: "1 1 200px", letterSpacing: ".08em" }} />
-                  <Btn tone="g" disabled={!callsign.trim()} onClick={() => setPhase("act")}>SIGN &amp; AUTHORIZE →</Btn>
-                </div>
-              </div>
-            </Panel>
-          )
+          <ScopeCard mod={mod} world={world} callsign={callsign} setCallsign={setCallsign} onAuthorize={() => setPhase("act")} />
         )}
 
         {/* ACT */}
@@ -405,8 +374,8 @@ export default function Engagement({
             )}
             <mod.Act onCapture={afterCapture} />
             <div>
-              <button onClick={() => setHint(!hint)} className="co-btn" style={preview ? { display: "inline-flex", alignItems: "center", gap: 7, background: "rgba(139,123,255,0.12)", border: `1px solid ${C.indigo2}`, color: C.indigo2, fontFamily: MONO, fontSize: 12, fontWeight: 700, letterSpacing: ".02em", cursor: "pointer", padding: "8px 14px", borderRadius: 8 } : { background: "none", border: "none", color: C.indigo2, fontFamily: MONO, fontSize: 12, cursor: "pointer", textDecoration: "underline", textUnderlineOffset: 3, padding: "4px 0" }}>{hint ? "Hide hint" : "Need a hint?"}</button>
-              {hint && <div style={{ marginTop: 8, padding: "12px 14px", borderLeft: `2px solid ${C.indigo}`, background: "rgba(139,123,255,0.05)", fontSize: 13.5, color: preview ? bodyBright : C.soft, lineHeight: 1.55 }}>{mod.hint}</div>}
+              <button onClick={() => setHint(!hint)} className="co-btn" style={{ display: "inline-flex", alignItems: "center", gap: 7, background: "rgba(139,123,255,0.12)", border: `1px solid ${C.indigo2}`, color: C.indigo2, fontFamily: MONO, fontSize: 12, fontWeight: 700, letterSpacing: ".02em", cursor: "pointer", padding: "8px 14px", borderRadius: 8 }}>{hint ? "Hide hint" : "Need a hint?"}</button>
+              {hint && <div style={{ marginTop: 8, padding: "12px 14px", borderLeft: `2px solid ${C.indigo}`, background: "rgba(139,123,255,0.05)", fontSize: 13.5, color: bodyBright, lineHeight: 1.55 }}>{mod.hint}</div>}
             </div>
           </div>
         )}
