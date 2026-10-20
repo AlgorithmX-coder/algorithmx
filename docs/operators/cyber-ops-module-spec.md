@@ -113,12 +113,17 @@ applies to all 16; "per-module" = author data per module.
   definition, example}`.
 - **Content.** Each block = a subheading + a tight paragraph. Every technical term
   gets a glossary entry with a plain definition AND a real-world example.
-- **Design.** Each block is a collapsible section (first one open), with its
-  distinct rail/framed/topline treatment as the header; brighter body text; glossary
-  terms are hover/tap popovers (must NOT be clipped - overflow opens when expanded).
-- **Checklist.** First block open, rest collapse · carets aligned · glossary popover
-  shows fully (not clipped) · every hard term has a definition + example · body text
-  bright enough to read over the backdrop.
+- **Design.** Each block is a collapsible section (first one open). Vary the blocks
+  by SHAPE (rail / framed / topline), NOT by colour. ⭐ **Monochrome standard:** every
+  block uses two shades of the ONE world accent (the accent + a lighter
+  `color-mix(in srgb, <accent> 52%, #ffffff)`), never a rainbow of hues. Multiple bright
+  colours read as childish for a 14-17 audience; two shades of one colour read as grown-up
+  tradecraft. Brighter body text throughout; glossary terms are hover/tap popovers (must
+  NOT be clipped - overflow opens when expanded).
+- **Checklist.** First block open, rest collapse · carets aligned · blocks vary by shape
+  not colour (two shades of one world accent, no rainbow) · glossary popover shows fully
+  (not clipped) · every hard term has a definition + example · body text bright enough to
+  read over the backdrop.
 
 ---
 
@@ -148,8 +153,21 @@ applies to all 16; "per-module" = author data per module.
 - **Content.** A "How to do it" line (tap the pieces into the box, in order, press
   RUN, hint if stuck). Every payload/command piece carries a plain "what it does".
 - **Design.** Each payload piece is a chip: the token (mono) + a tiny plain gloss.
+- ⭐ **Clean box per question (Abdullah UAT).** Input boxes clear AUTOMATICALLY when the
+  learner advances to the next stage / question / phase - never carry the previous
+  payload or answer into the next box. Applies to the Act stages, the capstone phases
+  and any multi-step drill (reset email / password / search on advance; drills that
+  remount per step are already clean).
+- ⭐ **Rotate the activity format (banked standard, apply per-module).** Don't make all
+  16 modules the same "type the payload into one box" drill end to end. Within a module,
+  and across the 16, vary the micro-format so it doesn't feel repetitive: e.g.
+  build-the-payload-from-chips, fill-in-the-blank skeleton, spot-the-vulnerable-line,
+  order-the-steps, pick-the-right-tool, count/identify. Keep each module's ONE signature
+  real hands-on move (for M5, the real typed injection against live SQLite); rotate the
+  supporting beats around it. Decide the mix when authoring each module.
 - **Checklist.** "How to do it" present and accurate to the surface · every piece
-  self-explains · no raw symbol goes in unexplained.
+  self-explains · no raw symbol goes in unexplained · boxes clear on advance (nothing
+  carries over) · activity format varied, not the same drill every beat.
 
 ---
 
@@ -216,14 +234,20 @@ applies to all 16; "per-module" = author data per module.
      **example that references the sample table** (e.g. `WHERE id = 42 → the Priya
      Shah row`).
   5. **Readable by a non-technical person** throughout - no unexplained jargon.
+  6. ⭐ **Pin-to-top (Abdullah UAT).** Every entry carries a ☆/★ pin toggle. Pinned
+     entries surface in a **"★ Your pins" band above the sample table**, so the keywords
+     a learner leans on are one glance away. Pins persist **per module** in
+     `localStorage` (`ops-cheat-pins-<n>`), wrapped in try/catch so blocked storage never
+     breaks the sheet. A one-line tip ("tap ☆ to pin it to the top") points it out. This
+     is built into the shared `CheatSheet`, so it applies to all 16 for free.
 - **Design.** Full-screen, themed to world. Sticky header (title + "Minimise ✕").
-  Blurb, then the sample table (clean data table, accent header row), then the
-  grouped reference cards (code in the accent, plain "what", a boxed example).
-  Futuristic but calm and readable.
+  Blurb + pin tip, then the "★ Your pins" band (when any), then the sample table (clean
+  data table, accent header row), then the grouped reference cards (code in the accent,
+  plain "what", a boxed example, ☆/★ pin top-right). Futuristic but calm and readable.
 - **Done checklist.** Side tab visible on every beat · opens full-screen · closes 3
   ways (button/backdrop/Esc) · has a sample table · examples reference the table ·
-  covers everyday + operators + attack-abused bits · non-technical readable · themed
-  · no em-dashes.
+  covers everyday + operators + attack-abused bits · entries pin to a top band and pins
+  persist per module · non-technical readable · themed · no em-dashes.
 
 ---
 
@@ -254,7 +278,12 @@ applies to all 16; "per-module" = author data per module.
 - **Where.** End of the report beat (`EthicsNote`, shared constant).
 - **Content.** Shared, consistent wording (walled range vs real systems, Computer
   Misuse Act 1990, legal only with written permission).
-- **Checklist.** Present on every module · consistent wording · no em-dashes.
+- ⭐ **Design (bolder, Abdullah UAT).** This must NOT read as fine print. Give it real
+  weight: amber border + left accent bar + soft glow, a prominent warning glyph, and body
+  text at full ink colour, ~15.5px, weight 600 - a message the learner cannot skim past,
+  not a footnote.
+- **Checklist.** Present on every module · consistent wording · visually prominent (bold,
+  bordered, glowing - not fine print) · no em-dashes.
 
 ---
 
@@ -285,13 +314,21 @@ Screen these BEFORE shipping (sources: Abdullah UAT + owner reviews).
 - [ ] Every instruction says plainly what to do (tap what, type where, press what).
 - [ ] Payload/command pieces each explain what they do.
 - [ ] Hint ladder present and the reveal visibly confirms it acted.
+- [ ] Input boxes clear automatically on advance - nothing carries into the next
+      question / stage / phase.
+- [ ] Activity format is varied across the module, not the same single drill every beat
+      (one signature real move kept; supporting beats rotated).
 
 **Clarity / readability**
 - [ ] No dull/greyed text that looks disabled; interactive controls look clickable.
 - [ ] No clipped text (descenders, gradient-clip titles) - nothing cut off.
 - [ ] Scope reads as plain-English Rules of Engagement with a "why" per row.
+- [ ] Lesson blocks vary by SHAPE in two shades of ONE world accent - no childish
+      rainbow of colours.
+- [ ] The ethics / stay-legal note is visually prominent (bold, bordered, glowing) -
+      not skimmable fine print.
 - [ ] Cheat sheet follows §9 (sample table + code references it; three coverage
-      bands; non-technical readable).
+      bands; entries pin to a top band, pins persist; non-technical readable).
 
 **Content / correctness**
 - [ ] Industry facts real + sourced + current; newspaper clearly real + why.
