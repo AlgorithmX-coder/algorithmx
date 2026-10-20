@@ -447,6 +447,55 @@ export const MODULE1: ModuleDef = {
   client: "Meridian Clinic",
   brief:
     "Welcome to Redoubt. You're a junior operator now - real engagements, real guardrails. This first job is as much about how you work as what you find. First client: Meridian Clinic, whose new staff portal goes live next week. The full job: know your scope cold, do one piece of real in-scope recon, then make the judgment calls that separate a professional from a criminal. Then four field jobs for new clients, and a final challenge you run start to finish. Everything lives in the range: fake data, no real systems, nothing leaves this browser.",
+  industry: {
+    tag: "The same action is a professional service with permission, and a crime without it.",
+    motif: { pre: "try a login  ->  ", hit: "with a signed scope", post: "", note: "a paid job. without it, a crime under the Computer Misuse Act" },
+    primer: {
+      term: "Authorised hacking",
+      what: "A penetration test is authorised, ethical hacking: you find the weaknesses in a system before criminals do, then report them so they get fixed. The one thing that makes it legal is permission. The exact same action, trying a password or scanning a server, is a professional service with written authorisation and a crime without it. In the UK that line is the Computer Misuse Act 1990.",
+      example: "AUTHORISED: portal.client.range  (login + session only)",
+      returns: "That signed scope is what separates you from a criminal. It says exactly what you may touch, and everything you may not. Stay inside it and you're a professional; step outside, even once, even with good intentions, and you've broken the law. Working inside the rules is this whole module.",
+    },
+    learn: [
+      "Tell what's in scope from what's off limits, and why it matters.",
+      "Do one piece of real, in-scope reconnaissance.",
+      "Make the professional call when a tempting target is out of scope.",
+      "Handle a finding responsibly: report it, never abuse it.",
+    ],
+    engines: [
+      { name: "Kali Linux", color: "#5fe6ff", blurb: "The industry-standard toolkit: a Linux system preloaded with hundreds of testing tools. The operator's workbench.", here: true, icon: "tool" },
+      { name: "Metasploit", color: "#4ade80", blurb: "The best-known framework for safely proving a weakness is real.", icon: "tool" },
+      { name: "Burp Suite", color: "#ff6633", blurb: "The standard tool for testing websites: it sits between browser and server to read and edit traffic.", icon: "tool" },
+      { name: "Nmap", color: "#8b7bff", blurb: "The classic scanner that maps what machines and services are on a network.", icon: "scan" },
+      { name: "Wireshark", color: "#ffb347", blurb: "A network microscope that captures and reads the actual packets on a network.", icon: "scan" },
+    ],
+    headline: {
+      masthead: "THE STATUTE SENTINEL",
+      dateline: "LONDON · 2005 · UK COURT RECORD (COMPUTER MISUSE ACT)",
+      title: "He checked a charity site looked real, and was convicted for it",
+      body: "After donating to a 2004 tsunami appeal, a security professional got no thank-you page and worried the site was a scam stealing card details. He ran one quick test to check it was genuine. The test tripped an alarm, the police were called, and he was convicted under the Computer Misuse Act 1990, fined, and lost his job. The judge ruled that unauthorised access is an offence 'however praiseworthy the motives'.",
+      stat: "£1,000",
+      statLabel: "FINE + COSTS, FOR ONE CURIOUS TEST",
+      why: "Good intentions did not matter; he had no permission, so it was a crime. That is the whole point of this module: permission, in writing, is the line, and it never moves.",
+    },
+    realWorld:
+      "Every skill in this course is useful only inside the law. Authorised, ethical hacking, testing systems with written permission and reporting what you find, is a real, well-paid, respected profession. The same actions without permission are criminal. The difference isn't the tools or the skill; it's a signed agreement and the discipline to stay inside it. Learn the rules first, and everything after is a career instead of a charge.",
+    now: {
+      stat: "$81M",
+      statLabel: "paid to ethical hackers via HackerOne in a year",
+      body: "Finding flaws WITH permission is now a serious career: through one platform, HackerOne, organisations paid ethical hackers around $81 million in bug bounties in a single year, and top researchers earn six figures. In the UK, the Computer Misuse Act 1990 is the law that makes authorisation, not skill, the dividing line.",
+    },
+    recent: {
+      year: "2025",
+      title: "Legal hacking goes mainstream",
+      body: "The penetration-testing market was worth roughly $1.7 billion in 2024 and is forecast to more than double by 2029, and bug-bounty payouts keep climbing. Governments now run official vulnerability-disclosure services so people can report flaws the legal way. Doing this with permission has become a mainstream, in-demand career.",
+    },
+    ahead:
+      "AI is changing the job. In 2025 an autonomous AI pentester briefly topped HackerOne's US leaderboard, out-filing every human, and more programs now put AI in scope. When machines can find raw bugs at scale, the uniquely human parts matter more, not less: staying inside authorised scope, judging what's safe to test, and disclosing responsibly. The rules of engagement, not the button-pushing, become the job.",
+    role:
+      "This is the foundation for every security career: penetration tester, red teamer, security consultant and bug-bounty hunter. Master the rules here and the rest of the course is training for a real, legal profession.",
+    roles: ["Penetration tester", "Red teamer", "Security consultant", "Bug-bounty hunter"],
+  },
   lesson: {
     blocks: [
       { h: "What you actually do here", body: "A penetration test is authorised, ethical hacking. Your job is to find the weaknesses in a client's systems before criminals do, then report them so they get fixed. Everything that makes it legal and useful comes down to a few rules - the rules of engagement - and this module is where you learn them before you touch anything." },
@@ -484,6 +533,12 @@ export const MODULE1: ModuleDef = {
   },
   handler: "Four stages, four field jobs, then one full challenge. Mark the scope correctly, do one piece of in-scope recon on the login source, then make the two judgment calls - stay in scope, and handle the finding responsibly. There's a right answer to each; take your time. You prove weaknesses, you never abuse them.",
   hint: "Work the stages in order. Only the staff portal and reading it are in scope - everything personal or third-party is out. Open the source to find the leak, then on the decisions choose least impact and responsible disclosure every time.",
+  plan: [
+    { label: "Know your scope", goal: "Mark each target or action in-scope or out: the boundary you never cross." },
+    { label: "In-scope recon", goal: "Do one real piece of passive recon, reading only what you're authorised to." },
+    { label: "Stay in scope", goal: "A tempting target appears that's out of scope. Make the professional call." },
+    { label: "Handle it right", goal: "You have a working finding. Report it responsibly instead of using it." },
+  ],
   Act: RoeAct,
   flag: "flag{s0urce_l3ak_f0und}",
   defend: {
@@ -510,6 +565,48 @@ export const MODULE1: ModuleDef = {
     cvss: "8.2",
     impact: "A working setup account was left in a source comment; anyone who reads the page can sign in. Found through in-scope passive recon and handled without accessing any real data.",
     fix: "Strip comments and test data from production builds; store secrets in a secrets manager; rotate the exposed account immediately and treat it as compromised.",
+  },
+  cheatsheet: {
+    title: "Rules of engagement quick reference",
+    blurb: "What makes testing legal, the judgment calls, and how this becomes a career, in plain words. You do not need to memorise any of it: it lives here, open it whenever you like.",
+    sample: {
+      caption: "The whole module is this one column break. The SAME action is a job or a crime, and only one thing decides which: permission.",
+      cols: ["the action", "with written permission", "without it"],
+      rows: [
+        ["trying a login / password", "an authorised test", "a criminal offence (CMA s1)"],
+        ["scanning a server", "in-scope recon", "unauthorised access"],
+        ["using a leaked credential", "report + recommend rotation", "a crime, even if found by accident"],
+      ],
+    },
+    groups: [
+      {
+        heading: "What makes it legal",
+        entries: [
+          { code: "authorisation", what: "Explicit, written permission to test a specific system. The one thing that makes it legal.", example: "a signed scope naming portal.client.range" },
+          { code: "scope", what: "Exactly what you may test, when and how, and by implication everything you may not.", example: "in: the staff login. out: patient records." },
+          { code: "Computer Misuse Act 1990", what: "The UK law: making a computer do anything to get access you know is unauthorised is a crime, even attempting it.", example: "no permission = an offence, whatever your motive" },
+          { code: "least impact", what: "Prove a weakness with the smallest, safest action; never damage data or disrupt the business.", example: "show you can read a record, don't delete it" },
+        ],
+      },
+      {
+        heading: "The judgment calls",
+        entries: [
+          { code: "the tempting detour", what: "Out of scope means hands off, however reachable or interesting it looks.", example: "a linked database that isn't in scope -> leave it" },
+          { code: "responsible disclosure", what: "Report what you find privately to the client so they can fix it; never exploit or publish it.", example: "a leaked key -> document it, recommend rotation" },
+          { code: "the methodology", what: "Work in order: recon, scanning, exploitation, post-exploitation, reporting, staying in scope at each step.", example: "map before you touch; report at the end" },
+          { code: "when in doubt, stop", what: "If you're not sure something is authorised, don't do it: ask first.", example: "unclear scope -> check before acting" },
+        ],
+      },
+      {
+        heading: "Doing it as a career",
+        entries: [
+          { code: "bug bounty", what: "Authorised programs pay you to find and report flaws through platforms like HackerOne.", example: "report via the program, get paid per valid bug" },
+          { code: "vulnerability disclosure", what: "Many orgs and governments publish how to report a flaw safely and legally.", example: "a security.txt or VDP telling you where to report" },
+          { code: "certifications", what: "Recognised qualifications show you can test professionally and legally.", example: "CompTIA PenTest+, CEH, OSCP" },
+          { code: "permission in writing", what: "Always get it before you touch anything, every engagement, no exceptions.", example: "signed scope first, keyboard second" },
+        ],
+      },
+    ],
   },
   takeaway: "A signed scope is the only thing that separates a tester from a criminal. No scope, no touching the keyboard.",
   outcome: [
