@@ -22,7 +22,7 @@ export function middleware(req: NextRequest) {
   // and bypasses the gate so the suite can drive the app directly.
   if (process.env.E2E_TESTS === "1") return NextResponse.next();
 
-  const authed = req.cookies.get("site_auth")?.value === "true";
+  const authed = req.cookies.get("site_auth")?.value === "v2";
   if (authed) return NextResponse.next();
 
   const url = req.nextUrl.clone();
