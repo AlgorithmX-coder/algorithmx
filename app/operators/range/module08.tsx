@@ -399,6 +399,54 @@ export const MODULE8: ModuleDef = {
   client: "Harbour Systems",
   brief:
     "A deep engagement on what actually keeps a secret. Harbour Systems handed us files from their servers, sure their 'encrypted' values are safe to leave lying around. The full job, all computed for real in your browser: decode a base64 'token', break a Caesar cipher by trying its 25 shifts, brute-force a one-byte XOR key, and then tell the genuinely-encrypted values from the merely-encoded ones. Then four field jobs for new clients, and a final challenge you run start to finish. Nothing leaves your machine.",
+  industry: {
+    tag: "Base64 is not encryption. A cipher you can brute-force in a blink is not protection either.",
+    motif: { pre: '"encrypted": "', hit: "c2VjcmV0", post: '"', note: "that's just base64, anyone can read it" },
+    primer: {
+      term: "Encryption vs encoding",
+      what: "Encryption scrambles data with a secret KEY, so only someone with the key can read it. Encoding (like base64) just rewrites data in a different alphabet with NO key, so anyone can reverse it. They look similar on screen, and mixing them up is one of the most common security mistakes there is.",
+      example: "base64(\"secret\") = c2VjcmV0   ->   decode = secret",
+      returns: "No key, no protection. Calling that 'encrypted' is itself the vulnerability. Real encryption needs a secret key and a strong modern cipher; weak or missing encryption is exactly what you will find and break here.",
+    },
+    learn: [
+      "Spot encoding (base64) being passed off as encryption, and just read it.",
+      "Break a Caesar cipher by trying all 25 shifts until it reads as English.",
+      "Brute-force a one-byte XOR key: only 256 possibilities to try.",
+      "Judge which 'protected' values genuinely need a key and which anyone can read.",
+    ],
+    engines: [
+      { name: "AES-256", color: "#4ade80", blurb: "The modern standard: strong symmetric encryption that needs a secret key. Used everywhere.", icon: "lock" },
+      { name: "TLS 1.3 / HTTPS", color: "#5fe6ff", blurb: "Encrypts data in transit, the padlock in your browser. Anything on plain HTTP is readable.", icon: "lock" },
+      { name: "SHA-256", color: "#8b7bff", blurb: "A modern one-way hash for checking integrity: you cannot reverse it back to the data.", icon: "key" },
+      { name: "MD5 (broken)", color: "#f26d72", blurb: "An ancient, fast hash: a GPU does billions a second, so on its own it protects nothing today.", icon: "lock" },
+      { name: "ECB mode (broken)", color: "#ffb347", blurb: "An encryption mode that leaks patterns: identical inputs look identical, the famous 'ECB penguin'.", icon: "lock" },
+    ],
+    headline: {
+      masthead: "THE VAULT GAZETTE",
+      dateline: "2013 · BREACH DISCLOSURE + US STATE AG SETTLEMENT",
+      title: "A giant 'encrypted' 150 million passwords, the wrong way",
+      body: "Adobe scrambled its users' passwords with reversible encryption instead of proper hashing, used a weak mode (ECB) that makes identical passwords look identical, and stored everyone's plaintext password hint right next to it. Researchers recovered huge numbers of passwords without ever breaking the cipher, just by spotting patterns and reading the hints. About 152 million accounts were exposed, and Adobe later paid a settlement to US states.",
+      stat: "152M",
+      statLabel: "ACCOUNTS, 'ENCRYPTED' BADLY",
+      why: "Using encryption the wrong way can be as bad as using none. Weak or misused crypto has exposed passwords, messages and payments for decades, which is why telling real protection from fake is a core skill.",
+    },
+    realWorld:
+      "Encryption is what keeps data safe once someone gets hold of it: the right cipher with a secret key is effectively unbreakable, but the wrong choice is worthless. Encoding mistaken for encryption, tiny keyspaces, broken old ciphers and plaintext storage all leave data readable to anyone who looks. Getting crypto right is cheap; getting it wrong quietly exposes everything.",
+    now: {
+      stat: "#4",
+      body: "Cryptographic Failures rank fourth (A04) on the 2025 OWASP Top 10, the industry's standard list of the most critical web risks; the category covers weak or missing encryption, broken ciphers, and sensitive data stored or sent in the clear. The classic giveaway you will practise here: base64 is encoding, not encryption, and calling it 'encrypted' is itself the bug.",
+    },
+    recent: {
+      year: "2024",
+      title: "19 million passwords, just sitting in plaintext",
+      body: "In 2024, researchers found close to 19 million passwords exposed in plaintext across 916 websites and apps whose cloud databases (Google Firebase) were set up with weak or no security rules, readable by anyone who asked. Not a broken cipher, but the same root failure: sensitive data left unprotected.",
+    },
+    ahead:
+      "The big shift is 'harvest now, decrypt later': attackers capture encrypted data today and store it, betting that quantum computers will soon crack today's public-key crypto (RSA and ECC). To get ahead of it, in 2024 the US standards body NIST published the first finished post-quantum encryption standards, and security guidance now urges high-risk systems to be quantum-ready by 2030. Knowing which crypto is strong, weak, or already broken is becoming more valuable, not less.",
+    role:
+      "This is day-one knowledge for security engineers, application-security engineers and cryptography specialists. Telling real protection from fake is what keeps data safe when everything else fails.",
+    roles: ["Security engineer", "Application security engineer", "Cryptography engineer", "PKI / encryption engineer"],
+  },
   lesson: {
     blocks: [
       { h: "Three things people muddle up", body: "Encoding, hashing, and encryption are constantly confused, and the confusion causes breaches. Encoding (like base64) just reformats data so it travels safely - anyone can reverse it, no key needed. Hashing is a one-way fingerprint - you can't turn a hash back into the input. Encryption scrambles data so that only someone with the key can get it back. Only the last one actually hides a secret." },
@@ -436,6 +484,12 @@ export const MODULE8: ModuleDef = {
   },
   handler: "Four stages, four field jobs, then one full challenge. Decode the base64 'token', step the Caesar shift until it reads, brute-force the one-byte XOR key, then classify which values truly need a key. Every transform runs for real in your browser. Judge by shape before you trust a label.",
   hint: "Work the stages in order. base64 ends in = and needs no key. Caesar has 25 shifts - try them. One-byte XOR has 256 keys - brute-force and read the English one. Only random-looking AES actually needs a key.",
+  plan: [
+    { label: "Encoding", goal: "An 'encrypted' token is really just base64. Spot it and read it the obvious way, no key needed." },
+    { label: "Caesar", goal: "A message shifted by a fixed amount. Step through the 25 shifts until it reads as English." },
+    { label: "XOR", goal: "A note XOR'd with one secret byte. Brute-force all 256 and pick the one that decodes to real text." },
+    { label: "Real vs fake", goal: "Judge four 'protected' values: mark which anyone can read and which genuinely need a key." },
+  ],
   Act: CryptoAct,
   flag: "flag{3nc0d1ng_1s_n0t_crypt0}",
   defend: {
@@ -462,6 +516,48 @@ export const MODULE8: ModuleDef = {
     cvss: "5.9",
     impact: "An admin credential is stored as base64 and labelled 'encrypted', and other values use a Caesar and a one-byte-XOR cipher. All are reversible by anyone who reads them - with no key - yielding working credentials and sensitive messages.",
     fix: "Never use encoding or home-grown ciphers as protection. Store secrets in a secrets manager; encrypt data at rest with a strong algorithm (AES-GCM) and a separately-managed key; rotate exposed credentials.",
+  },
+  cheatsheet: {
+    title: "Cryptography quick reference",
+    blurb: "How to tell real protection from fake: encoding, encryption and hashing, and the broken ciphers you'll crack, in plain words. You do not need to memorise any of it: it lives here, open it whenever you like.",
+    sample: {
+      caption: "The whole skill is this one judgment. For each value, ask: can I read it with no key at all?",
+      cols: ["value you find", "what it actually is", "readable without a key?"],
+      rows: [
+        ["c2VjcmV0", "base64 ENCODING", "yes - just decode it"],
+        ["Khoor (shift 3)", "Caesar cipher, 25 keys", "yes - try all 25 shifts"],
+        ["random-looking bytes", "real AES encryption", "no - needs the secret key"],
+      ],
+    },
+    groups: [
+      {
+        heading: "Encoding vs encryption vs hashing",
+        entries: [
+          { code: "encoding (base64)", what: "Rewrites data in another alphabet with NO key. Fully reversible by anyone. Not protection.", example: "base64('secret') = c2VjcmV0 -> decode -> secret" },
+          { code: "encryption", what: "Scrambles data with a secret KEY; only someone with the key can read it back.", example: "AES-256 with a key kept secret" },
+          { code: "hashing", what: "A one-way scramble you can't reverse, for integrity or storing passwords (salted + slow).", example: "SHA-256 for integrity; bcrypt/Argon2 for passwords" },
+          { code: "keyspace", what: "How many possible keys there are. Too few, and an attacker just tries them all.", example: "Caesar = 25; one-byte XOR = 256; AES = 2^256" },
+        ],
+      },
+      {
+        heading: "Broken / do-not-use",
+        entries: [
+          { code: "Caesar / shift cipher", what: "Each letter shifted by a fixed amount: only 25 keys, so it falls instantly.", example: "try shifts 1..25 until it reads as English" },
+          { code: "one-byte XOR", what: "Data XOR'd with a single secret byte: only 256 possibilities to brute-force.", example: "try all 256 bytes, pick the readable one" },
+          { code: "MD5 / SHA-1", what: "Old, fast hashes, broken for security: billions of guesses a second, and collisions exist.", example: "never store passwords with these" },
+          { code: "ECB mode", what: "An encryption mode where identical inputs give identical outputs, leaking patterns.", example: "same password -> same ciphertext for every user (the 'ECB penguin')" },
+        ],
+      },
+      {
+        heading: "The strong, modern choices",
+        entries: [
+          { code: "AES-256", what: "The modern symmetric standard: fast, hardware-accelerated, effectively unbreakable with a good key.", example: "encrypt data at rest with AES-256" },
+          { code: "TLS 1.3 / HTTPS", what: "Encrypts data in transit; the browser padlock. Plain HTTP is readable in the middle.", example: "always https, never http, for anything sensitive" },
+          { code: "bcrypt / Argon2", what: "Slow, salted password hashing built to resist GPU cracking; Argon2 is the current first choice.", example: "store passwords with Argon2 or bcrypt" },
+          { code: "post-quantum (ML-KEM)", what: "New NIST standards (2024) built to survive quantum computers, for data that must stay secret for years.", example: "FIPS 203 (ML-KEM) for future-proof key exchange" },
+        ],
+      },
+    ],
   },
   takeaway: "Encoding is not encryption. If it reverses with no key it protects nothing: use a strong algorithm and keep the key out of the code.",
   outcome: [
