@@ -438,6 +438,55 @@ export const MODULE3: ModuleDef = {
   client: "Caldera Freight",
   brief:
     "A deep engagement on how the web actually works - the foundation everything else stands on. Caldera's parts store is about to open. The full job: read a response and find what the dev left in it, map the hidden surface through robots.txt, tamper the price the checkout trusts, and forge a role header to open the staff tools. Then four field jobs for new clients, and a final challenge you run start to finish. Every request and response is real, modelled in your browser, nothing leaves your machine.",
+  industry: {
+    tag: "The page is only half the story. The real action is in the request and response underneath it.",
+    motif: { pre: "checkout sends -> price: ", hit: "0.01", note: "the price came from YOUR browser, so you set it" },
+    primer: {
+      term: "Requests and responses",
+      what: "Every web page is a conversation: your browser sends a REQUEST (a line like GET /page, plus headers), and the server sends back a RESPONSE (a status code, more headers, and the HTML). The page you see is only the HTML part. Attackers read and edit the whole conversation, including the parts the page hides.",
+      example: "GET /   ->   200 OK  (+ headers, + the HTML)",
+      returns: "The page is only the HTML. The request line, the headers, hidden form fields and even prices all travel with it, and your browser controls them. A server that trusts those is the bug under half the web, which is exactly what you will learn to spot here.",
+    },
+    learn: [
+      "Read a response and find what the developer left behind in it.",
+      "Map hidden paths through robots.txt and reach an unlinked staff area.",
+      "Tamper a price the checkout trusts from your browser.",
+      "Forge a role header to open the staff tools.",
+    ],
+    engines: [
+      { name: "Browser DevTools", color: "#4285F4", blurb: "Built into every browser (F12): see the live HTML, every request and response, and the JavaScript. The whole module lives here.", here: true, icon: "browser" },
+      { name: "Burp Suite", color: "#ff6633", blurb: "An intercepting proxy that sits between browser and server so you can read and edit every request.", icon: "tool" },
+      { name: "curl", color: "#5fe6ff", blurb: "A command-line tool that sends a raw request and shows the raw response, headers and status code.", icon: "tool" },
+      { name: "Postman", color: "#ff6c37", blurb: "Builds, sends and inspects requests to probe the endpoints a front end quietly calls.", icon: "tool" },
+      { name: "HTTP / HTTPS", color: "#8b7bff", blurb: "The protocol underneath it all: the request/response model, headers and status codes.", icon: "server" },
+    ],
+    headline: {
+      masthead: "THE PLAINVIEW HERALD",
+      dateline: "MISSOURI · 2021 · NEWS REPORT + PROSECUTOR DECISION",
+      title: "A reporter pressed 'view source', and the state called it hacking",
+      body: "A Missouri state website looked up teacher credentials. The page didn't show their Social Security numbers, but they were sitting right there in the page's HTML source, readable by anyone who pressed 'view source'. A journalist found it, told the state privately, and waited for a fix before reporting. More than 100,000 educators were exposed. The governor branded the reporter a hacker and demanded a criminal case; the prosecutor declined to charge, because looking at a page's own source is not a crime.",
+      stat: "100,000+",
+      statLabel: "SSNs SITTING IN THE PAGE SOURCE",
+      why: "Reading a page's source is not hacking; putting secrets in that source is the real failure. What a site sends your browser, you can always read, which is why knowing the web surface is step one.",
+    },
+    realWorld:
+      "The web runs on a simple conversation: your browser asks, the server answers, and everything, the request, the headers, the hidden fields, the full HTML, travels in the open to your machine. Anything the server puts there you can read; anything it lets your browser decide, you can change. Developers forget this constantly, leaving secrets in the source and trusting prices and roles sent from the client. Reading the whole conversation is the foundation of every web attack and defence.",
+    now: {
+      stat: "23.8M",
+      statLabel: "secrets leaked in public code in 2024 (GitGuardian)",
+      body: "The web surface leaks more than ever: GitGuardian counted 23.8 million new secrets, API keys, tokens and passwords, exposed in public code in 2024, up 25% on the year. Many sit in front-end JavaScript and HTML, the exact place this module teaches you to look.",
+    },
+    recent: {
+      year: "2025",
+      title: "Live keys hard-coded in front-end code",
+      body: "In 2025, researchers scanned a huge slice of the web and found nearly 12,000 live, working secrets sitting in public pages, including around 1,500 Mailchimp API keys hard-coded straight into front-end HTML and JavaScript. Developers pasting live keys into the client instead of keeping them on the server: exactly the 'secret left on the client' you will learn to spot.",
+    },
+    ahead:
+      "AI coding assistants are making it worse: studies find code written with AI autocomplete leaks secrets into public repositories at a noticeably higher rate, because the AI happily suggests a hard-coded key. The same AI is pointed at defence too, continuously scanning front-end code and public repos for exposed keys and hidden endpoints, the same client-side files attackers read by hand. Knowing the web surface is how you stay ahead of both.",
+    role:
+      "This is the foundation for web-application penetration testers, bug-bounty hunters and application-security engineers. Every web attack later in the course starts by reading this conversation.",
+    roles: ["Web app pentester", "Bug-bounty hunter", "Application security engineer", "Security-minded developer"],
+  },
   lesson: {
     blocks: [
       { h: "The web is requests and responses", body: "Every web action is a message. Your browser sends an HTTP request - a method (GET to fetch, POST to send), a path like /api/order, some headers, and often a body of data - and the server sends a response back with a status code, headers, and a body. That is the whole conversation; a web app is just a long series of these." },
@@ -475,6 +524,12 @@ export const MODULE3: ModuleDef = {
   },
   handler: "Four stages, four field jobs, then one full challenge. Read the home page response and find the endpoint in a comment, read robots.txt and reach the staff path, tamper the price the checkout trusts, then forge the X-Role header to open the admin tools. Try each yourself before the hints. You're proving the surface is open, not taking anything real.",
   hint: "Work the stages in order. Send GET / and read the HTML comment for a path. Then GET /robots.txt and browse to what it disallows. For the price, edit unitPrice to 0.00 and send. For the header, set X-Role to admin.",
+  plan: [
+    { label: "Inspect", goal: "Send a request to the home page and read what the developer left behind in the response." },
+    { label: "Discover", goal: "Read robots.txt to find the paths it tries to hide, then reach the staff area it names." },
+    { label: "Tamper the price", goal: "The checkout sends the price from your browser. Edit it before it goes and set your own." },
+    { label: "Forge a header", goal: "The staff tools trust an X-Role header your browser sends. Change it to admin and open them." },
+  ],
   Act: WebSurfaceAct,
   flag: "flag{the_cl1ent_c0ntr0ls_the_r3quest}",
   defend: {
@@ -501,6 +556,48 @@ export const MODULE3: ModuleDef = {
     cvss: "8.1",
     impact: "Responses leak internal endpoints in HTML comments and server versions in headers; robots.txt advertises hidden staff paths that are reachable directly; the checkout trusts a client-supplied price (buy for GBP 0); and staff tools grant access from a client-supplied X-Role header. Together these allow free purchases and unauthorised access to staff functionality.",
     fix: "Decide all security-relevant values server-side: look up prices by item id, derive roles from the session, and validate every field. Strip version banners, debug headers and developer comments from responses, and treat robots.txt as public.",
+  },
+  cheatsheet: {
+    title: "The web surface quick reference",
+    blurb: "The conversation under every web page, what your browser controls, and the one rule that fixes it, in plain words. You do not need to memorise any of it: it lives here, open it whenever you like.",
+    sample: {
+      caption: "Every example below is about who controls which part of the conversation. If your browser controls it, a careless server should never trust it.",
+      cols: ["part of the conversation", "who controls it", "what can go wrong"],
+      rows: [
+        ["the HTML / page source", "server sends it, you read it", "secrets left in comments or fields (view source)"],
+        ["request headers (X-Role)", "YOUR browser sets them", "server trusts a role you set yourself"],
+        ["hidden fields (price)", "YOUR browser sends them", "server trusts a price you edited"],
+      ],
+    },
+    groups: [
+      {
+        heading: "How the web actually talks",
+        entries: [
+          { code: "request", what: "What your browser sends: a method and path (GET /page) plus headers.", example: "GET /checkout, with your cookies and headers" },
+          { code: "response", what: "What the server sends back: a status code, headers, and the HTML.", example: "200 OK, Server: ..., then the page" },
+          { code: "status codes", what: "The 3-digit result: 200 ok, 301/302 redirect, 403 forbidden, 404 not found, 500 error.", example: "403 means it exists but you're blocked" },
+          { code: "headers", what: "Extra lines of info on each message: who you are, what software, what's allowed.", example: "Server: Apache/2.4.49 reveals the software + version" },
+        ],
+      },
+      {
+        heading: "What developers leave on the client",
+        entries: [
+          { code: "view source", what: "The raw HTML and inline JavaScript the server sent, where comments, hidden fields and keys hide.", example: "an SSN or API key sitting in the page source" },
+          { code: "robots.txt", what: "A file telling search engines what to skip, which quietly lists the paths worth a look.", example: "Disallow: /staff-portal -> an unlinked page" },
+          { code: "client-sent values", what: "Prices, discounts and quantities the browser sends; never trust them server-side.", example: "price=149 -> edit to 0.01 before it sends" },
+          { code: "client-set headers", what: "Headers your browser controls, like a role or flag the server reads.", example: "X-Role: user -> X-Role: admin" },
+        ],
+      },
+      {
+        heading: "The rule that fixes it",
+        entries: [
+          { code: "never trust the client", what: "Treat everything from the browser as attacker-controlled, and re-check it on the server.", example: "look up the real price server-side, ignore the sent one" },
+          { code: "check access server-side", what: "Decide roles and permissions on the server, never from a header the client sets.", example: "read the role from the session, not from X-Role" },
+          { code: "keep secrets server-side", what: "No keys, SSNs or protected logic in HTML or front-end JavaScript.", example: "call a server endpoint that holds the key" },
+          { code: "right status, no leaks", what: "Return proper codes, and don't leak software versions or internal paths in responses.", example: "hide the Server version header" },
+        ],
+      },
+    ],
   },
   takeaway: "A server can never trust what the client sends. Decide every price, role and permission on the server, every time.",
   outcome: [
