@@ -361,6 +361,58 @@ export const MODULE16: ModuleDef = {
   client: "Vantage Mutual",
   brief:
     "The finale. You broke in during Part 1; now finish the job the way a professional does, and close the season. The full job: reconstruct the chain you ran, score it honestly, build the report Vantage can act on, and deliver and debrief it. Then four field jobs, and a final challenge you run start to finish. This is the last engagement - the piece that turns a hack into a result, and a season of work into a portfolio.",
+  industry: {
+    tag: "Breaking in is the easy part. The report, scored and delivered right, is the job.",
+    readLine: "a 2 minute read before you write it up",
+    enginesTitle: "What delivers an engagement",
+    whyPunch: "A hack is only worth its report.",
+    motif: { pre: "hack done -> ", hit: "a clear, scored report", post: " -> a fix", note: "that's what the client actually pays for" },
+    primer: {
+      term: "Closing an engagement",
+      what: "Finding the holes is only half a professional's job. The other half is turning the whole attack into something a client can act on: reconstructing the chain honestly, scoring how serious it really is (CVSS), writing a clear report, and delivering it privately with a debrief and a fix, never keeping access or going public. That is what separates a professional from a criminal who found the same bug.",
+      example: "chain -> CVSS Critical -> report (what, where, reproduce, impact, fix) -> deliver + debrief",
+      returns: "A brilliant hack nobody can act on is worth nothing; a clear report that gets a critical flaw fixed is worth everything, sometimes literally millions. Delivering the engagement well is the skill that makes this a career, and it is how you close the whole course.",
+    },
+    learn: [
+      "Reconstruct the attack chain into an honest narrative.",
+      "Score the chained finding's severity, fairly.",
+      "Structure a report a busy team can act on.",
+      "Deliver and debrief it the professional way.",
+    ],
+    engines: [
+      { name: "The report", color: "#4ade80", blurb: "The written findings: the actual product a client pays for. The hack is worthless until it's a clear, honest report.", here: true, icon: "doc" },
+      { name: "CVSS score", color: "#5fe6ff", blurb: "The 0 to 10 severity standard, so the client knows exactly what to fix first.", icon: "doc" },
+      { name: "The debrief", color: "#8b7bff", blurb: "The live readout where you walk the client through the findings and agree next steps.", icon: "mail" },
+      { name: "The retest", color: "#ffb347", blurb: "After they fix it, you test again to confirm the hole is actually closed.", icon: "shield" },
+      { name: "Certifications", color: "#e535ab", blurb: "OSCP, CompTIA PenTest+ and CEH turn proven skill into a hireable credential.", icon: "key" },
+    ],
+    headline: {
+      masthead: "THE WHITE HAT TIMES",
+      dateline: "2019 · HACKERONE RECORD + PRESS",
+      title: "A self-taught teenager became hacking's first bounty millionaire",
+      body: "Santiago Lopez started hunting bugs at 16, self-taught, from Argentina; his first report earned $50. By 19 he had filed more than 1,600 clear, honest vulnerability reports to companies like Twitter and Verizon, and became the first person to earn over $1 million in bug bounties, all legal, all reported, never exploited. Not one lucky hit; a million dollars built from careful write-ups.",
+      stat: "$1M+",
+      statLabel: "EARNED BY 19, FROM HONEST REPORTS",
+      why: "He didn't break the law; he found flaws and reported them well. That is the whole profession this course has trained you for, and the report is what turns the skill into a living.",
+    },
+    realWorld:
+      "A finding is only worth what the report makes of it. Closing an engagement is reconstructing the attack into an honest story, scoring it fairly, writing it so a busy team can fix it fast, and delivering it privately with a debrief, then confirming the fix worked. It is the least glamorous and most valuable part of the job: the deliverable the client actually pays for, and the thing that marks you as a professional rather than someone who just got lucky.",
+    now: {
+      stat: "$81M",
+      statLabel: "paid to ethical hackers via HackerOne in a year (+13%)",
+      body: "This is a real, growing profession: through one platform, HackerOne, organisations paid ethical hackers around $81 million in a single year, up 13%, and the global cyber workforce is short millions of people. The skill this course taught is in demand, and the report is how you prove you have it.",
+    },
+    recent: {
+      year: "2024",
+      title: "Millions of unfilled security jobs",
+      body: "The world is short of people who can do this: a 2024 industry study put the global cybersecurity workforce gap at around 4.8 million unfilled roles. The demand for people who can find flaws and, crucially, report them clearly keeps growing, which is exactly the job this capstone trains.",
+    },
+    ahead:
+      "AI is already inside the job: most researchers now use AI tools, and AI drafts reports and finds raw bugs at speed. But the value shifts up, not away: judgment, scoping, chaining separate findings into one real attack, communicating risk, and ethics are the human parts AI can't replace, and they are exactly what this final module is about. The career is changing shape, not disappearing.",
+    role:
+      "You've now done the whole job. The roles this opens: penetration tester, red teamer, security consultant and bug-bounty hunter. You start the way the pros did, with capture-the-flag games, then reporting real bugs through official programs (with a parent and inside the rules), then the certifications that make it a career.",
+    roles: ["Penetration tester", "Red teamer", "Security consultant", "Bug-bounty hunter"],
+  },
   lesson: {
     blocks: [
       { h: "The report is the deliverable", body: "A client never pays for the thrill of a break-in; they pay for a report that makes them safer. Everything you found in Part 1 is worthless to Vantage until it's written up: what the issue is, how serious, what it would cost them, and precisely how to fix it. The report is the product - the hacking was just how you sourced it." },
@@ -398,6 +450,12 @@ export const MODULE16: ModuleDef = {
   },
   handler: "Last one, operator. Reconstruct the chain so the story's true, score it straight - this is a Critical, don't flinch - build a report they can ship, and deliver it properly with a debrief. Least harm throughout; the engagement's over, so no more access. Then it's done, and it's yours. Good work this season.",
   hint: "Work the stages in order. The chain is recon -> loot -> break in -> impact. Severity is Critical (remote, no login, full data). A report runs title, location, severity, impact, reproduce, remediation. Deliver privately, debrief, and file it - no further exploitation.",
+  plan: [
+    { label: "Reconstruct the chain", goal: "Lay out the Part 1 attack chain in order, so the report tells the true story." },
+    { label: "Score it honestly", goal: "A client acts on the severity. Score the chained finding as it really is." },
+    { label: "Build the report", goal: "Structure the write-up so Vantage can act on it fast." },
+    { label: "Deliver and debrief", goal: "The report is written. Close the engagement the professional way." },
+  ],
   Act: FinaleAct,
   flag: "flag{f1rst_s3ason_cl0sed}",
   defend: {
@@ -424,6 +482,48 @@ export const MODULE16: ModuleDef = {
     cvss: "9.1",
     impact: "The capstone engagement is documented end to end: a chained recon-to-admin compromise, reconstructed in order, scored Critical, written into an actionable report, and delivered with a debrief and an attack-path recommendation - the closing piece of a sixteen-finding portfolio spanning attack and defence.",
     fix: "Remove web-reachable backups and enforce access control + encryption; rotate exposed credentials; and adopt attack-path review so low-severity issues aren't allowed to chain into critical ones.",
+  },
+  cheatsheet: {
+    title: "Closing an engagement quick reference",
+    blurb: "How to turn a hack into a result and a career: reconstruct, score, report, deliver, in plain words. You do not need to memorise any of it: it lives here, open it whenever you like.",
+    sample: {
+      caption: "The hacking is done. Everything that makes it count happens here. Three things you hand over, and why each matters.",
+      cols: ["what you hand over", "what it does", "why it matters"],
+      rows: [
+        ["the chain, in order", "the true story of the attack", "the client sees exactly how it happened"],
+        ["a CVSS score", "a fair 0-10 severity", "tells them what to fix first"],
+        ["a private debrief + fix", "a walk-through and a recommendation", "it gets fixed, and you stay professional"],
+      ],
+    },
+    groups: [
+      {
+        heading: "Turning a hack into a result",
+        entries: [
+          { code: "reconstruct the chain", what: "Lay out every step in order, honestly, so the report tells the true story.", example: "recon -> loot -> reuse -> export" },
+          { code: "score it (CVSS)", what: "Give the finding a fair 0 to 10 severity so the client knows how urgent it is.", example: "remote + no login + full data = Critical" },
+          { code: "write it to act on", what: "Title, location, severity, impact, steps to reproduce, and the fix.", example: "a stranger can reproduce and patch it" },
+          { code: "the deliverable", what: "The report is the product the client pays for; the hack is worthless without it.", example: "a clear write-up, not a screenshot dump" },
+        ],
+      },
+      {
+        heading: "Delivering like a professional",
+        entries: [
+          { code: "deliver privately", what: "Hand the report to the client directly; never post it publicly to show off.", example: "a private readout, not a tweet" },
+          { code: "debrief", what: "Walk the client through what you found, answer questions, agree next steps.", example: "a live readout meeting" },
+          { code: "retest", what: "After they fix it, test again to confirm the hole is actually closed.", example: "verify the fix, don't assume" },
+          { code: "never retain access", what: "The engagement is over: report, rotate credentials, and keep nothing.", example: "no 'keeping the admin login for later'" },
+        ],
+      },
+      {
+        heading: "Making it a career",
+        entries: [
+          { code: "start with CTFs", what: "Capture-the-flag games are the safe, legal playground to build and prove skill.", example: "picoCTF, TryHackMe, Hack The Box" },
+          { code: "bug bounty (by the rules)", what: "Report real bugs through official programs, in scope, with a parent if under 18.", example: "HackerOne / Bugcrowd, inside the rules" },
+          { code: "certifications", what: "Recognised quals turn skill into a hireable credential.", example: "CompTIA PenTest+, then OSCP" },
+          { code: "a portfolio", what: "A record of your findings and write-ups proves what you can do.", example: "CTF solves + public bug-bounty reports" },
+        ],
+      },
+    ],
   },
   takeaway: "An engagement is only finished when it is reported. Reconstruct the chain in order, score it honestly, and hand over a fix the client can act on.",
   outcome: [
