@@ -407,6 +407,54 @@ export const MODULE9: ModuleDef = {
   client: "Harbour Systems",
   brief:
     "A deep engagement on how passwords are stored - and how badly it's often done. Harbour Systems had a database leak and the user table is now a test copy in your hands. The full job, with real hashing in your own browser: identify each hash, crack an unsalted one against a wordlist, watch a salt defeat your list and then beat it with the leaked salt, and prove that length alone doesn't save a guessable password. Then four field jobs for new clients, and a final challenge you run start to finish. Every hash is computed for real; nothing leaves your machine.",
+  industry: {
+    tag: "Sites don't store your password, they store a hash of it. Store that badly and a laptop cracks it in seconds.",
+    motif: { pre: "leaked hash == ", hit: "sha256('sunshine')", note: "they match, so the password was 'sunshine'" },
+    primer: {
+      term: "Hashing",
+      what: "A website should never store your actual password. Instead it stores a hash: a one-way scramble that is easy to compute but cannot be reversed. When you log in, it hashes what you typed and checks it matches the stored hash. The catch: if the hash is fast and unsalted, an attacker who steals the database can just hash millions of common passwords and look for matches.",
+      example: "sha256(\"sunshine\") = 9f86d081...",
+      returns: "Hashes can't be reversed, but they CAN be guessed: hash a wordlist and compare. A fast hash like SHA-256 lets a single graphics card try billions of guesses a second, which is exactly what you will do here, for real.",
+    },
+    learn: [
+      "Identify a hash by its format: length and prefix give the algorithm away.",
+      "Crack an unsalted hash by hashing a wordlist and matching the digest.",
+      "See what a salt does, then crack past it using the leaked salt.",
+      "Prove that length alone doesn't save a guessable password against a fast hash.",
+    ],
+    engines: [
+      { name: "hashcat", color: "#4ade80", blurb: "The fastest GPU password-cracker: runs wordlists and rules against stolen hashes. You'll do its core move by hand.", here: true, icon: "tool" },
+      { name: "John the Ripper", color: "#5fe6ff", blurb: "The classic open-source cracker; auto-detects the hash type and goes to work.", icon: "tool" },
+      { name: "MD5 / SHA-256", color: "#f26d72", blurb: "Fast, general-purpose hashes: billions of guesses a second on a GPU, so wrong for storing passwords.", icon: "key" },
+      { name: "bcrypt", color: "#ffb347", blurb: "A deliberately slow, salted password hash: thousands a second, not billions. The old reliable.", icon: "lock" },
+      { name: "Argon2", color: "#8b7bff", blurb: "The modern winner: slow AND memory-hard, so even custom hardware struggles. OWASP's first choice.", icon: "lock" },
+    ],
+    headline: {
+      masthead: "THE LEAK LEDGER",
+      dateline: "2009 · BREACH DISCLOSURE + SECURITY ANALYSIS",
+      title: "32 million passwords stored in plain text, and crackers still use the list",
+      body: "RockYou, a maker of social-media apps, kept all its users' passwords as plain text, no hashing at all, behind a database flaw anyone could exploit. When it leaked, about 32 million passwords spilled out, the most common being '123456'. Stripped of duplicates, that list became 'rockyou.txt', and more than fifteen years later it is still the first wordlist password-crackers reach for.",
+      stat: "32M",
+      statLabel: "PASSWORDS, IN PLAIN TEXT",
+      why: "One careless site armed every attacker since with a ready-made list of what people actually choose. Passwords are the lock on almost everything, which is why how they're stored, and cracked, is worth knowing cold.",
+    },
+    realWorld:
+      "Passwords protect almost every account, but they're only as safe as the way a site stores them. Store them in plain text or behind a fast, unsalted hash, and a single stolen database hands an attacker millions of real passwords in minutes on ordinary hardware. The defence, slow salted hashing plus a second factor, is well known; the attack is one wordlist away.",
+    now: {
+      stat: "#7",
+      body: "Password problems fall under Authentication Failures, ranked seventh (A07) on the 2025 OWASP Top 10. And people still make it easy: the most common password in NordPass's 2024 list is '123456', and surveys find most people reuse a password across several accounts, so one leak unlocks many.",
+    },
+    recent: {
+      year: "2024",
+      title: "Ten billion passwords in one file",
+      body: "In July 2024 someone posted 'rockyou2024.txt', a compilation of nearly 10 billion unique passwords gathered from thousands of past breaches, the largest such list ever assembled. On modern hardware the scale barely matters: a single high-end graphics card can try billions of fast-hash guesses every second, so a weak password falls almost instantly.",
+    },
+    ahead:
+      "AI is being pointed at guessing too: tools trained on billions of leaked passwords learn the patterns people actually use and generate better guesses than old rules alone. The long-term answer is to stop using passwords: passkeys replace them with a device key that can't be guessed, phished or cracked, and adoption is climbing fast, with billions already in use. Until then, slow salted hashing plus a second factor is what buys a stolen database time.",
+    role:
+      "This is day-one knowledge for penetration testers, security engineers and identity (IAM) specialists. Knowing how hashes fall is how you learn to store them so they don't.",
+    roles: ["Penetration tester", "Security engineer", "Identity & access (IAM) engineer", "SOC analyst"],
+  },
   lesson: {
     blocks: [
       { h: "Hashing stores passwords - in theory", body: "A site should never store your actual password. Instead it stores a hash: a one-way fingerprint. When you log in, it hashes what you typed and compares fingerprints. Done right, even someone who steals the database can't turn the hashes back into passwords. Done wrong, they barely have to try." },
@@ -444,6 +492,12 @@ export const MODULE9: ModuleDef = {
   },
   handler: "Four stages, four field jobs, then one full challenge. Identify the hashes, crack an unsalted one against the wordlist, see what a salt does and beat the leaked one, then crack a longer-but-weak password. Every hash is computed for real in your browser - tap a word to hash it and compare. The bcrypt ones aren't worth your time; that's the point.",
   hint: "Work the stages in order. Tap a word to hash it live and compare to the target. For the salted stage, nothing matches until you tick 'apply the leaked salt'. MD5 is 32 hex, SHA-256 is 64, bcrypt starts $2b$.",
+  plan: [
+    { label: "Identify", goal: "Identify each leaked hash by its format: length and any prefix give the algorithm away." },
+    { label: "Crack", goal: "Hash the wordlist for real and find the one whose SHA-256 digest matches the unsalted hash." },
+    { label: "Salt", goal: "The admin's hash is salted. Watch plain words fail, then apply the leaked salt and crack it." },
+    { label: "Length isn't strength", goal: "Crack a longer but still guessable password, proving length alone doesn't beat a fast hash." },
+  ],
   Act: HashAct,
   flag: "flag{unsalt3d_hash_cr4cked}",
   defend: {
@@ -470,6 +524,48 @@ export const MODULE9: ModuleDef = {
     cvss: "7.5",
     impact: "Most password hashes are fast and unsalted, and crack instantly against a dictionary of common passwords, exposing plaintext passwords for reuse across accounts and services. A leaked per-record salt provided no protection.",
     fix: "Rehash all passwords with a salted, slow algorithm (bcrypt/scrypt/Argon2) on next login; store a fresh random salt per password; force resets for cracked accounts; add MFA and breached-password checks.",
+  },
+  cheatsheet: {
+    title: "Passwords & hashing quick reference",
+    blurb: "How passwords are stored, how they get cracked, and how to store them so they don't, in plain words. You do not need to memorise any of it: it lives here, open it whenever you like.",
+    sample: {
+      caption: "How a password is stored decides how fast it falls. Same password, three storage choices, three very different outcomes.",
+      cols: ["the leak holds", "what it is", "how fast it falls"],
+      rows: [
+        ["5f4dcc3b... (32 hex)", "an MD5 hash", "billions/sec on a GPU: instant"],
+        ["unsalted SHA-256", "a fast hash, no salt", "hash a wordlist, compare: seconds"],
+        ["$2b$12$... ", "a slow, salted bcrypt hash", "thousands/sec: deliberately painful"],
+      ],
+    },
+    groups: [
+      {
+        heading: "How passwords are stored",
+        entries: [
+          { code: "hash", what: "A one-way scramble of your password. The site stores this, not the password, and compares hashes at login.", example: "sha256('sunshine') = 9f86d081..." },
+          { code: "salt", what: "A random value mixed in before hashing, unique per user, so identical passwords get different hashes.", example: "hash(salt + password); salt stored alongside" },
+          { code: "slow hash", what: "A hash made deliberately slow (bcrypt/Argon2) so guessing is expensive even on a GPU.", example: "bcrypt does thousands/sec, not billions" },
+          { code: "identify by format", what: "Length and prefix reveal the algorithm.", example: "32 hex = MD5, 64 hex = SHA-256, $2b$ = bcrypt" },
+        ],
+      },
+      {
+        heading: "How they get cracked",
+        entries: [
+          { code: "wordlist (dictionary)", what: "Hash every word in a list of common and leaked passwords, then compare to the stolen hash.", example: "rockyou.txt, ~14M real passwords" },
+          { code: "unsalted + fast = instant", what: "A fast, unsalted hash lets a GPU try billions a second, so common passwords fall immediately.", example: "MD5: ~150 billion guesses/sec on one card" },
+          { code: "password reuse", what: "People reuse passwords, so one cracked hash often unlocks their other accounts too.", example: "same password on email + bank + game" },
+          { code: "length isn't enough", what: "A long but predictable password still falls to a wordlist; randomness and slowness are what matter.", example: "'letmein123' is long and still instant" },
+        ],
+      },
+      {
+        heading: "The fix",
+        entries: [
+          { code: "Argon2 / bcrypt", what: "Store passwords with a slow, salted hash; Argon2 is the current first choice, bcrypt is fine.", example: "Argon2id with sensible cost settings" },
+          { code: "salt every hash", what: "Use a unique random salt per user so identical passwords never share a hash.", example: "16+ random bytes per password" },
+          { code: "MFA", what: "A second factor means a cracked password alone still isn't enough to get in.", example: "password + an app code or a passkey" },
+          { code: "passkeys", what: "Replace the password entirely with a device key that can't be guessed, phished or cracked.", example: "sign in with Face ID / fingerprint, no password" },
+        ],
+      },
+    ],
   },
   takeaway: "A fast, unsalted hash is a password waiting to be read. Store passwords with a slow, salted algorithm like bcrypt or Argon2.",
   outcome: [
