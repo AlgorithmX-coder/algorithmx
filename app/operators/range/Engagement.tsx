@@ -27,6 +27,9 @@ export type GlossaryEntry = { term: string; definition: string; example?: string
 // A learner-facing unit is a "Module" (Module 01…16). The in-fiction activity
 // you run inside one is still "the engagement". The persistence layer keys off
 // `moduleNo`, which maps to the shared Progress.week column at the DB boundary.
+/** Generic, topic-fitting glyphs for the engine/tool showcase (no copied logos).
+ *  Pick the one that fits the module's field; see spec §1a. */
+export type EngineIcon = "db" | "browser" | "tool" | "scan" | "key" | "lock" | "server" | "shield" | "doc" | "mail";
 export type ModuleDef = {
   code: string;
   /** Numeric module (1-16) - the key for Progress + the portfolio finding. */
@@ -52,7 +55,7 @@ export type ModuleDef = {
      *  "what this even is" + a real worked example, shown near the top of the intro. */
     primer?: { term: string; what: string; example: string; returns: string };
     roles?: string[];
-    engines?: { name: string; color: string; blurb: string; here?: boolean; icon?: "db" | "browser" }[];
+    engines?: { name: string; color: string; blurb: string; here?: boolean; icon?: EngineIcon }[];
     headline?: { masthead: string; dateline: string; title: string; body: string; stat: string; statLabel: string; why?: string };
     recent?: { year: string; title: string; body: string };
     /** The one-line "signature move" shown in the hero: a grey code frame with the
@@ -827,11 +830,97 @@ function BrowserGlyph({ color }: { color: string }) {
     </svg>
   );
 }
-function EngineCard({ name, color, blurb, here, icon }: { name: string; color: string; blurb: string; here?: boolean; icon?: "db" | "browser" }) {
+/** Topic-fitting generic glyph for an engine/tool card (spec §1a). No copied logos. */
+function EngineGlyph({ icon, color }: { icon?: EngineIcon; color: string }) {
+  const sw = { display: "block" as const };
+  switch (icon) {
+    case "browser":
+      return <BrowserGlyph color={color} />;
+    case "tool":
+      return (
+        <svg width="30" height="32" viewBox="0 0 36 36" aria-hidden style={sw}>
+          <rect x="15.5" y="1" width="5" height="8" rx="1.5" fill={color} opacity="0.8" />
+          <rect x="15.5" y="27" width="5" height="8" rx="1.5" fill={color} opacity="0.8" />
+          <rect x="1" y="15.5" width="8" height="5" rx="1.5" fill={color} opacity="0.8" />
+          <rect x="27" y="15.5" width="8" height="5" rx="1.5" fill={color} opacity="0.8" />
+          <circle cx="18" cy="18" r="11" fill={color} opacity="0.34" />
+          <circle cx="18" cy="18" r="11" fill="none" stroke={color} strokeOpacity="0.8" strokeWidth="1.5" />
+          <circle cx="18" cy="18" r="4.5" fill="#0f0c26" />
+        </svg>
+      );
+    case "scan":
+      return (
+        <svg width="30" height="32" viewBox="0 0 36 36" aria-hidden style={sw}>
+          <circle cx="15" cy="15" r="10" fill={color} opacity="0.3" />
+          <circle cx="15" cy="15" r="10" fill="none" stroke={color} strokeOpacity="0.85" strokeWidth="2.2" />
+          <line x1="22" y1="22" x2="32" y2="32" stroke={color} strokeWidth="4" strokeLinecap="round" />
+        </svg>
+      );
+    case "key":
+      return (
+        <svg width="32" height="32" viewBox="0 0 36 36" aria-hidden style={sw}>
+          <circle cx="11" cy="18" r="8" fill={color} opacity="0.35" />
+          <circle cx="11" cy="18" r="8" fill="none" stroke={color} strokeOpacity="0.85" strokeWidth="2.2" />
+          <circle cx="11" cy="18" r="3" fill="#0f0c26" />
+          <rect x="18" y="16" width="15" height="4" rx="1.5" fill={color} />
+          <rect x="22" y="20" width="3.5" height="4" rx="1" fill={color} opacity="0.85" />
+          <rect x="28.5" y="20" width="3.5" height="5" rx="1" fill={color} />
+        </svg>
+      );
+    case "lock":
+      return (
+        <svg width="28" height="32" viewBox="0 0 36 40" aria-hidden style={sw}>
+          <path d="M11 17 V12 a7 7 0 0 1 14 0 V17" fill="none" stroke={color} strokeOpacity="0.85" strokeWidth="3" />
+          <rect x="7" y="16" width="22" height="18" rx="3" fill={color} opacity="0.4" />
+          <rect x="7" y="16" width="22" height="18" rx="3" fill="none" stroke={color} strokeOpacity="0.8" strokeWidth="1.3" />
+          <circle cx="18" cy="24" r="2.6" fill="#0f0c26" />
+          <rect x="16.8" y="24" width="2.4" height="5" rx="1" fill="#0f0c26" />
+        </svg>
+      );
+    case "server":
+      return (
+        <svg width="30" height="32" viewBox="0 0 36 36" aria-hidden style={sw}>
+          {[5, 15, 25].map((y) => (
+            <g key={y}>
+              <rect x="5" y={y} width="26" height="8" rx="2" fill={color} opacity="0.4" stroke={color} strokeOpacity="0.7" strokeWidth="1" />
+              <circle cx="10" cy={y + 4} r="1.5" fill={color} />
+            </g>
+          ))}
+        </svg>
+      );
+    case "shield":
+      return (
+        <svg width="28" height="32" viewBox="0 0 34 38" aria-hidden style={sw}>
+          <path d="M17 2 L30 7 V18 C30 27 24 33 17 36 C10 33 4 27 4 18 V7 Z" fill={color} opacity="0.34" stroke={color} strokeOpacity="0.8" strokeWidth="1.4" />
+          <path d="M11 18 l4 4 l8 -9" fill="none" stroke="#fff" strokeOpacity="0.6" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      );
+    case "doc":
+      return (
+        <svg width="26" height="32" viewBox="0 0 30 38" aria-hidden style={sw}>
+          <path d="M5 3 H19 L25 9 V35 H5 Z" fill={color} opacity="0.34" stroke={color} strokeOpacity="0.8" strokeWidth="1.3" />
+          <path d="M19 3 V9 H25" fill="none" stroke={color} strokeOpacity="0.8" strokeWidth="1.3" />
+          <rect x="9" y="16" width="12" height="2.3" rx="1" fill={color} opacity="0.85" />
+          <rect x="9" y="22" width="12" height="2.3" rx="1" fill={color} opacity="0.6" />
+          <rect x="9" y="28" width="8" height="2.3" rx="1" fill={color} opacity="0.5" />
+        </svg>
+      );
+    case "mail":
+      return (
+        <svg width="32" height="30" viewBox="0 0 36 30" aria-hidden style={sw}>
+          <rect x="3" y="4" width="30" height="22" rx="3" fill={color} opacity="0.34" stroke={color} strokeOpacity="0.8" strokeWidth="1.3" />
+          <path d="M4 6 L18 17 L32 6" fill="none" stroke={color} strokeOpacity="0.9" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      );
+    default:
+      return <DbCyl color={color} />;
+  }
+}
+function EngineCard({ name, color, blurb, here, icon }: { name: string; color: string; blurb: string; here?: boolean; icon?: EngineIcon }) {
   return (
     <div style={{ position: "relative", borderRadius: 14, padding: "15px 15px 16px", background: `linear-gradient(160deg, ${color}22, rgba(12,14,21,0.72))`, border: `1px solid ${color}${here ? "aa" : "40"}`, boxShadow: here ? `0 0 26px -10px ${color}` : "none" }}>
       {here && <span style={{ position: "absolute", top: 10, right: 10, fontFamily: MONO, fontSize: 8.5, fontWeight: 700, letterSpacing: ".08em", color: "#0f0c26", background: color, padding: "3px 7px", borderRadius: 999 }}>YOU&apos;RE HERE</span>}
-      {icon === "browser" ? <BrowserGlyph color={color} /> : <DbCyl color={color} />}
+      <EngineGlyph icon={icon} color={color} />
       <div style={{ fontFamily: DISP, fontWeight: 700, fontSize: 16, color: "#fff", marginTop: 10 }}>{name}</div>
       <div style={{ fontSize: 12, color: "#C2CADA", lineHeight: 1.45, marginTop: 4 }}>{blurb}</div>
     </div>
