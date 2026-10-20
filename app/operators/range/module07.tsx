@@ -414,6 +414,54 @@ export const MODULE7: ModuleDef = {
   client: "Northwind Foods",
   brief:
     "A deep engagement on what the app LETS you reach. Logging in proved who you are; now test whether Northwind's portal actually checks what you're allowed to do. The full job: read another driver's record by changing a number, pull the manager's sensitive record the same way, walk into an admin area that was only hidden, and finally make yourself an admin by tampering a field the server trusts. Then four field jobs for new clients, and a final challenge you run start to finish. All against a real in-browser API, nothing leaves your machine.",
+  industry: {
+    tag: "Logged in as yourself, but the app never checks that what you ask for is actually yours.",
+    motif: { pre: "GET /record?id=", hit: "1000", note: "not your id, but the server hands over the manager's record" },
+    primer: {
+      term: "Access control",
+      what: "Authentication proves who you are; access control decides what you are allowed to see and do once you are in. Every time you open a record or a page, the server should check 'is this person allowed THIS one?'. Broken access control is when it checks that you are logged in, but forgets to check that the thing you asked for is actually yours.",
+      example: "GET /account?id=1042   ->   GET /account?id=1000",
+      returns: "Change the id and the server hands back someone else's account, because it never checked that you own it. That one missing check is the most common serious flaw on the web, and the whole of this module.",
+    },
+    learn: [
+      "Change an id in a request to read another user's record (IDOR), with no ownership check.",
+      "Walk the ids up to a sensitive record: salary, home address, an admin key.",
+      "Reach an admin area that was only hidden from the menu, not actually protected.",
+      "Tamper a field the server trusts to promote yourself to admin (mass assignment).",
+    ],
+    engines: [
+      { name: "REST / GraphQL APIs", color: "#e535ab", blurb: "The request layer where IDOR lives: changing an id in an API call is the core attack.", here: true, icon: "server" },
+      { name: "Burp Suite", color: "#ff6633", blurb: "The industry-standard proxy for intercepting and tampering with requests to test access.", icon: "tool" },
+      { name: "Postman", color: "#ff6c37", blurb: "An API client used to craft, replay and tweak requests while probing endpoints.", icon: "tool" },
+      { name: "JWT role claims", color: "#d63aff", blurb: "Tokens carry your identity and role; weak checks on them let you escalate privilege.", icon: "key" },
+      { name: "RBAC", color: "#5fe6ff", blurb: "Role-based access control: the model that, enforced server-side, keeps admin pages admin-only.", icon: "shield" },
+    ],
+    headline: {
+      masthead: "THE CITADEL POST",
+      dateline: "NEW YORK · 2019 · RESEARCHER DISCLOSURE + SEC ACTION",
+      title: "Change one number in the web address, read anyone's mortgage file",
+      body: "First American, a giant US title-insurance company, put customers' documents online with web addresses that simply ran in number order. Logged in or not, you could change a single digit in the address and read someone else's file. About 885 million records going back years, bank statements, mortgage paperwork, tax records, Social Security numbers and driving licences, sat exposed. US regulators brought an enforcement action.",
+      stat: "885M",
+      statLabel: "RECORDS, ONE DIGIT AWAY",
+      why: "No hacking tools and no password, just editing a number in the address bar. This same simple flaw, broken access control, is the single most common serious weakness on the web, which is exactly why it is worth learning to spot.",
+    },
+    realWorld:
+      "Access control is who-can-do-what, and it is the hardest thing to get right because every single request has to be checked. Miss the check on one record, one page or one button, and anyone logged in can reach data and powers never meant for them, usually just by editing an id, a path or a field. It is the number one web risk, and it turns up in almost every app that gets tested.",
+    now: {
+      stat: "#1",
+      body: "Broken Access Control is ranked number one (A01) on the 2025 OWASP Top 10, the top risk for a second edition running. In OWASP's own 2025 testing data, every single application checked had some form of broken access control, which is exactly why it sits at the top of the list.",
+    },
+    recent: {
+      year: "2025",
+      title: "Subscriber records scraped a number at a time",
+      body: "In late 2025, attackers pulled around 2.3 million subscriber email addresses (plus names, addresses and phone numbers) from Conde Nast titles such as Vogue and GQ. The cause was textbook broken access control: profiles used predictable, sequential ids, and some endpoints never properly checked who was asking, so records could be enumerated one after another.",
+    },
+    ahead:
+      "AI makes this worse before it makes it better. Modern apps are built from many APIs, and AI assistants and agents call them constantly, so a single missing ownership check (what the industry calls Broken Object Level Authorization, the number one API risk) is now reachable at huge scale. AI agents are also often handed more access than their task needs, so a cleverly worded prompt can push them to act beyond their authority. The fix is the same discipline at a bigger scale: check, on every request, that this user may touch this exact thing.",
+    role:
+      "This is day-one knowledge for web and API penetration testers, bug-bounty hunters and application-security engineers. A missing authorization check is one of the highest-paid bug classes in the industry.",
+    roles: ["Web & API pentester", "Bug-bounty hunter", "Application security engineer", "SOC analyst"],
+  },
   lesson: {
     blocks: [
       { h: "Authentication vs authorization", body: "Two different checks, and the gap between them is where this whole module lives. Authentication answers 'who are you?' - the login you broke in module 4. Authorization answers 'are you allowed to do this?' - and it has to happen on every single action, not just at the door. Broken access control is when that second check is missing, weak, or trusts something it shouldn't." },
@@ -451,6 +499,12 @@ export const MODULE7: ModuleDef = {
   },
   handler: "Four stages, four field jobs, then one full challenge. Change the id to read a record that isn't yours, push it to the manager's sensitive record, browse straight to the hidden admin area, then tamper the role field to make yourself admin. Try each yourself before the hints. Read-only on anything you reach; you're proving the access is open, not abusing it.",
   hint: "Work the stages in order. Edit the id in the request and SEND (try 1041, then 1000). For the admin area, change the path to /admin/users. For escalation, set the role field to admin and send.",
+  plan: [
+    { label: "IDOR", goal: "Change the record id in the request to read another driver's record the app never checks you own." },
+    { label: "Sensitive record", goal: "Walk the ids up to the manager's record: salary, home address, and an admin key." },
+    { label: "Forced browsing", goal: "The admin pages are hidden, not protected. Reach the admin user list by typing the path directly." },
+    { label: "Privilege escalation", goal: "The profile-update request trusts a role field. Set your own role to admin and open the vault." },
+  ],
   Act: AccessAct,
   flag: "flag{acc3ss_c0ntrol_f0rc3d}",
   defend: {
@@ -477,6 +531,48 @@ export const MODULE7: ModuleDef = {
     cvss: "8.6",
     impact: "The record endpoint returns any id with no ownership check, exposing other staff records including a manager's salary, home address and admin key. Admin pages are only hidden, not protected, so they are reachable by forced browsing. The profile update trusts a role field from the request, letting any user escalate to admin. Together these allow full data exposure and account takeover.",
     fix: "Enforce authorization server-side on every object and action, deny by default; derive role and permissions from the session, never from request fields (no mass assignment); and never rely on unguessable ids or hidden links.",
+  },
+  cheatsheet: {
+    title: "Access control quick reference",
+    blurb: "Everything an app should check before it hands you a record or a page, and the ways it forgets, in plain words. You do not need to memorise any of it: it lives here, open it whenever you like.",
+    sample: {
+      caption: "It is all about one missing check. Every example below is a request the server answers without asking 'is this actually yours?'.",
+      cols: ["you send", "the server returns", "the missing check"],
+      rows: [
+        ["GET /record?id=1042 (yours)", "your own record", "fine - it's yours"],
+        ["GET /record?id=1000", "the manager's record", "it never checked you own id 1000"],
+        ["GET /admin (no menu link)", "the admin page", "hidden, but never role-checked"],
+      ],
+    },
+    groups: [
+      {
+        heading: "How access control should work",
+        entries: [
+          { code: "authentication vs authorization", what: "Authentication is WHO you are; authorization is WHAT you may do. You need both, checked separately.", example: "logged in (authN) but still not allowed id 1000 (authZ)" },
+          { code: "ownership check", what: "For every record, the server must confirm it belongs to this user before returning it.", example: "return row WHERE id = 1000 AND owner = you" },
+          { code: "role check (RBAC)", what: "Admin-only pages and actions must verify the user's role on the server, every time.", example: "/admin -> require role == admin" },
+          { code: "deny by default", what: "Everything is forbidden unless a rule explicitly allows it, so a forgotten page stays locked.", example: "new endpoint -> locked until a rule opens it" },
+        ],
+      },
+      {
+        heading: "The weak spots you'll hit",
+        entries: [
+          { code: "IDOR", what: "An id in the request points straight at a record with no ownership check, so changing it reads others' data.", example: "id=1042 -> id=1000 returns the manager" },
+          { code: "forced browsing", what: "Admin pages only hidden from the menu, not protected, are reachable by typing the path.", example: "no admin link, but /admin loads anyway" },
+          { code: "mass assignment", what: "The server trusts fields you send it, including ones you should never control, like role.", example: 'update profile with {"role":"admin"} and it believes you' },
+          { code: "missing function checks", what: "An action (export, delete, promote) that checks you're logged in but not that you're allowed.", example: "any user can call /export, not just admins" },
+        ],
+      },
+      {
+        heading: "The fix",
+        entries: [
+          { code: "check ownership server-side", what: "On every request, confirm the logged-in user owns or may access the exact object asked for.", example: "reject id=1000 unless it belongs to you" },
+          { code: "enforce roles server-side", what: "Never rely on hiding a link; check the role on the server for every admin page and action.", example: "/admin returns 403 unless role == admin" },
+          { code: "allow-list fields", what: "Only accept the fields a user may change; never let 'role' or 'price' come from the request.", example: "ignore any role field the client sends" },
+          { code: "deny by default + log", what: "Default to forbidden, open access with explicit rules, and log access-control failures.", example: "403 unless allowed; alert on repeated denials" },
+        ],
+      },
+    ],
   },
   takeaway: "Hiding a link or an id is not access control. Check ownership and permission on the server for every object and action.",
   outcome: [
