@@ -52,9 +52,13 @@ export type ModuleDef = {
      *  "what this even is" + a real worked example, shown near the top of the intro. */
     primer?: { term: string; what: string; example: string; returns: string };
     roles?: string[];
-    engines?: { name: string; color: string; blurb: string; here?: boolean }[];
+    engines?: { name: string; color: string; blurb: string; here?: boolean; icon?: "db" | "browser" }[];
     headline?: { masthead: string; dateline: string; title: string; body: string; stat: string; statLabel: string; why?: string };
     recent?: { year: string; title: string; body: string };
+    /** The one-line "signature move" shown in the hero: a grey code frame with the
+     *  payload highlighted and a red consequence. Per module (SQL for M5, an XSS
+     *  payload for M6, etc.); the box is hidden if absent. */
+    motif?: { pre?: string; hit: string; post?: string; note: string };
   };
   lesson: {
     blocks: LessonBlock[];
@@ -684,14 +688,16 @@ function IntroPage({ mod, world, onContinue }: { mod: ModuleDef; world: World; o
         <div aria-hidden style={{ position: "absolute", inset: 0, opacity: 0.4, backgroundImage: `repeating-linear-gradient(90deg, ${A}12 0 1px, transparent 1px 44px)` }} />
         <div style={{ position: "relative", padding: "26px 26px 28px" }}>
           <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: ".22em", textTransform: "uppercase", fontWeight: 700, color: A, display: "flex", alignItems: "center", gap: 9, flexWrap: "wrap" }}>
-            <span aria-hidden style={{ width: 8, height: 8, borderRadius: "50%", background: A, boxShadow: `0 0 10px ${A}`, animation: "cn-led 1.6s infinite", display: "inline-block" }} />Field feature · Module 05
+            <span aria-hidden style={{ width: 8, height: 8, borderRadius: "50%", background: A, boxShadow: `0 0 10px ${A}`, animation: "cn-led 1.6s infinite", display: "inline-block" }} />Field feature · Module {String(mod.moduleNo).padStart(2, "0")}
             <span style={{ color: C.mute }}>· a 2 minute read before you break in</span>
           </div>
           <h1 style={{ fontFamily: DISP, fontSize: "clamp(42px,11vw,78px)", fontWeight: 700, margin: "8px 0 0", lineHeight: 1.06, paddingBottom: "0.12em", letterSpacing: "-.01em", background: `linear-gradient(100deg, #ffffff, ${A})`, WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent" }}>{mod.title}</h1>
           <p style={{ color: "#EAF0FB", fontSize: "clamp(16px,2.6vw,20px)", lineHeight: 1.45, margin: "14px 0 0", fontWeight: 600, maxWidth: 560 }}>{ind.tag}</p>
-          <div style={{ marginTop: 18, fontFamily: MONO, fontSize: "clamp(11px,2.3vw,13.5px)", lineHeight: 1.7, background: "rgba(0,0,0,0.38)", border: `1px solid ${A}33`, borderRadius: 10, padding: "12px 14px", overflowX: "auto", whiteSpace: "nowrap" }}>
-            <span style={{ color: C.mute }}>WHERE email = &apos;</span><span style={{ color: A, background: `${A}22`, padding: "1px 5px", borderRadius: 4, fontWeight: 700 }}>&apos; OR 1=1 --</span><span style={{ color: C.mute }}>&apos;</span><span style={{ color: C.red, marginLeft: 12 }}>you just walked in, no password</span>
-          </div>
+          {ind.motif && (
+            <div style={{ marginTop: 18, fontFamily: MONO, fontSize: "clamp(11px,2.3vw,13.5px)", lineHeight: 1.7, background: "rgba(0,0,0,0.38)", border: `1px solid ${A}33`, borderRadius: 10, padding: "12px 14px", overflowX: "auto", whiteSpace: "nowrap" }}>
+              {ind.motif.pre && <span style={{ color: C.mute }}>{ind.motif.pre}</span>}<span style={{ color: A, background: `${A}22`, padding: "1px 5px", borderRadius: 4, fontWeight: 700 }}>{ind.motif.hit}</span>{ind.motif.post && <span style={{ color: C.mute }}>{ind.motif.post}</span>}<span style={{ color: C.red, marginLeft: 12 }}>{ind.motif.note}</span>
+            </div>
+          )}
         </div>
       </div>
 
@@ -808,11 +814,24 @@ function DbCyl({ color }: { color: string }) {
     </svg>
   );
 }
-function EngineCard({ name, color, blurb, here }: { name: string; color: string; blurb: string; here?: boolean }) {
+function BrowserGlyph({ color }: { color: string }) {
+  return (
+    <svg width="34" height="30" viewBox="0 0 40 34" aria-hidden style={{ display: "block" }}>
+      <rect x="2" y="2" width="36" height="30" rx="4.5" fill={color} opacity="0.26" stroke={color} strokeOpacity="0.8" strokeWidth="1.2" />
+      <path d="M2 6.5 C2 4 3.8 2 6.5 2 H33.5 C36.2 2 38 4 38 6.5 V10 H2 Z" fill={color} opacity="0.9" />
+      <circle cx="7.5" cy="6" r="1.5" fill="#0f0c26" />
+      <circle cx="12.5" cy="6" r="1.5" fill="#0f0c26" />
+      <circle cx="17.5" cy="6" r="1.5" fill="#0f0c26" />
+      <rect x="7" y="16" width="26" height="2.6" rx="1.3" fill={color} opacity="0.75" />
+      <rect x="7" y="22" width="17" height="2.6" rx="1.3" fill={color} opacity="0.5" />
+    </svg>
+  );
+}
+function EngineCard({ name, color, blurb, here, icon }: { name: string; color: string; blurb: string; here?: boolean; icon?: "db" | "browser" }) {
   return (
     <div style={{ position: "relative", borderRadius: 14, padding: "15px 15px 16px", background: `linear-gradient(160deg, ${color}22, rgba(12,14,21,0.72))`, border: `1px solid ${color}${here ? "aa" : "40"}`, boxShadow: here ? `0 0 26px -10px ${color}` : "none" }}>
       {here && <span style={{ position: "absolute", top: 10, right: 10, fontFamily: MONO, fontSize: 8.5, fontWeight: 700, letterSpacing: ".08em", color: "#0f0c26", background: color, padding: "3px 7px", borderRadius: 999 }}>YOU&apos;RE HERE</span>}
-      <DbCyl color={color} />
+      {icon === "browser" ? <BrowserGlyph color={color} /> : <DbCyl color={color} />}
       <div style={{ fontFamily: DISP, fontWeight: 700, fontSize: 16, color: "#fff", marginTop: 10 }}>{name}</div>
       <div style={{ fontSize: 12, color: "#C2CADA", lineHeight: 1.45, marginTop: 4 }}>{blurb}</div>
     </div>
