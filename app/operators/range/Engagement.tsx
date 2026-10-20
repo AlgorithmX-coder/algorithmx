@@ -45,7 +45,7 @@ export type ModuleDef = {
     tag: string;
     learn: string[];
     realWorld: string;
-    now: { stat: string; body: string };
+    now: { stat: string; body: string; statLabel?: string };
     ahead: string;
     role: string;
     /** Editorial extras for the flagship intro (owner: make it vibrant, a magazine
@@ -761,7 +761,7 @@ function IntroPage({ mod, world, onContinue }: { mod: ModuleDef; world: World; o
           <SectionLabel color={C.cyan}>Right now in the industry</SectionLabel>
           <div style={{ display: "flex", alignItems: "baseline", gap: 11 }}>
             <span style={{ fontFamily: DISP, fontWeight: 700, fontSize: "clamp(46px,11vw,66px)", color: C.cyan, lineHeight: 0.9 }}>{ind.now.stat}</span>
-            <span style={{ fontFamily: MONO, fontSize: 12, color: C.soft, lineHeight: 1.35 }}>on the OWASP<br />Top 10, 2025</span>
+            <span style={{ fontFamily: MONO, fontSize: 12, color: C.soft, lineHeight: 1.35, whiteSpace: "pre-line" }}>{ind.now.statLabel ?? "on the OWASP\nTop 10, 2025"}</span>
           </div>
           <p style={{ margin: "13px 0 0", fontSize: 13.5, color: "#D9E0EE", lineHeight: 1.6 }}>{ind.now.body}</p>
         </div>
