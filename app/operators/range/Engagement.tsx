@@ -48,6 +48,11 @@ export type ModuleDef = {
     now: { stat: string; body: string; statLabel?: string };
     ahead: string;
     role: string;
+    /** Attacker-framed strings default for the red-team modules; defender/foundational
+     *  modules (forensics, IR, disclosure, recon) override them so the copy fits. */
+    readLine?: string;      // eyebrow, default "a 2 minute read before you break in"
+    enginesTitle?: string;  // engine section, default "The engines you'll be breaking (safely)"
+    whyPunch?: string;      // punch line under "why it matters", default "Cheap to fix. Devastating to miss."
     /** Editorial extras for the flagship intro (owner: make it vibrant, a magazine
      *  feature, not a card stack): the database engines as a colourful showcase, a
      *  real past breach as a newspaper clipping, a recent at-scale case, careers. */
@@ -692,7 +697,7 @@ function IntroPage({ mod, world, onContinue }: { mod: ModuleDef; world: World; o
         <div style={{ position: "relative", padding: "26px 26px 28px" }}>
           <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: ".22em", textTransform: "uppercase", fontWeight: 700, color: A, display: "flex", alignItems: "center", gap: 9, flexWrap: "wrap" }}>
             <span aria-hidden style={{ width: 8, height: 8, borderRadius: "50%", background: A, boxShadow: `0 0 10px ${A}`, animation: "cn-led 1.6s infinite", display: "inline-block" }} />Field feature · Module {String(mod.moduleNo).padStart(2, "0")}
-            <span style={{ color: C.mute }}>· a 2 minute read before you break in</span>
+            <span style={{ color: C.mute }}>· {ind.readLine ?? "a 2 minute read before you break in"}</span>
           </div>
           <h1 style={{ fontFamily: DISP, fontSize: "clamp(42px,11vw,78px)", fontWeight: 700, margin: "8px 0 0", lineHeight: 1.06, paddingBottom: "0.12em", letterSpacing: "-.01em", background: `linear-gradient(100deg, #ffffff, ${A})`, WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent" }}>{mod.title}</h1>
           <p style={{ color: "#EAF0FB", fontSize: "clamp(16px,2.6vw,20px)", lineHeight: 1.45, margin: "14px 0 0", fontWeight: 600, maxWidth: 560 }}>{ind.tag}</p>
@@ -738,7 +743,7 @@ function IntroPage({ mod, world, onContinue }: { mod: ModuleDef; world: World; o
       {/* ENGINE SHOWCASE - colourful */}
       {ind.engines && ind.engines.length > 0 && (
         <div>
-          <SectionLabel color={C.cyan}>The engines you&apos;ll be breaking (safely)</SectionLabel>
+          <SectionLabel color={C.cyan}>{ind.enginesTitle ?? "The engines you'll be breaking (safely)"}</SectionLabel>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))", gap: 10 }}>
             {ind.engines.map((e) => <EngineCard key={e.name} {...e} />)}
           </div>
@@ -750,7 +755,7 @@ function IntroPage({ mod, world, onContinue }: { mod: ModuleDef; world: World; o
         <div style={{ flex: "1 1 280px", minWidth: 258 }}>
           <SectionLabel color={A}>Why it matters</SectionLabel>
           <p style={{ margin: 0, fontSize: 15, color: "#E2E8F4", lineHeight: 1.7 }}>{ind.realWorld}</p>
-          <div style={{ marginTop: 16, paddingLeft: 16, borderLeft: `3px solid ${A}`, fontFamily: DISP, fontWeight: 700, fontSize: 19, color: "#fff", lineHeight: 1.3 }}>Cheap to fix. Devastating to miss.</div>
+          <div style={{ marginTop: 16, paddingLeft: 16, borderLeft: `3px solid ${A}`, fontFamily: DISP, fontWeight: 700, fontSize: 19, color: "#fff", lineHeight: 1.3 }}>{ind.whyPunch ?? "Cheap to fix. Devastating to miss."}</div>
         </div>
         {ind.headline && <div style={{ flex: "1 1 280px", minWidth: 258 }}><Newspaper h={ind.headline} /></div>}
       </div>
