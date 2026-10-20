@@ -345,6 +345,57 @@ export const MODULE13: ModuleDef = {
   client: "Harbour Systems",
   brief:
     "A deep engagement defending the weakest link - people. The strongest systems still run on humans, and attackers know it. Harbour forwarded a batch of messages their staff received. Your job is purely to analyse and defend: triage the real from the cons, name exactly what gives each away, and make the right call on the dangerous ones. Then four field jobs for new clients, and a final challenge you run start to finish. You never write a con - you only learn to see them.",
+  industry: {
+    tag: "The strongest defences still run on people, and attackers know it. One convincing message can beat them all.",
+    readLine: "a 2 minute read before you reply",
+    enginesTitle: "The defences that stop a con",
+    whyPunch: "The firewall is the person.",
+    motif: { pre: "caller: 'IT here, reset my MFA' -> ", hit: "hang up, call back on the official line", note: "a convincing voice is not proof" },
+    primer: {
+      term: "Social engineering",
+      what: "Social engineering is hacking people instead of computers. Instead of breaking code, the attacker tricks a person into helping them: a convincing email, a phone call pretending to be IT or the boss, an urgent request that rushes you past your doubts. It works because it targets trust, fear and helpfulness, which no firewall can patch.",
+      example: "\"Hi, it's IT. I need your login to fix your account urgently.\"",
+      returns: "That message has no virus and no exploit, just pressure and a plausible story. The defence isn't a better firewall; it's learning to spot the tells and to verify any risky request through a channel you already trust, which is exactly what you will practise here.",
+    },
+    learn: [
+      "Triage phishing from legitimate mail, analysing only, never replying.",
+      "Name the exact red flags that give a con away.",
+      "Make the right move on a pressured request: verify out-of-band.",
+      "Judge the genuinely tricky messages that aren't obvious either way.",
+    ],
+    engines: [
+      { name: "Awareness training + phishing sims", color: "#4ade80", blurb: "Safe fake phishing (KnowBe4, GoPhish) that trains staff to spot and report the real thing.", here: true, icon: "mail" },
+      { name: "SPF / DKIM / DMARC", color: "#5fe6ff", blurb: "Email checks that block spoofed 'from' addresses before they reach the inbox.", icon: "shield" },
+      { name: "Secure email gateway", color: "#8b7bff", blurb: "Scans incoming mail and links, quarantining phishing and malicious attachments.", icon: "shield" },
+      { name: "Phishing-resistant MFA / passkeys", color: "#ffb347", blurb: "The backstop: even a stolen password or code can't be used on a fake site.", icon: "key" },
+    ],
+    headline: {
+      masthead: "THE PRETEXT POST",
+      dateline: "2023 · COMPANY FILING + INCIDENT REPORTING",
+      title: "One phone call to the help desk took down a casino empire",
+      body: "Attackers found an MGM Resorts employee on LinkedIn, then simply phoned the IT help desk pretending to be them and talked the agent into resetting their login and MFA. No malware, no exploit, just a convincing call. From there they seized MGM's identity systems; casinos and hotels ran on paper for about ten days, and MGM put the hit at around $100 million.",
+      stat: "$100M",
+      statLabel: "FROM ONE CONVINCING PHONE CALL",
+      why: "A billion-dollar company's technology was beaten by a phone call. People are the real attack surface, which is why spotting and stopping a con is a core security skill, not an optional one.",
+    },
+    realWorld:
+      "Most breaches don't start with clever code; they start with a person being tricked. Phishing emails, fake IT calls, urgent requests from the 'boss', all aimed at trust and pressure rather than software. No firewall stops a convincing message, so the defence is people who can spot the tells, plus a simple habit: verify any risky request through a channel you already trust before you act.",
+    now: {
+      stat: "$2.77B",
+      statLabel: "lost to email-con (BEC) scams in 2024 (FBI)",
+      body: "Tricking people is big business: the FBI logged $2.77 billion lost to business email compromise (targeted email cons) in 2024, and Verizon found 68% of breaches involve a human element. No technical control stops a convincing message, which is why this defence trains the person, not just the firewall.",
+    },
+    recent: {
+      year: "2024",
+      title: "A deepfake video call, $25 million gone",
+      body: "In 2024 a finance worker at the engineering firm Arup joined a video call with people who looked and sounded like the company's CFO and colleagues. Every one of them was an AI deepfake. Convinced it was real, the worker made transfers totalling about $25 million. Social engineering with an AI face and voice.",
+    },
+    ahead:
+      "AI is turbo-charging the con: criminals clone voices and faces for real-time deepfake calls, and use chatbots to write flawless, personalised phishing at massive scale, erasing the old bad-spelling giveaway. Microsoft's 2025 testing found AI-written phishing far more effective than human-written. The same AI powers the defence too, filters and anomaly detection that flag a fake sender or an out-of-character request, but the human habit of verifying matters more than ever.",
+    role:
+      "This is day-one knowledge for security-awareness managers, SOC analysts and security consultants, and for the red-teamers who test it. The human layer is where most attacks are won or lost.",
+    roles: ["Security awareness manager", "SOC analyst", "Security consultant", "Social-engineering tester"],
+  },
   lesson: {
     blocks: [
       { h: "Hacking the human", body: "Social engineering is manipulating people into doing something unsafe - handing over a password, clicking a link, paying an invoice. It sidesteps every technical control because it targets the person, not the system. The best firewall in the world doesn't help if someone is talked into opening the door themselves." },
@@ -382,6 +433,12 @@ export const MODULE13: ModuleDef = {
   },
   handler: "You're defending people today, and you only analyse - never reply or send. Read each message and ask: who's it really from, what does it want, and how hard is it pushing? Name the tell on each, and on the dangerous ones, choose to verify out-of-band rather than act.",
   hint: "Work the stages in order. Lookalike/personal senders, urgency, mismatched links and irreversible requests are the tells. For any money or credential request, the right answer is always to verify out-of-band on a known number - never reply to the message.",
+  plan: [
+    { label: "Triage the inbox", goal: "Classify each forwarded message as a phish or legitimate. Analyse only, never reply." },
+    { label: "Name the tells", goal: "Break a suspicious email into parts and mark each element a red flag or normal." },
+    { label: "Verify", goal: "A CEO gift-card request arrives. Decide the right move, which is to verify out-of-band." },
+    { label: "The hard call", goal: "Not every odd message is a con, and not every polished one is safe. Judge the tricky one." },
+  ],
   Act: SocEngAct,
   flag: "flag{ph1sh_n0t_cl1cked}",
   defend: {
@@ -408,6 +465,48 @@ export const MODULE13: ModuleDef = {
     cvss: "5.3",
     impact: "Convincing phishing, CEO-fraud and supplier bank-change messages are reaching staff inboxes. A single click or compliant employee could hand over credentials or make an irreversible payment, bypassing technical controls entirely.",
     fix: "Enforce SPF/DKIM/DMARC, banner external mail, add a report-phishing button, mandate out-of-band verification for money/credential and bank-detail requests, require MFA, and run blame-free awareness training.",
+  },
+  cheatsheet: {
+    title: "Social engineering defence quick reference",
+    blurb: "How a con works, how to spot it, and how to stop it, in plain words. You do not need to memorise any of it: it lives here, open it whenever you like.",
+    sample: {
+      caption: "Every con is a message plus pressure. Here are three classics, the tell in each, and what to actually do.",
+      cols: ["the message says", "the tell", "the right move"],
+      rows: [
+        ["'Urgent: buy gift cards for the CEO'", "urgency + odd request + money", "verify on a known number, don't reply"],
+        ["'IT here, confirm your password'", "no one real asks for your password", "hang up, call IT on the official line"],
+        ["login link to paypa1-secure.com", "lookalike domain", "don't click; go to the real site directly"],
+      ],
+    },
+    groups: [
+      {
+        heading: "How the con works",
+        entries: [
+          { code: "phishing", what: "A fake message (usually email) that tricks you into clicking, logging in, or paying.", example: "a 'reset your password' email to a fake site" },
+          { code: "pretexting / vishing", what: "A made-up story, often by phone, pretending to be IT, the boss or a supplier.", example: "'IT here, I need your code to fix your account'" },
+          { code: "the levers", what: "Urgency, authority, fear and helpfulness, used to rush you past your doubts.", example: "'do this NOW or the deal falls through'" },
+          { code: "BEC", what: "Business email compromise: impersonating an exec or supplier to redirect a payment.", example: "a fake invoice with new bank details" },
+        ],
+      },
+      {
+        heading: "Spotting it (the tells)",
+        entries: [
+          { code: "lookalike sender", what: "A display name or domain that's almost right but not quite.", example: "ceo@company-support.com, paypa1.com" },
+          { code: "urgency + secrecy", what: "Pressure to act fast and not check with anyone.", example: "'urgent, keep this between us'" },
+          { code: "mismatched links", what: "The link text and the real destination don't match. Hover to check.", example: "'account.bank.com' that goes to evil.ru" },
+          { code: "irreversible request", what: "Money, gift cards, credentials or a bank-detail change: things you can't undo.", example: "'send the payment to this new account'" },
+        ],
+      },
+      {
+        heading: "Stopping it (the defence)",
+        entries: [
+          { code: "verify out-of-band", what: "For any risky request, confirm on a channel you already trust, never by replying.", example: "call the boss on their known number" },
+          { code: "never share credentials", what: "No legitimate IT or bank will ever ask for your password or MFA code.", example: "hang up on anyone who does" },
+          { code: "report it", what: "Forward suspected phishing to security so they can warn everyone and block it.", example: "the 'report phishing' button" },
+          { code: "passkeys / MFA", what: "The technical backstop: a passkey can't be handed to a fake site, so a trick alone fails.", example: "sign in with a passkey, not a password" },
+        ],
+      },
+    ],
   },
   takeaway: "No technical control stops a convincing message. Verify any money, credential or bank-change request out-of-band, on a number you already trust.",
   outcome: [
