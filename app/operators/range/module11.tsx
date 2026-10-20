@@ -374,6 +374,58 @@ export const MODULE11: ModuleDef = {
   client: "Harbour Systems",
   brief:
     "A deep engagement that flips your seat - you're the defender now, reading the trail someone else left. Something happened on Harbour's portal overnight and they've pulled the evidence. The full job, all in your browser: find the exact moment of compromise in the auth log, spot the attacker's implant in the process list, reconstruct the whole intrusion as a timeline, and scope what actually happened. Then four field jobs for new clients, and a final challenge you run start to finish. Nothing leaves your machine.",
+  industry: {
+    tag: "After the attack, the machine still remembers. Forensics is reading what it kept.",
+    readLine: "a 2 minute read before you dig in",
+    enginesTitle: "The forensic toolkit",
+    whyPunch: "Deleted is not gone.",
+    motif: { pre: "recovered deleted file -> ", hit: "last saved by: Dennis", note: "the metadata named the killer" },
+    primer: {
+      term: "Digital forensics",
+      what: "Digital forensics is the investigation after an incident: recovering and reading the traces a computer keeps, deleted files, logs, running processes, file metadata, to reconstruct exactly what happened and who did it. The key idea is that computers remember far more than people think, and 'deleted' usually just means 'hidden'.",
+      example: "deleted file -> Author: dennis   (metadata survives)",
+      returns: "A deleted file can often be recovered, and its hidden metadata can name who made it. Forensics turns leftover traces into a timeline and an attribution, which is exactly what you will do here: find the compromise, the implant, and rebuild the attack.",
+    },
+    learn: [
+      "Read an auth log and pinpoint the exact moment of compromise.",
+      "Scan the running processes and spot the persistence implant.",
+      "Reconstruct the whole attack as a timeline, first contact to impact.",
+      "Scope the incident: what actually happened, for the report.",
+    ],
+    engines: [
+      { name: "Autopsy", color: "#4ade80", blurb: "The free, open-source disk-forensics suite: recovers deleted files, history and more from a drive image.", here: true, icon: "scan" },
+      { name: "Volatility", color: "#5fe6ff", blurb: "Memory forensics: pulls running processes, passwords and malware out of a snapshot of RAM.", icon: "scan" },
+      { name: "Wireshark", color: "#8b7bff", blurb: "The standard network analyser: shows exactly what data moved across a network, packet by packet.", icon: "scan" },
+      { name: "FTK", color: "#ffb347", blurb: "A commercial all-in-one that indexes and searches huge evidence sets fast; used by police and enterprise.", icon: "doc" },
+      { name: "EnCase", color: "#e5392f", blurb: "The classic courtroom-grade platform, and the tool that cracked the BTK case.", icon: "scan" },
+    ],
+    headline: {
+      masthead: "THE COLD CASE GAZETTE",
+      dateline: "WICHITA · 2005 · POLICE INVESTIGATION RECORD",
+      title: "A deleted file on a floppy disk named a serial killer",
+      body: "For decades the BTK killer taunted police and was never caught. In 2005 he mailed a floppy disk to a TV station, sure it was safe. Investigators recovered a deleted file still on the disk, a church newsletter, and its hidden metadata showed it was last saved by a user named 'Dennis'. A quick search tied that to the church council president, Dennis Rader. He was arrested and confessed.",
+      stat: "1 file",
+      statLabel: "DELETED, BUT NEVER GONE",
+      why: "He thought deleting the file erased it; the computer remembered his name anyway. Deleted is not gone, and that single idea is the heart of digital forensics.",
+    },
+    realWorld:
+      "When an attack is over, the evidence isn't. Every system keeps logs of who logged in, traces of programs that ran, and files that were 'deleted' but still sit on the disk, each with hidden metadata. Forensics is the discipline of recovering and reading those traces to rebuild exactly what happened and point to who did it, for an investigation, a court, or just to stop it happening again.",
+    now: {
+      stat: "241 days",
+      statLabel: "average time to find and contain a breach (IBM 2025)",
+      body: "Attacks go unnoticed for a long time: IBM's 2025 report puts the average at 241 days to identify and contain a breach. That long gap is exactly the window forensics works in, reconstructing months of activity from the traces left behind, using a standard process: collect, examine, analyse, report.",
+    },
+    recent: {
+      year: "2024",
+      title: "Forensics unmasks a ransomware boss",
+      body: "In 2024, an international police operation seized the servers of LockBit, then the world's most prolific ransomware gang. Forensic analysis of the captured infrastructure let investigators map the network and publicly name its leader, a feat of attribution built entirely on reading seized data. (He denies it.)",
+    },
+    ahead:
+      "AI is taking on the slow part of forensics: sifting mountains of logs, device images and network traffic to flag the suspicious events a human would take weeks to find, and helping spot manipulated media. The flip side is anti-forensics: the same AI can fabricate convincing fake evidence and deepfakes, like the 2024 video-call scam that cost a firm around $25 million, so examiners increasingly have to prove a file is genuine, not just unaltered.",
+    role:
+      "This is day-one knowledge for digital forensics analysts, incident responders and DFIR consultants. When something goes wrong, these are the people who work out what, how, and who.",
+    roles: ["Digital forensics analyst", "Incident responder (DFIR)", "DFIR consultant", "SOC analyst"],
+  },
   lesson: {
     blocks: [
       { h: "Everything leaves a trail", body: "Systems log what happens to them: who connected, when, from where, what they asked for, and whether it worked. Digital forensics is the craft of reading those trails after the fact to reconstruct events. The same observation skills you used to attack now work in reverse - you're looking for the story the data tells." },
@@ -411,6 +463,12 @@ export const MODULE11: ModuleDef = {
   },
   handler: "Four stages, four field jobs, then one full challenge - you're the defender today. Walk the log and find the one line where they got in, scan the processes for the implant, order the events into a timeline, then scope what happened. Read carefully; don't alter the evidence.",
   hint: "Work the stages in order. In the log, the 200 right after the 401 storm from the odd IP is the compromise. In the processes, a hidden name running from /tmp is the implant. Order the timeline by attacker lifecycle: recon, break in, act, impact.",
+  plan: [
+    { label: "Read the trail", goal: "Read the overnight auth log and find the single line that marks the moment of compromise." },
+    { label: "Find the implant", goal: "Scan the running processes and spot what the attacker left behind to keep access." },
+    { label: "Rebuild the timeline", goal: "Put the attack's events in the order they happened, from first contact to impact." },
+    { label: "Scope it", goal: "From everything you found, reach the correct conclusion for the report." },
+  ],
   Act: ForensicsAct,
   flag: "flag{br3ach_t1meline_built}",
   defend: {
@@ -437,6 +495,48 @@ export const MODULE11: ModuleDef = {
     cvss: "8.1",
     impact: "An external IP brute-forced a portal account (failures then success at 02:03:14), reached the admin panel, bulk-exported data, and left a disguised implant running from /tmp for persistence - a full account takeover, data breach and foothold, all visible in the evidence but undetected at the time.",
     fix: "Add lockout/rate-limiting and MFA to close the brute-force path; alert on failed-login bursts and odd-hour access; ship logs to an append-only store; remove the implant, rotate credentials, and block the source IP.",
+  },
+  cheatsheet: {
+    title: "Digital forensics quick reference",
+    blurb: "Where the evidence hides, how to rebuild what happened, and how to keep it sound, in plain words. You do not need to memorise any of it: it lives here, open it whenever you like.",
+    sample: {
+      caption: "Forensics is reading leftovers. Here are three classic artifacts and what each one quietly tells the investigator.",
+      cols: ["the artifact", "what it tells you", "where it hides"],
+      rows: [
+        ["a 200 right after 401s", "the brute-force that finally worked", "the auth / access log"],
+        ["a process from /tmp/.hidden", "the attacker's persistence implant", "the running process list"],
+        ["Author: dennis", "who made a file", "file metadata (survives deletion)"],
+      ],
+    },
+    groups: [
+      {
+        heading: "Where the evidence lives",
+        entries: [
+          { code: "logs", what: "Records of who did what and when: logins, requests, errors. The first place to look.", example: "a 200 login right after failed 401s = the break-in" },
+          { code: "running processes", what: "What's executing on the machine right now; attackers hide implants here.", example: "a hidden name running from /tmp or /dev/shm" },
+          { code: "metadata", what: "Hidden info inside files: author, timestamps, software, sometimes paths. Survives deletion.", example: "a document's Author field names who made it" },
+          { code: "deleted is not gone", what: "Deleting a file usually just unlinks it; the data often stays and can be recovered.", example: "a recovered file that broke the BTK case" },
+        ],
+      },
+      {
+        heading: "Rebuilding what happened",
+        entries: [
+          { code: "timeline", what: "Order the events from the artifacts: recon, break-in, persistence, exfiltration.", example: "phish -> steal -> log in -> implant -> exfiltrate" },
+          { code: "indicators of compromise", what: "The tell-tale signs of an attacker: odd IPs, hashes, filenames, times (IoCs).", example: "a night-time login from an unknown IP" },
+          { code: "attribution", what: "Tying the evidence to a who: an account, a tool, a group, sometimes a person.", example: "seized servers mapped to a ransomware crew" },
+          { code: "the process", what: "Work in order: collect, examine, analyse, report, preserving evidence at each step.", example: "image the disk before you touch it" },
+        ],
+      },
+      {
+        heading: "Keeping it sound",
+        entries: [
+          { code: "preserve first", what: "Make a copy (image) and work on that, so you never change the original evidence.", example: "hash the image to prove it's unchanged" },
+          { code: "chain of custody", what: "Record who handled the evidence and when, so it stands up in court.", example: "a signed log of every access" },
+          { code: "prove authenticity", what: "Show the evidence is genuine and unaltered, increasingly, that it isn't an AI fake.", example: "verify hashes; check for deepfake signs" },
+          { code: "report clearly", what: "Write what happened, how you know, and what to do, for non-experts.", example: "timeline + evidence + recommendation" },
+        ],
+      },
+    ],
   },
   takeaway: "The logs hold the whole story: a burst of failures then one success, odd hour, odd place, is a break-in. Learn to read them.",
   outcome: [
