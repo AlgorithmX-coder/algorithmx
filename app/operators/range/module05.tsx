@@ -778,6 +778,7 @@ export const MODULE5: ModuleDef = {
     "A deep engagement. Northwind Foods' staff portal and product shop both build their database queries straight from whatever you type. Your job is the full job: prove the weakness, break in, work out the shape of the data, read out the staff records, map what else is in there, lift the customer card data, and reach the one secret they really didn't want found. Then four field jobs for new clients, and a final challenge you run start to finish on your own. All for real.",
   industry: {
     tag: "One missed text box can hand an attacker a company's entire database. This is the flaw that does it.",
+    motif: { pre: "WHERE email = '", hit: "' OR 1=1 --", post: "'", note: "you just walked in, no password" },
     learn: [
       "Spot a field where your text gets treated as part of the database's own commands.",
       "Walk past a login with no password, then read whole tables out through a search box.",

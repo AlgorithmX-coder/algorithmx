@@ -420,6 +420,53 @@ export const MODULE6: ModuleDef = {
   client: "Northwind Foods",
   brief:
     "A deep engagement on the browser itself. Northwind's driver noticeboard, search and support desk all put what you type onto the page as HTML, so your code can run in other people's browsers. Your job is the full range: run code from a search box, steal a session with it, beat a filter the dev bolted on, then plant a saved payload that fires in the ADMIN's browser. Then four field jobs for new clients, and a final challenge you run start to finish. Every payload really executes - safely, in an isolated sandbox.",
+  industry: {
+    tag: "One booby-trapped comment can run an attacker's code in every visitor's browser, the admin's included.",
+    motif: { pre: "comment: ", hit: "<img src=x onerror=report(COOKIE)>", note: "runs in every viewer's browser, steals the session" },
+    primer: {
+      term: "HTML",
+      what: "Every web page is just HTML: the text, images and buttons the browser draws, plus any script tucked inside. The browser runs whatever script it finds in that HTML, because normally all of it came from the website itself. It has no way to tell the site's own code from something a visitor slipped in.",
+      example: "<img src=x onerror=alert('hacked')>",
+      returns: "If a site drops what you type onto the page as HTML, the browser treats it like its own code and runs it. That broken image fails to load, fires its onerror, and runs the script. That is cross-site scripting: your words, executed as code in someone else's browser.",
+    },
+    learn: [
+      "Spot a field that drops what you type onto the page as live HTML, not text.",
+      "Run your own code from a search box, then steal a logged-in session with it.",
+      "Slip past a filter a developer bolted on, using a different event handler.",
+      "Plant a saved payload that fires in an admin's browser, and the one fix that actually works.",
+    ],
+    engines: [
+      { name: "Chrome", color: "#4285F4", blurb: "Runs Google's V8 engine. A Chromium sandbox like it powers this range.", here: true, icon: "browser" },
+      { name: "Firefox", color: "#FF7139", blurb: "Mozilla's browser, on the SpiderMonkey JavaScript engine.", icon: "browser" },
+      { name: "Safari", color: "#1E90FF", blurb: "Apple's browser on every iPhone and Mac, engine JavaScriptCore.", icon: "browser" },
+      { name: "Edge", color: "#33B1E1", blurb: "Microsoft's browser, built on Chromium and V8.", icon: "browser" },
+    ],
+    headline: {
+      masthead: "THE WIRE DISPATCH",
+      dateline: "LOS ANGELES · 2005 · COURT RECORD + CONTEMPORARY REPORTS",
+      title: "A teenager's profile trick spread to a million accounts in under a day",
+      body: "Samy Kamkar, 19, hid a few lines of cross-site scripting in his own MySpace profile. Anyone who merely viewed it silently ran his code, which added him as a friend and copied the payload onto their profile, so the next visitor spread it too. Over a million accounts were hit in under 20 hours, the fastest-spreading worm seen to that point, and MySpace was taken offline to purge it. Kamkar was raided by the Secret Service, pleaded guilty, and was sentenced to three years' probation and community service.",
+      stat: "1,000,000+",
+      statLabel: "ACCOUNTS IN UNDER A DAY",
+      why: "Not a stunt that stayed in 2005: the same flaw has since hit forums, webmail, social networks and admin dashboards for twenty years, which is exactly why learning to find and stop it is worth your time.",
+    },
+    realWorld:
+      "Cross-site scripting turns a trusted site into a delivery system for the attacker's code. A single field that puts user input on the page as HTML can run script in every visitor's browser, reading their session, acting as them, even spreading on its own. It has sat among the most-reported web weaknesses for twenty years, and it is cheap to prevent and easy to miss.",
+    now: {
+      stat: "#5",
+      body: "Cross-site scripting sits inside OWASP's Injection category, which ranks fifth on the 2025 OWASP Top 10, the industry's standard list of the most critical web risks. It is also the single most-reported bug class in HackerOne's bug-bounty data, year after year, the first flaw many professional hunters reach for.",
+    },
+    recent: {
+      year: "2026",
+      title: "The same flaw, now turning up in AI apps",
+      body: "A stored cross-site scripting hole in AnythingLLM (CVE-2026-41318) let anyone who could influence an AI assistant's output run code in every other user's browser, because the app rendered the model's reply as HTML without cleaning it first. A twenty-year-old bug, in brand-new software.",
+    },
+    ahead:
+      "AI is giving XSS a second life. Chat apps increasingly render a model's reply as formatted HTML, and when they skip sanitising it, a cleverly phrased prompt can make the AI emit a payload that runs in the next user's browser, an attack researchers now call prompt-to-XSS. Studies also find a large share of AI-generated front-end code ships without proper output encoding. As more of the web is written and rendered by AI, knowing how XSS works, and how to stop it, is becoming more valuable, not less.",
+    role:
+      "This is day-one knowledge for web-application penetration testers, bug-bounty hunters and secure-code reviewers. Find and fix XSS and you protect the data of everyone who uses the app.",
+    roles: ["Web app pentester", "Bug-bounty hunter", "Secure-code reviewer", "Application security engineer"],
+  },
   lesson: {
     blocks: [
       { h: "The browser trusts the page's HTML", body: "A web page is just HTML the server sends, and the browser builds the page from it - text, images, buttons, and any scripts. Crucially, the browser runs whatever script is in that HTML, because normally it all came from the website. It has no way to tell the site's own code from something an attacker slipped in." },
@@ -457,6 +504,12 @@ export const MODULE6: ModuleDef = {
   },
   handler: "Four stages, four field jobs, then one full challenge. Get a search box to run your code, then steal the session with it, then beat the filter the dev added, and finish by planting a saved payload that fires in the admin's browser. Try each yourself first. Your victim's session is exposed to your code as COOKIE, and your collector is report() - call it with what you steal. Every payload runs for real in an isolated sandbox.",
   hint: "Work the stages in order. A broken image runs code: <img src=x onerror=report('x')>. Swap the word for COOKIE to steal the session. If onerror is filtered, <svg onload=...> still fires. For stored, post it, then open the board as the admin.",
+  plan: [
+    { label: "Reflected", goal: "Get the search box to run your code: inject an image whose broken load fires your script." },
+    { label: "Steal the session", goal: "Reuse the same vector, but send the victim's session cookie to your collector instead of a word." },
+    { label: "Beat the filter", goal: "The dev strips <script> and the word onerror. Switch to an <svg onload> handler and steal the session anyway." },
+    { label: "Stored to admin", goal: "Plant a saved post on the board that fires in the ADMIN's browser when they open it, and lift THEIR session." },
+  ],
   Act: XssAct,
   flag: "flag{st0red_xss_t0_the_adm1n}",
   defend: {
@@ -483,6 +536,49 @@ export const MODULE6: ModuleDef = {
     cvss: "8.2",
     impact: "Multiple fields render user input as raw HTML, so attacker JavaScript runs in victims' browsers. A reflected payload executes from the search box and steals the session; a naive filter is bypassed with alternative event handlers; and a stored payload runs in staff and admin browsers, allowing session theft and full account impersonation.",
     fix: "Output-encode all user content so it renders as text, not HTML; never use innerHTML with raw input. Add a Content-Security-Policy, mark session cookies HttpOnly, and use a trusted sanitiser where some HTML must be allowed.",
+  },
+  cheatsheet: {
+    title: "XSS quick reference",
+    blurb: "Everything cross-site scripting uses to turn your input into running code, in plain words. You do not need to memorise any of it: it lives here, open it whenever you like.",
+    sample: {
+      caption: "One comment, rendered two ways. Every example below is about this one difference: does the page treat your input as HTML (it runs) or as text (it is only shown)?",
+      cols: ["you post this", "page renders it as HTML (vulnerable)", "page encodes it as text (safe)"],
+      rows: [
+        ["<b>Sam</b>", "Sam  (shown in bold)", "<b>Sam</b>  (shown literally)"],
+        ["<img src=x onerror=report(COOKIE)>", "runs - steals the session", "printed as plain text, nothing runs"],
+        ["hello there", "hello there", "hello there"],
+      ],
+    },
+    groups: [
+      {
+        heading: "Reading a page (the everyday stuff)",
+        entries: [
+          { code: "HTML", what: "The tags a browser builds the page from: text, images, buttons, and any script.", example: "<b>hi</b> -> the browser shows hi in bold" },
+          { code: "DOM", what: "The live, in-memory page the browser builds from the HTML; scripts read and change it.", example: "liking a post bumps 42 -> 43 by changing the DOM, no reload" },
+          { code: "attribute", what: "A setting inside a tag, like src on an image. Some attributes hold code.", example: "<img src='cat.jpg'> -> src points at the photo file" },
+          { code: "event handler", what: "An attribute like onerror or onload that runs JavaScript when that event happens, with no <script> tag needed.", example: "onclick='run()' fires your code when the button is tapped" },
+        ],
+      },
+      {
+        heading: "The pieces an XSS uses",
+        entries: [
+          { code: "<script>...</script>", what: "The obvious way to run code, but browsers often ignore a script tag injected into a page after it loads, which is why attackers reach for handlers instead.", example: "<script>report(COOKIE)</script>" },
+          { code: "<img src=x onerror=...>", what: "An image with a broken source fails to load and runs its onerror code. The workhorse XSS vector.", example: "<img src=x onerror=report(COOKIE)> -> steals the session" },
+          { code: "<svg onload=...>", what: "An SVG runs its onload code the moment it renders: a handler that survives filters which only strip onerror.", example: "<svg onload=report(COOKIE)>" },
+          { code: "document.cookie", what: "Reads the page's cookies, where the login session often lives. Running as the victim, your script can read it.", example: "report(document.cookie) -> ships the session to the attacker" },
+          { code: "reflected vs stored", what: "Reflected bounces back from a link someone clicks; stored is saved by the app and runs for everyone who later views the page.", example: "a booby-trapped comment (stored) fires for every reader, admins included" },
+        ],
+      },
+      {
+        heading: "Shutting it down (the fix)",
+        entries: [
+          { code: "output encoding", what: "Put user input on the page as TEXT, not HTML, so < and > are shown, not run. The real fix.", example: "textContent = input (or a framework's default escaping) -> the tag is printed, not executed" },
+          { code: "Content-Security-Policy", what: "A server rule telling the browser which scripts may run, so injected ones are blocked.", example: "CSP 'scripts from our domain only' -> an injected evil.com script is refused" },
+          { code: "HttpOnly", what: "A cookie flag that stops JavaScript reading it, so even a working XSS cannot steal the session that way.", example: "session cookie marked HttpOnly -> document.cookie comes back empty" },
+          { code: "DOMPurify / sanitiser", what: "Where you must allow some HTML, clean it with a trusted library instead of writing your own filter.", example: "DOMPurify keeps <b>, strips <script> and onerror" },
+        ],
+      },
+    ],
   },
   takeaway: "If a page renders your input as HTML, your input can run as code. Encode output as text; never rely on a blocklist.",
   outcome: [
