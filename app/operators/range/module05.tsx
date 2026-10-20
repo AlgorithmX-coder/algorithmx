@@ -897,13 +897,22 @@ export const MODULE5: ModuleDef = {
   cheatsheet: {
     title: "SQL quick reference",
     blurb: "Everything the app uses to talk to its database, in plain words. You do not need to memorise any of it: it lives here, open it whenever you like.",
+    sample: {
+      caption: "Here is a tiny 'users' table. Every example below reads from this one, so you can see exactly what each query would hand back.",
+      cols: ["id", "name", "email", "role"],
+      rows: [
+        ["41", "Sam Okafor", "sam@northwind.range", "staff"],
+        ["42", "Priya Shah", "priya@northwind.range", "staff"],
+        ["43", "Lee Grant", "lee@northwind.range", "admin"],
+      ],
+    },
     groups: [
       {
         heading: "Reading data (the everyday stuff)",
         entries: [
-          { code: "SELECT", what: "Asks for specific columns. The start of almost every query.", example: "SELECT name, email" },
+          { code: "SELECT", what: "Asks for specific columns. The start of almost every query.", example: "SELECT name, email  ->  the name and email columns" },
           { code: "FROM", what: "Says which table to read from.", example: "FROM users" },
-          { code: "WHERE", what: "Keeps only the rows that match a condition.", example: "WHERE id = 42" },
+          { code: "WHERE", what: "Keeps only the rows that match a condition.", example: "WHERE id = 42  ->  the Priya Shah row" },
           { code: "ORDER BY", what: "Sorts the results by a column, or by column number.", example: "ORDER BY name" },
           { code: "LIMIT", what: "Returns only the first few rows.", example: "LIMIT 10" },
         ],

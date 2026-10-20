@@ -108,6 +108,9 @@ export type ModuleDef = {
   cheatsheet?: {
     title: string;
     blurb: string;
+    /** A sample data table the examples read from, so every command has something
+     *  concrete to point at (the standard: show the data, then reference it). */
+    sample?: { caption: string; cols: string[]; rows: string[][] };
     groups: { heading: string; entries: { code: string; what: string; example?: string }[] }[];
   };
   rep: number;
@@ -719,7 +722,7 @@ function IntroPage({ mod, world, onContinue }: { mod: ModuleDef; world: World; o
             <span aria-hidden style={{ width: 8, height: 8, borderRadius: "50%", background: A, boxShadow: `0 0 10px ${A}`, animation: "cn-led 1.6s infinite", display: "inline-block" }} />Field feature · Module 05
             <span style={{ color: C.mute }}>· a 2 minute read before you break in</span>
           </div>
-          <h1 style={{ fontFamily: DISP, fontSize: "clamp(42px,11vw,78px)", fontWeight: 700, margin: "8px 0 0", lineHeight: 0.92, letterSpacing: "-.01em", background: `linear-gradient(100deg, #ffffff, ${A})`, WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent" }}>{mod.title}</h1>
+          <h1 style={{ fontFamily: DISP, fontSize: "clamp(42px,11vw,78px)", fontWeight: 700, margin: "8px 0 0", lineHeight: 1.06, paddingBottom: "0.12em", letterSpacing: "-.01em", background: `linear-gradient(100deg, #ffffff, ${A})`, WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent" }}>{mod.title}</h1>
           <p style={{ color: "#EAF0FB", fontSize: "clamp(16px,2.6vw,20px)", lineHeight: 1.45, margin: "14px 0 0", fontWeight: 600, maxWidth: 560 }}>{ind.tag}</p>
           <div style={{ marginTop: 18, fontFamily: MONO, fontSize: "clamp(11px,2.3vw,13.5px)", lineHeight: 1.7, background: "rgba(0,0,0,0.38)", border: `1px solid ${A}33`, borderRadius: 10, padding: "12px 14px", overflowX: "auto", whiteSpace: "nowrap" }}>
             <span style={{ color: C.mute }}>WHERE email = &apos;</span><span style={{ color: A, background: `${A}22`, padding: "1px 5px", borderRadius: 4, fontWeight: 700 }}>&apos; OR 1=1 --</span><span style={{ color: C.mute }}>&apos;</span><span style={{ color: C.red, marginLeft: 12 }}>you just walked in, no password</span>
@@ -978,7 +981,28 @@ function CheatSheet({ cs, world, moduleNo, onClose }: { cs: NonNullable<ModuleDe
         </div>
       </div>
       <div onClick={(e) => e.stopPropagation()} style={{ maxWidth: 880, margin: "0 auto", padding: "22px 22px 60px" }}>
-        <p style={{ color: "#D9E0EE", fontSize: 15, lineHeight: 1.65, margin: "0 0 24px", maxWidth: 640 }}>{cs.blurb}</p>
+        <p style={{ color: "#D9E0EE", fontSize: 15, lineHeight: 1.65, margin: "0 0 22px", maxWidth: 640 }}>{cs.blurb}</p>
+        {cs.sample && (
+          <div style={{ marginBottom: 28 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 11 }}>
+              <span style={{ width: 20, height: 2, background: A, borderRadius: 2 }} />
+              <span style={{ fontFamily: MONO, fontSize: 11.5, letterSpacing: ".14em", textTransform: "uppercase", fontWeight: 700, color: A }}>A sample table to picture</span>
+            </div>
+            <p style={{ color: "#C7CEDD", fontSize: 13.5, lineHeight: 1.6, margin: "0 0 12px", maxWidth: 640 }}>{cs.sample.caption}</p>
+            <div style={{ overflowX: "auto", borderRadius: 12, border: `1px solid ${A}3a`, background: "rgba(0,0,0,0.38)" }}>
+              <table style={{ borderCollapse: "collapse", width: "100%", fontFamily: MONO, fontSize: 13 }}>
+                <thead>
+                  <tr>{cs.sample.cols.map((c, ci) => <th key={ci} style={{ textAlign: "left", padding: "10px 14px", color: A, fontWeight: 700, letterSpacing: ".04em", borderBottom: `1px solid ${A}44`, background: `${A}12`, whiteSpace: "nowrap" }}>{c}</th>)}</tr>
+                </thead>
+                <tbody>
+                  {cs.sample.rows.map((r, ri) => (
+                    <tr key={ri}>{r.map((cell, cj) => <td key={cj} style={{ padding: "10px 14px", color: "#D9E0EE", borderBottom: ri < cs.sample!.rows.length - 1 ? `1px solid ${C.lineSoft}` : "none", whiteSpace: "nowrap" }}>{cell}</td>)}</tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
         {cs.groups.map((g, gi) => (
           <div key={gi} style={{ marginBottom: 26 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 13 }}>
