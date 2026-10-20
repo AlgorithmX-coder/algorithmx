@@ -23,15 +23,22 @@ applies to all 16; "per-module" = author data per module.
   forward platform; this page must look the part.
 - **Where.** First beat (`intro`), before `brief`. Rendered by `IntroPage`. The
   module opens on it; it is the first segment in the progress bar.
-- **Data.** `ModuleDef.industry` (optional): `tag`, `primer` (see §2), `learn[]`,
-  `engines[]` (§1a), `headline` (§1b), `recent`, `now {stat, body}`, `ahead`,
-  `role`, `roles[]`.
+- **Data.** `ModuleDef.industry` (optional): `tag`, `motif`, `primer` (see §2),
+  `learn[]`, `engines[]` (§1a), `headline` (§1b), `realWorld`, `recent`,
+  `now {stat, body}`, `ahead`, `role`, `roles[]`.
 - **Content.**
   - `tag`: one punchy line, the hook ("One missed text box can hand an attacker a
     company's entire database.").
+  - `motif`: the hero's one-line **signature move** - `{ pre?, hit, post?, note }`.
+    `hit` is the payload (highlighted in the world accent), `pre`/`post` the grey code
+    around it, `note` the red consequence. PER MODULE (SQL for M5, an `<img onerror>`
+    for M6). The shell shows it only if present, so every module must set its own.
   - `learn[]`: 3–4 concrete "you will…" outcomes.
-  - `now`: a single big stat + one paragraph grounding it in the present (e.g.
-    OWASP Top 10 2025 rank). Must cite a real, current source.
+  - `realWorld`: the "why it matters" paragraph shown left of the newspaper.
+  - `now`: a single big stat + one paragraph grounding it in the present. The stat
+    renders beside a fixed "on the OWASP Top 10, 2025" label, so `now.stat` is the
+    OWASP rank (e.g. "#5"); the body cites the real, current source and may add a
+    second stat (e.g. the HackerOne bug-bounty ranking).
   - `ahead`: the forward/AI angle - where the skill is going. Real, sourced.
   - `role` + `roles[]`: the careers it leads to.
 - **Design & behaviour.** Deliberately OFF the uniform terminal card look: a big
@@ -46,13 +53,19 @@ applies to all 16; "per-module" = author data per module.
 
 - **Purpose.** Show the real tools/engines the topic touches, as colourful cards,
   so the field feels concrete ("these are the things you'll be working on").
-- **Data.** `industry.engines[]`: `{ name, color, blurb, here? }`.
+- **Data.** `industry.engines[]`: `{ name, color, blurb, here?, icon? }`.
 - **Content.** 4–6 real tools/engines for the topic, brand-accurate colours, a
-  one-line plain blurb each; mark the one this module uses with `here: true`.
-- **Design.** Brand-coloured cards with a simple representative icon (generic, not a
-  copied logo), name, blurb; the `here` card is flagged "YOU'RE HERE" and glows.
+  one-line plain blurb each; mark the one this module uses with `here: true`. The
+  "engines" are whatever the topic actually touches: DB engines for injection,
+  BROWSERS for XSS, scanners for recon, cipher suites for crypto, and so on.
+- **Design.** Brand-coloured cards with a simple **generic glyph chosen to fit the
+  topic** via `icon` (NOT a copied logo). The shell glyph set: `"db"` (default,
+  cylinder), `"browser"` (window), and the rollout adds `"tool"`, `"scan"`, `"key"`,
+  `"lock"`, `"server"`, `"shield"`, `"doc"`, `"mail"` as modules need them. A DB
+  cylinder on a browser card (or similar mismatch) is a bug - pick the fitting glyph.
+  The `here` card is flagged "YOU'RE HERE" and glows.
 - **Checklist.** Real tools · the module's own tool flagged · plain blurbs · colours
-  on-brand but icons generic (no trademarked logo art).
+  on-brand but icons generic (no trademarked logo art) · glyph fits the topic.
 
 ### 1b. Real-case newspaper clipping
 
@@ -238,8 +251,9 @@ applies to all 16; "per-module" = author data per module.
      entries surface in a **"★ Your pins" band above the sample table**, so the keywords
      a learner leans on are one glance away. Pins persist **per module** in
      `localStorage` (`ops-cheat-pins-<n>`), wrapped in try/catch so blocked storage never
-     breaks the sheet. A one-line tip ("tap ☆ to pin it to the top") points it out. This
-     is built into the shared `CheatSheet`, so it applies to all 16 for free.
+     breaks the sheet. A **standout "★ TIP" callout** (accent badge + bright text in a
+     tinted, softly glowing band, NOT a faint grey line) points it out. This is built
+     into the shared `CheatSheet`, so it applies to all 16 for free.
 - **Design.** Full-screen, themed to world. Sticky header (title + "Minimise ✕").
   Blurb + pin tip, then the "★ Your pins" band (when any), then the sample table (clean
   data table, accent header row), then the grouped reference cards (code in the accent,
@@ -342,13 +356,29 @@ Screen these BEFORE shipping (sources: Abdullah UAT + owner reviews).
 
 ## 15. Per-module data to author (rollout checklist)
 
-For each of M01–M16, author in `moduleNN.tsx`:
-- `industry { tag, primer, learn[], engines[], headline, recent, now, ahead, role,
-  roles[] }` - real + sourced per topic.
-- `cheatsheet { title, blurb, sample, groups[] }` - to the §9 standard.
-- `takeaway`, `outcome[]`, `plan[]`.
-Then remove the `moduleNo === 5` preview gates in the shell so the shell features
-apply to all 16, and run §14 on each.
+**Status.** M5 = reference. M6 (XSS) = first pilot, shipped #726. The `moduleNo === 5`
+preview gate is now REMOVED (#725), so the designed brief/scope/bright-text/hint shell
+renders on all 16 automatically; the pin-tip is a standout callout (#724). The 14 still
+to roll: M1, M2, M3, M4, M7, M8, M9, M10, M11, M12, M13, M14, M15, M16.
+
+For each remaining module, author in `moduleNN.tsx` (one surgical PR per module):
+- `industry { tag, motif, primer, learn[], engines[] (+icon), headline, realWorld,
+  recent, now, ahead, role, roles[] }` - real + sourced per topic. Pick engine glyphs
+  (§1a) that fit the topic; set the hero `motif` (§1); stat beside the OWASP label.
+- `cheatsheet { title, blurb, sample, groups[] }` - to the §9 standard (sample table
+  the examples reference; three bands; pinnable).
+- `plan[]` - the mission map, mirroring the module's real Act stages.
+- `takeaway`, `outcome[]` - already present on every module; refine if needed.
+
+Per-module CHECKS (don't assume, verify):
+- Clear-inputs (§6): confirm the Act/capstone/drill surfaces reset between stages.
+  Where they remount per stage (`key={si}`) this is already satisfied (e.g. M6); where
+  they hold field state across stages, add the resets (e.g. M5).
+- Activity variety (§6): confirm the beats aren't the same single drill throughout.
+- Watch for hardcoded M5-isms in the shell as you go (the hero module number and motif
+  were two; fixed in #726). If a new shell generalisation is needed, add a glyph/field
+  rather than a special-case.
+- Run §14 (pre-ship QA) on each; screenshot-verify the intro + cheat sheet at minimum.
 
 ---
 
@@ -366,3 +396,11 @@ only, so send once merged + deployed).
 - The "stay legal" note at the end is now bold and front-and-centre, not fine print.
 - The "Learn the ground" cards now use one colour in two shades, instead of a mix
   of colours.
+
+**2026-10-20 - all-16 design rollout (shell + M6):**
+- Every module's opening brief and the "rules of engagement" scope are now the fuller
+  designed cards, and the body text is brighter, across all 16.
+- The cheat-sheet "pin" tip is now a clear highlighted callout, not a faint grey line.
+- Module 6 (Cross-Site Scripting) now opens with the full feature intro (what XSS is,
+  a real 2005 case, where it ranks today, the AI angle, careers) and has its own XSS
+  cheat sheet. The rest of the modules follow, one at a time.
