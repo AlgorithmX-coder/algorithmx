@@ -996,7 +996,10 @@ function CheatSheet({ cs, world, moduleNo, onClose }: { cs: NonNullable<ModuleDe
       </div>
       <div onClick={(e) => e.stopPropagation()} style={{ maxWidth: 880, margin: "0 auto", padding: "22px 22px 60px" }}>
         <p style={{ color: "#D9E0EE", fontSize: 15, lineHeight: 1.65, margin: "0 0 8px", maxWidth: 640 }}>{cs.blurb}</p>
-        <p style={{ color: C.mute, fontSize: 12.5, lineHeight: 1.5, margin: "0 0 22px" }}>Tip: tap <span style={{ color: A }}>☆</span> on any card to pin it to the top for quick access.</p>
+        <div style={{ display: "flex", alignItems: "center", gap: 11, margin: "2px 0 24px", padding: "10px 15px", borderRadius: 11, background: `${A}16`, border: `1px solid ${A}66`, boxShadow: `0 0 20px ${A}1f` }}>
+          <span style={{ flexShrink: 0, fontFamily: MONO, fontSize: 10.5, letterSpacing: ".14em", fontWeight: 700, textTransform: "uppercase", color: "#0A0C12", background: A, borderRadius: 999, padding: "3px 10px" }}>★ Tip</span>
+          <span style={{ color: C.ink, fontSize: 13.5, lineHeight: 1.45, fontWeight: 500 }}>Tap the <span style={{ color: A, fontWeight: 700 }}>☆</span> on any card to pin it to the top for quick access.</span>
+        </div>
         {pinned.length > 0 && (
           <div style={{ marginBottom: 28 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 13 }}>
