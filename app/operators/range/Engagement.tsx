@@ -225,9 +225,10 @@ const WORLDS: Record<string, World> = {
   data: { bar: "Analysis Bench", accent: "#5FE6FF", soft: "rgba(95,230,255,0.07)" },
   roleflip: { bar: "SOC · Live", accent: "#FF7BD5", soft: "rgba(255,123,213,0.08)" },
   capstone: { bar: "Mission Control", accent: "#E8A33D", soft: "rgba(232,163,61,0.08)" },
+  aifrontier: { bar: "AI Frontier", accent: "#B15BFF", soft: "rgba(177,91,255,0.08)" },
 };
 function worldOf(n: number): World {
-  return WORLDS[n <= 3 ? "foundations" : n <= 7 ? "web" : n <= 11 ? "data" : n <= 14 ? "roleflip" : "capstone"];
+  return WORLDS[n <= 3 ? "foundations" : n <= 7 ? "web" : n <= 11 ? "data" : n <= 14 ? "roleflip" : n <= 16 ? "capstone" : "aifrontier"];
 }
 
 export default function Engagement({

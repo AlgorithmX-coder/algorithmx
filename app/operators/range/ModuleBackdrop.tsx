@@ -130,6 +130,13 @@ const THEMES: Record<number, Theme> = {
     S.s.forEach((s: State, i: number) => { const px = cx + Math.cos(s.a) * s.r, py = cy + Math.sin(s.a) * s.r; if (i < prog) { x.strokeStyle = rgba(C[0], 0.22); x.lineWidth = 1; x.beginPath(); x.moveTo(px, py); x.lineTo(cx, cy); x.stroke(); } x.fillStyle = i < prog ? rgba(C[1], 0.85) : rgba(C[2], 0.22); x.beginPath(); x.arc(px, py, 2.6, 0, TAU); x.fill(); });
     const g = x.createRadialGradient(cx, cy, 0, cx, cy, R); g.addColorStop(0, rgba(C[0], 0.16 + 0.08 * Math.sin(t * 2))); g.addColorStop(1, rgba(C[0], 0)); x.fillStyle = g; x.beginPath(); x.arc(cx, cy, R, 0, TAU); x.fill();
   } },
+  17: { C: ["#B15BFF", "#D6A8FF", "#5FE6FF"], draw: (x, w, h, t, C, S) => {
+    if (!S.it) { S.it = []; const L = ["ignore above", "system:", "you are now", "jailbreak", "role:", "}}}", "<|end|>", "reveal the", "new rules:", "DAN"]; const N = Math.round(w / 150); for (let i = 0; i < N; i++) S.it.push({ x: Math.random() * w, y: Math.random() * h, vy: -(9 + Math.random() * 13), txt: L[i % L.length], ph: Math.random() * TAU }); }
+    x.font = `600 13px ${MONO}`; x.textBaseline = "middle"; x.textAlign = "center";
+    S.it.forEach((o: State) => { o.y += o.vy * 0.016; if (o.y < -14) { o.y = h + 14; o.x = Math.random() * w; } const a = 0.5 + 0.3 * Math.sin(t * 1.5 + o.ph); x.fillStyle = rgba(C[1], a * 0.78); x.fillText(o.txt, o.x, o.y); });
+    const car = (Math.sin(t * 3) > 0) ? 1 : 0; x.fillStyle = rgba(C[2], 0.5 * car); x.fillRect(w * 0.5 - 1, h * 0.12, 2, 16);
+    x.textAlign = "left";
+  } },
 };
 
 const AURORA_C = ["#8B7BFF", "#5FE6FF", "#B57BFF", "#2DD4BF"];
