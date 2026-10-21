@@ -22,6 +22,7 @@ import { MODULE13 } from "./module13";
 import { MODULE14 } from "./module14";
 import { MODULE15 } from "./module15";
 import { MODULE16 } from "./module16";
+import { MODULE17 } from "./module17";
 
 export const BUILT_MODULES: Record<number, ModuleDef> = {
   1: MODULE1,
@@ -40,6 +41,7 @@ export const BUILT_MODULES: Record<number, ModuleDef> = {
   14: MODULE14,
   15: MODULE15,
   16: MODULE16,
+  17: MODULE17,
 };
 
 export function builtModule(n: number): ModuleDef | null {
