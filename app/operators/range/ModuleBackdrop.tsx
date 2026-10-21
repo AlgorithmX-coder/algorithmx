@@ -25,7 +25,7 @@ type State = any;
 type Draw = (x: Ctx, w: number, h: number, t: number, C: string[], S: State) => void;
 type Theme = { C: string[]; draw: Draw };
 
-/* ---- the sixteen module worlds (full-field) ---- */
+/* ---- the module worlds (full-field) ---- */
 const THEMES: Record<number, Theme> = {
   1: { C: ["#8B7BFF", "#B9ADFF", "#5FE6FF"], draw: (x, w, h, t, C) => {
     x.strokeStyle = rgba(C[0], 0.08); x.lineWidth = 1; const g = 42;

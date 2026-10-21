@@ -424,3 +424,29 @@ only, so send once merged + deployed).
 - Every module has its own topic cheat sheet (a worked sample plus three bands) on the
   side tab, and a visual "mission map" of its stages.
 - The whole 16-module course is now one consistent, sourced, careers-forward experience.
+
+**2026-10-21 - AI Frontier track (Modules 17-20) added:**
+- A sixth phase, **AI Frontier**, extends the course from 16 to 20 modules, all built to
+  the same standard (sourced feature intro, glossary, interactive lesson lab, cheat sheet,
+  Learn -> Capture -> Defend -> Report, four drills, a capstone). World accent: violet (#B15BFF).
+  - **M17 Prompt Injection** - the AI cousin of SQL injection. Scripted in-browser assistant
+    (VaultBot); override its rules, leak its system prompt, indirect injection via a poisoned
+    page, beat a filter. Sourced: Chevy $1-car chatbot, OWASP LLM01, EchoLeak CVE-2025-32711.
+  - **M18 Cloud & API Security** - scripted fake REST API + cloud bucket. BOLA, public bucket
+    + leaked .env key, key reuse, BFLA. Sourced: Optus 2022, OWASP API1:2023 BOLA, Dell 2024.
+  - **M19 Agentic AI Under Attack** - scripted ReAct agent (ARIA) with tools. Indirect injection
+    turns into real actions: forward via email, exfil via a URL side channel, poison a document,
+    beat a domain allow-list. Sourced: Slack AI exfiltration (2024), OWASP LLM01+LLM06, ForcedLeak,
+    the lethal trifecta.
+  - **M20 Deepfakes & the AI Arms Race** - defence-led (you cannot hack a deepfake). Scripted
+    detection/decision lab: a deepfake video call, a cloned-voice voicemail, an AI phishing email,
+    and the verification protocol. The pass is the decision (verify out-of-band), not tell-spotting.
+    Sourced: Arup HK fraud (2024), Sumsub 2024, WPP, C2PA, FBI guidance.
+- THE SCRIPTED-AI PATTERN (M17-20, no real LLM/API/cost, nothing leaves the browser): deterministic
+  pattern-matchers run the "AI". M17/M19 detect injection on the USER input (never system+user, or the
+  system prompt's own "reveal instructions" trips the detector); replies branch so a plain override does
+  not leak the secret (only a leak-style ask does). M20 renders described scenarios, not real media.
+- Track wiring: `curriculum.ts` (AI Frontier phase + entries 17-20, violet), portfolio counts derive from
+  `CURRICULUM.length`, `CourseIntro` 6th phase + "20 modules / six phases", `/ops` landing curriculum grid
+  (6 columns) + counts. M16's capstone narrative ("sixteen engagements") is left unchanged by design; the
+  AI Frontier is positioned as an advanced track beyond the core season.
