@@ -1165,8 +1165,8 @@ function BrandCube() {
 /**
  * TrustStrip: the centred pill in the bar. Three things that are true and
  * verifiable, each with its mark: Cyber Essentials (certified), the NCSC
- * (content aligned to its guidance) and Microsoft for Startups
- * (collaborating; their guidance asks for that word, not "partner").
+ * (content aligned to its guidance) and Microsoft for Startups ("backed
+ * by", owner's wording 2026-10-21; never "partner").
  *
  * It replaces the "live telemetry" console (owner 2026-09-27): the invented
  * latency read-out and the internal stream counts were theatre, and the
@@ -1240,7 +1240,7 @@ function TrustStrip({ isLight }: { isLight: boolean }) {
               style={MARK_SIZE(14)}
             />
           </span>
-          <span className="lv2-tel-label">Collaborating</span>
+          <span className="lv2-tel-label">Backed by</span>
         </span>
       </span>
 
