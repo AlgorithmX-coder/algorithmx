@@ -143,6 +143,12 @@ const THEMES: Record<number, Theme> = {
     S.it.forEach((o: State) => { o.y += o.vy * 0.016; if (o.y < -14) { o.y = h + 14; o.x = Math.random() * w; } const a = 0.42 + 0.3 * Math.sin(t * 1.25 + o.ph); const isCode = /^\d/.test(o.txt); x.fillStyle = rgba(isCode ? C[2] : C[0], a * (isCode ? 0.62 : 0.72)); x.fillText(o.txt, o.x, o.y); });
     x.textAlign = "left";
   } },
+  19: { C: ["#B15BFF", "#D6A8FF", "#5FE6FF"], draw: (x, w, h, t, C, S) => {
+    if (!S.it) { S.it = []; const L = ["THOUGHT", "ACTION", "read_email()", "send_email(…)", "http_get(…)", "OBSERVATION", "→", "tool: fetch", "exfil?", "{ }"]; const N = Math.round(w / 175); for (let i = 0; i < N; i++) S.it.push({ x: Math.random() * w, y: Math.random() * h, vy: -(7 + Math.random() * 10), txt: L[i % L.length], ph: Math.random() * TAU }); }
+    x.font = `600 12px ${MONO}`; x.textBaseline = "middle"; x.textAlign = "center";
+    S.it.forEach((o: State) => { o.y += o.vy * 0.016; if (o.y < -14) { o.y = h + 14; o.x = Math.random() * w; } const a = 0.42 + 0.3 * Math.sin(t * 1.3 + o.ph); const isTool = /\(/.test(o.txt); x.fillStyle = rgba(isTool ? C[2] : C[1], a * 0.72); x.fillText(o.txt, o.x, o.y); });
+    x.textAlign = "left";
+  } },
 };
 
 const AURORA_C = ["#8B7BFF", "#5FE6FF", "#B57BFF", "#2DD4BF"];
