@@ -137,6 +137,12 @@ const THEMES: Record<number, Theme> = {
     const car = (Math.sin(t * 3) > 0) ? 1 : 0; x.fillStyle = rgba(C[2], 0.5 * car); x.fillRect(w * 0.5 - 1, h * 0.12, 2, 16);
     x.textAlign = "left";
   } },
+  18: { C: ["#5FE6FF", "#A9ECFF", "#B15BFF"], draw: (x, w, h, t, C, S) => {
+    if (!S.it) { S.it = []; const L = ["GET /api/users/1007", "GET /api/users/1008", "200 OK", "401", "config/.env", "Bearer sk_live_…", "403 Forbidden", "/api/admin", "role: admin", "s3://uploads/", "{ }"]; const N = Math.round(w / 180); for (let i = 0; i < N; i++) S.it.push({ x: Math.random() * w, y: Math.random() * h, vy: -(7 + Math.random() * 10), txt: L[i % L.length], ph: Math.random() * TAU }); }
+    x.font = `600 12px ${MONO}`; x.textBaseline = "middle"; x.textAlign = "center";
+    S.it.forEach((o: State) => { o.y += o.vy * 0.016; if (o.y < -14) { o.y = h + 14; o.x = Math.random() * w; } const a = 0.42 + 0.3 * Math.sin(t * 1.25 + o.ph); const isCode = /^\d/.test(o.txt); x.fillStyle = rgba(isCode ? C[2] : C[0], a * (isCode ? 0.62 : 0.72)); x.fillText(o.txt, o.x, o.y); });
+    x.textAlign = "left";
+  } },
 };
 
 const AURORA_C = ["#8B7BFF", "#5FE6FF", "#B57BFF", "#2DD4BF"];
