@@ -2,22 +2,23 @@
 
 /* CourseIntro - the orientation that runs BEFORE the first engagement, so a
  * learner sees the whole plan up front: a welcome, their learning scope
- * (the 16-module attacker->defender arc), how every engagement runs, and the
+ * (the 20-module attacker->defender->AI-frontier arc), how every engagement runs, and the
  * mission outcome (what they'll be able to do by the end). The calm aurora
  * backdrop sets a welcoming tone. Uses the Engagement design tokens. */
 
 import { C, DISP, MONO, SANS, Btn } from "./Engagement";
 import ModuleBackdrop from "./ModuleBackdrop";
 
-type Tone = "indigo" | "green" | "amber";
+type Tone = "indigo" | "green" | "amber" | "violet";
 const PHASES: { n: string; name: string; weeks: string; topics: string; tone: Tone; here?: boolean }[] = [
   { n: "01", name: "Foundations", weeks: "Modules 1-3", topics: "Rules of Engagement · Recon & OSINT · The Web Surface", tone: "indigo", here: true },
   { n: "02", name: "Web Exploitation", weeks: "Modules 4-7", topics: "Broken Auth · Injection · XSS · Access Control", tone: "indigo" },
   { n: "03", name: "Data & Systems", weeks: "Modules 8-11", topics: "Cryptography · Passwords & Hashes · Network Recon · Forensics", tone: "indigo" },
   { n: "04", name: "The Role Flip", weeks: "Modules 12-14", topics: "Incident Response · Phishing Defence · Disclosure & Reporting", tone: "green" },
   { n: "05", name: "Capstone", weeks: "Modules 15-16", topics: "Full Engagement · Report & Debrief", tone: "amber" },
+  { n: "06", name: "AI Frontier", weeks: "Modules 17-20", topics: "Prompt Injection · Cloud & API Security · Agentic AI · Deepfakes", tone: "violet" },
 ];
-const TONE: Record<Tone, string> = { indigo: C.indigo, green: C.green, amber: C.amber };
+const TONE: Record<Tone, string> = { indigo: C.indigo, green: C.green, amber: C.amber, violet: "#B15BFF" };
 
 const LOOP: { k: string; d: string }[] = [
   { k: "Brief", d: "meet the client + target" },
@@ -45,13 +46,13 @@ export default function CourseIntro({ onBegin }: { onBegin: () => void }) {
         <div style={eyebrow}><span style={{ width: 7, height: 7, borderRadius: "50%", background: C.green, boxShadow: `0 0 9px ${C.green}` }} />Redoubt · Operator orientation · Day one</div>
         <h1 style={{ fontFamily: DISP, fontWeight: 700, fontSize: "clamp(30px,6vw,46px)", lineHeight: 1.03, letterSpacing: "-.01em", margin: "16px 0 14px" }}>Welcome in. You&rsquo;ve been recruited.</h1>
         <p style={{ color: C.soft, fontSize: 16.5, lineHeight: 1.62, maxWidth: "60ch", margin: 0 }}>
-          You&rsquo;re the newest junior operator at <b style={{ color: C.ink }}>Redoubt</b>, a security firm. Over <b style={{ color: C.ink }}>16 modules</b>{" "}you&rsquo;ll take on real client jobs: break in, then defend, one skill at a time. No experience needed - module one starts from the ground up and the early jobs guide your every move. Take a minute to see the whole plan, then we&rsquo;ll get you started.
+          You&rsquo;re the newest junior operator at <b style={{ color: C.ink }}>Redoubt</b>, a security firm. Over <b style={{ color: C.ink }}>20 modules</b>{" "}you&rsquo;ll take on real client jobs: break in, then defend, one skill at a time, finishing on the AI frontier. No experience needed - module one starts from the ground up and the early jobs guide your every move. Take a minute to see the whole plan, then we&rsquo;ll get you started.
         </p>
 
         {/* 1 · learning scope */}
         <SectionLabel>Your learning scope <span style={{ color: C.mute }}>· what you&rsquo;ll learn, in order</span></SectionLabel>
         <p style={{ color: C.soft, fontSize: 14, lineHeight: 1.55, margin: "0 0 14px", maxWidth: "60ch" }}>
-          Five phases, sixteen modules, taking you from attacker to defender. You start at the top.
+          Six phases, twenty modules, taking you from attacker to defender and on to the AI frontier. You start at the top.
         </p>
         <div style={{ display: "grid", gap: 9 }}>
           {PHASES.map((p) => {

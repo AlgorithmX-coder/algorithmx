@@ -1,9 +1,9 @@
-/* The locked 16-module curriculum as pure data (no component imports), so server
+/* The 20-module curriculum as pure data (no component imports), so server
  * components like the portfolio can render the full course map without pulling in
  * the client module graph. Titles mirror the CourseContent rows / design spine
  * section 8. Phase grouping matches the CourseIntro. */
 
-export type Phase = "Foundations" | "Web Exploitation" | "Data & Systems" | "Role Flip" | "Capstone";
+export type Phase = "Foundations" | "Web Exploitation" | "Data & Systems" | "Role Flip" | "Capstone" | "AI Frontier";
 
 export type CurriculumEntry = { no: number; title: string; phase: Phase };
 
@@ -24,9 +24,13 @@ export const CURRICULUM: CurriculumEntry[] = [
   { no: 14, title: "Disclosure & Reporting", phase: "Role Flip" },
   { no: 15, title: "Full Engagement, Part 1", phase: "Capstone" },
   { no: 16, title: "Full Engagement, Part 2", phase: "Capstone" },
+  { no: 17, title: "Prompt Injection", phase: "AI Frontier" },
+  { no: 18, title: "Cloud & API Security", phase: "AI Frontier" },
+  { no: 19, title: "Agentic AI Under Attack", phase: "AI Frontier" },
+  { no: 20, title: "Deepfakes & the AI Arms Race", phase: "AI Frontier" },
 ];
 
-export const PHASE_ORDER: Phase[] = ["Foundations", "Web Exploitation", "Data & Systems", "Role Flip", "Capstone"];
+export const PHASE_ORDER: Phase[] = ["Foundations", "Web Exploitation", "Data & Systems", "Role Flip", "Capstone", "AI Frontier"];
 
 /* A colour per phase, so the course map reads as five distinct zones (owner:
  * each phase its own colour). Matches the module backdrops' hue families. */
@@ -36,4 +40,5 @@ export const PHASE_COLOR: Record<Phase, string> = {
   "Data & Systems": "#5FE6FF",
   "Role Flip": "#55D98C",
   "Capstone": "#E8A33D",
+  "AI Frontier": "#B15BFF",
 };

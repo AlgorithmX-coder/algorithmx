@@ -76,7 +76,7 @@ export default async function OperatorsPortfolioPage() {
         <div style={{ marginBottom: 34 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 12, margin: "0 0 14px" }}>
             <span style={{ width: 18, height: 2, background: C.cyan, borderRadius: 2, boxShadow: `0 0 8px ${C.cyan}` }} />
-            <span style={{ fontFamily: MONO, fontSize: 11.5, letterSpacing: ".14em", textTransform: "uppercase", color: C.ink, fontWeight: 700, textShadow: TSHADOW }}>The posting · {done.size}/16 modules cleared</span>
+            <span style={{ fontFamily: MONO, fontSize: 11.5, letterSpacing: ".14em", textTransform: "uppercase", color: C.ink, fontWeight: 700, textShadow: TSHADOW }}>The posting · {done.size}/{CURRICULUM.length} modules cleared</span>
           </div>
           {PHASE_ORDER.map((phase) => {
             const pc = PHASE_COLOR[phase];
@@ -160,7 +160,7 @@ function OperatorCard({ rank, rep, findingsCount, cleared }: { rank?: { rank: st
         <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
           <StatBig n={String(rep)} l="reputation" tone={C.amber} />
           <StatBig n={String(findingsCount)} l="findings filed" tone={C.green} />
-          <StatBig n={`${cleared}/16`} l="modules cleared" tone={C.cyan} />
+          <StatBig n={`${cleared}/${CURRICULUM.length}`} l="modules cleared" tone={C.cyan} />
         </div>
       </div>
       {rank?.next ? (

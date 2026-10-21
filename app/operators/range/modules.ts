@@ -2,7 +2,7 @@
  *
  * A module appears here once its ModuleDef + Act surface exist. The play route
  * and the course map read this to tell built modules from the still-to-come
- * ones in the locked 16-module curriculum, so there is a single source of
+ * ones in the 20-module curriculum, so there is a single source of
  * "what's actually playable" as content is authored module by module. */
 
 import type { ModuleDef } from "./Engagement";

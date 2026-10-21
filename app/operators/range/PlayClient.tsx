@@ -5,7 +5,7 @@
  * The ModuleDef carries a React component (the Act surface) and so can't cross
  * the server/client boundary as a prop; the server route passes only the module
  * number and this resolves the def from the built-modules registry. Module 1
- * opens on the course orientation (the whole 16-module plan up front); every
+ * opens on the course orientation (the whole 20-module plan up front); every
  * module then runs the persisted LiveEngagement. */
 
 import { useState } from "react";

@@ -126,7 +126,7 @@ const CSS = `
 .cyops-root .step h4{font-family:var(--display);font-weight:600;font-size:13.5px;letter-spacing:.08em;text-transform:uppercase;margin:9px 0 6px;color:var(--text)}
 .cyops-root .step p{color:var(--muted);font-size:.82rem;line-height:1.5}
 
-.cyops-root .acts{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-top:38px}
+.cyops-root .acts{display:grid;grid-template-columns:repeat(6,1fr);gap:14px;margin-top:38px}
 @media(max-width:960px){.cyops-root .acts{grid-template-columns:1fr 1fr}}
 @media(max-width:560px){.cyops-root .acts{grid-template-columns:1fr}}
 .cyops-root .act{border:1px solid var(--hairline-soft);border-radius:12px;overflow:hidden;background:var(--panel)}
@@ -139,6 +139,8 @@ const CSS = `
 .cyops-root .act.flip .ah{background:linear-gradient(180deg,rgba(74,222,128,.08),var(--raised))}
 .cyops-root .act.flip .ah .wk{color:var(--added)}
 .cyops-root .act.cap .ah{background:linear-gradient(180deg,rgba(139,123,255,.1),var(--raised))}
+.cyops-root .act.ai .ah{background:linear-gradient(180deg,rgba(177,91,255,.14),var(--raised))}
+.cyops-root .act.ai .ah .wk{color:#C9A0FF}
 
 .cyops-root .finding{border:1px solid var(--hairline);border-radius:14px;overflow:hidden;background:var(--panel);position:relative}
 .cyops-root .finding::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--threat),transparent 60%);z-index:2}
@@ -398,13 +400,13 @@ export default function CyberStartLanding() {
               <div className="chiprow">
                 <span className="chip"><span className="pip" />Recruitment open</span>
                 <span className="chip range"><span className="pip" />Ages 14-17</span>
-                <span className="chip mono">16 modules . about an hour each</span>
+                <span className="chip mono">20 modules . about an hour each</span>
               </div>
               <h1>Get recruited.<br /><span className="g">Do the real work.</span></h1>
               <p className="lead">Cyber Ops hires you as a junior security operator. Break into real targets, defend against real attacks, and write up real findings - inside a walled range where nothing can actually go wrong. You leave with a portfolio, not a certificate.</p>
               <div className="hbtns">
                 <a href="/ops/signup" className="cta">Sign up</a>
-                <a href="#curriculum" className="cta ghost">See the 16 modules &rarr;</a>
+                <a href="#curriculum" className="cta ghost">See the 20 modules &rarr;</a>
               </div>
               <p className="hnote">The top tier of AlgorithmX - after Cyber Heroes and Cyber Explorers.</p>
               {/* Aligned with the NCSC (alignment, not endorsement). */}
@@ -495,8 +497,8 @@ export default function CyberStartLanding() {
         <section className="band" id="curriculum">
           <div className="wrap">
             <div className="ey"><span className="k">The curriculum</span></div>
-            <h2>Sixteen modules, attacker to defender.</h2>
-            <p className="lead" style={{ marginTop: 14 }}>You spend the first modules learning to break in - then turn around and learn to catch it. That&rsquo;s the honest arc of the profession, and it&rsquo;s why this is never just a hacking course.</p>
+            <h2>Twenty modules, attacker to defender to the AI frontier.</h2>
+            <p className="lead" style={{ marginTop: 14 }}>You spend the first modules learning to break in - then turn around and learn to catch it - and finish on the newest attack surface of all: AI. That&rsquo;s the honest arc of the profession, and it&rsquo;s why this is never just a hacking course.</p>
             <div className="acts">
               <div className="act">
                 <div className="ah"><div className="wk">Modules 1-3</div><h4>Foundations</h4></div>
@@ -537,6 +539,15 @@ export default function CyberStartLanding() {
                 <ul>
                   <li><b>15</b>Full Engagement I</li>
                   <li><b>16</b>Report &amp; Debrief</li>
+                </ul>
+              </div>
+              <div className="act ai">
+                <div className="ah"><div className="wk">Modules 17-20</div><h4>AI Frontier</h4></div>
+                <ul>
+                  <li><b>17</b>Prompt Injection</li>
+                  <li><b>18</b>Cloud &amp; API Security</li>
+                  <li><b>19</b>Agentic AI Under Attack</li>
+                  <li><b>20</b>Deepfakes &amp; the Arms Race</li>
                 </ul>
               </div>
             </div>
@@ -589,7 +600,7 @@ export default function CyberStartLanding() {
               </div>
               <div className="scard">
                 <div className="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><path d="M12 2 4 6v6c0 5 3.4 7.7 8 10 4.6-2.3 8-5 8-10V6l-8-4Z" /><path d="m9 12 2 2 4-4" /></svg></div>
-                <div><h4>Authorization first</h4><p>Every engagement begins by signing a scope. The single most important professional and legal habit - you only touch what you&rsquo;re allowed to - is practised sixteen times.</p></div>
+                <div><h4>Authorization first</h4><p>Every engagement begins by signing a scope. The single most important professional and legal habit - you only touch what you&rsquo;re allowed to - is practised twenty times.</p></div>
               </div>
               <div className="scard">
                 <div className="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="9" /><path d="M12 8v4M12 16h.01" /></svg></div>
@@ -597,7 +608,7 @@ export default function CyberStartLanding() {
               </div>
               <div className="scard">
                 <div className="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><path d="M4 19V5M4 19h16M8 15l3-4 3 2 4-6" /></svg></div>
-                <div><h4>Structured &amp; tracked</h4><p>A 16-module curriculum with clear progress, a professional tone, and law-aware framing throughout. Built for teenagers, respected as teenagers.</p></div>
+                <div><h4>Structured &amp; tracked</h4><p>A 20-module curriculum with clear progress, a professional tone, and law-aware framing throughout. Built for teenagers, respected as teenagers.</p></div>
               </div>
             </div>
           </div>
@@ -622,7 +633,7 @@ export default function CyberStartLanding() {
           <div className="wrap">
             <div className="ey" style={{ justifyContent: "center" }}><span className="k">Enlist</span></div>
             <h2>The range is open.</h2>
-            <p className="lead" style={{ margin: "0 auto", textAlign: "center" }}>Create an operator account and take the first engagement today. Sixteen modules, one payment, a portfolio at the end.</p>
+            <p className="lead" style={{ margin: "0 auto", textAlign: "center" }}>Create an operator account and take the first engagement today. Twenty modules, one payment, a portfolio at the end.</p>
             <div style={{ marginTop: 30, display: "flex", gap: 14, justifyContent: "center", flexWrap: "wrap" }}>
               <a href="/ops/signup" className="cta">Sign up</a>
               <a href="/ops/login" className="cta ghost">Sign in</a>
