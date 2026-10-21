@@ -408,16 +408,18 @@ export default function Nav({ centre, cta, aside, showTelemetry = true, showSite
         }
         .lv2-wordmark-x {
           margin-left: 0.04em;
+          /* Cyan-neon treatment (owner pick "08", 2026-10-21): a pure cyan
+             X with a stronger halo, no violet, so the lockup reads as one
+             bright cyan accent. */
           background-image: linear-gradient(
             150deg,
             var(--lv2-cyan-soft),
-            var(--lv2-cyan) 45%,
-            var(--lv2-brand-violet, #7c5cff)
+            #00b4d8
           );
           -webkit-background-clip: text;
           background-clip: text;
           -webkit-text-fill-color: transparent;
-          filter: drop-shadow(0 0 8px rgba(0, 229, 255, 0.45));
+          filter: drop-shadow(0 0 10px rgba(0, 180, 216, 0.8));
           animation: lv2WordBoot 0.7s ease-out 0.08s 1 both;
         }
         @keyframes lv2WordShimmer {
@@ -604,7 +606,10 @@ export default function Nav({ centre, cta, aside, showTelemetry = true, showSite
             inset 0 1px 0 rgba(255, 255, 255, 0.9) !important;
         }
         nav[data-tone="sand"] :global(.lv2-tel-label) {
-          color: rgba(43, 35, 24, 0.78) !important;
+          /* Cyan-neon treatment (owner "08"): the trust labels take the
+             brand cyan with a soft halo instead of flat brown ink. */
+          color: #0a7d95 !important;
+          text-shadow: 0 0 9px rgba(0, 180, 216, 0.45) !important;
         }
         nav[data-tone="sand"] :global(.lv2-tel-plate-dark) {
           border-color: rgba(20, 22, 29, 0.35) !important;
@@ -654,7 +659,7 @@ export default function Nav({ centre, cta, aside, showTelemetry = true, showSite
            Below it these are plain links and only need their ink. */
         @media (max-width: 640px) {
           nav[data-tone="sand"] :global(.lv2-nav-secondary:not(.lv2-nav-aside)) {
-            color: #075a6b !important;
+            color: #0a7d95 !important;
             text-shadow: none !important;
           }
         }
@@ -669,25 +674,28 @@ export default function Nav({ centre, cta, aside, showTelemetry = true, showSite
           /* Owner 2026-10-15: raised tab-buttons so they clearly read as
              clickable. A paper gradient fill, a firm teal edge and a soft
              lift; hover inverts to a solid teal button. */
-          border-color: rgba(10, 112, 133, 0.5) !important;
-          background: linear-gradient(180deg, #ffffff, #eef6f7) !important;
-          color: #075a6b !important;
+          /* Cyan-neon treatment (owner "08"): cyan edge + ink and a soft
+             cyan halo on the chip. Hover still inverts to a solid button,
+             now cyan. */
+          border-color: rgba(0, 151, 196, 0.5) !important;
+          background: linear-gradient(180deg, #ffffff, #ecf8fc) !important;
+          color: #0a7d95 !important;
           font-weight: 800;
           font-size: 13px !important;
           letter-spacing: 0.16em !important;
           padding: 9px 19px !important;
-          text-shadow: none !important;
-          box-shadow: 0 4px 10px -5px rgba(10, 112, 133, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.95) !important;
+          text-shadow: 0 0 7px rgba(0, 180, 216, 0.45) !important;
+          box-shadow: 0 0 14px rgba(0, 180, 216, 0.5), 0 4px 10px -5px rgba(0, 151, 196, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.95) !important;
           transition: transform .15s ease, border-color .2s ease, background .2s ease, color .2s ease, box-shadow .2s ease !important;
         }
         nav[data-tone="sand"] :global(.lv2-nav-secondary:not(.lv2-nav-aside):hover),
         nav[data-tone="sand"] :global(.lv2-nav-secondary:not(.lv2-nav-aside):focus-visible) {
-          border-color: #0a7085 !important;
-          background: linear-gradient(180deg, #0e8299, #0a7085) !important;
-          color: #fbf9f4 !important;
+          border-color: #0097c4 !important;
+          background: linear-gradient(180deg, #19a6cc, #0097c4) !important;
+          color: #f7fdff !important;
           text-shadow: none !important;
           transform: translateY(-1px) !important;
-          box-shadow: 0 11px 22px -10px rgba(10, 112, 133, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.25) !important;
+          box-shadow: 0 11px 22px -10px rgba(0, 151, 196, 0.85), 0 0 18px rgba(0, 180, 216, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.25) !important;
         }
         }
         :global(.lv2-nav-secondary) {
@@ -715,10 +723,13 @@ export default function Nav({ centre, cta, aside, showTelemetry = true, showSite
           :global(.lv2-nav-secondary:not(.lv2-nav-aside)) {
             padding: 7px 14px;
             border-radius: 999px;
-            border: 1px solid rgba(159, 245, 255, 0.24);
-            background: rgba(0, 229, 255, 0.06);
-            box-shadow: inset 0 1px 0 rgba(232, 237, 255, 0.05);
-            color: var(--lv2-word-mark, var(--lv2-paper));
+            /* Cyan-neon treatment (owner "08"): night chips glow cyan at
+               rest. The sand tone overrides colour/edge/shadow above. */
+            border: 1px solid rgba(0, 180, 216, 0.45);
+            background: rgba(0, 180, 216, 0.1);
+            box-shadow: 0 0 14px -2px rgba(0, 180, 216, 0.5), inset 0 1px 0 rgba(232, 237, 255, 0.05);
+            color: #bfefff;
+            text-shadow: 0 0 8px rgba(0, 180, 216, 0.5);
           }
           /* the chip does the job the scanning underline used to do */
           :global(.lv2-nav-secondary:not(.lv2-nav-aside))::after {
@@ -1324,7 +1335,10 @@ function TrustStrip({ isLight }: { isLight: boolean }) {
           font-weight: 700;
           letter-spacing: 0.13em;
           text-transform: uppercase;
-          color: rgba(232, 237, 255, 0.7);
+          /* Cyan-neon treatment (owner "08"): night labels glow cyan.
+             The sand tone overrides this colour above. */
+          color: #bfefff;
+          text-shadow: 0 0 9px rgba(0, 180, 216, 0.5);
         }
         /* The marks: each on the plate its artwork needs. Soft-rect
            badge plates (2026-10-09 polish pass) - pills squeezed the
