@@ -149,6 +149,13 @@ const THEMES: Record<number, Theme> = {
     S.it.forEach((o: State) => { o.y += o.vy * 0.016; if (o.y < -14) { o.y = h + 14; o.x = Math.random() * w; } const a = 0.42 + 0.3 * Math.sin(t * 1.3 + o.ph); const isTool = /\(/.test(o.txt); x.fillStyle = rgba(isTool ? C[2] : C[1], a * 0.72); x.fillText(o.txt, o.x, o.y); });
     x.textAlign = "left";
   } },
+  20: { C: ["#B15BFF", "#f26d72", "#5FE6FF"], draw: (x, w, h, t, C, S) => {
+    if (!S.it) { S.it = []; const L = ["deepfake", "voice clone", "verify", "REAL?", "FAKE?", "out-of-band", "safe word", "synthetic", "provenance", "⚑"]; const N = Math.round(w / 185); for (let i = 0; i < N; i++) S.it.push({ x: Math.random() * w, y: Math.random() * h, vy: -(6 + Math.random() * 9), txt: L[i % L.length], ph: Math.random() * TAU }); }
+    x.font = `600 12px ${MONO}`; x.textBaseline = "middle"; x.textAlign = "center";
+    S.it.forEach((o: State) => { o.y += o.vy * 0.016; if (o.y < -14) { o.y = h + 14; o.x = Math.random() * w; } const flick = Math.sin(t * 2 + o.ph); const isFake = /FAKE|⚑/.test(o.txt); const a = 0.4 + 0.3 * Math.abs(flick); x.fillStyle = rgba(isFake ? C[1] : C[0], a * 0.7); x.fillText(o.txt, o.x, o.y); });
+    const sy = (t * 40) % h; x.fillStyle = rgba(C[2], 0.06); x.fillRect(0, sy, w, 1.5);
+    x.textAlign = "left";
+  } },
 };
 
 const AURORA_C = ["#8B7BFF", "#5FE6FF", "#B57BFF", "#2DD4BF"];
