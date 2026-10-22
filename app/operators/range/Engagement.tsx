@@ -239,6 +239,23 @@ const BASE_BEATS: { id: Phase; label: string }[] = [
   { id: "act", label: "Capture" }, { id: "drills", label: "Drills" }, { id: "challenge", label: "Challenge" }, { id: "defend", label: "Defend" }, { id: "report", label: "Report" },
 ];
 
+// Save/resume mid-module (UAT): the beats a learner can be dropped back into on a
+// refresh or a return visit. The two start beats (intro/brief) aren't worth
+// resuming to, and "report" means the module is finished, so none of those persist.
+// Per-device via localStorage, keyed by module number; reads/writes are wrapped so
+// a blocked store (private window, cleared data) just falls back to a fresh start.
+const RESUMABLE: Phase[] = ["lesson", "authorize", "act", "drills", "challenge", "defend"];
+export function resumeKeyFor(moduleNo: number) { return `ops:resume:${moduleNo}`; }
+function readResume(moduleNo: number, mod: ModuleDef): Phase | null {
+  try {
+    const s = localStorage.getItem(resumeKeyFor(moduleNo)) as Phase | null;
+    if (!s || !RESUMABLE.includes(s)) return null;
+    if (s === "drills" && !mod.Consolidation) return null;
+    if (s === "challenge" && !mod.Capstone) return null;
+    return s;
+  } catch { return null; }
+}
+
 // Each curriculum phase is a distinct "console world" (owner: make each module
 // feel like a different level). The world sets the header identity + the accent
 // that flows through the beat bar, eyebrows, handler and primary buttons (via
@@ -276,8 +293,34 @@ export default function Engagement({
    *  matches the portfolio. Previews pass nothing and show the designed text. */
   liveRank?: { rank: string; label: string; fraction: number } | null;
 }) {
-  const [phase, setPhase] = useState<Phase>(mod.industry ? "intro" : "brief");
-  const [callsign, setCallsign] = useState("NIGHTJAR");
+  const defaultPhase: Phase = mod.industry ? "intro" : "brief";
+  // Resume where the learner left off (only when a real completion handler is
+  // wired, i.e. the live lesson - never the preview/dev routes, which shouldn't
+  // persist). Beat-level: a return visit drops you back into the section you were
+  // in rather than restarting the whole module.
+  const canPersist = !!onReport;
+  const [phase, setPhase] = useState<Phase>(() => (canPersist && readResume(mod.moduleNo, mod)) || defaultPhase);
+  const [resumed, setResumed] = useState<boolean>(() => canPersist && readResume(mod.moduleNo, mod) !== null);
+  const [callsign, setCallsign] = useState(() => {
+    if (!canPersist) return "NIGHTJAR";
+    try { return localStorage.getItem(`ops:callsign:${mod.moduleNo}`) || "NIGHTJAR"; } catch { return "NIGHTJAR"; }
+  });
+  useEffect(() => {
+    if (!canPersist) return;
+    try {
+      if (RESUMABLE.includes(phase)) localStorage.setItem(resumeKeyFor(mod.moduleNo), phase);
+      else localStorage.removeItem(resumeKeyFor(mod.moduleNo)); // intro/brief/report: nothing to resume
+    } catch { /* storage blocked */ }
+  }, [phase, canPersist, mod.moduleNo]);
+  useEffect(() => {
+    if (!canPersist) return;
+    try { localStorage.setItem(`ops:callsign:${mod.moduleNo}`, callsign); } catch { /* storage blocked */ }
+  }, [callsign, canPersist, mod.moduleNo]);
+  function startOver() {
+    try { localStorage.removeItem(resumeKeyFor(mod.moduleNo)); } catch { /* storage blocked */ }
+    setResumed(false);
+    setPhase(defaultPhase);
+  }
   const [cheatOpen, setCheatOpen] = useState(false);
   useEffect(() => {
     if (!cheatOpen) return;
@@ -344,11 +387,17 @@ export default function Engagement({
             <div style={{ fontFamily: MONO, fontSize: 11, color: C.mute }}>operator <span style={{ color: world.accent }}>{callsign || "-"}</span></div>
           </div>
         )}
-        <div style={{ display: "flex", gap: 6, marginBottom: 22 }}>
+        <div style={{ display: "flex", gap: 6, marginBottom: resumed && phase !== "report" ? 12 : 22 }}>
           {BEATS.map((b, i) => (
             <div key={b.id} title={b.label} style={{ flex: 1, height: 3, borderRadius: 2, background: i <= idx ? world.accent : "rgba(255,255,255,.08)", boxShadow: i === idx ? `0 0 8px ${world.accent}` : "none", transition: "background .3s" }} />
           ))}
         </div>
+        {resumed && phase !== "report" && (
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10, flexWrap: "wrap", marginBottom: 20, padding: "8px 12px", borderRadius: 9, border: `1px solid ${world.accent}`, background: world.soft, fontFamily: MONO, fontSize: 12, color: C.soft }}>
+            <span>↻ Resumed where you left off · <span style={{ color: world.accent }}>{BEATS[idx]?.label ?? ""}</span></span>
+            <button onClick={startOver} style={{ background: "none", border: "none", color: world.accent, fontFamily: MONO, fontSize: 12, cursor: "pointer", textDecoration: "underline", textUnderlineOffset: 3 }}>start over</button>
+          </div>
+        )}
 
         {/* INDUSTRY INTRO */}
         {phase === "intro" && mod.industry && (
