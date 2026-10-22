@@ -11,7 +11,7 @@
  * ladder, FOUR drills, and a chained capstone. */
 
 import { useState } from "react";
-import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary } from "./Engagement";
+import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary, shuffle } from "./Engagement";
 
 /* ───────────────────────── real transforms ───────────────────────── */
 
@@ -71,33 +71,43 @@ function Hints({ hints, revealLabel, onReveal }: { hints: string[]; revealLabel?
 
 /* ── stage 1: pick the right transform (encoding is not encryption) ── */
 function TransformSurface({ onSolved }: { onSolved: () => void }) {
-  const [out, setOut] = useState<{ label: string; text: string; win: boolean } | null>(null);
+  const [out, setOut] = useState<{ kind: string; label: string; text: string; readable: boolean } | null>(null);
   const [solved, setSolved] = useState(false);
+  const [wrong, setWrong] = useState(false);
+  // Trying a transform only SHOWS its output; it never wins. Try as many as you
+  // like, see which one turns the token into something readable, then confirm it.
   function go(kind: "b64" | "rot13" | "hex" | "enc") {
-    if (kind === "b64") { const t = b64decode(B64_TOKEN); const win = t.includes(":"); setOut({ label: "base64 decode", text: t || "(not valid base64)", win }); if (win && !solved) { setSolved(true); onSolved(); } }
-    else if (kind === "rot13") setOut({ label: "ROT13", text: caesar(B64_TOKEN, 13), win: false });
-    else if (kind === "hex") setOut({ label: "hex decode", text: "(not valid hex - it's base64)", win: false });
-    else setOut({ label: "assume encrypted", text: "If it were truly encrypted you'd need the key. But look at the shape - it ends in = and uses only base64 characters.", win: false });
+    if (solved) return;
+    if (kind === "b64") { const t = b64decode(B64_TOKEN); setOut({ kind, label: "base64 decode", text: t || "(not valid base64)", readable: t.includes(":") }); }
+    else if (kind === "rot13") setOut({ kind, label: "ROT13", text: caesar(B64_TOKEN, 13), readable: false });
+    else if (kind === "hex") setOut({ kind, label: "hex decode", text: "(not valid hex - it's base64)", readable: false });
+    else setOut({ kind, label: "assume encrypted", text: "If it were truly encrypted you'd need the key. But look at the shape: it ends in = and uses only base64 characters.", readable: false });
+    setWrong(false);
   }
+  function confirm() { if (!out || solved) return; if (out.readable) { setSolved(true); onSolved(); } else setWrong(true); }
+  const B = (kind: "b64" | "rot13" | "hex" | "enc", label: string) => <Btn tone={out?.kind === kind ? "i" : "ghost"} onClick={() => go(kind)} disabled={solved}>{label}</Btn>;
   return (
     <div style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: 14, padding: 18 }}>
       <div style={{ fontFamily: MONO, fontSize: 11.5, color: C.mute, marginBottom: 10 }}>// intercepted from a config file, labelled &quot;encrypted auth token&quot;</div>
       <div style={{ ...box, color: C.amber }}>{B64_TOKEN}</div>
-      <div style={{ fontFamily: MONO, fontSize: 11, color: C.mute, margin: "12px 0 8px" }}>how would you read it?</div>
+      <div style={{ fontFamily: MONO, fontSize: 11, color: C.mute, margin: "12px 0 8px" }}>try a few ways to read it, then confirm the one that actually works</div>
       <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-        <Btn tone="i" onClick={() => go("b64")} disabled={solved}>Decode base64</Btn>
-        <Btn tone="ghost" onClick={() => go("rot13")}>Try ROT13</Btn>
-        <Btn tone="ghost" onClick={() => go("hex")}>Try hex</Btn>
-        <Btn tone="ghost" onClick={() => go("enc")}>Assume encrypted</Btn>
+        {B("b64", "Decode base64")}{B("rot13", "Try ROT13")}{B("hex", "Try hex")}{B("enc", "Assume encrypted")}
       </div>
       {out && (
-        <div style={{ marginTop: 14, ...box, borderColor: out.win ? C.green : C.lineSoft }}>
+        <div style={{ marginTop: 14, ...box, borderColor: solved && out.readable ? C.green : C.lineSoft }}>
           <div style={{ fontSize: 10.5, letterSpacing: ".1em", color: C.mute, marginBottom: 7 }}>{out.label.toUpperCase()}</div>
-          <div style={{ color: out.win ? C.green : "#8fa0c8" }}>{out.text}</div>
-          {out.win && <div style={{ color: C.green, marginTop: 9 }}>✓ Only base64 - reversible by anyone, no key. The &quot;token&quot; is a plaintext admin credential.</div>}
+          <div style={{ color: solved && out.readable ? C.green : "#8fa0c8" }}>{out.text}</div>
+          {solved && out.readable && <div style={{ color: C.green, marginTop: 9 }}>✓ Only base64 - reversible by anyone, no key. The &quot;token&quot; is a plaintext admin credential.</div>}
         </div>
       )}
-      <Hints hints={["It ends in = and uses only base64 characters. Hit 'Decode base64' - encoding needs no key."]} />
+      {!solved && (
+        <div style={{ display: "flex", gap: 14, alignItems: "center", flexWrap: "wrap", marginTop: 14 }}>
+          <Btn tone="g" onClick={confirm} disabled={!out}>This reveals the credential →</Btn>
+          {wrong && <span style={{ fontFamily: MONO, fontSize: 11.5, color: C.amber }}>that output still isn&apos;t readable. Try another transform.</span>}
+        </div>
+      )}
+      <Hints hints={["It ends in = and uses only base64 characters. Decode base64 - encoding needs no key."]} />
     </div>
   );
 }
@@ -106,9 +116,13 @@ function TransformSurface({ onSolved }: { onSolved: () => void }) {
 function CaesarSurface({ onSolved }: { onSolved: () => void }) {
   const [shift, setShift] = useState(0);
   const [solved, setSolved] = useState(false);
+  const [wrong, setWrong] = useState(false);
   const decoded = caesar(CAESAR_CT, shift);
-  const readable = decoded.includes("vault");
-  function set(n: number) { const s = ((n % 26) + 26) % 26; setShift(s); if (caesar(CAESAR_CT, s).includes("vault") && !solved) { setSolved(true); onSolved(); } }
+  // Stepping the shift only re-decodes; it never wins, and the output stays a
+  // neutral colour so you have to actually read it. Stop on the shift that
+  // turns it into English, then confirm.
+  function set(n: number) { setShift(((n % 26) + 26) % 26); setWrong(false); }
+  function confirm() { if (solved) return; if (decoded.includes("vault")) { setSolved(true); onSolved(); } else setWrong(true); }
   return (
     <div style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: 14, padding: 18 }}>
       <div style={{ fontFamily: MONO, fontSize: 11, color: C.mute, marginBottom: 6 }}>INTERCEPTED CIPHERTEXT (Caesar)</div>
@@ -119,7 +133,13 @@ function CaesarSurface({ onSolved }: { onSolved: () => void }) {
         <Btn tone="ghost" onClick={() => set(shift + 1)}>+ shift</Btn>
         <span style={{ fontFamily: MONO, fontSize: 11, color: C.mute }}>only 25 possibilities - just try them</span>
       </div>
-      <div style={{ ...box, color: readable ? C.green : "#8fa0c8", borderColor: readable ? C.green : C.lineSoft }}>{decoded}</div>
+      <div style={{ ...box, color: solved ? C.green : "#8fa0c8", borderColor: solved ? C.green : C.lineSoft }}>{decoded}</div>
+      {!solved && (
+        <div style={{ display: "flex", gap: 14, alignItems: "center", flexWrap: "wrap", marginTop: 12 }}>
+          <Btn tone="g" onClick={confirm}>This is readable →</Btn>
+          {wrong && <span style={{ fontFamily: MONO, fontSize: 11.5, color: C.amber }}>that still isn&apos;t English. Keep stepping the shift.</span>}
+        </div>
+      )}
       {solved && <div style={{ fontFamily: MONO, fontSize: 12.5, color: C.green, marginTop: 10 }}>✓ Readable - a 25-key cipher falls to brute force in seconds.</div>}
       <Hints hints={["Step the shift until the text turns into English. The right shift is 19."]} revealLabel="stuck? jump to the shift" onReveal={() => set(19)} />
     </div>
@@ -129,30 +149,40 @@ function CaesarSurface({ onSolved }: { onSolved: () => void }) {
 /* ── stage 3: single-byte XOR brute force by printability ── */
 function XorSurface({ onSolved }: { onSolved: () => void }) {
   const [cands, setCands] = useState<{ key: number; text: string }[] | null>(null);
+  const [selected, setSelected] = useState<number | null>(null);
   const [solved, setSolved] = useState(false);
+  const [wrong, setWrong] = useState(false);
   function brute() {
     const found: { key: number; text: string }[] = [];
     for (let k = 0; k < 256; k++) { const t = xorHex(XOR_HEX, k); if (printableRatio(t) > 0.95 && /[aeiou]{1}/i.test(t) && t.includes(" ")) found.push({ key: k, text: t }); }
-    setCands(found.slice(0, 6));
+    setCands(found.slice(0, 6)); setSelected(null); setWrong(false);
   }
-  function pick(c: { key: number; text: string }) {
-    if (c.text.includes("drop point") && !solved) { setSolved(true); onSolved(); }
-    setCands((cs) => cs); // keep
-  }
+  // Brute-force reveals the candidates that LOOK like text; not all are real
+  // sentences. Read them, select the real message, then confirm.
+  function confirm() { if (selected === null || solved) return; const c = cands?.find((x) => x.key === selected); if (c && c.text.includes("drop point")) { setSolved(true); onSolved(); } else setWrong(true); }
   return (
     <div style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: 14, padding: 18 }}>
       <div style={{ fontFamily: MONO, fontSize: 11, color: C.mute, marginBottom: 6 }}>INTERCEPTED CIPHERTEXT (single-byte XOR, hex)</div>
       <div style={{ ...box, color: C.amber }}>{XOR_HEX}</div>
-      <div style={{ margin: "14px 0 10px" }}><Btn tone="i" onClick={brute}>BRUTE-FORCE ALL 256 KEYS →</Btn></div>
+      <div style={{ margin: "14px 0 10px" }}><Btn tone="i" onClick={brute} disabled={solved}>BRUTE-FORCE ALL 256 KEYS →</Btn></div>
       {cands && (
         <div style={{ display: "grid", gap: 6 }}>
-          <div style={{ fontFamily: MONO, fontSize: 10.5, color: C.mute }}>keys whose output looks like real text ({cands.length}) - tap the readable one:</div>
-          {cands.map((c) => (
-            <button key={c.key} onClick={() => pick(c)} className="co-opt" style={{ textAlign: "left", display: "flex", gap: 10, flexWrap: "wrap", padding: "8px 12px", borderRadius: 8, border: `1px solid ${solved && c.text.includes("drop point") ? C.green : C.lineSoft}`, background: C.carbon, cursor: "pointer" }}>
-              <span style={{ fontFamily: MONO, fontSize: 11.5, color: C.indigo2 }}>key 0x{c.key.toString(16).padStart(2, "0")}</span>
-              <span style={{ fontFamily: MONO, fontSize: 12.5, color: C.soft }}>{c.text}</span>
-            </button>
-          ))}
+          <div style={{ fontFamily: MONO, fontSize: 10.5, color: C.mute }}>keys whose output looks like text ({cands.length}) - read them and select the real message:</div>
+          {cands.map((c) => {
+            const isSel = selected === c.key; const good = solved && c.text.includes("drop point");
+            return (
+              <button key={c.key} onClick={() => { if (!solved) { setSelected(c.key); setWrong(false); } }} disabled={solved} className="co-opt" style={{ textAlign: "left", display: "flex", gap: 10, flexWrap: "wrap", padding: "8px 12px", borderRadius: 8, border: `1px solid ${good ? C.green : isSel ? C.indigo : C.lineSoft}`, background: isSel ? "rgba(139,123,255,0.08)" : C.carbon, cursor: solved ? "default" : "pointer" }}>
+                <span style={{ fontFamily: MONO, fontSize: 11.5, color: C.indigo2 }}>key 0x{c.key.toString(16).padStart(2, "0")}</span>
+                <span style={{ fontFamily: MONO, fontSize: 12.5, color: good ? C.green : C.soft }}>{c.text}</span>
+              </button>
+            );
+          })}
+          {!solved && (
+            <div style={{ display: "flex", gap: 14, alignItems: "center", flexWrap: "wrap", marginTop: 8 }}>
+              <Btn tone="g" onClick={confirm} disabled={selected === null}>This is the real message →</Btn>
+              {wrong && <span style={{ fontFamily: MONO, fontSize: 11.5, color: C.amber }}>that one isn&apos;t a real sentence. Read the others.</span>}
+            </div>
+          )}
         </div>
       )}
       {solved && <div style={{ fontFamily: MONO, fontSize: 12.5, color: C.green, marginTop: 10 }}>✓ Cracked - 256 keys is nothing; scoring by readability finds the one instantly.</div>}
@@ -278,11 +308,12 @@ function LiveEncodeLab({ onDone }: { onDone: () => void }) {
 
 function PickProtectionLab({ onDone }: { onDone: () => void }) {
   const [picked, setPicked] = useState<number | null>(null);
-  const opts = [
-    { code: "base64(secret)  // 'it looks scrambled'", ok: false, why: "Encoding, not encryption - reversible by anyone in one call, exactly what you did in stage one." },
-    { code: "xor(secret, singleByte)  // 'home-grown crypto'", ok: false, why: "A 256-key cipher you brute-forced in stage three. Never roll your own, and never use a tiny keyspace." },
-    { code: "AES-GCM(secret, key-from-a-secrets-manager)", ok: true, why: "Real, modern encryption with a large key kept out of the code. This is how you actually protect a secret." },
-  ];
+  const [opts] = useState(() => shuffle([
+    { code: "base64(secret)", ok: false, why: "Encoding, not encryption. Reversible by anyone in one call, exactly what you did in stage one." },
+    { code: "xor(secret, singleByte)", ok: false, why: "A 256-key cipher you brute-forced in stage three. Never roll your own, and never use a tiny keyspace." },
+    { code: "sha256(secret)", ok: false, why: "Hashing is one-way, so you could never read the token back to use it. Hashes are for passwords, not secrets you must recover." },
+    { code: "AES-GCM(secret, key-from-a-secrets-manager)", ok: true, why: "Real, modern encryption with a large key kept out of the code. This is how you actually protect a secret you need back." },
+  ]));
   return (
     <div style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: 12, padding: "15px 16px" }}>
       <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: ".1em", color: C.indigo, fontWeight: 700, marginBottom: 10 }}>▶ APPLY THE FIX · how do you actually protect a secret?</div>
@@ -466,10 +497,10 @@ export const MODULE8: ModuleDef = {
     check: {
       q: "What's the key difference between encoding and encryption?",
       options: [
-        { text: "Encoding is reversible by anyone with no key; encryption can only be reversed with a secret key.", correct: true, feedback: "Right. That's exactly why base64 protects nothing." },
-        { text: "Encoding needs a key; encryption doesn't.", feedback: "It's the other way round - encoding needs no key at all." },
-        { text: "They're two words for the same thing.", feedback: "No - conflating them is precisely the mistake that leaks secrets." },
-        { text: "Encoding is more secure because it's faster.", feedback: "Speed has nothing to do with it; encoding provides no secrecy at all." },
+        { text: "Encoding can be reversed by anyone with no key; encryption can only be undone with a secret key.", correct: true, feedback: "Right. That is exactly why base64 protects nothing." },
+        { text: "Encoding needs a secret key to reverse, while encryption needs no key at all.", feedback: "It is the other way round: encoding needs no key, while encryption is defined by needing one." },
+        { text: "They are really two different names for one and the same process.", feedback: "No. Conflating them is precisely the mistake that leaks secrets." },
+        { text: "Encoding is the more secure of the two, because it is faster to run.", feedback: "Speed has nothing to do with secrecy; encoding provides no protection at all." },
       ],
     },
   },
@@ -502,10 +533,10 @@ export const MODULE8: ModuleDef = {
     check: {
       q: "How should that auth token have been handled?",
       options: [
-        { text: "Keep the secret in a secrets manager / env var, and encrypt at rest with a strong algorithm and a separately-managed key.", correct: true, feedback: "Right - real secret management and real encryption, not encoding." },
-        { text: "base64-encode it twice so it's harder to read.", feedback: "Encoding any number of times is still trivially reversible - it adds no protection." },
-        { text: "Use a home-grown XOR cipher so attackers don't know the method.", feedback: "You just brute-forced exactly that. Never roll your own, and never rely on a tiny keyspace." },
-        { text: "Rename the field to something less obvious.", feedback: "Obscuring the name doesn't protect the value; anyone who finds it can still decode it." },
+        { text: "Keep it in a secrets manager or env var, and encrypt it at rest with a strong, separately-managed key.", correct: true, feedback: "Right. Real secret management and real encryption, not encoding." },
+        { text: "Base64-encode it twice over so that it is noticeably harder for anyone to read.", feedback: "Encoding any number of times is still trivially reversible. It adds no protection at all." },
+        { text: "Use a home-grown XOR cipher so that attackers never work out the method.", feedback: "You just brute-forced exactly that. Never roll your own, and never rely on a tiny keyspace." },
+        { text: "Rename the field to something innocuous so nobody realises what it holds.", feedback: "Obscuring the name doesn't protect the value; anyone who finds it can still decode it." },
       ],
     },
   },
