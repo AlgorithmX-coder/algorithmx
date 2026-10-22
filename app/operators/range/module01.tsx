@@ -205,19 +205,19 @@ const ACT_STAGES: Stage[] = [
   {
     kind: "decision", title: "Stay in scope", goal: "Stage 3 - The tempting detour. While reading the source you spot a link to patient-records.meridian.range - not in your scope. What's the professional move?",
     decision: { prompt: "You've found an out-of-scope system that looks reachable. What do you do?", options: [
-      { text: "Leave it alone, note that it's reachable, and report it - but don't touch it.", correct: true, feedback: "Right. Out of scope means hands off. You document the exposure and let the client decide; touching it would be a crime, authorisation or not." },
+      { text: "Leave it alone, note that it's reachable, and report it.", correct: true, feedback: "Right. Out of scope means hands off - don't touch it. You document the exposure and let the client decide; touching it would be a crime, authorisation or not." },
       { text: "Have a quick look - just reading patient data isn't really hacking.", feedback: "No. Accessing data you're not authorised for is exactly what the Computer Misuse Act forbids, and reading real patient records is a serious breach." },
       { text: "Log in with the leaked account to see how far it reaches.", feedback: "That's exceeding scope and acting on real systems. Prove the leak exists; don't go exploring with it." },
-      { text: "Delete the link so attackers can't find it.", feedback: "Never alter the client's systems. You report what you find; you don't change things." },
+      { text: "Delete the link so that attackers can't ever find it.", feedback: "Never alter the client's systems. You report what you find; you don't change things." },
     ] },
   },
   {
     kind: "decision", title: "Handle it right", goal: "Stage 4 - Responsible handling. You have a working leaked credential for the in-scope portal. How do you close out the finding?",
     decision: { prompt: "You hold a valid leaked credential. What's the correct, professional next step?", options: [
-      { text: "Document it as a finding and recommend the account be disabled and the secret rotated immediately - without using it on real data.", correct: true, feedback: "Right. Prove it exists, report it with least impact, and advise rotation. That's responsible disclosure." },
+      { text: "Document it as a finding and recommend the account be disabled and rotated.", correct: true, feedback: "Right. Prove it exists, report it with least impact, and advise rotation immediately - without using it on real data. That's responsible disclosure." },
       { text: "Use it to pull as much data as possible, as proof for the report.", feedback: "No - least impact. A screenshot that the credential is valid is proof enough; hoarding real data is harmful and out of bounds." },
       { text: "Post it in the team chat so everyone can verify it works.", feedback: "Never spread a live credential. Keep findings confidential to the client and the engagement." },
-      { text: "Keep it in case it's useful on a future engagement.", feedback: "Absolutely not - that's theft of a credential. It belongs only to this authorised test, and the client must rotate it." },
+      { text: "Keep it in case it turns out useful on a future engagement.", feedback: "Absolutely not - that's theft of a credential. It belongs only to this authorised test, and the client must rotate it." },
     ] },
   },
 ];
@@ -284,11 +284,12 @@ function AuthorisedLab({ onDone }: { onDone: () => void }) {
 
 function ProStandardLab({ onDone }: { onDone: () => void }) {
   const [picked, setPicked] = useState<number | null>(null);
-  const opts = [
+  const [opts] = useState(() => shuffle([
     { code: "Start testing as soon as the client emails 'sounds good'", ok: false, why: "A casual email isn't authorisation. You need a signed scope naming the systems, the window and the limits - otherwise it's unauthorised access." },
-    { code: "Test whatever looks interesting, and sort out scope later", ok: false, why: "Scope comes first, always. Touching anything unauthorised is a crime regardless of good intentions." },
-    { code: "Get a signed scope, agree the rules of engagement, then test only what it names", ok: true, why: "This is the standard: written authorisation, agreed rules, and staying strictly inside the boundary. Everything else follows from it." },
-  ];
+    { code: "Test whatever looks interesting, and sort out the scope later", ok: false, why: "Scope comes first, always. Touching anything unauthorised is a crime regardless of good intentions." },
+    { code: "Get a signed scope and rules of engagement before you test", ok: true, why: "This is the standard: written authorisation, agreed rules, and staying strictly inside the boundary - test only what the scope names. Everything else follows from it." },
+    { code: "Get a verbal go-ahead from your main contact and start", ok: false, why: "A verbal okay isn't authorisation you can rely on. You still need a signed scope naming the systems, window and limits before touching anything." },
+  ]));
   return (
     <div style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: 12, padding: "15px 16px" }}>
       <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: ".1em", color: C.indigo, fontWeight: 700, marginBottom: 10 }}>▶ APPLY THE STANDARD · how should an engagement start?</div>
@@ -329,9 +330,10 @@ const DRILLS: DrillCfg[] = [
     client: "Tideway Council",
     brief: "Mid-test you hit a judgment call. Make the professional decision.",
     stages: [{ kind: "decision", title: "Judgment", goal: "A curveball during the Tideway test.", decision: { prompt: "A council system you're testing starts behaving oddly and might be about to crash. What do you do?", options: [
-      { text: "Stop immediately and contact the client's named point of contact before going further.", correct: true, feedback: "Right. Least impact and clear comms: you never risk disrupting a live service without telling the client." },
-      { text: "Push harder - a crash would prove the vulnerability.", feedback: "No. Causing an outage is real harm and usually outside the rules of engagement." },
+      { text: "Stop immediately and contact the client's named point of contact.", correct: true, feedback: "Right. Least impact and clear comms: you never risk disrupting a live service without telling the client." },
+      { text: "Push harder, since a crash would really prove the vulnerability.", feedback: "No. Causing an outage is real harm and usually outside the rules of engagement." },
       { text: "Quietly carry on and mention it in the report later.", feedback: "Risking a live service without telling anyone breaks the rules of engagement; contact the client now." },
+      { text: "Restart the system yourself to clear whatever is wrong.", feedback: "Never alter or operate the client's live systems. Stop and let their named contact decide." },
     ] } }],
     success: "Paused and escalated instead of risking a live service - exactly right. Finding logged.",
   },
@@ -350,8 +352,10 @@ const DRILLS: DrillCfg[] = [
         { label: "A supplier's portal linked from the shop", inScope: false, note: "A third party is never in your scope." },
       ], hint: "Only Oakline's shop is authorised; the supplier is someone else's system." },
       { kind: "decision", title: "Call", goal: "Step 2: you find a real customer's order while testing. The move?", decision: { prompt: "A bug exposes a real customer's order details. What do you do?", options: [
-        { text: "Capture just enough to prove the bug, stop, and report it with least impact.", correct: true, feedback: "Right. Prove it, don't harvest it, and report responsibly." },
-        { text: "Download all the orders as evidence.", feedback: "No - least impact. Don't hoard real personal data; a single proof is enough." },
+        { text: "Capture just enough to prove the bug, then stop and report it.", correct: true, feedback: "Right. Prove it with least impact, don't harvest it, and report responsibly." },
+        { text: "Download all the customer orders to keep as evidence.", feedback: "No - least impact. Don't hoard real personal data; a single proof is enough." },
+        { text: "Email the affected customer to warn them directly.", feedback: "Not your call - contacting data subjects is the client's responsibility. Report it to them with least impact." },
+        { text: "Carry on testing and note the exposure for the report.", feedback: "Stop touching real customer data the moment you've proved the bug. Least impact comes first." },
       ] } },
     ],
     success: "Scoped it, then handled real data responsibly - that's the whole of Rules of Engagement. Finding logged.",
@@ -410,9 +414,10 @@ const CAP_STAGES: Stage[] = [
   ], hint: "Only the named portal and reading what it exposes." },
   { kind: "inspect", title: "Recon", goal: "Read the portal source and find what the dev left in a comment.", cfg: { host: "portal.sableline.range", lines: [{ t: "<body>" }, { t: "  <!-- staging login: s.vale@sableline.range / Stag3!Set -->", leak: true }, { t: "</body>" }], question: "the leaked staging email", placeholder: "name@sableline.range", accept: (v) => v.trim().toLowerCase() === "s.vale@sableline.range", hint: "The comment holds it: s.vale@sableline.range.", reveal: "s.vale@sableline.range" } },
   { kind: "decision", title: "Call", goal: "Finish it: you have the leaked credential and spot an out-of-scope admin panel. The move?", decision: { prompt: "Leaked credential in hand, an out-of-scope admin panel in view. What do you do?", options: [
-    { text: "Report the leaked credential and the reachable panel, recommend rotation, and touch neither beyond proof.", correct: true, feedback: "Right. In scope, least impact, responsible disclosure - the whole module in one decision." },
+    { text: "Report the leaked credential and the reachable panel, and touch neither.", correct: true, feedback: "Right. In scope, least impact, responsible disclosure: recommend rotation and go no further than proof - the whole module in one decision." },
     { text: "Use the credential on the admin panel to show maximum impact.", feedback: "No - the panel is out of scope and that's unauthorised access. Report it; don't enter it." },
-    { text: "Keep the credential for later and move on quietly.", feedback: "Never retain a live credential. Report it and have it rotated." },
+    { text: "Keep the credential for later and quietly move on.", feedback: "Never retain a live credential. Report it and have it rotated." },
+    { text: "Try the credential once on the panel, just to confirm it works.", feedback: "That single login is already unauthorised access to an out-of-scope system. Report that it's reachable; don't enter it." },
   ] } },
 ];
 
@@ -551,9 +556,9 @@ export const MODULE1: ModuleDef = {
     check: {
       q: "You found Meridian's leaked account. What should they do first?",
       options: [
-        { text: "Disable or rotate the account immediately, then clean it out of the source.", correct: true, feedback: "Right. Assume it's burned: kill the credential first, then remove it from the source." },
-        { text: "Delete the comment from the page source.", feedback: "Necessary, but not first - the credential is already out, so removing the comment doesn't un-leak it." },
-        { text: "Nothing - it's only a test account.", feedback: "A working credential is a working credential; leftover test accounts are a classic way in." },
+        { text: "Disable or rotate the account immediately, then remove it from the source.", correct: true, feedback: "Right. Assume it's burned: kill the credential first, then remove it from the source." },
+        { text: "Delete the leaked comment from the website's page source.", feedback: "Necessary, but not first - the credential is already out, so removing the comment doesn't un-leak it." },
+        { text: "Nothing much, since it's only a disposable test account.", feedback: "A working credential is a working credential; leftover test accounts are a classic way in." },
         { text: "Change the website's design so the login looks different.", feedback: "Appearance is irrelevant - the exposed credential must be rotated and removed." },
       ],
     },
