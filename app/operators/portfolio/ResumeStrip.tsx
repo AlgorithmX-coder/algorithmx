@@ -1,13 +1,10 @@
-"use client";
-
-/* "Continue where you left off" (UAT): reads the per-device resume markers the
- * Engagement shell writes to localStorage (key `ops:resume:<moduleNo>`, mirrors
- * Engagement.resumeKeyFor) and surfaces any in-progress modules at the top of the
- * portfolio. Client-only because the resume state lives in the browser; renders
- * nothing when there's nothing to resume (or when storage is blocked). */
+/* "Continue where you left off" (UAT): the in-progress modules for the signed-in
+ * learner, surfaced at the top of the portfolio. The data is account-wide (saved
+ * server-side by the Engagement shell), fetched by the portfolio page and passed
+ * in, so it follows the learner across devices. Renders nothing when there's
+ * nothing in progress. Presentational only - no client state needed. */
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
 import { CURRICULUM } from "@/app/operators/range/curriculum";
 
 const BEAT_LABEL: Record<string, string> = {
@@ -15,7 +12,7 @@ const BEAT_LABEL: Record<string, string> = {
 };
 
 const C = {
-  ink: "#eef2fb", soft: "#c3cce0", mute: "#8e98b4", cyan: "#5fe6ff", indigo: "#8b7bff", indigo2: "#c2b8ff",
+  ink: "#eef2fb", cyan: "#5fe6ff", indigo: "#8b7bff", indigo2: "#c2b8ff",
 };
 const GLASS_SOFT = "rgba(20,23,33,0.82)";
 const BLUR = "blur(8px)";
@@ -23,24 +20,13 @@ const TSHADOW = "0 1px 12px rgba(6,8,14,0.9), 0 0 3px rgba(6,8,14,0.7)";
 const DISP = "var(--font-chakra),'Chakra Petch',system-ui,sans-serif";
 const MONO = "var(--font-plex-mono),ui-monospace,Menlo,monospace";
 
-type Item = { no: number; title: string; beat: string };
+export default function ResumeStrip({ items }: { items: { module: number; beat: string }[] }) {
+  const titleOf = new Map(CURRICULUM.map((m) => [m.no, m.title] as const));
+  const rows = items
+    .filter((it) => BEAT_LABEL[it.beat] && titleOf.has(it.module))
+    .map((it) => ({ no: it.module, title: titleOf.get(it.module)!, beat: BEAT_LABEL[it.beat] }));
 
-export default function ResumeStrip() {
-  const [items, setItems] = useState<Item[]>([]);
-  // Avoid a hydration mismatch: render nothing on the server and on the first
-  // client paint, then fill from localStorage after mount.
-  useEffect(() => {
-    try {
-      const found: Item[] = [];
-      for (const m of CURRICULUM) {
-        const b = localStorage.getItem(`ops:resume:${m.no}`);
-        if (b && BEAT_LABEL[b]) found.push({ no: m.no, title: m.title, beat: BEAT_LABEL[b] });
-      }
-      setItems(found);
-    } catch { /* storage blocked */ }
-  }, []);
-
-  if (items.length === 0) return null;
+  if (rows.length === 0) return null;
 
   return (
     <div style={{ marginBottom: 30 }}>
@@ -49,7 +35,7 @@ export default function ResumeStrip() {
         <span style={{ fontFamily: MONO, fontSize: 11.5, letterSpacing: ".14em", textTransform: "uppercase", color: C.ink, fontWeight: 700, textShadow: TSHADOW }}>Continue where you left off</span>
       </div>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))", gap: 10 }}>
-        {items.map((it) => (
+        {rows.map((it) => (
           <Link key={it.no} href={`/operators/play/${it.no}`} style={{ textDecoration: "none" }}>
             <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "13px 15px", borderRadius: 13, background: GLASS_SOFT, backdropFilter: BLUR, WebkitBackdropFilter: BLUR, border: `1px solid ${C.indigo}55`, borderLeft: `3px solid ${C.cyan}`, boxShadow: "0 6px 18px rgba(0,0,0,0.26)" }}>
               <div style={{ minWidth: 0, flex: 1 }}>

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { auth } from "@/app/lib/auth";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import { getPortfolio } from "@/app/lib/opsPortfolio.actions";
+import { getPortfolio, getOpsResumes } from "@/app/lib/opsPortfolio.actions";
 import { HIGHEST_BUILT_MODULE } from "@/app/operators/range/modules";
 import { CURRICULUM, PHASE_ORDER, PHASE_COLOR } from "@/app/operators/range/curriculum";
 import { OPS_RANKS } from "@/app/lib/opsRank";
@@ -52,7 +52,7 @@ export default async function OperatorsPortfolioPage() {
   const session = await auth();
   if (!session?.user?.id) redirect("/login?callbackUrl=/operators/portfolio");
 
-  const p = await getPortfolio();
+  const [p, resumes] = await Promise.all([getPortfolio(), getOpsResumes()]);
   const findings = p?.findings ?? [];
   const rank = p?.rank;
   const done = new Set(findings.map((f) => f.module));
@@ -73,8 +73,8 @@ export default async function OperatorsPortfolioPage() {
         {/* operator standing - the hero dashboard (stats stand out, not a plain row) */}
         <OperatorCard rank={rank} rep={p?.totalRep ?? 0} findingsCount={findings.length} cleared={done.size} />
 
-        {/* continue where you left off: in-progress modules from this device */}
-        <ResumeStrip />
+        {/* continue where you left off: in-progress modules (account-wide) */}
+        <ResumeStrip items={resumes} />
 
         {/* course map — the full posting, status per module */}
         <div style={{ marginBottom: 34 }}>

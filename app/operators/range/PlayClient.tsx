@@ -14,9 +14,20 @@ import CourseIntro from "./CourseIntro";
 import LiveEngagement from "./LiveEngagement";
 import { C, DISP, MONO, SANS } from "./Engagement";
 
-export default function PlayClient({ module: moduleNo }: { module: number }) {
+export default function PlayClient({
+  module: moduleNo,
+  initialBeat,
+  initialCallsign,
+}: {
+  module: number;
+  /** Account-wide resume point, hydrated by the server route. */
+  initialBeat?: string;
+  initialCallsign?: string;
+}) {
   const def = builtModule(moduleNo);
-  const [started, setStarted] = useState(moduleNo !== 1); // only module 1 gets orientation
+  // Module 1 opens on the course orientation, but not when the learner is
+  // resuming part-way through it.
+  const [started, setStarted] = useState(moduleNo !== 1 || !!initialBeat);
 
   if (!def) {
     return (
@@ -36,5 +47,5 @@ export default function PlayClient({ module: moduleNo }: { module: number }) {
   }
 
   if (!started) return <CourseIntro onBegin={() => setStarted(true)} />;
-  return <LiveEngagement mod={def} />;
+  return <LiveEngagement mod={def} initialBeat={initialBeat} initialCallsign={initialCallsign} />;
 }

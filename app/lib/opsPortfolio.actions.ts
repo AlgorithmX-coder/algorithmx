@@ -22,6 +22,10 @@ import type { OpsSeverity } from "@prisma/client";
 
 const PRODUCT_SLUG = "cyberstart";
 
+/** The beats a module can resume into. The two opening beats (intro/brief) and
+ *  the report beat aren't resumable, so reaching any of those clears the row. */
+const RESUMABLE_BEATS = new Set(["lesson", "authorize", "act", "drills", "challenge", "defend"]);
+
 /** The finding a module files, sent from the client at the report beat.
  *  `module` is the learner-facing unit (1-16); it maps to the shared
  *  Progress.week column at the DB boundary below. */
@@ -113,6 +117,9 @@ export async function fileEngagement(input: FileEngagementInput): Promise<FileEn
     },
   });
 
+  // The module is finished, so there's nothing left to resume.
+  await prisma.opsResume.deleteMany({ where: { childProfileId, week } });
+
   // 3. Real total reputation = sum of per-week xp for this child x product.
   const agg = await prisma.progress.aggregate({
     where: { childProfileId, product: { slug: PRODUCT_SLUG } },
@@ -184,4 +191,69 @@ export async function getPortfolio(): Promise<OpsPortfolio | null> {
       filedAt: r.createdAt,
     })),
   };
+}
+
+// ---------------------------------------------------------------------------
+// Save/resume (account-wide). The learner's current section (beat) per module,
+// stored server-side so a module reopens where they left off on any device.
+// ---------------------------------------------------------------------------
+
+/** Called by the live shell whenever the beat changes. A resumable beat is
+ *  upserted; reaching intro/brief/report (or starting over) clears the row. */
+export async function saveOpsResume(module: number, beat: string, callsign?: string): Promise<void> {
+  const session = await auth();
+  const userId = session?.user?.id;
+  if (!userId) return;
+  if (!Number.isInteger(module) || module < 1 || module > 20) return;
+
+  const childProfileId = await resolveActiveChildProfileId(userId);
+  if (!childProfileId) return;
+
+  if (!RESUMABLE_BEATS.has(beat)) {
+    await prisma.opsResume.deleteMany({ where: { childProfileId, week: module } });
+    return;
+  }
+
+  const cs = (callsign || "").trim().slice(0, 14) || null;
+  await prisma.opsResume.upsert({
+    where: { childProfileId_week: { childProfileId, week: module } },
+    create: { childProfileId, week: module, beat, callsign: cs },
+    update: { beat, ...(cs ? { callsign: cs } : {}) },
+  });
+}
+
+/** The saved resume point for one module (null if none / not resumable). */
+export async function getOpsResume(module: number): Promise<{ beat: string; callsign: string | null } | null> {
+  const session = await auth();
+  const userId = session?.user?.id;
+  if (!userId) return null;
+  if (!Number.isInteger(module) || module < 1 || module > 20) return null;
+
+  const childProfileId = await resolveActiveChildProfileId(userId);
+  if (!childProfileId) return null;
+
+  const row = await prisma.opsResume.findUnique({
+    where: { childProfileId_week: { childProfileId, week: module } },
+    select: { beat: true, callsign: true },
+  });
+  if (!row || !RESUMABLE_BEATS.has(row.beat)) return null;
+  return { beat: row.beat, callsign: row.callsign };
+}
+
+/** Every in-progress module for the signed-in learner, for the portfolio's
+ *  "Continue where you left off" strip. */
+export async function getOpsResumes(): Promise<{ module: number; beat: string }[]> {
+  const session = await auth();
+  const userId = session?.user?.id;
+  if (!userId) return [];
+
+  const childProfileId = await resolveActiveChildProfileId(userId);
+  if (!childProfileId) return [];
+
+  const rows = await prisma.opsResume.findMany({
+    where: { childProfileId },
+    select: { week: true, beat: true },
+    orderBy: { week: "asc" },
+  });
+  return rows.filter((r) => RESUMABLE_BEATS.has(r.beat)).map((r) => ({ module: r.week, beat: r.beat }));
 }
