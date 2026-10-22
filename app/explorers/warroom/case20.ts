@@ -11,6 +11,7 @@
  */
 
 import type { WarCase } from "./case16";
+import { ZERO_CLUES } from "../engine/zeroFile";
 
 export const case20War: WarCase = {
   id: "explorers-m20",
@@ -416,6 +417,45 @@ export const case20War: WarCase = {
     intro: "This is it, Agent. The last board, the whole case, one answer. Every signature you've ever faced is up here at once. Connect it all, trace it to the one hand behind it, name them, and then, hardest of all, choose how you finish it. No hints from me. You already know everything you need. Read the board.",
     introVoice: "/audio/wren/m20w-boss-intro.mp3",
     phases: [
+      {
+        // The Zero File deduction (UAT addition, Abdullah): before the board
+        // confirms anything, the player makes their OWN case from the 4
+        // clues collected across Cases 16-19 — who, then why — using the
+        // exact same clue text the Zero File panel shows them. The board's
+        // own reveal (phases below) still plays out narratively afterward;
+        // this is the "you called it first" beat the brief asked for.
+        name: "Build your case",
+        steps: [
+          { t: "note", text: "THE ZERO FILE · 4 entries collected across the block" },
+          { t: "note", text: `1 · ${ZERO_CLUES[0].text}` },
+          { t: "note", text: `2 · ${ZERO_CLUES[1].text}` },
+          { t: "note", text: `3 · ${ZERO_CLUES[2].text}` },
+          { t: "note", text: `4 · ${ZERO_CLUES[3].text}` },
+          {
+            t: "choose",
+            prompt: "Before the board confirms anything, make your own case. Who does the Zero File point to?",
+            options: [
+              {
+                label: "K-STATIC, a former ARC analyst who knows exactly how we work",
+                outcome: "good",
+                then: [
+                  { t: "note", text: "CASE LOGGED: K-STATIC." },
+                  {
+                    t: "choose",
+                    prompt: "Justify it. What's the strongest single reason?",
+                    options: [
+                      { label: "Only an insider would know ARC's own methods well enough to stay ahead of it", outcome: "good" },
+                      { label: "K-STATIC is simply the most skilled person we know", outcome: "bad", then: [{ t: "note", text: "Skill alone doesn't prove it. What's unique to an insider, not just a skilled outsider?" }] },
+                    ],
+                  },
+                ],
+              },
+              { label: "PACKRAT, the data broker who sold the first profiles", outcome: "bad", then: [{ t: "note", text: "PACKRAT sells to anyone with crypto. A buyer isn't the planner." }] },
+              { label: "It could be any one of the four actors, acting alone", outcome: "bad", then: [{ t: "note", text: "Re-read entry 4. One schedule, one planner, ties all four together." }] },
+            ],
+          },
+        ],
+      },
       {
         name: "Every signature at once",
         steps: [

@@ -24,6 +24,8 @@ import { CaseJournal } from "../engine/CaseJournal";
 import { ETHICS_LINE, ETHICS_VOICE } from "../engine/ethicsLine";
 import { CaseBoard } from "../engine/CaseBoard";
 import { CaseBoardFileExplorer } from "../engine/CaseBoardFileExplorer";
+import { ZeroFile } from "../engine/ZeroFilePanel";
+import { addZeroClue, loadZeroFile, ZERO_CLUES } from "../engine/zeroFile";
 import type { WarCase, WarStep, WarTest } from "./case16";
 
 const C = {
@@ -99,6 +101,10 @@ export default function WarRoomRuntime({ warCase, onExit, onNextCase }: { warCas
   const THEME = warCase.theme;
   const [journal, setJournal] = useState<JournalEntry[]>([]);
   useEffect(() => { setJournal(loadJournal(warCase.id)); }, [warCase.id]);
+  // Block-wide, not per-case: reload whenever this case's id changes too, so
+  // arriving at a later case shows every clue collected so far this block.
+  const [zeroClues, setZeroClues] = useState<ReturnType<typeof loadZeroFile>>([]);
+  useEffect(() => { setZeroClues(loadZeroFile()); }, [warCase.id]);
   // UAT skip: one click fast-forwards through whatever's left of the CURRENT
   // skill only (narration + any dock waiting on input), then clears itself —
   // same one-click-per-skill contract as Phone's "Skip this whole skill".
@@ -316,6 +322,7 @@ export default function WarRoomRuntime({ warCase, onExit, onNextCase }: { warCas
       ) : (
         <CaseBoard leads={warCase.skills} clearedCount={journal.length} accent={acc} caseTitle={warCase.title} actor={warCase.actor} />
       )}
+      <ZeroFile clues={zeroClues} total={ZERO_CLUES.length} />
       <button className="wr-btn" onClick={onExit} style={{ position: "fixed", top: 14, left: 14, zIndex: 20, fontFamily: MONO, fontSize: 11.5, fontWeight: 600, color: C.dim, background: "rgba(255,255,255,0.04)", border: `1px solid ${C.edge}`, borderRadius: 6, padding: "6px 12px", cursor: "pointer" }}>← Leave</button>
       <button className="wr-btn" onClick={() => { const v = !voiceOn; setVoiceOn(v); if (!v) stopWren(); }} aria-pressed={voiceOn} style={{ position: "fixed", top: 14, right: 14, zIndex: 20, fontFamily: MONO, fontSize: 11.5, fontWeight: 700, color: voiceOn ? C.wren : C.dim, background: "rgba(255,255,255,0.04)", border: `1px solid ${voiceOn ? "rgba(43,212,180,.5)" : C.edge}`, borderRadius: 6, padding: "6px 12px", cursor: "pointer" }}>{voiceOn ? "🔊 WREN on" : "🔇 WREN off"}</button>
       <button className="wr-btn" onClick={cycleVoiceRate} aria-label={`WREN's talking speed: ${voiceRate}×. Tap to change.`} style={{ position: "fixed", top: 54, right: 14, zIndex: 20, fontFamily: MONO, fontSize: 11, fontWeight: 700, color: voiceRate !== 1 ? C.wren : C.dim, background: "rgba(255,255,255,0.04)", border: `1px solid ${voiceRate !== 1 ? "rgba(43,212,180,.5)" : C.edge}`, borderRadius: 6, padding: "6px 12px", cursor: "pointer" }}>{voiceRate}×</button>
@@ -343,7 +350,7 @@ export default function WarRoomRuntime({ warCase, onExit, onNextCase }: { warCas
             <BootScreen title={warCase.title} caseNumber={warCase.caseNumber} open={warCase.open} acc={acc} onBoot={beginFresh} />
           )
         ) : phase === "test" ? (
-          <TestView test={warCase.test} voiceOn={voiceOn} acc={acc} onPass={() => { markCaseComplete(warCase.id); clearProgress(warCase.id); void saveExplorersProgress(parseInt(warCase.caseNumber.replace(/\D/g, ""), 10) || 0, { completed: true, xp: 100, screen: 99 }); setPhase("debrief"); }} />
+          <TestView test={warCase.test} voiceOn={voiceOn} acc={acc} onPass={() => { markCaseComplete(warCase.id); clearProgress(warCase.id); addZeroClue(warCase.id); setZeroClues(loadZeroFile()); void saveExplorersProgress(parseInt(warCase.caseNumber.replace(/\D/g, ""), 10) || 0, { completed: true, xp: 100, screen: 99 }); setPhase("debrief"); }} />
         ) : phase === "debrief" ? (
           <Debrief data={warCase.debrief} acc={acc} caseId={warCase.id} xp={100} reduced={!!reduce} onExit={onExit} onNext={onNextCase} />
         ) : (
