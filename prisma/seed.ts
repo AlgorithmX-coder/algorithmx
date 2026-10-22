@@ -63,6 +63,10 @@ const cyberOpsWeeks = [
   { week: 14, title: "Disclosure & Reporting",     description: "The craft of the writeup: severity scoring and how real researchers disclose. Portfolio polish." },
   { week: 15, title: "Full Engagement, Part 1",    description: "A complete multi-stage engagement against a fake client: recon through exploit." },
   { week: 16, title: "Full Engagement, Part 2",    description: "Write the real report, present your findings, and receive a field-ready rating. Season close." },
+  { week: 17, title: "Prompt Injection",            description: "The AI cousin of injection: make a scripted assistant ignore its rules, leak its system prompt, and obey poisoned content." },
+  { week: 18, title: "Cloud & API Security",        description: "BOLA, public buckets and leaked keys against a sandboxed API and object store." },
+  { week: 19, title: "Agentic AI Under Attack",     description: "Hijack an AI agent that has tools: indirect injection, the confused deputy, and the lethal trifecta." },
+  { week: 20, title: "Deepfakes & the AI Arms Race", description: "Spot and defeat synthetic voice and video fraud: verify out-of-band, never with your eyes alone." },
 ];
 
 const products = [
