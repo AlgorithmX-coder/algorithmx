@@ -10,7 +10,7 @@
  * FOUR-stage capture with a hint ladder, FOUR drills, and a chained capstone. */
 
 import { useEffect, useState } from "react";
-import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary } from "./Engagement";
+import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary, shuffle } from "./Engagement";
 
 /* ───────────────────────── glossary ───────────────────────── */
 
@@ -51,24 +51,35 @@ function Hints({ hints, revealLabel, onReveal }: { hints: string[]; revealLabel?
 type Row = { cells: string[]; bad: boolean; near?: boolean; note: string };
 function PickSurface({ header, rows, hint, onSolved }: { header: string; rows: Row[]; hint: string; onSolved: () => void }) {
   const [picked, setPicked] = useState<number | null>(null);
-  const [msg, setMsg] = useState<string | null>(null);
+  const [verdict, setVerdict] = useState<{ ok: boolean; note: string } | null>(null);
   const [solved, setSolved] = useState(false);
-  function pick(i: number) {
-    const r = rows[i]; setPicked(i);
-    if (r.bad) { setMsg(`✓ ${r.note}`); if (!solved) { setSolved(true); onSolved(); } }
-    else setMsg(r.note);
+  // Explore-then-select: reading a line never wins; you select the one you
+  // accuse, then confirm. The verdict (why it is or isn't the answer) only
+  // shows AFTER you commit, so no line gives the answer away on tap.
+  function confirm() {
+    if (picked === null || solved) return;
+    const r = rows[picked];
+    setVerdict({ ok: r.bad, note: r.note });
+    if (r.bad && !solved) { setSolved(true); onSolved(); }
   }
   return (
     <div style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: 14, padding: 16 }}>
-      <div style={{ fontFamily: MONO, fontSize: 11, letterSpacing: ".1em", color: C.indigo, fontWeight: 700, marginBottom: 10 }}>⌦ {header}</div>
+      <div style={{ fontFamily: MONO, fontSize: 11, letterSpacing: ".1em", color: C.indigo, fontWeight: 700, marginBottom: 4 }}>⌦ {header}</div>
+      <div style={{ fontFamily: MONO, fontSize: 11, color: C.mute, marginBottom: 10 }}>// read every line, select the suspicious one, then confirm your accusation</div>
       <div style={{ display: "grid", gap: 3 }}>
         {rows.map((r, i) => (
-          <button key={i} onClick={() => pick(i)} className="co-opt" style={{ textAlign: "left", display: "flex", gap: 10, alignItems: "center", flexWrap: "wrap", padding: "7px 10px", borderRadius: 7, border: `1px solid ${picked === i ? (r.bad ? C.green : C.amber) : "transparent"}`, background: picked === i ? "rgba(139,123,255,0.06)" : C.carbon, cursor: "pointer" }}>
+          <button key={i} onClick={() => { if (!solved) { setPicked(i); setVerdict(null); } }} disabled={solved} className="co-opt" style={{ textAlign: "left", display: "flex", gap: 10, alignItems: "center", flexWrap: "wrap", padding: "7px 10px", borderRadius: 7, border: `1px solid ${solved && r.bad ? C.green : picked === i ? C.indigo : "transparent"}`, background: picked === i ? "rgba(139,123,255,0.08)" : C.carbon, cursor: solved ? "default" : "pointer" }}>
             {r.cells.map((c, j) => <span key={j} style={{ fontFamily: MONO, fontSize: 11.5, color: j === 0 ? C.mute : j === r.cells.length - 1 ? (c.includes("40") || c === "200" ? C.green : C.soft) : C.soft, minWidth: j === 0 ? 64 : "auto", flex: j === 1 ? 1 : "none" }}>{c}</span>)}
           </button>
         ))}
       </div>
-      {msg && <div style={{ fontFamily: MONO, fontSize: 12.5, color: solved ? C.green : C.soft, marginTop: 10, lineHeight: 1.6 }}>{msg}</div>}
+      {!solved && (
+        <div style={{ display: "flex", gap: 14, alignItems: "center", flexWrap: "wrap", marginTop: 12 }}>
+          <Btn tone="g" onClick={confirm} disabled={picked === null}>This is the one →</Btn>
+          {verdict && !verdict.ok && <span style={{ fontFamily: MONO, fontSize: 12, color: C.amber }}>Not that one. Read it again, then pick another.</span>}
+        </div>
+      )}
+      {verdict && <div style={{ fontFamily: MONO, fontSize: 12.5, color: verdict.ok ? C.green : C.soft, marginTop: 10, lineHeight: 1.6, padding: "8px 11px", borderRadius: 8, background: "rgba(0,0,0,0.25)", border: `1px solid ${C.lineSoft}` }}>{verdict.ok ? "✓ " : ""}{verdict.note}</div>}
       <Hints hints={[hint]} />
     </div>
   );
@@ -192,10 +203,10 @@ const ACT_STAGES: Stage[] = [
     hint: "Attacker lifecycle: find (recon) -> break in (brute then success) -> act (admin) -> impact (exfiltrate). Order by the timestamps." },
   { kind: "decision", title: "Scope", goal: "Stage 4 - Scope the incident. From everything you found, what's the correct conclusion for the report?",
     decision: { prompt: "What does the evidence actually show?", options: [
-      { text: "An external IP brute-forced one account, logged in, reached the admin panel, exported data, and left an implant for persistence.", correct: true, feedback: "Right - that's what the log, the process list and the timeline together prove. Account takeover, data breach, and persistence." },
-      { text: "A staff member accidentally exported the data during the day.", feedback: "No - the activity is from an unknown night-time IP after a brute force, not the daytime staff IP." },
-      { text: "It was malware that spread on its own, with no login involved.", feedback: "The log clearly shows a brute-forced login (401s then 200) as the entry - not autonomous malware." },
-      { text: "Nothing happened; the 200s are all normal successful requests.", feedback: "A 200 after a 401 storm from a strange IP at 2am, followed by a bulk export, is a breach - not normal traffic." },
+      { text: "An external IP brute-forced an account, logged in, reached the admin panel, exported data, and left an implant.", correct: true, feedback: "Right. The log, the process list and the timeline together prove account takeover, a data breach, and persistence." },
+      { text: "A staff member exported the data by accident during their normal daytime work on the portal.", feedback: "No. The activity is from an unknown night-time IP after a brute force, not the daytime staff address." },
+      { text: "Self-spreading malware ran on the server on its own, with no login or human attacker involved.", feedback: "The log shows a brute-forced login (401s then a 200) as the way in, not self-spreading malware." },
+      { text: "A single failed login attempt that the system correctly blocked, so nothing was actually breached.", feedback: "The 200 after the 401 storm means a login succeeded, and a bulk export followed. It was not blocked." },
     ] } },
 ];
 
@@ -256,11 +267,12 @@ function AnomalyLab({ onDone }: { onDone: () => void }) {
 
 function CatchSoonestLab({ onDone }: { onDone: () => void }) {
   const [picked, setPicked] = useState<number | null>(null);
-  const opts = [
-    { code: "Read the logs manually once a year", ok: false, why: "Far too slow - the data was exported minutes after the break-in; a yearly review catches nothing in time." },
-    { code: "Delete old logs to save disk space", ok: false, why: "That destroys the very evidence forensics depends on - the opposite of what you want." },
-    { code: "Alert automatically on a burst of failed logins from one IP at an odd hour", ok: true, why: "That indicator fires BEFORE the successful login, giving you time to respond. Real-time detection on IoCs is the win." },
-  ];
+  const [opts] = useState(() => shuffle([
+    { code: "Auto-alert on a burst of failed logins from one IP at an odd hour", ok: true, why: "Right. That indicator fires before the login succeeds, so you can respond before any data leaves the building." },
+    { code: "Review the server logs by hand in the monthly security meeting", ok: false, why: "Far too slow. The data was exported minutes after the break-in, long before a monthly review would spot it." },
+    { code: "Keep only the last day of logs to save on storage costs", ok: false, why: "Short retention saves money but destroys the trail. You cannot investigate what you have already deleted." },
+    { code: "Trust the firewall to block anything dangerous before it reaches the app", ok: false, why: "A firewall cannot tell a valid-looking login from a brute force that guessed right. You need detection on the behaviour." },
+  ]));
   return (
     <div style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: 12, padding: "15px 16px" }}>
       <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: ".1em", color: C.indigo, fontWeight: 700, marginBottom: 10 }}>▶ APPLY THE FIX · what catches this attack soonest?</div>
@@ -290,7 +302,7 @@ const DRILLS: DrillCfg[] = [
   { client: "Flux Fitness", brief: "Reconstruct Flux's intrusion timeline. Trickier.", stages: [{ kind: "order", title: "Timeline", goal: "Order the events of the attack.", items: [ { label: "Phishing email opened", pos: 0 }, { label: "Credential stolen", pos: 1 }, { label: "Attacker logs in", pos: 2 }, { label: "Data exfiltrated", pos: 3 } ], hint: "Phish -> steal -> log in -> exfiltrate." }], success: "Rebuilt the full timeline from the artifacts. Finding logged." },
   { client: "Oakline Store", brief: "The full field job. Find the breach, then scope it. Chain it yourself.", stages: [
     { kind: "pick", title: "Log", goal: "Step 1: find the compromise.", header: "ACCESS LOG", rows: [ { cells: ["12:00", "10.0.0.3 GET /x", "200"], bad: false, note: "Normal." }, { cells: ["02:40", "77.3.3.3 POST /login", "200 (after 5x 401)"], bad: true, note: "The brute-force success." } ], hint: "The success after the failures." },
-    { kind: "decision", title: "Scope", goal: "Step 2: the correct conclusion?", decision: { prompt: "What does Oakline's evidence show?", options: [ { text: "An external brute-force takeover from an unknown night-time IP.", correct: true, feedback: "Right - matches the log." }, { text: "Normal staff activity.", feedback: "No - unknown IP, odd hour, after failures." } ] } },
+    { kind: "decision", title: "Scope", goal: "Step 2: the correct conclusion?", decision: { prompt: "What does Oakline's evidence show?", options: [ { text: "An external brute-force takeover from an unknown night-time IP, after a run of failures.", correct: true, feedback: "Right. Unknown IP, odd hour, and a 200 straight after the 401s. That matches the log exactly." }, { text: "Routine staff activity during normal working hours on the portal.", feedback: "No. This is a night-time unknown IP after failed attempts, not daytime staff." }, { text: "A one-off failed login that the system correctly blocked, with no breach at all.", feedback: "The 200 after the 401s means it succeeded. A blocked attempt would have stayed at 401." }, { text: "A scheduled backup job that logged itself in automatically overnight.", feedback: "A backup runs from a known internal host on a schedule, not a strange external IP guessing passwords." } ] } },
   ], success: "Found the breach and scoped it correctly - the whole forensic chain. Finding logged." },
 ];
 
@@ -445,10 +457,10 @@ export const MODULE11: ModuleDef = {
     check: {
       q: "In the log, which single entry marks the moment of compromise?",
       options: [
-        { text: "The successful login (200) from the attacker's IP right after the run of failures.", correct: true, feedback: "Right - that 200 after the 401 storm is where the brute force actually got in." },
-        { text: "The first failed login (401).", feedback: "That's the attack starting - an attempt, not a success." },
-        { text: "The data export request.", feedback: "That's the impact - what they did after getting in. Compromise was the successful login just before." },
-        { text: "The normal daytime request from the staff IP.", feedback: "That's legitimate traffic - not part of the attack at all." },
+        { text: "The 200 OK login from the night-time IP, straight after its run of 401 failures.", correct: true, feedback: "Right. The 200 after the 401 storm is the brute force finally landing. That success is the compromise." },
+        { text: "The first 401 failure from that night-time IP, where the password guessing begins.", feedback: "That is the attack starting, not succeeding. A failed attempt is not the moment they got in." },
+        { text: "The GET /api/export request that pulled the data out shortly after the login.", feedback: "That is the impact, what they did after getting in. The compromise was the successful login just before." },
+        { text: "The daytime 200 request from the staff IP doing normal portal work.", feedback: "That is legitimate traffic from a staff address during the day, not part of the attack at all." },
       ],
     },
   },
@@ -481,10 +493,10 @@ export const MODULE11: ModuleDef = {
     check: {
       q: "What would have caught this attack soonest?",
       options: [
-        { text: "Alerting automatically on a burst of failed logins from one IP at an unusual hour.", correct: true, feedback: "Right - that indicator fires before the successful login, giving you time to respond." },
-        { text: "Reading the logs manually once a year.", feedback: "Far too slow - the data would be exported long before anyone looked." },
-        { text: "Deleting old logs to save space.", feedback: "That destroys the very evidence forensics depends on." },
-        { text: "Turning logging off to improve performance.", feedback: "Then there's no trail at all - you'd never know the breach happened." },
+        { text: "Auto-alerting on a burst of failed logins from one IP at an unusual hour.", correct: true, feedback: "Right. That indicator fires before the login succeeds, giving you time to respond before data leaves." },
+        { text: "Reviewing the logs by hand in the monthly security review meeting.", feedback: "Far too slow. The data would be long gone before a monthly review ever looked at the logs." },
+        { text: "Keeping only a day of logs so the storage bill stays low.", feedback: "Short retention saves money but deletes your evidence. You cannot catch what you did not keep." },
+        { text: "Relying on the firewall to stop anything genuinely dangerous.", feedback: "A firewall waves through a valid-looking login. A brute force that guesses right needs behaviour detection." },
       ],
     },
   },

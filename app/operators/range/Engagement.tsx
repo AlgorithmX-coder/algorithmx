@@ -201,6 +201,14 @@ export function GlossaryTerm({ term, definition, example }: { term: string; defi
 
 function escapeRegExp(s: string): string { return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); }
 
+/** Fisher-Yates shuffle (returns a new array). Shared so every option list can
+ *  randomise its order and the correct answer is never pinned to a fixed slot. */
+export function shuffle<T>(a: T[]): T[] {
+  const r = [...a];
+  for (let i = r.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [r[i], r[j]] = [r[j], r[i]]; }
+  return r;
+}
+
 /** Wrap the first unseen occurrence of each glossary term in `text`. `seen`
  *  is shared across a block so a term lights up once, not on every mention. */
 export function withGlossary(text: string, glossary: GlossaryEntry[] | undefined, seen: Set<string>, keyPrefix: string): ReactNode {
