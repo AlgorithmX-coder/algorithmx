@@ -352,11 +352,25 @@ export default function Engagement({
     onReport?.(callsign);
     setPhase("report");
   }
+  function skipBeat() {
+    // Jump to the next section. Deliberately does NOT call onReport, so a skipped
+    // run never files a finding - skipping is for moving fast, not completing.
+    if (idx >= 0 && idx < BEATS.length - 1) setPhase(BEATS[idx + 1].id);
+  }
 
   return (
     <div style={{ minHeight: "100vh", background: "transparent", color: C.ink, fontFamily: SANS, display: "grid", placeItems: "start center", padding: "44px 20px 100px", ["--world" as string]: world.accent, ["--world-soft" as string]: world.soft }}>
       <ModuleBackdrop theme={mod.moduleNo} />
       <style>{styles}</style>
+      {/* tester fast-forward: on the live module platform during the testing
+          phase, so a tester can jump section to section. (Gate or remove before
+          public launch; skipping never files a finding, so it can't fake a pass.) */}
+      {!!onReport && idx >= 0 && idx < BEATS.length - 1 && (
+        <button onClick={skipBeat} title="Tester tool: jump to the next section without completing this one" style={{ position: "fixed", left: 14, bottom: 14, zIndex: 70, display: "flex", alignItems: "center", gap: 8, padding: "9px 14px", borderRadius: 10, border: `1px dashed ${C.amber}`, background: "rgba(13,15,22,0.94)", color: C.amber, fontFamily: MONO, fontSize: 12, fontWeight: 700, letterSpacing: ".06em", cursor: "pointer", boxShadow: "0 6px 20px rgba(0,0,0,0.4)" }}>
+          <span aria-hidden>skip ▸</span>
+          <span style={{ fontSize: 10, color: C.mute, fontWeight: 600, letterSpacing: ".04em" }}>to {BEATS[idx + 1].label} · test</span>
+        </button>
+      )}
       {/* cheat sheet: a side tab, open any time, into a full-screen beginner-friendly reference */}
       {mod.cheatsheet && (
         <button onClick={() => setCheatOpen(true)} className="co-btn" style={{ position: "fixed", right: 0, top: "42%", transform: "translateY(-50%)", zIndex: 60, display: "flex", alignItems: "center", gap: 8, writingMode: "vertical-rl", padding: "16px 9px", borderRadius: "10px 0 0 10px", border: `1px solid ${world.accent}`, borderRight: "none", background: "rgba(13,15,22,0.92)", color: world.accent, fontFamily: MONO, fontSize: 11.5, fontWeight: 700, letterSpacing: ".12em", textTransform: "uppercase", cursor: "pointer", boxShadow: `0 0 22px -6px ${world.accent}` }}>
