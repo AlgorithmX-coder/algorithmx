@@ -7,7 +7,7 @@
  * check, a FOUR-stage capture with a hint ladder, FOUR drills, and a capstone. */
 
 import { useEffect, useState } from "react";
-import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary } from "./Engagement";
+import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary, shuffle } from "./Engagement";
 
 /* ───────────────────────── glossary ───────────────────────── */
 
@@ -147,17 +147,17 @@ const ACT_STAGES: Stage[] = [
     hint: "Lookalike sender, urgency, generic greeting, and a mismatched link are all red flags. Plain text on its own is not." },
   { kind: "decision", title: "Verify", goal: "Stage 3 - The right move. You get the CEO gift-card request. What do you actually do?",
     decision: { prompt: "A message from the 'CEO' demands an urgent gift-card payment, in secret. Your move?", options: [
-      { text: "Verify out-of-band: call the CEO on their known number before doing anything - and don't act on the secrecy demand.", correct: true, feedback: "Right. Out-of-band verification on a trusted channel defeats the con no matter how convincing it is." },
-      { text: "Reply to the email to ask if it's really them.", feedback: "The attacker controls that thread - they'll just say yes. Verify through a separate, known channel." },
+      { text: "Verify out-of-band: call the CEO on their known number before acting.", correct: true, feedback: "Right. Out-of-band verification on a trusted channel defeats the con no matter how convincing it is, and don't act on the secrecy demand." },
+      { text: "Reply to the email to ask whether it's really them first.", feedback: "The attacker controls that thread - they'll just say yes. Verify through a separate, known channel." },
       { text: "Buy the gift cards quickly to avoid upsetting the CEO.", feedback: "That's exactly what the con relies on. Authority and urgency are the manipulation, not a reason to comply." },
-      { text: "Forward it to colleagues to ask what they think.", feedback: "Wastes time and may spread it. Go straight to out-of-band verification, and report it." },
+      { text: "Forward it to a few colleagues to ask what they think.", feedback: "Wastes time and may spread it. Go straight to out-of-band verification, and report it." },
     ] } },
   { kind: "decision", title: "The tricky one", goal: "Stage 4 - The hard call. Not every unusual message is a con, and not every polished one is safe. Judge this one.",
     decision: { prompt: "An email from a real supplier's correct address says their bank details have changed; pay the next invoice to a new account. It's well written and expected. Do you pay?", options: [
-      { text: "No - verify the new bank details out-of-band on a known supplier number first; changed payment details are a classic BEC even from a real address.", correct: true, feedback: "Right. A real address can be compromised, and a bank-detail change is the single highest-risk request. Always verify it out-of-band." },
+      { text: "No - verify the new bank details out-of-band on a known supplier number first.", correct: true, feedback: "Right. A real address can be compromised, and a bank-detail change is the single highest-risk request (a classic BEC). Always verify it out-of-band." },
       { text: "Yes - it's from their real address and the invoice was expected, so it's fine.", feedback: "A real address can be hijacked (business email compromise). The bank-detail change is exactly what you must verify independently." },
-      { text: "Yes, but only if the email looks professional and has no typos.", feedback: "Polish is not proof - good attackers write well. Verify the detail change, not the formatting." },
-      { text: "No - block the supplier and never deal with them again.", feedback: "Over-reaction. You don't cut off a real supplier; you verify the change through a known channel and proceed if it's genuine." },
+      { text: "Yes, but only if the email looks professional and has no obvious typos.", feedback: "Polish is not proof - good attackers write well. Verify the detail change, not the formatting." },
+      { text: "No - block this supplier for good and never deal with them again.", feedback: "Over-reaction. You don't cut off a real supplier; you verify the change through a known channel and proceed if it's genuine." },
     ] } },
 ];
 
@@ -215,11 +215,12 @@ function SpotLab({ onDone }: { onDone: () => void }) {
 
 function BestDefenceLab({ onDone }: { onDone: () => void }) {
   const [picked, setPicked] = useState<number | null>(null);
-  const opts = [
+  const [opts] = useState(() => shuffle([
     { code: "Reply to the email asking 'is this really you?'", ok: false, why: "The attacker controls that thread - they'll just confirm. Verification has to happen on a separate, known channel." },
     { code: "Tell staff to be more careful and hope for the best", ok: false, why: "Vague fear doesn't work. You need concrete controls and a safe process, not just 'be careful'." },
-    { code: "Require out-of-band verification for any money/credential request, plus DMARC, a report-phishing button, and blame-free training", ok: true, why: "Layered: process control for the con that lands, email authentication to block spoofing, reporting to catch the rest, and training to build the instinct. The real defence." },
-  ];
+    { code: "Require out-of-band verification for money and credential requests", ok: true, why: "Layered: a process control for the con that lands, plus DMARC to block spoofing, a report-phishing button to catch the rest, and blame-free training to build the instinct. The real defence." },
+    { code: "Install a spam filter and trust it to block every phishing email", ok: false, why: "Filters catch a lot, but targeted spear-phishing and BEC from real, compromised accounts sail straight through. You still need verification." },
+  ]));
   return (
     <div style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: 12, padding: "15px 16px" }}>
       <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: ".1em", color: C.indigo, fontWeight: 700, marginBottom: 10 }}>▶ APPLY THE FIX · how do you defend people against this?</div>
@@ -246,10 +247,10 @@ type DrillCfg = { client: string; brief: string; stages: Stage[]; success: strin
 const DRILLS: DrillCfg[] = [
   { client: "Brightpost Media", brief: "Triage Brightpost's forwarded messages. No walkthrough.", stages: [{ kind: "classify", title: "Triage", goal: "Classify each message.", intro: "phish or legit?", optA: PHISH, optB: LEGIT, items: [ { label: "'Google' <no-reply@g00gle-security.com>: sign in to secure your account", a: true, note: "g00gle lookalike domain + credential bait = phish." }, { label: "A colleague you know: 'lunch at 1?'", a: false, note: "Known person, harmless request. Legit." } ], hint: "The lookalike-domain security mail is the phish." }], success: "Spotted the phish among the noise. Finding logged." },
   { client: "Tideway Council", brief: "Name the red flags in one email.", stages: [{ kind: "classify", title: "Red flags", goal: "Mark each element a red flag or normal.", intro: "which parts are tells?", optA: FLAG, optB: FINE, items: [ { label: "Sender uses a free webmail for an official notice", a: true, note: "Official bodies don't use free webmail - a tell." }, { label: "'Respond in 30 minutes or face a fine'", a: true, note: "Urgency + threat - a tell." }, { label: "Addressed to you by your correct name", a: false, note: "A correct name alone isn't a red flag (and spear-phishing can get it right)." } ], hint: "Free webmail for an official notice and a 30-minute threat are the tells." }], success: "Named the tells correctly. Finding logged." },
-  { client: "Flux Fitness", brief: "A phone call this time. Make the call (so to speak). Trickier.", stages: [{ kind: "decision", title: "Vishing", goal: "Handle the suspicious phone call.", decision: { prompt: "Someone phones claiming to be IT and asks you to read out your login code to 'fix your account'. Your move?", options: [ { text: "Refuse, hang up, and call IT back on the official number to verify.", correct: true, feedback: "Right - never read out a code; verify out-of-band on a known number." }, { text: "Read it out - they said they're from IT.", feedback: "That's the con. Real IT never needs your code, and a claim of identity isn't proof." } ] } }], success: "Defeated a vishing call with out-of-band verification. Finding logged." },
+  { client: "Flux Fitness", brief: "A phone call this time. Make the call (so to speak). Trickier.", stages: [{ kind: "decision", title: "Vishing", goal: "Handle the suspicious phone call.", decision: { prompt: "Someone phones claiming to be IT and asks you to read out your login code to 'fix your account'. Your move?", options: [ { text: "Refuse, hang up, and call IT back on the official number.", correct: true, feedback: "Right - never read out a code; verify out-of-band on a known number." }, { text: "Read the code out to them - they said they're from IT.", feedback: "That's the con. Real IT never needs your code, and a claim of identity isn't proof." }, { text: "Ask them a security question to prove they really are IT.", feedback: "The caller can bluff or look up the answer. A claim plus a quiz isn't verification - call back on a known number." }, { text: "Read it out only after they confirm your name and desk.", feedback: "Knowing your details is easy to research and still isn't proof. Never read out a code; verify out-of-band." } ] } }], success: "Defeated a vishing call with out-of-band verification. Finding logged." },
   { client: "Oakline Store", brief: "The full field job. Triage, then make the verify call. Chain it yourself.", stages: [
     { kind: "classify", title: "Triage", goal: "Step 1: classify the messages.", intro: "phish or legit?", optA: PHISH, optB: LEGIT, items: [ { label: "'Finance' <fin@0akline.com>: update your payroll bank details here", a: true, note: "0akline lookalike + bank-detail change via link = phish." }, { label: "A newsletter you subscribed to", a: false, note: "Expected, benign. Legit." } ], hint: "The lookalike-domain payroll link is the phish." },
-    { kind: "decision", title: "Verify", goal: "Step 2: what do you do about a bank-detail change request?", decision: { prompt: "A message asks to change payroll bank details. Your move?", options: [ { text: "Verify out-of-band with the person on a known number before changing anything.", correct: true, feedback: "Right - bank-detail changes are the highest-risk request; always verify independently." }, { text: "Make the change - it looked official.", feedback: "Looking official is not verification. Confirm out-of-band first." } ] } },
+    { kind: "decision", title: "Verify", goal: "Step 2: what do you do about a bank-detail change request?", decision: { prompt: "A message asks to change payroll bank details. Your move?", options: [ { text: "Verify out-of-band with the person on a known number first.", correct: true, feedback: "Right - bank-detail changes are the highest-risk request; always verify independently." }, { text: "Make the change now - the request looked official enough.", feedback: "Looking official is not verification. Confirm out-of-band first." }, { text: "Reply to the message to confirm the new details are right.", feedback: "The attacker may control that thread. Verify on a separate, known channel." }, { text: "Make the change but email finance a heads-up afterwards.", feedback: "The money is already redirected by then. Verify the change before you action it, not after." } ] } },
   ], success: "Triaged and verified correctly - the whole defensive chain. Finding logged." },
 ];
 
@@ -308,9 +309,10 @@ const CAP_STAGES: Stage[] = [
     { label: "References a real upcoming policy update", a: false, note: "A real detail can be used by spear-phishers; on its own it isn't a red flag - but it doesn't make the rest safe." },
   ], hint: "The lookalike domain and the sign-in link are the tells." },
   { kind: "decision", title: "Verify", goal: "Finish it: HR 'needs' you to confirm your login on that link. Your move?", decision: { prompt: "The HR-lookalike email wants you to sign in on its link to confirm a contract. Do you?", options: [
-    { text: "No - don't use the link; verify with HR out-of-band and report the email.", correct: true, feedback: "Right - never authenticate via a link in an unsolicited message; verify through a known channel and report it." },
-    { text: "Yes - sign in, since it's about your own contract.", feedback: "That's the trap - the link harvests your credentials. Verify out-of-band and go to the real portal yourself." },
-    { text: "Reply asking HR to confirm it's genuine.", feedback: "The attacker may control that thread. Verify on a separate, known channel." },
+    { text: "No - don't use the link; verify with HR out-of-band and report it.", correct: true, feedback: "Right - never authenticate via a link in an unsolicited message; verify through a known channel and report it." },
+    { text: "Yes - sign in, since it's about your own employment contract.", feedback: "That's the trap - the link harvests your credentials. Verify out-of-band and go to the real portal yourself." },
+    { text: "Reply to the email asking HR to confirm that it's genuine.", feedback: "The attacker may control that thread. Verify on a separate, known channel." },
+    { text: "Open the link but only type your password if it looks like the real site.", feedback: "A lookalike login page is trivial to clone; 'looks real' is exactly the bait. Never log in via a link you were sent." },
   ] } },
 ];
 
@@ -417,8 +419,8 @@ export const MODULE13: ModuleDef = {
       options: [
         { text: "Urgency, a lookalike or personal sender address, and a link requesting your password.", correct: true, feedback: "Right - that stack of tells is the classic credential phish." },
         { text: "A plain subject line and a familiar sender on the correct domain.", feedback: "That describes ordinary legitimate mail, not a phish." },
-        { text: "An email that contains no links at all.", feedback: "Links aren't required for mail to be legitimate or malicious - judge by the tells, not link-presence alone." },
-        { text: "A long message with several paragraphs.", feedback: "Length says nothing about intent; the tells (sender, urgency, request) are what matter." },
+        { text: "An email that happens to contain no links or attachments at all.", feedback: "Links aren't required for mail to be legitimate or malicious - judge by the tells, not link-presence alone." },
+        { text: "A long, detailed message written across several careful paragraphs.", feedback: "Length says nothing about intent; the tells (sender, urgency, request) are what matter." },
       ],
     },
   },
@@ -452,9 +454,9 @@ export const MODULE13: ModuleDef = {
       q: "What best defends against a convincing CEO-fraud payment request?",
       options: [
         { text: "Verifying any money or credential request out-of-band on a known number before acting.", correct: true, feedback: "Right - out-of-band verification defeats the con no matter how convincing the message." },
-        { text: "A stronger spam filter.", feedback: "Helps with bulk phishing, but a targeted, well-written request can slip through. You need a process control." },
+        { text: "Rolling out a stronger, better-tuned spam filter across the business.", feedback: "Helps with bulk phishing, but a targeted, well-written request can slip through. You need a process control." },
         { text: "Replying to the email to ask if it's really them.", feedback: "The attacker controls that thread - they'll just say yes. Verify through a separate, known channel." },
-        { text: "Telling staff to simply be more careful.", feedback: "Vague caution doesn't scale; a concrete out-of-band rule does." },
+        { text: "Telling staff to simply be more careful with unusual requests.", feedback: "Vague caution doesn't scale; a concrete out-of-band rule does." },
       ],
     },
   },
