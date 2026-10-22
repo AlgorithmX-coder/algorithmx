@@ -38,10 +38,12 @@ import type { BlockIntroData } from "./phone/blockIntroData";
 import { useReducedMotion } from "./engine/primitives";
 import { MONO } from "./engine/tokens";
 import type { AwardEvent, MissionManifest } from "./engine/types";
-import { checkpointStorageKey, xpForEvent } from "./engine/types";
+import { checkpointStorageKey, xpForEvent, XP_RULES } from "./engine/types";
 import { getExplorersRank, type ExplorersRankInfo } from "./engine/rank";
 import { getStreak, recordDailyActivity } from "./engine/streak";
 import { RankUpMoment } from "./engine/RankUpMoment";
+import { ClearanceUpMoment } from "./engine/ClearanceUpMoment";
+import { blockBonusXP, hasBlockBonus, awardBlockBonus } from "./engine/blockBonus";
 import { VillainGallery } from "./VillainGallery";
 import { loadExplorersProgress } from "@/app/lib/explorersProgress.actions";
 import { CaseGlyph } from "./CaseGlyphs";
@@ -234,6 +236,12 @@ export default function ExplorersPage() {
   const [totalXp, setTotalXp] = useState(0);
   const [streak, setStreak] = useState(0);
   const [rankUp, setRankUp] = useState<{ from: ExplorersRankInfo; to: ExplorersRankInfo } | null>(null);
+  // Blocks whose clearance-upgrade moment has already fired — read from
+  // localStorage in an effect (never in the initializer: this component's
+  // first render can run server-side, where localStorage doesn't exist) so
+  // a reload never replays it.
+  const [clearanceSeen, setClearanceSeen] = useState<Set<number>>(() => new Set());
+  useEffect(() => { setClearanceSeen(new Set([3, 4].filter((b) => hasBlockBonus(b)))); }, []);
   const [showWatchlist, setShowWatchlist] = useState(false);
   // Which case (if any) the dev deep-link jumped straight to the boss on. Scoped
   // to that one case so Next-case navigation always starts the next mission fresh.
@@ -279,6 +287,7 @@ export default function ExplorersPage() {
       } catch {}
     }
     setStatus(s);
+    xp += blockBonusXP();
     setTotalXp(xp);
     setStreak(getStreak().count);
     // Real new progress since the last visit (not just reopening the board)
@@ -365,7 +374,27 @@ export default function ExplorersPage() {
     const hasNext = activeIdx >= 0 && activeIdx < CASES.length - 1;
     // The block-intro (ATLAS) slide plays before the block's opening case.
     const pageIntro = BLOCK_INTROS[active.block];
-    if (pageIntro && showBrief && firstIdOfBlock(active.block) === active.id) {
+    const isBlockOpen = !!pageIntro && showBrief && firstIdOfBlock(active.block) === active.id;
+    // Blocks 3 and 4: a clearance-upgrade + XP beat plays before ATLAS,
+    // once only (UAT request — "so users understand their role is more
+    // important now", structured rank screen -> XP reward -> briefing last).
+    if (isBlockOpen && (active.block === 3 || active.block === 4) && !clearanceSeen.has(active.block)) {
+      return (
+        <ClearanceUpMoment
+          from={BLOCK_INTROS[active.block - 1]?.theme.classification ?? null}
+          to={pageIntro.theme.classification}
+          xp={XP_RULES.BLOCK_ENTERED}
+          theme={pageIntro.theme}
+          reduced={reduced}
+          onDone={() => {
+            awardBlockBonus(active.block);
+            setClearanceSeen((s) => new Set(s).add(active.block));
+            refreshStatus();
+          }}
+        />
+      );
+    }
+    if (isBlockOpen) {
       return <BlockIntro data={pageIntro} onBegin={() => setShowBrief(false)} />;
     }
     // Block 2 cases run in THE PHONE, not the Signal Room engine.
