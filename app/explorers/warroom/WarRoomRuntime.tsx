@@ -518,17 +518,38 @@ function TestView({ test, voiceOn, acc, onPass }: { test: WarTest; voiceOn: bool
   const [correct, setCorrect] = useState(0);
   const [result, setResult] = useState<null | "pass" | "fail">(null);
   const [orders, setOrders] = useState<number[][]>(() => test.questions.map((q) => shuffled(q.options.length)));
+  const [whyOrders, setWhyOrders] = useState<number[][]>(() => test.questions.map((q) => shuffled(q.why?.options.length ?? 0)));
+  // A two-staged question (cases 18-20): "why" holds the picked answer's
+  // rightness until the follow-up resolves, so both have to land for the
+  // question to count — see WarTestQ.why above.
+  const [stage, setStage] = useState<"main" | "why">("main");
+  const [mainRight, setMainRight] = useState(false);
+  const [pickedIdx, setPickedIdx] = useState<number | null>(null);
   useEffect(() => { // focus/study music bed under the exam (Guardian Calm, same as Cyber Heroes)
     if (!voiceOn) return;
     playBGM("bgmFocus");
     return () => stopBGM(700);
   }, [voiceOn]);
-  const restart = () => { setQi(0); setCorrect(0); setResult(null); setOrders(test.questions.map((q) => shuffled(q.options.length))); };
-  const answer = (oi: number) => {
-    const right = !!test.questions[qi].options[oi].correct;
+  const restart = () => {
+    setQi(0); setCorrect(0); setResult(null); setStage("main"); setMainRight(false); setPickedIdx(null);
+    setOrders(test.questions.map((q) => shuffled(q.options.length)));
+    setWhyOrders(test.questions.map((q) => shuffled(q.why?.options.length ?? 0)));
+  };
+  const advance = (right: boolean) => {
     const nc = correct + (right ? 1 : 0);
+    setStage("main"); setMainRight(false); setPickedIdx(null);
     if (qi + 1 < test.questions.length) { setCorrect(nc); setQi(qi + 1); }
     else { setCorrect(nc); const passed = nc >= test.pass; setResult(passed ? "pass" : "fail"); const v = passed ? test.passVoice : test.failVoice; if (voiceOn && v) playWren(v, true); }
+  };
+  const answer = (oi: number) => {
+    const q = test.questions[qi];
+    const right = !!q.options[oi].correct;
+    if (q.why) { setMainRight(right); setPickedIdx(oi); setStage("why"); return; }
+    advance(right);
+  };
+  const answerWhy = (oi: number) => {
+    const right = mainRight && !!test.questions[qi].why!.options[oi].correct;
+    advance(right);
   };
   if (result) {
     const passed = result === "pass";
@@ -551,10 +572,25 @@ function TestView({ test, voiceOn, acc, onPass }: { test: WarTest; voiceOn: bool
       </div>
       <div style={{ height: 4, background: C.chip, borderRadius: 4, marginBottom: 18, overflow: "hidden" }}><div style={{ height: "100%", width: `${(qi / test.questions.length) * 100}%`, background: acc, transition: "width .3s" }} /></div>
       <div style={{ background: "#0d0a17", border: `1px solid ${C.edge}`, borderLeft: `3px solid ${acc}`, borderRadius: 8, padding: "12px 14px", fontSize: 14.5, lineHeight: 1.45, color: C.ink, marginBottom: 16 }}>{q.scenario}</div>
-      <div style={{ fontSize: 14, fontWeight: 700, color: C.ink, marginBottom: 12 }}>{q.ask}</div>
-      <div style={{ display: "flex", flexDirection: "column", gap: 9 }}>
-        {order.map((oi) => <button key={oi} className="wr-opt" onClick={() => answer(oi)} style={{ fontFamily: UI, fontSize: 14.5, fontWeight: 600, textAlign: "left", color: C.ink, background: C.chip, border: `1px solid ${C.chipedge}`, borderRadius: 8, padding: "12px 14px", cursor: "pointer" }}>{q.options[oi].label}</button>)}
-      </div>
+      {stage === "why" && q.why ? (
+        <>
+          <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 14, opacity: 0.7 }}>
+            <span style={{ fontFamily: MONO, fontSize: 10, letterSpacing: ".1em", color: acc, fontWeight: 700, flex: "0 0 auto" }}>YOUR PICK</span>
+            <span style={{ fontSize: 13, color: C.dim, textDecoration: "line-through" }}>{q.options[pickedIdx!].label}</span>
+          </div>
+          <div style={{ fontSize: 14, fontWeight: 700, color: C.ink, marginBottom: 12 }}>{q.why.ask}</div>
+          <div style={{ display: "flex", flexDirection: "column", gap: 9 }}>
+            {whyOrders[qi].map((oi) => <button key={oi} className="wr-opt" onClick={() => answerWhy(oi)} style={{ fontFamily: UI, fontSize: 14.5, fontWeight: 600, textAlign: "left", color: C.ink, background: C.chip, border: `1px solid ${C.chipedge}`, borderRadius: 8, padding: "12px 14px", cursor: "pointer" }}>{q.why!.options[oi].label}</button>)}
+          </div>
+        </>
+      ) : (
+        <>
+          <div style={{ fontSize: 14, fontWeight: 700, color: C.ink, marginBottom: 12 }}>{q.ask}</div>
+          <div style={{ display: "flex", flexDirection: "column", gap: 9 }}>
+            {order.map((oi) => <button key={oi} className="wr-opt" onClick={() => answer(oi)} style={{ fontFamily: UI, fontSize: 14.5, fontWeight: 600, textAlign: "left", color: C.ink, background: C.chip, border: `1px solid ${C.chipedge}`, borderRadius: 8, padding: "12px 14px", cursor: "pointer" }}>{q.options[oi].label}</button>)}
+          </div>
+        </>
+      )}
     </div>
   );
 }
