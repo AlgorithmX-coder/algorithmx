@@ -491,12 +491,12 @@ export const MODULE11: ModuleDef = {
     ],
     Interactive: CatchSoonestLab,
     check: {
-      q: "What would have caught this attack soonest?",
+      q: "The attacker had admin access on the host. Why does shipping logs to a separate, append-only store matter so much for the investigation?",
       options: [
-        { text: "Auto-alerting on a burst of failed logins from one IP at an unusual hour.", correct: true, feedback: "Right. That indicator fires before the login succeeds, giving you time to respond before data leaves." },
-        { text: "Reviewing the logs by hand in the monthly security review meeting.", feedback: "Far too slow. The data would be long gone before a monthly review ever looked at the logs." },
-        { text: "Keeping only a day of logs so the storage bill stays low.", feedback: "Short retention saves money but deletes your evidence. You cannot catch what you did not keep." },
-        { text: "Relying on the firewall to stop anything genuinely dangerous.", feedback: "A firewall waves through a valid-looking login. A brute force that guesses right needs behaviour detection." },
+        { text: "An intruder who controls the host can edit or wipe its logs; a separate append-only copy is one they can't quietly alter, so the trail survives.", correct: true, feedback: "Right - never keep the only copy where the attacker can reach it. Off-host, append-only logs are what make the timeline trustworthy." },
+        { text: "Logs on a separate server load faster, so the analyst can search the overnight entries more quickly.", feedback: "Speed isn't the point - it's that the attacker can't reach and rewrite a copy stored off the host." },
+        { text: "A separate store automatically blocks the brute-force attack before the login ever succeeds.", feedback: "Storage doesn't block attacks - lockout and alerting do. Off-host logging protects the evidence, not the login." },
+        { text: "Keeping logs elsewhere means you can safely wipe the host's own logs each day to save space.", feedback: "Deleting evidence is exactly the mistake - short retention destroys the trail whether it's on the host or not." },
       ],
     },
   },
