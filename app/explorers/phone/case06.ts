@@ -65,6 +65,18 @@ export type PhoneStep =
       okVoice?: string;
       bad?: string;
       badVoice?: string;
+    }
+  | {
+      // Boss-only "two sides" beat — ported from Block 3's Console (see
+      // console/case11.ts for the full rationale). ONE physical card you
+      // flip between YOUR side and THEIR side, never a split view. Block 2
+      // has no literal switch to flip (a con's ending is always a
+      // decision, never an on/off setting), so `you` is always a choice:
+      // make the call, flip the card to see the con's thread react.
+      t: "flip";
+      prompt?: string;
+      you: { kind: "choice"; label: string; sub?: string; prompt: string; options: { label: string; outcome: "good" | "bad" }[] };
+      them: { label: string; whenGood: string; whenBad: string };
     };
 
 /** One of the 7 skills: WREN teaches (learn), then the child does it (practice). */
@@ -560,13 +572,24 @@ export const case06Phone: PhoneCase = {
         name: "Walk away clean",
         steps: [
           {
-            t: "choose",
-            prompt: "How do you end it?",
-            options: [
-              { label: "here's the code!", outcome: "bad", then: [{ t: "con", text: "hurry!! the account will be deleted ⏳", delay: 800 }] },
-              { label: "no. real security never asks for my code.", outcome: "good", then: [{ t: "con", text: "wait, this is your last chance, ", delay: 700 }] },
-              { label: "block & report 🚫", outcome: "good", then: [{ t: "con", text: "This person has been blocked and reported.", delay: 600 }] },
-            ],
+            t: "flip",
+            prompt: "Decide, then flip the card to see what Jordan_Security does with your answer.",
+            you: {
+              kind: "choice",
+              label: "Jordan_Security's thread",
+              sub: "the final push for your code",
+              prompt: "How do you end it?",
+              options: [
+                { label: "here's the code!", outcome: "bad" },
+                { label: "no. real security never asks for my code.", outcome: "good" },
+                { label: "block & report 🚫", outcome: "good" },
+              ],
+            },
+            them: {
+              label: "Jordan_Security",
+              whenGood: "BLOCKED & REPORTED · thread dead · no code, no account",
+              whenBad: "CODE SENT · 'hurry!! the account will be deleted' · account compromised",
+            },
           },
         ],
       },

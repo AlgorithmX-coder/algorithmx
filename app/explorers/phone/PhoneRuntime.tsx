@@ -24,6 +24,7 @@ import { ClosingCeremony } from "../engine/closingCeremony";
 import { LEVERS, type LeverId, type PhoneAppKind, type PhoneCase, type PhoneStep, type PhoneTest, type TagSegment } from "./case06";
 import { addJournalEntry, loadJournal, type JournalEntry } from "../engine/journal";
 import { CaseJournal } from "../engine/CaseJournal";
+import { ETHICS_LINE, ETHICS_VOICE } from "../engine/ethicsLine";
 import { PropField } from "./PropField";
 import { HomeScreen } from "./HomeScreen";
 import { caseClockTime } from "./clock";
@@ -95,6 +96,7 @@ type Dock =
   | { type: "call"; answer: LeverId }
   | { type: "choose"; prompt?: string; options: { label: string; outcome?: "good" | "bad"; then?: PhoneStep[] }[] }
   | { type: "tag"; itemId: number; need: number; prompt?: string; bad?: string; badVoice?: string }
+  | { type: "flip"; prompt?: string; you: { kind: "choice"; label: string; sub?: string; prompt: string; options: { label: string; outcome: "good" | "bad" }[] }; them: { label: string; whenGood: string; whenBad: string } }
   | { type: "clear"; text: string }
   | { type: "composer" }
   | null;
@@ -176,6 +178,11 @@ export default function PhoneRuntime({ phoneCase, onExit, onNextCase }: { phoneC
       return;
     }
     if (dock.type === "clear") { resolveRef.current?.("go"); return; }
+    if (dock.type === "flip") {
+      const safe = dock.you.options.find((o) => o.outcome === "good") ?? dock.you.options[0];
+      resolveRef.current?.(safe.label);
+      return;
+    }
   }, [dock, skipRequested]);
 
   // WREN speaks a line and the thread WAITS for her to finish before anything
@@ -248,6 +255,13 @@ export default function PhoneRuntime({ phoneCase, onExit, onNextCase }: { phoneC
         setDock(null);
         setItems((a) => a.map((x) => (x.id === itemId && x.kind === "tagmsg" ? { ...x, locked: true } : x)));
         if (step.ok) { push({ id: nextId(), kind: "wren", text: step.ok }); await speak(step.ok, step.okVoice); }
+      } else if (step.t === "flip") {
+        setNudge(null);
+        setDock({ type: "flip", prompt: step.prompt, you: step.you, them: step.them });
+        const picked = await awaitUser(); // resolves with the winning option's label once the "good" side has been viewed on THEIR face
+        setDock(null);
+        push({ id: nextId(), kind: "you", text: picked });
+        await wait(500);
       }
     }
   };
@@ -274,6 +288,7 @@ export default function PhoneRuntime({ phoneCase, onExit, onNextCase }: { phoneC
     // PRACTICE
     if (sk.who) { setHeader({ who: sk.who, avatar: sk.avatar!, tag: sk.tag, sub: sk.sub! }); await wait(500); }
     await runSteps(sk.practice);
+    push({ id: nextId(), kind: "wren", text: ETHICS_LINE }); await speak(ETHICS_LINE, ETHICS_VOICE);
     setJournal(addJournalEntry(phoneCase.id, { skillN: sk.n, title: sk.title, note: sk.goal }));
     setDock({ type: "clear", text: `Skill ${sk.n} clear ✓` });
     await awaitUser();
@@ -361,6 +376,7 @@ export default function PhoneRuntime({ phoneCase, onExit, onNextCase }: { phoneC
   };
   const tapReply = (label: string) => { if (dock?.type === "choose") resolveRef.current?.(label); };
   const tapContinue = () => resolveRef.current?.("go");
+  const tapFlip = (label: string) => { if (dock?.type === "flip") resolveRef.current?.(label); };
 
   // tag: toggle one tappable phrase in the live message (only lever-bearing
   // segments respond; plain text is inert).
@@ -528,7 +544,7 @@ export default function PhoneRuntime({ phoneCase, onExit, onNextCase }: { phoneC
 
               {/* dock */}
               <div style={{ flex: "0 0 auto", borderTop: `1px solid ${C.line}`, background: C.chrome, padding: "11px 12px 14px" }}>
-                <DockView dock={dock} wrongId={wrongId} nudge={nudge} onLever={tapLever} onReply={tapReply} onContinue={tapContinue} onSubmitTag={submitTag} tagCount={tagCount} />
+                <DockView dock={dock} wrongId={wrongId} nudge={nudge} onLever={tapLever} onReply={tapReply} onContinue={tapContinue} onSubmitTag={submitTag} onFlip={tapFlip} tagCount={tagCount} />
               </div>
             </>
           )}
@@ -762,7 +778,20 @@ function TypewriterText({ text }: { text: string }) {
   );
 }
 
-function DockView({ dock, wrongId, nudge, onLever, onReply, onContinue, onSubmitTag, tagCount }: { dock: Dock; wrongId: LeverId | null; nudge: string | null; onLever: (id: LeverId) => void; onReply: (l: string) => void; onContinue: () => void; onSubmitTag: () => void; tagCount: number }) {
+function DockView({ dock, wrongId, nudge, onLever, onReply, onContinue, onSubmitTag, onFlip, tagCount }: { dock: Dock; wrongId: LeverId | null; nudge: string | null; onLever: (id: LeverId) => void; onReply: (l: string) => void; onContinue: () => void; onSubmitTag: () => void; onFlip: (l: string) => void; tagCount: number }) {
+  const [flipSide, setFlipSide] = useState<"you" | "them">("you");
+  const [flipChoiceIdx, setFlipChoiceIdx] = useState<number | null>(null);
+  const flipFiredRef = useRef(false);
+  useEffect(() => {
+    if (dock?.type === "flip") { setFlipSide("you"); setFlipChoiceIdx(null); flipFiredRef.current = false; }
+  }, [dock]);
+  // auto-resolves the instant the GOOD pick has been viewed on THEIR face —
+  // same "latches, no submit button" feel as Console/War Room's flip.
+  useEffect(() => {
+    if (dock?.type !== "flip" || flipFiredRef.current) return;
+    const picked = flipChoiceIdx !== null ? dock.you.options[flipChoiceIdx] : null;
+    if (flipSide === "them" && picked?.outcome === "good") { flipFiredRef.current = true; onFlip(picked.label); }
+  }, [dock, flipSide, flipChoiceIdx, onFlip]);
   if (!dock || dock.type === "composer") {
     return (
       <div style={{ display: "flex", alignItems: "center", gap: 9, opacity: 0.55 }}>
@@ -805,6 +834,52 @@ function DockView({ dock, wrongId, nudge, onLever, onReply, onContinue, onSubmit
         )}
         <button className="ph-btn" onClick={onSubmitTag} disabled={tagCount === 0} style={{ width: "100%", fontFamily: UI, fontWeight: 700, fontSize: 14, color: tagCount === 0 ? C.faint : C.page, background: tagCount === 0 ? C.chip : C.pink, border: `1px solid ${tagCount === 0 ? C.chipedge : C.pink}`, borderRadius: 14, padding: "11px 14px", cursor: tagCount === 0 ? "default" : "pointer" }}>
           {tagCount === 0 ? "Tap above to start" : `${tagCount} tagged · SUBMIT →`}
+        </button>
+      </>
+    );
+  }
+  if (dock.type === "flip") {
+    const pickedOutcome = flipChoiceIdx !== null ? dock.you.options[flipChoiceIdx].outcome : null;
+    const canFlip = pickedOutcome !== null;
+    const pageLabel = flipSide === "you" ? dock.you.label : dock.them.label;
+    const pageSub = flipSide === "you" ? dock.you.sub : undefined;
+    const themText = pickedOutcome === "good" ? dock.them.whenGood : pickedOutcome === "bad" ? dock.them.whenBad : "";
+    const themGood = pickedOutcome === "good";
+    return (
+      <>
+        <p style={{ fontSize: 12, color: C.dim, textAlign: "center", margin: "0 0 9px", fontWeight: 600 }}>{dock.prompt ?? "Flip between both sides."}</p>
+        <div style={{ display: "flex", justifyContent: "center", gap: 6, marginBottom: 9 }}>
+          <span style={{ fontFamily: UI, fontSize: 9.5, letterSpacing: ".1em", fontWeight: 700, textTransform: "uppercase", color: flipSide === "you" ? C.pink : C.faint, padding: "3px 9px", borderRadius: 999, border: `1px solid ${flipSide === "you" ? C.pink : C.chipedge}`, background: flipSide === "you" ? "rgba(255,61,138,.1)" : "transparent" }}>Your side</span>
+          <span style={{ fontFamily: UI, fontSize: 9.5, letterSpacing: ".1em", fontWeight: 700, textTransform: "uppercase", color: flipSide === "them" ? C.red : C.faint, padding: "3px 9px", borderRadius: 999, border: `1px solid ${flipSide === "them" ? C.red : C.chipedge}`, background: flipSide === "them" ? "rgba(255,90,99,.1)" : "transparent" }}>Their side</span>
+        </div>
+        <div key={flipSide} className="ph-row" style={{ background: C.chip, border: `1px solid ${flipSide === "them" ? "rgba(255,90,99,.4)" : C.chipedge}`, borderRadius: 14, padding: "13px 14px", marginBottom: 11, minHeight: 96 }}>
+          <div style={{ fontFamily: UI, fontSize: 10.5, fontWeight: 700, letterSpacing: ".04em", color: C.faint, marginBottom: 6 }}>{pageLabel}</div>
+          {pageSub && <div style={{ fontSize: 11.5, color: C.dim, marginBottom: 8 }}>{pageSub}</div>}
+          {flipSide === "you" && (
+            <>
+              <p style={{ fontSize: 12.5, color: C.dim, margin: "0 0 8px", fontWeight: 600 }}>{dock.you.prompt}</p>
+              <div style={{ display: "flex", flexDirection: "column", gap: 7 }}>
+                {dock.you.options.map((o, i) => {
+                  const isPicked = flipChoiceIdx === i;
+                  return (
+                    <button key={i} className="ph-reply" onClick={() => setFlipChoiceIdx(i)}
+                      style={{ fontFamily: UI, fontSize: 13.5, fontWeight: 600, textAlign: "left", color: C.ink, background: isPicked ? (o.outcome === "good" ? "rgba(49,217,160,.14)" : "rgba(255,90,99,.14)") : C.page, border: `1px solid ${isPicked ? (o.outcome === "good" ? "rgba(49,217,160,.5)" : "rgba(255,90,99,.5)") : C.chipedge}`, borderRadius: 14, padding: "9px 12px", cursor: "pointer" }}>
+                      {o.label}
+                    </button>
+                  );
+                })}
+              </div>
+            </>
+          )}
+          {flipSide === "them" && (
+            <div style={{ fontFamily: UI, fontSize: 13.5, lineHeight: 1.5, color: themText ? (themGood ? C.mint : C.red) : C.faint }}>
+              {themText || "— nothing to show yet, flip back and decide —"}
+            </div>
+          )}
+        </div>
+        <button className="ph-btn" disabled={!canFlip} onClick={() => setFlipSide((s) => (s === "you" ? "them" : "you"))}
+          style={{ width: "100%", fontFamily: UI, fontWeight: 700, fontSize: 13.5, color: C.page, background: !canFlip ? C.chip : C.pink, border: 0, borderRadius: 999, padding: "11px", cursor: !canFlip ? "not-allowed" : "pointer" }}>
+          {flipSide === "you" ? `Flip → see ${dock.them.label}` : "Flip back"}
         </button>
       </>
     );
