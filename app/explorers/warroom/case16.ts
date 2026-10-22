@@ -77,6 +77,11 @@ export interface WarTestQ {
   scenario: string;
   ask: string;
   options: { label: string; correct?: boolean }[];
+  // Two-staged question (cases 18-20, UAT request): after picking an
+  // answer, a "why" follow-up appears on the SAME question before moving
+  // on — the pick and the reason both have to be right for the question to
+  // count, deeper than a single pick and closer to what OPS/PRO expects.
+  why?: { ask: string; options: { label: string; correct?: boolean }[] };
 }
 export interface WarTest {
   intro: string;

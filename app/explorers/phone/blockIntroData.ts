@@ -204,18 +204,18 @@ export const block4Intro: BlockIntroData = {
   block: "BLOCK FOUR",
   title: ["The Long", "Game"],
   thesis:
-    "Everything so far was one attacker warming up. This is the big picture, and <b>the mind behind it.</b>",
+    "One attacker was never the whole story. This is the operation behind it, and <b>the mind running it.</b>",
   realWorld:
-    "Real attacks are never one trick. They're patient, linked, and run by someone who planned the whole thing. This is how you read the entire board, and unmask the mind behind it.",
+    "Real operations are never one move. They're patient, linked, and run top-down. Read the whole board, and unmask who's really running it.",
   audio: "/audio/atlas/block4.mp3",
   voiceScript:
-    "[serious] Agent, everything until now, every message, every trick, every system, it was one person warming up. [warm] This is Block Four: The Long Game, the highest clearance we have. Five cases that pull it all together. Who is really buying your life? What is real, and what is faked? And the single mind coordinating every attack you have seen. [determined] This is where a trainee becomes an operator. Read the whole board, then find the one behind it. This is signal zero. [excited] Let's finish this.",
+    "[serious] Agent, every op so far was one piece of something bigger. [warm] This is Block Four, The Long Game, your highest clearance yet. Five cases, one operation: who's buying your data, what's real, and the mind running every attack you've faced. [determined] This is where an agent becomes an analyst. Read the whole board, find who's behind it. [excited] Signal zero. Let's finish this.",
   commander: { name: "ATLAS", org: "ARC COMMAND", signoff: "ATLAS · ARC Command · Highest clearance" },
   shift: {
     kicker: "The endgame",
-    lede: "Every message, every trick, every system, was <em>one person.</em>",
+    lede: "Every op you've run was <em>one person.</em>",
     body:
-      "This is the highest clearance we have. Five cases that pull it all together: who's really buying your life, what's real and what's faked, the choice every hacker faces, and the single mind coordinating every attack you've seen. This is where a trainee becomes an operator. Read the whole board, then find the one behind it.",
+      "This is your highest clearance. Five cases, one operation: who's buying your data, what's real, and the mind running every attack you've faced. This is where an agent becomes an analyst. Read the whole board, find who's behind it.",
   },
   filesKicker: "Five cases. One mastermind.",
   files: [

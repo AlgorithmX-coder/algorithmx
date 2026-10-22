@@ -386,6 +386,7 @@ export default function ExplorersPage() {
           xp={XP_RULES.BLOCK_ENTERED}
           theme={pageIntro.theme}
           reduced={reduced}
+          finale={active.block === 4}
           onDone={() => {
             awardBlockBonus(active.block);
             setClearanceSeen((s) => new Set(s).add(active.block));
