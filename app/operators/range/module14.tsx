@@ -9,7 +9,7 @@
  * FOUR-stage capture with a hint ladder, FOUR drills, and a chained capstone. */
 
 import { useEffect, useState } from "react";
-import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary } from "./Engagement";
+import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary, shuffle } from "./Engagement";
 
 /* ───────────────────────── glossary ───────────────────────── */
 
@@ -179,17 +179,17 @@ const ACT_STAGES: Stage[] = [
     hint: "Lead with what and where, then how serious and why (severity + impact), then how to see it (reproduce), and finish with the fix (remediation)." },
   { kind: "decision", title: "Disclose", goal: "Stage 3 - Disclose it right. You found a real, critical flaw in a live company's system. How do you handle it?",
     decision: { prompt: "You've found a critical, unauthenticated flaw in a company's live system. What do you do?", options: [
-      { text: "Report it privately to the company first and give them reasonable time to fix before any public detail.", correct: true, feedback: "Right - responsible, coordinated disclosure. Get it fixed and protect people, with no exploit handed to attackers." },
+      { text: "Report it privately to the company first and give them time to fix.", correct: true, feedback: "Right - responsible, coordinated disclosure. Give them reasonable time before any public detail, get it fixed, and hand no exploit to attackers." },
       { text: "Publish the working exploit immediately so users can protect themselves.", feedback: "That hands attackers a weapon before any fix exists - the opposite of protecting users." },
-      { text: "Quietly sell the vulnerability to the highest bidder.", feedback: "That's exploitation, not disclosure, and it's illegal. Never." },
+      { text: "Quietly sell the vulnerability to the highest bidder you can find.", feedback: "That's exploitation, not disclosure, and it's illegal. Never." },
       { text: "Use it to pull more data as proof of how serious it is.", feedback: "Accessing more data is unauthorised and harmful - a clear description and the reproduction steps are proof enough." },
     ] } },
   { kind: "decision", title: "The hard call", goal: "Stage 4 - When it's not simple. You reported it privately 90 days ago. The vendor has gone silent and users are still exposed. Now what?",
     decision: { prompt: "90 days after a private report, the vendor is unresponsive and users remain at risk. The right move?", options: [
-      { text: "Escalate through a CERT or a coordinated-disclosure body to pressure a fix and agree a public timeline - still no working exploit dumped.", correct: true, feedback: "Right. When a vendor won't engage, a neutral coordinator (a CERT) is the responsible escalation - protecting users without arming attackers." },
-      { text: "Immediately dump the full working exploit publicly out of frustration.", feedback: "Understandable, but it arms attackers against still-unpatched users. Escalate through a coordinator, don't weaponise it." },
-      { text: "Give up and say nothing - it's their problem now.", feedback: "Users are still exposed; walking away isn't responsible either. Escalate to get it fixed." },
-      { text: "Start exploiting it yourself since they didn't fix it.", feedback: "Never - lack of a vendor response doesn't make unauthorised access legal or ethical." },
+      { text: "Escalate through a CERT or coordinated-disclosure body to pressure a fix.", correct: true, feedback: "Right. When a vendor won't engage, a neutral coordinator (a CERT) is the responsible escalation - agree a public timeline, protect users, and still dump no working exploit." },
+      { text: "Immediately dump the full working exploit in public out of frustration.", feedback: "Understandable, but it arms attackers against still-unpatched users. Escalate through a coordinator, don't weaponise it." },
+      { text: "Give up and say nothing more - it's the vendor's problem now.", feedback: "Users are still exposed; walking away isn't responsible either. Escalate to get it fixed." },
+      { text: "Start exploiting it yourself, since they never bothered to fix it.", feedback: "Never - lack of a vendor response doesn't make unauthorised access legal or ethical." },
     ] } },
 ];
 
@@ -242,11 +242,12 @@ function ScoreLab({ onDone }: { onDone: () => void }) {
 
 function HandleReportsLab({ onDone }: { onDone: () => void }) {
   const [picked, setPicked] = useState<number | null>(null);
-  const opts = [
+  const [opts] = useState(() => shuffle([
     { code: "Threaten legal action against anyone who reports a bug", ok: false, why: "That drives findings public or underground and leaves you less safe, not more." },
     { code: "Ignore reports unless they include a working exploit", ok: false, why: "That discourages good-faith reporting and leaves real issues unfixed." },
-    { code: "Publish a security contact and VDP, acknowledge reports fast, fix on a sensible timeline (and consider a bug bounty)", ok: true, why: "Make it easy and safe to report, treat researchers as allies, and act on what comes in. That's how bugs get fixed." },
-  ];
+    { code: "Publish a security contact and VDP, and fix on a sensible timeline", ok: true, why: "Make it easy and safe to report, acknowledge fast, treat researchers as allies, consider a bug bounty, and act on what comes in. That's how bugs get fixed." },
+    { code: "Quietly fix the bug and never acknowledge the person who reported it", ok: false, why: "Silent fixes with no acknowledgement discourage researchers from coming back, and an ignored reporter may go public. Acknowledge reports fast." },
+  ]));
   return (
     <div style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: 12, padding: "15px 16px" }}>
       <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: ".1em", color: C.indigo, fontWeight: 700, marginBottom: 10 }}>▶ APPLY THE STANDARD · how should an organisation handle incoming reports?</div>
@@ -273,10 +274,10 @@ type DrillCfg = { client: string; brief: string; stages: Stage[]; success: strin
 const DRILLS: DrillCfg[] = [
   { client: "Brightpost Media", brief: "Score Brightpost's findings to the right bands. No walkthrough.", stages: [{ kind: "severity", title: "Score", goal: "Score each finding.", rows: [ { finding: "Remote unauthenticated RCE on the web server", band: "Critical", note: "Remote code execution with no login = Critical." }, { finding: "Verbose error messages leak stack traces", band: "Low", note: "Information leak, no direct impact = Low." } ], hint: "RCE with no login is Critical; a stack-trace leak alone is Low." }], success: "Scored the findings correctly. Finding logged." },
   { client: "Tideway Council", brief: "Order a finding report for Tideway.", stages: [{ kind: "order", title: "Report", goal: "Order the report sections.", items: [ { label: "Title", pos: 0 }, { label: "Severity", pos: 1 }, { label: "Impact", pos: 2 }, { label: "Remediation", pos: 3 } ], hint: "Title -> severity -> impact -> remediation." }], success: "Structured a clear report. Finding logged." },
-  { client: "Flux Fitness", brief: "A disclosure judgment call. Trickier.", stages: [{ kind: "decision", title: "Disclose", goal: "The disclosure decision.", decision: { prompt: "You find a flaw in Flux's app that also affects their payment provider. How do you disclose?", options: [ { text: "Report privately to both affected parties and coordinate a fix timeline.", correct: true, feedback: "Right - coordinate with everyone affected, privately, before any public detail." }, { text: "Tweet it so both get embarrassed into fixing it.", feedback: "Public shaming arms attackers and skips the fix window - coordinate privately." } ] } }], success: "Disclosed responsibly across both parties. Finding logged." },
+  { client: "Flux Fitness", brief: "A disclosure judgment call. Trickier.", stages: [{ kind: "decision", title: "Disclose", goal: "The disclosure decision.", decision: { prompt: "You find a flaw in Flux's app that also affects their payment provider. How do you disclose?", options: [ { text: "Report privately to both affected parties and coordinate a fix.", correct: true, feedback: "Right - coordinate with everyone affected, privately, before any public detail." }, { text: "Tweet it publicly so both get embarrassed into fixing it.", feedback: "Public shaming arms attackers and skips the fix window - coordinate privately." }, { text: "Report it only to Flux and let them tell their provider.", feedback: "The provider may never hear, or hear too late. Coordinate directly with every affected party." }, { text: "Wait for the next release and mention the flaw in passing.", feedback: "Users stay exposed in the meantime. Report it privately now and agree a fix timeline." } ] } }], success: "Disclosed responsibly across both parties. Finding logged." },
   { client: "Oakline Store", brief: "The full field job. Score, then disclose. Chain it yourself.", stages: [
     { kind: "severity", title: "Score", goal: "Step 1: score the finding.", rows: [ { finding: "IDOR exposing any customer's order and address by changing an id", band: "High", note: "Mass PII exposure, but read-only and needs a valid account = High." } ], hint: "Broad PII read via IDOR is High." },
-    { kind: "decision", title: "Disclose", goal: "Step 2: disclose it.", decision: { prompt: "How do you report Oakline's IDOR?", options: [ { text: "Privately, with reproduction steps and a fix, giving time before any public detail.", correct: true, feedback: "Right - responsible disclosure with an actionable report." }, { text: "Post the steps publicly straight away.", feedback: "That exposes customers before a fix - report privately first." } ] } },
+    { kind: "decision", title: "Disclose", goal: "Step 2: disclose it.", decision: { prompt: "How do you report Oakline's IDOR?", options: [ { text: "Privately, with reproduction steps and a fix, giving time before going public.", correct: true, feedback: "Right - responsible disclosure with an actionable report." }, { text: "Post the steps publicly straight away so users know.", feedback: "That exposes customers before a fix - report privately first." }, { text: "Report it, but dump the full details if they take too long.", feedback: "Agree a reasonable timeline up front and escalate through a coordinator, don't lead with a threat to publish." }, { text: "Just email them the flag and leave them to work it out.", feedback: "A bare flag isn't actionable. Give a clear report with reproduction steps and a suggested fix." } ] } },
   ], success: "Scored and disclosed correctly - the whole reporting craft. Finding logged." },
 ];
 
@@ -331,9 +332,10 @@ const CAP_STAGES: Stage[] = [
   ], hint: "Remote admin takeover = Critical; session-stealing XSS = High; enumeration = Low." },
   { kind: "order", title: "Report", goal: "Write the report for the critical one.", items: [ { label: "Title", pos: 0 }, { label: "Location", pos: 1 }, { label: "Severity", pos: 2 }, { label: "Impact", pos: 3 }, { label: "Steps to reproduce", pos: 4 }, { label: "Remediation", pos: 5 } ], hint: "Title -> location -> severity -> impact -> reproduce -> remediation." },
   { kind: "decision", title: "Disclose", goal: "Finish it: disclose the critical finding the right way.", decision: { prompt: "How do you disclose Sableline's critical, unauthenticated takeover?", options: [
-    { text: "Report privately with a clear report and reproduction steps, agree a fix window, coordinate any public detail after.", correct: true, feedback: "Right - responsible, coordinated disclosure: fixed and no one harmed." },
-    { text: "Publish the exploit to force a fast fix.", feedback: "That arms attackers before the fix - report privately and coordinate." },
+    { text: "Report privately with reproduction steps, and agree a fix window.", correct: true, feedback: "Right - responsible, coordinated disclosure: a clear report, a fix window, public detail coordinated after, and no one harmed." },
+    { text: "Publish the working exploit to try to force a fast fix.", feedback: "That arms attackers before the fix - report privately and coordinate." },
     { text: "Exploit it once more to confirm, pulling live data.", feedback: "Unauthorised and harmful - your report and steps are proof enough." },
+    { text: "Report it anonymously so you can't be blamed if it goes wrong.", feedback: "Anonymous drops are hard for a vendor to verify or follow up. Report openly and coordinate - responsible disclosure protects you too." },
   ] } },
 ];
 
@@ -440,9 +442,9 @@ export const MODULE14: ModuleDef = {
       q: "What is responsible (coordinated) disclosure?",
       options: [
         { text: "Reporting privately to the vendor first and giving reasonable time to fix before public detail.", correct: true, feedback: "Right - private report, time to fix, then coordinate. Fixed, and no one harmed." },
-        { text: "Publishing a working exploit immediately so users can protect themselves.", feedback: "That hands attackers a weapon before any fix exists - the opposite of protecting users." },
-        { text: "Keeping it secret and using it whenever you like.", feedback: "That's exploitation, not disclosure - and it's illegal." },
-        { text: "Only reporting it if the company offers to pay you.", feedback: "Responsible disclosure doesn't depend on payment; you report to get it fixed regardless of a bounty." },
+        { text: "Publishing a working exploit immediately so that users can protect themselves.", feedback: "That hands attackers a weapon before any fix exists - the opposite of protecting users." },
+        { text: "Keeping the flaw secret and quietly using it whenever you like.", feedback: "That's exploitation, not disclosure - and it's illegal." },
+        { text: "Only reporting it if the company first offers to pay you for it.", feedback: "Responsible disclosure doesn't depend on payment; you report to get it fixed regardless of a bounty." },
       ],
     },
   },
@@ -475,10 +477,10 @@ export const MODULE14: ModuleDef = {
     check: {
       q: "What should an organisation do to handle incoming vulnerability reports well?",
       options: [
-        { text: "Publish a security contact and disclosure policy, acknowledge reports quickly, and fix on a sensible timeline.", correct: true, feedback: "Right - make it easy and safe to report, treat researchers as allies, and act on what comes in." },
-        { text: "Threaten legal action against anyone who reports a bug.", feedback: "That drives findings public or underground and leaves you less safe, not more." },
-        { text: "Ignore reports unless they include a working exploit.", feedback: "That discourages good-faith reporting and leaves real issues unfixed." },
-        { text: "Only fix bugs that have already been exploited.", feedback: "Waiting for exploitation means waiting for harm - fix reported issues before they're used." },
+        { text: "Publish a security contact and policy, acknowledge reports, and fix on a sensible timeline.", correct: true, feedback: "Right - make it easy and safe to report, treat researchers as allies, and act on what comes in." },
+        { text: "Threaten legal action against anyone who dares to report a bug.", feedback: "That drives findings public or underground and leaves you less safe, not more." },
+        { text: "Ignore any reports unless they come with a full working exploit.", feedback: "That discourages good-faith reporting and leaves real issues unfixed." },
+        { text: "Only bother fixing bugs that have already been exploited in the wild.", feedback: "Waiting for exploitation means waiting for harm - fix reported issues before they're used." },
       ],
     },
   },
