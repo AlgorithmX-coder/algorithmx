@@ -518,12 +518,12 @@ export const MODULE1: ModuleDef = {
       "Least impact and responsible disclosure: prove it safely, report it privately, never abuse or keep what you find.",
     ],
     check: {
-      q: "What single thing makes the difference between a penetration test and a computer crime?",
+      q: "A professional test runs its stages in a set order. Which sequence is the right one?",
       options: [
-        { text: "Explicit, written authorisation to test that specific system.", correct: true, feedback: "Right. The actions can be identical; permission to test that system is what makes it legal." },
-        { text: "Using professional tools instead of homemade ones.", feedback: "Tools don't make it legal - testing without permission is a crime whatever you use." },
-        { text: "Only reading data and never changing it.", feedback: "Even read-only access is unauthorised access if you have no permission; authorisation is the line." },
-        { text: "Working for a security company.", feedback: "Employment doesn't authorise you - a signed scope for that specific target does." },
+        { text: "Recon, then scanning, then exploitation, then post-exploitation, then reporting.", correct: true, feedback: "Right - you map and understand the target before you touch it, and you always finish by writing up what you found." },
+        { text: "Exploitation first to prove the impact, then recon and scanning to explain it afterwards.", feedback: "You can't reliably exploit what you haven't mapped - recon and scanning come before exploitation, not after it." },
+        { text: "Reporting first so the client knows the plan, then scanning, then exploitation at the end.", feedback: "The report comes last - it's the write-up of what you actually found, not the opening move." },
+        { text: "Scanning, then reporting, then exploitation once that report has been approved.", feedback: "Reporting is the final stage; exploitation and post-exploitation happen during the test, before you write it up." },
       ],
     },
   },
