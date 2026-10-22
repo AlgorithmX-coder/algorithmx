@@ -32,6 +32,7 @@ export const case20War: WarCase = {
       n: 1,
       title: "Read the whole board",
       goal: "Recall the analyst's habit: never one clue, always the picture they form.",
+      journalNote: "A detective never solves a case from one clue pinned alone — it's the whole board, every thread connected, that reveals the picture. Recall that habit: never one clue, always the shape they form together. When something feels off, step back and look at the whole pattern, not just one alert.",
       board: "THE FULL BOARD",
       learn: [
         { t: "wren", text: "Start where the War Room began: never trust one clue alone, read the whole board. One alert is noise. Ten alerts that fit together are a story. Your job as an analyst was never to react to a single message, it was to step back and see the pattern the pieces make. Today the whole board is finally in front of you, months of it. So let's do what you do best, step back, and read it as one picture.", voice: "/audio/wren/m20w-s1-learn.mp3" },
@@ -84,6 +85,7 @@ export const case20War: WarCase = {
       n: 2,
       title: "The five signatures",
       goal: "You know every actor's MO by heart. Match each attack to who runs it.",
+      journalNote: "Every attacker leaves a signature as distinct as handwriting — once you know the style, you can name who's behind an attack just from how it's run. Match the method to the actor from memory. Practise naming which actor's style fits an attack, from the method alone.",
       board: "THE SIGNATURES",
       learn: [
         { t: "wren", text: "You've met them all, and you know their signatures cold. PHANTOM HOOK, the phisher, fake urgency to steal a login. PACKRAT, the hoarder, quietly building a file to sell. GHOSTWRITER, the forger, fakes made to be believed and shared. THE FLOOD, the spammer, blasting scams wide to catch the few. Each has a fingerprint you can spot in seconds now. Let's connect each attack on the board to the signature behind it.", voice: "/audio/wren/m20w-s2-learn.mp3" },
@@ -140,6 +142,7 @@ export const case20War: WarCase = {
       n: 3,
       title: "Follow the benefit",
       goal: "Ask the question that cuts through everything: who gains from all of it?",
+      journalNote: "When you can't see who did something, ask who got richer or safer because of it — motive cuts through disguises faster than any other clue. Follow the benefit, not just the trail. When you're unsure who's behind something, ask first who gains from it.",
       board: "CUI BONO",
       learn: [
         { t: "wren", text: "Bring back the question from the ghostwriter case, who benefits? But now ask it about everything at once. Who gains if PACKRAT's file feeds PHANTOM HOOK's phishing, which feeds THE FLOOD's scams, all covered by GHOSTWRITER's fakes? Not four separate crooks with four small wins. One operator, running them as one machine, taking the profit from the whole chain. Follow the benefit all the way up, and it points to a single desk.", voice: "/audio/wren/m20w-s3-learn.mp3" },
@@ -192,6 +195,7 @@ export const case20War: WarCase = {
       n: 4,
       title: "One hand behind it",
       goal: "Shared timing, tools and targets prove one coordinator, not many.",
+      journalNote: "Four 'separate' attacks sharing the same timing, tools, and targets is like four robberies using the same getaway car — that's not coincidence, that's one team. Shared fingerprints prove one coordinator, not many. Look for shared patterns across separate incidents before assuming they're unrelated.",
       board: "THE FINGERPRINT",
       learn: [
         { t: "wren", text: "So how do you prove one hand, not four? You look for shared fingerprints across the attacks. Same timing, they all move together. Same tools, reused code and phrases. Same targets, the same people hit in sequence. And the same tradecraft, the same clever style in how it's run. When four 'different' attacks share timing, tools, targets and style, that's not a coincidence, that's a signature of its own. The coordinator's own fingerprint. Let's connect each shared trait to what it proves.", voice: "/audio/wren/m20w-s4-learn.mp3" },
@@ -247,6 +251,7 @@ export const case20War: WarCase = {
       n: 5,
       title: "The Code",
       goal: "Recall what separates you from the coordinator: permission, no harm, no secrets.",
+      journalNote: "Two people can have identical lockpicking skill, and only one of them is a locksmith — the difference was never the skill, it's the choice to only ever use it with permission. The Code is what separates you from the coordinator, not talent. Remember: permission, no harm, no secrets is the line skill alone can't draw.",
       board: "THE CODE",
       learn: [
         { t: "wren", text: "Before we name them, remember your Code, because you and this coordinator have the exact same skills. What separates you isn't talent, it's the Code you chose: you act only with permission, you never set out to harm, and you never work in secret from the people you should trust. The coordinator has every skill you have. They just broke the Code, and told themselves they were clever enough that the rules didn't apply. That one choice is the whole difference between an analyst and a criminal.", voice: "/audio/wren/m20w-s5-learn.mp3" },
@@ -300,6 +305,7 @@ export const case20War: WarCase = {
       n: 6,
       title: "The turncoat",
       goal: "Face the hard truth: the coordinator is one of ours who broke the Code.",
+      journalNote: "Finding out the coordinator was once one of the good guys is like learning a trusted guard let the thief in — it's proof that skill and training alone never guarantee someone stays good, only the Code does, held onto, every time. Don't assume training makes someone safe to trust by default; the Code is the real proof.",
       board: "SIGNAL ZERO",
       learn: [
         { t: "wren", text: "Here's the hard part, Agent, and I won't soften it. The fingerprints, the tradecraft, the way it's all run, we've matched it. The coordinator, K-STATIC, is a former ARC analyst. One of us. They trained where you trained, learned the same Code you learned, and then decided their talent put them above it. That's the warning at the heart of this whole programme: the skills don't make you good. Only the Code does. The most dangerous person in this story is the one who was almost you.", voice: "/audio/wren/m20w-s6-learn.mp3" },
@@ -353,6 +359,7 @@ export const case20War: WarCase = {
       n: 7,
       title: "Do it right",
       goal: "You could strike back. You don't. Evidence, proper channels, uphold the Code.",
+      journalNote: "Being offered the chance to strike back is the final test, not the finish line — hacking back to punish a rule-breaker makes you one too. Clean evidence through proper channels is how you finish without becoming them. If you're ever tempted to fight fire with fire, that's exactly the moment to walk the proper, legal path instead.",
       board: "ACTION PLAN",
       learn: [
         { t: "wren", text: "Last skill of the whole programme, and it's the truest test. You now know who they are, and you have the skills to hit back, to expose them, to take revenge. Here's what makes you an analyst instead of another K-STATIC: you don't. You do it right. You gather the evidence cleanly, you hand it to the people whose job it is, the proper authorities, and you let justice work. Fighting a rule-breaker by breaking the rules just makes two of them. You win this by staying exactly who you are. Uphold the Code, even now, especially now.", voice: "/audio/wren/m20w-s7-learn.mp3" },

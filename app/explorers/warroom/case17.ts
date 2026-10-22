@@ -31,6 +31,7 @@ export const case17War: WarCase = {
       n: 1,
       title: "Fakes are cheap now",
       goal: "Photos, video, voice and text can all be faked convincingly and fast.",
+      journalNote: "A faked photo used to take real skill; now it's like a filter anyone can tap — cheap, fast, and convincing. If something looks real, that no longer proves it is. Assume anything shocking could be faked until you've checked.",
       board: "THE FORGERY DESK",
       learn: [
         { t: "wren", text: "Start with the uncomfortable truth. Today a computer can fake almost anything: a photo of a place you've never been, a video of someone saying words they never said, a voice that sounds exactly like a friend, a whole news story with no truth in it. It's cheap, it's fast, and it's getting better. So 'I saw it with my own eyes' isn't proof any more. Seeing is no longer believing.", voice: "/audio/wren/m17w-s1-learn.mp3" },
@@ -84,6 +85,7 @@ export const case17War: WarCase = {
       n: 2,
       title: "Tells run out",
       goal: "Hunting for weird hands or glitches fails. You need a reliable method.",
+      journalNote: "Hunting for glitchy hands in a fake is like checking a counterfeit note's watermark by eye alone — it used to work, but fakes got too good too fast. You need a method that doesn't rely on spotting mistakes. Stop hunting for tells, start verifying the source instead.",
       board: "WHAT ACTUALLY WORKS",
       learn: [
         { t: "wren", text: "People love the 'spot the glitch' game, count the fingers, look for a blurry ear. Here's the problem: the fakes keep getting better, so those little tells vanish. If your whole plan is spotting glitches, you'll be fooled the day the glitch is gone. The reliable checks aren't about the image itself, they're about the source and the story around it. Let's pin the ones that keep working.", voice: "/audio/wren/m17w-s2-learn.mp3" },
@@ -139,6 +141,7 @@ export const case17War: WarCase = {
       n: 3,
       title: "Read sideways",
       goal: "Leave the page. Open new tabs and see what the rest of the web says.",
+      journalNote: "Reading sideways is like checking a rumour at school by asking three other people instead of just believing the first one who told you. Open new tabs, see what the rest of the web actually says. Before believing something shocking, open a search for it elsewhere.",
       board: "LATERAL READING",
       learn: [
         { t: "wren", text: "Here's the single most powerful skill in this case: lateral reading. When something surprises you, don't stare harder at the page trying to decide if it's real. Leave it. Open new tabs, search the claim, the person, the photo, and see what everyone else says. Fact-checkers don't read down a suspicious page, they read sideways across the whole web. Let's connect each claim to the tab that would check it.", voice: "/audio/wren/m17w-s3-learn.mp3" },
@@ -194,6 +197,7 @@ export const case17War: WarCase = {
       n: 4,
       title: "Who benefits?",
       goal: "Every rumour pushes something. Ask who gains if you believe it.",
+      journalNote: "Every rumour is a lever someone's pulling for a reason — ask who gets richer, more views, or more power if you believe it. Follow the motive, not just the story. When something feels urgent to share, ask who benefits if you do.",
       board: "CUI BONO",
       learn: [
         { t: "wren", text: "When a story is designed to make you angry or scared, ask one cool question: who benefits if I believe this? Someone selling something, someone wanting your vote, your click, your outrage, or your money. Real information doesn't usually need you frightened right now. If a story's whole job is to make you feel a strong thing and act instantly, follow the benefit, and you'll often find the ghostwriter.", voice: "/audio/wren/m17w-s4-learn.mp3" },
@@ -246,6 +250,7 @@ export const case17War: WarCase = {
       n: 5,
       title: "Find the original",
       goal: "A screenshot of a screenshot proves nothing. Trace back to the source.",
+      journalNote: "A screenshot of a screenshot is like a photocopy of a photocopy — it proves a copy exists, never that the original was real. Trace all the way back before trusting it. Always try to find the first, original source, not just the latest repost.",
       board: "TRACE TO SOURCE",
       learn: [
         { t: "wren", text: "Rumours travel as screenshots, of screenshots, of things nobody can find any more. That's a red flag by itself. Before you believe a claim, find the original: the real post, the real article, the real video, from the real account. If nobody can point to an original and it's all just re-shares of a re-share, treat it as unproven. No source, no belief.", voice: "/audio/wren/m17w-s5-learn.mp3" },
@@ -299,6 +304,7 @@ export const case17War: WarCase = {
       n: 6,
       title: "Know GHOSTWRITER's play",
       goal: "Manufacture, seed, amplify, profit. Break it at any link.",
+      journalNote: "GHOSTWRITER's trick is a factory line — manufacture a fake, seed it quietly, let others amplify it, profit from the chaos — and you can jam it at any single step. Breaking one link stops the whole line. Find the weakest link in a rumour and stop there.",
       board: "THREAT MODEL",
       learn: [
         { t: "wren", text: "See GHOSTWRITER's play, four moves. First, manufacture: fake the photo, quote or story. Second, seed it: drop it where it'll catch, an outrage group, a comment thread. Third, amplify: bots and angry sharers spread it faster than the truth. Fourth, profit: clicks, division, a scam, or a belief they wanted planted. Here's your power: the whole machine runs on people sharing before they check. Be the one who checks, and the chain breaks.", voice: "/audio/wren/m17w-s6-learn.mp3" },
@@ -351,6 +357,7 @@ export const case17War: WarCase = {
       n: 7,
       title: "Be the circuit breaker",
       goal: "Pause before you share. You are the link that stops the spread.",
+      journalNote: "Sharing instantly is like passing on a lit match without checking if it's safe — pausing even a few seconds is what stops the fire spreading. You are the link that can break the chain. Build in a pause before you ever hit share.",
       board: "ACTION PLAN",
       learn: [
         { t: "wren", text: "Last skill, and it's a habit, not a fact. You are a circuit breaker. Every fake needs people to pass it along, so when something makes you want to share right now, that urge is the signal to pause. Check the source, read sideways, ask who benefits. If it's true, it'll still be true in ten minutes. If it's fake, you just stopped it dead. One calm person who checks is worth a thousand who share.", voice: "/audio/wren/m17w-s7-learn.mp3" },

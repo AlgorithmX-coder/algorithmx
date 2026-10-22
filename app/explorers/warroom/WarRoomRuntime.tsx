@@ -19,6 +19,9 @@ import { type CaseStage, readProgress, saveProgress, clearProgress, markCaseComp
 import { saveExplorersProgress } from "@/app/lib/explorersProgress.actions";
 import { ResumePrompt } from "../engine/ResumePrompt";
 import { ClosingCeremony } from "../engine/closingCeremony";
+import { addJournalEntry, loadJournal, type JournalEntry } from "../engine/journal";
+import { CaseJournal } from "../engine/CaseJournal";
+import { ETHICS_LINE, ETHICS_VOICE } from "../engine/ethicsLine";
 import type { WarCase, WarStep, WarTest } from "./case16";
 
 const C = {
@@ -92,6 +95,8 @@ export default function WarRoomRuntime({ warCase, onExit, onNextCase }: { warCas
   const [, force] = useReducer((n) => n + 1, 0);
   const acc = warCase.accent ?? C.violet;
   const THEME = warCase.theme;
+  const [journal, setJournal] = useState<JournalEntry[]>([]);
+  useEffect(() => { setJournal(loadJournal(warCase.id)); }, [warCase.id]);
   // UAT skip: one click fast-forwards through whatever's left of the CURRENT
   // skill only (narration + any dock waiting on input), then clears itself —
   // same one-click-per-skill contract as Phone's "Skip this whole skill".
@@ -206,6 +211,8 @@ export default function WarRoomRuntime({ warCase, onExit, onNextCase }: { warCas
     push({ id: nextId(), kind: "divider", kicker: `Skill ${sk.n} of ${total}`, title: sk.title, sub: sk.goal }); await wait(600);
     await runSteps(sk.learn);
     await runSteps(sk.practice);
+    push({ id: nextId(), kind: "wren", text: ETHICS_LINE }); await speak(ETHICS_LINE, ETHICS_VOICE);
+    setJournal(addJournalEntry(warCase.id, { skillN: sk.n, title: sk.title, note: sk.journalNote }));
     setDock({ type: "clear", text: `Skill ${sk.n} complete ✓` }); await awaitUser();
   };
 
@@ -301,6 +308,7 @@ export default function WarRoomRuntime({ warCase, onExit, onNextCase }: { warCas
       >
         Skip skill ⏭
       </button>
+      <CaseJournal entries={journal} accent={acc} caseTitle={warCase.title} />
       <button className="wr-btn" onClick={onExit} style={{ position: "fixed", top: 14, left: 14, zIndex: 20, fontFamily: MONO, fontSize: 11.5, fontWeight: 600, color: C.dim, background: "rgba(255,255,255,0.04)", border: `1px solid ${C.edge}`, borderRadius: 6, padding: "6px 12px", cursor: "pointer" }}>← Leave</button>
       <button className="wr-btn" onClick={() => { const v = !voiceOn; setVoiceOn(v); if (!v) stopWren(); }} aria-pressed={voiceOn} style={{ position: "fixed", top: 14, right: 14, zIndex: 20, fontFamily: MONO, fontSize: 11.5, fontWeight: 700, color: voiceOn ? C.wren : C.dim, background: "rgba(255,255,255,0.04)", border: `1px solid ${voiceOn ? "rgba(43,212,180,.5)" : C.edge}`, borderRadius: 6, padding: "6px 12px", cursor: "pointer" }}>{voiceOn ? "🔊 WREN on" : "🔇 WREN off"}</button>
       <button className="wr-btn" onClick={cycleVoiceRate} aria-label={`WREN's talking speed: ${voiceRate}×. Tap to change.`} style={{ position: "fixed", top: 54, right: 14, zIndex: 20, fontFamily: MONO, fontSize: 11, fontWeight: 700, color: voiceRate !== 1 ? C.wren : C.dim, background: "rgba(255,255,255,0.04)", border: `1px solid ${voiceRate !== 1 ? "rgba(43,212,180,.5)" : C.edge}`, borderRadius: 6, padding: "6px 12px", cursor: "pointer" }}>{voiceRate}×</button>
