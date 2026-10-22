@@ -13,7 +13,7 @@
  * FOUR-stage capture with a hint ladder, FOUR drills, and a chained capstone. */
 
 import { useEffect, useState } from "react";
-import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary } from "./Engagement";
+import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary, shuffle } from "./Engagement";
 
 /* ───────────────────────── real hashing ───────────────────────── */
 
@@ -109,17 +109,27 @@ function IdentifySurface({ rows, options, hint, onSolved }: { rows: IdRow[]; opt
 /* ── crack: really hash candidate words and match the target digest ── */
 function CrackSurface({ target, salt, words, hint, reveal, onSolved }: { target: string; salt?: string; words: string[]; hint: string; reveal: string; onSolved: () => void }) {
   const [results, setResults] = useState<Record<string, { hash: string; match: boolean }>>({});
+  const [selected, setSelected] = useState<string | null>(null);
   const [input, setInput] = useState("");
   const [useSalt, setUseSalt] = useState(false);
   const [solved, setSolved] = useState(false);
+  const [wrong, setWrong] = useState(false);
 
+  // Hashing a word only REVEALS its digest (and selects it); it never wins, and
+  // the digest shows in a neutral colour so you have to actually compare it to
+  // the target. Hash as many as you like, then CONFIRM the one that matches.
   async function crack(word: string) {
     const w = word.trim();
-    if (!w) return;
+    if (!w || solved) return;
     const h = await sha256hex((salt && useSalt ? salt : "") + w);
-    const match = h === target;
-    setResults((r) => ({ ...r, [w]: { hash: h, match } }));
-    if (match && !solved) { setSolved(true); onSolved(); }
+    setResults((r) => ({ ...r, [w]: { hash: h, match: h === target } }));
+    setSelected(w);
+    setWrong(false);
+  }
+  function confirm() {
+    if (!selected || solved) return;
+    if (results[selected]?.match) { setSolved(true); onSolved(); }
+    else setWrong(true);
   }
 
   return (
@@ -128,18 +138,20 @@ function CrackSurface({ target, salt, words, hint, reveal, onSolved }: { target:
       <div style={{ fontFamily: MONO, fontSize: 12, color: C.amber, background: C.carbon, border: `1px solid ${C.lineSoft}`, borderRadius: 8, padding: "9px 11px", wordBreak: "break-all" }}>{target}</div>
       {salt && (
         <label style={{ display: "flex", gap: 8, alignItems: "center", marginTop: 12, fontFamily: MONO, fontSize: 12.5, color: C.soft, cursor: "pointer" }}>
-          <input type="checkbox" checked={useSalt} onChange={(e) => { setUseSalt(e.target.checked); setResults({}); }} />
+          <input type="checkbox" checked={useSalt} onChange={(e) => { setUseSalt(e.target.checked); setResults({}); setSelected(null); }} />
           apply the leaked salt <span style={{ color: C.indigo2 }}>{salt}</span> before hashing (hashes {salt}+word)
         </label>
       )}
-      <div style={{ marginTop: 14, fontFamily: MONO, fontSize: 10, letterSpacing: ".1em", color: C.indigo, fontWeight: 700 }}>⌦ WORDLIST · tap to hash &amp; compare</div>
+      <div style={{ marginTop: 14, fontFamily: MONO, fontSize: 10, letterSpacing: ".1em", color: C.indigo, fontWeight: 700 }}>⌦ WORDLIST · tap to hash, compare the digests to the target, then confirm the match</div>
       <div style={{ display: "grid", gap: 6, marginTop: 8 }}>
         {words.map((w) => {
           const res = results[w];
+          const isSel = selected === w;
+          const good = solved && res?.match;
           return (
-            <button key={w} onClick={() => crack(w)} disabled={solved} className="co-opt" style={{ textAlign: "left", display: "flex", justifyContent: "space-between", gap: 10, flexWrap: "wrap", padding: "8px 12px", borderRadius: 8, border: `1px solid ${res ? (res.match ? C.green : C.lineSoft) : C.line}`, background: C.carbon, cursor: solved ? "default" : "pointer" }}>
-              <span style={{ fontFamily: MONO, fontSize: 12.5, color: res?.match ? C.green : C.ink }}>{res?.match ? "✓ " : ""}{w}</span>
-              {res && <span style={{ fontFamily: MONO, fontSize: 11, color: res.match ? C.green : "#6b7490", wordBreak: "break-all" }}>{res.hash.slice(0, 24)}…</span>}
+            <button key={w} onClick={() => crack(w)} disabled={solved} className="co-opt" style={{ textAlign: "left", display: "flex", justifyContent: "space-between", gap: 10, flexWrap: "wrap", padding: "8px 12px", borderRadius: 8, border: `1px solid ${good ? C.green : isSel ? C.indigo : res ? C.lineSoft : C.line}`, background: isSel ? "rgba(139,123,255,0.08)" : C.carbon, cursor: solved ? "default" : "pointer" }}>
+              <span style={{ fontFamily: MONO, fontSize: 12.5, color: good ? C.green : C.ink }}>{good ? "✓ " : ""}{w}</span>
+              {res && <span style={{ fontFamily: MONO, fontSize: 11, color: good ? C.green : "#9fb0d8", wordBreak: "break-all" }}>{res.hash.slice(0, 24)}…</span>}
             </button>
           );
         })}
@@ -150,8 +162,15 @@ function CrackSurface({ target, salt, words, hint, reveal, onSolved }: { target:
           <input style={{ ...inp, flex: "1 1 200px" }} value={input} onChange={(e) => setInput(e.target.value)} placeholder="type a candidate word" />
           <Btn tone="i" onClick={() => crack(input)} disabled={solved}>HASH &amp; COMPARE →</Btn>
         </div>
-        {input && results[input.trim()] && !results[input.trim()].match && <div style={{ marginTop: 8, fontFamily: MONO, fontSize: 12, color: C.soft }}>no match - its hash is {results[input.trim()].hash.slice(0, 32)}…</div>}
+        {input && results[input.trim()] && <div style={{ marginTop: 8, fontFamily: MONO, fontSize: 12, color: C.soft }}>that digest is {results[input.trim()].hash.slice(0, 32)}… - does it match the target above?</div>}
       </div>
+      {!solved && (
+        <div style={{ display: "flex", gap: 14, alignItems: "center", flexWrap: "wrap", marginTop: 14 }}>
+          <Btn tone="g" onClick={confirm} disabled={!selected}>This hash matches →</Btn>
+          {selected && !wrong && <span style={{ fontFamily: MONO, fontSize: 11.5, color: C.mute }}>selected: {selected}</span>}
+          {wrong && <span style={{ fontFamily: MONO, fontSize: 11.5, color: C.amber }}>that digest doesn&apos;t match the target. Compare again.</span>}
+        </div>
+      )}
       {solved && <div style={{ marginTop: 12, fontFamily: MONO, fontSize: 12.5, color: C.green }}>✓ Cracked - that word&apos;s real SHA-256 matches the leaked hash exactly.</div>}
       <Hints hints={[hint]} revealLabel="stuck? reveal the word" onReveal={() => setInput(reveal)} />
     </div>
@@ -262,11 +281,12 @@ function LiveHashLab({ onDone }: { onDone: () => void }) {
 
 function PickStorageLab({ onDone }: { onDone: () => void }) {
   const [picked, setPicked] = useState<number | null>(null);
-  const opts = [
-    { code: "store MD5(password)", ok: false, why: "Fast and unsalted - exactly what you cracked with a wordlist in seconds." },
-    { code: "store SHA-256(password)", ok: false, why: "Still a fast, unsalted general-purpose hash - a dictionary attack walks right through it, as in stage two." },
-    { code: "store bcrypt(password)  // salted + slow", ok: true, why: "bcrypt salts every password automatically and is deliberately slow, defeating rainbow tables and making brute force impractical. This is the fix (Argon2/scrypt too)." },
-  ];
+  const [opts] = useState(() => shuffle([
+    { code: "store MD5(password)", ok: false, why: "Fast and unsalted, exactly what you cracked with a wordlist in seconds." },
+    { code: "store SHA-256(password)", ok: false, why: "Still a fast, unsalted general-purpose hash. A dictionary attack walks right through it, as in stage two." },
+    { code: "store SHA-256(SHA-256(password))", ok: false, why: "Running a fast hash twice is still fast, and still unsalted. It barely slows a wordlist attack down." },
+    { code: "store bcrypt(password)", ok: true, why: "bcrypt salts every password automatically and is deliberately slow, defeating rainbow tables and making brute force impractical. Argon2 and scrypt do the same." },
+  ]));
   return (
     <div style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: 12, padding: "15px 16px" }}>
       <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: ".1em", color: C.indigo, fontWeight: 700, marginBottom: 10 }}>▶ APPLY THE FIX · how should Harbour store passwords?</div>
@@ -474,10 +494,10 @@ export const MODULE9: ModuleDef = {
     check: {
       q: "Why does salting defeat a rainbow table?",
       options: [
-        { text: "It makes each password's hash unique, so precomputed hash-to-password tables don't match any of them.", correct: true, feedback: "Right. The attacker would have to rebuild a whole table per salt - impractical." },
-        { text: "It encrypts the hash so it can't be read.", feedback: "Salting isn't encryption - the hash is still visible; it's just unique per user now." },
-        { text: "It makes the user's password longer and therefore stronger.", feedback: "The salt isn't part of the user's password; it changes the stored hash, not the password's length." },
-        { text: "It slows the hash down so guessing is too expensive.", feedback: "That's what a slow hash does; salt is a separate idea - it makes each hash unique." },
+        { text: "It makes each password's stored hash unique, so a precomputed table matches none of them.", correct: true, feedback: "Right. The attacker would have to rebuild a whole table per salt, which is impractical." },
+        { text: "It encrypts the stored hash so an attacker who steals it cannot read it back.", feedback: "Salting isn't encryption. The hash is still visible; it is just unique per user now." },
+        { text: "It lengthens each user's password, so guessing the password itself takes far longer.", feedback: "The salt isn't part of the user's password; it changes the stored hash, not the password's length." },
+        { text: "It slows the hashing down, so trying millions of guesses becomes far too expensive.", feedback: "That is what a slow hash does; salt is a separate idea that makes each stored hash unique." },
       ],
     },
   },
