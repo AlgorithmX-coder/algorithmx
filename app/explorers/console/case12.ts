@@ -29,6 +29,7 @@ export const case12Console: ConsoleCase = {
       n: 1,
       title: "Scramble it with a key",
       goal: "A cipher turns a message into gibberish that only a key can unlock.",
+      journalNote: "A cipher is like a lockbox: anyone can see the box, but only someone with the right key can open what's inside. Scrambled text looks like nonsense unless you hold the key. Trust tools that scramble your data, not ones that leave it plain.",
       panel: "CIPHER LAB",
       learn: [
         { t: "wren", text: "Start with the oldest trick in security: a cipher. You scramble a message using a key, a secret rule, and now anyone who grabs it just sees nonsense. Only someone with the key can turn it back. Here's a baby one: shift every letter forward by one. A becomes B, B becomes C. So the key is 'shift by one'. Let's crack a message that used it.", voice: "/audio/wren/m12c-s1-learn.mp3" },
@@ -75,6 +76,7 @@ export const case12Console: ConsoleCase = {
       n: 2,
       title: "Why real codes hold",
       goal: "A shift is easy to crack; real encryption uses keys too huge to ever guess.",
+      journalNote: "A simple shift cipher is like a bike lock with ten numbers, a patient thief tries them all; real encryption is a lock with more combinations than atoms in the universe. Real codes aren't cracked by guessing, they're just too big to try. Trust proper encryption, not homemade scrambles.",
       panel: "CIPHER LAB",
       learn: [
         { t: "wren", text: "That shift cipher is fun, but useless against a computer. There are only 25 shifts, so a machine tries all 25 in a blink. Real encryption fixes that with a key so enormous, more combinations than atoms in the universe, that not even every computer on Earth working for billions of years could guess it. That's the difference between a toy and a lock.", voice: "/audio/wren/m12c-s2-learn.mp3" },
@@ -121,6 +123,7 @@ export const case12Console: ConsoleCase = {
       n: 3,
       title: "The padlock",
       goal: "The padlock (https) means the line between you and a site is sealed.",
+      journalNote: "The little padlock in your address bar means the road between you and the site is a sealed tunnel, not an open street. Everything sent down it is scrambled before it leaves your device. Always check for the padlock before typing anything private.",
       panel: "BROWSER · CONNECTION",
       learn: [
         { t: "wren", text: "You don't have to do the encrypting yourself, your browser does it, and it tells you when. See the little padlock, and the s in https? That means the whole conversation between you and that site is sealed, encrypted, unreadable to anyone in between. No padlock, no s, and the line is wide open. Learn to glance for that padlock, every time you type anything private.", voice: "/audio/wren/m12c-s3-learn.mp3" },
@@ -169,6 +172,7 @@ export const case12Console: ConsoleCase = {
       n: 4,
       title: "Postcards vs envelopes",
       goal: "Unsealed messages travel like postcards; anyone on the route can read them.",
+      journalNote: "An unsealed site is like writing your password on a postcard — anyone who handles it on the way can read it. A sealed, padlocked site is the same message in a locked envelope. Never trust a site with no padlock for logins or payments.",
       panel: "TRAFFIC VIEW",
       learn: [
         { t: "wren", text: "Here's the picture that makes it click. A message sent without encryption is a postcard, every person who handles it on the way can read the whole thing. A sealed, encrypted message is a letter in an envelope, they can see it's going somewhere, but not what it says. When PACKRAT listens, postcards are a gift and envelopes are useless. So seal everything that matters.", voice: "/audio/wren/m12c-s4-learn.mp3" },
@@ -216,6 +220,7 @@ export const case12Console: ConsoleCase = {
       n: 5,
       title: "Who's on the wi-fi",
       goal: "On open public wi-fi, others can snoop. The padlock still protects each site.",
+      journalNote: "Public wi-fi is a shared room where anyone else inside can listen to what's said out loud. The padlock on each site is like still whispering your secrets in code, so even a listener in the room hears nothing useful. On public wi-fi, stick to padlocked sites only.",
       panel: "NETWORK · CAFE-FREE-WIFI",
       learn: [
         { t: "wren", text: "Now the danger zone: free public wi-fi. On an open network, other people connected to it can try to listen to the traffic flying around, that's PACKRAT's favourite spot. The good news: any site with the padlock is still sealed, even on dodgy wi-fi. The rule is simple. On public wi-fi, stick to padlocked sites, and never send anything private over a connection with no lock.", voice: "/audio/wren/m12c-s5-learn.mp3" },
@@ -264,6 +269,7 @@ export const case12Console: ConsoleCase = {
       n: 6,
       title: "Know PACKRAT's play",
       goal: "Interception runs the same four moves, and the padlock breaks it.",
+      journalNote: "A listener on open wi-fi is like someone reading mail over your shoulder — they only win if the letter isn't sealed. The padlock seals every letter before it leaves your hands. Keep the padlock habit everywhere, not just at home.",
       panel: "THREAT MODEL",
       learn: [
         { t: "wren", text: "See PACKRAT's listening play, four moves. First, sit on an open network, like free cafe wi-fi. Second, quietly capture the traffic flowing past. Third, read anything that isn't sealed, postcards. Fourth, sell what it finds. And here's how you break it: every padlock turns your postcard into a sealed envelope, so all PACKRAT captures is gibberish. The lock does the whole job.", voice: "/audio/wren/m12c-s6-learn.mp3" },
@@ -313,6 +319,7 @@ export const case12Console: ConsoleCase = {
       n: 7,
       title: "Seal your traffic",
       goal: "The habit that beats every listener: look for the lock, mind the network.",
+      journalNote: "The habit that beats every listener is the same one, every time: check for the lock before you trust the line. No padlock, no private details. Make checking the address bar as automatic as checking before crossing the road.",
       panel: "ACTION PLAN",
       learn: [
         { t: "wren", text: "Last skill, the everyday habit that beats every listener. One: before you type anything private, glance for the padlock. Two: on public wi-fi, stick to padlocked sites and save the private stuff for a network you trust. Do those two things and it doesn't matter who's listening, all they'll ever get is sealed nonsense. Simple, and it protects you for life.", voice: "/audio/wren/m12c-s7-learn.mp3" },
@@ -383,15 +390,29 @@ export const case12Console: ConsoleCase = {
         name: "Your turn",
         steps: [
           { t: "sys", text: "YOU: logging into your bank on https://mybank.co.uk 🔒" },
-          { t: "sys", text: "PACKRAT CAPTURED from you:  \"x9$#a2!!Kd…Q7z\"  (unreadable)" },
           {
-            t: "choose",
-            prompt: "PACKRAT captured YOUR login too, but it's gibberish. Why?",
-            options: [
-              { label: "The padlock sealed it, encrypted end to end", outcome: "good" },
-              { label: "You typed too fast for it to read", outcome: "bad", then: [{ t: "sys", text: "PACKRAT: it captured every byte, it just can't decode them" }] },
-              { label: "PACKRAT left already", outcome: "bad", then: [{ t: "sys", text: "PACKRAT: still capturing, still reading gibberish" }] },
-            ],
+            t: "flip",
+            prompt: "PACKRAT can't see which connections are sealed from the outside. Flip the lock, then flip the card to watch what it actually captures.",
+            you: {
+              kind: "toggle",
+              label: "Padlocked connection (https) · simulator",
+              sub: "compare an unsealed postcard to your real, sealed one",
+              off: "SIMULATING: 🔓 no padlock, sent over http",
+              on: "YOUR REAL CONNECTION: 🔒 sealed, https",
+            },
+            them: {
+              label: "PACKRAT's capture feed",
+              whenBad: "CAPTURED: \"login: you  pass: ••••••\" (plain text, fully readable)",
+              whenGood: "CAPTURED: \"x9$#a2!!Kd…Q7z\" (unreadable)",
+            },
+            ask: {
+              prompt: "PACKRAT captured YOUR real login too, but it's gibberish. Why?",
+              options: [
+                { label: "The padlock sealed it, encrypted end to end", outcome: "good" },
+                { label: "You typed too fast for it to read", outcome: "bad", then: [{ t: "sys", text: "PACKRAT: it captured every byte, it just can't decode them" }] },
+                { label: "PACKRAT left already", outcome: "bad", then: [{ t: "sys", text: "PACKRAT: still capturing, still reading gibberish" }] },
+              ],
+            },
           },
         ],
       },

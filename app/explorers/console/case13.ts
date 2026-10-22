@@ -30,6 +30,7 @@ export const case13Console: ConsoleCase = {
       n: 1,
       title: "The back door",
       goal: "Every account has a second way in: recovery. A weak one undoes a strong password.",
+      journalNote: "Backdoors are like buildings with a broken back entrance: you don't use it any more and it might have been forgotten, but if a hacker finds it, it can still lead them straight in to your accounts and personal details. A strong front door isn't enough on its own. Check your recovery options too, not just your password.",
       panel: "RECOVERY PATH",
       learn: [
         { t: "wren", text: "Here's the thing almost everyone forgets. Every account has a SECOND way in, the recovery path, the 'I forgot my password' button. It exists so YOU can get back in. But it's a door too, and if it's weaker than your password, that's the door a thief walks through. A castle with a titanium gate and an open back window isn't safe. So we go find the windows.", voice: "/audio/wren/m13c-s1-learn.mp3" },
@@ -76,6 +77,7 @@ export const case13Console: ConsoleCase = {
       n: 2,
       title: "Guessable answers",
       goal: "Security questions ask for things a stranger can find in your footprint.",
+      journalNote: "A security question like 'your first pet's name' is like a quiz a stranger could pass just by scrolling your old posts — it's not really a secret. If the true answer is public, it isn't protecting anything. Assume any TRUE answer about you can be found.",
       panel: "RECOVERY · SECURITY QS",
       learn: [
         { t: "wren", text: "Look at what security questions ask: your first pet's name, your mum's maiden name, the street you grew up on. And now remember Case 4, the footprint. Every one of those answers is sitting in your posts, your photos, your relatives' profiles. A security question isn't a secret. It's a quiz a stranger can pass by scrolling your feed. That's the flaw.", voice: "/audio/wren/m13c-s2-learn.mp3" },
@@ -128,6 +130,7 @@ export const case13Console: ConsoleCase = {
       n: 3,
       title: "Answers can be lies",
       goal: "The fix is simple: security answers don't have to be TRUE, just unguessable.",
+      journalNote: "Nobody checks whether your security answer is true, so turn the honest answer into a second, made-up password. A lie only you know is a lock nobody can pick from your photos. Set unguessable made-up answers and store them in your manager.",
       panel: "RECOVERY · HARDEN",
       learn: [
         { t: "wren", text: "Here's the clever fix, and it feels like cheating. Your security answers don't have to be TRUE. Nobody checks whether Bailey was really your first pet. So you make the answer something no one could ever guess, and treat it like a password. First pet's name? Answer: purple-tractor-42. It's unguessable, and your password manager remembers it for you. A lie that only you know is the strongest answer there is.", voice: "/audio/wren/m13c-s3-learn.mp3" },
@@ -176,6 +179,7 @@ export const case13Console: ConsoleCase = {
       n: 4,
       title: "Keep recovery fresh",
       goal: "Your recovery email and phone must be current, and locked down themselves.",
+      journalNote: "A dead old recovery email is like a spare key left under a mat you forgot about — still real, still works, nobody's watching it. Your recovery contact has to be one you actually use, with its own lock. Update your recovery email and lock it with 2FA too.",
       panel: "RECOVERY · CONTACTS",
       learn: [
         { t: "wren", text: "One more back-door check. If your account resets through an OLD email you don't use any more, and someone gets into that dead inbox, they can reset everything through it. So your recovery contact, email or phone, must be current, one you still control, and locked with its own 2FA. A recovery email is a master key. Treat it like one.", voice: "/audio/wren/m13c-s4-learn.mp3" },
@@ -224,6 +228,7 @@ export const case13Console: ConsoleCase = {
       n: 5,
       title: "Log out the strangers",
       goal: "Old logged-in devices are open doors. Sign out where you shouldn't be.",
+      journalNote: "Staying logged in on a library computer is like leaving your front door key in the lock on your way out. Closing the tab isn't the same as logging out. Always log out properly on any device that isn't yours.",
       panel: "ACTIVE SESSIONS",
       learn: [
         { t: "wren", text: "Last door: you leave yourself logged in everywhere, and forget. That library computer, a friend's tablet, a phone you sold. Every account keeps a list of devices it's logged in on, and each is a door left open. So two habits: on any shared or public machine, log OUT when you're done, never just close the tab. And now and then, check that device list and kick off anything you don't recognise.", voice: "/audio/wren/m13c-s5-learn.mp3" },
@@ -272,6 +277,7 @@ export const case13Console: ConsoleCase = {
       n: 6,
       title: "Know SKELETON KEY's play",
       goal: "The recovery attack runs four moves, and a hardened back door stops it.",
+      journalNote: "Going around your password straight to recovery is like a thief skipping the locked front door for a window they think nobody checked. Made-up answers and a locked recovery email turn that window into another locked door. Treat recovery as seriously as your actual password.",
       panel: "THREAT MODEL",
       learn: [
         { t: "wren", text: "See SKELETON KEY's back-door play, four moves. First, skip your strong password entirely. Second, click 'forgot password'. Third, answer your security questions using facts scraped from your public life. Fourth, reset your password and stroll in. And here's the wall you just built: made-up answers it can't guess, and a locked recovery email it can't reach. Every move fails.", voice: "/audio/wren/m13c-s6-learn.mp3" },
@@ -320,6 +326,7 @@ export const case13Console: ConsoleCase = {
       n: 7,
       title: "Slam the side door",
       goal: "The habit that closes the back door for good.",
+      journalNote: "A house is only as safe as its weakest door, and recovery is the one most people never think to lock. Made-up answers, a current locked recovery email, and clean sessions close it for good. Pick one account today and bolt its back door.",
       panel: "ACTION PLAN",
       learn: [
         { t: "wren", text: "Last skill, your back-door habit. One, make your security answers unguessable lies your manager remembers. Two, keep your recovery email current and locked with 2FA. Three, log out on shared machines and sweep your device list now and then. Do those, and you've closed the door most people never even knew was open.", voice: "/audio/wren/m13c-s7-learn.mp3" },
@@ -392,15 +399,29 @@ export const case13Console: ConsoleCase = {
         name: "The recovery email",
         steps: [
           { t: "sys", text: "SKELETON KEY: trying to reset via your recovery email…" },
-          { t: "sys", text: "TARGET recovery inbox: locked · 2FA required · code on your phone only" },
           {
-            t: "choose",
-            prompt: "It went for your recovery email instead. Why is that a dead end?",
-            options: [
-              { label: "Your recovery email is current and 2FA-locked", outcome: "good" },
-              { label: "Recovery emails can't be reset", outcome: "bad", then: [{ t: "sys", text: "SK: they can, but this one has 2FA… ✗" }] },
-              { label: "It ran out of time", outcome: "bad", then: [{ t: "sys", text: "SK: plenty of time, still locked out by 2FA" }] },
-            ],
+            t: "flip",
+            prompt: "Flip the switch, then flip the card to watch its reset attempt react.",
+            you: {
+              kind: "toggle",
+              label: "2FA on your recovery email · simulator",
+              sub: "it can reset everything, compare both worlds",
+              off: "SIMULATING: no second lock",
+              on: "YOUR REAL SETUP: locked, code required",
+            },
+            them: {
+              label: "SKELETON KEY's reset attempt",
+              whenBad: "RESET EMAIL OPENED · password changed · account reset",
+              whenGood: "LOGIN BLOCKED · SECOND KEY REQUIRED · code sent to your phone only",
+            },
+            ask: {
+              prompt: "It went for your recovery email instead. Why is that a dead end?",
+              options: [
+                { label: "Your recovery email is current and 2FA-locked", outcome: "good" },
+                { label: "Recovery emails can't be reset", outcome: "bad", then: [{ t: "sys", text: "SK: they can, but this one has 2FA… ✗" }] },
+                { label: "It ran out of time", outcome: "bad", then: [{ t: "sys", text: "SK: plenty of time, still locked out by 2FA" }] },
+              ],
+            },
           },
         ],
       },
