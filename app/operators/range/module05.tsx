@@ -640,6 +640,7 @@ function CapstoneChallenge({ onDone }: { onDone: () => void }) {
   const [showHint, setShowHint] = useState(false);
   const [cracked, setCracked] = useState(false);
   const [crackMsg, setCrackMsg] = useState<string | null>(null);
+  const [pick, setPick] = useState<number | null>(null);
   const [reEmail, setReEmail] = useState(""); const [rePass, setRePass] = useState("");
   const [won, setWon] = useState(false); const [reMsg, setReMsg] = useState<string | null>(null);
 
@@ -656,9 +657,11 @@ function CapstoneChallenge({ onDone }: { onDone: () => void }) {
     setRes(r);
     if (step.done(r)) setTimeout(() => { setRes(null); setShowHint(false); setEmail(""); setPass(""); setTerm(""); setPhase(phase + 1); }, 700);
   }
-  function tryWord(e: { word: string; hash: string }) {
+  function confirmCrack() {
+    if (pick === null) return;
+    const e = RAINBOW[pick];
     if (e.hash === ADMIN_HASH) { setCracked(true); setCrackMsg(`Cracked - ${ADMIN_EMAIL} : ${e.word}`); }
-    else setCrackMsg(`"${e.word}" doesn't match the admin's hash. Keep going.`);
+    else setCrackMsg(`"${e.word}" hashes to a different digest than the admin's. Line the two strings up and compare again.`);
   }
   function reuse() {
     if (reEmail.trim().toLowerCase() === ADMIN_EMAIL && rePass === ADMIN_PW) setWon(true);
@@ -715,16 +718,21 @@ function CapstoneChallenge({ onDone }: { onDone: () => void }) {
           </div>
           <div style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: 14, padding: 16 }}>
             <div style={{ fontFamily: MONO, fontSize: 12, color: C.soft, marginBottom: 12 }}>admin hash · <span style={{ color: C.amber }}>{ADMIN_HASH}</span></div>
-            <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: ".1em", color: C.indigo, fontWeight: 700, marginBottom: 8 }}>⌦ RAINBOW TABLE · tap the match</div>
+            <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: ".1em", color: C.indigo, fontWeight: 700, marginBottom: 8 }}>⌦ RAINBOW TABLE · select the row whose digest matches, then confirm</div>
             <div style={{ display: "grid", gap: 6 }}>
-              {RAINBOW.map((e) => (
-                <button key={e.word} onClick={() => tryWord(e)} disabled={cracked} className="co-opt" style={{ textAlign: "left", display: "flex", justifyContent: "space-between", gap: 10, flexWrap: "wrap", padding: "8px 12px", borderRadius: 8, border: `1px solid ${cracked && e.hash === ADMIN_HASH ? C.green : C.lineSoft}`, background: C.carbon, color: C.soft, cursor: cracked ? "default" : "pointer" }}>
-                  <span style={{ fontFamily: MONO, fontSize: 12.5, color: C.ink }}>{e.word}</span>
-                  <span style={{ fontFamily: MONO, fontSize: 12, color: "#8fa0c8", wordBreak: "break-all" }}>{e.hash}</span>
-                </button>
-              ))}
+              {RAINBOW.map((e, i) => {
+                const isSel = pick === i;
+                const matched = cracked && e.hash === ADMIN_HASH;
+                return (
+                  <button key={e.word} onClick={() => { if (!cracked) { setPick(i); setCrackMsg(null); } }} disabled={cracked} className="co-opt" style={{ textAlign: "left", display: "flex", justifyContent: "space-between", gap: 10, flexWrap: "wrap", padding: "8px 12px", borderRadius: 8, border: `1px solid ${matched ? C.green : isSel ? C.indigo : C.lineSoft}`, background: isSel && !cracked ? "rgba(139,123,255,0.09)" : C.carbon, color: C.soft, cursor: cracked ? "default" : "pointer" }}>
+                    <span style={{ fontFamily: MONO, fontSize: 12.5, color: C.ink }}>{e.word}</span>
+                    <span style={{ fontFamily: MONO, fontSize: 12, color: matched ? C.green : "#8fa0c8", wordBreak: "break-all" }}>{e.hash}</span>
+                  </button>
+                );
+              })}
             </div>
             {crackMsg && <div style={{ marginTop: 10, fontFamily: MONO, fontSize: 12.5, color: cracked ? C.green : C.soft }}>{crackMsg}</div>}
+            {!cracked && <div style={{ marginTop: 12 }}><Btn tone="i" onClick={confirmCrack} disabled={pick === null}>This digest matches the admin&apos;s →</Btn></div>}
             {cracked && <div style={{ marginTop: 12 }}><Btn tone="g" onClick={() => setPhase(3)}>Now reuse it →</Btn></div>}
           </div>
         </>
