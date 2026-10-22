@@ -25,8 +25,8 @@ const GLOSSARY: GlossaryEntry[] = [
   { term: "status code", definition: "A number the response leads with: 200 means OK, 404 not found, 403 forbidden, 500 server error.", example: "You've met 404 as 'page not found'; a tester gets excited by a 200 on a page that was meant to be 403 forbidden, because it means a locked door just opened." },
   { term: "cookie", definition: "A small piece of data the server asks your browser to store and send back on every request - often your session.", example: "After you log into a game site, it drops a cookie in your browser; every later request carries it back so the site remembers you're signed in." },
   { term: "endpoint", definition: "A single address the app answers on, like /api/order or /admin.", example: "The app shows one tidy page, but behind it /api/order and /admin are separate endpoints you can call directly - including ones no button links to." },
-  { term: "parameter", definition: "A value you send with a request - a price, a quantity, an id. The server reads it to decide what to do.", example: "A checkout request might carry price=4999; that parameter is just a value in the message, and if the server trusts it you could try sending price=1 instead." },
-  { term: "hidden field", definition: "A form value that isn't drawn on screen. 'Hidden' means not shown - not secret, and not protected; it's ordinary data in the request.", example: "View the source of an order form and you find a hidden input holding price=50 - not drawn on screen, but sitting right there in the request for anyone to change." },
+  { term: "parameter", definition: "A value you send with a request - a price, a quantity, an id. The server reads it to decide what to do.", example: "A checkout request might carry price=149; that parameter is just a value in the message, and if the server trusts it you could try sending price=0.00 instead." },
+  { term: "hidden field", definition: "A form value that isn't drawn on screen. 'Hidden' means not shown - not secret, and not protected; it's ordinary data in the request.", example: "View the source of an order form and you find a hidden input holding price=149 - not drawn on screen, but sitting right there in the request for anyone to change." },
   { term: "developer tools", definition: "The panel built into every browser that lets you watch, read and change the requests your browser sends.", example: "Press F12 in any browser and the Network tab shows every request your last tap just sent - testers live in that panel to watch and edit what goes out." },
   { term: "proxy", definition: "A tool that sits between your browser and the server so you can pause and edit a request before it's sent.", example: "A proxy catches your 'buy for £50' request mid-flight and lets you change it to '£5' before it ever reaches the server - like intercepting a letter to edit it before posting." },
   { term: "robots.txt", definition: "A file sites publish to tell search engines which paths to skip. Attackers read it precisely to find those paths.", example: "A site's robots.txt says 'Disallow: /admin-backup' to hide that page from Google - but a tester reads that exact file first, because it's a signposted list of what they most wanted hidden." },
@@ -456,7 +456,7 @@ export const MODULE3: ModuleDef = {
     "A deep engagement on how the web actually works - the foundation everything else stands on. Caldera's parts store is about to open. The full job: read a response and find what the dev left in it, map the hidden surface through robots.txt, tamper the price the checkout trusts, and forge a role header to open the staff tools. Then four field jobs for new clients, and a final challenge you run start to finish. Every request and response is real, modelled in your browser, nothing leaves your machine.",
   industry: {
     tag: "The page is only half the story. The real action is in the request and response underneath it.",
-    motif: { pre: "checkout sends -> price: ", hit: "0.01", note: "the price came from YOUR browser, so you set it" },
+    motif: { pre: "checkout sends -> price: ", hit: "0.00", note: "the price came from YOUR browser, so you set it" },
     primer: {
       term: "Requests and responses",
       what: "Every web page is a conversation: your browser sends a REQUEST (a line like GET /page, plus headers), and the server sends back a RESPONSE (a status code, more headers, and the HTML). The page you see is only the HTML part. Attackers read and edit the whole conversation, including the parts the page hides.",
@@ -600,7 +600,7 @@ export const MODULE3: ModuleDef = {
         entries: [
           { code: "view source", what: "The raw HTML and inline JavaScript the server sent, where comments, hidden fields and keys hide.", example: "an SSN or API key sitting in the page source" },
           { code: "robots.txt", what: "A file telling search engines what to skip, which quietly lists the paths worth a look.", example: "Disallow: /staff-portal -> an unlinked page" },
-          { code: "client-sent values", what: "Prices, discounts and quantities the browser sends; never trust them server-side.", example: "price=149 -> edit to 0.01 before it sends" },
+          { code: "client-sent values", what: "Prices, discounts and quantities the browser sends; never trust them server-side.", example: "price=149 -> edit to 0.00 before it sends" },
           { code: "client-set headers", what: "Headers your browser controls, like a role or flag the server reads.", example: "X-Role: user -> X-Role: admin" },
         ],
       },
