@@ -11,7 +11,7 @@
  * check, a FOUR-stage capture with a hint ladder, FOUR drills, and a capstone. */
 
 import { useEffect, useState } from "react";
-import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary } from "./Engagement";
+import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary, shuffle } from "./Engagement";
 
 /* ───────────────────────── glossary ───────────────────────── */
 
@@ -299,11 +299,12 @@ function HiddenFieldLab({ onDone }: { onDone: () => void }) {
 
 function PickServerTruthLab({ onDone }: { onDone: () => void }) {
   const [picked, setPicked] = useState<number | null>(null);
-  const opts = [
+  const [opts] = useState(() => shuffle([
     { code: `total = request.price * qty`, ok: false, why: "The bug: it uses the price the client sent. That's exactly what you tampered." },
-    { code: `<input readonly>  // lock the field on the page`, ok: false, why: "The attacker edits the request, not the page. A read-only field changes nothing." },
+    { code: `price = Number(request.price);  total = price * qty`, ok: false, why: "Parsing the value doesn't make it trustworthy - it's still the number the client chose to send." },
     { code: `price = db.priceOf(itemId);  total = price * qty`, ok: true, why: "The server looks up the real price itself and ignores anything the client sent. This is the fix - the server owns the truth." },
-  ];
+    { code: `price = request.price || db.priceOf(itemId)`, ok: false, why: "It only falls back to the database when the field is missing; whenever the client sends a price, it still trusts it. Re-derive every time." },
+  ]));
   return (
     <div style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: 12, padding: "15px 16px" }}>
       <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: ".1em", color: C.indigo, fontWeight: 700, marginBottom: 10 }}>▶ APPLY THE FIX · which checkout can&apos;t be tampered?</div>
@@ -506,9 +507,9 @@ export const MODULE3: ModuleDef = {
     check: {
       q: "A checkout reads the price from a hidden form field in the request. Why can't the server trust it?",
       options: [
-        { text: "The client controls the whole request, so any field - hidden or not - can be edited before it's sent.", correct: true, feedback: "Right. 'Hidden' only means not drawn on screen; the value is ordinary data the browser can rewrite." },
-        { text: "Hidden fields are encrypted, so they're actually safe to trust.", feedback: "No - 'hidden' isn't encryption or protection; it's just not displayed." },
-        { text: "Hidden fields aren't sent to the server at all.", feedback: "They are sent - that's their whole purpose; they're just not shown on the page." },
+        { text: "The client controls the whole request, so any field, hidden or not, can be edited before sending.", correct: true, feedback: "Right. 'Hidden' only means not drawn on screen; the value is ordinary data the browser can rewrite." },
+        { text: "Hidden fields are automatically encrypted by the browser, so they're safe to trust.", feedback: "No - 'hidden' isn't encryption or protection; it's just not displayed." },
+        { text: "Hidden fields are kept on the page and never sent to the server at all.", feedback: "They are sent - that's their whole purpose; they're just not shown on the page." },
         { text: "It's fine as long as the field is also marked read-only on the page.", feedback: "The attacker edits the request, not the page, so read-only changes nothing." },
       ],
     },
@@ -542,9 +543,9 @@ export const MODULE3: ModuleDef = {
     check: {
       q: "What correctly fixes the tampered checkout?",
       options: [
-        { text: "The server looks up the real price by item id and ignores any price the client sends.", correct: true, feedback: "Right. The server owns the price; the client's value is never trusted." },
-        { text: "Make the price field read-only on the page.", feedback: "The attacker edits the request, not the page - a read-only field changes nothing." },
-        { text: "Encrypt the price field in the form before sending.", feedback: "The client still controls the plaintext before it's sent; the server must re-derive the price itself." },
+        { text: "The server looks up the real price by item id, ignoring the client's price.", correct: true, feedback: "Right. The server owns the price; the client's value is never trusted." },
+        { text: "Make the price field read-only on the checkout page so it can't change.", feedback: "The attacker edits the request, not the page - a read-only field changes nothing." },
+        { text: "Encrypt the price field in the form before the browser sends it.", feedback: "The client still controls the plaintext before it's sent; the server must re-derive the price itself." },
         { text: "Move the price into a hidden field instead of a visible one.", feedback: "Hidden fields are just as editable - that's the whole lesson. The server must decide the price." },
       ],
     },
