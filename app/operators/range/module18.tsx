@@ -493,9 +493,9 @@ export const MODULE18: ModuleDef = {
       "BFLA: an action that never checks your role lets a normal user do admin things. The theme is: check permission, don't trust the request.",
     ],
     check: {
-      q: "An app loads your invoice at GET /api/invoices/5531 and shows it fine. You change it to /api/invoices/5532 and get back someone else's invoice with a 200 OK. What is the flaw, and the real fix?",
+      q: "An app loads your invoice at GET /api/invoices/5531 and shows it fine. You change it to /api/invoices/5532 and get back someone else's invoice with a 200 OK. What is this flaw called?",
       options: [
-        { text: "BOLA: the server never checks the invoice is yours, so it must verify ownership on every request.", correct: true, feedback: "Right. The id is under your control, so authorise the object itself - confirm it belongs to you, not just that you're logged in." },
+        { text: "BOLA: the server returns a record by its id without ever checking it belongs to you.", correct: true, feedback: "Right. The id is under your control, so the server has to authorise the object - confirm it's yours - not just that you're logged in." },
         { text: "Nothing is wrong here: you are logged in, so you're allowed to open any invoice the app shows.", feedback: "Being logged in is authentication, not authorisation. You still must not be able to read other people's invoices." },
         { text: "The data is weakly encrypted in transit, so moving the whole API over to HTTPS would fix it.", feedback: "HTTPS protects data in transit but wouldn't stop this; the server itself handed over the wrong record." },
         { text: "The invoice ids are too easy to guess, so switching to long random ids would close the hole.", feedback: "Obscurity isn't authorisation: any leaked or shared id still works. You must check ownership." },
@@ -529,12 +529,12 @@ export const MODULE18: ModuleDef = {
     ],
     Interactive: PickDefenceLab,
     check: {
-      q: "What is the single most important fix for the BOLA flaw you exploited?",
+      q: "You were properly logged in the whole time, yet you still read another customer's invoice. What does that tell you?",
       options: [
-        { text: "On every request, verify the object belongs to the logged-in user before returning it.", correct: true, feedback: "Right. Authorise the object itself, server-side, every time. Nothing else is a substitute." },
-        { text: "Replace the sequential ids with long random ones so an attacker can't guess them.", feedback: "Obscurity, not authorisation. A shared or leaked id still works. Not a fix." },
-        { text: "Require HTTPS on the API so the request and its data are encrypted in transit.", feedback: "Good practice, but it doesn't stop the server handing over records that aren't yours." },
-        { text: "Move the id out of the URL and send it in a request header instead.", feedback: "Same attacker-controlled value, different place. No permission check added." },
+        { text: "Being logged in (authentication) isn't the same as being allowed (authorisation); the server must check both.", correct: true, feedback: "Right. Authentication proves who you are; authorisation decides what you may touch. BOLA is the second check missing." },
+        { text: "Your login token must have been forged, or it could never have reached another account's data.", feedback: "Nothing was forged - you stayed logged in as yourself. The server just never checked the record was yours." },
+        { text: "The other customer must at some point have shared their invoice link with your account.", feedback: "Nothing was shared. The endpoint returns any id to anyone logged in, because it never checks ownership." },
+        { text: "Logging in should open every record, so the real bug was the server blocking some of them.", feedback: "The opposite - being logged in should NOT open everyone's records. The server needed an ownership check it didn't have." },
       ],
     },
   },
