@@ -11,7 +11,7 @@
  * ladder, FOUR drills, and a chained capstone. */
 
 import { useState } from "react";
-import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary } from "./Engagement";
+import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary, shuffle } from "./Engagement";
 
 /* ───────────────────────── glossary ───────────────────────── */
 
@@ -49,20 +49,22 @@ function Hints({ hints, revealLabel, onReveal }: { hints: string[]; revealLabel?
   );
 }
 
-const riskColor = (r: "ok" | "watch" | "bad") => (r === "bad" ? C.red : r === "watch" ? C.amber : C.green);
-
-/* ── scan + pick: run a scan, reveal rows, click the target ── */
+/* ── scan + pick: run a scan, read the rows, flag the target ── */
 type ScanRow = { col1: string; col2: string; risk: "ok" | "watch" | "bad" };
 function ScanPickSurface({ cmd, prompt, rows, hint, onSolved }: { cmd: string; prompt: string; rows: ScanRow[]; hint: string; onSolved: () => void }) {
   const [scanned, setScanned] = useState(false);
   const [picked, setPicked] = useState<string | null>(null);
-  const [msg, setMsg] = useState<string | null>(null);
+  const [verdict, setVerdict] = useState<{ ok: boolean; text: string } | null>(null);
   const [solved, setSolved] = useState(false);
-  function pick(r: ScanRow) {
-    setPicked(r.col1);
-    if (r.risk === "bad") { setMsg(`✓ ${r.col1} - ${r.col2}. That's the critical exposure.`); if (!solved) { setSolved(true); onSolved(); } }
-    else if (r.risk === "watch") setMsg(`${r.col1} - a real concern, but there's something worse here. Keep looking.`);
-    else setMsg(`${r.col1} - expected and reasonably safe. Not the headline exposure.`);
+  // The scan reveals the services and versions, but NOT a risk colour, so you
+  // have to read them and decide. Selecting a row never wins; you flag the one
+  // you judge the worst, then confirm. The verdict shows only after you commit.
+  function confirm() {
+    if (!picked || solved) return;
+    const r = rows.find((x) => x.col1 === picked)!;
+    if (r.risk === "bad") { setVerdict({ ok: true, text: `${r.col1} - ${r.col2}. That's the critical exposure.` }); setSolved(true); onSolved(); }
+    else if (r.risk === "watch") setVerdict({ ok: false, text: `${r.col1} is a real concern, but there's something worse open here. Keep looking.` });
+    else setVerdict({ ok: false, text: `${r.col1} is expected and reasonably safe. Not the headline exposure.` });
   }
   return (
     <div style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: 14, padding: 16 }}>
@@ -73,15 +75,23 @@ function ScanPickSurface({ cmd, prompt, rows, hint, onSolved }: { cmd: string; p
         <>
           <div style={{ fontFamily: MONO, fontSize: 11.5, color: C.mute, margin: "10px 0 8px" }}>// scan complete · {rows.length} results · {prompt}</div>
           <div style={{ display: "grid", gap: 6 }}>
-            {rows.map((r) => (
-              <button key={r.col1} onClick={() => pick(r)} className="co-opt" style={{ textAlign: "left", display: "flex", gap: 12, alignItems: "center", flexWrap: "wrap", padding: "9px 12px", borderRadius: 9, border: `1px solid ${picked === r.col1 ? riskColor(r.risk) : C.lineSoft}`, background: C.carbon, cursor: "pointer" }}>
-                <span style={{ fontFamily: MONO, fontSize: 12.5, color: C.ink, minWidth: 110 }}>{r.col1}</span>
-                <span style={{ fontFamily: MONO, fontSize: 12.5, color: C.soft, flex: 1, minWidth: 150 }}>{r.col2}</span>
-                <span style={{ width: 8, height: 8, borderRadius: "50%", background: riskColor(r.risk) }} />
-              </button>
-            ))}
+            {rows.map((r) => {
+              const isSel = picked === r.col1; const good = solved && r.risk === "bad";
+              return (
+                <button key={r.col1} onClick={() => { if (!solved) { setPicked(r.col1); setVerdict(null); } }} disabled={solved} className="co-opt" style={{ textAlign: "left", display: "flex", gap: 12, alignItems: "center", flexWrap: "wrap", padding: "9px 12px", borderRadius: 9, border: `1px solid ${good ? C.green : isSel ? C.indigo : C.lineSoft}`, background: isSel ? "rgba(139,123,255,0.08)" : C.carbon, cursor: solved ? "default" : "pointer" }}>
+                  <span style={{ fontFamily: MONO, fontSize: 12.5, color: good ? C.green : C.ink, minWidth: 110 }}>{good ? "✓ " : ""}{r.col1}</span>
+                  <span style={{ fontFamily: MONO, fontSize: 12.5, color: C.soft, flex: 1, minWidth: 150 }}>{r.col2}</span>
+                </button>
+              );
+            })}
           </div>
-          {msg && <div style={{ fontFamily: MONO, fontSize: 12.5, color: solved ? C.green : C.soft, marginTop: 10, lineHeight: 1.6 }}>{msg}</div>}
+          {!solved && (
+            <div style={{ display: "flex", gap: 14, alignItems: "center", flexWrap: "wrap", marginTop: 12 }}>
+              <Btn tone="g" onClick={confirm} disabled={!picked}>Flag this as the exposure →</Btn>
+              {verdict && !verdict.ok && <span style={{ fontFamily: MONO, fontSize: 11.5, color: C.amber }}>{verdict.text}</span>}
+            </div>
+          )}
+          {verdict && verdict.ok && <div style={{ fontFamily: MONO, fontSize: 12.5, color: C.green, marginTop: 10, lineHeight: 1.6 }}>✓ {verdict.text}</div>}
           <Hints hints={[hint]} />
         </>
       )}
@@ -203,7 +213,7 @@ const ACT_STAGES: Stage[] = [
   {
     kind: "decision", title: "Prioritise", goal: "Stage 4 - Make the call. You've mapped the exposure. What do you put at the top of the report?",
     decision: { prompt: "Across everything you found, what's the right top recommendation?", options: [
-      { text: "Get RDP and the prod database off the open network (VPN/firewall), then patch the outdated vsftpd and Apache.", correct: true, feedback: "Right. Remove the directly-reachable high-value exposures first, then close the known-vulnerable versions. That's priority order." },
+      { text: "Take RDP and the prod database off the open network, then patch the outdated services.", correct: true, feedback: "Right. Remove the directly-reachable high-value exposures first (RDP, the prod DB), then close the known-vulnerable versions. That's priority order." },
       { text: "Move RDP to a non-standard port so scanners can't find it.", feedback: "Obscurity only - scanners find services on any port. The exposure remains and is still attacked." },
       { text: "Leave everything open but set strong passwords everywhere.", feedback: "An exposed RDP and a reachable prod DB are attacked regardless of password strength; take them off the open network." },
       { text: "Just upgrade the FTP server and call it done.", feedback: "The FTP is a real issue, but the internet-facing RDP and the reachable prod DB are bigger - don't stop there." },
@@ -264,11 +274,12 @@ function ScanLab({ onDone }: { onDone: () => void }) {
 
 function PickFixLab({ onDone }: { onDone: () => void }) {
   const [picked, setPicked] = useState<number | null>(null);
-  const opts = [
-    { code: "Move RDP to port 33890 so scanners miss it", ok: false, why: "Obscurity - scanners sweep all ports. The service is still exposed and attacked." },
-    { code: "Leave it open, just rely on a strong password", ok: false, why: "Exposed RDP is brute-forced and exploited continuously regardless; take it off the open internet." },
-    { code: "Put RDP behind a VPN/allow-list, close unused ports, patch the rest", ok: true, why: "Shrink and shield the attack surface: reachable only to who needs it, nothing spare open, everything current. The real fix." },
-  ];
+  const [opts] = useState(() => shuffle([
+    { code: "Move RDP to port 33890 so scanners miss it", ok: false, why: "Obscurity. Scanners sweep all ports, so the service is still exposed and attacked." },
+    { code: "Leave it open, but rely on a very strong password", ok: false, why: "Exposed RDP is brute-forced and exploited continuously regardless. Take it off the open internet." },
+    { code: "Rename the admin account so attackers can't target the login", ok: false, why: "Still obscurity. The login is reachable either way, and attackers enumerate usernames anyway." },
+    { code: "Put RDP behind a VPN or allow-list, and patch the rest", ok: true, why: "Shrink and shield the attack surface: reachable only to who needs it, and everything current. The real fix." },
+  ]));
   return (
     <div style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: 12, padding: "15px 16px" }}>
       <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: ".1em", color: C.indigo, fontWeight: 700, marginBottom: 10 }}>▶ APPLY THE FIX · how do you fix the exposed RDP?</div>
@@ -298,7 +309,7 @@ const DRILLS: DrillCfg[] = [
   { client: "Flux Fitness", brief: "Sweep Flux's subnet and find the host that shouldn't be reachable. Trickier.", stages: [{ kind: "scan", title: "Sweep", goal: "Find the exposed internal host.", cmd: "sweep 10.0.9.0/24", prompt: "click the host that shouldn't be reachable", rows: [ { col1: "10.0.9.10", col2: "web (ok)", risk: "ok" }, { col1: "10.0.9.50", col2: "backup-nas (open SMB share, reachable)", risk: "bad" } ], hint: "An open backup share reachable across the network is the find." }], success: "Found a reachable backup share - a goldmine if an attacker gets a foothold. Finding logged." },
   { client: "Oakline Store", brief: "The full field job. Scan, enumerate, then make the call. Chain it yourself.", stages: [
     { kind: "scan", title: "Scan", goal: "Step 1: flag the exposure.", cmd: "scan gw.oakline.range", prompt: "worst exposure", rows: [ { col1: "443/tcp", col2: "https (ok)", risk: "ok" }, { col1: "3389/tcp", col2: "rdp open to internet", risk: "bad" } ], hint: "Internet-facing RDP." },
-    { kind: "decision", title: "Call", goal: "Step 2: the top recommendation?", decision: { prompt: "What goes top of Oakline's report?", options: [ { text: "Take RDP off the open internet (VPN/allow-list) and patch services.", correct: true, feedback: "Right - remove the direct exposure first." }, { text: "Change the RDP port number.", feedback: "Obscurity isn't a fix - scanners find it anyway." } ] } },
+    { kind: "decision", title: "Call", goal: "Step 2: the top recommendation?", decision: { prompt: "What goes top of Oakline's report?", options: [ { text: "Take RDP off the open internet with a VPN or allow-list, then patch the services.", correct: true, feedback: "Right. Remove the direct exposure first, then patch." }, { text: "Change the RDP port number so the port scanners miss it.", feedback: "Obscurity isn't a fix. Scanners find the service on any port." }, { text: "Leave it open but enforce a long, complex administrator password.", feedback: "Exposed RDP is attacked regardless of how strong the password is." }, { text: "Turn RDP off completely so that nobody can ever use it.", feedback: "Over-correction that breaks legitimate remote admin. Restrict access, don't kill the service." } ] } },
   ], success: "Scanned, prioritised, and recommended correctly - the whole recon-to-report chain. Finding logged." },
 ];
 
@@ -450,10 +461,10 @@ export const MODULE10: ModuleDef = {
     check: {
       q: "Why is identifying the service version so valuable in recon?",
       options: [
-        { text: "A specific version can be matched to known, published vulnerabilities for that exact software.", correct: true, feedback: "Right - 'vsftpd 2.3.4' tells an attacker exactly which exploit to reach for." },
-        { text: "Newer version numbers are always safe to ignore.", feedback: "Version matters precisely because some (often old) versions have known vulnerabilities." },
-        { text: "The version number is the server's password.", feedback: "No - it just identifies the software; its value is matching it to known weaknesses." },
-        { text: "Knowing the version lets you log in without credentials.", feedback: "Not directly - it tells you which published exploit might, which is a different and earlier step." },
+        { text: "A specific version can be matched to known, published vulnerabilities for that exact software.", correct: true, feedback: "Right. 'vsftpd 2.3.4' tells an attacker exactly which published exploit to reach for." },
+        { text: "An older version number usually means the software is more tested and stable.", feedback: "It's the opposite risk: old versions are the ones with known, unpatched vulnerabilities." },
+        { text: "The version banner also leaks the server's internal hostname and IP address.", feedback: "A banner identifies the software, not the host's name or address. Its value is matching it to known weaknesses." },
+        { text: "Knowing the version lets you log straight in without any credentials at all.", feedback: "Not directly. It tells you which published exploit might work, a different and earlier step." },
       ],
     },
   },
@@ -486,10 +497,10 @@ export const MODULE10: ModuleDef = {
     check: {
       q: "What's the right fix for the exposed Remote Desktop?",
       options: [
-        { text: "Restrict it behind a VPN / allow-list so it isn't on the open internet, and keep it patched.", correct: true, feedback: "Right - remove it from the open internet and limit who can reach it." },
-        { text: "Change RDP to a different port number.", feedback: "Obscurity only - scanners find it on any port. The service is still exposed and attacked." },
-        { text: "Leave it open but pick a stronger admin password.", feedback: "Better than nothing, but exposed RDP is relentlessly attacked; take it off the open internet." },
-        { text: "Block the specific IPs that are currently scanning it.", feedback: "The whole internet scans continuously; blocking a few IPs doesn't reduce the exposure." },
+        { text: "Put it behind a VPN or allow-list, off the open internet, and keep it patched.", correct: true, feedback: "Right. Remove it from the open internet, limit who can reach it, and stay patched." },
+        { text: "Move RDP to a different, high-numbered port so the scanners miss it.", feedback: "Obscurity only. Scanners find it on any port, so the service is still exposed and attacked." },
+        { text: "Leave it open to the internet but enforce a much stronger admin password.", feedback: "Better than nothing, but exposed RDP is relentlessly attacked. Take it off the open internet." },
+        { text: "Block the specific IP addresses that are currently scanning the port.", feedback: "The whole internet scans continuously; blocking a few addresses doesn't reduce the exposure." },
       ],
     },
   },
