@@ -167,7 +167,7 @@ const ACT_STAGES: Stage[] = [
     explain: {
       q: "You logged into the live console with a password lifted from an old database backup. What is this, and why did it work?",
       options: [
-        { text: "Credential reuse: the same password still worked on the live console because it was never changed after the backup leaked.", correct: true, feedback: "Right - one leaked password opened a second system. Rotate credentials after any exposure, and never reuse them across systems." },
+        { text: "Credential reuse: the backup's password still worked because it was never changed after the leak.", correct: true, feedback: "Right - one leaked password opened a second system. Rotate credentials after any exposure, and never reuse them across systems." },
         { text: "A brute-force attack: the console just accepted the first password you tried from the leaked dump.", feedback: "No guessing was involved - you used the exact real password from the backup. It worked because it was still valid." },
         { text: "The console had no password check at all, so any text in the password box would have let you in.", feedback: "It does check - a wrong password is rejected. It worked because the looted password was the genuine, current one." },
         { text: "The backup file itself contained a live login session that carried straight over into the console.", feedback: "The backup held a password, not a session. You logged in normally with a credential that should have been rotated." },
@@ -454,12 +454,12 @@ export const MODULE15: ModuleDef = {
     ],
     Interactive: BreakChainLab,
     check: {
-      q: "What's the most reliable way to stop a chained attack like this?",
+      q: "On its own, each step here was a 'small' issue - a public backup, a reused password. Why did they add up to a full breach?",
       options: [
-        { text: "Fix any one link in the chain to break the whole attack.", correct: true, feedback: "Right - defence in depth: remove any link (for example, don't web-expose the backup) and the chain collapses." },
-        { text: "Only ever fix Critical-rated bugs and ignore the small stuff.", feedback: "The small stuff is exactly what chains into Criticals - ignoring it is how this breach happened." },
-        { text: "Add even more sensitive paths to the robots.txt file.", feedback: "That advertises even more - the opposite of a fix." },
-        { text: "Just hope that an attacker never notices the combination.", feedback: "Attackers look for exactly these chains; hope isn't a control." },
+        { text: "Chained together, each weak step handed the attacker the next, until a low-risk leak became full admin.", correct: true, feedback: "Right - that's why 'low severity' bugs still matter. Alone they're minor; in a chain they are the path to everything." },
+        { text: "Each of those issues was really a Critical bug that had simply been mis-scored as low.", feedback: "No - each genuinely was low-risk alone. The danger was the combination, not a hidden Critical." },
+        { text: "The attacker also used a powerful zero-day, and the small issues were just a distraction.", feedback: "No zero-day was needed. Ordinary, known weaknesses chained together were enough on their own." },
+        { text: "The steps only worked because they were all exploited within the same few minutes.", feedback: "Timing wasn't the point - the chain works whenever each step is still open, fast or slow." },
       ],
     },
   },
