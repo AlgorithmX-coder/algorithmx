@@ -42,6 +42,7 @@ const CSS = `
 .wr-opt{transition:transform .1s,border-color .15s,background .15s}
 .wr-opt:hover:not(:disabled){border-color:var(--v);transform:translateY(-1px)}
 .wr-opt:focus-visible{outline:2px solid var(--v);outline-offset:2px}
+.wr-sw{transition:background .15s,border-color .15s}
 .wr-btn:focus-visible{outline:2px solid var(--v);outline-offset:2px}
 .sr-stamp-in{animation:srStamp .3s cubic-bezier(.2,0,0,1)}
 @keyframes srStamp{0%{transform:rotate(-3deg) scale(1.15);opacity:0}30%{transform:rotate(-3deg) scale(1);opacity:1}38%{transform:rotate(-3deg) scale(1) translate(2px,0)}46%{transform:rotate(-3deg) scale(1) translate(0,0)}100%{transform:rotate(-3deg) scale(1);opacity:.9}}
@@ -63,6 +64,14 @@ type Dock =
   | { type: "connect"; prompt?: string; left: { id: string; label: string }[]; right: { id: string; label: string }[]; pairs: [string, string][]; bad?: string; badVoice?: string }
   | { type: "pin"; prompt?: string; cards: { label: string; good: boolean; sub?: string }[]; need: number; bad?: string; badVoice?: string }
   | { type: "sequence"; prompt?: string; cards: { id: string; label: string; sub?: string }[]; bad?: string; badVoice?: string }
+  | {
+      type: "flip";
+      prompt?: string;
+      you:
+        | { kind: "toggle"; label: string; sub?: string; off: string; on: string }
+        | { kind: "choice"; label: string; sub?: string; prompt: string; options: { label: string; outcome: "good" | "bad" }[] };
+      them: { label: string; whenGood: string; whenBad: string };
+    }
   | { type: "clear"; text: string }
   | { type: "idle" }
   | null;
@@ -117,7 +126,7 @@ export default function WarRoomRuntime({ warCase, onExit, onNextCase }: { warCas
       return;
     }
     if (dock.type === "clear") { resolveRef.current?.("go"); return; }
-    if (dock.type === "connect" || dock.type === "pin" || dock.type === "sequence") {
+    if (dock.type === "connect" || dock.type === "pin" || dock.type === "sequence" || dock.type === "flip") {
       resolveRef.current?.("ok");
       return;
     }
@@ -181,6 +190,13 @@ export default function WarRoomRuntime({ warCase, onExit, onNextCase }: { warCas
         setNudge(null); setDock({ type: "sequence", prompt: step.prompt, cards: step.cards, bad: step.bad, badVoice: step.badVoice });
         await awaitUser(); setDock(null);
         if (step.ok) { push({ id: nextId(), kind: "wren", text: step.ok }); await speak(step.ok, step.okVoice); }
+      } else if (step.t === "flip") {
+        setNudge(null);
+        setDock({ type: "flip", prompt: step.prompt, you: step.you, them: step.them });
+        await awaitUser(); // resolves once the "good" side has been viewed on THEIR face
+        setDock(null);
+        if (step.ok) { push({ id: nextId(), kind: "wren", text: step.ok }); await speak(step.ok, step.okVoice); }
+        if (step.ask) await runSteps([{ t: "choose", prompt: step.ask.prompt, options: step.ask.options }]);
       }
     }
   };
@@ -385,10 +401,21 @@ function DockView({ dock, nudge, acc, onResolve, onBad }: { dock: Dock; nudge: s
   const [matched, setMatched] = useState<string[]>([]);        // connect: solved left ids
   const [pool, setPool] = useState<number[]>([]);       // sequence: shuffled indices still unplaced
   const [placed, setPlaced] = useState<number[]>([]);   // sequence: indices tapped, in order
+  const [flipSide, setFlipSide] = useState<"you" | "them">("you");
+  const [flipToggleOn, setFlipToggleOn] = useState(false);
+  const [flipChoiceIdx, setFlipChoiceIdx] = useState<number | null>(null);
+  const flipFiredRef = useRef(false);
   useEffect(() => {
     setSel([]); setSelLeft(null); setMatched([]); setPlaced([]);
     setPool(dock?.type === "sequence" ? shuffled(dock.cards.length) : []);
+    if (dock?.type === "flip") { setFlipSide("you"); setFlipToggleOn(false); setFlipChoiceIdx(null); flipFiredRef.current = false; }
   }, [dock]);
+  // auto-resolves the instant the GOOD state has been viewed on THEIR face.
+  useEffect(() => {
+    if (dock?.type !== "flip" || flipFiredRef.current) return;
+    const good = dock.you.kind === "toggle" ? flipToggleOn : dock.you.options[flipChoiceIdx ?? -1]?.outcome === "good";
+    if (flipSide === "them" && good) { flipFiredRef.current = true; onResolve("ok"); }
+  }, [dock, flipSide, flipToggleOn, flipChoiceIdx, onResolve]);
 
   if (!dock || dock.type === "idle") return <div style={{ fontFamily: MONO, fontSize: 12, color: C.faint, opacity: 0.6, textAlign: "center", padding: "6px 0" }}>board idle…</div>;
   if (dock.type === "clear") {
@@ -490,6 +517,65 @@ function DockView({ dock, nudge, acc, onResolve, onBad }: { dock: Dock; nudge: s
           ))}
         </div>
         <button className="wr-btn" onClick={submit} disabled={placed.length !== total} style={{ width: "100%", fontFamily: MONO, fontWeight: 700, fontSize: 13, letterSpacing: ".04em", color: C.page, background: placed.length === total ? acc : "#3a2f5e", border: 0, borderRadius: 6, padding: "11px", cursor: placed.length === total ? "pointer" : "not-allowed" }}>LOCK THE CHAIN</button>
+      </>
+    );
+  }
+  if (dock.type === "flip") {
+    const isToggle = dock.you.kind === "toggle";
+    const pickedOutcome = !isToggle && dock.you.kind === "choice" && flipChoiceIdx !== null ? dock.you.options[flipChoiceIdx].outcome : null;
+    const canFlip = isToggle || pickedOutcome !== null;
+    const pageLabel = flipSide === "you" ? dock.you.label : dock.them.label;
+    const pageSub = flipSide === "you" ? dock.you.sub : undefined;
+    const themText = isToggle
+      ? (flipToggleOn ? dock.them.whenGood : dock.them.whenBad)
+      : pickedOutcome === "good" ? dock.them.whenGood : pickedOutcome === "bad" ? dock.them.whenBad : "";
+    const themGood = isToggle ? flipToggleOn : pickedOutcome === "good";
+    return (
+      <>
+        <p style={{ fontSize: 12, color: C.dim, textAlign: "center", margin: "0 0 9px", fontWeight: 600 }}>{dock.prompt ?? "Flip between both sides."}</p>
+        <div style={{ display: "flex", justifyContent: "center", gap: 6, marginBottom: 9 }}>
+          <span style={{ fontFamily: MONO, fontSize: 9.5, letterSpacing: ".16em", fontWeight: 700, color: flipSide === "you" ? acc : C.faint, padding: "3px 9px", borderRadius: 999, border: `1px solid ${flipSide === "you" ? acc : C.chipedge}`, background: flipSide === "you" ? `${acc}1a` : "transparent" }}>YOUR SIDE</span>
+          <span style={{ fontFamily: MONO, fontSize: 9.5, letterSpacing: ".16em", fontWeight: 700, color: flipSide === "them" ? C.red : C.faint, padding: "3px 9px", borderRadius: 999, border: `1px solid ${flipSide === "them" ? C.red : C.chipedge}`, background: flipSide === "them" ? "rgba(255,106,138,.12)" : "transparent" }}>THEIR SIDE</span>
+        </div>
+        <div key={flipSide} className="wr-row" style={{ background: C.chip, border: `1px solid ${flipSide === "them" ? "rgba(255,106,138,.4)" : C.chipedge}`, borderRadius: 10, padding: "13px 14px", marginBottom: 11, minHeight: 96 }}>
+          <div style={{ fontFamily: MONO, fontSize: 9.5, letterSpacing: ".1em", color: C.faint, marginBottom: 6 }}>{pageLabel.toUpperCase()}</div>
+          {pageSub && <div style={{ fontSize: 11, color: C.dim, marginBottom: 8 }}>{pageSub}</div>}
+          {flipSide === "you" && dock.you.kind === "toggle" && (
+            <button className="wr-sw" role="switch" aria-checked={flipToggleOn} onClick={() => setFlipToggleOn((v) => !v)}
+              style={{ display: "flex", alignItems: "center", gap: 11, textAlign: "left", background: flipToggleOn ? "rgba(79,217,168,.12)" : C.chip, border: `1px solid ${flipToggleOn ? "rgba(79,217,168,.5)" : C.chipedge}`, borderRadius: 8, padding: "9px 12px", cursor: "pointer", fontFamily: UI, width: "100%" }}>
+              <span aria-hidden style={{ flex: "0 0 auto", width: 40, height: 22, borderRadius: 999, background: flipToggleOn ? C.mint : "#2a2447", position: "relative" }}>
+                <span style={{ position: "absolute", top: 2, left: flipToggleOn ? 20 : 2, width: 18, height: 18, borderRadius: "50%", background: "#0c0a17" }} />
+              </span>
+              <span style={{ fontSize: 13, color: C.ink, fontWeight: 700 }}>{flipToggleOn ? dock.you.on : dock.you.off}</span>
+              <span style={{ marginLeft: "auto", fontFamily: MONO, fontSize: 10.5, fontWeight: 700, color: flipToggleOn ? C.mint : C.faint }}>{flipToggleOn ? "ON" : "OFF"}</span>
+            </button>
+          )}
+          {flipSide === "you" && dock.you.kind === "choice" && (
+            <>
+              <p style={{ fontSize: 12.5, color: C.dim, margin: "0 0 8px", fontWeight: 600 }}>{dock.you.prompt}</p>
+              <div style={{ display: "flex", flexDirection: "column", gap: 7 }}>
+                {dock.you.options.map((o, i) => {
+                  const isPicked = flipChoiceIdx === i;
+                  return (
+                    <button key={i} className="wr-opt" onClick={() => setFlipChoiceIdx(i)}
+                      style={{ fontFamily: UI, fontSize: 13.5, fontWeight: 600, textAlign: "left", color: C.ink, background: isPicked ? (o.outcome === "good" ? "rgba(79,217,168,.14)" : "rgba(255,106,138,.14)") : C.chip, border: `1px solid ${isPicked ? (o.outcome === "good" ? "rgba(79,217,168,.5)" : "rgba(255,106,138,.5)") : C.chipedge}`, borderRadius: 8, padding: "9px 12px", cursor: "pointer" }}>
+                      {o.label}
+                    </button>
+                  );
+                })}
+              </div>
+            </>
+          )}
+          {flipSide === "them" && (
+            <div style={{ fontFamily: MONO, fontSize: 13, letterSpacing: ".03em", lineHeight: 1.6, color: themText ? (themGood ? C.mint : C.red) : C.faint }}>
+              {themText || "— nothing to show yet, flip back and decide —"}
+            </div>
+          )}
+        </div>
+        <button className="wr-btn" disabled={!canFlip} onClick={() => setFlipSide((s) => (s === "you" ? "them" : "you"))}
+          style={{ width: "100%", fontFamily: MONO, fontWeight: 700, fontSize: 13, letterSpacing: ".04em", color: C.page, background: !canFlip ? "#3a2f5e" : acc, border: 0, borderRadius: 6, padding: "11px", cursor: !canFlip ? "not-allowed" : "pointer" }}>
+          {flipSide === "you" ? `FLIP → SEE ${dock.them.label.toUpperCase()}` : "FLIP BACK"}
+        </button>
       </>
     );
   }

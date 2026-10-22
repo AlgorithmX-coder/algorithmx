@@ -54,6 +54,26 @@ export type WarStep =
       okVoice?: string;
       bad?: string;
       badVoice?: string;
+    }
+  | {
+      // Boss-only "two sides" beat — ported from Block 3's Console (see
+      // console/case11.ts for the full rationale). ONE physical card you
+      // flip between YOUR side and THEIR side, never a split view. When
+      // `you` is a toggle, a real on/off defence exists and flipping to
+      // "them" shows the opponent's attempt reacting live to its position.
+      // When `you` is a choice, there's no literal switch for this threat,
+      // so "you" carries the same kind of decision this block already
+      // asks elsewhere, and flipping reveals the consequence from the
+      // opponent's own side.
+      t: "flip";
+      prompt?: string;
+      you:
+        | { kind: "toggle"; label: string; sub?: string; off: string; on: string }
+        | { kind: "choice"; label: string; sub?: string; prompt: string; options: { label: string; outcome: "good" | "bad" }[] };
+      them: { label: string; whenGood: string; whenBad: string };
+      ask?: { prompt?: string; options: { label: string; sub?: string; outcome?: "good" | "bad"; then?: WarStep[] }[] };
+      ok?: string;
+      okVoice?: string;
     };
 
 export interface WarSkill {
@@ -524,15 +544,29 @@ export const case16War: WarCase = {
       {
         name: "The gavel",
         steps: [
-          { t: "note", text: "AUCTION LOT now reads: 'name only · everything else: no recent data'" },
           {
-            t: "choose",
-            prompt: "The gavel falls. Why did the file sell for almost nothing?",
-            options: [
-              { label: "You cut its sources, the file starved to nearly empty", outcome: "good" },
-              { label: "Nobody was interested that day", outcome: "bad", then: [{ t: "note", text: "BIDDERS: keen as ever, the file was just empty" }] },
-              { label: "PACKRAT felt generous", outcome: "bad", then: [{ t: "note", text: "PACKRAT: I'd have sold it gladly, but there was nothing left to sell" }] },
-            ],
+            t: "flip",
+            prompt: "PACKRAT doesn't know this, but you can run the comparison yourself. Flip the switch, then flip the card to watch the gavel fall.",
+            you: {
+              kind: "toggle",
+              label: "Your data sources · simulator",
+              sub: "compare the auction with and without the cut",
+              off: "SIMULATING: sources still live",
+              on: "YOUR REAL MOVE: sources cut",
+            },
+            them: {
+              label: "PACKRAT's auction floor",
+              whenBad: "LOT SELLS: 'Complete profile' · full price · bidders eager",
+              whenGood: "LOT SELLS: 'name only' · pocket change · bidders walk",
+            },
+            ask: {
+              prompt: "The gavel falls. Why did the file sell for almost nothing?",
+              options: [
+                { label: "You cut its sources, the file starved to nearly empty", outcome: "good" },
+                { label: "Nobody was interested that day", outcome: "bad", then: [{ t: "note", text: "BIDDERS: keen as ever, the file was just empty" }] },
+                { label: "PACKRAT felt generous", outcome: "bad", then: [{ t: "note", text: "PACKRAT: I'd have sold it gladly, but there was nothing left to sell" }] },
+              ],
+            },
           },
         ],
       },
