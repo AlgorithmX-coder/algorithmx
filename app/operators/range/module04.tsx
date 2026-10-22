@@ -15,7 +15,7 @@
  * clients, and a chained capstone - all hands-on. */
 
 import { useEffect, useState } from "react";
-import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary } from "./Engagement";
+import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary, shuffle } from "./Engagement";
 
 /* ───────────────────────── glossary ───────────────────────── */
 
@@ -93,32 +93,42 @@ function unb64(token: string): { user?: string; role?: string } | null { try { r
 /* ── Surface 1: username enumeration ── */
 function EnumerateSurface({ cfg, onSolved }: { cfg: AuthConfig; onSolved: () => void }) {
   const [email, setEmail] = useState("");
-  const [msg, setMsg] = useState<{ ok: boolean; text: string } | null>(null);
+  const [msg, setMsg] = useState<{ exists: boolean; text: string } | null>(null);
+  const [solved, setSolved] = useState(false);
+  const [wrong, setWrong] = useState(false);
   const valid = new Set(cfg.accounts.map((a) => a.email));
   const suggestions = [...cfg.decoys.slice(0, 2), cfg.accounts[0].email, ...cfg.decoys.slice(2, 3)];
 
-  function check(e: string) {
-    setEmail(e);
-    if (valid.has(e.trim())) { setMsg({ ok: true, text: `✗ Wrong password. (The app ADMITTED this account exists - that's the leak.)` }); onSolved(); }
-    else setMsg({ ok: false, text: `✗ No account found with that email.` });
+  // Probing an email only REVEALS how the app responds (it leaks whether the
+  // account exists); it never wins. Probe a few, compare the responses, then
+  // confirm the one the app admitted is real.
+  function probe(e: string) {
+    const exists = valid.has(e.trim());
+    setMsg({ exists, text: exists ? "Wrong password. (The app ADMITTED this account exists - that leak is the point.)" : "No account found with that email." });
+    setWrong(false);
   }
+  function confirm() { if (solved) return; if (valid.has(email.trim())) { setSolved(true); onSolved(); } else setWrong(true); }
   return (
     <div style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: 14, overflow: "hidden" }}>
       <WinBar host={cfg.host} />
       <div style={{ padding: 18 }}>
-        <div style={{ fontFamily: MONO, fontSize: 11.5, color: C.mute, marginBottom: 12 }}>// the login tells you different things for real vs fake emails. Find a REAL account.</div>
+        <div style={{ fontFamily: MONO, fontSize: 11.5, color: C.mute, marginBottom: 12 }}>// the login tells you different things for real vs fake emails. Probe a few, then confirm a REAL account.</div>
         <label style={lab}>email</label>
-        <input style={inp} value={email} onChange={(e) => setEmail(e.target.value)} placeholder="name@..." />
+        <input style={inp} value={email} onChange={(e) => { setEmail(e.target.value); setMsg(null); }} placeholder="name@..." />
         <div style={{ marginTop: 10 }}>
-          <div style={{ fontFamily: MONO, fontSize: 10, letterSpacing: ".1em", color: C.mute, marginBottom: 7 }}>EMAILS TO TRY · tap one</div>
+          <div style={{ fontFamily: MONO, fontSize: 10, letterSpacing: ".1em", color: C.mute, marginBottom: 7 }}>EMAILS TO TRY · tap to probe</div>
           <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
             {suggestions.map((s) => (
-              <button key={s} onClick={() => check(s)} className="co-opt" style={{ padding: "5px 9px", borderRadius: 7, border: `1px solid ${C.line}`, background: C.carbon, color: C.indigo2, fontFamily: MONO, fontSize: 12, cursor: "pointer" }}>{s}</button>
+              <button key={s} onClick={() => { setEmail(s); probe(s); }} disabled={solved} className="co-opt" style={{ padding: "5px 9px", borderRadius: 7, border: `1px solid ${C.line}`, background: C.carbon, color: C.indigo2, fontFamily: MONO, fontSize: 12, cursor: solved ? "default" : "pointer" }}>{s}</button>
             ))}
           </div>
         </div>
-        <div style={{ marginTop: 14 }}><Btn tone="i" onClick={() => check(email)}>CHECK EMAIL →</Btn></div>
-        {msg && <Resp ok={msg.ok}>{msg.text}</Resp>}
+        <div style={{ display: "flex", gap: 12, alignItems: "center", flexWrap: "wrap", marginTop: 14 }}>
+          <Btn tone="i" onClick={() => probe(email)} disabled={solved}>PROBE EMAIL →</Btn>
+          {!solved && <Btn tone="g" onClick={confirm} disabled={!email.trim()}>This account is real →</Btn>}
+        </div>
+        {msg && <Resp ok={msg.exists}>{msg.exists ? "↳ " : "✗ "}{msg.text}</Resp>}
+        {wrong && <Resp ok={false}>That email returned &quot;no account found&quot;. Probe the others and confirm one the app admits exists.</Resp>}
       </div>
     </div>
   );
@@ -143,11 +153,11 @@ function BruteSurface({ cfg, email, candidates, onSolved }: { cfg: AuthConfig; e
       <div style={{ padding: 18 }}>
         <div style={{ marginBottom: 12 }}><label style={lab}>email (confirmed real)</label><input style={{ ...inp, opacity: 0.85 }} value={email} readOnly /></div>
         <div style={{ marginBottom: 14 }}><label style={lab}>password</label><input style={inp} value={pw} onChange={(e) => setPw(e.target.value)} placeholder="••••••••" /></div>
-        <div style={{ fontFamily: MONO, fontSize: 10, letterSpacing: ".1em", color: C.indigo, fontWeight: 700, marginBottom: 8 }}>⌦ COMMON-PASSWORD LIST · tap to try</div>
+        <div style={{ fontFamily: MONO, fontSize: 10, letterSpacing: ".1em", color: C.indigo, fontWeight: 700, marginBottom: 8 }}>⌦ COMMON-PASSWORD LIST · tap to load one, then LOG IN</div>
         <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
           {candidates.map((c) => (
-            <button key={c} onClick={() => { setPw(c); attempt(c); }} disabled={status === "ok"} className="co-opt"
-              style={{ padding: "6px 10px", borderRadius: 7, border: `1px solid ${tried.includes(c) ? (acct && c === acct.password ? C.green : C.red) : C.line}`, background: C.carbon, color: C.ink, fontFamily: MONO, fontSize: 12.5, cursor: status === "ok" ? "default" : "pointer" }}>
+            <button key={c} onClick={() => setPw(c)} disabled={status === "ok"} className="co-opt"
+              style={{ padding: "6px 10px", borderRadius: 7, border: `1px solid ${tried.includes(c) ? (acct && c === acct.password ? C.green : C.red) : pw === c ? C.indigo : C.line}`, background: pw === c ? "rgba(139,123,255,0.08)" : C.carbon, color: C.ink, fontFamily: MONO, fontSize: 12.5, cursor: status === "ok" ? "default" : "pointer" }}>
               {tried.includes(c) ? (acct && c === acct.password ? "✓ " : "✗ ") : ""}{c}
             </button>
           ))}
@@ -342,11 +352,12 @@ function TokenDecodeLab({ onDone }: { onDone: () => void }) {
 
 function PickSafeSessionLab({ onDone }: { onDone: () => void }) {
   const [picked, setPicked] = useState<number | null>(null);
-  const opts = [
+  const [opts] = useState(() => shuffle([
     { code: `cookie = base64({ user, role })`, ok: false, why: "This is the bug: the role lives in a token the user can read and rewrite. Exactly what you just forged." },
     { code: `cookie = base64({ user, role }) + ".checksum"`, ok: false, why: "A checksum anyone can recompute isn't a signature. If the client can regenerate it, the client can still forge it." },
+    { code: `cookie = aesEncrypt({ user, role }, keyInBrowserJs)`, ok: false, why: "Encryption helps, but a key shipped in the browser code is findable; the attacker just re-encrypts their own role." },
     { code: `cookie = random_session_id;  role looked up server-side`, ok: true, why: "The token is a meaningless random id; the role is stored on the server and looked up each request, so the client has nothing to tamper with. This is the fix." },
-  ];
+  ]));
   return (
     <div style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: 12, padding: "15px 16px" }}>
       <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: ".1em", color: C.indigo, fontWeight: 700, marginBottom: 10 }}>▶ APPLY THE FIX · which session design can&apos;t be forged?</div>
@@ -611,7 +622,7 @@ export const MODULE4: ModuleDef = {
     check: {
       q: "A team fixes session forgery by appending a checksum to the base64 token so tampering can be 'detected'. Is that enough?",
       options: [
-        { text: "No - if the client can recompute the checksum, it can forge it too; use a server-side random session id or a signature with a server-only secret.", correct: true, feedback: "Right. Only a secret the client doesn't have (a signature) or keeping the role server-side actually stops forgery." },
+        { text: "No. If the client can recompute the checksum, it can forge it too; it uses no secret.", correct: true, feedback: "Right. Only a secret the client doesn't have (a real signature) or keeping the role server-side actually stops forgery." },
         { text: "Yes - a checksum means any change to the token is detected, so forgery is blocked.", feedback: "Only if the attacker can't reproduce it. A plain checksum uses no secret, so the client recomputes it and forges freely." },
         { text: "Yes, as long as the checksum is a long SHA-256 hash of the token.", feedback: "Hash length doesn't help if there's no secret in it - the attacker hashes their forged token the same way." },
         { text: "No - but the real fix is to base64 the token twice so it's harder to read.", feedback: "Double base64 is still not secret and still editable; obscurity isn't a signature." },
