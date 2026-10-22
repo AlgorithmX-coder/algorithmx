@@ -10,7 +10,7 @@
  * ladder, FOUR drills, and a chained capstone. */
 
 import { useEffect, useState } from "react";
-import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary } from "./Engagement";
+import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary, shuffle } from "./Engagement";
 
 /* ───────────────────────── glossary ───────────────────────── */
 
@@ -217,11 +217,12 @@ function ChainLab({ onDone }: { onDone: () => void }) {
 
 function BreakChainLab({ onDone }: { onDone: () => void }) {
   const [picked, setPicked] = useState<number | null>(null);
-  const opts = [
-    { code: "Only fix Critical-rated bugs; ignore the small stuff", ok: false, why: "The small stuff is exactly what chains into Criticals - ignoring it is how this breach happened." },
+  const [opts] = useState(() => shuffle([
+    { code: "Only fix Critical-rated bugs and ignore all the small stuff", ok: false, why: "The small stuff is exactly what chains into Criticals - ignoring it is how this breach happened." },
     { code: "Add more paths to robots.txt so crawlers skip them", ok: false, why: "That advertises even more sensitive paths - the opposite of a fix." },
-    { code: "Break any link: don't web-expose backups, protect them with access control, and don't name sensitive paths in robots.txt", ok: true, why: "Defence in depth - remove any one link and the whole chain collapses. That's why small fixes matter." },
-  ];
+    { code: "Break any one link in the chain, like not web-exposing backups", ok: true, why: "Defence in depth - remove any single link (keep backups off the web, protect them with access control, don't name sensitive paths in robots.txt) and the whole chain collapses. That's why small fixes matter." },
+    { code: "Put the whole site behind a stronger firewall and move on", ok: false, why: "A firewall doesn't help when each step uses normal, allowed web requests. You have to break a link in the chain itself." },
+  ]));
   return (
     <div style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: 12, padding: "15px 16px" }}>
       <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: ".1em", color: C.indigo, fontWeight: 700, marginBottom: 10 }}>▶ APPLY THE FIX · how do you stop a chained attack?</div>
@@ -404,9 +405,9 @@ export const MODULE15: ModuleDef = {
     check: {
       q: "Why is 'Disallow' in robots.txt useful to an attacker?",
       options: [
-        { text: "It publicly lists paths the site wants left alone - pointing straight at sensitive files.", correct: true, feedback: "Right - it advertises exactly what's interesting, without protecting any of it." },
-        { text: "It blocks attackers from reaching the path.", feedback: "It only asks crawlers to skip it - it enforces nothing, and attackers read it directly." },
-        { text: "It encrypts the listed files.", feedback: "It does nothing to the files themselves; it's just a note to crawlers." },
+        { text: "It publicly lists the paths the site wants left alone.", correct: true, feedback: "Right - it advertises exactly what's interesting (the sensitive files), without protecting any of it." },
+        { text: "It blocks attackers from ever reaching the listed path.", feedback: "It only asks crawlers to skip it - it enforces nothing, and attackers read it directly." },
+        { text: "It automatically encrypts all of the files that it lists.", feedback: "It does nothing to the files themselves; it's just a note to crawlers." },
         { text: "It only matters for search engine ranking, not security.", feedback: "To an attacker it's a map of sensitive paths - very much a security concern." },
       ],
     },
@@ -440,10 +441,10 @@ export const MODULE15: ModuleDef = {
     check: {
       q: "What's the most reliable way to stop a chained attack like this?",
       options: [
-        { text: "Fix any link in the chain (e.g. don't web-expose the backup), since breaking one step stops the whole attack.", correct: true, feedback: "Right - defence in depth: remove any link and the chain collapses." },
+        { text: "Fix any one link in the chain to break the whole attack.", correct: true, feedback: "Right - defence in depth: remove any link (for example, don't web-expose the backup) and the chain collapses." },
         { text: "Only ever fix Critical-rated bugs and ignore the small stuff.", feedback: "The small stuff is exactly what chains into Criticals - ignoring it is how this breach happened." },
-        { text: "Add more paths to robots.txt.", feedback: "That advertises even more - the opposite of a fix." },
-        { text: "Hope an attacker doesn't notice the combination.", feedback: "Attackers look for exactly these chains; hope isn't a control." },
+        { text: "Add even more sensitive paths to the robots.txt file.", feedback: "That advertises even more - the opposite of a fix." },
+        { text: "Just hope that an attacker never notices the combination.", feedback: "Attackers look for exactly these chains; hope isn't a control." },
       ],
     },
   },

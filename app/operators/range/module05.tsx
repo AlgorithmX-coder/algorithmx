@@ -12,7 +12,7 @@
  * for real against wasm SQLite, zero egress. */
 
 import { useEffect, useState, type CSSProperties } from "react";
-import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary } from "./Engagement";
+import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary, shuffle } from "./Engagement";
 import {
   bootNorthwindRange, bootScenario,
   type NorthwindRange, type ScenarioRange, type ScenarioSpec, type RangeRunResult,
@@ -173,11 +173,12 @@ function InputBecomesCodeLab({ onDone }: { onDone: () => void }) {
 
 function PickSafeQueryLab({ onDone }: { onDone: () => void }) {
   const [picked, setPicked] = useState<number | null>(null);
-  const opts = [
+  const [opts] = useState(() => shuffle([
     { code: `"… WHERE email = '" + email + "'"`, ok: false, why: "This is the bug itself - gluing input into the string. Exactly what you just exploited." },
     { code: `"… WHERE email = '" + email.replace("'", "") + "'"`, ok: false, why: "Stripping quotes is a blocklist - bypassable, and it still builds the query by hand. Not the real fix." },
     { code: `"… WHERE email = ?"  +  bind([email])`, ok: true, why: "Parameterised: the ? is a placeholder and the value is sent separately, so the database treats it as data - never as SQL. This is the fix." },
-  ];
+    { code: `if (isEmail(email)) "… WHERE email = '" + email + "'"`, ok: false, why: "Validating the format still glues the value into the string by hand - other fields and valid-looking payloads can still break out. Parameterise instead." },
+  ]));
   return (
     <div style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: 12, padding: "15px 16px" }}>
       <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: ".1em", color: C.indigo, fontWeight: 700, marginBottom: 10 }}>▶ APPLY THE FIX · which login query is safe?</div>
