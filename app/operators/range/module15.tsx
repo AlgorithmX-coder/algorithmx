@@ -86,13 +86,16 @@ function InspectSurface({ cfg, onSolved }: { cfg: InspectCfg; onSolved: () => vo
 
 /* ── request: editable fields, SEND, response, win ── */
 type Resp = { status: number; title: string; lines: string[]; sensitive?: boolean };
-type ReqCfg = { host: string; method: "GET" | "POST"; pathTemplate: string; fields: { key: string; label: string; value: string }[]; respond: (f: Record<string, string>) => Resp; win: (f: Record<string, string>) => boolean; hint: string; reveal: Record<string, string> };
+type ReqCfg = { host: string; method: "GET" | "POST"; pathTemplate: string; fields: { key: string; label: string; value: string }[]; respond: (f: Record<string, string>) => Resp; win: (f: Record<string, string>) => boolean; hint: string; reveal: Record<string, string>; recovered?: { label: string; value: string; field?: string }[] };
 function ReqSurface({ cfg, onSolved }: { cfg: ReqCfg; onSolved: () => void }) {
   const [fields, setFields] = useState<Record<string, string>>(() => Object.fromEntries(cfg.fields.map((f) => [f.key, f.value])));
   const [resp, setResp] = useState<Resp | null>(null);
   const [solved, setSolved] = useState(false);
+  const [copied, setCopied] = useState<string | null>(null);
   const pathDisplay = cfg.pathTemplate.replace(/\{(\w+)\}/g, (_, k) => fields[k] ?? "");
   function send() { const r = cfg.respond(fields); setResp(r); if (cfg.win(fields)) { setSolved(true); onSolved(); } }
+  function fillRecovered() { if (!cfg.recovered) return; setFields((x) => { const n = { ...x }; cfg.recovered!.forEach((r) => { if (r.field) n[r.field] = r.value; }); return n; }); }
+  function copy(v: string) { try { navigator.clipboard?.writeText(v); setCopied(v); setTimeout(() => setCopied((c) => (c === v ? null : c)), 1200); } catch { /* clipboard blocked */ } }
   const ok = resp && resp.status >= 200 && resp.status < 300;
   return (
     <div style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: 14, overflow: "hidden" }}>
@@ -100,6 +103,24 @@ function ReqSurface({ cfg, onSolved }: { cfg: ReqCfg; onSolved: () => void }) {
         <span style={{ fontFamily: MONO, fontSize: 11.5, color: C.soft }}>{cfg.host}</span>
       </div>
       <div style={{ padding: 18 }}>
+        {cfg.recovered && cfg.recovered.length > 0 && (
+          <div style={{ display: "flex", gap: 12, flexWrap: "wrap", alignItems: "center", padding: "11px 13px", borderRadius: 11, background: "rgba(85,217,140,0.06)", border: `1px solid ${C.green}44`, marginBottom: 14 }}>
+            <div style={{ flex: "1 1 220px", minWidth: 200 }}>
+              <div style={{ fontFamily: MONO, fontSize: 10, letterSpacing: ".1em", textTransform: "uppercase", color: C.green, fontWeight: 700, marginBottom: 7 }}>✓ What you recovered earlier</div>
+              <div style={{ display: "grid", gap: 5 }}>
+                {cfg.recovered.map((r, i) => (
+                  <div key={i} style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap", fontFamily: MONO, fontSize: 12.5 }}>
+                    <span style={{ color: C.mute }}>{r.label} ·</span>
+                    <span style={{ color: C.green }}>{r.value}</span>
+                    <button onClick={() => copy(r.value)} className="co-btn" style={{ background: "transparent", border: `1px solid ${C.lineSoft}`, color: copied === r.value ? C.green : C.mute, borderRadius: 6, padding: "1px 7px", fontFamily: MONO, fontSize: 10.5, cursor: "pointer" }}>{copied === r.value ? "copied ✓" : "copy"}</button>
+                  </div>
+                ))}
+              </div>
+              <div style={{ fontSize: 11, color: C.mute, marginTop: 6 }}>No need to memorise it, it is right here.</div>
+            </div>
+            {cfg.recovered.some((r) => r.field) && <Btn tone="g" onClick={fillRecovered}>Fill these in →</Btn>}
+          </div>
+        )}
         <div style={{ fontFamily: MONO, fontSize: 13, color: "#8fa0c8", marginBottom: 12, wordBreak: "break-all" }}><span style={{ color: cfg.method === "POST" ? C.amber : C.cyan }}>{cfg.method}</span> {pathDisplay}</div>
         <div style={{ display: "grid", gap: 10 }}>
           {cfg.fields.map((f) => <div key={f.key}><label style={lab}>{f.label}</label><input style={{ ...inp, color: C.amber }} value={fields[f.key]} onChange={(e) => setFields((x) => ({ ...x, [f.key]: e.target.value }))} /></div>)}
@@ -139,7 +160,8 @@ const ACT_STAGES: Stage[] = [
     cfg: { host: `${HOST} · console login`, method: "POST", pathTemplate: "/console/login", fields: [{ key: "email", label: "email", value: "" }, { key: "pass", label: "password", value: "" }],
       respond: (f) => { if (f.email.trim() === "root@vantage.range" && f.pass === "Vantage!Backup#9") return { status: 200, title: "signed in as root (looted credential accepted)", lines: ["Welcome, administrator.", "admin console unlocked"], sensitive: true }; return { status: 401, title: "access denied", lines: ["wrong credentials"] }; },
       win: (f) => f.email.trim() === "root@vantage.range" && f.pass === "Vantage!Backup#9",
-      hint: "Use the credential from the dump: root@vantage.range / Vantage!Backup#9.", reveal: { email: "root@vantage.range", pass: "Vantage!Backup#9" } } },
+      hint: "Use the credential from the dump: root@vantage.range / Vantage!Backup#9.", reveal: { email: "root@vantage.range", pass: "Vantage!Backup#9" },
+      recovered: [{ label: "email", value: "root@vantage.range", field: "email" }, { label: "password", value: "Vantage!Backup#9", field: "pass" }] } },
   { kind: "req", title: "Crown jewels", goal: "Stage 4 - Reach the crown jewels. As admin, pull the protected customer export to prove full impact and capture the flag.",
     cfg: { host: `${HOST} · admin console`, method: "GET", pathTemplate: "/console/export?scope={scope}", fields: [{ key: "scope", label: "scope", value: "self" }],
       respond: (f) => { if (f.scope.trim().toLowerCase() === "all") return { status: 200, title: "full customer export (admin access)", lines: ["42,110 customer records", "flag{ch41n3d_t0_adm1n}"], sensitive: true }; return { status: 200, title: "export", lines: ["your own record only"] }; },
@@ -226,7 +248,7 @@ type DrillCfg = { client: string; brief: string; stages: Stage[]; success: strin
 const DRILLS: DrillCfg[] = [
   { client: "Brightpost Media", brief: "Recon Brightpost and find the exposed thing. No walkthrough.", stages: [{ kind: "inspect", title: "Recon", goal: "Read robots.txt and name the exposed file.", cfg: { host: "brightpost.range · robots.txt", method: "GET", path: "/robots.txt", lines: [{ t: "Disallow: /.env", leak: true }], question: "the exposed file", placeholder: "/path", accept: (v) => v.trim().toLowerCase().includes("/.env"), hint: "A named .env file is a goldmine. /.env", reveal: "/.env" } }], success: "Recon found an exposed .env - secrets in plain sight. Finding logged." },
   { client: "Tideway Council", brief: "Loot Tideway's exposed config and lift the key.", stages: [{ kind: "inspect", title: "Loot", goal: "Fetch the config and lift the API key.", cfg: { host: "tideway.range · /.env", method: "GET", path: "/.env", lines: [{ t: "DB_HOST=db.tideway.range" }, { t: "API_KEY=tw_live_4b1c9", leak: true }], question: "the API key", placeholder: "the key", accept: (v) => v.trim() === "tw_live_4b1c9", hint: "API_KEY line: tw_live_4b1c9", reveal: "tw_live_4b1c9" } }], success: "Looted a live API key from an exposed config. Finding logged." },
-  { client: "Flux Fitness", brief: "Use a looted credential to break in. Trickier.", stages: [{ kind: "req", title: "Break in", goal: "Log into Flux's admin with the looted credential (admin@flux.range / Flux_Backup!7).", cfg: { host: "flux.range · admin", method: "POST", pathTemplate: "/admin/login", fields: [{ key: "email", label: "email", value: "" }, { key: "pass", label: "password", value: "" }], respond: (f) => { if (f.email.trim() === "admin@flux.range" && f.pass === "Flux_Backup!7") return { status: 200, title: "signed in (looted credential)", lines: ["admin unlocked"], sensitive: true }; return { status: 401, title: "denied", lines: ["wrong credentials"] }; }, win: (f) => f.email.trim() === "admin@flux.range" && f.pass === "Flux_Backup!7", hint: "admin@flux.range / Flux_Backup!7", reveal: { email: "admin@flux.range", pass: "Flux_Backup!7" } } }], success: "Reused a looted credential to take the admin console. Finding logged." },
+  { client: "Flux Fitness", brief: "Use a looted credential to break in. Trickier.", stages: [{ kind: "req", title: "Break in", goal: "Log into Flux's admin with the looted credential (admin@flux.range / Flux_Backup!7).", cfg: { host: "flux.range · admin", method: "POST", pathTemplate: "/admin/login", fields: [{ key: "email", label: "email", value: "" }, { key: "pass", label: "password", value: "" }], respond: (f) => { if (f.email.trim() === "admin@flux.range" && f.pass === "Flux_Backup!7") return { status: 200, title: "signed in (looted credential)", lines: ["admin unlocked"], sensitive: true }; return { status: 401, title: "denied", lines: ["wrong credentials"] }; }, win: (f) => f.email.trim() === "admin@flux.range" && f.pass === "Flux_Backup!7", hint: "admin@flux.range / Flux_Backup!7", reveal: { email: "admin@flux.range", pass: "Flux_Backup!7" }, recovered: [{ label: "email", value: "admin@flux.range", field: "email" }, { label: "password", value: "Flux_Backup!7", field: "pass" }] } }], success: "Reused a looted credential to take the admin console. Finding logged." },
   { client: "Oakline Store", brief: "The full chain. Recon, loot, break in. Chain it yourself.", stages: [
     { kind: "inspect", title: "Recon", goal: "Step 1: find the exposed backup.", cfg: { host: "oakline.range · robots.txt", method: "GET", path: "/robots.txt", lines: [{ t: "Disallow: /backup.sql", leak: true }], question: "the exposed file", placeholder: "/path", accept: (v) => v.trim().toLowerCase().includes("/backup.sql"), hint: "/backup.sql", reveal: "/backup.sql" } },
     { kind: "inspect", title: "Loot", goal: "Step 2: loot the admin password.", cfg: { host: "oakline.range · /backup.sql", method: "GET", path: "/backup.sql", lines: [{ t: "('admin@oakline.range','Oak_Backup#3')", leak: true }], question: "the admin password", placeholder: "the password", accept: (v) => v.trim() === "Oak_Backup#3", hint: "Oak_Backup#3", reveal: "Oak_Backup#3" } },
@@ -279,7 +301,7 @@ function ConsolidationDrills({ onDone }: { onDone: () => void }) {
 const CAP_STAGES: Stage[] = [
   { kind: "inspect", title: "Recon", goal: "Sableline, full engagement. Recon first: find the exposed file.", cfg: { host: "sableline.range · robots.txt", method: "GET", path: "/robots.txt", lines: [{ t: "Disallow: /dump.sql", leak: true }], question: "the exposed file", placeholder: "/path", accept: (v) => v.trim().toLowerCase().includes("/dump.sql"), hint: "/dump.sql", reveal: "/dump.sql" } },
   { kind: "inspect", title: "Loot", goal: "Loot the admin credential from the dump.", cfg: { host: "sableline.range · /dump.sql", method: "GET", path: "/dump.sql", lines: [{ t: "('root@sableline.range','Sable_Dump!1')", leak: true }], question: "the admin password", placeholder: "the password", accept: (v) => v.trim() === "Sable_Dump!1", hint: "Sable_Dump!1", reveal: "Sable_Dump!1" } },
-  { kind: "req", title: "Break in", goal: "Break into the console with the looted credential.", cfg: { host: "sableline.range · console", method: "POST", pathTemplate: "/console/login", fields: [{ key: "email", label: "email", value: "" }, { key: "pass", label: "password", value: "" }], respond: (f) => { if (f.email.trim() === "root@sableline.range" && f.pass === "Sable_Dump!1") return { status: 200, title: "signed in as root", lines: ["admin console unlocked"], sensitive: true }; return { status: 401, title: "denied", lines: ["wrong credentials"] }; }, win: (f) => f.email.trim() === "root@sableline.range" && f.pass === "Sable_Dump!1", hint: "root@sableline.range / Sable_Dump!1", reveal: { email: "root@sableline.range", pass: "Sable_Dump!1" } } },
+  { kind: "req", title: "Break in", goal: "Break into the console with the looted credential.", cfg: { host: "sableline.range · console", method: "POST", pathTemplate: "/console/login", fields: [{ key: "email", label: "email", value: "" }, { key: "pass", label: "password", value: "" }], respond: (f) => { if (f.email.trim() === "root@sableline.range" && f.pass === "Sable_Dump!1") return { status: 200, title: "signed in as root", lines: ["admin console unlocked"], sensitive: true }; return { status: 401, title: "denied", lines: ["wrong credentials"] }; }, win: (f) => f.email.trim() === "root@sableline.range" && f.pass === "Sable_Dump!1", hint: "root@sableline.range / Sable_Dump!1", reveal: { email: "root@sableline.range", pass: "Sable_Dump!1" }, recovered: [{ label: "email", value: "root@sableline.range", field: "email" }, { label: "password", value: "Sable_Dump!1", field: "pass" }] } },
   { kind: "req", title: "Impact", goal: "Finish it: as admin, widen the export scope to prove full data access.", cfg: { host: "sableline.range · admin", method: "GET", pathTemplate: "/console/export?scope={scope}", fields: [{ key: "scope", label: "scope", value: "self" }], respond: (f) => { if (f.scope.trim().toLowerCase() === "all") return { status: 200, title: "full export (admin)", lines: ["88,402 records", "full compromise proven"], sensitive: true }; return { status: 200, title: "export", lines: ["your record only"] }; }, win: (f) => f.scope.trim().toLowerCase() === "all", hint: "scope=all", reveal: { scope: "all" } } },
 ];
 

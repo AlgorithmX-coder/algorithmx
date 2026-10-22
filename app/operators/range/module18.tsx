@@ -124,14 +124,15 @@ function pretty(body: unknown): string {
   try { return JSON.stringify(body, null, 2); } catch { return String(body); }
 }
 
-function ApiSurface({ host, start, win, hint, reveal, withAuth, withBody, onSolved }:
-  { host: string; start: { method: string; path: string }; win: (m: string, p: string, r: ApiResp) => boolean; hint: string; reveal: { method?: string; path?: string; auth?: string; body?: string }; withAuth?: boolean; withBody?: boolean; onSolved: () => void }) {
+function ApiSurface({ host, start, win, hint, reveal, withAuth, withBody, recovered, onSolved }:
+  { host: string; start: { method: string; path: string }; win: (m: string, p: string, r: ApiResp) => boolean; hint: string; reveal: { method?: string; path?: string; auth?: string; body?: string }; withAuth?: boolean; withBody?: boolean; recovered?: { label: string; value: string }[]; onSolved: () => void }) {
   const [method, setMethod] = useState(start.method);
   const [path, setPath] = useState(start.path);
   const [auth, setAuth] = useState("");
   const [body, setBody] = useState("");
   const [resp, setResp] = useState<ApiResp | null>(null);
   const [solved, setSolved] = useState(false);
+  const [copied, setCopied] = useState<string | null>(null);
 
   function send() {
     if (solved) return;
@@ -139,6 +140,7 @@ function ApiSurface({ host, start, win, hint, reveal, withAuth, withBody, onSolv
     setResp(r);
     if (win(method, path.trim(), r) && !solved) { setSolved(true); onSolved(); }
   }
+  function copy(v: string) { try { navigator.clipboard?.writeText(v); setCopied(v); setTimeout(() => setCopied((c) => (c === v ? null : c)), 1200); } catch { /* clipboard blocked */ } }
   const sColor = resp ? (resp.status < 300 ? C.green : resp.status < 500 ? C.amber : C.red) : C.mute;
 
   return (
@@ -148,6 +150,24 @@ function ApiSurface({ host, start, win, hint, reveal, withAuth, withBody, onSolv
         <span style={{ fontFamily: MONO, fontSize: 11.5, color: C.soft, marginLeft: 6 }}>{host}</span>
       </div>
       <div style={{ padding: 18 }}>
+        {recovered && recovered.length > 0 && (
+          <div style={{ display: "flex", gap: 12, flexWrap: "wrap", alignItems: "center", padding: "11px 13px", borderRadius: 11, background: "rgba(85,217,140,0.06)", border: `1px solid ${C.green}44`, marginBottom: 14 }}>
+            <div style={{ flex: "1 1 240px", minWidth: 220 }}>
+              <div style={{ fontFamily: MONO, fontSize: 10, letterSpacing: ".1em", textTransform: "uppercase", color: C.green, fontWeight: 700, marginBottom: 7 }}>✓ What you recovered earlier</div>
+              <div style={{ display: "grid", gap: 5 }}>
+                {recovered.map((r, i) => (
+                  <div key={i} style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap", fontFamily: MONO, fontSize: 12.5 }}>
+                    <span style={{ color: C.mute }}>{r.label} ·</span>
+                    <span style={{ color: C.green, wordBreak: "break-all" }}>{r.value}</span>
+                    <button onClick={() => copy(r.value)} className="co-btn" style={{ background: "transparent", border: `1px solid ${C.lineSoft}`, color: copied === r.value ? C.green : C.mute, borderRadius: 6, padding: "1px 7px", fontFamily: MONO, fontSize: 10.5, cursor: "pointer" }}>{copied === r.value ? "copied ✓" : "copy"}</button>
+                  </div>
+                ))}
+              </div>
+              <div style={{ fontSize: 11, color: C.mute, marginTop: 6 }}>No need to memorise it, it is right here.</div>
+            </div>
+            {withAuth && <Btn tone="g" onClick={() => setAuth(`Bearer ${recovered[0].value}`)}>Put it in the header →</Btn>}
+          </div>
+        )}
         <div style={{ display: "flex", gap: 8, marginBottom: 10, flexWrap: "wrap" }}>
           <select value={method} onChange={(e) => setMethod(e.target.value)} style={{ ...inp, width: 96, cursor: "pointer" }}>
             {["GET", "POST", "PUT", "DELETE"].map((m) => <option key={m}>{m}</option>)}
@@ -175,7 +195,7 @@ function ApiSurface({ host, start, win, hint, reveal, withAuth, withBody, onSolv
 
 /* ───────────────────────── a single step ───────────────────────── */
 
-type Step = { title: string; goal: string; start: { method: string; path: string }; win: (m: string, p: string, r: ApiResp) => boolean; hint: string; reveal: { method?: string; path?: string; auth?: string; body?: string }; withAuth?: boolean; withBody?: boolean };
+type Step = { title: string; goal: string; start: { method: string; path: string }; win: (m: string, p: string, r: ApiResp) => boolean; hint: string; reveal: { method?: string; path?: string; auth?: string; body?: string }; withAuth?: boolean; withBody?: boolean; recovered?: { label: string; value: string }[] };
 
 const HOST = "api.skyvault.range";
 
@@ -183,7 +203,7 @@ function StepView({ step, onSolved }: { step: Step; onSolved: () => void }) {
   return (
     <div style={{ display: "grid", gap: 12 }}>
       <div style={{ fontSize: 14, color: C.soft, lineHeight: 1.55, padding: "11px 14px", borderRadius: 10, background: "rgba(95,230,255,0.05)", border: `1px solid ${C.line}` }}>{G(step.goal, `step-${step.title}`)}</div>
-      <ApiSurface host={HOST} start={step.start} win={step.win} hint={step.hint} reveal={step.reveal} withAuth={step.withAuth} withBody={step.withBody} onSolved={onSolved} />
+      <ApiSurface host={HOST} start={step.start} win={step.win} hint={step.hint} reveal={step.reveal} withAuth={step.withAuth} withBody={step.withBody} recovered={step.recovered} onSolved={onSolved} />
     </div>
   );
 }
@@ -211,6 +231,7 @@ const ACT_STEPS: Step[] = [
     win: (m, p, r) => p.replace(/^https?:\/\/[^/]+/, "") === "/api/admin/customers" && r.status === 200,
     hint: `Send GET /api/admin/customers with Authorization: Bearer ${ADMIN_KEY}. Without the key you get 401; with it, the whole customer list.`,
     reveal: { method: "GET", path: "/api/admin/customers", auth: `Bearer ${ADMIN_KEY}` },
+    recovered: [{ label: "admin key (from config/.env)", value: ADMIN_KEY }],
   },
   {
     title: "Escalate", goal: "Stage 4 - Make yourself an admin. The role-change endpoint never checks you are ALLOWED to set a role (BFLA). POST your own id (1007) a new role of admin.",
@@ -318,7 +339,7 @@ const DRILLS: DrillCfg[] = [
   },
   {
     client: "Vantage", brief: "Vantage's admin data sits behind a key, and the key leaked. Use it to pull the customer list.",
-    step: { title: "Leaked key", goal: "Use the leaked admin key on the protected endpoint.", start: { method: "GET", path: "/api/admin/customers" }, withAuth: true, win: (m, p, r) => p.replace(/^https?:\/\/[^/]+/, "") === "/api/admin/customers" && r.status === 200, hint: `Authorization: Bearer ${ADMIN_KEY}`, reveal: { auth: `Bearer ${ADMIN_KEY}` } },
+    step: { title: "Leaked key", goal: "Use the leaked admin key on the protected endpoint.", start: { method: "GET", path: "/api/admin/customers" }, withAuth: true, win: (m, p, r) => p.replace(/^https?:\/\/[^/]+/, "") === "/api/admin/customers" && r.status === 200, hint: `Authorization: Bearer ${ADMIN_KEY}`, reveal: { auth: `Bearer ${ADMIN_KEY}` }, recovered: [{ label: "admin key (leaked earlier)", value: ADMIN_KEY }] },
     success: "A leaked bearer token is as good as the real app. Rotate and scope keys; never ship them in files. Finding logged.",
   },
   {
@@ -371,7 +392,7 @@ function ConsolidationDrills({ onDone }: { onDone: () => void }) {
 const CAP_STEPS: Step[] = [
   { title: "Enumerate", goal: "Sableline's cloud app. Start by reading a customer that is not you (BOLA) to prove the object check is missing.", start: { method: "GET", path: "/api/users/1007" }, win: (m, p, r) => m === "GET" && /\/api\/users\/\d+$/.test(p.replace(/^https?:\/\/[^/]+/, "")) && r.status === 200 && !/\/1007$/.test(p), hint: "GET /api/users/1008.", reveal: { path: "/api/users/1008" } },
   { title: "Loot the bucket", goal: "Their uploads bucket is public. Read the secrets file and grab the admin key.", start: { method: "GET", path: "https://skyvault-uploads.s3.range/" }, win: (m, p, r) => r.status === 200 && typeof r.body === "string" && /SKYVAULT_ADMIN_KEY/.test(r.body as string), hint: "List the bucket, then GET config/.env.", reveal: { path: "https://skyvault-uploads.s3.range/config/.env" } },
-  { title: "Own it", goal: "Finish it: use the leaked key to pull the full customer list from the admin endpoint.", start: { method: "GET", path: "/api/admin/customers" }, withAuth: true, win: (m, p, r) => p.replace(/^https?:\/\/[^/]+/, "") === "/api/admin/customers" && r.status === 200, hint: `Authorization: Bearer ${ADMIN_KEY}`, reveal: { auth: `Bearer ${ADMIN_KEY}` } },
+  { title: "Own it", goal: "Finish it: use the leaked key to pull the full customer list from the admin endpoint.", start: { method: "GET", path: "/api/admin/customers" }, withAuth: true, win: (m, p, r) => p.replace(/^https?:\/\/[^/]+/, "") === "/api/admin/customers" && r.status === 200, hint: `Authorization: Bearer ${ADMIN_KEY}`, reveal: { auth: `Bearer ${ADMIN_KEY}` }, recovered: [{ label: "admin key (from the .env)", value: ADMIN_KEY }] },
 ];
 
 function CapstoneChallenge({ onDone }: { onDone: () => void }) {
