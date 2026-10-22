@@ -9,7 +9,7 @@
  * drills, and a chained capstone. */
 
 import { useEffect, useState } from "react";
-import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary } from "./Engagement";
+import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary, shuffle } from "./Engagement";
 
 /* ───────────────────────── glossary ───────────────────────── */
 
@@ -165,10 +165,10 @@ const ACT_STAGES: Stage[] = [
     hint: "Most alerts are noise. The real incident is the one causing active harm right now: live data exfiltration from an unknown IP." },
   { kind: "decision", title: "Contain", goal: "Stage 2 - The first move. The attacker's session is live and exporting data. What's your FIRST action?",
     decision: { prompt: "An attacker session is active and exfiltrating right now. First action?", options: [
-      { text: "Block the attacker's IP and kill the active session - stop the bleeding while preserving evidence.", correct: true, feedback: "Right - contain first. Stop the active harm without destroying what you'll need to investigate." },
-      { text: "Pull the whole server offline and wipe it immediately.", feedback: "Too far, too fast - you'd destroy evidence and cause an outage. Contain the attacker, don't nuke the host." },
-      { text: "Start a week-long root-cause investigation.", feedback: "Later. While you investigate, they're still exfiltrating. Contain now, investigate after." },
-      { text: "Email all staff to warn them.", feedback: "Not first - it wastes the minutes that matter while the attacker is live. Contain the session." },
+      { text: "Block the attacker's IP and kill the active session, preserving the evidence.", correct: true, feedback: "Right - contain first. Stop the bleeding and the active harm without destroying what you'll need to investigate." },
+      { text: "Pull the whole server offline and wipe it clean immediately.", feedback: "Too far, too fast - you'd destroy evidence and cause an outage. Contain the attacker, don't nuke the host." },
+      { text: "Start a thorough week-long root-cause investigation first.", feedback: "Later. While you investigate, they're still exfiltrating. Contain now, investigate after." },
+      { text: "Email all staff right away to warn them about it.", feedback: "Not first - it wastes the minutes that matter while the attacker is live. Contain the session." },
     ] } },
   { kind: "order", title: "Lifecycle", goal: "Stage 3 - Work the lifecycle. The session is contained. Put the remaining response steps in the right order.",
     items: [
@@ -180,9 +180,9 @@ const ACT_STAGES: Stage[] = [
     hint: "Contain -> eradicate -> recover -> lessons. Stop it, remove it, restore safely, then learn so it can't recur." },
   { kind: "decision", title: "Close out", goal: "Stage 4 - Close it properly. The threat is removed. How do you finish the incident?",
     decision: { prompt: "Threat eradicated. How do you close out the incident?", options: [
-      { text: "Restore from known-clean backups, monitor for a return, and run a lessons-learned review - keeping all the logs.", correct: true, feedback: "Right - recover safely, watch for a comeback, and feed the lessons back in. Evidence stays intact." },
+      { text: "Restore from clean backups, monitor for a return, and run a review.", correct: true, feedback: "Right - recover safely, watch for a comeback, run a lessons-learned review, and keep all the logs intact." },
       { text: "Delete the logs so there's no record the breach happened.", feedback: "Never - that destroys evidence, breaks legal duties, and throws away the lessons. Keep the logs." },
-      { text: "Say nothing to anyone and hope it's over.", feedback: "Hiding it risks a worse outcome and often breaches disclosure obligations. Close out properly and review." },
+      { text: "Say nothing to anyone and quietly hope that it's all over.", feedback: "Hiding it risks a worse outcome and often breaches disclosure obligations. Close out properly and review." },
       { text: "Restore from a backup taken during the breach to save time.", feedback: "That backup may contain the attacker's implant - you'd reinfect yourself. Restore from a known-clean point." },
     ] } },
 ];
@@ -217,11 +217,12 @@ function IncidentAct({ onCapture }: { onCapture: () => void }) {
 /* ───────────────────────── lesson lab: pick the real incident ───────────────────────── */
 
 function TriageLab({ onDone }: { onDone: () => void }) {
-  const ALERTS = [
+  const [ALERTS] = useState(() => shuffle([
     { t: "Daily backup finished OK", real: false },
     { t: "Ransomware encrypting the file server right now", real: true },
-    { t: "One user locked out after typos", real: false },
-  ];
+    { t: "One user locked out after a few password typos", real: false },
+    { t: "A phishing email was reported and already quarantined", real: false },
+  ]));
   const [picked, setPicked] = useState<number | null>(null);
   const correct = picked !== null && ALERTS[picked].real;
   useEffect(() => { if (correct) onDone(); }, [correct, onDone]);
@@ -241,11 +242,12 @@ function TriageLab({ onDone }: { onDone: () => void }) {
 
 function PrepLab({ onDone }: { onDone: () => void }) {
   const [picked, setPicked] = useState<number | null>(null);
-  const opts = [
+  const [opts] = useState(() => shuffle([
     { code: "Buy the most expensive firewall on the market", ok: false, why: "Tools help, but a breach in progress is won or lost on process and practice, not on one shiny box." },
-    { code: "Plan to figure out the response when a breach happens", ok: false, why: "The worst time to invent a plan is during a live incident. You execute a plan then; you don't write one." },
-    { code: "A tested IR plan, clean backups, central logging, and rehearsed roles (tabletops)", ok: true, why: "Preparation is what separates a minutes-long response from a months-long one. This is the real work, done before anything happens." },
-  ];
+    { code: "Plan to figure out the response once a breach actually happens", ok: false, why: "The worst time to invent a plan is during a live incident. You execute a plan then; you don't write one." },
+    { code: "A tested IR plan, clean backups, central logging, and rehearsed roles", ok: true, why: "Preparation is what separates a minutes-long response from a months-long one - the plan, backups, logging and tabletop rehearsals, all done before anything happens." },
+    { code: "Buy cyber-insurance to cover the cost of any future breach", ok: false, why: "Insurance pays some of the bill afterwards; it does nothing to contain or recover from the incident on the day. You still need the plan." },
+  ]));
   return (
     <div style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: 12, padding: "15px 16px" }}>
       <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: ".1em", color: C.indigo, fontWeight: 700, marginBottom: 10 }}>▶ APPLY THE STANDARD · what most determines how well a breach is handled?</div>
@@ -272,10 +274,10 @@ type DrillCfg = { client: string; brief: string; stages: Stage[]; success: strin
 const DRILLS: DrillCfg[] = [
   { client: "Brightpost Media", brief: "Triage Brightpost's alert queue. No walkthrough.", stages: [{ kind: "triage", title: "Triage", goal: "Mark the real incident vs noise.", alerts: [ { label: "CMS auto-update installed overnight", real: false, note: "Routine maintenance." }, { label: "Admin account logging in from two countries at once", real: true, note: "Impossible travel = a real account-takeover incident." }, { label: "Spam filter blocked 400 emails", real: false, note: "Doing its job - noise." } ], hint: "Impossible-travel logins are a classic real incident." }], success: "Triaged correctly - you're on the real incident. Finding logged." },
   { client: "Tideway Council", brief: "A live attack is contained. Order the rest of the response.", stages: [{ kind: "order", title: "Lifecycle", goal: "Order the remaining IR steps.", items: [ { label: "Eradicate the foothold", pos: 0 }, { label: "Recover from clean backups", pos: 1 }, { label: "Lessons learned review", pos: 2 } ], hint: "Eradicate -> recover -> learn." }], success: "Ran the lifecycle in the right order. Finding logged." },
-  { client: "Flux Fitness", brief: "A judgment call mid-incident. Make it. Trickier.", stages: [{ kind: "decision", title: "Call", goal: "The containment decision.", decision: { prompt: "Malware is spreading across Flux's network right now. First move?", options: [ { text: "Isolate the affected segment from the rest of the network immediately.", correct: true, feedback: "Right - contain the spread first, preserving evidence." }, { text: "Wipe every machine at once.", feedback: "Destroys evidence and causes a huge outage - contain, don't nuke." } ] } }], success: "Contained the spread without over-reacting. Finding logged." },
+  { client: "Flux Fitness", brief: "A judgment call mid-incident. Make it. Trickier.", stages: [{ kind: "decision", title: "Call", goal: "The containment decision.", decision: { prompt: "Malware is spreading across Flux's network right now. First move?", options: [ { text: "Isolate the affected segment from the rest of the network.", correct: true, feedback: "Right - contain the spread first, preserving evidence." }, { text: "Wipe every machine on the network all at once.", feedback: "Destroys evidence and causes a huge outage - contain, don't nuke." }, { text: "Wait and watch to see how far the malware spreads.", feedback: "Waiting lets it spread further and do more damage. Contain now, investigate after." }, { text: "Email everyone to stop using their computers for now.", feedback: "Too slow, and it doesn't stop the malware - it keeps spreading while people read email. Isolate the segment." } ] } }], success: "Contained the spread without over-reacting. Finding logged." },
   { client: "Oakline Store", brief: "The full field job. Triage, then close out correctly. Chain it yourself.", stages: [
     { kind: "triage", title: "Triage", goal: "Step 1: find the real incident.", alerts: [ { label: "Card data being exfiltrated to an unknown host now", real: true, note: "Active exfiltration - the incident." }, { label: "A printer went offline", real: false, note: "Not security - noise." } ], hint: "Active data theft is the incident." },
-    { kind: "decision", title: "Close out", goal: "Step 2: close it properly.", decision: { prompt: "Threat removed. How do you close out?", options: [ { text: "Restore from clean backups, monitor, review, keep the logs.", correct: true, feedback: "Right - safe recovery and lessons, evidence intact." }, { text: "Delete the logs to avoid bad press.", feedback: "Never - destroys evidence and breaches disclosure duties." } ] } },
+    { kind: "decision", title: "Close out", goal: "Step 2: close it properly.", decision: { prompt: "Threat removed. How do you close out?", options: [ { text: "Restore from clean backups, monitor, review, and keep the logs.", correct: true, feedback: "Right - safe recovery and lessons, evidence intact." }, { text: "Delete the logs quickly to avoid any bad press.", feedback: "Never - destroys evidence and breaches disclosure duties." }, { text: "Restore from last night's backup to get running fastest.", feedback: "That backup may already contain the attacker's foothold - you'd reinfect. Restore from a known-clean point." }, { text: "Close the ticket now; the threat has been removed.", feedback: "Skipping recovery checks and the review means it can recur. Close out properly with monitoring and lessons learned." } ] } },
   ], success: "Triaged and closed out the incident correctly - the whole response. Finding logged." },
 ];
 
@@ -324,7 +326,7 @@ function ConsolidationDrills({ onDone }: { onDone: () => void }) {
 
 const CAP_STAGES: Stage[] = [
   { kind: "triage", title: "Triage", goal: "Sableline's SOC is lit up. Find the real incident.", alerts: [ { label: "Domain admin account created at 3am by an unknown source", real: true, note: "A rogue admin account at 3am is a serious live incident." }, { label: "Weekly vulnerability scan completed", real: false, note: "Routine - noise." }, { label: "A user changed their own password", real: false, note: "Normal self-service - noise." } ], hint: "A new domain-admin account at 3am is the incident." },
-  { kind: "decision", title: "Contain", goal: "Make the containment call.", decision: { prompt: "A rogue domain-admin account is active. First move?", options: [ { text: "Disable the rogue account and revoke its sessions immediately, preserving logs.", correct: true, feedback: "Right - contain the account first, keep the evidence." }, { text: "Rebuild the domain controller from scratch right now.", feedback: "Drastic and destroys evidence - contain the account first." } ] } },
+  { kind: "decision", title: "Contain", goal: "Make the containment call.", decision: { prompt: "A rogue domain-admin account is active. First move?", options: [ { text: "Disable the rogue account and revoke its sessions, preserving logs.", correct: true, feedback: "Right - contain the account first, keep the evidence." }, { text: "Rebuild the domain controller from scratch right now.", feedback: "Drastic and destroys evidence - contain the account first." }, { text: "Watch the account for a while to see what it does.", feedback: "Every minute it's active it can do more damage. Contain first, investigate from the logs after." }, { text: "Reset every user's password across the whole domain.", feedback: "A huge disruption that still leaves the rogue account's sessions live. Disable that account first." } ] } },
   { kind: "order", title: "Lifecycle", goal: "Finish it: order the full response.", items: [ { label: "Contain the rogue account", pos: 0 }, { label: "Eradicate (find how it was made, close the hole)", pos: 1 }, { label: "Recover and verify from clean state", pos: 2 }, { label: "Lessons learned", pos: 3 } ], hint: "Contain -> eradicate -> recover -> learn." },
 ];
 
@@ -430,10 +432,10 @@ export const MODULE12: ModuleDef = {
     check: {
       q: "Why contain a live attack before investigating the root cause?",
       options: [
-        { text: "Containment stops the ongoing damage; you can investigate safely once the bleeding has stopped.", correct: true, feedback: "Right - stop the harm first (preserving evidence), then dig into why." },
-        { text: "Root cause doesn't matter in a breach.", feedback: "It matters a lot - but later. Investigate first and the attacker keeps causing harm meanwhile." },
-        { text: "Investigating first is illegal.", feedback: "It's not illegal - it's just the wrong order while an attacker is still active." },
-        { text: "You should always wipe everything before anything else.", feedback: "Wiping destroys evidence and causes outages - contain precisely, don't nuke." },
+        { text: "Containment stops the ongoing damage, so you can then investigate safely.", correct: true, feedback: "Right - stop the harm first (preserving evidence), then dig into why." },
+        { text: "The root cause of a breach doesn't really matter either way.", feedback: "It matters a lot - but later. Investigate first and the attacker keeps causing harm meanwhile." },
+        { text: "Investigating the breach before containing it is actually illegal.", feedback: "It's not illegal - it's just the wrong order while an attacker is still active." },
+        { text: "You should always wipe every affected machine before doing anything else.", feedback: "Wiping destroys evidence and causes outages - contain precisely, don't nuke." },
       ],
     },
   },
@@ -466,10 +468,10 @@ export const MODULE12: ModuleDef = {
     check: {
       q: "What most determines how well an organisation handles a breach?",
       options: [
-        { text: "Preparation - a tested plan, clean backups, central logging, and rehearsed roles.", correct: true, feedback: "Right. The response is executed, not invented, in the moment." },
-        { text: "How powerful their newest firewall is.", feedback: "Tools help, but a breach in progress is won or lost on process and practice." },
-        { text: "How quickly they can delete the evidence.", feedback: "Never delete evidence - that's both counterproductive and often unlawful." },
-        { text: "Whether they keep the incident secret from everyone.", feedback: "Secrecy often breaches disclosure duties and prevents help; a prepared, honest response is what matters." },
+        { text: "Preparation: a tested plan, backups, logging, and rehearsed roles.", correct: true, feedback: "Right. The response is executed, not invented, in the moment - a tested plan, clean backups, central logging and rehearsed roles." },
+        { text: "How powerful and expensive their newest firewall happens to be.", feedback: "Tools help, but a breach in progress is won or lost on process and practice." },
+        { text: "How quickly they can delete the evidence and move on.", feedback: "Never delete evidence - that's both counterproductive and often unlawful." },
+        { text: "Whether they manage to keep the whole incident secret from everyone.", feedback: "Secrecy often breaches disclosure duties and prevents help; a prepared, honest response is what matters." },
       ],
     },
   },
