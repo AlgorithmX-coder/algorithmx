@@ -19,7 +19,11 @@ export type AwardEvent =
   | { type: "FIELDWORK_COMPLETED"; sourceKey: string; mastery: boolean }
   | { type: "CHECKPOINT_PASSED"; sourceKey: string; evidence: CheckpointEvidence[] }
   | { type: "INCIDENT_PHASE_CLEARED"; sourceKey: string }
-  | { type: "CASE_CLOSED"; sourceKey: string };
+  | { type: "CASE_CLOSED"; sourceKey: string }
+  // sourceKey = the block number ("3", "4", ...) being entered. One-off per
+  // block, awarded by the clearance-upgrade moment (engine/ClearanceUpMoment),
+  // never by a case — see engine/blockBonus.ts for the once-only gate.
+  | { type: "BLOCK_ENTERED"; sourceKey: string };
 
 /** Accreditation seam (template §7): outcome records, data-minimal. */
 export interface CheckpointEvidence {
@@ -40,6 +44,11 @@ export const XP_RULES = {
   CHECKPOINT_PASSED: 25,
   INCIDENT_PHASE_CLEARED: 20,
   CASE_CLOSED: 50,
+  // A full case runs 300-500 XP (engine/rank.ts); a block transition is a
+  // bigger single moment than any one case event but shouldn't outweigh
+  // actually playing the block, so this sits under one case's worth.
+  // Placeholder pending the owner's UAT pass on the exact number.
+  BLOCK_ENTERED: 200,
 } as const;
 
 export function xpForEvent(e: AwardEvent): number {
