@@ -22,6 +22,8 @@ import { ClosingCeremony } from "../engine/closingCeremony";
 import { addJournalEntry, loadJournal, type JournalEntry } from "../engine/journal";
 import { CaseJournal } from "../engine/CaseJournal";
 import { ETHICS_LINE, ETHICS_VOICE } from "../engine/ethicsLine";
+import { CaseBoard } from "../engine/CaseBoard";
+import { CaseBoardFileExplorer } from "../engine/CaseBoardFileExplorer";
 import type { WarCase, WarStep, WarTest } from "./case16";
 
 const C = {
@@ -309,6 +311,11 @@ export default function WarRoomRuntime({ warCase, onExit, onNextCase }: { warCas
         Skip skill ⏭
       </button>
       <CaseJournal entries={journal} accent={acc} caseTitle={warCase.title} />
+      {warCase.id === "explorers-m16" ? (
+        <CaseBoardFileExplorer leads={warCase.skills} clearedCount={journal.length} accent={acc} caseTitle={warCase.title} actor={warCase.actor} />
+      ) : (
+        <CaseBoard leads={warCase.skills} clearedCount={journal.length} accent={acc} caseTitle={warCase.title} actor={warCase.actor} />
+      )}
       <button className="wr-btn" onClick={onExit} style={{ position: "fixed", top: 14, left: 14, zIndex: 20, fontFamily: MONO, fontSize: 11.5, fontWeight: 600, color: C.dim, background: "rgba(255,255,255,0.04)", border: `1px solid ${C.edge}`, borderRadius: 6, padding: "6px 12px", cursor: "pointer" }}>← Leave</button>
       <button className="wr-btn" onClick={() => { const v = !voiceOn; setVoiceOn(v); if (!v) stopWren(); }} aria-pressed={voiceOn} style={{ position: "fixed", top: 14, right: 14, zIndex: 20, fontFamily: MONO, fontSize: 11.5, fontWeight: 700, color: voiceOn ? C.wren : C.dim, background: "rgba(255,255,255,0.04)", border: `1px solid ${voiceOn ? "rgba(43,212,180,.5)" : C.edge}`, borderRadius: 6, padding: "6px 12px", cursor: "pointer" }}>{voiceOn ? "🔊 WREN on" : "🔇 WREN off"}</button>
       <button className="wr-btn" onClick={cycleVoiceRate} aria-label={`WREN's talking speed: ${voiceRate}×. Tap to change.`} style={{ position: "fixed", top: 54, right: 14, zIndex: 20, fontFamily: MONO, fontSize: 11, fontWeight: 700, color: voiceRate !== 1 ? C.wren : C.dim, background: "rgba(255,255,255,0.04)", border: `1px solid ${voiceRate !== 1 ? "rgba(43,212,180,.5)" : C.edge}`, borderRadius: 6, padding: "6px 12px", cursor: "pointer" }}>{voiceRate}×</button>
