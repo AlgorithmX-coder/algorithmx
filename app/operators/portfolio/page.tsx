@@ -7,6 +7,7 @@ import { HIGHEST_BUILT_MODULE } from "@/app/operators/range/modules";
 import { CURRICULUM, PHASE_ORDER, PHASE_COLOR } from "@/app/operators/range/curriculum";
 import { OPS_RANKS } from "@/app/lib/opsRank";
 import OpsBackdrop from "@/app/operators/range/OpsBackdrop";
+import ResumeStrip from "./ResumeStrip";
 
 export const metadata: Metadata = {
   title: "Cyber Ops · Portfolio",
@@ -71,6 +72,9 @@ export default async function OperatorsPortfolioPage() {
 
         {/* operator standing - the hero dashboard (stats stand out, not a plain row) */}
         <OperatorCard rank={rank} rep={p?.totalRep ?? 0} findingsCount={findings.length} cleared={done.size} />
+
+        {/* continue where you left off: in-progress modules from this device */}
+        <ResumeStrip />
 
         {/* course map — the full posting, status per module */}
         <div style={{ marginBottom: 34 }}>
