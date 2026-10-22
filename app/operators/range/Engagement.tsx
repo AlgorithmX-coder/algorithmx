@@ -11,7 +11,7 @@
  * learning. Each module supplies its teaching content + target as a ModuleDef;
  * the only bespoke code is the Act surface. */
 
-import { useState, useEffect, type ReactNode } from "react";
+import { useState, useEffect, useRef, type ReactNode } from "react";
 import ModuleBackdrop from "./ModuleBackdrop";
 
 export type LessonBlock = { h: string; body: string };
@@ -152,20 +152,38 @@ export const SANS = "var(--font-plex-sans),'IBM Plex Sans',system-ui,-apple-syst
  * dotted term with a ✦ spark, and a popover that pops in. Teaching standard. */
 export function GlossaryTerm({ term, definition, example }: { term: string; definition: string; example?: string }) {
   const [open, setOpen] = useState(false);
+  const [below, setBelow] = useState(false);
+  const ref = useRef<HTMLSpanElement>(null);
+  // Open the popover on the side with room: above by default, but flip BELOW
+  // the term when it sits near the top of the viewport, otherwise the
+  // definition is clipped off the top of the screen.
+  const show = () => {
+    const r = ref.current?.getBoundingClientRect();
+    setBelow(!!r && r.top < 240);
+    setOpen(true);
+  };
+  // Tap support (tablets): no mouse-leave on touch, so an outside pointer-down
+  // closes the popover. Tapping the term itself toggles it.
+  useEffect(() => {
+    if (!open) return;
+    const onDown = (e: Event) => { if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false); };
+    document.addEventListener("pointerdown", onDown);
+    return () => document.removeEventListener("pointerdown", onDown);
+  }, [open]);
   return (
-    <span style={{ position: "relative", display: "inline-block" }}>
+    <span ref={ref} style={{ position: "relative", display: "inline-block" }}>
       <button
         type="button"
-        onClick={() => setOpen((o) => !o)}
-        onMouseEnter={() => setOpen(true)} onMouseLeave={() => setOpen(false)}
-        onFocus={() => setOpen(true)} onBlur={() => setOpen(false)}
+        onClick={() => (open ? setOpen(false) : show())}
+        onMouseEnter={show} onMouseLeave={() => setOpen(false)}
+        onFocus={show} onBlur={() => setOpen(false)}
         aria-expanded={open}
         style={{ font: "inherit", color: C.indigo2, fontWeight: 600, background: "transparent", border: "none", padding: 0, cursor: "help", borderBottom: `1.5px dotted ${C.indigo}`, textShadow: open ? `0 0 10px ${C.indigo}` : "none", transition: "text-shadow .15s" }}
       >
         {term}<span aria-hidden style={{ fontSize: ".7em", color: C.indigo2, verticalAlign: "super", marginLeft: 1 }}>✦</span>
       </button>
       {open && (
-        <span role="tooltip" className="co-anim co-pop" style={{ position: "absolute", left: 0, bottom: "calc(100% + 11px)", zIndex: 40, width: 304, maxWidth: "86vw", background: "linear-gradient(180deg, #1b1733, #130f20)", border: `1px solid ${C.indigo}`, borderRadius: 13, padding: "13px 15px 14px", boxShadow: `0 20px 46px rgba(0,0,0,.72), 0 0 26px -6px ${C.indigo}`, fontFamily: SANS, fontSize: 13.5, fontWeight: 400, lineHeight: 1.55, color: C.ink, whiteSpace: "normal", letterSpacing: "normal", textTransform: "none" }}>
+        <span role="tooltip" className="co-anim co-pop" style={{ position: "absolute", left: 0, ...(below ? { top: "calc(100% + 11px)" } : { bottom: "calc(100% + 11px)" }), zIndex: 40, width: 304, maxWidth: "86vw", background: "linear-gradient(180deg, #1b1733, #130f20)", border: `1px solid ${C.indigo}`, borderRadius: 13, padding: "13px 15px 14px", boxShadow: `0 20px 46px rgba(0,0,0,.72), 0 0 26px -6px ${C.indigo}`, fontFamily: SANS, fontSize: 13.5, fontWeight: 400, lineHeight: 1.55, color: C.ink, whiteSpace: "normal", letterSpacing: "normal", textTransform: "none" }}>
           <span style={{ display: "block", fontFamily: MONO, fontSize: 10.5, fontWeight: 700, letterSpacing: ".09em", color: C.indigo2, marginBottom: 6 }}>✦ {term.toUpperCase()}</span>
           <span style={{ display: "block", color: C.soft }}>{definition}</span>
           {example && (
@@ -174,7 +192,7 @@ export function GlossaryTerm({ term, definition, example }: { term: string; defi
               <span style={{ display: "block", color: C.soft, fontSize: 13 }}>{example}</span>
             </span>
           )}
-          <span aria-hidden style={{ position: "absolute", left: 20, bottom: -6, width: 11, height: 11, background: "#130f20", borderRight: `1px solid ${C.indigo}`, borderBottom: `1px solid ${C.indigo}`, transform: "rotate(45deg)" }} />
+          <span aria-hidden style={{ position: "absolute", left: 20, ...(below ? { top: -6, borderLeft: `1px solid ${C.indigo}`, borderTop: `1px solid ${C.indigo}` } : { bottom: -6, borderRight: `1px solid ${C.indigo}`, borderBottom: `1px solid ${C.indigo}` }), width: 11, height: 11, background: "#130f20", transform: "rotate(45deg)" }} />
         </span>
       )}
     </span>
