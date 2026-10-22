@@ -93,18 +93,21 @@ function Glyph({ k }: { k: GlyphKey }) {
         </>
       );
     case "messaging":
-      // The speech-bubble tail pulls the drawn shape's own bounding box
-      // left of the 24x24 frame's center (measured: 2px margin left, 4px
-      // right), unlike every other glyph here which lands dead-centered —
-      // that's what read as "not fixed" next to the others. Shifting the
-      // whole glyph +1 right re-centers it without reshaping the bubble.
+      // A prior fix shifted this +1 right to center the STROKE's bounding
+      // box. But the three solid-filled dots read as far heavier than the
+      // thin stroke outline to the eye, and that shift dragged their
+      // visual-weight centroid to 13.06 in a 24-wide frame (every other
+      // glyph here sits at 11.95-12.09) — a full pixel right of center,
+      // which is what kept reading as "still off". The unshifted path's
+      // weighted centroid is 12.06, already matching the others; no
+      // horizontal correction is needed here.
       return (
-        <g transform="translate(1, 0)">
+        <>
           <path d="M4 6.5A2.5 2.5 0 0 1 6.5 4h11A2.5 2.5 0 0 1 20 6.5v8A2.5 2.5 0 0 1 17.5 17H10l-4.5 3.5V17h-1A2.5 2.5 0 0 1 2 14.5" />
           <circle cx="8.3" cy="10.3" r="1" fill="currentColor" stroke="none" />
           <circle cx="12" cy="10.3" r="1" fill="currentColor" stroke="none" />
           <circle cx="15.7" cy="10.3" r="1" fill="currentColor" stroke="none" />
-        </g>
+        </>
       );
     case "social":
       return (
