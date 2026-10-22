@@ -15,7 +15,7 @@
  * admin) with a hint ladder, FOUR drills on fresh clients, and a chained capstone. */
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary } from "./Engagement";
+import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary, shuffle } from "./Engagement";
 
 /* ───────────────────────── glossary ───────────────────────── */
 
@@ -272,11 +272,12 @@ function HtmlVsTextLab({ onDone }: { onDone: () => void }) {
 
 function PickSafeRenderLab({ onDone }: { onDone: () => void }) {
   const [picked, setPicked] = useState<number | null>(null);
-  const opts = [
+  const [opts] = useState(() => shuffle([
     { code: `page.innerHTML = userComment`, ok: false, why: "This is the bug: it drops raw user input into the page as HTML, so any tag runs. Exactly what you exploited." },
-    { code: `userComment.replace("<script>", "")`, ok: false, why: "A blocklist - trivially bypassed with onerror, <svg onload>, odd casing or encodings, as you saw in stage three." },
+    { code: `page.innerHTML = userComment.replace("<script>", "")`, ok: false, why: "A blocklist - trivially bypassed with onerror, <svg onload>, odd casing or encodings, as you saw in stage three." },
     { code: `page.textContent = userComment`, ok: true, why: "textContent writes the input as TEXT, never HTML - the browser prints <img onerror=...> instead of running it. This is output encoding, the real fix." },
-  ];
+    { code: `page.innerHTML = userComment.replace("onerror", "")`, ok: false, why: "Another blocklist, exactly the stage-three 'fix': switch to <svg onload> or odd casing and it runs again. Encode on output instead." },
+  ]));
   return (
     <div style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: 12, padding: "15px 16px" }}>
       <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: ".1em", color: C.indigo, fontWeight: 700, marginBottom: 10 }}>▶ APPLY THE FIX · which render is safe?</div>
@@ -486,10 +487,10 @@ export const MODULE6: ModuleDef = {
     check: {
       q: "An app puts your comment onto the page with innerHTML, and a developer 'fixes' XSS by deleting any <script> tags from comments. Why does that fail?",
       options: [
-        { text: "Event-handler attributes like <img onerror> and <svg onload> still run, so code executes without a <script> tag at all.", correct: true, feedback: "Right. Script tags aren't the only way to run code; the real fix is to render input as text, not HTML." },
-        { text: "It works fine, because <script> is the only HTML that can run JavaScript.", feedback: "No - onerror, onload and other handlers run JavaScript without any <script> tag." },
+        { text: "Event-handler attributes like <img onerror> and <svg onload> run without any <script> tag.", correct: true, feedback: "Right. Script tags aren't the only way to run code; the real fix is to render input as text, not HTML." },
+        { text: "It works fine, because a <script> tag is the only HTML that can run JavaScript.", feedback: "No - onerror, onload and other handlers run JavaScript without any <script> tag." },
         { text: "It fails only because the attacker can host the script on another site.", feedback: "The payload runs inline via event handlers; no external hosting is needed to defeat the filter." },
-        { text: "It works, as long as they also delete the word 'javascript'.", feedback: "Still a blocklist - different tags, casing and encodings slip past. Encode on output instead of chasing words." },
+        { text: "It works, as long as the developer also deletes the word 'javascript' too.", feedback: "Still a blocklist - different tags, casing and encodings slip past. Encode on output instead of chasing words." },
       ],
     },
   },
@@ -522,7 +523,7 @@ export const MODULE6: ModuleDef = {
     check: {
       q: "Where you must display user-supplied content, what is the primary fix for XSS?",
       options: [
-        { text: "Render the input as text (output encoding / escaping) so tags are printed, not executed.", correct: true, feedback: "Right. If input can't become HTML, it can't become script - that removes the whole class of bug." },
+        { text: "Render the input as text so any tags are printed, not executed.", correct: true, feedback: "Right - that's output encoding/escaping. If input can't become HTML, it can't become script, which removes the whole class of bug." },
         { text: "Mark the session cookie HttpOnly so scripts can't read it.", feedback: "That blocks one impact (cookie theft) but the injected script still runs and can do other harm. It's a seatbelt, not the fix." },
         { text: "Strip the <script> tag and the word onerror from all input.", feedback: "A blocklist - bypassed by other handlers, casing and encodings, as in stage three. Encode on output instead." },
         { text: "Add a Content-Security-Policy and rely on it to block everything.", feedback: "CSP is a strong backup, but it can be misconfigured or bypassed; encoding the output is the primary fix it backs up." },

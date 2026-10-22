@@ -15,7 +15,7 @@
  * chained capstone. */
 
 import { useEffect, useState } from "react";
-import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary } from "./Engagement";
+import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary, shuffle } from "./Engagement";
 
 /* ───────────────────────── glossary ───────────────────────── */
 
@@ -251,11 +251,12 @@ function IdorLab({ onDone }: { onDone: () => void }) {
 
 function PickAccessCheckLab({ onDone }: { onDone: () => void }) {
   const [picked, setPicked] = useState<number | null>(null);
-  const opts = [
+  const [opts] = useState(() => shuffle([
     { code: `return db.record(req.query.id)`, ok: false, why: "The bug itself: it returns whatever id is asked for, with no ownership check. Exactly what you exploited." },
-    { code: `id = encrypt(id)   // make ids unguessable`, ok: false, why: "Obscurity, not access control. The id still leaks (logs, sharing) and the access is still never checked." },
-    { code: `if (!canAccess(user, id)) return 403;  // every request`, ok: true, why: "A server-side authorization check on every access, deny by default. This is the fix - it doesn't matter if the id is guessed." },
-  ];
+    { code: `id = encrypt(id); return db.record(id)`, ok: false, why: "Obscurity, not access control. The id still leaks (logs, sharing) and the access is still never checked." },
+    { code: `if (!canAccess(user, id)) return 403;`, ok: true, why: "A server-side authorization check on every access, deny by default. This is the fix - run it for every request, and it doesn't matter if the id is guessed." },
+    { code: `if (!user) return 401; return db.record(id)`, ok: false, why: "That only checks they are logged in (authentication), not that this record is theirs (authorisation). Any logged-in user still reads any id." },
+  ]));
   return (
     <div style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: 12, padding: "15px 16px" }}>
       <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: ".1em", color: C.indigo, fontWeight: 700, marginBottom: 10 }}>▶ APPLY THE FIX · which actually stops the IDOR?</div>
@@ -481,9 +482,9 @@ export const MODULE7: ModuleDef = {
     check: {
       q: "A logged-in user changes id=1042 to id=1000 and reads a manager's record. What went wrong?",
       options: [
-        { text: "The server returned the record by id without checking it belongs to (or is permitted for) the requester.", correct: true, feedback: "Right. Authentication happened; the per-object authorization check did not." },
-        { text: "The user guessed the manager's password to open the record.", feedback: "No password was involved - they're logged in as themselves and only changed an id." },
-        { text: "The ids were encrypted and the user broke the encryption.", feedback: "The id is plain in the request; the flaw is the missing ownership check, not cryptography." },
+        { text: "The server returned the record by id without checking it belongs to the requester.", correct: true, feedback: "Right. Authentication happened; the per-object authorization check did not." },
+        { text: "The user guessed the manager's password and used it to open the record.", feedback: "No password was involved - they're logged in as themselves and only changed an id." },
+        { text: "The record ids were encrypted and the user managed to break the encryption.", feedback: "The id is plain in the request; the flaw is the missing ownership check, not cryptography." },
         { text: "The record was only unsafe because its link appeared in the menu.", feedback: "Whether or not it's linked is irrelevant - the endpoint answers any id because there's no check." },
       ],
     },
@@ -517,9 +518,9 @@ export const MODULE7: ModuleDef = {
     check: {
       q: "Which correctly fixes an IDOR on /api/record?id=?",
       options: [
-        { text: "On every access, the server checks the current user is authorized for that specific record, and denies by default.", correct: true, feedback: "Right - authorization enforced server-side, per object, every time. The id being guessed no longer matters." },
-        { text: "Use long random ids so they can't be guessed.", feedback: "Obscurity only - the id leaks and the access still isn't checked. Not a fix." },
-        { text: "Remove the link to other records from the menu.", feedback: "Hiding the link changes nothing; the endpoint still answers any id directly." },
+        { text: "On every access, the server checks this user is authorised for that specific record.", correct: true, feedback: "Right - authorization enforced server-side, per object, every time, denying by default. The id being guessed no longer matters." },
+        { text: "Use long, random record ids so an attacker can never guess a valid one.", feedback: "Obscurity only - the id leaks and the access still isn't checked. Not a fix." },
+        { text: "Remove the links to other people's records from the navigation menu.", feedback: "Hiding the link changes nothing; the endpoint still answers any id directly." },
         { text: "Encrypt the id in the URL so the client can't read it.", feedback: "The client still sends some id and the server still returns it unchecked - the missing check is the bug, not readability." },
       ],
     },
