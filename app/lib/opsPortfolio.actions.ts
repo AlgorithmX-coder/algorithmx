@@ -27,7 +27,7 @@ const PRODUCT_SLUG = "cyberstart";
 const RESUMABLE_BEATS = new Set(["lesson", "authorize", "act", "drills", "challenge", "defend"]);
 
 /** The finding a module files, sent from the client at the report beat.
- *  `module` is the learner-facing unit (1-16); it maps to the shared
+ *  `module` is the learner-facing unit (1-20); it maps to the shared
  *  Progress.week column at the DB boundary below. */
 export type FileEngagementInput = {
   module: number;
@@ -60,7 +60,7 @@ export async function fileEngagement(input: FileEngagementInput): Promise<FileEn
   if (
     !Number.isInteger(input?.module) ||
     input.module < 1 ||
-    input.module > 16 ||
+    input.module > 20 ||
     !input.finding?.title
   ) {
     return { ok: false, reason: "invalid" };
