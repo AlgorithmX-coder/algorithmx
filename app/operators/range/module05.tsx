@@ -13,6 +13,7 @@
 
 import { useEffect, useState, type CSSProperties } from "react";
 import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary, shuffle } from "./Engagement";
+import ExplainQuiz from "./ExplainQuiz";
 import {
   bootNorthwindRange, bootScenario,
   type NorthwindRange, type ScenarioRange, type ScenarioSpec, type RangeRunResult,
@@ -289,34 +290,6 @@ const STAGES: Stage[] = [
     done: (r, range) => r.rows.some((row) => row.some((c) => c === range.vaultFlag)),
   },
 ];
-
-/* Task-variety "explain it" question (UAT): a short comprehension beat that
- * interrupts the type-run-next rhythm after a cleared stage. Options shuffle and
- * each carries feedback; you pick the correct one to unlock the next stage. */
-function ExplainQuiz({ q, options, onCorrect }: { q: string; options: { text: string; correct?: boolean; feedback: string }[]; onCorrect: () => void }) {
-  const [picked, setPicked] = useState<number | null>(null);
-  const [opts] = useState(() => shuffle(options));
-  const solved = picked !== null && !!opts[picked].correct;
-  return (
-    <div style={{ borderTop: `1px solid ${C.green}33`, paddingTop: 12 }}>
-      <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: ".1em", color: C.cyan, fontWeight: 700, marginBottom: 8 }}>▶ EXPLAIN IT · before you move on</div>
-      <div style={{ fontSize: 13.5, color: C.ink, lineHeight: 1.5, marginBottom: 10 }}>{q}</div>
-      <div style={{ display: "grid", gap: 8 }}>
-        {opts.map((o, i) => {
-          const isP = picked === i;
-          return (
-            <div key={i}>
-              <button disabled={solved} onClick={() => { setPicked(i); if (o.correct) onCorrect(); }} className="co-opt" style={{ width: "100%", textAlign: "left", padding: "10px 12px", borderRadius: 9, border: `1px solid ${isP ? (o.correct ? C.green : C.red) : C.line}`, background: isP ? (o.correct ? "rgba(85,217,140,.08)" : "rgba(242,109,114,.06)") : C.carbon, color: C.ink, fontSize: 13, lineHeight: 1.4, cursor: solved ? "default" : "pointer" }}>
-                <span style={{ fontFamily: MONO, color: isP ? (o.correct ? C.green : C.red) : C.mute, marginRight: 8 }}>{isP ? (o.correct ? "✓" : "✗") : String.fromCharCode(65 + i)}</span>{o.text}
-              </button>
-              {isP && <div style={{ padding: "7px 12px 2px", fontSize: 12.5, color: o.correct ? "#bff3d3" : C.soft, lineHeight: 1.5 }}>{o.feedback}</div>}
-            </div>
-          );
-        })}
-      </div>
-    </div>
-  );
-}
 
 function InjectionAct({ onCapture }: { onCapture: () => void }) {
   const [range, setRange] = useState<NorthwindRange | null>(null);
