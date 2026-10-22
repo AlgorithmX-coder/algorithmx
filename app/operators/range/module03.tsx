@@ -12,6 +12,7 @@
 
 import { useEffect, useState } from "react";
 import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary, shuffle } from "./Engagement";
+import ExplainQuiz from "./ExplainQuiz";
 
 /* ───────────────────────── glossary ───────────────────────── */
 
@@ -175,7 +176,8 @@ function InspectSurface({ step, onSolved }: { step: InspectStep; onSolved: () =>
 }
 
 /* a stage is either an inspect step or a request step */
-type Stage = { kind: "inspect"; step: InspectStep } | { kind: "req"; host: string; step: ReqStep };
+type Explain = { q: string; options: { text: string; correct?: boolean; feedback: string }[] };
+type Stage = { kind: "inspect"; step: InspectStep; explain?: Explain } | { kind: "req"; host: string; step: ReqStep; explain?: Explain };
 
 function StageView({ stage, onSolved }: { stage: Stage; onSolved: () => void }) {
   const goal = stage.kind === "inspect" ? stage.step.goal : stage.step.goal;
@@ -234,6 +236,15 @@ const ACT_STAGES: Stage[] = [
       hint: "Change unitPrice to something lower - 0.00 works - and send. If it still confirms, the server trusted the client.",
       reveal: { unitPrice: "0.00" },
     },
+    explain: {
+      q: "You bought a GBP 149 unit for 0.00 by editing the price before it was sent. Why did the server let you?",
+      options: [
+        { text: "The price came from your browser and the server trusted it instead of looking up the real one itself.", correct: true, feedback: "Right - parameter tampering. Anything the client sends (price, quantity, role) is attacker-controlled; the server must re-derive the real value." },
+        { text: "The checkout had a discount bug that happened to zero out the price for that one unit.", feedback: "No bug - the server simply used the number you sent. Any price you chose would have gone through." },
+        { text: "Your edit slipped past the browser's own validation, which is the only thing checking the price.", feedback: "Browser validation is cosmetic; you control the request. The real check has to be server-side." },
+        { text: "The server's database was briefly out of date, so it still held that unit at a price of zero.", feedback: "The database was fine - the server just never consulted it for the price. It took yours at face value." },
+      ],
+    },
   },
   {
     kind: "req", host: HOST, step: {
@@ -250,10 +261,11 @@ const ACT_STAGES: Stage[] = [
 function WebSurfaceAct({ onCapture }: { onCapture: () => void }) {
   const [si, setSi] = useState(0);
   const [cleared, setCleared] = useState<boolean[]>(ACT_STAGES.map(() => false));
+  const [explainOk, setExplainOk] = useState(false);
   const stage = ACT_STAGES[si];
   const titles = ACT_STAGES.map((s) => s.kind === "inspect" ? s.step.title : s.step.title);
   function solved() { setCleared((c) => { const n = [...c]; n[si] = true; return n; }); }
-  function advance() { if (si + 1 < ACT_STAGES.length) setSi(si + 1); else onCapture(); }
+  function advance() { setExplainOk(false); if (si + 1 < ACT_STAGES.length) setSi(si + 1); else onCapture(); }
   return (
     <div style={{ display: "grid", gap: 14 }}>
       <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
@@ -266,9 +278,12 @@ function WebSurfaceAct({ onCapture }: { onCapture: () => void }) {
       </div>
       <StageView key={si} stage={stage} onSolved={solved} />
       {cleared[si] && (
-        <div className="co-anim co-pop" style={{ display: "flex", alignItems: "center", gap: 14, flexWrap: "wrap", padding: "13px 16px", borderRadius: 12, background: "rgba(85,217,140,.08)", border: `1px solid ${C.green}55` }}>
-          <span style={{ fontFamily: MONO, fontSize: 12.5, color: C.green, fontWeight: 700 }}>✓ Stage {si + 1} cleared</span>
-          <Btn tone="g" onClick={advance} style={{ marginLeft: "auto" }}>{si + 1 < ACT_STAGES.length ? "Next stage →" : "Capture the engagement →"}</Btn>
+        <div className="co-anim co-pop" style={{ display: "grid", gap: 12, padding: "13px 16px", borderRadius: 12, background: "rgba(85,217,140,.08)", border: `1px solid ${C.green}55` }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 14, flexWrap: "wrap" }}>
+            <span style={{ fontFamily: MONO, fontSize: 12.5, color: C.green, fontWeight: 700 }}>✓ Stage {si + 1} cleared</span>
+            {(!stage.explain || explainOk) && <Btn tone="g" onClick={advance} style={{ marginLeft: "auto" }}>{si + 1 < ACT_STAGES.length ? "Next stage →" : "Capture the engagement →"}</Btn>}
+          </div>
+          {stage.explain && <ExplainQuiz key={si} q={stage.explain.q} options={stage.explain.options} onCorrect={() => setExplainOk(true)} />}
         </div>
       )}
     </div>

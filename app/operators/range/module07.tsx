@@ -16,6 +16,7 @@
 
 import { useEffect, useState } from "react";
 import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary, shuffle } from "./Engagement";
+import ExplainQuiz from "./ExplainQuiz";
 
 /* ───────────────────────── glossary ───────────────────────── */
 
@@ -81,6 +82,7 @@ type ReqStep = {
   win: (f: Record<string, string>) => boolean;
   hint: string;
   reveal: Record<string, string>;
+  explain?: { q: string; options: { text: string; correct?: boolean; feedback: string }[] };
 };
 
 function ReqSurface({ host, step, onSolved }: { host: string; step: ReqStep; onSolved: () => void }) {
@@ -166,6 +168,15 @@ const ACT_STEPS: ReqStep[] = [
     method: "GET", pathTemplate: "/api/record?id={id}", fields: [{ key: "id", label: "id", value: "1042" }], palette: ["1041", "1000"],
     respond: recordResp, win: (f) => { const r = RECORDS[String(f.id).trim()]; return !!r && String(f.id).trim() !== "1042"; },
     hint: "The id is right there in the request. Try 1041 - another driver - and the server won't check it isn't yours.", reveal: { id: "1041" },
+    explain: {
+      q: "You read another driver's record just by changing the id in the request. Why did the server hand it over?",
+      options: [
+        { text: "It checked that you were logged in, but never that the record you asked for was actually yours.", correct: true, feedback: "Right - that's IDOR. Being authenticated (logged in) isn't authorisation; the server must check you own each object, every request." },
+        { text: "Changing the id tricked the database into skipping its usual password check for that record.", feedback: "No password check was involved - you were already logged in as yourself. The server just never checked ownership." },
+        { text: "The other driver's record had accidentally been left shared with every logged-in user.", feedback: "Nothing was shared - the endpoint returns any id to anyone logged in, because it never checks who owns the record." },
+        { text: "The id numbers run in sequence, and sequential ids are automatically public to any user.", feedback: "Guessable ids make it easy, but that's not why it worked - the server hands over any id, sequential or not, with no ownership check." },
+      ],
+    },
   },
   {
     title: "Sensitive record", goal: "Stage 2 - Escalate the target. The same flaw reaches far more than peers. Pull the manager's record (id 1000) - salary, home address, and an admin portal key.",
@@ -200,9 +211,10 @@ const ACT_STEPS: ReqStep[] = [
 function AccessAct({ onCapture }: { onCapture: () => void }) {
   const [si, setSi] = useState(0);
   const [cleared, setCleared] = useState<boolean[]>(ACT_STEPS.map(() => false));
+  const [explainOk, setExplainOk] = useState(false);
   const step = ACT_STEPS[si];
   function solved() { setCleared((c) => { const n = [...c]; n[si] = true; return n; }); }
-  function advance() { if (si + 1 < ACT_STEPS.length) setSi(si + 1); else onCapture(); }
+  function advance() { setExplainOk(false); if (si + 1 < ACT_STEPS.length) setSi(si + 1); else onCapture(); }
   return (
     <div style={{ display: "grid", gap: 14 }}>
       <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
@@ -215,9 +227,12 @@ function AccessAct({ onCapture }: { onCapture: () => void }) {
       </div>
       <StepView key={si} host={HOST} step={step} onSolved={solved} />
       {cleared[si] && (
-        <div className="co-anim co-pop" style={{ display: "flex", alignItems: "center", gap: 14, flexWrap: "wrap", padding: "13px 16px", borderRadius: 12, background: "rgba(85,217,140,.08)", border: `1px solid ${C.green}55` }}>
-          <span style={{ fontFamily: MONO, fontSize: 12.5, color: C.green, fontWeight: 700 }}>✓ Stage {si + 1} cleared</span>
-          <Btn tone="g" onClick={advance} style={{ marginLeft: "auto" }}>{si + 1 < ACT_STEPS.length ? "Next stage →" : "Capture the engagement →"}</Btn>
+        <div className="co-anim co-pop" style={{ display: "grid", gap: 12, padding: "13px 16px", borderRadius: 12, background: "rgba(85,217,140,.08)", border: `1px solid ${C.green}55` }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 14, flexWrap: "wrap" }}>
+            <span style={{ fontFamily: MONO, fontSize: 12.5, color: C.green, fontWeight: 700 }}>✓ Stage {si + 1} cleared</span>
+            {(!step.explain || explainOk) && <Btn tone="g" onClick={advance} style={{ marginLeft: "auto" }}>{si + 1 < ACT_STEPS.length ? "Next stage →" : "Capture the engagement →"}</Btn>}
+          </div>
+          {step.explain && <ExplainQuiz key={si} q={step.explain.q} options={step.explain.options} onCorrect={() => setExplainOk(true)} />}
         </div>
       )}
     </div>

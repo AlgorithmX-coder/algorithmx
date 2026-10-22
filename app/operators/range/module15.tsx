@@ -11,6 +11,7 @@
 
 import { useEffect, useState } from "react";
 import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary, shuffle } from "./Engagement";
+import ExplainQuiz from "./ExplainQuiz";
 
 /* ───────────────────────── glossary ───────────────────────── */
 
@@ -138,7 +139,8 @@ function ReqSurface({ cfg, onSolved }: { cfg: ReqCfg; onSolved: () => void }) {
   );
 }
 
-type Stage = { kind: "inspect"; title: string; goal: string; cfg: InspectCfg } | { kind: "req"; title: string; goal: string; cfg: ReqCfg };
+type Explain = { q: string; options: { text: string; correct?: boolean; feedback: string }[] };
+type Stage = { kind: "inspect"; title: string; goal: string; cfg: InspectCfg; explain?: Explain } | { kind: "req"; title: string; goal: string; cfg: ReqCfg; explain?: Explain };
 function StageView({ stage, onSolved }: { stage: Stage; onSolved: () => void }) {
   return (
     <div style={{ display: "grid", gap: 12 }}>
@@ -161,7 +163,16 @@ const ACT_STAGES: Stage[] = [
       respond: (f) => { if (f.email.trim() === "root@vantage.range" && f.pass === "Vantage!Backup#9") return { status: 200, title: "signed in as root (looted credential accepted)", lines: ["Welcome, administrator.", "admin console unlocked"], sensitive: true }; return { status: 401, title: "access denied", lines: ["wrong credentials"] }; },
       win: (f) => f.email.trim() === "root@vantage.range" && f.pass === "Vantage!Backup#9",
       hint: "Use the credential from the dump: root@vantage.range / Vantage!Backup#9.", reveal: { email: "root@vantage.range", pass: "Vantage!Backup#9" },
-      recovered: [{ label: "email", value: "root@vantage.range", field: "email" }, { label: "password", value: "Vantage!Backup#9", field: "pass" }] } },
+      recovered: [{ label: "email", value: "root@vantage.range", field: "email" }, { label: "password", value: "Vantage!Backup#9", field: "pass" }] },
+    explain: {
+      q: "You logged into the live console with a password lifted from an old database backup. What is this, and why did it work?",
+      options: [
+        { text: "Credential reuse: the same password still worked on the live console because it was never changed after the backup leaked.", correct: true, feedback: "Right - one leaked password opened a second system. Rotate credentials after any exposure, and never reuse them across systems." },
+        { text: "A brute-force attack: the console just accepted the first password you tried from the leaked dump.", feedback: "No guessing was involved - you used the exact real password from the backup. It worked because it was still valid." },
+        { text: "The console had no password check at all, so any text in the password box would have let you in.", feedback: "It does check - a wrong password is rejected. It worked because the looted password was the genuine, current one." },
+        { text: "The backup file itself contained a live login session that carried straight over into the console.", feedback: "The backup held a password, not a session. You logged in normally with a credential that should have been rotated." },
+      ],
+    } },
   { kind: "req", title: "Crown jewels", goal: "Stage 4 - Reach the crown jewels. As admin, pull the protected customer export to prove full impact and capture the flag.",
     cfg: { host: `${HOST} · admin console`, method: "GET", pathTemplate: "/console/export?scope={scope}", fields: [{ key: "scope", label: "scope", value: "self" }],
       respond: (f) => { if (f.scope.trim().toLowerCase() === "all") return { status: 200, title: "full customer export (admin access)", lines: ["42,110 customer records", "flag{ch41n3d_t0_adm1n}"], sensitive: true }; return { status: 200, title: "export", lines: ["your own record only"] }; },
@@ -172,9 +183,10 @@ const ACT_STAGES: Stage[] = [
 function EngagementAct({ onCapture }: { onCapture: () => void }) {
   const [si, setSi] = useState(0);
   const [cleared, setCleared] = useState<boolean[]>(ACT_STAGES.map(() => false));
+  const [explainOk, setExplainOk] = useState(false);
   const stage = ACT_STAGES[si];
   function solved() { setCleared((c) => { const n = [...c]; n[si] = true; return n; }); }
-  function advance() { if (si + 1 < ACT_STAGES.length) setSi(si + 1); else onCapture(); }
+  function advance() { setExplainOk(false); if (si + 1 < ACT_STAGES.length) setSi(si + 1); else onCapture(); }
   return (
     <div style={{ display: "grid", gap: 14 }}>
       <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
@@ -187,9 +199,12 @@ function EngagementAct({ onCapture }: { onCapture: () => void }) {
       </div>
       <StageView key={si} stage={stage} onSolved={solved} />
       {cleared[si] && (
-        <div className="co-anim co-pop" style={{ display: "flex", alignItems: "center", gap: 14, flexWrap: "wrap", padding: "13px 16px", borderRadius: 12, background: "rgba(85,217,140,.08)", border: `1px solid ${C.green}55` }}>
-          <span style={{ fontFamily: MONO, fontSize: 12.5, color: C.green, fontWeight: 700 }}>✓ Stage {si + 1} cleared</span>
-          <Btn tone="g" onClick={advance} style={{ marginLeft: "auto" }}>{si + 1 < ACT_STAGES.length ? "Next link in the chain →" : "Capture the engagement →"}</Btn>
+        <div className="co-anim co-pop" style={{ display: "grid", gap: 12, padding: "13px 16px", borderRadius: 12, background: "rgba(85,217,140,.08)", border: `1px solid ${C.green}55` }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 14, flexWrap: "wrap" }}>
+            <span style={{ fontFamily: MONO, fontSize: 12.5, color: C.green, fontWeight: 700 }}>✓ Stage {si + 1} cleared</span>
+            {(!stage.explain || explainOk) && <Btn tone="g" onClick={advance} style={{ marginLeft: "auto" }}>{si + 1 < ACT_STAGES.length ? "Next link in the chain →" : "Capture the engagement →"}</Btn>}
+          </div>
+          {stage.explain && <ExplainQuiz key={si} q={stage.explain.q} options={stage.explain.options} onCorrect={() => setExplainOk(true)} />}
         </div>
       )}
     </div>

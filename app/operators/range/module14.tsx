@@ -10,6 +10,7 @@
 
 import { useEffect, useState } from "react";
 import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary, shuffle } from "./Engagement";
+import ExplainQuiz from "./ExplainQuiz";
 
 /* ───────────────────────── glossary ───────────────────────── */
 
@@ -140,10 +141,11 @@ function DecisionCard({ decision, onSolved }: { decision: Decision; onSolved: ()
 }
 
 /* ── a stage ── */
+type Explain = { q: string; options: { text: string; correct?: boolean; feedback: string }[] };
 type Stage =
-  | { kind: "severity"; title: string; goal: string; rows: SevRow[]; hint: string }
-  | { kind: "order"; title: string; goal: string; items: OrderItem[]; hint: string }
-  | { kind: "decision"; title: string; goal: string; decision: Decision };
+  | { kind: "severity"; title: string; goal: string; rows: SevRow[]; hint: string; explain?: Explain }
+  | { kind: "order"; title: string; goal: string; items: OrderItem[]; hint: string; explain?: Explain }
+  | { kind: "decision"; title: string; goal: string; decision: Decision; explain?: Explain };
 
 function StageView({ stage, onSolved }: { stage: Stage; onSolved: () => void }) {
   return (
@@ -166,7 +168,16 @@ const ACT_STAGES: Stage[] = [
       { finding: "Stored XSS that steals a logged-in user's session", band: "High", note: "Serious account takeover, but needs a victim to view the page = High, just below Critical." },
       { finding: "Missing rate-limiting on a non-sensitive search box", band: "Medium", note: "Enables abuse/DoS but no direct data impact = Medium." },
     ],
-    hint: "Remote + no login + whole database = Critical. A version banner alone = Low. Session-stealing XSS = High. A missing control with limited impact = Medium." },
+    hint: "Remote + no login + whole database = Critical. A version banner alone = Low. Session-stealing XSS = High. A missing control with limited impact = Medium.",
+    explain: {
+      q: "You scored the SQL injection Critical. Why does a remote, no-login flaw that exposes the whole database land at the top band?",
+      options: [
+        { text: "It can be hit remotely with no login and exposes the whole database, so both ease and impact are maximal.", correct: true, feedback: "Right - severity weighs how easy a flaw is to exploit (remote, unauthenticated) against its impact (the whole database). Both maxed = Critical." },
+        { text: "Critical is just the default band every finding starts at until someone downgrades it later.", feedback: "No - findings are scored on their actual exploitability and impact, not a default. A minor bug scores Low." },
+        { text: "It's Critical only because customer data is involved, and any data-related bug is automatically top band.", feedback: "Not automatic - a tiny, hard-to-reach data leak can be Low. It's the combination of easy access and huge impact here." },
+        { text: "The score is set by how long the bug has existed, and this one had been open the longest.", feedback: "Age doesn't set severity; exploitability and impact do. A brand-new remote, unauthenticated, full-database flaw is still Critical." },
+      ],
+    } },
   { kind: "order", title: "Report", goal: "Stage 2 - Build the report. Put a finding report's sections in the order that lets a busy team act on it fast.",
     items: [
       { label: "Title (what the issue is)", pos: 0 },
@@ -196,9 +207,10 @@ const ACT_STAGES: Stage[] = [
 function DisclosureAct({ onCapture }: { onCapture: () => void }) {
   const [si, setSi] = useState(0);
   const [cleared, setCleared] = useState<boolean[]>(ACT_STAGES.map(() => false));
+  const [explainOk, setExplainOk] = useState(false);
   const stage = ACT_STAGES[si];
   function solved() { setCleared((c) => { const n = [...c]; n[si] = true; return n; }); }
-  function advance() { if (si + 1 < ACT_STAGES.length) setSi(si + 1); else onCapture(); }
+  function advance() { setExplainOk(false); if (si + 1 < ACT_STAGES.length) setSi(si + 1); else onCapture(); }
   return (
     <div style={{ display: "grid", gap: 14 }}>
       <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
@@ -211,9 +223,12 @@ function DisclosureAct({ onCapture }: { onCapture: () => void }) {
       </div>
       <StageView key={si} stage={stage} onSolved={solved} />
       {cleared[si] && (
-        <div className="co-anim co-pop" style={{ display: "flex", alignItems: "center", gap: 14, flexWrap: "wrap", padding: "13px 16px", borderRadius: 12, background: "rgba(85,217,140,.08)", border: `1px solid ${C.green}55` }}>
-          <span style={{ fontFamily: MONO, fontSize: 12.5, color: C.green, fontWeight: 700 }}>✓ Stage {si + 1} cleared</span>
-          <Btn tone="g" onClick={advance} style={{ marginLeft: "auto" }}>{si + 1 < ACT_STAGES.length ? "Next stage →" : "Capture the engagement →"}</Btn>
+        <div className="co-anim co-pop" style={{ display: "grid", gap: 12, padding: "13px 16px", borderRadius: 12, background: "rgba(85,217,140,.08)", border: `1px solid ${C.green}55` }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 14, flexWrap: "wrap" }}>
+            <span style={{ fontFamily: MONO, fontSize: 12.5, color: C.green, fontWeight: 700 }}>✓ Stage {si + 1} cleared</span>
+            {(!stage.explain || explainOk) && <Btn tone="g" onClick={advance} style={{ marginLeft: "auto" }}>{si + 1 < ACT_STAGES.length ? "Next stage →" : "Capture the engagement →"}</Btn>}
+          </div>
+          {stage.explain && <ExplainQuiz key={si} q={stage.explain.q} options={stage.explain.options} onCorrect={() => setExplainOk(true)} />}
         </div>
       )}
     </div>
