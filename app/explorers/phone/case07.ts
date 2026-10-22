@@ -384,13 +384,23 @@ export const case07Phone: PhoneCase = {
             ],
           },
           {
-            t: "choose",
-            prompt: "Now what?",
-            options: [
-              { label: "Send no code, warn the real Jordan another way, tell an adult, send Priya her slides", outcome: "good" },
-              { label: "Send Jordan the code since it's really his account", outcome: "bad", then: [{ t: "con", text: "Chat 2 · Jordan: yesss finally", delay: 700 }] },
-              { label: "Block them both and say nothing", outcome: "bad", then: [{ t: "con", text: "[the real Jordan never finds out his account is stolen]", delay: 700 }] },
-            ],
+            t: "flip",
+            prompt: "Decide, then flip the card to see what happens to the real Jordan's account.",
+            you: {
+              kind: "choice",
+              label: "Chat 2, confirmed stolen",
+              prompt: "Now what?",
+              options: [
+                { label: "Send no code, warn the real Jordan another way, tell an adult, send Priya her slides", outcome: "good" },
+                { label: "Send Jordan the code since it's really his account", outcome: "bad" },
+                { label: "Block them both and say nothing", outcome: "bad" },
+              ],
+            },
+            them: {
+              label: "'Jordan's' thread",
+              whenGood: "NO CODE SENT · real Jordan warned another way · account stays locked out",
+              whenBad: "CODE SENT · 'Jordan' logs in · the real Jordan's account is gone",
+            },
           },
         ],
       },

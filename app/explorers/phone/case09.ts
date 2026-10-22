@@ -376,13 +376,23 @@ export const case09Phone: PhoneCase = {
         steps: [
           { t: "con", text: "come on, after everything these weeks?? i thought we were proper friends. don't tell anyone i asked though 🙏", delay: 1000 },
           {
-            t: "choose",
-            prompt: "That's the squeeze. What do you do?",
-            options: [
-              { label: "Send nothing, block and walk away, and tell a trusted adult", outcome: "good" },
-              { label: "Send it, you have been friends for six weeks", outcome: "bad", then: [{ t: "con", text: "yesss knew i could count on you 🥺", delay: 700 }] },
-              { label: "Explain nicely why you're saying no", outcome: "bad", then: [{ t: "con", text: "but why?? after everything?? 😔", delay: 700 }] },
-            ],
+            t: "flip",
+            prompt: "Decide, then flip the card to see what Jamie does with your answer.",
+            you: {
+              kind: "choice",
+              label: "Jamie's sunk-cost squeeze",
+              prompt: "That's the squeeze. What do you do?",
+              options: [
+                { label: "Send nothing, block and walk away, and tell a trusted adult", outcome: "good" },
+                { label: "Send it, you have been friends for six weeks", outcome: "bad" },
+                { label: "Explain nicely why you're saying no", outcome: "bad" },
+              ],
+            },
+            them: {
+              label: "Jamie's thread",
+              whenGood: "BLOCKED · thread dead · adult informed · the farm loses its mark",
+              whenBad: "CARD SENT · 'yesss knew i could count on you' · SIREN banks another week",
+            },
           },
         ],
       },

@@ -20,16 +20,8 @@ import { ResumePrompt } from "../engine/ResumePrompt";
 import { ClosingCeremony } from "../engine/closingCeremony";
 import { addJournalEntry, loadJournal, type JournalEntry } from "../engine/journal";
 import { CaseJournal } from "../engine/CaseJournal";
+import { ETHICS_LINE, ETHICS_VOICE } from "../engine/ethicsLine";
 import type { ConsoleCase, ConsoleStep, ConsoleTest } from "./case11";
-
-// Spoken once after every skill clears, every case — the ethics reinforcement
-// line (UAT request: stress that Block 3's real attacker techniques are
-// taught so players can defend, never to copy against someone else). One
-// shared clip reused everywhere rather than 35 bespoke lines: the message is
-// identical each time, so recording it once keeps it consistent and cuts the
-// voice-generation cost to a single clip.
-const ETHICS_LINE = "Quick reminder before we move on, Agent — everything you just built is to protect YOUR accounts. Never use what you've learned to get into someone else's.";
-const ETHICS_VOICE = "/audio/wren/ethics-defend-not-attack.mp3";
 
 const C = {
   page: "#0b0a06", ink: "#F4ECD8", dim: "#B39B6E", faint: "#877857",

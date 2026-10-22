@@ -378,13 +378,23 @@ export const case10Phone: PhoneCase = {
         name: "Confirm, and act",
         steps: [
           {
-            t: "choose",
-            prompt: "She can't give the code word, and she's rushing you harder. Now what?",
-            options: [
-              { label: "Hang up, call Mum's real number, and tell a trusted adult", outcome: "good" },
-              { label: "Send it anyway, just in case it's really her", outcome: "bad", then: [{ t: "con", text: "[Mum's voice] yes!! quickly!!", delay: 700 }] },
-              { label: "Argue with the caller about the code word", outcome: "bad", then: [{ t: "con", text: "[Mum's voice] stop wasting time!!", delay: 700 }] },
-            ],
+            t: "flip",
+            prompt: "The last call of the block. Decide, then flip the card to see who's really on the line.",
+            you: {
+              kind: "choice",
+              label: "The caller can't give the code word",
+              prompt: "She can't give the code word, and she's rushing you harder. Now what?",
+              options: [
+                { label: "Hang up, call Mum's real number, and tell a trusted adult", outcome: "good" },
+                { label: "Send it anyway, just in case it's really her", outcome: "bad" },
+                { label: "Argue with the caller about the code word", outcome: "bad" },
+              ],
+            },
+            them: {
+              label: "The caller",
+              whenGood: "LINE DEAD · you call the real Mum yourself · she's fine, never called",
+              whenBad: "MONEY SENT · 'yes!! quickly!!' · the clone banks it and hangs up",
+            },
           },
         ],
       },

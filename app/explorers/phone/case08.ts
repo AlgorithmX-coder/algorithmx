@@ -382,13 +382,23 @@ export const case08Phone: PhoneCase = {
           { t: "con", text: "ok this is SO embarrassing but my mum's card got declined and i can't top up my account 😭", delay: 1100 },
           { t: "con", text: "could you grab me a £20 game card? i'll pay you back i swear. don't tell anyone though, it's so embarrassing 🙏", ask: true },
           {
-            t: "choose",
-            prompt: "There's the ask. What do you do?",
-            options: [
-              { label: "Send nothing, verify who they really are, and tell an adult", outcome: "good" },
-              { label: "Send the card, they've been such a good friend all week", outcome: "bad", then: [{ t: "con", text: "you're the best, quick as you can? 🥺", delay: 700 }] },
-              { label: "Keep it secret like they asked, but don't send money", outcome: "bad", then: [{ t: "con", text: "please don't tell anyone, i'll be so embarrassed 😭", delay: 700 }] },
-            ],
+            t: "flip",
+            prompt: "Decide, then flip the card to see what 'Alex' does next.",
+            you: {
+              kind: "choice",
+              label: "Alex's ask, finally landed",
+              prompt: "There's the ask. What do you do?",
+              options: [
+                { label: "Send nothing, verify who they really are, and tell an adult", outcome: "good" },
+                { label: "Send the card, they've been such a good friend all week", outcome: "bad" },
+                { label: "Keep it secret like they asked, but don't send money", outcome: "bad" },
+              ],
+            },
+            them: {
+              label: "Alex's thread",
+              whenGood: "NO REPLY SENT · 'Alex' goes quiet · an adult now knows",
+              whenBad: "CARD SENT · 'you're the best, quick as you can?' · GHOSTWRITER banks it and moves on",
+            },
           },
         ],
       },
