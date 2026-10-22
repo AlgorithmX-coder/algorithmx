@@ -531,12 +531,12 @@ export const MODULE8: ModuleDef = {
     ],
     Interactive: PickProtectionLab,
     check: {
-      q: "How should that auth token have been handled?",
+      q: "A password you only ever check, and an API token you must use again later - how should each be stored?",
       options: [
-        { text: "Keep it in a secrets manager or env var, and encrypt it at rest with a strong, separately-managed key.", correct: true, feedback: "Right. Real secret management and real encryption, not encoding." },
-        { text: "Base64-encode it twice over so that it is noticeably harder for anyone to read.", feedback: "Encoding any number of times is still trivially reversible. It adds no protection at all." },
-        { text: "Use a home-grown XOR cipher so that attackers never work out the method.", feedback: "You just brute-forced exactly that. Never roll your own, and never rely on a tiny keyspace." },
-        { text: "Rename the field to something innocuous so nobody realises what it holds.", feedback: "Obscuring the name doesn't protect the value; anyone who finds it can still decode it." },
+        { text: "Hash the password one-way; encrypt the token so it can be decrypted - you must recover the token but never the password.", correct: true, feedback: "Right - match the primitive to the goal. Hashing is for values you only compare; encryption is for secrets you need back." },
+        { text: "Encrypt both, so you can always recover the original value whenever the system happens to need it.", feedback: "No - a password you can decrypt is a password an attacker can decrypt too. You never need the original back, so hash it." },
+        { text: "Hash both, because hashing is simply the strongest protection available for any kind of secret.", feedback: "A hashed token is useless - you could never read it back to call the API. Hashing is one-way by design." },
+        { text: "Base64-encode both, which is enough as long as the database itself is kept properly secure.", feedback: "Encoding is reversible by anyone and protects nothing; it isn't a security control at all." },
       ],
     },
   },

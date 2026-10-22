@@ -509,12 +509,12 @@ export const MODULE2: ModuleDef = {
     ],
     Interactive: PickExposureFixLab,
     check: {
-      q: "What most directly stops an attacker deriving a valid login and target from public info?",
+      q: "You've scrubbed Caldera's site and ads. Why can't you fully 'un-leak' what OSINT already exposed?",
       options: [
-        { text: "Use role-based email addresses, keep internal portal URLs out of public ads, and scrub document metadata.", correct: true, feedback: "Right - remove the pattern, the named URL and the leaked metadata, and the easy derivation stops working." },
-        { text: "Make the public website load faster and compress its images to save bandwidth.", feedback: "Performance has nothing to do with what the site reveals." },
-        { text: "Ask all employees to choose much longer and more complex account passwords.", feedback: "Good hygiene, but it doesn't stop an attacker learning a valid username and where to use it." },
-        { text: "Add a cookie-consent banner and a privacy policy link to the public site.", feedback: "That's a privacy notice, not a change to what you expose; the email scheme and subdomains still leak." },
+        { text: "Once something's been public it's copied, cached and archived by others, so you can shrink future exposure but never fully recall the old.", correct: true, feedback: "Right - you can't un-publish the internet. Scrub going forward, and rotate any secret that already leaked; assume the old copy is still out there." },
+        { text: "You can fully undo it - deleting the original page removes it from every search engine and archive within minutes.", feedback: "No. Search caches, the Wayback Machine and anyone who copied it keep their own version regardless of your delete." },
+        { text: "You can, as long as you also change the company's domain name so that all the old links break.", feedback: "The old content still exists wherever it was copied; a new domain doesn't retract what's already saved elsewhere." },
+        { text: "You can't, but only because attackers keep re-downloading your live pages faster than you can edit them.", feedback: "The problem isn't speed - it's that public data gets copied and archived beyond your reach the moment it's up." },
       ],
     },
   },

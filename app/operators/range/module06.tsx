@@ -521,12 +521,12 @@ export const MODULE6: ModuleDef = {
     ],
     Interactive: PickSafeRenderLab,
     check: {
-      q: "Where you must display user-supplied content, what is the primary fix for XSS?",
+      q: "You already encode output. What does also marking the session cookie HttpOnly add on top?",
       options: [
-        { text: "Render the input as text so any tags are printed, not executed.", correct: true, feedback: "Right - that's output encoding/escaping. If input can't become HTML, it can't become script, which removes the whole class of bug." },
-        { text: "Mark the session cookie HttpOnly so scripts can't read it.", feedback: "That blocks one impact (cookie theft) but the injected script still runs and can do other harm. It's a seatbelt, not the fix." },
-        { text: "Strip the <script> tag and the word onerror from all input.", feedback: "A blocklist - bypassed by other handlers, casing and encodings, as in stage three. Encode on output instead." },
-        { text: "Add a Content-Security-Policy and rely on it to block everything.", feedback: "CSP is a strong backup, but it can be misconfigured or bypassed; encoding the output is the primary fix it backs up." },
+        { text: "If an XSS ever slips through, the injected script can't read the cookie, so it can't steal the session that way.", correct: true, feedback: "Right - HttpOnly is a seatbelt behind the real fix: it removes one big impact (session theft) if encoding ever fails." },
+        { text: "It replaces output encoding, so once a cookie is HttpOnly you no longer need to escape user input at all.", feedback: "No - it's a backup layer, not a substitute. An injected script can still deface the page or act as the logged-in user." },
+        { text: "It encrypts the cookie so the server can detect whether an attacker has tampered with its value.", feedback: "HttpOnly is neither encryption nor an integrity check - it only hides the cookie from JavaScript." },
+        { text: "It blocks every script on the page, which is why it counts as the main defence against XSS.", feedback: "That's closer to a Content-Security-Policy, and even CSP isn't the primary fix - encoding the output is." },
       ],
     },
   },
