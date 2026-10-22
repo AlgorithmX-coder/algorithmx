@@ -15,7 +15,7 @@
  * industry{} authored from the research brief (Arup, Sumsub, WPP, C2PA). */
 
 import { useState } from "react";
-import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary } from "./Engagement";
+import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary, shuffle } from "./Engagement";
 
 /* ───────────────────────── glossary ───────────────────────── */
 
@@ -136,6 +136,7 @@ function TellPicker({ tells }: { tells: Tell[] }) {
 function ScenarioSurface({ scene, onSolved }: { scene: Scene; onSolved: () => void }) {
   const [picked, setPicked] = useState<number | null>(null);
   const [solved, setSolved] = useState(false);
+  const [decision] = useState(() => shuffle(scene.decision));
   return (
     <div style={{ display: "grid", gap: 14 }}>
       <MediaCard scene={scene} />
@@ -143,7 +144,7 @@ function ScenarioSurface({ scene, onSolved }: { scene: Scene; onSolved: () => vo
       <div>
         <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: ".08em", color: AI, fontWeight: 700, margin: "0 0 8px" }}>YOUR DECISION · what do you do? (this is the pass)</div>
         <div style={{ display: "grid", gap: 8 }}>
-          {scene.decision.map((d, i) => {
+          {decision.map((d, i) => {
             const isP = picked === i;
             return (
               <div key={i}>
@@ -176,7 +177,7 @@ function StepView({ step, onSolved }: { step: Step; onSolved: () => void }) {
 
 /* ───────────────────────── the main engagement (4 scenarios) ───────────────────────── */
 
-const VERIFY = "Refuse to act on the call. End it, and verify through a trusted channel: call Renn back on his known internal number and trigger dual authorisation.";
+const VERIFY = "End the call and verify on Renn's known internal number before acting";
 const ACT_STEPS: Step[] = [
   {
     title: "The video call", goal: "Scenario 1 - You join a 9am video call. The 'CFO' and two 'colleagues' are on screen and sound right. He says a confidential acquisition means you must wire GBP 185,000 to a new supplier today, and keep it off email. Decide what to do.",
@@ -191,10 +192,10 @@ const ACT_STEPS: Step[] = [
         { text: "He is wearing a suit", red: false, note: "appearance is not evidence; focus on the request and verification." },
       ],
       decision: [
-        { text: "Wire the GBP 185,000, he's the CFO and it's urgent", ok: false, why: "Urgency + secrecy + a new payee is the exact shape of CEO-fraud. A live video of someone you recognise is no longer proof." },
-        { text: "Spot a tell, then wire it anyway to be safe", ok: false, why: "Spotting a tell is a bonus, not a decision. Acting on the request is still the mistake." },
+        { text: "Wire the GBP 185,000 now, he's the CFO and it's clearly urgent", ok: false, why: "Urgency + secrecy + a new payee is the exact shape of CEO-fraud. A live video of someone you recognise is no longer proof." },
+        { text: "Spot a deepfake tell first, then wire it anyway to be safe", ok: false, why: "Spotting a tell is a bonus, not a decision. Acting on the request is still the mistake." },
         { text: VERIFY, ok: true, why: "The durable defence: don't trust the channel the request arrived on. A call back on a known number plus dual authorisation beats any deepfake." },
-        { text: "Reply on the call to confirm it's really him", ok: false, why: "You'd be verifying the fake using the fake. Confirmation has to come through a separate, trusted channel." },
+        { text: "Reply on this same call to confirm that it's really him", ok: false, why: "You'd be verifying the fake using the fake. Confirmation has to come through a separate, trusted channel." },
       ],
     },
   },
@@ -210,9 +211,10 @@ const ACT_STEPS: Step[] = [
         { text: "She sounds upset", red: false, note: "emotion is easy to fake and easy to feel; it is not evidence." },
       ],
       decision: [
-        { text: "Send the GBP 400, she sounds really upset", ok: false, why: "Panic + urgency + secrecy + an unusual payment is the scam template. A cloned voice can be built from seconds of audio." },
-        { text: "Text the account number back to check it's right", ok: false, why: "You'd be confirming with the attacker's channel. That doesn't prove who left the voicemail." },
-        { text: "Call Mum back on her saved number, and use your family safe word", ok: true, why: "Out-of-band verification plus a pre-agreed safe word defeats a voice clone instantly, no matter how real it sounds." },
+        { text: "Send the GBP 400 straight away, she clearly sounds upset and scared", ok: false, why: "Panic + urgency + secrecy + an unusual payment is the scam template. A cloned voice can be built from seconds of audio." },
+        { text: "Text the account number back to the voicemail to check it's right", ok: false, why: "You'd be confirming with the attacker's channel. That doesn't prove who left the voicemail." },
+        { text: "Call Mum back on her own saved number and use your family safe word", ok: true, why: "Out-of-band verification plus a pre-agreed safe word defeats a voice clone instantly, no matter how real it sounds." },
+        { text: "Send a smaller amount now and check with her properly tomorrow", ok: false, why: "Any money sent is money gone, and 'just a bit' is still the scam working. Verify before paying a penny." },
       ],
     },
   },
@@ -228,9 +230,10 @@ const ACT_STEPS: Step[] = [
         { text: "The grammar is perfect, so it's safe", red: false, note: "a trap: AI writes flawless phishing now, so good English is no longer reassurance." },
       ],
       decision: [
-        { text: "Update the bank details, the deadline is tight", ok: false, why: "This is how invoice-redirect fraud works. Flawless writing is not safety; AI removed the old spelling-mistake tell." },
-        { text: "Reply to the email to confirm the change", ok: false, why: "You'd be replying to the attacker. Verification must use a known contact, not the email you received." },
-        { text: "Phone the supplier on the number you already have on file to verify the change", ok: true, why: "Out-of-band again: confirm any bank-detail change through a contact you already trust, never the one in the message." },
+        { text: "Update the bank details now, the Friday payment-run deadline is tight", ok: false, why: "This is how invoice-redirect fraud works. Flawless writing is not safety; AI removed the old spelling-mistake tell." },
+        { text: "Reply to the email to confirm the change before you action it", ok: false, why: "You'd be replying to the attacker. Verification must use a known contact, not the email you received." },
+        { text: "Phone the supplier on the number you already hold on file to verify", ok: true, why: "Out-of-band again: confirm any bank-detail change through a contact you already trust, never the one in the message." },
+        { text: "Check the sender's email address carefully and proceed if it looks right", ok: false, why: "A look-alike domain passes a quick glance, and even a real address can be spoofed or compromised. Verify out-of-band." },
       ],
     },
   },
@@ -240,10 +243,10 @@ const ACT_STEPS: Step[] = [
       medium: "protocol",
       lines: ["The generators improve faster than the detectors, so spotting tells gets less reliable every year.", "A payment or data request arrives and everything looks and sounds right. What is the move that still works?"],
       decision: [
-        { text: "Look harder for visual glitches before deciding", ok: false, why: "Detection is a losing arms race: the best fakes have no visible tells. Never rely on spotting them." },
-        { text: "Ask them something personal on the call", ok: false, why: "Weak: attackers research their targets, and a real-time clone can improvise. Not a reliable check." },
-        { text: "Verify out-of-band on a known-good channel, with a pre-agreed safe word, and require dual approval for payments", ok: true, why: "This is the durable defence and it works regardless of fake quality: verify the request through a separate trusted channel, not the one it arrived on." },
-        { text: "Trust it if the person seems calm and professional", ok: false, why: "Demeanour is fully fakeable. 'Seeing and hearing is believing' is exactly the instinct deepfakes exploit." },
+        { text: "Look harder for visual glitches in the video before you decide", ok: false, why: "Detection is a losing arms race: the best fakes have no visible tells. Never rely on spotting them." },
+        { text: "Ask them something personal on the call to prove who they are", ok: false, why: "Weak: attackers research their targets, and a real-time clone can improvise. Not a reliable check." },
+        { text: "Verify out-of-band on a known channel, with dual approval", ok: true, why: "This is the durable defence and it works regardless of fake quality: verify through a separate trusted channel with a safe word and a second approver, not the channel it arrived on." },
+        { text: "Trust it if the person seems calm, fluent and professional", ok: false, why: "Demeanour is fully fakeable. 'Seeing and hearing is believing' is exactly the instinct deepfakes exploit." },
       ],
     },
   },
@@ -302,11 +305,12 @@ function DetectVsVerifyLab({ onDone }: { onDone: () => void }) {
 
 function PickDefenceLab({ onDone }: { onDone: () => void }) {
   const [picked, setPicked] = useState<number | null>(null);
-  const opts = [
-    { code: `train staff to spot deepfake tells`, ok: false, why: "Useful awareness, but a losing bet on its own: the best fakes have no tells and detection gets weaker every year. Never the primary control." },
-    { code: `mandatory out-of-band verification + dual approval for payments + a safe word`, ok: true, why: "The control that moves the needle: confirm any payment or bank-detail change through a known channel, require two people for large transfers, and use a code word for sensitive requests. A process, not a detector." },
-    { code: `buy the best deepfake-detection tool`, ok: false, why: "Detectors help at scale but lose the arms race against new generators, and can be bypassed. A useful layer, not the foundation." },
-  ];
+  const [opts] = useState(() => shuffle([
+    { code: `train staff to spot deepfake tells in calls and video`, ok: false, why: "Useful awareness, but a losing bet on its own: the best fakes have no tells and detection gets weaker every year. Never the primary control." },
+    { code: `buy the strongest deepfake-detection tool on the market`, ok: false, why: "Detectors help at scale but lose the arms race against new generators, and can be bypassed. A useful layer, not the foundation." },
+    { code: `verify money requests out-of-band and require two approvers`, ok: true, why: "The control that moves the needle: confirm any payment or bank-detail change through a known channel, require two people for large transfers, and use a code word for sensitive requests. A process, not a detector." },
+    { code: `require staff to be on camera for every payment request`, ok: false, why: "Video is exactly what deepfakes fake, so being 'on camera' proves nothing now. It adds friction without adding real verification." },
+  ]));
   return (
     <div style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: 12, padding: "15px 16px" }}>
       <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: ".1em", color: AI, fontWeight: 700, marginBottom: 10 }}>▶ APPLY THE FIX · what protects an organisation best?</div>
@@ -334,22 +338,22 @@ type DrillCfg = { client: string; brief: string; step: Step; success: string };
 const DRILLS: DrillCfg[] = [
   {
     client: "Brightpost", brief: "A WhatsApp voice note 'from your boss' asks you to urgently buy GBP 500 of gift cards and send the codes. Decide. No walkthrough.",
-    step: { title: "Voice note", goal: "Handle the urgent gift-card request.", scene: { medium: "voice", meta: "from 'your boss'", lines: ["Quick favour, I'm in a meeting. Buy GBP 500 of gift cards and send me the codes now.", "Keep it between us, I'll explain later."], decision: [{ text: "Buy the gift cards and send the codes", ok: false, why: "Gift-card + urgency + secrecy is a textbook scam. Never act on it." }, { text: "Call your boss on their known number to check", ok: true, why: "Out-of-band verification. The request dies the moment you use a trusted channel." }] } },
+    step: { title: "Voice note", goal: "Handle the urgent gift-card request.", scene: { medium: "voice", meta: "from 'your boss'", lines: ["Quick favour, I'm in a meeting. Buy GBP 500 of gift cards and send me the codes now.", "Keep it between us, I'll explain later."], decision: [{ text: "Buy the gift cards and send over the codes as asked", ok: false, why: "Gift-card + urgency + secrecy is a textbook scam. Never act on it." }, { text: "Call your boss on their known number to check first", ok: true, why: "Out-of-band verification. The request dies the moment you use a trusted channel." }, { text: "Reply to the voice note to ask if it's really them", ok: false, why: "You'd be confirming on the attacker's own channel. That proves nothing about who sent it." }, { text: "Buy one card first to be safe, then check later", ok: false, why: "Any code you send is gone, and 'just one' is the scam working. Verify before you spend anything." }] } },
     success: "Verified through a trusted channel instead of trusting the voice. Finding logged.",
   },
   {
     client: "Kudos", brief: "An email from your 'landlord' at a look-alike domain says rent must now go to a new account. Decide.",
-    step: { title: "Email", goal: "Handle the change-of-bank-details email.", scene: { medium: "email", from: "payments@kudos-lettings-portal.com", meta: "New rent payment details", lines: ["Our bank has changed. Please send this month's rent to the new account below.", "Please action today to avoid a late fee."], tells: [{ text: "Look-alike sender domain", red: true, note: "always check the domain character by character." }, { text: "Bank-detail change + deadline", red: true, note: "the most abused request in fraud." }], decision: [{ text: "Pay the new account to avoid the fee", ok: false, why: "Invoice/rent redirect fraud. Pressure is the tell." }, { text: "Call the landlord on your existing number to confirm", ok: true, why: "Verify any bank-detail change out-of-band, via a contact you already have." }] } },
+    step: { title: "Email", goal: "Handle the change-of-bank-details email.", scene: { medium: "email", from: "payments@kudos-lettings-portal.com", meta: "New rent payment details", lines: ["Our bank has changed. Please send this month's rent to the new account below.", "Please action today to avoid a late fee."], tells: [{ text: "Look-alike sender domain", red: true, note: "always check the domain character by character." }, { text: "Bank-detail change + deadline", red: true, note: "the most abused request in fraud." }], decision: [{ text: "Pay the new account quickly to avoid the late fee", ok: false, why: "Invoice/rent redirect fraud. Pressure is the tell." }, { text: "Call the landlord on your existing number to confirm", ok: true, why: "Verify any bank-detail change out-of-band, via a contact you already have." }, { text: "Reply to the email asking them to confirm the new details", ok: false, why: "You'd be replying to the attacker's look-alike address. Not a real check." }, { text: "Check the account name matches before you send the rent", ok: false, why: "Fraudsters can set the account name too, and a match proves nothing. Verify out-of-band instead." }] } },
     success: "Confirmed the change through a known contact, not the email. Finding logged.",
   },
   {
     client: "Verge", brief: "On a video call, a 'client' you've never met insists on an immediate confidential deposit. Decide.",
-    step: { title: "Video call", goal: "Handle the urgent confidential deposit.", scene: { medium: "video", meta: "video call · 1 participant", lines: ["I need the deposit wired in the next hour, strictly confidential.", "Don't loop in your finance team, this is sensitive."], tells: [{ text: "Won't let you involve finance (secrecy)", red: true, note: "bypassing normal process is a core red flag." }, { text: "They're on camera", red: false, note: "a live face is not proof of identity any more." }], decision: [{ text: "Wire the deposit, they're on video", ok: false, why: "A live video is no longer proof. Urgency + secrecy + new payee = fraud shape." }, { text: "Decline, verify their identity and payment through your normal process and a known channel", ok: true, why: "Follow process and verify out-of-band; never let a call pressure you past your controls." }] } },
+    step: { title: "Video call", goal: "Handle the urgent confidential deposit.", scene: { medium: "video", meta: "video call · 1 participant", lines: ["I need the deposit wired in the next hour, strictly confidential.", "Don't loop in your finance team, this is sensitive."], tells: [{ text: "Won't let you involve finance (secrecy)", red: true, note: "bypassing normal process is a core red flag." }, { text: "They're on camera", red: false, note: "a live face is not proof of identity any more." }], decision: [{ text: "Wire the deposit straight away, after all they're on video", ok: false, why: "A live video is no longer proof. Urgency + secrecy + new payee = fraud shape." }, { text: "Decline for now and verify through your normal process first", ok: true, why: "Follow process and verify out-of-band; never let a call pressure you past your controls." }, { text: "Ask the client a few questions on the call to be sure", ok: false, why: "A real-time deepfake improvises, and attackers prepare. Not a reliable identity check." }, { text: "Take a smaller deposit now and the rest once verified", ok: false, why: "You'd still be paying out on an unverified request. Verify before any money moves." }] } },
     success: "Refused to let a video call bypass your process; verified out-of-band. Finding logged.",
   },
   {
     client: "Oakline", brief: "The full job. A 'director' video-calls demanding a secret same-day transfer, says do not tell anyone. Everything looks perfect. Decide, and know why.",
-    step: { title: "The protocol", goal: "A flawless fake, real pressure. Choose the move that beats it.", scene: { medium: "video", meta: "video call · director", lines: ["Same-day transfer, strictly between us, I'll explain later.", "I need this done before the markets close."], tells: [{ text: "Secrecy + extreme urgency", red: true, note: "the pressure is the attack, in any medium." }], decision: [{ text: "Look for tells, then transfer if it seems real", ok: false, why: "Detection is a losing game and acting on the request is the mistake." }, { text: "Refuse, verify out-of-band on a known number, require dual authorisation", ok: true, why: "The durable defence, regardless of how perfect the fake is: verify through a trusted channel and require two people." }] } },
+    step: { title: "The protocol", goal: "A flawless fake, real pressure. Choose the move that beats it.", scene: { medium: "video", meta: "video call · director", lines: ["Same-day transfer, strictly between us, I'll explain later.", "I need this done before the markets close."], tells: [{ text: "Secrecy + extreme urgency", red: true, note: "the pressure is the attack, in any medium." }], decision: [{ text: "Look for tells, then transfer the money if it seems real", ok: false, why: "Detection is a losing game and acting on the request is the mistake." }, { text: "Refuse, verify out-of-band, and require dual authorisation", ok: true, why: "The durable defence, regardless of how perfect the fake is: verify through a trusted channel and require two people." }, { text: "Transfer it but keep a recording of the call as proof", ok: false, why: "A recording of a deepfake isn't proof, and the money is already gone. Verify first." }, { text: "Do it quietly as asked, since the director demanded secrecy", ok: false, why: "Enforced secrecy is the attack, not a reason to comply. Secrecy + urgency should raise the alarm." }] } },
     success: "Beat a flawless fake with process, not pixel-spotting: verify out-of-band, dual approval. Finding logged.",
   },
 ];
@@ -395,9 +399,9 @@ function ConsolidationDrills({ onDone }: { onDone: () => void }) {
 /* ───────────────────────── capstone ───────────────────────── */
 
 const CAP_STEPS: Step[] = [
-  { title: "The primer", goal: "A coordinated attack on Sableline begins. First, an email from a look-alike domain warns that 'the CFO will call you shortly about an urgent matter'. What do you do?", scene: { medium: "email", from: "exec-office@sableline-grp.com", meta: "The CFO will call you shortly", lines: ["Please expect an urgent call from the CFO about a confidential transfer.", "Kindly keep this discreet."], tells: [{ text: "Look-alike domain + priming you for a call + secrecy", red: true, note: "attackers now chain email, voice and video to build belief." }], decision: [{ text: "Get ready to act fast when the call comes", ok: false, why: "The email is priming you to lower your guard. Recognise the setup." }, { text: "Treat it as suspicious and plan to verify any request out-of-band", ok: true, why: "Spotting the multi-channel setup early is half the defence. Decide now to verify whatever comes next." }] } },
-  { title: "The call", goal: "Minutes later, the 'CFO' video-calls, perfectly lifelike, demanding a secret same-day transfer. Decide.", scene: { medium: "video", meta: "video call · CFO", lines: ["As my email said, I need a confidential transfer today, keep it between us.", "I'm about to go into a board meeting, please just handle it."], decision: [{ text: "Act, the email warned you and now the CFO is on video", ok: false, why: "That's exactly the trap the email set. A lifelike video is not proof." }, { text: "Refuse to act on the call and verify the CFO on a known internal number", ok: true, why: "Out-of-band verification, even after a convincing setup. The call and the email are the same attack." }] } },
-  { title: "The protocol", goal: "Finish it: name the single control that would have stopped this whole chain, no matter how perfect the fakes were.", scene: { medium: "protocol", lines: ["The email, the voice, the video were all fake, and all convincing.", "What one control defeats the entire chain?"], decision: [{ text: "Better deepfake detection on the video feed", ok: false, why: "Loses the arms race and wouldn't stop the email or voice legs." }, { text: "Mandatory out-of-band verification plus dual authorisation for payments", ok: true, why: "One process beats every leg: no payment moves without a trusted-channel check and a second approver, however real the fakes look." }] } },
+  { title: "The primer", goal: "A coordinated attack on Sableline begins. First, an email from a look-alike domain warns that 'the CFO will call you shortly about an urgent matter'. What do you do?", scene: { medium: "email", from: "exec-office@sableline-grp.com", meta: "The CFO will call you shortly", lines: ["Please expect an urgent call from the CFO about a confidential transfer.", "Kindly keep this discreet."], tells: [{ text: "Look-alike domain + priming you for a call + secrecy", red: true, note: "attackers now chain email, voice and video to build belief." }], decision: [{ text: "Get ready to act fast the moment the CFO's call comes in", ok: false, why: "The email is priming you to lower your guard. Recognise the setup." }, { text: "Treat it as suspicious and plan to verify any request out-of-band", ok: true, why: "Spotting the multi-channel setup early is half the defence. Decide now to verify whatever comes next." }, { text: "Reply to the email to ask the exec office whether it's genuine", ok: false, why: "You'd be replying to the attacker's own channel. A look-alike domain won't tell you the truth." }, { text: "Ignore it; it's probably just internal spam about a meeting", ok: false, why: "Dismissing it loses the warning. The right move is to stay alert and verify, not to tune it out." }] } },
+  { title: "The call", goal: "Minutes later, the 'CFO' video-calls, perfectly lifelike, demanding a secret same-day transfer. Decide.", scene: { medium: "video", meta: "video call · CFO", lines: ["As my email said, I need a confidential transfer today, keep it between us.", "I'm about to go into a board meeting, please just handle it."], decision: [{ text: "Act on it; the email warned you and now the CFO is on video", ok: false, why: "That's exactly the trap the email set. A lifelike video is not proof." }, { text: "Refuse to act, and verify the CFO on a known internal number", ok: true, why: "Out-of-band verification, even after a convincing setup. The call and the email are the same attack." }, { text: "Ask the CFO a personal question on the call to be sure it's him", ok: false, why: "A real-time deepfake can improvise, and attackers research their targets. Not a reliable check." }, { text: "Start the transfer but hold it until after the board meeting ends", ok: false, why: "You'd still be acting on an unverified request. Verify first, through a separate channel, before anything moves." }] } },
+  { title: "The protocol", goal: "Finish it: name the single control that would have stopped this whole chain, no matter how perfect the fakes were.", scene: { medium: "protocol", lines: ["The email, the voice, the video were all fake, and all convincing.", "What one control defeats the entire chain?"], decision: [{ text: "Roll out better deepfake detection on every incoming video feed", ok: false, why: "Loses the arms race and wouldn't stop the email or voice legs." }, { text: "Mandatory out-of-band verification plus dual authorisation for payments", ok: true, why: "One process beats every leg: no payment moves without a trusted-channel check and a second approver, however real the fakes look." }, { text: "Train all staff to spot the tells in fake audio and video", ok: false, why: "Awareness helps, but the best fakes have no tells and training fades. Not a control you can rely on." }, { text: "Require everyone to be on camera for any payment request", ok: false, why: "Video is exactly what the attacker faked. Being on camera proves nothing against a deepfake." }] } },
 ];
 
 function CapstoneChallenge({ onDone }: { onDone: () => void }) {
@@ -501,10 +505,10 @@ export const MODULE20: ModuleDef = {
     check: {
       q: "You get a lifelike video call from your 'manager' urgently asking you to pay a new supplier today and keep it quiet. It looks completely real. What is the right response, and why?",
       options: [
-        { text: "Refuse to act on the call and verify through a trusted channel (call back on a known number, dual approval). Detection can't be trusted; the fraud shape and out-of-band verification can.", correct: true, feedback: "Right. Urgency + secrecy + an unusual payment is the fraud shape, and verifying out-of-band beats any fake." },
-        { text: "Study the video for glitches; if it looks clean, pay.", feedback: "The best fakes have no glitches, and acting on the request is the mistake. Detection is a losing bet." },
-        { text: "Reply on the same call to confirm it's really them.", feedback: "That verifies the fake using the fake. Confirmation must come through a separate trusted channel." },
-        { text: "Pay it; a live video is proof enough.", feedback: "A live video of someone you recognise is no longer proof, exactly what the Arup attack exploited." },
+        { text: "Refuse to act on the call and verify it through a separate trusted channel.", correct: true, feedback: "Right. Urgency + secrecy + an unusual payment is the fraud shape; verify out-of-band - call back on a known number with dual approval - and it beats any fake." },
+        { text: "Study the video closely for glitches, and if it looks clean then pay.", feedback: "The best fakes have no glitches, and acting on the request is the mistake. Detection is a losing bet." },
+        { text: "Reply on the same call to confirm that it is really your manager.", feedback: "That verifies the fake using the fake. Confirmation must come through a separate trusted channel." },
+        { text: "Pay it; a live video call of someone you recognise is proof enough.", feedback: "A live video of someone you recognise is no longer proof, exactly what the Arup attack exploited." },
       ],
     },
   },
@@ -538,9 +542,9 @@ export const MODULE20: ModuleDef = {
       q: "What is the single most effective control against deepfake-enabled payment fraud?",
       options: [
         { text: "Mandatory out-of-band verification plus dual authorisation for payments (a process, not a detector).", correct: true, feedback: "Right. A trusted-channel check and a second approver work regardless of how perfect the fake is." },
-        { text: "Train staff to spot deepfake tells.", feedback: "Useful awareness, but the best fakes have no tells and detection loses the arms race. Not the primary control." },
-        { text: "Buy the best deepfake-detection software.", feedback: "A helpful layer at scale, but bypassable and always one step behind new generators." },
-        { text: "Ban video calls for anything involving money.", feedback: "Impractical and still leaves voice and email. The fix is verifying the request, not the medium." },
+        { text: "Train staff thoroughly to spot the tells in fake audio and video.", feedback: "Useful awareness, but the best fakes have no tells and detection loses the arms race. Not the primary control." },
+        { text: "Buy the best deepfake-detection software and run it on every call.", feedback: "A helpful layer at scale, but bypassable and always one step behind new generators." },
+        { text: "Ban video calls for anything that involves money or payments.", feedback: "Impractical and still leaves voice and email. The fix is verifying the request, not the medium." },
       ],
     },
   },
