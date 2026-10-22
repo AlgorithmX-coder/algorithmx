@@ -11,7 +11,7 @@
  * ladder, FOUR drills, and a chained capstone. */
 
 import { useEffect, useState } from "react";
-import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary } from "./Engagement";
+import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary, shuffle } from "./Engagement";
 
 /* ───────────────────────── glossary ───────────────────────── */
 
@@ -261,11 +261,12 @@ function CombineLab({ onDone }: { onDone: () => void }) {
 
 function PickExposureFixLab({ onDone }: { onDone: () => void }) {
   const [picked, setPicked] = useState<number | null>(null);
-  const opts = [
-    { code: "Publish a 'meet the team' page with everyone's personal emails", ok: false, why: "This hands an attacker the email scheme and named targets - exactly the start of what you just did." },
-    { code: "Name the internal portal URL in a public job advert", ok: false, why: "That advertises your attack surface. Keep internal hostnames out of anything public." },
-    { code: "Use role-based addresses (it@, careers@) and keep internal URLs private; scrub document metadata", ok: true, why: "Remove the pattern, the named URL and the leaked metadata, and the attacker's easy derivation stops working. This is the fix." },
-  ];
+  const [opts] = useState(() => shuffle([
+    { code: "Publish a 'meet the team' page listing everyone's personal emails", ok: false, why: "This hands an attacker the email scheme and named targets - exactly the start of what you just did." },
+    { code: "Name the internal staff-portal URL in a public job advert", ok: false, why: "That advertises your attack surface. Keep internal hostnames out of anything public." },
+    { code: "Use role-based addresses, keep internal URLs private, and scrub metadata", ok: true, why: "Remove the email pattern (so no it@/careers@ leaks a format), the named URL and the leaked metadata, and the attacker's easy derivation stops working. This is the fix." },
+    { code: "Ask staff to set their personal LinkedIn profiles to private", ok: false, why: "Helps a little, but it doesn't touch the guessable email scheme, the exposed portal URL or the document metadata an attacker actually used." },
+  ]));
   return (
     <div style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: 12, padding: "15px 16px" }}>
       <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: ".1em", color: C.indigo, fontWeight: 700, marginBottom: 10 }}>▶ APPLY THE FIX · which choice shrinks the footprint?</div>
@@ -475,9 +476,9 @@ export const MODULE2: ModuleDef = {
       q: "Why is passive recon considered low-risk and in-scope?",
       options: [
         { text: "You only read information that's already public and never interact with the target's systems.", correct: true, feedback: "Right. Reading public sources touches nobody's systems, so it's invisible and stays in bounds." },
-        { text: "It's too slow for anyone to notice you doing it.", feedback: "Speed isn't the point - it's that you never touch the target at all." },
-        { text: "The company gave you their passwords in advance.", feedback: "No passwords are involved - OSINT is built entirely from what's already public." },
-        { text: "It only becomes active once you've read more than one source.", feedback: "Reading any number of public sources is still passive; it's touching the target's systems that makes it active." },
+        { text: "It runs too slowly for the target's monitoring to ever notice you doing it.", feedback: "Speed isn't the point - it's that you never touch the target at all." },
+        { text: "The company quietly handed over their account passwords to you in advance.", feedback: "No passwords are involved - OSINT is built entirely from what's already public." },
+        { text: "It only turns into active recon once you've read more than one public source.", feedback: "Reading any number of public sources is still passive; it's touching the target's systems that makes it active." },
       ],
     },
   },
@@ -511,9 +512,9 @@ export const MODULE2: ModuleDef = {
       q: "What most directly stops an attacker deriving a valid login and target from public info?",
       options: [
         { text: "Use role-based email addresses, keep internal portal URLs out of public ads, and scrub document metadata.", correct: true, feedback: "Right - remove the pattern, the named URL and the leaked metadata, and the easy derivation stops working." },
-        { text: "Make the public website load faster.", feedback: "Performance has nothing to do with what the site reveals." },
-        { text: "Ask employees to choose longer passwords.", feedback: "Good hygiene, but it doesn't stop an attacker learning a valid username and where to use it." },
-        { text: "Add a cookie banner to the site.", feedback: "That's a privacy notice, not a change to what you expose; the email scheme and subdomains still leak." },
+        { text: "Make the public website load faster and compress its images to save bandwidth.", feedback: "Performance has nothing to do with what the site reveals." },
+        { text: "Ask all employees to choose much longer and more complex account passwords.", feedback: "Good hygiene, but it doesn't stop an attacker learning a valid username and where to use it." },
+        { text: "Add a cookie-consent banner and a privacy policy link to the public site.", feedback: "That's a privacy notice, not a change to what you expose; the email scheme and subdomains still leak." },
       ],
     },
   },
