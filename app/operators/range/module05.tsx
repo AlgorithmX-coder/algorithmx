@@ -209,6 +209,10 @@ type Stage = {
   skeleton: string;
   reveal: string;
   done: (r: RangeRunResult & { authed?: boolean }, range: NorthwindRange, input: string) => boolean;
+  /** Task-variety (UAT): an optional "explain why it worked" question shown
+   *  after the stage is cleared, before you can advance. Breaks the type-run-
+   *  next rhythm with a comprehension beat. Options shuffle; each has feedback. */
+  explain?: { q: string; options: { text: string; correct?: boolean; feedback: string }[] };
 };
 
 const STAGES: Stage[] = [
@@ -225,6 +229,15 @@ const STAGES: Stage[] = [
     tokens: ["'", " OR 1=1", "--"],
     hints: ["Start by closing the string with a quote, like the probe.", "After the quote, add a condition that's always true: OR 1=1", "Finish with -- to comment out the rest of the line. Put it in the EMAIL field; leave the password blank."],
     skeleton: "' OR ___ --", reveal: "' OR 1=1--", done: (r) => !!r.authed,
+    explain: {
+      q: "You just logged in with no password. In plain terms, why did ' OR 1=1 -- work?",
+      options: [
+        { text: "Your quote closed the string early, OR 1=1 made the condition always true, and -- ignored the password check.", correct: true, feedback: "Exactly. The database read your input as part of the query, so the WHERE clause matched every row and let you in." },
+        { text: "The -- at the end quietly deleted the admin's stored password, so the login had nothing left to check.", feedback: "No - -- comments out the rest of the query text; it changes nothing in the database and deletes no data." },
+        { text: "OR 1=1 happened to guess the admin's real password, because 1=1 is a very common default.", feedback: "No - 1=1 isn't a password. It's a condition that is always true, which is what matched every row." },
+        { text: "The single quote escaped you straight into the database's built-in administrator account.", feedback: "No - a quote just breaks out of the string literal. It grants no account; the always-true condition did the work." },
+      ],
+    },
   },
   {
     key: "count", title: "Count the columns", surface: "search",
@@ -249,6 +262,15 @@ const STAGES: Stage[] = [
     hints: ["Same UNION, 3 columns again - but this time SELECT from sqlite_master.", "Try: ' UNION SELECT name, sql, type FROM sqlite_master-- and read the table names that come back. Two of them you haven't touched yet."],
     skeleton: "' UNION SELECT ___, ___, ___ FROM sqlite_master --", reveal: "' UNION SELECT name, sql, type FROM sqlite_master--",
     done: (r) => r.rows.some((row) => row.some((c) => c === "secrets")),
+    explain: {
+      q: "That one query listed every table in the database. What is sqlite_master?",
+      options: [
+        { text: "A table SQLite keeps automatically in every database, listing all of its tables and how they're defined.", correct: true, feedback: "Right. It's the database describing itself, which is why one UNION against it maps the whole schema." },
+        { text: "A hidden administrator account that SQLite creates to manage and lock down all the other tables.", feedback: "No - it isn't an account or a login. It's an ordinary (built-in) table full of schema information." },
+        { text: "An encrypted master backup of the database that SQLite quietly keeps in case of corruption.", feedback: "No - it isn't a backup and isn't encrypted; it's a plain catalogue of the database's own structure." },
+        { text: "A table the developer left behind by mistake, holding the database's master password.", feedback: "No - it's a standard SQLite feature, not a developer slip, and it holds schema definitions, not passwords." },
+      ],
+    },
   },
   {
     key: "cards", title: "Lift the card data", surface: "search",
@@ -268,6 +290,34 @@ const STAGES: Stage[] = [
   },
 ];
 
+/* Task-variety "explain it" question (UAT): a short comprehension beat that
+ * interrupts the type-run-next rhythm after a cleared stage. Options shuffle and
+ * each carries feedback; you pick the correct one to unlock the next stage. */
+function ExplainQuiz({ q, options, onCorrect }: { q: string; options: { text: string; correct?: boolean; feedback: string }[]; onCorrect: () => void }) {
+  const [picked, setPicked] = useState<number | null>(null);
+  const [opts] = useState(() => shuffle(options));
+  const solved = picked !== null && !!opts[picked].correct;
+  return (
+    <div style={{ borderTop: `1px solid ${C.green}33`, paddingTop: 12 }}>
+      <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: ".1em", color: C.cyan, fontWeight: 700, marginBottom: 8 }}>▶ EXPLAIN IT · before you move on</div>
+      <div style={{ fontSize: 13.5, color: C.ink, lineHeight: 1.5, marginBottom: 10 }}>{q}</div>
+      <div style={{ display: "grid", gap: 8 }}>
+        {opts.map((o, i) => {
+          const isP = picked === i;
+          return (
+            <div key={i}>
+              <button disabled={solved} onClick={() => { setPicked(i); if (o.correct) onCorrect(); }} className="co-opt" style={{ width: "100%", textAlign: "left", padding: "10px 12px", borderRadius: 9, border: `1px solid ${isP ? (o.correct ? C.green : C.red) : C.line}`, background: isP ? (o.correct ? "rgba(85,217,140,.08)" : "rgba(242,109,114,.06)") : C.carbon, color: C.ink, fontSize: 13, lineHeight: 1.4, cursor: solved ? "default" : "pointer" }}>
+                <span style={{ fontFamily: MONO, color: isP ? (o.correct ? C.green : C.red) : C.mute, marginRight: 8 }}>{isP ? (o.correct ? "✓" : "✗") : String.fromCharCode(65 + i)}</span>{o.text}
+              </button>
+              {isP && <div style={{ padding: "7px 12px 2px", fontSize: 12.5, color: o.correct ? "#bff3d3" : C.soft, lineHeight: 1.5 }}>{o.feedback}</div>}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 function InjectionAct({ onCapture }: { onCapture: () => void }) {
   const [range, setRange] = useState<NorthwindRange | null>(null);
   const [bootErr, setBootErr] = useState("");
@@ -277,6 +327,7 @@ function InjectionAct({ onCapture }: { onCapture: () => void }) {
   const [term, setTerm] = useState("");
   const [res, setRes] = useState<(RangeRunResult & { authed?: boolean }) | null>(null);
   const [cleared, setCleared] = useState<boolean[]>(STAGES.map(() => false));
+  const [explainOk, setExplainOk] = useState(false);
 
   useEffect(() => {
     let live = true;
@@ -299,6 +350,7 @@ function InjectionAct({ onCapture }: { onCapture: () => void }) {
   }
   function advance() {
     setRes(null);
+    setExplainOk(false);
     setEmail(""); setPass(""); setTerm(""); // fresh box for the next stage
     if (si + 1 < STAGES.length) setSi(si + 1);
     else onCapture();
@@ -345,9 +397,12 @@ function InjectionAct({ onCapture }: { onCapture: () => void }) {
       </div>
 
       {stageCleared && (
-        <div className="co-anim co-pop" style={{ display: "flex", alignItems: "center", gap: 14, flexWrap: "wrap", padding: "13px 16px", borderRadius: 12, background: "rgba(85,217,140,.08)", border: `1px solid ${C.green}55` }}>
-          <span style={{ fontFamily: MONO, fontSize: 12.5, color: C.green, fontWeight: 700 }}>✓ Stage {si + 1} cleared</span>
-          <Btn tone="g" onClick={advance} style={{ marginLeft: "auto" }}>{si + 1 < STAGES.length ? "Next stage →" : "Capture the engagement →"}</Btn>
+        <div className="co-anim co-pop" style={{ display: "grid", gap: 12, padding: "13px 16px", borderRadius: 12, background: "rgba(85,217,140,.08)", border: `1px solid ${C.green}55` }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 14, flexWrap: "wrap" }}>
+            <span style={{ fontFamily: MONO, fontSize: 12.5, color: C.green, fontWeight: 700 }}>✓ Stage {si + 1} cleared</span>
+            {(!stage.explain || explainOk) && <Btn tone="g" onClick={advance} style={{ marginLeft: "auto" }}>{si + 1 < STAGES.length ? "Next stage →" : "Capture the engagement →"}</Btn>}
+          </div>
+          {stage.explain && <ExplainQuiz key={stage.key} q={stage.explain.q} options={stage.explain.options} onCorrect={() => setExplainOk(true)} />}
         </div>
       )}
     </div>
