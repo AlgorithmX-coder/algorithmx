@@ -15,7 +15,7 @@
  * industry{} (the sourced editorial intro) is authored from the research brief. */
 
 import { useEffect, useState } from "react";
-import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary } from "./Engagement";
+import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary, shuffle } from "./Engagement";
 
 /* ───────────────────────── glossary ───────────────────────── */
 
@@ -297,11 +297,12 @@ function IdorLab({ onDone }: { onDone: () => void }) {
 
 function PickDefenceLab({ onDone }: { onDone: () => void }) {
   const [picked, setPicked] = useState<number | null>(null);
-  const opts = [
-    { code: `use a random-looking id (UUID) instead of 1007`, ok: false, why: "Harder to guess, but not a fix: anyone who ever sees a valid id (shared link, logs, the app itself) can still read it. Obscurity is not authorisation." },
-    { code: `on every request, check the object belongs to the logged-in user`, ok: true, why: "The real fix: authorise the OBJECT, not just the login. The server must confirm 'does user 1007 own this record?' before returning it, on every endpoint. Pair it with least privilege and private buckets." },
-    { code: `hide the id by sending it in a header instead of the URL`, ok: false, why: "Same data, different place. The attacker just changes the header. Moving the id does not add a permission check." },
-  ];
+  const [opts] = useState(() => shuffle([
+    { code: `use a random-looking id (UUID) instead of a guessable number`, ok: false, why: "Harder to guess, but not a fix: anyone who ever sees a valid id (shared link, logs, the app itself) can still read it. Obscurity is not authorisation." },
+    { code: `on every request, check the object belongs to the caller`, ok: true, why: "The real fix: authorise the OBJECT, not just the login. The server must confirm 'does user 1007 own this record?' before returning it, on every endpoint. Pair it with least privilege and private buckets." },
+    { code: `send the id in a request header instead of in the URL`, ok: false, why: "Same data, different place. The attacker just changes the header. Moving the id does not add a permission check." },
+    { code: `rate-limit the endpoint so ids can't be enumerated quickly`, ok: false, why: "Slows down mass scraping, but one direct request to a known id still returns the record. Rate limiting is not an ownership check." },
+  ]));
   return (
     <div style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: 12, padding: "15px 16px" }}>
       <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: ".1em", color: API, fontWeight: 700, marginBottom: 10 }}>▶ APPLY THE FIX · what actually stops BOLA?</div>
@@ -494,10 +495,10 @@ export const MODULE18: ModuleDef = {
     check: {
       q: "An app loads your invoice at GET /api/invoices/5531 and shows it fine. You change it to /api/invoices/5532 and get back someone else's invoice with a 200 OK. What is the flaw, and the real fix?",
       options: [
-        { text: "BOLA/IDOR: the server never checks the object is yours. Fix: authorise the object (confirm the invoice belongs to the logged-in user) on every request.", correct: true, feedback: "Right. The id is under your control, so the server must verify ownership, not just that you're logged in." },
-        { text: "Nothing is wrong; you're logged in, so you're allowed.", feedback: "Being logged in is authentication, not authorisation. You still must not read other people's invoices." },
-        { text: "Weak encryption; use HTTPS.", feedback: "HTTPS protects data in transit but wouldn't stop this; the server itself handed over the wrong record." },
-        { text: "Use random invoice ids so they can't be guessed.", feedback: "Obscurity isn't authorisation: any leaked or shared id still works. You must check ownership." },
+        { text: "BOLA: the server never checks the invoice is yours, so it must verify ownership on every request.", correct: true, feedback: "Right. The id is under your control, so authorise the object itself - confirm it belongs to you, not just that you're logged in." },
+        { text: "Nothing is wrong here: you are logged in, so you're allowed to open any invoice the app shows.", feedback: "Being logged in is authentication, not authorisation. You still must not be able to read other people's invoices." },
+        { text: "The data is weakly encrypted in transit, so moving the whole API over to HTTPS would fix it.", feedback: "HTTPS protects data in transit but wouldn't stop this; the server itself handed over the wrong record." },
+        { text: "The invoice ids are too easy to guess, so switching to long random ids would close the hole.", feedback: "Obscurity isn't authorisation: any leaked or shared id still works. You must check ownership." },
       ],
     },
   },
@@ -531,9 +532,9 @@ export const MODULE18: ModuleDef = {
       q: "What is the single most important fix for the BOLA flaw you exploited?",
       options: [
         { text: "On every request, verify the object belongs to the logged-in user before returning it.", correct: true, feedback: "Right. Authorise the object itself, server-side, every time. Nothing else is a substitute." },
-        { text: "Use long, random ids so they can't be guessed.", feedback: "Obscurity, not authorisation. A shared or leaked id still works. Not a fix." },
-        { text: "Require HTTPS on the API.", feedback: "Good practice, but it doesn't stop the server handing over records that aren't yours." },
-        { text: "Move the id from the URL into a header.", feedback: "Same attacker-controlled value, different place. No permission check added." },
+        { text: "Replace the sequential ids with long random ones so an attacker can't guess them.", feedback: "Obscurity, not authorisation. A shared or leaked id still works. Not a fix." },
+        { text: "Require HTTPS on the API so the request and its data are encrypted in transit.", feedback: "Good practice, but it doesn't stop the server handing over records that aren't yours." },
+        { text: "Move the id out of the URL and send it in a request header instead.", feedback: "Same attacker-controlled value, different place. No permission check added." },
       ],
     },
   },
