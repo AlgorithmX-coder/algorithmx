@@ -447,15 +447,25 @@ export const case17War: WarCase = {
         name: "Break the chain",
         steps: [
           {
-            t: "choose",
-            prompt: "You've proven it's fake and you can see who seeded it. What breaks the rumour mill?",
-            options: [
-              { label: "Don't share it, report it, and calmly post what you verified", outcome: "good" },
-              { label: "Share your own angry version to fight back", outcome: "bad", then: [{ t: "note", text: "Now there are two rumours flying, GHOSTWRITER wins" }] },
-              { label: "Say nothing and hope it dies", outcome: "bad", then: [{ t: "note", text: "Silence lets the lie keep travelling unchallenged" }] },
-            ],
+            t: "flip",
+            prompt: "Decide, then flip the card to see what GHOSTWRITER's spread tracker does with your answer.",
+            you: {
+              kind: "choice",
+              label: "The rumour, now proven fake",
+              sub: "you've traced it to nothing, and seen who seeded it",
+              prompt: "What breaks the rumour mill?",
+              options: [
+                { label: "Don't share it, report it, and calmly post what you verified", outcome: "good" },
+                { label: "Share your own angry version to fight back", outcome: "bad" },
+                { label: "Say nothing and hope it dies", outcome: "bad" },
+              ],
+            },
+            them: {
+              label: "GHOSTWRITER's spread tracker",
+              whenGood: "SHARES COLLAPSING · chain broken · the fake dies here",
+              whenBad: "SPREAD CLIMBING · two rumours flying now, or one unchallenged · GHOSTWRITER wins",
+            },
           },
-          { t: "note", text: "CHAIN BROKEN · reported · debunk shared with sources · shares collapsing" },
         ],
       },
     ],

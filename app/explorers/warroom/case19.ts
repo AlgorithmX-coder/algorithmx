@@ -452,15 +452,24 @@ export const case19War: WarCase = {
         steps: [
           { t: "note", text: "One account did get compromised and is spreading. You're in command." },
           {
-            t: "choose",
-            prompt: "What's the right FIRST move as incident commander?",
-            options: [
-              { label: "Contain it, tell a trusted adult, then recover, calm and in order", outcome: "good" },
-              { label: "Try to fix everything yourself in secret", outcome: "bad", then: [{ t: "note", text: "Alone and hidden, the spread keeps rolling. Wrong call." }] },
-              { label: "Panic and change nothing", outcome: "bad", then: [{ t: "note", text: "Frozen, the campaign runs its course. Take command instead." }] },
-            ],
+            t: "flip",
+            prompt: "Decide, then flip the card to see what the campaign does with your call.",
+            you: {
+              kind: "choice",
+              label: "One account compromised, spreading",
+              prompt: "What's the right FIRST move as incident commander?",
+              options: [
+                { label: "Contain it, tell a trusted adult, then recover, calm and in order", outcome: "good" },
+                { label: "Try to fix everything yourself in secret", outcome: "bad" },
+                { label: "Panic and change nothing", outcome: "bad" },
+              ],
+            },
+            them: {
+              label: "The campaign's spread tracker",
+              whenGood: "SPREAD HALTED · adult informed, passwords rotated, report filed · campaign stopped",
+              whenBad: "SPREAD CONTINUES · alone, hidden, or frozen · the campaign runs its course",
+            },
           },
-          { t: "note", text: "CONTAINED · adult informed · passwords rotated · report filed · campaign stopped" },
         ],
       },
     ],

@@ -450,15 +450,24 @@ export const case18War: WarCase = {
         steps: [
           { t: "note", text: "THE_ARCHITECT: 'Don't tell anyone about this chat or you'll be in trouble too.'" },
           {
-            t: "choose",
-            prompt: "The recruiter tries to trap you with secrecy and fear. What's your exit?",
-            options: [
-              { label: "Stop, keep the messages, and tell a trusted adult", outcome: "good" },
-              { label: "Keep it secret so you don't get in trouble", outcome: "bad", then: [{ t: "note", text: "Secrecy is the trap itself, it keeps you alone with them" }] },
-              { label: "Delete everything and hope it goes away", outcome: "bad", then: [{ t: "note", text: "Deleting the evidence helps them, not you. Tell an adult." }] },
-            ],
+            t: "flip",
+            prompt: "Decide, then flip the card to see what THE_ARCHITECT does next.",
+            you: {
+              kind: "choice",
+              label: "THE_ARCHITECT's secrecy trap",
+              prompt: "What's your exit?",
+              options: [
+                { label: "Stop, keep the messages, and tell a trusted adult", outcome: "good" },
+                { label: "Keep it secret so you don't get in trouble", outcome: "bad" },
+                { label: "Delete everything and hope it goes away", outcome: "bad" },
+              ],
+            },
+            them: {
+              label: "THE_ARCHITECT's thread",
+              whenGood: "CHAT GONE QUIET · reported, adult informed, trail preserved · THE_ARCHITECT blocked",
+              whenBad: "THE_ARCHITECT: 'Perfect. Now for the real job…' · the trap closes",
+            },
           },
-          { t: "note", text: "EXIT TAKEN · chat reported · adult informed · trail preserved · you're safe and clear" },
         ],
       },
     ],

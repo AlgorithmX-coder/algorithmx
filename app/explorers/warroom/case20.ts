@@ -459,15 +459,24 @@ export const case20War: WarCase = {
         steps: [
           { t: "note", text: "K-STATIC: 'We're the same, you and I. Same skills. Come on, hit me back. Expose me. Prove it.'" },
           {
-            t: "choose",
-            prompt: "You've got them, and the skills to strike. How does a real analyst finish it?",
-            options: [
-              { label: "Gather clean evidence, hand it to the authorities, keep the Code", outcome: "good" },
-              { label: "Hack them back, they deserve it", outcome: "bad", then: [{ t: "note", text: "K-STATIC: 'See? You're just like me now.' The temptation WAS the trap." }] },
-              { label: "Dump all their private data online", outcome: "bad", then: [{ t: "note", text: "That harms people and breaks your Code, exactly what they wanted" }] },
-            ],
+            t: "flip",
+            prompt: "The last call of the programme. Decide, then flip the card to see who K-STATIC becomes.",
+            you: {
+              kind: "choice",
+              label: "K-STATIC's challenge",
+              prompt: "You've got them, and the skills to strike. How does a real analyst finish it?",
+              options: [
+                { label: "Gather clean evidence, hand it to the authorities, keep the Code", outcome: "good" },
+                { label: "Hack them back, they deserve it", outcome: "bad" },
+                { label: "Dump all their private data online", outcome: "bad" },
+              ],
+            },
+            them: {
+              label: "K-STATIC's reaction",
+              whenGood: "SIGNAL ZERO · evidence sealed, handed to the authorities · you walked away the real thing",
+              whenBad: "K-STATIC: 'See? You're just like me now.' · the temptation WAS the trap",
+            },
           },
-          { t: "note", text: "SIGNAL ZERO · evidence sealed · handed to the authorities · Code upheld · you never became them" },
         ],
       },
     ],
