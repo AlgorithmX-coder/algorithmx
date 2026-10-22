@@ -81,6 +81,11 @@ export interface WarSkill {
   title: string;
   goal: string;
   board?: string; // the board section label
+  // The case-journal entry logged when this skill clears: an analogy, what
+  // it means for the player, and one thing to actually do — kid-plain, not
+  // a restatement of `goal` (that line is written for the practice-dock
+  // header, a different job and register). Same field Console's skills carry.
+  journalNote: string;
   learn: WarStep[];
   practice: WarStep[];
 }
@@ -149,6 +154,7 @@ export const case16War: WarCase = {
       n: 1,
       title: "The data economy",
       goal: "Companies quietly keep a file on you, then buy and sell it.",
+      journalNote: "A free app that sells your data is like a 'free' fairground ride where they film you the whole time and sell the footage — you paid, just not with money. If something's free and you can't see how it earns, your data is probably the payment. Ask what a free app or site is really getting from you.",
       board: "THE MARKET",
       learn: [
         { t: "wren", text: "Start with the big secret of the internet. A lot of 'free' apps and sites aren't really free, you pay with data. As you browse, tap, and post, trackers quietly note what you like, where you go, and who you talk to. That gets bundled into a file about YOU, and companies buy and sell those files to target you. When something's free, quite often, the product being sold is you.", voice: "/audio/wren/m16w-s1-learn.mp3" },
@@ -201,6 +207,7 @@ export const case16War: WarCase = {
       n: 2,
       title: "What's in your file",
       goal: "Small crumbs each reveal something. Connect them to see the picture.",
+      journalNote: "Each post you make is a single puzzle piece — one alone tells a stranger almost nothing, but PACKRAT collects every piece until the whole picture snaps into place. Small crumbs add up to something big when someone's patient enough to connect them. Think about what the FULL picture of your posts would show, not just one.",
       board: "DOSSIER · SOURCES",
       learn: [
         { t: "wren", text: "So what's actually in a file about you? Not one big secret, lots of tiny crumbs, each giving away a piece. Your posts show your face and friends, your location tags show where you are, your searches show what you're into, your purchases show what you buy. On their own they seem harmless. Connected on a board, they draw a scarily complete picture. Let's connect a few and see.", voice: "/audio/wren/m16w-s2-learn.mp3" },
@@ -255,6 +262,7 @@ export const case16War: WarCase = {
       n: 3,
       title: "Audit your own trail",
       goal: "Turn Case 4's method on yourself: search you, see what a stranger sees.",
+      journalNote: "Searching yourself the way a stranger would is like checking your own house through the windows before a burglar does. You see exactly what PACKRAT would see, before it's a problem. Search your own name and usernames every so often.",
       board: "SELF-AUDIT",
       learn: [
         { t: "wren", text: "Here's a powerful move: audit yourself, the same way an attacker would. Search your own name and usernames. Look at your profiles the way a stranger sees them, logged out. You'll be surprised what's public, an old post, a tagged photo, a visible friends list. You can't fix what you can't see, so the self-audit is always step one. See your own file before anyone else uses it.", voice: "/audio/wren/m16w-s3-learn.mp3" },
@@ -300,6 +308,7 @@ export const case16War: WarCase = {
       n: 4,
       title: "Cut it down",
       goal: "You can lock down, delete, and correct. Make your file smaller on purpose.",
+      journalNote: "Your data trail is like a garden — left alone it grows wild, but you can prune it back any time: lock accounts, delete old posts, fix what's public. You're allowed to shrink what's out there on purpose. Go through one old account and lock down or delete what's public.",
       board: "DOSSIER · CURATE",
       learn: [
         { t: "wren", text: "Now the satisfying part, cutting the file down. You have more control than you think. Set profiles to private so only friends see them. Turn off location sharing. Delete old posts you've outgrown. Trim your public info. Every crumb you remove is one less thing in the file. You're not deleting yourself, you're curating, deciding on purpose what the world gets to see.", voice: "/audio/wren/m16w-s4-learn.mp3" },
@@ -354,6 +363,7 @@ export const case16War: WarCase = {
       n: 5,
       title: "Ask it down",
       goal: "You can request data be removed. Rights and settings are on your side.",
+      journalNote: "Asking a company to delete your data is like asking a shop to take your photo out of their window display — you have the right to ask, and most have to listen. Rights and settings exist for exactly this. Find one app's privacy settings and request takedown of old data.",
       board: "DOSSIER · TAKEDOWN",
       learn: [
         { t: "wren", text: "Sometimes data about you sits on a site you don't even control, an old account, a page that mentions you, a data broker's list. Good news: you often have the right to ask for it to be taken down, and most services have a delete-my-data or privacy request option. It's not instant and it's not perfect, but asking works more often than people think. If in doubt, a trusted adult can help you send the request.", voice: "/audio/wren/m16w-s5-learn.mp3" },
@@ -397,6 +407,7 @@ export const case16War: WarCase = {
       n: 6,
       title: "Know PACKRAT's play",
       goal: "The data-broker con runs four moves, and you can starve it at the source.",
+      journalNote: "PACKRAT's whole business is a leaking tap filling a bucket — collect, assemble, sell — and the fastest way to beat it isn't catching every drop, it's turning off the tap. Starve the source and the bucket never fills. Cut the sources before worrying about the finished file.",
       board: "THREAT MODEL",
       learn: [
         { t: "wren", text: "See PACKRAT's data play, four moves. First, collect your crumbs from everywhere. Second, assemble them into a file. Third, package that file up. Fourth, sell it to whoever pays. And here's your power: the file is only as rich as the crumbs feeding it. Cut the sources, lock your profiles, delete old data, request takedowns, and the file starves. You can't stop every crumb, but you can make PACKRAT's file thin and nearly worthless.", voice: "/audio/wren/m16w-s6-learn.mp3" },
@@ -450,6 +461,7 @@ export const case16War: WarCase = {
       n: 7,
       title: "Own your trail",
       goal: "The habit that keeps your file small and in your hands.",
+      journalNote: "Owning your trail is like owning a diary with a lock — you decide who reads which pages, and you can tear pages out whenever you like. Audit, lock down, take down, on repeat, keeps the pen in your hand. Make 'check my trail' a habit, not a one-off.",
       board: "ACTION PLAN",
       learn: [
         { t: "wren", text: "Last skill, and it's about ownership. Your data trail is yours to shape. So a few times a year, audit yourself, search your name, view your profiles as a stranger. Lock down what should be private, delete what you've outgrown, and ask sites to remove the rest. You'll never be invisible, and that's fine. The goal is simple: you decide what's out there, not PACKRAT.", voice: "/audio/wren/m16w-s7-learn.mp3" },

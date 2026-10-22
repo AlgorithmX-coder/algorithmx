@@ -31,6 +31,7 @@ export const case18War: WarCase = {
       n: 1,
       title: "Same skill, two paths",
       goal: "A skill can protect or harm. Permission and intent decide which.",
+      journalNote: "The same key can open your own front door or someone else's — the key doesn't decide right or wrong, permission does. Identical skill, totally different act depending on who said yes. Before using a skill, ask: do I actually have permission here?",
       board: "THE FORK",
       learn: [
         { t: "wren", text: "Start with the big idea, dual-use. The same skill can do good or harm. Knowing how a lock works helps a locksmith help people, and helps a burglar break in. It's not the skill that's good or bad, it's what you do with it. Two things decide which path you're on: permission, do you have the owner's okay, and intent, are you trying to help or to take. Keep those two straight and you'll almost always know the right move.", voice: "/audio/wren/m18w-s1-learn.mp3" },
@@ -83,6 +84,7 @@ export const case18War: WarCase = {
       n: 2,
       title: "White, grey, black",
       goal: "Testing with permission is a job. Without it, it's a crime.",
+      journalNote: "Testing a lock with the owner's permission is a locksmith; testing the same lock without asking is a burglar practising — same actions, opposite crimes. Permission is the only line between a job and a crime. Always get explicit permission before testing anything, even out of curiosity.",
       board: "THE HATS",
       learn: [
         { t: "wren", text: "People in security talk about hats. A white hat tests systems with permission and reports what they find, that's a real, respected job. A black hat breaks in without permission to steal or damage, that's a crime. And grey hat is the risky middle, poking at systems uninvited even if they mean no harm, which is still against the rules and can get them in serious trouble. Aim to be a white hat, always. Let's sort a few.", voice: "/audio/wren/m18w-s2-learn.mp3" },
@@ -137,6 +139,7 @@ export const case18War: WarCase = {
       n: 3,
       title: "Found a flaw? Report it",
       goal: "If you spot a weakness, tell the owner. Don't use it, don't post it.",
+      journalNote: "Finding a crack in a wall and fixing it quietly for the owner is helpful; finding it and bragging online is handing burglars a map. Tell the owner, never use it, never post it. If you ever spot a real flaw, report it privately and stop there.",
       board: "RESPONSIBLE DISCLOSURE",
       learn: [
         { t: "wren", text: "Here's what a real good guy does. Say you accidentally notice a weakness, a login that lets you see other people's info, a door left unlocked online. The right move is responsible disclosure: quietly tell the owner or a trusted adult so they can fix it, and don't use it, don't brag about it, don't post it publicly where crooks can grab it. Reporting a flaw makes you the hero. Exploiting it makes you the villain. Same discovery, opposite choice.", voice: "/audio/wren/m18w-s3-learn.mp3" },
@@ -190,6 +193,7 @@ export const case18War: WarCase = {
       n: 4,
       title: "The recruiter's levers",
       goal: "A bad recruiter pulls the same influence levers you already know.",
+      journalNote: "A bad recruiter's message is a magic trick stacking misdirections — flattery, free money, secrecy — all at once so you don't notice any one of them. Naming each lever as it lands breaks the spell. Read a suspicious message slowly and name each lever out loud.",
       board: "THE PITCH",
       learn: [
         { t: "wren", text: "Now the con. A bad recruiter, someone trying to pull your skills the wrong way, doesn't say 'come do crime'. They flatter you, they promise easy money, they call it 'just a test', they swear you to secrecy, and they whisper 'us versus them, the rules are for suckers'. Recognise those? They're the exact influence levers you learned earlier, dressed up as an offer. When you feel a lever being pulled, that IS the warning. Let's connect the pitch to the lever.", voice: "/audio/wren/m18w-s4-learn.mp3" },
@@ -245,6 +249,7 @@ export const case18War: WarCase = {
       n: 5,
       title: "Red flags of a bad offer",
       goal: "Secrecy, pressure, and money for access are the tell-tale signs.",
+      journalNote: "Secrecy, pressure, and money for access are like three alarms going off together — any one alone might be nothing, but all three at once means get out. They're the tell-tale pattern of a trap. If an offer asks you to keep it quiet AND decide fast, that's your answer.",
       board: "RED FLAGS",
       learn: [
         { t: "wren", text: "So how do you spot a bad offer fast? Look for these red flags. It's secret, tell no one. It's urgent, decide right now. It pays you for access or for doing something against the rules. And it needs you to break a rule or hide it from a trusted adult. A real, honest opportunity is the opposite: it's fine in daylight, an adult can know about it, and it never asks you to harm anyone. Let's pin the warning signs.", voice: "/audio/wren/m18w-s5-learn.mp3" },
@@ -300,6 +305,7 @@ export const case18War: WarCase = {
       n: 6,
       title: "Know the recruiter's play",
       goal: "Spot talent, flatter, small ask, bigger ask, trapped. Stop at the small ask.",
+      journalNote: "A recruiter's plan is a staircase with one trick step — spot talent, flatter, ask small, ask bigger, you're trapped — and the whole plan only works if you take that first small step. Refuse the small ask and the staircase goes nowhere. Stop at the very first small, rule-breaking ask, every time.",
       board: "THREAT MODEL",
       learn: [
         { t: "wren", text: "See the recruiter's play, five moves, and it's a slow one, that's why it's dangerous. First, spot talent, they find a skilled kid. Second, flatter, make you feel special and understood. Third, the small ask, something tiny and almost harmless. Fourth, the bigger ask, now you've done one, why not more. Fifth, trapped, 'you already helped, you can't back out now'. Here's your power: it all collapses if you refuse the small ask and tell a trusted adult. There's no such thing as too late to stop. Refuse early, and there's nothing to trap you with.", voice: "/audio/wren/m18w-s6-learn.mp3" },
@@ -352,6 +358,7 @@ export const case18War: WarCase = {
       n: 7,
       title: "Your line, your exit",
       goal: "You decide who you are. A real chance survives daylight. Always have an exit.",
+      journalNote: "Deciding your line in advance is like agreeing a safe word before a scary movie — you set the rule BEFORE you're under pressure, so panic can't talk you out of it. A real chance always survives daylight and a second look. Decide your no-harm, no-secrets line today, before anyone ever tests it.",
       board: "ACTION PLAN",
       learn: [
         { t: "wren", text: "Last skill, and it's the most important in the whole programme. You decide who you are. Your skills are real, and the good path is wide open, ethical hacking is a genuine, respected, well-paid job. So set your line now, before anyone tests it: I don't harm people, I don't do it in secret, and I don't work without permission. And always keep your exit: whenever an offer feels off, you stop, you say no, and you tell a trusted adult. No shame, no 'too late'. That exit is always open.", voice: "/audio/wren/m18w-s7-learn.mp3" },
