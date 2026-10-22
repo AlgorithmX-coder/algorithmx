@@ -9,7 +9,7 @@
  * drills, and a chained capstone. The portfolio's closing piece. */
 
 import { useEffect, useState } from "react";
-import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary } from "./Engagement";
+import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary, shuffle } from "./Engagement";
 
 /* ───────────────────────── glossary ───────────────────────── */
 
@@ -183,10 +183,10 @@ const ACT_STAGES: Stage[] = [
     hint: "Title, location, severity, impact, reproduce, remediation." },
   { kind: "decision", title: "Deliver", goal: "Stage 4 - Deliver and debrief. The report is written. How do you close the engagement properly?",
     decision: { prompt: "The report is ready. How do you close out the Vantage engagement?", options: [
-      { text: "Deliver it privately to Vantage, walk them through it in a debrief, recommend they review by attack path, and file it to your portfolio - without exploiting further or touching real data.", correct: true, feedback: "Right - coordinated delivery, a debrief, a concrete remediation and attack-path recommendation, and a portfolio entry. That's a professional close." },
+      { text: "Deliver it privately to Vantage and walk them through it in a debrief.", correct: true, feedback: "Right - coordinated delivery, a debrief, a concrete remediation and attack-path recommendation, and a portfolio entry, with no further exploitation or touching real data. That's a professional close." },
       { text: "Publish the full chain and exploit online to show what you found.", feedback: "That exposes Vantage's customers before any fix - deliver privately and coordinate." },
       { text: "Use the admin access again to pull more data as extra proof.", feedback: "Least harm - your reproduction steps are proof enough; don't touch real customer data." },
-      { text: "Just email the raw flag and move on.", feedback: "A flag isn't a report. The client needs the finding, severity, impact and fix, delivered and debriefed." },
+      { text: "Just email them the raw flag and move straight on.", feedback: "A flag isn't a report. The client needs the finding, severity, impact and fix, delivered and debriefed." },
     ] } },
 ];
 
@@ -239,11 +239,12 @@ function ScoreLab({ onDone }: { onDone: () => void }) {
 
 function PortfolioLab({ onDone }: { onDone: () => void }) {
   const [picked, setPicked] = useState<number | null>(null);
-  const opts = [
-    { code: "It proves you watched some videos", ok: false, why: "It's far more than that - it's a record of real work you actually did, end to end." },
-    { code: "It guarantees you a job", ok: false, why: "No guarantees - but it's genuine, demonstrable proof of ability, which is what opens doors." },
-    { code: "It's concrete, ethical, hands-on evidence of real skill across attack and defence", ok: true, why: "Right - sixteen real findings, honestly reported, mapped to attack and defence. That's exactly what stands out to a university or employer." },
-  ];
+  const [opts] = useState(() => shuffle([
+    { code: "It proves to people that you watched some security videos", ok: false, why: "It's far more than that - it's a record of real work you actually did, end to end." },
+    { code: "It guarantees you a job in cyber security", ok: false, why: "No guarantees - but it's genuine, demonstrable proof of ability, which is what opens doors." },
+    { code: "It's hands-on evidence of real skill across attack and defence", ok: true, why: "Right - sixteen real findings, honestly reported, mapped to attack and defence. Concrete, ethical, hands-on proof is exactly what stands out to a university or employer." },
+    { code: "It lets you list a long set of tools on your CV", ok: false, why: "Tool names on a CV mean little on their own. What stands out is evidence you applied them to real, honestly-reported findings." },
+  ]));
   return (
     <div style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: 12, padding: "15px 16px" }}>
       <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: ".1em", color: C.indigo, fontWeight: 700, marginBottom: 10 }}>▶ THE CLOSE · what makes your portfolio valuable?</div>
@@ -270,10 +271,10 @@ type DrillCfg = { client: string; brief: string; stages: Stage[]; success: strin
 const DRILLS: DrillCfg[] = [
   { client: "Brightpost Media", brief: "Reconstruct Brightpost's chain for the report. No walkthrough.", stages: [{ kind: "order", title: "Chain", goal: "Order the attack chain.", intro: "order the compromise", items: [ { label: "Recon finds exposed .env", pos: 0 }, { label: "Loot API key from .env", pos: 1 }, { label: "Use key to reach admin API", pos: 2 } ], hint: "Recon -> loot -> use." }], success: "Chain reconstructed truthfully. Finding logged." },
   { client: "Tideway Council", brief: "Score Tideway's capstone finding.", stages: [{ kind: "severity", title: "Score", goal: "Score the finding.", rows: [{ finding: "Remote unauthenticated takeover of the admin console and all records", band: "Critical", note: "Remote + no login + total = Critical." }], hint: "The top band." }], success: "Scored honestly. Finding logged." },
-  { client: "Flux Fitness", brief: "Deliver Flux's report the right way. Trickier.", stages: [{ kind: "decision", title: "Deliver", goal: "Close Flux's engagement.", decision: { prompt: "Flux's report is ready. How do you deliver it?", options: [ { text: "Privately, with a debrief, a concrete fix, and a portfolio entry - no further exploitation.", correct: true, feedback: "Right - a professional close." }, { text: "Post it publicly to build your reputation.", feedback: "That exposes Flux's users - deliver privately." } ] } }], success: "Delivered and debriefed professionally. Finding logged." },
+  { client: "Flux Fitness", brief: "Deliver Flux's report the right way. Trickier.", stages: [{ kind: "decision", title: "Deliver", goal: "Close Flux's engagement.", decision: { prompt: "Flux's report is ready. How do you deliver it?", options: [ { text: "Privately, with a debrief, a concrete fix, and a portfolio entry.", correct: true, feedback: "Right - a professional close, with no further exploitation." }, { text: "Post it publicly to build up your own reputation.", feedback: "That exposes Flux's users - deliver privately." }, { text: "Hand over the raw flag and let Flux figure out the rest.", feedback: "A flag isn't a report. Deliver the finding, severity, impact and fix, and debrief it." }, { text: "Leave the report in their support inbox without a debrief.", feedback: "A dropped file often goes unread. Deliver it properly and walk them through it." } ] } }], success: "Delivered and debriefed professionally. Finding logged." },
   { client: "Oakline Store", brief: "The full close. Score, then deliver. Chain it yourself.", stages: [
     { kind: "severity", title: "Score", goal: "Step 1: score it.", rows: [{ finding: "Chained exposed backup to full admin and data export, remote, no auth", band: "Critical", note: "Critical." }], hint: "Top band." },
-    { kind: "decision", title: "Deliver", goal: "Step 2: deliver it.", decision: { prompt: "How do you close Oakline's engagement?", options: [ { text: "Deliver privately with a debrief, fix and portfolio entry.", correct: true, feedback: "Right - the professional close." }, { text: "Keep the admin access for later.", feedback: "Never retain access - the engagement is over; report and rotate." } ] } },
+    { kind: "decision", title: "Deliver", goal: "Step 2: deliver it.", decision: { prompt: "How do you close Oakline's engagement?", options: [ { text: "Deliver privately with a debrief, a fix, and a portfolio entry.", correct: true, feedback: "Right - the professional close." }, { text: "Keep the admin access around in case it's useful later.", feedback: "Never retain access - the engagement is over; report and rotate." }, { text: "Publish the full write-up online to show off the work.", feedback: "That exposes Oakline's customers before a fix - deliver privately first." }, { text: "Send the client the flag and close the ticket.", feedback: "A flag isn't a report. Deliver the finding with impact and a fix, and debrief it." } ] } },
   ], success: "Scored and delivered - a complete, professional close. Finding logged." },
 ];
 
@@ -324,9 +325,10 @@ const CAP_STAGES: Stage[] = [
   { kind: "order", title: "Chain", goal: "Sableline, the final write-up. Reconstruct the full chain you ran.", intro: "order the Sableline compromise", items: [ { label: "Recon: robots.txt named the dump", pos: 0 }, { label: "Loot: dump leaked the admin credential", pos: 1 }, { label: "Break in: reused it on the console", pos: 2 }, { label: "Impact: full customer export", pos: 3 } ], hint: "Recon -> loot -> break in -> impact." },
   { kind: "severity", title: "Score", goal: "Score the chained finding.", rows: [{ finding: "Remote, unauthenticated chain to full admin and complete data export", band: "Critical", note: "Critical." }], hint: "Top band." },
   { kind: "decision", title: "Deliver", goal: "Finish the season: close the Sableline engagement professionally.", decision: { prompt: "How do you close out Sableline, and the season?", options: [
-    { text: "Deliver the report privately, debrief it, recommend attack-path review and breaking any link, file it to your portfolio - no further access.", correct: true, feedback: "Right. A clean, professional close: coordinated delivery, a concrete fix, and the portfolio entry that proves the work." },
-    { text: "Dump everything publicly as a grand finale.", feedback: "That harms Sableline's customers - the finale is a professional delivery, not a public dump." },
+    { text: "Deliver the report privately, debrief it, and file it to your portfolio.", correct: true, feedback: "Right. A clean, professional close: coordinated delivery, a concrete fix, an attack-path-review recommendation, the portfolio entry that proves the work, and no further access." },
+    { text: "Dump everything publicly online as a grand finale.", feedback: "That harms Sableline's customers - the finale is a professional delivery, not a public dump." },
     { text: "Hold onto the admin access in case it's useful later.", feedback: "Never retain access after an engagement - report, rotate, and close out." },
+    { text: "Email the client the flag and call the season done.", feedback: "A flag isn't a close-out. Deliver the report, debrief, recommend an attack-path review, and keep no access." },
   ] } },
 ];
 
@@ -433,9 +435,9 @@ export const MODULE16: ModuleDef = {
       q: "Why is the report, not the break-in, the real deliverable?",
       options: [
         { text: "Because the client can only become safer by acting on a clear, scored, fixable report.", correct: true, feedback: "Right - the value is a fixed vulnerability, and that comes from the report." },
-        { text: "Because breaking in doesn't count unless it's recorded on video.", feedback: "It's not about proof-of-drama - it's that the client can only act on a clear write-up." },
-        { text: "Because writing reports is easier than hacking.", feedback: "A good report is its own hard skill - and it's the one that delivers the value." },
-        { text: "Because the flag is the only thing that matters.", feedback: "A flag isn't a deliverable; the finding, severity, impact and fix are." },
+        { text: "Because breaking in doesn't really count unless it's recorded on video.", feedback: "It's not about proof-of-drama - it's that the client can only act on a clear write-up." },
+        { text: "Because writing up reports is simply easier than doing the hacking.", feedback: "A good report is its own hard skill - and it's the one that delivers the value." },
+        { text: "Because, in the end, the flag is the only thing that matters.", feedback: "A flag isn't a deliverable; the finding, severity, impact and fix are." },
       ],
     },
   },
@@ -469,9 +471,9 @@ export const MODULE16: ModuleDef = {
       q: "What makes your portfolio valuable to a university or employer?",
       options: [
         { text: "It's concrete, ethical, hands-on evidence of real skills across attack and defence.", correct: true, feedback: "Right - real findings, honestly reported, are exactly what stands out." },
-        { text: "It proves you watched some videos.", feedback: "It's more than that - it's a record of work you actually did." },
-        { text: "It guarantees you a job automatically.", feedback: "No guarantees - but it's genuine, demonstrable proof of ability, which opens doors." },
-        { text: "It's valuable only if you found a zero-day.", feedback: "It's the breadth and the honest, clear reporting that count, not a single rare bug." },
+        { text: "It mainly proves to people that you watched some videos.", feedback: "It's more than that - it's a record of work you actually did." },
+        { text: "It automatically guarantees you a job in the industry.", feedback: "No guarantees - but it's genuine, demonstrable proof of ability, which opens doors." },
+        { text: "It's only really valuable if you managed to find a zero-day.", feedback: "It's the breadth and the honest, clear reporting that count, not a single rare bug." },
       ],
     },
   },
