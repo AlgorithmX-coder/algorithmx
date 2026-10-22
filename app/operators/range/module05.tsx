@@ -231,12 +231,12 @@ const STAGES: Stage[] = [
     hints: ["Start by closing the string with a quote, like the probe.", "After the quote, add a condition that's always true: OR 1=1", "Finish with -- to comment out the rest of the line. Put it in the EMAIL field; leave the password blank."],
     skeleton: "' OR ___ --", reveal: "' OR 1=1--", done: (r) => !!r.authed,
     explain: {
-      q: "You just logged in with no password. In plain terms, why did ' OR 1=1 -- work?",
+      q: "You got into the staff console with no password. On a real site, what else could this same injection flaw let an attacker do?",
       options: [
-        { text: "Your quote closed the string early, OR 1=1 made the condition always true, and -- ignored the password check.", correct: true, feedback: "Exactly. The database read your input as part of the query, so the WHERE clause matched every row and let you in." },
-        { text: "The -- at the end quietly deleted the admin's stored password, so the login had nothing left to check.", feedback: "No - -- comments out the rest of the query text; it changes nothing in the database and deletes no data." },
-        { text: "OR 1=1 happened to guess the admin's real password, because 1=1 is a very common default.", feedback: "No - 1=1 isn't a password. It's a condition that is always true, which is what matched every row." },
-        { text: "The single quote escaped you straight into the database's built-in administrator account.", feedback: "No - a quote just breaks out of the string literal. It grants no account; the always-true condition did the work." },
+        { text: "Read or change almost any data the database holds - customer records, password hashes, card details - not just the login.", correct: true, feedback: "Right - that's why injection is so serious. The same flaw that skips a login can pull or alter whole tables, which is exactly what you do next." },
+        { text: "Only bypass logins: injection can skip a password check but can't reach any other table.", feedback: "No - once your input is part of the query, it can reach far beyond the login, as the next stages show." },
+        { text: "Only slow the site down, because the extra query just adds load to the server.", feedback: "It's not about load - injection reads and changes real data, not just performance." },
+        { text: "Only affect your own account, since the query still runs as the user you logged in as.", feedback: "The injected query runs with the database's own access, not a single user's - it can reach everyone's data." },
       ],
     },
   },
