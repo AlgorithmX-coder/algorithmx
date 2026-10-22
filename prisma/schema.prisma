@@ -236,6 +236,7 @@ model ChildProfile {
   class       Class?       @relation(fields: [classId], references: [id], onDelete: SetNull)
   progress    Progress[]
   opsFindings OpsFinding[]
+  opsResumes  OpsResume[]
 
   @@index([userId])
   @@index([classId])
@@ -338,6 +339,30 @@ model OpsFinding {
   flag           String
   createdAt      DateTime    @default(now())
   updatedAt      DateTime    @updatedAt
+
+  childProfile ChildProfile @relation(fields: [childProfileId], references: [id], onDelete: Cascade)
+
+  @@unique([childProfileId, week])
+  @@index([childProfileId])
+}
+
+// ---------------------------------------------------------------------------
+// Cyber Ops save/resume (account-wide): the section (beat) a learner is part
+// way through, per module, so a module reopens where they left off on ANY
+// device. One row per (child, module); cleared when the module is finished or
+// the learner starts over. Independent of the Progress/CourseContent spine so
+// it covers all 20 modules (Progress only exists where CourseContent does).
+// ---------------------------------------------------------------------------
+model OpsResume {
+  id             String   @id @default(cuid())
+  childProfileId String
+  /// Learner-facing module number (1-20).
+  week           Int
+  /// The beat id to resume at (lesson | authorize | act | drills | challenge | defend).
+  beat           String
+  /// The operator callsign chosen for this engagement, so a resumed run keeps the name.
+  callsign       String?
+  updatedAt      DateTime @updatedAt
 
   childProfile ChildProfile @relation(fields: [childProfileId], references: [id], onDelete: Cascade)
 

@@ -12,7 +12,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Engagement, { type ModuleDef, C, MONO } from "./Engagement";
-import { fileEngagement } from "@/app/lib/opsPortfolio.actions";
+import { fileEngagement, saveOpsResume } from "@/app/lib/opsPortfolio.actions";
 import type { OpsSeverity } from "@prisma/client";
 
 const SEVERITY_MAP: Record<string, OpsSeverity> = {
@@ -26,7 +26,17 @@ function toSeverity(display: string): OpsSeverity {
   return SEVERITY_MAP[display.trim().toLowerCase()] ?? "MEDIUM";
 }
 
-export default function LiveEngagement({ mod }: { mod: ModuleDef }) {
+export default function LiveEngagement({
+  mod,
+  initialBeat,
+  initialCallsign,
+}: {
+  mod: ModuleDef;
+  /** The section (beat) the learner was last on, hydrated server-side so a module
+   *  reopens where they left off on any device. Undefined = start fresh. */
+  initialBeat?: string;
+  initialCallsign?: string | null;
+}) {
   const router = useRouter();
   const [note, setNote] = useState<string | null>(null);
   const [liveRank, setLiveRank] = useState<{ rank: string; label: string; fraction: number } | null>(null);
@@ -63,7 +73,15 @@ export default function LiveEngagement({ mod }: { mod: ModuleDef }) {
 
   return (
     <>
-      <Engagement mod={mod} onReport={persist} onExit={() => router.push("/operators/portfolio")} liveRank={liveRank} />
+      <Engagement
+        mod={mod}
+        onReport={persist}
+        onExit={() => router.push("/operators/portfolio")}
+        liveRank={liveRank}
+        initialPhase={initialBeat}
+        initialCallsign={initialCallsign ?? undefined}
+        onPhaseChange={(phase, callsign) => { void saveOpsResume(mod.moduleNo, phase, callsign); }}
+      />
       {note && (
         <div
           role="status"

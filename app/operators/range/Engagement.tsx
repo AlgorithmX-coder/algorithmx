@@ -242,18 +242,16 @@ const BASE_BEATS: { id: Phase; label: string }[] = [
 // Save/resume mid-module (UAT): the beats a learner can be dropped back into on a
 // refresh or a return visit. The two start beats (intro/brief) aren't worth
 // resuming to, and "report" means the module is finished, so none of those persist.
-// Per-device via localStorage, keyed by module number; reads/writes are wrapped so
-// a blocked store (private window, cleared data) just falls back to a fresh start.
+// Account-wide: the live shell persists/hydrates the beat server-side (see
+// opsPortfolio.actions + LiveEngagement), so a module reopens where you left off
+// on any device. The pure shell here just takes initialPhase/onPhaseChange props;
+// the preview/dev routes pass neither and get no resume.
 const RESUMABLE: Phase[] = ["lesson", "authorize", "act", "drills", "challenge", "defend"];
-export function resumeKeyFor(moduleNo: number) { return `ops:resume:${moduleNo}`; }
-function readResume(moduleNo: number, mod: ModuleDef): Phase | null {
-  try {
-    const s = localStorage.getItem(resumeKeyFor(moduleNo)) as Phase | null;
-    if (!s || !RESUMABLE.includes(s)) return null;
-    if (s === "drills" && !mod.Consolidation) return null;
-    if (s === "challenge" && !mod.Capstone) return null;
-    return s;
-  } catch { return null; }
+function validResume(phase: string | undefined | null, mod: ModuleDef): Phase | null {
+  if (!phase || !RESUMABLE.includes(phase as Phase)) return null;
+  if (phase === "drills" && !mod.Consolidation) return null;
+  if (phase === "challenge" && !mod.Capstone) return null;
+  return phase as Phase;
 }
 
 // Each curriculum phase is a distinct "console world" (owner: make each module
@@ -279,6 +277,9 @@ export default function Engagement({
   onReport,
   onExit,
   liveRank,
+  initialPhase,
+  initialCallsign,
+  onPhaseChange,
 }: {
   mod: ModuleDef;
   /** Fired once when the learner reaches the report beat - the completion
@@ -292,34 +293,33 @@ export default function Engagement({
    *  present it overrides the module's designed rank text so the celebration
    *  matches the portfolio. Previews pass nothing and show the designed text. */
   liveRank?: { rank: string; label: string; fraction: number } | null;
+  /** Account-wide resume: the beat the learner was last on (hydrated from the
+   *  server by the live shell), and a callback fired on every beat change so the
+   *  shell can persist it. Preview/dev routes omit both and get no resume. */
+  initialPhase?: string;
+  initialCallsign?: string;
+  onPhaseChange?: (phase: Phase, callsign: string) => void;
 }) {
   const defaultPhase: Phase = mod.industry ? "intro" : "brief";
-  // Resume where the learner left off (only when a real completion handler is
-  // wired, i.e. the live lesson - never the preview/dev routes, which shouldn't
-  // persist). Beat-level: a return visit drops you back into the section you were
-  // in rather than restarting the whole module.
-  const canPersist = !!onReport;
-  const [phase, setPhase] = useState<Phase>(() => (canPersist && readResume(mod.moduleNo, mod)) || defaultPhase);
-  const [resumed, setResumed] = useState<boolean>(() => canPersist && readResume(mod.moduleNo, mod) !== null);
-  const [callsign, setCallsign] = useState(() => {
-    if (!canPersist) return "NIGHTJAR";
-    try { return localStorage.getItem(`ops:callsign:${mod.moduleNo}`) || "NIGHTJAR"; } catch { return "NIGHTJAR"; }
-  });
+  // Resume where the learner left off. The live shell hydrates initialPhase from
+  // the server and persists each beat change via onPhaseChange, so a module reopens
+  // on the right section on ANY device. Preview/dev routes pass neither.
+  const resumeTo = validResume(initialPhase, mod);
+  const [phase, setPhase] = useState<Phase>(resumeTo ?? defaultPhase);
+  const [resumed, setResumed] = useState<boolean>(resumeTo !== null);
+  const [callsign, setCallsign] = useState(initialCallsign || "NIGHTJAR");
+  // Persist each beat change (and the current callsign) via the shell. Refs keep
+  // the effect firing only on a real beat change, not on every callsign keystroke.
+  const onPhaseChangeRef = useRef(onPhaseChange);
+  onPhaseChangeRef.current = onPhaseChange;
+  const callsignRef = useRef(callsign);
+  callsignRef.current = callsign;
   useEffect(() => {
-    if (!canPersist) return;
-    try {
-      if (RESUMABLE.includes(phase)) localStorage.setItem(resumeKeyFor(mod.moduleNo), phase);
-      else localStorage.removeItem(resumeKeyFor(mod.moduleNo)); // intro/brief/report: nothing to resume
-    } catch { /* storage blocked */ }
-  }, [phase, canPersist, mod.moduleNo]);
-  useEffect(() => {
-    if (!canPersist) return;
-    try { localStorage.setItem(`ops:callsign:${mod.moduleNo}`, callsign); } catch { /* storage blocked */ }
-  }, [callsign, canPersist, mod.moduleNo]);
+    onPhaseChangeRef.current?.(phase, callsignRef.current);
+  }, [phase]); // eslint-disable-line react-hooks/exhaustive-deps
   function startOver() {
-    try { localStorage.removeItem(resumeKeyFor(mod.moduleNo)); } catch { /* storage blocked */ }
     setResumed(false);
-    setPhase(defaultPhase);
+    setPhase(defaultPhase); // the beat-change effect clears the saved row server-side
   }
   const [cheatOpen, setCheatOpen] = useState(false);
   useEffect(() => {
