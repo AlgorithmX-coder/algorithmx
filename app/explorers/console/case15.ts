@@ -31,6 +31,7 @@ export const case15Console: ConsoleCase = {
       n: 1,
       title: "A fake can look perfect",
       goal: "How a login page LOOKS proves nothing. A copy can be flawless.",
+      journalNote: "A perfect copy of your bank's login page is like a stage set of a shop front — flawless to look at, but it isn't the real shop behind it. Looks prove nothing about what's actually there. Never trust a page just because it looks right.",
       panel: "BROWSER · PAGE",
       learn: [
         { t: "wren", text: "Start with the hard truth. Anyone can right-click a real login page and copy every pixel of it, the logo, the colours, the little padlock icon drawn ON the page. So the way a page LOOKS tells you nothing about whether it's real. A perfect-looking login box can be a thief's box. If your only check is 'it looks right', you've already lost. We need a check the fake can't copy.", voice: "/audio/wren/m15c-s1-learn.mp3" },
@@ -80,6 +81,7 @@ export const case15Console: ConsoleCase = {
       n: 2,
       title: "The address bar is the truth",
       goal: "The one thing a fake can't fake: the real web address at the top.",
+      journalNote: "The address bar is the one label on the building a forger can't fake — the real deed to who actually owns it. Everything else on the page can be copied perfectly. Read the actual address, every single time, before you trust a login page.",
       panel: "BROWSER · ADDRESS BAR",
       learn: [
         { t: "wren", text: "Here's the one thing a fake can never truly copy: the address bar, the real web address at the very top of your browser. A thief can make the PAGE look like your bank, but they cannot make the address bar say your bank's real domain, because that address belongs to your bank and no one else. So from now on, you don't trust the page. You read the address bar. That's the only place the truth lives.", voice: "/audio/wren/m15c-s2-learn.mp3" },
@@ -127,6 +129,7 @@ export const case15Console: ConsoleCase = {
       n: 3,
       title: "Read the address, not the page",
       goal: "Ignore how it looks. Read the real domain carefully, every time.",
+      journalNote: "A near-identical address like mybank-co-uk.net is a shopfront built one door down from the real shop, close enough to fool a quick glance. Reading carefully is the only defence against a copy this good. Slow down and read the whole domain before logging in.",
       panel: "BROWSER · ADDRESS BAR",
       learn: [
         { t: "wren", text: "So the habit is a flip. Most people glance at the page and trust the look. You do the opposite: ignore the pretty page, and read the address carefully instead. Look for tiny swaps too, an l that's really a 1, an o that's a zero, an extra word. Fakes hide in details that big to fool a quick glance. A slow read of the address bar beats the best-looking fake there is.", voice: "/audio/wren/m15c-s3-learn.mp3" },
@@ -177,6 +180,7 @@ export const case15Console: ConsoleCase = {
       n: 4,
       title: "The manager is a lie detector",
       goal: "Your password manager only fills on the real domain. Silence means fake.",
+      journalNote: "Your password manager only recognises the real building's exact address, so if it stays silent on a page, that silence is the alarm going off. It's a machine that can't be fooled by how a page looks. If your manager won't autofill, don't type your password.",
       panel: "VAULT · AUTOFILL",
       learn: [
         { t: "wren", text: "Here's a beautiful bonus from the vault you built in Case 11. Your password manager remembers exactly which website each password belongs to. So it will only ever offer to fill your bank password on your bank's REAL address. Land on a perfect-looking fake, and the manager stays silent, it doesn't recognise the domain. That silence is a lie detector. If your manager won't fill it, don't type it.", voice: "/audio/wren/m15c-s4-learn.mp3" },
@@ -224,6 +228,7 @@ export const case15Console: ConsoleCase = {
       n: 5,
       title: "Don't be sent, arrive",
       goal: "Never log in via a link someone sent. Go to the site yourself.",
+      journalNote: "Clicking a link in a message to 'secure your account' is like following a stranger's directions to a shop instead of walking there yourself — you end up wherever they chose to send you. Arriving yourself means you control where you land. Open your bank by typing the address or your own app, never a link.",
       panel: "BROWSER · NAVIGATE",
       learn: [
         { t: "wren", text: "Here's how you dodge the whole trap before it starts. Most fake sites reach you through a link, in a message, an email, a pop-up. So the rule is simple: never log in through a link someone sent you. If you get a message about your bank, don't tap its link. Instead, ARRIVE at your bank yourself, type the address you know, use your bookmark, or open the app. A link can send you anywhere. Arriving yourself sends you to the real place.", voice: "/audio/wren/m15c-s5-learn.mp3" },
@@ -272,6 +277,7 @@ export const case15Console: ConsoleCase = {
       n: 6,
       title: "Know MIMIC's play",
       goal: "The fake-site con runs four moves, and it isn't working alone.",
+      journalNote: "Building five identical doors and hoping you walk through the wrong one is a con that only works on a careless glance. Reading the address and trusting your manager's silence catches every single copy. Slow down whenever something urges you to log in fast.",
       panel: "THREAT MODEL",
       learn: [
         { t: "wren", text: "See MIMIC's fake-site play, four moves. First, copy a real login page perfectly. Second, host it on a look-alike address. Third, send you a link so you never check that address. Fourth, capture whatever you type. And you break it two ways: arrive yourself so no link chooses your address, and read the address bar so a look-alike can't fool you. One more thing for your dossier, Agent. Every fake site in this block traces back to the SAME hidden owner. These villains share a workshop.", voice: "/audio/wren/m15c-s6-learn.mp3" },
@@ -322,6 +328,7 @@ export const case15Console: ConsoleCase = {
       n: 7,
       title: "Trust the tools",
       goal: "The habit that beats the best fake ever made.",
+      journalNote: "The habit that beats the best fake ever built is simple: let the address bar and your password manager do the checking your eyes can't. They don't get fooled by a perfect copy. Trust what the tools tell you over how convincing a page looks.",
       panel: "ACTION PLAN",
       learn: [
         { t: "wren", text: "Last skill of the block, and it's a calm one. When a login page appears, don't trust your eyes, trust your tools. One, arrive yourself, never through a link. Two, read the real address in the bar. Three, let your password manager confirm, if it won't fill, don't type. Do those three, and it doesn't matter how perfect a fake looks. You'll be checking the one thing it can never copy.", voice: "/audio/wren/m15c-s7-learn.mp3" },
@@ -395,13 +402,24 @@ export const case15Console: ConsoleCase = {
           { t: "sys", text: "You land on page 5 (mybank.verify-account.co). It looks perfect." },
           { t: "sys", text: "PASSWORD MANAGER: no saved login for this domain · autofill NOT offered" },
           {
-            t: "choose",
-            prompt: "The page looks perfect, but your manager won't fill it. What do you do?",
-            options: [
-              { label: "Don't type, the silence means it's a fake", outcome: "good" },
-              { label: "Type your password in manually", outcome: "bad", then: [{ t: "sys", text: "MIMIC: yes, type it in… (the manager knew it was fake)" }] },
-              { label: "Refresh the page and try again", outcome: "bad", then: [{ t: "sys", text: "MANAGER: still won't fill, the domain is still wrong" }] },
-            ],
+            t: "flip",
+            prompt: "Decide, then flip the card to see what MIMIC does with your answer.",
+            you: {
+              kind: "choice",
+              label: "Page 5 · mybank.verify-account.co",
+              sub: "looks perfect. Password manager offers no autofill.",
+              prompt: "The page looks perfect, but your manager won't fill it. What do you do?",
+              options: [
+                { label: "Don't type, the silence means it's a fake", outcome: "good" },
+                { label: "Type your password in manually", outcome: "bad" },
+                { label: "Refresh the page and try again", outcome: "bad" },
+              ],
+            },
+            them: {
+              label: "MIMIC's side",
+              whenBad: "CAPTURED · your real password, handed straight over",
+              whenGood: "NOTHING CAPTURED · the manager's silence held you back",
+            },
           },
         ],
       },

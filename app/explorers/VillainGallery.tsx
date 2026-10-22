@@ -13,15 +13,15 @@
  * A case not yet closed shows its mo (the threat) but redacts defeatedBy
  * (the answer) until it's actually been played — no spoilers.
  *
- * Where a journal exists for a closed case (Block 2 only, see
- * phone/journal.ts), the dossier surfaces it directly: a revision hub, not
+ * Where a journal exists for a closed case (Blocks 2 and 3, see
+ * engine/journal.ts), the dossier surfaces it directly: a revision hub, not
  * just a trophy case.
  */
 
 import { useEffect, useState } from "react";
 import type { MissionManifest } from "./engine/types";
 import { MONO } from "./engine/tokens";
-import { loadJournal, type JournalEntry } from "./phone/journal";
+import { loadJournal, type JournalEntry } from "./engine/journal";
 
 const INK = "#D3E6F7";
 const DIM = "#617a9e";

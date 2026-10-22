@@ -63,6 +63,27 @@ export type ConsoleStep =
       prompt?: string;
       ok?: string;
       okVoice?: string;
+    }
+  | {
+      // Boss-only "two sides" beat: ONE physical card you flip between YOUR
+      // side and THEIR side — never a side-by-side split (owner note: a
+      // flip stays neat and avoids cramped-layout bugs). When `you` is a
+      // toggle, a real on/off defence exists (2FA, the https padlock) and
+      // flipping to "them" shows the attacker's attempt reacting live to
+      // its position. When `you` is a choice, there's no literal switch for
+      // this threat, so "you" carries the same kind of decision Block 3
+      // already asks elsewhere, and flipping reveals the consequence from
+      // the villain's own side — same card, no toggle invented where none
+      // exists.
+      t: "flip";
+      prompt?: string;
+      you:
+        | { kind: "toggle"; label: string; sub?: string; off: string; on: string }
+        | { kind: "choice"; label: string; sub?: string; prompt: string; options: { label: string; outcome: "good" | "bad" }[] };
+      them: { label: string; whenGood: string; whenBad: string };
+      ask?: { prompt?: string; options: { label: string; sub?: string; outcome?: "good" | "bad"; then?: ConsoleStep[] }[] };
+      ok?: string;
+      okVoice?: string;
     };
 
 export interface ConsoleSkill {
@@ -70,6 +91,11 @@ export interface ConsoleSkill {
   title: string;
   goal: string;
   panel?: string; // the system/app being operated, shown in the console header
+  // The case-journal entry logged when this skill clears: an analogy, what
+  // it means for the player, and one thing to actually do — kid-plain, not
+  // a restatement of `goal` (that line is written for the practice-dock
+  // header, a different job and register).
+  journalNote: string;
   learn: ConsoleStep[];
   practice: ConsoleStep[];
 }
@@ -137,6 +163,7 @@ export const case11Console: ConsoleCase = {
       n: 1,
       title: "Why your brain can't do this",
       goal: "Unique + strong + forty accounts is impossible for a human. It's a tool's job.",
+      journalNote: "Trying to remember 41 unique passwords is like trying to memorise 41 different phone numbers — nobody's brain was built for that. A password manager is the phone book that remembers them for you. Let the tool carry the list, not your head.",
       panel: "ACCOUNT AUDIT",
       learn: [
         { t: "wren", text: "Start with the honest truth. To be safe, every account needs its own long, random password. Not one clever password everywhere, a DIFFERENT strong one for each. And you've got dozens of accounts. Nobody, no human alive, can invent and remember forty random passwords. So we stop trying. This is a job for a tool, and I'll show you how to build one.", voice: "/audio/wren/m11c-s1-learn.mp3" },
@@ -184,6 +211,7 @@ export const case11Console: ConsoleCase = {
       n: 2,
       title: "Build the master passphrase",
       goal: "The vault needs one key you never forget and no rig can guess: a long passphrase.",
+      journalNote: "Your master passphrase is the one key that opens the box holding all your other keys, so it has to be unpickable. Four random words strung together, like copper-otter-lantern-galaxy, take a guessing rig centuries. Pick random words, never facts about you.",
       panel: "VAULT SETUP",
       learn: [
         { t: "wren", text: "A password manager locks all your passwords behind ONE master key, so that key has to be brilliant. Not short and clever, LONG and random. The strongest trick is a passphrase: several random, unrelated words strung together. Long enough that a guessing rig would take centuries, simple enough that you'll never forget it. Let's build one.", voice: "/audio/wren/m11c-s2-learn.mp3" },
@@ -235,6 +263,7 @@ export const case11Console: ConsoleCase = {
       n: 3,
       title: "Let the vault do the rest",
       goal: "With the master key set, the manager generates a unique password for every account.",
+      journalNote: "Once the master key is set, the vault is like a locksmith who cuts a new unbreakable lock for every door, so you never cut your own keys again. Let it generate and remember every password from here on. Never type a password you invented yourself.",
       panel: "VAULT · GENERATE",
       learn: [
         { t: "wren", text: "Master key set. Now the magic. From here, every time you make an account, the manager generates a brand-new random password, stores it, and fills it in for you. You never see it, never type it, never reuse it. Forty-one unique fortress passwords, and you only ever remember the one master. Watch it fill the vault.", voice: "/audio/wren/m11c-s3-learn.mp3" },
@@ -283,6 +312,7 @@ export const case11Console: ConsoleCase = {
       n: 4,
       title: "The second lock (2FA)",
       goal: "A second key means even a stolen password isn't enough. Turn it on.",
+      journalNote: "2FA is a second lock on the same door, so a thief who steals your key still can't get in without the matching one on your phone. One stolen password stops being enough to walk in. Turn 2FA on for your email, bank, and main accounts.",
       panel: "SECURITY · TWO-FACTOR",
       learn: [
         { t: "wren", text: "Even a perfect password can be phished or leaked. So we add a SECOND lock, two-factor, or 2FA. It's a second key, usually a code on your phone, needed on top of the password. Now a thief with your password still can't get in, because they don't have your phone. It's the single strongest switch you can flip. So flip it, on the accounts that matter most.", voice: "/audio/wren/m11c-s4-learn.mp3" },
@@ -331,6 +361,7 @@ export const case11Console: ConsoleCase = {
       n: 5,
       title: "A code is a key",
       goal: "Your 2FA code IS a key. Nobody legitimate ever asks you to hand it over.",
+      journalNote: "Your 2FA code is the second key itself, and real security never asks to borrow your key — they already have their own. Reading a code out loud is the same as handing someone your spare key. Never say a 2FA code out loud to anyone, ever.",
       panel: "SECURITY · CODES",
       learn: [
         { t: "wren", text: "One warning that comes with 2FA. That code on your phone is a KEY, the second key to your account. And you know the rule about keys from last block: nobody real ever asks you for one. Not the bank, not support, not a friend. A code only ever goes in the login box yourself, never read out to a person. If anyone asks for your code, they're a thief, every single time.", voice: "/audio/wren/m11c-s5-learn.mp3" },
@@ -379,6 +410,7 @@ export const case11Console: ConsoleCase = {
       n: 6,
       title: "Know SKELETON KEY's play",
       goal: "The credential attack runs the same four moves, and your vault beats every one.",
+      journalNote: "A rig reusing a stolen password is like a thief trying one stolen key on every door on the street — it only works if all your locks are the same. Unique passwords mean one stolen key opens nothing else. Keep every account's password different, no exceptions.",
       panel: "THREAT MODEL",
       learn: [
         { t: "wren", text: "See SKELETON KEY's whole play, four moves. First, guess or steal one password. Second, try that same password on all your other accounts, hoping you reused it. Third, if it works, walk straight in. Fourth, use your email to reset everything else. Now look how your vault breaks it: unique passwords kill the reuse, and 2FA kills the walk-in. You've beaten every move before it starts.", voice: "/audio/wren/m11c-s6-learn.mp3" },
@@ -425,6 +457,7 @@ export const case11Console: ConsoleCase = {
       n: 7,
       title: "Turn it on today",
       goal: "Knowing isn't enough. The one action that protects you most, done for real.",
+      journalNote: "Knowing how a lock works doesn't lock your door — only actually turning the key does. The single biggest win is 2FA on your email, because it's the master key to every other account. This week, turn on 2FA for your email with an adult.",
       panel: "ACTION PLAN",
       learn: [
         { t: "wren", text: "Last skill, and it's a real-world one. None of this protects you until you actually switch it on. So here's your mission outside these walls: turn on 2FA on your most important account, your email, this week, with a parent or carer to help. Then, over time, let a password manager take over the rest. Knowing is good. Flipping the switch is what keeps you safe.", voice: "/audio/wren/m11c-s7-learn.mp3" },
@@ -509,15 +542,29 @@ export const case11Console: ConsoleCase = {
         name: "The last door",
         steps: [
           { t: "sys", text: "SKELETON KEY: somehow got your email password. Attempting login…" },
-          { t: "sys", text: "LOGIN BLOCKED · SECOND KEY REQUIRED · code sent to your phone only" },
           {
-            t: "choose",
-            prompt: "It has your actual email password. Why is it STILL locked out?",
-            options: [
-              { label: "2FA, it doesn't have the second key on your phone", outcome: "good" },
-              { label: "It just needs to guess the code too", outcome: "bad", then: [{ t: "sys", text: "SKELETON KEY: 6-digit code, 1,000,000 options, 3 tries… LOCKED OUT" }] },
-              { label: "The password must be wrong", outcome: "bad", then: [{ t: "sys", text: "PASSWORD ACCEPTED · but SECOND KEY still required · ✗" }] },
-            ],
+            t: "flip",
+            prompt: "SKELETON KEY doesn't know this, but you can run the comparison yourself. Flip the switch, then flip the card to watch its login attempt.",
+            you: {
+              kind: "toggle",
+              label: "2FA on your email · simulator",
+              sub: "compare a world without it to the one you actually built",
+              off: "SIMULATING: 2FA OFF",
+              on: "YOUR REAL SETUP: 2FA ON",
+            },
+            them: {
+              label: "SKELETON KEY's login attempt",
+              whenBad: "PASSWORD ACCEPTED · no second key required · walking straight in",
+              whenGood: "LOGIN BLOCKED · SECOND KEY REQUIRED · code sent to your phone only",
+            },
+            ask: {
+              prompt: "It has your actual email password. Why is your REAL account still locked out?",
+              options: [
+                { label: "2FA, it doesn't have the second key on your phone", outcome: "good" },
+                { label: "It just needs to guess the code too", outcome: "bad", then: [{ t: "sys", text: "SKELETON KEY: 6-digit code, 1,000,000 options, 3 tries… LOCKED OUT" }] },
+                { label: "The password must be wrong", outcome: "bad", then: [{ t: "sys", text: "PASSWORD ACCEPTED · but SECOND KEY still required · ✗" }] },
+              ],
+            },
           },
         ],
       },

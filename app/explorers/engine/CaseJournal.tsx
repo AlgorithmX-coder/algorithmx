@@ -2,9 +2,10 @@
 
 /**
  * The case journal — a collapsible notebook of what's been learned so far
- * this case. Docks at the right edge: on a wide screen that's empty margin
- * beside the centered phone, so opening it never covers the phone chrome;
- * on a narrow one (phone/iPad width) there's no margin to dock in, so it
+ * this case. Shared across every block's runtime (Phone, Console, …). Docks
+ * at the right edge: on a wide screen that's empty margin beside the
+ * centered content panel, so opening it never covers the chrome; on a
+ * narrow one (phone/iPad width) there's no margin to dock in, so it
  * naturally becomes a slide-out overlay instead — same component, same
  * behavior, the available space just decides which it looks like.
  */
