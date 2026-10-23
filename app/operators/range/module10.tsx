@@ -78,10 +78,13 @@ function ScanPickSurface({ cmd, prompt, rows, hint, onSolved }: { cmd: string; p
             {rows.map((r) => {
               const isSel = picked === r.col1; const good = solved && r.risk === "bad";
               return (
-                <button key={r.col1} onClick={() => { if (!solved) { setPicked(r.col1); setVerdict(null); } }} disabled={solved} className="co-opt" style={{ textAlign: "left", display: "flex", gap: 12, alignItems: "center", flexWrap: "wrap", padding: "9px 12px", borderRadius: 9, border: `1px solid ${good ? C.green : isSel ? C.indigo : C.lineSoft}`, background: isSel ? "rgba(139,123,255,0.08)" : C.carbon, cursor: solved ? "default" : "pointer" }}>
-                  <span style={{ fontFamily: MONO, fontSize: 12.5, color: good ? C.green : C.ink, minWidth: 110 }}>{good ? "✓ " : ""}{r.col1}</span>
-                  <span style={{ fontFamily: MONO, fontSize: 12.5, color: C.soft, flex: 1, minWidth: 150 }}>{r.col2}</span>
-                </button>
+                <div key={r.col1}>
+                  <button onClick={() => { if (!solved) { setPicked(r.col1); setVerdict(null); } }} disabled={solved} className="co-opt" style={{ width: "100%", textAlign: "left", display: "flex", gap: 12, alignItems: "center", flexWrap: "wrap", padding: "9px 12px", borderRadius: 9, border: `1px solid ${good ? C.green : isSel ? C.indigo : C.lineSoft}`, background: isSel ? "rgba(139,123,255,0.08)" : C.carbon, cursor: solved ? "default" : "pointer" }}>
+                    <span style={{ fontFamily: MONO, fontSize: 12.5, color: good ? C.green : C.ink, minWidth: 110 }}>{good ? "✓ " : ""}{r.col1}</span>
+                    <span style={{ fontFamily: MONO, fontSize: 12.5, color: C.soft, flex: 1, minWidth: 150 }}>{r.col2}</span>
+                  </button>
+                  {solved && <div style={{ fontFamily: MONO, fontSize: 11, color: r.risk === "bad" ? C.green : C.mute, padding: "3px 12px 5px", lineHeight: 1.5 }}>↳ {r.risk === "bad" ? "The critical exposure - fix this first." : r.risk === "watch" ? "A real concern, but not the worst one open here." : "Expected and reasonably safe."}</div>}
+                </div>
               );
             })}
           </div>
