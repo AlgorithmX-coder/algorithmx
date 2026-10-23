@@ -490,9 +490,9 @@ export const MODULE11: ModuleDef = {
     check: {
       q: "The attacker had admin access on the host. Why does shipping logs to a separate, append-only store matter so much for the investigation?",
       options: [
-        { text: "An intruder who controls the host can edit or wipe its logs; a separate append-only copy is one they can't quietly alter, so the trail survives.", correct: true, feedback: "Right - never keep the only copy where the attacker can reach it. Off-host, append-only logs are what make the timeline trustworthy." },
-        { text: "Logs on a separate server load faster, so the analyst can search the overnight entries more quickly.", feedback: "Speed isn't the point - it's that the attacker can't reach and rewrite a copy stored off the host." },
-        { text: "A separate store automatically blocks the brute-force attack before the login ever succeeds.", feedback: "Storage doesn't block attacks - lockout and alerting do. Off-host logging protects the evidence, not the login." },
+        { text: "An intruder controlling the host can edit or wipe its logs; an off-host append-only copy is one they can't quietly alter.", correct: true, feedback: "Right - never keep the only copy where the attacker can reach it. Off-host, append-only logs are what make the timeline trustworthy." },
+        { text: "Append-only storage encrypts the logs, so even an attacker on the host can't read what you recorded about them.", feedback: "Append-only is about integrity, not secrecy - it stops the logs being changed, not read. The point is a trail the attacker can't rewrite." },
+        { text: "A separate store automatically blocks the brute-force attack itself, stopping the intruder before the login ever succeeds.", feedback: "Storage doesn't block attacks - lockout and alerting do. Off-host logging protects the evidence, not the login." },
         { text: "Keeping logs elsewhere means you can safely wipe the host's own logs each day to save space.", feedback: "Deleting evidence is exactly the mistake - short retention destroys the trail whether it's on the host or not." },
       ],
     },

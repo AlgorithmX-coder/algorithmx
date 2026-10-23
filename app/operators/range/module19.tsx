@@ -523,7 +523,7 @@ export const MODULE19: ModuleDef = {
       q: "A developer wants to simply scan the agent's incoming email and strip out any injected instructions. Why won't that reliably work?",
       options: [
         { text: "An injection and a real task are the same kind of text, and there are endless ways to reword an instruction.", correct: true, feedback: "Right - there's no clean pattern to catch. You can't reliably filter it, which is why you contain what a hijacked agent can do instead." },
-        { text: "Scanning each email is too slow, so the agent would time out before it could act on anything.", feedback: "Speed isn't the problem - a filter can be fast. The problem is it can't tell a hostile instruction from a legitimate one." },
+        { text: "Because the injected instructions are hidden or encrypted in the email, so a plain text scan never sees them.", feedback: "Injections are usually plain, readable text - a scan can see them fine. The real problem is telling a hostile instruction apart from a legitimate one." },
         { text: "The agent must read every word literally, so any filtering would break its normal replies entirely.", feedback: "Light filtering wouldn't break normal use; the real issue is that no filter catches every rewording of an instruction." },
         { text: "Stripped instructions just get re-sent by the attacker until one finally slips through the filter.", feedback: "It's not about repeated attempts - a single reworded instruction the filter hasn't seen gets through first time." },
       ],

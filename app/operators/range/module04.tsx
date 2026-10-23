@@ -588,8 +588,8 @@ export const MODULE4: ModuleDef = {
     check: {
       q: "An app stores your identity as base64({ user, role }) in the session cookie and reads it back to decide access. Why is that dangerous?",
       options: [
-        { text: "base64 is readable and the token isn't signed, so you can change role to admin and the app will believe it.", correct: true, feedback: "Right. base64 isn't encryption; with no signature the client can rewrite the role and the server can't tell." },
-        { text: "base64 is slow to decode, so the login takes too long and users give up.", feedback: "No - base64 is instant, and speed isn't the issue; the issue is that it's readable and editable." },
+        { text: "base64 is readable and unsigned, so you can change role to admin and the app believes it.", correct: true, feedback: "Right. base64 isn't encryption; with no signature the client can rewrite the role and the server can't tell." },
+        { text: "It's safe because the cookie travels over HTTPS, so nobody can read or change what's inside it.", feedback: "HTTPS only protects the cookie in transit; the user's own browser still holds it and can decode and rewrite the role before sending it back." },
         { text: "The cookie is encrypted, so only an attacker with the key can read the role.", feedback: "base64 isn't encryption at all - there's no key, and anyone can decode it in a second." },
         { text: "It's fine as long as the role is spelled correctly, because the app checks the user field first.", feedback: "The order of fields doesn't matter - nothing stops you editing the role, which is the whole problem." },
       ],

@@ -444,12 +444,12 @@ export const MODULE13: ModuleDef = {
     ],
     Interactive: BestDefenceLab,
     check: {
-      q: "What best defends against a convincing CEO-fraud payment request?",
+      q: "Even with great training, someone will eventually enter their password on a fake login page. What limits the damage when that happens?",
       options: [
-        { text: "Verifying any money or credential request out-of-band on a known number before acting.", correct: true, feedback: "Right - out-of-band verification defeats the con no matter how convincing the message." },
-        { text: "Rolling out a stronger, better-tuned spam filter across the business.", feedback: "Helps with bulk phishing, but a targeted, well-written request can slip through. You need a process control." },
-        { text: "Replying to the email to ask if it's really them.", feedback: "The attacker controls that thread - they'll just say yes. Verify through a separate, known channel." },
-        { text: "Telling staff to simply be more careful with unusual requests.", feedback: "Vague caution doesn't scale; a concrete out-of-band rule does." },
+        { text: "MFA or passkeys, so a stolen password alone isn't enough for the attacker to get in.", correct: true, feedback: "Right - training reduces clicks but can't stop them all. A second factor or a passkey means a phished password on its own won't unlock the account." },
+        { text: "A better-tuned spam filter that catches more of the phishing emails before they arrive.", feedback: "A filter catches bulk phishing, but a targeted message still lands - and once the password's typed in, the filter has already been bypassed. MFA limits what a stolen password achieves." },
+        { text: "Forcing everyone to use much longer passwords that are harder to guess.", feedback: "A phished password is handed straight to the attacker whatever its length; length stops guessing, not phishing. MFA is what blunts a stolen one." },
+        { text: "Making sure up-to-date antivirus is running on every machine in the organisation.", feedback: "Antivirus looks for malware, but credential phishing steals a password without any - a second factor is what stops that stolen password working." },
       ],
     },
   },

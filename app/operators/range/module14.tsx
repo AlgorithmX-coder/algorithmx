@@ -483,12 +483,12 @@ export const MODULE14: ModuleDef = {
     ],
     Interactive: HandleReportsLab,
     check: {
-      q: "What should an organisation do to handle incoming vulnerability reports well?",
+      q: "A researcher wants to publish full exploit details the moment they find a bug. Why should they give the vendor reasonable time first?",
       options: [
-        { text: "Publish a security contact and policy, acknowledge reports, and fix on a sensible timeline.", correct: true, feedback: "Right - make it easy and safe to report, treat researchers as allies, and act on what comes in." },
-        { text: "Threaten legal action against anyone who dares to report a bug.", feedback: "That drives findings public or underground and leaves you less safe, not more." },
-        { text: "Ignore any reports unless they come with a full working exploit.", feedback: "That discourages good-faith reporting and leaves real issues unfixed." },
-        { text: "Only bother fixing bugs that have already been exploited in the wild.", feedback: "Waiting for exploitation means waiting for harm - fix reported issues before they're used." },
+        { text: "Until a fix ships, publishing full details leaves every user exposed to attackers who now have a working exploit.", correct: true, feedback: "Right - the fix is what protects people, and it takes time to build and roll out. Full details before then just arm attackers while users have no defence." },
+        { text: "Publishing vulnerability details is illegal, so they'd be breaking the law by releasing them at all.", feedback: "Publishing isn't automatically illegal - good-faith coordinated disclosure is normal practice. The reason to wait is that users are exposed until the fix lands, not legality." },
+        { text: "It only serves to embarrass the vendor publicly, without changing anything about the bug itself.", feedback: "It's not about embarrassment - early full details expose real users to a working exploit before they can be protected." },
+        { text: "Coordinating a timeline only matters when the researcher is being paid through a bug-bounty programme.", feedback: "Coordination protects users whether or not there's a bounty; giving time to fix matters for every vulnerability, paid or not." },
       ],
     },
   },

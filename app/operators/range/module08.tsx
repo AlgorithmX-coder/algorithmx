@@ -502,10 +502,10 @@ export const MODULE8: ModuleDef = {
     check: {
       q: "What's the key difference between encoding and encryption?",
       options: [
-        { text: "Encoding can be reversed by anyone with no key; encryption can only be undone with a secret key.", correct: true, feedback: "Right. That is exactly why base64 protects nothing." },
+        { text: "Encoding can be reversed by anyone with no key; encryption needs a secret key to undo.", correct: true, feedback: "Right. That is exactly why base64 protects nothing." },
         { text: "Encoding needs a secret key to reverse, while encryption needs no key at all.", feedback: "It is the other way round: encoding needs no key, while encryption is defined by needing one." },
         { text: "They are really two different names for one and the same process.", feedback: "No. Conflating them is precisely the mistake that leaks secrets." },
-        { text: "Encoding is the more secure of the two, because it is faster to run.", feedback: "Speed has nothing to do with secrecy; encoding provides no protection at all." },
+        { text: "Both hide data, but encoding is just weaker encryption that an attacker can eventually crack.", feedback: "Encoding isn't weak encryption - it uses no key and hides nothing; reversing base64 is one built-in step, not cracking." },
       ],
     },
   },
@@ -538,7 +538,7 @@ export const MODULE8: ModuleDef = {
     check: {
       q: "A password you only ever check, and an API token you must use again later - how should each be stored?",
       options: [
-        { text: "Hash the password one-way; encrypt the token so it can be decrypted - you must recover the token but never the password.", correct: true, feedback: "Right - match the primitive to the goal. Hashing is for values you only compare; encryption is for secrets you need back." },
+        { text: "Hash the password one-way; encrypt the token - you need the token back later, but never the password.", correct: true, feedback: "Right - match the primitive to the goal. Hashing is for values you only compare; encryption is for secrets you need back." },
         { text: "Encrypt both, so you can always recover the original value whenever the system happens to need it.", feedback: "No - a password you can decrypt is a password an attacker can decrypt too. You never need the original back, so hash it." },
         { text: "Hash both, because hashing is simply the strongest protection available for any kind of secret.", feedback: "A hashed token is useless - you could never read it back to call the API. Hashing is one-way by design." },
         { text: "Base64-encode both, which is enough as long as the database itself is kept properly secure.", feedback: "Encoding is reversible by anyone and protects nothing; it isn't a security control at all." },

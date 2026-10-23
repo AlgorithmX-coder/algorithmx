@@ -528,12 +528,12 @@ export const MODULE20: ModuleDef = {
     ],
     Interactive: PickDefenceLab,
     check: {
-      q: "What is the single most effective control against deepfake-enabled payment fraud?",
+      q: "On a live call you can't be sure the caller is who they claim to be. What instantly proves it's the real person and not a voice clone?",
       options: [
-        { text: "Mandatory out-of-band verification plus dual authorisation for payments (a process, not a detector).", correct: true, feedback: "Right. A trusted-channel check and a second approver work regardless of how perfect the fake is." },
-        { text: "Train staff thoroughly to spot the tells in fake audio and video.", feedback: "Useful awareness, but the best fakes have no tells and detection loses the arms race. Not the primary control." },
-        { text: "Buy the best deepfake-detection software and run it on every call.", feedback: "A helpful layer at scale, but bypassable and always one step behind new generators." },
-        { text: "Ban video calls for anything that involves money or payments.", feedback: "Impractical and still leaves voice and email. The fix is verifying the request, not the medium." },
+        { text: "A pre-agreed safe word only the real person knows - a clone of their voice can't supply it.", correct: true, feedback: "Right - a shared secret the voice itself can't fake. A perfect clone still doesn't know the safe word, so it proves identity when the sound can't." },
+        { text: "Asking them to repeat a phrase back to you to check the voice sounds right.", feedback: "A clone can say any phrase back and sound right - repeating words tests the voice, not whether the caller knows a shared secret." },
+        { text: "Checking that the caller ID shows the usual number you'd expect for that person.", feedback: "Caller ID is easily spoofed to show any number, so a familiar number proves nothing about who's really on the line." },
+        { text: "Listening carefully for robotic glitches or odd pauses in how the voice sounds.", feedback: "The best clones have no audible glitches, and that's the losing detection arms race - trust a shared secret, not your ears." },
       ],
     },
   },
