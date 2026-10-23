@@ -314,10 +314,10 @@ function HiddenFieldLab({ onDone }: { onDone: () => void }) {
 
 function PickServerTruthLab({ onDone }: { onDone: () => void }) {
   const [opts] = useState(() => shuffle([
-    { code: `total = request.price * qty`, ok: false, why: "The bug: it uses the price the client sent. That's exactly what you tampered." },
-    { code: `price = Number(request.price);  total = price * qty`, ok: false, why: "Parsing the value doesn't make it trustworthy - it's still the number the client chose to send." },
-    { code: `price = db.priceOf(itemId);  total = price * qty`, ok: true, why: "The server looks up the real price itself and ignores anything the client sent. This is the fix - the server owns the truth." },
-    { code: `price = request.price || db.priceOf(itemId)`, ok: false, why: "It only falls back to the database when the field is missing; whenever the client sends a price, it still trusts it. Re-derive every time." },
+    { code: `Multiply the quantity by the price the browser sent with the order`, ok: false, why: "The bug: it uses the price the client sent (total = request.price * qty). That's exactly what you tampered." },
+    { code: `Turn the price the browser sent into a number, then multiply by quantity`, ok: false, why: "Parsing the value (Number(request.price)) doesn't make it trustworthy - it's still the number the client chose to send." },
+    { code: `Look the price up in the server's own database and multiply that by quantity`, ok: true, why: "The server looks up the real price itself (db.priceOf(itemId)) and ignores anything the client sent. This is the fix - the server owns the truth." },
+    { code: `Use the browser's price, and only look it up on the server if that field is missing`, ok: false, why: "It only falls back to the database when the field is missing; whenever the client sends a price, it still trusts it. Re-derive every time." },
   ]));
   return (
     <div style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: 12, padding: "15px 16px" }}>
@@ -326,7 +326,6 @@ function PickServerTruthLab({ onDone }: { onDone: () => void }) {
         options={opts.map((o) => ({ text: o.code, correct: o.ok, reason: o.why }))}
         onAnswered={() => onDone()}
         doShuffle={false}
-        mono
       />
     </div>
   );

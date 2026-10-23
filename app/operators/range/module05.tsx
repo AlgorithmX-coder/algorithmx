@@ -174,10 +174,10 @@ function InputBecomesCodeLab({ onDone }: { onDone: () => void }) {
 
 function PickSafeQueryLab({ onDone }: { onDone: () => void }) {
   const [opts] = useState(() => shuffle([
-    { code: `"… WHERE email = '" + email + "'"`, ok: false, why: "This is the bug itself - gluing input into the string. Exactly what you just exploited." },
-    { code: `"… WHERE email = '" + email.replace("'", "") + "'"`, ok: false, why: "Stripping quotes is a blocklist - bypassable, and it still builds the query by hand. Not the real fix." },
-    { code: `"… WHERE email = ?"  +  bind([email])`, ok: true, why: "Parameterised: the ? is a placeholder and the value is sent separately, so the database treats it as data - never as SQL. This is the fix." },
-    { code: `if (isEmail(email)) "… WHERE email = '" + email + "'"`, ok: false, why: "Validating the format still glues the value into the string by hand - other fields and valid-looking payloads can still break out. Parameterise instead." },
+    { code: `Build the command by gluing the user's input straight into the text`, ok: false, why: "This is the bug itself - gluing input into the query string. Exactly what you just exploited." },
+    { code: `Build the command the same way, but first strip quote marks out of the input`, ok: false, why: "Stripping quotes is a blocklist - bypassable, and it still builds the query by hand. Not the real fix." },
+    { code: `Send the command and the user's input to the database as separate things`, ok: true, why: "Parameterised: a placeholder (?) marks the spot and the value is sent separately, so the database treats it as data - never as SQL. This is the fix." },
+    { code: `Check the input looks like an email, then glue it into the command text`, ok: false, why: "Validating the format still glues the value into the string by hand - other fields and valid-looking payloads can still break out. Parameterise instead." },
   ]));
   return (
     <div style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: 12, padding: "15px 16px" }}>
@@ -186,7 +186,6 @@ function PickSafeQueryLab({ onDone }: { onDone: () => void }) {
         options={opts.map((o) => ({ text: o.code, correct: o.ok, reason: o.why }))}
         onAnswered={() => onDone()}
         doShuffle={false}
-        mono
       />
     </div>
   );

@@ -281,10 +281,10 @@ function LiveHashLab({ onDone }: { onDone: () => void }) {
 
 function PickStorageLab({ onDone }: { onDone: () => void }) {
   const [opts] = useState(() => shuffle([
-    { code: "store MD5(password)", ok: false, why: "Fast and unsalted, exactly what you cracked with a wordlist in seconds." },
-    { code: "store SHA-256(password)", ok: false, why: "Still a fast, unsalted general-purpose hash. A dictionary attack walks right through it, as in stage two." },
-    { code: "store SHA-256(SHA-256(password))", ok: false, why: "Running a fast hash twice is still fast, and still unsalted. It barely slows a wordlist attack down." },
-    { code: "store bcrypt(password)", ok: true, why: "bcrypt salts every password automatically and is deliberately slow, defeating rainbow tables and making brute force impractical. Argon2 and scrypt do the same." },
+    { code: "Store it as a fast, old-style hash with no salt added (MD5)", ok: false, why: "Fast and unsalted (MD5), exactly what you cracked with a wordlist in seconds." },
+    { code: "Store it as a fast general-purpose hash with no salt added (SHA-256)", ok: false, why: "Still a fast, unsalted general-purpose hash (SHA-256). A dictionary attack walks right through it, as in stage two." },
+    { code: "Store it as a fast general-purpose hash run through twice, still no salt", ok: false, why: "Running a fast hash twice (SHA-256 of SHA-256) is still fast, and still unsalted. It barely slows a wordlist attack down." },
+    { code: "Store it with a slow, automatically salted password hash (bcrypt)", ok: true, why: "bcrypt salts every password automatically and is deliberately slow, defeating rainbow tables and making brute force impractical. Argon2 and scrypt do the same." },
   ]));
   return (
     <div style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: 12, padding: "15px 16px" }}>
@@ -293,7 +293,6 @@ function PickStorageLab({ onDone }: { onDone: () => void }) {
         options={opts.map((o) => ({ text: o.code, correct: o.ok, reason: o.why }))}
         onAnswered={() => onDone()}
         doShuffle={false}
-        mono
       />
     </div>
   );

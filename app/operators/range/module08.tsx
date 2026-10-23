@@ -308,10 +308,10 @@ function LiveEncodeLab({ onDone }: { onDone: () => void }) {
 
 function PickProtectionLab({ onDone }: { onDone: () => void }) {
   const [opts] = useState(() => shuffle([
-    { code: "base64(secret)", ok: false, why: "Encoding, not encryption. Reversible by anyone in one call, exactly what you did in stage one." },
-    { code: "xor(secret, singleByte)", ok: false, why: "A 256-key cipher you brute-forced in stage three. Never roll your own, and never use a tiny keyspace." },
-    { code: "sha256(secret)", ok: false, why: "Hashing is one-way, so you could never read the token back to use it. Hashes are for passwords, not secrets you must recover." },
-    { code: "AES-GCM(secret, key-from-a-secrets-manager)", ok: true, why: "Real, modern encryption with a large key kept out of the code. This is how you actually protect a secret you need back." },
+    { code: "Scramble it with base64 encoding so the text no longer looks readable", ok: false, why: "Encoding, not encryption. Reversible by anyone in one call (base64), exactly what you did in stage one." },
+    { code: "Hide it with a home-made cipher that mixes in a single secret byte", ok: false, why: "A 256-key cipher (single-byte XOR) you brute-forced in stage three. Never roll your own, and never use a tiny keyspace." },
+    { code: "Run it through one-way SHA-256 hashing so the value can't be read back", ok: false, why: "Hashing is one-way (SHA-256), so you could never read the token back to use it. Hashes are for passwords, not secrets you must recover." },
+    { code: "Encrypt it with a modern algorithm, using a key from a secrets manager", ok: true, why: "Real, modern encryption (AES-GCM) with a large key kept out of the code. This is how you actually protect a secret you need back." },
   ]));
   return (
     <div style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: 12, padding: "15px 16px" }}>
@@ -320,7 +320,6 @@ function PickProtectionLab({ onDone }: { onDone: () => void }) {
         options={opts.map((o) => ({ text: o.code, correct: o.ok, reason: o.why }))}
         onAnswered={() => onDone()}
         doShuffle={false}
-        mono
       />
     </div>
   );
