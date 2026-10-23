@@ -16,7 +16,7 @@
  * chained capstone. */
 
 import { useEffect, useState } from "react";
-import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary, shuffle } from "./Engagement";
+import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary, shuffle, AnswerReveal } from "./Engagement";
 import ExplainQuiz from "./ExplainQuiz";
 
 /* ───────────────────────── glossary ───────────────────────── */
@@ -278,7 +278,6 @@ function OneStreamLab({ onDone }: { onDone: () => void }) {
 /* ───────────────────────── defend lab: pick the real fix ───────────────────────── */
 
 function PickDefenceLab({ onDone }: { onDone: () => void }) {
-  const [picked, setPicked] = useState<number | null>(null);
   const [opts] = useState(() => shuffle([
     { code: `block the phrase "ignore previous instructions" on input`, ok: false, why: "A blocklist filter - reworded around in seconds, as you did in stage four. It catches phrases, not intent, so never a complete fix." },
     { code: `add a system-prompt rule telling the model to refuse injections`, ok: false, why: "The injection sits in the same stream as that rule and can override it just as easily. More instructions don't create a trust boundary." },
@@ -288,19 +287,12 @@ function PickDefenceLab({ onDone }: { onDone: () => void }) {
   return (
     <div style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: 12, padding: "15px 16px" }}>
       <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: ".1em", color: AI, fontWeight: 700, marginBottom: 10 }}>▶ APPLY THE FIX · what actually reduces the risk?</div>
-      <div style={{ display: "grid", gap: 8 }}>
-        {opts.map((o, i) => {
-          const isP = picked === i;
-          return (
-            <div key={i}>
-              <button onClick={() => { setPicked(i); if (o.ok) onDone(); }} className="co-opt" style={{ width: "100%", textAlign: "left", padding: "10px 12px", borderRadius: 9, border: `1px solid ${isP ? (o.ok ? C.green : C.red) : C.line}`, background: isP ? (o.ok ? "rgba(85,217,140,.08)" : "rgba(242,109,114,.06)") : C.carbon, color: C.ink, fontFamily: MONO, fontSize: 12.5, cursor: "pointer" }}>
-                <span style={{ color: isP ? (o.ok ? C.green : C.red) : C.mute, marginRight: 8 }}>{isP ? (o.ok ? "✓" : "✗") : String.fromCharCode(65 + i)}</span>{o.code}
-              </button>
-              {isP && <div style={{ padding: "7px 12px 2px", fontSize: 12.5, color: o.ok ? "#bff3d3" : C.soft, lineHeight: 1.5 }}>{o.why}</div>}
-            </div>
-          );
-        })}
-      </div>
+      <AnswerReveal
+        options={opts.map((o) => ({ text: o.code, correct: o.ok, reason: o.why }))}
+        onAnswered={() => onDone()}
+        doShuffle={false}
+        mono
+      />
     </div>
   );
 }

@@ -12,7 +12,7 @@
  * FOUR drills, and a chained capstone. */
 
 import { useEffect, useState } from "react";
-import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary } from "./Engagement";
+import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary, AnswerReveal } from "./Engagement";
 import CourseIntro from "./CourseIntro";
 
 /* ───────────────────────── glossary ───────────────────────── */
@@ -283,29 +283,19 @@ function AuthorisedLab({ onDone }: { onDone: () => void }) {
 /* ───────────────────────── defend lab: the professional standard ───────────────────────── */
 
 function ProStandardLab({ onDone }: { onDone: () => void }) {
-  const [picked, setPicked] = useState<number | null>(null);
-  const [opts] = useState(() => shuffle([
+  const opts = [
     { code: "Start testing as soon as the client emails 'sounds good'", ok: false, why: "A casual email isn't authorisation. You need a signed scope naming the systems, the window and the limits - otherwise it's unauthorised access." },
     { code: "Test whatever looks interesting, and sort out the scope later", ok: false, why: "Scope comes first, always. Touching anything unauthorised is a crime regardless of good intentions." },
     { code: "Get a signed scope and rules of engagement before you test", ok: true, why: "This is the standard: written authorisation, agreed rules, and staying strictly inside the boundary - test only what the scope names. Everything else follows from it." },
     { code: "Get a verbal go-ahead from your main contact and start", ok: false, why: "A verbal okay isn't authorisation you can rely on. You still need a signed scope naming the systems, window and limits before touching anything." },
-  ]));
+  ];
   return (
     <div style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: 12, padding: "15px 16px" }}>
       <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: ".1em", color: C.indigo, fontWeight: 700, marginBottom: 10 }}>▶ APPLY THE STANDARD · how should an engagement start?</div>
-      <div style={{ display: "grid", gap: 8 }}>
-        {opts.map((o, i) => {
-          const isP = picked === i;
-          return (
-            <div key={i}>
-              <button onClick={() => { setPicked(i); if (o.ok) onDone(); }} className="co-opt" style={{ width: "100%", textAlign: "left", padding: "10px 12px", borderRadius: 9, border: `1px solid ${isP ? (o.ok ? C.green : C.red) : C.line}`, background: isP ? (o.ok ? "rgba(85,217,140,.08)" : "rgba(242,109,114,.06)") : C.carbon, color: C.ink, fontFamily: "var(--font-plex-sans),system-ui,sans-serif", fontSize: 13.5, cursor: "pointer", lineHeight: 1.4 }}>
-                <span style={{ fontFamily: MONO, color: isP ? (o.ok ? C.green : C.red) : C.mute, marginRight: 8 }}>{isP ? (o.ok ? "✓" : "✗") : String.fromCharCode(65 + i)}</span>{o.code}
-              </button>
-              {isP && <div style={{ padding: "7px 12px 2px", fontSize: 12.5, color: o.ok ? "#bff3d3" : C.soft, lineHeight: 1.5 }}>{o.why}</div>}
-            </div>
-          );
-        })}
-      </div>
+      <AnswerReveal
+        options={opts.map((o) => ({ text: o.code, correct: o.ok, reason: o.why }))}
+        onAnswered={() => onDone()}
+      />
     </div>
   );
 }

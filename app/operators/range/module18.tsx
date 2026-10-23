@@ -15,7 +15,7 @@
  * industry{} (the sourced editorial intro) is authored from the research brief. */
 
 import { useEffect, useState } from "react";
-import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary, shuffle } from "./Engagement";
+import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary, shuffle, AnswerReveal } from "./Engagement";
 
 /* ───────────────────────── glossary ───────────────────────── */
 
@@ -296,7 +296,6 @@ function IdorLab({ onDone }: { onDone: () => void }) {
 /* ───────────────────────── defend lab: pick the real fix ───────────────────────── */
 
 function PickDefenceLab({ onDone }: { onDone: () => void }) {
-  const [picked, setPicked] = useState<number | null>(null);
   const [opts] = useState(() => shuffle([
     { code: `use a random-looking id (UUID) instead of a guessable number`, ok: false, why: "Harder to guess, but not a fix: anyone who ever sees a valid id (shared link, logs, the app itself) can still read it. Obscurity is not authorisation." },
     { code: `on every request, check the object belongs to the caller`, ok: true, why: "The real fix: authorise the OBJECT, not just the login. The server must confirm 'does user 1007 own this record?' before returning it, on every endpoint. Pair it with least privilege and private buckets." },
@@ -306,19 +305,12 @@ function PickDefenceLab({ onDone }: { onDone: () => void }) {
   return (
     <div style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: 12, padding: "15px 16px" }}>
       <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: ".1em", color: API, fontWeight: 700, marginBottom: 10 }}>▶ APPLY THE FIX · what actually stops BOLA?</div>
-      <div style={{ display: "grid", gap: 8 }}>
-        {opts.map((o, i) => {
-          const isP = picked === i;
-          return (
-            <div key={i}>
-              <button onClick={() => { setPicked(i); if (o.ok) onDone(); }} className="co-opt" style={{ width: "100%", textAlign: "left", padding: "10px 12px", borderRadius: 9, border: `1px solid ${isP ? (o.ok ? C.green : C.red) : C.line}`, background: isP ? (o.ok ? "rgba(85,217,140,.08)" : "rgba(242,109,114,.06)") : C.carbon, color: C.ink, fontFamily: MONO, fontSize: 12.5, cursor: "pointer" }}>
-                <span style={{ color: isP ? (o.ok ? C.green : C.red) : C.mute, marginRight: 8 }}>{isP ? (o.ok ? "✓" : "✗") : String.fromCharCode(65 + i)}</span>{o.code}
-              </button>
-              {isP && <div style={{ padding: "7px 12px 2px", fontSize: 12.5, color: o.ok ? "#bff3d3" : C.soft, lineHeight: 1.5 }}>{o.why}</div>}
-            </div>
-          );
-        })}
-      </div>
+      <AnswerReveal
+        options={opts.map((o) => ({ text: o.code, correct: o.ok, reason: o.why }))}
+        onAnswered={() => onDone()}
+        doShuffle={false}
+        mono
+      />
     </div>
   );
 }
