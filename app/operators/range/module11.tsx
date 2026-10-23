@@ -68,9 +68,12 @@ function PickSurface({ header, rows, hint, onSolved }: { header: string; rows: R
       <div style={{ fontFamily: MONO, fontSize: 11, color: C.mute, marginBottom: 10 }}>// read every line, select the suspicious one, then confirm your accusation</div>
       <div style={{ display: "grid", gap: 3 }}>
         {rows.map((r, i) => (
-          <button key={i} onClick={() => { if (!solved) { setPicked(i); setVerdict(null); } }} disabled={solved} className="co-opt" style={{ textAlign: "left", display: "flex", gap: 10, alignItems: "center", flexWrap: "wrap", padding: "7px 10px", borderRadius: 7, border: `1px solid ${solved && r.bad ? C.green : picked === i ? C.indigo : "transparent"}`, background: picked === i ? "rgba(139,123,255,0.08)" : C.carbon, cursor: solved ? "default" : "pointer" }}>
-            {r.cells.map((c, j) => <span key={j} style={{ fontFamily: MONO, fontSize: 11.5, color: j === 0 ? C.mute : j === r.cells.length - 1 ? (c.includes("40") || c === "200" ? C.green : C.soft) : C.soft, minWidth: j === 0 ? 64 : "auto", flex: j === 1 ? 1 : "none" }}>{c}</span>)}
-          </button>
+          <div key={i}>
+            <button onClick={() => { if (!solved) { setPicked(i); setVerdict(null); } }} disabled={solved} className="co-opt" style={{ width: "100%", textAlign: "left", display: "flex", gap: 10, alignItems: "center", flexWrap: "wrap", padding: "7px 10px", borderRadius: 7, border: `1px solid ${solved && r.bad ? C.green : picked === i ? C.indigo : "transparent"}`, background: picked === i ? "rgba(139,123,255,0.08)" : C.carbon, cursor: solved ? "default" : "pointer" }}>
+              {r.cells.map((c, j) => <span key={j} style={{ fontFamily: MONO, fontSize: 11.5, color: j === 0 ? C.mute : j === r.cells.length - 1 ? (c.includes("40") || c === "200" ? C.green : C.soft) : C.soft, minWidth: j === 0 ? 64 : "auto", flex: j === 1 ? 1 : "none" }}>{c}</span>)}
+            </button>
+            {solved && <div style={{ fontFamily: MONO, fontSize: 11, color: r.bad ? C.green : C.mute, padding: "3px 10px 5px", lineHeight: 1.5 }}>↳ {r.note}</div>}
+          </div>
         ))}
       </div>
       {!solved && (
