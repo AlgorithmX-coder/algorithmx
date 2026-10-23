@@ -16,7 +16,7 @@
  * chained capstone. */
 
 import { useEffect, useState } from "react";
-import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary, shuffle, AnswerReveal } from "./Engagement";
+import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary, AnswerReveal } from "./Engagement";
 import ExplainQuiz from "./ExplainQuiz";
 
 /* ───────────────────────── glossary ───────────────────────── */
@@ -312,7 +312,7 @@ function OneStreamLab({ onDone }: { onDone: () => void }) {
 /* ───────────────────────── defend lab: pick the real fix ───────────────────────── */
 
 function PickDefenceLab({ onDone }: { onDone: () => void }) {
-  const [opts] = useState(() => shuffle([
+  const [opts] = useState(() => ([
     { code: `block the phrase "ignore previous instructions" on input`, ok: false, why: "A blocklist filter - reworded around in seconds, as you did in stage four. It catches phrases, not intent, so never a complete fix." },
     { code: `add a system-prompt rule telling the model to refuse injections`, ok: false, why: "The injection sits in the same stream as that rule and can override it just as easily. More instructions don't create a trust boundary." },
     { code: `treat every input as untrusted and gate risky actions behind a human`, ok: true, why: "The real answer: assume any text the model reads may be hostile, give it least privilege, and keep a human in the loop for anything that acts. OWASP's own guidance says there is no fool-proof filter." },
@@ -324,7 +324,6 @@ function PickDefenceLab({ onDone }: { onDone: () => void }) {
       <AnswerReveal
         options={opts.map((o) => ({ text: o.code, correct: o.ok, reason: o.why }))}
         onAnswered={() => onDone()}
-        doShuffle={false}
         mono
       />
     </div>

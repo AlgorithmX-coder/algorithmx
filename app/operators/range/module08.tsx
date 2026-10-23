@@ -11,7 +11,7 @@
  * ladder, FOUR drills, and a chained capstone. */
 
 import { useState } from "react";
-import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary, shuffle, AnswerReveal } from "./Engagement";
+import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary, AnswerReveal } from "./Engagement";
 
 /* ───────────────────────── real transforms ───────────────────────── */
 
@@ -307,7 +307,7 @@ function LiveEncodeLab({ onDone }: { onDone: () => void }) {
 /* ───────────────────────── defend lab: pick real protection ───────────────────────── */
 
 function PickProtectionLab({ onDone }: { onDone: () => void }) {
-  const [opts] = useState(() => shuffle([
+  const [opts] = useState(() => ([
     { code: "Scramble it with base64 encoding so the text no longer looks readable", ok: false, why: "Encoding, not encryption. Reversible by anyone in one call (base64), exactly what you did in stage one." },
     { code: "Hide it with a home-made cipher that mixes in a single secret byte", ok: false, why: "A 256-key cipher (single-byte XOR) you brute-forced in stage three. Never roll your own, and never use a tiny keyspace." },
     { code: "Run it through one-way SHA-256 hashing so the value can't be read back", ok: false, why: "Hashing is one-way (SHA-256), so you could never read the token back to use it. Hashes are for passwords, not secrets you must recover." },
@@ -319,7 +319,6 @@ function PickProtectionLab({ onDone }: { onDone: () => void }) {
       <AnswerReveal
         options={opts.map((o) => ({ text: o.code, correct: o.ok, reason: o.why }))}
         onAnswered={() => onDone()}
-        doShuffle={false}
       />
     </div>
   );

@@ -7,7 +7,7 @@
  * check, a FOUR-stage capture with a hint ladder, FOUR drills, and a capstone. */
 
 import { useEffect, useState } from "react";
-import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary, shuffle, AnswerReveal } from "./Engagement";
+import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary, AnswerReveal } from "./Engagement";
 
 /* ───────────────────────── glossary ───────────────────────── */
 
@@ -202,7 +202,7 @@ function SpotLab({ onDone }: { onDone: () => void }) {
 /* ───────────────────────── defend lab: best defence ───────────────────────── */
 
 function BestDefenceLab({ onDone }: { onDone: () => void }) {
-  const [opts] = useState(() => shuffle([
+  const [opts] = useState(() => ([
     { code: "Reply to the email asking 'is this really you?'", ok: false, why: "The attacker controls that thread - they'll just confirm. Verification has to happen on a separate, known channel." },
     { code: "Tell staff to be more careful and hope for the best", ok: false, why: "Vague fear doesn't work. You need concrete controls and a safe process, not just 'be careful'." },
     { code: "Require out-of-band verification for money and credential requests", ok: true, why: "Layered: a process control for the con that lands, plus DMARC to block spoofing, a report-phishing button to catch the rest, and blame-free training to build the instinct. The real defence." },
@@ -214,7 +214,6 @@ function BestDefenceLab({ onDone }: { onDone: () => void }) {
       <AnswerReveal
         options={opts.map((o) => ({ text: o.code, correct: o.ok, reason: o.why }))}
         onAnswered={() => onDone()}
-        doShuffle={false}
       />
     </div>
   );

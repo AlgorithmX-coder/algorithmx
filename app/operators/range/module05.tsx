@@ -12,7 +12,7 @@
  * for real against wasm SQLite, zero egress. */
 
 import { useEffect, useState, type CSSProperties } from "react";
-import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary, shuffle, AnswerReveal } from "./Engagement";
+import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary, AnswerReveal } from "./Engagement";
 import ExplainQuiz from "./ExplainQuiz";
 import {
   bootNorthwindRange, bootScenario,
@@ -173,7 +173,7 @@ function InputBecomesCodeLab({ onDone }: { onDone: () => void }) {
 /* ───────────────────────── defend lab ───────────────────────── */
 
 function PickSafeQueryLab({ onDone }: { onDone: () => void }) {
-  const [opts] = useState(() => shuffle([
+  const [opts] = useState(() => ([
     { code: `Build the command by gluing the user's input straight into the text`, ok: false, why: "This is the bug itself - gluing input into the query string. Exactly what you just exploited." },
     { code: `Build the command the same way, but first strip quote marks out of the input`, ok: false, why: "Stripping quotes is a blocklist - bypassable, and it still builds the query by hand. Not the real fix." },
     { code: `Send the command and the user's input to the database as separate things`, ok: true, why: "Parameterised: a placeholder (?) marks the spot and the value is sent separately, so the database treats it as data - never as SQL. This is the fix." },
@@ -185,7 +185,6 @@ function PickSafeQueryLab({ onDone }: { onDone: () => void }) {
       <AnswerReveal
         options={opts.map((o) => ({ text: o.code, correct: o.ok, reason: o.why }))}
         onAnswered={() => onDone()}
-        doShuffle={false}
       />
     </div>
   );

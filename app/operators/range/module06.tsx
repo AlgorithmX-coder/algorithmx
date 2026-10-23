@@ -15,7 +15,7 @@
  * admin) with a hint ladder, FOUR drills on fresh clients, and a chained capstone. */
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary, shuffle, AnswerReveal } from "./Engagement";
+import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary, AnswerReveal } from "./Engagement";
 
 /* ───────────────────────── glossary ───────────────────────── */
 
@@ -271,7 +271,7 @@ function HtmlVsTextLab({ onDone }: { onDone: () => void }) {
 /* ───────────────────────── defend lab: pick the safe render ───────────────────────── */
 
 function PickSafeRenderLab({ onDone }: { onDone: () => void }) {
-  const [opts] = useState(() => shuffle([
+  const [opts] = useState(() => ([
     { code: `Drop the comment straight onto the page as raw HTML`, ok: false, why: "This is the bug (innerHTML = userComment): it treats user input as HTML, so any tag runs. Exactly what you exploited." },
     { code: `Show it as HTML, but first strip out any script tags`, ok: false, why: "A blocklist - trivially bypassed with onerror, an image/SVG error handler, odd casing or encodings, as you saw in stage three." },
     { code: `Show the comment as plain text, so any tags appear as characters instead of running`, ok: true, why: "Rendering as text (textContent) is output encoding: the browser prints the tag instead of running it. The real fix." },
@@ -283,7 +283,6 @@ function PickSafeRenderLab({ onDone }: { onDone: () => void }) {
       <AnswerReveal
         options={opts.map((o) => ({ text: o.code, correct: o.ok, reason: o.why }))}
         onAnswered={() => onDone()}
-        doShuffle={false}
       />
     </div>
   );
