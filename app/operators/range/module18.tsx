@@ -71,6 +71,9 @@ const USERS: Record<string, Record<string, unknown>> = {
   "1007": { id: 1007, name: "you (recruit)", email: "you@skyvault.range", plan: "Free", role: "user" },
   "1008": { id: 1008, name: "Priya Shah", email: "priya.shah@skyvault.range", plan: "Business", role: "user", billing: "card ****4417", note: "private record - not yours" },
   "1009": { id: 1009, name: "Marcus Bell", email: "m.bell@skyvault.range", plan: "Business", role: "user", billing: "card ****9920", note: "private record - not yours" },
+  "1010": { id: 1010, name: "Dana Okafor", email: "d.okafor@skyvault.range", plan: "Pro", role: "user", billing: "card ****2231", note: "private record - not yours" },
+  "1011": { id: 1011, name: "Sam Reyes", email: "s.reyes@skyvault.range", plan: "Business", role: "user", billing: "card ****7788", note: "private record - not yours" },
+  "1012": { id: 1012, name: "Lena Fischer", email: "l.fischer@skyvault.range", plan: "Pro", role: "user", billing: "card ****0145", note: "private record - not yours" },
   "1": { id: 1, name: "root", email: "root@skyvault.range", plan: "Internal", role: "admin", note: "the administrator account" },
 };
 const BUCKET: Record<string, string> = {
@@ -84,17 +87,18 @@ function skyvault(method: string, path: string, auth: string | null, body: strin
   const p = path.replace(/^https?:\/\/[^/]+/, "").replace(/\/+$/, "") || "/";
   // --- cloud bucket (public, no auth ever checked) ---
   if (/skyvault-uploads/.test(path) || p.startsWith("/uploads")) {
-    const key = path.split("skyvault-uploads.s3.range/")[1] || p.replace(/^\/uploads\/?/, "");
-    if (!key) return { status: 200, note: "public bucket listing - anyone can read this", body: { bucket: "skyvault-uploads", public: true, objects: Object.keys(BUCKET) } };
+    let key = /skyvault-uploads/.test(path) ? (path.split("skyvault-uploads.s3.range/")[1] ?? "") : p.replace(/^\/uploads\/?/, "");
+    key = key.replace(/\/+$/, "");
+    if (!key) return { status: 200, note: "public bucket listing - anyone can read this (it should be private)", body: { bucket: "skyvault-uploads", public: true, objects: Object.keys(BUCKET) } };
     if (BUCKET[key] !== undefined) return { status: 200, note: "object read from a PUBLIC bucket", body: BUCKET[key] };
-    return { status: 404, body: { error: "NoSuchKey" } };
+    return { status: 404, note: "no such file", body: { error: "NoSuchKey", tip: "that file is not in the bucket - send the bucket URL with nothing after the final slash to LIST what is in it" } };
   }
   // --- user records: BOLA, no ownership check ---
   const mUser = p.match(/^\/api\/users\/(\d+)$/);
   if (mUser) {
     const id = mUser[1];
     if (method === "GET") {
-      if (!USERS[id]) return { status: 404, body: { error: "user not found" } };
+      if (!USERS[id]) return { status: 404, note: "no such customer in this demo", body: { error: `no user ${id} here`, tip: "this demo has customers 1007 to 1012 - try one of those. The flaw isn't the number; it's that the server never checks the record belongs to YOU." } };
       return { status: 200, note: id === "1007" ? "your own record" : "another user's record - the server never checked it is yours (BOLA)", body: USERS[id] };
     }
   }
@@ -184,6 +188,16 @@ function ApiSurface({ host, start, win, hint, reveal, withAuth, withBody, recove
               {resp.note && <span style={{ fontFamily: MONO, fontSize: 11, color: resp.status < 300 ? "#bff3d3" : C.soft }}>{resp.note}</span>}
             </div>
             <pre style={{ margin: 0, padding: "11px 13px", background: "rgba(0,0,0,0.28)", color: "#c6d2f0", fontFamily: MONO, fontSize: 12.5, lineHeight: 1.5, whiteSpace: "pre-wrap", overflowX: "auto" }}>{pretty(resp.body)}</pre>
+            {typeof resp.body === "object" && resp.body !== null && Array.isArray((resp.body as { objects?: unknown }).objects) && (
+              <div style={{ padding: "10px 13px", borderTop: `1px solid ${C.lineSoft}`, background: "rgba(95,230,255,0.04)" }}>
+                <div style={{ fontFamily: MONO, fontSize: 11, color: C.cyan, marginBottom: 7 }}>▸ the bucket is public, so you can open any file in it. Click one to load its URL, then SEND to read it:</div>
+                <div style={{ display: "flex", gap: 7, flexWrap: "wrap" }}>
+                  {((resp.body as { objects: string[] }).objects).map((k) => (
+                    <button key={k} onClick={() => setPath(`https://skyvault-uploads.s3.range/${k}`)} className="co-btn" style={{ fontFamily: MONO, fontSize: 11.5, color: /\.env/.test(k) ? C.amber : C.soft, background: "transparent", border: `1px solid ${/\.env/.test(k) ? C.amber : C.lineSoft}`, borderRadius: 7, padding: "4px 9px", cursor: "pointer" }}>{k}</button>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         )}
         {solved && <div className="co-anim co-pop" style={{ marginTop: 11, fontFamily: MONO, fontSize: 12.5, color: C.green }}>✓ that is the flaw - you reached data the server should have gated.</div>}
@@ -212,7 +226,7 @@ function StepView({ step, onSolved }: { step: Step; onSolved: () => void }) {
 
 const ACT_STEPS: Step[] = [
   {
-    title: "BOLA", goal: "Stage 1 - Read a stranger's record. The Skyvault app loads YOUR profile at GET /api/users/1007. The server never checks the record is yours. Change the id and read another customer.",
+    title: "BOLA", goal: "Stage 1 - Read a stranger's record. The Skyvault app loads YOUR profile at GET /api/users/1007. The server never checks the record is yours. Change the id (other customers sit at 1008 to 1012) and read one that isn't yours.",
     start: { method: "GET", path: "/api/users/1007" },
     win: (m, p, r) => m === "GET" && /\/api\/users\/\d+$/.test(p.replace(/^https?:\/\/[^/]+/, "")) && r.status === 200 && !/\/1007$/.test(p),
     hint: "Just change the number. Try /api/users/1008 or /api/users/1009. You will get their full private record back with a 200.",
@@ -280,7 +294,7 @@ function IdorLab({ onDone }: { onDone: () => void }) {
   return (
     <div style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: 12, padding: "15px 16px" }}>
       <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: ".1em", color: API, fontWeight: 700, marginBottom: 9 }}>▶ TRY IT · whose data comes back?</div>
-      <div style={{ fontSize: 13.5, color: C.soft, lineHeight: 1.5, marginBottom: 10 }}>This app fetches a profile by the id in the URL and never checks it is yours. Yours is 1007. Change the number and see whose record you get.</div>
+      <div style={{ fontSize: 13.5, color: C.soft, lineHeight: 1.5, marginBottom: 10 }}>This app fetches a profile by the id in the URL and never checks it is yours. Yours is 1007. Change the number - try 1008 - and see whose record you get.</div>
       <div style={{ display: "flex", alignItems: "center", gap: 2, fontFamily: MONO, fontSize: 13.5, color: C.ink, marginBottom: 10 }}>
         <span style={{ color: C.mute }}>GET /api/users/</span>
         <input value={id} onChange={(e) => setId(e.target.value.replace(/[^0-9]/g, ""))} style={{ width: 70, padding: "5px 8px", borderRadius: 7, background: C.carbon, color: fired ? API : C.ink, border: `1px solid ${fired ? API : C.line}`, fontFamily: MONO, fontSize: 13.5, textAlign: "center" }} />
