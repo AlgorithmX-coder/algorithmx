@@ -175,11 +175,11 @@ const ACT_STEPS: Step[] = [
       medium: "video", meta: "09:02 · 3 participants",
       lines: ["This is strictly confidential, do not discuss it with anyone.", "I need GBP 185,000 wired to a new supplier today, legal will brief the team later.", "Let's keep this off email for now."],
       tells: [
-        { text: "He never turns his head fully sideways", red: true, note: "profiles are hard for deepfakes; reluctance to turn is a classic live tell." },
-        { text: "A faint shimmer along his shirt collar", red: true, note: "warping at the edges of the face/body is a common artefact." },
-        { text: "His reflection differs between his two eyes", red: true, note: "inconsistent eye reflections are a known deepfake giveaway." },
-        { text: "The call is at 9am", red: false, note: "the time of day tells you nothing about authenticity." },
-        { text: "He is wearing a suit", red: false, note: "appearance is not evidence; focus on the request and verification." },
+        { text: "He needs GBP 185,000 wired to a brand-new supplier, today", red: true, note: "a new payee plus urgency is the fraud shape in any medium - this is the reliable tell." },
+        { text: "He insists it stays off email and strictly confidential", red: true, note: "enforced secrecy is a core red flag whatever the channel; verify, don't comply." },
+        { text: "He never quite turns his head to the side", red: false, note: "a real deepfake artefact - but the best fakes have none, so you can't rely on spotting it." },
+        { text: "A faint shimmer along his shirt collar", red: false, note: "an edge artefact, yes, but detection is a losing game; don't count on catching it." },
+        { text: "The call is at 9am and he's in a suit", red: false, note: "time of day and appearance say nothing about who is really on the call." },
       ],
       decision: [
         { text: "Wire the GBP 185,000 now, he's the CFO and it's clearly urgent", ok: false, why: "Urgency + secrecy + a new payee is the exact shape of CEO-fraud. A live video of someone you recognise is no longer proof." },
@@ -195,10 +195,11 @@ const ACT_STEPS: Step[] = [
       medium: "voice", meta: "from 'Mum'",
       lines: ["(shaky) Darling, I've had a bit of an accident, I'm okay but I need help.", "Please send GBP 400 to this account right now, I can't talk long.", "And please, don't tell your dad, I don't want to worry him."],
       tells: [
-        { text: "No natural breaths between sentences", red: true, note: "cloned voices often miss breaths, lip smacks and mouth noises." },
-        { text: "A faint glitch in the middle of a word", red: true, note: "digital artefacts and clipping are audio tells." },
-        { text: "'Don't tell your dad' (secrecy)", red: true, note: "enforced secrecy is a core fraud red flag, in any medium." },
-        { text: "She sounds upset", red: false, note: "emotion is easy to fake and easy to feel; it is not evidence." },
+        { text: "'Send GBP 400 right now' - money, in a hurry", red: true, note: "urgency plus an unusual payment is the scam shape, even from 'family'." },
+        { text: "'Don't tell your dad' - keep it secret", red: true, note: "enforced secrecy is a core fraud red flag, in any medium." },
+        { text: "No natural breaths between her sentences", red: false, note: "cloned voices often miss breaths - but a good clone won't, so it isn't reliable." },
+        { text: "A faint glitch in the middle of a word", red: false, note: "an audio artefact, but you can't count on hearing one in a convincing fake." },
+        { text: "She sounds shaken and upset", red: false, note: "emotion is easy to fake and easy to feel; it is not evidence." },
       ],
       decision: [
         { text: "A voice clones from seconds of audio, so sounding exactly like her proves nothing - call her back on her saved number.", ok: true, why: "Right. Out-of-band verification, plus a pre-agreed safe word, defeats a clone instantly however real it sounds." },
@@ -214,10 +215,10 @@ const ACT_STEPS: Step[] = [
       medium: "email", from: "accounts@arup-finance-portal.com", meta: "Please update our remittance details before Friday",
       lines: ["Hi, hope you're well.", "We've changed banks. Please update our remittance details so Friday's payment reaches the new account.", "Appreciate you sorting this before the run. Thanks!"],
       tells: [
-        { text: "The sender domain is arup-finance-portal.com, not the real company domain", red: true, note: "a look-alike domain is a top giveaway; always check it character by character." },
-        { text: "It asks to CHANGE bank details", red: true, note: "a bank-detail change is the single most abused request in BEC; always verify it." },
-        { text: "There's a Friday deadline", red: true, note: "manufactured time pressure pushes you to skip checks." },
-        { text: "The grammar is perfect, so it's safe", red: false, note: "a trap: AI writes flawless phishing now, so good English is no longer reassurance." },
+        { text: "It asks you to CHANGE the supplier's bank details", red: true, note: "a bank-detail change is the single most abused request in fraud; always verify it out-of-band." },
+        { text: "A Friday deadline is pushing you to act fast", red: true, note: "manufactured time pressure is there to make you skip the check." },
+        { text: "The sender address looks almost right (arup-finance-portal.com)", red: false, note: "a look-alike is suspicious, but even a correct or real address can be spoofed - the address alone never clears it." },
+        { text: "The grammar is perfect and the tone is friendly", red: false, note: "a trap: AI writes flawless phishing now, so good English is no reassurance either way." },
       ],
       decision: [
         { text: "A look-alike domain passes a glance and even a real address can be spoofed, so phone the supplier on a number you already hold.", ok: true, why: "Right. The address proves nothing; verify a bank-detail change out-of-band, through a contact you already trust." },
@@ -325,7 +326,7 @@ const DRILLS: DrillCfg[] = [
   },
   {
     client: "Kudos", brief: "An email from your 'landlord' at a look-alike domain says rent must now go to a new account. Decide.",
-    step: { title: "Email", goal: "You're tempted to just check the new account's name matches the landlord before paying. Why isn't that enough?", scene: { medium: "email", from: "payments@kudos-lettings-portal.com", meta: "New rent payment details", lines: ["Our bank has changed. Please send this month's rent to the new account below.", "Please action today to avoid a late fee."], tells: [{ text: "Look-alike sender domain", red: true, note: "always check the domain character by character." }, { text: "Bank-detail change + deadline", red: true, note: "the most abused request in fraud." }], decision: [{ text: "Fraudsters set the account name themselves, so a match proves nothing - call the landlord on the number you already hold.", ok: true, why: "Right. Only an out-of-band check against a contact you already trust confirms a bank-detail change." }, { text: "It is enough - banks guarantee the name always matches the real account holder, so a match confirms it is genuine.", ok: false, why: "Name-checking is far weaker than that, and an attacker controls the name on their own account. Not proof." }, { text: "It isn't, because you should reply to the email first and ask the landlord to confirm the new account name.", ok: false, why: "That's replying to the attacker's look-alike address. Verify through a known channel instead." }, { text: "It isn't, because the looming late-fee deadline means there is really no time to check the name anyway.", ok: false, why: "Manufactured urgency is the pressure tactic, not a reason to skip the real check." }] } },
+    step: { title: "Email", goal: "You're tempted to just check the new account's name matches the landlord before paying. Why isn't that enough?", scene: { medium: "email", from: "payments@kudos-lettings-portal.com", meta: "New rent payment details", lines: ["Our bank has changed. Please send this month's rent to the new account below.", "Please action today to avoid a late fee."], tells: [{ text: "It moves the rent to a new bank account", red: true, note: "a bank-detail change is the most abused request in fraud; verify it out-of-band." }, { text: "'Action today to avoid a late fee' - pressure", red: true, note: "manufactured urgency is there to make you skip the check." }, { text: "The sender is at a look-alike domain", red: false, note: "suspicious, but even a real address can be spoofed - it's never your sole clear-or-condemn signal." }], decision: [{ text: "Fraudsters set the account name themselves, so a match proves nothing - call the landlord on the number you already hold.", ok: true, why: "Right. Only an out-of-band check against a contact you already trust confirms a bank-detail change." }, { text: "It is enough - banks guarantee the name always matches the real account holder, so a match confirms it is genuine.", ok: false, why: "Name-checking is far weaker than that, and an attacker controls the name on their own account. Not proof." }, { text: "It isn't, because you should reply to the email first and ask the landlord to confirm the new account name.", ok: false, why: "That's replying to the attacker's look-alike address. Verify through a known channel instead." }, { text: "It isn't, because the looming late-fee deadline means there is really no time to check the name anyway.", ok: false, why: "Manufactured urgency is the pressure tactic, not a reason to skip the real check." }] } },
     success: "Confirmed the change through a known contact, not the email. Finding logged.",
   },
   {
