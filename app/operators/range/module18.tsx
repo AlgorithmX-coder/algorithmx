@@ -16,6 +16,7 @@
 
 import { useEffect, useState } from "react";
 import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary, shuffle, AnswerReveal } from "./Engagement";
+import ExplainQuiz from "./ExplainQuiz";
 
 /* ───────────────────────── glossary ───────────────────────── */
 
@@ -209,7 +210,7 @@ function ApiSurface({ host, start, win, hint, reveal, withAuth, withBody, recove
 
 /* ───────────────────────── a single step ───────────────────────── */
 
-type Step = { title: string; goal: string; start: { method: string; path: string }; win: (m: string, p: string, r: ApiResp) => boolean; hint: string; reveal: { method?: string; path?: string; auth?: string; body?: string }; withAuth?: boolean; withBody?: boolean; recovered?: { label: string; value: string }[] };
+type Step = { title: string; goal: string; start: { method: string; path: string }; win: (m: string, p: string, r: ApiResp) => boolean; hint: string; reveal: { method?: string; path?: string; auth?: string; body?: string }; withAuth?: boolean; withBody?: boolean; recovered?: { label: string; value: string }[]; explain?: { q: string; options: { text: string; correct?: boolean; feedback: string }[] } };
 
 const HOST = "api.skyvault.range";
 
@@ -231,6 +232,15 @@ const ACT_STEPS: Step[] = [
     win: (m, p, r) => m === "GET" && /\/api\/users\/\d+$/.test(p.replace(/^https?:\/\/[^/]+/, "")) && r.status === 200 && !/\/1007$/.test(p),
     hint: "Just change the number. Try /api/users/1008 or /api/users/1009. You will get their full private record back with a 200.",
     reveal: { method: "GET", path: "/api/users/1008" },
+    explain: {
+      q: "You changed one number in the URL and read a stranger's full record. What was actually broken?",
+      options: [
+        { text: "The server handed over the record without ever checking it belonged to you - that missing object-level check is BOLA.", correct: true, feedback: "Right. The id wasn't the flaw; the missing ownership check was. The server must confirm the record is yours before returning it." },
+        { text: "The customer ids were too easy to guess; random, hard-to-guess ids would have made the app secure.", feedback: "Hard-to-guess ids only slow an attacker down. The real flaw is that the server never checks ownership, so any id that exists is readable." },
+        { text: "The connection wasn't encrypted, so your request leaked the other customer's data in transit.", feedback: "Encryption protects data on the wire; it wouldn't stop this. The server itself willingly returned data that wasn't yours." },
+        { text: "You were signed in as an administrator, which is the only reason the record came back.", feedback: "You used your own ordinary account - no admin rights needed. The endpoint simply never checked ownership." },
+      ],
+    },
   },
   {
     title: "Public bucket", goal: "Stage 2 - Raid the cloud storage. Skyvault keeps files in a PUBLIC bucket. List it, then read the file that should never be public, the one holding the app's secrets.",
@@ -238,6 +248,15 @@ const ACT_STEPS: Step[] = [
     win: (m, p, r) => r.status === 200 && typeof r.body === "string" && /SKYVAULT_ADMIN_KEY/.test(r.body as string),
     hint: "Send the bucket URL to LIST the objects. You will see a config/.env file. Then read it: https://skyvault-uploads.s3.range/config/.env",
     reveal: { method: "GET", path: "https://skyvault-uploads.s3.range/config/.env" },
+    explain: {
+      q: "Reading one .env file from the bucket turned a minor leak into a full breach. Why was that file so dangerous?",
+      options: [
+        { text: "A public bucket needs no login, and that .env held a live admin key - a working credential an attacker can reuse straight away.", correct: true, feedback: "Right. The file was readable by anyone, and it contained a real secret. Secrets never belong in storage that the whole internet can list." },
+        { text: "The .env was infected, so opening it ran malware on the server.", feedback: "Nothing executed. It was plain text - the damage was the live admin key printed inside it, there for the taking." },
+        { text: "Buckets are always private by default, so this one must have been hacked open first.", feedback: "No hack was needed. This bucket was simply misconfigured as public - one of the most common cloud mistakes there is." },
+        { text: "The file was large, so downloading it slowed the service down for every other user.", feedback: "Size is irrelevant. The harm was the admin key in the file, not the size of the download." },
+      ],
+    },
   },
   {
     title: "Use the key", goal: "Stage 3 - That .env leaked an admin key. Use it. Call the admin endpoint GET /api/admin/customers, and put the key in the Authorization header as a bearer token.",
@@ -246,6 +265,15 @@ const ACT_STEPS: Step[] = [
     hint: `Send GET /api/admin/customers with Authorization: Bearer ${ADMIN_KEY}. Without the key you get 401; with it, the whole customer list.`,
     reveal: { method: "GET", path: "/api/admin/customers", auth: `Bearer ${ADMIN_KEY}` },
     recovered: [{ label: "admin key (from config/.env)", value: ADMIN_KEY }],
+    explain: {
+      q: "The admin endpoint returned the whole customer list the moment you sent the leaked key. What's the real lesson?",
+      options: [
+        { text: "A secret that leaks anywhere is burned everywhere - the endpoint trusted whoever held the key, so a key in a public file is as good as the real admin.", correct: true, feedback: "Right. A bearer token trusts the holder. Once it leaks, it must be rotated at once and scoped to the least it needs." },
+        { text: "The endpoint was coded so badly it would have returned the list even with no key at all.", feedback: "Not so - without the key you got 401. The flaw is that a LEAKED key still counts as valid; it should have been rotated and limited." },
+        { text: "The key only worked because you were calling from inside the company's own network.", feedback: "Where you call from didn't matter. A bearer token trusts the holder wherever they are, inside the network or out." },
+        { text: "Admin endpoints can never really be protected, so a leak like this was always inevitable.", feedback: "They can be protected. The failure was a long-lived, over-privileged key that was allowed to leak into a public file." },
+      ],
+    },
   },
   {
     title: "Escalate", goal: "Stage 4 - Make yourself an admin. The role-change endpoint never checks you are ALLOWED to set a role (BFLA). POST your own id (1007) a new role of admin.",
@@ -259,9 +287,10 @@ const ACT_STEPS: Step[] = [
 function ApiAct({ onCapture }: { onCapture: () => void }) {
   const [si, setSi] = useState(0);
   const [cleared, setCleared] = useState<boolean[]>(ACT_STEPS.map(() => false));
+  const [explainOk, setExplainOk] = useState(false);
   const step = ACT_STEPS[si];
   function solved() { setCleared((c) => { const n = [...c]; n[si] = true; return n; }); }
-  function advance() { if (si + 1 < ACT_STEPS.length) setSi(si + 1); else onCapture(); }
+  function advance() { setExplainOk(false); if (si + 1 < ACT_STEPS.length) setSi(si + 1); else onCapture(); }
   return (
     <div style={{ display: "grid", gap: 14 }}>
       <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
@@ -274,9 +303,12 @@ function ApiAct({ onCapture }: { onCapture: () => void }) {
       </div>
       <StepView key={si} step={step} onSolved={solved} />
       {cleared[si] && (
-        <div className="co-anim co-pop" style={{ display: "flex", alignItems: "center", gap: 14, flexWrap: "wrap", padding: "13px 16px", borderRadius: 12, background: "rgba(85,217,140,.08)", border: `1px solid ${C.green}55` }}>
-          <span style={{ fontFamily: MONO, fontSize: 12.5, color: C.green, fontWeight: 700 }}>✓ Stage {si + 1} cleared</span>
-          <Btn tone="g" onClick={advance} style={{ marginLeft: "auto" }}>{si + 1 < ACT_STEPS.length ? "Next stage →" : "Capture the engagement →"}</Btn>
+        <div className="co-anim co-pop" style={{ display: "grid", gap: 12, padding: "13px 16px", borderRadius: 12, background: "rgba(85,217,140,.08)", border: `1px solid ${C.green}55` }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 14, flexWrap: "wrap" }}>
+            <span style={{ fontFamily: MONO, fontSize: 12.5, color: C.green, fontWeight: 700 }}>✓ Stage {si + 1} cleared</span>
+            {(!step.explain || explainOk) && <Btn tone="g" onClick={advance} style={{ marginLeft: "auto" }}>{si + 1 < ACT_STEPS.length ? "Next stage →" : "Capture the engagement →"}</Btn>}
+          </div>
+          {step.explain && <ExplainQuiz key={si} q={step.explain.q} options={step.explain.options} onCorrect={() => setExplainOk(true)} />}
         </div>
       )}
     </div>
