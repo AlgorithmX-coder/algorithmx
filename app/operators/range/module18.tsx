@@ -391,13 +391,20 @@ const CAP_STEPS: Step[] = [
 function CapstoneChallenge({ onDone }: { onDone: () => void }) {
   const [phase, setPhase] = useState(0);
   const [won, setWon] = useState(false);
-  function solved() { if (phase + 1 < CAP_STEPS.length) setTimeout(() => setPhase((p) => p + 1), 650); else setWon(true); }
+  const [cleared, setCleared] = useState(false);
+  function next() { if (phase + 1 < CAP_STEPS.length) { setPhase((p) => p + 1); setCleared(false); } else setWon(true); }
   const pct = (phase / CAP_STEPS.length) * 100;
   return (
     <div style={{ display: "grid", gap: 14 }}>
       <div style={{ fontFamily: MONO, fontSize: 11, color: C.mute }}>Sableline · full engagement · step {Math.min(phase + 1, CAP_STEPS.length)} of {CAP_STEPS.length}</div>
       <div style={{ height: 6, borderRadius: 999, background: "rgba(255,255,255,0.07)", overflow: "hidden" }}><div style={{ height: "100%", width: `${won ? 100 : pct}%`, background: `linear-gradient(90deg, ${API}, ${AI})`, transition: "width .4s" }} /></div>
-      {!won && <StepView key={phase} step={CAP_STEPS[phase]} onSolved={solved} />}
+      {!won && <StepView key={phase} step={CAP_STEPS[phase]} onSolved={() => setCleared(true)} />}
+      {!won && cleared && (
+        <div className="co-anim co-pop" style={{ display: "flex", alignItems: "center", gap: 14, flexWrap: "wrap", padding: "11px 14px", borderRadius: 10, background: "rgba(85,217,140,.08)", border: `1px solid ${C.green}55` }}>
+          <span style={{ fontFamily: MONO, fontSize: 12.5, color: C.green, fontWeight: 700 }}>✓ Step {phase + 1} cleared</span>
+          <Btn tone="g" onClick={next} style={{ marginLeft: "auto" }}>{phase + 1 < CAP_STEPS.length ? "Next step →" : "Finish the challenge →"}</Btn>
+        </div>
+      )}
       {won && (
         <div className="co-anim co-pop" style={{ textAlign: "center", padding: "20px", borderRadius: 14, background: "rgba(85,217,140,.08)", border: `1px solid ${C.green}55` }}>
           <div style={{ fontFamily: MONO, fontSize: 11, letterSpacing: ".2em", color: C.green, fontWeight: 700 }}>CHALLENGE COMPLETE</div>
