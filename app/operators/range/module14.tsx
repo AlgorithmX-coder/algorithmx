@@ -8,7 +8,7 @@
  * Shape mirrors M5: hover glossary, interactive lesson lab, de-biased check, a
  * FOUR-stage capture with a hint ladder, FOUR drills, and a chained capstone. */
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary, shuffle, AnswerReveal } from "./Engagement";
 import ExplainQuiz from "./ExplainQuiz";
 
@@ -226,17 +226,20 @@ function DisclosureAct({ onCapture }: { onCapture: () => void }) {
 /* ───────────────────────── lesson lab: score one finding ───────────────────────── */
 
 function ScoreLab({ onDone }: { onDone: () => void }) {
-  const [picked, setPicked] = useState<string | null>(null);
-  const correct = picked === "Critical";
-  useEffect(() => { if (correct) onDone(); }, [correct, onDone]);
   return (
     <div style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: 12, padding: "15px 16px" }}>
       <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: ".1em", color: C.indigo, fontWeight: 700, marginBottom: 9 }}>▶ TRY IT · score this one</div>
-      <div style={{ fontSize: 13.5, color: C.soft, lineHeight: 1.5, marginBottom: 10 }}>A remote attacker with no login can take over any account and read the whole database. What severity?</div>
-      <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
-        {["Low", "Medium", "High", "Critical"].map((b) => <button key={b} onClick={() => setPicked(b)} className="co-opt" style={{ padding: "6px 13px", borderRadius: 8, border: `1px solid ${picked === b ? SEV_COLOR[b] : C.line}`, background: "transparent", color: picked === b ? SEV_COLOR[b] : C.soft, fontFamily: MONO, fontSize: 12.5, cursor: "pointer" }}>{b}</button>)}
-      </div>
-      {picked && <div style={{ marginTop: 11, fontSize: 13, color: correct ? "#bff3d3" : C.soft, lineHeight: 1.5 }}>{correct ? "✓ Critical - no login needed, remote, and total impact. That's the top band every time." : "Think: no login, remote, total impact. That combination is the very top band."}</div>}
+      <div style={{ fontSize: 13.5, color: C.soft, lineHeight: 1.5, marginBottom: 12 }}>A remote attacker with no login can take over any account and read the whole database. What severity?</div>
+      <AnswerReveal
+        mono doShuffle={false}
+        onAnswered={() => onDone()}
+        options={[
+          { text: "Low", reason: "Low is for tiny, low-impact issues. Total account takeover plus the whole database is the opposite of low." },
+          { text: "Medium", reason: "Medium fits something awkward but contained. This is neither - it hands over every account and all the data." },
+          { text: "High", reason: "High is close, but remote plus no login plus total takeover leaves nothing worse to reach. That tips it to the top band." },
+          { text: "Critical", correct: true, reason: "No login needed, works remotely, and total impact. That combination is Critical every time - score it straight." },
+        ]}
+      />
     </div>
   );
 }
