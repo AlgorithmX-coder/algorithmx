@@ -81,7 +81,7 @@ function SortSurface({ items, hint, onSolved }: { items: SortItem[]; hint: strin
               <span style={{ flex: "1 1 180px", fontSize: 13.5, color: C.ink }}>{it.label}</span>
               <button onClick={() => { setPick((x) => ({ ...x, [it.label]: "in" })); setChecked(false); }} className="co-opt" style={{ padding: "5px 11px", borderRadius: 7, border: `1px solid ${p === "in" ? C.green : C.line}`, background: p === "in" ? "rgba(85,217,140,.1)" : "transparent", color: p === "in" ? C.green : C.soft, fontFamily: MONO, fontSize: 11.5, cursor: "pointer" }}>in scope</button>
               <button onClick={() => { setPick((x) => ({ ...x, [it.label]: "out" })); setChecked(false); }} className="co-opt" style={{ padding: "5px 11px", borderRadius: 7, border: `1px solid ${p === "out" ? C.red : C.line}`, background: p === "out" ? "rgba(242,109,114,.08)" : "transparent", color: p === "out" ? C.red : C.soft, fontFamily: MONO, fontSize: 11.5, cursor: "pointer" }}>out</button>
-              {checked && wrong && <span style={{ flexBasis: "100%", fontFamily: MONO, fontSize: 11.5, color: C.amber }}>↳ {it.note}</span>}
+              {((checked && wrong) || solved) && <span style={{ flexBasis: "100%", fontFamily: MONO, fontSize: 11.5, color: solved ? C.green : C.amber }}>↳ {it.note}</span>}
             </div>
           );
         })}

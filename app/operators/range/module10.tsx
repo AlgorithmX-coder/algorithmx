@@ -118,7 +118,7 @@ function ClassifySurface({ items, hint, onSolved }: { items: VerItem[]; hint: st
               <span style={{ flex: "1 1 200px", fontFamily: MONO, fontSize: 12.5, color: C.ink }}>{it.label}</span>
               <button onClick={() => { setPick((x) => ({ ...x, [it.label]: "vuln" })); setChecked(false); }} className="co-opt" style={{ padding: "4px 10px", borderRadius: 7, border: `1px solid ${p === "vuln" ? C.red : C.line}`, background: "transparent", color: p === "vuln" ? C.red : C.soft, fontFamily: MONO, fontSize: 11.5, cursor: "pointer" }}>known-vulnerable</button>
               <button onClick={() => { setPick((x) => ({ ...x, [it.label]: "ok" })); setChecked(false); }} className="co-opt" style={{ padding: "4px 10px", borderRadius: 7, border: `1px solid ${p === "ok" ? C.green : C.line}`, background: "transparent", color: p === "ok" ? C.green : C.soft, fontFamily: MONO, fontSize: 11.5, cursor: "pointer" }}>current</button>
-              {checked && wrong && <div style={{ flexBasis: "100%", fontFamily: MONO, fontSize: 11.5, color: C.amber }}>↳ {it.note}</div>}
+              {((checked && wrong) || solved) && <div style={{ flexBasis: "100%", fontFamily: MONO, fontSize: 11.5, color: solved ? C.green : C.amber }}>↳ {it.note}</div>}
             </div>
           );
         })}

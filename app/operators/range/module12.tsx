@@ -64,7 +64,7 @@ function TriageSurface({ alerts, hint, onSolved }: { alerts: Alert[]; hint: stri
               <span style={{ flex: "1 1 200px", fontSize: 13.5, color: C.ink }}>{a.label}</span>
               <button onClick={() => { setPick((x) => ({ ...x, [a.label]: "real" })); setChecked(false); }} className="co-opt" style={{ padding: "4px 10px", borderRadius: 7, border: `1px solid ${p === "real" ? C.red : C.line}`, background: "transparent", color: p === "real" ? C.red : C.soft, fontFamily: MONO, fontSize: 11.5, cursor: "pointer" }}>real incident</button>
               <button onClick={() => { setPick((x) => ({ ...x, [a.label]: "noise" })); setChecked(false); }} className="co-opt" style={{ padding: "4px 10px", borderRadius: 7, border: `1px solid ${p === "noise" ? C.green : C.line}`, background: "transparent", color: p === "noise" ? C.green : C.soft, fontFamily: MONO, fontSize: 11.5, cursor: "pointer" }}>benign noise</button>
-              {checked && wrong && <div style={{ flexBasis: "100%", fontFamily: MONO, fontSize: 11.5, color: C.amber }}>↳ {a.note}</div>}
+              {((checked && wrong) || solved) && <div style={{ flexBasis: "100%", fontFamily: MONO, fontSize: 11.5, color: solved ? C.green : C.amber }}>↳ {a.note}</div>}
             </div>
           );
         })}

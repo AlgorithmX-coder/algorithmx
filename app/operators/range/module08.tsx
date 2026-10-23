@@ -213,7 +213,7 @@ function ClassifySurface({ items, onSolved }: { items: ClassItem[]; onSolved: ()
                 <button onClick={() => { setPick((x) => ({ ...x, [it.label]: "rev" })); setChecked(false); }} className="co-opt" style={{ padding: "4px 10px", borderRadius: 7, border: `1px solid ${p === "rev" ? C.amber : C.line}`, background: "transparent", color: p === "rev" ? C.amber : C.soft, fontFamily: MONO, fontSize: 11.5, cursor: "pointer" }}>anyone can read</button>
                 <button onClick={() => { setPick((x) => ({ ...x, [it.label]: "enc" })); setChecked(false); }} className="co-opt" style={{ padding: "4px 10px", borderRadius: 7, border: `1px solid ${p === "enc" ? C.green : C.line}`, background: "transparent", color: p === "enc" ? C.green : C.soft, fontFamily: MONO, fontSize: 11.5, cursor: "pointer" }}>needs a key</button>
               </div>
-              {checked && wrong && <div style={{ marginTop: 7, fontFamily: MONO, fontSize: 11.5, color: C.amber }}>↳ {it.note}</div>}
+              {((checked && wrong) || solved) && <div style={{ marginTop: 7, fontFamily: MONO, fontSize: 11.5, color: solved ? C.green : C.amber }}>↳ {it.note}</div>}
             </div>
           );
         })}
