@@ -272,19 +272,18 @@ function HtmlVsTextLab({ onDone }: { onDone: () => void }) {
 
 function PickSafeRenderLab({ onDone }: { onDone: () => void }) {
   const [opts] = useState(() => shuffle([
-    { code: `page.innerHTML = userComment`, ok: false, why: "This is the bug: it drops raw user input into the page as HTML, so any tag runs. Exactly what you exploited." },
-    { code: `page.innerHTML = userComment.replace("<script>", "")`, ok: false, why: "A blocklist - trivially bypassed with onerror, <svg onload>, odd casing or encodings, as you saw in stage three." },
-    { code: `page.textContent = userComment`, ok: true, why: "textContent writes the input as TEXT, never HTML - the browser prints <img onerror=...> instead of running it. This is output encoding, the real fix." },
-    { code: `page.innerHTML = userComment.replace("onerror", "")`, ok: false, why: "Another blocklist, exactly the stage-three 'fix': switch to <svg onload> or odd casing and it runs again. Encode on output instead." },
+    { code: `Drop the comment straight onto the page as raw HTML`, ok: false, why: "This is the bug (innerHTML = userComment): it treats user input as HTML, so any tag runs. Exactly what you exploited." },
+    { code: `Show it as HTML, but first strip out any script tags`, ok: false, why: "A blocklist - trivially bypassed with onerror, an image/SVG error handler, odd casing or encodings, as you saw in stage three." },
+    { code: `Show the comment as plain text, so any tags appear as characters instead of running`, ok: true, why: "Rendering as text (textContent) is output encoding: the browser prints the tag instead of running it. The real fix." },
+    { code: `Show it as HTML, but first delete the word "onerror"`, ok: false, why: "Another blocklist, exactly the stage-three 'fix': switch to a different handler or odd casing and it runs again. Encode on output instead." },
   ]));
   return (
     <div style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: 12, padding: "15px 16px" }}>
-      <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: ".1em", color: C.indigo, fontWeight: 700, marginBottom: 10 }}>▶ APPLY THE FIX · which render is safe?</div>
+      <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: ".1em", color: C.indigo, fontWeight: 700, marginBottom: 10 }}>▶ APPLY THE FIX · which way of showing a comment is safe?</div>
       <AnswerReveal
         options={opts.map((o) => ({ text: o.code, correct: o.ok, reason: o.why }))}
         onAnswered={() => onDone()}
         doShuffle={false}
-        mono
       />
     </div>
   );

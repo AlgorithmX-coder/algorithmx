@@ -266,10 +266,10 @@ function IdorLab({ onDone }: { onDone: () => void }) {
 
 function PickAccessCheckLab({ onDone }: { onDone: () => void }) {
   const [opts] = useState(() => shuffle([
-    { code: `return db.record(req.query.id)`, ok: false, why: "The bug itself: it returns whatever id is asked for, with no ownership check. Exactly what you exploited." },
-    { code: `id = encrypt(id); return db.record(id)`, ok: false, why: "Obscurity, not access control. The id still leaks (logs, sharing) and the access is still never checked." },
-    { code: `if (!canAccess(user, id)) return 403;`, ok: true, why: "A server-side authorization check on every access, deny by default. This is the fix - run it for every request, and it doesn't matter if the id is guessed." },
-    { code: `if (!user) return 401; return db.record(id)`, ok: false, why: "That only checks they are logged in (authentication), not that this record is theirs (authorisation). Any logged-in user still reads any id." },
+    { code: `Return whatever record the id in the request asks for`, ok: false, why: "The bug itself: it returns whatever id is asked for, with no ownership check. Exactly what you exploited." },
+    { code: `Scramble the id so it is hard to guess, then return that record`, ok: false, why: "Obscurity, not access control. The id still leaks (logs, sharing) and the access is still never checked." },
+    { code: `On every request, check the logged-in user owns that record before returning it`, ok: true, why: "A server-side authorisation check on every access (canAccess(user, id)), deny by default. This is the fix - it doesn't matter if the id is guessed." },
+    { code: `Check the person is logged in, then return the record they asked for`, ok: false, why: "That only checks they are logged in (authentication), not that this record is theirs (authorisation). Any logged-in user still reads any id." },
   ]));
   return (
     <div style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: 12, padding: "15px 16px" }}>
@@ -278,7 +278,6 @@ function PickAccessCheckLab({ onDone }: { onDone: () => void }) {
         options={opts.map((o) => ({ text: o.code, correct: o.ok, reason: o.why }))}
         onAnswered={() => onDone()}
         doShuffle={false}
-        mono
       />
     </div>
   );
