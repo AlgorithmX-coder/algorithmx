@@ -426,8 +426,8 @@ export const MODULE12: ModuleDef = {
       q: "Why contain a live attack before investigating the root cause?",
       options: [
         { text: "Containment stops the ongoing damage, so you can then investigate safely.", correct: true, feedback: "Right - stop the harm first (preserving evidence), then dig into why." },
-        { text: "The root cause of a breach doesn't really matter either way.", feedback: "It matters a lot - but later. Investigate first and the attacker keeps causing harm meanwhile." },
-        { text: "Investigating the breach before containing it is actually illegal.", feedback: "It's not illegal - it's just the wrong order while an attacker is still active." },
+        { text: "You should find the full root cause first, then contain once you understand it.", feedback: "Understanding matters, but not first - while you diagnose, the attacker keeps causing harm. Contain to stop the bleeding, then investigate why." },
+        { text: "You should warn all affected customers before taking any technical action.", feedback: "Notifying people matters and may be legally required, but it doesn't stop a live attack - contain the harm first, then handle disclosure." },
         { text: "You should always wipe every affected machine before doing anything else.", feedback: "Wiping destroys evidence and causes outages - contain precisely, don't nuke." },
       ],
     },
@@ -459,12 +459,12 @@ export const MODULE12: ModuleDef = {
     ],
     Interactive: PrepLab,
     check: {
-      q: "What most determines how well an organisation handles a breach?",
+      q: "You've contained and removed the attacker. Which backup should you restore from?",
       options: [
-        { text: "Preparation: a tested plan, backups, logging, and rehearsed roles.", correct: true, feedback: "Right. The response is executed, not invented, in the moment - a tested plan, clean backups, central logging and rehearsed roles." },
-        { text: "How powerful and expensive their newest firewall happens to be.", feedback: "Tools help, but a breach in progress is won or lost on process and practice." },
-        { text: "How quickly they can delete the evidence and move on.", feedback: "Never delete evidence - that's both counterproductive and often unlawful." },
-        { text: "Whether they manage to keep the whole incident secret from everyone.", feedback: "Secrecy often breaches disclosure duties and prevents help; a prepared, honest response is what matters." },
+        { text: "One from before the breach began - a newer backup may already contain the attacker's foothold and reinfect you.", correct: true, feedback: "Right - restore from a known-clean point before the intrusion. A backup made after they got in can carry their implant straight back." },
+        { text: "Always pick the newest backup available, because that way you lose the least amount of data.", feedback: "The newest backup may have been taken after the attacker was already inside, so restoring it brings their foothold back. Clean beats recent." },
+        { text: "Any backup is fine now that the threat has been removed from the live system.", feedback: "Not any - a backup taken after they got in can carry the foothold back. The restore point has to be known-clean, from before the breach." },
+        { text: "There's no need for a backup - just rebuild the whole system from scratch instead.", feedback: "Rebuilding can clean the machine, but it needlessly discards all your data when a known-clean pre-breach backup would restore it safely." },
       ],
     },
   },

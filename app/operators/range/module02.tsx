@@ -483,7 +483,7 @@ export const MODULE2: ModuleDef = {
       options: [
         { text: "You only read information that's already public and never interact with the target's systems.", correct: true, feedback: "Right. Reading public sources touches nobody's systems, so it's invisible and stays in bounds." },
         { text: "It runs too slowly for the target's monitoring to ever notice you doing it.", feedback: "Speed isn't the point - it's that you never touch the target at all." },
-        { text: "The company quietly handed over their account passwords to you in advance.", feedback: "No passwords are involved - OSINT is built entirely from what's already public." },
+        { text: "Because every source it uses is public, the information is harmless and can't help an attacker get in.", feedback: "Public data is far from harmless - combined, the pieces derive a real login. It's low-risk because you never touch the target, not because the data is worthless." },
         { text: "It only turns into active recon once you've read more than one public source.", feedback: "Reading any number of public sources is still passive; it's touching the target's systems that makes it active." },
       ],
     },
@@ -517,7 +517,7 @@ export const MODULE2: ModuleDef = {
     check: {
       q: "You've scrubbed Caldera's site and ads. Why can't you fully 'un-leak' what OSINT already exposed?",
       options: [
-        { text: "Once something's been public it's copied, cached and archived by others, so you can shrink future exposure but never fully recall the old.", correct: true, feedback: "Right - you can't un-publish the internet. Scrub going forward, and rotate any secret that already leaked; assume the old copy is still out there." },
+        { text: "Once something's public, others copy, cache and archive it, so you can shrink future exposure but never recall the old.", correct: true, feedback: "Right - you can't un-publish the internet. Scrub going forward, and rotate any secret that already leaked; assume the old copy is still out there." },
         { text: "You can fully undo it - deleting the original page removes it from every search engine and archive within minutes.", feedback: "No. Search caches, the Wayback Machine and anyone who copied it keep their own version regardless of your delete." },
         { text: "You can, as long as you also change the company's domain name so that all the old links break.", feedback: "The old content still exists wherever it was copied; a new domain doesn't retract what's already saved elsewhere." },
         { text: "You can't, but only because attackers keep re-downloading your live pages faster than you can edit them.", feedback: "The problem isn't speed - it's that public data gets copied and archived beyond your reach the moment it's up." },

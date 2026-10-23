@@ -492,12 +492,12 @@ export const MODULE10: ModuleDef = {
     ],
     Interactive: PickFixLab,
     check: {
-      q: "What's the right fix for the exposed Remote Desktop?",
+      q: "A scan finds an old file-sharing service still running on a server, and it turns out nobody uses it any more. What's the best fix?",
       options: [
-        { text: "Put it behind a VPN or allow-list, off the open internet, and keep it patched.", correct: true, feedback: "Right. Remove it from the open internet, limit who can reach it, and stay patched." },
-        { text: "Move RDP to a different, high-numbered port so the scanners miss it.", feedback: "Obscurity only. Scanners find it on any port, so the service is still exposed and attacked." },
-        { text: "Leave it open to the internet but enforce a much stronger admin password.", feedback: "Better than nothing, but exposed RDP is relentlessly attacked. Take it off the open internet." },
-        { text: "Block the specific IP addresses that are currently scanning the port.", feedback: "The whole internet scans continuously; blocking a few addresses doesn't reduce the exposure." },
+        { text: "Switch it off and remove it - you can't attack a service that isn't running, and nobody needs this one.", correct: true, feedback: "Right. The smallest attack surface is the service that isn't there. If nothing needs it, turning it off removes the risk entirely." },
+        { text: "Leave it running but put a firewall rule in front of it so only trusted addresses can reach it.", feedback: "A firewall helps, but the service still runs and can still be reached or misconfigured. If nobody needs it, don't defend it - remove it." },
+        { text: "Keep it running and protect it with a long, strong password so nobody can log in.", feedback: "A strong password still leaves a running service to attack or brute-force. An unused service should be switched off, not merely locked." },
+        { text: "Keep it running but move it to an unusual high-numbered port so scanners are less likely to find it.", feedback: "Moving the port is obscurity - scanners find it anyway, and it's still running. Something nobody uses should be removed, not hidden." },
       ],
     },
   },

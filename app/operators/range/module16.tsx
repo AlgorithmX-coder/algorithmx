@@ -428,7 +428,7 @@ export const MODULE16: ModuleDef = {
       q: "Why is the report, not the break-in, the real deliverable?",
       options: [
         { text: "Because the client can only become safer by acting on a clear, scored, fixable report.", correct: true, feedback: "Right - the value is a fixed vulnerability, and that comes from the report." },
-        { text: "Because breaking in doesn't really count unless it's recorded on video.", feedback: "It's not about proof-of-drama - it's that the client can only act on a clear write-up." },
+        { text: "Because the report is what proves to the client that you actually managed to break in.", feedback: "Proof of access matters, but the report's real job is to let the client fix the problem - a clear, scored write-up, not just evidence you got in." },
         { text: "Because writing up reports is simply easier than doing the hacking.", feedback: "A good report is its own hard skill - and it's the one that delivers the value." },
         { text: "Because, in the end, the flag is the only thing that matters.", feedback: "A flag isn't a deliverable; the finding, severity, impact and fix are." },
       ],
@@ -461,12 +461,12 @@ export const MODULE16: ModuleDef = {
     ],
     Interactive: PortfolioLab,
     check: {
-      q: "What makes your portfolio valuable to a university or employer?",
+      q: "The client says they've fixed a finding from your report. Before you close it off, what should you do?",
       options: [
-        { text: "It's concrete, ethical, hands-on evidence of real skills across attack and defence.", correct: true, feedback: "Right - real findings, honestly reported, are exactly what stands out." },
-        { text: "It mainly proves to people that you watched some videos.", feedback: "It's more than that - it's a record of work you actually did." },
-        { text: "It automatically guarantees you a job in the industry.", feedback: "No guarantees - but it's genuine, demonstrable proof of ability, which opens doors." },
-        { text: "It's only really valuable if you managed to find a zero-day.", feedback: "It's the breadth and the honest, clear reporting that count, not a single rare bug." },
+        { text: "Retest it yourself to confirm the hole is really closed - the fix may be incomplete or reintroduce the bug.", correct: true, feedback: "Right - a fix isn't proven until it's verified. Retest against the original finding to be sure the issue is genuinely gone, not just partly patched." },
+        { text: "Take the client's word that it's fixed and mark the finding closed in your report.", feedback: "A fix often misses an edge case or gets undone later. Don't close a finding on trust - confirm it by retesting." },
+        { text: "Leave retesting to the client - verifying their own fix is their job, not yours.", feedback: "The client can't objectively verify their own fix against your attack - retesting the finding is part of the engagement you deliver." },
+        { text: "Only retest the finding if the client specifically asks you to check it again.", feedback: "Retesting is how you stand behind the report; waiting to be asked can leave a hole open that everyone assumes is closed." },
       ],
     },
   },

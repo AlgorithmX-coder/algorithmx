@@ -535,7 +535,7 @@ export const MODULE9: ModuleDef = {
     check: {
       q: "Two breached sites both salt their passwords - one used SHA-256, the other bcrypt. Why do the bcrypt site's users fare far better?",
       options: [
-        { text: "bcrypt is deliberately slow, so each guess costs the attacker far more; salt stops precomputed tables but doesn't slow guessing a single known hash.", correct: true, feedback: "Right - salt and slowness do different jobs. Salt kills rainbow tables; the deliberate slowness is what makes brute-forcing each hash impractical." },
+        { text: "bcrypt is deliberately slow, so each guess costs the attacker far more; salt only blocks precomputed tables, not per-hash guessing.", correct: true, feedback: "Right - salt and slowness do different jobs. Salt kills rainbow tables; the deliberate slowness is what makes brute-forcing each hash impractical." },
         { text: "bcrypt encrypts the password with a secret key, so the attacker can't read it back without stealing that key too.", feedback: "bcrypt hashes, it doesn't encrypt - there's no key to steal. Its advantage here is that it's slow by design." },
         { text: "bcrypt hides the salt inside the hash, so unlike SHA-256 the attacker never gets to see the salt at all.", feedback: "The salt isn't meant to be secret - it's stored with the hash in both cases. The real difference is bcrypt's cost, not a hidden salt." },
         { text: "SHA-256 produces a shorter output, which leaves the attacker fewer possibilities to search through.", feedback: "Hash length isn't the issue; SHA-256 being fast is - it lets an attacker try millions of guesses a second." },

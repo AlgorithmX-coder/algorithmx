@@ -538,9 +538,9 @@ export const MODULE7: ModuleDef = {
     check: {
       q: "The admin page wasn't linked anywhere, yet you opened it just by typing its address. What does that prove?",
       options: [
-        { text: "Hiding a page isn't protecting it - access has to be enforced on the server, not just left off the menu.", correct: true, feedback: "Right - that's forced browsing. If a URL exists, assume someone reaches it; the control is a permission check, not obscurity." },
+        { text: "Hiding a page isn't protecting it - access must be enforced on the server, not left off the menu.", correct: true, feedback: "Right - that's forced browsing. If a URL exists, assume someone reaches it; the control is a permission check, not obscurity." },
         { text: "The page was accidentally made public; normally a link is required before a browser can reach it.", feedback: "No link is ever required - any URL can be typed directly. The page needed a permission check, not a hidden link." },
-        { text: "Your browser must have cached the admin URL from an earlier, authorised visit.", feedback: "No cache was involved - you reached it by typing the path. Unlinked doesn't mean unreachable." },
+        { text: "Your browser must have cached the admin URL from an earlier authorised visit and reopened it for you.", feedback: "No cache was involved - you reached it by typing the path. Unlinked doesn't mean unreachable." },
         { text: "A search engine had indexed the admin page and leaked its address to you.", feedback: "You found it by guessing the path, not via a search engine. Hidden pages are still reachable." },
       ],
     },
