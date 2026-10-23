@@ -97,25 +97,13 @@ function SortSurface({ items, hint, onSolved }: { items: SortItem[]; hint: strin
 /* ── decision: a judgment call with one right answer ── */
 type Decision = { prompt: string; options: { text: string; correct?: boolean; feedback: string }[] };
 function DecisionCard({ decision, onSolved }: { decision: Decision; onSolved: () => void }) {
-  const [opts] = useState(() => shuffle(decision.options));
-  const [picked, setPicked] = useState<number | null>(null);
-  const [solved, setSolved] = useState(false);
   return (
     <div style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: 14, padding: 18 }}>
-      <div style={{ fontSize: 14, color: C.ink, lineHeight: 1.55, marginBottom: 12, fontFamily: DISP, fontWeight: 600 }}>{decision.prompt}</div>
-      <div style={{ display: "grid", gap: 8 }}>
-        {opts.map((o, i) => {
-          const isP = picked === i;
-          return (
-            <div key={i}>
-              <button onClick={() => { setPicked(i); if (o.correct) { setSolved(true); onSolved(); } }} disabled={solved} className="co-opt" style={{ width: "100%", textAlign: "left", padding: "11px 13px", borderRadius: 9, border: `1px solid ${isP ? (o.correct ? C.green : C.red) : C.line}`, background: isP ? (o.correct ? "rgba(85,217,140,.08)" : "rgba(242,109,114,.06)") : C.carbon, color: C.ink, fontFamily: "var(--font-plex-sans),system-ui,sans-serif", fontSize: 14, cursor: solved ? "default" : "pointer" }}>
-                <span style={{ fontFamily: MONO, fontSize: 12, color: isP ? (o.correct ? C.green : C.red) : C.mute, marginRight: 9 }}>{isP ? (o.correct ? "✓" : "✗") : String.fromCharCode(65 + i)}</span>{o.text}
-              </button>
-              {isP && <div style={{ padding: "8px 13px 2px", fontSize: 13, color: o.correct ? "#bff3d3" : C.soft, lineHeight: 1.5 }}>{o.feedback}</div>}
-            </div>
-          );
-        })}
-      </div>
+      <AnswerReveal
+        prompt={decision.prompt}
+        options={decision.options.map((o) => ({ text: o.text, correct: o.correct, reason: o.feedback }))}
+        onAnswered={() => onSolved()}
+      />
     </div>
   );
 }
@@ -355,11 +343,18 @@ const DRILLS: DrillCfg[] = [
 function DrillRunner({ stages, success, onSolved }: { stages: Stage[]; success: string; onSolved: () => void }) {
   const [si, setSi] = useState(0);
   const [done, setDone] = useState(false);
-  function stepSolved() { if (si + 1 < stages.length) setTimeout(() => setSi((n) => n + 1), 650); else { setDone(true); onSolved(); } }
+  const [cleared, setCleared] = useState(false);
+  function next() { if (si + 1 < stages.length) { setSi((n) => n + 1); setCleared(false); } else { setDone(true); onSolved(); } }
   return (
     <div style={{ display: "grid", gap: 12 }}>
       {stages.length > 1 && <div style={{ fontFamily: MONO, fontSize: 11.5, color: C.indigo2 }}>Step {si + 1} of {stages.length}</div>}
-      {!done && <StageView key={si} stage={stages[si]} onSolved={stepSolved} />}
+      {!done && <StageView key={si} stage={stages[si]} onSolved={() => setCleared(true)} />}
+      {!done && cleared && (
+        <div className="co-anim co-pop" style={{ display: "flex", alignItems: "center", gap: 14, flexWrap: "wrap", padding: "11px 14px", borderRadius: 10, background: "rgba(85,217,140,.08)", border: `1px solid ${C.green}55` }}>
+          <span style={{ fontFamily: MONO, fontSize: 12.5, color: C.green, fontWeight: 700 }}>✓ Step {si + 1} cleared</span>
+          <Btn tone="g" onClick={next} style={{ marginLeft: "auto" }}>{si + 1 < stages.length ? "Next step →" : "Done →"}</Btn>
+        </div>
+      )}
       {done && <div className="co-anim co-pop" style={{ padding: "11px 14px", borderRadius: 10, background: "rgba(85,217,140,.08)", border: `1px solid ${C.green}55`, fontSize: 13, color: "#bff3d3", lineHeight: 1.5 }}>✓ {success}</div>}
     </div>
   );
@@ -414,13 +409,20 @@ const CAP_STAGES: Stage[] = [
 function CapstoneChallenge({ onDone }: { onDone: () => void }) {
   const [phase, setPhase] = useState(0);
   const [won, setWon] = useState(false);
-  function solved() { if (phase + 1 < CAP_STAGES.length) setTimeout(() => setPhase((p) => p + 1), 650); else setWon(true); }
+  const [cleared, setCleared] = useState(false);
+  function next() { if (phase + 1 < CAP_STAGES.length) { setPhase((p) => p + 1); setCleared(false); } else setWon(true); }
   const pct = (phase / CAP_STAGES.length) * 100;
   return (
     <div style={{ display: "grid", gap: 14 }}>
       <div style={{ fontFamily: MONO, fontSize: 11, color: C.mute }}>Sableline · full kickoff · step {Math.min(phase + 1, CAP_STAGES.length)} of {CAP_STAGES.length}</div>
       <div style={{ height: 6, borderRadius: 999, background: "rgba(255,255,255,0.07)", overflow: "hidden" }}><div style={{ height: "100%", width: `${won ? 100 : pct}%`, background: `linear-gradient(90deg, ${C.indigo}, ${C.amber})`, transition: "width .4s" }} /></div>
-      {!won && <StageView key={phase} stage={CAP_STAGES[phase]} onSolved={solved} />}
+      {!won && <StageView key={phase} stage={CAP_STAGES[phase]} onSolved={() => setCleared(true)} />}
+      {!won && cleared && (
+        <div className="co-anim co-pop" style={{ display: "flex", alignItems: "center", gap: 14, flexWrap: "wrap", padding: "11px 14px", borderRadius: 10, background: "rgba(85,217,140,.08)", border: `1px solid ${C.green}55` }}>
+          <span style={{ fontFamily: MONO, fontSize: 12.5, color: C.green, fontWeight: 700 }}>✓ Step {phase + 1} cleared</span>
+          <Btn tone="g" onClick={next} style={{ marginLeft: "auto" }}>{phase + 1 < CAP_STAGES.length ? "Next step →" : "Finish the challenge →"}</Btn>
+        </div>
+      )}
       {won && (
         <div className="co-anim co-pop" style={{ textAlign: "center", padding: "20px", borderRadius: 14, background: "rgba(85,217,140,.08)", border: `1px solid ${C.green}55` }}>
           <div style={{ fontFamily: MONO, fontSize: 11, letterSpacing: ".2em", color: C.green, fontWeight: 700 }}>CHALLENGE COMPLETE</div>

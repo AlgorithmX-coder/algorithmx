@@ -518,6 +518,7 @@ function DrillSurface({ cfg, onSolved }: { cfg: DrillCfg; onSolved: () => void }
   const [res, setRes] = useState<(RangeRunResult & { authed?: boolean }) | null>(null);
   const [showHint, setShowHint] = useState(false);
   const [solved, setSolved] = useState(false);
+  const [stepCleared, setStepCleared] = useState(false);
 
   useEffect(() => {
     let live = true;
@@ -533,10 +534,11 @@ function DrillSurface({ cfg, onSolved }: { cfg: DrillCfg; onSolved: () => void }
     const r = step.surface === "login" ? sc.attemptLogin(val, pass) : sc.search(val);
     setRes(r);
     if (step.done(r, val)) {
-      if (si + 1 < cfg.steps.length) setTimeout(() => { setSi(si + 1); setVal(""); setPass(""); setRes(null); setShowHint(false); }, 650);
+      if (si + 1 < cfg.steps.length) setStepCleared(true);
       else { setSolved(true); onSolved(); }
     }
   }
+  function nextStep() { setSi(si + 1); setVal(""); setPass(""); setRes(null); setShowHint(false); setStepCleared(false); }
 
   return (
     <div style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: 14, overflow: "hidden" }}>
@@ -557,11 +559,17 @@ function DrillSurface({ cfg, onSolved }: { cfg: DrillCfg; onSolved: () => void }
         )}
         <Palette tokens={step.palette} onInsert={(t) => setVal(val + t)} />
         <div style={{ display: "flex", gap: 12, alignItems: "center", flexWrap: "wrap", marginTop: 14 }}>
-          <Btn tone="i" onClick={run} disabled={!sc || solved}>{step.surface === "login" ? "RUN LOGIN →" : "RUN SEARCH →"}</Btn>
+          <Btn tone="i" onClick={run} disabled={!sc || solved || stepCleared}>{step.surface === "login" ? "RUN LOGIN →" : "RUN SEARCH →"}</Btn>
           <button onClick={() => setVal("")} style={{ background: "none", border: "none", color: C.soft, fontFamily: MONO, fontSize: 12, cursor: "pointer", textDecoration: "underline", textUnderlineOffset: 3 }}>clear</button>
         </div>
         {res && <ResultView r={res} />}
-        {!solved && (
+        {stepCleared && !solved && (
+          <div className="co-anim co-pop" style={{ marginTop: 13, display: "flex", alignItems: "center", gap: 14, flexWrap: "wrap", padding: "11px 14px", borderRadius: 10, background: "rgba(85,217,140,.08)", border: `1px solid ${C.green}55` }}>
+            <span style={{ fontFamily: MONO, fontSize: 12.5, color: C.green, fontWeight: 700 }}>✓ Step {si + 1} cleared</span>
+            <Btn tone="g" onClick={nextStep} style={{ marginLeft: "auto" }}>Next step →</Btn>
+          </div>
+        )}
+        {!solved && !stepCleared && (
           <div style={{ marginTop: 12 }}>
             {!showHint ? (
               <button onClick={() => setShowHint(true)} style={{ background: "none", border: "none", color: C.indigo2, fontFamily: MONO, fontSize: 12, cursor: "pointer", textDecoration: "underline", textUnderlineOffset: 3 }}>hint</button>
@@ -656,6 +664,7 @@ const CAP_STEPS: CapStep[] = [
 function CapstoneChallenge({ onDone }: { onDone: () => void }) {
   const [sc, setSc] = useState<ScenarioRange | null>(null);
   const [phase, setPhase] = useState(0); // 0,1 = injection steps; 2 = crack; 3 = reuse
+  const [capCleared, setCapCleared] = useState(false);
   const [email, setEmail] = useState(""); const [pass, setPass] = useState(""); const [term, setTerm] = useState("");
   const [res, setRes] = useState<(RangeRunResult & { authed?: boolean }) | null>(null);
   const [showHint, setShowHint] = useState(false);
@@ -676,8 +685,9 @@ function CapstoneChallenge({ onDone }: { onDone: () => void }) {
     if (!sc || !step) return;
     const r = step.surface === "login" ? sc.attemptLogin(email, pass) : sc.search(term);
     setRes(r);
-    if (step.done(r)) setTimeout(() => { setRes(null); setShowHint(false); setEmail(""); setPass(""); setTerm(""); setPhase(phase + 1); }, 700);
+    if (step.done(r)) setCapCleared(true);
   }
+  function nextCapStep() { setRes(null); setShowHint(false); setEmail(""); setPass(""); setTerm(""); setCapCleared(false); setPhase(phase + 1); }
   function confirmCrack() {
     if (pick === null) return;
     const e = RAINBOW[pick];
@@ -713,10 +723,16 @@ function CapstoneChallenge({ onDone }: { onDone: () => void }) {
               )}
               <Palette tokens={step.palette} onInsert={(t) => setField(field + t)} />
               <div style={{ display: "flex", gap: 12, alignItems: "center", flexWrap: "wrap", marginTop: 14 }}>
-                <Btn tone="i" onClick={runStep}>{step.surface === "login" ? "RUN LOGIN →" : "RUN SEARCH →"}</Btn>
+                <Btn tone="i" onClick={runStep} disabled={capCleared}>{step.surface === "login" ? "RUN LOGIN →" : "RUN SEARCH →"}</Btn>
                 <button onClick={() => setField("")} style={{ background: "none", border: "none", color: C.soft, fontFamily: MONO, fontSize: 12, cursor: "pointer", textDecoration: "underline", textUnderlineOffset: 3 }}>clear</button>
               </div>
               {res && <ResultView r={res} />}
+              {capCleared && (
+                <div className="co-anim co-pop" style={{ marginTop: 13, display: "flex", alignItems: "center", gap: 14, flexWrap: "wrap", padding: "11px 14px", borderRadius: 10, background: "rgba(85,217,140,.08)", border: `1px solid ${C.green}55` }}>
+                  <span style={{ fontFamily: MONO, fontSize: 12.5, color: C.green, fontWeight: 700 }}>✓ Step {phase + 1} cleared</span>
+                  <Btn tone="g" onClick={nextCapStep} style={{ marginLeft: "auto" }}>Next step →</Btn>
+                </div>
+              )}
               <div style={{ marginTop: 12, display: "flex", gap: 14, alignItems: "center", flexWrap: "wrap" }}>
                 {!showHint ? (
                   <button onClick={() => setShowHint(true)} style={{ background: "none", border: "none", color: C.indigo2, fontFamily: MONO, fontSize: 12, cursor: "pointer", textDecoration: "underline", textUnderlineOffset: 3 }}>hint</button>

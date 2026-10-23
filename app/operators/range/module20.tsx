@@ -134,28 +134,18 @@ function TellPicker({ tells }: { tells: Tell[] }) {
 }
 
 function ScenarioSurface({ scene, onSolved }: { scene: Scene; onSolved: () => void }) {
-  const [picked, setPicked] = useState<number | null>(null);
   const [solved, setSolved] = useState(false);
-  const [decision] = useState(() => shuffle(scene.decision));
   return (
     <div style={{ display: "grid", gap: 14 }}>
       <MediaCard scene={scene} />
       {scene.tells && <TellPicker tells={scene.tells} />}
       <div>
         <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: ".08em", color: AI, fontWeight: 700, margin: "0 0 8px" }}>YOUR DECISION · what do you do? (this is the pass)</div>
-        <div style={{ display: "grid", gap: 8 }}>
-          {decision.map((d, i) => {
-            const isP = picked === i;
-            return (
-              <div key={i}>
-                <button onClick={() => { setPicked(i); if (d.ok && !solved) { setSolved(true); onSolved(); } }} className="co-opt" style={{ width: "100%", textAlign: "left", padding: "10px 12px", borderRadius: 9, border: `1px solid ${isP ? (d.ok ? C.green : C.red) : C.line}`, background: isP ? (d.ok ? "rgba(85,217,140,.08)" : "rgba(242,109,114,.06)") : C.panel, color: C.ink, fontFamily: MONO, fontSize: 12.5, cursor: "pointer" }}>
-                  <span style={{ color: isP ? (d.ok ? C.green : C.red) : C.mute, marginRight: 8 }}>{isP ? (d.ok ? "✓" : "✗") : String.fromCharCode(65 + i)}</span>{d.text}
-                </button>
-                {isP && <div style={{ padding: "7px 12px 2px", fontSize: 12.5, color: d.ok ? "#bff3d3" : C.soft, lineHeight: 1.5 }}>{d.why}</div>}
-              </div>
-            );
-          })}
-        </div>
+        <AnswerReveal
+          options={scene.decision.map((d) => ({ text: d.text, correct: d.ok, reason: d.why }))}
+          onAnswered={() => { setSolved(true); onSolved(); }}
+          mono
+        />
       </div>
       {solved && <div className="co-anim co-pop" style={{ fontFamily: MONO, fontSize: 12.5, color: C.green }}>✓ verified, not trusted. That decision beats the fake no matter how good it is.</div>}
     </div>
@@ -399,13 +389,20 @@ const CAP_STEPS: Step[] = [
 function CapstoneChallenge({ onDone }: { onDone: () => void }) {
   const [phase, setPhase] = useState(0);
   const [won, setWon] = useState(false);
-  function solved() { if (phase + 1 < CAP_STEPS.length) setTimeout(() => setPhase((p) => p + 1), 650); else setWon(true); }
+  const [cleared, setCleared] = useState(false);
+  function next() { if (phase + 1 < CAP_STEPS.length) { setPhase((p) => p + 1); setCleared(false); } else setWon(true); }
   const pct = (phase / CAP_STEPS.length) * 100;
   return (
     <div style={{ display: "grid", gap: 14 }}>
       <div style={{ fontFamily: MONO, fontSize: 11, color: C.mute }}>Sableline · coordinated attack · step {Math.min(phase + 1, CAP_STEPS.length)} of {CAP_STEPS.length}</div>
       <div style={{ height: 6, borderRadius: 999, background: "rgba(255,255,255,0.07)", overflow: "hidden" }}><div style={{ height: "100%", width: `${won ? 100 : pct}%`, background: `linear-gradient(90deg, ${FAKE}, ${AI})`, transition: "width .4s" }} /></div>
-      {!won && <StepView key={phase} step={CAP_STEPS[phase]} onSolved={solved} />}
+      {!won && <StepView key={phase} step={CAP_STEPS[phase]} onSolved={() => setCleared(true)} />}
+      {!won && cleared && (
+        <div className="co-anim co-pop" style={{ display: "flex", alignItems: "center", gap: 14, flexWrap: "wrap", padding: "11px 14px", borderRadius: 10, background: "rgba(85,217,140,.08)", border: `1px solid ${C.green}55` }}>
+          <span style={{ fontFamily: MONO, fontSize: 12.5, color: C.green, fontWeight: 700 }}>✓ Step {phase + 1} cleared</span>
+          <Btn tone="g" onClick={next} style={{ marginLeft: "auto" }}>{phase + 1 < CAP_STEPS.length ? "Next step →" : "Finish the challenge →"}</Btn>
+        </div>
+      )}
       {won && (
         <div className="co-anim co-pop" style={{ textAlign: "center", padding: "20px", borderRadius: 14, background: "rgba(85,217,140,.08)", border: `1px solid ${C.green}55` }}>
           <div style={{ fontFamily: MONO, fontSize: 11, letterSpacing: ".2em", color: C.green, fontWeight: 700 }}>CHALLENGE COMPLETE</div>

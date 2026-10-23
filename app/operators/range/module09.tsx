@@ -339,11 +339,18 @@ const DRILLS: DrillCfg[] = [
 function DrillRunner({ stages, success, onSolved }: { stages: Stage[]; success: string; onSolved: () => void }) {
   const [si, setSi] = useState(0);
   const [done, setDone] = useState(false);
-  function stepSolved() { if (si + 1 < stages.length) setTimeout(() => setSi((n) => n + 1), 650); else { setDone(true); onSolved(); } }
+  const [cleared, setCleared] = useState(false);
+  function next() { if (si + 1 < stages.length) { setSi((n) => n + 1); setCleared(false); } else { setDone(true); onSolved(); } }
   return (
     <div style={{ display: "grid", gap: 12 }}>
       {stages.length > 1 && <div style={{ fontFamily: MONO, fontSize: 11.5, color: C.indigo2 }}>Step {si + 1} of {stages.length}</div>}
-      {!done && <StageView key={si} stage={stages[si]} onSolved={stepSolved} />}
+      {!done && <StageView key={si} stage={stages[si]} onSolved={() => setCleared(true)} />}
+      {!done && cleared && (
+        <div className="co-anim co-pop" style={{ display: "flex", alignItems: "center", gap: 14, flexWrap: "wrap", padding: "11px 14px", borderRadius: 10, background: "rgba(85,217,140,.08)", border: `1px solid ${C.green}55` }}>
+          <span style={{ fontFamily: MONO, fontSize: 12.5, color: C.green, fontWeight: 700 }}>✓ Step {si + 1} cleared</span>
+          <Btn tone="g" onClick={next} style={{ marginLeft: "auto" }}>{si + 1 < stages.length ? "Next step →" : "Done →"}</Btn>
+        </div>
+      )}
       {done && <div className="co-anim co-pop" style={{ padding: "11px 14px", borderRadius: 10, background: "rgba(85,217,140,.08)", border: `1px solid ${C.green}55`, fontSize: 13, color: "#bff3d3", lineHeight: 1.5 }}>✓ {success}</div>}
     </div>
   );
@@ -391,13 +398,20 @@ const CAP_STAGES: Stage[] = [
 function CapstoneChallenge({ onDone }: { onDone: () => void }) {
   const [phase, setPhase] = useState(0);
   const [won, setWon] = useState(false);
-  function solved() { if (phase + 1 < CAP_STAGES.length) setTimeout(() => setPhase((p) => p + 1), 650); else setWon(true); }
+  const [cleared, setCleared] = useState(false);
+  function next() { if (phase + 1 < CAP_STAGES.length) { setPhase((p) => p + 1); setCleared(false); } else setWon(true); }
   const pct = (phase / CAP_STAGES.length) * 100;
   return (
     <div style={{ display: "grid", gap: 14 }}>
       <div style={{ fontFamily: MONO, fontSize: 11, color: C.mute }}>Sableline · full crack · step {Math.min(phase + 1, CAP_STAGES.length)} of {CAP_STAGES.length}</div>
       <div style={{ height: 6, borderRadius: 999, background: "rgba(255,255,255,0.07)", overflow: "hidden" }}><div style={{ height: "100%", width: `${won ? 100 : pct}%`, background: `linear-gradient(90deg, ${C.indigo}, ${C.amber})`, transition: "width .4s" }} /></div>
-      {!won && <StageView key={phase} stage={CAP_STAGES[phase]} onSolved={solved} />}
+      {!won && <StageView key={phase} stage={CAP_STAGES[phase]} onSolved={() => setCleared(true)} />}
+      {!won && cleared && (
+        <div className="co-anim co-pop" style={{ display: "flex", alignItems: "center", gap: 14, flexWrap: "wrap", padding: "11px 14px", borderRadius: 10, background: "rgba(85,217,140,.08)", border: `1px solid ${C.green}55` }}>
+          <span style={{ fontFamily: MONO, fontSize: 12.5, color: C.green, fontWeight: 700 }}>✓ Step {phase + 1} cleared</span>
+          <Btn tone="g" onClick={next} style={{ marginLeft: "auto" }}>{phase + 1 < CAP_STAGES.length ? "Next step →" : "Finish the challenge →"}</Btn>
+        </div>
+      )}
       {won && (
         <div className="co-anim co-pop" style={{ textAlign: "center", padding: "20px", borderRadius: 14, background: "rgba(85,217,140,.08)", border: `1px solid ${C.green}55` }}>
           <div style={{ fontFamily: MONO, fontSize: 11, letterSpacing: ".2em", color: C.green, fontWeight: 700 }}>CHALLENGE COMPLETE</div>
