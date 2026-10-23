@@ -11,7 +11,7 @@
  * ladder, FOUR drills, and a chained capstone. */
 
 import { useEffect, useState } from "react";
-import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary, shuffle, AnswerReveal } from "./Engagement";
+import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary, AnswerReveal } from "./Engagement";
 
 /* ───────────────────────── glossary ───────────────────────── */
 
@@ -260,7 +260,7 @@ function CombineLab({ onDone }: { onDone: () => void }) {
 /* ───────────────────────── defend lab: pick what reduces exposure ───────────────────────── */
 
 function PickExposureFixLab({ onDone }: { onDone: () => void }) {
-  const [opts] = useState(() => shuffle([
+  const [opts] = useState(() => ([
     { code: "Publish a 'meet the team' page listing everyone's personal emails", ok: false, why: "This hands an attacker the email scheme and named targets - exactly the start of what you just did." },
     { code: "Name the internal staff-portal URL in a public job advert", ok: false, why: "That advertises your attack surface. Keep internal hostnames out of anything public." },
     { code: "Use role-based addresses, keep internal URLs private, and scrub metadata", ok: true, why: "Remove the email pattern (so no it@/careers@ leaks a format), the named URL and the leaked metadata, and the attacker's easy derivation stops working. This is the fix." },
@@ -272,7 +272,6 @@ function PickExposureFixLab({ onDone }: { onDone: () => void }) {
       <AnswerReveal
         options={opts.map((o) => ({ text: o.code, correct: o.ok, reason: o.why }))}
         onAnswered={() => onDone()}
-        doShuffle={false}
         mono
       />
     </div>

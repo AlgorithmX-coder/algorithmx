@@ -11,7 +11,7 @@
  * check, a FOUR-stage capture with a hint ladder, FOUR drills, and a capstone. */
 
 import { useEffect, useState } from "react";
-import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary, shuffle, AnswerReveal } from "./Engagement";
+import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary, AnswerReveal } from "./Engagement";
 import ExplainQuiz from "./ExplainQuiz";
 
 /* ───────────────────────── glossary ───────────────────────── */
@@ -313,7 +313,7 @@ function HiddenFieldLab({ onDone }: { onDone: () => void }) {
 /* ───────────────────────── defend lab: pick the safe handling ───────────────────────── */
 
 function PickServerTruthLab({ onDone }: { onDone: () => void }) {
-  const [opts] = useState(() => shuffle([
+  const [opts] = useState(() => ([
     { code: `Multiply the quantity by the price the browser sent with the order`, ok: false, why: "The bug: it uses the price the client sent (total = request.price * qty). That's exactly what you tampered." },
     { code: `Turn the price the browser sent into a number, then multiply by quantity`, ok: false, why: "Parsing the value (Number(request.price)) doesn't make it trustworthy - it's still the number the client chose to send." },
     { code: `Look the price up in the server's own database and multiply that by quantity`, ok: true, why: "The server looks up the real price itself (db.priceOf(itemId)) and ignores anything the client sent. This is the fix - the server owns the truth." },
@@ -325,7 +325,6 @@ function PickServerTruthLab({ onDone }: { onDone: () => void }) {
       <AnswerReveal
         options={opts.map((o) => ({ text: o.code, correct: o.ok, reason: o.why }))}
         onAnswered={() => onDone()}
-        doShuffle={false}
       />
     </div>
   );

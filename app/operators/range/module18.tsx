@@ -15,7 +15,7 @@
  * industry{} (the sourced editorial intro) is authored from the research brief. */
 
 import { useEffect, useState } from "react";
-import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary, shuffle, AnswerReveal } from "./Engagement";
+import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary, AnswerReveal } from "./Engagement";
 import ExplainQuiz from "./ExplainQuiz";
 
 /* ───────────────────────── glossary ───────────────────────── */
@@ -342,7 +342,7 @@ function IdorLab({ onDone }: { onDone: () => void }) {
 /* ───────────────────────── defend lab: pick the real fix ───────────────────────── */
 
 function PickDefenceLab({ onDone }: { onDone: () => void }) {
-  const [opts] = useState(() => shuffle([
+  const [opts] = useState(() => ([
     { code: `use a random-looking id (UUID) instead of a guessable number`, ok: false, why: "Harder to guess, but not a fix: anyone who ever sees a valid id (shared link, logs, the app itself) can still read it. Obscurity is not authorisation." },
     { code: `on every request, check the object belongs to the caller`, ok: true, why: "The real fix: authorise the OBJECT, not just the login. The server must confirm 'does user 1007 own this record?' before returning it, on every endpoint. Pair it with least privilege and private buckets." },
     { code: `send the id in a request header instead of in the URL`, ok: false, why: "Same data, different place. The attacker just changes the header. Moving the id does not add a permission check." },
@@ -354,7 +354,6 @@ function PickDefenceLab({ onDone }: { onDone: () => void }) {
       <AnswerReveal
         options={opts.map((o) => ({ text: o.code, correct: o.ok, reason: o.why }))}
         onAnswered={() => onDone()}
-        doShuffle={false}
         mono
       />
     </div>

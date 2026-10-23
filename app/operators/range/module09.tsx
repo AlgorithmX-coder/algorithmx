@@ -13,7 +13,7 @@
  * FOUR-stage capture with a hint ladder, FOUR drills, and a chained capstone. */
 
 import { useEffect, useState } from "react";
-import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary, shuffle, AnswerReveal } from "./Engagement";
+import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary, AnswerReveal } from "./Engagement";
 
 /* ───────────────────────── real hashing ───────────────────────── */
 
@@ -280,7 +280,7 @@ function LiveHashLab({ onDone }: { onDone: () => void }) {
 /* ───────────────────────── defend lab: pick the right storage ───────────────────────── */
 
 function PickStorageLab({ onDone }: { onDone: () => void }) {
-  const [opts] = useState(() => shuffle([
+  const [opts] = useState(() => ([
     { code: "Store it as a fast, old-style hash with no salt added (MD5)", ok: false, why: "Fast and unsalted (MD5), exactly what you cracked with a wordlist in seconds." },
     { code: "Store it as a fast general-purpose hash with no salt added (SHA-256)", ok: false, why: "Still a fast, unsalted general-purpose hash (SHA-256). A dictionary attack walks right through it, as in stage two." },
     { code: "Store it as a fast general-purpose hash run through twice, still no salt", ok: false, why: "Running a fast hash twice (SHA-256 of SHA-256) is still fast, and still unsalted. It barely slows a wordlist attack down." },
@@ -292,7 +292,6 @@ function PickStorageLab({ onDone }: { onDone: () => void }) {
       <AnswerReveal
         options={opts.map((o) => ({ text: o.code, correct: o.ok, reason: o.why }))}
         onAnswered={() => onDone()}
-        doShuffle={false}
       />
     </div>
   );

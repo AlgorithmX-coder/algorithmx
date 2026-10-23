@@ -10,7 +10,7 @@
  * FOUR-stage capture with a hint ladder, FOUR drills, and a chained capstone. */
 
 import { useEffect, useState } from "react";
-import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary, shuffle, AnswerReveal } from "./Engagement";
+import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary, AnswerReveal, useShuffled } from "./Engagement";
 
 /* ───────────────────────── glossary ───────────────────────── */
 
@@ -91,7 +91,7 @@ function PickSurface({ header, rows, hint, onSolved }: { header: string; rows: R
 /* ── order: reconstruct the timeline by sequencing events ── */
 type OrderItem = { label: string; pos: number };
 function OrderSurface({ items, hint, onSolved }: { items: OrderItem[]; hint: string; onSolved: () => void }) {
-  const [shuffled] = useState(() => { const a = [...items]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; });
+  const shuffled = useShuffled(items);
   const [seq, setSeq] = useState<string[]>([]);
   const [checked, setChecked] = useState<null | boolean>(null);
   const [solved, setSolved] = useState(false);
@@ -257,7 +257,7 @@ function AnomalyLab({ onDone }: { onDone: () => void }) {
 /* ───────────────────────── defend lab: catch it soonest ───────────────────────── */
 
 function CatchSoonestLab({ onDone }: { onDone: () => void }) {
-  const [opts] = useState(() => shuffle([
+  const [opts] = useState(() => ([
     { code: "Auto-alert on a burst of failed logins from one IP at an odd hour", ok: true, why: "Right. That indicator fires before the login succeeds, so you can respond before any data leaves the building." },
     { code: "Review the server logs by hand in the monthly security meeting", ok: false, why: "Far too slow. The data was exported minutes after the break-in, long before a monthly review would spot it." },
     { code: "Keep only the last day of logs to save on storage costs", ok: false, why: "Short retention saves money but destroys the trail. You cannot investigate what you have already deleted." },
@@ -269,7 +269,6 @@ function CatchSoonestLab({ onDone }: { onDone: () => void }) {
       <AnswerReveal
         options={opts.map((o) => ({ text: o.code, correct: o.ok, reason: o.why }))}
         onAnswered={() => onDone()}
-        doShuffle={false}
         mono
       />
     </div>

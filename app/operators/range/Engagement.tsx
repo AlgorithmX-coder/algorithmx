@@ -553,6 +553,23 @@ export default function Engagement({
  *     lesson/defend checks, the shell's own Next button, which onAnswered unlocks
  *     on the correct pick) */
 export type RevealOption = { text: ReactNode; correct?: boolean; reason: ReactNode };
+
+/* Shuffle an array on the CLIENT only, after mount. The server and the first
+ * client render both return the input order (so they match - no hydration
+ * mismatch); the shuffle then happens once, post-mount. Snapshots `items` the
+ * way a useState initializer would, so later prop changes are ignored. */
+export function useShuffled<T>(items: T[]): T[] {
+  const [arr, setArr] = useState(items);
+  useEffect(() => {
+    setArr((prev) => {
+      const a = [...prev];
+      for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+      return a;
+    });
+  }, []);
+  return arr;
+}
+
 export function AnswerReveal({
   options, onAnswered, onContinue, continueLabel = "Continue →", mono = false, doShuffle = true, prompt,
 }: {
@@ -564,11 +581,20 @@ export function AnswerReveal({
   doShuffle?: boolean;
   prompt?: ReactNode;
 }) {
-  const [opts] = useState(() => {
-    const a = options.map((o, i) => ({ ...o, _i: i }));
-    if (doShuffle) for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
-    return a;
-  });
+  // Shuffle AFTER mount, never during render. The server and the first client
+  // render both show the authored order, so they match (no hydration mismatch);
+  // the options then shuffle once, on the client, after mounting. Still a fresh
+  // order each attempt, and `wrong`/`solved` are empty at that point so the
+  // reorder is safe.
+  const [opts, setOpts] = useState(() => options.map((o, i) => ({ ...o, _i: i })));
+  useEffect(() => {
+    if (!doShuffle) return;
+    setOpts((prev) => {
+      const a = [...prev];
+      for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+      return a;
+    });
+  }, [doShuffle]);
   const [wrong, setWrong] = useState<number[]>([]);
   const [solved, setSolved] = useState(false);
   return (

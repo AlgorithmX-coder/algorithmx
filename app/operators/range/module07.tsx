@@ -15,7 +15,7 @@
  * chained capstone. */
 
 import { useEffect, useState } from "react";
-import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary, shuffle, AnswerReveal } from "./Engagement";
+import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary, AnswerReveal } from "./Engagement";
 import ExplainQuiz from "./ExplainQuiz";
 
 /* ───────────────────────── glossary ───────────────────────── */
@@ -265,7 +265,7 @@ function IdorLab({ onDone }: { onDone: () => void }) {
 /* ───────────────────────── defend lab: pick the real access check ───────────────────────── */
 
 function PickAccessCheckLab({ onDone }: { onDone: () => void }) {
-  const [opts] = useState(() => shuffle([
+  const [opts] = useState(() => ([
     { code: `Return whatever record the id in the request asks for`, ok: false, why: "The bug itself: it returns whatever id is asked for, with no ownership check. Exactly what you exploited." },
     { code: `Scramble the id so it is hard to guess, then return that record`, ok: false, why: "Obscurity, not access control. The id still leaks (logs, sharing) and the access is still never checked." },
     { code: `On every request, check the logged-in user owns that record before returning it`, ok: true, why: "A server-side authorisation check on every access (canAccess(user, id)), deny by default. This is the fix - it doesn't matter if the id is guessed." },
@@ -277,7 +277,6 @@ function PickAccessCheckLab({ onDone }: { onDone: () => void }) {
       <AnswerReveal
         options={opts.map((o) => ({ text: o.code, correct: o.ok, reason: o.why }))}
         onAnswered={() => onDone()}
-        doShuffle={false}
       />
     </div>
   );

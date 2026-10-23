@@ -246,7 +246,10 @@ function AuthorisedLab({ onDone }: { onDone: () => void }) {
     { t: "Reading your own company's public homepage source", ok: true },
     { t: "Trying passwords on a stranger's email 'just to see'", ok: false },
   ];
-  const [idx] = useState(() => Math.floor(Math.random() * CASES.length));
+  // Pick the scenario after mount, not during render, so the server and first
+  // client render agree (no hydration mismatch); it then varies per attempt.
+  const [idx, setIdx] = useState(0);
+  useEffect(() => { setIdx(Math.floor(Math.random() * CASES.length)); }, []);
   const c = CASES[idx];
   const [answer, setAnswer] = useState<null | boolean>(null);
   const correct = answer !== null && answer === c.ok;

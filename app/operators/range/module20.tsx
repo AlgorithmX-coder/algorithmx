@@ -15,7 +15,7 @@
  * industry{} authored from the research brief (Arup, Sumsub, WPP, C2PA). */
 
 import { useState } from "react";
-import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary, shuffle, AnswerReveal } from "./Engagement";
+import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary, AnswerReveal } from "./Engagement";
 
 /* ───────────────────────── glossary ───────────────────────── */
 
@@ -78,7 +78,7 @@ function MediaCard({ scene }: { scene: Scene }) {
         <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "11px 14px" }}>
           <span style={{ width: 30, height: 30, borderRadius: "50%", background: AI, display: "grid", placeItems: "center", color: "#0b0820", fontWeight: 700 }}>▶</span>
           <div style={{ display: "flex", gap: 2, alignItems: "center", flex: 1 }}>
-            {Array.from({ length: 44 }).map((_, i) => <span key={i} style={{ width: 2.5, height: 5 + Math.abs(Math.sin(i * 0.9)) * 20, background: C.mute, borderRadius: 2, opacity: 0.6 }} />)}
+            {Array.from({ length: 44 }).map((_, i) => <span key={i} style={{ width: 2.5, height: Math.round(5 + Math.abs(Math.sin(i * 0.9)) * 20), background: C.mute, borderRadius: 2, opacity: 0.6 }} />)}
           </div>
           <span style={{ fontFamily: MONO, fontSize: 11, color: C.mute }}>0:14</span>
         </div>
@@ -295,7 +295,7 @@ function DetectVsVerifyLab({ onDone }: { onDone: () => void }) {
 /* ───────────────────────── defend lab ───────────────────────── */
 
 function PickDefenceLab({ onDone }: { onDone: () => void }) {
-  const [opts] = useState(() => shuffle([
+  const [opts] = useState(() => ([
     { code: `train staff to spot deepfake tells in calls and video`, ok: false, why: "Useful awareness, but a losing bet on its own: the best fakes have no tells and detection gets weaker every year. Never the primary control." },
     { code: `buy the strongest deepfake-detection tool on the market`, ok: false, why: "Detectors help at scale but lose the arms race against new generators, and can be bypassed. A useful layer, not the foundation." },
     { code: `verify money requests out-of-band and require two approvers`, ok: true, why: "The control that moves the needle: confirm any payment or bank-detail change through a known channel, require two people for large transfers, and use a code word for sensitive requests. A process, not a detector." },
@@ -307,7 +307,6 @@ function PickDefenceLab({ onDone }: { onDone: () => void }) {
       <AnswerReveal
         options={opts.map((o) => ({ text: o.code, correct: o.ok, reason: o.why }))}
         onAnswered={() => onDone()}
-        doShuffle={false}
         mono
       />
     </div>

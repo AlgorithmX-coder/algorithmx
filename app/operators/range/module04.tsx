@@ -15,7 +15,7 @@
  * clients, and a chained capstone - all hands-on. */
 
 import { useEffect, useState } from "react";
-import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary, shuffle, AnswerReveal } from "./Engagement";
+import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary, AnswerReveal } from "./Engagement";
 
 /* ───────────────────────── glossary ───────────────────────── */
 
@@ -351,7 +351,7 @@ function TokenDecodeLab({ onDone }: { onDone: () => void }) {
 /* ───────────────────────── defend lab: pick the safe session design ───────────────────────── */
 
 function PickSafeSessionLab({ onDone }: { onDone: () => void }) {
-  const [opts] = useState(() => shuffle([
+  const [opts] = useState(() => ([
     { code: `Put the user and their role into the cookie as readable, reversible text`, ok: false, why: "This is the bug: the role lives in a token the user can read and rewrite (base64 is just encoding). Exactly what you just forged." },
     { code: `Store the role in the cookie with a check-code the browser can also work out`, ok: false, why: "A checksum anyone can recompute isn't a signature. If the client can regenerate it, the client can still forge it." },
     { code: `Scramble the role with encryption, using a key shipped in the browser's code`, ok: false, why: "Encryption helps, but a key shipped in the browser code is findable; the attacker just re-encrypts their own role." },
@@ -363,7 +363,6 @@ function PickSafeSessionLab({ onDone }: { onDone: () => void }) {
       <AnswerReveal
         options={opts.map((o) => ({ text: o.code, correct: o.ok, reason: o.why }))}
         onAnswered={() => onDone()}
-        doShuffle={false}
       />
     </div>
   );

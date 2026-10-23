@@ -9,7 +9,7 @@
  * drills, and a chained capstone. */
 
 import { useState } from "react";
-import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary, shuffle, AnswerReveal } from "./Engagement";
+import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary, AnswerReveal, useShuffled } from "./Engagement";
 
 /* ───────────────────────── glossary ───────────────────────── */
 
@@ -94,7 +94,7 @@ function DecisionCard({ decision, onSolved }: { decision: Decision; onSolved: ()
 /* ── order: sequence the IR lifecycle ── */
 type OrderItem = { label: string; pos: number };
 function OrderSurface({ items, hint, onSolved }: { items: OrderItem[]; hint: string; onSolved: () => void }) {
-  const [shuffled] = useState(() => { const a = [...items]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; });
+  const shuffled = useShuffled(items);
   const [seq, setSeq] = useState<string[]>([]);
   const [checked, setChecked] = useState<null | boolean>(null);
   const [solved, setSolved] = useState(false);
@@ -225,7 +225,7 @@ function TriageLab({ onDone }: { onDone: () => void }) {
 /* ───────────────────────── defend lab: what matters most ───────────────────────── */
 
 function PrepLab({ onDone }: { onDone: () => void }) {
-  const [opts] = useState(() => shuffle([
+  const [opts] = useState(() => ([
     { code: "Buy the most expensive firewall on the market", ok: false, why: "Tools help, but a breach in progress is won or lost on process and practice, not on one shiny box." },
     { code: "Plan to figure out the response once a breach actually happens", ok: false, why: "The worst time to invent a plan is during a live incident. You execute a plan then; you don't write one." },
     { code: "A tested IR plan, clean backups, central logging, and rehearsed roles", ok: true, why: "Preparation is what separates a minutes-long response from a months-long one - the plan, backups, logging and tabletop rehearsals, all done before anything happens." },
@@ -237,7 +237,6 @@ function PrepLab({ onDone }: { onDone: () => void }) {
       <AnswerReveal
         options={opts.map((o) => ({ text: o.code, correct: o.ok, reason: o.why }))}
         onAnswered={() => onDone()}
-        doShuffle={false}
       />
     </div>
   );

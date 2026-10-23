@@ -11,7 +11,7 @@
  * ladder, FOUR drills, and a chained capstone. */
 
 import { useState } from "react";
-import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary, shuffle, AnswerReveal } from "./Engagement";
+import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary, AnswerReveal } from "./Engagement";
 
 /* ───────────────────────── glossary ───────────────────────── */
 
@@ -264,7 +264,7 @@ function ScanLab({ onDone }: { onDone: () => void }) {
 /* ───────────────────────── defend lab: pick the fix ───────────────────────── */
 
 function PickFixLab({ onDone }: { onDone: () => void }) {
-  const [opts] = useState(() => shuffle([
+  const [opts] = useState(() => ([
     { code: "Move RDP to port 33890 so scanners miss it", ok: false, why: "Obscurity. Scanners sweep all ports, so the service is still exposed and attacked." },
     { code: "Leave it open, but rely on a very strong password", ok: false, why: "Exposed RDP is brute-forced and exploited continuously regardless. Take it off the open internet." },
     { code: "Rename the admin account so attackers can't target the login", ok: false, why: "Still obscurity. The login is reachable either way, and attackers enumerate usernames anyway." },
@@ -276,7 +276,6 @@ function PickFixLab({ onDone }: { onDone: () => void }) {
       <AnswerReveal
         options={opts.map((o) => ({ text: o.code, correct: o.ok, reason: o.why }))}
         onAnswered={() => onDone()}
-        doShuffle={false}
         mono
       />
     </div>

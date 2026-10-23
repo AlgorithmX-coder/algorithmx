@@ -10,7 +10,7 @@
  * ladder, FOUR drills, and a chained capstone. */
 
 import { useEffect, useState } from "react";
-import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary, shuffle, AnswerReveal } from "./Engagement";
+import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary, AnswerReveal } from "./Engagement";
 import ExplainQuiz from "./ExplainQuiz";
 
 /* ───────────────────────── glossary ───────────────────────── */
@@ -231,7 +231,7 @@ function ChainLab({ onDone }: { onDone: () => void }) {
 /* ───────────────────────── defend lab: break the chain ───────────────────────── */
 
 function BreakChainLab({ onDone }: { onDone: () => void }) {
-  const [opts] = useState(() => shuffle([
+  const [opts] = useState(() => ([
     { code: "Only fix Critical-rated bugs and ignore all the small stuff", ok: false, why: "The small stuff is exactly what chains into Criticals - ignoring it is how this breach happened." },
     { code: "Add more paths to robots.txt so crawlers skip them", ok: false, why: "That advertises even more sensitive paths - the opposite of a fix." },
     { code: "Break any one link in the chain, like not web-exposing backups", ok: true, why: "Defence in depth - remove any single link (keep backups off the web, protect them with access control, don't name sensitive paths in robots.txt) and the whole chain collapses. That's why small fixes matter." },
@@ -243,7 +243,6 @@ function BreakChainLab({ onDone }: { onDone: () => void }) {
       <AnswerReveal
         options={opts.map((o) => ({ text: o.code, correct: o.ok, reason: o.why }))}
         onAnswered={() => onDone()}
-        doShuffle={false}
       />
     </div>
   );

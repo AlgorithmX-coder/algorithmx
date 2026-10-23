@@ -9,7 +9,7 @@
  * drills, and a chained capstone. The portfolio's closing piece. */
 
 import { useState } from "react";
-import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary, shuffle, AnswerReveal } from "./Engagement";
+import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary, AnswerReveal, useShuffled } from "./Engagement";
 
 /* ───────────────────────── glossary ───────────────────────── */
 
@@ -49,7 +49,7 @@ const SEV_COLOR: Record<string, string> = { Low: C.soft, Medium: C.amber, High: 
 /* ── order: sequence steps ── */
 type OrderItem = { label: string; pos: number };
 function OrderSurface({ items, intro, hint, onSolved }: { items: OrderItem[]; intro: string; hint: string; onSolved: () => void }) {
-  const [shuffled] = useState(() => { const a = [...items]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; });
+  const shuffled = useShuffled(items);
   const [seq, setSeq] = useState<string[]>([]);
   const [checked, setChecked] = useState<null | boolean>(null);
   const [solved, setSolved] = useState(false);
@@ -229,7 +229,7 @@ function ScoreLab({ onDone }: { onDone: () => void }) {
 /* ───────────────────────── defend lab: the portfolio ───────────────────────── */
 
 function PortfolioLab({ onDone }: { onDone: () => void }) {
-  const [opts] = useState(() => shuffle([
+  const [opts] = useState(() => ([
     { code: "It proves to people that you watched some security videos", ok: false, why: "It's far more than that - it's a record of real work you actually did, end to end." },
     { code: "It guarantees you a job in cyber security", ok: false, why: "No guarantees - but it's genuine, demonstrable proof of ability, which is what opens doors." },
     { code: "It's hands-on evidence of real skill across attack and defence", ok: true, why: "Right - sixteen real findings, honestly reported, mapped to attack and defence. Concrete, ethical, hands-on proof is exactly what stands out to a university or employer." },
@@ -241,7 +241,6 @@ function PortfolioLab({ onDone }: { onDone: () => void }) {
       <AnswerReveal
         options={opts.map((o) => ({ text: o.code, correct: o.ok, reason: o.why }))}
         onAnswered={() => onDone()}
-        doShuffle={false}
       />
     </div>
   );

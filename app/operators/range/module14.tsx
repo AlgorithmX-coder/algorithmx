@@ -9,7 +9,7 @@
  * FOUR-stage capture with a hint ladder, FOUR drills, and a chained capstone. */
 
 import { useState } from "react";
-import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary, shuffle, AnswerReveal } from "./Engagement";
+import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary, AnswerReveal, useShuffled } from "./Engagement";
 import ExplainQuiz from "./ExplainQuiz";
 
 /* ───────────────────────── glossary ───────────────────────── */
@@ -85,7 +85,7 @@ function SeveritySurface({ rows, hint, onSolved }: { rows: SevRow[]; hint: strin
 /* ── order: build the report structure ── */
 type OrderItem = { label: string; pos: number };
 function OrderSurface({ items, hint, onSolved }: { items: OrderItem[]; hint: string; onSolved: () => void }) {
-  const [shuffled] = useState(() => { const a = [...items]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; });
+  const shuffled = useShuffled(items);
   const [seq, setSeq] = useState<string[]>([]);
   const [checked, setChecked] = useState<null | boolean>(null);
   const [solved, setSolved] = useState(false);
@@ -247,7 +247,7 @@ function ScoreLab({ onDone }: { onDone: () => void }) {
 /* ───────────────────────── defend lab: handle reports well ───────────────────────── */
 
 function HandleReportsLab({ onDone }: { onDone: () => void }) {
-  const [opts] = useState(() => shuffle([
+  const [opts] = useState(() => ([
     { code: "Threaten legal action against anyone who reports a bug", ok: false, why: "That drives findings public or underground and leaves you less safe, not more." },
     { code: "Ignore reports unless they include a working exploit", ok: false, why: "That discourages good-faith reporting and leaves real issues unfixed." },
     { code: "Publish a security contact and VDP, and fix on a sensible timeline", ok: true, why: "Make it easy and safe to report, acknowledge fast, treat researchers as allies, consider a bug bounty, and act on what comes in. That's how bugs get fixed." },
@@ -259,7 +259,6 @@ function HandleReportsLab({ onDone }: { onDone: () => void }) {
       <AnswerReveal
         options={opts.map((o) => ({ text: o.code, correct: o.ok, reason: o.why }))}
         onAnswered={() => onDone()}
-        doShuffle={false}
       />
     </div>
   );
