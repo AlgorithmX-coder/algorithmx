@@ -99,7 +99,7 @@ function SeveritySurface({ rows, hint, onSolved }: { rows: SevRow[]; hint: strin
               <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
                 {bands.map((b) => <button key={b} onClick={() => { setPick((x) => ({ ...x, [r.finding]: b })); setChecked(false); }} className="co-opt" style={{ padding: "4px 11px", borderRadius: 7, border: `1px solid ${pick[r.finding] === b ? SEV_COLOR[b] : C.line}`, background: "transparent", color: pick[r.finding] === b ? SEV_COLOR[b] : C.soft, fontFamily: MONO, fontSize: 11.5, cursor: "pointer" }}>{b}</button>)}
               </div>
-              {checked && wrong && <div style={{ marginTop: 8, fontFamily: MONO, fontSize: 11.5, color: C.amber }}>↳ {r.note}</div>}
+              {((checked && wrong) || solved) && <div style={{ marginTop: 8, fontFamily: MONO, fontSize: 11.5, color: solved ? C.green : C.amber }}>↳ {r.note}</div>}
             </div>
           );
         })}

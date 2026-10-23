@@ -63,7 +63,7 @@ function ClassifySurface({ intro, items, optA, optB, hint, onSolved }: { intro: 
               <span style={{ flex: "1 1 220px", fontSize: 13.5, color: C.ink, lineHeight: 1.4 }}>{it.label}</span>
               <button onClick={() => { setPick((x) => ({ ...x, [it.label]: "a" })); setChecked(false); }} className="co-opt" style={{ padding: "4px 10px", borderRadius: 7, border: `1px solid ${p === "a" ? optA.color : C.line}`, background: "transparent", color: p === "a" ? optA.color : C.soft, fontFamily: MONO, fontSize: 11.5, cursor: "pointer" }}>{optA.label}</button>
               <button onClick={() => { setPick((x) => ({ ...x, [it.label]: "b" })); setChecked(false); }} className="co-opt" style={{ padding: "4px 10px", borderRadius: 7, border: `1px solid ${p === "b" ? optB.color : C.line}`, background: "transparent", color: p === "b" ? optB.color : C.soft, fontFamily: MONO, fontSize: 11.5, cursor: "pointer" }}>{optB.label}</button>
-              {checked && wrong && <div style={{ flexBasis: "100%", fontFamily: MONO, fontSize: 11.5, color: C.amber }}>↳ {it.note}</div>}
+              {((checked && wrong) || solved) && <div style={{ flexBasis: "100%", fontFamily: MONO, fontSize: 11.5, color: solved ? C.green : C.amber }}>↳ {it.note}</div>}
             </div>
           );
         })}

@@ -93,7 +93,7 @@ function IdentifySurface({ rows, options, hint, onSolved }: { rows: IdRow[]; opt
                   <button key={o} onClick={() => { setPick((x) => ({ ...x, [r.hash]: o })); setChecked(false); }} className="co-opt" style={{ padding: "4px 10px", borderRadius: 7, border: `1px solid ${pick[r.hash] === o ? C.indigo : C.line}`, background: pick[r.hash] === o ? "rgba(139,123,255,.1)" : "transparent", color: pick[r.hash] === o ? C.indigo2 : C.soft, fontFamily: MONO, fontSize: 11.5, cursor: "pointer" }}>{o}</button>
                 ))}
               </div>
-              {checked && wrong && <div style={{ marginTop: 7, fontFamily: MONO, fontSize: 11.5, color: C.amber }}>↳ {r.note}</div>}
+              {((checked && wrong) || solved) && <div style={{ marginTop: 7, fontFamily: MONO, fontSize: 11.5, color: solved ? C.green : C.amber }}>↳ {r.note}</div>}
             </div>
           );
         })}
