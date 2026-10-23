@@ -9,7 +9,7 @@
  * drills, and a chained capstone. */
 
 import { useEffect, useState } from "react";
-import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary, shuffle } from "./Engagement";
+import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary, shuffle, AnswerReveal } from "./Engagement";
 
 /* ───────────────────────── glossary ───────────────────────── */
 
@@ -241,7 +241,6 @@ function TriageLab({ onDone }: { onDone: () => void }) {
 /* ───────────────────────── defend lab: what matters most ───────────────────────── */
 
 function PrepLab({ onDone }: { onDone: () => void }) {
-  const [picked, setPicked] = useState<number | null>(null);
   const [opts] = useState(() => shuffle([
     { code: "Buy the most expensive firewall on the market", ok: false, why: "Tools help, but a breach in progress is won or lost on process and practice, not on one shiny box." },
     { code: "Plan to figure out the response once a breach actually happens", ok: false, why: "The worst time to invent a plan is during a live incident. You execute a plan then; you don't write one." },
@@ -251,19 +250,11 @@ function PrepLab({ onDone }: { onDone: () => void }) {
   return (
     <div style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: 12, padding: "15px 16px" }}>
       <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: ".1em", color: C.indigo, fontWeight: 700, marginBottom: 10 }}>▶ APPLY THE STANDARD · what most determines how well a breach is handled?</div>
-      <div style={{ display: "grid", gap: 8 }}>
-        {opts.map((o, i) => {
-          const isP = picked === i;
-          return (
-            <div key={i}>
-              <button onClick={() => { setPicked(i); if (o.ok) onDone(); }} className="co-opt" style={{ width: "100%", textAlign: "left", padding: "10px 12px", borderRadius: 9, border: `1px solid ${isP ? (o.ok ? C.green : C.red) : C.line}`, background: isP ? (o.ok ? "rgba(85,217,140,.08)" : "rgba(242,109,114,.06)") : C.carbon, color: C.ink, fontFamily: "var(--font-plex-sans),system-ui,sans-serif", fontSize: 13.5, cursor: "pointer", lineHeight: 1.4 }}>
-                <span style={{ fontFamily: MONO, color: isP ? (o.ok ? C.green : C.red) : C.mute, marginRight: 8 }}>{isP ? (o.ok ? "✓" : "✗") : String.fromCharCode(65 + i)}</span>{o.code}
-              </button>
-              {isP && <div style={{ padding: "7px 12px 2px", fontSize: 12.5, color: o.ok ? "#bff3d3" : C.soft, lineHeight: 1.5 }}>{o.why}</div>}
-            </div>
-          );
-        })}
-      </div>
+      <AnswerReveal
+        options={opts.map((o) => ({ text: o.code, correct: o.ok, reason: o.why }))}
+        onAnswered={() => onDone()}
+        doShuffle={false}
+      />
     </div>
   );
 }

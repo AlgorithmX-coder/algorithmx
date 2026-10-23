@@ -540,36 +540,91 @@ export default function Engagement({
  * Options are SHUFFLED once on mount, so the correct answer is never in a
  * predictable position (no "always pick the middle one" tell). Selection is
  * tracked by the option object, not its index, so shuffling is safe. */
-function CheckBox({ check, onPass }: { check: Check; onPass: () => void }) {
-  const [picked, setPicked] = useState<number | null>(null);
-  const [done, setDone] = useState(false);
+/* ---------- shared answer reveal (UAT A1) ----------
+ * One place that implements the "learn from every option" behaviour the owner
+ * asked for, so checks, scenario decisions and apply-the-fix labs all behave the
+ * same instead of each re-implementing it. Owner's chosen model:
+ *   - options are shuffled on mount
+ *   - a WRONG pick marks that option ✗ and shows why it fails, but does NOT
+ *     reveal the correct answer or let you move on - you pick again
+ *   - the CORRECT pick marks it ✓ and reveals a one-line reason under EVERY
+ *     option (so even a lucky first guess sees the full comparison), then locks
+ *   - nothing auto-advances: the player reads, then clicks Continue (or, for the
+ *     lesson/defend checks, the shell's own Next button, which onAnswered unlocks
+ *     on the correct pick) */
+export type RevealOption = { text: ReactNode; correct?: boolean; reason: ReactNode };
+export function AnswerReveal({
+  options, onAnswered, onContinue, continueLabel = "Continue →", mono = false, doShuffle = true, prompt,
+}: {
+  options: RevealOption[];
+  onAnswered?: (correct: boolean) => void;
+  onContinue?: () => void;
+  continueLabel?: string;
+  mono?: boolean;
+  doShuffle?: boolean;
+  prompt?: ReactNode;
+}) {
   const [opts] = useState(() => {
-    const a = check.options.map((o, i) => ({ ...o, _i: i }));
-    for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+    const a = options.map((o, i) => ({ ...o, _i: i }));
+    if (doShuffle) for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
     return a;
   });
+  const [wrong, setWrong] = useState<number[]>([]);
+  const [solved, setSolved] = useState(false);
+  return (
+    <div>
+      {prompt && <div style={{ fontSize: 14, color: C.ink, lineHeight: 1.55, marginBottom: 12, fontFamily: DISP, fontWeight: 600 }}>{prompt}</div>}
+      <div style={{ display: "grid", gap: 8 }}>
+        {opts.map((o, i) => {
+          const isWrong = wrong.includes(i);
+          const markCorrect = solved && o.correct;
+          const spent = solved || isWrong;                 // can't click a spent option
+          const border = markCorrect ? C.green : isWrong ? C.red : C.line;
+          const bg = markCorrect ? "rgba(74,222,128,.08)" : isWrong ? "rgba(255,91,98,.06)" : C.carbon;
+          const showReason = solved || isWrong;            // all reasons once solved; before that, only the wrong picks
+          const dim = solved && !o.correct && !isWrong;    // the options you never touched, after solving
+          return (
+            <div key={i}>
+              <button
+                onClick={() => { if (spent) return; if (o.correct) { setSolved(true); onAnswered?.(true); } else { setWrong((w) => [...w, i]); } }}
+                disabled={spent} className="co-opt"
+                style={{ width: "100%", textAlign: "left", padding: "11px 13px", borderRadius: 9, border: `1px solid ${border}`, background: bg, color: C.ink, fontFamily: mono ? MONO : SANS, fontSize: mono ? 12.5 : 14, cursor: spent ? "default" : "pointer", lineHeight: 1.4, opacity: dim ? 0.72 : 1 }}>
+                <span style={{ fontFamily: MONO, fontSize: 12, color: markCorrect ? C.green : isWrong ? C.red : C.mute, marginRight: 9 }}>{markCorrect ? "✓" : isWrong ? "✗" : String.fromCharCode(65 + i)}</span>
+                {o.text}
+              </button>
+              {showReason && (
+                <div style={{ padding: "7px 13px 2px", fontSize: 12.5, color: o.correct ? "#bff3d3" : C.soft, lineHeight: 1.5 }}>
+                  <span style={{ fontFamily: MONO, fontSize: 10, letterSpacing: ".06em", fontWeight: 700, color: o.correct ? C.green : C.mute, marginRight: 7 }}>{o.correct ? "WHY THIS WORKS" : "WHY NOT"}</span>{o.reason}
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+      {!solved && wrong.length > 0 && (
+        <div style={{ marginTop: 9, fontSize: 12.5, color: C.amber, fontFamily: MONO }}>Not quite - read why, then pick another.</div>
+      )}
+      {solved && onContinue && (
+        <div style={{ marginTop: 13 }}>
+          <Btn tone="i" onClick={onContinue}>{continueLabel}</Btn>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function CheckBox({ check, onPass }: { check: Check; onPass: () => void }) {
+  const [done, setDone] = useState(false);
   return (
     <div style={{ marginTop: 8, padding: "16px 18px", borderRadius: 14, border: `1px solid ${done ? C.green : C.indigo}66`, background: "rgba(139,123,255,0.06)", boxShadow: `0 0 26px -16px ${done ? C.green : C.indigo}` }}>
       <div style={{ display: "flex", gap: 10, alignItems: "baseline", marginBottom: 12, flexWrap: "wrap" }}>
         <span style={{ fontFamily: MONO, fontSize: 10, letterSpacing: ".12em", fontWeight: 700, color: "#0a0a12", background: done ? C.green : C.indigo2, borderRadius: 6, padding: "3px 9px" }}>{done ? "✓ CHECK" : "CHECK"}</span>
         <span style={{ fontFamily: DISP, fontWeight: 600, fontSize: 15.5, color: "#fff" }}>{check.q}</span>
       </div>
-      <div style={{ display: "grid", gap: 8 }}>
-        {opts.map((o, i) => {
-          const isPicked = picked === i;
-          const border = isPicked ? (o.correct ? C.green : C.red) : C.line;
-          return (
-            <div key={i}>
-              <button onClick={() => { setPicked(i); if (o.correct) { setDone(true); onPass(); } }} className="co-opt"
-                style={{ width: "100%", textAlign: "left", padding: "11px 13px", borderRadius: 9, border: `1px solid ${border}`, background: isPicked ? (o.correct ? "rgba(74,222,128,.08)" : "rgba(255,91,98,.06)") : C.carbon, color: C.ink, fontFamily: SANS, fontSize: 14, cursor: done ? "default" : "pointer" }} disabled={done}>
-                <span style={{ fontFamily: MONO, fontSize: 12, color: isPicked ? (o.correct ? C.green : C.red) : C.mute, marginRight: 9 }}>{isPicked ? (o.correct ? "✓" : "✗") : String.fromCharCode(65 + i)}</span>
-                {o.text}
-              </button>
-              {isPicked && <div style={{ padding: "8px 13px 2px", fontSize: 13, color: o.correct ? "#bff3d3" : C.soft, lineHeight: 1.5 }}>{o.feedback}</div>}
-            </div>
-          );
-        })}
-      </div>
+      <AnswerReveal
+        options={check.options.map((o) => ({ text: o.text, correct: o.correct, reason: o.feedback }))}
+        onAnswered={() => { setDone(true); onPass(); }}
+      />
     </div>
   );
 }

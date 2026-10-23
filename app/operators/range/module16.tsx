@@ -9,7 +9,7 @@
  * drills, and a chained capstone. The portfolio's closing piece. */
 
 import { useEffect, useState } from "react";
-import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary, shuffle } from "./Engagement";
+import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary, shuffle, AnswerReveal } from "./Engagement";
 
 /* ───────────────────────── glossary ───────────────────────── */
 
@@ -238,7 +238,6 @@ function ScoreLab({ onDone }: { onDone: () => void }) {
 /* ───────────────────────── defend lab: the portfolio ───────────────────────── */
 
 function PortfolioLab({ onDone }: { onDone: () => void }) {
-  const [picked, setPicked] = useState<number | null>(null);
   const [opts] = useState(() => shuffle([
     { code: "It proves to people that you watched some security videos", ok: false, why: "It's far more than that - it's a record of real work you actually did, end to end." },
     { code: "It guarantees you a job in cyber security", ok: false, why: "No guarantees - but it's genuine, demonstrable proof of ability, which is what opens doors." },
@@ -248,19 +247,11 @@ function PortfolioLab({ onDone }: { onDone: () => void }) {
   return (
     <div style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: 12, padding: "15px 16px" }}>
       <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: ".1em", color: C.indigo, fontWeight: 700, marginBottom: 10 }}>▶ THE CLOSE · what makes your portfolio valuable?</div>
-      <div style={{ display: "grid", gap: 8 }}>
-        {opts.map((o, i) => {
-          const isP = picked === i;
-          return (
-            <div key={i}>
-              <button onClick={() => { setPicked(i); if (o.ok) onDone(); }} className="co-opt" style={{ width: "100%", textAlign: "left", padding: "10px 12px", borderRadius: 9, border: `1px solid ${isP ? (o.ok ? C.green : C.red) : C.line}`, background: isP ? (o.ok ? "rgba(85,217,140,.08)" : "rgba(242,109,114,.06)") : C.carbon, color: C.ink, fontFamily: "var(--font-plex-sans),system-ui,sans-serif", fontSize: 13.5, cursor: "pointer", lineHeight: 1.4 }}>
-                <span style={{ fontFamily: MONO, color: isP ? (o.ok ? C.green : C.red) : C.mute, marginRight: 8 }}>{isP ? (o.ok ? "✓" : "✗") : String.fromCharCode(65 + i)}</span>{o.code}
-              </button>
-              {isP && <div style={{ padding: "7px 12px 2px", fontSize: 12.5, color: o.ok ? "#bff3d3" : C.soft, lineHeight: 1.5 }}>{o.why}</div>}
-            </div>
-          );
-        })}
-      </div>
+      <AnswerReveal
+        options={opts.map((o) => ({ text: o.code, correct: o.ok, reason: o.why }))}
+        onAnswered={() => onDone()}
+        doShuffle={false}
+      />
     </div>
   );
 }

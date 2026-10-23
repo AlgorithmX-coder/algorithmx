@@ -10,7 +10,7 @@
  * FOUR-stage capture with a hint ladder, FOUR drills, and a chained capstone. */
 
 import { useEffect, useState } from "react";
-import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary, shuffle } from "./Engagement";
+import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary, shuffle, AnswerReveal } from "./Engagement";
 
 /* ───────────────────────── glossary ───────────────────────── */
 
@@ -266,7 +266,6 @@ function AnomalyLab({ onDone }: { onDone: () => void }) {
 /* ───────────────────────── defend lab: catch it soonest ───────────────────────── */
 
 function CatchSoonestLab({ onDone }: { onDone: () => void }) {
-  const [picked, setPicked] = useState<number | null>(null);
   const [opts] = useState(() => shuffle([
     { code: "Auto-alert on a burst of failed logins from one IP at an odd hour", ok: true, why: "Right. That indicator fires before the login succeeds, so you can respond before any data leaves the building." },
     { code: "Review the server logs by hand in the monthly security meeting", ok: false, why: "Far too slow. The data was exported minutes after the break-in, long before a monthly review would spot it." },
@@ -276,19 +275,12 @@ function CatchSoonestLab({ onDone }: { onDone: () => void }) {
   return (
     <div style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: 12, padding: "15px 16px" }}>
       <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: ".1em", color: C.indigo, fontWeight: 700, marginBottom: 10 }}>▶ APPLY THE FIX · what catches this attack soonest?</div>
-      <div style={{ display: "grid", gap: 8 }}>
-        {opts.map((o, i) => {
-          const isP = picked === i;
-          return (
-            <div key={i}>
-              <button onClick={() => { setPicked(i); if (o.ok) onDone(); }} className="co-opt" style={{ width: "100%", textAlign: "left", padding: "10px 12px", borderRadius: 9, border: `1px solid ${isP ? (o.ok ? C.green : C.red) : C.line}`, background: isP ? (o.ok ? "rgba(85,217,140,.08)" : "rgba(242,109,114,.06)") : C.carbon, color: C.ink, fontFamily: MONO, fontSize: 12.5, cursor: "pointer", lineHeight: 1.4 }}>
-                <span style={{ color: isP ? (o.ok ? C.green : C.red) : C.mute, marginRight: 8 }}>{isP ? (o.ok ? "✓" : "✗") : String.fromCharCode(65 + i)}</span>{o.code}
-              </button>
-              {isP && <div style={{ padding: "7px 12px 2px", fontSize: 12.5, color: o.ok ? "#bff3d3" : C.soft, lineHeight: 1.5 }}>{o.why}</div>}
-            </div>
-          );
-        })}
-      </div>
+      <AnswerReveal
+        options={opts.map((o) => ({ text: o.code, correct: o.ok, reason: o.why }))}
+        onAnswered={() => onDone()}
+        doShuffle={false}
+        mono
+      />
     </div>
   );
 }
