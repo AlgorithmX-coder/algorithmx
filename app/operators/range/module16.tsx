@@ -8,7 +8,7 @@
  * lesson lab, de-biased check, a FOUR-stage capture with a hint ladder, FOUR
  * drills, and a chained capstone. The portfolio's closing piece. */
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary, shuffle, AnswerReveal } from "./Engagement";
 
 /* ───────────────────────── glossary ───────────────────────── */
@@ -208,17 +208,20 @@ function FinaleAct({ onCapture }: { onCapture: () => void }) {
 /* ───────────────────────── lesson lab: score the capstone ───────────────────────── */
 
 function ScoreLab({ onDone }: { onDone: () => void }) {
-  const [picked, setPicked] = useState<string | null>(null);
-  const correct = picked === "Critical";
-  useEffect(() => { if (correct) onDone(); }, [correct, onDone]);
   return (
     <div style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: 12, padding: "15px 16px" }}>
       <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: ".1em", color: C.indigo, fontWeight: 700, marginBottom: 9 }}>▶ TRY IT · score your capstone finding</div>
-      <div style={{ fontSize: 13.5, color: C.soft, lineHeight: 1.5, marginBottom: 10 }}>Your Part-1 chain gave remote, unauthenticated, full admin access to the whole customer database. What severity goes in the report?</div>
-      <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
-        {["Low", "Medium", "High", "Critical"].map((b) => <button key={b} onClick={() => setPicked(b)} className="co-opt" style={{ padding: "6px 13px", borderRadius: 8, border: `1px solid ${picked === b ? SEV_COLOR[b] : C.line}`, background: "transparent", color: picked === b ? SEV_COLOR[b] : C.soft, fontFamily: MONO, fontSize: 12.5, cursor: "pointer" }}>{b}</button>)}
-      </div>
-      {picked && <div style={{ marginTop: 11, fontSize: 13, color: correct ? "#bff3d3" : C.soft, lineHeight: 1.5 }}>{correct ? "✓ Critical - remote, no login, total impact. Score it straight; the client needs the truth." : "Remote, no login, whole database - that's the very top band every time."}</div>}
+      <div style={{ fontSize: 13.5, color: C.soft, lineHeight: 1.5, marginBottom: 12 }}>Your Part-1 chain gave remote, unauthenticated, full admin access to the whole customer database. What severity goes in the report?</div>
+      <AnswerReveal
+        mono doShuffle={false}
+        onAnswered={() => onDone()}
+        options={[
+          { text: "Low", reason: "Low is for cosmetic or trivial findings. Remote admin over every customer record is the opposite of trivial." },
+          { text: "Medium", reason: "Medium is for contained, limited-impact issues. Full admin access to the whole database is neither contained nor limited." },
+          { text: "High", reason: "High is tempting, but there is nothing worse left to reach - remote, no login, total control. That is the band above." },
+          { text: "Critical", correct: true, reason: "Remote, no login, total impact. That is the very top band - score it straight; the client needs the truth." },
+        ]}
+      />
     </div>
   );
 }

@@ -8,7 +8,7 @@
  * lesson lab, de-biased check, a FOUR-stage capture with a hint ladder, FOUR
  * drills, and a chained capstone. */
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary, shuffle, AnswerReveal } from "./Engagement";
 
 /* ───────────────────────── glossary ───────────────────────── */
@@ -205,23 +205,19 @@ function IncidentAct({ onCapture }: { onCapture: () => void }) {
 /* ───────────────────────── lesson lab: pick the real incident ───────────────────────── */
 
 function TriageLab({ onDone }: { onDone: () => void }) {
-  const [ALERTS] = useState(() => shuffle([
-    { t: "Daily backup finished OK", real: false },
-    { t: "Ransomware encrypting the file server right now", real: true },
-    { t: "One user locked out after a few password typos", real: false },
-    { t: "A phishing email was reported and already quarantined", real: false },
-  ]));
-  const [picked, setPicked] = useState<number | null>(null);
-  const correct = picked !== null && ALERTS[picked].real;
-  useEffect(() => { if (correct) onDone(); }, [correct, onDone]);
   return (
     <div style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: 12, padding: "15px 16px" }}>
       <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: ".1em", color: C.indigo, fontWeight: 700, marginBottom: 9 }}>▶ TRY IT · which is the real incident?</div>
-      <div style={{ fontSize: 13.5, color: C.soft, lineHeight: 1.5, marginBottom: 10 }}>Three alerts land at once. Click the one that actually needs an incident response.</div>
-      <div style={{ display: "grid", gap: 5 }}>
-        {ALERTS.map((a, i) => <button key={i} onClick={() => setPicked(i)} className="co-opt" style={{ textAlign: "left", padding: "9px 12px", borderRadius: 8, border: `1px solid ${picked === i ? (a.real ? C.green : C.red) : C.lineSoft}`, background: C.carbon, color: C.soft, fontFamily: "var(--font-plex-sans),system-ui,sans-serif", fontSize: 13.5, cursor: "pointer" }}>{a.t}</button>)}
-      </div>
-      {picked !== null && <div style={{ marginTop: 10, fontSize: 13, color: correct ? "#bff3d3" : C.soft, lineHeight: 1.5 }}>{correct ? "✓ Right - active harm in progress is the incident. The other two are routine noise." : "Look for active harm happening now, not a routine event or a minor slip."}</div>}
+      <div style={{ fontSize: 13.5, color: C.soft, lineHeight: 1.5, marginBottom: 12 }}>Four alerts land at once. Click the one that actually needs an incident response.</div>
+      <AnswerReveal
+        onAnswered={() => onDone()}
+        options={[
+          { text: "Daily backup finished OK", reason: "That is routine good news, not harm. A finished backup needs no response at all." },
+          { text: "Ransomware encrypting the file server right now", correct: true, reason: "Active harm happening this second. That is the real incident - it needs a response now, before more files are lost." },
+          { text: "One user locked out after a few password typos", reason: "Annoying for that user, but it is a routine lockout, not an attack in progress. Service-desk work, not an incident." },
+          { text: "A phishing email was reported and already quarantined", reason: "Good catch, but it is already contained. Reported and quarantined means the threat was handled, not live." },
+        ]}
+      />
     </div>
   );
 }
