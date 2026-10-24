@@ -15,7 +15,7 @@
  * industry{} (the sourced editorial intro) is authored from the research brief. */
 
 import { useEffect, useState } from "react";
-import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary, AnswerReveal } from "./Engagement";
+import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary, SpotTheFlawLab } from "./Engagement";
 import ExplainQuiz from "./ExplainQuiz";
 
 /* ───────────────────────── glossary ───────────────────────── */
@@ -342,19 +342,19 @@ function IdorLab({ onDone }: { onDone: () => void }) {
 /* ───────────────────────── defend lab: pick the real fix ───────────────────────── */
 
 function PickDefenceLab({ onDone }: { onDone: () => void }) {
-  const [opts] = useState(() => ([
-    { code: `use a random-looking id (UUID) instead of a guessable number`, ok: false, why: "Harder to guess, but not a fix: anyone who ever sees a valid id (shared link, logs, the app itself) can still read it. Obscurity is not authorisation." },
-    { code: `on every request, check the object belongs to the caller`, ok: true, why: "The real fix: authorise the OBJECT, not just the login. The server must confirm 'does user 1007 own this record?' before returning it, on every endpoint. Pair it with least privilege and private buckets." },
-    { code: `send the id in a request header instead of in the URL`, ok: false, why: "Same data, different place. The attacker just changes the header. Moving the id does not add a permission check." },
-    { code: `rate-limit the endpoint so ids can't be enumerated quickly`, ok: false, why: "Slows down mass scraping, but one direct request to a known id still returns the record. Rate limiting is not an ownership check." },
-  ]));
   return (
     <div style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: 12, padding: "15px 16px" }}>
-      <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: ".1em", color: API, fontWeight: 700, marginBottom: 10 }}>▶ APPLY THE FIX · what actually stops BOLA?</div>
-      <AnswerReveal
-        options={opts.map((o) => ({ text: o.code, correct: o.ok, reason: o.why }))}
-        onAnswered={() => onDone()}
-        mono
+      <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: ".1em", color: API, fontWeight: 700, marginBottom: 10 }}>▶ SPOT THE FLAW · which line lets BOLA happen?</div>
+      <SpotTheFlawLab
+        prompt="This endpoint has the BOLA flaw you exploited. Click the line that hands back a record without checking it belongs to the caller."
+        lines={[
+          { code: `app.get("/api/users/:id", (req, res) => {`, note: "Just defines the endpoint. Having a 'get one user' route is completely normal." },
+          { code: `  const id = req.params.id`, note: "Reading the id from the URL is fine - the id isn't the problem; what you do next is." },
+          { code: `  const record = db.users.find(id)`, note: "Looking the record up is fine too. The database did exactly what it was asked." },
+          { code: `  res.json(record)`, flaw: true, note: "Here's BOLA: it returns the record to whoever asked, with no check that it belongs to them. It needs 'if (record.ownerId !== req.user.id) return res.status(403)' before this line." },
+          { code: `})`, note: "Just closes the handler." },
+        ]}
+        onDone={onDone}
       />
     </div>
   );

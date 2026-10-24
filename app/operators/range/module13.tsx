@@ -7,7 +7,7 @@
  * check, a FOUR-stage capture with a hint ladder, FOUR drills, and a capstone. */
 
 import { useEffect, useState } from "react";
-import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary, AnswerReveal } from "./Engagement";
+import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary, AnswerReveal, MultiSelectLab } from "./Engagement";
 
 /* ───────────────────────── glossary ───────────────────────── */
 
@@ -202,18 +202,19 @@ function SpotLab({ onDone }: { onDone: () => void }) {
 /* ───────────────────────── defend lab: best defence ───────────────────────── */
 
 function BestDefenceLab({ onDone }: { onDone: () => void }) {
-  const [opts] = useState(() => ([
-    { code: "Reply to the email asking 'is this really you?'", ok: false, why: "The attacker controls that thread - they'll just confirm. Verification has to happen on a separate, known channel." },
-    { code: "Tell staff to be more careful and hope for the best", ok: false, why: "Vague fear doesn't work. You need concrete controls and a safe process, not just 'be careful'." },
-    { code: "Require out-of-band verification for money and credential requests", ok: true, why: "Layered: a process control for the con that lands, plus DMARC to block spoofing, a report-phishing button to catch the rest, and blame-free training to build the instinct. The real defence." },
-    { code: "Install a spam filter and trust it to block every phishing email", ok: false, why: "Filters catch a lot, but targeted spear-phishing and BEC from real, compromised accounts sail straight through. You still need verification." },
-  ]));
   return (
     <div style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: 12, padding: "15px 16px" }}>
-      <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: ".1em", color: C.indigo, fontWeight: 700, marginBottom: 10 }}>▶ APPLY THE FIX · how do you defend people against this?</div>
-      <AnswerReveal
-        options={opts.map((o) => ({ text: o.code, correct: o.ok, reason: o.why }))}
-        onAnswered={() => onDone()}
+      <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: ".1em", color: C.indigo, fontWeight: 700, marginBottom: 10 }}>▶ APPLY THE FIX · build the layered defence (pick all that belong)</div>
+      <MultiSelectLab
+        prompt="Social engineering beats any single control, so you defend in layers. Which of these belong in that layered defence?"
+        options={[
+          { text: "Out-of-band verification for money and credential requests", correct: true, reason: "The control that catches the con that gets through - verify on a channel you already trust, not the one the request arrived on." },
+          { text: "DMARC and SPF so spoofed sender domains are rejected", correct: true, reason: "Stops a lot of look-alike sender spoofing before it ever reaches a person." },
+          { text: "A one-click 'report phishing' button plus blame-free training", correct: true, reason: "Catches what slips through and builds the instinct, without punishing people for reporting." },
+          { text: "Reply to the suspicious email to ask if it is genuine", reason: "That just asks the attacker, who controls the thread. Verify out-of-band instead." },
+          { text: "Tell staff to simply be more careful and hope for the best", reason: "Vague fear is not a control. A layered defence is concrete process, tooling and training - not 'be careful'." },
+        ]}
+        onDone={onDone}
       />
     </div>
   );

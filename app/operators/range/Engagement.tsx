@@ -572,6 +572,7 @@ export function useShuffled<T>(items: T[]): T[] {
 
 export function AnswerReveal({
   options, onAnswered, onContinue, continueLabel = "Continue →", mono = false, doShuffle = true, prompt,
+  verdictLabels = { correct: "WHY THIS WORKS", wrong: "WHY NOT" },
 }: {
   options: RevealOption[];
   onAnswered?: (correct: boolean) => void;
@@ -580,6 +581,10 @@ export function AnswerReveal({
   mono?: boolean;
   doShuffle?: boolean;
   prompt?: ReactNode;
+  // Override the per-option reason labels. Needed for inverted questions like
+  // "which does NOT fix it?", where the picked answer is the bad option, so
+  // "WHY THIS WORKS" would read wrongly.
+  verdictLabels?: { correct: string; wrong: string };
 }) {
   // Shuffle AFTER mount, never during render. The server and the first client
   // render both show the authored order, so they match (no hydration mismatch);
@@ -620,7 +625,7 @@ export function AnswerReveal({
               </button>
               {showReason && (
                 <div style={{ padding: "7px 13px 2px", fontSize: 12.5, color: o.correct ? "#bff3d3" : C.soft, lineHeight: 1.5 }}>
-                  <span style={{ fontFamily: MONO, fontSize: 10, letterSpacing: ".06em", fontWeight: 700, color: o.correct ? C.green : C.mute, marginRight: 7 }}>{o.correct ? "WHY THIS WORKS" : "WHY NOT"}</span>{o.reason}
+                  <span style={{ fontFamily: MONO, fontSize: 10, letterSpacing: ".06em", fontWeight: 700, color: o.correct ? C.green : C.mute, marginRight: 7 }}>{o.correct ? verdictLabels.correct : verdictLabels.wrong}</span>{o.reason}
                 </div>
               )}
             </div>
@@ -633,6 +638,103 @@ export function AnswerReveal({
       {solved && onContinue && (
         <div style={{ marginTop: 13 }}>
           <Btn tone="i" onClick={onContinue}>{continueLabel}</Btn>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* "Which line is the flaw?" - a spot-the-bug format. Shows a short, readable
+ * snippet; the learner clicks the vulnerable line. A wrong pick explains why
+ * that line is fine and lets them look again; the correct pick reveals a note
+ * under every line. Lines stay in source order (no shuffle). Shell-gated: calls
+ * onDone when the flaw is found, so the beat's own Next unlocks. */
+export function SpotTheFlawLab({ prompt, lines, onDone }: { prompt?: ReactNode; lines: { code: string; flaw?: boolean; note: string }[]; onDone: () => void }) {
+  const [wrong, setWrong] = useState<number[]>([]);
+  const [solved, setSolved] = useState(false);
+  return (
+    <div>
+      {prompt && <div style={{ fontSize: 14, color: C.ink, lineHeight: 1.55, marginBottom: 12, fontFamily: DISP, fontWeight: 600 }}>{prompt}</div>}
+      <div style={{ display: "grid", gap: 5 }}>
+        {lines.map((ln, i) => {
+          const isWrong = wrong.includes(i);
+          const markFlaw = solved && ln.flaw;
+          const spent = solved || isWrong;
+          const showNote = solved || isWrong;
+          const border = markFlaw ? C.red : isWrong ? C.amber : C.line;
+          const bg = markFlaw ? "rgba(255,91,98,.08)" : isWrong ? "rgba(232,163,61,.06)" : C.carbon;
+          return (
+            <div key={i}>
+              <button
+                onClick={() => { if (spent) return; if (ln.flaw) { setSolved(true); onDone(); } else { setWrong((w) => [...w, i]); } }}
+                disabled={spent} className="co-opt"
+                style={{ width: "100%", textAlign: "left", padding: "9px 12px", borderRadius: 8, border: `1px solid ${border}`, background: bg, color: C.ink, fontFamily: MONO, fontSize: 12.5, cursor: spent ? "default" : "pointer", lineHeight: 1.5, display: "flex", gap: 11 }}>
+                <span style={{ color: markFlaw ? C.red : isWrong ? C.amber : C.mute, userSelect: "none", minWidth: 14 }}>{markFlaw ? "✗" : isWrong ? "·" : i + 1}</span>
+                <span style={{ whiteSpace: "pre-wrap" }}>{ln.code}</span>
+              </button>
+              {showNote && (
+                <div style={{ padding: "6px 13px 2px", fontSize: 12.5, color: ln.flaw ? "#ffd7d9" : C.soft, lineHeight: 1.5 }}>
+                  <span style={{ fontFamily: MONO, fontSize: 10, letterSpacing: ".06em", fontWeight: 700, color: ln.flaw ? C.red : C.mute, marginRight: 7 }}>{ln.flaw ? "THE FLAW" : "THIS LINE IS FINE"}</span>{ln.note}
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+      {!solved && wrong.length > 0 && <div style={{ marginTop: 9, fontSize: 12.5, color: C.amber, fontFamily: MONO }}>That line is fine - read why, then look again.</div>}
+    </div>
+  );
+}
+
+/* "Pick all that apply" - a multi-select format. The learner toggles options and
+ * presses Check. A check that isn't exactly right marks any wrong picks and nudges
+ * without revealing the full set; only the exact-correct set reveals every reason
+ * and unlocks. Options shuffle after mount (no hydration mismatch). Shell-gated. */
+export function MultiSelectLab({ prompt, options, onDone }: { prompt?: ReactNode; options: { text: string; correct?: boolean; reason: string }[]; onDone: () => void }) {
+  const opts = useShuffled(options);
+  const [sel, setSel] = useState<Set<number>>(() => new Set());
+  const [checked, setChecked] = useState(false);
+  const [solved, setSolved] = useState(false);
+  function toggle(i: number) { if (solved) return; setChecked(false); setSel((s) => { const n = new Set(s); if (n.has(i)) n.delete(i); else n.add(i); return n; }); }
+  function check() {
+    const allRight = opts.every((o, i) => !!o.correct === sel.has(i)) && sel.size > 0;
+    setChecked(true);
+    if (allRight) { setSolved(true); onDone(); }
+  }
+  const wrongPick = checked && !solved && opts.some((o, i) => sel.has(i) && !o.correct);
+  return (
+    <div>
+      {prompt && <div style={{ fontSize: 14, color: C.ink, lineHeight: 1.55, marginBottom: 10, fontFamily: DISP, fontWeight: 600 }}>{prompt}</div>}
+      <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: ".06em", color: C.mute, marginBottom: 8 }}>// pick ALL that apply</div>
+      <div style={{ display: "grid", gap: 8 }}>
+        {opts.map((o, i) => {
+          const picked = sel.has(i);
+          const badPick = checked && picked && !o.correct;        // you picked it, it's wrong
+          const goodPick = solved && o.correct;                   // revealed right answer
+          const showReason = solved || badPick;                   // reasons: all on solve; wrong picks on a failed check
+          const border = goodPick ? C.green : badPick ? C.red : picked ? C.indigo : C.line;
+          const bg = goodPick ? "rgba(74,222,128,.08)" : badPick ? "rgba(255,91,98,.06)" : picked ? "rgba(139,123,255,0.08)" : C.carbon;
+          const mark = goodPick ? "✓" : badPick ? "✗" : picked ? "▣" : "▢";
+          return (
+            <div key={i}>
+              <button onClick={() => toggle(i)} disabled={solved} className="co-opt"
+                style={{ width: "100%", textAlign: "left", padding: "11px 13px", borderRadius: 9, border: `1px solid ${border}`, background: bg, color: C.ink, fontFamily: SANS, fontSize: 14, cursor: solved ? "default" : "pointer", lineHeight: 1.4 }}>
+                <span style={{ fontFamily: MONO, fontSize: 13, color: goodPick ? C.green : badPick ? C.red : picked ? C.indigo2 : C.mute, marginRight: 9 }}>{mark}</span>
+                {o.text}
+              </button>
+              {showReason && (
+                <div style={{ padding: "7px 13px 2px", fontSize: 12.5, color: o.correct ? "#bff3d3" : C.soft, lineHeight: 1.5 }}>
+                  <span style={{ fontFamily: MONO, fontSize: 10, letterSpacing: ".06em", fontWeight: 700, color: o.correct ? C.green : C.mute, marginRight: 7 }}>{o.correct ? "BELONGS" : "DOESN'T BELONG"}</span>{o.reason}
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+      {!solved && (
+        <div style={{ marginTop: 12, display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
+          <Btn tone="i" onClick={check} disabled={sel.size === 0}>Check my picks</Btn>
+          {checked && <span style={{ fontFamily: MONO, fontSize: 12.5, color: C.amber }}>{wrongPick ? "One of your picks doesn't belong - see why, then adjust." : "Not the full set yet - you're missing at least one."}</span>}
         </div>
       )}
     </div>

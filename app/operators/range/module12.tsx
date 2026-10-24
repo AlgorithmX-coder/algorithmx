@@ -226,17 +226,18 @@ function TriageLab({ onDone }: { onDone: () => void }) {
 
 function PrepLab({ onDone }: { onDone: () => void }) {
   const [opts] = useState(() => ([
-    { code: "Buy the most expensive firewall on the market", ok: false, why: "Tools help, but a breach in progress is won or lost on process and practice, not on one shiny box." },
-    { code: "Plan to figure out the response once a breach actually happens", ok: false, why: "The worst time to invent a plan is during a live incident. You execute a plan then; you don't write one." },
-    { code: "A tested IR plan, clean backups, central logging, and rehearsed roles", ok: true, why: "Preparation is what separates a minutes-long response from a months-long one - the plan, backups, logging and tabletop rehearsals, all done before anything happens." },
-    { code: "Buy cyber-insurance to cover the cost of any future breach", ok: false, why: "Insurance pays some of the bill afterwards; it does nothing to contain or recover from the incident on the day. You still need the plan." },
+    { code: "A tested incident-response plan with rehearsed roles", ok: false, why: "Genuinely helps - everyone knows their job before the day comes, which is what makes a response fast." },
+    { code: "Clean, tested backups kept offline", ok: false, why: "Genuinely helps - you can recover without paying a ransom or rebuilding from nothing." },
+    { code: "Central logging so you can see what actually happened", ok: false, why: "Genuinely helps - without logs you are blind; with them you can scope and contain quickly." },
+    { code: "Cyber-insurance to cover the cost afterwards", ok: true, why: "The odd one out - it does NOT help you HANDLE the breach. It pays part of the bill later; it does nothing to contain or recover on the day. Useful, but not incident response." },
   ]));
   return (
     <div style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: 12, padding: "15px 16px" }}>
-      <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: ".1em", color: C.indigo, fontWeight: 700, marginBottom: 10 }}>▶ APPLY THE STANDARD · what most determines how well a breach is handled?</div>
+      <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: ".1em", color: C.indigo, fontWeight: 700, marginBottom: 10 }}>▶ ODD ONE OUT · which does NOT help you handle a breach?</div>
       <AnswerReveal
         options={opts.map((o) => ({ text: o.code, correct: o.ok, reason: o.why }))}
         onAnswered={() => onDone()}
+        verdictLabels={{ correct: "DOESN'T HELP HANDLE IT", wrong: "THIS GENUINELY HELPS" }}
       />
     </div>
   );
