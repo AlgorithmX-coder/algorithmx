@@ -1181,6 +1181,11 @@ function BrandCube() {
 function TrustStrip({ isLight }: { isLight: boolean }) {
   const baseColor = isLight ? "rgba(10,15,28,0.78)" : "rgba(232, 237, 255, 0.82)";
 
+  // TEMP 2026-10-24: Microsoft for Startups badge pulled from the strip at the
+  // owner's request; restore (~2026-10-31) by flipping this back to true. The
+  // same badge is also hidden in ProofBand. Keep the markup below intact.
+  const SHOW_MS_STARTUPS = false;
+
   return (
     <div
       className="lv2-telemetry"
@@ -1226,22 +1231,26 @@ function TrustStrip({ isLight }: { isLight: boolean }) {
           <span className="lv2-tel-label">Aligned</span>
         </span>
 
-        <i className="lv2-tel-div" aria-hidden />
+        {SHOW_MS_STARTUPS && (
+          <>
+            <i className="lv2-tel-div" aria-hidden />
 
-        <span className="lv2-tel-item" style={{ animationDelay: "0.19s" }}>
-          <span className="lv2-tel-plate">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/logos/microsoft-for-startups.webp"
-              alt="Microsoft for Startups"
-              width={424}
-              height={65}
-              decoding="async"
-              style={MARK_SIZE(14)}
-            />
-          </span>
-          <span className="lv2-tel-label">Backed by</span>
-        </span>
+            <span className="lv2-tel-item" style={{ animationDelay: "0.19s" }}>
+              <span className="lv2-tel-plate">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/logos/microsoft-for-startups.webp"
+                  alt="Microsoft for Startups"
+                  width={424}
+                  height={65}
+                  decoding="async"
+                  style={MARK_SIZE(14)}
+                />
+              </span>
+              <span className="lv2-tel-label">Backed by</span>
+            </span>
+          </>
+        )}
       </span>
 
       <style jsx>{`
