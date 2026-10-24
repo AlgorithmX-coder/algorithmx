@@ -357,6 +357,10 @@ export default function Engagement({
     // run never files a finding - skipping is for moving fast, not completing.
     if (idx >= 0 && idx < BEATS.length - 1) setPhase(BEATS[idx + 1].id);
   }
+  function backBeat() {
+    // Tester tool: step back to the previous section so a screen can be re-checked.
+    if (idx > 0) setPhase(BEATS[idx - 1].id);
+  }
 
   return (
     <div style={{ minHeight: "100vh", background: "transparent", color: C.ink, fontFamily: SANS, display: "grid", placeItems: "start center", padding: "44px 20px 100px", ["--world" as string]: world.accent, ["--world-soft" as string]: world.soft }}>
@@ -365,11 +369,21 @@ export default function Engagement({
       {/* tester fast-forward: on the live module platform during the testing
           phase, so a tester can jump section to section. (Gate or remove before
           public launch; skipping never files a finding, so it can't fake a pass.) */}
-      {!!onReport && idx >= 0 && idx < BEATS.length - 1 && (
-        <button onClick={skipBeat} title="Tester tool: jump to the next section without completing this one" style={{ position: "fixed", left: 14, bottom: 14, zIndex: 70, display: "flex", alignItems: "center", gap: 8, padding: "9px 14px", borderRadius: 10, border: `1px dashed ${C.amber}`, background: "rgba(13,15,22,0.94)", color: C.amber, fontFamily: MONO, fontSize: 12, fontWeight: 700, letterSpacing: ".06em", cursor: "pointer", boxShadow: "0 6px 20px rgba(0,0,0,0.4)" }}>
-          <span aria-hidden>skip ▸</span>
-          <span style={{ fontSize: 10, color: C.mute, fontWeight: 600, letterSpacing: ".04em" }}>to {BEATS[idx + 1].label} · test</span>
-        </button>
+      {!!onReport && idx >= 0 && (idx > 0 || idx < BEATS.length - 1) && (
+        <div style={{ position: "fixed", left: 14, bottom: 14, zIndex: 70, display: "flex", alignItems: "center", gap: 8 }}>
+          {idx > 0 && (
+            <button onClick={backBeat} title="Tester tool: go back to the previous section to re-check it" style={{ display: "flex", alignItems: "center", gap: 8, padding: "9px 14px", borderRadius: 10, border: `1px dashed ${C.indigo2}`, background: "rgba(13,15,22,0.94)", color: C.indigo2, fontFamily: MONO, fontSize: 12, fontWeight: 700, letterSpacing: ".06em", cursor: "pointer", boxShadow: "0 6px 20px rgba(0,0,0,0.4)" }}>
+              <span aria-hidden>◂ back</span>
+              <span style={{ fontSize: 10, color: C.mute, fontWeight: 600, letterSpacing: ".04em" }}>to {BEATS[idx - 1].label}</span>
+            </button>
+          )}
+          {idx < BEATS.length - 1 && (
+            <button onClick={skipBeat} title="Tester tool: jump to the next section without completing this one" style={{ display: "flex", alignItems: "center", gap: 8, padding: "9px 14px", borderRadius: 10, border: `1px dashed ${C.amber}`, background: "rgba(13,15,22,0.94)", color: C.amber, fontFamily: MONO, fontSize: 12, fontWeight: 700, letterSpacing: ".06em", cursor: "pointer", boxShadow: "0 6px 20px rgba(0,0,0,0.4)" }}>
+              <span aria-hidden>skip ▸</span>
+              <span style={{ fontSize: 10, color: C.mute, fontWeight: 600, letterSpacing: ".04em" }}>to {BEATS[idx + 1].label} · test</span>
+            </button>
+          )}
+        </div>
       )}
       {/* cheat sheet: a side tab, open any time, into a full-screen beginner-friendly reference */}
       {mod.cheatsheet && (
