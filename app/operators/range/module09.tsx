@@ -13,7 +13,7 @@
  * FOUR-stage capture with a hint ladder, FOUR drills, and a chained capstone. */
 
 import { useEffect, useState } from "react";
-import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary, AnswerReveal } from "./Engagement";
+import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary, SpotTheFlawLab } from "./Engagement";
 
 /* ───────────────────────── real hashing ───────────────────────── */
 
@@ -280,18 +280,19 @@ function LiveHashLab({ onDone }: { onDone: () => void }) {
 /* ───────────────────────── defend lab: pick the right storage ───────────────────────── */
 
 function PickStorageLab({ onDone }: { onDone: () => void }) {
-  const [opts] = useState(() => ([
-    { code: "Store it as a fast, old-style hash with no salt added (MD5)", ok: false, why: "Fast and unsalted (MD5), exactly what you cracked with a wordlist in seconds." },
-    { code: "Store it as a fast general-purpose hash with no salt added (SHA-256)", ok: false, why: "Still a fast, unsalted general-purpose hash (SHA-256). A dictionary attack walks right through it, as in stage two." },
-    { code: "Store it as a fast general-purpose hash run through twice, still no salt", ok: false, why: "Running a fast hash twice (SHA-256 of SHA-256) is still fast, and still unsalted. It barely slows a wordlist attack down." },
-    { code: "Store it with a slow, automatically salted password hash (bcrypt)", ok: true, why: "bcrypt salts every password automatically and is deliberately slow, defeating rainbow tables and making brute force impractical. Argon2 and scrypt do the same." },
-  ]));
   return (
     <div style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: 12, padding: "15px 16px" }}>
-      <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: ".1em", color: C.indigo, fontWeight: 700, marginBottom: 10 }}>▶ APPLY THE FIX · how should Harbour store passwords?</div>
-      <AnswerReveal
-        options={opts.map((o) => ({ text: o.code, correct: o.ok, reason: o.why }))}
-        onAnswered={() => onDone()}
+      <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: ".1em", color: C.indigo, fontWeight: 700, marginBottom: 10 }}>▶ SPOT THE FLAW · which line stores the password unsafely?</div>
+      <SpotTheFlawLab
+        prompt="This sign-up route saves a new password. Click the line that stores it in a way you could crack."
+        lines={[
+          { code: `app.post("/signup", (req, res) => {`, note: "Just defines the sign-up route. Nothing wrong with having one." },
+          { code: `  const password = req.body.password`, note: "Reading the new password from the request is normal - that's how sign-up works." },
+          { code: `  const stored = md5(password)`, flaw: true, note: "Here's the flaw: md5 is a fast, unsalted hash. A stolen database of these is cracked with a wordlist in seconds, exactly as you did. Use a slow, salted password hash - bcrypt, scrypt or argon2." },
+          { code: `  db.users.insert({ email, stored })`, note: "Saving the hashed value is fine - it's the weak hash on the line above that's the problem, not storing it." },
+          { code: `})`, note: "Just closes the handler." },
+        ]}
+        onDone={onDone}
       />
     </div>
   );
