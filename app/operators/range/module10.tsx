@@ -265,18 +265,18 @@ function ScanLab({ onDone }: { onDone: () => void }) {
 
 function PickFixLab({ onDone }: { onDone: () => void }) {
   const [opts] = useState(() => ([
-    { code: "Move RDP to port 33890 so scanners miss it", ok: false, why: "Obscurity. Scanners sweep all ports, so the service is still exposed and attacked." },
-    { code: "Leave it open, but rely on a very strong password", ok: false, why: "Exposed RDP is brute-forced and exploited continuously regardless. Take it off the open internet." },
-    { code: "Rename the admin account so attackers can't target the login", ok: false, why: "Still obscurity. The login is reachable either way, and attackers enumerate usernames anyway." },
-    { code: "Put RDP behind a VPN or allow-list, and patch the rest", ok: true, why: "Shrink and shield the attack surface: reachable only to who needs it, and everything current. The real fix." },
+    { code: "Put RDP behind a VPN so only connected staff can reach it", ok: false, why: "A genuine fix - RDP is no longer on the open internet at all." },
+    { code: "Restrict RDP to an allow-list of known admin IP addresses", ok: false, why: "A genuine fix - it limits who can even attempt a connection." },
+    { code: "Require MFA on the remote-access gateway", ok: false, why: "A genuine control - a guessed or stolen password alone no longer gets in." },
+    { code: "Move RDP to a high, unusual port so scanners miss it", ok: true, why: "This is the odd one out - it does NOT fix it. Scanners sweep every port, so the service stays just as exposed. That's security by obscurity, not a real reduction." },
   ]));
   return (
     <div style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: 12, padding: "15px 16px" }}>
-      <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: ".1em", color: C.indigo, fontWeight: 700, marginBottom: 10 }}>▶ APPLY THE FIX · how do you fix the exposed RDP?</div>
+      <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: ".1em", color: C.indigo, fontWeight: 700, marginBottom: 10 }}>▶ ODD ONE OUT · which does NOT fix the exposed RDP?</div>
       <AnswerReveal
         options={opts.map((o) => ({ text: o.code, correct: o.ok, reason: o.why }))}
         onAnswered={() => onDone()}
-        mono
+        verdictLabels={{ correct: "DOESN'T FIX IT", wrong: "THIS DOES HELP" }}
       />
     </div>
   );

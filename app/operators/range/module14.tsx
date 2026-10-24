@@ -9,7 +9,7 @@
  * FOUR-stage capture with a hint ladder, FOUR drills, and a chained capstone. */
 
 import { useState } from "react";
-import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary, AnswerReveal, useShuffled } from "./Engagement";
+import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary, AnswerReveal, useShuffled, MultiSelectLab } from "./Engagement";
 import ExplainQuiz from "./ExplainQuiz";
 
 /* ───────────────────────── glossary ───────────────────────── */
@@ -247,18 +247,19 @@ function ScoreLab({ onDone }: { onDone: () => void }) {
 /* ───────────────────────── defend lab: handle reports well ───────────────────────── */
 
 function HandleReportsLab({ onDone }: { onDone: () => void }) {
-  const [opts] = useState(() => ([
-    { code: "Threaten legal action against anyone who reports a bug", ok: false, why: "That drives findings public or underground and leaves you less safe, not more." },
-    { code: "Ignore reports unless they include a working exploit", ok: false, why: "That discourages good-faith reporting and leaves real issues unfixed." },
-    { code: "Publish a security contact and VDP, and fix on a sensible timeline", ok: true, why: "Make it easy and safe to report, acknowledge fast, treat researchers as allies, consider a bug bounty, and act on what comes in. That's how bugs get fixed." },
-    { code: "Quietly fix the bug and never acknowledge the person who reported it", ok: false, why: "Silent fixes with no acknowledgement discourage researchers from coming back, and an ignored reporter may go public. Acknowledge reports fast." },
-  ]));
   return (
     <div style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: 12, padding: "15px 16px" }}>
-      <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: ".1em", color: C.indigo, fontWeight: 700, marginBottom: 10 }}>▶ APPLY THE STANDARD · how should an organisation handle incoming reports?</div>
-      <AnswerReveal
-        options={opts.map((o) => ({ text: o.code, correct: o.ok, reason: o.why }))}
-        onAnswered={() => onDone()}
+      <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: ".1em", color: C.indigo, fontWeight: 700, marginBottom: 10 }}>▶ APPLY THE STANDARD · good report-handling (pick all that belong)</div>
+      <MultiSelectLab
+        prompt="A security team wants researchers to keep reporting bugs in good faith. Which of these belong in good report-handling?"
+        options={[
+          { text: "A published security contact and disclosure policy (VDP)", correct: true, reason: "Makes it easy and safe to report in the first place." },
+          { text: "Acknowledge a report quickly, even before it is fixed", correct: true, reason: "A fast reply keeps the researcher engaged and reduces the urge to go public." },
+          { text: "Fix on a sensible, communicated timeline", correct: true, reason: "Acting on reports, and saying when, is the whole point - and consider a bug bounty." },
+          { text: "Threaten legal action against anyone who reports a bug", reason: "That drives findings underground or straight to public disclosure, and leaves you less safe." },
+          { text: "Ignore reports unless they include a working exploit", reason: "That discourages good-faith reporting and leaves real issues unfixed." },
+        ]}
+        onDone={onDone}
       />
     </div>
   );

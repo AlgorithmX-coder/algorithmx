@@ -11,7 +11,7 @@
  * check, a FOUR-stage capture with a hint ladder, FOUR drills, and a capstone. */
 
 import { useEffect, useState } from "react";
-import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary, AnswerReveal } from "./Engagement";
+import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary, SpotTheFlawLab } from "./Engagement";
 import ExplainQuiz from "./ExplainQuiz";
 
 /* ───────────────────────── glossary ───────────────────────── */
@@ -313,18 +313,20 @@ function HiddenFieldLab({ onDone }: { onDone: () => void }) {
 /* ───────────────────────── defend lab: pick the safe handling ───────────────────────── */
 
 function PickServerTruthLab({ onDone }: { onDone: () => void }) {
-  const [opts] = useState(() => ([
-    { code: `Multiply the quantity by the price the browser sent with the order`, ok: false, why: "The bug: it uses the price the client sent (total = request.price * qty). That's exactly what you tampered." },
-    { code: `Turn the price the browser sent into a number, then multiply by quantity`, ok: false, why: "Parsing the value (Number(request.price)) doesn't make it trustworthy - it's still the number the client chose to send." },
-    { code: `Look the price up in the server's own database and multiply that by quantity`, ok: true, why: "The server looks up the real price itself (db.priceOf(itemId)) and ignores anything the client sent. This is the fix - the server owns the truth." },
-    { code: `Use the browser's price, and only look it up on the server if that field is missing`, ok: false, why: "It only falls back to the database when the field is missing; whenever the client sends a price, it still trusts it. Re-derive every time." },
-  ]));
   return (
     <div style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: 12, padding: "15px 16px" }}>
-      <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: ".1em", color: C.indigo, fontWeight: 700, marginBottom: 10 }}>▶ APPLY THE FIX · which checkout can&apos;t be tampered?</div>
-      <AnswerReveal
-        options={opts.map((o) => ({ text: o.code, correct: o.ok, reason: o.why }))}
-        onAnswered={() => onDone()}
+      <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: ".1em", color: C.indigo, fontWeight: 700, marginBottom: 10 }}>▶ SPOT THE FLAW · which line trusts the browser?</div>
+      <SpotTheFlawLab
+        prompt="This checkout lets a shopper pay a price they picked themselves. Click the line that trusts a value the browser sent."
+        lines={[
+          { code: `app.post("/checkout", (req, res) => {`, note: "Just defines the checkout route. Nothing wrong with having one." },
+          { code: `  const qty = req.body.qty`, note: "Reading the quantity from the request is normal - the shopper does choose how many." },
+          { code: `  const price = req.body.price`, flaw: true, note: "This trusts the price the browser sent. You just edited that value, so the server would charge whatever the client claims. Look the price up server-side instead: db.priceOf(itemId)." },
+          { code: `  const total = price * qty`, note: "The maths is fine; it's the price going into it that's tainted." },
+          { code: `  charge(req.user, total)`, note: "Charging is fine once the total is built from a price the server trusts." },
+          { code: `})`, note: "Just closes the handler." },
+        ]}
+        onDone={onDone}
       />
     </div>
   );
