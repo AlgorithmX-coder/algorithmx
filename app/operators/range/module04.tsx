@@ -229,7 +229,7 @@ function ResetSurface({ host, reset, onSolved }: { host: string; reset: NonNulla
     <div style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: 14, overflow: "hidden" }}>
       <WinBar host={host} />
       <div style={{ padding: 18, display: "grid", gap: 12 }}>
-        <div style={{ fontFamily: MONO, fontSize: 11.5, color: C.mute }}>// 'forgot password' emails a short reset code. Watch how the codes are made.</div>
+        <div style={{ fontFamily: MONO, fontSize: 11.5, color: C.mute }}>// 'forgot password' emails a reset code, and they are issued in sequence - each new code is the one before it, plus one.</div>
         <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
           <Btn tone="i" onClick={() => setGotYours(true)}>REQUEST A CODE FOR YOUR ACCOUNT</Btn>
           {gotYours && <Btn tone="i" onClick={() => setSentTarget(true)}>NOW REQUEST ONE FOR {reset.targetEmail}</Btn>}
@@ -473,7 +473,7 @@ const CAP_CFG: AuthConfig = {
     { email: "ceo@sableline.range", password: "x", role: "owner" },
   ],
   decoys: ["admin@sableline.com", "test@sableline.range", "root@sableline.range"],
-  reset: { yourCode: "RST-6F19", targetEmail: "ceo@sableline.range", nextCode: "RST-6F1A" },
+  reset: { yourCode: "RST-7042", targetEmail: "ceo@sableline.range", nextCode: "RST-7043" },
 };
 const CAP_STEPS: Step[] = [
   { kind: "enumerate", goal: "Sableline hired Redoubt for a full authentication review. Start by finding a real staff account.", hints: ["Only real emails get a 'wrong password' reply."] },

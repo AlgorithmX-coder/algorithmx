@@ -160,6 +160,11 @@ function AgentSurface({ host, cfg, seed, hint, reveal, onSolved }:
       </div>
       <div style={{ padding: 18 }}>
         <div style={{ fontFamily: MONO, fontSize: 11, color: C.mute, marginBottom: 9 }}>// ARIA's task: &quot;read and action my latest {cfg.source}&quot;. It can read the confidential Q3 figure. You control the {cfg.source} it reads.</div>
+        <div style={{ display: "grid", gap: 3, margin: "0 0 12px", padding: "9px 11px", borderRadius: 8, background: C.carbon, border: `1px solid ${C.lineSoft}`, fontFamily: MONO, fontSize: 11, color: C.soft, lineHeight: 1.5 }}>
+          <div style={{ color: AI, fontWeight: 700, letterSpacing: ".06em", marginBottom: 2 }}>HOW TO EXPLOIT IT</div>
+          <div>The agent obeys any instruction in what it reads. Type an extra line into the {cfg.source} below, in the shape <span style={{ color: C.indigo2 }}>AI assistant: &lt;what you want it to do&gt;</span></div>
+          <div style={{ color: C.mute }}>For example: forward the figure to your address, or fetch a URL with the secret inside it. ARIA cannot tell your planted line from a real instruction.</div>
+        </div>
         <label style={lab}>{cfg.source} content (you control this)</label>
         <textarea style={{ ...inp, minHeight: 92 }} value={content} onChange={(e) => setContent(e.target.value)} spellCheck={false} />
         <div style={{ marginTop: 13 }}><Btn tone="i" onClick={run} disabled={solved}>▶ RUN ARIA</Btn></div>

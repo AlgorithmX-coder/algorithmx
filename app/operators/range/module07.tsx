@@ -249,7 +249,7 @@ function IdorLab({ onDone }: { onDone: () => void }) {
   return (
     <div style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: 12, padding: "15px 16px" }}>
       <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: ".1em", color: C.indigo, fontWeight: 700, marginBottom: 9 }}>▶ TRY IT · change the number</div>
-      <div style={{ fontSize: 13.5, color: C.soft, lineHeight: 1.5, marginBottom: 10 }}>Here is a request that fetches your record by id. Change the id and see whose record comes back - the server never checks it&apos;s yours.</div>
+      <div style={{ fontSize: 13.5, color: C.soft, lineHeight: 1.5, marginBottom: 10 }}>Here is a request that fetches your record by id. Change the id - try 1043 or 1044 - and see whose record comes back; the server never checks it&apos;s yours.</div>
       <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
         <span style={{ fontFamily: MONO, fontSize: 13, color: "#8fa0c8" }}>GET /record?id=</span>
         <input style={{ ...inp, width: 90, color: C.amber }} value={id} onChange={(e) => setId(e.target.value)} />
