@@ -113,20 +113,20 @@ function TransformSurface({ onSolved }: { onSolved: () => void }) {
 }
 
 /* ── stage 2: Caesar brute force with live decode ── */
-function CaesarSurface({ onSolved }: { onSolved: () => void }) {
+function CaesarSurface({ onSolved, ct = CAESAR_CT, win = "vault", answerShift = 19 }: { onSolved: () => void; ct?: string; win?: string; answerShift?: number }) {
   const [shift, setShift] = useState(0);
   const [solved, setSolved] = useState(false);
   const [wrong, setWrong] = useState(false);
-  const decoded = caesar(CAESAR_CT, shift);
+  const decoded = caesar(ct, shift);
   // Stepping the shift only re-decodes; it never wins, and the output stays a
   // neutral colour so you have to actually read it. Stop on the shift that
   // turns it into English, then confirm.
   function set(n: number) { setShift(((n % 26) + 26) % 26); setWrong(false); }
-  function confirm() { if (solved) return; if (decoded.includes("vault")) { setSolved(true); onSolved(); } else setWrong(true); }
+  function confirm() { if (solved) return; if (decoded.includes(win)) { setSolved(true); onSolved(); } else setWrong(true); }
   return (
     <div style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: 14, padding: 18 }}>
       <div style={{ fontFamily: MONO, fontSize: 11, color: C.mute, marginBottom: 6 }}>INTERCEPTED CIPHERTEXT (Caesar)</div>
-      <div style={{ ...box, color: C.amber }}>{CAESAR_CT}</div>
+      <div style={{ ...box, color: C.amber }}>{ct}</div>
       <div style={{ display: "flex", gap: 10, alignItems: "center", flexWrap: "wrap", margin: "14px 0 10px" }}>
         <Btn tone="ghost" onClick={() => set(shift - 1)}>- shift</Btn>
         <span style={{ fontFamily: MONO, fontSize: 14, color: C.indigo2, minWidth: 70, textAlign: "center" }}>shift {shift}</span>
@@ -141,35 +141,35 @@ function CaesarSurface({ onSolved }: { onSolved: () => void }) {
         </div>
       )}
       {solved && <div style={{ fontFamily: MONO, fontSize: 12.5, color: C.green, marginTop: 10 }}>✓ Readable - a 25-key cipher falls to brute force in seconds.</div>}
-      <Hints hints={["Step the shift until the text turns into English. The right shift is 19."]} revealLabel="stuck? jump to the shift" onReveal={() => set(19)} />
+      <Hints hints={[`Step the shift until the text turns into English. The right shift is ${answerShift}.`]} revealLabel="stuck? jump to the shift" onReveal={() => set(answerShift)} />
     </div>
   );
 }
 
 /* ── stage 3: single-byte XOR brute force by printability ── */
-function XorSurface({ onSolved }: { onSolved: () => void }) {
+function XorSurface({ onSolved, hex = XOR_HEX, win = "drop point", answerKey = 0x3b }: { onSolved: () => void; hex?: string; win?: string; answerKey?: number }) {
   const [cands, setCands] = useState<{ key: number; text: string }[] | null>(null);
   const [selected, setSelected] = useState<number | null>(null);
   const [solved, setSolved] = useState(false);
   const [wrong, setWrong] = useState(false);
   function brute() {
     const found: { key: number; text: string }[] = [];
-    for (let k = 0; k < 256; k++) { const t = xorHex(XOR_HEX, k); if (printableRatio(t) > 0.95 && /[aeiou]{1}/i.test(t) && t.includes(" ")) found.push({ key: k, text: t }); }
+    for (let k = 0; k < 256; k++) { const t = xorHex(hex, k); if (printableRatio(t) > 0.95 && /[aeiou]{1}/i.test(t) && t.includes(" ")) found.push({ key: k, text: t }); }
     setCands(found.slice(0, 6)); setSelected(null); setWrong(false);
   }
   // Brute-force reveals the candidates that LOOK like text; not all are real
   // sentences. Read them, select the real message, then confirm.
-  function confirm() { if (selected === null || solved) return; const c = cands?.find((x) => x.key === selected); if (c && c.text.includes("drop point")) { setSolved(true); onSolved(); } else setWrong(true); }
+  function confirm() { if (selected === null || solved) return; const c = cands?.find((x) => x.key === selected); if (c && c.text.includes(win)) { setSolved(true); onSolved(); } else setWrong(true); }
   return (
     <div style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: 14, padding: 18 }}>
       <div style={{ fontFamily: MONO, fontSize: 11, color: C.mute, marginBottom: 6 }}>INTERCEPTED CIPHERTEXT (single-byte XOR, hex)</div>
-      <div style={{ ...box, color: C.amber }}>{XOR_HEX}</div>
+      <div style={{ ...box, color: C.amber }}>{hex}</div>
       <div style={{ margin: "14px 0 10px" }}><Btn tone="i" onClick={brute} disabled={solved}>BRUTE-FORCE ALL 256 KEYS →</Btn></div>
       {cands && (
         <div style={{ display: "grid", gap: 6 }}>
           <div style={{ fontFamily: MONO, fontSize: 10.5, color: C.mute }}>keys whose output looks like text ({cands.length}) - read them and select the real message:</div>
           {cands.map((c) => {
-            const isSel = selected === c.key; const good = solved && c.text.includes("drop point");
+            const isSel = selected === c.key; const good = solved && c.text.includes(win);
             return (
               <button key={c.key} onClick={() => { if (!solved) { setSelected(c.key); setWrong(false); } }} disabled={solved} className="co-opt" style={{ textAlign: "left", display: "flex", gap: 10, flexWrap: "wrap", padding: "8px 12px", borderRadius: 8, border: `1px solid ${good ? C.green : isSel ? C.indigo : C.lineSoft}`, background: isSel ? "rgba(139,123,255,0.08)" : C.carbon, cursor: solved ? "default" : "pointer" }}>
                 <span style={{ fontFamily: MONO, fontSize: 11.5, color: C.indigo2 }}>key 0x{c.key.toString(16).padStart(2, "0")}</span>
@@ -186,7 +186,7 @@ function XorSurface({ onSolved }: { onSolved: () => void }) {
         </div>
       )}
       {solved && <div style={{ fontFamily: MONO, fontSize: 12.5, color: C.green, marginTop: 10 }}>✓ Cracked - 256 keys is nothing; scoring by readability finds the one instantly.</div>}
-      <Hints hints={["Brute-force all 256 keys, then read the output that's actually English (key 0x3b)."]} />
+      <Hints hints={[`Brute-force all 256 keys, then read the output that's actually English (key 0x${answerKey.toString(16).padStart(2, "0")}).`]} />
     </div>
   );
 }
@@ -229,8 +229,8 @@ function ClassifySurface({ items, onSolved }: { items: ClassItem[]; onSolved: ()
 /* ── a stage ── */
 type Stage =
   | { kind: "transform"; title: string; goal: string }
-  | { kind: "caesar"; title: string; goal: string }
-  | { kind: "xor"; title: string; goal: string }
+  | { kind: "caesar"; title: string; goal: string; ct?: string; win?: string; answerShift?: number }
+  | { kind: "xor"; title: string; goal: string; hex?: string; win?: string; answerKey?: number }
   | { kind: "classify"; title: string; goal: string; items: ClassItem[] };
 
 function StageView({ stage, onSolved }: { stage: Stage; onSolved: () => void }) {
@@ -238,8 +238,8 @@ function StageView({ stage, onSolved }: { stage: Stage; onSolved: () => void }) 
     <div style={{ display: "grid", gap: 12 }}>
       <div style={{ fontSize: 14, color: C.soft, lineHeight: 1.55, padding: "11px 14px", borderRadius: 10, background: "rgba(139,123,255,0.05)", border: `1px solid ${C.line}` }}>{G(stage.goal, `stage-${stage.title}`)}</div>
       {stage.kind === "transform" && <TransformSurface onSolved={onSolved} />}
-      {stage.kind === "caesar" && <CaesarSurface onSolved={onSolved} />}
-      {stage.kind === "xor" && <XorSurface onSolved={onSolved} />}
+      {stage.kind === "caesar" && <CaesarSurface onSolved={onSolved} ct={stage.ct} win={stage.win} answerShift={stage.answerShift} />}
+      {stage.kind === "xor" && <XorSurface onSolved={onSolved} hex={stage.hex} win={stage.win} answerKey={stage.answerKey} />}
       {stage.kind === "classify" && <ClassifySurface items={stage.items} onSolved={onSolved} />}
     </div>
   );
@@ -329,8 +329,8 @@ function PickProtectionLab({ onDone }: { onDone: () => void }) {
 type DrillCfg = { client: string; brief: string; stages: Stage[]; success: string };
 const DRILLS: DrillCfg[] = [
   { client: "Brightpost Media", brief: "Brightpost's 'secure cookie' is suspicious. Read it. No walkthrough.", stages: [{ kind: "transform", title: "Encoding", goal: "Read the 'encrypted' token." }], success: "Decoded a base64 'token' - encoding never protected it. Finding logged." },
-  { client: "Tideway Council", brief: "An intercepted memo used a classic shift cipher. Break it.", stages: [{ kind: "caesar", title: "Caesar", goal: "Brute-force the Caesar shift until it reads as English." }], success: "Broke a 25-key cipher by trying shifts - tiny keyspaces fall instantly. Finding logged." },
-  { client: "Flux Fitness", brief: "Flux XOR'd a note with one byte. Recover it. Trickier.", stages: [{ kind: "xor", title: "XOR", goal: "Brute-force the one-byte XOR key and read the message." }], success: "Recovered a single-byte-XOR message - 256 keys is no keyspace at all. Finding logged." },
+  { client: "Tideway Council", brief: "An intercepted memo used a classic shift cipher. Break it.", stages: [{ kind: "caesar", title: "Caesar", goal: "Brute-force the Caesar shift until it reads as English.", ct: "iwt wpcsdktg xh pi bxscxvwi", win: "handover", answerShift: 11 }], success: "Broke a 25-key cipher by trying shifts - tiny keyspaces fall instantly. Finding logged." },
+  { client: "Flux Fitness", brief: "Flux XOR'd a note with one byte. Recover it. Trickier.", stages: [{ kind: "xor", title: "XOR", goal: "Brute-force the one-byte XOR key and read the message.", hex: "2b352e397c2834397c38392c332f35287c3e257c323333327c3a2e35383d25", win: "deposit", answerKey: 0x5c }], success: "Recovered a single-byte-XOR message - 256 keys is no keyspace at all. Finding logged." },
   { client: "Oakline Store", brief: "The full field job. Decode the token, then tell real crypto from fake. Chain it yourself.", stages: [
     { kind: "transform", title: "Encoding", goal: "Step 1: decode the token." },
     { kind: "classify", title: "Real vs fake", goal: "Step 2: mark which values actually need a key.", items: [
@@ -392,8 +392,8 @@ function ConsolidationDrills({ onDone }: { onDone: () => void }) {
 
 const CAP_STAGES: Stage[] = [
   { kind: "transform", title: "Encoding", goal: "Sableline's config has an 'encrypted' token. Decode it." },
-  { kind: "caesar", title: "Caesar", goal: "Their ops note used a Caesar cipher. Break the shift." },
-  { kind: "xor", title: "XOR", goal: "Finish it: a one-byte-XOR message. Brute-force the key and read it." },
+  { kind: "caesar", title: "Caesar", goal: "Their ops note used a Caesar cipher. Break the shift.", ct: "nkpwpa pda gauo aranu jejapu zwuo", win: "rotate", answerShift: 4 },
+  { kind: "xor", title: "XOR", goal: "Finish it: a one-byte-XOR message. Brute-force the key and read it.", hex: "5945480d5e485f5b485f0d5f4242590d5d4c5e5e5a425f490d445e0d404c5d4148", win: "password", answerKey: 0x2d },
 ];
 
 function CapstoneChallenge({ onDone }: { onDone: () => void }) {
