@@ -104,7 +104,7 @@ function ScanPickSurface({ cmd, prompt, rows, hint, onSolved }: { cmd: string; p
 
 /* ── classify: mark each service version vulnerable or current ── */
 type VerItem = { label: string; vuln: boolean; note: string };
-function ClassifySurface({ items, hint, onSolved }: { items: VerItem[]; hint: string; onSolved: () => void }) {
+function ClassifySurface({ items, hint, onSolved, advisories }: { items: VerItem[]; hint: string; onSolved: () => void; advisories?: string[] }) {
   const [pick, setPick] = useState<Record<string, "vuln" | "ok">>({});
   const [checked, setChecked] = useState(false);
   const [solved, setSolved] = useState(false);
@@ -112,7 +112,14 @@ function ClassifySurface({ items, hint, onSolved }: { items: VerItem[]; hint: st
   function check() { setChecked(true); if (items.every((it) => (pick[it.label] === "vuln") === it.vuln)) { setSolved(true); onSolved(); } }
   return (
     <div style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: 14, padding: 18 }}>
-      <div style={{ fontFamily: MONO, fontSize: 11.5, color: C.mute, marginBottom: 12 }}>// which versions have known, published vulnerabilities, and which are current?</div>
+      <div style={{ fontFamily: MONO, fontSize: 11.5, color: C.mute, marginBottom: 10 }}>// which versions have known, published vulnerabilities, and which are current?</div>
+      {advisories && advisories.length > 0 && (
+        <div style={{ display: "grid", gap: 3, marginBottom: 12, padding: "9px 11px", borderRadius: 8, background: C.carbon, border: `1px solid ${C.lineSoft}`, fontFamily: MONO, fontSize: 11, color: C.soft }}>
+          <div style={{ color: C.indigo2, fontWeight: 700, letterSpacing: ".06em", marginBottom: 2 }}>SECURITY ADVISORIES · known-vulnerable versions</div>
+          {advisories.map((a, i) => <div key={i}>· {a}</div>)}
+          <div style={{ color: C.mute, marginTop: 2 }}>Match each enumerated service against this feed. A version not listed here is current.</div>
+        </div>
+      )}
       <div style={{ display: "grid", gap: 10 }}>
         {items.map((it) => {
           const p = pick[it.label]; const right = checked && (p === "vuln") === it.vuln; const wrong = checked && p && (p === "vuln") !== it.vuln;
@@ -151,7 +158,7 @@ function DecisionCard({ decision, onSolved }: { decision: Decision; onSolved: ()
 /* ── a stage ── */
 type Stage =
   | { kind: "scan"; title: string; goal: string; cmd: string; prompt: string; rows: ScanRow[]; hint: string }
-  | { kind: "classify"; title: string; goal: string; items: VerItem[]; hint: string }
+  | { kind: "classify"; title: string; goal: string; items: VerItem[]; hint: string; advisories?: string[] }
   | { kind: "decision"; title: string; goal: string; decision: Decision };
 
 function StageView({ stage, onSolved }: { stage: Stage; onSolved: () => void }) {
@@ -159,7 +166,7 @@ function StageView({ stage, onSolved }: { stage: Stage; onSolved: () => void }) 
     <div style={{ display: "grid", gap: 12 }}>
       <div style={{ fontSize: 14, color: C.soft, lineHeight: 1.55, padding: "11px 14px", borderRadius: 10, background: "rgba(139,123,255,0.05)", border: `1px solid ${C.line}` }}>{G(stage.goal, `stage-${stage.title}`)}</div>
       {stage.kind === "scan" && <ScanPickSurface cmd={stage.cmd} prompt={stage.prompt} rows={stage.rows} hint={stage.hint} onSolved={onSolved} />}
-      {stage.kind === "classify" && <ClassifySurface items={stage.items} hint={stage.hint} onSolved={onSolved} />}
+      {stage.kind === "classify" && <ClassifySurface items={stage.items} hint={stage.hint} onSolved={onSolved} advisories={stage.advisories} />}
       {stage.kind === "decision" && <DecisionCard decision={stage.decision} onSolved={onSolved} />}
     </div>
   );
@@ -181,7 +188,7 @@ const ACT_STAGES: Stage[] = [
     hint: "22/80/443 are expected. The headline exposure is Remote Desktop (3389) open to the whole internet - click it.",
   },
   {
-    kind: "classify", title: "Versions", goal: "Stage 2 - Enumerate versions. A port being open is step one; the version tells you what to exploit. Mark each enumerated service known-vulnerable or current.",
+    kind: "classify", title: "Versions", goal: "Stage 2 - Enumerate versions. A port being open is step one; the version tells you what to exploit. Check each enumerated service against the advisory feed, then mark it known-vulnerable or current.", advisories: ["vsftpd 2.3.4 - backdoor (CVE-2011-2523)", "Apache 2.4.49 - path traversal / RCE (CVE-2021-41773)", "Log4j 2.14 - remote code execution (CVE-2021-44228)"],
     items: [
       { label: "vsftpd 2.3.4 (ftp)", vuln: true, note: "vsftpd 2.3.4 has a notorious backdoor - a classic known-vulnerable version." },
       { label: "OpenSSH 9.6 (ssh)", vuln: false, note: "A current OpenSSH release - not the weak point here." },
@@ -287,7 +294,7 @@ function PickFixLab({ onDone }: { onDone: () => void }) {
 type DrillCfg = { client: string; brief: string; stages: Stage[]; success: string };
 const DRILLS: DrillCfg[] = [
   { client: "Brightpost Media", brief: "Scan Brightpost's gateway and flag the exposure. No walkthrough.", stages: [{ kind: "scan", title: "Scan", goal: "Flag the dangerous open port.", cmd: "scan gw.brightpost.range", prompt: "click the worst exposure", rows: [ { col1: "443/tcp", col2: "https nginx (ok)", risk: "ok" }, { col1: "22/tcp", col2: "ssh OpenSSH 9.6 (ok)", risk: "ok" }, { col1: "5900/tcp", col2: "vnc · no password, open to internet", risk: "bad" } ], hint: "VNC with no password on the internet is the critical one." }], success: "Found an open, passwordless VNC on the internet - direct remote control. Finding logged." },
-  { client: "Tideway Council", brief: "Enumerate Tideway's service versions and triage them.", stages: [{ kind: "classify", title: "Versions", goal: "Mark each version vulnerable or current.", items: [ { label: "ProFTPD 1.3.3c", vuln: true, note: "1.3.3c shipped with a backdoor - known-vulnerable." }, { label: "OpenSSH 9.6", vuln: false, note: "Current." } ], hint: "The old, oddly-specific version is the vulnerable one." }], success: "Triaged versions so you only chase the exploitable service. Finding logged." },
+  { client: "Tideway Council", brief: "Enumerate Tideway's service versions and triage them.", stages: [{ kind: "classify", title: "Versions", goal: "Check each version against the advisory feed, then mark it vulnerable or current.", advisories: ["ProFTPD 1.3.3c - backdoored build", "OpenSSL 1.0.1 - Heartbleed (CVE-2014-0160)"], items: [ { label: "ProFTPD 1.3.3c", vuln: true, note: "1.3.3c shipped with a backdoor - known-vulnerable." }, { label: "OpenSSH 9.6", vuln: false, note: "Current." } ], hint: "The old, oddly-specific version is the vulnerable one." }], success: "Triaged versions so you only chase the exploitable service. Finding logged." },
   { client: "Flux Fitness", brief: "Sweep Flux's subnet and find the host that shouldn't be reachable. Trickier.", stages: [{ kind: "scan", title: "Sweep", goal: "Find the exposed internal host.", cmd: "sweep 10.0.9.0/24", prompt: "click the host that shouldn't be reachable", rows: [ { col1: "10.0.9.10", col2: "web (ok)", risk: "ok" }, { col1: "10.0.9.50", col2: "backup-nas (open SMB share, reachable)", risk: "bad" } ], hint: "An open backup share reachable across the network is the find." }], success: "Found a reachable backup share - a goldmine if an attacker gets a foothold. Finding logged." },
   { client: "Oakline Store", brief: "The full field job. Scan, enumerate, then make the call. Chain it yourself.", stages: [
     { kind: "scan", title: "Scan", goal: "Step 1: flag the exposure.", cmd: "scan gw.oakline.range", prompt: "worst exposure", rows: [ { col1: "443/tcp", col2: "https (ok)", risk: "ok" }, { col1: "3389/tcp", col2: "rdp open to internet", risk: "bad" } ], hint: "Internet-facing RDP." },
@@ -347,7 +354,7 @@ function ConsolidationDrills({ onDone }: { onDone: () => void }) {
 
 const CAP_STAGES: Stage[] = [
   { kind: "scan", title: "Scan", goal: "Scan Sableline's gateway and flag the exposure.", cmd: "scan gw.sableline.range", prompt: "worst exposure", rows: [ { col1: "443/tcp", col2: "https (ok)", risk: "ok" }, { col1: "22/tcp", col2: "ssh OpenSSH 9.6 (ok)", risk: "ok" }, { col1: "3389/tcp", col2: "rdp open to the internet", risk: "bad" } ], hint: "Internet-facing RDP is the critical one." },
-  { kind: "classify", title: "Versions", goal: "Enumerate and triage the service versions.", items: [ { label: "Exim 4.87", vuln: true, note: "Exim 4.87 has known remote-code-execution flaws." }, { label: "nginx 1.24", vuln: false, note: "Current." } ], hint: "The old mail server version is vulnerable." },
+  { kind: "classify", title: "Versions", goal: "Check each version against the advisory feed, then triage it.", advisories: ["Exim 4.87 - remote code execution", "Samba 3.6.3 - remote code execution (CVE-2017-7494)"], items: [ { label: "Exim 4.87", vuln: true, note: "Exim 4.87 has known remote-code-execution flaws." }, { label: "nginx 1.24", vuln: false, note: "Current." } ], hint: "The old mail server version is vulnerable." },
   { kind: "scan", title: "Sweep", goal: "Finish it: sweep the subnet and find the exposed internal host.", cmd: "sweep 10.0.2.0/24", prompt: "the host that shouldn't be reachable", rows: [ { col1: "10.0.2.10", col2: "app (ok)", risk: "ok" }, { col1: "10.0.2.30", col2: "db-prod (5432 Postgres, reachable)", risk: "bad" } ], hint: "A reachable production database is the find." },
 ];
 

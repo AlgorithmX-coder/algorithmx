@@ -80,7 +80,13 @@ function IdentifySurface({ rows, options, hint, onSolved }: { rows: IdRow[]; opt
   function check() { setChecked(true); if (rows.every((r) => pick[r.hash] === r.algo)) { setSolved(true); onSolved(); } }
   return (
     <div style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: 14, padding: 18 }}>
-      <div style={{ fontFamily: MONO, fontSize: 11.5, color: C.mute, marginBottom: 12 }}>// the format gives the algorithm away. Classify each leaked hash.</div>
+      <div style={{ fontFamily: MONO, fontSize: 11.5, color: C.mute, marginBottom: 10 }}>// the format gives the algorithm away. Classify each leaked hash.</div>
+      <div style={{ display: "grid", gap: 3, marginBottom: 12, padding: "9px 11px", borderRadius: 8, background: C.carbon, border: `1px solid ${C.lineSoft}`, fontFamily: MONO, fontSize: 11, color: C.soft }}>
+        <div style={{ color: C.indigo2, fontWeight: 700, letterSpacing: ".06em", marginBottom: 2 }}>HOW TO TELL THEM APART</div>
+        <div>32 hex characters → MD5 (old, fast)</div>
+        <div>64 hex characters → SHA-256 (fast, general-purpose)</div>
+        <div>starts with $2b$ → bcrypt (salted and slow - the safe one)</div>
+      </div>
       <div style={{ display: "grid", gap: 10 }}>
         {rows.map((r) => {
           const right = checked && pick[r.hash] === r.algo;
