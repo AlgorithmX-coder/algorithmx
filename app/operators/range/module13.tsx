@@ -135,7 +135,7 @@ const ACT_STAGES: Stage[] = [
     hint: "Lookalike sender, urgency, generic greeting, and a mismatched link are all red flags. Plain text on its own is not." },
   { kind: "decision", title: "Verify", goal: "Stage 3 - The right move. You get the CEO gift-card request. What do you actually do?",
     decision: { prompt: "A message from the 'CEO' demands an urgent gift-card payment, in secret. Your move?", options: [
-      { text: "Verify out-of-band: call the CEO on their known number before acting.", correct: true, feedback: "Right. Out-of-band verification on a trusted channel defeats the con no matter how convincing it is, and don't act on the secrecy demand." },
+      { text: "Verify out-of-band: call the CEO on their known number.", correct: true, feedback: "Right. Out-of-band verification on a trusted channel defeats the con no matter how convincing it is, and don't act on the secrecy demand." },
       { text: "Reply to the email to ask whether it's really them first.", feedback: "The attacker controls that thread - they'll just say yes. Verify through a separate, known channel." },
       { text: "Buy the gift cards quickly to avoid upsetting the CEO.", feedback: "That's exactly what the con relies on. Authority and urgency are the manipulation, not a reason to comply." },
       { text: "Forward it to a few colleagues to ask what they think.", feedback: "Wastes time and may spread it. Go straight to out-of-band verification, and report it." },
@@ -410,10 +410,10 @@ export const MODULE13: ModuleDef = {
     check: {
       q: "Which combination most strongly signals a phishing email?",
       options: [
-        { text: "Urgency, a lookalike or personal sender address, and a link requesting your password.", correct: true, feedback: "Right - that stack of tells is the classic credential phish." },
+        { text: "Urgency, a lookalike sender, and a link asking for your password.", correct: true, feedback: "Right - urgency, a lookalike or personal sender address, and a password link are the classic credential phish." },
         { text: "A plain subject line and a familiar sender on the correct domain.", feedback: "That describes ordinary legitimate mail, not a phish." },
         { text: "An email that happens to contain no links or attachments at all.", feedback: "Links aren't required for mail to be legitimate or malicious - judge by the tells, not link-presence alone." },
-        { text: "A long, detailed message written across several careful paragraphs.", feedback: "Length says nothing about intent; the tells (sender, urgency, request) are what matter." },
+        { text: "Several careful paragraphs of long, detailed, well-written text.", feedback: "Length says nothing about intent; the tells (sender, urgency, request) are what matter." },
       ],
     },
   },

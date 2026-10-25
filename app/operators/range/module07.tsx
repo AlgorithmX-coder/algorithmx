@@ -171,7 +171,7 @@ const ACT_STEPS: ReqStep[] = [
     explain: {
       q: "You walked from id 1042 to 1041 to read another record. If the app had used long random ids instead, would that have fixed the flaw?",
       options: [
-        { text: "No - a random id still works the moment it's seen, shared or logged; the missing ownership check is the real bug.", correct: true, feedback: "Right - random ids are harder to guess but aren't a permission check. The server still has to confirm the record is yours." },
+        { text: "No - a random id still works once seen, shared or logged; ownership is unchecked.", correct: true, feedback: "Right - random ids are harder to guess but aren't a permission check; the missing ownership check is the real bug. The server still has to confirm the record is yours." },
         { text: "Yes - random ids can't be guessed, so no one could ever reach another person's record.", feedback: "No - an attacker who sees a valid random id (a shared link, a log, the app itself) still reads it with no ownership check." },
         { text: "Yes, as long as the random ids are also kept out of the page's HTML source.", feedback: "Hiding the id doesn't add a check; wherever it comes from, the server still hands the record over." },
         { text: "No, but only because the attacker could still brute-force the random ids given enough time.", feedback: "Brute-forcing isn't the point - even one leaked id works, because the server never checks ownership." },

@@ -551,7 +551,7 @@ export const MODULE1: ModuleDef = {
     check: {
       q: "You found Meridian's leaked account. What should they do first?",
       options: [
-        { text: "Disable or rotate the account immediately, then remove it from the source.", correct: true, feedback: "Right. Assume it's burned: kill the credential first, then remove it from the source." },
+        { text: "Rotate or disable the account, then remove it from source.", correct: true, feedback: "Right. Assume it's burned: disable or rotate the credential immediately, then remove it from the source." },
         { text: "Delete the leaked comment from the website's page source.", feedback: "Necessary, but not first - the credential is already out, so removing the comment doesn't un-leak it." },
         { text: "Nothing much, since it's only a disposable test account.", feedback: "A working credential is a working credential; leftover test accounts are a classic way in." },
         { text: "Change the website's design so the login looks different.", feedback: "Appearance is irrelevant - the exposed credential must be rotated and removed." },

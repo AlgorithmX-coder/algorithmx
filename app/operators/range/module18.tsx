@@ -235,10 +235,10 @@ const ACT_STEPS: Step[] = [
     explain: {
       q: "You changed one number in the URL and read a stranger's full record. What was actually broken?",
       options: [
-        { text: "The server handed over the record without ever checking it belonged to you - that missing object-level check is BOLA.", correct: true, feedback: "Right. The id wasn't the flaw; the missing ownership check was. The server must confirm the record is yours before returning it." },
-        { text: "The customer ids were too easy to guess; random, hard-to-guess ids would have made the app secure.", feedback: "Hard-to-guess ids only slow an attacker down. The real flaw is that the server never checks ownership, so any id that exists is readable." },
-        { text: "The connection wasn't encrypted, so your request leaked the other customer's data in transit.", feedback: "Encryption protects data on the wire; it wouldn't stop this. The server itself willingly returned data that wasn't yours." },
-        { text: "You were signed in as an administrator, which is the only reason the record came back.", feedback: "You used your own ordinary account - no admin rights needed. The endpoint simply never checked ownership." },
+        { text: "The server returned the record without checking it was yours - that's BOLA.", correct: true, feedback: "Right. The id wasn't the flaw; the missing ownership check was. The server must confirm the record is yours before returning it." },
+        { text: "Guessable customer ids were the flaw; random ids would have made it secure.", feedback: "Hard-to-guess ids only slow an attacker down. The real flaw is that the server never checks ownership, so any id that exists is readable." },
+        { text: "Missing encryption let your request leak the other customer's data in transit.", feedback: "Encryption protects data on the wire; it wouldn't stop this. The server itself willingly returned data that wasn't yours." },
+        { text: "Your admin sign-in was the only reason the record came back at all.", feedback: "You used your own ordinary account - no admin rights needed. The endpoint simply never checked ownership." },
       ],
     },
   },
@@ -251,10 +251,10 @@ const ACT_STEPS: Step[] = [
     explain: {
       q: "Reading one .env file from the bucket turned a minor leak into a full breach. Why was that file so dangerous?",
       options: [
-        { text: "A public bucket needs no login, and that .env held a live admin key - a working credential an attacker can reuse straight away.", correct: true, feedback: "Right. The file was readable by anyone, and it contained a real secret. Secrets never belong in storage that the whole internet can list." },
-        { text: "The .env was infected, so opening it ran malware on the server.", feedback: "Nothing executed. It was plain text - the damage was the live admin key printed inside it, there for the taking." },
+        { text: "No login was needed, and the .env held a live admin key an attacker can reuse.", correct: true, feedback: "Right. The file was readable by anyone, and it contained a real secret. Secrets never belong in storage that the whole internet can list." },
+        { text: "Opening the .env ran malware on the server, because the file was infected.", feedback: "Nothing executed. It was plain text - the damage was the live admin key printed inside it, there for the taking." },
         { text: "Buckets are always private by default, so this one must have been hacked open first.", feedback: "No hack was needed. This bucket was simply misconfigured as public - one of the most common cloud mistakes there is." },
-        { text: "The file was large, so downloading it slowed the service down for every other user.", feedback: "Size is irrelevant. The harm was the admin key in the file, not the size of the download." },
+        { text: "Its sheer size slowed the service down for every other user downloading it.", feedback: "Size is irrelevant. The harm was the admin key in the file, not the size of the download." },
       ],
     },
   },
@@ -268,9 +268,9 @@ const ACT_STEPS: Step[] = [
     explain: {
       q: "The admin endpoint returned the whole customer list the moment you sent the leaked key. What's the real lesson?",
       options: [
-        { text: "A secret that leaks anywhere is burned everywhere - the endpoint trusted whoever held the key, so a key in a public file is as good as the real admin.", correct: true, feedback: "Right. A bearer token trusts the holder. Once it leaks, it must be rotated at once and scoped to the least it needs." },
-        { text: "The endpoint was coded so badly it would have returned the list even with no key at all.", feedback: "Not so - without the key you got 401. The flaw is that a LEAKED key still counts as valid; it should have been rotated and limited." },
-        { text: "The key only worked because you were calling from inside the company's own network.", feedback: "Where you call from didn't matter. A bearer token trusts the holder wherever they are, inside the network or out." },
+        { text: "A leaked secret is burned everywhere - the endpoint trusts whoever holds the key.", correct: true, feedback: "Right. A bearer token trusts the holder. Once it leaks, it must be rotated at once and scoped to the least it needs." },
+        { text: "Sloppy coding meant the endpoint would return the list even with no key at all.", feedback: "Not so - without the key you got 401. The flaw is that a LEAKED key still counts as valid; it should have been rotated and limited." },
+        { text: "Calling from inside the company's own network was the only reason the key worked.", feedback: "Where you call from didn't matter. A bearer token trusts the holder wherever they are, inside the network or out." },
         { text: "Admin endpoints can never really be protected, so a leak like this was always inevitable.", feedback: "They can be protected. The failure was a long-lived, over-privileged key that was allowed to leak into a public file." },
       ],
     },
