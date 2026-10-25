@@ -220,6 +220,13 @@ function ResetSurface({ host, reset, onSolved }: { host: string; reset: NonNulla
   const [code, setCode] = useState("");
   const [newPw, setNewPw] = useState("");
   const [resp, setResp] = useState<{ ok: boolean; text: string } | null>(null);
+  // Reset codes are issued in strict sequence, so the target's is just above
+  // yours. Spell out the exact range to enter (a repeated UAT ask - the task
+  // never said what numbers were valid).
+  const seq = reset.yourCode.match(/^(.*?)(\d+)$/);
+  const codePrefix = seq ? seq[1] : "";
+  const codeNum = seq ? parseInt(seq[2], 10) : NaN;
+  const codeRange = seq ? `${codePrefix}${codeNum + 1} to ${codePrefix}${codeNum + 3}` : null;
 
   function takeover() {
     if (code.trim() === reset.nextCode) { setResp({ ok: true, text: `✓ Accepted. You set a new password for ${reset.targetEmail}. The account is yours - the reset code was guessable.` }); onSolved(); }
@@ -238,7 +245,11 @@ function ResetSurface({ host, reset, onSolved }: { host: string; reset: NonNulla
         {sentTarget && <div style={{ fontFamily: MONO, fontSize: 12.5, color: C.soft }}>→ A code was sent to {reset.targetEmail}&apos;s inbox. You can&apos;t see it... or can you work it out?</div>}
         {sentTarget && (
           <div style={{ display: "grid", gap: 10, borderTop: `1px solid ${C.lineSoft}`, paddingTop: 12 }}>
-            <div><label style={lab}>their reset code (guess it)</label><input style={inp} value={code} onChange={(e) => setCode(e.target.value)} placeholder="RST-...." /></div>
+            <div>
+              <label style={lab}>their reset code (guess it)</label>
+              <input style={inp} value={code} onChange={(e) => setCode(e.target.value)} placeholder={seq ? `${codePrefix}????` : "RST-...."} />
+              {codeRange && <div style={{ fontFamily: MONO, fontSize: 11, color: C.mute, marginTop: 5 }}>Codes run in order, so theirs is just above yours - try the range {codeRange}.</div>}
+            </div>
             <div><label style={lab}>new password to set</label><input style={inp} value={newPw} onChange={(e) => setNewPw(e.target.value)} placeholder="anything you like" /></div>
             <div><Btn tone="g" onClick={takeover}>RESET &amp; TAKE OVER →</Btn></div>
           </div>
