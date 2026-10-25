@@ -12,6 +12,7 @@
 
 import { useState } from "react";
 import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary, AnswerReveal } from "./Engagement";
+import ExplainQuiz from "./ExplainQuiz";
 
 /* ───────────────────────── glossary ───────────────────────── */
 
@@ -156,10 +157,11 @@ function DecisionCard({ decision, onSolved }: { decision: Decision; onSolved: ()
 }
 
 /* ── a stage ── */
+type ExplainBeat = { q: string; options: { text: string; correct?: boolean; feedback: string }[] };
 type Stage =
-  | { kind: "scan"; title: string; goal: string; cmd: string; prompt: string; rows: ScanRow[]; hint: string }
-  | { kind: "classify"; title: string; goal: string; items: VerItem[]; hint: string; advisories?: string[] }
-  | { kind: "decision"; title: string; goal: string; decision: Decision };
+  | { kind: "scan"; title: string; goal: string; cmd: string; prompt: string; rows: ScanRow[]; hint: string; explain?: ExplainBeat }
+  | { kind: "classify"; title: string; goal: string; items: VerItem[]; hint: string; advisories?: string[]; explain?: ExplainBeat }
+  | { kind: "decision"; title: string; goal: string; decision: Decision; explain?: ExplainBeat };
 
 function StageView({ stage, onSolved }: { stage: Stage; onSolved: () => void }) {
   return (
@@ -196,6 +198,15 @@ const ACT_STAGES: Stage[] = [
       { label: "nginx 1.24 (https)", vuln: false, note: "A current nginx - fine." },
     ],
     hint: "The old, specific version numbers (vsftpd 2.3.4, Apache 2.4.49) are the known-vulnerable ones; the current releases are fine.",
+    explain: {
+      q: "You matched the versions against the advisory feed. Why does the exact version number matter so much to an attacker?",
+      options: [
+        { text: "A specific version points to a specific published exploit.", correct: true, feedback: "Right - 'vsftpd 2.3.4' isn't just 'old'; it tells an attacker exactly which exploit to run." },
+        { text: "Older software just runs slower, so attackers prefer to target it.", feedback: "Speed isn't the point - a known version has a known, published exploit to reach for." },
+        { text: "The version only matters when the service sits on an unusual port.", feedback: "The port is irrelevant - a known-vulnerable version is exploitable wherever it listens." },
+        { text: "A higher version number always means more bugs, not fewer.", feedback: "The opposite - current releases are patched; it's the old, specific versions that are exploitable." },
+      ],
+    },
   },
   {
     kind: "scan", title: "Subnet sweep", goal: "Stage 3 - Map the network. Sweep the internal subnet to discover live hosts, and flag the one that should never be reachable from here.",
@@ -222,9 +233,10 @@ const ACT_STAGES: Stage[] = [
 function NetReconAct({ onCapture }: { onCapture: () => void }) {
   const [si, setSi] = useState(0);
   const [cleared, setCleared] = useState<boolean[]>(ACT_STAGES.map(() => false));
+  const [explainOk, setExplainOk] = useState(false);
   const stage = ACT_STAGES[si];
   function solved() { setCleared((c) => { const n = [...c]; n[si] = true; return n; }); }
-  function advance() { if (si + 1 < ACT_STAGES.length) setSi(si + 1); else onCapture(); }
+  function advance() { setExplainOk(false); if (si + 1 < ACT_STAGES.length) setSi(si + 1); else onCapture(); }
   return (
     <div style={{ display: "grid", gap: 14 }}>
       <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
@@ -237,9 +249,12 @@ function NetReconAct({ onCapture }: { onCapture: () => void }) {
       </div>
       <StageView key={si} stage={stage} onSolved={solved} />
       {cleared[si] && (
-        <div className="co-anim co-pop" style={{ display: "flex", alignItems: "center", gap: 14, flexWrap: "wrap", padding: "13px 16px", borderRadius: 12, background: "rgba(85,217,140,.08)", border: `1px solid ${C.green}55` }}>
-          <span style={{ fontFamily: MONO, fontSize: 12.5, color: C.green, fontWeight: 700 }}>✓ Stage {si + 1} cleared</span>
-          <Btn tone="g" onClick={advance} style={{ marginLeft: "auto" }}>{si + 1 < ACT_STAGES.length ? "Next stage →" : "Capture the engagement →"}</Btn>
+        <div className="co-anim co-pop" style={{ display: "grid", gap: 12, padding: "13px 16px", borderRadius: 12, background: "rgba(85,217,140,.08)", border: `1px solid ${C.green}55` }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 14, flexWrap: "wrap" }}>
+            <span style={{ fontFamily: MONO, fontSize: 12.5, color: C.green, fontWeight: 700 }}>✓ Stage {si + 1} cleared</span>
+            {(!stage.explain || explainOk) && <Btn tone="g" onClick={advance} style={{ marginLeft: "auto" }}>{si + 1 < ACT_STAGES.length ? "Next stage →" : "Capture the engagement →"}</Btn>}
+          </div>
+          {stage.explain && <ExplainQuiz key={si} q={stage.explain.q} options={stage.explain.options} onCorrect={() => setExplainOk(true)} />}
         </div>
       )}
     </div>

@@ -10,6 +10,7 @@
 
 import { useState } from "react";
 import Engagement, { type ModuleDef, type GlossaryEntry, C, MONO, DISP, Btn, withGlossary, AnswerReveal, useShuffled } from "./Engagement";
+import ExplainQuiz from "./ExplainQuiz";
 
 /* ───────────────────────── glossary ───────────────────────── */
 
@@ -124,10 +125,11 @@ function OrderSurface({ items, hint, onSolved }: { items: OrderItem[]; hint: str
 }
 
 /* ── a stage ── */
+type ExplainBeat = { q: string; options: { text: string; correct?: boolean; feedback: string }[] };
 type Stage =
-  | { kind: "triage"; title: string; goal: string; alerts: Alert[]; hint: string }
-  | { kind: "decision"; title: string; goal: string; decision: Decision }
-  | { kind: "order"; title: string; goal: string; items: OrderItem[]; hint: string };
+  | { kind: "triage"; title: string; goal: string; alerts: Alert[]; hint: string; explain?: ExplainBeat }
+  | { kind: "decision"; title: string; goal: string; decision: Decision; explain?: ExplainBeat }
+  | { kind: "order"; title: string; goal: string; items: OrderItem[]; hint: string; explain?: ExplainBeat };
 
 function StageView({ stage, onSolved }: { stage: Stage; onSolved: () => void }) {
   return (
@@ -157,7 +159,15 @@ const ACT_STAGES: Stage[] = [
       { text: "Pull the whole server offline and wipe it clean immediately.", feedback: "Too far, too fast - you'd destroy evidence and cause an outage. Contain the attacker, don't nuke the host." },
       { text: "Start a thorough week-long root-cause investigation first.", feedback: "Later. While you investigate, they're still exfiltrating. Contain now, investigate after." },
       { text: "Email all staff right away to warn them about it.", feedback: "Not first - it wastes the minutes that matter while the attacker is live. Contain the session." },
-    ] } },
+    ] }, explain: {
+      q: "You blocked the IP and killed the session before anything else. Why contain first, before investigating the root cause?",
+      options: [
+        { text: "Containing stops the live harm; investigate once the bleeding has stopped.", correct: true, feedback: "Right - while you diagnose, the attacker keeps exfiltrating. Stop the active harm first (preserving evidence), then dig into why." },
+        { text: "Investigating first is pointless because logs never show the real cause.", feedback: "Logs are exactly how you find the cause - that's why you preserve them. You just don't wait to investigate before stopping the harm." },
+        { text: "Containment is really only about looking decisive to management.", feedback: "It's not optics - it genuinely stops ongoing data loss in the minutes that matter." },
+        { text: "You contain first mainly to avoid telling customers about it later.", feedback: "Disclosure duties don't go away; containment is about stopping the live attack, not dodging notification." },
+      ],
+    } },
   { kind: "order", title: "Lifecycle", goal: "Stage 3 - Work the lifecycle. The session is contained. Put the remaining response steps in the right order.",
     items: [
       { label: "Contain (block + kill session)", pos: 0 },
@@ -178,9 +188,10 @@ const ACT_STAGES: Stage[] = [
 function IncidentAct({ onCapture }: { onCapture: () => void }) {
   const [si, setSi] = useState(0);
   const [cleared, setCleared] = useState<boolean[]>(ACT_STAGES.map(() => false));
+  const [explainOk, setExplainOk] = useState(false);
   const stage = ACT_STAGES[si];
   function solved() { setCleared((c) => { const n = [...c]; n[si] = true; return n; }); }
-  function advance() { if (si + 1 < ACT_STAGES.length) setSi(si + 1); else onCapture(); }
+  function advance() { setExplainOk(false); if (si + 1 < ACT_STAGES.length) setSi(si + 1); else onCapture(); }
   return (
     <div style={{ display: "grid", gap: 14 }}>
       <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
@@ -193,9 +204,12 @@ function IncidentAct({ onCapture }: { onCapture: () => void }) {
       </div>
       <StageView key={si} stage={stage} onSolved={solved} />
       {cleared[si] && (
-        <div className="co-anim co-pop" style={{ display: "flex", alignItems: "center", gap: 14, flexWrap: "wrap", padding: "13px 16px", borderRadius: 12, background: "rgba(85,217,140,.08)", border: `1px solid ${C.green}55` }}>
-          <span style={{ fontFamily: MONO, fontSize: 12.5, color: C.green, fontWeight: 700 }}>✓ Stage {si + 1} cleared</span>
-          <Btn tone="g" onClick={advance} style={{ marginLeft: "auto" }}>{si + 1 < ACT_STAGES.length ? "Next stage →" : "Capture the engagement →"}</Btn>
+        <div className="co-anim co-pop" style={{ display: "grid", gap: 12, padding: "13px 16px", borderRadius: 12, background: "rgba(85,217,140,.08)", border: `1px solid ${C.green}55` }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 14, flexWrap: "wrap" }}>
+            <span style={{ fontFamily: MONO, fontSize: 12.5, color: C.green, fontWeight: 700 }}>✓ Stage {si + 1} cleared</span>
+            {(!stage.explain || explainOk) && <Btn tone="g" onClick={advance} style={{ marginLeft: "auto" }}>{si + 1 < ACT_STAGES.length ? "Next stage →" : "Capture the engagement →"}</Btn>}
+          </div>
+          {stage.explain && <ExplainQuiz key={si} q={stage.explain.q} options={stage.explain.options} onCorrect={() => setExplainOk(true)} />}
         </div>
       )}
     </div>
