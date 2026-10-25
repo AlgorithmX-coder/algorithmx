@@ -317,6 +317,12 @@ export default function Engagement({
   useEffect(() => {
     onPhaseChangeRef.current?.(phase, callsignRef.current);
   }, [phase]); // eslint-disable-line react-hooks/exhaustive-deps
+  // Open every beat at the TOP of the screen. Without this a new section inherits
+  // the previous beat's scroll position, so a tall screen opened half-way down or
+  // at the bottom (a repeated UAT finding).
+  useEffect(() => {
+    try { window.scrollTo({ top: 0, left: 0 }); } catch { /* SSR / storage blocked */ }
+  }, [phase]);
   function startOver() {
     setResumed(false);
     setPhase(defaultPhase); // the beat-change effect clears the saved row server-side
