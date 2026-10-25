@@ -344,7 +344,7 @@ function DrillRunner({ cfg, onSolved }: { cfg: DrillCfg; onSolved: () => void })
   const [done, setDone] = useState(false);
   return (
     <div style={{ display: "grid", gap: 12 }}>
-      {!done && <StepView key={cfg.client} step={cfg.step} onSolved={() => { setDone(true); onSolved(); }} />}
+      <StepView key={cfg.client} step={cfg.step} onSolved={() => { setDone(true); onSolved(); }} />{/* stays visible after solving so the learner can review their work */}
       {done && <div className="co-anim co-pop" style={{ padding: "11px 14px", borderRadius: 10, background: "rgba(85,217,140,.08)", border: `1px solid ${C.green}55`, fontSize: 13, color: "#bff3d3", lineHeight: 1.5 }}>✓ {cfg.success}</div>}
     </div>
   );
