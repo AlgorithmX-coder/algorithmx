@@ -160,16 +160,16 @@ export const block3Intro: BlockIntroData = {
   thesis:
     "You've beaten the tricks. Now look under the hood: how the tech really works, and <b>where it breaks.</b>",
   realWorld:
-    "Every account you own runs on systems like these. The people who break in understand exactly how they work. After this block, so do you.",
+    "Every account you own runs on systems like these. The people who break in understand exactly how they work. After this block, so do you — on a console built to look like the tools they use, because the fastest way to learn to defend a system is to see it exactly the way someone trying to break in sees it. Everything you run here is authorized ARC work, studying the attack to build the defence, never to attack anyone else's system.",
   audio: "/audio/atlas/block3.mp3",
   voiceScript:
-    "[warm] Agent, you've learned to spot the trick, and to read the person. [serious] But every con eventually touches a machine, and machines have rules. This is Block Three: Systems. Five cases on how the technology actually works, the locks, the networks, the hidden doors, and exactly where each one can be forced. [determined] Stop trusting the surface. Start understanding the wiring. Because once you can see how a system really works, you can see how it breaks, and how to defend it. [excited] Top secret clearance from here. WREN is ready.",
+    "[warm] Agent, you've learned to spot the trick, and to read the person. [serious] But every con eventually touches a machine, and machines have rules. This is Block Three: Systems. [serious] And from here, your console changes too. It's built to look like the tools ARC's own analysts use to study an attacker's methods, because the fastest way to learn to defend a system is to see it exactly the way someone trying to break in sees it. Every case on this console is authorized ARC work: studying the attack to build the defence, never to attack anyone else's system. [determined] Five cases on how the technology actually works, the locks, the networks, the hidden doors, and exactly where each one can be forced. Stop trusting the surface. Start understanding the wiring. Because once you can see how a system really works, you can see how it breaks, and how to defend it. [excited] Top secret clearance from here. WREN is ready.",
   commander: { name: "ATLAS", org: "ARC COMMAND", signoff: "ATLAS · ARC Command · Top clearance" },
   shift: {
     kicker: "The shift",
     lede: "Every con eventually touches a machine, and <em>machines have rules.</em>",
     body:
-      "You've learned to read the message and the person. This block goes under the surface: the locks, the networks, the hidden doors. Five cases on how the technology actually works, and exactly where each part can be forced. Once you see how a system really works, you can see how it breaks, and how to defend it.",
+      "You've learned to read the message and the person. This block goes under the surface: the locks, the networks, the hidden doors. Five cases on how the technology actually works, and exactly where each part can be forced. <b>Your console changes too from here</b> — it's built to look like the tools ARC's own analysts use to study how an attacker thinks, because the fastest way to learn to defend a system is to see it exactly the way someone trying to break in sees it. Every case on it is authorized ARC work: studying the attack to build the defence, never to attack anyone else's system. Once you see how a system really works, you can see how it breaks, and how to defend it.",
   },
   filesKicker: "Five systems. Five weak points.",
   files: [
@@ -188,7 +188,7 @@ export const block3Intro: BlockIntroData = {
     { name: "Catch a look-alike site", desc: "" },
   ],
   handoff:
-    "Stop trusting the surface. Start understanding the wiring. <em>WREN's ready when you are.</em>",
+    "Stop trusting the surface. Start understanding the wiring — on a console built like the ones they use. <em>WREN's ready when you are.</em>",
   beginLabel: "Begin Case 011 →",
   theme: {
     accent: "#FFB23E",
