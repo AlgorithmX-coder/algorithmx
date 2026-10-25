@@ -147,11 +147,13 @@ export const case11Console: ConsoleCase = {
   accent: "#2DD4BF",
   theme: { backdrop: "vault", matrix: ["#2DD4BF", "#7FEFE2", "#17A398"], accentHi: "#7FEFE2" },
   open: [
+    "Notice something different, Agent? This is ARC's real systems console, built to look like the tools an attacker actually uses, because the fastest way to learn to defend a system is to see it exactly the way someone trying to break in sees it. Everything you run here is authorized ARC work: studying the attack to build the defence, never to attack anyone else's system.",
     "New clearance, Agent, and a whole new job. No more reading messages, no more dodging DMs. Now you're at the controls of the machine itself.",
     "SKELETON KEY is back, the one whose rig guesses passwords. Last time you just watched it. This time, you're going to BUILD the defences that stop it dead.",
     "Seven skills to lock every door you own, then a boss and a test. Hands on the console, Agent. Let's build.",
   ],
   openVoice: [
+    "/audio/wren/m11c-open-0.mp3",
     "/audio/wren/m11c-open-1.mp3",
     "/audio/wren/m11c-open-2.mp3",
     "/audio/wren/m11c-open-3.mp3",

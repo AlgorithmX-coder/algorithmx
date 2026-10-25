@@ -8,6 +8,8 @@
  * failVoice have no text field in case11.ts — recovered by transcription.
  */
 export const mission11VoiceScripts = {
+  "/audio/wren/m11c-open-0.mp3":
+    "[curious] Notice something different, Agent? [serious] This is ARC's real systems console, built to look like the tools an attacker actually uses, because the fastest way to learn to defend a system is to see it exactly the way someone trying to break in sees it. [warm] Everything you run here is authorized ARC work: studying the attack to build the defence, never to attack anyone else's system.",
   "/audio/wren/m11c-open-1.mp3":
     "[serious] New clearance, Agent, and a whole new job. No more reading messages, no more dodging DMs. Now you're at the controls of the machine itself.",
   "/audio/wren/m11c-open-2.mp3":
