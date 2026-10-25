@@ -204,7 +204,7 @@ const ACT_STAGES: Stage[] = [
   {
     kind: "decision", title: "Prioritise", goal: "Stage 4 - Make the call. You've mapped the exposure. What do you put at the top of the report?",
     decision: { prompt: "Across everything you found, what's the right top recommendation?", options: [
-      { text: "Take RDP and the prod database off the open network, then patch the outdated services.", correct: true, feedback: "Right. Remove the directly-reachable high-value exposures first (RDP, the prod DB), then close the known-vulnerable versions. That's priority order." },
+      { text: "Take RDP and the prod DB off the open network, then patch.", correct: true, feedback: "Right. Remove the directly-reachable high-value exposures first (RDP, the prod DB), then close the known-vulnerable versions. That's priority order." },
       { text: "Move RDP to a non-standard port so scanners can't find it.", feedback: "Obscurity only - scanners find services on any port. The exposure remains and is still attacked." },
       { text: "Leave everything open but set strong passwords everywhere.", feedback: "An exposed RDP and a reachable prod DB are attacked regardless of password strength; take them off the open network." },
       { text: "Just upgrade the FTP server and call it done.", feedback: "The FTP is a real issue, but the internet-facing RDP and the reachable prod DB are bigger - don't stop there." },
@@ -457,7 +457,7 @@ export const MODULE10: ModuleDef = {
     check: {
       q: "Why is identifying the service version so valuable in recon?",
       options: [
-        { text: "A specific version can be matched to known, published vulnerabilities for that exact software.", correct: true, feedback: "Right. 'vsftpd 2.3.4' tells an attacker exactly which published exploit to reach for." },
+        { text: "A specific version maps to known, published vulnerabilities for that software.", correct: true, feedback: "Right. 'vsftpd 2.3.4' tells an attacker exactly which published exploit to reach for." },
         { text: "An older version number usually means the software is more tested and stable.", feedback: "It's the opposite risk: old versions are the ones with known, unpatched vulnerabilities." },
         { text: "The version banner also leaks the server's internal hostname and IP address.", feedback: "A banner identifies the software, not the host's name or address. Its value is matching it to known weaknesses." },
         { text: "Knowing the version lets you log straight in without any credentials at all.", feedback: "Not directly. It tells you which published exploit might work, a different and earlier step." },

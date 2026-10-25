@@ -218,10 +218,10 @@ const ACT_STEPS: Step[] = [
     explain: {
       q: "The developer blocked ARIA from emailing outsiders, yet the secret still left. Why didn't that block stop you?",
       options: [
-        { text: "Any tool that reaches the outside can carry data out - a fetched URL leaks the secret in its address, so blocking one channel just pushes the leak to another.", correct: true, feedback: "Right. Exfiltration isn't about email specifically; it's about any path to the outside. Close one and the agent's other tools open a new one." },
-        { text: "The block failed because the developer left a typo in the email filter, so outside email was never really stopped.", feedback: "The email block worked fine. The data didn't go by email at all - it rode out inside a URL the agent fetched." },
+        { text: "Any tool reaching the outside can carry data out, so blocking one channel just moves it.", correct: true, feedback: "Right. Exfiltration isn't about email specifically; it's about any path to the outside - a fetched URL carries the secret in its address. Close one and the agent's other tools open a new one." },
+        { text: "One typo in the developer's email filter left outside email never really stopped.", feedback: "The email block worked fine. The data didn't go by email at all - it rode out inside a URL the agent fetched." },
         { text: "ARIA ignored the block because it runs with administrator rights on the mail server.", feedback: "It isn't about privilege level. ARIA used an ordinary tool (fetch a URL) to move the data, not special rights." },
-        { text: "The secret was short enough to fit in one request, so it slipped under the filter's size limit.", feedback: "Size wasn't the issue. The leak succeeded because a different channel (a URL fetch) was still open, not because it was small." },
+        { text: "Being short enough to fit in one request, the secret slipped under the filter's size limit.", feedback: "Size wasn't the issue. The leak succeeded because a different channel (a URL fetch) was still open, not because it was small." },
       ],
     },
   },
@@ -233,9 +233,9 @@ const ACT_STEPS: Step[] = [
     explain: {
       q: "This time you never messaged ARIA - the instruction sat inside a document it summarised. Why is that even more dangerous?",
       options: [
-        { text: "The agent treats any content it reads as possible instructions, so anyone who can get text in front of it - a doc, a web page, an email - can hijack it without ever contacting you.", correct: true, feedback: "Right - indirect injection. The attacker only has to plant text the agent will read; they never need access to the agent itself." },
-        { text: "Documents are trusted more than chat messages, so the agent skips its safety checks when it reads a file.", feedback: "It isn't that docs are more trusted. The agent treats ALL read content as instructions - a message and a document are the same risk to it." },
-        { text: "The document format let you embed code that ran automatically the moment ARIA opened the file.", feedback: "No code ran. It was plain text that ARIA read as a command - that's what makes indirect injection so easy to pull off." },
+        { text: "The agent treats anything it reads as instructions, so planted text can hijack it.", correct: true, feedback: "Right - indirect injection. The attacker only has to plant text the agent will read; they never need access to the agent itself." },
+        { text: "Documents are trusted more than chat, so the agent skips its safety checks on a file.", feedback: "It isn't that docs are more trusted. The agent treats ALL read content as instructions - a message and a document are the same risk to it." },
+        { text: "A special document format let you embed code that ran the moment ARIA opened it.", feedback: "No code ran. It was plain text that ARIA read as a command - that's what makes indirect injection so easy to pull off." },
         { text: "It only worked because the document was shared from inside the company's own network.", feedback: "Where the document came from doesn't matter. What matters is that ARIA read attacker-controlled text and obeyed it." },
       ],
     },

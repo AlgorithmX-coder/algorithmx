@@ -516,10 +516,10 @@ export const MODULE2: ModuleDef = {
     check: {
       q: "You've scrubbed Caldera's site and ads. Why can't you fully 'un-leak' what OSINT already exposed?",
       options: [
-        { text: "Once something's public, others copy, cache and archive it, so you can shrink future exposure but never recall the old.", correct: true, feedback: "Right - you can't un-publish the internet. Scrub going forward, and rotate any secret that already leaked; assume the old copy is still out there." },
-        { text: "You can fully undo it - deleting the original page removes it from every search engine and archive within minutes.", feedback: "No. Search caches, the Wayback Machine and anyone who copied it keep their own version regardless of your delete." },
-        { text: "You can, as long as you also change the company's domain name so that all the old links break.", feedback: "The old content still exists wherever it was copied; a new domain doesn't retract what's already saved elsewhere." },
-        { text: "You can't, but only because attackers keep re-downloading your live pages faster than you can edit them.", feedback: "The problem isn't speed - it's that public data gets copied and archived beyond your reach the moment it's up." },
+        { text: "Copies, caches and archives persist; you shrink future exposure but can't recall the old.", correct: true, feedback: "Right - you can't un-publish the internet. Scrub going forward, and rotate any secret that already leaked; assume the old copy is still out there." },
+        { text: "Deleting the original page wipes it from every search engine and archive within minutes.", feedback: "No. Search caches, the Wayback Machine and anyone who copied it keep their own version regardless of your delete." },
+        { text: "Changing the company's domain name breaks all the old links, so the content is gone.", feedback: "The old content still exists wherever it was copied; a new domain doesn't retract what's already saved elsewhere." },
+        { text: "Attackers keep re-downloading your live pages faster than your team can edit them.", feedback: "The problem isn't speed - it's that public data gets copied and archived beyond your reach the moment it's up." },
       ],
     },
   },

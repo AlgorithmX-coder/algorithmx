@@ -452,10 +452,10 @@ export const MODULE14: ModuleDef = {
     check: {
       q: "What is responsible (coordinated) disclosure?",
       options: [
-        { text: "Reporting privately to the vendor first and giving reasonable time to fix before public detail.", correct: true, feedback: "Right - private report, time to fix, then coordinate. Fixed, and no one harmed." },
+        { text: "Reporting privately to the vendor first, with time to fix before disclosure.", correct: true, feedback: "Right - private report, time to fix, then coordinate. Fixed, and no one harmed." },
         { text: "Publishing a working exploit immediately so that users can protect themselves.", feedback: "That hands attackers a weapon before any fix exists - the opposite of protecting users." },
-        { text: "Keeping the flaw secret and quietly using it whenever you like.", feedback: "That's exploitation, not disclosure - and it's illegal." },
-        { text: "Only reporting it if the company first offers to pay you for it.", feedback: "Responsible disclosure doesn't depend on payment; you report to get it fixed regardless of a bounty." },
+        { text: "Keeping the flaw secret and quietly exploiting it whenever it suits you.", feedback: "That's exploitation, not disclosure - and it's illegal." },
+        { text: "Only reporting it if the company first agrees to pay you a bounty for it.", feedback: "Responsible disclosure doesn't depend on payment; you report to get it fixed regardless of a bounty." },
       ],
     },
   },

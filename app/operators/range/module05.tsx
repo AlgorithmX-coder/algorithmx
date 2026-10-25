@@ -223,10 +223,10 @@ const STAGES: Stage[] = [
     explain: {
       q: "You got into the staff console with no password. On a real site, what else could this same injection flaw let an attacker do?",
       options: [
-        { text: "Read or change almost any data the database holds - customer records, password hashes, card details - not just the login.", correct: true, feedback: "Right - that's why injection is so serious. The same flaw that skips a login can pull or alter whole tables, which is exactly what you do next." },
-        { text: "Only bypass logins: injection can skip a password check but can't reach any other table.", feedback: "No - once your input is part of the query, it can reach far beyond the login, as the next stages show." },
-        { text: "Only slow the site down, because the extra query just adds load to the server.", feedback: "It's not about load - injection reads and changes real data, not just performance." },
-        { text: "Only affect your own account, since the query still runs as the user you logged in as.", feedback: "The injected query runs with the database's own access, not a single user's - it can reach everyone's data." },
+        { text: "Read or alter almost any data the database holds, not just the login.", correct: true, feedback: "Right - that's why injection is so serious. The same flaw that skips a login can pull or alter whole tables - customer records, password hashes, card details - which is exactly what you do next." },
+        { text: "Bypass logins only - it skips the check but reaches no other table.", feedback: "No - once your input is part of the query, it can reach far beyond the login, as the next stages show." },
+        { text: "Slow the site down, since the extra query just loads the server.", feedback: "It's not about load - injection reads and changes real data, not just performance." },
+        { text: "Touch only your own account, since the query runs as the user you are.", feedback: "The injected query runs with the database's own access, not a single user's - it can reach everyone's data." },
       ],
     },
   },
@@ -925,7 +925,7 @@ export const MODULE5: ModuleDef = {
     check: {
       q: "A developer 'fixes' the login by deleting any single quotes from the input before building the query the same old way. Is that enough?",
       options: [
-        { text: "No - the query is still glued together by hand, so other inputs (and numeric fields) still break it; parameterise instead.", correct: true, feedback: "Right. Removing one character is a blocklist; the real fix is to stop building SQL from input at all." },
+        { text: "No - it still glues input into SQL by hand, so other inputs break it; parameterise.", correct: true, feedback: "Right. Removing one character is a blocklist; numeric fields and encoded quotes still slip through, so the real fix is to stop building SQL from input at all." },
         { text: "No - stripping quotes helps, but you also need to strip commas and the word UNION for it to be safe.", feedback: "Still a blocklist - attackers slip past with encodings and casing. Parameterise instead of chasing characters." },
         { text: "Yes - with the quotes removed, the input can't escape the data, so the query is safe.", feedback: "Not quite - numeric fields and encoded quotes still get through, and the query is still built by gluing." },
         { text: "Yes - as long as the same quote-stripping runs on every field, not just the login.", feedback: "Applying a blocklist everywhere is still a blocklist; it breaks real input and misses bypasses. Parameterise." },

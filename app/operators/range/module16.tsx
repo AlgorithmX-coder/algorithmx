@@ -230,10 +230,10 @@ function ScoreLab({ onDone }: { onDone: () => void }) {
 
 function PortfolioLab({ onDone }: { onDone: () => void }) {
   const [opts] = useState(() => ([
-    { code: "It proves to people that you watched some security videos", ok: false, why: "It's far more than that - it's a record of real work you actually did, end to end." },
-    { code: "It guarantees you a job in cyber security", ok: false, why: "No guarantees - but it's genuine, demonstrable proof of ability, which is what opens doors." },
-    { code: "It's hands-on evidence of real skill across attack and defence", ok: true, why: "Right - sixteen real findings, honestly reported, mapped to attack and defence. Concrete, ethical, hands-on proof is exactly what stands out to a university or employer." },
-    { code: "It lets you list a long set of tools on your CV", ok: false, why: "Tool names on a CV mean little on their own. What stands out is evidence you applied them to real, honestly-reported findings." },
+    { code: "Mostly it shows you sat through the security videos", ok: false, why: "It's far more than that - it's a record of real work you actually did, end to end." },
+    { code: "A guaranteed cyber security job the moment it's done", ok: false, why: "No guarantees - but it's genuine, demonstrable proof of ability, which is what opens doors." },
+    { code: "Hands-on proof of real skill in attack and defence", ok: true, why: "Right - sixteen real findings, honestly reported, mapped to attack and defence. Concrete, ethical, hands-on proof is exactly what stands out to a university or employer." },
+    { code: "Just a long list of tool names to put on your CV", ok: false, why: "Tool names on a CV mean little on their own. What stands out is evidence you applied them to real, honestly-reported findings." },
   ]));
   return (
     <div style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: 12, padding: "15px 16px" }}>
@@ -313,7 +313,7 @@ const CAP_STAGES: Stage[] = [
   { kind: "order", title: "Chain", goal: "Sableline, the final write-up. Reconstruct the full chain you ran.", intro: "order the Sableline compromise", items: [ { label: "Recon: robots.txt named the dump", pos: 0 }, { label: "Loot: dump leaked the admin credential", pos: 1 }, { label: "Break in: reused it on the console", pos: 2 }, { label: "Impact: full customer export", pos: 3 } ], hint: "Recon -> loot -> break in -> impact." },
   { kind: "severity", title: "Score", goal: "Score the chained finding.", rows: [{ finding: "Remote, unauthenticated chain to full admin and complete data export", band: "Critical", note: "Critical." }], hint: "Top band." },
   { kind: "decision", title: "Deliver", goal: "Finish the season: close the Sableline engagement professionally.", decision: { prompt: "How do you close out Sableline, and the season?", options: [
-    { text: "Deliver the report privately, debrief it, and file it to your portfolio.", correct: true, feedback: "Right. A clean, professional close: coordinated delivery, a concrete fix, an attack-path-review recommendation, the portfolio entry that proves the work, and no further access." },
+    { text: "Report it privately and file it to your portfolio.", correct: true, feedback: "Right. A clean, professional close: coordinated private delivery, a debrief, a concrete fix, an attack-path-review recommendation, the portfolio entry that proves the work, and no further access." },
     { text: "Dump everything publicly online as a grand finale.", feedback: "That harms Sableline's customers - the finale is a professional delivery, not a public dump." },
     { text: "Hold onto the admin access in case it's useful later.", feedback: "Never retain access after an engagement - report, rotate, and close out." },
     { text: "Email the client the flag and call the season done.", feedback: "A flag isn't a close-out. Deliver the report, debrief, recommend an attack-path review, and keep no access." },
@@ -465,7 +465,7 @@ export const MODULE16: ModuleDef = {
     check: {
       q: "The client says they've fixed a finding from your report. Before you close it off, what should you do?",
       options: [
-        { text: "Retest it yourself to confirm the hole is really closed - the fix may be incomplete or reintroduce the bug.", correct: true, feedback: "Right - a fix isn't proven until it's verified. Retest against the original finding to be sure the issue is genuinely gone, not just partly patched." },
+        { text: "Retest it yourself against the original finding to confirm it's really closed.", correct: true, feedback: "Right - a fix isn't proven until it's verified. Retest against the original finding to be sure the issue is genuinely gone, not just partly patched, and can't reintroduce the bug." },
         { text: "Take the client's word that it's fixed and mark the finding closed in your report.", feedback: "A fix often misses an edge case or gets undone later. Don't close a finding on trust - confirm it by retesting." },
         { text: "Leave retesting to the client - verifying their own fix is their job, not yours.", feedback: "The client can't objectively verify their own fix against your attack - retesting the finding is part of the engagement you deliver." },
         { text: "Only retest the finding if the client specifically asks you to check it again.", feedback: "Retesting is how you stand behind the report; waiting to be asked can leave a hole open that everyone assumes is closed." },

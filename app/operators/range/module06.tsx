@@ -274,7 +274,7 @@ function PickSafeRenderLab({ onDone }: { onDone: () => void }) {
   const [opts] = useState(() => ([
     { code: `Drop the comment straight onto the page as raw HTML`, ok: false, why: "This is the bug (innerHTML = userComment): it treats user input as HTML, so any tag runs. Exactly what you exploited." },
     { code: `Show it as HTML, but first strip out any script tags`, ok: false, why: "A blocklist - trivially bypassed with onerror, an image/SVG error handler, odd casing or encodings, as you saw in stage three." },
-    { code: `Show the comment as plain text, so any tags appear as characters instead of running`, ok: true, why: "Rendering as text (textContent) is output encoding: the browser prints the tag instead of running it. The real fix." },
+    { code: `Show the comment as plain text, so tags show as characters`, ok: true, why: "Rendering as text (textContent) is output encoding: the browser prints the tag instead of running it. The real fix." },
     { code: `Show it as HTML, but first delete the word "onerror"`, ok: false, why: "Another blocklist, exactly the stage-three 'fix': switch to a different handler or odd casing and it runs again. Encode on output instead." },
   ]));
   return (
@@ -491,10 +491,10 @@ export const MODULE6: ModuleDef = {
     check: {
       q: "An app puts your comment onto the page with innerHTML, and a developer 'fixes' XSS by deleting any <script> tags from comments. Why does that fail?",
       options: [
-        { text: "Event-handler attributes like <img onerror> and <svg onload> run without any <script> tag.", correct: true, feedback: "Right. Script tags aren't the only way to run code; the real fix is to render input as text, not HTML." },
-        { text: "It works fine, because a <script> tag is the only HTML that can run JavaScript.", feedback: "No - onerror, onload and other handlers run JavaScript without any <script> tag." },
-        { text: "It fails only because the attacker can host the script on another site.", feedback: "The payload runs inline via event handlers; no external hosting is needed to defeat the filter." },
-        { text: "It works, as long as the developer also deletes the word 'javascript' too.", feedback: "Still a blocklist - different tags, casing and encodings slip past. Encode on output instead of chasing words." },
+        { text: "Event handlers like <img onerror> and <svg onload> run with no <script> tag.", correct: true, feedback: "Right. Script tags aren't the only way to run code; the real fix is to render input as text, not HTML." },
+        { text: "Deleting <script> is enough, since only that tag can run JavaScript.", feedback: "No - onerror, onload and other handlers run JavaScript without any <script> tag." },
+        { text: "The filter fails only because the script is hosted on another site.", feedback: "The payload runs inline via event handlers; no external hosting is needed to defeat the filter." },
+        { text: "Also deleting the word 'javascript' too would make the filter safe.", feedback: "Still a blocklist - different tags, casing and encodings slip past. Encode on output instead of chasing words." },
       ],
     },
   },
@@ -527,10 +527,10 @@ export const MODULE6: ModuleDef = {
     check: {
       q: "You already encode output. What does also marking the session cookie HttpOnly add on top?",
       options: [
-        { text: "If an XSS ever slips through, the injected script can't read the cookie, so it can't steal the session that way.", correct: true, feedback: "Right - HttpOnly is a seatbelt behind the real fix: it removes one big impact (session theft) if encoding ever fails." },
-        { text: "It replaces output encoding, so once a cookie is HttpOnly you no longer need to escape user input at all.", feedback: "No - it's a backup layer, not a substitute. An injected script can still deface the page or act as the logged-in user." },
-        { text: "It encrypts the cookie so the server can detect whether an attacker has tampered with its value.", feedback: "HttpOnly is neither encryption nor an integrity check - it only hides the cookie from JavaScript." },
-        { text: "It blocks every script on the page, which is why it counts as the main defence against XSS.", feedback: "That's closer to a Content-Security-Policy, and even CSP isn't the primary fix - encoding the output is." },
+        { text: "If encoding fails, the injected script can't read the cookie to steal the session.", correct: true, feedback: "Right - HttpOnly is a seatbelt behind the real fix: it removes one big impact (session theft) if encoding ever fails." },
+        { text: "Marking the cookie HttpOnly replaces encoding, so you no longer need to escape input.", feedback: "No - it's a backup layer, not a substitute. An injected script can still deface the page or act as the logged-in user." },
+        { text: "The flag encrypts the cookie so the server can detect tampering with its value.", feedback: "HttpOnly is neither encryption nor an integrity check - it only hides the cookie from JavaScript." },
+        { text: "Blocking every script on the page is what makes HttpOnly the main XSS defence.", feedback: "That's closer to a Content-Security-Policy, and even CSP isn't the primary fix - encoding the output is." },
       ],
     },
   },

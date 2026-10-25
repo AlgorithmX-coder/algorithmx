@@ -153,7 +153,7 @@ const ACT_STAGES: Stage[] = [
     hint: "Most alerts are noise. The real incident is the one causing active harm right now: live data exfiltration from an unknown IP." },
   { kind: "decision", title: "Contain", goal: "Stage 2 - The first move. The attacker's session is live and exporting data. What's your FIRST action?",
     decision: { prompt: "An attacker session is active and exfiltrating right now. First action?", options: [
-      { text: "Block the attacker's IP and kill the active session, preserving the evidence.", correct: true, feedback: "Right - contain first. Stop the bleeding and the active harm without destroying what you'll need to investigate." },
+      { text: "Block the attacker's IP and kill the active session.", correct: true, feedback: "Right - contain first. Stop the bleeding and the active harm without destroying what you'll need to investigate." },
       { text: "Pull the whole server offline and wipe it clean immediately.", feedback: "Too far, too fast - you'd destroy evidence and cause an outage. Contain the attacker, don't nuke the host." },
       { text: "Start a thorough week-long root-cause investigation first.", feedback: "Later. While you investigate, they're still exfiltrating. Contain now, investigate after." },
       { text: "Email all staff right away to warn them about it.", feedback: "Not first - it wastes the minutes that matter while the attacker is live. Contain the session." },
@@ -421,10 +421,10 @@ export const MODULE12: ModuleDef = {
     check: {
       q: "Why contain a live attack before investigating the root cause?",
       options: [
-        { text: "Containment stops the ongoing damage, so you can then investigate safely.", correct: true, feedback: "Right - stop the harm first (preserving evidence), then dig into why." },
-        { text: "You should find the full root cause first, then contain once you understand it.", feedback: "Understanding matters, but not first - while you diagnose, the attacker keeps causing harm. Contain to stop the bleeding, then investigate why." },
-        { text: "You should warn all affected customers before taking any technical action.", feedback: "Notifying people matters and may be legally required, but it doesn't stop a live attack - contain the harm first, then handle disclosure." },
-        { text: "You should always wipe every affected machine before doing anything else.", feedback: "Wiping destroys evidence and causes outages - contain precisely, don't nuke." },
+        { text: "Containing the attack stops the damage so you can then investigate safely.", correct: true, feedback: "Right - stop the harm first (preserving evidence), then dig into why." },
+        { text: "Finding the full root cause first means you contain only once you understand it.", feedback: "Understanding matters, but not first - while you diagnose, the attacker keeps causing harm. Contain to stop the bleeding, then investigate why." },
+        { text: "Warning every affected customer must come before any technical action.", feedback: "Notifying people matters and may be legally required, but it doesn't stop a live attack - contain the harm first, then handle disclosure." },
+        { text: "Wiping every affected machine should always come first, before anything else.", feedback: "Wiping destroys evidence and causes outages - contain precisely, don't nuke." },
       ],
     },
   },
@@ -457,7 +457,7 @@ export const MODULE12: ModuleDef = {
     check: {
       q: "You've contained and removed the attacker. Which backup should you restore from?",
       options: [
-        { text: "One from before the breach began - a newer backup may already contain the attacker's foothold and reinfect you.", correct: true, feedback: "Right - restore from a known-clean point before the intrusion. A backup made after they got in can carry their implant straight back." },
+        { text: "One from before the breach began - that restore point is known to be clean.", correct: true, feedback: "Right - restore from a known-clean point before the intrusion. A backup made after they got in can carry their implant straight back." },
         { text: "Always pick the newest backup available, because that way you lose the least amount of data.", feedback: "The newest backup may have been taken after the attacker was already inside, so restoring it brings their foothold back. Clean beats recent." },
         { text: "Any backup is fine now that the threat has been removed from the live system.", feedback: "Not any - a backup taken after they got in can carry the foothold back. The restore point has to be known-clean, from before the breach." },
         { text: "There's no need for a backup - just rebuild the whole system from scratch instead.", feedback: "Rebuilding can clean the machine, but it needlessly discards all your data when a known-clean pre-breach backup would restore it safely." },
