@@ -101,7 +101,7 @@ type Dock =
   | { type: "composer" }
   | null;
 
-export default function PhoneRuntime({ phoneCase, onExit, onNextCase }: { phoneCase: PhoneCase; onExit?: () => void; onNextCase?: () => void }) {
+export default function PhoneRuntime({ phoneCase, onExit, onNextCase, autostart }: { phoneCase: PhoneCase; onExit?: () => void; onNextCase?: () => void; autostart?: boolean }) {
   useArrowAdvance(); // ArrowRight: fast-forward through narration for UAT
   // Fast test mode (?fast=1): skip the narrator wait so the owner can click
   // through quickly. Real users never set it, so the anti-skip stays on.
@@ -361,6 +361,15 @@ export default function PhoneRuntime({ phoneCase, onExit, onNextCase }: { phoneC
   const start = (from: CaseStage = { kind: "skill", index: 0 }) => { if (startedRef.current) return; startedRef.current = true; primeAudio(); setPhase("play"); run(from); };
   const beginFresh = () => { clearProgress(phoneCase.id); start({ kind: "skill", index: 0 }); };
   const beginResume = () => start(resumeStage ?? { kind: "skill", index: 0 });
+  // `autostart`: the per-mission ATLAS briefing (PhoneMissionIntro) already
+  // did the job LockScreen's own "press to unlock" screen exists for. The
+  // home-screen zoom-in cold-open still plays (it's atmosphere, not a
+  // redundant gate) but its onDone then skips straight past the lock
+  // screen — never for a RESUMABLE case, where that prompt is a real choice.
+  const onHomeDone = () => {
+    if (autostart && !isResumable(resumeStage)) beginFresh();
+    else setPhase("lock");
+  };
 
   // ---- interaction handlers ----
   const nudgeRef = useRef(0);
@@ -494,7 +503,7 @@ export default function PhoneRuntime({ phoneCase, onExit, onNextCase }: { phoneC
           </div>
 
           {phase === "home" ? (
-            <HomeScreen appName={APP} kind={phoneCase.app?.kind ?? "messaging"} accent={OUT} reduced={!!reduce} onDone={() => setPhase("lock")} caseId={phoneCase.id} />
+            <HomeScreen appName={APP} kind={phoneCase.app?.kind ?? "messaging"} accent={OUT} reduced={!!reduce} onDone={onHomeDone} caseId={phoneCase.id} />
           ) : phase === "lock" ? (
             isResumable(resumeStage) ? (
               <ResumePrompt caseNumber={phoneCase.caseNumber} title={phoneCase.title} acc={OUT} atLabel={stageLabel(resumeStage, phoneCase.skills)} onContinue={beginResume} onRestart={beginFresh} />

@@ -83,7 +83,7 @@ type Dock =
   | { type: "idle" }
   | null;
 
-export default function WarRoomRuntime({ warCase, onExit, onNextCase }: { warCase: WarCase; onExit?: () => void; onNextCase?: () => void }) {
+export default function WarRoomRuntime({ warCase, onExit, onNextCase, autostart }: { warCase: WarCase; onExit?: () => void; onNextCase?: () => void; autostart?: boolean }) {
   useArrowAdvance(); // ArrowRight: fast-forward through narration for UAT
   const fast = typeof window !== "undefined" && new URLSearchParams(window.location.search).get("fast") === "1";
   const [phase, setPhase] = useState<"boot" | "play" | "test" | "debrief">("boot");
@@ -261,6 +261,14 @@ export default function WarRoomRuntime({ warCase, onExit, onNextCase }: { warCas
   const start = (from: CaseStage = { kind: "skill", index: 0 }) => { if (startedRef.current) return; startedRef.current = true; primeAudio(); setPhase("play"); run(from); };
   const beginFresh = () => { clearProgress(warCase.id); start({ kind: "skill", index: 0 }); };
   const beginResume = () => start(resumeStage ?? { kind: "skill", index: 0 });
+  // `autostart`: the per-mission ATLAS briefing (WarRoomMissionIntro) already
+  // did the job BootScreen's own "press to begin" screen exists for, so a
+  // fresh arrival from that card skips straight into the case. Never skips
+  // a RESUMABLE case — that prompt is a real choice, not a redundant gate.
+  useEffect(() => {
+    if (autostart && !isResumable(resumeStage)) beginFresh();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const nudgeRef = useRef(0);
   // `voice`, when given, is the step's own authored badVoice (case-specific
