@@ -152,13 +152,17 @@ function Glyph({ k }: { k: GlyphKey }) {
       );
     case "call":
       // Centre dot + two mirrored pairs of ring-waves — symmetric about x=12.
+      // Both arc radii are sized so the STROKE (not just the path) stays
+      // inside the 24x24 viewBox — the first version's outer pair bulged
+      // a pixel past the edge and got clipped there (UAT: "cut off on the
+      // edges").
       return (
         <>
           <circle cx="12" cy="12" r="3" fill="currentColor" stroke="none" />
           <path d="M6.3 7a9 9 0 0 0 0 10" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" />
           <path d="M17.7 7a9 9 0 0 1 0 10" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" />
-          <path d="M3 3.5a14 14 0 0 0 0 17" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" opacity={0.55} />
-          <path d="M21 3.5a14 14 0 0 1 0 17" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" opacity={0.55} />
+          <path d="M3.5 5a13 13 0 0 0 0 14" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" opacity={0.55} />
+          <path d="M20.5 5a13 13 0 0 1 0 14" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" opacity={0.55} />
         </>
       );
   }
