@@ -590,6 +590,12 @@ export const MODULE18: ModuleDef = {
     impact: "Any user can read every other customer's private record by changing an id (BOLA), a public bucket exposes the app's .env and a live admin key, that key unlocks the full customer list, and an unprotected endpoint lets a normal account escalate itself to admin (BFLA). Chained, this is a complete breach of customer data and total account takeover.",
     fix: "Authorise the object and the function on every request (verify ownership and role server-side); make buckets private by default; never store secrets in buckets or code, and scope + rotate keys; validate input, rate-limit, and monitor cloud config and access patterns.",
   },
+  briefing: {
+    introAudio: "/operators/briefings/m18-intro.mp3",
+    introBlurb: "A one-minute brief from your handler: what you'll learn in this module, and why it matters.",
+    outroAudio: "/operators/briefings/m18-outro.mp3",
+    outroBlurb: "Your handler's debrief: what you can now do, and the one idea to carry forward.",
+  },
   takeaway: "Authentication is 'who are you'; authorisation is 'are you allowed'. Most cloud and API breaches are a missing authorisation check, not clever hacking.",
   outcome: [
     "Exploit BOLA/IDOR by changing an id in a request to read data that isn't yours.",

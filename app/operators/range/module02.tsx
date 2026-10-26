@@ -573,6 +573,12 @@ export const MODULE2: ModuleDef = {
       },
     ],
   },
+  briefing: {
+    introAudio: "/operators/briefings/m02-intro.mp3",
+    introBlurb: "A one-minute brief from your handler: what you'll learn in this module, and why it matters.",
+    outroAudio: "/operators/briefings/m02-outro.mp3",
+    outroBlurb: "Your handler's debrief: what you can now do, and the one idea to carry forward.",
+  },
   takeaway: "Anything a company puts in public can be stitched into a way in. If it is out there, assume an attacker already has it.",
   outcome: [
     "Build a valid staff login from public sources alone - pairing an email format on an About page with a name from a new-starter post, without touching a thing.",

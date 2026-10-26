@@ -559,6 +559,12 @@ export const MODULE19: ModuleDef = {
     impact: "An attacker who merely plants text in content the agent reads (an email, a shared document) can make it use its own legitimate access to exfiltrate confidential data, with no victim action beyond normal use and no stolen credentials. Blocking one channel (external email) is bypassed via a URL side channel, and a domain allow-list is bypassed through a trusted-but-attacker-owned domain. Where the agent can send money or run code, this becomes unauthorised action, not just data theft.",
     fix: "Apply least privilege to tools and permissions; allow-list the exact tools and destinations (and own that list); require human approval for high-impact actions; treat all retrieved content as untrusted data, never instructions; and break the lethal trifecta so private data, untrusted content and an outbound channel never meet in one session.",
   },
+  briefing: {
+    introAudio: "/operators/briefings/m19-intro.mp3",
+    introBlurb: "A one-minute brief from your handler: what you'll learn in this module, and why it matters.",
+    outroAudio: "/operators/briefings/m19-outro.mp3",
+    outroBlurb: "Your handler's debrief: what you can now do, and the one idea to carry forward.",
+  },
   takeaway: "Give an AI tools and prompt injection becomes real action. You can't filter it, so limit the agent's power and keep a human on anything that acts.",
   outcome: [
     "Hijack an AI agent by hiding an instruction in content it reads (indirect injection).",

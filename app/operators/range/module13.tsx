@@ -503,6 +503,12 @@ export const MODULE13: ModuleDef = {
       },
     ],
   },
+  briefing: {
+    introAudio: "/operators/briefings/m13-intro.mp3",
+    introBlurb: "A one-minute brief from your handler: what you'll learn in this module, and why it matters.",
+    outroAudio: "/operators/briefings/m13-outro.mp3",
+    outroBlurb: "Your handler's debrief: what you can now do, and the one idea to carry forward.",
+  },
   takeaway: "No technical control stops a convincing message. Verify any money, credential or bank-change request out-of-band, on a number you already trust.",
   outcome: [
     "Triage an inbox into phishing and legitimate mail, telling a lookalike sender and credential bait from a genuine message.",

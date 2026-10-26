@@ -528,6 +528,12 @@ export const MODULE12: ModuleDef = {
       },
     ],
   },
+  briefing: {
+    introAudio: "/operators/briefings/m12-intro.mp3",
+    introBlurb: "A one-minute brief from your handler: what you'll learn in this module, and why it matters.",
+    outroAudio: "/operators/briefings/m12-outro.mp3",
+    outroBlurb: "Your handler's debrief: what you can now do, and the one idea to carry forward.",
+  },
   takeaway: "In a live breach, contain before you clean. Block and isolate the attacker first, preserve the evidence, recover only from known-clean backups.",
   outcome: [
     "Triage a flooded alert queue down to the one real incident and set the benign noise aside.",

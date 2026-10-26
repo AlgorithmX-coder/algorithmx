@@ -572,6 +572,12 @@ export const MODULE10: ModuleDef = {
       },
     ],
   },
+  briefing: {
+    introAudio: "/operators/briefings/m10-intro.mp3",
+    introBlurb: "A one-minute brief from your handler: what you'll learn in this module, and why it matters.",
+    outroAudio: "/operators/briefings/m10-outro.mp3",
+    outroBlurb: "Your handler's debrief: what you can now do, and the one idea to carry forward.",
+  },
   takeaway: "Every open port is a door someone can try. Keep management services off the open internet and retire anything outdated.",
   outcome: [
     "Run a port scan of a host and flag the dangerous open door, such as Remote Desktop (3389) left facing the whole internet.",

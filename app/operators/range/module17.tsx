@@ -565,6 +565,12 @@ export const MODULE17: ModuleDef = {
     impact: "The assistant treats user input and read-in content as instructions, so an attacker can override its rules, extract its hidden system prompt and the secret launch code, hijack it indirectly through a poisoned page, and bypass the phrase filter with rewording. Where such an assistant is wired to real data or actions, this becomes data theft or unauthorised actions.",
     fix: "Treat all input (including content the AI reads) as untrusted; apply least privilege so the model can't reach secrets or powerful tools it doesn't need; require human approval and tool allow-listing for any action; monitor outputs for leaks. Do not rely on phrase blocklists.",
   },
+  briefing: {
+    introAudio: "/operators/briefings/m17-intro.mp3",
+    introBlurb: "A one-minute brief from your handler: what you'll learn in this module, and why it matters.",
+    outroAudio: "/operators/briefings/m17-outro.mp3",
+    outroBlurb: "Your handler's debrief: what you can now do, and the one idea to carry forward.",
+  },
   takeaway: "An AI can't tell its rules from the text it reads. You can't perfectly filter that, so limit what a hijacked model can reach or do.",
   outcome: [
     "Override an AI's hidden rules with a direct instruction, because it reads rules and input as one stream.",

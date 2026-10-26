@@ -517,6 +517,12 @@ export const MODULE15: ModuleDef = {
       },
     ],
   },
+  briefing: {
+    introAudio: "/operators/briefings/m15-intro.mp3",
+    introBlurb: "A one-minute brief from your handler: what you'll learn in this module, and why it matters.",
+    outroAudio: "/operators/briefings/m15-outro.mp3",
+    outroBlurb: "Your handler's debrief: what you can now do, and the one idea to carry forward.",
+  },
   takeaway: "Small flaws chain into total compromise: a leaked path, an exposed backup, a reused password. Break any single link and the whole route collapses.",
   outcome: [
     "Recon a target's public surface and read a robots.txt that advertises the very paths it is meant to hide.",

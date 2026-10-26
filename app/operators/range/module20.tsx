@@ -546,6 +546,12 @@ export const MODULE20: ModuleDef = {
     impact: "An attacker impersonates a trusted executive or contact with a cloned voice or a deepfake video and leans on urgency and secrecy to trigger a fraudulent payment or a bank-detail change. No system is breached; the request simply looks and sounds real. Losses are often large and unrecoverable (Arup lost about GBP 20m in a single incident), plus reputational and regulatory harm. This is scored as organisational risk (likelihood x impact), not a software CVSS.",
     fix: "Mandatory out-of-band verification for any payment or bank-detail change (call back on a known number); dual authorisation for large or unusual transfers; a pre-agreed safe word for sensitive requests; treat urgency and secrecy as red flags; limit public audio/video of staff; and adopt provenance (C2PA) and liveness checks as they mature. The control that moves the needle most is a process, not a detector.",
   },
+  briefing: {
+    introAudio: "/operators/briefings/m20-intro.mp3",
+    introBlurb: "A one-minute brief from your handler: what you'll learn in this module, and why it matters.",
+    outroAudio: "/operators/briefings/m20-outro.mp3",
+    outroBlurb: "Your handler's debrief: what you can now do, and the one idea to carry forward.",
+  },
   takeaway: "You cannot reliably spot the best fakes, and you do not need to. Verify the request through a trusted channel and 'seeing is believing' stops being a weakness.",
   outcome: [
     "Recognise deepfake video, voice and image tells, and know why they are hints, not proof.",

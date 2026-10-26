@@ -594,6 +594,12 @@ export const MODULE8: ModuleDef = {
       },
     ],
   },
+  briefing: {
+    introAudio: "/operators/briefings/m08-intro.mp3",
+    introBlurb: "A one-minute brief from your handler: what you'll learn in this module, and why it matters.",
+    outroAudio: "/operators/briefings/m08-outro.mp3",
+    outroBlurb: "Your handler's debrief: what you can now do, and the one idea to carry forward.",
+  },
   takeaway: "Encoding is not encryption. If it reverses with no key it protects nothing: use a strong algorithm and keep the key out of the code.",
   outcome: [
     "Decode a base64 'token' in a single step and recognise that encoding protects nothing, because it needs no key.",

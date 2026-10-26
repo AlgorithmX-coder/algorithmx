@@ -546,6 +546,12 @@ export const MODULE11: ModuleDef = {
       },
     ],
   },
+  briefing: {
+    introAudio: "/operators/briefings/m11-intro.mp3",
+    introBlurb: "A one-minute brief from your handler: what you'll learn in this module, and why it matters.",
+    outroAudio: "/operators/briefings/m11-outro.mp3",
+    outroBlurb: "Your handler's debrief: what you can now do, and the one idea to carry forward.",
+  },
   takeaway: "The logs hold the whole story: a burst of failures then one success, odd hour, odd place, is a break-in. Learn to read them.",
   outcome: [
     "Read an auth log and pinpoint the moment of compromise - the one success that follows a burst of failed logins from an odd IP at an odd hour.",

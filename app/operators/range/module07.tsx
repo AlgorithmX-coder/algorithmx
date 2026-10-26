@@ -594,6 +594,12 @@ export const MODULE7: ModuleDef = {
       },
     ],
   },
+  briefing: {
+    introAudio: "/operators/briefings/m07-intro.mp3",
+    introBlurb: "A one-minute brief from your handler: what you'll learn in this module, and why it matters.",
+    outroAudio: "/operators/briefings/m07-outro.mp3",
+    outroBlurb: "Your handler's debrief: what you can now do, and the one idea to carry forward.",
+  },
   takeaway: "Hiding a link or an id is not access control. Check ownership and permission on the server for every object and action.",
   outcome: [
     "Spot and exploit an IDOR by changing an object id in a request to read records that were never yours, because the server never checks ownership.",

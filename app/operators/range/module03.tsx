@@ -619,6 +619,12 @@ export const MODULE3: ModuleDef = {
       },
     ],
   },
+  briefing: {
+    introAudio: "/operators/briefings/m03-intro.mp3",
+    introBlurb: "A one-minute brief from your handler: what you'll learn in this module, and why it matters.",
+    outroAudio: "/operators/briefings/m03-outro.mp3",
+    outroBlurb: "Your handler's debrief: what you can now do, and the one idea to carry forward.",
+  },
   takeaway: "A server can never trust what the client sends. Decide every price, role and permission on the server, every time.",
   outcome: [
     "Read an HTTP response for what it leaks - a backend version in a header, or an internal endpoint a developer left in an HTML comment.",
