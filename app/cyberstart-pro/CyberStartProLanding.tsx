@@ -277,9 +277,9 @@ export default function CyberStartProLanding({ product }: { product: Product }) 
       `}</style>
 
       <CodeRainBg
-        glyph="rgba(255,122,61,0.16)"
+        glyph="rgba(255,122,61,0.14)"
         base="#060709"
-        glows="radial-gradient(1200px 620px at 50% -12%, rgba(255,122,61,0.14), transparent 60%), radial-gradient(900px 520px at 90% 2%, rgba(255,180,84,0.08), transparent 55%), radial-gradient(1100px 900px at 50% 42%, rgba(6,7,9,0.68), transparent 72%)"
+        glows="radial-gradient(150% 85% at 50% -24%, rgba(255,122,61,0.13), rgba(255,122,61,0.03) 42%, transparent 64%), linear-gradient(180deg, rgba(6,7,9,0) 0%, rgba(6,7,9,0.5) 72%, rgba(6,7,9,0.84) 100%)"
       />
 
       <div className="min-h-screen relative" style={{ background: "transparent", zIndex: 1 }}>
@@ -308,9 +308,7 @@ export default function CyberStartProLanding({ product }: { product: Product }) 
         </nav>
 
         {/* Hero */}
-        <Section className="pt-32 pb-16 md:pt-36 md:pb-20 overflow-hidden">
-          <div className="glow" style={{ width: 520, height: 520, background: PRIMARY, top: -140, left: -90, opacity: 0.4 }} />
-          <div className="glow" style={{ width: 440, height: 440, background: ACCENT, top: 30, right: -110, opacity: 0.28 }} />
+        <Section className="pt-32 pb-16 md:pt-36 md:pb-20">
           <div className="relative grid lg:grid-cols-[1.05fr_0.95fr] gap-12 items-center" style={{ zIndex: 1 }}>
             <div className="rise text-center lg:text-left">
               <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-[11px] font-black uppercase tracking-[0.18em] mb-7 mono"
