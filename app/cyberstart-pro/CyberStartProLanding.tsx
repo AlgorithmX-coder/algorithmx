@@ -9,31 +9,36 @@ import CubeMark from "@/app/components/CubeMark";
 
 /* Cyber Pro landing (marketing / sales page for /pro).
  *
- * Built for conversion on a PAID model: there is no free tier. Access is
- * one payment for the whole 21-module course, lifetime, no subscription.
- * The page still lets a visitor taste the product in the hero (a real,
- * honest password cracker, a genuine slice of Module 3) to build desire,
- * then drives to a single purchase.
+ * Design direction "Command Bar" (owner pick, 2026-10-26): the near-black and
+ * signal-orange brand used across the product (auth pages CourseAuthPage /
+ * themes.tsx, the homepage Pro card). A SOLID, bordered top bar with the
+ * code-bracket mark and a bright orange action; a two-column hero with the
+ * real Password Lab; and that black-and-orange run through every section with
+ * real hierarchy, so nothing blends into a single wash (the old violet/cyan
+ * page did). Semantic red/green stay for meaning (a cracked password, a
+ * breach, a "safe" verdict).
+ *
+ * Built for conversion on a PAID model: no free tier. Access is one payment
+ * for the whole 21-module course, lifetime, no subscription. The hero lets a
+ * visitor taste the product (a real, honest password cracker, a genuine slice
+ * of Module 3), then drives to a single purchase.
  *
  * Primary CTA is status-aware: a buy button into /purchase only once the
- * Product is ACTIVE *and* the paid checkout is wired (PURCHASE_OPEN). Until
- * then — including while the course is live but the sale is held — the CTA
- * points at the enrol band, which offers a "be first in" waitlist.
- * PRICE is catalogue-driven (the owner's live lever). Age is 18+, a fixed
- * fact, in copy.
- *
- * Design intent: break the flat-card look. A two-column interactive hero,
- * framed "real app" panels with depth and glow, a vertical path for the
- * journey. Claims policy: aligned to the CompTIA Security+ objectives +
- * CyBOK; no NCSC marks, no job guarantees, no invented statistics, no
- * "certification included". British spelling. No em-dashes. Fonts from the
- * self-hosted next/font vars (--font-pro-*); sections visible by default. */
+ * Product is ACTIVE and the paid checkout is wired (PURCHASE_OPEN). Until then
+ * the CTA points at the enrol band, which offers a "be first in" waitlist.
+ * PRICE is catalogue-driven. Age is 18+, a fixed fact, in copy. Claims policy:
+ * aligned to the CompTIA Security+ objectives; no NCSC marks, no job
+ * guarantees, no invented statistics, no "certification included". British
+ * spelling. No em-dashes. Fonts from the self-hosted --font-pro-* vars. */
 
-const PRIMARY = "#7c5cff";
-const ACCENT = "#00e5ff";
-const GREEN = "#3ecf8e";
-const RED = "#ff5d6c";
+const PRIMARY = "#ff7a3d"; // signal orange, the brand accent
+const ACCENT = "#ffb454";  // amber, the warm second step
+const DEEP = "#e0531a";    // deep ember
+const GREEN = "#5fe0a8";
+const RED = "#ff6b81";
 const AMBER = "#ffb454";
+const INK = "#eef1f8";
+const MUT = "rgba(205,212,230,0.74)";
 const GRAD = `linear-gradient(135deg, ${PRIMARY}, ${ACCENT})`;
 const DISPLAY = "var(--font-pro-display), 'Chakra Petch', sans-serif";
 const SANS = "var(--font-pro-sans), 'Nunito', sans-serif";
@@ -45,9 +50,19 @@ const ENROL_ANCHOR = "#enrol";
  * is not wired yet (app/purchase/[slug]/actions.ts still grants the
  * entitlement for free as a stub), so while this is false the course shows
  * as live but every buy action routes to the enrol-band waitlist instead of
- * /purchase, which would otherwise give the course away. Flip to true in the
- * same change that lands the real Stripe checkout. */
+ * /purchase. Flip to true in the same change that lands real Stripe checkout. */
 const PURCHASE_OPEN = false;
+
+/* The code-bracket shield mark, the Cyber Pro logo used on the auth pages. */
+function Mark({ size = 19 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={PRIMARY} strokeWidth="2" aria-hidden style={{ filter: `drop-shadow(0 0 9px ${PRIMARY}59)`, flexShrink: 0 }}>
+      <path d="M4 4 H14.5 L20 9.5 V20 H4 Z" strokeLinejoin="round" />
+      <path d="M8 9.5 L11.2 12.5 L8 15.5" strokeLinecap="round" strokeLinejoin="round" />
+      <path className="cypro-cursor" d="M13 15.5 H16.2" strokeLinecap="round" />
+    </svg>
+  );
+}
 
 /* ---------------- the live hero demo: a real password cracker ---------------- */
 
@@ -96,12 +111,12 @@ function PasswordLab() {
   const [show, setShow] = useState(true);
   const r = useMemo(() => crackEstimate(pw), [pw]);
   return (
-    <div className="rise" style={{ background: "rgba(6,8,16,0.82)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 18, boxShadow: `0 30px 80px rgba(0,0,0,0.5), 0 0 60px ${PRIMARY}22`, overflow: "hidden", backdropFilter: "blur(10px)" }}>
-      <div style={{ display: "flex", alignItems: "center", gap: 7, padding: "11px 15px", borderBottom: "1px solid rgba(255,255,255,0.07)", background: "rgba(255,255,255,0.025)" }}>
+    <div className="rise" style={{ background: "rgba(8,8,11,0.86)", border: `1px solid ${PRIMARY}33`, borderRadius: 18, boxShadow: `0 30px 80px rgba(0,0,0,0.6), 0 0 60px ${PRIMARY}1f`, overflow: "hidden", backdropFilter: "blur(10px)" }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 7, padding: "11px 15px", borderBottom: "1px solid rgba(255,255,255,0.07)", background: `${PRIMARY}0f` }}>
         <span style={{ width: 10, height: 10, borderRadius: "50%", background: "#ff5f57" }} />
         <span style={{ width: 10, height: 10, borderRadius: "50%", background: "#febc2e" }} />
         <span style={{ width: 10, height: 10, borderRadius: "50%", background: "#28c840" }} />
-        <span className="mono" style={{ marginLeft: 8, fontSize: 10.5, letterSpacing: "0.1em", color: "rgba(255,255,255,0.4)", textTransform: "uppercase" }}>Module 3 &middot; Password Lab</span>
+        <span className="mono" style={{ marginLeft: 8, fontSize: 10.5, letterSpacing: "0.1em", color: PRIMARY, textTransform: "uppercase" }}>Module 3 &middot; Password Lab</span>
       </div>
       <div style={{ padding: "22px 20px 24px" }}>
         <label className="mono" style={{ display: "block", fontSize: 11, letterSpacing: "0.08em", color: "rgba(255,255,255,0.55)", marginBottom: 9, textTransform: "uppercase" }}>Try a password</label>
@@ -114,7 +129,7 @@ function PasswordLab() {
             autoComplete="off" autoCapitalize="off" autoCorrect="off" spellCheck={false}
             aria-label="Try a password to see how long it takes to crack"
             className="mono"
-            style={{ width: "100%", boxSizing: "border-box", background: "rgba(0,0,0,0.4)", border: "1px solid rgba(255,255,255,0.14)", borderRadius: 11, padding: "14px 54px 14px 15px", color: "#fff", fontSize: 16, outline: "none" }}
+            style={{ width: "100%", boxSizing: "border-box", background: "rgba(0,0,0,0.45)", border: "1px solid rgba(255,255,255,0.14)", borderRadius: 11, padding: "14px 54px 14px 15px", color: "#fff", fontSize: 16, outline: "none" }}
           />
           <button type="button" onClick={() => setShow((s) => !s)} aria-label={show ? "Hide password" : "Show password"}
             className="mono" style={{ position: "absolute", right: 8, top: "50%", transform: "translateY(-50%)", background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 7, padding: "6px 9px", fontSize: 10, color: "rgba(255,255,255,0.65)", cursor: "pointer" }}>
@@ -128,7 +143,7 @@ function PasswordLab() {
         <p style={{ fontSize: 13, lineHeight: 1.5, color: "rgba(255,255,255,0.62)", minHeight: 38 }}>{r.detail}</p>
       </div>
       <div style={{ padding: "12px 20px", borderTop: "1px solid rgba(255,255,255,0.07)", background: "rgba(255,255,255,0.02)", display: "flex", alignItems: "center", gap: 8 }}>
-        <span aria-hidden style={{ color: ACCENT }}>&rsaquo;</span>
+        <span aria-hidden style={{ color: PRIMARY }}>&rsaquo;</span>
         <span style={{ fontSize: 12.5, color: "rgba(255,255,255,0.6)" }}>A taste of Module 3. All 21 are hands-on like this.</span>
       </div>
     </div>
@@ -193,10 +208,21 @@ function Section({ children, className = "" }: { children: React.ReactNode; clas
   return <section className={`relative max-w-[1180px] mx-auto px-6 md:px-10 ${className}`}>{children}</section>;
 }
 
+/* A full-width faint band with orange hairlines, used to give the page rhythm
+ * so sections read as distinct blocks instead of one flat wash. */
+function Band({ children }: { children: React.ReactNode }) {
+  return <div style={{ background: "rgba(255,255,255,0.016)", borderTop: `1px solid ${PRIMARY}1a`, borderBottom: `1px solid ${PRIMARY}1a` }}>{children}</div>;
+}
+
+/* A small orange section eyebrow. */
+function Eyebrow({ children }: { children: React.ReactNode }) {
+  return <p className="mono" style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.26em", textTransform: "uppercase", color: PRIMARY }}>{children}</p>;
+}
+
 export default function CyberStartProLanding({ product }: { product: Product }) {
   const [scrolled, setScrolled] = useState(false);
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 60);
+    const onScroll = () => setScrolled(window.scrollY > 24);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
@@ -204,20 +230,14 @@ export default function CyberStartProLanding({ product }: { product: Product }) 
   const isActive = product.status === "ACTIVE";
   const priceLine = `£${Math.round(product.priceGBP / 100)}`;
   const buyHref = `/purchase/${product.slug}`;
-  // Only send people into checkout when the course is live AND the paid flow
-  // is actually wired (see PURCHASE_OPEN). While the course is live but the
-  // sale is held, every CTA points at the enrol band's waitlist instead of
-  // the (free-stub) /purchase page.
   const canBuy = isActive && PURCHASE_OPEN;
 
-  // One paid call to action. Buy straight into checkout when the sale is
-  // live; otherwise point at the enrol band, which carries the waitlist.
   function Cta({ size = "lg", label }: { size?: "lg" | "md"; label?: string }) {
     const big = size === "lg";
     const href = canBuy ? buyHref : ENROL_ANCHOR;
     const text = label ?? (canBuy ? `Get the course for ${priceLine}` : isActive ? "Get the course" : "Enrol now");
     return (
-      <a href={href} className="cypro-start" style={{ padding: big ? "16px 34px" : "13px 26px", fontSize: big ? 18 : 15, background: GRAD, boxShadow: `0 10px 38px ${PRIMARY}55` }}>
+      <a href={href} className="cypro-start" style={{ padding: big ? "16px 32px" : "13px 24px", fontSize: big ? 17 : 15, background: GRAD, boxShadow: `0 10px 34px ${PRIMARY}55`, color: "#160a03" }}>
         {text}
         <span aria-hidden>&rarr;</span>
       </a>
@@ -225,11 +245,11 @@ export default function CyberStartProLanding({ product }: { product: Product }) 
   }
 
   return (
-    <div className="cypro" style={{ fontFamily: SANS }}>
+    <div className="cypro" style={{ fontFamily: SANS, color: INK }}>
       <style>{`
         .cypro { color-scheme: dark; }
-        .cypro ::selection { background: ${PRIMARY}66; color: #fff; }
-        .cypro :focus-visible { outline: 2px solid ${ACCENT}; outline-offset: 3px; border-radius: 6px; }
+        .cypro ::selection { background: ${PRIMARY}59; color: #fff; }
+        .cypro :focus-visible { outline: 2px solid ${PRIMARY}; outline-offset: 3px; border-radius: 6px; }
         .cypro .disp { font-family: ${DISPLAY}; }
         .cypro .mono { font-family: ${MONO}; }
         .cypro .glow { position:absolute; border-radius:50%; filter: blur(90px); opacity:0.5; pointer-events:none; z-index:0; }
@@ -240,12 +260,14 @@ export default function CyberStartProLanding({ product }: { product: Product }) 
         @keyframes cyproBlink { 50% { opacity: 0; } }
 
         .cypro .card { transition: transform 180ms ease, border-color 180ms ease, background 180ms ease; }
-        .cypro .card-hover:hover { transform: translateY(-3px); border-color: ${PRIMARY}66; background: rgba(255,255,255,0.055); }
+        .cypro .card-hover:hover { transform: translateY(-3px); border-color: ${PRIMARY}80; background: rgba(255,122,61,0.045); }
 
-        .cypro-start { display:inline-flex; align-items:center; gap:10px; border-radius:16px; font-family:${DISPLAY}; font-weight:700; color:#fff; text-decoration:none; transition: transform 160ms ease, box-shadow 160ms ease; white-space:nowrap; }
+        .cypro-start { display:inline-flex; align-items:center; gap:10px; border-radius:14px; font-family:${DISPLAY}; font-weight:800; text-decoration:none; transition: transform 160ms ease, box-shadow 160ms ease; white-space:nowrap; }
         .cypro-start:hover { transform: translateY(-2px); box-shadow: 0 14px 46px ${PRIMARY}66; }
         .cypro-ghost { transition: transform 140ms ease; }
         .cypro-ghost:hover { transform: scale(1.04); }
+        .cypro-navlink { color: rgba(226,230,245,0.72); font-weight:700; font-size:14px; transition: color 140ms ease; }
+        .cypro-navlink:hover { color:#fff; }
 
         @media (prefers-reduced-motion: reduce) {
           .cypro .rise, .cypro-cursor { animation: none; }
@@ -254,28 +276,31 @@ export default function CyberStartProLanding({ product }: { product: Product }) 
         }
       `}</style>
 
-      <CodeRainBg />
+      <CodeRainBg
+        glyph="rgba(255,122,61,0.16)"
+        base="#060709"
+        glows="radial-gradient(1200px 620px at 50% -12%, rgba(255,122,61,0.14), transparent 60%), radial-gradient(900px 520px at 90% 2%, rgba(255,180,84,0.08), transparent 55%), radial-gradient(1100px 900px at 50% 42%, rgba(6,7,9,0.68), transparent 72%)"
+      />
 
       <div className="min-h-screen relative" style={{ background: "transparent", zIndex: 1 }}>
-        {/* Nav */}
+        {/* Command bar: solid and bordered from the first pixel, so it never
+            melts into the hero the way the old transparent nav did. */}
         <nav className="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
-          style={{ background: scrolled ? "rgba(10,8,22,0.85)" : "transparent", backdropFilter: scrolled ? "blur(20px)" : "none", borderBottom: scrolled ? "1px solid rgba(255,255,255,0.06)" : "1px solid transparent" }}>
-          <div className="max-w-[1180px] mx-auto px-6 md:px-10 py-4 flex items-center justify-between">
+          style={{ background: scrolled ? "rgba(8,8,12,0.94)" : "rgba(8,8,12,0.8)", backdropFilter: "blur(18px)", borderBottom: `1px solid ${scrolled ? `${PRIMARY}4d` : `${PRIMARY}26`}`, boxShadow: scrolled ? "0 8px 30px -14px rgba(0,0,0,0.8)" : "none" }}>
+          <div className="max-w-[1180px] mx-auto px-6 md:px-10 py-3.5 flex items-center justify-between">
             <Link href="/" className="flex items-center gap-2.5" aria-label="Cyber Pro by AlgorithmX, home">
-              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#ff7a3d" strokeWidth="2" aria-hidden style={{ filter: "drop-shadow(0 0 9px rgba(255,122,61,0.35))", flexShrink: 0 }}>
-                <path d="M4 4 H14.5 L20 9.5 V20 H4 Z" strokeLinejoin="round" />
-                <path d="M8 9.5 L11.2 12.5 L8 15.5" strokeLinecap="round" strokeLinejoin="round" />
-                <path className="cypro-cursor" d="M13 15.5 H16.2" strokeLinecap="round" />
-              </svg>
+              <Mark />
               <span className="flex flex-col gap-0.5 leading-none">
-                <span className="disp" style={{ fontWeight: 700, fontSize: 18, letterSpacing: "0.07em", color: "#fff", whiteSpace: "nowrap" }}>CYBER PRO</span>
+                <span className="disp" style={{ fontWeight: 700, fontSize: 18, letterSpacing: "0.07em", color: "#fff", whiteSpace: "nowrap" }}>CYBER <span style={{ color: PRIMARY }}>PRO</span></span>
                 <span className="hidden sm:inline mono" style={{ fontSize: 9, letterSpacing: "0.16em", color: "rgba(255,255,255,0.4)", textTransform: "uppercase", whiteSpace: "nowrap" }}>by <CubeMark size={13} color="#5f8dff" code style={{ display: "inline-block", verticalAlign: "middle", position: "relative", top: "-0.15em", margin: "0 3px", filter: "drop-shadow(0 0 6px rgba(95,141,255,0.7))" }} />AlgorithmX</span>
               </span>
             </Link>
-            <div className="flex items-center gap-4">
-              <a href="/pro/login" className="text-sm font-bold text-gray-300 hover:text-white transition-colors hidden sm:block">Sign in</a>
-              <a href="/pro/course" className="text-sm font-bold text-gray-300 hover:text-white transition-colors hidden sm:block">See the course</a>
-              <a href={canBuy ? buyHref : ENROL_ANCHOR} className="cypro-ghost px-5 py-2.5 rounded-2xl text-sm font-black text-white" style={{ background: GRAD, boxShadow: `0 4px 20px ${PRIMARY}50` }}>
+            <div className="flex items-center gap-5 md:gap-6">
+              <a href="/pro/login" className="cypro-navlink hidden sm:block">Sign in</a>
+              <a href="/pro/course" className="cypro-navlink hidden md:block">The course</a>
+              <a href={ENROL_ANCHOR} className="cypro-navlink hidden md:block">Pricing</a>
+              <a href={canBuy ? buyHref : ENROL_ANCHOR} className="cypro-ghost rounded-xl text-sm font-black"
+                style={{ background: GRAD, color: "#160a03", padding: "9px 17px", boxShadow: `0 4px 18px ${PRIMARY}4d` }}>
                 {isActive ? "Get the course" : "Enrol"}
               </a>
             </div>
@@ -284,29 +309,34 @@ export default function CyberStartProLanding({ product }: { product: Product }) 
 
         {/* Hero */}
         <Section className="pt-32 pb-16 md:pt-36 md:pb-20 overflow-hidden">
-          <div className="glow" style={{ width: 520, height: 520, background: PRIMARY, top: -120, left: -80 }} />
-          <div className="glow" style={{ width: 460, height: 460, background: ACCENT, top: 40, right: -100, opacity: 0.35 }} />
+          <div className="glow" style={{ width: 520, height: 520, background: PRIMARY, top: -140, left: -90, opacity: 0.4 }} />
+          <div className="glow" style={{ width: 440, height: 440, background: ACCENT, top: 30, right: -110, opacity: 0.28 }} />
           <div className="relative grid lg:grid-cols-[1.05fr_0.95fr] gap-12 items-center" style={{ zIndex: 1 }}>
             <div className="rise text-center lg:text-left">
               <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-[11px] font-black uppercase tracking-[0.18em] mb-7 mono"
-                style={{ background: `${PRIMARY}1f`, border: `1px solid ${PRIMARY}55`, color: "#c9b8ff" }}>
-                <span aria-hidden style={{ width: 6, height: 6, borderRadius: "50%", background: ACCENT, boxShadow: `0 0 10px ${ACCENT}` }} />
+                style={{ background: `${PRIMARY}1c`, border: `1px solid ${PRIMARY}55`, color: ACCENT }}>
+                <span aria-hidden style={{ width: 6, height: 6, borderRadius: "50%", background: PRIMARY, boxShadow: `0 0 10px ${PRIMARY}` }} />
                 From total beginner to job-ready
               </div>
               <h1 className="disp font-black text-white leading-[1.05] mb-6" style={{ fontSize: "clamp(2.5rem, 5.4vw, 4.2rem)", letterSpacing: "-0.02em" }}>
                 You don&apos;t need to be technical to start.{" "}
-                <span className="text-transparent bg-clip-text" style={{ backgroundImage: GRAD, WebkitBackgroundClip: "text", filter: `drop-shadow(0 0 30px ${PRIMARY}44)` }}>You will be by the end.</span>
+                <span className="text-transparent bg-clip-text" style={{ backgroundImage: GRAD, WebkitBackgroundClip: "text", filter: `drop-shadow(0 0 30px ${PRIMARY}4d)` }}>You will be by the end.</span>
               </h1>
-              <p className="text-gray-300 leading-relaxed mb-8 mx-auto lg:mx-0" style={{ fontSize: "clamp(1.02rem, 1.3vw, 1.18rem)", maxWidth: "34ch" }}>
+              <p className="leading-relaxed mb-8 mx-auto lg:mx-0" style={{ color: MUT, fontSize: "clamp(1.02rem, 1.3vw, 1.18rem)", maxWidth: "34ch" }}>
                 Cyber security is one of the best-paid, most in-demand careers going, and far more learnable than it looks. Learn it from zero by doing, right in your browser.
               </p>
               <div className="flex flex-col items-center lg:items-start gap-4">
-                <Cta />
-                <p className="text-sm" style={{ color: "rgba(255,255,255,0.55)" }}>One payment. Lifetime access. No subscription.</p>
+                <div className="flex items-center gap-5 flex-wrap justify-center lg:justify-start">
+                  <Cta />
+                  <div className="text-left">
+                    <div className="disp font-black text-white" style={{ fontSize: 17 }}>{priceLine} once</div>
+                    <div className="mono" style={{ fontSize: 11, color: "rgba(255,255,255,0.5)" }}>lifetime &middot; no subscription</div>
+                  </div>
+                </div>
               </div>
               <div className="mt-7 flex items-center justify-center lg:justify-start gap-4 flex-wrap">
                 <a href="/pro/course" className="inline-flex items-center gap-1.5 text-sm font-bold" style={{ color: ACCENT }}>See all 21 modules <span aria-hidden>&rarr;</span></a>
-                <span className="text-xs font-bold uppercase tracking-widest text-gray-500 mono">18+ &middot; 21 modules</span>
+                <span className="text-xs font-bold uppercase tracking-widest mono" style={{ color: "rgba(255,255,255,0.4)" }}>18+ &middot; aligned to Security+</span>
               </div>
             </div>
             <PasswordLab />
@@ -315,20 +345,20 @@ export default function CyberStartProLanding({ product }: { product: Product }) 
 
         {/* Do real things */}
         <Section className="py-16 sm:py-20">
-          <div className="rise text-center mb-3"><p className="text-xs font-black uppercase tracking-[0.3em] mono" style={{ color: ACCENT }}>Real, not simulated</p></div>
+          <div className="rise text-center mb-3"><Eyebrow>Real, not simulated</Eyebrow></div>
           <div className="rise text-center mb-4"><h2 className="disp text-3xl sm:text-4xl font-black text-white">You just cracked a password. <span className="text-transparent bg-clip-text" style={{ backgroundImage: GRAD, WebkitBackgroundClip: "text" }}>Next, you&apos;ll do this.</span></h2></div>
-          <div className="rise text-center mb-12"><p className="text-gray-400 text-base max-w-2xl mx-auto">No slideshows, no multiple-choice quizzes about hacking. You do the real thing, safely, in your browser. Nothing you can break, nothing that ever leaves the page.</p></div>
+          <div className="rise text-center mb-12"><p className="text-base max-w-2xl mx-auto" style={{ color: MUT }}>No slideshows, no multiple-choice quizzes about hacking. You do the real thing, safely, in your browser. Nothing you can break, nothing that ever leaves the page.</p></div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {HOOKS.map((d) => (
-              <div key={d.t} className="rise card card-hover rounded-2xl overflow-hidden h-full flex flex-col" style={{ background: "rgba(255,255,255,0.035)", border: `1px solid ${PRIMARY}22` }}>
-                <div style={{ display: "flex", alignItems: "center", gap: 6, padding: "9px 13px", borderBottom: "1px solid rgba(255,255,255,0.06)", background: "rgba(0,0,0,0.25)" }}>
+              <div key={d.t} className="rise card card-hover rounded-2xl overflow-hidden h-full flex flex-col" style={{ background: "rgba(255,255,255,0.025)", border: `1px solid ${PRIMARY}2e` }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 6, padding: "9px 13px", borderBottom: "1px solid rgba(255,255,255,0.06)", background: "rgba(0,0,0,0.28)" }}>
                   <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#ff5f57" }} /><span style={{ width: 8, height: 8, borderRadius: "50%", background: "#febc2e" }} /><span style={{ width: 8, height: 8, borderRadius: "50%", background: "#28c840" }} />
-                  <span className="mono" style={{ marginLeft: 6, fontSize: 9.5, letterSpacing: "0.1em", color: "#b9a4ff", textTransform: "uppercase" }}>{d.mod}</span>
+                  <span className="mono" style={{ marginLeft: 6, fontSize: 9.5, letterSpacing: "0.1em", color: PRIMARY, textTransform: "uppercase" }}>{d.mod}</span>
                 </div>
                 <div className="p-6 flex flex-col flex-1">
                   <h3 className="disp font-black text-white text-lg mb-2">{d.t}</h3>
-                  <p className="text-gray-400 text-sm leading-relaxed mb-4 flex-1">{d.d}</p>
-                  <div className="mono" style={{ background: "rgba(4,6,14,0.7)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: 10, padding: "11px 13px", fontSize: 12, lineHeight: 1.7 }}>
+                  <p className="text-sm leading-relaxed mb-4 flex-1" style={{ color: MUT }}>{d.d}</p>
+                  <div className="mono" style={{ background: "rgba(3,4,8,0.75)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: 10, padding: "11px 13px", fontSize: 12, lineHeight: 1.7 }}>
                     {d.lines.map((l, i) => (<div key={i} style={{ color: l[1] as string, fontWeight: (l[1] === RED || l[1] === GREEN) ? 700 : 400 }}>{l[0]}</div>))}
                   </div>
                 </div>
@@ -340,14 +370,14 @@ export default function CyberStartProLanding({ product }: { product: Product }) 
 
         {/* Why cyber */}
         <Section className="py-16 sm:py-20">
-          <div className="rise card rounded-3xl p-8 sm:p-12 relative overflow-hidden" style={{ background: "rgba(255,255,255,0.04)", border: `1px solid ${ACCENT}25` }}>
-            <div className="glow" style={{ width: 360, height: 360, background: ACCENT, top: -120, right: -80, opacity: 0.25 }} />
+          <div className="rise card rounded-3xl p-8 sm:p-12 relative overflow-hidden" style={{ background: "rgba(255,122,61,0.04)", border: `1px solid ${PRIMARY}2e` }}>
+            <div className="glow" style={{ width: 360, height: 360, background: PRIMARY, top: -120, right: -80, opacity: 0.22 }} />
             <div className="relative grid md:grid-cols-[1fr_1fr] gap-10 items-center" style={{ zIndex: 1 }}>
               <div>
-                <p className="text-xs font-black uppercase tracking-[0.3em] mono mb-3" style={{ color: ACCENT }}>Why now</p>
-                <h2 className="disp text-3xl sm:text-4xl font-black text-white mb-4">A real career, not a hobby</h2>
-                <p className="text-gray-300 text-base leading-relaxed mb-4">Organisations everywhere are short of people who can defend them, and they hire on proof of skill far more than on a degree. That is the opening this course is built to get you through.</p>
-                <p className="text-gray-400 text-sm leading-relaxed">You start from nothing and finish ready for a first real role, with the hands-on work to show for it.</p>
+                <Eyebrow>Why now</Eyebrow>
+                <h2 className="disp text-3xl sm:text-4xl font-black text-white mb-4 mt-3">A real career, not a hobby</h2>
+                <p className="text-base leading-relaxed mb-4" style={{ color: "rgba(226,230,245,0.86)" }}>Organisations everywhere are short of people who can defend them, and they hire on proof of skill far more than on a degree. That is the opening this course is built to get you through.</p>
+                <p className="text-sm leading-relaxed" style={{ color: MUT }}>You start from nothing and finish ready for a first real role, with the hands-on work to show for it.</p>
               </div>
               <div className="flex flex-col gap-4">
                 {[
@@ -355,9 +385,9 @@ export default function CyberStartProLanding({ product }: { product: Product }) 
                   { t: "Hired on skill", d: "Show what you can do and the door opens, degree or not." },
                   { t: "Yours for life", d: "Learn it once in your browser, use it for a whole career." },
                 ].map((x) => (
-                  <div key={x.t} className="flex items-start gap-3 rounded-2xl p-4" style={{ background: "rgba(0,0,0,0.22)", border: "1px solid rgba(255,255,255,0.07)" }}>
-                    <span aria-hidden style={{ color: GREEN, fontWeight: 900, marginTop: 1 }}>&#10003;</span>
-                    <div><div className="disp font-black text-white text-base">{x.t}</div><div className="text-gray-400 text-sm">{x.d}</div></div>
+                  <div key={x.t} className="flex items-start gap-3 rounded-2xl p-4" style={{ background: "rgba(0,0,0,0.3)", border: `1px solid ${PRIMARY}1f` }}>
+                    <span aria-hidden style={{ color: PRIMARY, fontWeight: 900, marginTop: 1 }}>&rarr;</span>
+                    <div><div className="disp font-black text-white text-base">{x.t}</div><div className="text-sm" style={{ color: MUT }}>{x.d}</div></div>
                   </div>
                 ))}
               </div>
@@ -365,29 +395,32 @@ export default function CyberStartProLanding({ product }: { product: Product }) 
           </div>
         </Section>
 
-        {/* How you learn */}
-        <Section className="py-16 sm:py-20">
-          <div className="rise text-center mb-4"><h2 className="disp text-3xl sm:text-4xl font-black text-white">Taught like you&apos;re smart but new</h2></div>
-          <div className="rise text-center mb-12"><p className="text-gray-400 text-base max-w-2xl mx-auto">Every topic follows the same four steps, so you are never lost and never bored. If you can use a web browser, you can do all of it.</p></div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {METHOD.map((m) => (
-              <div key={m.n} className="rise card rounded-2xl p-6 h-full" style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}>
-                <div className="text-2xl font-black mb-3 mono" style={{ color: PRIMARY }}>{m.n}</div>
-                <h3 className="disp font-black text-white text-lg mb-2">{m.t}</h3>
-                <p className="text-gray-400 text-sm leading-relaxed">{m.d}</p>
-              </div>
-            ))}
-          </div>
-        </Section>
+        {/* How you learn (banded for rhythm) */}
+        <Band>
+          <Section className="py-16 sm:py-20">
+            <div className="rise text-center mb-3"><Eyebrow>How it works</Eyebrow></div>
+            <div className="rise text-center mb-4"><h2 className="disp text-3xl sm:text-4xl font-black text-white mt-3">Taught like you&apos;re smart but new</h2></div>
+            <div className="rise text-center mb-12"><p className="text-base max-w-2xl mx-auto" style={{ color: MUT }}>Every topic follows the same four steps, so you are never lost and never bored. If you can use a web browser, you can do all of it.</p></div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+              {METHOD.map((m) => (
+                <div key={m.n} className="rise card rounded-2xl p-6 h-full" style={{ background: "rgba(255,255,255,0.03)", border: `1px solid ${PRIMARY}26` }}>
+                  <div className="text-2xl font-black mb-3 mono" style={{ color: PRIMARY }}>{m.n}</div>
+                  <h3 className="disp font-black text-white text-lg mb-2">{m.t}</h3>
+                  <p className="text-sm leading-relaxed" style={{ color: MUT }}>{m.d}</p>
+                </div>
+              ))}
+            </div>
+          </Section>
+        </Band>
 
         {/* For you */}
         <Section className="py-16 sm:py-20">
           <div className="rise text-center mb-10"><h2 className="disp text-3xl sm:text-4xl font-black text-white">Made for you, wherever you&apos;re starting</h2></div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {FORYOU.map((f) => (
-              <div key={f.t} className="rise card card-hover rounded-2xl p-6 h-full" style={{ background: "rgba(255,255,255,0.04)", border: `1px solid ${ACCENT}22`, borderTop: `2px solid ${ACCENT}66` }}>
+              <div key={f.t} className="rise card card-hover rounded-2xl p-6 h-full" style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", borderTop: `2px solid ${PRIMARY}` }}>
                 <h3 className="disp font-black text-white text-base mb-2">{f.t}</h3>
-                <p className="text-gray-400 text-sm leading-relaxed">{f.d}</p>
+                <p className="text-sm leading-relaxed" style={{ color: MUT }}>{f.d}</p>
               </div>
             ))}
           </div>
@@ -396,19 +429,19 @@ export default function CyberStartProLanding({ product }: { product: Product }) 
         {/* Journey */}
         <Section className="py-16 sm:py-20">
           <div className="rise text-center mb-4"><h2 className="disp text-3xl sm:text-4xl font-black text-white">From zero to <span className="text-transparent bg-clip-text" style={{ backgroundImage: GRAD, WebkitBackgroundClip: "text" }}>job-ready</span>, in four acts</h2></div>
-          <div className="rise text-center mb-12"><p className="text-gray-400 text-base max-w-2xl mx-auto">Twenty-one modules at your own pace, each act building on the last, taking you from your first login to a job-ready analyst.</p></div>
+          <div className="rise text-center mb-12"><p className="text-base max-w-2xl mx-auto" style={{ color: MUT }}>Twenty-one modules at your own pace, each act building on the last, taking you from your first login to a job-ready analyst.</p></div>
           <div className="relative max-w-3xl mx-auto">
-            <div aria-hidden className="hidden sm:block" style={{ position: "absolute", left: 27, top: 10, bottom: 10, width: 2, background: `linear-gradient(${PRIMARY}, ${ACCENT})`, opacity: 0.4 }} />
+            <div aria-hidden className="hidden sm:block" style={{ position: "absolute", left: 27, top: 10, bottom: 10, width: 2, background: `linear-gradient(${PRIMARY}, ${DEEP})`, opacity: 0.45 }} />
             <div className="flex flex-col gap-5">
               {ACTS.map((a) => (
                 <div key={a.n} className="rise flex gap-5 items-start">
-                  <div className="flex-shrink-0 flex items-center justify-center rounded-2xl mono" style={{ width: 56, height: 56, background: "rgba(255,255,255,0.05)", border: `1px solid ${PRIMARY}55`, color: "#c9b8ff", fontWeight: 800, fontSize: 13, zIndex: 1 }}>{a.n.replace("Act ", "A")}</div>
-                  <div className="card rounded-2xl p-5 flex-1" style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}>
+                  <div className="flex-shrink-0 flex items-center justify-center rounded-2xl mono" style={{ width: 56, height: 56, background: `${PRIMARY}14`, border: `1px solid ${PRIMARY}66`, color: ACCENT, fontWeight: 800, fontSize: 13, zIndex: 1 }}>{a.n.replace("Act ", "A")}</div>
+                  <div className="card rounded-2xl p-5 flex-1" style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)" }}>
                     <div className="flex items-center gap-2 mb-1.5 flex-wrap">
                       <h3 className="disp font-black text-white text-lg">{a.t}</h3>
-                      <span className="mono text-gray-500" style={{ fontSize: 11 }}>&middot; {a.span}</span>
+                      <span className="mono" style={{ fontSize: 11, color: PRIMARY }}>&middot; {a.span}</span>
                     </div>
-                    <p className="text-gray-400 text-sm leading-relaxed">{a.d}</p>
+                    <p className="text-sm leading-relaxed" style={{ color: MUT }}>{a.d}</p>
                   </div>
                 </div>
               ))}
@@ -419,51 +452,54 @@ export default function CyberStartProLanding({ product }: { product: Product }) 
 
         {/* Portfolio */}
         <Section className="py-16 sm:py-20">
-          <div className="rise card rounded-3xl p-8 sm:p-12" style={{ background: "rgba(255,255,255,0.04)", border: `1px solid ${PRIMARY}25` }}>
+          <div className="rise card rounded-3xl p-8 sm:p-12" style={{ background: "rgba(255,255,255,0.03)", border: `1px solid ${PRIMARY}2e` }}>
             <div className="text-center mb-10">
               <h2 className="disp text-3xl sm:text-4xl font-black text-white mb-4">You leave with proof, <span className="text-transparent bg-clip-text" style={{ backgroundImage: GRAD, WebkitBackgroundClip: "text" }}>not just a certificate</span></h2>
-              <p className="text-gray-400 text-base max-w-2xl mx-auto">Employers hire people who can show the work. Every part of the course produces something real you can put in front of them.</p>
+              <p className="text-base max-w-2xl mx-auto" style={{ color: MUT }}>Employers hire people who can show the work. Every part of the course produces something real you can put in front of them.</p>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5">
               {PORTFOLIO.map((a, i) => (
-                <div key={a.t} className="rounded-2xl p-5" style={{ background: "rgba(0,0,0,0.25)", border: "1px solid rgba(255,255,255,0.07)" }}>
-                  <div className="text-xs font-black mb-2 mono" style={{ color: GREEN }}>{String(i + 1).padStart(2, "0")}</div>
+                <div key={a.t} className="rounded-2xl p-5" style={{ background: "rgba(0,0,0,0.3)", border: "1px solid rgba(255,255,255,0.07)", borderTop: `2px solid ${PRIMARY}` }}>
+                  <div className="text-xs font-black mb-2 mono" style={{ color: PRIMARY }}>{String(i + 1).padStart(2, "0")}</div>
                   <h3 className="disp font-black text-white text-sm mb-1.5 leading-snug">{a.t}</h3>
-                  <p className="text-gray-500 text-xs leading-relaxed">{a.d}</p>
+                  <p className="text-xs leading-relaxed" style={{ color: "rgba(205,212,230,0.6)" }}>{a.d}</p>
                 </div>
               ))}
             </div>
           </div>
         </Section>
 
-        {/* True stories */}
-        <Section className="py-16 sm:py-20">
-          <div className="rise text-center mb-4"><h2 className="disp text-3xl sm:text-4xl font-black text-white">Every lesson is a <span className="text-transparent bg-clip-text" style={{ backgroundImage: GRAD, WebkitBackgroundClip: "text" }}>true story</span></h2></div>
-          <div className="rise text-center mb-12"><p className="text-gray-400 text-base max-w-2xl mx-auto">You learn each defence by seeing the real company that skipped it, and what it cost them. Real names, real fines, real consequences.</p></div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {BREACHES.map((b) => (
-              <div key={b.org} className="rise card card-hover rounded-2xl p-5 h-full" style={{ background: "rgba(255,255,255,0.035)", border: "1px solid rgba(255,255,255,0.08)", borderLeft: `2px solid ${RED}66` }}>
-                <div className="flex items-baseline gap-2 mb-2"><span className="font-black text-white text-base">{b.org}</span><span className="text-xs text-gray-500 mono">{b.year}</span></div>
-                <p className="text-gray-300 text-sm leading-relaxed mb-3">{b.lesson}</p>
-                <span className="text-[10px] font-black uppercase tracking-[0.14em] mono" style={{ color: "#b9a4ff" }}>{b.tag}</span>
-              </div>
-            ))}
-          </div>
-        </Section>
+        {/* True stories (banded for rhythm) */}
+        <Band>
+          <Section className="py-16 sm:py-20">
+            <div className="rise text-center mb-3"><Eyebrow>Every lesson is a true story</Eyebrow></div>
+            <div className="rise text-center mb-4"><h2 className="disp text-3xl sm:text-4xl font-black text-white mt-3">Learn from the breaches that <span className="text-transparent bg-clip-text" style={{ backgroundImage: GRAD, WebkitBackgroundClip: "text" }}>actually happened</span></h2></div>
+            <div className="rise text-center mb-12"><p className="text-base max-w-2xl mx-auto" style={{ color: MUT }}>You learn each defence by seeing the real company that skipped it, and what it cost them. Real names, real fines, real consequences.</p></div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+              {BREACHES.map((b) => (
+                <div key={b.org} className="rise card card-hover rounded-2xl p-5 h-full" style={{ background: "rgba(255,255,255,0.025)", border: "1px solid rgba(255,255,255,0.08)", borderLeft: `3px solid ${RED}` }}>
+                  <div className="flex items-baseline gap-2 mb-2"><span className="font-black text-white text-base">{b.org}</span><span className="text-xs mono" style={{ color: "rgba(205,212,230,0.5)" }}>{b.year}</span></div>
+                  <p className="text-sm leading-relaxed mb-3" style={{ color: "rgba(226,230,245,0.84)" }}>{b.lesson}</p>
+                  <span className="text-[10px] font-black uppercase tracking-[0.14em] mono" style={{ color: PRIMARY }}>{b.tag}</span>
+                </div>
+              ))}
+            </div>
+          </Section>
+        </Band>
 
         {/* Honest */}
         <section className="relative max-w-[1000px] mx-auto px-6 md:px-10 py-16 sm:py-20">
-          <div className="rise text-center mb-3"><p className="text-xs font-black uppercase tracking-[0.3em] mono" style={{ color: ACCENT }}>No hype</p></div>
-          <div className="rise text-center mb-10"><h2 className="disp text-3xl sm:text-4xl font-black text-white">The honest version</h2></div>
+          <div className="rise text-center mb-3"><Eyebrow>No hype</Eyebrow></div>
+          <div className="rise text-center mb-10"><h2 className="disp text-3xl sm:text-4xl font-black text-white mt-3">The honest version</h2></div>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
             {[
               { t: "It takes real effort", d: "Nobody goes from zero to hired in a weekend. This is a proper course of 21 modules, and we tell you exactly what each one asks of you." },
               { t: "The first job is realistic", d: "Your way in is usually a support or analyst role, around £25,000 to £32,000 in the UK. We show you that path, not a fantasy one." },
               { t: "We prepare you, honestly", d: "The course is aligned to the CompTIA Security+ objectives and points you at the certificates worth your money. We never promise a job. We make you ready to earn one." },
             ].map((s) => (
-              <div key={s.t} className="rise card rounded-2xl p-6 h-full" style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderTop: `2px solid ${GREEN}55` }}>
+              <div key={s.t} className="rise card rounded-2xl p-6 h-full" style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", borderTop: `2px solid ${GREEN}` }}>
                 <h3 className="disp font-black text-white text-lg mb-2">{s.t}</h3>
-                <p className="text-gray-400 text-sm leading-relaxed">{s.d}</p>
+                <p className="text-sm leading-relaxed" style={{ color: MUT }}>{s.d}</p>
               </div>
             ))}
           </div>
@@ -474,12 +510,12 @@ export default function CyberStartProLanding({ product }: { product: Product }) 
           <div className="rise text-center mb-10"><h2 className="disp text-3xl sm:text-4xl font-black text-white">Questions, answered straight</h2></div>
           <div className="flex flex-col gap-3">
             {FAQ.map((f) => (
-              <details key={f.q} className="rise card group rounded-2xl" style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)" }}>
+              <details key={f.q} className="rise card group rounded-2xl" style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)" }}>
                 <summary className="cursor-pointer list-none flex items-center justify-between gap-4 p-5">
                   <span className="disp font-black text-white text-base">{f.q}</span>
-                  <span aria-hidden className="transition-transform group-open:rotate-45 flex-shrink-0 text-2xl font-light leading-none" style={{ color: ACCENT }}>+</span>
+                  <span aria-hidden className="transition-transform group-open:rotate-45 flex-shrink-0 text-2xl font-light leading-none" style={{ color: PRIMARY }}>+</span>
                 </summary>
-                <p className="text-gray-400 text-sm leading-relaxed px-5 pb-5">{f.a}</p>
+                <p className="text-sm leading-relaxed px-5 pb-5" style={{ color: MUT }}>{f.a}</p>
               </details>
             ))}
           </div>
@@ -487,16 +523,16 @@ export default function CyberStartProLanding({ product }: { product: Product }) 
 
         {/* Enrol / pricing */}
         <Section className="py-10">
-          <div id="enrol" className="rise card rounded-3xl px-6 py-10 sm:px-12 relative overflow-hidden" style={{ scrollMarginTop: 90, background: "rgba(255,255,255,0.04)", border: `1px solid ${PRIMARY}25` }}>
-            <div className="glow" style={{ width: 380, height: 380, background: PRIMARY, bottom: -160, left: "40%", opacity: 0.3 }} />
+          <div id="enrol" className="rise card rounded-3xl px-6 py-10 sm:px-12 relative overflow-hidden" style={{ scrollMarginTop: 90, background: "rgba(255,122,61,0.05)", border: `1px solid ${PRIMARY}40` }}>
+            <div className="glow" style={{ width: 380, height: 380, background: PRIMARY, bottom: -160, left: "40%", opacity: 0.26 }} />
             <div className="relative" style={{ zIndex: 1 }}>
               <div className="text-center mb-8">
                 <h2 className="disp text-2xl sm:text-3xl font-black text-white mb-3">Everything, for one payment</h2>
-                <p className="text-gray-400 text-sm max-w-2xl mx-auto">All 21 modules, every lab, your portfolio and lifetime access, for a single price. No subscription, ever. Free courses leave you alone and bootcamps charge thousands; Cyber Pro is one fair payment in between.</p>
+                <p className="text-sm max-w-2xl mx-auto" style={{ color: MUT }}>All 21 modules, every lab, your portfolio and lifetime access, for a single price. No subscription, ever. Free courses leave you alone and bootcamps charge thousands; Cyber Pro is one fair payment in between.</p>
               </div>
               <div className="flex flex-wrap justify-center gap-x-10 gap-y-4 text-center mb-9">
-                {[{ k: "Price", v: `${priceLine} once` }, { k: "Access", v: "Lifetime" }, { k: "Length", v: "21 modules" }, { k: "Level", v: "Zero to hired" }, { k: "Billing", v: "No subscription" }].map((f) => (
-                  <div key={f.k}><div className="text-[10px] font-black uppercase tracking-[0.22em] text-gray-500 mb-1 mono">{f.k}</div><div className="disp text-white font-black text-lg">{f.v}</div></div>
+                {[{ k: "Price", v: `${priceLine} once`, hot: true }, { k: "Access", v: "Lifetime" }, { k: "Length", v: "21 modules" }, { k: "Level", v: "Zero to hired" }, { k: "Billing", v: "No subscription" }].map((f) => (
+                  <div key={f.k}><div className="text-[10px] font-black uppercase tracking-[0.22em] mb-1 mono" style={{ color: "rgba(205,212,230,0.5)" }}>{f.k}</div><div className="disp font-black text-lg" style={{ color: f.hot ? PRIMARY : "#fff" }}>{f.v}</div></div>
                 ))}
               </div>
               <div className="flex flex-col items-center gap-4">
@@ -518,19 +554,19 @@ export default function CyberStartProLanding({ product }: { product: Product }) 
         <Section className="py-16 sm:py-24">
           <div className="rise text-center">
             <h2 className="disp text-4xl sm:text-5xl font-black text-white mb-5" style={{ letterSpacing: "-0.02em" }}>Ready to start your <span className="text-transparent bg-clip-text" style={{ backgroundImage: GRAD, WebkitBackgroundClip: "text" }}>cyber career</span>?</h2>
-            <p className="text-gray-400 text-base sm:text-lg max-w-lg mx-auto mb-8">Twenty-one modules, one payment, lifetime access. Everything you need to go from zero to job-ready.</p>
+            <p className="text-base sm:text-lg max-w-lg mx-auto mb-8" style={{ color: MUT }}>Twenty-one modules, one payment, lifetime access. Everything you need to go from zero to job-ready.</p>
             <div className="flex justify-center"><Cta /></div>
           </div>
         </Section>
 
         {/* Footer */}
-        <footer className="border-t py-8 px-6 md:px-10" style={{ borderColor: "rgba(255,255,255,0.06)" }}>
+        <footer className="border-t py-8 px-6 md:px-10" style={{ borderColor: `${PRIMARY}1f` }}>
           <div className="max-w-[1180px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-            <span className="text-sm font-bold text-gray-500">&copy; 2026 AlgorithmX</span>
+            <span className="text-sm font-bold" style={{ color: "rgba(205,212,230,0.5)" }}>&copy; 2026 AlgorithmX</span>
             <div className="flex items-center gap-6 flex-wrap">
-              <a href="/cyberheroes" className="text-xs font-bold text-gray-500 hover:text-gray-300 transition-colors">Cyber Heroes</a>
-              <a href="/cyberexplorers" className="text-xs font-bold text-gray-500 hover:text-gray-300 transition-colors">Cyber Explorers</a>
-              <a href="/ops" className="text-xs font-bold text-gray-500 hover:text-gray-300 transition-colors">Cyber Ops</a>
+              <a href="/cyberheroes" className="text-xs font-bold transition-colors" style={{ color: "rgba(205,212,230,0.5)" }}>Cyber Heroes</a>
+              <a href="/cyberexplorers" className="text-xs font-bold transition-colors" style={{ color: "rgba(205,212,230,0.5)" }}>Cyber Explorers</a>
+              <a href="/ops" className="text-xs font-bold transition-colors" style={{ color: "rgba(205,212,230,0.5)" }}>Cyber Ops</a>
               <a href="/pro" className="text-xs font-bold" style={{ color: PRIMARY }}>Cyber Pro</a>
             </div>
           </div>
