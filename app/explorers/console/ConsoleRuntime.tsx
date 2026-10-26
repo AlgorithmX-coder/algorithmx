@@ -107,7 +107,7 @@ type Dock =
 type Header = { who: string; sub: string };
 const WREN_HEADER: Header = { who: "WREN", sub: "in your ear" };
 
-export default function ConsoleRuntime({ consoleCase, onExit, onNextCase }: { consoleCase: ConsoleCase; onExit?: () => void; onNextCase?: () => void }) {
+export default function ConsoleRuntime({ consoleCase, onExit, onNextCase, autostart }: { consoleCase: ConsoleCase; onExit?: () => void; onNextCase?: () => void; autostart?: boolean }) {
   useArrowAdvance(); // ArrowRight: fast-forward through narration for UAT
   const fast = typeof window !== "undefined" && new URLSearchParams(window.location.search).get("fast") === "1";
   const [phase, setPhase] = useState<"boot" | "play" | "test" | "debrief">("boot");
@@ -299,6 +299,16 @@ export default function ConsoleRuntime({ consoleCase, onExit, onNextCase }: { co
   const start = (from: CaseStage = { kind: "skill", index: 0 }) => { if (startedRef.current) return; startedRef.current = true; primeAudio(); setPhase("play"); run(from); };
   const beginFresh = () => { clearProgress(consoleCase.id); start({ kind: "skill", index: 0 }); };
   const beginResume = () => start(resumeStage ?? { kind: "skill", index: 0 });
+  // `autostart`: the new per-mission ATLAS briefing (MissionIntro) already
+  // did the job BootScreen's own "press to begin" screen exists for, so a
+  // fresh arrival from that card skips straight into WREN's own open[]
+  // narration instead of showing a second, redundant "press to start" beat.
+  // Never skips a RESUMABLE case though — that prompt is a real choice
+  // (continue vs. start over), not a redundant gate, so it always shows.
+  useEffect(() => {
+    if (autostart && !isResumable(resumeStage)) beginFresh();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const nudgeRef = useRef(0);
   // `voice`, when given, is the step's own authored badVoice (case-specific
