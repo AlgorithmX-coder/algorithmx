@@ -601,7 +601,14 @@ function ItemView({ it, wrenAvatar, accent, kind, onTagSegment }: { it: Item; wr
           aria-hidden
           style={{ position: "absolute", inset: 0, backgroundImage: "repeating-linear-gradient(0deg, rgba(255,255,255,0.02) 0 1px, transparent 1px 24px)", pointerEvents: "none" }}
         />
-        <div style={{ fontSize: 10, letterSpacing: ".2em", textTransform: "uppercase", color: "#7CFFC4", fontWeight: 800, lineHeight: 1.4, marginBottom: 10 }}>
+        {/* #536's fix only covered shown=0 at mount. At a real phone width
+            (375px, not the 390px this was last checked at) ".2em" tracking
+            on this whole phrase makes it wrap to two lines, and the 10px
+            gap below it — sized for one line — then reads as cramped under
+            the wrapped second line. Tightened the tracking so the phrase
+            reliably fits one line down to ~355px, and widened the gap so
+            even a forced two-line wrap below that still has real room. */}
+        <div style={{ fontSize: 10, letterSpacing: ".13em", textTransform: "uppercase", color: "#7CFFC4", fontWeight: 800, lineHeight: 1.4, marginBottom: 13 }}>
           📓 previously on Cyber Explorers...
         </div>
         <TypewriterText text={it.text} />
