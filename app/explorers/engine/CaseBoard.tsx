@@ -65,7 +65,7 @@ export function CaseBoard({
         style={{
           position: "fixed",
           top: "50%",
-          left: open ? "min(320px, 92vw)" : 0,
+          left: open ? "min(340px, 92vw)" : 0,
           transform: "translateY(-50%)",
           zIndex: 46,
           writingMode: "vertical-rl",
@@ -93,7 +93,7 @@ export function CaseBoard({
           top: 0,
           left: 0,
           height: "100%",
-          width: "min(320px, 92vw)",
+          width: "min(340px, 92vw)",
           zIndex: 45,
           transform: open ? "translateX(0)" : "translateX(-100%)",
           transition: "transform 280ms cubic-bezier(0.2,0,0,1)",
@@ -120,7 +120,13 @@ export function CaseBoard({
           </div>
         </div>
 
-        <div style={{ position: "relative", flex: 1, overflowY: "auto", padding: "14px 10px 24px" }}>
+        {/* UAT (Abdullah): the left-column cards (x:14 in POS) sat right on
+            top of the panel's own edge with only 10px of padding outside
+            them — "too squashed". Widened the panel +20px and put all of it
+            on the left side only, so the left column gets real clearance
+            without moving the cards themselves or touching the right
+            column's existing fit. */}
+        <div style={{ position: "relative", flex: 1, overflowY: "auto", padding: "14px 10px 24px 30px" }}>
           <div style={{ position: "relative", width: "100%", height: BOARD_H }}>
             <svg aria-hidden width="100%" height={BOARD_H} style={{ position: "absolute", inset: 0, overflow: "visible" }}>
               {leads.slice(1).map((lead, i) => {
