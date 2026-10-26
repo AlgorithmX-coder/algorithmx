@@ -753,15 +753,29 @@ export default function CyberExplorersLanding() {
           </span>
         </Link>
         <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
-          <a href="#course" className="cx-navlink">THE COURSE</a>
-          <a href="#parents" className="cx-navlink">FOR PARENTS</a>
-          <Link href="/cyberexplorers/login" className="cx-navlink" style={{ border: `1px solid ${T.hairline}`, borderRadius: 3, padding: "8px 13px" }}>
+          <a href="#course" className="cx-navlink" style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden><rect x="4" y="4" width="16" height="16" rx="2" /><path d="M4 9h16M9 4v16" /></svg>
+            THE COURSE
+          </a>
+          <a href="#parents" className="cx-navlink" style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden><circle cx="9" cy="8" r="3.2" /><path d="M3 20c0-3.5 2.7-6 6-6s6 2.5 6 6" /><circle cx="18" cy="9" r="2.4" /><path d="M15 20c.3-2.6 1.6-4.4 3.6-4.9" /></svg>
+            FOR PARENTS
+          </a>
+          <Link
+            href="/cyberexplorers/login"
+            className="cx-navlink"
+            style={{ display: "inline-flex", alignItems: "center", gap: 6, border: `1px solid ${T.hairline}`, borderRadius: 3, padding: "8px 13px 8px 11px" }}
+          >
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden><rect x="4" y="11" width="16" height="9" rx="2" /><path d="M8 11V7a4 4 0 0 1 8 0v4" /></svg>
             LOG IN
           </Link>
           <Link
             href="/cyberexplorers/signup"
             className="cx-cta"
             style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 7,
               fontFamily: MONO,
               fontSize: 11,
               fontWeight: 600,
@@ -769,11 +783,12 @@ export default function CyberExplorersLanding() {
               color: T.inkBlack,
               background: T.actionAmber,
               borderRadius: 3,
-              padding: "9px 15px",
+              padding: "9px 15px 9px 13px",
               textDecoration: "none",
               boxShadow: `0 0 18px ${T.actionAmber}44`,
             }}
           >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" aria-hidden><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z" /><path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z" /></svg>
             ENROLL · £99
           </Link>
         </div>
