@@ -21,6 +21,12 @@ const week01: WeekManifest = {
     "Turn on strong MFA and know why SMS is the weakest kind",
     "Produce a finished Personal Security Audit of your own accounts",
   ],
+  briefing: {
+    introAudio: "/pro/briefings/m03-intro.mp3",
+    introBlurb: "A one-minute briefing from your instructor: what this module covers, and why it matters.",
+    outroAudio: "/pro/briefings/m03-outro.mp3",
+    outroBlurb: "A short recap of what you can now do, and the one idea to carry forward.",
+  },
   topics: [topic1, topic2, topic3, topic4, topic5],
 };
 

@@ -24,6 +24,12 @@ const module20: WeekManifest = {
     "Understand the honest job market, beyond hype and gloom, and what actually helps",
     "Reframe a non-technical background as the asset it often is",
   ],
+  briefing: {
+    introAudio: "/pro/briefings/m20-intro.mp3",
+    introBlurb: "A one-minute briefing from your instructor: what this module covers, and why it matters.",
+    outroAudio: "/pro/briefings/m20-outro.mp3",
+    outroBlurb: "A short recap of what you can now do, and the one idea to carry forward.",
+  },
   topics: [topic1, topic2, topic3, topic4, topic5],
 };
 

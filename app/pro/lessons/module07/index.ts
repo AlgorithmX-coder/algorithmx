@@ -24,6 +24,12 @@ const module07: WeekManifest = {
     "Inspect a suspicious email with a concrete checklist of real tells",
     "Respond to and report phishing so the whole organisation is protected",
   ],
+  briefing: {
+    introAudio: "/pro/briefings/m07-intro.mp3",
+    introBlurb: "A one-minute briefing from your instructor: what this module covers, and why it matters.",
+    outroAudio: "/pro/briefings/m07-outro.mp3",
+    outroBlurb: "A short recap of what you can now do, and the one idea to carry forward.",
+  },
   topics: [topic1, topic2, topic3, topic4, topic5],
 };
 

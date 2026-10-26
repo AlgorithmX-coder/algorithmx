@@ -23,6 +23,12 @@ const module12: WeekManifest = {
     "Run patch and update management as a reliable process, including risky management tooling",
     "Produce a real, reusable hardening checklist from a trusted baseline",
   ],
+  briefing: {
+    introAudio: "/pro/briefings/m12-intro.mp3",
+    introBlurb: "A one-minute briefing from your instructor: what this module covers, and why it matters.",
+    outroAudio: "/pro/briefings/m12-outro.mp3",
+    outroBlurb: "A short recap of what you can now do, and the one idea to carry forward.",
+  },
   topics: [topic1, topic2, topic3, topic4, topic5],
 };
 

@@ -24,6 +24,12 @@ const module02: WeekManifest = {
     "Read the common ports and protocols, and spot a dangerous open door",
     "Place any network attack on the lookup / journey / destination map",
   ],
+  briefing: {
+    introAudio: "/pro/briefings/m02-intro.mp3",
+    introBlurb: "A one-minute briefing from your instructor: what this module covers, and why it matters.",
+    outroAudio: "/pro/briefings/m02-outro.mp3",
+    outroBlurb: "A short recap of what you can now do, and the one idea to carry forward.",
+  },
   topics: [topic1, topic2, topic3, topic4, topic5],
 };
 

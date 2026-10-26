@@ -24,6 +24,12 @@ const module10: WeekManifest = {
     "Understand denial-of-service attacks and the availability-specific defences that counter them",
     "See how lateral movement turns a foothold into a breach, and how segmentation contains it",
   ],
+  briefing: {
+    introAudio: "/pro/briefings/m10-intro.mp3",
+    introBlurb: "A one-minute briefing from your instructor: what this module covers, and why it matters.",
+    outroAudio: "/pro/briefings/m10-outro.mp3",
+    outroBlurb: "A short recap of what you can now do, and the one idea to carry forward.",
+  },
   topics: [topic1, topic2, topic3, topic4, topic5],
 };
 

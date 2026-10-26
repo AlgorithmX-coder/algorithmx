@@ -23,6 +23,12 @@ const module09: WeekManifest = {
     "Recognise broken access control (OWASP's #1 risk) and why it must be enforced server-side",
     "Navigate the OWASP Top 10 with a handful of recurring fix mindsets",
   ],
+  briefing: {
+    introAudio: "/pro/briefings/m09-intro.mp3",
+    introBlurb: "A one-minute briefing from your instructor: what this module covers, and why it matters.",
+    outroAudio: "/pro/briefings/m09-outro.mp3",
+    outroBlurb: "A short recap of what you can now do, and the one idea to carry forward.",
+  },
   topics: [topic1, topic2, topic3, topic4, topic5],
 };
 

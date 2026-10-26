@@ -24,6 +24,12 @@ const module14: WeekManifest = {
     "Correlate scattered entries across logs into a clear attack timeline",
     "Write up a clear, evidence-led, actionable finding (the triage report)",
   ],
+  briefing: {
+    introAudio: "/pro/briefings/m14-intro.mp3",
+    introBlurb: "A one-minute briefing from your instructor: what this module covers, and why it matters.",
+    outroAudio: "/pro/briefings/m14-outro.mp3",
+    outroBlurb: "A short recap of what you can now do, and the one idea to carry forward.",
+  },
   topics: [topic1, topic2, topic3, topic4, topic5],
 };
 
