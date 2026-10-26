@@ -503,7 +503,7 @@ export default function PhoneRuntime({ phoneCase, onExit, onNextCase, autostart 
           </div>
 
           {phase === "home" ? (
-            <HomeScreen appName={APP} kind={phoneCase.app?.kind ?? "messaging"} accent={OUT} reduced={!!reduce} onDone={onHomeDone} caseId={phoneCase.id} />
+            <HomeScreen appName={APP} kind={phoneCase.app?.kind ?? "messaging"} accent={OUT} accentHi={THEME?.accentHi} reduced={!!reduce} onDone={onHomeDone} caseId={phoneCase.id} />
           ) : phase === "lock" ? (
             isResumable(resumeStage) ? (
               <ResumePrompt caseNumber={phoneCase.caseNumber} title={phoneCase.title} acc={OUT} atLabel={stageLabel(resumeStage, phoneCase.skills)} onContinue={beginResume} onRestart={beginFresh} />
