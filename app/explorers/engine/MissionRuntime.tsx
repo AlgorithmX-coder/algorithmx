@@ -255,7 +255,7 @@ function MissionMap({ manifest, pos, stampNew }: { manifest: MissionManifest; po
 
 /* ============================================================== runtime */
 
-export default function MissionRuntime({ manifest, devStartBeat, onExit, onNextCase }: { manifest: MissionManifest; devStartBeat?: BeatPos["beat"]; onExit?: () => void; onNextCase?: () => void }) {
+export default function MissionRuntime({ manifest, devStartBeat, onExit, onNextCase, autostart }: { manifest: MissionManifest; devStartBeat?: BeatPos["beat"]; onExit?: () => void; onNextCase?: () => void; autostart?: boolean }) {
   useArrowAdvance(); // ArrowRight: fast-forward through narration for UAT
   // Fast test mode (?fast=1): reuse the reduced-motion path to skip the narrator
   // wait / anti-skip so the owner can click through quickly. Real users never set
@@ -384,6 +384,16 @@ export default function MissionRuntime({ manifest, devStartBeat, onExit, onNextC
     setPos({ beat: "cycle", cycleIndex: 0, stage: "intel" });
     window.scrollTo({ top: 0 });
   };
+
+  // `autostart`: the per-mission ATLAS briefing (SignalMissionIntro) already
+  // is the "press to begin" screen MissionStartScene exists for, so a fresh
+  // start (no resume offer, no block film still queued) skips straight into
+  // the mission instead of showing a second start screen. A real resume
+  // offer, or a block intro film still to play, is never bypassed.
+  useEffect(() => {
+    if (autostart && hydrated && !resumeOffer && !filmToPlay && pos.beat === "transmission") startMission();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [autostart, hydrated, resumeOffer, filmToPlay]);
 
   // UAT-only: jump straight past the CURRENT skill/boss/test entirely —
   // learn, practice, checkpoint, whatever exercise is mid-flight — rather

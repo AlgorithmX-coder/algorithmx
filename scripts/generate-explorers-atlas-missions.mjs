@@ -60,7 +60,8 @@ async function wordTimestamps(buf) {
 
 await mkdir(OUT_DIR, { recursive: true });
 for (const n of requested) {
-  const id = `explorers-m${String(n).padStart(2, "0")}`;
+  const nn = String(n).padStart(2, "0");
+  const id = `explorers-m${nn}`;
   const data = MISSION_INTROS[id];
   if (!data) { console.error(`no MISSION_INTROS["${id}"] — write the mission intro data first`); continue; }
   const text = data.voiceScript;
@@ -68,11 +69,11 @@ for (const n of requested) {
   if (DRY) continue;
 
   const buf = await generate(text);
-  const rawPath = join(OUT_DIR, `.m${n}-brief-raw.mp3`);
+  const rawPath = join(OUT_DIR, `.m${nn}-brief-raw.mp3`);
   await writeFile(rawPath, buf);
 
   const words = await wordTimestamps(buf);
-  const outPath = join(OUT_DIR, `m${n}-brief.mp3`);
+  const outPath = join(OUT_DIR, `m${nn}-brief.mp3`);
   if (!words.length) { console.log(`  no words returned, keeping untrimmed`); await writeFile(outPath, buf); continue; }
   const lastWord = words[words.length - 1];
   const fadeStart = lastWord.end + NATURAL_TAIL;

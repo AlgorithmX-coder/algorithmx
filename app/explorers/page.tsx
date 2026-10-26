@@ -36,7 +36,10 @@ import BlockIntro from "./phone/BlockIntro";
 import { block1Intro, block2Intro, block3Intro, block4Intro } from "./phone/blockIntroData";
 import type { BlockIntroData } from "./phone/blockIntroData";
 import MissionIntro from "./MissionIntro";
+import SignalMissionIntro from "./engine/SignalMissionIntro";
+import PhoneMissionIntro from "./phone/PhoneMissionIntro";
 import ConsoleMissionIntro from "./console/ConsoleMissionIntro";
+import WarRoomMissionIntro from "./warroom/WarRoomMissionIntro";
 import { MISSION_INTROS } from "./missionIntroData";
 import { useReducedMotion } from "./engine/primitives";
 import { MONO } from "./engine/tokens";
@@ -252,10 +255,9 @@ export default function ExplorersPage() {
   const [devAt, setDevAt] = useState<string | null>(null); // "boss" | "test"
   // When true, show the block-intro (ATLAS) slide before the active case's runtime.
   const [showBrief, setShowBrief] = useState(false);
-  // When true, show the per-MISSION ATLAS briefing (MissionIntro) before the
-  // active case's runtime — every case gets this, not just block openers.
-  // Harmless when the case has no MISSION_INTROS entry yet (pilot: only
-  // explorers-m11 so far): the render branch below no-ops without one.
+  // When true, show the per-MISSION ATLAS briefing before the active case's
+  // runtime — every one of the 20 cases gets this, not just block openers
+  // (owner: "every single mission I start, I should see that screen").
   const [showMissionBrief, setShowMissionBrief] = useState(false);
   // QA/owner unlock. Visit ?qa=1 once to persist it (this browser only): it
   // enables the ?case= deep-link on prod and unlocks every case on the map for
@@ -408,16 +410,19 @@ export default function ExplorersPage() {
     if (isBlockOpen) {
       return <BlockIntro data={pageIntro} onBegin={() => setShowBrief(false)} />;
     }
-    // The per-MISSION ATLAS briefing (pilot: Case 011 only). Plays after the
-    // block intro (if any) and before the case's own runtime takes over —
-    // every case gets this, not just block openers. Chrome is coordinated
-    // per block (owner: "based off the theme of the actual interface of the
+    // The per-MISSION ATLAS briefing, all 20 cases. Plays after the block
+    // intro (if any) and before the case's own runtime takes over — every
+    // case gets this, not just block openers. Chrome is coordinated per
+    // block (owner: "based off the theme of the actual interface of the
     // UI, so it looks coordinated") — each block gets its own skin reusing
     // that runtime's own tokens, not one universal template recoloured.
     const missionIntro = MISSION_INTROS[active.id];
     if (missionIntro && showMissionBrief) {
       const onBeginBrief = () => setShowMissionBrief(false);
+      if (active.block === 1) return <SignalMissionIntro data={missionIntro} onBegin={onBeginBrief} />;
+      if (active.block === 2) return <PhoneMissionIntro data={missionIntro} onBegin={onBeginBrief} />;
       if (active.block === 3) return <ConsoleMissionIntro data={missionIntro} onBegin={onBeginBrief} />;
+      if (active.block === 4) return <WarRoomMissionIntro data={missionIntro} onBegin={onBeginBrief} />;
       return <MissionIntro data={missionIntro} onBegin={onBeginBrief} />;
     }
     // Block 2 cases run in THE PHONE, not the Signal Room engine.
@@ -427,6 +432,7 @@ export default function ExplorersPage() {
         <PhoneRuntime
           key={active.id}
           phoneCase={phoneCase}
+          autostart={!!missionIntro}
           onExit={() => { refreshStatus(); setActive(null); }}
           onNextCase={hasNext ? () => { refreshStatus(); openCase(CASES[activeIdx + 1]); } : undefined}
         />
@@ -452,6 +458,7 @@ export default function ExplorersPage() {
         <WarRoomRuntime
           key={active.id}
           warCase={warCase}
+          autostart={!!missionIntro}
           onExit={() => { refreshStatus(); setActive(null); }}
           onNextCase={hasNext ? () => { refreshStatus(); openCase(CASES[activeIdx + 1]); } : undefined}
         />
@@ -462,6 +469,7 @@ export default function ExplorersPage() {
         key={active.id}
         manifest={active}
         devStartBeat={active.id === devBossId ? (devAt === "test" ? "catch" : "incident") : undefined}
+        autostart={!!missionIntro}
         onExit={() => {
           refreshStatus();
           setActive(null);
