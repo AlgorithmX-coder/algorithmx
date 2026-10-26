@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-19T12:50:36.968Z",
+  "generatedAt": "2026-10-26T21:28:18.097Z",
   "model": "eleven_v4",
   "voiceSettings": {
     "stability": 0.6,
@@ -4965,21 +4965,21 @@
       "file": "/audio/voice/d8bd7aa38bb1296f.mp3"
     },
     {
-      "key": "80085ac399ff6072",
+      "key": "252344230ea73568",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "A message says 'do what I say or you're banned from the game!' Your thumb hovers over delete. What comes first? Is it option A... Camera, freeze the proof, then show a trusted grown-up. Option B... Delete it fast so it can't scare me again. Or is it option C... Beg them not to ban me, just in case. So, what do you think?",
+      "text": "A message says 'do what I say or you're banned from the game!' Your thumb hovers over delete. What comes first? Is it option A... Camera, freeze the proof, then show a trusted grown-up. Option B... Delete it fast so it can't scare me again tonight. Or is it option C... Beg them not to ban me, just to be safe. So, what do you think?",
       "lines": [
         "A message says 'do what I say or you're banned from the game!' Your thumb hovers over delete. What comes first?",
         "Is it option A...",
         "Camera, freeze the proof, then show a trusted grown-up.",
         "Option B...",
-        "Delete it fast so it can't scare me again.",
+        "Delete it fast so it can't scare me again tonight.",
         "Or is it option C...",
-        "Beg them not to ban me, just in case.",
+        "Beg them not to ban me, just to be safe.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/80085ac399ff6072.mp3"
+      "file": "/audio/voice/252344230ea73568.mp3"
     },
     {
       "key": "2cedd7c9ea7e3674",
@@ -6677,21 +6677,21 @@
       "file": "/audio/voice/e59e0112919d6227.mp3"
     },
     {
-      "key": "7fd38db0207ed2a7",
+      "key": "17c9f8529753d4da",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "You sent ONE photo to just ONE friend. How many copies of it exist now? Is it option A... Zero, sending moves a photo instead of copying it. Option B... Exactly one, on my friend's phone. Or is it option C... More than one: mine, my friend's, and the app kept one too. So, what do you think?",
+      "text": "You sent ONE photo to just ONE friend. How many copies of it exist now? Is it option A... Zero, sending moves a photo instead of copying it. Option B... Exactly one, sitting on my friend's phone now. Or is it option C... More than one: mine, my friend's, and the app kept one too. So, what do you think?",
       "lines": [
         "You sent ONE photo to just ONE friend. How many copies of it exist now?",
         "Is it option A...",
         "Zero, sending moves a photo instead of copying it.",
         "Option B...",
-        "Exactly one, on my friend's phone.",
+        "Exactly one, sitting on my friend's phone now.",
         "Or is it option C...",
         "More than one: mine, my friend's, and the app kept one too.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/7fd38db0207ed2a7.mp3"
+      "file": "/audio/voice/17c9f8529753d4da.mp3"
     },
     {
       "key": "947596eed0aa5d00",
@@ -8958,21 +8958,21 @@
       "file": "/audio/voice/8ad19308021ae304.mp3"
     },
     {
-      "key": "acf6deee5f57e0d1",
+      "key": "6eda69f4b8571241",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "Sleepover at Gran's, and there's no charging garage anywhere. Where does the tablet spend the night? Is it option A... Inside my sleeping bag to keep it warm. Option B... Out of the room I sleep in, like on the kitchen side. Or is it option C... Under my pillow so it can't get lost. So, what do you think?",
+      "text": "Sleepover at Gran's, and there's no charging garage anywhere. Where does the tablet spend the night? Is it option A... Inside my sleeping bag to keep it nice and warm. Option B... Out of the room I sleep in, like on the kitchen side. Or is it option C... Under my pillow so it can't get lost in the night. So, what do you think?",
       "lines": [
         "Sleepover at Gran's, and there's no charging garage anywhere. Where does the tablet spend the night?",
         "Is it option A...",
-        "Inside my sleeping bag to keep it warm.",
+        "Inside my sleeping bag to keep it nice and warm.",
         "Option B...",
         "Out of the room I sleep in, like on the kitchen side.",
         "Or is it option C...",
-        "Under my pillow so it can't get lost.",
+        "Under my pillow so it can't get lost in the night.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/acf6deee5f57e0d1.mp3"
+      "file": "/audio/voice/6eda69f4b8571241.mp3"
     },
     {
       "key": "87a2098b2e6bd8b6",
@@ -18884,21 +18884,21 @@
       "file": "/audio/voice/9f1477637b3750cb.mp3"
     },
     {
-      "key": "023652a07cd2fa71",
+      "key": "b12f347f50599334",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "On Grandad's computer, the SAVE PASSWORD balloon pops up. Grandad smiles and says: go on, save it, it's fine! What's the safest answer? Is it option A... Save it, a grown-up just said it was fine. Option B... Save it now and delete it before going home. Or is it option C... No thanks, it's a shared computer, so my keys shouldn't live in it. So, what do you think?",
+      "text": "On Grandad's computer, the SAVE PASSWORD balloon pops up. Grandad smiles and says: go on, save it, it's fine! What's the safest answer? Is it option A... Save it, a grown-up said it was fine, so it must be. Option B... Save it now and then delete it before going home. Or is it option C... No thanks, it's a shared computer, so my keys stay out. So, what do you think?",
       "lines": [
         "On Grandad's computer, the SAVE PASSWORD balloon pops up. Grandad smiles and says: go on, save it, it's fine! What's the safest answer?",
         "Is it option A...",
-        "Save it, a grown-up just said it was fine.",
+        "Save it, a grown-up said it was fine, so it must be.",
         "Option B...",
-        "Save it now and delete it before going home.",
+        "Save it now and then delete it before going home.",
         "Or is it option C...",
-        "No thanks, it's a shared computer, so my keys shouldn't live in it.",
+        "No thanks, it's a shared computer, so my keys stay out.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/023652a07cd2fa71.mp3"
+      "file": "/audio/voice/b12f347f50599334.mp3"
     },
     {
       "key": "93d67efefa80200f",
@@ -20616,38 +20616,38 @@
       "file": "/audio/voice/fac1519a2548d74e.mp3"
     },
     {
-      "key": "5edc61f2917087e2",
+      "key": "c055bea90e791244",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "Grandad's email says he WON a big vacation, he just pays a small fee to release the prize. But he never entered any contest. What do you show him? Is it option A... It's only fake if the spelling has mistakes in it. Option B... It could be real, small fees are how big prizes usually work. Or is it option C... You can't win a contest you never entered, and real prizes never ask for a fee. So, what do you think?",
+      "text": "Grandad's email says he WON a big vacation, he just pays a small fee to release the prize. But he never entered any contest. What do you show him? Is it option A... It's only fake if the spelling has mistakes somewhere in it. Option B... It could be real, small fees are just how big prizes usually work. Or is it option C... You can't win a contest you never entered, and real prizes never ask for a fee. So, what do you think?",
       "lines": [
         "Grandad's email says he WON a big vacation, he just pays a small fee to release the prize. But he never entered any contest. What do you show him?",
         "Is it option A...",
-        "It's only fake if the spelling has mistakes in it.",
+        "It's only fake if the spelling has mistakes somewhere in it.",
         "Option B...",
-        "It could be real, small fees are how big prizes usually work.",
+        "It could be real, small fees are just how big prizes usually work.",
         "Or is it option C...",
         "You can't win a contest you never entered, and real prizes never ask for a fee.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/5edc61f2917087e2.mp3"
+      "file": "/audio/voice/c055bea90e791244.mp3"
     },
     {
-      "key": "a3f60cd26d9420f0",
+      "key": "58194e6bfee600ad",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "A note appears on the fridge: NEW RULE, only the KIDS lock their devices, grown-ups don't have to bother. What's wrong with it? Is it option A... It's backwards, grown-ups should lock up while kids go free. Option B... A rule with a grown-up-sized hole in it isn't a firewall, locks are for everyone. Or is it option C... Nothing, grown-ups already know all about locks. So, what do you think?",
+      "text": "A note appears on the fridge: NEW RULE, only the KIDS lock their devices, grown-ups don't have to bother. What's wrong with it? Is it option A... It's backwards, grown-ups should lock up while kids go free. Option B... A rule with a grown-up-sized hole isn't a firewall, locks are for everyone. Or is it option C... Nothing at all, grown-ups already know everything about locks. So, what do you think?",
       "lines": [
         "A note appears on the fridge: NEW RULE, only the KIDS lock their devices, grown-ups don't have to bother. What's wrong with it?",
         "Is it option A...",
         "It's backwards, grown-ups should lock up while kids go free.",
         "Option B...",
-        "A rule with a grown-up-sized hole in it isn't a firewall, locks are for everyone.",
+        "A rule with a grown-up-sized hole isn't a firewall, locks are for everyone.",
         "Or is it option C...",
-        "Nothing, grown-ups already know all about locks.",
+        "Nothing at all, grown-ups already know everything about locks.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/a3f60cd26d9420f0.mp3"
+      "file": "/audio/voice/58194e6bfee600ad.mp3"
     },
     {
       "key": "60254aec0280de4e",
@@ -24710,55 +24710,55 @@
       "file": "/audio/voice/dce05a1f6958b432.mp3"
     },
     {
-      "key": "a2f2c0a9be295fe3",
+      "key": "9e70c3da449cb78e",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "A player you met TODAY already knows your dog's name and your street, and you never told them. What does that tell you? Is it option A... They must live nearby, so it's fine to keep chatting. Option B... They've been digging up your info, that's not a safe friend, tell a trusted grown-up. Or is it option C... They're extra clever, and clever players make the best friends. So, what do you think?",
+      "text": "A player you met TODAY already knows your dog's name and your street, and you never told them. What does that tell you? Is it option A... They must live somewhere nearby, so it's perfectly fine to keep chatting. Option B... They've been digging up your info, that's not a safe friend, tell a trusted grown-up. Or is it option C... They're extra clever, and clever players always make the very best friends. So, what do you think?",
       "lines": [
         "A player you met TODAY already knows your dog's name and your street, and you never told them. What does that tell you?",
         "Is it option A...",
-        "They must live nearby, so it's fine to keep chatting.",
+        "They must live somewhere nearby, so it's perfectly fine to keep chatting.",
         "Option B...",
         "They've been digging up your info, that's not a safe friend, tell a trusted grown-up.",
         "Or is it option C...",
-        "They're extra clever, and clever players make the best friends.",
+        "They're extra clever, and clever players always make the very best friends.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/a2f2c0a9be295fe3.mp3"
+      "file": "/audio/voice/9e70c3da449cb78e.mp3"
     },
     {
-      "key": "191302e3feace5ad",
+      "key": "ddf44cffc3df398b",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "A bully posts one mean comment about your drawing, then sits back and waits. What starves the meanness fastest? Is it option A... No reply at all, then block and tell, a reaction is what they're fishing for. Option B... One perfect comeback, so everyone can watch you win. Or is it option C... A polite reply asking them very nicely to stop. So, what do you think?",
+      "text": "A bully posts one mean comment about your drawing, then sits back and waits. What starves the meanness fastest? Is it option A... No reply, then block and tell, a reaction is what they're fishing for. Option B... One perfect comeback, so that everyone can watch you win it. Or is it option C... A polite reply asking them really very nicely to stop it. So, what do you think?",
       "lines": [
         "A bully posts one mean comment about your drawing, then sits back and waits. What starves the meanness fastest?",
         "Is it option A...",
-        "No reply at all, then block and tell, a reaction is what they're fishing for.",
+        "No reply, then block and tell, a reaction is what they're fishing for.",
         "Option B...",
-        "One perfect comeback, so everyone can watch you win.",
+        "One perfect comeback, so that everyone can watch you win it.",
         "Or is it option C...",
-        "A polite reply asking them very nicely to stop.",
+        "A polite reply asking them really very nicely to stop it.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/191302e3feace5ad.mp3"
+      "file": "/audio/voice/ddf44cffc3df398b.mp3"
     },
     {
-      "key": "91fc122193113b44",
+      "key": "15a31f665920c5b1",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "Something online scared you, and a little voice says: keep it secret or you'll get in trouble. What's true? Is it option A... It's safest to wait a week, most scary things fix themselves. Option B... It only counts as worth telling if it happens twice. Or is it option C... Telling a trusted grown-up is the hero move, and you're never in trouble for telling. So, what do you think?",
+      "text": "Something online scared you, and a little voice says: keep it secret or you'll get in trouble. What's true? Is it option A... It's safest to wait a week or two, most scary things just fix themselves. Option B... It only really counts as worth telling if it happens more than twice. Or is it option C... Telling a trusted grown-up is the hero move, and you're never in trouble for telling. So, what do you think?",
       "lines": [
         "Something online scared you, and a little voice says: keep it secret or you'll get in trouble. What's true?",
         "Is it option A...",
-        "It's safest to wait a week, most scary things fix themselves.",
+        "It's safest to wait a week or two, most scary things just fix themselves.",
         "Option B...",
-        "It only counts as worth telling if it happens twice.",
+        "It only really counts as worth telling if it happens more than twice.",
         "Or is it option C...",
         "Telling a trusted grown-up is the hero move, and you're never in trouble for telling.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/91fc122193113b44.mp3"
+      "file": "/audio/voice/15a31f665920c5b1.mp3"
     },
     {
       "key": "87b5e8f59e420c52",
@@ -35482,21 +35482,21 @@
       "file": "/audio/voice/20fd02d8e02d15af.mp3"
     },
     {
-      "key": "335a541f675de330",
+      "key": "9928e0951b4e1a61",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "Adam says buying a 999-coin pack is fine because 'coins aren't real money'. What's the truth? Is it option A... Real money bought them, so they're real money in a costume. Option B... He's right, money stops being real once it turns into coins. Or is it option C... Only the giant coin packs count as real money. So, what do you think?",
+      "text": "Adam says buying a 999-coin pack is fine because 'coins aren't real money'. What's the truth? Is it option A... Real money bought them, so they're real money in a costume. Option B... He's right, coins stop being real money because the game made them. Or is it option C... Only the giant coin packs count as real money. So, what do you think?",
       "lines": [
         "Adam says buying a 999-coin pack is fine because 'coins aren't real money'. What's the truth?",
         "Is it option A...",
         "Real money bought them, so they're real money in a costume.",
         "Option B...",
-        "He's right, money stops being real once it turns into coins.",
+        "He's right, coins stop being real money because the game made them.",
         "Or is it option C...",
         "Only the giant coin packs count as real money.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/335a541f675de330.mp3"
+      "file": "/audio/voice/9928e0951b4e1a61.mp3"
     },
     {
       "key": "0c36c9aa7d1a4dcb",
@@ -36949,38 +36949,38 @@
       "file": "/audio/voice/560399dff3c3364b.mp3"
     },
     {
-      "key": "660feeeafea74755",
+      "key": "a935c65a335f77bf",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "Adam filmed his little brother's wobbly first bike ride. It's brilliant! Before sending it to the family chat, what comes first? Is it option A... Send just the funniest wobbly bit. Option B... Send it, family chats don't count. Or is it option C... Ask his brother if he's happy for it to be shared. So, what do you think?",
+      "text": "Adam filmed his little brother's wobbly first bike ride. It's brilliant! Before sending it to the family chat, what comes first? Is it option A... Send just the funniest wobbly bit of it. Option B... Send it, family chats don't count as sharing. Or is it option C... Ask his brother if he's happy for it to be shared. So, what do you think?",
       "lines": [
         "Adam filmed his little brother's wobbly first bike ride. It's brilliant! Before sending it to the family chat, what comes first?",
         "Is it option A...",
-        "Send just the funniest wobbly bit.",
+        "Send just the funniest wobbly bit of it.",
         "Option B...",
-        "Send it, family chats don't count.",
+        "Send it, family chats don't count as sharing.",
         "Or is it option C...",
         "Ask his brother if he's happy for it to be shared.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/660feeeafea74755.mp3"
+      "file": "/audio/voice/a935c65a335f77bf.mp3"
     },
     {
-      "key": "5a8bd67a52e2c804",
+      "key": "e2d8f0b7ff68dae0",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "Layla's swimming photo shows her new medal, her stripy towel, and the swimming pool's name on the wall behind her. Which one talks to strangers? Is it option A... The stripy towel over her shoulder. Option B... The pool's name on the wall, it shows where she swims every week. Or is it option C... The shiny medal around her neck. So, what do you think?",
+      "text": "Layla's swimming photo shows her new medal, her stripy towel, and the swimming pool's name on the wall behind her. Which one talks to strangers? Is it option A... The stripy towel draped over her shoulder. Option B... The pool's name on the wall behind her. Or is it option C... The shiny medal hanging around her neck. So, what do you think?",
       "lines": [
         "Layla's swimming photo shows her new medal, her stripy towel, and the swimming pool's name on the wall behind her. Which one talks to strangers?",
         "Is it option A...",
-        "The stripy towel over her shoulder.",
+        "The stripy towel draped over her shoulder.",
         "Option B...",
-        "The pool's name on the wall, it shows where she swims every week.",
+        "The pool's name on the wall behind her.",
         "Or is it option C...",
-        "The shiny medal around her neck.",
+        "The shiny medal hanging around her neck.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/5a8bd67a52e2c804.mp3"
+      "file": "/audio/voice/e2d8f0b7ff68dae0.mp3"
     },
     {
       "key": "5097bcce267cd890",
@@ -37000,21 +37000,21 @@
       "file": "/audio/voice/5097bcce267cd890.mp3"
     },
     {
-      "key": "b75b5c80e01e6102",
+      "key": "d5b03ba7bfc5b98f",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "Layla wants to post a video of her friends' dance routine. She has LOOKED at every corner, and it's clean. What's the next step of the ritual? Is it option A... Post it now, looking was enough. Option B... Add music first so it gets more likes. Or is it option C... THINK: where is it going, and is it OK for anyone, forever? So, what do you think?",
+      "text": "Layla wants to post a video of her friends' dance routine. She has LOOKED at every corner, and it's clean. What's the next step of the ritual? Is it option A... Post it now, having a look was enough. Option B... Add some music first so it gets more likes! Or is it option C... THINK: where is it going, and is it OK forever? So, what do you think?",
       "lines": [
         "Layla wants to post a video of her friends' dance routine. She has LOOKED at every corner, and it's clean. What's the next step of the ritual?",
         "Is it option A...",
-        "Post it now, looking was enough.",
+        "Post it now, having a look was enough.",
         "Option B...",
-        "Add music first so it gets more likes.",
+        "Add some music first so it gets more likes!",
         "Or is it option C...",
-        "THINK: where is it going, and is it OK for anyone, forever?",
+        "THINK: where is it going, and is it OK forever?",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/b75b5c80e01e6102.mp3"
+      "file": "/audio/voice/d5b03ba7bfc5b98f.mp3"
     },
     {
       "key": "c9405134acb862de",
@@ -38941,21 +38941,21 @@
       "file": "/audio/voice/4eb3b97a8d8c3715.mp3"
     },
     {
-      "key": "74274735e5d63231",
+      "key": "9d0af6ad4bf8b234",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "A pop-up in Adam's game says: 'Update needed! Tap here to update now!' It isn't from the app store. What's the hero move? Is it option A... Tap it quickly, updates keep games safe. Option B... Tap it, but only because it's his favourite game. Or is it option C... Close it, and check for updates in the real app store with a grown-up. So, what do you think?",
+      "text": "A pop-up in Adam's game says: 'Update needed! Tap here to update now!' It isn't from the app store. What's the hero move? Is it option A... Tap it quickly, updates like this keep games safe. Option B... Tap it, but only because it's his favourite game. Or is it option C... Close it, and check the real app store with a grown-up. So, what do you think?",
       "lines": [
         "A pop-up in Adam's game says: 'Update needed! Tap here to update now!' It isn't from the app store. What's the hero move?",
         "Is it option A...",
-        "Tap it quickly, updates keep games safe.",
+        "Tap it quickly, updates like this keep games safe.",
         "Option B...",
         "Tap it, but only because it's his favourite game.",
         "Or is it option C...",
-        "Close it, and check for updates in the real app store with a grown-up.",
+        "Close it, and check the real app store with a grown-up.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/74274735e5d63231.mp3"
+      "file": "/audio/voice/9d0af6ad4bf8b234.mp3"
     },
     {
       "key": "a0eb2e59a026cd5f",
