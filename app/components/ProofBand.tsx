@@ -73,14 +73,9 @@ const MARKS: Mark[] = [
 
 export default function ProofBand({ tone = "night", forFirms = false }: { tone?: "night" | "sand"; forFirms?: boolean } = {}) {
   const onSand = tone === "sand";
-  // TEMP 2026-10-24: Microsoft for Startups badge pulled at the owner's request;
-  // restore (~2026-10-31) by flipping this back to true. Same badge is also
-  // hidden in the Nav trust strip. The MARKS entry above is kept intact.
-  const SHOW_MS_STARTUPS = false;
-  const shown = SHOW_MS_STARTUPS ? MARKS : MARKS.filter((m) => m.alt !== "Microsoft for Startups");
   /* The ASDAN mark speaks to schools; a page for firms shows the three
    * that apply to them. */
-  const marks = forFirms ? shown.filter((m) => !m.name.startsWith("ASDAN")) : shown;
+  const marks = forFirms ? MARKS.filter((m) => !m.name.startsWith("ASDAN")) : MARKS;
   return (
     <section
       id="accreditations"
