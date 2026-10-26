@@ -7,7 +7,14 @@ import { useEffect, useRef } from "react";
  * vignette over the top so it never competes with the content. Disabled
  * entirely for prefers-reduced-motion. Fixed, so it parallaxes gently as
  * the page scrolls. */
-export default function CodeRainBg() {
+/* Colours default to the hub's brand-cyan/violet; the Cyber Pro landing
+ * passes the black-and-orange brand instead so the backdrop matches the rest
+ * of the product (auth pages, homepage card). */
+export default function CodeRainBg({
+  glyph = "rgba(53, 214, 240, 0.22)",
+  base = "#08070f",
+  glows = "radial-gradient(1200px 620px at 50% -10%, rgba(139,109,255,0.16), transparent 60%), radial-gradient(900px 520px at 92% 3%, rgba(53,214,240,0.09), transparent 55%), radial-gradient(1100px 900px at 50% 42%, rgba(8,7,18,0.62), transparent 72%)",
+}: { glyph?: string; base?: string; glows?: string } = {}) {
   const ref = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -48,7 +55,7 @@ export default function CodeRainBg() {
       // fade the previous frame a touch to leave soft trails
       ctx.fillStyle = "rgba(8, 7, 18, 0.13)";
       ctx.fillRect(0, 0, width, height);
-      ctx.fillStyle = "rgba(53, 214, 240, 0.22)";
+      ctx.fillStyle = glyph;
       for (let i = 0; i < cols; i++) {
         const ch = glyphs[(Math.random() * glyphs.length) | 0];
         ctx.fillText(ch, i * fontSize, drops[i] * fontSize);
@@ -67,10 +74,10 @@ export default function CodeRainBg() {
   }, []);
 
   return (
-    <div aria-hidden style={{ position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none", background: "#08070f" }}>
+    <div aria-hidden style={{ position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none", background: base }}>
       <canvas ref={ref} style={{ display: "block", opacity: 0.55 }} />
       {/* brand glows on top + a soft vignette so the rain stays behind the reading column */}
-      <div style={{ position: "absolute", inset: 0, background: "radial-gradient(1200px 620px at 50% -10%, rgba(139,109,255,0.16), transparent 60%), radial-gradient(900px 520px at 92% 3%, rgba(53,214,240,0.09), transparent 55%), radial-gradient(1100px 900px at 50% 42%, rgba(8,7,18,0.62), transparent 72%)" }} />
+      <div style={{ position: "absolute", inset: 0, background: glows }} />
     </div>
   );
 }
