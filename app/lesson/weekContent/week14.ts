@@ -226,9 +226,9 @@ export const WEEK_14: WeekContent = {
       prompt: "Which one of these has ears?",
       choices: [
         { text: "The telly with the voice button", isCorrect: true },
-        { text: "The kettle", isCorrect: false, why: "A kettle boils water. There is no microphone anywhere in it." },
-        { text: "The reading lamp", isCorrect: false, why: "A lamp makes light and that is all. Nothing to hear with." },
-        { text: "The wind-up alarm clock", isCorrect: false, why: "You wind it up and it ticks. No microphone in there at all." },
+        { text: "The kettle on the kitchen side", isCorrect: false, why: "A kettle boils water. There is no microphone anywhere in it." },
+        { text: "The reading lamp by the bed", isCorrect: false, why: "A lamp makes light and that is all. Nothing to hear with." },
+        { text: "The wind-up alarm clock on the shelf", isCorrect: false, why: "You wind it up and it ticks. No microphone in there at all." },
       ],
       praise: "The telly. That voice button is a microphone. ✓",
       nudge: "Which one can you talk TO and get an answer from?",

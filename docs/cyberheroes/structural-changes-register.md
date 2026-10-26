@@ -1423,6 +1423,56 @@ destructive step over the one asset here that costs money to replace, or
 
 ---
 
+## Rule 15 - count the defect where it SHIPS, not where it is written
+
+The answer-disguise sweep across all twenty weeks, 26 October 2026, reported
+167 questions whose shape gave the answer away. Only **43** of them were
+reachable.
+
+The other 124 sat in blocks no child opens:
+
+| Block | Where | Status |
+|---|---|---|
+| `bossQuiz` | all 20 weeks | **shipped** - the week-ending test, since #228 |
+| `bossPhases` | weeks 1-2 only | fallback, used only if `bossQuiz` is cleared |
+| `bossQuestions` | all 20 weeks | fallback below that, from the original build |
+
+`DynamicLesson`'s boss overlay checks `content.bossQuiz` first and every week
+has one, so the two fallbacks are dead data kept for a one-line revert. 100 of
+the findings were in `bossQuestions`, 24 in `bossPhases`.
+
+Two ways that could have gone wrong, both avoided:
+
+1. **Rewriting all 167.** Three quarters of the effort would have changed
+   nothing a tester can see, and would have been reported as a course-wide fix.
+2. **Leaving the dead count in the gate.** Week 1 could never go green, so the
+   ratchet would have stayed parked at weeks 3-5 forever, or been switched off.
+
+What was done instead: the audit skips a legacy fallback **only while that same
+week still has a live `bossQuiz`**, and says so in its own comments. Clear a
+bossQuiz and the fallback becomes shipped content again, and the gate measures
+it that day. The 43 real ones were rewritten and the ratchet went to all twenty.
+
+The general rule: before fixing what an audit reports, find out which of it
+renders. An audit reads source; a child reads a screen. Where a product keeps
+fallbacks, dead branches or superseded data, a source-level count is an upper
+bound, not the defect count, and the gap is worth measuring before anything is
+spent on it.
+
+The rewrite rule, for the real ones: **lengthen the decoys, do not shorten the
+answer.** A right answer trimmed to hide its length takes the lesson out with
+it; a decoy given the same weight gets more tempting, which is the point. Where
+the answer genuinely had to come down (week 8's pool sign, week 9's FREE tag)
+the reason it was right already lived in its `why` or `teachOnWrong` text.
+
+And the exemption that came with it: a set of **passwords or usernames** is
+exempt from the length test, because there long IS the lesson. Week 1's
+`hedgehog-saxophone-waterfall` against `wow` must stay the longest; padding
+those decoys would teach the opposite of the week. 12 of the original 179 were
+sets like that.
+
+---
+
 ## Working rules the owner has set
 
 - ElevenLabs spend is **week by week**, signed off before the next.

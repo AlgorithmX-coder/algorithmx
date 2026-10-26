@@ -504,9 +504,9 @@ export const WEEK_18: WeekContent = {
       prompt: "The Raccoon says: 'A lock screen is pointless, anyone clever can get past it!' Is he right?",
       choices: [
         { text: "No. A shut door stops nearly everyone who walks past", isCorrect: true },
-        { text: "Yes, so there is no point having one", isCorrect: false, why: "That is exactly what he wants you to think. An open door stops nobody at all." },
-        { text: "Yes, unless your code is really long", isCorrect: false, why: "This is not about the code. It is about whether there is a door there to begin with." },
-        { text: "Yes, locks are only for phones", isCorrect: false, why: "Tablets, computers and consoles all have one, and all of them need it." },
+        { text: "Yes, so there is really no point having one at all", isCorrect: false, why: "That is exactly what he wants you to think. An open door stops nobody at all." },
+        { text: "Yes, unless your code is really long and tricky", isCorrect: false, why: "This is not about the code. It is about whether there is a door there to begin with." },
+        { text: "Yes, locks are only really for phones anyway", isCorrect: false, why: "Tablets, computers and consoles all have one, and all of them need it." },
       ],
       praise: "No. A shut door stops nearly everyone who walks past. ✓",
       nudge: "Think about a real front door. Does it have to be unbreakable to be worth shutting?",
@@ -1113,9 +1113,9 @@ export const WEEK_18: WeekContent = {
           text: "On Grandad's computer, the SAVE PASSWORD balloon pops up. Grandad smiles and says: go on, save it, it's fine! What's the safest answer?",
         },
         options: [
-          { text: "No thanks, it's a shared computer, so my keys shouldn't live in it" },
-          { text: "Save it, a grown-up just said it was fine" },
-          { text: "Save it now and delete it before going home" },
+          { text: "No thanks, it's a shared computer, so my keys stay out" },
+          { text: "Save it, a grown-up said it was fine, so it must be" },
+          { text: "Save it now and then delete it before going home" },
         ],
         correctIndex: 0,
         teachOnWrong: {

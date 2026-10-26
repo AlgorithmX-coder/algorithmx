@@ -536,8 +536,8 @@ export const WEEK_8: WeekContent = {
       speedMs: 5000,
       choices: [
         { text: "The house number on the door", isCorrect: true },
-        { text: "The balloons behind you", isCorrect: false, why: "Balloons look the same at every party. They point nowhere." },
-        { text: "The sunny sky", isCorrect: false, why: "The sky looks the same over every town. It tells a stranger nothing." },
+        { text: "The balloons tied behind you", isCorrect: false, why: "Balloons look the same at every party. They point nowhere." },
+        { text: "The sunny sky up above you", isCorrect: false, why: "The sky looks the same over every town. It tells a stranger nothing." },
       ],
       praise: "Spotted in a flash. The house number talks loudest! ✓",
       teachNarration: {
@@ -968,8 +968,8 @@ export const WEEK_8: WeekContent = {
           question: "Oops, you posted a silly photo! Just delete it, and it's gone from everyone's phone.",
           answers: [
             "Delete only clears MY copy. Next time I'll think first.",
-            "Phew! Delete fixes everything.",
-            "I'll delete it twice, just to be sure.",
+            "Phew! Deleting it fixes the whole thing.",
+            "I'll delete it twice, that makes it really gone.",
           ],
           correctIndex: 0,
           why: "Delete only clears your copy. Every copy on other phones stays put, so heroes think before they post.",
@@ -980,7 +980,7 @@ export const WEEK_8: WeekContent = {
           question: "I got a funny photo of Zara asleep at the sleepover. Let's post it before she wakes up!",
           answers: [
             "No. It's her face, so we ask her first.",
-            "Yes! She'll think it's funny later.",
+            "Yes! It's funny, so she'll laugh about it later.",
             "Post it, and delete it if she gets upset.",
           ],
           correctIndex: 0,
@@ -992,7 +992,7 @@ export const WEEK_8: WeekContent = {
           question: "Take a selfie in front of your house! The big door number looks so cool.",
           answers: [
             "I'll move, so the house number isn't in it.",
-            "OK, the number makes it look cool!",
+            "OK, it looks cool, so the number can stay!",
             "I'll post it just for my friends.",
           ],
           correctIndex: 0,
@@ -1004,8 +1004,8 @@ export const WEEK_8: WeekContent = {
           question: "Show the group chat your bath time baby photo. It's so cute!",
           answers: [
             "No. Body photos are Just Me photos, with no door at all.",
-            "OK, it's only the group chat.",
-            "Only if everyone promises not to share it.",
+            "OK, it's only the group chat, nobody else.",
+            "Only if everyone in the chat promises not to share it.",
           ],
           correctIndex: 0,
           why: "Photos of your body are private. They are Just Me photos, and they go through no door, not even a small one.",
@@ -1150,8 +1150,8 @@ export const WEEK_8: WeekContent = {
         },
         options: [
           { text: "Ask his brother if he's happy for it to be shared" },
-          { text: "Send it, family chats don't count" },
-          { text: "Send just the funniest wobbly bit" },
+          { text: "Send it, family chats don't count as sharing" },
+          { text: "Send just the funniest wobbly bit of it" },
         ],
         correctIndex: 0,
         teachOnWrong: {
@@ -1176,9 +1176,9 @@ export const WEEK_8: WeekContent = {
           text: "Layla's swimming photo shows her new medal, her stripy towel, and the swimming pool's name on the wall behind her. Which one talks to strangers?",
         },
         options: [
-          { text: "The pool's name on the wall, it shows where she swims every week" },
-          { text: "The shiny medal around her neck" },
-          { text: "The stripy towel over her shoulder" },
+          { text: "The big sign that names the pool" },
+          { text: "The shiny medal hanging around her neck" },
+          { text: "The stripy towel draped over her shoulder" },
         ],
         correctIndex: 0,
         teachOnWrong: {
@@ -1230,9 +1230,9 @@ export const WEEK_8: WeekContent = {
           text: "Layla wants to post a video of her friends' dance routine. She has LOOKED at every corner, and it's clean. What's the next step of the ritual?",
         },
         options: [
-          { text: "THINK: where is it going, and is it OK for anyone, forever?" },
-          { text: "Post it now, looking was enough" },
-          { text: "Add music first so it gets more likes" },
+          { text: "THINK: where is it going, and is it OK forever?" },
+          { text: "Post it now, having a look was enough." },
+          { text: "Add some music first so it gets more likes!" },
         ],
         correctIndex: 0,
         teachOnWrong: {

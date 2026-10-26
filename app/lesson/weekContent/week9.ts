@@ -1025,8 +1025,8 @@ export const WEEK_9: WeekContent = {
           readAloud: "Two apps called Moon Jump. Look closely at who made each one, and how many downloads they have. Which one is the copycat?",
           choices: [
             { text: "The one by Star1ight Games, with 9 downloads", isCorrect: true, explanation: "That's the copycat.", why: "A number one where the l should be, and only nine downloads. Almost right is all wrong, so that's the copycat." },
-            { text: "The one with 4 million downloads", isCorrect: false, explanation: "Four million downloads and a maker spelled right is a real history. Look at the other maker's name." },
-            { text: "Neither, the app names match", isCorrect: false, explanation: "The app names match, but check every piece. One maker has a number one where the l should be." },
+            { text: "The one by Starlight Games, with 4 million downloads", isCorrect: false, explanation: "Four million downloads and a maker spelled right is a real history. Look at the other maker's name." },
+            { text: "Neither, the app names match exactly", isCorrect: false, explanation: "The app names match, but check every piece. One maker has a number one where the l should be." },
           ],
           recap: "Count the whiskers",
         },
@@ -1050,7 +1050,7 @@ export const WEEK_9: WeekContent = {
           prompt: "Your friend says a game is FREE, so it can't cost anything. But it has a coin shop inside. What's true?",
           readAloud: "Your friend says a game is FREE, so it can't cost anything. But it has a coin shop inside. What's true?",
           choices: [
-            { text: "Free to start isn't free to play: the coin shop costs real money", isCorrect: true, explanation: "Free to start, not free to play.", why: "That shop inside means the game gets paid with coins, and coins cost real money. Free to start isn't free to play." },
+            { text: "Free to start isn't free to play", isCorrect: true, explanation: "Free to start, not free to play.", why: "That shop inside means the game gets paid with coins, and coins cost real money. Free to start isn't free to play." },
             { text: "Your friend is right, FREE means free", isCorrect: false, explanation: "Apps always get paid somehow, and the shop inside is how this one gets paid." },
             { text: "Game coins aren't real money", isCorrect: false, explanation: "Remember the Loot Shop? Game coins are bought with real money, every time." },
           ],
@@ -1276,8 +1276,8 @@ export const WEEK_9: WeekContent = {
           text: "A pop-up in Adam's game says: 'Update needed! Tap here to update now!' It isn't from the app store. What's the hero move?",
         },
         options: [
-          { text: "Close it, and check for updates in the real app store with a grown-up" },
-          { text: "Tap it quickly, updates keep games safe" },
+          { text: "Close it, and check the real app store with a grown-up" },
+          { text: "Tap it quickly, updates like this keep games safe" },
           { text: "Tap it, but only because it's his favourite game" },
         ],
         correctIndex: 0,

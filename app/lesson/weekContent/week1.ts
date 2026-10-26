@@ -619,9 +619,9 @@ export const WEEK_1: WeekContent = {
       prompt: "Who should know your password?",
       choices: [
         { text: "Only me (and a parent)", isCorrect: true },
-        { text: "My best friend", isCorrect: false, why: "Even a best friend shouldn't know it; a secret shared is a secret that can leak." },
-        { text: "My whole class", isCorrect: false, why: "A whole class is a lot of people; a password is for you alone." },
-        { text: "Anyone who asks", isCorrect: false, why: "Anyone who asks is exactly who must not get it; the Raccoon asks nicely too." },
+        { text: "My best friend, if they promise", isCorrect: false, why: "Even a best friend shouldn't know it; a secret shared is a secret that can leak." },
+        { text: "My whole class, we all share it", isCorrect: false, why: "A whole class is a lot of people; a password is for you alone." },
+        { text: "Anyone who asks me nicely", isCorrect: false, why: "Anyone who asks is exactly who must not get it; the Raccoon asks nicely too." },
       ],
       praise: "Right - it stays your secret! ✓",
       teachNarration: {

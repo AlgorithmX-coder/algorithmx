@@ -33,6 +33,68 @@ const WEEKS = ARG.length ? ARG.map(Number) : Array.from({ length: 20 }, (_, i) =
  * its length alone identifies it. 1.4 is forgiving: week 3's was 2.5x. */
 const LONGEST_RATIO = 1.4;
 
+/**
+ * Some answer sets are EXEMPT from the length test, because for them length is
+ * the lesson rather than a leak.
+ *
+ * Week 1 asks which password is strongest. The answer is
+ * "hedgehog-saxophone-waterfall" against "hedgehog", "H3llo!" and "wow", and
+ * it is longest because LONG IS WHAT STRONG MEANS in that week. Padding the
+ * decoys to match would teach a child the exact opposite of the lesson.
+ *
+ * Found 2026-10-26 when the audit reported 179 findings across the course: 12
+ * of them were sets of passwords and usernames, 11 in week 1 alone. Without
+ * this exemption week 1 could never pass the gate however well its prose
+ * answers were written, so the gate would have been switched off - which is how
+ * this kind of check dies.
+ *
+ * A set counts as credentials when half or more of its options read as a typed
+ * string rather than a sentence. The other two tests - "the only one that gives
+ * its reason" and "the only one phrased differently" - still apply to these
+ * sets, because those really would leak whatever the options are.
+ */
+function looksLikeCredential(s) {
+  const t = String(s).trim();
+  if (!t) return false;
+  const hyphenChain = /^[\w!$@#%^&*.-]+(?:-[\w!$@#%^&*.-]+)+$/.test(t);
+  if (/\s/.test(t) && !hyphenChain) return false; // a sentence
+  return !/\s/.test(t) || hyphenChain || /[0-9!$@#%^&*]/.test(t);
+}
+
+function isCredentialSet(opts) {
+  const n = opts.filter(looksLikeCredential).length;
+  return n >= Math.ceil(opts.length / 2);
+}
+
+/**
+ * `bossPhases` and `bossQuestions` are LEGACY FALLBACKS, not shipped content.
+ *
+ * DynamicLesson's boss overlay gives `content.bossQuiz` top preference on all
+ * twenty weeks (#228, QuizBoss) and only falls through to `bossPhases`, then
+ * to the flat `bossQuestions`, if that is ever cleared. Every week has a
+ * bossQuiz, so no child reaches either block.
+ *
+ * Found 2026-10-26: of 167 findings across the course, 124 sat in those two
+ * dead blocks. Rewriting them would have changed nothing a tester can see, and
+ * leaving them in the count meant the gate could never go green, which is how
+ * a check like this gets switched off.
+ *
+ * So a dead block is skipped ONLY while the same week still has a live
+ * bossQuiz. Clear the bossQuiz and the fallback becomes shipped content again,
+ * and the gate starts measuring it the same day.
+ */
+const LEGACY_FALLBACK = new Set(["bossPhases", "bossQuestions"]);
+
+/** Top-level keys of the WeekContent literal, in line order. */
+function topLevelKeys(src) {
+  const marks = [];
+  src.split("\n").forEach((l, i) => {
+    const m = /^  ([A-Za-z_$][\w$]*)\s*:/.exec(l);
+    if (m) marks.push({ line: i + 1, key: m[1] });
+  });
+  return marks;
+}
+
 /** Balanced-bracket reader, so a choices array is read whole. */
 function balanced(src, from, open, close) {
   let depth = 0, inStr = null;
@@ -53,6 +115,17 @@ let flagged = 0, checked = 0;
 for (const w of WEEKS) {
   let src;
   try { src = await readFile(`app/lesson/weekContent/week${w}.ts`, "utf8"); } catch { continue; }
+
+  /* Skip the legacy fallbacks while this week still renders a bossQuiz. */
+  const marks = topLevelKeys(src);
+  const hasLiveQuiz = marks.some((m) => m.key === "bossQuiz");
+  const sectionOf = (line) => {
+    let k = "(top)";
+    for (const m of marks) { if (m.line <= line) k = m.key; else break; }
+    return k;
+  };
+  const isDead = (at) =>
+    hasLiveQuiz && LEGACY_FALLBACK.has(sectionOf(src.slice(0, at).split("\n").length));
 
   const groups = [];
 
@@ -87,6 +160,7 @@ for (const w of WEEKS) {
   }
 
   for (const g of groups) {
+    if (isDead(g.at)) continue;
     const right = g.opts[g.ci];
     if (!right) continue;
     const wrong = g.opts.filter((_, i) => i !== g.ci);
@@ -94,8 +168,10 @@ for (const w of WEEKS) {
     checked++;
     const why = [];
 
+    /* Length is exempt for credential sets - see isCredentialSet above. */
+    const credentials = isCredentialSet(g.opts);
     const avgWrong = wrong.reduce((a, b) => a + b.length, 0) / wrong.length;
-    if (right.length > avgWrong * LONGEST_RATIO && right.length === Math.max(...g.opts.map((o) => o.length))) {
+    if (!credentials && right.length > avgWrong * LONGEST_RATIO && right.length === Math.max(...g.opts.map((o) => o.length))) {
       why.push(`longest by ${(right.length / avgWrong).toFixed(1)}x (${right.length} vs ${Math.round(avgWrong)} avg)`);
     }
 

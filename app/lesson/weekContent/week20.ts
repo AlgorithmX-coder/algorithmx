@@ -226,9 +226,9 @@ export const WEEK_20: WeekContent = {
       prompt: "The Raccoon says: 'A really CLEVER short password beats a long boring one!' Is he right?",
       choices: [
         { text: "No. Length beats cleverness every single time", isCorrect: true },
-        { text: "Yes, symbols make it much harder", isCorrect: false, why: "Symbols help a little. Length helps enormously, and a short password stays short however clever it is." },
-        { text: "Yes, if nobody can guess it", isCorrect: false, why: "Nobody is guessing. A machine is trying millions, and that is a race short passwords lose." },
-        { text: "Yes, as long as you change it often", isCorrect: false, why: "Changing a short one often just gives you lots of short ones." },
+        { text: "Yes, symbols make it much harder to crack", isCorrect: false, why: "Symbols help a little. Length helps enormously, and a short password stays short however clever it is." },
+        { text: "Yes, if nobody can ever guess it", isCorrect: false, why: "Nobody is guessing. A machine is trying millions, and that is a race short passwords lose." },
+        { text: "Yes, as long as you change it quite often", isCorrect: false, why: "Changing a short one often just gives you lots of short ones." },
       ],
       praise: "No. Length beats cleverness every single time. ✓",
       nudge: "Think about the lock that said long beats complicated.",
@@ -389,8 +389,8 @@ export const WEEK_20: WeekContent = {
       choices: [
         { text: "Compare what it asks for against what it does", isCorrect: true },
         { text: "Check how many people have installed it", isCorrect: false, why: "Plenty of people install nosy things. A big number says nothing about the ask." },
-        { text: "See if it looks professional", isCorrect: false, why: "Looking smart is the cheapest part of making an app." },
-        { text: "Check whether it is free", isCorrect: false, why: "Free and nosy often go together, and plenty of fair apps are free too." },
+        { text: "See if the whole thing looks professional", isCorrect: false, why: "Looking smart is the cheapest part of making an app." },
+        { text: "Check whether it is free to download", isCorrect: false, why: "Free and nosy often go together, and plenty of fair apps are free too." },
       ],
       praise: "Compare what it asks for against what it does. ✓",
       nudge: "Think about the torch. What made its list wrong?",
@@ -565,9 +565,9 @@ export const WEEK_20: WeekContent = {
       prompt: "A deal says '1 coin each!' but only sells in bundles of 40. What is the real price?",
       choices: [
         { text: "40 coins, because that is the smallest you can buy", isCorrect: true },
-        { text: "1 coin, that is what it says", isCorrect: false, why: "One coin each is true and useless, because there is no way to buy just one." },
-        { text: "It depends how many you want", isCorrect: false, why: "It does not. You take forty whatever you wanted." },
-        { text: "You cannot tell without asking", isCorrect: false, why: "The receipt tells you. The smallest bundle is the price." },
+        { text: "1 coin, because that is what the deal says", isCorrect: false, why: "One coin each is true and useless, because there is no way to buy just one." },
+        { text: "It depends on how many you want to buy", isCorrect: false, why: "It does not. You take forty whatever you wanted." },
+        { text: "You cannot tell without asking somebody", isCorrect: false, why: "The receipt tells you. The smallest bundle is the price." },
       ],
       praise: "40 coins, because that is the smallest you can buy. ✓",
       nudge: "What is the least you could actually hand over?",
@@ -1054,8 +1054,8 @@ export const WEEK_20: WeekContent = {
         },
         options: [
           { text: "They've been digging up your info, that's not a safe friend, tell a trusted grown-up" },
-          { text: "They're extra clever, and clever players make the best friends" },
-          { text: "They must live nearby, so it's fine to keep chatting" },
+          { text: "They're extra clever, and clever players always make the very best friends" },
+          { text: "They must live somewhere nearby, so it's perfectly fine to keep chatting" },
         ],
         correctIndex: 0,
         teachOnWrong: {
@@ -1080,9 +1080,9 @@ export const WEEK_20: WeekContent = {
           text: "A bully posts one mean comment about your drawing, then sits back and waits. What starves the meanness fastest?",
         },
         options: [
-          { text: "No reply at all, then block and tell, a reaction is what they're fishing for" },
-          { text: "One perfect comeback, so everyone can watch you win" },
-          { text: "A polite reply asking them very nicely to stop" },
+          { text: "No reply, then block and tell, a reaction is what they're fishing for" },
+          { text: "One perfect comeback, so that everyone can watch you win it" },
+          { text: "A polite reply asking them really very nicely to stop it" },
         ],
         correctIndex: 0,
         teachOnWrong: {
@@ -1108,8 +1108,8 @@ export const WEEK_20: WeekContent = {
         },
         options: [
           { text: "Telling a trusted grown-up is the hero move, and you're never in trouble for telling" },
-          { text: "It's safest to wait a week, most scary things fix themselves" },
-          { text: "It only counts as worth telling if it happens twice" },
+          { text: "It's safest to wait a week or two, most scary things just fix themselves" },
+          { text: "It only really counts as worth telling if it happens more than twice" },
         ],
         correctIndex: 0,
         teachOnWrong: {
