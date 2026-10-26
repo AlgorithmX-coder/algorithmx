@@ -947,6 +947,12 @@ export const MODULE5: ModuleDef = {
     "Count a query's columns with ORDER BY, then UNION a different table out through a search box - staff records, card data, or a hidden secrets table.",
     "Explain why parameterised queries kill injection for good where stripping quotes or banning 'UNION' never will.",
   ],
+  briefing: {
+    introAudio: "/operators/briefings/m05-intro.mp3",
+    introBlurb: "A one-minute brief from your handler: what injection is, what you'll do in this module, and why it matters in the real world.",
+    outroAudio: "/operators/briefings/m05-outro.mp3",
+    outroBlurb: "Your handler's debrief: what you can now do, and the one rule to carry forward.",
+  },
   cheatsheet: {
     title: "SQL quick reference",
     blurb: "Everything the app uses to talk to its database, in plain words. You do not need to memorise any of it: it lives here, open it whenever you like.",
