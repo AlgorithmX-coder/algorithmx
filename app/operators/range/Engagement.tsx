@@ -113,6 +113,11 @@ export type ModuleDef = {
   /** What the learner can now do, shown as a "Module outcome" block on the report
    *  screen. 2-4 concrete "you can now..." capabilities. */
   outcome?: string[];
+  /** Optional spoken briefing + debrief - the HANDLER reads a plain-English
+   *  "here's what you'll learn and why it matters" intro, and a "here's what you
+   *  can now do" outro. Just mp3 URLs under /public; the player is optional per
+   *  module, so modules without audio are unaffected. */
+  briefing?: { introAudio?: string; introBlurb?: string; outroAudio?: string; outroBlurb?: string };
   /** Optional per-module cheat sheet: a beginner-friendly quick reference the
    *  learner can open full-screen from a side tab at any time, applicable to this
    *  module (e.g. the SQL statements and what each does). Plain enough for a
@@ -817,6 +822,7 @@ function Report({ mod, callsign, onExit, liveRank }: { mod: ModuleDef; callsign:
         <p style={{ fontSize: 14, color: C.soft, marginTop: 10, lineHeight: 1.55 }}><b style={{ color: C.ink }}>Impact.</b> {f.impact}</p>
         <p style={{ fontSize: 14, color: C.soft, marginTop: 6, lineHeight: 1.55 }}><b style={{ color: C.ink }}>Fix.</b> {f.fix}</p>
       </Panel>
+      {mod.briefing?.outroAudio && <BriefingAudio src={mod.briefing.outroAudio} kind="debrief" blurb={mod.briefing.outroBlurb} accent={C.green} />}
       {mod.outcome && mod.outcome.length > 0 && (
         <div style={{ padding: "18px 18px 16px", borderRadius: 16, background: "rgba(85,217,140,0.05)", border: `1px solid ${C.green}3a` }}>
           <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: ".16em", textTransform: "uppercase", color: C.green, fontWeight: 700, display: "flex", alignItems: "center", gap: 9 }}>
@@ -979,6 +985,37 @@ function BriefChip({ k, v, accent }: { k: string; v: string; accent: string }) {
 // matters, what the industry looks like now, and where it's heading - we're an
 // AI/future-forward platform). Shown as the first "Industry" beat; content from
 // mod.industry. Themed to the module world.
+/* ---------- spoken briefing / debrief player ----------
+ * The HANDLER reads a plain-English brief (intro) and debrief (outro). Pure
+ * <audio>; shows play/pause, elapsed time and a progress bar. Optional per
+ * module - renders nothing unless a clip URL is set. */
+function BriefingAudio({ src, kind, blurb, accent }: { src: string; kind: "briefing" | "debrief"; blurb?: string; accent: string }) {
+  const ref = useRef<HTMLAudioElement | null>(null);
+  const [playing, setPlaying] = useState(false);
+  const [cur, setCur] = useState(0);
+  const [dur, setDur] = useState(0);
+  function toggle() { const a = ref.current; if (!a) return; if (a.paused) a.play().catch(() => {}); else a.pause(); }
+  const pct = dur > 0 ? (cur / dur) * 100 : 0;
+  const fmt = (s: number) => { if (!isFinite(s) || s < 0) return "0:00"; const m = Math.floor(s / 60); const r = Math.floor(s % 60); return `${m}:${String(r).padStart(2, "0")}`; };
+  const label = kind === "briefing" ? "Mission briefing" : "Debrief";
+  return (
+    <div style={{ display: "flex", alignItems: "center", gap: 14, padding: "13px 15px", borderRadius: 14, background: `linear-gradient(140deg, ${accent}1f, rgba(13,15,22,0.72))`, border: `1px solid ${accent}44` }}>
+      <audio ref={ref} src={src} preload="metadata" onPlay={() => setPlaying(true)} onPause={() => setPlaying(false)} onEnded={() => setPlaying(false)} onTimeUpdate={(e) => setCur(e.currentTarget.currentTime)} onLoadedMetadata={(e) => setDur(e.currentTarget.duration)} />
+      <button onClick={toggle} aria-label={playing ? "Pause briefing" : "Play briefing"} style={{ flexShrink: 0, width: 46, height: 46, borderRadius: "50%", border: "none", background: accent, color: "#0b0820", fontSize: 16, fontWeight: 700, cursor: "pointer", display: "grid", placeItems: "center", boxShadow: `0 0 18px -4px ${accent}`, boxSizing: "border-box", paddingLeft: playing ? 0 : 3 }}>{playing ? "❚❚" : "▶"}</button>
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
+          <span style={{ fontFamily: MONO, fontSize: 10, letterSpacing: ".16em", textTransform: "uppercase", fontWeight: 700, color: accent }}>{label} · press play to listen</span>
+          <span style={{ fontFamily: MONO, fontSize: 10.5, color: C.mute }}>{fmt(cur)} / {fmt(dur)}</span>
+        </div>
+        {blurb && <div style={{ fontSize: 12.5, color: C.soft, lineHeight: 1.45, marginTop: 3 }}>{blurb}</div>}
+        <div style={{ marginTop: 8, height: 4, borderRadius: 999, background: "rgba(255,255,255,0.1)", overflow: "hidden" }}>
+          <div style={{ height: "100%", width: `${pct}%`, background: accent, borderRadius: 999, transition: "width .15s linear" }} />
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function IntroPage({ mod, world, onContinue }: { mod: ModuleDef; world: World; onContinue: () => void }) {
   const ind = mod.industry!;
   const A = world.accent;
@@ -1001,6 +1038,9 @@ function IntroPage({ mod, world, onContinue }: { mod: ModuleDef; world: World; o
           )}
         </div>
       </div>
+
+      {/* SPOKEN BRIEFING - the HANDLER tells them what they'll learn and why it matters */}
+      {mod.briefing?.introAudio && <BriefingAudio src={mod.briefing.introAudio} kind="briefing" blurb={mod.briefing.introBlurb} accent={A} />}
 
       {/* BASICS PRIMER - never throw a beginner in cold: what it is + a real example */}
       {ind.primer && (
