@@ -26,6 +26,38 @@ function StatusDot({ status, n }: { status: Status; n: number }) {
   );
 }
 
+/* Spoken module briefing / recap player. A warm narrator reads a plain-English
+ * brief (intro, on the module map) and recap (outro, on the completion screen).
+ * Pure <audio>: play/pause, elapsed time and a progress bar. Optional per
+ * module; renders nothing unless a clip URL is set. Mirrors the Cyber Ops
+ * BriefingAudio, themed to the Pro learn palette. */
+function BriefingAudio({ src, kind, blurb, accent }: { src: string; kind: "briefing" | "recap"; blurb?: string; accent: string }) {
+  const ref = useRef<HTMLAudioElement | null>(null);
+  const [playing, setPlaying] = useState(false);
+  const [cur, setCur] = useState(0);
+  const [dur, setDur] = useState(0);
+  const toggle = () => { const a = ref.current; if (!a) return; if (a.paused) a.play().catch(() => {}); else a.pause(); };
+  const pct = dur > 0 ? (cur / dur) * 100 : 0;
+  const fmt = (s: number) => { if (!isFinite(s) || s < 0) return "0:00"; const m = Math.floor(s / 60); const r = Math.floor(s % 60); return `${m}:${String(r).padStart(2, "0")}`; };
+  const label = kind === "briefing" ? "Module briefing" : "Module recap";
+  return (
+    <div style={{ display: "flex", alignItems: "center", gap: 14, padding: "13px 15px", borderRadius: 14, background: `linear-gradient(140deg, ${accent}1f, ${T.panel})`, border: `1px solid ${accent}44` }}>
+      <audio ref={ref} src={src} preload="metadata" onPlay={() => setPlaying(true)} onPause={() => setPlaying(false)} onEnded={() => setPlaying(false)} onTimeUpdate={(e) => setCur(e.currentTarget.currentTime)} onLoadedMetadata={(e) => setDur(e.currentTarget.duration)} />
+      <button onClick={toggle} aria-label={playing ? `Pause the ${label.toLowerCase()}` : `Play the ${label.toLowerCase()}`} style={{ flexShrink: 0, width: 46, height: 46, borderRadius: "50%", border: "none", background: accent, color: T.bg, fontSize: 15, fontWeight: 700, cursor: "pointer", display: "grid", placeItems: "center", boxShadow: `0 0 18px -4px ${accent}`, boxSizing: "border-box", paddingLeft: playing ? 0 : 3 }}>{playing ? "❚❚" : "▶"}</button>
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
+          <span style={{ fontFamily: T.mono, fontSize: 10, letterSpacing: ".16em", textTransform: "uppercase", fontWeight: 700, color: accent }}>{label} &middot; press play to listen</span>
+          <span style={{ fontFamily: T.mono, fontSize: 10.5, color: T.faint }}>{fmt(cur)} / {fmt(dur)}</span>
+        </div>
+        {blurb && <div style={{ fontSize: 12.5, color: T.muted, lineHeight: 1.45, marginTop: 3 }}>{blurb}</div>}
+        <div style={{ marginTop: 8, height: 4, borderRadius: 999, background: T.panelSoft, overflow: "hidden" }}>
+          <div style={{ height: "100%", width: `${pct}%`, background: accent, borderRadius: 999, transition: "width .15s linear" }} />
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function WeekPlayer({ week }: { week: WeekManifest }) {
   const [active, setActive] = useState<number | null>(null);
   const [doneIds, setDoneIds] = useState<string[]>([]);
@@ -195,6 +227,12 @@ export default function WeekPlayer({ week }: { week: WeekManifest }) {
           <h1 className="pro-week-h1">{week.title}</h1>
           <p className="pro-week-intro">{week.intro}</p>
 
+          {week.briefing?.introAudio && (
+            <div style={{ margin: "0 0 22px", maxWidth: "62ch" }}>
+              <BriefingAudio src={week.briefing.introAudio} kind="briefing" blurb={week.briefing.introBlurb} accent={T.primary} />
+            </div>
+          )}
+
           <div className="pro-week-meta">
             <span><b>{week.topics.length} topics</b></span>
             <span className="pro-week-sep" />
@@ -240,6 +278,11 @@ export default function WeekPlayer({ week }: { week: WeekManifest }) {
                 </div>
               </div>
               <div style={{ fontSize: 14.5, color: T.muted, marginBottom: 14, lineHeight: 1.55 }}>You finished all {week.topics.length} topics of {week.weekLabel}. Another step toward job-ready.</div>
+              {week.briefing?.outroAudio && (
+                <div style={{ marginBottom: 16 }}>
+                  <BriefingAudio src={week.briefing.outroAudio} kind="recap" blurb={week.briefing.outroBlurb} accent={T.green} />
+                </div>
+              )}
               <div style={{ fontFamily: T.mono, fontSize: 10.5, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", color: T.green, marginBottom: 8 }}>You can now</div>
               <ul style={{ margin: 0, paddingLeft: 20, display: "flex", flexDirection: "column", gap: 6 }}>
                 {week.outcomes.map((o, i) => <li key={i} style={{ fontSize: 15, color: T.body, lineHeight: 1.55 }}>{o}</li>)}

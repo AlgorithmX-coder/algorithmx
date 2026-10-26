@@ -22,6 +22,12 @@ const module01: WeekManifest = {
     "Explain defence in depth and least privilege, and why flat networks fail",
     "Switch between the attacker's and the defender's mindset on demand",
   ],
+  briefing: {
+    introAudio: "/pro/briefings/m01-intro.mp3",
+    introBlurb: "A one-minute briefing from your instructor: what this module covers, and why it is the foundation everything else is built on.",
+    outroAudio: "/pro/briefings/m01-outro.mp3",
+    outroBlurb: "A short recap of what you can now do, and the one idea to carry forward.",
+  },
   topics: [topic1, topic2, topic3, topic4, topic5],
 };
 

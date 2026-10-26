@@ -180,6 +180,12 @@ export interface WeekManifest {
   role: string;
   /* What the learner can do once the week is finished. */
   outcomes: string[];
+  /* Optional spoken module briefing + recap: a warm narrator reads a
+   * plain-English "here's what you'll learn and why it matters" intro on the
+   * module overview, and a "here's what you can now do" recap on the completion
+   * screen. Just mp3 URLs under /public; optional per module, so modules
+   * without audio are unaffected (the pilot pattern from Cyber Ops). */
+  briefing?: { introAudio?: string; introBlurb?: string; outroAudio?: string; outroBlurb?: string };
   topics: TopicManifest[];
 }
 
