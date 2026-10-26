@@ -24,6 +24,12 @@ const module06: WeekManifest = {
     "Describe how attackers research a target with OSINT, and how to shrink that exposure",
     "Use the attacker's own map, defensively, to place detections and defences",
   ],
+  briefing: {
+    introAudio: "/pro/briefings/m06-intro.mp3",
+    introBlurb: "A one-minute briefing from your instructor: what this module covers, and why it matters.",
+    outroAudio: "/pro/briefings/m06-outro.mp3",
+    outroBlurb: "A short recap of what you can now do, and the one idea to carry forward.",
+  },
   topics: [topic1, topic2, topic3, topic4, topic5],
 };
 

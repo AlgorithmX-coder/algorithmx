@@ -24,6 +24,12 @@ const module04: WeekManifest = {
     "Understand HTTPS, TLS and certificates, and feel encryption work hands-on",
     "Explain digital signatures and PKI: proving who sent something, and that it is unchanged",
   ],
+  briefing: {
+    introAudio: "/pro/briefings/m04-intro.mp3",
+    introBlurb: "A one-minute briefing from your instructor: what this module covers, and why it matters.",
+    outroAudio: "/pro/briefings/m04-outro.mp3",
+    outroBlurb: "A short recap of what you can now do, and the one idea to carry forward.",
+  },
   topics: [topic1, topic2, topic3, topic4, topic5],
 };
 

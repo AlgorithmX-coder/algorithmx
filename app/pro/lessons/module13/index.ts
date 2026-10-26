@@ -24,6 +24,12 @@ const module13: WeekManifest = {
     "Say what a SIEM and EDR each do, and how they complement each other",
     "Recognise and practise good triage: calm, evidence-led, well-escalated, documented",
   ],
+  briefing: {
+    introAudio: "/pro/briefings/m13-intro.mp3",
+    introBlurb: "A one-minute briefing from your instructor: what this module covers, and why it matters.",
+    outroAudio: "/pro/briefings/m13-outro.mp3",
+    outroBlurb: "A short recap of what you can now do, and the one idea to carry forward.",
+  },
   topics: [topic1, topic2, topic3, topic4, topic5],
 };
 
