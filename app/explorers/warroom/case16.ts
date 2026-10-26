@@ -18,6 +18,11 @@ export type WarStep =
       t: "choose";
       prompt?: string;
       options: { label: string; sub?: string; outcome?: "good" | "bad"; then?: WarStep[] }[];
+      // Case 20's capstone "who is it" lineup only: a quick link to THE
+      // WATCHLIST (the gallery of already-met actors), so the player can
+      // check who they know before committing to a culprit who turns out
+      // to be someone new.
+      showGallery?: boolean;
     }
   | {
       // link each left card to its correct right card (draw the board)

@@ -454,14 +454,36 @@ export default function ExplorersPage() {
     // Block 4 cases run in THE WAR ROOM.
     const warCase = WAR_CASES[active.id];
     if (warCase) {
+      // WarRoomRuntime's own render is an early return inside this `if
+      // (active)` block, same as every branch above — the page's normal
+      // `showWatchlist && <VillainGallery>` (below, outside this block)
+      // never reaches render for any of them. Case 20's boss needs the
+      // Watchlist reachable from its own "who is it" screen (UAT), so this
+      // one branch carries its own overlay instead of restructuring every
+      // branch's return just to share the one at the bottom of the page.
       return (
-        <WarRoomRuntime
-          key={active.id}
-          warCase={warCase}
-          autostart={!!missionIntro}
-          onExit={() => { refreshStatus(); setActive(null); }}
-          onNextCase={hasNext ? () => { refreshStatus(); openCase(CASES[activeIdx + 1]); } : undefined}
-        />
+        <>
+          <WarRoomRuntime
+            key={active.id}
+            warCase={warCase}
+            autostart={!!missionIntro}
+            onExit={() => { refreshStatus(); setActive(null); }}
+            onNextCase={hasNext ? () => { refreshStatus(); openCase(CASES[activeIdx + 1]); } : undefined}
+            onOpenWatchlist={() => setShowWatchlist(true)}
+          />
+          {showWatchlist && (
+            <VillainGallery
+              cases={CASES}
+              status={status}
+              onOpenCase={(id) => {
+                setShowWatchlist(false);
+                const m = CASES.find((c) => c.id === id);
+                if (m) openCase(m);
+              }}
+              onClose={() => setShowWatchlist(false)}
+            />
+          )}
+        </>
       );
     }
     return (

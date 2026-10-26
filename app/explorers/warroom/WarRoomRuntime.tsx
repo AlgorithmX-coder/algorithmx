@@ -25,7 +25,7 @@ import { ETHICS_LINE, ETHICS_VOICE } from "../engine/ethicsLine";
 import { CaseBoard } from "../engine/CaseBoard";
 import { CaseBoardFileExplorer } from "../engine/CaseBoardFileExplorer";
 import { ZeroFile } from "../engine/ZeroFilePanel";
-import { addZeroClue, loadZeroFile, ZERO_CLUES } from "../engine/zeroFile";
+import { addZeroClue, loadZeroFile, ZERO_CLUES, type ZeroClue } from "../engine/zeroFile";
 import type { WarCase, WarStep, WarTest } from "./case16";
 
 const C = {
@@ -55,6 +55,8 @@ const CSS = `
 @keyframes srStamp{0%{transform:rotate(-3deg) scale(1.15);opacity:0}30%{transform:rotate(-3deg) scale(1);opacity:1}38%{transform:rotate(-3deg) scale(1) translate(2px,0)}46%{transform:rotate(-3deg) scale(1) translate(0,0)}100%{transform:rotate(-3deg) scale(1);opacity:.9}}
 .sr-xpnum{display:inline-block;animation:srXpNum .5s cubic-bezier(.2,0,0,1)}
 @keyframes srXpNum{0%{transform:scale(1.35)}100%{transform:scale(1)}}
+@keyframes wr-clue-in{0%{opacity:0;transform:translateX(16px) scale(.96)}60%{opacity:1;transform:translateX(0) scale(1.02)}100%{opacity:1;transform:translateX(0) scale(1)}}
+.wr-clue-toast{animation:wr-clue-in .35s cubic-bezier(.2,0,0,1) both}
 @media (prefers-reduced-motion: reduce){.wr *{animation-duration:.001ms !important}}
 `;
 
@@ -67,7 +69,7 @@ type Item =
   | { id: number; kind: "working" };
 
 type Dock =
-  | { type: "choose"; prompt?: string; options: { label: string; sub?: string; outcome?: "good" | "bad"; then?: WarStep[] }[] }
+  | { type: "choose"; prompt?: string; options: { label: string; sub?: string; outcome?: "good" | "bad"; then?: WarStep[] }[]; showGallery?: boolean }
   | { type: "connect"; prompt?: string; left: { id: string; label: string }[]; right: { id: string; label: string }[]; pairs: [string, string][]; bad?: string; badVoice?: string }
   | { type: "pin"; prompt?: string; cards: { label: string; good: boolean; sub?: string }[]; need: number; bad?: string; badVoice?: string }
   | { type: "sequence"; prompt?: string; cards: { id: string; label: string; sub?: string }[]; bad?: string; badVoice?: string }
@@ -83,7 +85,7 @@ type Dock =
   | { type: "idle" }
   | null;
 
-export default function WarRoomRuntime({ warCase, onExit, onNextCase, autostart }: { warCase: WarCase; onExit?: () => void; onNextCase?: () => void; autostart?: boolean }) {
+export default function WarRoomRuntime({ warCase, onExit, onNextCase, autostart, onOpenWatchlist }: { warCase: WarCase; onExit?: () => void; onNextCase?: () => void; autostart?: boolean; onOpenWatchlist?: () => void }) {
   useArrowAdvance(); // ArrowRight: fast-forward through narration for UAT
   const fast = typeof window !== "undefined" && new URLSearchParams(window.location.search).get("fast") === "1";
   const [phase, setPhase] = useState<"boot" | "play" | "test" | "debrief">("boot");
@@ -105,6 +107,23 @@ export default function WarRoomRuntime({ warCase, onExit, onNextCase, autostart 
   // arriving at a later case shows every clue collected so far this block.
   const [zeroClues, setZeroClues] = useState<ReturnType<typeof loadZeroFile>>([]);
   useEffect(() => { setZeroClues(loadZeroFile()); }, [warCase.id]);
+  // UAT (Abdullah): every Zero File clue needs its own on-screen moment —
+  // it was being added to localStorage completely silently. One small
+  // helper, used everywhere a clue is earned, so none of them stay silent.
+  const [clueToast, setClueToast] = useState<ZeroClue | null>(null);
+  const awardClue = (caseId: string) => {
+    const isNew = addZeroClue(caseId);
+    setZeroClues(loadZeroFile());
+    if (isNew) {
+      const clue = ZERO_CLUES.find((c) => c.caseId === caseId) ?? null;
+      setClueToast(clue);
+    }
+  };
+  useEffect(() => {
+    if (!clueToast) return;
+    const t = setTimeout(() => setClueToast(null), 6000);
+    return () => clearTimeout(t);
+  }, [clueToast]);
   // UAT skip: one click fast-forwards through whatever's left of the CURRENT
   // skill only (narration + any dock waiting on input), then clears itself —
   // same one-click-per-skill contract as Phone's "Skip this whole skill".
@@ -175,7 +194,7 @@ export default function WarRoomRuntime({ warCase, onExit, onNextCase, autostart 
         // single time.
         const choiceOptions = shuffled(step.options.length).map((i) => step.options[i]);
         while (!done) {
-          setNudge(null); setDock({ type: "choose", prompt: step.prompt, options: choiceOptions });
+          setNudge(null); setDock({ type: "choose", prompt: step.prompt, options: choiceOptions, showGallery: step.showGallery });
           const picked = await awaitUser(); setDock(null);
           const opt = step.options.find((o) => o.label === picked)!;
           if (opt.then) await runSteps(opt.then);
@@ -244,7 +263,18 @@ export default function WarRoomRuntime({ warCase, onExit, onNextCase, autostart 
         await wait(650);
         setDock({ type: "clear", text: "Ready? Skill 1 first." }); await awaitUser();
       }
-      for (let i = from.index; i < total; i++) { saveProgress(warCase.id, { kind: "skill", index: i }); await runSkill(warCase.skills[i], total); setSkipRequested(false); /* one skip = exactly one skill */ }
+      for (let i = from.index; i < total; i++) {
+        saveProgress(warCase.id, { kind: "skill", index: i });
+        await runSkill(warCase.skills[i], total);
+        setSkipRequested(false); // one skip = exactly one skill
+        // Case 20 only: it contributes its OWN Zero File clue, like every
+        // other case, but it has to land BEFORE the boss's "who is it"
+        // deduction rather than at the usual test-pass moment (too late to
+        // be useful as evidence) — right after Skill 6, "The turncoat",
+        // the one skill that's actually about the coordinator being a
+        // trained insider.
+        if (warCase.id === "explorers-m20" && warCase.skills[i].n === 6) awardClue(warCase.id);
+      }
     }
     if (from.kind === "skill" || from.kind === "boss") { saveProgress(warCase.id, { kind: "boss" }); await runBoss(); }
     saveProgress(warCase.id, { kind: "test" });
@@ -331,6 +361,33 @@ export default function WarRoomRuntime({ warCase, onExit, onNextCase, autostart 
         <CaseBoard leads={warCase.skills} clearedCount={journal.length} accent={acc} caseTitle={warCase.title} actor={warCase.actor} />
       )}
       <ZeroFile clues={zeroClues} total={ZERO_CLUES.length} />
+      {clueToast && (
+        <button
+          className="wr-clue-toast"
+          onClick={() => setClueToast(null)}
+          aria-label="New Zero File clue added, dismiss"
+          style={{
+            position: "fixed",
+            right: 14,
+            bottom: 108,
+            zIndex: 80,
+            width: "min(300px, calc(100vw - 28px))",
+            textAlign: "left",
+            background: "linear-gradient(180deg,#1c0f10,#120a0b)",
+            border: "1px solid rgba(255,77,77,0.5)",
+            borderLeft: "3px solid #FF4D4D",
+            borderRadius: 10,
+            padding: "11px 13px",
+            boxShadow: "0 10px 26px rgba(0,0,0,0.5)",
+            cursor: "pointer",
+          }}
+        >
+          <div style={{ fontFamily: MONO, fontSize: 10, letterSpacing: ".12em", color: "#FF8080", fontWeight: 700, marginBottom: 4 }}>
+            🔴 NEW ZERO FILE CLUE · {clueToast.caseNumber}
+          </div>
+          <div style={{ fontSize: 12.5, lineHeight: 1.4, color: C.ink }}>{clueToast.text}</div>
+        </button>
+      )}
       <button className="wr-btn" onClick={onExit} style={{ position: "fixed", top: 14, left: 14, zIndex: 20, fontFamily: MONO, fontSize: 11.5, fontWeight: 600, color: C.dim, background: "rgba(255,255,255,0.04)", border: `1px solid ${C.edge}`, borderRadius: 6, padding: "6px 12px", cursor: "pointer" }}>← Leave</button>
       <button className="wr-btn" onClick={() => { const v = !voiceOn; setVoiceOn(v); if (!v) stopWren(); }} aria-pressed={voiceOn} style={{ position: "fixed", top: 14, right: 14, zIndex: 20, fontFamily: MONO, fontSize: 11.5, fontWeight: 700, color: voiceOn ? C.wren : C.dim, background: "rgba(255,255,255,0.04)", border: `1px solid ${voiceOn ? "rgba(43,212,180,.5)" : C.edge}`, borderRadius: 6, padding: "6px 12px", cursor: "pointer" }}>{voiceOn ? "🔊 WREN on" : "🔇 WREN off"}</button>
       <button className="wr-btn" onClick={cycleVoiceRate} aria-label={`WREN's talking speed: ${voiceRate}×. Tap to change.`} style={{ position: "fixed", top: 54, right: 14, zIndex: 20, fontFamily: MONO, fontSize: 11, fontWeight: 700, color: voiceRate !== 1 ? C.wren : C.dim, background: "rgba(255,255,255,0.04)", border: `1px solid ${voiceRate !== 1 ? "rgba(43,212,180,.5)" : C.edge}`, borderRadius: 6, padding: "6px 12px", cursor: "pointer" }}>{voiceRate}×</button>
@@ -358,7 +415,7 @@ export default function WarRoomRuntime({ warCase, onExit, onNextCase, autostart 
             <BootScreen title={warCase.title} caseNumber={warCase.caseNumber} open={warCase.open} acc={acc} onBoot={beginFresh} />
           )
         ) : phase === "test" ? (
-          <TestView test={warCase.test} voiceOn={voiceOn} acc={acc} onPass={() => { markCaseComplete(warCase.id); clearProgress(warCase.id); addZeroClue(warCase.id); setZeroClues(loadZeroFile()); void saveExplorersProgress(parseInt(warCase.caseNumber.replace(/\D/g, ""), 10) || 0, { completed: true, xp: 100, screen: 99 }); setPhase("debrief"); }} />
+          <TestView test={warCase.test} voiceOn={voiceOn} acc={acc} onPass={() => { markCaseComplete(warCase.id); clearProgress(warCase.id); awardClue(warCase.id); void saveExplorersProgress(parseInt(warCase.caseNumber.replace(/\D/g, ""), 10) || 0, { completed: true, xp: 100, screen: 99 }); setPhase("debrief"); }} />
         ) : phase === "debrief" ? (
           <Debrief data={warCase.debrief} acc={acc} caseId={warCase.id} xp={100} reduced={!!reduce} onExit={onExit} onNext={onNextCase} />
         ) : (
@@ -367,7 +424,7 @@ export default function WarRoomRuntime({ warCase, onExit, onNextCase, autostart 
               {items.map((it) => <ItemView key={it.id} it={it} acc={acc} wrenDot={wrenDot} />)}
             </div>
             <div style={{ flex: "0 0 auto", borderTop: `1px solid ${C.edge}`, background: "linear-gradient(180deg,#191233,#110d20)", padding: "12px 14px 15px" }}>
-              <DockView dock={dock} nudge={nudge} acc={acc} onResolve={(v) => resolveRef.current?.(v)} onBad={nudgeBad} />
+              <DockView dock={dock} nudge={nudge} acc={acc} onResolve={(v) => resolveRef.current?.(v)} onBad={nudgeBad} onOpenWatchlist={onOpenWatchlist} />
             </div>
           </>
         )}
@@ -425,7 +482,7 @@ function ItemView({ it, acc, wrenDot }: { it: Item; acc: string; wrenDot: React.
   );
 }
 
-function DockView({ dock, nudge, acc, onResolve, onBad }: { dock: Dock; nudge: string | null; acc: string; onResolve: (v: string) => void; onBad: (t?: string, voice?: string) => void }) {
+function DockView({ dock, nudge, acc, onResolve, onBad, onOpenWatchlist }: { dock: Dock; nudge: string | null; acc: string; onResolve: (v: string) => void; onBad: (t?: string, voice?: string) => void; onOpenWatchlist?: () => void }) {
   const [sel, setSel] = useState<number[]>([]);        // pin: selected card indices
   const [selLeft, setSelLeft] = useState<string | null>(null); // connect: currently picked left id
   const [matched, setMatched] = useState<string[]>([]);        // connect: solved left ids
@@ -460,6 +517,14 @@ function DockView({ dock, nudge, acc, onResolve, onBad }: { dock: Dock; nudge: s
     return (
       <>
         <p style={{ fontSize: 12, color: C.dim, textAlign: "center", margin: "0 0 9px", fontWeight: 600 }}>{dock.prompt ?? "Choose:"}</p>
+        {dock.showGallery && onOpenWatchlist && (
+          <button
+            onClick={onOpenWatchlist}
+            style={{ display: "block", margin: "0 auto 10px", fontFamily: MONO, fontSize: 11.5, fontWeight: 700, letterSpacing: ".04em", color: acc, background: "transparent", border: `1px solid ${acc}55`, borderRadius: 999, padding: "7px 14px", cursor: "pointer" }}
+          >
+            📁 Check the Watchlist first
+          </button>
+        )}
         <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
           {dock.options.map((o, i) => (
             <button key={i} className="wr-opt" onClick={() => onResolve(o.label)} style={{ fontFamily: UI, fontSize: 14.5, fontWeight: 600, textAlign: "left", color: C.ink, background: C.chip, border: `1px solid ${C.chipedge}`, borderRadius: 8, padding: "11px 14px", cursor: "pointer" }}>
