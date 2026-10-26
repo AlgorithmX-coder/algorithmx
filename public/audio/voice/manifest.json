@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-26T21:28:18.097Z",
+  "generatedAt": "2026-10-26T21:36:16.274Z",
   "model": "eleven_v4",
   "voiceSettings": {
     "stability": 0.6,
@@ -36966,21 +36966,21 @@
       "file": "/audio/voice/a935c65a335f77bf.mp3"
     },
     {
-      "key": "e2d8f0b7ff68dae0",
+      "key": "ebc627c6a7d3ceb0",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "Layla's swimming photo shows her new medal, her stripy towel, and the swimming pool's name on the wall behind her. Which one talks to strangers? Is it option A... The stripy towel draped over her shoulder. Option B... The pool's name on the wall behind her. Or is it option C... The shiny medal hanging around her neck. So, what do you think?",
+      "text": "Layla's swimming photo shows her new medal, her stripy towel, and the swimming pool's name on the wall behind her. Which one talks to strangers? Is it option A... The stripy towel draped over her shoulder. Option B... The big sign that names the pool. Or is it option C... The shiny medal hanging around her neck. So, what do you think?",
       "lines": [
         "Layla's swimming photo shows her new medal, her stripy towel, and the swimming pool's name on the wall behind her. Which one talks to strangers?",
         "Is it option A...",
         "The stripy towel draped over her shoulder.",
         "Option B...",
-        "The pool's name on the wall behind her.",
+        "The big sign that names the pool.",
         "Or is it option C...",
         "The shiny medal hanging around her neck.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/e2d8f0b7ff68dae0.mp3"
+      "file": "/audio/voice/ebc627c6a7d3ceb0.mp3"
     },
     {
       "key": "5097bcce267cd890",

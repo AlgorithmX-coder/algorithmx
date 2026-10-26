@@ -1176,7 +1176,7 @@ export const WEEK_8: WeekContent = {
           text: "Layla's swimming photo shows her new medal, her stripy towel, and the swimming pool's name on the wall behind her. Which one talks to strangers?",
         },
         options: [
-          { text: "The pool's name on the wall behind her" },
+          { text: "The big sign that names the pool" },
           { text: "The shiny medal hanging around her neck" },
           { text: "The stripy towel draped over her shoulder" },
         ],
