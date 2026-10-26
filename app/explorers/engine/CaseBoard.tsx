@@ -26,18 +26,32 @@ export interface CaseBoardLead {
   goal: string;
 }
 
-// Fixed zigzag positions for up to 7 cards, hand-placed so the board reads
-// as a real pinned layout rather than a straight list. Card is 148x66.
+// Zigzag positions for up to 7 cards, hand-placed so the board reads as a
+// real pinned layout rather than a straight list.
+//
+// UAT (Abdullah), twice now: the board reads "squashed", most recently
+// "add more than the required space... so the skills fit perfectly." Both
+// previous fixes tuned fixed PIXEL margins against a panel that's capped at
+// 92vw on anything narrower than ~435px CSS width — i.e. on almost every
+// real phone. Padding tuned to look right at one width just moves where it
+// clips at another. Switched x and width to PERCENTAGES of the panel's own
+// content box instead, so the margin is always proportional, never a fixed
+// px guess against a moving target: 8% clear on the left, 8% clear on the
+// right, symmetric, at any panel width.
+const LEFT_X = "8%";
+const RIGHT_X = "54%";
+const CARD_W_PCT = "38%"; // 54% + 38% = 92% -> 8% clear on the right too
+const CARD_CENTER_LEFT = "27%"; // 8% + 38%/2
+const CARD_CENTER_RIGHT = "73%"; // 54% + 38%/2
 const POS = [
-  { x: 14, y: 18 },
-  { x: 168, y: 92 },
-  { x: 14, y: 166 },
-  { x: 168, y: 240 },
-  { x: 14, y: 314 },
-  { x: 168, y: 388 },
-  { x: 14, y: 462 },
+  { x: LEFT_X, cx: CARD_CENTER_LEFT, y: 18 },
+  { x: RIGHT_X, cx: CARD_CENTER_RIGHT, y: 92 },
+  { x: LEFT_X, cx: CARD_CENTER_LEFT, y: 166 },
+  { x: RIGHT_X, cx: CARD_CENTER_RIGHT, y: 240 },
+  { x: LEFT_X, cx: CARD_CENTER_LEFT, y: 314 },
+  { x: RIGHT_X, cx: CARD_CENTER_RIGHT, y: 388 },
+  { x: LEFT_X, cx: CARD_CENTER_LEFT, y: 462 },
 ];
-const CARD_W = 148;
 const CARD_H = 66;
 const BOARD_H = 548;
 
@@ -120,13 +134,7 @@ export function CaseBoard({
           </div>
         </div>
 
-        {/* UAT (Abdullah): the left-column cards (x:14 in POS) sat right on
-            top of the panel's own edge with only 10px of padding outside
-            them — "too squashed". Widened the panel +20px and put all of it
-            on the left side only, so the left column gets real clearance
-            without moving the cards themselves or touching the right
-            column's existing fit. */}
-        <div style={{ position: "relative", flex: 1, overflowY: "auto", padding: "14px 10px 24px 30px" }}>
+        <div style={{ position: "relative", flex: 1, overflowY: "auto", padding: "14px 16px 24px" }}>
           <div style={{ position: "relative", width: "100%", height: BOARD_H }}>
             <svg aria-hidden width="100%" height={BOARD_H} style={{ position: "absolute", inset: 0, overflow: "visible" }}>
               {leads.slice(1).map((lead, i) => {
@@ -136,9 +144,9 @@ export function CaseBoard({
                 return (
                   <line
                     key={lead.n}
-                    x1={a.x + CARD_W / 2}
+                    x1={a.cx}
                     y1={a.y + CARD_H / 2}
-                    x2={b.x + CARD_W / 2}
+                    x2={b.cx}
                     y2={b.y + CARD_H / 2}
                     stroke={cleared ? "#d13b3b" : "rgba(255,255,255,0.18)"}
                     strokeWidth={cleared ? 1.6 : 1}
@@ -158,7 +166,7 @@ export function CaseBoard({
                     position: "absolute",
                     left: pos.x,
                     top: pos.y,
-                    width: CARD_W,
+                    width: CARD_W_PCT,
                     height: CARD_H,
                     transform: `rotate(${rotate}deg)`,
                     background: cleared ? "#efe6d2" : "#4a4238",
