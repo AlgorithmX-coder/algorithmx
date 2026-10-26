@@ -35,6 +35,9 @@ import type { WarCase } from "./warroom/case16";
 import BlockIntro from "./phone/BlockIntro";
 import { block1Intro, block2Intro, block3Intro, block4Intro } from "./phone/blockIntroData";
 import type { BlockIntroData } from "./phone/blockIntroData";
+import MissionIntro from "./MissionIntro";
+import ConsoleMissionIntro from "./console/ConsoleMissionIntro";
+import { MISSION_INTROS } from "./missionIntroData";
 import { useReducedMotion } from "./engine/primitives";
 import { MONO } from "./engine/tokens";
 import type { AwardEvent, MissionManifest } from "./engine/types";
@@ -249,6 +252,11 @@ export default function ExplorersPage() {
   const [devAt, setDevAt] = useState<string | null>(null); // "boss" | "test"
   // When true, show the block-intro (ATLAS) slide before the active case's runtime.
   const [showBrief, setShowBrief] = useState(false);
+  // When true, show the per-MISSION ATLAS briefing (MissionIntro) before the
+  // active case's runtime — every case gets this, not just block openers.
+  // Harmless when the case has no MISSION_INTROS entry yet (pilot: only
+  // explorers-m11 so far): the render branch below no-ops without one.
+  const [showMissionBrief, setShowMissionBrief] = useState(false);
   // QA/owner unlock. Visit ?qa=1 once to persist it (this browser only): it
   // enables the ?case= deep-link on prod and unlocks every case on the map for
   // testing. ?qa=0 clears it. Content is already behind auth, so this only
@@ -271,6 +279,7 @@ export default function ExplorersPage() {
   const openCase = useCallback((m: MissionManifest) => {
     setActive(m);
     setShowBrief(!!BLOCK_INTROS[m.block] && firstIdOfBlock(m.block) === m.id);
+    setShowMissionBrief(!!MISSION_INTROS[m.id]);
   }, [firstIdOfBlock]);
 
   const refreshStatus = useCallback(() => {
@@ -352,6 +361,7 @@ export default function ExplorersPage() {
       setDevAt(at);
       // Brief the block on a cold deep-link to its opening case (unless jumping to boss/test).
       setShowBrief(!at && !!BLOCK_INTROS[found.block] && CASES.find((m) => m.block === found.block)?.id === found.id);
+      setShowMissionBrief(!at && !!MISSION_INTROS[found.id]);
     }
   }, [qa]);
 
@@ -398,6 +408,18 @@ export default function ExplorersPage() {
     if (isBlockOpen) {
       return <BlockIntro data={pageIntro} onBegin={() => setShowBrief(false)} />;
     }
+    // The per-MISSION ATLAS briefing (pilot: Case 011 only). Plays after the
+    // block intro (if any) and before the case's own runtime takes over —
+    // every case gets this, not just block openers. Chrome is coordinated
+    // per block (owner: "based off the theme of the actual interface of the
+    // UI, so it looks coordinated") — each block gets its own skin reusing
+    // that runtime's own tokens, not one universal template recoloured.
+    const missionIntro = MISSION_INTROS[active.id];
+    if (missionIntro && showMissionBrief) {
+      const onBeginBrief = () => setShowMissionBrief(false);
+      if (active.block === 3) return <ConsoleMissionIntro data={missionIntro} onBegin={onBeginBrief} />;
+      return <MissionIntro data={missionIntro} onBegin={onBeginBrief} />;
+    }
     // Block 2 cases run in THE PHONE, not the Signal Room engine.
     const phoneCase = PHONE_CASES[active.id];
     if (phoneCase) {
@@ -417,6 +439,7 @@ export default function ExplorersPage() {
         <ConsoleRuntime
           key={active.id}
           consoleCase={consoleCase}
+          autostart={!!missionIntro}
           onExit={() => { refreshStatus(); setActive(null); }}
           onNextCase={hasNext ? () => { refreshStatus(); openCase(CASES[activeIdx + 1]); } : undefined}
         />
