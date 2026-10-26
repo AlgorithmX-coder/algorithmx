@@ -15,29 +15,20 @@ export function middleware(req: NextRequest) {
     return NextResponse.next();
   }
 
-  // Launch gate toggle. OFF 2026-10-24 (owner: drop the site password for ~a
-  // week; restore on request, ~2026-10-31). While OFF the whole site is public
-  // again; member areas keep their own auth. To re-enable the gate, flip
-  // LAUNCH_GATE back to true — the password logic below is preserved.
-  //
-  // When ON, the whole site requires the site password before anything is
-  // reachable. /password, /api, /verify and static assets are excluded by the
-  // matcher below, so the gate page and its POST endpoint stay open to take the
-  // password. CI e2e runs with E2E_TESTS=1 and bypasses the gate so the suite
-  // can drive the app directly.
-  const LAUNCH_GATE = false;
+  // Launch password is BACK ON (owner 2026-10-20): the whole site requires the
+  // site password before anything is reachable. /password, /api, /verify and
+  // static assets are excluded by the matcher below, so the gate page and its
+  // POST endpoint stay open to take the password. CI e2e runs with E2E_TESTS=1
+  // and bypasses the gate so the suite can drive the app directly.
+  if (process.env.E2E_TESTS === "1") return NextResponse.next();
 
-  if (LAUNCH_GATE && process.env.E2E_TESTS !== "1") {
-    const authed = req.cookies.get("site_auth")?.value === "v2";
-    if (!authed) {
-      const url = req.nextUrl.clone();
-      url.pathname = "/password";
-      url.search = "";
-      return NextResponse.redirect(url);
-    }
-  }
+  const authed = req.cookies.get("site_auth")?.value === "v2";
+  if (authed) return NextResponse.next();
 
-  return NextResponse.next();
+  const url = req.nextUrl.clone();
+  url.pathname = "/password";
+  url.search = "";
+  return NextResponse.redirect(url);
 }
 
 export const config = {
