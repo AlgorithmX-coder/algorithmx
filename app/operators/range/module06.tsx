@@ -585,6 +585,12 @@ export const MODULE6: ModuleDef = {
       },
     ],
   },
+  briefing: {
+    introAudio: "/operators/briefings/m06-intro.mp3",
+    introBlurb: "A one-minute brief from your handler: what you'll learn in this module, and why it matters.",
+    outroAudio: "/operators/briefings/m06-outro.mp3",
+    outroBlurb: "Your handler's debrief: what you can now do, and the one idea to carry forward.",
+  },
   takeaway: "If a page renders your input as HTML, your input can run as code. Encode output as text; never rely on a blocklist.",
   outcome: [
     "Get your own JavaScript to run in a page by injecting an event handler like '<img src=x onerror=...>' where a plain script tag is ignored.",

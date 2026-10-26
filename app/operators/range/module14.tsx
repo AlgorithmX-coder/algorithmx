@@ -545,6 +545,12 @@ export const MODULE14: ModuleDef = {
       },
     ],
   },
+  briefing: {
+    introAudio: "/operators/briefings/m14-intro.mp3",
+    introBlurb: "A one-minute brief from your handler: what you'll learn in this module, and why it matters.",
+    outroAudio: "/operators/briefings/m14-outro.mp3",
+    outroBlurb: "Your handler's debrief: what you can now do, and the one idea to carry forward.",
+  },
   takeaway: "A finding only matters if it gets fixed. Score it honestly, write it so a busy team can act, and disclose privately first.",
   outcome: [
     "Score a finding to the right severity band by weighing exploitability against impact - remote, unauthenticated, total impact is Critical.",

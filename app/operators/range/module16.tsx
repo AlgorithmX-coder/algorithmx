@@ -522,6 +522,12 @@ export const MODULE16: ModuleDef = {
       },
     ],
   },
+  briefing: {
+    introAudio: "/operators/briefings/m16-intro.mp3",
+    introBlurb: "A one-minute brief from your handler: what you'll learn in this module, and why it matters.",
+    outroAudio: "/operators/briefings/m16-outro.mp3",
+    outroBlurb: "Your handler's debrief: what you can now do, and the one idea to carry forward.",
+  },
   takeaway: "An engagement is only finished when it is reported. Reconstruct the chain in order, score it honestly, and hand over a fix the client can act on.",
   outcome: [
     "Reconstruct a full attack chain in order - recon, loot, break in, impact - so the report tells the true story.",
