@@ -53,7 +53,13 @@ export const ZERO_CLUES: ZeroClue[] = [
     caseId: "explorers-m20",
     caseNumber: "020",
     n: 5,
-    text: "SIGNAL ZERO · identity confirmed: K-STATIC, a former ARC analyst. Every actor in this file — PACKRAT, GHOSTWRITER, COORD, the Case 19 campaign — was a tool in one hand the whole time.",
+    // Owner UAT: Case 20 should contribute its OWN clue, like every other
+    // case, so the deduction in its boss fight runs on 5 clues, not 4 —
+    // not just hand the player the answer at the very end. This one is
+    // added mid-case (after Skill 6, "The turncoat"), BEFORE the "who is
+    // it" deduction, so it has to be real evidence, never the reveal
+    // itself — no name here, same as every other clue in the file.
+    text: "Fingerprint analysis on the coordinator's own tradecraft matches training patterns taught only inside ARC. Whoever Signal Zero really is, they didn't learn this craft from outside. They learned it from us.",
   },
 ];
 
@@ -77,11 +83,18 @@ export function hasZeroClue(caseId: string): boolean {
   return load().includes(caseId);
 }
 
-/** Idempotent: a case already logged is a no-op, never double-added. */
-export function addZeroClue(caseId: string): void {
-  if (hasZeroClue(caseId)) return;
+/**
+ * Idempotent: a case already logged is a no-op, never double-added.
+ * Returns true only when a NEW clue was actually added, so callers can
+ * show a one-time "clue added" moment (UAT: every clue needs its own
+ * on-screen beat, not just a silent localStorage write) instead of firing
+ * on a resumed/replayed case that already has it.
+ */
+export function addZeroClue(caseId: string): boolean {
+  if (hasZeroClue(caseId)) return false;
   const next = [...load(), caseId];
   try {
     localStorage.setItem(KEY, JSON.stringify(next));
   } catch {}
+  return true;
 }

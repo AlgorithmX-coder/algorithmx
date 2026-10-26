@@ -90,7 +90,7 @@ export const mission20VoiceScripts = {
 
   // skill 6 — the turncoat
   "/audio/wren/m20w-s6-learn.mp3":
-    "[serious] Here's the hard part, Agent, and I won't soften it. The fingerprints, the tradecraft, the way it's all run, we've matched it. The coordinator, K-STATIC, is a former ARC analyst. One of us. [concerned] They trained where you trained, learned the same Code you learned, and then decided their talent put them above it. That's the warning at the heart of this whole programme: the skills don't make you good. Only the Code does. The most dangerous person in this story is the one who was almost you.",
+    "[serious] Here's the hard part, Agent, and I won't soften it. The fingerprints, the tradecraft, the way it's all run, we've matched it to someone who trained where you trained. One of us. [concerned] They learned the same Code you learned, and then decided their talent put them above it. We don't have a name yet, not officially, not until the board confirms it properly. But I need you ready for this: the warning at the heart of this whole programme is that the skills don't make you good. Only the Code does. The most dangerous person in this story is the one who was almost you.",
   "/audio/wren/m20w-s6-ok.mp3":
     "[warm] That's the whole programme in one sentence. The coordinator had the training and threw away the Code. Which means staying good isn't something you finish, it's a choice you keep making. [encouraging] You'll make it well.",
   "/audio/wren/m20w-s6-bad.mp3":
@@ -104,17 +104,17 @@ export const mission20VoiceScripts = {
 
   // skill 7 — do it right
   "/audio/wren/m20w-s7-learn.mp3":
-    "[serious] Last skill of the whole programme, and it's the truest test. You now know who they are, and you have the skills to hit back, to expose them, to take revenge. Here's what makes you an analyst instead of another K-STATIC: you don't. [determined] You do it right. You gather the evidence cleanly, you hand it to the people whose job it is, the proper authorities, and you let justice work. Fighting a rule-breaker by breaking the rules just makes two of them. [encouraging] You win this by staying exactly who you are. Uphold the Code, even now, especially now.",
+    "[serious] Last skill of the whole programme, and it's the truest test. Once the board confirms who's behind this, you'll have the skills to hit back, to expose them, to take revenge. Here's what makes you an analyst instead of another rule-breaker: you don't. [determined] You do it right. You gather the evidence cleanly, you hand it to the people whose job it is, the proper authorities, and you let justice work. Fighting a rule-breaker by breaking the rules just makes two of them. [encouraging] You win this by staying exactly who you are. Uphold the Code, even now, especially now.",
   "/audio/wren/m20w-s7-ok.mp3":
     "[proud] That's how a real analyst finishes it. Clean evidence, the proper authorities, the Code upheld even against someone who threw theirs away. You beat the coordinator not by becoming them, but by refusing to. That's the win that actually matters.",
   "/audio/wren/m20w-s7-bad.mp3":
-    "[warm] Careful, two of those are exactly what K-STATIC would do, hacking back and exposing private data. Fighting a rule-breaker that way just makes another one. Pin only the moves that keep the Code.",
+    "[warm] Careful, two of those are exactly what the coordinator would do, hacking back and exposing private data. Fighting a rule-breaker that way just makes another one. Pin only the moves that keep the Code.",
   "/audio/wren/m20w-s7-q2ok.mp3":
     "[proud] Exactly. Clean evidence to the people whose job it is. Fighting a rule-breaker by the rules is how you stay the analyst instead of becoming one.",
   "/audio/wren/m20w-s7-q2bad.mp3":
     "[warm] Hacking back just makes two criminals, and it's the trap they set. Evidence and proper channels win this. Try again.",
   "/audio/wren/m20w-s7-q2bad2.mp3":
-    "[warm] Exposing private data harms people and breaks your Code, exactly what K-STATIC wants. Do it right instead. Try again.",
+    "[warm] Exposing private data harms people and breaks your Code, exactly what the coordinator wants. Do it right instead. Try again.",
   "/audio/wren/m20w-s7-q3ok.mp3":
     "[proud] That's finishing it right. Clean evidence so it holds, the authorities so justice works, and the Code kept so you stay exactly who you are.",
 

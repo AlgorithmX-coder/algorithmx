@@ -17,7 +17,15 @@ export const case20War: WarCase = {
   id: "explorers-m20",
   caseNumber: "CASE 020",
   title: "Signal Zero",
-  actor: "K-STATIC / COORD",
+  // UAT (Abdullah): "you basically revealed Zero's identity in Skill 6,
+  // which you shouldn't have." The actual earliest leak wasn't skill 6 at
+  // all — this `actor` string renders in WarRoomRuntime's persistent
+  // top-of-screen header ("vs {actor}") and the opening roadmap card from
+  // the very first second of the case, long before skill 6. Veiled here
+  // the same way Case 18 veils the same recurring entity ("COORD
+  // (veiled)"); the real name is only ever spoken once it's actually
+  // confirmed, in the boss's "Build your case" deduction.
+  actor: "COORD (veiled)",
   accent: "#F0C14B",
   theme: { backdrop: "unmask", matrix: ["#F0C14B", "#FFE08A", "#C9A961"], accentHi: "#FFE08A" },
   open: [
@@ -309,8 +317,8 @@ export const case20War: WarCase = {
       journalNote: "Finding out the coordinator was once one of the good guys is like learning a trusted guard let the thief in — it's proof that skill and training alone never guarantee someone stays good, only the Code does, held onto, every time. Don't assume training makes someone safe to trust by default; the Code is the real proof.",
       board: "SIGNAL ZERO",
       learn: [
-        { t: "wren", text: "Here's the hard part, Agent, and I won't soften it. The fingerprints, the tradecraft, the way it's all run, we've matched it. The coordinator, K-STATIC, is a former ARC analyst. One of us. They trained where you trained, learned the same Code you learned, and then decided their talent put them above it. That's the warning at the heart of this whole programme: the skills don't make you good. Only the Code does. The most dangerous person in this story is the one who was almost you.", voice: "/audio/wren/m20w-s6-learn.mp3" },
-        { t: "note", text: "IDENTITY CONFIRMED · K-STATIC / COORD · former ARC analyst · Code: BROKEN" },
+        { t: "wren", text: "Here's the hard part, Agent, and I won't soften it. The fingerprints, the tradecraft, the way it's all run, we've matched it to someone who trained where you trained. One of us. They learned the same Code you learned, and then decided their talent put them above it. We don't have a name yet, not officially, not until the board confirms it properly. But I need you ready for this: the warning at the heart of this whole programme is that the skills don't make you good. Only the Code does. The most dangerous person in this story is the one who was almost you.", voice: "/audio/wren/m20w-s6-learn.mp3" },
+        { t: "note", text: "IDENTITY TRACE · a former ARC analyst · trained here, same as you · Code: BROKEN" },
       ],
       practice: [
         {
@@ -324,7 +332,7 @@ export const case20War: WarCase = {
         },
         {
           t: "connect",
-          prompt: "Link each fact about K-STATIC to what it teaches you:",
+          prompt: "Link each fact about the coordinator to what it teaches you:",
           left: [
             { id: "trained", label: "Trained as an ARC analyst" },
             { id: "broke", label: "Broke the Code" },
@@ -346,7 +354,7 @@ export const case20War: WarCase = {
           cards: [
             { label: "Skills don't make you good, the Code does", good: true, sub: "" },
             { label: "Staying good is a daily choice you keep making", good: true, sub: "" },
-            { label: "Trained people can never turn bad", good: false, sub: "K-STATIC is the proof they can" },
+            { label: "Trained people can never turn bad", good: false, sub: "the coordinator is the proof they can" },
             { label: "So the training was a waste", good: false, sub: "training plus the Code keeps you right" },
           ],
           ok: "Right. Skills don't make you good, and staying good is a choice you make again and again. That's the whole warning.",
@@ -363,7 +371,7 @@ export const case20War: WarCase = {
       journalNote: "Being offered the chance to strike back is the final test, not the finish line — hacking back to punish a rule-breaker makes you one too. Clean evidence through proper channels is how you finish without becoming them. If you're ever tempted to fight fire with fire, that's exactly the moment to walk the proper, legal path instead.",
       board: "ACTION PLAN",
       learn: [
-        { t: "wren", text: "Last skill of the whole programme, and it's the truest test. You now know who they are, and you have the skills to hit back, to expose them, to take revenge. Here's what makes you an analyst instead of another K-STATIC: you don't. You do it right. You gather the evidence cleanly, you hand it to the people whose job it is, the proper authorities, and you let justice work. Fighting a rule-breaker by breaking the rules just makes two of them. You win this by staying exactly who you are. Uphold the Code, even now, especially now.", voice: "/audio/wren/m20w-s7-learn.mp3" },
+        { t: "wren", text: "Last skill of the whole programme, and it's the truest test. Once the board confirms who's behind this, you'll have the skills to hit back, to expose them, to take revenge. Here's what makes you an analyst instead of another rule-breaker: you don't. You do it right. You gather the evidence cleanly, you hand it to the people whose job it is, the proper authorities, and you let justice work. Fighting a rule-breaker by breaking the rules just makes two of them. You win this by staying exactly who you are. Uphold the Code, even now, especially now.", voice: "/audio/wren/m20w-s7-learn.mp3" },
       ],
       practice: [
         {
@@ -379,16 +387,16 @@ export const case20War: WarCase = {
           ],
           ok: "That's how a real analyst finishes it. Clean evidence, the proper authorities, the Code upheld even against someone who threw theirs away. You beat the coordinator not by becoming them, but by refusing to. That's the win that actually matters.",
           okVoice: "/audio/wren/m20w-s7-ok.mp3",
-          bad: "Careful, two of those are exactly what K-STATIC would do, hacking back and exposing private data. Fighting a rule-breaker that way just makes another one. Pin only the moves that keep the Code.",
+          bad: "Careful, two of those are exactly what the coordinator would do, hacking back and exposing private data. Fighting a rule-breaker that way just makes another one. Pin only the moves that keep the Code.",
           badVoice: "/audio/wren/m20w-s7-bad.mp3",
         },
         {
           t: "choose",
-          prompt: "K-STATIC taunts you to hack them back and get even. What's the analyst's answer?",
+          prompt: "The coordinator taunts you to hack them back and get even. What's the analyst's answer?",
           options: [
             { label: "Gather clean evidence and hand it to the proper authorities", outcome: "good", then: [{ t: "wren", text: "Exactly. Clean evidence to the people whose job it is. Fighting a rule-breaker by the rules is how you stay the analyst instead of becoming one.", voice: "/audio/wren/m20w-s7-q2ok.mp3" }] },
             { label: "Hack them back, they had it coming", outcome: "bad", then: [{ t: "wren", text: "Hacking back just makes two criminals, and it's the trap they set. Evidence and proper channels win this. Try again.", voice: "/audio/wren/m20w-s7-q2bad.mp3" }] },
-            { label: "Post all their private data to expose them", outcome: "bad", then: [{ t: "wren", text: "Exposing private data harms people and breaks your Code, exactly what K-STATIC wants. Do it right instead. Try again.", voice: "/audio/wren/m20w-s7-q2bad2.mp3" }] },
+            { label: "Post all their private data to expose them", outcome: "bad", then: [{ t: "wren", text: "Exposing private data harms people and breaks your Code, exactly what the coordinator wants. Do it right instead. Try again.", voice: "/audio/wren/m20w-s7-q2bad2.mp3" }] },
           ],
         },
         {
@@ -402,7 +410,7 @@ export const case20War: WarCase = {
           right: [
             { id: "stands", label: "So the case actually stands up" },
             { id: "justice", label: "So justice does its job, not you" },
-            { id: "you", label: "So you never become another K-STATIC" },
+            { id: "you", label: "So you never become another rule-breaker" },
           ],
           pairs: [["evidence", "stands"], ["hand", "justice"], ["code", "you"]],
           ok: "That's finishing it right. Clean evidence so it holds, the authorities so justice works, and the Code kept so you stay exactly who you are.",
@@ -413,27 +421,37 @@ export const case20War: WarCase = {
   ],
 
   boss: {
-    board: "SIGNAL ZERO · K-STATIC",
+    board: "SIGNAL ZERO",
     intro: "This is it, Agent. The last board, the whole case, one answer. Every signature you've ever faced is up here at once. Connect it all, trace it to the one hand behind it, name them, and then, hardest of all, choose how you finish it. No hints from me. You already know everything you need. Read the board.",
     introVoice: "/audio/wren/m20w-boss-intro.mp3",
     phases: [
       {
         // The Zero File deduction (UAT addition, Abdullah): before the board
-        // confirms anything, the player makes their OWN case from the 4
-        // clues collected across Cases 16-19 — who, then why — using the
-        // exact same clue text the Zero File panel shows them. The board's
-        // own reveal (phases below) still plays out narratively afterward;
-        // this is the "you called it first" beat the brief asked for.
+        // confirms anything, the player makes their OWN case from all 5
+        // clues collected across Cases 16-20 (Case 20's own entry lands
+        // right after Skill 6, see WarRoomRuntime's awardClue hook) — who,
+        // then why — using the exact same clue text the Zero File panel
+        // shows them. The board's own reveal (phases below) still plays
+        // out narratively afterward; this is the "you called it first"
+        // beat the brief asked for.
+        //
+        // UAT round 2: the lineup needs 5+ real suspects, not 3, each with
+        // their own characteristics, none of them an actor the player has
+        // already met (PACKRAT doesn't belong here — that was the old
+        // wrong answer) — plus a quick link to THE WATCHLIST so the player
+        // can rule out everyone they DO already know before committing.
         name: "Build your case",
         steps: [
-          { t: "note", text: "THE ZERO FILE · 4 entries collected across the block" },
+          { t: "note", text: "THE ZERO FILE · 5 entries collected across the block" },
           { t: "note", text: `1 · ${ZERO_CLUES[0].text}` },
           { t: "note", text: `2 · ${ZERO_CLUES[1].text}` },
           { t: "note", text: `3 · ${ZERO_CLUES[2].text}` },
           { t: "note", text: `4 · ${ZERO_CLUES[3].text}` },
+          { t: "note", text: `5 · ${ZERO_CLUES[4].text}` },
           {
             t: "choose",
             prompt: "Before the board confirms anything, make your own case. Who does the Zero File point to?",
+            showGallery: true,
             options: [
               {
                 label: "K-STATIC, a former ARC analyst who knows exactly how we work",
@@ -446,12 +464,17 @@ export const case20War: WarCase = {
                     options: [
                       { label: "Only an insider would know ARC's own methods well enough to stay ahead of it", outcome: "good" },
                       { label: "K-STATIC is simply the most skilled person we know", outcome: "bad", then: [{ t: "note", text: "Skill alone doesn't prove it. What's unique to an insider, not just a skilled outsider?" }] },
+                      { label: "K-STATIC had a grudge after losing a security contract bid", outcome: "bad", then: [{ t: "note", text: "A grudge gives a reason to want it, not the inside knowledge to actually pull it off. Look at what only an insider could know." }] },
+                      { label: "K-STATIC was simply in the right place at the right time", outcome: "bad", then: [{ t: "note", text: "Coincidence doesn't explain entry 5's training fingerprint. That's deliberate, not luck." }] },
+                      { label: "No real reason, it's just a hunch worth logging", outcome: "bad", then: [{ t: "note", text: "A hunch isn't a case. The file itself has to carry the proof. What does entry 5 actually show?" }] },
                     ],
                   },
                 ],
               },
-              { label: "PACKRAT, the data broker who sold the first profiles", outcome: "bad", then: [{ t: "note", text: "PACKRAT sells to anyone with crypto. A buyer isn't the planner." }] },
-              { label: "It could be any one of the four actors, acting alone", outcome: "bad", then: [{ t: "note", text: "Re-read entry 4. One schedule, one planner, ties all four together." }] },
+              { label: "VEIL, a freelance broker who sells network access to the highest bidder", outcome: "bad", then: [{ t: "note", text: "VEIL sells access, they don't run the schedule. Someone planned this operation end to end." }] },
+              { label: "LATTICE, a loosely organised collective with no single face or leader", outcome: "bad", then: [{ t: "note", text: "A loose collective wouldn't share one consistent signature. Every clue here points to one hand, not many." }] },
+              { label: "RUSTLE, a contractor who lost an ARC security bid last year", outcome: "bad", then: [{ t: "note", text: "A grudge explains motive. It doesn't explain knowing ARC's own methods well enough to stay ahead of them." }] },
+              { label: "MERIDIAN, an outside firm that's audited ARC's systems before", outcome: "bad", then: [{ t: "note", text: "An outside auditor sees our systems, not our internal training. Re-read entry 5, the fingerprint is distinctly ARC-trained." }] },
             ],
           },
         ],
