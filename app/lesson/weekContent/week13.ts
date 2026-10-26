@@ -934,8 +934,8 @@ export const WEEK_13: WeekContent = {
       prompt: "Quick! Which one still keeps you awake?",
       choices: [
         { text: "A phone face down on silent, next to your pillow", isCorrect: true },
-        { text: "A book with a bookmark in it", isCorrect: false, why: "A book makes no light and no noise. It is on the settling side, every time." },
-        { text: "A lamp turned down low", isCorrect: false, why: "A low warm lamp helps you wind down. It is bright screens your brain argues with." },
+        { text: "A book with a bookmark halfway through it", isCorrect: false, why: "A book makes no light and no noise. It is on the settling side, every time." },
+        { text: "A lamp turned down low in the corner", isCorrect: false, why: "A low warm lamp helps you wind down. It is bright screens your brain argues with." },
       ],
       praise: "Face down and silent is still right there. ✓",
       teachNarration: {
@@ -1135,8 +1135,8 @@ export const WEEK_13: WeekContent = {
         },
         options: [
           { text: "Out of the room I sleep in, like on the kitchen side" },
-          { text: "Under my pillow so it can't get lost" },
-          { text: "Inside my sleeping bag to keep it warm" },
+          { text: "Under my pillow so it can't get lost in the night" },
+          { text: "Inside my sleeping bag to keep it nice and warm" },
         ],
         correctIndex: 0,
         teachOnWrong: {

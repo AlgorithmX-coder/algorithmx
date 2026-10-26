@@ -615,9 +615,9 @@ export const WEEK_16: WeekContent = {
       raccoonLine: "You can always SPOT a sticker! They're crooked, they're bubbly, they've got shadows. If it looks neat, it's definitely the real one!",
       choices: [
         { text: "A good sticker looks perfectly flat and neat", isCorrect: true },
-        { text: "Stickers only go on menus", isCorrect: false, why: "They turn up on posters, car parks and shop windows too. The place is not the tell." },
+        { text: "Stickers only ever go on cafe menus", isCorrect: false, why: "They turn up on posters, car parks and shop windows too. The place is not the tell." },
         { text: "You can spot one if you look for ages", isCorrect: false, why: "Looking for ages is still looking. The test is your thumb, not your eyes." },
-        { text: "Real codes are always crooked", isCorrect: false, why: "That is his trick turned round. Neat or crooked tells you nothing either way." },
+        { text: "Real codes are always a bit crooked", isCorrect: false, why: "That is his trick turned round. Neat or crooked tells you nothing either way." },
       ],
       praise: "Caught him. Neat proves nothing. ✓",
       nudge: "If a sticker were easy to see, would his trick work at all?",
@@ -969,8 +969,8 @@ export const WEEK_16: WeekContent = {
       prompt: "Quick! You cannot tell about a door. What do you do?",
       choices: [
         { text: "Wheel out the barrier and fetch a grown-up", isCorrect: true },
-        { text: "Tap it once, just to see", isCorrect: false, why: "Once is all a door needs. There is no peeking through a doorway without walking into it." },
-        { text: "Leave it and never mention it", isCorrect: false, why: "Leaving it is safe, but the grown-up is the bit that makes it safe for everyone else too." },
+        { text: "Tap it once, just to see what it is", isCorrect: false, why: "Once is all a door needs. There is no peeking through a doorway without walking into it." },
+        { text: "Leave it there and never mention it again", isCorrect: false, why: "Leaving it is safe, but the grown-up is the bit that makes it safe for everyone else too." },
       ],
       praise: "Barrier out, grown-up fetched. ✓",
       teachNarration: {

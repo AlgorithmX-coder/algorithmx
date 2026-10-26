@@ -121,10 +121,14 @@ jobs:
       # right one because it is the longest, the only one that explains itself,
       # or the only one phrased unlike the rest.
       #
-      # Ratcheted at the weeks that have been rewritten for it. Weeks 1 and 2
-      # are NOT clean - 26 and 16 questions respectively - and both are live.
-      # They are the next ones to rewrite; the gate goes to 1,2,3,4 in that PR.
-      - run: node scripts/audit-answer-giveaway.mjs 3 4 5
+      # ALL TWENTY WEEKS, 2026-10-26. The course-wide sweep found 167, of which
+      # 124 sat in the legacy `bossPhases`/`bossQuestions` fallbacks that no
+      # child reaches (every week renders `bossQuiz`, which takes top
+      # preference). The audit now skips those while a live bossQuiz exists,
+      # and re-arms the day one is cleared. The other 43 were real and are
+      # rewritten: decoys lengthened, so the lesson still lives in the right
+      # answer rather than being padded out of it.
+      - run: node scripts/audit-answer-giveaway.mjs
 
       # Every lesson icon keeps a transparent margin. Owner, 2026-10-17: "All
       # emojis need to look full and complete. As you can see, this eye is cut

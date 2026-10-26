@@ -712,9 +712,9 @@ export const WEEK_7: WeekContent = {
       prompt: "Who do you ask before ANY buy?",
       choices: [
         { text: "The grown-up whose money it is", isCorrect: true },
-        { text: "Your best friend", isCorrect: false, why: "A friend cannot say yes to someone else's money. Only the grown-up whose money it is can." },
-        { text: "The game's shop", isCorrect: false, why: "The shop wants the sale. It will always say yes. That is not an ask." },
-        { text: "Nobody, if it is small", isCorrect: false, why: "Small buys add up in secret. Every buy gets an ask, tiny ones too." },
+        { text: "Your best friend, they have coins", isCorrect: false, why: "A friend cannot say yes to someone else's money. Only the grown-up whose money it is can." },
+        { text: "The game's shop, it just needs a tap", isCorrect: false, why: "The shop wants the sale. It will always say yes. That is not an ask." },
+        { text: "Nobody, if the price is tiny", isCorrect: false, why: "Small buys add up in secret. Every buy gets an ask, tiny ones too." },
       ],
       praise: "Their money, their call, every single time. ✓",
       teachNarration: {
@@ -1032,7 +1032,7 @@ export const WEEK_7: WeekContent = {
         },
         options: [
           { text: "Real money bought them, so they're real money in a costume" },
-          { text: "He's right, money stops being real once it turns into coins" },
+          { text: "He's right, coins stop being real money because the game made them" },
           { text: "Only the giant coin packs count as real money" },
         ],
         correctIndex: 0,

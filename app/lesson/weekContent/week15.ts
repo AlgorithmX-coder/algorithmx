@@ -538,9 +538,9 @@ export const WEEK_15: WeekContent = {
       prompt: "What stays OUT of every bot chat?",
       choices: [
         { text: "Your name, school, photos and secrets", isCorrect: true },
-        { text: "Math questions", isCorrect: false, why: "Math questions are fine to ask a bot; they don't tell anyone who you are." },
-        { text: "Dinosaur facts", isCorrect: false, why: "Dinosaur facts are safe to ask about; they aren't private." },
-        { text: "Spelling words", isCorrect: false, why: "Spelling words are safe to ask; they give away nothing about you." },
+        { text: "Math questions about adding up", isCorrect: false, why: "Math questions are fine to ask a bot; they don't tell anyone who you are." },
+        { text: "Dinosaur facts for a school project", isCorrect: false, why: "Dinosaur facts are safe to ask about; they aren't private." },
+        { text: "Spelling words for Friday's test", isCorrect: false, why: "Spelling words are safe to ask; they give away nothing about you." },
       ],
       praise: "Exactly - questions in, private stuff NEVER. The jar stays empty. ✓",
       teachNarration: {

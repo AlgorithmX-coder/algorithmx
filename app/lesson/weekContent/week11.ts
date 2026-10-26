@@ -1036,8 +1036,8 @@ export const WEEK_11: WeekContent = {
         },
         options: [
           { text: "Camera, freeze the proof, then show a trusted grown-up" },
-          { text: "Delete it fast so it can't scare me again" },
-          { text: "Beg them not to ban me, just in case" },
+          { text: "Delete it fast so it can't scare me again tonight" },
+          { text: "Beg them not to ban me, just to be safe" },
         ],
         correctIndex: 0,
         teachOnWrong: {

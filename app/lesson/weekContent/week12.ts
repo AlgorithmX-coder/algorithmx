@@ -239,9 +239,9 @@ export const WEEK_12: WeekContent = {
       prompt: "You searched for dinosaur jokes, giggled, and closed the tab without posting a thing. Track or no track?",
       choices: [
         { text: "A track. Searches print even when nothing is posted", isCorrect: true },
-        { text: "No track, closing the tab wiped it", isCorrect: false, why: "Closing a tab puts the jokes away on your screen. The search box kept the question." },
-        { text: "Half a track, it fades by tomorrow", isCorrect: false, why: "Snow out here does not melt. A print from today is still a print next year." },
-        { text: "No track, because nobody saw it", isCorrect: false, why: "A print does not need an audience to exist. It only needs somebody to come along with a lamp." },
+        { text: "No track, closing the tab wiped it away", isCorrect: false, why: "Closing a tab puts the jokes away on your screen. The search box kept the question." },
+        { text: "Half a track, and it fades away by tomorrow", isCorrect: false, why: "Snow out here does not melt. A print from today is still a print next year." },
+        { text: "No track, because nobody else ever saw it", isCorrect: false, why: "A print does not need an audience to exist. It only needs somebody to come along with a lamp." },
       ],
       praise: "A track. Searches print too. ✓",
       nudge: "Did the search box keep the question, or did closing the tab take it away?",
@@ -891,7 +891,7 @@ export const WEEK_12: WeekContent = {
       choices: [
         { text: "'Swimming lesson, 4pm every Thursday, Bell Road pool'", isCorrect: true },
         { text: "A drawing of a dragon, signed with one letter", isCorrect: false, why: "A drawing and an initial point at nobody. That print is yours to enjoy." },
-        { text: "'Brilliant goal, Sam!'", isCorrect: false, why: "That is a golden print. It names a friend for a good thing, and it keeps reading well." },
+        { text: "'Brilliant goal today, Sam, well done!'", isCorrect: false, why: "That is a golden print. It names a friend for a good thing, and it keeps reading well." },
       ],
       praise: "Pointy: a where AND a when, on repeat. ✓",
       teachNarration: {
@@ -953,9 +953,9 @@ export const WEEK_12: WeekContent = {
           from: "Leo",
           question: "I looked up something daft last night, then closed the tab. That means nothing happened, right?",
           answers: [
-            "The search still printed. Closing the tab only cleared your screen.",
-            "Right, closing the tab wipes the whole thing.",
-            "Only if you searched it more than once.",
+            "The search printed. Closing the tab only cleared your screen.",
+            "Right, closing the tab wipes the whole lot of it.",
+            "Only if you searched for it more than once, I think.",
           ],
           correctIndex: 0,
           why: "A search goes into a box that keeps it. So the print is there whether or not anything was posted.",
@@ -978,8 +978,8 @@ export const WEEK_12: WeekContent = {
           question: "We lost the final and the ref was hopeless. I'm posting exactly what I think of him, right now.",
           answers: [
             "Hold the mirror up first. Would older me be glad it is still there?",
-            "Post it, you can always delete it tomorrow.",
-            "Post it, because you are right about the ref.",
+            "Post it, you can always delete the whole thing tomorrow.",
+            "Post it, because you are completely right about the ref.",
           ],
           correctIndex: 0,
           why: "The fury fades by breakfast. The print does not. So the mirror question comes before the post, not after.",
@@ -990,8 +990,8 @@ export const WEEK_12: WeekContent = {
           question: "We won on penalties! Help me write the post.",
           answers: [
             "Name the person who made the save, and leave the other team out of it.",
-            "Say their goalie was useless, it is funnier.",
-            "Say it was no thanks to our defenders.",
+            "Say their goalie was completely useless, it is funnier.",
+            "Say it was no thanks at all to our hopeless defenders.",
           ],
           correctIndex: 0,
           why: "Proud and kind, with the person who made the save named. That is the post that still reads beautifully a year from now.",
@@ -1134,7 +1134,7 @@ export const WEEK_12: WeekContent = {
         },
         options: [
           { text: "More than one: mine, my friend's, and the app kept one too" },
-          { text: "Exactly one, on my friend's phone" },
+          { text: "Exactly one, sitting on my friend's phone now" },
           { text: "Zero, sending moves a photo instead of copying it" },
         ],
         correctIndex: 0,
