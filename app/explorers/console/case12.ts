@@ -261,6 +261,30 @@ export const case12Console: ConsoleCase = {
           ok: "That's the rule for open wi-fi. Padlocked sites only, and leave anything private for a network you trust.",
           okVoice: "/audio/wren/m12c-s5-q3ok.mp3",
         },
+        {
+          t: "flip",
+          prompt: "PACKRAT is listening on CAFE-FREE-WIFI right now. Flip the lock, then flip the card to watch what it actually captures.",
+          you: {
+            kind: "toggle",
+            label: "Logging in on CAFE-FREE-WIFI · simulator",
+            sub: "compare a no-lock login to a padlocked one, same wi-fi",
+            off: "SIMULATING: 🔓 no padlock, plain http site",
+            on: "YOUR REAL HABIT: 🔒 padlocked site only",
+          },
+          them: {
+            label: "PACKRAT's capture feed",
+            whenBad: "CAPTURED: \"login: you  pass: ••••••\" (plain text, fully readable)",
+            whenGood: "CAPTURED: \"h4$#z…Lp9\" (unreadable, sealed before it left your phone)",
+          },
+          ask: {
+            prompt: "Same cafe, same PACKRAT, but one login stayed safe. Why?",
+            options: [
+              { label: "The padlock seals it before it ever hits the open wi-fi", outcome: "good" },
+              { label: "PACKRAT only watches some logins", outcome: "bad", then: [{ t: "sys", text: "PACKRAT: watching every single packet, it just can't read the sealed ones" }] },
+              { label: "The cafe wi-fi got safer", outcome: "bad", then: [{ t: "sys", text: "PACKRAT: same open network the whole time, nothing changed there" }] },
+            ],
+          },
+        },
       ],
     },
 

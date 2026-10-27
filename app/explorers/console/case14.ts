@@ -204,6 +204,30 @@ export const case14Console: ConsoleCase = {
             { label: "Neither, updates make no difference", outcome: "bad", then: [{ t: "wren", text: "They make all the difference, the un-updated one is the easy target. Try again.", voice: "/audio/wren/m14c-s4-q3bad2.mp3" }] },
           ],
         },
+        {
+          t: "flip",
+          prompt: "GHOSTWRITER has a known exploit for an old hole. Flip the switch, then flip the card to watch it try your device.",
+          you: {
+            kind: "toggle",
+            label: "Your device · simulator",
+            sub: "compare a year of skipped updates to being fully patched",
+            off: "SIMULATING: a year behind on updates",
+            on: "YOUR REAL SETUP: fully updated, auto-updates on",
+          },
+          them: {
+            label: "GHOSTWRITER's exploit attempt",
+            whenBad: "HOLE FOUND · known exploit works · device compromised",
+            whenGood: "HOLE PATCHED · exploit fails · nothing gets through",
+          },
+          ask: {
+            prompt: "Same exploit, same device model, one gets in and one doesn't. Why?",
+            options: [
+              { label: "The update already patched that exact hole", outcome: "good" },
+              { label: "GHOSTWRITER picked the wrong device", outcome: "bad", then: [{ t: "sys", text: "GHOSTWRITER: right device, right exploit, just already patched" }] },
+              { label: "The exploit only works on weekends", outcome: "bad", then: [{ t: "sys", text: "GHOSTWRITER: works any day, on any device that hasn't patched this hole" }] },
+            ],
+          },
+        },
       ],
     },
 

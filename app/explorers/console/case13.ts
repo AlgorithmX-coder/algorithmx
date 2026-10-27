@@ -171,6 +171,30 @@ export const case13Console: ConsoleCase = {
           ok: "That is the trick. The answer can be a lie, and your manager keeps it safe, so it is both unguessable and unforgettable. True never comes into it.",
           okVoice: "/audio/wren/m13c-s3-q3ok.mp3",
         },
+        {
+          t: "flip",
+          prompt: "SKELETON KEY found your old posts about your first pet. Flip the switch, then flip the card to watch its reset attempt.",
+          you: {
+            kind: "toggle",
+            label: "Security answer · simulator",
+            sub: "compare the true, public answer to a made-up one only your manager knows",
+            off: "SIMULATING: true answer · Bailey",
+            on: "YOUR REAL SETUP: made-up answer · violet-anchor-88",
+          },
+          them: {
+            label: "SKELETON KEY's recovery attempt",
+            whenBad: "ANSWER CORRECT · 'Bailey' matched · password reset",
+            whenGood: "ANSWER WRONG · 'Bailey' doesn't match · reset blocked",
+          },
+          ask: {
+            prompt: "It found your real pet's name from an old photo caption. Why didn't that work?",
+            options: [
+              { label: "The stored answer is made-up, not the true one", outcome: "good" },
+              { label: "SKELETON KEY had the wrong photo", outcome: "bad", then: [{ t: "sys", text: "SKELETON KEY: right photo, right pet, still wrong, the answer was never Bailey" }] },
+              { label: "It needed the pet's birthday too", outcome: "bad", then: [{ t: "sys", text: "SKELETON KEY: one answer is all it needs, and this one's a lie" }] },
+            ],
+          },
+        },
       ],
     },
 
