@@ -19,7 +19,12 @@ jobs:
   # ────────────────────────────────────────────────────────────
   static:
     name: typecheck + unit tests
-    runs-on: ubuntu-latest
+    # PINNED for the same reason as the e2e job below (PR #861): on the
+    # 26.04 image actions/checkout@v4 is force-migrated to Node 24 and
+    # HANGS - this job spent its whole 10-minute timeout inside checkout,
+    # reaching no build step at all, twice, at an identical 10m03s. Every
+    # job on 24.04 has passed. Unpin once the latest image is healthy.
+    runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
