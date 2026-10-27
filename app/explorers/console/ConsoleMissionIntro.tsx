@@ -137,7 +137,7 @@ export default function ConsoleMissionIntro({ data, onBegin }: { data: MissionIn
           </div>
 
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 12 }}>
-            <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: ".1em", color: C.faint, textTransform: "uppercase" }}>— ATLAS · ARC COMMAND</div>
+            <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: ".1em", color: C.faint, textTransform: "uppercase" }}>ATLAS · ARC COMMAND</div>
             <button className="cmi-cta" onClick={onBegin} style={{ fontFamily: MONO, fontWeight: 700, fontSize: 15, letterSpacing: ".04em", color: "#14110a", background: acc, border: 0, borderRadius: R.btn, padding: "13px 24px", cursor: "pointer" }}>
               [ {data.beginLabel} ]
             </button>

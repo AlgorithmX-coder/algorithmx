@@ -39,10 +39,10 @@ interface Door {
    happens below (shuffled(DOORS)), which is what the child reading the keys
    (not tapping top-to-bottom) actually depends on. */
 const DOORS: Door[] = [
-  { id: "email", label: "Email — Biscuit2013!", note: "name + birth year + a !", rank: 3 },
-  { id: "bank", label: "Parent's bank — velvet-otter-cannon-77", note: "four random words", rank: 4 },
-  { id: "locker", label: "Locker app — 1234", note: "four digits", rank: 1 },
-  { id: "game", label: "GameHub — biscuit", note: "one real word (his dog)", rank: 2 },
+  { id: "email", label: "Email: Biscuit2013!", note: "name + birth year + a !", rank: 3 },
+  { id: "bank", label: "Parent's bank: velvet-otter-cannon-77", note: "four random words", rank: 4 },
+  { id: "locker", label: "Locker app: 1234", note: "four digits", rank: 1 },
+  { id: "game", label: "GameHub: biscuit", note: "one real word (his dog)", rank: 2 },
 ];
 
 const CUTS = [
@@ -52,9 +52,9 @@ const CUTS = [
 ];
 
 const WALLS = [
-  { id: "clever", label: "S3cur3P@ss! — it looks really strong", correct: false, outcome: "Short, and every swap in it is on the rig's list. It looks tough and falls in minutes. Looks aren't length." },
+  { id: "clever", label: "S3cur3P@ss! (it looks really strong)", correct: false, outcome: "Short, and every swap in it is on the rig's list. It looks tough and falls in minutes. Looks aren't length." },
   { id: "phrase", label: "otter-cannon-velvet-thunder, kept in a manager", correct: true, outcome: "That's the wall. Four random, unrelated words, long enough that the rig's clock jumps to centuries, and a manager to remember it." },
-  { id: "personal", label: "LiverpoolLiverpool2013 — nice and long", correct: false, outcome: "Long, sure, but it's his team twice plus his birth year, all guessable. Length only wins when it's RANDOM." },
+  { id: "personal", label: "LiverpoolLiverpool2013 (nice and long)", correct: false, outcome: "Long, sure, but it's his team twice plus his birth year, all guessable. Length only wins when it's RANDOM." },
 ];
 
 export default function Mission03Incident({ reduced, audio, onPhaseCleared, onComplete }: IncidentProps) {

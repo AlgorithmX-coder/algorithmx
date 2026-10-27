@@ -82,7 +82,7 @@ export const case19War: WarCase = {
       n: 2,
       title: "Stage one: recon",
       goal: "They research you first. A small footprint gives them less to use.",
-      journalNote: "Giving away your routine online is like leaving a note on your door saying exactly when you're out — recon is just a stranger reading what you've already posted. A smaller public footprint gives them less to work with. Think before posting anything that reveals a pattern, like where you are and when.",
+      journalNote: "Giving away your routine online is like leaving a note on your door saying exactly when you're out. Recon is just a stranger reading what you've already posted. A smaller public footprint gives them less to work with. Think before posting anything that reveals a pattern, like where you are and when.",
       board: "STAGE · RECON",
       learn: [
         { t: "wren", text: "Stage one, recon. Before a good attacker sends a single message, they study you, your posts, your school, your friends, your routine, all those data crumbs from earlier cases. Why? So the bait can be personal and believable. 'Hi from your football coach about Saturday' works far better than 'Dear user'. Your defence at this stage is the smaller footprint you already learned: less public data means weaker, more generic bait. Recon is where you starve them first.", voice: "/audio/wren/m19w-s2-learn.mp3" },
@@ -135,7 +135,7 @@ export const case19War: WarCase = {
       n: 3,
       title: "Stage two: the lure",
       goal: "The bait wears many faces. Recognise the trick behind each one.",
-      journalNote: "The bait wears a different face every time — flattery, a fake friend, a too-good deal — but it's still a hook underneath. Recognise the trick, not just the costume. When something feels flattering or too good, ask what trick might be underneath.",
+      journalNote: "The bait wears a different face every time (flattery, a fake friend, a too-good deal), but it's still a hook underneath. Recognise the trick, not just the costume. When something feels flattering or too good, ask what trick might be underneath.",
       board: "STAGE · LURE",
       learn: [
         { t: "wren", text: "Stage two, the lure, the bait that gets you to click, tell, or install. You've met all its faces already. An urgent 'your account is locked' link, that's phishing. A too-good free prize, that's a scam hook. A cloned voice or fake video, that's synthetic media. A flattering offer, that's recruitment. Different masks, same goal: get you to act fast without thinking. Naming the trick behind the bait is how you stay calm. Let's match a few lures to the play behind them.", voice: "/audio/wren/m19w-s3-learn.mp3" },
@@ -191,7 +191,7 @@ export const case19War: WarCase = {
       n: 4,
       title: "Stage three: access",
       goal: "The break-in. Strong, unique logins and a second factor slam this door.",
-      journalNote: "A unique password with a second lock is a door that doesn't open even with the right-looking key — the break-in stage is where strong logins do their real work. This is the door that slams the whole attack shut. Make sure your most important accounts have both a unique password and a second lock.",
+      journalNote: "A unique password with a second lock is a door that doesn't open even with the right-looking key. The break-in stage is where strong logins do their real work. This is the door that slams the whole attack shut. Make sure your most important accounts have both a unique password and a second lock.",
       board: "STAGE · ACCESS",
       learn: [
         { t: "wren", text: "Stage three, access, the actual break-in. If the lure works and you hand over a password or run their file, they're in. This is exactly why the basics matter so much: a strong, unique password means one stolen login doesn't open your other doors, and a second factor, that code on your phone, stops them even if they have your password. Access is the stage where your everyday habits do the heavy lifting. Boring defences, huge payoff.", voice: "/audio/wren/m19w-s4-learn.mp3" },
@@ -244,7 +244,7 @@ export const case19War: WarCase = {
       n: 5,
       title: "Stage four: harvest & spread",
       goal: "They steal, then pivot to your contacts. Spotting it fast limits the damage.",
-      journalNote: "Once they're in, they don't just take, they use your account to cast the net wider — the fastest response shrinks the damage the most. Spotting it quickly is what limits how far it spreads. If you ever see your own account send something you didn't, act immediately.",
+      journalNote: "Once they're in, they don't just take, they use your account to cast the net wider. The fastest response shrinks the damage the most. Spotting it quickly is what limits how far it spreads. If you ever see your own account send something you didn't, act immediately.",
       board: "STAGE · HARVEST",
       learn: [
         { t: "wren", text: "Stage four and five, harvest and spread. Once in, they grab what they want, data, money, files, then they pivot: they use your account to hit your friends, because a message from you is trusted. This is why noticing fast matters so much. Strange logins, messages you didn't send, money you didn't spend, those are harvest-and-spread in progress. Catching it early is the difference between a small mess and a disaster that rolls through everyone you know.", voice: "/audio/wren/m19w-s5-learn.mp3" },
@@ -298,7 +298,7 @@ export const case19War: WarCase = {
       n: 6,
       title: "Defence in depth",
       goal: "Stack layers so no single mistake is fatal. No one point of failure.",
-      journalNote: "Defence in depth is wearing a seatbelt AND having airbags — you hope never to need either, but one failing doesn't mean disaster, because the next layer catches you. No single mistake should ever be fatal on its own. Stack more than one defence on your most important accounts.",
+      journalNote: "Defence in depth is wearing a seatbelt AND having airbags. You hope never to need either, but one failing doesn't mean disaster, because the next layer catches you. No single mistake should ever be fatal on its own. Stack more than one defence on your most important accounts.",
       board: "THE LAYERS",
       learn: [
         { t: "wren", text: "Here's the master idea, defence in depth. You will never be perfect, you'll misjudge a message one day, everyone does. So the goal isn't a single perfect wall, it's LAYERS, so that when one fails, another catches you. Skepticism catches most lures. Unique passwords limit a leak. Two-factor blocks a stolen password. Updates close known holes. Backups mean even a disaster isn't the end. No single point of failure, that's how pros stay safe. Let's pin the layers.", voice: "/audio/wren/m19w-s6-learn.mp3" },
@@ -354,7 +354,7 @@ export const case19War: WarCase = {
       n: 7,
       title: "Take command",
       goal: "When something gets through: contain, tell an adult, recover, report. In order.",
-      journalNote: "When something does get through, panicking alone is like trying to put out a fire without calling anyone — the right order is contain it, tell an adult, recover, report, every time, in that order. Staying calm and following the order beats freezing or hiding. If something ever goes wrong, run through contain, tell an adult, recover, report, in order.",
+      journalNote: "When something does get through, panicking alone is like trying to put out a fire without calling anyone. The right order is contain it, tell an adult, recover, report, every time, in that order. Staying calm and following the order beats freezing or hiding. If something ever goes wrong, run through contain, tell an adult, recover, report, in order.",
       board: "ACTION PLAN",
       learn: [
         { t: "wren", text: "Last skill, and it's about the moment it goes wrong, because sometimes it will. Don't panic, take command. There's an order that works: contain first, disconnect, log out everywhere, stop the bleeding. Tell a trusted adult straight away, you don't handle a real incident alone. Recover, change passwords from a clean device, restore from backup. And report it, to the platform, and to a grown-up who can escalate. Calm, in order, not alone. That's incident command, and it turns a disaster into a bad afternoon.", voice: "/audio/wren/m19w-s7-learn.mp3" },

@@ -80,7 +80,7 @@ export function VillainGallery({
   return (
     <div
       role="dialog"
-      aria-label="The Watchlist — villain gallery"
+      aria-label="The Watchlist, villain gallery"
       style={{ position: "fixed", inset: 0, zIndex: 100, background: "rgba(3,5,12,0.94)", backdropFilter: "blur(6px)", overflowY: "auto", padding: "28px 18px 60px" }}
     >
       <div style={{ maxWidth: 920, margin: "0 auto" }}>
@@ -98,7 +98,7 @@ export function VillainGallery({
           </button>
         </div>
         <p style={{ fontFamily: MONO, fontSize: 12.5, color: DIM, lineHeight: 1.6, margin: "6px 0 26px", maxWidth: 640 }}>
-          Every repeat offender ARC has flagged. Close a case against one to unmask their file — and watch how they change their angle every time they come back.
+          Every repeat offender ARC has flagged. Close a case against one to unmask their file, and watch how they change their angle every time they come back.
         </p>
 
         {open ? (
@@ -177,11 +177,11 @@ function VillainDossier({ villain, onBack, onOpenCase }: { villain: VillainEntry
         <div style={{ minWidth: 0, flex: 1 }}>
           <div style={{ fontFamily: MONO, fontSize: 24, fontWeight: 800, color: INK, letterSpacing: "0.03em" }}>{known ? villain.codename : "UNIDENTIFIED"}</div>
           <p style={{ fontFamily: MONO, fontSize: 13, lineHeight: 1.6, color: DIM, margin: "8px 0 0", maxWidth: 520 }}>
-            {known ? latestClosed.mo : "No case against this actor has been closed yet — their file stays sealed until you do."}
+            {known ? latestClosed.mo : "No case against this actor has been closed yet. Their file stays sealed until you do."}
           </p>
           {known && (
             <p style={{ fontFamily: MONO, fontSize: 12, lineHeight: 1.6, color: AMBER, margin: "10px 0 0", maxWidth: 520 }}>
-              ⚠ {villain.codename} doesn't stay still. Each return uses a new angle — what worked last time might not work again.
+              ⚠ {villain.codename} doesn't stay still. Each return uses a new angle. What worked last time might not work again.
             </p>
           )}
         </div>
@@ -213,7 +213,7 @@ function AppearanceCard({ appearance: a, level, onOpenCase }: { appearance: Appe
       </div>
       <div style={{ fontFamily: MONO, fontSize: 14, fontWeight: 700, color: INK, margin: "4px 0 6px" }}>{a.title}</div>
       <p style={{ fontSize: 13, lineHeight: 1.55, color: a.closed ? INK : DIM, margin: 0, fontStyle: a.closed ? "normal" : "italic" }}>
-        {a.closed ? a.mo : "Threat not yet assessed — close this case to find out how they're operating this time."}
+        {a.closed ? a.mo : "Threat not yet assessed. Close this case to find out how they're operating this time."}
       </p>
       {a.closed && a.defeatedBy && (
         <p style={{ fontSize: 12.5, lineHeight: 1.5, color: GREEN, margin: "8px 0 0" }}>

@@ -8,5 +8,5 @@
  * against someone else.
  */
 export const ETHICS_LINE =
-  "Quick reminder before we move on, Agent — everything you just built is to protect YOUR accounts. Never use what you've learned to get into someone else's.";
+  "Quick reminder before we move on, Agent. Everything you just built is to protect YOUR accounts. Never use what you've learned to get into someone else's.";
 export const ETHICS_VOICE = "/audio/wren/ethics-defend-not-attack.mp3";

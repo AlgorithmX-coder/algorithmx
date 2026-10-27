@@ -899,7 +899,7 @@ function DockView({ dock, wrongId, nudge, onLever, onReply, onContinue, onSubmit
           )}
           {flipSide === "them" && (
             <div style={{ fontFamily: UI, fontSize: 13.5, lineHeight: 1.5, color: themText ? (themGood ? C.mint : C.red) : C.faint }}>
-              {themText || "— nothing to show yet, flip back and decide —"}
+              {themText || "Nothing to show yet, flip back and decide."}
             </div>
           )}
         </div>

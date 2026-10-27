@@ -40,7 +40,7 @@ const NODES: Node[] = [
   { id: "b2", label: "“Mod” DM: “claim before midnight”", lane: 1, step: 1 },
   { id: "c1", label: "Group text: “my cousin won already lol”", lane: 2, step: 0 },
   { id: "c2", label: "DM: “spots almost gone”", lane: 2, step: 1 },
-  { id: "hub", label: "skinstorm-event.net — the CLAIM FORM (username, password, phone)", lane: 1, step: 2, isHub: true },
+  { id: "hub", label: "skinstorm-event.net: the CLAIM FORM (username, password, phone)", lane: 1, step: 2, isHub: true },
 ];
 
 const CUTS = [

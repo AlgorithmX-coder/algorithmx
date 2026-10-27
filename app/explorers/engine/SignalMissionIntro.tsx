@@ -125,7 +125,7 @@ export default function SignalMissionIntro({ data, onBegin }: { data: MissionInt
           </div>
 
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 12 }}>
-            <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: ".1em", color: T.textSecondary, textTransform: "uppercase" }}>— ATLAS · ARC COMMAND</div>
+            <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: ".1em", color: T.textSecondary, textTransform: "uppercase" }}>ATLAS · ARC COMMAND</div>
             <button className="smi-cta" onClick={onBegin} style={{ fontFamily: MONO, fontWeight: 700, fontSize: 15, letterSpacing: ".04em", color: "#04070c", background: `linear-gradient(180deg,${accHi},${acc})`, border: 0, borderRadius: 9, padding: "13px 24px", cursor: "pointer" }}>
               {data.beginLabel}
             </button>

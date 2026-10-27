@@ -29,7 +29,7 @@ export const ZERO_CLUES: ZeroClue[] = [
     caseId: "explorers-m16",
     caseNumber: "016",
     n: 1,
-    text: "PACKRAT's auction records show one buyer purchasing profiles in bulk, no name on the account, paid in crypto, handle just 'Z'. Whoever this is, they don't build files themselves — they buy wholesale from brokers like PACKRAT.",
+    text: "PACKRAT's auction records show one buyer purchasing profiles in bulk, no name on the account, paid in crypto, handle just 'Z'. Whoever this is, they don't build files themselves. They buy wholesale from brokers like PACKRAT.",
   },
   {
     caseId: "explorers-m17",
@@ -41,13 +41,13 @@ export const ZERO_CLUES: ZeroClue[] = [
     caseId: "explorers-m18",
     caseNumber: "018",
     n: 3,
-    text: "COORD's recruitment pitch — the levers, the small ask, the trap — was too practiced to be a first attempt. This is a script that's been run before, refined each time it worked.",
+    text: "COORD's recruitment pitch (the levers, the small ask, the trap) was too practiced to be a first attempt. This is a script that's been run before, refined each time it worked.",
   },
   {
     caseId: "explorers-m19",
     caseNumber: "019",
     n: 4,
-    text: "Four separate attack lines — data harvesting, a fake story, a recruitment pitch, a live campaign — all went quiet on the same three days, then started again together. One schedule. One planner, coordinating every actor in this file.",
+    text: "Four separate attack lines (data harvesting, a fake story, a recruitment pitch, a live campaign) all went quiet on the same three days, then started again together. One schedule. One planner, coordinating every actor in this file.",
   },
   {
     caseId: "explorers-m20",

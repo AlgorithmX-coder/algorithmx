@@ -77,7 +77,7 @@ export const case13Console: ConsoleCase = {
       n: 2,
       title: "Guessable answers",
       goal: "Security questions ask for things a stranger can find in your footprint.",
-      journalNote: "A security question like 'your first pet's name' is like a quiz a stranger could pass just by scrolling your old posts — it's not really a secret. If the true answer is public, it isn't protecting anything. Assume any TRUE answer about you can be found.",
+      journalNote: "A security question like 'your first pet's name' is like a quiz a stranger could pass just by scrolling your old posts. It's not really a secret. If the true answer is public, it isn't protecting anything. Assume any TRUE answer about you can be found.",
       panel: "RECOVERY · SECURITY QS",
       learn: [
         { t: "wren", text: "Look at what security questions ask: your first pet's name, your mum's maiden name, the street you grew up on. And now remember Case 4, the footprint. Every one of those answers is sitting in your posts, your photos, your relatives' profiles. A security question isn't a secret. It's a quiz a stranger can pass by scrolling your feed. That's the flaw.", voice: "/audio/wren/m13c-s2-learn.mp3" },
@@ -203,7 +203,7 @@ export const case13Console: ConsoleCase = {
       n: 4,
       title: "Keep recovery fresh",
       goal: "Your recovery email and phone must be current, and locked down themselves.",
-      journalNote: "A dead old recovery email is like a spare key left under a mat you forgot about — still real, still works, nobody's watching it. Your recovery contact has to be one you actually use, with its own lock. Update your recovery email and lock it with 2FA too.",
+      journalNote: "A dead old recovery email is like a spare key left under a mat you forgot about: still real, still works, nobody's watching it. Your recovery contact has to be one you actually use, with its own lock. Update your recovery email and lock it with 2FA too.",
       panel: "RECOVERY · CONTACTS",
       learn: [
         { t: "wren", text: "One more back-door check. If your account resets through an OLD email you don't use any more, and someone gets into that dead inbox, they can reset everything through it. So your recovery contact, email or phone, must be current, one you still control, and locked with its own 2FA. A recovery email is a master key. Treat it like one.", voice: "/audio/wren/m13c-s4-learn.mp3" },

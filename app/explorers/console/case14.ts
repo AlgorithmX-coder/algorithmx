@@ -29,7 +29,7 @@ export const case14Console: ConsoleCase = {
       n: 1,
       title: "A download is powers",
       goal: "Installing an app hands it real powers on your device. Know what you're granting.",
-      journalNote: "Installing an app is like handing someone a set of keys to rooms in your house — each permission is one more room they can walk into. Camera, contacts, files, every 'Allow' opens a door. Always notice what powers you're actually handing over.",
+      journalNote: "Installing an app is like handing someone a set of keys to rooms in your house. Each permission is one more room they can walk into. Camera, contacts, files, every 'Allow' opens a door. Always notice what powers you're actually handing over.",
       panel: "INSTALL · PERMISSIONS",
       learn: [
         { t: "wren", text: "Here's what an install really is. When you add an app, you don't just get the app, you HAND it powers over your device. Permission to use your camera, read your files, see your location, reach your contacts. Some apps genuinely need some of those. But every power you grant is a power that app, or whoever's behind it, now holds. So installing isn't just 'yes'. It's 'here are the keys to these rooms'.", voice: "/audio/wren/m14c-s1-learn.mp3" },
@@ -119,7 +119,7 @@ export const case14Console: ConsoleCase = {
       n: 3,
       title: "Grant only what fits",
       goal: "Give an app the powers its job needs, deny the rest. You're in charge.",
-      journalNote: "Granting permissions is like being the one holding every key in the house — you choose exactly who gets which room, and you can take a key back any time. A map app gets location, not your microphone. Give each app only the keys its job needs.",
+      journalNote: "Granting permissions is like being the one holding every key in the house. You choose exactly who gets which room, and you can take a key back any time. A map app gets location, not your microphone. Give each app only the keys its job needs.",
       panel: "PERMISSIONS · MAP APP",
       learn: [
         { t: "wren", text: "Good news: you're in charge of every switch. You can grant the powers an app truly needs and deny the rest, and change your mind any time. Take a map app. It needs your location to give directions, fair enough. It does NOT need your microphone or your photos to draw a map. So grant the one that fits the job, deny the ones that don't. Let's set it.", voice: "/audio/wren/m14c-s3-learn.mp3" },
@@ -236,7 +236,7 @@ export const case14Console: ConsoleCase = {
       n: 5,
       title: "The fake installer",
       goal: "GHOSTWRITER dresses malware as a game you want or an update you need.",
-      journalNote: "GHOSTWRITER dressing malware as a free game is like a thief wearing a delivery uniform to walk past your front desk — it's the disguise that gets them in, not a broken lock. A scary pop-up or a 'free' download can be the same trick. Judge the source, not the costume.",
+      journalNote: "GHOSTWRITER dressing malware as a free game is like a thief wearing a delivery uniform to walk past your front desk. It's the disguise that gets them in, not a broken lock. A scary pop-up or a 'free' download can be the same trick. Judge the source, not the costume.",
       panel: "DOWNLOAD · VERIFY SOURCE",
       learn: [
         { t: "wren", text: "Here's GHOSTWRITER's trick. It takes malware and dresses it up as something you'd happily install: a free version of a game, a 'you must update NOW' pop-up, a cracked app. It even uses the old lure tricks, urgency and free stuff. The defence is the SOURCE. Install only from the official app store or the maker's real site. A download from a random link or a pop-up is a stranger's parcel. Don't open it.", voice: "/audio/wren/m14c-s5-learn.mp3" },
@@ -286,7 +286,7 @@ export const case14Console: ConsoleCase = {
       n: 6,
       title: "Know GHOSTWRITER's play",
       goal: "The malware con runs four moves, and checking source + permissions breaks it.",
-      journalNote: "A download from a random link is like a parcel from a stranger with no return address — you don't open it just because it looks exciting. Checking the source and the permissions catches the disguise every time. Always check WHO sent it and WHAT it's asking for.",
+      journalNote: "A download from a random link is like a parcel from a stranger with no return address. You don't open it just because it looks exciting. Checking the source and the permissions catches the disguise every time. Always check WHO sent it and WHAT it's asking for.",
       panel: "THREAT MODEL",
       learn: [
         { t: "wren", text: "See GHOSTWRITER's malware play, four moves. First, dress the malware as something you want, a game, an update, a freebie. Second, get you to install it. Third, grab powers it should never have, your files, your camera, your messages. Fourth, do the damage. And you break it at move two: install only from official sources, and grant only the powers that fit the job. It never gets in, and if it did, it gets no keys.", voice: "/audio/wren/m14c-s6-learn.mp3" },

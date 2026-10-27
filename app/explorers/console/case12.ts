@@ -172,7 +172,7 @@ export const case12Console: ConsoleCase = {
       n: 4,
       title: "Postcards vs envelopes",
       goal: "Unsealed messages travel like postcards; anyone on the route can read them.",
-      journalNote: "An unsealed site is like writing your password on a postcard — anyone who handles it on the way can read it. A sealed, padlocked site is the same message in a locked envelope. Never trust a site with no padlock for logins or payments.",
+      journalNote: "An unsealed site is like writing your password on a postcard. Anyone who handles it on the way can read it. A sealed, padlocked site is the same message in a locked envelope. Never trust a site with no padlock for logins or payments.",
       panel: "TRAFFIC VIEW",
       learn: [
         { t: "wren", text: "Here's the picture that makes it click. A message sent without encryption is a postcard, every person who handles it on the way can read the whole thing. A sealed, encrypted message is a letter in an envelope, they can see it's going somewhere, but not what it says. When PACKRAT listens, postcards are a gift and envelopes are useless. So seal everything that matters.", voice: "/audio/wren/m12c-s4-learn.mp3" },
@@ -293,7 +293,7 @@ export const case12Console: ConsoleCase = {
       n: 6,
       title: "Know PACKRAT's play",
       goal: "Interception runs the same four moves, and the padlock breaks it.",
-      journalNote: "A listener on open wi-fi is like someone reading mail over your shoulder — they only win if the letter isn't sealed. The padlock seals every letter before it leaves your hands. Keep the padlock habit everywhere, not just at home.",
+      journalNote: "A listener on open wi-fi is like someone reading mail over your shoulder. They only win if the letter isn't sealed. The padlock seals every letter before it leaves your hands. Keep the padlock habit everywhere, not just at home.",
       panel: "THREAT MODEL",
       learn: [
         { t: "wren", text: "See PACKRAT's listening play, four moves. First, sit on an open network, like free cafe wi-fi. Second, quietly capture the traffic flowing past. Third, read anything that isn't sealed, postcards. Fourth, sell what it finds. And here's how you break it: every padlock turns your postcard into a sealed envelope, so all PACKRAT captures is gibberish. The lock does the whole job.", voice: "/audio/wren/m12c-s6-learn.mp3" },

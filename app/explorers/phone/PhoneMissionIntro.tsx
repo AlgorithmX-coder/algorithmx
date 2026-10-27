@@ -142,7 +142,7 @@ export default function PhoneMissionIntro({ data, onBegin }: { data: MissionIntr
           <button className="pmi-cta" onClick={onBegin} style={{ width: "100%", fontFamily: MONO, fontWeight: 700, fontSize: 14.5, letterSpacing: ".04em", color: "#17171f", background: `linear-gradient(180deg,${accHi},${acc})`, border: 0, borderRadius: 14, padding: "14px 20px", cursor: "pointer" }}>
             {data.beginLabel}
           </button>
-          <div style={{ textAlign: "center", fontFamily: MONO, fontSize: 10, letterSpacing: ".1em", color: C.faint, marginTop: 10, textTransform: "uppercase" }}>— ATLAS · ARC COMMAND</div>
+          <div style={{ textAlign: "center", fontFamily: MONO, fontSize: 10, letterSpacing: ".1em", color: C.faint, marginTop: 10, textTransform: "uppercase" }}>ATLAS · ARC COMMAND</div>
         </div>
       </div>
     </main>

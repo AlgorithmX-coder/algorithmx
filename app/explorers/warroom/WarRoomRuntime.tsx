@@ -598,7 +598,7 @@ function DockView({ dock, nudge, acc, onResolve, onBad, onOpenWatchlist }: { doc
               <button key={pos} className="wr-opt" disabled={!filled} onClick={() => tapPlaced(pos)}
                 style={{ flex: "1 1 0", minWidth: 0, fontFamily: UI, fontSize: 12, fontWeight: 700, textAlign: "center", color: filled ? C.page : C.faint, background: filled ? acc : C.chip, border: `1px solid ${filled ? acc : C.chipedge}`, borderRadius: 8, padding: "9px 4px", cursor: filled ? "pointer" : "default" }}>
                 <span style={{ display: "block", fontSize: 9, opacity: 0.75, marginBottom: 2 }}>{pos + 1}</span>
-                {filled ? dock.cards[idx].label : "—"}
+                {filled ? dock.cards[idx].label : "·"}
               </button>
             );
           })}
@@ -664,7 +664,7 @@ function DockView({ dock, nudge, acc, onResolve, onBad, onOpenWatchlist }: { doc
           )}
           {flipSide === "them" && (
             <div style={{ fontFamily: MONO, fontSize: 13, letterSpacing: ".03em", lineHeight: 1.6, color: themText ? (themGood ? C.mint : C.red) : C.faint }}>
-              {themText || "— nothing to show yet, flip back and decide —"}
+              {themText || "Nothing to show yet, flip back and decide."}
             </div>
           )}
         </div>

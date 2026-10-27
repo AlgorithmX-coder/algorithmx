@@ -165,7 +165,7 @@ export const case11Console: ConsoleCase = {
       n: 1,
       title: "Why your brain can't do this",
       goal: "Unique + strong + forty accounts is impossible for a human. It's a tool's job.",
-      journalNote: "Trying to remember 41 unique passwords is like trying to memorise 41 different phone numbers — nobody's brain was built for that. A password manager is the phone book that remembers them for you. Let the tool carry the list, not your head.",
+      journalNote: "Trying to remember 41 unique passwords is like trying to memorise 41 different phone numbers. Nobody's brain was built for that. A password manager is the phone book that remembers them for you. Let the tool carry the list, not your head.",
       panel: "ACCOUNT AUDIT",
       learn: [
         { t: "wren", text: "Start with the honest truth. To be safe, every account needs its own long, random password. Not one clever password everywhere, a DIFFERENT strong one for each. And you've got dozens of accounts. Nobody, no human alive, can invent and remember forty random passwords. So we stop trying. This is a job for a tool, and I'll show you how to build one.", voice: "/audio/wren/m11c-s1-learn.mp3" },
@@ -387,7 +387,7 @@ export const case11Console: ConsoleCase = {
       n: 5,
       title: "A code is a key",
       goal: "Your 2FA code IS a key. Nobody legitimate ever asks you to hand it over.",
-      journalNote: "Your 2FA code is the second key itself, and real security never asks to borrow your key — they already have their own. Reading a code out loud is the same as handing someone your spare key. Never say a 2FA code out loud to anyone, ever.",
+      journalNote: "Your 2FA code is the second key itself, and real security never asks to borrow your key. They already have their own. Reading a code out loud is the same as handing someone your spare key. Never say a 2FA code out loud to anyone, ever.",
       panel: "SECURITY · CODES",
       learn: [
         { t: "wren", text: "One warning that comes with 2FA. That code on your phone is a KEY, the second key to your account. And you know the rule about keys from last block: nobody real ever asks you for one. Not the bank, not support, not a friend. A code only ever goes in the login box yourself, never read out to a person. If anyone asks for your code, they're a thief, every single time.", voice: "/audio/wren/m11c-s5-learn.mp3" },
@@ -436,7 +436,7 @@ export const case11Console: ConsoleCase = {
       n: 6,
       title: "Know SKELETON KEY's play",
       goal: "The credential attack runs the same four moves, and your vault beats every one.",
-      journalNote: "A rig reusing a stolen password is like a thief trying one stolen key on every door on the street — it only works if all your locks are the same. Unique passwords mean one stolen key opens nothing else. Keep every account's password different, no exceptions.",
+      journalNote: "A rig reusing a stolen password is like a thief trying one stolen key on every door on the street. It only works if all your locks are the same. Unique passwords mean one stolen key opens nothing else. Keep every account's password different, no exceptions.",
       panel: "THREAT MODEL",
       learn: [
         { t: "wren", text: "See SKELETON KEY's whole play, four moves. First, guess or steal one password. Second, try that same password on all your other accounts, hoping you reused it. Third, if it works, walk straight in. Fourth, use your email to reset everything else. Now look how your vault breaks it: unique passwords kill the reuse, and 2FA kills the walk-in. You've beaten every move before it starts.", voice: "/audio/wren/m11c-s6-learn.mp3" },
@@ -483,7 +483,7 @@ export const case11Console: ConsoleCase = {
       n: 7,
       title: "Turn it on today",
       goal: "Knowing isn't enough. The one action that protects you most, done for real.",
-      journalNote: "Knowing how a lock works doesn't lock your door — only actually turning the key does. The single biggest win is 2FA on your email, because it's the master key to every other account. This week, turn on 2FA for your email with an adult.",
+      journalNote: "Knowing how a lock works doesn't lock your door. Only actually turning the key does. The single biggest win is 2FA on your email, because it's the master key to every other account. This week, turn on 2FA for your email with an adult.",
       panel: "ACTION PLAN",
       learn: [
         { t: "wren", text: "Last skill, and it's a real-world one. None of this protects you until you actually switch it on. So here's your mission outside these walls: turn on 2FA on your most important account, your email, this week, with a parent or carer to help. Then, over time, let a password manager take over the rest. Knowing is good. Flipping the switch is what keeps you safe.", voice: "/audio/wren/m11c-s7-learn.mp3" },
