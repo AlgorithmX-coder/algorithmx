@@ -79,7 +79,12 @@ export default function CourseLockup({
   if (id === "ops") {
     return (
       <span style={ROW}>
-        <span aria-hidden style={{ width: 11 * size, height: 11 * size, borderRadius: 3, background: T.ops, boxShadow: T.glow ? "0 0 12px rgba(139,123,255,0.45)" : "none", flexShrink: 0 }} />
+        <svg width={18 * size} height={18 * size} viewBox="0 0 24 24" fill="none" stroke={T.ops} strokeWidth="1.8" strokeLinecap="round" aria-hidden style={{ filter: glow("rgba(139,123,255,0.45)", 7), flexShrink: 0 }}>
+          <circle cx="12" cy="12" r="8" />
+          <circle cx="12" cy="12" r="4.4" strokeWidth="1.1" opacity="0.55" />
+          <path d="M12 2.2V6.6 M12 17.4V21.8 M2.2 12H6.6 M17.4 12H21.8" />
+          <circle cx="12" cy="12" r="1.3" fill={T.ops} stroke="none" />
+        </svg>
         <span style={{ fontFamily: "var(--font-chakra), ui-sans-serif, system-ui, sans-serif", fontWeight: 700, fontSize: `${1.05 * size}rem`, letterSpacing: "0.16em", color: T.word }}>
           CYBER OPS
         </span>

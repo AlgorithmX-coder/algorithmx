@@ -438,9 +438,11 @@ export const COURSE_AUTH_THEMES: Record<CourseAuthKey, CourseAuthTheme> = {
     },
     lockup: (
       <span style={LOCKUP_ROW}>
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#8b7bff" strokeWidth="1.8" aria-hidden style={{ filter: "drop-shadow(0 0 8px rgba(139,123,255,0.4))", flexShrink: 0 }}>
-          <path d="M12 2l8 3.5v5.5c0 5-3.4 8-8 11-4.6-3-8-6-8-11V5.5L12 2z" />
-          <path d="M8.5 12l2.3 2.3L15.5 9.5" strokeLinecap="round" strokeLinejoin="round" />
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#8b7bff" strokeWidth="1.8" strokeLinecap="round" aria-hidden style={{ filter: "drop-shadow(0 0 8px rgba(139,123,255,0.4))", flexShrink: 0 }}>
+          <circle cx="12" cy="12" r="8" />
+          <circle cx="12" cy="12" r="4.4" strokeWidth="1.1" opacity="0.55" />
+          <path d="M12 2.2V6.6 M12 17.4V21.8 M2.2 12H6.6 M17.4 12H21.8" />
+          <circle cx="12" cy="12" r="1.3" fill="#8b7bff" stroke="none" />
         </svg>
         <span style={{ fontFamily: "'Chakra Petch', system-ui, sans-serif", fontWeight: 700, fontSize: "1.1rem", letterSpacing: "0.1em", color: "#e8edff" }}>
           CYBER <span style={{ color: "#8b7bff" }}>OPS</span>
