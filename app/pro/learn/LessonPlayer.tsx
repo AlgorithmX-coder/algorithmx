@@ -384,6 +384,9 @@ export default function LessonPlayer({ lesson, topicIndex, topicCount, weekTitle
   const [didTry, setDidTry] = useState(false);
   const [explainDraft, setExplainDraft] = useState("");
   const [quizAnswers, setQuizAnswers] = useState<(number | null)[]>(() => lesson.check.quiz.map(() => null));
+  /* Wrong option indices the learner has tried, per question (rich reveal
+   * mode). A question stays open until the correct option is picked. */
+  const [quizWrong, setQuizWrong] = useState<number[][]>(() => lesson.check.quiz.map(() => []));
   const [restored, setRestored] = useState(false);
 
   useEffect(() => {
@@ -398,6 +401,9 @@ export default function LessonPlayer({ lesson, topicIndex, topicCount, weekTitle
           if (Array.isArray(cp.quizAnswers) && cp.quizAnswers.length === lesson.check.quiz.length) {
             setQuizAnswers(cp.quizAnswers);
           }
+          if (Array.isArray(cp.quizWrong) && cp.quizWrong.length === lesson.check.quiz.length) {
+            setQuizWrong(cp.quizWrong.map((w) => (Array.isArray(w) ? w : [])));
+          }
         }
       }
     } catch {
@@ -408,9 +414,9 @@ export default function LessonPlayer({ lesson, topicIndex, topicCount, weekTitle
 
   useEffect(() => {
     if (!restored) return;
-    const cp: LessonCheckpoint = { id: lesson.id, phase, didTry, explainDraft, quizAnswers };
+    const cp: LessonCheckpoint = { id: lesson.id, phase, didTry, explainDraft, quizAnswers, quizWrong };
     try { localStorage.setItem(lessonCheckpointKey(lesson.id), JSON.stringify(cp)); } catch { /* ignore */ }
-  }, [restored, lesson.id, phase, didTry, explainDraft, quizAnswers]);
+  }, [restored, lesson.id, phase, didTry, explainDraft, quizAnswers, quizWrong]);
 
   const onDidTry = useCallback(() => setDidTry(true), []);
   const Lab = lesson.lab.component;
@@ -779,29 +785,69 @@ export default function LessonPlayer({ lesson, topicIndex, topicCount, weekTitle
               <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
                 {lesson.check.quiz.map((que, qi) => {
                   const chosen = quizAnswers[qi];
+                  const wrongTried = quizWrong[qi] ?? [];
+                  /* Rich mode when the question carries a reason per option: the
+                   * check then reveals Ops-style with retry. Otherwise the
+                   * legacy single-attempt + single `why` behaviour. */
+                  const rich = Array.isArray(que.reasons) && que.reasons.length === que.options.length;
+                  const solved = chosen !== null;
                   return (
                     <div key={qi} style={{ background: T.panel, border: `1px solid ${T.edge}`, borderRadius: 12, padding: "16px 18px" }}>
                       <div style={{ fontSize: 15.5, fontWeight: 700, color: T.ink, marginBottom: 12 }}>{que.q}</div>
                       <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                         {quizOrder[qi].map((origIdx) => {
-                          const answered = chosen !== null;
-                          const isChosen = chosen === origIdx;
                           const isCorrect = origIdx === que.answer;
+                          if (!rich) {
+                            const answered = solved;
+                            const isChosen = chosen === origIdx;
+                            let border: string = T.edgeSoft, bg: string = T.panelSoft, fg: string = T.ink;
+                            if (answered && isCorrect) { border = T.green; bg = T.greenSoft; fg = T.ink; }
+                            else if (answered && isChosen && !isCorrect) { border = T.red; bg = T.redSoft; fg = T.ink; }
+                            else if (answered) { fg = T.muted; }
+                            return (
+                              <button key={origIdx} className="quiz-opt" onClick={() => { if (chosen === null) setQuizAnswers((a) => a.map((v, i) => i === qi ? origIdx : v)); }}
+                                disabled={answered}
+                                style={{ textAlign: "left", fontFamily: T.sans, fontSize: 15, fontWeight: 600, lineHeight: 1.45, color: fg, background: bg, border: `1px solid ${border}`, borderRadius: 9, padding: "12px 15px", cursor: answered ? "default" : "pointer" }}>
+                                {que.options[origIdx]}
+                              </button>
+                            );
+                          }
+                          /* Rich reveal + retry. A wrong pick is spent and shows
+                           * its own "WHY NOT"; the correct pick solves it and
+                           * every option's reason is revealed. */
+                          const isWrongPick = wrongTried.includes(origIdx);
+                          const spent = solved || isWrongPick;
+                          const showReason = solved || isWrongPick;
                           let border: string = T.edgeSoft, bg: string = T.panelSoft, fg: string = T.ink;
-                          if (answered && isCorrect) { border = T.green; bg = T.greenSoft; fg = T.ink; }
-                          else if (answered && isChosen && !isCorrect) { border = T.red; bg = T.redSoft; fg = T.ink; }
-                          else if (answered) { fg = T.muted; }
+                          if (solved && isCorrect) { border = T.green; bg = T.greenSoft; fg = T.ink; }
+                          else if (isWrongPick) { border = T.red; bg = T.redSoft; fg = T.ink; }
+                          else if (solved) { fg = T.muted; }
                           return (
-                            <button key={origIdx} className="quiz-opt" onClick={() => { if (chosen === null) setQuizAnswers((a) => a.map((v, i) => i === qi ? origIdx : v)); }}
-                              disabled={answered}
-                              style={{ textAlign: "left", fontFamily: T.sans, fontSize: 15, fontWeight: 600, lineHeight: 1.45, color: fg, background: bg, border: `1px solid ${border}`, borderRadius: 9, padding: "12px 15px", cursor: answered ? "default" : "pointer" }}>
-                              {que.options[origIdx]}
-                            </button>
+                            <div key={origIdx} style={{ display: "flex", flexDirection: "column" }}>
+                              <button className="quiz-opt" disabled={spent}
+                                onClick={() => {
+                                  if (spent) return;
+                                  if (isCorrect) setQuizAnswers((a) => a.map((v, i) => i === qi ? origIdx : v));
+                                  else setQuizWrong((w) => w.map((arr, i) => i === qi ? [...arr, origIdx] : arr));
+                                }}
+                                style={{ textAlign: "left", fontFamily: T.sans, fontSize: 15, fontWeight: 600, lineHeight: 1.45, color: fg, background: bg, border: `1px solid ${border}`, borderRadius: 9, padding: "12px 15px", cursor: spent ? "default" : "pointer" }}>
+                                {que.options[origIdx]}
+                              </button>
+                              {showReason && que.reasons && (
+                                <div style={{ fontSize: 13, lineHeight: 1.5, color: isCorrect ? T.body : T.muted, padding: "7px 4px 2px 16px" }}>
+                                  <span style={{ fontFamily: T.mono, fontSize: 9.5, fontWeight: 700, letterSpacing: "0.08em", color: isCorrect ? T.green : T.red, marginRight: 7 }}>{isCorrect ? "WHY THIS WORKS" : "WHY NOT"}</span>
+                                  {que.reasons[origIdx]}
+                                </div>
+                              )}
+                            </div>
                           );
                         })}
                       </div>
-                      {chosen !== null && (
+                      {!rich && chosen !== null && que.why && (
                         <div style={{ fontSize: 13.5, color: T.muted, marginTop: 10, lineHeight: 1.55 }}>{que.why}</div>
+                      )}
+                      {rich && !solved && wrongTried.length > 0 && (
+                        <div style={{ fontSize: 13, color: T.amber, marginTop: 10, lineHeight: 1.5 }}>Not quite. Read why, then pick another.</div>
                       )}
                     </div>
                   );

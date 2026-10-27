@@ -107,7 +107,14 @@ export interface QuizQuestion {
   q: string;
   options: string[];
   answer: number; // index of the correct option
-  why: string; // shown after answering, right or wrong
+  /* Legacy single explanation, shown after answering when no per-option
+   * reasons are supplied. Optional so migrated questions can drop it. */
+  why?: string;
+  /* Per-option explanations, parallel to `options` (one reason per option).
+   * When present (and length matches options), the check reveals Ops-style:
+   * a wrong pick shows why it is wrong and lets the learner try again, and
+   * the correct pick reveals every option's reason. */
+  reasons?: string[];
 }
 
 export interface ExplainBack {
@@ -207,4 +214,7 @@ export interface LessonCheckpoint {
   didTry: boolean;
   explainDraft: string;
   quizAnswers: (number | null)[];
+  /* Wrong option indices tried per question (rich reveal mode). Optional so
+   * older checkpoints still parse. */
+  quizWrong?: number[][];
 }
