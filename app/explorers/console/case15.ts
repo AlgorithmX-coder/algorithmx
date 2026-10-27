@@ -269,6 +269,30 @@ export const case15Console: ConsoleCase = {
           ok: "Right. Arriving yourself, by address or app, always lands you at the real site. Links in messages let a stranger pick your destination.",
           okVoice: "/audio/wren/m15c-s5-q3ok.mp3",
         },
+        {
+          t: "flip",
+          prompt: "MIMIC sent the 'your account is locked' message to everyone in your class. Flip the switch, then flip the card to see who lands where.",
+          you: {
+            kind: "toggle",
+            label: "Reaching your bank · simulator",
+            sub: "compare tapping MIMIC's link to arriving yourself",
+            off: "SIMULATING: tap the link in the message",
+            on: "YOUR REAL HABIT: type the address yourself",
+          },
+          them: {
+            label: "MIMIC's fake page",
+            whenBad: "VISITOR ARRIVED · perfect fake loaded · waiting for a password",
+            whenGood: "NO VISITOR · never sent there · landed on the real bank instead",
+          },
+          ask: {
+            prompt: "Same message, same class, but MIMIC's fake only catches some of them. Why?",
+            options: [
+              { label: "A link lets MIMIC choose where you land; typing the address doesn't", outcome: "good" },
+              { label: "MIMIC's fake only works on some phones", outcome: "bad", then: [{ t: "sys", text: "MIMIC: works on any phone, it only needs you to tap the link" }] },
+              { label: "The message wasn't sent to everyone", outcome: "bad", then: [{ t: "sys", text: "MIMIC: sent to the whole class, only the link-tappers show up" }] },
+            ],
+          },
+        },
       ],
     },
 

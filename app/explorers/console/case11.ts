@@ -306,6 +306,30 @@ export const case11Console: ConsoleCase = {
           ok: "Exactly. It builds an unguessable one and remembers it, so your brain stays free for the master key alone.",
           okVoice: "/audio/wren/m11c-s3-q3ok.mp3",
         },
+        {
+          t: "flip",
+          prompt: "SKELETON KEY just leaked one password from an old, dead account. Flip the switch, then flip the card to watch what it tries next.",
+          you: {
+            kind: "toggle",
+            label: "That leaked password · simulator",
+            sub: "compare reusing it everywhere to letting the vault keep every account unique",
+            off: "SIMULATING: same password reused on every account",
+            on: "YOUR REAL SETUP: vault-generated, unique per account",
+          },
+          them: {
+            label: "SKELETON KEY's credential-stuffing run",
+            whenBad: "MATCH · bank ✓ email ✓ game ✓ school ✓ · one leak opened all 41",
+            whenGood: "NO MATCH · tried the leaked password everywhere · every other account holds",
+          },
+          ask: {
+            prompt: "One password leaked, but only one account fell. Why?",
+            options: [
+              { label: "Every account has its own unique password, the leak stays contained", outcome: "good" },
+              { label: "SKELETON KEY just gave up", outcome: "bad", then: [{ t: "sys", text: "SKELETON KEY: still trying the same password everywhere, still failing" }] },
+              { label: "The leaked account wasn't a real password", outcome: "bad", then: [{ t: "sys", text: "SKELETON KEY: it was real, it's just the only one that password unlocks" }] },
+            ],
+          },
+        },
       ],
     },
 
