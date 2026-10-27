@@ -13,7 +13,13 @@ on:
 jobs:
   vendors:
     name: vendor terms still say what the course says
-    runs-on: ubuntu-latest
+    # PINNED, not ubuntu-latest. On 27 October 2026 the latest image
+    # rolled to Ubuntu 26.04 and every run died before a single spec:
+    #   Cannot install dependencies for ubuntu26.04-x64 with Playwright 1.59.1!
+    #   ERROR: Playwright does not support chromium on ubuntu26.04-x64
+    # main went red on a merge that had passed minutes earlier, so this is
+    # not caused by any one diff. Unpin once Playwright supports 26.04.
+    runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
