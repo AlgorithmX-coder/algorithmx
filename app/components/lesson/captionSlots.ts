@@ -130,6 +130,50 @@ export function coveredArea(box: Box, guard: HTMLElement | null): number {
     if (painted.right <= painted.left || painted.bottom <= painted.top) continue;
     area += overlap(painted);
   }
+
+  /* THE CARD'S BORDER IS INK TOO.
+   *
+   * Owner, 2026-10-18, on week 3: "I don't want any of the cards within the box
+   * of the activity, which is the thin lining around, to be on the line of the
+   * box... I don't want anything touching the line."
+   *
+   * That came back on 27 October 2026, measured by audit-box-line.mjs: the
+   * "Listening..." pill straddled the activity card's bottom border on week 2
+   * screens 13, 21 and 24, by 5px, 12px and 5px. It was less a placement bug
+   * than a blind spot in this scoring - it weighed controls and text, and a
+   * slot sitting exactly ON a thin border covers neither, so it scored a clean
+   * zero and won on the spot. Week 1 escaped only because its cards happen to
+   * end elsewhere.
+   *
+   * A border is a drawn thing, like the text above, so count it the same way:
+   * each visible edge as a thin band, intersected with the pill. The area is
+   * deliberately small - a 2px edge crossed for 100px is 200px squared - which
+   * is the point. It will never outweigh covering a sentence, but it breaks a
+   * tie against a slot that covers nothing else, and the next slot down sits
+   * clear of the card entirely.
+   *
+   * Living in the shared chooser, CoachCaption and any future floating pill
+   * get this without knowing about it - what this file's header says the
+   * intent always was. */
+  document.querySelectorAll("div,section,article").forEach((el) => {
+    if (guard && guard.contains(el)) return;
+    const cs = window.getComputedStyle(el);
+    if (cs.visibility === "hidden" || cs.display === "none") return;
+    const r = el.getBoundingClientRect();
+    /* An activity card, not a hairline divider and not the whole page. */
+    if (r.width < 200 || r.height < 120) return;
+    const edges: Array<[number, Box]> = [
+      [parseFloat(cs.borderTopWidth) || 0, { left: r.left, right: r.right, top: r.top, bottom: r.top + 2 }],
+      [parseFloat(cs.borderBottomWidth) || 0, { left: r.left, right: r.right, top: r.bottom - 2, bottom: r.bottom }],
+      [parseFloat(cs.borderLeftWidth) || 0, { left: r.left, right: r.left + 2, top: r.top, bottom: r.bottom }],
+      [parseFloat(cs.borderRightWidth) || 0, { left: r.right - 2, right: r.right, top: r.top, bottom: r.bottom }],
+    ];
+    for (const [w, band] of edges) {
+      if (w < 1) continue;
+      area += overlap(band);
+    }
+  });
+
   return area;
 }
 

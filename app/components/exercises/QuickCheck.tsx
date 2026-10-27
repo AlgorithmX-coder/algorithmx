@@ -322,12 +322,23 @@ export default function QuickCheck({
   // Only the break immediately after the blank is suppressed, so the rest of
   // the sentence wraps normally. Five weeks have words after the blank (4, 5,
   // 6, 8, 15); the others end on it, where this changes nothing.
+  //
+  // The right-hand margin comes OFF when the next character is punctuation.
+  // Seen at stage 7b, 26 October 2026, on weeks 1 and 2 - the two whose
+  // sentences END on the blank: "A password proves it's ___." and "If you're
+  // not sure, ___." rendered with the full stop sitting 6px clear, reading as
+  // a floating dot rather than the end of a sentence. The gap PREDATES the
+  // glue above (it arrived with #539, and the glue only wrapped the same
+  // markup), so this is an old defect that no gate had an assertion for and
+  // thirty frames in front of a person caught.
   const promptNode = (() => {
     if (mode !== "finish" || !prompt.includes("___")) return prompt;
     const [before, after = ""] = prompt.split("___");
     const glue = /^(\s*\S+)([\s\S]*)$/.exec(after);
     const nextWord = glue ? glue[1] : after;
     const rest = glue ? glue[2] : "";
+    /* Punctuation sits tight against what it closes. */
+    const tightRight = /^[.,!?;:)]/.test(after);
     return (
       <>
         {before}
@@ -336,7 +347,7 @@ export default function QuickCheck({
             style={{
               display: "inline-block",
               minWidth: 84,
-              margin: "0 6px",
+              margin: tightRight ? "0 0 0 6px" : "0 6px",
               color: "#7df0ff",
               borderBottom: "3px solid #7df0ff",
               textShadow: "0 0 16px rgba(125,240,255,0.75)",

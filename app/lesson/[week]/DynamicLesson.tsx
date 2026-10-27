@@ -4631,7 +4631,31 @@ function DynamicLessonInner({
                    * shrinks the artwork inside it. Where there is a medal, it
                    * stands on its own and gets the room instead. */
                   width: content.badgeArt ? 168 : 140,
-                  height: content.badgeArt ? 168 : 140,
+                  /* THE BOX GROWS TO FIT THE MEDAL; it does not crop it.
+                   *
+                   * 27 October 2026, stage 7b: "WEEK 2 COMPLETE" read as
+                   * "WEEK __ ETE", week 3's as "WEI ___ TE", and week 7's was
+                   * almost entirely gone. Measured in the browser, the medal
+                   * rendered 168 wide by 228 TALL inside a box fixed at 168,
+                   * overflowing 60px with overflow:visible, straight over the
+                   * pill below it.
+                   *
+                   * The height was already meant to contain it: `height:100%`
+                   * on the img plus objectFit:contain. Neither did anything. A
+                   * grid item under `place-items:center` is NOT stretched, so
+                   * the percentage height resolved to auto, the image sized by
+                   * WIDTH and took its own aspect ratio, and contain had no
+                   * second dimension left to work against. Every medal is
+                   * taller than wide (0.74-0.86), so every week overflowed;
+                   * week 1 is the squarest and clipped only the pill's top
+                   * edge, which is why the one week anybody checks was the one
+                   * that still read.
+                   *
+                   * Capping the image would have shrunk every medal to fit a
+                   * height that was arbitrary anyway. Letting the box take the
+                   * medal's own height keeps the artwork exactly as drawn and
+                   * puts the pill back underneath it. */
+                  height: content.badgeArt ? "auto" : 140,
                   margin: "8px auto 14px",
                   borderRadius: "50%",
                   display: "grid",
@@ -4661,7 +4685,11 @@ function DynamicLessonInner({
                   <img
                     src={content.badgeArt}
                     alt=""
-                    style={{ width: "100%", height: "100%", objectFit: "contain", display: "block" }}
+                    /* height:auto, not 100%. A percentage height against the
+                       now-auto box is circular and resolves to auto anyway;
+                       saying so plainly is what keeps the next reader from
+                       "restoring" the 100% that caused the overlap. */
+                    style={{ width: "100%", height: "auto", display: "block" }}
                   />
                 ) : (
                   <span

@@ -594,7 +594,7 @@ export const WEEK_9: WeekContent = {
       type: "quickCheck",
       mode: "lie",
       prompt: "Is that true?",
-      raccoonLine: "a cute pet game NEEDS your microphone and your contacts, or it simply won't work!",
+      raccoonLine: "A cute pet game NEEDS your microphone and your contacts, or it simply won't work!",
       choices: [
         { text: "TRUE", isCorrect: false, why: "Feeding a pretend pet needs taps and sounds. Your contacts and your microphone are greedy keys." },
         { text: "FALSE", isCorrect: true },

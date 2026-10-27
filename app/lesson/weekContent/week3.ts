@@ -234,7 +234,7 @@ export const WEEK_3: WeekContent = {
       type: "quickCheck",
       mode: "lie",
       prompt: "Is that true?",
-      raccoonLine: "if a profile has a kid's photo and says AGE 9, that PROVES a kid is typing!",
+      raccoonLine: "If a profile has a kid's photo and says AGE 9, that PROVES a kid is typing!",
       choices: [
         { text: "TRUE", isCorrect: false, why: "A photo can be copied. An age takes one second to type. Neither shows who is really typing." },
         { text: "FALSE", isCorrect: true },

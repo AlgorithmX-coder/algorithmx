@@ -341,7 +341,7 @@ export const WEEK_7: WeekContent = {
       type: "quickCheck",
       mode: "lie",
       prompt: "Is that true?",
-      raccoonLine: "open enough boxes and the rare prize is GUARANTEED, that's just maths!",
+      raccoonLine: "Open enough boxes and the rare prize is GUARANTEED, that's just maths!",
       choices: [
         { text: "TRUE", isCorrect: false, why: "Boxes have no memory. Every open is the same jar with the same one gold marble in a hundred." },
         { text: "FALSE", isCorrect: true },

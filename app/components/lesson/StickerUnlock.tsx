@@ -359,8 +359,19 @@ export default function StickerUnlock({
           }
           style={{
             position: "relative",
+            /* `margin: 0 auto` does NOT centre an inline-block - auto margins
+               only centre a BLOCK box, and an inline-block just sits where the
+               inline flow puts it, which here is hard left. Seen at stage 7b,
+               26 October 2026: on weeks 1 and 2 this stamp sat flush against
+               the left of the card while the two buttons below it were
+               centred, and the matching stamp on the Mission Debrief screen
+               beside it was centred too - so the suite that was made one
+               themed set (W2-17) disagreed with itself. The debrief one only
+               centres because it happens to sit in a flex row; this one had
+               nothing centring it. A block box of fitting width does. */
+            display: "block",
+            width: "fit-content",
             margin: "0 auto 18px",
-            display: "inline-block",
             padding: "6px 18px",
             borderRadius: 8,
             background: "rgba(253,224,71,0.95)",

@@ -20,10 +20,19 @@
  */
 import { chromium } from "playwright";
 import { mkdir } from "node:fs/promises";
+import { signIn } from "./_qa-signin.mjs";
 
 const ARG = process.argv.slice(2).filter((a) => !a.startsWith("--"));
 const SHOTS = process.argv.includes("--shots");
-const WEEKS = ARG.length ? ARG.map(Number) : [1];
+/* DEFAULTS TO ALL TWENTY.
+ *
+ * It used to default to a SINGLE week - [1] here, [2] in stage-overflow - so
+ * running it the way the checklist documents it (no arguments) measured one
+ * week of twenty and printed a confident verdict over the other 570 screens.
+ * On 27 October 2026 that produced a clean "all 20" layout report that had
+ * covered 30 screens. Every other audit in this repo defaults to the whole
+ * course; these three were the exception, and the exception read as a pass. */
+const WEEKS = ARG.length ? ARG.map(Number) : Array.from({ length: 20 }, (_, i) => i + 1);
 const SCREENS = 30;
 const BASE = process.env.AUDIT_BASE || "http://localhost:3007";
 const VIEWPORT = { width: 1414, height: 771 };   // the owner's window
@@ -35,13 +44,18 @@ const browser = await chromium.launch({ channel: "msedge" });
 const ctx = await browser.newContext({ viewport: VIEWPORT });
 await ctx.addCookies([{ name: "site_auth", value: "true", domain: "localhost", path: "/" }]);
 const page = await ctx.newPage();
+/* The launch-gate cookie above is not a session: /lesson/[week] redirects
+ * without one, and every gate here used to measure the login page. */
+await signIn(page, BASE);
 
 const rows = [];
+/* Screens this gate could not read. Counted and NAMED, never silently dropped. */
+const unread = [];
 for (const w of WEEKS) {
   for (let s = 0; s < SCREENS; s++) {
     try {
       await page.goto(`${BASE}/lesson/${w}?screen=${s}`, { waitUntil: "domcontentloaded", timeout: 20000 });
-    } catch { continue; }
+    } catch { unread.push(`w${w} s${s} (never loaded)`); continue; }
     await page.waitForTimeout(1600);
 
     const r = await page.evaluate(() => {
@@ -93,7 +107,7 @@ for (const w of WEEKS) {
       };
     });
 
-    if (!r) continue;
+    if (!r) { unread.push(`w${w} s${s} (no lesson stage on the page)`); continue; }
     rows.push({ w, s, ...r });
     if (SHOTS) await page.screenshot({ path: `${OUT}/w${String(w).padStart(2, "0")}-s${String(s).padStart(2, "0")}.png` });
   }
@@ -111,4 +125,21 @@ for (const r of rows) {
 }
 const sparse = rows.filter((r) => r.fillPct < 55);
 console.log(`\n${rows.length} screen(s) measured, ${sparse.length} with a quarter of the card empty below the content.`);
+
+/* A SCREEN IT COULD NOT READ IS NOT A SCREEN THAT PASSED.
+ *
+ * 26 October 2026, stage 7b on weeks 1 and 2: this printed "59 screen(s)
+ * measured" for 60 screens and never said which one it dropped. Same shape as
+ * the --shots run that returned 85 of 90 and called it 85 measured, and the
+ * same shape as the login redirect that made this gate measure nothing at all.
+ * A tidy number over an incomplete measurement reads as a complete one.
+ *
+ * So name them. Most will be legitimate - the boss overlay replaces the lesson
+ * stage, so there is no card to measure - but legitimate is a judgement for a
+ * person to make, not a row to delete. */
+if (unread.length) {
+  console.log(`\n${unread.length} screen(s) this gate could NOT read, so they are unmeasured, not clean:`);
+  for (const u of unread) console.log(`  ${u}`);
+  console.log("A boss overlay has no card and is expected here; anything else wants a look.");
+}
 await browser.close();
