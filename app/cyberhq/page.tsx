@@ -25,6 +25,7 @@ import { BADGE_CATALOGUE } from "@/app/lib/badges-data";
 import { getEarnedBadges } from "@/app/lib/badges.actions";
 import { getProgressionSnapshot } from "@/app/lib/lessonProgress.actions";
 import { getRank } from "@/app/lib/progression";
+import AgentWardrobe from "@/app/components/cyberhq/AgentWardrobe";
 import PlaySignatureOnMount from "@/app/components/lesson/PlaySignatureOnMount";
 import PlayHubAmbientOnMount from "@/app/components/PlayHubAmbientOnMount";
 import PixIcon from "@/app/components/lesson/PixIcon";
@@ -307,6 +308,14 @@ export default async function CyberHQPage() {
             </div>
           </div>
         </section>
+
+        {/* The Agent Wardrobe - "Your Kit".
+            TRIAL, 27 October 2026: docs/cyberheroes/agent-wardrobe-design.md.
+            Unlocks derive from the SAME `completedAt` the badge case below
+            already uses, so there is no new query and nothing new stored. */}
+        <AgentWardrobe
+          completedWeeks={snapshot.weeks.filter((w) => w.completed).map((w) => w.week)}
+        />
 
         {/* Badge case — one trophy per week (earned = completed that week). */}
         <h2
