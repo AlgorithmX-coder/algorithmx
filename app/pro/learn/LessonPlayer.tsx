@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useState, type ReactNode } from "react
 import { T } from "./tokens";
 import InlineVisual from "./learnVisuals";
 import TutorChat from "./TutorChat";
+import LessonNotes from "./LessonNotes";
 import {
   FIVE_CONTROLS,
   lessonCheckpointKey,
@@ -429,6 +430,9 @@ export default function LessonPlayer({ lesson, topicIndex, topicCount, weekTitle
     [lesson.id, lesson.check.quiz],
   );
   const inLesson = phase !== "intro" && phase !== "done";
+  /* Notes are kept per MODULE, so they build up across its five topics. The
+   * topic id is like "m1t3" (or "w1t3" for module 3); strip the topic suffix. */
+  const notebookKey = lesson.id.replace(/t\d+$/, "");
 
   /* The teaching material for this topic, compiled for the AI tutor so it
      answers from the lesson rather than the open web. Bounded to stay
@@ -904,6 +908,8 @@ export default function LessonPlayer({ lesson, topicIndex, topicCount, weekTitle
           )}
         </div>
       </div>
+
+      {inLesson && <LessonNotes notebookKey={notebookKey} title={lesson.title} />}
     </div>
   );
 }
