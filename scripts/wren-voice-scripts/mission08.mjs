@@ -5,7 +5,7 @@
  */
 export const mission08VoiceScripts = {
   "/audio/wren/m08p-recap.mp3":
-    "[warm] Previously... MIMIC hijacked a friend's account and messaged you from inside it, borrowing a face you trusted. You learned to verify a weird ask on a different channel before you ever believe it. [curious] Today, a message with zero typos, perfectly written. Too perfectly.",
+    "[warm] Previously on Cyber Explorers... MIMIC hijacked a friend's account and messaged you from inside it, borrowing a face you trusted. You learned to verify a weird ask on a different channel before you ever believe it. [curious] Today, a message with zero typos, perfectly written. Too perfectly.",
   "/audio/wren/m08p-open-1.mp3":
     "[serious] New case, Agent. This villain is called GHOSTWRITER, and GHOSTWRITER doesn't type. It uses a machine.",
   "/audio/wren/m08p-open-2.mp3":

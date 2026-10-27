@@ -19,7 +19,7 @@ export const case07Phone: PhoneCase = {
   actor: "MIMIC",
   app: { name: "Loop", accent: "#9B7BFF", wall: "radial-gradient(130% 90% at 50% 0%, #171233 0%, #0b0b14 62%)", kind: "social", theme: { backdrop: "loop", matrix: ["#9B7BFF", "#C4B2FF", "#6B4FE0"], accentHi: "#C4B2FF" } },
   recap: {
-    text: "Previously... SIREN tried to rush you, scare you, and guilt you into clicking, stacking one feeling on another until you weren't thinking straight. You learned to name every lever as it's pulled, and to walk away clean. Today: a friend's account messages you. Only... is it really them?",
+    text: "Previously on Cyber Explorers... SIREN tried to rush you, scare you, and guilt you into clicking, stacking one feeling on another until you weren't thinking straight. You learned to name every lever as it's pulled, and to walk away clean. Today: a friend's account messages you. Only... is it really them?",
     voice: "/audio/wren/m07p-recap.mp3",
   },
   open: [

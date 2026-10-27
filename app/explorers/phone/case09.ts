@@ -24,7 +24,7 @@ export const case09Phone: PhoneCase = {
   actor: "SIREN",
   app: { name: "Bond", accent: "#FFB13D", wall: "radial-gradient(130% 90% at 50% 0%, #2a2110 0%, #0d0c0a 62%)", kind: "gamechat", theme: { backdrop: "bond", matrix: ["#FFB13D", "#FFD27A", "#FF9A3D"], accentHi: "#FFD27A" } },
   recap: {
-    text: "Previously... GHOSTWRITER used AI to write you a flawless message, no mistakes to catch, no clumsy tells. You learned that perfect writing isn't proof of anything. Today: someone's been messaging you for weeks. Slowly. Patiently. On purpose.",
+    text: "Previously on Cyber Explorers... GHOSTWRITER used AI to write you a flawless message, no mistakes to catch, no clumsy tells. You learned that perfect writing isn't proof of anything. Today: someone's been messaging you for weeks. Slowly. Patiently. On purpose.",
     voice: "/audio/wren/m09p-recap.mp3",
   },
   open: [

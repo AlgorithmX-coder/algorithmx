@@ -61,7 +61,16 @@ const CSS = `
 @keyframes ph-shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
 .ph-pulse-dot{animation:phPulseDot 1.4s ease-in-out infinite}
 @keyframes phPulseDot{0%,100%{opacity:1}50%{opacity:.35}}
-.ph-row{animation:ph-pop .28s cubic-bezier(.2,.8,.2,1) both}
+/* UAT: the recap card's closing line was squashed at the bottom once the
+   typewriter finished — not a margin/padding problem, a flexbox one. Every
+   message is a child of .ph-thread's column flex, and a long message (the
+   recap's full paragraph) could get shrunk below its own content height
+   once the thread's accumulated children pass the viewport's available
+   space, with the card's own overflow:hidden then silently clipping
+   whatever got shrunk away instead of visibly overflowing. flex-shrink:0
+   makes every row keep its full natural height always; .ph-thread's own
+   overflowY:auto is what scrolls past them, never a per-row squeeze. */
+.ph-row{animation:ph-pop .28s cubic-bezier(.2,.8,.2,1) both;flex-shrink:0}
 .ph-lever{transition:transform .1s,border-color .15s,background .15s}
 .ph-lever:hover:not(:disabled){border-color:${C.wren};transform:translateY(-2px)}
 .ph-lever:focus-visible{outline:2px solid ${C.wren};outline-offset:2px}

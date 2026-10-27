@@ -21,7 +21,7 @@ export const case10Phone: PhoneCase = {
   actor: "MIMIC",
   app: { name: "Ringer", accent: "#35C777", wall: "radial-gradient(130% 90% at 50% 0%, #0f2418 0%, #0a0d0a 62%)", kind: "call", theme: { backdrop: "ringer", matrix: ["#35C777", "#7AF0B0", "#1F9A5C"], accentHi: "#7AF0B0" } },
   recap: {
-    text: "Previously... SIREN played the long game, weeks of trust before the real ask ever showed up. You learned to spot the pattern even when it moves slowly. Today: your phone rings. The voice on the other end sounds exactly like someone you'd trust.",
+    text: "Previously on Cyber Explorers... SIREN played the long game, weeks of trust before the real ask ever showed up. You learned to spot the pattern even when it moves slowly. Today: your phone rings. The voice on the other end sounds exactly like someone you'd trust.",
     voice: "/audio/wren/m10p-recap.mp3",
   },
   open: [
