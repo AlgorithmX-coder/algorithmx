@@ -10,11 +10,11 @@ import CyberExplorersLanding from "./CyberExplorersLanding";
  */
 
 export const metadata: Metadata = {
-  title: "Cyber Explorers — Cybersecurity for Ages 10–13 | AlgorithmX",
+  title: "Cyber Explorers: Cybersecurity for Ages 10–13 | AlgorithmX",
   description:
-    "A 20-mission cybersecurity course for ages 10–13. Your child joins ARC, hunts the STATIC network, and learns to spot scams, read URLs, and out-think attackers — real skills, real judgment, zero jump scares.",
+    "A 20-mission cybersecurity course for ages 10–13. Your child joins ARC, hunts the STATIC network, and learns to spot scams, read URLs, and out-think attackers. Real skills, real judgment, zero jump scares.",
   openGraph: {
-    title: "Cyber Explorers — Cybersecurity for Ages 10–13 | AlgorithmX",
+    title: "Cyber Explorers: Cybersecurity for Ages 10–13 | AlgorithmX",
     description:
       "20 missions. 4 clearance blocks. Your child becomes the operative who finds the signal in the noise.",
     type: "website",
