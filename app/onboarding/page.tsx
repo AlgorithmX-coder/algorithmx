@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { DataLabScene } from "@/app/components/CyberFutureScenes";
 import { CyberIconOrEmoji } from "@/app/components/CyberIcon";
+import CubeMark from "@/app/components/CubeMark";
 
 const C = {
   pageBg: "#080a16",
@@ -157,16 +158,7 @@ export default function OnboardingPage() {
                 "0 14px 30px -8px rgba(255,120,40,0.6), 0 0 0 1px rgba(255,235,200,0.55) inset",
             }}
           >
-            <span
-              style={{
-                fontSize: 18,
-                fontWeight: 900,
-                color: C.goldDark,
-                fontFamily: "'Space Grotesk', system-ui, sans-serif",
-              }}
-            >
-              AX
-            </span>
+            <CubeMark size={30} color={C.goldDark} code />
           </motion.div>
           <span
             style={{

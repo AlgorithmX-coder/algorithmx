@@ -9,6 +9,7 @@ import AuthField from "@/app/components/auth/AuthField";
 import AuthButton, { type AuthButtonState } from "@/app/components/auth/AuthButton";
 import AccessGrantedOverlay from "@/app/components/auth/AccessGrantedOverlay";
 import { useIsDesktop } from "@/app/components/auth/useIsDesktop";
+import CubeMark from "@/app/components/CubeMark";
 import { ACCESS, ACCESS_FONT, ACCESS_GRAD, rgba } from "@/app/components/auth/accessTokens";
 import { IconCredentials, IconKey, IconHub, IconEye, IconEyeOff } from "@/app/components/auth/icons";
 
@@ -114,7 +115,7 @@ export default function PasswordGatePage() {
             <div className="mb-6">
               <span className="inline-flex items-center gap-2.5">
                 <span className="flex items-center justify-center" style={{ width: 38, height: 38, borderRadius: 11, background: ACCESS_GRAD.brand, boxShadow: `0 0 20px ${rgba(ACCESS.cyan, 0.32)}` }}>
-                  <span style={{ color: "#06080f", fontFamily: ACCESS_FONT.display, fontWeight: 800, fontSize: 14 }}>AX</span>
+                  <CubeMark size={22} color="#06080f" code />
                 </span>
                 <span style={{ color: ACCESS.textBright, fontFamily: ACCESS_FONT.display, fontWeight: 800, fontSize: 19, letterSpacing: "-0.01em" }}>
                   Algorithm<span style={{ background: ACCESS_GRAD.brand, WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent" }}>X</span>
