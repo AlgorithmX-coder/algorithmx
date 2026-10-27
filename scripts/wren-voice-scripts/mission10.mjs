@@ -7,7 +7,7 @@
  */
 export const mission10VoiceScripts = {
   "/audio/wren/m10p-recap.mp3":
-    "[warm] Previously... SIREN played the long game, weeks of trust before the real ask ever showed up. You learned to spot the pattern even when it moves slowly. [curious] Today, your phone rings. The voice on the other end sounds exactly like someone you'd trust.",
+    "[warm] Previously on Cyber Explorers... SIREN played the long game, weeks of trust before the real ask ever showed up. You learned to spot the pattern even when it moves slowly. [curious] Today, your phone rings. The voice on the other end sounds exactly like someone you'd trust.",
   "/audio/wren/m10p-open-1.mp3":
     "[serious] Last case of the block, Agent, and MIMIC has saved its scariest trick for the end. It can clone a voice.",
   "/audio/wren/m10p-open-2.mp3":

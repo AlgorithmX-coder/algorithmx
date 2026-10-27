@@ -7,7 +7,7 @@
  */
 export const mission07VoiceScripts = {
   "/audio/wren/m07p-recap.mp3":
-    "[warm] Previously... SIREN tried to rush you, scare you, and guilt you into clicking, stacking one feeling on another until you weren't thinking straight. You learned to name every lever as it's pulled, and to walk away clean. [curious] Today, a friend's account messages you. Only... is it really them?",
+    "[warm] Previously on Cyber Explorers... SIREN tried to rush you, scare you, and guilt you into clicking, stacking one feeling on another until you weren't thinking straight. You learned to name every lever as it's pulled, and to walk away clean. [curious] Today, a friend's account messages you. Only... is it really them?",
   "/audio/wren/m07p-open-1.mp3":
     "[serious] Next case, Agent, and a new kind of enemy. This one's name is MIMIC, and MIMIC doesn't send you a dodgy link.",
   "/audio/wren/m07p-open-2.mp3":

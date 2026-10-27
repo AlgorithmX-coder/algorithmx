@@ -22,7 +22,7 @@ export const case08Phone: PhoneCase = {
   actor: "GHOSTWRITER",
   app: { name: "Glint", accent: "#FF7A4D", wall: "radial-gradient(130% 90% at 50% 0%, #2a1710 0%, #0d0b0a 62%)", kind: "wallet", theme: { backdrop: "glint", matrix: ["#FF7A4D", "#FFB088", "#FF9A4D"], accentHi: "#FFB088" } },
   recap: {
-    text: "Previously... MIMIC hijacked a friend's account and messaged you from inside it, borrowing a face you trusted. You learned to verify a weird ask on a different channel before you ever believe it. Today: a message with zero typos, perfectly written. Too perfectly.",
+    text: "Previously on Cyber Explorers... MIMIC hijacked a friend's account and messaged you from inside it, borrowing a face you trusted. You learned to verify a weird ask on a different channel before you ever believe it. Today: a message with zero typos, perfectly written. Too perfectly.",
     voice: "/audio/wren/m08p-recap.mp3",
   },
   open: [

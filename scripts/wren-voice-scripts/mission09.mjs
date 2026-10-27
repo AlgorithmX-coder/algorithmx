@@ -10,7 +10,7 @@
  */
 export const mission09VoiceScripts = {
   "/audio/wren/m09p-recap.mp3":
-    "[warm] Previously... GHOSTWRITER used AI to write you a flawless message, no mistakes to catch, no clumsy tells. You learned that perfect writing isn't proof of anything. [curious] Today, someone's been messaging you for weeks. Slowly. Patiently. On purpose.",
+    "[warm] Previously on Cyber Explorers... GHOSTWRITER used AI to write you a flawless message, no mistakes to catch, no clumsy tells. You learned that perfect writing isn't proof of anything. [curious] Today, someone's been messaging you for weeks. Slowly. Patiently. On purpose.",
   "/audio/wren/m09p-open-1.mp3":
     "[serious] Toughest case yet, Agent. SIREN is back, and this time there's no rush, no quick trick. This is the long con.",
   "/audio/wren/m09p-open-2.mp3":
