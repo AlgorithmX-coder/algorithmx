@@ -529,7 +529,7 @@ export const WEEK_5: WeekContent = {
       type: "quickCheck",
       mode: "lie",
       prompt: "Is that true?",
-      raccoonLine: "if someone's mean to you, hit back MEANER, that's how you make it stop!",
+      raccoonLine: "If someone's mean to you, hit back MEANER, that's how you make it stop!",
       choices: [
         { text: "TRUE", isCorrect: false, why: "Hitting back is wood on the fire. Now there are two mean messages, and it grows." },
         { text: "FALSE", isCorrect: true },

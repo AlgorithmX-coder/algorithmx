@@ -614,7 +614,7 @@ export const WEEK_4: WeekContent = {
       type: "quickCheck",
       mode: "lie",
       prompt: "Is that true?",
-      raccoonLine: "you have 60 seconds to click, or your account is GONE FOREVER! Tick tock!",
+      raccoonLine: "You have 60 seconds to click, or your account is GONE FOREVER! Tick tock!",
       choices: [
         { text: "TRUE", isCorrect: false, why: "Real companies never give you a scary countdown; a ticking clock is the rush trick talking." },
         { text: "FALSE", isCorrect: true },

@@ -1473,6 +1473,66 @@ sets like that.
 
 ---
 
+## Rule 16 - a gate must state its coverage, or it is a reassurance
+
+27 October 2026, running stage 4 and stage 7b on weeks 1 and 2. **Three
+separate gates reported a clean pass over work they had not done**, in three
+different ways, and all three printed a confident verdict:
+
+| gate | what it claimed | what it had actually measured |
+|---|---|---|
+| `audit-stage-overflow` | "No screen scrolls" | **nothing** - every page was `/login` |
+| `audit-card-fill` | "59 screen(s) measured" | 59 of 60, the 60th silently dropped |
+| `audit-stage-overflow`, `audit-card-fill`, `audit-result-card-fill` | an "all 20" run | **one week**, from a `[1]` / `[2]` default |
+
+1. **Blind.** The browser gates set the `site_auth` cookie, which opens the
+   LAUNCH gate, then stopped. `/lesson/[week]` redirects anyone without a
+   SESSION, so what they measured was the login page. All four had it:
+   stage-overflow, card-fill, frame-fit, result-card-fill - the whole of stage
+   4. Fixed by lifting `shoot-week.mjs`'s working sign-in into
+   `scripts/_qa-signin.mjs` and sharing it.
+
+2. **Silently short.** `audit-card-fill` counted 59 of 60 and named neither the
+   missing screen nor the fact that one was missing. Same shape as the
+   `--shots` run that returned 85 of 90 and called it 85 measured. It now names
+   every screen it could not read.
+
+3. **Defaulting to one week.** Run with no arguments, the way the checklist
+   documents them, three gates measured a single week. Every other audit here
+   defaults to the whole course; these were the exception, and the exception
+   read as a pass. All three now default to twenty.
+
+**The rule.** A gate states what it covered, in the same breath as its verdict,
+and names anything it could not reach. `audit-stage-overflow` only confessed
+case 1 because somebody had written an honest "MEASURED NOTHING" guard into it;
+without that line it would have gone green on an empty measurement forever.
+Copy that guard into anything new.
+
+**Why this matters more than any single defect.** The owner, 26 October:
+"make sure you actually do them and don't waste my coins. Because last time you
+wasted them, you said you did it, but then we were still having the same bloody
+issues." This is the mechanism. The checks were not skipped. They ran, they
+went green, and they had not looked at anything. A check that cannot fail is
+worse than no check, because it buys confidence instead of information.
+
+**And the corollary for the eye stage.** Seven defects were found on weeks 1
+and 2 by looking at sixty frames, and *no gate had an assertion for any of
+them*: a full stop floating clear of its blank (8 screens, 8 weeks), a stamp
+that `margin: 0 auto` never centred because it was an inline-block (all 20),
+twelve Raccoon quotes opening in lower case, the medal burying "WEEK N
+COMPLETE" (all 20), the "Listening..." pill on a card border, and week 2's
+opening caption naming a different week's story.
+
+Five of those seven had a root cause that READS AS CORRECT in the source.
+`height: 100%` with `objectFit: contain` that contained nothing, because a grid
+item under `place-items: center` is not stretched. `margin: 0 auto` that
+centres nothing, because auto margins do not centre an inline-block. A slot
+chooser that scored a border as empty space, because it weighed text and
+controls and a border is neither. Reading the code would have passed all three.
+Only measuring the rendered box disagreed.
+
+---
+
 ## Working rules the owner has set
 
 - ElevenLabs spend is **week by week**, signed off before the next.

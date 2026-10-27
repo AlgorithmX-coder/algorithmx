@@ -469,7 +469,7 @@ export const WEEK_1: WeekContent = {
       type: "quickCheck",
       mode: "lie",
       prompt: "Is that true?",
-      raccoonLine: "a password made of small letters only is just as strong as a mixed-up one!",
+      raccoonLine: "A password made of small letters only is just as strong as a mixed-up one!",
       choices: [
         { text: "TRUE", isCorrect: false, why: "Small letters only is easy to guess; mixing in capitals, numbers and symbols is what makes it strong." },
         { text: "FALSE", isCorrect: true },

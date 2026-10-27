@@ -20,6 +20,7 @@
  */
 import { chromium } from "playwright";
 import { mkdir } from "node:fs/promises";
+import { signIn } from "./_qa-signin.mjs";
 
 const ARG = process.argv.slice(2).filter((a) => !a.startsWith("--"));
 const KEEP_ALL = process.argv.includes("--shots");
@@ -44,6 +45,9 @@ const browser = await chromium.launch({ channel: "msedge" });
 const ctx = await browser.newContext({ viewport: VIEWPORT });
 await ctx.addCookies([{ name: "site_auth", value: "true", domain: "localhost", path: "/" }]);
 const page = await ctx.newPage();
+/* The launch-gate cookie above is not a session: /lesson/[week] redirects
+ * without one, and every gate here used to measure the login page. */
+await signIn(page, BASE);
 
 const problems = [];
 let checked = 0;

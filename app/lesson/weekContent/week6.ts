@@ -591,7 +591,7 @@ export const WEEK_6: WeekContent = {
       type: "quickCheck",
       mode: "lie",
       prompt: "Is that true?",
-      raccoonLine: "real friends ALWAYS move to a different app, game chat is for noobs!",
+      raccoonLine: "Real friends ALWAYS move to a different app, game chat is for noobs!",
       choices: [
         { text: "TRUE", isCorrect: false, why: "Real gaming friends are happy where the guards are. Only tricksters need you to leave." },
         { text: "FALSE", isCorrect: true },

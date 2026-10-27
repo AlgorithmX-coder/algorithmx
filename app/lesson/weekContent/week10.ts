@@ -360,7 +360,7 @@ export const WEEK_10: WeekContent = {
       type: "quickCheck",
       mode: "lie",
       prompt: "Is that true?",
-      raccoonLine: "the moon is made of cheese, and I watched a video that PROVED it!",
+      raccoonLine: "The moon is made of cheese, and I watched a video that PROVED it!",
       choices: [
         { text: "TRUE", isCorrect: false, why: "A video is not proof. Ask who would really know: an astronomer, or your science book." },
         { text: "FALSE", isCorrect: true },

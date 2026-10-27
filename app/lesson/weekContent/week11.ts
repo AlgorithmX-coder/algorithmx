@@ -434,7 +434,7 @@ export const WEEK_11: WeekContent = {
       type: "quickCheck",
       mode: "lie",
       prompt: "Is that true?",
-      raccoonLine: "if you block me, that PROVES you're scared of me!",
+      raccoonLine: "If you block me, that PROVES you're scared of me!",
       choices: [
         { text: "TRUE", isCorrect: false, why: "Blocking is a choice, not a fright. It means somebody decided you were finished talking." },
         { text: "FALSE", isCorrect: true },

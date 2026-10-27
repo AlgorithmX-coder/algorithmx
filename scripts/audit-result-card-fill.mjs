@@ -28,10 +28,19 @@
  */
 import { chromium } from "playwright";
 import { mkdir } from "node:fs/promises";
+import { signIn } from "./_qa-signin.mjs";
 
 const ARG = process.argv.slice(2).filter((a) => !a.startsWith("--"));
 const SHOTS = process.argv.includes("--shots");
-const WEEKS = ARG.length ? ARG.map(Number) : [1];
+/* DEFAULTS TO ALL TWENTY.
+ *
+ * It used to default to a SINGLE week - [1] here, [2] in stage-overflow - so
+ * running it the way the checklist documents it (no arguments) measured one
+ * week of twenty and printed a confident verdict over the other 570 screens.
+ * On 27 October 2026 that produced a clean "all 20" layout report that had
+ * covered 30 screens. Every other audit in this repo defaults to the whole
+ * course; these three were the exception, and the exception read as a pass. */
+const WEEKS = ARG.length ? ARG.map(Number) : Array.from({ length: 20 }, (_, i) => i + 1);
 const SCREENS = 30;
 const BASE = process.env.AUDIT_BASE || "http://localhost:3007";
 const VIEWPORT = { width: 1414, height: 771 };
@@ -45,6 +54,9 @@ const browser = await chromium.launch({ channel: "msedge" });
 const ctx = await browser.newContext({ viewport: VIEWPORT });
 await ctx.addCookies([{ name: "site_auth", value: "true", domain: "localhost", path: "/" }]);
 const page = await ctx.newPage();
+/* The launch-gate cookie above is not a session: /lesson/[week] redirects
+ * without one, and every gate here used to measure the login page. */
+await signIn(page, BASE);
 
 /** Is a result showing? Every engine ends with a way onward. */
 const RESULT = /continue|try again|next|claim|well done|brilliant|all pairs|complete/i;

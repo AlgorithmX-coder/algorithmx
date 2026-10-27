@@ -58,7 +58,7 @@ export const WEEK_2: WeekContent = {
       title: "ALERT INCOMING",
       badge: "Incident Report",
       caption: "The Raccoon tricked Adam and Layla into typing their address, school and phone number. Now he knows EVERYTHING. Your secrets? He's not getting a single one - let's make sure.",
-      photoCaption: "Wk 2 - The Free Game Trap",
+      photoCaption: "Wk 2 - The Nosy Form",
       ctaLabel: "See the Mission →",
       narration: {
         speaker: "adam",
@@ -495,7 +495,7 @@ export const WEEK_2: WeekContent = {
       type: "quickCheck",
       mode: "lie",
       prompt: "Is that true?",
-      raccoonLine: "a quiz app NEEDS your home address, or the quiz won't work!",
+      raccoonLine: "A quiz app NEEDS your home address, or the quiz won't work!",
       choices: [
         { text: "TRUE", isCorrect: false, why: "A quiz has no use for your address. That is private info. An app that asks for it is up to something." },
         { text: "FALSE", isCorrect: true },

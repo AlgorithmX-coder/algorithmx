@@ -710,7 +710,7 @@ export const WEEK_8: WeekContent = {
       type: "quickCheck",
       mode: "lie",
       prompt: "Is that true?",
-      raccoonLine: "your account is PRIVATE, so your photos can NEVER escape!",
+      raccoonLine: "Your account is PRIVATE, so your photos can NEVER escape!",
       choices: [
         { text: "TRUE", isCorrect: false, why: "Private makes the door smaller, but anyone inside can still screenshot a photo and send it on." },
         { text: "FALSE", isCorrect: true },

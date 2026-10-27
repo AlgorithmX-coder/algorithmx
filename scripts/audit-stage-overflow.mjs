@@ -24,10 +24,19 @@
  */
 import { chromium } from "playwright";
 import { mkdir } from "node:fs/promises";
+import { signIn } from "./_qa-signin.mjs";
 
 const ARG = process.argv.slice(2).filter((a) => !a.startsWith("--"));
 const SHOTS = process.argv.includes("--shots");
-const WEEKS = ARG.length ? ARG.map(Number) : [2];
+/* DEFAULTS TO ALL TWENTY.
+ *
+ * It used to default to a SINGLE week - [1] here, [2] in stage-overflow - so
+ * running it the way the checklist documents it (no arguments) measured one
+ * week of twenty and printed a confident verdict over the other 570 screens.
+ * On 27 October 2026 that produced a clean "all 20" layout report that had
+ * covered 30 screens. Every other audit in this repo defaults to the whole
+ * course; these three were the exception, and the exception read as a pass. */
+const WEEKS = ARG.length ? ARG.map(Number) : Array.from({ length: 20 }, (_, i) => i + 1);
 const SCREENS = 30;
 const BASE = process.env.AUDIT_BASE || "http://localhost:3007";
 /* The owner's own window. Short, which is the point: a screen that only fits
@@ -44,13 +53,21 @@ const browser = await chromium.launch({ channel: "msedge" });
 const ctx = await browser.newContext({ viewport: VIEWPORT });
 await ctx.addCookies([{ name: "site_auth", value: "true", domain: "localhost", path: "/" }]);
 const page = await ctx.newPage();
+/* The launch-gate cookie above is not a session: /lesson/[week] redirects
+ * without one, and every gate here used to measure the login page. */
+await signIn(page, BASE);
 
+/* Screens this gate could not read. NAMED, never silently dropped: rule 16.
+ * A run that reported 598 of 600 and still said "No screen scrolls" is how
+ * two screens go unmeasured behind a clean verdict. */
+const unread = [];
 const rows = [];
 for (const w of WEEKS) {
   for (let s = 0; s < SCREENS; s++) {
     try {
       await page.goto(`${BASE}/lesson/${w}?screen=${s}`, { waitUntil: "domcontentloaded", timeout: 20000 });
     } catch {
+      unread.push(`w${w} s${s} (never rendered)`);
       continue;
     }
     await page.waitForTimeout(1500);
@@ -131,6 +148,18 @@ if (!rows.length) {
   console.log("MEASURED NOTHING - the lesson never rendered.");
   console.log("Check the server is up and the gate is open, then run again.");
   process.exit(2);
+}
+
+/* Rule 16: a screen this could not read is UNMEASURED, not clean.
+ *
+ * 27 October 2026: this reported "598 screen(s) measured" and then "No screen
+ * scrolls. Every card fits its stage." Two screens had gone unread and the
+ * verdict covered for them. The guard above only catches reading NOTHING;
+ * reading nearly everything needs saying too. */
+if (unread.length) {
+  console.log(`\n${unread.length} screen(s) this gate could NOT read, so they are unmeasured, not clean:`);
+  for (const u of unread) console.log(`  ${u}`);
+  console.log("Re-run them; a screen that will not load twice is itself a finding.");
 }
 
 if (flashes.length) {

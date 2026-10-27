@@ -381,7 +381,7 @@ export const WEEK_15: WeekContent = {
       type: "quickCheck",
       mode: "lie",
       prompt: "Is that true?",
-      raccoonLine: "the bot sounded REALLY sure about the ice-cream volcano... so it must be true. Confident means correct!",
+      raccoonLine: "The bot sounded REALLY sure about the ice-cream volcano... so it must be true. Confident means correct!",
       choices: [
         { text: "TRUE", isCorrect: false, why: "Sounding sure isn't the same as being right. A bot can say a made-up thing in a very confident voice." },
         { text: "FALSE", isCorrect: true },
