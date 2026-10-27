@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import { T } from "./learn/tokens";
 import CodeRainBg from "./CodeRainBg";
 import ReadinessMeter from "./ReadinessMeter";
@@ -69,8 +72,66 @@ function Pill({ status }: { status: Status }) {
   return <span style={{ fontFamily: T.mono, fontSize: 9.5, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: map.color, background: map.bg, border: `1px solid ${map.color}44`, borderRadius: 5, padding: "3px 8px", whiteSpace: "nowrap", flexShrink: 0 }}>{map.label}</span>;
 }
 
+/* Shown in place of the status pill once every topic in a module is done. */
+function DoneBadge() {
+  return (
+    <span style={{ display: "inline-flex", alignItems: "center", gap: 4, fontFamily: T.mono, fontSize: 9.5, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: T.green, background: T.greenSoft, border: `1px solid ${T.green}66`, borderRadius: 5, padding: "3px 8px", whiteSpace: "nowrap", flexShrink: 0 }}>
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke={T.green} strokeWidth="3.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d="M5 13l4 4L19 7" /></svg>
+      Done
+    </span>
+  );
+}
+
+/* Topic ids per module number, matching the lesson checkpoint keys
+ * (pro:lesson:<id>). Every module is m{n}t1..5 except Module 3 (its content
+ * lives in week01, so w1t*) and Module 18 (the Code Lab, which has no topics).
+ * A module counts as done when all five of its topics are done. */
+function moduleTopicIds(n: number): string[] {
+  if (n === 18) return [];
+  const prefix = n === 3 ? "w1" : `m${n}`;
+  return [1, 2, 3, 4, 5].map((k) => `${prefix}t${k}`);
+}
+
 export default function CourseHub() {
   const built = ACTS.flatMap((a) => a.modules).filter((m) => m.href).length;
+
+  // Which modules the learner has finished (every topic done). Read from the
+  // same lesson checkpoints the ReadinessMeter uses: localStorage first, then
+  // merge the server's cross-device record. Best-effort and client-only.
+  const [doneMods, setDoneMods] = useState<Set<number>>(new Set());
+  useEffect(() => {
+    const doneTopics = new Set<string>();
+    try {
+      for (let i = 0; i < localStorage.length; i++) {
+        const k = localStorage.key(i);
+        if (!k || !k.startsWith("pro:lesson:")) continue;
+        try {
+          const cp = JSON.parse(localStorage.getItem(k) || "null");
+          if (cp && cp.phase === "done" && cp.id) doneTopics.add(cp.id);
+        } catch { /* ignore a corrupt checkpoint */ }
+      }
+    } catch { /* localStorage unavailable */ }
+    const recompute = () => {
+      const mods = new Set<number>();
+      for (const a of ACTS) for (const m of a.modules) {
+        const ids = moduleTopicIds(m.n);
+        if (ids.length > 0 && ids.every((id) => doneTopics.has(id))) mods.add(m.n);
+      }
+      setDoneMods(mods);
+    };
+    recompute();
+    (async () => {
+      try {
+        const res = await fetch("/api/pro/progress", { cache: "no-store" });
+        if (!res.ok) return;
+        const data = (await res.json()) as { done?: string[] };
+        if (Array.isArray(data.done) && data.done.length) {
+          for (const id of data.done) doneTopics.add(id);
+          recompute();
+        }
+      } catch { /* no server sync; local stands */ }
+    })();
+  }, []);
 
   return (
     <div className="pro-hub">
@@ -143,13 +204,22 @@ export default function CourseHub() {
         .a3 .mod::before { background: linear-gradient(${T.cyan}, transparent); }
         .a4 .mod::before { background: linear-gradient(${T.green}, transparent); }
 
-        a.mod { cursor: pointer; transition: border-color 160ms ease, transform 160ms ease, background 160ms ease, box-shadow 160ms ease; }
+        a.mod { cursor: pointer; transition: border-color 160ms ease, transform 160ms ease, background 160ms ease, box-shadow 160ms ease, opacity 220ms ease, filter 220ms ease; }
         a.mod.live { border-color: ${T.green}44; }
         a.mod:hover { transform: translateY(-3px); background: ${T.bgRaise}; box-shadow: 0 14px 30px rgba(0,0,0,0.34); }
         a.mod.live:hover { border-color: ${T.green}; }
         a.mod.preview:hover { border-color: ${T.cyan}; }
         .mod.soon { opacity: 0.5; }
         .mod.soon::before { opacity: 0.4; }
+
+        /* Completed modules: ticked and dimmed/blurred so attention goes to
+           what is left; hover clears it so going back to review stays easy. */
+        .mod.done { opacity: 0.5; filter: blur(0.8px) saturate(0.6); }
+        .mod.done::before { background: linear-gradient(${T.green}, transparent); }
+        a.mod.done { border-color: ${T.green}33; }
+        a.mod.done:hover { opacity: 1; filter: none; border-color: ${T.green}; }
+        a.mod.done .mod-go { color: ${T.green}; }
+        @media (prefers-reduced-motion: reduce) { .mod.done { filter: saturate(0.6); } }
 
         .mod-top { display: flex; align-items: center; gap: 12px; margin-bottom: 11px; }
         .mod-n { flex-shrink: 0; width: 34px; height: 34px; border-radius: 9px; font-family: ${T.mono}; font-size: 14px; font-weight: 800; display: inline-flex; align-items: center; justify-content: center; }
@@ -184,6 +254,9 @@ export default function CourseHub() {
             <span className="hub-chip"><b>21</b> modules</span>
             <span className="hub-chip"><b>4</b> acts</span>
             <span className="hub-chip"><b>{built}</b> open now</span>
+            {doneMods.size > 0 && (
+              <span className="hub-chip" style={{ color: T.green, borderColor: `${T.green}55` }}><b style={{ color: T.green }}>{doneMods.size}</b> done</span>
+            )}
             <span className="hub-chip">aligned to <b>Security+</b> &middot; ISC² CC</span>
           </div>
 
@@ -222,23 +295,25 @@ export default function CourseHub() {
               </div>
               <div className="mods">
                 {a.modules.map((m) => {
+                  const isDone = doneMods.has(m.n);
                   const inner = (
                     <>
                       <div className="mod-top">
                         <span className="mod-n" aria-hidden>{m.n}</span>
                         <h3 className="mod-title">{m.title}</h3>
-                        <Pill status={m.status} />
+                        {isDone ? <DoneBadge /> : <Pill status={m.status} />}
                       </div>
                       <p className="mod-blurb">{m.blurb}</p>
                       <div className="mod-foot">
                         <span className="mod-tag">{m.tag}</span>
-                        {m.href && <span className="mod-go">{m.status === "preview" ? "Preview lesson" : "Start module"} <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d="M5 12h14M13 6l6 6-6 6" /></svg></span>}
+                        {m.href && <span className="mod-go">{isDone ? "Review" : m.status === "preview" ? "Preview lesson" : "Start module"} <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d="M5 12h14M13 6l6 6-6 6" /></svg></span>}
                       </div>
                     </>
                   );
+                  const cls = `mod ${m.status}${isDone ? " done" : ""}`;
                   return m.href
-                    ? <a key={m.n} className={`mod ${m.status}`} href={m.href}>{inner}</a>
-                    : <div key={m.n} className={`mod ${m.status}`}>{inner}</div>;
+                    ? <a key={m.n} className={cls} href={m.href} aria-label={isDone ? `${m.title} (completed, open to review)` : undefined}>{inner}</a>
+                    : <div key={m.n} className={cls}>{inner}</div>;
                 })}
               </div>
             </section>
