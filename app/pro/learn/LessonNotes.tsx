@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import { T } from "./tokens";
 
 /* Cyber Pro note-taking (AI-summarise mode).
@@ -24,7 +24,7 @@ function tidy(text: string): string {
   return clean.length > 400 ? clean.slice(0, 397).trimEnd() + "..." : clean;
 }
 
-export default function LessonNotes({ notebookKey, title }: { notebookKey: string; title: string }) {
+export default function LessonNotes({ notebookKey, title, leftSlot }: { notebookKey: string; title: string; leftSlot?: ReactNode }) {
   const storeKey = `pro:notes:${notebookKey}`;
   const [notes, setNotes] = useState<Note[]>([]);
   const [open, setOpen] = useState(false);
@@ -124,13 +124,17 @@ export default function LessonNotes({ notebookKey, title }: { notebookKey: strin
         </div>
       )}
 
-      {/* floating open/close toggle */}
-      <button
-        onClick={() => setOpen((o) => !o)}
-        aria-label={open ? "Close your notes" : "Open your notes"}
-        style={{ position: "fixed", right: 18, bottom: 18, zIndex: 55, display: "inline-flex", alignItems: "center", gap: 8, fontFamily: T.display, fontSize: 13.5, fontWeight: 700, color: open ? T.ink : "#fff", background: open ? T.panel : `linear-gradient(135deg, ${T.primary}, ${T.cyan})`, border: open ? `1px solid ${T.edge}` : "none", borderRadius: 999, padding: "11px 17px", cursor: "pointer", boxShadow: "0 10px 26px rgba(0,0,0,0.45)" }}>
-        <Sparkle /> Notes{notes.length > 0 ? ` (${notes.length})` : ""}
-      </button>
+      {/* floating action dock: an optional sibling action (e.g. Test me) sits
+          to the left of the notes open/close toggle */}
+      <div style={{ position: "fixed", right: 18, bottom: 18, zIndex: 55, display: "flex", alignItems: "center", gap: 10 }}>
+        {leftSlot}
+        <button
+          onClick={() => setOpen((o) => !o)}
+          aria-label={open ? "Close your notes" : "Open your notes"}
+          style={{ display: "inline-flex", alignItems: "center", gap: 8, fontFamily: T.display, fontSize: 13.5, fontWeight: 700, color: open ? T.ink : "#fff", background: open ? T.panel : `linear-gradient(135deg, ${T.primary}, ${T.cyan})`, border: open ? `1px solid ${T.edge}` : "none", borderRadius: 999, padding: "11px 17px", cursor: "pointer", boxShadow: "0 10px 26px rgba(0,0,0,0.45)" }}>
+          <Sparkle /> Notes{notes.length > 0 ? ` (${notes.length})` : ""}
+        </button>
+      </div>
 
       {/* notes drawer */}
       {open && (

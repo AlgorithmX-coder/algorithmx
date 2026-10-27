@@ -5,6 +5,8 @@ import { T } from "./tokens";
 import InlineVisual from "./learnVisuals";
 import TutorChat from "./TutorChat";
 import LessonNotes from "./LessonNotes";
+import LessonTestMe from "./LessonTestMe";
+import { moduleOfTopic } from "./quizPool";
 import {
   FIVE_CONTROLS,
   lessonCheckpointKey,
@@ -433,6 +435,9 @@ export default function LessonPlayer({ lesson, topicIndex, topicCount, weekTitle
   /* Notes are kept per MODULE, so they build up across its five topics. The
    * topic id is like "m1t3" (or "w1t3" for module 3); strip the topic suffix. */
   const notebookKey = lesson.id.replace(/t\d+$/, "");
+  /* Which module this topic belongs to, for the in-lesson "Test me" button.
+   * null for the Code Lab module (no quiz), which hides the button. */
+  const moduleN = useMemo(() => moduleOfTopic(lesson.id), [lesson.id]);
 
   /* The teaching material for this topic, compiled for the AI tutor so it
      answers from the lesson rather than the open web. Bounded to stay
@@ -909,7 +914,13 @@ export default function LessonPlayer({ lesson, topicIndex, topicCount, weekTitle
         </div>
       </div>
 
-      {inLesson && <LessonNotes notebookKey={notebookKey} title={lesson.title} />}
+      {inLesson && (
+        <LessonNotes
+          notebookKey={notebookKey}
+          title={lesson.title}
+          leftSlot={moduleN !== null ? <LessonTestMe moduleN={moduleN} /> : undefined}
+        />
+      )}
     </div>
   );
 }

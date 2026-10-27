@@ -58,6 +58,32 @@ function shuffle<T>(arr: T[]): T[] {
   return a;
 }
 
+/* The topic ids the learner has finished: localStorage checkpoints merged
+ * with the server record, read exactly the way the course hub reads them.
+ * Client-only (touches localStorage and fetch); call it at runtime, not at
+ * import. Shared by the full-page Test Me and the in-lesson one. */
+export async function collectDoneTopicIds(): Promise<string[]> {
+  const ids = new Set<string>();
+  try {
+    for (let i = 0; i < localStorage.length; i++) {
+      const k = localStorage.key(i);
+      if (!k || !k.startsWith("pro:lesson:")) continue;
+      try {
+        const cp = JSON.parse(localStorage.getItem(k) || "null");
+        if (cp && cp.phase === "done" && cp.id) ids.add(cp.id);
+      } catch { /* skip a corrupt checkpoint */ }
+    }
+  } catch { /* localStorage unavailable */ }
+  try {
+    const res = await fetch("/api/pro/progress", { cache: "no-store" });
+    if (res.ok) {
+      const data = (await res.json()) as { done?: string[] };
+      if (Array.isArray(data.done)) for (const id of data.done) ids.add(id);
+    }
+  } catch { /* local set stands */ }
+  return [...ids];
+}
+
 /* Build a shuffled test from the topics the learner has finished. With none
  * finished yet, fall back to Module 1 so a new learner can still try (flagged
  * `starter`). `count` caps how many questions the test holds. */
@@ -81,4 +107,31 @@ export async function buildTest(doneTopicIds: string[], count = 10): Promise<{ q
     }
   }
   return { questions: shuffle(pool).slice(0, count), starter };
+}
+
+/* Build a shuffled self-test for ONE module, for the in-lesson "Test me"
+ * button that sits beside Notes. It pulls from the topics the learner has
+ * finished in this module; if they have finished none yet, it falls back to
+ * the whole module so the test is useful from the very first topic. Module 18
+ * (Code Lab) has no quiz and no loader, so it yields an empty test. */
+export async function buildModuleTest(
+  moduleN: number,
+  doneTopicIds: string[],
+  count = 8,
+): Promise<{ questions: PoolQuestion[]; moduleTitle: string; finishedOnly: boolean }> {
+  const loader = LOADERS[moduleN];
+  if (!loader) return { questions: [], moduleTitle: "", finishedOnly: false };
+  const m = (await loader()).default;
+  const doneSet = new Set(doneTopicIds);
+  const finished = m.topics.filter((t) => doneSet.has(t.id));
+  const finishedOnly = finished.length > 0;
+  const topics = finishedOnly ? finished : m.topics;
+
+  const pool: PoolQuestion[] = [];
+  for (const t of topics) {
+    for (const q of t.check.quiz) {
+      pool.push({ ...q, moduleN, moduleTitle: m.title, topicTitle: t.title, topicId: t.id, order: shuffle(q.options.map((_, i) => i)) });
+    }
+  }
+  return { questions: shuffle(pool).slice(0, count), moduleTitle: m.title, finishedOnly };
 }
