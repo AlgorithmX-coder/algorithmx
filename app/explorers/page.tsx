@@ -50,6 +50,7 @@ import { getStreak, recordDailyActivity } from "./engine/streak";
 import { RankUpMoment } from "./engine/RankUpMoment";
 import { ClearanceUpMoment } from "./engine/ClearanceUpMoment";
 import { blockBonusXP, hasBlockBonus, awardBlockBonus } from "./engine/blockBonus";
+import { resetZeroFile, ZERO_CLUES } from "./engine/zeroFile";
 import { VillainGallery } from "./VillainGallery";
 import { loadExplorersProgress } from "@/app/lib/explorersProgress.actions";
 import { CaseGlyph } from "./CaseGlyphs";
@@ -267,12 +268,20 @@ export default function ExplorersPage() {
   // server + first client render agree — otherwise the lock state hydration-
   // mismatches. Mirrors how `status` is read below.
   const [qa, setQa] = useState(false);
+  // Set when /explorers?clues=0 has just emptied the Zero File, so the tester
+  // gets an on-screen confirmation rather than having to take it on trust
+  // (Abdullah, UAT, 27 October 2026 - see resetZeroFile).
+  const [cluesReset, setCluesReset] = useState(false);
   useEffect(() => {
     try {
       const p = new URLSearchParams(window.location.search);
-      if (p.get("qa") === "1") { localStorage.setItem("explorers:qa", "1"); setQa(true); return; }
-      if (p.get("qa") === "0") { localStorage.removeItem("explorers:qa"); setQa(false); return; }
-      setQa(localStorage.getItem("explorers:qa") === "1");
+      let on = localStorage.getItem("explorers:qa") === "1";
+      if (p.get("qa") === "1") { localStorage.setItem("explorers:qa", "1"); on = true; }
+      else if (p.get("qa") === "0") { localStorage.removeItem("explorers:qa"); on = false; }
+      setQa(on);
+      // Behind the same unlock as the ?case= deep-link below: a tester's tool,
+      // never something a child can trip over by typing in the address bar.
+      if (on && p.get("clues") === "0") { resetZeroFile(); setCluesReset(true); }
     } catch {}
   }, []);
 
@@ -576,6 +585,39 @@ export default function ExplorersPage() {
       <MatrixRain reduced={reduced} opacity={0.24} colors={RAIN_COLORS} />
       <div className="tc-scan" aria-hidden />
       <div className="tc-vig" aria-hidden />
+
+      {cluesReset && (
+        <button
+          onClick={() => setCluesReset(false)}
+          style={{
+            position: "fixed",
+            top: 14,
+            left: "50%",
+            transform: "translateX(-50%)",
+            zIndex: 90,
+            maxWidth: "calc(100vw - 28px)",
+            textAlign: "left",
+            fontFamily: MONO,
+            fontSize: 12,
+            lineHeight: 1.45,
+            color: "#E4D4D4",
+            background: "linear-gradient(180deg,#1c0f10,#120a0b)",
+            border: "1px solid rgba(255,77,77,0.5)",
+            borderLeft: "3px solid #FF4D4D",
+            borderRadius: 8,
+            padding: "10px 14px",
+            boxShadow: "0 10px 26px rgba(0,0,0,0.5)",
+            cursor: "pointer",
+          }}
+        >
+          <span style={{ color: "#FF8080", fontWeight: 700, letterSpacing: ".1em", fontSize: 10 }}>
+            ZERO FILE CLEARED
+          </span>
+          <br />
+          0 of {ZERO_CLUES.length} clues. Replay a Block 4 case and the new-clue
+          pop-up fires again. Your cases, xp and rank are untouched. Tap to close.
+        </button>
+      )}
 
       {rankUp && <RankUpMoment from={rankUp.from} to={rankUp.to} reduced={reduced} onDone={() => setRankUp(null)} />}
       {showWatchlist && (

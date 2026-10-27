@@ -90,6 +90,28 @@ export function hasZeroClue(caseId: string): boolean {
  * on-screen beat, not just a silent localStorage write) instead of firing
  * on a resumed/replayed case that already has it.
  */
+/**
+ * TESTER TOOL, not a child-facing control.
+ *
+ * Abdullah, UAT, 27 October 2026: "I need you to reset the clues ... I can't
+ * test the pop up screen as I've already got all the clues."
+ *
+ * He is right that there was no way back. The file is block-wide and
+ * permanent by design - that is the whole point of it - so once all five
+ * clues are in, addZeroClue() returns false forever and the one-time "new
+ * clue" moment can never fire again in that browser. Emptying the file puts
+ * all five of those moments back on the table.
+ *
+ * Clears the dossier and NOTHING else: cases stay closed, XP, rank, streak
+ * and per-case journals are untouched. Reached from the map with
+ * /explorers?clues=0, behind the same ?qa unlock as the ?case= deep-link.
+ */
+export function resetZeroFile(): void {
+  try {
+    localStorage.removeItem(KEY);
+  } catch {}
+}
+
 export function addZeroClue(caseId: string): boolean {
   if (hasZeroClue(caseId)) return false;
   const next = [...load(), caseId];
