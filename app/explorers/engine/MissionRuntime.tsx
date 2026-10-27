@@ -16,7 +16,7 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import type { CSSProperties } from "react";
 import { playWren, setVoiceRate, stopWren, useSignalAudio, useVoiceRate, useWrenSpeaking, VOICE_RATES } from "./audio";
-import { useArrowAdvance, useSkipToComplete, SkipButton } from "./arrowAdvance";
+import { useArrowAdvance, useSkipToComplete, SkipButton, BackButton } from "./arrowAdvance";
 import { playBGM, stopBGM } from "@/app/lib/sounds";
 import { saveExplorersProgress } from "@/app/lib/explorersProgress.actions";
 
@@ -83,6 +83,40 @@ function nextPos(pos: BeatPos, hasCatch = false, hasCheckpoint = true, lastCycle
   if (pos.beat === "catch") return { beat: "debrief" };
   if (pos.beat === "debrief") return { beat: "closed" };
   return pos;
+}
+
+/**
+ * The exact inverse of nextPos — one beat backward, same granularity as one
+ * tap of CONTINUE forward (UAT, Abdullah: "add a back button so I can go
+ * back whilst doing UAT"). Signal Room replaces its whole screen per beat
+ * rather than accumulating a scrollable transcript (unlike the other three
+ * blocks), so going back here has to be a real position change, not a
+ * scroll. `hasCheckpointAt(i)` takes a cycle index rather than nextPos's
+ * single boolean, because retreating from "incident" or from one cycle's
+ * "intel" stage both need to know a DIFFERENT cycle's checkpoint flag (the
+ * last cycle's, or the previous cycle's) than the one nextPos was called
+ * for — a single flag can't answer both.
+ */
+function prevPos(pos: BeatPos, hasCatch: boolean, hasCheckpointAt: (i: number) => boolean, lastCycle: number): BeatPos {
+  if (pos.beat === "closed") return { beat: "debrief" };
+  if (pos.beat === "debrief") return hasCatch ? { beat: "catch" } : { beat: "incident", incidentPhase: 1 };
+  if (pos.beat === "catch") return { beat: "incident", incidentPhase: 1 };
+  if (pos.beat === "incident") {
+    return hasCheckpointAt(lastCycle)
+      ? { beat: "cycle", cycleIndex: lastCycle, stage: "checkpoint" }
+      : { beat: "cycle", cycleIndex: lastCycle, stage: "fieldwork" };
+  }
+  if (pos.beat === "cycle") {
+    if (pos.stage === "checkpoint") return { ...pos, stage: "fieldwork" };
+    if (pos.stage === "fieldwork") return { ...pos, stage: "intel" };
+    // stage === "intel": step back into the previous cycle's last stage, or
+    // all the way out to the briefing if this is the first cycle.
+    if (pos.cycleIndex === 0) return { beat: "briefing" };
+    const prev = pos.cycleIndex - 1;
+    return hasCheckpointAt(prev) ? { beat: "cycle", cycleIndex: prev, stage: "checkpoint" } : { beat: "cycle", cycleIndex: prev, stage: "fieldwork" };
+  }
+  if (pos.beat === "briefing") return { beat: "transmission" };
+  return pos; // transmission: already at the start
 }
 
 /** Kid-plain position label for the HUD. */
@@ -378,6 +412,14 @@ export default function MissionRuntime({ manifest, devStartBeat, onExit, onNextC
     window.scrollTo({ top: 0 });
   }, [audio, manifest]);
 
+  /** Mirror of advance(): one beat backward, for the UAT Back button. */
+  const retreat = useCallback(() => {
+    stopWren();
+    setMapGate(null);
+    setPos((p) => prevPos(p, !!manifest.catchThem, (i) => !!manifest.cycles[i]?.checkpoint?.questions?.length, manifest.cycles.length - 1));
+    window.scrollTo({ top: 0 });
+  }, [manifest]);
+
   const startMission = () => {
     audio.click();
     setIntro(false);
@@ -505,6 +547,7 @@ export default function MissionRuntime({ manifest, devStartBeat, onExit, onNextC
     <main style={{ ...(theme.surface as CSSProperties), minHeight: "100vh", background: T.inkBlack, color: T.textPrimary, fontFamily: BODY, position: "relative", overflow: "hidden" }}>
       <EngineStyles />
       <SkipButton />
+      <BackButton onBack={retreat} />
       <button
         onClick={skipSkill}
         aria-label="Skip this whole skill (testing)"
