@@ -31,7 +31,7 @@ export const case15Console: ConsoleCase = {
       n: 1,
       title: "A fake can look perfect",
       goal: "How a login page LOOKS proves nothing. A copy can be flawless.",
-      journalNote: "A perfect copy of your bank's login page is like a stage set of a shop front — flawless to look at, but it isn't the real shop behind it. Looks prove nothing about what's actually there. Never trust a page just because it looks right.",
+      journalNote: "A perfect copy of your bank's login page is like a stage set of a shop front: flawless to look at, but it isn't the real shop behind it. Looks prove nothing about what's actually there. Never trust a page just because it looks right.",
       panel: "BROWSER · PAGE",
       learn: [
         { t: "wren", text: "Start with the hard truth. Anyone can right-click a real login page and copy every pixel of it, the logo, the colours, the little padlock icon drawn ON the page. So the way a page LOOKS tells you nothing about whether it's real. A perfect-looking login box can be a thief's box. If your only check is 'it looks right', you've already lost. We need a check the fake can't copy.", voice: "/audio/wren/m15c-s1-learn.mp3" },
@@ -81,7 +81,7 @@ export const case15Console: ConsoleCase = {
       n: 2,
       title: "The address bar is the truth",
       goal: "The one thing a fake can't fake: the real web address at the top.",
-      journalNote: "The address bar is the one label on the building a forger can't fake — the real deed to who actually owns it. Everything else on the page can be copied perfectly. Read the actual address, every single time, before you trust a login page.",
+      journalNote: "The address bar is the one label on the building a forger can't fake: the real deed to who actually owns it. Everything else on the page can be copied perfectly. Read the actual address, every single time, before you trust a login page.",
       panel: "BROWSER · ADDRESS BAR",
       learn: [
         { t: "wren", text: "Here's the one thing a fake can never truly copy: the address bar, the real web address at the very top of your browser. A thief can make the PAGE look like your bank, but they cannot make the address bar say your bank's real domain, because that address belongs to your bank and no one else. So from now on, you don't trust the page. You read the address bar. That's the only place the truth lives.", voice: "/audio/wren/m15c-s2-learn.mp3" },
@@ -228,7 +228,7 @@ export const case15Console: ConsoleCase = {
       n: 5,
       title: "Don't be sent, arrive",
       goal: "Never log in via a link someone sent. Go to the site yourself.",
-      journalNote: "Clicking a link in a message to 'secure your account' is like following a stranger's directions to a shop instead of walking there yourself — you end up wherever they chose to send you. Arriving yourself means you control where you land. Open your bank by typing the address or your own app, never a link.",
+      journalNote: "Clicking a link in a message to 'secure your account' is like following a stranger's directions to a shop instead of walking there yourself. You end up wherever they chose to send you. Arriving yourself means you control where you land. Open your bank by typing the address or your own app, never a link.",
       panel: "BROWSER · NAVIGATE",
       learn: [
         { t: "wren", text: "Here's how you dodge the whole trap before it starts. Most fake sites reach you through a link, in a message, an email, a pop-up. So the rule is simple: never log in through a link someone sent you. If you get a message about your bank, don't tap its link. Instead, ARRIVE at your bank yourself, type the address you know, use your bookmark, or open the app. A link can send you anywhere. Arriving yourself sends you to the real place.", voice: "/audio/wren/m15c-s5-learn.mp3" },

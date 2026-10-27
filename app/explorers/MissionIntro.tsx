@@ -155,7 +155,7 @@ export default function MissionIntro({ data, onBegin }: { data: MissionIntroData
           </div>
           <div style={{ flex: "0 0 auto", textAlign: "right" }}>
             <button className="cta" onClick={onBegin} style={{ fontFamily: DISP, fontWeight: 600, fontSize: 17, letterSpacing: ".05em", textTransform: "uppercase", color: "#14110a", background: `linear-gradient(180deg,${accHi},${acc})`, border: 0, borderRadius: 9, padding: "14px 30px", cursor: "pointer" }}>{data.beginLabel}</button>
-            <div style={{ fontFamily: MONO, fontSize: 11, letterSpacing: ".12em", color: "#6f7b89", marginTop: 8, textTransform: "uppercase" }}>— ATLAS · ARC COMMAND</div>
+            <div style={{ fontFamily: MONO, fontSize: 11, letterSpacing: ".12em", color: "#6f7b89", marginTop: 8, textTransform: "uppercase" }}>ATLAS · ARC COMMAND</div>
           </div>
         </div>
 

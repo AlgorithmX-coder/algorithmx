@@ -55,7 +55,7 @@ export const mission01Intro: MissionIntroData = {
   title: "Phishing",
   thesis: "One fake message, built to look exactly like the one you trust, and three seconds to make you click before you think.",
   realWorld:
-    "Phishing is still the single most common way in — not a hack, just a message built to feel real enough that you act before you check. Learn how PHANTOM HOOK builds that message, and every copy of it stops working on you.",
+    "Phishing is still the single most common way in, not a hack, just a message built to feel real enough that you act before you check. Learn how PHANTOM HOOK builds that message, and every copy of it stops working on you.",
   audio: "/audio/atlas/m01-brief.mp3",
   voiceScript:
     "[serious] Agent. PHANTOM HOOK doesn't break in, he gets invited in. One message, dressed as your bank, your school, your favourite app, built to make you move before you think. [determined] Today you learn to take that message apart: the address, the link, the pressure, all of it. [warm] WREN's got the first case open. [excited] Let's teach you to read past the disguise.",
@@ -80,12 +80,12 @@ export const mission02Intro: MissionIntroData = {
   caseNumber: "CASE 002",
   codename: "SIREN",
   title: "Too Good To Be True",
-  thesis: "A prize with your name on it, ticking down, showing up in three places at once — and every bit of it built to collect, not to give.",
+  thesis: "A prize with your name on it, ticking down, showing up in three places at once, and every bit of it built to collect, not to give.",
   realWorld:
     "SIREN's whole trick is flattery and a countdown: the second you believe you've won something, you stop checking anything. Spot the funnel and the gift stops working on you.",
   audio: "/audio/atlas/m02-brief.mp3",
   voiceScript:
-    "[warm] Agent, welcome back. [serious] Meet SIREN — she doesn't threaten you, she flatters you. A prize, a gift, a clock running down, and a form waiting to collect. [determined] Today you trace the funnel from the bait to the form, and learn why 'free' always has a price. [excited] WREN's waiting in the Signal Room. Let's find the hook under the glitter.",
+    "[warm] Agent, welcome back. [serious] Meet SIREN. She doesn't threaten you, she flatters you. A prize, a gift, a clock running down, and a form waiting to collect. [determined] Today you trace the funnel from the bait to the form, and learn why 'free' always has a price. [excited] WREN's waiting in the Signal Room. Let's find the hook under the glitter.",
   skills: [
     "Too good to be true",
     "'Free' has a price",
@@ -107,9 +107,9 @@ export const mission03Intro: MissionIntroData = {
   caseNumber: "CASE 003",
   codename: "SKELETON KEY",
   title: "The Guessing Game",
-  thesis: "One rig, millions of guesses a second, built entirely out of your own life — your pet's name, your birthday, the password you've used since forever.",
+  thesis: "One rig, millions of guesses a second, built entirely out of your own life: your pet's name, your birthday, the password you've used since forever.",
   realWorld:
-    "SKELETON KEY doesn't need to trick you if your password is guessable. Length and randomness beat cleverness every time — three random words will outlast anything you could 'cleverly' make up.",
+    "SKELETON KEY doesn't need to trick you if your password is guessable. Length and randomness beat cleverness every time. Three random words will outlast anything you could 'cleverly' make up.",
   audio: "/audio/atlas/m03-brief.mp3",
   voiceScript:
     "[serious] Agent, SKELETON KEY is back, and he's not guessing blind, he's guessing YOU. Pet names, birthdays, old passwords, he feeds it all into the rig and waits. [determined] Today you learn his math, and build a password his machine can't crack: long, random, and nothing it can scrape off you. [warm] WREN's got the Signal Room standing by. [excited] Let's lock every door he thinks he knows.",
@@ -136,7 +136,7 @@ export const mission04Intro: MissionIntroData = {
   title: "The Puzzle You Posted",
   thesis: "He never breaks in. He just collects what you post, piece by piece, until the pieces make a file worth selling.",
   realWorld:
-    "PACKRAT's attack has no hacking in it at all — just patience, and the crumbs people hand out for free in photos, quizzes, and posts. Scrub the trail and there's nothing left for him to assemble.",
+    "PACKRAT's attack has no hacking in it at all, just patience, and the crumbs people hand out for free in photos, quizzes, and posts. Scrub the trail and there's nothing left for him to assemble.",
   audio: "/audio/atlas/m04-brief.mp3",
   voiceScript:
     "[serious] Agent, PACKRAT doesn't break locks, he picks up what falls outside them. A handle here, a photo there, a quiz that asks one question too many, and he builds a file. [determined] Today you learn to read a photo the way he does, and scrub your trail before he can stack it. [warm] WREN's holding the next piece of evidence. [excited] Let's make sure PACKRAT's file on you stays empty.",
@@ -161,7 +161,7 @@ export const mission05Intro: MissionIntroData = {
   caseNumber: "CASE 005",
   codename: "PHANTOM HOOK",
   title: "Signal Storm",
-  thesis: "Same trick, three costumes, three hundred targets at once — and one of them was built just for you.",
+  thesis: "Same trick, three costumes, three hundred targets at once, and one of them was built just for you.",
   realWorld:
     "A real attack rarely stops at one message. It fires the same trick across every channel you own, spoofing senders and mixing in one personal, researched spear among the spray. Reading addresses, not names, catches all of it.",
   audio: "/audio/atlas/m05-brief.mp3",
@@ -190,7 +190,7 @@ export const mission06Intro: MissionIntroData = {
   caseNumber: "CASE 006",
   codename: "SIREN",
   title: "Levers",
-  thesis: "Every message that moves you fast is pulling a lever on purpose — flattery, urgency, guilt, a gift with a string attached.",
+  thesis: "Every message that moves you fast is pulling a lever on purpose: flattery, urgency, guilt, a gift with a string attached.",
   realWorld:
     "Manipulation in a DM follows a short list of levers, used again and again because they work. Name the lever while it's being pulled, and it stops working on you.",
   audio: "/audio/atlas/m06-brief.mp3",
@@ -217,7 +217,7 @@ export const mission07Intro: MissionIntroData = {
   caseNumber: "CASE 007",
   codename: "MIMIC",
   title: "Borrowed Faces",
-  thesis: "The account is real. The face is real. The person typing isn't your friend anymore — it's MIMIC, wearing them.",
+  thesis: "The account is real. The face is real. The person typing isn't your friend anymore. It's MIMIC, wearing them.",
   realWorld:
     "Account takeovers let an attacker message you from a face you already trust, which is exactly why 'it looked like them' isn't proof. A question only the real friend knows, checked on another channel, is.",
   audio: "/audio/atlas/m07-brief.mp3",
@@ -244,7 +244,7 @@ export const mission08Intro: MissionIntroData = {
   caseNumber: "CASE 008",
   codename: "GHOSTWRITER",
   title: "The Perfect Message",
-  thesis: "Flawless, warm, personal-sounding, and written by a machine that's never met you — polish like that proves nothing.",
+  thesis: "Flawless, warm, personal-sounding, and written by a machine that's never met you. Polish like that proves nothing.",
   realWorld:
     "AI-written messages can sound warmer and more convincing than a real friend's typo-filled text, which makes polish a terrible way to judge anything. Verify by source, not by how good it sounds.",
   audio: "/audio/atlas/m08-brief.mp3",
@@ -271,7 +271,7 @@ export const mission09Intro: MissionIntroData = {
   caseNumber: "CASE 009",
   codename: "SIREN",
   title: "The Long Game",
-  thesis: "Not one message, weeks of them — warmth first, a gift, then the ask, and finally the turn you were never meant to see coming.",
+  thesis: "Not one message, weeks of them: warmth first, a gift, then the ask, and finally the turn you were never meant to see coming.",
   realWorld:
     "The slowest scams are the most convincing because trust is built for weeks before the ask ever appears. Laying the whole thing on a timeline is how you spot the turn in time, and exit without shame.",
   audio: "/audio/atlas/m09-brief.mp3",
@@ -298,7 +298,7 @@ export const mission10Intro: MissionIntroData = {
   caseNumber: "CASE 010",
   codename: "MIMIC",
   title: "The Voice",
-  thesis: "A voice you'd know anywhere, saying exactly the right thing — except it isn't them, it's a clone built from scraps.",
+  thesis: "A voice you'd know anywhere, saying exactly the right thing, except it isn't them, it's a clone built from scraps.",
   realWorld:
     "Voice cloning means a familiar voice is no longer proof of anything; one real call can be enough to build the clone that calls you next asking for help. A family code word beats any ear test.",
   audio: "/audio/atlas/m10-brief.mp3",
@@ -329,7 +329,7 @@ export const mission11Intro: MissionIntroData = {
   title: "The Master Key",
   thesis: "One machine, millions of guesses a second, and every password you own in its sights.",
   realWorld:
-    "This is the single most common break-in there is — not a clever trick, just a machine trying password after password until one works. Build a vault that doesn't crack, and this attack fails before it starts.",
+    "This is the single most common break-in there is, not a clever trick, just a machine trying password after password until one works. Build a vault that doesn't crack, and this attack fails before it starts.",
   audio: "/audio/atlas/m11-brief.mp3",
   voiceScript:
     "[serious] Agent. SKELETON KEY doesn't guess, it grinds. Millions of attempts a second, every password you've ever reused, every weak one you thought was clever enough. [determined] Today you stop being a guessable target. You're going to build a vault: one master key strong enough to hold forty-one others, and a second lock that turns a stolen password into a dead end. [warm] WREN's got the console ready. [excited] Let's build something that holds.",
@@ -358,7 +358,7 @@ export const mission12Intro: MissionIntroData = {
   caseNumber: "CASE 012",
   codename: "PACKRAT",
   title: "Unreadable",
-  thesis: "He's not stealing your account anymore — he's sitting on the network, reading every unlocked message that passes by.",
+  thesis: "He's not stealing your account anymore. He's sitting on the network, reading every unlocked message that passes by.",
   realWorld:
     "Open wi-fi and unencrypted traffic let anyone nearby read what you send, no password theft required. Seal the channel and PACKRAT gets nothing but gibberish.",
   audio: "/audio/atlas/m12-brief.mp3",
@@ -385,9 +385,9 @@ export const mission13Intro: MissionIntroData = {
   caseNumber: "CASE 013",
   codename: "SKELETON KEY",
   title: "Backdoors",
-  thesis: "He's done guessing your password — now he's after the back door: the recovery questions that give him a way back in.",
+  thesis: "He's done guessing your password. Now he's after the back door: the recovery questions that give him a way back in.",
   realWorld:
-    "Account recovery is often the weakest lock on the door — guessable security answers and stale recovery details let an attacker back in long after the front door's secure. Fresh, unguessable recovery closes it.",
+    "Account recovery is often the weakest lock on the door: guessable security answers and stale recovery details let an attacker back in long after the front door's secure. Fresh, unguessable recovery closes it.",
   audio: "/audio/atlas/m13-brief.mp3",
   voiceScript:
     "[serious] Agent, SKELETON KEY's given up on your front door, he's after the back one: account recovery. Guessable answers, stale details, a session nobody logged out. [determined] Today you slam every side door shut: strong recovery answers, fresh details, no strangers left logged in. [warm] WREN's got the console ready. [excited] Let's leave him nothing to walk through.",
@@ -412,7 +412,7 @@ export const mission14Intro: MissionIntroData = {
   caseNumber: "CASE 014",
   codename: "GHOSTWRITER",
   title: "The Update Trap",
-  thesis: "A download isn't just a file, it's a set of powers you hand over — and GHOSTWRITER's disguised his as the update you were waiting for.",
+  thesis: "A download isn't just a file, it's a set of powers you hand over, and GHOSTWRITER's disguised his as the update you were waiting for.",
   realWorld:
     "Malware disguised as a real installer or urgent update is one of the most effective ways onto a device, because the download LOOKS legitimate. Checking what powers you're actually granting catches it before it runs.",
   audio: "/audio/atlas/m14-brief.mp3",
@@ -439,9 +439,9 @@ export const mission15Intro: MissionIntroData = {
   caseNumber: "CASE 015",
   codename: "MIMIC",
   title: "The Real Site",
-  thesis: "The page is pixel-perfect. The login box works. Everything about it is real — except the address, which was never yours to trust.",
+  thesis: "The page is pixel-perfect. The login box works. Everything about it is real, except the address, which was never yours to trust.",
   realWorld:
-    "A fake login page can be a flawless copy, which means looks can't authenticate anything — only the address bar can, and a password manager that refuses to autofill is the lie detector that catches the swap.",
+    "A fake login page can be a flawless copy, which means looks can't authenticate anything. Only the address bar can, and a password manager that refuses to autofill is the lie detector that catches the swap.",
   audio: "/audio/atlas/m15-brief.mp3",
   voiceScript:
     "[serious] Agent, MIMIC's finest work yet: a login page so perfect you'd never spot it by eye. [determined] Today you learn the one thing that can't be faked, the address bar, and why your password manager refusing to help is the loudest warning you'll get. [warm] WREN's got the console lit up with five doors. [excited] Let's close out Systems, and find the one real site among them.",
@@ -468,7 +468,7 @@ export const mission16Intro: MissionIntroData = {
   caseNumber: "CASE 016",
   codename: "PACKRAT",
   title: "The File On You",
-  thesis: "Every account, every app, every quiz you've ever answered — somewhere, it's all compiled into one file, and PACKRAT's been building yours for years.",
+  thesis: "Every account, every app, every quiz you've ever answered: somewhere, it's all compiled into one file, and PACKRAT's been building yours for years.",
   realWorld:
     "Data brokers and scattered permissions quietly assemble a detailed file on almost everyone, built from sign-ups most people forgot they made. A self-audit and real takedown requests are the only way to shrink it.",
   audio: "/audio/atlas/m16-brief.mp3",
@@ -497,7 +497,7 @@ export const mission17Intro: MissionIntroData = {
   title: "Ghost Stories",
   thesis: "The video looks real. The quote looks real. The only way to know for sure is to stop looking AT it and start looking AROUND it.",
   realWorld:
-    "Convincing fakes are cheap to make now, which means spotting tells by eye is no longer reliable — lateral reading, leaving the page to check elsewhere, and tracing to the original source are what actually work.",
+    "Convincing fakes are cheap to make now, which means spotting tells by eye is no longer reliable. Lateral reading, leaving the page to check elsewhere, and tracing to the original source are what actually work.",
   audio: "/audio/atlas/m17-brief.mp3",
   voiceScript:
     "[serious] Agent, GHOSTWRITER's moved into video and headlines now, and the fakes are good, good enough that tells won't save you anymore. [determined] Today you learn to read sideways, leave the page, ask who benefits, and trace every story back to its original source. [warm] WREN's got the board full of rumours. [excited] Let's be the circuit breaker, not the next share.",
@@ -549,7 +549,7 @@ export const mission19Intro: MissionIntroData = {
   caseNumber: "CASE 019",
   codename: "ALL FREQUENCIES",
   title: "Static Rising",
-  thesis: "No attack is just one trick. It's a chain — recon, lure, access, harvest, spread — and you've just been handed command.",
+  thesis: "No attack is just one trick. It's a chain (recon, lure, access, harvest, spread), and you've just been handed command.",
   realWorld:
     "Real breaches are rarely a single clever move; they're a staged campaign, and breaking the chain at any single link stops the whole operation. Defence in depth means no one failure ever ends the story.",
   audio: "/audio/atlas/m19-brief.mp3",

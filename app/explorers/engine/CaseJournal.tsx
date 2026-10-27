@@ -111,7 +111,7 @@ export function CaseJournal({ entries, accent, caseTitle }: { entries: JournalEn
               {entries.map((e) => (
                 <div key={e.skillN} style={{ borderLeft: `2px solid ${accent}77`, paddingLeft: 10 }}>
                   <div style={{ fontFamily: MONO, fontSize: 10, letterSpacing: "0.08em", color: accent, lineHeight: "28px" }}>
-                    ✓ SKILL {e.skillN} — {e.title.toUpperCase()}
+                    ✓ SKILL {e.skillN} · {e.title.toUpperCase()}
                   </div>
                   <p style={{ margin: 0, fontFamily: MONO, fontSize: 14, fontWeight: 600, lineHeight: "28px", color: "#E4E6EC" }}>{e.note}</p>
                 </div>

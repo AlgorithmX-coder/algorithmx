@@ -145,7 +145,7 @@ export function CaseBoardFileExplorer({
                       </div>
                     )}
                     <div style={{ fontFamily: MONO, fontSize: 9.5, color: "#6b6459", marginTop: 1 }}>
-                      {cleared ? SIZE[i] ?? "—" : "ENCRYPTED"} · lead {lead.n}
+                      {cleared ? SIZE[i] ?? "·" : "ENCRYPTED"} · lead {lead.n}
                     </div>
                   </div>
                 </div>

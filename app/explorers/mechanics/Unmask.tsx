@@ -139,7 +139,7 @@ export default function Unmask({ payload, audio, onEvent, voiceOn }: MechanicPro
                     })}
                     {showTruth && v && (
                       <span role="status" style={{ fontSize: 12.5, lineHeight: 1.5, color: isCorrect ? "#1F7A4D" : "#8A2E2E", flex: 1, minWidth: 190 }}>
-                        {isCorrect ? it.why : `Look again — ${it.why}`}
+                        {isCorrect ? it.why : `Look again. ${it.why}`}
                       </span>
                     )}
                   </div>

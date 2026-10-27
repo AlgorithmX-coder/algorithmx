@@ -254,7 +254,7 @@ function TriagePhase({ reduced, audio, onDone }: { reduced: boolean; audio: Inci
                 })}
                 {submitted && v && (
                   <span role="status" style={{ fontSize: 12.5, lineHeight: 1.5, color: correct ? "#1F7A4D" : "#8A2E2E", flex: 1, minWidth: 200 }}>
-                    {correct ? m.why : `Wrong call — this one was ${m.truth}. ${m.why}`}
+                    {correct ? m.why : `Wrong call. This one was ${m.truth}. ${m.why}`}
                   </span>
                 )}
               </div>
@@ -276,7 +276,7 @@ function TriagePhase({ reduced, audio, onDone }: { reduced: boolean; audio: Inci
           </>
         ) : (
           <>
-            <span style={{ fontFamily: MONO, fontSize: 12, color: T.threatRed }}>{correctCount}/{WAVE.length} right — see the marks above.</span>
+            <span style={{ fontFamily: MONO, fontSize: 12, color: T.threatRed }}>{correctCount}/{WAVE.length} right. See the marks above.</span>
             <AmberButton label="TRY AGAIN" onClick={() => setSubmitted(false)} />
           </>
         )}
