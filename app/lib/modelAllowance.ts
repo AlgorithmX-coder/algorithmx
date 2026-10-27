@@ -18,7 +18,7 @@ export async function modelAllowance(userId: string): Promise<{ used: number; al
   return { used, allowance: DAILY_ALLOWANCE, over: used >= DAILY_ALLOWANCE };
 }
 
-export async function recordModelCall(userId: string, course: CourseKey, route: "grade" | "reply" | "tutor") {
+export async function recordModelCall(userId: string, course: CourseKey, route: "grade" | "reply" | "tutor" | "summarise") {
   try {
     await prisma.modelCall.create({ data: { userId, course, route } });
   } catch (err) {
