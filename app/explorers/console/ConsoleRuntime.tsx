@@ -11,7 +11,7 @@
 import { useEffect, useReducer, useRef, useState } from "react";
 import { HubStarfield, HubEnergy } from "./HubField";
 import { playWren, primeAudio, setVoiceRate, stopWren, useVoiceRate, useWrenSpeaking, VOICE_RATES } from "../engine/audio";
-import { useArrowAdvance, SkipButton } from "../engine/arrowAdvance";
+import { useArrowAdvance, SkipButton, BackButton } from "../engine/arrowAdvance";
 import { playBGM, stopBGM } from "@/app/lib/sounds";
 import { type CaseStage, readProgress, saveProgress, clearProgress, markCaseComplete, isResumable, stageLabel } from "../engine/caseProgress";
 import { saveExplorersProgress } from "@/app/lib/explorersProgress.actions";
@@ -343,6 +343,7 @@ export default function ConsoleRuntime({ consoleCase, onExit, onNextCase, autost
       <HubEnergy accent={acc} reduced={!!reduce} />
 
       <SkipButton />
+      <BackButton target=".cn-work" />
       {/* UAT skip: fast-forwards the rest of the current skill in one click
           (narration + any dock resolved as if answered correctly), same
           one-click-per-skill contract as Phone's "Skip this whole skill". */}

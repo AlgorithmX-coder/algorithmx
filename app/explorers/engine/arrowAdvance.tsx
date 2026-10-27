@@ -108,3 +108,49 @@ export function SkipButton() {
     </button>
   );
 }
+
+/**
+ * UAT escape hatch, the mirror image of SkipButton: lets a tester re-check
+ * something they just scrolled past without losing any progress (owner —
+ * Abdullah, Case 20 UAT: "add a back button so I can go back whilst doing
+ * UAT"). Every one of the four blocks accumulates its current skill/scene
+ * as a growing, scrollable transcript (never trimmed until the skill ends),
+ * so going "back" never needs to touch game state — it only needs to
+ * scroll that transcript up by about one screen. `target` is that block's
+ * own scroll container's class (".wr-work" / ".ph-thread" / ".cn-work");
+ * Signal Room's MissionRuntime instead replaces the whole screen per beat
+ * (nothing to scroll), so it passes its own `onBack` that steps `pos`
+ * backward one beat instead.
+ */
+export function BackButton({ target, onBack }: { target?: string; onBack?: () => void }) {
+  const handleBack = () => {
+    if (onBack) { onBack(); return; }
+    const el = target ? document.querySelector<HTMLElement>(target) : null;
+    el?.scrollBy({ top: -el.clientHeight * 0.8, behavior: "smooth" });
+  };
+  return (
+    <button
+      onClick={handleBack}
+      aria-label="Back one step (testing)"
+      style={{
+        position: "fixed",
+        bottom: 14,
+        left: 14,
+        zIndex: 70,
+        fontFamily: "ui-monospace, Consolas, monospace",
+        fontSize: 12.5,
+        fontWeight: 700,
+        letterSpacing: "0.03em",
+        color: "#7CD1FF",
+        background: "rgba(0,0,0,0.6)",
+        border: "1px solid rgba(124,209,255,0.55)",
+        borderRadius: 999,
+        padding: "9px 16px",
+        cursor: "pointer",
+        boxShadow: "0 6px 18px rgba(0,0,0,0.45)",
+      }}
+    >
+      ← Back
+    </button>
+  );
+}
