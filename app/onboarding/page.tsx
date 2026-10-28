@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { DataLabScene } from "@/app/components/CyberFutureScenes";
 import { CyberIconOrEmoji } from "@/app/components/CyberIcon";
+import BrandCube from "@/app/components/BrandCube";
 
 const C = {
   pageBg: "#080a16",
@@ -141,33 +142,16 @@ export default function OnboardingPage() {
 
       <div className="relative min-h-screen flex flex-col items-center justify-center px-4 py-10" style={{ zIndex: 1 }}>
         {/* Logo */}
-        <a href="/" className="inline-flex items-center gap-3 mb-8 no-underline">
-          <motion.div
-            animate={{ rotate: [0, 6, 0, -6, 0] }}
-            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-            style={{
-              width: 56,
-              height: 56,
-              borderRadius: 16,
-              background: GRAD,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              boxShadow:
-                "0 14px 30px -8px rgba(255,120,40,0.6), 0 0 0 1px rgba(255,235,200,0.55) inset",
-            }}
-          >
-            <span
-              style={{
-                fontSize: 18,
-                fontWeight: 900,
-                color: C.goldDark,
-                fontFamily: "'Space Grotesk', system-ui, sans-serif",
-              }}
-            >
-              AX
-            </span>
-          </motion.div>
+        <a href="/" className="inline-flex items-center gap-4 mb-8 no-underline">
+          {/* The REAL brand mark (Bracket Core, owner pick 2026-09-17), the
+            * same component the nav renders, in place of the flat CubeMark
+            * stamp. It carries its own float, turn and glow, so the old
+            * rocking wrapper goes with it - two competing animations read as
+            * a wobble. The tile goes too: its glow was still rgba(255,120,40)
+            * orange with a cream inset ring, left over from the warm gold
+            * palette this page was recoloured away from, which is why a cyan
+            * badge was sitting in an orange halo. */}
+          <BrandCube size={52} />
           <span
             style={{
               fontSize: 26,

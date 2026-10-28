@@ -135,12 +135,14 @@ const TRACK_KICKERS: Record<string, string> = {
 };
 
 /* Display-layer status + weeks overrides, same rationale as
- * TRACK_DISPLAY_OVERRIDES: Cyber Explorers is LIVE in the product
- * (missions ship at /explorers) but the DB catalogue row still says
- * COMING_SOON pending the checkout flip — the browse card shouldn't
- * under-sell a live course. */
+ * TRACK_DISPLAY_OVERRIDES: Cyber Explorers and Cyber Ops are both LIVE
+ * in the product (Explorers missions ship at /explorers; Cyber Ops runs
+ * its live range) but their DB catalogue rows still say COMING_SOON
+ * pending the checkout flip — the browse card shouldn't under-sell a
+ * live course. */
 const TRACK_STATUS_OVERRIDES: Record<string, "ACTIVE" | "COMING_SOON"> = {
   cyberexplorers: "ACTIVE",
+  cyberstart: "ACTIVE",
 };
 /* Per-track accent. Heroes runs the hub palette's warm amber-orange
  * (kid-energy, matches the hub card's accent) — kept lighter than

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import CubeMark from "@/app/components/CubeMark";
 
 /**
  * Footer - 4-column. Brand / Subjects / Company / Legal.
@@ -87,14 +88,13 @@ export default function Footer({ tone = "night", variant = "site" }: { tone?: Fo
                 marginBottom: 14,
               }}
             >
-              <span
-                aria-hidden
+              <CubeMark
+                size={20}
+                code
                 style={{
-                  width: 10,
-                  height: 10,
-                  borderRadius: 2,
-                  background: "var(--lv2-cyan)",
-                  boxShadow: "0 0 14px rgba(0,229,255,0.7)",
+                  flexShrink: 0,
+                  color: "var(--lv2-cyan)",
+                  filter: "drop-shadow(0 0 8px rgba(0,229,255,0.6))",
                 }}
               />
               <span

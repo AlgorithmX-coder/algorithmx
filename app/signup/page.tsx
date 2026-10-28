@@ -11,6 +11,7 @@ import AuthButton, { type AuthButtonState } from "@/app/components/auth/AuthButt
 import AuthTerminalPanel from "@/app/components/auth/AuthTerminalPanel";
 import AccessGrantedOverlay from "@/app/components/auth/AccessGrantedOverlay";
 import { useIsDesktop } from "@/app/components/auth/useIsDesktop";
+import CubeMark from "@/app/components/CubeMark";
 import { safeCourseSlug, courseHomeFor } from "@/app/lib/courseIntent";
 import { ACCESS, ACCESS_FONT, ACCESS_GRAD, rgba } from "@/app/components/auth/accessTokens";
 import {
@@ -250,9 +251,7 @@ function SignupPageInner() {
                 boxShadow: `0 0 18px ${rgba(ACCESS.cyan, 0.3)}`,
               }}
             >
-              <span style={{ color: "#06080f", fontFamily: ACCESS_FONT.display, fontWeight: 800, fontSize: 14 }}>
-                AX
-              </span>
+              <CubeMark size={22} color="#06080f" code />
             </div>
             <span style={{ color: ACCESS.textBright, fontFamily: ACCESS_FONT.display, fontWeight: 800, fontSize: 19, letterSpacing: "-0.01em" }}>
               Algorithm
