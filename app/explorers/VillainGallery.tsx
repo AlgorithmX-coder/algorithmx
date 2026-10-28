@@ -19,9 +19,11 @@
  */
 
 import { useEffect, useState } from "react";
+import type { CSSProperties } from "react";
 import type { MissionManifest } from "./engine/types";
 import { MONO } from "./engine/tokens";
 import { loadJournal, type JournalEntry } from "./engine/journal";
+import { MISSION_INTROS } from "./missionIntroData";
 
 const INK = "#D3E6F7";
 const DIM = "#617a9e";
@@ -108,46 +110,73 @@ export function VillainGallery({
             {villains.map((v) => {
               const known = v.appearances.some((a) => a.closed);
               const defeatedCount = v.appearances.filter((a) => a.closed).length;
+              // Reuses the same accent, corner-bracket, scan-sweep and radial
+              // gauge chrome as the mission board's case cards (shared .tc-*
+              // classes live in ExplorersPage's always-mounted <style>, since
+              // this gallery only ever renders as its child) — each actor's
+              // own colour comes from their FIRST case's canonical accent, so
+              // the Watchlist reads as part of the same system, not a
+              // different screen bolted on.
+              const accent = MISSION_INTROS[v.appearances[0].id]?.theme.accent ?? SYS;
+              const ring = known ? accent : DIM;
+              const pct = Math.round((defeatedCount / v.appearances.length) * 100);
               return (
                 <button
                   key={v.codename}
+                  className="tc-card"
                   onClick={() => setOpenCodename(v.codename)}
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    gap: 8,
-                    background: "rgba(255,255,255,0.03)",
-                    border: `1px solid ${known ? SYS + "44" : "rgba(255,255,255,0.08)"}`,
-                    borderRadius: 12,
-                    padding: "16px 10px 14px",
-                    cursor: "pointer",
-                  }}
+                  aria-label={`${known ? v.codename : "Unidentified actor"}. ${defeatedCount} of ${v.appearances.length} encounters closed.`}
+                  style={{ ["--accent"]: ring, textAlign: "center" } as CSSProperties}
                 >
-                  <span
-                    aria-hidden
-                    style={{
-                      width: 72,
-                      height: 72,
-                      borderRadius: "50%",
-                      overflow: "hidden",
-                      background: "#11151f",
-                      border: `1.5px solid ${known ? SYS + "77" : "rgba(255,255,255,0.12)"}`,
-                      display: "block",
-                    }}
-                  >
-                    <img
-                      src={v.portrait}
-                      alt=""
-                      style={{ width: "100%", height: "100%", objectFit: "cover", filter: known ? "none" : "brightness(0) opacity(0.5)" }}
-                    />
-                  </span>
-                  <span style={{ fontFamily: MONO, fontSize: 12, fontWeight: 800, letterSpacing: "0.04em", color: known ? INK : DIM, textAlign: "center" }}>
-                    {known ? v.codename : "?????"}
-                  </span>
-                  <span style={{ fontFamily: MONO, fontSize: 9.5, color: defeatedCount > 0 ? GREEN : DIM, letterSpacing: "0.06em" }}>
-                    {defeatedCount}/{v.appearances.length} CLOSED
-                  </span>
+                  {known && (
+                    <>
+                      <span className="tc-brk tl" aria-hidden />
+                      <span className="tc-brk tr" aria-hidden />
+                      <span className="tc-brk bl" aria-hidden />
+                      <span className="tc-brk br" aria-hidden />
+                    </>
+                  )}
+                  <div style={{ padding: "18px 14px 16px" }}>
+                    <span
+                      aria-hidden
+                      style={{
+                        position: "relative",
+                        display: "block",
+                        width: 92,
+                        height: 92,
+                        margin: "0 auto 12px",
+                        overflow: "hidden",
+                        background: "#11151f",
+                        border: `2px solid ${ring}`,
+                        boxShadow: `0 0 16px ${ring}55`,
+                        clipPath: "polygon(14px 0,calc(100% - 14px) 0,100% 14px,100% 100%,0 100%,0 14px)",
+                      }}
+                    >
+                      <img
+                        src={v.portrait}
+                        alt=""
+                        style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "50% 28%", filter: known ? "none" : "brightness(0) opacity(0.5)" }}
+                      />
+                      {known && <span className="tc-sweep" aria-hidden />}
+                      {!known && (
+                        <span className="tc-lockpulse" aria-hidden style={{ position: "absolute", inset: 0, display: "grid", placeItems: "center", color: DIM, ["--accent"]: DIM } as CSSProperties}>
+                          <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+                            <rect x="4" y="10.5" width="16" height="10.5" rx="2.2" stroke="currentColor" strokeWidth="2" fill="rgba(3,6,14,0.6)" />
+                            <path d="M7.5 10.5V7.5a4.5 4.5 0 0 1 9 0v3" stroke="currentColor" strokeWidth="2" />
+                          </svg>
+                        </span>
+                      )}
+                    </span>
+                    <div style={{ fontFamily: MONO, fontSize: 12, fontWeight: 800, letterSpacing: "0.04em", color: known ? INK : DIM, textShadow: known ? `0 0 10px ${ring}66` : "none" }}>
+                      {known ? v.codename : "?????"}
+                    </div>
+                    <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, marginTop: 10 }}>
+                      <span className="tc-gauge" style={{ background: `conic-gradient(${ring} ${pct}%, rgba(255,255,255,0.1) 0)` }}>
+                        <i style={{ color: ring }}>{defeatedCount}/{v.appearances.length}</i>
+                      </span>
+                      <span style={{ fontFamily: MONO, fontSize: 9, letterSpacing: "0.1em", color: DIM, textTransform: "uppercase" }}>closed</span>
+                    </div>
+                  </div>
                 </button>
               );
             })}
