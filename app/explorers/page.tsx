@@ -579,7 +579,22 @@ export default function ExplorersPage() {
         .tc-glyph{display:inline-flex;align-items:center;justify-content:center;width:46px;height:46px;border-radius:6px;border:1px solid;background:rgba(255,255,255,0.03)}
         .tc-title{font-family:var(--font-inter),system-ui,-apple-system,sans-serif;font-size:17px;font-weight:800;letter-spacing:.02em;text-transform:uppercase;line-height:1.15;margin-top:12px}
         .tc-chip{font-size:9.5px;letter-spacing:.14em;border:1px solid;border-radius:2px;padding:2px 7px}
-        @media (prefers-reduced-motion: reduce){.tc-cur,.tc-blink{animation:none}.tc-card:hover,.tc-cta:hover{transform:none}.tc-lockpulse,.radar-sweep,.radar-blip,.lf-redact .rd,.lf-hex .hexroll,.lf-net .node{animation:none}}
+        .tc-brk{position:absolute;width:11px;height:11px;z-index:3;pointer-events:none;opacity:.9}
+        .tc-brk.tl{top:7px;left:7px;border-top:2px solid var(--accent);border-left:2px solid var(--accent)}
+        .tc-brk.tr{top:7px;right:7px;border-top:2px solid var(--accent);border-right:2px solid var(--accent)}
+        .tc-brk.bl{bottom:7px;left:7px;border-bottom:2px solid var(--accent);border-left:2px solid var(--accent)}
+        .tc-brk.br{bottom:7px;right:7px;border-bottom:2px solid var(--accent);border-right:2px solid var(--accent)}
+        .tc-sweep{position:absolute;left:0;right:0;height:64px;top:-64px;z-index:1;pointer-events:none;background:linear-gradient(180deg, color-mix(in srgb, var(--accent) 32%, transparent), transparent);animation:tcSweep 3.4s linear infinite}
+        @keyframes tcSweep{from{transform:translateY(0)}to{transform:translateY(232px)}}
+        .tc-gauge{width:32px;height:32px;border-radius:50%;flex:none;display:grid;place-items:center}
+        .tc-gauge i{width:21px;height:21px;border-radius:50%;background:#070b16;display:grid;place-items:center;font:700 7.5px/1 ${MONO};font-style:normal;letter-spacing:0}
+        .tc-glitch{position:relative;display:inline-block}
+        .tc-glitch::before,.tc-glitch::after{content:attr(data-t);position:absolute;left:0;top:0;width:100%;overflow:hidden}
+        .tc-glitch::before{color:#36f0ff;clip-path:inset(0 0 55% 0);transform:translate(-2px,-1px);animation:tcGlitchA 2.8s infinite}
+        .tc-glitch::after{color:#ff2d94;clip-path:inset(55% 0 0 0);transform:translate(2px,1px);animation:tcGlitchB 2.8s infinite}
+        @keyframes tcGlitchA{0%,88%,100%{opacity:0;transform:translate(-2px,-1px)}90%{opacity:.85;transform:translate(-4px,-2px)}}
+        @keyframes tcGlitchB{0%,86%,100%{opacity:0;transform:translate(2px,1px)}92%{opacity:.85;transform:translate(4px,2px)}}
+        @media (prefers-reduced-motion: reduce){.tc-cur,.tc-blink{animation:none}.tc-card:hover,.tc-cta:hover{transform:none}.tc-lockpulse,.radar-sweep,.radar-blip,.lf-redact .rd,.lf-hex .hexroll,.lf-net .node,.tc-sweep,.tc-glitch::before,.tc-glitch::after{animation:none}}
       `}</style>
 
       <MatrixRain reduced={reduced} opacity={0.24} colors={RAIN_COLORS} />
@@ -704,12 +719,15 @@ export default function ExplorersPage() {
                   const isClosed = st === "CLOSED";
                   const isNext = nextCase?.id === m.id;
                   const locked = !qa && CASES.indexOf(m) > nextIdx;
-                  // Locked cards now wear the block's colour (not grey) so the
-                  // case name + glyph stand out and read as "encrypted", not dead.
-                  const accent = isNext ? AMBER : b.color;
+                  // Every case carries its OWN colour (the same accent already
+                  // canonical for it in missionIntroData.ts / its runtime case
+                  // file) instead of just its block's — so all 20 cards on the
+                  // board read as 20 distinct cases, not 4 colours repeated 5x.
+                  const caseAccent = MISSION_INTROS[m.id]?.theme.accent ?? b.color;
+                  const accent = isNext ? AMBER : caseAccent;
                   const ring = isClosed ? DIM : accent;
-                  const titleColor = isClosed ? DIM : b.color;
-                  const sevFilled = "■".repeat(b.sev) + "□".repeat(5 - b.sev);
+                  const titleColor = isClosed ? DIM : caseAccent;
+                  const active = !isClosed && !locked;
                   return (
                     <button
                       key={m.id}
@@ -720,9 +738,19 @@ export default function ExplorersPage() {
                       style={{ ["--accent"]: accent, position: "relative" } as CSSProperties}
                     >
                       {/* Live ambient FX behind every card — the block's own "world"
-                          (radar / redaction / hex / network), subtle on open cards
-                          and brighter on hover. Locked cards keep the stronger look. */}
-                      <LockedFX variant={LOCK_VARIANTS[b.n - 1] ?? "signal"} accent={b.color} />
+                          (radar / redaction / hex / network) tinted in THIS case's
+                          own accent, subtle on open cards and brighter on hover.
+                          Locked cards keep the stronger look. */}
+                      <LockedFX variant={LOCK_VARIANTS[b.n - 1] ?? "signal"} accent={caseAccent} />
+                      {active && (
+                        <>
+                          <span className="tc-sweep" aria-hidden />
+                          <span className="tc-brk tl" aria-hidden />
+                          <span className="tc-brk tr" aria-hidden />
+                          <span className="tc-brk bl" aria-hidden />
+                          <span className="tc-brk br" aria-hidden />
+                        </>
+                      )}
                       {isClosed && (
                         <span
                           aria-hidden
@@ -762,8 +790,8 @@ export default function ExplorersPage() {
                               left: "50%",
                               transform: "translateX(-50%)",
                               zIndex: 4,
-                              color: b.color,
-                              ["--accent"]: b.color,
+                              color: caseAccent,
+                              ["--accent"]: caseAccent,
                               pointerEvents: "none",
                             } as CSSProperties}
                           >
@@ -775,11 +803,11 @@ export default function ExplorersPage() {
                         </>
                       )}
                       <div className="tc-cardbar">
-                        <span style={{ color: isNext ? AMBER : b.color }}>{m.caseNumber}</span>
+                        <span style={{ color: isNext ? AMBER : caseAccent }}>{m.caseNumber}</span>
                         {isClosed ? (
                           <span style={{ color: DIM }}>{"✓"} CLOSED</span>
                         ) : locked ? (
-                          <span style={{ color: b.color, display: "inline-flex", alignItems: "center", gap: 5, opacity: 0.9 }}>
+                          <span style={{ color: caseAccent, display: "inline-flex", alignItems: "center", gap: 5, opacity: 0.9 }}>
                             <svg width="10" height="10" viewBox="0 0 24 24" fill="none" aria-hidden>
                               <rect x="5" y="11" width="14" height="9" rx="2" stroke="currentColor" strokeWidth="2.4" />
                               <path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="currentColor" strokeWidth="2.4" />
@@ -789,7 +817,7 @@ export default function ExplorersPage() {
                         ) : isNext ? (
                           <span className="tc-blink" style={{ color: AMBER }}>{"●"} {st === "IN PROGRESS" ? "RESUME" : "PLAY"}</span>
                         ) : st === "IN PROGRESS" ? (
-                          <span style={{ color: b.color }}>{"◐"} STARTED</span>
+                          <span style={{ color: caseAccent }}>{"◐"} STARTED</span>
                         ) : (
                           <span style={{ color: DIM }}>{"○"} OPEN</span>
                         )}
@@ -800,14 +828,20 @@ export default function ExplorersPage() {
                           <span className="tc-glyph" style={{ borderColor: ring, color: ring, boxShadow: `0 0 14px ${ring}55` }}>
                             <CaseGlyph id={m.id} size={26} color={ring} />
                           </span>
-                          <span style={{ textAlign: "right", fontSize: 8.5, letterSpacing: "0.12em", color: DIM, lineHeight: 1.5 }}>
-                            THREAT
-                            <br />
-                            <span style={{ color: ring, letterSpacing: "0.08em", fontSize: 9.5 }}>{sevFilled}</span>
+                          <span
+                            className="tc-gauge"
+                            style={{ background: `conic-gradient(${ring} ${b.sev * 20}%, rgba(255,255,255,0.1) 0)` }}
+                            aria-label={`Threat level ${b.sev} of 5`}
+                          >
+                            <i style={{ color: ring }}>{b.sev}/5</i>
                           </span>
                         </div>
 
-                        <div className="tc-title" style={{ color: titleColor, textShadow: `0 0 12px ${titleColor}66` }}>
+                        <div
+                          className={locked ? "tc-title tc-glitch" : "tc-title"}
+                          data-t={locked ? m.title.toUpperCase() : undefined}
+                          style={{ color: titleColor, textShadow: `0 0 12px ${titleColor}66` }}
+                        >
                           {m.title}
                         </div>
                         <div style={{ fontSize: 11, color: TXT, opacity: 0.7, marginTop: 4 }}>{TOPICS[m.id] ?? ""}</div>
