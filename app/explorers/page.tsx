@@ -551,7 +551,8 @@ export default function ExplorersPage() {
            on a closed one, and it wakes up on hover. */
         .tc-card:not(.tc-locked):not(.tc-closed) .lf{opacity:.24}
         .tc-card:not(.tc-locked):not(.tc-closed):hover .lf{opacity:.42;filter:brightness(1.3)}
-        .tc-closed .lf{opacity:.1}
+        .tc-closed .lf{opacity:.22}
+        .tc-closed:hover .lf{opacity:.36;filter:brightness(1.2)}
         .lf-radar{opacity:.5}
         .radar-grid{position:absolute;top:52%;left:50%;transform:translate(-50%,-50%);width:120px;height:120px;opacity:.4}
         .radar-grid circle{fill:none;stroke:currentColor;stroke-width:.6}
@@ -725,8 +726,11 @@ export default function ExplorersPage() {
                   // board read as 20 distinct cases, not 4 colours repeated 5x.
                   const caseAccent = MISSION_INTROS[m.id]?.theme.accent ?? b.color;
                   const accent = isNext ? AMBER : caseAccent;
-                  const ring = isClosed ? DIM : accent;
-                  const titleColor = isClosed ? DIM : caseAccent;
+                  // A closed case stays fully lit in its own colour — "closed"
+                  // is the CASE CLOSED stamp's job, not a wash to grey. Only
+                  // a genuinely locked (not-yet-reached) card dims out.
+                  const ring = accent;
+                  const titleColor = caseAccent;
                   const active = !isClosed && !locked;
                   return (
                     <button
@@ -805,7 +809,7 @@ export default function ExplorersPage() {
                       <div className="tc-cardbar">
                         <span style={{ color: isNext ? AMBER : caseAccent }}>{m.caseNumber}</span>
                         {isClosed ? (
-                          <span style={{ color: DIM }}>{"✓"} CLOSED</span>
+                          <span style={{ color: caseAccent }}>{"✓"} CLOSED</span>
                         ) : locked ? (
                           <span style={{ color: caseAccent, display: "inline-flex", alignItems: "center", gap: 5, opacity: 0.9 }}>
                             <svg width="10" height="10" viewBox="0 0 24 24" fill="none" aria-hidden>
