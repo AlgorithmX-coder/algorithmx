@@ -6,7 +6,7 @@ import { getPortfolio, getOpsResumes } from "@/app/lib/opsPortfolio.actions";
 import { HIGHEST_BUILT_MODULE } from "@/app/operators/range/modules";
 import { CURRICULUM, PHASE_ORDER, PHASE_COLOR } from "@/app/operators/range/curriculum";
 import { OPS_RANKS } from "@/app/lib/opsRank";
-import OpsBackdrop from "@/app/operators/range/OpsBackdrop";
+import PortfolioBackdrop from "./PortfolioBackdrop";
 import ResumeStrip from "./ResumeStrip";
 
 export const metadata: Metadata = {
@@ -60,7 +60,7 @@ export default async function OperatorsPortfolioPage() {
 
   return (
     <main style={{ position: "relative", minHeight: "100vh", background: "transparent", color: C.ink, fontFamily: SANS, display: "grid", placeItems: "start center", padding: "56px 20px 100px" }}>
-      <OpsBackdrop />
+      <PortfolioBackdrop />
       <style>{GLOW_CSS}</style>
       <div style={{ position: "relative", zIndex: 1, width: "100%", maxWidth: 880 }}>
         {/* header */}
