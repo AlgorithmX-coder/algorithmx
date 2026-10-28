@@ -303,7 +303,7 @@ export default function DashboardView({
                   <div aria-hidden style={{ position: "absolute", inset: "-14% -8%", borderRadius: "50%", border: "1px solid rgba(86,140,230,0.25)", transform: "rotate(-12deg) scaleY(0.7)" }} />
                   <div aria-hidden className="absolute inset-0 rounded-3xl" style={{ background: "linear-gradient(135deg, rgba(54,214,255,0.4), rgba(139,108,255,0.4))", filter: "blur(34px)", transform: "scale(1.08)" }} />
                   <div className="relative rounded-3xl overflow-hidden" style={{ border: `2px solid ${C.borderStrong}`, boxShadow: "0 0 50px rgba(54,214,255,0.28), 0 0 0 5px rgba(13,19,44,0.6)" }}>
-                    <Image src="/characters/waving.png" alt="Adam and Layla waving" width={320} height={320} className="block" priority />
+                    <Image src="/characters/heroes-hq.webp" alt="Adam and Layla in the Cyber Heroes command centre" width={320} height={239} className="block" priority />
                   </div>
                   <div className="absolute" style={{ right: -14, bottom: -14, width: 56, height: 56, borderRadius: 16, background: "rgba(10,14,32,0.92)", border: `1px solid ${C.borderStrong}`, display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 0 24px rgba(54,214,255,0.4)" }}>
                     <ShieldLogo size={30} />

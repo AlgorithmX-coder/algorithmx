@@ -301,7 +301,7 @@ export default function OnboardingPage() {
                   {/* Adam & Layla (desktop only) */}
                   <div className="hidden lg:block shrink-0">
                     <motion.img
-                      src="/characters/waving.png"
+                      src="/characters/heroes-hq.webp"
                       alt="Adam and Layla"
                       width={280}
                       height={280}
