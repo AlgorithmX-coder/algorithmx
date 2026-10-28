@@ -155,16 +155,12 @@ const TXT = "#D3E6F7"; // readable body
 const DIM = "#617a9e"; // muted
 const AMBER = "#FFC24B"; // the next case
 
-// Scatter slots for the agent ID card's earned-rank badge collection — up
-// to 5 (every rank below MAVERICK), positioned so none overlap the ring,
-// the name or the stat row.
-const BADGE_SLOTS = [
-  { top: "10%", left: "8%", rotate: "-10deg" },
-  { top: "14%", right: "9%", rotate: "8deg" },
-  { bottom: "14%", left: "7%", rotate: "7deg" },
-  { bottom: "10%", right: "10%", rotate: "-6deg" },
-  { top: "46%", left: "4%", rotate: "-4deg" },
-] as const;
+// The agent ID card's rank badge: an army-style insignia (a pentagon
+// shield + a centred star, two-layer clip-path for the coloured border)
+// instead of a plain outline icon, so it reads as a real badge rather
+// than a UI glyph.
+const BADGE_PENTAGON = "polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%)";
+const BADGE_STAR = "M12 1.5 14.9 8.6 22.5 9.3 16.7 14.3 18.5 21.8 12 17.8 5.5 21.8 7.3 14.3 1.5 9.3 9.1 8.6Z";
 
 /* Locked cards read as "encrypted intel awaiting decryption", not dead grey
  * boxes, and each of the four blocks gets its OWN texture so they feel distinct:
@@ -709,73 +705,85 @@ export default function ExplorersPage() {
             {/* agent ID card — the badge itself IS the progress ring: how
                 far this agent is from their next rank, at a glance. The
                 card's own background tints to the CURRENT rank's colour,
-                and every rank already passed stays pinned behind it as a
-                faint badge, so the card visibly fills up with a trophy
-                case over the course of the 20 cases instead of looking
-                the same at every rank. */}
+                and every rank already passed collects below as a clearly
+                labelled army-style badge, so the card visibly fills up
+                with a trophy case over the course of the 20 cases instead
+                of looking the same at every rank. */}
             <div
               style={{
                 position: "relative",
-                overflow: "hidden",
                 border: `1px solid ${rank.current.colour}44`,
                 borderRadius: 10,
                 background: `radial-gradient(ellipse 100% 90% at 75% 10%, ${rank.current.colour}1c, transparent 60%), rgba(8,13,24,0.68)`,
                 padding: "22px 20px",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                textAlign: "center",
+                gap: 8,
               }}
             >
-              {earnedBadges.map((r, i) => {
-                const slot = BADGE_SLOTS[i];
-                if (!slot) return null;
-                return (
-                  <span
-                    key={r.name}
-                    aria-hidden
-                    title={r.name}
-                    style={{ position: "absolute", ...slot, transform: `rotate(${slot.rotate})`, color: r.colour, opacity: 0.22, zIndex: 0 } as CSSProperties}
-                  >
-                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-                      <path d="M12 2.6 19 5.5v5c0 5-3 8.5-7 10-4-1.5-7-5-7-10v-5L12 2.6Z" />
-                    </svg>
-                  </span>
-                );
-              })}
-
-              <div style={{ position: "relative", zIndex: 1, display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", gap: 8 }}>
-                <span
-                  aria-hidden
-                  style={{
-                    width: 72, height: 72, borderRadius: "50%", display: "grid", placeItems: "center",
-                    background: `conic-gradient(${rank.current.colour} ${Math.round(rank.progress * 100)}%, rgba(255,255,255,0.12) 0)`,
-                    boxShadow: `0 0 18px ${rank.current.colour}55`,
-                  }}
-                >
-                  <span style={{ width: 56, height: 56, borderRadius: "50%", background: "#070b16", display: "grid", placeItems: "center", color: rank.current.colour }}>
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-                      <path d="M12 2.6 19 5.5v5c0 5-3 8.5-7 10-4-1.5-7-5-7-10v-5L12 2.6Z" />
+              <span
+                aria-hidden
+                style={{
+                  width: 78, height: 78, borderRadius: "50%", display: "grid", placeItems: "center",
+                  background: `conic-gradient(${rank.current.colour} ${Math.round(rank.progress * 100)}%, rgba(255,255,255,0.12) 0)`,
+                  boxShadow: `0 0 18px ${rank.current.colour}55`,
+                }}
+              >
+                <span style={{ width: 62, height: 62, borderRadius: "50%", background: "#070b16", display: "grid", placeItems: "center" }}>
+                  <span style={{ position: "relative", width: 48, height: 48, display: "grid", placeItems: "center" }}>
+                    <span aria-hidden style={{ position: "absolute", inset: 0, clipPath: BADGE_PENTAGON, background: rank.current.colour, boxShadow: `0 0 10px ${rank.current.colour}66` } as CSSProperties} />
+                    <span aria-hidden style={{ position: "absolute", inset: 2.5, clipPath: BADGE_PENTAGON, background: "#0d1420" } as CSSProperties} />
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style={{ position: "relative", color: rank.current.colour }}>
+                      <path d={BADGE_STAR} />
                     </svg>
                   </span>
                 </span>
-                <div style={{ fontFamily: MONO, fontSize: 15, fontWeight: 800, letterSpacing: "0.06em", color: TXT, marginTop: 2 }}>{rank.current.name}</div>
-                <div style={{ fontFamily: MONO, fontSize: 9.5, letterSpacing: "0.08em", color: DIM, marginBottom: 4 }}>
-                  {rank.next ? `${rank.next.minXP - totalXp} XP TO ${rank.next.name}` : "MAX RANK REACHED"}
-                </div>
-                <div style={{ display: "flex", gap: 18, width: "100%", justifyContent: "center", borderTop: "1px solid rgba(255,255,255,0.08)", paddingTop: 12, marginTop: 4 }}>
-                  <div>
-                    <div style={{ fontFamily: MONO, fontSize: 15, fontWeight: 800, color: "#3BF57E" }}>{closedCount}<span style={{ color: DIM, fontWeight: 600 }}>/20</span></div>
-                    <div style={{ fontFamily: MONO, fontSize: 7.5, letterSpacing: "0.1em", color: DIM, marginTop: 3 }}>CASES</div>
-                  </div>
-                  <div>
-                    <div style={{ fontFamily: MONO, fontSize: 15, fontWeight: 800, color: AMBER }}>{totalXp}</div>
-                    <div style={{ fontFamily: MONO, fontSize: 7.5, letterSpacing: "0.1em", color: DIM, marginTop: 3 }}>XP</div>
-                  </div>
-                  {streak > 0 && (
-                    <div>
-                      <div style={{ fontFamily: MONO, fontSize: 15, fontWeight: 800, color: "#FF8A3D" }}>🔥 {streak}d</div>
-                      <div style={{ fontFamily: MONO, fontSize: 7.5, letterSpacing: "0.1em", color: DIM, marginTop: 3 }}>STREAK</div>
-                    </div>
-                  )}
-                </div>
+              </span>
+              <div style={{ fontFamily: MONO, fontSize: 15, fontWeight: 800, letterSpacing: "0.06em", color: TXT, marginTop: 2 }}>{rank.current.name}</div>
+              <div style={{ fontFamily: MONO, fontSize: 9.5, letterSpacing: "0.08em", color: DIM, marginBottom: 4 }}>
+                {rank.next ? `${rank.next.minXP - totalXp} XP TO ${rank.next.name}` : "MAX RANK REACHED"}
               </div>
+              <div style={{ display: "flex", gap: 18, width: "100%", justifyContent: "center", borderTop: "1px solid rgba(255,255,255,0.08)", paddingTop: 12, marginTop: 4 }}>
+                <div>
+                  <div style={{ fontFamily: MONO, fontSize: 15, fontWeight: 800, color: "#3BF57E" }}>{closedCount}<span style={{ color: DIM, fontWeight: 600 }}>/20</span></div>
+                  <div style={{ fontFamily: MONO, fontSize: 7.5, letterSpacing: "0.1em", color: DIM, marginTop: 3 }}>CASES</div>
+                </div>
+                <div>
+                  <div style={{ fontFamily: MONO, fontSize: 15, fontWeight: 800, color: AMBER }}>{totalXp}</div>
+                  <div style={{ fontFamily: MONO, fontSize: 7.5, letterSpacing: "0.1em", color: DIM, marginTop: 3 }}>XP</div>
+                </div>
+                {streak > 0 && (
+                  <div>
+                    <div style={{ fontFamily: MONO, fontSize: 15, fontWeight: 800, color: "#FF8A3D" }}>🔥 {streak}d</div>
+                    <div style={{ fontFamily: MONO, fontSize: 7.5, letterSpacing: "0.1em", color: DIM, marginTop: 3 }}>STREAK</div>
+                  </div>
+                )}
+              </div>
+
+              {/* collection of every rank already passed — the same badge
+                  shape as the current one, just smaller, each clearly
+                  labelled with the rank it was, in the order earned */}
+              {earnedBadges.length > 0 && (
+                <div style={{ width: "100%", borderTop: "1px solid rgba(255,255,255,0.08)", paddingTop: 10, marginTop: 2 }}>
+                  <div style={{ fontFamily: MONO, fontSize: 8, letterSpacing: "0.14em", color: DIM, textTransform: "uppercase", marginBottom: 8 }}>Previous ranks</div>
+                  <div style={{ display: "flex", flexWrap: "wrap", gap: 10, justifyContent: "center" }}>
+                    {earnedBadges.map((r) => (
+                      <div key={r.name} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 4, width: 46 }}>
+                        <span style={{ position: "relative", width: 34, height: 34, display: "grid", placeItems: "center" }}>
+                          <span aria-hidden style={{ position: "absolute", inset: 0, clipPath: BADGE_PENTAGON, background: r.colour } as CSSProperties} />
+                          <span aria-hidden style={{ position: "absolute", inset: 2, clipPath: BADGE_PENTAGON, background: "#0d1420" } as CSSProperties} />
+                          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" style={{ position: "relative", color: r.colour }}>
+                            <path d={BADGE_STAR} />
+                          </svg>
+                        </span>
+                        <span style={{ fontFamily: MONO, fontSize: 6.5, fontWeight: 800, letterSpacing: "0.04em", color: r.colour, textTransform: "uppercase", lineHeight: 1.15 }}>{r.name}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
 
