@@ -6,6 +6,7 @@ import {
   StaggeredList,
 } from "@/app/components/AnimatedDashboardV2";
 import { DashboardParticles } from "@/app/components/DashboardAtmosphere";
+import { WEEK_THEMES } from "@/app/lesson/weekContent/weekThemes";
 
 /* ───────────────── CYBER PALETTE (cool cosmic) ───────────────── */
 const C = {
@@ -41,6 +42,13 @@ const FONT_DISPLAY = "var(--font-space-grotesk), 'Space Grotesk', system-ui, -ap
 /* Weeks that have a generated themed holographic backdrop strip in
    /public/dashboard/week-bg. Grow this as art lands so a card never points
    at a missing image. */
+/* Weeks whose bespoke card art has been drawn and installed in
+ * /public/dashboard/week-art. A week NOT listed here falls back to its own
+ * colour gradient, which still looks finished, so this grows one week at a
+ * time without ever pointing a tile at a missing image. */
+const WEEK_ART = new Set<number>([
+  1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+]);
 const WEEK_BG_AVAILABLE = new Set<number>([
   1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
 ]);
@@ -218,7 +226,7 @@ export default function DashboardView({
     { label: "Weeks Done", value: completedCount, color: C.cyan, glow: "rgba(54,214,255,0.5)", icon: <CalendarIcon color={C.cyan} /> },
     { label: "Remaining", value: remaining, color: C.blue, glow: "rgba(77,155,255,0.5)", icon: <HourglassIcon color={C.blue} /> },
     { label: "Badges Earned", value: completedCount, color: C.violetSoft, glow: "rgba(139,108,255,0.5)", icon: <StarIcon color={C.violetSoft} /> },
-    { label: "Raccoon Power", value: `${raccoonPower}%`, color: C.pink, glow: "rgba(255,77,157,0.5)", icon: <Image src="/game/characters/raccoon-head.png" alt="" width={26} height={26} style={{ borderRadius: "50%", objectFit: "cover", display: "block" }} /> },
+    { label: "Raccoon Power", value: `${raccoonPower}%`, color: C.pink, glow: "rgba(255,77,157,0.5)", icon: <Image src="/game/characters/raccoon-head.png" alt="" width={26} height={26} style={{ borderRadius: "50%", objectFit: "cover", display: "block" }} />, art: "/dashboard/raccoon-power.webp" },
   ];
 
   return (
@@ -303,7 +311,7 @@ export default function DashboardView({
                   <div aria-hidden style={{ position: "absolute", inset: "-14% -8%", borderRadius: "50%", border: "1px solid rgba(86,140,230,0.25)", transform: "rotate(-12deg) scaleY(0.7)" }} />
                   <div aria-hidden className="absolute inset-0 rounded-3xl" style={{ background: "linear-gradient(135deg, rgba(54,214,255,0.4), rgba(139,108,255,0.4))", filter: "blur(34px)", transform: "scale(1.08)" }} />
                   <div className="relative rounded-3xl overflow-hidden" style={{ border: `2px solid ${C.borderStrong}`, boxShadow: "0 0 50px rgba(54,214,255,0.28), 0 0 0 5px rgba(13,19,44,0.6)" }}>
-                    <Image src="/characters/waving.png" alt="Adam and Layla waving" width={320} height={320} className="block" priority />
+                    <Image src="/characters/heroes-hq.webp" alt="Adam and Layla in the Cyber Heroes command centre" width={320} height={239} className="block" priority />
                   </div>
                   <div className="absolute" style={{ right: -14, bottom: -14, width: 56, height: 56, borderRadius: 16, background: "rgba(10,14,32,0.92)", border: `1px solid ${C.borderStrong}`, display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 0 24px rgba(54,214,255,0.4)" }}>
                     <ShieldLogo size={30} />
@@ -331,10 +339,31 @@ export default function DashboardView({
           <RevealOnScroll delay={120}>
             <section className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
               {statCards.map((s) => (
-                <div key={s.label} className="rounded-2xl p-5 lift" style={{ background: C.card, border: `1px solid ${C.border}`, backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)", boxShadow: SHADOW_CARD }}>
+                <div key={s.label} className="rounded-2xl p-5 lift relative overflow-hidden" style={{ background: C.card, border: `1px solid ${C.border}`, backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)", boxShadow: SHADOW_CARD }}>
+                  {s.art && (
+                    /* Held back hard and faded out to the left. This is a
+                       BACKDROP; the number on top of it is what the child is
+                       reading, and art that wins here loses the card. */
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={s.art}
+                      alt=""
+                      aria-hidden
+                      loading="lazy"
+                      style={{
+                        position: "absolute", inset: 0, width: "100%", height: "100%",
+                        objectFit: "cover", objectPosition: "right center",
+                        opacity: 0.42, pointerEvents: "none", zIndex: 0,
+                        WebkitMaskImage: "linear-gradient(90deg, transparent 2%, rgba(0,0,0,0.5) 46%, #000 100%)",
+                        maskImage: "linear-gradient(90deg, transparent 2%, rgba(0,0,0,0.5) 46%, #000 100%)",
+                      }}
+                    />
+                  )}
+                  <div className="relative" style={{ zIndex: 1 }}>
                   <HexIcon color={s.color} glow={s.glow}>{s.icon}</HexIcon>
                   <div className="display mt-3" style={{ fontSize: 38, fontWeight: 800, color: C.text, lineHeight: 1 }}>{s.value}</div>
                   <div className="mt-1.5" style={{ fontSize: 11, fontWeight: 800, color: C.textMuted, letterSpacing: "0.09em", textTransform: "uppercase" }}>{s.label}</div>
+                  </div>
                 </div>
               ))}
             </section>
@@ -345,7 +374,9 @@ export default function DashboardView({
               {/* ── HACKER RACCOON ── */}
               <RevealOnScroll delay={80}>
                 <section className="rounded-3xl p-6 sm:p-7 flex flex-col sm:flex-row items-center gap-6 mb-6 relative overflow-hidden" style={{ background: C.card, border: `1px solid ${allDone ? "rgba(126,255,151,0.4)" : "rgba(255,77,157,0.4)"}`, boxShadow: (allDone ? "0 0 30px rgba(126,255,151,0.14), " : "0 0 30px rgba(255,77,157,0.16), ") + SHADOW_CARD, backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)" }}>
-                  <span aria-hidden style={{ position: "absolute", right: -10, top: "50%", transform: "translateY(-50%)", fontSize: 200, opacity: 0.05, lineHeight: 1, pointerEvents: "none" }}>🦝</span>
+                  {/* Owner, 28 Oct: "Get rid of that emoji raccoon face." It was a
+                      200px raccoon GLYPH at 5% opacity standing in for art, in the
+                      one card that already shows the real villain below. */}
                   <div className="relative shrink-0">
                     <div aria-hidden className="absolute inset-0 rounded-2xl" style={{ background: allDone ? "rgba(126,255,151,0.3)" : "rgba(255,77,157,0.38)", filter: "blur(26px)", transform: "scale(0.85)" }} />
                     <Image src="/characters/raccoon-sneaking.png" alt="The Hacker Raccoon" width={104} height={104} className="relative rounded-2xl block" style={{ border: `2px solid ${allDone ? "rgba(126,255,151,0.5)" : "rgba(255,77,157,0.55)"}` }} />
@@ -392,92 +423,87 @@ export default function DashboardView({
               </RevealOnScroll>
 
               {/* ── WEEK LIST ── */}
-              <StaggeredList className="space-y-3 mb-10">
+              {/* ── WEEK TILES ──
+                  Owner pick, 28 Oct: concept 08, the capsule tile, "but can we
+                  get them filled in ... relevant to the content".
+
+                  Two things make this work. The tile takes the week's OWN
+                  colour, already defined for all twenty in weekThemes.ts and
+                  until now unused on this page, so a list of twenty reads as a
+                  colour run instead of twenty blue rows. And STATE IS TOLD BY
+                  FORM, not colour: a tick and stars for done, full strength for
+                  the week you are on, dimmed for one not started. That is what
+                  frees colour to mean "which week".
+
+                  Art is per-week and OPTIONAL. A week with no image falls back
+                  to its colour gradient and still looks finished, so the weeks
+                  still being drawn are never broken meanwhile. */}
+              <StaggeredList className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-10">
                 {weeks.map((w) => {
                   const isCompleted = w.state === "completed";
                   const isInProgress = w.state === "inProgress";
                   const isCurrent = w.state === "current";
+                  const notStarted = !isCompleted && !isCurrent && !isInProgress;
+                  const a = WEEK_THEMES[w.week]?.accent ?? C.cyan;
+                  const art = WEEK_ART.has(w.week) ? `/dashboard/week-art/week-${w.week}.webp` : null;
                   return (
-                    <div
+                    <a
                       key={w.id}
-                      className="relative overflow-hidden rounded-3xl flex items-center gap-4 sm:gap-5"
+                      href={w.href}
+                      className="relative overflow-hidden rounded-3xl flex flex-col lift"
                       style={{
-                        padding: isCurrent ? "22px 22px" : "18px 22px",
-                        background: isCurrent
-                          ? "linear-gradient(120deg, rgba(54,214,255,0.12), rgba(139,108,255,0.14))"
-                          : isCompleted
-                            ? "linear-gradient(120deg, rgba(126,255,151,0.1), rgba(13,19,44,0.5))"
-                            : C.card,
-                        border: isCurrent ? `1.5px solid rgba(139,108,255,0.65)` : isCompleted ? "1px solid rgba(126,255,151,0.38)" : `1px solid ${C.border}`,
-                        boxShadow: isCurrent ? "0 0 30px rgba(139,108,255,0.3), " + SHADOW_CARD : SHADOW_CARD,
-                        backdropFilter: "blur(10px)",
-                        WebkitBackdropFilter: "blur(10px)",
+                        minHeight: 352,
+                        padding: 20,
+                        textDecoration: "none",
+                        background: art ? "#0a0e1e" : `linear-gradient(160deg, ${a}, ${a}22 85%), #0a0e1e`,
+                        border: `1px solid ${a}${isCurrent ? "99" : "3a"}`,
+                        boxShadow: isCurrent ? `0 0 34px -14px ${a}, ` + SHADOW_CARD : SHADOW_CARD,
+                        opacity: notStarted ? 0.86 : 1,
                       }}
                     >
-                      {/* Faint themed holographic backdrop (screen-blended so the
-                          pure-black art vanishes and only the glow remains). */}
-                      {WEEK_BG_AVAILABLE.has(w.week) && (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img
-                          src={`/dashboard/week-bg/week-${w.week}.png`}
-                          alt=""
-                          aria-hidden
-                          loading="lazy"
-                          style={{
-                            position: "absolute",
-                            top: 0,
-                            bottom: 0,
-                            // R12 — right-anchored motif: sit in the right ~46% of
-                            // the card, clear of the title/description, fading into
-                            // the card on its inner (left) edge. Tucks behind the
-                            // opaque CTA button (z-1) on the far right.
-                            left: "54%",
-                            right: 0,
-                            height: "100%",
-                            objectFit: "cover",
-                            objectPosition: "center",
-                            opacity: isCompleted ? 0.4 : 0.55,
-                            mixBlendMode: "screen",
-                            pointerEvents: "none",
-                            zIndex: 0,
-                            WebkitMaskImage: "linear-gradient(90deg, transparent 0%, #000 40%, #000 100%)",
-                            maskImage: "linear-gradient(90deg, transparent 0%, #000 40%, #000 100%)",
-                          }}
-                        />
+                      {art && (
+                        <>
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img src={art} alt="" aria-hidden loading="lazy" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 52%", opacity: notStarted ? 0.74 : 1, zIndex: 0 }} />
+                          {/* The scrim is what makes words legible over a
+                              picture. Without it this is a poster, not a card. */}
+                          <span aria-hidden style={{ position: "absolute", inset: 0, zIndex: 1, background: "linear-gradient(180deg, rgba(8,12,28,0.38) 0%, rgba(8,12,28,0.00) 24%, rgba(8,12,28,0.00) 56%, rgba(8,12,28,0.34) 72%, rgba(8,12,28,0.74) 86%, rgba(8,12,28,0.92) 100%)" }} />
+                          <span aria-hidden style={{ position: "absolute", inset: 0, zIndex: 1, background: `linear-gradient(90deg, rgba(8,12,28,0.45) 0%, rgba(8,12,28,0.05) 52%, transparent 78%), linear-gradient(180deg, transparent 55%, ${a}1a 100%)` }} />
+                        </>
                       )}
 
-                      <div className="relative z-[1] shrink-0 flex items-center justify-center font-black text-sm" style={{
-                        width: 52, height: 52, borderRadius: 100,
-                        background: isCompleted ? "rgba(126,255,151,0.16)" : isCurrent ? GRAD_PRIMARY : "rgba(54,214,255,0.08)",
-                        color: isCompleted ? C.mossLight : isCurrent ? C.dark : C.textSoft,
-                        border: isCurrent ? "none" : `1px solid ${isCompleted ? "rgba(126,255,151,0.4)" : C.border}`,
-                        boxShadow: isCurrent ? "0 0 22px rgba(139,108,255,0.55)" : isCompleted ? "0 0 16px rgba(126,255,151,0.35)" : "none",
-                      }}>
-                        {isCompleted ? <CheckIcon size={22} color={C.mossLight} /> : `W${w.week}`}
-                      </div>
-
-                      <div className="relative z-[1] flex-1 min-w-0">
-                        <div className="font-black uppercase mb-0.5 flex items-center gap-2 flex-wrap" style={{ fontSize: 10, letterSpacing: "0.15em", color: isCompleted ? "rgba(160,255,176,0.85)" : isCurrent ? C.cyan : "rgba(143,233,255,0.6)" }}>
-                          <span>Week {w.week}</span>
-                          {isCompleted && w.stars > 0 && <StarRow stars={w.stars} />}
-                          {isInProgress && w.screen != null && <span style={{ color: C.cyan, letterSpacing: "0.05em" }}>· screen {w.screen}</span>}
-                        </div>
-                        <h3 className="display font-bold text-base sm:text-lg leading-snug" style={{ color: C.text }}>{w.title}</h3>
-                        <p className="text-xs sm:text-sm mt-1 leading-relaxed line-clamp-2" style={{ color: C.textMuted }}>{w.description}</p>
-                      </div>
-
-                      <div className="relative z-[1] shrink-0">
-                        {isCompleted ? (
-                          <a href={w.href} className="inline-flex items-center gap-1.5 font-black lift" style={{ background: "rgba(126,255,151,0.14)", color: C.mossLight, border: "1px solid rgba(126,255,151,0.45)", borderRadius: 100, padding: "10px 18px", fontSize: 12, textDecoration: "none" }}>
-                            <CheckIcon size={14} color={C.mossLight} /> Replay
-                          </a>
-                        ) : (
-                          <a href={w.href} className="inline-flex items-center gap-1.5 font-black lift" style={{ background: GRAD_PRIMARY, color: C.dark, boxShadow: GLOW_PRIMARY, borderRadius: 100, padding: "12px 22px", fontSize: 13.5, textDecoration: "none", letterSpacing: "0.01em" }}>
-                            {isInProgress ? "Continue" : "Start Lesson"} <span aria-hidden>→</span>
-                          </a>
+                      <div className="relative flex items-start justify-between" style={{ zIndex: 2 }}>
+                        <span className="display" style={{ fontSize: 46, fontWeight: 800, lineHeight: 1, color: art ? a : "rgba(8,12,28,0.55)" }}>
+                          {String(w.week).padStart(2, "0")}
+                        </span>
+                        {isCompleted && (
+                          <span style={{ width: 30, height: 30, borderRadius: "50%", background: a, display: "grid", placeItems: "center", flexShrink: 0 }}>
+                            <CheckIcon size={17} color="#0a0e1e" />
+                          </span>
                         )}
                       </div>
-                    </div>
+
+                      <div className="relative" style={{ zIndex: 2, marginTop: "auto" }}>
+                        <div className="font-black uppercase mb-1 flex items-center gap-2" style={{ fontSize: 10, letterSpacing: "0.16em", color: a }}>
+                          <span>Week {w.week}</span>
+                          {isCompleted && w.stars > 0 && <StarRow stars={w.stars} />}
+                          {isInProgress && w.screen != null && <span>· screen {w.screen}</span>}
+                        </div>
+                        <h3 className="display font-bold leading-snug" style={{ fontSize: 17, color: C.text, textShadow: "0 2px 10px rgba(5,8,20,0.95), 0 1px 3px rgba(5,8,20,0.9)" }}>{w.title}</h3>
+                        <p className="mt-1 leading-relaxed line-clamp-2" style={{ fontSize: 12, color: C.textSoft, textShadow: "0 2px 9px rgba(5,8,20,0.95), 0 1px 3px rgba(5,8,20,0.9)" }}>{w.description}</p>
+                        <span
+                          className="inline-flex items-center gap-1.5 font-black mt-3"
+                          style={{
+                            background: isCompleted ? `${a}2e` : a,
+                            color: isCompleted ? a : "#0a0e1e",
+                            border: isCompleted ? `1px solid ${a}8c` : "none",
+                            borderRadius: 100, padding: "9px 17px", fontSize: 12.5,
+                          }}
+                        >
+                          {isCompleted ? "Replay" : isInProgress ? "Continue" : "Start Lesson"} <span aria-hidden>→</span>
+                        </span>
+                      </div>
+                    </a>
                   );
                 })}
               </StaggeredList>

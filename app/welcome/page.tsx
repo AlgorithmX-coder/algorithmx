@@ -252,7 +252,7 @@ export default function WelcomePage() {
                       borderColor: "rgba(245,158,11,0.4)",
                       boxShadow: "0 0 30px rgba(245,158,11,0.3)",
                     }}>
-                    <img src="/characters/waving.png" alt="Adam and Layla"
+                    <img src="/characters/heroes-hq.webp" alt="Adam and Layla in the Cyber Heroes command centre"
                       className="block w-full" />
                   </div>
                 </motion.div>
