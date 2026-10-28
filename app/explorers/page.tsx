@@ -45,7 +45,7 @@ import { useReducedMotion } from "./engine/primitives";
 import { MONO } from "./engine/tokens";
 import type { AwardEvent, MissionManifest } from "./engine/types";
 import { checkpointStorageKey, xpForEvent, XP_RULES } from "./engine/types";
-import { getExplorersRank, type ExplorersRankInfo } from "./engine/rank";
+import { getExplorersRank, EXPLORERS_RANKS, type ExplorersRankInfo } from "./engine/rank";
 import { getStreak, recordDailyActivity } from "./engine/streak";
 import { RankUpMoment } from "./engine/RankUpMoment";
 import { ClearanceUpMoment } from "./engine/ClearanceUpMoment";
@@ -154,6 +154,17 @@ const SYS = "#34E1FF"; // system / chrome
 const TXT = "#D3E6F7"; // readable body
 const DIM = "#617a9e"; // muted
 const AMBER = "#FFC24B"; // the next case
+
+// Scatter slots for the agent ID card's earned-rank badge collection — up
+// to 5 (every rank below MAVERICK), positioned so none overlap the ring,
+// the name or the stat row.
+const BADGE_SLOTS = [
+  { top: "10%", left: "8%", rotate: "-10deg" },
+  { top: "14%", right: "9%", rotate: "8deg" },
+  { bottom: "14%", left: "7%", rotate: "7deg" },
+  { bottom: "10%", right: "10%", rotate: "-6deg" },
+  { top: "46%", left: "4%", rotate: "-4deg" },
+] as const;
 
 /* Locked cards read as "encrypted intel awaiting decryption", not dead grey
  * boxes, and each of the four blocks gets its OWN texture so they feel distinct:
@@ -388,6 +399,14 @@ export default function ExplorersPage() {
     return { ...b, cases, closed, total: cases.length, done: closed > 0 && closed === cases.length };
   });
   const rank = useMemo(() => getExplorersRank(totalXp), [totalXp]);
+  // Every rank already reached (not the current one — that one's the big
+  // badge in the ring) stays pinned in the card's background like a trophy
+  // case, so the card visibly fills up as the agent ranks up over the
+  // course of the 20 cases, instead of resetting to a blank slate each time.
+  const earnedBadges = useMemo(
+    () => EXPLORERS_RANKS.filter((r) => r.minXP <= totalXp && r.name !== rank.current.name),
+    [totalXp, rank.current.name],
+  );
 
   if (active) {
     const activeIdx = CASES.findIndex((m) => m.id === active.id);
@@ -685,41 +704,74 @@ export default function ExplorersPage() {
             </div>
 
             {/* agent ID card — the badge itself IS the progress ring: how
-                far this agent is from their next rank, at a glance */}
-            <div style={{ border: `1px solid ${rank.current.colour}44`, borderRadius: 10, background: "rgba(8,13,24,0.6)", padding: "22px 20px", display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", gap: 8 }}>
-              <span
-                aria-hidden
-                style={{
-                  width: 72, height: 72, borderRadius: "50%", display: "grid", placeItems: "center",
-                  background: `conic-gradient(${rank.current.colour} ${Math.round(rank.progress * 100)}%, rgba(255,255,255,0.12) 0)`,
-                  boxShadow: `0 0 18px ${rank.current.colour}55`,
-                }}
-              >
-                <span style={{ width: 56, height: 56, borderRadius: "50%", background: "#070b16", display: "grid", placeItems: "center", color: rank.current.colour }}>
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-                    <path d="M12 2.6 19 5.5v5c0 5-3 8.5-7 10-4-1.5-7-5-7-10v-5L12 2.6Z" />
-                  </svg>
+                far this agent is from their next rank, at a glance. The
+                card's own background tints to the CURRENT rank's colour,
+                and every rank already passed stays pinned behind it as a
+                faint badge, so the card visibly fills up with a trophy
+                case over the course of the 20 cases instead of looking
+                the same at every rank. */}
+            <div
+              style={{
+                position: "relative",
+                overflow: "hidden",
+                border: `1px solid ${rank.current.colour}44`,
+                borderRadius: 10,
+                background: `radial-gradient(ellipse 100% 90% at 75% 10%, ${rank.current.colour}1c, transparent 60%), rgba(8,13,24,0.68)`,
+                padding: "22px 20px",
+              }}
+            >
+              {earnedBadges.map((r, i) => {
+                const slot = BADGE_SLOTS[i];
+                if (!slot) return null;
+                return (
+                  <span
+                    key={r.name}
+                    aria-hidden
+                    title={r.name}
+                    style={{ position: "absolute", ...slot, transform: `rotate(${slot.rotate})`, color: r.colour, opacity: 0.22, zIndex: 0 } as CSSProperties}
+                  >
+                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+                      <path d="M12 2.6 19 5.5v5c0 5-3 8.5-7 10-4-1.5-7-5-7-10v-5L12 2.6Z" />
+                    </svg>
+                  </span>
+                );
+              })}
+
+              <div style={{ position: "relative", zIndex: 1, display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", gap: 8 }}>
+                <span
+                  aria-hidden
+                  style={{
+                    width: 72, height: 72, borderRadius: "50%", display: "grid", placeItems: "center",
+                    background: `conic-gradient(${rank.current.colour} ${Math.round(rank.progress * 100)}%, rgba(255,255,255,0.12) 0)`,
+                    boxShadow: `0 0 18px ${rank.current.colour}55`,
+                  }}
+                >
+                  <span style={{ width: 56, height: 56, borderRadius: "50%", background: "#070b16", display: "grid", placeItems: "center", color: rank.current.colour }}>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+                      <path d="M12 2.6 19 5.5v5c0 5-3 8.5-7 10-4-1.5-7-5-7-10v-5L12 2.6Z" />
+                    </svg>
+                  </span>
                 </span>
-              </span>
-              <div style={{ fontFamily: MONO, fontSize: 15, fontWeight: 800, letterSpacing: "0.06em", color: TXT, marginTop: 2 }}>{rank.current.name}</div>
-              <div style={{ fontFamily: MONO, fontSize: 9.5, letterSpacing: "0.08em", color: DIM, marginBottom: 4 }}>
-                {rank.next ? `${rank.next.minXP - totalXp} XP TO ${rank.next.name}` : "MAX RANK REACHED"}
-              </div>
-              <div style={{ display: "flex", gap: 18, width: "100%", justifyContent: "center", borderTop: "1px solid rgba(255,255,255,0.08)", paddingTop: 12, marginTop: 4 }}>
-                <div>
-                  <div style={{ fontFamily: MONO, fontSize: 15, fontWeight: 800, color: "#3BF57E" }}>{closedCount}<span style={{ color: DIM, fontWeight: 600 }}>/20</span></div>
-                  <div style={{ fontFamily: MONO, fontSize: 7.5, letterSpacing: "0.1em", color: DIM, marginTop: 3 }}>CASES</div>
+                <div style={{ fontFamily: MONO, fontSize: 15, fontWeight: 800, letterSpacing: "0.06em", color: TXT, marginTop: 2 }}>{rank.current.name}</div>
+                <div style={{ fontFamily: MONO, fontSize: 9.5, letterSpacing: "0.08em", color: DIM, marginBottom: 4 }}>
+                  {rank.next ? `${rank.next.minXP - totalXp} XP TO ${rank.next.name}` : "MAX RANK REACHED"}
                 </div>
-                <div>
-                  <div style={{ fontFamily: MONO, fontSize: 15, fontWeight: 800, color: AMBER }}>{totalXp}</div>
-                  <div style={{ fontFamily: MONO, fontSize: 7.5, letterSpacing: "0.1em", color: DIM, marginTop: 3 }}>XP</div>
-                </div>
-                {streak > 0 && (
+                <div style={{ display: "flex", gap: 18, width: "100%", justifyContent: "center", borderTop: "1px solid rgba(255,255,255,0.08)", paddingTop: 12, marginTop: 4 }}>
                   <div>
-                    <div style={{ fontFamily: MONO, fontSize: 15, fontWeight: 800, color: "#FF8A3D" }}>🔥 {streak}d</div>
-                    <div style={{ fontFamily: MONO, fontSize: 7.5, letterSpacing: "0.1em", color: DIM, marginTop: 3 }}>STREAK</div>
+                    <div style={{ fontFamily: MONO, fontSize: 15, fontWeight: 800, color: "#3BF57E" }}>{closedCount}<span style={{ color: DIM, fontWeight: 600 }}>/20</span></div>
+                    <div style={{ fontFamily: MONO, fontSize: 7.5, letterSpacing: "0.1em", color: DIM, marginTop: 3 }}>CASES</div>
                   </div>
-                )}
+                  <div>
+                    <div style={{ fontFamily: MONO, fontSize: 15, fontWeight: 800, color: AMBER }}>{totalXp}</div>
+                    <div style={{ fontFamily: MONO, fontSize: 7.5, letterSpacing: "0.1em", color: DIM, marginTop: 3 }}>XP</div>
+                  </div>
+                  {streak > 0 && (
+                    <div>
+                      <div style={{ fontFamily: MONO, fontSize: 15, fontWeight: 800, color: "#FF8A3D" }}>🔥 {streak}d</div>
+                      <div style={{ fontFamily: MONO, fontSize: 7.5, letterSpacing: "0.1em", color: DIM, marginTop: 3 }}>STREAK</div>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </div>
