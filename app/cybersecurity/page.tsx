@@ -240,17 +240,24 @@ const TRACK_LOCKUPS: Record<string, React.ReactNode> = {
   ),
   cyberstart: (
     <span style={LOCKUP_ROW}>
-      <span
+      <svg
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="#8B7BFF"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
         aria-hidden
-        style={{
-          width: 12,
-          height: 12,
-          borderRadius: 3,
-          background: "#8B7BFF",
-          boxShadow: "0 0 14px rgba(139,123,255,0.35)",
-          flexShrink: 0,
-        }}
-      />
+        style={{ filter: "drop-shadow(0 0 10px rgba(139,123,255,0.4))", flexShrink: 0 }}
+      >
+        <path d="M3.4 7.4 V3.4 H7.4 M16.6 3.4 H20.6 V7.4 M20.6 16.6 V20.6 H16.6 M7.4 20.6 H3.4 V16.6" strokeWidth="1.5" />
+        <circle cx="12" cy="12" r="5.4" />
+        <circle cx="12" cy="12" r="2.9" strokeWidth="1" opacity="0.5" />
+        <path d="M12 4.8 V7 M12 17 V19.2 M4.8 12 H7 M17 12 H19.2" strokeWidth="1.5" />
+        <circle cx="12" cy="12" r="1.2" fill="#8B7BFF" stroke="none" />
+      </svg>
       <span
         style={{
           fontFamily: "var(--font-chakra), ui-sans-serif, system-ui, sans-serif",
