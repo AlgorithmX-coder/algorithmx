@@ -387,7 +387,6 @@ export default function ExplorersPage() {
     const closed = cases.filter((m) => status[m.id] === "CLOSED").length;
     return { ...b, cases, closed, total: cases.length, done: closed > 0 && closed === cases.length };
   });
-  const ladder = blockStats.map((b) => (b.done ? "■" : "□")).join(" ");
   const rank = useMemo(() => getExplorersRank(totalXp), [totalXp]);
 
   if (active) {
@@ -580,6 +579,8 @@ export default function ExplorersPage() {
         .tc-glyph{display:inline-flex;align-items:center;justify-content:center;width:46px;height:46px;border-radius:6px;border:1px solid;background:rgba(255,255,255,0.03)}
         .tc-title{font-family:var(--font-inter),system-ui,-apple-system,sans-serif;font-size:17px;font-weight:800;letter-spacing:.02em;text-transform:uppercase;line-height:1.15;margin-top:12px}
         .tc-chip{font-size:9.5px;letter-spacing:.14em;border:1px solid;border-radius:2px;padding:2px 7px}
+        .tc-hero-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:28px;align-items:center}
+        @media (max-width:760px){.tc-hero-grid{grid-template-columns:1fr}}
         .tc-brk{position:absolute;width:11px;height:11px;z-index:3;pointer-events:none;opacity:.9}
         .tc-brk.tl{top:7px;left:7px;border-top:2px solid var(--accent);border-left:2px solid var(--accent)}
         .tc-brk.tr{top:7px;right:7px;border-top:2px solid var(--accent);border-right:2px solid var(--accent)}
@@ -660,41 +661,67 @@ export default function ExplorersPage() {
         </div>
 
         <div className="tc-win">
-          {/* hero */}
-          <div style={{ color: SYS, fontSize: 12.5, letterSpacing: "0.06em" }}>
-            AGENT, YOUR MISSIONS<span className="tc-cur" style={{ color: SYS }}>▊</span>
-          </div>
-          <h1 className="tc-h1">
-            PICK YOUR CASE, <span style={{ color: SYS }}>AGENT</span>
-          </h1>
-          <div style={{ color: TXT, opacity: 0.9, fontSize: 13, marginTop: 8 }}>
-            agent: <span style={{ color: rank.current.colour, fontWeight: 700, letterSpacing: "0.06em" }}>{rank.current.name}</span>
-            {rank.next && (
-              <span style={{ color: DIM, fontSize: 11 }}> ({rank.next.minXP - totalXp} xp to {rank.next.name})</span>
-            )}
-            &nbsp;·&nbsp; cases solved:{" "}
-            <span style={{ color: "#3BF57E" }}>{closedCount}</span>
-            <span style={{ color: DIM }}>/20</span> &nbsp;·&nbsp; xp: <span style={{ color: AMBER }}>{totalXp}</span>
-            {streak > 0 && (
-              <>
-                &nbsp;·&nbsp; streak: <span style={{ color: "#FF8A3D" }}>🔥 {streak}d</span>
-              </>
-            )}
-            &nbsp;·&nbsp; clearance:{" "}
-            <span style={{ color: SYS, letterSpacing: "0.18em" }}>{ladder}</span>
-          </div>
+          {/* hero — split: headline + actions left, agent ID card right */}
+          <div className="tc-hero-grid">
+            <div>
+              <div style={{ color: SYS, fontSize: 12.5, letterSpacing: "0.06em" }}>
+                AGENT, YOUR MISSIONS<span className="tc-cur" style={{ color: SYS }}>▊</span>
+              </div>
+              <h1 className="tc-h1">
+                PICK YOUR CASE, <span style={{ color: SYS }}>AGENT</span>
+              </h1>
+              <div style={{ marginTop: 18, display: "flex", gap: 12, flexWrap: "wrap", alignItems: "center" }}>
+                <button className="tc-cta" onClick={() => nextCase && openCase(nextCase)} disabled={!nextCase}>
+                  {nextCase ? "▶ " : "✓ "}
+                  {continueLabel}
+                </button>
+                <button
+                  onClick={() => setShowWatchlist(true)}
+                  style={{ fontFamily: MONO, fontSize: 12.5, fontWeight: 700, letterSpacing: "0.06em", color: SYS, background: "rgba(52,225,255,0.07)", border: `1px solid ${SYS}55`, borderRadius: 3, padding: "11px 18px", cursor: "pointer" }}
+                >
+                  🗂 THE WATCHLIST
+                </button>
+              </div>
+            </div>
 
-          <div style={{ marginTop: 18, display: "flex", gap: 12, flexWrap: "wrap", alignItems: "center" }}>
-            <button className="tc-cta" onClick={() => nextCase && openCase(nextCase)} disabled={!nextCase}>
-              {nextCase ? "▶ " : "✓ "}
-              {continueLabel}
-            </button>
-            <button
-              onClick={() => setShowWatchlist(true)}
-              style={{ fontFamily: MONO, fontSize: 12.5, fontWeight: 700, letterSpacing: "0.06em", color: SYS, background: "rgba(52,225,255,0.07)", border: `1px solid ${SYS}55`, borderRadius: 3, padding: "11px 18px", cursor: "pointer" }}
-            >
-              🗂 THE WATCHLIST
-            </button>
+            {/* agent ID card — the badge itself IS the progress ring: how
+                far this agent is from their next rank, at a glance */}
+            <div style={{ border: `1px solid ${rank.current.colour}44`, borderRadius: 10, background: "rgba(8,13,24,0.6)", padding: "22px 20px", display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", gap: 8 }}>
+              <span
+                aria-hidden
+                style={{
+                  width: 72, height: 72, borderRadius: "50%", display: "grid", placeItems: "center",
+                  background: `conic-gradient(${rank.current.colour} ${Math.round(rank.progress * 100)}%, rgba(255,255,255,0.12) 0)`,
+                  boxShadow: `0 0 18px ${rank.current.colour}55`,
+                }}
+              >
+                <span style={{ width: 56, height: 56, borderRadius: "50%", background: "#070b16", display: "grid", placeItems: "center", color: rank.current.colour }}>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+                    <path d="M12 2.6 19 5.5v5c0 5-3 8.5-7 10-4-1.5-7-5-7-10v-5L12 2.6Z" />
+                  </svg>
+                </span>
+              </span>
+              <div style={{ fontFamily: MONO, fontSize: 15, fontWeight: 800, letterSpacing: "0.06em", color: TXT, marginTop: 2 }}>{rank.current.name}</div>
+              <div style={{ fontFamily: MONO, fontSize: 9.5, letterSpacing: "0.08em", color: DIM, marginBottom: 4 }}>
+                {rank.next ? `${rank.next.minXP - totalXp} XP TO ${rank.next.name}` : "MAX RANK REACHED"}
+              </div>
+              <div style={{ display: "flex", gap: 18, width: "100%", justifyContent: "center", borderTop: "1px solid rgba(255,255,255,0.08)", paddingTop: 12, marginTop: 4 }}>
+                <div>
+                  <div style={{ fontFamily: MONO, fontSize: 15, fontWeight: 800, color: "#3BF57E" }}>{closedCount}<span style={{ color: DIM, fontWeight: 600 }}>/20</span></div>
+                  <div style={{ fontFamily: MONO, fontSize: 7.5, letterSpacing: "0.1em", color: DIM, marginTop: 3 }}>CASES</div>
+                </div>
+                <div>
+                  <div style={{ fontFamily: MONO, fontSize: 15, fontWeight: 800, color: AMBER }}>{totalXp}</div>
+                  <div style={{ fontFamily: MONO, fontSize: 7.5, letterSpacing: "0.1em", color: DIM, marginTop: 3 }}>XP</div>
+                </div>
+                {streak > 0 && (
+                  <div>
+                    <div style={{ fontFamily: MONO, fontSize: 15, fontWeight: 800, color: "#FF8A3D" }}>🔥 {streak}d</div>
+                    <div style={{ fontFamily: MONO, fontSize: 7.5, letterSpacing: "0.1em", color: DIM, marginTop: 3 }}>STREAK</div>
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
 
           {/* blocks */}
