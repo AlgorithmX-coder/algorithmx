@@ -155,12 +155,67 @@ const TXT = "#D3E6F7"; // readable body
 const DIM = "#617a9e"; // muted
 const AMBER = "#FFC24B"; // the next case
 
-// The agent ID card's rank badge: an army-style insignia (a pentagon
-// shield + a centred star, two-layer clip-path for the coloured border)
-// instead of a plain outline icon, so it reads as a real badge rather
-// than a UI glyph.
-const BADGE_PENTAGON = "polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%)";
+// The agent ID card's rank badge: a hex security-clearance shield
+// (two-layer clip-path for the coloured border) with a glyph that
+// changes per rank — not just a recoloured icon — so RECRUIT through
+// MAVERICK each read as a distinct clearance tier, cybersecurity-styled
+// to match the rest of /explorers (hex grids, scan rings, terminal chrome).
+const BADGE_HEX = "polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%)";
 const BADGE_STAR = "M12 1.5 14.9 8.6 22.5 9.3 16.7 14.3 18.5 21.8 12 17.8 5.5 21.8 7.3 14.3 1.5 9.3 9.1 8.6Z";
+const BADGE_SPECIALIST_RAY = "M12 0l1 2.4-1 1-1-1Z";
+
+/** Per-rank clearance glyph — RECRUIT (bare access) through MAVERICK
+ * (elite, winged) escalate in visual complexity so the rank reads from
+ * the icon alone, not just the badge colour. */
+function RankGlyph({ name, size, color }: { name: string; size: number; color: string }) {
+  switch (name) {
+    case "RECRUIT":
+      return (
+        <svg width={size} height={size} viewBox="0 0 24 24" style={{ position: "relative" }}>
+          <path d="M7 15l5-4 5 4" fill="none" stroke={color} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      );
+    case "OPERATIVE":
+      return (
+        <svg width={size} height={size} viewBox="0 0 24 24" fill={color} style={{ position: "relative" }}>
+          <path d={BADGE_STAR} />
+        </svg>
+      );
+    case "TRACKER":
+      return (
+        <svg width={size} height={size} viewBox="0 0 24 24" style={{ position: "relative" }}>
+          <circle cx={12} cy={12} r={7.2} fill="none" stroke={color} strokeWidth={1.6} />
+          <path d="M12 5.6v3M12 15.4v3M5.6 12h3M15.4 12h3" stroke={color} strokeWidth={1.6} strokeLinecap="round" />
+          <circle cx={12} cy={12} r={1.4} fill={color} />
+        </svg>
+      );
+    case "ANALYST":
+      return (
+        <svg width={size} height={size} viewBox="0 0 24 24" style={{ position: "relative" }}>
+          <path d="M2 12s4-6.4 10-6.4S22 12 22 12s-4 6.4-10 6.4S2 12 2 12Z" fill="none" stroke={color} strokeWidth={1.6} strokeLinejoin="round" />
+          <circle cx={12} cy={12} r={3} fill={color} />
+        </svg>
+      );
+    case "SPECIALIST":
+      return (
+        <svg width={size} height={size} viewBox="0 0 24 24" fill={color} style={{ position: "relative" }}>
+          <path d="M12 3 13.8 8 19 8.8 15 12.2 16.2 17.4 12 14.6 7.8 17.4 9 12.2 5 8.8 10.2 8Z" />
+          <path d={BADGE_SPECIALIST_RAY} />
+          <g transform="rotate(90 12 12)"><path d={BADGE_SPECIALIST_RAY} /></g>
+          <g transform="rotate(180 12 12)"><path d={BADGE_SPECIALIST_RAY} /></g>
+          <g transform="rotate(270 12 12)"><path d={BADGE_SPECIALIST_RAY} /></g>
+        </svg>
+      );
+    default: // MAVERICK
+      return (
+        <svg width={size} height={size} viewBox="0 0 24 24" fill={color} style={{ position: "relative" }}>
+          <path d="M1 13.5c1.8-6 6.6-8.4 9-6.6-3 1.3-5.6 4.3-5.9 9.1-1.1 1-2.2.3-3.1-2.5Z" opacity={0.92} />
+          <path d="M23 13.5c-1.8-6-6.6-8.4-9-6.6 3 1.3 5.6 4.3 5.9 9.1 1.1 1 2.2.3 3.1-2.5Z" opacity={0.92} />
+          <g transform="translate(12 12) scale(0.46) translate(-12 -12)"><path d={BADGE_STAR} /></g>
+        </svg>
+      );
+  }
+}
 
 /* Locked cards read as "encrypted intel awaiting decryption", not dead grey
  * boxes, and each of the four blocks gets its OWN texture so they feel distinct:
@@ -733,11 +788,9 @@ export default function ExplorersPage() {
               >
                 <span style={{ width: 62, height: 62, borderRadius: "50%", background: "#070b16", display: "grid", placeItems: "center" }}>
                   <span style={{ position: "relative", width: 48, height: 48, display: "grid", placeItems: "center" }}>
-                    <span aria-hidden style={{ position: "absolute", inset: 0, clipPath: BADGE_PENTAGON, background: rank.current.colour, boxShadow: `0 0 10px ${rank.current.colour}66` } as CSSProperties} />
-                    <span aria-hidden style={{ position: "absolute", inset: 2.5, clipPath: BADGE_PENTAGON, background: "#0d1420" } as CSSProperties} />
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style={{ position: "relative", color: rank.current.colour }}>
-                      <path d={BADGE_STAR} />
-                    </svg>
+                    <span aria-hidden style={{ position: "absolute", inset: 0, clipPath: BADGE_HEX, background: rank.current.colour, boxShadow: `0 0 10px ${rank.current.colour}66` } as CSSProperties} />
+                    <span aria-hidden style={{ position: "absolute", inset: 2.5, clipPath: BADGE_HEX, background: "#0d1420" } as CSSProperties} />
+                    <RankGlyph name={rank.current.name} size={20} color={rank.current.colour} />
                   </span>
                 </span>
               </span>
@@ -772,11 +825,9 @@ export default function ExplorersPage() {
                     {earnedBadges.map((r) => (
                       <div key={r.name} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 4, width: 46 }}>
                         <span style={{ position: "relative", width: 34, height: 34, display: "grid", placeItems: "center" }}>
-                          <span aria-hidden style={{ position: "absolute", inset: 0, clipPath: BADGE_PENTAGON, background: r.colour } as CSSProperties} />
-                          <span aria-hidden style={{ position: "absolute", inset: 2, clipPath: BADGE_PENTAGON, background: "#0d1420" } as CSSProperties} />
-                          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" style={{ position: "relative", color: r.colour }}>
-                            <path d={BADGE_STAR} />
-                          </svg>
+                          <span aria-hidden style={{ position: "absolute", inset: 0, clipPath: BADGE_HEX, background: r.colour } as CSSProperties} />
+                          <span aria-hidden style={{ position: "absolute", inset: 2, clipPath: BADGE_HEX, background: "#0d1420" } as CSSProperties} />
+                          <RankGlyph name={r.name} size={15} color={r.colour} />
                         </span>
                         <span style={{ fontFamily: MONO, fontSize: 6.5, fontWeight: 800, letterSpacing: "0.04em", color: r.colour, textTransform: "uppercase", lineHeight: 1.15 }}>{r.name}</span>
                       </div>
