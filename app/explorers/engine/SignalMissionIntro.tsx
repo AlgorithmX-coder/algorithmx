@@ -15,6 +15,7 @@ import { BlockBackdrop } from "../BlockBackdrop";
 import { useArrowAdvance, SkipButton } from "./arrowAdvance";
 import { T, MONO, BODY, BAND_BY_CLASSIFICATION } from "./tokens";
 import type { MissionIntroData } from "../missionIntroData";
+import { ACTOR_PORTRAIT } from "../actorPortraits";
 
 const CSS = `
 .smi *{box-sizing:border-box}
@@ -68,6 +69,7 @@ export default function SignalMissionIntro({ data, onBegin }: { data: MissionInt
   const barH = (i: number) => (playing && !reduce ? 3 + Math.abs(Math.sin((audioRef.current?.currentTime ?? 0) * 3 + i * 0.5)) * 12 : 4);
   const acc = t.accent, accHi = t.accentHi;
   const band = BAND_BY_CLASSIFICATION[t.classification as keyof typeof BAND_BY_CLASSIFICATION] ?? acc;
+  const portrait = ACTOR_PORTRAIT[data.codename];
 
   return (
     <main className="smi" style={{ minHeight: "100dvh", background: T.inkBlack, color: T.textPrimary, fontFamily: BODY, display: "flex", alignItems: "center", justifyContent: "center", padding: "18px 14px", overflow: "hidden", position: "relative", ["--acc" as string]: acc, ["--accRGB" as string]: t.accentRGB }}>
@@ -88,9 +90,35 @@ export default function SignalMissionIntro({ data, onBegin }: { data: MissionInt
         </div>
 
         <div style={{ padding: "22px 24px 24px", overflowY: "auto" }}>
-          <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: ".28em", textTransform: "uppercase", color: acc, fontWeight: 700, marginBottom: 8 }}>[ {data.caseNumber} · {data.codename} ]</div>
-          <h1 style={{ fontWeight: 800, fontSize: "clamp(28px,5vw,42px)", lineHeight: 1.02, margin: "0 0 10px", letterSpacing: "-.01em", textShadow: `0 2px 24px ${acc}40` }}>{data.title}</h1>
-          <p style={{ fontSize: 14.5, color: T.textSecondary, lineHeight: 1.5, margin: "0 0 16px", maxWidth: "54ch" }}>{data.thesis}</p>
+          <div style={{ display: "flex", gap: 18, alignItems: "flex-start", flexWrap: "wrap" }}>
+            <div style={{ flex: "1 1 320px", minWidth: 0 }}>
+              <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: ".28em", textTransform: "uppercase", color: acc, fontWeight: 700, marginBottom: 8 }}>[ {data.caseNumber} · {data.codename} ]</div>
+              <h1 style={{ fontWeight: 800, fontSize: "clamp(28px,5vw,42px)", lineHeight: 1.02, margin: "0 0 10px", letterSpacing: "-.01em", textShadow: `0 2px 24px ${acc}40` }}>{data.title}</h1>
+              <p style={{ fontSize: 14.5, color: T.textSecondary, lineHeight: 1.5, margin: 0, maxWidth: "54ch" }}>{data.thesis}</p>
+            </div>
+            {portrait && (
+              <div style={{ flex: "0 0 auto", display: "flex", flexDirection: "column", alignItems: "center", gap: 6 }}>
+                <span
+                  aria-hidden
+                  style={{
+                    position: "relative",
+                    display: "block",
+                    width: 72,
+                    height: 72,
+                    overflow: "hidden",
+                    background: T.panelRaised,
+                    border: `2px solid ${acc}`,
+                    boxShadow: `0 0 16px ${acc}88`,
+                    clipPath: "polygon(12px 0,calc(100% - 12px) 0,100% 12px,100% 100%,0 100%,0 12px)",
+                  }}
+                >
+                  <img src={portrait} alt="" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "50% 25%" }} />
+                </span>
+                <span style={{ fontFamily: MONO, fontSize: 9, letterSpacing: ".12em", color: T.textSecondary, textTransform: "uppercase" }}>Threat actor</span>
+              </div>
+            )}
+          </div>
+          <div style={{ height: 16 }} />
 
           {/* ATLAS player */}
           <div style={{ display: "flex", alignItems: "center", gap: 13, background: T.panel, border: `1px solid ${T.hairline}`, borderLeft: `3px solid ${acc}`, borderRadius: 9, padding: "11px 15px 11px 12px", marginBottom: 14 }}>

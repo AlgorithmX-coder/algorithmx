@@ -16,6 +16,7 @@ import { useEffect, useRef, useState } from "react";
 import { HubStarfield, HubEnergy } from "./HubField";
 import { useArrowAdvance, SkipButton } from "../engine/arrowAdvance";
 import type { MissionIntroData } from "../missionIntroData";
+import { ACTOR_PORTRAIT } from "../actorPortraits";
 
 const C = {
   page: "#050402", ink: "#F4ECD8", dim: "#B39B6E", faint: "#877857",
@@ -78,6 +79,7 @@ export default function ConsoleMissionIntro({ data, onBegin }: { data: MissionIn
   const bars = Array.from({ length: 18 });
   const barH = (i: number) => (playing && !reduce ? 3 + Math.abs(Math.sin((audioRef.current?.currentTime ?? 0) * 3 + i * 0.5)) * 12 : 4);
   const acc = t.accent;
+  const portrait = ACTOR_PORTRAIT[data.codename];
 
   return (
     <main className="cmi" style={{ minHeight: "100dvh", background: C.page, color: C.ink, fontFamily: UI, display: "flex", alignItems: "center", justifyContent: "center", padding: "18px 14px", overflow: "hidden", position: "relative", ["--acc" as string]: acc }}>
@@ -101,9 +103,22 @@ export default function ConsoleMissionIntro({ data, onBegin }: { data: MissionIn
         </div>
 
         <div style={{ padding: "20px 22px 22px", overflowY: "auto" }}>
-          <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: ".28em", textTransform: "uppercase", color: acc, fontWeight: 700, marginBottom: 8 }}>[ {data.caseNumber} · {data.codename} ]</div>
-          <div style={{ fontSize: "clamp(28px,5vw,40px)", fontWeight: 800, letterSpacing: "-.01em", color: C.ink, textShadow: `0 2px 20px ${acc}40`, marginBottom: 10, lineHeight: 1.02 }}>{data.title}</div>
-          <p style={{ fontSize: 14.5, color: C.dim, lineHeight: 1.5, margin: "0 0 16px", maxWidth: "52ch" }}>{data.thesis}</p>
+          <div style={{ display: "flex", gap: 18, alignItems: "flex-start", flexWrap: "wrap" }}>
+            <div style={{ flex: "1 1 320px", minWidth: 0 }}>
+              <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: ".28em", textTransform: "uppercase", color: acc, fontWeight: 700, marginBottom: 8 }}>[ {data.caseNumber} · {data.codename} ]</div>
+              <div style={{ fontSize: "clamp(28px,5vw,40px)", fontWeight: 800, letterSpacing: "-.01em", color: C.ink, textShadow: `0 2px 20px ${acc}40`, marginBottom: 10, lineHeight: 1.02 }}>{data.title}</div>
+              <p style={{ fontSize: 14.5, color: C.dim, lineHeight: 1.5, margin: 0, maxWidth: "52ch" }}>{data.thesis}</p>
+            </div>
+            {portrait && (
+              <div style={{ flex: "0 0 auto", display: "flex", flexDirection: "column", alignItems: "center", gap: 6 }}>
+                <span aria-hidden style={{ position: "relative", display: "block", width: 72, height: 72, overflow: "hidden", background: "#0c0a05", border: `2px solid ${acc}`, borderRadius: R.card, boxShadow: `0 0 16px ${acc}88` }}>
+                  <img src={portrait} alt="" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "50% 25%" }} />
+                </span>
+                <span style={{ fontFamily: MONO, fontSize: 9, letterSpacing: ".12em", color: C.faint, textTransform: "uppercase" }}>Threat actor</span>
+              </div>
+            )}
+          </div>
+          <div style={{ height: 16 }} />
 
           {/* ATLAS player — terminal module */}
           <div style={{ display: "flex", alignItems: "center", gap: 13, background: C.chip, border: `1px solid ${C.chipedge}`, borderLeft: `3px solid ${acc}`, borderRadius: R.card, padding: "11px 15px 11px 12px", marginBottom: 14 }}>
