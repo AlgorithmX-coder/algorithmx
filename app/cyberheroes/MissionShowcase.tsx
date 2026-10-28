@@ -29,6 +29,7 @@
 
 import Image from "next/image";
 import { WEEK_THEMES } from "@/app/lesson/weekContent/weekThemes";
+import { weekArtSrc, weekArtPosition } from "@/app/lesson/weekContent/weekArt";
 
 interface Wk {
   w: number;
@@ -43,7 +44,7 @@ const FEATURED = [1, 3, 6, 7, 13];
 const TEASED = Array.from({ length: 20 }, (_, i) => i + 1).filter((n) => !FEATURED.includes(n));
 
 const accent = (w: number) => WEEK_THEMES[w]?.accent ?? "#36d6ff";
-const art = (w: number) => `/dashboard/week-art/week-${w}.webp`;
+const art = weekArtSrc;
 
 function Card({ wk, locked = false, small = false }: { wk: Wk; locked?: boolean; small?: boolean }) {
   const a = accent(wk.w);
@@ -74,7 +75,7 @@ function Card({ wk, locked = false, small = false }: { wk: Wk; locked?: boolean;
         alt={locked ? "" : `${wk.title} mission artwork`}
         fill
         sizes={small ? "(max-width: 640px) 45vw, 180px" : "(max-width: 640px) 90vw, (max-width: 1024px) 45vw, 300px"}
-        style={{ objectFit: "cover", objectPosition: "center 52%", zIndex: 0 }}
+        style={{ objectFit: "cover", objectPosition: weekArtPosition(wk.w), zIndex: 0 }}
       />
       {/* The scrim is what lets the words sit on a picture and still read. */}
       <span
