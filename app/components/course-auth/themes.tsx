@@ -166,19 +166,19 @@ function HeroesBackdrop() {
 
 function ExplorersBackdrop() {
   return (
-    <div aria-hidden style={{ position: "absolute", inset: 0, overflow: "hidden", background: "#030805" }}>
-      <CodeRainBackground fixed={false} bg="#030805" head="rgba(110,231,183,0.9)" accentA="rgba(74,222,128,0.85)" accentB="rgba(125,240,255,0.8)" />
+    <div aria-hidden style={{ position: "absolute", inset: 0, overflow: "hidden", background: "#030608" }}>
+      <CodeRainBackground fixed={false} bg="#030608" head="rgba(180,245,255,0.9)" accentA="rgba(52,225,255,0.85)" accentB="rgba(125,180,255,0.8)" />
       {/* veil + scanlines keep the terminal look while the form wins */}
-      <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse 70% 60% at 50% 45%, rgba(3,8,5,0.25), rgba(3,8,5,0.78))" }} />
+      <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse 70% 60% at 50% 45%, rgba(3,6,10,0.25), rgba(3,6,10,0.78))" }} />
       <div style={{ position: "absolute", inset: 0, opacity: 0.35, backgroundImage: "repeating-linear-gradient(0deg, rgba(0,0,0,0.35) 0px, rgba(0,0,0,0.35) 1px, transparent 1px, transparent 3px)" }} />
       {/* uplink scan-sweep rolling down the terminal */}
-      <div className="caX-sweep" style={{ position: "absolute", left: 0, right: 0, top: "-12%", height: "10%", background: "linear-gradient(180deg, transparent, rgba(74,222,128,0.07) 45%, rgba(110,231,183,0.14) 50%, rgba(74,222,128,0.07) 55%, transparent)", opacity: 0 }} />
+      <div className="caX-sweep" style={{ position: "absolute", left: 0, right: 0, top: "-12%", height: "10%", background: "linear-gradient(180deg, transparent, rgba(52,225,255,0.07) 45%, rgba(180,245,255,0.14) 50%, rgba(52,225,255,0.07) 55%, transparent)", opacity: 0 }} />
       {/* live link readout, bottom-left */}
       {/* sits above the dev-tools badge corner */}
-      <div style={{ position: "absolute", left: 24, bottom: 64, display: "flex", alignItems: "center", gap: 8, fontFamily: "ui-monospace, Menlo, monospace", fontSize: 11, letterSpacing: "0.14em", color: "rgba(110,231,183,0.5)", userSelect: "none" }}>
-        <span className="caX-pulse" style={{ width: 7, height: 7, borderRadius: "50%", background: "#4ade80", boxShadow: "0 0 8px rgba(74,222,128,0.8)" }} />
+      <div style={{ position: "absolute", left: 24, bottom: 64, display: "flex", alignItems: "center", gap: 8, fontFamily: "ui-monospace, Menlo, monospace", fontSize: 11, letterSpacing: "0.14em", color: "rgba(180,245,255,0.5)", userSelect: "none" }}>
+        <span className="caX-pulse" style={{ width: 7, height: 7, borderRadius: "50%", background: "#34E1FF", boxShadow: "0 0 8px rgba(52,225,255,0.8)" }} />
         ARC LINK // SECURE
-        <span className="caX-cursor" style={{ display: "inline-block", width: 7, height: 13, background: "rgba(110,231,183,0.7)" }} />
+        <span className="caX-cursor" style={{ display: "inline-block", width: 7, height: 13, background: "rgba(180,245,255,0.7)" }} />
       </div>
       <style>{`
         @media (prefers-reduced-motion: no-preference) {
@@ -395,13 +395,13 @@ export const COURSE_AUTH_THEMES: Record<CourseAuthKey, CourseAuthTheme> = {
       mono: "var(--font-geist-mono, ui-monospace), Menlo, monospace",
     },
     palette: {
-      page: "#030805",
-      panel: "rgba(5,14,9,0.88)",
-      border: "rgba(74,222,128,0.32)",
-      accent: "#4ade80",
-      ink: "#04130a",
-      text: "#e7fff1",
-      textSoft: "rgba(201,243,219,0.72)",
+      page: "#030608",
+      panel: "rgba(5,10,20,0.88)",
+      border: "rgba(52,225,255,0.32)",
+      accent: "#34E1FF",
+      ink: "#021a22",
+      text: "#e7fbff",
+      textSoft: "rgba(201,236,243,0.72)",
       danger: "#ff6b81",
       success: "#4ade80",
     },
@@ -416,13 +416,13 @@ export const COURSE_AUTH_THEMES: Record<CourseAuthKey, CourseAuthTheme> = {
     },
     lockup: (
       <span style={LOCKUP_ROW}>
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#4ade80" strokeWidth="1.8" aria-hidden style={{ filter: "drop-shadow(0 0 8px rgba(74,222,128,0.4))", flexShrink: 0 }}>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#34E1FF" strokeWidth="1.8" aria-hidden style={{ filter: "drop-shadow(0 0 8px rgba(52,225,255,0.4))", flexShrink: 0 }}>
           <circle cx="12" cy="12" r="9" />
           <circle cx="12" cy="12" r="3.4" />
           <path d="M12 3v3.2M12 17.8V21M3 12h3.2M17.8 12H21" strokeLinecap="round" />
         </svg>
-        <span style={{ fontFamily: "ui-monospace, Menlo, monospace", fontWeight: 700, fontSize: "1.05rem", letterSpacing: "0.12em", color: "#e7fff1" }}>
-          CYBER_<span style={{ color: "#4ade80" }}>EXPLORERS</span>
+        <span style={{ fontFamily: "ui-monospace, Menlo, monospace", fontWeight: 700, fontSize: "1.05rem", letterSpacing: "0.12em", color: "#e7fbff" }}>
+          CYBER_<span style={{ color: "#34E1FF" }}>EXPLORERS</span>
         </span>
       </span>
     ),
