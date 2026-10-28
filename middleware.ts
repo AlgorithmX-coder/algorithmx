@@ -15,20 +15,27 @@ export function middleware(req: NextRequest) {
     return NextResponse.next();
   }
 
-  // Launch password is BACK ON (owner 2026-10-20): the whole site requires the
-  // site password before anything is reachable. /password, /api, /verify and
-  // static assets are excluded by the matcher below, so the gate page and its
-  // POST endpoint stay open to take the password. CI e2e runs with E2E_TESTS=1
-  // and bypasses the gate so the suite can drive the app directly.
-  if (process.env.E2E_TESTS === "1") return NextResponse.next();
+  // Launch gate toggle. OFF 2026-10-28 (owner: open the site so Google can
+  // re-crawl the new favicon; re-gate once Google has picked it up). To put the
+  // password back on, flip LAUNCH_GATE to true. The password logic is preserved.
+  //
+  // When ON, the whole site requires the site password before anything is
+  // reachable. /password, /api, /verify and static assets are excluded by the
+  // matcher below, so the gate page and its POST endpoint stay open to take the
+  // password. CI e2e runs with E2E_TESTS=1 and bypasses the gate.
+  const LAUNCH_GATE = false;
 
-  const authed = req.cookies.get("site_auth")?.value === "v2";
-  if (authed) return NextResponse.next();
+  if (LAUNCH_GATE && process.env.E2E_TESTS !== "1") {
+    const authed = req.cookies.get("site_auth")?.value === "v2";
+    if (!authed) {
+      const url = req.nextUrl.clone();
+      url.pathname = "/password";
+      url.search = "";
+      return NextResponse.redirect(url);
+    }
+  }
 
-  const url = req.nextUrl.clone();
-  url.pathname = "/password";
-  url.search = "";
-  return NextResponse.redirect(url);
+  return NextResponse.next();
 }
 
 export const config = {
