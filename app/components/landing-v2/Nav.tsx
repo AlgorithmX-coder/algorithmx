@@ -127,7 +127,7 @@ export default function Nav({ centre, cta, aside, showTelemetry = true, showSite
   return (
     <nav
       data-tone={tone}
-      data-cta={cta ? "on" : "off"}
+      data-cta={cta === null ? "none" : cta ? "custom" : "default"}
       style={{
         position: "fixed",
         top: 0,
@@ -1124,15 +1124,21 @@ function TrustStrip({ isLight }: { isLight: boolean }) {
             display: none !important;
           }
         }
-        /* The homepage nav has no "Get Started" CTA (cta=null), so the centre
-           has real room: keep the trust strip down to a normal desktop width.
+        /* The homepage nav has NO pill at all (cta={null} -> data-cta="none"),
+           so the centre has real room: keep the trust strip down to a normal
+           desktop width. Pages that keep the DEFAULT "Get Started" pill
+           (cta undefined -> data-cta="default", e.g. /cybersecurity) must NOT
+           re-show the strip here — the pill needs this width or it clips off
+           the right edge (which is exactly the 1300->1580 bug above, so the
+           earlier blanket selector that also matched the default pill
+           reintroduced that clip on /cybersecurity).
            Owner 2026-10-19: on a display scaled below ~1580 effective px the
-           strip had vanished even though there was space. */
+           strip had vanished on the homepage even though there was space. */
         @media (min-width: 1200px) and (max-width: 1580px) {
           /* :global on the nav because the <nav> and this telemetry strip are
              in different styled-jsx scopes; without it the scoped nav selector
              matches nothing and the strip stays hidden. */
-          :global(nav[data-cta="off"]) .lv2-telemetry {
+          :global(nav[data-cta="none"]) .lv2-telemetry {
             display: flex !important;
           }
         }
