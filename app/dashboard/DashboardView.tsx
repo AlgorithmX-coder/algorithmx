@@ -7,6 +7,7 @@ import {
 } from "@/app/components/AnimatedDashboardV2";
 import { DashboardParticles } from "@/app/components/DashboardAtmosphere";
 import { WEEK_THEMES } from "@/app/lesson/weekContent/weekThemes";
+import { weekArtSrc, WEEK_ART_WEEKS, weekArtPosition } from "@/app/lesson/weekContent/weekArt";
 
 /* ───────────────── CYBER PALETTE (cool cosmic) ───────────────── */
 const C = {
@@ -46,9 +47,9 @@ const FONT_DISPLAY = "var(--font-space-grotesk), 'Space Grotesk', system-ui, -ap
  * /public/dashboard/week-art. A week NOT listed here falls back to its own
  * colour gradient, which still looks finished, so this grows one week at a
  * time without ever pointing a tile at a missing image. */
-const WEEK_ART = new Set<number>([
-  1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-]);
+/* The shared registry, so the dashboard and the landing page can never
+ * disagree about which weeks have art or how it is framed. */
+const WEEK_ART = WEEK_ART_WEEKS;
 const WEEK_BG_AVAILABLE = new Set<number>([
   1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
 ]);
@@ -505,7 +506,7 @@ export default function DashboardView({
                       {art && (
                         <>
                           {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img src={art} alt="" aria-hidden loading="lazy" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 52%", opacity: notStarted ? 0.74 : 1, zIndex: 0 }} />
+                          <img src={art} alt="" aria-hidden loading="lazy" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: weekArtPosition(w.week), opacity: notStarted ? 0.74 : 1, zIndex: 0 }} />
                           {/* The scrim is what makes words legible over a
                               picture. Without it this is a poster, not a card. */}
                           <span aria-hidden style={{ position: "absolute", inset: 0, zIndex: 1, background: "linear-gradient(180deg, rgba(8,12,28,0.38) 0%, rgba(8,12,28,0.00) 24%, rgba(8,12,28,0.00) 56%, rgba(8,12,28,0.34) 72%, rgba(8,12,28,0.74) 86%, rgba(8,12,28,0.92) 100%)" }} />
