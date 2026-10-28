@@ -46,7 +46,9 @@ const FONT_DISPLAY = "var(--font-space-grotesk), 'Space Grotesk', system-ui, -ap
  * /public/dashboard/week-art. A week NOT listed here falls back to its own
  * colour gradient, which still looks finished, so this grows one week at a
  * time without ever pointing a tile at a missing image. */
-const WEEK_ART = new Set<number>([1, 3, 13]);
+const WEEK_ART = new Set<number>([
+  1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+]);
 const WEEK_BG_AVAILABLE = new Set<number>([
   1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
 ]);
@@ -462,11 +464,11 @@ export default function DashboardView({
                       {art && (
                         <>
                           {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img src={art} alt="" aria-hidden loading="lazy" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 68%", opacity: notStarted ? 0.6 : 0.95, zIndex: 0 }} />
+                          <img src={art} alt="" aria-hidden loading="lazy" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 52%", opacity: notStarted ? 0.74 : 1, zIndex: 0 }} />
                           {/* The scrim is what makes words legible over a
                               picture. Without it this is a poster, not a card. */}
-                          <span aria-hidden style={{ position: "absolute", inset: 0, zIndex: 1, background: "linear-gradient(180deg, rgba(8,12,28,0.52) 0%, rgba(8,12,28,0.06) 26%, rgba(8,12,28,0.30) 50%, rgba(8,12,28,0.86) 72%, rgba(8,12,28,0.97) 88%)" }} />
-                          <span aria-hidden style={{ position: "absolute", inset: 0, zIndex: 1, background: `linear-gradient(90deg, rgba(8,12,28,0.62) 0%, rgba(8,12,28,0.12) 48%, transparent 72%), linear-gradient(180deg, transparent 45%, ${a}22 100%)` }} />
+                          <span aria-hidden style={{ position: "absolute", inset: 0, zIndex: 1, background: "linear-gradient(180deg, rgba(8,12,28,0.38) 0%, rgba(8,12,28,0.00) 24%, rgba(8,12,28,0.00) 56%, rgba(8,12,28,0.34) 72%, rgba(8,12,28,0.74) 86%, rgba(8,12,28,0.92) 100%)" }} />
+                          <span aria-hidden style={{ position: "absolute", inset: 0, zIndex: 1, background: `linear-gradient(90deg, rgba(8,12,28,0.45) 0%, rgba(8,12,28,0.05) 52%, transparent 78%), linear-gradient(180deg, transparent 55%, ${a}1a 100%)` }} />
                         </>
                       )}
 
@@ -487,8 +489,8 @@ export default function DashboardView({
                           {isCompleted && w.stars > 0 && <StarRow stars={w.stars} />}
                           {isInProgress && w.screen != null && <span>· screen {w.screen}</span>}
                         </div>
-                        <h3 className="display font-bold leading-snug" style={{ fontSize: 17, color: art ? C.text : "#0a0e1e" }}>{w.title}</h3>
-                        <p className="mt-1 leading-relaxed line-clamp-2" style={{ fontSize: 12, color: art ? C.textSoft : "rgba(10,14,30,0.82)" }}>{w.description}</p>
+                        <h3 className="display font-bold leading-snug" style={{ fontSize: 17, color: C.text, textShadow: "0 2px 10px rgba(5,8,20,0.95), 0 1px 3px rgba(5,8,20,0.9)" }}>{w.title}</h3>
+                        <p className="mt-1 leading-relaxed line-clamp-2" style={{ fontSize: 12, color: C.textSoft, textShadow: "0 2px 9px rgba(5,8,20,0.95), 0 1px 3px rgba(5,8,20,0.9)" }}>{w.description}</p>
                         <span
                           className="inline-flex items-center gap-1.5 font-black mt-3"
                           style={{
