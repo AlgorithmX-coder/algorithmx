@@ -13,6 +13,7 @@ import { useEffect, useRef, useState } from "react";
 import { BlockBackdrop } from "../BlockBackdrop";
 import { useArrowAdvance, SkipButton } from "../engine/arrowAdvance";
 import type { MissionIntroData } from "../missionIntroData";
+import { ACTOR_PORTRAIT } from "../actorPortraits";
 
 const C = {
   page: "#0a0812", ink: "#ECE8F7", dim: "#A99BD0", faint: "#7e72a1",
@@ -71,6 +72,7 @@ export default function WarRoomMissionIntro({ data, onBegin }: { data: MissionIn
   const bars = Array.from({ length: 18 });
   const barH = (i: number) => (playing && !reduce ? 3 + Math.abs(Math.sin((audioRef.current?.currentTime ?? 0) * 3 + i * 0.5)) * 12 : 4);
   const acc = t.accent, accHi = t.accentHi;
+  const portrait = ACTOR_PORTRAIT[data.codename];
 
   return (
     <main className="wmi" style={{ minHeight: "100dvh", background: C.page, color: C.ink, fontFamily: UI, display: "flex", alignItems: "center", justifyContent: "center", padding: "18px 14px", overflow: "hidden", position: "relative", ["--acc" as string]: acc }}>
@@ -93,9 +95,23 @@ export default function WarRoomMissionIntro({ data, onBegin }: { data: MissionIn
         </div>
 
         <div style={{ padding: "20px 24px 24px", overflowY: "auto" }}>
-          <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: ".26em", textTransform: "uppercase", color: acc, fontWeight: 700, marginBottom: 8 }}>[ {data.caseNumber} · {data.codename} ]</div>
-          <h1 style={{ fontWeight: 800, fontSize: "clamp(28px,5vw,42px)", lineHeight: 1.02, margin: "0 0 10px", color: C.ink, textShadow: `0 2px 20px ${acc}3c` }}>{data.title}</h1>
-          <p style={{ fontSize: 14.5, color: C.dim, lineHeight: 1.5, margin: "0 0 16px", maxWidth: "54ch" }}>{data.thesis}</p>
+          <div style={{ display: "flex", gap: 18, alignItems: "flex-start", flexWrap: "wrap" }}>
+            <div style={{ flex: "1 1 320px", minWidth: 0 }}>
+              <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: ".26em", textTransform: "uppercase", color: acc, fontWeight: 700, marginBottom: 8 }}>[ {data.caseNumber} · {data.codename} ]</div>
+              <h1 style={{ fontWeight: 800, fontSize: "clamp(28px,5vw,42px)", lineHeight: 1.02, margin: "0 0 10px", color: C.ink, textShadow: `0 2px 20px ${acc}3c` }}>{data.title}</h1>
+              <p style={{ fontSize: 14.5, color: C.dim, lineHeight: 1.5, margin: 0, maxWidth: "54ch" }}>{data.thesis}</p>
+            </div>
+            {portrait && (
+              <div style={{ flex: "0 0 auto", position: "relative", transform: "rotate(3deg)", background: "#efe9d8", padding: "6px 6px 18px", boxShadow: "0 10px 22px rgba(0,0,0,.5)" }}>
+                <span aria-hidden className="wmi-pin" style={{ position: "absolute", top: -6, left: "50%", transform: "translateX(-50%)", width: 11, height: 11, borderRadius: "50%", background: `radial-gradient(circle at 35% 30%, ${accHi}, ${acc})`, border: "1px solid rgba(0,0,0,.4)" }} />
+                <span aria-hidden style={{ display: "block", width: 68, height: 68, overflow: "hidden" }}>
+                  <img src={portrait} alt="" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "50% 25%" }} />
+                </span>
+                <span style={{ display: "block", textAlign: "center", marginTop: 4, fontFamily: MONO, fontSize: 8, letterSpacing: ".06em", color: "#1a1626", textTransform: "uppercase" }}>Threat actor</span>
+              </div>
+            )}
+          </div>
+          <div style={{ height: 16 }} />
 
           {/* ATLAS player */}
           <div style={{ display: "flex", alignItems: "center", gap: 13, background: C.chip, border: `1px solid ${C.chipedge}`, borderLeft: `3px solid ${acc}`, borderRadius: 8, padding: "11px 15px 11px 12px", marginBottom: 14 }}>

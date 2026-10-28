@@ -16,6 +16,7 @@ import { useEffect, useRef, useState } from "react";
 import { BlockBackdrop } from "./BlockBackdrop";
 import { useArrowAdvance, SkipButton } from "./engine/arrowAdvance";
 import type { MissionIntroData } from "./missionIntroData";
+import { ACTOR_PORTRAIT } from "./actorPortraits";
 
 const DISP = `"Oswald", "Arial Narrow", "Segoe UI", sans-serif`;
 const MONO = `"IBM Plex Mono", ui-monospace, Consolas, monospace`;
@@ -83,6 +84,7 @@ export default function MissionIntro({ data, onBegin }: { data: MissionIntroData
   const barH = (i: number) => (playing && !reduce ? 3 + Math.abs(Math.sin((audioRef.current?.currentTime ?? 0) * 3 + i * 0.5)) * 13 : 4);
 
   const acc = t.accent, accHi = t.accentHi;
+  const portrait = ACTOR_PORTRAIT[data.codename];
 
   return (
     <main
@@ -115,6 +117,31 @@ export default function MissionIntro({ data, onBegin }: { data: MissionIntroData
             </h1>
             <p style={{ fontSize: "clamp(13.5px,1.6vw,16px)", color: "#9BA6B2", margin: 0, maxWidth: "46ch" }}>{data.thesis}</p>
           </div>
+
+          {/* threat-actor dossier photo — same beveled frame + accent glow
+              the Watchlist gallery uses, so a kid recognises this is the
+              same case file they'll see again there */}
+          {portrait && (
+            <div style={{ flex: "0 0 auto", display: "flex", flexDirection: "column", alignItems: "center", gap: 6 }}>
+              <span
+                aria-hidden
+                style={{
+                  position: "relative",
+                  display: "block",
+                  width: 76,
+                  height: 76,
+                  overflow: "hidden",
+                  background: "#0c0f14",
+                  border: `2px solid ${acc}`,
+                  boxShadow: `0 0 16px rgba(${t.accentRGB},.5)`,
+                  clipPath: "polygon(12px 0,calc(100% - 12px) 0,100% 12px,100% 100%,0 100%,0 12px)",
+                }}
+              >
+                <img src={portrait} alt="" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "50% 25%" }} />
+              </span>
+              <span style={{ fontFamily: MONO, fontSize: 9.5, letterSpacing: ".12em", color: "#6f7b89", textTransform: "uppercase" }}>Threat actor</span>
+            </div>
+          )}
 
           {/* ATLAS player */}
           <div style={{ flex: "0 0 auto", display: "flex", alignItems: "center", gap: 13, background: "linear-gradient(180deg,#171C24,#12161C)", border: "1px solid #232B36", borderLeft: `3px solid ${acc}`, borderRadius: 12, padding: "11px 15px 11px 12px" }}>

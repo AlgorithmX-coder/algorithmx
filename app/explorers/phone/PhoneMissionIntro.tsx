@@ -14,6 +14,7 @@ import { useEffect, useRef, useState } from "react";
 import { BlockBackdrop } from "../BlockBackdrop";
 import { useArrowAdvance, SkipButton } from "../engine/arrowAdvance";
 import type { MissionIntroData } from "../missionIntroData";
+import { ACTOR_PORTRAIT } from "../actorPortraits";
 
 const C = {
   page: "#0d0d12", ink: "#F3F4F7", dim: "#9A9AA6", faint: "#7a7a88",
@@ -73,6 +74,7 @@ export default function PhoneMissionIntro({ data, onBegin }: { data: MissionIntr
   const bars = Array.from({ length: 16 });
   const barH = (i: number) => (playing && !reduce ? 3 + Math.abs(Math.sin((audioRef.current?.currentTime ?? 0) * 3 + i * 0.5)) * 11 : 4);
   const acc = t.accent, accHi = t.accentHi;
+  const portrait = ACTOR_PORTRAIT[data.codename];
 
   return (
     <main className="pmi" style={{ minHeight: "100dvh", background: C.page, color: C.ink, fontFamily: UI, display: "flex", alignItems: "center", justifyContent: "center", padding: "18px 14px", overflow: "hidden", position: "relative", ["--acc" as string]: acc }}>
@@ -104,8 +106,17 @@ export default function PhoneMissionIntro({ data, onBegin }: { data: MissionIntr
 
           {/* message bubble: title + thesis */}
           <div style={{ background: C.chip, border: `1px solid ${C.chipedge}`, borderRadius: "4px 16px 16px 16px", padding: "14px 16px", marginBottom: 12 }}>
-            <div style={{ fontFamily: MONO, fontSize: 10, letterSpacing: ".22em", textTransform: "uppercase", color: acc, fontWeight: 700, marginBottom: 7 }}>{data.caseNumber} · {data.codename}</div>
-            <div style={{ fontWeight: 800, fontSize: "clamp(22px,6vw,28px)", lineHeight: 1.06, marginBottom: 8 }}>{data.title}</div>
+            <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 10 }}>
+              <div style={{ minWidth: 0 }}>
+                <div style={{ fontFamily: MONO, fontSize: 10, letterSpacing: ".22em", textTransform: "uppercase", color: acc, fontWeight: 700, marginBottom: 7 }}>{data.caseNumber} · {data.codename}</div>
+                <div style={{ fontWeight: 800, fontSize: "clamp(22px,6vw,28px)", lineHeight: 1.06, marginBottom: 8 }}>{data.title}</div>
+              </div>
+              {portrait && (
+                <span aria-hidden style={{ flex: "0 0 auto", width: 46, height: 46, borderRadius: "50%", overflow: "hidden", border: `2px solid ${acc}`, boxShadow: `0 0 12px ${acc}88`, display: "block" }}>
+                  <img src={portrait} alt="" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "50% 25%" }} />
+                </span>
+              )}
+            </div>
             <p style={{ fontSize: 13.5, color: C.dim, lineHeight: 1.48, margin: 0 }}>{data.thesis}</p>
           </div>
 
