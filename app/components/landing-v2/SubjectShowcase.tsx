@@ -575,11 +575,11 @@ function TrackMark({ id, accent }: { id: LockupId; accent: string }) {
     );
   if (id === "ops")
     return (
-      <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke={accent} strokeWidth="1.9" aria-hidden>
-        <circle cx="12" cy="12" r="3" fill={accent} stroke="none" />
-        <path d="M12 9 V4 M12 20 V15 M9 12 H4 M20 12 H15" strokeLinecap="round" />
-        <circle cx="12" cy="4" r="1.5" fill={accent} stroke="none" />
-        <circle cx="20" cy="12" r="1.5" fill={accent} stroke="none" />
+      <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke={accent} strokeWidth="1.9" strokeLinecap="round" aria-hidden>
+        <circle cx="12" cy="12" r="8" />
+        <circle cx="12" cy="12" r="4.4" strokeWidth="1.1" opacity="0.55" />
+        <path d="M12 2.2 V6.6 M12 17.4 V21.8 M2.2 12 H6.6 M17.4 12 H21.8" />
+        <circle cx="12" cy="12" r="1.3" fill={accent} stroke="none" />
       </svg>
     );
   return (
