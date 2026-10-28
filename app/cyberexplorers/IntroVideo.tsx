@@ -12,7 +12,9 @@ import { useEffect, useRef, useState } from "react";
 import { MONO, T } from "@/app/explorers/engine/tokens";
 
 const SRC = "/explorers/trailer-cyberexplorers.mp4";
-const G = "#3BF57E";
+// The brand's own cyan (T.arcCyan) — this frame used a one-off green before,
+// the only thing on the hero not matching the rest of the page's identity.
+const G = "#34E1FF";
 
 export function IntroVideo({ reduced }: { reduced: boolean }) {
   const ref = useRef<HTMLVideoElement | null>(null);
@@ -72,40 +74,76 @@ export function IntroVideo({ reduced }: { reduced: boolean }) {
   };
 
   return (
-    <div style={{ border: `1px solid ${G}44`, borderRadius: 8, overflow: "hidden", background: "rgba(6,14,10,0.72)", boxShadow: `0 0 30px ${G}22` }}>
-      {/* terminal titlebar */}
-      <div style={{ display: "flex", alignItems: "center", gap: 7, padding: "8px 12px", borderBottom: `1px solid ${G}22`, fontFamily: MONO, fontSize: 10.5, letterSpacing: "0.08em", color: T.textSecondary }}>
-        <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#ff5f56" }} />
-        <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#ffbd2e" }} />
-        <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#27c93f" }} />
-        <span style={{ marginLeft: 8, color: G }}>RECRUITMENT</span>
-        <span style={{ color: T.textDisabled }}>// ARC SECURE FEED</span>
-        <span style={{ marginLeft: "auto", display: "inline-flex", alignItems: "center", gap: 5, color: "#ff5f56" }}>
-          <span className="cx-wave" style={{ width: 6, height: 6, borderRadius: "50%", background: "#ff5f56" }} />LIVE
-        </span>
-      </div>
+    <div style={{ position: "relative" }}>
+      {/* targeting-ring glow behind the frame — the Signal Room HUD motif
+          (the same corner-bracket/concentric-ring language carried through
+          the case board and Watchlist) now reaches the marketing hero too */}
+      <span
+        aria-hidden
+        style={{
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          width: "120%",
+          height: "120%",
+          transform: "translate(-50%,-50%)",
+          borderRadius: "50%",
+          background: `radial-gradient(circle, ${G}14 0%, transparent 62%)`,
+          pointerEvents: "none",
+          zIndex: -1,
+        }}
+      />
+      <style>{`
+        .iv-brk{position:absolute;width:16px;height:16px;z-index:3;pointer-events:none}
+        .iv-brk.tl{top:-1px;left:-1px;border-top:2px solid ${G};border-left:2px solid ${G}}
+        .iv-brk.tr{top:-1px;right:-1px;border-top:2px solid ${G};border-right:2px solid ${G}}
+        .iv-brk.bl{bottom:-1px;left:-1px;border-bottom:2px solid ${G};border-left:2px solid ${G}}
+        .iv-brk.br{bottom:-1px;right:-1px;border-bottom:2px solid ${G};border-right:2px solid ${G}}
+        .iv-sweep{position:absolute;left:0;right:0;height:90px;top:-90px;z-index:1;pointer-events:none;background:linear-gradient(180deg, ${G}26, transparent);animation:ivSweep 4.2s linear infinite}
+        @keyframes ivSweep{from{transform:translateY(0)}to{transform:translateY(340px)}}
+        @media (prefers-reduced-motion: reduce){.iv-sweep{animation:none}}
+      `}</style>
+      <div style={{ position: "relative", border: `1px solid ${G}55`, borderRadius: 8, overflow: "hidden", background: "rgba(6,12,20,0.72)", boxShadow: `0 0 36px ${G}26` }}>
+        <span className="iv-brk tl" aria-hidden />
+        <span className="iv-brk tr" aria-hidden />
+        <span className="iv-brk bl" aria-hidden />
+        <span className="iv-brk br" aria-hidden />
+        {!reduced && <span className="iv-sweep" aria-hidden />}
 
-      {/* video */}
-      <div style={{ position: "relative", cursor: ended ? "pointer" : "default", background: "#000" }} onClick={ended ? replay : undefined}>
-        {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
-        <video
-          ref={ref}
-          src={SRC}
-          poster="/explorers/trailer-poster.jpg"
-          playsInline
-          muted
-          preload="auto"
-          onEnded={onEnded}
-          style={{ width: "100%", display: "block", aspectRatio: "16 / 10", objectFit: "cover" }}
-        />
+        {/* terminal titlebar */}
+        <div style={{ position: "relative", zIndex: 2, display: "flex", alignItems: "center", gap: 7, padding: "8px 12px", borderBottom: `1px solid ${G}22`, fontFamily: MONO, fontSize: 10.5, letterSpacing: "0.08em", color: T.textSecondary }}>
+          <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#ff5f56" }} />
+          <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#ffbd2e" }} />
+          <span style={{ width: 8, height: 8, borderRadius: "50%", background: "#27c93f" }} />
+          <span style={{ marginLeft: 8, color: G }}>RECRUITMENT</span>
+          <span style={{ color: T.textDisabled }}>// ARC SECURE FEED</span>
+          <span style={{ marginLeft: "auto", display: "inline-flex", alignItems: "center", gap: 5, color: "#ff5f56" }}>
+            <span className="cx-wave" style={{ width: 6, height: 6, borderRadius: "50%", background: "#ff5f56" }} />LIVE
+          </span>
+        </div>
 
-        {/* replay overlay */}
-        {ended && (
-          <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 10, background: "rgba(4,8,6,0.55)" }}>
-            <span style={{ width: 64, height: 64, borderRadius: "50%", border: `2px solid ${G}`, background: "rgba(0,0,0,0.5)", color: G, fontSize: 24, display: "flex", alignItems: "center", justifyContent: "center", boxShadow: `0 0 18px ${G}66` }}>▶</span>
-            <span style={{ fontFamily: MONO, fontSize: 11, letterSpacing: "0.1em", color: G }}>PLAY</span>
-          </div>
-        )}
+        {/* video */}
+        <div style={{ position: "relative", zIndex: 2, cursor: ended ? "pointer" : "default", background: "#000" }} onClick={ended ? replay : undefined}>
+          {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
+          <video
+            ref={ref}
+            src={SRC}
+            poster="/explorers/trailer-poster.jpg"
+            playsInline
+            muted
+            preload="auto"
+            onEnded={onEnded}
+            style={{ width: "100%", display: "block", aspectRatio: "16 / 10", objectFit: "cover" }}
+          />
+
+          {/* replay overlay */}
+          {ended && (
+            <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 10, background: "rgba(4,8,6,0.55)" }}>
+              <span style={{ width: 64, height: 64, borderRadius: "50%", border: `2px solid ${G}`, background: "rgba(0,0,0,0.5)", color: G, fontSize: 24, display: "flex", alignItems: "center", justifyContent: "center", boxShadow: `0 0 18px ${G}66` }}>▶</span>
+              <span style={{ fontFamily: MONO, fontSize: 11, letterSpacing: "0.1em", color: G }}>PLAY</span>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
