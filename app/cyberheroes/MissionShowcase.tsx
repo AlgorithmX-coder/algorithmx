@@ -40,12 +40,12 @@ interface Wk {
 const FEATURED = [1, 3, 6, 7, 13];
 /** A handful blurred behind the unlock panel. Enough to read as "there is
  *  much more here", few enough that the page does not carry twenty images. */
-const TEASED = [4, 8, 10, 17, 19, 20];
+const TEASED = Array.from({ length: 20 }, (_, i) => i + 1).filter((n) => !FEATURED.includes(n));
 
 const accent = (w: number) => WEEK_THEMES[w]?.accent ?? "#36d6ff";
 const art = (w: number) => `/dashboard/week-art/week-${w}.webp`;
 
-function Card({ wk, locked = false }: { wk: Wk; locked?: boolean }) {
+function Card({ wk, locked = false, small = false }: { wk: Wk; locked?: boolean; small?: boolean }) {
   const a = accent(wk.w);
   return (
     <div
@@ -54,8 +54,8 @@ function Card({ wk, locked = false }: { wk: Wk; locked?: boolean }) {
         position: "relative",
         overflow: "hidden",
         borderRadius: 22,
-        minHeight: 300,
-        padding: 18,
+        minHeight: small ? 168 : 300,
+        padding: small ? 11 : 18,
         display: "flex",
         flexDirection: "column",
         background: "#0a0e1e",
@@ -63,8 +63,8 @@ function Card({ wk, locked = false }: { wk: Wk; locked?: boolean }) {
         boxShadow: locked ? "none" : `0 18px 40px -26px ${a}`,
         /* The blur goes on the whole card, art and words together, so a
          * locked week reads as "something is there" without giving it away. */
-        filter: locked ? "blur(7px) saturate(0.75)" : "none",
-        opacity: locked ? 0.55 : 1,
+        filter: locked ? (small ? "blur(3.2px) saturate(0.92)" : "blur(7px) saturate(0.75)") : "none",
+        opacity: locked ? (small ? 0.95 : 0.55) : 1,
         pointerEvents: locked ? "none" : undefined,
         userSelect: locked ? "none" : undefined,
       }}
@@ -73,7 +73,7 @@ function Card({ wk, locked = false }: { wk: Wk; locked?: boolean }) {
         src={art(wk.w)}
         alt={locked ? "" : `${wk.title} mission artwork`}
         fill
-        sizes="(max-width: 640px) 90vw, (max-width: 1024px) 45vw, 300px"
+        sizes={small ? "(max-width: 640px) 45vw, 180px" : "(max-width: 640px) 90vw, (max-width: 1024px) 45vw, 300px"}
         style={{ objectFit: "cover", objectPosition: "center 52%", zIndex: 0 }}
       />
       {/* The scrim is what lets the words sit on a picture and still read. */}
@@ -99,7 +99,7 @@ function Card({ wk, locked = false }: { wk: Wk; locked?: boolean }) {
 
       <span
         className="display-font"
-        style={{ position: "relative", zIndex: 2, fontSize: 40, fontWeight: 800, lineHeight: 1, color: a }}
+        style={{ position: "relative", zIndex: 2, fontSize: small ? 22 : 40, fontWeight: 800, lineHeight: 1, color: a }}
       >
         {String(wk.w).padStart(2, "0")}
       </span>
@@ -108,7 +108,7 @@ function Card({ wk, locked = false }: { wk: Wk; locked?: boolean }) {
         <div
           style={{
             fontFamily: "var(--font-jetbrains-mono), monospace",
-            fontSize: 9.5,
+            fontSize: small ? 8 : 9.5,
             fontWeight: 700,
             letterSpacing: "0.18em",
             textTransform: "uppercase",
@@ -122,7 +122,7 @@ function Card({ wk, locked = false }: { wk: Wk; locked?: boolean }) {
           className="display-font"
           style={{
             color: "#fff",
-            fontSize: 16.5,
+            fontSize: small ? 11.5 : 16.5,
             fontWeight: 700,
             lineHeight: 1.25,
             textShadow: "0 2px 10px rgba(5,8,20,0.95)",
@@ -137,6 +137,7 @@ function Card({ wk, locked = false }: { wk: Wk; locked?: boolean }) {
             lineHeight: 1.5,
             marginTop: 4,
             textShadow: "0 2px 9px rgba(5,8,20,0.95)",
+            display: small ? "none" : undefined,
           }}
         >
           {wk.sub}
@@ -163,7 +164,7 @@ export default function MissionShowcase({
   const locked = weeks.length - featured.length;
 
   return (
-    <section id="inside" className="max-w-[1100px] mx-auto px-6 md:px-10 py-16 sm:py-24">
+    <section id="curriculum" className="max-w-[1100px] mx-auto px-6 md:px-10 py-16 sm:py-24">
       <div className="text-center mb-10" data-scroll>
         <h2 className="text-3xl sm:text-4xl font-black text-white mb-4">
           A Look <span style={accentText}>Inside</span>
@@ -181,10 +182,10 @@ export default function MissionShowcase({
       </div>
 
       {/* ── the locked strip ───────────────────────────────────────────── */}
-      <div style={{ position: "relative", marginTop: 16 }} data-scroll>
-        <div className="grid gap-4 grid-cols-2 sm:grid-cols-3 lg:grid-cols-6" style={{ pointerEvents: "none" }}>
+      <div id="unlock" style={{ position: "relative", marginTop: 16, scrollMarginTop: 110 }} data-scroll>
+        <div className="grid gap-2.5 grid-cols-3 sm:grid-cols-5" style={{ pointerEvents: "none" }}>
           {teased.map((wk) => (
-            <Card key={wk.w} wk={wk} locked />
+            <Card key={wk.w} wk={wk} locked small />
           ))}
         </div>
 
@@ -203,7 +204,7 @@ export default function MissionShowcase({
              * blurred cards still show through. If you cannot tell there is
              * something behind this panel, the tease has done nothing. */
             background:
-              "radial-gradient(75% 95% at 50% 50%, rgba(10,14,30,0.62) 0%, rgba(10,14,30,0.78) 58%, rgba(10,14,30,0.9) 100%)",
+              "radial-gradient(62% 80% at 50% 50%, rgba(10,14,30,0.80) 0%, rgba(10,14,30,0.62) 55%, rgba(10,14,30,0.28) 100%)",
             borderRadius: 22,
           }}
         >
@@ -233,10 +234,23 @@ export default function MissionShowcase({
             mission. Enrol once and your child keeps all twenty.
           </p>
 
+          {/* Carried over from the pricing section this pass deletes. Those
+              lines were the only place the page said what you actually get,
+              and "no subscriptions, no renewals" is the strongest
+              objection-handler on a page aimed at parents. */}
+          <ul style={{ display: "flex", flexWrap: "wrap", gap: "6px 18px", justifyContent: "center", listStyle: "none", padding: 0, margin: "0 0 4px" }}>
+            {["All 20 weeks, missions and boss battles", "4 milestone certificates", "Parent progress dashboard", "One-time payment, no subscriptions"].map((t) => (
+              <li key={t} style={{ display: "inline-flex", alignItems: "center", gap: 7, color: "#c5cdf0", fontSize: 12.5 }}>
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#7eff97" strokeWidth="3.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d="M5 13l4.5 4.5L19 7" /></svg>
+                {t}
+              </li>
+            ))}
+          </ul>
+
           <a
             href="/cyberheroes/signup"
             className="inline-flex items-center gap-2 font-black px-7 py-3.5 rounded-full text-[15px] transition-all"
-            style={{ background: btnGrad, boxShadow: btnGlow, color: "#1a1200", textDecoration: "none" }}
+            style={{ background: btnGrad, boxShadow: btnGlow, color: "#fff", textDecoration: "none", textShadow: "0 1px 6px rgba(80,20,0,0.45)" }}
           >
             Enrol Now to Unlock · £99
             <span aria-hidden>→</span>
