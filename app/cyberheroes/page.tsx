@@ -157,8 +157,8 @@ const CURRICULUM: Array<{
     cert: "Cyber Guardian",
     certEmoji: "⚔️",
     weeks: [
-      { w: 6, title: "Gaming Safety: Defend Your Game Zone", sub: "Stay safe in Roblox, Minecraft and Fortnite — chat, reporting, blocking." },
-      { w: 7, title: "In-Game Spending: The V-Bucks Trap", sub: "Loot boxes, Robux and V-Bucks — and why to ask a grown-up first." },
+      { w: 6, title: "Gaming Safety: Defend Your Game Zone", sub: "Stay safe in Roblox, Minecraft and Fortnite. Chat, reporting and blocking." },
+      { w: 7, title: "In-Game Spending: The V-Bucks Trap", sub: "Loot boxes, Robux and V-Bucks, and why to ask a grown-up first." },
       { w: 8, title: "Photos & Videos: Think Before You Share", sub: "Why screenshots last forever and why consent matters." },
       { w: 9, title: "Apps & Downloads: Spot the Fakes", sub: "Spot fake apps, understand permissions and download safely." },
       { w: 10, title: "YouTube & Videos: Escape the Rabbit Hole", sub: "Stay safe watching videos and manage screen time." },
@@ -171,11 +171,11 @@ const CURRICULUM: Array<{
     cert: "Cyber Defender",
     certEmoji: "🏰",
     weeks: [
-      { w: 11, title: "Something Wrong? Emergency Protocol", sub: "How to report, block and tell a trusted grown-up — it's never your fault." },
-      { w: 12, title: "Digital Footprint: Tracks in the Snow", sub: "Everything you do online leaves a trail — learn to be proud of yours." },
+      { w: 11, title: "Something Wrong? Emergency Protocol", sub: "How to report, block and tell a trusted grown-up. It's never your fault." },
+      { w: 12, title: "Digital Footprint: Tracks in the Snow", sub: "Everything you do online leaves a trail. Learn to be proud of yours." },
       { w: 13, title: "Screen Time: Balance Your Power", sub: "The right balance between time online, breaks, sleep and healthy habits." },
-      { w: 14, title: "Smart Devices: Who's Listening?", sub: "What Alexa, Siri and smart devices hear — and how to protect your privacy." },
-      { w: 15, title: "AI & Chatbots: Robot or Real?", sub: "ChatGPT and chatbots — what they know and what never to share." },
+      { w: 14, title: "Smart Devices: Who's Listening?", sub: "What Alexa, Siri and smart devices hear, and how to protect your privacy." },
+      { w: 15, title: "AI & Chatbots: Robot or Real?", sub: "ChatGPT and chatbots: what they know, and what never to share." },
     ],
   },
   {
@@ -185,11 +185,11 @@ const CURRICULUM: Array<{
     cert: "Certified Cyber Hero",
     certEmoji: "🎓",
     weeks: [
-      { w: 16, title: "QR Codes & Links: Don't Take the Bait", sub: "Check before you scan or click — not every link is safe." },
-      { w: 17, title: "Social Media: The Profile Shield", sub: "Stay safe on TikTok, Snapchat and Instagram — privacy and smart posting." },
-      { w: 18, title: "Sharing Devices: Lock Before You Leave", sub: "Keep your stuff private on family tablets — logging out and boundaries." },
+      { w: 16, title: "QR Codes & Links: Don't Take the Bait", sub: "Check before you scan or click. Not every link is safe." },
+      { w: 17, title: "Social Media: The Profile Shield", sub: "Stay safe on TikTok, Snapchat and Instagram: privacy and smart posting." },
+      { w: 18, title: "Sharing Devices: Lock Before You Leave", sub: "Keep your stuff private on family tablets: logging out and boundaries." },
       { w: 19, title: "Protecting Family: Family Firewall", sub: "Become the family cyber expert and help everyone stay safe." },
-      { w: 20, title: "Graduation Day: The Final Mission", sub: "The ultimate challenge — earn your Cyber Hero certificate!" },
+      { w: 20, title: "Graduation Day: The Final Mission", sub: "The ultimate challenge. Earn your Cyber Hero certificate!" },
     ],
   },
 ];
@@ -436,7 +436,7 @@ function CyberHeroesNav() {
           <span aria-hidden className={`chnav-frame${scrolled ? " breathe" : ""}`} style={{ opacity: scrolled ? 0.72 : 0.38 }} />
 
           <div className="chnav-grid">
-            <Link href="/" className="chnav-logo" aria-label="Cyber Heroes by AlgorithmX — home">
+            <Link href="/" className="chnav-logo" aria-label="Cyber Heroes by AlgorithmX, home">
               <span className="chnav-shield" aria-hidden>
                 <svg width="22" height="22" viewBox="0 0 24 24">
                   <path d="M12 2 L20 5 V12 C20 17 16.5 20.5 12 22 C7.5 20.5 4 17 4 12 V5 Z" fill="#ffb347" />
