@@ -222,10 +222,50 @@ export default function DashboardView({
   const heroCtaLabel =
     completedCount === 0 ? "Start Your First Mission" : allDone ? "Revisit Week 1" : "Continue Mission";
 
+  /* The four-phase ladder from the course: five weeks earns the next rank. */
+  const RANKS = ["Cyber Cadet", "Cyber Guardian", "Cyber Defender", "Certified Cyber Hero"];
+  const ranksEarned = Math.min(RANKS.length, Math.floor(completedCount / 5));
+  const intoPhase = completedCount % 5;
+  const toNextRank = ranksEarned >= RANKS.length ? 0 : 5 - intoPhase;
+  const nextRank = ranksEarned >= RANKS.length ? null : RANKS[ranksEarned];
+
+  /* The next week a child will actually open, so "Remaining" names what is
+   * coming rather than only counting it. */
+  const nextWeek =
+    weeks.find((w) => w.state === "current" || w.state === "inProgress") ??
+    weeks.find((w) => w.state === "available");
+
   const statCards = [
-    { label: "Weeks Done", value: completedCount, color: C.cyan, glow: "rgba(54,214,255,0.5)", icon: <CalendarIcon color={C.cyan} /> },
-    { label: "Remaining", value: remaining, color: C.blue, glow: "rgba(77,155,255,0.5)", icon: <HourglassIcon color={C.blue} /> },
-    { label: "Badges Earned", value: completedCount, color: C.violetSoft, glow: "rgba(139,108,255,0.5)", icon: <StarIcon color={C.violetSoft} /> },
+    {
+      label: "Weeks Done", value: completedCount, color: C.cyan, glow: "rgba(54,214,255,0.5)", icon: <CalendarIcon color={C.cyan} />,
+      /* One pip per week: the number says "3", the pips say "3, and look how
+       * far the road goes". */
+      foot: (
+        <span className="flex flex-wrap gap-1" aria-label={`${completedCount} of ${totalWeeks} weeks done`}>
+          {Array.from({ length: totalWeeks }).map((_, i) => (
+            <i key={i} style={{ width: 7, height: 7, borderRadius: 2, display: "block", background: i < completedCount ? C.cyan : "rgba(86,140,230,0.22)" }} />
+          ))}
+        </span>
+      ),
+    },
+    {
+      label: "Remaining", value: remaining, color: C.blue, glow: "rgba(77,155,255,0.5)", icon: <HourglassIcon color={C.blue} />,
+      foot: nextWeek ? (
+        <span className="block truncate" style={{ fontSize: 11.5, color: C.textMuted }}>
+          Next: <span style={{ color: C.blue, fontWeight: 700 }}>{nextWeek.title.split(":")[0]}</span>
+        </span>
+      ) : null,
+    },
+    {
+      label: "Badges Earned", value: completedCount, color: C.violetSoft, glow: "rgba(139,108,255,0.5)", icon: <StarIcon color={C.violetSoft} />,
+      foot: nextRank ? (
+        <span className="block truncate" style={{ fontSize: 11.5, color: C.textMuted }}>
+          <span style={{ color: C.violetSoft, fontWeight: 700 }}>{toNextRank}</span> more to {nextRank.replace("Cyber ", "")}
+        </span>
+      ) : (
+        <span className="block truncate" style={{ fontSize: 11.5, color: C.mossLight, fontWeight: 700 }}>Every rank earned</span>
+      ),
+    },
     { label: "Raccoon Power", value: `${raccoonPower}%`, color: C.pink, glow: "rgba(255,77,157,0.5)", icon: <Image src="/game/characters/raccoon-head.png" alt="" width={26} height={26} style={{ borderRadius: "50%", objectFit: "cover", display: "block" }} />, art: "/dashboard/raccoon-power.webp" },
   ];
 
@@ -363,6 +403,7 @@ export default function DashboardView({
                   <HexIcon color={s.color} glow={s.glow}>{s.icon}</HexIcon>
                   <div className="display mt-3" style={{ fontSize: 38, fontWeight: 800, color: C.text, lineHeight: 1 }}>{s.value}</div>
                   <div className="mt-1.5" style={{ fontSize: 11, fontWeight: 800, color: C.textMuted, letterSpacing: "0.09em", textTransform: "uppercase" }}>{s.label}</div>
+                  {s.foot ? <div className="mt-2.5">{s.foot}</div> : null}
                   </div>
                 </div>
               ))}

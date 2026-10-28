@@ -6,6 +6,7 @@ import { CSSProperties, useEffect, useRef, useState } from "react";
 import { CyberIconOrEmoji } from "@/app/components/CyberIcon";
 import CyberHeroesPlayfulBackdrop from "@/app/components/CyberHeroesPlayfulBackdrop";
 import CubeMark from "@/app/components/CubeMark";
+import MissionShowcase from "./MissionShowcase";
 
 /* ─── CONSTANTS ─── */
 const GRAD = "linear-gradient(135deg, #7c5cff, #00e5ff)";
@@ -1317,6 +1318,14 @@ export default function HomePage() {
             </Link>
           </div>
         </section>
+
+        {/* ── A LOOK INSIDE — the week cards, five shown, the rest locked ─── */}
+        <MissionShowcase
+          weeks={CURRICULUM.flatMap((p) => p.weeks)}
+          accentText={ACCENT_TEXT}
+          btnGrad={BTN_GRAD}
+          btnGlow={BTN_GLOW}
+        />
 
         {/* ── CURRICULUM — ALL 20 WEEKS ───────────────────────────────────── */}
         <section id="curriculum" className="max-w-[820px] mx-auto px-6 md:px-10 py-16 sm:py-24">
