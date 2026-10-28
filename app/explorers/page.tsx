@@ -677,9 +677,12 @@ export default function ExplorersPage() {
                 </button>
                 <button
                   onClick={() => setShowWatchlist(true)}
-                  style={{ fontFamily: MONO, fontSize: 12.5, fontWeight: 700, letterSpacing: "0.06em", color: SYS, background: "rgba(52,225,255,0.07)", border: `1px solid ${SYS}55`, borderRadius: 3, padding: "11px 18px", cursor: "pointer" }}
+                  style={{ display: "inline-flex", alignItems: "center", gap: 8, fontFamily: MONO, fontSize: 12.5, fontWeight: 700, letterSpacing: "0.06em", color: SYS, background: "rgba(52,225,255,0.07)", border: `1px solid ${SYS}55`, borderRadius: 3, padding: "11px 18px", cursor: "pointer" }}
                 >
-                  🗂 THE WATCHLIST
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
+                    <path d="M4 6a1 1 0 0 1 1-1h4l2 2h8a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6Z" />
+                  </svg>
+                  THE WATCHLIST
                 </button>
               </div>
             </div>
