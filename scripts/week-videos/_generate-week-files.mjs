@@ -34,38 +34,17 @@
  */
 import { writeFileSync } from "node:fs";
 
-/* Naming the OBJECTS, not just "writing". The week 3 detective wall came back
- * covered in little cards of green pseudo-code: the model does not count a
- * screen full of glyphs as "writing", so it has to be told about screens. */
-const NOTEXT =
-  "CRITICAL: the picture fills the entire frame edge to edge, with no black bars, no letterboxing and no borders at any edge. No screens, no monitors, no displays, no pinned notes or cards, no diagrams, no icons, no code, no text, no letters, no numbers, no brand marks and no writing of any kind anywhere in the picture.";
-
-const villain = ({ pose, set, light }) =>
-  `Stylised 3D cartoon still, cinematic, for a children's cybersecurity cartoon. The striped grey raccoon villain from the reference image, wearing his purple circuit-patterned hoodie with the hood UP over his head and his cape, ${pose}, in ${set}. ${light} His mouth is closed. ${NOTEXT} No human characters. 16:9 cinematic framing, full scene, nothing cropped.`;
-
-const heroes = ({ costume, pose, set, light }) =>
-  `Stylised 3D cartoon still, cinematic, for a children's cybersecurity cartoon. The two child heroes from the reference images, a boy with short curly dark hair and a girl with two afro puffs, both wearing ${costume}, ${pose}, in ${set}. ${light} Both children fully in frame, mouths closed, eyes OPEN, calm and capable. ${NOTEXT} 16:9 cinematic framing, full scene, nothing cropped.`;
-
-/* "Keep the costumes" is not enough on its own. Week 4's beaten Raccoon came
- * back bare-headed with a different cape: the model reads a defeated pose as
- * licence to restyle the character. So the end frame restates the costume as
- * a positive instruction rather than only a thing to preserve. */
-const KEEP_VILLAIN =
-  "The raccoon KEEPS his purple circuit-patterned hoodie with the hood UP over his head and his cape on: his costume does not change at all.";
-/* Owner, 2026-10-29, on week 6's outro: "Adam and Layla laughing with their
- * eyes closed... recreate it with their eyes open." Asked to cheer, the model
- * reaches for a squeezed-shut laughing face, which on a still reads as a
- * blink. It had done it on weeks 3, 4 and 6. So every hero frame says it. */
-const EYES = "Both children have their eyes OPEN, never closed or squeezed shut.";
-const KEEP_HEROES = (costume) =>
-  `Both children KEEP wearing ${costume}: their costumes do not change at all. ${EYES}`;
-
-const endFrame = (change, keep) =>
-  `Keep the set, the background, the lighting and the camera framing EXACTLY as they are in the reference image. ${keep} Change ONLY this: ${change}. Same characters, same costumes, same colours, same camera. ${NOTEXT}`;
-
-const motion = (m) =>
-  `Slow, smooth cinematic shot. ${m} ONE continuous shot, no cuts, camera almost still. Nobody speaks and no mouth moves to form words. No text, no captions, no subtitles.`;
-
+/* Every prompt rule lives in the kit, so a rule learned on one week applies
+ * to every week generated afterwards - including the weeks 11-20 generator,
+ * which imports the same strings rather than keeping its own copies. */
+import {
+  villain,
+  heroes,
+  KEEP_VILLAIN,
+  KEEP_HEROES,
+  endFrame,
+  motionSlow as motion,
+} from "./_prompt-kit.mjs";
 /* ── the eight weeks ──────────────────────────────────────────────────── */
 const WEEKS = [
   /* Week 1 was made before this pipeline existed and is the week the whole
