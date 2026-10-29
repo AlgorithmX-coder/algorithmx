@@ -10,13 +10,16 @@ const HAS_SPECIAL = /[^A-Za-z0-9]/;
  * themed auth page gets that course for free, there and then, so they
  * land straight in it instead of bouncing to the catalogue. Scoped to
  * the consumer courses whose checkout already grants free during launch.
- * Cyber Pro ("cyberstart-pro") is DELIBERATELY excluded while its paid
- * buy is held pending the £99 Stripe wiring. Flip these off (and let the
- * purchase flow be the only grant) once real payment is live. */
+ * Cyber Pro ("cyberstart-pro") is included here FOR UAT so testers get
+ * the full course (Acts 2-4 are entitlement-gated from Module 6 on) the
+ * moment they sign up, instead of having to run the free purchase stub.
+ * ⚠️ Flip cyberstart-pro back OUT (and let the purchase flow be the only
+ * grant) once the £99 Stripe buy is live. */
 const FREE_ON_SIGNUP: ReadonlySet<string> = new Set([
   "cyber-heroes",
   "cyberexplorers",
   "cyberstart",
+  "cyberstart-pro",
 ]);
 
 export async function POST(request: Request) {
