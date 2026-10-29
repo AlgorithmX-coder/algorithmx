@@ -100,6 +100,21 @@ const SLOW_RISK = 8;
 const EMMA = "EMMA";
 const RACCOON = "CALLUM";
 
+/* The base raccoon sprite renders with GREEN eyes about as often as amber,
+ * so a week that never says which gets whichever it gets: week 11's Raccoon
+ * came out amber and week 12's came out green off the identical reference.
+ * Within a week that no longer matters, because every later frame is grown
+ * from the first one, but across the twenty films it is the same character
+ * changing eye colour between episodes. So the FIRST frame of each film says
+ * it too, not only the frames that follow. */
+const VILLAIN_EYES =
+  "His eyes are AMBER GOLDEN-BROWN, never green: the amber eye colour is part of the character and does not change.";
+
+/* Weeks 12-20 live in their own file: this one is the SHAPE, that one is the
+ * CONTENT. Week 11 stays here because it is the week the shape was found on,
+ * and its comments explain why each rule exists. */
+import { WEEKS_12_20 } from "./_weeks-12-20.mjs";
+
 /* ── the weeks ────────────────────────────────────────────────────────── */
 const WEEKS = [
   {
@@ -218,6 +233,8 @@ const WEEKS = [
       },
     ],
   },
+
+  ...WEEKS_12_20,
 ];
 
 /* ── emit ─────────────────────────────────────────────────────────────── */
@@ -230,11 +247,21 @@ for (const k of WEEKS) {
    * built, and read only while building the outro. */
   let introShots = null;
   const introSetFrame = (isVillain) => {
-    const s = isVillain
-      ? introShots.find((x) => x.villain && !x.startFrom)
-      : introShots.find((x) => !x.villain && !x.startFrom);
-    if (!s) throw new Error(`the intro has no ${isVillain ? "villain" : "hero"} shot to take a set from`);
-    /* Its LAST frame, so the outro opens on the world as the intro left it. */
+    const mine = introShots.filter((x) => x.villain === isVillain);
+    if (!mine.length) throw new Error(`the intro has no ${isVillain ? "villain" : "hero"} shot to take a set from`);
+    /* THE HEROES take the LAST of their intro shots, because the intro leaves
+     * their world changed and the outro has to continue from that. Week 13
+     * pinned the outro to the FIRST hero shot instead, so the greenhouse was
+     * still full of wilting plants in the outro after the children had
+     * already revived them in the intro: the week undid its own ending.
+     *
+     * THE VILLAIN takes the FIRST, because his last intro shot is always the
+     * gloat - a close-up of his face - and an outro that opens on that has
+     * nowhere to pull back to. His first shot is the wide view of the den.
+     * What changed in his world across the intro is week-specific, so the
+     * week's own outro pose says it. */
+    const s = isVillain ? mine[0] : mine[mine.length - 1];
+    /* Its LAST frame, so the outro opens on the world as that shot left it. */
     return `${s.file}-end`;
   };
 
@@ -281,7 +308,7 @@ for (const k of WEEKS) {
           : tag === "outro"
             ? endFrame(spec.pose, isVillain ? KEEP_VILLAIN : KEEP_HEROES(k.costume))
             : isVillain
-              ? villain({ pose: spec.pose, set: k.den, light: k.denLight })
+              ? `${villain({ pose: spec.pose, set: k.den, light: k.denLight })} ${VILLAIN_EYES}`
               : heroes({ costume: k.costume, pose: spec.pose, set: k.world, light: k.worldLight }),
         end: endFrame(spec.end, isVillain ? KEEP_VILLAIN : KEEP_HEROES(k.costume)),
         move: motionBrisk(spec.move),

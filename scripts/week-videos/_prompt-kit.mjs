@@ -11,7 +11,7 @@
  * covered in little cards of green pseudo-code: the model does not count a
  * screen full of glyphs as "writing", so it has to be told about screens. */
 export const NOTEXT =
-  "CRITICAL: the picture fills the entire frame edge to edge, with no black bars, no letterboxing and no borders at any edge. No screens, no monitors, no displays, no pinned notes or cards, no diagrams, no icons, no code, no text, no letters, no numbers, no brand marks and no writing of any kind anywhere in the picture.";
+  "CRITICAL: the picture fills the entire frame edge to edge, with no black bars, no letterboxing and no borders at any edge. No screens, no monitors, no displays, no pinned notes or cards, no diagrams, no icons, no code, no text, no letters, no numbers, no brand marks, no badges, no patches, no flags, no emblems, no insignia and no writing of any kind anywhere in the picture.";
 
 export const villain = ({ pose, set, light }) =>
   `Stylised 3D cartoon still, cinematic, for a children's cybersecurity cartoon. The striped grey raccoon villain from the reference image, wearing his purple circuit-patterned hoodie with the hood UP over his head and his cape, ${pose}, in ${set}. ${light} His mouth is closed. ${NOTEXT} No human characters. 16:9 cinematic framing, full scene, nothing cropped.`;
