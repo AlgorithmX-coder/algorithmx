@@ -63,25 +63,43 @@ const ref = (name) => {
   return { type: "image", id: r.id, label: `w${WW}-${name}`, url: man._base + r.f };
 };
 
+/* Past this the pinned pair reads as slow motion. Owner, 2026-10-29: "when it
+ * shows Adam and Layla is too slow motion." Week 3's opening shot was ordered
+ * at 15s to fit three lines, and one gesture spread over 15s is slow motion
+ * whatever the prompt says. The three-shot weeks keep every shot under this;
+ * the warning is here so a long one can never be ordered unnoticed again. */
+const SLOW_RISK = 8;
+
 for (const video of wk.VIDEOS) {
   video.shots.forEach((s, i) => {
     const lines = video.lines.filter((l) => l.shot === i + 1);
     let t = LEAD;
     for (const l of lines) t += seconds(`.art-check/w${WW}-video/vo/${l.file}.mp3`) + GAP;
     const needs = t - GAP + SHOT_TAIL;
-    const duration = Math.min(MAX, Math.max(MIN, Math.ceil(needs)));
+
+    /* `seconds` in the week file is a FLOOR, not a target: a shot may be
+     * ordered a little longer than its voice needs so the action has room to
+     * play at a natural speed, which is the rest of the owner's note. */
+    const floor = s.seconds ?? 0;
+    const duration = Math.min(MAX, Math.max(MIN, floor, Math.ceil(needs)));
 
     console.log(
-      `\n@@@ w${WW} ${s.file}  ${duration}s   (voice needs ${needs.toFixed(1)}s: ${lines
+      `\n@@@ w${WW} ${s.file}  ${duration}s   (voice needs ${needs.toFixed(1)}s, floor ${floor}s: ${lines
         .map((l) => l.file)
         .join(", ")})`
     );
+    if (duration > SLOW_RISK) {
+      console.log(`!!! ${duration}s is over ${SLOW_RISK}s: SLOW-MOTION RISK, split this shot instead`);
+    }
     console.log(
       JSON.stringify({
         prompt: wk.MOTION[s.file],
         duration,
         resolution: "1080p",
-        startFrame: ref(`${s.file}-start`),
+        /* A chained shot starts on the previous shot's END frame - the same
+         * picture - so the two clips join with no seam and neither has to
+         * cover much distance. */
+        startFrame: ref(s.startFrom ?? `${s.file}-start`),
         endFrame: ref(`${s.file}-end`),
       })
     );
