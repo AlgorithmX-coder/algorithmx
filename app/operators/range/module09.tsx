@@ -30,6 +30,12 @@ const T_SUNSHINE = "a941a4c4fd0c01cddef61b8be963bf4c1e2b0811c037ce3f1835fddf6ef6
 const SALT = "k3f9";
 const T_SALTED = "4803071c7c173eb6abd1789c343aacc911f29a2aebef233e67444cbc9b91ecda"; // sha256("k3f9dragon")
 const T_LETMEIN = "9b0eb22aef89516d6fb4b31ccf008a68abe0d10a3fc606316389613eccf96854"; // sha256("letmein123")
+// Distinct answers for the drills + capstone, so learners don't reuse the
+// "sunshine"/"dragon" they met in the learn stages.
+const T_FOOTBALL = "6382deaf1f5dc6e792b76db4a4a7bf2ba468884e000b25e7928e621e27fb23cb"; // sha256("football")
+const T_ILOVEYOU = "e4ad93ca07acb8d908a3aa41e920ea4f4ef4f26e7f86cf8291c5db289780a5ae"; // sha256("iloveyou")
+const T_SALTED_MONKEY = "dd574b8b9abfbe3297903e9170cde3d265b3665b26c1a5b1988ece78c83b61ee"; // sha256("k3f9monkey")
+const T_SALTED_QWERTY = "6149ea5948dc2e32f746a6e833e166f711ffe3ac528666b36d9c93ae0f531ccf"; // sha256("k3f9qwerty")
 
 /* ───────────────────────── glossary ───────────────────────── */
 
@@ -312,13 +318,13 @@ const DRILLS: DrillCfg[] = [
   {
     client: "Brightpost Media",
     brief: "Brightpost leaked a hash. Identify its algorithm, then crack it for real. No walkthrough.",
-    stages: [{ kind: "crack", title: "Crack", goal: "Hash the list and crack Brightpost's unsalted SHA-256.", target: T_SUNSHINE, words: ["letmein", "sunshine", "welcome", "abc123"], hint: "A cheerful common password - tap to hash each.", reveal: "sunshine" }],
+    stages: [{ kind: "crack", title: "Crack", goal: "Hash the list and crack Brightpost's unsalted SHA-256.", target: T_FOOTBALL, words: ["welcome", "football", "abc123", "monday"], hint: "A sporty favourite - tap to hash each.", reveal: "football" }],
     success: "Cracked an unsalted SHA-256 by hashing a wordlist - fast hashes fall to a dictionary. Finding logged.",
   },
   {
     client: "Tideway Council",
     brief: "Tideway's hashes are salted, but the salt leaked too. Crack the account.",
-    stages: [{ kind: "crack", title: "Salted", goal: "Flip the leaked salt on, then crack it.", target: T_SALTED, salt: SALT, words: ["dragon", "council", "tideway"], hint: "Nothing matches until you apply the salt - then the right word does.", reveal: "dragon" }],
+    stages: [{ kind: "crack", title: "Salted", goal: "Flip the leaked salt on, then crack it.", target: T_SALTED_MONKEY, salt: SALT, words: ["monkey", "council", "tideway"], hint: "Nothing matches until you apply the salt - then the cheeky one does.", reveal: "monkey" }],
     success: "A leaked salt makes salting worthless - cracked it with salt+word. Finding logged.",
   },
   {
@@ -393,11 +399,11 @@ function ConsolidationDrills({ onDone }: { onDone: () => void }) {
 
 const CAP_STAGES: Stage[] = [
   { kind: "identify", title: "Triage", goal: "Sableline's whole user table leaked. Triage it: identify each hash so you know which are worth attacking.", rows: [
-    { hash: T_SUNSHINE, algo: "SHA-256", note: "64 hex = SHA-256 (crackable)." },
+    { hash: T_ILOVEYOU, algo: "SHA-256", note: "64 hex = SHA-256 (crackable)." },
     { hash: "$2b$12$Zx9kLmNoPqRsTuVwXyZ01a", algo: "bcrypt", note: "$2b$ = bcrypt (leave it)." },
   ], options: ["MD5", "SHA-256", "bcrypt"], hint: "64 hex = SHA-256; $2b$ = bcrypt. Only the SHA-256 one is worth cracking." },
-  { kind: "crack", title: "Crack", goal: "Crack the SHA-256 account for real.", target: T_SUNSHINE, words: ["summer", "sunshine", "sableline", "password"], hint: "A warm, common one.", reveal: "sunshine" },
-  { kind: "crack", title: "Salted admin", goal: "Finish it: the admin is salted, but the salt leaked. Apply it and crack the admin.", target: T_SALTED, salt: SALT, words: ["dragon", "admin", "sableline"], hint: "Apply the salt, then the right word matches.", reveal: "dragon" },
+  { kind: "crack", title: "Crack", goal: "Crack the SHA-256 account for real.", target: T_ILOVEYOU, words: ["summer", "iloveyou", "sableline", "password"], hint: "A soppy classic - tap to hash each.", reveal: "iloveyou" },
+  { kind: "crack", title: "Salted admin", goal: "Finish it: the admin is salted, but the salt leaked. Apply it and crack the admin.", target: T_SALTED_QWERTY, salt: SALT, words: ["qwerty", "admin", "sableline"], hint: "Apply the salt, then the keyboard-row one matches.", reveal: "qwerty" },
 ];
 
 function CapstoneChallenge({ onDone }: { onDone: () => void }) {
