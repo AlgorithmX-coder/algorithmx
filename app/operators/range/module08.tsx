@@ -544,10 +544,10 @@ export const MODULE8: ModuleDef = {
     check: {
       q: "A password you only ever check, and an API token you must use again later - how should each be stored?",
       options: [
-        { text: "Hash the password one-way; encrypt the token - you need the token back later, but never the password.", correct: true, feedback: "Right - match the primitive to the goal. Hashing is for values you only compare; encryption is for secrets you need back." },
-        { text: "Encrypt both, so you can always recover the original value whenever the system happens to need it.", feedback: "No - a password you can decrypt is a password an attacker can decrypt too. You never need the original back, so hash it." },
+        { text: "Hash the password one-way; encrypt the token, since you need it back later but not the password.", correct: true, feedback: "Right - match the primitive to the goal. Hashing is for values you only compare; encryption is for secrets you need back." },
+        { text: "Encrypt both, so you can always recover the original value whenever the system might need it again.", feedback: "No - a password you can decrypt is a password an attacker can decrypt too. You never need the original back, so hash it." },
         { text: "Hash both, because hashing is simply the strongest protection available for any kind of secret.", feedback: "A hashed token is useless - you could never read it back to call the API. Hashing is one-way by design." },
-        { text: "Base64-encode both, which is enough as long as the database itself is kept properly secure.", feedback: "Encoding is reversible by anyone and protects nothing; it isn't a security control at all." },
+        { text: "Base64-encode both, which is plenty safe as long as the database server itself is kept secure.", feedback: "Encoding is reversible by anyone and protects nothing; it isn't a security control at all." },
       ],
     },
   },
