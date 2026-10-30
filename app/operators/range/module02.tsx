@@ -128,6 +128,28 @@ function IntelSurface({ cfg, onSolved }: { cfg: IntelCfg; onSolved: () => void }
             <Btn tone="i" onClick={runSearch}>SEARCH →</Btn>
           </div>
           {smsg && <div style={{ marginTop: 10, fontFamily: MONO, fontSize: 12.5, color: C.mute }}>{smsg}</div>}
+          {!revealed && (
+            <div style={{ marginTop: 12, borderTop: `1px solid ${C.lineSoft}`, paddingTop: 11 }}>
+              <div style={{ fontFamily: MONO, fontSize: 10.5, letterSpacing: ".1em", color: C.indigo, fontWeight: 700, marginBottom: 7 }}>FILE TYPES WORTH DORKING</div>
+              <div style={{ display: "grid", gap: 5 }}>
+                {([
+                  ["filetype:env", "config files - API keys, database passwords"],
+                  ["filetype:sql", "database dumps - whole tables, sometimes credentials"],
+                  ["filetype:log", "log files - errors, internal paths, tokens"],
+                  ["filetype:bak", "backups of code or config left public"],
+                  ["filetype:pdf", "documents - author names and hidden metadata"],
+                  ["filetype:xls", "spreadsheets - lists of users, emails, numbers"],
+                  ["filetype:conf", "server/app config - hostnames, settings, secrets"],
+                ] as const).map(([op, why]) => (
+                  <div key={op} style={{ display: "flex", gap: 8, flexWrap: "wrap", alignItems: "baseline" }}>
+                    <span style={{ fontFamily: MONO, fontSize: 11.5, color: C.indigo2, flex: "0 0 auto" }}>{op}</span>
+                    <span style={{ fontSize: 12, color: C.mute, lineHeight: 1.45 }}>{why}</span>
+                  </div>
+                ))}
+              </div>
+              <div style={{ fontSize: 11.5, color: C.mute, marginTop: 9, lineHeight: 1.5 }}>Pair an operator with the target name and what you want, then read what comes back - a pasted config is usually a <span style={{ fontFamily: MONO, color: C.indigo2 }}>.env</span>.</div>
+            </div>
+          )}
           {!revealed && <Hints hints={[`Precise operators surface accidental leaks. Try something like: ${cfg.search.dork}`]} revealLabel="stuck? reveal a search" onReveal={() => { setQ(cfg.search!.dork); setRevealed(true); }} />}
         </div>
       )}
@@ -309,7 +331,7 @@ const DRILLS: DrillCfg[] = [
     brief: "The full field job to finish on. Oakline exposes a subdomain AND a dev pasted a secret. Find the subdomain, then dork out the leaked key. Chain it yourself.",
     stages: [
       { kind: "intel", title: "Subdomain", goal: "Step 1: find the internal subdomain in the cert logs.", cfg: { sourceTag: "CERT TRANSPARENCY", via: "crt.sh · oakline.range", lines: [{ t: "shop.oakline.range" }, { t: "internal-api.oakline.range", leak: true }], question: "Which subdomain is internal?", placeholder: "x.oakline.range", accept: (v) => v.trim().toLowerCase() === "internal-api.oakline.range", hint: "internal-api.oakline.range", reveal: "internal-api.oakline.range" } },
-      { kind: "intel", title: "Leaked key", goal: "Step 2: dork out the pasted config and read the API key.", cfg: { sourceTag: "SEARCH RESULT", via: "paste.range/k2a · 'oakline test'", search: { placeholder: "filetype:env oakline", match: (q) => /filetype:|\.env|oakline|key|cred/i.test(q), dork: "oakline filetype:env" }, lines: [{ t: "API_HOST=internal-api.oakline.range" }, { t: "API_KEY=ok_live_9fA2bC7dE1", leak: true }], question: "The leaked API key?", placeholder: "the key", accept: (v) => v.trim() === "ok_live_9fA2bC7dE1", hint: "API_KEY line: ok_live_9fA2bC7dE1", reveal: "ok_live_9fA2bC7dE1" } },
+      { kind: "intel", title: "Leaked key", goal: "Step 2: a developer pasted a config file somewhere public. Pick the right file-type operator (a config is usually a .env) to surface it, then read the API key it leaks.", cfg: { sourceTag: "SEARCH RESULT", via: "paste.range/k2a · 'oakline test'", search: { placeholder: "filetype:env oakline", match: (q) => /filetype:|\.env|oakline|key|cred/i.test(q), dork: "oakline filetype:env" }, lines: [{ t: "API_HOST=internal-api.oakline.range" }, { t: "API_KEY=ok_live_9fA2bC7dE1", leak: true }], question: "The leaked API key?", placeholder: "the key", accept: (v) => v.trim() === "ok_live_9fA2bC7dE1", hint: "API_KEY line: ok_live_9fA2bC7dE1", reveal: "ok_live_9fA2bC7dE1" } },
     ],
     success: "Mapped a hidden subdomain then dorked out a live API key - the full recon chain, unguided. Finding logged.",
   },
