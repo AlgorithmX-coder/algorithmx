@@ -294,7 +294,10 @@ function WebSurfaceAct({ onCapture }: { onCapture: () => void }) {
 
 function HiddenFieldLab({ onDone }: { onDone: () => void }) {
   const [price, setPrice] = useState("149.00");
-  const changed = price.trim() !== "149.00";
+  // "Changed" must mean a genuinely DIFFERENT price, not just different text:
+  // knocking a zero off 149.00 -> 149.0 is the same number, so it doesn't count.
+  const n = Number(price.trim());
+  const changed = price.trim() !== "" && Number.isFinite(n) && n !== 149;
   useEffect(() => { if (changed) onDone(); }, [changed, onDone]);
   return (
     <div style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: 12, padding: "15px 16px" }}>

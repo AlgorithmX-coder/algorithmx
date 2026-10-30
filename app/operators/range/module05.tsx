@@ -148,7 +148,11 @@ function HintLadder({ hints, onSkeleton, onReveal }: { hints: string[]; onSkelet
 
 function InputBecomesCodeLab({ onDone }: { onDone: () => void }) {
   const [val, setVal] = useState("");
-  const broke = val.includes("'");
+  // Only "break" once an email has been typed AND then a quote - a lone quote
+  // with no email first shouldn't trigger it (follow the instruction order).
+  const quoteAt = val.indexOf("'");
+  const beforeQuote = quoteAt >= 0 ? val.slice(0, quoteAt) : "";
+  const broke = quoteAt >= 0 && /[^\s@]+@[^\s@]+\.[^\s@]+/.test(beforeQuote);
   useEffect(() => { if (broke) onDone(); }, [broke, onDone]);
   const before = `SELECT * FROM users WHERE email = '`;
   return (
