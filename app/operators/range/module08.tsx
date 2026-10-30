@@ -155,7 +155,14 @@ function XorSurface({ onSolved, hex = XOR_HEX, win = "drop point", answerKey = 0
   function brute() {
     const found: { key: number; text: string }[] = [];
     for (let k = 0; k < 256; k++) { const t = xorHex(hex, k); if (printableRatio(t) > 0.95 && /[aeiou]{1}/i.test(t) && t.includes(" ")) found.push({ key: k, text: t }); }
-    setCands(found.slice(0, 6)); setSelected(null); setWrong(false);
+    // Show the real message in a RANDOM slot among the decoys - never always first.
+    // Keep the real one in regardless of key order, then shuffle the shown set.
+    const real = found.filter((x) => x.key === answerKey);
+    const decoys = found.filter((x) => x.key !== answerKey);
+    for (let i = decoys.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [decoys[i], decoys[j]] = [decoys[j], decoys[i]]; }
+    const shown = [...real, ...decoys].slice(0, 6);
+    for (let i = shown.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [shown[i], shown[j]] = [shown[j], shown[i]]; }
+    setCands(shown); setSelected(null); setWrong(false);
   }
   // Brute-force reveals the candidates that LOOK like text; not all are real
   // sentences. Read them, select the real message, then confirm.
