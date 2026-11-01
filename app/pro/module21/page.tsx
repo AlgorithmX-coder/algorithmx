@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
-import { redirect } from "next/navigation";
-import { auth } from "@/app/lib/auth";
-import { hasEntitlement } from "@/app/lib/entitlements";
 import WeekPlayer from "../learn/WeekPlayer";
 import module21 from "../lessons/module21";
+import { enforceProAccess } from "../proAccessGate";
 
 /**
  * /pro/module21 - Module 21: The job machinery + capstone.
@@ -17,12 +15,6 @@ export const metadata: Metadata = {
 };
 
 export default async function ProModule21Page() {
-  const session = await auth();
-  if (!session?.user?.id) {
-    redirect(`/login?callbackUrl=${encodeURIComponent("/pro/module21")}`);
-  }
-  if (!(await hasEntitlement(session.user.id, "cyberstart-pro"))) {
-    redirect("/pro/course?locked=1");
-  }
+  await enforceProAccess("/pro/module21");
   return <WeekPlayer week={module21} />;
 }

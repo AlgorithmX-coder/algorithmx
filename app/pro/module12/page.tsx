@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
-import { redirect } from "next/navigation";
-import { auth } from "@/app/lib/auth";
-import { hasEntitlement } from "@/app/lib/entitlements";
 import WeekPlayer from "../learn/WeekPlayer";
 import module12 from "../lessons/module12";
+import { enforceProAccess } from "../proAccessGate";
 
 /**
  * /pro/module12 - Module 12: Hardening & secure configuration.
@@ -17,12 +15,6 @@ export const metadata: Metadata = {
 };
 
 export default async function ProModule12Page() {
-  const session = await auth();
-  if (!session?.user?.id) {
-    redirect(`/login?callbackUrl=${encodeURIComponent("/pro/module12")}`);
-  }
-  if (!(await hasEntitlement(session.user.id, "cyberstart-pro"))) {
-    redirect("/pro/course?locked=1");
-  }
+  await enforceProAccess("/pro/module12");
   return <WeekPlayer week={module12} />;
 }

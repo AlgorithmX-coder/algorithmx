@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
-import { redirect } from "next/navigation";
-import { auth } from "@/app/lib/auth";
-import { hasEntitlement } from "@/app/lib/entitlements";
 import WeekPlayer from "../learn/WeekPlayer";
 import module17 from "../lessons/module17";
+import { enforceProAccess } from "../proAccessGate";
 
 /**
  * /pro/module17 - Module 17: Governance, risk & compliance (GRC).
@@ -17,12 +15,6 @@ export const metadata: Metadata = {
 };
 
 export default async function ProModule17Page() {
-  const session = await auth();
-  if (!session?.user?.id) {
-    redirect(`/login?callbackUrl=${encodeURIComponent("/pro/module17")}`);
-  }
-  if (!(await hasEntitlement(session.user.id, "cyberstart-pro"))) {
-    redirect("/pro/course?locked=1");
-  }
+  await enforceProAccess("/pro/module17");
   return <WeekPlayer week={module17} />;
 }

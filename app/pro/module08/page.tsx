@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
-import { redirect } from "next/navigation";
-import { auth } from "@/app/lib/auth";
-import { hasEntitlement } from "@/app/lib/entitlements";
 import WeekPlayer from "../learn/WeekPlayer";
 import module08 from "../lessons/module08";
+import { enforceProAccess } from "../proAccessGate";
 
 /**
  * /pro/module08 - Module 8: Malware: how it really works.
@@ -18,12 +16,6 @@ export const metadata: Metadata = {
 };
 
 export default async function ProModule08Page() {
-  const session = await auth();
-  if (!session?.user?.id) {
-    redirect(`/login?callbackUrl=${encodeURIComponent("/pro/module08")}`);
-  }
-  if (!(await hasEntitlement(session.user.id, "cyberstart-pro"))) {
-    redirect("/pro/course?locked=1");
-  }
+  await enforceProAccess("/pro/module08");
   return <WeekPlayer week={module08} />;
 }

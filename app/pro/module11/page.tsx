@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
-import { redirect } from "next/navigation";
-import { auth } from "@/app/lib/auth";
-import { hasEntitlement } from "@/app/lib/entitlements";
 import WeekPlayer from "../learn/WeekPlayer";
 import module11 from "../lessons/module11";
+import { enforceProAccess } from "../proAccessGate";
 
 /**
  * /pro/module11 - Module 11: Vulnerabilities & patching.
@@ -19,12 +17,6 @@ export const metadata: Metadata = {
 };
 
 export default async function ProModule11Page() {
-  const session = await auth();
-  if (!session?.user?.id) {
-    redirect(`/login?callbackUrl=${encodeURIComponent("/pro/module11")}`);
-  }
-  if (!(await hasEntitlement(session.user.id, "cyberstart-pro"))) {
-    redirect("/pro/course?locked=1");
-  }
+  await enforceProAccess("/pro/module11");
   return <WeekPlayer week={module11} />;
 }
