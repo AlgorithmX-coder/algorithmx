@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
-import { redirect } from "next/navigation";
-import { auth } from "@/app/lib/auth";
-import { hasEntitlement } from "@/app/lib/entitlements";
 import WeekPlayer from "../learn/WeekPlayer";
 import module07 from "../lessons/module07";
+import { enforceProAccess } from "../proAccessGate";
 
 /**
  * /pro/module07 - Module 7: Social engineering & phishing.
@@ -18,12 +16,6 @@ export const metadata: Metadata = {
 };
 
 export default async function ProModule07Page() {
-  const session = await auth();
-  if (!session?.user?.id) {
-    redirect(`/login?callbackUrl=${encodeURIComponent("/pro/module07")}`);
-  }
-  if (!(await hasEntitlement(session.user.id, "cyberstart-pro"))) {
-    redirect("/pro/course?locked=1");
-  }
+  await enforceProAccess("/pro/module07");
   return <WeekPlayer week={module07} />;
 }

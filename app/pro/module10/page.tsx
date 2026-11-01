@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
-import { redirect } from "next/navigation";
-import { auth } from "@/app/lib/auth";
-import { hasEntitlement } from "@/app/lib/entitlements";
 import WeekPlayer from "../learn/WeekPlayer";
 import module10 from "../lessons/module10";
+import { enforceProAccess } from "../proAccessGate";
 
 /**
  * /pro/module10 - Module 10: Networks & Wi-Fi under attack.
@@ -18,12 +16,6 @@ export const metadata: Metadata = {
 };
 
 export default async function ProModule10Page() {
-  const session = await auth();
-  if (!session?.user?.id) {
-    redirect(`/login?callbackUrl=${encodeURIComponent("/pro/module10")}`);
-  }
-  if (!(await hasEntitlement(session.user.id, "cyberstart-pro"))) {
-    redirect("/pro/course?locked=1");
-  }
+  await enforceProAccess("/pro/module10");
   return <WeekPlayer week={module10} />;
 }
