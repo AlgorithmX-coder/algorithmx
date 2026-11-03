@@ -4,6 +4,20 @@ import { useEffect, useMemo, useState } from "react";
 import { T } from "./tokens";
 import type { LabProps } from "./types";
 
+/* One-shot shuffle for activity option/item order. Called inside useMemo so
+ * each mount scrambles once and the order stays stable while the learner
+ * works through it. This is what breaks the authored patterns a learner can
+ * otherwise game without reading: the correct answer marching down the rows,
+ * or always sitting in the same slot. */
+function shuffle<T>(arr: readonly T[]): T[] {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
 /* A reusable classification game for the concept modules: read each real
  * item and drop it into the right category. It teaches the distinctions
  * that certificates test (CIA pillars, threat vs vuln vs risk, control
@@ -19,6 +33,13 @@ function SortGame({ categories, items, onDidTry, prompt }: LabProps & { categori
 
   useEffect(() => { if (answeredCount >= 1) onDidTry(); }, [answeredCount, onDidTry]);
 
+  /* Scramble the row order AND the category-button order once per mount, so
+   * the correct answer never marches predictably down the rows or stays in a
+   * fixed column. Answers stay keyed by each item's ORIGINAL index, so
+   * scoring is unaffected. */
+  const rowOrder = useMemo(() => shuffle(items.map((_, i) => i)), [items]);
+  const cats = useMemo(() => shuffle(categories), [categories]);
+
   const catOf = (id: string) => categories.find((c) => c.id === id)!;
 
   return (
@@ -26,7 +47,8 @@ function SortGame({ categories, items, onDidTry, prompt }: LabProps & { categori
       <div style={{ fontSize: 13.5, color: T.muted, marginBottom: 16, lineHeight: 1.5 }}>{prompt}</div>
 
       <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-        {items.map((it, i) => {
+        {rowOrder.map((i) => {
+          const it = items[i];
           const chosen = answers[i];
           const answered = chosen !== undefined;
           const correct = answered && chosen === it.cat;
@@ -34,7 +56,7 @@ function SortGame({ categories, items, onDidTry, prompt }: LabProps & { categori
             <div key={i} style={{ background: T.panel, border: `1px solid ${answered ? (correct ? `${T.green}66` : `${T.red}66`) : T.edge}`, borderRadius: 11, padding: "13px 15px" }}>
               <div style={{ fontSize: 14.5, color: T.ink, lineHeight: 1.5, marginBottom: 11 }}>{it.text}</div>
               <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-                {categories.map((c) => {
+                {cats.map((c) => {
                   const isChosen = chosen === c.id;
                   const isAnswer = c.id === it.cat;
                   let bg: string = T.panelSoft, bd: string = T.edge, fg: string = T.muted;
@@ -157,8 +179,12 @@ function ScenarioGame({ steps, intro, onDidTry, doneKicker = "Played out", doneN
   const [chosen, setChosen] = useState<number | null>(null);
   const [finished, setFinished] = useState(false);
 
+  /* Shuffle each step's options once per mount so the correct answer is not
+   * always the first one. `chosen` indexes into this shuffled list. */
+  const steps2 = useMemo(() => steps.map((s) => ({ ...s, options: shuffle(s.options) })), [steps]);
+
   const pick = (oi: number) => { if (chosen === null) { setChosen(oi); onDidTry(); } };
-  const advance = () => { if (i + 1 >= steps.length) { setFinished(true); } else { setI(i + 1); setChosen(null); } };
+  const advance = () => { if (i + 1 >= steps2.length) { setFinished(true); } else { setI(i + 1); setChosen(null); } };
 
   if (finished) {
     return (
@@ -169,13 +195,13 @@ function ScenarioGame({ steps, intro, onDidTry, doneKicker = "Played out", doneN
     );
   }
 
-  const step = steps[i];
+  const step = steps2[i];
   const answered = chosen !== null;
   return (
     <div style={{ fontFamily: T.sans }}>
       <div style={{ fontSize: 13.5, color: T.muted, marginBottom: 14, lineHeight: 1.5 }}>{intro}</div>
       <div style={{ display: "flex", gap: 6, marginBottom: 14 }}>
-        {steps.map((_, k) => <span key={k} style={{ flex: 1, height: 4, borderRadius: 2, background: k < i ? T.green : k === i ? T.cyan : T.edge }} />)}
+        {steps2.map((_, k) => <span key={k} style={{ flex: 1, height: 4, borderRadius: 2, background: k < i ? T.green : k === i ? T.cyan : T.edge }} />)}
       </div>
       <div style={{ fontFamily: T.mono, fontSize: 11, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", color: T.cyan, marginBottom: 8 }}>{step.role}</div>
       <div style={{ fontSize: 16, fontWeight: 700, color: T.ink, lineHeight: 1.4, marginBottom: 14 }}>{step.prompt}</div>
@@ -200,7 +226,7 @@ function ScenarioGame({ steps, intro, onDidTry, doneKicker = "Played out", doneN
       )}
       {answered && (
         <button onClick={advance} style={{ marginTop: 14, fontFamily: T.display, fontSize: 13.5, fontWeight: 700, color: "#fff", background: `linear-gradient(135deg, ${T.primary}, ${T.cyan})`, border: "none", borderRadius: 9, padding: "10px 20px", cursor: "pointer" }}>
-          {i + 1 >= steps.length ? "Finish" : "Next"}
+          {i + 1 >= steps2.length ? "Finish" : "Next"}
         </button>
       )}
     </div>
