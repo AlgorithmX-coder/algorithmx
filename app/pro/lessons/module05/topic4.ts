@@ -110,7 +110,7 @@ const topic4: TopicManifest = {
         q: "What is the first thing to do when you find a real security flaw you were not hunting for?",
         options: [
           "Post it on social media so people are warned quickly",
-          "Stop, record it with minimal proof, and avoid digging further",
+          "Stop, record it with minimal proof, and dig no further",
           "Exploit it fully to measure exactly how bad it is",
           "Keep probing to find every other flaw on the system",
           "Email all the affected users directly to warn them first",
@@ -146,7 +146,7 @@ const topic4: TopicManifest = {
         q: "What is the right takeaway from the Missouri case?",
         options: [
           "Never report flaws at all; it is simply too risky",
-          "Report by the book, keep records, and use official channels",
+          "Report by the book and use official channels",
           "Viewing a web page's HTML source counts as hacking",
           "Always publish the details first to protect yourself",
           "Always report anonymously so you can never be traced",

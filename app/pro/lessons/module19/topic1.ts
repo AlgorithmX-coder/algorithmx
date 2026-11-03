@@ -125,7 +125,7 @@ const topic1: TopicManifest = {
       {
         q: "What does 'all-hazards' resilience thinking mean?",
         options: [
-          "Planning for the impact, lost systems, site or data, whatever the cause, cyber or physical",
+          "Planning for the impact of lost systems, site or data, whatever the cause",
           "Writing a separate, detailed recovery plan for every individual cause you can imagine",
           "Concentrating only on the single most likely hazard and setting the rest aside",
           "Preventing every possible disaster in advance so that none of them can ever occur",

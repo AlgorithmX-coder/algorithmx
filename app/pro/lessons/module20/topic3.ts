@@ -128,7 +128,7 @@ const topic3: TopicManifest = {
         options: [
           "Yes; holding CompTIA Security+ on its own guarantees you a junior role",
           "No; employers now ignore certifications entirely and look only at experience",
-          "No; they help and open doors, but employers skills-test, so ability matters as much",
+          "No; they help and open doors, but employers skills-test for ability",
           "Only if you hold several advanced certifications all at the same time",
           "Yes, as long as you pass the exam with a high enough score",
         ],

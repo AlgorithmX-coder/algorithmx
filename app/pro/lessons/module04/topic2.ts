@@ -135,7 +135,7 @@ const topic2: TopicManifest = {
           "It sends the shared key openly across the network before the message",
           "It uses one key that both locks and unlocks, shared in advance",
           "It scrambles the key so hard that no eavesdropper can ever read it",
-          "A public key encrypts, your private key decrypts, no shared secret needed",
+          "A public key encrypts; your private key decrypts, no shared secret",
         ],
         answer: 4,
         reasons: [

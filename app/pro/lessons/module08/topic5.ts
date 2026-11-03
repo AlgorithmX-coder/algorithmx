@@ -111,7 +111,7 @@ const topic5: TopicManifest = {
           "Run it on a spare computer that happens to still be connected to the network",
           "Open it only after disabling the antivirus so that you can see it more clearly",
           "Rename the file to something harmless-looking before you decide to open it up",
-          "Never run it on a real, connected machine: use an isolated sandbox or disposable VM",
+          "Never run it on a real, connected machine: use an isolated sandbox",
           "Run it quickly, then pull out the network cable the moment that it starts",
         ],
         answer: 3,

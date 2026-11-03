@@ -112,7 +112,7 @@ const topic5: TopicManifest = {
           "Secrecy, by hiding the message contents from everyone else",
           "A guarantee that the message will be delivered on time",
           "Compression, so the message takes up much less space",
-          "Authenticity, who sent it, and integrity, that it was not changed",
+          "Authenticity (who sent it) and integrity (unchanged)",
           "A backup of the message in case the original is lost",
         ],
         answer: 3,

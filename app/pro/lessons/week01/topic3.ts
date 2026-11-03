@@ -144,7 +144,7 @@ const topic3: TopicManifest = {
         q: "What is the main job of a password manager?",
         options: [
           "To create one very strong password you use everywhere",
-          "To generate and store a unique strong password for each site",
+          "To create and store a unique strong password per site",
           "To stop any website from ever seeing your password",
           "To back up and encrypt the files on your computer",
           "To remember your passwords so you never type them again",

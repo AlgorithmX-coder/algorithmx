@@ -150,7 +150,7 @@ const topic1: TopicManifest = {
           "The vendor is legally required to release a fix within one single day",
           "It affects only software that was first released in the last day",
           "It can be used only once before security tools learn to block it",
-          "Attackers use it before the vendor has any fix, so defenders get zero days",
+          "Attackers use it before any vendor fix, so defenders get zero days",
         ],
         answer: 4,
         reasons: [

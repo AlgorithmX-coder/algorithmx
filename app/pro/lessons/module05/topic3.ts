@@ -147,7 +147,7 @@ const topic3: TopicManifest = {
         options: [
           "Physical penetration testing is too risky to ever attempt",
           "A signed contract by itself fully protects the testers",
-          "Authorisation must come from the right authority and reach responders",
+          "Authorisation must come from the right authority",
           "Local police must personally approve every single security test",
           "Testers are always to blame if anything about a job goes wrong",
         ],

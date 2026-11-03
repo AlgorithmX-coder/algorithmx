@@ -145,7 +145,7 @@ const topic2: TopicManifest = {
       {
         q: "In the 2016 attack, how did Mirai build its weapon?",
         options: [
-          "By logging into smart devices that still had their factory default passwords",
+          "By logging into smart devices left on factory default passwords",
           "By exploiting a hidden flaw in the code behind Twitter's website",
           "By bribing insiders who worked at the DNS provider Dyn",
           "By breaking into the internet's handful of core root servers",

@@ -122,7 +122,7 @@ const topic5: TopicManifest = {
         q: "What is the main advantage of a passkey over a password?",
         options: [
           "You can safely reuse the same passkey across every site",
-          "There is no shared secret to steal and none to give a fake site",
+          "No shared secret to steal, and none to give a fake site",
           "It never expires, so you can set it once and forget it",
           "It can never be lost or forgotten by the user at all",
           "It is far longer than a password, so it cannot be cracked",

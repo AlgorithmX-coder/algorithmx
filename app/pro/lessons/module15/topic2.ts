@@ -109,7 +109,7 @@ const topic2: TopicManifest = {
         options: [
           "A forecast of which attack an organisation is most likely to face next",
           "A rule that automatically blocks suspicious traffic as soon as it appears",
-          "A concrete, observable, shareable sign of an attack, like a hash or bad address",
+          "A concrete, shareable sign of an attack, like a hash or bad address",
           "A score that rates how secure an organisation is overall right now",
           "A confidential list of an organisation's known weaknesses and open gaps",
         ],
@@ -144,7 +144,7 @@ const topic2: TopicManifest = {
         q: "What is the fundamental limit of IOCs?",
         options: [
           "They take too long to load into a detection tool to be worth using",
-          "They describe the known, so they miss genuinely new threats and are easily changed",
+          "They describe the known, so they miss genuinely new threats",
           "They can only ever be shared between two organisations at a time",
           "They reveal the victim's identity to everyone each time they are shared",
           "They work only against malware files, never against malicious web addresses",

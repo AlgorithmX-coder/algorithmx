@@ -110,7 +110,7 @@ const topic1: TopicManifest = {
           "It convinces employers that you already have years of hands-on professional experience.",
           "It removes any need to sit an interview or a skills test.",
           "It impresses employers more than genuinely understanding the work you are showing.",
-          "Employers skills-test, so demonstrable work proves ability and breaks the 'experience trap'.",
+          "Employers skills-test, so demonstrable work proves ability.",
           "It guarantees a job offer regardless of how the rest of hiring goes.",
         ],
         answer: 3,

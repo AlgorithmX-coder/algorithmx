@@ -128,7 +128,7 @@ const topic5: TopicManifest = {
         options: [
           "Having used computers and gadgets ever since you were a young child",
           "Owning the newest, fastest and most powerful personal computer available",
-          "Clear communication: explaining complex things plainly to non-technical people",
+          "Clear communication: explaining complex things plainly",
           "Knowing the names of many famous hacking tools and exploits",
           "Having watched a lot of films and shows about hackers",
         ],

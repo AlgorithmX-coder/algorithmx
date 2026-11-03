@@ -129,7 +129,7 @@ const topic4: TopicManifest = {
         options: [
           "It encrypts all of the data that is stored on the website's server",
           "It keeps a safe backup copy of the website's own private key",
-          "It binds a public key to a site's identity, vouched for by an authority",
+          "It binds a public key to a site identity, vouched by an authority",
           "It scans the website for malware each time before you connect",
           "It speeds up the connection by caching the site's pages for you",
         ],

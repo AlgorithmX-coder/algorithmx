@@ -126,7 +126,7 @@ const topic4: TopicManifest = {
       {
         q: "Why is correlation across different logs so powerful?",
         options: [
-          "No single log shows the whole attack, but connected across sources the full story appears",
+          "No single log shows the whole attack; connected across sources it appears",
           "Because one carefully chosen log almost always contains the entire attack by itself",
           "Because it lets you safely discard every other log except the firewall log",
           "Because it merges all of the separate logs into one entry to save space",
@@ -146,7 +146,7 @@ const topic4: TopicManifest = {
         options: [
           "A single alert that simply flags that something is wrong somewhere",
           "A blocklist naming every address that was seen anywhere in the logs",
-          "A timeline: the attack reconstructed in order, which you can then act on",
+          "A timeline: the attack reconstructed in order",
           "A score rating how noisy each of the detection rules has been",
           "A full copy of the raw logs exported for long-term storage",
         ],

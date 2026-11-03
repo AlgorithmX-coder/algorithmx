@@ -110,7 +110,7 @@ const topic3: TopicManifest = {
         options: [
           "How attackers first manage to break in to a network",
           "How many alerts the monitoring and logging tools generate",
-          "The blast radius: how much damage any single compromise can do",
+          "The blast radius: how much one compromise can damage",
           "How long security patches take to apply across the estate",
           "How quickly an intruder is detected once they are inside",
         ],

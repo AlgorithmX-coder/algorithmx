@@ -146,7 +146,7 @@ const topic4: TopicManifest = {
         options: [
           "Block all inbound email from any sender outside the company",
           "Publish more company information to appear open and trustworthy",
-          "Shrink the attack surface: limit exposed information and unused systems",
+          "Shrink the attack surface: limit exposed info and unused systems",
           "Install up-to-date antivirus on every single employee device",
           "Require a longer, more complex password from every member of staff",
         ],

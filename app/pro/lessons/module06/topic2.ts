@@ -109,7 +109,7 @@ const topic2: TopicManifest = {
         q: "What is 'ransomware-as-a-service'?",
         options: [
           "Buying ready-stolen data dumps to resell on to other criminals",
-          "Renting ready-made ransomware and infrastructure for a share of the profits",
+          "Renting ready-made ransomware and infrastructure for a cut",
           "Paying an access broker for a ready-made foothold into a target",
           "A single gang that writes, runs and profits from its own ransomware",
           "A subscription service that protects firms against ransomware attacks",
@@ -130,7 +130,7 @@ const topic2: TopicManifest = {
           "Launders the cryptocurrency that victims pay in ransoms",
           "Writes and maintains the malware that the gang deploys",
           "Recruits and manages the affiliates who rent the tools",
-          "Breaks into organisations, then sells that foothold on to others",
+          "Breaks into organisations, then sells the foothold on",
         ],
         answer: 4,
         reasons: [

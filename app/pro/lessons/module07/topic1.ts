@@ -145,7 +145,7 @@ const topic1: TopicManifest = {
         q: "The Twitter 2020 breach is a landmark example because it shows that:",
         options: [
           "A strong engineering team is enough on its own to prevent social-engineering breaches",
-          "Even a technically sophisticated organisation can still be breached through its own people",
+          "Even a sophisticated organisation can be breached through its own people",
           "Attackers will almost always prefer exploiting code rather than going after people",
           "Internal admin tools stay safe for as long as the code behind them is secure",
           "Only small or careless organisations ever really fall victim to social engineering",

@@ -129,7 +129,7 @@ const topic2: TopicManifest = {
           "Read every single log line in order, from the beginning, to be thorough",
           "Filter only by event type and leave the time window out of it entirely",
           "Decide the conclusion first, then search only for the logs that confirm it",
-          "Orient, then narrow with filters by time, source and event type, and find the story",
+          "Orient, then narrow with filters by time, source and type",
           "Pick one source address at random and follow only it, ignoring everything else",
         ],
         answer: 3,

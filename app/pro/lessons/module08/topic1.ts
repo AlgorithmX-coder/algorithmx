@@ -150,7 +150,7 @@ const topic1: TopicManifest = {
           "Antivirus always removes every last trace completely once it detects the malware",
           "A quick reinstall of the affected machine reliably ends the whole incident",
           "A minor infection cleans itself up once the computer is simply restarted",
-          "Modern malware is often a platform: one foothold is used or sold to deliver far worse",
+          "Modern malware is often a platform: one foothold is used or sold for worse",
         ],
         answer: 4,
         reasons: [

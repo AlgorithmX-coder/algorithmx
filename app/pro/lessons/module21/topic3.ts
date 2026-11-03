@@ -144,7 +144,7 @@ const topic3: TopicManifest = {
         options: [
           "Describe how passionate, driven and hard-working you have always been in work.",
           "Recite the definitions of as many security terms as you possibly can.",
-          "Point to real portfolio pieces and discuss what you did, why, and what you learned.",
+          "Point to real portfolio pieces and discuss what you did and learned.",
           "Talk up advanced projects you read about but did not actually do.",
           "List all the certifications and courses you are planning to take next.",
         ],

@@ -130,7 +130,7 @@ const topic4: TopicManifest = {
           "By writing down the most likely story and filling any gaps with sensible assumptions",
           "By relying on one single system's log and trusting its record completely",
           "By listing events in whatever order the tool happens to display them",
-          "By correlating evidence from different sources by timestamp and logic, staying evidence-led",
+          "By correlating evidence from different sources by timestamp and logic",
           "By asking those involved to recall the attack from memory as best they can",
         ],
         answer: 3,

@@ -147,7 +147,7 @@ const topic2: TopicManifest = {
           "Should be delayed until the threat has been fully understood by the team",
           "Is only ever a matter of isolating one single infected laptop somewhere",
           "Works best when you simply pull the plug on absolutely everything at once",
-          "Often involves a hard trade-off, where the fastest way to stop the spread does harm",
+          "Often a hard trade-off: the fastest way to stop the spread does harm",
         ],
         answer: 4,
         reasons: [

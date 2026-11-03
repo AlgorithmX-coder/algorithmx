@@ -146,7 +146,7 @@ const topic1: TopicManifest = {
         q: "A friend gives you their password 'in case you ever need it'. Months later you log in without asking. Lawful?",
         options: [
           "Yes, because they gave you the password themselves",
-          "No, having a password is not the same as permission now",
+          "No: having a password is not permission now",
           "Yes, as long as you do not change anything there",
           "Only if you tell them about it straight afterwards",
           "Yes, since they never actually told you not to",

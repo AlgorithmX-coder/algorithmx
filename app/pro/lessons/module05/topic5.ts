@@ -109,7 +109,7 @@ const topic5: TopicManifest = {
         q: "What makes a personal security audit worth putting in a portfolio?",
         options: [
           "It lists every security tool and technique you know",
-          "It shows you can assess, prioritise and communicate real risk",
+          "It shows you can assess, prioritise and explain risk",
           "It requires access to a real company's live systems",
           "It proves that you can break into protected systems",
           "It uses impressive, highly technical language throughout",

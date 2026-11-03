@@ -145,7 +145,7 @@ const topic1: TopicManifest = {
       {
         q: "What does Maersk's NotPetya recovery best illustrate?",
         options: [
-          "That organised response and recovery can turn a catastrophe into a survivable event",
+          "That organised response can turn a catastrophe into a survivable event",
           "That paying the ransom quickly is the surest route back to normal operations",
           "That prevention is the only thing that matters and response barely counts",
           "That one chance offline backup is all the preparation any organisation needs",

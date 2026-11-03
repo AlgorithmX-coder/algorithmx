@@ -109,7 +109,7 @@ const topic5: TopicManifest = {
       {
         q: "What is 'threat-informed defence'?",
         options: [
-          "Designing defences around how real attackers behave, using their own maps",
+          "Designing defences around how real attackers behave",
           "Buying every available security product to cover all possible risks",
           "Keeping your defences secret so that attackers cannot study them",
           "Striking back at the attackers once you detect a live breach",
@@ -130,7 +130,7 @@ const topic5: TopicManifest = {
           "It mainly tips attackers off about which methods defenders have spotted",
           "Because the law requires every company to publish all its breaches",
           "Because attackers freely share their own methods too, so it balances out",
-          "No single organisation sees every attack, so one team's discovery protects many",
+          "No one organisation sees every attack, so one find protects all",
           "It lets smaller firms stop paying for any security tooling at all",
         ],
         answer: 3,

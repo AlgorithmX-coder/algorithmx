@@ -129,7 +129,7 @@ const topic1: TopicManifest = {
           "Because watching the network physically stops attacks from ever reaching it",
           "Because monitoring automatically blocks malicious traffic before it can arrive",
           "Because thorough monitoring removes the need to patch or harden systems",
-          "Because you cannot respond to an attack you cannot see, and prevention sometimes fails",
+          "Because you cannot respond to an attack you cannot see",
           "Because regulators require a monitoring tool on every device an organisation owns",
         ],
         answer: 3,
