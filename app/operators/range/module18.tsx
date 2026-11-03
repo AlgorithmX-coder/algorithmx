@@ -243,7 +243,7 @@ const ACT_STEPS: Step[] = [
     },
   },
   {
-    title: "Public bucket", goal: "Stage 2 - Raid the cloud storage. Skyvault keeps files in a PUBLIC bucket. List it, then read the file that should never be public, the one holding the app's secrets.",
+    title: "Public bucket", goal: "Stage 2 - Raid the cloud storage. A bucket is cloud file storage reachable at its own URL, and Skyvault's is PUBLIC. The request below is pre-filled with the bucket's URL: send it to LIST what's inside, then change the path to a file you find there (like config/.env) and send it again to READ the secrets it holds.",
     start: { method: "GET", path: "https://skyvault-uploads.s3.range/" },
     win: (m, p, r) => r.status === 200 && typeof r.body === "string" && /SKYVAULT_ADMIN_KEY/.test(r.body as string),
     hint: "Send the bucket URL to LIST the objects. You will see a config/.env file. Then read it: https://skyvault-uploads.s3.range/config/.env",
@@ -372,7 +372,7 @@ const DRILLS: DrillCfg[] = [
   },
   {
     client: "Nimbus Files", brief: "Nimbus left a storage bucket public. Find and read the secrets file.",
-    step: { title: "Bucket", goal: "List the public bucket and read its secret file.", start: { method: "GET", path: "https://skyvault-uploads.s3.range/" }, win: (m, p, r) => r.status === 200 && typeof r.body === "string" && /SKYVAULT_ADMIN_KEY/.test(r.body as string), hint: "List the bucket URL, then GET config/.env from it.", reveal: { path: "https://skyvault-uploads.s3.range/config/.env" } },
+    step: { title: "Bucket", goal: "A bucket is cloud file storage reachable at its own URL. The request is pre-filled with Nimbus's public bucket URL: send it to LIST the files inside, then change the path to the file you find there (like config/.env) and send it again to READ its secrets.", start: { method: "GET", path: "https://skyvault-uploads.s3.range/" }, win: (m, p, r) => r.status === 200 && typeof r.body === "string" && /SKYVAULT_ADMIN_KEY/.test(r.body as string), hint: "List the bucket URL, then GET config/.env from it.", reveal: { path: "https://skyvault-uploads.s3.range/config/.env" } },
     success: "A public bucket handed over the .env with a live key. Private-by-default would have stopped this. Finding logged.",
   },
   {
@@ -429,7 +429,7 @@ function ConsolidationDrills({ onDone }: { onDone: () => void }) {
 
 const CAP_STEPS: Step[] = [
   { title: "Enumerate", goal: "Sableline's cloud app. You are user 1007 - read a customer that is not you (try 1008; they run to 1012) to prove the object check is missing (BOLA).", start: { method: "GET", path: "/api/users/1007" }, win: (m, p, r) => m === "GET" && /\/api\/users\/\d+$/.test(p.replace(/^https?:\/\/[^/]+/, "")) && r.status === 200 && !/\/1007$/.test(p), hint: "GET /api/users/1008.", reveal: { path: "/api/users/1008" } },
-  { title: "Loot the bucket", goal: "Their uploads bucket is public. Read the secrets file and grab the admin key.", start: { method: "GET", path: "https://skyvault-uploads.s3.range/" }, win: (m, p, r) => r.status === 200 && typeof r.body === "string" && /SKYVAULT_ADMIN_KEY/.test(r.body as string), hint: "List the bucket, then GET config/.env.", reveal: { path: "https://skyvault-uploads.s3.range/config/.env" } },
+  { title: "Loot the bucket", goal: "Their uploads bucket is public. The request is pre-filled with its URL: send it to LIST the files inside, then change the path to the file you find there (like config/.env) and send it again to read the secrets file and grab the admin key.", start: { method: "GET", path: "https://skyvault-uploads.s3.range/" }, win: (m, p, r) => r.status === 200 && typeof r.body === "string" && /SKYVAULT_ADMIN_KEY/.test(r.body as string), hint: "List the bucket, then GET config/.env.", reveal: { path: "https://skyvault-uploads.s3.range/config/.env" } },
   { title: "Own it", goal: "Finish it: use the leaked key to pull the full customer list from the admin endpoint.", start: { method: "GET", path: "/api/admin/customers" }, withAuth: true, win: (m, p, r) => p.replace(/^https?:\/\/[^/]+/, "") === "/api/admin/customers" && r.status === 200, hint: `Authorization: Bearer ${ADMIN_KEY}`, reveal: { auth: `Bearer ${ADMIN_KEY}` }, recovered: [{ label: "admin key (from the .env)", value: ADMIN_KEY }] },
 ];
 
