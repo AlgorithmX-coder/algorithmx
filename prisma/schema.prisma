@@ -41,6 +41,7 @@ model User {
   packShareLinks      PackShareLink[]
   classesTaught       Class[]
   proProgress         ProProgress[]
+  teacherInvites      TeacherInvite[]
 }
 
 model Account {
@@ -461,16 +462,22 @@ model Organisation {
   stripeCheckoutSessionId String? @unique
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
+  /// Set by a staff trial grant (1-2 days, one person). Null means "not on
+  /// a trial" — says nothing about paid vs free, which is read from plan /
+  /// seatsPurchased / stripeCustomerId as elsewhere. Cleared back to null
+  /// once staff convert the org to a real paid or manual deal.
+  trialExpiresAt  DateTime?
 
-  members      OrgMember[]
-  seats        Seat[]
-  profile      FirmProfile?
-  school       SchoolProfile?
-  classes      Class[]
-  enrolments   Enrolment[]
-  certificates Certificate[]
-  packShares   PackShareLink[]
-  purchases    SeatPurchase[]
+  members        OrgMember[]
+  seats          Seat[]
+  profile        FirmProfile?
+  school         SchoolProfile?
+  classes        Class[]
+  enrolments     Enrolment[]
+  certificates   Certificate[]
+  packShares     PackShareLink[]
+  purchases      SeatPurchase[]
+  teacherInvites TeacherInvite[]
 }
 
 /// One card purchase of seats: a new firm, or seats added to the firm the
@@ -539,6 +546,29 @@ model Seat {
   user User?        @relation(fields: [userId], references: [id], onDelete: SetNull)
 
   @@unique([orgId, email, course])
+  @@index([userId])
+}
+
+/// Reserved when staff invite a school's first teacher (or an existing
+/// school admin invites another one), claimed on first sign-in via
+/// /schools/join/[token]. Mirrors Seat's invite+claim shape but drops
+/// course/team/trackHint, which only mean anything for a corporate seat —
+/// a teacher claim enrols on nothing and belongs to no track.
+model TeacherInvite {
+  id          String    @id @default(cuid())
+  orgId       String
+  email       String
+  inviteToken String    @unique
+  /// MANAGER = teacher, ADMIN = the school's first/head admin.
+  role        OrgRole   @default(MANAGER)
+  invitedAt   DateTime  @default(now())
+  claimedAt   DateTime?
+  userId      String?
+
+  org  Organisation @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  user User?        @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@unique([orgId, email])
   @@index([userId])
 }
 

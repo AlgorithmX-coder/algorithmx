@@ -3,7 +3,9 @@ import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { auth } from "@/app/lib/auth";
 import { getSchoolContext, listClasses } from "@/app/lib/schoolClasses";
+import { trialStatus } from "@/app/lib/orgTrial";
 import Locked from "../teach/Locked";
+import TrialEnded from "../TrialEnded";
 import NewClass from "./NewClass";
 
 /**
@@ -26,6 +28,9 @@ export default async function ClassesPage() {
   if (!session?.user?.id) redirect("/schools/login?callbackUrl=%2Fschools%2Fclasses");
   const school = await getSchoolContext(session.user.id);
   if (!school) return <Locked email={session.user.email} />;
+  if (trialStatus(school.trialExpiresAt) === "expired") {
+    return <TrialEnded orgName={school.orgName} trialExpiresAt={school.trialExpiresAt!} />;
+  }
 
   const classes = await listClasses(school.orgId);
   const left = school.seatsPurchased - school.seatsUsed;
