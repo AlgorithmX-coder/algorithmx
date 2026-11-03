@@ -206,13 +206,30 @@ export function useStageFit(ref: RefObject<HTMLDivElement | null>): number {
       // React bails on the identical state and this settles rather than loops.
       if (Math.abs(next - applied) < 0.0005) return;
       setFit(next);
+      // Re-measure after the browser has actually laid the new zoom out.
+      //
+      // A board mounts in stages (text, then the icons, then the board
+      // itself), and when one of those growth steps lands in the SAME
+      // ResizeObserver callback as a zoom we just applied, the callback
+      // measures the old rect, computes a scale for a board that has since
+      // grown, and then nothing mutates the element again - so no further
+      // callback ever comes and the board stays too big. That is the race
+      // behind week 1 screen 4 sitting 224px past the fold on some loads
+      // and settling correctly on others. Chasing it with the observer
+      // alone cannot work, because the observer is the thing that went
+      // quiet. These three settle passes are the same pattern the
+      // Listening pill uses to re-place itself as a board fills in.
+      settle.forEach(window.clearTimeout);
+      settle = [80, 400, 1200].map((ms) => window.setTimeout(measure, ms));
     };
+    let settle: number[] = [];
     measure();
     const ro = new ResizeObserver(measure);
     ro.observe(el);
     window.addEventListener("resize", measure);
     return () => {
       ro.disconnect();
+      settle.forEach(window.clearTimeout);
       window.removeEventListener("resize", measure);
     };
   }, [ref]);
