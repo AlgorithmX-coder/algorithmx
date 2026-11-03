@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { auth } from "@/app/lib/auth";
 import { courseOf, getAdminContext, getRegister, firmStanding } from "@/app/lib/aiClearedAdmin";
 import { firstNameOf } from "@/app/lib/aiCleared";
+import { trialStatus } from "@/app/lib/orgTrial";
 import { CLASS_DEFAULT_NAME } from "../engine/types";
 import Frame from "../Frame";
 import AdminPanel from "./AdminPanel";
@@ -23,6 +24,16 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
         <h1 className="cf-h1">This page is for your firm&rsquo;s <span className="cf-grad">admins</span>.</h1>
         <p className="cf-lead">If you run AI Cleared for your firm, ask admissions@algorithmx.co.uk to make you an admin, or claim an admin invite link.</p>
         <Link href="/ai-cleared" className="cf-btn cf-btn-pri">Back to your course</Link>
+      </Frame>
+    );
+  }
+
+  if (!ctx.staff && trialStatus(ctx.org.trialExpiresAt) === "expired") {
+    return (
+      <Frame firmName={ctx.org.name} meta={<span className="cf-meta">{session.user.email}</span>} courseLink>
+        <span className="cf-eyebrow">Trial</span>
+        <h1 className="cf-h1">{ctx.org.name}&rsquo;s trial has <span className="cf-grad">ended</span>.</h1>
+        <p className="cf-lead">Everything you tried stays exactly as it was. Email admissions@algorithmx.co.uk and we will set a licence up for {ctx.org.name} to carry on from here.</p>
       </Frame>
     );
   }

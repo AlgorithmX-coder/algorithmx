@@ -33,6 +33,7 @@ export interface FirmRow {
   lastActivity: string | null;
   createdAt: string;
   paidVia: "stripe" | "manual";
+  trialExpiresAt: string | null;
 }
 
 export async function listFirms(): Promise<FirmRow[]> {
@@ -73,6 +74,7 @@ export async function listFirms(): Promise<FirmRow[]> {
       lastActivity: last ? last.toISOString() : null,
       createdAt: o.createdAt.toISOString(),
       paidVia: o.stripeCustomerId ? "stripe" : "manual",
+      trialExpiresAt: o.trialExpiresAt ? o.trialExpiresAt.toISOString() : null,
     };
   });
 }
