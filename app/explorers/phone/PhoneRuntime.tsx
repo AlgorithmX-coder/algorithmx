@@ -138,6 +138,14 @@ export default function PhoneRuntime({ phoneCase, onExit, onNextCase, autostart 
   const [, force] = useReducer((n) => n + 1, 0);
 
   const reduce = fast || skipRequested || (typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches);
+  // `run()` is kicked off once (see `start`) and its whole async chain —
+  // runSkill/runSteps/wait/speak — lives on as closures from THAT render.
+  // Reading `reduce` directly in wait/speak freezes it at whatever it was
+  // when run() started (always false, since skipRequested starts false),
+  // so a later Skip click never actually sped anything up past the first
+  // dock it could resolve — same stale-closure fix voiceRef already uses
+  // for voiceOn below. reduceRef stays live across the whole run.
+  const reduceRef = useRef(reduce);
   // Per-case app skin (wallpaper + accent + name) so each case feels like a
   // different app; falls back to the block pink if a case sets none.
   const OUT = phoneCase.app?.accent ?? C.out;
@@ -158,7 +166,7 @@ export default function PhoneRuntime({ phoneCase, onExit, onNextCase, autostart 
   useEffect(() => { if (isResumable(resumeStage)) setPhase("lock"); }, [resumeStage]);
 
   const nextId = () => ++idRef.current;
-  const wait = (ms: number) => new Promise<void>((r) => setTimeout(r, reduce ? Math.min(ms, 120) : ms));
+  const wait = (ms: number) => new Promise<void>((r) => setTimeout(r, reduceRef.current ? Math.min(ms, 120) : ms));
   const scroll = () => { const t = threadRef.current; if (t) t.scrollTop = t.scrollHeight; };
   useEffect(scroll, [items, dock]);
 
@@ -202,11 +210,12 @@ export default function PhoneRuntime({ phoneCase, onExit, onNextCase, autostart 
       const fin = () => { if (!done) { done = true; res(); } };
       // Normal: wait for WREN to finish (anti-whizz). Fast/reduced: don't wait —
       // start the clip if voice is on, but advance quickly so testing flies.
-      if (voice && voiceRef.current && !reduce) { playWren(voice, true, fin); setTimeout(fin, 30000); }
-      else { if (voice && voiceRef.current) playWren(voice, true); setTimeout(fin, reduce ? 250 : Math.max(2400, text.length * 42)); }
+      if (voice && voiceRef.current && !reduceRef.current) { playWren(voice, true, fin); setTimeout(fin, 30000); }
+      else { if (voice && voiceRef.current) playWren(voice, true); setTimeout(fin, reduceRef.current ? 250 : Math.max(2400, text.length * 42)); }
     });
 
   useEffect(() => { voiceRef.current = voiceOn; }, [voiceOn]);
+  useEffect(() => { reduceRef.current = reduce; }, [reduce]);
   useEffect(() => () => stopWren(), []);
 
   // process a flat list of steps; choose loops on a "bad" outcome (rewind)
