@@ -103,6 +103,11 @@ function Hints({ hints, revealLabel, onReveal }: { hints: string[]; revealLabel?
 
 const OVERRIDE = /ignore\s+(all\s+)?(the\s+)?(previous|above|prior|earlier|your)\s+(instructions?|rules?|prompt|text)|disregard\s+(your|the|all)?\s*(instructions?|rules?)|forget\s+(your|the|everything|all)\s*(instructions?|rules?|above)?|you\s+are\s+now|from\s+now\s+on|new\s+(instructions?|rules?)\s*:|pretend\s+(you|to|there)|act\s+as\s+|role[-\s]?play|no\s+(rules?|restrictions?|limits?)/i;
 const LEAK = /(repeat|print|show|reveal|tell me|what('?s| is| are| were)|display|output|say)\b.{0,40}(system prompt|instructions?|your rules?|the text above|everything above|prompt above|initial (prompt|instructions?)|hidden|secret|first (message|line))/i;
+/* The one-stream demo lab asks the learner to type the exact example shown
+ * ("Ignore all previous instructions"), so it matches that literal plural
+ * phrase only - the shared OVERRIDE above stays lenient for every other
+ * exercise in this module, which accept many valid phrasings on purpose. */
+const OVERRIDE_EXACT = /ignore\s+all\s+previous\s+instructions/i;
 
 type Flip = (combined: string) => boolean;
 
@@ -293,7 +298,7 @@ function PromptAct({ onCapture }: { onCapture: () => void }) {
 
 function OneStreamLab({ onDone }: { onDone: () => void }) {
   const [val, setVal] = useState("");
-  const fired = OVERRIDE.test(val);
+  const fired = OVERRIDE_EXACT.test(val);
   useEffect(() => { if (fired) onDone(); }, [fired, onDone]);
   return (
     <div style={{ background: C.panel, border: `1px solid ${C.line}`, borderRadius: 12, padding: "15px 16px" }}>
