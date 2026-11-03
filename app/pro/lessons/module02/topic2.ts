@@ -110,7 +110,7 @@ const topic2: TopicManifest = {
         q: "What does DNS actually do?",
         options: [
           "Encrypts your web traffic so strangers on the network cannot read it",
-          "Translates human-friendly names into the IP addresses that routers deliver to",
+          "Turns human-friendly names into the IP addresses machines use",
           "Stores a copy of every website's pages so they load faster",
           "Blocks dangerous or malicious websites from loading on your device",
           "Chooses the fastest route for your packets across the internet",

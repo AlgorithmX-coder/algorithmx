@@ -111,7 +111,7 @@ const topic3: TopicManifest = {
           "Rewrites the database query so that it dumps all of its tables",
           "Floods a web server with traffic until it is knocked offline",
           "Tricks a logged-in user into approving a hidden, forged request",
-          "Gets a website to run the attacker's script in other visitors' browsers",
+          "Runs the attacker's script in other visitors' browsers",
           "Guesses another user's record by changing a number in the URL",
         ],
         answer: 3,
@@ -126,7 +126,7 @@ const topic3: TopicManifest = {
       {
         q: "Why is XSS especially dangerous?",
         options: [
-          "It rides on users' trust and can steal sessions, hijack accounts, even spread like a worm",
+          "It rides on user trust: it can steal sessions and hijack accounts",
           "It hands the attacker direct control of the underlying web server and its files",
           "It can only read what is already on the page and never act for the user",
           "It works only when the victim first downloads and then opens a file",
@@ -146,7 +146,7 @@ const topic3: TopicManifest = {
         options: [
           "Blocking the word script from every form field on the site",
           "Forcing every visitor to log in before they can view any page",
-          "Treat user content as data to display, never as code to run, by escaping output",
+          "Treat user content as data to display, never as code to run",
           "Serving the whole site over HTTPS so all the traffic is encrypted",
           "Storing all user content in a separate, encrypted database table",
         ],

@@ -127,7 +127,7 @@ const topic2: TopicManifest = {
         q: "Why is 3-2-1 alone not fully enough against ransomware?",
         options: [
           "Three separate copies are simply too few to survive a modern ransomware attack",
-          "Modern ransomware deliberately seeks out and encrypts reachable, online backups along with the data",
+          "Modern ransomware deliberately seeks out and encrypts reachable, online backups",
           "Ransomware now spreads faster than any backup schedule could ever hope to keep up with",
           "An offsite backup must always stay online, so 3-2-1 can never actually include one",
           "The rule was designed for disk failure and does not apply to any cyber attack",
@@ -148,7 +148,7 @@ const topic2: TopicManifest = {
           "Keeping the backup on a networked drive that staff can always reach quickly",
           "Running antivirus across the backup drive every single night, as a routine",
           "Encrypting the backup with a strong password that only the administrators know",
-          "Having at least one copy offline or immutable, as well as offsite, beyond ransomware's reach",
+          "Having at least one copy offline or immutable, as well as offsite",
         ],
         answer: 4,
         reasons: [

@@ -110,7 +110,7 @@ const topic4: TopicManifest = {
           "Huge demand at every level, so almost any beginner is hired within weeks",
           "Strong demand, but only ever for people who already hold advanced certs",
           "Shrinking demand, with noticeably fewer cyber jobs being created each year",
-          "Real demand, but entry-level is genuinely competitive and takes effort and persistence",
+          "Real demand, but entry-level is genuinely competitive and takes effort",
           "Plenty of entry roles, but they all pay too little to be worth taking",
         ],
         answer: 3,

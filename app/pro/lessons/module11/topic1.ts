@@ -131,7 +131,7 @@ const topic1: TopicManifest = {
           "A severity score from 0 to 10 showing how dangerous the flaw is",
           "A ready-made patch that organisations can download to fix the flaw",
           "A step-by-step guide showing attackers how to exploit the flaw",
-          "A unique public name for one specific flaw, so everyone means the same thing",
+          "A unique public name for one specific flaw, so everyone agrees",
           "A deadline by which affected vendors are legally required to fix it",
         ],
         answer: 3,

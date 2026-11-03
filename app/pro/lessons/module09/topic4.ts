@@ -130,7 +130,7 @@ const topic4: TopicManifest = {
           "Because browsers are simply too slow to check permissions in real time",
           "Because only the server holds a copy of each user's real password",
           "Because the law specifically requires permission checks to run on the server",
-          "Anything decided in the browser can be changed by the user, so only the server enforces it",
+          "Browser checks can be changed by the user; only the server enforces it",
         ],
         answer: 4,
         reasons: [
@@ -144,7 +144,7 @@ const topic4: TopicManifest = {
       {
         q: "The First American flaw (changing a URL number to see others' documents) is an example of:",
         options: [
-          "An insecure direct object reference (IDOR), a form of broken access control",
+          "Insecure direct object reference (IDOR): broken access control",
           "SQL injection, where crafted input rewrites the database query",
           "Cross-site scripting, where a script runs in the visitor's browser",
           "A denial-of-service attack that overwhelmed the document server",

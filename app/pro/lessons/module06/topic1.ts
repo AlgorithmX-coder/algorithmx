@@ -132,7 +132,7 @@ const topic1: TopicManifest = {
           "It names the specific individual sitting behind the keyboard",
           "It removes any need for technical security controls elsewhere",
           "It tells you the exact day and hour an attack will land",
-          "Motive predicts behaviour, guiding what to protect and how to respond",
+          "Motive predicts behaviour: it guides what to protect",
         ],
         answer: 4,
         reasons: [

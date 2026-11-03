@@ -130,7 +130,7 @@ const topic5: TopicManifest = {
           "It protects people only after they have already been infected at least once",
           "It quietly removes the malware from every corner of the internet entirely",
           "It warns people individually by email whenever a new malware sample appears",
-          "Observed behaviour becomes shareable indicators, so tools everywhere can block the threat",
+          "Observed behaviour becomes shared indicators, so tools everywhere block it",
         ],
         answer: 4,
         reasons: [

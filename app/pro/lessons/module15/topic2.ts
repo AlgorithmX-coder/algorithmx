@@ -129,7 +129,7 @@ const topic2: TopicManifest = {
           "It guarantees that an organisation taking part will never be breached again",
           "It removes the need for any behaviour-based detection going forward",
           "It replaces the slow work of patching with a faster, simpler fix",
-          "One organisation's discovery becomes everyone's protection: seen once, blocked everywhere",
+          "Seen once, blocked everywhere: one discovery protects all",
         ],
         answer: 4,
         reasons: [

@@ -128,7 +128,7 @@ const topic4: TopicManifest = {
         options: [
           "Automate every patch everywhere and remove humans from the process entirely",
           "Apply patches manually, one by one, so every change gets reviewed",
-          "Automate the routine updates, but reserve human judgement for critical or sensitive cases",
+          "Automate routine updates, but reserve human judgement for critical cases",
           "Wait for a scheduled annual maintenance window, then apply all patches together",
           "Patch only the internet-facing systems and leave the internal ones alone",
         ],
@@ -148,7 +148,7 @@ const topic4: TopicManifest = {
           "They sit outside the network perimeter, where firewalls cannot protect them",
           "They run automatically without any human oversight, so attacks go unnoticed",
           "They are usually old software that vendors have stopped patching and updating",
-          "They hold deep access to many systems, so one compromise reaches everything they manage",
+          "They hold deep access to many systems, so one compromise reaches them all",
         ],
         answer: 4,
         reasons: [

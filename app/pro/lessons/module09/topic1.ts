@@ -143,7 +143,7 @@ const topic1: TopicManifest = {
       {
         q: "Why was the Exactis exposure preventable without defeating any attack?",
         options: [
-          "The database was left reachable on the open internet, so basic hygiene (no exposure, strong auth) would have stopped it",
+          "The database was left open on the internet, so basic hygiene would have stopped it",
           "A clever new exploit broke the database's strong encryption and copied all the records out",
           "Attackers phished an Exactis employee and used the stolen login details to get in",
           "A disgruntled insider deliberately copied the records out of the database and leaked them",

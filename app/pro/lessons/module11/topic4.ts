@@ -144,7 +144,7 @@ const topic4: TopicManifest = {
       {
         q: "Why does the CISA KEV catalogue lead with actively-exploited flaws?",
         options: [
-          "Because real-world exploitation turns theoretical risk into present danger, so fixing them stops real attacks",
+          "Because real-world exploitation turns theory into present danger",
           "Because actively-exploited flaws always carry the very highest CVSS scores",
           "Because exploited flaws are always the quickest and cheapest ones to patch",
           "Because a flaw being exploited proves that a patch must already exist",

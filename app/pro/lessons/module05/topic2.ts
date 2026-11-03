@@ -128,7 +128,7 @@ const topic2: TopicManifest = {
         q: "An organisation discovers a breach that puts customers' data at real risk. What does UK GDPR generally require?",
         options: [
           "Nothing at all, unless an affected customer complains first",
-          "Report it to the ICO, usually within 72 hours, and warn high-risk people",
+          "Tell the ICO within 72 hours, and warn high-risk people",
           "Disclose it only in the next annual report to shareholders",
           "Notify the police about it, and tell no one else",
           "Report it to the ICO only once the breach is fully fixed",

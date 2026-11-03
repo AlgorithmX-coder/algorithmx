@@ -111,7 +111,7 @@ const topic2: TopicManifest = {
         options: [
           "The database stores all of its passwords without any encryption at all",
           "The server is overwhelmed by far too many database requests at once",
-          "The site glues user input into the SQL command, so crafted input rewrites the command",
+          "The site glues user input into the SQL command, so input can rewrite it",
           "The attacker steals the database administrator's login and signs in directly",
           "The database runs on outdated software that has an unpatched flaw",
         ],
@@ -146,7 +146,7 @@ const topic2: TopicManifest = {
         q: "Why did the ICO treat the TalkTalk breach as especially avoidable?",
         options: [
           "The attack relied on a brand-new technique no one had seen before",
-          "It was a well-known flaw with a standard, long-available fix, left on a neglected page",
+          "A well-known flaw with a standard fix, left on a neglected page",
           "The breach was carried out by a highly skilled, state-sponsored gang",
           "The breach affected only a tiny handful of TalkTalk's customers",
           "The company had no realistic way of knowing the legacy page existed",

@@ -147,7 +147,7 @@ const topic2: TopicManifest = {
           "Because most attackers simply lack the skill to beat basic controls",
           "Because the basics reliably block every known attack technique",
           "Because attackers are legally deterred by any visible security",
-          "Because a profit-driven industry chases easy targets, so being harder sends them elsewhere",
+          "Because attackers chase easy targets and move to softer ones",
           "Because insurers refuse to pay out unless the basics are in place",
         ],
         answer: 3,

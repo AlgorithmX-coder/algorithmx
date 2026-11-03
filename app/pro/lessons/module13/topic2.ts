@@ -147,7 +147,7 @@ const topic2: TopicManifest = {
           "The monitoring tools must have failed to raise any alerts at all",
           "Buying more detection tools would have been enough to prevent the breach",
           "The attack was simply too sophisticated for any process to have caught",
-          "Accurate alerts are worthless unless acted on; triage and escalation are the point",
+          "Accurate alerts are worthless unless acted on; triage is the point",
           "The SOC should have escalated every single alert straight to management",
         ],
         answer: 3,

@@ -128,7 +128,7 @@ const topic1: TopicManifest = {
         q: "You find a genuine, serious flaw by poking at a stranger's website without permission. Where do you stand legally in the UK?",
         options: [
           "You are fine, because the flaw was real and serious",
-          "You have likely committed an offence; finding a flaw grants no permission",
+          "Likely an offence; finding a flaw grants no permission",
           "It depends only on whether you downloaded or copied any data",
           "It is lawful provided you report the flaw to them afterwards",
           "You are safe as long as you did not cause any damage",

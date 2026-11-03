@@ -111,7 +111,7 @@ const topic4: TopicManifest = {
           "Keeping several historical copies of old data purely for compliance reasons",
           "Removing duplicate systems from the network to keep it simple and tidy",
           "Backing up data to a second location once every single night",
-          "Having no single point of failure: duplication so any one component's failure is survivable",
+          "Having no single point of failure: duplication so one failure is survivable",
         ],
         answer: 4,
         reasons: [
@@ -125,7 +125,7 @@ const topic4: TopicManifest = {
       {
         q: "Which of these can be a single point of failure?",
         options: [
-          "A key person, a single supplier or a shared credential, not only hardware",
+          "A key person, a single supplier or a shared credential",
           "Only physical hardware, such as a server or a disk drive",
           "Only components that have no warranty or active vendor support",
           "Only systems that are already old and starting to fail",
@@ -146,7 +146,7 @@ const topic4: TopicManifest = {
           "That the largest cloud providers are too big ever to suffer a serious outage",
           "That moving everything to a single trusted provider removes all of the risk",
           "That only the cloud provider, not its customers, is affected by an outage",
-          "That concentration is a single point of failure: many services on one region fail together",
+          "Concentration is a single point of failure: many services on one region",
           "That the cloud is always less reliable than running your own servers",
         ],
         answer: 3,

@@ -144,7 +144,7 @@ const topic3: TopicManifest = {
         q: "Why set RTO and RPO per system?",
         options: [
           "Because every system must be given the same tight targets to stay safe",
-          "Because systems differ in criticality, so the targets direct effort and spend to what matters",
+          "Because systems differ in criticality, so targets direct effort where it matters",
           "Because regulators require identical recovery targets to apply across all systems",
           "Because the targets are chosen by the vendor rather than by the business",
           "Because the targets only ever matter for the organisation's public-facing website",

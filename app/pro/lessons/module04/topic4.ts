@@ -145,7 +145,7 @@ const topic4: TopicManifest = {
       {
         q: "Why was the DigiNotar compromise so damaging?",
         options: [
-          "A compromised authority issued fake certificates that impersonated real sites",
+          "A compromised authority issued fake certificates for real sites",
           "It quietly deleted the certificates of thousands of legitimate sites",
           "It exposed the private encryption keys hidden inside every browser",
           "It affected only one single website and nothing more beyond that",

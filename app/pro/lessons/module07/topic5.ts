@@ -112,7 +112,7 @@ const topic5: TopicManifest = {
           "Reporting it recovers any money or data that has already been lost",
           "Deleting it without reporting is what actually lets the attack spread",
           "Reporting it guarantees the attacker will be identified and prosecuted",
-          "Reporting lets the team warn everyone, block the sender and investigate, protecting the whole organisation",
+          "Reporting lets the team warn others and block the sender",
         ],
         answer: 4,
         reasons: [
@@ -126,7 +126,7 @@ const topic5: TopicManifest = {
       {
         q: "What makes a reporting culture effective?",
         options: [
-          "Making reporting easy and safe, thanking people even for false alarms, and never punishing honest mistakes",
+          "Make reporting easy and safe, and never punish honest mistakes",
           "Publishing the names of the staff who fall for the phishing tests",
           "Keeping every reported incident strictly confidential within the team",
           "Requiring staff to prove a message is malicious before they report it",
@@ -147,7 +147,7 @@ const topic5: TopicManifest = {
           "A surprise test that is designed to catch out the careless staff",
           "An external test quietly run without the company's own knowledge",
           "A mock phishing email that is sent out to the company's customers",
-          "Internal, sanctioned and consented, and run kindly to build resilience, not to humiliate",
+          "Internal, sanctioned and consented, run to build resilience",
           "A real phishing campaign simply redirected at the company's own staff",
         ],
         answer: 3,

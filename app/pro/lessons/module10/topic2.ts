@@ -130,7 +130,7 @@ const topic2: TopicManifest = {
           "Forgetting the network on your device once you disconnect from it",
           "Turning your device's Wi-Fi signal strength down as low as it goes",
           "Choosing a different, longer username when you sign in to sites",
-          "Strong encryption, so your traffic's contents stay unreadable to the attacker",
+          "Strong encryption keeps your traffic unreadable to the attacker",
         ],
         answer: 4,
         reasons: [

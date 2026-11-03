@@ -109,7 +109,7 @@ const topic2: TopicManifest = {
         options: [
           "By permanently deleting the victim's files unless the demanded ransom is paid",
           "By locking the victim out after quietly changing the account login password",
-          "By encrypting the victim's files with a key only the attacker holds, then demanding payment",
+          "By encrypting files with a key only the attacker holds, then charging",
           "By flooding the victim's network with junk traffic until it is paid to stop",
           "By slowly corrupting the files at random so that nobody can trust the data",
         ],

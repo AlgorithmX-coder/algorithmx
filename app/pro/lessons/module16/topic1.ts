@@ -130,7 +130,7 @@ const topic1: TopicManifest = {
           "Because the same attacker tends to return at fairly regular intervals",
           "Because each of the stages is repeated several times within one incident",
           "Because recovery always has to be completed before containment begins",
-          "Because lessons learned feed back into preparation, readying you for the next incident",
+          "Because lessons learned feed back into preparation for the next incident",
           "Because the stages can be worked through in almost any order you like",
         ],
         answer: 3,

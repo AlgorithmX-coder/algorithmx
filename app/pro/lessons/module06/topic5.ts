@@ -149,7 +149,7 @@ const topic5: TopicManifest = {
           "Supply-chain attacks can only ever be stopped by the software vendor",
           "Detection tools should be sold rather than shared, to help fund defence",
           "A breached security firm should stay quiet to protect its reputation",
-          "Publishing attacker techniques turns one victim's loss into many firms' protection",
+          "Sharing attacker techniques turns one loss into broad protection",
         ],
         answer: 4,
         reasons: [

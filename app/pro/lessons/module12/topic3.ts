@@ -147,7 +147,7 @@ const topic3: TopicManifest = {
           "Strong perimeter defences alone are enough to stop a determined attacker",
           "Hard-coded credentials are safe as long as they are stored inside the network",
           "Multi-factor authentication removes the need for least privilege and credential care",
-          "What a foothold can reach, through least privilege and protected credentials, often decides the damage",
+          "Least privilege and credential care decide how far a foothold reaches",
           "Keeping attackers out is all that matters; what they reach afterwards is secondary",
         ],
         answer: 3,

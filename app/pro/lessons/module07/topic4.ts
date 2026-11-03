@@ -112,7 +112,7 @@ const topic4: TopicManifest = {
           "That the display name shows a sender's name you recognise",
           "That the message carries the company's familiar logo and branding",
           "That the message greets you correctly by your full name",
-          "The real email address behind the display name, read slowly for lookalike tricks",
+          "The real email address behind the display name",
           "That the message is free of any spelling and grammar mistakes",
         ],
         answer: 3,
@@ -129,7 +129,7 @@ const topic4: TopicManifest = {
         options: [
           "Copy the link into a browser's address bar and open it carefully",
           "Trust it so long as the visible link text names a company you know",
-          "Hover on a desktop, or long-press on mobile, to preview the true destination first",
+          "Hover or long-press to preview the link's true destination first",
           "Check the visible link text is spelled correctly, and then click it",
           "Reply to the sender first to ask whether the link is safe to open",
         ],
@@ -146,7 +146,7 @@ const topic4: TopicManifest = {
         q: "The FACC case shows that the most important check for a high-value request is:",
         options: [
           "Whether the email looks professional, polished and well written",
-          "Verifying it out-of-band through a trusted channel before acting, however genuine it looks",
+          "Verifying it out-of-band on a trusted channel before acting",
           "How quickly and smoothly you can action the request that was made",
           "Whether the antivirus or the spam filter happened to flag it",
           "Whether the sender's name matches a senior person you already know",

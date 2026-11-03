@@ -111,7 +111,7 @@ const topic4: TopicManifest = {
           "Intelligence gathered by secretly intercepting a target's communications",
           "Information obtained by actively breaking into the target's systems",
           "Information that comes only from an insider willing to leak it",
-          "Open-source intelligence: information gathered from public sources, no break-in needed",
+          "Open-source intelligence: gathered from public sources",
           "Intelligence bought from a commercial data broker under contract",
         ],
         answer: 3,

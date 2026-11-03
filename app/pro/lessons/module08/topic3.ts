@@ -128,7 +128,7 @@ const topic3: TopicManifest = {
         options: [
           "They can be blocked completely simply by vetting every single supplier once",
           "They only ever reach the customers who skip their routine security updates",
-          "They defeat the instinct to be careful: malware arrives inside software you are right to trust",
+          "Malware arrives inside software you are right to trust, defeating caution",
           "They are easy to spot because the poisoned software behaves oddly straight away",
           "They work only against firms too small to run any security tools at all",
         ],
@@ -148,7 +148,7 @@ const topic3: TopicManifest = {
           "Because you only ever need to defend the single route that attackers tend to use most",
           "Because closing off the common routes makes the rarer ones completely irrelevant",
           "Because a short, known list means attackers will soon run out of methods entirely",
-          "Because 'defend against malware' breaks down into closing a handful of specific, achievable doors",
+          "Because 'defend against malware' becomes closing a handful of specific doors",
         ],
         answer: 4,
         reasons: [

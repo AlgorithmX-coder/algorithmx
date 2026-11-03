@@ -147,7 +147,7 @@ const topic5: TopicManifest = {
         options: [
           "It broke the signature cryptography with sheer mathematical force",
           "It quietly disabled the systems' signature checks altogether",
-          "It used stolen, genuine signing certificates to make its malware look trusted",
+          "It used stolen, genuine signing certificates to look trusted",
           "It guessed the companies' secret private signing keys",
           "It forged brand-new certificates from scratch that looked official",
         ],

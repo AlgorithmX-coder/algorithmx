@@ -148,7 +148,7 @@ const topic1: TopicManifest = {
           "The web server log, which records each request and its result",
           "The firewall log, which records the connections allowed or blocked",
           "The system log, which records the changes made on the machine",
-          "The authentication log, which records sign-in attempts and whether they worked",
+          "The authentication log, which records sign-in attempts",
         ],
         answer: 4,
         reasons: [

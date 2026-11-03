@@ -112,7 +112,7 @@ const topic1: TopicManifest = {
           "Because its roles need no real grasp of the business they are there to protect",
           "Because the work is now mostly automated, so there is little left for people to do",
           "Because it sits apart from real security, so it needs no security knowledge at all",
-          "Because its roles draw on communication, organisation and business sense, so a non-technical background is an asset",
+          "Because its roles draw on communication, organisation and business sense",
           "Because it demands no analysis, writing or organising, only a basic awareness of security",
         ],
         answer: 3,
@@ -127,7 +127,7 @@ const topic1: TopicManifest = {
       {
         q: "What is the core of risk management?",
         options: [
-          "Treating cyber risk as business risk: weighing likelihood and impact, then deciding to reduce, transfer, avoid or accept it",
+          "Treating cyber risk as business risk: weigh likelihood and impact, then act",
           "Buying enough security tools and layers to remove every possible threat the organisation faces",
           "Transferring every risk to an insurer so that the business itself carries none of it",
           "Ranking threats purely by how technically advanced and sophisticated each individual attack is",
@@ -149,7 +149,7 @@ const topic1: TopicManifest = {
           "That paying attackers off quietly is an effective way to keep a data breach secret",
           "That the main risk in any breach is simply the cost of fixing the technical flaw",
           "That a breach is fundamentally a technical failure, to be solved by the security team alone",
-          "That governance and accountability, how leaders handle risk and obligations, carry serious legal and personal consequences",
+          "That governance and accountability carry serious legal and personal consequences",
         ],
         answer: 4,
         reasons: [

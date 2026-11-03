@@ -128,7 +128,7 @@ const topic1: TopicManifest = {
       {
         q: "A trojan infects a machine by:",
         options: [
-          "Tricking the user into installing it by pretending to be something genuinely useful",
+          "Tricking the user into installing it by posing as something useful",
           "Spreading automatically across the whole network with no user action at all",
           "Exploiting an unpatched software flaw to force its own way in unaided",
           "Hiding itself deep inside the system purely to avoid being detected",

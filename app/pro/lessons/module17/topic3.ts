@@ -110,7 +110,7 @@ const topic3: TopicManifest = {
         options: [
           "A high-level statement of intent, such as 'we will protect our customers' data'",
           "A specific, measurable rule, such as 'passwords must be at least 12 characters'",
-          "The actual safeguard that delivers protection, such as the MFA system enforcing a second factor",
+          "The actual safeguard that delivers protection, such as an MFA system",
           "A step-by-step how-to, such as the exact steps to onboard a new user securely",
           "An audit finding that records where a security gap has been discovered",
         ],
@@ -130,7 +130,7 @@ const topic3: TopicManifest = {
           "Because auditors only ever check that the documents exist, and never look at the controls",
           "Because standards and procedures ultimately matter far more than the safeguards themselves",
           "Because once a control is written into a policy it no longer needs to be maintained",
-          "Because however good the policy, nothing is protected unless the real safeguard is in place and working",
+          "Because however good the policy, nothing is protected unless the safeguard is in place",
         ],
         answer: 4,
         reasons: [
@@ -145,7 +145,7 @@ const topic3: TopicManifest = {
         q: "What is the 'policy on paper' trap?",
         options: [
           "Having so many detailed policies that staff cannot possibly follow every one of them",
-          "Having the right documents but controls not actually in place, enforced or tested, creating false assurance",
+          "Having the right documents but controls not actually in place, enforced or tested",
           "Enforcing controls very strictly even though they were never written into any policy at all",
           "Writing policies in language so vague that an auditor cannot measure against them",
           "Updating policies so often that nobody can keep track of the current version",

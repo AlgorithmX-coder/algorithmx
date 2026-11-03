@@ -127,7 +127,7 @@ const topic3: TopicManifest = {
         options: [
           "A reused password is easier for cracking tools to guess",
           "Each site you reuse it on can then see your other logins",
-          "One breached site lets attackers into all the others, called credential stuffing",
+          "One breach unlocks the rest: this is credential stuffing",
           "It forces you to reset every account whenever one changes",
           "Reusing a password slowly weakens it each time it is entered",
         ],

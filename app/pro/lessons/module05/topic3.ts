@@ -110,7 +110,7 @@ const topic3: TopicManifest = {
         q: "What makes security testing lawful, as opposed to an offence?",
         options: [
           "Being highly skilled and careful at the techniques",
-          "Written permission from the right person, for a defined scope",
+          "Written permission from the right person, in scope",
           "Using only tools the industry considers legitimate",
           "Reporting whatever you find once you have finished",
           "Working for a recognised, reputable security company",

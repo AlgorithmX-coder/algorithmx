@@ -111,7 +111,7 @@ const topic4: TopicManifest = {
         options: [
           "A schedule setting out when future patches and routine scans are due",
           "A live feed of security alerts as they arrive during the attack",
-          "The chronological reconstruction of an attack from evidence, showing what the attacker did and when",
+          "The chronological reconstruction of an attack from the evidence",
           "A single log file that happens to record every single event in order",
           "A countdown clock showing how long the response team has left to act",
         ],
@@ -145,7 +145,7 @@ const topic4: TopicManifest = {
       {
         q: "Why is the timeline so essential to a response?",
         options: [
-          "It reveals how they got in, how far they went and what they did, driving eradication and prevention",
+          "It reveals how they got in, how far they went and what they did",
           "It is useful only for the final written report, not for the live response itself",
           "It matters only once the attack has been picked up by the news media",
           "It lets you reconnect systems at once without checking that the threat is gone",

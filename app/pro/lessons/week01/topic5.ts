@@ -104,7 +104,7 @@ const topic5: TopicManifest = {
         q: "Which account should you secure first, and why?",
         options: [
           "Social media, because your profile is already public",
-          "Email, because it can reset the passwords on everything else",
+          "Email, since it can reset your other passwords",
           "A shopping site, because it stores your card details",
           "Whichever account you happen to log into most often",
           "Online banking, because it holds your money directly",

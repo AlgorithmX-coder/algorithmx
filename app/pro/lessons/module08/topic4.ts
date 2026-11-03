@@ -144,7 +144,7 @@ const topic4: TopicManifest = {
       {
         q: "Zeus shows that a quiet, stealthy payload can be devastating because:",
         options: [
-          "Long dwell time lets it keep stealing banking logins unnoticed, so the losses add up hugely",
+          "Long dwell time lets it keep stealing banking logins unnoticed",
           "It works far faster and a great deal more loudly than any ransomware ever could",
           "It immediately alerts the victim in order to demand a large upfront payment",
           "It wipes the victim's whole hard drive the very moment that it first lands",

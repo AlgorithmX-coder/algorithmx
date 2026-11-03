@@ -110,7 +110,7 @@ const topic5: TopicManifest = {
           "It automatically fixes any insecure settings it finds on a system",
           "It lets an organisation skip the slower work of patching and monitoring",
           "It proves to customers that a system can never possibly be breached",
-          "It turns principles into repeatable action, so nothing is forgotten and anyone can apply it",
+          "It turns principles into repeatable action, so nothing is forgotten",
           "It records who changed each setting so blame can be assigned later",
         ],
         answer: 3,
@@ -143,7 +143,7 @@ const topic5: TopicManifest = {
       {
         q: "Why start from a baseline like the CIS Benchmarks?",
         options: [
-          "They are free, expert, consensus-built baselines you can adopt, tailor and check against",
+          "Free, expert, consensus-built baselines you can adopt, tailor and check",
           "They are legally mandated, so every system must match them exactly",
           "They are tailored specifically to your organisation before you receive them",
           "They remove the need to monitor or log a system once applied",

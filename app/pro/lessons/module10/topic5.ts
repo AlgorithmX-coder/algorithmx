@@ -110,7 +110,7 @@ const topic5: TopicManifest = {
       {
         q: "What is lateral movement?",
         options: [
-          "An attacker moving from a first foothold toward more valuable systems inside",
+          "Moving from a foothold toward more valuable internal systems",
           "An attacker escalating to full administrator rights on one machine",
           "Spreading malware outward to external partner organisations",
           "Copying stolen data out of the network back to the attacker",
@@ -129,7 +129,7 @@ const topic5: TopicManifest = {
         q: "Why is a 'flat' network so dangerous?",
         options: [
           "It exposes every internal machine directly to the public internet",
-          "Once inside, an attacker can reach everything, so one foothold opens the lot",
+          "Once inside, one foothold can reach everything",
           "It forces all of the traffic through one slow central chokepoint",
           "It stops administrators from ever applying their security patches",
           "It encrypts internal traffic so that defenders cannot inspect it",
@@ -149,7 +149,7 @@ const topic5: TopicManifest = {
           "Building one single, much thicker and stronger perimeter wall",
           "Assuming that attackers will simply never get past the firewall",
           "Encrypting all of the data so a breach reveals nothing at all",
-          "Planning for an attacker getting in: limiting reach and watching internal movement",
+          "Plan for an attacker getting in: limit reach, watch movement",
           "Moving every system into the cloud to avoid being targeted",
         ],
         answer: 3,

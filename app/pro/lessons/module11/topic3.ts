@@ -132,7 +132,7 @@ const topic3: TopicManifest = {
           "Because the CVSS score is recalculated and changes from one day to the next",
           "Because lower-scored flaws tend to affect far more systems on average",
           "Because urgency is decided by the vendor's reputation, not by the score",
-          "Because active exploitation in the wild is a powerful urgency signal beyond severity",
+          "Because active exploitation in the wild is a strong urgency signal",
         ],
         answer: 4,
         reasons: [
@@ -146,7 +146,7 @@ const topic3: TopicManifest = {
       {
         q: "The PrintNightmare case shows that when an advisory is confusing, you should:",
         options: [
-          "Read precisely, confirm from authoritative sources, apply mitigations, and monitor closely",
+          "Read precisely, confirm from trusted sources, mitigate, then monitor",
           "Wait for the media to explain it clearly before taking any action at all",
           "Assume that one patch has already resolved every related flaw",
           "Apply every available patch at once and then consider the matter closed",
