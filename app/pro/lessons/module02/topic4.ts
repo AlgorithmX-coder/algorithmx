@@ -115,7 +115,7 @@ const topic4: TopicManifest = {
         q: "What is a port, in plain terms?",
         options: [
           "The physical socket on the back where a network cable plugs in",
-          "A numbered channel that lets one machine run many services and keep them apart",
+          "A numbered channel letting one machine run many services",
           "Just another word for the machine's IP address on the network",
           "The password a service needs before it will accept a connection",
           "The agreed language two machines speak once they are connected",

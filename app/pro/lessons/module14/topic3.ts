@@ -109,7 +109,7 @@ const topic3: TopicManifest = {
         options: [
           "Logs are written in a format that humans simply cannot read at all",
           "Most log entries are deleted within a few seconds of being created",
-          "The volume is enormous, millions or billions a day, so you search rather than read",
+          "The volume is enormous, so you search rather than read",
           "Reading logs would breach data protection law, so analysts are not allowed to",
           "Only approved automated tools are ever permitted to open the log files",
         ],
@@ -145,7 +145,7 @@ const topic3: TopicManifest = {
         options: [
           "Because a broad search across everything always finds the problem the fastest",
           "Because the tool answers general questions far better than specific ones",
-          "A precise question tells you what to filter; a vague one leaves nothing to narrow on",
+          "A precise question tells you what to filter; a vague one does not",
           "Because you should settle on the conclusion before you start searching at all",
           "Because precise questions make the logs load and return their results faster",
         ],

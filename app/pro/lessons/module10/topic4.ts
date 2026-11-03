@@ -130,7 +130,7 @@ const topic4: TopicManifest = {
           "It targets a single weak point using one very powerful machine",
           "It encrypts all of its traffic so that filters cannot read it",
           "It can only ever be launched by skilled nation-state teams",
-          "It is distributed across many sources, so blocking one address is not enough",
+          "Distributed across many sources, so blocking one won't help",
           "It hides inside normal traffic so that nobody notices it at all",
         ],
         answer: 3,
@@ -147,7 +147,7 @@ const topic4: TopicManifest = {
         options: [
           "Encrypting the whole database to protect its stored contents",
           "Training all of the staff to spot and report phishing emails",
-          "Availability mitigation: scrubbing, CDNs and filtering that absorb the flood",
+          "Availability mitigation: scrubbing, CDNs and filtering",
           "Enforcing a long, strong, unique password on every account",
           "Patching every server to close its known software flaws",
         ],

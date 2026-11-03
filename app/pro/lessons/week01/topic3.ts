@@ -127,7 +127,7 @@ const topic3: TopicManifest = {
         options: [
           "A reused password is easier for cracking tools to guess",
           "Each site you reuse it on can then see your other logins",
-          "One breached site lets attackers into all the others, called credential stuffing",
+          "One breach unlocks the rest: this is credential stuffing",
           "It forces you to reset every account whenever one changes",
           "Reusing a password slowly weakens it each time it is entered",
         ],
@@ -144,7 +144,7 @@ const topic3: TopicManifest = {
         q: "What is the main job of a password manager?",
         options: [
           "To create one very strong password you use everywhere",
-          "To generate and store a unique strong password for each site",
+          "To create and store a unique strong password per site",
           "To stop any website from ever seeing your password",
           "To back up and encrypt the files on your computer",
           "To remember your passwords so you never type them again",

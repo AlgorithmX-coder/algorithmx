@@ -68,17 +68,21 @@ function StageIcon({ kind, size = 22 }: { kind: StageKey; size?: number }) {
 
 /* --- the outline rail --- */
 function TickDot({ state }: { state: "done" | "current" | "upcoming" }) {
+  /* All three share the SAME border-box footprint (20x20 incl. border) so
+   * the ring diameters match down the column and the inner dot/tick sits
+   * dead-centre regardless of border width. */
+  const ring: React.CSSProperties = { width: 20, height: 20, boxSizing: "border-box", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, lineHeight: 0 };
   if (state === "done") {
     return (
-      <span style={{ width: 20, height: 20, borderRadius: "50%", background: T.greenSoft, border: `1px solid ${T.green}`, display: "inline-flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+      <span style={{ ...ring, background: T.greenSoft, border: `1px solid ${T.green}` }}>
         <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke={T.green} strokeWidth="3.5" aria-hidden><path d="M5 13l4 4L19 7" strokeLinecap="round" strokeLinejoin="round" /></svg>
       </span>
     );
   }
   if (state === "current") {
-    return <span style={{ width: 20, height: 20, borderRadius: "50%", border: `2px solid ${T.cyan}`, background: T.cyanSoft, display: "inline-flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}><span style={{ width: 7, height: 7, borderRadius: "50%", background: T.cyan }} /></span>;
+    return <span style={{ ...ring, border: `2px solid ${T.cyan}`, background: T.cyanSoft }}><span style={{ width: 7, height: 7, borderRadius: "50%", background: T.cyan }} /></span>;
   }
-  return <span style={{ width: 20, height: 20, borderRadius: "50%", border: `1.5px solid ${T.edge}`, flexShrink: 0 }} />;
+  return <span style={{ ...ring, border: `1.5px solid ${T.edge}` }} />;
 }
 
 function Rail({ phase, learnIdx, learnCount, onGo }: { phase: LessonPhase; learnIdx: number; learnCount: number; onGo: (p: LessonPhase) => void }) {
@@ -235,6 +239,17 @@ function brandFor(org: string, color?: string): BrandSpec {
   return { name: org, color: color ?? T.primary };
 }
 
+/* A short monogram for anonymised cases with no fetchable logo (e.g.
+ * "Conti ransomware group", "UK energy firm (AI-voice CEO fraud)"). The
+ * full name shows as text beside the tile, so the tile just needs a clean
+ * mark that fits its square instead of a squashed or overflowing wordmark. */
+function monogram(name: string): string {
+  const words = name.replace(/\([^)]*\)/g, " ").split(/[^A-Za-z0-9]+/).filter(Boolean);
+  if (words.length === 0) return name.slice(0, 2).toUpperCase();
+  if (words.length === 1) return words[0].slice(0, 2).toUpperCase();
+  return (words[0][0] + words[1][0]).toUpperCase();
+}
+
 /* The real company logo, on a clean white tile so any brand reads well
  * on the dark ground. Tries a logo service, then a favicon, then falls
  * back to the brand-coloured wordmark if the company has no fetchable
@@ -257,10 +272,11 @@ function CompanyLogo({ org, color, size = 56 }: { org: string; color?: string; s
       />
     );
   }
-  // final fallback: brand-coloured wordmark tile
+  // final fallback: brand-coloured monogram tile (a clean mark that always
+  // fits; the full company name is shown as text beside it).
   return (
-    <span aria-label={`${b.name} logo`} style={{ width: size, height: size, borderRadius: 12, background: `${b.color}1f`, border: `1px solid ${b.color}55`, display: "inline-flex", alignItems: "center", justifyContent: "center", textAlign: "center", padding: 6, flexShrink: 0, fontFamily: T.display, fontWeight: 800, fontSize: size * 0.2, lineHeight: 1.1, letterSpacing: "-0.01em", color: b.color }}>
-      {b.name}
+    <span aria-label={`${b.name} logo`} style={{ width: size, height: size, boxSizing: "border-box", borderRadius: 12, background: `${b.color}1f`, border: `1px solid ${b.color}55`, display: "inline-flex", alignItems: "center", justifyContent: "center", flexShrink: 0, fontFamily: T.display, fontWeight: 800, fontSize: Math.round(size * 0.4), lineHeight: 1, letterSpacing: "0.02em", color: b.color }}>
+      {monogram(b.name)}
     </span>
   );
 }
@@ -552,7 +568,7 @@ export default function LessonPlayer({ lesson, topicIndex, topicCount, weekTitle
 
         .pro-why { max-width: 66ch; font-size: 15px; line-height: 1.6; color: ${T.body}; margin: 4px 0 28px; }
         .pro-why-label { display: block; font-family: ${T.mono}; font-size: 10.5px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: ${T.cyan}; margin-bottom: 6px; }
-        .pro-cta-row { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
+        .pro-cta-row { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; margin-top: 40px; padding-top: 28px; border-top: 1px solid ${T.edge}; }
         .pro-cta { display: inline-flex; align-items: center; gap: 10px; font-family: ${T.display}; font-size: 16px; font-weight: 700; letter-spacing: 0.01em; color: #fff; background: linear-gradient(135deg, ${T.primary}, ${T.cyan}); border: none; border-radius: 12px; padding: 15px 28px; cursor: pointer; box-shadow: 0 8px 26px rgba(139,109,255,0.34); transition: transform 160ms ease, box-shadow 160ms ease; }
         .pro-cta:hover { transform: translateY(-1px); box-shadow: 0 12px 32px rgba(139,109,255,0.44); }
         .pro-cta svg { transition: transform 160ms ease; }

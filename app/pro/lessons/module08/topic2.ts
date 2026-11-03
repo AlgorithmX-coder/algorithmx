@@ -109,7 +109,7 @@ const topic2: TopicManifest = {
         options: [
           "By permanently deleting the victim's files unless the demanded ransom is paid",
           "By locking the victim out after quietly changing the account login password",
-          "By encrypting the victim's files with a key only the attacker holds, then demanding payment",
+          "By encrypting files with a key only the attacker holds, then charging",
           "By flooding the victim's network with junk traffic until it is paid to stop",
           "By slowly corrupting the files at random so that nobody can trust the data",
         ],
@@ -128,7 +128,7 @@ const topic2: TopicManifest = {
           "It is reliably the fastest and cheapest way to get all of the data straight back",
           "It is always illegal in every country and will guarantee the victim is prosecuted later",
           "Paying immediately reinfects every other machine that is still connected on the network",
-          "No guarantee of a working key, it funds crime, and it marks you as a payer worth hitting again",
+          "No guarantee of a key, it funds crime, and it marks you as a payer worth hitting",
           "It permanently deletes the stolen copy of the data that the attackers took earlier",
         ],
         answer: 3,
@@ -143,7 +143,7 @@ const topic2: TopicManifest = {
       {
         q: "What made WannaCry so devastating, and yet so preventable?",
         options: [
-          "It was wormable through a known flaw that already had a patch, so patched systems stayed safe",
+          "It was wormable through a flaw that already had a patch",
           "It used an unknown zero-day flaw for which no patch could possibly have existed yet",
           "It spread only through phishing emails that unsuspecting staff opened by hand",
           "It could be stopped only by paying the ransom that the attackers were demanding",

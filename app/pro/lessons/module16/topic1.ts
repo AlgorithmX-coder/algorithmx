@@ -130,7 +130,7 @@ const topic1: TopicManifest = {
           "Because the same attacker tends to return at fairly regular intervals",
           "Because each of the stages is repeated several times within one incident",
           "Because recovery always has to be completed before containment begins",
-          "Because lessons learned feed back into preparation, readying you for the next incident",
+          "Because lessons learned feed back into preparation for the next incident",
           "Because the stages can be worked through in almost any order you like",
         ],
         answer: 3,
@@ -145,7 +145,7 @@ const topic1: TopicManifest = {
       {
         q: "What does Maersk's NotPetya recovery best illustrate?",
         options: [
-          "That organised response and recovery can turn a catastrophe into a survivable event",
+          "That organised response can turn a catastrophe into a survivable event",
           "That paying the ransom quickly is the surest route back to normal operations",
           "That prevention is the only thing that matters and response barely counts",
           "That one chance offline backup is all the preparation any organisation needs",

@@ -110,7 +110,7 @@ const topic2: TopicManifest = {
         q: "What does DNS actually do?",
         options: [
           "Encrypts your web traffic so strangers on the network cannot read it",
-          "Translates human-friendly names into the IP addresses that routers deliver to",
+          "Turns human-friendly names into the IP addresses machines use",
           "Stores a copy of every website's pages so they load faster",
           "Blocks dangerous or malicious websites from loading on your device",
           "Chooses the fastest route for your packets across the internet",
@@ -145,7 +145,7 @@ const topic2: TopicManifest = {
       {
         q: "In the 2016 attack, how did Mirai build its weapon?",
         options: [
-          "By logging into smart devices that still had their factory default passwords",
+          "By logging into smart devices left on factory default passwords",
           "By exploiting a hidden flaw in the code behind Twitter's website",
           "By bribing insiders who worked at the DNS provider Dyn",
           "By breaking into the internet's handful of core root servers",

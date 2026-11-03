@@ -109,7 +109,7 @@ const topic3: TopicManifest = {
       {
         q: "What is the fundamental difference between hashing and encryption?",
         options: [
-          "Encryption is reversible with the key; hashing is one-way and cannot be reversed",
+          "Encryption is reversible with the key; hashing is one-way",
           "They are really two names for the very same process",
           "Hashing is reversible with a key, while encryption is one-way",
           "Hashing needs a secret key, but encryption needs no key at all",
@@ -146,7 +146,7 @@ const topic3: TopicManifest = {
         q: "What was Adobe's core cryptographic mistake in 2013?",
         options: [
           "Using one-way hashing where reversible encryption was really needed",
-          "Using reversible encryption, plus plaintext hints, where hashing was needed",
+          "Using reversible encryption, plus plaintext hints, not hashing",
           "Storing all the passwords in plain text with no protection at all",
           "Choosing an encryption method that was simply far too strong",
           "Hashing the passwords but forgetting to add any salt",

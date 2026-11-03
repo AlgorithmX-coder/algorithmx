@@ -25,6 +25,11 @@ type SqlDb = {
 };
 
 const CLASSIC = "' OR '1'='1";
+/* A real seeded account, shown to the learner so they know what a normal
+ * login looks like here (otherwise the username/password boxes give no clue
+ * what to type besides the injection). Matches a row inserted in boot(). */
+const DEMO_USER = "sarah.k";
+const DEMO_PASS = "Summer2015";
 
 type Attempt = {
   username: string;
@@ -130,7 +135,10 @@ export default function SqlInjectionLab({ onDidTry }: LabProps) {
       {/* the fake portal */}
       <div style={{ background: T.bgRaise, border: `1px solid ${T.edge}`, borderRadius: 12, padding: "18px 20px" }}>
         <div style={{ fontFamily: T.display, fontWeight: 700, fontSize: 15, color: T.ink, marginBottom: 2 }}>MyAccount portal</div>
-        <div style={{ fontSize: 12.5, color: T.faint, marginBottom: 14 }}>Sign in to manage your broadband</div>
+        <div style={{ fontSize: 12.5, color: T.faint, marginBottom: 12 }}>Sign in to manage your broadband</div>
+        <div style={{ fontSize: 12.5, color: T.body, lineHeight: 1.5, marginBottom: 14, background: T.panelSoft, border: `1px solid ${T.edge}`, borderRadius: 8, padding: "9px 12px", maxWidth: 360 }}>
+          You have no account here, so you cannot sign in the normal way. A real customer is <b style={{ color: T.ink, fontFamily: T.mono }}>{DEMO_USER}</b> / <b style={{ color: T.ink, fontFamily: T.mono }}>{DEMO_PASS}</b>. Try that first to see a normal login, then try to get in without a valid password.
+        </div>
         <div style={{ display: "flex", flexDirection: "column", gap: 10, maxWidth: 360 }}>
           <input value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Username" autoComplete="off" spellCheck={false}
             style={{ boxSizing: "border-box", padding: "10px 13px", background: T.bg, color: T.ink, border: `1px solid ${T.edge}`, borderRadius: 8, fontFamily: T.mono, fontSize: 13.5 }} />
@@ -140,6 +148,10 @@ export default function SqlInjectionLab({ onDidTry }: LabProps) {
             <button onClick={login} disabled={!username && !password}
               style={{ fontFamily: T.display, fontSize: 13, fontWeight: 700, color: "#fff", background: `linear-gradient(135deg, ${T.primary}, ${T.cyan})`, border: "none", borderRadius: 8, padding: "10px 20px", cursor: "pointer" }}>
               Sign in
+            </button>
+            <button onClick={() => { setUsername(DEMO_USER); setPassword(DEMO_PASS); }}
+              style={{ fontFamily: T.mono, fontSize: 11, fontWeight: 600, color: T.green, background: "transparent", border: `1px solid ${T.edge}`, borderRadius: 8, padding: "9px 12px", cursor: "pointer" }}>
+              fill a normal login
             </button>
             <button onClick={() => { setUsername("sarah.k"); setPassword(CLASSIC); }}
               style={{ fontFamily: T.mono, fontSize: 11, fontWeight: 600, color: T.cyan, background: "transparent", border: `1px solid ${T.edge}`, borderRadius: 8, padding: "9px 12px", cursor: "pointer" }}>

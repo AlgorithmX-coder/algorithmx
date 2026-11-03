@@ -110,7 +110,7 @@ const topic4: TopicManifest = {
           "Huge demand at every level, so almost any beginner is hired within weeks",
           "Strong demand, but only ever for people who already hold advanced certs",
           "Shrinking demand, with noticeably fewer cyber jobs being created each year",
-          "Real demand, but entry-level is genuinely competitive and takes effort and persistence",
+          "Real demand, but entry-level is genuinely competitive and takes effort",
           "Plenty of entry roles, but they all pay too little to be worth taking",
         ],
         answer: 3,
@@ -126,7 +126,7 @@ const topic4: TopicManifest = {
         q: "Why treat 'millions of unfilled cyber jobs' with scepticism?",
         options: [
           "Because those figures secretly count only unpaid, volunteer and work-experience positions",
-          "Because the headline figures are widely debunked and do not match beginners' competitive reality",
+          "Because the headline figures are widely debunked and overstate reality",
           "Because the figures were simply invented and there is no real demand at all",
           "Because cyber jobs are being rapidly replaced by automation every single year",
           "Because the shortage applies only outside the UK, never to the home market",

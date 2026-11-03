@@ -108,7 +108,7 @@ const topic2: TopicManifest = {
         q: "What does a SOC analyst's day mostly involve?",
         options: [
           "Constantly chasing live intruders across the network in real time, all day",
-          "Steady, methodical triage and investigation and documentation, with occasional real incidents",
+          "Steady, methodical triage, investigation and documentation",
           "Mostly writing, reviewing and approving the company's security policies and standards",
           "Hands-on hardening, patching and configuring of servers for the whole day",
           "Running authorised attacks to find weaknesses, then writing up the findings",

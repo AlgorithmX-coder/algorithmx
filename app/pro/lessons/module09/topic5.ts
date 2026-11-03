@@ -110,7 +110,7 @@ const topic5: TopicManifest = {
         options: [
           "A ranked list of the ten most popular web-security scanning tools",
           "A professional certification exam that web-security specialists must pass",
-          "A community-driven, data-driven list of the most critical web-application risks, used as a shared checklist",
+          "A data-driven list of the most critical web-app risks",
           "A set of binding laws that govern how web applications must be secured",
           "A single vendor's product for automatically blocking the top web attacks",
         ],
@@ -129,7 +129,7 @@ const topic5: TopicManifest = {
           "Because the entire Top 10 list is swapped for ten completely different risks every year",
           "Because the ten listed risks almost never actually turn up in real production applications",
           "Because every one of the ten risks needs its own completely separate and unrelated fix",
-          "Because most risks reduce to a few shared principles, which also lets you reason about new, unseen flaws",
+          "Because most risks reduce to a few shared principles that also cover unseen flaws",
           "Because memorising the list word for word is the only thing interviewers ever ask about",
         ],
         answer: 3,
@@ -148,7 +148,7 @@ const topic5: TopicManifest = {
           "Running a single security scan just before each new release",
           "Relying on penetration testers to find and fix every flaw",
           "Buying the most expensive security tools that the budget allows",
-          "Building security principles in from the start, not bolting them on afterwards",
+          "Building security in from the start, not bolting it on later",
         ],
         answer: 4,
         reasons: [

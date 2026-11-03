@@ -128,7 +128,7 @@ const topic1: TopicManifest = {
         q: "You find a genuine, serious flaw by poking at a stranger's website without permission. Where do you stand legally in the UK?",
         options: [
           "You are fine, because the flaw was real and serious",
-          "You have likely committed an offence; finding a flaw grants no permission",
+          "Likely an offence; finding a flaw grants no permission",
           "It depends only on whether you downloaded or copied any data",
           "It is lawful provided you report the flaw to them afterwards",
           "You are safe as long as you did not cause any damage",
@@ -146,7 +146,7 @@ const topic1: TopicManifest = {
         q: "A friend gives you their password 'in case you ever need it'. Months later you log in without asking. Lawful?",
         options: [
           "Yes, because they gave you the password themselves",
-          "No, having a password is not the same as permission now",
+          "No: having a password is not permission now",
           "Yes, as long as you do not change anything there",
           "Only if you tell them about it straight afterwards",
           "Yes, since they never actually told you not to",

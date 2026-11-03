@@ -111,7 +111,7 @@ const topic3: TopicManifest = {
           "An advanced specialist cert first, then Security+, then a foundational entry cert",
           "A specialism first, taken before any general entry-level certification at all",
           "Whichever single certification your very first employer happens to pay for",
-          "A foundational cert, then CompTIA Security+, then a specialism, with advanced certs later",
+          "A foundational cert, then Security+, then a specialism, advanced certs later",
           "The most expensive prestige cert first, because it impresses employers the most",
         ],
         answer: 3,
@@ -128,7 +128,7 @@ const topic3: TopicManifest = {
         options: [
           "Yes; holding CompTIA Security+ on its own guarantees you a junior role",
           "No; employers now ignore certifications entirely and look only at experience",
-          "No; they help and open doors, but employers skills-test, so ability matters as much",
+          "No; they help and open doors, but employers skills-test for ability",
           "Only if you hold several advanced certifications all at the same time",
           "Yes, as long as you pass the exam with a high enough score",
         ],

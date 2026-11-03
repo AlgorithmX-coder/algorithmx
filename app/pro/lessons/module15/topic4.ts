@@ -147,7 +147,7 @@ const topic4: TopicManifest = {
           "By blocking every technique listed in the framework by default",
           "By ranking your analysts on how many alerts each of them closes",
           "By automatically writing brand-new detection rules on your behalf",
-          "By mapping your detections onto its techniques to see what you could not catch",
+          "By mapping detections onto its techniques to find the gaps",
           "By counting how many alerts your tools produce in a typical day",
         ],
         answer: 3,

@@ -109,7 +109,7 @@ const topic5: TopicManifest = {
         options: [
           "A final written exam that covers every module from across the course.",
           "A short slideshow summarising the parts of the course you most enjoyed.",
-          "One complete investigation written up two ways: a technical write-up and an executive summary.",
+          "One investigation written up two ways: technical and executive.",
           "A single deep technical report written only for security specialists to read.",
           "A reflective essay on what you learned and how you have grown.",
         ],
@@ -128,7 +128,7 @@ const topic5: TopicManifest = {
           "Because a longer, more detailed submission almost always impresses an employer more.",
           "Because technical readers and senior leaders both want exactly the same deep detail.",
           "Because producing two separate documents makes the capstone look more substantial.",
-          "It exercises both halves of being valuable: doing the technical work, and communicating it clearly.",
+          "It exercises both halves: doing the technical work and communicating it clearly.",
           "Because the executive summary lets you leave out the real findings altogether.",
         ],
         answer: 3,

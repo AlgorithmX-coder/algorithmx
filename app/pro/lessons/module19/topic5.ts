@@ -130,7 +130,7 @@ const topic5: TopicManifest = {
           "Checking that the backup files are all present and roughly the right size",
           "Trusting the backup will restore fine, because it has always worked before now",
           "Reading the whole recovery plan through carefully once a year as a team",
-          "Actually restoring to a test environment, confirming the systems work, and measuring against RTO/RPO",
+          "Actually restoring to a test environment and measuring against RTO/RPO",
         ],
         answer: 4,
         reasons: [

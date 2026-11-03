@@ -132,7 +132,7 @@ const topic1: TopicManifest = {
           "It names the specific individual sitting behind the keyboard",
           "It removes any need for technical security controls elsewhere",
           "It tells you the exact day and hour an attack will land",
-          "Motive predicts behaviour, guiding what to protect and how to respond",
+          "Motive predicts behaviour: it guides what to protect",
         ],
         answer: 4,
         reasons: [
@@ -146,7 +146,7 @@ const topic1: TopicManifest = {
       {
         q: "Most organisations are hit mainly by which kind of attacker?",
         options: [
-          "Opportunists exploiting unpatched systems and weak passwords at scale",
+          "Opportunists exploiting unpatched systems and weak passwords",
           "Nation-state teams spending rare zero-day exploits on them",
           "Skilled insiders deliberately stealing data from the inside",
           "Targeted hacktivist campaigns aimed squarely at their brand",

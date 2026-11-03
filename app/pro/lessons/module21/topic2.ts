@@ -125,7 +125,7 @@ const topic2: TopicManifest = {
         q: "Why tailor each application?",
         options: [
           "One strong generic CV sent to every role saves effort and works just as well.",
-          "A CV matched to the role gets noticed, and a few targeted applications beat many generic ones.",
+          "A CV matched to the role gets noticed, and targeted applications beat generic ones.",
           "It lets you send out far more applications in the same amount of time.",
           "Employers only really read the covering letter, so the CV itself need not change.",
           "Tailoring is mostly about making your CV longer, which most recruiters tend to prefer.",
@@ -145,7 +145,7 @@ const topic2: TopicManifest = {
           "A little exaggeration is fine, provided you can learn the skill later on.",
           "Claim certifications you are currently studying for as though you already hold them.",
           "List skills you have only read about as if they were hands-on experience.",
-          "Never claim certifications, skills or experience you lack; dishonesty is caught, costly and unnecessary.",
+          "Never claim certifications, skills or experience you lack.",
           "Round up your dates and job titles slightly, since every applicant does it.",
         ],
         answer: 3,

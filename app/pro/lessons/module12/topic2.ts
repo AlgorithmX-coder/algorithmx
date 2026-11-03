@@ -110,7 +110,7 @@ const topic2: TopicManifest = {
         options: [
           "A one-off security scan run when a system is first installed",
           "The default settings a system ships with straight out of the box",
-          "A defined, known-good configuration making a system safe by default, applied consistently",
+          "A defined, known-good configuration, safe by default",
           "A record of every configuration change ever made to a system",
           "The minimum security a regulator demands before a system may go live",
         ],
@@ -129,7 +129,7 @@ const topic2: TopicManifest = {
           "It hides the system from attackers so they cannot find it at all",
           "It encrypts the services that remain so attackers cannot read them",
           "It guarantees the system can never be breached once it is minimal",
-          "The less there is, fewer features, ports and accounts, the less there is to attack",
+          "Fewer features, ports and accounts means less for an attacker to hit",
           "It moves the exposed parts behind the firewall, out of an attacker's reach",
         ],
         answer: 3,
@@ -144,7 +144,7 @@ const topic2: TopicManifest = {
       {
         q: "The Capital One breach is a classic example of:",
         options: [
-          "Misconfiguration, a preventable, self-inflicted exposure a secure baseline and review would target",
+          "Misconfiguration: a preventable, self-inflicted exposure",
           "A zero-day flaw in the firewall software for which no patch yet existed",
           "A phishing email that tricked an employee into handing over their credentials",
           "A malicious insider who copied the customer data to a personal device",

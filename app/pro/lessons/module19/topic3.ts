@@ -107,7 +107,7 @@ const topic3: TopicManifest = {
       {
         q: "What does RTO (Recovery Time Objective) set?",
         options: [
-          "How quickly a system must be restored and working after a disruption",
+          "How quickly a system must be restored after a disruption",
           "How much recent data you can afford to lose in a disruption",
           "How often backups of the system should be taken each day",
           "How long old backups must be retained before they are deleted",
@@ -144,7 +144,7 @@ const topic3: TopicManifest = {
         q: "Why set RTO and RPO per system?",
         options: [
           "Because every system must be given the same tight targets to stay safe",
-          "Because systems differ in criticality, so the targets direct effort and spend to what matters",
+          "Because systems differ in criticality, so targets direct effort where it matters",
           "Because regulators require identical recovery targets to apply across all systems",
           "Because the targets are chosen by the vendor rather than by the business",
           "Because the targets only ever matter for the organisation's public-facing website",

@@ -111,7 +111,7 @@ const topic4: TopicManifest = {
           "Intelligence gathered by secretly intercepting a target's communications",
           "Information obtained by actively breaking into the target's systems",
           "Information that comes only from an insider willing to leak it",
-          "Open-source intelligence: information gathered from public sources, no break-in needed",
+          "Open-source intelligence: gathered from public sources",
           "Intelligence bought from a commercial data broker under contract",
         ],
         answer: 3,
@@ -146,7 +146,7 @@ const topic4: TopicManifest = {
         options: [
           "Block all inbound email from any sender outside the company",
           "Publish more company information to appear open and trustworthy",
-          "Shrink the attack surface: limit exposed information and unused systems",
+          "Shrink the attack surface: limit exposed info and unused systems",
           "Install up-to-date antivirus on every single employee device",
           "Require a longer, more complex password from every member of staff",
         ],

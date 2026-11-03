@@ -128,7 +128,7 @@ const topic1: TopicManifest = {
       {
         q: "A trojan infects a machine by:",
         options: [
-          "Tricking the user into installing it by pretending to be something genuinely useful",
+          "Tricking the user into installing it by posing as something useful",
           "Spreading automatically across the whole network with no user action at all",
           "Exploiting an unpatched software flaw to force its own way in unaided",
           "Hiding itself deep inside the system purely to avoid being detected",
@@ -150,7 +150,7 @@ const topic1: TopicManifest = {
           "Antivirus always removes every last trace completely once it detects the malware",
           "A quick reinstall of the affected machine reliably ends the whole incident",
           "A minor infection cleans itself up once the computer is simply restarted",
-          "Modern malware is often a platform: one foothold is used or sold to deliver far worse",
+          "Modern malware is often a platform: one foothold is used or sold for worse",
         ],
         answer: 4,
         reasons: [

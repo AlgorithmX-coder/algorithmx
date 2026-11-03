@@ -110,7 +110,7 @@ const topic3: TopicManifest = {
         options: [
           "How attackers first manage to break in to a network",
           "How many alerts the monitoring and logging tools generate",
-          "The blast radius: how much damage any single compromise can do",
+          "The blast radius: how much one compromise can damage",
           "How long security patches take to apply across the estate",
           "How quickly an intruder is detected once they are inside",
         ],
@@ -147,7 +147,7 @@ const topic3: TopicManifest = {
           "Strong perimeter defences alone are enough to stop a determined attacker",
           "Hard-coded credentials are safe as long as they are stored inside the network",
           "Multi-factor authentication removes the need for least privilege and credential care",
-          "What a foothold can reach, through least privilege and protected credentials, often decides the damage",
+          "Least privilege and credential care decide how far a foothold reaches",
           "Keeping attackers out is all that matters; what they reach afterwards is secondary",
         ],
         answer: 3,

@@ -134,7 +134,7 @@ const topic1: TopicManifest = {
           "Using a website that proudly displays a trust seal or badge",
           "Connecting only to busy networks that have many other users",
           "Clearing your browser history and cookies on a regular basis",
-          "Encryption in transit, so any captured traffic is only unreadable noise",
+          "Encryption in transit, so captured traffic is just noise",
           "Choosing the network whose signal is strongest and most stable",
         ],
         answer: 3,
@@ -149,7 +149,7 @@ const topic1: TopicManifest = {
       {
         q: "Why was Superfish able to intercept HTTPS traffic without warnings?",
         options: [
-          "It installed its own trusted root certificate, so the device trusted its fakes",
+          "It installed its own root certificate the device would trust",
           "It exploited a flaw that breaks HTTPS encryption everywhere at once",
           "It only worked when users chose to visit plain HTTP websites",
           "It stole the real certificates directly from each website's server",

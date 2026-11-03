@@ -109,7 +109,7 @@ const topic2: TopicManifest = {
       {
         q: "What distinguishes spear phishing from mass phishing?",
         options: [
-          "It is tailored to one specific person using research, trading volume for much higher success",
+          "It is tailored to one person using research, trading volume for success",
           "It is blasted out to far more recipients at once than ordinary mass phishing",
           "It is always delivered by a phone call rather than by an email message",
           "It always carries a malicious attachment that the recipient is urged to open",
@@ -130,7 +130,7 @@ const topic2: TopicManifest = {
           "It hides malware inside an encrypted attachment that the scanners cannot open",
           "It exploits an unpatched flaw in the organisation's own email server software",
           "It encrypts all of its own messages so that spam filters cannot read them",
-          "It often carries no malware at all, just a believable message and a plausible request",
+          "It often carries no malware at all, just a believable message and request",
           "It uses a virus so new that no antivirus yet holds a signature for it",
         ],
         answer: 3,

@@ -113,7 +113,7 @@ const topic5: TopicManifest = {
           "It is guaranteed to be infected with malware the moment it goes unsupported",
           "It is no longer able to run any modern applications at all",
           "It costs more to license than a fully supported, current version would",
-          "It no longer gets security patches, so new flaws are never fixed: a permanent open door",
+          "It no longer gets security patches, so new flaws are never fixed",
         ],
         answer: 4,
         reasons: [
@@ -129,7 +129,7 @@ const topic5: TopicManifest = {
         options: [
           "Because upgrading to supported software would always make them less secure",
           "Because older software is simply more reliable and safer than new software",
-          "Real pressures: cost, software or equipment tied to it, embedded devices, and inertia",
+          "Real pressures: cost, tied software or equipment, embedded devices, inertia",
           "Because end-of-life software costs far more to license than current versions",
           "Because regulators require certain industries to keep the original software",
         ],

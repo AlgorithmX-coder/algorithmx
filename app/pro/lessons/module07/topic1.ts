@@ -110,7 +110,7 @@ const topic1: TopicManifest = {
         options: [
           "Because modern firewalls and encryption have become almost impossible to beat head-on",
           "Because people always hold far more valuable data than the servers behind them ever do",
-          "Because people cannot be patched: trust, helpfulness and fear stay exploitable even when technology is strong",
+          "Because people cannot be patched: trust, helpfulness and fear stay exploitable",
           "Because social engineering needs no technical skill, so almost anyone could attempt it",
           "Because deceiving a person carries far less legal risk than hacking a system does",
         ],
@@ -130,7 +130,7 @@ const topic1: TopicManifest = {
           "Require the person to repeat their security training again as a visible penalty",
           "Make a public example of the incident so that everyone else stays alert",
           "Expect the person to catch every future attack now they have been caught once",
-          "Accept that it exploits good qualities, design so one mistake is survivable, and keep reporting safe",
+          "Accept it targets good instincts; make mistakes survivable, reporting safe",
         ],
         answer: 4,
         reasons: [
@@ -145,7 +145,7 @@ const topic1: TopicManifest = {
         q: "The Twitter 2020 breach is a landmark example because it shows that:",
         options: [
           "A strong engineering team is enough on its own to prevent social-engineering breaches",
-          "Even a technically sophisticated organisation can still be breached through its own people",
+          "Even a sophisticated organisation can be breached through its own people",
           "Attackers will almost always prefer exploiting code rather than going after people",
           "Internal admin tools stay safe for as long as the code behind them is secure",
           "Only small or careless organisations ever really fall victim to social engineering",

@@ -112,7 +112,7 @@ const topic5: TopicManifest = {
           "A penetration test carried out on your behalf by an external security firm",
           "A written inventory listing every single device and system the organisation owns",
           "An automated tool that scans the whole network for weaknesses overnight",
-          "A discussion-based rehearsal of an incident scenario, testing the plan and team without touching real systems",
+          "A discussion-based rehearsal of an incident scenario, testing the plan and team",
         ],
         answer: 4,
         reasons: [
@@ -126,7 +126,7 @@ const topic5: TopicManifest = {
       {
         q: "What makes a good incident report?",
         options: [
-          "Clear, factual, structured and honest: what happened, the impact, timeline, root cause and lessons",
+          "Clear, factual and honest: impact, timeline, root cause and lessons",
           "Reassuring and brief, playing down the real impact so as not to cause alarm",
           "Packed with dense technical detail so that only true experts can follow it",
           "Centred firmly on identifying which individual was most at fault for it",
@@ -146,7 +146,7 @@ const topic5: TopicManifest = {
         options: [
           "Because punishing people for their mistakes would breach employment law in every case",
           "Because in truth no individual ever really contributes to a security incident at all",
-          "Because blame makes people hide mistakes and information, so the organisation learns nothing and repeats it",
+          "Because blame makes people hide mistakes, so the organisation learns nothing",
           "Because a blameless review is then allowed to skip over the technical detail entirely",
           "Because blameless reviews are always quicker to finish than ones that assign fault",
         ],

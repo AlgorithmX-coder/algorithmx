@@ -112,7 +112,7 @@ const topic3: TopicManifest = {
           "The defender must place a working control at every single stage",
           "Defences only ever work at the final actions-on-objectives stage",
           "Breaking the chain means catching the attacker during reconnaissance",
-          "The attacker must win every stage, but the defender need break only one link",
+          "The attacker must win every stage; the defender breaks just one",
           "The defender always gets to act before the attacker even begins",
         ],
         answer: 3,
@@ -127,7 +127,7 @@ const topic3: TopicManifest = {
       {
         q: "How do the kill chain and MITRE ATT&CK relate?",
         options: [
-          "The kill chain gives the broad stages, ATT&CK catalogues the techniques within them",
+          "The kill chain gives the stages; ATT&CK catalogues the techniques",
           "The kill chain lists the techniques, and ATT&CK gives the broad stages",
           "ATT&CK is a paid tool that has quietly replaced the free kill chain",
           "Both describe defensive controls rather than real attacker behaviour",

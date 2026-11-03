@@ -112,7 +112,7 @@ const topic4: TopicManifest = {
           "Because a breach at any supplier automatically publishes all of your data online at once",
           "Because suppliers are generally far less careful about security than your own in-house team",
           "Because an attacker who breaches one supplier can then reach any company at all at random",
-          "Because trusted suppliers have access to your systems or data, so an attacker can reach you through them",
+          "Because trusted suppliers have access to your systems or data",
           "Because the law makes you legally liable for every one of your suppliers' own breaches",
         ],
         answer: 3,
@@ -129,7 +129,7 @@ const topic4: TopicManifest = {
         options: [
           "Grant trusted suppliers full standing access to everything so that their work is never delayed",
           "Rely on a well-known supplier's good reputation instead of actually checking their security",
-          "Do due diligence, set security requirements in contracts, apply least privilege, and monitor suppliers",
+          "Do due diligence, set security requirements in contracts, apply least privilege, monitor",
           "Assess a supplier once at onboarding and then never review their security again afterwards",
           "Trust any supplier that holds a certificate, with no further checks or limits on access",
         ],
@@ -149,7 +149,7 @@ const topic4: TopicManifest = {
           "That file-transfer tools are the only kind of software attackers ever target in this way",
           "That organisations stay perfectly safe as long as their own staff never make a mistake",
           "That a supply-chain flaw only affects the direct customers, never their customers in turn",
-          "That one flaw in one widely-used supplier can cascade to hundreds of organisations and millions of people",
+          "That one flaw in one widely-used supplier can cascade to hundreds of organisations",
         ],
         answer: 4,
         reasons: [

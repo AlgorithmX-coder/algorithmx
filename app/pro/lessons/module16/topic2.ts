@@ -109,7 +109,7 @@ const topic2: TopicManifest = {
         options: [
           "Containment removes the threat and root cause fully; eradication merely slows the spread",
           "Eradication stops the spread quickly; containment fixes the root cause much later on",
-          "Containment limits damage and stops the spread now; eradication fully removes the threat and root cause after",
+          "Containment stops the spread now; eradication removes the threat and root cause after",
           "Containment restores systems from clean backup; eradication just watches for any new attacks",
           "Containment and eradication are two names for the very same clean-up step",
         ],
@@ -128,7 +128,7 @@ const topic2: TopicManifest = {
           "Because getting systems reconnected quickly always matters more than fully removing the threat",
           "Because containment will already have wiped out every last trace of the attacker",
           "Because the fastest clean-up you can manage is reliably the most complete one too",
-          "Because attackers leave several footholds, so clearing the obvious malware leaves a backdoor to resume through",
+          "Because attackers leave several footholds; clearing the obvious malware leaves a backdoor",
           "Because a thorough job mainly makes the incident report look more professional afterwards",
         ],
         answer: 3,
@@ -147,7 +147,7 @@ const topic2: TopicManifest = {
           "Should be delayed until the threat has been fully understood by the team",
           "Is only ever a matter of isolating one single infected laptop somewhere",
           "Works best when you simply pull the plug on absolutely everything at once",
-          "Often involves a hard trade-off, where the fastest way to stop the spread does harm",
+          "Often a hard trade-off: the fastest way to stop the spread does harm",
         ],
         answer: 4,
         reasons: [

@@ -112,7 +112,7 @@ const topic5: TopicManifest = {
           "Because regulators require every single log line to be printed out",
           "Because only the analyst who did the work will ever need to read it",
           "Because the write-up replaces the need to keep the original logs",
-          "Because a brilliant investigation that is not communicated helps no one; the finding makes it useful",
+          "Because an investigation that is not communicated helps no one",
         ],
         answer: 4,
         reasons: [
@@ -129,7 +129,7 @@ const topic5: TopicManifest = {
           "A raw export of every log line, with no explanation added at all",
           "The analyst's best guesses about what most probably happened",
           "A clear statement naming which individual person was at fault",
-          "What happened, the evidence of logs and timeline, the impact, and the recommendation",
+          "What happened, the evidence, the impact, and the recommendation",
           "Only the final recommendation, with the evidence and impact left out",
         ],
         answer: 3,

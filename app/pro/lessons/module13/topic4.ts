@@ -144,7 +144,7 @@ const topic4: TopicManifest = {
       {
         q: "What does the FireEye discovery illustrate about tools and analysts?",
         options: [
-          "Tools surface the signal, but skilled humans acting on it catch even sophisticated attacks",
+          "Tools surface the signal, but skilled humans acting on it catch the attacks",
           "Good enough tools can detect and respond to attacks with no human involvement at all",
           "Small, unusual anomalies are almost always false positives and safe to dismiss",
           "Only very expensive, advanced tooling can ever catch a sophisticated attacker",

@@ -146,7 +146,7 @@ const topic5: TopicManifest = {
         options: [
           "They remove the need for controls altogether once a certificate has been issued",
           "They freeze the security setup so that nothing can change after certification is granted",
-          "They surface gaps as findings that become a prioritised list of fixes, and they recur, so improvement is ongoing",
+          "They surface gaps as findings that become a prioritised list of fixes, and they recur",
           "They hand all of the organisation's security decisions over to the external auditor",
           "They reward teams with a certificate rather than pointing out any weaknesses",
         ],

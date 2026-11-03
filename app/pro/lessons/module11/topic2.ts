@@ -110,7 +110,7 @@ const topic2: TopicManifest = {
         options: [
           "Once it is released, the patch instantly protects every affected system",
           "It signals that the vendor is about to stop supporting the old version",
-          "Making the flaw public also tells attackers, who race to hit everyone unpatched",
+          "Going public also tells attackers, who race to hit the unpatched",
           "It gives defenders a long, relaxed window in which to update calmly",
           "It means the most dangerous part of the incident is now safely over",
         ],
@@ -126,7 +126,7 @@ const topic2: TopicManifest = {
       {
         q: "Which systems must be patched most urgently, and why?",
         options: [
-          "Internet-facing systems, because the whole world can reach and attack them at once",
+          "Internet-facing systems, because the whole world can reach them at once",
           "The oldest machines, because they tend to break down and fail most often",
           "Isolated internal systems, because they are the ones holding valuable data",
           "Whichever systems happen to be the easiest and quickest to take offline",
@@ -147,7 +147,7 @@ const topic2: TopicManifest = {
           "Wait quietly for the next scheduled maintenance window to apply the patch",
           "Apply the untested patch immediately to every single system you run",
           "Turn the affected software off permanently and never bring it back",
-          "Reduce exposure now with access limits, a workaround and monitoring, then patch soon",
+          "Reduce exposure now with access limits and monitoring, then patch soon",
           "Assume the flaw is low risk until you see proof it is being exploited",
         ],
         answer: 3,

@@ -110,7 +110,7 @@ const topic4: TopicManifest = {
         options: [
           "A longer and more complex version of your password",
           "A second password kept separate from the first",
-          "A different kind of proof, like something you have or are",
+          "A different proof: something you have or are",
           "Answering a personal security question only you know",
           "Entering your password a second time to confirm it",
         ],
@@ -127,7 +127,7 @@ const topic4: TopicManifest = {
         q: "Why does MFA stop most account takeovers?",
         options: [
           "It makes your password much harder for attackers to guess",
-          "It blocks an attacker who has your password but not your factor",
+          "It blocks a thief who has your password but not your factor",
           "It emails you a warning whenever someone new logs in",
           "It changes your password automatically after every login",
           "It hides your username so attackers cannot target you",

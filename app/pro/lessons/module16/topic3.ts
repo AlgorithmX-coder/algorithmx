@@ -126,7 +126,7 @@ const topic3: TopicManifest = {
       {
         q: "What is chain of custody?",
         options: [
-          "The documented, unbroken record of who handled evidence, when, and how, proving it was not tampered with",
+          "The documented, unbroken record of who handled evidence, when and how",
           "An exact forensic copy of a disk, made so investigators can examine it safely",
           "The set order in which a response team works through the incident stages",
           "A secure, locked room where physical evidence is kept under guard",
@@ -146,7 +146,7 @@ const topic3: TopicManifest = {
         options: [
           "Because a forensic specialist is reliably on the scene from the very first moment",
           "Because only serious incidents ever lead to legal action, and those are obvious from the outset",
-          "Because critical early actions happen before a specialist arrives, and you rarely know which incident will have consequences",
+          "Because critical early actions happen before a specialist arrives",
           "Because digital evidence can always be recovered in full later on, even after early mistakes",
           "Because the law requires every analyst to hold a formal digital-forensics qualification first",
         ],

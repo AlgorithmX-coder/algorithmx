@@ -129,7 +129,7 @@ const topic1: TopicManifest = {
           "Regular staff security-awareness training sessions",
           "Encrypting stored data with full-disk encryption",
           "Continuous network monitoring to detect intrusions",
-          "Security update management, patching known flaws promptly",
+          "Security update management: patching known flaws",
           "Keeping tested, offline backups of important data",
         ],
         answer: 3,

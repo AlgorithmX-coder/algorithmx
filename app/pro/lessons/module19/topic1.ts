@@ -109,7 +109,7 @@ const topic1: TopicManifest = {
         options: [
           "Disaster recovery keeps the business trading, while continuity rebuilds the IT systems afterwards",
           "Continuity and disaster recovery are two names for the same single recovery plan",
-          "Continuity keeps the business running through a disruption; disaster recovery restores the systems afterwards",
+          "Continuity keeps the business running; disaster recovery restores the systems afterwards",
           "Continuity handles only cyber attacks, while disaster recovery handles only fires and floods",
           "Continuity means taking backups, while disaster recovery means buying insurance cover",
         ],
@@ -125,7 +125,7 @@ const topic1: TopicManifest = {
       {
         q: "What does 'all-hazards' resilience thinking mean?",
         options: [
-          "Planning for the impact, lost systems, site or data, whatever the cause, cyber or physical",
+          "Planning for the impact of lost systems, site or data, whatever the cause",
           "Writing a separate, detailed recovery plan for every individual cause you can imagine",
           "Concentrating only on the single most likely hazard and setting the rest aside",
           "Preventing every possible disaster in advance so that none of them can ever occur",
@@ -146,7 +146,7 @@ const topic1: TopicManifest = {
           "Keeping data with a large cloud provider removes any need for your own backups",
           "A second copy in the same data centre is enough to survive almost any disaster",
           "Physical disasters like fire can no longer destroy data once it is stored digitally",
-          "Resilience must be deliberate: assuming data is safe, with no offsite backup, is how it is lost",
+          "Resilience must be deliberate: no offsite backup is how data is lost",
           "Fire is so rare in modern data centres that offsite backups are not worth the cost",
         ],
         answer: 3,

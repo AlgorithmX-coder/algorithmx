@@ -109,7 +109,7 @@ const topic2: TopicManifest = {
         options: [
           "A UK law that requires companies to report data breaches to a regulator",
           "A US framework of five functions used to structure a security programme",
-          "An international, certifiable standard for an organisation's information-security management system",
+          "An international, certifiable standard for information-security management",
           "The UK's free baseline scheme built around five basic security controls",
           "A one-off technical test that scans a company's systems for vulnerabilities",
         ],
@@ -143,7 +143,7 @@ const topic2: TopicManifest = {
       {
         q: "Why does security certification matter commercially?",
         options: [
-          "Certification, especially ISO 27001, is often required to win enterprise and government contracts, so it enables business",
+          "Certification like ISO 27001 is often required to win enterprise and government contracts",
           "It exempts the organisation from having to follow data-protection law once the certificate is held",
           "It shifts all the legal liability for any breach onto the auditor who issued the certificate",
           "It guarantees that a certified organisation can never suffer a security breach in future",

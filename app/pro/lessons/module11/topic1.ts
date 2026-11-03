@@ -131,7 +131,7 @@ const topic1: TopicManifest = {
           "A severity score from 0 to 10 showing how dangerous the flaw is",
           "A ready-made patch that organisations can download to fix the flaw",
           "A step-by-step guide showing attackers how to exploit the flaw",
-          "A unique public name for one specific flaw, so everyone means the same thing",
+          "A unique public name for one specific flaw, so everyone agrees",
           "A deadline by which affected vendors are legally required to fix it",
         ],
         answer: 3,
@@ -150,7 +150,7 @@ const topic1: TopicManifest = {
           "The vendor is legally required to release a fix within one single day",
           "It affects only software that was first released in the last day",
           "It can be used only once before security tools learn to block it",
-          "Attackers use it before the vendor has any fix, so defenders get zero days",
+          "Attackers use it before any vendor fix, so defenders get zero days",
         ],
         answer: 4,
         reasons: [

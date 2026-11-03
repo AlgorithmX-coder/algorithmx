@@ -110,7 +110,7 @@ const topic1: TopicManifest = {
         q: "How does your message actually travel across the internet?",
         options: [
           "As one unbroken stream flowing down a single dedicated pipe",
-          "As many addressed packets that may take different routes and are reassembled",
+          "Addressed packets that may take different routes and are reassembled",
           "As one whole file pulled in a single piece from a server",
           "Along a private cable connection reserved just for you and the server",
           "As a single packet that follows one fixed path the whole way",
@@ -127,7 +127,7 @@ const topic1: TopicManifest = {
       {
         q: "What does a router actually do with a packet?",
         options: [
-          "Reads the destination address and passes it to the best next neighbour",
+          "Reads the destination address and passes it to the next hop",
           "Opens the packet and scans its contents for viruses and threats",
           "Stores a copy of every packet it sees in case it is needed",
           "Encrypts every packet to keep it private before handing it onward",

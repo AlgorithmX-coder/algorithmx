@@ -146,7 +146,7 @@ const topic3: TopicManifest = {
       {
         q: "As fakes (voices, caller IDs, branding) get more convincing, the durable defence is:",
         options: [
-          "Verifying important requests out-of-band, through a trusted channel the attacker does not control",
+          "Verifying requests out-of-band on a separate trusted channel",
           "Training yourself and others to spot the fakes far more reliably",
           "Deploying software that can reliably detect synthetic voices and images",
           "Trusting a request once its caller ID and branding both look right",

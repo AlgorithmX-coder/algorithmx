@@ -147,7 +147,7 @@ const topic4: TopicManifest = {
           "Waiting for your employer to book you on a training course every few years.",
           "Reading up on new threats only once they have directly affected you.",
           "Memorising every new tool and acronym the moment it is released.",
-          "Following reputable news and advisories, joining communities, and practising and learning continuously.",
+          "Following reputable news and advisories, and always learning.",
         ],
         answer: 4,
         reasons: [

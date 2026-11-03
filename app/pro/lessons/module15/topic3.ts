@@ -111,7 +111,7 @@ const topic3: TopicManifest = {
           "Intelligence is simply a much larger quantity of the same raw data",
           "Intelligence is any information that comes from an official government source",
           "Data is already actionable, so analysing it further adds nothing useful",
-          "Data is raw fact; intelligence is data analysed and given context to drive a decision",
+          "Data is raw fact; intelligence is data analysed and given context",
           "Data is always wrong until an analyst corrects it into intelligence",
         ],
         answer: 3,
@@ -144,7 +144,7 @@ const topic3: TopicManifest = {
       {
         q: "Why was the Mandiant APT1 report a landmark?",
         options: [
-          "It published deep intelligence on a specific adversary openly, turning private knowledge into shared defence",
+          "It published deep intelligence on a specific adversary openly",
           "It was the first tool able to automatically block a nation-state attack",
           "It created the MITRE ATT&CK framework that catalogues attacker techniques",
           "It introduced the first national law requiring companies to report breaches",

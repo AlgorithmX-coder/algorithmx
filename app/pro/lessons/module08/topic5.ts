@@ -111,7 +111,7 @@ const topic5: TopicManifest = {
           "Run it on a spare computer that happens to still be connected to the network",
           "Open it only after disabling the antivirus so that you can see it more clearly",
           "Rename the file to something harmless-looking before you decide to open it up",
-          "Never run it on a real, connected machine: use an isolated sandbox or disposable VM",
+          "Never run it on a real, connected machine: use an isolated sandbox",
           "Run it quickly, then pull out the network cable the moment that it starts",
         ],
         answer: 3,
@@ -130,7 +130,7 @@ const topic5: TopicManifest = {
           "It protects people only after they have already been infected at least once",
           "It quietly removes the malware from every corner of the internet entirely",
           "It warns people individually by email whenever a new malware sample appears",
-          "Observed behaviour becomes shareable indicators, so tools everywhere can block the threat",
+          "Observed behaviour becomes shared indicators, so tools everywhere block it",
         ],
         answer: 4,
         reasons: [

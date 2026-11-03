@@ -127,7 +127,7 @@ const topic5: TopicManifest = {
       {
         q: "What is tuning?",
         options: [
-          "Refining rules to cut false positives so real alerts stand out and are trusted",
+          "Refining rules to cut false positives so real alerts stand out",
           "Switching off any rule that has ever produced a single false positive",
           "Making every detection rule as broad as possible so it catches more",
           "Forwarding every alert straight to senior management for a decision",
