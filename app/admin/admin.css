@@ -2,20 +2,23 @@
   The staff admin portal's one stylesheet.
 
   Everything under /admin and /admin-login shares this file instead of
-  each page carrying its own copy-pasted <style> block - the previous
-  approach, which meant six near-identical copies of ".ad-table" with
-  no guarantee they'd stay in step. Values here mirror app/admin/adminTokens.ts
-  (a plain CSS file can't import a TS object, so the two are kept in
-  sync by hand - small and stable enough that this is fine).
+  each page carrying its own copy-pasted <style> block. Values here
+  mirror app/admin/adminTokens.ts (a plain CSS file can't import a TS
+  object, so the two are kept in sync by hand - small and stable
+  enough that this is fine).
 
   Every selector is scoped under .admin-ui. Next.js keeps a route-level
-  stylesheet loaded after you navigate away (documented behaviour, not a
-  bug), so an unscoped .card here would quietly follow a visitor out to
-  the rest of the site. Scoped, a lingering sheet matches nothing.
+  stylesheet loaded after you navigate away (documented behaviour, not
+  a bug), so an unscoped .card here would quietly follow a visitor out
+  to the rest of the site. Scoped, a lingering sheet matches nothing.
 
-  Deliberately plain: one accent colour, one shadow, one radius scale.
-  This is an internal tool for two or three people, not a product - it
-  should look quietly put-together, not designed.
+  One identity colour per section, reusing brand colours that already
+  mean something elsewhere on the site rather than inventing new ones:
+  Schools = amber (Cyber Heroes' own amber), Firms = teal (the AI
+  Cleared brand colour, also the generic UI accent), Individuals =
+  violet (the AI-platform gradient's violet). Still an internal tool,
+  not a product - the colour marks "which section am I in", it doesn't
+  carry the whole page.
 */
 
 .admin-ui {
@@ -35,6 +38,15 @@
   --ok-soft: rgba(14, 122, 69, 0.1);
   --warn: #8a5400;
   --warn-soft: rgba(138, 84, 0, 0.1);
+
+  /* Section identity colours */
+  --schools: #9a5b00;
+  --schools-soft: rgba(255, 179, 71, 0.2);
+  --firms: #0a7085;
+  --firms-soft: rgba(10, 112, 133, 0.12);
+  --individuals: #5744c9;
+  --individuals-soft: rgba(87, 68, 201, 0.12);
+
   --sans: var(--font-inter), Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
   --display: var(--font-space-grotesk), "Space Grotesk", var(--font-inter), Inter, system-ui, sans-serif;
   --mono: var(--font-geist-mono), "Geist Mono", ui-monospace, Consolas, monospace;
@@ -65,9 +77,12 @@
 .admin-ui .admin-brand { font-family: var(--mono); font-size: 13px; letter-spacing: 0.06em; color: var(--ink); }
 .admin-ui .admin-brand i { font-style: normal; color: var(--accent); }
 .admin-ui .admin-tabs { display: flex; gap: var(--sp-sm); }
-.admin-ui .admin-tab { font-size: 14px; font-weight: 600; color: var(--muted); text-decoration: none; padding: var(--sp-sm) var(--sp-lg); border-radius: var(--r-full); min-height: 36px; display: inline-flex; align-items: center; transition: color 150ms ease, background-color 150ms ease; }
+.admin-ui .admin-tab { display: inline-flex; align-items: center; gap: var(--sp-xs); font-size: 14px; font-weight: 600; color: var(--muted); text-decoration: none; padding: var(--sp-sm) var(--sp-lg); border-radius: var(--r-full); min-height: 36px; transition: color 150ms ease, background-color 150ms ease; }
+.admin-ui .admin-tab svg { width: 15px; height: 15px; opacity: 0.75; }
 .admin-ui .admin-tab:hover { color: var(--ink); background: var(--sunk); }
-.admin-ui .admin-tab[aria-current="page"] { color: var(--ink); background: var(--accent-soft); }
+.admin-ui .admin-tab[data-section="schools"][aria-current="page"] { color: var(--schools); background: var(--schools-soft); }
+.admin-ui .admin-tab[data-section="firms"][aria-current="page"] { color: var(--firms); background: var(--firms-soft); }
+.admin-ui .admin-tab[data-section="individuals"][aria-current="page"] { color: var(--individuals); background: var(--individuals-soft); }
 .admin-ui .admin-who { margin-left: auto; font-size: 13px; color: var(--faint); }
 .admin-ui .admin-main { padding: var(--sp-xl) var(--sp-xl) 60px; max-width: 1200px; margin: 0 auto; }
 .admin-ui .admin-gate { min-height: 60vh; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--sp-sm); text-align: center; padding: var(--sp-xl); }
@@ -75,7 +90,12 @@
 .admin-ui .admin-gate a { color: var(--accent); font-weight: 600; }
 
 /* ── Headings / notes ────────────────────────────────────────────── */
-.admin-ui .ad-h1 { font-family: var(--display); font-size: 26px; font-weight: 600; margin: 0 0 var(--sp-sm); color: var(--ink); letter-spacing: -0.01em; }
+.admin-ui .ad-eyebrow { display: inline-flex; align-items: center; gap: var(--sp-xs); font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; margin-bottom: var(--sp-xs); }
+.admin-ui .ad-eyebrow svg { width: 15px; height: 15px; }
+.admin-ui .ad-eyebrow.schools { color: var(--schools); }
+.admin-ui .ad-eyebrow.firms { color: var(--firms); }
+.admin-ui .ad-eyebrow.individuals { color: var(--individuals); }
+.admin-ui .ad-h1 { font-family: var(--display); font-size: 30px; font-weight: 700; margin: 0 0 var(--sp-sm); color: var(--ink); letter-spacing: -0.015em; }
 .admin-ui .ad-h2 { font-family: var(--display); font-size: 19px; font-weight: 600; margin: 0 0 var(--sp-xs); color: var(--ink); }
 .admin-ui .ad-note { font-size: 13.5px; line-height: 1.55; color: var(--muted); margin: 0 0 var(--sp-sm); max-width: 70ch; }
 .admin-ui .ad-back { margin: 0 0 var(--sp-md); font-size: 13px; }
@@ -84,10 +104,16 @@
 
 /* ── Landing tiles ───────────────────────────────────────────────── */
 .admin-ui .ad-tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: var(--sp-lg); margin-top: var(--sp-lg); }
-.admin-ui .ad-tile { display: flex; flex-direction: column; gap: var(--sp-xs); background: var(--panel); border: 1px solid var(--edge); border-radius: var(--r-lg); box-shadow: var(--shadow); padding: var(--sp-xl) var(--sp-lg); text-decoration: none; min-height: 44px; transition: border-color 150ms ease, box-shadow 150ms ease, transform 150ms ease; }
-.admin-ui .ad-tile:hover { border-color: var(--accent); box-shadow: var(--shadow-hover); transform: translateY(-1px); }
-.admin-ui .ad-tile-count { font-family: var(--display); font-size: 36px; font-weight: 600; color: var(--ink); line-height: 1; }
-.admin-ui .ad-tile-label { font-size: 15px; font-weight: 600; color: var(--ink); margin-top: var(--sp-xs); }
+.admin-ui .ad-tile { position: relative; overflow: hidden; display: flex; flex-direction: column; gap: var(--sp-xs); background: var(--panel); border: 1px solid var(--edge); border-radius: var(--r-lg); box-shadow: var(--shadow); padding: var(--sp-xl) var(--sp-lg) var(--sp-lg); text-decoration: none; min-height: 44px; transition: border-color 150ms ease, box-shadow 150ms ease, transform 150ms ease; }
+.admin-ui .ad-tile::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: var(--tile-colour); }
+.admin-ui .ad-tile:hover { box-shadow: var(--shadow-hover); transform: translateY(-2px); }
+.admin-ui .ad-tile.schools { --tile-colour: var(--schools); }
+.admin-ui .ad-tile.firms { --tile-colour: var(--firms); }
+.admin-ui .ad-tile.individuals { --tile-colour: var(--individuals); }
+.admin-ui .ad-tile-icon { width: 34px; height: 34px; border-radius: var(--r-md); display: flex; align-items: center; justify-content: center; background: var(--tile-colour); color: #fff; margin-bottom: var(--sp-xs); }
+.admin-ui .ad-tile-icon svg { width: 19px; height: 19px; }
+.admin-ui .ad-tile-count { font-family: var(--display); font-size: 44px; font-weight: 700; color: var(--tile-colour); line-height: 1; }
+.admin-ui .ad-tile-label { font-size: 16px; font-weight: 700; color: var(--ink); margin-top: var(--sp-xs); }
 .admin-ui .ad-tile-note { font-size: 12.5px; color: var(--muted); }
 
 /* ── Card / table ────────────────────────────────────────────────── */
@@ -105,6 +131,20 @@
 .admin-ui .ad-table td small { display: block; color: var(--faint); font-size: 12px; margin-top: 2px; }
 .admin-ui .ad-table td code { font-family: var(--mono); font-size: 12.5px; background: var(--sunk); padding: 2px 7px; border-radius: var(--r-sm); }
 .admin-ui .ad-empty { color: var(--muted); }
+
+/* ── Search / sort / filter controls ────────────────────────────── */
+.admin-ui .ad-controls { display: flex; align-items: center; gap: var(--sp-md); flex-wrap: wrap; padding: var(--sp-md) var(--sp-lg); border-bottom: 1px solid var(--edge-soft); }
+.admin-ui .ad-search { flex: 1 1 220px; min-width: 160px; position: relative; }
+.admin-ui .ad-search svg { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); width: 15px; height: 15px; color: var(--faint); pointer-events: none; }
+.admin-ui .ad-search input { width: 100%; min-height: 38px; font: inherit; font-size: 13.5px; color: var(--ink); background: var(--ground); border: 1px solid var(--edge); border-radius: var(--r-md); padding: 0 var(--sp-md) 0 34px; transition: border-color 150ms ease, box-shadow 150ms ease; }
+.admin-ui .ad-search input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+.admin-ui .ad-sort { display: flex; align-items: center; gap: var(--sp-xs); font-size: 12.5px; color: var(--muted); }
+.admin-ui .ad-sort select { font: inherit; font-size: 13px; min-height: 38px; color: var(--ink); background: var(--ground); border: 1px solid var(--edge); border-radius: var(--r-md); padding: 0 var(--sp-sm); cursor: pointer; }
+.admin-ui .ad-pills { display: flex; gap: var(--sp-xs); flex-wrap: wrap; }
+.admin-ui .ad-pill { font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: 0.04em; color: var(--muted); background: var(--ground); border: 1px solid var(--edge); border-radius: var(--r-full); padding: 5px 12px; cursor: pointer; transition: all 150ms ease; }
+.admin-ui .ad-pill:hover { border-color: var(--accent); color: var(--ink); }
+.admin-ui .ad-pill[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: #fff; }
+.admin-ui .ad-count { font-size: 12.5px; color: var(--faint); margin-left: auto; }
 
 /* ── Status chips ────────────────────────────────────────────────── */
 .admin-ui .ad-chip { display: inline-block; font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: 0.06em; border-radius: var(--r-sm); padding: 3px 9px; white-space: nowrap; }
@@ -154,4 +194,6 @@
 @media (max-width: 720px) {
   .admin-ui .admin-main { padding: var(--sp-lg); }
   .admin-ui .ad-row, .admin-ui .ad-row.three { grid-template-columns: 1fr; }
+  .admin-ui .ad-controls { flex-direction: column; align-items: stretch; }
+  .admin-ui .ad-count { margin-left: 0; }
 }
