@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getIndividual } from "@/app/lib/individualOps";
 import { IndividualsIcon } from "../../icons";
+import RevokeEntitlementButton from "./RevokeEntitlementButton";
 
 /* /admin/individuals/[id]: one person - their courses, how they got
  * each one, and any family children on their account. Styling in
@@ -29,7 +30,7 @@ export default async function AdminIndividualPage({ params }: { params: Promise<
       <div className="ad-card ad-table-wrap">
         <table className="ad-table">
           <thead>
-            <tr><th>Course</th><th>How they got it</th><th>Granted</th></tr>
+            <tr><th>Course</th><th>How they got it</th><th>Granted</th><th></th></tr>
           </thead>
           <tbody>
             {person.products.map((p) => (
@@ -37,9 +38,10 @@ export default async function AdminIndividualPage({ params }: { params: Promise<
                 <td><b>{p.name}</b></td>
                 <td>{SOURCE_LABEL[p.source] ?? p.source}</td>
                 <td>{day(p.grantedAt)}</td>
+                <td><RevokeEntitlementButton userId={person.id} productSlug={p.slug} courseName={p.name} /></td>
               </tr>
             ))}
-            {person.products.length === 0 && <tr><td colSpan={3} className="ad-empty">No courses.</td></tr>}
+            {person.products.length === 0 && <tr><td colSpan={4} className="ad-empty">No courses.</td></tr>}
           </tbody>
         </table>
       </div>

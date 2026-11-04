@@ -10,18 +10,21 @@ import { SearchIcon } from "../icons";
  * SchoolsTable.tsx for why this stays in-browser rather than a new
  * API/pagination surface. */
 
-type StatusFilter = "all" | "paid" | "trial" | "expired";
+type StatusFilter = "all" | "paid" | "trial" | "expired" | "revoked";
 type SortKey = "activity-desc" | "activity-asc" | "name-asc" | "seats-desc" | "cleared-desc" | "created-desc";
 
 const PLAN: Record<string, string> = { TEAM: "Team", FIRM: "Firm", ENTERPRISE: "Enterprise" };
+const STATUS_LABEL: Record<StatusFilter, string> = { all: "All", paid: "Paid", trial: "Trial", expired: "Expired", revoked: "Revoked" };
 
 function statusOf(r: FirmRow): StatusFilter {
+  if (r.revokedAt) return "revoked";
   const s = trialStatus(r.trialExpiresAt ? new Date(r.trialExpiresAt) : null);
   return s === "active" ? "trial" : s === "expired" ? "expired" : "paid";
 }
 
 function statusChip(r: FirmRow) {
   const s = statusOf(r);
+  if (s === "revoked") return <span className="ad-chip expired">Access closed</span>;
   if (s === "trial") {
     const days = Math.max(0, Math.ceil((new Date(r.trialExpiresAt!).getTime() - Date.now()) / 86400000));
     return <span className="ad-chip trial">Trial &middot; {days}d left</span>;
@@ -65,9 +68,9 @@ export default function FirmsTable({ rows }: { rows: FirmRow[] }) {
           <input type="search" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search firms…" aria-label="Search firms" />
         </label>
         <div className="ad-pills" role="group" aria-label="Filter by status">
-          {(["all", "paid", "trial", "expired"] as const).map((s) => (
+          {(["all", "paid", "trial", "expired", "revoked"] as const).map((s) => (
             <button key={s} type="button" className="ad-pill" aria-pressed={status === s} onClick={() => setStatus(s)}>
-              {s === "all" ? "All" : s === "paid" ? "Paid" : s === "trial" ? "Trial" : "Expired"}
+              {STATUS_LABEL[s]}
             </button>
           ))}
         </div>

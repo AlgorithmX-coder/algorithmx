@@ -168,9 +168,10 @@
 .admin-ui .ad-btn-pri:hover { background: #086578; border-color: #086578; }
 .admin-ui .ad-btn:disabled { opacity: 0.5; cursor: default; border-color: var(--edge); background: var(--panel); color: var(--muted); }
 
-.admin-ui .ad-made { display: flex; flex-direction: column; gap: var(--sp-sm); padding: var(--sp-md) var(--sp-lg); border-radius: var(--r-md); background: var(--ok-soft); color: var(--ink); font-size: 14px; }
+.admin-ui .ad-made { display: flex; flex-direction: column; gap: var(--sp-sm); padding: var(--sp-md) var(--sp-lg); border-radius: var(--r-md); background: var(--ok-soft); color: var(--ink); font-size: 14px; margin-top: var(--sp-md); }
+.admin-ui .ad-made.warn { background: var(--warn-soft); }
 .admin-ui .ad-made code { font-family: var(--mono); font-size: 12.5px; word-break: break-all; color: var(--accent); }
-.admin-ui .ad-made span { display: flex; gap: var(--sp-sm); flex-wrap: wrap; }
+.admin-ui .ad-made span { display: flex; gap: var(--sp-sm); flex-wrap: wrap; align-items: center; }
 .admin-ui .ad-err { padding: var(--sp-sm) var(--sp-lg); border-radius: var(--r-md); font-size: 14px; background: var(--warn-soft); color: var(--warn); }
 
 /* ── Staff sign-in (/admin-login) ───────────────────────────────── */

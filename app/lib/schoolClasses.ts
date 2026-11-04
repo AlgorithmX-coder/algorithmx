@@ -46,6 +46,8 @@ export interface SchoolContext {
   /* Set only while this school is on a staff-granted trial; null for a
    * licensed school. See app/lib/orgTrial.ts::trialStatus(). */
   trialExpiresAt: Date | null;
+  /* Set once staff close this school's access. See orgRevoke.ts. */
+  revokedAt: Date | null;
 }
 
 /**
@@ -59,7 +61,7 @@ export async function getSchoolContext(userId: string): Promise<SchoolContext | 
   if (!userId) return null;
   const member = await prisma.orgMember.findFirst({
     where: { userId, role: { in: ["ADMIN", "MANAGER"] }, org: { school: { isNot: null } } },
-    select: { org: { select: { id: true, name: true, seatsPurchased: true, trialExpiresAt: true } } },
+    select: { org: { select: { id: true, name: true, seatsPurchased: true, trialExpiresAt: true, revokedAt: true } } },
   });
   if (!member) return null;
   const seatsUsed = await prisma.childProfile.count({
@@ -71,6 +73,7 @@ export async function getSchoolContext(userId: string): Promise<SchoolContext | 
     seatsPurchased: member.org.seatsPurchased,
     seatsUsed,
     trialExpiresAt: member.org.trialExpiresAt,
+    revokedAt: member.org.revokedAt,
   };
 }
 
