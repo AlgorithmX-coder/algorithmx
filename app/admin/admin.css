@@ -95,9 +95,9 @@
 .admin-ui .ad-eyebrow.schools { color: var(--schools); }
 .admin-ui .ad-eyebrow.firms { color: var(--firms); }
 .admin-ui .ad-eyebrow.individuals { color: var(--individuals); }
-.admin-ui .ad-h1 { font-family: var(--display); font-size: 30px; font-weight: 700; margin: 0 0 var(--sp-sm); color: var(--ink); letter-spacing: -0.015em; }
-.admin-ui .ad-h2 { font-family: var(--display); font-size: 19px; font-weight: 600; margin: 0 0 var(--sp-xs); color: var(--ink); }
-.admin-ui .ad-note { font-size: 13.5px; line-height: 1.55; color: var(--muted); margin: 0 0 var(--sp-sm); max-width: 70ch; }
+.admin-ui .ad-h1 { font-family: var(--display); font-size: 32px; font-weight: 800; margin: 0 0 var(--sp-sm); color: var(--ink); letter-spacing: -0.015em; }
+.admin-ui .ad-h2 { font-family: var(--display); font-size: 20px; font-weight: 700; margin: 0 0 var(--sp-xs); color: var(--ink); }
+.admin-ui .ad-note { font-size: 14px; font-weight: 600; line-height: 1.55; color: var(--body); margin: 0 0 var(--sp-sm); max-width: 70ch; }
 .admin-ui .ad-back { margin: 0 0 var(--sp-md); font-size: 13px; }
 .admin-ui .ad-back a { color: var(--accent); font-weight: 600; text-decoration: none; }
 .admin-ui .ad-back a:hover { text-decoration: underline; }
