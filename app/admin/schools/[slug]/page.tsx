@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { prisma } from "@/app/lib/prisma";
 import { listClasses } from "@/app/lib/schoolClasses";
 import { trialStatus } from "@/app/lib/orgTrial";
+import { SchoolIcon } from "../../icons";
 
 /* /admin/schools/[slug]: one school, staff-wide - its classes, pupil
  * counts and trial status. The schools analog of /ai-cleared/ops/[slug],
@@ -27,6 +28,7 @@ export default async function AdminSchoolPage({ params }: { params: Promise<{ sl
   return (
     <div>
       <p className="ad-back"><Link href="/admin/schools">All schools</Link></p>
+      <span className="ad-eyebrow schools"><SchoolIcon /> School</span>
       <h1 className="ad-h1">{org.name}</h1>
       <p className="ad-note">
         {org.sector ?? "sector not set"} &middot; contact {org.contactName ?? "not set"}{org.contactRole ? `, ${org.contactRole}` : ""} &middot; {org.stripeCustomerId ? "paid through Stripe" : "manual deal"} &middot; {pupilsUsed} of {org.seatsPurchased} pupil places used &middot; created {day(org.createdAt)}

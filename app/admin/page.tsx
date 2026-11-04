@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { prisma } from "@/app/lib/prisma";
+import { SchoolIcon, FirmIcon, IndividualsIcon } from "./icons";
 
 /* /admin: a landing page to choose a tab, rather than auto-forwarding
  * to Schools. Counts are cheap direct queries (not the full
@@ -17,9 +18,9 @@ export default async function AdminIndexPage() {
   ]);
 
   const tiles = [
-    { href: "/admin/schools", label: "Schools", count: schools, note: "Cyber Heroes licences and trials" },
-    { href: "/admin/firms", label: "Firms", count: firms, note: "AI Cleared / AI Fluent seats" },
-    { href: "/admin/individuals", label: "Individuals", count: individuals, note: "Direct course sign-ups" },
+    { href: "/admin/schools", section: "schools", label: "Schools", count: schools, note: "Cyber Heroes licences and trials", Icon: SchoolIcon },
+    { href: "/admin/firms", section: "firms", label: "Firms", count: firms, note: "AI Cleared / AI Fluent seats", Icon: FirmIcon },
+    { href: "/admin/individuals", section: "individuals", label: "Individuals", count: individuals, note: "Direct course sign-ups", Icon: IndividualsIcon },
   ];
 
   return (
@@ -27,7 +28,8 @@ export default async function AdminIndexPage() {
       <h1 className="ad-h1">Who do you want to look at?</h1>
       <div className="ad-tiles">
         {tiles.map((t) => (
-          <Link key={t.href} href={t.href} className="ad-tile">
+          <Link key={t.href} href={t.href} className={`ad-tile ${t.section}`}>
+            <span className="ad-tile-icon"><t.Icon /></span>
             <span className="ad-tile-count">{t.count}</span>
             <span className="ad-tile-label">{t.label}</span>
             <span className="ad-tile-note">{t.note}</span>

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getIndividual } from "@/app/lib/individualOps";
+import { IndividualsIcon } from "../../icons";
 
 /* /admin/individuals/[id]: one person - their courses, how they got
  * each one, and any family children on their account. Styling in
@@ -19,6 +20,7 @@ export default async function AdminIndividualPage({ params }: { params: Promise<
   return (
     <div>
       <p className="ad-back"><Link href="/admin/individuals">All individuals</Link></p>
+      <span className="ad-eyebrow individuals"><IndividualsIcon /> Individual</span>
       <h1 className="ad-h1">{person.name ?? person.email}</h1>
       <p className="ad-note">
         {person.name ? person.email : "No name on file"} &middot; signed up {day(person.createdAt)} &middot; last active {day(person.lastActive)}
