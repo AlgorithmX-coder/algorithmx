@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { K } from "../adminTokens";
 
 /* New firm, with an optional trial grant layered on right after creation
  * - the same "add customer" action covers a real deal and a trial,
@@ -96,25 +95,6 @@ export default function AdminFirmsPanel() {
         </div>
       )}
       {err && <div className="ad-err">{err}</div>}
-
-      <style jsx>{`
-        .ad-form { margin-top: 18px; padding: 18px; display: flex; flex-direction: column; gap: 12px; max-width: 640px; }
-        .ad-h2 { font-family: ${K.display}; font-size: 20px; margin: 0 0 4px; color: ${K.ink}; }
-        .ad-note { font-size: 13px; color: ${K.muted}; margin: 0; }
-        .ad-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
-        .ad-row.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-        label { display: flex; flex-direction: column; gap: 6px; font-size: 12.5px; color: ${K.muted}; }
-        input, select { width: 100%; box-sizing: border-box; font: inherit; font-size: 14px; color: ${K.ink}; background: ${K.glassStrong}; border: 1px solid ${K.edge}; border-radius: 10px; padding: 9px 12px; }
-        .ad-check { flex-direction: row; align-items: center; gap: 8px; font-size: 13.5px; color: ${K.body}; }
-        .ad-check input { width: auto; }
-        .ad-btn { align-self: flex-start; font-size: 13.5px; font-weight: 600; padding: 9px 16px; border-radius: 10px; border: 1px solid ${K.edge}; background: ${K.panel}; color: ${K.ink}; cursor: pointer; text-decoration: none; display: inline-block; }
-        .ad-btn-pri { background: ${K.accent}; border-color: ${K.accent}; color: ${K.onAccent}; }
-        .ad-btn:disabled { opacity: 0.5; cursor: default; }
-        .ad-made { display: flex; flex-direction: column; gap: 8px; padding: 12px 14px; border-radius: 12px; background: ${K.okSoft}; color: ${K.ink}; font-size: 14px; }
-        .ad-made code { font-family: ${K.mono}; font-size: 12.5px; word-break: break-all; color: ${K.accentInk}; }
-        .ad-made span { display: flex; gap: 8px; flex-wrap: wrap; }
-        .ad-err { padding: 10px 14px; border-radius: 10px; font-size: 14px; background: ${K.warnSoft}; color: ${K.warn}; }
-      `}</style>
     </div>
   );
 }

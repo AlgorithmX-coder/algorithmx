@@ -1,10 +1,10 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getIndividual } from "@/app/lib/individualOps";
-import { K } from "../../adminTokens";
 
 /* /admin/individuals/[id]: one person - their courses, how they got
- * each one, and any family children on their account. */
+ * each one, and any family children on their account. Styling in
+ * ../../admin.css. */
 export const dynamic = "force-dynamic";
 
 const SOURCE_LABEL: Record<string, string> = { PURCHASE: "Bought (no payment taken yet)", MANUAL: "Free / staff-granted", BUNDLE: "Bundle" };
@@ -37,7 +37,7 @@ export default async function AdminIndividualPage({ params }: { params: Promise<
                 <td>{day(p.grantedAt)}</td>
               </tr>
             ))}
-            {person.products.length === 0 && <tr><td colSpan={3} style={{ color: K.muted }}>No courses.</td></tr>}
+            {person.products.length === 0 && <tr><td colSpan={3} className="ad-empty">No courses.</td></tr>}
           </tbody>
         </table>
       </div>
@@ -56,19 +56,6 @@ export default async function AdminIndividualPage({ params }: { params: Promise<
           </table>
         </div>
       )}
-
-      <style>{`
-        .ad-back { margin: 0 0 10px; font-size: 13px; }
-        .ad-back a { color: ${K.accentInk}; text-decoration: none; }
-        .ad-h1 { font-family: ${K.display}; font-size: 24px; margin: 0 0 6px; color: ${K.ink}; }
-        .ad-note { font-size: 13.5px; color: ${K.muted}; margin: 0 0 8px; }
-        .ad-card { background: ${K.panel}; border: 1px solid ${K.edge}; border-radius: 14px; margin-top: 10px; }
-        .ad-table-wrap { padding: 6px 0; overflow-x: auto; }
-        .ad-table { width: 100%; border-collapse: collapse; font-size: 13.5px; min-width: 420px; }
-        .ad-table th { text-align: left; font-family: ${K.mono}; font-size: 10.5px; letter-spacing: 0.12em; text-transform: uppercase; color: ${K.faint}; padding: 10px 12px; border-bottom: 1px solid ${K.edgeSoft}; font-weight: 600; }
-        .ad-table td { padding: 11px 12px; border-bottom: 1px solid ${K.edgeSoft}; color: ${K.body}; vertical-align: top; }
-        .ad-table td b { color: ${K.ink}; font-weight: 600; }
-      `}</style>
     </div>
   );
 }
