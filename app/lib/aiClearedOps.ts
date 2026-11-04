@@ -38,6 +38,10 @@ export interface FirmRow {
 
 export async function listFirms(): Promise<FirmRow[]> {
   const orgs = await prisma.organisation.findMany({
+    // Schools are Organisation rows too (see SchoolProfile); this list
+    // is firm-shaped (seat/course columns), so schools are excluded
+    // rather than rendered nonsensically.
+    where: { school: { is: null } },
     orderBy: { createdAt: "desc" },
     include: {
       seats: { select: { claimedAt: true, course: true } },
