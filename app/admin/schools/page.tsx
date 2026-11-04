@@ -1,13 +1,12 @@
 import Link from "next/link";
 import { listSchools, platformSchoolTotals } from "@/app/lib/schoolOps";
 import { trialStatus } from "@/app/lib/orgTrial";
-import { K } from "../adminTokens";
 import AdminSchoolsPanel from "./AdminSchoolsPanel";
 
 /* /admin/schools: every school, staff-wide. Same shape as /admin/firms,
  * rolled up from Class/ChildProfile/Progress instead of Seat/Enrolment.
  * Cyber Heroes only, for now - the only course actually wired for
- * school licensing. */
+ * school licensing. Styling in ../admin.css. */
 export const dynamic = "force-dynamic";
 
 function statusChip(paidVia: "stripe" | "manual", trialExpiresAt: string | null) {
@@ -48,29 +47,12 @@ export default async function AdminSchoolsPage() {
                 <td>{day(r.lastActivity)}</td>
               </tr>
             ))}
-            {rows.length === 0 && <tr><td colSpan={6} style={{ color: K.muted }}>No schools yet. Create one below.</td></tr>}
+            {rows.length === 0 && <tr><td colSpan={6} className="ad-empty">No schools yet. Create one below.</td></tr>}
           </tbody>
         </table>
       </div>
 
       <AdminSchoolsPanel />
-
-      <style>{`
-        .ad-h1 { font-family: ${K.display}; font-size: 24px; margin: 0 0 6px; color: ${K.ink}; }
-        .ad-note { font-size: 13.5px; color: ${K.muted}; margin: 0 0 14px; }
-        .ad-card { background: ${K.panel}; border: 1px solid ${K.edge}; border-radius: 14px; }
-        .ad-table-wrap { padding: 6px 0; overflow-x: auto; }
-        .ad-table { width: 100%; border-collapse: collapse; font-size: 13.5px; min-width: 760px; }
-        .ad-table th { text-align: left; font-family: ${K.mono}; font-size: 10.5px; letter-spacing: 0.12em; text-transform: uppercase; color: ${K.faint}; padding: 10px 12px; border-bottom: 1px solid ${K.edgeSoft}; font-weight: 600; }
-        .ad-table td { padding: 11px 12px; border-bottom: 1px solid ${K.edgeSoft}; color: ${K.body}; vertical-align: top; }
-        .ad-table td a { text-decoration: none; }
-        .ad-table td b { display: block; color: ${K.ink}; font-weight: 600; }
-        .ad-table td small { display: block; color: ${K.faint}; font-size: 12px; }
-        .ad-chip { display: inline-block; font-family: ${K.mono}; font-size: 11px; font-weight: 700; letter-spacing: 0.06em; border-radius: 6px; padding: 3px 8px; white-space: nowrap; }
-        .ad-chip.paid { color: ${K.ok}; background: ${K.okSoft}; }
-        .ad-chip.trial { color: ${K.accentInk}; background: ${K.accentSoft}; }
-        .ad-chip.expired { color: ${K.warn}; background: ${K.warnSoft}; }
-      `}</style>
     </div>
   );
 }

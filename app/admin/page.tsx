@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { prisma } from "@/app/lib/prisma";
-import { K } from "./adminTokens";
 
 /* /admin: a landing page to choose a tab, rather than auto-forwarding
  * to Schools. Counts are cheap direct queries (not the full
@@ -35,16 +34,6 @@ export default async function AdminIndexPage() {
           </Link>
         ))}
       </div>
-
-      <style>{`
-        .ad-h1 { font-family: ${K.display}; font-size: 24px; margin: 0 0 16px; color: ${K.ink}; }
-        .ad-tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
-        .ad-tile { display: flex; flex-direction: column; gap: 4px; background: ${K.panel}; border: 1px solid ${K.edge}; border-radius: 16px; padding: 22px 20px; text-decoration: none; transition: border-color 120ms ease, transform 120ms ease; }
-        .ad-tile:hover { border-color: ${K.accent}; transform: translateY(-2px); }
-        .ad-tile-count { font-family: ${K.display}; font-size: 34px; color: ${K.ink}; line-height: 1; }
-        .ad-tile-label { font-size: 15px; font-weight: 600; color: ${K.ink}; }
-        .ad-tile-note { font-size: 12.5px; color: ${K.muted}; }
-      `}</style>
     </div>
   );
 }

@@ -1,10 +1,10 @@
 import Link from "next/link";
 import { listIndividuals, platformIndividualTotals } from "@/app/lib/individualOps";
-import { K } from "../adminTokens";
 
 /* /admin/individuals: everyone who signed up for a course directly,
  * staff-wide. Read-only - individuals sign themselves up, staff don't
- * create them, so there's no "add" form here like the other two tabs. */
+ * create them, so there's no "add" form here like the other two tabs.
+ * Styling in ../admin.css. */
 export const dynamic = "force-dynamic";
 
 export default async function AdminIndividualsPage() {
@@ -37,23 +37,10 @@ export default async function AdminIndividualsPage() {
                 <td>{day(r.lastActive)}</td>
               </tr>
             ))}
-            {rows.length === 0 && <tr><td colSpan={5} style={{ color: K.muted }}>No individual sign-ups yet.</td></tr>}
+            {rows.length === 0 && <tr><td colSpan={5} className="ad-empty">No individual sign-ups yet.</td></tr>}
           </tbody>
         </table>
       </div>
-
-      <style>{`
-        .ad-h1 { font-family: ${K.display}; font-size: 24px; margin: 0 0 6px; color: ${K.ink}; }
-        .ad-note { font-size: 13.5px; color: ${K.muted}; margin: 0 0 8px; max-width: 70ch; }
-        .ad-card { background: ${K.panel}; border: 1px solid ${K.edge}; border-radius: 14px; margin-top: 10px; }
-        .ad-table-wrap { padding: 6px 0; overflow-x: auto; }
-        .ad-table { width: 100%; border-collapse: collapse; font-size: 13.5px; min-width: 760px; }
-        .ad-table th { text-align: left; font-family: ${K.mono}; font-size: 10.5px; letter-spacing: 0.12em; text-transform: uppercase; color: ${K.faint}; padding: 10px 12px; border-bottom: 1px solid ${K.edgeSoft}; font-weight: 600; }
-        .ad-table td { padding: 11px 12px; border-bottom: 1px solid ${K.edgeSoft}; color: ${K.body}; vertical-align: top; }
-        .ad-table td a { text-decoration: none; }
-        .ad-table td b { display: block; color: ${K.ink}; font-weight: 600; }
-        .ad-table td small { display: block; color: ${K.faint}; font-size: 12px; }
-      `}</style>
     </div>
   );
 }
