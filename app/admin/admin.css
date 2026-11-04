@@ -73,8 +73,8 @@
 .admin-ui :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
 /* ── Shell / nav ─────────────────────────────────────────────────── */
-.admin-ui .admin-top { display: flex; align-items: center; gap: var(--sp-xl); flex-wrap: wrap; padding: var(--sp-lg) var(--sp-xl); border-bottom: 1px solid var(--edge-soft); background: var(--panel); }
-.admin-ui .admin-brand { font-family: var(--mono); font-size: 13px; letter-spacing: 0.06em; color: var(--ink); }
+.admin-ui .admin-top { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; gap: var(--sp-xl); flex-wrap: wrap; padding: var(--sp-lg) var(--sp-xl); border-bottom: 1px solid var(--edge-soft); background: var(--panel); box-shadow: var(--shadow); }
+.admin-ui .admin-brand { display: inline-flex; align-items: center; gap: var(--sp-sm); font-family: var(--mono); font-size: 13px; letter-spacing: 0.06em; color: var(--ink); }
 .admin-ui .admin-brand i { font-style: normal; color: var(--accent); }
 .admin-ui .admin-tabs { display: flex; gap: var(--sp-sm); }
 .admin-ui .admin-tab { display: inline-flex; align-items: center; gap: var(--sp-xs); font-size: 14px; font-weight: 600; color: var(--muted); text-decoration: none; padding: var(--sp-sm) var(--sp-lg); border-radius: var(--r-full); min-height: 36px; transition: color 150ms ease, background-color 150ms ease; }
@@ -95,9 +95,9 @@
 .admin-ui .ad-eyebrow.schools { color: var(--schools); }
 .admin-ui .ad-eyebrow.firms { color: var(--firms); }
 .admin-ui .ad-eyebrow.individuals { color: var(--individuals); }
-.admin-ui .ad-h1 { font-family: var(--display); font-size: 30px; font-weight: 700; margin: 0 0 var(--sp-sm); color: var(--ink); letter-spacing: -0.015em; }
-.admin-ui .ad-h2 { font-family: var(--display); font-size: 19px; font-weight: 600; margin: 0 0 var(--sp-xs); color: var(--ink); }
-.admin-ui .ad-note { font-size: 13.5px; line-height: 1.55; color: var(--muted); margin: 0 0 var(--sp-sm); max-width: 70ch; }
+.admin-ui .ad-h1 { font-family: var(--display); font-size: 32px; font-weight: 800; margin: 0 0 var(--sp-sm); color: var(--ink); letter-spacing: -0.015em; }
+.admin-ui .ad-h2 { font-family: var(--display); font-size: 20px; font-weight: 700; margin: 0 0 var(--sp-xs); color: var(--ink); }
+.admin-ui .ad-note { font-size: 14px; font-weight: 600; line-height: 1.55; color: var(--body); margin: 0 0 var(--sp-sm); max-width: 70ch; }
 .admin-ui .ad-back { margin: 0 0 var(--sp-md); font-size: 13px; }
 .admin-ui .ad-back a { color: var(--accent); font-weight: 600; text-decoration: none; }
 .admin-ui .ad-back a:hover { text-decoration: underline; }
@@ -168,9 +168,10 @@
 .admin-ui .ad-btn-pri:hover { background: #086578; border-color: #086578; }
 .admin-ui .ad-btn:disabled { opacity: 0.5; cursor: default; border-color: var(--edge); background: var(--panel); color: var(--muted); }
 
-.admin-ui .ad-made { display: flex; flex-direction: column; gap: var(--sp-sm); padding: var(--sp-md) var(--sp-lg); border-radius: var(--r-md); background: var(--ok-soft); color: var(--ink); font-size: 14px; }
+.admin-ui .ad-made { display: flex; flex-direction: column; gap: var(--sp-sm); padding: var(--sp-md) var(--sp-lg); border-radius: var(--r-md); background: var(--ok-soft); color: var(--ink); font-size: 14px; margin-top: var(--sp-md); }
+.admin-ui .ad-made.warn { background: var(--warn-soft); }
 .admin-ui .ad-made code { font-family: var(--mono); font-size: 12.5px; word-break: break-all; color: var(--accent); }
-.admin-ui .ad-made span { display: flex; gap: var(--sp-sm); flex-wrap: wrap; }
+.admin-ui .ad-made span { display: flex; gap: var(--sp-sm); flex-wrap: wrap; align-items: center; }
 .admin-ui .ad-err { padding: var(--sp-sm) var(--sp-lg); border-radius: var(--r-md); font-size: 14px; background: var(--warn-soft); color: var(--warn); }
 
 /* ── Staff sign-in (/admin-login) ───────────────────────────────── */

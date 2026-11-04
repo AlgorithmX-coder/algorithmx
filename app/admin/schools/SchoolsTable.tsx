@@ -11,16 +11,18 @@ import { SearchIcon } from "../icons";
  * needed, so this stays a plain in-browser filter rather than new API
  * surface. */
 
-type StatusFilter = "all" | "paid" | "trial" | "expired";
+type StatusFilter = "all" | "paid" | "trial" | "expired" | "revoked";
 type SortKey = "activity-desc" | "activity-asc" | "name-asc" | "pupils-desc" | "created-desc";
 
 function statusOf(r: SchoolRow): StatusFilter {
+  if (r.revokedAt) return "revoked";
   const s = trialStatus(r.trialExpiresAt ? new Date(r.trialExpiresAt) : null);
   return s === "active" ? "trial" : s === "expired" ? "expired" : "paid";
 }
 
 function statusChip(r: SchoolRow) {
   const s = statusOf(r);
+  if (s === "revoked") return <span className="ad-chip expired">Access closed</span>;
   if (s === "trial") {
     const days = Math.max(0, Math.ceil((new Date(r.trialExpiresAt!).getTime() - Date.now()) / 86400000));
     return <span className="ad-chip trial">Trial &middot; {days}d left</span>;
@@ -28,6 +30,8 @@ function statusChip(r: SchoolRow) {
   if (s === "expired") return <span className="ad-chip expired">Trial ended</span>;
   return <span className="ad-chip paid">{r.paidVia === "stripe" ? "Paid (Stripe)" : "Paid (manual)"}</span>;
 }
+
+const STATUS_LABEL: Record<StatusFilter, string> = { all: "All", paid: "Paid", trial: "Trial", expired: "Expired", revoked: "Revoked" };
 
 export default function SchoolsTable({ rows }: { rows: SchoolRow[] }) {
   const [q, setQ] = useState("");
@@ -63,9 +67,9 @@ export default function SchoolsTable({ rows }: { rows: SchoolRow[] }) {
           <input type="search" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search schools…" aria-label="Search schools" />
         </label>
         <div className="ad-pills" role="group" aria-label="Filter by status">
-          {(["all", "paid", "trial", "expired"] as const).map((s) => (
+          {(["all", "paid", "trial", "expired", "revoked"] as const).map((s) => (
             <button key={s} type="button" className="ad-pill" aria-pressed={status === s} onClick={() => setStatus(s)}>
-              {s === "all" ? "All" : s === "paid" ? "Paid" : s === "trial" ? "Trial" : "Expired"}
+              {STATUS_LABEL[s]}
             </button>
           ))}
         </div>

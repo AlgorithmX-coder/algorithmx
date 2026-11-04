@@ -28,6 +28,16 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
     );
   }
 
+  if (!ctx.staff && ctx.org.revokedAt) {
+    return (
+      <Frame firmName={ctx.org.name} meta={<span className="cf-meta">{session.user.email}</span>} courseLink>
+        <span className="cf-eyebrow">Access closed</span>
+        <h1 className="cf-h1">{ctx.org.name}&rsquo;s access has been <span className="cf-grad">closed</span>.</h1>
+        <p className="cf-lead">If you believe this is a mistake, email admissions@algorithmx.co.uk.</p>
+      </Frame>
+    );
+  }
+
   if (!ctx.staff && trialStatus(ctx.org.trialExpiresAt) === "expired") {
     return (
       <Frame firmName={ctx.org.name} meta={<span className="cf-meta">{session.user.email}</span>} courseLink>

@@ -4,6 +4,7 @@ import { prisma } from "@/app/lib/prisma";
 import { listClasses } from "@/app/lib/schoolClasses";
 import { trialStatus } from "@/app/lib/orgTrial";
 import { SchoolIcon } from "../../icons";
+import RevokeButton from "./RevokeButton";
 
 /* /admin/schools/[slug]: one school, staff-wide - its classes, pupil
  * counts and trial status. The schools analog of /ai-cleared/ops/[slug],
@@ -34,8 +35,11 @@ export default async function AdminSchoolPage({ params }: { params: Promise<{ sl
         {org.sector ?? "sector not set"} &middot; contact {org.contactName ?? "not set"}{org.contactRole ? `, ${org.contactRole}` : ""} &middot; {org.stripeCustomerId ? "paid through Stripe" : "manual deal"} &middot; {pupilsUsed} of {org.seatsPurchased} pupil places used &middot; created {day(org.createdAt)}
         {status === "active" && <> &middot; <span className="ad-chip trial">Trial, expires {day(org.trialExpiresAt)}</span></>}
         {status === "expired" && <> &middot; <span className="ad-chip expired">Trial ended {day(org.trialExpiresAt)}</span></>}
+        {org.revokedAt && <> &middot; <span className="ad-chip expired">Access closed</span></>}
       </p>
       {org.school?.safeguardingContact && <p className="ad-note">Safeguarding contact: {org.school.safeguardingContact}{org.school.childLineNumber ? ` · ${org.school.childLineNumber}` : ""}</p>}
+
+      <RevokeButton orgId={org.id} revoked={!!org.revokedAt} />
 
       <div className="ad-card ad-table-wrap">
         <table className="ad-table">

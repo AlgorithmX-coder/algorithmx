@@ -6,6 +6,7 @@ import { getSchoolContext, listClasses } from "@/app/lib/schoolClasses";
 import { trialStatus } from "@/app/lib/orgTrial";
 import Locked from "../teach/Locked";
 import TrialEnded from "../TrialEnded";
+import AccessClosed from "../AccessClosed";
 import NewClass from "./NewClass";
 
 /**
@@ -28,6 +29,7 @@ export default async function ClassesPage() {
   if (!session?.user?.id) redirect("/schools/login?callbackUrl=%2Fschools%2Fclasses");
   const school = await getSchoolContext(session.user.id);
   if (!school) return <Locked email={session.user.email} />;
+  if (school.revokedAt) return <AccessClosed orgName={school.orgName} />;
   if (trialStatus(school.trialExpiresAt) === "expired") {
     return <TrialEnded orgName={school.orgName} trialExpiresAt={school.trialExpiresAt!} />;
   }

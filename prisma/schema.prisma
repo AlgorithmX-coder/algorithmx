@@ -467,6 +467,12 @@ model Organisation {
   /// seatsPurchased / stripeCustomerId as elsewhere. Cleared back to null
   /// once staff convert the org to a real paid or manual deal.
   trialExpiresAt  DateTime?
+  /// Set by staff to close an org's access immediately - independent of
+  /// trial/paid status. For a school this blocks the teacher dashboard
+  /// and new pupils; pupils already added keep playing (no code path
+  /// ties their lesson access to org status - a deliberate, smaller
+  /// first cut rather than touching the live kids' lesson-loading path).
+  revokedAt       DateTime?
 
   members        OrgMember[]
   seats          Seat[]

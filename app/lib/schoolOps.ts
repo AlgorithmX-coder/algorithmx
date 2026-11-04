@@ -21,6 +21,7 @@ export interface SchoolRow {
   lastActivity: string | null;
   createdAt: string;
   trialExpiresAt: string | null;
+  revokedAt: string | null;
   paidVia: "stripe" | "manual";
 }
 
@@ -51,6 +52,7 @@ export async function listSchools(): Promise<SchoolRow[]> {
       lastActivity: last ? last.toISOString() : null,
       createdAt: o.createdAt.toISOString(),
       trialExpiresAt: o.trialExpiresAt ? o.trialExpiresAt.toISOString() : null,
+      revokedAt: o.revokedAt ? o.revokedAt.toISOString() : null,
       paidVia: o.stripeCustomerId ? "stripe" : "manual",
     };
   });
