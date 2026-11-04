@@ -18,8 +18,8 @@ export default async function AdminIndexPage() {
   ]);
 
   const tiles = [
-    { href: "/admin/schools", section: "schools", label: "Schools", count: schools, note: "Cyber Heroes licences and trials", Icon: SchoolIcon },
-    { href: "/admin/firms", section: "firms", label: "Firms", count: firms, note: "AI Cleared / AI Fluent seats", Icon: FirmIcon },
+    { href: "/admin/schools", section: "schools", label: "Schools", count: schools, note: "School licences and trials", Icon: SchoolIcon },
+    { href: "/admin/firms", section: "firms", label: "Firms", count: firms, note: "Firm seats and trials", Icon: FirmIcon },
     { href: "/admin/individuals", section: "individuals", label: "Individuals", count: individuals, note: "Direct course sign-ups", Icon: IndividualsIcon },
   ];
 

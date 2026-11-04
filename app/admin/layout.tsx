@@ -2,6 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { auth } from "@/app/lib/auth";
 import { isStaffUser } from "@/app/lib/aiClearedStaff";
+import CubeMark from "@/app/components/CubeMark";
 import AdminNav from "./AdminNav";
 import "./admin.css";
 
@@ -30,7 +31,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   return (
     <div className="admin-ui">
       <header className="admin-top">
-        <span className="admin-brand">AlgorithmX &middot; <i>Admin</i></span>
+        <span className="admin-brand"><CubeMark size={20} color="#0a7085" code /> AlgorithmX &middot; <i>Admin</i></span>
         <AdminNav />
         <span className="admin-who">{session.user.email}</span>
       </header>

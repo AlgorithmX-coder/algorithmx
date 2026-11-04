@@ -73,8 +73,8 @@
 .admin-ui :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
 /* ── Shell / nav ─────────────────────────────────────────────────── */
-.admin-ui .admin-top { display: flex; align-items: center; gap: var(--sp-xl); flex-wrap: wrap; padding: var(--sp-lg) var(--sp-xl); border-bottom: 1px solid var(--edge-soft); background: var(--panel); }
-.admin-ui .admin-brand { font-family: var(--mono); font-size: 13px; letter-spacing: 0.06em; color: var(--ink); }
+.admin-ui .admin-top { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; gap: var(--sp-xl); flex-wrap: wrap; padding: var(--sp-lg) var(--sp-xl); border-bottom: 1px solid var(--edge-soft); background: var(--panel); box-shadow: var(--shadow); }
+.admin-ui .admin-brand { display: inline-flex; align-items: center; gap: var(--sp-sm); font-family: var(--mono); font-size: 13px; letter-spacing: 0.06em; color: var(--ink); }
 .admin-ui .admin-brand i { font-style: normal; color: var(--accent); }
 .admin-ui .admin-tabs { display: flex; gap: var(--sp-sm); }
 .admin-ui .admin-tab { display: inline-flex; align-items: center; gap: var(--sp-xs); font-size: 14px; font-weight: 600; color: var(--muted); text-decoration: none; padding: var(--sp-sm) var(--sp-lg); border-radius: var(--r-full); min-height: 36px; transition: color 150ms ease, background-color 150ms ease; }
