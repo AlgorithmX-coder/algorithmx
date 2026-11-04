@@ -14,7 +14,7 @@ export const dynamic = "force-dynamic";
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const session = await auth();
-  if (!session?.user?.id) redirect("/login?callbackUrl=%2Fadmin");
+  if (!session?.user?.id) redirect("/admin-login?callbackUrl=%2Fadmin");
   if (!(await isStaffUser(session.user.id))) {
     return (
       <div className="admin-gate">
