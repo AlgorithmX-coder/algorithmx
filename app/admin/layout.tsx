@@ -4,11 +4,12 @@ import { auth } from "@/app/lib/auth";
 import { isStaffUser } from "@/app/lib/aiClearedStaff";
 import { K } from "./adminTokens";
 
-/* /admin: the staff-only view of every customer - schools and firms, one
- * portal, two tabs. One flat permission tier: any staff user (role
- * "staff", or PLATFORM_STAFF_EMAILS) sees and does everything here, same
- * gate as /ai-cleared/ops. Every page underneath still re-checks staff
- * status itself - a page is a public endpoint whatever renders around it. */
+/* /admin: the staff-only view of every customer - schools, firms and
+ * individuals, one portal, three tabs. One flat permission tier: any
+ * staff user (role "staff", or PLATFORM_STAFF_EMAILS) sees and does
+ * everything here, same gate as /ai-cleared/ops. Every page underneath
+ * still re-checks staff status itself - a page is a public endpoint
+ * whatever renders around it. */
 export const dynamic = "force-dynamic";
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -34,6 +35,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
         <nav className="admin-tabs" aria-label="Admin sections">
           <Link href="/admin/schools" className="admin-tab">Schools</Link>
           <Link href="/admin/firms" className="admin-tab">Firms</Link>
+          <Link href="/admin/individuals" className="admin-tab">Individuals</Link>
         </nav>
         <span className="admin-who">{session.user.email}</span>
       </header>
