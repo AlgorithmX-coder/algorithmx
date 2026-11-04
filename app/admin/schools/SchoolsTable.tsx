@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import type { SchoolRow } from "@/app/lib/schoolOps";
-import { trialStatus } from "@/app/lib/orgTrial";
+import { trialStatus } from "@/app/lib/trialStatus";
 import { SearchIcon } from "../icons";
 
 /* Client-side search/filter/sort over an already-fetched list. Schools
