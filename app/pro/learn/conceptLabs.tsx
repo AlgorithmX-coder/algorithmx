@@ -387,11 +387,19 @@ function MatchGame({ categories, items, prompt, onDidTry }: LabProps & { categor
   const correctCount = items.filter((it, i) => assign[i] === it.cat).length;
   const catOf = (id: string) => categories.find((c) => c.id === id);
 
+  /* Scramble both the description order AND the term-button order once per
+   * mount, so the first description never lines up with the first term at the
+   * bottom. `assign` stays keyed by each item's ORIGINAL index, so scoring is
+   * unaffected. */
+  const rowOrder = useMemo(() => shuffle(items.map((_, i) => i)), [items]);
+  const cats = useMemo(() => shuffle(categories), [categories]);
+
   return (
     <div style={{ fontFamily: T.sans }}>
       <div style={{ fontSize: 13.5, color: T.muted, marginBottom: 14, lineHeight: 1.5 }}>{prompt}</div>
       <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 14 }}>
-        {items.map((it, i) => {
+        {rowOrder.map((i) => {
+          const it = items[i];
           const cat = assign[i];
           const c = cat ? catOf(cat) : undefined;
           const right = checked && cat === it.cat;
@@ -410,7 +418,7 @@ function MatchGame({ categories, items, prompt, onDidTry }: LabProps & { categor
         })}
       </div>
       <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 12 }}>
-        {categories.map((c) => (
+        {cats.map((c) => (
           <button key={c.id} onClick={() => { if (sel !== null && !checked) { setAssign((a) => ({ ...a, [sel]: c.id })); setSel(null); } }} disabled={sel === null || checked}
             style={{ flex: "1 1 120px", fontFamily: T.mono, fontSize: 12.5, fontWeight: 700, color: sel === null ? T.faint : c.color, background: sel === null ? T.panelSoft : `${c.color}18`, border: `1px solid ${sel === null ? T.edge : `${c.color}66`}`, borderRadius: 9, padding: "10px 12px", cursor: sel === null || checked ? "default" : "pointer" }}>{c.label}</button>
         ))}

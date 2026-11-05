@@ -125,6 +125,11 @@ export default function WeekPlayer({ week }: { week: WeekManifest }) {
     return () => { cancelled = true; };
   }, [recompute]);
 
+  /* Open the overview and each topic at the top. Switching between the topic
+   * map and a lesson is a state change, not a route change, so the window
+   * would otherwise keep whatever scroll position it had. */
+  useEffect(() => { window.scrollTo(0, 0); }, [active]);
+
   const resetWeek = useCallback(() => {
     for (const t of week.topics) {
       try { localStorage.removeItem(lessonCheckpointKey(t.id)); } catch { /* ignore */ }

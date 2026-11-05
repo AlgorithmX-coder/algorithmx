@@ -437,6 +437,12 @@ export default function LessonPlayer({ lesson, topicIndex, topicCount, weekTitle
     try { localStorage.setItem(lessonCheckpointKey(lesson.id), JSON.stringify(cp)); } catch { /* ignore */ }
   }, [restored, lesson.id, phase, didTry, explainDraft, quizAnswers, quizWrong]);
 
+  /* Open every phase at the top. Moving between intro/learn/see/try/check is a
+   * state change, not a route change, so the window keeps its old scroll and a
+   * new phase would otherwise open part-way down the page. Reset to the top
+   * whenever the phase (or the Learn card) changes. */
+  useEffect(() => { window.scrollTo(0, 0); }, [phase, learnIdx]);
+
   const onDidTry = useCallback(() => setDidTry(true), []);
   const Lab = lesson.lab.component;
   const heroCase = lesson.cases[0];
