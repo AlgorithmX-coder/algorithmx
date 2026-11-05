@@ -4,11 +4,12 @@ import { useEffect, useMemo, useState } from "react";
 import { T } from "./tokens";
 import type { LabProps } from "./types";
 
-/* One-shot shuffle for activity option/item order. Called inside useMemo so
- * each mount scrambles once and the order stays stable while the learner
- * works through it. This is what breaks the authored patterns a learner can
- * otherwise game without reading: the correct answer marching down the rows,
- * or always sitting in the same slot. */
+/* One-shot shuffle for activity option/item order. Called inside a useState
+ * initializer so each mount scrambles exactly once and the order stays stable
+ * while the learner works through it, even across parent re-renders. This is
+ * what breaks the authored patterns a learner can otherwise game without
+ * reading: the correct answer marching down the rows, or always sitting in
+ * the same slot. */
 function shuffle<T>(arr: readonly T[]): T[] {
   const a = [...arr];
   for (let i = a.length - 1; i > 0; i--) {
@@ -36,9 +37,12 @@ function SortGame({ categories, items, onDidTry, prompt }: LabProps & { categori
   /* Scramble the row order AND the category-button order once per mount, so
    * the correct answer never marches predictably down the rows or stays in a
    * fixed column. Answers stay keyed by each item's ORIGINAL index, so
-   * scoring is unaffected. */
-  const rowOrder = useMemo(() => shuffle(items.map((_, i) => i)), [items]);
-  const cats = useMemo(() => shuffle(categories), [categories]);
+   * scoring is unaffected. Held in useState (NOT useMemo): `items` is an
+   * inline array literal, so its identity changes on every parent re-render
+   * (e.g. when the first answer flips the lesson's didTry flag). A useMemo
+   * keyed on it would reshuffle mid-activity and make answered rows jump. */
+  const [rowOrder] = useState<number[]>(() => shuffle(items.map((_, i) => i)));
+  const [cats] = useState<Cat[]>(() => shuffle(categories));
 
   const catOf = (id: string) => categories.find((c) => c.id === id)!;
 
@@ -180,8 +184,12 @@ function ScenarioGame({ steps, intro, onDidTry, doneKicker = "Played out", doneN
   const [finished, setFinished] = useState(false);
 
   /* Shuffle each step's options once per mount so the correct answer is not
-   * always the first one. `chosen` indexes into this shuffled list. */
-  const steps2 = useMemo(() => steps.map((s) => ({ ...s, options: shuffle(s.options) })), [steps]);
+   * always the first one. `chosen` indexes into this shuffled list. Held in
+   * useState (NOT useMemo): `steps` is an inline array literal whose identity
+   * changes on every parent re-render (e.g. when the first pick flips the
+   * lesson's didTry flag), so a useMemo keyed on it would reshuffle the
+   * options under the learner after they have answered. */
+  const [steps2] = useState(() => steps.map((s) => ({ ...s, options: shuffle(s.options) })));
 
   const pick = (oi: number) => { if (chosen === null) { setChosen(oi); onDidTry(); } };
   const advance = () => { if (i + 1 >= steps2.length) { setFinished(true); } else { setI(i + 1); setChosen(null); } };
@@ -390,9 +398,11 @@ function MatchGame({ categories, items, prompt, onDidTry }: LabProps & { categor
   /* Scramble both the description order AND the term-button order once per
    * mount, so the first description never lines up with the first term at the
    * bottom. `assign` stays keyed by each item's ORIGINAL index, so scoring is
-   * unaffected. */
-  const rowOrder = useMemo(() => shuffle(items.map((_, i) => i)), [items]);
-  const cats = useMemo(() => shuffle(categories), [categories]);
+   * unaffected. Held in useState (NOT useMemo): `items` is an inline array
+   * literal whose identity changes on every parent re-render, so a useMemo
+   * keyed on it would reshuffle mid-activity and make answered rows jump. */
+  const [rowOrder] = useState<number[]>(() => shuffle(items.map((_, i) => i)));
+  const [cats] = useState<Cat[]>(() => shuffle(categories));
 
   return (
     <div style={{ fontFamily: T.sans }}>
