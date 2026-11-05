@@ -802,7 +802,7 @@ export default function LessonPlayer({ lesson, topicIndex, topicCount, weekTitle
 
               <div style={{ display: "flex", gap: 12, marginTop: 26, alignItems: "center" }}>
                 {btn("I've had a go", () => setPhase("check"), { disabled: !didTry })}
-                {!didTry && <span style={{ fontSize: 13, color: T.muted }}>have a go above to continue</span>}
+                {!didTry && <span style={{ fontSize: 13, color: T.muted }}>work through the activity above to continue</span>}
               </div>
             </main>
           )}

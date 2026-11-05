@@ -32,7 +32,9 @@ function SortGame({ categories, items, onDidTry, prompt }: LabProps & { categori
   const correctCount = useMemo(() => items.filter((it, i) => answers[i] === it.cat).length, [answers, items]);
   const allDone = answeredCount === items.length;
 
-  useEffect(() => { if (answeredCount >= 1) onDidTry(); }, [answeredCount, onDidTry]);
+  /* Gate progress on COMPLETING the activity, not the first answer: "I've had
+   * a go" stays locked until every row has been answered. */
+  useEffect(() => { if (allDone) onDidTry(); }, [allDone, onDidTry]);
 
   /* Scramble the row order AND the category-button order once per mount, so
    * the correct answer never marches predictably down the rows or stays in a
@@ -191,8 +193,11 @@ function ScenarioGame({ steps, intro, onDidTry, doneKicker = "Played out", doneN
    * options under the learner after they have answered. */
   const [steps2] = useState(() => steps.map((s) => ({ ...s, options: shuffle(s.options) })));
 
-  const pick = (oi: number) => { if (chosen === null) { setChosen(oi); onDidTry(); } };
+  const pick = (oi: number) => { if (chosen === null) setChosen(oi); };
   const advance = () => { if (i + 1 >= steps2.length) { setFinished(true); } else { setI(i + 1); setChosen(null); } };
+
+  /* Gate progress on finishing the whole scenario, not the first pick. */
+  useEffect(() => { if (finished) onDidTry(); }, [finished, onDidTry]);
 
   if (finished) {
     return (
@@ -277,9 +282,11 @@ function OrderGame({ items, prompt, onDidTry, doneNote = "Perfect. That is defen
     [next[pos], next[to]] = [next[to], next[pos]];
     setOrder(next);
     setChecked(false);
-    onDidTry();
   };
   const correctCount = order.filter((idx, pos) => idx === pos).length;
+  /* Gate progress on getting the order right and checking it, not the first
+   * move. */
+  useEffect(() => { if (checked && correctCount === items.length) onDidTry(); }, [checked, correctCount, items.length, onDidTry]);
 
   return (
     <div style={{ fontFamily: T.sans }}>
@@ -331,8 +338,9 @@ type ComposeCase = { outcome: string; threat: string; weakness: string; why: str
 
 function ComposeGame({ threats, weaknesses, cases, prompt, onDidTry }: LabProps & { threats: string[]; weaknesses: string[]; cases: ComposeCase[]; prompt: string }) {
   const [picks, setPicks] = useState<Record<number, { t?: string; w?: string }>>({});
-  const started = Object.keys(picks).length;
-  useEffect(() => { if (started >= 1) onDidTry(); }, [started, onDidTry]);
+  /* Gate progress on assembling every risk correctly, not the first pick. */
+  const allCorrect = cases.every((c, i) => { const p = picks[i]; return !!p && p.t === c.threat && p.w === c.weakness; });
+  useEffect(() => { if (allCorrect) onDidTry(); }, [allCorrect, onDidTry]);
 
   const chip = (label: string, sel: string | undefined, correct: string, both: boolean, accent: string, onClick: () => void, locked: boolean) => {
     let bg: string = T.panelSoft, bd: string = T.edge, fg: string = T.body;
@@ -388,8 +396,9 @@ function MatchGame({ categories, items, prompt, onDidTry }: LabProps & { categor
   const [assign, setAssign] = useState<Record<number, string>>({});
   const [sel, setSel] = useState<number | null>(null);
   const [checked, setChecked] = useState(false);
-  const started = Object.keys(assign).length;
-  useEffect(() => { if (started >= 1) onDidTry(); }, [started, onDidTry]);
+  /* Gate progress on completing the activity (every description matched and
+   * then checked), not the first tap. */
+  useEffect(() => { if (checked) onDidTry(); }, [checked, onDidTry]);
 
   const allAssigned = items.every((_, i) => assign[i]);
   const correctCount = items.filter((it, i) => assign[i] === it.cat).length;
