@@ -315,6 +315,9 @@ export default function MissionRuntime({ manifest, devStartBeat, onExit, onNextC
   const [hydrated, setHydrated] = useState(false);
   const [xpPop, setXpPop] = useState<{ amount: number; key: number } | null>(null);
   const [filmToPlay, setFilmToPlay] = useState<{ kind: "intro" | "outro"; id: string } | null>(null);
+  /** Boss beaten — the red alarm glow switches off on the BOSS DOWN screen. */
+  const [bossDown, setBossDown] = useState(false);
+  useEffect(() => { if (pos.beat !== "incident") setBossDown(false); }, [pos.beat]);
   const seen = useRef<Set<string>>(new Set());
   const prevXp = useRef(0);
 
@@ -575,6 +578,12 @@ export default function MissionRuntime({ manifest, devStartBeat, onExit, onNextC
       <BlockBackdrop variant={theme.backdrop} colors={theme.matrix} accent={theme.accent} accentHi={theme.accentHi} reduced={reduced} opacity={0.42} />
       <div aria-hidden style={{ position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none", background: "repeating-linear-gradient(0deg, rgba(0,0,0,0.24) 0 1px, transparent 1px 3px)", opacity: 0.32 }} />
       <div aria-hidden style={{ position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none", background: `radial-gradient(ellipse 82% 72% at 50% 34%, transparent 44%, ${tone}12 74%, rgba(3,5,12,0.9) 100%)`, transition: "background 700ms" }} />
+      {/* The boss alarm glow lives HERE, not inside BossScene: every scene sits
+          in .sr-scene, whose transform entrance animation (fill-mode both)
+          makes it the containing block for position:fixed children. Inside
+          it, this "full-screen" glow was trapped to the content box, which
+          read as a cramped red rectangle flush against the boss text. */}
+      {pos.beat === "incident" && !bossDown && !reduced && !resumeOffer && mapGate === null && <div className="sr-alert-edge" aria-hidden />}
 
       {filmToPlay &&
         (() => {
@@ -675,7 +684,7 @@ export default function MissionRuntime({ manifest, devStartBeat, onExit, onNextC
               />
             )}
             {pos.beat === "incident" && (
-              <BossScene manifest={manifest} reduced={reduced} audio={audio} emit={emit} onNext={advance} />
+              <BossScene manifest={manifest} reduced={reduced} audio={audio} emit={emit} onNext={advance} onBossDown={() => setBossDown(true)} />
             )}
             {pos.beat === "catch" && manifest.catchThem && (
               <CatchThemStage def={manifest.catchThem} actor={manifest.actor.codename} reduced={reduced} audio={audio} emit={emit} onPass={advance} onResit={restart} voiceOn={voiceOn} />
@@ -1737,7 +1746,7 @@ function CatchThemStage({ def, actor, reduced, audio, emit, onPass, onResit, voi
 
 /* ---------------------------------------------------------------- boss */
 
-function BossScene({ manifest, reduced, audio, emit, onNext }: { manifest: MissionManifest; reduced: boolean; audio: ReturnType<typeof useSignalAudio>; emit: (e: AwardEvent) => void; onNext: () => void }) {
+function BossScene({ manifest, reduced, audio, emit, onNext, onBossDown }: { manifest: MissionManifest; reduced: boolean; audio: ReturnType<typeof useSignalAudio>; emit: (e: AwardEvent) => void; onNext: () => void; onBossDown: () => void }) {
   const Incident = manifest.incident.component;
   const [started, setStarted] = useState(false);
   const [complete, setComplete] = useState(false);
@@ -1750,7 +1759,6 @@ function BossScene({ manifest, reduced, audio, emit, onNext }: { manifest: Missi
     // rather than leaving a narrow column inside a narrow column.
     return (
       <section style={{ maxWidth: 820, margin: "0 auto" }}>
-        {!reduced && <div className="sr-alert-edge" aria-hidden />}
         <Eyebrow text="Boss: live case" color={T.threatRed} />
         <h1 style={{ fontFamily: BODY, fontSize: "clamp(28px, 5vw, 44px)", fontWeight: 800, letterSpacing: "-0.01em", margin: "12px 0 26px", textShadow: `0 0 40px ${T.threatRed}33` }}>
           <Resolve text={manifest.incident.title} reduced={reduced} />
@@ -1797,7 +1805,6 @@ function BossScene({ manifest, reduced, audio, emit, onNext }: { manifest: Missi
 
   return (
     <section>
-      {!complete && !reduced && <div className="sr-alert-edge" aria-hidden />}
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 18, flexWrap: "wrap", gap: 8 }}>
         <Eyebrow text={`Boss: ${manifest.incident.title}`} color={T.threatRed} />
         <span style={{ fontFamily: MONO, fontSize: 11, color: T.threatRed, letterSpacing: "0.1em" }}>
@@ -1809,7 +1816,7 @@ function BossScene({ manifest, reduced, audio, emit, onNext }: { manifest: Missi
           reduced={reduced}
           audio={audio}
           onPhaseCleared={(phase) => emit({ type: "INCIDENT_PHASE_CLEARED", sourceKey: `phase-${phase}` })}
-          onComplete={() => setComplete(true)}
+          onComplete={() => { setComplete(true); onBossDown(); }}
         />
       ) : (
         <div style={{ maxWidth: 560 }}>
@@ -1829,7 +1836,7 @@ function BossScene({ manifest, reduced, audio, emit, onNext }: { manifest: Missi
 
 function ReportScene({ manifest, reduced, onNext }: { manifest: MissionManifest; reduced: boolean; onNext: () => void }) {
   return (
-    <section style={{ maxWidth: 640 }}>
+    <section style={{ maxWidth: 640, margin: "0 auto" }}>
       <Eyebrow text="Mission report" color={T.confirmedGreen} />
       <h1 style={{ fontFamily: BODY, fontSize: "clamp(26px, 4.6vw, 38px)", fontWeight: 800, margin: "12px 0 18px" }}>You learned {manifest.cycles.length} skills today.</h1>
       <div style={{ display: "grid", gap: 10, marginBottom: 18 }}>
