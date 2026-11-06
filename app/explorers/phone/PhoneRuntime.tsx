@@ -14,7 +14,7 @@
 import { useEffect, useReducer, useRef, useState } from "react";
 import { MatrixRain } from "../MatrixRain";
 import { BlockBackdrop } from "../BlockBackdrop";
-import { playWren, primeAudio, setVoiceRate, stopWren, useVoiceRate, useWrenSpeaking, VOICE_RATES } from "../engine/audio";
+import { playWren, primeAudio, setVoiceRate, stopWren, useVoiceRate, useWrenSpeaking, VOICE_RATES, wrenProgress } from "../engine/audio";
 import { useArrowAdvance, SkipButton, BackButton } from "../engine/arrowAdvance";
 import { playBGM, stopBGM } from "@/app/lib/sounds";
 import { type CaseStage, readProgress, saveProgress, clearProgress, markCaseComplete, isResumable, stageLabel } from "../engine/caseProgress";
@@ -97,7 +97,7 @@ type Item =
   | { id: number; kind: "divider"; kicker: string; title: string; sub?: string; boss?: boolean }
   | { id: number; kind: "phase"; label: string }
   | { id: number; kind: "roadmap"; title: string; actor: string; skills: { n: number; title: string; goal: string }[] }
-  | { id: number; kind: "recap"; text: string }
+  | { id: number; kind: "recap"; text: string; voice?: string }
   | { id: number; kind: "typing" };
 
 type Header = { who: string; avatar: string; tag?: string; sub: string };
@@ -345,7 +345,7 @@ export default function PhoneRuntime({ phoneCase, onExit, onNextCase, autostart 
     if (from.kind === "skill") {
       if (from.index === 0) { // fresh run: recap, then the opening + roadmap
         if (phoneCase.recap) {
-          push({ id: nextId(), kind: "recap", text: phoneCase.recap.text });
+          push({ id: nextId(), kind: "recap", text: phoneCase.recap.text, voice: voiceRef.current ? phoneCase.recap.voice : undefined });
           await speak(phoneCase.recap.text, phoneCase.recap.voice);
           await wait(400);
         }
@@ -632,7 +632,7 @@ function ItemView({ it, wrenAvatar, accent, kind, onTagSegment }: { it: Item; wr
         <div style={{ fontSize: 10, letterSpacing: ".13em", textTransform: "uppercase", color: "#7CFFC4", fontWeight: 800, lineHeight: 1.4, marginBottom: 13 }}>
           📓 previously on Cyber Explorers...
         </div>
-        <TypewriterText text={it.text} />
+        <TypewriterText text={it.text} voice={it.voice} />
       </div>
     );
   }
@@ -787,22 +787,30 @@ function ItemView({ it, wrenAvatar, accent, kind, onTagSegment }: { it: Item; wr
   );
 }
 
-/** Reveals `text` a few characters at a time, like a notebook typing itself
- *  out — the visual half of the "previously on" recap. Paced close to the
- *  no-voice reading timer elsewhere in this file (~40ms/char) so it tracks
- *  WREN's reading speed whether or not her clip is actually playing; jumps
- *  straight to the full line under reduced motion. */
-function TypewriterText({ text }: { text: string }) {
+/** Reveals `text` like a notebook typing itself out, the visual half of the
+ *  "previously on" recap. While WREN is playing `voice`, the text follows
+ *  her actual position in the clip, so it can never run ahead of her (a fixed
+ *  32ms/char finished ~40% before she did, UAT Case 007) and it follows the
+ *  speed setting. Voice off: 42ms/char, the same as speak()'s read timer.
+ *  Jumps straight to the full line under reduced motion. */
+function TypewriterText({ text, voice }: { text: string; voice?: string }) {
   const reduced = typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
   const [shown, setShown] = useState(reduced ? text.length : 0);
   useEffect(() => {
     if (reduced) { setShown(text.length); return; }
     setShown(0);
+    const start = performance.now();
+    let synced = false;
     const id = setInterval(() => {
-      setShown((n) => (n >= text.length ? (clearInterval(id), n) : n + 1));
-    }, 32);
+      const p = voice ? wrenProgress(voice) : null;
+      if (p !== null) synced = true;
+      // clip finished (or was stopped) after we synced to it: show the rest
+      if (synced && p === null) { setShown(text.length); clearInterval(id); return; }
+      const next = p !== null ? Math.ceil(p * text.length) : Math.floor((performance.now() - start) / 42);
+      setShown((n) => Math.max(n, Math.min(text.length, next)));
+    }, 40);
     return () => clearInterval(id);
-  }, [text, reduced]);
+  }, [text, voice, reduced]);
   return (
     // minHeight reserves one full line up front — otherwise, right as this
     // mounts (shown=0, only the cursor glyph visible), the card collapses

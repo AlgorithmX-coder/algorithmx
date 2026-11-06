@@ -89,6 +89,14 @@ function getWrenEl(): HTMLAudioElement | null {
   return wrenEl;
 }
 
+/** 0..1 progress through `url` if WREN is currently playing it, else null. */
+export function wrenProgress(url: string): number | null {
+  const el = wrenEl;
+  if (!el || el.paused || !el.duration || !Number.isFinite(el.duration)) return null;
+  if (!decodeURI(el.currentSrc || el.src).endsWith(url)) return null;
+  return Math.min(1, el.currentTime / el.duration);
+}
+
 function clearSafety() {
   if (safetyTimer) { clearTimeout(safetyTimer); safetyTimer = null; }
 }
