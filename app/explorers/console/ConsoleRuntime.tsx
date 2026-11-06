@@ -20,6 +20,7 @@ import { ClosingCeremony } from "../engine/closingCeremony";
 import { addJournalEntry, loadJournal, type JournalEntry } from "../engine/journal";
 import { CaseJournal } from "../engine/CaseJournal";
 import { ETHICS_LINE, ETHICS_VOICE } from "../engine/ethicsLine";
+import { SAFE_CENTER, SAFE_CENTER_CSS } from "../engine/safeCenter";
 import type { ConsoleCase, ConsoleStep, ConsoleTest } from "./case11";
 
 const C = {
@@ -35,6 +36,16 @@ const C = {
  *  reads as one consistent "hacker UI" rather than a patchwork. */
 const R = { panel: 3, card: 2, btn: 2 };
 const MONO = `"IBM Plex Mono", ui-monospace, Consolas, monospace`;
+/** Where the decode dial starts: a random spot at least 8 steps (around the
+ *  26-letter wheel) from the answer. Starting at 0 sat right next to a
+ *  shift-1 answer, so the first touch of the slider solved it. */
+function dialStart(answer: number): number {
+  const far = Array.from({ length: 26 }, (_, v) => v).filter((v) => {
+    const d = Math.abs(v - answer);
+    return Math.min(d, 26 - d) >= 8;
+  });
+  return far[Math.floor(Math.random() * far.length)];
+}
 /** Shift letters by n (mod 26), preserving everything else — the "decode" dial. */
 const CIPHER_A = "A".charCodeAt(0);
 function caesar(text: string, n: number): string {
@@ -76,6 +87,7 @@ const CSS = `
 .sr-xpnum{display:inline-block;animation:srXpNum .5s cubic-bezier(.2,0,0,1)}
 @keyframes srXpNum{0%{transform:scale(1.35)}100%{transform:scale(1)}}
 @media (prefers-reduced-motion: reduce){.cn *{animation-duration:.001ms !important}.cn-sweepbar{display:none}}
+${SAFE_CENTER_CSS}
 `;
 
 type Item =
@@ -502,10 +514,21 @@ function DockView({ dock, nudge, acc, onResolve, onBad }: { dock: Dock; nudge: s
   useEffect(() => {
     if (dock?.type === "toggle") setSw(dock.switches.map(() => false));
     if (dock?.type === "build") setSel([]);
-    if (dock?.type === "decode") { setDial(0); setSolved(false); }
+    if (dock?.type === "decode") { setDial(dialStart(dock.shift)); setSolved(false); }
     if (dock?.type === "spot") setSpotSel(new Set());
     if (dock?.type === "flip") { setFlipSide("you"); setFlipToggleOn(false); setFlipChoiceIdx(null); flipFiredRef.current = false; }
   }, [dock]);
+  // The decode dial latches once it has RESTED on the answer, so sliding
+  // past it doesn't count. Works the same for mouse, touch, keys and
+  // assistive tech. onResolve is read through a ref because the parent
+  // passes a fresh arrow each render, which would keep resetting the timer.
+  const resolveLatest = useRef(onResolve);
+  resolveLatest.current = onResolve;
+  useEffect(() => {
+    if (dock?.type !== "decode" || solved || dial !== dock.shift) return;
+    const t = setTimeout(() => { setSolved(true); resolveLatest.current("ok"); }, 600);
+    return () => clearTimeout(t);
+  }, [dock, dial, solved]);
   // auto-resolves the instant the GOOD state has been viewed on THEIR face —
   // same "latches, no submit button" feel as the decode dial above.
   useEffect(() => {
@@ -566,11 +589,7 @@ function DockView({ dock, nudge, acc, onResolve, onBad }: { dock: Dock; nudge: s
   }
   if (dock.type === "decode") {
     const preview = caesar(dock.ciphertext, -dial);
-    const spin = (n: number) => {
-      if (solved) return;
-      setDial(n);
-      if (n === dock.shift) { setSolved(true); onResolve("ok"); }
-    };
+    const spin = (n: number) => { if (!solved) setDial(n); };
     return (
       <>
         <p style={{ fontSize: 12, color: C.dim, textAlign: "center", margin: "0 0 9px", fontWeight: 600, fontFamily: MONO }}>{dock.prompt ?? "Turn the dial until it reads."}</p>
@@ -727,7 +746,7 @@ function TestView({ test, voiceOn, acc, onPass }: { test: ConsoleTest; voiceOn: 
   if (result) {
     const passed = result === "pass";
     return (
-      <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", padding: "0 28px 30px", textAlign: "center" }}>
+      <div className={SAFE_CENTER} style={{ flex: 1, padding: "16px 28px 30px", textAlign: "center" }}>
         <div style={{ fontSize: 42, marginBottom: 8 }}>{passed ? "🛡️" : "🔁"}</div>
         <div style={{ fontSize: 23, fontWeight: 800, color: passed ? C.mint : acc, marginBottom: 8, fontFamily: MONO }}>{passed ? "SYSTEMS SECURE" : "NOT YET"}</div>
         <div style={{ fontSize: 15, color: C.ink, marginBottom: 8 }}>You got <b style={{ color: passed ? C.mint : acc }}>{correct} of {test.questions.length}</b> right.</div>
@@ -755,7 +774,7 @@ function TestView({ test, voiceOn, acc, onPass }: { test: ConsoleTest; voiceOn: 
 
 function BootScreen({ title, caseNumber, open, acc, onBoot }: { title: string; caseNumber: string; open: string[]; acc: string; onBoot: () => void }) {
   return (
-    <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", padding: "0 26px 30px", textAlign: "left", fontFamily: MONO }}>
+    <div className={SAFE_CENTER} style={{ flex: 1, padding: "16px 26px 30px", textAlign: "left", fontFamily: MONO }}>
       <div style={{ color: C.faint, fontSize: 11, lineHeight: 1.8, marginBottom: 14 }}>
         <div>&gt; loading case file <span style={{ color: acc }}>{caseNumber}</span>...</div>
         <div>&gt; decrypting ARC archive... <span style={{ color: C.mint }}>ok</span></div>
@@ -776,23 +795,11 @@ function BootScreen({ title, caseNumber, open, acc, onBoot }: { title: string; c
 function Debrief({ data, acc, caseId, xp, reduced, onExit, onNext }: { data: ConsoleCase["debrief"]; acc: string; caseId: string; xp: number; reduced: boolean; onExit?: () => void; onNext?: () => void }) {
   const [revealed, setRevealed] = useState(false);
   return (
-    // justifyContent:"center" only works while content is shorter than the
-    // viewport; the closing ceremony pushes it past that on short windows,
-    // so this needs to scroll (same fix as Phone's Debrief) or the bottom
-    // (incl. "Next case") is unreachable with no scrollbar shown (UAT:
-    // Week 11, "squashed at the end, make it bigger and add a scroll").
-    // minHeight:0 added defensively: this div is a flex child of the panel
-    // above (flex:1 there too), and a flex item's default min-height is
-    // `auto` ("never shrink below my own content"), which can silently
-    // override overflowY:auto. Re-tested this screen at real laptop window
-    // sizes down to 1414x560 after a UAT report that it was still squashed
-    // there — scrolling actually already worked correctly at every size
-    // tried (confirmed by scrolling the container and checking the "Next
-    // case" button's real on-screen position, not just element visibility),
-    // so that report most likely predates this fix's original deploy. This
-    // min-height addition is a genuine robustness fix regardless — it just
-    // isn't the thing that was reproduced broken here.
-    <div style={{ flex: 1, minHeight: 0, display: "flex", flexDirection: "column", justifyContent: "center", overflowY: "auto", padding: "0 26px 26px" }}>
+    // SAFE_CENTER, not justifyContent:"center": centring a scrolling column
+    // pushed the title above the scroll area on laptop-height windows
+    // (measured 49px hidden at 1366x620), while "Next case" at the bottom
+    // stayed reachable, which is why an earlier bottom-only check passed.
+    <div className={SAFE_CENTER} style={{ flex: 1, padding: "22px 26px 26px" }}>
       <div style={{ fontSize: 24, fontWeight: 800, color: C.mint, marginBottom: 14, textAlign: "center", lineHeight: 1.2, fontFamily: MONO }}>{data.title}</div>
       <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 18 }}>
         {data.lines.map((l, i) => <div key={i} style={{ display: "flex", gap: 10, fontSize: 14, lineHeight: 1.45, color: C.ink }}><span style={{ color: C.mint, flex: "0 0 auto" }}>✓</span><span>{l}</span></div>)}

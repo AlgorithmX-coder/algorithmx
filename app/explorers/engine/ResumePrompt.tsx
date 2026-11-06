@@ -4,6 +4,8 @@
  * mid-case stage exists. Themed by the block's accent; neutral text works on
  * all three dark panels.
  */
+import { SAFE_CENTER } from "./safeCenter";
+
 const MONO = "ui-monospace, 'SF Mono', 'Fira Code', monospace";
 
 export function ResumePrompt({
@@ -22,7 +24,7 @@ export function ResumePrompt({
   onRestart: () => void;
 }) {
   return (
-    <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", padding: "0 30px 30px", textAlign: "center" }}>
+    <div className={SAFE_CENTER} style={{ flex: 1, padding: "16px 30px 30px", textAlign: "center" }}>
       <div style={{ fontFamily: MONO, fontSize: 12, letterSpacing: ".24em", textTransform: "uppercase", color: acc, fontWeight: 700, marginBottom: 8 }}>
         {caseNumber} · Welcome back
       </div>

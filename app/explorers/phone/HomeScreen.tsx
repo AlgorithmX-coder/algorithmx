@@ -240,7 +240,7 @@ export function HomeScreen({
         flex: 1,
         display: "flex",
         flexDirection: "column",
-        padding: "22px 20px 18px",
+        padding: "clamp(12px, 2.6vh, 22px) 20px clamp(10px, 2vh, 18px)",
         background: `radial-gradient(640px 420px at 18% -4%, rgba(${accRGB},0.22), rgba(${accRGB},0) 60%),
           radial-gradient(520px 460px at 100% 18%, rgba(${hexToRgb(hi)},0.14), rgba(${hexToRgb(hi)},0) 55%),
           radial-gradient(130% 90% at 50% 0%, #1a1a22 0%, #0a0a0c 70%)`,
@@ -249,30 +249,27 @@ export function HomeScreen({
         position: "relative",
       }}
     >
-      {/* status row */}
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", fontFamily: UI, fontSize: 12.5, fontWeight: 600, color: "#F3F4F7", opacity: zooming ? 0 : 1, transition: "opacity 180ms ease" }}>
-        <span>{caseClockTime(caseId)}</span>
-        <span style={{ position: "absolute", left: "50%", transform: "translateX(-50%)", display: "inline-flex", alignItems: "center", gap: 5, background: "#000", borderRadius: 999, padding: "5px 12px 5px 8px", boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.08)" }}>
+      {/* ARC pill only: the phone frame around this screen already shows the
+          time and battery in its own status bar, so repeating them here put
+          the time on screen three times and the battery twice (UAT, Case 006). */}
+      <div style={{ display: "flex", justifyContent: "center", fontFamily: UI, opacity: zooming ? 0 : 1, transition: "opacity 180ms ease" }}>
+        <span style={{ display: "inline-flex", alignItems: "center", gap: 5, background: "#000", borderRadius: 999, padding: "5px 12px 5px 8px", boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.08)" }}>
           <svg width="9" height="9" viewBox="0 0 24 24" aria-hidden><path d="M12 2l3.6 6.3 7 1-5.1 5 1.2 7-6.7-3.5-6.7 3.5 1.2-7-5.1-5 7-1z" fill={accent} /></svg>
           <span style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.16em", color: "#F3F4F7" }}>ARC</span>
         </span>
-        <svg width="16" height="11" viewBox="0 0 24 16" aria-hidden>
-          <rect x="1" y="1" width="19" height="14" rx="3" stroke="#F3F4F7" strokeWidth="1.4" fill="none" />
-          <rect x="3" y="3" width="13" height="10" rx="1.5" fill="#F3F4F7" />
-          <rect x="21.5" y="5" width="2" height="6" rx="1" fill="#F3F4F7" />
-        </svg>
       </div>
 
-      {/* big clock */}
-      <div style={{ textAlign: "center", marginTop: 24, transition: "opacity 180ms ease", opacity: zooming ? 0 : 1 }}>
-        <div style={{ fontFamily: UI, fontSize: 54, fontWeight: 200, color: "#F3F4F7", letterSpacing: "-0.01em" }}>{caseClockTime(caseId)}</div>
+      {/* big clock. Sizes below scale with window height (capped at the original
+          values) so the dock isn't cut off on laptop-height windows. */}
+      <div style={{ textAlign: "center", marginTop: "clamp(8px, 2.4vh, 24px)", transition: "opacity 180ms ease", opacity: zooming ? 0 : 1 }}>
+        <div style={{ fontFamily: UI, fontSize: "clamp(40px, 7.6vh, 54px)", fontWeight: 200, color: "#F3F4F7", letterSpacing: "-0.01em" }}>{caseClockTime(caseId)}</div>
         <div style={{ fontFamily: UI, fontSize: 12.5, color: "#9A9AA6", marginTop: 4 }}>Tuesday, 12 October</div>
       </div>
 
       {/* ARC field-OS status widget */}
       <div
         style={{
-          marginTop: 16,
+          marginTop: "clamp(8px, 1.8vh, 16px)",
           background: "linear-gradient(160deg, rgba(255,255,255,0.09), rgba(255,255,255,0.02))",
           border: "1px solid rgba(255,255,255,0.10)",
           boxShadow: "inset 0 1px 0 rgba(255,255,255,0.12)",
@@ -293,7 +290,7 @@ export function HomeScreen({
       </div>
 
       {/* app grid */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "20px 10px", flex: 1, marginTop: 22 }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "clamp(8px, 2.4vh, 20px) 10px", flex: 1, minHeight: 0, marginTop: "clamp(10px, 2.4vh, 22px)" }}>
         {apps.map((a, i) => {
           const isReal = "real" in a && a.real;
           return (
@@ -306,7 +303,7 @@ export function HomeScreen({
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
-                gap: 6,
+                gap: "clamp(3px, 0.8vh, 6px)",
                 background: "none",
                 border: "none",
                 cursor: isReal ? "pointer" : "default",
@@ -324,8 +321,8 @@ export function HomeScreen({
               <span
                 aria-hidden
                 style={{
-                  width: 60,
-                  height: 60,
+                  width: "clamp(44px, 7.6vh, 60px)",
+                  height: "clamp(44px, 7.6vh, 60px)",
                   borderRadius: 17,
                   display: "flex",
                   alignItems: "center",
@@ -354,12 +351,12 @@ export function HomeScreen({
       {/* dock — same four, every case; only the grid's one app changes */}
       <div
         style={{
-          marginTop: 18,
+          marginTop: "clamp(8px, 2vh, 18px)",
           background: "linear-gradient(160deg, rgba(255,255,255,0.10), rgba(255,255,255,0.03))",
           border: "1px solid rgba(255,255,255,0.10)",
           boxShadow: "inset 0 1px 0 rgba(255,255,255,0.14), 0 10px 26px rgba(0,0,0,0.4)",
           borderRadius: 24,
-          padding: "11px 16px",
+          padding: "clamp(7px, 1.4vh, 11px) 16px",
           display: "flex",
           justifyContent: "space-around",
           opacity: zooming ? 0 : 1,

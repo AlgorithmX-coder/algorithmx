@@ -122,7 +122,7 @@ export function HubEnergy({ accent, reduced }: { accent: string; reduced: boolea
     <>
       <style>{`
         @keyframes hub-ring{0%{transform:translate(-50%,-50%) scale(.14);opacity:.85}70%{opacity:.25}100%{transform:translate(-50%,-50%) scale(1);opacity:0}}
-        @keyframes hub-beam{0%,100%{opacity:.25}50%{opacity:.85}}
+        @keyframes hub-beam{0%,100%{opacity:.18}50%{opacity:.45}}
         @keyframes hub-core{0%,100%{opacity:.5;transform:translate(-50%,-50%) scale(1)}50%{opacity:.85;transform:translate(-50%,-50%) scale(1.08)}}
       `}</style>
       <div aria-hidden style={{ position: "fixed", top: "50%", left: "50%", width: 0, height: 0, zIndex: 0, pointerEvents: "none" }}>
@@ -143,17 +143,20 @@ export function HubEnergy({ accent, reduced }: { accent: string; reduced: boolea
         {!reduced &&
           Array.from({ length: BEAM_COUNT }).map((_, i) => {
             const angle = (360 / BEAM_COUNT) * i;
+            // Soft light rays, not lines: UAT (Case 011) said the crisp 3px beams
+            // read as horizontal lines cutting across the screen. Wider, blurred
+            // and dimmer keeps the energy without any hard edge.
             return (
               <div
                 key={`b${i}`}
                 style={{
                   position: "absolute",
                   top: 0,
-                  left: 0,
-                  width: 3,
+                  left: -7,
+                  width: 14,
                   height: 640,
-                  background: `linear-gradient(to bottom, ${accent}e6 0%, ${accent}66 30%, transparent 70%)`,
-                  boxShadow: `0 0 6px ${accent}99`,
+                  background: `linear-gradient(to bottom, ${accent}99 0%, ${accent}33 30%, transparent 70%)`,
+                  filter: "blur(9px)",
                   transformOrigin: "top center",
                   transform: `rotate(${angle}deg)`,
                   animation: `hub-beam ${4.2 + (i % 4) * 0.6}s ease-in-out ${(i % 7) * 0.3}s infinite`,
