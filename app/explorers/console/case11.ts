@@ -613,16 +613,16 @@ export const case11Console: ConsoleCase = {
         options: [
           { label: "Use a password manager to generate and store them", correct: true },
           { label: "Invent one clever password and use it everywhere" },
-          { label: "Memorise all forty" },
+          { label: "Memorise all forty and practise them until they stick" },
         ],
       },
       {
         scenario: "You need one master passphrase for your vault.",
         ask: "Which is strongest?",
         options: [
-          { label: "Four random unrelated words, like copper-otter-lantern-galaxy", correct: true },
-          { label: "Your birthday and your pet's name" },
-          { label: "Password123!" },
+          { label: "Four random words, like copper-otter-lantern-galaxy", correct: true },
+          { label: "Your pet's name plus your birth year, like Fluffy2011" },
+          { label: "A word mixed with numbers and a symbol, like Password123!" },
         ],
       },
       {
@@ -630,8 +630,8 @@ export const case11Console: ConsoleCase = {
         ask: "Why does the damage stop at one account?",
         options: [
           { label: "Because every account has its own unique password", correct: true },
-          { label: "Because you'd notice quickly" },
-          { label: "Because passwords can't really be stolen" },
+          { label: "Because you'd notice quickly and change it in time" },
+          { label: "Because SKELETON KEY gives up after the first account" },
         ],
       },
       {
@@ -639,8 +639,8 @@ export const case11Console: ConsoleCase = {
         ask: "Which matters most?",
         options: [
           { label: "Your email, it can reset every other account", correct: true },
-          { label: "An old forum you never use" },
-          { label: "It doesn't matter which" },
+          { label: "Your game account, it has years of your progress" },
+          { label: "It doesn't matter, any account is as good as another" },
         ],
       },
       {
@@ -648,8 +648,8 @@ export const case11Console: ConsoleCase = {
         ask: "What do you do?",
         options: [
           { label: "Never share it, real security never asks for your code", correct: true },
-          { label: "Read it back so they can help" },
-          { label: "Ask for a fresh code first" },
+          { label: "Read it back, they're from security so they can help you" },
+          { label: "Ask them to text a fresh code first, then read that" },
         ],
       },
       {
@@ -657,52 +657,52 @@ export const case11Console: ConsoleCase = {
         ask: "Why can't they get in?",
         options: [
           { label: "They don't have the second key on your phone", correct: true },
-          { label: "They'll just guess the code" },
-          { label: "The password must be wrong" },
+          { label: "They can, a six-digit code is easy to guess" },
+          { label: "The password they have must be the wrong one" },
         ],
       },
       {
         scenario: "A friend says he stays safe by keeping three strong passwords and rotating them across all his apps.",
         ask: "What's the flaw?",
         options: [
-          { label: "Three strong passwords is plenty to be safe" },
-          { label: "He should add a fourth password to be extra sure" },
-          { label: "Those still get reused, so one leak unlocks several accounts, a manager gives each its own", correct: true },
+          { label: "There isn't one, three strong passwords is plenty" },
+          { label: "He needs a fourth password, three is too few to rotate" },
+          { label: "They're still reused, one leak opens several accounts", correct: true },
         ],
       },
       {
         scenario: "A friend sets \"Tiger9!\" as her master key because it has a capital, a number and a symbol.",
         ask: "Why is it still weak?",
         options: [
-          { label: "It's fine, symbols make any password strong" },
-          { label: "It's short and just one word, a master key needs to be long, like several random words", correct: true },
-          { label: "It only needs one more symbol on the end" },
+          { label: "It isn't, a capital, number and symbol make it strong" },
+          { label: "It's short, a master key should be several random words", correct: true },
+          { label: "It needs one more symbol on the end to be really strong" },
         ],
       },
       {
         scenario: "A month after setting up your vault, you realise you can't remember your bank password at all, the manager made and saved it.",
         ask: "Is that a problem?",
         options: [
-          { label: "No, that's the whole idea, you only remember the master key and the vault fills the rest", correct: true },
-          { label: "Yes, you should memorise every password as a backup" },
-          { label: "Yes, change them all to something you can remember" },
+          { label: "No, that's the point, you only remember the master key", correct: true },
+          { label: "Yes, you should memorise every one of them as a backup" },
+          { label: "Yes, change them all to ones you can actually remember" },
         ],
       },
       {
         scenario: "A site offers to switch on 2FA with a code sent to your phone, but a friend says your password is already strong enough.",
         ask: "What's the better call?",
         options: [
-          { label: "Skip it, a strong password never needs a backup" },
-          { label: "Skip it, 2FA just makes logging in impossible" },
-          { label: "Turn it on, even a strong password can be leaked or phished, the second key still blocks a thief", correct: true },
+          { label: "Skip it, a strong password never needs a second lock" },
+          { label: "Skip it, 2FA makes it impossible for you to log in" },
+          { label: "Turn it on, even a strong password can be leaked", correct: true },
         ],
       },
       {
         scenario: "A login code you never asked for arrives by text, then a DM says \"Someone's breaking into your account, send me that code so I can lock it for you.\"",
         ask: "What does this really mean?",
         options: [
-          { label: "A helper is protecting you, so send the code quickly" },
-          { label: "Someone's trying to log in as you, never send the code, it's your second key", correct: true },
+          { label: "A helper is protecting you, so send them the code quickly" },
+          { label: "Someone's trying to log in as you, never send that code", correct: true },
           { label: "Send the code, then change your password afterwards" },
         ],
       },
@@ -710,9 +710,9 @@ export const case11Console: ConsoleCase = {
         scenario: "SKELETON KEY grabs your password from one leaked website and instantly tries it on your email, bank and games.",
         ask: "What's the rig betting on, and why does it fail?",
         options: [
-          { label: "That a leaked password automatically works on every site" },
-          { label: "That you only have one account to break into" },
-          { label: "That you reused that password, but every account has its own, so nothing else opens", correct: true },
+          { label: "That no site will notice, but they all spotted it at once" },
+          { label: "That you only have one account, but you have dozens" },
+          { label: "That you reused it, but every account has its own", correct: true },
         ],
       },
       {
@@ -721,16 +721,16 @@ export const case11Console: ConsoleCase = {
         options: [
           { label: "A long random password for every account" },
           { label: "Reusing one password across lots of accounts", correct: true },
-          { label: "Switching on 2FA everywhere" },
+          { label: "Switching on 2FA for every one of your accounts" },
         ],
       },
       {
         scenario: "You finish this case thinking, \"Great, now I really understand 2FA and password managers.\"",
         ask: "Are you protected yet?",
         options: [
-          { label: "Not yet, knowing locks nothing, you're protected once you actually switch 2FA on", correct: true },
-          { label: "Yes, understanding how it works is what protects you" },
-          { label: "Yes, finishing the case turned it all on for you" },
+          { label: "Not yet, knowing locks nothing until you switch 2FA on", correct: true },
+          { label: "Yes, understanding how it all works is what protects you" },
+          { label: "Yes, finishing the case switched it all on for you" },
         ],
       },
     ],

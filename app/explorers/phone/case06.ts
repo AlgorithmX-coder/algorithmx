@@ -629,8 +629,8 @@ export const case06Phone: PhoneCase = {
         ask: "What is this?",
         options: [
           { label: "A long con cashing in the friendship it built", correct: true },
-          { label: "A normal request from a real friend" },
-          { label: "A hurry trick" },
+          { label: "A normal favour from a real friend who needs help" },
+          { label: "A hurry trick to rush you before you think" },
         ],
       },
       {
@@ -638,26 +638,26 @@ export const case06Phone: PhoneCase = {
         ask: "How many levers are being stacked here?",
         options: [
           { label: "Three: payback, scarcity and hurry", correct: true },
-          { label: "None, it's a real prize" },
-          { label: "One: just scarcity" },
+          { label: "None, it's real and you won it" },
+          { label: "One: just scarcity, as only 3 are left" },
         ],
       },
       {
         scenario: "\"This is IT Support. To fix your account, read us back the code we just texted you.\"",
         ask: "What do you do?",
         options: [
-          { label: "Never share the code; real support never asks for it", correct: true },
-          { label: "Read the code back so they can help" },
-          { label: "Ask them to text a second code first" },
+          { label: "Never share the code, real support never asks", correct: true },
+          { label: "Read the code back, so they can fix your account" },
+          { label: "Ask for a second code first, to be extra safe" },
         ],
       },
       {
         scenario: "You've realised a stranger messaging you is running a scam.",
         ask: "What's the clean walk-away?",
         options: [
-          { label: "Stop replying, block and report, tell an adult you trust", correct: true },
-          { label: "Argue until they admit it's a scam" },
-          { label: "Keep chatting to find out who they are" },
+          { label: "Stop replying, block and report, tell a trusted adult", correct: true },
+          { label: "Argue back and prove you spotted the scam, then leave" },
+          { label: "Keep chatting, and find out who they really are first" },
         ],
       },
       {
@@ -665,7 +665,7 @@ export const case06Phone: PhoneCase = {
         ask: "Which lever is this?",
         options: [
           { label: "Liking", correct: true },
-          { label: "Fear" },
+          { label: "Payback" },
           { label: "Hurry" },
         ],
       },
@@ -673,9 +673,9 @@ export const case06Phone: PhoneCase = {
         scenario: "\"⚡ flash giveaway! only 1 winner slot left and i'm closing it in 60 seconds, don't miss out!\"",
         ask: "How many levers is this stacking?",
         options: [
-          { label: "None, it's a real giveaway" },
+          { label: "None, it's fair" },
           { label: "Two: scarcity and hurry", correct: true },
-          { label: "One: just liking" },
+          { label: "One: hurry and nothing more" },
         ],
       },
       {
@@ -683,8 +683,8 @@ export const case06Phone: PhoneCase = {
         ask: "Under the 'free voucher', what is he really after?",
         options: [
           { label: "To reward you for being awesome" },
-          { label: "To send you even more vouchers" },
-          { label: "Your account login", correct: true },
+          { label: "To send you more vouchers and prizes" },
+          { label: "The login for your game account", correct: true },
         ],
       },
       {
@@ -692,7 +692,7 @@ export const case06Phone: PhoneCase = {
         ask: "What's the safe first move?",
         options: [
           { label: "Send the code, she said it's her new number" },
-          { label: "Reach your sister a way you already trust before doing anything", correct: true },
+          { label: "Reach your sister a way you already trust", correct: true },
           { label: "Reply here asking her to prove it's really her" },
         ],
       },
@@ -701,7 +701,7 @@ export const case06Phone: PhoneCase = {
         ask: "What is this most likely setting up?",
         options: [
           { label: "An ask coming next, wrapped in all that trust", correct: true },
-          { label: "Nothing, they simply trust you now" },
+          { label: "Nothing, they simply trust you as a real friend" },
           { label: "A surprise gift they're about to send you" },
         ],
       },
@@ -718,18 +718,18 @@ export const case06Phone: PhoneCase = {
         scenario: "\"heyy you seem so cool, i feel like we'd get on great 😄\" and nothing has been asked for yet.",
         ask: "Which move of SIREN's play is this?",
         options: [
-          { label: "The real ask" },
+          { label: "The real ask, tucked in a compliment" },
           { label: "The warm-up, making friends first", correct: true },
-          { label: "The guilt trip at the end" },
+          { label: "The guilt trip, at the very end" },
         ],
       },
       {
         scenario: "You spotted a scam and blocked them. Now a brand-new account messages: \"why did you block me?? that was so rude.\"",
         ask: "What's the clean move?",
         options: [
-          { label: "Don't engage, block and report this one too", correct: true },
+          { label: "Don't engage, block and report this one as well", correct: true },
           { label: "Reply to explain exactly why you blocked them" },
-          { label: "Apologise so they don't feel bad" },
+          { label: "Say sorry, and explain you were just being careful" },
         ],
       },
     ],

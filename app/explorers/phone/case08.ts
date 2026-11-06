@@ -419,7 +419,7 @@ export const case08Phone: PhoneCase = {
         scenario: "A message from a stranger has perfect spelling, perfect grammar, and no typos at all.",
         ask: "What does that tell you about whether it's safe?",
         options: [
-          { label: "Nothing, a machine writes flawlessly, so polish proves nothing", correct: true },
+          { label: "Nothing, a machine can write flawlessly too", correct: true },
           { label: "It's safe, real scams always have mistakes" },
           { label: "It's safe, it's clearly too neat to be fake" },
         ],
@@ -428,9 +428,9 @@ export const case08Phone: PhoneCase = {
         scenario: "\"Hey [name]! Saw you love Minecraft 🎮 we'd totally get on!\" from someone you've never met.",
         ask: "What does knowing your name and game prove?",
         options: [
-          { label: "Nothing, those are public and easy to auto-fill", correct: true },
-          { label: "That it's really someone who knows you" },
-          { label: "That it's a friend from school" },
+          { label: "Nothing, anyone can read them on your profile", correct: true },
+          { label: "That it's really someone who knows you in real life" },
+          { label: "That it's a friend from school, saying hi" },
         ],
       },
       {
@@ -438,35 +438,35 @@ export const case08Phone: PhoneCase = {
         ask: "What's the clue here?",
         options: [
           { label: "Huge closeness with no real history behind it", correct: true },
-          { label: "They're just a friendly person" },
-          { label: "Nothing, their writing is perfect" },
+          { label: "They're just a really warm and friendly person" },
+          { label: "Nothing, their message is perfectly written" },
         ],
       },
       {
         scenario: "A warm message feels totally genuine and you want to trust it.",
         ask: "How do you actually check if it's real?",
         options: [
-          { label: "Verify who it's from a different way, not by how it reads", correct: true },
-          { label: "Trust it, because it feels genuine" },
-          { label: "Reply asking 'are you real?'" },
+          { label: "Check who it's really from, a different way", correct: true },
+          { label: "Trust it, because it feels genuine and warm" },
+          { label: "Reply asking 'are you real?' and see what it says" },
         ],
       },
       {
         scenario: "A lovely online friend of one week finally makes their first request.",
         ask: "What's it most likely to be?",
         options: [
-          { label: "A small favour, money, a code, or a secret, wrapped in the friendship", correct: true },
-          { label: "Nothing, they just want to keep chatting" },
-          { label: "A sudden threat" },
+          { label: "A small favour, like money, a code or a secret", correct: true },
+          { label: "Nothing, they just want to keep on chatting forever" },
+          { label: "A sudden threat, to scare you into paying" },
         ],
       },
       {
         scenario: "A kind online friend you've never met asks you to buy them a game card and keep it secret.",
         ask: "What do you do?",
         options: [
-          { label: "Send nothing, verify who they are, and tell an adult", correct: true },
-          { label: "Send it, they've been so nice all week" },
-          { label: "Keep the secret, but just don't send money" },
+          { label: "Send nothing, check who they are, tell an adult", correct: true },
+          { label: "Send it, they've been so nice and kind all week" },
+          { label: "Keep the secret, but just don't send any money" },
         ],
       },
       {
@@ -482,9 +482,9 @@ export const case08Phone: PhoneCase = {
         scenario: "A stranger writes: \"Out of everyone online, I picked just you to message, because you seem so special.\"",
         ask: "Why should that not make you feel specially chosen?",
         options: [
-          { label: "Because the message was spelled perfectly" },
-          { label: "Because they already knew your first name" },
-          { label: "A machine can send that exact \"just you\" line to thousands at once", correct: true },
+          { label: "Because the spelling and grammar were perfect" },
+          { label: "Because they already knew your first name and game" },
+          { label: "Because a machine sends that line to thousands", correct: true },
         ],
       },
       {
@@ -492,7 +492,7 @@ export const case08Phone: PhoneCase = {
         ask: "What's the clue in that?",
         options: [
           { label: "Nothing, they clearly just feel a strong connection" },
-          { label: "Enormous closeness with no real time or shared moments behind it", correct: true },
+          { label: "Enormous closeness with no shared time behind it", correct: true },
           { label: "Nothing, their message is warm and well written" },
         ],
       },
@@ -502,14 +502,14 @@ export const case08Phone: PhoneCase = {
         options: [
           { label: "Believe it, it sounds exactly like something Jordan would say" },
           { label: "Reply on this account and ask him to promise it's really him" },
-          { label: "Ask Jordan in person, or on an account you already know is his", correct: true },
+          { label: "Ask Jordan in person, or on the account you know is his", correct: true },
         ],
       },
       {
         scenario: "A new online friend has been endlessly kind for weeks and has never wanted a single thing.",
         ask: "When the ask finally comes, how will it be built to feel?",
         options: [
-          { label: "Small and reasonable, so all that kindness makes it hard to say no", correct: true },
+          { label: "Small and reasonable, so it's hard to say no", correct: true },
           { label: "Big and frightening, so you panic and rush" },
           { label: "It won't ever come, they plainly want nothing" },
         ],
@@ -519,7 +519,7 @@ export const case08Phone: PhoneCase = {
         ask: "What have they just described?",
         options: [
           { label: "Some unlucky coincidences that just happened in a row" },
-          { label: "A real friendship that sadly went wrong at the end" },
+          { label: "A real friendship, which sadly went wrong at the end" },
           { label: "GHOSTWRITER's whole play, run from start to finish", correct: true },
         ],
       },
@@ -527,7 +527,7 @@ export const case08Phone: PhoneCase = {
         scenario: "An online friend who has always felt completely trustworthy asks for your account password and adds \"don't tell your mum, she wouldn't get it.\"",
         ask: "What's the play?",
         options: [
-          { label: "Refuse, check who they really are, and tell a trusted adult", correct: true },
+          { label: "Refuse, check who they really are, tell a trusted adult", correct: true },
           { label: "Share it, that trustworthy feeling means it must be safe" },
           { label: "Share it, but keep it from your mum like they asked" },
         ],
@@ -536,9 +536,9 @@ export const case08Phone: PhoneCase = {
         scenario: "A new contact's messages are flawless and are now drowning you in compliments, but there's been no request of any kind yet.",
         ask: "Which move are you in, and what does the play say is coming?",
         options: [
-          { label: "The last move, so the danger has already passed" },
-          { label: "Fake warmth now, with trust-building and then an ask still to come", correct: true },
-          { label: "No move at all, this isn't part of any pattern" },
+          { label: "The last move, so all the danger has already passed" },
+          { label: "Fake warmth, with trust-building and an ask to come", correct: true },
+          { label: "No move at all, it's just kindness and nothing more" },
         ],
       },
     ],
