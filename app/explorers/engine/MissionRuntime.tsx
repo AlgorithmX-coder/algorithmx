@@ -1836,7 +1836,7 @@ function BossScene({ manifest, reduced, audio, emit, onNext, onBossDown }: { man
 
 function ReportScene({ manifest, reduced, onNext }: { manifest: MissionManifest; reduced: boolean; onNext: () => void }) {
   return (
-    <section style={{ maxWidth: 640 }}>
+    <section style={{ maxWidth: 640, margin: "0 auto" }}>
       <Eyebrow text="Mission report" color={T.confirmedGreen} />
       <h1 style={{ fontFamily: BODY, fontSize: "clamp(26px, 4.6vw, 38px)", fontWeight: 800, margin: "12px 0 18px" }}>You learned {manifest.cycles.length} skills today.</h1>
       <div style={{ display: "grid", gap: 10, marginBottom: 18 }}>
