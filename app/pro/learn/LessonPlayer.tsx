@@ -437,11 +437,24 @@ export default function LessonPlayer({ lesson, topicIndex, topicCount, weekTitle
     try { localStorage.setItem(lessonCheckpointKey(lesson.id), JSON.stringify(cp)); } catch { /* ignore */ }
   }, [restored, lesson.id, phase, didTry, explainDraft, quizAnswers, quizWrong]);
 
+  /* Open every phase at the top. Moving between intro/learn/see/try/check is a
+   * state change, not a route change, so the window keeps its old scroll and a
+   * new phase would otherwise open part-way down the page. Reset to the top
+   * whenever the phase (or the Learn card) changes. */
+  useEffect(() => { window.scrollTo(0, 0); }, [phase, learnIdx]);
+
   const onDidTry = useCallback(() => setDidTry(true), []);
   const Lab = lesson.lab.component;
   const heroCase = lesson.cases[0];
 
   const quizDone = useMemo(() => quizAnswers.every((a) => a !== null), [quizAnswers]);
+  /* "Explain it back" is a retrieval-practice step, so a lesson is not finished
+   * until the learner has written their own explanation (not just answered the
+   * quiz below it). A short minimum keeps out "ok"/"done" while never blocking
+   * a genuine short answer. */
+  const EXPLAIN_MIN = 20;
+  const explainWritten = explainDraft.trim().length >= EXPLAIN_MIN;
+  const canFinish = quizDone && explainWritten;
   /* Per-question display order of the options (see seededOrder above). */
   const quizOrder = useMemo(
     () => lesson.check.quiz.map((q, qi) => seededOrder(q.options.length, hashStr(`${lesson.id}:${qi}`))),
@@ -789,7 +802,7 @@ export default function LessonPlayer({ lesson, topicIndex, topicCount, weekTitle
 
               <div style={{ display: "flex", gap: 12, marginTop: 26, alignItems: "center" }}>
                 {btn("I've had a go", () => setPhase("check"), { disabled: !didTry })}
-                {!didTry && <span style={{ fontSize: 13, color: T.muted }}>have a go above to continue</span>}
+                {!didTry && <span style={{ fontSize: 13, color: T.muted }}>work through the activity above to continue</span>}
               </div>
             </main>
           )}
@@ -880,8 +893,8 @@ export default function LessonPlayer({ lesson, topicIndex, topicCount, weekTitle
               </div>
 
               <div style={{ display: "flex", gap: 12, marginTop: 26, alignItems: "center" }}>
-                {btn("Finish the lesson", () => setPhase("done"), { disabled: !quizDone })}
-                {!quizDone && <span style={{ fontSize: 13, color: T.muted }}>answer the checks to finish</span>}
+                {btn("Finish the lesson", () => setPhase("done"), { disabled: !canFinish })}
+                {!canFinish && <span style={{ fontSize: 13, color: T.muted }}>{!explainWritten ? "write your answer in “Explain it back” to finish" : "answer the checks to finish"}</span>}
               </div>
             </main>
           )}

@@ -4,11 +4,12 @@ import { useEffect, useMemo, useState } from "react";
 import { T } from "./tokens";
 import type { LabProps } from "./types";
 
-/* One-shot shuffle for activity option/item order. Called inside useMemo so
- * each mount scrambles once and the order stays stable while the learner
- * works through it. This is what breaks the authored patterns a learner can
- * otherwise game without reading: the correct answer marching down the rows,
- * or always sitting in the same slot. */
+/* One-shot shuffle for activity option/item order. Called inside a useState
+ * initializer so each mount scrambles exactly once and the order stays stable
+ * while the learner works through it, even across parent re-renders. This is
+ * what breaks the authored patterns a learner can otherwise game without
+ * reading: the correct answer marching down the rows, or always sitting in
+ * the same slot. */
 function shuffle<T>(arr: readonly T[]): T[] {
   const a = [...arr];
   for (let i = a.length - 1; i > 0; i--) {
@@ -31,14 +32,19 @@ function SortGame({ categories, items, onDidTry, prompt }: LabProps & { categori
   const correctCount = useMemo(() => items.filter((it, i) => answers[i] === it.cat).length, [answers, items]);
   const allDone = answeredCount === items.length;
 
-  useEffect(() => { if (answeredCount >= 1) onDidTry(); }, [answeredCount, onDidTry]);
+  /* Gate progress on COMPLETING the activity, not the first answer: "I've had
+   * a go" stays locked until every row has been answered. */
+  useEffect(() => { if (allDone) onDidTry(); }, [allDone, onDidTry]);
 
   /* Scramble the row order AND the category-button order once per mount, so
    * the correct answer never marches predictably down the rows or stays in a
    * fixed column. Answers stay keyed by each item's ORIGINAL index, so
-   * scoring is unaffected. */
-  const rowOrder = useMemo(() => shuffle(items.map((_, i) => i)), [items]);
-  const cats = useMemo(() => shuffle(categories), [categories]);
+   * scoring is unaffected. Held in useState (NOT useMemo): `items` is an
+   * inline array literal, so its identity changes on every parent re-render
+   * (e.g. when the first answer flips the lesson's didTry flag). A useMemo
+   * keyed on it would reshuffle mid-activity and make answered rows jump. */
+  const [rowOrder] = useState<number[]>(() => shuffle(items.map((_, i) => i)));
+  const [cats] = useState<Cat[]>(() => shuffle(categories));
 
   const catOf = (id: string) => categories.find((c) => c.id === id)!;
 
@@ -180,11 +186,18 @@ function ScenarioGame({ steps, intro, onDidTry, doneKicker = "Played out", doneN
   const [finished, setFinished] = useState(false);
 
   /* Shuffle each step's options once per mount so the correct answer is not
-   * always the first one. `chosen` indexes into this shuffled list. */
-  const steps2 = useMemo(() => steps.map((s) => ({ ...s, options: shuffle(s.options) })), [steps]);
+   * always the first one. `chosen` indexes into this shuffled list. Held in
+   * useState (NOT useMemo): `steps` is an inline array literal whose identity
+   * changes on every parent re-render (e.g. when the first pick flips the
+   * lesson's didTry flag), so a useMemo keyed on it would reshuffle the
+   * options under the learner after they have answered. */
+  const [steps2] = useState(() => steps.map((s) => ({ ...s, options: shuffle(s.options) })));
 
-  const pick = (oi: number) => { if (chosen === null) { setChosen(oi); onDidTry(); } };
+  const pick = (oi: number) => { if (chosen === null) setChosen(oi); };
   const advance = () => { if (i + 1 >= steps2.length) { setFinished(true); } else { setI(i + 1); setChosen(null); } };
+
+  /* Gate progress on finishing the whole scenario, not the first pick. */
+  useEffect(() => { if (finished) onDidTry(); }, [finished, onDidTry]);
 
   if (finished) {
     return (
@@ -269,9 +282,11 @@ function OrderGame({ items, prompt, onDidTry, doneNote = "Perfect. That is defen
     [next[pos], next[to]] = [next[to], next[pos]];
     setOrder(next);
     setChecked(false);
-    onDidTry();
   };
   const correctCount = order.filter((idx, pos) => idx === pos).length;
+  /* Gate progress on getting the order right and checking it, not the first
+   * move. */
+  useEffect(() => { if (checked && correctCount === items.length) onDidTry(); }, [checked, correctCount, items.length, onDidTry]);
 
   return (
     <div style={{ fontFamily: T.sans }}>
@@ -323,8 +338,9 @@ type ComposeCase = { outcome: string; threat: string; weakness: string; why: str
 
 function ComposeGame({ threats, weaknesses, cases, prompt, onDidTry }: LabProps & { threats: string[]; weaknesses: string[]; cases: ComposeCase[]; prompt: string }) {
   const [picks, setPicks] = useState<Record<number, { t?: string; w?: string }>>({});
-  const started = Object.keys(picks).length;
-  useEffect(() => { if (started >= 1) onDidTry(); }, [started, onDidTry]);
+  /* Gate progress on assembling every risk correctly, not the first pick. */
+  const allCorrect = cases.every((c, i) => { const p = picks[i]; return !!p && p.t === c.threat && p.w === c.weakness; });
+  useEffect(() => { if (allCorrect) onDidTry(); }, [allCorrect, onDidTry]);
 
   const chip = (label: string, sel: string | undefined, correct: string, both: boolean, accent: string, onClick: () => void, locked: boolean) => {
     let bg: string = T.panelSoft, bd: string = T.edge, fg: string = T.body;
@@ -380,18 +396,29 @@ function MatchGame({ categories, items, prompt, onDidTry }: LabProps & { categor
   const [assign, setAssign] = useState<Record<number, string>>({});
   const [sel, setSel] = useState<number | null>(null);
   const [checked, setChecked] = useState(false);
-  const started = Object.keys(assign).length;
-  useEffect(() => { if (started >= 1) onDidTry(); }, [started, onDidTry]);
+  /* Gate progress on completing the activity (every description matched and
+   * then checked), not the first tap. */
+  useEffect(() => { if (checked) onDidTry(); }, [checked, onDidTry]);
 
   const allAssigned = items.every((_, i) => assign[i]);
   const correctCount = items.filter((it, i) => assign[i] === it.cat).length;
   const catOf = (id: string) => categories.find((c) => c.id === id);
 
+  /* Scramble both the description order AND the term-button order once per
+   * mount, so the first description never lines up with the first term at the
+   * bottom. `assign` stays keyed by each item's ORIGINAL index, so scoring is
+   * unaffected. Held in useState (NOT useMemo): `items` is an inline array
+   * literal whose identity changes on every parent re-render, so a useMemo
+   * keyed on it would reshuffle mid-activity and make answered rows jump. */
+  const [rowOrder] = useState<number[]>(() => shuffle(items.map((_, i) => i)));
+  const [cats] = useState<Cat[]>(() => shuffle(categories));
+
   return (
     <div style={{ fontFamily: T.sans }}>
       <div style={{ fontSize: 13.5, color: T.muted, marginBottom: 14, lineHeight: 1.5 }}>{prompt}</div>
       <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 14 }}>
-        {items.map((it, i) => {
+        {rowOrder.map((i) => {
+          const it = items[i];
           const cat = assign[i];
           const c = cat ? catOf(cat) : undefined;
           const right = checked && cat === it.cat;
@@ -410,7 +437,7 @@ function MatchGame({ categories, items, prompt, onDidTry }: LabProps & { categor
         })}
       </div>
       <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 12 }}>
-        {categories.map((c) => (
+        {cats.map((c) => (
           <button key={c.id} onClick={() => { if (sel !== null && !checked) { setAssign((a) => ({ ...a, [sel]: c.id })); setSel(null); } }} disabled={sel === null || checked}
             style={{ flex: "1 1 120px", fontFamily: T.mono, fontSize: 12.5, fontWeight: 700, color: sel === null ? T.faint : c.color, background: sel === null ? T.panelSoft : `${c.color}18`, border: `1px solid ${sel === null ? T.edge : `${c.color}66`}`, borderRadius: 9, padding: "10px 12px", cursor: sel === null || checked ? "default" : "pointer" }}>{c.label}</button>
         ))}
