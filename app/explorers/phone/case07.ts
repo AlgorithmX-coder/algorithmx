@@ -421,18 +421,18 @@ export const case07Phone: PhoneCase = {
         scenario: "\"It's Ella! I got a new number. Can you send the login code that just arrived on your phone? Locked out 😭\"",
         ask: "What is this, really?",
         options: [
-          { label: "A stolen account, a code sent to YOUR phone unlocks YOUR account", correct: true },
+          { label: "A thief, a code sent to YOUR phone unlocks YOUR account", correct: true },
           { label: "Your friend Ella, who genuinely needs help getting in" },
-          { label: "A normal request you should just say yes to" },
+          { label: "A normal request, codes go to the wrong phone all the time" },
         ],
       },
       {
         scenario: "A friend's account is messaging something that feels off.",
         ask: "What's the safest way to check it's really them?",
         options: [
-          { label: "Reach them a different way, like calling or asking in person", correct: true },
+          { label: "Reach them another way, like a call or in person", correct: true },
           { label: "Ask 'is this really you?' in the same chat" },
-          { label: "Look at their profile photo to see if it's them" },
+          { label: "Check their profile photo, to see if it's really them" },
         ],
       },
       {
@@ -440,8 +440,8 @@ export const case07Phone: PhoneCase = {
         ask: "Which one is best?",
         options: [
           { label: "An inside joke only the two of you share", correct: true },
-          { label: "Their birthday" },
-          { label: "The name of their pet" },
+          { label: "Their birthday, since a real friend knows it" },
+          { label: "The name of their pet, a personal detail" },
         ],
       },
       {
@@ -449,17 +449,17 @@ export const case07Phone: PhoneCase = {
         ask: "What does that reply tell you?",
         options: [
           { label: "It's a thief, that's a dodge and a rush", correct: true },
-          { label: "It's really them, just stressed" },
-          { label: "Nothing, you can't tell" },
+          { label: "It's really them, stressed and in a hurry" },
+          { label: "Nothing, you can't tell from one reply" },
         ],
       },
       {
         scenario: "You realise a real friend's account has been stolen and is messaging you.",
         ask: "What do you do?",
         options: [
-          { label: "Send nothing, warn the real friend another way, and tell an adult", correct: true },
+          { label: "Send nothing, warn them another way, tell an adult", correct: true },
           { label: "Send what they asked, since it's your friend's account" },
-          { label: "Argue with the thief until they give up" },
+          { label: "Argue with the thief until they finally admit it" },
         ],
       },
       {
@@ -467,8 +467,8 @@ export const case07Phone: PhoneCase = {
         ask: "Which one is the WEIRD ask that screams thief?",
         options: [
           { label: "\"Send me the security code on your phone\"", correct: true },
-          { label: "\"Did you finish the homework?\"" },
-          { label: "\"Wanna come round Saturday?\"" },
+          { label: "\"Did you finish the maths homework yet?\"" },
+          { label: "\"Wanna come round mine on Saturday afternoon?\"" },
         ],
       },
       {
@@ -476,7 +476,7 @@ export const case07Phone: PhoneCase = {
         ask: "The account really is hers. So is the request safe?",
         options: [
           { label: "Yes, it's her genuine account, so it must be her asking" },
-          { label: "No, her real account could be in a thief's hands right now", correct: true },
+          { label: "No, her real account could be in a thief's hands", correct: true },
           { label: "Yes, sisters are allowed each other's passcodes" },
         ],
       },
@@ -484,7 +484,7 @@ export const case07Phone: PhoneCase = {
         scenario: "In your gaming clan, the leader Ola's account (real, and in the clan for years) DMs you privately for your account password \"to fix a glitch\".",
         ask: "Does the account being real and long-trusted make the ask safe?",
         options: [
-          { label: "No, trust belongs to Ola the person, and a thief could be holding the account", correct: true },
+          { label: "No, trust is in Ola the person, not the account", correct: true },
           { label: "Yes, an account trusted for years can be believed" },
           { label: "Yes, clan leaders are allowed to ask for passwords" },
         ],
@@ -495,15 +495,15 @@ export const case07Phone: PhoneCase = {
         options: [
           { label: "Reply in the same DM asking if it's really him" },
           { label: "Check whether his profile photo still looks normal" },
-          { label: "Ask him face to face tomorrow, or ring the number you know is his", correct: true },
+          { label: "Ask him in class tomorrow or ring his home phone", correct: true },
         ],
       },
       {
         scenario: "You want to test a suspicious account that says it's your friend Nadia.",
         ask: "Which question would a THIEF find easiest to answer?",
         options: [
-          { label: "\"What did we rename the ice-cream van tune?\"" },
-          { label: "\"What town do you live in?\"", correct: true },
+          { label: "\"What did we call the ice-cream van tune?\"" },
+          { label: "\"What's the name of the town you live in?\"", correct: true },
           { label: "\"What did we call our den in the park?\"" },
         ],
       },
@@ -511,36 +511,36 @@ export const case07Phone: PhoneCase = {
         scenario: "You ask a suspicious account \"what did we bury in the garden in Year 3?\" It replies: \"stop messing about, this is serious, send the code!\"",
         ask: "What just happened?",
         options: [
-          { label: "It's your friend being serious about a real emergency" },
+          { label: "Your friend is stressed and it's a real emergency" },
           { label: "It answered you, so it must really be them" },
-          { label: "It dodged the question and pushed harder, so it's a thief", correct: true },
+          { label: "A thief dodged your question and pushed harder", correct: true },
         ],
       },
       {
         scenario: "An account you trust writes: \"we've been best mates since reception, you totally trust me yeah? 😊\" and hasn't asked for anything yet.",
         ask: "Which move of MIMIC's play is this?",
         options: [
-          { label: "Rushing you past your checks" },
-          { label: "Wearing the friendship, spending trust before the ask", correct: true },
-          { label: "Stealing the account" },
+          { label: "Rushing you past your checks, move four" },
+          { label: "Wearing the friendship, spending trust", correct: true },
+          { label: "Stealing the account, the very first move" },
         ],
       },
       {
         scenario: "A stolen account has already leaned on your friendship and just made a weird ask for a code.",
         ask: "If it follows MIMIC's usual play, what comes NEXT?",
         options: [
-          { label: "It finally stops and lets you verify calmly" },
-          { label: "It goes back and wears the friendship all over again" },
-          { label: "A rush, hurrying you so you don't stop to check", correct: true },
+          { label: "It finally stops, and lets you verify calmly" },
+          { label: "It goes back to wearing the friendship again" },
+          { label: "A rush, hurrying you before you can check", correct: true },
         ],
       },
       {
         scenario: "You've caught a thief on your friend Amara's account, and you feel bad, like you might be getting a real friend in trouble.",
         ask: "What's the kind AND safe thing to do?",
         options: [
-          { label: "Say nothing, so you don't stir up any drama" },
-          { label: "Warn the real Amara another way, she's a victim too and needs her account back", correct: true },
-          { label: "Delete the messages so nobody ever sees them" },
+          { label: "Say nothing, so you don't get Amara into any trouble" },
+          { label: "Warn the real Amara another way, she's a victim too", correct: true },
+          { label: "Delete the messages, and hope nobody ever sees them" },
         ],
       },
     ],

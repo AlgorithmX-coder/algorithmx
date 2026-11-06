@@ -416,8 +416,8 @@ export const case10Phone: PhoneCase = {
         ask: "Does the familiar voice prove it's really her?",
         options: [
           { label: "No, a voice can be cloned from a few seconds of audio", correct: true },
-          { label: "Yes, you'd always know your own mum's voice" },
-          { label: "Yes, voices can't be faked" },
+          { label: "Yes, you'd always know your own mum's voice anywhere" },
+          { label: "Yes, a machine can't copy the way a real person talks" },
         ],
       },
       {
@@ -425,8 +425,8 @@ export const case10Phone: PhoneCase = {
         ask: "What should your real defence be?",
         options: [
           { label: "One that doesn't depend on spotting the fake at all", correct: true },
-          { label: "Get really good at spotting the tells" },
-          { label: "Trust any video that looks convincing" },
+          { label: "Practise spotting the tells until you're an expert at it" },
+          { label: "Trust any video or voice that looks and sounds convincing" },
         ],
       },
       {
@@ -434,8 +434,8 @@ export const case10Phone: PhoneCase = {
         ask: "What's the safest move?",
         options: [
           { label: "Hang up and call his real number to check", correct: true },
-          { label: "Send it, he sounds really scared" },
-          { label: "Ask the caller to prove it's him" },
+          { label: "Send it and check later, he sounds scared" },
+          { label: "Stay on and ask the caller to prove it's him" },
         ],
       },
       {
@@ -443,8 +443,8 @@ export const case10Phone: PhoneCase = {
         ask: "Which is best?",
         options: [
           { label: "A random, silly word only your family knows", correct: true },
-          { label: "Your surname" },
-          { label: "Your street name" },
+          { label: "Your surname, since the whole family shares it" },
+          { label: "Your street name, every one of you knows it" },
         ],
       },
       {
@@ -452,35 +452,35 @@ export const case10Phone: PhoneCase = {
         ask: "What's it about to ask for?",
         options: [
           { label: "Money or a code, right now, before you can check", correct: true },
-          { label: "Nothing, just a normal chat" },
-          { label: "For you to take your time" },
+          { label: "Nothing, just a normal catch-up chat about the day" },
+          { label: "For you to slow down, take your time and think" },
         ],
       },
       {
         scenario: "A voice exactly like your mum's demands money sent immediately.",
         ask: "What do you do?",
         options: [
-          { label: "Stay calm, hang up, call her real number, and tell an adult", correct: true },
-          { label: "Send it, she sounds terrified" },
-          { label: "Stay on the line and do as she says" },
+          { label: "Stay calm, hang up, call her real number, tell an adult", correct: true },
+          { label: "Send it fast, she sounds terrified and needs you right now" },
+          { label: "Stay on the line, keep calm, and do just as she says" },
         ],
       },
       {
         scenario: "You post a quick video of yourself singing, just a few seconds long, on a public account.",
         ask: "Could that tiny clip ever be a problem?",
         options: [
-          { label: "No, a clip that short is far too small to copy a voice" },
-          { label: "Yes, even a few seconds is enough for a machine to clone your voice", correct: true },
-          { label: "No, only videos of grown-ups can ever be cloned" },
+          { label: "No, a clip that short is far too small for a machine to copy" },
+          { label: "Yes, a few seconds is enough for a machine to clone a voice", correct: true },
+          { label: "No, only grown-ups' voices can be cloned, not children's" },
         ],
       },
       {
         scenario: "A new phone app promises it can automatically flag every fake voice for you.",
         ask: "Can you count on it to keep you safe for good?",
         options: [
-          { label: "Yes, once an app spots fakes you never have to check again" },
-          { label: "Yes, apps are always cleverer than the scammers" },
-          { label: "No, the fakes keep improving, so catching them is still a losing race", correct: true },
+          { label: "Yes, once an app spots fakes you'll never have to check again" },
+          { label: "Yes, an app will always be cleverer than the scammers are" },
+          { label: "No, the fakes keep improving, spotting them is a losing race", correct: true },
         ],
       },
       {
@@ -489,52 +489,52 @@ export const case10Phone: PhoneCase = {
         options: [
           { label: "Hang up and reach him on the number you already have for him", correct: true },
           { label: "Trust it, the borrowed-phone story explains the strange number" },
-          { label: "Ask the caller to describe what your dad looks like" },
+          { label: "Ask the caller what your dad looks like and where he works" },
         ],
       },
       {
         scenario: "A caller who sounds just like your gran says, \"Remind me what our family code word is, I've forgotten it.\"",
         ask: "What do you do?",
         options: [
-          { label: "Tell her the word so she can use it next time" },
-          { label: "Refuse, you never tell a caller the word, they say it to you", correct: true },
-          { label: "Give her a small hint to jog her memory" },
+          { label: "Tell her the word, she's family and she's just forgotten" },
+          { label: "Refuse, you never tell a caller the word, they tell you", correct: true },
+          { label: "Give her a small hint, just enough to jog her memory" },
         ],
       },
       {
         scenario: "A voice like your sister's calls in tears, saying she's locked out of her account and needs you to read her the code that just texted your phone.",
         ask: "What's really going on here?",
         options: [
-          { label: "Nothing, she just needs a quick favour from you" },
-          { label: "She wants you to slow down and think it through" },
-          { label: "It's the same panic-then-grab, steering at a code before you can check", correct: true },
+          { label: "Nothing odd, she's locked out and just needs a quick favour" },
+          { label: "She wants you to slow down, take care and think it through" },
+          { label: "It's panic, then a grab for a code before you can check", correct: true },
         ],
       },
       {
         scenario: "You wonder how a scammer ever got hold of your uncle's voice in the first place.",
         ask: "Which move of MIMIC's play answers that?",
         options: [
-          { label: "The last move, when it rushes you for money" },
-          { label: "The first move, scraping a few seconds of his voice from a post online", correct: true },
-          { label: "None, a cloned voice just appears out of nowhere" },
+          { label: "The last move, rushing you for money before you can check" },
+          { label: "The first move, scraping his voice from a post online", correct: true },
+          { label: "None, the machine just invents a voice out of nowhere" },
         ],
       },
       {
         scenario: "MIMIC brags that it built the whole voice scam completely by itself.",
         ask: "Why don't you believe it?",
         options: [
-          { label: "It needed scraped audio and a written script from others, so it had help", correct: true },
-          { label: "You do believe it, one villain can easily do everything" },
-          { label: "The audio and script it used don't matter at all" },
+          { label: "It needed scraped audio and a written script from others", correct: true },
+          { label: "You do believe it, one villain can easily do every part" },
+          { label: "The audio and the script it used don't really matter at all" },
         ],
       },
       {
         scenario: "A panic call in your cousin's voice comes through while you're home alone and feeling scared.",
         ask: "What's the safest first thing to do?",
         options: [
-          { label: "Handle it yourself quickly so nobody has to worry" },
+          { label: "Handle it yourself quickly and quietly, so nobody worries" },
           { label: "Do whatever the caller says, since there's no one else around" },
-          { label: "Take a breath, don't act on the voice, and get a trusted adult involved", correct: true },
+          { label: "Take a breath, don't act on it, and get a trusted adult", correct: true },
         ],
       },
     ],

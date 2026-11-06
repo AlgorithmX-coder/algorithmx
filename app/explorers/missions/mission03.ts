@@ -70,8 +70,8 @@ export const mission03: MissionManifest = {
       concept: "A guessing rig isn't magic; it runs lists, and the obvious stuff falls first",
       checkpoint: {
         questions: [
-          { id: "m03-c1-chk1", question: "The rig works down a list, most common first. Which of these would it reach almost instantly?", options: ["football", "wobble-tractor-lemon-glow", "kv83-quartz-hollow"], answer: 0, ok: "Right. 'football' is a common word sitting near the top of the rig's list, so it falls in the first second.", okVoice: "/audio/wren/m03-c1-chk1-ok.mp3" },
-          { id: "m03-c1-chk2", question: "Which of these would make the rig grind the LONGEST?", options: ["password2024", "iloveyou", "kettle-marble-fox-73"], answer: 2, ok: "Exactly. Random, unrelated words are on no list, so the rig has nothing to grab and has to grind for years.", okVoice: "/audio/wren/m03-c1-chk2-ok.mp3" },
+          { id: "m03-c1-chk1", question: "The rig works down a list, most common first. Which of these would it reach almost instantly?", options: ["football", "x7#kq9vz", "pq4!wr8m"], answer: 0, ok: "Right. 'football' is a common word sitting near the top of the rig's list, so it falls in the first second.", okVoice: "/audio/wren/m03-c1-chk1-ok.mp3" },
+          { id: "m03-c1-chk2", question: "Which of these would make the rig grind the LONGEST?", options: ["password12345678", "qwertyuiop123456!", "kettle-marble-fox"], answer: 2, ok: "Exactly. Random, unrelated words are on no list, so the rig has nothing to grab and has to grind for years.", okVoice: "/audio/wren/m03-c1-chk2-ok.mp3" },
         ],
       },
       promise: "You'll learn why a weak password falls in seconds and a strong one doesn't.",
@@ -122,8 +122,8 @@ export const mission03: MissionManifest = {
       concept: "A weak password is built from YOU, and the rig can read your life",
       checkpoint: {
         questions: [
-          { id: "m03-c2-chk1", question: "Why isn't Leo's password as personal and safe as he thinks?", evidence: "Leo's password: Leo2011!", options: ["The symbols make it really strong", "Every part is his name and birth year, both easy to look up", "It's far too long for the rig to bother with"], answer: 1, ok: "That's it. His name and birth year are one quick search away, so none of it is actually a secret.", okVoice: "/audio/wren/m03-c2-chk1-ok.mp3" },
-          { id: "m03-c2-chk2", question: "Does writing 'Passw0rd' with a zero instead of an o fool the rig?", options: ["No, the rig already tries that swap automatically", "Yes, zeros are impossible to guess", "Yes, it becomes a brand-new word"], answer: 0, ok: "Right. Swapping o for 0 is an old trick the rig checks by itself, so it doesn't slow it down at all.", okVoice: "/audio/wren/m03-c2-chk2-ok.mp3" },
+          { id: "m03-c2-chk1", question: "Why isn't Leo's password as personal and safe as he thinks?", evidence: "Leo's password: Leo2011!", options: ["The ! and the capital L make it really strong", "His name and birth year are easy to look up", "It's far too long for the rig to bother with"], answer: 1, ok: "That's it. His name and birth year are one quick search away, so none of it is actually a secret.", okVoice: "/audio/wren/m03-c2-chk1-ok.mp3" },
+          { id: "m03-c2-chk2", question: "Does writing 'Passw0rd' with a zero instead of an o fool the rig?", options: ["No, the rig already tries that swap", "Yes, a zero is much harder to guess", "Yes, it turns into a brand-new word"], answer: 0, ok: "Right. Swapping o for 0 is an old trick the rig checks by itself, so it doesn't slow it down at all.", okVoice: "/audio/wren/m03-c2-chk2-ok.mp3" },
         ],
       },
       promise: "You'll learn to spot the guessable bits you've baked into a password.",
@@ -178,8 +178,8 @@ export const mission03: MissionManifest = {
       concept: "A reused password is a master key; one leak opens every door, and email is the master door",
       checkpoint: {
         questions: [
-          { id: "m03-c3-chk1", question: "Sara uses the same password on her game, her socials, and her email. That one password leaks. What can the attacker do?", options: ["Only open the game it leaked from", "Try that one key on every other account too", "Nothing, a leaked password is harmless"], answer: 1, ok: "Exactly. One reused key means a single leak swings open every door that shares it.", okVoice: "/audio/wren/m03-c3-chk1-ok.mp3" },
-          { id: "m03-c3-chk2", question: "Why is the email account the very first one to protect?", options: ["It can reset the passwords on your other accounts", "It just holds your oldest messages", "It collects the most adverts"], answer: 0, ok: "Right. 'Forgot password' sends a reset link to your email, so owning the email means owning everything.", okVoice: "/audio/wren/m03-c3-chk2-ok.mp3" },
+          { id: "m03-c3-chk1", question: "Sara uses the same password on her game, her socials, and her email. That one password leaks. What can the attacker do?", options: ["Only open the game account it leaked from", "Try that key on every other account", "Nothing, a leaked password is harmless"], answer: 1, ok: "Exactly. One reused key means a single leak swings open every door that shares it.", okVoice: "/audio/wren/m03-c3-chk1-ok.mp3" },
+          { id: "m03-c3-chk2", question: "Why is the email account the very first one to protect?", options: ["It can reset your other passwords", "It just holds your oldest messages", "It collects the most adverts of all"], answer: 0, ok: "Right. 'Forgot password' sends a reset link to your email, so owning the email means owning everything.", okVoice: "/audio/wren/m03-c3-chk2-ok.mp3" },
         ],
       },
       promise: "You'll learn why one leak can take every account, and which door to save first.",
@@ -240,8 +240,8 @@ export const mission03: MissionManifest = {
       concept: "What actually costs the rig time is length, not clever symbol swaps",
       checkpoint: {
         questions: [
-          { id: "m03-c4-chk1", question: "Which of these would take the rig the LONGEST to crack?", options: ["Xy7$!q", "coppertunnelmangoladder", "P@ss1"], answer: 1, ok: "Yes. It has no symbols at all, but it's long, and length is what buries the rig for centuries.", okVoice: "/audio/wren/m03-c4-chk1-ok.mp3" },
-          { id: "m03-c4-chk2", question: "You can change ONE thing about a short password. Which helps most against the rig?", options: ["Add several more characters to make it longer", "Add a single ! at the end", "Change an e to a 3"], answer: 0, ok: "That's the real lever. Length multiplies the rig's work, while a lone symbol or swap barely slows it down.", okVoice: "/audio/wren/m03-c4-chk2-ok.mp3" },
+          { id: "m03-c4-chk1", question: "Which of these would take the rig the LONGEST to crack?", options: ["Xy7$!q, packed with symbols and numbers", "coppertunnelmangoladder, all letters", "P@ss1, with a swap and a number too"], answer: 1, ok: "Yes. It has no symbols at all, but it's long, and length is what buries the rig for centuries.", okVoice: "/audio/wren/m03-c4-chk1-ok.mp3" },
+          { id: "m03-c4-chk2", question: "You can change ONE thing about a short password. Which helps most against the rig?", options: ["Add several more characters", "Add a single ! right at the end", "Swap every e in it for a 3"], answer: 0, ok: "That's the real lever. Length multiplies the rig's work, while a lone symbol or swap barely slows it down.", okVoice: "/audio/wren/m03-c4-chk2-ok.mp3" },
         ],
       },
       promise: "You'll SEE why a long dull password beats a short clever one.",
@@ -290,8 +290,8 @@ export const mission03: MissionManifest = {
       concept: "Three or four random, unrelated words make a long password you can actually remember",
       checkpoint: {
         questions: [
-          { id: "m03-c5-chk1", question: "Which of these is the best passphrase?", options: ["badger-lantern-syrup-cloud", "MyTownIsLeeds2012", "summer-holiday-fun"], answer: 0, ok: "Perfect. Four random, unrelated words that are nothing to do with you: long, unguessable, and easy to picture.", okVoice: "/audio/wren/m03-c5-chk1-ok.mp3" },
-          { id: "m03-c5-chk2", question: "Why NOT build your passphrase from a line of your favourite song?", options: ["Song words are too short to use", "The words rhyme and confuse the rig", "Famous lines are already on the rig's list"], answer: 2, ok: "Right. A well-known lyric is on the list the rig already tries, so random has to mean truly random.", okVoice: "/audio/wren/m03-c5-chk2-ok.mp3" },
+          { id: "m03-c5-chk1", question: "Which of these is the best passphrase?", options: ["badger-lantern-syrup-cloud", "MyTownIsLeedsBornIn2012", "summer-holiday-sunny-beach"], answer: 0, ok: "Perfect. Four random, unrelated words that are nothing to do with you: long, unguessable, and easy to picture.", okVoice: "/audio/wren/m03-c5-chk1-ok.mp3" },
+          { id: "m03-c5-chk2", question: "Why NOT build your passphrase from a line of your favourite song?", options: ["Song words are far too short to be safe", "The words rhyme, and that confuses the rig", "Famous lines are already on the rig's list"], answer: 2, ok: "Right. A well-known lyric is on the list the rig already tries, so random has to mean truly random.", okVoice: "/audio/wren/m03-c5-chk2-ok.mp3" },
         ],
       },
       promise: "You'll build a passphrase that's long, strong, and sticks in your head.",
@@ -369,8 +369,8 @@ export const mission03: MissionManifest = {
       concept: "Every guessing attack is a list, plus your own life, plus endless patience",
       checkpoint: {
         questions: [
-          { id: "m03-c6-chk1", question: "Which of these is one of SKELETON KEY's three real moves?", options: ["Sending a fake 'you won a prize!' message", "Building a copycat login page", "Scraping your posts for your pet and birthday"], answer: 2, ok: "Yes. Feeding your own life into the rig is move two. He doesn't trick you, he studies you.", okVoice: "/audio/wren/m03-c6-chk1-ok.mp3" },
-          { id: "m03-c6-chk2", question: "What single habit beats every part of his guessing game?", options: ["Changing your username often", "Long, random, unique passwords for each door", "A trickier secret question"], answer: 1, ok: "Exactly. He can't guess what isn't a word and isn't about you, and a unique key stops one lucky hit spreading.", okVoice: "/audio/wren/m03-c6-chk2-ok.mp3" },
+          { id: "m03-c6-chk1", question: "Which of these is one of SKELETON KEY's three real moves?", options: ["Sending a fake 'you won a prize!' message", "Building a copycat login page to fool you", "Scraping your posts for your pet's name"], answer: 2, ok: "Yes. Feeding your own life into the rig is move two. He doesn't trick you, he studies you.", okVoice: "/audio/wren/m03-c6-chk1-ok.mp3" },
+          { id: "m03-c6-chk2", question: "What single habit beats every part of his guessing game?", options: ["Clever, short passwords full of symbols", "Long, random, unique keys for each door", "The same long, strong password everywhere"], answer: 1, ok: "Exactly. He can't guess what isn't a word and isn't about you, and a unique key stops one lucky hit spreading.", okVoice: "/audio/wren/m03-c6-chk2-ok.mp3" },
         ],
       },
       promise: "You'll learn SKELETON KEY's whole game, and the one thing that beats it.",
@@ -422,7 +422,7 @@ export const mission03: MissionManifest = {
       concept: "The fix-it plan: change the reused one, go long, make each unique, let a manager remember",
       checkpoint: {
         questions: [
-          { id: "m03-c7-chk1", question: "You're locking down all your accounts. What's the very FIRST move?", options: ["Buy a brand-new device first", "Change your least-used account first", "Change your most-reused password, starting with email"], answer: 2, ok: "Right. Snapping the most-reused key first, at the master door, does the most good the fastest.", okVoice: "/audio/wren/m03-c7-chk1-ok.mp3" },
+          { id: "m03-c7-chk1", question: "You're locking down all your accounts. What's the very FIRST move?", options: ["Buy a brand-new device, then start fresh", "Change your least-used one, games first", "Change your most-reused one, email first"], answer: 2, ok: "Right. Snapping the most-reused key first, at the master door, does the most good the fastest.", okVoice: "/audio/wren/m03-c7-chk1-ok.mp3" },
           { id: "m03-c7-chk2", question: "How do the pros remember forty different strong passwords?", options: ["They reuse one clever password everywhere", "A password manager remembers them all", "They write them in a note called 'passwords'"], answer: 1, ok: "That's the cheat code. A manager holds every strong key, so you only have to remember one.", okVoice: "/audio/wren/m03-c7-chk2-ok.mp3" },
         ],
       },
@@ -516,18 +516,18 @@ export const mission03: MissionManifest = {
     // skill: 0 how-the-rig-guesses · 1 ingredients · 2 reuse · 3 length
     //        4 three-random-words · 5 SKELETON-KEY's-play · 6 lock-down-plan.
     scenarios: [
-      { id: "cq1", skill: 0, prompt: "A guessing rig works down a list, most common first. Which does it try earliest?", options: ["password123", "a 16-letter random jumble", "four unrelated random words", "a long line of nonsense"], answer: 0 },
+      { id: "cq1", skill: 0, prompt: "A guessing rig works down a list, most common first. Which does it try earliest?", options: ["password123", "kq9vRz-T4mxw", "lamp-otter-fig", "z8#Hw!pQ2v"], answer: 0 },
       { id: "cq2", skill: 0, prompt: "Why does “qwerty” fall almost instantly?", options: ["A keyboard row the rig knows", "It is simply far too short", "It has no numbers at all in it", "It isn't a real dictionary word"], answer: 0 },
       { id: "cq3", skill: 0, prompt: "A friend says his password “dinosawr” is safe because he spelled it wrong. Is he right?", options: ["No, it's still near a real word", "Yes, misspelling makes it unbreakable", "Yes, made-up words are always safe", "Only if he also adds a capital"], answer: 0 },
       { id: "cq4", skill: 1, prompt: "Which password could the rig most likely guess just from your posts?", options: ["Your dog's name and birth year", "Four random unrelated words", "A long jumble of random letters", "A line from your private diary"], answer: 0 },
       { id: "cq5", skill: 1, prompt: "Why doesn't swapping “a” for “@” make a password much stronger?", options: ["The rig already tries those swaps", "Symbols jam the rig for hours", "It makes the whole thing too long", "Numbers matter far more than that"], answer: 0 },
-      { id: "cq6", skill: 1, prompt: "Which of these is the WEAKEST, even though it looks careful?", options: ["Emma-2010!", "grapefruit-anchor-piano-6", "a manager's 20 random letters", "four random words joined up"], answer: 0 },
+      { id: "cq6", skill: 1, prompt: "Which of these is the WEAKEST, even though it looks careful?", options: ["Emma-2010!", "Rv7#qLm2Xz", "owl-kelp-drum", "8gW!t3Kp0e"], answer: 0 },
       { id: "cq7", skill: 2, prompt: "You reuse one password everywhere and one site gets breached. What's the danger?", options: ["That key now opens all your doors", "Only that single site is affected", "Nothing, breaches get cleaned up", "You just change it there next year"], answer: 0 },
       { id: "cq8", skill: 2, prompt: "Why guard your email password hardest of all?", options: ["It can reset your other accounts", "It holds the most old messages", "It is usually your oldest account", "It gets the most spam of them all"], answer: 0 },
       { id: "cq9", skill: 2, prompt: "A game forum you use gets breached. Best move?", options: ["Change it where you reused it", "Wait for the forum to apologise", "Delete the forum and just move on", "Add one number to that password"], answer: 0 },
-      { id: "cq10", skill: 3, prompt: "What makes a password hardest of all for the rig?", options: ["Being long", "Having a capital letter", "Ending it with a !", "Swapping an o for a 0"], answer: 0 },
-      { id: "cq11", skill: 3, prompt: "P@ssw0rd! or pineapple-ladder-comet. Which holds longer against the rig?", options: ["pineapple-ladder-comet", "P@ssw0rd!, it has symbols", "They are both about the same", "P@ssw0rd!, it has a capital"], answer: 0 },
-      { id: "cq12", skill: 3, prompt: "You can improve a password ONE way. Which helps the most?", options: ["Make it a lot longer", "Add one exclamation mark", "Capitalise the first letter", "Swap a letter for a number"], answer: 0 },
+      { id: "cq10", skill: 3, prompt: "What makes a password hardest of all for the rig?", options: ["Making it really long", "Having a capital letter", "Ending it with a !", "Swapping an o for a 0"], answer: 0 },
+      { id: "cq11", skill: 3, prompt: "P@ssw0rd! or pineapple-ladder-comet. Which holds longer against the rig?", options: ["pineapple-ladder-comet", "P@ssw0rd!, it has symbols", "Both about the same", "P@ssw0rd!, it has a capital"], answer: 0 },
+      { id: "cq12", skill: 3, prompt: "You can improve a password ONE way. Which helps the most?", options: ["Make it much, much longer", "Add one exclamation mark", "Capitalise the first letter", "Swap a letter for a number"], answer: 0 },
       { id: "cq13", skill: 4, prompt: "Which is the best passphrase?", options: ["walrus-forest-trumpet-echo", "Manchester-United-forever-2013", "MyNameIsJake2011", "Summer-Holiday-Fun!"], answer: 0 },
       { id: "cq14", skill: 4, prompt: "Why pick RANDOM words instead of a favourite song lyric?", options: ["Known lines are on the list", "Lyrics are far too long to type", "Songs change too often to trust", "Rhyming words confuse the rig"], answer: 0 },
       { id: "cq15", skill: 4, prompt: "Three random words are strong, and also:", options: ["easy for you to remember", "impossible to ever type fast", "only safe on one account", "weaker than a short one"], answer: 0 },
