@@ -82,7 +82,7 @@ export const mission04: MissionManifest = {
         beats: [
           "One post on its own? PACKRAT can't do a thing with it. A handle. A team photo. A birthday joke. Each one is harmless.",
           "That's exactly the trap. Every crumb feels too small to matter, so you drop it in public without a second thought.",
-          "But PACKRAT doesn't read one post. He STACKS them. A handle names your town. A photo names your school. A comment names your schedule. Alone, nothing. Stacked, a file. ARC calls it the assembly attack.",
+          "But PACKRAT doesn't read one post. He STACKS them. A handle names your town. A photo names your school. A comment names your schedule. On their own, they're nothing. Stacked together, they're a file. ARC calls it the assembly attack.",
           "Tonight we run one ourselves, the safe way, on a volunteer's test account, with her say-so. Watch four harmless crumbs become a file, without anyone breaking into anything.",
         ],
         beatAudio: [
