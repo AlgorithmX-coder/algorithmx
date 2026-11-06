@@ -148,4 +148,12 @@ export const mission04VoiceScripts = {
   // debrief
   "/audio/wren/m04-debrief.mp3":
     "[proud] File closed, nest empty. Watch what you drop, Agent. Sign out.",
+
+  // boss: WREN reads each phase's instruction (the villain's taunts stay text)
+  "/audio/wren/m04-boss-p1.mp3":
+    "[determined] Phase one. The listing. Four claims, each built from a crumb. Tap the claim that puts Priya in real-world danger.",
+  "/audio/wren/m04-boss-p2.mp3":
+    "[determined] Phase two. The auction closes in minutes. Scrub the live sources in the RIGHT order.",
+  "/audio/wren/m04-boss-p3.mp3":
+    "[determined] Phase three. The file still exists in the nest. Make it WORTHLESS. Pick the finishing move.",
 };

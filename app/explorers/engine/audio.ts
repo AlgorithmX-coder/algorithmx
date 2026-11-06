@@ -9,7 +9,7 @@
  * the Heroes lesson).
  */
 
-import { useCallback, useMemo, useRef, useSyncExternalStore } from "react";
+import { useCallback, useEffect, useMemo, useRef, useSyncExternalStore } from "react";
 import type { SignalAudio } from "./types";
 
 /* ---- "is WREN speaking" signal, so the UI can lock clicks while she talks.
@@ -205,6 +205,16 @@ export function stopWren() {
   } catch {}
   clearSafety();
   setSpeaking(false);
+}
+
+/** WREN reads a boss phase's instruction as the phase opens, and stops if the
+ *  phase ends (or the voice is switched off) before she finishes. */
+export function usePhaseVoice(url: string | undefined, enabled: boolean) {
+  useEffect(() => {
+    if (!url || !enabled) return;
+    playWren(url, true);
+    return () => stopWren();
+  }, [url, enabled]);
 }
 
 /**

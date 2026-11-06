@@ -155,4 +155,12 @@ export const mission02VoiceScripts = {
   // debrief
   "/audio/wren/m02-debrief.mp3":
     "[proud] Free bait costs the most. Clean sweep. Sign out.",
+
+  // boss: WREN reads each phase's instruction (the villain's taunts stay text)
+  "/audio/wren/m02-boss-p1.mp3":
+    "[determined] Phase one. The factory floor. Three funnels are running, and every funnel drains somewhere. Follow the arrows, and tap the collection point.",
+  "/audio/wren/m02-boss-p2.mp3":
+    "[determined] Phase two. Cut the hub. One move shuts the whole factory. Make your call, then submit.",
+  "/audio/wren/m02-boss-p3.mp3":
+    "[determined] Phase three. Warn everyone. Some kids already typed things. Pick the message that actually helps, then submit.",
 };

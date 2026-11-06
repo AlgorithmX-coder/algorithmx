@@ -682,7 +682,7 @@ export default function MissionRuntime({ manifest, devStartBeat, onExit, onNextC
               />
             )}
             {pos.beat === "incident" && (
-              <BossScene manifest={manifest} reduced={reduced} audio={audio} emit={emit} onNext={advance} onBossDown={() => setBossDown(true)} />
+              <BossScene manifest={manifest} reduced={reduced} audio={audio} voiceOn={voiceOn} emit={emit} onNext={advance} onBossDown={() => setBossDown(true)} />
             )}
             {pos.beat === "catch" && manifest.catchThem && (
               <CatchThemStage def={manifest.catchThem} actor={manifest.actor.codename} reduced={reduced} audio={audio} emit={emit} onPass={advance} onResit={restart} voiceOn={voiceOn} />
@@ -1760,7 +1760,7 @@ function CatchThemStage({ def, actor, reduced, audio, emit, onPass, onResit, voi
 
 /* ---------------------------------------------------------------- boss */
 
-function BossScene({ manifest, reduced, audio, emit, onNext, onBossDown }: { manifest: MissionManifest; reduced: boolean; audio: ReturnType<typeof useSignalAudio>; emit: (e: AwardEvent) => void; onNext: () => void; onBossDown: () => void }) {
+function BossScene({ manifest, reduced, audio, voiceOn, emit, onNext, onBossDown }: { manifest: MissionManifest; reduced: boolean; audio: ReturnType<typeof useSignalAudio>; voiceOn: boolean; emit: (e: AwardEvent) => void; onNext: () => void; onBossDown: () => void }) {
   const Incident = manifest.incident.component;
   const [started, setStarted] = useState(false);
   const [complete, setComplete] = useState(false);
@@ -1831,6 +1831,7 @@ function BossScene({ manifest, reduced, audio, emit, onNext, onBossDown }: { man
           audio={audio}
           onPhaseCleared={(phase) => emit({ type: "INCIDENT_PHASE_CLEARED", sourceKey: `phase-${phase}` })}
           onComplete={() => { setComplete(true); onBossDown(); }}
+          voiceOn={voiceOn}
         />
       ) : (
         <div style={{ maxWidth: 560 }}>

@@ -150,4 +150,12 @@ export const mission05VoiceScripts = {
   // debrief
   "/audio/wren/m05-debrief.mp3":
     "[proud] Block One, closed. PHANTOM HOOK's storm is one filed case, Agent. [excited] CONFIDENTIAL clearance, confirmed. [warm] Wear it well.",
+
+  // boss: WREN reads each phase's instruction (the villain's taunts stay text)
+  "/audio/wren/m05-boss-p1.mp3":
+    "[determined] Phase one. The wall. Six messages just landed. Tap every one that belongs to the storm. Don't flag the real ones.",
+  "/audio/wren/m05-boss-p2.mp3":
+    "[determined] Phase two. Four storm messages. Three are spray. One did its homework. Tap the spear.",
+  "/audio/wren/m05-boss-p3.mp3":
+    "[determined] Phase three. The spear knew your form and your teacher. Where did that data COME from?",
 };

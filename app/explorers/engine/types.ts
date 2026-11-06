@@ -503,6 +503,8 @@ export interface IncidentProps {
   audio: SignalAudio;
   onPhaseCleared: (phase: number) => void;
   onComplete: () => void;
+  /** WREN reads each phase's instruction aloud when it opens (the villain's taunts stay text). */
+  voiceOn?: boolean;
 }
 
 /* ---------------------------------------------------------- manifest */
