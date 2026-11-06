@@ -43,3 +43,22 @@ export function SearchIcon({ className }: IconProps) {
     </svg>
   );
 }
+
+export function RefreshIcon({ className }: IconProps) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M20 11a8 8 0 0 0-14.6-4.6M4 4v5h5" />
+      <path d="M4 13a8 8 0 0 0 14.6 4.6M20 20v-5h-5" />
+    </svg>
+  );
+}
+
+export function SignOutIcon({ className }: IconProps) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+      <path d="M16 17l5-5-5-5" />
+      <path d="M21 12H9" />
+    </svg>
+  );
+}

@@ -1,7 +1,9 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import type { CSSProperties } from "react";
 import { getIndividual } from "@/app/lib/individualOps";
 import { IndividualsIcon } from "../../icons";
+import { courseColor } from "../../courseColors";
 import RevokeEntitlementButton from "./RevokeEntitlementButton";
 
 /* /admin/individuals/[id]: one person - their courses, how they got
@@ -35,7 +37,7 @@ export default async function AdminIndividualPage({ params }: { params: Promise<
           <tbody>
             {person.products.map((p) => (
               <tr key={p.slug}>
-                <td><b>{p.name}</b></td>
+                <td><span className="ad-course" style={{ "--c": courseColor(p.name) } as CSSProperties}>{p.name}</span></td>
                 <td>{SOURCE_LABEL[p.source] ?? p.source}</td>
                 <td>{day(p.grantedAt)}</td>
                 <td><RevokeEntitlementButton userId={person.id} productSlug={p.slug} courseName={p.name} /></td>
