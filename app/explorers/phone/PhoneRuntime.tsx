@@ -25,6 +25,7 @@ import { LEVERS, type LeverId, type PhoneAppKind, type PhoneCase, type PhoneStep
 import { addJournalEntry, loadJournal, type JournalEntry } from "../engine/journal";
 import { CaseJournal } from "../engine/CaseJournal";
 import { ETHICS_LINE, ETHICS_VOICE } from "../engine/ethicsLine";
+import { SAFE_CENTER, SAFE_CENTER_CSS } from "../engine/safeCenter";
 import { PropField } from "./PropField";
 import { HomeScreen } from "./HomeScreen";
 import { caseClockTime } from "./clock";
@@ -84,6 +85,7 @@ const CSS = `
 .sr-xpnum{display:inline-block;animation:srXpNum .5s cubic-bezier(.2,0,0,1)}
 @keyframes srXpNum{0%{transform:scale(1.35)}100%{transform:scale(1)}}
 @media (prefers-reduced-motion: reduce){.ph *{animation-duration:.001ms !important}}
+${SAFE_CENTER_CSS}
 `;
 
 type Item =
@@ -978,7 +980,7 @@ function TestView({ test, voiceOn, onPass }: { test: PhoneTest; voiceOn: boolean
   if (result) {
     const passed = result === "pass";
     return (
-      <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", padding: "0 24px 30px", textAlign: "center" }}>
+      <div className={SAFE_CENTER} style={{ flex: 1, padding: "16px 24px 30px", textAlign: "center" }}>
         <div style={{ fontSize: 44, marginBottom: 8 }}>{passed ? "🏅" : "🔁"}</div>
         <div style={{ fontSize: 24, fontWeight: 800, color: passed ? C.mint : C.warn, marginBottom: 8 }}>{passed ? "Case closed." : "So close."}</div>
         <div style={{ fontSize: 15, color: C.ink, lineHeight: 1.5, marginBottom: 8 }}>You got <b style={{ color: passed ? C.mint : C.warn }}>{correct} of {test.questions.length}</b> right.</div>
@@ -1016,7 +1018,7 @@ function TestView({ test, voiceOn, onPass }: { test: PhoneTest; voiceOn: boolean
 
 function LockScreen({ caseNumber, open, title, onOpen }: { caseNumber: string; open: string[]; title: string; onOpen: () => void }) {
   return (
-    <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", overflowY: "auto", padding: "20px 26px 30px", textAlign: "center" }}>
+    <div className={SAFE_CENTER} style={{ flex: 1, padding: "20px 26px 30px", textAlign: "center" }}>
       <div style={{ fontSize: 12, letterSpacing: ".28em", textTransform: "uppercase", color: C.pink, fontWeight: 700, marginBottom: 6 }}>{caseNumber}</div>
       <div style={{ fontSize: 34, fontWeight: 700, letterSpacing: "-.01em", marginBottom: 28 }}>{title}</div>
       <div style={{ display: "flex", flexDirection: "column", gap: 9, textAlign: "left", marginBottom: 26 }}>
@@ -1044,7 +1046,7 @@ function Debrief({ data, caseId, xp, reduced, voiceOn, onExit, onNext }: { data:
     // viewport; the closing ceremony pushes it past that on short phones, so
     // this needs to scroll (matches LockScreen's pattern above) or the
     // bottom (incl. "Next case") is unreachable with no scrollbar shown.
-    <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", overflowY: "auto", padding: "0 24px 26px" }}>
+    <div className={SAFE_CENTER} style={{ flex: 1, padding: "22px 24px 26px" }}>
       <div style={{ fontSize: 24, fontWeight: 700, color: C.mint, marginBottom: 14, textAlign: "center", lineHeight: 1.2 }}>{data.title}</div>
       <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 18 }}>
         {data.lines.map((l, i) => (

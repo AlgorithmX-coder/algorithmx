@@ -22,6 +22,7 @@ import { ClosingCeremony } from "../engine/closingCeremony";
 import { addJournalEntry, loadJournal, type JournalEntry } from "../engine/journal";
 import { CaseJournal } from "../engine/CaseJournal";
 import { ETHICS_LINE, ETHICS_VOICE } from "../engine/ethicsLine";
+import { SAFE_CENTER, SAFE_CENTER_CSS } from "../engine/safeCenter";
 import { CaseBoard } from "../engine/CaseBoard";
 import { CaseBoardFileExplorer } from "../engine/CaseBoardFileExplorer";
 import { ZeroFile } from "../engine/ZeroFilePanel";
@@ -58,6 +59,7 @@ const CSS = `
 @keyframes wr-clue-in{0%{opacity:0;transform:translateX(16px) scale(.96)}60%{opacity:1;transform:translateX(0) scale(1.02)}100%{opacity:1;transform:translateX(0) scale(1)}}
 .wr-clue-toast{animation:wr-clue-in .35s cubic-bezier(.2,0,0,1) both}
 @media (prefers-reduced-motion: reduce){.wr *{animation-duration:.001ms !important}}
+${SAFE_CENTER_CSS}
 `;
 
 type Item =
@@ -745,7 +747,7 @@ function TestView({ test, voiceOn, acc, onPass }: { test: WarTest; voiceOn: bool
   if (result) {
     const passed = result === "pass";
     return (
-      <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", padding: "0 28px 30px", textAlign: "center" }}>
+      <div className={SAFE_CENTER} style={{ flex: 1, padding: "16px 28px 30px", textAlign: "center" }}>
         <div style={{ fontSize: 42, marginBottom: 8 }}>{passed ? "🎖️" : "🔁"}</div>
         <div style={{ fontSize: 23, fontWeight: 800, color: passed ? C.mint : acc, marginBottom: 8, fontFamily: MONO }}>{passed ? "CASE CLOSED" : "NOT YET"}</div>
         <div style={{ fontSize: 15, color: C.ink, marginBottom: 8 }}>You got <b style={{ color: passed ? C.mint : acc }}>{correct} of {test.questions.length}</b> right.</div>
@@ -788,7 +790,7 @@ function TestView({ test, voiceOn, acc, onPass }: { test: WarTest; voiceOn: bool
 
 function BootScreen({ title, caseNumber, open, acc, onBoot }: { title: string; caseNumber: string; open: string[]; acc: string; onBoot: () => void }) {
   return (
-    <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", padding: "0 30px 30px", textAlign: "center" }}>
+    <div className={SAFE_CENTER} style={{ flex: 1, padding: "16px 30px 30px", textAlign: "center" }}>
       <div style={{ fontFamily: MONO, fontSize: 12, letterSpacing: ".28em", textTransform: "uppercase", color: acc, fontWeight: 700, marginBottom: 6 }}>{caseNumber}</div>
       <div style={{ fontSize: 34, fontWeight: 800, letterSpacing: "-.01em", marginBottom: 28 }}>{title}</div>
       <div style={{ display: "flex", flexDirection: "column", gap: 9, textAlign: "left", marginBottom: 26 }}>
@@ -805,7 +807,7 @@ function Debrief({ data, acc, caseId, xp, reduced, onExit, onNext }: { data: War
     // Same fix as Phone/Console's Debrief: without overflowY the closing
     // ceremony can push past a short window with no way to scroll down to
     // "Next case".
-    <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", overflowY: "auto", padding: "0 26px 26px" }}>
+    <div className={SAFE_CENTER} style={{ flex: 1, padding: "22px 26px 26px" }}>
       <div style={{ fontSize: 24, fontWeight: 800, color: C.mint, marginBottom: 14, textAlign: "center", lineHeight: 1.2, fontFamily: MONO }}>{data.title}</div>
       <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 18 }}>
         {data.lines.map((l, i) => <div key={i} style={{ display: "flex", gap: 10, fontSize: 14, lineHeight: 1.45, color: C.ink }}><span style={{ color: C.mint, flex: "0 0 auto" }}>✓</span><span>{l}</span></div>)}
