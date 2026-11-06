@@ -35,6 +35,27 @@ const CSS = `
 .pmi-cta:hover{filter:brightness(1.08)}
 .pmi-cta:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
 @media (prefers-reduced-motion: reduce){.pmi *{animation:none !important;transition:none !important}}
+.pmi-scroll{scrollbar-width:thin;scrollbar-color:var(--acc) transparent}
+.pmi-scroll::-webkit-scrollbar{width:4px}
+.pmi-scroll::-webkit-scrollbar-thumb{background:var(--acc);border-radius:4px}
+/* Laptop-height windows: the full briefing ran ~130px taller than the phone
+   card at 1366x620 and showed a scrollbar. Tighten it so it fits; monitors
+   (taller than 780px) keep the original spacing. */
+@media (max-height: 780px){
+  .pmi-scroll{padding:4px 18px 14px !important}
+  .pmi-head{margin-bottom:9px !important}
+  .pmi-bubble{padding:11px 14px !important;margin-bottom:8px !important}
+  .pmi-title{font-size:22px !important;margin-bottom:5px !important}
+  .pmi-thesis{font-size:12.5px !important;line-height:1.4 !important}
+  .pmi-voice{padding:7px 12px 7px 10px !important;margin-bottom:8px !important}
+  .pmi-out{padding:8px 12px !important;margin-bottom:10px !important}
+  .pmi-out p{font-size:11.5px !important;line-height:1.4 !important}
+  .pmi-skills-label{margin-bottom:6px !important}
+  .pmi-skills{display:grid !important;grid-template-columns:1fr 1fr;gap:5px !important;margin-bottom:12px !important}
+  .pmi-chip{font-size:10.5px !important;padding:4px 8px !important}
+  .pmi-cta{padding:11px 18px !important}
+  .pmi-foot{display:none}
+}
 `;
 
 export default function PhoneMissionIntro({ data, onBegin }: { data: MissionIntroData; onBegin: () => void }) {
@@ -94,9 +115,9 @@ export default function PhoneMissionIntro({ data, onBegin }: { data: MissionIntr
           </span>
         </div>
 
-        <div style={{ padding: "6px 22px 24px", overflowY: "auto" }}>
+        <div className="pmi-scroll" style={{ padding: "6px 22px 24px", overflowY: "auto" }}>
           {/* incoming-message style header */}
-          <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
+          <div className="pmi-head" style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
             <div aria-hidden style={{ width: 40, height: 40, borderRadius: "50%", background: `radial-gradient(circle at 38% 32%, ${acc}55, ${C.chrome})`, border: `1px solid ${acc}`, display: "grid", placeItems: "center", fontFamily: MONO, fontWeight: 700, fontSize: 12, color: accHi }}>A</div>
             <div>
               <div style={{ fontFamily: MONO, fontWeight: 700, fontSize: 13 }}>ATLAS <span style={{ color: acc, fontSize: 10, letterSpacing: ".1em" }}>ARC CMD</span></div>
@@ -105,11 +126,11 @@ export default function PhoneMissionIntro({ data, onBegin }: { data: MissionIntr
           </div>
 
           {/* message bubble: title + thesis */}
-          <div style={{ background: C.chip, border: `1px solid ${C.chipedge}`, borderRadius: "4px 16px 16px 16px", padding: "14px 16px", marginBottom: 12 }}>
+          <div className="pmi-bubble" style={{ background: C.chip, border: `1px solid ${C.chipedge}`, borderRadius: "4px 16px 16px 16px", padding: "14px 16px", marginBottom: 12 }}>
             <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 10 }}>
               <div style={{ minWidth: 0 }}>
                 <div style={{ fontFamily: MONO, fontSize: 10, letterSpacing: ".22em", textTransform: "uppercase", color: acc, fontWeight: 700, marginBottom: 7 }}>{data.caseNumber} · {data.codename}</div>
-                <div style={{ fontWeight: 800, fontSize: "clamp(22px,6vw,28px)", lineHeight: 1.06, marginBottom: 8 }}>{data.title}</div>
+                <div className="pmi-title" style={{ fontWeight: 800, fontSize: "clamp(22px,6vw,28px)", lineHeight: 1.06, marginBottom: 8 }}>{data.title}</div>
               </div>
               {portrait && (
                 <span aria-hidden style={{ flex: "0 0 auto", width: 46, height: 46, borderRadius: "50%", overflow: "hidden", border: `2px solid ${acc}`, boxShadow: `0 0 12px ${acc}88`, display: "block" }}>
@@ -117,11 +138,11 @@ export default function PhoneMissionIntro({ data, onBegin }: { data: MissionIntr
                 </span>
               )}
             </div>
-            <p style={{ fontSize: 13.5, color: C.dim, lineHeight: 1.48, margin: 0 }}>{data.thesis}</p>
+            <p className="pmi-thesis" style={{ fontSize: 13.5, color: C.dim, lineHeight: 1.48, margin: 0 }}>{data.thesis}</p>
           </div>
 
           {/* ATLAS voice-note player, styled like a phone voice message */}
-          <div style={{ display: "flex", alignItems: "center", gap: 11, background: C.chrome, border: `1px solid ${C.chipedge}`, borderLeft: `3px solid ${acc}`, borderRadius: "4px 16px 16px 16px", padding: "10px 14px 10px 11px", marginBottom: 12 }}>
+          <div className="pmi-voice" style={{ display: "flex", alignItems: "center", gap: 11, background: C.chrome, border: `1px solid ${C.chipedge}`, borderLeft: `3px solid ${acc}`, borderRadius: "4px 16px 16px 16px", padding: "10px 14px 10px 11px", marginBottom: 12 }}>
             <button className="pmi-play" onClick={toggle} aria-label={playing ? "Pause" : "Play"}
               style={{ flex: "0 0 auto", width: 38, height: 38, borderRadius: "50%", border: `1px solid ${acc}`, background: `radial-gradient(circle at 40% 35%, ${acc}2e, ${C.page})`, color: accHi, fontSize: 14, display: "grid", placeItems: "center", cursor: "pointer" }}>
               {playing ? "❚❚" : "▶"}
@@ -136,15 +157,15 @@ export default function PhoneMissionIntro({ data, onBegin }: { data: MissionIntr
           </div>
 
           {/* real-world stakes, styled as a flagged note */}
-          <div style={{ background: `${acc}14`, border: `1px solid ${acc}44`, borderRadius: 12, padding: "11px 14px", marginBottom: 16 }}>
+          <div className="pmi-out" style={{ background: `${acc}14`, border: `1px solid ${acc}44`, borderRadius: 12, padding: "11px 14px", marginBottom: 16 }}>
             <div style={{ fontFamily: MONO, fontSize: 9.5, letterSpacing: ".16em", color: acc, fontWeight: 700, textTransform: "uppercase", marginBottom: 4 }}>Out there</div>
             <p style={{ margin: 0, fontSize: 12.5, lineHeight: 1.46, color: C.ink }}>{data.realWorld}</p>
           </div>
 
-          <div style={{ fontFamily: MONO, fontSize: 10, letterSpacing: ".16em", textTransform: "uppercase", color: acc, marginBottom: 8 }}>By the end, you&rsquo;ll be able to</div>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 18 }}>
+          <div className="pmi-skills-label" style={{ fontFamily: MONO, fontSize: 10, letterSpacing: ".16em", textTransform: "uppercase", color: acc, marginBottom: 8 }}>By the end, you&rsquo;ll be able to</div>
+          <div className="pmi-skills" style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 18 }}>
             {data.skills.map((s) => (
-              <span key={s} style={{ display: "inline-flex", alignItems: "center", gap: 5, fontSize: 11.5, fontWeight: 600, color: C.ink, background: C.chip, border: `1px solid ${C.chipedge}`, borderRadius: 999, padding: "5px 10px" }}>
+              <span key={s} className="pmi-chip" style={{ display: "inline-flex", alignItems: "center", gap: 5, fontSize: 11.5, fontWeight: 600, color: C.ink, background: C.chip, border: `1px solid ${C.chipedge}`, borderRadius: 999, padding: "5px 10px" }}>
                 <span style={{ color: acc, fontWeight: 700 }}>✓</span>{s}
               </span>
             ))}
@@ -153,7 +174,7 @@ export default function PhoneMissionIntro({ data, onBegin }: { data: MissionIntr
           <button className="pmi-cta" onClick={onBegin} style={{ width: "100%", fontFamily: MONO, fontWeight: 700, fontSize: 14.5, letterSpacing: ".04em", color: "#17171f", background: `linear-gradient(180deg,${accHi},${acc})`, border: 0, borderRadius: 14, padding: "14px 20px", cursor: "pointer" }}>
             {data.beginLabel}
           </button>
-          <div style={{ textAlign: "center", fontFamily: MONO, fontSize: 10, letterSpacing: ".1em", color: C.faint, marginTop: 10, textTransform: "uppercase" }}>ATLAS · ARC COMMAND</div>
+          <div className="pmi-foot" style={{ textAlign: "center", fontFamily: MONO, fontSize: 10, letterSpacing: ".1em", color: C.faint, marginTop: 10, textTransform: "uppercase" }}>ATLAS · ARC COMMAND</div>
         </div>
       </div>
     </main>
