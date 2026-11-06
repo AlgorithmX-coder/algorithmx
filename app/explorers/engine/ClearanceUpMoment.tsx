@@ -21,6 +21,16 @@ import { useEffect, useMemo, useState } from "react";
 import { MONO } from "./tokens";
 import type { BlockTheme } from "../phone/blockIntroData";
 
+/**
+ * The hero name (clearance + XP number) switched from plain MONO to a
+ * stencilled display face — owner picked "Classified Upgrade" from a
+ * 5-concept review (OpenArt/Artifact mockup, 2026-11-06): a dossier stamp
+ * feel, the most tactile/spy-thriller of the five. Loaded here rather than
+ * tokens.ts since no other engine screen uses it (same pattern as Console/
+ * WarRoom's own IBM Plex Mono @import).
+ */
+const DISPLAY = '"Black Ops One", Impact, "Arial Narrow", sans-serif';
+
 // Fixed angles/delays (not random) so the burst is identical every run —
 // no hydration mismatch risk, and easy to tune by eye.
 const SPARKS = Array.from({ length: 14 }, (_, i) => ({
@@ -84,6 +94,18 @@ export function ClearanceUpMoment({
         animation: reduced ? undefined : "cuIn 400ms cubic-bezier(0.2,0,0,1)",
       }}
     >
+      {/* paper-grain texture — the dossier feels handled, not generated */}
+      <span
+        aria-hidden
+        style={{
+          position: "absolute",
+          inset: 0,
+          opacity: 0.12,
+          mixBlendMode: "overlay",
+          backgroundImage: "radial-gradient(rgba(255,255,255,0.5) 0.6px, transparent 0.6px)",
+          backgroundSize: "3px 3px",
+        }}
+      />
       <span
         aria-hidden
         style={{
@@ -146,16 +168,40 @@ export function ClearanceUpMoment({
           )}
           <span
             style={{
-              fontFamily: MONO,
-              fontSize: finale ? "clamp(34px, 9vw, 64px)" : "clamp(28px, 7vw, 48px)",
-              fontWeight: 800,
-              letterSpacing: "0.1em",
+              position: "relative",
+              fontFamily: DISPLAY,
+              fontSize: finale ? "clamp(26px, 7.4vw, 52px)" : "clamp(21px, 5.8vw, 40px)",
+              lineHeight: 1.08,
+              letterSpacing: "0.02em",
               color: acc,
-              textShadow: finale ? `0 0 18px ${acc}, 0 0 46px ${acc}88` : `0 0 28px ${acc}88`,
-              animation: reduced ? undefined : "cuScale 600ms 200ms cubic-bezier(0.2,0,0,1) both",
+              textAlign: "center",
+              maxWidth: "88vw",
+              padding: "0 12px",
+              textShadow: finale ? `0 2px 0 rgba(0,0,0,0.6), 0 0 46px ${acc}88` : `0 2px 0 rgba(0,0,0,0.6), 0 0 28px ${acc}88`,
+              animation: reduced ? undefined : "cuCut 260ms 160ms steps(2) both",
             }}
           >
             {to}
+          </span>
+          {/* ink-stamp slam — the dossier's own "CLEARANCE GRANTED" beat, timed
+              to land just after the stencilled name cuts in */}
+          <span
+            aria-hidden
+            style={{
+              fontFamily: DISPLAY,
+              fontSize: finale ? "clamp(14px, 3.6vw, 20px)" : "clamp(12px, 3.1vw, 17px)",
+              letterSpacing: "0.14em",
+              color: acc,
+              border: `3px solid ${acc}`,
+              borderRadius: 4,
+              padding: "6px 16px",
+              background: "rgba(0,0,0,0.25)",
+              transform: "rotate(-9deg)",
+              animation: reduced ? undefined : "cuStamp 340ms 420ms cubic-bezier(0.2,1.3,0.3,1) both",
+              opacity: reduced ? 1 : undefined,
+            }}
+          >
+            GRANTED
           </span>
           {finale && (
             <span style={{ fontFamily: MONO, fontSize: 12, letterSpacing: "0.1em", color: "#8FA2BF" }}>
@@ -168,13 +214,12 @@ export function ClearanceUpMoment({
           <span style={{ fontFamily: MONO, fontSize: 12, letterSpacing: "0.3em", color: acc }}>XP REWARD</span>
           <span
             style={{
-              fontFamily: MONO,
-              fontSize: finale ? "clamp(38px, 9vw, 68px)" : "clamp(32px, 8vw, 56px)",
-              fontWeight: 800,
-              letterSpacing: "0.1em",
+              fontFamily: DISPLAY,
+              fontSize: finale ? "clamp(30px, 7.6vw, 56px)" : "clamp(26px, 6.6vw, 46px)",
+              letterSpacing: "0.02em",
               color: accHi,
-              textShadow: finale ? `0 0 18px ${acc}, 0 0 46px ${acc}88` : `0 0 28px ${acc}88`,
-              animation: reduced ? undefined : "cuScale 600ms 200ms cubic-bezier(0.2,0,0,1) both",
+              textShadow: finale ? `0 2px 0 rgba(0,0,0,0.6), 0 0 46px ${acc}88` : `0 2px 0 rgba(0,0,0,0.6), 0 0 28px ${acc}88`,
+              animation: reduced ? undefined : "cuCut 260ms 160ms steps(2) both",
             }}
           >
             +{xp} XP
@@ -183,8 +228,15 @@ export function ClearanceUpMoment({
       )}
       <span style={{ fontFamily: MONO, fontSize: 11, letterSpacing: "0.08em", color: "#8FA2BF" }}>tap anywhere to continue</span>
       <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Black+Ops+One&display=swap');
         @keyframes cuIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes cuScale { from { opacity: 0; transform: scale(0.7); } to { opacity: 1; transform: scale(1); } }
+        @keyframes cuCut { from { opacity: 0; filter: blur(2px); } to { opacity: 1; filter: blur(0); } }
+        @keyframes cuStamp {
+          0% { opacity: 0; transform: rotate(-9deg) scale(1.6); }
+          55% { opacity: 1; transform: rotate(-9deg) scale(0.92); }
+          70% { transform: rotate(-9deg) scale(1.04); }
+          100% { opacity: 1; transform: rotate(-9deg) scale(1); }
+        }
         @keyframes cuPulse { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
         @keyframes cuRing { 0% { opacity: 0.55; transform: translate(-50%,-50%) scale(1); } 100% { opacity: 0; transform: translate(-50%,-50%) scale(220); } }
         @keyframes cuSpark {
