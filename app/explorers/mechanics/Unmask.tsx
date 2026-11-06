@@ -131,14 +131,19 @@ export default function Unmask({ payload, audio, onEvent, voiceOn }: MechanicPro
                           className="sr-btn"
                           disabled={submitted || locked}
                           aria-pressed={chosen}
-                          style={{ fontFamily: MONO, fontSize: 11, letterSpacing: "0.08em", padding: "6px 14px", borderRadius: 2, cursor: submitted || locked ? "default" : "pointer", color: filled ? T.paper : T.fileInk, background: bg, border: `1px solid ${T.fileInk}55` }}
+                          // Unchosen text/border follow the card's own ink, not a
+                          // hardcoded dark ink: on the dark case cards (Mission 5)
+                          // fileInk measured 1.12:1 against the card, invisible.
+                          style={{ fontFamily: MONO, fontSize: 11, fontWeight: 700, letterSpacing: "0.08em", padding: "6px 14px", borderRadius: 2, cursor: submitted || locked ? "default" : "pointer", color: filled ? T.paper : "var(--sf-ink)", background: bg, border: `1px solid ${filled ? bg : "color-mix(in srgb, var(--sf-ink) 55%, transparent)"}` }}
                         >
                           {opt === "REAL" ? "REALLY " + payload.brand.toUpperCase() : "A FAKE"}
                         </button>
                       );
                     })}
+                    {/* green/red blended 40% into the card's ink: >= 5:1 contrast on
+                        the light paper card (Mission 1) AND the dark ones (2, 5). */}
                     {showTruth && v && (
-                      <span role="status" style={{ fontSize: 12.5, lineHeight: 1.5, color: isCorrect ? "#1F7A4D" : "#8A2E2E", flex: 1, minWidth: 190 }}>
+                      <span role="status" style={{ fontSize: 12.5, lineHeight: 1.5, color: `color-mix(in srgb, ${isCorrect ? T.confirmedGreen : T.threatRed} 40%, var(--sf-ink))`, flex: 1, minWidth: 190 }}>
                         {isCorrect ? it.why : `Look again. ${it.why}`}
                       </span>
                     )}
