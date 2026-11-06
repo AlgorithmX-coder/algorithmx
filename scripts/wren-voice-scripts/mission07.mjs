@@ -181,5 +181,5 @@ export const mission07VoiceScripts = {
 
   // debrief
   "/audio/wren/m07p-debrief.mp3":
-    "[proud] You saw through the mask.",
+    "[proud] You saw through the mask, Agent. Well done.",
 };
