@@ -420,6 +420,7 @@ export const mission05: MissionManifest = {
               options: [
                 { id: "p1", label: "Stop, and don't tap anything yet", good: true, why: "Panic is his whole plan. The pause is what beats the clock." },
                 { id: "p2", label: "Tap fast before the timer runs out", good: false, why: "The timer is fake, and rushing is exactly what he wants." },
+                { id: "p3", label: "Reply first, asking if it's really them", good: false, why: "Replying talks straight to him, and he'll happily say yes. Pause, then check it yourself." },
               ],
             },
             {
@@ -428,6 +429,7 @@ export const mission05: MissionManifest = {
               options: [
                 { id: "a1", label: "Does the address match the name?", good: true, why: "Names are typed, addresses are hard to fake. This catches most of them." },
                 { id: "a2", label: "Does it have the right logo?", good: false, why: "Logos are copy-paste. A logo proves absolutely nothing." },
+                { id: "a3", label: "Is the name on it one you trust?", good: false, why: "The name tag is typed by whoever sent it, and anyone can type anything. Read the address instead." },
               ],
             },
             {
@@ -436,6 +438,7 @@ export const mission05: MissionManifest = {
               options: [
                 { id: "b1", label: "Open the real app yourself and look there", good: true, why: "If it's real, it'll be in your actual account. If not, it never was." },
                 { id: "b2", label: "Tap the link in the message to check", good: false, why: "His link goes to his page. Never check a message using the message's own link." },
+                { id: "b3", label: "Call the phone number written in the message", good: false, why: "That number goes to him, just like his link does. Never check a message using its own details. Open the real app." },
               ],
             },
             {
@@ -444,6 +447,7 @@ export const mission05: MissionManifest = {
               options: [
                 { id: "c1", label: "Tell an adult you trust", good: true, why: "A second pair of eyes catches what panic misses. Never the wrong move." },
                 { id: "c2", label: "Ignore it and hope for the best", good: false, why: "Hoping isn't a plan, and a real spear won't just go away. Say something." },
+                { id: "c3", label: "Keep quiet in case you get in trouble", good: false, why: "You're never in trouble for asking. A trusted adult would much rather you check than guess." },
               ],
             },
           ],

@@ -324,6 +324,7 @@ export const mission03: MissionManifest = {
               options: [
                 { id: "w1a", label: "otter", good: true, why: "Random, and about nothing. A perfect first word." },
                 { id: "w1b", label: "Jake", good: false, why: "His own name, right there on his profile. The first thing the rig tries." },
+                { id: "w1c", label: "biscuit", good: false, why: "That's his dog, tagged in every photo he's in. Pets sit near the top of the rig's list." },
               ],
             },
             {
@@ -332,6 +333,7 @@ export const mission03: MissionManifest = {
               options: [
                 { id: "w2a", label: "cannon", good: true, why: "Unrelated to word one, and unrelated to Jake. Exactly right." },
                 { id: "w2b", label: "Liverpool", good: false, why: "His favourite team is on the rig's word list. Skip it." },
+                { id: "w2c", label: "qwerty", good: false, why: "That's a row of keys, not a random word, and it's one of the first things the rig tries." },
               ],
             },
             {
@@ -340,6 +342,7 @@ export const mission03: MissionManifest = {
               options: [
                 { id: "w3a", label: "velvet", good: true, why: "Nothing links these three words. That randomness is the whole point." },
                 { id: "w3b", label: "password", good: false, why: "'password' sits at the very top of the rig's list. Never." },
+                { id: "w3c", label: "p@ssw0rd", good: false, why: "Swapping letters for symbols doesn't fool it. The rig knows every swap, so p@ssw0rd is still on the list." },
               ],
             },
             {
@@ -348,6 +351,7 @@ export const mission03: MissionManifest = {
               options: [
                 { id: "w4a", label: "thunder (a 4th random word)", good: true, why: "More length means more centuries. The rig hates every extra word." },
                 { id: "w4b", label: "2013 (his birth year)", good: false, why: "A year is guessable and barely adds length. Another random word is far stronger." },
+                { id: "w4c", label: "! (a symbol on the end)", good: false, why: "One symbol barely adds length, and the rig tacks a ! onto every guess anyway. Another random word does far more." },
               ],
             },
           ],
@@ -452,6 +456,7 @@ export const mission03: MissionManifest = {
               options: [
                 { id: "f1", label: "Change the reused email password now", good: true, why: "The master door, and the most-reused key. That's exactly where you start." },
                 { id: "f2", label: "Change the least-important account first", good: false, why: "Backwards. The master door and the reused key are what matter most." },
+                { id: "f3", label: "Buy a brand-new phone before anything else", good: false, why: "A new phone doesn't change a single password. The reused key still opens every door." },
               ],
             },
             {
@@ -460,6 +465,7 @@ export const mission03: MissionManifest = {
               options: [
                 { id: "m1", label: "Long, and different for every door", good: true, why: "Unique means one leak can never open a second door." },
                 { id: "m2", label: "One strong password used everywhere", good: false, why: "Even a strong key, reused, is one leak away from opening everything." },
+                { id: "m3", label: "Your name and birth year, with a !", good: false, why: "That's the exact shape at the top of the rig's list. Gone in under a second." },
               ],
             },
             {
@@ -468,6 +474,7 @@ export const mission03: MissionManifest = {
               options: [
                 { id: "r1", label: "A password manager", good: true, why: "It remembers forty strong passwords so you only remember one." },
                 { id: "r2", label: "A notes file called 'passwords'", good: false, why: "One peek and it's all gone. That's not a vault, it's a gift." },
+                { id: "r3", label: "A sticky note on the side of your screen", good: false, why: "Anyone walking past can read it. A manager locks them all away behind one key only you know." },
               ],
             },
             {
@@ -476,6 +483,7 @@ export const mission03: MissionManifest = {
               options: [
                 { id: "s1", label: "Turn on 2-step login where you can", good: true, why: "Even a guessed password fails without the second code. And nobody legit ever asks you for that code." },
                 { id: "s2", label: "Just add a ! to each password", good: false, why: "A ! is on the rig's list. It's not a second lock, it's decoration." },
+                { id: "s3", label: "Copy the same password onto a backup account", good: false, why: "That's the same key on another door, so one leak opens both. A second lock means a second code, not a second copy." },
               ],
             },
           ],

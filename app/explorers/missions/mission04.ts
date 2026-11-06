@@ -427,6 +427,7 @@ export const mission04: MissionManifest = {
               options: [
                 { id: "s1", label: "Auditing your recent posts like PACKRAT would", good: true, why: "You can't scrub what you haven't spotted. See the leaks first." },
                 { id: "s2", label: "Deleting the whole account in a panic", good: false, why: "You lose everything and learn nothing, and the old file stays built. Scrub smart." },
+                { id: "s3", label: "Deleting the post you're most embarrassed about first", good: false, why: "Embarrassing isn't the same as dangerous. Audit first, so you find the where-and-when that could put a stranger at your door." },
               ],
             },
             {
@@ -435,6 +436,7 @@ export const mission04: MissionManifest = {
               options: [
                 { id: "p1", label: "Turn location tags off", good: true, why: "Kills the silent geotag your phone staples onto every photo." },
                 { id: "p2", label: "Just crop the picture a bit", good: false, why: "Cropping doesn't touch the hidden location tag, the crest, or the sign." },
+                { id: "p3", label: "Add a caption saying it's an old photo", good: false, why: "A caption changes nothing PACKRAT reads. The location tag and the background still give the place away." },
               ],
             },
             {
@@ -443,6 +445,7 @@ export const mission04: MissionManifest = {
               options: [
                 { id: "v1", label: "Set personal accounts to private", good: true, why: "Only people you actually approve can read the crumbs." },
                 { id: "v2", label: "Keep everything public for more likes", good: false, why: "Every public crumb goes straight to the nest. Likes aren't worth a file." },
+                { id: "v3", label: "Accept every follow request to look friendly", good: false, why: "Private only works if you're picky. Accept everyone and the crumbs reach anyone, PACKRAT included." },
               ],
             },
             {
@@ -451,6 +454,7 @@ export const mission04: MissionManifest = {
               options: [
                 { id: "h1", label: "Use a different handle where you can", good: true, why: "Breaks the thread, so one name can't link all your accounts together." },
                 { id: "h2", label: "Use the same catchy handle everywhere", good: false, why: "That's the exact thread PACKRAT pulls. Same name links every crumb." },
+                { id: "h3", label: "Add your birth year to your usual handle", good: false, why: "Still the same thread, now with a birthday stapled on. A different handle is what breaks the link." },
               ],
             },
           ],
