@@ -160,7 +160,7 @@ function IntelSurface({ cfg, onSolved }: { cfg: IntelCfg; onSolved: () => void }
             <span style={{ fontFamily: MONO, fontSize: 11.5, color: C.mute }}>{cfg.via}</span>
           </div>
           <div style={{ padding: "12px 14px" }}>
-            {cfg.lines.map((l, i) => <div key={i} style={{ fontFamily: MONO, fontSize: 12.5, color: l.leak ? C.amber : C.soft, background: l.leak ? "rgba(232,163,61,.08)" : "transparent", borderRadius: 3, padding: l.leak ? "1px 4px" : 0, lineHeight: 1.7, wordBreak: "break-word" }}>{l.t || " "}</div>)}
+            {cfg.lines.map((l, i) => <div key={i} style={{ fontFamily: MONO, fontSize: 12.5, color: C.soft, lineHeight: 1.7, wordBreak: "break-word" }}>{l.t || " "}</div>)}
           </div>
         </div>
       )}
@@ -392,7 +392,7 @@ const CAP_STAGES: Stage[] = [
     { tag: "WEBSITE", via: "sableline.range/about", title: "Leadership", body: (<p style={{ ...para, fontFamily: MONO, color: C.indigo2 }}>press@sableline.range · format: first.last@sableline.range</p>), clue: "Scheme = first.last@sableline.range" },
     { tag: "SOCIAL", via: "public post", title: "Elena Ruiz", body: (<p style={para}>Excited to lead IT at <b style={{ color: C.ink }}>Sableline Group</b>.</p>), clue: "Elena Ruiz leads IT" },
   ], question: "The IT lead's login email?", placeholder: "x@sableline.range", accept: (v) => v.trim().toLowerCase() === "elena.ruiz@sableline.range", hint: "first.last: elena.ruiz@sableline.range", reveal: "elena.ruiz@sableline.range" },
-  { kind: "intel", title: "Subdomain", goal: "Find Sableline's internal console in the cert logs.", cfg: { sourceTag: "CERT TRANSPARENCY", via: "crt.sh · sableline.range", lines: [{ t: "www.sableline.range" }, { t: "console.sableline.range", leak: true }], question: "The internal subdomain?", placeholder: "x.sableline.range", accept: (v) => v.trim().toLowerCase() === "console.sableline.range", hint: "console.sableline.range", reveal: "console.sableline.range" } },
+  { kind: "intel", title: "Subdomain", goal: "Find Sableline's internal console in the cert logs.", cfg: { sourceTag: "CERT TRANSPARENCY", via: "crt.sh · sableline.range", lines: [{ t: "www.sableline.range" }, { t: "mail.sableline.range" }, { t: "console.sableline.range", leak: true }, { t: "cdn.sableline.range" }, { t: "status.sableline.range" }], question: "The internal subdomain?", placeholder: "x.sableline.range", accept: (v) => v.trim().toLowerCase() === "console.sableline.range", hint: "console.sableline.range", reveal: "console.sableline.range" } },
   { kind: "intel", title: "Leaked secret", goal: "Finish it: dork out the pasted secret and read the password.", cfg: { sourceTag: "SEARCH RESULT", via: "paste.range/s9 · 'sableline test'", search: { placeholder: "filetype:env sableline", match: (q) => /filetype:|\.env|sableline|password|cred/i.test(q), dork: "sableline filetype:env" }, lines: [{ t: "HOST=console.sableline.range" }, { t: "USER=elena.ruiz" }, { t: "PASS=Sab1eline_Dev!", leak: true }], question: "The leaked password?", placeholder: "the password", accept: (v) => v.trim() === "Sab1eline_Dev!", hint: "PASS line: Sab1eline_Dev!", reveal: "Sab1eline_Dev!" } },
 ];
 
