@@ -432,16 +432,18 @@ export const mission03: MissionManifest = {
       practiceIntroVoice: "/audio/wren/m03-c7-practice.mp3",
       intel: {
         beats: [
-          "So how do you actually lock every door, without a genius memory? A real plan, in four steps.",
+          "So how do you actually lock every door, without a genius memory? A real plan, in five steps.",
           "Step one, the emergency. Change your ONE most-reused password today, starting with your email. That snaps the master key in half.",
           "Steps two and three, go long and go unique. Three random words each, a different set for every important door. Never the same key twice.",
           "Step four, the cheat code. A password manager remembers all of them, so you only remember one. That's how the pros run forty strong passwords without breaking a sweat.",
+          "Step five, a second lock. Turn on 2-step login wherever you can. Then even a guessed password isn't enough, because the rig still needs the code sent to YOUR phone. And nobody real will ever ask you for that code.",
         ],
         beatAudio: [
           "/audio/wren/m03-c7-b1.mp3",
           "/audio/wren/m03-c7-b2.mp3",
           "/audio/wren/m03-c7-b3.mp3",
           "/audio/wren/m03-c7-b4.mp3",
+          "/audio/wren/m03-c7-b5.mp3",
         ],
       },
       fieldwork: {
