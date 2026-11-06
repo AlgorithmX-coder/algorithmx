@@ -491,14 +491,12 @@ export default function MissionRuntime({ manifest, devStartBeat, onExit, onNextC
     } catch {}
   }, []);
   const toggleVoice = () => {
-    setVoiceOn((v) => {
-      const n = !v;
-      try {
-        localStorage.setItem("explorers:voice", n ? "1" : "0");
-      } catch {}
-      if (!n) stopWren();
-      return n;
-    });
+    const n = !voiceOn;
+    setVoiceOn(n);
+    try {
+      localStorage.setItem("explorers:voice", n ? "1" : "0");
+    } catch {}
+    if (!n) stopWren();
   };
   const voiceRate = useVoiceRate();
   const cycleVoiceRate = () => setVoiceRate(VOICE_RATES[(VOICE_RATES.indexOf(voiceRate) + 1) % VOICE_RATES.length]);
@@ -1066,6 +1064,18 @@ function LearnStage({ cycle, cycleIndex, reduced, audio, emit, onNext, voiceOn }
   // Anti-brute-force (#4): a wrong "your call" pick locks the options for a
   // few seconds and tells them to read it again, so they can't spam to green.
   const [retryLock, setRetryLock] = useState(false);
+  // The "Now let's put it to work" bubble (and its PRACTICE IT button) must
+  // appear when its OWN line starts, not when the last beat merely appears:
+  // otherwise it animated in under the previous line's audio ("the animation
+  // plays but nothing reads it out", UAT Mission 5), and its button was
+  // already there for a Skip press to click, cutting the line 0.9s in.
+  const [lastBeatEnded, setLastBeatEnded] = useState(false);
+  const bubbleReady = !!artifact || !!p || !narrated || lastBeatEnded;
+  useEffect(() => {
+    if (!narrated || !beatsDone || lastBeatEnded) return;
+    const t = setTimeout(() => setLastBeatEnded(true), 30000); // never strand it if audio can't play
+    return () => clearTimeout(t);
+  }, [narrated, beatsDone, lastBeatEnded]);
 
   // Play the current beat's clip; when it finishes, reveal the next one.
   useIsoLayoutEffect(() => {
@@ -1080,6 +1090,7 @@ function LearnStage({ cycle, cycleIndex, reduced, audio, emit, onNext, voiceOn }
     const clip = beatAudio?.[shown - 1];
     if (!clip) {
       stopWren();
+      if (shown >= beats.length) setLastBeatEnded(true);
       return;
     }
     let cancelled = false;
@@ -1104,7 +1115,10 @@ function LearnStage({ cycle, cycleIndex, reduced, audio, emit, onNext, voiceOn }
         // still won't voice this line, since it only becomes `lessonDone`
         // via `settled` from a correct "your call" answer, a path this fix
         // doesn't touch.)
+        setLastBeatEnded(true);
         playWren(cycle.practiceIntroVoice, true);
+      } else {
+        setLastBeatEnded(true);
       }
     });
     return () => {
@@ -1265,7 +1279,7 @@ function LearnStage({ cycle, cycleIndex, reduced, audio, emit, onNext, voiceOn }
       </div>
       )}
 
-      {lessonDone && (
+      {lessonDone && bubbleReady && (
         <div className="sr-msg" style={{ display: "grid", gap: 18, marginTop: 22 }}>
           {/* WREN bridges into practice so the lone button never floats in empty
               space, and the child knows exactly what the next screen asks. */}
