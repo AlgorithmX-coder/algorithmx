@@ -1,9 +1,10 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, type CSSProperties } from "react";
 import Link from "next/link";
 import type { IndividualRow } from "@/app/lib/individualOps";
 import { SearchIcon } from "../icons";
+import { courseColor } from "../courseColors";
 
 /* Client-side search/filter/sort over an already-fetched list. See
  * SchoolsTable.tsx for why this stays in-browser rather than a new
@@ -54,7 +55,17 @@ export default function IndividualsTable({ rows }: { rows: IndividualRow[] }) {
           <div className="ad-pills" role="group" aria-label="Filter by course">
             <button type="button" className="ad-pill" aria-pressed={course === "all"} onClick={() => setCourse("all")}>All</button>
             {courses.map((c) => (
-              <button key={c} type="button" className="ad-pill" aria-pressed={course === c} onClick={() => setCourse(c)}>{c}</button>
+              <button
+                key={c}
+                type="button"
+                className="ad-pill"
+                data-course
+                style={{ "--c": courseColor(c) } as CSSProperties}
+                aria-pressed={course === c}
+                onClick={() => setCourse(c)}
+              >
+                {c}
+              </button>
             ))}
           </div>
         )}
@@ -78,7 +89,15 @@ export default function IndividualsTable({ rows }: { rows: IndividualRow[] }) {
           {filtered.map((r) => (
             <tr key={r.id}>
               <td><Link href={`/admin/individuals/${r.id}`}><b>{r.name ?? r.email}</b></Link><small>{r.name ? r.email : ""}</small></td>
-              <td>{r.products.map((p) => p.name).join(", ") || "—"}</td>
+              <td>
+                {r.products.length ? (
+                  <div className="ad-course-list">
+                    {r.products.map((p) => (
+                      <span key={p.slug} className="ad-course" style={{ "--c": courseColor(p.name) } as CSSProperties}>{p.name}</span>
+                    ))}
+                  </div>
+                ) : "—"}
+              </td>
               <td>{r.children.length ? r.children.map((c) => c.name).join(", ") : "—"}</td>
               <td>{day(r.createdAt)}</td>
               <td>{day(r.lastActive)}</td>
