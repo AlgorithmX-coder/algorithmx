@@ -50,6 +50,7 @@ function Hints({ hints, revealLabel, onReveal }: { hints: string[]; revealLabel?
 /* ── pick: scan a list of rows and click the suspicious one ── */
 type Row = { cells: string[]; bad: boolean; near?: boolean; note: string };
 function PickSurface({ header, rows, hint, onSolved }: { header: string; rows: Row[]; hint: string; onSolved: () => void }) {
+  const shuffled = useShuffled(rows);
   const [picked, setPicked] = useState<number | null>(null);
   const [verdict, setVerdict] = useState<{ ok: boolean; note: string } | null>(null);
   const [solved, setSolved] = useState(false);
@@ -58,7 +59,7 @@ function PickSurface({ header, rows, hint, onSolved }: { header: string; rows: R
   // shows AFTER you commit, so no line gives the answer away on tap.
   function confirm() {
     if (picked === null || solved) return;
-    const r = rows[picked];
+    const r = shuffled[picked];
     setVerdict({ ok: r.bad, note: r.note });
     if (r.bad && !solved) { setSolved(true); onSolved(); }
   }
@@ -67,7 +68,7 @@ function PickSurface({ header, rows, hint, onSolved }: { header: string; rows: R
       <div style={{ fontFamily: MONO, fontSize: 11, letterSpacing: ".1em", color: C.indigo, fontWeight: 700, marginBottom: 4 }}>⌦ {header}</div>
       <div style={{ fontFamily: MONO, fontSize: 11, color: C.mute, marginBottom: 10 }}>// read every line, select the suspicious one, then confirm your accusation</div>
       <div style={{ display: "grid", gap: 3 }}>
-        {rows.map((r, i) => (
+        {shuffled.map((r, i) => (
           <div key={i}>
             <button onClick={() => { if (!solved) { setPicked(i); setVerdict(null); } }} disabled={solved} className="co-opt" style={{ width: "100%", textAlign: "left", display: "flex", gap: 10, alignItems: "center", flexWrap: "wrap", padding: "7px 10px", borderRadius: 7, border: `1px solid ${solved && r.bad ? C.green : picked === i ? C.indigo : "transparent"}`, background: picked === i ? "rgba(139,123,255,0.08)" : C.carbon, cursor: solved ? "default" : "pointer" }}>
               {r.cells.map((c, j) => <span key={j} style={{ fontFamily: MONO, fontSize: 11.5, color: j === 0 ? C.mute : j === r.cells.length - 1 ? (c.includes("40") || c === "200" ? C.green : C.soft) : C.soft, minWidth: j === 0 ? 64 : "auto", flex: j === 1 ? 1 : "none" }}>{c}</span>)}
