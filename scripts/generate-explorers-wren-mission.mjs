@@ -85,7 +85,8 @@ const MID_PAUSE = 0.2;
 const strayPauses = (words) =>
   words.slice(1).flatMap((w, i) => {
     const gap = w.start - words[i].end;
-    return gap >= MID_PAUSE && !/[.,?!:;…-]$/.test(words[i].text) ? [`${words[i].text} | ${w.text} (${gap.toFixed(2)}s)`] : [];
+    // the transcriber keeps a closing quote on the word: `minutes."` still ends a sentence
+    return gap >= MID_PAUSE && !/[.,?!:;…—–-]["'”’)\]]*$/.test(words[i].text) ? [`${words[i].text} | ${w.text} (${gap.toFixed(2)}s)`] : [];
   });
 
 async function generate(text) {
