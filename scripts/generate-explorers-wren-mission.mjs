@@ -75,6 +75,18 @@ const MIN_MATCH = 0.9;
 const MAX_TAKES = 4;
 // v3 reads a mid-clip [tag] as a tone change, so clips carry one tag at the start.
 const ONE_TAG = /^\[[a-z ]+\][^[]*$/;
+// UAT M2-3a: v3 reads quote marks as a cue and pauses at them ("paid the ...
+// 'postage'"). The screen keeps its quotes; what she's sent to read doesn't.
+// Apostrophes inside a word ("Leo's", "don't") stay.
+const spoken = (text) => text.replace(/["“”]/g, "").replace(/(^|[^A-Za-z])['‘’]|['‘’](?![A-Za-z])/g, "$1");
+// A silence this long between two words, where the line has no punctuation,
+// is a stray pause (normal word gaps are under 0.1s). Such a take is retaken.
+const MID_PAUSE = 0.2;
+const strayPauses = (words) =>
+  words.slice(1).flatMap((w, i) => {
+    const gap = w.start - words[i].end;
+    return gap >= MID_PAUSE && !/[.,?!:;…-]$/.test(words[i].text) ? [`${words[i].text} | ${w.text} (${gap.toFixed(2)}s)`] : [];
+  });
 
 async function generate(text) {
   const res = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${VOICE_ID}?output_format=mp3_44100_128`, {
@@ -236,24 +248,26 @@ for (const [path, text] of entries) {
     const clean = [];
     let best = null;
     for (let take = 1; clean.length < TAKES && take < TAKES + MAX_TAKES; take++) {
-      const buf = await generate(text);
+      const buf = await generate(spoken(text));
       const { words, text: heard } = await wordTimestamps(buf);
       const score = matchScore(text, heard);
       const missed = missedWords(text, heard);
-      console.log(`  take ${take}: match ${(score * 100).toFixed(0)}%${missed.length ? `, words not heard: ${missed.join(" ")}` : ""}`);
+      const pauses = strayPauses(words);
+      console.log(`  take ${take}: match ${(score * 100).toFixed(0)}%${missed.length ? `, words not heard: ${missed.join(" ")}` : ""}${pauses.length ? `, stray pause: ${pauses.join("; ")}` : ""}`);
       if (!words.length) continue;
       const rawPath = join(tmp, `${filename}.${take}.raw.mp3`);
       await writeFile(rawPath, buf);
-      const t = { rawPath, words, heard, score, take, missed, ...voiceProfile(rawPath, text) };
-      if (score >= MIN_MATCH && !missed.length) clean.push(t);
-      const better = !best || (score >= MIN_MATCH) > (best.score >= MIN_MATCH) || missed.length < best.missed.length || (missed.length === best.missed.length && score > best.score);
+      const t = { rawPath, words, heard, score, take, missed, pauses, ...voiceProfile(rawPath, text) };
+      if (score >= MIN_MATCH && !missed.length && !pauses.length) clean.push(t);
+      const flaws = (x) => x.missed.length + x.pauses.length;
+      const better = !best || (score >= MIN_MATCH) > (best.score >= MIN_MATCH) || flaws(t) < flaws(best) || (flaws(t) === flaws(best) && score > best.score);
       if (better) best = t;
     }
     if (!best) throw new Error("no words returned from STT");
     if (best.score < MIN_MATCH) throw new Error(`best take only matched ${(best.score * 100).toFixed(0)}%: "${best.heard}"`);
     // Usually the transcriber's spelling ("you won" -> "U1"), but it may be a
     // real slip: kept for a human to check rather than failing the run.
-    if (!clean.length) console.log(`  CHECK BY EAR: "${best.missed.join(" ")}" not in transcript "${best.heard}"`);
+    if (!clean.length) console.log(`  CHECK BY EAR: ${best.missed.length ? `"${best.missed.join(" ")}" not in transcript "${best.heard}"` : ""}${best.pauses.length ? ` stray pause ${best.pauses.join("; ")}` : ""}`);
     recorded.push({ path, text, filename, takes: clean.length ? clean : [best] });
   } catch (e) {
     console.error(`  FAILED: ${e.message}`);
@@ -284,7 +298,7 @@ if (recorded.length) {
       const { fadeStart, quiet } = finish(pick.rawPath, outPath, lastWordEnd);
       const lufs = loudness(outPath);
       console.log(`${r.filename}: take ${pick.take} of ${r.takes.length} (${pick.f0.toFixed(0)} Hz, ${pick.rate.toFixed(1)} l/s), fade ${fadeStart.toFixed(2)}s (quiet ${quiet.toFixed(2)}s), ${lufs} LUFS`);
-      log.push({ clip: r.path, tag: r.text.match(/^\[([a-z ]+)\]/)[1], voice: VOICE_ID, model: MODEL_ID, settings: VOICE_SETTINGS, take: pick.take, cleanTakes: r.takes.length, match: +pick.score.toFixed(3), missed: pick.missed, heard: pick.heard, f0: +pick.f0.toFixed(1), rate: +pick.rate.toFixed(2), target, lastWordEnd, fadeStart, lufs });
+      log.push({ clip: r.path, tag: r.text.match(/^\[([a-z ]+)\]/)[1], voice: VOICE_ID, model: MODEL_ID, settings: VOICE_SETTINGS, take: pick.take, cleanTakes: r.takes.length, match: +pick.score.toFixed(3), missed: pick.missed, pauses: pick.pauses, spoken: spoken(r.text), heard: pick.heard, f0: +pick.f0.toFixed(1), rate: +pick.rate.toFixed(2), target, lastWordEnd, fadeStart, lufs });
       ok++;
     } catch (e) {
       console.error(`${r.filename}: FAILED: ${e.message}`);
