@@ -415,7 +415,7 @@ export const mission02: MissionManifest = {
       fieldwork: {
         verb: "BUILD",
         payload: {
-          intro: "Leo paid the 'postage' and typed his password into the SKINSTORM page.",
+          intro: "Okay, so Leo's made the mistake. He paid the 'postage' and typed his password into the SKINSTORM page. Now what happens? Remember the four steps you just learned, and pick the right move for each one.",
           target: "Leo's rescue plan",
           slots: [
             {

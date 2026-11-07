@@ -146,7 +146,7 @@ export const mission02VoiceScripts = {
   "/audio/wren/m02-c7-practice.mp3":
     "[warm] Now let's put it to work, Agent. Leo just got caught by SKINSTORM, paid the postage and typed in his password. Build his rescue plan, one right move at a time.",
   "/audio/wren/m02-c7-play.mp3":
-    "[warm] Leo paid the 'postage' and typed his password into the SKINSTORM page.",
+    "[warm] Okay, so Leo's made the mistake. He paid the 'postage' and typed his password into the SKINSTORM page. Now what happens? Remember the four steps you just learned, and pick the right move for each one.",
 
   // the test
   "/audio/wren/m02-catch-intro.mp3":
