@@ -53,7 +53,7 @@ export const mission01: MissionManifest = {
       "Check links, senders, QR codes and downloads",
       "Beat the pattern, and bounce back if you slip",
     ],
-    wrenLine: "Seven skills, then a test to close the case. This test makes you THINK, it won't just ask what I said. So learn it properly. Ready?",
+    wrenLine: "You'll learn seven skills, then take a test to close the case. The test makes you think, and it won't just ask you to repeat what I said. So learn each skill properly. Ready?",
   },
 
   cycles: [
@@ -70,15 +70,15 @@ export const mission01: MissionManifest = {
       },
       promise: "You'll learn the feelings a scammer fakes, and how to catch it.",
       instruction: "Read this NEW message. Select every part that's trying to pressure you, then submit.",
-      practiceIntro: "Now let's put it to work, Agent. On the next screen I'll show you a NEW message you haven't seen. Your job: tap every part that's trying to pressure you, then hit submit. Find them all and this skill is yours.",
+      practiceIntro: "Now let's put it to work, Agent. On the next screen, I'll show you a new message you haven't seen before. Your job is to tap every part that's trying to pressure you, then hit submit. Find them all, and this skill is yours.",
       practiceIntroVoice: "/audio/wren/m01-c1-practice.mp3",
       intel: {
         beats: [
-          "A scammer can't reach through the screen and make you do anything. So they do the next best thing. They make you FEEL something strong, fast.",
-          "There are three feelings they fake again and again. Fear: your account's in danger. Greed: you've won something. And rush: act NOW, or lose it.",
+          "A scammer can't reach through the screen and make you do anything. So they do the next best thing. They make you feel something strong, and they make you feel it fast.",
+          "There are three feelings they fake again and again. The first is fear, like being told your account's in danger. The second is greed, like being told you've won something. The third is rush, like being told to act now or lose it.",
           "Here's the tell most people miss. A real message gives you time. A scam slams a clock on you, so you move before your brain catches up.",
           "So no real company will ever say your account gets deleted in an hour. That countdown isn't a warning. It's the bait.",
-          "Which means the feeling itself is your clue. The moment a message makes you panic or rush, that's the signal to STOP, not to tap.",
+          "That means the feeling itself is your clue. The moment a message makes you panic or rush, that's your signal to stop, not to tap.",
         ],
         beatAudio: [
           "/audio/wren/m01-c1-b1.mp3",
@@ -118,11 +118,11 @@ export const mission01: MissionManifest = {
             {
               id: "now",
               label: "The push",
-              reveal: "See the word NOW? Every line is shoving you to act this second. That jolt of panic you feel reading it? THAT feeling is your signal, to stop, not to tap.",
+              reveal: "See the word now? Every line is shoving you to act this second. Do you feel that jolt of panic when you read it? That feeling is your signal to stop, not to tap.",
               audio: "/audio/wren/m01-c1-art-now.mp3",
             },
           ],
-          doneLine: "That's the whole pressure play. Fear, then a fake clock, then a push to act now. Some scams fake good news instead, like winning a prize. But underneath, it's the same trick. A strong feeling, to rush you past thinking.",
+          doneLine: "That's the whole pressure play. First comes fear, then a fake clock, then a push to act now. Some scams fake good news instead, like winning a prize. But underneath, it's the same trick. A strong feeling rushes you past thinking.",
           doneAudio: "/audio/wren/m01-c1-art-done.mp3",
         },
       },
@@ -136,7 +136,7 @@ export const mission01: MissionManifest = {
           // official-looking decoys (automated notice, reference number, unsubscribe
           // footer). Miss one tell OR tap a safe line and the submit fails, so it's
           // a real discrimination call, not "tap the shouty ones".
-          intro: "A brand-new message just landed on Sam's phone. Find EVERY part that's trying to pressure him. Some safe-looking lines are there to throw you.",
+          intro: "A brand-new message just landed on Sam's phone. Find every part that's trying to pressure him. Some safe-looking lines are only there to throw you off.",
           device: { app: "TEXTS", owner: "SAM'S PHONE" },
           header: [
             { label: "FROM:", seg: { id: "from", text: "+44 7700 900418 (unknown)" } },
@@ -174,7 +174,7 @@ export const mission01: MissionManifest = {
               why: "Everyone's-doing-it pressure, scaring you that you'll be the one who loses out.",
             },
           ],
-          doneLine: "Spot on. Four pressure tricks in one message: greed, a countdown, a threat, and fear of missing out. The automated notice, the reference number and the unsubscribe line are just normal message bits, there to fool you.",
+          doneLine: "Spot on. There were four pressure tricks in that message: greed, a countdown, a threat, and fear of missing out. The automated notice, the reference number and the unsubscribe line are just normal parts of a message. They're only there to fool you.",
           doneAudio: "/audio/wren/m01-c1-review.mp3",
         },
       },
@@ -188,21 +188,21 @@ export const mission01: MissionManifest = {
       concept: "The real owner is the last two chunks before the first slash",
       checkpoint: {
         questions: [
-          { id: "m01-c2-chk1", question: "Read the link. Who really owns it?", evidence: "login.gamehub-rewards.co/verify", options: ["gamehub-rewards.co", "login.gamehub-rewards", "the real gamehub.com"], answer: 0, ok: "Right. The owner is the last two chunks before the first slash: gamehub-rewards.co. That is not the real GameHub.", okVoice: "/audio/wren/m01-c2-chk1-ok.mp3" },
-          { id: "m01-c2-chk2", question: "Is this the real paypal.com?", evidence: "secure.paypal.com.account-fix.net/login", options: ["Yes, paypal.com is right there in it", "No, the owner is account-fix.net", "Yes, it starts with the word secure"], answer: 1, ok: "Nice. The paypal.com bit is just decoration. The owner is account-fix.net, the last two chunks before the slash. Fake.", okVoice: "/audio/wren/m01-c2-chk2-ok.mp3" },
+          { id: "m01-c2-chk1", question: "Read the link. Who really owns it?", evidence: "login.gamehub-rewards.co/verify", options: ["gamehub-rewards.co", "login.gamehub-rewards", "the real gamehub.com"], answer: 0, ok: "Right. The owner is the last two chunks before the first slash, and that's gamehub-rewards.co. That is not the real GameHub.", okVoice: "/audio/wren/m01-c2-chk1-ok.mp3" },
+          { id: "m01-c2-chk2", question: "Is this the real paypal.com?", evidence: "secure.paypal.com.account-fix.net/login", options: ["Yes, paypal.com is right there in it", "No, the owner is account-fix.net", "Yes, it starts with the word secure"], answer: 1, ok: "Nice. The paypal.com bit is just decoration. The owner is account-fix.net, the last two chunks before the slash. So it's a fake.", okVoice: "/audio/wren/m01-c2-chk2-ok.mp3" },
         ],
       },
       promise: "You'll learn to find who a link REALLY goes to, even the sneaky ones.",
       instruction: "Sort each address: really the brand, or a disguise?",
-      practiceIntro: "Now let's put it to work, Agent. A whole batch of addresses is coming up next, every one claiming to be PixelPlay. Sort each one: really PixelPlay, or a disguise wearing the name? Use the rule, and the sneaky ones won't fool you.",
+      practiceIntro: "Now let's put it to work, Agent. A whole batch of addresses is coming up next, and every one claims to be PixelPlay. Sort each one. Is it really PixelPlay, or a disguise wearing the name? Use the rule, and the sneaky ones won't fool you.",
       practiceIntroVoice: "/audio/wren/m01-address-practice.mp3",
       intel: {
         beats: [
-          "Every web address has one part that can't lie: the real name. Everything else is decoration the scammer gets to choose.",
+          "Every web address has one part that can't lie, and that's the real name. Everything else is decoration that the scammer gets to choose.",
           "To find the real name, do two things. Find the first single slash. Then read the two chunks right before it.",
-          "So in account.gamehub.com/login, the two chunks before the slash are gamehub.com. That's the real owner. “account” is just a room inside their house.",
-          "Now the trick that fools grown-ups. Look at gamehub.com.rewards-login.net. It SAYS gamehub.com, but the last two chunks are rewards-login.net. The real name is glued on the front to trick you.",
-          "So never read left to right and relax the moment you see a name you know. Find the slash, take the last two chunks. That's who you're really talking to.",
+          "So in account.gamehub.com/login, the two chunks before the slash are gamehub.com. That's the real owner. The word account is just a room inside their house.",
+          "Now for the trick that fools grown-ups. Look at gamehub.com.rewards-login.net. It says gamehub.com, but the last two chunks are rewards-login.net. The real name is glued on the front to trick you.",
+          "So never read from left to right and relax the moment you see a name you know. Find the slash, and take the two chunks right before it. That's who you're really talking to.",
         ],
         beatAudio: [
           "/audio/wren/m01-c2-b1.mp3",
@@ -218,7 +218,7 @@ export const mission01: MissionManifest = {
           // PRACTICE the address rule on SIX fresh addresses (brand never seen in
           // the lesson). The child must apply "last two chunks before the first
           // slash" to each one to place it, not recognise a taught example.
-          intro: "A whole batch of addresses, every one claiming to be PixelPlay. Sort each one: really PixelPlay, or a disguise wearing the name? Some are sneaky. Use the rule.",
+          intro: "Here's a whole batch of addresses, and every one claims to be PixelPlay. Sort each one. Is it really PixelPlay, or a disguise wearing the name? Some are sneaky, so use the rule.",
           buckets: [
             { id: "real", label: "REALLY PIXELPLAY", hint: "ends in pixelplay.com" },
             { id: "fake", label: "A DISGUISE", hint: "a stranger's site" },
@@ -253,13 +253,13 @@ export const mission01: MissionManifest = {
       },
       promise: "You'll learn to see past the name and read who REALLY sent it.",
       instruction: "Unmask each sender, then call real or fake.",
-      practiceIntro: "Now let's put it to work, Agent. A pile of messages is up next, every one signed GameHub. Tap each sender to reveal the real address hiding behind the name, then call it real or fake. Some hide it well.",
+      practiceIntro: "Now let's put it to work, Agent. A pile of messages is up next, and every one is signed GameHub. Tap each sender to reveal the real address hiding behind the name, then call it real or fake. Some of them hide it well.",
       practiceIntroVoice: "/audio/wren/m01-sender-practice.mp3",
       intel: {
         beats: [
           "Every message shows a name at the top, like GameHub Support. But that name is just a label. The sender can type whatever they want there.",
           "The truth is hiding one tap away. Behind the name sits the real email address, and that part is far harder to fake.",
-          "So you read that address exactly like a link. Find the real owner, the last two chunks. If it isn't the brand, then the friendly name was a lie.",
+          "So you read that address exactly like a link. Find the real owner, which is the last two chunks. If it isn't the brand, then the friendly name was a lie.",
           "Never trust the name on its own. Peel it back, read the real address, and only then decide.",
         ],
         beatAudio: [
@@ -272,7 +272,7 @@ export const mission01: MissionManifest = {
       fieldwork: {
         verb: "UNMASK",
         payload: {
-          intro: "A pile of messages, all signed GameHub. Tap each one to reveal the real address, then call it. Some hide the fake well.",
+          intro: "Here's a pile of messages, all signed GameHub. Tap each one to reveal the real address, then call it real or fake. Some of them hide the fake well.",
           brand: "GameHub",
           items: [
             { id: "s1", displayName: "GameHub Support", address: "support@gamehub.com", real: true, why: "The real owner is gamehub.com. The name and the address match. Genuine." },
@@ -282,7 +282,7 @@ export const mission01: MissionManifest = {
             { id: "s5", displayName: "GameHub Accounts", address: "help@accounts.gamehub.com", real: true, why: "The last two chunks are gamehub.com. 'accounts' is just another room inside the real site." },
             { id: "s6", displayName: "GameHub Care", address: "care@gamehub.support-team.com", real: false, why: "The real owner is support-team.com, a stranger. 'gamehub' is just a room in the middle, not the owner." },
           ],
-          doneLine: "Let's check those back. The real ones all ended in gamehub.com, so the name and the address matched. The fakes hid a stranger's address behind the GameHub name. Names lie, but addresses don't, so always read the address, not the name.",
+          doneLine: "Let's look back at those. The real ones all ended in gamehub.com, so the name and the address matched. The fakes hid a stranger's address behind the GameHub name. Names lie, but addresses don't, so always read the address, not the name.",
           doneAudio: "/audio/wren/m01-c-sender-review.mp3",
         },
       },
@@ -302,14 +302,14 @@ export const mission01: MissionManifest = {
       },
       promise: "You'll learn to see where a QR code REALLY takes you, before it opens.",
       instruction: "Scan each code, read the address, then call it.",
-      practiceIntro: "Now let's put it to work, Agent. Some QR codes just turned up, each one claiming to be PayZone, the parking app. Scan each code to reveal where it really goes, then call it real or fake.",
+      practiceIntro: "Now let's put it to work, Agent. Some QR codes just turned up, and each one claims to be PayZone, the parking app. Scan each code to reveal where it really goes, then call it real or fake.",
       practiceIntroVoice: "/audio/wren/m01-qrcode-practice.mp3",
       intel: {
         beats: [
-          "Here's a sneaky one. A QR code is just a link in disguise, a little pattern of squares your camera turns into a web address.",
-          "Scammers love them, because you can't SEE where a code goes just by looking. They stick fake ones on posters, car parks, even inside emails.",
+          "Here's a sneaky one. A QR code is just a link in disguise. It's a little pattern of squares that your camera turns into a web address.",
+          "Scammers love them, because you can't see where a code goes just by looking. They stick fake ones on posters, in car parks, and even inside emails.",
           "But your phone has your back. When you scan a code, it shows you the address FIRST, before it opens anything. That little preview is the whole game.",
-          "So read that address just like any link. Find the real owner, the last two chunks. A stranger? Don't open it. Same rule, brand-new trick.",
+          "So read that address just like any link. Find the real owner, which is the last two chunks. If it's a stranger, don't open it. It's the same rule for a brand-new trick.",
         ],
         beatAudio: [
           "/audio/wren/m01-c-qr-b1.mp3",
@@ -321,7 +321,7 @@ export const mission01: MissionManifest = {
       fieldwork: {
         verb: "UNMASK",
         payload: {
-          intro: "Some QR codes have turned up, each claiming to be PayZone, the parking app. Scan each one to reveal where it really goes, then call it.",
+          intro: "Some QR codes have turned up, and each one claims to be PayZone, the parking app. Scan each one to reveal where it really goes, then call it real or fake.",
           brand: "PayZone",
           sourceLabel: "QR CODE",
           revealText: "▸ TAP TO SCAN THE CODE",
@@ -332,7 +332,7 @@ export const mission01: MissionManifest = {
             { id: "q4", displayName: "Free parking offer", address: "payzone-refund.net", real: false, why: "The owner is payzone-refund.net, a name a stranger made up. The real one is simply payzone.com." },
             { id: "q5", displayName: "Scan to renew", address: "renew.payzone.billing.io", real: false, why: "The last two chunks are billing.io, a stranger. 'payzone' is just decoration in the middle." },
           ],
-          doneLine: "Nicely done. A QR code can't hide from the rule. Scan it, read the address it shows you, take the last two chunks. If it's a stranger, don't open it.",
+          doneLine: "Nicely done. A QR code can't hide from the rule. Scan it, read the address it shows you, and take the last two chunks. If it's a stranger, don't open it.",
           doneAudio: "/audio/wren/m01-c-qr-review.mp3",
         },
       },
@@ -347,18 +347,18 @@ export const mission01: MissionManifest = {
       checkpoint: {
         questions: [
           { id: "m01-c5-chk1", question: "A site offers a 'free game hack that gives unlimited coins'. What is it most likely?", options: ["A trap that installs something harmful", "A helpful free tool other players use", "An official update from the game maker"], answer: 0, ok: "Exactly. Free hacks and coin generators are classic bait for malware. Nothing good comes from them.", okVoice: "/audio/wren/m01-c5-chk1-ok.mp3" },
-          { id: "m01-c5-chk2", question: "Where should you get your apps and games from?", options: ["Any download link a stranger sends you", "The official app store or real website", "A free download site with good reviews"], answer: 1, ok: "That's the safe path. Official store or the real site, never a random download link.", okVoice: "/audio/wren/m01-c5-chk2-ok.mp3" },
+          { id: "m01-c5-chk2", question: "Where should you get your apps and games from?", options: ["Any download link a stranger sends you", "The official app store or real website", "A free download site with good reviews"], answer: 1, ok: "That's the safe path. Use the official store or the real site, never a random download link.", okVoice: "/audio/wren/m01-c5-chk2-ok.mp3" },
         ],
       },
       promise: "You'll learn why 'free' downloads are bait, and where safe ones really come from.",
       instruction: "Sort each download: safe to get, or a trap?",
-      practiceIntro: "Now let's put it to work, Agent. A pile of downloads just showed up on the next screen. Sort each one: safe to get, or a trap? Remember where real apps actually come from.",
+      practiceIntro: "Now let's put it to work, Agent. A pile of downloads just showed up on the next screen. Sort each one. Is it safe to get, or is it a trap? Remember where real apps actually come from.",
       practiceIntroVoice: "/audio/wren/m01-download-practice.mp3",
       intel: {
         beats: [
-          "Ever seen a free Robux generator, or a game hack that promises unlimited coins? Here's the truth. Those don't exist.",
+          "Have you ever seen a free Robux generator, or a game hack that promises unlimited coins? Here's the truth. Those don't exist.",
           "That download isn't free coins. It's a virus, or a trick to steal your login. The 'free prize' is just the bait, again.",
-          "Real games and apps come from one place: the official app store, or the company's own website. Never a random 'free' link.",
+          "Real games and apps come from the official app store, or from the company's own website. They never come from a random free link.",
           "So before you download anything, ask one question. Is this the official place? If it's a stranger's free file, close it. It's a trap.",
         ],
         beatAudio: [
@@ -371,7 +371,7 @@ export const mission01: MissionManifest = {
       fieldwork: {
         verb: "SORT",
         payload: {
-          intro: "A pile of downloads just showed up. Sort each one: safe to get, or a trap? Remember where real apps come from.",
+          intro: "A pile of downloads just showed up. Sort each one. Is it safe to get, or is it a trap? Remember where real apps come from.",
           buckets: [
             { id: "safe", label: "SAFE TO GET", hint: "official store or site" },
             { id: "trap", label: "A TRAP", hint: "a stranger's 'free' file" },
@@ -398,20 +398,20 @@ export const mission01: MissionManifest = {
       checkpoint: {
         questions: [
           { id: "m01-c6-chk1", question: "Every phishing scam is built from the same parts. Which is one of them?", options: ["A strong feeling that rushes you", "A handwritten letter sent in the post", "A visit from someone at your school"], answer: 0, ok: "Yes. Whatever the story, there is always a feeling pushing you to act fast. Spot that and you spot the scam.", okVoice: "/audio/wren/m01-c6-chk1-ok.mp3" },
-          { id: "m01-c6-chk2", question: "Why is knowing the phishing recipe so useful?", options: ["It only helps with scams you've already seen", "You can spot new scams you've never seen", "You can write your own scams to fool people"], answer: 1, ok: "Exactly. The disguise changes, the recipe does not. Know the parts and no new costume fools you.", okVoice: "/audio/wren/m01-c6-chk2-ok.mp3" },
+          { id: "m01-c6-chk2", question: "Why is knowing the phishing recipe so useful?", options: ["It only helps with scams you've already seen", "You can spot new scams you've never seen", "You can write your own scams to fool people"], answer: 1, ok: "Exactly. The disguise changes, but the recipe does not. Know the parts, and no new costume will fool you.", okVoice: "/audio/wren/m01-c6-chk2-ok.mp3" },
         ],
       },
       promise: "You'll learn the pattern behind every disguise, and the one move that beats it.",
       instruction: "Tap the 3 tricks that are really his.",
-      practiceIntro: "Now let's put it to work, Agent. Time to build his file. From the evidence on the next screen, tap the three tricks that are really his, no more, no less.",
+      practiceIntro: "Now let's put it to work, Agent. It's time to build his file. From the evidence on the next screen, tap the three tricks that are really his, no more and no less.",
       practiceIntroVoice: "/audio/wren/m01-actor-practice.mp3",
       intel: {
         beats: [
           "Here's the secret that makes you unbeatable. Every phishing scam, whatever it's dressed as, is built from the same three parts.",
-          "One: a feeling, to rush you. Two: a trusted name, faked. Three: a link that lies about where it goes.",
-          "You don't need all three to be sure. Spot two of them in a message, and you're almost certainly looking at a scam. Game, bank, or school, it doesn't matter.",
+          "The first is a feeling that rushes you. The second is a trusted name that's been faked. The third is a link that lies about where it goes.",
+          "You don't need all three to be sure. Spot two of them in a message, and you're almost certainly looking at a scam. It doesn't matter if it's a game, a bank, or a school.",
           "And here's the move that beats every single one of them. Never act from the message itself. Go to the real app or website yourself, and check there.",
-          "That one habit, go direct and never tap the message, defeats every disguise he will ever wear.",
+          "Go direct, and never tap the message. That one habit defeats every disguise he will ever wear.",
         ],
         beatAudio: [
           "/audio/wren/m01-c3-b1.mp3",
@@ -460,7 +460,7 @@ export const mission01: MissionManifest = {
       },
       promise: "You'll learn the exact rescue steps if a scam ever catches you.",
       instruction: "Build the rescue plan: pick the right move for each step.",
-      practiceIntro: "Now let's put it to work, Agent. Someone just typed their password into a fake GameHub page. Build the rescue plan with me, one right move for each step.",
+      practiceIntro: "Now let's put it to work, Agent. Someone just typed their password into a fake GameHub page. Build the rescue plan with me, and pick the right move for each step.",
       practiceIntroVoice: "/audio/wren/m01-recover-practice.mp3",
       intel: {
         beats: [
@@ -806,7 +806,7 @@ export const mission01: MissionManifest = {
     ],
     realWorldMove:
       "This week: if a message tries to rush you, don't tap its links. Open the real app yourself and check there. Still feels wrong? Tell an adult you trust, and report it.",
-    wrenLine: "You didn't just remember it, you worked it out. That's the real thing, Agent.",
+    wrenLine: "You didn't just remember it. You worked it out, and that's the real thing, Agent.",
   },
 
   voice: {

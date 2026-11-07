@@ -78,7 +78,14 @@ const ONE_TAG = /^\[[a-z ]+\][^[]*$/;
 // UAT M2-3a: v3 reads quote marks as a cue and pauses at them ("paid the ...
 // 'postage'"). The screen keeps its quotes; what she's sent to read doesn't.
 // Apostrophes inside a word ("Leo's", "don't") stay.
-const spoken = (text) => text.replace(/["“”]/g, "").replace(/(^|[^A-Za-z])['‘’]|['‘’](?![A-Za-z])/g, "$1");
+// Web addresses got stray pauses too (2026-11-07 audit), so she's sent them
+// the way a child says them: "account dot gamehub dot com slash login".
+const sayUrl = (s) =>
+  s.replace(/\b[a-z0-9-]+(?:\.[a-z0-9-]+)*\.(?:com|net|org|co|uk|io|ru|app)\b(?:\/[a-z0-9-]+)*/gi, (u) =>
+    u.split(/([./-])/).filter(Boolean)
+      .map((p) => (p === "." ? "dot" : p === "/" ? "slash" : p === "-" ? "dash" : /^(ru|uk)$/i.test(p) ? p.toUpperCase().split("").join(" ") : p))
+      .join(" "));
+const spoken = (text) => sayUrl(text.replace(/["“”]/g, "").replace(/(^|[^A-Za-z])['‘’]|['‘’](?![A-Za-z])/g, "$1"));
 // A silence this long between two words, where the line has no punctuation,
 // is a stray pause (normal word gaps are under 0.1s). Such a take is retaken.
 const MID_PAUSE = 0.2;
@@ -339,8 +346,9 @@ for (const [path, text] of entries) {
       const buf = await generate(spoken(text));
       const { words: heardWords, text: heard } = await wordTimestamps(buf);
       const words = withScriptMarks(heardWords, text);
-      const score = matchScore(text, heard);
-      const missed = missedWords(text, heard);
+      // compare what she was sent with what was heard, addresses in words on both sides
+      const score = matchScore(spoken(text), sayUrl(heard));
+      const missed = missedWords(spoken(text), sayUrl(heard));
       const pauses = strayPauses(words);
       console.log(`  take ${take}: match ${(score * 100).toFixed(0)}%${missed.length ? `, words not heard: ${missed.join(" ")}` : ""}${pauses.length ? `, stray pause: ${pauses.join("; ")}` : ""}`);
       if (!words.length) continue;

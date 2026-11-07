@@ -22,7 +22,7 @@ const NAMES = new Set([
 ]);
 
 const TAG_FOR = (path) =>
-  /-debrief\./.test(path) ? "proud" : /-boss-p\d/.test(path) ? "determined" : /-transmission\./.test(path) ? null : "warm";
+  /-debrief\.|-catch-pass\./.test(path) ? "proud" : /-boss-p\d/.test(path) ? "determined" : /-transmission\./.test(path) ? null : "warm";
 
 const RULES = {
   "one tag": (raw) => !/^\[[a-z ]+\][^[]*$/.test(raw.trim()) && "needs exactly one [tag], at the start",
@@ -43,7 +43,8 @@ const RULES = {
   ellipsis: (t) => /\.\.\.|…/.test(t) && "ellipsis",
   dash: (t) => /[—–]|\s-\s/.test(t) && "dash",
   brackets: (t) => /[()]/.test(t) && "brackets",
-  symbols: (t) => /[&%/£$#@*+=<>]/.test(t.replace(/\b[a-z0-9-]+(\.[a-z]+)+\b/gi, "")) && "symbol",
+  // web addresses are read out in words by the generator ("dot", "slash")
+  symbols: (t) => /[&%/£$#@*+=<>]/.test(t.replace(/\b[a-z0-9-]+(?:\.[a-z0-9-]+)+(?:\/[a-z0-9-]+)*/gi, "")) && "symbol",
 };
 
 const missions = process.argv.slice(2).length ? process.argv.slice(2) : Array.from({ length: 20 }, (_, i) => String(i + 1));
