@@ -125,13 +125,15 @@ export const mission03VoiceScripts = {
 
   // cycle 7 — lock every door
   "/audio/wren/m03-c7-b1.mp3":
-    "[curious] So how do you actually lock every door, without a genius memory? A real plan, in four steps.",
+    "[warm] So how do you actually lock every door, without a genius memory? A real plan, in five steps.",
   "/audio/wren/m03-c7-b2.mp3":
-    "[determined] Step one, the emergency. Change your ONE most-reused password today, starting with your email. That snaps the master key in half.",
+    "[warm] Step one, the emergency. Change your ONE most-reused password today, starting with your email. That snaps the master key in half.",
   "/audio/wren/m03-c7-b3.mp3":
     "[warm] Steps two and three, go long and go unique. Three random words each, a different set for every important door. Never the same key twice.",
   "/audio/wren/m03-c7-b4.mp3":
-    "[encouraging] Step four, the cheat code. A password manager remembers all of them, so you only remember one. That's how the pros run forty strong passwords without breaking a sweat.",
+    "[warm] Step four, the cheat code. A password manager remembers all of them, so you only remember one. That's how the pros run forty strong passwords without breaking a sweat.",
+  "/audio/wren/m03-c7-b5.mp3":
+    "[warm] Step five, a second lock. Turn on 2-step login wherever you can. Then even a guessed password isn't enough, because the rig still needs the code sent to YOUR phone. And nobody real will ever ask you for that code.",
   "/audio/wren/m03-c7-chk1-ok.mp3":
     "[proud] Right. Snapping the most-reused key first, at the master door, does the most good the fastest.",
   "/audio/wren/m03-c7-chk2-ok.mp3":
