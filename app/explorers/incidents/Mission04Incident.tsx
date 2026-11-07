@@ -15,6 +15,7 @@
 import { useState } from "react";
 import { AmberButton, Bubble, Eyebrow, GhostButton } from "../engine/primitives";
 import { MONO, T } from "../engine/tokens";
+import { usePhaseVoice } from "../engine/audio";
 import type { IncidentProps } from "../engine/types";
 
 // Every option list below is checked by a field on the option itself (id,
@@ -76,11 +77,12 @@ const MOVES = [
   },
 ];
 
-export default function Mission04Incident({ reduced, audio, onPhaseCleared, onComplete }: IncidentProps) {
+export default function Mission04Incident({ reduced, audio, onPhaseCleared, onComplete, voiceOn }: IncidentProps) {
   const [claims] = useState(() => shuffled(CLAIMS));
   const [sources] = useState(() => shuffled(SOURCES));
   const [moves] = useState(() => shuffled(MOVES));
   const [phase, setPhase] = useState(1);
+  usePhaseVoice(`/audio/wren/m04-boss-p${phase}.mp3`, !!voiceOn);
   const [wrongClaim, setWrongClaim] = useState<string | null>(null);
   const [dangerFound, setDangerFound] = useState(false);
   const [scrubbed, setScrubbed] = useState<string[]>([]);

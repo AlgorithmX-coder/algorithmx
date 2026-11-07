@@ -13,6 +13,7 @@
 import { useState } from "react";
 import { AmberButton, Bubble, Eyebrow, GhostButton } from "../engine/primitives";
 import { MONO, T } from "../engine/tokens";
+import { usePhaseVoice } from "../engine/audio";
 import type { IncidentProps } from "../engine/types";
 
 // Checked by a field on the option itself (id, correct...), never by
@@ -55,8 +56,9 @@ const WARNINGS = [
   { id: "plain", label: "Plain text, no link: “That skins giveaway is fake. If you typed anything, change your password now and tell an adult. Not your fault, it's built to fool people.”", correct: true, outcome: "Clean. No live link, no shame, a clear next step. That message just saved passwords you'll never hear about." },
 ];
 
-export default function Mission02Incident({ reduced, audio, onPhaseCleared, onComplete }: IncidentProps) {
+export default function Mission02Incident({ reduced, audio, onPhaseCleared, onComplete, voiceOn }: IncidentProps) {
   const [phase, setPhase] = useState(1);
+  usePhaseVoice(`/audio/wren/m02-boss-p${phase}.mp3`, !!voiceOn);
   const [wrongNode, setWrongNode] = useState<string | null>(null);
   const [hubFound, setHubFound] = useState(false);
 

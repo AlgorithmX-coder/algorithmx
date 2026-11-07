@@ -148,4 +148,12 @@ export const mission03VoiceScripts = {
   // debrief
   "/audio/wren/m03-debrief.mp3":
     "[proud] Ten thousand doors, all still locked. [excited] Your rules now, Agent, not his. [warm] Sign out.",
+
+  // boss: WREN reads each phase's instruction (the villain's taunts stay text)
+  "/audio/wren/m03-boss-p1.mp3":
+    "[determined] Phase one. The rig is hammering four doors at once, and it always cracks the weakest first. Tap the doors in the order they'll fall.",
+  "/audio/wren/m03-boss-p2.mp3":
+    "[determined] Phase two. Cut the master key. One move stops one leak opening every door. Make your call, then submit.",
+  "/audio/wren/m03-boss-p3.mp3":
+    "[determined] Phase three. Hold the wall. Pick the new key that actually stops the rig, then raise it.",
 };

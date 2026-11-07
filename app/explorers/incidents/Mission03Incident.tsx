@@ -16,6 +16,7 @@
 import { useState } from "react";
 import { AmberButton, Bubble, Eyebrow, GhostButton } from "../engine/primitives";
 import { MONO, T } from "../engine/tokens";
+import { usePhaseVoice } from "../engine/audio";
 import type { IncidentProps } from "../engine/types";
 
 // Checked by a field on the option itself (id, rank, correct...), never by
@@ -57,9 +58,10 @@ const WALLS = [
   { id: "personal", label: "LiverpoolLiverpool2013 (nice and long)", correct: false, outcome: "Long, sure, but it's his team twice plus his birth year, all guessable. Length only wins when it's RANDOM." },
 ];
 
-export default function Mission03Incident({ reduced, audio, onPhaseCleared, onComplete }: IncidentProps) {
+export default function Mission03Incident({ reduced, audio, onPhaseCleared, onComplete, voiceOn }: IncidentProps) {
   const [doors] = useState(() => shuffled(DOORS));
   const [phase, setPhase] = useState(1);
+  usePhaseVoice(`/audio/wren/m03-boss-p${phase}.mp3`, !!voiceOn);
   const [order, setOrder] = useState<string[]>([]);
   const [wrongDoor, setWrongDoor] = useState<string | null>(null);
 

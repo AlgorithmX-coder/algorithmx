@@ -184,4 +184,12 @@ export const mission01VoiceScripts = {
   // debrief
   "/audio/wren/m01-debrief.mp3":
     "[proud] You didn't just remember it, you worked it out. [warm] That's the real thing, Agent.",
+
+  // boss: WREN reads each phase's instruction (the villain's taunts stay text)
+  "/audio/wren/m01-boss-p1.mp3":
+    "[determined] Phase one. Triage. A wave just hit the class group. Call every one, then submit.",
+  "/audio/wren/m01-boss-p2.mp3":
+    "[determined] Phase two. Cut the hook. The group is still getting hit. Make your call, then submit.",
+  "/audio/wren/m01-boss-p3.mp3":
+    "[determined] Phase three. File it. Your report takes the campaign off the board.",
 };

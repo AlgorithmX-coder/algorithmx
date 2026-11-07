@@ -18,6 +18,7 @@
 import { useRef, useState } from "react";
 import { AmberButton, Bubble, Eyebrow, GhostButton } from "../engine/primitives";
 import { MONO, T } from "../engine/tokens";
+import { usePhaseVoice } from "../engine/audio";
 import type { IncidentProps } from "../engine/types";
 
 // Checked by a field on the option itself (id, correct...), never by
@@ -114,8 +115,9 @@ const CONTAINMENT = [
   },
 ];
 
-export default function Mission01Incident({ reduced, audio, onPhaseCleared, onComplete }: IncidentProps) {
+export default function Mission01Incident({ reduced, audio, onPhaseCleared, onComplete, voiceOn }: IncidentProps) {
   const [phase, setPhase] = useState(1);
+  usePhaseVoice(`/audio/wren/m01-boss-p${phase}.mp3`, !!voiceOn);
 
   return (
     <div>
