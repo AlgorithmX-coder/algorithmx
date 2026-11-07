@@ -175,7 +175,7 @@ export const mission01VoiceScripts = {
 
   // the test
   "/audio/wren/m01-catch-intro.mp3":
-    "[warm] Okay Agent, this is the real test. [serious] Nineteen questions, and not one of them is “what did I say”. Every single one makes you THINK. Take what you learned, and work out an answer you've never seen before. [determined] I won't tell you how you're doing until the very end. Get fifteen right to close the case. Miss it, and you sit the whole case again. [encouraging] Take your time.",
+    "[warm] Okay, Agent, this is the real test. There are nineteen questions, and none of them just ask you to repeat what I said. Every single one makes you think. Use what you've learned to work out answers you've never seen before. I won't tell you how you're doing until the very end. Get fifteen right, and you close the case. If you get fewer than fifteen, you'll play the whole case again. So take your time, and good luck.",
   "/audio/wren/m01-catch-pass.mp3":
     "[excited] That's a pass, Agent! [proud] You earned this one yourself. Case closed.",
   "/audio/wren/m01-catch-fail.mp3":

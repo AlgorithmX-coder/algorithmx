@@ -17,7 +17,7 @@
 // Git Bash rewrites "/audio/..." arguments into Windows paths: prefix MSYS_NO_PATHCONV=1.
 
 import { spawnSync } from "node:child_process";
-import { existsSync } from "node:fs";
+import { writeFileSync } from "node:fs";
 import { writeFile, mkdir, mkdtemp, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -82,12 +82,38 @@ const spoken = (text) => text.replace(/["“”]/g, "").replace(/(^|[^A-Za-z])['
 // A silence this long between two words, where the line has no punctuation,
 // is a stray pause (normal word gaps are under 0.1s). Such a take is retaken.
 const MID_PAUSE = 0.2;
+// the transcriber keeps a closing quote on the word: `minutes."` still ends a sentence
+const breakAfter = (word) => (/[.?!]["'”’)\]]*$/.test(word) ? "sentence" : /[,:;…—–-]["'”’)\]]*$/.test(word) ? "comma" : null);
+// The transcriber drops commas ("take your time, and" heard as "time and"), so
+// each heard word takes the punctuation of the script word it matches.
+const bare = (s) => s.toLowerCase().replace(/[‘’]/g, "'").replace(/[^a-z0-9']/g, "");
+function withScriptMarks(words, text) {
+  const tokens = spoken(text).replace(/\[[a-z ]+\]/g, " ").split(/\s+/).filter(Boolean);
+  let j = 0;
+  return words.map((w) => {
+    const k = tokens.slice(j, j + 4).findIndex((t) => bare(t) === bare(w.text));
+    if (k < 0) return { ...w, mark: w.text };
+    j += k + 1;
+    return { ...w, mark: tokens[j - 1] };
+  });
+}
 const strayPauses = (words) =>
   words.slice(1).flatMap((w, i) => {
     const gap = w.start - words[i].end;
-    // the transcriber keeps a closing quote on the word: `minutes."` still ends a sentence
-    return gap >= MID_PAUSE && !/[.,?!:;…—–-]["'”’)\]]*$/.test(words[i].text) ? [`${words[i].text} | ${w.text} (${gap.toFixed(2)}s)`] : [];
+    return gap >= MID_PAUSE && !breakAfter(words[i].mark) ? [`${words[i].text} | ${w.text} (${gap.toFixed(2)}s)`] : [];
   });
+// Owner, 2026-11-07: breaks "not too long... where the child's waiting around".
+// Limits from her own good clips (comma p50 0.22s, max 0.68s; full stop p50
+// 0.34s, p90 0.66s). A longer silence is shortened to the limit, cutting only
+// audio that is actually quiet, never her voice.
+const MAX_BREAK = { comma: 0.5, sentence: 0.75 };
+// Owner: "a short little split-second break after it so it doesn't sound like a
+// sharp cutoff". Silence after the last sound must land in this range.
+const TAIL = { min: 0.25, max: 0.6, aim: 0.4 };
+// One WREN across all 20 missions: her Missions 2 and 4 delivery (re-recorded
+// under #916, signed off by ear) is the target every take is chosen against.
+// Measured 2026-11-07 over their 131 clips: median 163.3 Hz, 16.06 l/s.
+const TARGET_TONE = { f0: 163, rate: 16.1 };
 
 async function generate(text) {
   const res = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${VOICE_ID}?output_format=mp3_44100_128`, {
@@ -164,16 +190,22 @@ function missedWords(script, heard) {
   return miss.filter((w) => { const bare = w.replace(/'s$/, ""); return !fold(heardOnly).includes(fold(bare)); });
 }
 
-/** First moment at/after `from` where the clip stays below QUIET_DB for 80ms. */
-function quietAfter(file, from) {
-  const r = spawnSync(ffmpegPath, ["-hide_banner", "-loglevel", "error", "-i", file, "-ac", "1", "-ar", "16000", "-f", "s16le", "-"], { maxBuffer: 1 << 28 });
-  const pcm = r.stdout, n = pcm.length / 2, FR = 160; // 10ms frames
+/** Level of each 10ms frame, in dBFS. */
+function frameLevels(file, sr = 16000) {
+  const r = spawnSync(ffmpegPath, ["-hide_banner", "-loglevel", "error", "-i", file, "-ac", "1", "-ar", String(sr), "-f", "s16le", "-"], { maxBuffer: 1 << 28 });
+  const pcm = r.stdout, n = pcm.length / 2, FR = sr / 100;
   const db = [];
   for (let s = 0; s + FR <= n; s += FR) {
     let e = 0;
     for (let i = 0; i < FR; i++) { const v = pcm.readInt16LE((s + i) * 2) / 32768; e += v * v; }
     db.push(20 * Math.log10(Math.sqrt(e / FR) + 1e-9));
   }
+  return { db, pcm };
+}
+
+/** First moment at/after `from` where the clip stays below QUIET_DB for 80ms. */
+function quietAfter(file, from) {
+  const { db } = frameLevels(file);
   for (let f = Math.floor(from * 100); f + 8 <= db.length; f++) {
     if (db.slice(f, f + 8).every((d) => d < QUIET_DB)) return f / 100;
   }
@@ -210,8 +242,63 @@ function loudness(file) {
   return Number((r.stderr.match(/I:\s+(-?[\d.]+) LUFS/) || [])[1]);
 }
 
+/** Shorten every comma or full-stop silence longer than MAX_BREAK to the
+ *  limit. Only frames below QUIET_DB are removed, from the middle of the
+ *  longest quiet run in the gap, keeping 50ms either side of the cut, so her
+ *  voice is never touched. Writes a WAV and returns it with shifted words. */
+function tightenBreaks(rawPath, words, outWav) {
+  const SR = 44100, FR = SR / 100;
+  const { db, pcm } = frameLevels(rawPath, SR);
+  const cuts = [], fixed = [];
+  for (let i = 0; i + 1 < words.length; i++) {
+    const kind = breakAfter(words[i].mark);
+    const gap = words[i + 1].start - words[i].end;
+    if (!kind || gap <= MAX_BREAK[kind]) continue;
+    let best = [0, 0];
+    for (let f = Math.ceil(words[i].end * 100), run = f; f <= Math.floor(words[i + 1].start * 100); f++) {
+      if (!(db[f] < QUIET_DB)) run = f + 1;
+      else if (f + 1 - run > best[1] - best[0]) best = [run, f + 1];
+    }
+    const room = (best[1] - best[0]) / 100 - 0.1;
+    const cut = Math.min(gap - MAX_BREAK[kind], room);
+    if (cut < 0.02) continue;
+    const mid = (best[0] + best[1]) / 200;
+    cuts.push([mid - cut / 2, mid + cut / 2]);
+    fixed.push(`${words[i].text} | ${words[i + 1].text} ${gap.toFixed(2)}s -> ${(gap - cut).toFixed(2)}s`);
+  }
+  if (!cuts.length) return { path: rawPath, words, fixed };
+  const keep = [];
+  let from = 0;
+  for (const [a, b] of cuts) { keep.push(pcm.subarray(Math.round(from * SR) * 2, Math.round(a * SR) * 2)); from = b; }
+  keep.push(pcm.subarray(Math.round(from * SR) * 2));
+  const data = Buffer.concat(keep);
+  const head = Buffer.alloc(44);
+  head.write("RIFF", 0); head.writeUInt32LE(36 + data.length, 4); head.write("WAVEfmt ", 8);
+  head.writeUInt32LE(16, 16); head.writeUInt16LE(1, 20); head.writeUInt16LE(1, 22);
+  head.writeUInt32LE(SR, 24); head.writeUInt32LE(SR * 2, 28); head.writeUInt16LE(2, 32); head.writeUInt16LE(16, 34);
+  head.write("data", 36); head.writeUInt32LE(data.length, 40);
+  writeFileSync(outWav, Buffer.concat([head, data]));
+  return {
+    path: outWav,
+    words: words.map((w) => {
+      const shift = cuts.filter(([, b]) => b <= w.start).reduce((s, [a, b]) => s + (b - a), 0);
+      return { ...w, start: w.start - shift, end: w.end - shift };
+    }),
+    fixed,
+  };
+}
+
+/** Silence after the clip's last sound (last frame within 35 dB of its peak). */
+function tailSilence(file) {
+  const { db } = frameLevels(file);
+  const peak = Math.max(...db);
+  let last = db.length - 1;
+  while (last > 0 && db[last] < peak - 35) last--;
+  return (db.length - 1 - last) / 100;
+}
+
 /** Trim after the last word has gone quiet, normalise loudness, fade, pad. */
-function finish(rawPath, outPath, lastWordEnd) {
+function finish(rawPath, outPath, lastWordEnd, pad = 0.25) {
   const quiet = quietAfter(rawPath, lastWordEnd);
   const fadeStart = Math.min(Math.max(quiet, lastWordEnd + MIN_TAIL), lastWordEnd + 0.8);
   const total = fadeStart + FADE_DUR;
@@ -219,7 +306,7 @@ function finish(rawPath, outPath, lastWordEnd) {
   const m = spawnSync(ffmpegPath, ["-hide_banner", "-i", rawPath, "-af", `atrim=0:${total},${ln}:print_format=json`, "-f", "null", "-"], { encoding: "utf8" });
   const j = JSON.parse(m.stderr.slice(m.stderr.lastIndexOf("{"), m.stderr.lastIndexOf("}") + 1));
   const second = `${ln}:measured_I=${j.input_i}:measured_TP=${j.input_tp}:measured_LRA=${j.input_lra}:measured_thresh=${j.input_thresh}:offset=${j.target_offset}:linear=true`;
-  const af = `atrim=0:${total},${second},afade=t=out:st=${fadeStart}:d=${FADE_DUR},apad=pad_dur=0.25`;
+  const af = `atrim=0:${total},${second},afade=t=out:st=${fadeStart}:d=${FADE_DUR},apad=pad_dur=${pad}`;
   const out = spawnSync(ffmpegPath, ["-y", "-hide_banner", "-loglevel", "error", "-i", rawPath, "-af", af, "-ar", "44100", "-ac", "1", "-b:a", "128k", outPath], { encoding: "utf8" });
   if (out.status !== 0) throw new Error(`ffmpeg finish failed: ${out.stderr}`);
   return { fadeStart, quiet };
@@ -250,7 +337,8 @@ for (const [path, text] of entries) {
     let best = null;
     for (let take = 1; clean.length < TAKES && take < TAKES + MAX_TAKES; take++) {
       const buf = await generate(spoken(text));
-      const { words, text: heard } = await wordTimestamps(buf);
+      const { words: heardWords, text: heard } = await wordTimestamps(buf);
+      const words = withScriptMarks(heardWords, text);
       const score = matchScore(text, heard);
       const missed = missedWords(text, heard);
       const pauses = strayPauses(words);
@@ -278,28 +366,40 @@ for (const [path, text] of entries) {
 
 // Pass 2: choose. UAT (Mission 4, Skill 1): one beat came out brighter or
 // faster than its neighbours, which reads as a tone change even with one
-// tag. Each clip keeps the take closest to WREN's typical pitch and pace
-// (the median over this run, or over the mission's current clips when only
-// a few are being redone).
+// tag. Each clip keeps the take closest to TARGET_TONE, so every mission
+// sounds like the same WREN.
 if (recorded.length) {
-  const median = (v) => { const s = [...v].sort((a, b) => a - b); return s[s.length >> 1]; };
-  let ref = recorded.flatMap((r) => r.takes);
-  if (recorded.length < 8) {
-    const redo = new Set(recorded.map((r) => r.path));
-    ref = Object.entries(scripts).filter(([p]) => !redo.has(p) && existsSync(join("public", p))).map(([p, t]) => voiceProfile(join("public", p), t));
-  }
-  const target = { f0: median(ref.map((t) => t.f0)), rate: median(ref.map((t) => t.rate)) };
-  console.log(`\nTarget delivery: ${target.f0.toFixed(0)} Hz, ${target.rate.toFixed(1)} letters per voiced second`);
+  const target = TARGET_TONE;
+  console.log(`\nTarget delivery: ${target.f0} Hz, ${target.rate} letters per voiced second`);
   const distance = (t) => Math.abs(t.f0 - target.f0) / target.f0 + Math.abs(t.rate - target.rate) / target.rate;
   for (const r of recorded) {
     try {
       const pick = [...r.takes].sort((a, b) => distance(a) - distance(b))[0];
       const outPath = join(OUT_DIR, r.filename);
-      const lastWordEnd = pick.words[pick.words.length - 1].end;
-      const { fadeStart, quiet } = finish(pick.rawPath, outPath, lastWordEnd);
+      const tight = tightenBreaks(pick.rawPath, pick.words, pick.rawPath.replace(/\.mp3$/, ".wav"));
+      const lastWordEnd = tight.words[tight.words.length - 1].end;
+      let pad = 0.25;
+      let { fadeStart, quiet } = finish(tight.path, outPath, lastWordEnd, pad);
+      let tail = tailSilence(outPath);
+      // Re-pad once so the silence after her last sound lands near TAIL.aim.
+      if (tail < TAIL.min || tail > TAIL.max) {
+        pad = Math.max(0.05, +(pad + TAIL.aim - tail).toFixed(2));
+        ({ fadeStart, quiet } = finish(tight.path, outPath, lastWordEnd, pad));
+        tail = tailSilence(outPath);
+      }
+      // Her voice still sounding 0.8s after the last word means a breath or a
+      // cut: the fade may have landed on the word's release.
+      const endFlaws = [
+        ...(quiet > lastWordEnd + 0.8 ? [`did not go quiet within 0.8s of the last word`] : []),
+        ...(tail < TAIL.min || tail > TAIL.max ? [`tail ${tail.toFixed(2)}s outside ${TAIL.min}-${TAIL.max}s`] : []),
+        // a rushed or dragged take stands out against its neighbours
+        ...(Math.abs(pick.rate - target.rate) / target.rate > 0.1 || Math.abs(pick.f0 - target.f0) / target.f0 > 0.08 ? [`tone off target (${pick.f0.toFixed(0)} Hz, ${pick.rate.toFixed(1)} l/s)`] : []),
+      ];
       const lufs = loudness(outPath);
-      console.log(`${r.filename}: take ${pick.take} of ${r.takes.length} (${pick.f0.toFixed(0)} Hz, ${pick.rate.toFixed(1)} l/s), fade ${fadeStart.toFixed(2)}s (quiet ${quiet.toFixed(2)}s), ${lufs} LUFS`);
-      log.push({ clip: r.path, tag: r.text.match(/^\[([a-z ]+)\]/)[1], voice: VOICE_ID, model: MODEL_ID, settings: VOICE_SETTINGS, take: pick.take, cleanTakes: r.takes.length, match: +pick.score.toFixed(3), missed: pick.missed, pauses: pick.pauses, spoken: spoken(r.text), heard: pick.heard, f0: +pick.f0.toFixed(1), rate: +pick.rate.toFixed(2), target, lastWordEnd, fadeStart, lufs });
+      console.log(`${r.filename}: take ${pick.take} of ${r.takes.length} (${pick.f0.toFixed(0)} Hz, ${pick.rate.toFixed(1)} l/s), fade ${fadeStart.toFixed(2)}s (quiet ${quiet.toFixed(2)}s), tail ${tail.toFixed(2)}s, ${lufs} LUFS`);
+      for (const f of tight.fixed) console.log(`  break shortened: ${f}`);
+      if (endFlaws.length) console.log(`  CHECK BY EAR: ${endFlaws.join("; ")}`);
+      log.push({ clip: r.path, tag: r.text.match(/^\[([a-z ]+)\]/)[1], voice: VOICE_ID, model: MODEL_ID, settings: VOICE_SETTINGS, take: pick.take, cleanTakes: r.takes.length, match: +pick.score.toFixed(3), missed: pick.missed, pauses: pick.pauses, breaksShortened: tight.fixed, spoken: spoken(r.text), heard: pick.heard, f0: +pick.f0.toFixed(1), rate: +pick.rate.toFixed(2), target, lastWordEnd, fadeStart, pad, tail, endFlaws, lufs });
       ok++;
     } catch (e) {
       console.error(`${r.filename}: FAILED: ${e.message}`);
