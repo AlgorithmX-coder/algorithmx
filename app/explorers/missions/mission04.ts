@@ -45,7 +45,7 @@ export const mission04: MissionManifest = {
   transmission: {
     headline: "AUCTION DETECTED",
     lines: [
-      "Agent, there's an auction running on a hidden channel, and the lot for sale is a file about a student. Her school, her schedule, her birthday, all of it.",
+      "Agent, there's an auction running on a hidden channel, and the lot for sale is a file about a student. It has her school, her schedule, her birthday, all of it.",
       "Here's the thing. She never told anyone any of it. She posted it in pieces, all harmless on their own, and PACKRAT pocketed every crumb.",
       "He never broke in. He never had to. Tonight we learn how the pieces became a file, and make his file worthless.",
     ],
@@ -59,7 +59,7 @@ export const mission04: MissionManifest = {
       "Read what a photo and a 'fun' quiz quietly give away",
       "Scrub your trail, and starve the nest for good",
     ],
-    wrenLine: "Seven skills, then a test to close the case. One rule tonight, Agent. PACKRAT can only keep what you leave lying out. Ready?",
+    wrenLine: "You'll learn seven skills, then take a test to close the case. There's one rule tonight, Agent. PACKRAT can only keep what you leave lying out. Ready?",
   },
 
   cycles: [
@@ -71,16 +71,16 @@ export const mission04: MissionManifest = {
       checkpoint: {
         questions: [
           { id: "m04-c1-chk1", question: "Over one week Leo posts his dog's name, his estate's summer fair, and his Saturday football club. Each post is harmless. Why should he still worry?", options: ["Three posts in one week looks like showing off", "One of them probably has an embarrassing typo", "Stacked together they build a file on him"], answer: 2, ok: "Exactly. On their own they are crumbs. Stacked, they hand a stranger a whole file. That is the assembly attack.", okVoice: "/audio/wren/m04-c1-chk1-ok.mp3" },
-          { id: "m04-c1-chk2", question: "A stranger has built a file on a girl he has never met, and he never once touched her account. How did he most likely do it?", options: ["He guessed her password over and over", "He stacked her separate public posts", "He read a fake prize email she tapped"], answer: 1, ok: "That is the whole trick. No break-in, just patience. He pockets each harmless crumb and stacks them into one file.", okVoice: "/audio/wren/m04-c1-chk2-ok.mp3" },
+          { id: "m04-c1-chk2", question: "A stranger has built a file on a girl he has never met, and he never once touched her account. How did he most likely do it?", options: ["He guessed her password over and over", "He stacked her separate public posts", "He read a fake prize email she tapped"], answer: 1, ok: "That is the whole trick. There's no break-in, just patience. He pockets each harmless crumb and stacks them into one file.", okVoice: "/audio/wren/m04-c1-chk2-ok.mp3" },
         ],
       },
       promise: "You'll learn how a stranger turns scattered posts into a profile.",
       instruction: "Pin every crumb that feeds the file, then chain them in order.",
-      practiceIntro: "Now let's put it to work, Agent. The audit board is up next, a fresh trail of crumbs. Pin every one that feeds the file, then chain them in the order PACKRAT would.",
+      practiceIntro: "Now let's put it to work, Agent. The audit board is up next, with a fresh trail of crumbs. Pin every one that feeds the file, then chain them in the order PACKRAT would.",
       practiceIntroVoice: "/audio/wren/m04-c1-practice.mp3",
       intel: {
         beats: [
-          "One post on its own? PACKRAT can't do a thing with it. A handle. A team photo. A birthday joke. Each one is harmless.",
+          "What about one post on its own? PACKRAT can't do a thing with it. A handle, a team photo, or a birthday joke is harmless on its own.",
           "That's exactly the trap. Every crumb feels too small to matter, so you drop it in public without a second thought.",
           "But PACKRAT doesn't read one post. He STACKS them. A handle names your town. A photo names your school. A comment names your schedule. On their own, they're nothing. Stacked together, they're a file. ARC calls it the assembly attack.",
           "Tonight we run one ourselves, the safe way, on a volunteer's test account, with her say-so. Watch four harmless crumbs become a file, without anyone breaking into anything.",
@@ -95,7 +95,7 @@ export const mission04: MissionManifest = {
       fieldwork: {
         verb: "TRACE",
         payload: {
-          intro: "Audit board: pin every crumb that feeds the file, then chain them in the order PACKRAT would.",
+          intro: "Here's the audit board. Pin every crumb that feeds the file, then chain them in the order PACKRAT would.",
           fingerprintHint: "anything that says who, where, or when",
           cards: [
             { id: "t1", surface: "GAME PROFILE", from: "@priya_riverdale09", text: "bio: goalie for the Riverdale Foxes ⚽ love saves & snacks", inCampaign: true, clue: "the handle names her town AND her team", order: 1 },
@@ -119,7 +119,7 @@ export const mission04: MissionManifest = {
       concept: "A photo leaks far more than the thing you pointed it at",
       checkpoint: {
         questions: [
-          { id: "m04-c2-chk1", question: "Maya posts a cute selfie in her bedroom. She only meant to show off her new haircut. What might the photo ALSO give away?", options: ["Things behind her, like a letter or house number", "Nothing, a selfie only ever shows her face", "Only the haircut, a phone never captures anything else"], answer: 0, ok: "Right. You checked the haircut. PACKRAT checks the shelf, the window, the letter on the desk. Same photo, a whole other read.", okVoice: "/audio/wren/m04-c2-chk1-ok.mp3" },
+          { id: "m04-c2-chk1", question: "Maya posts a cute selfie in her bedroom. She only meant to show off her new haircut. What might the photo ALSO give away?", options: ["Things behind her, like a letter or house number", "Nothing, a selfie only ever shows her face", "Only the haircut, a phone never captures anything else"], answer: 0, ok: "Right. You checked the haircut. PACKRAT checked the shelf, the window, and the letter on the desk. It's the same photo, with a whole other read.", okVoice: "/audio/wren/m04-c2-chk1-ok.mp3" },
           { id: "m04-c2-chk2", question: "Sam took a photo at the park and posted it straight away. He typed no location at all. How could a stranger still learn exactly where he was?", options: ["They could not, because he typed no location", "Only if Sam had tagged the park himself", "His phone can add a location tag by itself"], answer: 2, ok: "That is the silent one. The phone tags the exact spot without ever asking. Turn location tags off and that leak closes.", okVoice: "/audio/wren/m04-c2-chk2-ok.mp3" },
         ],
       },
@@ -130,9 +130,9 @@ export const mission04: MissionManifest = {
       intel: {
         beats: [
           "A photo shows what you pointed it at. It also shows everything BEHIND it, and you stopped looking the second the smile was good.",
-          "Uniform crests that name your school. Street signs. House numbers. A reflection in a window. A landmark out the bus.",
-          "And underneath the whole thing, the location tag your phone stapled on automatically, without ever asking you.",
-          "You checked the smile. PACKRAT checked the background, and the tags. Same photo, two completely different reads.",
+          "There are uniform crests that name your school. There are street signs, house numbers, a reflection in a shop window, and a landmark seen from the bus.",
+          "And underneath the whole thing is the location tag your phone stapled on automatically, without ever asking you.",
+          "You checked the smile. PACKRAT checked the background, and the tags. It's the same photo, with two completely different reads.",
         ],
         beatAudio: [
           "/audio/wren/m04-c2-b1.mp3",
@@ -144,7 +144,7 @@ export const mission04: MissionManifest = {
       fieldwork: {
         verb: "INSPECT",
         payload: {
-          intro: "Priya's match-day photo, from the audit. Tap every leak hiding in it. Some of what's in frame is just a nice picture.",
+          intro: "Here's Priya's match-day photo, from the audit. Tap every leak hiding in it. Some of what's in frame is just a nice picture.",
           device: { app: "PHOTOS", owner: "TEST ACCOUNT (Priya's audit)" },
           header: [
             { label: "POST:", seg: { id: "cap", text: "match day!! ⚽🔥" } },
@@ -162,7 +162,7 @@ export const mission04: MissionManifest = {
             { id: "street", label: "The street sign", why: "A background sign puts the school on a map, down to the road." },
             { id: "geo", label: "The location tag", why: "The phone tagged the exact spot automatically. Nobody typed a word." },
           ],
-          doneLine: "Three leaks, and not one of them in the caption she actually wrote. The crest, the sign, the silent tag. That's exactly why PACKRAT loves a photo.",
+          doneLine: "There were three leaks, and not one of them was in the caption she actually wrote. They were the crest, the sign, and the silent tag. That's exactly why PACKRAT loves a photo.",
           doneAudio: "/audio/wren/m04-c2-review.mp3",
         },
       },
@@ -182,12 +182,12 @@ export const mission04: MissionManifest = {
       },
       promise: "You'll learn to spot the quiz that's really fishing for your secrets.",
       instruction: "Sort each quiz: harmless fun, or is it fishing for a real secret?",
-      practiceIntro: "Now let's put it to work, Agent. A whole feed of 'fun' quizzes is waiting. Sort each one: harmless fun, or fishing for a real secret about you?",
+      practiceIntro: "Now let's put it to work, Agent. A whole feed of fun quizzes is waiting. Sort each one. Is it harmless fun, or is it fishing for a real secret about you?",
       practiceIntroVoice: "/audio/wren/m04-c3-practice.mp3",
       intel: {
         beats: [
-          "PACKRAT's favourite trick isn't sneaky at all. It's FUN. 'Your superstar name is your first pet plus your street name!' Everyone joins in, laughing.",
-          "But look at what it's actually asking for. Your first pet. Your street. Your first school. Your mum's maiden name.",
+          "PACKRAT's favourite trick isn't sneaky at all. It's fun. A post says your superstar name is your first pet plus your street name, and everyone joins in, laughing.",
+          "But look at what it's actually asking for. It wants your first pet, your street, your first school, and your mum's maiden name.",
           "Those aren't random. They're the exact 'security questions' your bank and your apps use to check it's really you. You just posted the answers, as a joke, in public.",
           "So when a quiz asks for a real FACT about your past, that's not a game. That's PACKRAT, holding out a bucket and hoping you fill it.",
         ],
@@ -201,7 +201,7 @@ export const mission04: MissionManifest = {
       fieldwork: {
         verb: "SORT",
         payload: {
-          intro: "A feed full of 'fun' quizzes. Sort each one: harmless fun, or is it fishing for a real secret about you?",
+          intro: "Here's a feed full of fun quizzes. Sort each one. Is it harmless fun, or is it fishing for a real secret about you?",
           buckets: [
             { id: "fun", label: "HARMLESS FUN", hint: "opinions only" },
             { id: "secret", label: "FISHING FOR A SECRET", hint: "real facts about you" },
@@ -228,7 +228,7 @@ export const mission04: MissionManifest = {
       concept: "Before a post goes up, black out the bits that hand a stranger your where-and-when",
       checkpoint: {
         questions: [
-          { id: "m04-c4-chk1", question: "Priya's friend is about to post this. Which part should she black out before it goes up?", evidence: "Buzzing after drama club! We meet at St Mark's Hall every Thursday at 5.", options: ["The word buzzing and the exclamation mark", "Nothing, the whole post is fine to share", "St Mark's Hall and every Thursday at 5"], answer: 2, ok: "Exactly. Keep the excitement, black out the where-and-when. A stranger should learn she is happy, and nothing else.", okVoice: "/audio/wren/m04-c4-chk1-ok.mp3" },
+          { id: "m04-c4-chk1", question: "Priya's friend is about to post this. Which part should she black out before it goes up?", evidence: "Buzzing after drama club! We meet at St Mark's Hall every Thursday at 5.", options: ["The word buzzing and the exclamation mark", "Nothing, the whole post is fine to share", "St Mark's Hall and every Thursday at 5"], answer: 2, ok: "Exactly. Keep the excitement, and black out the where and when. A stranger should learn she is happy, and nothing else.", okVoice: "/audio/wren/m04-c4-chk1-ok.mp3" },
           { id: "m04-c4-chk2", question: "Which line is completely safe to keep in a post, with no scrubbing needed?", options: ["We train on Oak Road every Monday night", "That was the best game I have ever played", "Come and find me at Northgate School at 4"], answer: 1, ok: "That is the one. A feeling gives a stranger nothing to stand on. The other two hand over exactly where and when to find you.", okVoice: "/audio/wren/m04-c4-chk2-ok.mp3" },
         ],
       },
@@ -239,9 +239,9 @@ export const mission04: MissionManifest = {
       intel: {
         beats: [
           "Here's the good news. You don't have to go silent to stay safe. You just have to scrub. Read a post before it goes up, the way PACKRAT will.",
-          "Some bits are completely fine. That you had a great game. That you're buzzing about it. Feelings give a stranger nothing.",
-          "But the WHERE and the WHEN? Your school's name, the street, 'every Tuesday at six', a live location? Those put a stranger at your door.",
-          "So black out the where-and-when, keep the feeling, and post THAT. Same fun, none of the map.",
+          "Some bits are completely fine, like that you had a great game, or that you're buzzing about it. Feelings give a stranger nothing.",
+          "But what about the where and the when? Your school's name, the street, every Tuesday at six, or a live location will put a stranger at your door.",
+          "So black out the where and when, keep the feeling, and post that. It's the same fun, with none of the map.",
         ],
         beatAudio: [
           "/audio/wren/m04-c4-b1.mp3",
@@ -253,7 +253,7 @@ export const mission04: MissionManifest = {
       fieldwork: {
         verb: "REDACT",
         payload: {
-          intro: "Priya's about to post this. Black out every bit a stranger could use to find her in person. Leave the harmless bits.",
+          intro: "Priya's about to post this. Black out every bit a stranger could use to find her in person, and leave the harmless bits alone.",
           surface: "Priya's match-day post",
           spans: [
             { id: "feel1", text: "Best game of my life today!", risky: false, why: "A feeling. Gives a stranger nothing to work with. Keep it." },
@@ -263,7 +263,7 @@ export const mission04: MissionManifest = {
             { id: "when", text: "every Tuesday til 6pm", risky: true, why: "Where AND when, in public. This is the one that puts a stranger at the pitch." },
             { id: "invite", text: "so proud of this team", risky: false, why: "A feeling about her team. Nothing a stranger can stand on. Keep it." },
           ],
-          doneLine: "That's scrubbed. The excitement stays, the map disappears. A stranger reading this now learns Priya is happy, and absolutely nothing else.",
+          doneLine: "That's scrubbed. The excitement stays, and the map disappears. A stranger reading this now learns Priya is happy, and absolutely nothing else.",
           doneLabel: "POST IT SAFELY",
           doneAudio: "/audio/wren/m04-c4-review.mp3",
         },
@@ -278,7 +278,7 @@ export const mission04: MissionManifest = {
       concept: "You can't delete the internet, so take down the crumb that hurts most, first",
       checkpoint: {
         questions: [
-          { id: "m04-c5-chk1", question: "An audit finds three of Jordan's leaks at once: an old blurry team photo, a joke about his birthday, and a public post saying 'at the skate park every Friday at 6'. He can fix ONE now. Which comes first?", options: ["The skate park every Friday at 6", "The old blurry photo of his team", "The joke he made about his birthday"], answer: 0, ok: "Right first move. A real-world where-and-when beats every other leak. That one comes down first, then the rest.", okVoice: "/audio/wren/m04-c5-chk1-ok.mp3" },
+          { id: "m04-c5-chk1", question: "An audit finds three of Jordan's leaks at once: an old blurry team photo, a joke about his birthday, and a public post saying 'at the skate park every Friday at 6'. He can fix ONE now. Which comes first?", options: ["The skate park every Friday at 6", "The old blurry photo of his team", "The joke he made about his birthday"], answer: 0, ok: "That's the right first move. A real-world where and when beats every other leak. That one comes down first, then the rest.", okVoice: "/audio/wren/m04-c5-chk1-ok.mp3" },
           { id: "m04-c5-chk2", question: "Panicking, Jordan wants to just delete his whole account instead. Why is that the wrong call?", options: ["Deleting an account is against the rules", "He would lose all of his likes and followers", "Any file already built on him stays built"], answer: 2, ok: "That is it. Panic is not a plan. Scrub the most dangerous crumb first instead, calm and by priority.", okVoice: "/audio/wren/m04-c5-chk2-ok.mp3" },
         ],
       },
@@ -288,10 +288,10 @@ export const mission04: MissionManifest = {
       practiceIntroVoice: "/audio/wren/m04-c5-practice.mp3",
       intel: {
         beats: [
-          "One thing makes assembly even easier for PACKRAT: the same handle everywhere. The same name on games, photos, and forums is one thread, tying every crumb together.",
-          "So you'd think, delete everything! But you can't delete the internet, and you don't need to. Panic is not a plan.",
-          "Analysts scrub by PRIORITY. Not the most embarrassing crumb. The most DANGEROUS one. The one that could put a stranger in front of you.",
-          "So which is that? Where you'll be, and when. A real-world place and time beats every other leak. That one comes down first, every single time.",
+          "One thing makes assembly even easier for PACKRAT, and that's the same handle everywhere. The same name on games, photos, and forums is one thread, tying every crumb together.",
+          "So you'd think you should delete everything. But you can't delete the internet, and you don't need to. Panic is not a plan.",
+          "Analysts scrub by priority. They don't start with the most embarrassing crumb. They start with the most dangerous one, the one that could put a stranger in front of you.",
+          "So which one is that? It's where you'll be, and when. A real-world place and time beats every other leak. That one comes down first, every single time.",
         ],
         beatAudio: [
           "/audio/wren/m04-c5-b1.mp3",
@@ -350,10 +350,10 @@ export const mission04: MissionManifest = {
       practiceIntroVoice: "/audio/wren/m04-c6-practice.mp3",
       intel: {
         beats: [
-          "Let's name PACKRAT's game so you see it coming. Move one, he COLLECTS. He never breaks into anything. He just saves every crumb you drop in public, and he keeps it forever.",
-          "Move two, he LINKS. The same handle on every app is a thread. He pulls it, and every crumb from every account comes along for the ride.",
-          "Move three, he ASSEMBLES and SELLS. Stacked crumbs become a file, a where, a when, a name, and he auctions it to whoever's buying.",
-          "And the counter to all of it? Give him nothing worth linking. Different handles, no where-and-when, backgrounds checked. An empty nest is a very bored magpie.",
+          "Let's name PACKRAT's game so you see it coming. In move one, he collects. He never breaks into anything. He just saves every crumb you drop in public, and he keeps it forever.",
+          "In move two, he links. The same handle on every app is a thread. He pulls it, and every crumb from every account comes along for the ride.",
+          "In move three, he assembles and sells. Stacked crumbs become a file with a where, a when, and a name, and he auctions it to whoever's buying.",
+          "And what's the counter to all of it? Give him nothing worth linking. Use different handles, leave out the where and when, and check your backgrounds. An empty nest makes a very bored PACKRAT.",
         ],
         beatAudio: [
           "/audio/wren/m04-c6-b1.mp3",
@@ -403,10 +403,10 @@ export const mission04: MissionManifest = {
       practiceIntroVoice: "/audio/wren/m04-c7-practice.mp3",
       intel: {
         beats: [
-          "So how do you starve the nest for good? A footprint clean-up, in four steps, and you can do it this week.",
-          "Step one, audit. Look at your last few posts the way PACKRAT does. Where's the where, the when, the school, the face in the background?",
-          "Steps two and three, kill location and go private. Turn location tags off, and set the accounts that don't need to be public, to private.",
-          "Step four, cut the thread. Use a different handle where you can, so your game name can't lead a stranger straight to your real one.",
+          "So how do you starve the nest for good? You do a footprint clean-up in four steps, and you can do it this week.",
+          "Step one is the audit. Look at your last few posts the way PACKRAT does. Where's the where, the when, the school, and the face in the background?",
+          "Steps two and three are to kill location and go private. Turn location tags off, and set any account that doesn't need to be public to private.",
+          "Step four is to cut the thread. Use a different handle where you can, so your game name can't lead a stranger straight to your real one.",
         ],
         beatAudio: [
           "/audio/wren/m04-c7-b1.mp3",
@@ -475,7 +475,7 @@ export const mission04: MissionManifest = {
 
   catchThem: {
     intro:
-      "Okay Agent, this is the real test. Nineteen questions, and not one of them is “what did I say”. Every single one makes you THINK. Take what you learned about the nest and work out an answer you've never seen before. I won't tell you how you're doing until the very end. Get fifteen right to close the case. Miss it, and you sit the whole case again. Take your time.",
+      "Okay, Agent, this is the real test. There are nineteen questions, and none of them just ask you to repeat what I said. Every single one makes you think. Use what you've learned about the nest to work out answers you've never seen before. I won't tell you how you're doing until the very end. Get fifteen right, and you close the case. If you get fewer than fifteen, you'll play the whole case again. So take your time, and good luck.",
     pass: 15,
     voice: {
       intro: "/audio/wren/m04-catch-intro.mp3",
@@ -517,7 +517,7 @@ export const mission04: MissionManifest = {
     ],
     realWorldMove:
       "This week: audit your own top three posts the way PACKRAT would. Check the background, the tags, and the handle. Turn location tags off, and scrub anything that says where you'll be and when. Do it with a parent if an account is shared.",
-    wrenLine: "File closed, nest empty. Watch what you drop, Agent. Sign out.",
+    wrenLine: "The file is closed, and the nest is empty. Keep watching what you drop, Agent.",
   },
 
   voice: {

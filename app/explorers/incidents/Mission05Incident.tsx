@@ -148,7 +148,7 @@ export default function Mission05Incident({ reduced, audio, onPhaseCleared, onCo
       {/* ---------------- phase 1: hold the queue ---------------- */}
       {phase === 1 && (
         <div style={{ maxWidth: 820 }}>
-          <Eyebrow text="Phase 1: The wall. Six messages just landed. Tap every one that belongs to the storm. Don't flag the real ones." color={T.actionAmber} />
+          <Eyebrow text="Phase 1 · The wall: six messages just landed. Tap every one that belongs to the storm, and don't flag the real ones." color={T.actionAmber} />
           <div style={{ display: "grid", gap: 10, marginTop: 14 }}>
             {WALL.map((w) => {
               const done = held.includes(w.id);
@@ -199,7 +199,7 @@ export default function Mission05Incident({ reduced, audio, onPhaseCleared, onCo
       {/* ---------------- phase 2: find the spear ---------------- */}
       {phase === 2 && (
         <div style={{ maxWidth: 820 }}>
-          <Eyebrow text="Phase 2: Four storm messages. Three are spray. One did its homework. Tap the spear." color={T.actionAmber} />
+          <Eyebrow text="Phase 2 · The spear: there are four storm messages. Three are spray, and one did its homework. Tap the spear." color={T.actionAmber} />
           <div style={{ display: "grid", gap: 10, marginTop: 14 }}>
             {storm.map((s) => (
               <button
@@ -241,7 +241,7 @@ export default function Mission05Incident({ reduced, audio, onPhaseCleared, onCo
       {/* ---------------- phase 3: trace the data ---------------- */}
       {phase === 3 && (
         <div style={{ maxWidth: 820 }}>
-          <Eyebrow text="Phase 3: The spear knew your form and your teacher. Where did that data COME from?" color={T.actionAmber} />
+          <Eyebrow text="Phase 3 · The source: the spear knew your form and your teacher. Where did that data come from?" color={T.actionAmber} />
           <div style={{ display: "grid", gap: 10, marginTop: 14 }}>
             {traces.map((t) => {
               const isChosen = trace === t.id;

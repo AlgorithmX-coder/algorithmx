@@ -32,7 +32,8 @@ for (const file of walk("app/explorers")) {
 }
 // Spoken only, with no bubble on screen: the shared test pass/fail lines
 // (the result screen shows its own score text).
-const VOICE_ONLY = /-catch-(pass|fail)\.mp3$/;
+// test verdicts are spoken only (Missions 1-5 call them catch-pass/fail)
+const VOICE_ONLY = /-(catch|test)-(pass|fail)\.mp3$/;
 
 function closest(line) {
   const a = new Set(words(line));
