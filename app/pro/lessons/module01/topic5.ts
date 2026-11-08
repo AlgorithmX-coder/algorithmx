@@ -102,7 +102,12 @@ const topic5: TopicManifest = {
   check: {
     explain: {
       prompt: "Using 3CX, explain what 'assume breach' means and why it matters. Write a sentence or two, then reveal a model answer.",
-      modelAnswer: "3CX worked because everyone trusted a signed update from a known vendor, so the attack arrived through the one channel nobody was watching. 'Assume breach' means you stop relying on that kind of blanket trust and instead work as if an attacker is already inside: you verify things that used to be taken on faith, you watch for unusual behaviour even from trusted software, and you limit what any one component can reach. It would not have made 3CX impossible, but organisations practising assume breach and zero trust were better placed to notice the strange activity and contain how far it spread.",
+      modelAnswer: [
+        "3CX worked because everyone trusted a signed update from a known vendor, so the attack arrived through the one channel nobody was watching.",
+        "'Assume breach' means you stop relying on that kind of blanket trust and work as if an attacker is already inside.",
+        "In practice you verify things that used to be taken on faith, watch for unusual behaviour even from trusted software, and limit what any one component can reach.",
+        "It would not have made 3CX impossible, but organisations practising assume breach and zero trust were better placed to notice the strange activity and contain how far it spread.",
+      ],
     },
     quiz: [
       {

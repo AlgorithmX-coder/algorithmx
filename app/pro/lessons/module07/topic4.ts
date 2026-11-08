@@ -103,7 +103,13 @@ const topic4: TopicManifest = {
   check: {
     explain: {
       prompt: "FACC lost 42 million euros to a convincing email with no malware. Walk through the checks that should have caught it, and name the single step that would have stopped the payment.",
-      modelAnswer: "The checks are: look past the display name to the real sender address and watch for lookalike domains; check where any links truly lead before clicking; and, most importantly, suspect the request itself, especially anything moving money or acting urgently outside normal process. Here the attack carried no malware, so detection was never going to catch it; the request was the attack. The single step that would have stopped the payment is out-of-band verification: independently confirming an unusual, high-value transfer instruction through a known, trusted channel before acting, rather than trusting the email alone. That missing procedural check is what cost 42 million euros and two careers.",
+      modelAnswer: [
+        "Look past the display name to the real sender address and watch for lookalike domains, and check where any links truly lead before clicking.",
+        "Most importantly, suspect the request itself, especially anything moving money or acting urgently outside normal process.",
+        "The attack carried no malware, so detection was never going to catch it; the request was the attack.",
+        "The single step that would have stopped the payment is out-of-band verification: independently confirming an unusual, high-value transfer instruction through a known, trusted channel before acting, rather than trusting the email alone.",
+        "That missing procedural check is what cost 42 million euros and two careers.",
+      ],
     },
     quiz: [
       {

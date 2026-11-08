@@ -102,7 +102,13 @@ const topic1: TopicManifest = {
   check: {
     explain: {
       prompt: "The Marriott breach went undetected for around four years. Explain what a SOC is, why 'you cannot respond to what you cannot see', and how the concept of dwell time makes this case so instructive.",
-      modelAnswer: "A SOC, a Security Operations Centre, is the team responsible for continuously monitoring an organisation for signs of attack and responding when something is found; the SOC analyst who does the front-line monitoring and triage is the most common entry-level role in the field. Its core reason to exist is that you cannot respond to an attack you cannot see: prevention sometimes fails, so you need visibility, through logs, alerts and tools, to detect what gets through, ideally early. Dwell time, the length of time an attacker operates undetected, is where much of a breach's damage accumulates: minutes is minor, but months or years is catastrophic because the attacker has all the time they need to spread, steal and entrench. Marriott is so instructive because the attackers were inside for around four years, exposing data on hundreds of millions of guests, which points to a profound lack of monitoring. Had a SOC detected the activity early, the dwell time, and the damage, would have been a tiny fraction. It is the clearest argument for why visibility and fast detection matter as much as prevention.",
+      modelAnswer: [
+        "A SOC (Security Operations Centre) is the team responsible for continuously monitoring an organisation for signs of attack and responding when something is found; the front-line SOC analyst who does the monitoring and triage is the most common entry-level role in the field.",
+        "Its core reason to exist is that you cannot respond to an attack you cannot see: prevention sometimes fails, so you need visibility through logs, alerts and tools to detect what gets through, ideally early.",
+        "Dwell time, the length of time an attacker operates undetected, is where much of a breach's damage accumulates: minutes is minor, but months or years is catastrophic because the attacker has time to spread, steal and entrench.",
+        "Marriott is so instructive because the attackers were inside for around four years, exposing data on hundreds of millions of guests, which points to a profound lack of monitoring.",
+        "Had a SOC detected the activity early, the dwell time and damage would have been a tiny fraction, making it the clearest argument that visibility and fast detection matter as much as prevention.",
+      ],
     },
     quiz: [
       {

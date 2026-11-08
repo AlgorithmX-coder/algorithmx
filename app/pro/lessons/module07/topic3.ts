@@ -104,7 +104,12 @@ const topic3: TopicManifest = {
   check: {
     explain: {
       prompt: "In the 2019 case, a managing director wired around 220,000 euros because he recognised his 'CEO's' voice. Name the psychological levers at work, and explain why verification, not a better ear, is the real defence.",
-      modelAnswer: "The levers were authority (the instruction appeared to come from the CEO) and urgency (an immediate transfer was demanded), the classic combination that makes people act before thinking. The voice was AI-synthesised, convincing enough that the managing director trusted his ear, which is exactly why detection failed: the fake removed the usual 'that doesn't sound right' instinct. The durable defence is verification, not detection: independently confirming the request through a known, trusted channel before moving any money. Because technology keeps making fakes more convincing, you cannot rely on spotting them; you rely on verifying through a channel the attacker does not control.",
+      modelAnswer: [
+        "The levers were authority (the instruction appeared to come from the CEO) and urgency (an immediate transfer was demanded), the classic combination that makes people act before thinking.",
+        "The voice was AI-synthesised, convincing enough that the managing director trusted his ear, which is exactly why detection failed: the fake removed the usual 'that doesn't sound right' instinct.",
+        "The durable defence is verification, not detection: independently confirming the request through a known, trusted channel before moving any money.",
+        "Because technology keeps making fakes more convincing, you cannot rely on spotting them; you rely on verifying through a channel the attacker does not control.",
+      ],
     },
     quiz: [
       {

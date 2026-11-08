@@ -101,7 +101,12 @@ const topic4: TopicManifest = {
   check: {
     explain: {
       prompt: "Give the honest picture of the cyber job market, explain why 'millions of unfilled jobs' is misleading, and say what actually helps a beginner get in.",
-      modelAnswer: "The honest picture of the cyber job market sits between two misleading extremes: the hype that there are millions of unfilled jobs and anyone can walk straight into a high salary, and the gloom that it is impossible to break in. The truth is that there is real, ongoing demand for cyber skills, but entry-level roles are genuinely competitive, and getting a first job takes effort, a good approach and persistence. 'Millions of unfilled jobs' is misleading because those headline 'skills gap' figures are widely debated and often debunked, and they do not match beginners' lived experience of scarce, competitive junior roles that frequently ask for experience, much of the real demand is for experienced people, not beginners, so it is not the effortless gold rush the biggest numbers suggest. What actually helps a beginner get in is largely within their control: a portfolio of demonstrable work that sets them apart because employers skills-test; the right certifications in order that open doors; networking that surfaces unadvertised opportunities and builds job-leading relationships; and persistence through many applications and some rejection. The honest, useful truth is not 'it's easy' or 'it's impossible' but 'it's achievable with the right, persistent effort', which is exactly what this course prepares you for.",
+      modelAnswer: [
+        "The honest picture sits between two extremes: the hype of millions of unfilled jobs and easy high salaries, and the gloom that it is impossible to break in. The truth is real, ongoing demand, but genuinely competitive entry-level roles that take effort and persistence.",
+        "'Millions of unfilled jobs' is misleading because those 'skills gap' figures are widely debated and often debunked, and much of the real demand is for experienced people, not beginners, so it does not match the scarce, competitive junior roles beginners actually find.",
+        "What helps a beginner is largely within their control: a portfolio of demonstrable work (because employers skills-test), the right certifications in order, networking that surfaces unadvertised roles, and persistence through many applications and some rejection.",
+        "The useful truth is not 'it's easy' or 'it's impossible' but 'it's achievable with the right, persistent effort', which is exactly what this course prepares you for.",
+      ],
     },
     quiz: [
       {

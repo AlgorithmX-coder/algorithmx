@@ -103,7 +103,12 @@ const topic3: TopicManifest = {
   check: {
     explain: {
       prompt: "The Coalfire testers had a signed contract and were doing exactly what they were hired to do, yet they were arrested. In your own words, explain what went wrong and how a professional prevents it.",
-      modelAnswer: "The problem was the authorisation chain, not the testers' actions. They were engaged by the state court administration, but the county and the local law enforcement who actually responded were not aligned or informed, so to the officers on the ground it looked exactly like a real break-in. A professional prevents this by confirming that permission comes from a party with genuine authority over the target, making sure everyone who might respond knows the test is authorised, and carrying documentation the people on the ground will recognise. A contract alone is not enough if the authorisation does not reach everyone who matters.",
+      modelAnswer: [
+        "The problem was the authorisation chain, not the testers' actions.",
+        "They were engaged by the state court administration, but the county and the local law enforcement who actually responded were not aligned or informed, so to the officers on the ground it looked exactly like a real break-in.",
+        "A professional prevents this by confirming that permission comes from a party with genuine authority over the target, and making sure everyone who might respond knows the test is authorised.",
+        "They also carry documentation the people on the ground will recognise, because a contract alone is not enough if the authorisation does not reach everyone who matters.",
+      ],
     },
     quiz: [
       {

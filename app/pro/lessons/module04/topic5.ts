@@ -103,7 +103,13 @@ const topic5: TopicManifest = {
   check: {
     explain: {
       prompt: "Explain what digital signatures provide and how they use key pairs, what PKI is for, and how Stuxnet abused the signature trust model.",
-      modelAnswer: "Digital signatures provide authenticity (confidence a message really came from the claimed sender) and integrity (confidence it was not altered since), rather than secrecy, so a signed software update is not hidden but is proven to come genuinely from the vendor and to be unchanged. They use the public/private key pair in reverse of encryption: you sign with your private key (which only you have), and anyone verifies with your public key (which everyone has), and because only your private key could produce a signature that your public key verifies, a valid signature proves it came from you, while because the signature covers the message content, any change breaks it, proving integrity. PKI (public-key infrastructure) is the system of certificates and authorities, the same chain of trust as HTTPS, that binds public keys to identities, so signatures can be trusted at scale (your device can trust that an update's signature really belongs to the genuine vendor). Stuxnet abused this trust model not by breaking the cryptography but by stealing it: it used stolen, legitimate code-signing certificates belonging to real companies to sign its malicious drivers, so that systems which trust validly-signed software accepted its components as genuine and defences relying on signatures were evaded. It showed that digital signatures are only as trustworthy as the secrecy of the signing keys, and that a stolen key turns the trust model to the attacker's advantage.",
+      modelAnswer: [
+        "Digital signatures provide authenticity (confidence a message really came from the claimed sender) and integrity (confidence it was not altered since), rather than secrecy.",
+        "They use the key pair in reverse of encryption: you sign with your private key, and anyone verifies with your public key, so a valid signature proves it came from you and any change to the message breaks it.",
+        "PKI (public-key infrastructure) is the system of certificates and authorities, the same chain of trust as HTTPS, that binds public keys to identities so signatures can be trusted at scale.",
+        "Stuxnet abused this not by breaking the cryptography but by stealing it, using stolen legitimate code-signing certificates from real companies to sign its malicious drivers so that systems trusting validly-signed software accepted them as genuine.",
+        "It showed that digital signatures are only as trustworthy as the secrecy of the signing keys, and a stolen key turns the trust model to the attacker's advantage.",
+      ],
     },
     quiz: [
       {

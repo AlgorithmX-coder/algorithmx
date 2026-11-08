@@ -103,7 +103,13 @@ const topic5: TopicManifest = {
   check: {
     explain: {
       prompt: "Explain why 'more alerts is not more security', what tuning is, and why signal-to-noise determines whether real threats are actually caught.",
-      modelAnswer: "More alerts is not more security because when detection rules are too broad, they fire constantly on harmless, expected activity, producing a flood of false positives. Analysts cannot investigate everything, so they start to ignore or rush past alerts, and the one real threat buried in the noise gets missed, which is alert fatigue, and exactly what happened in the Target breach where alerts fired but were lost in the volume. Tuning is the disciplined, evidence-based work of refining detection rules to reduce false positives so genuine alerts stand out and can be trusted: you judge each rule by its track record, keeping and sharpening what catches real threats and reducing what reliably wastes time, without deleting detections and going blind, and because environments change, it is ongoing. Signal-to-noise determines whether real threats are caught because an alert that is almost always real gets investigated and taken seriously, while one that is almost always false gets ignored even when it matters, and a missed alert lost in noise has the same consequence as no alert at all. So detection is a balance, not a maximisation: the aim is the right alerts, the genuine signals clearly visible and trusted, which is what turns detection capability into actual defence.",
+      modelAnswer: [
+        "More alerts is not more security because overly broad rules fire constantly on harmless, expected activity, producing a flood of false positives.",
+        "Analysts cannot investigate everything, so they start to ignore or rush past alerts and the one real threat buried in the noise gets missed, which is alert fatigue and exactly what happened in the Target breach where alerts fired but were lost in the volume.",
+        "Tuning is the disciplined, evidence-based work of refining detection rules to reduce false positives so genuine alerts stand out and can be trusted: you judge each rule by its track record, sharpening what catches real threats and reducing what wastes time, without deleting detections and going blind, and it is ongoing because environments change.",
+        "Signal-to-noise determines whether real threats are caught, because an alert that is almost always real gets investigated while one that is almost always false gets ignored even when it matters, and a missed alert lost in noise has the same consequence as no alert at all.",
+        "So detection is a balance, not a maximisation: the aim is the right alerts, with the genuine signals clearly visible and trusted, which is what turns detection capability into actual defence.",
+      ],
     },
     quiz: [
       {

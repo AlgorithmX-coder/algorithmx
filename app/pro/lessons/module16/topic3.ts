@@ -102,7 +102,13 @@ const topic3: TopicManifest = {
   check: {
     explain: {
       prompt: "Explain the core principles of handling digital evidence and what chain of custody is, and why even a front-line analyst needs to understand this.",
-      modelAnswer: "The core principles of handling digital evidence are: do not alter the original (simply using a compromised system overwrites timestamps and evidence), so make a forensic image and investigate the copy, leaving the original intact and credible; capture volatile evidence, like the contents of memory, first, because it is lost the moment a machine is powered off or changed; and document everything you do. Chain of custody is the documented, unbroken record of who handled a piece of evidence, when, and what they did, from the moment it was collected; it proves the evidence has not been tampered with or substituted, and so makes it credible and admissible, whereas a broken or missing chain can make even genuine evidence worthless in a formal process. Even a front-line analyst needs to understand this because you rarely know at the start which incident will end in a prosecution, dismissal, claim or investigation, and the critical early actions, or mistakes, often happen before any forensic specialist arrives. Knowing not to log into the compromised machine 'just to check', not to reboot it before memory is captured, and to document what you do, can be the difference between a case that holds and one that collapses.",
+      modelAnswer: [
+        "The core principles of handling digital evidence are to not alter the original (simply using a compromised system overwrites timestamps and evidence), so you make a forensic image and investigate the copy, leaving the original intact and credible.",
+        "You also capture volatile evidence like the contents of memory first, because it is lost the moment a machine is powered off or changed, and you document everything you do.",
+        "Chain of custody is the documented, unbroken record of who handled a piece of evidence, when, and what they did, from the moment it was collected.",
+        "It proves the evidence has not been tampered with or substituted, making it credible and admissible, whereas a broken or missing chain can make even genuine evidence worthless in a formal process.",
+        "Even a front-line analyst needs this because you rarely know at the start which incident will end in a prosecution, claim or investigation, and the critical early actions happen before any specialist arrives: knowing not to log into the compromised machine 'just to check', not to reboot it before memory is captured, and to document what you do can be the difference between a case that holds and one that collapses.",
+      ],
     },
     quiz: [
       {

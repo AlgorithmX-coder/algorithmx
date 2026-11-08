@@ -102,7 +102,13 @@ const topic1: TopicManifest = {
   check: {
     explain: {
       prompt: "Explain what logs are and why they are the foundation of investigation, why 'you cannot investigate what was never logged', and how knowing different log sources helps.",
-      modelAnswer: "Logs are the records a system keeps of things that happen on it, a login, a file opened, a connection made, a request served, so every meaningful action leaves a log entry, a footprint, and together these are the evidence of what occurred; investigating anything means reading logs to reconstruct what happened, which makes them the raw material of all detection and investigation. 'You cannot investigate what was never logged' is a hard truth because if an action left no record, you have no evidence of it, which is exactly why hardening includes turning logging on, why logs must be kept safely, and why attackers sometimes try to delete or disable them: no logs, no investigation. Knowing different log sources helps because different systems keep different logs that answer different questions, authentication logs record who logged in and whether it succeeded (the first place to look for account attacks), web server logs record requests and their results, firewall logs record allowed and blocked connections, and DNS logs record name lookups (great for catching malware phoning home), so an effective investigator reaches for the right log for the question at hand, turning a vague 'check the logs' into targeted, efficient investigation.",
+      modelAnswer: [
+        "Logs are the records a system keeps of things that happen on it (a login, a file opened, a connection made, a request served), so every meaningful action leaves a footprint, and together these are the evidence of what occurred and the raw material of all detection and investigation.",
+        "Investigating anything means reading logs to reconstruct what happened.",
+        "'You cannot investigate what was never logged' because if an action left no record you have no evidence of it, which is why hardening includes turning logging on, why logs must be kept safely, and why attackers sometimes try to delete or disable them.",
+        "Knowing different log sources helps because different systems keep different logs that answer different questions: authentication logs record who logged in and whether it succeeded, web server logs record requests and their results, firewall logs record allowed and blocked connections, and DNS logs record name lookups (good for catching malware phoning home).",
+        "An effective investigator reaches for the right log for the question at hand, turning a vague 'check the logs' into targeted, efficient investigation.",
+      ],
     },
     quiz: [
       {

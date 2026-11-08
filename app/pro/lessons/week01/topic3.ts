@@ -101,7 +101,12 @@ const topic3: TopicManifest = {
   check: {
     explain: {
       prompt: "Your colleague says: 'My password is P@ssw0rd99, it has capitals, numbers and a symbol, so it's strong, and I use it everywhere because it's easy to remember.' Give them the two things wrong with that. Write a couple of sentences, then reveal a model answer.",
-      modelAnswer: "First, it is short and pattern-based, exactly what cracking tools try first, so the symbols do not save it; length and unpredictability are what matter, so a long passphrase would be far stronger. Second, and worse, using it everywhere means the day any one of those sites is breached, attackers will stuff that email-and-password pair into every other site and get straight into the rest, including email and banking. The fix is a unique password per site, generated and stored by a password manager.",
+      modelAnswer: [
+        "First, it is short and pattern-based, exactly what cracking tools try first, so the symbols do not save it: length and unpredictability are what matter, and a long passphrase would be far stronger.",
+        "Second, and worse, using it everywhere means the day any one of those sites is breached, attackers will stuff that email-and-password pair into every other site.",
+        "That gets them straight into the rest, including email and banking.",
+        "The fix is a unique password per site, generated and stored by a password manager.",
+      ],
     },
     quiz: [
       {

@@ -102,7 +102,13 @@ const topic2: TopicManifest = {
   check: {
     explain: {
       prompt: "In your own words, use Log4Shell to explain the difference between a threat, a vulnerability, and a risk. Write a sentence or two, then reveal a model answer.",
-      modelAnswer: "The threat was the attackers worldwide who started scanning for it within hours. The vulnerability was the Log4Shell flaw itself, sitting inside a huge share of the world's software. The risk was the realistic chance those attackers would find and exploit it, weighed by how much damage running their own code on your systems would do. The risk was so high because a serious, motivated threat met an easy, extremely widespread vulnerability. Finding every copy of Log4j and patching it fast was how you reduced that risk.",
+      modelAnswer: [
+        "The threat was the attackers worldwide who started scanning for it within hours.",
+        "The vulnerability was the Log4Shell flaw itself, sitting inside a huge share of the world's software.",
+        "The risk was the realistic chance those attackers would find and exploit it, weighed by how much damage running their own code on your systems would do.",
+        "The risk was so high because a serious, motivated threat met an easy, extremely widespread vulnerability.",
+        "Finding every copy of Log4j and patching it fast was how you reduced that risk.",
+      ],
     },
     quiz: [
       {

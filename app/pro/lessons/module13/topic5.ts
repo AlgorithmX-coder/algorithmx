@@ -102,7 +102,13 @@ const topic5: TopicManifest = {
   check: {
     explain: {
       prompt: "Describe what good triage looks like, and explain why research showing systems are attacked within minutes of exposure makes continuous monitoring and the SOC analyst's role so essential.",
-      modelAnswer: "Good triage is calm: an alert is a question, not an emergency, so you gather context before judging. It is evidence-led: you decide on what you can actually see and confirm, not guesses or panic. It knows when to escalate: neither sitting on something serious nor raising every trivial thing, moving genuine concerns promptly through the proper path. And it is documented: clear, factual notes so others can pick up instantly and the work is defensible later. Bad triage panics at noise, dismisses real signals, escalates everything or nothing, and leaves no record. Research showing that internet-exposed systems are probed and attacked within minutes makes continuous monitoring essential because there is no quiet internet: automated scanners constantly sweep everything, so anything exposed draws attack at once, with no grace period or obscurity. That relentless background storm is why a SOC always has something to watch, why the basics (hardening, patching, MFA) are not optional, and why the analyst's calm, evidence-led, well-documented triage, done continuously, is what stands between an organisation and an attack pressure that never stops.",
+      modelAnswer: [
+        "Good triage is calm (an alert is a question, not an emergency, so you gather context before judging) and evidence-led (you decide on what you can actually see and confirm, not guesses or panic).",
+        "It knows when to escalate, neither sitting on something serious nor raising every trivial thing, and it is documented with clear, factual notes so others can pick up instantly and the work is defensible later.",
+        "Bad triage is the opposite: it panics at noise, dismisses real signals, escalates everything or nothing, and leaves no record.",
+        "Research showing that internet-exposed systems are probed and attacked within minutes makes continuous monitoring essential, because there is no quiet internet: automated scanners constantly sweep everything, so anything exposed draws attack at once, with no grace period or obscurity.",
+        "That relentless background storm is why a SOC always has something to watch, why the basics (hardening, patching, MFA) are not optional, and why the analyst's calm, evidence-led, well-documented triage is what stands between an organisation and attack pressure that never stops.",
+      ],
     },
     quiz: [
       {

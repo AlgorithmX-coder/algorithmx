@@ -101,7 +101,13 @@ const topic1: TopicManifest = {
   check: {
     explain: {
       prompt: "Explain what resilience is, the difference between business continuity and disaster recovery, and what the OVHcloud fire teaches about assuming data is safe.",
-      modelAnswer: "Resilience is planning in advance to survive and recover from disruptions, whether a cyber attack, hardware failure, fire or flood, so that a disruption is a setback rather than an extinction event; it broadens your view to all hazards, planning for the impact (lost systems, site or data) regardless of cause. Business continuity and disaster recovery are two related but different jobs: business continuity is about keeping the business running, or running in a reduced way, through a disruption (which functions must keep going, what manual or alternative workarounds exist), while disaster recovery is the technical restoration of the IT systems afterwards, rebuilding servers, restoring data, bringing services back online. You need both, because recovery takes time and continuity keeps the organisation alive meanwhile. The OVHcloud fire teaches that assuming your data is safe is how data is lost: a data-centre fire physically destroyed servers and data, and customers who had assumed being in the cloud made their data safe, with no independent offsite backup or recovery plan, lost it permanently, while those with offsite copies could recover. Resilience must be deliberate, not assumed: you ensure your critical data can survive a single disaster, and have a plan to recover and keep running, because the bad day, often a mundane physical one rather than a hacker, will come.",
+      modelAnswer: [
+        "Resilience is planning in advance to survive and recover from disruptions (a cyber attack, hardware failure, fire or flood) so a disruption is a setback rather than an extinction event, planning for the impact (lost systems, site or data) regardless of cause (all-hazards).",
+        "Business continuity is about keeping the business running, or running in a reduced way, through a disruption: which functions must keep going, and what manual or alternative workarounds exist.",
+        "Disaster recovery is the technical restoration of the IT systems afterwards: rebuilding servers, restoring data, and bringing services back online.",
+        "You need both, because recovery takes time and continuity keeps the organisation alive meanwhile.",
+        "The OVHcloud fire teaches that assuming data is safe is how data is lost: a data-centre fire destroyed servers and data, customers who had no independent offsite backup or recovery plan lost it permanently, and those with offsite copies could recover, so resilience must be deliberate, ensuring data can survive a single disaster.",
+      ],
     },
     quiz: [
       {

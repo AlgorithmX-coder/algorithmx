@@ -101,7 +101,13 @@ const topic2: TopicManifest = {
   check: {
     explain: {
       prompt: "What is an indicator of compromise, why is sharing IOCs so powerful (use WannaCry), and what is the fundamental limit of IOCs that makes behaviour detection still necessary?",
-      modelAnswer: "An indicator of compromise is a concrete, observable, shareable sign that an attack has occurred, such as a malware file's hash, a malicious address, or a suspicious artefact it leaves behind. Sharing IOCs is powerful because one organisation's or researcher's discovery becomes everyone's protection: extracted IOCs can be distributed through feeds, communities and national advisories so others immediately detect and block the same threat, often before it reaches them. WannaCry shows this at global scale: researchers analysing the malware shared its hashes, addresses and the kill-switch domain, letting defenders worldwide detect and blunt the outbreak far faster than any one organisation could alone. The fundamental limit of IOCs is that they describe the known: an IOC only exists after an attack has been observed, and attackers can swap a file or address easily to evade indicator-based detection. That is why behaviour detection (and detecting on harder-to-change behavioural patterns, TTPs) remains necessary to catch the genuinely new and the disguised. IOCs are essential, but they are one layer, best combined with behaviour.",
+      modelAnswer: [
+        "An indicator of compromise (IOC) is a concrete, observable, shareable sign that an attack has occurred, such as a malware file's hash, a malicious address, or a suspicious artefact it leaves behind.",
+        "Sharing IOCs is powerful because one organisation's or researcher's discovery becomes everyone's protection: extracted IOCs can be distributed through feeds, communities and national advisories so others immediately detect and block the same threat, often before it reaches them.",
+        "WannaCry shows this at global scale, as researchers analysing the malware shared its hashes, addresses and kill-switch domain, letting defenders worldwide detect and blunt the outbreak far faster than any one organisation could alone.",
+        "The fundamental limit of IOCs is that they describe only the known: an IOC exists only after an attack has been observed, and attackers can swap a file or address easily to evade indicator-based detection.",
+        "That is why behaviour detection, on harder-to-change behavioural patterns (TTPs), remains necessary to catch the genuinely new and the disguised, so IOCs are essential but one layer, best combined with behaviour.",
+      ],
     },
     quiz: [
       {

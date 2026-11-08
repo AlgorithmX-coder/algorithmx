@@ -101,7 +101,13 @@ const topic1: TopicManifest = {
   check: {
     explain: {
       prompt: "State the golden rule of web security in your own words, and explain why the Exactis case is a different kind of failure from an attack that exploits user input.",
-      modelAnswer: "The golden rule is: never trust input that came from the user. Anything a person can type, edit or send, form fields, URL values, hidden fields, uploads, could be a deliberate attack, so all of it must be treated as hostile until checked and handled safely. Most web vulnerabilities are failures to respect this. The Exactis case is a different kind of failure: it was not an attack through user input at all, but a breach by exposure, a database of around 340 million records left directly reachable on the internet, so it could simply be found and copied with no exploit needed. It shows that protecting data has two halves: respecting untrusted input to defend against attacks through the application, and basic hygiene, no internet-facing databases, strong authentication, protected backups, so the data is not just left open in the first place.",
+      modelAnswer: [
+        "The golden rule of web security is: never trust input that came from the user.",
+        "Anything a person can type, edit or send (form fields, URL values, hidden fields, uploads) could be a deliberate attack, so all of it must be treated as hostile until it has been checked and handled safely.",
+        "Most web vulnerabilities are failures to respect this rule.",
+        "The Exactis case was a different kind of failure: not an attack through user input, but a breach by exposure, a database of around 340 million records left directly reachable on the internet, so it could simply be found and copied with no exploit needed.",
+        "It shows protecting data has two halves: respecting untrusted input to defend against attacks through the application, and basic hygiene (no internet-facing databases, strong authentication, protected backups) so the data is not left open in the first place.",
+      ],
     },
     quiz: [
       {

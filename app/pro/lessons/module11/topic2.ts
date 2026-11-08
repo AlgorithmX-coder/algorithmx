@@ -102,7 +102,13 @@ const topic2: TopicManifest = {
   check: {
     explain: {
       prompt: "In 2021, Microsoft released patches for Exchange, yet tens of thousands of servers were still compromised. Explain why 'a patch exists' did not make organisations safe, and what winning the patch race actually requires.",
-      modelAnswer: "A released patch is a starting gun, not a finish line: making the flaw public also tells attackers it exists and how it works, so they race to exploit every system that has not yet applied the fix. Exchange servers are typically internet-facing, so the whole world could reach them, making the race brutally fast; the victims were simply those who did not patch in time, often because they did not realise how exposed they were or had no rapid process. Winning the race requires knowing your exposure (especially internet-facing systems), patching critical exposed flaws immediately, applying interim mitigations when you cannot patch instantly, and having a routine process so this is default behaviour rather than panic. 'A patch exists' protects no one until it is applied, fast, where it is most exposed.",
+      modelAnswer: [
+        "A released patch is a starting gun, not a finish line: making the flaw public also tells attackers it exists and how it works, so they race to exploit every system that has not yet applied the fix.",
+        "Exchange servers are typically internet-facing, so the whole world could reach them, making the race brutally fast.",
+        "The victims were simply those who did not patch in time, often because they did not realise how exposed they were or had no rapid process.",
+        "Winning the race requires knowing your exposure (especially internet-facing systems), patching critical exposed flaws immediately, applying interim mitigations when you cannot patch instantly, and having a routine process so this is default behaviour rather than panic.",
+        "'A patch exists' protects no one until it is applied, fast, where it is most exposed.",
+      ],
     },
     quiz: [
       {

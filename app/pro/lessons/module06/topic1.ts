@@ -104,7 +104,12 @@ const topic1: TopicManifest = {
   check: {
     explain: {
       prompt: "DarkSide shut down a fuel pipeline but insisted it was 'only about money'. Using the idea of threat actors and motives, explain what kind of attacker they were and why that claim is actually consistent with the damage they caused.",
-      modelAnswer: "DarkSide were organised crime: a profit-driven ransomware business, even renting their tools to affiliates. Their claim to be apolitical fits that motive, they wanted a ransom, not disruption for its own sake. But profit-driven crime can still cause huge collateral damage, because the fastest route to payment, encrypting critical systems, forced Colonial to shut the pipeline to contain it. So the motive was money, and the national-scale fuel shortage was a side effect of how a criminal group pursues money: loudly, quickly, and by holding essential systems hostage.",
+      modelAnswer: [
+        "DarkSide were organised crime: a profit-driven ransomware business that even rented its tools to affiliates.",
+        "Their claim to be apolitical fits that motive: they wanted a ransom, not disruption for its own sake.",
+        "Profit-driven crime can still cause huge collateral damage, because the fastest route to payment, encrypting critical systems, forced Colonial to shut the pipeline to contain it.",
+        "So the motive was money, and the national-scale fuel shortage was a side effect of how a criminal group pursues money: loudly, quickly, and by holding essential systems hostage.",
+      ],
     },
     quiz: [
       {

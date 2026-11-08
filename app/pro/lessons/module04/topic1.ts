@@ -106,7 +106,13 @@ const topic1: TopicManifest = {
   check: {
     explain: {
       prompt: "Explain what encryption does and does not protect, and why a lost device is a breach or a non-event depending on encryption.",
-      modelAnswer: "Encryption scrambles data with a key so that anyone who intercepts or steals it sees only meaningless noise, while whoever holds the right key can read it; it is the primary tool for confidentiality, protecting data in transit (HTTPS) and at rest (encrypted disks and databases) from those without the key. What it does not do is just as important: it does nothing against someone who has the key or who can get you to hand over the secret, so it will not stop a phishing attack (you type your password into the fake site willingly), it does not by itself verify who you are talking to (certificates add that), and it does not protect availability (ransomware actually weaponises encryption against you). It is one tool for one job, not a cure-all. A lost device shows this starkly: if the device holding personal data was encrypted, the data is unreadable without the key, so the loss is a minor incident; if it was not encrypted, the finder can read everything, so the same loss is a serious, reportable breach. The exact same physical event is a disaster or a shrug depending entirely on whether the data was encrypted, which is why encryption at rest is such a basic, high-value control and its absence a recurring cause of breaches.",
+      modelAnswer: [
+        "Encryption scrambles data with a key so an interceptor sees only meaningless noise while the key-holder can read it; it is the primary tool for confidentiality, protecting data in transit (HTTPS) and at rest (encrypted disks and databases).",
+        "It does nothing against someone who has the key or who can get you to hand over the secret, so it will not stop phishing, where you type your password into the fake site willingly.",
+        "It does not by itself verify who you are talking to (certificates add that), and it does not protect availability (ransomware actually weaponises encryption against you), so it is one tool for one job, not a cure-all.",
+        "A lost device shows this: if it was encrypted, the data is unreadable without the key, so the loss is a minor incident.",
+        "If it was not encrypted, the finder can read everything, so the same loss is a serious, reportable breach, which is why encryption at rest is such a basic, high-value control.",
+      ],
     },
     quiz: [
       {

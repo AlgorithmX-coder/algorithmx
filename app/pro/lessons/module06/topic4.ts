@@ -102,7 +102,12 @@ const topic4: TopicManifest = {
   check: {
     explain: {
       prompt: "The RSA breach began with reconnaissance and a tailored email, not a technical break-in. Explain the role OSINT plays in an attack like this, and one thing a defender can do about it.",
-      modelAnswer: "Reconnaissance, much of it open-source intelligence, lets attackers learn who works somewhere, their roles, and what would seem plausible to them. That research is what turns a generic, ignorable email into a tailored spear-phishing lure convincing enough that one RSA employee opened a booby-trapped attachment, giving the attackers their foothold. A defender's response starts before the attack: shrink what can be discovered (limit exposed staff information and unnecessary systems), and train people to be wary even of messages that seem to know a lot about them, because that very relevance is often the product of recon.",
+      modelAnswer: [
+        "Reconnaissance, much of it open-source intelligence, lets attackers learn who works somewhere, their roles, and what would seem plausible to them.",
+        "That research is what turns a generic, ignorable email into a tailored spear-phishing lure, convincing enough that one RSA employee opened a booby-trapped attachment and gave the attackers their foothold.",
+        "A defender's response starts before the attack: shrink what can be discovered, limiting exposed staff information and unnecessary systems.",
+        "Train people to be wary even of messages that seem to know a lot about them, because that very relevance is often the product of recon.",
+      ],
     },
     quiz: [
       {

@@ -102,7 +102,12 @@ const topic2: TopicManifest = {
   check: {
     explain: {
       prompt: "Explain how an evil-twin attack works, why encryption still helps even once you have connected to one, and two simple habits that defeat it.",
-      modelAnswer: "An evil twin is a fake access point the attacker names identically (or similarly) to a legitimate network, so you connect to it instead of the real one; your traffic then flows through the attacker's equipment, ready for eavesdropping or man-in-the-middle attacks. It works because we trust Wi-Fi names and often auto-connect without checking. Encryption still helps because even on a hostile network, HTTPS and a trustworthy VPN keep your traffic's contents scrambled, so the twin sees only gibberish; its real prize is unencrypted traffic or users tricked past a certificate warning. Two simple defeating habits: verify the exact network name with staff before joining, and use a VPN (or mobile data) on any network you do not control, so your traffic stays encrypted regardless of whose network it is.",
+      modelAnswer: [
+        "An evil twin is a fake access point the attacker names identically (or similarly) to a legitimate network, so you connect to it instead of the real one and your traffic flows through the attacker's equipment, ready for eavesdropping or man-in-the-middle attacks.",
+        "It works because we trust Wi-Fi names and often auto-connect without checking.",
+        "Encryption still helps because even on a hostile network, HTTPS and a trustworthy VPN keep your traffic's contents scrambled, so the twin sees only gibberish; its real prize is unencrypted traffic or users tricked past a certificate warning.",
+        "Two simple defeating habits: verify the exact network name with staff before joining, and use a VPN (or mobile data) on any network you do not control, so your traffic stays encrypted regardless of whose network it is.",
+      ],
     },
     quiz: [
       {
