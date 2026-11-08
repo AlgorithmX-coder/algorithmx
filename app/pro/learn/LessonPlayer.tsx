@@ -16,6 +16,7 @@ import {
   type LessonCheckpoint,
   type LessonManifest,
   type LessonPhase,
+  type TryScore,
 } from "./types";
 
 /* Deterministic per-question option shuffle. The quiz answers were authored
@@ -401,6 +402,11 @@ export default function LessonPlayer({ lesson, topicIndex, topicCount, weekTitle
   const [phase, setPhase] = useState<LessonPhase>("intro");
   const [learnIdx, setLearnIdx] = useState(0);
   const [didTry, setDidTry] = useState(false);
+  /* The Try activity's score (when the lab measures one) and a remount counter
+   * so "Redo the task" gives a fresh attempt. Not persisted: a reloaded lesson
+   * keeps didTry and simply offers Continue. */
+  const [tryScore, setTryScore] = useState<TryScore | null>(null);
+  const [tryAttempt, setTryAttempt] = useState(0);
   const [explainDraft, setExplainDraft] = useState("");
   const [quizAnswers, setQuizAnswers] = useState<(number | null)[]>(() => lesson.check.quiz.map(() => null));
   /* Wrong option indices the learner has tried, per question (rich reveal
@@ -443,7 +449,8 @@ export default function LessonPlayer({ lesson, topicIndex, topicCount, weekTitle
    * whenever the phase (or the Learn card) changes. */
   useEffect(() => { window.scrollTo(0, 0); }, [phase, learnIdx]);
 
-  const onDidTry = useCallback(() => setDidTry(true), []);
+  const onDidTry = useCallback((score?: TryScore) => { setDidTry(true); if (score) setTryScore(score); }, []);
+  const redoTry = useCallback(() => { setDidTry(false); setTryScore(null); setTryAttempt((n) => n + 1); }, []);
   const Lab = lesson.lab.component;
   const heroCase = lesson.cases[0];
 
@@ -797,12 +804,38 @@ export default function LessonPlayer({ lesson, topicIndex, topicCount, weekTitle
               </div>
 
               <div style={{ background: T.bgRaise, border: `1px solid ${T.edge}`, borderRadius: 12, padding: "20px 22px" }}>
-                <Lab onDidTry={onDidTry} />
+                <Lab key={tryAttempt} onDidTry={onDidTry} />
               </div>
 
-              <div style={{ display: "flex", gap: 12, marginTop: 26, alignItems: "center" }}>
-                {btn("I've had a go", () => setPhase("check"), { disabled: !didTry })}
-                {!didTry && <span style={{ fontSize: 13, color: T.muted }}>work through the activity above to continue</span>}
+              <div style={{ marginTop: 26 }}>
+                {!didTry ? (
+                  <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
+                    {btn("I've had a go", () => setPhase("check"), { disabled: true })}
+                    <span style={{ fontSize: 13, color: T.muted }}>work through the activity above to continue</span>
+                  </div>
+                ) : (() => {
+                  const pct = tryScore && tryScore.total > 0 ? Math.round((tryScore.correct / tryScore.total) * 100) : null;
+                  if (pct !== null && pct < 80) {
+                    return (
+                      <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                        <div style={{ background: T.amberSoft, border: `1px solid ${T.amber}55`, borderRadius: 10, padding: "12px 15px" }}>
+                          <div style={{ fontFamily: T.mono, fontSize: 10.5, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: T.amber, marginBottom: 5 }}>You scored {pct}%</div>
+                          <div style={{ fontSize: 14.5, color: T.body, lineHeight: 1.55 }}>You got {tryScore!.correct} of {tryScore!.total} right. Aim for 80% or more to be sure it has stuck. Redo the task to try again, or continue if you would rather move on.</div>
+                        </div>
+                        <div style={{ display: "flex", gap: 12, alignItems: "center", flexWrap: "wrap" }}>
+                          {btn("Redo the task", redoTry)}
+                          {btn("Continue anyway", () => setPhase("check"), { ghost: true })}
+                        </div>
+                      </div>
+                    );
+                  }
+                  return (
+                    <div style={{ display: "flex", gap: 12, alignItems: "center", flexWrap: "wrap" }}>
+                      {btn(pct === null ? "I've had a go" : "Continue", () => setPhase("check"))}
+                      {pct !== null && <span style={{ fontSize: 13, color: T.green }}>You got {tryScore!.correct} of {tryScore!.total} right.</span>}
+                    </div>
+                  );
+                })()}
               </div>
             </main>
           )}
