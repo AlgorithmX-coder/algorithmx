@@ -101,7 +101,13 @@ const topic2: TopicManifest = {
   check: {
     explain: {
       prompt: "Contrast the real day-to-day work of a SOC analyst, a GRC professional and a penetration tester, and explain why choosing a role by fit rather than title matters.",
-      modelAnswer: "A SOC analyst's day is steady and methodical: working through a queue of alerts, gathering context, deciding what is real, escalating what matters, and documenting as they go, punctuated by occasional real incidents, suiting patient, detail-oriented people who are calm under pressure and enjoy watchfulness and investigation. A GRC professional's day is quite different and more advisory: assessing risks, writing and reviewing policies, checking suppliers, preparing for and running audits, and translating technical risk into business language, suiting strong communicators who are methodical and comfortable with process, people and documentation. A penetration tester's day, far from the frantic image, is careful, scoped, authorised testing followed by a great deal of clear report-writing, because a finding nobody can understand or act on is worthless; even this most 'glamorous' role is disciplined, documented work. Choosing a role by fit rather than title matters because the best role for you is the one whose actual daily work plays to your strengths and temperament: someone who loves methodical investigation will thrive as a SOC analyst but be miserable chasing policy deadlines, while a brilliant communicator may flourish in GRC and find alert queues draining. Honest self-matching makes for better applications and interviews (you can show you understand what the role really involves and why it suits you) and a happier, more sustainable career.",
+      modelAnswer: [
+        "A SOC analyst's day is steady and methodical: working a queue of alerts, gathering context, deciding what is real, escalating what matters and documenting as they go, with the occasional real incident. It suits patient, detail-oriented people who stay calm under pressure.",
+        "A GRC professional's day is more advisory: assessing risks, writing and reviewing policies, checking suppliers, running audits and translating technical risk into business language. It suits strong communicators comfortable with process, people and documentation.",
+        "A penetration tester's day is careful, scoped, authorised testing followed by a lot of clear report writing, because a finding nobody can act on is worthless. Even this role is disciplined, documented work, not the frantic image.",
+        "Choosing by fit rather than title matters because the best role for you is the one whose daily work plays to your strengths: a methodical investigator thrives in a SOC but tires of policy deadlines, while a great communicator flourishes in GRC.",
+        "Honest self-matching makes for stronger applications and interviews, and a happier, more sustainable career.",
+      ],
     },
     quiz: [
       {

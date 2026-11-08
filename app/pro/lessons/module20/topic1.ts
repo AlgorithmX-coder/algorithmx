@@ -101,7 +101,13 @@ const topic1: TopicManifest = {
   check: {
     explain: {
       prompt: "Explain why 'cyber security' is many jobs, which roles are the realistic entry points, and why penetration testing is usually a destination rather than a first job.",
-      modelAnswer: "'Cyber security' is many jobs, not one: it is a whole field of different roles needing different skills and suiting different people, defenders and attackers, technical and non-technical, hands-on and advisory, far more varied than the popular hacker image, which means there are many doors in and the right one may not be the one you first pictured. The realistic entry points are the SOC analyst (monitoring and triaging alerts, often the most accessible technical first job and the one this course prepared you for most directly), GRC and risk roles (managing risk, compliance and audits, a major entry lane especially friendly to non-technical backgrounds), and security-focused IT roles (hardening, patching and administering systems securely, a natural route particularly with some IT experience); these are entry-accessible because they need solid fundamentals and the right attitude rather than years of experience, and they are where the volume of jobs is. Penetration testing is usually a destination rather than a first job because it typically requires deep technical skill and broad experience, often built first in roles like those above, so the realistic path is to get in through an accessible role, build skills and experience, and then specialise toward pen testing if that is your goal, as many successful testers did, aiming your first applications at the doors that are actually open to a capable beginner.",
+      modelAnswer: [
+        "Cyber security is a whole field of different roles, not one job: defenders and attackers, technical and advisory, hands-on and strategic, so there are many ways in and the right one may not be the one you first pictured.",
+        "The realistic entry roles are the SOC analyst (monitoring and triaging alerts), GRC and risk (compliance, audits and managing risk, friendly to non-technical backgrounds), and security-focused IT (hardening, patching and administering systems).",
+        "These are entry-accessible because they reward solid fundamentals and the right attitude over years of experience, and they are where most of the jobs actually are.",
+        "Penetration testing is usually a destination, not a first job: it needs deep technical skill and broad experience, often built first in one of the roles above.",
+        "So the realistic path is to get in through a door that is actually open to a capable beginner, build skills and experience, then specialise toward pen testing if that is your goal.",
+      ],
     },
     quiz: [
       {

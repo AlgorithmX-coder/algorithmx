@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useMemo, useState, type ReactNode } from "react";
 import { T } from "./tokens";
 import InlineVisual from "./learnVisuals";
-import TutorChat from "./TutorChat";
+import TutorChat, { looksBulleted } from "./TutorChat";
 import LessonNotes from "./LessonNotes";
 import LessonTestMe from "./LessonTestMe";
 import { moduleOfTopic } from "./quizPool";
@@ -453,7 +453,10 @@ export default function LessonPlayer({ lesson, topicIndex, topicCount, weekTitle
    * quiz below it). A short minimum keeps out "ok"/"done" while never blocking
    * a genuine short answer. */
   const EXPLAIN_MIN = 20;
-  const explainWritten = explainDraft.trim().length >= EXPLAIN_MIN;
+  /* Must be a genuine paragraph in their own words: long enough, and not just
+   * the bulleted model answer pasted back (which the tutor also refuses). */
+  const explainIsParagraph = !looksBulleted(explainDraft);
+  const explainWritten = explainDraft.trim().length >= EXPLAIN_MIN && explainIsParagraph;
   const canFinish = quizDone && explainWritten;
   /* Per-question display order of the options (see seededOrder above). */
   const quizOrder = useMemo(
@@ -894,7 +897,7 @@ export default function LessonPlayer({ lesson, topicIndex, topicCount, weekTitle
 
               <div style={{ display: "flex", gap: 12, marginTop: 26, alignItems: "center" }}>
                 {btn("Finish the lesson", () => setPhase("done"), { disabled: !canFinish })}
-                {!canFinish && <span style={{ fontSize: 13, color: T.muted }}>{!explainWritten ? "write your answer in “Explain it back” to finish" : "answer the checks to finish"}</span>}
+                {!canFinish && <span style={{ fontSize: 13, color: T.muted }}>{explainDraft.trim().length >= EXPLAIN_MIN && !explainIsParagraph ? "write your answer as a paragraph in your own words, not bullet points" : !explainWritten ? "write your answer in “Explain it back” to finish" : "answer the checks to finish"}</span>}
               </div>
             </main>
           )}

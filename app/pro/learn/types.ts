@@ -119,9 +119,11 @@ export interface QuizQuestion {
 
 export interface ExplainBack {
   prompt: string;
-  /* Revealed after the learner writes their own answer; a model of a
-   * strong reply, never marked against their exact words. */
-  modelAnswer: string;
+  /* Revealed after the learner writes their own answer; a model of a strong
+   * reply, never marked against their exact words. An array renders as the
+   * bulleted "Points that a strong answer would include"; a plain string is
+   * shown as prose (the older format, still supported). */
+  modelAnswer: string | string[];
 }
 
 /* ---- the whole lesson ---- */
