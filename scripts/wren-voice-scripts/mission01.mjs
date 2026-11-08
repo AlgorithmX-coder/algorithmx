@@ -50,7 +50,7 @@ export const mission01VoiceScripts = {
   "/audio/wren/m01-download-practice.mp3":
     "[warm] Now let's put it to work, Agent. A pile of downloads just showed up on the next screen. Sort each one. Is it safe to get, or is it a trap? Remember where real apps actually come from.",
   "/audio/wren/m01-actor-practice.mp3":
-    "[warm] Now let's put it to work, Agent. It's time to build his file. From the evidence on the next screen, tap the three tricks that are really his, no more and no less.",
+    "[warm] Now let's put it to work, Agent. It's time to build PHANTOM HOOK's file. From the evidence on the next screen, tap the three tricks that are really his, no more and no less.",
   "/audio/wren/m01-recover-practice.mp3":
     "[warm] Now let's put it to work, Agent. Someone just typed their password into a fake GameHub page. Build the rescue plan with me, and pick the right move for each step.",
   "/audio/wren/m01-c1-art-intro.mp3":
@@ -64,7 +64,7 @@ export const mission01VoiceScripts = {
   "/audio/wren/m01-c1-art-done.mp3":
     "[warm] That's the whole pressure play. First comes fear, then a fake clock, then a push to act now. Some scams fake good news instead, like winning a prize. But underneath, it's the same trick. A strong feeling rushes you past thinking.",
   "/audio/wren/m01-c1-review.mp3":
-    "[warm] Spot on. There were four pressure tricks in that message: greed, a countdown, a threat, and fear of missing out. The automated notice, the reference number and the unsubscribe line are just normal parts of a message. They're only there to fool you.",
+    "[warm] Spot on. There were four pressure tricks in that message: greed, a countdown, a threat, and fear of missing out. The automated notice, the reference number and the unsubscribe line are just normal parts of a message, so they aren't tricks at all.",
   "/audio/wren/m01-c1-play.mp3":
     "[warm] A brand-new message just landed on Sam's phone. Find every part that's trying to pressure him. Some safe-looking lines are only there to throw you off.",
 
@@ -78,7 +78,7 @@ export const mission01VoiceScripts = {
   "/audio/wren/m01-c2-b4.mp3":
     "[warm] Now for the trick that fools grown-ups. Look at gamehub.com.rewards-login.net. It says gamehub.com, but the last two chunks are rewards-login.net. The real name is glued on the front to trick you.",
   "/audio/wren/m01-c2-b5.mp3":
-    "[warm] So never read from left to right and relax the moment you see a name you know. Find the slash, and take the two chunks right before it. That's who you're really talking to.",
+    "[warm] So don't relax the moment you spot a name you know at the start. Find the slash, and take the two chunks right before it. That's who you're really talking to.",
   "/audio/wren/m01-c2-chk1-ok.mp3":
     "[warm] Right. The owner is the last two chunks before the first slash, and that's gamehub-rewards.co. That is not the real GameHub.",
   "/audio/wren/m01-c2-chk2-ok.mp3":
@@ -154,7 +154,7 @@ export const mission01VoiceScripts = {
   "/audio/wren/m01-c6-chk2-ok.mp3":
     "[warm] Exactly. The disguise changes, but the recipe does not. Know the parts, and no new costume will fool you.",
   "/audio/wren/m01-c3-play.mp3":
-    "[warm] Now build his file. Tap the three tricks that are really his.",
+    "[warm] Now build PHANTOM HOOK's file. Tap the three tricks that are really his.",
 
   // cycle 7 — recover
   "/audio/wren/m01-c-recover-b1.mp3":
