@@ -17,9 +17,9 @@ export const case12Console: ConsoleCase = {
   accent: "#9B59F6",
   theme: { backdrop: "cipher", matrix: ["#9B59F6", "#C4A0FF", "#6B2FD6"], accentHi: "#C4A0FF" },
   open: [
-    "New system to master, Agent. This one's about secrets, how to send a message so that only the right person can read it.",
-    "PACKRAT is back, and this time it isn't stealing accounts. It's LISTENING, sitting quietly on networks, reading whatever travels past unprotected.",
-    "Seven skills in codes, keys, and sealed messages, then a boss and a test. Let's make your words unreadable to anyone but the person you meant.",
+    "Here's a new system to master, Agent. This one's about secrets, and how to send a message so that only the right person can read it.",
+    "PACKRAT is back, and this time he isn't collecting crumbs from your posts. He's listening, sitting quietly on networks and reading whatever travels past unprotected.",
+    "You'll learn seven skills in codes, keys and sealed messages, then face a boss and a test. Let's make your words unreadable to anyone but the person you meant.",
   ],
   openVoice: ["/audio/wren/m12c-open-1.mp3", "/audio/wren/m12c-open-2.mp3", "/audio/wren/m12c-open-3.mp3"],
 
@@ -32,7 +32,7 @@ export const case12Console: ConsoleCase = {
       journalNote: "A cipher is like a lockbox: anyone can see the box, but only someone with the right key can open what's inside. Scrambled text looks like nonsense unless you hold the key. Trust tools that scramble your data, not ones that leave it plain.",
       panel: "CIPHER LAB",
       learn: [
-        { t: "wren", text: "Start with the oldest trick in security: a cipher. You scramble a message using a key, a secret rule, and now anyone who grabs it just sees nonsense. Only someone with the key can turn it back. Here's a baby one: shift every letter forward by one. A becomes B, B becomes C. So the key is 'shift by one'. Let's crack a message that used it.", voice: "/audio/wren/m12c-s1-learn.mp3" },
+        { t: "wren", text: "Let's start with the oldest trick in security, a cipher. You scramble a message using a key, which is a secret rule. Now anyone who grabs it just sees nonsense. Only someone with the key can turn it back. Here's a baby one. Shift every letter forward by one, so the letter A becomes B, and B becomes C. That means the key is to shift by one. Let's crack a message that used it.", voice: "/audio/wren/m12c-s1-learn.mp3" },
         { t: "sys", text: "INTERCEPTED (key = shift back by 1):  IFMMP" },
       ],
       practice: [
@@ -41,7 +41,7 @@ export const case12Console: ConsoleCase = {
           prompt: "Turn the dial until IFMMP reads as a real word.",
           ciphertext: "IFMMP",
           shift: 1,
-          ok: "Cracked it. I-F-M-M-P shifted back one letter is H-E-L-L-O. With the key, gibberish becomes a message. Without it, PACKRAT just sees IFMMP and learns nothing. That's the whole power of a cipher.",
+          ok: "You cracked it. Shift each letter of IFMMP back by one, and it spells HELLO. With the key, gibberish becomes a message. Without it, PACKRAT just sees IFMMP and learns nothing. That's the whole power of a cipher.",
           okVoice: "/audio/wren/m12c-s1-ok.mp3",
         },
         {
@@ -54,7 +54,7 @@ export const case12Console: ConsoleCase = {
             { label: "Good eyesight", good: false, sub: "the key does the work, not your eyes" },
             { label: "A lucky guess", good: false, sub: "guessing isn't reading" },
           ],
-          ok: "Right. A message plus its key. Without the key it stays gibberish, and that is exactly the point of a cipher.",
+          ok: "Right. You need a message plus its key. Without the key it stays gibberish, and that is exactly the point of a cipher.",
           okVoice: "/audio/wren/m12c-s1-q2ok.mp3",
         },
         {
@@ -76,10 +76,10 @@ export const case12Console: ConsoleCase = {
       n: 2,
       title: "Why real codes hold",
       goal: "A shift is easy to crack; real encryption uses keys too huge to ever guess.",
-      journalNote: "A simple shift cipher is like a bike lock with ten numbers, a patient thief tries them all; real encryption is a lock with more combinations than atoms in the universe. Real codes aren't cracked by guessing, they're just too big to try. Trust proper encryption, not homemade scrambles.",
+      journalNote: "A simple shift cipher is like a bike lock with ten numbers, a patient thief tries them all; real encryption is a lock with more combinations than stars in the universe. Real codes aren't cracked by guessing, they're just too big to try. Trust proper encryption, not homemade scrambles.",
       panel: "CIPHER LAB",
       learn: [
-        { t: "wren", text: "That shift cipher is fun, but useless against a computer. There are only 25 shifts, so a machine tries all 25 in a blink. Real encryption fixes that with a key so enormous, more combinations than atoms in the universe, that not even every computer on Earth working for billions of years could guess it. That's the difference between a toy and a lock.", voice: "/audio/wren/m12c-s2-learn.mp3" },
+        { t: "wren", text: "That shift cipher is fun, but it's useless against a computer. There are only 25 shifts, so a machine tries all 25 in a blink. Real encryption fixes that with an enormous key. It has more possible combinations than there are stars in the universe. Not even every computer on Earth, working for billions of years, could guess it. That's the difference between a toy and a lock.", voice: "/audio/wren/m12c-s2-learn.mp3" },
       ],
       practice: [
         {
@@ -88,7 +88,7 @@ export const case12Console: ConsoleCase = {
           options: [
             { label: "There are only 25 shifts, it tries them all instantly", outcome: "good", then: [{ t: "wren", text: "Exactly. A tiny number of keys means no key at all to a computer. Strong encryption wins by having so many possible keys that guessing is hopeless. Size is the whole game.", voice: "/audio/wren/m12c-s2-ok.mp3" }] },
             { label: "Computers can't read letters", outcome: "bad", then: [{ t: "wren", text: "Computers read letters faster than you ever could. The real weakness is there are only 25 shifts to try. Try again.", voice: "/audio/wren/m12c-s2-bad.mp3" }] },
-            { label: "It isn't, a shift cipher is unbreakable", outcome: "bad", then: [{ t: "wren", text: "A shift falls in an instant, only 25 options. Real strength comes from a mountain of possible keys. Try again.", voice: "/audio/wren/m12c-s2-bad2.mp3" }] },
+            { label: "It isn't, a shift cipher is unbreakable", outcome: "bad", then: [{ t: "wren", text: "A shift falls in an instant, because there are only 25 options. Real strength comes from a mountain of possible keys. Try again.", voice: "/audio/wren/m12c-s2-bad2.mp3" }] },
           ],
         },
         {
@@ -101,7 +101,7 @@ export const case12Console: ConsoleCase = {
             { label: "A short, simple key", good: false, sub: "few options, cracked fast" },
             { label: "A key everyone already knows", good: false, sub: "then it's not secret" },
           ],
-          ok: "Right. Strength is size: so many possible keys that trying them all is hopeless, even for a computer.",
+          ok: "Right. Strength is size. There are so many possible keys that trying them all is hopeless, even for a computer.",
           okVoice: "/audio/wren/m12c-s2-q2ok.mp3",
         },
         {
@@ -112,7 +112,7 @@ export const case12Console: ConsoleCase = {
             { label: "Only a handful of possible keys", sub: "a computer tries them all in a blink", want: false },
             { label: "A key too long to ever guess", sub: "", want: true },
           ],
-          ok: "That's it. A mountain of possible keys and a key too long to guess. A handful of options is no protection at all.",
+          ok: "That's it. You need a mountain of possible keys, and a key too long to guess. A handful of options is no protection at all.",
           okVoice: "/audio/wren/m12c-s2-q3ok.mp3",
         },
       ],
@@ -126,7 +126,7 @@ export const case12Console: ConsoleCase = {
       journalNote: "The little padlock in your address bar means the road between you and the site is a sealed tunnel, not an open street. Everything sent down it is scrambled before it leaves your device. Always check for the padlock before typing anything private.",
       panel: "BROWSER · CONNECTION",
       learn: [
-        { t: "wren", text: "You don't have to do the encrypting yourself, your browser does it, and it tells you when. See the little padlock, and the s in https? That means the whole conversation between you and that site is sealed, encrypted, unreadable to anyone in between. No padlock, no s, and the line is wide open. Learn to glance for that padlock, every time you type anything private.", voice: "/audio/wren/m12c-s3-learn.mp3" },
+        { t: "wren", text: "You don't have to do the encrypting yourself. Your browser does it, and it tells you when. See the little padlock, and the s in https? That means the whole conversation between you and that site is sealed, encrypted and unreadable to anyone in between. Some browsers, like Chrome, hide the padlock now, so click the address bar and check it starts with https. No padlock and no s means the line is wide open. Learn to glance for that padlock every time you type anything private.", voice: "/audio/wren/m12c-s3-learn.mp3" },
       ],
       practice: [
         { t: "sys", text: "A: http://shop-deals.net   (no padlock)      B: https://shop-deals.net 🔒  (padlock)" },
@@ -134,9 +134,9 @@ export const case12Console: ConsoleCase = {
           t: "choose",
           prompt: "You're about to type your details. Which connection is sealed?",
           options: [
-            { label: "B, it has https and the padlock", outcome: "good", then: [{ t: "wren", text: "Right. The s and the padlock mean sealed. On A, with plain http, everything you type travels in the open for anyone listening to read. Padlock first, then type.", voice: "/audio/wren/m12c-s3-ok.mp3" }] },
-            { label: "A, shorter address, must be simpler", outcome: "bad", then: [{ t: "wren", text: "Shorter isn't safer. Plain http has no padlock and no seal, everything you send is readable. Look for the s and the lock. Try again.", voice: "/audio/wren/m12c-s3-bad.mp3" }] },
-            { label: "They're the same, the padlock is decoration", outcome: "bad", then: [{ t: "wren", text: "That padlock is doing real work, it means the line is encrypted. Without it, there's no seal at all. Try again.", voice: "/audio/wren/m12c-s3-bad2.mp3" }] },
+            { label: "B, it has https and the padlock", outcome: "good", then: [{ t: "wren", text: "Right. The s and the padlock mean sealed. On site A, with plain http, everything you type travels in the open for anyone listening to read. Check the padlock first, then type.", voice: "/audio/wren/m12c-s3-ok.mp3" }] },
+            { label: "A, shorter address, must be simpler", outcome: "bad", then: [{ t: "wren", text: "Shorter isn't safer. Plain http has no padlock and no seal, so everything you send is readable. Look for the s and the lock. Try again.", voice: "/audio/wren/m12c-s3-bad.mp3" }] },
+            { label: "They're the same, the padlock is decoration", outcome: "bad", then: [{ t: "wren", text: "That padlock is doing real work. It means the line is encrypted. Without it, there's no seal at all. Try again.", voice: "/audio/wren/m12c-s3-bad2.mp3" }] },
           ],
         },
         { t: "sys", text: "ADDRESS BAR:  🔒 https://mail.example.com" },
@@ -150,7 +150,7 @@ export const case12Console: ConsoleCase = {
             { label: "A short web address", good: false, sub: "length says nothing about safety" },
             { label: "A colourful, friendly page", good: false, sub: "looks are not a seal" },
           ],
-          ok: "Exactly. The padlock and the s in https. Those two, and nothing else, tell you the line is encrypted.",
+          ok: "Exactly. It's the padlock and the s in https. Those two, and nothing else, tell you the line is encrypted.",
           okVoice: "/audio/wren/m12c-s3-q2ok.mp3",
         },
         {
@@ -161,7 +161,7 @@ export const case12Console: ConsoleCase = {
             { label: "Type my details on a plain http page", sub: "no lock, no seal", want: false },
             { label: "Glance for the padlock before anything private", sub: "", want: true },
           ],
-          ok: "That's the reflex. Padlock first, then type. On a plain http page, whatever you enter travels in the open.",
+          ok: "That's the reflex. Check the padlock first, then type. On a plain http page, whatever you enter travels in the open.",
           okVoice: "/audio/wren/m12c-s3-q3ok.mp3",
         },
       ],
@@ -175,14 +175,14 @@ export const case12Console: ConsoleCase = {
       journalNote: "An unsealed site is like writing your password on a postcard. Anyone who handles it on the way can read it. A sealed, padlocked site is the same message in a locked envelope. Never trust a site with no padlock for logins or payments.",
       panel: "TRAFFIC VIEW",
       learn: [
-        { t: "wren", text: "Here's the picture that makes it click. A message sent without encryption is a postcard, every person who handles it on the way can read the whole thing. A sealed, encrypted message is a letter in an envelope, they can see it's going somewhere, but not what it says. When PACKRAT listens, postcards are a gift and envelopes are useless. So seal everything that matters.", voice: "/audio/wren/m12c-s4-learn.mp3" },
+        { t: "wren", text: "Here's the picture that makes it click. A message sent without encryption is a postcard. Every person who handles it on the way can read the whole thing. A sealed, encrypted message is a letter in an envelope. People can see it's going somewhere, but not what it says. When PACKRAT listens, postcards are a gift, and envelopes are useless to him. So seal everything that matters.", voice: "/audio/wren/m12c-s4-learn.mp3" },
       ],
       practice: [
         {
           t: "choose",
           prompt: "You send your password over a plain, unencrypted connection. What is that, really?",
           options: [
-            { label: "A postcard, anyone on the route can read it", outcome: "good", then: [{ t: "wren", text: "Exactly. No envelope, no seal, so every stop between you and the site can read your password in plain sight. Encryption is the envelope. Never post secrets on a postcard.", voice: "/audio/wren/m12c-s4-ok.mp3" }] },
+            { label: "A postcard, anyone on the route can read it", outcome: "good", then: [{ t: "wren", text: "Exactly. There's no envelope and no seal, so every stop between you and the site can read your password in plain sight. Encryption is the envelope. Never post secrets on a postcard.", voice: "/audio/wren/m12c-s4-ok.mp3" }] },
             { label: "A sealed letter, passwords are always private", outcome: "bad", then: [{ t: "wren", text: "Only encryption seals it. On a plain connection your password is a postcard, readable by anyone handling it. Try again.", voice: "/audio/wren/m12c-s4-bad.mp3" }] },
             { label: "Safe, because it's travelling fast", outcome: "bad", then: [{ t: "wren", text: "Speed doesn't hide it. Unsealed means readable, however fast it goes. Try again.", voice: "/audio/wren/m12c-s4-bad2.mp3" }] },
           ],
@@ -209,7 +209,7 @@ export const case12Console: ConsoleCase = {
             { label: "A poster you want everyone to see", good: false, sub: "meant to be public" },
             { label: "A public 'hello world' post", good: false, sub: "no secret to seal" },
           ],
-          ok: "Exactly. Anything private, passwords, bank details, private messages, goes in a sealed envelope. Public things don't need one, but secrets always do.",
+          ok: "Exactly. Anything private goes in a sealed envelope, like passwords, bank details and private messages. Public things don't need one, but secrets always do.",
           okVoice: "/audio/wren/m12c-s4-q3ok.mp3",
         },
       ],
@@ -223,7 +223,7 @@ export const case12Console: ConsoleCase = {
       journalNote: "Public wi-fi is a shared room where anyone else inside can listen to what's said out loud. The padlock on each site is like still whispering your secrets in code, so even a listener in the room hears nothing useful. On public wi-fi, stick to padlocked sites only.",
       panel: "NETWORK · CAFE-FREE-WIFI",
       learn: [
-        { t: "wren", text: "Now the danger zone: free public wi-fi. On an open network, other people connected to it can try to listen to the traffic flying around, that's PACKRAT's favourite spot. The good news: any site with the padlock is still sealed, even on dodgy wi-fi. The rule is simple. On public wi-fi, stick to padlocked sites, and never send anything private over a connection with no lock.", voice: "/audio/wren/m12c-s5-learn.mp3" },
+        { t: "wren", text: "Now for the danger zone, which is free public wi-fi. On an open network, other people connected to it can try to listen to the traffic flying around. That's PACKRAT's favourite spot. Here's the good news. Any site with the padlock is still sealed, even on dodgy wi-fi. The rule is simple. On public wi-fi, stick to padlocked sites, and never send anything private over a connection with no lock.", voice: "/audio/wren/m12c-s5-learn.mp3" },
       ],
       practice: [
         {
@@ -234,9 +234,9 @@ export const case12Console: ConsoleCase = {
             { label: "Check my bank on the plain http site", sub: "no lock", want: false },
             { label: "Save anything private for a network I trust", sub: "", want: true },
           ],
-          ok: "That's the safe setup. Padlocked sites stay sealed even here, so those are fine. But a no-lock site on open wi-fi is a postcard read aloud in a crowd, so that switch stays OFF. Good instincts.",
+          ok: "That's the safe setup. Padlocked sites stay sealed even here, so those are fine. But a no-lock site on open wi-fi is a postcard read aloud in a crowd, so that switch stays off. You've got good instincts.",
           okVoice: "/audio/wren/m12c-s5-ok.mp3",
-          bad: "Careful. On open wi-fi, stick to padlocked sites and leave anything private for a network you trust. Turn the risky one back OFF.",
+          bad: "Be careful. On open wi-fi, stick to padlocked sites and leave anything private for a network you trust. Turn the risky one back off.",
           badVoice: "/audio/wren/m12c-s5-bad.mp3",
         },
         {
@@ -258,12 +258,12 @@ export const case12Console: ConsoleCase = {
             { label: "Log into your bank on a no-lock site", good: false, sub: "a postcard in a crowd" },
             { label: "Trust the wi-fi because it's busy", good: false, sub: "busy doesn't mean safe" },
           ],
-          ok: "That's the rule for open wi-fi. Padlocked sites only, and leave anything private for a network you trust.",
+          ok: "That's the rule for open wi-fi. Use padlocked sites only, and leave anything private for a network you trust.",
           okVoice: "/audio/wren/m12c-s5-q3ok.mp3",
         },
         {
           t: "flip",
-          prompt: "PACKRAT is listening on CAFE-FREE-WIFI right now. Flip the lock, then flip the card to watch what it actually captures.",
+          prompt: "PACKRAT is listening on CAFE-FREE-WIFI right now. Flip the lock, then flip the card to watch what he actually captures.",
           you: {
             kind: "toggle",
             label: "Logging in on CAFE-FREE-WIFI · simulator",
@@ -280,7 +280,7 @@ export const case12Console: ConsoleCase = {
             prompt: "Same cafe, same PACKRAT, but one login stayed safe. Why?",
             options: [
               { label: "The padlock seals it before it ever hits the open wi-fi", outcome: "good" },
-              { label: "PACKRAT only watches some logins", outcome: "bad", then: [{ t: "sys", text: "PACKRAT: watching every single packet, it just can't read the sealed ones" }] },
+              { label: "PACKRAT only watches some logins", outcome: "bad", then: [{ t: "sys", text: "PACKRAT: watching every single packet, he just can't read the sealed ones" }] },
               { label: "The cafe wi-fi got safer", outcome: "bad", then: [{ t: "sys", text: "PACKRAT: same open network the whole time, nothing changed there" }] },
             ],
           },
@@ -296,15 +296,15 @@ export const case12Console: ConsoleCase = {
       journalNote: "A listener on open wi-fi is like someone reading mail over your shoulder. They only win if the letter isn't sealed. The padlock seals every letter before it leaves your hands. Keep the padlock habit everywhere, not just at home.",
       panel: "THREAT MODEL",
       learn: [
-        { t: "wren", text: "See PACKRAT's listening play, four moves. First, sit on an open network, like free cafe wi-fi. Second, quietly capture the traffic flowing past. Third, read anything that isn't sealed, postcards. Fourth, sell what it finds. And here's how you break it: every padlock turns your postcard into a sealed envelope, so all PACKRAT captures is gibberish. The lock does the whole job.", voice: "/audio/wren/m12c-s6-learn.mp3" },
+        { t: "wren", text: "Here's PACKRAT's listening play, in four moves. First, he sits on an open network, like free cafe wi-fi. Second, he quietly captures the traffic flowing past. Third, he reads anything that isn't sealed, the postcards. Fourth, he sells what he finds. And here's how you break it. Every padlock turns your postcard into a sealed envelope, so all PACKRAT captures is gibberish. The lock does the whole job.", voice: "/audio/wren/m12c-s6-learn.mp3" },
       ],
       practice: [
         {
           t: "choose",
-          prompt: "PACKRAT captures all your traffic on the cafe wi-fi. Why does it still get nothing useful?",
+          prompt: "PACKRAT captures all your traffic on the cafe wi-fi. Why does he still get nothing useful?",
           options: [
-            { label: "Everything private went over padlocked, sealed connections", outcome: "good", then: [{ t: "wren", text: "That's the defence in a sentence. It can capture all the traffic it likes, but sealed is sealed, all it reads is gibberish. The padlock beat the listener before it even sat down.", voice: "/audio/wren/m12c-s6-ok.mp3" }] },
-            { label: "Because PACKRAT is bad at its job", outcome: "bad", then: [{ t: "wren", text: "It captured everything just fine, it simply can't read sealed traffic. The padlock is why. Try again.", voice: "/audio/wren/m12c-s6-bad.mp3" }] },
+            { label: "Everything private went over padlocked, sealed connections", outcome: "good", then: [{ t: "wren", text: "That's the defence in a sentence. He can capture all the traffic he likes, but sealed is sealed, so all he reads is gibberish. The padlock beat the listener before he even sat down.", voice: "/audio/wren/m12c-s6-ok.mp3" }] },
+            { label: "Because PACKRAT is bad at his job", outcome: "bad", then: [{ t: "wren", text: "He captured everything just fine. He simply can't read sealed traffic. The padlock is why. Try again.", voice: "/audio/wren/m12c-s6-bad.mp3" }] },
             { label: "Because the cafe wi-fi was too slow", outcome: "bad", then: [{ t: "wren", text: "Speed has nothing to do with it. What stops PACKRAT reading your traffic is that it was encrypted. Try again.", voice: "/audio/wren/m12c-s6-bad2.mp3" }] },
           ],
         },
@@ -317,11 +317,11 @@ export const case12Console: ConsoleCase = {
             { label: "Sit on an open network", good: true, sub: "" },
             { label: "Capture the traffic flowing past", good: true, sub: "" },
             { label: "Read anything that isn't sealed", good: true, sub: "" },
-            { label: "Sell what it finds", good: true, sub: "" },
-            { label: "Politely ask you for your password", good: false, sub: "it listens, it doesn't ask" },
+            { label: "Sell what he finds", good: true, sub: "" },
+            { label: "Politely ask you for your password", good: false, sub: "he listens, he doesn't ask" },
             { label: "Guess every password by hand", good: false, sub: "that's a cracking rig, not a listener" },
           ],
-          ok: "That's the whole play. Sit, capture, read the unsealed, sell it. Notice it never has to ask, it just listens.",
+          ok: "That's the whole play. He sits, captures, reads the unsealed traffic, and sells it. Notice he never has to ask. He just listens.",
           okVoice: "/audio/wren/m12c-s6-q2ok.mp3",
         },
         {
@@ -346,7 +346,7 @@ export const case12Console: ConsoleCase = {
       journalNote: "The habit that beats every listener is the same one, every time: check for the lock before you trust the line. No padlock, no private details. Make checking the address bar as automatic as checking before crossing the road.",
       panel: "ACTION PLAN",
       learn: [
-        { t: "wren", text: "Last skill, the everyday habit that beats every listener. One: before you type anything private, glance for the padlock. Two: on public wi-fi, stick to padlocked sites and save the private stuff for a network you trust. Do those two things and it doesn't matter who's listening, all they'll ever get is sealed nonsense. Simple, and it protects you for life.", voice: "/audio/wren/m12c-s7-learn.mp3" },
+        { t: "wren", text: "This last skill is the everyday habit that beats every listener. First, before you type anything private, glance for the padlock. Second, on public wi-fi, stick to padlocked sites and save the private stuff for a network you trust. Do those two things, and it doesn't matter who's listening. All they'll ever get is sealed nonsense. It's simple, and it protects you for life.", voice: "/audio/wren/m12c-s7-learn.mp3" },
       ],
       practice: [
         {
@@ -360,9 +360,9 @@ export const case12Console: ConsoleCase = {
             { label: "Type your password on any http site", good: false, sub: "no lock = postcard" },
             { label: "Trust free wi-fi with anything", good: false, sub: "PACKRAT's home turf" },
           ],
-          ok: "That's the whole habit, and it's a strong one. Padlock, trusted network, secrets only over a sealed line. Do that and PACKRAT can listen all day and hear nothing.",
+          ok: "That's the whole habit, and it's a strong one. Check the padlock, use a trusted network, and send secrets only over a sealed line. Do that, and PACKRAT can listen all day and hear nothing.",
           okVoice: "/audio/wren/m12c-s7-ok.mp3",
-          bad: "Careful, you picked a risky one. A no-lock site or blind trust in free wi-fi is exactly what a listener wants. Choose only the sealing moves.",
+          bad: "Be careful, because you picked a risky one. A no-lock site or blind trust in free wi-fi is exactly what a listener wants. Choose only the sealing moves.",
           badVoice: "/audio/wren/m12c-s7-bad.mp3",
         },
         {
@@ -382,7 +382,7 @@ export const case12Console: ConsoleCase = {
             { label: "Save secrets for a network you trust", sub: "", want: true },
             { label: "Send private info over any open connection", sub: "no lock means readable", want: false },
           ],
-          ok: "That's the habit for life. Padlock first, private stuff only on trusted networks, and never anything secret over an open, unlocked line.",
+          ok: "That's the habit for life. Check the padlock first, keep private stuff to trusted networks, and never send anything secret over an open, unlocked line.",
           okVoice: "/audio/wren/m12c-s7-q3ok.mp3",
         },
       ],
@@ -391,7 +391,7 @@ export const case12Console: ConsoleCase = {
 
   boss: {
     panel: "LIVE INTERCEPT · PACKRAT",
-    intro: "This is it, Agent. You're on the cafe wi-fi, and PACKRAT is on it too, capturing everything that moves. No hints from me. Keep your traffic sealed, and tell me exactly why it walks away empty-handed.",
+    intro: "This is it, Agent. You're on the cafe wi-fi, and PACKRAT is on it too, capturing everything that moves. There are no hints from me. Keep your traffic sealed, and tell me exactly why he walks away empty-handed.",
     introVoice: "/audio/wren/m12c-boss-intro.mp3",
     phases: [
       {
@@ -413,10 +413,10 @@ export const case12Console: ConsoleCase = {
       {
         name: "Your turn",
         steps: [
-          { t: "sys", text: "YOU: logging into your bank on https://mybank.co.uk 🔒" },
+          { t: "sys", text: "YOU: logging into your bank on https://mybank.com 🔒" },
           {
             t: "flip",
-            prompt: "PACKRAT can't see which connections are sealed from the outside. Flip the lock, then flip the card to watch what it actually captures.",
+            prompt: "PACKRAT can't see which connections are sealed from the outside. Flip the lock, then flip the card to watch what he actually captures.",
             you: {
               kind: "toggle",
               label: "Padlocked connection (https) · simulator",
@@ -433,7 +433,7 @@ export const case12Console: ConsoleCase = {
               prompt: "PACKRAT captured YOUR real login too, but it's gibberish. Why?",
               options: [
                 { label: "The padlock sealed it, encrypted end to end", outcome: "good" },
-                { label: "You typed too fast for it to read", outcome: "bad", then: [{ t: "sys", text: "PACKRAT: it captured every byte, it just can't decode them" }] },
+                { label: "You typed too fast for it to read", outcome: "bad", then: [{ t: "sys", text: "PACKRAT: he captured every byte, he just can't decode them" }] },
                 { label: "PACKRAT left already", outcome: "bad", then: [{ t: "sys", text: "PACKRAT: still capturing, still reading gibberish" }] },
               ],
             },
@@ -456,12 +456,12 @@ export const case12Console: ConsoleCase = {
         ],
       },
     ],
-    win: "Beautifully done, Agent. PACKRAT sat on the network and captured every single thing you sent, and walked away with a fistful of gibberish. Your padlocked connections stayed sealed, you never posted a secret on a postcard, and you didn't fall for the fake 'faster' network. The listener heard everything, and understood nothing.",
+    win: "That was beautifully done, Agent. PACKRAT sat on the network and captured every single thing you sent, then walked away with a fistful of gibberish. Your padlocked connections stayed sealed. You never posted a secret on a postcard, and you didn't fall for the fake network that promised to be faster. The listener heard everything, and understood nothing.",
     winVoice: "/audio/wren/m12c-boss-win.mp3",
   },
 
   test: {
-    intro: "Last thing before I sign this off, the test. A fresh batch, no hints, and you need to get most of them right. Everything about keeping things sealed, put it to work. Ready?",
+    intro: "There's one last thing before I sign this off, and that's the test. It's a fresh batch with no hints, and you need to get most of them right. Put everything you know about keeping things sealed to work. Ready?",
     introVoice: "/audio/wren/m12c-test-intro.mp3",
     passVoice: "/audio/wren/m12c-test-pass.mp3",
     failVoice: "/audio/wren/m12c-test-fail.mp3",
@@ -474,11 +474,11 @@ export const case12Console: ConsoleCase = {
       { scenario: "You're on free cafe wi-fi and want to log in somewhere.", ask: "What's the safe rule?", options: [{ label: "Only padlocked sites, private stuff on a trusted network", correct: true }, { label: "Any site is fine, as long as the cafe wi-fi has a password" }, { label: "Plain http is fine, it loads faster on busy cafe wi-fi" }] },
       { scenario: "A listener captures all your traffic on open wi-fi, but gets only gibberish.", ask: "Why?", options: [{ label: "Your connections were padlocked and sealed", correct: true }, { label: "The listener was clumsy and missed half of it" }, { label: "The wi-fi was slow and jumbled everything up" }] },
       { scenario: "A friend hands you a note scrambled with a secret rule, but never tells you what the rule is.", ask: "Can you read it?", options: [{ label: "No, without the key it stays gibberish", correct: true }, { label: "Yes, scrambled notes are easy to read" }, { label: "Yes, if you hold it up to a bright light" }] },
-      { scenario: "Two locks: one has only a handful of possible keys, the other has more keys than there are atoms in the universe.", ask: "Which one is safe from a computer trying every key?", options: [{ label: "The lock with a handful of keys, fewer to remember" }, { label: "The lock with a mountain of possible keys", correct: true }, { label: "Both, a computer cracks them just as fast" }] },
+      { scenario: "Two locks: one has only a handful of possible keys, the other has more keys than there are stars in the universe.", ask: "Which one is safe from a computer trying every key?", options: [{ label: "The lock with a handful of keys, fewer to remember" }, { label: "The lock with a mountain of possible keys", correct: true }, { label: "Both, a computer cracks them just as fast" }] },
       { scenario: "A shopping page wants your card number, but there's no padlock and the address begins with plain http.", ask: "What should you do?", options: [{ label: "Type it fast, before anyone has time to notice" }, { label: "Type it, the page looks friendly enough" }, { label: "Don't type your card, the line isn't sealed", correct: true }] },
       { scenario: "You want to post a funny meme for everyone to see, and also send your bank details to a shop.", ask: "Which one MUST go in a sealed envelope?", options: [{ label: "The meme, so no one can copy it" }, { label: "The bank details you send the shop", correct: true }, { label: "Neither, a postcard is fine for both" }] },
       { scenario: "You're on the airport's open wi-fi and need to send a private message, but there's no padlock in sight.", ask: "Best move?", options: [{ label: "Wait, then send it on a network you trust", correct: true }, { label: "Send it now, airports are always safe places" }, { label: "Send it, a busy place is a safe place" }] },
-      { scenario: "PACKRAT sits quietly on an open network, reading whatever flies past.", ask: "How does it get people's secrets?", options: [{ label: "By politely asking each person for their password" }, { label: "By guessing every password by hand, one by one" }, { label: "By reading any unsealed traffic that flies past", correct: true }] },
+      { scenario: "PACKRAT sits quietly on an open network, reading whatever flies past.", ask: "How does he get people's secrets?", options: [{ label: "By politely asking each person for their password" }, { label: "By guessing every password by hand, one by one" }, { label: "By reading any unsealed traffic that flies past", correct: true }] },
       { scenario: "You sit down at a cafe and want to log into your email.", ask: "What's the very first thing to do?", options: [{ label: "Type your password fast, before anyone looks" }, { label: "Glance for the padlock in the address bar", correct: true }, { label: "Check the cafe wi-fi has a password first" }] },
       { scenario: "You've finished your drink and want to do your online banking, but you're still on the cafe's open wi-fi.", ask: "Best move?", options: [{ label: "Save the banking for a network you trust", correct: true }, { label: "Do it now on the open wi-fi, it's quicker" }, { label: "Do it, just don't tell anyone you did it" }] },
     ],
