@@ -225,11 +225,38 @@ export const SCHOOLS_EMAIL = "schools@algorithmx.co.uk";
  * On a trial it leads with the trial rather than with a number of places.
  * It used to announce however many places were posted, which on a trial was
  * a hardcoded 30 that nobody had agreed to buy.
+ *
+ * `colleague` switches it to the other kind of invite: one teacher adding
+ * another from the head's own screen. That reader does not need to be told
+ * what their school bought, and should not be. Announcing a licence to
+ * somebody down the corridor reads as a letter from a supplier.
  */
-export async function sendTeacherInvite(args: { to: string; token: string; schoolName: string; kind?: LearnerOrgKind; seats: number; trialDays?: number | null; origin: string }) {
+export async function sendTeacherInvite(args: { to: string; token: string; schoolName: string; kind?: LearnerOrgKind; seats: number; trialDays?: number | null; origin: string; colleague?: boolean }) {
   const link = `${args.origin}/schools/join/${args.token}`;
   const school = esc(args.schoolName);
+  const isOrg = args.kind === "ORGANISATION";
   const onTrial = Boolean(args.trialDays && args.trialDays > 0);
+
+  if (args.colleague) {
+    const group = isOrg ? "group" : "class";
+    const groups = isOrg ? "groups" : "classes";
+    const people = isOrg ? "young people" : "children";
+    const head = isOrg ? "whoever runs AlgorithmX for" : "whoever holds the licence at";
+    const cHeadline = `You have been added to AlgorithmX at ${school}.`;
+    const cSub = `Set up your account from the link below and you land on your own ${groups}, ready to make one and add your ${people}. Each one gets a login card with the ${group} code on it, so nobody has to remember an email address.`;
+    const cHtml = `
+    <div style="font-family:Inter,Segoe UI,Helvetica,Arial,sans-serif;color:#14161d;max-width:560px;margin:0 auto;padding:24px">
+      <p style="font-family:ui-monospace,Consolas,monospace;font-size:11px;letter-spacing:.2em;color:#0a7085;margin:0 0 16px">ALGORITHMX &middot; ${isOrg ? "FOR ORGANISATIONS" : "FOR SCHOOLS"}</p>
+      <h1 style="font-size:22px;margin:0 0 12px">${cHeadline}</h1>
+      <p style="font-size:15px;line-height:1.55;margin:0 0 12px">${cSub}</p>
+      <p style="margin:18px 0 10px"><a href="${link}" style="display:inline-block;background:#0a7085;color:#fff;text-decoration:none;padding:11px 18px;border-radius:8px;font-weight:600">Set up my account</a></p>
+      <p style="font-size:13.5px;color:#5b6572;line-height:1.5;margin:0">Or copy this link: <a href="${link}" style="color:#0a7085">${link}</a></p>
+      <p style="font-size:13.5px;color:#5b6572;line-height:1.5;margin:14px 0 0">This invite was sent by ${head} ${school}. Anything we can help with, write to <a href="mailto:${SCHOOLS_EMAIL}" style="color:#0a7085">${SCHOOLS_EMAIL}</a>.</p>
+    </div>`;
+    const cText = `You have been added to AlgorithmX at ${args.schoolName}.\n\nSet up your account: ${link}\n\nYou land on your own ${groups}, ready to make one and add your ${people}.\n\nAnything we can help with, write to ${SCHOOLS_EMAIL}.\n`;
+    return sendEmail({ to: args.to, subject: `You have been added to AlgorithmX at ${args.schoolName}`, html: cHtml, text: cText, replyTo: SCHOOLS_EMAIL });
+  }
+
   /* ONE HEADLINE, for every school, every organisation and every course.
      It used to lead with either a course name or a number of places, and
      both are wrong to lead with: a course name is wrong for a school that

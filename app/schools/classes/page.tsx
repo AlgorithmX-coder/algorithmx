@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { auth } from "@/app/lib/auth";
 import { getSchoolContext, listClasses } from "@/app/lib/schoolClasses";
+import { getHeadContext } from "@/app/lib/schoolHead";
 import { listSchoolCourses } from "@/app/lib/schoolPlaces";
 import { trialStatus } from "@/app/lib/orgTrial";
 import Locked from "../teach/Locked";
@@ -35,9 +36,12 @@ export default async function ClassesPage() {
     return <TrialEnded orgName={school.orgName} trialExpiresAt={school.trialExpiresAt!} />;
   }
 
-  const [classes, courses] = await Promise.all([
+  const [classes, courses, head] = await Promise.all([
     listClasses(school.orgId),
     listSchoolCourses(),
+    /* Only to decide whether to offer the overview link below. A teacher
+       bouncing off a link they were shown is worse than no link. */
+    getHeadContext(session.user.id),
   ]);
   const left = school.seatsPurchased - school.seatsUsed;
   /* A trial is not a small licence, and must never be described as one. */
@@ -62,6 +66,7 @@ export default async function ClassesPage() {
             </div>
           </div>
           <div className="modes" role="group" aria-label="Elsewhere">
+            {head && <Link href="/schools/overview" className="axbtn">School overview</Link>}
             <Link href="/schools/teach" className="axbtn">Teacher packs</Link>
           </div>
         </header>
