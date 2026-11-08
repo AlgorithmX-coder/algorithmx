@@ -18,9 +18,9 @@ export const case13Console: ConsoleCase = {
   accent: "#FF4D5E",
   theme: { backdrop: "backdoor", matrix: ["#FF4D5E", "#FF8A94", "#C62828"], accentHi: "#FF8A94" },
   open: [
-    "Your locks are strong now, Agent. Unique passwords, 2FA, the lot. So SKELETON KEY has stopped trying the front door entirely.",
-    "It's going for the BACK door: account recovery. That 'forgot my password' path, the security questions, the recovery email. If those are weak, your brilliant password doesn't matter one bit.",
-    "Seven skills to slam every back door shut, then a boss and a test. Let's find the way in that you never think about, and lock it.",
+    "Your locks are strong now, Agent. You've got unique passwords, 2FA, the lot. So SKELETON KEY has stopped trying the front door entirely.",
+    "He's going for the back door instead, which is account recovery. That means the forgot password button, the security questions, and the recovery email. If those are weak, your brilliant password doesn't matter one bit.",
+    "You'll learn seven skills to slam every back door shut, then face a boss and a test. Let's find the way in that you never think about, and lock it.",
   ],
   openVoice: ["/audio/wren/m13c-open-1.mp3", "/audio/wren/m13c-open-2.mp3", "/audio/wren/m13c-open-3.mp3"],
 
@@ -33,16 +33,16 @@ export const case13Console: ConsoleCase = {
       journalNote: "Backdoors are like buildings with a broken back entrance: you don't use it any more and it might have been forgotten, but if a hacker finds it, it can still lead them straight in to your accounts and personal details. A strong front door isn't enough on its own. Check your recovery options too, not just your password.",
       panel: "RECOVERY PATH",
       learn: [
-        { t: "wren", text: "Here's the thing almost everyone forgets. Every account has a SECOND way in, the recovery path, the 'I forgot my password' button. It exists so YOU can get back in. But it's a door too, and if it's weaker than your password, that's the door a thief walks through. A castle with a titanium gate and an open back window isn't safe. So we go find the windows.", voice: "/audio/wren/m13c-s1-learn.mp3" },
+        { t: "wren", text: "Here's the thing almost everyone forgets. Every account has a second way in, called the recovery path. It's the button you press when you forget your password. It exists so you can get back in. But it's a door too. If it's weaker than your password, that's the door a thief walks through. A castle with a titanium gate and an open back window isn't safe. So let's go and find those windows.", voice: "/audio/wren/m13c-s1-learn.mp3" },
       ],
       practice: [
         {
           t: "choose",
           prompt: "You have a long, unique password AND 2FA. Where does SKELETON KEY attack instead?",
           options: [
-            { label: "The recovery path, the 'forgot password' back door", outcome: "good", then: [{ t: "wren", text: "Exactly. Why pick a titanium lock when there's a back door? A thief always goes for the weakest way in, and recovery is the one people never think to strengthen. So we're about to.", voice: "/audio/wren/m13c-s1-ok.mp3" }] },
-            { label: "It just tries harder on the password", outcome: "bad", then: [{ t: "wren", text: "A strong unique password with 2FA is a dead end, so it won't waste time there. It looks for a weaker door: recovery. Try again.", voice: "/audio/wren/m13c-s1-bad.mp3" }] },
-            { label: "It gives up completely", outcome: "bad", then: [{ t: "wren", text: "SKELETON KEY doesn't give up, it changes doors. The recovery path is the one it's heading for. Try again.", voice: "/audio/wren/m13c-s1-bad2.mp3" }] },
+            { label: "The recovery path, the 'forgot password' back door", outcome: "good", then: [{ t: "wren", text: "Exactly. Why pick a titanium lock when there's a back door? A thief always goes for the weakest way in, and recovery is the one people never think to strengthen. So that's what we're about to do.", voice: "/audio/wren/m13c-s1-ok.mp3" }] },
+            { label: "He just tries harder on the password", outcome: "bad", then: [{ t: "wren", text: "A strong, unique password with 2FA is a dead end, so he won't waste his time there. He looks for a weaker door, which is recovery. Try again.", voice: "/audio/wren/m13c-s1-bad.mp3" }] },
+            { label: "He gives up completely", outcome: "bad", then: [{ t: "wren", text: "SKELETON KEY doesn't give up. He just changes doors. The recovery path is the one he's heading for. Try again.", voice: "/audio/wren/m13c-s1-bad2.mp3" }] },
           ],
         },
         {
@@ -53,7 +53,7 @@ export const case13Console: ConsoleCase = {
             { label: "The recovery / 'forgot password' path", sub: "the back door", want: true },
             { label: "The app's public help articles", sub: "just reading, no login", want: false },
           ],
-          ok: "Right. Two real doors: the password you type, and the recovery path behind it. Lock only the front, and the back stays wide open.",
+          ok: "Right. There are two real doors, the password you type and the recovery path behind it. Lock only the front, and the back stays wide open.",
           okVoice: "/audio/wren/m13c-s1-q2ok.mp3",
         },
         {
@@ -80,7 +80,7 @@ export const case13Console: ConsoleCase = {
       journalNote: "A security question like 'your first pet's name' is like a quiz a stranger could pass just by scrolling your old posts. It's not really a secret. If the true answer is public, it isn't protecting anything. Assume any TRUE answer about you can be found.",
       panel: "RECOVERY · SECURITY QS",
       learn: [
-        { t: "wren", text: "Look at what security questions ask: your first pet's name, your mum's maiden name, the street you grew up on. And now remember Case 4, the footprint. Every one of those answers is sitting in your posts, your photos, your relatives' profiles. A security question isn't a secret. It's a quiz a stranger can pass by scrolling your feed. That's the flaw.", voice: "/audio/wren/m13c-s2-learn.mp3" },
+        { t: "wren", text: "Look at what security questions ask. They want your first pet's name, your mum's maiden name, or the street you grew up on. Now remember Case 4, and your footprint. Every one of those answers is sitting in your posts, your photos, and your family's profiles. A security question isn't a secret. It's a quiz a stranger can pass by scrolling your feed. That's the flaw.", voice: "/audio/wren/m13c-s2-learn.mp3" },
         { t: "sys", text: "PROFILE SCRAPE:  dog 'Bailey' in 6 photos · school tagged · mum's maiden name on her profile" },
       ],
       practice: [
@@ -88,9 +88,9 @@ export const case13Console: ConsoleCase = {
           t: "choose",
           prompt: "Security question: \"What was your first pet's name?\" Why is that weak?",
           options: [
-            { label: "It's all over your posts, a stranger can just look it up", outcome: "good", then: [{ t: "wren", text: "Right. Bailey the dog is in six photos. That 'secret' answer is public. A security question you can answer truthfully is one a thief can answer too. So we're going to stop answering them truthfully.", voice: "/audio/wren/m13c-s2-ok.mp3" }] },
+            { label: "It's all over your posts, a stranger can just look it up", outcome: "good", then: [{ t: "wren", text: "Right. Bailey the dog is in six photos, so that so-called secret answer is public. A security question you can answer truthfully is one a thief can answer too. So we're going to stop answering them truthfully.", voice: "/audio/wren/m13c-s2-ok.mp3" }] },
             { label: "It's fine, only you know your pet's name", outcome: "bad", then: [{ t: "wren", text: "Your pet is tagged in half your photos. That answer is public, not secret. Try again.", voice: "/audio/wren/m13c-s2-bad.mp3" }] },
-            { label: "Pets can't be security questions", outcome: "bad", then: [{ t: "wren", text: "They very much are, and that's the problem, the answer is easy to find. Try again.", voice: "/audio/wren/m13c-s2-bad2.mp3" }] },
+            { label: "Pets can't be security questions", outcome: "bad", then: [{ t: "wren", text: "They very much can be, and that's the problem. The answer is easy to find. Try again.", voice: "/audio/wren/m13c-s2-bad2.mp3" }] },
           ],
         },
         {
@@ -104,7 +104,7 @@ export const case13Console: ConsoleCase = {
             { label: "A made-up phrase you never wrote down", good: false, sub: "truly secret" },
             { label: "A random word only you invented", good: false, sub: "not findable" },
           ],
-          ok: "Right. Pet, street, mum's maiden name, every one is sitting in someone's public post. A question you can answer honestly is one a stranger can answer too.",
+          ok: "Right. Your pet, your street, and your mum's maiden name are all sitting in someone's public post. A question you can answer honestly is one a stranger can answer too.",
           okVoice: "/audio/wren/m13c-s2-q2ok.mp3",
         },
         {
@@ -133,7 +133,7 @@ export const case13Console: ConsoleCase = {
       journalNote: "Nobody checks whether your security answer is true, so turn the honest answer into a second, made-up password. A lie only you know is a lock nobody can pick from your photos. Set unguessable made-up answers and store them in your manager.",
       panel: "RECOVERY · HARDEN",
       learn: [
-        { t: "wren", text: "Here's the clever fix, and it feels like cheating. Your security answers don't have to be TRUE. Nobody checks whether Bailey was really your first pet. So you make the answer something no one could ever guess, and treat it like a password. First pet's name? Answer: purple-tractor-42. It's unguessable, and your password manager remembers it for you. A lie that only you know is the strongest answer there is.", voice: "/audio/wren/m13c-s3-learn.mp3" },
+        { t: "wren", text: "Here's the clever fix, and it feels like cheating. Your security answers don't have to be true. Nobody checks whether Bailey was really your first pet. So you make the answer something no one could ever guess, and you treat it like a password. What was your first pet's name? Your answer could be purple-tractor-42. It's unguessable, and your password manager remembers it for you. A lie that only you know is the strongest answer there is.", voice: "/audio/wren/m13c-s3-learn.mp3" },
       ],
       practice: [
         {
@@ -146,9 +146,9 @@ export const case13Console: ConsoleCase = {
             { label: "Your real street name", good: false, sub: "on a hundred records" },
             { label: "Something in your bio", good: false, sub: "public" },
           ],
-          ok: "Perfect. A made-up answer no one can look up, remembered by your manager so you never lose it. Now even a thief who knows your whole life story can't answer your security question, because the answer isn't your life story.",
+          ok: "Perfect. It's a made-up answer no one can look up, and your manager remembers it so you never lose it. Now even a thief who knows your whole life story can't answer your security question, because the answer isn't your life story.",
           okVoice: "/audio/wren/m13c-s3-ok.mp3",
-          bad: "Careful. Anything true, or anything public like your bio, is guessable. The strongest answer is a made-up one your manager remembers. Pick those two.",
+          bad: "Careful. Anything true, or anything public like your bio, is guessable. The strongest answer is a made-up one that your manager remembers. Pick those two.",
           badVoice: "/audio/wren/m13c-s3-bad.mp3",
         },
         {
@@ -156,8 +156,8 @@ export const case13Console: ConsoleCase = {
           prompt: "\"What was your first pet's name?\" What should you actually type as the answer?",
           options: [
             { label: "A made-up, unguessable answer like violet-anchor-88", outcome: "good", then: [{ t: "wren", text: "Perfect. Nobody checks whether it is true. A made-up answer treated like a password is unbeatable, and your manager remembers it for you.", voice: "/audio/wren/m13c-s3-q2ok.mp3" }] },
-            { label: "Your real pet's name, Bailey", outcome: "bad", then: [{ t: "wren", text: "That is the one thing a thief can look up. The answer does not have to be true, so do not make it your real pet. Try again.", voice: "/audio/wren/m13c-s3-q2bad.mp3" }] },
-            { label: "The word 'password'", outcome: "bad", then: [{ t: "wren", text: "Far too easy to guess. Use a long, made-up answer your manager stores. Try again.", voice: "/audio/wren/m13c-s3-q2bad2.mp3" }] },
+            { label: "Your real pet's name, Bailey", outcome: "bad", then: [{ t: "wren", text: "That is the one thing a thief can look up. The answer does not have to be true, so do not make it your real pet's name. Try again.", voice: "/audio/wren/m13c-s3-q2bad.mp3" }] },
+            { label: "The word 'password'", outcome: "bad", then: [{ t: "wren", text: "That's far too easy to guess. Use a long, made-up answer that your manager stores. Try again.", voice: "/audio/wren/m13c-s3-q2bad2.mp3" }] },
           ],
         },
         {
@@ -168,12 +168,12 @@ export const case13Console: ConsoleCase = {
             { label: "Your password manager can store it", sub: "so you won't forget it", want: true },
             { label: "It must be your real, honest answer", sub: "that's the guessable one", want: false },
           ],
-          ok: "That is the trick. The answer can be a lie, and your manager keeps it safe, so it is both unguessable and unforgettable. True never comes into it.",
+          ok: "That is the trick. The answer can be a lie, and your manager keeps it safe, so it is both unguessable and unforgettable. Whether it's true never comes into it.",
           okVoice: "/audio/wren/m13c-s3-q3ok.mp3",
         },
         {
           t: "flip",
-          prompt: "SKELETON KEY found your old posts about your first pet. Flip the switch, then flip the card to watch its reset attempt.",
+          prompt: "SKELETON KEY found your old posts about your first pet. Flip the switch, then flip the card to watch his reset attempt.",
           you: {
             kind: "toggle",
             label: "Security answer · simulator",
@@ -187,11 +187,11 @@ export const case13Console: ConsoleCase = {
             whenGood: "ANSWER WRONG · 'Bailey' doesn't match · reset blocked",
           },
           ask: {
-            prompt: "It found your real pet's name from an old photo caption. Why didn't that work?",
+            prompt: "He found your real pet's name from an old photo caption. Why didn't that work?",
             options: [
               { label: "The stored answer is made-up, not the true one", outcome: "good" },
               { label: "SKELETON KEY had the wrong photo", outcome: "bad", then: [{ t: "sys", text: "SKELETON KEY: right photo, right pet, still wrong, the answer was never Bailey" }] },
-              { label: "It needed the pet's birthday too", outcome: "bad", then: [{ t: "sys", text: "SKELETON KEY: one answer is all it needs, and this one's a lie" }] },
+              { label: "It needed the pet's birthday too", outcome: "bad", then: [{ t: "sys", text: "SKELETON KEY: one answer is all he needs, and this one's a lie" }] },
             ],
           },
         },
@@ -206,7 +206,7 @@ export const case13Console: ConsoleCase = {
       journalNote: "A dead old recovery email is like a spare key left under a mat you forgot about: still real, still works, nobody's watching it. Your recovery contact has to be one you actually use, with its own lock. Update your recovery email and lock it with 2FA too.",
       panel: "RECOVERY · CONTACTS",
       learn: [
-        { t: "wren", text: "One more back-door check. If your account resets through an OLD email you don't use any more, and someone gets into that dead inbox, they can reset everything through it. So your recovery contact, email or phone, must be current, one you still control, and locked with its own 2FA. A recovery email is a master key. Treat it like one.", voice: "/audio/wren/m13c-s4-learn.mp3" },
+        { t: "wren", text: "Here's one more back-door check. Your account might reset through an old email you don't use any more. If someone gets into that dead inbox, they can reset everything through it. So your recovery email or phone must be current, and one you still control. It must also be locked with its own 2FA. A recovery email is a master key, so treat it like one.", voice: "/audio/wren/m13c-s4-learn.mp3" },
       ],
       practice: [
         {
@@ -217,9 +217,9 @@ export const case13Console: ConsoleCase = {
             { label: "2FA is on that recovery email", sub: "it can reset everything", want: true },
             { label: "Leave an old forgotten email as backup", sub: "just in case", want: false },
           ],
-          ok: "Locked. A current recovery email you control, with its own second lock, and no dead old inbox hanging around as a way in. Whoever controls your recovery controls your account, so now that's only you.",
+          ok: "That's locked. You have a current recovery email you control, with its own second lock. There's no dead old inbox hanging around as a way in. Whoever controls your recovery controls your account, and now that's only you.",
           okVoice: "/audio/wren/m13c-s4-ok.mp3",
-          bad: "Not quite. Your recovery email must be current AND have 2FA, and an old forgotten inbox is a way in, not a safety net. Fix the switches.",
+          bad: "Not quite. Your recovery email must be current, and it must have 2FA. An old, forgotten inbox is a way in, not a safety net. Fix the switches.",
           badVoice: "/audio/wren/m13c-s4-bad.mp3",
         },
         {
@@ -241,7 +241,7 @@ export const case13Console: ConsoleCase = {
             { label: "An old inbox kept as a spare", good: false, sub: "a forgotten door" },
             { label: "Shared with a friend just in case", good: false, sub: "now they hold your master key" },
           ],
-          ok: "That is a locked master key. Current, so you would spot trouble, and 2FA protected, so a thief cannot use it to reset the rest.",
+          ok: "That is a locked master key. It's current, so you would spot trouble, and it's protected by 2FA, so a thief cannot use it to reset the rest.",
           okVoice: "/audio/wren/m13c-s4-q3ok.mp3",
         },
       ],
@@ -251,11 +251,11 @@ export const case13Console: ConsoleCase = {
     {
       n: 5,
       title: "Log out the strangers",
-      goal: "Old logged-in devices are open doors. Sign out where you shouldn't be.",
+      goal: "Old logged-in devices are open doors. Sign out of devices you've finished with.",
       journalNote: "Staying logged in on a library computer is like leaving your front door key in the lock on your way out. Closing the tab isn't the same as logging out. Always log out properly on any device that isn't yours.",
       panel: "ACTIVE SESSIONS",
       learn: [
-        { t: "wren", text: "Last door: you leave yourself logged in everywhere, and forget. That library computer, a friend's tablet, a phone you sold. Every account keeps a list of devices it's logged in on, and each is a door left open. So two habits: on any shared or public machine, log OUT when you're done, never just close the tab. And now and then, check that device list and kick off anything you don't recognise.", voice: "/audio/wren/m13c-s5-learn.mp3" },
+        { t: "wren", text: "Here's the last door. You leave yourself logged in everywhere, and then you forget. Think of that library computer, a friend's tablet, or a phone you sold. Every account keeps a list of the devices it's logged in on, and each one is a door left open. So build two habits. On any shared or public machine, log out when you're done, and never just close the tab. And now and then, check that device list and kick off anything you don't recognise.", voice: "/audio/wren/m13c-s5-learn.mp3" },
       ],
       practice: [
         {
@@ -266,9 +266,9 @@ export const case13Console: ConsoleCase = {
             { label: "Library PC · 3 weeks ago", sub: "you never logged out", want: false },
             { label: "Unknown device · another city", sub: "not you", want: false },
           ],
-          ok: "Good sweep. Your own phone stays, but the library PC you forgot and a login from a city you've never been to are both doors slammed shut. Logging out where you shouldn't be is a two-second habit that closes real gaps.",
+          ok: "That's a good sweep. Your own phone stays. But the library PC you forgot, and a login from a city you've never been to, are both doors slammed shut. Logging out of devices you've finished with is a two-second habit that closes real gaps.",
           okVoice: "/audio/wren/m13c-s5-ok.mp3",
-          bad: "Not quite. Keep your own phone, but log OUT the forgotten library PC and that unknown device in another city, those aren't you. Fix it.",
+          bad: "Not quite. Keep your own phone, but log out the forgotten library PC and that unknown device in another city. Neither of those is you. Fix it.",
           badVoice: "/audio/wren/m13c-s5-bad.mp3",
         },
         {
@@ -290,7 +290,7 @@ export const case13Console: ConsoleCase = {
             { label: "Your own phone you use every day", good: false, sub: "keep it" },
             { label: "Your home laptop from this morning", good: false, sub: "that's you" },
           ],
-          ok: "Good sweep. A login from nowhere you have been and a device you no longer own are both open doors. Kick them off and keep your own.",
+          ok: "That's a good sweep. A login from somewhere you have never been and a device you no longer own are both open doors. Kick them off, and keep your own.",
           okVoice: "/audio/wren/m13c-s5-q3ok.mp3",
         },
       ],
@@ -304,21 +304,21 @@ export const case13Console: ConsoleCase = {
       journalNote: "Going around your password straight to recovery is like a thief skipping the locked front door for a window they think nobody checked. Made-up answers and a locked recovery email turn that window into another locked door. Treat recovery as seriously as your actual password.",
       panel: "THREAT MODEL",
       learn: [
-        { t: "wren", text: "See SKELETON KEY's back-door play, four moves. First, skip your strong password entirely. Second, click 'forgot password'. Third, answer your security questions using facts scraped from your public life. Fourth, reset your password and stroll in. And here's the wall you just built: made-up answers it can't guess, and a locked recovery email it can't reach. Every move fails.", voice: "/audio/wren/m13c-s6-learn.mp3" },
+        { t: "wren", text: "Let's look at SKELETON KEY's back-door play. It has four moves. First, he skips your strong password entirely. Second, he clicks the forgot password button. Third, he answers your security questions using facts scraped from your public life. Fourth, he resets your password and strolls in. And here's the wall you just built. You have made-up answers he can't guess, and a locked recovery email he can't reach. Every move fails.", voice: "/audio/wren/m13c-s6-learn.mp3" },
       ],
       practice: [
         {
           t: "choose",
-          prompt: "SKELETON KEY tries the recovery path with everything it knows about you. Why does it fail?",
+          prompt: "SKELETON KEY tries the recovery path with everything he knows about you. Why does he fail?",
           options: [
-            { label: "Your security answers are made-up, and recovery is locked", outcome: "good", then: [{ t: "wren", text: "That's the whole defence. It can know your real pet, street, and school, and it still can't answer, because your answers are lies only you know. And it can't hijack your recovery email either. The back door is shut.", voice: "/audio/wren/m13c-s6-ok.mp3" }] },
-            { label: "Because it doesn't know your real details", outcome: "bad", then: [{ t: "wren", text: "Assume it knows everything real about you, that's the point. It fails because your ANSWERS aren't the real details. Try again.", voice: "/audio/wren/m13c-s6-bad.mp3" }] },
-            { label: "Because recovery paths don't really work", outcome: "bad", then: [{ t: "wren", text: "Recovery works fine, that's why it's a target. It fails because you made the answers unguessable and locked recovery. Try again.", voice: "/audio/wren/m13c-s6-bad2.mp3" }] },
+            { label: "Your security answers are made-up, and recovery is locked", outcome: "good", then: [{ t: "wren", text: "That's the whole defence. He can know your real pet, street, and school, and he still can't answer, because your answers are lies only you know. And he can't hijack your recovery email either. The back door is shut.", voice: "/audio/wren/m13c-s6-ok.mp3" }] },
+            { label: "Because he doesn't know your real details", outcome: "bad", then: [{ t: "wren", text: "Assume he knows everything real about you. That's the point. He fails because your answers aren't the real details. Try again.", voice: "/audio/wren/m13c-s6-bad.mp3" }] },
+            { label: "Because recovery paths don't really work", outcome: "bad", then: [{ t: "wren", text: "Recovery works fine, and that's why it's a target. He fails because you made the answers unguessable and locked your recovery. Try again.", voice: "/audio/wren/m13c-s6-bad2.mp3" }] },
           ],
         },
         {
           t: "build",
-          prompt: "SKELETON KEY's back-door attack. Tap the FOUR moves in its plan:",
+          prompt: "SKELETON KEY's back-door attack. Tap the FOUR moves in his plan:",
           need: 4,
           parts: [
             { label: "Skip your strong password entirely", good: true, sub: "" },
@@ -328,18 +328,18 @@ export const case13Console: ConsoleCase = {
             { label: "Guess your 2FA code a million times", good: false, sub: "that's the front door, not this attack" },
             { label: "Politely email you for permission", good: false, sub: "thieves don't ask" },
           ],
-          ok: "That is the play. Skip the password, click forgot, answer from your public life, reset, and stroll in. Four quiet moves that never touch your strong password.",
+          ok: "That is the play. He skips the password, clicks forgot password, answers from your public life, resets, and strolls in. Those are four quiet moves that never touch your strong password.",
           okVoice: "/audio/wren/m13c-s6-q2ok.mp3",
         },
         {
           t: "toggle",
           prompt: "Flip ON the two walls that make every one of those moves fail:",
           switches: [
-            { label: "Made-up security answers it can't guess", sub: "the reset step fails", want: true },
+            { label: "Made-up security answers he can't guess", sub: "the reset step fails", want: true },
             { label: "A recovery email locked with 2FA", sub: "the email step fails", want: true },
             { label: "Just a longer login password", sub: "the attack skips it", want: false },
           ],
-          ok: "Exactly. It can skip your password all it likes, but made-up answers and a locked recovery email leave it stuck at the back door. Every move fails.",
+          ok: "Exactly. He can skip your password all he likes, but made-up answers and a locked recovery email leave him stuck at the back door. Every move fails.",
           okVoice: "/audio/wren/m13c-s6-q3ok.mp3",
         },
       ],
@@ -353,7 +353,7 @@ export const case13Console: ConsoleCase = {
       journalNote: "A house is only as safe as its weakest door, and recovery is the one most people never think to lock. Made-up answers, a current locked recovery email, and clean sessions close it for good. Pick one account today and bolt its back door.",
       panel: "ACTION PLAN",
       learn: [
-        { t: "wren", text: "Last skill, your back-door habit. One, make your security answers unguessable lies your manager remembers. Two, keep your recovery email current and locked with 2FA. Three, log out on shared machines and sweep your device list now and then. Do those, and you've closed the door most people never even knew was open.", voice: "/audio/wren/m13c-s7-learn.mp3" },
+        { t: "wren", text: "This last skill is your back-door habit. One, make your security answers unguessable lies that your manager remembers. Two, keep your recovery email current, and lock it with 2FA. Three, log out on shared machines, and sweep your device list now and then. Do those, and you've closed the door most people never even knew was open.", voice: "/audio/wren/m13c-s7-learn.mp3" },
       ],
       practice: [
         {
@@ -367,7 +367,7 @@ export const case13Console: ConsoleCase = {
             { label: "Answer questions truthfully", good: false, sub: "guessable" },
             { label: "Reuse an old email for recovery", good: false, sub: "a way in" },
           ],
-          ok: "That's the back door bolted. Made-up answers, locked recovery, clean sessions. A thief can know everything true about you and still be left standing outside every door.",
+          ok: "That's the back door bolted. You have made-up answers, locked recovery, and clean sessions. A thief can know everything true about you, and still be left standing outside every door.",
           okVoice: "/audio/wren/m13c-s7-ok.mp3",
           bad: "Careful, you picked a weak one. True answers and old recovery emails are exactly the gaps a thief uses. Choose only the three that shut the door.",
           badVoice: "/audio/wren/m13c-s7-bad.mp3",
@@ -376,7 +376,7 @@ export const case13Console: ConsoleCase = {
           t: "choose",
           prompt: "If you fix just ONE back-door gap on your most important account today, which gives the biggest win?",
           options: [
-            { label: "Swap its true security answers for made-up ones your manager stores", outcome: "good", then: [{ t: "wren", text: "Great pick. That single move beats a thief's whole scrapbook, however much they already know about you.", voice: "/audio/wren/m13c-s7-q2ok.mp3" }] },
+            { label: "Swap its true security answers for made-up ones your manager stores", outcome: "good", then: [{ t: "wren", text: "That's a great pick. That single move beats a thief's whole scrapbook, however much they already know about you.", voice: "/audio/wren/m13c-s7-q2ok.mp3" }] },
             { label: "Just read about back doors one more time", outcome: "bad", then: [{ t: "wren", text: "Understanding a door does not bolt it. Pick the move that actually shuts it. Try again.", voice: "/audio/wren/m13c-s7-q2bad.mp3" }] },
             { label: "Post a warning telling thieves to stay away", outcome: "bad", then: [{ t: "wren", text: "Thieves do not read warnings. Change your answers and lock recovery instead. Try again.", voice: "/audio/wren/m13c-s7-q2bad2.mp3" }] },
           ],
@@ -390,7 +390,7 @@ export const case13Console: ConsoleCase = {
             { label: "Log out on shared machines and sweep sessions", sub: "", want: true },
             { label: "Answer questions truthfully so you don't forget", sub: "guessable", want: false },
           ],
-          ok: "That is the whole habit locked in. Made-up answers, locked recovery, clean sessions, and the back door most people never notice stays bolted.",
+          ok: "That is the whole habit locked in. With made-up answers, locked recovery and clean sessions, the back door most people never notice stays bolted.",
           okVoice: "/audio/wren/m13c-s7-q3ok.mp3",
         },
       ],
@@ -399,7 +399,7 @@ export const case13Console: ConsoleCase = {
 
   boss: {
     panel: "LIVE ATTACK · SKELETON KEY",
-    intro: "This is it, Agent. SKELETON KEY has given up on your password and gone straight for the back door, armed with everything it scraped about your life. No hints from me. Hold the recovery path, and tell me why every attempt bounces.",
+    intro: "This is it, Agent. SKELETON KEY has given up on your password and gone straight for the back door. He's armed with everything he scraped about your life. You'll get no hints from me. Hold the recovery path, and tell me why every attempt bounces.",
     introVoice: "/audio/wren/m13c-boss-intro.mp3",
     phases: [
       {
@@ -413,7 +413,7 @@ export const case13Console: ConsoleCase = {
             prompt: "SKELETON KEY knew your real pet's name, and still got it wrong. Why?",
             options: [
               { label: "Your saved answer is a made-up lie, not the true one", outcome: "good" },
-              { label: "It spelled Bailey wrong", outcome: "bad", then: [{ t: "sys", text: "SK: spelling verified correct… still ✗" }] },
+              { label: "He spelled Bailey wrong", outcome: "bad", then: [{ t: "sys", text: "SK: spelling verified correct… still ✗" }] },
               { label: "The pet's name changed", outcome: "bad", then: [{ t: "sys", text: "SK: real name confirmed, answer still ✗" }] },
             ],
           },
@@ -425,7 +425,7 @@ export const case13Console: ConsoleCase = {
           { t: "sys", text: "SKELETON KEY: trying to reset via your recovery email…" },
           {
             t: "flip",
-            prompt: "Flip the switch, then flip the card to watch its reset attempt react.",
+            prompt: "Flip the switch, then flip the card to watch his reset attempt react.",
             you: {
               kind: "toggle",
               label: "2FA on your recovery email · simulator",
@@ -439,11 +439,11 @@ export const case13Console: ConsoleCase = {
               whenGood: "LOGIN BLOCKED · SECOND KEY REQUIRED · code sent to your phone only",
             },
             ask: {
-              prompt: "It went for your recovery email instead. Why is that a dead end?",
+              prompt: "He went for your recovery email instead. Why is that a dead end?",
               options: [
                 { label: "Your recovery email is current and 2FA-locked", outcome: "good" },
                 { label: "Recovery emails can't be reset", outcome: "bad", then: [{ t: "sys", text: "SK: they can, but this one has 2FA… ✗" }] },
-                { label: "It ran out of time", outcome: "bad", then: [{ t: "sys", text: "SK: plenty of time, still locked out by 2FA" }] },
+                { label: "He ran out of time", outcome: "bad", then: [{ t: "sys", text: "SK: plenty of time, still locked out by 2FA" }] },
               ],
             },
           },
@@ -456,22 +456,22 @@ export const case13Console: ConsoleCase = {
           { t: "sys", text: "FOUND: none. (old email removed · library PC logged out · sessions clean)" },
           {
             t: "choose",
-            prompt: "It went looking for a forgotten open door. Why did it find none?",
+            prompt: "He went looking for a forgotten open door. Why did he find none?",
             options: [
               { label: "You cleaned up, no old email, no stale sessions left", outcome: "good" },
-              { label: "It didn't look hard enough", outcome: "bad", then: [{ t: "sys", text: "SK: searched everything, found no gaps" }] },
+              { label: "He didn't look hard enough", outcome: "bad", then: [{ t: "sys", text: "SK: searched everything, found no gaps" }] },
               { label: "You got lucky", outcome: "bad", then: [{ t: "sys", text: "SK: not luck, there simply were no open doors" }] },
             ],
           },
         ],
       },
     ],
-    win: "Watch that, Agent. SKELETON KEY knew your real pet, your real school, your real street, and it still couldn't get in. Your made-up answers beat its whole scrapbook, your locked recovery email held, and there wasn't a single forgotten door left open. You didn't just lock the front. You bolted every window it knew about.",
+    win: "Watch that, Agent. SKELETON KEY knew your real pet, your real school and your real street, and he still couldn't get in. Your made-up answers beat his whole scrapbook. Your locked recovery email held, and there wasn't a single forgotten door left open. You didn't just lock the front. You bolted every window he knew about.",
     winVoice: "/audio/wren/m13c-boss-win.mp3",
   },
 
   test: {
-    intro: "Last thing before I sign this off, the test. Fresh scenarios, no hints, and you need to pass. Everything about back doors, put it to work. Ready?",
+    intro: "There's one last thing before I sign this off, and that's the test. The scenarios are fresh, there are no hints, and you need to pass. Put everything you know about back doors to work. Ready?",
     introVoice: "/audio/wren/m13c-test-intro.mp3",
     passVoice: "/audio/wren/m13c-test-pass.mp3",
     failVoice: "/audio/wren/m13c-test-fail.mp3",
@@ -487,8 +487,8 @@ export const case13Console: ConsoleCase = {
       { scenario: "You switched phone numbers last year, but your accounts still recover through the old one.", ask: "What should you do?", options: [{ label: "Leave it, old numbers still work fine" }, { label: "Update recovery to your current number", correct: true }, { label: "Nothing, phone numbers can't reset accounts" }] },
       { scenario: "You used a library computer to log into your account.", ask: "What should you do when done?", options: [{ label: "Log out fully, don't just close the tab", correct: true }, { label: "Close the tab, that logs you out anyway" }, { label: "Leave it open, you'll be back later" }] },
       { scenario: "Weeks ago you logged into your account on a friend's tablet to show them a game.", ask: "What is the safe move now?", options: [{ label: "Nothing, it's a friend and friends are safe" }, { label: "Ask the friend never to open the tablet again" }, { label: "Open your device list and log that tablet out", correct: true }] },
-      { scenario: "A thief knows your real pet, street and school, but still can't reset your account.", ask: "Why?", options: [{ label: "Your answers are made-up and recovery is locked", correct: true }, { label: "It doesn't really know your street and school" }, { label: "Recovery paths are broken and never work at all" }] },
-      { scenario: "Watching SKELETON KEY work, you notice it never even types your password.", ask: "What does that tell you about its plan?", options: [{ label: "It has given up on breaking into your account" }, { label: "It's going for the recovery back door instead", correct: true }, { label: "It can't find your username, so it's stuck" }] },
+      { scenario: "A thief knows your real pet, street and school, but still can't reset your account.", ask: "Why?", options: [{ label: "Your answers are made-up and recovery is locked", correct: true }, { label: "They don't really know your street and school" }, { label: "Recovery paths are broken and never work at all" }] },
+      { scenario: "Watching SKELETON KEY work, you notice he never even types your password.", ask: "What does that tell you about his plan?", options: [{ label: "He has given up on breaking into your account" }, { label: "He's going for the recovery back door instead", correct: true }, { label: "He can't find your username, so he's stuck" }] },
       { scenario: "You want one weekend habit that keeps your back door shut for good.", ask: "Which set of moves does the job?", options: [{ label: "True answers, an old spare email, stay logged in" }, { label: "A longer password, changed often and kept secret" }, { label: "Made-up answers, locked recovery, clean sessions", correct: true }] },
       { scenario: "A younger cousin asks how to stop anyone resetting their account through the recovery path.", ask: "What is the best advice to give?", options: [{ label: "Tell no one their password and hope that's enough" }, { label: "Use made-up answers and lock recovery with 2FA", correct: true }, { label: "Stop using the account and make a new one" }] },
     ],
@@ -497,7 +497,7 @@ export const case13Console: ConsoleCase = {
   debrief: {
     title: "Every door bolted.",
     lines: [
-      "Seven skills, a back-door siege, and a test, and SKELETON KEY's whole scrapbook got it nowhere.",
+      "Seven skills, a back-door siege, and a test, and SKELETON KEY's whole scrapbook got him nowhere.",
       "You learned that recovery is a door too, made your security answers unguessable lies, and locked your recovery email.",
       "You swept your sessions clean, so there wasn't a forgotten window left open anywhere.",
     ],
