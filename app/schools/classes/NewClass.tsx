@@ -6,12 +6,30 @@ import { createClassAction } from "./class.actions";
 /**
  * Make a class.
  *
- * Two fields, because that is all a class needs before it is useful: what the
- * school calls it, and which year it is. The code is generated and shown
- * once it exists; a teacher never picks one, because a memorable code is a
- * guessable code and this one unlocks a list of children's names.
+ * Three fields: what the school calls it, which year it is, and which course
+ * it runs. The code is generated and shown once it exists; a teacher never
+ * picks one, because a memorable code is a guessable code and this one
+ * unlocks a list of children's names.
+ *
+ * The course is the one that matters, and it is per class rather than per
+ * school so one school can run Cyber Heroes in year 4 and Cyber Explorers in
+ * year 8. Age ranges are shown beside each course and none is disabled: year
+ * groups are named differently in every country, and a catch-up group or an
+ * SEN class is a good reason to pick a course that does not match the year.
  */
-export default function NewClass({ placesLeft }: { placesLeft: number }) {
+export interface CourseChoice {
+  id: string;
+  name: string;
+  ageRange: string;
+}
+
+export default function NewClass({
+  placesLeft,
+  courses,
+}: {
+  placesLeft: number;
+  courses: readonly CourseChoice[];
+}) {
   const [pending, start] = useTransition();
   const [said, setSaid] = useState<{ ok: boolean; text: string } | null>(null);
   const form = useRef<HTMLFormElement>(null);
@@ -42,6 +60,16 @@ export default function NewClass({ placesLeft }: { placesLeft: number }) {
         <label>
           <span>Year group</span>
           <input name="yearGroup" type="number" min={1} max={13} placeholder="4" />
+        </label>
+        <label className="grow">
+          <span>Which course</span>
+          <select name="productId" required defaultValue={courses[0]?.id ?? ""}>
+            {courses.map((c) => (
+              <option key={c.id} value={c.id}>
+                {c.name} &middot; ages {c.ageRange}
+              </option>
+            ))}
+          </select>
         </label>
         <button type="submit" disabled={pending}>{pending ? "Making…" : "Make the class"}</button>
       </form>

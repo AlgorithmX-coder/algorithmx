@@ -157,7 +157,26 @@ export async function claimTeacherInvite(
 
   const classCount = await prisma.class.count({ where: { orgId: invite.orgId, archivedAt: null } });
   if (classCount === 0) {
-    await createClass({ orgId: invite.orgId, teacherId: userId, name: "Class 1" });
+    /* A class now has to say which course it runs, and nobody has chosen one
+       at this point: the first teacher has only just claimed their invite.
+       Cyber Heroes is the default because it is what every school class was
+       before courses were selectable, and the teacher can make classes on
+       any of the four from their own page. If the product is missing (a bare
+       database with no seed), skip the starter class rather than fail the
+       claim: landing with no class is recoverable, not being able to sign in
+       at all is not. */
+    const starter = await prisma.product.findUnique({
+      where: { slug: "cyber-heroes" },
+      select: { id: true },
+    });
+    if (starter) {
+      await createClass({
+        orgId: invite.orgId,
+        teacherId: userId,
+        name: "Class 1",
+        productId: starter.id,
+      });
+    }
   }
   return { ok: true, orgId: invite.orgId, orgName: invite.org.name };
 }
