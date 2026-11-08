@@ -36,7 +36,7 @@ export default async function SchoolJoinPage({ params }: { params: Promise<{ tok
         <div className="wrap">
           <header className="top">
             <div>
-              <div className="brand">Cyber <span>Heroes</span> &middot; <i>Schools</i></div>
+              <div className="brand">Algorithm<span>X</span></div>
               <div className="sub">Invited as {invite.email}</div>
             </div>
           </header>
@@ -71,7 +71,7 @@ export default async function SchoolJoinPage({ params }: { params: Promise<{ tok
       <div className="wrap">
         <header className="top">
           <div>
-            <div className="brand">Cyber <span>Heroes</span> &middot; <i>Schools</i></div>
+            <div className="brand">Algorithm<span>X</span></div>
             <div className="sub">{session.user.email}</div>
           </div>
         </header>
