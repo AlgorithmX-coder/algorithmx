@@ -1,0 +1,12 @@
+-- The country an organisation is in.
+--
+-- Schools and firms are both sold internationally, so "which country" is a
+-- question we need the answer to at the moment of sale rather than inferred
+-- later from a phone number or a domain. It also decides things we must not
+-- guess: a child protection helpline differs by country and we never ship a
+-- table of them.
+--
+-- Nullable, because every organisation that already exists was created
+-- without one and a blank is honest. Nothing reads it yet beyond displaying
+-- it, so an empty value cannot break a page.
+ALTER TABLE "Organisation" ADD COLUMN "country" TEXT;

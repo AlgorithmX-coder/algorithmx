@@ -8,9 +8,13 @@ import { useRouter } from "next/navigation";
  * /api/admin/schools (which creates the Organisation + SchoolProfile +
  * first teacher invite - no Class yet, that needs a real teacher first)
  * then, if asked, /api/admin/trial. */
+/** Places a trial school can use. Enough for a class to be run properly,
+ *  and never presented to the school as something they bought. */
+const TRIAL_PLACES = 30;
+
 export default function AdminSchoolsPanel() {
   const router = useRouter();
-  const [f, setF] = useState({ name: "", sector: "", contactName: "", contactRole: "", safeguardingContact: "", childLineNumber: "", seatsPurchased: "50", teacherEmail: "" });
+  const [f, setF] = useState({ name: "", sector: "", country: "", contactName: "", contactRole: "", safeguardingContact: "", seatsPurchased: "50", teacherEmail: "" });
   const [trial, setTrial] = useState(false);
   const [trialDays, setTrialDays] = useState<"1" | "2">("2");
   const [busy, setBusy] = useState(false);
@@ -28,7 +32,15 @@ export default function AdminSchoolsPanel() {
       const res = await fetch("/api/admin/schools", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...f, seatsPurchased: trial ? 30 : Number(f.seatsPurchased) }),
+        /* A trial school still gets places, or there would be nothing for a
+           teacher to add a child to. They are a working allowance rather
+           than a purchase, which is why the invite email leads with the
+           trial and never announces this number. */
+        body: JSON.stringify({
+          ...f,
+          seatsPurchased: trial ? TRIAL_PLACES : Number(f.seatsPurchased),
+          trialDays: trial ? Number(trialDays) : null,
+        }),
       });
       const j = (await res.json().catch(() => ({}))) as Record<string, unknown>;
       if (!res.ok) throw new Error((j.error as string) ?? "Something went wrong.");
@@ -38,7 +50,7 @@ export default function AdminSchoolsPanel() {
         if (tRes.ok) grantedDays = Number(trialDays);
       }
       setMade({ name: j.name as string, slug: j.slug as string, link: j.link as string, emailed: !!j.emailed, trialDays: grantedDays });
-      setF({ name: "", sector: "", contactName: "", contactRole: "", safeguardingContact: "", childLineNumber: "", seatsPurchased: "50", teacherEmail: "" });
+      setF({ name: "", sector: "", country: "", contactName: "", contactRole: "", safeguardingContact: "", seatsPurchased: "50", teacherEmail: "" });
       router.refresh();
     } catch (e) {
       setErr(e instanceof Error ? e.message : "Something went wrong.");
@@ -63,15 +75,15 @@ export default function AdminSchoolsPanel() {
       <p className="ad-note">For a licence deal, a test school, or a trial. The first teacher gets the invite by email, and the link shows here too.</p>
       <div className="ad-row">
         <label>School name <input value={f.name} onChange={(e) => set("name", e.target.value)} placeholder="Oakwood Primary" /></label>
+        <label>Country <input value={f.country} onChange={(e) => set("country", e.target.value)} placeholder="United Kingdom" /></label>
+      </div>
+      <div className="ad-row">
         <label>Sector <input value={f.sector} onChange={(e) => set("sector", e.target.value)} placeholder="Primary school" /></label>
+        <label>Safeguarding contact <input value={f.safeguardingContact} onChange={(e) => set("safeguardingContact", e.target.value)} placeholder="Who a disclosure goes to" /></label>
       </div>
       <div className="ad-row">
         <label>Contact name <input value={f.contactName} onChange={(e) => set("contactName", e.target.value)} placeholder="Head of computing" /></label>
         <label>Contact role <input value={f.contactRole} onChange={(e) => set("contactRole", e.target.value)} placeholder="Head of Computing" /></label>
-      </div>
-      <div className="ad-row">
-        <label>Safeguarding contact <input value={f.safeguardingContact} onChange={(e) => set("safeguardingContact", e.target.value)} placeholder="Who the course's safeguarding briefings name" /></label>
-        <label>Child line number <input value={f.childLineNumber} onChange={(e) => set("childLineNumber", e.target.value)} placeholder="Optional" /></label>
       </div>
       <label className="ad-check">
         <input type="checkbox" checked={trial} onChange={(e) => setTrial(e.target.checked)} /> Grant a trial instead of licensing pupil places now

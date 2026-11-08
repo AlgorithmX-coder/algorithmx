@@ -84,15 +84,16 @@ function slugify(name: string): string {
 export async function createSchool(args: {
   name: string;
   sector?: string | null;
+  country?: string | null;
   contactName?: string | null;
   contactRole?: string | null;
   safeguardingContact?: string | null;
-  childLineNumber?: string | null;
   seatsPurchased: number;
+  /** Set when this school is being started on a trial, so the invite email
+   *  leads with the trial instead of announcing places nobody bought. */
+  trialDays?: number | null;
   teacherEmail: string;
   origin: string;
-  staffName: string;
-  staffEmail: string | null;
 }) {
   const base = slugify(args.name);
   let slug = base;
@@ -102,24 +103,28 @@ export async function createSchool(args: {
       name: args.name.trim(),
       slug,
       sector: args.sector?.trim() || null,
+      country: args.country?.trim() || null,
       contactName: args.contactName?.trim() || null,
       contactRole: args.contactRole?.trim() || null,
       plan: "TEAM",
       seatsPurchased: args.seatsPurchased,
     },
   });
+  /* No child line number here. It is the school's own country's number and
+     the school is the only party who can give it; asking a salesperson for
+     it at the moment of sale produced a blank field every time. The column
+     stays, to be filled in from the school's own screen. */
   await prisma.schoolProfile.create({
     data: {
       orgId: org.id,
       safeguardingContact: args.safeguardingContact?.trim() || null,
-      childLineNumber: args.childLineNumber?.trim() || null,
     },
   });
   const token = newInviteToken(slug.slice(0, 6));
   await prisma.teacherInvite.create({ data: { orgId: org.id, email: args.teacherEmail.trim().toLowerCase(), inviteToken: token, role: "ADMIN" } });
   let emailed = true;
   try {
-    await sendTeacherInvite({ to: args.teacherEmail, token, schoolName: org.name, seats: args.seatsPurchased, origin: args.origin, staffName: args.staffName, staffEmail: args.staffEmail });
+    await sendTeacherInvite({ to: args.teacherEmail, token, schoolName: org.name, seats: args.seatsPurchased, trialDays: args.trialDays ?? null, origin: args.origin });
   } catch (err) {
     emailed = false;
     console.error("[admin/schools] teacher invite email failed", err instanceof Error ? err.message : err);
@@ -185,17 +190,43 @@ function esc(s: string): string {
   return s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c] as string);
 }
 
-export async function sendTeacherInvite(args: { to: string; token: string; schoolName: string; seats: number; origin: string; staffName: string; staffEmail: string | null }) {
+/** Where a school writes in. Never a person: staff change, an address does
+ *  not, and a teacher should not be replying to whoever happened to set
+ *  their school up. */
+export const SCHOOLS_EMAIL = "schools@algorithmx.co.uk";
+
+/**
+ * The first teacher's invite.
+ *
+ * Says nothing about which course. A school picks a course per class, and
+ * naming one in the welcome email is both wrong for a school that bought
+ * something else and the reason the whole product used to read as a single
+ * course. The same email has to work for a primary school running Cyber
+ * Heroes and a secondary running Cyber Explorers.
+ *
+ * On a trial it leads with the trial rather than with a number of places.
+ * It used to announce however many places were posted, which on a trial was
+ * a hardcoded 30 that nobody had agreed to buy.
+ */
+export async function sendTeacherInvite(args: { to: string; token: string; schoolName: string; seats: number; trialDays?: number | null; origin: string }) {
   const link = `${args.origin}/schools/join/${args.token}`;
+  const school = esc(args.schoolName);
+  const onTrial = Boolean(args.trialDays && args.trialDays > 0);
+  const headline = onTrial
+    ? `${school} is set up to try.`
+    : `${args.seats} pupil place${args.seats === 1 ? "" : "s"} ${args.seats === 1 ? "is" : "are"} ready for ${school}.`;
+  const sub = onTrial
+    ? `You are the first teacher set up for ${school}, on a ${args.trialDays}-day trial. Set up your account from the link below and you will land on your classes page, ready to make a class and add children.`
+    : `You are the first teacher set up for ${school}. Set up your account from the link below and you will land on your classes page, ready to make a class and add children. You can add more teachers once you are in.`;
   const html = `
     <div style="font-family:Inter,Segoe UI,Helvetica,Arial,sans-serif;color:#14161d;max-width:560px;margin:0 auto;padding:24px">
-      <p style="font-family:ui-monospace,Consolas,monospace;font-size:11px;letter-spacing:.2em;color:#0a7085;margin:0 0 16px">CYBER HEROES &middot; SCHOOLS</p>
-      <h1 style="font-size:22px;margin:0 0 12px">${args.seats} place${args.seats === 1 ? "" : "s"} ${args.seats === 1 ? "is" : "are"} ready for ${esc(args.schoolName)}.</h1>
-      <p style="font-size:15px;line-height:1.55;margin:0 0 12px">You are the first teacher set up for ${esc(args.schoolName)}. Set up your account from the link below and you will land on your classes page with a class ready to add children to. You can add more teachers once you are in.</p>
+      <p style="font-family:ui-monospace,Consolas,monospace;font-size:11px;letter-spacing:.2em;color:#0a7085;margin:0 0 16px">ALGORITHMX &middot; FOR SCHOOLS</p>
+      <h1 style="font-size:22px;margin:0 0 12px">${headline}</h1>
+      <p style="font-size:15px;line-height:1.55;margin:0 0 12px">${sub}</p>
       <p style="margin:18px 0 10px"><a href="${link}" style="display:inline-block;background:#0a7085;color:#fff;text-decoration:none;padding:11px 18px;border-radius:8px;font-weight:600">Set up my teacher account</a></p>
       <p style="font-size:13.5px;color:#5b6572;line-height:1.5;margin:0">Or copy this link: <a href="${link}" style="color:#0a7085">${link}</a></p>
-      <p style="font-size:13.5px;color:#5b6572;line-height:1.5;margin:14px 0 0">Questions go to ${esc(args.staffName)}${args.staffEmail ? ` (${esc(args.staffEmail)})` : ""}.</p>
+      <p style="font-size:13.5px;color:#5b6572;line-height:1.5;margin:14px 0 0">Any questions, write to <a href="mailto:${SCHOOLS_EMAIL}" style="color:#0a7085">${SCHOOLS_EMAIL}</a>.</p>
     </div>`;
-  const text = `${args.seats} place(s) are ready for ${args.schoolName}.\n\nSet up your teacher account: ${link}\n`;
-  return sendEmail({ to: args.to, subject: `Cyber Heroes is ready for ${args.schoolName}`, html, text, replyTo: args.staffEmail ?? undefined });
+  const text = `${onTrial ? `${args.schoolName} is set up to try, on a ${args.trialDays}-day trial.` : `${args.seats} pupil place(s) are ready for ${args.schoolName}.`}\n\nSet up your teacher account: ${link}\n\nAny questions, write to ${SCHOOLS_EMAIL}.\n`;
+  return sendEmail({ to: args.to, subject: `Your AlgorithmX account for ${args.schoolName}`, html, text, replyTo: SCHOOLS_EMAIL });
 }
