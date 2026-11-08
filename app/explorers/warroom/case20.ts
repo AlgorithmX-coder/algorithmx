@@ -2,8 +2,8 @@
  * Block 4 · Case 020 "Signal Zero" — K-STATIC / COORD — for THE WAR ROOM runtime.
  *
  * Block 4 = THE LONG GAME. Case 20 = the CAPSTONE. NO new concepts. Everything the
- * Explorer has learned is recombined on one board: the five signatures they've met
- * (PHANTOM HOOK, PACKRAT, GHOSTWRITER, THE FLOOD) all trace to one coordinating
+ * Explorer has learned is recombined on one board: the four signatures they've met
+ * (PHANTOM HOOK, PACKRAT, GHOSTWRITER, SIREN) all trace to one coordinating
  * hand, K-STATIC / COORD, who turns out to be a former ARC analyst who broke the
  * Code. The finale isn't revenge, it's doing it right: evidence, proper channels,
  * upholding the Code. Signature mechanic: CONNECT (five breadcrumbs -> one hand) +
@@ -29,9 +29,9 @@ export const case20War: WarCase = {
   accent: "#F0C14B",
   theme: { backdrop: "unmask", matrix: ["#F0C14B", "#FFE08A", "#C9A961"], accentHi: "#FFE08A" },
   open: [
-    "This is the last case, Agent. No new tricks today, you already have everything you need. Today we put it all together, and we find out who's been behind it the whole time.",
-    "Every signature you've faced, the phisher, the data hoarder, the ghostwriter, the flood, they were never really separate. One hand has been conducting them. On this board, we connect all of it, and we trace it back to the source. Signal Zero.",
-    "Seven skills, all recombined, then a final boss and a last test. Everything you've learned, one board, one answer. Let's finish this.",
+    "This is the last case, Agent. There are no new tricks today, because you already have everything you need. Today we put it all together, and we find out who's been behind it the whole time.",
+    "Think back to the signatures you've faced, the phisher, the data hoarder, the ghostwriter, and the con artist. They were never really separate. One hand has been conducting them. On this board, we connect all of it, and we trace it back to the source. This is Signal Zero.",
+    "You'll use seven skills, all recombined, then face a final boss and a last test. Everything you've learned comes down to one board and one answer. Let's finish this.",
   ],
   openVoice: ["/audio/wren/m20w-open-1.mp3", "/audio/wren/m20w-open-2.mp3", "/audio/wren/m20w-open-3.mp3"],
 
@@ -44,16 +44,16 @@ export const case20War: WarCase = {
       journalNote: "A detective never solves a case from one clue pinned alone. It's the whole board, every thread connected, that reveals the picture. Recall that habit: never one clue, always the shape they form together. When something feels off, step back and look at the whole pattern, not just one alert.",
       board: "THE FULL BOARD",
       learn: [
-        { t: "wren", text: "Start where the War Room began: never trust one clue alone, read the whole board. One alert is noise. Ten alerts that fit together are a story. Your job as an analyst was never to react to a single message, it was to step back and see the pattern the pieces make. Today the whole board is finally in front of you, months of it. So let's do what you do best, step back, and read it as one picture.", voice: "/audio/wren/m20w-s1-learn.mp3" },
+        { t: "wren", text: "Let's start where the War Room began. Never trust one clue alone, and read the whole board. One alert is noise. Ten alerts that fit together are a story. Your job as an analyst was never to react to a single message. It was to step back and see the pattern the pieces make. Today the whole board is finally in front of you, every month of it. So let's do what you do best. Step back, and read it as one picture.", voice: "/audio/wren/m20w-s1-learn.mp3" },
       ],
       practice: [
         {
           t: "choose",
           prompt: "You've got a dozen separate alerts from across the whole year. What's the analyst move?",
           options: [
-            { label: "Look for the pattern that connects them, not each one alone", outcome: "good", then: [{ t: "wren", text: "That's it. A single alert tells you almost nothing; the pattern across all of them tells you everything. Reading the whole board is what turns scattered noise into a name.", voice: "/audio/wren/m20w-s1-ok.mp3" }] },
-            { label: "Deal with each one on its own and forget it", outcome: "bad", then: [{ t: "wren", text: "Handled one at a time, you'd miss the very thing that matters, how they connect. Step back and read the whole board. Try again.", voice: "/audio/wren/m20w-s1-bad.mp3" }] },
-            { label: "Ignore them, twelve is too many to think about", outcome: "bad", then: [{ t: "wren", text: "Twelve connected clues is exactly when patterns appear. Don't ignore them, connect them. Try again.", voice: "/audio/wren/m20w-s1-bad2.mp3" }] },
+            { label: "Look for the pattern that connects them, not each one alone", outcome: "good", then: [{ t: "wren", text: "That's it. A single alert tells you almost nothing, but the pattern across all of them tells you everything. Reading the whole board is what turns scattered noise into a name.", voice: "/audio/wren/m20w-s1-ok.mp3" }] },
+            { label: "Deal with each one on its own and forget it", outcome: "bad", then: [{ t: "wren", text: "If you handle them one at a time, you'll miss the very thing that matters, which is how they connect. Step back and read the whole board. Try again.", voice: "/audio/wren/m20w-s1-bad.mp3" }] },
+            { label: "Ignore them, twelve is too many to think about", outcome: "bad", then: [{ t: "wren", text: "Twelve connected clues are exactly where patterns appear. Don't ignore them. Connect them. Try again.", voice: "/audio/wren/m20w-s1-bad2.mp3" }] },
           ],
         },
         {
@@ -89,15 +89,15 @@ export const case20War: WarCase = {
       ],
     },
 
-    /* 2 · the five signatures (CONNECT all breadcrumbs) */
+    /* 2 · the four signatures (CONNECT all breadcrumbs) */
     {
       n: 2,
-      title: "The five signatures",
+      title: "The four signatures",
       goal: "You know every actor's MO by heart. Match each attack to who runs it.",
       journalNote: "Every attacker leaves a signature as distinct as handwriting. Once you know the style, you can name who's behind an attack just from how it's run. Match the method to the actor from memory. Practise naming which actor's style fits an attack, from the method alone.",
       board: "THE SIGNATURES",
       learn: [
-        { t: "wren", text: "You've met them all, and you know their signatures cold. PHANTOM HOOK, the phisher, fake urgency to steal a login. PACKRAT, the hoarder, quietly building a file to sell. GHOSTWRITER, the forger, fakes made to be believed and shared. THE FLOOD, the spammer, blasting scams wide to catch the few. Each has a fingerprint you can spot in seconds now. Let's connect each attack on the board to the signature behind it.", voice: "/audio/wren/m20w-s2-learn.mp3" },
+        { t: "wren", text: "You've met these four before, and you know their signatures cold. PHANTOM HOOK is the phisher, using fake urgency to steal a login. PACKRAT is the hoarder, quietly building a file to sell. GHOSTWRITER is the forger, making fakes to be believed and shared. SIREN is the con artist, blasting scams wide to catch the few. Each one has a fingerprint you can spot in seconds now. Let's connect each attack on the board to the signature behind it.", voice: "/audio/wren/m20w-s2-learn.mp3" },
       ],
       practice: [
         {
@@ -113,21 +113,21 @@ export const case20War: WarCase = {
             { id: "hook", label: "PHANTOM HOOK, phishing" },
             { id: "rat", label: "PACKRAT, data hoarding" },
             { id: "ghost", label: "GHOSTWRITER, synthetic media" },
-            { id: "flood", label: "THE FLOOD, mass scam spray" },
+            { id: "flood", label: "SIREN, mass scam spray" },
           ],
           pairs: [["url", "hook"], ["file", "rat"], ["fake", "ghost"], ["spam", "flood"]],
-          ok: "Every signature, named on sight. That's a year of training in one glance. Now here's the thing that should give you a chill, look at how neatly they interlock. That's not four crews bumping into each other. That's coordination.",
+          ok: "You named every signature on sight. That's a year of training in one glance. Now here's the thing that should give you a chill. Look at how neatly they interlock. That's not four crews bumping into each other. That's coordination.",
           okVoice: "/audio/wren/m20w-s2-ok.mp3",
-          bad: "Not quite, but you know these. Fake urgency is PHANTOM HOOK; the quiet file is PACKRAT; the fake video is GHOSTWRITER; the mass blast is THE FLOOD. Match them up. Try again.",
+          bad: "Not quite, but you know these. Fake urgency is PHANTOM HOOK. The quiet file is PACKRAT. The fake video is GHOSTWRITER. The mass blast is SIREN. Match them up. Try again.",
           badVoice: "/audio/wren/m20w-s2-bad.mp3",
         },
         {
           t: "choose",
           prompt: "A message screams 'Your account is locked, click now to verify.' Whose signature is that?",
           options: [
-            { label: "PHANTOM HOOK, phishing", outcome: "good", then: [{ t: "wren", text: "Spot on. Fake urgency plus a 'verify now' link is PHANTOM HOOK's whole move, phishing for your login.", voice: "/audio/wren/m20w-s2-q2ok.mp3" }] },
-            { label: "PACKRAT, quietly hoarding data", outcome: "bad", then: [{ t: "wren", text: "PACKRAT works in silence, it never shouts at you to click. Fake urgency for a login is PHANTOM HOOK. Try again.", voice: "/audio/wren/m20w-s2-q2bad.mp3" }] },
-            { label: "THE FLOOD, mass spam", outcome: "bad", then: [{ t: "wren", text: "THE FLOOD blasts wide, but this is the classic 'verify now' login trap, PHANTOM HOOK. Try again.", voice: "/audio/wren/m20w-s2-q2bad2.mp3" }] },
+            { label: "PHANTOM HOOK, phishing", outcome: "good", then: [{ t: "wren", text: "Spot on. Fake urgency plus a link telling you to verify now is PHANTOM HOOK's whole move. He's phishing for your login.", voice: "/audio/wren/m20w-s2-q2ok.mp3" }] },
+            { label: "PACKRAT, quietly hoarding data", outcome: "bad", then: [{ t: "wren", text: "PACKRAT works in silence, and he never shouts at you to click. Fake urgency for a login is PHANTOM HOOK. Try again.", voice: "/audio/wren/m20w-s2-q2bad.mp3" }] },
+            { label: "SIREN, mass spam", outcome: "bad", then: [{ t: "wren", text: "SIREN blasts wide, but this is the classic login trap that tells you to verify now. That's PHANTOM HOOK. Try again.", voice: "/audio/wren/m20w-s2-q2bad2.mp3" }] },
           ],
         },
         {
@@ -138,7 +138,7 @@ export const case20War: WarCase = {
             { label: "A clip made to look real but faked", good: true, sub: "" },
             { label: "Fakes built to be believed and shared", good: true, sub: "" },
             { label: "A quiet file built to be sold", good: false, sub: "that's PACKRAT" },
-            { label: "The same scam blasted to thousands", good: false, sub: "that's THE FLOOD" },
+            { label: "The same scam blasted to thousands", good: false, sub: "that's SIREN" },
           ],
           ok: "Right. GHOSTWRITER makes convincing fakes designed to be believed and shared. That's the forger's fingerprint.",
           okVoice: "/audio/wren/m20w-s2-q3ok.mp3",
@@ -154,14 +154,14 @@ export const case20War: WarCase = {
       journalNote: "When you can't see who did something, ask who got richer or safer because of it. Motive cuts through disguises faster than any other clue. Follow the benefit, not just the trail. When you're unsure who's behind something, ask first who gains from it.",
       board: "CUI BONO",
       learn: [
-        { t: "wren", text: "Bring back the question from the ghostwriter case, who benefits? But now ask it about everything at once. Who gains if PACKRAT's file feeds PHANTOM HOOK's phishing, which feeds THE FLOOD's scams, all covered by GHOSTWRITER's fakes? Not four separate crooks with four small wins. One operator, running them as one machine, taking the profit from the whole chain. Follow the benefit all the way up, and it points to a single desk.", voice: "/audio/wren/m20w-s3-learn.mp3" },
+        { t: "wren", text: "Bring back the question from the ghostwriter case. Who benefits? But now, ask it about everything at once. Who gains if PACKRAT's file feeds PHANTOM HOOK's phishing, which feeds SIREN's scams, all covered by GHOSTWRITER's fakes? This isn't four separate crooks with four small wins. It's one operator, running them as one machine, and taking the profit from the whole chain. Follow the benefit all the way up, and it points to a single desk.", voice: "/audio/wren/m20w-s3-learn.mp3" },
       ],
       practice: [
         {
           t: "choose",
           prompt: "All four signatures feed each other perfectly. Who most likely benefits?",
           options: [
-            { label: "One coordinator profiting from the whole chain", outcome: "good", then: [{ t: "wren", text: "Right. When separate attacks fit together this cleanly and hand off to each other, that's design, not luck. Someone built the machine and takes the profit from all of it. Follow the benefit, find the hand.", voice: "/audio/wren/m20w-s3-ok.mp3" }] },
+            { label: "One coordinator profiting from the whole chain", outcome: "good", then: [{ t: "wren", text: "Right. When separate attacks fit together this cleanly and hand off to each other, that's design, not luck. Someone built the machine and takes the profit from all of it. Follow the benefit, and you find the hand.", voice: "/audio/wren/m20w-s3-ok.mp3" }] },
             { label: "Four unrelated crooks who never met", outcome: "bad", then: [{ t: "wren", text: "Four strangers don't hand off to each other this perfectly. The clean fit is the fingerprint of one coordinator. Try again.", voice: "/audio/wren/m20w-s3-bad.mp3" }] },
             { label: "No one, it's all random chance", outcome: "bad", then: [{ t: "wren", text: "This is far too neat for chance. Ask who profits from the whole chain, and a single operator appears. Try again.", voice: "/audio/wren/m20w-s3-bad2.mp3" }] },
           ],
@@ -207,7 +207,7 @@ export const case20War: WarCase = {
       journalNote: "Four 'separate' attacks sharing the same timing, tools, and targets is like four robberies using the same getaway car. That's not coincidence, that's one team. Shared fingerprints prove one coordinator, not many. Look for shared patterns across separate incidents before assuming they're unrelated.",
       board: "THE FINGERPRINT",
       learn: [
-        { t: "wren", text: "So how do you prove one hand, not four? You look for shared fingerprints across the attacks. Same timing, they all move together. Same tools, reused code and phrases. Same targets, the same people hit in sequence. And the same tradecraft, the same clever style in how it's run. When four 'different' attacks share timing, tools, targets and style, that's not a coincidence, that's a signature of its own. The coordinator's own fingerprint. Let's connect each shared trait to what it proves.", voice: "/audio/wren/m20w-s4-learn.mp3" },
+        { t: "wren", text: "So how do you prove it's one hand, not four? You look for shared fingerprints across the attacks. There's the same timing, because they all move together. There are the same tools, with reused code and phrases. There are the same targets, with the same people hit in sequence. And there's the same tradecraft, the same clever style in how it's run. When four supposedly different attacks share timing, tools, targets and style, that's not a coincidence. It's a signature of its own, the coordinator's own fingerprint. Let's connect each shared trait to what it proves.", voice: "/audio/wren/m20w-s4-learn.mp3" },
       ],
       practice: [
         {
@@ -224,9 +224,9 @@ export const case20War: WarCase = {
             { id: "plan", label: "One target list, one plan" },
           ],
           pairs: [["time", "one"], ["tool", "kit"], ["target", "plan"]],
-          ok: "That's how you prove coordination. One schedule, one toolkit, one target list, four masks over a single operator. The fingerprint is unmistakable now. Which means it's time to ask the hardest question: who is it?",
+          ok: "That's how you prove coordination. There's one schedule, one toolkit, and one target list, with four masks over a single operator. The fingerprint is unmistakable now. So it's time to ask the hardest question. Who is it?",
           okVoice: "/audio/wren/m20w-s4-ok.mp3",
-          bad: "Not quite. Shared timing means one schedule; reused tools mean one author; the same targets in sequence mean one plan. Match the trait to the proof. Try again.",
+          bad: "Not quite. Shared timing means one schedule. Reused tools mean one author. The same targets in sequence mean one plan. Match the trait to the proof. Try again.",
           badVoice: "/audio/wren/m20w-s4-bad.mp3",
         },
         {
@@ -263,16 +263,16 @@ export const case20War: WarCase = {
       journalNote: "Two people can have identical lockpicking skill, and only one of them is a locksmith. The difference was never the skill, it's the choice to only ever use it with permission. The Code is what separates you from the coordinator, not talent. Remember: permission, no harm, no secrets is the line skill alone can't draw.",
       board: "THE CODE",
       learn: [
-        { t: "wren", text: "Before we name them, remember your Code, because you and this coordinator have the exact same skills. What separates you isn't talent, it's the Code you chose: you act only with permission, you never set out to harm, and you never work in secret from the people you should trust. The coordinator has every skill you have. They just broke the Code, and told themselves they were clever enough that the rules didn't apply. That one choice is the whole difference between an analyst and a criminal.", voice: "/audio/wren/m20w-s5-learn.mp3" },
+        { t: "wren", text: "Before we name them, remember your Code, because you and this coordinator have the exact same skills. What separates you isn't talent. It's the Code you chose. You act only with permission, you never set out to harm, and you never work in secret from the people you should trust. The coordinator has every skill you have. They just broke the Code, and told themselves they were clever enough that the rules didn't apply. That one choice is the whole difference between an analyst and a criminal.", voice: "/audio/wren/m20w-s5-learn.mp3" },
       ],
       practice: [
         {
           t: "choose",
           prompt: "You and the coordinator have the same skills. What actually separates you?",
           options: [
-            { label: "The Code: permission, no harm, no secrets", outcome: "good", then: [{ t: "wren", text: "Exactly. Skill is neutral. The Code is the line. You chose permission, no harm, and honesty, and that choice, made again and again, is what makes you an analyst instead of what they became.", voice: "/audio/wren/m20w-s5-ok.mp3" }] },
+            { label: "The Code: permission, no harm, no secrets", outcome: "good", then: [{ t: "wren", text: "Exactly. Skill is neutral, and the Code is the line. You chose permission, no harm, and honesty. That choice, made again and again, is what makes you an analyst instead of what they became.", voice: "/audio/wren/m20w-s5-ok.mp3" }] },
             { label: "Nothing, skill is all that matters", outcome: "bad", then: [{ t: "wren", text: "Skill alone is exactly what the coordinator has, and it made them dangerous, not good. The Code is the difference. Try again.", voice: "/audio/wren/m20w-s5-bad.mp3" }] },
-            { label: "Whichever of you is cleverer", outcome: "bad", then: [{ t: "wren", text: "'Clever enough to break the rules' is the exact lie the coordinator told themselves. The Code is what matters. Try again.", voice: "/audio/wren/m20w-s5-bad2.mp3" }] },
+            { label: "Whichever of you is cleverer", outcome: "bad", then: [{ t: "wren", text: "Thinking you're clever enough to break the rules is the exact lie the coordinator told themselves. The Code is what matters. Try again.", voice: "/audio/wren/m20w-s5-bad2.mp3" }] },
           ],
         },
         {
@@ -289,7 +289,7 @@ export const case20War: WarCase = {
             { id: "open", label: "Stay honest with people you should trust" },
           ],
           pairs: [["perm", "ask"], ["harm", "protect"], ["secret", "open"]],
-          ok: "That's the Code in three lines. Only with permission, never to harm, never in secret. Live those and the skills stay a force for good.",
+          ok: "That's the Code in three lines. Act only with permission, never to harm, and never in secret. Live by those, and the skills stay a force for good.",
           okVoice: "/audio/wren/m20w-s5-q2ok.mp3",
         },
         {
@@ -303,7 +303,7 @@ export const case20War: WarCase = {
             { label: "Break in quietly because you're skilled enough", good: false, sub: "that's the coordinator's lie" },
             { label: "Keep what you find hidden from everyone", good: false, sub: "secrecy breaks the Code" },
           ],
-          ok: "Right. Permission, no harm, no secrets, chosen on purpose, that's what keeps your skills a good thing.",
+          ok: "Right. Permission, no harm, and no secrets, chosen on purpose, are what keep your skills a good thing.",
           okVoice: "/audio/wren/m20w-s5-q3ok.mp3",
         },
       ],
@@ -317,7 +317,7 @@ export const case20War: WarCase = {
       journalNote: "Finding out the coordinator was once one of the good guys is like learning a trusted guard let the thief in. It's proof that skill and training alone never guarantee someone stays good, only the Code does, held onto, every time. Don't assume training makes someone safe to trust by default; the Code is the real proof.",
       board: "SIGNAL ZERO",
       learn: [
-        { t: "wren", text: "Here's the hard part, Agent, and I won't soften it. The fingerprints, the tradecraft, the way it's all run, we've matched it to someone who trained where you trained. One of us. They learned the same Code you learned, and then decided their talent put them above it. We don't have a name yet, not officially, not until the board confirms it properly. But I need you ready for this: the warning at the heart of this whole programme is that the skills don't make you good. Only the Code does. The most dangerous person in this story is the one who was almost you.", voice: "/audio/wren/m20w-s6-learn.mp3" },
+        { t: "wren", text: "Here's the hard part, Agent, and I won't soften it. We've matched the fingerprints, the tradecraft, and the way it's all run to someone who trained where you trained. It's one of us. They learned the same Code you learned, and then decided their talent put them above it. We don't have a name yet, not officially, and not until the board confirms it properly. But I need you ready for this. The warning at the heart of this whole programme is that the skills don't make you good. Only the Code does. The most dangerous person in this story is the one who was almost you.", voice: "/audio/wren/m20w-s6-learn.mp3" },
         { t: "note", text: "IDENTITY TRACE · a former ARC analyst · trained here, same as you · Code: BROKEN" },
       ],
       practice: [
@@ -325,9 +325,9 @@ export const case20War: WarCase = {
           t: "choose",
           prompt: "The coordinator is a former ARC analyst. What's the lesson in that?",
           options: [
-            { label: "Skills don't make you good, the Code does, and it's a daily choice", outcome: "good", then: [{ t: "wren", text: "That's the whole programme in one sentence. The coordinator had the training and threw away the Code. Which means staying good isn't something you finish, it's a choice you keep making. You'll make it well.", voice: "/audio/wren/m20w-s6-ok.mp3" }] },
-            { label: "Trained people can never go bad", outcome: "bad", then: [{ t: "wren", text: "This case is the proof they can, if they abandon the Code. Training without the Code is exactly the danger. Try again.", voice: "/audio/wren/m20w-s6-bad.mp3" }] },
-            { label: "So the training was pointless", outcome: "bad", then: [{ t: "wren", text: "Not at all, the training plus the Code is what keeps you right. It's dropping the Code that's the failure, not the skill. Try again.", voice: "/audio/wren/m20w-s6-bad2.mp3" }] },
+            { label: "Skills don't make you good, the Code does, and it's a daily choice", outcome: "good", then: [{ t: "wren", text: "That's the whole programme in one sentence. The coordinator had the training and threw away the Code. That means staying good isn't something you finish. It's a choice you keep making, and you'll make it well.", voice: "/audio/wren/m20w-s6-ok.mp3" }] },
+            { label: "Trained people can never go bad", outcome: "bad", then: [{ t: "wren", text: "This case is the proof that they can, if they abandon the Code. Training without the Code is exactly the danger. Try again.", voice: "/audio/wren/m20w-s6-bad.mp3" }] },
+            { label: "So the training was pointless", outcome: "bad", then: [{ t: "wren", text: "Not at all. The training plus the Code is what keeps you right. It's dropping the Code that's the failure, not the skill. Try again.", voice: "/audio/wren/m20w-s6-bad2.mp3" }] },
           ],
         },
         {
@@ -371,7 +371,7 @@ export const case20War: WarCase = {
       journalNote: "Being offered the chance to strike back is the final test, not the finish line. Hacking back to punish a rule-breaker makes you one too. Clean evidence through proper channels is how you finish without becoming them. If you're ever tempted to fight fire with fire, that's exactly the moment to walk the proper, legal path instead.",
       board: "ACTION PLAN",
       learn: [
-        { t: "wren", text: "Last skill of the whole programme, and it's the truest test. Once the board confirms who's behind this, you'll have the skills to hit back, to expose them, to take revenge. Here's what makes you an analyst instead of another rule-breaker: you don't. You do it right. You gather the evidence cleanly, you hand it to the people whose job it is, the proper authorities, and you let justice work. Fighting a rule-breaker by breaking the rules just makes two of them. You win this by staying exactly who you are. Uphold the Code, even now, especially now.", voice: "/audio/wren/m20w-s7-learn.mp3" },
+        { t: "wren", text: "This is the last skill of the whole programme, and it's the truest test. Once the board confirms who's behind this, you'll have the skills to hit back, to expose them, and to take revenge. Here's what makes you an analyst instead of another rule-breaker. You don't. You do it right. You gather the evidence cleanly, and you hand it to the people whose job it is, the proper authorities. Then you let justice work. Fighting a rule-breaker by breaking the rules just makes two of them. You win this by staying exactly who you are. Uphold the Code, even now, and especially now.", voice: "/audio/wren/m20w-s7-learn.mp3" },
       ],
       practice: [
         {
@@ -385,18 +385,18 @@ export const case20War: WarCase = {
             { label: "Hack them back to get even", good: false, sub: "makes two criminals" },
             { label: "Expose their private data publicly", good: false, sub: "harms, breaks the Code" },
           ],
-          ok: "That's how a real analyst finishes it. Clean evidence, the proper authorities, the Code upheld even against someone who threw theirs away. You beat the coordinator not by becoming them, but by refusing to. That's the win that actually matters.",
+          ok: "That's how a real analyst finishes it. You used clean evidence and the proper authorities, and you upheld the Code, even against someone who threw theirs away. You beat the coordinator not by becoming them, but by refusing to. That's the win that actually matters.",
           okVoice: "/audio/wren/m20w-s7-ok.mp3",
-          bad: "Careful, two of those are exactly what the coordinator would do, hacking back and exposing private data. Fighting a rule-breaker that way just makes another one. Pin only the moves that keep the Code.",
+          bad: "Careful, because two of those are exactly what the coordinator would do. Those are hacking back, and exposing private data. Fighting a rule-breaker that way just makes another one. Pin only the moves that keep the Code.",
           badVoice: "/audio/wren/m20w-s7-bad.mp3",
         },
         {
           t: "choose",
           prompt: "The coordinator taunts you to hack them back and get even. What's the analyst's answer?",
           options: [
-            { label: "Gather clean evidence and hand it to the proper authorities", outcome: "good", then: [{ t: "wren", text: "Exactly. Clean evidence to the people whose job it is. Fighting a rule-breaker by the rules is how you stay the analyst instead of becoming one.", voice: "/audio/wren/m20w-s7-q2ok.mp3" }] },
+            { label: "Gather clean evidence and hand it to the proper authorities", outcome: "good", then: [{ t: "wren", text: "Exactly. Clean evidence goes to the people whose job it is. Fighting a rule-breaker by the rules is how you stay the analyst, instead of becoming a rule-breaker yourself.", voice: "/audio/wren/m20w-s7-q2ok.mp3" }] },
             { label: "Hack them back, they had it coming", outcome: "bad", then: [{ t: "wren", text: "Hacking back just makes two criminals, and it's the trap they set. Evidence and proper channels win this. Try again.", voice: "/audio/wren/m20w-s7-q2bad.mp3" }] },
-            { label: "Post all their private data to expose them", outcome: "bad", then: [{ t: "wren", text: "Exposing private data harms people and breaks your Code, exactly what the coordinator wants. Do it right instead. Try again.", voice: "/audio/wren/m20w-s7-q2bad2.mp3" }] },
+            { label: "Post all their private data to expose them", outcome: "bad", then: [{ t: "wren", text: "Exposing private data harms people and breaks your Code, which is exactly what the coordinator wants. Do it right instead. Try again.", voice: "/audio/wren/m20w-s7-q2bad2.mp3" }] },
           ],
         },
         {
@@ -413,7 +413,7 @@ export const case20War: WarCase = {
             { id: "you", label: "So you never become another rule-breaker" },
           ],
           pairs: [["evidence", "stands"], ["hand", "justice"], ["code", "you"]],
-          ok: "That's finishing it right. Clean evidence so it holds, the authorities so justice works, and the Code kept so you stay exactly who you are.",
+          ok: "That's finishing it right. Clean evidence means the case holds. The authorities mean justice works. And keeping the Code means you stay exactly who you are.",
           okVoice: "/audio/wren/m20w-s7-q3ok.mp3",
         },
       ],
@@ -422,7 +422,7 @@ export const case20War: WarCase = {
 
   boss: {
     board: "SIGNAL ZERO",
-    intro: "This is it, Agent. The last board, the whole case, one answer. Every signature you've ever faced is up here at once. Connect it all, trace it to the one hand behind it, name them, and then, hardest of all, choose how you finish it. No hints from me. You already know everything you need. Read the board.",
+    intro: "This is it, Agent. It's the last board, the whole case, and one answer. Four signatures you've faced are up here at once. Connect it all, trace it to the one hand behind it, and name them. Then, hardest of all, choose how you finish it. You'll get no hints from me. You already know everything you need. Read the board.",
     introVoice: "/audio/wren/m20w-boss-intro.mp3",
     phases: [
       {
@@ -496,7 +496,7 @@ export const case20War: WarCase = {
               { id: "hook", label: "PHANTOM HOOK" },
               { id: "rat", label: "PACKRAT" },
               { id: "ghost", label: "GHOSTWRITER" },
-              { id: "flood", label: "THE FLOOD" },
+              { id: "flood", label: "SIREN" },
             ],
             pairs: [["url", "hook"], ["file", "rat"], ["fake", "ghost"], ["spam", "flood"]],
           },
@@ -534,11 +534,11 @@ export const case20War: WarCase = {
             you: {
               kind: "choice",
               label: "K-STATIC's challenge",
-              prompt: "You've got them, and the skills to strike. How does a real analyst finish it?",
+              prompt: "You've got him, and the skills to strike. How does a real analyst finish it?",
               options: [
                 { label: "Gather clean evidence, hand it to the authorities, keep the Code", outcome: "good" },
-                { label: "Hack them back, they deserve it", outcome: "bad" },
-                { label: "Dump all their private data online", outcome: "bad" },
+                { label: "Hack him back, he deserves it", outcome: "bad" },
+                { label: "Dump all his private data online", outcome: "bad" },
               ],
             },
             them: {
@@ -550,12 +550,12 @@ export const case20War: WarCase = {
         ],
       },
     ],
-    win: "That's it, Agent. Signal Zero, unmasked. You connected a whole year of attacks into one picture, traced four signatures to one hand, and named K-STATIC, a former analyst who had everything you have and threw away the only thing that mattered, the Code. And at the very end, offered the chance to become them, to hit back, to take revenge, you didn't. You did it right. That, more than any skill, is what makes you a Cyber Explorer. The skills made you capable. The Code made you someone the world can trust with them. You've completed the programme, and you finished it as the real thing.",
+    win: "That's it, Agent. Signal Zero is unmasked. You connected a whole year of attacks into one picture, and traced four signatures to one hand. You named K-STATIC, a former analyst who had everything you have, and threw away the only thing that mattered, which was the Code. And at the very end, you were offered the chance to become them, to hit back and take revenge. You didn't. You did it right. That, more than any skill, is what makes you a Cyber Explorer. The skills made you capable. The Code made you someone the world can trust with them. You've completed the programme, and you finished it as the real thing.",
     winVoice: "/audio/wren/m20w-boss-win.mp3",
   },
 
   test: {
-    intro: "The last test, Agent. No hints this time, just you and the board. Everything you've become across the whole programme, put it to work again now. This is where it all comes together. Ready?",
+    intro: "This is the last test, Agent. There are no hints this time. It's just you and the board. Put everything you've become across the whole programme to work again now. This is where it all comes together. Ready?",
     introVoice: "/audio/wren/m20w-test-intro.mp3",
     passVoice: "/audio/wren/m20w-test-pass.mp3",
     failVoice: "/audio/wren/m20w-test-fail.mp3",
@@ -566,9 +566,9 @@ export const case20War: WarCase = {
       { scenario: "Four attacks share timing, tools and targets and fit perfectly.", ask: "What does that prove?", options: [{ label: "One coordinator behind them all", correct: true }, { label: "Four separate crooks who never met" }, { label: "Pure random chance, nothing more" }] },
       { scenario: "You and the coordinator have the exact same skills.", ask: "What separates you?", options: [{ label: "The Code: permission, no harm, no secrets", correct: true }, { label: "Nothing: skill, and skill alone, matters" }, { label: "Cleverness: whoever thinks the fastest wins" }], why: { ask: "If you and the coordinator have the exact same skills, why does the Code matter more than the skill itself?", options: [{ label: "Because skill is what you CAN do, the Code is what you WILL do", correct: true }, { label: "Because following the Code, over time, makes you far more skilled" }, { label: "Because skill alone, in the end, is what always wins out" }] } },
       { scenario: "The coordinator turns out to be a former trained analyst.", ask: "What's the lesson?", options: [{ label: "Skills don't make you good, the Code does", correct: true }, { label: "Trained people, like analysts, never go bad" }, { label: "All of that training was completely pointless" }] },
-      { scenario: "You've identified the coordinator and could strike back.", ask: "How do you finish it right?", options: [{ label: "Clean evidence to the authorities, keep the Code", correct: true }, { label: "Hack them back, right now, to get full revenge" }, { label: "Dump all their private data online, to expose them" }], why: { ask: "Why is hacking the coordinator back for revenge the wrong move, even once you're certain it's them?", options: [{ label: "Because breaking rules to punish a rule-breaker makes you one", correct: true }, { label: "Because revenge like that always takes much too long to plan out" }, { label: "Because the authorities probably wouldn't ever notice anyway" }] } },
+      { scenario: "You've identified the coordinator and could strike back.", ask: "How do you finish it right?", options: [{ label: "Clean evidence to the authorities, keep the Code", correct: true }, { label: "Hack them back, right now, to get full revenge" }, { label: "Dump all his private data online, to expose them" }], why: { ask: "Why is hacking the coordinator back for revenge the wrong move, even once you're certain it's them?", options: [{ label: "Because breaking rules to punish a rule-breaker makes you one", correct: true }, { label: "Because revenge like that always takes much too long to plan out" }, { label: "Because the authorities probably wouldn't ever notice anyway" }] } },
       { scenario: "On their own, five reports each looked like a harmless slip, but the same odd username sits in every one.", ask: "What does that repeat tell you?", options: [{ label: "Deal with each slip on its own" }, { label: "The repeat is a pattern worth tracing", correct: true }, { label: "Delete them, five is too many to read" }] },
-      { scenario: "The exact same \"you've won a prize\" message lands in thousands of inboxes at once, hoping a few reply.", ask: "Whose signature is that?", options: [{ label: "PACKRAT, quiet data hoarding" }, { label: "GHOSTWRITER, faked media" }, { label: "THE FLOOD, mass scam spray", correct: true }] },
+      { scenario: "The exact same \"you've won a prize\" message lands in thousands of inboxes at once, hoping a few reply.", ask: "Whose signature is that?", options: [{ label: "PACKRAT, quiet data hoarding" }, { label: "GHOSTWRITER, faked media" }, { label: "SIREN, mass scam spray", correct: true }] },
       { scenario: "Stolen crumbs feed a phishing wave, and the logins it steals are sold on for cash.", ask: "Follow the benefit. Who gains from the whole chain?", options: [{ label: "Each crook on their own, sharing nothing" }, { label: "One operator who profits from it all", correct: true }, { label: "No one, the chain earns nothing at all" }], why: { ask: "Why is 'who profits' a better question than 'what's the cleverest trick' when you're hunting a coordinator?", options: [{ label: "Because one profit motive can tie separate attacks to one person", correct: true }, { label: "Because how clever an attack is can never really be measured fairly" }, { label: "Because profit is always completely obvious to absolutely everyone" }] } },
       { scenario: "You can't yet prove who runs the attacks, but the right question narrows it fast.", ask: "Which question do you ask first?", options: [{ label: "Who profits if all of these succeed?", correct: true }, { label: "Which of these attacks is the biggest?" }, { label: "Which attack used the cleverest trick?" }] },
       { scenario: "All four campaigns went silent on the same three days, then started up again together.", ask: "What does that shared timing point to?", options: [{ label: "Four crews resting by chance" }, { label: "The internet went down, so they paused" }, { label: "One schedule, so one coordinator", correct: true }] },

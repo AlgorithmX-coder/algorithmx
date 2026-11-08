@@ -19,9 +19,9 @@ export const case17War: WarCase = {
   accent: "#5FD3F3",
   theme: { backdrop: "deepfake", matrix: ["#5FD3F3", "#B4ECFF", "#2FA3D6"], accentHi: "#B4ECFF" },
   open: [
-    "Back at the board, Agent. New signature on the wire: GHOSTWRITER. This one doesn't steal your password, it steals your belief. It makes things that never happened look completely real.",
-    "Fake photos, cloned voices, invented quotes, whole stories built from nothing, and cheap to make now. The goal is to get you to believe it, feel something, and pass it on before you think.",
-    "Seven skills to tell real from fake without being fooled or paranoid, then a boss and a test. Let's learn to check before we believe.",
+    "We're back at the board, Agent. There's a familiar signature on the wire, and it's GHOSTWRITER. This one doesn't steal your password. He steals your belief. He makes things that never happened look completely real.",
+    "He makes fake photos, cloned voices, invented quotes, and whole stories built from nothing, and they're cheap to make now. The goal is to get you to believe it, feel something, and pass it on before you think.",
+    "You'll learn seven skills to tell real from fake without being fooled or paranoid, then face a boss and a test. Let's learn to check before we believe.",
   ],
   openVoice: ["/audio/wren/m17w-open-1.mp3", "/audio/wren/m17w-open-2.mp3", "/audio/wren/m17w-open-3.mp3"],
 
@@ -34,16 +34,16 @@ export const case17War: WarCase = {
       journalNote: "A faked photo used to take real skill; now it's like a filter anyone can tap: cheap, fast, and convincing. If something looks real, that no longer proves it is. Assume anything shocking could be faked until you've checked.",
       board: "THE FORGERY DESK",
       learn: [
-        { t: "wren", text: "Start with the uncomfortable truth. Today a computer can fake almost anything: a photo of a place you've never been, a video of someone saying words they never said, a voice that sounds exactly like a friend, a whole news story with no truth in it. It's cheap, it's fast, and it's getting better. So 'I saw it with my own eyes' isn't proof any more. Seeing is no longer believing.", voice: "/audio/wren/m17w-s1-learn.mp3" },
+        { t: "wren", text: "Start with the uncomfortable truth. Today, a computer can fake almost anything. It can make a photo of a place you've never been, or a video of someone saying words they never said. It can make a voice that sounds exactly like a friend, or a whole news story with no truth in it. It's cheap, it's fast, and it's getting better. So seeing something with your own eyes isn't proof any more. Seeing is no longer believing.", voice: "/audio/wren/m17w-s1-learn.mp3" },
       ],
       practice: [
         {
           t: "choose",
           prompt: "You see a shocking video of a celebrity saying something wild. What should you assume?",
           options: [
-            { label: "It could be fake, video can be made now, so I'll check", outcome: "good", then: [{ t: "wren", text: "Exactly the right reflex. Not 'everything is fake', just 'this could be, so I'll verify before I believe or share'. A calm check beats both blind trust and blind panic.", voice: "/audio/wren/m17w-s1-ok.mp3" }] },
-            { label: "Video can't be faked, so it must be true", outcome: "bad", then: [{ t: "wren", text: "Video absolutely can be faked now, convincingly. Seeing isn't proof any more. Try again.", voice: "/audio/wren/m17w-s1-bad.mp3" }] },
-            { label: "Share it fast so everyone sees", outcome: "bad", then: [{ t: "wren", text: "That's exactly what GHOSTWRITER wants, you spreading it before you check. Slow down first. Try again.", voice: "/audio/wren/m17w-s1-bad2.mp3" }] },
+            { label: "It could be fake, video can be made now, so I'll check", outcome: "good", then: [{ t: "wren", text: "That's exactly the right reflex. You don't decide that everything is fake. You just decide that this could be fake, so you verify it before you believe or share it. A calm check beats both blind trust and blind panic.", voice: "/audio/wren/m17w-s1-ok.mp3" }] },
+            { label: "Video can't be faked, so it must be true", outcome: "bad", then: [{ t: "wren", text: "Video can absolutely be faked now, and convincingly. Seeing isn't proof any more. Try again.", voice: "/audio/wren/m17w-s1-bad.mp3" }] },
+            { label: "Share it fast so everyone sees", outcome: "bad", then: [{ t: "wren", text: "That's exactly what GHOSTWRITER wants. He wants you to spread it before you check. Slow down first. Try again.", voice: "/audio/wren/m17w-s1-bad2.mp3" }] },
           ],
         },
         {
@@ -74,7 +74,7 @@ export const case17War: WarCase = {
             { id: "event", label: "Describes an event that never happened" },
           ],
           pairs: [["photo", "place"], ["voice", "call"], ["story", "event"]],
-          ok: "Exactly. Image, sound or text, all cheap to fake now, so seeing and hearing aren't proof on their own.",
+          ok: "Exactly. Images, sound and text are all cheap to fake now, so seeing and hearing aren't proof on their own.",
           okVoice: "/audio/wren/m17w-s1-q3ok.mp3",
         },
       ],
@@ -88,7 +88,7 @@ export const case17War: WarCase = {
       journalNote: "Hunting for glitchy hands in a fake is like checking a counterfeit note's watermark by eye alone. It used to work, but fakes got too good too fast. You need a method that doesn't rely on spotting mistakes. Stop hunting for tells, start verifying the source instead.",
       board: "WHAT ACTUALLY WORKS",
       learn: [
-        { t: "wren", text: "People love the 'spot the glitch' game, count the fingers, look for a blurry ear. Here's the problem: the fakes keep getting better, so those little tells vanish. If your whole plan is spotting glitches, you'll be fooled the day the glitch is gone. The reliable checks aren't about the image itself, they're about the source and the story around it. Let's pin the ones that keep working.", voice: "/audio/wren/m17w-s2-learn.mp3" },
+        { t: "wren", text: "People love playing spot the glitch, like counting the fingers or looking for a blurry ear. Here's the problem. The fakes keep getting better, so those little tells vanish. If your whole plan is spotting glitches, you'll be fooled the day the glitch is gone. The reliable checks aren't about the image itself. They're about the source and the story around it. Let's pin the ones that keep working.", voice: "/audio/wren/m17w-s2-learn.mp3" },
       ],
       practice: [
         {
@@ -102,7 +102,7 @@ export const case17War: WarCase = {
             { label: "Count the fingers in the picture", good: false, sub: "tells vanish" },
             { label: "It looks real to me, so it's real", good: false, sub: "fakes look real" },
           ],
-          ok: "That's the toolkit. Who posted it, does anyone reliable agree, and is there a real original. Those checks work no matter how perfect the fake looks, because they ask about the source, not the pixels.",
+          ok: "That's the toolkit. Ask who posted it, whether anyone reliable agrees, and whether there's a real original. Those checks work no matter how perfect the fake looks, because they ask about the source, not the pixels.",
           okVoice: "/audio/wren/m17w-s2-ok.mp3",
           bad: "Careful, one of those relies on spotting a flaw in the image, and flaws vanish as fakes improve. Pin the checks about the source and the story, not the pixels.",
           badVoice: "/audio/wren/m17w-s2-bad.mp3",
@@ -130,7 +130,7 @@ export const case17War: WarCase = {
             { id: "real", label: "Shows there's real proof behind it" },
           ],
           pairs: [["poster", "trust"], ["outlets", "confirm"], ["original", "real"]],
-          ok: "That's the method. Every one asks about the source and the story, so they keep working no matter how good the fake looks.",
+          ok: "That's the method. Each one asks about the source and the story, so they all keep working no matter how good the fake looks.",
           okVoice: "/audio/wren/m17w-s2-q3ok.mp3",
         },
       ],
@@ -144,7 +144,7 @@ export const case17War: WarCase = {
       journalNote: "Reading sideways is like checking a rumour at school by asking three other people instead of just believing the first one who told you. Open new tabs, see what the rest of the web actually says. Before believing something shocking, open a search for it elsewhere.",
       board: "LATERAL READING",
       learn: [
-        { t: "wren", text: "Here's the single most powerful skill in this case: lateral reading. When something surprises you, don't stare harder at the page trying to decide if it's real. Leave it. Open new tabs, search the claim, the person, the photo, and see what everyone else says. Fact-checkers don't read down a suspicious page, they read sideways across the whole web. Let's connect each claim to the tab that would check it.", voice: "/audio/wren/m17w-s3-learn.mp3" },
+        { t: "wren", text: "Here's the single most powerful skill in this case, and it's called lateral reading. When something surprises you, don't stare harder at the page trying to decide if it's real. Leave it. Open new tabs, and search the claim, the person, and the photo, to see what everyone else says. Fact-checkers don't read down a suspicious page. They read sideways, across the whole web. Let's connect each claim to the tab that would check it.", voice: "/audio/wren/m17w-s3-learn.mp3" },
       ],
       practice: [
         {
@@ -161,9 +161,9 @@ export const case17War: WarCase = {
             { id: "about", label: "Search the site itself, who runs it?" },
           ],
           pairs: [["photo", "rev"], ["quote", "news"], ["site", "about"]],
-          ok: "That's reading sideways. A reverse image search shows where a photo really came from; searching a quote shows if anyone reliable reported it; searching a site shows who's really behind it. You left the page, and the truth was one tab away.",
+          ok: "That's reading sideways. A reverse image search shows where a photo really came from. Searching a quote shows if anyone reliable reported it. Searching a site shows who's really behind it. You left the page, and the truth was one tab away.",
           okVoice: "/audio/wren/m17w-s3-ok.mp3",
-          bad: "Not quite. Match the check to the claim: images go to reverse image search, quotes go to a news search, unknown sites you look up directly. Try again.",
+          bad: "Not quite. Match the check to the claim. Images go to a reverse image search, quotes go to a news search, and unknown sites get looked up directly. Try again.",
           badVoice: "/audio/wren/m17w-s3-bad.mp3",
         },
         {
@@ -186,7 +186,7 @@ export const case17War: WarCase = {
             { label: "The same page again, top to bottom", good: false, sub: "still on the page" },
             { label: "Only the comments under the post", good: false, sub: "not the wider web" },
           ],
-          ok: "That's reading sideways. New tabs, real searches, and the truth is usually one of them away.",
+          ok: "That's reading sideways. Open new tabs, run real searches, and the truth is usually just one tab away.",
           okVoice: "/audio/wren/m17w-s3-q3ok.mp3",
         },
       ],
@@ -200,15 +200,15 @@ export const case17War: WarCase = {
       journalNote: "Every rumour is a lever someone's pulling for a reason. Ask who gets richer, more views, or more power if you believe it. Follow the motive, not just the story. When something feels urgent to share, ask who benefits if you do.",
       board: "CUI BONO",
       learn: [
-        { t: "wren", text: "When a story is designed to make you angry or scared, ask one cool question: who benefits if I believe this? Someone selling something, someone wanting your vote, your click, your outrage, or your money. Real information doesn't usually need you frightened right now. If a story's whole job is to make you feel a strong thing and act instantly, follow the benefit, and you'll often find the ghostwriter.", voice: "/audio/wren/m17w-s4-learn.mp3" },
+        { t: "wren", text: "When a story is designed to make you angry or scared, ask one calm question. Who benefits if I believe this? It might be someone selling something, or someone wanting your vote, your click, your outrage, or your money. Real information doesn't usually need you frightened right now. If a story's whole job is to make you feel a strong thing and act instantly, follow the benefit, and you'll often find the ghostwriter.", voice: "/audio/wren/m17w-s4-learn.mp3" },
       ],
       practice: [
         {
           t: "choose",
           prompt: "A viral post screams 'Everyone's deleting this app, it's dangerous!' with a link to a rival app. Who benefits?",
           options: [
-            { label: "The rival app, it wins users if you panic and switch", outcome: "good", then: [{ t: "wren", text: "Right. The panic conveniently points you at a competitor. That doesn't prove the first app is safe, it proves the story has a motive. Follow the benefit and verify before you act.", voice: "/audio/wren/m17w-s4-ok.mp3" }] },
-            { label: "Nobody, people just share out of kindness", outcome: "bad", then: [{ t: "wren", text: "A post that ends with 'switch to this instead' has a motive built in. Ask who profits. Try again.", voice: "/audio/wren/m17w-s4-bad.mp3" }] },
+            { label: "The rival app, it wins users if you panic and switch", outcome: "good", then: [{ t: "wren", text: "Right. The panic conveniently points you at a competitor. That doesn't prove the first app is safe. It proves the story has a motive. Follow the benefit and verify before you act.", voice: "/audio/wren/m17w-s4-ok.mp3" }] },
+            { label: "Nobody, people just share out of kindness", outcome: "bad", then: [{ t: "wren", text: "A post that ends by telling you to switch to something else has a motive built in. Ask who profits. Try again.", voice: "/audio/wren/m17w-s4-bad.mp3" }] },
             { label: "Me, so I should switch right now", outcome: "bad", then: [{ t: "wren", text: "The one thing you shouldn't do is act instantly on a scare with a sales pitch attached. Check first. Try again.", voice: "/audio/wren/m17w-s4-bad2.mp3" }] },
           ],
         },
@@ -253,15 +253,15 @@ export const case17War: WarCase = {
       journalNote: "A screenshot of a screenshot is like a photocopy of a photocopy. It proves a copy exists, never that the original was real. Trace all the way back before trusting it. Always try to find the first, original source, not just the latest repost.",
       board: "TRACE TO SOURCE",
       learn: [
-        { t: "wren", text: "Rumours travel as screenshots, of screenshots, of things nobody can find any more. That's a red flag by itself. Before you believe a claim, find the original: the real post, the real article, the real video, from the real account. If nobody can point to an original and it's all just re-shares of a re-share, treat it as unproven. No source, no belief.", voice: "/audio/wren/m17w-s5-learn.mp3" },
+        { t: "wren", text: "Rumours travel as screenshots of screenshots of things nobody can find any more. That's a red flag by itself. Before you believe a claim, find the original. That means the real post, the real article, or the real video, from the real account. If nobody can point to an original, and it's all just re-shares of a re-share, treat it as unproven. No source means no belief.", voice: "/audio/wren/m17w-s5-learn.mp3" },
       ],
       practice: [
         {
           t: "choose",
           prompt: "A screenshot of a tweet is going round, but you can't find the actual tweet anywhere. What's the smart read?",
           options: [
-            { label: "Treat it as unproven, no original means no proof", outcome: "good", then: [{ t: "wren", text: "Exactly. A screenshot with no findable original is one of the oldest tricks, because screenshots are trivial to fake. No source, no belief. You keep it in the 'unproven' pile.", voice: "/audio/wren/m17w-s5-ok.mp3" }] },
-            { label: "Believe it, screenshots don't lie", outcome: "bad", then: [{ t: "wren", text: "Screenshots are some of the easiest things to fake, anyone can edit text into one. Find the original or don't believe it. Try again.", voice: "/audio/wren/m17w-s5-bad.mp3" }] },
+            { label: "Treat it as unproven, no original means no proof", outcome: "good", then: [{ t: "wren", text: "Exactly. A screenshot with no findable original is one of the oldest tricks, because screenshots are trivial to fake. No source means no belief. You keep it in the unproven pile.", voice: "/audio/wren/m17w-s5-ok.mp3" }] },
+            { label: "Believe it, screenshots don't lie", outcome: "bad", then: [{ t: "wren", text: "Screenshots are some of the easiest things to fake, because anyone can edit text into one. Find the original or don't believe it. Try again.", voice: "/audio/wren/m17w-s5-bad.mp3" }] },
             { label: "Share it and ask if it's true", outcome: "bad", then: [{ t: "wren", text: "Sharing to ask still spreads it, and most people won't see your question. Verify first, share second. Try again.", voice: "/audio/wren/m17w-s5-bad2.mp3" }] },
           ],
         },
@@ -307,16 +307,16 @@ export const case17War: WarCase = {
       journalNote: "GHOSTWRITER's trick is a factory line (manufacture a fake, seed it quietly, let others amplify it, profit from the chaos), and you can jam it at any single step. Breaking one link stops the whole line. Find the weakest link in a rumour and stop there.",
       board: "THREAT MODEL",
       learn: [
-        { t: "wren", text: "See GHOSTWRITER's play, four moves. First, manufacture: fake the photo, quote or story. Second, seed it: drop it where it'll catch, an outrage group, a comment thread. Third, amplify: bots and angry sharers spread it faster than the truth. Fourth, profit: clicks, division, a scam, or a belief they wanted planted. Here's your power: the whole machine runs on people sharing before they check. Be the one who checks, and the chain breaks.", voice: "/audio/wren/m17w-s6-learn.mp3" },
+        { t: "wren", text: "Let's see GHOSTWRITER's play. It has four moves. First, he manufactures. He fakes the photo, the quote, or the story. Second, he seeds it, dropping it where it'll catch, like an outrage group or a comment thread. Third, he amplifies, and bots and angry sharers spread it faster than the truth. Fourth, he profits, from clicks, division, a scam, or a belief he wanted planted. Here's your power. The whole machine runs on people sharing before they check. Be the one who checks, and the chain breaks.", voice: "/audio/wren/m17w-s6-learn.mp3" },
       ],
       practice: [
         {
           t: "choose",
           prompt: "GHOSTWRITER's whole campaign depends on one thing from ordinary people. What?",
           options: [
-            { label: "Sharing before checking, break that and the chain dies", outcome: "good", then: [{ t: "wren", text: "That's the weak link. Manufacturing a fake is easy; getting real people to spread it is the hard part they need YOU for. The moment you check before sharing, you stop being their amplifier.", voice: "/audio/wren/m17w-s6-ok.mp3" }] },
-            { label: "Expensive equipment only GHOSTWRITER owns", outcome: "bad", then: [{ t: "wren", text: "The fakes are cheap now, that's the problem. The expensive part for them is your trust and your share. Try again.", voice: "/audio/wren/m17w-s6-bad.mp3" }] },
-            { label: "Nothing, it spreads on its own", outcome: "bad", then: [{ t: "wren", text: "It doesn't spread on its own, it needs people to pass it on. That's the link you can break. Try again.", voice: "/audio/wren/m17w-s6-bad2.mp3" }] },
+            { label: "Sharing before checking, break that and the chain dies", outcome: "good", then: [{ t: "wren", text: "That's the weak link. Manufacturing a fake is easy. Getting real people to spread it is the hard part, and that's what he needs you for. The moment you check before sharing, you stop being his amplifier.", voice: "/audio/wren/m17w-s6-ok.mp3" }] },
+            { label: "Expensive equipment only GHOSTWRITER owns", outcome: "bad", then: [{ t: "wren", text: "The fakes are cheap now, and that's the problem. The expensive part for him is your trust and your share. Try again.", voice: "/audio/wren/m17w-s6-bad.mp3" }] },
+            { label: "Nothing, it spreads on its own", outcome: "bad", then: [{ t: "wren", text: "It doesn't spread on its own. It needs people to pass it on. That's the link you can break. Try again.", voice: "/audio/wren/m17w-s6-bad2.mp3" }] },
           ],
         },
         {
@@ -346,7 +346,7 @@ export const case17War: WarCase = {
             { label: "Forward anything shocking straight away", good: false, sub: "that's amplifying" },
             { label: "Add an angry comment and re-share", good: false, sub: "still spreads it" },
           ],
-          ok: "Right. Check first and refuse to pass on the unverified, and GHOSTWRITER loses the amplifier it needs.",
+          ok: "Right. Check first, refuse to pass on anything you can't verify, and GHOSTWRITER loses the amplifier he needs.",
           okVoice: "/audio/wren/m17w-s6-q3ok.mp3",
         },
       ],
@@ -360,7 +360,7 @@ export const case17War: WarCase = {
       journalNote: "Sharing instantly is like passing on a lit match without checking if it's safe. Pausing even a few seconds is what stops the fire spreading. You are the link that can break the chain. Build in a pause before you ever hit share.",
       board: "ACTION PLAN",
       learn: [
-        { t: "wren", text: "Last skill, and it's a habit, not a fact. You are a circuit breaker. Every fake needs people to pass it along, so when something makes you want to share right now, that urge is the signal to pause. Check the source, read sideways, ask who benefits. If it's true, it'll still be true in ten minutes. If it's fake, you just stopped it dead. One calm person who checks is worth a thousand who share.", voice: "/audio/wren/m17w-s7-learn.mp3" },
+        { t: "wren", text: "This is the last skill, and it's a habit, not a fact. You are a circuit breaker. Every fake needs people to pass it along, so when something makes you want to share right now, that urge is the signal to pause. Check the source, read sideways, and ask who benefits. If it's true, it'll still be true in ten minutes. If it's fake, you just stopped it dead. One calm person who checks is worth a thousand who share.", voice: "/audio/wren/m17w-s7-learn.mp3" },
       ],
       practice: [
         {
@@ -376,7 +376,7 @@ export const case17War: WarCase = {
           ],
           ok: "That's a circuit breaker. Pause, check, ask who benefits, then decide. You'll share plenty of real things, but you'll never be the reason a lie went viral. That's real power on the modern internet.",
           okVoice: "/audio/wren/m17w-s7-ok.mp3",
-          bad: "Careful, one of those still spreads the fake, sharing 'just in case' or 'not sure if true' still puts it in front of people. Pin only the moves that stop the spread.",
+          bad: "Careful, two of those still spread the fake. Sharing instantly, or posting it with a note saying you're not sure it's true, still puts it in front of people. Pin only the moves that stop the spread.",
           badVoice: "/audio/wren/m17w-s7-bad.mp3",
         },
         {
@@ -411,7 +411,7 @@ export const case17War: WarCase = {
 
   boss: {
     board: "THE RUMOUR MILL · GHOSTWRITER",
-    intro: "This is it, Agent. GHOSTWRITER has seeded a fake story and it's spreading through your school's group chats right now: a doctored photo, a fake quote, and a screenshot with no original. You're the analyst who can stop it. No hints from me. Check it, trace it, break the chain.",
+    intro: "This is it, Agent. GHOSTWRITER has seeded a fake story, and it's spreading through your school's group chats right now. There's a doctored photo, a fake quote, and a screenshot with no original. You're the analyst who can stop it. You'll get no hints from me. Check it, trace it, and break the chain.",
     introVoice: "/audio/wren/m17w-boss-intro.mp3",
     phases: [
       {
@@ -476,12 +476,12 @@ export const case17War: WarCase = {
         ],
       },
     ],
-    win: "Now THAT is analyst work, Agent. A fake was tearing through the chats, and instead of adding to it, you left the page, read sideways, traced every piece to nothing, and posted the truth with receipts. GHOSTWRITER's whole machine runs on people sharing before they check, and you were the circuit breaker. Seeing isn't believing, checking is.",
+    win: "Now that is analyst work, Agent. A fake was tearing through the chats, and instead of adding to it, you left the page and read sideways. You traced every piece to nothing, and posted the truth with receipts. GHOSTWRITER's whole machine runs on people sharing before they check, and you were the circuit breaker. Seeing isn't believing, but checking is.",
     winVoice: "/audio/wren/m17w-boss-win.mp3",
   },
 
   test: {
-    intro: "Last thing before I sign this off, the test. A fresh batch of scenarios, no hints, and you need to get most of them right. Everything about telling real from fake, put it to work. Ready?",
+    intro: "There's one last thing before I sign this off, and that's the test. It's a fresh batch of scenarios with no hints, and you need to get most of them right. Put everything you know about telling real from fake to work. Ready?",
     introVoice: "/audio/wren/m17w-test-intro.mp3",
     passVoice: "/audio/wren/m17w-test-pass.mp3",
     failVoice: "/audio/wren/m17w-test-fail.mp3",
