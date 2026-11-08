@@ -6,6 +6,7 @@ import { trialStatus } from "@/app/lib/orgTrial";
 import { courseName } from "@/app/lib/schoolPlaces";
 import { SchoolIcon, OrganisationIcon } from "./icons";
 import RevokeButton from "./schools/[slug]/RevokeButton";
+import DeleteOrgButton from "./DeleteOrgButton";
 
 /**
  * One school, or one organisation: its classes, pupil counts and status.
@@ -61,7 +62,20 @@ export default async function LearnerOrgDetail({
         </p>
       )}
 
-      <RevokeButton orgId={org.id} revoked={!!org.revokedAt} />
+      <div className="ad-actions">
+        <RevokeButton orgId={org.id} revoked={!!org.revokedAt} />
+        {/* Only once access is closed. The gate is the closed state itself,
+            not a dialog: see DeleteOrgButton. */}
+        <DeleteOrgButton
+          orgId={org.id}
+          name={org.name}
+          noun={w.Noun.toLowerCase()}
+          backTo={w.back}
+          closed={!!org.revokedAt}
+          pupils={pupilsUsed}
+          classes={classes.length}
+        />
+      </div>
 
       <div className="ad-card ad-table-wrap">
         <table className="ad-table">

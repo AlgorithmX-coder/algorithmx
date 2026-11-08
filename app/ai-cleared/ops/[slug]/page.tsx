@@ -10,7 +10,7 @@ import { getPurchaseAmount } from "@/app/lib/refund";
 import { CLASS_DEFAULT_NAME } from "../../engine/types";
 import Frame from "../../Frame";
 import AdminPanel from "../../admin/AdminPanel";
-import { PurchasesPanel, RevokeFirmButton, type PurchaseRow } from "./OpsFirmActions";
+import { PurchasesPanel, RevokeFirmButton, DeleteFirmButton, type PurchaseRow } from "./OpsFirmActions";
 
 /* /ai-cleared/ops/[slug][?course=ai-fluent]: one firm, exactly as its
  * admin sees it, with the same invite, resend, remove, nudge and profile
@@ -75,6 +75,8 @@ export default async function OpsFirmPage({ params, searchParams }: { params: Pr
       </p>
       <p className="cf-note" style={{ marginBottom: 14 }}>
         <RevokeFirmButton orgId={ctx.orgId} revoked={!!ctx.org.revokedAt} />
+        {/* Only once access is closed: same rule as the schools side. */}
+        <DeleteFirmButton orgId={ctx.orgId} name={ctx.org.name} revoked={!!ctx.org.revokedAt} />
       </p>
       <span className="cf-eyebrow">Purchases</span>
       <PurchasesPanel purchases={purchases} />
