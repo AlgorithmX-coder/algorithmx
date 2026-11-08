@@ -16,6 +16,15 @@ import { T } from "./tokens";
 
 type Msg = { role: "user" | "assistant"; content: string };
 
+/* True when the text reads as a bulleted / numbered list rather than prose.
+ * Used to stop a learner pasting the bulleted model answer and having it
+ * accepted: the explanation must be written as a paragraph in their own words. */
+export function looksBulleted(text: string): boolean {
+  const lines = text.split(/\r?\n/).map((l) => l.trim()).filter(Boolean);
+  const bulletLines = lines.filter((l) => /^([-*•‣◦·]|\d+[.)])\s+/.test(l)).length;
+  return bulletLines >= 2;
+}
+
 export default function TutorChat({
   lesson,
   getDraft,
@@ -23,7 +32,7 @@ export default function TutorChat({
 }: {
   lesson: { title: string; teaching: string };
   getDraft: () => string;
-  modelAnswer: string;
+  modelAnswer: string | string[];
 }) {
   const [messages, setMessages] = useState<Msg[]>([]);
   const [input, setInput] = useState("");
@@ -85,7 +94,12 @@ export default function TutorChat({
       {!started && (
         <div style={{ display: "flex", gap: 10, flexWrap: "wrap", alignItems: "center" }}>
           <button
-            onClick={() => { const d = getDraft().trim(); if (d.length >= 10) send(`Here is my explanation, could you give me feedback?\n\n${d}`); }}
+            onClick={() => {
+              const d = getDraft().trim();
+              if (d.length < 10) return;
+              if (looksBulleted(d)) { setError({ text: "Write your answer as a paragraph in your own words, not as bullet points, so the feedback is about your own understanding." }); return; }
+              send(`Here is my explanation, could you give me feedback?\n\n${d}`);
+            }}
             disabled={getDraft().trim().length < 10 || streaming}
             style={{ display: "inline-flex", alignItems: "center", gap: 8, fontFamily: T.display, fontSize: 14, fontWeight: 700, color: "#fff", background: getDraft().trim().length < 10 ? T.edge : `linear-gradient(135deg, ${T.primary}, ${T.cyan})`, border: "none", borderRadius: 10, padding: "11px 18px", cursor: getDraft().trim().length < 10 ? "not-allowed" : "pointer", opacity: getDraft().trim().length < 10 ? 0.6 : 1 }}>
             <TutorGlyph /> Ask your tutor for feedback
@@ -144,8 +158,14 @@ export default function TutorChat({
 
       {showModel && (
         <div style={{ marginTop: 12, background: T.greenSoft, border: `1px solid ${T.green}55`, borderRadius: 8, padding: "12px 15px" }}>
-          <div style={{ fontFamily: T.mono, fontSize: 10, letterSpacing: "0.14em", color: T.green, marginBottom: 6 }}>A STRONG ANSWER LOOKS LIKE</div>
-          <div style={{ fontSize: 14.5, color: T.body, lineHeight: 1.6 }}>{modelAnswer}</div>
+          <div style={{ fontFamily: T.mono, fontSize: 10, letterSpacing: "0.14em", color: T.green, marginBottom: 6 }}>{Array.isArray(modelAnswer) ? "POINTS THAT A STRONG ANSWER WOULD INCLUDE" : "A STRONG ANSWER LOOKS LIKE"}</div>
+          {Array.isArray(modelAnswer) ? (
+            <ul style={{ margin: 0, paddingLeft: 20, display: "flex", flexDirection: "column", gap: 7 }}>
+              {modelAnswer.map((pt, i) => <li key={i} style={{ fontSize: 14.5, color: T.body, lineHeight: 1.55 }}>{pt}</li>)}
+            </ul>
+          ) : (
+            <div style={{ fontSize: 14.5, color: T.body, lineHeight: 1.6 }}>{modelAnswer}</div>
+          )}
         </div>
       )}
 

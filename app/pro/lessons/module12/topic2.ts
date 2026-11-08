@@ -102,7 +102,13 @@ const topic2: TopicManifest = {
   check: {
     explain: {
       prompt: "Capital One was breached through a misconfiguration, not an unknown exploit. Explain what a secure baseline and attack-surface reduction are, and how they target exactly this kind of self-inflicted breach.",
-      modelAnswer: "A secure baseline is a defined, known-good configuration that makes a system safe by default, defaults removed, unneeded features off, security settings on, applied consistently so there are no odd one-off configurations to become the weak link. Attack-surface reduction is the disciplined removal of everything that does not need to be there: unused software, open ports, spare accounts, and any unnecessary exposure, because the less there is, the less there is to attack. Both directly target misconfiguration, which is the software set up unsafely rather than a software flaw, and one of the most common and preventable causes of breaches. Capital One's breach was exactly this: a misconfigured firewall that could be abused, plus access broader than it needed to be. A secure baseline and regular configuration review would have aimed straight at that self-inflicted gap, and tighter access would have limited what the misconfiguration could reach.",
+      modelAnswer: [
+        "A secure baseline is a defined, known-good configuration that makes a system safe by default (defaults removed, unneeded features off, security settings on), applied consistently so there are no odd one-off configurations to become the weak link.",
+        "Attack-surface reduction is the disciplined removal of everything that does not need to be there: unused software, open ports, spare accounts and any unnecessary exposure, because the less there is, the less there is to attack.",
+        "Both directly target misconfiguration (software set up unsafely rather than a software flaw), one of the most common and preventable causes of breaches.",
+        "Capital One's breach was exactly this: a misconfigured firewall that could be abused, plus access broader than it needed to be.",
+        "A secure baseline and regular configuration review would have aimed straight at that self-inflicted gap, and tighter access would have limited what the misconfiguration could reach.",
+      ],
     },
     quiz: [
       {

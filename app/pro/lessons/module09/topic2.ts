@@ -103,7 +103,13 @@ const topic2: TopicManifest = {
   check: {
     explain: {
       prompt: "Having done the lab, explain in your own words how SQL injection works and why parameterised queries defeat it completely, and why the TalkTalk fine was considered so avoidable.",
-      modelAnswer: "SQL injection works because the website builds its database question as a sentence and glues the user's input straight into it. If I type a fragment of SQL instead of a normal value, and the site glues it in blindly, my input stops being mere data and becomes part of the command, so I can rewrite the query, for example making a login condition always true, or dumping a whole table. Parameterised queries defeat it completely because they keep data and command apart: the query is written with placeholders and the input is passed to the database separately, as a value only, so no crafted SQL in the input can ever change the command. It is structural, not a filter to sneak past. The TalkTalk fine was so avoidable because this was a well-known flaw with a standard, long-established fix, left in place on a neglected legacy page; basic, routine web-security practice would have prevented a breach of around 157,000 customers' data.",
+      modelAnswer: [
+        "SQL injection works because the website builds its database question as a sentence and glues the user's input straight into it, so a fragment of SQL typed as a value stops being mere data and becomes part of the command.",
+        "That lets an attacker rewrite the query, for example making a login condition always true, or dumping a whole table.",
+        "Parameterised queries defeat it completely by keeping data and command apart: the query is written with placeholders and the input is passed to the database separately, as a value only, so no crafted SQL can ever change the command.",
+        "This is structural, not a filter to sneak past.",
+        "The TalkTalk fine was so avoidable because this was a well-known flaw with a standard, long-established fix, left on a neglected legacy page; routine web-security practice would have prevented a breach of around 157,000 customers' data.",
+      ],
     },
     quiz: [
       {

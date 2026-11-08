@@ -14,7 +14,7 @@ export default function TrialEnded({ orgName, trialExpiresAt }: { orgName: strin
       <div className="wrap">
         <header className="top">
           <div>
-            <div className="brand">Cyber <span>Heroes</span> &middot; <i>Trial</i></div>
+            <div className="brand">Algorithm<span>X</span> &middot; <i>Trial</i></div>
             <div className="sub">{orgName}</div>
           </div>
         </header>
@@ -22,7 +22,7 @@ export default function TrialEnded({ orgName, trialExpiresAt }: { orgName: strin
         <div className="brief">
           <h4>Your trial has ended</h4>
           <p>
-            {orgName}&rsquo;s trial of Cyber Heroes ended on {day}. Everything you tried stays
+            {orgName}&rsquo;s trial ended on {day}. Everything you tried stays
             exactly as it was; a licence picks straight back up from here.
           </p>
           <p>

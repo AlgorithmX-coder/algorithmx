@@ -102,7 +102,12 @@ const topic2: TopicManifest = {
   check: {
     explain: {
       prompt: "In your own words, why does adding a random salt to each password make an attacker's job so much harder, even if the passwords themselves are weak? Write a sentence or two, then reveal a model answer.",
-      modelAnswer: "Without salt, everyone who picked the same password has the same fingerprint, so an attacker can pre-compute common passwords once (a rainbow table) and crack all of them together. A unique salt per user makes every fingerprint different, so those pre-built tables are useless and the attacker has to attack each account separately. It does not make a weak password strong, but it removes the attacker's biggest shortcut and buys the defender enormous time, especially combined with a slow hash.",
+      modelAnswer: [
+        "Without salt, everyone who picked the same password has the same fingerprint, so an attacker can pre-compute common passwords once (a rainbow table) and crack all of them together.",
+        "A unique salt per user makes every fingerprint different, so those pre-built tables are useless and the attacker has to attack each account separately.",
+        "It does not make a weak password strong, but it removes the attacker's biggest shortcut.",
+        "It buys the defender enormous time, especially combined with a slow hash.",
+      ],
     },
     quiz: [
       {

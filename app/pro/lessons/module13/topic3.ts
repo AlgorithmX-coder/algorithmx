@@ -103,7 +103,13 @@ const topic3: TopicManifest = {
   check: {
     explain: {
       prompt: "Explain the difference between an event, an alert and an incident, why using these words precisely matters, and where the Garmin outage sits.",
-      modelAnswer: "An event is a record of something happening, routine logged activity like a normal login or a completed backup, of which there are millions and almost all are benign. An alert is raised when something matches a rule saying it is worth a human look, like a burst of failed logins or a flagged file; it is a question to triage, not a confirmed problem. An incident is confirmed malicious or harmful activity that has breached security and needs a response; an alert becomes an incident when investigation confirms it is real. Using these words precisely matters because calling a routine event an 'incident' causes needless panic, while calling a real incident 'just an alert' causes dangerous delay; precise language keeps the whole team aligned, and declaring an incident triggers the response process, escalation and obligations. The Garmin outage sits firmly as an incident: a ransomware attack that encrypted systems and took services offline for days is confirmed, active, high-impact harm, exactly the kind of thing the SOC process exists to catch early and respond to.",
+      modelAnswer: [
+        "An event is a record of something happening, routine logged activity like a normal login or a completed backup, of which there are millions and almost all are benign.",
+        "An alert is raised when something matches a rule saying it is worth a human look, such as a burst of failed logins or a flagged file; it is a question to triage, not a confirmed problem.",
+        "An incident is confirmed malicious or harmful activity that has breached security and needs a response; an alert becomes an incident when investigation confirms it is real.",
+        "Using these words precisely matters because calling a routine event an 'incident' causes needless panic while calling a real incident 'just an alert' causes dangerous delay; precise language keeps the team aligned, and declaring an incident triggers the response process, escalation and obligations.",
+        "The Garmin outage sits firmly as an incident: a ransomware attack that encrypted systems and took services offline for days is confirmed, active, high-impact harm.",
+      ],
     },
     quiz: [
       {

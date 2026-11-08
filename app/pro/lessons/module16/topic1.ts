@@ -103,7 +103,13 @@ const topic1: TopicManifest = {
   check: {
     explain: {
       prompt: "Describe the incident-response lifecycle, explain why preparation is the most important stage, and how Maersk's NotPetya recovery illustrates the value of good response.",
-      modelAnswer: "The incident-response lifecycle is a recognised set of stages: preparation (before anything happens), identification (confirm an incident and its scope), containment (limit the damage and stop the spread), eradication (remove the threat fully), recovery (restore to normal safely, confirming the threat is gone), and lessons learned (a blameless review that improves things), and it is a cycle because lessons learned feed back into preparation. Preparation is the most important stage because the middle of a crisis is the worst time to work out who to call or what to do: having a plan, clear roles and contacts, ready tools and access, good logs, tested backups, and practice is what lets an organisation respond in hours rather than flounder for weeks. Maersk's NotPetya recovery illustrates the value of good response: devastated by the wiper, it rebuilt thousands of servers and tens of thousands of PCs in around ten days through an enormous, well-organised effort, turning a potentially terminal catastrophe into a survivable recovery, though the pivotal role of one chance offline backup also shows how much fuller preparation would have helped. It demonstrates that how you respond and recover can determine whether an incident is a catastrophe or merely a very bad week.",
+      modelAnswer: [
+        "The incident-response lifecycle is a recognised set of stages: preparation (before anything happens), identification (confirm an incident and its scope), containment (limit damage and stop the spread), eradication (remove the threat fully), recovery (restore to normal safely, confirming the threat is gone), and lessons learned (a blameless review that improves things), and it is a cycle because lessons learned feed back into preparation.",
+        "Preparation is the most important stage because the middle of a crisis is the worst time to work out who to call or what to do.",
+        "Having a plan, clear roles and contacts, ready tools and access, good logs, tested backups and practice is what lets an organisation respond in hours rather than flounder for weeks.",
+        "Maersk's NotPetya recovery illustrates the value of good response: devastated by the wiper, it rebuilt thousands of servers and tens of thousands of PCs in around ten days through an enormous, well-organised effort, turning a potentially terminal catastrophe into a survivable recovery.",
+        "The pivotal role of one chance offline backup also shows how much fuller preparation would have helped, demonstrating that how you respond and recover can determine whether an incident is a catastrophe or merely a very bad week.",
+      ],
     },
     quiz: [
       {

@@ -21,8 +21,13 @@ const NAMES = new Set([
   "PACKRAT", "GHOSTWRITER", "MIMIC", "SIREN", "SKELETON", "KEY", "PHANTOM", "HOOK", "SKINSTORM", "COORD", "IFMMP", "FLOOD",
 ]);
 
+// Missions 6-20 name the same roles differently: test-pass/boss-win (proud),
+// boss-intro (determined), open-N (the transmission, split into clips).
 const TAG_FOR = (path) =>
-  /-debrief\.|-catch-pass\./.test(path) ? "proud" : /-boss-p\d/.test(path) ? "determined" : /-transmission\./.test(path) ? null : "warm";
+  /-debrief\.|-catch-pass\.|-test-pass\.|-boss-win\./.test(path) ? "proud"
+    : /-boss-p\d|-boss-intro\./.test(path) ? "determined"
+    : /-transmission\.|-open-\d/.test(path) ? null
+    : "warm";
 
 const RULES = {
   "one tag": (raw) => !/^\[[a-z ]+\][^[]*$/.test(raw.trim()) && "needs exactly one [tag], at the start",
@@ -52,10 +57,12 @@ let lines = 0, bad = 0;
 const counts = Object.fromEntries(Object.keys(RULES).map((k) => [k, 0]));
 for (const m of missions) {
   const nn = m.padStart(2, "0");
-  const { [`mission${nn}VoiceScripts`]: scripts } = await import(`./wren-voice-scripts/mission${nn}.mjs`);
+  const { [`mission${nn}VoiceScripts`]: scripts, [`mission${nn}Say`]: say = {} } = await import(`./wren-voice-scripts/mission${nn}.mjs`);
+  // a token in missionNNSay is checked as she says it ("P@ssw0rd" -> words)
+  const keys = Object.keys(say).sort((a, b) => b.length - a.length);
   for (const [path, raw] of Object.entries(scripts)) {
     lines++;
-    const text = raw.replace(/^\[[a-z ]+\]\s*/, "");
+    const text = keys.reduce((t, k) => t.split(k).join(say[k]), raw.replace(/^\[[a-z ]+\]\s*/, ""));
     const hits = Object.entries(RULES).flatMap(([k, f]) => {
       const r = f(k === "one tag" || k === "tag by role" ? raw : text, path);
       return r ? [[k, r]] : [];

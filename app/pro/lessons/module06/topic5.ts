@@ -103,7 +103,13 @@ const topic5: TopicManifest = {
   check: {
     explain: {
       prompt: "When FireEye discovered it had been breached, it chose to publish the attacker's techniques and detection tools. Using the idea of the defender's shared map, explain why that choice made the whole community stronger.",
-      modelAnswer: "Defence scales through sharing in a way attacking does not. FireEye's breach gave it detailed knowledge of a sophisticated campaign: the attacker's techniques, infrastructure and telltale signs. By publishing that, along with detection tools, it let thousands of other potential victims search their own systems and defend against the exact same intrusion, often before they were hit. One organisation's painful discovery became everyone's protection. That is the defender's map working as a shared asset: no single organisation sees every attack, but when the one that does shares what it learned, the whole community can prepare for it.",
+      modelAnswer: [
+        "Defence scales through sharing in a way attacking does not.",
+        "FireEye's breach gave it detailed knowledge of a sophisticated campaign: the attacker's techniques, infrastructure and telltale signs.",
+        "By publishing that, along with detection tools, it let thousands of other potential victims search their own systems and defend against the exact same intrusion, often before they were hit.",
+        "One organisation's painful discovery became everyone's protection.",
+        "That is the defender's map working as a shared asset: no single organisation sees every attack, but when the one that does shares what it learned, the whole community can prepare for it.",
+      ],
     },
     quiz: [
       {

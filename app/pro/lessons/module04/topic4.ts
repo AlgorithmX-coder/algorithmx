@@ -103,7 +103,13 @@ const topic4: TopicManifest = {
   check: {
     explain: {
       prompt: "Explain the two things HTTPS (TLS) guarantees, how certificates provide the second, and why the DigiNotar case was so serious.",
-      modelAnswer: "HTTPS, which is HTTP secured by TLS, guarantees two things: it encrypts the conversation so no one on the network can read it (privacy), and it checks the server's identity so you know you are really talking to the genuine site, not an impostor. It uses the hybrid encryption from earlier (asymmetric to agree a shared key, then symmetric for speed) for the privacy half, and certificates for the identity half, which is crucial because encryption alone would let you have a perfectly private conversation with an attacker impersonating your bank. Certificates provide identity by binding a public key to a website's identity, vouched for by a trusted Certificate Authority (CA): your browser trusts a set of CAs, so when a site presents a certificate signed by one, your browser believes the site is who it claims, the chain of trust (you trust the CA, the CA vouches for the site). The DigiNotar case was so serious because it attacked exactly this foundation: the CA was compromised and issued fraudulent certificates for high-profile domains, and because browsers trusted DigiNotar, those fraudulent certificates could impersonate real sites convincingly, complete with the reassuring padlock, enabling interception of supposedly-secure connections. It showed that the entire HTTPS trust model depends on certificate authorities being secure, and when one is not, the padlock itself can be made to lie.",
+      modelAnswer: [
+        "HTTPS, which is HTTP secured by TLS, guarantees two things: it encrypts the conversation so no one on the network can read it (privacy), and it checks the server's identity so you know you are talking to the genuine site (identity).",
+        "It uses hybrid encryption (asymmetric to agree a shared key, then symmetric for speed) for privacy, and certificates for identity, because encryption alone would let you have a private conversation with an attacker impersonating your bank.",
+        "Certificates provide identity by binding a public key to a website's identity, vouched for by a trusted Certificate Authority (CA) that your browser already trusts: a chain of trust where you trust the CA and the CA vouches for the site.",
+        "DigiNotar was so serious because the CA itself was compromised and issued fraudulent certificates for high-profile domains, which browsers trusted and which could impersonate real sites convincingly, complete with the reassuring padlock.",
+        "It showed that the entire HTTPS trust model depends on certificate authorities being secure, and when one is not, the padlock itself can be made to lie.",
+      ],
     },
     quiz: [
       {

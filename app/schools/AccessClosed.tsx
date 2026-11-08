@@ -11,7 +11,7 @@ export default function AccessClosed({ orgName }: { orgName: string }) {
       <div className="wrap">
         <header className="top">
           <div>
-            <div className="brand">Cyber <span>Heroes</span> &middot; <i>Access closed</i></div>
+            <div className="brand">Algorithm<span>X</span> &middot; <i>Access closed</i></div>
             <div className="sub">{orgName}</div>
           </div>
         </header>

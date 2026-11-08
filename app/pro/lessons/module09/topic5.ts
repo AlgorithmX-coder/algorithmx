@@ -102,7 +102,13 @@ const topic5: TopicManifest = {
   check: {
     explain: {
       prompt: "What is the OWASP Top 10, and why is it more useful to understand the handful of recurring fix mindsets than to memorise ten separate risks?",
-      modelAnswer: "The OWASP Top 10 is the web-security community's free, periodically updated, data-driven list of the ten most critical web-application risks, used across the industry as a shared vocabulary and prioritised checklist, by developers, testers, auditors and in interviews. It is more useful to understand the recurring fix mindsets than to memorise ten separate risks because most of the list comes down to a few principles I already know: never trust user input (which fixes injection and XSS by keeping data separate from commands and code), enforce access on the server with default-deny (which fixes broken access control), protect data, use strong authentication with MFA, patch known-vulnerable components, and configure securely. Seeing it this way makes web security coherent rather than overwhelming, and, crucially, it lets me reason about brand-new flaws I have never seen by placing them against a mindset and knowing roughly how they are fixed, which is far more valuable than rote memorisation.",
+      modelAnswer: [
+        "The OWASP Top 10 is the web-security community's free, periodically updated, data-driven list of the ten most critical web-application risks, used across the industry as a shared vocabulary and prioritised checklist by developers, testers, auditors and in interviews.",
+        "Understanding the recurring fix mindsets beats memorising ten separate risks because most of the list comes down to a few principles you already know.",
+        "Those principles are: never trust user input (fixing injection and XSS by keeping data separate from commands and code), enforce access on the server with default-deny (fixing broken access control), protect data, use strong authentication with MFA, patch known-vulnerable components, and configure securely.",
+        "Seeing it this way makes web security coherent rather than overwhelming.",
+        "Crucially, it lets you reason about brand-new flaws you have never seen by placing them against a mindset and knowing roughly how they are fixed, which is far more valuable than rote memorisation.",
+      ],
     },
     quiz: [
       {

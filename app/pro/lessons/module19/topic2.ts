@@ -102,7 +102,13 @@ const topic2: TopicManifest = {
   check: {
     explain: {
       prompt: "Explain the 3-2-1 rule, why it is not quite enough against modern ransomware, and what addition makes backups genuinely resilient.",
-      modelAnswer: "The 3-2-1 rule is the foundation of reliable backups: keep at least three copies of your data (the original plus two backups), on at least two different types of media or locations, with at least one copy kept offsite somewhere a single local disaster cannot reach. The logic is that multiple independent copies mean no single failure, a dead drive, a fire, a theft, destroys all of them, and the offsite copy in particular survives a local disaster (exactly what OVHcloud customers lacked). It is not quite enough against modern ransomware because attackers deliberately hunt for and destroy reachable backups, knowing backups are what let victims recover without paying: before or while encrypting your data, they find any backup connected to the network or accessible with stolen credentials and encrypt or delete it too, which is why so many victims who 'had backups' still could not recover. The addition that makes backups genuinely resilient is at least one copy that is offline (physically disconnected) or immutable (stored so it cannot be altered or deleted for a period), as well as offsite, so the ransomware simply cannot reach it. 3-2-1 with one offline/immutable copy survives the realistic range of disasters, hardware, physical and malicious, and is the single highest-value resilience measure, turning ransomware from a catastrophe into an inconvenience and removing the pressure to pay.",
+      modelAnswer: [
+        "The 3-2-1 rule is the foundation of reliable backups: keep at least three copies of your data, on at least two different media or locations, with at least one copy offsite where a single local disaster cannot reach it.",
+        "The logic is that multiple independent copies mean no single failure (a dead drive, a fire, a theft) destroys all of them, and the offsite copy in particular survives a local disaster.",
+        "It is not quite enough against modern ransomware because attackers deliberately hunt for and destroy reachable backups, encrypting or deleting any backup connected to the network or accessible with stolen credentials, which is why many victims who 'had backups' still could not recover.",
+        "The addition that makes backups genuinely resilient is at least one copy that is offline (physically disconnected) or immutable (stored so it cannot be altered or deleted for a period), as well as offsite, so ransomware simply cannot reach it.",
+        "3-2-1 with one offline or immutable copy survives failure, local disaster and ransomware, and is the single highest-value resilience measure, turning ransomware from a catastrophe into an inconvenience and removing the pressure to pay.",
+      ],
     },
     quiz: [
       {

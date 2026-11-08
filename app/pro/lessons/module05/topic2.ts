@@ -103,7 +103,12 @@ const topic2: TopicManifest = {
   check: {
     explain: {
       prompt: "A colleague says 'data protection is just paperwork for the legal team, nothing to do with security.' Using the British Airways fine, explain why they are wrong.",
-      modelAnswer: "Data protection law contains a security principle: organisations must protect personal data with appropriate measures. British Airways was fined 20 million pounds precisely because the ICO found its security measures were not good enough to prevent or detect the 2018 breach. So the access control, monitoring, patching and testing a security professional does are the law in action, not separate from it. Weak security is not only a technical problem; it can be a breach of a legal duty with public, costly consequences.",
+      modelAnswer: [
+        "Data protection law contains a security principle: organisations must protect personal data with appropriate measures.",
+        "British Airways was fined 20 million pounds precisely because the ICO found its security measures were not good enough to prevent or detect the 2018 breach.",
+        "The access control, monitoring, patching and testing a security professional does are that law in action, not separate from it.",
+        "Weak security is not only a technical problem; it can be a breach of a legal duty with public, costly consequences.",
+      ],
     },
     quiz: [
       {

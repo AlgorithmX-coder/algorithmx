@@ -19,7 +19,7 @@ import { removePupilAction, resetPicturesAction } from "../class.actions";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Class | Cyber Heroes for schools",
+  title: "Class | AlgorithmX for schools",
   robots: { index: false, follow: false, nocache: true },
 };
 

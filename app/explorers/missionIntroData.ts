@@ -584,7 +584,7 @@ export const mission20Intro: MissionIntroData = {
     "[serious] Agent, this is it, the capstone. Every signature you've ever faced, PHANTOM HOOK, PACKRAT, GHOSTWRITER, SIREN, MIMIC, all trace back to one hand behind the board. [determined] No new tricks today, just everything you know, recombined, to find out who's really been running this and why. [warm] WREN's got the full board open, every case, every clue. [excited] Let's finish this the right way, Agent. Signal Zero, go.",
   skills: [
     "Read the whole board",
-    "The five signatures",
+    "The four signatures",
     "Follow the benefit",
     "One hand behind it",
     "The Code",

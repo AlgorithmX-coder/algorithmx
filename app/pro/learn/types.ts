@@ -86,8 +86,12 @@ export interface CaseCard {
 /* The play area is a bespoke per-lesson component the engine mounts.
  * It reports back when the learner has actually engaged with it, so the
  * engine can gate progress on doing, not just reading. */
+/* A Try activity's score, when the lab can measure one. Completion-only labs
+ * call onDidTry() with no argument; the scored engines pass their tally so the
+ * player can nudge a learner below 80% to redo. */
+export type TryScore = { correct: number; total: number };
 export interface LabProps {
-  onDidTry: () => void;
+  onDidTry: (score?: TryScore) => void;
 }
 export type Lab = ComponentType<LabProps>;
 
@@ -119,9 +123,11 @@ export interface QuizQuestion {
 
 export interface ExplainBack {
   prompt: string;
-  /* Revealed after the learner writes their own answer; a model of a
-   * strong reply, never marked against their exact words. */
-  modelAnswer: string;
+  /* Revealed after the learner writes their own answer; a model of a strong
+   * reply, never marked against their exact words. An array renders as the
+   * bulleted "Points that a strong answer would include"; a plain string is
+   * shown as prose (the older format, still supported). */
+  modelAnswer: string | string[];
 }
 
 /* ---- the whole lesson ---- */

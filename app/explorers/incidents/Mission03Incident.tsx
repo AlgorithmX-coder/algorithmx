@@ -104,7 +104,7 @@ export default function Mission03Incident({ reduced, audio, onPhaseCleared, onCo
       {/* ---------------- phase 1: read the queue ---------------- */}
       {phase === 1 && (
         <div>
-          <Eyebrow text="Phase 1. The rig is hammering four doors at once. It always cracks the weakest first. Tap the doors in the order they'll fall." color={T.actionAmber} />
+          <Eyebrow text="Phase 1 · The doors: the rig is hammering four doors at once, and it always cracks the weakest first. Tap the doors in the order they'll fall." color={T.actionAmber} />
           <div style={{ marginTop: 14, display: "grid", gap: 10 }}>
             {doors.map((d) => {
               const idx = order.indexOf(d.id);

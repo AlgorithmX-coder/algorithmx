@@ -295,7 +295,7 @@ export const mission20: MissionManifest = {
         prediction: {
           question: "You've found a real criminal. The right final move?",
           options: [
-            "Hack them back, they deserve it",
+            "Hack him back, he deserves it",
             "Document everything and hand it to adults and the platform",
             "Expose them online yourself",
           ],

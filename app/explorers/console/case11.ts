@@ -147,10 +147,10 @@ export const case11Console: ConsoleCase = {
   accent: "#2DD4BF",
   theme: { backdrop: "vault", matrix: ["#2DD4BF", "#7FEFE2", "#17A398"], accentHi: "#7FEFE2" },
   open: [
-    "Notice something different, Agent? This is ARC's real systems console, built to look like the tools an attacker actually uses, because the fastest way to learn to defend a system is to see it exactly the way someone trying to break in sees it. Everything you run here is authorized ARC work: studying the attack to build the defence, never to attack anyone else's system.",
-    "New clearance, Agent, and a whole new job. No more reading messages, no more dodging DMs. Now you're at the controls of the machine itself.",
-    "SKELETON KEY is back, the one whose rig guesses passwords. Last time you just watched it. This time, you're going to BUILD the defences that stop it dead.",
-    "Seven skills to lock every door you own, then a boss and a test. Hands on the console, Agent. Let's build.",
+    "Notice something different, Agent? This is ARC's real systems console. It's built to look like the tools an attacker actually uses. The fastest way to learn to defend a system is to see it exactly the way someone trying to break in sees it. Everything you run here is authorised ARC work. You study the attack to build the defence, and you never attack anyone else's system.",
+    "You've got new clearance, Agent, and a whole new job. There's no more reading messages, and no more dodging DMs. Now you're at the controls of the machine itself.",
+    "SKELETON KEY is back. He's the one whose rig guesses passwords. Last time, you just watched it. This time, you're going to build the defences that stop it dead.",
+    "You'll learn seven skills to lock every door you own, then face a boss and a test. Put your hands on the console, Agent. Let's build.",
   ],
   openVoice: [
     "/audio/wren/m11c-open-0.mp3",
@@ -168,7 +168,7 @@ export const case11Console: ConsoleCase = {
       journalNote: "Trying to remember 41 unique passwords is like trying to memorise 41 different phone numbers. Nobody's brain was built for that. A password manager is the phone book that remembers them for you. Let the tool carry the list, not your head.",
       panel: "ACCOUNT AUDIT",
       learn: [
-        { t: "wren", text: "Start with the honest truth. To be safe, every account needs its own long, random password. Not one clever password everywhere, a DIFFERENT strong one for each. And you've got dozens of accounts. Nobody, no human alive, can invent and remember forty random passwords. So we stop trying. This is a job for a tool, and I'll show you how to build one.", voice: "/audio/wren/m11c-s1-learn.mp3" },
+        { t: "wren", text: "Let's start with the honest truth. To be safe, every account needs its own long, random password. That doesn't mean one clever password everywhere. It means a different strong one for each. And you've got dozens of accounts. Nobody, no human alive, can invent and remember forty-one random passwords. So we stop trying. This is a job for a tool, and I'll show you how to build one.", voice: "/audio/wren/m11c-s1-learn.mp3" },
         { t: "sys", text: "ACCOUNTS DETECTED: 41   ·   UNIQUE STRONG PASSWORDS A HUMAN CAN REMEMBER: ~2" },
       ],
       practice: [
@@ -176,8 +176,8 @@ export const case11Console: ConsoleCase = {
           t: "choose",
           prompt: "So what's the RIGHT way to have a strong, unique password on all 41 accounts?",
           options: [
-            { label: "Use a tool that makes and remembers them for you", sub: "a password manager", outcome: "good", then: [{ t: "wren", text: "Exactly. A password manager invents a long random password for every account and remembers all of them, so you don't have to. Your brain's job shrinks to remembering just ONE. That's the whole trick, and it's what we build next.", voice: "/audio/wren/m11c-s1-ok.mp3" }] },
-            { label: "Think of one really clever password and use it everywhere", sub: "", outcome: "bad", then: [{ t: "wren", text: "One password everywhere is the master key SKELETON KEY dreams of, crack it once, open everything. Unique per account is the rule, and no human can do that alone. Try again.", voice: "/audio/wren/m11c-s1-bad.mp3" }] },
+            { label: "Use a tool that makes and remembers them for you", sub: "a password manager", outcome: "good", then: [{ t: "wren", text: "Exactly. A password manager invents a long random password for every account and remembers all of them, so you don't have to. Your brain's job shrinks to remembering just one. That's the whole trick, and it's what we build next.", voice: "/audio/wren/m11c-s1-ok.mp3" }] },
+            { label: "Think of one really clever password and use it everywhere", sub: "", outcome: "bad", then: [{ t: "wren", text: "One password everywhere is the master key SKELETON KEY dreams of. If he cracks it once, he opens everything. One unique password per account is the rule, and no human can do that alone. Try again.", voice: "/audio/wren/m11c-s1-bad.mp3" }] },
             { label: "Write all 41 on a note in your bag", sub: "", outcome: "bad", then: [{ t: "wren", text: "A list anyone could find or lose isn't a vault. We want them generated and locked, not scribbled on paper. Try again.", voice: "/audio/wren/m11c-s1-bad2.mp3" }] },
           ],
         },
@@ -191,7 +191,7 @@ export const case11Console: ConsoleCase = {
             { label: "Your memory never fails", good: false, sub: "everyone forgets" },
             { label: "You really only have one account", good: false, sub: "you have dozens" },
           ],
-          ok: "Right. Too many, and no pattern to lean on. That is exactly why we hand the job to a tool.",
+          ok: "Right. There are too many, and there's no pattern to lean on. That is exactly why we hand the job to a tool.",
           okVoice: "/audio/wren/m11c-s1-q2ok.mp3",
         },
         {
@@ -202,7 +202,7 @@ export const case11Console: ConsoleCase = {
             { label: "Remember all 41 passwords", sub: "", want: true },
             { label: "Remember your single master key", sub: "that stays in your head", want: false },
           ],
-          ok: "Exactly. The tool invents and remembers the 41. Your brain only keeps the one master key.",
+          ok: "Exactly. The tool invents and remembers the forty-one. Your brain only keeps the one master key.",
           okVoice: "/audio/wren/m11c-s1-q3ok.mp3",
         },
       ],
@@ -216,7 +216,7 @@ export const case11Console: ConsoleCase = {
       journalNote: "Your master passphrase is the one key that opens the box holding all your other keys, so it has to be unpickable. Four random words strung together, like copper-otter-lantern-galaxy, take a guessing rig centuries. Pick random words, never facts about you.",
       panel: "VAULT SETUP",
       learn: [
-        { t: "wren", text: "A password manager locks all your passwords behind ONE master key, so that key has to be brilliant. Not short and clever, LONG and random. The strongest trick is a passphrase: several random, unrelated words strung together. Long enough that a guessing rig would take centuries, simple enough that you'll never forget it. Let's build one.", voice: "/audio/wren/m11c-s2-learn.mp3" },
+        { t: "wren", text: "A password manager locks all your passwords behind one master key, so that key has to be brilliant. It shouldn't be short and clever. It should be long and random. The strongest trick is a passphrase, which is several random, unrelated words strung together. It's long enough that a guessing rig would take centuries, but simple enough that you'll never forget it. Let's build one.", voice: "/audio/wren/m11c-s2-learn.mp3" },
       ],
       practice: [
         {
@@ -232,16 +232,16 @@ export const case11Console: ConsoleCase = {
             { label: "password123", good: false, sub: "cracked instantly" },
             { label: "your pet's name", good: false, sub: "it's on your profile" },
           ],
-          ok: "Now THAT is a master key. Four random words a rig would take centuries to guess, but you'll picture a copper otter with a lantern in a galaxy and never forget it. Long and random beats short and clever, every time.",
+          ok: "Now that's a real master key. It's four random words a rig would take centuries to guess. But you'll picture a copper otter with a lantern in a galaxy, and never forget it. Long and random beats short and clever, every time.",
           okVoice: "/audio/wren/m11c-s2-ok.mp3",
-          bad: "Careful. Anything a rig can guess or a stranger can look up, like your birthday, a pet, or 'password123', weakens the whole vault. Pick only the long, random, unguessable parts.",
+          bad: "Be careful. Anything a rig can guess or a stranger can look up, like your birthday, a pet, or password123, weakens the whole vault. Pick only the long, random, unguessable parts.",
           badVoice: "/audio/wren/m11c-s2-bad.mp3",
         },
         {
           t: "choose",
           prompt: "Three people set a master passphrase. Whose is strongest?",
           options: [
-            { label: "river-cactus-velvet-thunder", sub: "four random, unrelated words", outcome: "good", then: [{ t: "wren", text: "Yes. Four random words a rig would take centuries to crack, and a picture you will never forget.", voice: "/audio/wren/m11c-s2-q2ok.mp3" }] },
+            { label: "river-cactus-velvet-thunder", sub: "four random, unrelated words", outcome: "good", then: [{ t: "wren", text: "Yes. That's four random words a rig would take centuries to crack, and a picture you will never forget.", voice: "/audio/wren/m11c-s2-q2ok.mp3" }] },
             { label: "Fluffy2011", sub: "pet name and birth year", outcome: "bad", then: [{ t: "wren", text: "A pet and a year are both easy to look up or guess. The master key has to be long and random. Try again.", voice: "/audio/wren/m11c-s2-q2bad.mp3" }] },
             { label: "qwerty", sub: "short and common", outcome: "bad", then: [{ t: "wren", text: "Short and common is the first thing any rig tries. Reach for several random words instead. Try again.", voice: "/audio/wren/m11c-s2-q2bad2.mp3" }] },
           ],
@@ -254,7 +254,7 @@ export const case11Console: ConsoleCase = {
             { label: "Long enough to take centuries to guess", sub: "", want: true },
             { label: "Built from your name or birthday", sub: "easy to look up", want: false },
           ],
-          ok: "That is the recipe. Long and random, never personal. Personal facts are the first thing a rig checks.",
+          ok: "That is the recipe. Make it long and random, and never personal. Personal facts are the first thing a rig checks.",
           okVoice: "/audio/wren/m11c-s2-q3ok.mp3",
         },
       ],
@@ -268,7 +268,7 @@ export const case11Console: ConsoleCase = {
       journalNote: "Once the master key is set, the vault is like a locksmith who cuts a new unbreakable lock for every door, so you never cut your own keys again. Let it generate and remember every password from here on. Never type a password you invented yourself.",
       panel: "VAULT · GENERATE",
       learn: [
-        { t: "wren", text: "Master key set. Now the magic. From here, every time you make an account, the manager generates a brand-new random password, stores it, and fills it in for you. You never see it, never type it, never reuse it. Forty-one unique fortress passwords, and you only ever remember the one master. Watch it fill the vault.", voice: "/audio/wren/m11c-s3-learn.mp3" },
+        { t: "wren", text: "Your master key is set. Now comes the magic. From here, every time you make an account, the manager generates a brand-new random password, stores it, and fills it in for you. You never see it, never type it, and never reuse it. That's forty-one unique fortress passwords, and you only ever remember the one master. Watch it fill the vault.", voice: "/audio/wren/m11c-s3-learn.mp3" },
         { t: "sys", text: "GENERATING… bank ✓  email ✓  game ✓  school ✓  … 41/41 UNIQUE PASSWORDS STORED" },
       ],
       practice: [
@@ -276,9 +276,9 @@ export const case11Console: ConsoleCase = {
           t: "choose",
           prompt: "A new account asks you to set a password. What do you do now?",
           options: [
-            { label: "Let the manager generate and store a random one", outcome: "good", then: [{ t: "wren", text: "Perfect. That's the whole point of the vault, you never invent a password again. It makes one no human could guess, and remembers it so you don't have to.", voice: "/audio/wren/m11c-s3-ok.mp3" }] },
-            { label: "Reuse your master passphrase for this one too", outcome: "bad", then: [{ t: "wren", text: "Never reuse the master, it's the one key to everything. Let the manager make a fresh, unique password instead. Try again.", voice: "/audio/wren/m11c-s3-bad.mp3" }] },
-            { label: "Make up a new one in your head", outcome: "bad", then: [{ t: "wren", text: "That's back to the impossible human job. The manager exists so you never have to invent one again. Let it. Try again.", voice: "/audio/wren/m11c-s3-bad2.mp3" }] },
+            { label: "Let the manager generate and store a random one", outcome: "good", then: [{ t: "wren", text: "Perfect. That's the whole point of the vault. You never invent a password again. It makes one no human could guess, and remembers it so you don't have to.", voice: "/audio/wren/m11c-s3-ok.mp3" }] },
+            { label: "Reuse your master passphrase for this one too", outcome: "bad", then: [{ t: "wren", text: "Never reuse the master. It's the one key to everything. Let the manager make a fresh, unique password instead. Try again.", voice: "/audio/wren/m11c-s3-bad.mp3" }] },
+            { label: "Make up a new one in your head", outcome: "bad", then: [{ t: "wren", text: "That's back to the impossible human job. The manager exists so you never have to invent one again. Let it do the job. Try again.", voice: "/audio/wren/m11c-s3-bad2.mp3" }] },
           ],
         },
         {
@@ -290,7 +290,7 @@ export const case11Console: ConsoleCase = {
             { label: "Fill it in when you log in", sub: "", want: true },
             { label: "Make you memorise each one", sub: "that job is gone", want: false },
           ],
-          ok: "Right. Generate, store, fill. Three jobs off your plate, so you never type or reuse a password again.",
+          ok: "Right. It generates, stores and fills. That's three jobs off your plate, so you never type or reuse a password again.",
           okVoice: "/audio/wren/m11c-s3-q2ok.mp3",
         },
         {
@@ -308,7 +308,7 @@ export const case11Console: ConsoleCase = {
         },
         {
           t: "flip",
-          prompt: "SKELETON KEY just leaked one password from an old, dead account. Flip the switch, then flip the card to watch what it tries next.",
+          prompt: "SKELETON KEY just leaked one password from an old, dead account. Flip the switch, then flip the card to watch what he tries next.",
           you: {
             kind: "toggle",
             label: "That leaked password · simulator",
@@ -341,7 +341,7 @@ export const case11Console: ConsoleCase = {
       journalNote: "2FA is a second lock on the same door, so a thief who steals your key still can't get in without the matching one on your phone. One stolen password stops being enough to walk in. Turn 2FA on for your email, bank, and main accounts.",
       panel: "SECURITY · TWO-FACTOR",
       learn: [
-        { t: "wren", text: "Even a perfect password can be phished or leaked. So we add a SECOND lock, two-factor, or 2FA. It's a second key, usually a code on your phone, needed on top of the password. Now a thief with your password still can't get in, because they don't have your phone. It's the single strongest switch you can flip. So flip it, on the accounts that matter most.", voice: "/audio/wren/m11c-s4-learn.mp3" },
+        { t: "wren", text: "Even a perfect password can be phished or leaked. So we add a second lock, called two-factor authentication, or 2FA for short. Some apps call it two-step verification. It's a second key, usually a code on your phone, needed on top of the password. Now a thief with your password still can't get in, because they don't have your phone. It's the single strongest switch you can flip. So flip it on the accounts that matter most.", voice: "/audio/wren/m11c-s4-learn.mp3" },
       ],
       practice: [
         {
@@ -352,9 +352,9 @@ export const case11Console: ConsoleCase = {
             { label: "Email", sub: "resets every other account", want: true },
             { label: "Main game account", sub: "years of progress", want: true },
           ],
-          ok: "Locked down. Especially email, because whoever controls your email can reset every other password you own. With 2FA on, a stolen password is just half a key. It won't open the door.",
+          ok: "They're locked down. Email matters most, because whoever controls your email can reset every other password you own. With 2FA on, a stolen password is just half a key. It won't open the door.",
           okVoice: "/audio/wren/m11c-s4-ok.mp3",
-          bad: "Not quite. Turn the second lock ON for all three, these are the accounts a thief wants most. Email especially: it's the master key to everything else.",
+          bad: "Not quite. Turn the second lock on for all three, because these are the accounts a thief wants most. Email especially matters, because it's the master key to everything else.",
           badVoice: "/audio/wren/m11c-s4-bad.mp3",
         },
         {
@@ -362,8 +362,8 @@ export const case11Console: ConsoleCase = {
           prompt: "A thief buys your real password in a leak, but the account has 2FA on. What happens when they try to log in?",
           options: [
             { label: "They're stopped, they don't have the code on your phone", outcome: "good", then: [{ t: "wren", text: "Exactly. The password is only half a key now. Without the code on your phone, the door stays shut.", voice: "/audio/wren/m11c-s4-q2ok.mp3" }] },
-            { label: "They walk straight in, the password is enough", outcome: "bad", then: [{ t: "wren", text: "Not with 2FA on. The password alone is only half the key, they still need the code on your phone. Try again.", voice: "/audio/wren/m11c-s4-q2bad.mp3" }] },
-            { label: "The account deletes itself for safety", outcome: "bad", then: [{ t: "wren", text: "Nothing so dramatic. 2FA simply blocks the login until the second key is entered. Try again.", voice: "/audio/wren/m11c-s4-q2bad2.mp3" }] },
+            { label: "They walk straight in, the password is enough", outcome: "bad", then: [{ t: "wren", text: "Not with 2FA on. The password alone is only half the key. They still need the code on your phone. Try again.", voice: "/audio/wren/m11c-s4-q2bad.mp3" }] },
+            { label: "The account deletes itself for safety", outcome: "bad", then: [{ t: "wren", text: "Nothing so dramatic happens. 2FA simply blocks the login until the second key is entered. Try again.", voice: "/audio/wren/m11c-s4-q2bad2.mp3" }] },
           ],
         },
         {
@@ -376,7 +376,7 @@ export const case11Console: ConsoleCase = {
             { label: "Just your username", good: false, sub: "that is public" },
             { label: "Only your birthday", good: false, sub: "easy to look up" },
           ],
-          ok: "Right. Two keys now: something you know and something you have. A thief needs both, and they only ever get one.",
+          ok: "Right. There are two keys now, something you know and something you have. A thief needs both, and they only ever get one.",
           okVoice: "/audio/wren/m11c-s4-q3ok.mp3",
         },
       ],
@@ -390,7 +390,7 @@ export const case11Console: ConsoleCase = {
       journalNote: "Your 2FA code is the second key itself, and real security never asks to borrow your key. They already have their own. Reading a code out loud is the same as handing someone your spare key. Never say a 2FA code out loud to anyone, ever.",
       panel: "SECURITY · CODES",
       learn: [
-        { t: "wren", text: "One warning that comes with 2FA. That code on your phone is a KEY, the second key to your account. And you know the rule about keys from last block: nobody real ever asks you for one. Not the bank, not support, not a friend. A code only ever goes in the login box yourself, never read out to a person. If anyone asks for your code, they're a thief, every single time.", voice: "/audio/wren/m11c-s5-learn.mp3" },
+        { t: "wren", text: "Here's one warning that comes with 2FA. That code on your phone is a key, the second key to your account. And you know the rule about keys from last block. Nobody real ever asks you for one, not the bank, not support, and not a friend. You only ever type a code into the login box yourself. Never read it out to a person. If anyone asks for your code, they're a thief, every single time.", voice: "/audio/wren/m11c-s5-learn.mp3" },
       ],
       practice: [
         { t: "sys", text: "INCOMING: \"Hi, this is Account Security. To verify you, read us back the code we just texted.\"" },
@@ -398,9 +398,9 @@ export const case11Console: ConsoleCase = {
           t: "choose",
           prompt: "What do you do?",
           options: [
-            { label: "Never share it, real security never asks for your code", outcome: "good", then: [{ t: "wren", text: "Exactly. Real security already knows it, they don't need you to read it back. Anyone asking for your code is trying to be the second key. You never hand it over.", voice: "/audio/wren/m11c-s5-ok.mp3" }] },
+            { label: "Never share it, real security never asks for your code", outcome: "good", then: [{ t: "wren", text: "Exactly. Real security already knows the code, so they don't need you to read it back. Anyone asking for your code is trying to steal your second key. You never hand it over.", voice: "/audio/wren/m11c-s5-ok.mp3" }] },
             { label: "Read it back so they can help", outcome: "bad", then: [{ t: "wren", text: "That code is the only thing standing between a thief and your account. Read it out and you've handed them the second key. Never share it. Try again.", voice: "/audio/wren/m11c-s5-bad.mp3" }] },
-            { label: "Ask them to text a fresh code first", outcome: "bad", then: [{ t: "wren", text: "Any code you read to a person unlocks your account for them. Don't negotiate, just refuse. Real security never asks. Try again.", voice: "/audio/wren/m11c-s5-bad2.mp3" }] },
+            { label: "Ask them to text a fresh code first", outcome: "bad", then: [{ t: "wren", text: "Any code you read to a person unlocks your account for them. Don't negotiate. Just refuse. Real security never asks. Try again.", voice: "/audio/wren/m11c-s5-bad2.mp3" }] },
           ],
         },
         {
@@ -439,27 +439,27 @@ export const case11Console: ConsoleCase = {
       journalNote: "A rig reusing a stolen password is like a thief trying one stolen key on every door on the street. It only works if all your locks are the same. Unique passwords mean one stolen key opens nothing else. Keep every account's password different, no exceptions.",
       panel: "THREAT MODEL",
       learn: [
-        { t: "wren", text: "See SKELETON KEY's whole play, four moves. First, guess or steal one password. Second, try that same password on all your other accounts, hoping you reused it. Third, if it works, walk straight in. Fourth, use your email to reset everything else. Now look how your vault breaks it: unique passwords kill the reuse, and 2FA kills the walk-in. You've beaten every move before it starts.", voice: "/audio/wren/m11c-s6-learn.mp3" },
+        { t: "wren", text: "Here's SKELETON KEY's whole play, in four moves. First, he guesses or steals one password. Second, he tries that same password on all your other accounts, hoping you reused it. Third, if it works, he walks straight in. Fourth, he uses your email to reset everything else. Now look how your vault breaks it. Unique passwords kill the reuse, and 2FA kills the walk-in. You've beaten every move before it starts.", voice: "/audio/wren/m11c-s6-learn.mp3" },
       ],
       practice: [
         {
           t: "choose",
           prompt: "SKELETON KEY steals one of your passwords. Why does the attack STOP there now?",
           options: [
-            { label: "It's unique, so it opens nothing else, and 2FA blocks even that account", outcome: "good", then: [{ t: "wren", text: "That's the whole defence in one line. A unique password means a stolen one opens exactly one door, and 2FA means it can't even open that. The rig runs out of moves. That's what building defences that HOLD looks like.", voice: "/audio/wren/m11c-s6-ok.mp3" }] },
-            { label: "Because you'll notice and change it in time", outcome: "bad", then: [{ t: "wren", text: "Don't rely on being fast, rely on the locks. The real reason it stops: unique passwords plus 2FA. Try again.", voice: "/audio/wren/m11c-s6-bad.mp3" }] },
-            { label: "Because SKELETON KEY gives up easily", outcome: "bad", then: [{ t: "wren", text: "A rig never gives up, it just fails. What makes it fail is your unique passwords and 2FA. Try again.", voice: "/audio/wren/m11c-s6-bad2.mp3" }] },
+            { label: "It's unique, so it opens nothing else, and 2FA blocks even that account", outcome: "good", then: [{ t: "wren", text: "That's the whole defence in one line. A unique password means a stolen one opens exactly one door, and 2FA means it can't even open that. The rig runs out of moves. That's what building defences that hold looks like.", voice: "/audio/wren/m11c-s6-ok.mp3" }] },
+            { label: "Because you'll notice and change it in time", outcome: "bad", then: [{ t: "wren", text: "Don't rely on being fast. Rely on the locks. The real reason it stops is unique passwords plus 2FA. Try again.", voice: "/audio/wren/m11c-s6-bad.mp3" }] },
+            { label: "Because SKELETON KEY gives up easily", outcome: "bad", then: [{ t: "wren", text: "A rig never gives up. It just fails. What makes it fail is your unique passwords and 2FA. Try again.", voice: "/audio/wren/m11c-s6-bad2.mp3" }] },
           ],
         },
         {
           t: "toggle",
-          prompt: "SKELETON KEY runs its play. Flip ON the two defences that stop it dead:",
+          prompt: "SKELETON KEY runs his play. Flip ON the two defences that stop him dead:",
           switches: [
             { label: "Give every account its own unique password", sub: "kills the reuse move", want: true },
             { label: "Switch on 2FA", sub: "kills the walk-in", want: true },
             { label: "Reuse one password to keep it simple", sub: "", want: false },
           ],
-          ok: "Right. Unique passwords kill the reuse trick, and 2FA blocks the walk-in. Two switches beat all four of its moves.",
+          ok: "Right. Unique passwords kill the reuse trick, and 2FA blocks the walk-in. Two switches beat all four of his moves.",
           okVoice: "/audio/wren/m11c-s6-q2ok.mp3",
         },
         {
@@ -486,15 +486,15 @@ export const case11Console: ConsoleCase = {
       journalNote: "Knowing how a lock works doesn't lock your door. Only actually turning the key does. The single biggest win is 2FA on your email, because it's the master key to every other account. This week, turn on 2FA for your email with an adult.",
       panel: "ACTION PLAN",
       learn: [
-        { t: "wren", text: "Last skill, and it's a real-world one. None of this protects you until you actually switch it on. So here's your mission outside these walls: turn on 2FA on your most important account, your email, this week, with a parent or carer to help. Then, over time, let a password manager take over the rest. Knowing is good. Flipping the switch is what keeps you safe.", voice: "/audio/wren/m11c-s7-learn.mp3" },
+        { t: "wren", text: "This is the last skill, and it's a real-world one. None of this protects you until you actually switch it on. So here's your mission outside these walls. This week, turn on 2FA for your most important account, your email, with a parent or carer to help. Then, over time, let a password manager take over the rest. Knowing is good, but flipping the switch is what keeps you safe.", voice: "/audio/wren/m11c-s7-learn.mp3" },
       ],
       practice: [
         {
           t: "choose",
           prompt: "If you only do ONE thing this week, which protects you most?",
           options: [
-            { label: "Turn on 2FA for your email, with an adult", outcome: "good", then: [{ t: "wren", text: "The single best move you can make. Email resets everything else, so locking it with a second key protects your whole digital life. Do that one thing, and you're already ahead of most adults.", voice: "/audio/wren/m11c-s7-ok.mp3" }] },
-            { label: "Change your game password to something longer", outcome: "bad", then: [{ t: "wren", text: "Not bad, but the biggest win is 2FA on your EMAIL, because it can reset every other account. Start there. Try again.", voice: "/audio/wren/m11c-s7-bad.mp3" }] },
+            { label: "Turn on 2FA for your email, with an adult", outcome: "good", then: [{ t: "wren", text: "That's the single best move you can make. Email resets everything else, so locking it with a second key protects your whole digital life. Do that one thing, and you're already ahead of most adults.", voice: "/audio/wren/m11c-s7-ok.mp3" }] },
+            { label: "Change your game password to something longer", outcome: "bad", then: [{ t: "wren", text: "That's not bad, but the biggest win is 2FA on your email, because it can reset every other account. Start there. Try again.", voice: "/audio/wren/m11c-s7-bad.mp3" }] },
             { label: "Nothing, you understand it now, that's enough", outcome: "bad", then: [{ t: "wren", text: "Understanding a lock doesn't lock the door. The protection only starts when you flip the switch. Pick the real action. Try again.", voice: "/audio/wren/m11c-s7-bad2.mp3" }] },
           ],
         },
@@ -508,7 +508,7 @@ export const case11Console: ConsoleCase = {
             { label: "Decide that knowing is enough", good: false, sub: "knowing locks nothing" },
             { label: "Keep reusing one password", good: false, sub: "the opposite of safe" },
           ],
-          ok: "Perfect. 2FA on your email first, then let a manager take over. Real switches, flipped for real.",
+          ok: "Perfect. Put 2FA on your email first, then let a manager take over. Those are real switches, flipped for real.",
           okVoice: "/audio/wren/m11c-s7-q2ok.mp3",
         },
         {
@@ -519,7 +519,7 @@ export const case11Console: ConsoleCase = {
             { label: "An old forum you never use", sub: "", want: false },
             { label: "A random quiz site", sub: "", want: false },
           ],
-          ok: "Right. Email first, always. Whoever holds your email can reset every other account you own.",
+          ok: "Right. Your email always comes first. Whoever holds your email can reset every other account you own.",
           okVoice: "/audio/wren/m11c-s7-q3ok.mp3",
         },
       ],
@@ -529,7 +529,7 @@ export const case11Console: ConsoleCase = {
   /* ================= BOSS · "Locksmith's Nightmare" (blind, no coaching) ================= */
   boss: {
     panel: "LIVE ATTACK · SKELETON KEY",
-    intro: "This is it, Agent. SKELETON KEY has dusted off the cracking rig from your last case and pointed it straight at your accounts. No hints from me. You've built the defences, now watch them work, and tell me exactly why the rig fails.",
+    intro: "This is it, Agent. SKELETON KEY has dusted off the cracking rig from Case 3 and pointed it straight at your accounts. There are no hints from me. You've built the defences, so now watch them work, and tell me exactly why the rig fails.",
     introVoice: "/audio/wren/m11c-boss-intro.mp3",
     phases: [
       {
@@ -555,7 +555,7 @@ export const case11Console: ConsoleCase = {
           { t: "sys", text: "TRYING leaked password on: email ✗  bank ✗  game ✗   (none match)" },
           {
             t: "choose",
-            prompt: "It has a real password of yours from an old leak, and it opens nothing. Why?",
+            prompt: "He has a real password of yours from an old leak, and it opens nothing. Why?",
             options: [
               { label: "Every account has its OWN password, reuse is dead", outcome: "good" },
               { label: "The leak must have been fake", outcome: "bad", then: [{ t: "sys", text: "SKELETON KEY: leak verified real… still no matches" }] },
@@ -570,7 +570,7 @@ export const case11Console: ConsoleCase = {
           { t: "sys", text: "SKELETON KEY: somehow got your email password. Attempting login…" },
           {
             t: "flip",
-            prompt: "SKELETON KEY doesn't know this, but you can run the comparison yourself. Flip the switch, then flip the card to watch its login attempt.",
+            prompt: "SKELETON KEY doesn't know this, but you can run the comparison yourself. Flip the switch, then flip the card to watch his login attempt.",
             you: {
               kind: "toggle",
               label: "2FA on your email · simulator",
@@ -584,10 +584,10 @@ export const case11Console: ConsoleCase = {
               whenGood: "LOGIN BLOCKED · SECOND KEY REQUIRED · code sent to your phone only",
             },
             ask: {
-              prompt: "It has your actual email password. Why is your REAL account still locked out?",
+              prompt: "He has your actual email password. Why is your REAL account still locked out?",
               options: [
-                { label: "2FA, it doesn't have the second key on your phone", outcome: "good" },
-                { label: "It just needs to guess the code too", outcome: "bad", then: [{ t: "sys", text: "SKELETON KEY: 6-digit code, 1,000,000 options, 3 tries… LOCKED OUT" }] },
+                { label: "2FA, he doesn't have the second key on your phone", outcome: "good" },
+                { label: "He just needs to guess the code too", outcome: "bad", then: [{ t: "sys", text: "SKELETON KEY: 6-digit code, 1,000,000 options, 3 tries… LOCKED OUT" }] },
                 { label: "The password must be wrong", outcome: "bad", then: [{ t: "sys", text: "PASSWORD ACCEPTED · but SECOND KEY still required · ✗" }] },
               ],
             },
@@ -595,13 +595,13 @@ export const case11Console: ConsoleCase = {
         ],
       },
     ],
-    win: "Watch that, Agent. Millions of guesses, a real leaked password, even your email password, and the rig walked away with NOTHING. Unique passwords killed the reuse, and 2FA killed the last door. You didn't dodge SKELETON KEY this time. You built a wall it couldn't climb, and made it bounce off. That's what defences that hold look like.",
+    win: "Watch that, Agent. The rig threw millions of guesses, a real leaked password, and even your email password, and it walked away with nothing. Unique passwords killed the reuse, and 2FA killed the last door. You didn't dodge SKELETON KEY this time. You built a wall he couldn't climb, and made him bounce off. That's what defences that hold look like.",
     winVoice: "/audio/wren/m11c-boss-win.mp3",
   },
 
   /* ================= TEST · "Prove it" (blind, must-pass) ================= */
   test: {
-    intro: "Last thing before I sign off your build, the test. A fresh set, no hints, and you'll need to get most of them right. Everything you just built, put it to work. Ready?",
+    intro: "There's one last thing before I sign off your build, and that's the test. It's a fresh set with no hints, and you'll need to get most of them right. Put everything you just built to work. Ready?",
     introVoice: "/audio/wren/m11c-test-intro.mp3",
     passVoice: "/audio/wren/m11c-test-pass.mp3",
     failVoice: "/audio/wren/m11c-test-fail.mp3",

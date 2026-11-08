@@ -102,7 +102,12 @@ const topic4: TopicManifest = {
   check: {
     explain: {
       prompt: "First American exposed around 885 million documents through a flaw where changing a number in the URL showed a different document. Explain what broken access control is, why it must be enforced on the server, and why this flaw was so easy to exploit.",
-      modelAnswer: "Broken access control is the failure to stop users reaching data or actions they are not allowed to, OWASP's number-one web risk. First American's flaw was the classic form, an insecure direct object reference: documents were reachable by a URL containing a sequential number, and the application never checked that the requester was authorised to view that specific document, so simply changing the number showed someone else's. It must be enforced on the server because anything decided in the browser can be bypassed, hiding a button or trusting a client-side value does nothing, so the server must check, on every request, both who you are and whether you may access this exact item, ideally default-deny. It was so easy to exploit because there was effectively no check at all: anyone who found one valid link could walk the entire archive just by counting, no skill or authentication required.",
+      modelAnswer: [
+        "Broken access control is the failure to stop users reaching data or actions they are not allowed to, OWASP's number-one web risk.",
+        "First American's flaw was the classic insecure direct object reference: documents were reachable by a URL containing a sequential number, and the application never checked that the requester was authorised to view that specific document, so changing the number showed someone else's.",
+        "It must be enforced on the server because anything decided in the browser can be bypassed: hiding a button or trusting a client-side value does nothing, so the server must check on every request both who you are and whether you may access this exact item, ideally default-deny.",
+        "It was so easy to exploit because there was effectively no check at all: anyone who found one valid link could walk the entire archive just by counting, with no skill or authentication required.",
+      ],
     },
     quiz: [
       {

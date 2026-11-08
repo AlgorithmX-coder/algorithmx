@@ -42,7 +42,7 @@ export const mission05: MissionManifest = {
   transmission: {
     headline: "STORM WARNING",
     lines: [
-      "Agent, PHANTOM HOOK is back, and he's done being subtle. Texts, QR posters, DMs, emails. Every screen you own, all at once.",
+      "Agent, PHANTOM HOOK is back, and he's done being subtle. He's using texts, QR posters, DMs, and emails, on every screen you own, all at once.",
       "Volume is the weapon, and panic is the plan. 'Tick tock, player,' he says, hoping you'll tap before you think.",
       "But here's the thing. Analysts don't panic in a storm. They work the queue. Tonight we read every costume, and find the one hook cut just for you.",
     ],
@@ -56,7 +56,7 @@ export const mission05: MissionManifest = {
       "Read the address, not the name tag, and spot the spear in the spray",
       "Work the queue by severity, and drill the two-check habit",
     ],
-    wrenLine: "Seven skills, then a test to close the case, and close out Block One. One rule tonight, Agent. His storm is loud, so slow down. Ready?",
+    wrenLine: "You'll learn seven skills, then take a test to close the case, and close out Block One. There's one rule tonight, Agent. His storm is loud, so slow down. Ready?",
   },
 
   cycles: [
@@ -67,19 +67,19 @@ export const mission05: MissionManifest = {
       concept: "The same scam wears a different costume on every channel",
       checkpoint: {
         questions: [
-          { id: "m05-c1-chk1", question: "You get an email AND an Instagram DM the same afternoon, both saying your account is locked and both linking to secure-fix-now.net. What does that tell you?", options: ["One scammer running the same play in two costumes", "Two unrelated companies happened to contact you", "Proof the warning must be real, since it came twice"], answer: 0, ok: "Right. Same link, same story, two channels. That is one author swapping costumes, not two real alerts.", okVoice: "/audio/wren/m05-c1-chk1-ok.mp3" },
-          { id: "m05-c1-chk2", question: "PHANTOM HOOK jumps from a text to a QR poster to a DM. Why keep changing costume like that?", options: ["Because posters simply cost him money", "Because he prefers one channel over another", "To hide that it is all one scam underneath"], answer: 2, ok: "Exactly. The costume keeps changing, the moves stay the same. Match the moves and the whole storm becomes one case.", okVoice: "/audio/wren/m05-c1-chk2-ok.mp3" },
+          { id: "m05-c1-chk1", question: "You get an email AND an Instagram DM the same afternoon, both saying your account is locked and both linking to secure-fix-now.net. What does that tell you?", options: ["One scammer running the same play in two costumes", "Two unrelated companies happened to contact you", "Proof the warning must be real, since it came twice"], answer: 0, ok: "Right. It's the same link and the same story on two channels. That is one author swapping costumes, not two real alerts.", okVoice: "/audio/wren/m05-c1-chk1-ok.mp3" },
+          { id: "m05-c1-chk2", question: "PHANTOM HOOK jumps from a text to a QR poster to a DM. Why keep changing costume like that?", options: ["Because posters simply cost him money", "Because he prefers one channel over another", "To hide that it is all one scam underneath"], answer: 2, ok: "Exactly. The costume keeps changing, but the moves stay the same. Match the moves and the whole storm becomes one case.", okVoice: "/audio/wren/m05-c1-chk2-ok.mp3" },
         ],
       },
       promise: "You'll learn to see one scam wearing three costumes at once.",
       instruction: "Tap the 3 fingerprints every channel shares. One message is genuinely fine.",
-      practiceIntro: "Now let's put it to work, Agent. The channel monitor's live on the next screen, last twenty minutes of traffic. Tap the three fingerprints every scam channel shares, and leave the one genuine alert alone.",
+      practiceIntro: "Now let's put it to work, Agent. The channel monitor's live on the next screen, with the last twenty minutes of traffic. Tap the three fingerprints every scam channel shares, and leave the one genuine alert alone.",
       practiceIntroVoice: "/audio/wren/m05-c1-practice.mp3",
       intel: {
         beats: [
-          "A text. A QR poster. A DM. Three different screens, three different costumes, and one very busy quick-change artist behind all of them.",
+          "A text, a QR poster, and a DM are three different screens and three different costumes. There's one very busy quick-change artist behind all of them.",
           "Underneath every costume is one author, running one play. He swaps the costume because it's cheap. He keeps the MOVES, because they work.",
-          "And moves leave fingerprints. The same ticking clock. The same weird verify-website. The same one ask: hand over your login.",
+          "And moves leave fingerprints. There's the same ticking clock, the same weird verify website, and the same one ask, which is to hand over your login.",
           "So don't get lost in the costumes. Match the fingerprints, and a whole screaming storm collapses into one single case.",
         ],
         beatAudio: [
@@ -92,7 +92,7 @@ export const mission05: MissionManifest = {
       fieldwork: {
         verb: "INSPECT",
         payload: {
-          intro: "The channel monitor, last twenty minutes. Tap the 3 fingerprints every scam channel shares. One message is a genuine school alert.",
+          intro: "Here's the channel monitor for the last twenty minutes. Tap the three fingerprints every scam channel shares. One message is a genuine school alert.",
           device: { app: "CHANNEL MONITOR", owner: "ARC INTERCEPTS · LAST 20 MIN" },
           header: [
             { label: "FEED:", seg: { id: "feed", text: "three channels, one storm" } },
@@ -108,7 +108,7 @@ export const mission05: MissionManifest = {
             { id: "domain", label: "The verify-domain", why: "The same weird 'verify' website family shows up under every single costume." },
             { id: "ask", label: "The ask", why: "Three channels, one ask: hand over your login. That's the whole play, every time." },
           ],
-          doneLine: "Three costumes, one signature: the clock, the verify-site, the login ask. Tick tock, PHANTOM HOOK. Your storm is one case now.",
+          doneLine: "There were three costumes, with one signature. It was the clock, the verify site, and the login ask. Tick tock, PHANTOM HOOK. Your storm is one case now.",
           doneAudio: "/audio/wren/m05-c1-review.mp3",
         },
       },
@@ -122,8 +122,8 @@ export const mission05: MissionManifest = {
       concept: "The sender's name is a costume too; the address underneath is the truth",
       checkpoint: {
         questions: [
-          { id: "m05-c2-chk1", question: "A DM's name tag reads 'Head Teacher Office', but it comes from mrsp-school-alerts.co. Should the name make you trust it?", evidence: "from: mrsp-school-alerts.co", options: ["Yes, only a real teacher could set that name", "No, anyone can type any name they like", "Yes, because it clearly mentions the school"], answer: 1, ok: "That is it. The name tag is typed by whoever sent it. The address, mrsp-school-alerts dot co, is the giveaway.", okVoice: "/audio/wren/m05-c2-chk1-ok.mp3" },
-          { id: "m05-c2-chk2", question: "An email says 'StreamBox Billing'. You peel back the name and the real address is billing@streambox.com. Real or fake?", evidence: "billing@streambox.com", options: ["Real, it is the genuine streambox.com", "Fake, billing teams never send any emails", "Fake, the name sounds far too friendly"], answer: 0, ok: "Correct. Name and address agree, and the address is the real streambox.com. This one genuinely is them.", okVoice: "/audio/wren/m05-c2-chk2-ok.mp3" },
+          { id: "m05-c2-chk1", question: "A DM's name tag reads 'Head Teacher Office', but it comes from mrsp-school-alerts.co. Should the name make you trust it?", evidence: "from: mrsp-school-alerts.co", options: ["Yes, only a real teacher could set that name", "No, anyone can type any name they like", "Yes, because it clearly mentions the school"], answer: 1, ok: "That is it. The name tag is typed by whoever sent it. The address, mrsp-school-alerts.co, is the giveaway.", okVoice: "/audio/wren/m05-c2-chk1-ok.mp3" },
+          { id: "m05-c2-chk2", question: "An email says 'StreamBox Billing'. You peel back the name and the real address is billing@streambox.com. Real or fake?", evidence: "billing@streambox.com", options: ["Real, it is the genuine streambox.com", "Fake, billing teams never send any emails", "Fake, the name sounds far too friendly"], answer: 0, ok: "Correct. The name and address agree, and the address is the real streambox.com. This one genuinely is them.", okVoice: "/audio/wren/m05-c2-chk2-ok.mp3" },
         ],
       },
       promise: "You'll learn why the sender's name proves absolutely nothing.",
@@ -132,9 +132,9 @@ export const mission05: MissionManifest = {
       practiceIntroVoice: "/audio/wren/m05-c2-practice.mp3",
       intel: {
         beats: [
-          "Every message arrives wearing a name tag. 'GameHub Support.' 'Library Desk.' Even your head teacher's name. And you read the tag and relax.",
-          "Here's the catch you've been missing. The name tag is typed by whoever SENT the message. Anyone can type anything. PHANTOM HOOK types whatever fits you.",
-          "The address underneath, though? That's much harder to fake. 'GameHub Support' can send from a random verify-site, but it can't magic up the real gamehub.com.",
+          "Every message arrives wearing a name tag, like GameHub Support, the Library Desk, or even your head teacher's name. And you read the tag and relax.",
+          "Here's the catch you've been missing. The name tag is typed by whoever sent the message. Anyone can type anything, and PHANTOM HOOK types whatever fits you.",
+          "The address underneath is much harder to fake. A message from GameHub Support can come from a random verify site, but it can't magic up the real gamehub.com.",
           "So do what an analyst does. Ignore the name. Peel it back, read the actual address, and let THAT tell you who really sent it.",
         ],
         beatAudio: [
@@ -147,7 +147,7 @@ export const mission05: MissionManifest = {
       fieldwork: {
         verb: "UNMASK",
         payload: {
-          intro: "Five messages, all wearing the 'GameHub' name tag. Tap each to read the real address, then call REAL or FAKE.",
+          intro: "Here are five messages, all wearing the GameHub name tag. Tap each one to read the real address, then call it real or fake.",
           brand: "GameHub",
           items: [
             { id: "u1", displayName: "GameHub Support", address: "help@gamehub.com", real: true, why: "The address is the real gamehub.com. This one genuinely is them." },
@@ -156,7 +156,7 @@ export const mission05: MissionManifest = {
             { id: "u4", displayName: "GameHub", address: "noreply@gamehub.com", real: true, why: "Real domain, gamehub.com, under an official-looking name. Genuine." },
             { id: "u5", displayName: "GameHub Rewards", address: "team@gamehub.account-fix.ru", real: false, why: "The real domain here is 'account-fix dot ru', with gamehub only pasted in front. Fake." },
           ],
-          doneLine: "Names are costume, addresses are fingerprints. Two of those were really GameHub. The other three were PHANTOM HOOK, wearing GameHub's name tag.",
+          doneLine: "Names are costumes, and addresses are fingerprints. Two of those were really GameHub. The other three were PHANTOM HOOK, wearing GameHub's name tag.",
           doneAudio: "/audio/wren/m05-c2-review.mp3",
         },
       },
@@ -171,19 +171,19 @@ export const mission05: MissionManifest = {
       checkpoint: {
         questions: [
           { id: "m05-c3-chk1", question: "Why can a scammer stick a fake QR sticker over a real one and fool almost everyone?", options: ["Because QR codes need a special camera app", "Because stickers are really hard to make", "Because you cannot see where a square goes"], answer: 2, ok: "Right. A square hides its destination. Swap the sticker and the same-looking code now points at his site.", okVoice: "/audio/wren/m05-c3-chk1-ok.mp3" },
-          { id: "m05-c3-chk2", question: "You scan a bus-stop QR to buy a ticket, and it previews buytickets.city-transit-verify.net. What now?", evidence: "buytickets.city-transit-verify.net", options: ["Pay quickly, because the bus is nearly here", "Do not go, type the real address yourself", "Scan it a second time, just to be sure"], answer: 1, ok: "Good call. The preview showed a stranger's verify-site, not the real one. Type the real address in yourself instead.", okVoice: "/audio/wren/m05-c3-chk2-ok.mp3" },
+          { id: "m05-c3-chk2", question: "You scan a bus-stop QR to buy a ticket, and it previews buytickets.city-transit-verify.net. What now?", evidence: "buytickets.city-transit-verify.net", options: ["Pay quickly, because the bus is nearly here", "Do not go, type the real address yourself", "Scan it a second time, just to be sure"], answer: 1, ok: "Good call. The preview showed a stranger's verify site, not the real one. Type the real address in yourself instead.", okVoice: "/audio/wren/m05-c3-chk2-ok.mp3" },
         ],
       },
       promise: "You'll learn to never trust a square you can't read.",
       instruction: "Tap each code to scan the real address, then call REAL or FAKE.",
-      practiceIntro: "Now let's put it to work, Agent. Four canteen top-up QR codes are waiting, straight from around school. Scan each to preview the real address, then call it real or fake.",
+      practiceIntro: "Now let's put it to work, Agent. Four canteen top-up QR codes are waiting, straight from around school. Scan each one to preview the real address, then call it real or fake.",
       practiceIntroVoice: "/audio/wren/m05-c3-practice.mp3",
       intel: {
         beats: [
-          "Here's PHANTOM HOOK's newest costume. A QR code. A little square you point your camera at, and it whisks you off somewhere. But WHERE? You can't read a square.",
+          "Here's PHANTOM HOOK's newest costume, the QR code. It's a little square you point your camera at, and it whisks you off somewhere. But where does it go? You can't read a square.",
           "That's the whole trick. A QR code hides its destination completely. You just have to trust it, and he is absolutely counting on that trust.",
-          "So he prints stickers and slaps them over the real ones. On posters, on tables, on the canteen machine itself. Same square, brand-new destination: his.",
-          "The rule? Never trust a square blind. Scan to PREVIEW the address first, and if it's not the place's real website, don't go. When in doubt, type the address in yourself.",
+          "So he prints stickers and slaps them over the real ones, on posters, on tables, and on the canteen machine itself. It's the same square, with a brand-new destination, and it's his.",
+          "What's the rule? Never trust a square blind. Scan to preview the address first, and if it's not the place's real website, don't go. When in doubt, type the address in yourself.",
         ],
         beatAudio: [
           "/audio/wren/m05-c3-b1.mp3",
@@ -195,12 +195,12 @@ export const mission05: MissionManifest = {
       fieldwork: {
         verb: "UNMASK",
         payload: {
-          intro: "Four canteen top-up QR codes from around school. Scan each to preview the real address, then call REAL or FAKE.",
+          intro: "Here are four canteen top-up QR codes from around school. Scan each one to preview the real address, then call it real or fake.",
           brand: "the school canteen",
           sourceLabel: "QR CODE",
           revealText: "▸ TAP TO SCAN THE CODE",
           items: [
-            { id: "qr1", displayName: "Canteen top-up (on the wall by the hall)", address: "pay.myschool.sch.uk/canteen", real: true, why: "Scans to the school's own real website, ending sch.uk. Genuine." },
+            { id: "qr1", displayName: "Canteen top-up (on the wall by the hall)", address: "pay.myschool.com/canteen", real: true, why: "Scans to the school's own real website, myschool.com. Genuine." },
             { id: "qr2", displayName: "Canteen top-up (sticker on the machine)", address: "canteen-pay-verify.net", real: false, why: "A random 'verify' site stuck over the real one. The classic QR swap." },
             { id: "qr3", displayName: "URGENT: re-verify your canteen account", address: "myschool-canteen-secure.info", real: false, why: "Urgent, plus a look-alike domain. Your school never says 'urgent, re-verify'." },
             { id: "qr4", displayName: "Lunch balance top-up", address: "myschool.canteen-topup.ru", real: false, why: "The real domain is 'canteen-topup dot ru'. Nothing to do with your school. Fake." },
@@ -225,13 +225,13 @@ export const mission05: MissionManifest = {
       },
       promise: "You'll learn why the quiet, personal message is the real threat.",
       instruction: "Three flagged messages, one of you. Make the call: which goes to the top?",
-      practiceIntro: "Now let's put it to work, Agent. The storm's live and three messages just got flagged. The queue is yours, read them, then make the call.",
+      practiceIntro: "Now let's put it to work, Agent. The storm's live, and three messages just got flagged. The queue is yours. Read them, then make the call.",
       practiceIntroVoice: "/audio/wren/m05-c4-practice.mp3",
       intel: {
         beats: [
           "In a storm, every message is screaming for your attention. So an analyst doesn't answer the loudest one. They rank them by how dangerous they really are.",
-          "And loud is not the same as dangerous. A message blasted to the whole school is SPRAY. It's just guessing, hoping someone panics.",
-          "But a message that knows your name, your form room, your teacher? That's a SPEAR. Someone did real homework on YOU to write it.",
+          "And loud is not the same as dangerous. A message blasted to the whole school is spray. It's just guessing, and hoping someone panics.",
+          "But what about a message that knows your name, your form room, and your teacher? That's a spear. Someone did real homework on you to write it.",
           "Spray is cheap and it's guessing. A spear cost effort, which means someone decided you were worth targeting. Targeted beats loud, every single time.",
         ],
         beatAudio: [
@@ -287,14 +287,14 @@ export const mission05: MissionManifest = {
       },
       promise: "You'll learn to handle the real threats first and let the noise wait.",
       instruction: "Sort the flood: handle now, or log and ignore?",
-      practiceIntro: "Now let's put it to work, Agent. The flood's live on the next screen. Sort each message: a real threat to handle now, or just noise to log and ignore?",
+      practiceIntro: "Now let's put it to work, Agent. The flood's live on the next screen. Sort each message. Is it a real threat to handle now, or just noise to log and ignore?",
       practiceIntroVoice: "/audio/wren/m05-c5-practice.mp3",
       intel: {
         beats: [
           "When the storm hits, your inbox is a wall of noise, and every message wants to be first. Don't let the volume set your order. YOU set the order.",
-          "Loud is not dangerous. A message shouting 'FREE JETPACK' in ten emojis is loud, and asks for nothing real. That's noise. Log it, move on.",
-          "The dangerous ones are usually quieter and more specific. The one asking for your login. The one that knows your name. Those go straight to the top.",
-          "So work the queue like a pro. Real threats first, noise last, and never, ever let the flood rush you into tapping something.",
+          "Loud is not dangerous. A message shouting about a free jetpack in ten emojis is loud, and it asks for nothing real. That's noise, so log it and move on.",
+          "The dangerous ones are usually quieter and more specific, like the one asking for your login, or the one that knows your name. Those go straight to the top.",
+          "So work the queue like a pro. Handle real threats first and noise last, and never, ever let the flood rush you into tapping something.",
         ],
         beatAudio: [
           "/audio/wren/m05-c5-b1.mp3",
@@ -306,7 +306,7 @@ export const mission05: MissionManifest = {
       fieldwork: {
         verb: "SORT",
         payload: {
-          intro: "The flood is live. Sort each message: is it a real threat to handle now, or just noise to log and ignore?",
+          intro: "The flood is live. Sort each message. Is it a real threat to handle now, or just noise to log and ignore?",
           buckets: [
             { id: "now", label: "HANDLE NOW", hint: "a real threat" },
             { id: "noise", label: "LOG & IGNORE", hint: "just noise" },
@@ -343,10 +343,10 @@ export const mission05: MissionManifest = {
       practiceIntroVoice: "/audio/wren/m05-c6-practice.mp3",
       intel: {
         beats: [
-          "Let's name PHANTOM HOOK's whole play, because you've now seen every part of it. Move one, MANY COSTUMES. The same hook by text, by QR, by DM, by email. Wherever you look, a costume is waiting.",
-          "Move two, a BORROWED NAME. He types a trusted name on the tag, GameHub, the library, your head teacher, while the address underneath is pure him.",
-          "Move three, THE ASK. Every costume, every channel, ends the exact same way: hand over your login. That's the only thing he ever actually wants.",
-          "And the scariest upgrade? Sometimes he BUYS a file on you first, so the hook already knows your name. That's when he stops being spray and becomes a spear. Remember that. It matters next case.",
+          "Let's name PHANTOM HOOK's whole play, because you've now seen every part of it. Move one is many costumes. It's the same hook by text, by QR, by DM, and by email. Wherever you look, a costume is waiting.",
+          "Move two is a borrowed name. He types a trusted name on the tag, like GameHub, the library, or your head teacher, while the address underneath is pure him.",
+          "Move three is the ask. Every costume, on every channel, ends the exact same way. He wants you to hand over your login. That's the only thing he ever actually wants.",
+          "And what's the scariest upgrade? Sometimes he buys a file on you first, so the hook already knows your name. That's when he stops being spray and becomes a spear. Remember that, because you'll need it before this case is closed.",
         ],
         beatAudio: [
           "/audio/wren/m05-c6-b1.mp3",
@@ -358,7 +358,7 @@ export const mission05: MissionManifest = {
       fieldwork: {
         verb: "PROFILE",
         payload: {
-          intro: "Everything you've seen tonight, on one board. Tap the 3 moves that are really PHANTOM HOOK's.",
+          intro: "Everything you've seen tonight is on one board. Tap the three moves that are really PHANTOM HOOK's.",
           evidence: [
             "The same hook arrived by text, QR, DM and email",
             "Every sender name was borrowed; the address never matched",
@@ -396,10 +396,10 @@ export const mission05: MissionManifest = {
       practiceIntroVoice: "/audio/wren/m05-c7-practice.mp3",
       intel: {
         beats: [
-          "So how do you beat a storm that hits every channel at once? Not with panic. With a drill. The same four steps, every single time, no matter which costume it's wearing.",
-          "First, the hardest one. PAUSE. Don't tap anything. The ticking clock is fake, and the pause is what beats him.",
-          "Then two quick checks. Check one, does the ADDRESS match the name? Check two, open the REAL app yourself, not his link, and see if it's actually there.",
-          "And if it still feels off after both? Tell an adult you trust. Two checks and a grown-up. Ten seconds, and his whole storm is just noise.",
+          "So how do you beat a storm that hits every channel at once? You don't beat it with panic. You beat it with a drill, the same four steps every single time, no matter which costume it's wearing.",
+          "First comes the hardest one, which is to pause. Don't tap anything. The ticking clock is fake, and the pause is what beats him.",
+          "Then come two quick checks. Check one, does the address match the name? Check two, open the real app yourself, not his link, and see if it's actually there.",
+          "And what if it still feels off after both? Tell an adult you trust. It's two checks and a grown-up. That takes ten seconds, and his whole storm is just noise.",
         ],
         beatAudio: [
           "/audio/wren/m05-c7-b1.mp3",
@@ -468,7 +468,7 @@ export const mission05: MissionManifest = {
 
   catchThem: {
     intro:
-      "Okay Agent, this is the real test, and it closes out Block One. Nineteen questions, and not one of them is “what did I say”. Every single one makes you THINK. Take everything you learned this block and work out an answer you've never seen before. I won't tell you how you're doing until the very end. Get fifteen right to close the case. Miss it, and you sit the whole case again. Take your time.",
+      "Okay, Agent, this is the real test, and it closes out Block One. There are nineteen questions, and none of them just ask you to repeat what I said. Every single one makes you think. Use everything you've learned this block to work out answers you've never seen before. I won't tell you how you're doing until the very end. Get fifteen right, and you close the case. If you get fewer than fifteen, you'll play the whole case again. So take your time, and good luck.",
     pass: 15,
     voice: {
       intro: "/audio/wren/m05-catch-intro.mp3",
@@ -510,7 +510,7 @@ export const mission05: MissionManifest = {
     ],
     realWorldMove:
       "This week: when an urgent message lands, run the drill. Pause. Does the address match the name? Then open the real app yourself and check there. Two checks, ten seconds. Still feels off? Tell an adult you trust.",
-    wrenLine: "Block One, closed. PHANTOM HOOK's storm is one filed case, Agent. CONFIDENTIAL clearance, confirmed. Wear it well.",
+    wrenLine: "Block One is closed, and PHANTOM HOOK's storm is one filed case, Agent. Your Confidential clearance is confirmed. Wear it well.",
   },
 
   voice: {

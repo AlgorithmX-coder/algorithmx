@@ -112,7 +112,7 @@ export const mission01: MissionManifest = {
             {
               id: "clock",
               label: "The countdown",
-              reveal: "This one fakes RUSH. A real company would give you time. This clock is made up, it's only here to hurry you along before your brain catches up.",
+              reveal: "This one fakes rush. A real company would give you time. This clock is made up. It's only here to hurry you along before your brain catches up.",
               audio: "/audio/wren/m01-c1-art-clock.mp3",
             },
             {

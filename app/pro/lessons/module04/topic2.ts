@@ -107,7 +107,13 @@ const topic2: TopicManifest = {
   check: {
     explain: {
       prompt: "Explain the difference between symmetric and asymmetric encryption, the key-distribution problem, and how HTTPS uses both.",
-      modelAnswer: "Symmetric encryption uses a single shared secret key for both locking and unlocking; it is fast and efficient, ideal for bulk data, but it has the key-distribution problem: how do you get the shared key to the other person securely, especially a stranger, without an eavesdropper on the insecure channel grabbing it? Asymmetric encryption solves this with a public/private key pair, each person has a public key they share freely and a private key they keep secret, and anything encrypted with your public key can only be decrypted with your private key, so anyone can send you a secret using your freely-shared public key and only you can read it, with no prior shared secret needed, though it is slower than symmetric. HTTPS uses both, each for what it does best: when your browser connects to a website, it uses asymmetric encryption to safely agree a shared symmetric key with the server (solving key distribution), then switches to fast symmetric encryption for the actual conversation, giving the stranger-friendly key exchange of asymmetric crypto with the speed of symmetric. This combination, enabled by the invention of public-key cryptography, is what makes the secure internet possible.",
+      modelAnswer: [
+        "Symmetric encryption uses a single shared secret key for both locking and unlocking; it is fast and ideal for bulk data, but it has the key-distribution problem: how do you get the shared key to a stranger securely without an eavesdropper grabbing it?",
+        "Asymmetric encryption solves this with a public/private key pair: everyone shares a public key freely and keeps a private key secret.",
+        "Anything encrypted with your public key can only be decrypted with your private key, so anyone can send you a secret with no prior shared secret needed, though it is slower than symmetric.",
+        "HTTPS uses both: the browser uses asymmetric encryption to safely agree a shared symmetric key with the server, then switches to fast symmetric encryption for the actual conversation.",
+        "This combination, enabled by public-key cryptography, gives the stranger-friendly key exchange of asymmetric with the speed of symmetric, and is what makes the secure internet possible.",
+      ],
     },
     quiz: [
       {
