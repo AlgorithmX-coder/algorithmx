@@ -125,3 +125,66 @@ export function RevokeFirmButton({ orgId, revoked }: { orgId: string; revoked: b
 
   return <button type="button" className="cf-btn" onClick={() => setConfirming(true)}>Revoke access</button>;
 }
+
+/**
+ * Delete a firm for good. Only rendered once its access is closed.
+ *
+ * Same rule and same endpoint as the schools side: closing access is a
+ * separate, reversible act that someone had to mean, and this button does
+ * not exist before it. The server checks the condition again, because a
+ * button is not a gate.
+ *
+ * Unlike a school, deleting a firm never deletes its people. A firm's
+ * learners are real people with real work addresses who may hold a course
+ * of their own; they lose the seat and the enrolment and keep the account.
+ */
+export function DeleteFirmButton({ orgId, name, revoked }: { orgId: string; name: string; revoked: boolean }) {
+  const router = useRouter();
+  const [open, setOpen] = useState(false);
+  const [typed, setTyped] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [err, setErr] = useState<string | null>(null);
+
+  if (!revoked) return null;
+
+  async function remove() {
+    setBusy(true);
+    setErr(null);
+    try {
+      const res = await fetch("/api/admin/delete-org", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ orgId }) });
+      const j = (await res.json().catch(() => ({}))) as { error?: string };
+      if (!res.ok) throw new Error(j.error ?? "Something went wrong.");
+      router.push("/admin/firms");
+      router.refresh();
+    } catch (e) {
+      setErr(e instanceof Error ? e.message : "Something went wrong.");
+      setBusy(false);
+    }
+  }
+
+  if (!open) {
+    return <button type="button" className="cf-btn" style={{ color: "#a11" }} onClick={() => setOpen(true)}>Delete this firm</button>;
+  }
+
+  return (
+    <span style={{ display: "inline-flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
+      <span className="cf-note">
+        Delete {name} for good? This cannot be undone. Seats, enrolments and certificates go with it.
+        The people keep their own accounts.
+      </span>
+      <input
+        value={typed}
+        onChange={(e) => setTyped(e.target.value)}
+        placeholder={name}
+        autoComplete="off"
+        aria-label={`Type ${name} to confirm deletion`}
+        style={{ padding: "6px 8px", borderRadius: 8, border: "1px solid rgba(20,22,29,0.2)", minWidth: 160 }}
+      />
+      <button type="button" className="cf-btn cf-btn-pri" onClick={remove} disabled={busy || typed.trim() !== name}>
+        {busy ? "Deleting…" : "Delete this firm"}
+      </button>
+      <button type="button" className="cf-btn" onClick={() => { setOpen(false); setTyped(""); }} disabled={busy}>Cancel</button>
+      {err && <span className="cf-note" style={{ color: "#a63a08" }}>{err}</span>}
+    </span>
+  );
+}

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { prisma } from "@/app/lib/prisma";
-import { SchoolIcon, FirmIcon, IndividualsIcon } from "./icons";
+import { SchoolIcon, OrganisationIcon, FirmIcon, IndividualsIcon } from "./icons";
 
 /* /admin: a landing page to choose a tab, rather than auto-forwarding
  * to Schools. Counts are cheap direct queries (not the full
@@ -11,14 +11,19 @@ export const dynamic = "force-dynamic";
 const SMOKE_DOMAIN = "@algorithmx-ci.invalid";
 
 export default async function AdminIndexPage() {
-  const [schools, firms, individuals] = await Promise.all([
-    prisma.organisation.count({ where: { school: { isNot: null } } }),
+  /* Schools and organisations are both SchoolProfile rows and used to be
+     counted together here, which would now show every youth club as a
+     school. Split by kind; a firm is still the row with no profile. */
+  const [schools, organisations, firms, individuals] = await Promise.all([
+    prisma.organisation.count({ where: { school: { kind: "SCHOOL" } } }),
+    prisma.organisation.count({ where: { school: { kind: "ORGANISATION" } } }),
     prisma.organisation.count({ where: { school: { is: null } } }),
     prisma.user.count({ where: { role: { notIn: ["staff", "pupil"] }, email: { not: { endsWith: SMOKE_DOMAIN } }, entitlements: { some: {} } } }),
   ]);
 
   const tiles = [
     { href: "/admin/schools", section: "schools", label: "Schools", count: schools, note: "School licences and trials", Icon: SchoolIcon },
+    { href: "/admin/organisations", section: "organisations", label: "Organisations", count: organisations, note: "Youth clubs, councils, charities", Icon: OrganisationIcon },
     { href: "/admin/firms", section: "firms", label: "Firms", count: firms, note: "Firm seats and trials", Icon: FirmIcon },
     { href: "/admin/individuals", section: "individuals", label: "Individuals", count: individuals, note: "Direct course sign-ups", Icon: IndividualsIcon },
   ];

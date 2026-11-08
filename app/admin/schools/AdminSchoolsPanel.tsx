@@ -51,7 +51,7 @@ function MadeBox({ made }: { made: Made }) {
   );
 }
 
-const BLANK = { name: "", country: "", sector: "", safeguardingContact: "", contactName: "", contactRole: "", teacherEmail: "" };
+const BLANK = { name: "", country: "", sector: "", contactName: "", contactRole: "", teacherEmail: "" };
 
 /** Everything both boxes ask for. Only the places and the term differ. */
 function SharedFields({ f, set, w }: { f: typeof BLANK; set: (k: keyof typeof BLANK, v: string) => void; w: OrgWords }) {
@@ -63,12 +63,9 @@ function SharedFields({ f, set, w }: { f: typeof BLANK; set: (k: keyof typeof BL
       </div>
       <div className="ad-row">
         <label>Sector <input value={f.sector} onChange={(e) => set("sector", e.target.value)} placeholder={w.sectorPlaceholder} /></label>
-        <label>Safeguarding contact <input value={f.safeguardingContact} onChange={(e) => set("safeguardingContact", e.target.value)} placeholder="Who a disclosure goes to" /></label>
-      </div>
-      <div className="ad-row">
         <label>Contact name <input value={f.contactName} onChange={(e) => set("contactName", e.target.value)} placeholder={w.contactPlaceholder} /></label>
-        <label>Contact role <input value={f.contactRole} onChange={(e) => set("contactRole", e.target.value)} placeholder="Head of Computing" /></label>
       </div>
+      <label>Contact role <input value={f.contactRole} onChange={(e) => set("contactRole", e.target.value)} placeholder="Head of Computing" /></label>
       <label>{w.firstPerson}&rsquo;s email <input type="email" value={f.teacherEmail} onChange={(e) => set("teacherEmail", e.target.value)} placeholder={w.emailHint} /></label>
     </>
   );

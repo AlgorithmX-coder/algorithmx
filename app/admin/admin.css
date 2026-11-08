@@ -202,3 +202,147 @@
   .admin-ui .ad-controls { flex-direction: column; align-items: stretch; }
   .admin-ui .ad-count { margin-left: 0; }
 }
+
+/* ════════════════════════════════════════════════════════════════════
+   VIBRANT LAYER
+
+   The console was correct and grey. Same layout, same density, same
+   simplicity: this changes colour only, and nothing below moves a box.
+
+   Two colours per section, not one, because a single vivid hue cannot do
+   both jobs. The BRIGHT one is decorative and never carries text: bars,
+   dots, gradients, icon chips. The SOLID one is dark enough for white
+   text to clear 4.5:1 on it, so anything with words in it uses that.
+   That split is what lets this be loud and still readable.
+   ════════════════════════════════════════════════════════════════════ */
+
+.admin-ui {
+  --schools-solid: #c2410c;  --schools-bright: #f97316;
+  --schools-soft: rgba(249, 115, 22, 0.14);  --schools: #9a3412;
+
+  --organisations-solid: #047857;  --organisations-bright: #10b981;
+  --organisations-soft: rgba(16, 185, 129, 0.14);  --organisations: #065f46;
+
+  --firms-solid: #0e7490;  --firms-bright: #06b6d4;
+  --firms-soft: rgba(6, 182, 212, 0.14);  --firms: #155e75;
+
+  --individuals-solid: #6d28d9;  --individuals-bright: #8b5cf6;
+  --individuals-soft: rgba(139, 92, 246, 0.14);  --individuals: #5b21b6;
+
+  /* The four hues laid over the sand, so the page is not a flat sheet.
+     Fixed, so they do not slide about under a scrolling table. */
+  background-image:
+    radial-gradient(900px 520px at 8% -8%, rgba(249, 115, 22, 0.13), transparent 62%),
+    radial-gradient(820px 480px at 92% -4%, rgba(139, 92, 246, 0.12), transparent 60%),
+    radial-gradient(760px 520px at 78% 104%, rgba(6, 182, 212, 0.11), transparent 62%),
+    radial-gradient(680px 460px at 12% 96%, rgba(16, 185, 129, 0.10), transparent 62%);
+  background-attachment: fixed;
+}
+
+/* Shell: a four-hue seam under the bar, so the tabs sit on something. */
+.admin-ui .admin-top {
+  position: sticky;
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: saturate(1.6) blur(10px);
+  border-bottom: 0;
+  box-shadow: 0 1px 0 var(--edge-soft), 0 10px 30px -22px rgba(20, 22, 29, 0.5);
+}
+.admin-ui .admin-top::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 3px;
+  background: linear-gradient(90deg,
+    var(--schools-bright) 0%, var(--schools-bright) 25%,
+    var(--organisations-bright) 25%, var(--organisations-bright) 50%,
+    var(--firms-bright) 50%, var(--firms-bright) 75%,
+    var(--individuals-bright) 75%);
+}
+.admin-ui .admin-brand i { color: var(--firms-solid); font-weight: 700; }
+
+/* Active tab: white on the SOLID colour. Loud, and still 4.5:1. */
+.admin-ui .admin-tab { font-weight: 650; }
+.admin-ui .admin-tab svg { opacity: 1; }
+.admin-ui .admin-tab[data-section="schools"][aria-current="page"] { background: var(--schools-solid); color: #fff; }
+.admin-ui .admin-tab[data-section="organisations"][aria-current="page"] { background: var(--organisations-solid); color: #fff; }
+.admin-ui .admin-tab[data-section="firms"][aria-current="page"] { background: var(--firms-solid); color: #fff; }
+.admin-ui .admin-tab[data-section="individuals"][aria-current="page"] { background: var(--individuals-solid); color: #fff; }
+
+/* Headings: the eyebrow becomes a solid tag rather than loose small text. */
+.admin-ui .ad-eyebrow {
+  color: #fff; padding: 4px 10px; border-radius: var(--r-full);
+  background: var(--sec-solid, var(--firms-solid));
+}
+.admin-ui .ad-eyebrow.schools { --sec-solid: var(--schools-solid); color: #fff; }
+.admin-ui .ad-eyebrow.organisations { --sec-solid: var(--organisations-solid); color: #fff; }
+.admin-ui .ad-eyebrow.firms { --sec-solid: var(--firms-solid); color: #fff; }
+.admin-ui .ad-eyebrow.individuals { --sec-solid: var(--individuals-solid); color: #fff; }
+.admin-ui .ad-h1 { font-size: 36px; letter-spacing: -0.02em; }
+
+/* Cards: a coloured edge, and a lift that shifts nothing. */
+.admin-ui .ad-card {
+  position: relative; overflow: hidden;
+  border-color: rgba(20, 22, 29, 0.07);
+  box-shadow: 0 1px 2px rgba(20, 22, 29, 0.04), 0 18px 40px -28px rgba(20, 22, 29, 0.45);
+}
+.admin-ui .ad-card::before {
+  content: ""; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, var(--schools-bright), var(--individuals-bright), var(--firms-bright));
+  opacity: 0.9;
+}
+.admin-ui .ad-table th { background: rgba(20, 22, 29, 0.045); color: var(--muted); }
+.admin-ui .ad-table tbody tr:hover { background: rgba(6, 182, 212, 0.07); }
+.admin-ui .ad-table td a { color: var(--firms-solid); font-weight: 600; }
+.admin-ui .ad-table td a:hover { text-decoration: underline; }
+
+/* Chips: one hue per meaning, each clearing 4.5:1 on its own tint. */
+.admin-ui .ad-chip { border: 1px solid transparent; }
+.admin-ui .ad-chip.paid { color: #065f46; background: rgba(16, 185, 129, 0.16); border-color: rgba(16, 185, 129, 0.35); }
+.admin-ui .ad-chip.trial { color: #9a3412; background: rgba(249, 115, 22, 0.16); border-color: rgba(249, 115, 22, 0.35); }
+.admin-ui .ad-chip.expired { color: #9f1239; background: rgba(244, 63, 94, 0.14); border-color: rgba(244, 63, 94, 0.32); }
+
+/* Pills and controls. */
+.admin-ui .ad-pill { background: rgba(255, 255, 255, 0.75); }
+.admin-ui .ad-pill:hover { border-color: var(--firms-bright); }
+.admin-ui .ad-search input, .admin-ui .ad-sort select,
+.admin-ui .ad-form input, .admin-ui .ad-form select { background: rgba(255, 255, 255, 0.72); }
+.admin-ui .ad-search input:focus, .admin-ui .ad-form input:focus, .admin-ui .ad-form select:focus {
+  border-color: var(--firms-bright); box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.18);
+}
+.admin-ui :focus-visible { outline-color: var(--firms-solid); }
+
+/* Buttons: the primary one carries the brand gradient. */
+.admin-ui .ad-btn-pri {
+  background: linear-gradient(135deg, var(--firms-solid), var(--individuals-solid));
+  border-color: transparent; color: #fff;
+  box-shadow: 0 10px 22px -14px var(--individuals-solid);
+}
+.admin-ui .ad-btn-pri:hover { background: linear-gradient(135deg, #0b6076, #5b21b6); border-color: transparent; }
+
+/* Danger: rose, and only ever reachable once access is closed. */
+.admin-ui .ad-btn-danger { background: #be123c; border-color: #be123c; color: #fff; }
+.admin-ui .ad-btn-danger:hover { background: #9f1239; border-color: #9f1239; }
+.admin-ui .ad-btn-danger:disabled { background: rgba(190, 18, 60, 0.35); border-color: transparent; color: #fff; opacity: 1; }
+
+.admin-ui .ad-actions { display: flex; gap: var(--sp-sm); flex-wrap: wrap; align-items: flex-start; margin-bottom: var(--sp-md); }
+.admin-ui .ad-made { background: rgba(16, 185, 129, 0.13); }
+.admin-ui .ad-made.warn { background: rgba(249, 115, 22, 0.14); }
+.admin-ui .ad-made.danger { background: rgba(244, 63, 94, 0.12); border: 1px solid rgba(244, 63, 94, 0.3); }
+.admin-ui .ad-made code { color: var(--firms-solid); }
+.admin-ui .ad-confirm { display: flex; flex-direction: column; gap: var(--sp-xs); font-size: 12.5px; font-weight: 600; color: var(--body); }
+.admin-ui .ad-confirm input {
+  font: inherit; font-size: 14px; min-height: 40px; max-width: 320px; color: var(--ink);
+  background: #fff; border: 1px solid rgba(244, 63, 94, 0.4); border-radius: var(--r-md); padding: 8px var(--sp-md);
+}
+.admin-ui .ad-confirm input:focus { outline: none; border-color: #be123c; box-shadow: 0 0 0 3px rgba(190, 18, 60, 0.16); }
+.admin-ui .ad-err { background: rgba(244, 63, 94, 0.13); color: #9f1239; }
+
+/* Landing tiles pick up the brighter set. */
+.admin-ui .ad-tile.schools { --tile-colour: var(--schools-bright); }
+.admin-ui .ad-tile.organisations { --tile-colour: var(--organisations-bright); }
+.admin-ui .ad-tile.firms { --tile-colour: var(--firms-bright); }
+.admin-ui .ad-tile.individuals { --tile-colour: var(--individuals-bright); }
+.admin-ui .ad-tile-count { color: var(--ink); }
+.admin-ui .ad-tile::before { height: 5px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .admin-ui * { transition: none !important; }
+  .admin-ui .ad-tile:hover { transform: none; }
+}
