@@ -103,7 +103,12 @@ const topic1: TopicManifest = {
   check: {
     explain: {
       prompt: "A friend says 'Facebook was down, they must have been hacked.' Using what you now know about routes, explain in a sentence or two what actually happened in October 2021.",
-      modelAnswer: "Nobody broke in. Facebook's own configuration change withdrew the routes that tell the rest of the internet how to reach its network, so every router in the world lost its directions to Facebook. The servers stayed healthy but unreachable, like a shop that is open while every signpost to it has been taken down. It is a reminder that availability depends on the journey to a system, not just the system itself.",
+      modelAnswer: [
+        "Nobody broke in: Facebook's own configuration change withdrew the routes that tell the rest of the internet how to reach its network.",
+        "Every router in the world lost its directions to Facebook, so the servers stayed healthy but unreachable.",
+        "It was like a shop that is open while every signpost to it has been taken down.",
+        "It is a reminder that availability depends on the journey to a system, not just the system itself.",
+      ],
     },
     quiz: [
       {

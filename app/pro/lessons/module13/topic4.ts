@@ -102,7 +102,13 @@ const topic4: TopicManifest = {
   check: {
     explain: {
       prompt: "Explain what a SIEM and EDR each do and how they complement each other, and why the FireEye discovery shows that tools and analysts work best together.",
-      modelAnswer: "A SIEM (Security Information and Event Management) aggregates logs and events from across the whole organisation into one searchable place and correlates related events into meaningful alerts that tell a story; it is the central console where an analyst investigates, searching millions of log lines, giving breadth, the organisation-wide picture. EDR (Endpoint Detection and Response) focuses on individual computers, watching each device's processes, files and connections for malicious behaviour and able to respond on the device itself (for example isolating an infected laptop); it gives depth, the close-up view of each machine. They complement each other as breadth plus depth. The FireEye discovery shows tools and analysts work best together because security tooling surfaced a single small anomaly, an unusual device enrolment, but it took skilled humans investigating that thread, rather than dismissing it, to uncover a vast espionage campaign. Tools surface the signal; humans investigate, judge and act. Neither alone would have caught it, which is also why you do not need to build tools to be valuable, you need to understand what they show and make good judgements about it.",
+      modelAnswer: [
+        "A SIEM (Security Information and Event Management) aggregates logs and events from across the whole organisation into one searchable place and correlates related events into meaningful alerts; it is the central console an analyst investigates in, giving breadth, the organisation-wide picture.",
+        "EDR (Endpoint Detection and Response) focuses on individual computers, watching each device's processes, files and connections for malicious behaviour and able to respond on the device itself (for example isolating an infected laptop); it gives depth, the close-up view of each machine.",
+        "The two complement each other as breadth plus depth.",
+        "The FireEye discovery shows tools and analysts work best together: security tooling surfaced a single small anomaly, an unusual device enrolment, but it took skilled humans investigating that thread, rather than dismissing it, to uncover a vast espionage campaign.",
+        "Tools surface the signal while humans investigate, judge and act, so you do not need to build tools to be valuable: you need to understand what they show and make good judgements about it.",
+      ],
     },
     quiz: [
       {

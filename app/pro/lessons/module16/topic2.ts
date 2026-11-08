@@ -101,7 +101,13 @@ const topic2: TopicManifest = {
   check: {
     explain: {
       prompt: "Explain the difference between containment and eradication, why you usually contain first, and the hard trade-off the Colonial Pipeline containment decision illustrates.",
-      modelAnswer: "Containment is limiting the damage and stopping the spread right now, isolating an infected machine, blocking the attacker's control channel, disabling a compromised account, fast and often temporary, to buy time and prevent things getting worse. Eradication comes after: fully removing the threat, every foothold, and the root cause that let it in, done thoroughly so it cannot return. You usually contain first because stopping the damage spreading is the immediate priority, then eradicate once the situation is stable and understood; skipping straight to clean-up lets the incident keep spreading while you work, and incomplete eradication that misses a backdoor lets the attacker simply resume. The Colonial Pipeline decision illustrates the hard trade-off in containment: faced with ransomware, the company shut down the pipeline itself to contain the attack and stop it spreading to operational systems, which prevented a potentially worse spread but also halted a major fuel supply and caused regional shortages. It shows that the fastest containment can itself cause serious harm, so responders must weigh the damage of the attack spreading against the damage of the containment action, often under intense pressure with incomplete information.",
+      modelAnswer: [
+        "Containment is limiting the damage and stopping the spread right now (isolating an infected machine, blocking the attacker's control channel, disabling a compromised account), fast and often temporary, to buy time and prevent things getting worse.",
+        "Eradication comes after: fully removing the threat, every foothold and the root cause that let it in, done thoroughly so it cannot return.",
+        "You usually contain first because stopping the damage spreading is the immediate priority, then eradicate once the situation is stable and understood, since skipping to clean-up lets the incident keep spreading and incomplete eradication that misses a backdoor lets the attacker simply resume.",
+        "The Colonial Pipeline decision illustrates the hard trade-off: faced with ransomware, the company shut down the pipeline itself to contain the attack and stop it spreading to operational systems, which prevented a potentially worse spread but also halted a major fuel supply and caused regional shortages.",
+        "It shows that the fastest containment can itself cause serious harm, so responders must weigh the damage of the attack spreading against the damage of the containment action, often under intense pressure with incomplete information.",
+      ],
     },
     quiz: [
       {

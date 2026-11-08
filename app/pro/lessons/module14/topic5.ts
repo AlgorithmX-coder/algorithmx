@@ -102,7 +102,13 @@ const topic5: TopicManifest = {
   check: {
     explain: {
       prompt: "Explain why an investigation must be written up, what a good finding contains, and what to leave out.",
-      modelAnswer: "An investigation must be written up because you can run a brilliant investigation, but if you cannot communicate what you found clearly, it helps no one: the written finding is how the work becomes useful, letting others understand what happened, act on it, and learn from it, which is why clear writing is one of the most valued (and underrated) analyst skills. A finding is written for a reader who was not in your head, so it must stand on its own, and a good one has a clear, repeatable shape: what happened, stated plainly in language the reader can follow; the evidence, the specific log entries and timeline that support your conclusion, so it is grounded in fact; the impact, what it means and how serious it is, so the reader knows why it matters and how urgent it is; and the recommendation, what to do about it, so the finding leads to action rather than just description. What to leave out is just as important: guesses stated as fact (instead, state what you know and clearly flag what is uncertain), and blame aimed at individuals (findings are factual and blameless, focused on what happened and the fix). Finally, write for your audience, matching detail and clarity to whoever reads it (an analyst needing technical depth, a manager needing impact and recommendation, or both), and avoid being so vague it is useless or so jargon-filled no one reads it. Clear, evidence-led, impactful, actionable, honest and right-sized is what makes a finding genuinely useful and acted upon.",
+      modelAnswer: [
+        "An investigation must be written up because a brilliant investigation helps no one if you cannot communicate it clearly: the written finding is how the work becomes useful, letting others understand what happened, act on it and learn from it, which makes clear writing one of the most valued and underrated analyst skills.",
+        "A good finding has a clear, repeatable shape: what happened (stated plainly), the evidence (the specific log entries and timeline that support it), the impact (what it means and how serious, so the reader knows why it matters), and the recommendation (what to do about it, so it leads to action).",
+        "Leave out guesses stated as fact: instead state what you know and clearly flag what is uncertain.",
+        "Leave out blame aimed at individuals, because findings are factual and blameless, focused on what happened and the fix.",
+        "Write for your audience, matching detail to whoever reads it (an analyst needing technical depth, a manager needing impact and recommendation, or both), and avoid being so vague it is useless or so jargon-filled no one reads it.",
+      ],
     },
     quiz: [
       {

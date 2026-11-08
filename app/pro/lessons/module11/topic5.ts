@@ -103,7 +103,13 @@ const topic5: TopicManifest = {
   check: {
     explain: {
       prompt: "BlueKeep affected end-of-life Windows, yet Microsoft patched even those unsupported systems. Explain why end-of-life software is so dangerous, why organisations get stuck on it, and what a realistic defender does about it.",
-      modelAnswer: "End-of-life software is dangerous because its maker has stopped all support, including security patches, so any new flaw in it is never fixed, the patch race never even starts, and an exposed unsupported system is a permanent open door that only gets worse as new flaws accumulate. Organisations get stuck on it not usually through ignorance but because of real pressures: cost and disruption of upgrading, critical software or specialist equipment that only runs on the old system, hard-to-update embedded devices, and plain inertia. A realistic defender does not just say 'upgrade everything'; they plan ahead by inventorying end-of-life dates and migrating before support ends, and for systems that genuinely cannot move yet, they contain them, isolating and segmenting so a flaw cannot be reached or spread, restricting access, and monitoring closely. BlueKeep shows both the danger of lingering unsupported systems and the extraordinary step, patching retired systems, their existence can force.",
+      modelAnswer: [
+        "End-of-life software is dangerous because its maker has stopped all support, including security patches, so any new flaw is never fixed, the patch race never even starts, and an exposed unsupported system is a permanent open door that only gets worse as new flaws accumulate.",
+        "Organisations get stuck on it not usually through ignorance but because of real pressures: the cost and disruption of upgrading, critical software or specialist equipment that only runs on the old system, hard-to-update embedded devices, and plain inertia.",
+        "A realistic defender does not just say 'upgrade everything'; they plan ahead by inventorying end-of-life dates and migrating before support ends.",
+        "For systems that genuinely cannot move yet, they contain them: isolating and segmenting so a flaw cannot be reached or spread, restricting access, and monitoring closely.",
+        "BlueKeep shows both the danger of lingering unsupported systems and the extraordinary step, patching retired systems, that their existence can force.",
+      ],
     },
     quiz: [
       {

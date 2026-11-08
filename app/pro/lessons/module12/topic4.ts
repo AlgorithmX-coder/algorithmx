@@ -102,7 +102,12 @@ const topic4: TopicManifest = {
   check: {
     explain: {
       prompt: "Explain what turns patching from a scramble into a reliable process, and why the Kaseya attack shows that the tools and suppliers you use to manage systems are themselves a serious risk.",
-      modelAnswer: "Patching becomes reliable when it is a repeatable process rather than a crisis response: it starts with an asset inventory (you cannot patch what you do not know you run), then prioritises by severity and exposure, tests sensibly to avoid breakage, applies and verifies, on a regular cadence. The routine stream is automated (auto-updates for endpoints and common software), which frees human judgement for the critical, exposed flaws and the sensitive systems that need care, 'automate the routine, deliberate on the exceptions'. The Kaseya attack shows that the tools and suppliers you use to manage and patch systems have deep access to them, which makes them high-value targets: when REvil exploited a flaw in the Kaseya VSA management tool, they pushed ransomware downstream through it to an estimated 1,500 businesses at once. So patch management must include keeping the management tools themselves patched and tightly controlled, limiting their access, and being alert to supplier compromise, because a trusted tool or supplier that is breached can reach everything it can reach.",
+      modelAnswer: [
+        "Patching becomes reliable when it is a repeatable process rather than a crisis response: it starts with an asset inventory (you cannot patch what you do not know you run), then prioritises by severity and exposure, tests sensibly to avoid breakage, and applies and verifies on a regular cadence.",
+        "The routine stream is automated (auto-updates for endpoints and common software), which frees human judgement for the critical, exposed flaws and the sensitive systems that need care: 'automate the routine, deliberate on the exceptions'.",
+        "The Kaseya attack shows that the tools and suppliers you use to manage and patch systems have deep access to them, which makes them high-value targets: when REvil exploited a flaw in the Kaseya VSA management tool, they pushed ransomware downstream to an estimated 1,500 businesses at once.",
+        "So patch management must include keeping the management tools themselves patched and tightly controlled, limiting their access, and being alert to supplier compromise, because a trusted tool or supplier that is breached can reach everything it can reach.",
+      ],
     },
     quiz: [
       {

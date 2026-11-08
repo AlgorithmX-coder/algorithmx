@@ -97,7 +97,12 @@ const topic5: TopicManifest = {
   check: {
     explain: {
       prompt: "Explain, in your own words, why a passkey cannot be phished the way a password can. Write a sentence or two, then reveal a model answer.",
-      modelAnswer: "A password is a shared secret: you type it in, so a convincing fake site can simply capture what you type and reuse it on the real site. A passkey keeps its secret on your device and only ever responds to the genuine site it was set up with, so a look-alike phishing page gets nothing it can use. There is no shared password to steal in a breach and nothing to hand over to a fake site, which is why passkeys and hardware keys defeat phishing where passwords cannot.",
+      modelAnswer: [
+        "A password is a shared secret: you type it in, so a convincing fake site can simply capture what you type and reuse it on the real site.",
+        "A passkey keeps its secret on your device and only ever responds to the genuine site it was set up with, so a look-alike phishing page gets nothing it can use.",
+        "There is no shared password to steal in a breach and nothing to hand over to a fake site.",
+        "That is why passkeys and hardware keys defeat phishing where passwords cannot.",
+      ],
     },
     quiz: [
       {

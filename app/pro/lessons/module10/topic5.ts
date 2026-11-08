@@ -104,7 +104,13 @@ const topic5: TopicManifest = {
   check: {
     explain: {
       prompt: "Equifax was breached through one unpatched web application, yet the attackers reached the data of 147 million people. Explain the role of lateral movement, and how segmentation and 'assume breach' would have limited the damage.",
-      modelAnswer: "The attackers' initial foothold was a single unpatched web application, not the valuable databases themselves. From there they moved laterally, from system to system, using credentials they found, because the internal network was poorly segmented and let a foothold reach far too much. That sideways movement is what turned one entry point into access to numerous databases and 147 million records. Segmentation would have divided the network into zones with controlled boundaries, so the initial foothold could not freely reach the sensitive data; least privilege would have meant the credentials they found could touch very little. An 'assume breach' mindset would have added monitoring of internal activity to catch the lateral movement early. Together, limiting reach and detecting movement, they would have contained the incident instead of allowing a catastrophe. (Patching the known flaw would also have stopped it ever starting.)",
+      modelAnswer: [
+        "The attackers' initial foothold was a single unpatched web application, not the valuable databases themselves.",
+        "From there they moved laterally, system to system, using credentials they found, because the internal network was poorly segmented and let a foothold reach far too much, turning one entry point into access to numerous databases and 147 million records.",
+        "Segmentation would have divided the network into zones with controlled boundaries, so the initial foothold could not freely reach the sensitive data, and least privilege would have meant the credentials they found could touch very little.",
+        "An 'assume breach' mindset would have added monitoring of internal activity to catch the lateral movement early.",
+        "Together, limiting reach and detecting movement would have contained the incident, and patching the known flaw would also have stopped it ever starting.",
+      ],
     },
     quiz: [
       {

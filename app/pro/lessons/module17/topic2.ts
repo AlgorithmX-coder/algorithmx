@@ -101,7 +101,13 @@ const topic2: TopicManifest = {
   check: {
     explain: {
       prompt: "Distinguish ISO 27001, the NIST CSF and Cyber Essentials, explain where UK GDPR fits, and say why security certification matters commercially.",
-      modelAnswer: "ISO 27001 is an international, certifiable standard for an information-security management system (ISMS): a whole, audited management approach to security, widely required in enterprise contracts. The NIST Cybersecurity Framework is a flexible, widely-used framework organised around five functions, identify, protect, detect, respond and recover, that helps structure a security programme (it is not a certification). Cyber Essentials is the UK's basic-five-controls baseline (firewalls, secure configuration, access control, update management, malware protection), achievable and often required for UK government work. UK GDPR is different from all of these: it is law, a mandatory legal requirement for handling personal data, not a voluntary framework you adopt, so it should be kept separate from frameworks. Security certification matters commercially because certification against a recognised standard, especially ISO 27001, is often a precondition for doing business: enterprise customers and government buyers frequently require their suppliers to be certified before trusting them with data or contracts, so demonstrable security enables sales and partnerships. That makes security a business enabler, not just a cost, and GRC professionals who can help achieve and maintain certification genuinely valuable.",
+      modelAnswer: [
+        "ISO 27001 is an international, certifiable standard for an information-security management system (ISMS): a whole, audited management approach to security, widely required in enterprise contracts.",
+        "The NIST Cybersecurity Framework is a flexible framework organised around five functions (identify, protect, detect, respond, recover) that helps structure a security programme, and is not a certification.",
+        "Cyber Essentials is the UK's basic-five-controls baseline (firewalls, secure configuration, access control, update management, malware protection), achievable and often required for UK government work.",
+        "UK GDPR is different: it is law, a mandatory legal requirement for handling personal data, not a voluntary framework you adopt, so it should be kept separate from frameworks.",
+        "Security certification matters commercially because certification against a recognised standard, especially ISO 27001, is often a precondition for doing business, so demonstrable security enables sales and partnerships and is a business enabler, not just a cost.",
+      ],
     },
     quiz: [
       {

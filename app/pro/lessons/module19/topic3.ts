@@ -101,7 +101,13 @@ const topic3: TopicManifest = {
   check: {
     explain: {
       prompt: "Explain what RTO and RPO each mean, how each drives a decision, and how together they size an organisation's resilience plan.",
-      modelAnswer: "RTO, the Recovery Time Objective, is how quickly a system must be restored and working again after a disruption, set by the business based on how much downtime it can tolerate for that system; it drives the recovery design, a tight RTO (hours) needs fast recovery or automatic failover, while a loose one (days) allows a slower, cheaper approach. RPO, the Recovery Point Objective, is how much recent data you can afford to lose, and it drives backup frequency, if you can only tolerate losing 15 minutes of data you must back up or replicate at least every 15 minutes, whereas data that can tolerate a day's loss needs only a daily backup. Together they size and prioritise the whole resilience plan: for each important system, the business sets an RTO and an RPO based on how critical it is, and those targets then dictate the recovery design and backup frequency, so a system with a two-hour RTO and 15-minute RPO gets fast recovery and very frequent backups, while one with a one-week RTO and one-day RPO can be handled simply and cheaply. This turns resilience from a vague aspiration into a concrete, affordable, prioritised plan, directing effort and spend to the systems and data that truly matter.",
+      modelAnswer: [
+        "RTO (Recovery Time Objective) is how quickly a system must be restored after a disruption, set by how much downtime the business can tolerate, and it drives the recovery design: a tight RTO (hours) needs fast recovery or automatic failover, while a loose one (days) allows a slower, cheaper approach.",
+        "RPO (Recovery Point Objective) is how much recent data you can afford to lose, and it drives backup frequency: a 15-minute RPO means backing up or replicating at least every 15 minutes, while data that can tolerate a day's loss needs only a daily backup.",
+        "Together they size and prioritise the whole resilience plan: for each important system the business sets an RTO and an RPO based on how critical it is, and those targets dictate the recovery design and backup frequency.",
+        "So a system with a two-hour RTO and 15-minute RPO gets fast recovery and very frequent backups, while one with a one-week RTO and one-day RPO can be handled simply and cheaply.",
+        "This turns resilience from a vague aspiration into a concrete, affordable, prioritised plan, directing effort and spend to the systems and data that truly matter.",
+      ],
     },
     quiz: [
       {

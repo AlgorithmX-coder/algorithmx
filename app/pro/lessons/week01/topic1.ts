@@ -103,7 +103,12 @@ const topic1: TopicManifest = {
   check: {
     explain: {
       prompt: "A friend says: 'I use one really strong password everywhere, so I'm safe.' In your own words, why is that still risky? Write a sentence or two, then reveal a model answer.",
-      modelAnswer: "The password being strong does not help if any one of those sites stores or protects it badly and gets breached, the way even LastPass's vaults were stolen. Once that single password leaks, attackers try it on every other site the person uses, because reuse means one leak unlocks everything. Strong-but-reused still has a single point of failure; unique passwords plus MFA remove it.",
+      modelAnswer: [
+        "A password being strong does not help if any one of those sites stores or protects it badly and gets breached, the way even LastPass's vaults were stolen.",
+        "Once that single password leaks, attackers try it on every other site the person uses, because reuse means one leak unlocks everything.",
+        "Strong-but-reused still has a single point of failure.",
+        "Unique passwords plus MFA remove that single point of failure.",
+      ],
     },
     quiz: [
       {

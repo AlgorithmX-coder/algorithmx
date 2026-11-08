@@ -103,7 +103,13 @@ const topic3: TopicManifest = {
   check: {
     explain: {
       prompt: "Walk the Target breach through the kill-chain stages in your own words, and name two different stages where breaking the chain would have stopped it.",
-      modelAnswer: "Reconnaissance and delivery: attackers targeted and phished a third-party HVAC contractor that had network access to Target. Exploitation and lateral movement: they used that foothold to move into Target's own network. Installation: they planted malware on the point-of-sale systems reading customers' cards. Command and control and actions on objectives: they steered the malware and siphoned out around 40 million card records. Two places to break the chain: limiting the vendor's access so a contractor foothold could not reach payment systems (early and cheap), and network segmentation plus acting on early alerts to stop the lateral movement and exfiltration (later, but still decisive).",
+      modelAnswer: [
+        "Reconnaissance and delivery: attackers targeted and phished a third-party HVAC contractor that had network access to Target.",
+        "Exploitation and lateral movement: they used that foothold to move into Target's own network, then installation: they planted malware on the point-of-sale systems reading customers' cards.",
+        "Command and control and actions on objectives: they steered the malware and siphoned out around 40 million card records.",
+        "One place to break the chain was limiting the vendor's access so a contractor foothold could not reach payment systems (early and cheap).",
+        "Another was network segmentation plus acting on early alerts to stop the lateral movement and exfiltration (later, but still decisive).",
+      ],
     },
     quiz: [
       {

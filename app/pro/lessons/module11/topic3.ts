@@ -104,7 +104,12 @@ const topic3: TopicManifest = {
   check: {
     explain: {
       prompt: "Explain the four questions you read a vulnerability advisory to answer, why severity and urgency are not the same, and what the PrintNightmare case teaches about confusing disclosures.",
-      modelAnswer: "You read an advisory to answer four questions: which flaw is this and does it affect systems I run (CVE and affected versions); how severe is it (CVSS); how urgent is it, especially whether it is being exploited in the wild or has public exploit code; and what do I do (the patch or an interim workaround). Severity and urgency differ because a slightly lower-scored flaw being actively exploited can be far more pressing than a higher-scored one nobody is using yet, so exploitation status sits alongside the score when judging urgency. PrintNightmare teaches that advisories are sometimes genuinely confusing, overlapping CVEs, uncertainty over what a patch fixes, and the professional response is to read precisely, confirm from authoritative sources like the vendor and national agencies, treat ambiguity as a reason to apply mitigations and monitor closely, and never to assume a single patch resolved everything.",
+      modelAnswer: [
+        "You read an advisory to answer four questions: which flaw is this and does it affect systems I run (CVE and affected versions); how severe is it (CVSS); how urgent is it, especially whether it is being exploited in the wild or has public exploit code; and what do I do (the patch or an interim workaround).",
+        "Severity and urgency differ because a slightly lower-scored flaw being actively exploited can be far more pressing than a higher-scored one nobody is using yet, so exploitation status sits alongside the score when judging urgency.",
+        "PrintNightmare teaches that advisories are sometimes genuinely confusing, with overlapping CVEs and uncertainty over what a patch fixes.",
+        "The professional response is to read precisely, confirm from authoritative sources like the vendor and national agencies, treat ambiguity as a reason to apply mitigations and monitor closely, and never assume a single patch resolved everything.",
+      ],
     },
     quiz: [
       {

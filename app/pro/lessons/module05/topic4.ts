@@ -103,7 +103,12 @@ const topic4: TopicManifest = {
   check: {
     explain: {
       prompt: "In the Missouri case, someone followed responsible disclosure correctly and was still accused of hacking. What does this teach a new security professional about how to handle a flaw they find?",
-      modelAnswer: "It teaches that doing the right thing, reporting privately, waiting for a fix before publishing, not taking more data than needed, is still the correct path, but that you should do it carefully and keep clean records, because not every organisation reacts well. The journalist's process was sound: the real failure was the state exposing sensitive data in a page's source. A new professional should report through official channels where they exist, document their good-faith steps, understand the law well enough to know where they stand, and not be deterred from responsible disclosure, while being realistic that a defensive organisation may still push back.",
+      modelAnswer: [
+        "Doing the right thing, reporting privately, waiting for a fix before publishing, and not taking more data than needed, is still the correct path.",
+        "You should do it carefully and keep clean records, because not every organisation reacts well; the journalist's process was sound, and the real failure was the state exposing sensitive data in a page's source.",
+        "A new professional should report through official channels where they exist, document their good-faith steps, and understand the law well enough to know where they stand.",
+        "Do not be deterred from responsible disclosure, while being realistic that a defensive organisation may still push back.",
+      ],
     },
     quiz: [
       {

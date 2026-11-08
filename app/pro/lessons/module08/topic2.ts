@@ -101,7 +101,12 @@ const topic2: TopicManifest = {
   check: {
     explain: {
       prompt: "WannaCry caused worldwide damage, yet a patch for the flaw it used already existed. Explain how ransomware holds a victim hostage, and why WannaCry shows that patching and backups, not paying, are the real defence.",
-      modelAnswer: "Ransomware takes you hostage by encrypting your files with a key only the attacker holds, then demanding payment; often it spreads across the whole network first, and may also steal data to threaten a leak (double extortion). WannaCry shows the real defence because it was wormable: it spread automatically through a known Windows flaw for which a patch already existed, so organisations that had patched were protected, and those that had not were hit en masse. Paying would not have addressed the cause; patching closed the hole, and tested offline backups would let a victim restore without ever needing the attacker's key. The disaster was a known, patchable flaw left open, which is exactly why preparation beats payment.",
+      modelAnswer: [
+        "Ransomware takes you hostage by encrypting your files with a key only the attacker holds, then demanding payment; often it spreads across the whole network first, and may also steal data to threaten a leak (double extortion).",
+        "WannaCry was wormable: it spread automatically through a known Windows flaw for which a patch already existed, so organisations that had patched were protected, and those that had not were hit en masse.",
+        "Paying would not have addressed the cause; patching closed the hole, and tested offline backups would let a victim restore without ever needing the attacker's key.",
+        "The disaster was a known, patchable flaw left open, which is exactly why preparation beats payment.",
+      ],
     },
     quiz: [
       {

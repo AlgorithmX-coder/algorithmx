@@ -102,7 +102,12 @@ const topic4: TopicManifest = {
   check: {
     explain: {
       prompt: "Zeus was stealthy and quiet, not noisy like ransomware, yet it caused enormous losses. Explain what its payload was, why reading behaviour matters more than the malware's name, and one defence that blunts this kind of threat.",
-      modelAnswer: "Zeus's payload was theft, specifically stealing online-banking credentials by logging keystrokes and capturing logins, then sending them out so criminals could drain accounts. It favoured stealth and persistence precisely so it could keep stealing for as long as possible, which made its long dwell time the source of its huge losses. Reading behaviour matters more than the name because attackers constantly tweak malware to dodge signature detection, but the behaviour, quietly harvesting passwords and phoning home, is far harder to disguise, so watching for it catches even unknown variants. A strong defence is multi-factor authentication, which means a stolen password alone is not enough to get into an account, blunting the value of exactly what Zeus steals; behaviour-based monitoring to shrink dwell time helps too.",
+      modelAnswer: [
+        "Zeus's payload was theft, specifically stealing online-banking credentials by logging keystrokes and capturing logins, then sending them out so criminals could drain accounts.",
+        "It favoured stealth and persistence precisely so it could keep stealing for as long as possible, which made its long dwell time the source of its huge losses.",
+        "Reading behaviour matters more than the name because attackers constantly tweak malware to dodge signature detection, but the behaviour, quietly harvesting passwords and phoning home, is far harder to disguise, so watching for it catches even unknown variants.",
+        "A strong defence is multi-factor authentication, so a stolen password alone is not enough to get into an account, blunting the value of exactly what Zeus steals; behaviour-based monitoring to shrink dwell time helps too.",
+      ],
     },
     quiz: [
       {

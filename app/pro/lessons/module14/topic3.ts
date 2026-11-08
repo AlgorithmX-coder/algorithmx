@@ -101,7 +101,13 @@ const topic3: TopicManifest = {
   check: {
     explain: {
       prompt: "Explain why you can never read all the logs, the filters that let you search at scale, and why starting with a precise question matters.",
-      modelAnswer: "You can never read all the logs because the volume is staggering: a large organisation can generate millions or even billions of log events a day, so reading them all, or scrolling through them in order, is impossible, you would never find the few lines that matter among the overwhelming many that do not. This reframes the task from reading to finding, treating logs as a database to query rather than a wall to read. The filters that let you search at scale are: time (often the strongest, narrowing to the window around a suspected event cuts millions of lines to a slice instantly), entity filters (pinning to a specific user, IP or system to isolate that actor's activity), event-type filters (only failed logins, only blocked connections), and searching for a specific indicator (a known-bad IP or file hash), and the real skill is combining these to zero in, 'failed logins, for this account, in this two-hour window' turns billions of lines into a handful. Starting with a precise question matters because the search is only as good as what you ask: a precise question ('did this account have unusual logins last Tuesday?') tells you exactly what to filter, while a vague 'is anything wrong?' gives you nothing to narrow on, and matching the scope, especially the right time window and entity, is what makes the difference between finding the evidence and missing it.",
+      modelAnswer: [
+        "You can never read all the logs because the volume is staggering (a large organisation can generate millions or even billions of events a day), so the task is reframed from reading to finding, treating logs as a database to query rather than a wall to read.",
+        "Time is often the strongest filter: narrowing to the window around a suspected event cuts millions of lines to a slice instantly.",
+        "Entity filters pin to a specific user, IP or system to isolate that actor's activity, event-type filters show only failed logins or only blocked connections, and you can search for a specific indicator such as a known-bad IP or file hash.",
+        "The real skill is combining these to zero in, as 'failed logins, for this account, in this two-hour window' turns billions of lines into a handful.",
+        "Starting with a precise question matters because the search is only as good as what you ask: a precise question tells you exactly what to filter, while a vague 'is anything wrong?' gives you nothing to narrow on, and matching the right time window and entity is the difference between finding the evidence and missing it.",
+      ],
     },
     quiz: [
       {

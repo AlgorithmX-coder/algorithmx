@@ -103,7 +103,13 @@ const topic4: TopicManifest = {
   check: {
     explain: {
       prompt: "Explain why third-party risk is your risk, how to manage it, and why the MOVEit attack shows how a single supplier flaw can cascade so widely.",
-      modelAnswer: "Third-party risk is your risk because modern organisations depend on a web of suppliers, software vendors, cloud services, contractors, partners, many of whom have access to your systems or data, so their security weaknesses become yours: if a supplier you trust is compromised or their software has a flaw, an attacker can reach you through that trusted relationship, often bypassing your own defences. You manage it with practical GRC work: due diligence (assessing a supplier's security before trusting them), contractual security requirements (standards, breach-notification duties, the right to audit), least privilege for suppliers (only the access they genuinely need, for as long as needed), and ongoing monitoring and re-review, replacing blind trust with verified, limited, monitored trust. The MOVEit attack shows how a single supplier flaw cascades so widely because a flaw in one widely-used tool reaches all of that tool's customers at once: Cl0p exploited one MOVEit vulnerability and, because MOVEit was embedded across many organisations, breached hundreds of them and exposed the personal data of many millions of people, their customers and their customers' customers, most of whom had done nothing wrong but relied on a trusted tool. That force-multiplier cascade is exactly why third-party risk has risen to the top of the GRC agenda.",
+      modelAnswer: [
+        "Third-party risk is your risk because modern organisations depend on a web of suppliers, vendors, cloud services and partners who have access to your systems or data, so their weaknesses become yours: if one is compromised, an attacker can reach you through that trusted relationship, often bypassing your own defences.",
+        "You manage it with practical GRC work: due diligence (assessing a supplier's security before trusting them), contractual security requirements (standards, breach-notification duties, the right to audit), least privilege for suppliers, and ongoing monitoring and re-review.",
+        "The goal is to replace blind trust with verified, limited, monitored trust.",
+        "The MOVEit attack shows how a single supplier flaw cascades widely: Cl0p exploited one vulnerability in a widely-used file-transfer tool and, because it was embedded across many organisations, breached hundreds of them and exposed the personal data of many millions, most of whom had done nothing wrong but relied on a trusted tool.",
+        "That force-multiplier cascade is exactly why third-party risk has risen to the top of the GRC agenda.",
+      ],
     },
     quiz: [
       {

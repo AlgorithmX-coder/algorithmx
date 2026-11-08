@@ -103,7 +103,13 @@ const topic5: TopicManifest = {
   check: {
     explain: {
       prompt: "Describe the three stages any network attack can target, and give one real example of each. Then say why this map is useful to an analyst on the job.",
-      modelAnswer: "The three stages are the lookup (turning a name into an address, via DNS), the journey (the packets travelling hop by hop, via routing), and the destination (the server behind its ports). A lookup attack is cache poisoning sending a bank's users to a fake. A journey attack is a BGP route hijack pulling traffic through attacker networks, as in the 2018 crypto theft. A destination attack is a DDoS flooding a site offline. The map is useful because when an alert fires, naming the stage instantly narrows what kind of attack it is and where to investigate next.",
+      modelAnswer: [
+        "The three stages are the lookup (turning a name into an address, via DNS), the journey (the packets travelling hop by hop, via routing), and the destination (the server behind its ports).",
+        "A lookup attack is cache poisoning sending a bank's users to a fake.",
+        "A journey attack is a BGP route hijack pulling traffic through attacker networks, as in the 2018 crypto theft.",
+        "A destination attack is a DDoS flooding a site offline.",
+        "The map is useful because when an alert fires, naming the stage instantly narrows what kind of attack it is and where to investigate next.",
+      ],
     },
     quiz: [
       {

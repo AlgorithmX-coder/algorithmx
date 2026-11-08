@@ -103,7 +103,12 @@ const topic2: TopicManifest = {
   check: {
     explain: {
       prompt: "Google and Facebook lost around 100 million dollars to fake invoices with no malware involved. Explain what kind of attack this was, and why its defence is about process rather than technology.",
-      modelAnswer: "This was business email compromise, a form of whaling: the attacker impersonated a real supplier and sent convincing fake invoices with his own bank details to the staff who process payments. There was no virus to detect, just plausible paperwork and impersonation, which is exactly what makes BEC so dangerous and so hard for technology to catch. The defence is therefore procedural: independently verifying new or changed payment details through a trusted channel before paying, and treating any payment instruction, however official it looks, with built-in suspicion. The gap that cost two tech giants 100 million dollars was a missing verification step, not a missing piece of software.",
+      modelAnswer: [
+        "This was business email compromise, a form of whaling: the attacker impersonated a real supplier and sent convincing fake invoices with his own bank details to the staff who process payments.",
+        "There was no virus to detect, just plausible paperwork and impersonation, which is exactly what makes BEC so dangerous and so hard for technology to catch.",
+        "The defence is therefore procedural: independently verifying new or changed payment details through a trusted channel before paying, and treating any payment instruction, however official it looks, with built-in suspicion.",
+        "The gap that cost two tech giants 100 million dollars was a missing verification step, not a missing piece of software.",
+      ],
     },
     quiz: [
       {

@@ -102,7 +102,12 @@ const topic4: TopicManifest = {
   check: {
     explain: {
       prompt: "Your scan returns hundreds of vulnerabilities and you cannot fix them all at once. Explain how you decide what to fix first, and why the CISA KEV catalogue is such a practical tool.",
-      modelAnswer: "You prioritise by risk, blending three factors: severity (the CVSS score, how bad in principle), exposure (how reachable the affected system is, internet-facing beats isolated-internal), and exploitation (whether attackers are actually using the flaw right now). Weighing these together beats chasing the highest scores blindly: a critical, internet-facing, actively-exploited flaw is an obvious fix-first, while a critical flaw on an isolated test box nobody is exploiting can wait behind it. The CISA KEV catalogue is so practical because it leads with the strongest signal, real-world exploitation: instead of drowning in thousands of theoretical flaws, you start with the ones proven to be dangerous now, focusing limited effort where it most reduces actual risk and most directly prevents real attacks.",
+      modelAnswer: [
+        "You prioritise by risk, blending three factors: severity (the CVSS score, how bad in principle), exposure (how reachable the affected system is, internet-facing beats isolated-internal), and exploitation (whether attackers are actually using the flaw right now).",
+        "Weighing these together beats chasing the highest scores blindly: a critical, internet-facing, actively-exploited flaw is an obvious fix-first, while a critical flaw on an isolated test box nobody is exploiting can wait behind it.",
+        "The CISA KEV catalogue is so practical because it leads with the strongest signal, real-world exploitation.",
+        "Instead of drowning in thousands of theoretical flaws, you start with the ones proven to be dangerous now, focusing limited effort where it most reduces actual risk and most directly prevents real attacks.",
+      ],
     },
     quiz: [
       {

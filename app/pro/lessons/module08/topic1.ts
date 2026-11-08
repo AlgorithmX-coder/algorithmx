@@ -104,7 +104,13 @@ const topic1: TopicManifest = {
   check: {
     explain: {
       prompt: "Emotet started as a banking trojan but became famous as a 'platform'. Explain what that means, and why it shows that no malware infection should be treated as minor.",
-      modelAnswer: "A platform means Emotet was modular: it got a foothold through phishing, then downloaded and delivered whatever further malware its operators, or their paying customers, wanted, including ransomware. It became a criminal delivery service rather than a single fixed threat. This is why no infection is minor: a foothold established by one family is routinely used, or sold, to deliver something far worse. An apparently small Emotet infection was really a beachhead that could become a full ransomware attack, so the professional mindset is to treat any infection as a potential gateway, contain it fast, and assume more may follow.",
+      modelAnswer: [
+        "A platform means Emotet was modular: it got a foothold through phishing, then downloaded and delivered whatever further malware its operators, or their paying customers, wanted, including ransomware.",
+        "It became a criminal delivery service rather than a single fixed threat.",
+        "This is why no infection is minor: a foothold established by one family is routinely used, or sold, to deliver something far worse.",
+        "An apparently small Emotet infection was really a beachhead that could become a full ransomware attack.",
+        "The professional mindset is to treat any infection as a potential gateway, contain it fast, and assume more may follow.",
+      ],
     },
     quiz: [
       {

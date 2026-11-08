@@ -102,7 +102,13 @@ const topic5: TopicManifest = {
   check: {
     explain: {
       prompt: "Explain what a tabletop exercise is and why it is valuable, what makes a good incident report, and why the review behind it must be blameless.",
-      modelAnswer: "A tabletop exercise is a discussion-based rehearsal of an incident: the team talks through a realistic scenario step by step, testing the plan, the roles and the decisions, without affecting any real systems. It is valuable because it is cheap and low-risk yet revealing, surfacing gaps in the plan, confusion over who does what, and missing contacts or tools, in calm conditions before a real incident finds them; a rehearsed team responds far more calmly and effectively than one meeting the process for the first time in a crisis. A good incident report is clear, factual and structured, covering what happened, the impact, the timeline, the root cause, and the lessons and actions, and it is honest (not downplayed, which hides the truth and can breach legal duties) and readable (not buried in jargon, so people actually act on it). The review behind it must be blameless because if people fear punishment they hide information and omit mistakes, so the organisation learns nothing and repeats the incident; a blameless review focuses on what happened and how to improve, not who to punish, which lets people tell the truth. The payoff of the whole exercise is coming out stronger, concrete improvements that prevent or reduce the next incident, closing the IR lifecycle back into better preparation.",
+      modelAnswer: [
+        "A tabletop exercise is a discussion-based rehearsal of an incident: the team talks through a realistic scenario step by step, testing the plan, the roles and the decisions, without affecting any real systems.",
+        "It is valuable because it is cheap and low-risk yet revealing, surfacing gaps in the plan, confusion over who does what, and missing contacts or tools in calm conditions before a real incident finds them, so a rehearsed team responds far more calmly and effectively.",
+        "A good incident report is clear, factual and structured, covering what happened, the impact, the timeline, the root cause, and the lessons and actions.",
+        "It is also honest (not downplayed, which hides the truth and can breach legal duties) and readable (not buried in jargon, so people actually act on it).",
+        "The review behind it must be blameless because if people fear punishment they hide information and omit mistakes, so the organisation learns nothing and repeats the incident, whereas a blameless review focuses on what happened and how to improve, letting people tell the truth and closing the lifecycle back into better preparation.",
+      ],
     },
     quiz: [
       {

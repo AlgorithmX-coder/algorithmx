@@ -103,7 +103,13 @@ const topic4: TopicManifest = {
   check: {
     explain: {
       prompt: "What is an incident timeline, how is it built, and why is it so essential, using the Bangladesh Bank heist to illustrate?",
-      modelAnswer: "An incident timeline is the attack reconstructed in chronological order: when the attacker got in, what they did first, how they moved, what they took, and when, assembled from evidence scattered across many sources (logs from different systems, artefacts malware left, network records), each a fragment that in sequence forms a coherent story. It is built largely by correlation: connecting evidence by timestamp and logic into the attacker's path, which is why good logging and synchronised clocks matter so much, while staying evidence-led so every step is supported and gaps are marked as gaps, not guessed. It is essential because without it you are guessing: you cannot eradicate a threat you do not understand, confirm the true scope of a breach (crucial for notification), or prevent a recurrence if you do not know how it happened; and it becomes the backbone of the incident report and lessons learned. The Bangladesh Bank heist illustrates this powerfully: investigators reconstructed a detailed timeline of the roughly 81-million-dollar theft from logs, the attackers' custom malware (which even tampered with transaction-confirmation printing to delay detection), and network traces, and that reconstruction was what revealed exactly how the audacious heist was carried out and how the attackers tried to cover their tracks.",
+      modelAnswer: [
+        "An incident timeline is the attack reconstructed in chronological order (when the attacker got in, what they did first, how they moved, what they took, and when), assembled from evidence scattered across many sources such as logs from different systems, artefacts malware left, and network records.",
+        "It is built largely by correlation, connecting evidence by timestamp and logic into the attacker's path, which is why good logging and synchronised clocks matter so much, while staying evidence-led so every step is supported and gaps are marked as gaps, not guessed.",
+        "It is essential because without it you are guessing: you cannot eradicate a threat you do not understand, confirm the true scope of a breach (crucial for notification), or prevent a recurrence if you do not know how it happened.",
+        "The timeline becomes the backbone of the incident report and lessons learned.",
+        "The Bangladesh Bank heist illustrates this, as investigators reconstructed a detailed timeline of the roughly 81-million-dollar theft from logs, the attackers' custom malware (which even tampered with transaction-confirmation printing to delay detection) and network traces, revealing exactly how the heist was carried out and how the attackers tried to cover their tracks.",
+      ],
     },
     quiz: [
       {
