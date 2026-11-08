@@ -1608,7 +1608,7 @@ function CatchThemStage({ def, actor, reduced, audio, emit, onPass, onResit, voi
           <Bubble who="wren" tone={T.arcCyan} speaking={speaking}>{def.intro}</Bubble>
         </div>
         <p style={{ fontFamily: MONO, fontSize: 13, color: T.textSecondary, marginBottom: 20 }}>
-          {scenarios.length} questions. Get {def.pass} right to close the case. Miss it and you sit the whole case again.
+          {scenarios.length} questions. Get {def.pass} right, and you close the case. If you get fewer than {def.pass}, you&apos;ll play the whole case again.
         </p>
         {canStart ? (
           <AmberButton label="START THE TEST →" onClick={begin} />
