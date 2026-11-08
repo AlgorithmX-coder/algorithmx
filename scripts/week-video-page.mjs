@@ -251,6 +251,12 @@ ${sections}
     <p>Week 3&rsquo;s Raccoon now holds a smiling <b>child&rsquo;s face</b> on a stick rather than a puppy&rsquo;s, since the case a child actually meets is a grown-up pretending to be a kid their own age. Reading all eight scripts together also caught three broken lines: week 5 said &ldquo;a shield of <b>kind</b>&rdquo; and &ldquo;<b>Kind</b> is stronger&rdquo;, and week 6 answered the Raccoon with &ldquo;It is not yours, Cyber Hero&rdquo; &mdash; which reads as telling the <em>child</em> the lobby is not theirs, one line after saying it is.</p>
   </div>
 
+  <div class="note">
+    <p><b>What changed at week 11.</b> Weeks 1 to 10 move too slowly, and the cause was not the wording that asked for a &ldquo;slow, smooth&rdquo; shot, though all forty clips did ask for exactly that. It was that a shot was ordered as long as the voice over it needed, so an opening shot carrying three lines ran to <b>fifteen seconds</b> while its two pinned pictures differed by one small gesture. Stretch one gesture across fifteen seconds and the model does not slow it down, it invents drift.</p>
+    <p>So a week 11 shot carries <b>one line and one action</b>, and the action has an unmistakable before and after: a beacon goes from blazing to smothered, a lever is hauled down and the lamp bursts, three lights answer across the sea. The intro runs five shots rather than two. Two clips were rejected on the first pass for the old fault and rebuilt, one of which had warped a child&rsquo;s face while it drifted.</p>
+    <p>Week 11 is also the week whose subject is hardest. The film never shows a child frightened and never names a helpline: the Raccoon&rsquo;s whole plan is to <b>keep it quiet</b>, and the answer is to light the lamp and have three lights answer back.</p>
+  </div>
+
 </div>
 </body>
 </html>

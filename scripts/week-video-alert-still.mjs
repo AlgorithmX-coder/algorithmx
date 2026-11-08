@@ -13,10 +13,15 @@
  * Owner, 2026-10-29: "it takes a screenshot of the video and then it says, oh
  * no". So the photo is now literally a frame of the film.
  *
- * WHICH frame: the last moment of shot one, where the Raccoon's gloat has
+ * WHICH frame: the last moment of the GLOAT shot, where the Raccoon's line has
  * landed - the mask lowered, the gems scooped, the lure swung at the camera.
  * That is the picture the words "oh no, look what happened" belong to. Taken a
- * little before the cut so it is never the dissolve into shot two.
+ * little before the cut so it is never the dissolve into the next shot.
+ *
+ * On weeks 1-10 the gloat is shot one, because those films put all three of
+ * the intro's lines on it. From week 11 the villain's gloat has a shot of its
+ * own, so the week file names the shot to cut from in ALERT_SHOT rather than
+ * this script assuming it.
  *
  * SHAPE: the polaroid is 4:3 and covers, so a 16:9 frame would lose a quarter
  * of its width to a crop nobody chose. The crop is done here instead, centred,
@@ -53,14 +58,26 @@ function seconds(file) {
 }
 
 const weeks = ALL
-  ? Array.from({ length: 10 }, (_, i) => String(i + 1).padStart(2, "0"))
+  ? Array.from({ length: 20 }, (_, i) => String(i + 1).padStart(2, "0"))
   : [String(Number(weekArg.split("=")[1])).padStart(2, "0")];
+
+/* Which shot carries the gloat. The week file says so from week 11 on; the
+ * two-shot weeks put it on shot one. */
+async function gloatShot(WW) {
+  try {
+    const wk = await import(`./week-videos/w${WW}.mjs`);
+    return wk.ALERT_SHOT ?? "intro-shot1";
+  } catch {
+    return "intro-shot1";
+  }
+}
 
 let done = 0;
 for (const WW of weeks) {
-  const shot = `.art-check/w${WW}-video/shots/intro-shot1.mp4`;
+  const name = await gloatShot(WW);
+  const shot = `.art-check/w${WW}-video/shots/${name}.mp4`;
   if (!existsSync(shot)) {
-    console.log(`  w${WW}  no intro-shot1 footage, skipped`);
+    console.log(`  w${WW}  no ${name} footage, skipped`);
     continue;
   }
   const at = Math.max(0, seconds(shot) - BEFORE_CUT);
@@ -76,7 +93,7 @@ for (const WW of weeks) {
   /* cover, centred: the same crop the polaroid would do, done once and
    * checked, rather than left to the browser. */
   await sharp(tmp).resize(OUT_W, OUT_H, { fit: "cover", position: "centre" }).png().toFile(`${OUT_DIR}/week-${WW}.png`);
-  console.log(`  w${WW}  frame at ${at.toFixed(2)}s -> ${OUT_DIR}/week-${WW}.png  ${OUT_W}x${OUT_H}`);
+  console.log(`  w${WW}  ${name} at ${at.toFixed(2)}s -> ${OUT_DIR}/week-${WW}.png  ${OUT_W}x${OUT_H}`);
   done++;
 }
 console.log(`${done} alert still(s) cut from the films.`);
