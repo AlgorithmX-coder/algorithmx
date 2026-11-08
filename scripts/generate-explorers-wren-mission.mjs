@@ -197,7 +197,17 @@ function missedWords(script, heard) {
   // sound-alike fold, so a name heard as "Pakrad's" still matches PACKRAT
   const fold = (s) => s.replace(/'/g, "").replace(/c/g, "k").replace(/d/g, "t").replace(/z/g, "s").replace(/[aeiouy]/g, "").replace(/(.)\1+/g, "$1");
   const heardOnly = extra.join("");
-  return miss.filter((w) => { const bare = w.replace(/'s$/, ""); return !fold(heardOnly).includes(fold(bare)); });
+  const missed = miss.filter((w) => { const bare = w.replace(/'s$/, ""); return !fold(heardOnly).includes(fold(bare)); });
+  // UAT M1 Skill 5: "a free Robux generator" said as "generators". The fold
+  // above excused it ("generator" sits inside "generators"), so a plural slip
+  // is reported on its own. A possessive 's stays excused.
+  const plural = miss.flatMap((w) => {
+    const x = extra.find((e) => !/'/.test(w + e) && (e === w + "s" || e === w + "es" || w === e + "s" || w === e + "es"));
+    return x ? [`${w} (said as ${x})`] : [];
+  });
+  // a word she added that no missed word's spelling explains
+  const added = extra.filter((e) => !plural.some((p) => p.endsWith(` ${e})`)) && !fold(miss.join("")).includes(fold(e))).map((e) => `+${e}`);
+  return [...missed, ...plural, ...added];
 }
 
 /** Level of each 10ms frame, in dBFS. */
