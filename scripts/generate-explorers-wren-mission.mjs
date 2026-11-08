@@ -26,6 +26,9 @@ import ffmpegPath from "ffmpeg-static";
 const DRY = process.argv.includes("--dry");
 const onlyIdx = process.argv.indexOf("--only");
 const only = onlyIdx >= 0 ? process.argv[onlyIdx + 1] : null;
+// --skip <path,path>: leave clips already signed off by ear untouched
+const skipIdx = process.argv.indexOf("--skip");
+const skip = new Set(skipIdx >= 0 ? process.argv[skipIdx + 1].split(",") : []);
 // --log <file>: per-clip receipt (tag, voice, settings, take, transcript match, fade point, LUFS)
 const logIdx = process.argv.indexOf("--log");
 const logPath = logIdx >= 0 ? process.argv[logIdx + 1] : null;
@@ -33,7 +36,7 @@ const logPath = logIdx >= 0 ? process.argv[logIdx + 1] : null;
 // typical pitch and pace, so neighbouring lines sound like one delivery.
 const takesIdx = process.argv.indexOf("--takes");
 const TAKES = takesIdx >= 0 ? Math.max(1, Number(process.argv[takesIdx + 1])) : 1;
-const missionArg = process.argv.slice(2).find((a, i, all) => /^\d+$/.test(a) && all[i - 1] !== "--log" && all[i - 1] !== "--takes");
+const missionArg = process.argv.slice(2).find((a, i, all) => /^\d+$/.test(a) && !["--log", "--takes", "--skip"].includes(all[i - 1]));
 if (!missionArg) {
   console.error("usage: node scripts/generate-explorers-wren-mission.mjs <NN> [--only <path>] [--dry]");
   process.exit(2);
@@ -319,7 +322,7 @@ function finish(rawPath, outPath, lastWordEnd, pad = 0.25) {
   return { fadeStart, quiet };
 }
 
-const entries = Object.entries(scripts).filter(([path]) => !only || path === only);
+const entries = Object.entries(scripts).filter(([path]) => (!only || path === only) && !skip.has(path));
 console.log(`Mission ${missionNo}: ${entries.length} clip(s) to generate${DRY ? " (dry run)" : ""}`);
 const multiTag = entries.filter(([, text]) => !ONE_TAG.test(text.trim()));
 if (multiTag.length) {
@@ -354,7 +357,8 @@ for (const [path, text] of entries) {
       if (!words.length) continue;
       const rawPath = join(tmp, `${filename}.${take}.raw.mp3`);
       await writeFile(rawPath, buf);
-      const t = { rawPath, words, heard, score, take, missed, pauses, ...voiceProfile(rawPath, text) };
+      // pace on what she says: "account dot gamehub dot com" has more letters than the address
+      const t = { rawPath, words, heard, score, take, missed, pauses, ...voiceProfile(rawPath, spoken(text)) };
       if (score >= MIN_MATCH && !missed.length && !pauses.length) clean.push(t);
       const flaws = (x) => x.missed.length + x.pauses.length;
       const better = !best || (score >= MIN_MATCH) > (best.score >= MIN_MATCH) || flaws(t) < flaws(best) || (flaws(t) === flaws(best) && score > best.score);
