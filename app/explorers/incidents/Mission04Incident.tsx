@@ -155,7 +155,7 @@ export default function Mission04Incident({ reduced, audio, onPhaseCleared, onCo
       {/* ---------------- phase 1: read the file ---------------- */}
       {phase === 1 && (
         <div style={{ maxWidth: 820 }}>
-          <Eyebrow text="Phase 1. The listing: four claims, each built from a crumb. Tap the claim that puts Priya in real-world danger." color={T.actionAmber} />
+          <Eyebrow text="Phase 1 · The listing: there are four claims, each built from a crumb. Tap the claim that puts Priya in real-world danger." color={T.actionAmber} />
           <div style={{ display: "grid", gap: 10, marginTop: 14 }}>
             {claims.map((c) => (
               <button
@@ -200,7 +200,7 @@ export default function Mission04Incident({ reduced, audio, onPhaseCleared, onCo
       {/* ---------------- phase 2: scrub the sources ---------------- */}
       {phase === 2 && (
         <div style={{ maxWidth: 820 }}>
-          <Eyebrow text="Phase 2. The auction closes in minutes. Scrub the live sources in the RIGHT ORDER." color={T.actionAmber} />
+          <Eyebrow text="Phase 2 · The auction: it closes in minutes. Scrub the live sources in the right order." color={T.actionAmber} />
           <div style={{ display: "grid", gap: 10, marginTop: 14 }}>
             {sources.map((s) => {
               const done = scrubbed.includes(s.id);
@@ -248,7 +248,7 @@ export default function Mission04Incident({ reduced, audio, onPhaseCleared, onCo
       {/* ---------------- phase 3: poison the auction ---------------- */}
       {phase === 3 && (
         <div style={{ maxWidth: 820 }}>
-          <Eyebrow text="Phase 3. The file still exists in the nest. Make it WORTHLESS. Pick the finishing move." color={T.actionAmber} />
+          <Eyebrow text="Phase 3 · The nest: the file still sits in there. Make it worthless, and pick the finishing move." color={T.actionAmber} />
           <div style={{ display: "grid", gap: 10, marginTop: 14 }}>
             {moves.map((m) => {
               const isChosen = move === m.id;

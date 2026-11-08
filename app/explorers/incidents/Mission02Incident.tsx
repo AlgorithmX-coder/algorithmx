@@ -91,7 +91,7 @@ export default function Mission02Incident({ reduced, audio, onPhaseCleared, onCo
       {/* ---------------- phase 1: find the hub ---------------- */}
       {phase === 1 && (
         <div>
-          <Eyebrow text="Phase 1. The factory floor: three funnels are running. Every funnel drains somewhere. Follow the arrows and tap the collection point." color={T.actionAmber} />
+          <Eyebrow text="Phase 1 · The factory floor: three funnels are running, and every funnel drains somewhere. Follow the arrows, and tap the collection point." color={T.actionAmber} />
           <div style={{ marginTop: 14, display: "grid", gap: 10 }}>
             {[0, 1, 2].map((lane) => (
               <div key={lane} style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10, alignItems: "stretch" }} className="sr-two-col">

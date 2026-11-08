@@ -43,7 +43,9 @@ if (!missionArg) {
 }
 const missionNo = missionArg.padStart(2, "0");
 
-const { [`mission${missionNo}VoiceScripts`]: scripts } = await import(`./wren-voice-scripts/mission${missionNo}.mjs`);
+// missionNNSay (optional): screen tokens she reads out differently, e.g. a
+// password shown as "P@ssw0rd" and said as words
+const { [`mission${missionNo}VoiceScripts`]: scripts, [`mission${missionNo}Say`]: SAY = {} } = await import(`./wren-voice-scripts/mission${missionNo}.mjs`);
 if (!scripts) {
   console.error(`scripts/wren-voice-scripts/mission${missionNo}.mjs must export mission${missionNo}VoiceScripts`);
   process.exit(2);
@@ -88,7 +90,22 @@ const sayUrl = (s) =>
     u.split(/([./-])/).filter(Boolean)
       .map((p) => (p === "." ? "dot" : p === "/" ? "slash" : p === "-" ? "dash" : /^(ru|uk)$/i.test(p) ? p.toUpperCase().split("").join(" ") : p))
       .join(" "));
-const spoken = (text) => sayUrl(text.replace(/["“”]/g, "").replace(/(^|[^A-Za-z])['‘’]|['‘’](?![A-Za-z])/g, "$1"));
+// longest token first, so "P@ssw0rd!" wins over "P@ssw0rd"
+const sayTokens = (s) =>
+  Object.keys(SAY).sort((a, b) => b.length - a.length).reduce((t, k) => t.split(k).join(SAY[k]), s);
+const spoken = (text) => sayUrl(sayTokens(text).replace(/["“”]/g, "").replace(/(^|[^A-Za-z])['‘’]|['‘’](?![A-Za-z])/g, "$1"));
+// The transcriber writes a number said as words back as typed: "Jake twenty
+// fourteen with an exclamation mark" comes back "Jake2014!", sometimes with
+// "with an exclamation mark" kept in words after it. Heard text is put back
+// into the words she was sent before it's compared (tokens with a digit only:
+// letters-only tokens like "https" come back as spoken).
+const escRe = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+const SAY_HEARD = Object.keys(SAY).filter((k) => /\d/.test(k)).sort((a, b) => b.length - a.length).map((k) => {
+  const said = SAY[k].split(" ");
+  const tails = said.slice(1).map((_, i) => said.slice(i + 1).join(" ")).map(escRe).join("|");
+  return { said: SAY[k], re: new RegExp(`${escRe(k.replace(/[^A-Za-z0-9]+$/, ""))}[^\\sA-Za-z0-9]*(?: (?:${tails})(?![A-Za-z]))?`, "g") };
+});
+const heardAsSaid = (s) => SAY_HEARD.reduce((t, { said, re }) => t.replace(re, said), s);
 // A silence this long between two words, where the line has no punctuation,
 // is a stray pause (normal word gaps are under 0.1s). Such a take is retaken.
 const MID_PAUSE = 0.2;
@@ -101,6 +118,15 @@ function withScriptMarks(words, text) {
   const tokens = spoken(text).replace(/\[[a-z ]+\]/g, " ").split(/\s+/).filter(Boolean);
   let j = 0;
   return words.map((w) => {
+    // one heard word standing for several said ones ("Jake2014!"): step over them all
+    const said = heardAsSaid(w.text).split(" ");
+    if (said.length > 1) {
+      const s = tokens.slice(j, j + 4).findIndex((t) => bare(t) === bare(said[0]));
+      if (s >= 0) {
+        j += s + said.length;
+        return { ...w, mark: tokens[j - 1] };
+      }
+    }
     const k = tokens.slice(j, j + 4).findIndex((t) => bare(t) === bare(w.text));
     if (k < 0) return { ...w, mark: w.text };
     j += k + 1;
@@ -360,8 +386,8 @@ for (const [path, text] of entries) {
       const { words: heardWords, text: heard } = await wordTimestamps(buf);
       const words = withScriptMarks(heardWords, text);
       // compare what she was sent with what was heard, addresses in words on both sides
-      const score = matchScore(spoken(text), sayUrl(heard));
-      const missed = missedWords(spoken(text), sayUrl(heard));
+      const score = matchScore(spoken(text), sayUrl(heardAsSaid(heard)));
+      const missed = missedWords(spoken(text), sayUrl(heardAsSaid(heard)));
       const pauses = strayPauses(words);
       console.log(`  take ${take}: match ${(score * 100).toFixed(0)}%${missed.length ? `, words not heard: ${missed.join(" ")}` : ""}${pauses.length ? `, stray pause: ${pauses.join("; ")}` : ""}`);
       if (!words.length) continue;
