@@ -32,6 +32,7 @@ export default function LessonNotes({ notebookKey, title, leftSlot }: { notebook
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<{ text: string; signIn?: boolean } | null>(null);
   const [loaded, setLoaded] = useState(false);
+  const [draft, setDraft] = useState("");
   const pillRef = useRef<HTMLDivElement>(null);
 
   // Load this module's notes once.
@@ -110,6 +111,17 @@ export default function LessonNotes({ notebookKey, title, leftSlot }: { notebook
 
   const remove = (id: string) => setNotes((p) => p.filter((n) => n.id !== id));
 
+  // Hand-typed note: some learners take in a lesson better by writing it out
+  // themselves, so they can add their own note without highlighting anything.
+  const addTyped = () => {
+    const text = draft.trim();
+    if (!text) return;
+    const id = (crypto as Crypto).randomUUID ? crypto.randomUUID() : String(Date.now());
+    setNotes((p) => [{ id, text, ts: Date.now() }, ...p]);
+    setDraft("");
+    setOpen(true);
+  };
+
   return (
     <>
       {/* floating "summarise" pill by the current selection */}
@@ -160,7 +172,7 @@ export default function LessonNotes({ notebookKey, title, leftSlot }: { notebook
             {notes.length === 0 && !busy ? (
               <div style={{ margin: "auto", textAlign: "center", padding: "24px 10px", color: T.faint }}>
                 <div style={{ marginBottom: 10 }}><Sparkle big /></div>
-                <p style={{ fontSize: 14, color: T.muted, lineHeight: 1.6 }}>Highlight any part of the lesson, then tap <b style={{ color: T.body }}>Summarise to notes</b>. Your notes build up here as you go.</p>
+                <p style={{ fontSize: 14, color: T.muted, lineHeight: 1.6 }}>Highlight any part of the lesson to <b style={{ color: T.body }}>summarise</b> it, or <b style={{ color: T.body }}>write your own</b> below. Your notes build up here as you go.</p>
               </div>
             ) : (
               notes.map((n) => (
@@ -176,6 +188,25 @@ export default function LessonNotes({ notebookKey, title, leftSlot }: { notebook
                 </div>
               ))
             )}
+          </div>
+
+          {/* compose your own note */}
+          <div style={{ borderTop: `1px solid ${T.edge}`, padding: "12px 14px", display: "flex", flexDirection: "column", gap: 8 }}>
+            <textarea
+              value={draft}
+              onChange={(e) => setDraft(e.target.value)}
+              onKeyDown={(e) => { if ((e.metaKey || e.ctrlKey) && e.key === "Enter") { e.preventDefault(); addTyped(); } }}
+              placeholder="Write your own note..."
+              rows={2}
+              style={{ width: "100%", boxSizing: "border-box", resize: "vertical", minHeight: 44, background: T.panel, color: T.ink, border: `1px solid ${T.edge}`, borderRadius: 9, padding: "9px 11px", fontFamily: T.sans, fontSize: 13.5, lineHeight: 1.5 }}
+            />
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10 }}>
+              <span style={{ fontFamily: T.mono, fontSize: 10.5, color: T.faint }}>Ctrl / Cmd + Enter to add</span>
+              <button onClick={addTyped} disabled={!draft.trim()}
+                style={{ fontFamily: T.display, fontSize: 13, fontWeight: 700, color: draft.trim() ? "#fff" : T.faint, background: draft.trim() ? `linear-gradient(135deg, ${T.primary}, ${T.cyan})` : T.panel, border: draft.trim() ? "none" : `1px solid ${T.edge}`, borderRadius: 9, padding: "8px 16px", cursor: draft.trim() ? "pointer" : "default" }}>
+                Add note
+              </button>
+            </div>
           </div>
         </aside>
       )}
