@@ -26,9 +26,13 @@ export interface CourseChoice {
 export default function NewClass({
   placesLeft,
   courses,
+  onTrial = false,
+  trialEnds = null,
 }: {
   placesLeft: number;
   courses: readonly CourseChoice[];
+  onTrial?: boolean;
+  trialEnds?: string | null;
 }) {
   const [pending, start] = useTransition();
   const [said, setSaid] = useState<{ ok: boolean; text: string } | null>(null);
@@ -48,8 +52,12 @@ export default function NewClass({
       <h3>Make a class</h3>
       <p className="sharelede">
         {placesLeft > 0
-          ? `Your licence has ${placesLeft} place${placesLeft === 1 ? "" : "s"} left.`
-          : "Your licence is full. You can still make a class, but you will not be able to add pupils to it."}
+          ? onTrial
+            ? `Your trial has ${placesLeft} place${placesLeft === 1 ? "" : "s"} to try with${trialEnds ? `, until ${trialEnds}` : ""}.`
+            : `Your licence has ${placesLeft} place${placesLeft === 1 ? "" : "s"} left.`
+          : onTrial
+            ? "Your trial places are all used. You can still make a class, but you will not be able to add pupils to it."
+            : "Your licence is full. You can still make a class, but you will not be able to add pupils to it."}
       </p>
 
       <form ref={form} action={submit} className="sharerow">

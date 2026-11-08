@@ -34,6 +34,27 @@ export const SCHOOL_COURSE_SLUGS = [
   "cyberstart-pro",
 ] as const;
 
+/**
+ * What each course is called, which is not always what `Product.name` says.
+ *
+ * The catalogue has "Cyber Heroes Academy" for `cyber-heroes`, while every
+ * public page, the nav and the marketing all say "Cyber Heroes". The odd one
+ * out was showing up in the teacher's course picker. The slugs are stranger
+ * still for historical reasons (`cyberstart` is Cyber Ops), so neither the
+ * slug nor the stored name can be put in front of a teacher as it stands.
+ */
+const COURSE_NAME: Record<string, string> = {
+  "cyber-heroes": "Cyber Heroes",
+  cyberexplorers: "Cyber Explorers",
+  cyberstart: "Cyber Ops",
+  "cyberstart-pro": "Cyber Pro",
+};
+
+/** The name to show a teacher, falling back to the catalogue's own. */
+export function courseName(slug: string, fallback: string): string {
+  return COURSE_NAME[slug] ?? fallback;
+}
+
 export interface SchoolCourse {
   id: string;
   slug: string;
@@ -56,7 +77,7 @@ export async function listSchoolCourses(): Promise<SchoolCourse[]> {
     select: { id: true, slug: true, name: true, ageRange: true, weeksCount: true, ageMin: true },
     orderBy: { ageMin: "asc" },
   });
-  return rows.map(({ ageMin: _ageMin, ...rest }) => rest);
+  return rows.map(({ ageMin: _ageMin, ...rest }) => ({ ...rest, name: courseName(rest.slug, rest.name) }));
 }
 
 /** True if this product is one a school may put a class on. */
@@ -133,7 +154,7 @@ export async function placesSummary(orgId: string): Promise<PlacesSummary> {
   for (const k of classes) {
     const key = k.product.slug;
     order.set(key, k.product.ageMin);
-    const row = byCourse.get(key) ?? { slug: key, name: k.product.name, pupils: 0, classes: 0 };
+    const row = byCourse.get(key) ?? { slug: key, name: courseName(key, k.product.name), pupils: 0, classes: 0 };
     row.pupils += k._count.pupils;
     row.classes += 1;
     byCourse.set(key, row);

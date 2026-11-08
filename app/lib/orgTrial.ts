@@ -10,7 +10,7 @@ export { trialStatus, type TrialStatus } from "@/app/lib/trialStatus";
  * client-safe trialStatus() re-exported above lives in ./trialStatus.ts;
  * import it from there directly in a client component. */
 
-export async function grantTrial(orgId: string, days: 1 | 2, grantedBy: { name: string; email: string | null }): Promise<Date> {
+export async function grantTrial(orgId: string, days: number, grantedBy: { name: string; email: string | null }): Promise<Date> {
   const trialExpiresAt = new Date(Date.now() + days * 24 * 60 * 60 * 1000);
   const org = await prisma.organisation.update({ where: { id: orgId }, data: { trialExpiresAt }, select: { name: true, slug: true } });
   await opsAlert({ what: "Trial granted", detail: { org: org.name, slug: org.slug, days, grantedBy: grantedBy.email ?? grantedBy.name } });
