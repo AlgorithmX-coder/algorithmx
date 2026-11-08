@@ -42,6 +42,8 @@
   /* Section identity colours */
   --schools: #9a5b00;
   --schools-soft: rgba(255, 179, 71, 0.2);
+  --organisations: #0e7a45;
+  --organisations-soft: rgba(14, 122, 69, 0.14);
   --firms: #0a7085;
   --firms-soft: rgba(10, 112, 133, 0.12);
   --individuals: #5744c9;
@@ -81,6 +83,7 @@
 .admin-ui .admin-tab svg { width: 15px; height: 15px; opacity: 0.75; }
 .admin-ui .admin-tab:hover { color: var(--ink); background: var(--sunk); }
 .admin-ui .admin-tab[data-section="schools"][aria-current="page"] { color: var(--schools); background: var(--schools-soft); }
+.admin-ui .admin-tab[data-section="organisations"][aria-current="page"] { color: var(--organisations); background: var(--organisations-soft); }
 .admin-ui .admin-tab[data-section="firms"][aria-current="page"] { color: var(--firms); background: var(--firms-soft); }
 .admin-ui .admin-tab[data-section="individuals"][aria-current="page"] { color: var(--individuals); background: var(--individuals-soft); }
 .admin-ui .admin-who { margin-left: auto; font-size: 13px; color: var(--faint); }
@@ -93,6 +96,7 @@
 .admin-ui .ad-eyebrow { display: inline-flex; align-items: center; gap: var(--sp-xs); font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; margin-bottom: var(--sp-xs); }
 .admin-ui .ad-eyebrow svg { width: 15px; height: 15px; }
 .admin-ui .ad-eyebrow.schools { color: var(--schools); }
+.admin-ui .ad-eyebrow.organisations { color: var(--organisations); }
 .admin-ui .ad-eyebrow.firms { color: var(--firms); }
 .admin-ui .ad-eyebrow.individuals { color: var(--individuals); }
 .admin-ui .ad-h1 { font-family: var(--display); font-size: 32px; font-weight: 800; margin: 0 0 var(--sp-sm); color: var(--ink); letter-spacing: -0.015em; }

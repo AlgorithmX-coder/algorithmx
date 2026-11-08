@@ -13,6 +13,10 @@ import { createSchool } from "@/app/lib/schoolOps";
 
 const Body = z.object({
   name: z.string().min(2).max(120),
+  /* A school, or a youth club / council / charity / training provider that
+     teaches the same courses. Same machinery either way; it only decides
+     which staff tab it lands under. */
+  kind: z.enum(["SCHOOL", "ORGANISATION"]).optional(),
   sector: z.string().max(80).optional().nullable(),
   country: z.string().max(80).optional().nullable(),
   contactName: z.string().max(120).optional().nullable(),

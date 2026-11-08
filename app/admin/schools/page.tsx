@@ -1,18 +1,22 @@
-import { listSchools, platformSchoolTotals } from "@/app/lib/schoolOps";
+import { listLearnerOrgs, platformLearnerOrgTotals } from "@/app/lib/schoolOps";
 import { SchoolIcon } from "../icons";
 import SchoolsTable from "./SchoolsTable";
 import AdminSchoolsPanel from "./AdminSchoolsPanel";
+import { SCHOOL_WORDS } from "../orgWords";
 
-/* /admin/schools: every school, staff-wide. Same shape as /admin/firms,
- * rolled up from Class/ChildProfile/Progress instead of Seat/Enrolment.
- * Cyber Heroes only, for now - the only course actually wired for
- * school licensing. Search/filter/sort lives in SchoolsTable.tsx;
+/* /admin/schools: every school, staff-wide. Rolled up from
+ * Class/ChildProfile/Progress rather than Seat/Enrolment.
+ *
+ * Organisations that are not schools (youth clubs, councils, charities,
+ * training providers) are the same thing underneath and live under their own
+ * tab at /admin/organisations, which renders this same table and panel with
+ * a different vocabulary. Search/filter/sort lives in SchoolsTable.tsx;
  * styling in ../admin.css. */
 export const dynamic = "force-dynamic";
 
 export default async function AdminSchoolsPage() {
-  const rows = await listSchools();
-  const t = platformSchoolTotals(rows);
+  const rows = await listLearnerOrgs("SCHOOL");
+  const t = platformLearnerOrgTotals(rows);
 
   return (
     <div>
@@ -22,9 +26,9 @@ export default async function AdminSchoolsPage() {
         {t.seatsLicensed} pupil places licensed &middot; {t.pupilsUsed} pupils added &middot; {t.classes} classes &middot; Cyber Heroes only, for now.
       </p>
 
-      <SchoolsTable rows={rows} />
+      <SchoolsTable rows={rows} basePath="/admin/schools" noun="school" />
 
-      <AdminSchoolsPanel />
+      <AdminSchoolsPanel w={SCHOOL_WORDS} />
     </div>
   );
 }

@@ -747,8 +747,26 @@ model PackShareLink {
 /// school at all. Sector was never usable for that, because it is free text
 /// somebody types at onboarding and a wording difference would lock a real
 /// teacher out of a live lesson.
+/// What kind of body this is. Both teach children on the same four courses
+/// and share every piece of machinery below: classes, pupils, picture
+/// sign-in, the places ledger. They differ in how they are sold to and in
+/// the words staff use about them, which is why this is one flag rather
+/// than a second set of tables.
+enum LearnerOrgKind {
+  SCHOOL
+  ORGANISATION
+}
+
+/// The profile for any organisation that teaches learners.
+///
+/// Named SchoolProfile because schools came first. It now also carries youth
+/// clubs, councils, charities, scout groups, home-ed co-ops and training
+/// providers, told apart by `kind`. Renaming the table would touch every
+/// query that distinguishes a learner organisation from a law firm, for no
+/// behaviour, so the name stays and this comment carries the truth.
 model SchoolProfile {
-  id        String   @id @default(cuid())
+  id        String         @id @default(cuid())
+  kind      LearnerOrgKind @default(SCHOOL)
   orgId     String   @unique
   /// Who a teacher passes a disclosure to, in this school's own words. There
   /// is no country-neutral job title for this, so the school supplies one.

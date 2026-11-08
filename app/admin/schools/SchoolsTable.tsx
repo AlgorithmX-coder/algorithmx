@@ -33,7 +33,7 @@ function statusChip(r: SchoolRow) {
 
 const STATUS_LABEL: Record<StatusFilter, string> = { all: "All", paid: "Paid", trial: "Trial", expired: "Expired", revoked: "Revoked" };
 
-export default function SchoolsTable({ rows }: { rows: SchoolRow[] }) {
+export default function SchoolsTable({ rows, basePath = "/admin/schools", noun = "school" }: { rows: SchoolRow[]; basePath?: string; noun?: string }) {
   const [q, setQ] = useState("");
   const [status, setStatus] = useState<StatusFilter>("all");
   const [sort, setSort] = useState<SortKey>("activity-desc");
@@ -64,7 +64,7 @@ export default function SchoolsTable({ rows }: { rows: SchoolRow[] }) {
       <div className="ad-controls">
         <label className="ad-search">
           <SearchIcon />
-          <input type="search" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search schools…" aria-label="Search schools" />
+          <input type="search" value={q} onChange={(e) => setQ(e.target.value)} placeholder={`Search ${noun}s…`} aria-label={`Search ${noun}s`} />
         </label>
         <div className="ad-pills" role="group" aria-label="Filter by status">
           {(["all", "paid", "trial", "expired", "revoked"] as const).map((s) => (
@@ -93,7 +93,7 @@ export default function SchoolsTable({ rows }: { rows: SchoolRow[] }) {
         <tbody>
           {filtered.map((r) => (
             <tr key={r.id}>
-              <td><Link href={`/admin/schools/${r.slug}`}><b>{r.name}</b></Link><small>{r.sector ?? "—"}{r.contactName ? ` · ${r.contactName}` : ""}</small></td>
+              <td><Link href={`${basePath}/${r.slug}`}><b>{r.name}</b></Link><small>{r.sector ?? "—"}{r.contactName ? ` · ${r.contactName}` : ""}</small></td>
               <td>{r.pupilsUsed} / {r.seatsPurchased}</td>
               <td>{r.classes}</td>
               <td>{statusChip(r)}</td>
@@ -101,7 +101,7 @@ export default function SchoolsTable({ rows }: { rows: SchoolRow[] }) {
               <td>{day(r.lastActivity)}</td>
             </tr>
           ))}
-          {filtered.length === 0 && <tr><td colSpan={6} className="ad-empty">{rows.length === 0 ? "No schools yet. Create one below." : "Nothing matches that search."}</td></tr>}
+          {filtered.length === 0 && <tr><td colSpan={6} className="ad-empty">{rows.length === 0 ? `No ${noun}s yet. Create one below.` : "Nothing matches that search."}</td></tr>}
         </tbody>
       </table>
     </div>
