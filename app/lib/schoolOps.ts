@@ -142,7 +142,7 @@ export async function createSchool(args: {
   await prisma.teacherInvite.create({ data: { orgId: org.id, email: args.teacherEmail.trim().toLowerCase(), inviteToken: token, role: "ADMIN" } });
   let emailed = true;
   try {
-    await sendTeacherInvite({ to: args.teacherEmail, token, schoolName: org.name, seats: args.seatsPurchased, trialDays: args.trialDays ?? null, origin: args.origin });
+    await sendTeacherInvite({ to: args.teacherEmail, token, schoolName: org.name, kind: args.kind ?? "SCHOOL", seats: args.seatsPurchased, trialDays: args.trialDays ?? null, origin: args.origin });
   } catch (err) {
     emailed = false;
     console.error("[admin/schools] teacher invite email failed", err instanceof Error ? err.message : err);
@@ -226,25 +226,31 @@ export const SCHOOLS_EMAIL = "schools@algorithmx.co.uk";
  * It used to announce however many places were posted, which on a trial was
  * a hardcoded 30 that nobody had agreed to buy.
  */
-export async function sendTeacherInvite(args: { to: string; token: string; schoolName: string; seats: number; trialDays?: number | null; origin: string }) {
+export async function sendTeacherInvite(args: { to: string; token: string; schoolName: string; kind?: LearnerOrgKind; seats: number; trialDays?: number | null; origin: string }) {
   const link = `${args.origin}/schools/join/${args.token}`;
   const school = esc(args.schoolName);
   const onTrial = Boolean(args.trialDays && args.trialDays > 0);
-  const headline = onTrial
-    ? `${school} is set up to try.`
-    : `${args.seats} pupil place${args.seats === 1 ? "" : "s"} ${args.seats === 1 ? "is" : "are"} ready for ${school}.`;
-  const sub = onTrial
-    ? `You are the first teacher set up for ${school}, on a ${args.trialDays}-day trial. Set up your account from the link below and you will land on your classes page, ready to make a class and add children.`
-    : `You are the first teacher set up for ${school}. Set up your account from the link below and you will land on your classes page, ready to make a class and add children. You can add more teachers once you are in.`;
+  /* ONE HEADLINE, for every school, every organisation and every course.
+     It used to lead with either a course name or a number of places, and
+     both are wrong to lead with: a course name is wrong for a school that
+     bought something else, and a number of places on a trial was a figure
+     nobody had agreed to buy. What the reader wants to know first is that
+     the thing they signed for exists and is theirs. The standing goes in
+     the line underneath, where a wrong guess cannot be the first words. */
+  const headline = `${school} is ready for AlgorithmX.`;
+  const standing = onTrial
+    ? `You are on a ${args.trialDays}-day trial, so everything is open and nothing is charged.`
+    : `Your licence covers ${args.seats} pupil place${args.seats === 1 ? "" : "s"}.`;
+  const sub = `You are the first person set up for ${school}. ${standing} Set up your account from the link below and you will land on your classes page, ready to make a class and add children.`;
   const html = `
     <div style="font-family:Inter,Segoe UI,Helvetica,Arial,sans-serif;color:#14161d;max-width:560px;margin:0 auto;padding:24px">
-      <p style="font-family:ui-monospace,Consolas,monospace;font-size:11px;letter-spacing:.2em;color:#0a7085;margin:0 0 16px">ALGORITHMX &middot; FOR SCHOOLS</p>
+      <p style="font-family:ui-monospace,Consolas,monospace;font-size:11px;letter-spacing:.2em;color:#0a7085;margin:0 0 16px">ALGORITHMX &middot; ${args.kind === "ORGANISATION" ? "FOR ORGANISATIONS" : "FOR SCHOOLS"}</p>
       <h1 style="font-size:22px;margin:0 0 12px">${headline}</h1>
       <p style="font-size:15px;line-height:1.55;margin:0 0 12px">${sub}</p>
-      <p style="margin:18px 0 10px"><a href="${link}" style="display:inline-block;background:#0a7085;color:#fff;text-decoration:none;padding:11px 18px;border-radius:8px;font-weight:600">Set up my teacher account</a></p>
+      <p style="margin:18px 0 10px"><a href="${link}" style="display:inline-block;background:#0a7085;color:#fff;text-decoration:none;padding:11px 18px;border-radius:8px;font-weight:600">Set up my account</a></p>
       <p style="font-size:13.5px;color:#5b6572;line-height:1.5;margin:0">Or copy this link: <a href="${link}" style="color:#0a7085">${link}</a></p>
       <p style="font-size:13.5px;color:#5b6572;line-height:1.5;margin:14px 0 0">Any questions, write to <a href="mailto:${SCHOOLS_EMAIL}" style="color:#0a7085">${SCHOOLS_EMAIL}</a>.</p>
     </div>`;
-  const text = `${onTrial ? `${args.schoolName} is set up to try, on a ${args.trialDays}-day trial.` : `${args.seats} pupil place(s) are ready for ${args.schoolName}.`}\n\nSet up your teacher account: ${link}\n\nAny questions, write to ${SCHOOLS_EMAIL}.\n`;
+  const text = `${args.schoolName} is ready for AlgorithmX.\n\n${onTrial ? `You are on a ${args.trialDays}-day trial, so everything is open and nothing is charged.` : `Your licence covers ${args.seats} pupil place(s).`}\n\nSet up your account: ${link}\n\nAny questions, write to ${SCHOOLS_EMAIL}.\n`;
   return sendEmail({ to: args.to, subject: `Your AlgorithmX account for ${args.schoolName}`, html, text, replyTo: SCHOOLS_EMAIL });
 }

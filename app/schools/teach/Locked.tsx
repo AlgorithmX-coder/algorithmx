@@ -7,6 +7,11 @@ import Link from "next/link";
  * link by their head of computing needs to know what happened and what to do
  * about it; bouncing them to a marketing page tells them neither and looks
  * broken. The same choice the AI Cleared admin page makes for a firm.
+ *
+ * Names no course. This screen is the gate for the classes page and the
+ * overview as well as the packs, and a licence buys places that a school
+ * spends on whichever of the four courses it likes. Saying "a Cyber Heroes
+ * licence" here was wrong for every school that bought something else.
  */
 export default function Locked({ email }: { email?: string | null }) {
   return (
@@ -14,7 +19,7 @@ export default function Locked({ email }: { email?: string | null }) {
       <div className="wrap">
         <header className="top">
           <div>
-            <div className="brand">Cyber <span>Heroes</span> &middot; <i>Teacher packs</i></div>
+            <div className="brand">Algorithm<span>X</span> &middot; <i>For schools</i></div>
             <div className="sub">{email ?? "Signed in"}</div>
           </div>
         </header>
@@ -22,9 +27,9 @@ export default function Locked({ email }: { email?: string | null }) {
         <div className="brief">
           <h4>This is for schools with a licence</h4>
           <p>
-            The teacher packs carry the whole lesson: the script, the answers, and on some weeks a
-            safeguarding briefing written for an adult. They open for staff at a school that holds
-            a Cyber Heroes licence.
+            Behind here are your classes, your pupils&rsquo; progress, and the teacher packs that
+            carry the whole lesson: the script, the answers, and on some weeks a safeguarding
+            briefing written for an adult. They open for staff at a school that holds a licence.
           </p>
           <p>
             If your school has one and you cannot get in, your account is not on it yet. Ask

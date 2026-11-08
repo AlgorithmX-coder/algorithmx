@@ -19,7 +19,7 @@ import NewClass from "./NewClass";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Classes | Cyber Heroes for schools",
+  title: "Classes | AlgorithmX for schools",
   /* a list of children's first names is never indexed */
   robots: { index: false, follow: false, nocache: true },
 };
