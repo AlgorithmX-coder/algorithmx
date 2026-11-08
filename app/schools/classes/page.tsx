@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { auth } from "@/app/lib/auth";
 import { getSchoolContext, listClasses } from "@/app/lib/schoolClasses";
+import { listSchoolCourses } from "@/app/lib/schoolPlaces";
 import { trialStatus } from "@/app/lib/orgTrial";
 import Locked from "../teach/Locked";
 import TrialEnded from "../TrialEnded";
@@ -34,7 +35,10 @@ export default async function ClassesPage() {
     return <TrialEnded orgName={school.orgName} trialExpiresAt={school.trialExpiresAt!} />;
   }
 
-  const classes = await listClasses(school.orgId);
+  const [classes, courses] = await Promise.all([
+    listClasses(school.orgId),
+    listSchoolCourses(),
+  ]);
   const left = school.seatsPurchased - school.seatsUsed;
 
   return (
@@ -61,7 +65,7 @@ export default async function ClassesPage() {
           password, so nobody has to remember an email address or type one.
         </p>
 
-        <NewClass placesLeft={left} />
+        <NewClass placesLeft={left} courses={courses} />
 
         {classes.length === 0 ? (
           <div className="sheet">
@@ -78,7 +82,8 @@ export default async function ClassesPage() {
                 <div className="rb">
                   <Link href={`/schools/classes/${c.id}`}>{c.name}</Link>
                   <small className="s-say">
-                    {c._count.pupils} pupil{c._count.pupils === 1 ? "" : "s"}
+                    {c.product.name} &middot; {c._count.pupils} pupil
+                    {c._count.pupils === 1 ? "" : "s"}
                   </small>
                 </div>
                 <div className="rs">

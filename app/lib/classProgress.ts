@@ -19,7 +19,9 @@ import { prisma } from "@/app/lib/prisma";
  * because a pupil owns their own profile and writes their own progress.
  */
 
-const PRODUCT_SLUG = "cyber-heroes";
+/* No hardcoded product any more. A class carries the course it runs, and the
+   weeks and progress are read against THAT course: a year 8 class on Cyber
+   Explorers must not be scored against Cyber Heroes' twenty weeks. */
 
 export type PupilState = "not_started" | "in_progress" | "done";
 
@@ -41,6 +43,9 @@ export interface ClassProgress {
   className: string;
   yearGroup: number | null;
   code: string;
+  /** The course this class runs, which is what its pupils are entitled to. */
+  courseName: string;
+  courseSlug: string;
   weeksCount: number;
   pupils: PupilProgress[];
   /** The three numbers a teacher actually scans for. */
@@ -60,6 +65,7 @@ export async function getClassProgress(orgId: string, classId: string): Promise<
     where: { id: classId, orgId, archivedAt: null },
     select: {
       name: true, yearGroup: true, code: true,
+      product: { select: { id: true, slug: true, name: true, weeksCount: true } },
       pupils: {
         orderBy: { name: "asc" },
         select: { id: true, name: true, user: { select: { hashedPassword: true } } },
@@ -68,11 +74,7 @@ export async function getClassProgress(orgId: string, classId: string): Promise<
   });
   if (!klass) return null;
 
-  const product = await prisma.product.findUnique({
-    where: { slug: PRODUCT_SLUG },
-    select: { weeksCount: true },
-  });
-  const weeksCount = product?.weeksCount ?? 20;
+  const weeksCount = klass.product.weeksCount || 20;
 
   const ids = klass.pupils.map((p) => p.id);
   const rows = ids.length
@@ -82,7 +84,7 @@ export async function getClassProgress(orgId: string, classId: string): Promise<
         where: {
           childProfileId: { in: ids },
           childProfile: { class: { orgId } },
-          product: { slug: PRODUCT_SLUG },
+          productId: klass.product.id,
         },
         select: { childProfileId: true, week: true, stars: true, completedAt: true, updatedAt: true },
       })
@@ -140,6 +142,8 @@ export async function getClassProgress(orgId: string, classId: string): Promise<
     className: klass.name,
     yearGroup: klass.yearGroup,
     code: klass.code,
+    courseName: klass.product.name,
+    courseSlug: klass.product.slug,
     weeksCount,
     pupils,
     notStarted: pupils.filter((p) => p.currentWeek === null).length,

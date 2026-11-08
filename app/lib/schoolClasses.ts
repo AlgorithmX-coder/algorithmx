@@ -1,6 +1,7 @@
 import { randomInt } from "crypto";
 import { prisma } from "@/app/lib/prisma";
 import bcrypt from "bcryptjs";
+import { isSchoolCourse, placesUsed } from "@/app/lib/schoolPlaces";
 
 /**
  * Classes and pupils.
@@ -34,6 +35,7 @@ export type ClassFailure =
   | "seats_full"
   | "bad_name"
   | "bad_year"
+  | "bad_course"
   | "class_not_found"
   | "bad_pupil_name"
   | "no_pupils";
@@ -64,9 +66,10 @@ export async function getSchoolContext(userId: string): Promise<SchoolContext | 
     select: { org: { select: { id: true, name: true, seatsPurchased: true, trialExpiresAt: true, revokedAt: true } } },
   });
   if (!member) return null;
-  const seatsUsed = await prisma.childProfile.count({
-    where: { class: { orgId: member.org.id, archivedAt: null } },
-  });
+  /* The ledger, not a head count of pupils in live classes. A place spent is
+     spent: removing a pupil does not hand it back, and archiving a class at
+     the end of a year does not hand back the whole class. See schoolPlaces. */
+  const seatsUsed = await placesUsed(member.org.id);
   return {
     orgId: member.org.id,
     orgName: member.org.name,
@@ -85,6 +88,7 @@ export async function listClasses(orgId: string) {
     select: {
       id: true, name: true, yearGroup: true, code: true, createdAt: true,
       teacher: { select: { id: true, name: true, email: true } },
+      product: { select: { slug: true, name: true } },
       _count: { select: { pupils: true } },
     },
   });
@@ -95,6 +99,9 @@ export async function createClass(args: {
   teacherId: string;
   name: string;
   yearGroup?: number | null;
+  /** Which of the four courses this class runs. Every pupil added to it is
+   *  entitled to this course, so it cannot be left unset. */
+  productId: string;
 }): Promise<{ ok: true; id: string; code: string } | { ok: false; error: ClassFailure }> {
   const name = args.name.trim();
   if (!name || name.length > 40) return { ok: false, error: "bad_name" };
@@ -102,6 +109,10 @@ export async function createClass(args: {
   if (year !== null && (!Number.isInteger(year) || year < 1 || year > 13)) {
     return { ok: false, error: "bad_year" };
   }
+  /* Checked here rather than trusted from the form: this is a server action's
+     input, so the picker that offered four courses is not a guarantee that
+     four courses came back. */
+  if (!(await isSchoolCourse(args.productId))) return { ok: false, error: "bad_course" };
 
   /* A unique code on the first try almost always; the loop is for the day it
      is not, because a collision would otherwise surface as a raw constraint
@@ -111,7 +122,10 @@ export async function createClass(args: {
     const taken = await prisma.class.findUnique({ where: { code }, select: { id: true } });
     if (taken) continue;
     const created = await prisma.class.create({
-      data: { orgId: args.orgId, teacherId: args.teacherId, name, yearGroup: year, code },
+      data: {
+        orgId: args.orgId, teacherId: args.teacherId, name, yearGroup: year, code,
+        productId: args.productId,
+      },
       select: { id: true, code: true },
     });
     return { ok: true, id: created.id, code: created.code };
@@ -143,7 +157,7 @@ export async function addPupils(args: {
 }): Promise<{ ok: true; added: number } | { ok: false; error: ClassFailure; detail?: string }> {
   const klass = await prisma.class.findFirst({
     where: { id: args.classId, orgId: args.orgId, archivedAt: null },
-    select: { id: true },
+    select: { id: true, productId: true },
   });
   if (!klass) return { ok: false, error: "class_not_found" };
 
@@ -152,7 +166,7 @@ export async function addPupils(args: {
   const tooLong = names.find((n) => n.length > 30);
   if (tooLong) return { ok: false, error: "bad_pupil_name", detail: tooLong };
 
-  /* The seat cap, enforced. `seatsPurchased` has existed since AI Cleared and
+  /* The place cap, enforced. `seatsPurchased` has existed since AI Cleared and
      has never been checked anywhere: a firm can invite more people than it
      bought. A school should not be able to. */
   const org = await prisma.organisation.findUnique({
@@ -160,9 +174,7 @@ export async function addPupils(args: {
     select: { seatsPurchased: true },
   });
   if (!org) return { ok: false, error: "not_a_school" };
-  const used = await prisma.childProfile.count({
-    where: { class: { orgId: args.orgId, archivedAt: null } },
-  });
+  const used = await placesUsed(args.orgId);
   if (used + names.length > org.seatsPurchased) {
     return { ok: false, error: "seats_full", detail: String(org.seatsPurchased - used) };
   }
@@ -179,13 +191,30 @@ export async function addPupils(args: {
         },
         select: { id: true },
       });
-      await tx.childProfile.create({
+      const child = await tx.childProfile.create({
         data: {
           userId: user.id,
           name: firstName,
           favouriteColour: COLOURS[randomInt(COLOURS.length)],
           classId: args.classId,
         },
+        select: { id: true },
+      });
+
+      /* The place, spent. One row per child, kept for good: see schoolPlaces. */
+      await tx.placeRedemption.create({
+        data: { orgId: args.orgId, childProfileId: child.id },
+      });
+
+      /* The course, granted. Without this a pupil signs in, lands on their
+         HQ and is bounced off the first lesson they tap, because
+         `/lesson/[week]` checks for an entitlement that nothing was creating.
+         Written with `tx` rather than through `grantEntitlement` so the
+         account, the place and the access are one atomic unit: a pupil who
+         exists without a place would be free, and a pupil who exists without
+         this cannot play. */
+      await tx.entitlement.create({
+        data: { userId: user.id, productId: klass.productId, source: "BUNDLE" },
       });
     });
     added++;
@@ -205,8 +234,17 @@ export async function listPupils(orgId: string, classId: string) {
   });
 }
 
-/** Removing a pupil removes the account and, with it, the progress. A school
- *  that removes a child is saying that child has left. */
+/**
+ * Removing a pupil removes the account and, with it, the progress. A school
+ * that removes a child is saying that child has left.
+ *
+ * THE PLACE IS NOT RETURNED. Deleting the user cascades to the profile, and
+ * the profile's `PlaceRedemption` row survives it with a null child, because
+ * that foreign key is ON DELETE SET NULL rather than CASCADE. That is the
+ * commercial rule made structural: a place spent is spent. Staff can credit
+ * one back for a genuine mistake (`creditPlaceBack`), which is the only way
+ * a place returns to the pool.
+ */
 export async function removePupil(orgId: string, childProfileId: string): Promise<boolean> {
   const child = await prisma.childProfile.findFirst({
     where: { id: childProfileId, class: { orgId } },

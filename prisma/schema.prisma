@@ -151,6 +151,7 @@ model Product {
   waitlist       WaitlistEntry[]
   courseContents CourseContent[]
   enrolments     Enrolment[]
+  classes        Class[]
 }
 
 // ============================================================
@@ -238,6 +239,9 @@ model ChildProfile {
   progress    Progress[]
   opsFindings OpsFinding[]
   opsResumes  OpsResume[]
+  /// The school place this pupil consumed, if they are a school pupil. The
+  /// row outlives this profile on purpose: see PlaceRedemption.
+  place       PlaceRedemption?
 
   @@index([userId])
   @@index([classId])
@@ -484,6 +488,7 @@ model Organisation {
   packShares     PackShareLink[]
   purchases      SeatPurchase[]
   teacherInvites TeacherInvite[]
+  places         PlaceRedemption[]
 }
 
 /// One card purchase of seats: a new firm, or seats added to the firm the
@@ -770,15 +775,51 @@ model Class {
   /// Archived at the end of a year rather than deleted, so last year's
   /// progress is still attached to something.
   archivedAt DateTime?
+  /// Which course this class runs. A place is bought course-blind and spent
+  /// when a pupil is added, so this is what decides which course that pupil
+  /// is entitled to. Set per class rather than per school, so one school can
+  /// run Cyber Heroes in year 4 and Cyber Explorers in year 8.
+  productId String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   org     Organisation   @relation(fields: [orgId], references: [id], onDelete: Cascade)
   teacher User           @relation(fields: [teacherId], references: [id], onDelete: Cascade)
+  product Product        @relation(fields: [productId], references: [id], onDelete: Restrict)
   pupils  ChildProfile[]
 
   @@index([orgId])
   @@index([teacherId])
+  @@index([productId])
+}
+
+/// One place a school has spent, and the only record that it is spent.
+///
+/// A school buys places course-blind. Adding a pupil redeems one, and a place
+/// redeemed is redeemed: removing the pupil does not hand it back, and nor
+/// does archiving their class at the end of a year. That is why this is a
+/// ledger rather than a count of pupils sitting in live classes, which is how
+/// it worked before and which quietly refunded a school every July.
+///
+/// `childProfileId` goes null when a pupil's account is deleted and the row
+/// stays, which is what "a place spent is spent" looks like in the data. It
+/// carries no name, so a departed pupil leaves nothing identifying behind.
+/// The only way a place returns to the pool is staff setting
+/// `creditedBackAt`, for a genuine mistake, which corrects the count without
+/// destroying the evidence.
+model PlaceRedemption {
+  id             String    @id @default(cuid())
+  orgId          String
+  childProfileId String?   @unique
+  redeemedAt     DateTime  @default(now())
+  creditedBackAt DateTime?
+  /// The staff user who credited it back, so the correction has an author.
+  creditedBy     String?
+
+  org   Organisation  @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  child ChildProfile? @relation(fields: [childProfileId], references: [id], onDelete: SetNull)
+
+  @@index([orgId])
 }
 
 // ---------------------------------------------------------------------------

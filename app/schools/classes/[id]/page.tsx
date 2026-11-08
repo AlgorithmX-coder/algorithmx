@@ -51,10 +51,10 @@ export default async function ClassPage({ params }: { params: Promise<{ id: stri
         <header className="top">
           <div>
             <div className="brand">
-              Cyber <span>Heroes</span> &middot; <i>{klass.className}</i>
+              {school.orgName} &middot; <i>{klass.className}</i>
             </div>
             <div className="sub">
-              {school.orgName}
+              {klass.courseName}
               {klass.yearGroup ? ` · year ${klass.yearGroup}` : ""}
               {` · ${klass.pupils.length} pupil${klass.pupils.length === 1 ? "" : "s"}`}
             </div>
@@ -153,7 +153,8 @@ export default async function ClassPage({ params }: { params: Promise<{ id: stri
         <footer className="note">
           You can see how a child is getting on. You cannot change it: progress is written by the
           child playing the week. Removing a pupil deletes their account and their progress with
-          it, so do it when a child leaves the school, not when they change class.
+          it, and <b>the place stays used</b>, so do it when a child leaves the school, not when
+          they change class or when a name is spelled wrong.
         </footer>
       </div>
     </div>

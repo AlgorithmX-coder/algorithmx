@@ -30,6 +30,7 @@ const SAID: Record<ClassFailure, string> = {
   seats_full: "That would go over your licence.",
   bad_name: "Give the class a name, up to 40 characters.",
   bad_year: "Year group should be a number between 1 and 13.",
+  bad_course: "Pick one of the four courses for this class.",
   class_not_found: "That class does not exist, or it belongs to another school.",
   bad_pupil_name: "One of those names is too long.",
   no_pupils: "Type at least one name.",
@@ -47,6 +48,7 @@ export async function createClassAction(formData: FormData): Promise<ActionResul
     teacherId: session.user.id,
     name: String(formData.get("name") ?? ""),
     yearGroup: rawYear ? Number(rawYear) : null,
+    productId: String(formData.get("productId") ?? ""),
   });
   if (!res.ok) return { ok: false, error: SAID[res.error] };
 
