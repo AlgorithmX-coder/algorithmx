@@ -133,6 +133,15 @@ export default function CourseHub() {
     })();
   }, []);
 
+  // Where the primary CTA should send the learner: the first module they have
+  // not finished (skipping the Code Lab, which has no topic checkpoints), or
+  // Module 1 for a fresh start, or the final test once everything is done.
+  const orderedMods = ACTS.flatMap((a) => a.modules);
+  const nextMod = orderedMods.find((m) => moduleTopicIds(m.n).length > 0 && !doneMods.has(m.n));
+  const started = doneMods.size > 0;
+  const ctaHref = nextMod?.href ?? "/pro/testme";
+  const ctaLabel = !started ? "Start with Module 1" : nextMod ? `Continue: Module ${nextMod.n}` : "You're ready, take the test";
+
   return (
     <div className="pro-hub">
       <style>{`
@@ -264,8 +273,8 @@ export default function CourseHub() {
           </div>
 
           <div className="hub-cta-row">
-            <a className="hub-cta" href="/pro/module01">
-              Start with Module 1
+            <a className="hub-cta" href={ctaHref}>
+              {ctaLabel}
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d="M5 12h14M13 6l6 6-6 6" /></svg>
             </a>
             <a className="hub-testme" href="/pro/testme">
