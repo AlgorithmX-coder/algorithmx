@@ -174,7 +174,7 @@ export const mission01: MissionManifest = {
               why: "Everyone's-doing-it pressure, scaring you that you'll be the one who loses out.",
             },
           ],
-          doneLine: "Spot on. There were four pressure tricks in that message: greed, a countdown, a threat, and fear of missing out. The automated notice, the reference number and the unsubscribe line are just normal parts of a message. They're only there to fool you.",
+          doneLine: "Spot on. There were four pressure tricks in that message: greed, a countdown, a threat, and fear of missing out. The automated notice, the reference number and the unsubscribe line are just normal parts of a message, so they aren't tricks at all.",
           doneAudio: "/audio/wren/m01-c1-review.mp3",
         },
       },
@@ -202,7 +202,7 @@ export const mission01: MissionManifest = {
           "To find the real name, do two things. Find the first single slash. Then read the two chunks right before it.",
           "So in account.gamehub.com/login, the two chunks before the slash are gamehub.com. That's the real owner. The word account is just a room inside their house.",
           "Now for the trick that fools grown-ups. Look at gamehub.com.rewards-login.net. It says gamehub.com, but the last two chunks are rewards-login.net. The real name is glued on the front to trick you.",
-          "So never read from left to right and relax the moment you see a name you know. Find the slash, and take the two chunks right before it. That's who you're really talking to.",
+          "So don't relax the moment you spot a name you know at the start. Find the slash, and take the two chunks right before it. That's who you're really talking to.",
         ],
         beatAudio: [
           "/audio/wren/m01-c2-b1.mp3",
@@ -403,7 +403,7 @@ export const mission01: MissionManifest = {
       },
       promise: "You'll learn the pattern behind every disguise, and the one move that beats it.",
       instruction: "Tap the 3 tricks that are really his.",
-      practiceIntro: "Now let's put it to work, Agent. It's time to build his file. From the evidence on the next screen, tap the three tricks that are really his, no more and no less.",
+      practiceIntro: "Now let's put it to work, Agent. It's time to build PHANTOM HOOK's file. From the evidence on the next screen, tap the three tricks that are really his, no more and no less.",
       practiceIntroVoice: "/audio/wren/m01-actor-practice.mp3",
       intel: {
         beats: [
@@ -424,7 +424,7 @@ export const mission01: MissionManifest = {
       fieldwork: {
         verb: "PROFILE",
         payload: {
-          intro: "Now build his file. Tap the 3 tricks that are really his.",
+          intro: "Now build PHANTOM HOOK's file. Tap the 3 tricks that are really his.",
           evidence: [
             "Made up a 24-hour countdown to rush Maya",
             "Sent it from gamehub-rewards-center.com, pretending to be GameHub",
