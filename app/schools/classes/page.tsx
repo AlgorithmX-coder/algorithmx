@@ -40,17 +40,24 @@ export default async function ClassesPage() {
     listSchoolCourses(),
   ]);
   const left = school.seatsPurchased - school.seatsUsed;
+  /* A trial is not a small licence, and must never be described as one. */
+  const onTrial = trialStatus(school.trialExpiresAt) === "active";
+  const trialEnds = school.trialExpiresAt
+    ? new Date(school.trialExpiresAt).toLocaleDateString("en-GB", { day: "numeric", month: "long" })
+    : null;
 
   return (
     <div className="axtp">
       <div className="wrap">
         <header className="top">
           <div>
-            <div className="brand">Cyber <span>Heroes</span> &middot; <i>Classes</i></div>
+            <div className="brand">{school.orgName} &middot; <i>Classes</i></div>
             <div className="sub">
-              {school.orgName} &middot; {school.seatsUsed} of {school.seatsPurchased} places used
+              {onTrial
+                ? `Trial · ends ${trialEnds} · ${school.seatsUsed} of ${school.seatsPurchased} places used`
+                : `${school.seatsUsed} of ${school.seatsPurchased} places used`}
               {left <= 0
-                ? " · your licence is full"
+                ? onTrial ? " · no places left" : " · your licence is full"
                 : left <= 5 ? ` · ${left} left` : ""}
             </div>
           </div>
@@ -65,7 +72,7 @@ export default async function ClassesPage() {
           password, so nobody has to remember an email address or type one.
         </p>
 
-        <NewClass placesLeft={left} courses={courses} />
+        <NewClass placesLeft={left} courses={courses} onTrial={onTrial} trialEnds={trialEnds} />
 
         {classes.length === 0 ? (
           <div className="sheet">
@@ -87,10 +94,7 @@ export default async function ClassesPage() {
                   </small>
                 </div>
                 <div className="rs">
-                  <p>
-                    Class code <code className="axcode">{c.code}</code>
-                    {c.teacher.name ? ` · made by ${c.teacher.name}` : ""}
-                  </p>
+                  <p>Class code <code className="axcode">{c.code}</code></p>
                 </div>
               </div>
             ))}

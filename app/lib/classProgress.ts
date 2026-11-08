@@ -1,4 +1,5 @@
 import { prisma } from "@/app/lib/prisma";
+import { courseName } from "@/app/lib/schoolPlaces";
 
 /**
  * How a class is getting on.
@@ -142,7 +143,7 @@ export async function getClassProgress(orgId: string, classId: string): Promise<
     className: klass.name,
     yearGroup: klass.yearGroup,
     code: klass.code,
-    courseName: klass.product.name,
+    courseName: courseName(klass.product.slug, klass.product.name),
     courseSlug: klass.product.slug,
     weeksCount,
     pupils,

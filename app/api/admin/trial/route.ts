@@ -11,7 +11,9 @@ import { firstNameOf } from "@/app/lib/aiCleared";
  * real licence up. Staff only, shared by both admin tabs. */
 
 const Ref = z.object({ orgId: z.string().optional(), slug: z.string().optional() });
-const PostBody = Ref.extend({ days: z.union([z.literal(1), z.literal(2)]) });
+/* Was 1 or 2 days only. A school cannot judge the product without getting a
+   class through a lesson, which a day never allowed. See trialTerms.ts. */
+const PostBody = Ref.extend({ days: z.number().int().min(1).max(60) });
 
 async function resolveOrgId(ref: { orgId?: string; slug?: string }): Promise<string | null> {
   if (ref.orgId) return ref.orgId;
