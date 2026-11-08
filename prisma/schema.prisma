@@ -455,6 +455,11 @@ model Organisation {
   name             String
   slug             String   @unique
   sector           String?
+  /// Where this organisation is. Both lines are sold internationally, so this
+  /// is asked at the point of sale rather than guessed later from a domain or
+  /// a phone number. Free text in the seller's own words, not a code list:
+  /// what a country is called is not a thing to be opinionated about.
+  country          String?
   contactName      String?
   contactRole      String?
   seatsPurchased   Int      @default(0)
