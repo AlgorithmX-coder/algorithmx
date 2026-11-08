@@ -3,11 +3,17 @@ import { sendEmail } from "@/app/lib/resend";
 import { opsAlert } from "@/app/lib/opsAlert";
 import { newInviteToken } from "@/app/lib/aiClearedAdmin";
 import { createClass } from "@/app/lib/schoolClasses";
+import type { LearnerOrgKind } from "@prisma/client";
 
-/* The AlgorithmX side of schools: every school at a glance, creating one
- * by hand with its first teacher invite, and claiming that invite. The
- * schools analog of aiClearedOps.ts. Never import from a client
- * component. */
+/* The AlgorithmX side of schools and the other organisations that teach
+ * children: each at a glance, creating one by hand with its first teacher
+ * invite, and claiming that invite. The schools analog of aiClearedOps.ts.
+ * Never import from a client component.
+ *
+ * A school and a youth organisation are the same thing here, told apart by
+ * SchoolProfile.kind. They are sold to differently and staff talk about
+ * them differently, so they have separate tabs and separate forms; nothing
+ * below them is duplicated. */
 
 export interface SchoolRow {
   id: string;
@@ -25,9 +31,17 @@ export interface SchoolRow {
   paidVia: "stripe" | "manual";
 }
 
-export async function listSchools(): Promise<SchoolRow[]> {
+/**
+ * Every school, or every organisation that is not a school.
+ *
+ * Both are the same thing underneath and this is the same query: they teach
+ * children on the same four courses, through the same classes, pupils and
+ * places ledger. `kind` only decides which staff tab they appear under and
+ * which words that tab uses.
+ */
+export async function listLearnerOrgs(kind: LearnerOrgKind): Promise<SchoolRow[]> {
   const orgs = await prisma.organisation.findMany({
-    where: { school: { isNot: null } },
+    where: { school: { kind } },
     orderBy: { createdAt: "desc" },
     include: {
       classes: {
@@ -58,7 +72,7 @@ export async function listSchools(): Promise<SchoolRow[]> {
   });
 }
 
-export function platformSchoolTotals(rows: SchoolRow[]) {
+export function platformLearnerOrgTotals(rows: SchoolRow[]) {
   return {
     schools: rows.length,
     seatsLicensed: rows.reduce((a, r) => a + r.seatsPurchased, 0),
@@ -83,6 +97,9 @@ function slugify(name: string): string {
  * User, and none exists until the invite is claimed. */
 export async function createSchool(args: {
   name: string;
+  /** School or other organisation. Decides nothing but the staff tab it
+   *  appears under and the words used about it. */
+  kind?: LearnerOrgKind;
   sector?: string | null;
   country?: string | null;
   contactName?: string | null;
@@ -117,6 +134,7 @@ export async function createSchool(args: {
   await prisma.schoolProfile.create({
     data: {
       orgId: org.id,
+      kind: args.kind ?? "SCHOOL",
       safeguardingContact: args.safeguardingContact?.trim() || null,
     },
   });

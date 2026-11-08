@@ -14,6 +14,20 @@ export function SchoolIcon({ className }: IconProps) {
   );
 }
 
+/* Organisations: a youth club, council, charity or training provider. Three
+   figures rather than a building, because what they have in common is a
+   group of young people, not a site. */
+export function OrganisationIcon({ className }: IconProps) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <circle cx="12" cy="7" r="3" />
+      <path d="M7 21v-2a5 5 0 0 1 10 0v2" />
+      <path d="M4 13.5a2.5 2.5 0 1 1 2-4.4" />
+      <path d="M20 13.5a2.5 2.5 0 1 0-2-4.4" />
+    </svg>
+  );
+}
+
 export function FirmIcon({ className }: IconProps) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">

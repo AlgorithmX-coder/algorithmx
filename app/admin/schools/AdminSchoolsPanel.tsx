@@ -54,35 +54,43 @@ function MadeBox({ made }: { made: Made }) {
 const BLANK = { name: "", country: "", sector: "", safeguardingContact: "", contactName: "", contactRole: "", teacherEmail: "" };
 
 /** Everything both boxes ask for. Only the places and the term differ. */
-function SharedFields({
-  f,
-  set,
-  emailHint,
-}: {
-  f: typeof BLANK;
-  set: (k: keyof typeof BLANK, v: string) => void;
-  emailHint: string;
-}) {
+function SharedFields({ f, set, w }: { f: typeof BLANK; set: (k: keyof typeof BLANK, v: string) => void; w: OrgWords }) {
   return (
     <>
       <div className="ad-row">
-        <label>School name <input value={f.name} onChange={(e) => set("name", e.target.value)} placeholder="Oakwood Primary" /></label>
+        <label>{w.Noun} name <input value={f.name} onChange={(e) => set("name", e.target.value)} placeholder={w.namePlaceholder} /></label>
         <label>Country <input value={f.country} onChange={(e) => set("country", e.target.value)} placeholder="United Kingdom" /></label>
       </div>
       <div className="ad-row">
-        <label>Sector <input value={f.sector} onChange={(e) => set("sector", e.target.value)} placeholder="Primary school" /></label>
+        <label>Sector <input value={f.sector} onChange={(e) => set("sector", e.target.value)} placeholder={w.sectorPlaceholder} /></label>
         <label>Safeguarding contact <input value={f.safeguardingContact} onChange={(e) => set("safeguardingContact", e.target.value)} placeholder="Who a disclosure goes to" /></label>
       </div>
       <div className="ad-row">
-        <label>Contact name <input value={f.contactName} onChange={(e) => set("contactName", e.target.value)} placeholder="Head of computing" /></label>
+        <label>Contact name <input value={f.contactName} onChange={(e) => set("contactName", e.target.value)} placeholder={w.contactPlaceholder} /></label>
         <label>Contact role <input value={f.contactRole} onChange={(e) => set("contactRole", e.target.value)} placeholder="Head of Computing" /></label>
       </div>
-      <label>First teacher&rsquo;s email <input type="email" value={f.teacherEmail} onChange={(e) => set("teacherEmail", e.target.value)} placeholder={emailHint} /></label>
+      <label>{w.firstPerson}&rsquo;s email <input type="email" value={f.teacherEmail} onChange={(e) => set("teacherEmail", e.target.value)} placeholder={w.emailHint} /></label>
     </>
   );
 }
 
-export default function AdminSchoolsPanel() {
+/** The words a tab uses. Schools and organisations run on the same
+ *  machinery, so only the vocabulary and the examples change. */
+export interface OrgWords {
+  kind: "SCHOOL" | "ORGANISATION";
+  /** "School" / "Organisation", for headings. */
+  Noun: string;
+  /** "school" / "organisation", mid-sentence. */
+  noun: string;
+  namePlaceholder: string;
+  sectorPlaceholder: string;
+  contactPlaceholder: string;
+  emailHint: string;
+  /** What the first person invited is called. */
+  firstPerson: string;
+}
+
+export default function AdminSchoolsPanel({ w }: { w: OrgWords }) {
   const router = useRouter();
 
   /* A licence: a school that has bought a number of places. */
@@ -114,7 +122,7 @@ export default function AdminSchoolsPanel() {
   async function createLicence() {
     setLBusy(true); setLErr(null); setLMade(null);
     try {
-      setLMade(await post({ ...lf, seatsPurchased: Number(places) }));
+      setLMade(await post({ ...lf, kind: w.kind, seatsPurchased: Number(places) }));
       setLf({ ...BLANK }); setPlaces("50");
       router.refresh();
     } catch (e) {
@@ -128,7 +136,7 @@ export default function AdminSchoolsPanel() {
       const days = Number(trialDays);
       /* trialDays rides along so the invite email leads with the trial
          rather than announcing places nobody agreed to buy. */
-      const made = await post({ ...tf, seatsPurchased: Number(trialPlaces), trialDays: days });
+      const made = await post({ ...tf, kind: w.kind, seatsPurchased: Number(trialPlaces), trialDays: days });
       const tRes = await fetch("/api/admin/trial", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -150,12 +158,11 @@ export default function AdminSchoolsPanel() {
   return (
     <>
       <div className="ad-card ad-form">
-        <h2 className="ad-h2">New school, on a licence</h2>
+        <h2 className="ad-h2">New {w.noun}, on a licence</h2>
         <p className="ad-note">
-          A school that has agreed to buy. Set the pupil places they bought. The first teacher gets
-          an invite by email, and the link shows here too.
+          A {w.noun} that has agreed to buy. Set the pupil places they bought. The {w.firstPerson.toLowerCase()} gets an invite by email, and the link shows here too.
         </p>
-        <SharedFields f={lf} set={(k, v) => setLf({ ...lf, [k]: v })} emailHint="teacher@school.sch.uk" />
+        <SharedFields f={lf} set={(k, v) => setLf({ ...lf, [k]: v })} w={w} />
         <label>Pupil places <input type="number" min={1} value={places} onChange={(e) => setPlaces(e.target.value)} /></label>
         <button
           type="button"
@@ -163,7 +170,7 @@ export default function AdminSchoolsPanel() {
           onClick={createLicence}
           disabled={lBusy || !ready(lf) || Number(places) < 1}
         >
-          {lBusy ? "Creating…" : "Create school and teacher invite"}
+          {lBusy ? "Creating…" : `Create ${w.noun} and invite`}
         </button>
         {lMade && <MadeBox made={lMade} />}
         {lErr && <div className="ad-err">{lErr}</div>}
@@ -174,9 +181,9 @@ export default function AdminSchoolsPanel() {
         <p className="ad-note">
           A look at the product for a set number of days, with places to try with. Nothing has been
           bought, and the invite email says so. A personal address is fine here. When the days run
-          out the school is locked out until you set a licence up on its own page.
+          out the {w.noun} is locked out until you set a licence up on its own page.
         </p>
-        <SharedFields f={tf} set={(k, v) => setTf({ ...tf, [k]: v })} emailHint="their.name@example.com" />
+        <SharedFields f={tf} set={(k, v) => setTf({ ...tf, [k]: v })} w={w} />
         <div className="ad-row">
           <label>
             Trial length
