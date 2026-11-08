@@ -111,12 +111,16 @@ export default function SchoolLogin() {
             <section className="sxa-door teacher" aria-labelledby="sxa-teacher-h">
               <p className="sxa-eyebrow">Teachers and leaders</p>
               <h2 id="sxa-teacher-h" className="sxa-h2">Sign in with your email</h2>
+              {/* One door, two destinations. /schools/overview sends a
+                  teacher on to their own classes, so nobody has to know
+                  which URL is theirs, and this copy has to be true of
+                  both of them. */}
               <p className="sxa-body">
-                Your account is ready from onboarding. Sign in to make classes, add children, and
-                see how everybody is getting on.
+                Your account is ready from onboarding. Sign in and you land where you work: your
+                own classes, or your whole school if you hold the licence.
               </p>
               <div className="sxa-foot">
-                <Link href="/login?callbackUrl=%2Fschools%2Fclasses" className="sxa-btn sxa-btn-go">
+                <Link href="/login?callbackUrl=%2Fschools%2Foverview" className="sxa-btn sxa-btn-go">
                   Sign in
                 </Link>
               </div>
