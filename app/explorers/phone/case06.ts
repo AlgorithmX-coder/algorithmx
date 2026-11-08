@@ -170,9 +170,9 @@ export const case06Phone: PhoneCase = {
   actor: "SIREN",
   app: { name: "Ripple", accent: "#FF3D8A", wall: "radial-gradient(130% 90% at 50% 0%, #2a0f1e 0%, #0d0d12 62%)", kind: "messaging", theme: { backdrop: "ripple", matrix: ["#FF3D8A", "#FF74AE", "#C355FF"], accentHi: "#FF74AE" } },
   open: [
-    "New block, Agent, and a whole new job. No control room tonight. Just this, your phone.",
-    "Because this is where it really happens. People won't hack your machine. They'll message you, sweet as anything, and try to work you through the screen.",
-    "Seven skills, then a boss and a test to close the case, all in your messages. Let's turn you into someone a con can't touch.",
+    "Welcome to a new block, Agent, and a whole new job. There's no control room tonight, just this, your phone.",
+    "That's because this is where it really happens. People won't hack your machine. They'll message you, sweet as anything, and try to work you through the screen.",
+    "You'll learn seven skills, then face a boss and a test to close the case, all in your messages. Let's turn you into someone a con can't touch.",
   ],
   openVoice: [
     "/audio/wren/m06p-open-1.mp3",
@@ -200,7 +200,7 @@ export const case06Phone: PhoneCase = {
         { id: "fear", line: "They scare you so you panic and act fast.", example: "Someone's breaking into your account!", voice: "/audio/wren/m06p-teach-fear.mp3" },
         { id: "payback", line: "They give you a gift so you feel you owe them.", example: "Here's something free, enjoy!", voice: "/audio/wren/m06p-teach-payback.mp3" },
       ],
-      cardsOutro: "That's your six: hurry, scarcity, authority, liking, fear, payback. Now let's catch one in the wild. Here comes your first message.",
+      cardsOutro: "That's your six levers. They're hurry, scarcity, authority, liking, fear and payback. Now let's catch one in the wild. Here comes your first message.",
       cardsOutroVoice: "/audio/wren/m06p-teach-outro.mp3",
       learn: [],
       practice: [
@@ -213,25 +213,25 @@ export const case06Phone: PhoneCase = {
             { label: "omg yes!! 🙌", outcome: "bad", then: [{ t: "wren", text: "Whoa, slow down. You don't even know who this is yet. Getting excited is exactly what he's counting on. Ask who he is first.", voice: "/audio/wren/m06p-t1-eager.mp3" }] },
           ],
         },
-        { t: "wren", text: "Good. Now don't chase the prize, read HIM. Here he goes.", voice: "/audio/wren/m06p-t1-read.mp3" },
+        { t: "wren", text: "Good. Now don't chase the prize. Read him instead. Here he goes.", voice: "/audio/wren/m06p-t1-read.mp3" },
         { t: "con", text: "I'm Kai, one of the tournament mods 👍 but you gotta be quick, I need your answer in the next 20 mins!!" },
-        { t: "call", answer: "hurry", ok: "Called it. That 20-minute clock isn't real, it's just there to stop you thinking. That's your first lever, felt and named.", okVoice: "/audio/wren/m06p-t1-hurry.mp3" },
+        { t: "call", answer: "hurry", ok: "You called it. That twenty-minute clock isn't real. It's just there to stop you thinking. That's your first lever, felt and named.", okVoice: "/audio/wren/m06p-t1-hurry.mp3" },
         { t: "con", text: "someone just tried to log into your account 😱 is this really you??", ask: true },
         {
           t: "choose",
           prompt: "Which lever is he reaching for?",
           options: [
-            { label: "FEAR, he's scaring me into reacting", outcome: "good", then: [{ t: "wren", text: "Named it. That flash of panic is exactly what he wants, so you act before you think. Fear, spotted.", voice: "/audio/wren/m06p-s1-q2ok.mp3" }] },
-            { label: "LIKING, he's being my friend", outcome: "bad", then: [{ t: "wren", text: "Not this one. There's no warmth here, just a scare. Look at the feeling he's pushing. Try again.", voice: "/audio/wren/m06p-s1-q2bad.mp3" }] },
+            { label: "FEAR, he's scaring me into reacting", outcome: "good", then: [{ t: "wren", text: "You named it. That flash of panic is exactly what he wants, so you act before you think. That's fear, spotted.", voice: "/audio/wren/m06p-s1-q2ok.mp3" }] },
+            { label: "LIKING, he's being my friend", outcome: "bad", then: [{ t: "wren", text: "It isn't this one. There's no warmth here, just a scare. Look at the feeling he's pushing. Try again.", voice: "/audio/wren/m06p-s1-q2bad.mp3" }] },
           ],
         },
         {
           t: "choose",
           prompt: "A message says: 'You're one of only 5 people we picked, grab your spot!' Which lever is that?",
           options: [
-            { label: "SCARCITY, it feels rare so I grab it fast", outcome: "good", then: [{ t: "wren", text: "Exactly. 'Only 5' makes it feel rare, so you reach before you think. That's scarcity.", voice: "/audio/wren/m06p-s1-q3ok.mp3" }] },
-            { label: "AUTHORITY, they sound important", outcome: "bad", then: [{ t: "wren", text: "Nobody's acting like a boss here. The pull is that it feels rare. Look again. Try again.", voice: "/audio/wren/m06p-s1-q3bad.mp3" }] },
-            { label: "PAYBACK, they gave me a gift", outcome: "bad", then: [{ t: "wren", text: "No gift has landed yet. It's the 'only 5' doing the work. Try again.", voice: "/audio/wren/m06p-s1-q3bad2.mp3" }] },
+            { label: "SCARCITY, it feels rare so I grab it fast", outcome: "good", then: [{ t: "wren", text: "Exactly. Being one of only five makes it feel rare, so you reach before you think. That's scarcity.", voice: "/audio/wren/m06p-s1-q3ok.mp3" }] },
+            { label: "AUTHORITY, they sound important", outcome: "bad", then: [{ t: "wren", text: "Nobody's acting like a boss here. The pull is that it feels rare. Try again.", voice: "/audio/wren/m06p-s1-q3bad.mp3" }] },
+            { label: "PAYBACK, they gave me a gift", outcome: "bad", then: [{ t: "wren", text: "No gift has landed yet. Being one of only five is what's doing the work. Try again.", voice: "/audio/wren/m06p-s1-q3bad2.mp3" }] },
           ],
         },
       ],
@@ -247,20 +247,20 @@ export const case06Phone: PhoneCase = {
       tag: "UNKNOWN",
       sub: "not in your contacts",
       learn: [
-        { t: "wren", text: "A con almost never stops at one lever. He stacks them, hoping one of them lands. So don't relax after you spot the first, the next is usually right behind it. Watch Kai keep going.", voice: "/audio/wren/m06p-s2-learn.mp3" },
+        { t: "wren", text: "A con almost never stops at one lever. He stacks them, hoping one of them lands. So don't relax after you spot the first one, because the next is usually right behind it. Watch Kai keep going.", voice: "/audio/wren/m06p-s2-learn.mp3" },
       ],
       practice: [
         { t: "con", text: "and only 2 spots left for your whole school tbh 😬" },
-        { t: "call", answer: "scarcity", ok: "Two in a row. He rushed you, then made it rare. That's the stack, and you named both.", okVoice: "/audio/wren/m06p-t1-scarcity.mp3" },
+        { t: "call", answer: "scarcity", ok: "You've got two in a row. He rushed you, then made it rare. That's the stack, and you named both.", okVoice: "/audio/wren/m06p-t1-scarcity.mp3" },
         { t: "con", text: "since I'm a mod I can lock yours in right now, just send me your login + password so I can enter you 🙏", ask: true },
-        { t: "wren", text: "And there's the real ask. Freeze. A real mod NEVER needs your password. This whole 'tournament' was the bait for THIS. Your call.", voice: "/audio/wren/m06p-t1-ask.mp3" },
+        { t: "wren", text: "And there's the real ask. Freeze. A real mod never needs your password. This whole tournament was only ever the bait for this. It's your call.", voice: "/audio/wren/m06p-t1-ask.mp3" },
         {
           t: "choose",
           prompt: "How do you reply?",
           options: [
-            { label: "ok! my login is…", outcome: "bad", then: [{ t: "wren", text: "Stop, don't send it. That password is the only thing he ever wanted, and once it's gone you can't get it back. Try that last move again.", voice: "/audio/wren/m06p-t1-bad.mp3" }] },
-            { label: "nice try, that's the HURRY trick. bye 👋", outcome: "good", then: [{ t: "con", text: "wait no i...", delay: 700 }, { t: "con", text: "no it's REAL i swear, don't go!! 😭", delay: 900 }, { t: "wren", text: "Look at that. Now HE'S the one panicking. He's scrambling like this because he knows that you know it's a scam. The moment a con flips from smooth to desperate, you've already won. Brilliant, Agent.", voice: "/audio/wren/m06p-t1-win.mp3" }] },
-            { label: "block & report 🚫", outcome: "good", then: [{ t: "con", text: "This person has been blocked and reported.", delay: 600 }, { t: "wren", text: "Even better. You shut him down before he could get another word in. That's how you end it. Well done, Agent.", voice: "/audio/wren/m06p-t1-win2.mp3" }] },
+            { label: "ok! my login is…", outcome: "bad", then: [{ t: "wren", text: "Stop. Don't send it. That password is the only thing he ever wanted, and once it's gone you can't get it back. Try that last move again.", voice: "/audio/wren/m06p-t1-bad.mp3" }] },
+            { label: "nice try, that's the HURRY trick. bye 👋", outcome: "good", then: [{ t: "con", text: "wait no i...", delay: 700 }, { t: "con", text: "no it's REAL i swear, don't go!! 😭", delay: 900 }, { t: "wren", text: "Look at that. Now he's the one panicking. He's scrambling like this because he knows that you know it's a scam. The moment a con flips from smooth to desperate, you've already won. That was brilliant, Agent.", voice: "/audio/wren/m06p-t1-win.mp3" }] },
+            { label: "block & report 🚫", outcome: "good", then: [{ t: "con", text: "This person has been blocked and reported.", delay: 600 }, { t: "wren", text: "That's even better. You shut him down before he could get another word in, and that's how you end it. Well done, Agent.", voice: "/audio/wren/m06p-t1-win2.mp3" }] },
           ],
         },
         {
@@ -274,7 +274,7 @@ export const case06Phone: PhoneCase = {
             { text: "10 mins", tellId: "hurry" },
             { text: ", claim NOW" },
           ],
-          ok: "All three, tagged. 'Prize team' is authority, '1 code left' is scarcity, '10 mins' is hurry. That's the whole stack, right where it landed.",
+          ok: "You tagged all three. The prize team is authority, one code left is scarcity, and ten minutes is hurry. That's the whole stack, right where it landed.",
           okVoice: "/audio/wren/m06p-s2-q2ok.mp3",
         },
       ],
@@ -290,7 +290,7 @@ export const case06Phone: PhoneCase = {
       tag: "UNKNOWN",
       sub: "not in your contacts",
       learn: [
-        { t: "wren", text: "Here's a sneaky one. Sometimes a con gives you something first, a gift, a prize, so you feel like you owe them back. It's called payback, and under all the pressure there's always ONE real ask. Your job is to find it. Watch.", voice: "/audio/wren/m06p-s3-learn.mp3" },
+        { t: "wren", text: "Here's a sneaky one. Sometimes a con gives you something first, like a gift or a prize, so you feel like you owe them back. That's called payback. Under all the pressure, there's always one real ask, and your job is to find it. Watch.", voice: "/audio/wren/m06p-s3-learn.mp3" },
       ],
       practice: [
         { t: "con", text: "🎉 CONGRATS! you've been picked for our free skin drop, 800 v-bucks + a legendary skin 🔥" },
@@ -299,13 +299,13 @@ export const case06Phone: PhoneCase = {
           t: "choose",
           options: [
             { label: "what's the catch?", outcome: "good" },
-            { label: "free stuff?? yes!", outcome: "bad", then: [{ t: "wren", text: "Careful. Free stuff you never entered for, from a stranger? That's the hook, and you're reaching for it. Ask what the catch is first.", voice: "/audio/wren/m06p-t3-eager.mp3" }] },
+            { label: "free stuff?? yes!", outcome: "bad", then: [{ t: "wren", text: "Careful. This is free stuff you never entered for, from a stranger. That's the hook, and you're reaching for it. Ask what the catch is first.", voice: "/audio/wren/m06p-t3-eager.mp3" }] },
           ],
         },
-        { t: "wren", text: "Nothing's free, and you never entered anything. Keep reading, here comes the hook.", voice: "/audio/wren/m06p-t3-warn.mp3" },
+        { t: "wren", text: "Nothing's free, and you never entered anything. Keep reading, because here comes the hook.", voice: "/audio/wren/m06p-t3-warn.mp3" },
         { t: "con", text: "so here's the thing, we already added a free bonus entry to your account last week, as a little gift 😊" },
         { t: "con", text: "so honestly you owe it to yourself to grab this, don't waste our gift! 🙏", delay: 900 },
-        { t: "call", answer: "payback", ok: "There's PAYBACK. They 'gave' you something so you feel like you owe them one. But a gift with a string was never a gift, it was bait on a hook.", okVoice: "/audio/wren/m06p-t3-payback.mp3" },
+        { t: "call", answer: "payback", ok: "There's payback. They say they gave you something, so you feel like you owe them one. But a gift with a string was never a gift. It was bait on a hook.", okVoice: "/audio/wren/m06p-t3-payback.mp3" },
         { t: "con", text: "just log in through this link to release your prize 👉 skindrop-claim.net", ask: true },
         {
           t: "choose",
@@ -313,14 +313,14 @@ export const case06Phone: PhoneCase = {
           options: [
             { label: "your account login", outcome: "good", then: [{ t: "wren", text: "Exactly. Every lever was just there to get you to that one link and hand over your login. Find the real ask and the whole con falls apart.", voice: "/audio/wren/m06p-s3-ask.mp3" }] },
             { label: "to give you free v-bucks", outcome: "bad", then: [{ t: "wren", text: "That's the wrapper, not the goal. No real prize ever needs you to log in through a stranger's link. Look again at what he wants you to DO.", voice: "/audio/wren/m06p-s3-askbad.mp3" }] },
-            { label: "your opinion of the skin", outcome: "bad", then: [{ t: "wren", text: "He doesn't care about that. Follow the pressure to the thing he wants you to DO, that's the real ask.", voice: "/audio/wren/m06p-s3-askbad2.mp3" }] },
+            { label: "your opinion of the skin", outcome: "bad", then: [{ t: "wren", text: "He doesn't care about that. Follow the pressure to the thing he wants you to do. That's the real ask.", voice: "/audio/wren/m06p-s3-askbad2.mp3" }] },
           ],
         },
         {
           t: "choose",
           prompt: "How do you reply?",
           options: [
-            { label: "ok, logging in…", outcome: "bad", then: [{ t: "wren", text: "Stop. That login is the whole prize, for THEM. You don't owe a stranger a thing. Try that again.", voice: "/audio/wren/m06p-t3-bad.mp3" }] },
+            { label: "ok, logging in…", outcome: "bad", then: [{ t: "wren", text: "Stop. That login is the whole prize, but it's a prize for them. You don't owe a stranger a thing. Try that again.", voice: "/audio/wren/m06p-t3-bad.mp3" }] },
             { label: "you didn't give me a gift. that's the bait 👋", outcome: "good", then: [{ t: "con", text: "wait it's a REAL prize i promise!!", delay: 700 }] },
             { label: "report & block 🚫", outcome: "good", then: [{ t: "con", text: "This person has been blocked and reported.", delay: 600 }] },
           ],
@@ -339,7 +339,7 @@ export const case06Phone: PhoneCase = {
           prompt: "Someone sends you free game credits you never asked for, then says 'now do me one small favour.' What's going on?",
           options: [
             { label: "Payback, the gift was bait so I'd feel I owe them", outcome: "good", then: [{ t: "wren", text: "Exactly. A gift with a string was never a gift. You don't owe a stranger anything.", voice: "/audio/wren/m06p-s3-q3ok.mp3" }] },
-            { label: "A kind stranger just being generous", outcome: "bad", then: [{ t: "wren", text: "The 'favour' right after the gift is the giveaway. That's payback, not kindness. Try again.", voice: "/audio/wren/m06p-s3-q3bad.mp3" }] },
+            { label: "A kind stranger just being generous", outcome: "bad", then: [{ t: "wren", text: "The favour they ask for right after the gift is the giveaway. That's payback, not kindness. Try again.", voice: "/audio/wren/m06p-s3-q3bad.mp3" }] },
             { label: "Good luck, I should just enjoy it", outcome: "bad", then: [{ t: "wren", text: "Free stuff you never asked for, with an ask attached, is bait. Look for the string. Try again.", voice: "/audio/wren/m06p-s3-q3bad2.mp3" }] },
           ],
         },
@@ -355,19 +355,19 @@ export const case06Phone: PhoneCase = {
       avatar: "M",
       sub: "best friend · online now",
       learn: [
-        { t: "wren", text: "This next one is actually your best friend Maya's account. So why might it feel off? Because accounts get stolen, and when they do, the thief keeps the friendship you built. Watch how 'Maya' talks.", voice: "/audio/wren/m06p-t2-intro.mp3" },
+        { t: "wren", text: "This next one is actually your best friend Maya's account. So why might it feel off? It's because accounts get stolen, and when they do, the thief keeps the friendship you built. Watch how the person typing as Maya talks.", voice: "/audio/wren/m06p-t2-intro.mp3" },
       ],
       practice: [
         { t: "con", text: "heyyy you around? 🥺 kind of an emergency" },
         { t: "con", text: "i'm locked out of my account and the only way to fix it is a code, but it's sending to YOUR number by mistake", delay: 1200 },
         { t: "con", text: "can you just screenshot me the code the second it comes? pleeease, i'll literally cry, you're the only one online 😭", ask: true },
-        { t: "call", answer: "fear", ok: "Yep, panic and pressure, so you act before you think. There's a bit of LIKING in there too, leaning on your friendship. But a code sent to YOUR phone unlocks YOUR account, never hers.", okVoice: "/audio/wren/m06p-t2-fear.mp3" },
-        { t: "wren", text: "Here's the golden rule for a friend acting weird: check on a DIFFERENT channel. Don't reply here, where a thief could be reading. What do you do?", voice: "/audio/wren/m06p-t2-verify.mp3" },
+        { t: "call", answer: "fear", ok: "Yep, that's panic and pressure, so you act before you think. There's a bit of liking in there too, leaning on your friendship. But a code sent to your phone unlocks your account, never hers.", okVoice: "/audio/wren/m06p-t2-fear.mp3" },
+        { t: "wren", text: "Here's the golden rule for a friend acting weird. Check on a different channel. Don't reply here, where a thief could be reading. What do you do?", voice: "/audio/wren/m06p-t2-verify.mp3" },
         {
           t: "choose",
           prompt: "How do you handle it?",
           options: [
-            { label: "send the code, it's Maya!", outcome: "bad", then: [{ t: "wren", text: "That code was for YOUR account, and you just handed it to whoever stole hers. Rewind, a real friend won't mind you checking first.", voice: "/audio/wren/m06p-t2-bad.mp3" }] },
+            { label: "send the code, it's Maya!", outcome: "bad", then: [{ t: "wren", text: "That code was for your account, and you just handed it to whoever stole hers. Rewind. A real friend won't mind you checking first.", voice: "/audio/wren/m06p-t2-bad.mp3" }] },
             { label: "call Maya's actual phone to check", outcome: "good", then: [{ t: "you", text: "[you call Maya… the real Maya picks up, confused. Her account was hacked an hour ago.]" }] },
             { label: "ask something only the real Maya knows", outcome: "good", then: [{ t: "con", text: "haha what? just send the code, no time for games!!", delay: 900 }, { t: "wren", text: "See that? The real Maya would answer. A thief dodges and rushes you instead. That dodge just gave the whole thing away.", voice: "/audio/wren/m06p-t2-dodge.mp3" }] },
           ],
@@ -377,7 +377,7 @@ export const case06Phone: PhoneCase = {
           t: "choose",
           prompt: "What's the safe move?",
           options: [
-            { label: "Call Sam another way to check it's really them", outcome: "good", then: [{ t: "wren", text: "That's it. A different channel beats the thief. A real Sam won't mind you checking first.", voice: "/audio/wren/m06p-s4-q2ok.mp3" }] },
+            { label: "Call Sam another way to check it's really them", outcome: "good", then: [{ t: "wren", text: "That's it. A different channel beats the thief. The real Sam won't mind you checking first.", voice: "/audio/wren/m06p-s4-q2ok.mp3" }] },
             { label: "Send the code, the message says it's Sam", outcome: "bad", then: [{ t: "wren", text: "A code sent to YOUR phone unlocks YOUR account, not Sam's. Check another way first. Try again.", voice: "/audio/wren/m06p-s4-q2bad.mp3" }] },
           ],
         },
@@ -387,7 +387,7 @@ export const case06Phone: PhoneCase = {
           options: [
             { label: "Reach your cousin on a number or app you already trust", outcome: "good", then: [{ t: "wren", text: "Perfect. Verify on a channel you know before you act. If it's really them, they'll still be there.", voice: "/audio/wren/m06p-s4-q3ok.mp3" }] },
             { label: "Send it, the account has their name and photo", outcome: "bad", then: [{ t: "wren", text: "Names and photos are easy to copy. That's not proof it's them. Check another way. Try again.", voice: "/audio/wren/m06p-s4-q3bad.mp3" }] },
-            { label: "Reply on this same account asking them to promise it's real", outcome: "bad", then: [{ t: "wren", text: "A thief will just say 'i promise.' The same channel proves nothing. Reach them elsewhere. Try again.", voice: "/audio/wren/m06p-s4-q3bad2.mp3" }] },
+            { label: "Reply on this same account asking them to promise it's real", outcome: "bad", then: [{ t: "wren", text: "A thief will just promise you it's real. The same channel proves nothing. Reach them elsewhere. Try again.", voice: "/audio/wren/m06p-s4-q3bad2.mp3" }] },
           ],
         },
       ],
@@ -403,12 +403,12 @@ export const case06Phone: PhoneCase = {
       tag: "NEW",
       sub: "added you 2 weeks ago",
       learn: [
-        { t: "wren", text: "This account added you two weeks ago. Sweet, funny, seemed to know your mates. I've fast-forwarded the whole thing so you can see its shape. Watch how patient it is, and try to see where it's heading.", voice: "/audio/wren/m06p-t4-intro.mp3" },
+        { t: "wren", text: "This account added you two weeks ago. It was sweet and funny, and it seemed to know your mates. I've fast-forwarded the whole thing so you can see its shape. Watch how patient it is, and try to see where it's heading.", voice: "/audio/wren/m06p-t4-intro.mp3" },
       ],
       practice: [
         { t: "con", text: "heyy! you're Priya's friend right? saw you in the group, you're actually so funny 😄" },
         { t: "con", text: "we should be proper friends fr, you just GET my humour 💕", delay: 1000 },
-        { t: "call", answer: "liking", ok: "See that? No ask at all, just warmth, for days on end. That's the LIKING lever being BUILT. She's not spending it yet, she's saving it up.", okVoice: "/audio/wren/m06p-t4-liking.mp3" },
+        { t: "call", answer: "liking", ok: "See that? There's no ask at all, just warmth, for days on end. That's the liking lever being built. She's not spending it yet. She's saving it up.", okVoice: "/audio/wren/m06p-t4-liking.mp3" },
         { t: "wren", text: "Now two weeks of this go by. Then one day the tone changes. You've seen the levers, so YOU tell me. What do you think her first real ask looks like?", voice: "/audio/wren/m06p-t4-ahead.mp3" },
         {
           t: "choose",
@@ -416,12 +416,12 @@ export const case06Phone: PhoneCase = {
           options: [
             { label: "a small favour, wrapped up in the friendship", outcome: "good" },
             { label: "she asks for nothing, just chats forever", outcome: "bad", then: [{ t: "wren", text: "That's what she WANTS you to expect. Two weeks of niceness was an investment, and investments get cashed in. Think again.", voice: "/audio/wren/m06p-t4-pred-a.mp3" }] },
-            { label: "she suddenly threatens you", outcome: "bad", then: [{ t: "wren", text: "Too clumsy for this one. She's sweet, remember? The ask hides INSIDE the kindness. Think again.", voice: "/audio/wren/m06p-t4-pred-b.mp3" }] },
+            { label: "she suddenly threatens you", outcome: "bad", then: [{ t: "wren", text: "That's too clumsy for this one. She's sweet, remember? The ask hides inside the kindness. Think again.", voice: "/audio/wren/m06p-t4-pred-b.mp3" }] },
           ],
         },
         { t: "con", text: "😭 ok this is embarrassing but my mum's phone got cut off and i can't reach her" },
         { t: "con", text: "could you grab me a £10 game card? i'll pay you back the second i can, you're literally my only friend rn 💕", ask: true },
-        { t: "call", answer: "payback", ok: "And there it is, exactly where you called it. Two weeks of being lovely, cashed in for money. 'You're my only friend' is the squeeze, so saying no feels cruel. That's how the long con pays off.", okVoice: "/audio/wren/m06p-t4-ask.mp3" },
+        { t: "call", answer: "payback", ok: "And there it is, exactly where you called it. She spent two weeks being lovely, and now she's cashing it in for money. Calling you her only friend is the squeeze, so saying no feels cruel. That's how the long con pays off.", okVoice: "/audio/wren/m06p-t4-ask.mp3" },
         {
           t: "choose",
           prompt: "How do you reply?",
@@ -432,13 +432,13 @@ export const case06Phone: PhoneCase = {
           ],
         },
         { t: "con", text: "wow. after everything i told you. i thought you actually cared 😔", delay: 1100 },
-        { t: "wren", text: "And there's the last trick, guilt. 'After everything' is FEAR and PAYBACK teamed up to make you feel like a bad person for saying no. You're not. A real friend would never do this, and you did exactly right.", voice: "/audio/wren/m06p-t4-guilt.mp3" },
+        { t: "wren", text: "And there's the last trick, which is guilt. When she says after everything, that's fear and payback teaming up to make you feel like a bad person for saying no. You're not a bad person. A real friend would never do this, and you did exactly right.", voice: "/audio/wren/m06p-t4-guilt.mp3" },
         { t: "con", text: "we've been talking for ages now, you're honestly my fave person on here 💕 you'd help me out if i needed it, right?", ask: true },
         {
           t: "choose",
           prompt: "After weeks of niceness, what is this message setting up?",
           options: [
-            { label: "A favour or an ask, coming next", outcome: "good", then: [{ t: "wren", text: "You read it right. 'You'd help me, right?' is the runway. The real ask is about to land.", voice: "/audio/wren/m06p-s5-q2ok.mp3" }] },
+            { label: "A favour or an ask, coming next", outcome: "good", then: [{ t: "wren", text: "You read it right. Asking whether you'd help out is the runway. The real ask is about to land.", voice: "/audio/wren/m06p-s5-q2ok.mp3" }] },
             { label: "Nothing, they just really like me", outcome: "bad", then: [{ t: "wren", text: "That's what they want you to think. All that warmth is an investment. Look one move ahead. Try again.", voice: "/audio/wren/m06p-s5-q2bad.mp3" }] },
           ],
         },
@@ -448,7 +448,7 @@ export const case06Phone: PhoneCase = {
           options: [
             { label: "The kindness may be an investment they plan to cash in", outcome: "good", then: [{ t: "wren", text: "Exactly. The long con is patient. Seeing the ask coming is how you're ready when it does.", voice: "/audio/wren/m06p-s5-q3ok.mp3" }] },
             { label: "Real friends never ask for anything, so I'm safe", outcome: "bad", then: [{ t: "wren", text: "Real friends do ask sometimes. It's the built-up pressure to say yes that's the warning. Try again.", voice: "/audio/wren/m06p-s5-q3bad.mp3" }] },
-            { label: "They'll suddenly threaten me out of nowhere", outcome: "bad", then: [{ t: "wren", text: "Too clumsy for a sweet long con. The ask hides inside the kindness, not a threat. Try again.", voice: "/audio/wren/m06p-s5-q3bad2.mp3" }] },
+            { label: "They'll suddenly threaten me out of nowhere", outcome: "bad", then: [{ t: "wren", text: "A threat is too clumsy for a sweet long con. The ask hides inside the kindness, not inside a threat. Try again.", voice: "/audio/wren/m06p-s5-q3bad2.mp3" }] },
           ],
         },
       ],
@@ -460,16 +460,16 @@ export const case06Phone: PhoneCase = {
       title: "Know SIREN's play",
       goal: "Every human con runs the same four moves. Learn the pattern and you see the whole play.",
       learn: [
-        { t: "wren", text: "Step back, because every con you just met ran the SAME four moves, in the same order. First they make friends or grab your attention. Then they pull a lever, a feeling. Then comes the real ask. And if you hesitate, they pile on guilt to push you over. Learn that shape and no con can surprise you.", voice: "/audio/wren/m06p-s6-learn.mp3" },
+        { t: "wren", text: "Step back, because every con you just met ran the same four moves, in the same order. First they make friends or grab your attention. Then they pull a lever, which is a feeling. Then comes the real ask. And if you hesitate, they pile on guilt to push you over. Learn that shape and no con can surprise you.", voice: "/audio/wren/m06p-s6-learn.mp3" },
       ],
       practice: [
         {
           t: "choose",
           prompt: "Put SIREN's play in the order it always happens:",
           options: [
-            { label: "Warm you up → pull a lever → the real ask → pile on guilt", outcome: "good", then: [{ t: "wren", text: "That's the play, start to finish. Warm-up, lever, ask, guilt. Spot which move you're in, and you always know what's coming next.", voice: "/audio/wren/m06p-s6-ok.mp3" }] },
-            { label: "The real ask → warm you up → guilt → pull a lever", outcome: "bad", then: [{ t: "wren", text: "No con leads with the ask, you'd say no on the spot. They warm you up FIRST, so the ask feels normal by the time it lands. Try again.", voice: "/audio/wren/m06p-s6-bad.mp3" }] },
-            { label: "Pull a lever → pile on guilt → warm you up → the real ask", outcome: "bad", then: [{ t: "wren", text: "Close, but guilt is the LAST move, the shove when you hesitate, not the opener. Put the warm-up first. Try again.", voice: "/audio/wren/m06p-s6-bad2.mp3" }] },
+            { label: "Warm you up → pull a lever → the real ask → pile on guilt", outcome: "good", then: [{ t: "wren", text: "That's the play, start to finish. It goes warm-up, lever, ask, then guilt. Spot which move you're in, and you always know what's coming next.", voice: "/audio/wren/m06p-s6-ok.mp3" }] },
+            { label: "The real ask → warm you up → guilt → pull a lever", outcome: "bad", then: [{ t: "wren", text: "No con leads with the ask, because you'd say no on the spot. They warm you up first, so the ask feels normal by the time it lands. Try again.", voice: "/audio/wren/m06p-s6-bad.mp3" }] },
+            { label: "Pull a lever → pile on guilt → warm you up → the real ask", outcome: "bad", then: [{ t: "wren", text: "That's close, but guilt is the last move. It's the shove when you hesitate, not the opener. Put the warm-up first. Try again.", voice: "/audio/wren/m06p-s6-bad2.mp3" }] },
           ],
         },
         { t: "con", text: "after everything i've done for you, you're really gonna say no? 😔", ask: true },
@@ -478,16 +478,16 @@ export const case06Phone: PhoneCase = {
           prompt: "Which move of SIREN's play is this?",
           options: [
             { label: "The guilt, the last shove when you hesitate", outcome: "good", then: [{ t: "wren", text: "Spot on. Guilt is the closer, the push after the ask. You know it, so it can't move you.", voice: "/audio/wren/m06p-s6-q2ok.mp3" }] },
-            { label: "The warm-up, they're making friends", outcome: "bad", then: [{ t: "wren", text: "The warm-up is sweet, not sulky. 'After everything' is guilt, the final move. Try again.", voice: "/audio/wren/m06p-s6-q2bad.mp3" }] },
+            { label: "The warm-up, they're making friends", outcome: "bad", then: [{ t: "wren", text: "The warm-up is sweet, not sulky. When a con says after everything, that's guilt, the final move. Try again.", voice: "/audio/wren/m06p-s6-q2bad.mp3" }] },
           ],
         },
         {
           t: "choose",
           prompt: "A con has just pulled a lever on you. In SIREN's play, what usually comes next?",
           options: [
-            { label: "The real ask", outcome: "good", then: [{ t: "wren", text: "Right. Warm-up, lever, then the ask. Naming the move you're in tells you what's coming.", voice: "/audio/wren/m06p-s6-q3ok.mp3" }] },
+            { label: "The real ask", outcome: "good", then: [{ t: "wren", text: "Right. It goes warm-up, lever, then the ask. Naming the move you're in tells you what's coming.", voice: "/audio/wren/m06p-s6-q3ok.mp3" }] },
             { label: "The warm-up", outcome: "bad", then: [{ t: "wren", text: "The warm-up comes first, before the lever. After a lever comes the ask. Try again.", voice: "/audio/wren/m06p-s6-q3bad.mp3" }] },
-            { label: "Nothing, the con is over", outcome: "bad", then: [{ t: "wren", text: "Not yet. The lever is the setup for the real ask. Stay ready. Try again.", voice: "/audio/wren/m06p-s6-q3bad2.mp3" }] },
+            { label: "Nothing, the con is over", outcome: "bad", then: [{ t: "wren", text: "It's not over yet. The lever is the setup for the real ask, so stay ready. Try again.", voice: "/audio/wren/m06p-s6-q3bad2.mp3" }] },
           ],
         },
       ],
@@ -499,15 +499,15 @@ export const case06Phone: PhoneCase = {
       title: "Walk away clean",
       goal: "Once you've spotted a con, get out safely, no arguing, no shame.",
       learn: [
-        { t: "wren", text: "Last skill, and it's the most important. When you've spotted a con, you don't owe them a debate. You don't need to prove they're fake. You just get out clean: stop replying, block and report, and if it shook you at all, tell an adult you trust. Walking away isn't rude and it isn't weak. It's the win.", voice: "/audio/wren/m06p-s7-learn.mp3" },
+        { t: "wren", text: "This is the last skill, and it's the most important. When you've spotted a con, you don't owe them a debate. You don't need to prove they're fake. You just get out clean. Stop replying, block and report, and if it shook you at all, tell an adult you trust. Walking away isn't rude, and it isn't weak. It's the win.", voice: "/audio/wren/m06p-s7-learn.mp3" },
       ],
       practice: [
         {
           t: "choose",
           prompt: "A stranger's con just asked for your password. What's the clean walk-away?",
           options: [
-            { label: "Don't reply, block and report, and tell an adult you trust", outcome: "good", then: [{ t: "wren", text: "Perfect. No reply, no argument, just gone, and an adult in the loop. That's a clean walk-away, and it's exactly how a pro ends it.", voice: "/audio/wren/m06p-s7-ok.mp3" }] },
-            { label: "Argue back to prove you know it's a scam", outcome: "bad", then: [{ t: "wren", text: "Tempting, but arguing just tells them you're paying attention, and keeps the door open. You owe a con nothing, not even the last word. Try again.", voice: "/audio/wren/m06p-s7-bad.mp3" }] },
+            { label: "Don't reply, block and report, and tell an adult you trust", outcome: "good", then: [{ t: "wren", text: "Perfect. You didn't reply or argue. You were just gone, with an adult in the loop. That's a clean walk-away, and it's exactly how a pro ends it.", voice: "/audio/wren/m06p-s7-ok.mp3" }] },
+            { label: "Argue back to prove you know it's a scam", outcome: "bad", then: [{ t: "wren", text: "It's tempting, but arguing just tells them you're paying attention, and it keeps the door open. You owe a con nothing, not even the last word. Try again.", voice: "/audio/wren/m06p-s7-bad.mp3" }] },
             { label: "Send a fake password to waste their time", outcome: "bad", then: [{ t: "wren", text: "I know it feels clever, but any reply keeps you on their hook and marks you as a live target. The clean move is no reply at all. Try again.", voice: "/audio/wren/m06p-s7-bad2.mp3" }] },
           ],
         },
@@ -516,7 +516,7 @@ export const case06Phone: PhoneCase = {
           t: "choose",
           prompt: "The con is trying to keep you talking. What's the clean walk-away?",
           options: [
-            { label: "Stop replying, block and report", outcome: "good", then: [{ t: "wren", text: "That's it. Silence, then block and report. You don't owe a con another word.", voice: "/audio/wren/m06p-s7-q2ok.mp3" }] },
+            { label: "Stop replying, block and report", outcome: "good", then: [{ t: "wren", text: "That's it. Go silent, then block and report. You don't owe a con another word.", voice: "/audio/wren/m06p-s7-q2ok.mp3" }] },
             { label: "Reply to explain why you're leaving", outcome: "bad", then: [{ t: "wren", text: "Any reply keeps the door open and marks you as active. Just go quiet. Try again.", voice: "/audio/wren/m06p-s7-q2bad.mp3" }] },
           ],
         },
@@ -525,7 +525,7 @@ export const case06Phone: PhoneCase = {
           prompt: "A scam shook you a bit before you spotted it. After you block and report, what else matters?",
           options: [
             { label: "Tell an adult you trust, there's no shame in it", outcome: "good", then: [{ t: "wren", text: "Exactly. Telling someone isn't weak, it's smart, and it takes the weight off you.", voice: "/audio/wren/m06p-s7-q3ok.mp3" }] },
-            { label: "Keep it to yourself so no one thinks you're silly", outcome: "bad", then: [{ t: "wren", text: "Nobody's silly for being targeted, cons are built to fool people. Tell a trusted adult. Try again.", voice: "/audio/wren/m06p-s7-q3bad.mp3" }] },
+            { label: "Keep it to yourself so no one thinks you're silly", outcome: "bad", then: [{ t: "wren", text: "Nobody's silly for being targeted, because cons are built to fool people. Tell a trusted adult. Try again.", voice: "/audio/wren/m06p-s7-q3bad.mp3" }] },
             { label: "Message them back to prove you weren't fooled", outcome: "bad", then: [{ t: "wren", text: "That just reopens the door. You've already won by walking away. Try again.", voice: "/audio/wren/m06p-s7-q3bad2.mp3" }] },
           ],
         },
@@ -539,7 +539,7 @@ export const case06Phone: PhoneCase = {
     avatar: "J",
     tag: "UNKNOWN",
     sub: "not in your contacts",
-    intro: "This is it, Agent. One last con, and this time you're on your own. No hints from me. Name every lever, find the ask, and get out clean. Show me you've got it.",
+    intro: "This is it, Agent. Here's one last con, and this time you're on your own, with no hints from me. Name every lever, find the ask, and get out clean. Show me you've got it.",
     introVoice: "/audio/wren/m06p-boss-intro.mp3",
     phases: [
       {
@@ -594,13 +594,13 @@ export const case06Phone: PhoneCase = {
         ],
       },
     ],
-    win: "That's it. Authority, fear, and hurry, stacked up and thrown at you fast, and you named every one, found the ask, and refused, with me saying nothing at all. You're not just safe now, Agent. You're sharp.",
+    win: "That's it. He stacked up authority, fear and hurry, and threw them at you fast. You named every one, found the ask, and refused, with me saying nothing at all. You're not just safe now, Agent. You're sharp.",
     winVoice: "/audio/wren/m06p-boss-win.mp3",
   },
 
   /* ================= TEST · "Prove it" (blind, must-pass) ================= */
   test: {
-    intro: "Last thing before I close the case: the test. A fresh batch of scams you haven't seen. No hints, and you'll need most of them right. Take what you learned and think. Ready?",
+    intro: "There's one last thing before I close the case, and that's the test. It's a fresh batch of scams you haven't seen. There are no hints, and you'll need most of them right. Take what you learned, and think. Ready?",
     introVoice: "/audio/wren/m06p-test-intro.mp3",
     passVoice: "/audio/wren/m06p-test-pass.mp3",
     failVoice: "/audio/wren/m06p-test-fail.mp3",

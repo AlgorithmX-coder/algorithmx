@@ -24,13 +24,13 @@ export const case09Phone: PhoneCase = {
   actor: "SIREN",
   app: { name: "Bond", accent: "#FFB13D", wall: "radial-gradient(130% 90% at 50% 0%, #2a2110 0%, #0d0c0a 62%)", kind: "gamechat", theme: { backdrop: "bond", matrix: ["#FFB13D", "#FFD27A", "#FF9A3D"], accentHi: "#FFD27A" } },
   recap: {
-    text: "Previously on Cyber Explorers... GHOSTWRITER used AI to write you a flawless message, no mistakes to catch, no clumsy tells. You learned that perfect writing isn't proof of anything. Today: someone's been messaging you for weeks. Slowly. Patiently. On purpose.",
+    text: "Previously on Cyber Explorers, GHOSTWRITER used AI to write you a flawless message, with no mistakes to catch and no clumsy tells. You learned that perfect writing isn't proof of anything. In today's case, someone has been messaging you for weeks, slowly and patiently, and all on purpose.",
     voice: "/audio/wren/m09p-recap.mp3",
   },
   open: [
-    "Toughest case yet, Agent. SIREN is back, and this time there's no rush, no quick trick. This is the long con.",
-    "SIREN doesn't want your password today. SIREN spends weeks being your best friend, so that one day, when the ask finally comes, saying no feels impossible.",
-    "Seven skills to see a con that plays out over weeks, then a boss and a test. Learn these, and no amount of patience can trap you.",
+    "This is our toughest case yet, Agent. SIREN is back, and this time there's no rush and no quick trick. This is the long con.",
+    "SIREN doesn't want your password today. He spends weeks being your best friend, so that one day, when the ask finally comes, saying no feels impossible.",
+    "You'll learn seven skills to see a con that plays out over weeks, then face a boss and a test. Learn these, and no amount of patience can trap you.",
   ],
   openVoice: [
     "/audio/wren/m09p-open-1.mp3",
@@ -49,7 +49,7 @@ export const case09Phone: PhoneCase = {
       tag: "NEW",
       sub: "added you 3 weeks ago",
       learn: [
-        { t: "wren", text: "This is SIREN's masterpiece, and it starts with something that'll actually make you feel better. Scams are a business. A scammer isn't obsessed with you, they're running a factory, messaging thousands of people at once, hoping a handful say yes. So when a special connection feels aimed right at you, remember: you're just one of thousands. And that means it was never personal, and never your fault.", voice: "/audio/wren/m09p-s1-learn.mp3" },
+        { t: "wren", text: "This is SIREN's masterpiece, and it starts with something that'll actually make you feel better. Scams are a business. A scammer isn't obsessed with you. They're running a factory, messaging thousands of people at once and hoping a handful say yes. So when a special connection feels aimed right at you, remember that you're just one of thousands. And that means it was never personal, and never your fault.", voice: "/audio/wren/m09p-s1-learn.mp3" },
       ],
       practice: [
         { t: "con", text: "i've never clicked with anyone the way i click with you. it's like we were meant to be friends 💫" },
@@ -57,8 +57,8 @@ export const case09Phone: PhoneCase = {
           t: "choose",
           prompt: "It feels like a one-in-a-million connection. What's the truth?",
           options: [
-            { label: "You're one of thousands they message the same way", outcome: "good", then: [{ t: "wren", text: "Exactly. That line isn't written for you, it's copied and pasted to thousands, tweaked with a name. Knowing that takes all its power away. It was never special, and it was never about you.", voice: "/audio/wren/m09p-s1-ok.mp3" }] },
-            { label: "You must be really special to them", outcome: "bad", then: [{ t: "wren", text: "That's exactly what they need you to think. A business doesn't have favourites, it has targets. Try again.", voice: "/audio/wren/m09p-s1-bad.mp3" }] },
+            { label: "You're one of thousands they message the same way", outcome: "good", then: [{ t: "wren", text: "Exactly. That line isn't written for you. It's copied and pasted to thousands, tweaked with a name. Knowing that takes all its power away. It was never special, and it was never about you.", voice: "/audio/wren/m09p-s1-ok.mp3" }] },
+            { label: "You must be really special to them", outcome: "bad", then: [{ t: "wren", text: "That's exactly what they need you to think. A business doesn't have favourites. It has targets. Try again.", voice: "/audio/wren/m09p-s1-bad.mp3" }] },
             { label: "It's a genuine one-in-a-million bond", outcome: "bad", then: [{ t: "wren", text: "A genuine bond takes real, slow time, not a scripted line in week one. This is a factory, not a friendship. Try again.", voice: "/audio/wren/m09p-s1-bad2.mp3" }] },
           ],
         },
@@ -67,8 +67,8 @@ export const case09Phone: PhoneCase = {
           t: "choose",
           prompt: "That 'we're so alike' feeling. What's the business trick here?",
           options: [
-            { label: "They scatter that line to thousands, someone always bites", outcome: "good", then: [{ t: "wren", text: "Right. That line gets copied to thousands, and it only takes a few to believe it. Your shared interests were guessed, not fate.", voice: "/audio/wren/m09p-s1-q2ok.mp3" }] },
-            { label: "You two genuinely have loads in common", outcome: "bad", then: [{ t: "wren", text: "In week one, from a stranger? That is a script fishing for a match, not a real bond. Try again.", voice: "/audio/wren/m09p-s1-q2bad.mp3" }] },
+            { label: "They scatter that line to thousands, someone always bites", outcome: "good", then: [{ t: "wren", text: "Right. That line gets copied to thousands, and it only takes a few to believe it. Your shared interests were a guess, not fate.", voice: "/audio/wren/m09p-s1-q2ok.mp3" }] },
+            { label: "You two genuinely have loads in common", outcome: "bad", then: [{ t: "wren", text: "This is week one, and they're a stranger. That is a script fishing for a match, not a real bond. Try again.", voice: "/audio/wren/m09p-s1-q2bad.mp3" }] },
             { label: "It means they picked you specially", outcome: "bad", then: [{ t: "wren", text: "A factory has no favourites, only targets. They message thousands the exact same way. Try again.", voice: "/audio/wren/m09p-s1-q2bad2.mp3" }] },
           ],
         },
@@ -77,8 +77,8 @@ export const case09Phone: PhoneCase = {
           prompt: "Why is 'a scam is a business' actually good news for you?",
           options: [
             { label: "It's not personal, so it's never your fault and easy to walk away", outcome: "good", then: [{ t: "wren", text: "Exactly. A factory was never about you, so getting targeted is never your fault, and walking away is easy.", voice: "/audio/wren/m09p-s1-q3ok.mp3" }] },
-            { label: "It means they'll get bored and leave you alone soon", outcome: "bad", then: [{ t: "wren", text: "A business chases every lead, it won't quit on its own. You have to be the one to walk. Try again.", voice: "/audio/wren/m09p-s1-q3bad.mp3" }] },
-            { label: "It means the scammer must be really rich", outcome: "bad", then: [{ t: "wren", text: "Rich or not doesn't matter. What matters is it's a business, not a bond. Try again.", voice: "/audio/wren/m09p-s1-q3bad2.mp3" }] },
+            { label: "It means they'll get bored and leave you alone soon", outcome: "bad", then: [{ t: "wren", text: "A business chases every lead, and it won't quit on its own. You have to be the one to walk. Try again.", voice: "/audio/wren/m09p-s1-q3bad.mp3" }] },
+            { label: "It means the scammer must be really rich", outcome: "bad", then: [{ t: "wren", text: "Whether they're rich doesn't matter. What matters is that it's a business, not a bond. Try again.", voice: "/audio/wren/m09p-s1-q3bad2.mp3" }] },
           ],
         },
       ],
@@ -94,7 +94,7 @@ export const case09Phone: PhoneCase = {
       tag: "NEW",
       sub: "added you 3 weeks ago",
       learn: [
-        { t: "wren", text: "Here's why it's called farming. A scammer plants trust and grows it, slowly. Little gifts, weeks of being lovely, remembering your birthday, asking for nothing at all. It feels like a real friendship blooming. But a farmer doesn't grow a crop to admire it. They grow it to harvest it. All that kindness is being saved up, to cash in later.", voice: "/audio/wren/m09p-s2-learn.mp3" },
+        { t: "wren", text: "Here's why it's called farming. A scammer plants trust and grows it, slowly. They send little gifts, spend weeks being lovely, remember your birthday, and ask for nothing at all. It feels like a real friendship blooming. But a farmer doesn't grow a crop to admire it. They grow it to harvest it. All that kindness is being saved up, to cash in later.", voice: "/audio/wren/m09p-s2-learn.mp3" },
       ],
       practice: [
         { t: "con", text: "sent you 500 robux 🎁 no reason, just felt like treating my fave person. you deserve nice things x" },
@@ -102,8 +102,8 @@ export const case09Phone: PhoneCase = {
           t: "choose",
           prompt: "A new online friend gives you gifts and asks for nothing back. What's really happening?",
           options: [
-            { label: "Trust is being farmed, to cash in later", outcome: "good", then: [{ t: "wren", text: "That's it. A free gift from someone you've never met isn't kindness, it's an investment. They're building up how much you feel you owe them, ready to spend it on the day they ask.", voice: "/audio/wren/m09p-s2-ok.mp3" }] },
-            { label: "They're just a really generous person", outcome: "bad", then: [{ t: "wren", text: "Strangers online don't send money to be generous, they send it to build a debt. That gift has a string on it. Try again.", voice: "/audio/wren/m09p-s2-bad.mp3" }] },
+            { label: "Trust is being farmed, to cash in later", outcome: "good", then: [{ t: "wren", text: "That's it. A free gift from someone you've never met isn't kindness. It's an investment. They're building up how much you feel you owe them, ready to spend it on the day they ask.", voice: "/audio/wren/m09p-s2-ok.mp3" }] },
+            { label: "They're just a really generous person", outcome: "bad", then: [{ t: "wren", text: "Strangers online don't send money to be generous. They send it to build a debt. That gift has a string on it. Try again.", voice: "/audio/wren/m09p-s2-bad.mp3" }] },
             { label: "It would be rude to be suspicious of a gift", outcome: "bad", then: [{ t: "wren", text: "It's never rude to be careful. A real friend wouldn't mind, and a farmer is counting on you feeling exactly that guilt. Try again.", voice: "/audio/wren/m09p-s2-bad2.mp3" }] },
           ],
         },
@@ -112,18 +112,18 @@ export const case09Phone: PhoneCase = {
           t: "choose",
           prompt: "Second gift, and still no ask. What is really being built?",
           options: [
-            { label: "A debt, so you feel you owe them when the ask comes", outcome: "good", then: [{ t: "wren", text: "That's it. Two gifts, zero asks, that's an investment growing. The bigger the debt feels, the harder the future ask is to refuse.", voice: "/audio/wren/m09p-s2-q2ok.mp3" }] },
+            { label: "A debt, so you feel you owe them when the ask comes", outcome: "good", then: [{ t: "wren", text: "That's it. Two gifts with zero asks means an investment is growing. The bigger the debt feels, the harder the future ask is to refuse.", voice: "/audio/wren/m09p-s2-q2ok.mp3" }] },
             { label: "A real, caring friendship", outcome: "bad", then: [{ t: "wren", text: "A real friend you've never met doesn't buy your trust with top-ups. That's a farmer feeding a crop. Try again.", voice: "/audio/wren/m09p-s2-q2bad.mp3" }] },
-            { label: "Nothing, some people are just kind", outcome: "bad", then: [{ t: "wren", text: "Strangers online don't spend money to be kind, they spend it to build a debt. Try again.", voice: "/audio/wren/m09p-s2-q2bad2.mp3" }] },
+            { label: "Nothing, some people are just kind", outcome: "bad", then: [{ t: "wren", text: "Strangers online don't spend money to be kind. They spend it to build a debt. Try again.", voice: "/audio/wren/m09p-s2-q2bad2.mp3" }] },
           ],
         },
         {
           t: "choose",
           prompt: "An online friend sends you a birthday present. A grown-up asks about it. What's the safe move?",
           options: [
-            { label: "Tell the trusted adult about the gift and where it came from", outcome: "good", then: [{ t: "wren", text: "Perfect. Telling a trusted adult about gifts from online strangers is exactly right, they can help you see the string attached.", voice: "/audio/wren/m09p-s2-q3ok.mp3" }] },
-            { label: "Keep it quiet so the gift isn't taken away", outcome: "bad", then: [{ t: "wren", text: "A gift you have to hide is a warning sign. Tell a trusted adult, a real gift has nothing to keep secret. Try again.", voice: "/audio/wren/m09p-s2-q3bad.mp3" }] },
-            { label: "Send an even bigger gift back to be fair", outcome: "bad", then: [{ t: "wren", text: "That just deepens the debt they're farming. Don't repay, tell a trusted adult instead. Try again.", voice: "/audio/wren/m09p-s2-q3bad2.mp3" }] },
+            { label: "Tell the trusted adult about the gift and where it came from", outcome: "good", then: [{ t: "wren", text: "Perfect. Telling a trusted adult about gifts from online strangers is exactly right. They can help you see the string attached.", voice: "/audio/wren/m09p-s2-q3ok.mp3" }] },
+            { label: "Keep it quiet so the gift isn't taken away", outcome: "bad", then: [{ t: "wren", text: "A gift you have to hide is a warning sign. Tell a trusted adult, because a real gift has nothing to keep secret. Try again.", voice: "/audio/wren/m09p-s2-q3bad.mp3" }] },
+            { label: "Send an even bigger gift back to be fair", outcome: "bad", then: [{ t: "wren", text: "That just deepens the debt they're farming. Don't repay them. Tell a trusted adult instead. Try again.", voice: "/audio/wren/m09p-s2-q3bad2.mp3" }] },
           ],
         },
       ],
@@ -139,7 +139,7 @@ export const case09Phone: PhoneCase = {
       tag: "NEW",
       sub: "added you 3 weeks ago",
       learn: [
-        { t: "wren", text: "Now the trap that keeps you stuck. Once you've spent weeks talking, once you feel invested, the scammer turns it against you. After everything we've shared. You've come this far. It makes leaving feel like a waste, like you'd be throwing it all away. But here's the truth: the time you already spent is gone either way. Staying to protect it just loses you more. You can walk away at any point, no matter how far in you are.", voice: "/audio/wren/m09p-s3-learn.mp3" },
+        { t: "wren", text: "Now here's the trap that keeps you stuck. Once you've spent weeks talking, and once you feel invested, the scammer turns it against you. They remind you of everything you've shared, and tell you that you've come this far. It makes leaving feel like a waste, like you'd be throwing it all away. But here's the truth. The time you already spent is gone either way. Staying to protect it just loses you more. You can walk away at any point, no matter how far in you are.", voice: "/audio/wren/m09p-s3-learn.mp3" },
       ],
       practice: [
         { t: "con", text: "wow. after everything we've been through, you'd really just walk away now? i thought i mattered to you 😔" },
@@ -167,7 +167,7 @@ export const case09Phone: PhoneCase = {
           prompt: "You feel bad quitting because of all the weeks you put in. What's the truth about those weeks?",
           options: [
             { label: "They're already gone, and staying only costs you more", outcome: "good", then: [{ t: "wren", text: "Right. Spent time can't be un-spent, and staying to protect it just loses you more. Walk away, and if you're unsure, tell a trusted adult.", voice: "/audio/wren/m09p-s3-q3ok.mp3" }] },
-            { label: "You can win them back by carrying on", outcome: "bad", then: [{ t: "wren", text: "You can't win back spent time by spending more, that's the whole trap. Try again.", voice: "/audio/wren/m09p-s3-q3bad.mp3" }] },
+            { label: "You can win them back by carrying on", outcome: "bad", then: [{ t: "wren", text: "You can't win back spent time by spending more. That's the whole trap. Try again.", voice: "/audio/wren/m09p-s3-q3bad.mp3" }] },
             { label: "They'd all be wasted if you leave now", outcome: "bad", then: [{ t: "wren", text: "They're already gone either way, so leaving wastes nothing extra. Staying does. Try again.", voice: "/audio/wren/m09p-s3-q3bad2.mp3" }] },
           ],
         },
@@ -180,16 +180,16 @@ export const case09Phone: PhoneCase = {
       title: "Trace the timeline",
       goal: "Lay a weeks-long con out on a timeline, so its shape can't hide.",
       learn: [
-        { t: "wren", text: "Your signature tool for this case is TRACE, laying the whole con out on a timeline. A long con almost always runs the same stages, in order. First contact. Then warmth. Then a gift. Then the turn. Then the ask. Then the squeeze. When you can see all six laid out at once, the friendly bits stop looking friendly. They start to look like a plan.", voice: "/audio/wren/m09p-s4-learn.mp3" },
+        { t: "wren", text: "Your signature tool for this case is TRACE, which means laying the whole con out on a timeline. A long con almost always runs through the same stages, in order. First comes contact, then warmth, then a gift. After that come the turn, the ask, and the squeeze. When you can see all six laid out at once, the friendly bits stop looking friendly. They start to look like a plan.", voice: "/audio/wren/m09p-s4-learn.mp3" },
       ],
       practice: [
         {
           t: "choose",
           prompt: "Put a long con's timeline in the order it always runs:",
           options: [
-            { label: "Contact → warmth → a gift → the turn → the ask → the squeeze", outcome: "good", then: [{ t: "wren", text: "That's the shape of every long con. Contact, warmth, gift, turn, ask, squeeze. Once you can see the whole timeline, you can spot exactly where you are on it, and get off before the ask.", voice: "/audio/wren/m09p-s4-ok.mp3" }] },
-            { label: "The ask → the squeeze → contact → warmth → a gift → the turn", outcome: "bad", then: [{ t: "wren", text: "No con leads with the ask, you'd say no instantly. It has to build all that trust first. Contact comes first. Try again.", voice: "/audio/wren/m09p-s4-bad.mp3" }] },
-            { label: "Warmth → contact → the turn → a gift → the squeeze → the ask", outcome: "bad", then: [{ t: "wren", text: "There's no warmth before contact, they have to reach you first. And the ask comes near the end, not before the gift. Try again.", voice: "/audio/wren/m09p-s4-bad2.mp3" }] },
+            { label: "Contact → warmth → a gift → the turn → the ask → the squeeze", outcome: "good", then: [{ t: "wren", text: "That's the shape of every long con. It goes contact, warmth, gift, turn, ask, and squeeze. Once you can see the whole timeline, you can spot exactly where you are on it, and get off before the ask.", voice: "/audio/wren/m09p-s4-ok.mp3" }] },
+            { label: "The ask → the squeeze → contact → warmth → a gift → the turn", outcome: "bad", then: [{ t: "wren", text: "No con leads with the ask, because you'd say no instantly. It has to build all that trust first. Contact comes first. Try again.", voice: "/audio/wren/m09p-s4-bad.mp3" }] },
+            { label: "Warmth → contact → the turn → a gift → the squeeze → the ask", outcome: "bad", then: [{ t: "wren", text: "There's no warmth before contact, because they have to reach you first. And the ask comes near the end, not before the gift. Try again.", voice: "/audio/wren/m09p-s4-bad2.mp3" }] },
           ],
         },
         { t: "con", text: "hiii i saw your comment and you seem really cool, wanna be friends? 😊", ask: true },
@@ -198,7 +198,7 @@ export const case09Phone: PhoneCase = {
           prompt: "On the con timeline, which stage is this message?",
           options: [
             { label: "Contact, the very first stage", outcome: "good", then: [{ t: "wren", text: "Yes. A friendly hello is contact, stage one. Warmth comes next, then the gift, then the turn. Now you know where you are.", voice: "/audio/wren/m09p-s4-q2ok.mp3" }] },
-            { label: "The turn, where it starts taking", outcome: "bad", then: [{ t: "wren", text: "Nothing's been taken yet, this is just the opener. The turn comes later, after warmth and a gift. Try again.", voice: "/audio/wren/m09p-s4-q2bad.mp3" }] },
+            { label: "The turn, where it starts taking", outcome: "bad", then: [{ t: "wren", text: "Nothing's been taken yet. This is just the opener. The turn comes later, after warmth and a gift. Try again.", voice: "/audio/wren/m09p-s4-q2bad.mp3" }] },
             { label: "The squeeze, the final pressure", outcome: "bad", then: [{ t: "wren", text: "The squeeze is the last, heaviest push. This is the very first hello. Try again.", voice: "/audio/wren/m09p-s4-q2bad2.mp3" }] },
           ],
         },
@@ -207,8 +207,8 @@ export const case09Phone: PhoneCase = {
           prompt: "Why does laying a con out on a timeline help you so much?",
           options: [
             { label: "You can see where you are and get off before the ask", outcome: "good", then: [{ t: "wren", text: "Exactly. See the whole shape and you can spot your place on it, then step off before the ask ever lands.", voice: "/audio/wren/m09p-s4-q3ok.mp3" }] },
-            { label: "It makes the friendship feel more real", outcome: "bad", then: [{ t: "wren", text: "A timeline does the opposite, it shows the friendly bits are a plan. Try again.", voice: "/audio/wren/m09p-s4-q3bad.mp3" }] },
-            { label: "It proves the person is trustworthy", outcome: "bad", then: [{ t: "wren", text: "It shows the opposite, that the warmth is staged to lead somewhere. Try again.", voice: "/audio/wren/m09p-s4-q3bad2.mp3" }] },
+            { label: "It makes the friendship feel more real", outcome: "bad", then: [{ t: "wren", text: "A timeline does the opposite. It shows the friendly bits are a plan. Try again.", voice: "/audio/wren/m09p-s4-q3bad.mp3" }] },
+            { label: "It proves the person is trustworthy", outcome: "bad", then: [{ t: "wren", text: "It shows the opposite. The warmth is staged to lead somewhere. Try again.", voice: "/audio/wren/m09p-s4-q3bad2.mp3" }] },
           ],
         },
       ],
@@ -220,7 +220,7 @@ export const case09Phone: PhoneCase = {
       title: "Spot the turn",
       goal: "Every long con has one moment it flips from giving to taking. Find it.",
       learn: [
-        { t: "wren", text: "Somewhere in every long con is the turn, the exact moment it flips from giving to taking. Up to then, they gave, attention, gifts, warmth. After it, they take, money, codes, favours. The turn is usually gentle, wrapped in the friendship so you barely feel it. But once you can spot the turn, you can leave the very second it happens.", voice: "/audio/wren/m09p-s5-learn.mp3" },
+        { t: "wren", text: "Somewhere in every long con is the turn, the exact moment it flips from giving to taking. Up to then, they give you attention, gifts, and warmth. After it, they take money, codes, and favours. The turn is usually gentle, wrapped in the friendship so you barely feel it. But once you can spot the turn, you can leave the very second it happens.", voice: "/audio/wren/m09p-s5-learn.mp3" },
       ],
       practice: [
         {
@@ -231,7 +231,7 @@ export const case09Phone: PhoneCase = {
             { text: "Week 2: sent you a little gift, just because 🎁\n\n" },
             { text: "Week 3: heyy so, tiny favour, could you lend me a bit of credit? i'll pay you back 🙏", tellId: "turn" },
           ],
-          ok: "Spot on. Weeks one and two were all giving, warmth and a gift. Week three is the first take, wrapped up as a tiny favour. That's the turn, and it's your cue to walk.",
+          ok: "Spot on. Weeks one and two were all giving, with warmth and a gift. Week three is the first take, wrapped up as a tiny favour. That's the turn, and it's your cue to walk.",
           okVoice: "/audio/wren/m09p-s5-ok.mp3",
         },
         { t: "con", text: "Week 1: you're honestly my favourite person to talk to 💛", ask: true },
@@ -241,9 +241,9 @@ export const case09Phone: PhoneCase = {
           t: "choose",
           prompt: "Which message is THE turn, from giving to taking?",
           options: [
-            { label: "Week 3, the first time they ask you to hand something over", outcome: "good", then: [{ t: "wren", text: "Spot on. Weeks one and two only gave, warmth and a gift. Week three is the first take, asking for your login. That's the turn, and you never share a login.", voice: "/audio/wren/m09p-s5-q2ok.mp3" }] },
-            { label: "Week 1, the kind words", outcome: "bad", then: [{ t: "wren", text: "Kind words are still giving, no ask yet. The turn is the first time they take. Look further on. Try again.", voice: "/audio/wren/m09p-s5-q2bad.mp3" }] },
-            { label: "Week 2, the playlist gift", outcome: "bad", then: [{ t: "wren", text: "A gift is still giving, it's the bait. The turn is the first ask. Try again.", voice: "/audio/wren/m09p-s5-q2bad2.mp3" }] },
+            { label: "Week 3, the first time they ask you to hand something over", outcome: "good", then: [{ t: "wren", text: "Spot on. Weeks one and two only gave you warmth and a gift. Week three is the first take. It asks for your login. That's the turn, and you never share a login.", voice: "/audio/wren/m09p-s5-q2ok.mp3" }] },
+            { label: "Week 1, the kind words", outcome: "bad", then: [{ t: "wren", text: "Kind words are still giving, and there's no ask yet. The turn is the first time they take. Look further on. Try again.", voice: "/audio/wren/m09p-s5-q2bad.mp3" }] },
+            { label: "Week 2, the playlist gift", outcome: "bad", then: [{ t: "wren", text: "A gift is still giving. It's the bait. The turn is the first time they take. Try again.", voice: "/audio/wren/m09p-s5-q2bad2.mp3" }] },
           ],
         },
         {
@@ -251,8 +251,8 @@ export const case09Phone: PhoneCase = {
           prompt: "What makes the turn so easy to miss?",
           options: [
             { label: "It's wrapped up gently as a tiny favour inside the friendship", outcome: "good", then: [{ t: "wren", text: "Exactly. It's dressed as a tiny favour so you barely feel it flip. Spot it and you can leave the second it happens.", voice: "/audio/wren/m09p-s5-q3ok.mp3" }] },
-            { label: "It always comes with an angry threat", outcome: "bad", then: [{ t: "wren", text: "Not yet, the turn is usually gentle and sweet. Threats only come later if you don't leave. Try again.", voice: "/audio/wren/m09p-s5-q3bad.mp3" }] },
-            { label: "It happens in the very first message", outcome: "bad", then: [{ t: "wren", text: "The first message is just contact, giving. The turn comes after weeks of building trust. Try again.", voice: "/audio/wren/m09p-s5-q3bad2.mp3" }] },
+            { label: "It always comes with an angry threat", outcome: "bad", then: [{ t: "wren", text: "No, the turn is usually gentle and sweet. Threats only come later, if you don't leave. Try again.", voice: "/audio/wren/m09p-s5-q3bad.mp3" }] },
+            { label: "It happens in the very first message", outcome: "bad", then: [{ t: "wren", text: "The first message is just contact, and it's still giving. The turn comes after weeks of building trust. Try again.", voice: "/audio/wren/m09p-s5-q3bad2.mp3" }] },
           ],
         },
       ],
@@ -264,14 +264,14 @@ export const case09Phone: PhoneCase = {
       title: "Exit without shame",
       goal: "You can leave a con at any point, and you owe no one an explanation.",
       learn: [
-        { t: "wren", text: "Here's the skill that sets you free: you can leave a con at any point, and you never owe anyone an explanation. Not after a week, not after a month. And this matters most of all: if you got pulled in, it is not your fault. Con artists are professionals, fooling people is their entire job. The shame belongs to them, every scrap of it. So you just stop replying, block, and walk away. No goodbye, no apology, no shame.", voice: "/audio/wren/m09p-s6-learn.mp3" },
+        { t: "wren", text: "Here's the skill that sets you free. You can leave a con at any point, and you never owe anyone an explanation. You don't owe one after a week, and you don't owe one after a month. And this matters most of all. If you got pulled in, it is not your fault. Con artists are professionals, and fooling people is their entire job. The shame belongs to them, every scrap of it. So you just stop replying, block, and walk away. There's no goodbye, no apology, and no shame.", voice: "/audio/wren/m09p-s6-learn.mp3" },
       ],
       practice: [
         {
           t: "choose",
           prompt: "You realise a 'friend' of several weeks is running a con. What's the clean exit?",
           options: [
-            { label: "Stop replying, block, and tell an adult, no explanation owed", outcome: "good", then: [{ t: "wren", text: "Perfect. No goodbye, no debate, no shame. You block, you walk, and you tell a trusted adult so they can help. Leaving a con is never rude, and getting fooled is never your fault.", voice: "/audio/wren/m09p-s6-ok.mp3" }] },
+            { label: "Stop replying, block, and tell an adult, no explanation owed", outcome: "good", then: [{ t: "wren", text: "Perfect. There's no goodbye, no debate, and no shame. You block, you walk, and you tell a trusted adult so they can help. Leaving a con is never rude, and getting fooled is never your fault.", voice: "/audio/wren/m09p-s6-ok.mp3" }] },
             { label: "Politely explain why you're leaving", outcome: "bad", then: [{ t: "wren", text: "You owe a con nothing, not even a reason. Explaining just gives them a chance to reel you back in. Block and walk. Try again.", voice: "/audio/wren/m09p-s6-bad.mp3" }] },
             { label: "Stay, you've come too far to quit now", outcome: "bad", then: [{ t: "wren", text: "That's the sunk-cost trap talking. The time is gone either way, and staying only costs you more. You can always leave. Try again.", voice: "/audio/wren/m09p-s6-bad2.mp3" }] },
           ],
@@ -281,17 +281,17 @@ export const case09Phone: PhoneCase = {
           t: "choose",
           prompt: "They want a reason before you go. What do you owe them?",
           options: [
-            { label: "Nothing, you can block and walk with no explanation", outcome: "good", then: [{ t: "wren", text: "Right. A con is owed nothing, not even a reason. Explaining just hands them a way to pull you back in. Block, walk, done.", voice: "/audio/wren/m09p-s6-q2ok.mp3" }] },
+            { label: "Nothing, you can block and walk with no explanation", outcome: "good", then: [{ t: "wren", text: "Right. A con is owed nothing, not even a reason. Explaining just hands them a way to pull you back in. Block them, walk away, and you're done.", voice: "/audio/wren/m09p-s6-q2ok.mp3" }] },
             { label: "A polite explanation, it's only fair", outcome: "bad", then: [{ t: "wren", text: "You owe a con no reasons. A goodbye is just another door for them to reel you back through. Try again.", voice: "/audio/wren/m09p-s6-q2bad.mp3" }] },
-            { label: "One more chance to make it right", outcome: "bad", then: [{ t: "wren", text: "That's how they keep you. You can leave at any point, no chances owed. Try again.", voice: "/audio/wren/m09p-s6-q2bad2.mp3" }] },
+            { label: "One more chance to make it right", outcome: "bad", then: [{ t: "wren", text: "That's how they keep you. You can leave at any point, and you don't owe them another chance. Try again.", voice: "/audio/wren/m09p-s6-q2bad2.mp3" }] },
           ],
         },
         {
           t: "choose",
           prompt: "You got pulled into a con for weeks before spotting it. Whose fault is that?",
           options: [
-            { label: "The con artist's, so tell a trusted adult and don't carry it alone", outcome: "good", then: [{ t: "wren", text: "Exactly. They're professionals, the shame is all theirs. Tell a trusted adult, getting fooled is never your fault.", voice: "/audio/wren/m09p-s6-q3ok.mp3" }] },
-            { label: "Yours, for not noticing sooner", outcome: "bad", then: [{ t: "wren", text: "Never. Con artists trick people for a living, the fault is entirely theirs. Tell a trusted adult. Try again.", voice: "/audio/wren/m09p-s6-q3bad.mp3" }] },
+            { label: "The con artist's, so tell a trusted adult and don't carry it alone", outcome: "good", then: [{ t: "wren", text: "Exactly. They're professionals, so the shame is all theirs. Tell a trusted adult, because getting fooled is never your fault.", voice: "/audio/wren/m09p-s6-q3ok.mp3" }] },
+            { label: "Yours, for not noticing sooner", outcome: "bad", then: [{ t: "wren", text: "It's never your fault. Con artists trick people for a living, so the fault is entirely theirs. Tell a trusted adult. Try again.", voice: "/audio/wren/m09p-s6-q3bad.mp3" }] },
             { label: "Nobody's, so just quietly forget it", outcome: "bad", then: [{ t: "wren", text: "Don't carry it alone. It wasn't your fault, and a trusted adult can help you. Try again.", voice: "/audio/wren/m09p-s6-q3bad2.mp3" }] },
           ],
         },
@@ -304,7 +304,7 @@ export const case09Phone: PhoneCase = {
       title: "The pause-and-tell rule",
       goal: "Any ask about money, codes, or secrets: pause, and tell a trusted adult.",
       learn: [
-        { t: "wren", text: "Last skill, your safety net for everything. Any time an ask touches money, codes, or keeping a secret, you pause, and you tell a trusted adult before you do anything at all. And one more rule, the most important in this whole course. If anyone ever threatens to share something embarrassing about you unless you pay or do what they say, you never pay, you never do it, and you tell a trusted adult straight away. That isn't you being in trouble, that's you being brave. It is never, ever your fault, and a trusted adult will help you sort it.", voice: "/audio/wren/m09p-s7-learn.mp3" },
+        { t: "wren", text: "This is the last skill, and it's your safety net for everything. Any time an ask touches money, codes, or keeping a secret, you pause, and you tell a trusted adult before you do anything at all. And here's one more rule, the most important in this whole course. If anyone ever threatens to share something embarrassing about you unless you pay or do what they say, here's what you do. You never pay, and you never do it. You tell a trusted adult straight away. That isn't you being in trouble. That's you being brave. It is never, ever your fault, and a trusted adult will help you sort it.", voice: "/audio/wren/m09p-s7-learn.mp3" },
       ],
       practice: [
         {
@@ -312,8 +312,8 @@ export const case09Phone: PhoneCase = {
           prompt: "Someone says they'll post something embarrassing about you unless you send money. What do you do?",
           options: [
             { label: "Don't pay, don't reply, tell a trusted adult straight away", outcome: "good", then: [{ t: "wren", text: "That's exactly right, and it's the bravest thing you can do. You never pay and you never comply, because it only ever leads to more. You tell a trusted adult, and they help you. You are not in trouble, and none of it is your fault.", voice: "/audio/wren/m09p-s7-ok.mp3" }] },
-            { label: "Quietly pay so it just goes away", outcome: "bad", then: [{ t: "wren", text: "Paying never makes it go away, it tells them it works and they come back for more. Never pay. Tell a trusted adult, they will help you. Try again.", voice: "/audio/wren/m09p-s7-bad.mp3" }] },
-            { label: "Beg them not to do it", outcome: "bad", then: [{ t: "wren", text: "Begging just shows them they've got power over you. Don't reply at all. Go straight to a trusted adult, that's what beats this every time. Try again.", voice: "/audio/wren/m09p-s7-bad2.mp3" }] },
+            { label: "Quietly pay so it just goes away", outcome: "bad", then: [{ t: "wren", text: "Paying never makes it go away. It tells them it works, and they come back for more. Never pay. Tell a trusted adult, and they will help you. Try again.", voice: "/audio/wren/m09p-s7-bad.mp3" }] },
+            { label: "Beg them not to do it", outcome: "bad", then: [{ t: "wren", text: "Begging just shows them they've got power over you. Don't reply at all. Go straight to a trusted adult, because that's what beats this every time. Try again.", voice: "/audio/wren/m09p-s7-bad2.mp3" }] },
           ],
         },
         { t: "con", text: "quick one, what's the code that just texted your phone? need it to send you something, keep it between us though 🤫", ask: true },
@@ -321,16 +321,16 @@ export const case09Phone: PhoneCase = {
           t: "choose",
           prompt: "They want your code, and want it kept secret. What do you do?",
           options: [
-            { label: "Pause, share the code with no one, and tell a trusted adult", outcome: "good", then: [{ t: "wren", text: "Perfect. A code plus keep it secret is a double alarm. You share codes with no one, and you tell a trusted adult straight away.", voice: "/audio/wren/m09p-s7-q2ok.mp3" }] },
-            { label: "Send the code, it's just to receive a gift", outcome: "bad", then: [{ t: "wren", text: "Never send a code from your phone, that's someone breaking into an account. Pause, and tell a trusted adult. Try again.", voice: "/audio/wren/m09p-s7-q2bad.mp3" }] },
-            { label: "Refuse, but keep it a secret like they asked", outcome: "bad", then: [{ t: "wren", text: "Good that you refused, but secrets are the trap. Tell a trusted adult, you are never in trouble for it. Try again.", voice: "/audio/wren/m09p-s7-q2bad2.mp3" }] },
+            { label: "Pause, share the code with no one, and tell a trusted adult", outcome: "good", then: [{ t: "wren", text: "Perfect. A request for a code, plus a request to keep it secret, is a double alarm. You share codes with no one, and you tell a trusted adult straight away.", voice: "/audio/wren/m09p-s7-q2ok.mp3" }] },
+            { label: "Send the code, it's just to receive a gift", outcome: "bad", then: [{ t: "wren", text: "Never send a code from your phone. That's how someone breaks into an account. Pause, and tell a trusted adult. Try again.", voice: "/audio/wren/m09p-s7-q2bad.mp3" }] },
+            { label: "Refuse, but keep it a secret like they asked", outcome: "bad", then: [{ t: "wren", text: "It's good that you refused, but secrets are the trap. Tell a trusted adult. You are never in trouble for it. Try again.", voice: "/audio/wren/m09p-s7-q2bad2.mp3" }] },
           ],
         },
         {
           t: "choose",
           prompt: "An online friend keeps saying \"don't tell your parents about us, they wouldn't get it.\" What does that tell you?",
           options: [
-            { label: "A push to keep secrets is a warning, so tell a trusted adult", outcome: "good", then: [{ t: "wren", text: "Exactly. Anyone pushing you to hide a friendship from your parents is a red flag. Tell a trusted adult, secrets are how cons hide.", voice: "/audio/wren/m09p-s7-q3ok.mp3" }] },
+            { label: "A push to keep secrets is a warning, so tell a trusted adult", outcome: "good", then: [{ t: "wren", text: "Exactly. Anyone pushing you to hide a friendship from your parents is a red flag. Tell a trusted adult, because secrets are how cons hide.", voice: "/audio/wren/m09p-s7-q3ok.mp3" }] },
             { label: "They just want your friendship to stay private", outcome: "bad", then: [{ t: "wren", text: "Real friends don't need you to hide them from your family. That secret keeps you cut off. Tell a trusted adult. Try again.", voice: "/audio/wren/m09p-s7-q3bad.mp3" }] },
             { label: "They're right, grown-ups wouldn't understand", outcome: "bad", then: [{ t: "wren", text: "That's exactly the line a con uses to isolate you. A trusted adult will understand and help. Try again.", voice: "/audio/wren/m09p-s7-q3bad2.mp3" }] },
           ],
@@ -345,7 +345,7 @@ export const case09Phone: PhoneCase = {
     avatar: "J",
     tag: "6 WEEKS",
     sub: "online friend · added 6 weeks ago",
-    intro: "This is it, Agent. I've laid out a whole con for you, six weeks of it, from the very first hello. Somewhere in there it turns from giving to taking. No hints from me now. Read the timeline, find the turn, refuse the ask, and get out clean. Go.",
+    intro: "This is it, Agent. I've laid out a whole con for you, six weeks of it, from the very first hello. Somewhere in there, it turns from giving to taking. There are no hints from me now. Read the timeline, find the turn, refuse the ask, and get out clean. Go.",
     introVoice: "/audio/wren/m09p-boss-intro.mp3",
     phases: [
       {
@@ -397,13 +397,13 @@ export const case09Phone: PhoneCase = {
         ],
       },
     ],
-    win: "Flawless, Agent. You saw it was a business, not a bond. You watched the trust get farmed, you traced the whole six-week timeline, and you found the exact week it turned from giving to taking. And when the sunk-cost squeeze tried to hold you, you walked away clean, no shame, no explanation owed, and told a trusted adult. That's SIREN's masterpiece, beaten.",
+    win: "That was flawless, Agent. You saw it was a business, not a bond. You watched the trust get farmed, you traced the whole six-week timeline, and you found the exact week it turned from giving to taking. And when the sunk-cost squeeze tried to hold you, you walked away clean and told a trusted adult. You felt no shame, and you owed no explanation. You beat SIREN's masterpiece.",
     winVoice: "/audio/wren/m09p-boss-win.mp3",
   },
 
   /* ================= TEST · "Prove it" (blind, must-pass) ================= */
   test: {
-    intro: "Last thing before I close the case, the test. A fresh batch you haven't seen, no hints. Get enough of them right and the case is closed for good. Take everything you learned about the long con, and think. Ready?",
+    intro: "There's one last thing before I close the case, and that's the test. It's a fresh batch you haven't seen, with no hints. Get enough of them right, and the case is closed for good. Take everything you learned about the long con, and think. Ready?",
     introVoice: "/audio/wren/m09p-test-intro.mp3",
     passVoice: "/audio/wren/m09p-test-pass.mp3",
     failVoice: "/audio/wren/m09p-test-fail.mp3",
