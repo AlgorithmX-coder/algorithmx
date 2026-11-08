@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { T } from "../learn/tokens";
 import CodePlayground, { type RunLine } from "../learn/CodePlayground";
+import SyntaxHelp, { type SyntaxGroup } from "../learn/SyntaxHelp";
 
 /* The free "code area": five small, security-flavoured challenges that build
  * up to a mini project the learner writes themselves. Real JavaScript, run in
@@ -121,7 +122,7 @@ const CHALLENGES: Challenge[] = [
 ];
 
 /* ---- Syntax help: the pullout reference, always one tap away ---- */
-const SYNTAX: { group: string; items: Tip[] }[] = [
+const SYNTAX: SyntaxGroup[] = [
   { group: "Print to the Output", items: [
     { code: 'console.log("hello")', note: "print some text" },
     { code: "console.log(count)", note: "print a value you stored" },
@@ -158,15 +159,10 @@ const SYNTAX: { group: string; items: Tip[] }[] = [
   ] },
 ];
 
-function CodeBit({ children }: { children: string }) {
-  return <code style={{ display: "block", whiteSpace: "pre", fontFamily: T.mono, fontSize: 12.5, lineHeight: 1.5, color: "#c9f7e0", background: "#0b0a16", border: `1px solid ${T.edge}`, borderRadius: 7, padding: "7px 10px", overflowX: "auto" }}>{children}</code>;
-}
-
 export default function CodeLab() {
   const [active, setActive] = useState(0);
   const [result, setResult] = useState<{ pass: boolean; msg: string } | null>(null);
   const [solved, setSolved] = useState<Set<string>>(new Set());
-  const [helpOpen, setHelpOpen] = useState(false);
   const ch = CHALLENGES[active];
   const atFirst = active === 0;
   const atLast = active === CHALLENGES.length - 1;
@@ -233,10 +229,7 @@ export default function CodeLab() {
           </div>
 
           <div style={{ background: T.panel, border: `1px solid ${T.edge}`, borderRadius: 14, padding: "20px 22px" }}>
-            <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 12, flexWrap: "wrap", marginBottom: 8 }}>
-              <h2 style={{ fontFamily: T.display, fontSize: 19, fontWeight: 700, color: T.ink, margin: 0 }}>{ch.title}</h2>
-              <button onClick={() => setHelpOpen(true)} style={{ fontFamily: T.mono, fontSize: 11.5, fontWeight: 700, letterSpacing: "0.04em", color: T.cyan, background: "transparent", border: `1px solid ${T.cyan}55`, borderRadius: 8, padding: "6px 11px", cursor: "pointer" }}>{"{ }"} Syntax help</button>
-            </div>
+            <h2 style={{ fontFamily: T.display, fontSize: 19, fontWeight: 700, color: T.ink, margin: "0 0 8px" }}>{ch.title}</h2>
             <p style={{ fontSize: 15, lineHeight: 1.6, color: T.body, margin: "0 0 16px", maxWidth: "62ch" }}>{ch.brief}</p>
 
             {ch.ethics && (
@@ -284,44 +277,7 @@ export default function CodeLab() {
         </main>
       </div>
 
-      {/* side pullout tab (closed state) */}
-      {!helpOpen && (
-        <button onClick={() => setHelpOpen(true)} aria-label="Open syntax help"
-          style={{ position: "fixed", right: 0, top: "42%", zIndex: 40, writingMode: "vertical-rl", transform: "rotate(180deg)", fontFamily: T.mono, fontSize: 11.5, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", color: "#fff", background: `linear-gradient(135deg, ${T.primary}, ${T.cyan})`, border: "none", borderRadius: "0 10px 10px 0", padding: "16px 9px", cursor: "pointer", boxShadow: "0 6px 20px rgba(0,0,0,0.35)" }}>
-          {"{ }"} Syntax help
-        </button>
-      )}
-
-      {/* side pullout drawer (open state) */}
-      {helpOpen && (
-        <>
-          <div onClick={() => setHelpOpen(false)} style={{ position: "fixed", inset: 0, zIndex: 50, background: "rgba(5,4,12,0.55)" }} />
-          <aside style={{ position: "fixed", top: 0, right: 0, bottom: 0, zIndex: 51, width: "min(400px, 92vw)", background: T.bg, borderLeft: `1px solid ${T.edge}`, boxShadow: "-14px 0 40px rgba(0,0,0,0.5)", overflowY: "auto" }}>
-            <div style={{ position: "sticky", top: 0, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, padding: "16px 20px", background: T.bg, borderBottom: `1px solid ${T.edge}` }}>
-              <span style={{ fontFamily: T.display, fontSize: 16, fontWeight: 700, color: T.ink }}>Syntax help</span>
-              <button onClick={() => setHelpOpen(false)} aria-label="Close syntax help" style={{ fontFamily: T.mono, fontSize: 13, fontWeight: 700, color: T.muted, background: "transparent", border: `1px solid ${T.edge}`, borderRadius: 8, padding: "5px 11px", cursor: "pointer" }}>Close &times;</button>
-            </div>
-            <div style={{ padding: "18px 20px 60px" }}>
-              <p style={{ fontSize: 13.5, color: T.muted, lineHeight: 1.55, margin: "0 0 20px" }}>A quick reference for everything in the Code Lab. Copy any of these shapes into your code.</p>
-              <div style={{ display: "flex", flexDirection: "column", gap: 22 }}>
-                {SYNTAX.map((sec) => (
-                  <div key={sec.group}>
-                    <div style={{ fontFamily: T.mono, fontSize: 10.5, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: T.cyan, marginBottom: 9 }}>{sec.group}</div>
-                    <div style={{ display: "flex", flexDirection: "column", gap: 9 }}>
-                      {sec.items.map((it, i) => (
-                        <div key={i}>
-                          <CodeBit>{it.code}</CodeBit>
-                          <div style={{ fontSize: 12.5, color: T.muted, lineHeight: 1.45, margin: "4px 2px 0" }}>{it.note}</div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </aside>
-        </>
-      )}
+      <SyntaxHelp label="Syntax help" intro="A quick reference for everything in the Code Lab. Copy any of these shapes into your code." groups={SYNTAX} />
     </div>
   );
 }

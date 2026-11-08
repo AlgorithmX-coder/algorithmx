@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { T } from "./tokens";
 import type { LabProps } from "./types";
+import SyntaxHelp, { type SyntaxGroup } from "./SyntaxHelp";
 
 /* Week 8 play area: a REAL SQL injection, run against a REAL in-browser
  * SQLite database (sql.js, wasm). This is the "find the decision point"
@@ -30,6 +31,29 @@ const CLASSIC = "' OR '1'='1";
  * what to type besides the injection). Matches a row inserted in boot(). */
 const DEMO_USER = "sarah.k";
 const DEMO_PASS = "Summer2015";
+
+/* The syntax reference for this lab: just enough SQL to understand the login
+ * query, craft the classic injection, and see why the fix kills it. */
+const SQL_SYNTAX: SyntaxGroup[] = [
+  { group: "The query this login runs", items: [
+    { code: "SELECT ... FROM customers\nWHERE username = '...'\n  AND password = '...'", note: "whatever you type in the boxes is dropped straight inside those quotes" },
+  ] },
+  { group: "A single quote", items: [
+    { code: "'", note: "starts or ends a piece of text in SQL. Slip one in and you can break out of the password and write SQL of your own." },
+  ] },
+  { group: "An always-true condition", items: [
+    { code: "OR '1'='1'", note: "'1'='1' is always true, so OR makes the whole WHERE match every row." },
+  ] },
+  { group: "Comment out the rest", items: [
+    { code: "--", note: "everything after -- on the line is ignored, so you can drop the rest of the query." },
+  ] },
+  { group: "The classic payload", items: [
+    { code: "' OR '1'='1", note: "type this into the password box: it closes the password string, then adds a condition that is always true." },
+  ] },
+  { group: "Why the fix stops it", items: [
+    { code: "WHERE username = ?\n  AND password = ?", note: "the ? are placeholders. Your input is sent separately as data, never run as SQL, so the same payload is just a wrong password." },
+  ] },
+];
 
 type Attempt = {
   username: string;
@@ -115,6 +139,8 @@ export default function SqlInjectionLab({ onDidTry }: LabProps) {
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+      <SyntaxHelp label="SQL help" intro="Just enough SQL to understand the login query, craft the injection, and see why the fix kills it." groups={SQL_SYNTAX} />
+
       {/* mode toggle */}
       <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
         <span style={{ fontFamily: T.mono, fontSize: 10.5, letterSpacing: "0.14em", textTransform: "uppercase", color: T.faint }}>Portal version</span>
