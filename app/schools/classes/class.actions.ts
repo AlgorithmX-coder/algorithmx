@@ -6,6 +6,7 @@ import {
   addPupils,
   createClass,
   getSchoolContext,
+  movePupil,
   removePupil,
   type ClassFailure,
 } from "@/app/lib/schoolClasses";
@@ -131,3 +132,29 @@ export async function removePupilAction(formData: FormData): Promise<void> {
   if (id) await removePupil(school.orgId, id);
   revalidatePath(`/schools/classes/${classId}`);
 }
+
+/**
+ * Move a pupil to another class in the same school.
+ *
+ * A plain form post rather than a client component, the same as the two
+ * actions above it: a teacher does this a handful of times a year and in a
+ * hurry, and a select plus a button needs no JavaScript to work.
+ */
+export async function movePupilAction(formData: FormData): Promise<void> {
+  const session = await auth();
+  if (!session?.user?.id) return;
+  const school = await getSchoolContext(session.user.id);
+  if (!school) return;
+
+  const childProfileId = String(formData.get("childProfileId") ?? "");
+  const toClassId = String(formData.get("toClassId") ?? "");
+  const fromClassId = String(formData.get("classId") ?? "");
+  if (childProfileId && toClassId) {
+    await movePupil({ orgId: school.orgId, childProfileId, toClassId });
+  }
+  /* Both ends change: one loses a row, the other gains one. */
+  revalidatePath(`/schools/classes/${fromClassId}`);
+  revalidatePath(`/schools/classes/${toClassId}`);
+  revalidatePath("/schools/classes");
+}
+

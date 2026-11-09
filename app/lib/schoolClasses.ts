@@ -243,6 +243,67 @@ export async function listPupils(orgId: string, classId: string) {
 }
 
 /**
+ * Move a pupil into another class.
+ *
+ * WITHOUT THIS, THE PLACES MODEL CANNOT WORK. The owner decided on
+ * 2026-11-08 that a place belongs to the CHILD, so a child moving up to the
+ * next course in September re-points their existing place and costs
+ * nothing. There was no way to move a child, so the only route was Remove
+ * and re-add: that deletes the account and the progress, and the place
+ * stays spent. A school moving fifty children up a year would have burned
+ * fifty places and thrown away a year of work.
+ *
+ * Nothing is deleted and nothing is spent. The profile keeps its id, so its
+ * PlaceRedemption row, its Progress rows and its picture password all stay
+ * exactly where they are.
+ *
+ * MOVING TO A CLASS ON ANOTHER COURSE grants the new course and LEAVES THE
+ * OLD ONE in place. A child who spent a year on Cyber Heroes keeps what
+ * they did; taking it away to hand them Explorers would delete work they
+ * can still see in their own hub. This is the 2026-11-08 reading, which is
+ * also what the rest of the code already does.
+ * WARNING: the 2026-10-27 partner ruling says the opposite (one place = one
+ * child on ONE course, so moving spends a second place). The two have not
+ * been reconciled. This follows November.
+ *
+ * Any class in the SAME school is a valid destination, including another
+ * teacher's, because that is exactly what September looks like.
+ */
+export async function movePupil(args: {
+  orgId: string;
+  childProfileId: string;
+  toClassId: string;
+}): Promise<{ ok: true; className: string } | { ok: false; error: ClassFailure }> {
+  /* Both ends scoped to this school IN THE QUERY, so neither a child nor a
+     class from another school can be named by a hand-made request. */
+  const [child, target] = await Promise.all([
+    prisma.childProfile.findFirst({
+      where: { id: args.childProfileId, class: { orgId: args.orgId } },
+      select: { id: true, userId: true, classId: true },
+    }),
+    prisma.class.findFirst({
+      where: { id: args.toClassId, orgId: args.orgId, archivedAt: null },
+      select: { id: true, name: true, productId: true },
+    }),
+  ]);
+  if (!child || !target) return { ok: false, error: "class_not_found" };
+  if (child.classId === target.id) return { ok: true, className: target.name };
+
+  await prisma.$transaction(async (tx) => {
+    await tx.childProfile.update({ where: { id: child.id }, data: { classId: target.id } });
+    /* The new course, granted. Idempotent: a child moved back and forth
+       between two courses already holds both, and the composite key makes
+       the second grant a no-op rather than an error. */
+    await tx.entitlement.upsert({
+      where: { userId_productId: { userId: child.userId, productId: target.productId } },
+      update: {},
+      create: { userId: child.userId, productId: target.productId, source: "BUNDLE" },
+    });
+  });
+  return { ok: true, className: target.name };
+}
+
+/**
  * Removing a pupil removes the account and, with it, the progress. A school
  * that removes a child is saying that child has left.
  *
