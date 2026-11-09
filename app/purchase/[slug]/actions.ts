@@ -5,11 +5,14 @@ import { redirect } from "next/navigation";
 import { auth } from "@/app/lib/auth";
 import { prisma } from "@/app/lib/prisma";
 import { grantEntitlement, hasEntitlement } from "@/app/lib/entitlements";
+import { FIRM_BUY_PATH, isFirmProduct } from "@/app/lib/cyberSecured";
 
 /**
  * Server action invoked by the PaymentButton.
  *
  * What it does TODAY (stub flow):
+ *   - Refuses firm products (Cyber Secured and its tracks): those are
+ *     licensed by firms, so it sends the buyer to /corporate instead.
  *   - Verifies the session server-side (never trust the client about
  *     who is buying).
  *   - Confirms the slug resolves to an ACTIVE Product.
@@ -29,6 +32,10 @@ export async function startCheckoutAction(slug: string): Promise<void> {
   if (!slug || typeof slug !== "string") {
     throw new Error("startCheckoutAction: slug required");
   }
+
+  // Firm courses are licensed per seat by a firm, never granted here, so
+  // even a hand-crafted call for one gets no entitlement.
+  if (isFirmProduct(slug)) redirect(FIRM_BUY_PATH);
 
   const session = await auth();
   if (!session?.user?.id) {

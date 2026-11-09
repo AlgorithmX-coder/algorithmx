@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { SECURED_TRACKS, liveTrackNames, onePerPerson } from "./cyberSecured";
+import { SECURED_TRACKS, isFirmProduct, liveTrackNames, onePerPerson } from "./cyberSecured";
 
 const d = (day: number) => new Date(Date.UTC(2026, 10, day));
 const seat = (id: string, email: string, invited: number, claimed: number | null = null) => ({ id, email, invitedAt: d(invited), claimedAt: claimed === null ? null : d(claimed) });
@@ -39,5 +39,19 @@ describe("Cyber Secured tracks", () => {
 
   it("names the live tracks as one phrase", () => {
     expect(liveTrackNames()).toBe("AI Cleared, AI Fluent and Cyber Awareness");
+  });
+});
+
+describe("isFirmProduct", () => {
+  it("knows every firm course, and Cyber Secured itself", () => {
+    for (const slug of ["ai-cleared", "ai-fluent", "cyber-awareness", "cyber-secured", " AI-Fluent "]) expect(isFirmProduct(slug)).toBe(true);
+  });
+
+  it("covers every Cyber Secured track, built or not", () => {
+    for (const t of SECURED_TRACKS) expect(isFirmProduct(t.slug)).toBe(true);
+  });
+
+  it("leaves every consumer course alone", () => {
+    for (const slug of ["cyber-heroes", "cyberexplorers", "cyberstart", "cyberstart-pro", "desk-ready", "", null, undefined]) expect(isFirmProduct(slug)).toBe(false);
   });
 });
