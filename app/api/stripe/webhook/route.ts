@@ -1,6 +1,7 @@
 import { NextRequest } from "next/server";
 import type Stripe from "stripe";
 import { fulfilCheckoutSession } from "@/app/lib/aiClearedCheckout";
+import { fulfilPlacesSession } from "@/app/lib/learnerPlaces";
 import { stripe } from "@/app/lib/stripe";
 import { opsAlert } from "@/app/lib/opsAlert";
 
@@ -32,12 +33,19 @@ export async function POST(req: NextRequest) {
     const host = req.headers.get("x-forwarded-host") ?? req.headers.get("host") ?? "www.algorithmx.co.uk";
     const session = event.data.object as Stripe.Checkout.Session;
     try {
-      const result = await fulfilCheckoutSession(session, `${proto}://${host}`);
+      /* Which lane paid. A firm buys seats on a corporate course; an
+         educational organisation buys pupil places. Both arrive on this
+         one endpoint because Stripe sends every event to one place, so
+         the metadata written at checkout is what tells them apart. */
+      const result =
+        session.metadata?.product === "learner-places"
+          ? await fulfilPlacesSession(session, `${proto}://${host}`)
+          : await fulfilCheckoutSession(session, `${proto}://${host}`);
       console.log("[stripe/webhook]", event.type, JSON.stringify(result));
       /* A paid session that set nothing up is a customer waiting for an
        * email that is not coming. */
       if ("skipped" in result && session.payment_status === "paid") {
-        await opsAlert({ what: "A paid Stripe session was not fulfilled", detail: { reason: result.skipped, sessionId: session.id, email: session.customer_details?.email ?? session.customer_email ?? "", firm: session.metadata?.firmName ?? "", course: session.metadata?.course ?? "", seats: session.metadata?.seats ?? "" } });
+        await opsAlert({ what: "A paid Stripe session was not fulfilled", detail: { reason: result.skipped, sessionId: session.id, email: session.customer_details?.email ?? session.customer_email ?? "", firm: session.metadata?.firmName ?? "", org: session.metadata?.orgName ?? "", course: session.metadata?.course ?? "", seats: session.metadata?.seats ?? "", places: session.metadata?.places ?? "" } });
       }
     } catch (err) {
       console.error("[stripe/webhook] fulfilment failed", err instanceof Error ? err.message : err);
