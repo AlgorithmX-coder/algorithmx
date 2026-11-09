@@ -1,200 +1,710 @@
-import type { CSSProperties } from "react";
+"use client";
+
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import Link from "next/link";
-import DeskHeader from "./DeskHeader";
+
+import Nav from "@/app/components/landing-v2/Nav";
+import CubeMark from "@/app/components/CubeMark";
+import Footer from "@/app/components/landing-v2/Footer";
+import ProofBand from "@/app/components/ProofBand";
+import { FadeUp } from "@/app/components/landing-v2/utilities";
+import { sectionMark, sectionMarkBare } from "@/app/components/sectionMark";
+import DeskHeroSim from "./DeskHeroSim";
 import { FINAL, PARTS } from "./syllabus";
-import { D } from "./tokens";
 
-/* The Desk Ready landing: who it is for, how it works, what you learn and
- * the price. Written for an adult who is new to computers: short words,
- * large type, one obvious button. House copy rules: no em-dashes, no
- * emoji, state the benefit. Price arrives from the Product row. */
+/**
+ * The Desk Ready landing, built on the AlgorithmX landing system (owner
+ * 2026-11-09: "needs to look like algorithmx standard"): the shared Nav with
+ * a course brand, a dark photographic hero band with a live taste of the
+ * course on glass, the accreditations band, sand sections that reveal on
+ * scroll, and the shared Footer. The /corporate page is the pattern.
+ *
+ * The buyer is one adult paying for themselves, often nervous about
+ * computers, so the copy is plain, the price is said up front, and the
+ * hero proof is the easiest real lesson in the course.
+ *
+ * Copy rules (owner): state the benefit, never the denial; no em-dashes; no
+ * invented figures (the one statistic is sourced on the page).
+ */
 
-const CTA = "/desk-ready/signup";
+const SIGNUP = "/desk-ready/signup";
 
-const button: CSSProperties = {
-  display: "inline-block",
-  background: D.accent,
-  color: D.onAccent,
-  fontFamily: D.display,
-  fontWeight: 600,
-  fontSize: 18,
-  padding: "15px 26px",
-  borderRadius: 12,
-  textDecoration: "none",
-  boxShadow: "0 10px 26px rgba(43,89,195,0.28)",
+const h2: CSSProperties = {
+  margin: "14px 0 0",
+  fontFamily: "var(--lv2-font-display)",
+  fontSize: "clamp(1.9rem, 3.4vw, 2.8rem)",
+  lineHeight: 1.06,
+  letterSpacing: "-0.025em",
+  fontWeight: 400,
+  color: "var(--lv2-ink)",
 };
 
-const eyebrow: CSSProperties = { margin: 0, fontSize: 15, fontWeight: 700, color: D.accent, letterSpacing: "0.04em", textTransform: "uppercase" };
-const h2: CSSProperties = { margin: "8px 0 0", fontFamily: D.display, fontWeight: 700, fontSize: "clamp(1.6rem, 3.6vw, 2.15rem)", lineHeight: 1.2, color: D.ink };
+const lede: CSSProperties = {
+  margin: "16px 0 0",
+  fontFamily: "var(--lv2-font-display)",
+  fontSize: "clamp(1rem, 1.2vw, 1.1rem)",
+  lineHeight: 1.6,
+  color: "rgba(17,22,38,0.82)",
+  maxWidth: 660,
+};
 
-/* A drawn (not photographed) taste of the course: an email being written
- * beside a small sheet of stock data. Pure markup, so it is crisp at any
- * size and needs no image file. */
-function DeskPreview() {
-  const cell: CSSProperties = { padding: "7px 10px", borderRight: `1px solid ${D.edge}`, borderBottom: `1px solid ${D.edge}`, fontSize: 14, whiteSpace: "nowrap" };
-  const head: CSSProperties = { ...cell, background: D.sunk, fontWeight: 700, color: D.muted, fontSize: 12.5 };
-  const rows = [
-    ["Pallet labels", "120", "Sam"],
-    ["Stretch wrap", "36", "Priya"],
-    ["Safety boots", "14", "Sam"],
-  ];
+const SECTIONS: ReadonlyArray<readonly [id: string, label: string]> = [
+  ["who", "Who it is for"],
+  ["learn", "What you learn"],
+  ["how", "How it works"],
+  ["price", "Price"],
+  ["questions", "Questions"],
+];
+
+const WHO = [
+  {
+    accent: "#2b59c3",
+    title: "You work on your feet",
+    text: "On a line, in a warehouse, on a shop floor or in care, and you want the job at the desk: stock control, the transport office, team leader, admin.",
+    icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d="M3 21h18M5 21V9l7-5 7 5v12" /><path d="M9 21v-6h6v6" /></svg>,
+  },
+  {
+    accent: "#0a7085",
+    title: "You live on your phone",
+    text: "You have used a phone for years, but not much of a computer. Offices expect a mouse, a keyboard, Outlook and Excel, so we start right at the beginning.",
+    icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden><rect x="7" y="2.5" width="10" height="19" rx="2.2" /><path d="M11 18.5h2" /></svg>,
+  },
+  {
+    accent: "#5744c9",
+    title: "You are going back to work",
+    text: "You have been away for a while and the office has moved on. Catch up on email, spreadsheets, shared files and AI at your own pace, from home.",
+    icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d="M20 12a8 8 0 1 1-2.3-5.7" /><path d="M20 4v5h-5" /></svg>,
+  },
+];
+
+const PART_ACCENT = ["#8a5400", "#2b59c3", "#0e7a45", "#0a7085", "#5744c9", "#a5117f"];
+
+const STEPS = [
+  { n: "01", colour: "#2b59c3", title: "Learn one thing", text: "A short lesson in plain English, one idea per screen, with real examples of what good looks like and what to avoid." },
+  { n: "02", colour: "#0a7085", title: "Do it in a pretend office", text: "Straight away you try it in a pretend Outlook, a pretend Excel or a pretend desktop. Nothing breaks and nothing is ever sent." },
+  { n: "03", colour: "#0e7a45", title: "See what to fix", text: "Press Send or Check and every point is marked on the spot, with a plain hint for anything that needs another go." },
+  { n: "04", colour: "#8a5400", title: "Keep the proof", text: "Finish with a real Monday morning at the desk: emails, a spreadsheet, a meeting and one scam to spot." },
+];
+
+const FAQS = [
+  { q: "I am not good with computers. Is it really for me?", a: "Yes. That is exactly who it is for. Module 0 starts with the mouse and the keyboard, every lesson is in plain English, and the practice is in a pretend office where you cannot break anything. If you already use a computer every day, you can skip Module 0." },
+  { q: "Do I need Microsoft Office?", a: "All you need is a web browser. Everything you practise on is built into the course, so there is nothing to install or buy. It looks and works like Microsoft 365, because that is what most UK offices use." },
+  { q: "How long does it take?", a: "About fifteen hours in all, in lessons of around ten minutes. Do one on your lunch break or a few in an evening, and pick up where you stopped." },
+  { q: "Can I do it on my phone?", a: "It works on a phone, and a laptop or desktop is better, because that is what you will use at work. Most libraries have computers you can use for free." },
+  { q: "Will it help me get a job?", a: "It teaches the computer skills desk jobs ask for, and the final module turns the work you have already done into the words employers look for, with practice for the typing and Excel tests agencies set." },
+  { q: "What does it cost?", a: "One payment, VAT included, for every module and every update, for as long as you want it." },
+];
+
+/* The /desk-ready header mark: the course glyph (a monitor with a tick) and
+ * the mono wordmark with "by AlgorithmX", the same lockup the other courses
+ * wear. It sits on night over the hero and sand below, so the words use the
+ * nav's tone-aware ink and the glyph a blue that reads on both. */
+function DeskBrand() {
   return (
-    <div aria-hidden style={{ display: "flex", flexDirection: "column" }}>
-      <div style={{ background: D.panel, border: `1px solid ${D.edge}`, borderRadius: 14, boxShadow: D.lift, overflow: "hidden", maxWidth: 380 }}>
-        <div style={{ background: D.outlook, color: D.onAccent, padding: "8px 14px", fontSize: 13, fontWeight: 700 }}>New message</div>
-        <div style={{ padding: "12px 16px", fontSize: 15, lineHeight: 1.6, color: D.body }}>
-          <div style={{ borderBottom: `1px solid ${D.edgeSoft}`, paddingBottom: 6 }}>
-            <span style={{ color: D.faint }}>To </span>sarah.jones@northfield.co.uk
-          </div>
-          <div style={{ borderBottom: `1px solid ${D.edgeSoft}`, padding: "6px 0" }}>
-            <span style={{ color: D.faint }}>Subject </span>
-            <b>Delivery 4417 is two pallets short</b>
-          </div>
-          <div style={{ paddingTop: 10 }}>
-            Hi Sarah,
-            <br />
-            Could you check order 4417 for me? We received 10 pallets, not 12.
-            <br />
-            <br />
-            Kind regards,
-            <br />
-            Dave
-          </div>
-        </div>
-      </div>
-      {/* tucked under the email's bottom-right corner, clear of its text */}
-      <div style={{ alignSelf: "flex-end", marginTop: -26, position: "relative", background: D.panel, border: `1px solid ${D.edge}`, borderRadius: 14, boxShadow: D.lift, overflow: "hidden" }}>
-        <div style={{ background: D.excel, color: D.onAccent, padding: "8px 14px", fontSize: 13, fontWeight: 700 }}>Stock list</div>
-        <div style={{ display: "grid", gridTemplateColumns: "auto auto auto", color: D.body }}>
-          <div style={head}>Item</div>
-          <div style={head}>Qty</div>
-          <div style={head}>Ordered by</div>
-          {rows.flat().map((v, i) => (
-            <div key={i} style={cell}>
-              {v}
-            </div>
-          ))}
-        </div>
+    <>
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="none" aria-hidden="true" style={{ display: "block", flexShrink: 0, filter: "drop-shadow(0 0 6px rgba(95,141,255,0.55))" }}>
+        <rect x="3" y="4" width="18" height="12" rx="2" fill="rgba(95,141,255,0.14)" stroke="#5f8dff" strokeWidth="1.8" />
+        <path d="M9 20 H15 M12 16 V20" stroke="#5f8dff" strokeWidth="1.8" strokeLinecap="round" />
+        <path d="M7.5 10 L10.2 12.6 L15.8 7.4" stroke="#8fd3ff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+      <span style={{ display: "flex", flexDirection: "column", gap: 2, lineHeight: 1 }}>
+        <span style={{ fontFamily: "var(--lv2-font-mono)", fontWeight: 700, fontSize: 14, letterSpacing: "0.2em", textTransform: "uppercase", color: "var(--lv2-word-mark, #eaf1ff)" }}>
+          DESK <span style={{ color: "#5f8dff" }}>READY</span>
+        </span>
+        <span style={{ fontFamily: "var(--lv2-font-mono)", fontWeight: 500, fontSize: 8.5, letterSpacing: "0.24em", textTransform: "uppercase", color: "var(--lv2-word-mark, #eaf1ff)", display: "inline-flex", alignItems: "center" }}>
+          <span style={{ opacity: 0.6 }}>by</span>
+          <CubeMark size={12} color="#5f8dff" code style={{ display: "inline-block", margin: "0 3px", filter: "drop-shadow(0 0 4px rgba(95,141,255,0.7))" }} />
+          <span style={{ opacity: 0.6 }}>AlgorithmX</span>
+        </span>
+      </span>
+    </>
+  );
+}
+
+/* Three small drawings of the practice: the inbox, the sheet, the desktop. */
+function PracticeInbox() {
+  return (
+    <div className="dr-mini" aria-hidden>
+      <div className="dr-mini-bar" style={{ background: "#0f6cbd" }}>New message</div>
+      <div className="dr-mini-body">
+        <div className="dr-mini-line"><span>Subject</span>Order 5520: delivery date?</div>
+        <div className="dr-mini-text">Hi Mark,<br />Could you confirm the delivery date by Thursday?<br />Many thanks, Dave</div>
+        <div className="dr-mini-ticks">✓ Says which order · ✓ Asks politely · ✓ Signs off</div>
       </div>
     </div>
   );
 }
 
-const WHO = [
-  { title: "You work on your feet", body: "On a line, in a warehouse, on a shop floor or in care, and you want a job at a desk." },
-  { title: "You live on your phone", body: "You have used a phone for years, but not much of a computer, and offices expect one." },
-  { title: "You are going back to work", body: "You have been away a while and the office has moved on. Catch up in weeks." },
-];
+function PracticeSheet() {
+  const rows = [["Brightline Supplies", "4417", "10"], ["Fenwick Packaging", "4420", "4"], ["Ashby Foods", "4425", "7"]];
+  return (
+    <div className="dr-mini" aria-hidden>
+      <div className="dr-mini-bar" style={{ background: "#107c41" }}>Deliveries.xlsx</div>
+      <div className="dr-mini-grid">
+        <span className="h" />
+        <span className="h">A</span>
+        <span className="h">B</span>
+        <span className="h">C</span>
+        <span className="h">1</span>
+        <span className="b">Supplier</span>
+        <span className="b">Order no</span>
+        <span className="b">Pallets</span>
+        {rows.map((r, i) => (
+          <span key={i} style={{ display: "contents" }}>
+            <span className="h">{i + 2}</span>
+            {r.map((v, j) => (
+              <span key={j} className={i === 1 && j === 2 ? "sel" : ""}>{v}</span>
+            ))}
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
 
-const HOW = [
-  { n: "1", title: "Learn", body: "Short lessons in plain English, one idea at a time, with examples from real workplaces." },
-  { n: "2", title: "Practise", body: "Try it straight away in a pretend inbox and a pretend spreadsheet. Nothing breaks and nothing gets sent." },
-  { n: "3", title: "Prove it", body: "Finish with a real morning's work you can show an employer." },
-];
+function WinButtons() {
+  return (
+    <svg width="34" height="8" viewBox="0 0 34 8" fill="none" stroke="currentColor" strokeWidth="1.2" aria-hidden style={{ display: "inline-block" }}>
+      <path d="M1 4 H7" />
+      <rect x="13" y="1" width="6" height="6" />
+      <path d="M26 1 L32 7 M32 1 L26 7" />
+    </svg>
+  );
+}
+
+function PracticeDesktop() {
+  return (
+    <div className="dr-mini dr-mini-desk" aria-hidden>
+      <div className="dr-mini-win" style={{ left: "8%", top: "12%" }}>
+        <div className="dr-mini-bar" style={{ background: "#107c41" }}>Excel <WinButtons /></div>
+      </div>
+      <div className="dr-mini-win" style={{ left: "26%", top: "30%" }}>
+        <div className="dr-mini-bar" style={{ background: "#0f6cbd" }}>Outlook <WinButtons /></div>
+      </div>
+      <div className="dr-mini-task"><span>Outlook</span><span className="on">Excel</span><span>Files</span></div>
+    </div>
+  );
+}
 
 export default function DeskReadyLanding({ priceGBP }: { priceGBP: number }) {
   const price = `£${Math.round(priceGBP / 100)}`;
+  const [activeSection, setActiveSection] = useState("");
+  const heroRef = useRef<HTMLElement>(null);
+  const [overHero, setOverHero] = useState(true);
+
+  /* The nav wears night over the photograph and sand once past it. */
+  useEffect(() => {
+    const el = heroRef.current;
+    if (!el || typeof IntersectionObserver === "undefined") return;
+    const io = new IntersectionObserver(([e]) => setOverHero(e.isIntersecting), { rootMargin: "-68px 0px 0px 0px", threshold: 0 });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const els = SECTIONS.map(([id]) => document.getElementById(id)).filter((el): el is HTMLElement => !!el);
+    if (!els.length || typeof IntersectionObserver === "undefined") return;
+    const visible = new Set<string>();
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) visible.add(e.target.id);
+          else visible.delete(e.target.id);
+        }
+        const first = SECTIONS.find(([id]) => visible.has(id));
+        setActiveSection(first ? first[0] : "");
+      },
+      { rootMargin: "-130px 0px -60% 0px", threshold: 0 },
+    );
+    els.forEach((el) => io.observe(el));
+    return () => io.disconnect();
+  }, []);
+
+  const chip = ([id, label]: (typeof SECTIONS)[number]) => (
+    <a key={id} href={`#${id}`} aria-current={activeSection === id ? "location" : undefined} className={`dr-chip${activeSection === id ? " on" : ""}`}>
+      {label}
+    </a>
+  );
+
   return (
-    <>
-      <DeskHeader link={{ href: "/desk-ready/login", label: "Sign in" }} />
-      <main>
-        {/* hero */}
-        <section style={{ maxWidth: 1080, margin: "0 auto", padding: "44px 16px 56px", display: "grid", gap: 40, gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 420px), 1fr))", alignItems: "center" }}>
-          <div>
-            <p style={eyebrow}>For anyone moving from the floor to a desk</p>
-            <h1 style={{ margin: "12px 0 0", fontFamily: D.display, fontWeight: 700, fontSize: "clamp(2.2rem, 5.5vw, 3.3rem)", lineHeight: 1.08, color: D.ink }}>
-              The computer skills every desk job expects.
-            </h1>
-            <p style={{ margin: "18px 0 0", fontSize: 19, lineHeight: 1.6, color: D.body, maxWidth: 540 }}>
-              Emails, spreadsheets, files and AI, taught from the very start. Short lessons, then practice in a pretend office until it feels normal.
-            </p>
-            <div style={{ marginTop: 26, display: "flex", flexWrap: "wrap", alignItems: "center", gap: 18 }}>
-              <Link href={CTA} style={button}>
-                Create your account
-              </Link>
-              <span style={{ fontSize: 17, color: D.muted }}>
-                <b style={{ color: D.ink }}>{price}</b> once, yours for life
-              </span>
-            </div>
+    <div className={overHero ? "dr-page dr-page-dark" : "dr-page"} style={{ display: "contents" }}>
+      <Nav
+        brand={<DeskBrand />}
+        tone={overHero ? "night" : "sand"}
+        showTelemetry={false}
+        showSiteLinks={false}
+        homeHref="/desk-ready"
+        ctaTone="teal"
+        aside={{ label: "Sign in", href: "/desk-ready/login" }}
+        cta={{ label: `Start for ${price}`, href: SIGNUP }}
+        centre={<nav className="dr-navsections" aria-label="On this page">{SECTIONS.map(chip)}</nav>}
+      />
+      <main style={{ position: "relative", color: "var(--lv2-ink)", minHeight: "100vh", overflowX: "clip" }}>
+        {/* HERO ───────────────────────────────────────────── */}
+        {/* A dark photographic band: the warehouse office, the floor through
+            the glass behind him. The wall on the left carries the headline;
+            the live taste of Module 2 sits on dark glass to the right. */}
+        <section ref={heroRef} className="dr-hero-band">
+          <div className="dr-hero-media" aria-hidden>
+            <picture>
+              <source type="image/webp" srcSet="/desk-ready/hero-1200.webp 1200w, /desk-ready/hero.webp 2200w" sizes="100vw" />
+              <img src="/desk-ready/hero.jpg" alt="" className="dr-hero-img" fetchPriority="high" />
+            </picture>
+            <span className="dr-hero-scrim" />
+            <span className="dr-hero-fade" />
           </div>
-          <DeskPreview />
-        </section>
-
-        {/* who it is for */}
-        <section style={{ background: D.panel, borderTop: `1px solid ${D.edgeSoft}`, borderBottom: `1px solid ${D.edgeSoft}` }}>
-          <div style={{ maxWidth: 1080, margin: "0 auto", padding: "48px 16px" }}>
-            <p style={eyebrow}>Who it is for</p>
-            <h2 style={h2}>Made for people who have never worked at a desk</h2>
-            <div style={{ marginTop: 22, display: "grid", gap: 16, gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 260px), 1fr))" }}>
-              {WHO.map((w) => (
-                <div key={w.title} style={{ background: D.panelSoft, border: `1px solid ${D.edge}`, borderRadius: 14, padding: "18px 18px 20px" }}>
-                  <h3 style={{ margin: 0, fontFamily: D.display, fontWeight: 600, fontSize: 19, color: D.ink }}>{w.title}</h3>
-                  <p style={{ margin: "8px 0 0", fontSize: 16.5, lineHeight: 1.55, color: D.body }}>{w.body}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* how it works */}
-        <section style={{ maxWidth: 1080, margin: "0 auto", padding: "52px 16px" }}>
-          <p style={eyebrow}>How it works</p>
-          <h2 style={h2}>Learn it, try it, prove it</h2>
-          <ol style={{ listStyle: "none", padding: 0, margin: "22px 0 0", display: "grid", gap: 16, gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 260px), 1fr))" }}>
-            {HOW.map((h) => (
-              <li key={h.n} style={{ display: "flex", gap: 14, alignItems: "flex-start" }}>
-                <span aria-hidden style={{ width: 40, height: 40, borderRadius: "50%", flexShrink: 0, display: "inline-flex", alignItems: "center", justifyContent: "center", background: D.accent, color: D.onAccent, fontFamily: D.display, fontWeight: 700, fontSize: 18 }}>
-                  {h.n}
-                </span>
-                <div>
-                  <h3 style={{ margin: "6px 0 0", fontFamily: D.display, fontWeight: 600, fontSize: 19, color: D.ink }}>{h.title}</h3>
-                  <p style={{ margin: "6px 0 0", fontSize: 16.5, lineHeight: 1.55, color: D.body }}>{h.body}</p>
-                </div>
-              </li>
-            ))}
-          </ol>
-        </section>
-
-        {/* what you learn */}
-        <section id="learn" style={{ background: D.panel, borderTop: `1px solid ${D.edgeSoft}`, borderBottom: `1px solid ${D.edgeSoft}` }}>
-          <div style={{ maxWidth: 1080, margin: "0 auto", padding: "48px 16px" }}>
-            <p style={eyebrow}>What you will learn</p>
-            <h2 style={h2}>14 modules, from switching on to getting the job</h2>
-            <div style={{ marginTop: 22, display: "grid", gap: 16, gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 300px), 1fr))" }}>
-              {PARTS.map((p) => (
-                <div key={p.id} style={{ border: `1px solid ${D.edge}`, borderRadius: 14, padding: "18px 18px 20px", background: D.panelSoft }}>
-                  <p style={{ margin: 0, fontSize: 14, fontWeight: 700, color: D.faint, textTransform: "uppercase", letterSpacing: "0.04em" }}>{p.label}</p>
-                  <h3 style={{ margin: "4px 0 0", fontFamily: D.display, fontWeight: 600, fontSize: 20, color: D.ink }}>{p.title}</h3>
-                  <ul style={{ margin: "10px 0 0", paddingLeft: 20, fontSize: 16, lineHeight: 1.6, color: D.body }}>
-                    {p.modules.map((m) => (
-                      <li key={m.id}>{m.title}</li>
-                    ))}
+          <div className="dr-section dr-hero-section">
+            <div className="dr-hero-grid">
+              <div className="dr-hero">
+                <FadeUp>
+                  <p style={sectionMarkBare} className="dr-hero-eyebrow">{"// Desk skills · From the floor to the desk"}</p>
+                </FadeUp>
+                <FadeUp delay={0.06}>
+                  <h1 className="dr-h1">
+                    The computer skills every desk job <span className="dr-grad-night">expects.</span>
+                  </h1>
+                </FadeUp>
+                <FadeUp delay={0.12}>
+                  <p className="dr-hero-lede" style={{ ...lede, fontSize: "clamp(1.05rem, 1.35vw, 1.2rem)", maxWidth: 540 }}>
+                    <strong>Desk Ready</strong> teaches email, spreadsheets, files and AI from the very start, in ten minute lessons you practise straight away in a pretend office. Built for people who have worked on their feet and want the job at the desk.
+                  </p>
+                </FadeUp>
+                <FadeUp delay={0.18}>
+                  <div className="dr-cta-row">
+                    <Link href={SIGNUP} className="dr-pill">
+                      Start for {price}
+                      <span aria-hidden style={{ marginLeft: 10, fontSize: 17, lineHeight: 1 }}>&rarr;</span>
+                    </Link>
+                    <a href="#learn" className="dr-pill-ghost">See what you learn</a>
+                  </div>
+                </FadeUp>
+                <FadeUp delay={0.24}>
+                  <ul className="dr-trust">
+                    <li>{price} once, yours for life</li>
+                    <li>Plain English from the start</li>
+                    <li>A pretend office to practise in</li>
                   </ul>
-                </div>
-              ))}
-              <div style={{ border: `1px solid rgba(43,89,195,0.35)`, borderRadius: 14, padding: "18px 18px 20px", background: D.accentSoft }}>
-                <p style={{ margin: 0, fontSize: 14, fontWeight: 700, color: D.accent, textTransform: "uppercase", letterSpacing: "0.04em" }}>Final task</p>
-                <h3 style={{ margin: "4px 0 0", fontFamily: D.display, fontWeight: 600, fontSize: 20, color: D.ink }}>{FINAL.title}</h3>
-                <p style={{ margin: "10px 0 0", fontSize: 16, lineHeight: 1.55, color: D.body }}>{FINAL.promise}</p>
+                </FadeUp>
               </div>
+              <FadeUp delay={0.15} y={30}>
+                <DeskHeroSim />
+              </FadeUp>
             </div>
           </div>
         </section>
 
-        {/* price */}
-        <section style={{ maxWidth: 720, margin: "0 auto", padding: "56px 16px 80px", textAlign: "center" }}>
-          <p style={eyebrow}>The price</p>
-          <h2 style={{ ...h2, fontSize: "clamp(2.4rem, 6vw, 3.2rem)" }}>{price}, once</h2>
-          <p style={{ margin: "12px auto 0", fontSize: 18, lineHeight: 1.6, color: D.body, maxWidth: 520 }}>
-            Every module and every update, yours for life. VAT included. Learn on any computer, whenever suits you.
-          </p>
-          <div style={{ marginTop: 24 }}>
-            <Link href={CTA} style={button}>
-              Create your account
-            </Link>
+        {/* ACCREDITATIONS ─────────────────────────────────── */}
+        <ProofBand tone="sand" forFirms />
+
+        {/* WHO IT IS FOR ──────────────────────────────────── */}
+        <section id="who" className="dr-section">
+          <span className="dr-glow dr-glow-blue" aria-hidden />
+          <FadeUp>
+            <p style={sectionMark}>{"// Who it is for"}</p>
+            <h2 style={h2}>
+              Made for people who have <span className="dr-grad">never worked at a desk.</span>
+            </h2>
+            <p style={lede}>
+              More than half of working-age adults in the UK cannot yet do all twenty of the digital tasks employers and government call essential for work (
+              <a className="dr-src" href="https://futuredotnow.uk/final-report-the-economic-impact-of-closing-the-work-essential-digital-skills-gap" target="_blank" rel="noopener noreferrer">
+                FutureDotNow, 2025
+              </a>
+              ). Desk Ready closes that gap, one short lesson at a time.
+            </p>
+          </FadeUp>
+          <div className="dr-grid-3" style={{ marginTop: 34 }}>
+            {WHO.map((w, i) => (
+              <FadeUp key={w.title} delay={0.06 * i}>
+                <article className="dr-card dr-pillar" style={{ "--dr-accent": w.accent } as CSSProperties}>
+                  <span className="dr-pillar-icon">{w.icon}</span>
+                  <h3>{w.title}</h3>
+                  <p>{w.text}</p>
+                </article>
+              </FadeUp>
+            ))}
           </div>
+        </section>
+
+        {/* WHAT YOU LEARN ─────────────────────────────────── */}
+        <section id="learn" className="dr-section">
+          <span className="dr-glow dr-glow-violet" aria-hidden />
+          <FadeUp>
+            <p style={sectionMark}>{"// What you learn"}</p>
+            <h2 style={h2}>
+              Fourteen modules, <span className="dr-grad">from switching on to getting the job.</span>
+            </h2>
+            <p style={lede}>Six parts in the order you need them. Start at the beginning, or skip what you already know.</p>
+          </FadeUp>
+          <div className="dr-parts">
+            {PARTS.map((p, i) => (
+              <FadeUp key={p.id} delay={0.05 * i}>
+                <article className="dr-part" style={{ "--dr-accent": PART_ACCENT[i] } as CSSProperties}>
+                  <span className="dr-part-tag">{p.label}</span>
+                  <h3>{p.title}</h3>
+                  <p className="dr-part-blurb">{p.blurb}</p>
+                  <ol className="dr-part-list">
+                    {p.modules.map((m) => (
+                      <li key={m.id} data-n={String(m.number).padStart(2, "0")}>
+                        <b>{m.title}</b>
+                        <span>{m.promise}</span>
+                      </li>
+                    ))}
+                  </ol>
+                </article>
+              </FadeUp>
+            ))}
+          </div>
+          <FadeUp delay={0.1}>
+            <article className="dr-final">
+              <span className="dr-part-tag" style={{ color: "#a5117f" }}>The final task</span>
+              <h3>{FINAL.title}</h3>
+              <p>{FINAL.promise}</p>
+            </article>
+          </FadeUp>
+        </section>
+
+        {/* HANDS ON ───────────────────────────────────────── */}
+        <section className="dr-section">
+          <FadeUp>
+            <p style={sectionMark}>{"// Hands on"}</p>
+            <h2 style={h2}>
+              You learn it by <span className="dr-grad">doing it.</span>
+            </h2>
+            <p style={lede}>Every lesson ends with the real thing, in a pretend version of the tools offices use. Press Send or Check and see straight away what is right and what to fix.</p>
+          </FadeUp>
+          <div className="dr-grid-3" style={{ marginTop: 34 }}>
+            {[
+              { title: "A pretend inbox", text: "Write subject lines, greetings, chasers and apologies, and get every point marked when you press Send.", Art: PracticeInbox },
+              { title: "A pretend spreadsheet", text: "Type real business data into rows and columns, tidy it, sort it, filter it and check it against the paperwork.", Art: PracticeSheet },
+              { title: "A pretend desktop", text: "Open, switch and close windows, copy and paste, save a file and find it again, until it feels normal.", Art: PracticeDesktop },
+            ].map(({ title, text, Art }, i) => (
+              <FadeUp key={title} delay={0.06 * i}>
+                <article className="dr-card dr-hands">
+                  <Art />
+                  <h3>{title}</h3>
+                  <p>{text}</p>
+                </article>
+              </FadeUp>
+            ))}
+          </div>
+        </section>
+
+        {/* HOW IT WORKS ───────────────────────────────────── */}
+        <section id="how" className="dr-section">
+          <span className="dr-glow dr-glow-green" aria-hidden />
+          <div className="dr-how-head">
+            <FadeUp>
+              <p style={sectionMark}>{"// How it works"}</p>
+              <h2 style={h2}>
+                Ten minutes at a time, <span className="dr-grad">at your kitchen table.</span>
+              </h2>
+              <p style={lede}>Learn in the evening, on a lunch break, whenever suits you. Stop any time and carry on where you left off.</p>
+            </FadeUp>
+            <FadeUp delay={0.08} y={20}>
+              <figure className="dr-photo-panel">
+                <picture>
+                  <source type="image/webp" srcSet="/desk-ready/home.webp" />
+                  <img src="/desk-ready/home.jpg" alt="A woman learning on a laptop at her kitchen table in the evening, with a notebook and a mug of tea beside her" loading="lazy" />
+                </picture>
+              </figure>
+            </FadeUp>
+          </div>
+          <div className="dr-grid-4" style={{ marginTop: 34 }}>
+            {STEPS.map((s, i) => (
+              <FadeUp key={s.n} delay={0.06 * i}>
+                <article className="dr-card dr-step" style={{ "--dr-accent": s.colour } as CSSProperties}>
+                  <span className="dr-step-n">{s.n}</span>
+                  <h3>{s.title}</h3>
+                  <p>{s.text}</p>
+                </article>
+              </FadeUp>
+            ))}
+          </div>
+        </section>
+
+        {/* PRICE ──────────────────────────────────────────── */}
+        <section id="price" className="dr-section">
+          <span className="dr-glow dr-glow-blue" aria-hidden />
+          <div className="dr-price-wrap">
+            <FadeUp>
+              <p style={sectionMark}>{"// Price"}</p>
+              <h2 style={h2}>
+                One price. <span className="dr-grad">Yours for life.</span>
+              </h2>
+              <p style={lede}>Pay once and every module is yours, including every update and every new lesson we add.</p>
+            </FadeUp>
+            <FadeUp delay={0.08}>
+              <article className="dr-price">
+                <span className="dr-part-tag" style={{ color: "#2b59c3" }}>Desk Ready</span>
+                <p className="dr-price-figure">
+                  {price}
+                  <span>once</span>
+                </p>
+                <p className="dr-price-unit">VAT included · lifetime access</p>
+                <ul>
+                  <li>All fourteen modules and the final task</li>
+                  <li>A pretend inbox, spreadsheet and desktop to practise in</li>
+                  <li>Instant marking on every task</li>
+                  <li>Any computer with a web browser</li>
+                </ul>
+                <Link href={SIGNUP} className="dr-pill" style={{ alignSelf: "stretch" }}>
+                  Start for {price}
+                  <span aria-hidden style={{ marginLeft: 10, fontSize: 17, lineHeight: 1 }}>&rarr;</span>
+                </Link>
+                <p className="dr-price-fine">
+                  Already have an account? <Link href="/desk-ready/login">Sign in</Link>
+                </p>
+              </article>
+            </FadeUp>
+          </div>
+        </section>
+
+        {/* QUESTIONS ──────────────────────────────────────── */}
+        <section id="questions" className="dr-section" style={{ paddingBottom: "calc(var(--lv2-rail) * 2.2)" }}>
+          <FadeUp>
+            <p style={sectionMark}>{"// Questions"}</p>
+            <h2 style={h2}>Good to know.</h2>
+          </FadeUp>
+          <FadeUp delay={0.08}>
+            <div className="dr-faq-grid">
+              {FAQS.map((f) => (
+                <details key={f.q} className="dr-faq">
+                  <summary>{f.q}</summary>
+                  <p>{f.q === "What does it cost?" ? `${price}, once. ${f.a}` : f.a}</p>
+                </details>
+              ))}
+            </div>
+          </FadeUp>
         </section>
       </main>
-    </>
+      <Footer tone="sand" />
+
+      <style>{`
+        .dr-page, .dr-page :is(section, div, nav, header, footer, main, span, p, li, a, ol, button, article, details, summary) {
+          --lv2-cyan: #0a7085;
+          --lv2-cyan-soft: #0a7085;
+          --lv2-lime: #0e7a45;
+          --lv2-cosmic: #5744c9;
+          --lv2-text-muted: #5d6472;
+          --lv2-ink: #14161d;
+        }
+        html, .dr-page { background: #f3ede4; }
+        .dr-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+        /* the photographic hero band */
+        .dr-hero-band {
+          position: relative; isolation: isolate; overflow: hidden; color: #eef2f5;
+          min-height: clamp(580px, 86svh, 800px);
+          display: flex; flex-direction: column; justify-content: center;
+          background: #f3ede4;
+        }
+        .dr-hero-band::before { content: ""; position: absolute; inset: 0; background: #0b1117; z-index: -1; }
+        .dr-hero-media { position: absolute; inset: 0; z-index: 0; }
+        .dr-hero-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 72% center; display: block; }
+        .dr-hero-scrim {
+          position: absolute; inset: 0; pointer-events: none;
+          background:
+            linear-gradient(90deg, rgba(8,13,18,0.92) 0%, rgba(8,13,18,0.84) 32%, rgba(8,13,18,0.55) 50%, rgba(8,13,18,0.2) 66%, rgba(8,13,18,0.38) 100%),
+            linear-gradient(180deg, rgba(8,13,18,0.5) 0%, rgba(8,13,18,0) 28%, rgba(8,13,18,0.55) 100%);
+        }
+        .dr-hero-fade { position: absolute; left: 0; right: 0; bottom: 0; height: clamp(170px, 24vh, 280px); pointer-events: none; background: linear-gradient(180deg, rgba(243,237,228,0) 0%, rgba(243,237,228,0.55) 55%, #f3ede4 100%); }
+        .dr-hero-band .dr-section { position: relative; z-index: 1; width: 100%; }
+        /* doubled class: .dr-section (declared below) would otherwise win */
+        .dr-section.dr-hero-section { padding-top: calc(68px + clamp(26px, 2.4vw, 48px)); padding-bottom: calc(var(--lv2-rail) * 1.2 + 40px); }
+        .dr-hero-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr); gap: 48px; align-items: start; }
+        .dr-hero-eyebrow { color: #7fb2ff !important; }
+        .dr-h1 { margin: 18px 0 0; font-family: var(--lv2-font-display); font-size: clamp(2.5rem, 5vw, 4.3rem); line-height: 1.0; letter-spacing: -0.03em; font-weight: 500; color: #ffffff; text-shadow: 0 2px 30px rgba(0,0,0,0.35); }
+        .dr-grad-night { background: linear-gradient(92deg, #7fb2ff 0%, #5fd0d8 50%, #9d8cff 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .dr-hero-band .dr-hero-lede { color: rgba(238,242,245,0.86) !important; }
+        .dr-hero strong { color: #ffffff; font-weight: 600; }
+        .dr-cta-row { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 30px; }
+        .dr-pill {
+          display: inline-flex; align-items: center; justify-content: center; height: 56px; padding: 0 30px; border-radius: 999px;
+          background: linear-gradient(135deg, #3a6ee0 0%, #2b59c3 55%, #23489f 100%); color: #ffffff;
+          font-family: var(--lv2-font-display); font-size: 15.5px; font-weight: 600; text-decoration: none; white-space: nowrap;
+          box-shadow: 0 16px 38px -12px rgba(43,89,195,0.95), 0 0 0 1px rgba(43,89,195,0.35), inset 0 1px 0 rgba(255,255,255,0.4);
+          transition: transform .15s ease, box-shadow .2s ease;
+        }
+        .dr-pill:hover { transform: translateY(-1px); box-shadow: 0 20px 42px -12px rgba(43,89,195,1), 0 0 0 1px rgba(43,89,195,0.45), inset 0 1px 0 rgba(255,255,255,0.45); }
+        .dr-pill-ghost {
+          display: inline-flex; align-items: center; justify-content: center; height: 56px; padding: 0 26px; border-radius: 999px;
+          border: 1px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.08); color: #ffffff;
+          font-family: var(--lv2-font-display); font-size: 15.5px; font-weight: 600; text-decoration: none; white-space: nowrap;
+          backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+        }
+        .dr-pill-ghost:hover { border-color: rgba(255,255,255,0.55); }
+        .dr-trust { list-style: none; padding: 0; margin: 24px 0 0; display: flex; flex-wrap: wrap; gap: 10px 22px; }
+        .dr-trust li { position: relative; padding-left: 18px; font-family: var(--lv2-font-mono); font-size: 11.5px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(238,242,245,0.75); }
+        .dr-trust li::before { content: ""; position: absolute; left: 0; top: 4px; width: 8px; height: 8px; border-radius: 50%; background: #4cc38a; box-shadow: 0 0 10px #4cc38a; }
+
+        /* the live taste, dark glass over the photograph */
+        .dr-sim { position: relative; border-radius: 16px; overflow: hidden; background: rgba(14,20,26,0.76); border: 1px solid rgba(255,255,255,0.14); box-shadow: 0 40px 90px -30px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,255,255,0.08); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); color: #eef2f5; }
+        .dr-sim-bar { display: flex; align-items: center; gap: 12px; height: 42px; padding: 0 14px; background: rgba(255,255,255,0.05); border-bottom: 1px solid rgba(255,255,255,0.08); }
+        .dr-sim-dots { display: inline-flex; gap: 6px; }
+        .dr-sim-dots i { width: 9px; height: 9px; border-radius: 50%; display: block; }
+        .dr-sim-dots i:nth-child(1) { background: #ff5f57; } .dr-sim-dots i:nth-child(2) { background: #febc2e; } .dr-sim-dots i:nth-child(3) { background: #28c840; }
+        .dr-sim-app { flex: 1; min-width: 0; font-family: var(--lv2-font-display); font-size: 13.5px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .dr-sim-app span { font-weight: 400; color: rgba(238,242,245,0.6); }
+        .dr-sim-chip { font-family: var(--lv2-font-mono); font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: #7fb2ff; border: 1px solid rgba(127,178,255,0.5); border-radius: 999px; padding: 4px 9px; white-space: nowrap; }
+        .dr-sim-body { padding: 16px 18px; display: flex; flex-direction: column; gap: 12px; }
+        .dr-sim-task { margin: 0; padding: 11px 13px; border-radius: 10px; background: rgba(127,178,255,0.1); border: 1px solid rgba(127,178,255,0.32); font-family: var(--lv2-font-display); font-size: 14px; line-height: 1.5; color: rgba(238,242,245,0.92); }
+        .dr-sim-task span { display: block; margin-bottom: 3px; font-family: var(--lv2-font-mono); font-size: 10px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #7fb2ff; }
+        .dr-sim-mail { border-radius: 10px; border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.04); overflow: hidden; }
+        .dr-sim-row { display: flex; align-items: center; gap: 10px; min-height: 46px; padding: 0 12px; border-bottom: 1px solid rgba(255,255,255,0.08); }
+        .dr-sim-row:last-child { border-bottom: 0; }
+        .dr-sim-lab { width: 58px; flex-shrink: 0; font-family: var(--lv2-font-mono); font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(238,242,245,0.55); }
+        .dr-sim-to { font-family: var(--lv2-font-display); font-size: 13.5px; color: #eef2f5; background: rgba(127,178,255,0.16); border-radius: 999px; padding: 3px 10px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+        .dr-sim-input { flex: 1; min-width: 0; height: 44px; border: none; outline: none; background: transparent; color: #ffffff; font-family: var(--lv2-font-display); font-size: 15.5px; }
+        .dr-sim-input::placeholder { color: rgba(238,242,245,0.45); }
+        .dr-sim-row:focus-within { box-shadow: inset 0 0 0 2px rgba(127,178,255,0.6); }
+        /* the row carries the focus ring; the input inside it does not add a second */
+        .dr-sim .dr-sim-input:focus-visible { outline: none; }
+        .dr-sim-checks { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 8px 14px; }
+        .dr-sim-checks li { display: flex; align-items: center; gap: 8px; font-family: var(--lv2-font-display); font-size: 13.5px; color: rgba(238,242,245,0.6); transition: color .2s ease; }
+        .dr-sim-checks li.on { color: #ffffff; }
+        .dr-sim-tick { display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; flex-shrink: 0; border-radius: 50%; border: 1.5px solid rgba(238,242,245,0.35); color: transparent; transition: all .2s ease; }
+        .dr-sim-tick svg { display: block; }
+        .dr-sim-checks li.on .dr-sim-tick { background: #4cc38a; border-color: #4cc38a; color: #06180f; box-shadow: 0 0 12px rgba(76,195,138,0.7); }
+        .dr-sim-foot { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; min-height: 36px; }
+        .dr-sim-note { margin: 0; font-family: var(--lv2-font-mono); font-size: 10.5px; letter-spacing: 0.06em; color: rgba(238,242,245,0.55); }
+        .dr-sim-done { margin: 0; padding: 9px 12px; border-radius: 10px; background: rgba(76,195,138,0.14); border: 1px solid rgba(76,195,138,0.45); font-family: var(--lv2-font-display); font-size: 14px; line-height: 1.45; color: #ffffff; }
+        .dr-sim-alt { height: 34px; padding: 0 14px; border-radius: 999px; cursor: pointer; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.25); color: #ffffff; font-family: var(--lv2-font-display); font-size: 13px; font-weight: 600; }
+        .dr-sim-alt:hover { border-color: #7fb2ff; }
+        @media (max-width: 480px) { .dr-sim-checks { grid-template-columns: 1fr; } }
+
+        /* nav section chips (wide screens) */
+        .dr-navsections { display: none; }
+        @media (min-width: 1180px) { .dr-navsections { display: flex; align-items: center; gap: 6px; min-width: 0; } }
+        .dr-chip {
+          flex: 0 0 auto; display: inline-flex; align-items: center; min-height: 36px; padding: 0 15px; border-radius: 12px; text-decoration: none;
+          border: 1px solid rgba(43,89,195,0.3); background: linear-gradient(180deg, #ffffff, #f1e9db);
+          font-family: var(--lv2-font-mono); font-size: 11px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: #23489f;
+          box-shadow: 0 3px 7px -4px rgba(43,89,195,0.5), inset 0 1px 0 rgba(255,255,255,0.95);
+          transition: transform .15s ease, border-color .2s ease, background .2s ease, color .2s ease;
+        }
+        .dr-chip:hover { transform: translateY(-1px); border-color: rgba(43,89,195,0.55); }
+        .dr-chip.on { color: #ffffff; background: linear-gradient(180deg, #3a6ee0, #2b59c3); border-color: #2b59c3; }
+        .dr-page-dark .dr-chip { border-color: rgba(127,178,255,0.38); background: linear-gradient(180deg, rgba(255,255,255,0.11), rgba(255,255,255,0.045)); color: #dce6f5; box-shadow: 0 3px 8px -4px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.12); }
+        .dr-page-dark .dr-chip:hover { border-color: rgba(160,200,255,0.65); color: #ffffff; }
+
+        /* sections */
+        .dr-section { position: relative; max-width: 1180px; margin: 0 auto; padding: calc(var(--lv2-rail) * 1.3) var(--lv2-rail); scroll-margin-top: 88px; }
+        .dr-section > *:not(.dr-glow) { position: relative; z-index: 1; }
+        .dr-section :is(a, button, summary, input):focus-visible { outline: 2px solid #2b59c3; outline-offset: 3px; }
+        .dr-glow { position: absolute; pointer-events: none; z-index: 0; border-radius: 50%; filter: blur(60px); opacity: 0.55; }
+        .dr-glow-blue { width: 560px; height: 560px; right: -160px; top: -60px; background: radial-gradient(circle, rgba(43,89,195,0.3), transparent 65%); }
+        .dr-glow-violet { width: 560px; height: 560px; left: -200px; top: 60px; background: radial-gradient(circle, rgba(124,92,255,0.3), transparent 65%); }
+        .dr-glow-green { width: 480px; height: 480px; right: -160px; top: 120px; background: radial-gradient(circle, rgba(76,195,138,0.25), transparent 65%); }
+        .dr-grad { background: linear-gradient(92deg, #0a7085 0%, #2b59c3 50%, #5744c9 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .dr-src { color: #2b59c3; text-decoration: underline; text-underline-offset: 3px; }
+
+        .dr-card {
+          position: relative; height: 100%; box-sizing: border-box; padding: 26px 24px; border-radius: 18px;
+          background: linear-gradient(180deg, rgba(244,239,231,0.78), rgba(255,253,248,0.78));
+          border: 1px solid rgba(20,22,29,0.24);
+          box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), 0 20px 50px -30px rgba(43,89,195,0.35);
+          backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+        }
+        .dr-card h3 { margin: 0; font-family: var(--lv2-font-display); font-size: 1.2rem; font-weight: 500; letter-spacing: -0.01em; color: #14161d; }
+        .dr-card p { margin: 10px 0 0; font-family: var(--lv2-font-display); font-size: 14.5px; line-height: 1.6; color: rgba(17,22,38,0.8); }
+        .dr-grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; }
+        .dr-grid-4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; }
+        .dr-grid-3 > *, .dr-grid-4 > * { height: 100%; }
+        .dr-pillar { border-top: 2px solid var(--dr-accent); }
+        .dr-pillar-icon { display: inline-flex; width: 44px; height: 44px; border-radius: 12px; margin-bottom: 14px; align-items: center; justify-content: center; color: var(--dr-accent); background: color-mix(in srgb, var(--dr-accent) 14%, transparent); border: 1px solid color-mix(in srgb, var(--dr-accent) 40%, transparent); }
+        .dr-pillar-icon svg { width: 22px; height: 22px; display: block; }
+
+        /* the course: six parts */
+        .dr-parts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; margin-top: 34px; align-items: stretch; }
+        .dr-parts > * { height: 100%; }
+        .dr-part {
+          display: flex; flex-direction: column; gap: 8px; height: 100%; box-sizing: border-box; padding: 24px 22px 22px; border-radius: 18px;
+          background: linear-gradient(180deg, rgba(255,253,248,0.9), rgba(244,239,231,0.85));
+          border: 1px solid rgba(20,22,29,0.22); border-top: 3px solid var(--dr-accent);
+          box-shadow: inset 0 1px 0 rgba(255,255,255,0.5), 0 26px 60px -40px var(--dr-accent);
+        }
+        .dr-part-tag { font-family: var(--lv2-font-mono); font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--dr-accent); }
+        .dr-part h3 { margin: 0; font-family: var(--lv2-font-display); font-size: clamp(1.35rem, 2vw, 1.6rem); line-height: 1.1; letter-spacing: -0.02em; font-weight: 500; color: #14161d; }
+        .dr-part-blurb { margin: 0; font-family: var(--lv2-font-display); font-size: 14px; line-height: 1.55; color: rgba(17,22,38,0.74); }
+        .dr-part-list { list-style: none; margin: 8px 0 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+        .dr-part-list li { position: relative; padding: 9px 0 0 34px; border-top: 1px solid rgba(86,68,45,0.14); }
+        .dr-part-list li::before { content: attr(data-n); position: absolute; left: 0; top: 11px; font-family: var(--lv2-font-mono); font-size: 11px; font-weight: 800; color: var(--dr-accent); }
+        .dr-part-list b { display: block; font-family: var(--lv2-font-display); font-size: 15px; font-weight: 600; color: #14161d; }
+        .dr-part-list span { display: block; margin-top: 2px; font-family: var(--lv2-font-display); font-size: 13.5px; line-height: 1.5; color: rgba(17,22,38,0.7); }
+        .dr-final {
+          margin-top: 20px; padding: 24px 26px; border-radius: 18px;
+          background: linear-gradient(120deg, rgba(43,89,195,0.1), rgba(87,68,201,0.08) 55%, rgba(165,17,127,0.08));
+          border: 1px solid rgba(87,68,201,0.35);
+        }
+        .dr-final h3 { margin: 6px 0 0; font-family: var(--lv2-font-display); font-size: clamp(1.35rem, 2vw, 1.6rem); font-weight: 500; letter-spacing: -0.02em; color: #14161d; }
+        .dr-final p { margin: 8px 0 0; max-width: 760px; font-family: var(--lv2-font-display); font-size: 15px; line-height: 1.6; color: rgba(17,22,38,0.82); }
+
+        /* hands on: the three drawings */
+        .dr-hands { display: flex; flex-direction: column; }
+        .dr-mini { position: relative; height: 168px; margin-bottom: 18px; border-radius: 12px; overflow: hidden; background: #ffffff; border: 1px solid rgba(20,22,29,0.16); box-shadow: 0 16px 34px -22px rgba(20,22,29,0.5); font-family: var(--lv2-font-display); }
+        .dr-mini-bar { display: flex; justify-content: space-between; align-items: center; padding: 6px 10px; color: #ffffff; font-size: 11.5px; font-weight: 700; }
+        .dr-mini-body { display: flex; flex-direction: column; height: calc(100% - 28px); box-sizing: border-box; padding: 8px 10px; font-size: 12px; color: #2a2e36; }
+        .dr-mini-line { padding-bottom: 5px; border-bottom: 1px solid rgba(20,22,29,0.08); font-weight: 600; }
+        .dr-mini-line span { color: #8a8f98; font-weight: 400; margin-right: 6px; }
+        .dr-mini-text { margin-top: 6px; line-height: 1.45; }
+        .dr-mini-ticks { margin-top: auto; padding-top: 6px; border-top: 1px solid rgba(20,22,29,0.08); font-size: 10.5px; color: #1b7a43; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .dr-mini-grid { display: grid; grid-template-columns: 22px 1.5fr 1fr 0.8fr; font-size: 11.5px; color: #2a2e36; }
+        .dr-mini-grid span { padding: 6px; border-right: 1px solid #e3ded4; border-bottom: 1px solid #e3ded4; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .dr-mini-grid .h { background: #efeae1; color: #767c87; font-size: 10px; text-align: center; padding: 4px 2px; }
+        .dr-mini-grid .b { font-weight: 700; }
+        .dr-mini-grid .sel { outline: 2px solid #107c41; outline-offset: -2px; }
+        .dr-mini-desk { background: linear-gradient(160deg, #3b6fd1, #22468f); }
+        .dr-mini-win { position: absolute; width: 62%; height: 52%; border-radius: 6px; overflow: hidden; background: #ffffff; box-shadow: 0 10px 22px rgba(0,0,0,0.3); }
+        .dr-mini-task { position: absolute; left: 0; right: 0; bottom: 0; height: 30px; display: flex; align-items: center; justify-content: center; gap: 6px; background: rgba(246,243,238,0.92); font-size: 10.5px; font-weight: 700; color: #14161d; }
+        .dr-mini-task span { padding: 3px 7px; border-radius: 5px; }
+        .dr-mini-task .on { background: rgba(43,89,195,0.14); border-bottom: 2px solid #107c41; }
+
+        /* how it works */
+        .dr-how-head { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 34px; align-items: center; }
+        .dr-photo-panel { position: relative; margin: 0; border-radius: 18px; overflow: hidden; aspect-ratio: 3 / 2; border: 1px solid rgba(20,22,29,0.24); box-shadow: 0 30px 70px -40px rgba(43,89,195,0.6), 0 20px 50px -30px rgba(0,0,0,0.5); background: #e8dfd0; }
+        .dr-photo-panel img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+        .dr-step { border-top: 2px solid var(--dr-accent); }
+        .dr-step-n { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; margin-bottom: 14px; border-radius: 50%; background: var(--dr-accent); color: #fffdfa; box-shadow: 0 0 22px -4px var(--dr-accent); font-family: var(--lv2-font-mono); font-size: 12px; font-weight: 800; }
+
+        /* price */
+        .dr-price-wrap { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr); gap: 40px; align-items: center; }
+        .dr-price {
+          display: flex; flex-direction: column; gap: 6px; padding: 30px 28px 26px; border-radius: 22px;
+          background: linear-gradient(180deg, rgba(255,253,248,0.95), rgba(244,239,231,0.9));
+          border: 1px solid rgba(20,22,29,0.22); border-top: 3px solid #2b59c3;
+          box-shadow: inset 0 1px 0 rgba(255,255,255,0.6), 0 40px 80px -40px rgba(43,89,195,0.7);
+        }
+        .dr-price-figure { margin: 6px 0 0; font-family: var(--lv2-font-display); font-size: clamp(3.2rem, 6vw, 4.4rem); line-height: 1; letter-spacing: -0.04em; font-weight: 500; color: #14161d; }
+        .dr-price-figure span { margin-left: 10px; font-size: 1.1rem; letter-spacing: 0; font-weight: 600; color: rgba(17,22,38,0.6); }
+        .dr-price-unit { margin: 0; font-family: var(--lv2-font-mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(17,22,38,0.62); }
+        .dr-price ul { list-style: none; margin: 16px 0 20px; padding: 0; display: flex; flex-direction: column; gap: 9px; }
+        .dr-price li { position: relative; padding: 9px 0 0 22px; border-top: 1px solid rgba(86,68,45,0.14); font-family: var(--lv2-font-display); font-size: 14.5px; line-height: 1.5; color: rgba(17,22,38,0.88); }
+        .dr-price li:first-child { border-top: 0; padding-top: 0; }
+        .dr-price li::before { content: ""; position: absolute; left: 2px; top: 16px; width: 6px; height: 6px; border-radius: 999px; background: #2b59c3; }
+        .dr-price li:first-child::before { top: 7px; }
+        .dr-price-fine { margin: 14px 0 0; text-align: center; font-family: var(--lv2-font-display); font-size: 14px; color: rgba(17,22,38,0.7); }
+        .dr-price-fine a { color: #2b59c3; font-weight: 600; }
+
+        /* questions */
+        .dr-faq-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 18px; margin-top: 30px; }
+        .dr-faq { border-radius: 14px; border: 1px solid rgba(20,22,29,0.2); background: linear-gradient(180deg, rgba(244,239,231,0.7), rgba(255,253,248,0.7)); padding: 0 18px; }
+        .dr-faq[open] { border-color: rgba(20,22,29,0.45); }
+        .dr-faq summary { cursor: pointer; list-style: none; padding: 16px 28px 16px 0; position: relative; font-family: var(--lv2-font-display); font-size: 15.5px; font-weight: 600; color: #14161d; }
+        .dr-faq summary::-webkit-details-marker { display: none; }
+        .dr-faq summary::after { content: "+"; position: absolute; right: 2px; top: 12px; font-size: 22px; color: #2b59c3; transition: transform .2s ease; }
+        .dr-faq[open] summary::after { transform: rotate(45deg); }
+        .dr-faq p { margin: 0; padding: 0 0 16px; font-family: var(--lv2-font-display); font-size: 14.5px; line-height: 1.6; color: rgba(17,22,38,0.82); }
+
+        @media (max-width: 980px) {
+          .dr-hero-grid { grid-template-columns: minmax(0, 1fr); gap: 30px; }
+          .dr-sim { max-width: 620px; }
+          .dr-grid-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+          .dr-grid-3, .dr-parts { grid-template-columns: 1fr; }
+          .dr-how-head, .dr-price-wrap { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 820px) { .dr-faq-grid { grid-template-columns: 1fr; } }
+        @media (max-width: 560px) { .dr-grid-4 { grid-template-columns: 1fr; } .dr-hero-img { object-position: 78% center; } }
+      `}</style>
+    </div>
   );
 }
