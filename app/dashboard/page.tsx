@@ -1,4 +1,4 @@
-import { landingRouteFor } from "@/app/lib/courseLandings";
+import { logoutDestinationFor } from "@/app/lib/courseLandings";
 import { CATALOGUE } from "@/app/lib/courseIntent";
 import { auth } from "@/app/lib/auth";
 import { prisma } from "@/app/lib/prisma";
@@ -68,7 +68,7 @@ export default async function DashboardPage() {
      with their own way back in nowhere on it. They go to the school door
      instead, which is where whoever is next will come through. */
   const pupil = await isSchoolPupil(userId);
-  const logoutTo = pupil ? "/schools/login" : landingRouteFor(PRODUCT_SLUG) ?? "/";
+  const logoutTo = logoutDestinationFor({ slug: PRODUCT_SLUG, pupil });
   const childAge = getAge(activeChild.dateOfBirth);
   const userName = activeChild.name ?? session.user.name ?? "Cyber Hero";
   const raccoonPower = Math.round(100 - progressPct);
