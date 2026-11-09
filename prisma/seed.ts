@@ -148,12 +148,13 @@ const products = [
   {
     // Individuals-only course: desk and computer skills for adults moving
     // into office work (email, spreadsheets, files, AI). Ships at
-    // /desk-ready. Prod row: migration 20261109120000_desk_ready_product.
+    // /desk-ready. Prod row: migration 20261109120000_desk_ready_product,
+    // repriced to £25 (VAT inclusive) by 20261109180000_desk_ready_price_25.
     slug: "desk-ready",
     name: "Desk Ready",
     ageMin: 18,
     ageMax: 99,
-    priceGBP: 9900,
+    priceGBP: 2500,
     weeks: 0,
     status: ProductStatus.ACTIVE,
     emoji: "💼",
