@@ -552,7 +552,44 @@ export interface PhonePractise {
   events: PhoneEvent[];
 }
 
-export type Practise = SandboxPractise | SortPractise | SituationsPractise | TriagePractise | InspectPractise | LoopPractise | SpotPractise | SourcesPractise | MomentsPractise | InboxPractise | PhonePractise;
+/* A place to look round: one or more drawn views (a café table, then
+ * your laptop screen), each with numbered spots on it. The learner opens
+ * each spot, reads what is there, and calls it: needs fixing, or fine as
+ * it is. A spot with `risk` needs fixing; the others only look risky, and
+ * every call shows why. The drawings are art the engine owns (`art` picks
+ * one); every word the learner reads comes from here. Each spot is a real
+ * button, reachable by keyboard and labelled, not only a picture. */
+export type SceneArt = "cafe" | "laptop";
+export interface SceneSpot {
+  /* Where the marker sits on the drawing, in percent from the left and top. */
+  x: number;
+  y: number;
+  /* What the spot is: read out by a screen reader, and the heading once opened. */
+  label: string;
+  /* What you see when you look closer. */
+  seen: string;
+  risk: boolean;
+  why: string;
+}
+export interface SceneView {
+  /* The tab: "The café", "Your screen". */
+  label: string;
+  art: SceneArt;
+  /* The whole drawing in one sentence, for a screen reader. */
+  alt: string;
+  spots: SceneSpot[];
+}
+export interface ScenePractise {
+  kind: "scene";
+  task: string;
+  /* One line under the task that sets the scene. */
+  scene?: string;
+  /* The two calls, in the learner's words. */
+  calls: { risk: string; fine: string };
+  views: SceneView[];
+}
+
+export type Practise = SandboxPractise | SortPractise | SituationsPractise | TriagePractise | InspectPractise | LoopPractise | SpotPractise | SourcesPractise | MomentsPractise | InboxPractise | PhonePractise | ScenePractise;
 
 /* ---- Prove ---- */
 
