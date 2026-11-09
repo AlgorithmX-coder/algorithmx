@@ -22,6 +22,8 @@ import {
   type LoopPractise,
   type ModuleManifest,
   type MomentsPractise,
+  type PhoneAction,
+  type PhonePractise,
   type Phase,
   type Practise,
   type ProveItem,
@@ -97,6 +99,8 @@ type Screen =
   | { kind: "moments"; p: number; phase: "practise" }
   /* Cyber Awareness: triage an inbox, indexed by practice `p`. */
   | { kind: "inbox"; p: number; phase: "practise" }
+  /* Cyber Awareness: a day of sign-in prompts on the phone, indexed by practice `p`. */
+  | { kind: "phone"; p: number; phase: "practise" }
   | { kind: "prove"; i: number; phase: "prove" }
   | { kind: "result"; phase: "done" };
 
@@ -464,6 +468,8 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
         out.push({ kind: "moments", p, phase: "practise" });
       } else if (pr.kind === "inbox") {
         out.push({ kind: "inbox", p, phase: "practise" });
+      } else if (pr.kind === "phone") {
+        out.push({ kind: "phone", p, phase: "practise" });
       }
     });
     proveSet.forEach((_, i) => out.push({ kind: "prove", i, phase: "prove" }));
@@ -502,6 +508,10 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
    * named for a phish; and which senders and links have been looked behind. */
   const [inboxPicks, setInboxPicks] = useState<Record<number, Record<number, { call: "phish" | "fine"; tell?: string }>>>({});
   const [inboxSeen, setInboxSeen] = useState<Record<number, Record<string, true>>>({});
+  /* Cyber Awareness phone: per practice, the action taken on each
+   * notification, and which notification is on the lock screen now. */
+  const [phonePicks, setPhonePicks] = useState<Record<number, Record<number, PhoneAction>>>({});
+  const [phoneStep, setPhoneStep] = useState<Record<number, number>>({});
   const bestFluentRank = useRef(99);
   const [bestFluent, setBestFluent] = useState<FluentVerdict | undefined>(undefined);
   /* one-action practises: answer per item */
@@ -775,7 +785,7 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
   const pct = Math.round(((cur + 1) / screens.length) * 100);
   const phaseIdx = (["learn", "practise", "prove", "done"] as Phase[]).indexOf(screen.phase);
   const practiseSub = (pr: Practise): string =>
-    pr.kind === "sandbox" ? "in the simulator" : pr.kind === "sort" ? "which tier is this" : pr.kind === "situations" ? "ten situations" : pr.kind === "inspect" ? "a document to check" : pr.kind === "triage" ? "six incidents" : pr.kind === "loop" ? `${pr.turns.length} send${pr.turns.length === 1 ? "" : "s"}, scored on the rubric` : pr.kind === "spot" ? "find the planted mistake" : pr.kind === "moments" ? "spot the moment" : pr.kind === "inbox" ? "triage the inbox" : "check the sources";
+    pr.kind === "sandbox" ? "in the simulator" : pr.kind === "sort" ? "which tier is this" : pr.kind === "situations" ? "ten situations" : pr.kind === "inspect" ? "a document to check" : pr.kind === "triage" ? "six incidents" : pr.kind === "loop" ? `${pr.turns.length} send${pr.turns.length === 1 ? "" : "s"}, scored on the rubric` : pr.kind === "spot" ? "find the planted mistake" : pr.kind === "moments" ? "spot the moment" : pr.kind === "inbox" ? "triage the inbox" : pr.kind === "phone" ? "a day of sign-in prompts" : "check the sources";
   const PHASES: { key: Phase; label: string; sub: string }[] = [
     { key: "learn", label: "Learn", sub: "the idea" },
     { key: "practise", label: "Practise", sub: practises.map(practiseSub).join(", then ") },
@@ -1740,6 +1750,123 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
         </div>
       </>
     );
+  } else if (screen.kind === "phone" && practises[screen.p]?.kind === "phone") {
+    const pp = practises[screen.p] as PhonePractise;
+    const p = screen.p;
+    const picks = phonePicks[p] ?? {};
+    const total = pp.events.length;
+    const at = Math.min(phoneStep[p] ?? 0, total);
+    const summary = at >= total;
+    const ev = pp.events[Math.min(at, total - 1)];
+    const pick = summary ? undefined : picks[at];
+    const actionLabel = (id: PhoneAction) => pp.actions.find((a) => a.id === id)?.label ?? id;
+    const rightOn = (i: number) => !!picks[i] && pp.events[i].accept.includes(picks[i]);
+    const rightCount = pp.events.filter((_, i) => rightOn(i)).length;
+    const setStep = (i: number) => {
+      setPhoneStep((all) => ({ ...all, [p]: i }));
+      if (typeof window !== "undefined") window.scrollTo({ top: 0, behavior: "smooth" });
+    };
+    const choose = (a: PhoneAction) => {
+      setPhonePicks((all) => ({ ...all, [p]: { ...(all[p] ?? {}), [at]: a } }));
+      /* On a phone the reason sits under the handset: bring it into view. */
+      if (typeof window !== "undefined" && window.matchMedia("(max-width: 900px)").matches) {
+        window.setTimeout(() => document.querySelector(".cl-ph-fb")?.scrollIntoView({ block: "nearest", behavior: "smooth" }), 80);
+      }
+    };
+    stage = (
+      <>
+        <Eyebrow>Practise · a day of sign-in prompts</Eyebrow>
+        <div className="cl-task"><span className="cl-label">Your task</span><p>{t(pp.task)}</p></div>
+        {pp.scene && <p className="cl-p">{t(pp.scene)}</p>}
+        <ol className="cl-ph-day" aria-label="Your day">
+          {pp.events.map((e, i) => {
+            const state = i === at ? "current" : !picks[i] ? "upcoming" : rightOn(i) ? "right" : "wrong";
+            return (
+              <li key={i}>
+                <button type="button" className={`cl-ph-dot ${state}`} disabled={!picks[i] || i === at} onClick={() => setStep(i)} aria-current={i === at ? "step" : undefined}>
+                  {e.time}
+                </button>
+              </li>
+            );
+          })}
+          <li>
+            <button type="button" className={`cl-ph-dot end ${summary ? "current" : ""}`} disabled={summary || Object.keys(picks).length < total} onClick={() => setStep(total)}>Day done</button>
+          </li>
+        </ol>
+        {summary ? (
+          <div className="cl-ph-sum">
+            <p className="cl-p"><b>{rightCount} of {total}</b> called right. The rule underneath every one: approve only a prompt you started yourself, seconds ago.</p>
+            <ol className="cl-ph-log">
+              {pp.events.map((e, i) => {
+                const ok = rightOn(i);
+                return (
+                  <li key={i} className={ok ? "right" : "wrong"}>
+                    <span className="cl-mo-time">{e.time}</span>
+                    <span className="cl-ph-log-t">{t(e.title)}{e.count && e.count > 1 ? ` × ${e.count}` : ""}<small>{t(e.doing)}</small></span>
+                    <span className="cl-ph-log-c">
+                      <span>You: <b>{picks[i] ? actionLabel(picks[i]) : "-"}</b></span>
+                      {!ok && <span>Best: <b>{actionLabel(e.accept[0])}</b></span>}
+                    </span>
+                  </li>
+                );
+              })}
+            </ol>
+          </div>
+        ) : (
+          <div className="cl-ph-grid" key={at}>
+            <div className="cl-ph-ctx">
+              <div className="cl-label">{ev.time} · What you are doing</div>
+              <p className="cl-ph-doing">{t(ev.doing)}</p>
+            </div>
+            <div className="cl-ph-phone" aria-label="Your phone">
+              <div className={`cl-ph-screen ${ev.message ? "busy" : ""}`}>
+                <div className="cl-ph-status" aria-hidden><span>{ev.time}</span><span className="cl-ph-notch" /><span className="cl-ph-bars"><i /><i /><i /></span></div>
+                <div className="cl-ph-clock" aria-hidden>{ev.time}</div>
+                {ev.message && (
+                  <div className="cl-ph-note msg">
+                    <div className="cl-ph-app"><span className="cl-ph-icon msg" aria-hidden />{t(ev.message.channel)}<span className="cl-ph-now">just now</span></div>
+                    <b>{t(ev.message.from)}</b>
+                    <p>{t(ev.message.text)}</p>
+                  </div>
+                )}
+                <div className={`cl-ph-stack ${ev.count && ev.count > 1 ? "many" : ""}`}>
+                  <div className="cl-ph-note">
+                    <div className="cl-ph-app"><span className="cl-ph-icon" aria-hidden />{t(ev.app)}<span className="cl-ph-now">{ev.count && ev.count > 1 ? `${ev.count} new` : "now"}</span></div>
+                    <b>{t(ev.title)}</b>
+                    {ev.lines.map((l, li) => <small key={li}>{t(l)}</small>)}
+                  </div>
+                </div>
+                <div className="cl-ph-acts">
+                  {pp.actions.map((a) => {
+                    const s = !pick ? "" : ev.accept.includes(a.id) ? "right" : a.id === pick ? "wrong" : "";
+                    return (
+                      <button key={a.id} type="button" disabled={!!pick} className={`cl-ph-act ${a.id} ${s}`} onClick={() => choose(a.id)}>
+                        <b>{t(a.label)}</b>
+                        <small>{t(a.desc)}</small>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+            {pick && (
+              <div className="cl-fb cl-ph-fb">
+                <b>{ev.accept.includes(pick) ? (pick === ev.accept[0] ? "Correct." : `That works too. Best: ${actionLabel(ev.accept[0])}.`) : `Not quite. Best: ${actionLabel(ev.accept[0])}.`}</b> {t(ev.why)}
+              </div>
+            )}
+          </div>
+        )}
+        <div className="cl-nav">
+          <Btn onClick={summary ? () => setStep(total - 1) : at > 0 ? () => setStep(at - 1) : back}>Back</Btn>
+          <span className="cl-hint">{summary ? "That was your day." : `${at + 1} of ${total}`}</span>
+          {summary ? (
+            <Btn primary onClick={next}>Continue to Prove</Btn>
+          ) : (
+            <button type="button" className="cl-btn cl-btn-pri cl-ph-next" disabled={!pick} onClick={() => setStep(at + 1)}>{at === total - 1 ? "See your day" : "Next notification"}</button>
+          )}
+        </div>
+      </>
+    );
   } else if (screen.kind === "prove") {
     const q = proveSet[screen.i];
     const picked = proveAnswers[screen.i];
@@ -2101,6 +2228,59 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
         .cl-ib-ask .cl-q { font-size: 14px; }
         .cl-ib-msg > .cl-fb { margin-top: 10px; }
 
+        .cl-ph-day { list-style: none; margin: 2px 0 16px; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+        .cl-ph-dot { font: inherit; font-family: ${K.mono}; font-size: 11.5px; font-weight: 600; color: ${K.muted}; background: ${K.panelRaise}; border: 1px solid ${K.edge}; border-radius: 999px; padding: 4px 10px; cursor: pointer; }
+        .cl-ph-dot:disabled { cursor: default; }
+        .cl-ph-dot.upcoming { color: ${K.faint}; border-style: dashed; }
+        .cl-ph-dot.current { color: ${K.onAccent}; background: ${K.grad}; border-color: transparent; }
+        .cl-ph-dot.right { color: ${K.ok}; border-color: ${K.ok}; background: ${K.okSoft}; }
+        .cl-ph-dot.wrong { color: ${K.warn}; border-color: ${K.warn}; background: ${K.warnSoft}; }
+        .cl-ph-dot:not(:disabled):hover { border-color: ${K.accent}; }
+        .cl-ph-dot.end:not(.current):disabled { color: ${K.faint}; border-style: dashed; }
+        .cl-ph-grid { display: grid; grid-template-columns: minmax(0, 1fr) 286px; grid-template-areas: "ctx phone" "fb phone"; grid-template-rows: auto 1fr; gap: 14px 22px; align-items: start; }
+        .cl-ph-ctx { grid-area: ctx; border-left: 3px solid ${K.accent}; padding: 2px 0 2px 14px; animation: cl-in 250ms ease both; }
+        .cl-ph-doing { margin: 0; font-size: 16px; line-height: 1.55; color: ${K.ink}; }
+        .cl-ph-fb { grid-area: fb; margin-top: 0; animation: cl-in 250ms ease both; }
+        .cl-ph-phone { grid-area: phone; justify-self: center; width: 100%; max-width: 286px; background: ${K.ink}; border-radius: 34px; padding: 9px; box-sizing: border-box; box-shadow: ${K.lift}; }
+        .cl-ph-screen { position: relative; border-radius: 26px; padding: 8px 10px 12px; min-height: 344px; box-sizing: border-box; background: linear-gradient(165deg, rgba(10,112,133,0.92) 0%, rgba(87,68,201,0.9) 55%, rgba(165,17,127,0.82) 100%); display: flex; flex-direction: column; gap: 8px; overflow: hidden; }
+        .cl-ph-status { display: flex; align-items: center; justify-content: space-between; font-family: ${K.mono}; font-size: 10.5px; font-weight: 600; color: ${K.onAccent}; padding: 0 6px; }
+        .cl-ph-notch { width: 64px; height: 16px; border-radius: 999px; background: ${K.ink}; }
+        .cl-ph-bars { display: inline-flex; align-items: flex-end; gap: 2px; height: 10px; }
+        .cl-ph-bars i { display: block; width: 3px; background: ${K.onAccent}; border-radius: 1px; }
+        .cl-ph-bars i:nth-child(1) { height: 4px; } .cl-ph-bars i:nth-child(2) { height: 7px; } .cl-ph-bars i:nth-child(3) { height: 10px; }
+        .cl-ph-clock { text-align: center; font-family: ${K.display}; font-size: 40px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.05; color: ${K.onAccent}; margin: 2px 0 4px; }
+        .cl-ph-screen.busy .cl-ph-clock { font-size: 28px; margin: 0 0 2px; }
+        .cl-ph-stack { position: relative; }
+        .cl-ph-stack.many { padding-bottom: 14px; }
+        .cl-ph-stack.many::before, .cl-ph-stack.many::after { content: ""; position: absolute; left: 9px; right: 9px; bottom: 6px; height: 24px; border-radius: 0 0 14px 14px; background: rgba(255,255,255,0.62); }
+        .cl-ph-stack.many::after { left: 18px; right: 18px; bottom: 0; background: rgba(255,255,255,0.38); }
+        .cl-ph-note { position: relative; z-index: 1; background: ${K.glassStrong}; border-radius: 14px; padding: 9px 11px 10px; display: flex; flex-direction: column; gap: 2px; color: ${K.ink}; animation: cl-in 250ms ease both; }
+        .cl-ph-note b { font-size: 14px; line-height: 1.3; overflow-wrap: anywhere; }
+        .cl-ph-note small { font-size: 12.5px; color: ${K.muted}; line-height: 1.4; overflow-wrap: anywhere; }
+        .cl-ph-note p { margin: 0; font-size: 13px; line-height: 1.45; color: ${K.body}; }
+        .cl-ph-app { display: flex; align-items: center; gap: 6px; font-family: ${K.mono}; font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: ${K.muted}; margin-bottom: 2px; }
+        .cl-ph-icon { width: 14px; height: 14px; border-radius: 4px; background: ${K.grad}; flex-shrink: 0; }
+        .cl-ph-icon.msg { background: ${K.ok}; }
+        .cl-ph-now { margin-left: auto; font-weight: 500; letter-spacing: 0.04em; text-transform: none; }
+        .cl-ph-acts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; margin-top: auto; padding-top: 6px; }
+        .cl-ph-act { font: inherit; display: flex; flex-direction: column; align-items: center; gap: 2px; text-align: center; color: ${K.ink}; background: ${K.glassStrong}; border: 2px solid transparent; border-radius: 12px; padding: 8px 4px 7px; cursor: pointer; }
+        .cl-ph-act b { font-size: 13.5px; }
+        .cl-ph-act small { font-size: 10.5px; line-height: 1.25; color: ${K.muted}; }
+        .cl-ph-act:hover:not(:disabled) { border-color: ${K.ink}; }
+        .cl-ph-act:disabled { cursor: default; opacity: 0.55; }
+        .cl-ph-act.right, .cl-ph-act.wrong { opacity: 1; }
+        .cl-ph-act.right { border-color: ${K.ok}; background: ${K.panel}; }
+        .cl-ph-act.right b { color: ${K.ok}; }
+        .cl-ph-act.wrong { border-color: ${K.crit}; background: ${K.panel}; }
+        .cl-ph-act.wrong b { color: ${K.crit}; }
+        .cl-ph-log { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+        .cl-ph-log li { display: grid; grid-template-columns: 48px minmax(0, 1fr) auto; align-items: baseline; gap: 4px 12px; border: 1px solid ${K.edge}; border-left: 3px solid ${K.ok}; border-radius: 10px; padding: 9px 12px; background: ${K.panelRaise}; font-size: 14px; }
+        .cl-ph-log li.wrong { border-left-color: ${K.warn}; }
+        .cl-ph-log-t { color: ${K.ink}; font-weight: 600; overflow-wrap: anywhere; }
+        .cl-ph-log-t small { display: block; font-weight: 400; font-size: 13px; line-height: 1.45; color: ${K.muted}; margin-top: 2px; }
+        .cl-ph-log-c { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 2px 12px; font-size: 13px; color: ${K.muted}; }
+        .cl-ph-log li.wrong .cl-ph-log-c span:last-child b { color: ${K.warn}; }
+
         .cl-toggles { display: flex; flex-direction: column; gap: 12px; margin-top: 12px; }
         .cl-toggle { display: flex; gap: 14px; align-items: flex-start; border: 1px solid ${K.edge}; border-radius: 10px; padding: 14px; background: ${K.panelRaise}; }
         .cl-toggle b { display: block; color: ${K.ink}; font-size: 15px; margin-bottom: 4px; }
@@ -2248,6 +2428,10 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
           .cl-three { grid-template-columns: 1fr; }
           .cl-ib-list { padding: 8px; }
           .cl-ib-msg { padding: 11px 12px; }
+          .cl-ph-grid { grid-template-columns: minmax(0, 1fr); grid-template-areas: "ctx" "phone" "fb"; grid-template-rows: auto; }
+          .cl-ph-screen { min-height: 0; }
+          .cl-ph-log li { grid-template-columns: 44px minmax(0, 1fr); }
+          .cl-ph-log-c { grid-column: 2; justify-content: flex-start; }
           .cl-row { grid-template-columns: 22px 1fr; }
           .cl-row .cl-v { grid-column: 2; }
           .cl-row.show { grid-template-columns: 1fr auto; }
@@ -2262,9 +2446,11 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
           .cl-firm { font-size: 12.5px; max-width: 96px; }
           .cl-exit { padding: 5px 8px; font-size: 12.5px; }
           .cl-top-right { gap: 6px; }
+          /* "Close desk" is wider than "Desk": make room by dropping the firm's name while the drawer is open, so Course is never clipped. */
+          .cl-top:has(.cl-desk-btn[aria-expanded="true"]) .cl-firm, .cl-top:has(.cl-desk-btn[aria-expanded="true"]) .cl-top-left .cl-sep { display: none; }
         }
         @media (prefers-reduced-motion: reduce) {
-          .cl-stage, .cl-rv, .cl-grader, .cl-card-detail, .cl-tl.after, .cl-peek-real { animation: none; }
+          .cl-stage, .cl-rv, .cl-grader, .cl-card-detail, .cl-tl.after, .cl-peek-real, .cl-ph-ctx, .cl-ph-fb, .cl-ph-note { animation: none; }
           .cl-bar i, .cl-meter i, .cl-knob { transition: none; }
         }
       `}</style>

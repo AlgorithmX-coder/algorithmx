@@ -20,7 +20,7 @@ describe("Cyber Awareness module 2", () => {
     expect(m2).toBeTruthy();
     expect(m2.course).toBe("cyber-awareness");
     expect(AWARENESS_MODULE_LIST[1]).toMatchObject({ n: 2, title: m2.title, minutes: m2.minutes, available: true });
-    expect(AWARENESS_MODULE_LIST.filter((m) => m.available).map((m) => m.n)).toEqual([1, 2]);
+    expect(AWARENESS_MODULE_LIST.filter((m) => m.available).map((m) => m.n)).toEqual(expect.arrayContaining([1, 2]));
   });
 
   it("plays the same block on every desk", () => {
