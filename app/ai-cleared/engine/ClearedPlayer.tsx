@@ -28,6 +28,7 @@ import {
   type Practise,
   type ProveItem,
   type SandboxPractise,
+  type ScenePractise,
   type SimRef,
   type SituationAnswer,
   type Tool,
@@ -46,6 +47,7 @@ import { rulesGrade } from "@/app/ai-fluent/engine/rubric";
 import { fluentScriptedReply } from "@/app/ai-fluent/engine/scripted";
 import { FLUENT_LABEL, FLUENT_RANK, type FluentGrade, type FluentVerdict } from "@/app/ai-fluent/engine/grading";
 import { FluentPanel, SpotReply } from "@/app/ai-fluent/engine/FluentPieces";
+import SceneArtView from "@/app/cyber-awareness/scenes/SceneArt";
 
 /* The engine that runs one module through Learn -> Practise -> Prove.
  * Structure only; every word of content comes from the manifest, the
@@ -101,6 +103,8 @@ type Screen =
   | { kind: "inbox"; p: number; phase: "practise" }
   /* Cyber Awareness: a day of sign-in prompts on the phone, indexed by practice `p`. */
   | { kind: "phone"; p: number; phase: "practise" }
+  /* Cyber Awareness: spot the risk in a drawn scene, indexed by practice `p`. */
+  | { kind: "scene"; p: number; phase: "practise" }
   | { kind: "prove"; i: number; phase: "prove" }
   | { kind: "result"; phase: "done" };
 
@@ -130,6 +134,13 @@ interface SandboxState {
   busy: boolean;
 }
 const EMPTY_SANDBOX: SandboxState = { messages: [], status: "", busy: false };
+/* A Cyber Awareness scene: the view on show, the spot open, the call on each spot. */
+interface SceneState {
+  view: number;
+  open: number | null;
+  calls: Record<number, "risk" | "fine">;
+}
+const EMPTY_SCENE: SceneState = { view: 0, open: null, calls: {} };
 
 let idSeq = 0;
 const nextId = () => `m${++idSeq}`;
@@ -470,6 +481,8 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
         out.push({ kind: "inbox", p, phase: "practise" });
       } else if (pr.kind === "phone") {
         out.push({ kind: "phone", p, phase: "practise" });
+      } else if (pr.kind === "scene") {
+        out.push({ kind: "scene", p, phase: "practise" });
       }
     });
     proveSet.forEach((_, i) => out.push({ kind: "prove", i, phase: "prove" }));
@@ -512,6 +525,9 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
    * notification, and which notification is on the lock screen now. */
   const [phonePicks, setPhonePicks] = useState<Record<number, Record<number, PhoneAction>>>({});
   const [phoneStep, setPhoneStep] = useState<Record<number, number>>({});
+  /* Cyber Awareness scene: per practice, the view on show, the spot open
+   * (numbered across all views), and the call made on each spot. */
+  const [sceneState, setSceneState] = useState<Record<number, SceneState>>({});
   const bestFluentRank = useRef(99);
   const [bestFluent, setBestFluent] = useState<FluentVerdict | undefined>(undefined);
   /* one-action practises: answer per item */
@@ -785,7 +801,7 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
   const pct = Math.round(((cur + 1) / screens.length) * 100);
   const phaseIdx = (["learn", "practise", "prove", "done"] as Phase[]).indexOf(screen.phase);
   const practiseSub = (pr: Practise): string =>
-    pr.kind === "sandbox" ? "in the simulator" : pr.kind === "sort" ? "which tier is this" : pr.kind === "situations" ? "ten situations" : pr.kind === "inspect" ? "a document to check" : pr.kind === "triage" ? "six incidents" : pr.kind === "loop" ? `${pr.turns.length} send${pr.turns.length === 1 ? "" : "s"}, scored on the rubric` : pr.kind === "spot" ? "find the planted mistake" : pr.kind === "moments" ? "spot the moment" : pr.kind === "inbox" ? "triage the inbox" : pr.kind === "phone" ? "a day of sign-in prompts" : "check the sources";
+    pr.kind === "sandbox" ? "in the simulator" : pr.kind === "sort" ? "which tier is this" : pr.kind === "situations" ? "ten situations" : pr.kind === "inspect" ? "a document to check" : pr.kind === "triage" ? "six incidents" : pr.kind === "loop" ? `${pr.turns.length} send${pr.turns.length === 1 ? "" : "s"}, scored on the rubric` : pr.kind === "spot" ? "find the planted mistake" : pr.kind === "moments" ? "spot the moment" : pr.kind === "inbox" ? "triage the inbox" : pr.kind === "phone" ? "a day of sign-in prompts" : pr.kind === "scene" ? "spot the risk" : "check the sources";
   const PHASES: { key: Phase; label: string; sub: string }[] = [
     { key: "learn", label: "Learn", sub: "the idea" },
     { key: "practise", label: "Practise", sub: practises.map(practiseSub).join(", then ") },
@@ -1867,6 +1883,138 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
         </div>
       </>
     );
+  } else if (screen.kind === "scene" && practises[screen.p]?.kind === "scene") {
+    const sp = practises[screen.p] as ScenePractise;
+    const p = screen.p;
+    const st: SceneState = sceneState[p] ?? EMPTY_SCENE;
+    const setScene = (fn: (s: SceneState) => SceneState) => setSceneState((all) => ({ ...all, [p]: fn(all[p] ?? EMPTY_SCENE) }));
+    /* Spots are numbered across every view, 1 to N, so "spot 5" means one place. */
+    const flat = sp.views.flatMap((v, vi) => v.spots.map((s) => ({ s, vi })));
+    const firstOf = (vi: number) => sp.views.slice(0, vi).reduce((a, v) => a + v.spots.length, 0);
+    const total = flat.length;
+    const isRight = (g: number) => !!st.calls[g] && (st.calls[g] === "risk") === flat[g].s.risk;
+    const called = flat.filter((_, g) => st.calls[g]).length;
+    const rightCount = flat.filter((_, g) => isRight(g)).length;
+    const risks = flat.filter((f) => f.s.risk).length;
+    const done = called === total;
+    const view = sp.views[Math.min(st.view, sp.views.length - 1)];
+    const base = firstOf(st.view);
+    const open = st.open !== null ? flat[st.open] : null;
+    const call = st.open !== null ? st.calls[st.open] : undefined;
+    let nextSpot: number | null = null;
+    for (let k = 1; st.open !== null && k <= total; k++) {
+      const g = (st.open + k) % total;
+      if (!st.calls[g]) {
+        nextSpot = g;
+        break;
+      }
+    }
+    const narrow = () => typeof window !== "undefined" && window.matchMedia("(max-width: 900px)").matches;
+    const openSpot = (g: number, fromNext?: boolean) => {
+      setScene((s) => ({ ...s, view: flat[g].vi, open: g }));
+      /* On a phone the panel sits under the picture: show the picture for
+       * the next spot, or the panel for the spot just tapped. */
+      if (narrow()) window.setTimeout(() => document.querySelector(fromNext ? ".cl-sc-tabs" : ".cl-sc-panel")?.scrollIntoView({ block: fromNext ? "start" : "nearest", behavior: "smooth" }), 80);
+    };
+    const choose = (c: "risk" | "fine") => {
+      if (st.open === null) return;
+      const g = st.open;
+      setScene((s) => ({ ...s, calls: { ...s.calls, [g]: c } }));
+      if (narrow()) window.setTimeout(() => document.querySelector(".cl-sc-fb")?.scrollIntoView({ block: "nearest", behavior: "smooth" }), 80);
+    };
+    const callLabel = (c: "risk" | "fine") => t(c === "risk" ? sp.calls.risk : sp.calls.fine);
+    stage = (
+      <>
+        <Eyebrow>Practise · spot the risk</Eyebrow>
+        <div className="cl-task"><span className="cl-label">Your task</span><p>{t(sp.task)}</p></div>
+        {sp.scene && <p className="cl-p">{t(sp.scene)}</p>}
+        <div className="cl-sc">
+          <div className="cl-sc-tabs" role="group" aria-label="Where you are looking">
+            {sp.views.map((v, vi) => {
+              const b = firstOf(vi);
+              const c = v.spots.filter((_, si) => st.calls[b + si]).length;
+              return (
+                <button key={vi} type="button" className={`cl-sc-tab ${vi === st.view ? "on" : ""} ${c === v.spots.length ? "full" : ""}`} aria-pressed={vi === st.view} onClick={() => setScene((s) => ({ ...s, view: vi, open: null }))}>
+                  <b>{t(v.label)}</b>
+                  <small>{c} of {v.spots.length} checked</small>
+                </button>
+              );
+            })}
+          </div>
+          <div className="cl-sc-grid">
+            <div className="cl-sc-pic">
+              <SceneArtView art={view.art} label={t(view.alt)} />
+              {view.spots.map((s, si) => {
+                const g = base + si;
+                const c = st.calls[g];
+                const ok = isRight(g);
+                return (
+                  <button
+                    key={g}
+                    type="button"
+                    className={`cl-sc-spot ${c ? `done ${ok ? "right" : "wrong"}` : ""} ${st.open === g ? "open" : ""}`}
+                    style={{ left: `${s.x}%`, top: `${s.y}%` }}
+                    aria-pressed={st.open === g}
+                    aria-label={`Spot ${g + 1}: ${t(s.label)}${c ? `. You said: ${callLabel(c)}` : ""}`}
+                    onClick={() => openSpot(g)}
+                  >
+                    {c ? (
+                      <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
+                        {ok ? <path d="M3 8.5l3.2 3.2L13 4.8" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" /> : <path d="M8 3v6.2M8 12.6v.4" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" />}
+                      </svg>
+                    ) : (
+                      g + 1
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+            <div className="cl-sc-panel" aria-live="polite">
+              {!open ? (
+                <p className="cl-sc-empty">
+                  {done ? `All ${total} checked. You called ${rightCount} of ${total} right.` : `Tap a numbered spot on the picture to look closer. ${view.spots.filter((_, si) => !st.calls[base + si]).length} still to check here.`}
+                </p>
+              ) : (
+                <>
+                  <div className="cl-label">Spot {(st.open ?? 0) + 1} of {total}</div>
+                  <b className="cl-sc-title">{t(open.s.label)}</b>
+                  <p className="cl-sc-seen">{t(open.s.seen)}</p>
+                  <div className="cl-sc-calls">
+                    {(["risk", "fine"] as const).map((id) => {
+                      const s = !call ? "" : (id === "risk") === open.s.risk ? "right" : id === call ? "wrong" : "";
+                      return (
+                        <button key={id} type="button" disabled={!!call} className={`cl-sc-call ${id} ${s}`} onClick={() => choose(id)}>
+                          {callLabel(id)}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </>
+              )}
+            </div>
+            {open && call && (
+              <div className="cl-sc-out">
+                <div className="cl-fb cl-sc-fb">
+                  <b>{call === "risk" ? (open.s.risk ? "Right, this needs fixing." : "Fine as it is, in fact. Checking cost nothing.") : open.s.risk ? "Not quite: this needs fixing." : "Right, this one is fine."}</b> {t(open.s.why)}
+                </div>
+                {nextSpot !== null && (
+                  <button type="button" className="cl-btn cl-btn-small cl-sc-next" onClick={() => openSpot(nextSpot, true)}>
+                    {flat[nextSpot].vi !== st.view ? `Next: ${t(sp.views[flat[nextSpot].vi].label)}` : "Next spot"}
+                  </button>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+        <div className="cl-nav">
+          <Btn onClick={back}>Back</Btn>
+          <span className="cl-hint">
+            {done ? `All ${total} checked: ${risks} needed fixing. You called ${rightCount} of ${total} right.` : `${called} of ${total} checked`}
+          </span>
+          <Btn primary disabled={!done} onClick={next}>Continue to Prove</Btn>
+        </div>
+      </>
+    );
   } else if (screen.kind === "prove") {
     const q = proveSet[screen.i];
     const picked = proveAnswers[screen.i];
@@ -2281,6 +2429,40 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
         .cl-ph-log-c { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 2px 12px; font-size: 13px; color: ${K.muted}; }
         .cl-ph-log li.wrong .cl-ph-log-c span:last-child b { color: ${K.warn}; }
 
+        .cl-sc { margin-top: 2px; }
+        .cl-sc-tabs { display: flex; gap: 8px; margin-bottom: 12px; }
+        .cl-sc-tab { font: inherit; flex: 1 1 0; min-width: 0; text-align: left; display: flex; flex-direction: column; gap: 1px; color: ${K.ink}; background: ${K.panelRaise}; border: 1px solid ${K.edge}; border-radius: 10px; padding: 8px 12px; cursor: pointer; }
+        .cl-sc-tab b { font-size: 14px; }
+        .cl-sc-tab small { font-family: ${K.mono}; font-size: 11px; color: ${K.muted}; }
+        .cl-sc-tab:hover { border-color: ${K.accent}; }
+        .cl-sc-tab.on { border-color: ${K.accent}; background: ${K.accentSoft}; box-shadow: inset 0 -3px 0 ${K.accent}; }
+        .cl-sc-tab.full small { color: ${K.ok}; }
+        .cl-sc-grid { display: grid; grid-template-columns: minmax(0, 1fr) 248px; grid-template-areas: "pic panel" "out out"; gap: 14px 16px; align-items: start; }
+        .cl-sc-pic { grid-area: pic; position: relative; border-radius: 14px; box-shadow: ${K.lift}; }
+        .cl-sc-out { grid-area: out; display: flex; align-items: flex-start; gap: 14px; border-left: 3px solid ${K.accent}; padding: 2px 0 2px 14px; }
+        .cl-sc-out .cl-sc-fb { margin-top: 0; flex: 1 1 auto; min-width: 0; }
+        .cl-sc-out .cl-sc-next { flex-shrink: 0; margin-top: 0; }
+        .cl-sc-art { display: block; width: 100%; height: auto; border-radius: 14px; }
+        .cl-sc-spot { position: absolute; transform: translate(-50%, -50%); width: 30px; height: 30px; border-radius: 50%; border: 2px solid ${K.onAccent}; background: ${K.grad}; color: ${K.onAccent}; font: inherit; font-family: ${K.mono}; font-size: 13px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; padding: 0; cursor: pointer; box-shadow: 0 2px 10px rgba(20,22,29,0.35); animation: cl-sc-pulse 2.4s ease-in-out infinite; }
+        .cl-sc-spot:hover { filter: brightness(1.1); }
+        .cl-sc-spot.done { animation: none; }
+        .cl-sc-spot.right { background: ${K.ok}; }
+        .cl-sc-spot.wrong { background: ${K.warn}; }
+        .cl-sc-spot.open { outline: 3px solid ${K.ink}; outline-offset: 2px; animation: none; }
+        .cl-shell .cl-sc-spot:focus-visible { outline: 3px solid ${K.ink}; outline-offset: 2px; }
+        @keyframes cl-sc-pulse { 0%, 100% { box-shadow: 0 2px 10px rgba(20,22,29,0.35), 0 0 0 0 rgba(87,68,201,0.45); } 50% { box-shadow: 0 2px 10px rgba(20,22,29,0.35), 0 0 0 8px rgba(87,68,201,0); } }
+        .cl-sc-panel { grid-area: panel; align-self: stretch; border: 1px solid ${K.edge}; border-radius: 12px; background: ${K.panelRaise}; padding: 14px; min-width: 0; }
+        .cl-sc-empty { margin: 0; font-size: 14px; color: ${K.muted}; }
+        .cl-sc-title { display: block; color: ${K.ink}; font-size: 15.5px; line-height: 1.3; margin-bottom: 6px; }
+        .cl-sc-seen { margin: 0 0 12px; font-size: 14px; line-height: 1.5; color: ${K.body}; }
+        .cl-sc-calls { display: flex; flex-wrap: wrap; gap: 8px; }
+        .cl-sc-call { font: inherit; flex: 1 1 auto; font-size: 13.5px; font-weight: 600; color: ${K.ink}; background: ${K.panel}; border: 1px solid ${K.edge}; border-radius: 9px; padding: 8px 10px; cursor: pointer; }
+        .cl-sc-call:hover:not(:disabled) { border-color: ${K.accent}; }
+        .cl-sc-call:disabled { cursor: default; }
+        .cl-sc-call.right { border-color: ${K.ok}; background: ${K.okSoft}; color: ${K.ok}; }
+        .cl-sc-call.wrong { border-color: ${K.crit}; background: ${K.critSoft}; color: ${K.crit}; }
+        .cl-sc-out { animation: cl-in 250ms ease both; }
+
         .cl-toggles { display: flex; flex-direction: column; gap: 12px; margin-top: 12px; }
         .cl-toggle { display: flex; gap: 14px; align-items: flex-start; border: 1px solid ${K.edge}; border-radius: 10px; padding: 14px; background: ${K.panelRaise}; }
         .cl-toggle b { display: block; color: ${K.ink}; font-size: 15px; margin-bottom: 4px; }
@@ -2432,6 +2614,9 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
           .cl-ph-screen { min-height: 0; }
           .cl-ph-log li { grid-template-columns: 44px minmax(0, 1fr); }
           .cl-ph-log-c { grid-column: 2; justify-content: flex-start; }
+          .cl-sc-grid { grid-template-columns: minmax(0, 1fr); grid-template-areas: "pic" "panel" "out"; }
+          .cl-sc-out { flex-direction: column; gap: 10px; }
+          .cl-sc-spot { width: 32px; height: 32px; }
           .cl-row { grid-template-columns: 22px 1fr; }
           .cl-row .cl-v { grid-column: 2; }
           .cl-row.show { grid-template-columns: 1fr auto; }
@@ -2450,7 +2635,7 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
           .cl-top:has(.cl-desk-btn[aria-expanded="true"]) .cl-firm, .cl-top:has(.cl-desk-btn[aria-expanded="true"]) .cl-top-left .cl-sep { display: none; }
         }
         @media (prefers-reduced-motion: reduce) {
-          .cl-stage, .cl-rv, .cl-grader, .cl-card-detail, .cl-tl.after, .cl-peek-real, .cl-ph-ctx, .cl-ph-fb, .cl-ph-note { animation: none; }
+          .cl-stage, .cl-rv, .cl-grader, .cl-card-detail, .cl-tl.after, .cl-peek-real, .cl-ph-ctx, .cl-ph-fb, .cl-ph-note, .cl-sc-spot, .cl-sc-out { animation: none; }
           .cl-bar i, .cl-meter i, .cl-knob { transition: none; }
         }
       `}</style>

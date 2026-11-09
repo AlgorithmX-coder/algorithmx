@@ -13,12 +13,13 @@ import { getAwarenessModule } from "../../app/cyber-awareness/manifests";
  * error fails the build. On the inbox it also hovers a sender and a link
  * and checks what is behind them appears. On the phone it answers every
  * notification, checks each one explains itself, and reaches the day's
- * log. A second pass answers every
- * Prove item correctly (found by text, because the options shuffle) and
- * must pass.
+ * log. In a scene it opens every spot in every view, by keyboard as well
+ * as by tap, makes a call on each and checks each one explains itself. A
+ * second pass answers every Prove item correctly (found by text, because
+ * the options shuffle) and must pass.
  */
 
-const MODULES = [1, 2, 3];
+const MODULES = [1, 2, 3, 4];
 const MAX_SCREENS = 40;
 
 function collectErrors(page: Page) {
@@ -53,6 +54,7 @@ async function playThrough(page: Page, query: string, opts: { m: number; answerR
   let peeked = false;
   let phoned = 0;
   let dayLogged = false;
+  let spotted = 0;
   for (let guard = 0; guard < MAX_SCREENS; guard++) {
     await page.waitForTimeout(200);
     const eyebrow = (await page.locator(".cl-eyebrow").first().textContent().catch(() => "")) || "screen";
@@ -108,6 +110,27 @@ async function playThrough(page: Page, query: string, opts: { m: number; answerR
       phoned++;
     }
     if (await page.locator(".cl-ph-log").count()) dayLogged = true;
+    /* The scene: in each view, open every spot (the first by keyboard,
+     * the rest by tap), make the first call, and check it explains itself. */
+    if (await page.locator(".cl-sc").count()) {
+      const tabs = page.locator(".cl-sc-tab");
+      const views = await tabs.count();
+      for (let v = 0; v < views; v++) {
+        await tabs.nth(v).click();
+        for (let k = 0; k < 12 && (await page.locator(".cl-sc-spot:not(.done)").count()); k++) {
+          const spot = page.locator(".cl-sc-spot:not(.done)").first();
+          await expect(spot, "every spot is labelled").toHaveAttribute("aria-label", /^Spot \d+: .{8,}/);
+          if (k === 0) {
+            await spot.focus();
+            await page.keyboard.press("Enter");
+          } else await spot.click();
+          await expect(page.locator(".cl-sc-title"), "opening a spot shows what it is").toBeVisible();
+          await page.locator(".cl-sc-call:not(:disabled)").first().click();
+          await expect(page.locator(".cl-sc-fb").first(), "every spot explains itself").toBeVisible();
+          spotted++;
+        }
+      }
+    }
     /* A prove item: the right answer on the passing run, else the first. */
     if (await page.locator(".cl-opts.col .cl-opt:not(:disabled)").count()) {
       const stem = ((await page.locator(".cl-h1").first().textContent()) ?? "").trim();
@@ -126,7 +149,7 @@ async function playThrough(page: Page, query: string, opts: { m: number; answerR
     await pri.click();
   }
   const stamp = (await page.locator(".cl-stamp").textContent().catch(() => "")) ?? "";
-  return { screens, stuckAt, errors, stamped: (await page.locator(".cl-stamp").count()) > 0, stamp, peeked, phoned, dayLogged };
+  return { screens, stuckAt, errors, stamped: (await page.locator(".cl-stamp").count()) > 0, stamp, peeked, phoned, dayLogged, spotted };
 }
 
 /* Modules whose practice is an inbox, where the walker must have looked behind a sender and a link. */
@@ -135,6 +158,11 @@ const INBOX = new Set(MODULES.filter((m) => getAwarenessModule(m)!.tracks.genera
 const PHONE = new Map(MODULES.flatMap((m) => {
   const pr = getAwarenessModule(m)!.tracks.general!.practise;
   return pr?.kind === "phone" ? [[m, pr.events.length] as const] : [];
+}));
+/* Modules whose practice is a scene: the walker must have opened and called every spot in every view. */
+const SCENE = new Map(MODULES.flatMap((m) => {
+  const pr = getAwarenessModule(m)!.tracks.general!.practise;
+  return pr?.kind === "scene" ? [[m, pr.views.reduce((a, v) => a + v.spots.length, 0)] as const] : [];
 }));
 
 test.describe("Cyber Awareness modules play through to the result", () => {
@@ -151,6 +179,7 @@ test.describe("Cyber Awareness modules play through to the result", () => {
         expect(r.phoned, "answered every notification on the phone").toBe(PHONE.get(m));
         expect(r.dayLogged, "saw the day's log").toBe(true);
       }
+      if (SCENE.has(m)) expect(r.spotted, "opened and called every spot in the scene").toBe(SCENE.get(m));
     });
 
     test(`module ${m}, right answers pass`, async ({ page }) => {
@@ -171,6 +200,7 @@ test.describe("Cyber Awareness modules play through to the result", () => {
         expect(r.phoned).toBe(PHONE.get(m));
         expect(r.dayLogged).toBe(true);
       }
+      if (SCENE.has(m)) expect(r.spotted).toBe(SCENE.get(m));
     });
   }
 });
