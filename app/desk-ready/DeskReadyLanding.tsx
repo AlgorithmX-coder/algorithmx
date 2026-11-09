@@ -777,6 +777,10 @@ export default function DeskReadyLanding({ priceGBP }: { priceGBP: number }) {
         .dr-part-head { display: contents; }
         .dr-part-titles { grid-area: titles; min-width: 0; padding-top: 6px; }
         .dr-part .dr-pv { grid-area: pv; align-self: start; }
+        .dr-part.narrow .dr-pv { width: 136px; }
+        .dr-part.narrow h3 { font-size: clamp(1.2rem, 1.6vw, 1.4rem); }
+        /* beside a screenshot taller than the title, the blurb row takes the slack, so the blurb sits snug under the title */
+        .dr-part:not(.narrow) { grid-template-rows: auto 1fr auto; }
         .dr-part-blurb { grid-area: blurb; }
         .dr-part.narrow { grid-template-areas: "titles pv" "blurb blurb" "mods mods"; }
         /* a narrow card beside its window has no room for the module count */
@@ -813,6 +817,8 @@ ${PREVIEW_CSS}
           .dr-part-cell { grid-column: span 12; }
           .dr-part.narrow { grid-template-areas: "titles pv" "blurb pv" "mods mods"; }
           .dr-part.narrow .dr-part-count { display: inline; }
+          .dr-part.narrow .dr-pv { width: 250px; }
+          .dr-part.narrow { grid-template-rows: auto 1fr auto; }
           .dr-mods { grid-template-columns: repeat(auto-fill, minmax(min(100%, 220px), 1fr)); }
         }
         @media (max-width: 560px) { .dr-final { flex-direction: column; align-items: flex-start; } }
