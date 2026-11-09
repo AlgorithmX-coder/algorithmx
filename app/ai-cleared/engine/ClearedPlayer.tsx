@@ -2233,7 +2233,8 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
         .cl-learner { color: ${K.muted}; font-size: 13px; white-space: nowrap; }
         .cl-exit { color: ${K.ink}; font-size: 13px; text-decoration: none; border: 1px solid ${K.edge}; border-radius: 8px; padding: 5px 10px; }
         .cl-exit:hover { border-color: ${K.accent}; }
-        .cl-desk-btn { display: none; white-space: nowrap; }
+        /* Two classes so it beats .cl-btn's display, declared further down: the dock is already a column on wide screens. */
+        .cl-btn.cl-desk-btn { display: none; white-space: nowrap; }
         .cl-bar { position: relative; z-index: 4; height: 3px; background: ${K.edgeSoft}; }
         .cl-bar i { display: block; height: 100%; background: ${K.grad}; transition: width 300ms ease; box-shadow: 0 0 12px rgba(87,68,201,0.45); }
 
@@ -2599,9 +2600,11 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
         }
         @media (max-width: 900px) {
           .cl-body { grid-template-columns: minmax(0, 1fr); }
-          .cl-dock { display: none; position: fixed; inset: 52px 0 0 0; z-index: 4; height: auto; background: ${K.ground}; border-left: none; }
+          /* align-self: stretch undoes the column's align-self: start, which otherwise shrinks the fixed drawer to its content. */
+          .cl-dock { display: none; position: fixed; inset: 52px 0 0 0; z-index: 4; height: auto; align-self: stretch; background: ${K.ground}; border-left: none; }
           .cl-dock.open { display: block; }
-          .cl-desk-btn { display: inline-flex; }
+          html:has(.cl-dock.open) { overflow: hidden; }
+          .cl-btn.cl-desk-btn { display: inline-flex; }
           .cl-learner, .cl-where { display: none; }
           .cl-stage { padding: 16px 16px 48px; }
           .cl-card { padding: 22px 18px 20px; }
