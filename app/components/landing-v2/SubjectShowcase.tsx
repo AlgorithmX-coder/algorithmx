@@ -62,7 +62,7 @@ const STREAMS: Stream[] = [
   {
     id: "workplace",
     name: "Workplace Skills",
-    ages: "Adults · 1 track live",
+    ages: "Adults · 1 of 4 tracks live",
     status: "LIVE NOW",
     isLive: true,
     blurb:
@@ -743,6 +743,10 @@ interface FeaturedLook {
   emblem: "shield" | "desk";
   strip: { text: string; logo?: { src: string; alt: string } };
   tracks: ReadonlyArray<FeaturedTrack>;
+  /* Tracks on the way, shown as locked, scrambling slots after the live
+   * ones (the roadmap cards' encrypted look): one accent per slot. They
+   * never carry a real name, so nothing about them can leak. */
+  locked?: ReadonlyArray<string>;
 }
 
 const FEATURED: Record<string, FeaturedLook> = {
@@ -831,10 +835,12 @@ const FEATURED: Record<string, FeaturedLook> = {
       "--ssf-cta-glow2": "rgba(91, 140, 240, 0.75)",
     },
     bracket: "#7fb2ff",
-    hud: ["AX // WORK.SKILLS", "STATUS:LIVE · TRACKS:1/1"],
+    hud: ["AX // WORK.SKILLS", "STATUS:LIVE · TRACKS:1/4"],
     emblem: "desk",
     strip: { text: "Practise in a pretend Outlook, Excel and desktop" },
     tracks: WORKPLACE_TRACK_CARDS,
+    /* owner 2026-11-09: three or four more cards, fuzzed out until released */
+    locked: ["#9d8cff", "#5fd0d8", "#ff8fe0"],
   },
 };
 
@@ -843,9 +849,13 @@ const FEATURED: Record<string, FeaturedLook> = {
  * title + blurb, the NCSC alignment strip and four designed track cards that
  * each link to a course. */
 function FeaturedStreamCard({ stream, f }: { stream: Stream; f: FeaturedLook }) {
-  const single = f.tracks.length === 1;
+  const locked = f.locked ?? [];
+  const single = f.tracks.length + locked.length === 1;
+  /* the locked slots scramble only while the card is near the screen */
+  const cardRef = useRef<HTMLElement>(null);
+  const onScreen = useInView(cardRef, { margin: "240px 0px 240px 0px" });
   return (
-    <article className="ssf-card" style={f.vars as CSSProperties}>
+    <article ref={cardRef} className="ssf-card" style={f.vars as CSSProperties}>
       <span aria-hidden className="ssf-grid" />
       <Bracket accent={f.bracket} corner="tl" size={24} off={16} />
       <Bracket accent={f.bracket} corner="tr" size={24} off={16} />
@@ -914,6 +924,8 @@ function FeaturedStreamCard({ stream, f }: { stream: Stream; f: FeaturedLook }) 
                   {t.items.map((it) => (
                     <li key={it.ref} className="ssf-li">
                       <span className="ssf-ref">{it.ref}</span>
+                      {/* a real space, so the line can break between the ref and the name */}
+                      {" "}
                       {it.name}
                     </li>
                   ))}
@@ -922,6 +934,44 @@ function FeaturedStreamCard({ stream, f }: { stream: Stream; f: FeaturedLook }) 
               </div>
             </div>
           ))}
+          {locked.map((accent, j) => {
+            const n = f.tracks.length + j + 1;
+            return (
+              <div
+                key={`locked-${j}`}
+                className="ssf-trk ssf-locked"
+                aria-label="Upcoming track, not yet released"
+                style={{ ["--c" as string]: accent, ["--accent" as string]: accent }}
+              >
+                <span aria-hidden className="ssf-topbar" />
+                <span aria-hidden className="ssf-no">{`0${n}`}</span>
+                <span aria-hidden className="lv2-scanline" style={{ animationDelay: `${-1.4 * (j + 1)}s`, animationPlayState: onScreen ? "running" : "paused" }} />
+                <div className="ssf-trk-a" style={{ display: "flex", flexDirection: "column", padding: "18px 15px 15px" }}>
+                  <span className="ssf-trk-head">
+                    <span className="ssf-badge">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={accent} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                        <path d={LOCK_ICON} />
+                      </svg>
+                    </span>
+                    <span className="ssf-titlebox">
+                      <CipherText length={11} phase={n * 3} active={onScreen} style={{ fontSize: 13, color: "var(--ssf-ink)", fontWeight: 600 }} />
+                      <span className="ssf-verb">Unlocks soon</span>
+                    </span>
+                  </span>
+                  <CipherText length={12} phase={n * 5} active={onScreen} style={{ fontSize: 9, marginTop: 13, color: "var(--ssf-ag)" }} />
+                  <span aria-hidden className="ssf-sep" />
+                  <span className="ssf-list" aria-hidden>
+                    {[17, 21, 15, 19].map((len, k) => (
+                      <CipherText key={k} length={len} phase={n * 7 + k * 11} active={onScreen} style={{ fontSize: 11.5, lineHeight: 1.3, color: "var(--ssf-li)", opacity: 0.6 }} />
+                    ))}
+                  </span>
+                  <span className="ssf-more">
+                    &gt; encrypted until launch<span className="lv2-cipher-caret">_</span>
+                  </span>
+                </div>
+              </div>
+            );
+          })}
         </div>
         {stream.href && (
           <Link href={stream.href} className="ssf-cta">
@@ -1155,6 +1205,20 @@ function FeaturedStreamCard({ stream, f }: { stream: Stream; f: FeaturedLook }) 
             max-width: 100%;
           }
         }
+        /* a track not yet released: same frame, dimmed and frosted, its
+           contents scrambling (the roadmap cards' encrypted look) */
+        .ssf-trk.ssf-locked {
+          background: linear-gradient(180deg, color-mix(in srgb, var(--c) 10%, var(--ssf-trk1)), var(--ssf-trk2));
+          border-style: dashed;
+          border-color: color-mix(in srgb, var(--c) 38%, transparent);
+        }
+        .ssf-locked .ssf-trk-a {
+          filter: blur(0.4px);
+          opacity: 0.88;
+        }
+        .ssf-locked .ssf-topbar {
+          opacity: 0.55;
+        }
         .ssf-trk {
           position: relative;
           border-radius: 16px;
@@ -1270,7 +1334,9 @@ function FeaturedStreamCard({ stream, f }: { stream: Stream; f: FeaturedLook }) 
           font-size: 12px;
           line-height: 1.3;
           color: var(--ssf-li);
-          overflow-wrap: anywhere;
+          /* break only a word too long for a line of its own, never mid-word
+             ("Spreadshe/ets" on phones) */
+          overflow-wrap: break-word;
         }
         .ssf-ref {
           font-family: var(--lv2-font-mono);
@@ -1279,7 +1345,7 @@ function FeaturedStreamCard({ stream, f }: { stream: Stream; f: FeaturedLook }) 
           letter-spacing: 0.06em;
           text-transform: uppercase;
           color: var(--c);
-          margin-right: 6px;
+          margin-right: 2px;
           white-space: nowrap;
         }
         .ssf-more {
