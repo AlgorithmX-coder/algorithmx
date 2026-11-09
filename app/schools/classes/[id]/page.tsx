@@ -150,7 +150,7 @@ export default async function ClassPage({
           </div>
         ) : (
           <>
-            <div className="board">
+            <div className="classboard">
               <div className="boardsay">
                 <h3>Put this on the board</h3>
                 <p>
