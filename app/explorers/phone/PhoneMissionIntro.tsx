@@ -35,9 +35,6 @@ const CSS = `
 .pmi-cta:hover{filter:brightness(1.08)}
 .pmi-cta:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
 @media (prefers-reduced-motion: reduce){.pmi *{animation:none !important;transition:none !important}}
-.pmi-scroll{scrollbar-width:thin;scrollbar-color:var(--acc) transparent}
-.pmi-scroll::-webkit-scrollbar{width:4px}
-.pmi-scroll::-webkit-scrollbar-thumb{background:var(--acc);border-radius:4px}
 /* Laptop-height windows: the full briefing ran ~130px taller than the phone
    card at 1366x620 and showed a scrollbar. Tighten it so it fits; monitors
    (taller than 780px) keep the original spacing. */
