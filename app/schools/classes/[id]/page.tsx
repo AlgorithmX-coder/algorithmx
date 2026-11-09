@@ -8,6 +8,7 @@ import Locked from "../../teach/Locked";
 import AddPupils from "./AddPupils";
 import ClassStrip from "./ClassStrip";
 import SignOut from "../../SignOut";
+import { wordsFor } from "../../words";
 import { removePupilAction, resetPicturesAction } from "../class.actions";
 
 /**
@@ -20,7 +21,7 @@ import { removePupilAction, resetPicturesAction } from "../class.actions";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Class | AlgorithmX for schools",
+  title: "Class | AlgorithmX",
   robots: { index: false, follow: false, nocache: true },
 };
 
@@ -43,6 +44,7 @@ export default async function ClassPage({ params }: { params: Promise<{ id: stri
   const klass = await getClassProgress(school.orgId, id);
   if (!klass) notFound();
 
+  const w = wordsFor(school.kind);
   const left = school.seatsPurchased - school.seatsUsed;
   const waiting = klass.pupils.filter((p) => !p.signedIn).length;
 
@@ -56,20 +58,20 @@ export default async function ClassPage({ params }: { params: Promise<{ id: stri
             </div>
             <div className="sub">
               {klass.courseName}
-              {klass.yearGroup ? ` · year ${klass.yearGroup}` : ""}
-              {` · ${klass.pupils.length} pupil${klass.pupils.length === 1 ? "" : "s"}`}
+              {klass.yearGroup ? ` · ${w.yearLabel.toLowerCase()} ${klass.yearGroup}` : ""}
+              {` · ${klass.pupils.length} ${klass.pupils.length === 1 ? w.person : w.people}`}
             </div>
           </div>
           <div className="modes" role="group" aria-label="Elsewhere">
-            <Link href="/schools/classes" className="axbtn">All classes</Link>
+            <Link href="/schools/classes" className="axbtn">All {w.groups}</Link>
+            <Link href="/schools/teach" className="axbtn">{w.Staff} packs</Link>
             <SignOut />
-            <Link href="/schools/teach" className="axbtn">Teacher packs</Link>
           </div>
         </header>
 
         <p className="whatis">
-          <b>The class code is <code className="axcode">{klass.code}</code>.</b> It goes on every
-          login card in this class. A child types it, picks their name, and taps their picture
+          <b>The {w.group} code is <code className="axcode">{klass.code}</code>.</b> It goes on every
+          login card in this {w.group}. They type it, pick their name, and tap their picture
           password. The first time they sign in they choose that password, so there is nothing for
           you to set up beforehand.
         </p>
@@ -96,18 +98,19 @@ export default async function ClassPage({ params }: { params: Promise<{ id: stri
           </div>
         )}
 
-        <AddPupils classId={id} placesLeft={left} />
+        <AddPupils classId={id} placesLeft={left} w={w} />
 
         {klass.pupils.length === 0 ? (
           <div className="sheet">
             <p className="lede" style={{ margin: 0 }}>
-              Nobody in this class yet. Paste your register above, one first name per line.
+              Nobody in this {w.group} yet. Paste your register above, one first name per line.
             </p>
           </div>
         ) : (
           <div className="sheet">
             <div className="phase">
-              The class &middot; {klass.pupils.length} pupil{klass.pupils.length === 1 ? "" : "s"}
+              The {w.group} &middot; {klass.pupils.length}{" "}
+              {klass.pupils.length === 1 ? w.person : w.people}
             </div>
             {klass.pupils.map((p) => (
               <div key={p.id} className="row prow">
@@ -153,10 +156,10 @@ export default async function ClassPage({ params }: { params: Promise<{ id: stri
         )}
 
         <footer className="note">
-          You can see how a child is getting on. You cannot change it: progress is written by the
-          child playing the week. Removing a pupil deletes their account and their progress with
-          it, and <b>the place stays used</b>, so do it when a child leaves the school, not when
-          they change class or when a name is spelled wrong.
+          You can see how a {w.person} is getting on. You cannot change it: progress is written by
+          them playing the week. Removing a {w.person} deletes their account and their progress
+          with it, and <b>the place stays used</b>, so do it when somebody leaves the {w.noun}, not
+          when they change {w.group} or when a name is spelled wrong.
         </footer>
       </div>
     </div>

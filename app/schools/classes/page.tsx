@@ -11,6 +11,7 @@ import TrialEnded from "../TrialEnded";
 import AccessClosed from "../AccessClosed";
 import NewClass from "./NewClass";
 import SignOut from "../SignOut";
+import { wordsFor } from "../words";
 
 /**
  * A teacher's classes.
@@ -21,7 +22,10 @@ import SignOut from "../SignOut";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Classes | AlgorithmX for schools",
+  /* Not "for schools": metadata runs before we know whether this is a
+     school or a youth organisation, and two queries for a browser tab is
+     not a trade worth making. Saying neither is true for both. */
+  title: "Classes | AlgorithmX",
   /* a list of children's first names is never indexed */
   robots: { index: false, follow: false, nocache: true },
 };
@@ -44,6 +48,7 @@ export default async function ClassesPage() {
        bouncing off a link they were shown is worse than no link. */
     getHeadContext(session.user.id),
   ]);
+  const w = wordsFor(school.kind);
   const left = school.seatsPurchased - school.seatsUsed;
   /* A trial is not a small licence, and must never be described as one. */
   const onTrial = trialStatus(school.trialExpiresAt) === "active";
@@ -56,7 +61,7 @@ export default async function ClassesPage() {
       <div className="wrap">
         <header className="top">
           <div>
-            <div className="brand">{school.orgName} &middot; <i>Classes</i></div>
+            <div className="brand">{school.orgName} &middot; <i>{w.Groups}</i></div>
             <div className="sub">
               {onTrial
                 ? `Trial · ends ${trialEnds} · ${school.seatsUsed} of ${school.seatsPurchased} places used`
@@ -67,41 +72,41 @@ export default async function ClassesPage() {
             </div>
           </div>
           <div className="modes" role="group" aria-label="Elsewhere">
-            {head && <Link href="/schools/overview" className="axbtn">School overview</Link>}
-            <Link href="/schools/teach" className="axbtn">Teacher packs</Link>
+            {head && <Link href="/schools/overview" className="axbtn">{w.Noun} overview</Link>}
+            <Link href="/schools/teach" className="axbtn">{w.Staff} packs</Link>
             <SignOut />
           </div>
         </header>
 
         <p className="whatis">
-          <b>Make a class, then add your pupils by first name.</b> Each child gets their own login
-          card with the class code on it. They pick their name from the list and tap a picture
-          password, so nobody has to remember an email address or type one.
+          <b>Make a {w.group}, then add your {w.people} by first name.</b> Each {w.person} gets their
+          own login card with the {w.group} code on it. They pick their name from the list and tap a
+          picture password, so nobody has to remember an email address or type one.
         </p>
 
-        <NewClass placesLeft={left} courses={courses} onTrial={onTrial} trialEnds={trialEnds} />
+        <NewClass placesLeft={left} courses={courses} onTrial={onTrial} trialEnds={trialEnds} w={w} />
 
         {classes.length === 0 ? (
           <div className="sheet">
             <p className="lede" style={{ margin: 0 }}>
-              No classes yet. Make the first one above, and you can add the children straight after.
+              No {w.groups} yet. Make the first one above, and you can add the {w.people} straight after.
             </p>
           </div>
         ) : (
           <div className="sheet">
-            <div className="phase">Your classes</div>
+            <div className="phase">Your {w.groups}</div>
             {classes.map((c) => (
               <div key={c.id} className="row">
                 <span className="rn">{c.yearGroup ?? ""}</span>
                 <div className="rb">
                   <Link href={`/schools/classes/${c.id}`}>{c.name}</Link>
                   <small className="s-say">
-                    {c.product.name} &middot; {c._count.pupils} pupil
-                    {c._count.pupils === 1 ? "" : "s"}
+                    {c.product.name} &middot; {c._count.pupils}{" "}
+                    {c._count.pupils === 1 ? w.person : w.people}
                   </small>
                 </div>
                 <div className="rs">
-                  <p>Class code <code className="axcode">{c.code}</code></p>
+                  <p>{w.Group} code <code className="axcode">{c.code}</code></p>
                 </div>
               </div>
             ))}
@@ -109,8 +114,8 @@ export default async function ClassesPage() {
         )}
 
         <footer className="note">
-          A pupil account holds a first name, a colour and a class. No surname, no date of birth,
-          no email address, and nothing a child has to remember except which picture comes first.
+          An account holds a first name, a colour and a {w.group}. No surname, no date of birth, no
+          email address, and nothing they have to remember except which picture comes first.
         </footer>
       </div>
     </div>

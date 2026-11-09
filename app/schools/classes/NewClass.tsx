@@ -2,6 +2,7 @@
 
 import { useRef, useState, useTransition } from "react";
 import { createClassAction } from "./class.actions";
+import type { SchoolWords } from "../words";
 
 /**
  * Make a class.
@@ -28,11 +29,14 @@ export default function NewClass({
   courses,
   onTrial = false,
   trialEnds = null,
+  w,
 }: {
   placesLeft: number;
   courses: readonly CourseChoice[];
   onTrial?: boolean;
   trialEnds?: string | null;
+  /* A youth project runs groups of young people, not classes of pupils. */
+  w: SchoolWords;
 }) {
   const [pending, start] = useTransition();
   const [said, setSaid] = useState<{ ok: boolean; text: string } | null>(null);
@@ -42,31 +46,31 @@ export default function NewClass({
     setSaid(null);
     start(async () => {
       const res = await createClassAction(fd);
-      setSaid(res.ok ? { ok: true, text: res.message ?? "Class created." } : { ok: false, text: res.error });
+      setSaid(res.ok ? { ok: true, text: res.message ?? `${w.Group} created.` } : { ok: false, text: res.error });
       if (res.ok) form.current?.reset();
     });
   };
 
   return (
     <div className="share">
-      <h3>Make a class</h3>
+      <h3>Make a {w.group}</h3>
       <p className="sharelede">
         {placesLeft > 0
           ? onTrial
             ? `Your trial has ${placesLeft} place${placesLeft === 1 ? "" : "s"} to try with${trialEnds ? `, until ${trialEnds}` : ""}.`
             : `Your licence has ${placesLeft} place${placesLeft === 1 ? "" : "s"} left.`
           : onTrial
-            ? "Your trial places are all used. You can still make a class, but you will not be able to add pupils to it."
-            : "Your licence is full. You can still make a class, but you will not be able to add pupils to it."}
+            ? `Your trial places are all used. You can still make a ${w.group}, but you will not be able to add ${w.people} to it.`
+            : `Your licence is full. You can still make a ${w.group}, but you will not be able to add ${w.people} to it.`}
       </p>
 
       <form ref={form} action={submit} className="sharerow">
         <label className="grow">
-          <span>What the class is called</span>
+          <span>What the {w.group} is called</span>
           <input name="name" placeholder="4B" maxLength={40} required />
         </label>
         <label>
-          <span>Year group</span>
+          <span>{w.yearLabel}</span>
           <input name="yearGroup" type="number" min={1} max={13} placeholder="4" />
         </label>
         <label className="grow">
@@ -79,7 +83,7 @@ export default function NewClass({
             ))}
           </select>
         </label>
-        <button type="submit" disabled={pending}>{pending ? "Making…" : "Make the class"}</button>
+        <button type="submit" disabled={pending}>{pending ? "Making…" : `Make the ${w.group}`}</button>
       </form>
 
       {said && (

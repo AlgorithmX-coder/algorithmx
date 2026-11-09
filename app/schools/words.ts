@@ -20,6 +20,10 @@ export interface SchoolWords {
   /** The buyer. "School" / "Organisation". */
   Noun: string;
   noun: string;
+  /** The article `noun` takes. One of these words starts with a vowel,
+      and "a organisation" in front of a customer is the whole reason
+      this file exists. */
+  an: string;
   /** The children. "pupils" / "young people". */
   people: string;
   person: string;
@@ -27,24 +31,34 @@ export interface SchoolWords {
   Group: string;
   group: string;
   groups: string;
+  Groups: string;
   /** The adults who run them. "teacher" / "leader". */
   Staff: string;
   staff: string;
   staffs: string;
   /** The person who holds the licence, for the one line that names them. */
   head: string;
-  /** What a class is grouped by, where a school says "Year 4". */
+  /**
+   * What a group is numbered by, where a school says "Year 4".
+   *
+   * NOT an age. The field behind it is a whole number from 1 to 13, which
+   * is a school year; labelling it "Age" put a word on the box that the
+   * box contradicts, and a youth leader typing the real age of a fifteen
+   * year old would have been refused.
+   */
   yearLabel: string;
 }
 
 export const SCHOOL_WORDS: SchoolWords = {
   Noun: "School",
   noun: "school",
+  an: "a",
   people: "pupils",
   person: "pupil",
   Group: "Class",
   group: "class",
   groups: "classes",
+  Groups: "Classes",
   Staff: "Teacher",
   staff: "teacher",
   staffs: "teachers",
@@ -55,18 +69,18 @@ export const SCHOOL_WORDS: SchoolWords = {
 export const ORGANISATION_WORDS: SchoolWords = {
   Noun: "Organisation",
   noun: "organisation",
+  an: "an",
   people: "young people",
   person: "young person",
   Group: "Group",
   group: "group",
   groups: "groups",
+  Groups: "Groups",
   Staff: "Leader",
   staff: "leader",
   staffs: "leaders",
   head: "lead",
-  /* A youth club's Thursday group is not "Year 7", but the field behind it
-     is the same one, so the label changes and the data does not. */
-  yearLabel: "Age",
+  yearLabel: "Level",
 };
 
 export function wordsFor(kind: LearnerOrgKind | null | undefined): SchoolWords {

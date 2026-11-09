@@ -2,6 +2,7 @@ import { randomInt } from "crypto";
 import { prisma } from "@/app/lib/prisma";
 import bcrypt from "bcryptjs";
 import { isSchoolCourse, placesUsed } from "@/app/lib/schoolPlaces";
+import type { LearnerOrgKind } from "@prisma/client";
 
 /**
  * Classes and pupils.
@@ -43,6 +44,10 @@ export type ClassFailure =
 export interface SchoolContext {
   orgId: string;
   orgName: string;
+  /* SCHOOL or ORGANISATION. Carried so the screens under this can say
+     "groups" and "young people" to a youth project rather than
+     "classes" and "pupils". See app/schools/words.ts. */
+  kind: LearnerOrgKind;
   seatsPurchased: number;
   seatsUsed: number;
   /* Set only while this school is on a staff-granted trial; null for a
@@ -63,7 +68,7 @@ export async function getSchoolContext(userId: string): Promise<SchoolContext | 
   if (!userId) return null;
   const member = await prisma.orgMember.findFirst({
     where: { userId, role: { in: ["ADMIN", "MANAGER"] }, org: { school: { isNot: null } } },
-    select: { org: { select: { id: true, name: true, seatsPurchased: true, trialExpiresAt: true, revokedAt: true } } },
+    select: { org: { select: { id: true, name: true, seatsPurchased: true, trialExpiresAt: true, revokedAt: true, school: { select: { kind: true } } } } },
   });
   if (!member) return null;
   /* The ledger, not a head count of pupils in live classes. A place spent is
@@ -73,6 +78,9 @@ export async function getSchoolContext(userId: string): Promise<SchoolContext | 
   return {
     orgId: member.org.id,
     orgName: member.org.name,
+    /* The where clause above requires a SchoolProfile, so this is never
+       null; SCHOOL is the safe reading if that ever changes. */
+    kind: member.org.school?.kind ?? "SCHOOL",
     seatsPurchased: member.org.seatsPurchased,
     seatsUsed,
     trialExpiresAt: member.org.trialExpiresAt,

@@ -2,6 +2,7 @@
 
 import { useRef, useState, useTransition } from "react";
 import { addPupilsAction } from "../class.actions";
+import type { SchoolWords } from "../../words";
 
 /**
  * Put children in a class, by first name.
@@ -14,7 +15,7 @@ import { addPupilsAction } from "../class.actions";
  * First names only, said out loud in the label and meant: a surname is not
  * needed to run the lesson and we would rather not hold one.
  */
-export default function AddPupils({ classId, placesLeft }: { classId: string; placesLeft: number }) {
+export default function AddPupils({ classId, placesLeft, w }: { classId: string; placesLeft: number; /* groups of young people, not classes of pupils */ w: SchoolWords }) {
   const [pending, start] = useTransition();
   const [said, setSaid] = useState<{ ok: boolean; text: string } | null>(null);
   const [count, setCount] = useState(0);
@@ -36,7 +37,7 @@ export default function AddPupils({ classId, placesLeft }: { classId: string; pl
 
   return (
     <div className="share">
-      <h3>Add pupils</h3>
+      <h3>Add {w.people}</h3>
       <p className="sharelede">
         One first name per line. Paste your register straight in: commas and line breaks both
         work. <b>First names only</b>, no surnames.
@@ -55,7 +56,7 @@ export default function AddPupils({ classId, placesLeft }: { classId: string; pl
         </label>
         <div className="sharerow" style={{ marginTop: 10 }}>
           <button type="submit" disabled={pending || count === 0 || over}>
-            {pending ? "Adding…" : count === 0 ? "Add pupils" : `Add ${count} pupil${count === 1 ? "" : "s"}`}
+            {pending ? "Adding…" : count === 0 ? `Add ${w.people}` : `Add ${count} ${count === 1 ? w.person : w.people}`}
           </button>
           <span className="pupilcount">
             {over
