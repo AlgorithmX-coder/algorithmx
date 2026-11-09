@@ -27,7 +27,7 @@ export interface SecuredTrack {
 export const SECURED_TRACKS: readonly SecuredTrack[] = [
   { slug: "ai-cleared", name: "AI Cleared", base: "/ai-cleared", line: "using AI tools safely at work, about ninety minutes", live: true },
   { slug: "ai-fluent", name: "AI Fluent", base: "/ai-fluent", line: "getting real work out of them, about three hours", live: true },
-  { slug: "cyber-awareness", name: "Cyber Awareness", base: "/cyber-awareness", line: "spotting the attacks aimed at staff, about two hours", live: false },
+  { slug: "cyber-awareness", name: "Cyber Awareness", base: "/cyber-awareness", line: "spotting the attacks aimed at staff, about two hours", live: true },
 ];
 
 export const SECURED_TRACK_SLUGS: readonly SecuredTrackSlug[] = SECURED_TRACKS.map((t) => t.slug);
