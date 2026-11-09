@@ -8,10 +8,8 @@ import Frame from "@/app/ai-cleared/Frame";
 import ConsoleHome from "@/app/ai-cleared/ConsoleHome";
 
 /* /cyber-awareness: the Cyber Awareness course home. Gated by the
- * entitlement, same as AI Cleared and AI Fluent. Phase 1 plumbing only:
- * every module is listed as coming (see ./manifests), so a claimed seat
- * always lands on the "modules open as they are released" state until
- * the content ships in a later pass. */
+ * entitlement, same as AI Cleared and AI Fluent. Modules ship one at a
+ * time (see ./manifests): released ones open, the rest show as coming. */
 export const dynamic = "force-dynamic";
 
 export default async function CyberAwarenessHome() {

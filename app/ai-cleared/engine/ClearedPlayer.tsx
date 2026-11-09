@@ -19,6 +19,7 @@ import {
   type LearnScreen,
   type LoopPractise,
   type ModuleManifest,
+  type MomentsPractise,
   type Phase,
   type Practise,
   type ProveItem,
@@ -90,6 +91,8 @@ type Screen =
   | { kind: "spot"; p: number; phase: "practise" }
   | { kind: "srcs"; p: number; phase: "practise" }
   | { kind: "playbook"; p: number; phase: "practise" }
+  /* Cyber Awareness: spot the moment, indexed by practice `p`. */
+  | { kind: "moments"; p: number; phase: "practise" }
   | { kind: "prove"; i: number; phase: "prove" }
   | { kind: "result"; phase: "done" };
 
@@ -160,6 +163,17 @@ function drawFinal(manifest: ModuleManifest, trackProve: ProveItem[]): ProveItem
     round++;
   }
   return shuffle([...fromTrack, ...shared]);
+}
+
+/* Each choose item's options in a fresh random order, the answer index
+ * moved with its option. Only for a manifest that asks (shuffleOptions);
+ * called from state initialisers and the retry, never from a memo. */
+function shuffleChoices(items: ProveItem[]): ProveItem[] {
+  return items.map((q) => {
+    if (q.kind !== "choose") return q;
+    const order = shuffle(q.options.map((_, i) => i));
+    return { ...q, options: order.map((i) => q.options[i]), answer: order.indexOf(q.answer) };
+  });
 }
 
 /* ---------- small pieces ---------- */
@@ -350,9 +364,15 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
   const course = manifest.course ?? "ai-cleared";
   const courseDef = COURSES[course];
   const fluent = course === "ai-fluent";
+  /* "cleared" is AI Cleared's word; the other courses say "done". */
+  const doneWord = course === "ai-cleared" ? "cleared" : "done";
 
   /* the prove set: the track's bank, or a fresh draw for the final */
-  const [proveSet, setProveSet] = useState<ProveItem[]>(() => drawFinal(manifest, block.prove));
+  const drawProve = () => {
+    const drawn = drawFinal(manifest, block.prove);
+    return manifest.shuffleOptions ? shuffleChoices(drawn) : drawn;
+  };
+  const [proveSet, setProveSet] = useState<ProveItem[]>(drawProve);
 
   const screens = useMemo<Screen[]>(() => {
     const out: Screen[] = manifest.learn.map((_, i) => ({ kind: "learn", i, phase: "learn" }));
@@ -375,6 +395,8 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
         out.push({ kind: "spot", p, phase: "practise" });
       } else if (pr.kind === "sources") {
         out.push({ kind: "srcs", p, phase: "practise" });
+      } else if (pr.kind === "moments") {
+        out.push({ kind: "moments", p, phase: "practise" });
       }
     });
     proveSet.forEach((_, i) => out.push({ kind: "prove", i, phase: "prove" }));
@@ -406,6 +428,9 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
   const [srcState, setSrcState] = useState<Record<number, { asked: boolean; text: string; pending: boolean; picked: number | null }>>({});
   const [playbookDraft, setPlaybookDraft] = useState<{ prompt: string; whenToUse: string; check: string } | null>(null);
   const [playbookSaved, setPlaybookSaved] = useState<"idle" | "saving" | "saved" | "failed">("idle");
+  /* Cyber Awareness moments: per practice, the flagged moments and the
+   * pressure button named for each. */
+  const [momentPicks, setMomentPicks] = useState<Record<number, Record<number, { lever?: string }>>>({});
   const bestFluentRank = useRef(99);
   const [bestFluent, setBestFluent] = useState<FluentVerdict | undefined>(undefined);
   /* one-action practises: answer per item */
@@ -567,7 +592,7 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
   };
 
   const retryProve = () => {
-    const fresh = drawFinal(manifest, block.prove);
+    const fresh = drawProve();
     setProveSet(fresh);
     setProveAnswers(fresh.map(() => null));
     go(startOf("prove"));
@@ -679,7 +704,7 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
   const pct = Math.round(((cur + 1) / screens.length) * 100);
   const phaseIdx = (["learn", "practise", "prove", "done"] as Phase[]).indexOf(screen.phase);
   const practiseSub = (pr: Practise): string =>
-    pr.kind === "sandbox" ? "in the simulator" : pr.kind === "sort" ? "which tier is this" : pr.kind === "situations" ? "ten situations" : pr.kind === "inspect" ? "a document to check" : pr.kind === "triage" ? "six incidents" : pr.kind === "loop" ? `${pr.turns.length} send${pr.turns.length === 1 ? "" : "s"}, scored on the rubric` : pr.kind === "spot" ? "find the planted mistake" : "check the sources";
+    pr.kind === "sandbox" ? "in the simulator" : pr.kind === "sort" ? "which tier is this" : pr.kind === "situations" ? "ten situations" : pr.kind === "inspect" ? "a document to check" : pr.kind === "triage" ? "six incidents" : pr.kind === "loop" ? `${pr.turns.length} send${pr.turns.length === 1 ? "" : "s"}, scored on the rubric` : pr.kind === "spot" ? "find the planted mistake" : pr.kind === "moments" ? "spot the moment" : "check the sources";
   const PHASES: { key: Phase; label: string; sub: string }[] = [
     { key: "learn", label: "Learn", sub: "the idea" },
     { key: "practise", label: "Practise", sub: practises.map(practiseSub).join(", then ") },
@@ -863,10 +888,18 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
                   <p>{t(c.body)}</p>
                   {c.detail && open && <p className="cl-card-detail">{t(c.detail)}</p>}
                   {c.link && open && <a className="cl-card-link" href={c.link.href} target="_blank" rel="noopener noreferrer">{c.link.label} ↗</a>}
+                  {c.sources && open && (
+                    <span className="cl-card-srcs">
+                      <span className="cl-card-srcs-h">Sources</span>
+                      {c.sources.map((s) => <a key={s.href} className="cl-card-link" href={s.href} target="_blank" rel="noopener noreferrer">{s.label} ↗</a>)}
+                    </span>
+                  )}
                   {c.detail && !open && <span className="cl-card-more">Tap to reveal</span>}
                 </>
               );
-              return L.reveal && c.detail ? (
+              /* An opened card with sources becomes a plain block: links may
+               * not sit inside a button. */
+              return L.reveal && c.detail && !(open && c.sources) ? (
                 <button key={i} type="button" className={`cl-cardbtn ${open ? "open" : ""}`} style={{ borderTopColor: colour }} onClick={() => setSt({ opened: opened.includes(i) ? opened : [...opened, i] })}>
                   {inner}
                 </button>
@@ -1483,6 +1516,71 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
         </div>
       </>
     );
+  } else if (screen.kind === "moments" && practises[screen.p]?.kind === "moments") {
+    const mp = practises[screen.p] as MomentsPractise;
+    const p = screen.p;
+    const st = momentPicks[p] ?? {};
+    const setOne = (i: number, v: { lever?: string }) => setMomentPicks((all) => ({ ...all, [p]: { ...(all[p] ?? {}), [i]: v } }));
+    const targets = mp.moments.flatMap((m, i) => (m.levers?.length ? [i] : []));
+    const found = targets.filter((i) => st[i]).length;
+    const named = targets.filter((i) => st[i]?.lever).length;
+    const falseAlarms = mp.moments.filter((m, i) => !m.levers?.length && st[i]).length;
+    const done = named === targets.length;
+    stage = (
+      <>
+        <Eyebrow>Practise · spot the moment</Eyebrow>
+        <div className="cl-task"><span className="cl-label">Your task</span><p>{t(mp.task)}</p></div>
+        {mp.scene && <p className="cl-p">{t(mp.scene)}</p>}
+        <ol className="cl-moments">
+          {mp.moments.map((m, i) => {
+            const pick = st[i];
+            const target = !!m.levers?.length;
+            const accepted = m.levers ?? [];
+            const right = !!pick?.lever && accepted.includes(pick.lever);
+            const state = !pick ? "" : !target ? "clear" : !pick.lever ? "flagged" : right ? "right" : "wrong";
+            return (
+              <li key={i} className={`cl-mo ${state}`}>
+                <div className="cl-mo-head">
+                  <span className="cl-mo-time">{m.time}</span>
+                  <span className="cl-mo-where">{t(m.where)}</span>
+                  <b className="cl-mo-from">{t(m.from)}</b>
+                </div>
+                <p className="cl-mo-text">{t(m.text)}</p>
+                {!pick && <button type="button" className="cl-mo-flag" onClick={() => setOne(i, {})}>Flag this moment</button>}
+                {pick && !target && <div className="cl-fb"><b>Nothing to flag here.</b> {t(m.why)}</div>}
+                {pick && target && (
+                  <div className="cl-mo-ask">
+                    <div className="cl-q">{pick.lever ? "The pressure button" : "Good catch. Which pressure button is it pressing?"}</div>
+                    <div className="cl-opts">
+                      {mp.levers.map((l) => {
+                        const s = !pick.lever ? "" : accepted.includes(l.id) ? "right" : l.id === pick.lever ? "wrong" : "";
+                        return (
+                          <button key={l.id} type="button" title={t(l.desc)} disabled={!!pick.lever} className={`cl-opt ${s}`} onClick={() => setOne(i, { lever: l.id })}>{l.label}</button>
+                        );
+                      })}
+                    </div>
+                    {pick.lever && (
+                      <div className="cl-fb">
+                        <b>{right ? "Correct." : "Not quite."}</b> {t(m.why)}
+                      </div>
+                    )}
+                  </div>
+                )}
+              </li>
+            );
+          })}
+        </ol>
+        <div className="cl-nav">
+          <Btn onClick={back}>Back</Btn>
+          <span className="cl-hint">
+            {done
+              ? `All ${targets.length} found.${falseAlarms ? ` ${falseAlarms} false alarm${falseAlarms > 1 ? "s" : ""}, which is fine.` : ""}`
+              : found > named ? `${found} of ${targets.length} found. Name each button.` : `${found} of ${targets.length} found`}
+          </span>
+          <Btn primary disabled={!done} onClick={next}>Continue to Prove</Btn>
+        </div>
+      </>
+    );
   } else if (screen.kind === "prove") {
     const q = proveSet[screen.i];
     const picked = proveAnswers[screen.i];
@@ -1539,12 +1637,14 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
     const doneCount = courseMap.filter((m) => m.done || (m.n === manifest.n && passed)).length;
     const total = courseMap.length;
     const courseDone = passed && courseMap.filter((m) => m.available).every((m) => m.done || m.n === manifest.n);
-    const doneWord = fluent ? "done" : "cleared";
+    /* Another module is open to go on to; false only while the rest of a
+     * course is still being released (every module is out on Cleared and Fluent). */
+    const nextOpen = !courseMap.some((m) => !m.available) || courseMap.some((m) => m.available && !m.done && m.n !== manifest.n);
     stage = (
       <>
-        <span className="cl-stamp" style={{ color: passed ? K.ok : K.warn, borderColor: passed ? K.ok : K.warn }}>{passed ? (isFinal ? `Course ${fluent ? "complete" : "cleared"}` : `Module ${doneWord}`) : `Not yet ${doneWord}`}</span>
+        <span className="cl-stamp" style={{ color: passed ? K.ok : K.warn, borderColor: passed ? K.ok : K.warn }}>{passed ? (isFinal ? `Course ${course === "ai-cleared" ? "cleared" : "complete"}` : `Module ${doneWord}`) : `Not yet ${doneWord}`}</span>
         <Eyebrow>Module {manifest.n} · {manifest.title}</Eyebrow>
-        <h1 className="cl-h1">{passed ? (fluent ? "Done, " : "Cleared, ") : "Not yet, "}{correct} of {proveSet.length}</h1>
+        <h1 className="cl-h1">{passed ? (course === "ai-cleared" ? "Cleared, " : "Done, ") : "Not yet, "}{correct} of {proveSet.length}</h1>
         <p className="cl-lead">
           {passed
             ? isFinal
@@ -1560,13 +1660,13 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
                   : `You answered ${correct} of ${proveSet.length} correctly. This module's score is on your record.`
             : `Pass mark is ${manifest.passMark} of ${proveSet.length}. ${isFinal ? "A retake draws a different set of questions." : "Go back over the Learn screens and try again."} Nothing is recorded until you pass.`}
         </p>
-        <div className="cl-label" style={{ marginTop: 22 }}>Progress to your {courseDef.doneName} certificate</div>
+        <div className="cl-label" style={{ marginTop: 22 }}>{courseDef.certificate ? `Progress to your ${courseDef.doneName} certificate` : `Progress through ${courseDef.name}`}</div>
         <div className="cl-meter"><i style={{ width: `${(doneCount / total) * 100}%` }} /></div>
-        <div className="cl-hint">{doneCount} of {total} modules · {TRACK_LABEL[track]} track</div>
+        <div className="cl-hint">{doneCount} of {total} modules{course === "cyber-awareness" ? "" : ` · ${TRACK_LABEL[track]} track`}</div>
         <div className="cl-nav">
           {passed ? (
             <>
-              <span className="cl-hint">{isFinal ? "Thank you. The habits are the point; the certificate is the receipt." : "The next module is waiting on the course page."}</span>
+              <span className="cl-hint">{isFinal ? "Thank you. The habits are the point; the certificate is the receipt." : nextOpen ? "The next module is waiting on the course page." : "The next module opens on your course page when it is released."}</span>
               <Link href={courseDef.base} className="cl-btn cl-btn-pri">Back to your course</Link>
             </>
           ) : (
@@ -1603,19 +1703,30 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
           ))}
         </div>
       )}
-      <div className="cl-dock-sec">
-        <div className="cl-label">{firm.name}&rsquo;s rules</div>
-        <p><b>Approved:</b> {firm.approvedTools.join(", ") || "none listed yet"}.</p>
-        {firm.askFirstTools.length > 0 && <p><b>Ask first:</b> {firm.askFirstTools.join(", ")}.</p>}
-        <p><b>Not allowed:</b> {firm.bannedTools.join(", ") || "none listed yet"}.</p>
-        <p><b>Ask:</b> {firm.contactName}{firm.contactRole ? `, ${firm.contactRole}` : ""}.</p>
-      </div>
-      <div className="cl-dock-sec">
-        <div className="cl-label">The four classes</div>
-        <div className="cl-classes">
-          {(["P", "I", "C", "R"] as DataClass[]).map((c) => <Tag key={c} cls={c} names={names} small />)}
-        </div>
-      </div>
+      {manifest.dock ? (
+        manifest.dock.map((sec) => (
+          <div key={sec.label} className="cl-dock-sec">
+            <div className="cl-label">{t(sec.label)}</div>
+            {sec.lines.map((line, i) => <p key={i}>{t(line)}</p>)}
+          </div>
+        ))
+      ) : (
+        <>
+          <div className="cl-dock-sec">
+            <div className="cl-label">{firm.name}&rsquo;s rules</div>
+            <p><b>Approved:</b> {firm.approvedTools.join(", ") || "none listed yet"}.</p>
+            {firm.askFirstTools.length > 0 && <p><b>Ask first:</b> {firm.askFirstTools.join(", ")}.</p>}
+            <p><b>Not allowed:</b> {firm.bannedTools.join(", ") || "none listed yet"}.</p>
+            <p><b>Ask:</b> {firm.contactName}{firm.contactRole ? `, ${firm.contactRole}` : ""}.</p>
+          </div>
+          <div className="cl-dock-sec">
+            <div className="cl-label">The four classes</div>
+            <div className="cl-classes">
+              {(["P", "I", "C", "R"] as DataClass[]).map((c) => <Tag key={c} cls={c} names={names} small />)}
+            </div>
+          </div>
+        </>
+      )}
     </>
   );
 
@@ -1665,7 +1776,7 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
               );
             })}
           </ol>
-          <div className="cl-pct">{pct}% {fluent ? "done" : "cleared"}</div>
+          <div className="cl-pct">{pct}% {doneWord}</div>
         </aside>
 
         <main className="cl-stage" key={cur}>
@@ -1769,6 +1880,25 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
         .cl-card-detail { color: ${K.ink}; border-top: 1px solid ${K.edgeSoft}; padding-top: 8px; margin-top: 4px; animation: cl-in 250ms ease both; overflow-wrap: anywhere; }
         .cl-card-link { color: ${K.accentInk}; font-size: 13.5px; text-decoration: underline; text-underline-offset: 3px; overflow-wrap: anywhere; }
         .cl-card-more { font-family: ${K.mono}; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: ${K.accentInk}; margin-top: 4px; }
+        .cl-card-srcs { display: flex; flex-direction: column; gap: 4px; margin-top: 4px; padding-top: 8px; border-top: 1px solid ${K.edgeSoft}; }
+        .cl-card-srcs-h { font-family: ${K.mono}; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: ${K.faint}; }
+
+        .cl-moments { list-style: none; margin: 4px 0 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+        .cl-mo { border: 1px solid ${K.edge}; border-left: 3px solid ${K.edge}; border-radius: 10px; padding: 12px 14px; background: ${K.panelRaise}; }
+        .cl-mo.flagged { border-left-color: ${K.accent}; }
+        .cl-mo.right { border-left-color: ${K.ok}; }
+        .cl-mo.wrong { border-left-color: ${K.warn}; }
+        .cl-mo.clear { border-left-color: ${K.faint}; }
+        .cl-mo-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; margin-bottom: 4px; }
+        .cl-mo-time { font-family: ${K.mono}; font-size: 12px; color: ${K.muted}; }
+        .cl-mo-where { font-family: ${K.mono}; font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: ${K.accentInk}; border: 1px solid ${K.edge}; border-radius: 4px; padding: 1px 6px; }
+        .cl-mo-from { color: ${K.ink}; font-size: 14px; font-weight: 600; overflow-wrap: anywhere; }
+        .cl-mo-text { margin: 0; color: ${K.body}; font-size: 14.5px; line-height: 1.55; }
+        .cl-mo-flag { font: inherit; font-size: 13px; font-weight: 600; color: ${K.accentInk}; background: transparent; border: 1px solid ${K.edge}; border-radius: 8px; padding: 6px 11px; margin-top: 10px; cursor: pointer; }
+        .cl-mo-flag:hover { border-color: ${K.accent}; }
+        .cl-mo-ask { margin-top: 10px; padding-top: 10px; border-top: 1px solid ${K.edgeSoft}; }
+        .cl-mo-ask .cl-q { font-size: 14px; }
+        .cl-mo .cl-fb { margin-top: 10px; }
 
         .cl-toggles { display: flex; flex-direction: column; gap: 12px; margin-top: 12px; }
         .cl-toggle { display: flex; gap: 14px; align-items: flex-start; border: 1px solid ${K.edge}; border-radius: 10px; padding: 14px; background: ${K.panelRaise}; }

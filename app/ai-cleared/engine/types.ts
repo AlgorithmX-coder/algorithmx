@@ -134,6 +134,9 @@ export interface LearnCard {
   sim?: SimRef;
   /* An outbound page, opened in a new tab. */
   link?: { label: string; href: string };
+  /* The published reports a real case is drawn from, listed under the
+   * detail once it is open. Each opens in a new tab. */
+  sources?: { label: string; href: string }[];
 }
 
 export type LearnScreen =
@@ -445,7 +448,38 @@ export interface SourcesPractise {
   sources: { label: string; real: boolean; note: string }[];
 }
 
-export type Practise = SandboxPractise | SortPractise | SituationsPractise | TriagePractise | InspectPractise | LoopPractise | SpotPractise | SourcesPractise;
+/* ---- Cyber Awareness practices ---- */
+
+/* A working morning, one moment after another (an email, a call, a
+ * visitor, a chat message). The learner flags the moments where someone
+ * was working on them and names the pressure button each one pressed.
+ * A moment with `levers` is one of those: the ids it lists are the
+ * buttons accepted as right, the first being the main one. Every other
+ * moment is ordinary, and flagging it only shows why. */
+export interface PressureLever {
+  id: string;
+  label: string;
+  desc: string;
+}
+export interface Moment {
+  time: string;
+  /* Where it arrived: "Email", "Phone call", "Reception", "Teams". */
+  where: string;
+  from: string;
+  text: string;
+  levers?: string[];
+  why: string;
+}
+export interface MomentsPractise {
+  kind: "moments";
+  task: string;
+  /* One line that sets the morning up. */
+  scene?: string;
+  levers: PressureLever[];
+  moments: Moment[];
+}
+
+export type Practise = SandboxPractise | SortPractise | SituationsPractise | TriagePractise | InspectPractise | LoopPractise | SpotPractise | SourcesPractise | MomentsPractise;
 
 /* ---- Prove ---- */
 
@@ -476,7 +510,15 @@ export interface ModuleManifest {
   minutes: number;
   promise: string;
   /* Which course the module belongs to; AI Cleared when absent. */
-  course?: "ai-cleared" | "ai-fluent";
+  course?: "ai-cleared" | "ai-fluent" | "cyber-awareness";
+  /* Shuffle each choose item's options once per attempt (held in state,
+   * so a re-render never reorders them) so the right answer has no fixed
+   * place. Absent = the authored order, which AI Cleared and AI Fluent use. */
+  shuffleOptions?: boolean;
+  /* What the dock (the right-hand column; the Desk drawer on a phone)
+   * shows instead of the firm's AI tool rules and the four data classes,
+   * for a course where those do not apply. Lines take {{firm.*}} slots. */
+  dock?: { label: string; lines: string[] }[];
   learn: LearnScreen[];
   tracks: Partial<Record<Track, TrackBlock>>;
   /* Correct prove items needed, out of the items shown. */

@@ -240,7 +240,10 @@ export async function completeIfFinished(enrolmentId: string) {
   const rows = await prisma.moduleProgress.findMany({ where: { enrolmentId } });
   const byModule = new Map(rows.map((r) => [r.module, r]));
   const available = list.filter((m) => m.available);
-  const allDone = available.length > 0 && available.every((m) => byModule.get(m.n)?.completedAt);
+  /* A course still releasing modules (Cyber Awareness ships one at a
+   * time) is never complete: finishing Module 1 of 8 must not stamp the
+   * enrolment done. AI Cleared and AI Fluent have every module out. */
+  const allDone = available.length > 0 && available.length === list.length && available.every((m) => byModule.get(m.n)?.completedAt);
   if (!allDone) return false;
   const finalRow = byModule.get(COURSES[slug].finalModule);
   const finalScore = finalRow?.proveScore != null && finalRow.proveTotal ? Math.round((finalRow.proveScore / finalRow.proveTotal) * 100) : null;
