@@ -32,6 +32,20 @@ export const SECURED_TRACKS: readonly SecuredTrack[] = [
 
 export const SECURED_TRACK_SLUGS: readonly SecuredTrackSlug[] = SECURED_TRACKS.map((t) => t.slug);
 
+/* Product slugs only a firm can buy: every track, built or not, plus
+ * "cyber-secured" itself should it ever get a Product row of its own.
+ * The consumer checkout (/purchase/[slug]) refuses these and sends the
+ * buyer to /corporate, so a signed-in individual can never take a free
+ * entitlement to a firm course. Consumer slugs are not on this list. */
+export const FIRM_PRODUCT_SLUGS: readonly string[] = [...SECURED_TRACK_SLUGS, "cyber-secured"];
+
+/* Where a would-be buyer of a firm product is sent instead. */
+export const FIRM_BUY_PATH = "/corporate";
+
+export function isFirmProduct(slug: string | null | undefined): boolean {
+  return !!slug && FIRM_PRODUCT_SLUGS.includes(slug.trim().toLowerCase());
+}
+
 /* A firm's seats, one per person. Someone invited before Cyber Secured may
  * hold an old Cleared seat and an old Fluent seat; they are one person and
  * one seat of the licence, shown on whichever seat they claimed (else the

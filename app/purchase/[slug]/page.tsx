@@ -28,6 +28,7 @@ import { CATALOGUE, courseHomeFor, safeCourseSlug } from "@/app/lib/courseIntent
 import { auth } from "@/app/lib/auth";
 import { prisma } from "@/app/lib/prisma";
 import { hasEntitlement } from "@/app/lib/entitlements";
+import { FIRM_BUY_PATH, isFirmProduct } from "@/app/lib/cyberSecured";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import {
@@ -60,6 +61,12 @@ function formatPrice(pence: number): string {
 export default async function PurchasePage({ params, searchParams }: PageProps) {
   const { slug } = await params;
   const { status } = await searchParams;
+
+  /* Firm courses (Cyber Secured and its tracks) are licensed by firms,
+   * never bought here: no order summary, no stub grant, straight to the
+   * corporate page. Checked before sign-in, since nobody needs an account
+   * to be told that. */
+  if (isFirmProduct(decodeURIComponent(slug))) redirect(FIRM_BUY_PATH);
 
   /* ──────────────────── auth ──────────────────── */
   const session = await auth();
