@@ -62,6 +62,11 @@ export async function createClassAction(formData: FormData): Promise<ActionResul
     name: String(formData.get("name") ?? ""),
     yearGroup: rawYear ? Number(rawYear) : null,
     productId: String(formData.get("productId") ?? ""),
+    /* Which course list to check against. An organisation may run Cyber Pro
+       and a school may not, and this is a server action, so the picker
+       having offered three courses is no guarantee that one of the three
+       came back. */
+    kind: school.kind,
   });
   if (!res.ok) return { ok: false, error: saidFor(w)[res.error] };
 

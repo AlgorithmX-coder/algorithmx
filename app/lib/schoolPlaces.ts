@@ -1,4 +1,5 @@
 import { prisma } from "@/app/lib/prisma";
+import type { LearnerOrgKind } from "@prisma/client";
 
 /**
  * Places: what a school bought, what it has spent, and on which course.
@@ -27,29 +28,47 @@ import { prisma } from "@/app/lib/prisma";
  */
 
 /**
- * The courses a school can put a class on, youngest first.
+ * The courses a learner organisation can put a class on, youngest first.
  *
  * Deliberately a fixed list rather than "every ACTIVE Product": the catalogue
  * also holds the corporate courses, and a school picking AI Cleared for a
  * class of nine year olds is not a thing we want to be possible.
  *
- * CYBER PRO IS NOT ONE OF THEM (owner, 2026-11-09). It was, and a class put
- * on it was broken in a way nobody would have noticed until a teacher
- * complained: Cyber Pro keeps its progress in its own ProProgress table,
- * which the teacher's class view does not read, so every pupil in a Pro
- * class showed as "not started" for ever, whatever they did. It is also the
- * 18+ consumer course at £99, sitting in a picker whose year field stops at
- * 13.
+ * CYBER PRO DEPENDS ON WHO IS ASKING (owner, 2026-11-09): *"for schools,
+ * remove CyberPro because we're not doing pro. Pro is only for
+ * organizations."*
  *
- * Any Pro class a school already made keeps working: nothing here deletes
- * one, COURSE_NAME below still names it, and movePupil can still move a
- * child out of it. It simply cannot be chosen again.
+ * A SCHOOL gets three. Pro is the 18+ course and a school is not selling it,
+ * and it sat in a picker whose year field stops at 13.
+ *
+ * AN ORGANISATION gets four. A training provider or an adult education
+ * project is exactly who Pro is for. Note that a Pro group's progress reads
+ * differently from the others, because Pro keeps its progress in its own
+ * table by topic rather than by week: see classProgress.ts, which shows a Pro
+ * group topics and modules instead of a row of weeks rather than showing
+ * everybody as "not started" for ever, which is what it used to do and the
+ * reason Pro was pulled from both lists for a few hours.
+ *
+ * Any class already made on a course that has since left its list keeps
+ * working: nothing here deletes one, COURSE_NAME below still names it, and
+ * movePupil can still move a learner out of it. It only stops being
+ * choosable.
  */
 export const SCHOOL_COURSE_SLUGS = [
   "cyber-heroes",
   "cyberexplorers",
   "cyberstart",
 ] as const;
+
+export const ORGANISATION_COURSE_SLUGS = [
+  ...SCHOOL_COURSE_SLUGS,
+  "cyberstart-pro",
+] as const;
+
+/** The courses this kind of organisation may choose from. */
+export function courseSlugsFor(kind: LearnerOrgKind): readonly string[] {
+  return kind === "ORGANISATION" ? ORGANISATION_COURSE_SLUGS : SCHOOL_COURSE_SLUGS;
+}
 
 /**
  * What each course is called, which is not always what `Product.name` says.
@@ -92,20 +111,29 @@ export interface SchoolCourse {
  * age rule to be right everywhere, and a SEN group or a catch-up cohort is a
  * legitimate reason to choose a course that does not match the year.
  */
-export async function listSchoolCourses(): Promise<SchoolCourse[]> {
+export async function listSchoolCourses(kind: LearnerOrgKind = "SCHOOL"): Promise<SchoolCourse[]> {
   const rows = await prisma.product.findMany({
-    where: { slug: { in: [...SCHOOL_COURSE_SLUGS] } },
+    where: { slug: { in: [...courseSlugsFor(kind)] } },
     select: { id: true, slug: true, name: true, ageRange: true, weeksCount: true, ageMin: true },
     orderBy: { ageMin: "asc" },
   });
   return rows.map(({ ageMin: _ageMin, ...rest }) => ({ ...rest, name: courseName(rest.slug, rest.name) }));
 }
 
-/** True if this product is one a school may put a class on. */
-export async function isSchoolCourse(productId: string): Promise<boolean> {
+/**
+ * True if this product is one this kind of organisation may put a class on.
+ *
+ * `kind` defaults to SCHOOL, the stricter of the two, so a caller that
+ * forgets to pass it refuses Pro rather than allowing it. A gate that fails
+ * open is worth more care than one that fails shut.
+ */
+export async function isSchoolCourse(
+  productId: string,
+  kind: LearnerOrgKind = "SCHOOL",
+): Promise<boolean> {
   if (!productId) return false;
   const row = await prisma.product.findFirst({
-    where: { id: productId, slug: { in: [...SCHOOL_COURSE_SLUGS] } },
+    where: { id: productId, slug: { in: [...courseSlugsFor(kind)] } },
     select: { id: true },
   });
   return row !== null;
@@ -173,7 +201,13 @@ export interface PlacesSummary {
  * spent on Cyber Heroes, 2 classes running it today" is the pair a head
  * actually wants.
  */
-export async function placesSummary(orgId: string): Promise<PlacesSummary> {
+export async function placesSummary(
+  orgId: string,
+  /* Decides which courses get a zero row below. An organisation runs
+     Cyber Pro as well, so leaving this out would hide it from the one
+     screen a head uses to decide what to run next year. */
+  kind: LearnerOrgKind = "SCHOOL",
+): Promise<PlacesSummary> {
   const [org, redeemed, classes, spentByCourse, inArchivedClasses, leftTheSchool] =
     await Promise.all([
       prisma.organisation.findUnique({ where: { id: orgId }, select: { seatsPurchased: true } }),
@@ -263,10 +297,10 @@ export async function placesSummary(orgId: string): Promise<PlacesSummary> {
   /* Every school course gets a row, including the ones with nothing on them:
      a head deciding whether to run Explorers next year should see it sitting
      there at zero rather than wonder whether it is included at all. */
-  for (const c of await listSchoolCourses()) {
+  for (const c of await listSchoolCourses(kind)) {
     if (!byCourse.has(c.slug)) {
       byCourse.set(c.slug, blank(c.slug, c.name));
-      order.set(c.slug, SCHOOL_COURSE_SLUGS.indexOf(c.slug as (typeof SCHOOL_COURSE_SLUGS)[number]));
+      order.set(c.slug, courseSlugsFor(kind).indexOf(c.slug));
     }
   }
 

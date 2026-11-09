@@ -36,14 +36,18 @@ export default async function OrganisationsBuyPage({
         <h1 className="oxb-h1">
           Buy places for your <span className="oxb-grad">young people</span>.
         </h1>
-        {/* Cyber Pro is NOT named here any more. It was, and this is a
-            page that takes money: selling a place on a course the group
-            picker will not offer is the one place that mistake costs
+        {/* All four, Cyber Pro included. This page is for ORGANISATIONS, and
+            owner, 2026-11-09: "for schools, remove CyberPro because we're not
+            doing pro. Pro is only for organizations." The /schools landing
+            names three; this one names four, and the group picker matches
+            whichever kind of account the buyer ends up with. Keep the two in
+            step: this is the page that takes the money, so naming a course
+            the picker will not offer is the one place that mistake costs
             something. */}
         <p className="oxb-lede">
-          A place is one young person on one of our three courses: Cyber Heroes, Cyber Explorers
-          and Cyber Ops. You choose the course for each group when you make it, and you can run
-          different groups on different courses at the same time.
+          A place is one young person on one of our four courses: Cyber Heroes, Cyber Explorers,
+          Cyber Ops and Cyber Pro for over 18s. You choose the course for each group when you make
+          it, and you can run different groups on different courses at the same time.
         </p>
 
         <BuyForm blocks0={blocks0} vatPercent={vatPercentShown()} />
