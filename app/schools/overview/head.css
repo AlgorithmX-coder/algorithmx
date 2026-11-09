@@ -179,6 +179,13 @@
   border-color: var(--cyan);
   background: rgba(34, 211, 238, 0.1);
 }
+/* Sign out is a form button, not a link, because it changes something. A
+   button brings its own font and cursor, so it needs these two to read as
+   one of the links it sits beside. */
+.sxh button.sxh-navlink {
+  font-family: inherit;
+  cursor: pointer;
+}
 
 /* ── Sections ─────────────────────────────────────────────────────── */
 .sxh .sxh-main {

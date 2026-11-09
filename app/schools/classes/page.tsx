@@ -10,6 +10,7 @@ import Locked from "../teach/Locked";
 import TrialEnded from "../TrialEnded";
 import AccessClosed from "../AccessClosed";
 import NewClass from "./NewClass";
+import SignOut from "../SignOut";
 
 /**
  * A teacher's classes.
@@ -68,6 +69,7 @@ export default async function ClassesPage() {
           <div className="modes" role="group" aria-label="Elsewhere">
             {head && <Link href="/schools/overview" className="axbtn">School overview</Link>}
             <Link href="/schools/teach" className="axbtn">Teacher packs</Link>
+            <SignOut />
           </div>
         </header>
 

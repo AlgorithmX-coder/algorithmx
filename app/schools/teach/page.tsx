@@ -8,6 +8,7 @@ import { listShareLinks } from "@/app/lib/packShare";
 import { writtenWeeks } from "./packs";
 import Locked from "./Locked";
 import SharePanel from "./SharePanel";
+import SignOut from "../SignOut";
 
 export const dynamic = "force-dynamic";
 
@@ -36,6 +37,10 @@ export default async function TeachIndexPage() {
               {ctx.orgName} &middot; ages 6&ndash;9 &middot; one pack per week, for the adult at the
               front of the room
             </div>
+          </div>
+          <div className="modes" role="group" aria-label="Elsewhere">
+            <Link href="/schools/classes" className="axbtn">Classes</Link>
+            <SignOut />
           </div>
         </header>
 

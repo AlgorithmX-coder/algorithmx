@@ -11,6 +11,7 @@ import Locked from "../teach/Locked";
 import TrialEnded from "../TrialEnded";
 import AccessClosed from "../AccessClosed";
 import InviteStaff from "./InviteStaff";
+import SignOut from "../SignOut";
 import { SCHOOLS_EMAIL } from "@/app/lib/schoolOps";
 import "./head.css";
 
@@ -135,6 +136,7 @@ export default async function SchoolOverviewPage() {
             <Link href="/schools/teach" className="sxh-navlink">
               {w.Staff} packs
             </Link>
+            <SignOut className="sxh-navlink" />
           </nav>
         </div>
       </header>
