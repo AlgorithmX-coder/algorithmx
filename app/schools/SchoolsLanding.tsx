@@ -605,6 +605,23 @@ export default function SchoolsLanding() {
                 <p style={{ ...lede, fontSize: 14.5, color: "rgba(17,22,38,0.63)" }}>
                   Prefer email? <a href="mailto:admissions@algorithmx.co.uk" style={{ color: "var(--lv2-cyan-soft)" }}>admissions@algorithmx.co.uk</a>
                 </p>
+                {/* The card route, for the buyers it is actually for.
+                    Nothing in the site linked to /organisations/buy: the
+                    only references to it anywhere were Stripe's own success
+                    and cancel URLs, so the one checkout we have could be
+                    reached only by somebody sent the path by hand.
+
+                    Quiet, and under the enquiry rather than beside it,
+                    because a school is quoted against its own budget after
+                    a conversation and must not be nudged into paying a
+                    published price instead. */}
+                <p style={{ ...lede, fontSize: 14.5, color: "rgba(17,22,38,0.63)" }}>
+                  Not a school? A club, charity or training provider can{" "}
+                  <Link href="/organisations/buy" style={{ color: "var(--lv2-cyan-soft)" }}>
+                    buy places by card
+                  </Link>
+                  .
+                </p>
               </div>
             </FadeUp>
             <FadeUp delay={0.08}>
