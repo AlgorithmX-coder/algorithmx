@@ -336,7 +336,7 @@ export default function DeskReadyLanding({ priceGBP }: { priceGBP: number }) {
         homeHref="/desk-ready"
         ctaTone="teal"
         aside={{ label: "Sign in", href: "/desk-ready/login" }}
-        cta={{ label: `Start for ${price}`, href: SIGNUP }}
+        cta={{ label: `Purchase ${price}`, href: SIGNUP }}
         centre={<nav className="dr-navsections" aria-label="On this page">{SECTIONS.map(chip)}</nav>}
       />
       <main style={{ position: "relative", color: "var(--lv2-ink)", minHeight: "100vh", overflowX: "clip" }}>
@@ -372,7 +372,7 @@ export default function DeskReadyLanding({ priceGBP }: { priceGBP: number }) {
                 <FadeUp delay={0.18}>
                   <div className="dr-cta-row">
                     <Link href={SIGNUP} className="dr-pill">
-                      Start for {price}
+                      Purchase for {price}
                       <span aria-hidden style={{ marginLeft: 10, fontSize: 17, lineHeight: 1 }}>&rarr;</span>
                     </Link>
                     <a href="#learn" className="dr-pill-ghost">See what you learn</a>
@@ -406,7 +406,7 @@ export default function DeskReadyLanding({ priceGBP }: { priceGBP: number }) {
             <FadeUp>
               <p style={sectionMark}>{"// Who it is for"}</p>
               <h2 style={{ ...h2, color: "#ffffff" }}>
-                For anyone who wants to be <span className="dr-grad-night">sharper at the desk.</span>
+                Whether you are new to the desk <span className="dr-grad-night">or already at one.</span>
               </h2>
               <p style={{ ...lede, color: "rgba(238,242,245,0.8)" }}>
                 More than half of working-age adults in the UK cannot yet do all twenty of the digital tasks employers and government call essential for work (
@@ -563,7 +563,7 @@ export default function DeskReadyLanding({ priceGBP }: { priceGBP: number }) {
                   <li>Any computer with a web browser</li>
                 </ul>
                 <Link href={SIGNUP} className="dr-pill" style={{ alignSelf: "stretch" }}>
-                  Start for {price}
+                  Purchase for {price}
                   <span aria-hidden style={{ marginLeft: 10, fontSize: 17, lineHeight: 1 }}>&rarr;</span>
                 </Link>
                 <p className="dr-price-fine">
@@ -891,6 +891,9 @@ export default function DeskReadyLanding({ priceGBP }: { priceGBP: number }) {
           .dr-how-head, .dr-price-wrap { grid-template-columns: 1fr; }
         }
         @media (max-width: 820px) { .dr-faq-grid { grid-template-columns: 1fr; } }
+        /* below 375px the header cannot fit the brand, Sign in and the Purchase
+           pill; Sign in stays reachable from the price card */
+        @media (max-width: 374px) { .dr-page .lv2-nav-aside { display: none; } }
         @media (max-width: 560px) { .dr-grid-4 { grid-template-columns: 1fr; } .dr-hero-img { object-position: 78% center; } }
       `}</style>
     </div>
