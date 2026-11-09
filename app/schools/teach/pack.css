@@ -462,6 +462,10 @@
   .axtp .board {flex-direction:column;align-items:flex-start}
   .axtp .boardlink {font-size:1rem}
 }
+/* Said once, where a teacher is standing when it matters, and in the
+   colour this page already uses to mean pay attention. */
+.axtp .packswarn {border-left:3px solid var(--ask-c);padding-left:13px;background:rgba(255,179,71,.08);
+  border-radius:0 8px 8px 0;padding-top:10px;padding-bottom:10px;padding-right:13px}
 .axtp .axcode {font:800 1.05em ui-monospace,Menlo,monospace;letter-spacing:.08em;
   background:rgba(10,112,133,.1);color:var(--say-c);padding:2px 8px;border-radius:6px}
 
