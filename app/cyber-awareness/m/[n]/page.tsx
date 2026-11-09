@@ -7,9 +7,8 @@ import { practisesOf } from "@/app/ai-cleared/engine/types";
 import ClearedPlayer from "@/app/ai-cleared/engine/ClearedPlayer";
 
 /* /cyber-awareness/m/[n]: the player for Cyber Awareness module n, wired
- * onto the shared engine the same way AI Cleared and AI Fluent are. Phase
- * 1 plumbing only: no manifest has shipped yet (see ../../manifests), so
- * every n here 404s until one does. */
+ * onto the shared engine the same way AI Cleared and AI Fluent are. A
+ * module with no manifest yet (see ../../manifests) 404s here. */
 export const dynamic = "force-dynamic";
 
 export default async function CyberAwarenessModulePage({ params }: { params: Promise<{ n: string }> }) {

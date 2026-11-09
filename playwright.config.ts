@@ -56,9 +56,10 @@ export default defineConfig({
       use: { ...devices["Desktop Chrome"], channel: BROWSER_CHANNEL },
     },
     {
-      // AI Cleared play-throughs: no sign-in, the offline preview under /dev.
+      // AI Cleared, AI Fluent and Cyber Awareness play-throughs: no
+      // sign-in, the offline preview under /dev.
       name: "cleared",
-      testMatch: /ai-(cleared|fluent)-.*\.spec\.ts/,
+      testMatch: /(ai-(cleared|fluent)|cyber-awareness)-.*\.spec\.ts/,
       use: { ...devices["Desktop Chrome"], channel: BROWSER_CHANNEL },
     },
     {
