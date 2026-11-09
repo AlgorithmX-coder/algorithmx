@@ -10,6 +10,7 @@ import ProofBand from "@/app/components/ProofBand";
 import { FadeUp } from "@/app/components/landing-v2/utilities";
 import { sectionMark, sectionMarkBare } from "@/app/components/sectionMark";
 import DeskHeroSim from "./DeskHeroSim";
+import PartPreview, { PREVIEW_CSS, type PreviewKind } from "./PartPreview";
 import { FINAL, PARTS } from "./syllabus";
 
 /**
@@ -181,16 +182,8 @@ const PART_LAYOUT: ReadonlyArray<{ span: number; cols: number }> = [
   { span: 4, cols: 1 }, // Getting the job: 1
 ];
 
-/* One glyph per part, in order: the pointer, the inbox, the sheet, the
- * folder, the everyday office (with AI), the job. */
-const PART_GLYPH = [
-  <path key="0" d="M6 3 L6 19 L10 15 L12.8 21 L15.2 20 L12.5 14 L18 14 Z" />,
-  <g key="1"><rect x="3" y="5" width="18" height="14" rx="2.2" /><path d="M3.5 6.5 L12 12.5 L20.5 6.5" /></g>,
-  <g key="2"><rect x="3" y="4" width="18" height="16" rx="2.2" /><path d="M3 9.5h18M3 14.5h18M9 4v16M15 4v16" /></g>,
-  <path key="3" d="M3 7.5a2 2 0 0 1 2-2h4.2l2 2.2H19a2 2 0 0 1 2 2V17a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />,
-  <g key="4"><path d="M11 3.5l1.7 4.4 4.4 1.7-4.4 1.7L11 15.7l-1.7-4.4-4.4-1.7 4.4-1.7z" /><path d="M18.5 14.5l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z" /></g>,
-  <g key="5"><rect x="3" y="7" width="18" height="13" rx="2.2" /><path d="M9 7V5.2A1.2 1.2 0 0 1 10.2 4h3.6A1.2 1.2 0 0 1 15 5.2V7M3 12.5h18" /></g>,
-];
+/* The app each part teaches, drawn small in its card's top right. */
+const PART_PREVIEW: ReadonlyArray<PreviewKind> = ["desktop", "outlook", "excel", "sharepoint", "copilot", "word"];
 
 const STEPS = [
   { n: "01", colour: "#2b59c3", title: "Learn one thing", text: "A short lesson in plain English, one idea per screen, with real examples of what good looks like and what to avoid." },
@@ -460,22 +453,22 @@ export default function DeskReadyLanding({ priceGBP }: { priceGBP: number }) {
             {PARTS.map((p, i) => (
               <div key={p.id} className="dr-part-cell" style={{ "--span": PART_LAYOUT[i].span } as CSSProperties}>
                 <FadeUp delay={0.05 * i}>
-                  <article className="dr-part" style={{ "--dr-accent": PART_ACCENT[i], "--cols": PART_LAYOUT[i].cols } as CSSProperties}>
+                  <article className={PART_LAYOUT[i].span < 7 ? "dr-part narrow" : "dr-part"} style={{ "--dr-accent": PART_ACCENT[i], "--cols": PART_LAYOUT[i].cols } as CSSProperties}>
                     <span className="dr-part-ghost" aria-hidden>
                       {String(i).padStart(2, "0")}
                     </span>
                     <header className="dr-part-head">
-                      <span className="dr-part-glyph" aria-hidden>
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round">
-                          {PART_GLYPH[i]}
-                        </svg>
-                      </span>
-                      <span>
+                      <span className="dr-part-titles">
                         <span className="dr-part-tag">
-                          {p.label} · {p.modules.length} {p.modules.length === 1 ? "module" : "modules"}
+                          {p.label}
+                          <span className="dr-part-count">
+                            {" "}
+                            · {p.modules.length} {p.modules.length === 1 ? "module" : "modules"}
+                          </span>
                         </span>
                         <h3>{p.title}</h3>
                       </span>
+                      <PartPreview kind={PART_PREVIEW[i]} />
                     </header>
                     <p className="dr-part-blurb">{p.blurb}</p>
                     <ol className="dr-mods">
@@ -765,7 +758,7 @@ export default function DeskReadyLanding({ priceGBP }: { priceGBP: number }) {
         .dr-part-cell > * { height: 100%; }
         .dr-part {
           position: relative; overflow: hidden; isolation: isolate; height: 100%; box-sizing: border-box;
-          display: flex; flex-direction: column; gap: 12px; padding: 22px 22px 20px; border-radius: 20px;
+          display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-rows: auto auto 1fr; grid-template-areas: "titles pv" "blurb pv" "mods mods"; column-gap: 16px; row-gap: 10px; padding: 22px 22px 20px; border-radius: 20px;
           background:
             radial-gradient(120% 90% at 100% 0%, color-mix(in srgb, var(--dr-accent) 22%, transparent), transparent 60%),
             linear-gradient(170deg, #111a33, #090e1c);
@@ -779,22 +772,21 @@ export default function DeskReadyLanding({ priceGBP }: { priceGBP: number }) {
         .dr-part::after { content: ""; position: absolute; left: 20px; right: 20px; top: 0; height: 2px; border-radius: 2px; background: linear-gradient(90deg, transparent, var(--dr-accent), transparent); box-shadow: 0 0 14px var(--dr-accent); }
         .dr-part:hover { transform: translateY(-4px); border-color: color-mix(in srgb, var(--dr-accent) 60%, transparent); box-shadow: 0 34px 64px -30px color-mix(in srgb, var(--dr-accent) 55%, rgba(9,14,28,0.9)), inset 0 1px 0 rgba(255,255,255,0.09); }
         .dr-part-ghost { position: absolute; right: 14px; bottom: -22px; z-index: -1; font-family: var(--lv2-font-display); font-size: 120px; font-weight: 700; line-height: 1; letter-spacing: -0.05em; color: var(--dr-accent); opacity: 0.08; pointer-events: none; }
-        .dr-part-head { display: flex; align-items: center; gap: 14px; }
-        .dr-part-glyph {
-          flex-shrink: 0; width: 46px; height: 46px; border-radius: 13px;
-          display: inline-flex; align-items: center; justify-content: center; color: var(--dr-accent);
-          background: color-mix(in srgb, var(--dr-accent) 16%, #0b1226);
-          border: 1px solid color-mix(in srgb, var(--dr-accent) 45%, transparent);
-          box-shadow: 0 0 22px -6px var(--dr-accent), inset 0 1px 0 rgba(255,255,255,0.08);
-          transition: transform .25s ease;
-        }
-        .dr-part-glyph svg { width: 22px; height: 22px; display: block; }
-        .dr-part:hover .dr-part-glyph { transform: rotate(-6deg) scale(1.06); }
+        /* titles, the app window and the blurb share a grid: on a wide card the
+           blurb sits beside the window, on a narrow one it runs under both */
+        .dr-part-head { display: contents; }
+        .dr-part-titles { grid-area: titles; min-width: 0; padding-top: 6px; }
+        .dr-part .dr-pv { grid-area: pv; align-self: start; }
+        .dr-part-blurb { grid-area: blurb; }
+        .dr-part.narrow { grid-template-areas: "titles pv" "blurb blurb" "mods mods"; }
+        /* a narrow card beside its window has no room for the module count */
+        .dr-part.narrow .dr-part-count { display: none; }
         .dr-part-tag { display: block; font-family: var(--lv2-font-mono); font-size: 10.5px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--dr-accent); }
         .dr-part h3 { margin: 4px 0 0; font-family: var(--lv2-font-display); font-size: clamp(1.3rem, 1.9vw, 1.55rem); line-height: 1.1; letter-spacing: -0.02em; font-weight: 500; color: #ffffff; }
         .dr-part-blurb { margin: 0; font-family: var(--lv2-font-display); font-size: 14px; line-height: 1.55; color: rgba(222,230,250,0.72); max-width: 560px; }
+${PREVIEW_CSS}
         /* every module a glass tile */
-        .dr-mods { list-style: none; margin: 4px 0 0; padding: 0; display: grid; grid-template-columns: repeat(var(--cols), minmax(0, 1fr)); gap: 10px; flex: 1; align-content: start; }
+        .dr-mods { list-style: none; margin: 4px 0 0; padding: 0; display: grid; grid-area: mods; grid-template-columns: repeat(var(--cols), minmax(0, 1fr)); gap: 10px; align-content: start; }
         .dr-mod {
           position: relative; display: flex; flex-direction: column; gap: 3px; padding: 12px 13px 13px; border-radius: 13px;
           background: rgba(255,255,255,0.045); border: 1px solid rgba(255,255,255,0.08);
@@ -819,6 +811,8 @@ export default function DeskReadyLanding({ priceGBP }: { priceGBP: number }) {
         .dr-final p { margin: 6px 0 0; max-width: 760px; font-family: var(--lv2-font-display); font-size: 15px; line-height: 1.6; color: rgba(222,230,250,0.78); }
         @media (max-width: 980px) {
           .dr-part-cell { grid-column: span 12; }
+          .dr-part.narrow { grid-template-areas: "titles pv" "blurb pv" "mods mods"; }
+          .dr-part.narrow .dr-part-count { display: inline; }
           .dr-mods { grid-template-columns: repeat(auto-fill, minmax(min(100%, 220px), 1fr)); }
         }
         @media (max-width: 560px) { .dr-final { flex-direction: column; align-items: flex-start; } }
