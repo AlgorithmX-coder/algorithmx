@@ -13,13 +13,16 @@ const HAS_SPECIAL = /[^A-Za-z0-9]/;
  * Cyber Pro ("cyberstart-pro") is included here FOR UAT so testers get
  * the full course (Acts 2-4 are entitlement-gated from Module 6 on) the
  * moment they sign up, instead of having to run the free purchase stub.
- * ⚠️ Flip cyberstart-pro back OUT (and let the purchase flow be the only
- * grant) once the £99 Stripe buy is live. */
+ * Desk Ready ("desk-ready") is in for the same reason: its pilot learner
+ * tests the moment they sign up.
+ * ⚠️ Flip cyberstart-pro and desk-ready back OUT (and let the purchase
+ * flow be the only grant) once the £99 Stripe buy is live. */
 const FREE_ON_SIGNUP: ReadonlySet<string> = new Set([
   "cyber-heroes",
   "cyberexplorers",
   "cyberstart",
   "cyberstart-pro",
+  "desk-ready",
 ]);
 
 export async function POST(request: Request) {

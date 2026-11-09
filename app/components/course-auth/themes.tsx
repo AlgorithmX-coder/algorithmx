@@ -18,7 +18,7 @@
 import type React from "react";
 import CodeRainBackground from "@/app/components/CodeRainBackground";
 
-export type CourseAuthKey = "cyberheroes" | "cyberexplorers" | "ops" | "pro";
+export type CourseAuthKey = "cyberheroes" | "cyberexplorers" | "ops" | "pro" | "desk";
 
 export interface CourseAuthTheme {
   /** Catalog slug, carried through the auth flow for the hub target. */
@@ -40,6 +40,12 @@ export interface CourseAuthTheme {
     textSoft: string;
     danger: string;
     success: string;
+    /** Input fill, placeholder and the panel's shadow. They default to
+     *  the dark packs' smoked field and deep shadow; a light pack needs
+     *  its own or the inputs read as grey and the panel looks muddy. */
+    field?: string;
+    placeholder?: string;
+    shadow?: string;
   };
   copy: {
     loginTitle: string;
@@ -335,6 +341,61 @@ function ProBackdrop() {
   );
 }
 
+/* Desk Ready is the one light pack: a calm paper desk for adults who are
+ * new to computers, so nothing dark or "hacker". Faint spreadsheet ruling
+ * and a ghost email behind the form, and one soft glow that drifts. */
+function DeskBackdrop() {
+  return (
+    <div aria-hidden style={{ position: "absolute", inset: 0, overflow: "hidden", background: "linear-gradient(160deg, #f8f5ef 0%, #f3efe7 60%, #eee9df 100%)" }}>
+      {/* spreadsheet ruling: column and row lines, fading out to the edges */}
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          backgroundImage:
+            "linear-gradient(rgba(43,89,195,0.07) 1px, transparent 1px), linear-gradient(90deg, rgba(43,89,195,0.07) 1px, transparent 1px)",
+          backgroundSize: "96px 30px",
+          maskImage: "radial-gradient(ellipse 80% 70% at 50% 45%, #000 30%, transparent 85%)",
+          WebkitMaskImage: "radial-gradient(ellipse 80% 70% at 50% 45%, #000 30%, transparent 85%)",
+        }}
+      />
+      <div className="caD-glow" style={{ position: "absolute", width: "62vw", height: "46vw", left: "-14vw", top: "-16vw", borderRadius: "50%", background: "radial-gradient(circle, rgba(43,89,195,0.13), transparent 62%)", filter: "blur(24px)" }} />
+      {/* ghost email, the course's first big skill */}
+      <div
+        style={{
+          position: "absolute",
+          right: "6%",
+          bottom: "11%",
+          width: 250,
+          padding: "14px 16px",
+          borderRadius: 12,
+          background: "rgba(255,255,255,0.5)",
+          border: "1px solid rgba(23,25,31,0.06)",
+          fontFamily: "var(--font-desk-sans, 'Atkinson Hyperlegible Next'), system-ui, sans-serif",
+          fontSize: 12,
+          lineHeight: 1.7,
+          color: "rgba(23,25,31,0.22)",
+          userSelect: "none",
+        }}
+      >
+        <div><b>Subject:</b> Delivery 4417 is two pallets short</div>
+        <div style={{ marginTop: 6 }}>Hi Sarah,</div>
+        <div>Could you check the order for me?</div>
+        <div style={{ marginTop: 6 }}>Kind regards,</div>
+      </div>
+      <style>{`
+        @media (prefers-reduced-motion: no-preference) {
+          .caD-glow { animation: caD-drift 18s ease-in-out infinite alternate; }
+        }
+        @keyframes caD-drift {
+          from { transform: translate3d(0, 0, 0); }
+          to { transform: translate3d(8vw, 6vw, 0); }
+        }
+      `}</style>
+    </div>
+  );
+}
+
 /* ── Lockups (glyph + wordmark, scaled from the course logo system) ── */
 
 const LOCKUP_ROW: React.CSSProperties = { display: "inline-flex", alignItems: "center", gap: 10, whiteSpace: "nowrap" };
@@ -517,5 +578,54 @@ export const COURSE_AUTH_THEMES: Record<CourseAuthKey, CourseAuthTheme> = {
       </span>
     ),
     backdrop: <ProBackdrop />,
+  },
+
+  desk: {
+    slug: "desk-ready",
+    base: "/desk-ready",
+    courseName: "Desk Ready",
+    /* Lexend + Atkinson Hyperlegible, both drawn for easy reading. No mono:
+     * the uppercase field labels use the body face so nothing looks techy. */
+    fonts: {
+      display: "var(--font-desk-display, 'Lexend'), system-ui, sans-serif",
+      body: "var(--font-desk-sans, 'Atkinson Hyperlegible Next'), system-ui, sans-serif",
+      mono: "var(--font-desk-sans, 'Atkinson Hyperlegible Next'), system-ui, sans-serif",
+    },
+    palette: {
+      page: "#f6f3ee",
+      panel: "rgba(255,255,255,0.94)",
+      border: "rgba(23,25,31,0.16)",
+      accent: "#2b59c3",
+      ink: "#ffffff",
+      text: "#17191f",
+      textSoft: "#4f5560",
+      danger: "#b3261e",
+      success: "#1b7a43",
+      field: "#ffffff",
+      placeholder: "#8a8f98",
+      shadow: "0 18px 50px rgba(23,25,31,0.12), 0 2px 6px rgba(23,25,31,0.06)",
+    },
+    copy: {
+      loginTitle: "Welcome back",
+      loginSub: "Sign in and carry on from where you stopped.",
+      signupTitle: "Create your account",
+      signupSub: "Learn the computer skills every desk job expects, one short lesson at a time.",
+      registeredNotice: "Account created. Sign in to start your first lesson.",
+      submitLogin: "Sign in",
+      submitSignup: "Create account",
+    },
+    lockup: (
+      <span style={LOCKUP_ROW}>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2b59c3" strokeWidth="2" aria-hidden style={{ flexShrink: 0 }}>
+          <rect x="3" y="4" width="18" height="12" rx="2" />
+          <path d="M9 20 H15 M12 16 V20" strokeLinecap="round" />
+          <path d="M7.5 10 L10 12.5 L15.5 7.5" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+        <span style={{ fontFamily: "var(--font-desk-display, 'Lexend'), system-ui, sans-serif", fontWeight: 700, fontSize: "1.15rem", letterSpacing: "0.01em", color: "#17191f" }}>
+          Desk <span style={{ color: "#2b59c3" }}>Ready</span>
+        </span>
+      </span>
+    ),
+    backdrop: <DeskBackdrop />,
   },
 };

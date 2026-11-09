@@ -145,6 +145,23 @@ const products = [
     weeksCount: 0,
     content: [],
   },
+  {
+    // Individuals-only course: desk and computer skills for adults moving
+    // into office work (email, spreadsheets, files, AI). Ships at
+    // /desk-ready. Prod row: migration 20261109120000_desk_ready_product.
+    slug: "desk-ready",
+    name: "Desk Ready",
+    ageMin: 18,
+    ageMax: 99,
+    priceGBP: 9900,
+    weeks: 0,
+    status: ProductStatus.ACTIVE,
+    emoji: "💼",
+    ageRange: "Adults",
+    duration: "About 15 hours",
+    weeksCount: 0,
+    content: [],
+  },
   /* AI Cleared: the corporate AI-safety course. Seat-licensed by a firm
    * (see Organisation/Seat), so it is excluded from the consumer hub by
    * slug (app/lib/corporateProducts.ts). Price is the Team rate per seat;
