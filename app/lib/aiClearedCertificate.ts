@@ -1,14 +1,16 @@
 import { randomBytes } from "crypto";
 import { prisma } from "@/app/lib/prisma";
 import { sendEmail } from "@/app/lib/resend";
-import { COURSES, courseOfSerial, type CertifiedCourseSlug, type CourseDef } from "@/app/ai-cleared/engine/courses";
+import { COURSES, courseOfSerial, isCourseSlug, type CertifiedCourseSlug, type CourseDef } from "@/app/ai-cleared/engine/courses";
 
-/* Certificates for the two courses that issue one. Issued once per
- * enrolment when the course is complete, valid for 12 months (owner
+/* Certificates for AI Cleared and AI Fluent. They were issued once per
+ * enrolment when the course was complete, valid for 12 months (owner
  * decision 2026-09-28), with a serial anyone can check at
- * /verify/[serial]: AXC for AI Cleared, AXF for AI Fluent. Cyber Awareness
- * tracks completion but never issues a certificate (Cyber Secured design
- * v1.0), so it has no entry here. Never import from a client component. */
+ * /verify/[serial]: AXC for AI Cleared, AXF for AI Fluent. Since
+ * 2026-11-09 no new certificate issues (owner: Cyber Secured tracks
+ * completion per module only); the ones already out keep working until
+ * they expire, so nothing here deletes a Certificate row. Cyber Awareness
+ * never had one. Never import from a client component. */
 
 export const CERTIFICATE_MONTHS = 12;
 
@@ -44,10 +46,14 @@ export const CERT_COPY: Record<CertifiedCourseSlug, { tagline: string; completed
 
 export type IssueResult =
   | { ok: true; serial: string; issuedAt: Date; expiresAt: Date; score: number; alreadyIssued: boolean }
-  | { ok: false; reason: "not-complete" | "not-found" };
+  | { ok: false; reason: "not-complete" | "not-found" | "not-issued" };
 
-/* Idempotent: a second call returns the existing certificate. The serial
- * prefix follows the enrolment's course. */
+/* Idempotent: a certificate already issued is always returned, so its
+ * holder keeps the page, the PDF and the verify link. A new one is made
+ * only on a course whose `certificate` flag is on, and since 2026-11-09
+ * none is (owner: completion per module only), so this now only ever
+ * finds; "not-issued" means there is no certificate and none will come.
+ * The serial prefix follows the enrolment's course. */
 export async function issueCertificate(enrolmentId: string): Promise<IssueResult> {
   const enrolment = await prisma.enrolment.findUnique({ where: { id: enrolmentId }, include: { certificate: true, product: { select: { slug: true } } } });
   if (!enrolment) return { ok: false, reason: "not-found" };
@@ -55,8 +61,10 @@ export async function issueCertificate(enrolmentId: string): Promise<IssueResult
     const c = enrolment.certificate;
     return { ok: true, serial: c.serial, issuedAt: c.issuedAt, expiresAt: c.expiresAt, score: c.score, alreadyIssued: true };
   }
+  const course = isCourseSlug(enrolment.product.slug) ? COURSES[enrolment.product.slug] : null;
+  if (!course?.certificate || !course.serialPrefix) return { ok: false, reason: "not-issued" };
   if (!enrolment.completedAt) return { ok: false, reason: "not-complete" };
-  const prefix = (enrolment.product.slug === "ai-fluent" ? COURSES["ai-fluent"] : COURSES["ai-cleared"]).serialPrefix;
+  const prefix = course.serialPrefix;
   const issuedAt = new Date();
   const expiresAt = new Date(issuedAt);
   expiresAt.setMonth(expiresAt.getMonth() + CERTIFICATE_MONTHS);

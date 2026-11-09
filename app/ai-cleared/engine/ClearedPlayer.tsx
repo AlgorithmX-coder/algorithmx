@@ -1801,15 +1801,15 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
     const nextOpen = !courseMap.some((m) => !m.available) || courseMap.some((m) => m.available && !m.done && m.n !== manifest.n);
     stage = (
       <>
-        <span className="cl-stamp" style={{ color: passed ? K.ok : K.warn, borderColor: passed ? K.ok : K.warn }}>{passed ? (isFinal ? `Course ${course === "ai-cleared" ? "cleared" : "complete"}` : `Module ${doneWord}`) : `Not yet ${doneWord}`}</span>
+        <span className="cl-stamp" style={{ color: passed ? K.ok : K.warn, borderColor: passed ? K.ok : K.warn }}>{passed ? (isFinal ? "Course complete" : `Module ${doneWord}`) : `Not yet ${doneWord}`}</span>
         <Eyebrow>Module {manifest.n} · {manifest.title}</Eyebrow>
-        <h1 className="cl-h1">{passed ? (course === "ai-cleared" ? "Cleared, " : "Done, ") : "Not yet, "}{correct} of {proveSet.length}</h1>
+        <h1 className="cl-h1">{passed ? (course === "ai-cleared" && !isFinal ? "Cleared, " : "Done, ") : "Not yet, "}{correct} of {proveSet.length}</h1>
         <p className="cl-lead">
           {passed
             ? isFinal
               ? courseDone
-                ? `You passed the final assessment with ${correct} of ${proveSet.length}. Every module is ${doneWord} and your certificate is being prepared; you will find it on the course page.`
-                : `You passed the final assessment with ${correct} of ${proveSet.length}. Finish the remaining modules and your certificate issues from the course page.`
+                ? `You passed the final assessment with ${correct} of ${proveSet.length}. Every module is done and the course is complete. It is on your record and your firm's training register.`
+                : `You passed the final assessment with ${correct} of ${proveSet.length}. Finish the remaining modules and the course is complete.`
               : fluent
                 ? `You answered ${correct} of ${proveSet.length} correctly${bestFluent ? `, and your best practice send scored ${FLUENT_LABEL[bestFluent]}` : ""}. This module is on your record.`
                 : sandbox
@@ -1819,13 +1819,13 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
                   : `You answered ${correct} of ${proveSet.length} correctly. This module's score is on your record.`
             : `Pass mark is ${manifest.passMark} of ${proveSet.length}. ${isFinal ? "A retake draws a different set of questions." : "Go back over the Learn screens and try again."} Nothing is recorded until you pass.`}
         </p>
-        <div className="cl-label" style={{ marginTop: 22 }}>{courseDef.certificate ? `Progress to your ${courseDef.doneName} certificate` : `Progress through ${courseDef.name}`}</div>
+        <div className="cl-label" style={{ marginTop: 22 }}>{`Progress through ${courseDef.name}`}</div>
         <div className="cl-meter"><i style={{ width: `${(doneCount / total) * 100}%` }} /></div>
         <div className="cl-hint">{doneCount} of {total} modules{course === "cyber-awareness" ? "" : ` · ${TRACK_LABEL[track]} track`}</div>
         <div className="cl-nav">
           {passed ? (
             <>
-              <span className="cl-hint">{isFinal ? "Thank you. The habits are the point; the certificate is the receipt." : nextOpen ? "The next module is waiting on the course page." : "The next module opens on your course page when it is released."}</span>
+              <span className="cl-hint">{isFinal ? "Thank you. The habits are the point, and they are yours to keep." : nextOpen ? "The next module is waiting on the course page." : "The next module opens on your course page when it is released."}</span>
               <Link href={courseDef.base} className="cl-btn cl-btn-pri">Back to your course</Link>
             </>
           ) : (

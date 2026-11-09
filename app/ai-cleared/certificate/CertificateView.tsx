@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { redirect } from "next/navigation";
 import { auth } from "@/app/lib/auth";
 import { getEnrolment, firstNameOf, DB_TO_TRACK } from "@/app/lib/aiCleared";
@@ -10,9 +9,11 @@ import Frame from "../Frame";
 import CourseAside from "../CourseAside";
 import CertificateActions from "./CertificateActions";
 
-/* The certificate screen for the two courses that issue one, with the
- * download and the verify link. Issues the certificate on first visit
- * once the course is complete. Cyber Awareness has no certificate route. */
+/* The certificate screen for a holder of an AI Cleared or AI Fluent
+ * certificate issued before 2026-11-09, with the download and the verify
+ * link. Nothing links here any more and no new certificate issues; it
+ * stays so the people who hold one can still reach it. Anyone without
+ * one goes back to their course. Cyber Awareness never had one. */
 export default async function CertificateView({ course }: { course: CertifiedCourseSlug }) {
   const c = COURSES[course];
   const session = await auth();
@@ -24,27 +25,20 @@ export default async function CertificateView({ course }: { course: CertifiedCou
   const profile = enrolment.org.profile;
   const aside = <CourseAside course={course} firmName={enrolment.org.name} contactName={profile?.escalationContact ?? enrolment.org.contactName} contactRole={profile?.escalationRole ?? enrolment.org.contactRole} learnerName={holder} done={enrolment.modules.filter((m) => m.completedAt).map((m) => m.module)} />;
 
+  /* No new certificate issues (owner, 2026-11-09), so this only finds one
+   * issued before then. Without one there is nothing to show: back to
+   * the course, where completion is shown module by module. */
   const issued = await issueCertificate(enrolment.id);
-  if (!issued.ok) {
-    const done = enrolment.modules.filter((m) => m.completedAt).length;
-    return (
-      <Frame course={course} firmName={enrolment.org.name} courseLink aside={aside}>
-        <span className="cf-eyebrow">Certificate</span>
-        <h1 className="cf-h1">Your certificate issues when every module is <span className="cf-grad">{course === "ai-fluent" ? "done" : "cleared"}</span>.</h1>
-        <p className="cf-lead">{done} module{done === 1 ? "" : "s"} {course === "ai-fluent" ? "done" : "cleared"} so far. The final assessment at the end of Module {c.finalModule} is the last step.</p>
-        <Link href={c.base} className="cf-btn cf-btn-pri">Back to your course</Link>
-      </Frame>
-    );
-  }
+  if (!issued.ok) redirect(c.base);
 
   const valid = issued.expiresAt > new Date();
   const copy = CERT_COPY[course];
   return (
     <Frame course={course} firmName={enrolment.org.name} courseLink aside={aside}>
-      <span className="cf-eyebrow" style={{ color: valid ? K.ok : K.warn }}>{valid ? (course === "ai-fluent" ? "Course complete" : "Course cleared") : "Certificate expired"}</span>
+      <span className="cf-eyebrow" style={{ color: valid ? K.ok : K.warn }}>{valid ? "Course complete" : "Certificate expired"}</span>
       <h1 className="cf-h1">You are <span className="cf-grad">{c.doneName}</span>, {holder}.</h1>
       <p className="cf-lead">
-        Every module {course === "ai-fluent" ? "done" : "cleared"} and the final assessment passed. The certificate below is yours to download; the serial lets a manager, an auditor or an insurer check it without asking you.
+        Every module done and the final assessment passed. The certificate below was issued to you and is yours to download; the serial lets a manager, an auditor or an insurer check it without asking you.
       </p>
 
       <div style={{ position: "relative", borderRadius: 18, padding: 1.5, background: K.grad, boxShadow: K.lift }}>
@@ -76,7 +70,7 @@ export default async function CertificateView({ course }: { course: CertifiedCou
       <CertificateActions serial={issued.serial} course={course} />
 
       <p className="cf-note" style={{ marginTop: 26, maxWidth: "60ch" }}>
-        Valid for twelve months. The course content is reviewed every quarter and within weeks of a major change to any tool, and renewal is on the refreshed content, so a certificate is never older than the tools it covers.
+        Valid for twelve months from the day it was issued. The course no longer issues new certificates; every module you finish stays on your firm&rsquo;s training register.
       </p>
     </Frame>
   );

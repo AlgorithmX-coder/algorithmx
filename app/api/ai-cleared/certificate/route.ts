@@ -8,10 +8,18 @@ import { COURSES, type CertifiedCourseSlug } from "@/app/ai-cleared/engine/cours
 import { TRACK_LABEL } from "@/app/ai-cleared/engine/types";
 
 /* GET  /api/ai-cleared/certificate?course=   the PDF, for the signed-in holder
- * POST /api/ai-cleared/certificate            issue (idempotent) and, with
+ * POST /api/ai-cleared/certificate            the holder's certificate and, with
  *                                            { email: true, course? }, send the copy
- * Both courses: the course picks the enrolment, the serial prefix and the
- * words on the paper. */
+ * Both courses: the course picks the enrolment and the words on the paper.
+ * No new certificate issues any more (owner, 2026-11-09); this route only
+ * serves a certificate issued before then, and says so to anyone without
+ * one. */
+
+/* What a learner with no certificate is told, by either verb. */
+function noCertificate(reason: "not-complete" | "not-found" | "not-issued") {
+  if (reason === "not-found") return Response.json({ error: "No enrolment." }, { status: 403 });
+  return Response.json({ error: "There is no certificate for this course. Every module you finish is on your firm's training register." }, { status: 404 });
+}
 
 const INK = "#14161d";
 const MUTED = "#5b6572";
@@ -26,9 +34,9 @@ function originOf(req: NextRequest): string {
   return `${proto}://${host}`;
 }
 
-/* Only the two courses that issue a certificate; Cyber Awareness never
- * reaches this route (no certificate route for it), so an unrecognised
- * or absent value falls back to AI Cleared as it always has. */
+/* Only the two courses that ever issued a certificate; Cyber Awareness
+ * never reaches this route, so an unrecognised or absent value falls back
+ * to AI Cleared as it always has. */
 function courseOf(v: unknown): CertifiedCourseSlug {
   return v === "ai-fluent" ? "ai-fluent" : "ai-cleared";
 }
@@ -42,7 +50,7 @@ export async function POST(req: NextRequest) {
   if (!enrolment) return Response.json({ error: "No enrolment." }, { status: 403 });
 
   const issued = await issueCertificate(enrolment.id);
-  if (!issued.ok) return Response.json({ error: issued.reason === "not-complete" ? "Finish every module first." : "No enrolment." }, { status: 409 });
+  if (!issued.ok) return noCertificate(issued.reason);
 
   let emailed = false;
   let emailError: string | undefined;
@@ -74,7 +82,7 @@ export async function GET(req: NextRequest) {
   const enrolment = await getEnrolment(session.user.id, course);
   if (!enrolment) return Response.json({ error: "No enrolment." }, { status: 403 });
   const issued = await issueCertificate(enrolment.id);
-  if (!issued.ok) return Response.json({ error: "Finish every module first." }, { status: 409 });
+  if (!issued.ok) return noCertificate(issued.reason);
 
   const c = COURSES[course];
   const copy = CERT_COPY[course];

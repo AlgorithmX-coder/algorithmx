@@ -14,10 +14,13 @@ export type CourseSlug = "ai-cleared" | "ai-fluent" | "cyber-awareness";
  * widening those needs a Prisma migration, which is not this file's call. */
 export type CourseKey = "AI_CLEARED" | "AI_FLUENT";
 
-/* The two courses that still issue a certificate. Cyber Awareness tracks
- * completion per module like the rest of the platform, but never issues
- * one (owner decision, Cyber Secured design v1.0): no CERT_COPY entry, no
- * certificate route, and ConsoleHome's certificate card is gated on this. */
+/* The two courses that once issued a certificate, so still have serials
+ * in the wild. No course issues a new one (owner, 2026-11-09: Cyber
+ * Secured tracks completion per module only), but an AXC or AXF
+ * certificate already issued stays good until it expires: /verify/[serial]
+ * checks it and its holder can still open and download it. This type keys
+ * the words those certificates carry (CERT_COPY). Cyber Awareness never
+ * had one. */
 export type CertifiedCourseSlug = "ai-cleared" | "ai-fluent";
 
 /* Narrow a database CourseKey (which also includes the consumer course
@@ -41,8 +44,8 @@ export interface CourseDef {
   brand: string;
   /* Where the course lives: "/ai-cleared" */
   base: string;
-  /* Certificate serial prefix: AXC or AXF. Absent (and never issued
-   * against) when `certificate` is false. */
+  /* Certificate serial prefix, AXC or AXF, for the certificates issued
+   * before issuing stopped. Absent on a course that never had one. */
   serialPrefix?: string;
   /* How many modules, and the number of the one that carries the final. */
   modules: number;
@@ -55,7 +58,9 @@ export interface CourseDef {
   doneName: string;
   /* One line on what the course is, for invites and the home page. */
   blurb: string;
-  /* Whether this course issues a certificate on completion. */
+  /* Whether this course issues a new certificate on completion. False on
+   * every course since 2026-11-09; certificates already issued still
+   * verify and still download for their holder. */
   certificate: boolean;
 }
 
@@ -72,8 +77,8 @@ export const COURSES: Record<CourseSlug, CourseDef> = {
     length: "about ninety minutes, in five short modules",
     stateWord: "cleared",
     doneName: "AI Cleared",
-    blurb: "using AI tools safely at work: you practise inside a copy of the tool you already use, on invented data, and a certificate issues at the end",
-    certificate: true,
+    blurb: "using AI tools safely at work: you practise inside a copy of the tool you already use, on invented data, and every module you finish goes on your firm's training register",
+    certificate: false,
   },
   "ai-fluent": {
     slug: "ai-fluent",
@@ -87,8 +92,8 @@ export const COURSES: Record<CourseSlug, CourseDef> = {
     length: "about three hours, in nine twenty-minute modules",
     stateWord: "fluent",
     doneName: "AI Fluent",
-    blurb: "getting real work out of AI tools: prompting that works, the five workflows, verification as a habit, and a real task on your own desk; you keep a personal prompt playbook and a certificate issues at the end",
-    certificate: true,
+    blurb: "getting real work out of AI tools: prompting that works, the five workflows, verification as a habit, and a real task on your own desk; you keep a personal prompt playbook, and every module you finish goes on your firm's training register",
+    certificate: false,
   },
   "cyber-awareness": {
     slug: "cyber-awareness",
