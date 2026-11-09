@@ -22,6 +22,8 @@ import {
   type LoopPractise,
   type ModuleManifest,
   type MomentsPractise,
+  type OutboxItem,
+  type OutboxPractise,
   type PhoneAction,
   type PhonePractise,
   type Phase,
@@ -105,6 +107,8 @@ type Screen =
   | { kind: "phone"; p: number; phase: "practise" }
   /* Cyber Awareness: spot the risk in a drawn scene, indexed by practice `p`. */
   | { kind: "scene"; p: number; phase: "practise" }
+  /* Cyber Awareness: check the outbox before it sends, indexed by practice `p`. */
+  | { kind: "outbox"; p: number; phase: "practise" }
   | { kind: "prove"; i: number; phase: "prove" }
   | { kind: "result"; phase: "done" };
 
@@ -141,6 +145,35 @@ interface SceneState {
   calls: Record<number, "risk" | "fine">;
 }
 const EMPTY_SCENE: SceneState = { view: 0, open: null, calls: {} };
+/* A Cyber Awareness outbox item, once dealt with: sent as it was, or a part fixed. */
+type OutboxPick = { act: "send" } | { act: "fix"; part: string };
+/* How a pick on an outbox item went: right, a fine item held (no harm),
+ * the wrong part fixed, or a faulty item sent. */
+function outboxVerdict(item: OutboxItem, pick: OutboxPick): "right" | "held" | "part" | "sent" {
+  const fault = item.fault ?? [];
+  if (!fault.length) return pick.act === "send" ? "right" : "held";
+  if (pick.act === "send") return "sent";
+  return fault.includes(pick.part) ? "right" : "part";
+}
+/* A document preview: [[text]] sits under a black box until looked at. */
+function Redacted({ text, open }: { text: string; open: boolean }) {
+  return (
+    <>
+      {text.split(/(\[\[[^\]]*\]\])/).map((seg, i) => {
+        const m = /^\[\[([^\]]*)\]\]$/.exec(seg);
+        if (!m) return <span key={i}>{seg}</span>;
+        return open ? (
+          <mark key={i} className="cl-ob-sel">{m[1]}</mark>
+        ) : (
+          <span key={i} className="cl-ob-bar">
+            <span aria-hidden="true">{m[1]}</span>
+            <span className="cl-ob-sr">(covered by a black box)</span>
+          </span>
+        );
+      })}
+    </>
+  );
+}
 
 let idSeq = 0;
 const nextId = () => `m${++idSeq}`;
@@ -483,6 +516,8 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
         out.push({ kind: "phone", p, phase: "practise" });
       } else if (pr.kind === "scene") {
         out.push({ kind: "scene", p, phase: "practise" });
+      } else if (pr.kind === "outbox") {
+        out.push({ kind: "outbox", p, phase: "practise" });
       }
     });
     proveSet.forEach((_, i) => out.push({ kind: "prove", i, phase: "prove" }));
@@ -528,6 +563,12 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
   /* Cyber Awareness scene: per practice, the view on show, the spot open
    * (numbered across all views), and the call made on each spot. */
   const [sceneState, setSceneState] = useState<Record<number, SceneState>>({});
+  /* Cyber Awareness outbox: per practice, what was done with each item
+   * (sent, or a part fixed), which item is on show, and which parts have
+   * been looked at closely. */
+  const [outboxPicks, setOutboxPicks] = useState<Record<number, Record<number, OutboxPick>>>({});
+  const [outboxStep, setOutboxStep] = useState<Record<number, number>>({});
+  const [outboxLooked, setOutboxLooked] = useState<Record<number, Record<string, true>>>({});
   const bestFluentRank = useRef(99);
   const [bestFluent, setBestFluent] = useState<FluentVerdict | undefined>(undefined);
   /* one-action practises: answer per item */
@@ -801,7 +842,7 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
   const pct = Math.round(((cur + 1) / screens.length) * 100);
   const phaseIdx = (["learn", "practise", "prove", "done"] as Phase[]).indexOf(screen.phase);
   const practiseSub = (pr: Practise): string =>
-    pr.kind === "sandbox" ? "in the simulator" : pr.kind === "sort" ? "which tier is this" : pr.kind === "situations" ? "ten situations" : pr.kind === "inspect" ? "a document to check" : pr.kind === "triage" ? "six incidents" : pr.kind === "loop" ? `${pr.turns.length} send${pr.turns.length === 1 ? "" : "s"}, scored on the rubric` : pr.kind === "spot" ? "find the planted mistake" : pr.kind === "moments" ? "spot the moment" : pr.kind === "inbox" ? "triage the inbox" : pr.kind === "phone" ? "a day of sign-in prompts" : pr.kind === "scene" ? "spot the risk" : "check the sources";
+    pr.kind === "sandbox" ? "in the simulator" : pr.kind === "sort" ? "which tier is this" : pr.kind === "situations" ? "ten situations" : pr.kind === "inspect" ? "a document to check" : pr.kind === "triage" ? "six incidents" : pr.kind === "loop" ? `${pr.turns.length} send${pr.turns.length === 1 ? "" : "s"}, scored on the rubric` : pr.kind === "spot" ? "find the planted mistake" : pr.kind === "moments" ? "spot the moment" : pr.kind === "inbox" ? "triage the inbox" : pr.kind === "phone" ? "a day of sign-in prompts" : pr.kind === "scene" ? "spot the risk" : pr.kind === "outbox" ? "check the outbox" : "check the sources";
   const PHASES: { key: Phase; label: string; sub: string }[] = [
     { key: "learn", label: "Learn", sub: "the idea" },
     { key: "practise", label: "Practise", sub: practises.map(practiseSub).join(", then ") },
@@ -2015,6 +2056,180 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
         </div>
       </>
     );
+  } else if (screen.kind === "outbox" && practises[screen.p]?.kind === "outbox") {
+    const op = practises[screen.p] as OutboxPractise;
+    const p = screen.p;
+    const picks = outboxPicks[p] ?? {};
+    const looked = outboxLooked[p] ?? {};
+    const total = op.items.length;
+    const at = Math.min(outboxStep[p] ?? 0, total);
+    const summary = at >= total;
+    const it = op.items[Math.min(at, total - 1)];
+    const pick = summary ? undefined : picks[at];
+    const verdict = pick ? outboxVerdict(it, pick) : null;
+    const fault = it.fault ?? [];
+    const partLabel = (item: OutboxItem, id: string) => t(item.parts.find((x) => x.id === id)?.label ?? id);
+    const sendWord = (item: OutboxItem) => (item.kind === "share" ? "Share it" : "Send it");
+    const pickLabel = (item: OutboxItem, pk: OutboxPick) => (pk.act === "send" ? (item.kind === "share" ? "Shared it" : "Sent it") : `Fixed: ${partLabel(item, pk.part)}`);
+    const bestLabel = (item: OutboxItem) => (item.fault?.length ? `Fix: ${partLabel(item, item.fault[0])}` : sendWord(item));
+    const rightOn = (i: number) => !!picks[i] && outboxVerdict(op.items[i], picks[i]) === "right";
+    const rightCount = op.items.filter((_, i) => rightOn(i)).length;
+    const faulty = op.items.filter((x) => x.fault?.length).length;
+    const narrow = () => typeof window !== "undefined" && window.matchMedia("(max-width: 900px)").matches;
+    const setStep = (i: number) => {
+      setOutboxStep((all) => ({ ...all, [p]: i }));
+      if (typeof window !== "undefined") window.scrollTo({ top: 0, behavior: "smooth" });
+    };
+    const choose = (pk: OutboxPick) => {
+      setOutboxPicks((all) => ({ ...all, [p]: { ...(all[p] ?? {}), [at]: pk } }));
+      /* On a phone the reason sits under the draft: bring it into view. */
+      if (narrow()) window.setTimeout(() => document.querySelector(".cl-ob-fb")?.scrollIntoView({ block: "nearest", behavior: "smooth" }), 80);
+    };
+    const look = (id: string) => setOutboxLooked((all) => ({ ...all, [p]: { ...(all[p] ?? {}), [`${at}:${id}`]: true } }));
+    const headline =
+      verdict === "right"
+        ? fault.length ? "Right: held and fixed." : "Right, good to go."
+        : verdict === "held"
+          ? "This one was fine to send. Checking cost nothing."
+          : verdict === "part"
+            ? `Not quite. The line to fix: ${partLabel(it, fault[0])}. Fixed for you.`
+            : verdict === "sent"
+              ? `Stopped before it went. The line to fix: ${partLabel(it, fault[0])}.`
+              : "";
+    const stamp = !pick ? "" : fault.length ? (verdict === "right" ? "Held and fixed" : "Stopped and fixed") : it.kind === "share" ? "Shared" : "Sent";
+    stage = (
+      <>
+        <Eyebrow>Practise · check the outbox</Eyebrow>
+        <div className="cl-task"><span className="cl-label">Your task</span><p>{t(op.task)}</p></div>
+        {op.scene && <p className="cl-p">{t(op.scene)}</p>}
+        <ol className="cl-ph-day" aria-label="Your outbox">
+          {op.items.map((x, i) => {
+            const state = i === at ? "current" : !picks[i] ? "upcoming" : rightOn(i) ? "right" : "wrong";
+            return (
+              <li key={i}>
+                <button type="button" className={`cl-ph-dot ${state}`} disabled={!picks[i] || i === at} onClick={() => setStep(i)} aria-current={i === at ? "step" : undefined}>
+                  {i + 1} · {x.kind === "share" ? "Share" : "Email"}
+                </button>
+              </li>
+            );
+          })}
+          <li>
+            <button type="button" className={`cl-ph-dot end ${summary ? "current" : ""}`} disabled={summary || Object.keys(picks).length < total} onClick={() => setStep(total)}>Outbox done</button>
+          </li>
+        </ol>
+        {summary ? (
+          <div className="cl-ph-sum">
+            <p className="cl-p"><b>{rightCount} of {total}</b> called right. {faulty} needed fixing before they went. The habit underneath every one: read it as the person receiving it will, before you press Send.</p>
+            <ol className="cl-ph-log cl-ob-log">
+              {op.items.map((x, i) => {
+                const ok = rightOn(i);
+                return (
+                  <li key={i} className={ok ? "right" : "wrong"}>
+                    <span className="cl-mo-time">{i + 1} · {x.kind === "share" ? "Share" : "Email"}</span>
+                    <span className="cl-ph-log-t">{t(x.title)}<small>{t(x.meant)}</small></span>
+                    <span className="cl-ph-log-c">
+                      <span>You: <b>{picks[i] ? pickLabel(x, picks[i]) : "-"}</b></span>
+                      {!ok && <span>Best: <b>{bestLabel(x)}</b></span>}
+                    </span>
+                  </li>
+                );
+              })}
+            </ol>
+          </div>
+        ) : (
+          <div className="cl-ob-grid" key={at}>
+            <div className="cl-ob-meant">
+              <div className="cl-label">{at + 1} of {total} · What you meant to do</div>
+              <p>{t(it.meant)}</p>
+            </div>
+            <section className={`cl-ob-draft ${it.kind}`} aria-label={it.kind === "share" ? "The share, ready to go" : "The email, ready to send"}>
+              <div className="cl-ob-top">
+                <span className="cl-ob-kind">{it.kind === "share" ? "Share" : "New message"}</span>
+                {it.cls && <span className="cl-ob-cls">Label <Tag cls={it.cls} names={names} small /></span>}
+                {pick && <span className={`cl-ob-stamp ${verdict === "right" ? "right" : "wrong"}`}>{stamp}</span>}
+              </div>
+              <div className="cl-ob-title">
+                <span className="cl-ob-k">{it.kind === "share" ? "Sharing" : "Subject"}</span>
+                <b>{t(it.title)}</b>
+              </div>
+              <ul className="cl-ob-parts">
+                {it.parts.map((part) => {
+                  const seen = !!looked[`${at}:${part.id}`] || !!pick;
+                  const changed = !!pick && fault.length > 0 && part.fixed !== undefined;
+                  const mine = pick?.act === "fix" && pick.part === part.id;
+                  const state = !pick ? "" : fault.includes(part.id) ? "fault" : mine ? "miss" : "";
+                  return (
+                    <li key={part.id} className={`cl-ob-part ${state} ${mine ? "mine" : ""}`}>
+                      <span className="cl-ob-k">{t(part.label)}</span>
+                      <span className="cl-ob-v">
+                        {changed ? (
+                          <s className="cl-ob-was">{t(part.value)}</s>
+                        ) : (
+                          <span className="cl-ob-val">{t(part.value)}{part.external && <span className="cl-ib-ext">External</span>}</span>
+                        )}
+                        {part.preview && <span className="cl-ob-doc"><Redacted text={t(part.preview)} open={seen} /></span>}
+                        {part.look && seen && (
+                          <span className="cl-ob-found">
+                            <span className="cl-ob-found-k">{t(part.look.action)}</span>
+                            <span>{t(part.look.found)}</span>
+                            {part.look.table && (
+                              <table className="cl-ob-table">
+                                <thead><tr>{part.look.table.columns.map((c, ci) => <th key={ci} scope="col">{t(c)}</th>)}</tr></thead>
+                                <tbody>{part.look.table.rows.map((r, ri) => <tr key={ri}>{r.map((c, ci) => <td key={ci}>{t(c)}</td>)}</tr>)}</tbody>
+                              </table>
+                            )}
+                          </span>
+                        )}
+                        {changed && (
+                          <span className="cl-ob-now">
+                            <span className="cl-ob-now-k">Now</span>
+                            {t(part.fixed!)}
+                          </span>
+                        )}
+                        {mine && <span className="cl-ob-you">You fixed this line</span>}
+                      </span>
+                      {!pick && (
+                        <span className="cl-ob-acts">
+                          {part.look && !seen && (
+                            <button type="button" className="cl-ob-look" aria-label={`${t(part.look.action)}: ${t(part.label)}`} onClick={() => look(part.id)}>{t(part.look.action)}</button>
+                          )}
+                          <button type="button" className="cl-ob-fix cl-ob-act" aria-label={`Fix this: ${t(part.label)}`} onClick={() => choose({ act: "fix", part: part.id })}>Fix this</button>
+                        </span>
+                      )}
+                    </li>
+                  );
+                })}
+              </ul>
+              {it.body && <div className="cl-ob-body">{t(it.body)}</div>}
+              <div className="cl-ob-foot">
+                {pick ? (
+                  <span className="cl-ob-done">{pickLabel(it, pick)}</span>
+                ) : (
+                  <>
+                    <span className="cl-ob-ask">Nothing wrong? {it.kind === "share" ? "Share" : "Send"} it. Something wrong? Press Fix on that line.</span>
+                    <button type="button" className="cl-ob-send cl-ob-act" onClick={() => choose({ act: "send" })}>{sendWord(it)}</button>
+                  </>
+                )}
+              </div>
+            </section>
+            {pick && (
+              <div className="cl-fb cl-ob-fb" aria-live="polite">
+                <b>{headline}</b> {t(it.why)}
+              </div>
+            )}
+          </div>
+        )}
+        <div className="cl-nav">
+          <Btn onClick={summary ? () => setStep(total - 1) : at > 0 ? () => setStep(at - 1) : back}>Back</Btn>
+          <span className="cl-hint">{summary ? "That was your outbox." : `${at + 1} of ${total}`}</span>
+          {summary ? (
+            <Btn primary onClick={next}>Continue to Prove</Btn>
+          ) : (
+            <button type="button" className="cl-btn cl-btn-pri cl-ob-next" disabled={!pick} onClick={() => setStep(at + 1)}>{at === total - 1 ? "See what went out" : "Next in the outbox"}</button>
+          )}
+        </div>
+      </>
+    );
   } else if (screen.kind === "prove") {
     const q = proveSet[screen.i];
     const picked = proveAnswers[screen.i];
@@ -2464,6 +2679,56 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
         .cl-sc-call.wrong { border-color: ${K.crit}; background: ${K.critSoft}; color: ${K.crit}; }
         .cl-sc-out { animation: cl-in 250ms ease both; }
 
+        .cl-ob-grid { display: flex; flex-direction: column; gap: 14px; }
+        .cl-ob-meant { border-left: 3px solid ${K.accent}; padding: 2px 0 2px 14px; animation: cl-in 250ms ease both; }
+        .cl-ob-meant p { margin: 0; font-size: 16px; line-height: 1.55; color: ${K.ink}; }
+        .cl-ob-draft { border: 1px solid ${K.edge}; border-radius: 14px; background: ${K.panel}; box-shadow: ${K.lift}; overflow: hidden; animation: cl-in 250ms ease both; }
+        .cl-ob-top { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 12px; padding: 9px 14px; background: ${K.grad}; color: ${K.onAccent}; }
+        .cl-ob-kind { font-family: ${K.mono}; font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
+        .cl-ob-cls { display: inline-flex; align-items: center; gap: 6px; font-family: ${K.mono}; font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.95; }
+        .cl-ob-cls span { background: ${K.panel} !important; }
+        .cl-ob-stamp { margin-left: auto; font-family: ${K.mono}; font-size: 10.5px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: ${K.ink}; background: ${K.panel}; border-radius: 999px; padding: 3px 9px; }
+        .cl-ob-stamp.right { color: ${K.ok}; }
+        .cl-ob-stamp.wrong { color: ${K.warn}; }
+        .cl-ob-title { display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 4px 12px; align-items: baseline; padding: 11px 14px; border-bottom: 1px solid ${K.edgeSoft}; }
+        .cl-ob-title b { color: ${K.ink}; font-size: 15px; line-height: 1.35; overflow-wrap: anywhere; }
+        .cl-ob-k { font-family: ${K.mono}; font-size: 10.5px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: ${K.faint}; }
+        .cl-ob-parts { list-style: none; margin: 0; padding: 0; }
+        .cl-ob-part { display: grid; grid-template-columns: 120px minmax(0, 1fr) auto; gap: 6px 12px; align-items: start; padding: 10px 14px; border-bottom: 1px solid ${K.edgeSoft}; }
+        .cl-ob-part > .cl-ob-k { padding-top: 3px; }
+        .cl-ob-part.fault { background: ${K.okSoft}; box-shadow: inset 3px 0 0 ${K.ok}; }
+        .cl-ob-part.miss { box-shadow: inset 3px 0 0 ${K.warn}; }
+        .cl-ob-v { min-width: 0; display: flex; flex-direction: column; gap: 6px; font-size: 14.5px; line-height: 1.45; color: ${K.ink}; overflow-wrap: anywhere; }
+        .cl-ob-val { display: inline; }
+        .cl-ob-val .cl-ib-ext { display: inline-block; margin-left: 8px; vertical-align: 1px; white-space: nowrap; overflow-wrap: normal; }
+        .cl-ob-was { color: ${K.faint}; font-size: 13px; }
+        .cl-ob-now { color: ${K.ok}; font-weight: 600; }
+        .cl-ob-now-k { display: inline-block; margin-right: 8px; font-family: ${K.mono}; font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: ${K.onAccent}; background: ${K.ok}; border-radius: 4px; padding: 1px 6px; vertical-align: 2px; }
+        .cl-ob-log li { grid-template-columns: 72px minmax(0, 1fr) auto; }
+        .cl-ob-doc { display: block; font-family: ${K.mono}; font-size: 12.5px; line-height: 1.7; color: ${K.ink}; background: ${K.sunk}; border: 1px solid ${K.edge}; border-radius: 8px; padding: 8px 11px; }
+        .cl-ob-bar { background: ${K.ink}; color: transparent; border-radius: 2px; padding: 1px 2px; }
+        .cl-ob-sel { background: ${K.accentSoft}; color: ${K.ink}; border-radius: 2px; padding: 1px 2px; box-shadow: inset 0 -2px 0 ${K.accent}; }
+        .cl-ob-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+        .cl-ob-found { display: flex; flex-direction: column; gap: 4px; font-size: 13.5px; line-height: 1.5; color: ${K.body}; border-left: 2px solid ${K.accent}; padding: 2px 0 2px 10px; animation: cl-in 250ms ease both; }
+        .cl-ob-found-k { font-family: ${K.mono}; font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: ${K.accentInk}; }
+        .cl-ob-table { border-collapse: collapse; font-size: 12.5px; margin-top: 4px; max-width: 100%; }
+        .cl-ob-table th, .cl-ob-table td { text-align: left; padding: 4px 10px 4px 0; border-bottom: 1px solid ${K.edgeSoft}; }
+        .cl-ob-table th { font-family: ${K.mono}; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: ${K.faint}; font-weight: 600; }
+        .cl-ob-you { font-family: ${K.mono}; font-size: 10.5px; letter-spacing: 0.06em; text-transform: uppercase; color: ${K.muted}; }
+        .cl-ob-acts { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 6px; }
+        .cl-ob-look, .cl-ob-fix { font: inherit; font-size: 12.5px; font-weight: 600; border-radius: 8px; padding: 5px 10px; cursor: pointer; white-space: nowrap; }
+        .cl-ob-look { color: ${K.accentInk}; background: ${K.accentSoft}; border: 1px solid transparent; }
+        .cl-ob-look:hover { border-color: ${K.accent}; }
+        .cl-ob-fix { color: ${K.ink}; background: ${K.panelRaise}; border: 1px solid ${K.edge}; }
+        .cl-ob-fix:hover { border-color: ${K.warn}; color: ${K.warn}; }
+        .cl-ob-body { padding: 12px 14px; font-size: 14.5px; line-height: 1.55; color: ${K.body}; white-space: pre-line; border-bottom: 1px solid ${K.edgeSoft}; }
+        .cl-ob-foot { display: flex; align-items: center; justify-content: flex-end; gap: 12px; padding: 10px 14px; background: ${K.panelRaise}; }
+        .cl-ob-ask { margin-right: auto; font-size: 13px; color: ${K.muted}; }
+        .cl-ob-send { font: inherit; font-size: 14px; font-weight: 700; color: ${K.onAccent}; background: ${K.grad}; border: none; border-radius: 10px; padding: 8px 20px; cursor: pointer; white-space: nowrap; }
+        .cl-ob-send:hover { filter: brightness(1.08); }
+        .cl-ob-done { font-family: ${K.mono}; font-size: 11.5px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: ${K.muted}; }
+        .cl-ob-fb { margin-top: 0; animation: cl-in 250ms ease both; }
+
         .cl-toggles { display: flex; flex-direction: column; gap: 12px; margin-top: 12px; }
         .cl-toggle { display: flex; gap: 14px; align-items: flex-start; border: 1px solid ${K.edge}; border-radius: 10px; padding: 14px; background: ${K.panelRaise}; }
         .cl-toggle b { display: block; color: ${K.ink}; font-size: 15px; margin-bottom: 4px; }
@@ -2620,6 +2885,16 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
           .cl-sc-grid { grid-template-columns: minmax(0, 1fr); grid-template-areas: "pic" "panel" "out"; }
           .cl-sc-out { flex-direction: column; gap: 10px; }
           .cl-sc-spot { width: 32px; height: 32px; }
+          .cl-ob-title { grid-template-columns: minmax(0, 1fr); gap: 2px; }
+          .cl-ob-part { grid-template-columns: minmax(0, 1fr); gap: 4px; padding: 10px 12px; }
+          .cl-ob-part > .cl-ob-k { padding-top: 0; }
+          .cl-ob-acts { justify-content: flex-start; }
+          .cl-ob-look, .cl-ob-fix { padding: 7px 12px; }
+          .cl-ob-foot { flex-wrap: wrap; }
+          .cl-ob-ask { flex-basis: 100%; }
+          .cl-ob-send { margin-left: auto; }
+          .cl-ob-log li { grid-template-columns: minmax(0, 1fr); }
+          .cl-ob-log .cl-ph-log-c { grid-column: 1; }
           .cl-row { grid-template-columns: 22px 1fr; }
           .cl-row .cl-v { grid-column: 2; }
           .cl-row.show { grid-template-columns: 1fr auto; }
@@ -2638,7 +2913,7 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
           .cl-top:has(.cl-desk-btn[aria-expanded="true"]) .cl-firm, .cl-top:has(.cl-desk-btn[aria-expanded="true"]) .cl-top-left .cl-sep { display: none; }
         }
         @media (prefers-reduced-motion: reduce) {
-          .cl-stage, .cl-rv, .cl-grader, .cl-card-detail, .cl-tl.after, .cl-peek-real, .cl-ph-ctx, .cl-ph-fb, .cl-ph-note, .cl-sc-spot, .cl-sc-out { animation: none; }
+          .cl-stage, .cl-rv, .cl-grader, .cl-card-detail, .cl-tl.after, .cl-peek-real, .cl-ph-ctx, .cl-ph-fb, .cl-ph-note, .cl-sc-spot, .cl-sc-out, .cl-ob-meant, .cl-ob-draft, .cl-ob-found, .cl-ob-fb { animation: none; }
           .cl-bar i, .cl-meter i, .cl-knob { transition: none; }
         }
       `}</style>
