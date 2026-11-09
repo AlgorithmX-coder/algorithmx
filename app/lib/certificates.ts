@@ -31,13 +31,22 @@ export const MILESTONES = [
 
 export type Milestone = (typeof MILESTONES)[number];
 
-export function getCertificateUrl(childName: string, weekNumber: number): string {
-  const date = new Date().toLocaleDateString("en-GB", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  });
-  return `/api/certificate?childName=${encodeURIComponent(childName)}&weekNumber=${weekNumber}&completedDate=${encodeURIComponent(date)}`;
+/**
+ * Where to get a milestone certificate.
+ *
+ * Takes NO name and NO date any more. Both used to be passed in the query
+ * string and printed as given, which made the certificate a name-to-PDF
+ * service rather than a record: any caller could mint one for any name at
+ * any rank. The route reads all three out of the database now, and checks
+ * the milestone was earned, so there is nothing left for a caller to say
+ * except which milestone it is.
+ *
+ * childProfileId is only for a teacher printing one for a pupil. Left out,
+ * the certificate is for the caller's own active child.
+ */
+export function getCertificateUrl(weekNumber: number, childProfileId?: string): string {
+  const who = childProfileId ? `&childProfileId=${encodeURIComponent(childProfileId)}` : "";
+  return `/api/certificate?week=${weekNumber}${who}`;
 }
 
 export function getAchievedMilestones(completedCount: number) {

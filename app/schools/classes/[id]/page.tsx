@@ -11,6 +11,7 @@ import ClassStrip from "./ClassStrip";
 import ClassLink from "./ClassLink";
 import SignOut from "../../SignOut";
 import { wordsFor } from "../../words";
+import { MILESTONES, getCertificateUrl } from "@/app/lib/certificates";
 import { archiveClassAction, movePupilAction, removePupilAction, resetPicturesAction, unarchiveClassAction } from "../class.actions";
 
 /**
@@ -26,6 +27,11 @@ export const metadata: Metadata = {
   title: "Class | AlgorithmX",
   robots: { index: false, follow: false, nocache: true },
 };
+
+/* The highest milestone a pupil has reached, or null. Same arithmetic as
+   getAchievedMilestones: completed weeks counted against the milestone,
+   not the furthest week touched. */
+const CERT_WEEKS = [...MILESTONES].map((m) => m.week).sort((a, b) => b - a);
 
 const WHEN = (d: Date | null) =>
   !d ? "" : new Date(d).toLocaleDateString("en-GB", { day: "numeric", month: "short" });
@@ -65,6 +71,10 @@ export default async function ClassPage({ params }: { params: Promise<{ id: stri
     ? new Date(klass.archivedAt).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })
     : null;
   const waiting = klass.pupils.filter((p) => !p.signedIn).length;
+  /* Cyber Heroes only: the milestones are its weeks, and a certificate
+     saying "of 20 weeks" on an Explorers class would be a lie. */
+  const certificateWeekFor = (done: number): number | null =>
+    klass.courseSlug === "cyber-heroes" ? CERT_WEEKS.find((wk) => done >= wk) ?? null : null;
 
   return (
     <div className="axtp">
@@ -184,6 +194,28 @@ export default async function ClassPage({ params }: { params: Promise<{ id: stri
                   </small>
                 </div>
                 <div className="rs pupilacts">
+                  {/* The certificate this one has actually earned, if any.
+                      /schools promises a school "certificates for every
+                      pupil" and until now there was no way for a teacher to
+                      get one at all: the only route to it was inside the
+                      lesson player, at the moment a child finished a
+                      milestone week, on the child's own screen. Cyber
+                      Heroes only, because the milestones are its weeks.
+
+                      It stays on an archived class on purpose: printing
+                      last year's certificates in September is exactly when
+                      a teacher wants them, and reading one changes
+                      nothing. */}
+                  {certificateWeekFor(p.weeksComplete) !== null && (
+                    <a
+                      className="axbtn"
+                      href={getCertificateUrl(certificateWeekFor(p.weeksComplete)!, p.id)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Certificate
+                    </a>
+                  )}
                   {/* Mid-lesson jobs, so they go once the year has ended:
                       resetting pictures for a child who cannot sign in is
                       nothing, and Remove on last year's class is a way to

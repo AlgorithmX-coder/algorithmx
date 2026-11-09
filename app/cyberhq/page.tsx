@@ -30,6 +30,7 @@ import PlaySignatureOnMount from "@/app/components/lesson/PlaySignatureOnMount";
 import PlayHubAmbientOnMount from "@/app/components/PlayHubAmbientOnMount";
 import PixIcon from "@/app/components/lesson/PixIcon";
 import PupilSignOut from "@/app/components/PupilSignOut";
+import { getAchievedMilestones, getCertificateUrl } from "@/app/lib/certificates";
 
 const C = {
   pageBg: "#080a16",
@@ -75,6 +76,9 @@ export default async function CyberHQPage() {
   // before the ladder was re-scaled; to close that, the rank would have to be
   // persisted server-side alongside totalXp.
   const rank = getRank(totalXp);
+  /* Milestone certificates, against the same completed-week count the
+     badge case already derives from. */
+  const certificates = getAchievedMilestones(snapshot.weeks.filter((w) => w.completed).length);
   const collectionsEmpty = earnedCount === 0 && badgeEarnedCount === 0;
 
   return (
@@ -313,6 +317,103 @@ export default async function CyberHQPage() {
             </div>
           </div>
         </section>
+
+        {/* Certificates.
+            The certificate existed and was reachable from exactly one place:
+            the moment a child finished a milestone week, inside the lesson
+            player. Close that screen and it was gone for good, so nothing
+            could be reprinted, nothing could be collected later, and a
+            parent who was not in the room never saw it. They live here now,
+            which is where a child comes back to look at what they have
+            won. */}
+        <h2
+          style={{
+            fontSize: 18,
+            fontWeight: 800,
+            margin: "0 0 4px",
+            color: C.text,
+            letterSpacing: "0.02em",
+          }}
+        >
+          Certificates
+        </h2>
+        <p style={{ color: C.textMuted, fontSize: 12, margin: "0 0 14px" }}>
+          One at week 5, 10, 15 and 20. Yours to keep and print.
+        </p>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
+            gap: 12,
+            marginBottom: 30,
+          }}
+        >
+          {certificates.map((m) => (
+            <div
+              key={m.week}
+              style={{
+                padding: "15px 14px",
+                borderRadius: 14,
+                background: m.achieved
+                  ? "linear-gradient(180deg, rgba(255, 209, 88, 0.2), rgba(15, 21, 48, 0.85))"
+                  : "rgba(15, 21, 48, 0.55)",
+                border: m.achieved
+                  ? `2.5px solid ${C.borderEarned}`
+                  : "2px dashed rgba(148, 163, 184, 0.3)",
+                textAlign: "center",
+              }}
+            >
+              <div
+                style={{
+                  fontSize: 9,
+                  letterSpacing: "0.16em",
+                  color: m.achieved ? C.gold : C.textMuted,
+                  textTransform: "uppercase",
+                  fontWeight: 800,
+                  marginBottom: 4,
+                }}
+              >
+                Week {m.week}
+              </div>
+              <div
+                style={{
+                  fontSize: 15,
+                  fontWeight: 900,
+                  color: m.achieved ? C.text : "#475569",
+                  marginBottom: 9,
+                  fontFamily: "'Space Grotesk', sans-serif",
+                }}
+              >
+                {m.title}
+              </div>
+              {m.achieved ? (
+                <a
+                  href={getCertificateUrl(m.week)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    display: "inline-block",
+                    minHeight: 40,
+                    lineHeight: "40px",
+                    padding: "0 16px",
+                    borderRadius: 10,
+                    background: `linear-gradient(135deg, ${C.gold}, #ff9f43)`,
+                    color: "#0f1530",
+                    fontWeight: 900,
+                    fontSize: 13,
+                    textDecoration: "none",
+                  }}
+                >
+                  Get it
+                </a>
+              ) : (
+                <span style={{ fontSize: 12, color: "#475569" }}>
+                  {m.weeksRemaining} more {m.weeksRemaining === 1 ? "week" : "weeks"}
+                </span>
+              )}
+            </div>
+          ))}
+        </div>
 
         {/* The Agent Wardrobe - "Your Kit".
             TRIAL, 27 October 2026: docs/cyberheroes/agent-wardrobe-design.md.
