@@ -902,9 +902,10 @@ function FeaturedStreamCard({ stream, f }: { stream: Stream; f: FeaturedLook }) 
         </span>
         <div className={single ? "ssf-tracks single" : "ssf-tracks"}>
           {f.tracks.map((t, i) => (
-            <div key={t.label} className="ssf-trk" style={{ ["--c" as string]: t.accent }}>
+            <div key={t.label} className={locked.length ? "ssf-trk ssf-live" : "ssf-trk"} style={{ ["--c" as string]: t.accent }}>
               <span aria-hidden className="ssf-topbar" />
-              <span aria-hidden className="ssf-no">{`0${i + 1}`}</span>
+              {/* beside locked tracks, the live one says so instead of its number */}
+              {locked.length ? <span className="ssf-livechip">Live</span> : <span aria-hidden className="ssf-no">{`0${i + 1}`}</span>}
               <div
                 className="ssf-trk-a"
                 style={{ display: "flex", flexDirection: "column", padding: "18px 15px 15px", color: "inherit" }}
@@ -1207,6 +1208,54 @@ function FeaturedStreamCard({ stream, f }: { stream: Stream; f: FeaturedLook }) 
         }
         /* a track not yet released: same frame, dimmed and frosted, its
            contents scrambling (the roadmap cards' encrypted look) */
+        /* the live track among locked ones: a solid lit edge, a glow and a
+           small lift, plus a LIVE chip (only when the stream has locked
+           tracks, so the Cybersecurity card is untouched) */
+        .ssf-trk.ssf-live {
+          border: 1.5px solid color-mix(in srgb, var(--c) 80%, transparent);
+          background: linear-gradient(180deg, color-mix(in srgb, var(--c) 26%, var(--ssf-trk1)), var(--ssf-trk2));
+          box-shadow: 0 0 0 1px color-mix(in srgb, var(--c) 28%, transparent), 0 20px 44px -18px color-mix(in srgb, var(--c) 75%, transparent),
+            inset 0 1px 0 rgba(255, 255, 255, 0.08);
+          transform: translateY(-4px);
+        }
+        .ssf-live .ssf-topbar {
+          height: 4px;
+          box-shadow: 0 0 14px var(--c);
+        }
+        .ssf-livechip {
+          position: absolute;
+          right: 11px;
+          top: 11px;
+          z-index: 2;
+          display: inline-flex;
+          align-items: center;
+          gap: 5px;
+          padding: 3px 8px 3px 7px;
+          border-radius: 999px;
+          background: #4cc38a;
+          color: #04170d;
+          font-family: var(--lv2-font-mono);
+          font-size: 8.5px;
+          font-weight: 800;
+          letter-spacing: 0.16em;
+          text-transform: uppercase;
+          box-shadow: 0 0 14px rgba(76, 195, 138, 0.65);
+        }
+        .ssf-livechip::before {
+          content: "";
+          width: 5px;
+          height: 5px;
+          border-radius: 50%;
+          background: #ffffff;
+          animation: ssfLiveDot 1.6s ease-in-out infinite;
+        }
+        @keyframes ssfLiveDot {
+          0%, 100% { opacity: 1; transform: scale(1); }
+          50% { opacity: 0.35; transform: scale(0.7); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .ssf-livechip::before { animation: none; }
+        }
         .ssf-trk.ssf-locked {
           background: linear-gradient(180deg, color-mix(in srgb, var(--c) 10%, var(--ssf-trk1)), var(--ssf-trk2));
           border-style: dashed;
