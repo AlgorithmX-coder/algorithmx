@@ -4,7 +4,7 @@ import Link from "next/link";
 
 import { type LockupId } from "@/app/components/CourseLockup";
 import { SectionTag } from "@/app/components/SectionTag";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { useInView } from "framer-motion";
 import { FadeUp } from "./utilities";
 
@@ -58,6 +58,20 @@ const STREAMS: Stream[] = [
     href: "/cybersecurity",
     /* Plural: the link lands on the 4-track hub, not a single course. */
     cta: "View streams",
+  },
+  {
+    id: "workplace",
+    name: "Workplace Skills",
+    ages: "Adults · 1 of 4 tracks live",
+    status: "LIVE NOW",
+    isLive: true,
+    blurb:
+      "The fundamentals every desk job runs on: email, spreadsheets, files and AI, practised in a pretend office until they are second nature.",
+    project: "A Monday morning at the desk",
+    accent: "#2b59c3",
+    icon: "M3 4h18v12H3z M9 20h6 M12 16v4",
+    href: "/desk-ready",
+    cta: "View course",
   },
   {
     id: "game-dev",
@@ -137,7 +151,7 @@ const STREAMS: Stream[] = [
 ];
 
 export default function SubjectShowcase() {
-  const featured = STREAMS.find((s) => s.isLive)!;
+  const featured = STREAMS.filter((s) => s.isLive);
   const upcoming = STREAMS.filter((s) => !s.isLive);
 
   return (
@@ -168,7 +182,7 @@ export default function SubjectShowcase() {
         <div style={{ textAlign: "center", marginBottom: 56 }}>
           <FadeUp>
             <p style={{ margin: "0 0 18px", textAlign: "center" }}>
-              <SectionTag>six streams</SectionTag>
+              <SectionTag>seven streams</SectionTag>
             </p>
           </FadeUp>
           <FadeUp delay={0.05}>
@@ -202,17 +216,22 @@ export default function SubjectShowcase() {
                   "kickstart your career in IT", which spoke only to the
                   adult end of a platform that starts at six. */}
               The IT world our children will work in is being built right
-              now. Cyber Security is live today across every age, and five
-              more subjects are in development, every one built on real
-              projects: a six year old&rsquo;s first safe password, an
-              adult&rsquo;s first job in tech.
+              now. Cyber Security is live today across every age, Workplace
+              Skills is live for adults, and five more subjects are in
+              development, every one built on real projects: a six year
+              old&rsquo;s first safe password, an adult&rsquo;s first job in
+              tech.
             </p>
           </FadeUp>
         </div>
 
-        <FadeUp delay={0.16}>
-          <FeaturedStreamCard stream={featured} />
-        </FadeUp>
+        {featured.map((st, i) => (
+          <div key={st.id} style={{ marginTop: i === 0 ? 0 : 28 }}>
+            <FadeUp delay={0.16}>
+              <FeaturedStreamCard stream={st} f={FEATURED[st.id]} />
+            </FadeUp>
+          </div>
+        ))}
 
         <div style={{ marginTop: 40 }}>
           {/* Announcement header — says plainly what the encrypted cards
@@ -603,7 +622,17 @@ function TrackMark({ id, accent }: { id: LockupId; accent: string }) {
 //     M11 Digital Forensics, M16 Full Engagement (capstone).
 //   Pro (/pro course page): M9 Web attacks & OWASP, M14 Logs & the SIEM,
 //     M16 Incident response, M21 capstone + CV.
-const CYBER_TRACK_CARDS: ReadonlyArray<{
+interface FeaturedTrack {
+  family: string;
+  label: string;
+  accent: string;
+  ages: string;
+  verb: string;
+  mark: ReactNode;
+  items: ReadonlyArray<{ ref: string; name: string }>;
+}
+
+const CYBER_TRACKS: ReadonlyArray<{
   id: LockupId;
   label: string;
   accent: string;
@@ -665,22 +694,177 @@ const CYBER_TRACK_CARDS: ReadonlyArray<{
   },
 ];
 
+const CYBER_TRACK_CARDS: ReadonlyArray<FeaturedTrack> = CYBER_TRACKS.map((t) => ({
+  ...t,
+  family: "Cyber",
+  mark: <TrackMark id={t.id} accent={t.accent} />,
+}));
+
+/* Workplace Skills: one live track, Desk Ready (individuals only; AI Cleared
+ * and AI Fluent are for firms and stay off the homepage, owner 2026-11-09).
+ * Each label is marketing-worded and maps to a real module on the Desk Ready
+ * syllabus (app/desk-ready/syllabus.ts): M0 Your computer, your way (copy,
+ * paste, undo, saving), M2 Writing a work email, M5 Putting business data
+ * in, M12 AI as your assistant. */
+const DESK_MARK = (
+  <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="#7fb2ff" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+    <rect x="3" y="4" width="18" height="12" rx="2" />
+    <path d="M9 20 H15 M12 16 V20" />
+    <path d="M7.5 10 L10.2 12.6 L15.8 7.4" stroke="#bfe0ff" />
+  </svg>
+);
+
+const WORKPLACE_TRACK_CARDS: ReadonlyArray<FeaturedTrack> = [
+  {
+    family: "Desk",
+    label: "Ready",
+    accent: "#7fb2ff",
+    ages: "Adults · 14 modules",
+    verb: "Practise",
+    mark: DESK_MARK,
+    items: [
+      { ref: "Module 2", name: "Emails that get answers" },
+      { ref: "Module 5", name: "Spreadsheets people trust" },
+      { ref: "Module 0", name: "Shortcuts that save hours" },
+      { ref: "Module 12", name: "Make AI do the admin" },
+    ],
+  },
+];
+
+/* How each live stream's featured card looks. Same format, own palette:
+ * every colour in the card's stylesheet reads one of these variables. */
+interface FeaturedLook {
+  vars: Record<string, string>;
+  bracket: string;
+  hud: [string, string];
+  /* Drawn inside FeaturedStreamCard, not passed as JSX: styled-jsx only
+   * scopes elements written in the component, so a strip or emblem built
+   * out here would miss the card's styles. */
+  emblem: "shield" | "desk";
+  strip: { text: string; logo?: { src: string; alt: string } };
+  tracks: ReadonlyArray<FeaturedTrack>;
+  /* Tracks on the way, shown as locked, scrambling slots after the live
+   * ones (the roadmap cards' encrypted look): one accent per slot. They
+   * never carry a real name, so nothing about them can leak. */
+  locked?: ReadonlyArray<string>;
+}
+
+const FEATURED: Record<string, FeaturedLook> = {
+  cybersecurity: {
+    vars: {
+      "--ssf-brand": "#37e08a",
+      "--ssf-brand-soft": "rgba(55, 224, 138, 0.2)",
+      "--ssf-accent2": "#35e0ff",
+      "--ssf-accent2-soft": "rgba(53, 224, 255, 0.2)",
+      "--ssf-radial": "rgba(21, 155, 138, 0.14)",
+      "--ssf-bg1": "#0b1d16",
+      "--ssf-bg2": "#060f0b",
+      "--ssf-border": "rgba(21, 200, 160, 0.3)",
+      "--ssf-gridline": "rgba(55, 224, 138, 0.055)",
+      "--ssf-hud": "#5f8778",
+      "--ssf-hudline": "rgba(55, 224, 138, 0.14)",
+      "--ssf-scope-in": "rgba(23, 160, 94, 0.22)",
+      "--ssf-scope-out": "#06130e",
+      "--ssf-scope-shadow": "rgba(14, 122, 69, 0.6)",
+      "--ssf-scope-inset": "rgba(21, 155, 138, 0.18)",
+      "--ssf-scope-border": "rgba(21, 200, 160, 0.35)",
+      "--ssf-pulse": "rgba(55, 224, 138, 0.5)",
+      "--ssf-glow": "rgba(55, 224, 138, 0.7)",
+      "--ssf-ink": "#eafff5",
+      "--ssf-ages": "#7bbfa4",
+      "--ssf-blurb": "#c3e3d5",
+      "--ssf-strip": "#8ff3c4",
+      "--ssf-strip-border": "rgba(55, 224, 138, 0.3)",
+      "--ssf-strip-bg": "rgba(55, 224, 138, 0.05)",
+      "--ssf-strip-div": "rgba(143, 243, 196, 0.32)",
+      "--ssf-trk1": "#0a1813",
+      "--ssf-trk2": "#081210",
+      "--ssf-badge-base": "#06120d",
+      "--ssf-ag": "#8fb3a4",
+      "--ssf-li": "#d7efe4",
+      "--ssf-more": "#7fa596",
+      "--ssf-cta1": "#1fd089",
+      "--ssf-cta2": "#0f9a5c",
+      "--ssf-cta-ink": "#04140d",
+      "--ssf-cta-glow": "rgba(55, 224, 138, 0.6)",
+      "--ssf-cta-glow2": "rgba(55, 224, 138, 0.75)",
+    },
+    bracket: "#37e08a",
+    hud: ["AX // CYBER.SEC", "ENC:256 · STATUS:SECURE · TRACKS:4/4"],
+    emblem: "shield",
+    strip: { text: "Aligned with UK’s National Cyber Security Centre", logo: { src: "/logos/ncsc.svg", alt: "National Cyber Security Centre" } },
+    tracks: CYBER_TRACK_CARDS,
+  },
+  workplace: {
+    vars: {
+      "--ssf-brand": "#7fb2ff",
+      "--ssf-brand-soft": "rgba(127, 178, 255, 0.2)",
+      "--ssf-accent2": "#9d8cff",
+      "--ssf-accent2-soft": "rgba(157, 140, 255, 0.2)",
+      "--ssf-radial": "rgba(87, 110, 230, 0.18)",
+      "--ssf-bg1": "#0d1428",
+      "--ssf-bg2": "#070b17",
+      "--ssf-border": "rgba(127, 178, 255, 0.3)",
+      "--ssf-gridline": "rgba(127, 178, 255, 0.06)",
+      "--ssf-hud": "#6d7fa3",
+      "--ssf-hudline": "rgba(127, 178, 255, 0.15)",
+      "--ssf-scope-in": "rgba(60, 100, 220, 0.25)",
+      "--ssf-scope-out": "#070b17",
+      "--ssf-scope-shadow": "rgba(43, 89, 195, 0.6)",
+      "--ssf-scope-inset": "rgba(87, 110, 230, 0.2)",
+      "--ssf-scope-border": "rgba(127, 178, 255, 0.38)",
+      "--ssf-pulse": "rgba(127, 178, 255, 0.5)",
+      "--ssf-glow": "rgba(127, 178, 255, 0.7)",
+      "--ssf-ink": "#eef3ff",
+      "--ssf-ages": "#8fa6d4",
+      "--ssf-blurb": "#c9d5f0",
+      "--ssf-strip": "#b9d3ff",
+      "--ssf-strip-border": "rgba(127, 178, 255, 0.32)",
+      "--ssf-strip-bg": "rgba(127, 178, 255, 0.06)",
+      "--ssf-strip-div": "rgba(185, 211, 255, 0.32)",
+      "--ssf-trk1": "#0b1226",
+      "--ssf-trk2": "#080d1b",
+      "--ssf-badge-base": "#080d1b",
+      "--ssf-ag": "#93a6cc",
+      "--ssf-li": "#dbe5fb",
+      "--ssf-more": "#7f90b5",
+      "--ssf-cta1": "#5b8cf0",
+      "--ssf-cta2": "#2b59c3",
+      "--ssf-cta-ink": "#ffffff",
+      "--ssf-cta-glow": "rgba(91, 140, 240, 0.6)",
+      "--ssf-cta-glow2": "rgba(91, 140, 240, 0.75)",
+    },
+    bracket: "#7fb2ff",
+    hud: ["AX // WORK.SKILLS", "STATUS:LIVE · TRACKS:1/4"],
+    emblem: "desk",
+    strip: { text: "Practise in a pretend Outlook, Excel and desktop" },
+    tracks: WORKPLACE_TRACK_CARDS,
+    /* owner 2026-11-09: three or four more cards, fuzzed out until released */
+    locked: ["#9d8cff", "#5fd0d8", "#ff8fe0"],
+  },
+};
+
 /* Featured Cybersecurity card — dark "cyber ops" console (owner 2026-10-18):
  * a HUD status line, a cyber grid, an animated reticle logo, the centred
  * title + blurb, the NCSC alignment strip and four designed track cards that
  * each link to a course. */
-function FeaturedStreamCard({ stream }: { stream: Stream }) {
+function FeaturedStreamCard({ stream, f }: { stream: Stream; f: FeaturedLook }) {
+  const locked = f.locked ?? [];
+  const single = f.tracks.length + locked.length === 1;
+  /* the locked slots scramble only while the card is near the screen */
+  const cardRef = useRef<HTMLElement>(null);
+  const onScreen = useInView(cardRef, { margin: "240px 0px 240px 0px" });
   return (
-    <article className="ssf-card">
+    <article ref={cardRef} className="ssf-card" style={f.vars as CSSProperties}>
       <span aria-hidden className="ssf-grid" />
-      <Bracket accent="#37e08a" corner="tl" size={24} off={16} />
-      <Bracket accent="#37e08a" corner="tr" size={24} off={16} />
-      <Bracket accent="#37e08a" corner="bl" size={24} off={16} />
-      <Bracket accent="#37e08a" corner="br" size={24} off={16} />
+      <Bracket accent={f.bracket} corner="tl" size={24} off={16} />
+      <Bracket accent={f.bracket} corner="tr" size={24} off={16} />
+      <Bracket accent={f.bracket} corner="bl" size={24} off={16} />
+      <Bracket accent={f.bracket} corner="br" size={24} off={16} />
       <div className="ssf-inner">
         <div className="ssf-hud">
-          <span>AX // CYBER.SEC</span>
-          <span>ENC:256 · STATUS:SECURE · TRACKS:4/4</span>
+          <span>{f.hud[0]}</span>
+          <span>{f.hud[1]}</span>
         </div>
         <span className="ssf-scope" aria-hidden>
           <span className="ssf-cbk a" />
@@ -690,36 +874,47 @@ function FeaturedStreamCard({ stream }: { stream: Stream }) {
           <span className="ssf-ring r1" />
           <span className="ssf-ring r2" />
           <span className="ssf-pulse" />
-          <svg width="50" height="54" viewBox="0 0 24 26" fill="none" stroke="#5ff0a8" strokeWidth="1.8" strokeLinejoin="round">
-            <path d="M12 2l8 3v6c0 5-3.5 8-8 11-4.5-3-8-6-8-11V5l8-3z" />
-            <path d="M8.5 12.5 L11 15 L15.5 9.5" stroke="#8ff6ff" strokeWidth="2" />
-          </svg>
+          {f.emblem === "shield" ? (
+            <svg width="28" height="30" viewBox="0 0 24 26" fill="none" stroke="#5ff0a8" strokeWidth="1.8" strokeLinejoin="round">
+              <path d="M12 2l8 3v6c0 5-3.5 8-8 11-4.5-3-8-6-8-11V5l8-3z" />
+              <path d="M8.5 12.5 L11 15 L15.5 9.5" stroke="#8ff6ff" strokeWidth="2" />
+            </svg>
+          ) : (
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#9fc4ff" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="3" y="4" width="18" height="12" rx="2" />
+              <path d="M9 20 H15 M12 16 V20" />
+              <path d="M7.5 10 L10.2 12.6 L15.8 7.4" stroke="#d6e6ff" strokeWidth="2" />
+            </svg>
+          )}
         </span>
         <h3 className="ssf-ttl">{stream.name}</h3>
         <div className="ssf-ages">{stream.ages}</div>
         <p className="ssf-blurb">{stream.blurb}</p>
         <span className="ssf-ncsc">
-          <span>Aligned with UK&rsquo;s National Cyber Security Centre</span>
-          <span aria-hidden className="ssf-ncsc-div" />
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/logos/ncsc.svg" alt="National Cyber Security Centre" loading="lazy" className="ssf-ncsc-logo" />
+          <span>{f.strip.text}</span>
+          {f.strip.logo && (
+            <>
+              <span aria-hidden className="ssf-ncsc-div" />
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={f.strip.logo.src} alt={f.strip.logo.alt} loading="lazy" className="ssf-ncsc-logo" />
+            </>
+          )}
         </span>
-        <div className="ssf-tracks">
-          {CYBER_TRACK_CARDS.map((t, i) => (
-            <div key={t.id} className="ssf-trk" style={{ ["--c" as string]: t.accent }}>
+        <div className={single ? "ssf-tracks single" : "ssf-tracks"}>
+          {f.tracks.map((t, i) => (
+            <div key={t.label} className={locked.length ? "ssf-trk ssf-live" : "ssf-trk"} style={{ ["--c" as string]: t.accent }}>
               <span aria-hidden className="ssf-topbar" />
-              <span aria-hidden className="ssf-no">{`0${i + 1}`}</span>
+              {/* beside locked tracks, the live one says so instead of its number */}
+              {locked.length ? <span className="ssf-livechip">Live</span> : <span aria-hidden className="ssf-no">{`0${i + 1}`}</span>}
               <div
                 className="ssf-trk-a"
                 style={{ display: "flex", flexDirection: "column", padding: "18px 15px 15px", color: "inherit" }}
               >
                 <span className="ssf-trk-head">
-                  <span className="ssf-badge">
-                    <TrackMark id={t.id} accent={t.accent} />
-                  </span>
+                  <span className="ssf-badge">{t.mark}</span>
                   <span className="ssf-titlebox">
                     <span className="ssf-nm">
-                      Cyber <em>{t.label}</em>
+                      {t.family} <em>{t.label}</em>
                     </span>
                     <span className="ssf-verb">{t.verb}</span>
                   </span>
@@ -730,6 +925,8 @@ function FeaturedStreamCard({ stream }: { stream: Stream }) {
                   {t.items.map((it) => (
                     <li key={it.ref} className="ssf-li">
                       <span className="ssf-ref">{it.ref}</span>
+                      {/* a real space, so the line can break between the ref and the name */}
+                      {" "}
                       {it.name}
                     </li>
                   ))}
@@ -738,6 +935,44 @@ function FeaturedStreamCard({ stream }: { stream: Stream }) {
               </div>
             </div>
           ))}
+          {locked.map((accent, j) => {
+            const n = f.tracks.length + j + 1;
+            return (
+              <div
+                key={`locked-${j}`}
+                className="ssf-trk ssf-locked"
+                aria-label="Upcoming track, not yet released"
+                style={{ ["--c" as string]: accent, ["--accent" as string]: accent }}
+              >
+                <span aria-hidden className="ssf-topbar" />
+                <span aria-hidden className="ssf-no">{`0${n}`}</span>
+                <span aria-hidden className="lv2-scanline" style={{ animationDelay: `${-1.4 * (j + 1)}s`, animationPlayState: onScreen ? "running" : "paused" }} />
+                <div className="ssf-trk-a" style={{ display: "flex", flexDirection: "column", padding: "18px 15px 15px" }}>
+                  <span className="ssf-trk-head">
+                    <span className="ssf-badge">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={accent} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                        <path d={LOCK_ICON} />
+                      </svg>
+                    </span>
+                    <span className="ssf-titlebox">
+                      <CipherText length={11} phase={n * 3} active={onScreen} style={{ fontSize: 13, color: "var(--ssf-ink)", fontWeight: 600 }} />
+                      <span className="ssf-verb">Unlocks soon</span>
+                    </span>
+                  </span>
+                  <CipherText length={12} phase={n * 5} active={onScreen} style={{ fontSize: 9, marginTop: 13, color: "var(--ssf-ag)" }} />
+                  <span aria-hidden className="ssf-sep" />
+                  <span className="ssf-list" aria-hidden>
+                    {[17, 21, 15, 19].map((len, k) => (
+                      <CipherText key={k} length={len} phase={n * 7 + k * 11} active={onScreen} style={{ fontSize: 11.5, lineHeight: 1.3, color: "var(--ssf-li)", opacity: 0.6 }} />
+                    ))}
+                  </span>
+                  <span className="ssf-more">
+                    &gt; encrypted until launch<span className="lv2-cipher-caret">_</span>
+                  </span>
+                </div>
+              </div>
+            );
+          })}
         </div>
         {stream.href && (
           <Link href={stream.href} className="ssf-cta">
@@ -752,10 +987,10 @@ function FeaturedStreamCard({ stream }: { stream: Stream }) {
           position: relative;
           border-radius: 24px;
           overflow: hidden;
-          color: #37e08a;
-          background: radial-gradient(130% 120% at 50% -10%, rgba(21, 155, 138, 0.14), transparent 55%),
-            linear-gradient(180deg, #0b1d16, #060f0b);
-          border: 1px solid rgba(21, 200, 160, 0.3);
+          color: var(--ssf-brand);
+          background: radial-gradient(130% 120% at 50% -10%, var(--ssf-radial), transparent 55%),
+            linear-gradient(180deg, var(--ssf-bg1), var(--ssf-bg2));
+          border: 1px solid var(--ssf-border);
           box-shadow: 0 26px 70px rgba(0, 0, 0, 0.55);
         }
         .ssf-grid {
@@ -763,8 +998,8 @@ function FeaturedStreamCard({ stream }: { stream: Stream }) {
           inset: 0;
           pointer-events: none;
           opacity: 0.8;
-          background-image: linear-gradient(rgba(55, 224, 138, 0.055) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(55, 224, 138, 0.055) 1px, transparent 1px);
+          background-image: linear-gradient(var(--ssf-gridline) 1px, transparent 1px),
+            linear-gradient(90deg, var(--ssf-gridline) 1px, transparent 1px);
           background-size: 30px 30px;
           -webkit-mask: radial-gradient(130% 90% at 50% -10%, #000, transparent 64%);
           mask: radial-gradient(130% 90% at 50% -10%, #000, transparent 64%);
@@ -772,7 +1007,7 @@ function FeaturedStreamCard({ stream }: { stream: Stream }) {
         .ssf-inner {
           position: relative;
           z-index: 1;
-          padding: 18px 36px 40px;
+          padding: 14px 36px 26px;
           display: flex;
           flex-direction: column;
           align-items: center;
@@ -792,9 +1027,9 @@ function FeaturedStreamCard({ stream }: { stream: Stream }) {
           font-size: 9px;
           letter-spacing: 0.2em;
           text-transform: uppercase;
-          color: #5f8778;
-          border-bottom: 1px solid rgba(55, 224, 138, 0.14);
-          padding: 10px 2px 18px;
+          color: var(--ssf-hud);
+          border-bottom: 1px solid var(--ssf-hudline);
+          padding: 8px 2px 12px;
         }
         .ssf-hud span:last-child {
           white-space: nowrap;
@@ -803,16 +1038,16 @@ function FeaturedStreamCard({ stream }: { stream: Stream }) {
         }
         .ssf-scope {
           position: relative;
-          width: 112px;
-          height: 112px;
-          margin-top: 18px;
+          width: 62px;
+          height: 62px;
+          margin-top: 10px;
           display: flex;
           align-items: center;
           justify-content: center;
           border-radius: 50%;
-          background: radial-gradient(60% 60% at 50% 42%, rgba(23, 160, 94, 0.22), #06130e 72%);
-          box-shadow: 0 8px 24px -8px rgba(14, 122, 69, 0.6), inset 0 0 14px rgba(21, 155, 138, 0.18);
-          border: 1px solid rgba(21, 200, 160, 0.35);
+          background: radial-gradient(60% 60% at 50% 42%, var(--ssf-scope-in), var(--ssf-scope-out) 72%);
+          box-shadow: 0 8px 24px -8px var(--ssf-scope-shadow), inset 0 0 14px var(--ssf-scope-inset);
+          border: 1px solid var(--ssf-scope-border);
         }
         .ssf-ring {
           position: absolute;
@@ -821,23 +1056,23 @@ function FeaturedStreamCard({ stream }: { stream: Stream }) {
           animation: ssfSpin 5s linear infinite;
         }
         .ssf-ring.r1 {
-          inset: 12px;
-          border-top-color: #35e0ff;
-          border-right-color: rgba(53, 224, 255, 0.2);
+          inset: 6px;
+          border-top-color: var(--ssf-accent2);
+          border-right-color: var(--ssf-accent2-soft);
         }
         .ssf-ring.r2 {
-          inset: 26px;
-          border-bottom-color: #37e08a;
-          border-left-color: rgba(55, 224, 138, 0.2);
+          inset: 14px;
+          border-bottom-color: var(--ssf-brand);
+          border-left-color: var(--ssf-brand-soft);
           animation-duration: 7s;
           animation-direction: reverse;
         }
         .ssf-cbk {
           position: absolute;
-          width: 11px;
-          height: 11px;
-          margin: 9px;
-          border-color: #35e0ff;
+          width: 8px;
+          height: 8px;
+          margin: 4px;
+          border-color: var(--ssf-accent2);
         }
         .ssf-cbk.a { left: 0; top: 0; border-left: 2px solid; border-top: 2px solid; }
         .ssf-cbk.b { right: 0; top: 0; border-right: 2px solid; border-top: 2px solid; }
@@ -845,23 +1080,23 @@ function FeaturedStreamCard({ stream }: { stream: Stream }) {
         .ssf-cbk.d { right: 0; bottom: 0; border-right: 2px solid; border-bottom: 2px solid; }
         .ssf-pulse {
           position: absolute;
-          inset: 30px;
+          inset: 16px;
           border-radius: 50%;
-          border: 1.5px solid rgba(55, 224, 138, 0.5);
+          border: 1.5px solid var(--ssf-pulse);
           animation: ssfPulse 2.8s ease-out infinite;
         }
         .ssf-scope svg {
           position: relative;
           z-index: 2;
-          filter: drop-shadow(0 0 8px rgba(55, 224, 138, 0.7));
+          filter: drop-shadow(0 0 8px var(--ssf-glow));
         }
         .ssf-ttl {
           font-family: var(--lv2-font-display);
           font-weight: 500;
           letter-spacing: -0.022em;
-          font-size: clamp(2rem, 4.4vw, 2.9rem);
-          margin: 18px 0 0;
-          color: #eafff5;
+          font-size: clamp(1.9rem, 3.6vw, 2.6rem);
+          margin: 8px 0 0;
+          color: var(--ssf-ink);
           line-height: 1.02;
         }
         .ssf-ages {
@@ -870,37 +1105,37 @@ function FeaturedStreamCard({ stream }: { stream: Stream }) {
           font-weight: 600;
           letter-spacing: 0.17em;
           text-transform: uppercase;
-          margin-top: 11px;
-          color: #7bbfa4;
+          margin-top: 7px;
+          color: var(--ssf-ages);
         }
         .ssf-blurb {
           font-family: var(--lv2-font-display);
           font-size: clamp(0.95rem, 1.15vw, 1.0625rem);
           line-height: 1.6;
           max-width: 560px;
-          margin: 15px auto 0;
-          color: #c3e3d5;
+          margin: 9px auto 0;
+          color: var(--ssf-blurb);
         }
         .ssf-ncsc {
           display: inline-flex;
           align-items: center;
           gap: 10px;
-          margin-top: 20px;
+          margin-top: 12px;
           padding: 8px 15px;
           border-radius: 999px;
-          border: 1px solid rgba(55, 224, 138, 0.3);
-          background: rgba(55, 224, 138, 0.05);
+          border: 1px solid var(--ssf-strip-border);
+          background: var(--ssf-strip-bg);
           font-family: var(--lv2-font-mono);
           font-size: 10px;
           font-weight: 700;
           letter-spacing: 0.2em;
           text-transform: uppercase;
-          color: #8ff3c4;
+          color: var(--ssf-strip);
         }
         .ssf-ncsc-div {
           width: 1px;
           height: 16px;
-          background: rgba(143, 243, 196, 0.32);
+          background: var(--ssf-strip-div);
           flex: none;
         }
         .ssf-ncsc-logo {
@@ -912,8 +1147,38 @@ function FeaturedStreamCard({ stream }: { stream: Stream }) {
           display: grid;
           grid-template-columns: repeat(4, 1fr);
           gap: 14px;
-          margin: 28px 0 0;
+          margin: 18px 0 0;
           width: 100%;
+        }
+        /* one track (Workplace Skills): a single wide card, items in two columns */
+        .ssf-tracks.single {
+          grid-template-columns: minmax(0, 620px);
+          justify-content: center;
+        }
+        .ssf-tracks.single .ssf-list {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 9px 22px;
+        }
+        .ssf-tracks.single .ssf-li {
+          font-size: 13px;
+        }
+        @media (max-width: 680px) {
+          .ssf-tracks.single {
+            grid-template-columns: 1fr;
+          }
+          .ssf-tracks.single .ssf-list {
+            grid-template-columns: 1fr;
+          }
+          /* one full-width card has room for the badge beside the title,
+             so undo the two-column phone stack */
+          .ssf-tracks.single .ssf-trk-head {
+            flex-direction: row;
+            align-items: center;
+          }
+          .ssf-tracks.single .ssf-nm {
+            min-height: 0;
+          }
         }
         @media (max-width: 680px) {
           .ssf-tracks {
@@ -941,12 +1206,74 @@ function FeaturedStreamCard({ stream }: { stream: Stream }) {
             max-width: 100%;
           }
         }
+        /* a track not yet released: same frame, dimmed and frosted, its
+           contents scrambling (the roadmap cards' encrypted look) */
+        /* the live track among locked ones: a solid lit edge, a glow and a
+           small lift, plus a LIVE chip (only when the stream has locked
+           tracks, so the Cybersecurity card is untouched) */
+        .ssf-trk.ssf-live {
+          border: 1.5px solid color-mix(in srgb, var(--c) 80%, transparent);
+          background: linear-gradient(180deg, color-mix(in srgb, var(--c) 26%, var(--ssf-trk1)), var(--ssf-trk2));
+          box-shadow: 0 0 0 1px color-mix(in srgb, var(--c) 28%, transparent), 0 20px 44px -18px color-mix(in srgb, var(--c) 75%, transparent),
+            inset 0 1px 0 rgba(255, 255, 255, 0.08);
+          transform: translateY(-4px);
+        }
+        .ssf-live .ssf-topbar {
+          height: 4px;
+          box-shadow: 0 0 14px var(--c);
+        }
+        .ssf-livechip {
+          position: absolute;
+          right: 11px;
+          top: 11px;
+          z-index: 2;
+          display: inline-flex;
+          align-items: center;
+          gap: 5px;
+          padding: 3px 8px 3px 7px;
+          border-radius: 999px;
+          background: #4cc38a;
+          color: #04170d;
+          font-family: var(--lv2-font-mono);
+          font-size: 8.5px;
+          font-weight: 800;
+          letter-spacing: 0.16em;
+          text-transform: uppercase;
+          box-shadow: 0 0 14px rgba(76, 195, 138, 0.65);
+        }
+        .ssf-livechip::before {
+          content: "";
+          width: 5px;
+          height: 5px;
+          border-radius: 50%;
+          background: #ffffff;
+          animation: ssfLiveDot 1.6s ease-in-out infinite;
+        }
+        @keyframes ssfLiveDot {
+          0%, 100% { opacity: 1; transform: scale(1); }
+          50% { opacity: 0.35; transform: scale(0.7); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .ssf-livechip::before { animation: none; }
+        }
+        .ssf-trk.ssf-locked {
+          background: linear-gradient(180deg, color-mix(in srgb, var(--c) 10%, var(--ssf-trk1)), var(--ssf-trk2));
+          border-style: dashed;
+          border-color: color-mix(in srgb, var(--c) 38%, transparent);
+        }
+        .ssf-locked .ssf-trk-a {
+          filter: blur(0.4px);
+          opacity: 0.88;
+        }
+        .ssf-locked .ssf-topbar {
+          opacity: 0.55;
+        }
         .ssf-trk {
           position: relative;
           border-radius: 16px;
           overflow: hidden;
           text-align: left;
-          background: linear-gradient(180deg, color-mix(in srgb, var(--c) 15%, #0a1813), #081210);
+          background: linear-gradient(180deg, color-mix(in srgb, var(--c) 15%, var(--ssf-trk1)), var(--ssf-trk2));
           border: 1px solid color-mix(in srgb, var(--c) 42%, transparent);
         }
         .ssf-topbar {
@@ -982,7 +1309,7 @@ function FeaturedStreamCard({ stream }: { stream: Stream }) {
           display: flex;
           align-items: center;
           justify-content: center;
-          background: color-mix(in srgb, var(--c) 22%, #06120d);
+          background: color-mix(in srgb, var(--c) 22%, var(--ssf-badge-base));
           box-shadow: inset 0 0 10px color-mix(in srgb, var(--c) 30%, transparent), 0 0 14px -4px var(--c);
         }
         .ssf-titlebox {
@@ -995,7 +1322,7 @@ function FeaturedStreamCard({ stream }: { stream: Stream }) {
           font-family: var(--lv2-font-display);
           font-weight: 600;
           font-size: 15px;
-          color: #eafff5;
+          color: var(--ssf-ink);
           line-height: 1.05;
           overflow-wrap: anywhere;
         }
@@ -1033,7 +1360,7 @@ function FeaturedStreamCard({ stream }: { stream: Stream }) {
           font-size: 9px;
           letter-spacing: 0.12em;
           text-transform: uppercase;
-          color: #8fb3a4;
+          color: var(--ssf-ag);
           margin-top: 13px;
         }
         .ssf-sep {
@@ -1055,8 +1382,10 @@ function FeaturedStreamCard({ stream }: { stream: Stream }) {
           font-family: var(--lv2-font-display);
           font-size: 12px;
           line-height: 1.3;
-          color: #d7efe4;
-          overflow-wrap: anywhere;
+          color: var(--ssf-li);
+          /* break only a word too long for a line of its own, never mid-word
+             ("Spreadshe/ets" on phones) */
+          overflow-wrap: break-word;
         }
         .ssf-ref {
           font-family: var(--lv2-font-mono);
@@ -1065,7 +1394,7 @@ function FeaturedStreamCard({ stream }: { stream: Stream }) {
           letter-spacing: 0.06em;
           text-transform: uppercase;
           color: var(--c);
-          margin-right: 6px;
+          margin-right: 2px;
           white-space: nowrap;
         }
         .ssf-more {
@@ -1074,7 +1403,7 @@ function FeaturedStreamCard({ stream }: { stream: Stream }) {
           font-size: 9px;
           letter-spacing: 0.1em;
           text-transform: uppercase;
-          color: #7fa596;
+          color: var(--ssf-more);
         }
         :global(.ssf-cta) {
           display: inline-flex;
@@ -1085,16 +1414,16 @@ function FeaturedStreamCard({ stream }: { stream: Stream }) {
           font-size: 15px;
           text-decoration: none;
           border-radius: 12px;
-          padding: 14px 28px;
-          margin-top: 30px;
-          background: linear-gradient(180deg, #1fd089, #0f9a5c);
-          color: #04140d;
-          box-shadow: 0 12px 28px -10px rgba(55, 224, 138, 0.6);
+          padding: 12px 26px;
+          margin-top: 20px;
+          background: linear-gradient(180deg, var(--ssf-cta1), var(--ssf-cta2));
+          color: var(--ssf-cta-ink);
+          box-shadow: 0 12px 28px -10px var(--ssf-cta-glow);
           transition: transform 0.18s, box-shadow 0.18s;
         }
         :global(.ssf-cta:hover) {
           transform: translateY(-2px);
-          box-shadow: 0 18px 34px -12px rgba(55, 224, 138, 0.75);
+          box-shadow: 0 18px 34px -12px var(--ssf-cta-glow2);
         }
         @keyframes ssfSpin {
           to {

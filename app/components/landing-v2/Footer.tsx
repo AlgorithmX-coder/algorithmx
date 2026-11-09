@@ -142,6 +142,7 @@ export default function Footer({ tone = "night", variant = "site" }: { tone?: Fo
                 { name: "Cyber Explorers", href: "/cyberexplorers" },
                 { name: "Cyber Ops", href: "/ops" },
                 { name: "Cyber Pro", href: "/pro" },
+                { name: "Desk Ready", href: "/desk-ready" },
                 { name: "AI at work", href: "/corporate" },
               ]}
               note="+ 5 more subjects in development"
