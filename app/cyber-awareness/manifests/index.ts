@@ -7,11 +7,13 @@ import { AWARENESS_MODULE_4 } from "./module4";
 import { AWARENESS_MODULE_5 } from "./module5";
 import { AWARENESS_MODULE_6 } from "./module6";
 import { AWARENESS_MODULE_7 } from "./module7";
+import { AWARENESS_MODULE_8 } from "./module8";
 
 /* The Cyber Awareness course map: eight modules on everyday cyber hygiene
- * for every member of staff, the same for every desk. Modules ship one
- * at a time; one marked unavailable shows on the course home as coming,
- * and its page 404s until its manifest is added below. */
+ * for every member of staff, the same for every desk. Modules shipped
+ * one at a time, and all eight are now out. One marked unavailable would
+ * show on the course home as coming, and its page would 404 until its
+ * manifest is added below. */
 
 export const AWARENESS_MODULE_LIST: ModuleSummary[] = [
   { n: 1, title: "The Human Firewall", minutes: 15, available: true },
@@ -21,7 +23,7 @@ export const AWARENESS_MODULE_LIST: ModuleSummary[] = [
   { n: 5, title: "Data Handling", minutes: 15, available: true },
   { n: 6, title: "Invoice Fraud & BEC", minutes: 15, available: true },
   { n: 7, title: "AI-Powered Scams & Deepfakes", minutes: 15, available: true },
-  { n: 8, title: "Report It", minutes: 15, available: false },
+  { n: 8, title: "Report It", minutes: 15, available: true },
 ];
 
 const MANIFESTS: Partial<Record<number, ModuleManifest>> = {
@@ -32,6 +34,7 @@ const MANIFESTS: Partial<Record<number, ModuleManifest>> = {
   5: AWARENESS_MODULE_5,
   6: AWARENESS_MODULE_6,
   7: AWARENESS_MODULE_7,
+  8: AWARENESS_MODULE_8,
 };
 
 export function getAwarenessModule(n: number): ModuleManifest | null {

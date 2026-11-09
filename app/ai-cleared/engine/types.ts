@@ -749,7 +749,64 @@ export interface CallsPractise {
   calls: IncomingCall[];
 }
 
-export type Practise = SandboxPractise | SortPractise | SituationsPractise | TriagePractise | InspectPractise | LoopPractise | SpotPractise | SourcesPractise | MomentsPractise | InboxPractise | PhonePractise | ScenePractise | OutboxPractise | PaymentsPractise | CallsPractise;
+/* A day of things going wrong, and the report the learner writes for each:
+ * a link clicked and a password typed, an email to the wrong person, a
+ * call that felt off, a laptop bag left on a train. Each incident shows
+ * what happened (and, sometimes, the voice saying keep quiet), then the
+ * learner builds the report in three steps: who to tell first and by which
+ * channel, which details go in (the useful ones, not the noise), and what
+ * to do while waiting. Each pick is graded (best, ok, wrong) and explains
+ * itself, the details are checked one by one, and the draft fills in as
+ * they go. Sending it shows a model report, what the contact does next,
+ * minute by minute, and what keeping quiet would have cost. Every control
+ * is a labelled button; the pictures are drawn, never photographs. */
+export interface ReportChoice {
+  /* The button's words: "Ring {{firm.contact}} now". */
+  label: string;
+  /* One line under the label: the channel, or what it means. */
+  desc?: string;
+  grade: "best" | "ok" | "wrong";
+  why: string;
+}
+export interface ReportDetail {
+  /* What the detail says, as it would read in the report. */
+  text: string;
+  /* Useful to whoever acts on the report; false = noise, or harmful to send. */
+  useful: boolean;
+  why: string;
+}
+export interface ReportIncident {
+  /* When it happens: "Thu 09:40". */
+  time: string;
+  title: string;
+  /* Which drawing heads it. */
+  art: "link" | "mail" | "phone" | "laptop";
+  /* What happened, in a few sentences. */
+  happened: string;
+  /* The voice that says keep quiet or sort it yourself, when there is one. */
+  tempt?: string;
+  /* Step 1: who you tell first, and how. */
+  route: ReportChoice[];
+  /* Step 2: what goes in the report. */
+  details: ReportDetail[];
+  /* Step 3: what you do while you wait. */
+  meanwhile: ReportChoice[];
+  /* A model report: who it goes to, how, and what it says. */
+  model: { to: string; via: string; lines: string[] };
+  /* What happens next, by the clock. */
+  after: { time: string; text: string }[];
+  /* What keeping quiet, or waiting, would have cost. */
+  ifQuiet: string;
+}
+export interface ReportsPractise {
+  kind: "reports";
+  task: string;
+  /* One line under the task that sets the day up. */
+  scene?: string;
+  incidents: ReportIncident[];
+}
+
+export type Practise = SandboxPractise | SortPractise | SituationsPractise | TriagePractise | InspectPractise | LoopPractise | SpotPractise | SourcesPractise | MomentsPractise | InboxPractise | PhonePractise | ScenePractise | OutboxPractise | PaymentsPractise | CallsPractise | ReportsPractise;
 
 /* ---- Prove ---- */
 
@@ -789,6 +846,12 @@ export interface ModuleManifest {
    * shows instead of the firm's AI tool rules and the four data classes,
    * for a course where those do not apply. Lines take {{firm.*}} slots. */
   dock?: { label: string; lines: string[] }[];
+  /* The course's closing, for the module that ends a course with no final
+   * assessment: shown on the result screen once the module is passed.
+   * `done` heads it when every module is done, `pending` while some are
+   * still to finish; then a lead and one habit per module. Lines take
+   * {{firm.*}} slots. Absent = no closing, as on every other module. */
+  outro?: { done: string; pending: string; lead: string; habits: { n: number; title: string; habit: string }[] };
   learn: LearnScreen[];
   tracks: Partial<Record<Track, TrackBlock>>;
   /* Correct prove items needed, out of the items shown. */
