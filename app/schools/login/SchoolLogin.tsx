@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
 import PicturePassword from "./PicturePassword";
@@ -23,8 +23,8 @@ import "./auth.css";
 
 const CODE_RE = /^[A-Z0-9]{2,8}(-[A-Z0-9]{1,4})?$/;
 
-export default function SchoolLogin() {
-  const [code, setCode] = useState("");
+export default function SchoolLogin({ initialCode = null }: { initialCode?: string | null }) {
+  const [code, setCode] = useState(initialCode ? initialCode.toUpperCase() : "");
   const [msg, setMsg] = useState<null | { kind: "warn" | "info"; text: string }>(null);
 
   /* The three steps a child goes through: the code off their card, their own
@@ -37,9 +37,11 @@ export default function SchoolLogin() {
   const [busy, setBusy] = useState(false);
   const [authError, setAuthError] = useState<string | null>(null);
 
-  const onPupilSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const c = code.trim().toUpperCase();
+  /* One lookup, two ways in: the child typing the code, and the short
+     link /c/ABCD-EFG that a teacher puts on the board, which arrives as
+     ?class= and runs this on arrival so the child never types at all. */
+  const findClass = useCallback(async (raw: string) => {
+    const c = raw.trim().toUpperCase();
     if (!CODE_RE.test(c)) {
       setMsg({ kind: "warn", text: "Type the code exactly as it is on your card, like OAK-4." });
       return;
@@ -67,7 +69,18 @@ export default function SchoolLogin() {
     } finally {
       setBusy(false);
     }
+  }, []);
+
+  const onPupilSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    void findClass(code);
   };
+
+  /* Arrived by the short link: find the class straight away, so the first
+     thing on screen is the list of names rather than a box to type in. */
+  useEffect(() => {
+    if (initialCode) void findClass(initialCode);
+  }, [initialCode, findClass]);
 
   const onPictures = async (sequence: string[]) => {
     if (!chosen) return;

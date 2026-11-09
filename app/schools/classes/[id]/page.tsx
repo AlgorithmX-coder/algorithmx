@@ -1,12 +1,14 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
+import { headers } from "next/headers";
 import { auth } from "@/app/lib/auth";
 import { getSchoolContext } from "@/app/lib/schoolClasses";
 import { getClassProgress } from "@/app/lib/classProgress";
 import Locked from "../../teach/Locked";
 import AddPupils from "./AddPupils";
 import ClassStrip from "./ClassStrip";
+import ClassLink from "./ClassLink";
 import SignOut from "../../SignOut";
 import { wordsFor } from "../../words";
 import { removePupilAction, resetPicturesAction } from "../class.actions";
@@ -45,6 +47,9 @@ export default async function ClassPage({ params }: { params: Promise<{ id: stri
   if (!klass) notFound();
 
   const w = wordsFor(school.kind);
+  /* The host as the browser asked for it, so the link on the board is the
+     one the school actually uses rather than a domain in a config file. */
+  const host = (await headers()).get("x-forwarded-host") ?? (await headers()).get("host") ?? "algorithmx.io";
   const left = school.seatsPurchased - school.seatsUsed;
   const waiting = klass.pupils.filter((p) => !p.signedIn).length;
 
@@ -69,9 +74,20 @@ export default async function ClassPage({ params }: { params: Promise<{ id: stri
           </div>
         </header>
 
+        <div className="board">
+          <div className="boardsay">
+            <h3>Put this on the board</h3>
+            <p>
+              It opens straight on the list of names, so nobody has to type the {w.group} code.
+              Write it up, bookmark it once on the {w.group} machines, or send it home.
+            </p>
+          </div>
+          <ClassLink host={host} code={klass.code} />
+        </div>
+
         <p className="whatis">
-          <b>The {w.group} code is <code className="axcode">{klass.code}</code>.</b> It goes on every
-          login card in this {w.group}. They type it, pick their name, and tap their picture
+          <b>The {w.group} code is <code className="axcode">{klass.code}</code>.</b> Children who
+          arrive any other way type this, pick their name, and tap their picture
           password. The first time they sign in they choose that password, so there is nothing for
           you to set up beforehand.
         </p>
