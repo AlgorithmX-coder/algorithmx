@@ -21,7 +21,7 @@ export const FLUENT_MODULE_1: ModuleManifest = {
       eyebrow: "Module 1 of 9 · about 18 minutes",
       heading: "The first answer is never the answer.",
       lead: "Most people ask an AI tool once, read what comes back, and either paste it or give up. The people who get real work out of these tools do something different, and it takes about a minute longer. This module shows you the difference and has you do it on your own desk.",
-      note: "You hold an AI Cleared certificate, so the safety habits are assumed here. The leak rules still run under every send.",
+      note: "The safety habits from AI Cleared still apply here, and the leak rules run under every send.",
       cta: "Show me the difference",
     },
     {

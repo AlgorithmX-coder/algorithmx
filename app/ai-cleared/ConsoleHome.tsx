@@ -9,9 +9,10 @@ import TrackChange from "./TrackChange";
 
 const WORDS = ["", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"];
 
-/* The course home for either course: a progress ring, the modules as
- * glass cards with their state, the certificate once the course is
- * complete, the playbook on Fluent, and the one-time desk change. */
+/* The course home for every course: a progress ring, the modules as
+ * glass cards with their state, the playbook on Fluent, and the one-time
+ * desk change. No certificate: completion is per module (owner,
+ * 2026-11-09). */
 export default function ConsoleHome({
   firmName,
   contactName,
@@ -82,7 +83,7 @@ export default function ConsoleHome({
           </h1>
           <p className="cf-note">
             {complete
-              ? c.certificate ? "Every module passed. Your certificate is ready below." : "Every module passed."
+              ? "Every module done. The course is complete, and it is on your firm's training register."
               : next
                 ? `Next up: Module ${next.n}, ${next.title}, about ${next.minutes} minutes.`
                 : anyOpen
@@ -91,14 +92,6 @@ export default function ConsoleHome({
           </p>
         </div>
       </div>
-
-      {complete && c.certificate && (
-        <Link href={`${c.base}/certificate`} className="ch-cert">
-          <span className="ch-cert-stamp">Course {fluent ? "complete" : "cleared"}</span>
-          <span className="ch-cert-text">Your certificate is ready. Download it, or send the verify link to your manager.</span>
-          <span className="ch-cert-go">Open</span>
-        </Link>
-      )}
 
       {fluent && (
         <Link href={`${c.base}/playbook`} className="ch-cert ch-play">

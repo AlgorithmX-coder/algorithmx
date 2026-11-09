@@ -2,7 +2,8 @@ import { describe, expect, it } from "vitest";
 import { COURSES, courseByKey, courseOfSerial, isCourseSlug } from "./courses";
 
 /* The three courses share one platform; these are the facts the shared
- * pages, the certificate prefixes and the seat claim rely on. Cyber
+ * pages, the prefixes on certificates already issued and the seat claim
+ * rely on. Cyber
  * Awareness has no Seat.course value yet, so courseByKey only resolves
  * the two seat-keyed courses. */
 describe("courses", () => {
@@ -17,10 +18,14 @@ describe("courses", () => {
     expect(COURSES["cyber-awareness"].modules).toBe(8);
   });
 
-  it("issues a certificate only on AI Cleared and AI Fluent", () => {
-    expect(COURSES["ai-cleared"].certificate).toBe(true);
-    expect(COURSES["ai-fluent"].certificate).toBe(true);
+  it("issues no new certificate on any course", () => {
+    expect(COURSES["ai-cleared"].certificate).toBe(false);
+    expect(COURSES["ai-fluent"].certificate).toBe(false);
     expect(COURSES["cyber-awareness"].certificate).toBe(false);
+  });
+
+  it("never promises a certificate in a course's own words", () => {
+    for (const c of Object.values(COURSES)) expect(c.blurb).not.toMatch(/certificate issues/i);
   });
 
   it("maps a seat's course key to its course", () => {
