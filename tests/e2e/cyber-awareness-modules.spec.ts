@@ -8,12 +8,15 @@ import { getAwarenessModule } from "../../app/cyber-awareness/manifests";
  * its result stamp in the offline preview (/dev/cyber-awareness, no
  * database: every practice is scripted). The walker takes the first
  * available action on each screen, flags every moment in the morning and
- * names a button for each, so a screen with no way forward, a crash, or a
- * console error fails the build. A second pass answers every Prove item
- * correctly (found by text, because the options shuffle) and must pass.
+ * names a button for each, marks every inbox message and names a tell for
+ * each phish, so a screen with no way forward, a crash, or a console
+ * error fails the build. On the inbox it also hovers a sender and a link
+ * and checks what is behind them appears. A second pass answers every
+ * Prove item correctly (found by text, because the options shuffle) and
+ * must pass.
  */
 
-const MODULES = [1];
+const MODULES = [1, 2];
 const MAX_SCREENS = 40;
 
 function collectErrors(page: Page) {
@@ -45,6 +48,7 @@ async function playThrough(page: Page, query: string, opts: { m: number; answerR
 
   let screens = 0;
   let stuckAt: string | null = null;
+  let peeked = false;
   for (let guard = 0; guard < MAX_SCREENS; guard++) {
     await page.waitForTimeout(200);
     const eyebrow = (await page.locator(".cl-eyebrow").first().textContent().catch(() => "")) || "screen";
@@ -53,6 +57,10 @@ async function playThrough(page: Page, query: string, opts: { m: number; answerR
     for (let k = 0; k < 12 && (await page.locator(".cl-cardbtn:not(.static):not(.open)").count()); k++) {
       await page.locator(".cl-cardbtn:not(.static):not(.open)").first().click();
       await page.waitForTimeout(100);
+    }
+    for (let k = 0; k < 12 && (await page.locator(".cl-switch:not(.on)").count()); k++) {
+      await page.locator(".cl-switch:not(.on)").first().click();
+      await page.waitForTimeout(80);
     }
     while (await page.locator(".cl-nav button.cl-btn:not(.cl-btn-pri):not(:disabled)").filter({ hasText: /^Show / }).count()) {
       await page.locator(".cl-nav button.cl-btn").filter({ hasText: /^Show / }).first().click();
@@ -66,6 +74,24 @@ async function playThrough(page: Page, query: string, opts: { m: number; answerR
     }
     for (let k = 0; k < 20 && (await page.locator(".cl-mo-ask .cl-opt:not(:disabled)").count()); k++) {
       await page.locator(".cl-mo-ask .cl-opt:not(:disabled)").first().click();
+      await page.waitForTimeout(80);
+    }
+    /* The inbox: hover the first sender and the first link and check the
+     * real address shows, then mark every message (the first call on
+     * each) and name a tell on each one that asks. */
+    if (await page.locator(".cl-ib-msg").count()) {
+      await page.locator(".cl-peek.from").first().hover();
+      await expect(page.locator(".cl-peek-wrap.from .cl-peek-real").first(), "hovering a sender shows who it is really from").toBeVisible();
+      await page.locator(".cl-peek.link").first().hover();
+      await expect(page.locator(".cl-peek-wrap.link .cl-peek-real").first(), "hovering a link shows where it goes").toBeVisible();
+      peeked = true;
+    }
+    for (let k = 0; k < 20 && (await page.locator(".cl-ib-call").count()); k++) {
+      await page.locator(".cl-ib-call").first().click();
+      await page.waitForTimeout(60);
+    }
+    for (let k = 0; k < 20 && (await page.locator(".cl-ib-ask .cl-opt:not(:disabled)").count()); k++) {
+      await page.locator(".cl-ib-ask .cl-opt:not(:disabled)").first().click();
       await page.waitForTimeout(80);
     }
     /* A prove item: the right answer on the passing run, else the first. */
@@ -86,8 +112,11 @@ async function playThrough(page: Page, query: string, opts: { m: number; answerR
     await pri.click();
   }
   const stamp = (await page.locator(".cl-stamp").textContent().catch(() => "")) ?? "";
-  return { screens, stuckAt, errors, stamped: (await page.locator(".cl-stamp").count()) > 0, stamp };
+  return { screens, stuckAt, errors, stamped: (await page.locator(".cl-stamp").count()) > 0, stamp, peeked };
 }
+
+/* Modules whose practice is an inbox, where the walker must have looked behind a sender and a link. */
+const INBOX = new Set(MODULES.filter((m) => getAwarenessModule(m)!.tracks.general!.practise?.kind === "inbox"));
 
 test.describe("Cyber Awareness modules play through to the result", () => {
   test.setTimeout(150_000);
@@ -98,6 +127,7 @@ test.describe("Cyber Awareness modules play through to the result", () => {
       expect(r.stuckAt, `no way forward at "${r.stuckAt}" after ${r.screens} screens`).toBeNull();
       expect(r.stamped, "reached the result stamp").toBe(true);
       expect(r.errors, "no page or console errors").toEqual([]);
+      if (INBOX.has(m)) expect(r.peeked, "looked behind a sender and a link in the inbox").toBe(true);
     });
 
     test(`module ${m}, right answers pass`, async ({ page }) => {
@@ -113,6 +143,7 @@ test.describe("Cyber Awareness modules play through to the result", () => {
       expect(r.stuckAt).toBeNull();
       expect(r.stamped).toBe(true);
       expect(r.errors).toEqual([]);
+      if (INBOX.has(m)) expect(r.peeked).toBe(true);
     });
   }
 });

@@ -1,6 +1,7 @@
 import type { ModuleManifest } from "@/app/ai-cleared/engine/types";
 import type { ModuleSummary } from "@/app/ai-cleared/manifests";
 import { AWARENESS_MODULE_1 } from "./module1";
+import { AWARENESS_MODULE_2 } from "./module2";
 
 /* The Cyber Awareness course map: eight modules on everyday cyber hygiene
  * for every member of staff, the same for every desk. Modules ship one
@@ -9,7 +10,7 @@ import { AWARENESS_MODULE_1 } from "./module1";
 
 export const AWARENESS_MODULE_LIST: ModuleSummary[] = [
   { n: 1, title: "The Human Firewall", minutes: 15, available: true },
-  { n: 2, title: "Phishing & Social Engineering", minutes: 15, available: false },
+  { n: 2, title: "Phishing & Social Engineering", minutes: 15, available: true },
   { n: 3, title: "Passwords, MFA & Access", minutes: 15, available: false },
   { n: 4, title: "Malware, Devices & Working Remotely", minutes: 15, available: false },
   { n: 5, title: "Data Handling", minutes: 15, available: false },
@@ -20,6 +21,7 @@ export const AWARENESS_MODULE_LIST: ModuleSummary[] = [
 
 const MANIFESTS: Partial<Record<number, ModuleManifest>> = {
   1: AWARENESS_MODULE_1,
+  2: AWARENESS_MODULE_2,
 };
 
 export function getAwarenessModule(n: number): ModuleManifest | null {

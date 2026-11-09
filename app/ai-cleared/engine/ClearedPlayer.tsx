@@ -15,6 +15,8 @@ import {
   type AttachedDocument,
   type DataClass,
   type FirmView,
+  type InboxMessage,
+  type InboxPractise,
   type LearnCard,
   type LearnScreen,
   type LoopPractise,
@@ -93,6 +95,8 @@ type Screen =
   | { kind: "playbook"; p: number; phase: "practise" }
   /* Cyber Awareness: spot the moment, indexed by practice `p`. */
   | { kind: "moments"; p: number; phase: "practise" }
+  /* Cyber Awareness: triage an inbox, indexed by practice `p`. */
+  | { kind: "inbox"; p: number; phase: "practise" }
   | { kind: "prove"; i: number; phase: "prove" }
   | { kind: "result"; phase: "done" };
 
@@ -289,6 +293,67 @@ function ThreeWay<T extends string>({ options, picked, answer, onPick }: { optio
   );
 }
 
+/* What a message shows, with what is behind it one gesture away, the way
+ * a real mail app hides it: hover or keyboard focus on a computer; on a
+ * phone, a tap on a sender (mail apps open the address on a tap) or a
+ * press and hold on a link. A click or tap on a link reveals it too, with
+ * a note that on a real message it would have opened. Once seen, the real
+ * address stays shown, so nothing depends on keeping the pointer still. */
+function Peek({ kind, real, seen, onSeen, badge, children }: { kind: "from" | "link"; real: string; seen: boolean; onSeen: () => void; badge?: ReactNode; children: ReactNode }) {
+  const hold = useRef<number | null>(null);
+  const held = useRef(false);
+  const touch = useRef(false);
+  const [nudge, setNudge] = useState<"" | "click" | "tap">("");
+  const stop = () => {
+    if (hold.current !== null) window.clearTimeout(hold.current);
+    hold.current = null;
+  };
+  useEffect(() => stop, []);
+  const link = kind === "link";
+  return (
+    <span className={`cl-peek-wrap ${kind}`}>
+      <span className="cl-peek-row">
+      <button
+        type="button"
+        className={`cl-peek ${kind} ${seen ? "seen" : ""}`}
+        onMouseEnter={() => { if (!touch.current) onSeen(); }}
+        onFocus={(e) => { if (e.currentTarget.matches(":focus-visible")) onSeen(); }}
+        onPointerDown={(e) => {
+          touch.current = e.pointerType !== "mouse";
+          held.current = false;
+          if (touch.current && link) {
+            stop();
+            hold.current = window.setTimeout(() => { hold.current = null; held.current = true; setNudge(""); onSeen(); }, 450);
+          }
+        }}
+        onPointerUp={stop}
+        onPointerCancel={stop}
+        onPointerLeave={stop}
+        onContextMenu={(e) => { if (link) e.preventDefault(); }}
+        onClick={() => {
+          if (held.current) { held.current = false; return; }
+          onSeen();
+          if (link) setNudge(touch.current ? "tap" : "click");
+        }}
+      >
+        {children}
+      </button>
+      {badge}
+      </span>
+      {seen && (
+        <span className="cl-peek-real" aria-live="polite">
+          <span className="cl-peek-k">{link ? "Goes to" : "Really from"}</span>
+          <span className="cl-peek-v">{real}</span>
+        </span>
+      )}
+      {nudge && <small className="cl-peek-nudge">{nudge === "tap" ? "On a real phone, a tap opens the link. Press and hold to preview it instead." : "On a real message, that click would have opened it. Hovering is enough."}</small>}
+    </span>
+  );
+}
+
+const CHANNEL_LABEL: Record<InboxMessage["channel"], string> = { email: "Email", sms: "Text", teams: "Teams" };
+const initialsOf = (name: string) => name.split(/\s+/).filter((w) => /^[A-Za-z]/.test(w)).slice(0, 2).map((w) => w[0].toUpperCase()).join("");
+
 /* ---------- the grader's panel, shown under the learner's message ---------- */
 
 function GraderPanel({ prompt, grade, names, onUseRewrite }: { prompt: string; grade: GradeResult; names: Record<DataClass, string>; onUseRewrite?: (rewrite: string) => void }) {
@@ -397,6 +462,8 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
         out.push({ kind: "srcs", p, phase: "practise" });
       } else if (pr.kind === "moments") {
         out.push({ kind: "moments", p, phase: "practise" });
+      } else if (pr.kind === "inbox") {
+        out.push({ kind: "inbox", p, phase: "practise" });
       }
     });
     proveSet.forEach((_, i) => out.push({ kind: "prove", i, phase: "prove" }));
@@ -431,6 +498,10 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
   /* Cyber Awareness moments: per practice, the flagged moments and the
    * pressure button named for each. */
   const [momentPicks, setMomentPicks] = useState<Record<number, Record<number, { lever?: string }>>>({});
+  /* Cyber Awareness inbox: per practice, each message's call and the tell
+   * named for a phish; and which senders and links have been looked behind. */
+  const [inboxPicks, setInboxPicks] = useState<Record<number, Record<number, { call: "phish" | "fine"; tell?: string }>>>({});
+  const [inboxSeen, setInboxSeen] = useState<Record<number, Record<string, true>>>({});
   const bestFluentRank = useRef(99);
   const [bestFluent, setBestFluent] = useState<FluentVerdict | undefined>(undefined);
   /* one-action practises: answer per item */
@@ -704,7 +775,7 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
   const pct = Math.round(((cur + 1) / screens.length) * 100);
   const phaseIdx = (["learn", "practise", "prove", "done"] as Phase[]).indexOf(screen.phase);
   const practiseSub = (pr: Practise): string =>
-    pr.kind === "sandbox" ? "in the simulator" : pr.kind === "sort" ? "which tier is this" : pr.kind === "situations" ? "ten situations" : pr.kind === "inspect" ? "a document to check" : pr.kind === "triage" ? "six incidents" : pr.kind === "loop" ? `${pr.turns.length} send${pr.turns.length === 1 ? "" : "s"}, scored on the rubric` : pr.kind === "spot" ? "find the planted mistake" : pr.kind === "moments" ? "spot the moment" : "check the sources";
+    pr.kind === "sandbox" ? "in the simulator" : pr.kind === "sort" ? "which tier is this" : pr.kind === "situations" ? "ten situations" : pr.kind === "inspect" ? "a document to check" : pr.kind === "triage" ? "six incidents" : pr.kind === "loop" ? `${pr.turns.length} send${pr.turns.length === 1 ? "" : "s"}, scored on the rubric` : pr.kind === "spot" ? "find the planted mistake" : pr.kind === "moments" ? "spot the moment" : pr.kind === "inbox" ? "triage the inbox" : "check the sources";
   const PHASES: { key: Phase; label: string; sub: string }[] = [
     { key: "learn", label: "Learn", sub: "the idea" },
     { key: "practise", label: "Practise", sub: practises.map(practiseSub).join(", then ") },
@@ -1581,6 +1652,94 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
         </div>
       </>
     );
+  } else if (screen.kind === "inbox" && practises[screen.p]?.kind === "inbox") {
+    const ip = practises[screen.p] as InboxPractise;
+    const p = screen.p;
+    const st = inboxPicks[p] ?? {};
+    const seen = inboxSeen[p] ?? {};
+    const setOne = (i: number, v: { call: "phish" | "fine"; tell?: string }) => setInboxPicks((all) => ({ ...all, [p]: { ...(all[p] ?? {}), [i]: v } }));
+    const see = (key: string) => setInboxSeen((all) => (all[p]?.[key] ? all : { ...all, [p]: { ...(all[p] ?? {}), [key]: true } }));
+    const isPhish = (m: InboxMessage) => !!m.tells?.length;
+    const tellLabel = (id: string) => ip.tells.find((x) => x.id === id)?.label ?? id;
+    const phishes = ip.messages.flatMap((m, i) => (isPhish(m) ? [i] : []));
+    const sorted = ip.messages.filter((_, i) => st[i]).length;
+    const caught = phishes.filter((i) => st[i]?.call === "phish").length;
+    const flaggedGenuine = ip.messages.filter((m, i) => !isPhish(m) && st[i]?.call === "phish").length;
+    const done = sorted === ip.messages.length && phishes.every((i) => st[i]?.tell);
+    stage = (
+      <>
+        <Eyebrow>Practise · triage the inbox</Eyebrow>
+        <div className="cl-task"><span className="cl-label">Your task</span><p>{t(ip.task)}</p></div>
+        {ip.scene && <p className="cl-p">{t(ip.scene)}</p>}
+        <div className="cl-ib">
+          <div className="cl-ib-bar"><span>Inbox</span><span>{ip.messages.length} new</span></div>
+          <ol className="cl-ib-list">
+            {ip.messages.map((m, i) => {
+              const pick = st[i];
+              const phish = isPhish(m);
+              const accepted = m.tells ?? [];
+              const tellRight = !!pick?.tell && accepted.includes(pick.tell);
+              const state = !pick ? "" : !phish ? (pick.call === "fine" ? "right" : "clear") : !pick.tell ? (pick.call === "phish" ? "flagged" : "missed") : tellRight && pick.call === "phish" ? "right" : "wrong";
+              return (
+                <li key={i} className={`cl-ib-msg ${m.channel} ${state}`}>
+                  <div className="cl-ib-head">
+                    <span className={`cl-ib-ch ${m.channel}`}>{CHANNEL_LABEL[m.channel]}</span>
+                    <span className="cl-mo-time">{m.time}</span>
+                    {pick && <span className={`cl-ib-verdict ${phish ? "phish" : "fine"}`}>{phish ? "Phishing" : "Genuine"}</span>}
+                  </div>
+                  <div className="cl-ib-from">
+                    {m.channel !== "email" && <span className="cl-ib-av" aria-hidden>{m.channel === "sms" && /^[+0-9]/.test(m.from) ? "#" : initialsOf(t(m.from))}</span>}
+                    <Peek kind="from" real={t(m.realFrom)} seen={!!seen[`${i}:from`]} onSeen={() => see(`${i}:from`)} badge={m.external ? <span className="cl-ib-ext">External</span> : undefined}>{t(m.from)}</Peek>
+                  </div>
+                  {m.subject && <div className="cl-ib-subj">{t(m.subject)}</div>}
+                  <div className="cl-ib-body">
+                    <p>{t(m.text)}</p>
+                    {m.file && <span className="cl-ib-file"><span className="cl-doc-icon" aria-hidden />{t(m.file)}</span>}
+                    {m.link && <Peek kind="link" real={t(m.link.href)} seen={!!seen[`${i}:link`]} onSeen={() => see(`${i}:link`)}>{t(m.link.label)}</Peek>}
+                  </div>
+                  {!pick && (
+                    <div className="cl-ib-calls">
+                      <button type="button" className="cl-ib-call" onClick={() => setOne(i, { call: "phish" })}>Phishing</button>
+                      <button type="button" className="cl-ib-call" onClick={() => setOne(i, { call: "fine" })}>Looks fine</button>
+                    </div>
+                  )}
+                  {pick && !phish && (
+                    <div className="cl-fb"><b>{pick.call === "fine" ? "Right, this one is genuine." : "This one is genuine. Flagging it cost nothing."}</b> {t(m.why)}</div>
+                  )}
+                  {pick && phish && (
+                    <div className="cl-ib-ask">
+                      <div className="cl-q">{pick.tell ? "The tell" : pick.call === "phish" ? "Good catch. Which tell gives it away?" : "This one is phishing. Which tell gives it away?"}</div>
+                      <div className="cl-opts">
+                        {ip.tells.map((x) => {
+                          const s = !pick.tell ? "" : accepted.includes(x.id) ? "right" : x.id === pick.tell ? "wrong" : "";
+                          return (
+                            <button key={x.id} type="button" title={t(x.desc)} disabled={!!pick.tell} className={`cl-opt ${s}`} onClick={() => setOne(i, { ...pick, tell: x.id })}>{x.label}</button>
+                          );
+                        })}
+                      </div>
+                      {pick.tell && (
+                        <div className="cl-fb">
+                          <b>{tellRight ? (pick.call === "phish" ? "Correct." : "Right tell, though it got past you first.") : `Not quite. The main tell: ${tellLabel(accepted[0])}.`}</b> {t(m.why)}
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </li>
+              );
+            })}
+          </ol>
+        </div>
+        <div className="cl-nav">
+          <Btn onClick={back}>Back</Btn>
+          <span className="cl-hint">
+            {done
+              ? `All ${ip.messages.length} sorted. You caught ${caught} of ${phishes.length} phishes${flaggedGenuine ? ` and flagged ${flaggedGenuine} genuine message${flaggedGenuine > 1 ? "s" : ""}, which is fine` : ""}.`
+              : `${sorted} of ${ip.messages.length} sorted${sorted && phishes.some((i) => st[i] && !st[i].tell) ? ". Name each tell." : ""}`}
+          </span>
+          <Btn primary disabled={!done} onClick={next}>Continue to Prove</Btn>
+        </div>
+      </>
+    );
   } else if (screen.kind === "prove") {
     const q = proveSet[screen.i];
     const picked = proveAnswers[screen.i];
@@ -1900,6 +2059,48 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
         .cl-mo-ask .cl-q { font-size: 14px; }
         .cl-mo .cl-fb { margin-top: 10px; }
 
+        .cl-ib { border: 1px solid ${K.edge}; border-radius: 14px; overflow: hidden; background: ${K.sunk}; margin-top: 4px; }
+        .cl-ib-bar { display: flex; justify-content: space-between; align-items: center; padding: 9px 14px; font-family: ${K.mono}; font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: ${K.muted}; border-bottom: 1px solid ${K.edge}; background: ${K.panelRaise}; }
+        .cl-ib-list { list-style: none; margin: 0; padding: 10px; display: flex; flex-direction: column; gap: 10px; }
+        .cl-ib-msg { background: ${K.panel}; border: 1px solid ${K.edge}; border-left: 3px solid ${K.edge}; border-radius: 10px; padding: 12px 14px; min-width: 0; }
+        .cl-ib-msg.flagged { border-left-color: ${K.accent}; }
+        .cl-ib-msg.right { border-left-color: ${K.ok}; }
+        .cl-ib-msg.wrong, .cl-ib-msg.missed { border-left-color: ${K.warn}; }
+        .cl-ib-msg.clear { border-left-color: ${K.faint}; }
+        .cl-ib-head { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+        .cl-ib-ch { font-family: ${K.mono}; font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; border-radius: 4px; padding: 2px 7px; color: ${K.accentInk}; background: ${K.accentSoft}; }
+        .cl-ib-ch.sms { color: ${K.ok}; background: ${K.okSoft}; }
+        .cl-ib-ch.teams { color: ${K.ink}; background: ${K.edgeSoft}; }
+        .cl-ib-verdict { margin-left: auto; font-family: ${K.mono}; font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; }
+        .cl-ib-verdict.phish { color: ${K.crit}; }
+        .cl-ib-verdict.fine { color: ${K.ok}; }
+        .cl-ib-from { display: flex; align-items: flex-start; gap: 8px; min-width: 0; }
+        .cl-ib-from .cl-peek-wrap { flex: 1 1 auto; }
+        .cl-peek-row { display: inline-flex; align-items: center; flex-wrap: wrap; gap: 4px 8px; max-width: 100%; }
+        .cl-ib-av { flex-shrink: 0; width: 26px; height: 26px; border-radius: 50%; background: ${K.sunk}; color: ${K.muted}; font-family: ${K.mono}; font-size: 10.5px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; }
+        .cl-ib-ext { font-family: ${K.mono}; font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: ${K.warn}; border: 1px solid ${K.warn}; border-radius: 4px; padding: 1px 6px; }
+        .cl-ib-subj { color: ${K.ink}; font-weight: 600; font-size: 14.5px; margin-top: 6px; overflow-wrap: anywhere; }
+        .cl-ib-body { margin-top: 6px; display: flex; flex-direction: column; align-items: flex-start; gap: 8px; min-width: 0; }
+        .cl-ib-body p { margin: 0; color: ${K.body}; font-size: 14.5px; line-height: 1.55; }
+        .cl-ib-msg.sms .cl-ib-body, .cl-ib-msg.teams .cl-ib-body { background: ${K.sunk}; border-radius: 4px 14px 14px 14px; padding: 10px 12px; max-width: 100%; box-sizing: border-box; }
+        .cl-ib-file { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: ${K.ink}; border: 1px solid ${K.edge}; border-radius: 8px; padding: 6px 10px; background: ${K.panelRaise}; overflow-wrap: anywhere; }
+        .cl-peek-wrap { display: inline-flex; flex-direction: column; align-items: flex-start; gap: 4px; min-width: 0; max-width: 100%; }
+        .cl-peek { font: inherit; text-align: left; cursor: help; background: transparent; border: none; padding: 0; color: ${K.ink}; -webkit-touch-callout: none; user-select: none; -webkit-user-select: none; overflow-wrap: anywhere; }
+        .cl-peek.from { font-size: 14px; font-weight: 600; border-bottom: 1px dashed ${K.faint}; padding-top: 3px; }
+        .cl-peek.link { color: ${K.accentInk}; font-size: 14px; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+        .cl-ib-msg.email .cl-peek.link { text-decoration: none; color: ${K.onAccent}; background: ${K.accent}; border-radius: 6px; padding: 7px 14px; }
+        .cl-peek:hover { opacity: 0.85; }
+        .cl-peek-real { display: inline-flex; flex-wrap: wrap; align-items: baseline; gap: 2px 8px; font-family: ${K.mono}; font-size: 12px; color: ${K.ink}; background: ${K.warnSoft}; border: 1px dashed ${K.warn}; border-radius: 6px; padding: 4px 8px; max-width: 100%; box-sizing: border-box; animation: cl-in 200ms ease both; }
+        .cl-peek-k { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: ${K.warn}; }
+        .cl-peek-v { overflow-wrap: anywhere; word-break: break-word; }
+        .cl-peek-nudge { font-size: 12.5px; color: ${K.muted}; max-width: 46ch; }
+        .cl-ib-calls { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+        .cl-ib-call { font: inherit; font-size: 13px; font-weight: 600; color: ${K.ink}; background: ${K.panelRaise}; border: 1px solid ${K.edge}; border-radius: 8px; padding: 7px 14px; cursor: pointer; }
+        .cl-ib-call:hover { border-color: ${K.accent}; }
+        .cl-ib-ask { margin-top: 10px; padding-top: 10px; border-top: 1px solid ${K.edgeSoft}; }
+        .cl-ib-ask .cl-q { font-size: 14px; }
+        .cl-ib-msg > .cl-fb { margin-top: 10px; }
+
         .cl-toggles { display: flex; flex-direction: column; gap: 12px; margin-top: 12px; }
         .cl-toggle { display: flex; gap: 14px; align-items: flex-start; border: 1px solid ${K.edge}; border-radius: 10px; padding: 14px; background: ${K.panelRaise}; }
         .cl-toggle b { display: block; color: ${K.ink}; font-size: 15px; margin-bottom: 4px; }
@@ -2045,6 +2246,8 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
           .cl-h1 { font-size: 23px; }
           .cl-tiles, .cl-choices, .cl-cards, .cl-tls.two, .cl-ba.two { grid-template-columns: 1fr; }
           .cl-three { grid-template-columns: 1fr; }
+          .cl-ib-list { padding: 8px; }
+          .cl-ib-msg { padding: 11px 12px; }
           .cl-row { grid-template-columns: 22px 1fr; }
           .cl-row .cl-v { grid-column: 2; }
           .cl-row.show { grid-template-columns: 1fr auto; }
@@ -2061,7 +2264,7 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
           .cl-top-right { gap: 6px; }
         }
         @media (prefers-reduced-motion: reduce) {
-          .cl-stage, .cl-rv, .cl-grader, .cl-card-detail, .cl-tl.after { animation: none; }
+          .cl-stage, .cl-rv, .cl-grader, .cl-card-detail, .cl-tl.after, .cl-peek-real { animation: none; }
           .cl-bar i, .cl-meter i, .cl-knob { transition: none; }
         }
       `}</style>

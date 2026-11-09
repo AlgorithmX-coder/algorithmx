@@ -479,7 +479,47 @@ export interface MomentsPractise {
   moments: Moment[];
 }
 
-export type Practise = SandboxPractise | SortPractise | SituationsPractise | TriagePractise | InspectPractise | LoopPractise | SpotPractise | SourcesPractise | MomentsPractise;
+/* An inbox to triage: emails, texts and chat messages. The learner marks
+ * each one phishing or fine and, for each phish, names the tell that
+ * gives it away. As in a real mail app, what a message shows (a display
+ * name, the words on a button) hides what is behind it (the real address,
+ * where the link really goes); hovering, or tapping a sender and pressing
+ * and holding a link on a phone, reveals it. A message with `tells` is
+ * phishing: the ids it lists are the tells accepted as right, the first
+ * being the main one. Every other message is genuine. */
+export interface InboxTell {
+  id: string;
+  label: string;
+  desc: string;
+}
+export interface InboxMessage {
+  channel: "email" | "sms" | "teams";
+  time: string;
+  /* What the app shows: a display name, a contact or a number. */
+  from: string;
+  /* What sits behind it: the real address, number or account. */
+  realFrom: string;
+  /* Teams: the account is outside the firm and carries the External label. */
+  external?: boolean;
+  subject?: string;
+  text: string;
+  /* An attachment or shared file, by name. */
+  file?: string;
+  /* A link or button: the words it shows, and where it really goes. */
+  link?: { label: string; href: string };
+  tells?: string[];
+  why: string;
+}
+export interface InboxPractise {
+  kind: "inbox";
+  task: string;
+  /* One line under the task: how to look behind a message here. */
+  scene?: string;
+  tells: InboxTell[];
+  messages: InboxMessage[];
+}
+
+export type Practise = SandboxPractise | SortPractise | SituationsPractise | TriagePractise | InspectPractise | LoopPractise | SpotPractise | SourcesPractise | MomentsPractise | InboxPractise;
 
 /* ---- Prove ---- */
 
