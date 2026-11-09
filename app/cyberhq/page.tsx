@@ -29,6 +29,7 @@ import AgentWardrobe from "@/app/components/cyberhq/AgentWardrobe";
 import PlaySignatureOnMount from "@/app/components/lesson/PlaySignatureOnMount";
 import PlayHubAmbientOnMount from "@/app/components/PlayHubAmbientOnMount";
 import PixIcon from "@/app/components/lesson/PixIcon";
+import PupilSignOut from "@/app/components/PupilSignOut";
 
 const C = {
   pageBg: "#080a16",
@@ -97,6 +98,10 @@ export default async function CyberHQPage() {
           hub. Client island; fades out on leave and honors the global
           mute. Only the hub gets BGM (see BGM_ALLOWLIST in sounds.ts). */}
       <PlayHubAmbientOnMount />
+
+      {/* Only for a school pupil on a shared machine; renders nothing
+          for a parent's child. */}
+      <PupilSignOut />
 
       {/* Ambient particle field - subtle drifting dots so the room is
           never visually still. CSS-only; respects reduced motion via

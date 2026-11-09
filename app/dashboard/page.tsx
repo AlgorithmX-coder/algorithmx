@@ -1,10 +1,11 @@
-import { landingRouteFor } from "@/app/lib/courseLandings";
+import { logoutDestinationFor } from "@/app/lib/courseLandings";
 import { CATALOGUE } from "@/app/lib/courseIntent";
 import { auth } from "@/app/lib/auth";
 import { prisma } from "@/app/lib/prisma";
 import { redirect } from "next/navigation";
 import { hasEntitlement, getAge } from "@/app/lib/entitlements";
 import { resolveActiveChildProfileId } from "@/app/lib/progressService";
+import { isSchoolPupil } from "@/app/lib/pupilAuth";
 import DashboardView, { type WeekItem, type WeekState } from "./DashboardView";
 import PlayDashboardAmbientOnMount from "@/app/components/PlayDashboardAmbientOnMount";
 
@@ -61,6 +62,13 @@ export default async function DashboardPage() {
     }
   }
 
+  /* A school pupil reaches this page too, and signing out used to drop
+     them on the Cyber Heroes sales page: a marketing page with a parent's
+     log-in on it, in front of a seven year old on a classroom machine,
+     with their own way back in nowhere on it. They go to the school door
+     instead, which is where whoever is next will come through. */
+  const pupil = await isSchoolPupil(userId);
+  const logoutTo = logoutDestinationFor({ slug: PRODUCT_SLUG, pupil });
   const childAge = getAge(activeChild.dateOfBirth);
   const userName = activeChild.name ?? session.user.name ?? "Cyber Hero";
   const raccoonPower = Math.round(100 - progressPct);
@@ -100,7 +108,7 @@ export default async function DashboardPage() {
   async function handleLogout() {
     "use server";
     const { signOut } = await import("@/app/lib/auth");
-    await signOut({ redirectTo: landingRouteFor(PRODUCT_SLUG) ?? "/" });
+    await signOut({ redirectTo: logoutTo });
   }
 
   return (

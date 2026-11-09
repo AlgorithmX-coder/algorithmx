@@ -180,3 +180,23 @@ export async function pupilDestination(userId: string): Promise<string> {
      where a pupil without a class was going anyway. */
   return pupilCourseHomeFor(child?.class?.product.slug ?? null);
 }
+
+/**
+ * Is this signed-in account a school pupil, rather than a parent's child?
+ *
+ * The session cannot answer it. The pupil provider puts no marker on the
+ * JWT, and adding one would only mark sessions created AFTER the deploy, so
+ * every child already signed in would be missed by exactly the control that
+ * is meant to protect them.
+ *
+ * A ChildProfile with a class is the real distinction: a school pupil sits
+ * in a class, a parent's child does not. One indexed count, on pages that
+ * are already reading the database.
+ */
+export async function isSchoolPupil(userId: string): Promise<boolean> {
+  if (!userId) return false;
+  const n = await prisma.childProfile.count({
+    where: { userId, classId: { not: null } },
+  });
+  return n > 0;
+}

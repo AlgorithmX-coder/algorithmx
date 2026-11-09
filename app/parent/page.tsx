@@ -6,7 +6,7 @@
  * them to <ParentView>. Source of truth is the flat Progress table.
  */
 
-import { landingRouteFor } from "@/app/lib/courseLandings";
+import { logoutDestinationFor } from "@/app/lib/courseLandings";
 import { CATALOGUE } from "@/app/lib/courseIntent";
 import { auth } from "@/app/lib/auth";
 import { prisma } from "@/app/lib/prisma";
@@ -89,7 +89,7 @@ export default async function ParentDashboard() {
   async function handleLogout() {
     "use server";
     const { signOut } = await import("@/app/lib/auth");
-    await signOut({ redirectTo: landingRouteFor(PRODUCT_SLUG) ?? "/" });
+    await signOut({ redirectTo: logoutDestinationFor({ slug: PRODUCT_SLUG }) });
   }
 
   return <ParentView productName={product.name} weeksCount={weeksCount} summaries={summaries} onLogout={handleLogout} />;
