@@ -3,27 +3,30 @@ import CorporateLanding from "./CorporateLanding";
 import { stripeConfigured } from "@/app/lib/stripe";
 
 /**
- * /corporate - AlgorithmX for firms: AI Cleared and AI Fluent.
+ * /corporate - Cyber Secured by AlgorithmX: one seat per person opens AI
+ * Cleared, AI Fluent and Cyber Awareness.
  *
  * The one page an HR lead, IT manager, DPO or managing partner needs: the
- * two courses, how they run in the firm, what every seat comes with, the
- * price, and a form.
+ * three courses, the real attacks they teach from, how it runs in the firm,
+ * what every seat comes with, the price, and a form.
  */
+const OG_ALT = "Attacks change daily. We have your firm covered. Cyber Secured by AlgorithmX: AI Cleared, AI Fluent and Cyber Awareness for every member of staff.";
+
 export const metadata: Metadata = {
-  title: "AI Cleared and AI Fluent by AlgorithmX | AI training for every member of staff",
+  title: "Cyber Secured by AlgorithmX | AI and cyber training for every member of staff",
   description:
-    "AI Cleared teaches your whole firm to use Copilot, ChatGPT, Gemini and Claude without leaking client, colleague or bank data. AI Fluent teaches them to get real work out of it. Interactive, with a certificate and a training register. From £25 per person per year.",
+    "One seat per person opens three courses: AI Cleared to use Copilot, ChatGPT, Gemini and Claude safely, AI Fluent to get real work out of them, and Cyber Awareness to spot the attacks aimed at staff. Built on real, reported incidents, with every completion on your team register. From £85 per person per year plus VAT.",
   alternates: { canonical: "https://algorithmx.io/corporate" },
   openGraph: {
-    title: "AI Cleared and AI Fluent by AlgorithmX",
+    title: "Cyber Secured by AlgorithmX",
     description:
-      "Every member of staff, cleared to use AI. Two short interactive courses with a live sandbox, a certificate and a training register.",
+      "Attacks change daily. One seat per person opens AI Cleared, AI Fluent and Cyber Awareness, built on real, reported incidents, with every completion on your team register.",
     url: "https://algorithmx.io/corporate",
     siteName: "AlgorithmX",
     type: "website",
-    images: [{ url: "https://algorithmx.io/corporate/og.png", width: 1200, height: 630, alt: "Every member of staff, cleared to use AI. AI Cleared and AI Fluent by AlgorithmX." }],
+    images: [{ url: "https://algorithmx.io/corporate/og.png", width: 1200, height: 630, alt: OG_ALT }],
   },
-  twitter: { card: "summary_large_image", title: "AI Cleared and AI Fluent by AlgorithmX", description: "Every member of staff, cleared to use AI. Two short interactive courses with a live sandbox, a certificate and a training register.", images: ["https://algorithmx.io/corporate/og.png"] },
+  twitter: { card: "summary_large_image", title: "Cyber Secured by AlgorithmX", description: "Attacks change daily. One seat per person opens AI Cleared, AI Fluent and Cyber Awareness, built on real, reported incidents, with every completion on your team register.", images: ["https://algorithmx.io/corporate/og.png"] },
 };
 
 export default function CorporatePage() {

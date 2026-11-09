@@ -10,7 +10,7 @@ import { sectionMark, sectionMarkBare } from "@/app/components/sectionMark";
 
 /**
  * The chrome for a /corporate sub-page: one column of plain sections, the
- * sand tone, the same one-bar nav as the landing with AI Cleared as the way
+ * sand tone, the same one-bar nav as the landing with Cyber Secured as the way
  * back. Built for the regulation pages, which are read rather than scanned.
  */
 
@@ -25,14 +25,14 @@ export default function CorporateSubpage({
   lede,
   sections,
   maps,
-  mapsHeading = "// How AI Cleared answers it",
+  mapsHeading = "// Where Cyber Secured fits",
   asOf,
 }: {
   eyebrow: string;
   title: ReactNode;
   lede: string;
   sections: SubSection[];
-  /** How AI Cleared answers the duty, as short points. */
+  /** Where Cyber Secured fits the duty, as short points. */
   maps: string[];
   /** The aside heading over those points. */
   mapsHeading?: string;
@@ -48,13 +48,13 @@ export default function CorporateSubpage({
         homeHref="/corporate"
         ctaTone="teal"
         cta={{ label: "Get in touch", href: "/corporate#enquiry" }}
-        aside={{ label: "AI Cleared", href: "/corporate" }}
+        aside={{ label: "Cyber Secured", href: "/corporate" }}
       />
       <main className="corp-sub-main">
         <article className="corp-sub-article">
           <FadeUp>
             <div className="corp-sub-toprow">
-              <Link href="/corporate" className="corp-sub-toplink"><span aria-hidden>←</span> AI Cleared</Link>
+              <Link href="/corporate" className="corp-sub-toplink"><span aria-hidden>←</span> Cyber Secured</Link>
             </div>
             <p style={sectionMarkBare}>{eyebrow}</p>
             <h1 className="corp-sub-h1">{title}</h1>

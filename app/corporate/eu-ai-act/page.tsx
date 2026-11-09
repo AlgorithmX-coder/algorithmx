@@ -7,9 +7,9 @@ import CorporateSubpage from "../CorporateSubpage";
  * The reading is dated on the page; check it at each refresh of the course.
  */
 export const metadata: Metadata = {
-  title: "EU AI Act Article 4: the AI literacy duty for firms | AI Cleared by AlgorithmX",
+  title: "EU AI Act Article 4: the AI literacy duty for firms | Cyber Secured by AlgorithmX",
   description:
-    "Since February 2025, firms that deploy AI have had a duty to ensure their staff are AI literate. What Article 4 asks, whether it reaches a UK firm, what counts as evidence, and how AI Cleared answers it.",
+    "Since February 2025, firms that deploy AI have had a duty to ensure their staff are AI literate. What Article 4 asks, whether it reaches a UK firm, what counts as evidence, and where Cyber Secured fits.",
   alternates: { canonical: "https://algorithmx.io/corporate/eu-ai-act" },
   openGraph: {
     title: "EU AI Act Article 4: the AI literacy duty, in plain English",
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     url: "https://algorithmx.io/corporate/eu-ai-act",
     siteName: "AlgorithmX",
     type: "article",
-    images: [{ url: "https://algorithmx.io/corporate/og.png", width: 1200, height: 630, alt: "Every member of staff, cleared to use AI. AI Cleared and AI Fluent by AlgorithmX." }],
+    images: [{ url: "https://algorithmx.io/corporate/og.png", width: 1200, height: 630, alt: "Attacks change daily. We have your firm covered. Cyber Secured by AlgorithmX: AI Cleared, AI Fluent and Cyber Awareness for every member of staff." }],
   },
 };
 
@@ -85,11 +85,11 @@ export default function EuAiActPage() {
         },
       ]}
       maps={[
-        "A baseline for everyone: five core modules covering what the tools do with data, the four data classes, the firm's approved tools, verifying output, and shadow AI.",
-        "Depth by role: eight tracks with scenarios and practice data from that role's own desk.",
+        "A baseline for everyone: AI Cleared's five modules on what the tools do with data, the four data classes, the firm's approved tools, verifying output, and shadow AI.",
+        "Depth by role: AI Fluent's eight role desks, with scenarios and practice data from that role's own work.",
         "Content matched to the tools: every vendor fact carries the date it was verified, and the course refreshes as the tools change.",
-        "The register: who completed what, when, with scores, exportable for a client questionnaire or an audit, and a certificate per person and per firm.",
-        "The policy: a starter AI use policy written from your own profile answers, free, on the AI Cleared page.",
+        "The record: a team register showing who has finished each course, module by module, with a CSV download for a client questionnaire or an audit.",
+        "The policy: a starter AI use policy written from your own profile answers, free, on the Cyber Secured page.",
       ]}
     />
   );

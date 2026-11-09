@@ -6,7 +6,7 @@ import CorporateSubpage from "../CorporateSubpage";
  * AI tools, and why Cyber Essentials does not cover it. Dated on the page.
  */
 export const metadata: Metadata = {
-  title: "UK GDPR and the ICO: what applies when staff use AI tools | AI Cleared by AlgorithmX",
+  title: "UK GDPR and the ICO: what applies when staff use AI tools | Cyber Secured by AlgorithmX",
   description:
     "The UK has no AI literacy statute yet. It has UK GDPR, and the ICO treats client or employee data pasted into an unapproved AI tool the way it treats any other loss of control over personal data. What applies, what a breach looks like, and what evidence the ICO asks for.",
   alternates: { canonical: "https://algorithmx.io/corporate/uk-gdpr" },
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     url: "https://algorithmx.io/corporate/uk-gdpr",
     siteName: "AlgorithmX",
     type: "article",
-    images: [{ url: "https://algorithmx.io/corporate/og.png", width: 1200, height: 630, alt: "Every member of staff, cleared to use AI. AI Cleared and AI Fluent by AlgorithmX." }],
+    images: [{ url: "https://algorithmx.io/corporate/og.png", width: 1200, height: 630, alt: "Attacks change daily. We have your firm covered. Cyber Secured by AlgorithmX: AI Cleared, AI Fluent and Cyber Awareness for every member of staff." }],
   },
 };
 
@@ -84,8 +84,8 @@ export default function UkGdprPage() {
       ]}
       maps={[
         "The policy: a starter AI use policy that names the approved tools, the four data classes and the reporting route, written from your own answers.",
-        "The training: five modules every member of staff completes, including what each tool does with data and what to do the moment something goes wrong, with the firm's own contact on screen.",
-        "The register: who completed what and when, with scores, exportable for the ICO, an insurer or a client.",
+        "The training: AI Cleared's five modules on what each tool does with data and what to do the moment something goes wrong, with the firm's own contact on screen, and Cyber Awareness on spotting the attacks aimed at staff.",
+        "The record: a team register showing who has finished each course, module by module, with a CSV download for the ICO, an insurer or a client.",
         "The habit: the paste test, practised against a live AI on invented data, so the rule is a reflex rather than a page in a handbook.",
       ]}
     />
