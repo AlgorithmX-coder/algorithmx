@@ -30,10 +30,18 @@ import { getAwarenessModule } from "../../app/cyber-awareness/manifests";
  * is labelled, then picks a move at each turn until the call ends (the best
  * move on the passing run, which must be stamped right), checks each move
  * explains itself and the call says who it really was, and reaches the
- * week's log.
+ * week's log. In a day of reports it builds every report: picks who to
+ * tell and how (the first by keyboard), ticks details and checks them,
+ * picks what to do meanwhile, sends it, and checks each step explains
+ * itself and the model report, what happens next and the cost of silence
+ * show (the best route, the useful details only and the best move on the
+ * passing run, which must be stamped right), then reaches the day's log.
+ * The last module also closes the course: with every other module done,
+ * its result says the course is finished, and the course home says it is
+ * complete, with no certificate.
  */
 
-const MODULES = [1, 2, 3, 4, 5, 6, 7];
+const MODULES = [1, 2, 3, 4, 5, 6, 7, 8];
 const MAX_SCREENS = 40;
 
 function collectErrors(page: Page) {
@@ -85,6 +93,13 @@ function bestCallMove(m: number, time: string, turn: number): { label: string; n
   return o ? { label: o.label, next: o.next } : null;
 }
 
+/* An incident in a day of reports, by its time, from the manifest. */
+function reportIncident(m: number, time: string) {
+  const pr = getAwarenessModule(m)!.tracks.general!.practise;
+  if (pr?.kind !== "reports") return null;
+  return pr.incidents.find((i) => i.time === time) ?? null;
+}
+
 async function playThrough(page: Page, query: string, opts: { m: number; answerRight?: boolean }) {
   const errors = collectErrors(page);
   await page.goto(`/dev/cyber-awareness?${query}`, { waitUntil: "domcontentloaded", timeout: 90_000 });
@@ -108,6 +123,9 @@ async function playThrough(page: Page, query: string, opts: { m: number; answerR
   let calledRight = 0;
   let callMoves = 0;
   let callLogged = false;
+  let reported = 0;
+  let reportedRight = 0;
+  let reportLogged = false;
   for (let guard = 0; guard < MAX_SCREENS; guard++) {
     await page.waitForTimeout(200);
     const eyebrow = (await page.locator(".cl-eyebrow").first().textContent().catch(() => "")) || "screen";
@@ -296,6 +314,55 @@ async function playThrough(page: Page, query: string, opts: { m: number; answerR
       await expect(page.locator(".cl-calls-log"), "the week's log of calls shows").toBeVisible();
     }
     if (await page.locator(".cl-calls-log").count()) callLogged = true;
+    /* A day of reports: on each incident pick who to tell and how (the
+     * first by keyboard), tick details and check them, pick a move
+     * meanwhile, send, and check each step explains itself and the pay-off
+     * shows. On the passing run: the best route, exactly the useful details
+     * and the best move, stamped right. Then the day's log. */
+    if ((await page.locator(".cl-rp").count()) && !(await page.locator(".cl-rp-log").count())) {
+      for (let c = 0; c < 10 && !(await page.locator(".cl-rp-log").count()); c++) {
+        const time = ((await page.locator(".cl-rp-inc-body .cl-label").textContent()) ?? "").split(" · ")[0].trim();
+        const inc = reportIncident(opts.m, time);
+        expect(inc, `"${time}" is in the manifest`).toBeTruthy();
+        await expect(page.locator(".cl-rp-art"), "the incident is drawn, and labelled").toHaveAttribute("aria-label", /^A drawing: .{6,}/);
+        const pick = async (step: string, list: { grade: string }[]) => {
+          const choices = page.locator(`.cl-rp-step.${step} .cl-rp-opt`);
+          await expect(choices).toHaveCount(list.length);
+          for (let i = 0; i < list.length; i++) await expect(choices.nth(i), "every choice is labelled").toHaveAccessibleName(/^\S.{8,}/);
+          const idx = opts.answerRight ? list.findIndex((o) => o.grade === "best") : (reported + (step === "s3" ? 1 : 0)) % list.length;
+          if (c === 0 && step === "s1") {
+            await choices.nth(idx).focus();
+            await page.keyboard.press("Enter");
+          } else await choices.nth(idx).click();
+          await expect(page.locator(`.cl-rp-step.${step} .cl-rp-fb`), "every choice explains itself").toBeVisible();
+        };
+        await pick("s1", inc!.route);
+        const chips = page.locator(".cl-rp-chip");
+        await expect(chips).toHaveCount(inc!.details.length);
+        for (let i = 0; i < inc!.details.length; i++) await expect(chips.nth(i), "every detail is a labelled toggle").toHaveAttribute("aria-pressed", "false");
+        const ticks = opts.answerRight ? inc!.details.flatMap((d, i) => (d.useful ? [i] : [])) : [0, 1];
+        for (const i of ticks) {
+          await chips.nth(i).click();
+          await expect(chips.nth(i)).toHaveAttribute("aria-pressed", "true");
+        }
+        await page.locator(".cl-rp-check").click();
+        await expect(page.locator(".cl-rp-step.s2 .cl-rp-fb"), "the details are checked").toBeVisible();
+        await expect(page.locator(".cl-rp-why li"), "every detail explains itself").toHaveCount(inc!.details.length);
+        await pick("s3", inc!.meanwhile);
+        await page.locator(".cl-rp-send").click();
+        await expect(page.locator(".cl-rp-model"), "a model report shows").toBeVisible();
+        await expect(page.locator(".cl-rp-after li"), "what happens next shows").toHaveCount(inc!.after.length);
+        await expect(page.locator(".cl-rp-quiet"), "the cost of keeping quiet shows").toBeVisible();
+        if (opts.answerRight) {
+          await expect(page.locator(".cl-rp-stamp.right"), `"${time}": the best report is stamped right`).toBeVisible();
+          reportedRight++;
+        }
+        reported++;
+        await page.locator(".cl-rp-next").click();
+      }
+      await expect(page.locator(".cl-rp-log"), "the day's log shows").toBeVisible();
+    }
+    if (await page.locator(".cl-rp-log").count()) reportLogged = true;
     /* A prove item: the right answer on the passing run, else the first. */
     if (await page.locator(".cl-opts.col .cl-opt:not(:disabled)").count()) {
       const stem = ((await page.locator(".cl-h1").first().textContent()) ?? "").trim();
@@ -314,7 +381,7 @@ async function playThrough(page: Page, query: string, opts: { m: number; answerR
     await pri.click();
   }
   const stamp = (await page.locator(".cl-stamp").textContent().catch(() => "")) ?? "";
-  return { screens, stuckAt, errors, stamped: (await page.locator(".cl-stamp").count()) > 0, stamp, peeked, phoned, dayLogged, spotted, outboxed, outboxRight, lookedCloser, outboxLogged, decided, decidedRight, payChecked, payLogged, called, calledRight, callMoves, callLogged };
+  return { screens, stuckAt, errors, stamped: (await page.locator(".cl-stamp").count()) > 0, stamp, peeked, phoned, dayLogged, spotted, outboxed, outboxRight, lookedCloser, outboxLogged, decided, decidedRight, payChecked, payLogged, called, calledRight, callMoves, callLogged, reported, reportedRight, reportLogged };
 }
 
 /* Modules whose practice is an inbox, where the walker must have looked behind a sender and a link. */
@@ -347,6 +414,12 @@ const CALLS = new Map(MODULES.flatMap((m) => {
   return pr?.kind === "calls" ? [[m, pr.calls.length] as const] : [];
 }));
 
+/* Modules whose practice is a day of reports: the walker must have sent every report and seen the day's log. */
+const REPORTS = new Map(MODULES.flatMap((m) => {
+  const pr = getAwarenessModule(m)!.tracks.general!.practise;
+  return pr?.kind === "reports" ? [[m, pr.incidents.length] as const] : [];
+}));
+
 test.describe("Cyber Awareness modules play through to the result", () => {
   test.setTimeout(150_000);
 
@@ -377,6 +450,10 @@ test.describe("Cyber Awareness modules play through to the result", () => {
         expect(r.callMoves, "made a move on every turn reached").toBeGreaterThanOrEqual(CALLS.get(m)!);
         expect(r.callLogged, "saw the week's log of calls").toBe(true);
       }
+      if (REPORTS.has(m)) {
+        expect(r.reported, "sent a report for every incident").toBe(REPORTS.get(m));
+        expect(r.reportLogged, "saw the day's log").toBe(true);
+      }
     });
 
     test(`module ${m}, right answers pass`, async ({ page }) => {
@@ -387,6 +464,7 @@ test.describe("Cyber Awareness modules play through to the result", () => {
       if (OUTBOX.has(m)) expect(r.outboxRight, "the right call on every outbox item is stamped right").toBe(OUTBOX.get(m));
       if (PAYMENTS.has(m)) expect(r.decidedRight, "the best decision on every payment request is stamped right").toBe(PAYMENTS.get(m));
       if (CALLS.has(m)) expect(r.calledRight, "the best moves on every call are stamped right").toBe(CALLS.get(m));
+      if (REPORTS.has(m)) expect(r.reportedRight, "the best report on every incident is stamped right").toBe(REPORTS.get(m));
     });
 
     test(`module ${m} on a phone`, async ({ page }) => {
@@ -413,6 +491,37 @@ test.describe("Cyber Awareness modules play through to the result", () => {
         expect(r.called).toBe(CALLS.get(m));
         expect(r.callLogged).toBe(true);
       }
+      if (REPORTS.has(m)) {
+        expect(r.reported).toBe(REPORTS.get(m));
+        expect(r.reportLogged).toBe(true);
+      }
     });
   }
+
+  /* The last module closes the course: with every other module done, its
+   * passing result says the course is finished and lists one habit per
+   * module, and never says a next module is coming. */
+  const LAST = MODULES[MODULES.length - 1];
+  test(`module ${LAST} closes the course`, async ({ page }) => {
+    const r = await playThrough(page, `m=${LAST}&done=all`, { m: LAST, answerRight: true });
+    expect(r.stuckAt).toBeNull();
+    expect(r.stamp).toMatch(/Module done/i);
+    expect(r.errors).toEqual([]);
+    await expect(page.locator(".cl-outro-h")).toHaveText(/You have finished Cyber Awareness/);
+    await expect(page.locator(".cl-outro-list li")).toHaveCount(MODULES.length);
+    await expect(page.locator(".cl-lead")).toContainText(/Every module is done/);
+    await expect(page.locator(".cl-nav .cl-hint")).toHaveText(/That is every module/);
+    await expect(page.locator(".cl-stage")).not.toContainText(/next module|when it is released|certificate/i);
+  });
+
+  test("the course home says the course is complete, with no certificate", async ({ page }) => {
+    const errors = collectErrors(page);
+    await page.goto("/dev/cyber-awareness?home=complete", { waitUntil: "domcontentloaded", timeout: 90_000 });
+    await expect(page.locator(".cf-h1")).toHaveText(/You are Cyber Aware\./, { timeout: 60_000 });
+    await expect(page.locator(".cf-note")).toContainText(/The course is complete/);
+    await expect(page.locator(".ch-go.done")).toHaveCount(MODULES.length);
+    for (const label of await page.locator(".ch-go.done").allTextContents()) expect(label).toBe("Done");
+    await expect(page.locator("body")).not.toContainText(/certificate/i);
+    expect(errors).toEqual([]);
+  });
 });

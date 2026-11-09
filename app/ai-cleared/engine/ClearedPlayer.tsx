@@ -31,6 +31,9 @@ import {
   type PaymentsPractise,
   type PhoneAction,
   type PhonePractise,
+  type ReportChoice,
+  type ReportIncident,
+  type ReportsPractise,
   type Phase,
   type Practise,
   type ProveItem,
@@ -56,6 +59,7 @@ import { FLUENT_LABEL, FLUENT_RANK, type FluentGrade, type FluentVerdict } from 
 import { FluentPanel, SpotReply } from "@/app/ai-fluent/engine/FluentPieces";
 import SceneArtView from "@/app/cyber-awareness/scenes/SceneArt";
 import CallArt from "@/app/cyber-awareness/scenes/CallArt";
+import ReportArt from "@/app/cyber-awareness/scenes/ReportArt";
 
 /* The engine that runs one module through Learn -> Practise -> Prove.
  * Structure only; every word of content comes from the manifest, the
@@ -119,6 +123,8 @@ type Screen =
   | { kind: "payments"; p: number; phase: "practise" }
   /* Cyber Awareness: a week of incoming calls, voice and video, indexed by practice `p`. */
   | { kind: "calls"; p: number; phase: "practise" }
+  /* Cyber Awareness: a day of incidents, each one reported, indexed by practice `p`. */
+  | { kind: "reports"; p: number; phase: "practise" }
   | { kind: "prove"; i: number; phase: "prove" }
   | { kind: "result"; phase: "done" };
 
@@ -182,6 +188,25 @@ function walkCall(call: IncomingCall, path: number[]): { steps: { turn: number; 
   return { steps, ended: false };
 }
 const CALL_RANK: Record<CallOption["grade"], number> = { best: 0, ok: 1, wrong: 2 };
+/* A Cyber Awareness report as the learner builds it, one incident at a time. */
+interface ReportDraft {
+  route?: number;
+  details: number[];
+  checked?: boolean;
+  meanwhile?: number;
+  sent?: boolean;
+}
+const EMPTY_REPORT: ReportDraft = { details: [] };
+/* How a sent report went: right (the best route and the best move meanwhile,
+ * every useful detail and none of the noise), safe (nothing wrong, but a gap),
+ * or wrong (a route or a move that does harm). */
+function reportVerdict(inc: ReportIncident, d: ReportDraft): "right" | "safe" | "wrong" {
+  const route = d.route === undefined ? undefined : inc.route[d.route];
+  const mean = d.meanwhile === undefined ? undefined : inc.meanwhile[d.meanwhile];
+  if (!route || !mean || route.grade === "wrong" || mean.grade === "wrong") return "wrong";
+  const exact = inc.details.every((x, i) => x.useful === d.details.includes(i));
+  return route.grade === "best" && mean.grade === "best" && exact ? "right" : "safe";
+}
 /* A document preview: [[text]] sits under a black box until looked at. */
 function Redacted({ text, open }: { text: string; open: boolean }) {
   return (
@@ -549,6 +574,8 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
         out.push({ kind: "payments", p, phase: "practise" });
       } else if (pr.kind === "calls") {
         out.push({ kind: "calls", p, phase: "practise" });
+      } else if (pr.kind === "reports") {
+        out.push({ kind: "reports", p, phase: "practise" });
       }
     });
     proveSet.forEach((_, i) => out.push({ kind: "prove", i, phase: "prove" }));
@@ -612,6 +639,12 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
   const [callAt, setCallAt] = useState<Record<number, number>>({});
   const [callAnswered, setCallAnswered] = useState<Record<number, Record<number, true>>>({});
   const [callPaths, setCallPaths] = useState<Record<number, Record<number, number[]>>>({});
+  /* Cyber Awareness reports: per practice, the incident on screen (past the
+   * last = the day's log), and per incident the report as built: the route
+   * picked, the details ticked, whether they were checked, what to do
+   * meanwhile, and whether it was sent. */
+  const [rpAt, setRpAt] = useState<Record<number, number>>({});
+  const [rpDraft, setRpDraft] = useState<Record<number, Record<number, ReportDraft>>>({});
   const bestFluentRank = useRef(99);
   const [bestFluent, setBestFluent] = useState<FluentVerdict | undefined>(undefined);
   /* one-action practises: answer per item */
@@ -885,7 +918,7 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
   const pct = Math.round(((cur + 1) / screens.length) * 100);
   const phaseIdx = (["learn", "practise", "prove", "done"] as Phase[]).indexOf(screen.phase);
   const practiseSub = (pr: Practise): string =>
-    pr.kind === "sandbox" ? "in the simulator" : pr.kind === "sort" ? "which tier is this" : pr.kind === "situations" ? "ten situations" : pr.kind === "inspect" ? "a document to check" : pr.kind === "triage" ? "six incidents" : pr.kind === "loop" ? `${pr.turns.length} send${pr.turns.length === 1 ? "" : "s"}, scored on the rubric` : pr.kind === "spot" ? "find the planted mistake" : pr.kind === "moments" ? "spot the moment" : pr.kind === "inbox" ? "triage the inbox" : pr.kind === "phone" ? "a day of sign-in prompts" : pr.kind === "scene" ? "spot the risk" : pr.kind === "outbox" ? "check the outbox" : pr.kind === "payments" ? "a week of payment requests" : pr.kind === "calls" ? "a week of incoming calls" : "check the sources";
+    pr.kind === "sandbox" ? "in the simulator" : pr.kind === "sort" ? "which tier is this" : pr.kind === "situations" ? "ten situations" : pr.kind === "inspect" ? "a document to check" : pr.kind === "triage" ? "six incidents" : pr.kind === "loop" ? `${pr.turns.length} send${pr.turns.length === 1 ? "" : "s"}, scored on the rubric` : pr.kind === "spot" ? "find the planted mistake" : pr.kind === "moments" ? "spot the moment" : pr.kind === "inbox" ? "triage the inbox" : pr.kind === "phone" ? "a day of sign-in prompts" : pr.kind === "scene" ? "spot the risk" : pr.kind === "outbox" ? "check the outbox" : pr.kind === "payments" ? "a week of payment requests" : pr.kind === "calls" ? "a week of incoming calls" : pr.kind === "reports" ? "a day of reports to write" : "check the sources";
   const PHASES: { key: Phase; label: string; sub: string }[] = [
     { key: "learn", label: "Learn", sub: "the idea" },
     { key: "practise", label: "Practise", sub: practises.map(practiseSub).join(", then ") },
@@ -2621,6 +2654,242 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
         </div>
       </>
     );
+  } else if (screen.kind === "reports" && practises[screen.p]?.kind === "reports") {
+    const rp = practises[screen.p] as ReportsPractise;
+    const p = screen.p;
+    const total = rp.incidents.length;
+    const at = Math.min(rpAt[p] ?? 0, total);
+    const summary = at >= total;
+    const drafts = rpDraft[p] ?? {};
+    const draftOf = (i: number): ReportDraft => drafts[i] ?? EMPTY_REPORT;
+    const verdicts = rp.incidents.map((x, i) => (draftOf(i).sent ? reportVerdict(x, draftOf(i)) : null));
+    const sentCount = verdicts.filter((v) => v !== null).length;
+    const rightCount = verdicts.filter((v) => v === "right").length;
+    const safeCount = verdicts.filter((v) => v === "safe").length;
+    const ii = Math.min(at, total - 1);
+    const inc = rp.incidents[ii];
+    const d = draftOf(ii);
+    const v = d.sent ? reportVerdict(inc, d) : null;
+    const STAMP = { right: "Reported right", safe: "Reported, with gaps", wrong: "Not quite" } as const;
+    const update = (fn: (x: ReportDraft) => ReportDraft) => setRpDraft((all) => ({ ...all, [p]: { ...(all[p] ?? {}), [ii]: fn(all[p]?.[ii] ?? EMPTY_REPORT) } }));
+    /* Bring the step that has just opened into view, so its choices follow
+     * the reason for the last one in reading order. */
+    const bringIntoView = (sel: string, block: ScrollLogicalPosition = "nearest") => window.setTimeout(() => document.querySelector(sel)?.scrollIntoView({ block, behavior: "smooth" }), 80);
+    const setStep = (i: number) => {
+      setRpAt((all) => ({ ...all, [p]: i }));
+      if (typeof window !== "undefined") window.scrollTo({ top: 0, behavior: "smooth" });
+    };
+    const bestOf = (list: ReportChoice[]) => list.find((o) => o.grade === "best");
+    const headline = (o: ReportChoice, list: ReportChoice[]) => (o.grade === "best" ? "Correct." : `${o.grade === "ok" ? "Safe, but not the strongest move." : "Not quite."} Best: ${t(bestOf(list)?.label ?? "")}.`);
+    const usefulCount = inc.details.filter((x) => x.useful).length;
+    const gotUseful = d.details.filter((i) => inc.details[i].useful).length;
+    const noise = d.details.filter((i) => !inc.details[i].useful).length;
+    const choices = (list: ReportChoice[], picked: number | undefined, onPick: (oi: number) => void, label: string) => (
+      <>
+        <div className="cl-rp-opts" role="group" aria-label={label}>
+          {list.map((o, oi) => {
+            const st = picked === undefined ? "" : o.grade === "best" ? "right" : oi === picked ? o.grade : "";
+            return (
+              <button key={oi} type="button" className={`cl-rp-opt ${st} ${oi === picked ? "on" : ""}`} disabled={picked !== undefined} aria-pressed={oi === picked} onClick={() => onPick(oi)}>
+                <b>{t(o.label)}</b>
+                {o.desc && <small>{t(o.desc)}</small>}
+              </button>
+            );
+          })}
+        </div>
+        {picked !== undefined && (
+          <div className={`cl-fb cl-rp-fb ${list[picked].grade}`} aria-live="polite">
+            <b>{headline(list[picked], list)}</b> {t(list[picked].why)}
+          </div>
+        )}
+      </>
+    );
+    const tick = <svg viewBox="0 0 16 16" width="12" height="12" aria-hidden="true"><path d="M3 8.5l3.2 3L13 4.5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>;
+    const plus = <svg viewBox="0 0 16 16" width="12" height="12" aria-hidden="true"><path d="M8 3v10M3 8h10" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg>;
+    const CHIP_STATE = { right: "Useful, included", missed: "Useful, missed", wrong: "Does not belong", left: "Rightly left out" } as const;
+    const chipState = (di: number): keyof typeof CHIP_STATE => (inc.details[di].useful ? (d.details.includes(di) ? "right" : "missed") : d.details.includes(di) ? "wrong" : "left");
+    stage = (
+      <>
+        <Eyebrow>Practise · a day of reports to write</Eyebrow>
+        <div className="cl-task"><span className="cl-label">Your task</span><p>{t(rp.task)}</p></div>
+        {rp.scene && <p className="cl-p">{t(rp.scene)}</p>}
+        <ol className="cl-ph-day" aria-label="Today's incidents">
+          {rp.incidents.map((x, i) => {
+            const state = i === at ? "current" : !verdicts[i] ? "upcoming" : verdicts[i] === "wrong" ? "wrong" : "right";
+            return (
+              <li key={i}>
+                <button type="button" className={`cl-ph-dot ${state}`} disabled={!verdicts[i] || i === at} onClick={() => setStep(i)} aria-current={i === at ? "step" : undefined}>
+                  {x.time}
+                </button>
+              </li>
+            );
+          })}
+          <li>
+            <button type="button" className={`cl-ph-dot end ${summary ? "current" : ""}`} disabled={summary || sentCount < total} onClick={() => setStep(total)}>Day done</button>
+          </li>
+        </ol>
+        {summary ? (
+          <div className="cl-rp-sum">
+            <p className="cl-p">
+              <b>{rightCount} of {total}</b> reported right{safeCount ? `, and ${safeCount} safely but with a gap` : ""}. {t("The habit under every one: tell {{firm.contact}} straight away, through a channel you trust, say what happened and when, and leave the fixing to the people who can. Nobody is blamed for reporting; the harm comes from the hours nobody knew.")}
+            </p>
+            <ol className="cl-ph-log cl-rp-log">
+              {rp.incidents.map((x, i) => {
+                const dr = draftOf(i);
+                const ok = verdicts[i] !== "wrong";
+                const best = bestOf(x.route);
+                const last = x.after[x.after.length - 1];
+                return (
+                  <li key={i} className={ok ? "right" : "wrong"}>
+                    <span className="cl-mo-time">{x.time}</span>
+                    <span className="cl-ph-log-t">{t(x.title)}<small>{last ? `${last.time} · ${t(last.text)}` : ""}</small></span>
+                    <span className="cl-ph-log-c">
+                      <span>You: <b>{dr.route !== undefined ? t(x.route[dr.route].label) : "-"}</b></span>
+                      {verdicts[i] !== "right" && best && <span>Best: <b>{t(best.label)}</b></span>}
+                    </span>
+                  </li>
+                );
+              })}
+            </ol>
+          </div>
+        ) : (
+          <div className="cl-rp" key={ii}>
+            <div className="cl-rp-inc">
+              <ReportArt art={inc.art} label={`A drawing: ${t(inc.title)}`} />
+              <div className="cl-rp-inc-body">
+                <div className="cl-label">{inc.time} · What happened</div>
+                <h2 className="cl-rp-title">{t(inc.title)}</h2>
+                <p>{t(inc.happened)}</p>
+                {inc.tempt && (
+                  <p className="cl-rp-tempt"><span>The voice in your head</span>&ldquo;{t(inc.tempt)}&rdquo;</p>
+                )}
+              </div>
+            </div>
+            <div className="cl-rp-grid">
+              <div className="cl-rp-steps">
+                <section className="cl-rp-step s1" aria-label="Step 1 of 3: who you tell first, and how">
+                  <div className="cl-rp-step-h"><span className="cl-rp-n">1</span>Who do you tell first, and how?</div>
+                  {choices(inc.route, d.route, (oi) => {
+                    update((x) => ({ ...x, route: oi }));
+                    bringIntoView(".cl-rp-step.s2");
+                  }, "Who you tell first, and how")}
+                </section>
+                {d.route !== undefined && (
+                  <section className="cl-rp-step s2" aria-label="Step 2 of 3: what goes in the report">
+                    <div className="cl-rp-step-h"><span className="cl-rp-n">2</span>What goes in the report? Pick every detail that helps, and leave out the rest.</div>
+                    <div className="cl-rp-chips" role="group" aria-label="Details for the report">
+                      {inc.details.map((x, di) => {
+                        const on = d.details.includes(di);
+                        return (
+                          <button
+                            key={di}
+                            type="button"
+                            className={`cl-rp-chip ${on ? "on" : ""} ${d.checked ? chipState(di) : ""}`}
+                            aria-pressed={on}
+                            disabled={!!d.checked}
+                            onClick={() => update((y) => ({ ...y, details: y.details.includes(di) ? y.details.filter((k) => k !== di) : [...y.details, di].sort((a, b) => a - b) }))}
+                          >
+                            <span className="cl-rp-tick">{on ? tick : plus}</span>
+                            <span>{t(x.text)}</span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                    {!d.checked ? (
+                      <button type="button" className="cl-btn cl-btn-small cl-rp-check" disabled={!d.details.length} onClick={() => {
+                        update((x) => ({ ...x, checked: true }));
+                        bringIntoView(".cl-rp-step.s3");
+                      }}>
+                        Check my details
+                      </button>
+                    ) : (
+                      <>
+                        <div className={`cl-fb cl-rp-fb ${gotUseful === usefulCount && !noise ? "best" : noise ? "wrong" : "ok"}`} aria-live="polite">
+                          <b>{gotUseful === usefulCount && !noise ? "Correct." : "Not quite."}</b> You included {gotUseful} of the {usefulCount} useful details{noise ? `, and ${noise === 1 ? "one that does" : `${noise} that do`} not belong` : ", and none of the noise"}.
+                        </div>
+                        <ul className="cl-rp-why">
+                          {inc.details.map((x, di) => (
+                            <li key={di} className={chipState(di)}>
+                              <span className="cl-rp-why-k">{CHIP_STATE[chipState(di)]}</span>
+                              <span><b>{t(x.text)}</b> {t(x.why)}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </>
+                    )}
+                  </section>
+                )}
+                {d.checked && (
+                  <section className="cl-rp-step s3" aria-label="Step 3 of 3: what you do while you wait">
+                    <div className="cl-rp-step-h"><span className="cl-rp-n">3</span>What do you do while you wait?</div>
+                    {choices(inc.meanwhile, d.meanwhile, (oi) => {
+                      update((x) => ({ ...x, meanwhile: oi }));
+                      bringIntoView(".cl-rp-sendrow");
+                    }, "What you do while you wait")}
+                  </section>
+                )}
+                {d.meanwhile !== undefined && !d.sent && (
+                  <div className="cl-rp-sendrow">
+                    <button type="button" className="cl-btn cl-btn-pri cl-rp-send" onClick={() => {
+                      update((x) => ({ ...x, sent: true }));
+                      bringIntoView(".cl-rp-sent", "start");
+                    }}>
+                      Send the report
+                    </button>
+                  </div>
+                )}
+              </div>
+              <section className={`cl-rp-draft ${d.sent ? "sent" : ""}`} aria-label="Your report so far">
+                <div className="cl-rp-draft-h">
+                  <span>{d.sent ? "Your report · sent" : "Your report · draft"}</span>
+                  {v && <span className={`cl-rp-stamp ${v}`}>{STAMP[v]}</span>}
+                </div>
+                <dl>
+                  <div><dt>To, and how</dt><dd>{d.route !== undefined ? t(inc.route[d.route].label) : <span className="cl-rp-empty">Step 1</span>}</dd></div>
+                  <div>
+                    <dt>What it says</dt>
+                    <dd>
+                      {d.details.length ? (
+                        <ul>{d.details.map((i) => <li key={i} className={d.checked ? chipState(i) : ""}>{t(inc.details[i].text)}</li>)}</ul>
+                      ) : (
+                        <span className="cl-rp-empty">Step 2</span>
+                      )}
+                    </dd>
+                  </div>
+                  <div><dt>Meanwhile</dt><dd>{d.meanwhile !== undefined ? t(inc.meanwhile[d.meanwhile].label) : <span className="cl-rp-empty">Step 3</span>}</dd></div>
+                </dl>
+              </section>
+            </div>
+            {d.sent && (
+              <div className="cl-rp-sent">
+                <div className="cl-rp-model">
+                  <div className="cl-label">A model report · to {t(inc.model.to)} · {t(inc.model.via)}</div>
+                  {inc.model.lines.map((line, li) => <p key={li}>{t(line)}</p>)}
+                </div>
+                <div className="cl-rp-after">
+                  <div className="cl-label">What happens next</div>
+                  <ol>
+                    {inc.after.map((a, ai) => (
+                      <li key={ai}><span className="cl-rp-clock">{a.time}</span><p>{t(a.text)}</p></li>
+                    ))}
+                  </ol>
+                </div>
+                <div className="cl-rp-quiet"><b>If you had kept quiet.</b> {t(inc.ifQuiet)}</div>
+              </div>
+            )}
+          </div>
+        )}
+        <div className="cl-nav">
+          <Btn onClick={summary ? () => setStep(total - 1) : at > 0 ? () => setStep(at - 1) : back}>Back</Btn>
+          <span className="cl-hint">{summary ? "That was your day." : `Incident ${at + 1} of ${total}`}</span>
+          {summary ? (
+            <Btn primary onClick={next}>Continue to Prove</Btn>
+          ) : (
+            <button type="button" className="cl-btn cl-btn-pri cl-rp-next" disabled={!d.sent} onClick={() => setStep(at + 1)}>{at === total - 1 ? "See your day" : "Next incident"}</button>
+          )}
+        </div>
+      </>
+    );
   } else if (screen.kind === "prove") {
     const q = proveSet[screen.i];
     const picked = proveAnswers[screen.i];
@@ -2680,6 +2949,11 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
     /* Another module is open to go on to; false only while the rest of a
      * course is still being released (every module is out on Cleared and Fluent). */
     const nextOpen = !courseMap.some((m) => !m.available) || courseMap.some((m) => m.available && !m.done && m.n !== manifest.n);
+    /* The modules still to finish besides this one, and whether this is the
+     * last module of the course, so "the next module" would be wrong. */
+    const left = courseMap.filter((m) => m.available && !m.done && m.n !== manifest.n);
+    const lastInCourse = courseMap.every((m) => m.n <= manifest.n);
+    const outro = passed ? manifest.outro : undefined;
     stage = (
       <>
         <span className="cl-stamp" style={{ color: passed ? K.ok : K.warn, borderColor: passed ? K.ok : K.warn }}>{passed ? (isFinal ? "Course complete" : `Module ${doneWord}`) : `Not yet ${doneWord}`}</span>
@@ -2697,16 +2971,32 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
                   ? clean
                     ? `You classified ${correct} snippets correctly and sent a cleared prompt in the sandbox. This module's score is on your record.`
                     : `You classified ${correct} snippets correctly. Your sandbox send was not fully cleared; a cleared send would lift this to full marks.`
-                  : `You answered ${correct} of ${proveSet.length} correctly. This module's score is on your record.`
+                  : courseDone
+                    ? `You answered ${correct} of ${proveSet.length} correctly. Every module is done, so ${courseDef.name} is complete, and it is on your firm's training register.`
+                    : `You answered ${correct} of ${proveSet.length} correctly. This module's score is on your record.`
             : `Pass mark is ${manifest.passMark} of ${proveSet.length}. ${isFinal ? "A retake draws a different set of questions." : "Go back over the Learn screens and try again."} Nothing is recorded until you pass.`}
         </p>
+        {outro && (
+          <section className="cl-outro" aria-label={t(courseDone ? outro.done : outro.pending)}>
+            <h2 className="cl-outro-h">{t(courseDone ? outro.done : outro.pending)}</h2>
+            <p className="cl-p">{t(outro.lead)}</p>
+            <ol className="cl-outro-list">
+              {outro.habits.map((h) => (
+                <li key={h.n}>
+                  <span className="cl-outro-n">{h.n}</span>
+                  <span><b>{t(h.title)}</b><small>{t(h.habit)}</small></span>
+                </li>
+              ))}
+            </ol>
+          </section>
+        )}
         <div className="cl-label" style={{ marginTop: 22 }}>{`Progress through ${courseDef.name}`}</div>
         <div className="cl-meter"><i style={{ width: `${(doneCount / total) * 100}%` }} /></div>
         <div className="cl-hint">{doneCount} of {total} modules{course === "cyber-awareness" ? "" : ` · ${TRACK_LABEL[track]} track`}</div>
         <div className="cl-nav">
           {passed ? (
             <>
-              <span className="cl-hint">{isFinal ? "Thank you. The habits are the point, and they are yours to keep." : nextOpen ? "The next module is waiting on the course page." : "The next module opens on your course page when it is released."}</span>
+              <span className="cl-hint">{isFinal ? "Thank you. The habits are the point, and they are yours to keep." : courseDone ? "That is every module. Thank you: the habits are yours to keep." : left.length && lastInCourse ? "The modules you have left are waiting on the course page." : nextOpen ? "The next module is waiting on the course page." : "The next module opens on your course page when it is released."}</span>
               <Link href={courseDef.base} className="cl-btn cl-btn-pri">Back to your course</Link>
             </>
           ) : (
@@ -3244,6 +3534,86 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
         .cl-calls-log li { grid-template-columns: 76px minmax(0, 1fr); }
         .cl-calls-log .cl-ph-log-c { grid-column: 2; justify-content: flex-start; }
 
+        .cl-rp { display: flex; flex-direction: column; gap: 14px; }
+        .cl-rp-inc { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 16px; align-items: start; animation: cl-in 250ms ease both; }
+        .cl-rp-art { display: block; width: 100%; height: auto; aspect-ratio: 320 / 120; border-radius: 12px; border: 1px solid ${K.edge}; }
+        .cl-rp-inc-body .cl-label { margin-bottom: 2px; }
+        .cl-rp-title { margin: 0 0 4px; font-size: 18px; line-height: 1.3; color: ${K.ink}; }
+        .cl-rp-inc-body p { margin: 0; font-size: 15px; line-height: 1.55; color: ${K.body}; }
+        .cl-rp-inc-body .cl-rp-tempt { margin-top: 10px; padding: 8px 12px; border-left: 3px solid ${K.warn}; border-radius: 0 10px 10px 0; background: ${K.warnSoft}; color: ${K.ink}; font-style: italic; }
+        .cl-rp-tempt span { display: block; font-style: normal; font-family: ${K.mono}; font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: ${K.warn}; margin-bottom: 2px; }
+        .cl-rp-grid { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 16px; align-items: start; }
+        .cl-rp-steps { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+        .cl-rp-step { scroll-margin-top: 70px; scroll-margin-bottom: 16px; display: flex; flex-direction: column; gap: 8px; animation: cl-in 250ms ease both; }
+        .cl-rp-step-h { display: flex; align-items: flex-start; gap: 8px; font-size: 15px; font-weight: 600; color: ${K.ink}; }
+        .cl-rp-n { flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%; font-family: ${K.mono}; font-size: 11px; display: inline-flex; align-items: center; justify-content: center; color: ${K.onAccent}; background: ${K.grad}; }
+        .cl-rp-opts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
+        .cl-rp-opt { font: inherit; text-align: left; display: flex; flex-direction: column; gap: 2px; color: ${K.ink}; background: ${K.glassStrong}; border: 1px solid ${K.edge}; border-radius: 10px; padding: 9px 12px; cursor: pointer; transition: border-color 150ms ease; }
+        .cl-rp-opt b { font-size: 14px; line-height: 1.35; }
+        .cl-rp-opt small { font-size: 12.5px; line-height: 1.4; color: ${K.muted}; }
+        .cl-rp-opt:hover:not(:disabled) { border-color: ${K.accent}; }
+        .cl-rp-opt:disabled { cursor: default; }
+        .cl-rp-opt:disabled:not(.right):not(.on) { opacity: 0.6; }
+        .cl-rp-opt.right { border-color: ${K.ok}; background: ${K.okSoft}; }
+        .cl-rp-opt.ok { border-color: ${K.warn}; background: ${K.warnSoft}; }
+        .cl-rp-opt.wrong { border-color: ${K.crit}; background: ${K.critSoft}; }
+        .cl-rp-fb { margin: 0; padding: 8px 12px; border-left: 3px solid ${K.ok}; border-radius: 0 10px 10px 0; background: ${K.panelRaise}; font-size: 13.5px; line-height: 1.5; animation: cl-in 250ms ease both; }
+        .cl-rp-fb.ok { border-left-color: ${K.warn}; }
+        .cl-rp-fb.wrong { border-left-color: ${K.crit}; }
+        .cl-rp-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+        .cl-rp-chip { font: inherit; font-size: 13.5px; line-height: 1.35; text-align: left; display: inline-flex; align-items: flex-start; gap: 7px; max-width: 100%; color: ${K.ink}; background: ${K.glassStrong}; border: 1px solid ${K.edge}; border-radius: 10px; padding: 7px 11px; cursor: pointer; }
+        .cl-rp-chip:hover:not(:disabled) { border-color: ${K.accent}; }
+        .cl-rp-chip:disabled { cursor: default; }
+        .cl-rp-chip.on { border-color: ${K.accent}; background: ${K.accentSoft}; }
+        .cl-rp-chip.right { border-color: ${K.ok}; background: ${K.okSoft}; }
+        .cl-rp-chip.missed { border-style: dashed; border-color: ${K.warn}; }
+        .cl-rp-chip.wrong { border-color: ${K.crit}; background: ${K.critSoft}; }
+        .cl-rp-chip.left { opacity: 0.6; }
+        .cl-rp-tick { flex-shrink: 0; display: inline-flex; margin-top: 3px; color: ${K.accentInk}; }
+        .cl-rp-check { align-self: flex-start; }
+        .cl-rp-why { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 5px; animation: cl-in 250ms ease both; }
+        .cl-rp-why li { display: grid; grid-template-columns: 104px minmax(0, 1fr); gap: 2px 10px; font-size: 13px; line-height: 1.45; color: ${K.body}; padding: 6px 10px; border-radius: 8px; background: ${K.panelRaise}; border-left: 3px solid ${K.ok}; }
+        .cl-rp-why li.missed { border-left-color: ${K.warn}; }
+        .cl-rp-why li.wrong { border-left-color: ${K.crit}; }
+        .cl-rp-why li.left { border-left-color: ${K.edge}; }
+        .cl-rp-why b { color: ${K.ink}; font-weight: 600; }
+        .cl-rp-why-k { font-family: ${K.mono}; font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: ${K.faint}; padding-top: 2px; }
+        .cl-rp-sendrow { scroll-margin-bottom: 16px; display: flex; justify-content: flex-start; }
+        .cl-rp-draft { position: sticky; top: 68px; border: 1px solid ${K.edge}; border-top: 4px solid ${K.accent}; border-radius: 12px; background: ${K.panel}; padding: 10px 14px 12px; box-shadow: ${K.lift}; }
+        .cl-rp-draft.sent { border-top-color: ${K.ok}; }
+        .cl-rp-draft-h { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 8px; font-family: ${K.mono}; font-size: 10.5px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: ${K.faint}; margin-bottom: 6px; }
+        .cl-rp-stamp { border-radius: 999px; padding: 2px 9px; }
+        .cl-rp-stamp.right { color: ${K.ok}; background: ${K.okSoft}; }
+        .cl-rp-stamp.safe { color: ${K.accentInk}; background: ${K.accentSoft}; }
+        .cl-rp-stamp.wrong { color: ${K.warn}; background: ${K.warnSoft}; }
+        .cl-rp-draft dl { margin: 0; display: flex; flex-direction: column; gap: 8px; }
+        .cl-rp-draft dt { font-family: ${K.mono}; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: ${K.faint}; }
+        .cl-rp-draft dd { margin: 2px 0 0; font-size: 13.5px; line-height: 1.45; color: ${K.ink}; overflow-wrap: anywhere; }
+        .cl-rp-draft ul { margin: 0; padding-left: 16px; display: flex; flex-direction: column; gap: 3px; }
+        .cl-rp-draft li.wrong { text-decoration: line-through; color: ${K.muted}; }
+        .cl-rp-empty { color: ${K.faint}; font-style: italic; }
+        .cl-rp-sent { scroll-margin-top: 70px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px; animation: cl-in 250ms ease both; }
+        .cl-rp-model { border: 1px solid ${K.edge}; border-left: 4px solid ${K.ok}; border-radius: 12px; background: ${K.panel}; padding: 10px 14px; }
+        .cl-rp-model p { margin: 0 0 6px; font-size: 14px; line-height: 1.5; color: ${K.ink}; }
+        .cl-rp-model p:last-child { margin-bottom: 0; }
+        .cl-rp-after { border: 1px solid ${K.edge}; border-radius: 12px; background: ${K.panelRaise}; padding: 10px 14px; }
+        .cl-rp-after ol { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+        .cl-rp-after li { display: grid; grid-template-columns: 48px minmax(0, 1fr); gap: 8px; align-items: baseline; }
+        .cl-rp-after p { margin: 0; font-size: 13.5px; line-height: 1.5; color: ${K.body}; }
+        .cl-rp-clock { font-family: ${K.mono}; font-size: 12px; font-weight: 700; color: ${K.ok}; }
+        .cl-rp-quiet { grid-column: 1 / -1; padding: 9px 14px; border-left: 4px solid ${K.warn}; border-radius: 0 12px 12px 0; background: ${K.warnSoft}; font-size: 14px; line-height: 1.5; color: ${K.body}; }
+        .cl-rp-quiet b { color: ${K.ink}; }
+        .cl-rp-log li { grid-template-columns: 76px minmax(0, 1fr); }
+        .cl-rp-log .cl-ph-log-c { grid-column: 2; justify-content: flex-start; }
+        .cl-outro { margin-top: 18px; border: 1px solid ${K.edge}; border-top: 4px solid ${K.ok}; border-radius: 14px; background: ${K.panel}; padding: 14px 16px; }
+        .cl-outro-h { margin: 0 0 4px; font-size: 18px; font-weight: 600; line-height: 1.3; color: ${K.ink}; }
+        .cl-outro .cl-p { margin: 0 0 10px; }
+        .cl-outro-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px 14px; }
+        .cl-outro-list li { display: flex; align-items: flex-start; gap: 9px; }
+        .cl-outro-list b { display: block; font-size: 13.5px; color: ${K.ink}; }
+        .cl-outro-list small { display: block; font-size: 13px; line-height: 1.4; color: ${K.muted}; }
+        .cl-outro-n { flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%; font-family: ${K.mono}; font-size: 11px; display: inline-flex; align-items: center; justify-content: center; color: ${K.ok}; background: ${K.okSoft}; border: 1px solid ${K.ok}; }
+
         .cl-toggles { display: flex; flex-direction: column; gap: 12px; margin-top: 12px; }
         .cl-toggle { display: flex; gap: 14px; align-items: flex-start; border: 1px solid ${K.edge}; border-radius: 10px; padding: 14px; background: ${K.panelRaise}; }
         .cl-toggle b { display: block; color: ${K.ink}; font-size: 15px; margin-bottom: 4px; }
@@ -3428,6 +3798,15 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
           .cl-call-art { aspect-ratio: 320 / 150; }
           .cl-calls-log li { grid-template-columns: minmax(0, 1fr); }
           .cl-calls-log .cl-ph-log-c { grid-column: 1; justify-content: flex-start; }
+          .cl-rp-inc { grid-template-columns: minmax(0, 1fr); gap: 10px; }
+          .cl-rp-grid { grid-template-columns: minmax(0, 1fr); }
+          .cl-rp-opts { grid-template-columns: minmax(0, 1fr); }
+          .cl-rp-why li { grid-template-columns: minmax(0, 1fr); }
+          .cl-rp-draft { position: static; }
+          .cl-rp-sent { grid-template-columns: minmax(0, 1fr); }
+          .cl-rp-log li { grid-template-columns: minmax(0, 1fr); }
+          .cl-rp-log .cl-ph-log-c { grid-column: 1; justify-content: flex-start; }
+          .cl-outro-list { grid-template-columns: minmax(0, 1fr); }
           .cl-row { grid-template-columns: 22px 1fr; }
           .cl-row .cl-v { grid-column: 2; }
           .cl-row.show { grid-template-columns: 1fr auto; }
@@ -3446,7 +3825,7 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
           .cl-top:has(.cl-desk-btn[aria-expanded="true"]) .cl-firm, .cl-top:has(.cl-desk-btn[aria-expanded="true"]) .cl-top-left .cl-sep { display: none; }
         }
         @media (prefers-reduced-motion: reduce) {
-          .cl-stage, .cl-rv, .cl-grader, .cl-card-detail, .cl-tl.after, .cl-peek-real, .cl-ph-ctx, .cl-ph-fb, .cl-ph-note, .cl-sc-spot, .cl-sc-out, .cl-ob-meant, .cl-ob-draft, .cl-ob-found, .cl-ob-fb, .cl-pay-doc, .cl-pay-found, .cl-pay-out, .cl-call-ctx, .cl-call-line, .cl-call-fb, .cl-call-opts, .cl-call-end, .cl-call-art .cl-call-ring { animation: none; }
+          .cl-stage, .cl-rv, .cl-grader, .cl-card-detail, .cl-tl.after, .cl-peek-real, .cl-ph-ctx, .cl-ph-fb, .cl-ph-note, .cl-sc-spot, .cl-sc-out, .cl-ob-meant, .cl-ob-draft, .cl-ob-found, .cl-ob-fb, .cl-pay-doc, .cl-pay-found, .cl-pay-out, .cl-call-ctx, .cl-call-line, .cl-call-fb, .cl-call-opts, .cl-call-end, .cl-call-art .cl-call-ring, .cl-rp-inc, .cl-rp-step, .cl-rp-fb, .cl-rp-why, .cl-rp-sent { animation: none; }
           .cl-bar i, .cl-meter i, .cl-knob { transition: none; }
         }
       `}</style>

@@ -52,6 +52,8 @@ export default function ConsoleHome({
   const next = modules.find((m) => m.n === resumeN);
   const anyOpen = modules.some((m) => m.available);
   const stateWord = c.stateWord;
+  /* "Cleared" is AI Cleared's word for a finished module; the other courses say "done". */
+  const cleared = course === "ai-cleared";
 
   return (
     <Frame
@@ -79,7 +81,7 @@ export default function ConsoleHome({
         </svg>
         <div>
           <h1 className="cf-h1" style={{ marginBottom: 6 }}>
-            {complete ? <>You are <span className="cf-grad">{c.doneName}</span>.</> : done === 0 ? <>Hello, {learnerName}. Let&rsquo;s get you <span className="cf-grad">{stateWord}</span>.</> : <>{done} of {modules.length} {fluent ? "done" : "cleared"}, {learnerName}.</>}
+            {complete ? <>You are <span className="cf-grad">{c.doneName}</span>.</> : done === 0 ? <>Hello, {learnerName}. Let&rsquo;s get you <span className="cf-grad">{stateWord}</span>.</> : <>{done} of {modules.length} {cleared ? "cleared" : "done"}, {learnerName}.</>}
           </h1>
           <p className="cf-note">
             {complete
@@ -111,7 +113,7 @@ export default function ConsoleHome({
                 <b>{m.title}</b>
                 <small>{m.minutes} min{m.phaseLabel ? ` · ${m.phaseLabel}` : ""}{state === "locked" ? " · coming with the next release" : ""}</small>
               </span>
-              <span className={`ch-go ${state}`}>{m.done ? (fluent ? "Done" : "Cleared") : state === "next" ? (m.phaseLabel ? "Resume" : "Start") : state === "open" ? "Open" : "Locked"}</span>
+              <span className={`ch-go ${state}`}>{m.done ? (cleared ? "Cleared" : "Done") : state === "next" ? (m.phaseLabel ? "Resume" : "Start") : state === "open" ? "Open" : "Locked"}</span>
             </>
           );
           return (
