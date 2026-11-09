@@ -519,7 +519,40 @@ export interface InboxPractise {
   messages: InboxMessage[];
 }
 
-export type Practise = SandboxPractise | SortPractise | SituationsPractise | TriagePractise | InspectPractise | LoopPractise | SpotPractise | SourcesPractise | MomentsPractise | InboxPractise;
+/* A day on your phone: sign-in prompts and account alerts arrive one at a
+ * time on the lock screen, each with what you were doing when it came
+ * (the only way to know whether you started it), and sometimes a message
+ * that arrives just before it. The learner answers each one with one of
+ * three actions (approve, deny, report) and sees why before the next
+ * arrives. `accept` lists the actions taken as right, the first being the
+ * best; every other action is shown as not quite, with the same reason. */
+export type PhoneAction = "approve" | "deny" | "report";
+export interface PhoneEvent {
+  time: string;
+  /* What you are doing when it arrives. */
+  doing: string;
+  /* A message that lands just before the notification. */
+  message?: { channel: string; from: string; text: string };
+  /* The app the notification comes from: "Authenticator", "Account alert". */
+  app: string;
+  title: string;
+  /* The detail rows under the title: account, device, place. */
+  lines: string[];
+  /* More than one of the same, shown as a stack with a count. */
+  count?: number;
+  accept: PhoneAction[];
+  why: string;
+}
+export interface PhonePractise {
+  kind: "phone";
+  task: string;
+  /* One line under the task that sets the day up. */
+  scene?: string;
+  actions: { id: PhoneAction; label: string; desc: string }[];
+  events: PhoneEvent[];
+}
+
+export type Practise = SandboxPractise | SortPractise | SituationsPractise | TriagePractise | InspectPractise | LoopPractise | SpotPractise | SourcesPractise | MomentsPractise | InboxPractise | PhonePractise;
 
 /* ---- Prove ---- */
 

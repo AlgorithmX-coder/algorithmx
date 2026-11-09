@@ -11,12 +11,14 @@ import { getAwarenessModule } from "../../app/cyber-awareness/manifests";
  * names a button for each, marks every inbox message and names a tell for
  * each phish, so a screen with no way forward, a crash, or a console
  * error fails the build. On the inbox it also hovers a sender and a link
- * and checks what is behind them appears. A second pass answers every
+ * and checks what is behind them appears. On the phone it answers every
+ * notification, checks each one explains itself, and reaches the day's
+ * log. A second pass answers every
  * Prove item correctly (found by text, because the options shuffle) and
  * must pass.
  */
 
-const MODULES = [1, 2];
+const MODULES = [1, 2, 3];
 const MAX_SCREENS = 40;
 
 function collectErrors(page: Page) {
@@ -49,6 +51,8 @@ async function playThrough(page: Page, query: string, opts: { m: number; answerR
   let screens = 0;
   let stuckAt: string | null = null;
   let peeked = false;
+  let phoned = 0;
+  let dayLogged = false;
   for (let guard = 0; guard < MAX_SCREENS; guard++) {
     await page.waitForTimeout(200);
     const eyebrow = (await page.locator(".cl-eyebrow").first().textContent().catch(() => "")) || "screen";
@@ -94,6 +98,16 @@ async function playThrough(page: Page, query: string, opts: { m: number; answerR
       await page.locator(".cl-ib-ask .cl-opt:not(:disabled)").first().click();
       await page.waitForTimeout(80);
     }
+    /* The phone: answer the notification on the lock screen (the first
+     * action) and check its reason shows; the primary button then brings
+     * the next one, and after the last, the day's log. */
+    if (await page.locator(".cl-ph-act:not(:disabled)").count()) {
+      await page.locator(".cl-ph-act:not(:disabled)").first().click();
+      await page.waitForTimeout(100);
+      await expect(page.locator(".cl-ph-fb").first(), "every notification explains itself").toBeVisible();
+      phoned++;
+    }
+    if (await page.locator(".cl-ph-log").count()) dayLogged = true;
     /* A prove item: the right answer on the passing run, else the first. */
     if (await page.locator(".cl-opts.col .cl-opt:not(:disabled)").count()) {
       const stem = ((await page.locator(".cl-h1").first().textContent()) ?? "").trim();
@@ -112,11 +126,16 @@ async function playThrough(page: Page, query: string, opts: { m: number; answerR
     await pri.click();
   }
   const stamp = (await page.locator(".cl-stamp").textContent().catch(() => "")) ?? "";
-  return { screens, stuckAt, errors, stamped: (await page.locator(".cl-stamp").count()) > 0, stamp, peeked };
+  return { screens, stuckAt, errors, stamped: (await page.locator(".cl-stamp").count()) > 0, stamp, peeked, phoned, dayLogged };
 }
 
 /* Modules whose practice is an inbox, where the walker must have looked behind a sender and a link. */
 const INBOX = new Set(MODULES.filter((m) => getAwarenessModule(m)!.tracks.general!.practise?.kind === "inbox"));
+/* Modules whose practice is a day on the phone: the walker must have answered every notification and seen the day's log. */
+const PHONE = new Map(MODULES.flatMap((m) => {
+  const pr = getAwarenessModule(m)!.tracks.general!.practise;
+  return pr?.kind === "phone" ? [[m, pr.events.length] as const] : [];
+}));
 
 test.describe("Cyber Awareness modules play through to the result", () => {
   test.setTimeout(150_000);
@@ -128,6 +147,10 @@ test.describe("Cyber Awareness modules play through to the result", () => {
       expect(r.stamped, "reached the result stamp").toBe(true);
       expect(r.errors, "no page or console errors").toEqual([]);
       if (INBOX.has(m)) expect(r.peeked, "looked behind a sender and a link in the inbox").toBe(true);
+      if (PHONE.has(m)) {
+        expect(r.phoned, "answered every notification on the phone").toBe(PHONE.get(m));
+        expect(r.dayLogged, "saw the day's log").toBe(true);
+      }
     });
 
     test(`module ${m}, right answers pass`, async ({ page }) => {
@@ -144,6 +167,10 @@ test.describe("Cyber Awareness modules play through to the result", () => {
       expect(r.stamped).toBe(true);
       expect(r.errors).toEqual([]);
       if (INBOX.has(m)) expect(r.peeked).toBe(true);
+      if (PHONE.has(m)) {
+        expect(r.phoned).toBe(PHONE.get(m));
+        expect(r.dayLogged).toBe(true);
+      }
     });
   }
 });
