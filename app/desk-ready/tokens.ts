@@ -35,6 +35,8 @@ export const D = Object.freeze({
   /* the real apps' title-bar colours, for drawn Outlook and Excel windows */
   outlook: "#0f6cbd",
   excel: "#107c41",
+  /* printed paperwork (a delivery note) laid beside a sheet */
+  paper: "#fffdf6",
 
   display: "var(--font-desk-display), 'Lexend', system-ui, sans-serif",
   sans: "var(--font-desk-sans), 'Atkinson Hyperlegible Next', system-ui, sans-serif",
