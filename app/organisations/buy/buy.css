@@ -1,0 +1,263 @@
+/*
+  Buying places, for an educational organisation.
+
+  WHY IT LOOKS LIKE THIS. It is the first screen of three the same person
+  sees: this, then /schools/join, then /schools/overview. So the palette,
+  the void and the cyan-to-violet accent are lifted from auth.css and
+  head.css, and the rule those two keep is kept here too: nothing but the
+  thing you press is ever a gradient.
+
+  Every selector is scoped under .oxb. A route-level stylesheet stays
+  loaded after you navigate away (documented Next.js behaviour), so an
+  unscoped rule here would follow a buyer out into the rest of the site.
+*/
+
+.oxb,
+.oxb *,
+.oxb *::before,
+.oxb *::after {
+  box-sizing: border-box;
+}
+
+.oxb {
+  --ink: #e9edff;
+  --ink-soft: rgba(233, 237, 255, 0.76);
+  --ink-faint: rgba(233, 237, 255, 0.52);
+  --void: #05060f;
+  --cyan: #22d3ee;
+  --violet: #a78bfa;
+  --glass: rgba(16, 20, 42, 0.72);
+  --hair: rgba(233, 237, 255, 0.1);
+  --hair-hi: rgba(233, 237, 255, 0.18);
+  --warn: #fbbf24;
+  position: relative;
+  min-height: 100svh;
+  background: var(--void);
+  color: var(--ink);
+  font-family: var(--font-inter), system-ui, -apple-system, "Segoe UI", sans-serif;
+  padding: 0 16px 64px;
+  overflow-x: hidden;
+}
+
+/* The same aurora as the login, at the same strength. */
+.oxb::before {
+  content: "";
+  position: fixed;
+  inset: -20% -10% auto;
+  height: 70vh;
+  background:
+    radial-gradient(60% 60% at 22% 0%, rgba(34, 211, 238, 0.16), transparent 70%),
+    radial-gradient(55% 55% at 80% 10%, rgba(167, 139, 250, 0.16), transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.oxb-wrap {
+  position: relative;
+  z-index: 1;
+  max-width: 880px;
+  margin: 0 auto;
+  padding-block: 40px;
+}
+
+.oxb-eyebrow {
+  margin: 0 0 10px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--cyan);
+}
+
+.oxb-h1 {
+  margin: 0 0 12px;
+  font-size: clamp(28px, 5vw, 42px);
+  line-height: 1.1;
+  font-weight: 800;
+  text-wrap: balance;
+}
+
+.oxb-grad {
+  background: linear-gradient(100deg, var(--cyan), var(--violet));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.oxb-lede {
+  margin: 0 0 28px;
+  max-width: 62ch;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--ink-soft);
+}
+
+.oxb-card {
+  background: var(--glass);
+  border: 1px solid var(--hair);
+  border-radius: 16px;
+  padding: 24px;
+  backdrop-filter: blur(10px);
+}
+
+.oxb-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.oxb-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.oxb-field.wide {
+  grid-column: 1 / -1;
+}
+
+.oxb-label {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+.oxb input,
+.oxb select {
+  font: inherit;
+  font-size: 16px;
+  color: var(--ink);
+  background: rgba(5, 6, 15, 0.6);
+  border: 1px solid var(--hair-hi);
+  border-radius: 10px;
+  padding: 11px 13px;
+  width: 100%;
+  min-width: 0;
+}
+
+.oxb input:focus-visible,
+.oxb select:focus-visible,
+.oxb button:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 2px;
+}
+
+.oxb-hp {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+/* The money, set apart so it is read before the button is pressed. */
+.oxb-quote {
+  margin-top: 20px;
+  border: 1px solid var(--hair-hi);
+  border-radius: 12px;
+  padding: 16px 18px;
+  background: rgba(5, 6, 15, 0.45);
+}
+
+.oxb-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 5px 0;
+  font-size: 14.5px;
+  color: var(--ink-soft);
+  font-variant-numeric: tabular-nums;
+}
+
+.oxb-row.total {
+  margin-top: 6px;
+  padding-top: 11px;
+  border-top: 1px solid var(--hair);
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--ink);
+}
+
+.oxb-btn {
+  margin-top: 18px;
+  width: 100%;
+  font: inherit;
+  font-size: 16px;
+  font-weight: 800;
+  color: #04121a;
+  background: linear-gradient(100deg, var(--cyan), var(--violet));
+  border: 0;
+  border-radius: 999px;
+  padding: 14px 20px;
+  min-height: 48px;
+  cursor: pointer;
+  transition: filter 180ms ease;
+}
+
+.oxb-btn:hover:not(:disabled) {
+  filter: brightness(1.08);
+}
+
+.oxb-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.oxb-msg {
+  margin: 14px 0 0;
+  font-size: 14.5px;
+  line-height: 1.5;
+  color: var(--warn);
+}
+
+.oxb-note {
+  margin: 16px 0 0;
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--ink-faint);
+}
+
+.oxb-note a {
+  color: var(--cyan);
+}
+
+.oxb-after {
+  margin-top: 28px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+.oxb-step {
+  border: 1px solid var(--hair);
+  border-radius: 12px;
+  padding: 14px 16px;
+  background: rgba(16, 20, 42, 0.4);
+}
+
+.oxb-step b {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 14px;
+}
+
+.oxb-step span {
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--ink-faint);
+}
+
+@media (max-width: 720px) {
+  .oxb-grid,
+  .oxb-after {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .oxb * {
+    transition: none !important;
+  }
+}
