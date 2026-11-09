@@ -164,6 +164,26 @@ const products = [
     weeksCount: 0,
     content: [],
   },
+  /* Cyber Awareness: the third Cyber Secured track, everyday cyber hygiene
+   * for every member of staff. Seat-licensed by a firm, so excluded from
+   * the consumer hub by slug once that list is updated elsewhere (this is
+   * the Product row only; pricing, the seat-purchase plumbing and the
+   * eight modules' real content are separate, later work). Adult,
+   * module-based, no weekly CourseContent. */
+  {
+    slug: "cyber-awareness",
+    name: "Cyber Awareness",
+    ageMin: 18,
+    ageMax: 99,
+    priceGBP: 0,
+    weeks: 0,
+    status: ProductStatus.ACTIVE,
+    emoji: "🔒",
+    ageRange: "Working adults",
+    duration: "About 2 hours",
+    weeksCount: 0,
+    content: [],
+  },
 ];
 
 /* The test firm for AI Cleared. Invented, like everything in the course.

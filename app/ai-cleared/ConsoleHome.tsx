@@ -85,7 +85,7 @@ export default function ConsoleHome({
           </h1>
           <p className="cf-note">
             {complete
-              ? "Every module passed. Your certificate is ready below."
+              ? c.certificate ? "Every module passed. Your certificate is ready below." : "Every module passed."
               : next
                 ? `Next up: Module ${next.n}, ${next.title}, about ${next.minutes} minutes.`
                 : anyOpen
@@ -95,7 +95,7 @@ export default function ConsoleHome({
         </div>
       </div>
 
-      {complete && (
+      {complete && c.certificate && (
         <Link href={`${c.base}/certificate`} className="ch-cert">
           <span className="ch-cert-stamp">Course {fluent ? "complete" : "cleared"}</span>
           <span className="ch-cert-text">Your certificate is ready. Download it, or send the verify link to your manager.</span>

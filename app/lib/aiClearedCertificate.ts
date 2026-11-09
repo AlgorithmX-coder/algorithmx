@@ -1,12 +1,14 @@
 import { randomBytes } from "crypto";
 import { prisma } from "@/app/lib/prisma";
 import { sendEmail } from "@/app/lib/resend";
-import { COURSES, courseOfSerial, type CourseDef, type CourseSlug } from "@/app/ai-cleared/engine/courses";
+import { COURSES, courseOfSerial, type CertifiedCourseSlug, type CourseDef } from "@/app/ai-cleared/engine/courses";
 
-/* Certificates for both corporate courses. Issued once per enrolment when
- * the course is complete, valid for 12 months (owner decision 2026-09-28),
- * with a serial anyone can check at /verify/[serial]: AXC for AI Cleared,
- * AXF for AI Fluent. Never import from a client component. */
+/* Certificates for the two courses that issue one. Issued once per
+ * enrolment when the course is complete, valid for 12 months (owner
+ * decision 2026-09-28), with a serial anyone can check at
+ * /verify/[serial]: AXC for AI Cleared, AXF for AI Fluent. Cyber Awareness
+ * tracks completion but never issues a certificate (Cyber Secured design
+ * v1.0), so it has no entry here. Never import from a client component. */
 
 export const CERTIFICATE_MONTHS = 12;
 
@@ -21,7 +23,7 @@ export function makeSerial(prefix = "AXC"): string {
 }
 
 /* What each certificate says, on screen, in the PDF and on the verify page. */
-export const CERT_COPY: Record<CourseSlug, { tagline: string; completed: string; pdfBody: string; verifyValid: string; verifyExpired: string; chips: string[] }> = {
+export const CERT_COPY: Record<CertifiedCourseSlug, { tagline: string; completed: string; pdfBody: string; verifyValid: string; verifyExpired: string; chips: string[] }> = {
   "ai-cleared": {
     tagline: "Safe and effective AI use for staff",
     completed: "has completed AI Cleared, the five modules on safe and effective AI use, and passed the final assessment.",
@@ -89,7 +91,10 @@ export async function verifyCertificate(serial: string) {
     issuedAt: c.issuedAt,
     expiresAt: c.expiresAt,
     valid: c.expiresAt > now,
-    course: course.slug,
+    /* Cyber Awareness never issues a certificate, so no real serial ever
+     * resolves here; the fallback keeps the return type the two courses
+     * CERT_COPY actually knows. */
+    course: (course.slug === "cyber-awareness" ? "ai-cleared" : course.slug) as CertifiedCourseSlug,
   };
 }
 
@@ -99,7 +104,7 @@ export function fmtDate(d: Date): string {
 
 /* The learner's copy by email: a link to the certificate page and the
  * public verify link. The PDF itself stays behind sign-in. */
-export async function emailCertificate(args: { to: string; holder: string; firm: string; serial: string; expiresAt: Date; origin: string; course?: CourseSlug }) {
+export async function emailCertificate(args: { to: string; holder: string; firm: string; serial: string; expiresAt: Date; origin: string; course?: CertifiedCourseSlug }) {
   const course = COURSES[args.course ?? "ai-cleared"];
   const verify = `${args.origin}/verify/${args.serial}`;
   const page = `${args.origin}${course.base}/certificate`;

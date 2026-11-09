@@ -10,7 +10,7 @@ import {
   type Track,
   type Verdict,
 } from "@/app/ai-cleared/engine/types";
-import { COURSES, courseByKey, corporateCourse, type CourseSlug } from "@/app/ai-cleared/engine/courses";
+import { COURSES, courseByKey, corporateCourse, isCourseSlug, type CourseSlug } from "@/app/ai-cleared/engine/courses";
 import { moduleListFor } from "@/app/lib/courseModules";
 
 /* Server-side helpers for the corporate courses, AI Cleared and AI Fluent.
@@ -19,6 +19,7 @@ import { moduleListFor } from "@/app/lib/courseModules";
 
 export const AI_CLEARED_SLUG = "ai-cleared";
 export const AI_FLUENT_SLUG = "ai-fluent";
+export const CYBER_AWARENESS_SLUG = "cyber-awareness";
 
 export const TRACK_TO_DB: Record<Track, ClearedTrack> = {
   finance: "FINANCE",
@@ -229,7 +230,7 @@ export async function saveScreen(args: {
 export async function completeIfFinished(enrolmentId: string) {
   const enrolment = await prisma.enrolment.findUnique({ where: { id: enrolmentId }, select: { product: { select: { slug: true } } } });
   if (!enrolment) return false;
-  const slug = (enrolment.product.slug === "ai-fluent" ? "ai-fluent" : "ai-cleared") as CourseSlug;
+  const slug: CourseSlug = isCourseSlug(enrolment.product.slug) ? enrolment.product.slug : "ai-cleared";
   const list = moduleListFor(slug);
   const rows = await prisma.moduleProgress.findMany({ where: { enrolmentId } });
   const byModule = new Map(rows.map((r) => [r.module, r]));

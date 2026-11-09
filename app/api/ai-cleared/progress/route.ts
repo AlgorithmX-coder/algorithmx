@@ -10,7 +10,7 @@ import { getEnrolment, recordAttempt, saveScreen } from "@/app/lib/aiCleared";
  * is resolved from the session and the course field, never from the body's
  * ids, and the prompt text is never accepted here. */
 
-const Course = z.enum(["ai-cleared", "ai-fluent"]).optional();
+const Course = z.enum(["ai-cleared", "ai-fluent", "cyber-awareness"]).optional();
 
 const Screen = z.object({
   type: z.literal("screen"),
