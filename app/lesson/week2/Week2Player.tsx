@@ -2291,7 +2291,7 @@ export default function Week2Player({ userName, moduleId, childName }: { userNam
                   <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
                     {IS_MILESTONE_WEEK && (
                       <a
-                        href={getCertificateUrl(childName, CURRENT_WEEK)}
+                        href={getCertificateUrl(CURRENT_WEEK)}
                         target="_blank"
                         rel="noopener noreferrer"
                         style={{

@@ -5112,7 +5112,7 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
             onContinue={() => { triggerEarnForScreen(17); navigate(18); }}
             onDownloadCertificate={
               IS_MILESTONE_WEEK
-                ? () => window.open(getCertificateUrl(childName, CURRENT_WEEK), "_blank")
+                ? () => window.open(getCertificateUrl(CURRENT_WEEK), "_blank")
                 : undefined
             }
           />

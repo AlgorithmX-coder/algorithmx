@@ -1,6 +1,27 @@
 import { NextRequest } from "next/server";
 import { jsPDF } from "jspdf";
 import { MILESTONES } from "@/app/lib/certificates";
+import { auth } from "@/app/lib/auth";
+import { certificateFor } from "@/app/lib/certificateAccess";
+
+/**
+ * The Cyber Heroes milestone certificate, as a PDF.
+ *
+ * WHO IT NAMES IS NO LONGER UP TO THE CALLER. It used to take the child's
+ * name, the week and the date as query parameters and print whatever it was
+ * handed, so the document was a name-to-PDF service rather than a record of
+ * anything: any signed-out stranger could mint one in any name, at any rank,
+ * dated anything. A school being promised "a certificate for every pupil"
+ * is being promised something that means something, so the name, the rank
+ * and the date all come out of the database now, and the milestone has to
+ * have actually been earned.
+ *
+ * `week` says which milestone. `childProfileId` is optional and is how a
+ * teacher prints one for a pupil; without it the certificate is for the
+ * caller's own active child, which is the pupil themselves or the parent's
+ * current child. certificateAccess.ts holds the rule about who may ask for
+ * whom.
+ */
 
 const BRAND = {
   blue: "#60a5fa",
@@ -20,10 +41,11 @@ function sanitizeFilename(input: string): string {
 
 export async function GET(req: NextRequest) {
   const url = new URL(req.url);
-  const childName = (url.searchParams.get("childName") ?? "").trim() || "Cyber Hero";
-  const weekParam = url.searchParams.get("weekNumber");
-  const completedDate = (url.searchParams.get("completedDate") ?? "").trim();
-
+  /* `weekNumber` is still read as well as `week`: the two lesson players
+     already link here with the older name, and a certificate button that
+     stops working at the moment a child finishes week 20 is not a trade
+     worth making for a tidier parameter. */
+  const weekParam = url.searchParams.get("week") ?? url.searchParams.get("weekNumber");
   const weekNumber = weekParam ? parseInt(weekParam, 10) : NaN;
   const milestone = MILESTONES.find((m) => m.week === weekNumber);
 
@@ -35,6 +57,32 @@ export async function GET(req: NextRequest) {
       { status: 400, headers: { "Content-Type": "application/json" } },
     );
   }
+
+  const session = await auth();
+  if (!session?.user?.id) {
+    return new Response(JSON.stringify({ error: "Sign in first." }), {
+      status: 401,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
+
+  const earned = await certificateFor({
+    userId: session.user.id,
+    week: milestone.week,
+    childProfileId: url.searchParams.get("childProfileId"),
+  });
+  if (!earned.ok) {
+    /* 404 for "not yours" as well as "not earned yet". Telling a caller
+       which of the two it was tells them whether a child profile exists,
+       and that is not a thing to confirm to somebody who is not entitled
+       to it. */
+    return new Response(JSON.stringify({ error: earned.error }), {
+      status: earned.reason === "unauthenticated" ? 401 : 404,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
+  const childName = earned.childName;
+  const completedDate = earned.completedDate;
 
   // Landscape A4: 297mm x 210mm
   const doc = new jsPDF({ orientation: "landscape", unit: "mm", format: "a4" });
@@ -174,12 +222,24 @@ export async function GET(req: NextRequest) {
   // Bottom-right: frameworks
   doc.setFontSize(8);
   doc.setTextColor(BRAND.light);
-  doc.text("Aligned with CyberFirst & ASDAN frameworks", W - 28, bottomY + 10, {
+  /* This line used to read "Aligned with CyberFirst & ASDAN frameworks".
+     CyberFirst is the NCSC's programme and ASDAN is an awarding
+     organisation, so that is a claim about two third parties printed on a
+     document handed to a child and shown to their parents. Nothing in this
+     repository evidences either agreement, and the certificate was until
+     now effectively unreachable, so the claim had never been made in
+     public. Wiring the certificate up would have published it.
+
+     Saying less is the only safe direction for a claim like that, so it
+     says what we can stand behind: which course it is and how many weeks
+     it took. If the agreements exist, put the line back. */
+  doc.text(`Cyber Heroes Academy · ${milestone.week} of 20 weeks`, W - 28, bottomY + 10, {
     align: "right",
   });
 
-  // Bottom-centre: website
-  doc.text("www.algorithmx.com", shieldCX, H - 18, { align: "center" });
+  // Bottom-centre: website. Was www.algorithmx.com, a domain that is not
+  // ours; the site is algorithmx.io.
+  doc.text("algorithmx.io", shieldCX, H - 18, { align: "center" });
 
   // Corner decorations - filled dots, one brand colour per corner
   const dots: { x: number; y: number; color: string }[] = [
