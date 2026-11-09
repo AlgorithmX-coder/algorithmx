@@ -3,6 +3,8 @@ import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { auth } from "@/app/lib/auth";
 import { getTeacherContext } from "@/app/lib/schoolAccess";
+import { listClasses } from "@/app/lib/schoolClasses";
+import { courseName } from "@/app/lib/schoolPlaces";
 import { WEEK_CONTENT, getAvailableWeeks } from "@/app/lesson/weekContent";
 import { listShareLinks } from "@/app/lib/packShare";
 import { writtenWeeks } from "./packs";
@@ -27,6 +29,19 @@ export default async function TeachIndexPage() {
   const ready = new Map(writtenWeeks().map((p) => [p.n, p]));
   const links = await listShareLinks(ctx.orgId);
 
+  /* Which OTHER courses this school actually runs. Packs exist for Cyber
+     Heroes alone, and a teacher who runs an Explorers class should be
+     told that here rather than left to work it out from a page headed
+     with somebody else's course. Read from their own classes so the
+     line names their courses rather than disclaiming in general. */
+  const otherCourses = Array.from(
+    new Set(
+      (await listClasses(ctx.orgId))
+        .filter((c) => c.product.slug !== "cyber-heroes")
+        .map((c) => courseName(c.product.slug, c.product.name)),
+    ),
+  ).sort();
+
   return (
     <div className="axtp">
       <div className="wrap">
@@ -49,6 +64,19 @@ export default async function TeachIndexPage() {
           the game teaches and tests them, then ten minutes talking it through. The pack gives you
           the board to put on the screen, the script to read from, and a sheet you can print.
         </p>
+
+        {otherCourses.length > 0 && (
+          <p className="whatis packswarn">
+            <b>These packs are for Cyber Heroes.</b> You also run{" "}
+            {otherCourses.length === 1
+              ? otherCourses[0]
+              : `${otherCourses.slice(0, -1).join(", ")} and ${otherCourses[otherCourses.length - 1]}`}
+            , and there are no packs for{" "}
+            {otherCourses.length === 1 ? "that course" : "those courses"} yet. The weeks themselves
+            are live and the children can play them; it is the adult-facing pack that is still
+            being written.
+          </p>
+        )}
 
         <SharePanel
           weeks={writtenWeeks().map((p) => ({ n: p.n, title: p.title }))}
