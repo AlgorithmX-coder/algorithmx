@@ -38,6 +38,6 @@ describe("Cyber Secured tracks", () => {
   });
 
   it("names the live tracks as one phrase", () => {
-    expect(liveTrackNames()).toBe("AI Cleared and AI Fluent");
+    expect(liveTrackNames()).toBe("AI Cleared, AI Fluent and Cyber Awareness");
   });
 });
