@@ -68,10 +68,8 @@ const CSS = `
 .cn-work::-webkit-scrollbar{width:0}
 @keyframes cn-pop{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 @keyframes cn-led{0%,100%{opacity:.4}50%{opacity:1}}
-@keyframes cn-scan{0%{background-position:0 0}100%{background-position:0 7px}}
 @keyframes cn-blink{0%,49%{opacity:1}50%,100%{opacity:0}}
 @keyframes cn-flicker{0%{opacity:.3}4%{opacity:.9}8%{opacity:.4}12%{opacity:1}100%{opacity:1}}
-@keyframes cn-sweep{0%{transform:translateY(-100%)}100%{transform:translateY(100%)}}
 .cn-row{animation:cn-pop .26s ease both}
 .cn-opt{transition:border-color .15s,background .15s,box-shadow .15s}
 .cn-opt:hover:not(:disabled){border-color:var(--amber);box-shadow:0 0 0 1px var(--amber) inset}
@@ -80,13 +78,11 @@ const CSS = `
 .cn-btn:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
 .cn-cursor{display:inline-block;width:7px;height:1em;background:currentColor;vertical-align:text-bottom;animation:cn-blink 1s step-end infinite;margin-left:1px}
 .cn-crt{animation:cn-flicker .6s ease both}
-.cn-scanlines{position:absolute;inset:0;z-index:5;pointer-events:none;background-image:repeating-linear-gradient(0deg,rgba(0,0,0,0.18) 0 1px,transparent 1px 3px);mix-blend-mode:multiply}
-.cn-sweepbar{position:absolute;left:0;right:0;height:120px;background:linear-gradient(180deg,transparent,rgba(255,178,62,0.05) 45%,transparent);animation:cn-sweep 7s linear infinite;pointer-events:none}
 .sr-stamp-in{animation:srStamp .3s cubic-bezier(.2,0,0,1)}
 @keyframes srStamp{0%{transform:rotate(-3deg) scale(1.15);opacity:0}30%{transform:rotate(-3deg) scale(1);opacity:1}38%{transform:rotate(-3deg) scale(1) translate(2px,0)}46%{transform:rotate(-3deg) scale(1) translate(0,0)}100%{transform:rotate(-3deg) scale(1);opacity:.9}}
 .sr-xpnum{display:inline-block;animation:srXpNum .5s cubic-bezier(.2,0,0,1)}
 @keyframes srXpNum{0%{transform:scale(1.35)}100%{transform:scale(1)}}
-@media (prefers-reduced-motion: reduce){.cn *{animation-duration:.001ms !important}.cn-sweepbar{display:none}}
+@media (prefers-reduced-motion: reduce){.cn *{animation-duration:.001ms !important}}
 ${SAFE_CENTER_CSS}
 `;
 
@@ -398,8 +394,6 @@ export default function ConsoleRuntime({ consoleCase, onExit, onNextCase, autost
       <button className="cn-btn" onClick={cycleVoiceRate} aria-label={`WREN's talking speed: ${voiceRate}×. Tap to change.`} style={{ position: "fixed", top: 54, right: 14, zIndex: 20, fontFamily: MONO, fontSize: 11, fontWeight: 700, color: voiceRate !== 1 ? C.wren : C.dim, background: "rgba(0,0,0,0.5)", border: `1px solid ${voiceRate !== 1 ? "rgba(43,212,180,.5)" : C.edge}`, borderRadius: R.btn, padding: "6px 12px", cursor: "pointer" }}>{voiceRate}×</button>
 
       <div className={reduce ? "" : "cn-crt"} style={{ width: "100%", maxWidth: 640, height: 760, maxHeight: "calc(100dvh - 30px)", background: "rgba(10,8,4,0.74)", backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)", borderRadius: R.panel, border: `1px solid ${acc}70`, boxShadow: `0 0 0 1px #000, 0 24px 70px rgba(0,0,0,.7), inset 0 0 60px ${acc}0c, inset 0 0 0 1px rgba(255,255,255,0.03)`, position: "relative", zIndex: 1, display: "flex", flexDirection: "column", overflow: "hidden" }}>
-        <div aria-hidden className="cn-scanlines" />
-        {!reduce && <div aria-hidden className="cn-sweepbar" />}
         {/* console readout bar — a terminal window's own titlebar, not just a label */}
         <div style={{ flex: "0 0 auto", display: "flex", alignItems: "center", gap: 10, padding: "10px 15px", borderBottom: `1px solid ${C.edge}`, background: "linear-gradient(180deg,rgba(28,22,12,0.85),rgba(14,11,5,0.7))", fontFamily: MONO }}>
           <span aria-hidden style={{ display: "flex", gap: 5, marginRight: 2 }}>
@@ -433,7 +427,7 @@ export default function ConsoleRuntime({ consoleCase, onExit, onNextCase, autost
           <Debrief data={consoleCase.debrief} acc={acc} caseId={consoleCase.id} xp={100} reduced={!!reduce} onExit={onExit} onNext={onNextCase} />
         ) : (
           <>
-            <div ref={workRef} className="cn-work" style={{ flex: "1 1 auto", overflowY: "auto", padding: "16px 15px 10px", display: "flex", flexDirection: "column", gap: 4, backgroundImage: "repeating-linear-gradient(0deg, rgba(255,178,62,0.02) 0 1px, transparent 1px 6px)" }}>
+            <div ref={workRef} className="cn-work" style={{ flex: "1 1 auto", overflowY: "auto", padding: "16px 15px 10px", display: "flex", flexDirection: "column", gap: 4 }}>
               {items.map((it) => <ItemView key={it.id} it={it} acc={acc} wrenDot={wrenDot} />)}
             </div>
             <div style={{ flex: "0 0 auto", borderTop: `1px solid ${C.edge}`, background: "linear-gradient(180deg,#1a140b,#120e07)", padding: "12px 14px 15px" }}>
