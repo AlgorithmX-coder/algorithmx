@@ -4,7 +4,9 @@
  * nervous about it, so: a light warm paper ground, high-contrast ink, large
  * reading type, one calm blue for anything you can press, and nothing that
  * looks like a hacker film. The simulated Outlook and Excel windows are
- * the one exception, because they recreate the real apps' chrome. */
+ * the one exception, because they recreate the real apps' chrome. The
+ * landing (DeskReadyLanding, DeskHeroSim) is the other: it is built on the
+ * shared AlgorithmX landing system (landing-v2) and its palette, not on D. */
 export const D = Object.freeze({
   ground: "#f6f3ee",
   panel: "#ffffff",
