@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import { auth } from "@/app/lib/auth";
 import { prisma } from "@/app/lib/prisma";
 import { hasEntitlement } from "@/app/lib/entitlements";
-import { AI_FLUENT_SLUG, DB_TO_TRACK, firstNameOf, getEnrolments } from "@/app/lib/aiCleared";
+import { AI_FLUENT_SLUG, DB_TO_TRACK, FIRM_ORG, firstNameOf, getEnrolments } from "@/app/lib/aiCleared";
 import { isStaffUser } from "@/app/lib/aiClearedStaff";
 import { FLUENT_MODULE_LIST } from "./manifests";
 import Frame from "@/app/ai-cleared/Frame";
@@ -21,7 +21,9 @@ export default async function AiFluentHome() {
   const [entitled, { cleared, fluent: enrolment }, adminRow, staff] = await Promise.all([
     hasEntitlement(userId, AI_FLUENT_SLUG),
     getEnrolments(userId),
-    prisma.orgMember.findFirst({ where: { userId, role: { in: ["ADMIN", "MANAGER"] } }, select: { id: true } }),
+    /* An admin of a FIRM. A head teacher is an ADMIN of their school, so
+       without the filter this page sent them into the firm console. */
+    prisma.orgMember.findFirst({ where: { userId, role: { in: ["ADMIN", "MANAGER"] }, org: FIRM_ORG }, select: { id: true } }),
     isStaffUser(userId),
   ]);
   if (!entitled || !enrolment) {

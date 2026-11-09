@@ -16,15 +16,13 @@ import { prisma } from "@/app/lib/prisma";
  * not members of anything: a child needs no email, no password and no account,
  * and nothing here should ever make one necessary.
  *
- * TODO(phase-3): this cannot yet tell a school from a law firm. `sector` is
- * free text typed by whoever onboards the customer, so gating on it would lock
- * a real teacher out of a live lesson because somebody wrote "Primary
- * education" instead of "School", and a fresh firm has no `FirmProfile` row
- * either, so its absence proves nothing. The honest fix is a `SchoolProfile`
- * that mirrors `FirmProfile`, which lands with the `Class` model in phase 3.
- * Until then the residual overlap is that an AI Cleared firm admin could open
- * a primary school lesson plan. That is our own teaching material rather than
- * anybody's data, and it is written down here rather than papered over.
+ * This used to carry a TODO saying it could not tell a school from a law
+ * firm, because `sector` is free text and a fresh firm has no `FirmProfile`
+ * row either, so neither could be gated on. The fix it asked for was a
+ * `SchoolProfile` mirroring `FirmProfile`, and that now exists on every
+ * school and youth organisation we create, so the gate below is the fix
+ * rather than the note. The residual overlap it described, an AI Cleared
+ * firm admin opening a primary school lesson plan, is closed.
  */
 export interface TeacherContext {
   orgId: string;
@@ -35,7 +33,8 @@ export interface TeacherContext {
 export async function getTeacherContext(userId: string): Promise<TeacherContext | null> {
   if (!userId) return null;
   const member = await prisma.orgMember.findFirst({
-    where: { userId, role: { in: ["ADMIN", "MANAGER"] } },
+    where: { userId, role: { in: ["ADMIN", "MANAGER"] }, org: { school: { isNot: null } } },
+    orderBy: { createdAt: "asc" },
     select: { role: true, org: { select: { id: true, name: true } } },
   });
   if (!member) return null;

@@ -1,6 +1,6 @@
 import { prisma } from "@/app/lib/prisma";
 import { opsAlert } from "@/app/lib/opsAlert";
-import { AI_CLEARED_SLUG, AI_FLUENT_SLUG } from "@/app/lib/aiCleared";
+import { AI_CLEARED_SLUG, AI_FLUENT_SLUG, FIRM_ORG } from "@/app/lib/aiCleared";
 import { FIRM_THRESHOLD, newInviteToken, sendAdminWelcome } from "@/app/lib/aiClearedAdmin";
 import { moduleListFor } from "@/app/lib/courseModules";
 import { COURSES, courseByKey, corporateCourse, courseOfSerial, type CourseSlug } from "@/app/ai-cleared/engine/courses";
@@ -41,8 +41,9 @@ export async function listFirms(): Promise<FirmRow[]> {
   const orgs = await prisma.organisation.findMany({
     // Schools are Organisation rows too (see SchoolProfile); this list
     // is firm-shaped (seat/course columns), so schools are excluded
-    // rather than rendered nonsensically.
-    where: { school: { is: null } },
+    // rather than rendered nonsensically. FIRM_ORG is this same test,
+    // shared with the console gates that were missing it.
+    where: FIRM_ORG,
     orderBy: { createdAt: "desc" },
     include: {
       seats: { select: { claimedAt: true, course: true } },

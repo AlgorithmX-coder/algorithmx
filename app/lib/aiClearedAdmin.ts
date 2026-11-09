@@ -1,7 +1,7 @@
 import { randomBytes } from "crypto";
 import { prisma } from "@/app/lib/prisma";
 import { sendEmail } from "@/app/lib/resend";
-import { DB_TO_TRACK, TRACK_TO_DB } from "@/app/lib/aiCleared";
+import { DB_TO_TRACK, FIRM_ORG, TRACK_TO_DB } from "@/app/lib/aiCleared";
 import { moduleListFor } from "@/app/lib/courseModules";
 import { COURSES, type CourseSlug } from "@/app/ai-cleared/engine/courses";
 import { opsAlert } from "@/app/lib/opsAlert";
@@ -31,14 +31,21 @@ export async function getAdminContext(userId: string, orgRef?: string | null): P
   if (orgRef) {
     if (!(await isStaffUser(userId))) return null;
     const [org, user] = await Promise.all([
-      prisma.organisation.findFirst({ where: { OR: [{ id: orgRef }, { slug: orgRef }] }, include: { profile: true } }),
+      prisma.organisation.findFirst({ where: { OR: [{ id: orgRef }, { slug: orgRef }], ...FIRM_ORG }, include: { profile: true } }),
       prisma.user.findUnique({ where: { id: userId }, select: { name: true, email: true } }),
     ]);
     if (!org || !user) return null;
     return { orgId: org.id, role: "ADMIN", org, user, staff: true };
   }
+  /* A FIRM of theirs, not an org of any kind. Without the filter this
+     asked only "is this user an ADMIN or MANAGER of anything", and a head
+     teacher is an ADMIN of their school, so /ai-cleared redirected them
+     into this console and rendered their school as a firm: the seat
+     register, the invite form and the approved-AI-tools profile. The
+     ordering makes the answer stable for anyone who belongs to two. */
   const member = await prisma.orgMember.findFirst({
-    where: { userId, role: { in: ["ADMIN", "MANAGER"] } },
+    where: { userId, role: { in: ["ADMIN", "MANAGER"] }, org: FIRM_ORG },
+    orderBy: { createdAt: "asc" },
     include: { org: { include: { profile: true } }, user: { select: { name: true, email: true } } },
   });
   if (!member) return null;

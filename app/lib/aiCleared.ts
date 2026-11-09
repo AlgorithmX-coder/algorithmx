@@ -49,6 +49,18 @@ export const FLUENT_TO_DB: Record<FluentWord, FluentVerdict> = { fluent: "FLUENT
 export const DB_TO_FLUENT: Record<FluentVerdict, FluentWord> = { FLUENT: "fluent", NEARLY: "nearly", NOT_YET: "notyet" };
 const FLUENT_RANK: Record<FluentVerdict, number> = { FLUENT: 0, NEARLY: 1, NOT_YET: 2 };
 
+/**
+ * The Prisma filter for "this Organisation is a firm".
+ *
+ * `Organisation` is shared by firms, schools and youth organisations, and
+ * every school is created with a `SchoolProfile` (see createSchool), so the
+ * absence of one is what makes a row a firm. The school side has always
+ * filtered the other way with `school: { isNot: null }`; this is the mirror
+ * the firm side was missing, and without it "is this user an admin of
+ * anything" answered yes for a head teacher.
+ */
+export const FIRM_ORG = { school: { is: null } } as const;
+
 /* The learner's enrolment on a course with everything a module page needs. */
 export async function getEnrolment(userId: string, course: CourseSlug = "ai-cleared") {
   if (!userId) return null;
