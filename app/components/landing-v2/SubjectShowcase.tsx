@@ -865,12 +865,12 @@ function FeaturedStreamCard({ stream, f }: { stream: Stream; f: FeaturedLook }) 
           <span className="ssf-ring r2" />
           <span className="ssf-pulse" />
           {f.emblem === "shield" ? (
-            <svg width="36" height="39" viewBox="0 0 24 26" fill="none" stroke="#5ff0a8" strokeWidth="1.8" strokeLinejoin="round">
+            <svg width="28" height="30" viewBox="0 0 24 26" fill="none" stroke="#5ff0a8" strokeWidth="1.8" strokeLinejoin="round">
               <path d="M12 2l8 3v6c0 5-3.5 8-8 11-4.5-3-8-6-8-11V5l8-3z" />
               <path d="M8.5 12.5 L11 15 L15.5 9.5" stroke="#8ff6ff" strokeWidth="2" />
             </svg>
           ) : (
-            <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="#9fc4ff" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#9fc4ff" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
               <rect x="3" y="4" width="18" height="12" rx="2" />
               <path d="M9 20 H15 M12 16 V20" />
               <path d="M7.5 10 L10.2 12.6 L15.8 7.4" stroke="#d6e6ff" strokeWidth="2" />
@@ -956,7 +956,7 @@ function FeaturedStreamCard({ stream, f }: { stream: Stream; f: FeaturedLook }) 
         .ssf-inner {
           position: relative;
           z-index: 1;
-          padding: 18px 36px 40px;
+          padding: 14px 36px 26px;
           display: flex;
           flex-direction: column;
           align-items: center;
@@ -978,7 +978,7 @@ function FeaturedStreamCard({ stream, f }: { stream: Stream; f: FeaturedLook }) 
           text-transform: uppercase;
           color: var(--ssf-hud);
           border-bottom: 1px solid var(--ssf-hudline);
-          padding: 10px 2px 18px;
+          padding: 8px 2px 12px;
         }
         .ssf-hud span:last-child {
           white-space: nowrap;
@@ -987,9 +987,9 @@ function FeaturedStreamCard({ stream, f }: { stream: Stream; f: FeaturedLook }) 
         }
         .ssf-scope {
           position: relative;
-          width: 80px;
-          height: 80px;
-          margin-top: 14px;
+          width: 62px;
+          height: 62px;
+          margin-top: 10px;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -1005,12 +1005,12 @@ function FeaturedStreamCard({ stream, f }: { stream: Stream; f: FeaturedLook }) 
           animation: ssfSpin 5s linear infinite;
         }
         .ssf-ring.r1 {
-          inset: 8px;
+          inset: 6px;
           border-top-color: var(--ssf-accent2);
           border-right-color: var(--ssf-accent2-soft);
         }
         .ssf-ring.r2 {
-          inset: 18px;
+          inset: 14px;
           border-bottom-color: var(--ssf-brand);
           border-left-color: var(--ssf-brand-soft);
           animation-duration: 7s;
@@ -1018,9 +1018,9 @@ function FeaturedStreamCard({ stream, f }: { stream: Stream; f: FeaturedLook }) 
         }
         .ssf-cbk {
           position: absolute;
-          width: 9px;
-          height: 9px;
-          margin: 6px;
+          width: 8px;
+          height: 8px;
+          margin: 4px;
           border-color: var(--ssf-accent2);
         }
         .ssf-cbk.a { left: 0; top: 0; border-left: 2px solid; border-top: 2px solid; }
@@ -1029,7 +1029,7 @@ function FeaturedStreamCard({ stream, f }: { stream: Stream; f: FeaturedLook }) 
         .ssf-cbk.d { right: 0; bottom: 0; border-right: 2px solid; border-bottom: 2px solid; }
         .ssf-pulse {
           position: absolute;
-          inset: 21px;
+          inset: 16px;
           border-radius: 50%;
           border: 1.5px solid var(--ssf-pulse);
           animation: ssfPulse 2.8s ease-out infinite;
@@ -1043,8 +1043,8 @@ function FeaturedStreamCard({ stream, f }: { stream: Stream; f: FeaturedLook }) 
           font-family: var(--lv2-font-display);
           font-weight: 500;
           letter-spacing: -0.022em;
-          font-size: clamp(2rem, 4.4vw, 2.9rem);
-          margin: 12px 0 0;
+          font-size: clamp(1.9rem, 3.6vw, 2.6rem);
+          margin: 8px 0 0;
           color: var(--ssf-ink);
           line-height: 1.02;
         }
@@ -1054,7 +1054,7 @@ function FeaturedStreamCard({ stream, f }: { stream: Stream; f: FeaturedLook }) 
           font-weight: 600;
           letter-spacing: 0.17em;
           text-transform: uppercase;
-          margin-top: 11px;
+          margin-top: 7px;
           color: var(--ssf-ages);
         }
         .ssf-blurb {
@@ -1062,14 +1062,14 @@ function FeaturedStreamCard({ stream, f }: { stream: Stream; f: FeaturedLook }) 
           font-size: clamp(0.95rem, 1.15vw, 1.0625rem);
           line-height: 1.6;
           max-width: 560px;
-          margin: 12px auto 0;
+          margin: 9px auto 0;
           color: var(--ssf-blurb);
         }
         .ssf-ncsc {
           display: inline-flex;
           align-items: center;
           gap: 10px;
-          margin-top: 16px;
+          margin-top: 12px;
           padding: 8px 15px;
           border-radius: 999px;
           border: 1px solid var(--ssf-strip-border);
@@ -1096,7 +1096,7 @@ function FeaturedStreamCard({ stream, f }: { stream: Stream; f: FeaturedLook }) 
           display: grid;
           grid-template-columns: repeat(4, 1fr);
           gap: 14px;
-          margin: 24px 0 0;
+          margin: 18px 0 0;
           width: 100%;
         }
         /* one track (Workplace Skills): a single wide card, items in two columns */
@@ -1299,8 +1299,8 @@ function FeaturedStreamCard({ stream, f }: { stream: Stream; f: FeaturedLook }) 
           font-size: 15px;
           text-decoration: none;
           border-radius: 12px;
-          padding: 14px 28px;
-          margin-top: 30px;
+          padding: 12px 26px;
+          margin-top: 20px;
           background: linear-gradient(180deg, var(--ssf-cta1), var(--ssf-cta2));
           color: var(--ssf-cta-ink);
           box-shadow: 0 12px 28px -10px var(--ssf-cta-glow);
