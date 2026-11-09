@@ -33,7 +33,7 @@ export const PARTS: readonly DeskPart[] = [
     id: "p0",
     label: "Part 0",
     title: "Getting comfortable",
-    blurb: "If you have mostly used a phone, start here. If you already use a computer, you can skip it.",
+    blurb: "Start here if computers are new to you. Already confident with a mouse and keyboard? Skip ahead.",
     modules: [
       {
         id: "m0",
@@ -177,13 +177,13 @@ export const PARTS: readonly DeskPart[] = [
     id: "p5",
     label: "Part 5",
     title: "Getting the job",
-    blurb: "Show employers what you can do, and turn the work you have done into the words they look for.",
+    blurb: "Show employers what you can do, in the words they look for.",
     modules: [
       {
         id: "m13",
         number: 13,
-        title: "From floor to desk",
-        promise: "Write a CV for a desk job and pass the tests agencies set.",
+        title: "Show what you can do",
+        promise: "Write a CV that shows your skills and pass the tests agencies set.",
         topics: ["Your experience, in office words", "A CV for a desk job", "Indeed and LinkedIn", "Typing and Excel tests", "Video interviews"],
         ready: false,
       },
