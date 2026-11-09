@@ -7,6 +7,7 @@ import { getClassProgress } from "@/app/lib/classProgress";
 import Locked from "../../teach/Locked";
 import AddPupils from "./AddPupils";
 import ClassStrip from "./ClassStrip";
+import SignOut from "../../SignOut";
 import { removePupilAction, resetPicturesAction } from "../class.actions";
 
 /**
@@ -61,6 +62,7 @@ export default async function ClassPage({ params }: { params: Promise<{ id: stri
           </div>
           <div className="modes" role="group" aria-label="Elsewhere">
             <Link href="/schools/classes" className="axbtn">All classes</Link>
+            <SignOut />
             <Link href="/schools/teach" className="axbtn">Teacher packs</Link>
           </div>
         </header>
