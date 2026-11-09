@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { MAX_BLOCKS, PLACES_PER_BLOCK, placesPricePence } from "@/app/lib/learnerPlaces";
+import { MAX_BLOCKS, PLACES_PER_BLOCK, placesPricePence } from "@/app/lib/learnerPlacesPricing";
 
 /**
  * Buy places.

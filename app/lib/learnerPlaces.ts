@@ -1,9 +1,3 @@
-import type Stripe from "stripe";
-import { prisma } from "@/app/lib/prisma";
-import { createSchool } from "@/app/lib/schoolOps";
-import { opsAlert } from "@/app/lib/opsAlert";
-import { stripe, vatMode, vatTaxRateId, VAT_PERCENT } from "@/app/lib/stripe";
-
 /**
  * Buying places, for an educational organisation.
  *
@@ -19,29 +13,19 @@ import { stripe, vatMode, vatTaxRateId, VAT_PERCENT } from "@/app/lib/stripe";
  *
  * VAT is added ON TOP here, which is right for a business buyer and is the
  * opposite of the consumer price, where the £99 includes it.
+ *
+ * The arithmetic itself lives in learnerPlacesPricing.ts, so the buy form
+ * can import it without dragging Prisma into the browser bundle, and is
+ * re-exported below so server callers still have one place to look.
  */
+import type Stripe from "stripe";
+import { prisma } from "@/app/lib/prisma";
+import { createSchool } from "@/app/lib/schoolOps";
+import { opsAlert } from "@/app/lib/opsAlert";
+import { stripe, vatMode, vatTaxRateId, VAT_PERCENT } from "@/app/lib/stripe";
+import { PLACES_PER_BLOCK, placesPricePence, validateBlocks } from "@/app/lib/learnerPlacesPricing";
 
-export const PLACES_PER_BLOCK = 50;
-export const BLOCK_FIRST_PENCE = 250_000;
-export const BLOCK_FURTHER_PENCE = 225_000;
-/* Twenty blocks is a thousand places. Past that somebody should be talking
-   to us rather than typing a card number in. */
-export const MAX_BLOCKS = 20;
-
-/** What `blocks` blocks cost, in pence, before VAT. */
-export function placesPricePence(blocks: number): number {
-  if (!Number.isInteger(blocks) || blocks < 1) return 0;
-  return BLOCK_FIRST_PENCE + (blocks - 1) * BLOCK_FURTHER_PENCE;
-}
-
-export function validateBlocks(blocks: number): string | null {
-  if (!Number.isInteger(blocks)) return "Choose a whole number of blocks.";
-  if (blocks < 1) return `The smallest licence is ${PLACES_PER_BLOCK} places.`;
-  if (blocks > MAX_BLOCKS) {
-    return `For more than ${MAX_BLOCKS * PLACES_PER_BLOCK} places, talk to us and we will quote you.`;
-  }
-  return null;
-}
+export * from "@/app/lib/learnerPlacesPricing";
 
 /** The figures a buyer sees before they commit, all in pence. */
 export function placesQuote(blocks: number) {

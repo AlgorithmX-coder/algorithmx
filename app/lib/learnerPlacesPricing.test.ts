@@ -6,7 +6,7 @@ import {
   PLACES_PER_BLOCK,
   placesPricePence,
   validateBlocks,
-} from "./learnerPlaces";
+} from "./learnerPlacesPricing";
 
 /* The published ladder (owner, settled 2026-10-13): £2,500 for the first
    fifty places, £2,250 for every further fifty. These are the numbers a rep

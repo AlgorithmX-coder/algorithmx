@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { vatPercentShown } from "@/app/lib/stripe";
-import { MAX_BLOCKS } from "@/app/lib/learnerPlaces";
+import { MAX_BLOCKS } from "@/app/lib/learnerPlacesPricing";
 import BuyForm from "./BuyForm";
 import "./buy.css";
 
