@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
 import { headers } from "next/headers";
 import { auth } from "@/app/lib/auth";
-import { getSchoolContext } from "@/app/lib/schoolClasses";
+import { getSchoolContext, listClasses } from "@/app/lib/schoolClasses";
 import { getClassProgress } from "@/app/lib/classProgress";
 import Locked from "../../teach/Locked";
 import AddPupils from "./AddPupils";
@@ -11,7 +11,7 @@ import ClassStrip from "./ClassStrip";
 import ClassLink from "./ClassLink";
 import SignOut from "../../SignOut";
 import { wordsFor } from "../../words";
-import { removePupilAction, resetPicturesAction } from "../class.actions";
+import { movePupilAction, removePupilAction, resetPicturesAction } from "../class.actions";
 
 /**
  * One class: who is in it, how they are getting on, and the jobs a teacher
@@ -45,6 +45,11 @@ export default async function ClassPage({ params }: { params: Promise<{ id: stri
      another school comes back as not found, which is safer and also true. */
   const klass = await getClassProgress(school.orgId, id);
   if (!klass) notFound();
+
+  /* Somewhere to move a child TO. Every live class in the school counts,
+     including another teacher's, because that is what September is: a
+     whole year group moving up at once. */
+  const others = (await listClasses(school.orgId)).filter((c) => c.id !== id);
 
   const w = wordsFor(school.kind);
   /* The host as the browser asked for it, so the link on the board is the
@@ -153,6 +158,28 @@ export default async function ClassPage({ params }: { params: Promise<{ id: stri
                       <input type="hidden" name="childProfileId" value={p.id} />
                       <input type="hidden" name="classId" value={id} />
                       <button type="submit" className="axbtn">Forgotten pictures</button>
+                    </form>
+                  )}
+                  {others.length > 0 && (
+                    <form action={movePupilAction} className="movebox">
+                      <input type="hidden" name="childProfileId" value={p.id} />
+                      <input type="hidden" name="classId" value={id} />
+                      <select
+                        name="toClassId"
+                        defaultValue=""
+                        aria-label={`Move ${p.name} to another ${w.group}`}
+                      >
+                        <option value="" disabled>
+                          Move to&hellip;
+                        </option>
+                        {others.map((c) => (
+                          <option key={c.id} value={c.id}>
+                            {c.name}
+                            {c.product.slug === klass.courseSlug ? "" : ` · ${c.product.name}`}
+                          </option>
+                        ))}
+                      </select>
+                      <button type="submit" className="axbtn">Move</button>
                     </form>
                   )}
                   <form action={removePupilAction}>

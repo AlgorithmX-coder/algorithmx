@@ -485,6 +485,15 @@
 /* a pupil who has not signed in yet is amber, not an error */
 .axtp .rb small.s-ask {color:var(--ask-c)}
 
+/* Moving a child is a select and a button rather than a drag or a modal:
+   it happens a handful of times a year, usually in a hurry, and it has to
+   work with no JavaScript. Quiet by default so it does not compete with
+   the progress strip, which is what the row is actually for. */
+.axtp .movebox {display:flex;gap:6px;align-items:center;min-width:0}
+.axtp .movebox select {font:600 .78rem var(--font-nunito),system-ui,sans-serif;
+  padding:6px 8px;border-radius:999px;border:1px solid var(--rule);background:var(--paper);
+  color:var(--ink);max-width:150px;cursor:pointer}
+.axtp .movebox select:focus-visible {outline:2px solid var(--say-c);outline-offset:2px}
 .axtp .pupilacts {display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 
 /* ============ A CLASS AT A GLANCE ============
