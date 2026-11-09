@@ -341,47 +341,49 @@ function ProBackdrop() {
   );
 }
 
-/* Desk Ready is the one light pack: a calm paper desk for adults who are
- * new to computers, so nothing dark or "hacker". Faint spreadsheet ruling
- * and a ghost email behind the form, and one soft glow that drifts. */
+/* Desk Ready matches the course inside (owner 2026-11-09: every screen
+ * must match how it is sold): the dark desk with a faint grid, two soft
+ * glows, and a light Outlook window floating behind the form, as on the
+ * landing hero. */
 function DeskBackdrop() {
   return (
-    <div aria-hidden style={{ position: "absolute", inset: 0, overflow: "hidden", background: "linear-gradient(160deg, #f8f5ef 0%, #f3efe7 60%, #eee9df 100%)" }}>
-      {/* spreadsheet ruling: column and row lines, fading out to the edges */}
+    <div aria-hidden style={{ position: "absolute", inset: 0, overflow: "hidden", background: "radial-gradient(60% 55% at 12% 0%, rgba(43,89,195,0.32), transparent 60%), radial-gradient(50% 50% at 92% 25%, rgba(124,92,255,0.22), transparent 60%), #070b17" }}>
       <div
         style={{
           position: "absolute",
           inset: 0,
-          backgroundImage:
-            "linear-gradient(rgba(43,89,195,0.07) 1px, transparent 1px), linear-gradient(90deg, rgba(43,89,195,0.07) 1px, transparent 1px)",
-          backgroundSize: "96px 30px",
-          maskImage: "radial-gradient(ellipse 80% 70% at 50% 45%, #000 30%, transparent 85%)",
-          WebkitMaskImage: "radial-gradient(ellipse 80% 70% at 50% 45%, #000 30%, transparent 85%)",
+          backgroundImage: "linear-gradient(rgba(127,178,255,0.07) 1px, transparent 1px), linear-gradient(90deg, rgba(127,178,255,0.07) 1px, transparent 1px)",
+          backgroundSize: "48px 48px",
+          maskImage: "radial-gradient(ellipse 80% 70% at 50% 40%, #000 30%, transparent 85%)",
+          WebkitMaskImage: "radial-gradient(ellipse 80% 70% at 50% 40%, #000 30%, transparent 85%)",
         }}
       />
-      <div className="caD-glow" style={{ position: "absolute", width: "62vw", height: "46vw", left: "-14vw", top: "-16vw", borderRadius: "50%", background: "radial-gradient(circle, rgba(43,89,195,0.13), transparent 62%)", filter: "blur(24px)" }} />
-      {/* ghost email, the course's first big skill */}
+      <div className="caD-glow" style={{ position: "absolute", width: "60vw", height: "44vw", left: "-16vw", top: "-18vw", borderRadius: "50%", background: "radial-gradient(circle, rgba(58,110,224,0.22), transparent 62%)", filter: "blur(28px)" }} />
+      {/* a light Outlook window, tilted, behind the form */}
       <div
+        className="caD-win"
         style={{
           position: "absolute",
-          right: "6%",
-          bottom: "11%",
-          width: 250,
-          padding: "14px 16px",
+          right: "5%",
+          bottom: "9%",
+          width: 300,
           borderRadius: 12,
-          background: "rgba(255,255,255,0.5)",
-          border: "1px solid rgba(23,25,31,0.06)",
-          fontFamily: "var(--font-desk-sans, 'Atkinson Hyperlegible Next'), system-ui, sans-serif",
-          fontSize: 12,
-          lineHeight: 1.7,
-          color: "rgba(23,25,31,0.22)",
+          overflow: "hidden",
+          background: "rgba(255,255,255,0.9)",
+          boxShadow: "0 30px 70px -30px rgba(0,0,0,0.9), 0 0 44px -14px rgba(127,178,255,0.55)",
+          transform: "rotate(-4deg)",
+          opacity: 0.55,
+          fontFamily: "'Segoe UI', var(--lv2-font-display), system-ui, sans-serif",
           userSelect: "none",
         }}
       >
-        <div><b>Subject:</b> Delivery 4417 is two pallets short</div>
-        <div style={{ marginTop: 6 }}>Hi Sarah,</div>
-        <div>Could you check the order for me?</div>
-        <div style={{ marginTop: 6 }}>Kind regards,</div>
+        <div style={{ background: "#0f6cbd", color: "#fff", padding: "7px 12px", fontSize: 11, fontWeight: 700 }}>New message</div>
+        <div style={{ padding: "10px 12px", fontSize: 12, lineHeight: 1.7, color: "#323130" }}>
+          <div><b>Subject:</b> Delivery 4417 is two pallets short</div>
+          <div style={{ marginTop: 6 }}>Hi Sarah,</div>
+          <div>Could you check the order for me?</div>
+          <div style={{ marginTop: 6 }}>Kind regards,</div>
+        </div>
       </div>
       <style>{`
         @media (prefers-reduced-motion: no-preference) {
@@ -391,6 +393,7 @@ function DeskBackdrop() {
           from { transform: translate3d(0, 0, 0); }
           to { transform: translate3d(8vw, 6vw, 0); }
         }
+        @media (max-width: 760px) { .caD-win { display: none; } }
       `}</style>
     </div>
   );
@@ -584,45 +587,41 @@ export const COURSE_AUTH_THEMES: Record<CourseAuthKey, CourseAuthTheme> = {
     slug: "desk-ready",
     base: "/desk-ready",
     courseName: "Desk Ready",
-    /* Lexend + Atkinson Hyperlegible, both drawn for easy reading. No mono:
-     * the uppercase field labels use the body face so nothing looks techy. */
+    /* the site's own faces, as inside the course */
     fonts: {
-      display: "var(--font-desk-display, 'Lexend'), system-ui, sans-serif",
-      body: "var(--font-desk-sans, 'Atkinson Hyperlegible Next'), system-ui, sans-serif",
-      mono: "var(--font-desk-sans, 'Atkinson Hyperlegible Next'), system-ui, sans-serif",
+      display: "var(--lv2-font-display, 'Inter'), system-ui, sans-serif",
+      body: "var(--lv2-font-display, 'Inter'), system-ui, sans-serif",
+      mono: "var(--lv2-font-mono, 'Geist Mono'), ui-monospace, monospace",
     },
     palette: {
-      page: "#f6f3ee",
-      panel: "rgba(255,255,255,0.94)",
-      border: "rgba(23,25,31,0.16)",
-      accent: "#2b59c3",
+      page: "#070b17",
+      panel: "rgba(15,23,46,0.86)",
+      border: "rgba(127,178,255,0.3)",
+      accent: "#3a6ee0",
       ink: "#ffffff",
-      text: "#17191f",
-      textSoft: "#4f5560",
-      danger: "#b3261e",
-      success: "#1b7a43",
-      field: "#ffffff",
-      placeholder: "#8a8f98",
-      shadow: "0 18px 50px rgba(23,25,31,0.12), 0 2px 6px rgba(23,25,31,0.06)",
+      text: "#ffffff",
+      textSoft: "rgba(222,230,250,0.74)",
+      danger: "#ff7a8a",
+      success: "#4cc38a",
     },
     copy: {
       loginTitle: "Welcome back",
-      loginSub: "Sign in and carry on from where you stopped.",
+      loginSub: "Sign in and pick up where you left off.",
       signupTitle: "Create your account",
-      signupSub: "Learn the computer skills every desk job expects, one short lesson at a time.",
+      signupSub: "The fundamentals every desk job runs on, one short lesson at a time.",
       registeredNotice: "Account created. Sign in to start your first lesson.",
       submitLogin: "Sign in",
       submitSignup: "Create account",
     },
     lockup: (
       <span style={LOCKUP_ROW}>
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2b59c3" strokeWidth="2" aria-hidden style={{ flexShrink: 0 }}>
-          <rect x="3" y="4" width="18" height="12" rx="2" />
-          <path d="M9 20 H15 M12 16 V20" strokeLinecap="round" />
-          <path d="M7.5 10 L10 12.5 L15.5 7.5" strokeLinecap="round" strokeLinejoin="round" />
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden style={{ flexShrink: 0, filter: "drop-shadow(0 0 6px rgba(95,141,255,0.55))" }}>
+          <rect x="3" y="4" width="18" height="12" rx="2" fill="rgba(95,141,255,0.14)" stroke="#5f8dff" strokeWidth="1.8" />
+          <path d="M9 20 H15 M12 16 V20" stroke="#5f8dff" strokeWidth="1.8" strokeLinecap="round" />
+          <path d="M7.5 10 L10.2 12.6 L15.8 7.4" stroke="#8fd3ff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
-        <span style={{ fontFamily: "var(--font-desk-display, 'Lexend'), system-ui, sans-serif", fontWeight: 700, fontSize: "1.15rem", letterSpacing: "0.01em", color: "#17191f" }}>
-          Desk <span style={{ color: "#2b59c3" }}>Ready</span>
+        <span style={{ fontFamily: "var(--lv2-font-mono, 'Geist Mono'), ui-monospace, monospace", fontWeight: 700, fontSize: "1rem", letterSpacing: "0.2em", color: "#ffffff" }}>
+          DESK <span style={{ color: "#5f8dff" }}>READY</span>
         </span>
       </span>
     ),

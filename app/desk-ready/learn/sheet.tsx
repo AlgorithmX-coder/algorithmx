@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState, type CSSProperties, type KeyboardEvent } from "react";
-import { D } from "../tokens";
+import { D, W } from "../tokens";
 import type { LabProps } from "./types";
-import { Button, Cross, StepBar, Tick } from "./ui";
+import { Button, Cross, Kicker, StepBar, Tick, Workspace } from "./ui";
 
 /* SheetLab: a pretend Excel sheet the learner types business data into.
  * Drawn in code (green title bar, name box, formula bar, column letters,
@@ -64,7 +64,10 @@ function compare(a: string, b: string): number {
   return a.localeCompare(b, "en-GB", { sensitivity: "base" });
 }
 
-const toolSelect: CSSProperties = { minHeight: 40, borderRadius: 8, border: `1px solid ${D.edge}`, background: D.panel, fontFamily: D.sans, fontSize: 15.5, color: D.ink, padding: "4px 8px" };
+const toolSelect: CSSProperties = { minHeight: 40, borderRadius: 6, border: `1px solid ${W.edge}`, background: W.page, fontFamily: W.font, fontSize: 15.5, color: W.ink, padding: "4px 8px" };
+
+/* Excel's own highlight for the selected row and column header. */
+const headerOn = `color-mix(in srgb, ${W.excel} 16%, ${W.sunk})`;
 
 function Sheet({ task, grid, setGrid, view, setView }: { task: SheetTask; grid: Grid; setGrid: (g: Grid) => void; view: SheetView; setView: (v: SheetView) => void }) {
   /* Start on the first cell the learner is meant to type in (row 1 when
@@ -111,17 +114,17 @@ function Sheet({ task, grid, setGrid, view, setView }: { task: SheetTask; grid: 
   const filterValues = Array.from(new Set(column(grid, filterCol).filter(Boolean))).sort((a, b) => compare(a, b));
 
   return (
-    <div style={{ border: `1px solid ${D.edge}`, borderRadius: 12, overflow: "hidden", background: D.panel, boxShadow: D.lift }}>
-      <div style={{ background: D.excel, color: D.onAccent, padding: "8px 14px", fontSize: 14, fontWeight: 700, display: "flex", justifyContent: "space-between", gap: 10 }}>
+    <div style={{ border: `1px solid ${W.edge}`, borderRadius: 12, overflow: "hidden", background: W.page, color: W.ink, fontFamily: W.font, boxShadow: W.float, colorScheme: "light" }}>
+      <div style={{ background: W.excel, color: D.onAccent, padding: "8px 14px", fontSize: 14, fontWeight: 700, display: "flex", justifyContent: "space-between", gap: 10 }}>
         <span>{task.file}</span>
         <span style={{ fontWeight: 400, opacity: 0.9 }}>Practice only</span>
       </div>
 
       {(task.tools?.sort || task.tools?.filter) && (
-        <div style={{ display: "flex", flexWrap: "wrap", gap: 16, alignItems: "center", padding: "10px 12px", borderBottom: `1px solid ${D.edge}`, background: D.panelSoft }}>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 16, alignItems: "center", padding: "10px 12px", borderBottom: `1px solid ${W.edge}`, background: W.chrome }}>
           {task.tools?.sort && (
             <span style={{ display: "inline-flex", flexWrap: "wrap", alignItems: "center", gap: 8 }}>
-              <label style={{ fontSize: 15.5, fontWeight: 700, color: D.ink }}>
+              <label style={{ fontSize: 15.5, fontWeight: 700, color: W.ink }}>
                 Sort by{" "}
                 <select aria-label="Sort by column" value={sortCol} onChange={(e) => setSortCol(Number(e.target.value))} style={toolSelect}>
                   {headers.map((h, c) => (
@@ -131,14 +134,14 @@ function Sheet({ task, grid, setGrid, view, setView }: { task: SheetTask; grid: 
                   ))}
                 </select>
               </label>
-              <Button kind="secondary" onClick={sort} style={{ minHeight: 40, padding: "6px 14px", fontSize: 15.5 }}>
+              <Button kind="secondary" onClick={sort} style={{ minHeight: 40, padding: "6px 14px", fontSize: 15.5, borderRadius: 6, background: W.page, color: W.ink, border: `1px solid ${W.edge}`, fontFamily: W.font, backdropFilter: "none" }}>
                 Sort A to Z
               </Button>
             </span>
           )}
           {task.tools?.filter && (
             <span style={{ display: "inline-flex", flexWrap: "wrap", alignItems: "center", gap: 8 }}>
-              <label style={{ fontSize: 15.5, fontWeight: 700, color: D.ink }}>
+              <label style={{ fontSize: 15.5, fontWeight: 700, color: W.ink }}>
                 Filter{" "}
                 <select aria-label="Filter column" value={filterCol} onChange={(e) => setFilterCol(Number(e.target.value))} style={toolSelect}>
                   {headers.map((h, c) => (
@@ -167,24 +170,24 @@ function Sheet({ task, grid, setGrid, view, setView }: { task: SheetTask; grid: 
       )}
 
       {/* name box + formula bar */}
-      <div style={{ display: "flex", alignItems: "stretch", borderBottom: `1px solid ${D.edge}`, fontSize: 15 }}>
-        <span aria-label="Selected cell" style={{ width: 64, flexShrink: 0, padding: "8px 10px", borderRight: `1px solid ${D.edge}`, fontWeight: 700, color: D.ink, textAlign: "center" }}>
+      <div style={{ display: "flex", alignItems: "stretch", borderBottom: `1px solid ${W.edge}`, fontSize: 15, background: W.page }}>
+        <span aria-label="Selected cell" style={{ width: 64, flexShrink: 0, padding: "8px 10px", borderRight: `1px solid ${W.edge}`, fontWeight: 700, color: W.ink, textAlign: "center" }}>
           {cellName(at.r, at.c)}
         </span>
-        <span aria-hidden style={{ padding: "8px 10px", color: D.faint, fontStyle: "italic", borderRight: `1px solid ${D.edge}` }}>
+        <span aria-hidden style={{ padding: "8px 10px", color: W.muted, fontStyle: "italic", borderRight: `1px solid ${W.edge}` }}>
           fx
         </span>
-        <span style={{ padding: "8px 10px", color: D.ink, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{grid[at.r][at.c]}</span>
+        <span style={{ padding: "8px 10px", color: W.ink, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{grid[at.r][at.c]}</span>
       </div>
 
       {view.filter && (
-        <div style={{ padding: "8px 12px", background: D.warnSoft, fontSize: 15, color: D.body, borderBottom: `1px solid ${D.edge}` }}>
+        <div style={{ padding: "8px 12px", background: `color-mix(in srgb, ${D.warn} 18%, ${W.page})`, fontSize: 15, color: W.body, borderBottom: `1px solid ${W.edge}` }}>
           Filter on: showing only <b>{view.filter.value}</b> in {headers[view.filter.col]}. The other rows are hidden, not deleted.
         </div>
       )}
 
       {/* phones only: the sheet is wider than the screen, as real Excel is */}
-      <p className="desk-swipe" style={{ margin: 0, padding: "8px 12px", fontSize: 14.5, color: D.muted, borderBottom: `1px solid ${D.edge}` }}>
+      <p className="desk-swipe" style={{ margin: 0, padding: "8px 12px", fontSize: 15, color: W.muted, borderBottom: `1px solid ${W.edge}` }}>
         Swipe the sheet sideways to see every column.
       </p>
       <style>{"@media (min-width: 760px) { .desk-swipe { display: none; } }"}</style>
@@ -192,9 +195,9 @@ function Sheet({ task, grid, setGrid, view, setView }: { task: SheetTask; grid: 
         <table style={{ borderCollapse: "collapse", fontSize: 16, minWidth: "100%" }}>
           <thead>
             <tr>
-              <th style={{ width: 40, background: D.sunk, border: `1px solid ${D.edge}` }} />
+              <th style={{ width: 40, background: W.sunk, border: `1px solid ${W.edge}` }} />
               {Array.from({ length: task.cols }, (_, c) => (
-                <th key={c} scope="col" style={{ minWidth: 150, padding: "4px 0", background: at.c === c ? "rgba(16,124,65,0.14)" : D.sunk, border: `1px solid ${D.edge}`, fontWeight: 600, color: D.muted, fontSize: 14 }}>
+                <th key={c} scope="col" style={{ minWidth: 150, padding: "4px 0", background: at.c === c ? headerOn : W.sunk, border: `1px solid ${W.edge}`, fontWeight: 600, color: at.c === c ? W.excel : W.muted, fontSize: 14 }}>
                   {colLetter(c)}
                 </th>
               ))}
@@ -204,14 +207,14 @@ function Sheet({ task, grid, setGrid, view, setView }: { task: SheetTask; grid: 
             {grid.map((row, r) =>
               visible(r) ? (
                 <tr key={r}>
-                  <th scope="row" style={{ background: at.r === r ? "rgba(16,124,65,0.14)" : D.sunk, border: `1px solid ${D.edge}`, fontWeight: 600, color: D.muted, fontSize: 14, padding: "0 6px" }}>
+                  <th scope="row" style={{ background: at.r === r ? headerOn : W.sunk, border: `1px solid ${W.edge}`, fontWeight: 600, color: at.r === r ? W.excel : W.muted, fontSize: 14, padding: "0 6px" }}>
                     {r + 1}
                   </th>
                   {row.map((value, c) => {
                     const lockedCell = task.locked?.(r, c) ?? false;
                     const selected = at.r === r && at.c === c;
                     return (
-                      <td key={c} style={{ border: `1px solid ${D.edge}`, padding: 0, outline: selected ? `2px solid ${D.excel}` : "none", outlineOffset: -2, background: r === 0 ? D.panelSoft : D.panel }}>
+                      <td key={c} style={{ border: `1px solid ${W.edge}`, padding: 0, outline: selected ? `2px solid ${W.excel}` : "none", outlineOffset: -2, background: r === 0 ? W.chrome : W.page }}>
                         <input
                           ref={(el) => {
                             refs.current[r] = refs.current[r] ?? [];
@@ -223,7 +226,7 @@ function Sheet({ task, grid, setGrid, view, setView }: { task: SheetTask; grid: 
                           onFocus={() => setAt({ r, c })}
                           onChange={(e) => edit(r, c, e.target.value)}
                           onKeyDown={(e) => onKey(e, r, c)}
-                          style={{ width: "100%", minWidth: 150, boxSizing: "border-box", border: "none", outline: "none", background: "transparent", padding: "10px 8px", fontFamily: D.sans, fontSize: 16, fontWeight: r === 0 ? 700 : 400, color: lockedCell && r !== 0 ? D.muted : D.ink }}
+                          style={{ width: "100%", minWidth: 150, boxSizing: "border-box", border: "none", outline: "none", background: "transparent", padding: "10px 8px", fontFamily: W.font, fontSize: 16, fontWeight: r === 0 ? 700 : 400, color: lockedCell && r !== 0 ? W.muted : W.ink }}
                         />
                       </td>
                     );
@@ -272,7 +275,7 @@ export function SheetLab({ tasks, onDone }: LabProps & { tasks: SheetTask[] }) {
 
   if (finished) {
     return (
-      <div role="status" style={{ display: "flex", gap: 10, alignItems: "flex-start", padding: "12px 14px", borderRadius: 12, background: D.goodSoft, fontSize: 16.5, lineHeight: 1.5, color: D.body }}>
+      <div role="status" style={{ display: "flex", gap: 10, alignItems: "flex-start", padding: "13px 16px", borderRadius: 14, background: D.goodSoft, border: `1px solid ${D.goodEdge}`, fontSize: 16.5, lineHeight: 1.55, color: D.body }}>
         <Tick />
         <span>Done. Nothing in these sheets is saved anywhere: it was practice.</span>
       </div>
@@ -282,12 +285,15 @@ export function SheetLab({ tasks, onDone }: LabProps & { tasks: SheetTask[] }) {
   return (
     <div>
       {tasks.length > 1 && <StepBar at={at + 1} of={tasks.length} label="Task" />}
-      <div style={{ marginTop: tasks.length > 1 ? 14 : 0, whiteSpace: "pre-wrap", background: D.accentSoft, border: "1px solid rgba(43,89,195,0.25)", borderRadius: 12, padding: "12px 14px", fontSize: 16.5, lineHeight: 1.55, color: D.body }}>{task.scenario}</div>
+      <div style={{ marginTop: tasks.length > 1 ? 14 : 0, whiteSpace: "pre-wrap", background: D.accentSoft, border: `1px solid ${D.accentEdge}`, borderRadius: 14, padding: "13px 16px", fontSize: 16.5, lineHeight: 1.6, color: D.body }}>
+        <Kicker style={{ marginBottom: 6 }}>The job</Kicker>
+        <div>{task.scenario}</div>
+      </div>
 
-      <div style={{ marginTop: 14, display: "grid", gap: 14 }}>
+      <Workspace style={{ marginTop: 14, display: "grid", gap: 14 }}>
         {task.paper && (
-          <div style={{ background: D.paper, border: `1px solid ${D.edge}`, borderRadius: 6, padding: "14px 16px", boxShadow: "2px 3px 0 rgba(23,25,31,0.06)", fontSize: 15.5, lineHeight: 1.7, color: D.body }}>
-            <p style={{ margin: "0 0 6px", fontWeight: 700, color: D.ink, textTransform: "uppercase", letterSpacing: "0.05em", fontSize: 13.5 }}>{task.paper.title}</p>
+          <div style={{ background: W.paper, border: `1px solid ${W.edge}`, borderRadius: 6, padding: "14px 16px", boxShadow: W.float, fontFamily: W.font, fontSize: 15.5, lineHeight: 1.7, color: W.body }}>
+            <p style={{ margin: "0 0 6px", fontWeight: 700, color: W.ink, textTransform: "uppercase", letterSpacing: "0.05em", fontSize: 15 }}>{task.paper.title}</p>
             {task.paper.lines.map((l) => (
               <div key={l}>{l}</div>
             ))}
@@ -303,14 +309,19 @@ export function SheetLab({ tasks, onDone }: LabProps & { tasks: SheetTask[] }) {
             setView={(v) => setViews((vs) => vs.map((x, i) => (i === at ? v : x)))}
           />
         </div>
-      </div>
+      </Workspace>
 
       <div style={{ marginTop: 14 }}>
         <Button onClick={check}>Check my sheet</Button>
       </div>
 
       {result && (
-        <div ref={resultRef} role="status" style={{ marginTop: 16, background: D.panel, border: `1px solid ${D.edge}`, borderRadius: 14, padding: "16px 16px 18px" }}>
+        <div
+          ref={resultRef}
+          role="status"
+          className="dr-glass"
+          style={{ marginTop: 16, position: "relative", background: allPass ? D.goodSoft : D.warnSoft, border: `1px solid ${allPass ? D.goodEdge : D.warnEdge}`, borderRadius: 16, padding: "18px 18px 20px", color: D.body, ["--acc" as string]: allPass ? D.good : D.warn } as CSSProperties}
+        >
           <p style={{ margin: 0, fontSize: 18, fontWeight: 700, color: D.ink }}>{allPass ? "That sheet is spot on." : "Nearly there. Fix these, then check again:"}</p>
           <ul style={{ listStyle: "none", padding: 0, margin: "12px 0 0", display: "grid", gap: 10 }}>
             {task.rules.map((rule, i) => (

@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
-import { D } from "../tokens";
+import { D, W } from "../tokens";
 import type { LabProps } from "./types";
-import { Button, Cross, StepBar, Tick, shuffle } from "./ui";
+import { Button, Cross, Kicker, StepBar, Tick, Workspace, darkInput, shuffle } from "./ui";
 
 /* The Try engines. Content configures them (app/desk-ready/lessons), so a
  * new lesson never touches this file. Owner rules carried over from the
@@ -34,14 +34,46 @@ export interface ChoiceStep {
 
 function Feedback({ ok, children }: { ok: boolean; children: ReactNode }) {
   return (
-    <div role="status" style={{ marginTop: 14, display: "flex", gap: 10, alignItems: "flex-start", padding: "12px 14px", borderRadius: 12, background: ok ? D.goodSoft : D.badSoft, color: D.body, fontSize: 16.5, lineHeight: 1.5 }}>
+    <div role="status" style={{ marginTop: 14, display: "flex", gap: 10, alignItems: "flex-start", padding: "13px 16px", borderRadius: 14, background: ok ? D.goodSoft : D.badSoft, border: `1px solid ${ok ? D.goodEdge : D.badEdge}`, color: D.body, fontSize: 16.5, lineHeight: 1.55 }}>
       {ok ? <Tick /> : <Cross />}
       <div>{children}</div>
     </div>
   );
 }
 
-const contextBox: CSSProperties = { whiteSpace: "pre-wrap", background: D.panelSoft, border: `1px solid ${D.edge}`, borderRadius: 12, padding: "12px 14px", fontSize: 16, lineHeight: 1.55, color: D.body, marginTop: 12 };
+const contextBox: CSSProperties = { whiteSpace: "pre-wrap", background: D.glass, border: `1px solid ${D.edge}`, borderRadius: 14, padding: "13px 16px", fontSize: 16.5, lineHeight: 1.6, color: D.body, marginTop: 12 };
+
+/* "The job": the scenario a practice task sets, in the course's accent. */
+const jobBox: CSSProperties = { ...contextBox, background: D.accentSoft, border: `1px solid ${D.accentEdge}` };
+
+/* A glass answer row; green or red once it has been picked. */
+function optionLook(right: boolean, wrong: boolean): CSSProperties {
+  return {
+    background: right ? D.goodSoft : wrong ? D.badSoft : D.glass,
+    border: `1px solid ${right ? D.good : wrong ? D.bad : D.edge}`,
+    borderRadius: 14,
+    color: D.ink,
+    fontFamily: D.sans,
+  };
+}
+
+/* The panel a Send or Check result shows in: green when everything passes,
+ * amber while there is still something to fix. The lit top edge follows. */
+function resultPanel(pass: boolean): CSSProperties {
+  return {
+    marginTop: 16,
+    position: "relative",
+    background: pass ? D.goodSoft : D.warnSoft,
+    border: `1px solid ${pass ? D.goodEdge : D.warnEdge}`,
+    borderRadius: 16,
+    padding: "18px 18px 20px",
+    color: D.body,
+    ["--acc" as string]: pass ? D.good : D.warn,
+  } as CSSProperties;
+}
+
+/* Inside a practice app the shell's pale placeholder would vanish on white. */
+const APP_INPUT_CSS = `.dr-app-input.dr-app-input::placeholder { color: ${W.muted}; opacity: 1; }`;
 
 export function ChoiceLab({ steps, onDone }: LabProps & { steps: ChoiceStep[] }) {
   const [order] = useState(() => steps.map((s) => shuffle(s.options.map((_, i) => i))));
@@ -95,18 +127,15 @@ export function ChoiceLab({ steps, onDone }: LabProps & { steps: ChoiceStep[] })
               type="button"
               onClick={() => pick(i)}
               disabled={solved || tried}
+              className="dr-option"
               style={{
                 textAlign: "left",
-                minHeight: 52,
-                padding: "13px 16px",
-                borderRadius: 12,
+                minHeight: 54,
+                padding: "14px 18px",
                 fontSize: 17,
-                lineHeight: 1.45,
-                fontFamily: D.sans,
-                color: D.ink,
+                lineHeight: 1.5,
                 cursor: solved || tried ? "default" : "pointer",
-                background: showRight ? D.goodSoft : showWrong ? D.badSoft : D.panel,
-                border: `2px solid ${showRight ? D.good : showWrong ? D.bad : D.edge}`,
+                ...optionLook(!!showRight, showWrong),
                 display: "flex",
                 gap: 10,
                 alignItems: "flex-start",
@@ -181,7 +210,7 @@ export function SortLab({ buckets, items, onDone }: LabProps & { buckets: string
   return (
     <div>
       <StepBar at={at + 1} of={items.length} label="Card" />
-      <div style={{ marginTop: 16, padding: "22px 18px", borderRadius: 14, background: D.panelSoft, border: `2px dashed ${D.edge}`, textAlign: "center", fontSize: 21, fontWeight: 700, color: D.ink }}>
+      <div className="dr-glass" style={{ position: "relative", marginTop: 16, padding: "26px 20px", borderRadius: 18, background: D.card, border: `1px solid ${D.edgeStrong}`, boxShadow: D.lift, textAlign: "center", fontSize: 21, fontWeight: 600, lineHeight: 1.4, color: D.ink }}>
         {item.text}
       </div>
       <p style={{ margin: "14px 0 0", fontSize: 16, color: D.muted }}>Where does it belong?</p>
@@ -195,17 +224,14 @@ export function SortLab({ buckets, items, onDone }: LabProps & { buckets: string
               type="button"
               onClick={() => choose(i)}
               disabled={choice !== null}
+              className="dr-option"
               style={{
-                minHeight: 52,
-                padding: "12px 14px",
-                borderRadius: 12,
+                minHeight: 54,
+                padding: "12px 16px",
                 fontSize: 16.5,
-                fontWeight: 700,
-                fontFamily: D.sans,
-                color: D.ink,
+                fontWeight: 600,
                 cursor: choice !== null ? "default" : "pointer",
-                background: isRight ? D.goodSoft : isWrongPick ? D.badSoft : D.panel,
-                border: `2px solid ${isRight ? D.good : isWrongPick ? D.bad : D.edge}`,
+                ...optionLook(isRight, isWrongPick),
               }}
             >
               {b}
@@ -258,20 +284,21 @@ export interface ComposeTask {
 
 function InboxWindow({ children, onSend }: { children: ReactNode; onSend: () => void }) {
   return (
-    <div style={{ border: `1px solid ${D.edge}`, borderRadius: 12, overflow: "hidden", background: D.panel, boxShadow: D.lift }}>
-      <div style={{ background: D.outlook, color: D.onAccent, padding: "8px 14px", fontSize: 14, fontWeight: 700 }}>New message</div>
-      <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 12, padding: "10px 14px", borderBottom: `1px solid ${D.edge}`, background: D.panelSoft }}>
+    <div style={{ border: `1px solid ${W.edge}`, borderRadius: 12, overflow: "hidden", background: W.page, color: W.ink, fontFamily: W.font, boxShadow: W.float, colorScheme: "light" }}>
+      <style>{APP_INPUT_CSS}</style>
+      <div style={{ background: W.outlook, color: D.onAccent, padding: "8px 14px", fontSize: 14, fontWeight: 700 }}>New message</div>
+      <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 12, padding: "10px 14px", borderBottom: `1px solid ${W.edge}`, background: W.chrome }}>
         <button
           type="button"
           onClick={onSend}
-          style={{ minHeight: 44, padding: "8px 22px", borderRadius: 8, border: "none", background: D.outlook, color: D.onAccent, fontFamily: D.sans, fontSize: 16, fontWeight: 700, cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 8 }}
+          style={{ minHeight: 44, padding: "8px 22px", borderRadius: 8, border: "none", background: W.outlook, color: D.onAccent, fontFamily: W.font, fontSize: 16, fontWeight: 700, cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 8 }}
         >
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden style={{ display: "inline-block" }}>
             <path d="M3 11 L21 3 L14 21 L11 13 Z" strokeLinejoin="round" />
           </svg>
           Send
         </button>
-        <span style={{ fontSize: 14.5, color: D.faint }}>Practice only. Nothing is really sent.</span>
+        <span style={{ fontSize: 15, color: W.muted }}>Practice only. Nothing is really sent.</span>
       </div>
       {children}
     </div>
@@ -288,9 +315,9 @@ function useRevealOnChange<T extends HTMLElement>(dep: unknown) {
   return ref;
 }
 
-const fieldRow: CSSProperties = { display: "flex", alignItems: "center", gap: 10, padding: "6px 14px", borderBottom: `1px solid ${D.edgeSoft}`, minHeight: 50 };
-const fieldLabel: CSSProperties = { width: 66, flexShrink: 0, fontSize: 15.5, color: D.faint };
-const fieldInput: CSSProperties = { flex: 1, minWidth: 0, border: "none", outline: "none", background: "transparent", fontFamily: D.sans, fontSize: 17, color: D.ink, padding: "8px 0" };
+const fieldRow: CSSProperties = { display: "flex", alignItems: "center", gap: 10, padding: "6px 14px", borderBottom: `1px solid ${W.edge}`, minHeight: 50, background: W.page };
+const fieldLabel: CSSProperties = { width: 66, flexShrink: 0, fontSize: 15.5, color: W.muted };
+const fieldInput: CSSProperties = { flex: 1, minWidth: 0, border: "none", outline: "none", background: "transparent", fontFamily: W.font, fontSize: 17, color: W.ink, padding: "8px 0" };
 
 export function ComposeLab({ tasks, onDone }: LabProps & { tasks: ComposeTask[] }) {
   const [at, setAt] = useState(0);
@@ -335,38 +362,42 @@ export function ComposeLab({ tasks, onDone }: LabProps & { tasks: ComposeTask[] 
   return (
     <div>
       {tasks.length > 1 && <StepBar at={at + 1} of={tasks.length} label="Email" />}
-      <div style={{ ...contextBox, marginTop: tasks.length > 1 ? 14 : 0, background: D.accentSoft, borderColor: "rgba(43,89,195,0.25)" }}>{task.scenario}</div>
-      <div style={{ marginTop: 14 }}>
+      <div style={{ ...jobBox, marginTop: tasks.length > 1 ? 14 : 0 }}>
+        <Kicker style={{ marginBottom: 6 }}>The job</Kicker>
+        <div>{task.scenario}</div>
+      </div>
+      <Workspace style={{ marginTop: 14 }}>
         <InboxWindow onSend={send}>
           <div style={fieldRow}>
             <span style={fieldLabel}>To</span>
-            <span style={{ fontSize: 16, color: D.ink, background: D.accentSoft, borderRadius: 99, padding: "4px 12px", overflowWrap: "anywhere" }}>{draft.to}</span>
+            <span style={{ fontSize: 16, color: W.ink, background: W.select, borderRadius: 99, padding: "4px 12px", overflowWrap: "anywhere" }}>{draft.to}</span>
           </div>
           <label style={fieldRow}>
             <span style={fieldLabel}>Subject</span>
             {task.write.includes("subject") ? (
-              <input value={draft.subject} onChange={(e) => edit("subject", e.target.value)} placeholder="Type the subject here" style={fieldInput} />
+              <input className="dr-app-input" value={draft.subject} onChange={(e) => edit("subject", e.target.value)} placeholder="Type the subject here" style={fieldInput} />
             ) : (
-              <span style={{ ...fieldInput, color: D.body }}>{draft.subject}</span>
+              <span style={{ ...fieldInput, color: W.body }}>{draft.subject}</span>
             )}
           </label>
           {task.write.includes("body") ? (
             <textarea
+              className="dr-app-input"
               aria-label="Email message"
               value={draft.body}
               onChange={(e) => edit("body", e.target.value)}
               placeholder="Type your email here"
               rows={9}
-              style={{ ...fieldInput, display: "block", width: "100%", boxSizing: "border-box", padding: "14px", resize: "vertical", lineHeight: 1.55 }}
+              style={{ ...fieldInput, display: "block", width: "100%", boxSizing: "border-box", padding: "14px", resize: "vertical", lineHeight: 1.55, background: W.page }}
             />
           ) : (
-            <div style={{ padding: 14, minHeight: 60, fontSize: 16, color: D.faint }}>You only need the subject line for this one.</div>
+            <div style={{ padding: 14, minHeight: 60, fontSize: 16, color: W.muted, background: W.page }}>You only need the subject line for this one.</div>
           )}
         </InboxWindow>
-      </div>
+      </Workspace>
 
       {result && (
-        <div ref={resultRef} role="status" style={{ marginTop: 16, background: D.panel, border: `1px solid ${D.edge}`, borderRadius: 14, padding: "16px 16px 18px" }}>
+        <div ref={resultRef} role="status" className="dr-glass" style={resultPanel(allPass)}>
           <p style={{ margin: 0, fontSize: 18, fontWeight: 700, color: D.ink }}>
             {allPass ? "That email is ready to send." : "Nearly there. Fix these, then press Send again:"}
           </p>
@@ -454,7 +485,7 @@ export function SignatureLab({ onDone }: LabProps) {
               value={f[field.key]}
               onChange={(e) => setF({ ...f, [field.key]: e.target.value })}
               placeholder={field.placeholder}
-              style={{ minHeight: 48, padding: "10px 14px", borderRadius: 10, border: `1px solid ${D.edge}`, background: D.panel, fontFamily: D.sans, fontSize: 17, color: D.ink }}
+              style={darkInput}
             />
           </label>
         ))}
@@ -464,26 +495,28 @@ export function SignatureLab({ onDone }: LabProps) {
       </div>
 
       <div>
-        <p style={{ margin: "0 0 8px", fontSize: 15.5, color: D.faint }}>How it looks under an email:</p>
-        <div style={{ border: `1px solid ${D.edge}`, borderRadius: 12, background: D.panel, padding: "16px 18px", fontSize: 16.5, lineHeight: 1.6, color: D.body, boxShadow: D.lift }}>
-          <div>Hi Sarah,</div>
-          <div style={{ marginTop: 8 }}>The stock count for aisle 4 is attached.</div>
-          <div style={{ marginTop: 12 }}>Kind regards,</div>
-          <div style={{ marginTop: 10, paddingTop: 10, borderTop: `1px solid ${D.edgeSoft}` }}>
-            {lines.length ? (
-              lines.map((l, i) => (
-                <div key={i} style={i === 0 ? { fontWeight: 700, color: D.ink } : undefined}>
-                  {l}
-                </div>
-              ))
-            ) : (
-              <div style={{ color: D.faint }}>Your signature appears here as you type.</div>
-            )}
+        <p style={{ margin: "0 0 8px", fontSize: 15.5, color: D.muted }}>How it looks under an email:</p>
+        <Workspace>
+          <div style={{ border: `1px solid ${W.edge}`, borderRadius: 12, background: W.page, padding: "16px 18px", fontFamily: W.font, fontSize: 16.5, lineHeight: 1.6, color: W.body, boxShadow: W.float, colorScheme: "light" }}>
+            <div>Hi Sarah,</div>
+            <div style={{ marginTop: 8 }}>The stock count for aisle 4 is attached.</div>
+            <div style={{ marginTop: 12 }}>Kind regards,</div>
+            <div style={{ marginTop: 10, paddingTop: 10, borderTop: `1px solid ${W.edge}` }}>
+              {lines.length ? (
+                lines.map((l, i) => (
+                  <div key={i} style={i === 0 ? { fontWeight: 700, color: W.ink } : undefined}>
+                    {l}
+                  </div>
+                ))
+              ) : (
+                <div style={{ color: W.muted }}>Your signature appears here as you type.</div>
+              )}
+            </div>
           </div>
-        </div>
+        </Workspace>
 
         {checked && (
-          <ul ref={checkedRef} role="status" style={{ listStyle: "none", padding: 0, margin: "16px 0 0", display: "grid", gap: 10 }}>
+          <ul ref={checkedRef} role="status" style={{ listStyle: "none", margin: "16px 0 0", padding: "16px 18px", display: "grid", gap: 10, background: D.glass, border: `1px solid ${D.edge}`, borderRadius: 16, color: D.body }}>
             {rules.map((rule, i) => (
               <li key={rule.label} style={{ display: "flex", gap: 10, alignItems: "flex-start", fontSize: 16.5, lineHeight: 1.45 }}>
                 {checked[i] ? <Tick /> : <Cross />}

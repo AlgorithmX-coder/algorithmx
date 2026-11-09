@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState, type CSSProperties, type PointerEvent as RPointerEvent, type ReactNode } from "react";
-import { D } from "../tokens";
+import { D, W } from "../tokens";
 import type { LabProps } from "./types";
-import { Button, Cross, StepBar, Tick } from "./ui";
+import { Button, Cross, StepBar, Tick, Workspace, darkInput } from "./ui";
 
 /* Module 0 practice: the mouse, the keyboard, windows, copy and paste,
  * saving and finding files, and typing. For an adult who has mostly used
@@ -11,11 +11,19 @@ import { Button, Cross, StepBar, Tick } from "./ui";
  * shows what to try. Pointer events throughout, so a finger on a tablet
  * works as well as a mouse. */
 
-const stage: CSSProperties = { position: "relative", height: 280, borderRadius: 14, background: D.panelSoft, border: `2px dashed ${D.edge}`, overflow: "hidden", touchAction: "none", userSelect: "none" };
+/* The mouse practice area: a dark grid stage (class dr-workspace supplies
+ * the background, border and grid), so the targets can glow on it. */
+const stage: CSSProperties = { position: "relative", height: 280, borderRadius: 16, overflow: "hidden", touchAction: "none", userSelect: "none" };
+
+/* A typing box in the course's own dark glass. */
+const typeBox: CSSProperties = { ...darkInput, width: "100%", minHeight: 56, padding: "12px 16px", fontSize: 20 };
+
+/* How a light app window floats on the dark desk. */
+const appWindow: CSSProperties = { border: `1px solid ${W.edge}`, borderRadius: 12, overflow: "hidden", background: W.page, color: W.ink, fontFamily: W.font, boxShadow: W.float, colorScheme: "light" };
 
 function Done({ children }: { children: ReactNode }) {
   return (
-    <div role="status" style={{ display: "flex", gap: 10, alignItems: "flex-start", padding: "12px 14px", borderRadius: 12, background: D.goodSoft, fontSize: 16.5, lineHeight: 1.5, color: D.body }}>
+    <div role="status" style={{ display: "flex", gap: 10, alignItems: "flex-start", padding: "13px 16px", borderRadius: 14, background: D.goodSoft, border: `1px solid ${D.goodEdge}`, fontSize: 16.5, lineHeight: 1.55, color: D.body }}>
       <Tick />
       <span>{children}</span>
     </div>
@@ -29,8 +37,8 @@ function Instruction({ children }: { children: ReactNode }) {
 function FolderIcon({ size = 56, open = false }: { size?: number; open?: boolean }) {
   return (
     <svg width={size} height={size} viewBox="0 0 48 48" aria-hidden style={{ display: "inline-block" }}>
-      <path d="M4 12 h14 l4 4 h22 v24 a2 2 0 0 1 -2 2 H6 a2 2 0 0 1 -2 -2 Z" fill={D.folder} />
-      <path d={open ? "M4 20 h40 l-4 20 H8 Z" : "M4 18 h40 v22 a2 2 0 0 1 -2 2 H6 a2 2 0 0 1 -2 -2 Z"} fill={D.folderLight} />
+      <path d="M4 12 h14 l4 4 h22 v24 a2 2 0 0 1 -2 2 H6 a2 2 0 0 1 -2 -2 Z" fill={W.folder} />
+      <path d={open ? "M4 20 h40 l-4 20 H8 Z" : "M4 18 h40 v22 a2 2 0 0 1 -2 2 H6 a2 2 0 0 1 -2 -2 Z"} fill={W.folderLight} />
     </svg>
   );
 }
@@ -38,9 +46,9 @@ function FolderIcon({ size = 56, open = false }: { size?: number; open?: boolean
 function FileIcon({ size = 40 }: { size?: number }) {
   return (
     <svg width={size} height={size} viewBox="0 0 48 48" aria-hidden style={{ display: "inline-block" }}>
-      <path d="M10 4 h20 l10 10 v30 H10 Z" fill={D.panel} stroke={D.edge} strokeWidth="2" />
-      <path d="M30 4 v10 h10" fill="none" stroke={D.edge} strokeWidth="2" />
-      <path d="M16 24 h18 M16 30 h18 M16 36 h12" stroke={D.accent} strokeWidth="2.5" strokeLinecap="round" />
+      <path d="M10 4 h20 l10 10 v30 H10 Z" fill={W.page} stroke={W.faint} strokeWidth="2" />
+      <path d="M30 4 v10 h10" fill="none" stroke={W.faint} strokeWidth="2" />
+      <path d="M16 24 h18 M16 30 h18 M16 36 h12" stroke={W.outlook} strokeWidth="2.5" strokeLinecap="round" />
     </svg>
   );
 }
@@ -122,12 +130,12 @@ export function MouseLab({ onDone }: LabProps) {
       {part === "click" && (
         <>
           <Instruction>Click each blue circle as it appears. ({hits} of {SPOTS.length})</Instruction>
-          <div style={stage}>
+          <div className="dr-workspace" style={stage}>
             <button
               type="button"
               aria-label="Click me"
               onClick={hit}
-              style={{ position: "absolute", left: `${SPOTS[hits].x}%`, top: `${SPOTS[hits].y}%`, width: 56, height: 56, marginLeft: -28, marginTop: -28, borderRadius: "50%", border: "none", background: D.accent, boxShadow: "0 0 0 8px rgba(43,89,195,0.18)", cursor: "pointer" }}
+              style={{ position: "absolute", left: `${SPOTS[hits].x}%`, top: `${SPOTS[hits].y}%`, width: 56, height: 56, marginLeft: -28, marginTop: -28, borderRadius: "50%", border: `2px solid ${D.ink}`, background: D.accent, boxShadow: `0 0 0 9px ${D.accentSoft}, 0 0 30px 4px ${D.accent}`, cursor: "pointer" }}
             />
           </div>
         </>
@@ -135,12 +143,12 @@ export function MouseLab({ onDone }: LabProps) {
       {part === "double" && (
         <>
           <Instruction>Double-click the folder to open it: click twice, quickly, without moving. ({opens} of 3)</Instruction>
-          <div style={{ ...stage, display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <div className="dr-workspace" style={{ ...stage, display: "flex", alignItems: "center", justifyContent: "center" }}>
             <button
               type="button"
               onClick={() => setSingleTip(true)}
               onDoubleClick={opened}
-              style={{ background: "transparent", border: "none", cursor: "pointer", display: "grid", justifyItems: "center", gap: 4, fontFamily: D.sans, fontSize: 16, color: D.ink, padding: 12, borderRadius: 12 }}
+              style={{ background: singleTip ? D.accentSoft : "transparent", border: `1px solid ${singleTip ? D.accentEdge : "transparent"}`, boxShadow: singleTip ? `0 0 24px -6px ${D.accent}` : "none", cursor: "pointer", display: "grid", justifyItems: "center", gap: 4, fontFamily: D.sans, fontSize: 16, color: D.ink, padding: 12, borderRadius: 12 }}
             >
               <FolderIcon size={72} open={opens > 0} />
               Rotas
@@ -153,8 +161,8 @@ export function MouseLab({ onDone }: LabProps) {
       {(part === "drag" || part === "done") && (
         <>
           <Instruction>Drag the invoice into the Finance folder: press and hold on it, move it over the folder, then let go.</Instruction>
-          <div ref={area} style={stage}>
-            <div ref={folderRef} style={{ position: "absolute", right: "6%", top: "28%", display: "grid", justifyItems: "center", gap: 4, fontSize: 16, color: D.ink, padding: 10, borderRadius: 12, background: dropped ? D.goodSoft : "transparent" }}>
+          <div ref={area} className="dr-workspace" style={stage}>
+            <div ref={folderRef} style={{ position: "absolute", right: "6%", top: "28%", display: "grid", justifyItems: "center", gap: 4, fontSize: 16, color: D.ink, padding: 10, borderRadius: 12, background: dropped ? D.goodSoft : dragging ? D.accentSoft : "transparent", border: `1px dashed ${dropped ? D.goodEdge : dragging ? D.accentEdge : "transparent"}`, boxShadow: dragging ? `0 0 30px -6px ${D.accent}` : "none" }}>
               <FolderIcon size={80} open={dropped} />
               Finance
             </div>
@@ -166,7 +174,7 @@ export function MouseLab({ onDone }: LabProps) {
                 onPointerDown={down}
                 onPointerMove={moveTo}
                 onPointerUp={up}
-                style={{ position: "absolute", left: `${pos.x}%`, top: `${pos.y}%`, display: "grid", justifyItems: "center", gap: 2, fontSize: 14.5, color: D.ink, padding: 8, borderRadius: 10, background: dragging ? D.accentSoft : D.panel, border: `1px solid ${D.edge}`, cursor: dragging ? "grabbing" : "grab", boxShadow: dragging ? D.lift : "none" }}
+                style={{ position: "absolute", left: `${pos.x}%`, top: `${pos.y}%`, display: "grid", justifyItems: "center", gap: 2, fontSize: 15, color: D.ink, padding: 8, borderRadius: 10, background: dragging ? D.accentSoft : D.glassStrong, border: `1px solid ${dragging ? D.accent : D.accentEdge}`, cursor: dragging ? "grabbing" : "grab", boxShadow: dragging ? `${D.lift}, 0 0 26px -4px ${D.accent}` : `0 0 18px -6px ${D.accent}` }}
               >
                 <FileIcon />
                 Invoice 4417
@@ -230,7 +238,7 @@ export function TypeTasksLab({ tasks, onDone }: LabProps & { tasks: TypeTask[] }
         }}
         autoComplete="off"
         spellCheck={false}
-        style={{ width: "100%", boxSizing: "border-box", minHeight: 56, padding: "12px 14px", borderRadius: 12, border: `2px solid ${right ? D.good : D.edge}`, background: D.panel, fontFamily: D.sans, fontSize: 20, color: D.ink }}
+        style={{ ...typeBox, border: `1px solid ${right ? D.good : D.edgeStrong}`, boxShadow: right ? `0 0 0 3px ${D.goodSoft}` : "none" }}
       />
       <div style={{ marginTop: 10, display: "flex", alignItems: "center", gap: 8, fontSize: 16, color: right ? D.good : D.muted, fontWeight: right ? 700 : 400 }}>
         {right ? <Tick /> : null}
@@ -251,9 +259,9 @@ export function TypeTasksLab({ tasks, onDone }: LabProps & { tasks: TypeTask[] }
 
 type AppId = "outlook" | "excel" | "files";
 const APPS: Record<AppId, { name: string; colour: string }> = {
-  outlook: { name: "Outlook", colour: D.outlook },
-  excel: { name: "Excel", colour: D.excel },
-  files: { name: "File Explorer", colour: D.files },
+  outlook: { name: "Outlook", colour: W.outlook },
+  excel: { name: "Excel", colour: W.excel },
+  files: { name: "File Explorer", colour: W.files },
 };
 type WinState = "closed" | "open" | "min" | "max";
 type Action = { app: AppId; to: WinState | "front" };
@@ -310,62 +318,64 @@ export function WindowsLab({ onDone }: LabProps) {
     <div>
       <StepBar at={Math.min(step + 1, WINDOW_STEPS.length)} of={WINDOW_STEPS.length} label="Step" />
       {finished ? <div style={{ margin: "14px 0" }}><Done>You can open, switch, resize and close windows.</Done></div> : <Instruction>{WINDOW_STEPS[step].say}</Instruction>}
-      <div style={{ position: "relative", height: 330, borderRadius: 14, overflow: "hidden", background: D.desktop, border: `1px solid ${D.edge}` }}>
-        {order.map((app, i) => {
-          const s = wins[app];
-          const max = s === "max";
-          return (
-            <div
-              key={app}
-              onPointerDown={() => setFront(app)}
-              style={{ position: "absolute", left: max ? 0 : `${8 + i * 10}%`, top: max ? 0 : `${8 + i * 9}%`, width: max ? "100%" : "max(62%, 240px)", height: max ? "calc(100% - 52px)" : "58%", background: D.panel, borderRadius: max ? 0 : 10, boxShadow: "0 12px 32px rgba(0,0,0,0.3)", overflow: "hidden", zIndex: app === front ? 3 : 1 + i }}
-            >
-              <div style={{ display: "flex", alignItems: "center", background: APPS[app].colour, color: D.onAccent, fontSize: 14, fontWeight: 700 }}>
-                <span style={{ padding: "0 12px", flex: 1, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{APPS[app].name}</span>
-                {(
-                  [
-                    ["min", "Minimise", "M6 12 H18"],
-                    ["max", max ? "Restore" : "Maximise", "M7 7 H17 V17 H7 Z"],
-                    ["closed", "Close", "M7 7 L17 17 M17 7 L7 17"],
-                  ] as const
-                ).map(([to, label, path]) => (
-                  <button
-                    key={to}
-                    type="button"
-                    aria-label={`${label} ${APPS[app].name}`}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      const target: WinState = to === "max" && max ? "open" : to;
-                      act({ app, to: target }, () => setWins((w) => ({ ...w, [app]: target })));
-                    }}
-                    style={{ width: 46, height: 38, border: "none", background: "transparent", color: D.onAccent, fontSize: 16, cursor: "pointer" }}
-                  >
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden style={{ display: "inline-block" }}>
-                      <path d={path} strokeLinecap="round" />
-                    </svg>
-                  </button>
-                ))}
+      <Workspace>
+        <div style={{ position: "relative", height: 330, borderRadius: 12, overflow: "hidden", background: W.desktop, border: `1px solid ${D.edgeStrong}`, boxShadow: W.float, fontFamily: W.font, colorScheme: "light" }}>
+          {order.map((app, i) => {
+            const s = wins[app];
+            const max = s === "max";
+            return (
+              <div
+                key={app}
+                onPointerDown={() => setFront(app)}
+                style={{ position: "absolute", left: max ? 0 : `${8 + i * 10}%`, top: max ? 0 : `${8 + i * 9}%`, width: max ? "100%" : "max(62%, 240px)", height: max ? "calc(100% - 52px)" : "58%", background: W.page, border: max ? "none" : `1px solid ${W.edge}`, borderRadius: max ? 0 : 10, boxShadow: `0 14px 34px -6px color-mix(in srgb, ${D.ground} 55%, transparent)`, overflow: "hidden", zIndex: app === front ? 3 : 1 + i }}
+              >
+                <div style={{ display: "flex", alignItems: "center", background: APPS[app].colour, color: D.onAccent, fontSize: 14, fontWeight: 700 }}>
+                  <span style={{ padding: "0 12px", flex: 1, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{APPS[app].name}</span>
+                  {(
+                    [
+                      ["min", "Minimise", "M6 12 H18"],
+                      ["max", max ? "Restore" : "Maximise", "M7 7 H17 V17 H7 Z"],
+                      ["closed", "Close", "M7 7 L17 17 M17 7 L7 17"],
+                    ] as const
+                  ).map(([to, label, path]) => (
+                    <button
+                      key={to}
+                      type="button"
+                      aria-label={`${label} ${APPS[app].name}`}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        const target: WinState = to === "max" && max ? "open" : to;
+                        act({ app, to: target }, () => setWins((w) => ({ ...w, [app]: target })));
+                      }}
+                      style={{ width: 46, height: 38, border: "none", background: "transparent", color: D.onAccent, fontSize: 16, cursor: "pointer" }}
+                    >
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden style={{ display: "inline-block" }}>
+                        <path d={path} strokeLinecap="round" />
+                      </svg>
+                    </button>
+                  ))}
+                </div>
+                <div style={{ padding: 14, fontSize: 15, color: W.muted }}>{app === "excel" ? "Rota.xlsx" : app === "outlook" ? "Inbox (3)" : "Documents"}</div>
               </div>
-              <div style={{ padding: 14, fontSize: 15, color: D.muted }}>{app === "excel" ? "Rota.xlsx" : app === "outlook" ? "Inbox (3)" : "Documents"}</div>
-            </div>
-          );
-        })}
-        <div style={{ position: "absolute", left: 0, right: 0, bottom: 0, height: 52, background: "rgba(246,243,238,0.92)", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, zIndex: 5 }}>
-          {(Object.keys(APPS) as AppId[]).map((app) => (
-            <button
-              key={app}
-              type="button"
-              onClick={() => taskbar(app)}
-              aria-label={`${APPS[app].name} on the taskbar`}
-              style={{ minHeight: 40, padding: "6px 12px", borderRadius: 8, border: "none", background: wins[app] !== "closed" ? D.accentSoft : "transparent", borderBottom: wins[app] !== "closed" ? `3px solid ${APPS[app].colour}` : "3px solid transparent", fontFamily: D.sans, fontSize: 14.5, fontWeight: 700, color: D.ink, cursor: "pointer" }}
-            >
-              {APPS[app].name}
-            </button>
-          ))}
+            );
+          })}
+          <div style={{ position: "absolute", left: 0, right: 0, bottom: 0, height: 52, background: `color-mix(in srgb, ${W.chrome} 92%, transparent)`, borderTop: `1px solid ${W.edge}`, backdropFilter: "blur(10px)", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, zIndex: 5 }}>
+            {(Object.keys(APPS) as AppId[]).map((app) => (
+              <button
+                key={app}
+                type="button"
+                onClick={() => taskbar(app)}
+                aria-label={`${APPS[app].name} on the taskbar`}
+                style={{ minHeight: 40, padding: "6px 12px", borderRadius: 8, border: "none", background: wins[app] !== "closed" ? W.select : "transparent", borderBottom: wins[app] !== "closed" ? `3px solid ${APPS[app].colour}` : "3px solid transparent", fontFamily: W.font, fontSize: 15, fontWeight: 700, color: W.ink, cursor: "pointer" }}
+              >
+                {APPS[app].name}
+              </button>
+            ))}
+          </div>
         </div>
-      </div>
+      </Workspace>
       {wrong && (
-        <p role="status" style={{ margin: "12px 0 0", display: "flex", gap: 8, fontSize: 16, color: D.body }}>
+        <p role="status" style={{ margin: "12px 0 0", display: "flex", alignItems: "flex-start", gap: 10, padding: "12px 16px", borderRadius: 14, background: D.badSoft, border: `1px solid ${D.badEdge}`, fontSize: 16, lineHeight: 1.5, color: D.body }}>
           <Cross /> {wrong}
         </p>
       )}
@@ -392,9 +402,11 @@ export function CopyPasteLab({ onDone }: LabProps) {
       {part === 0 && (
         <>
           <Instruction>Copy the order number from the email and paste it into the box below.</Instruction>
-          <div style={{ background: D.panel, border: `1px solid ${D.edge}`, borderRadius: 12, padding: "12px 14px", fontSize: 17, lineHeight: 1.6, color: D.body }}>
-            Hi Dave, the pallets for <b style={{ background: D.accentSoft, padding: "1px 4px", borderRadius: 4 }}>{SOURCE}</b> arrive on Friday.
-          </div>
+          <Workspace>
+            <div style={{ ...appWindow, padding: "14px 16px", fontSize: 17, lineHeight: 1.6, color: W.body }}>
+              Hi Dave, the pallets for <b style={{ background: W.select, color: W.ink, padding: "1px 4px", borderRadius: 4 }}>{SOURCE}</b> arrive on Friday.
+            </div>
+          </Workspace>
           <ol style={{ margin: "12px 0", paddingLeft: 22, fontSize: 16.5, lineHeight: 1.7, color: D.body }}>
             <li>Select it: press and hold just before &ldquo;Order&rdquo;, drag to the end of &ldquo;5520&rdquo;, let go.</li>
             <li>Copy: press Ctrl and C together. Or right-click it and choose Copy.</li>
@@ -405,7 +417,7 @@ export function CopyPasteLab({ onDone }: LabProps) {
             value={pasted}
             onChange={(e) => setPasted(e.target.value)}
             placeholder="Paste here"
-            style={{ width: "100%", boxSizing: "border-box", minHeight: 52, padding: "10px 14px", borderRadius: 12, border: `2px solid ${pasteOk ? D.good : D.edge}`, background: D.panel, fontFamily: D.sans, fontSize: 18, color: D.ink }}
+            style={{ ...typeBox, minHeight: 52, fontSize: 18, border: `1px solid ${pasteOk ? D.good : D.edgeStrong}`, boxShadow: pasteOk ? `0 0 0 3px ${D.goodSoft}` : "none" }}
           />
           {pasteOk && (
             <div style={{ marginTop: 12 }}>
@@ -431,7 +443,7 @@ export function CopyPasteLab({ onDone }: LabProps) {
                 onDone({ correct: 2, total: 2 });
               }
             }}
-            style={{ width: "100%", boxSizing: "border-box", minHeight: 52, padding: "10px 14px", borderRadius: 12, border: `2px solid ${undone ? D.good : D.edge}`, background: D.panel, fontFamily: D.sans, fontSize: 18, color: D.ink }}
+            style={{ ...typeBox, minHeight: 52, fontSize: 18, border: `1px solid ${undone ? D.good : D.edgeStrong}`, boxShadow: undone ? `0 0 0 3px ${D.goodSoft}` : "none" }}
           />
           {!undone && (
             <p style={{ margin: "10px 0 0", fontSize: 15.5, color: D.muted }}>
@@ -472,7 +484,7 @@ export function SaveFindLab({ onDone }: LabProps) {
   const saveOk = folder === "Timesheets" && nameOk;
 
   const folderButton = (f: string, selected: boolean, onClick: () => void) => (
-    <button key={f} type="button" onClick={onClick} style={{ display: "flex", alignItems: "center", gap: 10, width: "100%", textAlign: "left", minHeight: 48, padding: "6px 10px", borderRadius: 8, border: "none", background: selected ? D.accentSoft : "transparent", fontFamily: D.sans, fontSize: 16.5, color: D.ink, cursor: "pointer" }}>
+    <button key={f} type="button" onClick={onClick} style={{ display: "flex", alignItems: "center", gap: 10, width: "100%", textAlign: "left", minHeight: 48, padding: "6px 10px", borderRadius: 6, border: "none", background: selected ? W.select : "transparent", boxShadow: selected ? `inset 3px 0 0 ${W.outlook}` : "none", fontFamily: W.font, fontSize: 16.5, color: W.ink, cursor: "pointer" }}>
       <FolderIcon size={28} open={selected} />
       {f}
     </button>
@@ -484,22 +496,24 @@ export function SaveFindLab({ onDone }: LabProps) {
       {part === 0 && (
         <>
           <Instruction>Save this week&apos;s timesheet in the Timesheets folder, named so you can find it again: Timesheet 14-11-2026.</Instruction>
-          <div style={{ border: `1px solid ${D.edge}`, borderRadius: 12, overflow: "hidden", background: D.panel, boxShadow: D.lift }}>
-            <div style={{ background: D.sunk, padding: "8px 14px", fontWeight: 700, fontSize: 15, color: D.ink }}>Save As</div>
-            <div style={{ padding: 12, display: "grid", gap: 4 }}>
-              <p style={{ margin: "0 0 4px", fontSize: 15, color: D.faint }}>Documents</p>
-              {Object.keys(FOLDERS).map((f) => folderButton(f, folder === f, () => setFolder(f)))}
+          <Workspace>
+            <div style={appWindow}>
+              <div style={{ background: W.sunk, padding: "8px 14px", fontWeight: 700, fontSize: 15, color: W.ink, borderBottom: `1px solid ${W.edge}` }}>Save As</div>
+              <div style={{ padding: 12, display: "grid", gap: 4 }}>
+                <p style={{ margin: "0 0 4px", fontSize: 15, color: W.muted }}>Documents</p>
+                {Object.keys(FOLDERS).map((f) => folderButton(f, folder === f, () => setFolder(f)))}
+              </div>
+              <label style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 10, padding: "12px", borderTop: `1px solid ${W.edge}`, background: W.chrome }}>
+                <span style={{ fontSize: 16, color: W.body }}>File name</span>
+                <input value={name} onChange={(e) => setName(e.target.value)} onFocus={(e) => e.target.select()} style={{ flex: 1, minWidth: 180, minHeight: 44, padding: "6px 10px", borderRadius: 6, border: `1px solid ${W.edge}`, background: W.page, fontFamily: W.font, fontSize: 17, color: W.ink }} />
+                <Button onClick={() => { setSaveTried(true); if (saveOk) setPart(1); }} style={{ minHeight: 44, padding: "8px 18px" }}>
+                  Save
+                </Button>
+              </label>
             </div>
-            <label style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 10, padding: "12px", borderTop: `1px solid ${D.edge}` }}>
-              <span style={{ fontSize: 16, color: D.muted }}>File name</span>
-              <input value={name} onChange={(e) => setName(e.target.value)} onFocus={(e) => e.target.select()} style={{ flex: 1, minWidth: 180, minHeight: 44, padding: "6px 10px", borderRadius: 8, border: `1px solid ${D.edge}`, fontFamily: D.sans, fontSize: 17, color: D.ink }} />
-              <Button onClick={() => { setSaveTried(true); if (saveOk) setPart(1); }} style={{ minHeight: 44, padding: "8px 18px" }}>
-                Save
-              </Button>
-            </label>
-          </div>
+          </Workspace>
           {saveTried && !saveOk && (
-            <ul role="status" style={{ listStyle: "none", padding: 0, margin: "14px 0 0", display: "grid", gap: 8, fontSize: 16.5 }}>
+            <ul role="status" style={{ listStyle: "none", margin: "14px 0 0", padding: "14px 16px", display: "grid", gap: 8, fontSize: 16.5, lineHeight: 1.5, color: D.body, background: D.warnSoft, border: `1px solid ${D.warnEdge}`, borderRadius: 14 }}>
               <li style={{ display: "flex", gap: 8 }}>{folder === "Timesheets" ? <Tick /> : <Cross />} {folder === "Timesheets" ? "Right folder." : "Click the Timesheets folder first, so it is highlighted."}</li>
               <li style={{ display: "flex", gap: 8 }}>{nameOk ? <Tick /> : <Cross />} {nameOk ? "Good file name." : "Replace Book1 with a name that says what it is and when: Timesheet 14-11-2026."}</li>
             </ul>
@@ -510,37 +524,39 @@ export function SaveFindLab({ onDone }: LabProps) {
         <>
           <Done>Saved in Timesheets as &ldquo;{name.trim()}&rdquo;.</Done>
           <Instruction>A week later your manager asks for Invoice 4420. Find it: open folders by double-clicking, then double-click the file.</Instruction>
-          <div style={{ border: `1px solid ${D.edge}`, borderRadius: 12, overflow: "hidden", background: D.panel, display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 200px), 1fr))" }}>
-            <div style={{ padding: 12, borderRight: `1px solid ${D.edgeSoft}` }}>
-              <p style={{ margin: "0 0 4px", fontSize: 15, color: D.faint }}>Documents</p>
-              {Object.keys(FOLDERS).map((f) => (
-                <div key={f} onDoubleClick={() => setOpenFolder(f)}>
-                  {folderButton(f, openFolder === f, () => setOpenFolder(f))}
-                </div>
-              ))}
-            </div>
-            <div style={{ padding: 12 }}>
-              <p style={{ margin: "0 0 4px", fontSize: 15, color: D.faint }}>{openFolder ?? "Open a folder to see what is inside"}</p>
-              {openFolder &&
-                [...FOLDERS[openFolder], ...(openFolder === "Timesheets" ? [`${name.trim()}.xlsx`] : [])].map((file) => (
-                  <button
-                    key={file}
-                    type="button"
-                    onDoubleClick={() => {
-                      if (file === "Invoice 4420.pdf") {
-                        setFound(true);
-                        setWrongFile(false);
-                        onDone({ correct: 2, total: 2 });
-                      } else setWrongFile(true);
-                    }}
-                    style={{ display: "flex", alignItems: "center", gap: 10, width: "100%", textAlign: "left", minHeight: 48, padding: "6px 10px", borderRadius: 8, border: "none", background: found && file === "Invoice 4420.pdf" ? D.goodSoft : "transparent", fontFamily: D.sans, fontSize: 16.5, color: D.ink, cursor: "pointer" }}
-                  >
-                    <FileIcon size={28} />
-                    {file}
-                  </button>
+          <Workspace>
+            <div style={{ ...appWindow, display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 200px), 1fr))" }}>
+              <div style={{ padding: 12, borderRight: `1px solid ${W.edge}`, background: W.chrome }}>
+                <p style={{ margin: "0 0 4px", fontSize: 15, color: W.muted }}>Documents</p>
+                {Object.keys(FOLDERS).map((f) => (
+                  <div key={f} onDoubleClick={() => setOpenFolder(f)}>
+                    {folderButton(f, openFolder === f, () => setOpenFolder(f))}
+                  </div>
                 ))}
+              </div>
+              <div style={{ padding: 12 }}>
+                <p style={{ margin: "0 0 4px", fontSize: 15, color: W.muted }}>{openFolder ?? "Open a folder to see what is inside"}</p>
+                {openFolder &&
+                  [...FOLDERS[openFolder], ...(openFolder === "Timesheets" ? [`${name.trim()}.xlsx`] : [])].map((file) => (
+                    <button
+                      key={file}
+                      type="button"
+                      onDoubleClick={() => {
+                        if (file === "Invoice 4420.pdf") {
+                          setFound(true);
+                          setWrongFile(false);
+                          onDone({ correct: 2, total: 2 });
+                        } else setWrongFile(true);
+                      }}
+                      style={{ display: "flex", alignItems: "center", gap: 10, width: "100%", textAlign: "left", minHeight: 48, padding: "6px 10px", borderRadius: 6, border: "none", background: found && file === "Invoice 4420.pdf" ? `color-mix(in srgb, ${D.good} 22%, ${W.page})` : "transparent", fontFamily: W.font, fontSize: 16.5, color: W.ink, cursor: "pointer" }}
+                    >
+                      <FileIcon size={28} />
+                      {file}
+                    </button>
+                  ))}
+              </div>
             </div>
-          </div>
+          </Workspace>
           {wrongFile && !found && <p style={{ margin: "10px 0 0", fontSize: 16, color: D.muted }}>That is a different file. Invoices live in the Invoices folder.</p>}
           {found && (
             <div style={{ marginTop: 12 }}>
@@ -611,7 +627,7 @@ export function TypingLab({ onDone }: LabProps) {
     <div>
       <StepBar at={at + 1} of={LINES.length} label="Sentence" />
       <Instruction>Type this sentence exactly, then press Enter.</Instruction>
-      <p aria-label="Sentence to type" style={{ margin: "0 0 12px", padding: "14px 16px", borderRadius: 12, background: D.panel, border: `1px solid ${D.edge}`, fontSize: 21, lineHeight: 1.5, letterSpacing: "0.01em" }}>
+      <p aria-label="Sentence to type" className="dr-glass" style={{ position: "relative", margin: "0 0 12px", padding: "16px 18px", borderRadius: 14, background: D.card, border: `1px solid ${D.edgeStrong}`, boxShadow: D.lift, fontSize: 21, lineHeight: 1.5, letterSpacing: "0.01em", color: D.ink }}>
         {target.split("").map((ch, i) => {
           const t = typed[i];
           const colour = t === undefined ? D.ink : t === ch ? D.good : D.bad;
@@ -636,7 +652,7 @@ export function TypingLab({ onDone }: LabProps) {
         onPaste={(e) => e.preventDefault()}
         autoComplete="off"
         spellCheck={false}
-        style={{ width: "100%", boxSizing: "border-box", minHeight: 56, padding: "12px 14px", borderRadius: 12, border: `2px solid ${D.edge}`, background: D.panel, fontFamily: D.sans, fontSize: 20, color: D.ink }}
+        style={typeBox}
       />
       <p style={{ margin: "10px 0 0", fontSize: 15.5, color: D.muted }}>Green letters are right, red ones are wrong. Fix a mistake with Backspace.</p>
       <div style={{ marginTop: 12 }}>

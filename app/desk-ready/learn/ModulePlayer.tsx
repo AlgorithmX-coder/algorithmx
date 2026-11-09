@@ -1,111 +1,195 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
+import { useEffect, useState, type CSSProperties } from "react";
 import DeskHeader from "../DeskHeader";
-import { D } from "../tokens";
-import { markDone, parseDone, readDoneRaw, serverDoneRaw, subscribeDone } from "./progress";
+import PartPreview, { PREVIEW_CSS, type PreviewKind } from "../PartPreview";
+import { PARTS } from "../syllabus";
+import { D, PART_ACCENT } from "../tokens";
+import { markDone, useDone } from "./progress";
 import TopicPlayer from "./TopicPlayer";
 import type { ModuleManifest } from "./types";
-import { Button, Tick, card } from "./ui";
+import { Button, Kicker, SHELL_CSS, Tick } from "./ui";
 
-/* A Desk Ready module: the overview (what you will be able to do, and the
- * lessons in order with a tick on each finished one), and the lesson
- * player when one is open. Which lesson is open is client state; the page
- * returns to the top whenever it changes. */
+/* A Desk Ready module: a hero band in its part's colour (the app it teaches,
+ * drawn large, what you will be able to do, your progress), then the
+ * lessons as a glowing timeline; and the lesson player when one is open.
+ * Which lesson is open is client state; the page returns to the top
+ * whenever it changes. */
+
+const PART_PREVIEW: ReadonlyArray<PreviewKind> = ["desktop", "outlook", "excel", "sharepoint", "copilot", "word"];
+
 export default function ModulePlayer({ module: m }: { module: ModuleManifest }) {
-  const doneRaw = useSyncExternalStore(subscribeDone, readDoneRaw, serverDoneRaw);
-  const done = useMemo(() => parseDone(doneRaw), [doneRaw]);
+  const done = useDone();
   const [open, setOpen] = useState<number | null>(null);
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [open]);
 
+  const partIndex = Math.max(0, PARTS.findIndex((p) => p.modules.some((x) => x.id === m.id)));
+  const part = PARTS[partIndex];
+  const acc = PART_ACCENT[partIndex];
   const finished = m.topics.filter((t) => done.includes(t.id)).length;
   const firstOpen = m.topics.findIndex((t) => !done.includes(t.id));
   const resumeAt = firstOpen === -1 ? 0 : firstOpen;
+  const allDone = finished === m.topics.length;
+  const shellStyle = { "--acc": acc, "--dr-accent": acc } as CSSProperties;
+
+  const styles = (
+    <style>{`
+      ${SHELL_CSS}
+      ${PREVIEW_CSS}
+      ${MODULE_CSS}
+    `}</style>
+  );
 
   if (open !== null) {
     const t = m.topics[open];
     const hasNext = open + 1 < m.topics.length;
     return (
-      <>
-        <DeskHeader link={{ href: "/desk-ready/course", label: "Your course" }} />
-        <main style={{ maxWidth: 820, margin: "0 auto", padding: "20px 16px 72px" }}>
+      <div className="dr-shell" style={shellStyle}>
+        <DeskHeader link={{ href: "/desk-ready/course", label: "Your desk" }} trail={`Module ${m.number} · Lesson ${open + 1} of ${m.topics.length}`} />
+        <main style={{ maxWidth: 920, margin: "0 auto", padding: "22px 16px 90px" }}>
           <TopicPlayer
             key={t.id}
             topic={t}
             index={open}
             total={m.topics.length}
+            moduleLabel={`Module ${m.number}: ${m.title}`}
             onBack={() => setOpen(null)}
             onFinish={() => markDone(t.id)}
             next={hasNext ? { label: `Next lesson: ${m.topics[open + 1].title}`, go: () => setOpen(open + 1) } : { label: "Back to the module", go: () => setOpen(null) }}
           />
         </main>
-      </>
+        {styles}
+      </div>
     );
   }
 
   return (
-    <>
-      <DeskHeader link={{ href: "/desk-ready/course", label: "Your course" }} />
-      <main style={{ maxWidth: 820, margin: "0 auto", padding: "28px 16px 72px" }}>
-        <Link href="/desk-ready/course" style={{ fontSize: 16, fontWeight: 700, color: D.accent, textDecoration: "none" }}>
-          &larr; All modules
+    <div className="dr-shell" style={shellStyle}>
+      <DeskHeader link={{ href: "/desk-ready/course", label: "Your desk" }} trail={`${part.label} · ${part.title}`} />
+      <main style={{ maxWidth: 1080, margin: "0 auto", padding: "26px 16px 90px" }}>
+        <Link href="/desk-ready/course" className="mp-back">
+          &larr; Your desk
         </Link>
-        <p style={{ margin: "18px 0 0", fontSize: 15, fontWeight: 700, color: D.accent, letterSpacing: "0.04em", textTransform: "uppercase" }}>Module {m.number}</p>
-        <h1 style={{ margin: "6px 0 0", fontFamily: D.display, fontWeight: 700, fontSize: "clamp(1.9rem, 5vw, 2.6rem)", lineHeight: 1.12, color: D.ink }}>{m.title}</h1>
-        <p style={{ margin: "14px 0 0", fontSize: 19, lineHeight: 1.6, color: D.body }}>{m.intro}</p>
 
-        <div style={{ ...card, marginTop: 22 }}>
-          <p style={{ margin: 0, fontSize: 17, fontWeight: 700, color: D.ink }}>By the end you will be able to:</p>
-          <ul style={{ listStyle: "none", padding: 0, margin: "12px 0 0", display: "grid", gap: 10 }}>
+        {/* hero band */}
+        <section className="mp-hero dr-glass">
+          <span className="mp-ghost" aria-hidden>
+            {String(m.number).padStart(2, "0")}
+          </span>
+          <div className="mp-hero-copy">
+            <Kicker color={acc}>
+              {part.label} · Module {m.number}
+            </Kicker>
+            <h1 className="mp-h1">{m.title}</h1>
+            <p className="mp-intro">{m.intro}</p>
+            <div className="mp-cta">
+              <Button onClick={() => setOpen(resumeAt)}>{finished === 0 ? "Start the first lesson" : allDone ? "Go through it again" : `Carry on: lesson ${resumeAt + 1}`}</Button>
+              <span className="mp-count">
+                {finished} of {m.topics.length} lessons finished
+              </span>
+            </div>
+            <div className="mp-bar" aria-hidden>
+              <span style={{ width: `${(finished / m.topics.length) * 100}%` }} />
+            </div>
+          </div>
+          <div className="mp-hero-art" aria-hidden>
+            <PartPreview kind={PART_PREVIEW[partIndex]} />
+          </div>
+        </section>
+
+        {/* outcomes */}
+        <section className="mp-outcomes">
+          <Kicker color={D.faint}>By the end you will be able to</Kicker>
+          <ul>
             {m.outcomes.map((o) => (
-              <li key={o} style={{ display: "flex", gap: 10, alignItems: "flex-start", fontSize: 17.5, lineHeight: 1.5, color: D.body }}>
-                <Tick color={D.accent} />
+              <li key={o}>
+                <Tick color={acc} />
                 <span>{o}</span>
               </li>
             ))}
           </ul>
-        </div>
+        </section>
 
-        <div style={{ marginTop: 22, display: "flex", flexWrap: "wrap", alignItems: "center", gap: 14 }}>
-          <Button onClick={() => setOpen(resumeAt)}>{finished === 0 ? "Start the first lesson" : finished === m.topics.length ? "Go through it again" : `Carry on: lesson ${resumeAt + 1}`}</Button>
-          <span style={{ fontSize: 16, color: D.muted }}>
-            {finished} of {m.topics.length} lessons finished
-          </span>
-        </div>
-
-        <h2 style={{ margin: "34px 0 0", fontFamily: D.display, fontWeight: 700, fontSize: 23, color: D.ink }}>The lessons</h2>
-        <ol style={{ listStyle: "none", padding: 0, margin: "14px 0 0", display: "grid", gap: 12 }}>
-          {m.topics.map((t, i) => {
-            const isDone = done.includes(t.id);
-            return (
-              <li key={t.id}>
-                <button
-                  type="button"
-                  onClick={() => setOpen(i)}
-                  style={{ width: "100%", textAlign: "left", display: "flex", alignItems: "center", gap: 14, padding: "16px 16px", borderRadius: 14, background: D.panel, border: `1px solid ${isDone ? "rgba(27,122,67,0.35)" : D.edge}`, cursor: "pointer", fontFamily: D.sans }}
-                >
-                  <span aria-hidden style={{ width: 40, height: 40, borderRadius: "50%", flexShrink: 0, display: "inline-flex", alignItems: "center", justifyContent: "center", background: isDone ? D.goodSoft : D.sunk, color: D.muted, fontFamily: D.display, fontWeight: 700, fontSize: 17 }}>
-                    {isDone ? <Tick size={20} /> : i + 1}
+        {/* the lessons, as a timeline */}
+        <section aria-labelledby="mp-lessons-h" style={{ marginTop: 44 }}>
+          <Kicker color={D.faint}>The lessons</Kicker>
+          <h2 id="mp-lessons-h" className="mp-h2">
+            {m.topics.length} short lessons
+          </h2>
+          <ol className="mp-timeline">
+            {m.topics.map((t, i) => {
+              const isDone = done.includes(t.id);
+              const isNext = !allDone && i === resumeAt;
+              return (
+                <li key={t.id} className={isDone ? "done" : isNext ? "next" : ""}>
+                  <span className="mp-node" aria-hidden>
+                    {isDone ? <Tick size={16} color={D.good} /> : String(i + 1).padStart(2, "0")}
                   </span>
-                  <span style={{ flex: 1 }}>
-                    <span style={{ display: "block", fontSize: 18, fontWeight: 700, color: D.ink, lineHeight: 1.35 }}>{t.title}</span>
-                    <span style={{ display: "block", marginTop: 3, fontSize: 15, color: D.faint }}>
-                      {isDone ? "Finished" : `About ${t.minutes} minutes`}
+                  <button type="button" onClick={() => setOpen(i)} className="mp-row">
+                    <span style={{ flex: 1, minWidth: 0 }}>
+                      <span className="mp-row-title">{t.title}</span>
+                      <span className="mp-row-meta">{isDone ? "Finished" : isNext ? `Up next · about ${t.minutes} minutes` : `About ${t.minutes} minutes`}</span>
                     </span>
-                  </span>
-                  <span aria-hidden style={{ fontSize: 22, color: D.accent }}>
-                    &rsaquo;
-                  </span>
-                </button>
-              </li>
-            );
-          })}
-        </ol>
+                    <span aria-hidden className="mp-row-go">
+                      &rarr;
+                    </span>
+                  </button>
+                </li>
+              );
+            })}
+          </ol>
+        </section>
       </main>
-    </>
+      {styles}
+    </div>
   );
 }
+
+const MODULE_CSS = `
+  .mp-back { display: inline-flex; align-items: center; gap: 6px; min-height: 40px; font-family: ${D.mono}; font-size: 12px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: ${D.faint}; text-decoration: none; }
+  .mp-back:hover { color: ${D.ink}; }
+  .mp-hero { position: relative; margin-top: 10px; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 40px; align-items: center; padding: 34px 36px; border-radius: 24px;
+    background: radial-gradient(90% 120% at 100% 0%, color-mix(in srgb, var(--acc) 26%, transparent), transparent 60%), ${D.card};
+    border: 1px solid color-mix(in srgb, var(--acc) 38%, transparent); box-shadow: ${D.lift}; }
+  .mp-ghost { position: absolute; right: 26px; bottom: -46px; z-index: -1; font-family: ${D.display}; font-size: 200px; font-weight: 700; line-height: 1; letter-spacing: -0.05em; color: var(--acc); opacity: 0.06; pointer-events: none; }
+  .mp-h1 { margin: 12px 0 0; font-family: ${D.display}; font-size: clamp(2.2rem, 5vw, 3.4rem); line-height: 1.02; letter-spacing: -0.03em; font-weight: 500; color: ${D.ink}; }
+  .mp-intro { margin: 16px 0 0; max-width: 600px; font-size: 18px; line-height: 1.6; color: ${D.muted}; }
+  .mp-cta { margin-top: 24px; display: flex; flex-wrap: wrap; align-items: center; gap: 18px; }
+  .mp-count { font-family: ${D.mono}; font-size: 12px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: ${D.faint}; }
+  .mp-bar { margin-top: 18px; max-width: 420px; height: 6px; border-radius: 99px; background: rgba(255,255,255,0.08); overflow: hidden; }
+  .mp-bar span { display: block; height: 100%; border-radius: 99px; background: var(--acc); box-shadow: 0 0 12px var(--acc); transition: width .4s ease; }
+  .mp-hero-art { width: 272px; height: 172px; display: flex; align-items: center; justify-content: center; }
+  .mp-hero-art .dr-pv { transform: scale(2) rotate(-3deg); }
+
+  .mp-outcomes { margin-top: 22px; padding: 22px 26px; border-radius: 20px; background: ${D.glass}; border: 1px solid ${D.edge}; }
+  .mp-outcomes ul { list-style: none; margin: 14px 0 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 12px 26px; }
+  .mp-outcomes li { display: flex; gap: 10px; align-items: flex-start; font-size: 17px; line-height: 1.5; color: ${D.body}; }
+
+  .mp-h2 { margin: 10px 0 0; font-family: ${D.display}; font-size: clamp(1.6rem, 3vw, 2.2rem); line-height: 1.1; letter-spacing: -0.025em; font-weight: 500; color: ${D.ink}; }
+  .mp-timeline { position: relative; list-style: none; margin: 22px 0 0; padding: 0; display: grid; gap: 12px; }
+  .mp-timeline::before { content: ""; position: absolute; left: 21px; top: 22px; bottom: 22px; width: 2px; background: linear-gradient(180deg, var(--acc), rgba(255,255,255,0.08)); opacity: 0.5; }
+  .mp-timeline li { position: relative; display: flex; align-items: center; gap: 16px; }
+  .mp-node { position: relative; z-index: 1; flex-shrink: 0; width: 44px; height: 44px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-family: ${D.mono}; font-size: 13px; font-weight: 800; color: ${D.faint}; background: ${D.ground2}; border: 1.5px solid rgba(255,255,255,0.16); }
+  .mp-timeline li.done .mp-node { background: ${D.goodSoft}; border-color: ${D.good}; box-shadow: 0 0 16px -2px ${D.good}; }
+  .mp-timeline li.next .mp-node { color: ${D.ink}; background: color-mix(in srgb, var(--acc) 26%, ${D.ground2}); border-color: var(--acc); box-shadow: 0 0 18px -2px var(--acc); }
+  @media (prefers-reduced-motion: no-preference) { .mp-timeline li.next .mp-node { animation: mp-pulse 2.2s ease-in-out infinite; } }
+  @keyframes mp-pulse { 0%, 100% { box-shadow: 0 0 18px -2px var(--acc); } 50% { box-shadow: 0 0 0 6px color-mix(in srgb, var(--acc) 18%, transparent), 0 0 26px 0 var(--acc); } }
+  .mp-row { flex: 1; min-width: 0; display: flex; align-items: center; gap: 14px; text-align: left; padding: 16px 20px; border-radius: 16px; cursor: pointer;
+    background: ${D.card}; border: 1px solid ${D.edge}; box-shadow: ${D.lift}; font-family: ${D.sans}; transition: transform .18s ease, border-color .18s ease; }
+  .mp-row:hover { transform: translateX(3px); border-color: color-mix(in srgb, var(--acc) 60%, transparent); }
+  .mp-timeline li.next .mp-row { border-color: color-mix(in srgb, var(--acc) 55%, transparent); background: radial-gradient(80% 160% at 0% 50%, color-mix(in srgb, var(--acc) 14%, transparent), transparent 60%), ${D.card}; }
+  .mp-row-title { display: block; font-size: 18px; font-weight: 600; line-height: 1.35; color: ${D.ink}; }
+  .mp-row-meta { display: block; margin-top: 3px; font-family: ${D.mono}; font-size: 11.5px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: ${D.faint}; }
+  .mp-timeline li.done .mp-row-meta { color: ${D.good}; }
+  .mp-timeline li.next .mp-row-meta { color: var(--acc); }
+  .mp-row-go { font-size: 20px; color: var(--acc); }
+
+  @media (max-width: 860px) {
+    .mp-hero { grid-template-columns: 1fr; padding: 26px 22px; }
+    .mp-hero-art { display: none; }
+  }
+`;
