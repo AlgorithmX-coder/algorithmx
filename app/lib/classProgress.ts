@@ -49,6 +49,10 @@ export interface ClassProgress {
   courseSlug: string;
   weeksCount: number;
   pupils: PupilProgress[];
+  /** Set once the year has been ended. The page goes read-only: an
+   *  archived class is filtered out of both pupil sign-in gates, so its
+   *  children cannot get in and its code no longer works. */
+  archivedAt: Date | null;
   /** The three numbers a teacher actually scans for. */
   notStarted: number;
   inProgress: number;
@@ -62,10 +66,14 @@ export interface ClassProgress {
  */
 export async function getClassProgress(orgId: string, classId: string): Promise<ClassProgress | null> {
   const klass = await prisma.class.findFirst({
-    /* scoped in the query, not checked after it */
-    where: { id: classId, orgId, archivedAt: null },
+    /* Scoped in the query, not checked after it. Archived classes ARE
+       returned: the whole reason a class is archived rather than deleted
+       is that last year's progress stays attached to something, and
+       refusing to read one made that promise unkeepable. The page shows
+       it read-only. */
+    where: { id: classId, orgId },
     select: {
-      name: true, yearGroup: true, code: true,
+      name: true, yearGroup: true, code: true, archivedAt: true,
       product: { select: { id: true, slug: true, name: true, weeksCount: true } },
       pupils: {
         orderBy: { name: "asc" },
@@ -142,6 +150,7 @@ export async function getClassProgress(orgId: string, classId: string): Promise<
   return {
     className: klass.name,
     yearGroup: klass.yearGroup,
+    archivedAt: klass.archivedAt,
     code: klass.code,
     courseName: courseName(klass.product.slug, klass.product.name),
     courseSlug: klass.product.slug,

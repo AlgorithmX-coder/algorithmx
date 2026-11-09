@@ -56,6 +56,18 @@
 .axtp .whatis {margin:0 0 12px;font-size:.92rem;line-height:1.5;padding:9px 13px;border-radius:9px;
   background:rgba(10,112,133,.07);border-left:3px solid var(--say-c)}
 .axtp .whatis b {font-weight:800}
+/* A class whose year has been ended. Warm rather than alarming: nothing has
+   gone wrong, but every child in it has stopped being able to sign in, and
+   the screen has to say so before a teacher wonders why a code died. */
+.axtp .ended {margin:0 0 12px;font-size:.92rem;line-height:1.5;padding:10px 14px;border-radius:9px;
+  background:rgba(165,17,127,.07);border-left:3px solid var(--warn)}
+.axtp .ended b {font-weight:800}
+.axtp .ended form {display:inline}
+/* The control that ends it. Dashed, set apart and at the bottom, because it
+   is a once-a-year job and not one to put next to the everyday buttons. */
+.axtp .endyear {margin:18px 0 0;padding:13px 15px;border-radius:10px;border:1px dashed var(--rule)}
+.axtp .endyear h4 {margin:0 0 5px;font:800 .9rem var(--font-nunito),system-ui,sans-serif;color:var(--ink)}
+.axtp .endyear p {margin:0 0 9px;font-size:.86rem;line-height:1.5;color:var(--muted)}
 .axtp .brand i {font-style:normal}
 .axtp .weeks {display:flex;gap:6px;margin-top:9px}
 /* Anchors, not buttons: each week is its own route now, so the picker opens in

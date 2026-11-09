@@ -11,7 +11,7 @@ import ClassStrip from "./ClassStrip";
 import ClassLink from "./ClassLink";
 import SignOut from "../../SignOut";
 import { wordsFor } from "../../words";
-import { movePupilAction, removePupilAction, resetPicturesAction } from "../class.actions";
+import { archiveClassAction, movePupilAction, removePupilAction, resetPicturesAction, unarchiveClassAction } from "../class.actions";
 
 /**
  * One class: who is in it, how they are getting on, and the jobs a teacher
@@ -56,6 +56,14 @@ export default async function ClassPage({ params }: { params: Promise<{ id: stri
      one the school actually uses rather than a domain in a config file. */
   const host = (await headers()).get("x-forwarded-host") ?? (await headers()).get("host") ?? "algorithmx.io";
   const left = school.seatsPurchased - school.seatsUsed;
+  /* An archived class is last year's. Both pupil sign-in gates filter it
+     out, so the code on the cards no longer works and nobody in it can get
+     in. Everything below that depends on the class being live is hidden
+     rather than left to fail quietly. */
+  const archived = klass.archivedAt !== null;
+  const endedOn = klass.archivedAt
+    ? new Date(klass.archivedAt).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })
+    : null;
   const waiting = klass.pupils.filter((p) => !p.signedIn).length;
 
   return (
@@ -79,23 +87,46 @@ export default async function ClassPage({ params }: { params: Promise<{ id: stri
           </div>
         </header>
 
-        <div className="board">
-          <div className="boardsay">
-            <h3>Put this on the board</h3>
-            <p>
-              It opens straight on the list of names, so nobody has to type the {w.group} code.
-              Write it up, bookmark it once on the {w.group} machines, or send it home.
+        {archived ? (
+          /* The board link and the code are hidden rather than greyed out,
+             because neither works any more: both pupil gates filter an
+             archived class, so the link opens on nothing and the code is
+             refused. A dead link on a classroom board is worse than no
+             link. */
+          <div className="ended">
+            <p style={{ margin: "0 0 9px" }}>
+              <b>This {w.group}&rsquo;s year ended on {endedOn}.</b> Nobody in it can sign in any
+              more and the {w.group} code has stopped working, which is what ending a year means.
+              Nothing has been deleted: the names, the pictures they chose and every week they
+              finished are all still here, and the places stay spent. You can still move a{" "}
+              {w.person} into a live {w.group} below.
             </p>
+            <form action={unarchiveClassAction}>
+              <input type="hidden" name="classId" value={id} />
+              <button type="submit" className="axbtn">Put this {w.group} back</button>
+            </form>
           </div>
-          <ClassLink host={host} code={klass.code} />
-        </div>
+        ) : (
+          <>
+            <div className="board">
+              <div className="boardsay">
+                <h3>Put this on the board</h3>
+                <p>
+                  It opens straight on the list of names, so nobody has to type the {w.group} code.
+                  Write it up, bookmark it once on the {w.group} machines, or send it home.
+                </p>
+              </div>
+              <ClassLink host={host} code={klass.code} />
+            </div>
 
-        <p className="whatis">
-          <b>The {w.group} code is <code className="axcode">{klass.code}</code>.</b> Children who
-          arrive any other way type this, pick their name, and tap their picture
-          password. The first time they sign in they choose that password, so there is nothing for
-          you to set up beforehand.
-        </p>
+            <p className="whatis">
+              <b>The {w.group} code is <code className="axcode">{klass.code}</code>.</b> Children
+              who arrive any other way type this, pick their name, and tap their picture password.
+              The first time they sign in they choose that password, so there is nothing for you to
+              set up beforehand.
+            </p>
+          </>
+        )}
 
         {klass.pupils.length > 0 && (
           <div className="run">
@@ -119,7 +150,7 @@ export default async function ClassPage({ params }: { params: Promise<{ id: stri
           </div>
         )}
 
-        <AddPupils classId={id} placesLeft={left} w={w} />
+        {!archived && <AddPupils classId={id} placesLeft={left} w={w} />}
 
         {klass.pupils.length === 0 ? (
           <div className="sheet">
@@ -153,7 +184,13 @@ export default async function ClassPage({ params }: { params: Promise<{ id: stri
                   </small>
                 </div>
                 <div className="rs pupilacts">
-                  {p.signedIn && (
+                  {/* Mid-lesson jobs, so they go once the year has ended:
+                      resetting pictures for a child who cannot sign in is
+                      nothing, and Remove on last year's class is a way to
+                      destroy the progress this class was kept for. Move
+                      stays, because a teacher who archived before moving
+                      the year group up still has to be able to. */}
+                  {!archived && p.signedIn && (
                     <form action={resetPicturesAction}>
                       <input type="hidden" name="childProfileId" value={p.id} />
                       <input type="hidden" name="classId" value={id} />
@@ -182,11 +219,13 @@ export default async function ClassPage({ params }: { params: Promise<{ id: stri
                       <button type="submit" className="axbtn">Move</button>
                     </form>
                   )}
-                  <form action={removePupilAction}>
-                    <input type="hidden" name="childProfileId" value={p.id} />
-                    <input type="hidden" name="classId" value={id} />
-                    <button type="submit" className="revoke">Remove</button>
-                  </form>
+                  {!archived && (
+                    <form action={removePupilAction}>
+                      <input type="hidden" name="childProfileId" value={p.id} />
+                      <input type="hidden" name="classId" value={id} />
+                      <button type="submit" className="revoke">Remove</button>
+                    </form>
+                  )}
                 </div>
               </div>
             ))}
@@ -195,6 +234,22 @@ export default async function ClassPage({ params }: { params: Promise<{ id: stri
               <span className="pip in_progress" /> started
               <span className="pip not_started" /> not started
             </p>
+          </div>
+        )}
+
+        {!archived && (
+          <div className="endyear">
+            <h4>End this {w.group}&rsquo;s year</h4>
+            <p>
+              Do this in July, once the {w.people} have moved up. It stops everybody in this{" "}
+              {w.group} signing in and retires the {w.group} code, so move anyone carrying on into
+              their new {w.group} first. Nothing is deleted and no place comes back: the work stays
+              here to look at, and you can put the {w.group} back if you do it by mistake.
+            </p>
+            <form action={archiveClassAction}>
+              <input type="hidden" name="classId" value={id} />
+              <button type="submit" className="revoke">End the year for this {w.group}</button>
+            </form>
           </div>
         )}
 
