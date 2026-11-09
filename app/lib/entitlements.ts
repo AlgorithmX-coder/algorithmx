@@ -19,9 +19,41 @@ export async function hasEntitlement(
   if (!userId || !productSlug) return false;
   const row = await prisma.entitlement.findFirst({
     where: { userId, product: { slug: productSlug } },
-    select: { id: true },
+    select: { id: true, source: true },
   });
-  return row !== null;
+  if (!row) return false;
+  /* A BUNDLE grant is the organisation's access, not the person's: it came
+     with a school place or a firm seat and was never bought by whoever is
+     holding it. So closing that org's access closes this too. Checked only
+     for BUNDLE, which means an individual's own PURCHASE or a comped
+     MANUAL grant never pays for the extra read and can never be switched
+     off by somebody else's licence ending. */
+  if (row.source === "BUNDLE" && (await accessClosedFor(userId))) return false;
+  return true;
+}
+
+/**
+ * True when this person's access came from an organisation whose access
+ * staff have closed.
+ *
+ * Revoking used to stop the adults and nobody else. The teacher dashboard,
+ * the head's portal and the firm console all checked `revokedAt`, so a
+ * school that stopped paying lost its staff screens while every child it
+ * had already added carried on playing indefinitely: the schema said so in
+ * as many words, calling it "a deliberate, smaller first cut rather than
+ * touching the live kids' lesson-loading path".
+ *
+ * Two ways in, because the two sides of the product reach an org
+ * differently: a pupil through the class they sit in, a firm learner
+ * through the seat they claimed.
+ */
+export async function accessClosedFor(userId: string): Promise<boolean> {
+  if (!userId) return false;
+  const [pupilOfClosed, seatAtClosed] = await Promise.all([
+    prisma.childProfile.count({ where: { userId, class: { org: { revokedAt: { not: null } } } } }),
+    prisma.seat.count({ where: { userId, org: { revokedAt: { not: null } } } }),
+  ]);
+  return pupilOfClosed > 0 || seatAtClosed > 0;
 }
 
 /**
@@ -34,9 +66,13 @@ export async function getOwnedProductSlugs(
   if (!userId) return new Set();
   const rows = await prisma.entitlement.findMany({
     where: { userId },
-    select: { product: { select: { slug: true } } },
+    select: { source: true, product: { select: { slug: true } } },
   });
-  return new Set(rows.map((r) => r.product.slug));
+  /* Must agree with hasEntitlement or the catalogue offers a course that
+     the gate then refuses. Asked once for the whole set, and only when
+     there is a BUNDLE row that could be affected. */
+  const closed = rows.some((r) => r.source === "BUNDLE") ? await accessClosedFor(userId) : false;
+  return new Set(rows.filter((r) => !(closed && r.source === "BUNDLE")).map((r) => r.product.slug));
 }
 
 /**

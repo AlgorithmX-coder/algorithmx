@@ -477,10 +477,12 @@ model Organisation {
   /// once staff convert the org to a real paid or manual deal.
   trialExpiresAt  DateTime?
   /// Set by staff to close an org's access immediately - independent of
-  /// trial/paid status. For a school this blocks the teacher dashboard
-  /// and new pupils; pupils already added keep playing (no code path
-  /// ties their lesson access to org status - a deliberate, smaller
-  /// first cut rather than touching the live kids' lesson-loading path).
+  /// trial/paid status. It closes the adults' screens AND the learners:
+  /// a child at a closed school cannot find their class to sign in, and a
+  /// BUNDLE entitlement (the kind a school place or a firm seat grants)
+  /// stops counting while revokedAt is set. See accessClosedFor in
+  /// app/lib/entitlements.ts. Nothing is deleted, so unrevoking restores
+  /// every pupil, seat and piece of progress exactly as it was.
   revokedAt       DateTime?
 
   members        OrgMember[]
