@@ -46,7 +46,11 @@ export async function lookupClass(rawCode: string): Promise<ClassLookup | null> 
   if (!code || code.length > 16) return null;
 
   const klass = await prisma.class.findFirst({
-    where: { code, archivedAt: null },
+    /* A closed school has no classes to find. The child is told the same
+       thing as for a wrong code, which is "ask your teacher": a child must
+       never be the one told their school's access has ended, and the
+       teacher is reading that on their own portal already. */
+    where: { code, archivedAt: null, org: { revokedAt: null } },
     select: {
       name: true,
       pupils: {
@@ -95,8 +99,10 @@ export async function authorisePupil(
   if (!childProfileId || !isSequence(sequence)) return { ok: false, reason: "bad_sequence" };
 
   const child = await prisma.childProfile.findFirst({
-    /* the class must still be live: an archived class is last year's */
-    where: { id: childProfileId, class: { archivedAt: null } },
+    /* The class must still be live: an archived class is last year's, and a
+       closed school's classes are nobody's. Both are also filtered in
+       lookupClass, so this is the second gate on a page left open. */
+    where: { id: childProfileId, class: { archivedAt: null, org: { revokedAt: null } } },
     select: { name: true, user: { select: { id: true, hashedPassword: true } } },
   });
   if (!child) return { ok: false, reason: "unknown" };

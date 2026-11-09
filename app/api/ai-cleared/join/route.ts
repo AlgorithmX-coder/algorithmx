@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
 
   const result = await claimSeat({ token: parsed.data.token, userId: session.user.id, track: parsed.data.track });
   if (!result.ok) {
-    const status = result.reason === "not-found" ? 404 : result.reason === "taken" || result.reason === "needs-cleared" ? 409 : 500;
+    const status = result.reason === "not-found" ? 404 : result.reason === "taken" || result.reason === "needs-cleared" || result.reason === "closed" ? 409 : 500;
     const message =
       result.reason === "not-found"
         ? "That invite link is not valid. Ask your admin for a new one."
@@ -32,7 +32,9 @@ export async function POST(req: NextRequest) {
           ? "That seat has already been claimed by someone else."
           : result.reason === "needs-cleared"
             ? "AI Fluent needs a valid AI Cleared certificate on this login first. Finish AI Cleared, then open this link again."
-            : "The course is not set up yet. Ask your admin.";
+            : result.reason === "closed"
+              ? "Your firm's access to this course is closed. Your admin can reopen it with us at admissions@algorithmx.co.uk."
+              : "The course is not set up yet. Ask your admin.";
     return Response.json({ error: message }, { status });
   }
   return Response.json({ ok: true, orgName: result.orgName, redirect: COURSES[result.course].base });

@@ -2,9 +2,11 @@ import { prisma } from "@/app/lib/prisma";
 import { opsAlert } from "@/app/lib/opsAlert";
 
 /* Closing an org's access immediately, independent of trial/paid status
- * - shared by schools and firms since both are Organisation rows. See
- * the revokedAt field comment in schema.prisma for the school-pupil
- * caveat (this does not retroactively cut off pupils already added).
+ * - shared by schools and firms since both are Organisation rows. It
+ * reaches the learners as well as the adults: a child at a closed school
+ * cannot find their class to sign in, and accessClosedFor in
+ * app/lib/entitlements.ts stops every BUNDLE entitlement the org granted.
+ * Nothing is deleted, so unrevokeOrg restores all of it untouched.
  * Server-only (Prisma) - never import from a client component. "Is it
  * revoked" is a plain truthiness check on the field (no date math, so
  * no shared pure helper needed the way trialStatus() has one). */
