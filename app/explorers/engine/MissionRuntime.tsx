@@ -49,7 +49,6 @@ import type {
   MissionManifest,
 } from "./types";
 import { checkpointStorageKey, xpForEvent } from "./types";
-import { BLOCK_FILMS, BlockFilm, filmId, filmSeen, markFilmSeen } from "./BlockFilm";
 import { BlockBackdrop } from "../BlockBackdrop";
 import { resolveCaseTheme, CaseThemeProvider, useCaseTheme } from "./caseThemes";
 import Inspect from "../mechanics/Inspect";
@@ -314,7 +313,6 @@ export default function MissionRuntime({ manifest, devStartBeat, onExit, onNextC
   const [ledgerOpen, setLedgerOpen] = useState(false);
   const [hydrated, setHydrated] = useState(false);
   const [xpPop, setXpPop] = useState<{ amount: number; key: number } | null>(null);
-  const [filmToPlay, setFilmToPlay] = useState<{ kind: "intro" | "outro"; id: string } | null>(null);
   /** Boss beaten — the red alarm glow switches off on the BOSS DOWN screen. */
   const [bossDown, setBossDown] = useState(false);
   useEffect(() => { if (pos.beat !== "incident") setBossDown(false); }, [pos.beat]);
@@ -367,38 +365,6 @@ export default function MissionRuntime({ manifest, devStartBeat, onExit, onNextC
     setEvents((prev) => [...prev, e]);
   }, []);
 
-  const finishFilm = useCallback(() => {
-    setFilmToPlay((f) => {
-      if (f) markFilmSeen(f.id);
-      return null;
-    });
-  }, []);
-
-  /* Block INTRO film: the first time a kid opens a block's opening case. */
-  useEffect(() => {
-    if (!hydrated || resumeOffer || filmToPlay) return;
-    if (pos.beat !== "transmission") return; // fresh start only, never mid-mission
-    const cfg = BLOCK_FILMS[manifest.block];
-    if (!cfg || cfg.openerId !== manifest.id || !cfg.intro) return;
-    const id = filmId(manifest.block, "intro");
-    if (filmSeen(id)) return;
-    stopWren();
-    setFilmToPlay({ kind: "intro", id });
-    // pos.beat read for the fresh-start guard; effect keys off hydration/resume
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [hydrated, resumeOffer, manifest.block, manifest.id]);
-
-  /* Block OUTRO film: when a kid closes the block's final case. */
-  useEffect(() => {
-    if (pos.beat !== "closed" || resumeOffer || filmToPlay) return;
-    const cfg = BLOCK_FILMS[manifest.block];
-    if (!cfg || cfg.closerId !== manifest.id || !cfg.outro) return;
-    const id = filmId(manifest.block, "outro");
-    if (filmSeen(id)) return;
-    stopWren();
-    setFilmToPlay({ kind: "outro", id });
-  }, [pos.beat, resumeOffer, filmToPlay, manifest.block, manifest.id]);
-
   /** Advance; crossing a step boundary opens a MAP MOMENT. */
   const advance = useCallback(() => {
     audio.click();
@@ -432,13 +398,12 @@ export default function MissionRuntime({ manifest, devStartBeat, onExit, onNextC
 
   // `autostart`: the per-mission ATLAS briefing (SignalMissionIntro) already
   // is the "press to begin" screen MissionStartScene exists for, so a fresh
-  // start (no resume offer, no block film still queued) skips straight into
-  // the mission instead of showing a second start screen. A real resume
-  // offer, or a block intro film still to play, is never bypassed.
+  // start (no resume offer) skips straight into the mission instead of
+  // showing a second start screen. A real resume offer is never bypassed.
   useEffect(() => {
-    if (autostart && hydrated && !resumeOffer && !filmToPlay && pos.beat === "transmission") startMission();
+    if (autostart && hydrated && !resumeOffer && pos.beat === "transmission") startMission();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [autostart, hydrated, resumeOffer, filmToPlay]);
+  }, [autostart, hydrated, resumeOffer]);
 
   // UAT-only: jump straight past the CURRENT skill/boss/test entirely —
   // learn, practice, checkpoint, whatever exercise is mid-flight — rather
@@ -502,7 +467,7 @@ export default function MissionRuntime({ manifest, devStartBeat, onExit, onNextC
   const cycleVoiceRate = () => setVoiceRate(VOICE_RATES[(VOICE_RATES.indexOf(voiceRate) + 1) % VOICE_RATES.length]);
   const atStart = intro && (pos.beat === "transmission" || pos.beat === "briefing");
   useIsoLayoutEffect(() => {
-    if (resumeOffer || filmToPlay) {
+    if (resumeOffer) {
       stopWren();
       return;
     }
@@ -515,7 +480,7 @@ export default function MissionRuntime({ manifest, devStartBeat, onExit, onNextC
     // the race and cut them off on entry (this is why "Time for the Test"
     // never actually played, even with voice on).
     else if (pos.beat !== "cycle" && pos.beat !== "catch") stopWren();
-  }, [atStart, pos.beat, resumeOffer, filmToPlay, voiceOn, manifest.voice]);
+  }, [atStart, pos.beat, resumeOffer, voiceOn, manifest.voice]);
   useEffect(() => () => stopWren(), []);
 
   // The base/identity beats (transmission, learn, catch, default) come back as
@@ -582,23 +547,6 @@ export default function MissionRuntime({ manifest, devStartBeat, onExit, onNextC
           it, this "full-screen" glow was trapped to the content box, which
           read as a cramped red rectangle flush against the boss text. */}
       {pos.beat === "incident" && !bossDown && !reduced && !resumeOffer && mapGate === null && <div className="sr-alert-edge" aria-hidden />}
-
-      {filmToPlay &&
-        (() => {
-          const cfg = BLOCK_FILMS[manifest.block];
-          const film = filmToPlay.kind === "intro" ? cfg?.intro : cfg?.outro;
-          if (!film) return null;
-          return (
-            <BlockFilm
-              film={film}
-              label={cfg.label}
-              kind={filmToPlay.kind}
-              block={manifest.block}
-              reduced={reduced}
-              onDone={finishFilm}
-            />
-          );
-        })()}
 
       {/* HUD — terminal chrome */}
       <div style={{ position: "relative", zIndex: 2, borderBottom: `1px solid ${T.arcCyan}2E`, background: "rgba(8,14,26,0.82)", backdropFilter: "blur(8px)" }}>
@@ -695,7 +643,7 @@ export default function MissionRuntime({ manifest, devStartBeat, onExit, onNextC
 
       {/* HARD LOCK: while WREN is talking, NOTHING on the page is clickable.
           A full-viewport catcher sits above the HUD (z2), the content (z1) and the
-          dev tools (z3) — z50, just under a cinematic (z60) — and swallows every
+          dev tools (z3) — z50 — and swallows every
           pointer event. Kids can't tap ahead, re-trigger a line, navigate away, or
           toggle voice until she finishes. Auto-clears when the clip ends; audio.ts
           also has duration + 20s safety timers so it can never stick. */}
