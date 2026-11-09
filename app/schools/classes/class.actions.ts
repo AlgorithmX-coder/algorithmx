@@ -34,7 +34,7 @@ function saidFor(w: SchoolWords): Record<ClassFailure, string> {
     seats_full: "That would go over your licence.",
     bad_name: `Give the ${w.group} a name, up to 40 characters.`,
     bad_year: `${w.yearLabel} should be a number between 1 and 13.`,
-    bad_course: `Pick one of the four courses for this ${w.group}.`,
+    bad_course: `Pick one of the courses for this ${w.group}.`,
     class_not_found: `That ${w.group} does not exist, or it belongs to another ${w.noun}.`,
     bad_pupil_name: "One of those names is too long.",
     no_pupils: "Type at least one name.",

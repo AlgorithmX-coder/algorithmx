@@ -10,7 +10,7 @@ import Link from "next/link";
  *
  * Names no course. This screen is the gate for the classes page and the
  * overview as well as the packs, and a licence buys places that a school
- * spends on whichever of the four courses it likes. Saying "a Cyber Heroes
+ * spends on whichever of the school courses it likes. Saying "a Cyber Heroes
  * licence" here was wrong for every school that bought something else.
  */
 export default function Locked({ email }: { email?: string | null }) {

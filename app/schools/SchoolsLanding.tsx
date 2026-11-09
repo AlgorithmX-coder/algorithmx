@@ -104,14 +104,26 @@ const STEPS = [
   { n: "04", colour: "#8a5400", title: "Get the class report", text: "A detailed breakdown of the class and feedback on every pupil: who finished, what they found hard, and a certificate each to take home." },
 ];
 
-/* The four courses, in the order a school meets them. Ages match the
-   course landings; nothing here is a claim we cannot show on those pages. */
+/* The courses a school can actually run, in the order it meets them. Ages
+   match the course landings; nothing here is a claim we cannot show on those
+   pages.
+
+   CYBER PRO CAME OUT (owner, 2026-11-09). It was listed here at "Ages 18+"
+   while being withdrawn from the teacher's course picker, and selling a
+   school a course it cannot then put a class on is worse than not offering
+   it at all. Pro remains the consumer course at /pro. If a sixth form or a
+   college should be able to buy it, it goes back in both places together,
+   and its class progress has to be made to work first: Pro keeps progress in
+   its own table, which the teacher's class view does not read. */
 const COURSE_MARKS: ReadonlyArray<{ id: LockupId; ages: string; accent: string }> = [
   { id: "heroes", ages: "Ages 6 to 9", accent: "#8a5400" },
   { id: "explorers", ages: "Ages 10 to 13", accent: "#0a6675" },
   { id: "ops", ages: "Ages 14 to 17", accent: "#5744c9" },
-  { id: "pro", ages: "Ages 18+", accent: "#a63a08" },
 ];
+
+/* Spelled out, because a numeral in running copy reads as a statistic. */
+const COUNT_WORDS = ["no", "one", "two", "three", "four", "five", "six"] as const;
+const COURSE_COUNT: string = COUNT_WORDS[COURSE_MARKS.length] ?? String(COURSE_MARKS.length);
 
 const PILLARS = [
   {
@@ -519,7 +531,11 @@ export default function SchoolsLanding() {
           <FadeUp delay={0.2}>
             <div className="sch-marks">
               <div className="sch-marks-courses">
-                <p className="sch-marks-label">{"// One platform, four courses"}</p>
+                {/* Counted from the list rather than written as a word, so
+                    the label cannot go on saying "four" after a course is
+                    added or withdrawn. It was saying four at the moment
+                    Cyber Pro came out of the picker. */}
+                <p className="sch-marks-label">{`// One platform, ${COURSE_COUNT} courses`}</p>
                 <ul className="sch-marks-row">
                   {COURSE_MARKS.map((m) => (
                     /* Same links as the homepage chips, from the same map. */
