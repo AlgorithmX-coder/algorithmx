@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { safeCourseSlug, courseHomeFor, CATALOGUE } from "./courseIntent";
+import { safeCourseSlug, courseHomeFor, pupilCourseHomeFor, CATALOGUE } from "./courseIntent";
 
 describe("safeCourseSlug", () => {
   it("accepts catalog slug shapes", () => {
@@ -40,5 +40,34 @@ describe("courseHomeFor", () => {
 
   it("an unknown course goes to the catalogue rather than nowhere", () => {
     expect(courseHomeFor("some-future-course")).toBe(CATALOGUE);
+  });
+});
+
+describe("pupilCourseHomeFor", () => {
+  /* A school pupil's class can be on any of the four courses. The login
+   * used to send every child to the Cyber Heroes hub whatever their class
+   * ran, so a place came off the school's licence and the child landed
+   * somewhere with none of their own lessons on it. */
+  it("sends a child to the course their own class runs", () => {
+    expect(pupilCourseHomeFor("cyber-heroes")).toBe("/cyberhq");
+    expect(pupilCourseHomeFor("cyberexplorers")).toBe("/explorers");
+    expect(pupilCourseHomeFor("cyberstart")).toBe("/operators/portfolio");
+    expect(pupilCourseHomeFor("cyberstart-pro")).toBe("/pro/course");
+  });
+
+  /* The adult's screen carries a sign-out and the account's children on
+   * it, which is not what a child on a classroom device should be given. */
+  it("never sends a child to the adult dashboard", () => {
+    for (const slug of ["cyber-heroes", "cyberexplorers", "cyberstart", "cyberstart-pro", "some-future-course", null]) {
+      expect(pupilCourseHomeFor(slug)).not.toBe("/dashboard");
+    }
+  });
+
+  /* The catalogue invites you to buy a course, so it is the wrong fallback
+   * for a nine year old whose class has gone missing. */
+  it("falls back to Cyber Heroes, never to the catalogue", () => {
+    expect(pupilCourseHomeFor(null)).toBe("/cyberhq");
+    expect(pupilCourseHomeFor("some-future-course")).toBe("/cyberhq");
+    expect(pupilCourseHomeFor(null)).not.toBe(CATALOGUE);
   });
 });
