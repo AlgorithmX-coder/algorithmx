@@ -141,20 +141,68 @@ function esc(s: string): string {
   return s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c] as string);
 }
 
+/**
+ * What a firm may still invite on a course: the seats it bought, less the
+ * seats it already holds.
+ *
+ * Every seat on the course counts, whatever its role, including the admin
+ * seat created along with the firm. It has to be every role for two
+ * reasons: the console lets an admin invite a MANAGER or a second ADMIN,
+ * and claiming a seat of any role grants the course, so exempting a role
+ * would hand free seats to anyone who picked it from the dropdown.
+ *
+ * Deliberately the same number the console already prints as "N invited",
+ * so a refusal agrees with what the admin is looking at.
+ */
+export async function seatsLeft(orgId: string, course: CourseSlug): Promise<{ licensed: number; used: number; left: number }> {
+  const [org, used] = await Promise.all([
+    prisma.organisation.findUnique({ where: { id: orgId }, select: { seatsPurchased: true, fluentSeatsPurchased: true } }),
+    prisma.seat.count({ where: { orgId, course: COURSES[course].key } }),
+  ]);
+  const licensed = course === "ai-fluent" ? org?.fluentSeatsPurchased ?? 0 : org?.seatsPurchased ?? 0;
+  return { licensed, used, left: Math.max(0, licensed - used) };
+}
+
+export type InviteSeatsResult =
+  | { ok: true; created: { email: string; token: string }[]; skipped: string[]; emailFailed: string[] }
+  | { ok: false; error: "seats_full"; licensed: number; used: number; left: number; asked: number };
+
 /* Create seats for new addresses on a course and email each an invite
  * link. An address that already has a seat on that course is skipped,
  * never duplicated. Emails go out under the admin's name with reply-to
- * set to them. */
-export async function inviteSeats(args: { orgId: string; orgSlug: string; firmName: string; emails: string[]; team?: string | null; track?: Track | null; role?: OrgRole; course?: CourseSlug; origin: string; adminName: string; adminEmail: string | null }) {
+ * set to them. Refused outright once the firm's seats are all taken. */
+export async function inviteSeats(args: { orgId: string; orgSlug: string; firmName: string; emails: string[]; team?: string | null; track?: Track | null; role?: OrgRole; course?: CourseSlug; origin: string; adminName: string; adminEmail: string | null; staff?: boolean }): Promise<InviteSeatsResult> {
   const course = args.course ?? "ai-cleared";
   const key = COURSES[course].key;
   const clean = Array.from(new Set(args.emails.map((e) => e.trim().toLowerCase()).filter((e) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e))));
   const existing = await prisma.seat.findMany({ where: { orgId: args.orgId, course: key, email: { in: clean } }, select: { email: true } });
   const have = new Set(existing.map((e) => e.email));
+  const wanted = clean.filter((e) => !have.has(e));
+
+  /* The licence, enforced. Until this check a firm that bought ten seats
+     could invite five hundred and every one of them got the course: the
+     purchased count was taken at checkout, shown on this very screen, and
+     never compared against anything. The whole batch is refused rather
+     than its first few, because quietly taking part of a pasted list
+     leaves an admin with no way of knowing which addresses went out.
+     AlgorithmX staff acting on a firm from the ops console are not
+     capped, and must not be: a firm's seat count can only be set when
+     the firm is created, so until there is a control for changing it,
+     going over is the only way to honour "add two seats and invoice us".
+     The leak this closes is the firm's own admin, who cannot reach that
+     path (orgRef is refused to anyone who is not staff).
+
+     Two admins inviting in the same second can still overshoot by a seat
+     or two, the same bounded race the school side lives with; closing
+     that needs a constraint in the database, not a second read here. */
+  const standing = await seatsLeft(args.orgId, course);
+  if (!args.staff && wanted.length > standing.left) {
+    return { ok: false, error: "seats_full", licensed: standing.licensed, used: standing.used, left: standing.left, asked: wanted.length };
+  }
+
   const created: { email: string; token: string }[] = [];
   const failed: string[] = [];
-  for (const email of clean) {
-    if (have.has(email)) continue;
+  for (const email of wanted) {
     const t = token(`${args.orgSlug.slice(0, 6)}${course === "ai-fluent" ? "-f" : ""}`);
     await prisma.seat.create({ data: { orgId: args.orgId, email, inviteToken: t, team: args.team ?? null, trackHint: args.track ? TRACK_TO_DB[args.track] : null, role: args.role ?? "LEARNER", course: key } });
     created.push({ email, token: t });
@@ -166,7 +214,7 @@ export async function inviteSeats(args: { orgId: string; orgSlug: string; firmNa
     }
   }
   if (failed.length) await opsAlert({ what: "Invite emails did not send", detail: { firm: args.firmName, course, failed, origin: args.origin, links: created.filter((c) => failed.includes(c.email)).map((c) => `${c.email}: ${args.origin}/ai-cleared/join/${c.token}`) } });
-  return { created, skipped: clean.filter((e) => have.has(e)), emailFailed: failed };
+  return { ok: true, created, skipped: clean.filter((e) => have.has(e)), emailFailed: failed };
 }
 
 export async function sendInvite(args: { to: string; token: string; firmName: string; origin: string; adminName: string; adminEmail: string | null; course?: CourseSlug }) {
