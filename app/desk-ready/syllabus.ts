@@ -65,7 +65,7 @@ export const PARTS: readonly DeskPart[] = [
         title: "Writing a work email",
         promise: "Write a clear, polite work email that gets a reply.",
         topics: ["A subject line that says what is inside", "Starting it off: greetings", "Say what you need, once", "Signing off and your signature", "Polite but direct: chasing and saying sorry"],
-        ready: false,
+        ready: true,
       },
       {
         id: "m3",
