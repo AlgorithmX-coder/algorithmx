@@ -259,8 +259,8 @@ export default function CourseHome() {
         .cs-next-title { margin: 10px 0 0; font-family: ${D.display}; font-size: clamp(1.6rem, 3vw, 2.2rem); line-height: 1.12; letter-spacing: -0.02em; font-weight: 500; color: ${D.ink}; }
         .cs-next-sub { margin: 10px 0 0; font-size: 17px; line-height: 1.5; color: ${D.muted}; }
         .cs-next-cta { margin-top: 20px; display: inline-flex; align-items: center; gap: 10px; min-height: 50px; padding: 0 26px; border-radius: 999px; background: ${D.action}; color: ${D.onAccent}; font-family: ${D.display}; font-weight: 600; font-size: 16.5px; box-shadow: ${D.actionGlow}; }
-        .cs-next-art { flex-shrink: 0; transform: scale(1.75); transform-origin: center right; margin: 0 26px 0 90px; }
-        .cs-next-art .dr-pv { transform: rotate(-3deg); }
+        .cs-next-art { flex-shrink: 0; margin: 0 10px 0 20px; }
+        .cs-next-art .dr-pv { width: 340px; transform: rotate(-3deg); }
 
         .cs-h2 { margin: 10px 0 0; font-family: ${D.display}; font-size: clamp(1.8rem, 3.2vw, 2.5rem); line-height: 1.08; letter-spacing: -0.025em; font-weight: 500; color: ${D.ink}; }
         .cs-parts { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 18px; margin-top: 26px; }
@@ -272,7 +272,9 @@ export default function CourseHome() {
         .cs-ghost { position: absolute; right: 14px; bottom: -22px; z-index: -1; font-family: ${D.display}; font-size: 120px; font-weight: 700; line-height: 1; letter-spacing: -0.05em; color: var(--acc); opacity: 0.07; pointer-events: none; }
         .cs-part-titles { grid-area: titles; padding-top: 6px; min-width: 0; }
         .cs-part h3 { margin: 6px 0 0; font-family: ${D.display}; font-size: clamp(1.3rem, 1.9vw, 1.55rem); line-height: 1.1; letter-spacing: -0.02em; font-weight: 500; color: ${D.ink}; }
-        .cs-part .dr-pv { grid-area: pv; align-self: start; }
+        .cs-part .dr-pv { grid-area: pv; align-self: start; width: 230px; }
+        .cs-part.narrow .dr-pv { width: 136px; }
+        .cs-part.narrow h3 { font-size: clamp(1.2rem, 1.6vw, 1.4rem); }
         .cs-mods { grid-area: mods; list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(var(--cols), minmax(0, 1fr)); gap: 10px; align-content: start; }
         .cs-mods li { display: flex; }
         .cs-mod { flex: 1; display: flex; flex-direction: column; gap: 4px; padding: 13px 14px 14px; border-radius: 14px; background: rgba(255,255,255,0.03); border: 1px dashed rgba(255,255,255,0.1); color: ${D.muted}; text-decoration: none; opacity: 0.75; }
@@ -301,6 +303,7 @@ export default function CourseHome() {
         @media (max-width: 980px) {
           .cs-hero { grid-template-columns: 1fr; }
           .cs-part { grid-column: span 12; }
+          .cs-part.narrow .dr-pv { width: 230px; }
           .cs-mods { grid-template-columns: repeat(auto-fill, minmax(min(100%, 220px), 1fr)); }
           .cs-next-art { display: none; }
         }

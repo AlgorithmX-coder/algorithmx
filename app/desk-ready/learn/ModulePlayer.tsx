@@ -162,8 +162,8 @@ const MODULE_CSS = `
   .mp-count { font-family: ${D.mono}; font-size: 12px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: ${D.faint}; }
   .mp-bar { margin-top: 18px; max-width: 420px; height: 6px; border-radius: 99px; background: rgba(255,255,255,0.08); overflow: hidden; }
   .mp-bar span { display: block; height: 100%; border-radius: 99px; background: var(--acc); box-shadow: 0 0 12px var(--acc); transition: width .4s ease; }
-  .mp-hero-art { width: 272px; height: 172px; display: flex; align-items: center; justify-content: center; }
-  .mp-hero-art .dr-pv { transform: scale(2) rotate(-3deg); }
+  .mp-hero-art { display: flex; align-items: center; justify-content: center; }
+  .mp-hero-art .dr-pv { width: 360px; transform: rotate(-3deg); }
 
   .mp-outcomes { margin-top: 22px; padding: 22px 26px; border-radius: 20px; background: ${D.glass}; border: 1px solid ${D.edge}; }
   .mp-outcomes ul { list-style: none; margin: 14px 0 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 12px 26px; }
