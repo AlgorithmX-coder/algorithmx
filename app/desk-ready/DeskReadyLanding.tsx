@@ -166,7 +166,20 @@ const WHO = [
   },
 ];
 
-const PART_ACCENT = ["#8a5400", "#2b59c3", "#0e7a45", "#0a7085", "#5744c9", "#a5117f"];
+/* Bright accents: the part cards are dark panels. */
+const PART_ACCENT = ["#f0b450", "#7fb2ff", "#4cc38a", "#5fd0d8", "#9d8cff", "#ff8fe0"];
+
+/* The bento: each part's width (of 12 columns) and how many module tiles sit
+ * side by side, so a one-module part is narrow and a four-module part wide,
+ * and the cards in a row end at the same height. In syllabus order. */
+const PART_LAYOUT: ReadonlyArray<{ span: number; cols: number }> = [
+  { span: 4, cols: 1 }, // Getting comfortable: 1 module
+  { span: 8, cols: 3 }, // Email: 3
+  { span: 7, cols: 2 }, // Spreadsheets: 4
+  { span: 5, cols: 1 }, // Documents and files: 2
+  { span: 8, cols: 3 }, // The everyday office: 3
+  { span: 4, cols: 1 }, // Getting the job: 1
+];
 
 /* One glyph per part, in order: the pointer, the inbox, the sheet, the
  * folder, the everyday office (with AI), the job. */
@@ -445,33 +458,53 @@ export default function DeskReadyLanding({ priceGBP }: { priceGBP: number }) {
           </FadeUp>
           <div className="dr-parts">
             {PARTS.map((p, i) => (
-              <FadeUp key={p.id} delay={0.05 * i}>
-                <article className="dr-part" style={{ "--dr-accent": PART_ACCENT[i] } as CSSProperties}>
-                  <span className="dr-part-glyph" aria-hidden>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round">
-                      {PART_GLYPH[i]}
-                    </svg>
-                  </span>
-                  <span className="dr-part-tag">{p.label}</span>
-                  <h3>{p.title}</h3>
-                  <p className="dr-part-blurb">{p.blurb}</p>
-                  <ol className="dr-part-list">
-                    {p.modules.map((m) => (
-                      <li key={m.id} data-n={String(m.number).padStart(2, "0")}>
-                        <b>{m.title}</b>
-                        <span>{m.promise}</span>
-                      </li>
-                    ))}
-                  </ol>
-                </article>
-              </FadeUp>
+              <div key={p.id} className="dr-part-cell" style={{ "--span": PART_LAYOUT[i].span } as CSSProperties}>
+                <FadeUp delay={0.05 * i}>
+                  <article className="dr-part" style={{ "--dr-accent": PART_ACCENT[i], "--cols": PART_LAYOUT[i].cols } as CSSProperties}>
+                    <span className="dr-part-ghost" aria-hidden>
+                      {String(i).padStart(2, "0")}
+                    </span>
+                    <header className="dr-part-head">
+                      <span className="dr-part-glyph" aria-hidden>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round">
+                          {PART_GLYPH[i]}
+                        </svg>
+                      </span>
+                      <span>
+                        <span className="dr-part-tag">
+                          {p.label} · {p.modules.length} {p.modules.length === 1 ? "module" : "modules"}
+                        </span>
+                        <h3>{p.title}</h3>
+                      </span>
+                    </header>
+                    <p className="dr-part-blurb">{p.blurb}</p>
+                    <ol className="dr-mods">
+                      {p.modules.map((m) => (
+                        <li key={m.id} className="dr-mod">
+                          <span className="dr-mod-n">{String(m.number).padStart(2, "0")}</span>
+                          <b>{m.title}</b>
+                          <span className="dr-mod-p">{m.promise}</span>
+                        </li>
+                      ))}
+                    </ol>
+                  </article>
+                </FadeUp>
+              </div>
             ))}
           </div>
           <FadeUp delay={0.1}>
             <article className="dr-final">
-              <span className="dr-part-tag" style={{ color: "#a5117f" }}>The final task</span>
-              <h3>{FINAL.title}</h3>
-              <p>{FINAL.promise}</p>
+              <span className="dr-final-glyph" aria-hidden>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M6 3h12v4a6 6 0 0 1-12 0z" />
+                  <path d="M6 5H3v1a4 4 0 0 0 4 4M18 5h3v1a4 4 0 0 1-4 4M12 13v4M8 21h8M10 17h4v4h-4z" />
+                </svg>
+              </span>
+              <span>
+                <span className="dr-part-tag">The final task</span>
+                <h3>{FINAL.title}</h3>
+                <p>{FINAL.promise}</p>
+              </span>
             </article>
           </FadeUp>
         </section>
@@ -726,44 +759,69 @@ export default function DeskReadyLanding({ priceGBP }: { priceGBP: number }) {
         .dr-grid-4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; }
         .dr-grid-3 > *, .dr-grid-4 > * { height: 100%; }
 
-        /* the course: six parts */
-        .dr-parts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; margin-top: 34px; align-items: stretch; }
-        .dr-parts > * { height: 100%; }
+        /* the course: six parts, as dark panels in a bento grid */
+        .dr-parts { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 18px; margin-top: 34px; align-items: stretch; }
+        .dr-part-cell { grid-column: span var(--span); }
+        .dr-part-cell > * { height: 100%; }
         .dr-part {
-          position: relative; display: flex; flex-direction: column; gap: 8px; height: 100%; box-sizing: border-box; padding: 24px 22px 22px; border-radius: 18px;
-          background: linear-gradient(180deg, rgba(255,253,248,0.9), rgba(244,239,231,0.85));
-          border: 1px solid rgba(20,22,29,0.22); border-top: 3px solid var(--dr-accent);
-          box-shadow: inset 0 1px 0 rgba(255,255,255,0.5), 0 26px 60px -40px var(--dr-accent);
-          transition: transform .25s ease, box-shadow .25s ease;
+          position: relative; overflow: hidden; isolation: isolate; height: 100%; box-sizing: border-box;
+          display: flex; flex-direction: column; gap: 12px; padding: 22px 22px 20px; border-radius: 20px;
+          background:
+            radial-gradient(120% 90% at 100% 0%, color-mix(in srgb, var(--dr-accent) 22%, transparent), transparent 60%),
+            linear-gradient(170deg, #111a33, #090e1c);
+          border: 1px solid color-mix(in srgb, var(--dr-accent) 32%, rgba(255,255,255,0.06));
+          box-shadow: 0 24px 50px -28px rgba(9,14,28,0.85), inset 0 1px 0 rgba(255,255,255,0.07);
+          color: #eef3ff;
+          transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
         }
-        .dr-part:hover { transform: translateY(-4px); box-shadow: inset 0 1px 0 rgba(255,255,255,0.5), 0 34px 70px -34px var(--dr-accent); }
-        /* the glowing glyph tile in each part's corner */
+        /* faint grid, and a lit edge along the top */
+        .dr-part::before { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; background-image: linear-gradient(rgba(127,178,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(127,178,255,0.05) 1px, transparent 1px); background-size: 26px 26px; -webkit-mask-image: linear-gradient(180deg, #000, transparent 75%); mask-image: linear-gradient(180deg, #000, transparent 75%); }
+        .dr-part::after { content: ""; position: absolute; left: 20px; right: 20px; top: 0; height: 2px; border-radius: 2px; background: linear-gradient(90deg, transparent, var(--dr-accent), transparent); box-shadow: 0 0 14px var(--dr-accent); }
+        .dr-part:hover { transform: translateY(-4px); border-color: color-mix(in srgb, var(--dr-accent) 60%, transparent); box-shadow: 0 34px 64px -30px color-mix(in srgb, var(--dr-accent) 55%, rgba(9,14,28,0.9)), inset 0 1px 0 rgba(255,255,255,0.09); }
+        .dr-part-ghost { position: absolute; right: 14px; bottom: -22px; z-index: -1; font-family: var(--lv2-font-display); font-size: 120px; font-weight: 700; line-height: 1; letter-spacing: -0.05em; color: var(--dr-accent); opacity: 0.08; pointer-events: none; }
+        .dr-part-head { display: flex; align-items: center; gap: 14px; }
         .dr-part-glyph {
-          position: absolute; top: 20px; right: 20px; width: 46px; height: 46px; border-radius: 13px;
+          flex-shrink: 0; width: 46px; height: 46px; border-radius: 13px;
           display: inline-flex; align-items: center; justify-content: center; color: var(--dr-accent);
-          background: radial-gradient(circle at 30% 25%, rgba(255,255,255,0.9), color-mix(in srgb, var(--dr-accent) 14%, #fffdf8) 70%);
-          border: 1px solid color-mix(in srgb, var(--dr-accent) 40%, transparent);
-          box-shadow: 0 10px 26px -10px var(--dr-accent), inset 0 1px 0 rgba(255,255,255,0.9);
+          background: color-mix(in srgb, var(--dr-accent) 16%, #0b1226);
+          border: 1px solid color-mix(in srgb, var(--dr-accent) 45%, transparent);
+          box-shadow: 0 0 22px -6px var(--dr-accent), inset 0 1px 0 rgba(255,255,255,0.08);
           transition: transform .25s ease;
         }
         .dr-part-glyph svg { width: 22px; height: 22px; display: block; }
         .dr-part:hover .dr-part-glyph { transform: rotate(-6deg) scale(1.06); }
-        .dr-part h3, .dr-part-blurb { padding-right: 54px; }
-        .dr-part-tag { font-family: var(--lv2-font-mono); font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--dr-accent); }
-        .dr-part h3 { margin: 0; font-family: var(--lv2-font-display); font-size: clamp(1.35rem, 2vw, 1.6rem); line-height: 1.1; letter-spacing: -0.02em; font-weight: 500; color: #14161d; }
-        .dr-part-blurb { margin: 0; font-family: var(--lv2-font-display); font-size: 14px; line-height: 1.55; color: rgba(17,22,38,0.74); }
-        .dr-part-list { list-style: none; margin: 8px 0 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
-        .dr-part-list li { position: relative; padding: 9px 0 0 34px; border-top: 1px solid rgba(86,68,45,0.14); }
-        .dr-part-list li::before { content: attr(data-n); position: absolute; left: 0; top: 11px; font-family: var(--lv2-font-mono); font-size: 11px; font-weight: 800; color: var(--dr-accent); }
-        .dr-part-list b { display: block; font-family: var(--lv2-font-display); font-size: 15px; font-weight: 600; color: #14161d; }
-        .dr-part-list span { display: block; margin-top: 2px; font-family: var(--lv2-font-display); font-size: 13.5px; line-height: 1.5; color: rgba(17,22,38,0.7); }
-        .dr-final {
-          margin-top: 20px; padding: 24px 26px; border-radius: 18px;
-          background: linear-gradient(120deg, rgba(43,89,195,0.1), rgba(87,68,201,0.08) 55%, rgba(165,17,127,0.08));
-          border: 1px solid rgba(87,68,201,0.35);
+        .dr-part-tag { display: block; font-family: var(--lv2-font-mono); font-size: 10.5px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--dr-accent); }
+        .dr-part h3 { margin: 4px 0 0; font-family: var(--lv2-font-display); font-size: clamp(1.3rem, 1.9vw, 1.55rem); line-height: 1.1; letter-spacing: -0.02em; font-weight: 500; color: #ffffff; }
+        .dr-part-blurb { margin: 0; font-family: var(--lv2-font-display); font-size: 14px; line-height: 1.55; color: rgba(222,230,250,0.72); max-width: 560px; }
+        /* every module a glass tile */
+        .dr-mods { list-style: none; margin: 4px 0 0; padding: 0; display: grid; grid-template-columns: repeat(var(--cols), minmax(0, 1fr)); gap: 10px; flex: 1; align-content: start; }
+        .dr-mod {
+          position: relative; display: flex; flex-direction: column; gap: 3px; padding: 12px 13px 13px; border-radius: 13px;
+          background: rgba(255,255,255,0.045); border: 1px solid rgba(255,255,255,0.08);
+          transition: border-color .2s ease, background .2s ease;
         }
-        .dr-final h3 { margin: 6px 0 0; font-family: var(--lv2-font-display); font-size: clamp(1.35rem, 2vw, 1.6rem); font-weight: 500; letter-spacing: -0.02em; color: #14161d; }
-        .dr-final p { margin: 8px 0 0; max-width: 760px; font-family: var(--lv2-font-display); font-size: 15px; line-height: 1.6; color: rgba(17,22,38,0.82); }
+        .dr-mod:hover { border-color: color-mix(in srgb, var(--dr-accent) 55%, transparent); background: color-mix(in srgb, var(--dr-accent) 9%, rgba(255,255,255,0.04)); }
+        .dr-mod-n { font-family: var(--lv2-font-mono); font-size: 10.5px; font-weight: 800; letter-spacing: 0.12em; color: var(--dr-accent); }
+        .dr-mod b { font-family: var(--lv2-font-display); font-size: 14.5px; font-weight: 600; line-height: 1.3; color: #ffffff; }
+        .dr-mod-p { font-family: var(--lv2-font-display); font-size: 13px; line-height: 1.45; color: rgba(222,230,250,0.66); }
+        /* the final task: one wide panel in the course's three colours */
+        .dr-final {
+          position: relative; overflow: hidden; margin-top: 18px; padding: 24px 26px; border-radius: 20px;
+          display: flex; align-items: center; gap: 20px;
+          background: radial-gradient(80% 140% at 0% 0%, rgba(127,178,255,0.22), transparent 60%), radial-gradient(70% 140% at 100% 100%, rgba(255,143,224,0.18), transparent 60%), linear-gradient(170deg, #111a33, #090e1c);
+          border: 1px solid rgba(157,140,255,0.4);
+          box-shadow: 0 24px 50px -28px rgba(9,14,28,0.85), inset 0 1px 0 rgba(255,255,255,0.08);
+        }
+        .dr-final .dr-part-tag { color: #ff8fe0; }
+        .dr-final-glyph { flex-shrink: 0; width: 56px; height: 56px; border-radius: 16px; display: inline-flex; align-items: center; justify-content: center; color: #ffd27a; background: rgba(255,210,122,0.12); border: 1px solid rgba(255,210,122,0.45); box-shadow: 0 0 26px -6px rgba(255,210,122,0.8); }
+        .dr-final-glyph svg { width: 28px; height: 28px; display: block; }
+        .dr-final h3 { margin: 4px 0 0; font-family: var(--lv2-font-display); font-size: clamp(1.35rem, 2vw, 1.6rem); font-weight: 500; letter-spacing: -0.02em; color: #ffffff; }
+        .dr-final p { margin: 6px 0 0; max-width: 760px; font-family: var(--lv2-font-display); font-size: 15px; line-height: 1.6; color: rgba(222,230,250,0.78); }
+        @media (max-width: 980px) {
+          .dr-part-cell { grid-column: span 12; }
+          .dr-mods { grid-template-columns: repeat(auto-fill, minmax(min(100%, 220px), 1fr)); }
+        }
+        @media (max-width: 560px) { .dr-final { flex-direction: column; align-items: flex-start; } }
 
         /* hands on: the three drawings */
         .dr-hands { display: flex; flex-direction: column; transition: transform .25s ease, box-shadow .25s ease; }
@@ -887,7 +945,7 @@ export default function DeskReadyLanding({ priceGBP }: { priceGBP: number }) {
           .dr-hero-grid { grid-template-columns: minmax(0, 1fr); gap: 30px; }
           .dr-sim { max-width: 620px; }
           .dr-grid-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-          .dr-grid-3, .dr-parts { grid-template-columns: 1fr; }
+          .dr-grid-3 { grid-template-columns: 1fr; }
           .dr-how-head, .dr-price-wrap { grid-template-columns: 1fr; }
         }
         @media (max-width: 820px) { .dr-faq-grid { grid-template-columns: 1fr; } }
