@@ -37,6 +37,11 @@ export const D = Object.freeze({
   excel: "#107c41",
   /* printed paperwork (a delivery note) laid beside a sheet */
   paper: "#fffdf6",
+  /* the pretend desktop in Module 0: folders, the File Explorer bar, wallpaper */
+  folder: "#f2b84b",
+  folderLight: "#f8cf6f",
+  files: "#c28a14",
+  desktop: "linear-gradient(160deg, #3b6fd1, #22468f)",
 
   display: "var(--font-desk-display), 'Lexend', system-ui, sans-serif",
   sans: "var(--font-desk-sans), 'Atkinson Hyperlegible Next', system-ui, sans-serif",
