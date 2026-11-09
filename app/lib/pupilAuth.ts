@@ -1,6 +1,7 @@
 import bcrypt from "bcryptjs";
 import { prisma } from "@/app/lib/prisma";
 import { PICTURE_KEYS, SEQUENCE_LENGTH } from "@/app/lib/pictures";
+import { pupilCourseHomeFor } from "@/app/lib/courseIntent";
 
 /**
  * Signing a child in without an email address or a typed password.
@@ -130,4 +131,33 @@ export async function resetPupilPictures(orgId: string, childProfileId: string):
   if (!child) return false;
   await prisma.user.update({ where: { id: child.userId }, data: { hashedPassword: null } });
   return true;
+}
+
+/**
+ * Where a child goes once they are signed in: the course their own class
+ * runs.
+ *
+ * This was `/cyberhq` for every child, hardcoded in the login. Cyber Heroes
+ * is one of FOUR courses a class can be put on, and the other three have
+ * their own portals, so a child in a Cyber Explorers class signed in, spent
+ * a place off the school's licence, and landed on the Cyber Heroes hub:
+ * Heroes stickers, Heroes badges, a Heroes rank, and not one lesson of their
+ * own anywhere on the screen.
+ *
+ * Read fresh on every sign-in, which is what makes a place follow the child
+ * (owner decision 2026-11-08). A class moved up to the next course in
+ * September changes this answer on its own, with nothing to migrate.
+ */
+export async function pupilDestination(userId: string): Promise<string> {
+  if (!userId) return pupilCourseHomeFor(null);
+  const child = await prisma.childProfile.findFirst({
+    where: { userId },
+    orderBy: { createdAt: "asc" },
+    select: { class: { select: { product: { select: { slug: true } } } } },
+  });
+  /* No class means a child on a family account, or a pupil whose class was
+     deleted (the relation is ON DELETE SET NULL by design). Cyber Heroes is
+     the right answer for both: it is what a family account buys, and it is
+     where a pupil without a class was going anyway. */
+  return pupilCourseHomeFor(child?.class?.product.slug ?? null);
 }

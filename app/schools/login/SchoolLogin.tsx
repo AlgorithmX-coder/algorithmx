@@ -83,8 +83,12 @@ export default function SchoolLogin() {
       setAuthError("Those were not your three pictures. Have another go, or ask your teacher.");
       return;
     }
-    /* straight to their own progress, which is what they came for */
-    window.location.href = "/cyberhq";
+    /* Straight to their own work, which is what they came for. The course
+       is whichever one their class runs, so the destination is worked out
+       server-side by /schools/play rather than hardcoded here: this used
+       to be "/cyberhq", which sent an Explorers or Ops class to the Cyber
+       Heroes hub. */
+    window.location.href = "/schools/play";
   };
 
   return (

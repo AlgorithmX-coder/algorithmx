@@ -53,3 +53,25 @@ export function courseHomeFor(slug: string | null): string {
   if (slug && COURSE_HOME[slug]) return COURSE_HOME[slug];
   return CATALOGUE;
 }
+
+/**
+ * The same four destinations for a SCHOOL PUPIL.
+ *
+ * Only Cyber Heroes differs. A family buyer lands on /dashboard, which is
+ * the adult's screen: it carries a sign-out and the account's children. A
+ * child signed in on a classroom device is not that person, so they go to
+ * their own hub instead. The other three portals are the child's screens
+ * already, so they are shared.
+ *
+ * The fallback is Cyber Heroes rather than the catalogue, because the
+ * catalogue is a marketing page that invites you to buy a course, which is
+ * not something to put in front of a nine year old.
+ */
+const PUPIL_HOME: Record<string, string> = {
+  ...COURSE_HOME,
+  "cyber-heroes": "/cyberhq",
+};
+
+export function pupilCourseHomeFor(slug: string | null): string {
+  return (slug && PUPIL_HOME[slug]) || PUPIL_HOME["cyber-heroes"];
+}
