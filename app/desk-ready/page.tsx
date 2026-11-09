@@ -16,7 +16,7 @@ export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Desk Ready | AlgorithmX",
-  description: "The computer skills every desk job expects: email, spreadsheets, files and AI, taught from the very start with practice in a pretend office.",
+  description: "The fundamental computer skills every desk job runs on: email, spreadsheets, files and AI, in ten minute lessons practised in a pretend office.",
   robots: { index: false, follow: false },
 };
 

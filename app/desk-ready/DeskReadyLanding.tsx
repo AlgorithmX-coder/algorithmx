@@ -19,9 +19,11 @@ import { FINAL, PARTS } from "./syllabus";
  * course on glass, the accreditations band, sand sections that reveal on
  * scroll, and the shared Footer. The /corporate page is the pattern.
  *
- * The buyer is one adult paying for themselves, often nervous about
- * computers, so the copy is plain, the price is said up front, and the
- * hero proof is the easiest real lesson in the course.
+ * The buyer is one adult paying for themselves who wants the fundamentals
+ * every desk job runs on, whether new to office work or already at a desk
+ * (owner 2026-11-09: "just for anyone looking to get their skills up"). The
+ * copy is plain, the price is said up front, and the hero proof is a real
+ * lesson from the course.
  *
  * Copy rules (owner): state the benefit, never the denial; no em-dashes; no
  * invented figures (the one statistic is sourced on the page).
@@ -56,28 +58,126 @@ const SECTIONS: ReadonlyArray<readonly [id: string, label: string]> = [
   ["questions", "Questions"],
 ];
 
+/* The four "who it is for" graphics. Each is a small animated SVG in the
+ * card's accent (currentColor), drawn for the idea on the card: bars that
+ * climb, a path whose stops light up in turn, skill tiles whose gaps fill,
+ * a progress ring that closes. Motion only under no-preference. */
+function ArtStepUp() {
+  const bars = [26, 40, 54, 70, 88];
+  return (
+    <svg viewBox="0 0 220 110" aria-hidden className="dr-art">
+      <defs>
+        <linearGradient id="drArtBar" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stopColor="currentColor" stopOpacity="0.95" />
+          <stop offset="1" stopColor="currentColor" stopOpacity="0.15" />
+        </linearGradient>
+      </defs>
+      {bars.map((h, i) => (
+        <rect key={i} className="dr-art-bar" style={{ animationDelay: `${i * 0.18}s` }} x={22 + i * 38} y={100 - h} width="24" height={h} rx="5" fill="url(#drArtBar)" />
+      ))}
+      {/* the line draws in; the arrowhead appears as the line reaches it */}
+      <path className="dr-art-trend" d="M20 78 L64 64 L102 50 L140 36 L187 13" fill="none" stroke="#ffffff" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" pathLength="100" />
+      <path className="dr-art-head" d="M175 11.5 L187 13 L184.5 25" fill="none" stroke="#ffffff" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+function ArtNewRole() {
+  const stops = [
+    [24, 78],
+    [78, 34],
+    [138, 70],
+    [194, 26],
+  ];
+  return (
+    <svg viewBox="0 0 220 110" aria-hidden className="dr-art">
+      <path d="M24 78 C48 78 54 34 78 34 S112 70 138 70 S170 26 194 26" fill="none" stroke="currentColor" strokeOpacity="0.35" strokeWidth="2" strokeDasharray="4 6" />
+      <path className="dr-art-path" d="M24 78 C48 78 54 34 78 34 S112 70 138 70 S170 26 194 26" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" pathLength="260" />
+      {stops.map(([x, y], i) => (
+        <g key={i} className="dr-art-stop" style={{ animationDelay: `${i * 0.55}s` }}>
+          <circle cx={x} cy={y} r="11" fill="currentColor" fillOpacity="0.18" />
+          <circle cx={x} cy={y} r="5.5" fill="currentColor" />
+        </g>
+      ))}
+    </svg>
+  );
+}
+
+function ArtGaps() {
+  const gaps = new Set([2, 5, 9]);
+  return (
+    <svg viewBox="0 0 220 110" aria-hidden className="dr-art">
+      {Array.from({ length: 12 }, (_, i) => {
+        const x = 26 + (i % 4) * 44;
+        const y = 8 + Math.floor(i / 4) * 34;
+        return gaps.has(i) ? (
+          <g key={i}>
+            <rect x={x} y={y} width="36" height="26" rx="6" fill="none" stroke="currentColor" strokeOpacity="0.55" strokeDasharray="4 4" />
+            <rect className="dr-art-fill" style={{ animationDelay: `${[...gaps].indexOf(i) * 0.6}s` }} x={x} y={y} width="36" height="26" rx="6" fill="currentColor" />
+          </g>
+        ) : (
+          <rect key={i} x={x} y={y} width="36" height="26" rx="6" fill="currentColor" fillOpacity="0.22" stroke="currentColor" strokeOpacity="0.35" />
+        );
+      })}
+    </svg>
+  );
+}
+
+function ArtReturn() {
+  return (
+    <svg viewBox="0 0 220 110" aria-hidden className="dr-art">
+      <circle cx="110" cy="55" r="40" fill="none" stroke="currentColor" strokeOpacity="0.2" strokeWidth="8" />
+      <circle className="dr-art-ring" cx="110" cy="55" r="40" fill="none" stroke="currentColor" strokeWidth="8" strokeLinecap="round" pathLength="100" transform="rotate(-90 110 55)" />
+      <path d="M110 55 L110 32 M110 55 L126 63" stroke="#ffffff" strokeWidth="3" strokeLinecap="round" />
+      <circle cx="110" cy="55" r="4" fill="#ffffff" />
+      <circle className="dr-art-orbit" cx="110" cy="15" r="4" fill="currentColor" />
+    </svg>
+  );
+}
+
 const WHO = [
   {
-    accent: "#2b59c3",
-    title: "You work on your feet",
-    text: "On a line, in a warehouse, on a shop floor or in care, and you want the job at the desk: stock control, the transport office, team leader, admin.",
-    icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d="M3 21h18M5 21V9l7-5 7 5v12" /><path d="M9 21v-6h6v6" /></svg>,
+    accent: "#7fb2ff",
+    n: "01",
+    title: "Stepping up",
+    text: "Taking on more admin, reports or a team to run? Get quicker at the email, spreadsheets and shared files that come with it.",
+    Art: ArtStepUp,
   },
   {
-    accent: "#0a7085",
-    title: "You live on your phone",
-    text: "You have used a phone for years, but not much of a computer. Offices expect a mouse, a keyboard, Outlook and Excel, so we start right at the beginning.",
-    icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden><rect x="7" y="2.5" width="10" height="19" rx="2.2" /><path d="M11 18.5h2" /></svg>,
+    accent: "#5fd0d8",
+    n: "02",
+    title: "Starting something new",
+    text: "Moving into office, admin or customer service work? Walk in on day one already sure of the tools everyone else uses.",
+    Art: ArtNewRole,
   },
   {
-    accent: "#5744c9",
-    title: "You are going back to work",
-    text: "You have been away for a while and the office has moved on. Catch up on email, spreadsheets, shared files and AI at your own pace, from home.",
-    icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d="M20 12a8 8 0 1 1-2.3-5.7" /><path d="M20 4v5h-5" /></svg>,
+    accent: "#9d8cff",
+    n: "03",
+    title: "Self-taught so far",
+    text: "Picked it all up as you went? Fill the gaps, learn the shortcuts and do it the way offices expect it done.",
+    Art: ArtGaps,
+  },
+  {
+    accent: "#ff8fe0",
+    n: "04",
+    title: "Getting back in",
+    text: "Returning after time away? Catch up on how offices work now, from shared files to using AI safely, at your own pace.",
+    Art: ArtReturn,
   },
 ];
 
 const PART_ACCENT = ["#8a5400", "#2b59c3", "#0e7a45", "#0a7085", "#5744c9", "#a5117f"];
+
+/* One glyph per part, in order: the pointer, the inbox, the sheet, the
+ * folder, the everyday office (with AI), the job. */
+const PART_GLYPH = [
+  <path key="0" d="M6 3 L6 19 L10 15 L12.8 21 L15.2 20 L12.5 14 L18 14 Z" />,
+  <g key="1"><rect x="3" y="5" width="18" height="14" rx="2.2" /><path d="M3.5 6.5 L12 12.5 L20.5 6.5" /></g>,
+  <g key="2"><rect x="3" y="4" width="18" height="16" rx="2.2" /><path d="M3 9.5h18M3 14.5h18M9 4v16M15 4v16" /></g>,
+  <path key="3" d="M3 7.5a2 2 0 0 1 2-2h4.2l2 2.2H19a2 2 0 0 1 2 2V17a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />,
+  <g key="4"><path d="M11 3.5l1.7 4.4 4.4 1.7-4.4 1.7L11 15.7l-1.7-4.4-4.4-1.7 4.4-1.7z" /><path d="M18.5 14.5l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z" /></g>,
+  <g key="5"><rect x="3" y="7" width="18" height="13" rx="2.2" /><path d="M9 7V5.2A1.2 1.2 0 0 1 10.2 4h3.6A1.2 1.2 0 0 1 15 5.2V7M3 12.5h18" /></g>,
+];
 
 const STEPS = [
   { n: "01", colour: "#2b59c3", title: "Learn one thing", text: "A short lesson in plain English, one idea per screen, with real examples of what good looks like and what to avoid." },
@@ -87,11 +187,11 @@ const STEPS = [
 ];
 
 const FAQS = [
-  { q: "I am not good with computers. Is it really for me?", a: "Yes. That is exactly who it is for. Module 0 starts with the mouse and the keyboard, every lesson is in plain English, and the practice is in a pretend office where you cannot break anything. If you already use a computer every day, you can skip Module 0." },
+  { q: "Is it for beginners, or for people already at a desk?", a: "Both. It starts from the fundamentals and builds up, so anyone new to office work gets a solid start, and anyone already at a desk fills the gaps and picks up faster ways of working. Already know a module? Skip it." },
   { q: "Do I need Microsoft Office?", a: "All you need is a web browser. Everything you practise on is built into the course, so there is nothing to install or buy. It looks and works like Microsoft 365, because that is what most UK offices use." },
   { q: "How long does it take?", a: "About fifteen hours in all, in lessons of around ten minutes. Do one on your lunch break or a few in an evening, and pick up where you stopped." },
   { q: "Can I do it on my phone?", a: "It works on a phone, and a laptop or desktop is better, because that is what you will use at work. Most libraries have computers you can use for free." },
-  { q: "Will it help me get a job?", a: "It teaches the computer skills desk jobs ask for, and the final module turns the work you have already done into the words employers look for, with practice for the typing and Excel tests agencies set." },
+  { q: "Will it help my career?", a: "It covers the skills desk jobs ask for, and the final module helps you show them: a CV that says what you can do, and practice for the typing and Excel tests agencies set." },
   { q: "What does it cost?", a: "One payment, VAT included, for every module and every update, for as long as you want it." },
 ];
 
@@ -257,7 +357,7 @@ export default function DeskReadyLanding({ priceGBP }: { priceGBP: number }) {
             <div className="dr-hero-grid">
               <div className="dr-hero">
                 <FadeUp>
-                  <p style={sectionMarkBare} className="dr-hero-eyebrow">{"// Desk skills · From the floor to the desk"}</p>
+                  <p style={sectionMarkBare} className="dr-hero-eyebrow">{"// Desk skills · Email, Excel, files and AI"}</p>
                 </FadeUp>
                 <FadeUp delay={0.06}>
                   <h1 className="dr-h1">
@@ -266,7 +366,7 @@ export default function DeskReadyLanding({ priceGBP }: { priceGBP: number }) {
                 </FadeUp>
                 <FadeUp delay={0.12}>
                   <p className="dr-hero-lede" style={{ ...lede, fontSize: "clamp(1.05rem, 1.35vw, 1.2rem)", maxWidth: 540 }}>
-                    <strong>Desk Ready</strong> teaches email, spreadsheets, files and AI from the very start, in ten minute lessons you practise straight away in a pretend office. Built for people who have worked on their feet and want the job at the desk.
+                    <strong>Desk Ready</strong> teaches the fundamentals every desk job runs on: email, spreadsheets, files and AI, in ten minute lessons you practise straight away in a pretend office. For anyone who wants to work faster and more confidently at a desk.
                   </p>
                 </FadeUp>
                 <FadeUp delay={0.18}>
@@ -281,7 +381,7 @@ export default function DeskReadyLanding({ priceGBP }: { priceGBP: number }) {
                 <FadeUp delay={0.24}>
                   <ul className="dr-trust">
                     <li>{price} once, yours for life</li>
-                    <li>Plain English from the start</li>
+                    <li>Ten minute lessons</li>
                     <li>A pretend office to practise in</li>
                   </ul>
                 </FadeUp>
@@ -297,33 +397,41 @@ export default function DeskReadyLanding({ priceGBP }: { priceGBP: number }) {
         <ProofBand tone="sand" forFirms />
 
         {/* WHO IT IS FOR ──────────────────────────────────── */}
-        <section id="who" className="dr-section">
-          <span className="dr-glow dr-glow-blue" aria-hidden />
-          <FadeUp>
-            <p style={sectionMark}>{"// Who it is for"}</p>
-            <h2 style={h2}>
-              Made for people who have <span className="dr-grad">never worked at a desk.</span>
-            </h2>
-            <p style={lede}>
-              More than half of working-age adults in the UK cannot yet do all twenty of the digital tasks employers and government call essential for work (
-              <a className="dr-src" href="https://futuredotnow.uk/final-report-the-economic-impact-of-closing-the-work-essential-digital-skills-gap" target="_blank" rel="noopener noreferrer">
-                FutureDotNow, 2025
-              </a>
-              ). Desk Ready closes that gap, one short lesson at a time.
-            </p>
-          </FadeUp>
-          <div className="dr-grid-3" style={{ marginTop: 34 }}>
-            {WHO.map((w, i) => (
-              <FadeUp key={w.title} delay={0.06 * i}>
-                <article className="dr-card dr-pillar" style={{ "--dr-accent": w.accent } as CSSProperties}>
-                  <span className="dr-pillar-icon">{w.icon}</span>
-                  <h3>{w.title}</h3>
-                  <p>{w.text}</p>
-                </article>
-              </FadeUp>
-            ))}
-          </div>
-        </section>
+        {/* A night band between the sand sections, so the page has a second
+            dark beat after the hero: a faint grid, two glows, and four glass
+            cards, each with its own animated graphic. */}
+        <div className="dr-night">
+          <span className="dr-night-grid" aria-hidden />
+          <section id="who" className="dr-section">
+            <FadeUp>
+              <p style={sectionMark}>{"// Who it is for"}</p>
+              <h2 style={{ ...h2, color: "#ffffff" }}>
+                For anyone who wants to be <span className="dr-grad-night">sharper at the desk.</span>
+              </h2>
+              <p style={{ ...lede, color: "rgba(238,242,245,0.8)" }}>
+                More than half of working-age adults in the UK cannot yet do all twenty of the digital tasks employers and government call essential for work (
+                <a className="dr-src dr-src-night" href="https://futuredotnow.uk/final-report-the-economic-impact-of-closing-the-work-essential-digital-skills-gap" target="_blank" rel="noopener noreferrer">
+                  FutureDotNow, 2025
+                </a>
+                ). Wherever you are starting from, Desk Ready makes the fundamentals second nature.
+              </p>
+            </FadeUp>
+            <div className="dr-who-grid">
+              {WHO.map((w, i) => (
+                <FadeUp key={w.title} delay={0.07 * i}>
+                  <article className="dr-who" style={{ "--dr-accent": w.accent } as CSSProperties}>
+                    <div className="dr-who-art">
+                      <w.Art />
+                    </div>
+                    <span className="dr-who-n">{w.n}</span>
+                    <h3>{w.title}</h3>
+                    <p>{w.text}</p>
+                  </article>
+                </FadeUp>
+              ))}
+            </div>
+          </section>
+        </div>
 
         {/* WHAT YOU LEARN ─────────────────────────────────── */}
         <section id="learn" className="dr-section">
@@ -331,7 +439,7 @@ export default function DeskReadyLanding({ priceGBP }: { priceGBP: number }) {
           <FadeUp>
             <p style={sectionMark}>{"// What you learn"}</p>
             <h2 style={h2}>
-              Fourteen modules, <span className="dr-grad">from switching on to getting the job.</span>
+              Fourteen modules, <span className="dr-grad">everything a desk job asks of you.</span>
             </h2>
             <p style={lede}>Six parts in the order you need them. Start at the beginning, or skip what you already know.</p>
           </FadeUp>
@@ -339,6 +447,11 @@ export default function DeskReadyLanding({ priceGBP }: { priceGBP: number }) {
             {PARTS.map((p, i) => (
               <FadeUp key={p.id} delay={0.05 * i}>
                 <article className="dr-part" style={{ "--dr-accent": PART_ACCENT[i] } as CSSProperties}>
+                  <span className="dr-part-glyph" aria-hidden>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round">
+                      {PART_GLYPH[i]}
+                    </svg>
+                  </span>
                   <span className="dr-part-tag">{p.label}</span>
                   <h3>{p.title}</h3>
                   <p className="dr-part-blurb">{p.blurb}</p>
@@ -380,7 +493,9 @@ export default function DeskReadyLanding({ priceGBP }: { priceGBP: number }) {
             ].map(({ title, text, Art }, i) => (
               <FadeUp key={title} delay={0.06 * i}>
                 <article className="dr-card dr-hands">
-                  <Art />
+                  <div className="dr-hands-stage">
+                    <Art />
+                  </div>
                   <h3>{title}</h3>
                   <p>{text}</p>
                 </article>
@@ -610,19 +725,30 @@ export default function DeskReadyLanding({ priceGBP }: { priceGBP: number }) {
         .dr-grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; }
         .dr-grid-4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; }
         .dr-grid-3 > *, .dr-grid-4 > * { height: 100%; }
-        .dr-pillar { border-top: 2px solid var(--dr-accent); }
-        .dr-pillar-icon { display: inline-flex; width: 44px; height: 44px; border-radius: 12px; margin-bottom: 14px; align-items: center; justify-content: center; color: var(--dr-accent); background: color-mix(in srgb, var(--dr-accent) 14%, transparent); border: 1px solid color-mix(in srgb, var(--dr-accent) 40%, transparent); }
-        .dr-pillar-icon svg { width: 22px; height: 22px; display: block; }
 
         /* the course: six parts */
         .dr-parts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; margin-top: 34px; align-items: stretch; }
         .dr-parts > * { height: 100%; }
         .dr-part {
-          display: flex; flex-direction: column; gap: 8px; height: 100%; box-sizing: border-box; padding: 24px 22px 22px; border-radius: 18px;
+          position: relative; display: flex; flex-direction: column; gap: 8px; height: 100%; box-sizing: border-box; padding: 24px 22px 22px; border-radius: 18px;
           background: linear-gradient(180deg, rgba(255,253,248,0.9), rgba(244,239,231,0.85));
           border: 1px solid rgba(20,22,29,0.22); border-top: 3px solid var(--dr-accent);
           box-shadow: inset 0 1px 0 rgba(255,255,255,0.5), 0 26px 60px -40px var(--dr-accent);
+          transition: transform .25s ease, box-shadow .25s ease;
         }
+        .dr-part:hover { transform: translateY(-4px); box-shadow: inset 0 1px 0 rgba(255,255,255,0.5), 0 34px 70px -34px var(--dr-accent); }
+        /* the glowing glyph tile in each part's corner */
+        .dr-part-glyph {
+          position: absolute; top: 20px; right: 20px; width: 46px; height: 46px; border-radius: 13px;
+          display: inline-flex; align-items: center; justify-content: center; color: var(--dr-accent);
+          background: radial-gradient(circle at 30% 25%, rgba(255,255,255,0.9), color-mix(in srgb, var(--dr-accent) 14%, #fffdf8) 70%);
+          border: 1px solid color-mix(in srgb, var(--dr-accent) 40%, transparent);
+          box-shadow: 0 10px 26px -10px var(--dr-accent), inset 0 1px 0 rgba(255,255,255,0.9);
+          transition: transform .25s ease;
+        }
+        .dr-part-glyph svg { width: 22px; height: 22px; display: block; }
+        .dr-part:hover .dr-part-glyph { transform: rotate(-6deg) scale(1.06); }
+        .dr-part h3, .dr-part-blurb { padding-right: 54px; }
         .dr-part-tag { font-family: var(--lv2-font-mono); font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--dr-accent); }
         .dr-part h3 { margin: 0; font-family: var(--lv2-font-display); font-size: clamp(1.35rem, 2vw, 1.6rem); line-height: 1.1; letter-spacing: -0.02em; font-weight: 500; color: #14161d; }
         .dr-part-blurb { margin: 0; font-family: var(--lv2-font-display); font-size: 14px; line-height: 1.55; color: rgba(17,22,38,0.74); }
@@ -640,7 +766,18 @@ export default function DeskReadyLanding({ priceGBP }: { priceGBP: number }) {
         .dr-final p { margin: 8px 0 0; max-width: 760px; font-family: var(--lv2-font-display); font-size: 15px; line-height: 1.6; color: rgba(17,22,38,0.82); }
 
         /* hands on: the three drawings */
-        .dr-hands { display: flex; flex-direction: column; }
+        .dr-hands { display: flex; flex-direction: column; transition: transform .25s ease, box-shadow .25s ease; }
+        .dr-hands:hover { transform: translateY(-4px); box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), 0 34px 70px -34px rgba(43,89,195,0.6); }
+        /* each drawing floats on a small dark "screen" with a grid and a glow */
+        .dr-hands-stage {
+          position: relative; margin: -8px -8px 20px; padding: 18px; border-radius: 14px; overflow: hidden;
+          background: radial-gradient(120% 90% at 50% 0%, rgba(43,89,195,0.35), transparent 60%), #0b1117;
+          border: 1px solid rgba(127,178,255,0.22);
+          box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
+        }
+        .dr-hands-stage::before { content: ""; position: absolute; inset: 0; pointer-events: none; background-image: linear-gradient(rgba(127,178,255,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(127,178,255,0.08) 1px, transparent 1px); background-size: 22px 22px; }
+        .dr-hands-stage .dr-mini { margin-bottom: 0; box-shadow: 0 20px 40px -18px rgba(0,0,0,0.8), 0 0 0 1px rgba(127,178,255,0.25), 0 0 34px -10px rgba(127,178,255,0.55); transition: transform .3s ease; }
+        .dr-hands:hover .dr-hands-stage .dr-mini { transform: translateY(-3px) scale(1.015); }
         .dr-mini { position: relative; height: 168px; margin-bottom: 18px; border-radius: 12px; overflow: hidden; background: #ffffff; border: 1px solid rgba(20,22,29,0.16); box-shadow: 0 16px 34px -22px rgba(20,22,29,0.5); font-family: var(--lv2-font-display); }
         .dr-mini-bar { display: flex; justify-content: space-between; align-items: center; padding: 6px 10px; color: #ffffff; font-size: 11.5px; font-weight: 700; }
         .dr-mini-body { display: flex; flex-direction: column; height: calc(100% - 28px); box-sizing: border-box; padding: 8px 10px; font-size: 12px; color: #2a2e36; }
@@ -658,6 +795,57 @@ export default function DeskReadyLanding({ priceGBP }: { priceGBP: number }) {
         .dr-mini-task { position: absolute; left: 0; right: 0; bottom: 0; height: 30px; display: flex; align-items: center; justify-content: center; gap: 6px; background: rgba(246,243,238,0.92); font-size: 10.5px; font-weight: 700; color: #14161d; }
         .dr-mini-task span { padding: 3px 7px; border-radius: 5px; }
         .dr-mini-task .on { background: rgba(43,89,195,0.14); border-bottom: 2px solid #107c41; }
+
+        /* who it is for: the night band and its glass cards */
+        .dr-night { position: relative; isolation: isolate; overflow: hidden; background: radial-gradient(70% 60% at 85% 10%, rgba(87,68,201,0.32), transparent 60%), radial-gradient(60% 60% at 10% 90%, rgba(10,112,133,0.32), transparent 60%), #0b1117; color: #eef2f5; }
+        .dr-night-grid { position: absolute; inset: 0; z-index: 0; pointer-events: none; background-image: linear-gradient(rgba(127,178,255,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(127,178,255,0.06) 1px, transparent 1px); background-size: 48px 48px; -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, #000 30%, transparent 80%); mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, #000 30%, transparent 80%); }
+        .dr-night .dr-section { z-index: 1; padding-top: calc(var(--lv2-rail) * 1.6); padding-bottom: calc(var(--lv2-rail) * 1.6); }
+        .dr-src-night { color: #9fc4ff; }
+        .dr-who-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; margin-top: 38px; }
+        .dr-who-grid > * { height: 100%; }
+        .dr-who {
+          position: relative; height: 100%; box-sizing: border-box; display: flex; flex-direction: column;
+          padding: 18px 18px 22px; border-radius: 20px; color: var(--dr-accent);
+          background: linear-gradient(180deg, rgba(255,255,255,0.075), rgba(255,255,255,0.025));
+          border: 1px solid rgba(255,255,255,0.12);
+          box-shadow: inset 0 1px 0 rgba(255,255,255,0.1), 0 30px 60px -36px rgba(0,0,0,0.9);
+          backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+          transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease;
+        }
+        /* a lit edge along the top in the card's colour */
+        .dr-who::before { content: ""; position: absolute; left: 18px; right: 18px; top: -1px; height: 2px; border-radius: 2px; background: linear-gradient(90deg, transparent, var(--dr-accent), transparent); box-shadow: 0 0 14px var(--dr-accent); }
+        .dr-who:hover { transform: translateY(-5px); border-color: color-mix(in srgb, var(--dr-accent) 55%, transparent); box-shadow: inset 0 1px 0 rgba(255,255,255,0.12), 0 36px 70px -34px color-mix(in srgb, var(--dr-accent) 70%, transparent); }
+        .dr-who-art { position: relative; height: 112px; margin-bottom: 18px; border-radius: 14px; background: radial-gradient(100% 100% at 50% 100%, color-mix(in srgb, var(--dr-accent) 22%, transparent), transparent 70%), rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.06); display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        .dr-art { width: 100%; height: 100%; display: block; padding: 8px 6px; box-sizing: border-box; filter: drop-shadow(0 0 8px color-mix(in srgb, var(--dr-accent) 55%, transparent)); }
+        .dr-who-n { font-family: var(--lv2-font-mono); font-size: 11px; font-weight: 800; letter-spacing: 0.18em; color: var(--dr-accent); }
+        .dr-who h3 { margin: 6px 0 0; font-family: var(--lv2-font-display); font-size: 1.25rem; font-weight: 500; letter-spacing: -0.01em; color: #ffffff; }
+        .dr-who p { margin: 10px 0 0; font-family: var(--lv2-font-display); font-size: 14.5px; line-height: 1.6; color: rgba(238,242,245,0.76); }
+        @media (prefers-reduced-motion: no-preference) {
+          .dr-art-bar { transform-box: fill-box; transform-origin: bottom; animation: dr-bar 3.2s ease-in-out infinite; }
+          .dr-art-trend { stroke-dasharray: 100 120; animation: dr-draw 3.2s ease-in-out infinite; }
+          .dr-art-head { animation: dr-head 3.2s ease-in-out infinite; }
+          .dr-art-path { stroke-dasharray: 260 300; animation: dr-draw-long 3.4s ease-in-out infinite; }
+          .dr-art-stop { animation: dr-blink 3.4s ease-in-out infinite; }
+          .dr-art-fill { animation: dr-fill 3.6s ease-in-out infinite; }
+          .dr-art-ring { stroke-dasharray: 100; animation: dr-ring 4s ease-in-out infinite; }
+          .dr-art-orbit { transform-box: view-box; transform-origin: 110px 55px; animation: dr-orbit 4s linear infinite; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .dr-art-fill { opacity: 0.85; }
+          .dr-art-ring { stroke-dasharray: 100; stroke-dashoffset: 25; }
+        }
+        @keyframes dr-bar { 0%, 100% { transform: scaleY(0.72); } 50% { transform: scaleY(1); } }
+        /* draw in, hold, then fade: never erase from the start, which left the
+           arrowhead floating on its own */
+        @keyframes dr-draw { 0% { stroke-dashoffset: 104; opacity: 1; } 50%, 85% { stroke-dashoffset: 0; opacity: 1; } 100% { stroke-dashoffset: 0; opacity: 0; } }
+        @keyframes dr-head { 0%, 46% { opacity: 0; } 54%, 85% { opacity: 1; } 100% { opacity: 0; } }
+        @keyframes dr-draw-long { 0% { stroke-dashoffset: 266; opacity: 1; } 60%, 88% { stroke-dashoffset: 0; opacity: 1; } 100% { stroke-dashoffset: 0; opacity: 0; } }
+        @keyframes dr-blink { 0%, 100% { opacity: 0.35; } 20%, 60% { opacity: 1; } }
+        @keyframes dr-fill { 0%, 15% { opacity: 0; } 35%, 80% { opacity: 0.9; } 100% { opacity: 0; } }
+        @keyframes dr-ring { 0% { stroke-dashoffset: 100; } 70%, 85% { stroke-dashoffset: 0; } 100% { stroke-dashoffset: 100; } }
+        @keyframes dr-orbit { to { transform: rotate(360deg); } }
+        @media (max-width: 1100px) { .dr-who-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+        @media (max-width: 560px) { .dr-who-grid { grid-template-columns: 1fr; } }
 
         /* how it works */
         .dr-how-head { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 34px; align-items: center; }
