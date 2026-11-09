@@ -44,9 +44,8 @@ export interface PlacesCheckoutInput {
 }
 
 /* Card checkout needs the key and the webhook secret, and nothing else.
-   Deliberately NOT stripe.ts's stripeConfigured(), which also insists on
-   AI Cleared's two price ids: those belong to the firm lane and have
-   nothing to say about whether an organisation can buy places. */
+   Kept apart from stripe.ts's stripeConfigured() (today the same test) so
+   a future condition on the firm lane cannot switch this lane off. */
 export function placesCheckoutConfigured(): boolean {
   return Boolean(process.env.STRIPE_SECRET_KEY && process.env.STRIPE_WEBHOOK_SECRET);
 }
