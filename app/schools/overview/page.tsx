@@ -131,7 +131,7 @@ export default async function SchoolOverviewPage() {
                 : `Licence, ${places.bought} place${places.bought === 1 ? "" : "s"}`}
             </span>
             <Link href="/schools/classes" className="sxh-navlink">
-              {w.groups === "classes" ? "Classes" : "Groups"}
+              {w.Groups}
             </Link>
             <Link href="/schools/teach" className="sxh-navlink">
               {w.Staff} packs

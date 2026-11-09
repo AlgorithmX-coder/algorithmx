@@ -31,7 +31,7 @@ export default function TrialEnded({ orgName, trialExpiresAt }: { orgName: strin
             up a licence for {orgName}.
           </p>
           <p className="line">
-            <Link href="/schools">See what a school licence includes</Link>
+            <Link href="/schools">See what a licence includes</Link>
           </p>
         </div>
       </div>

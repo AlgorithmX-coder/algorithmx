@@ -19,7 +19,7 @@ export default function AccessClosed({ orgName }: { orgName: string }) {
         <div className="brief">
           <h4>This account&rsquo;s access has been closed</h4>
           <p>
-            {orgName}&rsquo;s access to the school platform has been closed. If you believe this
+            {orgName}&rsquo;s access to AlgorithmX has been closed. If you believe this
             is a mistake, email{" "}
             <a href="mailto:schools@algorithmx.co.uk">schools@algorithmx.co.uk</a>.
           </p>
