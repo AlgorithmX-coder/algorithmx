@@ -165,6 +165,12 @@ exposition). The season still escalates block to block toward ZERO.
 
 ## 5. Build status
 
+> **RETIRED 2026-11-09 (owner): Cyber Explorers no longer uses animations.**
+> The Block 1 intro/outro films were removed from the course, and every film
+> file below was deleted from `public/explorers/` along with the screening
+> page. The list is kept as history only. The landing-page trailer
+> (`trailer-cyberexplorers.mp4`) is marketing, not course content, and stays.
+
 - [x] Look + characters locked (THE EYE, WREN)
 - [x] Pipeline proven (WREN lip-sync test; "The Save" scene)
 - [x] Recruitment opener "The Save" — `public/explorers/scene-save-the-day.mp4`

@@ -85,11 +85,9 @@ export function SkipButton() {
         position: "fixed",
         bottom: 14,
         right: 14,
-        // Above EVERY other full-viewport overlay in Explorers: Block 1's
-        // "hard lock" catcher that swallows clicks while WREN is speaking
-        // (z50, engine/MissionRuntime.tsx) and BlockFilm's cinematic dialog
-        // (z60, engine/BlockFilm.tsx). Skip needs to win against all of them,
-        // not just the one it was first tested against.
+        // Above EVERY other full-viewport overlay in Explorers, including
+        // Block 1's "hard lock" catcher that swallows clicks while WREN is
+        // speaking (z50, engine/MissionRuntime.tsx).
         zIndex: 70,
         fontFamily: "ui-monospace, Consolas, monospace",
         fontSize: 12.5,
