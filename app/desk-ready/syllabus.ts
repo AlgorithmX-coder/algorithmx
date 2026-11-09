@@ -41,7 +41,7 @@ export const PARTS: readonly DeskPart[] = [
         title: "Your computer, your way",
         promise: "Use a mouse and keyboard with confidence, and find what you saved.",
         topics: ["The mouse: click, double-click, drag", "The keyboard and the keys that matter", "Windows: open, close, switch", "Copy, paste and undo", "Saving and finding a file", "Typing practice"],
-        ready: false,
+        ready: true,
       },
     ],
   },
