@@ -97,7 +97,7 @@ export const PARTS: readonly DeskPart[] = [
         title: "Putting business data in",
         promise: "Enter business data neatly, so other people can trust it.",
         topics: ["One row for one thing", "Headings that make sense", "Dates and numbers done the same way", "Sort and filter", "Checking your own work"],
-        ready: false,
+        ready: true,
       },
       {
         id: "m6",
