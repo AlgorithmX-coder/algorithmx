@@ -7,7 +7,7 @@ import { pupilDestination } from "@/app/lib/pupilAuth";
  * class runs.
  *
  * The login used to send every child to /cyberhq, which is Cyber Heroes. A
- * class can be put on any of the four courses, and the other three have
+ * class can be put on any of the school courses, and the others have
  * their own portals, so a child in a Cyber Explorers class landed on the
  * Heroes hub and had no way to reach their own lessons.
  *

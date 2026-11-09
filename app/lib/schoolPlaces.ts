@@ -26,12 +26,23 @@ import { prisma } from "@/app/lib/prisma";
  * Deliberately a fixed list rather than "every ACTIVE Product": the catalogue
  * also holds the corporate courses, and a school picking AI Cleared for a
  * class of nine year olds is not a thing we want to be possible.
+ *
+ * CYBER PRO IS NOT ONE OF THEM (owner, 2026-11-09). It was, and a class put
+ * on it was broken in a way nobody would have noticed until a teacher
+ * complained: Cyber Pro keeps its progress in its own ProProgress table,
+ * which the teacher's class view does not read, so every pupil in a Pro
+ * class showed as "not started" for ever, whatever they did. It is also the
+ * 18+ consumer course at £99, sitting in a picker whose year field stops at
+ * 13.
+ *
+ * Any Pro class a school already made keeps working: nothing here deletes
+ * one, COURSE_NAME below still names it, and movePupil can still move a
+ * child out of it. It simply cannot be chosen again.
  */
 export const SCHOOL_COURSE_SLUGS = [
   "cyber-heroes",
   "cyberexplorers",
   "cyberstart",
-  "cyberstart-pro",
 ] as const;
 
 /**
@@ -42,6 +53,10 @@ export const SCHOOL_COURSE_SLUGS = [
  * out was showing up in the teacher's course picker. The slugs are stranger
  * still for historical reasons (`cyberstart` is Cyber Ops), so neither the
  * slug nor the stored name can be put in front of a teacher as it stands.
+ *
+ * Cyber Pro stays in this map although it has left SCHOOL_COURSE_SLUGS: a
+ * class made before it was withdrawn still has to be named properly on the
+ * screens that list it.
  */
 const COURSE_NAME: Record<string, string> = {
   "cyber-heroes": "Cyber Heroes",
@@ -64,7 +79,7 @@ export interface SchoolCourse {
 }
 
 /**
- * The four courses, for the picker a teacher sees when making a class.
+ * The courses for the picker a teacher sees when making a class.
  *
  * Age ranges come back so the picker can show them, but nothing here
  * enforces them: year-group naming differs too much between countries for an

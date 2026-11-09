@@ -4,7 +4,7 @@ import type { OrgWords } from "./schools/AdminSchoolsPanel";
  * The two vocabularies.
  *
  * A school and a youth organisation run on identical machinery: the same
- * four courses, the same classes, pupils, picture sign-in and places ledger.
+ * same courses, the same classes, pupils, picture sign-in and places ledger.
  * What differs is who you are selling to and what they call themselves, so
  * the difference lives here, in words, rather than in a second set of tables
  * and a second set of screens that would drift apart.

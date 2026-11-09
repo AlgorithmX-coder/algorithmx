@@ -166,7 +166,7 @@ export async function createClass(args: {
   teacherId: string;
   name: string;
   yearGroup?: number | null;
-  /** Which of the four courses this class runs. Every pupil added to it is
+  /** Which of the school courses this class runs. Every pupil added to it is
    *  entitled to this course, so it cannot be left unset. */
   productId: string;
 }): Promise<{ ok: true; id: string; code: string } | { ok: false; error: ClassFailure }> {
@@ -177,8 +177,8 @@ export async function createClass(args: {
     return { ok: false, error: "bad_year" };
   }
   /* Checked here rather than trusted from the form: this is a server action's
-     input, so the picker that offered four courses is not a guarantee that
-     four courses came back. */
+     input, so the picker that offered the school courses is not a guarantee
+     that one of them came back. */
   if (!(await isSchoolCourse(args.productId))) return { ok: false, error: "bad_course" };
 
   /* A unique code on the first try almost always; the loop is for the day it

@@ -4,7 +4,7 @@ import type { LearnerOrgKind } from "@prisma/client";
  * The two vocabularies, customer side.
  *
  * A school and a youth organisation run on identical machinery: the same
- * four courses, the same classes, pupils, picture sign-in and places
+ * same courses, the same classes, pupils, picture sign-in and places
  * ledger. What differs is what the buyer calls themselves and the people
  * in front of them. A youth club does not have pupils and does not teach
  * classes, and reading "pupils" on your own dashboard is the moment you
