@@ -3,6 +3,7 @@ import { sendEmail } from "@/app/lib/resend";
 import { opsAlert } from "@/app/lib/opsAlert";
 import { newInviteToken } from "@/app/lib/aiClearedAdmin";
 import { createClass } from "@/app/lib/schoolClasses";
+import { placesUsed } from "@/app/lib/schoolPlaces";
 import type { LearnerOrgKind } from "@prisma/client";
 
 /* The AlgorithmX side of schools and the other organisations that teach
@@ -149,6 +150,70 @@ export async function createSchool(args: {
     await opsAlert({ what: "A teacher invite email did not send", detail: { school: org.name, slug, teacherEmail: args.teacherEmail, link: `${args.origin}/schools/join/${token}` }, error: err });
   }
   return { org, token, link: `${args.origin}/schools/join/${token}`, emailed };
+}
+
+/* Change what a school has bought, after it was created.
+ *
+ * There was no way to do this at all: seatsPurchased was set once, by
+ * whoever created the school, and never again. That made the ordinary
+ * second conversation impossible - a trial becoming a licence, or a school
+ * buying another twenty-five places in January - and the only way through
+ * was editing the database by hand.
+ *
+ * It will not go below the places already spent. The ledger is what
+ * `available` is counted against, so a school licensed for fewer places
+ * than it has spent is a school quietly teaching children nobody paid for,
+ * and that is not a state staff should be able to create by typing a
+ * smaller number. Staff who really mean it take the pupils out first, or
+ * close the school's access.
+ *
+ * A licence changing is worth a trail, so it alerts like a trial grant. */
+export type SetPlacesFailure = "not_found" | "below_spent";
+
+export interface SetPlacesOk {
+  ok: true;
+  /** What it is now. */
+  places: number;
+  /** Ledger rows, which is the floor this refused to go under. */
+  spent: number;
+  /** What it was, so the screen can say what changed. */
+  previous: number;
+}
+
+export async function setPlaces(args: {
+  orgId: string;
+  places: number;
+  actor: { name: string; email: string | null };
+}): Promise<SetPlacesOk | { ok: false; error: SetPlacesFailure; spent?: number }> {
+  const org = await prisma.organisation.findUnique({
+    where: { id: args.orgId },
+    select: { id: true, name: true, slug: true, seatsPurchased: true },
+  });
+  if (!org) return { ok: false, error: "not_found" };
+
+  const spent = await placesUsed(org.id);
+  if (args.places < spent) return { ok: false, error: "below_spent", spent };
+
+  /* Saying the same number again is a success that changes nothing, and in
+     particular does not raise an alert: staff re-saving a form they did not
+     edit should not look like a licence change in the ops mailbox. */
+  if (args.places === org.seatsPurchased) {
+    return { ok: true, places: args.places, spent, previous: org.seatsPurchased };
+  }
+
+  await prisma.organisation.update({ where: { id: org.id }, data: { seatsPurchased: args.places } });
+  await opsAlert({
+    what: "Places changed",
+    detail: {
+      org: org.name,
+      slug: org.slug,
+      from: org.seatsPurchased,
+      to: args.places,
+      spent,
+      changedBy: args.actor.email ?? args.actor.name,
+    },
+  });
+  return { ok: true, places: args.places, spent, previous: org.seatsPurchased };
 }
 
 export type ClaimInviteFailure = "not_found" | "claimed_by_other";

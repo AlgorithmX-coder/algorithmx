@@ -45,7 +45,7 @@ export default function RevokeButton({ orgId, revoked }: { orgId: string; revoke
     return (
       <div className="ad-made warn">
         <b>Close this school&rsquo;s access right now?</b>
-        <span>The teacher dashboard and adding new pupils stop immediately. Pupils already added keep their own logins working.</span>
+        <span>Everything stops at once: the staff screens, and the children&rsquo;s own logins too, because a pupil at a closed school can no longer find their class. Nothing is deleted. Reopening puts every pupil, place and piece of progress back exactly as it was.</span>
         <span>
           <button type="button" className="ad-btn ad-btn-pri" onClick={() => act("revoke")} disabled={busy}>{busy ? "Revoking…" : "Yes, revoke access"}</button>
           <button type="button" className="ad-btn" onClick={() => setConfirming(false)}>Cancel</button>
