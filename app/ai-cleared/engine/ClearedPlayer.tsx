@@ -24,6 +24,8 @@ import {
   type MomentsPractise,
   type OutboxItem,
   type OutboxPractise,
+  type PaymentDecision,
+  type PaymentsPractise,
   type PhoneAction,
   type PhonePractise,
   type Phase,
@@ -109,6 +111,8 @@ type Screen =
   | { kind: "scene"; p: number; phase: "practise" }
   /* Cyber Awareness: check the outbox before it sends, indexed by practice `p`. */
   | { kind: "outbox"; p: number; phase: "practise" }
+  /* Cyber Awareness: a week of payment requests in a queue, indexed by practice `p`. */
+  | { kind: "payments"; p: number; phase: "practise" }
   | { kind: "prove"; i: number; phase: "prove" }
   | { kind: "result"; phase: "done" };
 
@@ -518,6 +522,8 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
         out.push({ kind: "scene", p, phase: "practise" });
       } else if (pr.kind === "outbox") {
         out.push({ kind: "outbox", p, phase: "practise" });
+      } else if (pr.kind === "payments") {
+        out.push({ kind: "payments", p, phase: "practise" });
       }
     });
     proveSet.forEach((_, i) => out.push({ kind: "prove", i, phase: "prove" }));
@@ -569,6 +575,12 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
   const [outboxPicks, setOutboxPicks] = useState<Record<number, Record<number, OutboxPick>>>({});
   const [outboxStep, setOutboxStep] = useState<Record<number, number>>({});
   const [outboxLooked, setOutboxLooked] = useState<Record<number, Record<string, true>>>({});
+  /* Cyber Awareness payment queue: per practice, the decision on each
+   * request, the checks taken ("request:check"), and which request is
+   * open (null = the week's log, once every request is decided). */
+  const [payPicks, setPayPicks] = useState<Record<number, Record<number, PaymentDecision>>>({});
+  const [payChecks, setPayChecks] = useState<Record<number, Record<string, true>>>({});
+  const [payOpen, setPayOpen] = useState<Record<number, number | null>>({});
   const bestFluentRank = useRef(99);
   const [bestFluent, setBestFluent] = useState<FluentVerdict | undefined>(undefined);
   /* one-action practises: answer per item */
@@ -842,7 +854,7 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
   const pct = Math.round(((cur + 1) / screens.length) * 100);
   const phaseIdx = (["learn", "practise", "prove", "done"] as Phase[]).indexOf(screen.phase);
   const practiseSub = (pr: Practise): string =>
-    pr.kind === "sandbox" ? "in the simulator" : pr.kind === "sort" ? "which tier is this" : pr.kind === "situations" ? "ten situations" : pr.kind === "inspect" ? "a document to check" : pr.kind === "triage" ? "six incidents" : pr.kind === "loop" ? `${pr.turns.length} send${pr.turns.length === 1 ? "" : "s"}, scored on the rubric` : pr.kind === "spot" ? "find the planted mistake" : pr.kind === "moments" ? "spot the moment" : pr.kind === "inbox" ? "triage the inbox" : pr.kind === "phone" ? "a day of sign-in prompts" : pr.kind === "scene" ? "spot the risk" : pr.kind === "outbox" ? "check the outbox" : "check the sources";
+    pr.kind === "sandbox" ? "in the simulator" : pr.kind === "sort" ? "which tier is this" : pr.kind === "situations" ? "ten situations" : pr.kind === "inspect" ? "a document to check" : pr.kind === "triage" ? "six incidents" : pr.kind === "loop" ? `${pr.turns.length} send${pr.turns.length === 1 ? "" : "s"}, scored on the rubric` : pr.kind === "spot" ? "find the planted mistake" : pr.kind === "moments" ? "spot the moment" : pr.kind === "inbox" ? "triage the inbox" : pr.kind === "phone" ? "a day of sign-in prompts" : pr.kind === "scene" ? "spot the risk" : pr.kind === "outbox" ? "check the outbox" : pr.kind === "payments" ? "a week of payment requests" : "check the sources";
   const PHASES: { key: Phase; label: string; sub: string }[] = [
     { key: "learn", label: "Learn", sub: "the idea" },
     { key: "practise", label: "Practise", sub: practises.map(practiseSub).join(", then ") },
@@ -2230,6 +2242,182 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
         </div>
       </>
     );
+  } else if (screen.kind === "payments" && practises[screen.p]?.kind === "payments") {
+    const pq = practises[screen.p] as PaymentsPractise;
+    const p = screen.p;
+    const picks = payPicks[p] ?? {};
+    const taken = payChecks[p] ?? {};
+    const total = pq.requests.length;
+    const decided = pq.requests.filter((_, i) => picks[i]).length;
+    const done = decided === total;
+    /* The first request is open to begin with; null is the week's log. */
+    const open = payOpen[p] === undefined ? 0 : payOpen[p];
+    const rq = open === null ? null : pq.requests[open];
+    const pick = open === null ? undefined : picks[open];
+    const decLabel = (id: PaymentDecision) => t(pq.decisions.find((d) => d.id === id)?.label ?? id);
+    const PAST: Record<PaymentDecision, string> = { pay: "Paid", hold: "Held", report: "Reported" };
+    const RESULT = { match: "Matches", mismatch: "Does not match", info: "Found" } as const;
+    const rightOn = (i: number) => !!picks[i] && pq.requests[i].accept.includes(picks[i]);
+    const rightCount = pq.requests.filter((_, i) => rightOn(i)).length;
+    const isFraud = (i: number) => !pq.requests[i].accept.includes("pay");
+    const money = (s: string) => Number(s.replace(/[^0-9.]/g, "")) || 0;
+    const gbp = (n: number) => `£${n.toLocaleString("en-GB", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    const sum = (f: (i: number) => boolean) => pq.requests.reduce((a, r, i) => a + (picks[i] && f(i) ? money(r.amount) : 0), 0);
+    const paid = sum((i) => picks[i] === "pay" && !isFraud(i));
+    const stopped = sum((i) => picks[i] !== "pay" && isFraud(i));
+    const lost = sum((i) => picks[i] === "pay" && isFraud(i));
+    let nextReq: number | null = null;
+    for (let k = 1; open !== null && k < total; k++) {
+      const i = (open + k) % total;
+      if (!picks[i]) {
+        nextReq = i;
+        break;
+      }
+    }
+    const narrow = () => typeof window !== "undefined" && window.matchMedia("(max-width: 900px)").matches;
+    const openReq = (i: number | null) => {
+      setPayOpen((all) => ({ ...all, [p]: i }));
+      /* On a phone the request sits under the queue: bring it into view. */
+      if (narrow()) window.setTimeout(() => document.querySelector(i === null ? ".cl-pay-sum" : ".cl-pay-doc")?.scrollIntoView({ block: "start", behavior: "smooth" }), 80);
+    };
+    const takeCheck = (ci: number) => setPayChecks((all) => ({ ...all, [p]: { ...(all[p] ?? {}), [`${open}:${ci}`]: true } }));
+    const decide = (d: PaymentDecision) => {
+      if (open === null) return;
+      setPayPicks((all) => ({ ...all, [p]: { ...(all[p] ?? {}), [open]: d } }));
+      if (narrow()) window.setTimeout(() => document.querySelector(".cl-pay-fb")?.scrollIntoView({ block: "nearest", behavior: "smooth" }), 80);
+    };
+    const headline = !rq || !pick ? "" : rq.accept.includes(pick) ? (pick === rq.accept[0] ? "Correct." : `That works too. Best: ${decLabel(rq.accept[0])}.`) : `Not quite. Best: ${decLabel(rq.accept[0])}.`;
+    stage = (
+      <>
+        <Eyebrow>Practise · a week of payment requests</Eyebrow>
+        <div className="cl-task"><span className="cl-label">Your task</span><p>{t(pq.task)}</p></div>
+        {pq.scene && <p className="cl-p">{t(pq.scene)}</p>}
+        <div className="cl-pay">
+          <dl className="cl-pay-run" aria-label="This week's payment run">
+            <div><dt>Paid</dt><dd>{gbp(paid)}</dd></div>
+            <div className="stop"><dt>Stopped</dt><dd>{gbp(stopped)}</dd></div>
+            <div className={`lost ${lost ? "on" : ""}`}><dt>Lost to fraud</dt><dd>{gbp(lost)}</dd></div>
+            <div><dt>Decided</dt><dd>{decided} of {total}</dd></div>
+          </dl>
+          <ol className="cl-pay-queue" aria-label="Payment requests this week">
+            {pq.requests.map((r, i) => {
+              const d = picks[i];
+              return (
+                <li key={i}>
+                  <button
+                    type="button"
+                    className={`cl-pay-req ${i === open ? "on" : ""} ${d ? (rightOn(i) ? "right" : "wrong") : ""}`}
+                    aria-pressed={i === open}
+                    aria-label={`Request ${i + 1} of ${total}: ${t(r.from)}, ${r.amount}, ${r.when}. ${d ? `You decided: ${decLabel(d)}` : "Not decided yet"}`}
+                    onClick={() => openReq(i)}
+                  >
+                    <span className="cl-pay-q-when">{r.when}</span>
+                    <b className="cl-pay-q-from">{t(r.from)}</b>
+                    <span className="cl-pay-q-foot">
+                      <span className="cl-pay-q-amt">{r.amount}</span>
+                      <span className="cl-pay-q-st">{d ? PAST[d] : "To decide"}</span>
+                    </span>
+                  </button>
+                </li>
+              );
+            })}
+          </ol>
+          {rq === null || open === null ? (
+            <div className="cl-pay-sum">
+              <p className="cl-p"><b>{rightCount} of {total}</b> decided right. {gbp(stopped)} stopped before it reached a criminal{lost ? `, and ${gbp(lost)} sent to one` : ""}. The habit under every one: new or changed bank details get a call to a number you already hold, and every payment goes through the process.</p>
+              <ol className="cl-ph-log cl-pay-log">
+                {pq.requests.map((r, i) => {
+                  const ok = rightOn(i);
+                  return (
+                    <li key={i} className={ok ? "right" : "wrong"}>
+                      <span className="cl-mo-time">{r.when}</span>
+                      <span className="cl-ph-log-t">{t(r.payee)} · {r.amount}<small>{t(r.from)}: {t(r.subject)}</small></span>
+                      <span className="cl-ph-log-c">
+                        <span>You: <b>{picks[i] ? decLabel(picks[i]) : "-"}</b></span>
+                        {!ok && <span>Best: <b>{decLabel(r.accept[0])}</b></span>}
+                      </span>
+                    </li>
+                  );
+                })}
+              </ol>
+            </div>
+          ) : (
+            <div className="cl-pay-grid" key={open}>
+              <article className="cl-pay-doc" aria-label={`Request ${open + 1} of ${total}: ${t(rq.subject)}`}>
+                <div className="cl-pay-top">
+                  <span className="cl-pay-ch">{t(rq.channel)}</span>
+                  <span className="cl-pay-at">{rq.when}</span>
+                  {pick && <span className={`cl-pay-stamp ${rightOn(open) ? "right" : "wrong"}`}>{PAST[pick]}</span>}
+                </div>
+                <dl className="cl-pay-meta">
+                  <div><dt>From</dt><dd><b>{t(rq.from)}</b><span className="cl-pay-addr">{t(rq.address)}</span></dd></div>
+                  <div><dt>Subject</dt><dd>{t(rq.subject)}</dd></div>
+                </dl>
+                <p className="cl-pay-text">{t(rq.text)}</p>
+                {rq.file && (
+                  <div className="cl-pay-file">
+                    <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M10.5 4.5l-5 5a1.6 1.6 0 0 0 2.3 2.3l5.4-5.4a3 3 0 0 0-4.2-4.2L3.6 7.6a4.3 4.3 0 0 0 6.1 6.1l4-4" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" /></svg>
+                    <span><span className="cl-ob-sr">Attached: </span>{t(rq.file)}</span>
+                  </div>
+                )}
+                <div className="cl-pay-slip" role="group" aria-label="The payment it asks for">
+                  <div><span className="cl-pay-k">Pay</span><b>{t(rq.payee)}</b></div>
+                  <div><span className="cl-pay-k">Amount</span><b className="cl-pay-amt">{rq.amount}</b></div>
+                  {rq.bank && <div className="wide"><span className="cl-pay-k">Into</span><span>{t(rq.bank)}</span></div>}
+                </div>
+              </article>
+              <section className="cl-pay-checks" aria-label="Checks you can make">
+                <div className="cl-label">Checks you can make · {rq.checks.filter((_, ci) => taken[`${open}:${ci}`]).length} of {rq.checks.length} taken</div>
+                <ul>
+                  {rq.checks.map((c, ci) => (
+                    <li key={ci}>
+                      {taken[`${open}:${ci}`] ? (
+                        <div className={`cl-pay-found ${c.result}`}>
+                          <div className="cl-pay-found-h"><span>{t(c.action)}</span><span className="cl-pay-res">{RESULT[c.result]}</span></div>
+                          <p>{t(c.found)}</p>
+                        </div>
+                      ) : (
+                        <button type="button" className="cl-pay-check" onClick={() => takeCheck(ci)}>
+                          <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><circle cx="7" cy="7" r="4.4" fill="none" stroke="currentColor" strokeWidth="1.6" /><path d="M10.3 10.3L14 14" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" /></svg>
+                          {t(c.action)}
+                        </button>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              </section>
+              <div className="cl-pay-decide" role="group" aria-label="Your decision on this request">
+                {pq.decisions.map((d) => {
+                  const s = !pick ? "" : rq.accept.includes(d.id) ? "right" : d.id === pick ? "wrong" : "";
+                  return (
+                    <button key={d.id} type="button" disabled={!!pick} className={`cl-pay-act ${d.id} ${s}`} onClick={() => decide(d.id)}>
+                      <b>{t(d.label)}</b>
+                      <small>{t(d.desc)}</small>
+                    </button>
+                  );
+                })}
+              </div>
+              {pick && (
+                <div className="cl-pay-out">
+                  <div className="cl-fb cl-pay-fb" aria-live="polite">
+                    <b>{headline}</b> {t(rq.outcomes[pick])}
+                    <span className="cl-pay-why">{t(rq.why)}</span>
+                  </div>
+                  <button type="button" className="cl-btn cl-btn-small cl-pay-next" onClick={() => openReq(nextReq)}>
+                    {nextReq !== null ? "Next request" : "See the week"}
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+        <div className="cl-nav">
+          <Btn onClick={back}>Back</Btn>
+          <span className="cl-hint">{done ? `All ${total} decided. You called ${rightCount} of ${total} right.` : `${decided} of ${total} decided`}</span>
+          <Btn primary disabled={!done} onClick={next}>Continue to Prove</Btn>
+        </div>
+      </>
+    );
   } else if (screen.kind === "prove") {
     const q = proveSet[screen.i];
     const picked = proveAnswers[screen.i];
@@ -2729,6 +2917,76 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
         .cl-ob-done { font-family: ${K.mono}; font-size: 11.5px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: ${K.muted}; }
         .cl-ob-fb { margin-top: 0; animation: cl-in 250ms ease both; }
 
+        .cl-pay { display: flex; flex-direction: column; gap: 14px; }
+        .cl-pay-run { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; margin: 0; border: 1px solid ${K.edge}; border-radius: 12px; background: ${K.panel}; overflow: hidden; }
+        .cl-pay-run > div { padding: 8px 12px; border-left: 1px solid ${K.edgeSoft}; min-width: 0; }
+        .cl-pay-run > div:first-child { border-left: none; }
+        .cl-pay-run dt { font-family: ${K.mono}; font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: ${K.faint}; }
+        .cl-pay-run dd { margin: 2px 0 0; font-family: ${K.mono}; font-size: 15px; font-weight: 700; color: ${K.ink}; font-variant-numeric: tabular-nums; white-space: nowrap; }
+        .cl-pay-run .stop dd { color: ${K.ok}; }
+        .cl-pay-run .lost.on { background: ${K.critSoft}; }
+        .cl-pay-run .lost.on dd { color: ${K.crit}; }
+        .cl-pay-queue { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+        .cl-pay-req { font: inherit; width: 100%; height: 100%; text-align: left; display: flex; flex-direction: column; gap: 3px; color: ${K.ink}; background: ${K.panelRaise}; border: 1px solid ${K.edge}; border-left: 4px solid ${K.edge}; border-radius: 10px; padding: 8px 10px; cursor: pointer; transition: border-color 140ms ease, box-shadow 140ms ease; }
+        .cl-pay-req:hover { border-color: ${K.accent}; }
+        .cl-pay-req.on { background: ${K.panel}; border-color: ${K.accent}; box-shadow: 0 0 0 2px ${K.accentSoft}, ${K.lift}; }
+        .cl-pay-req.right { border-left-color: ${K.ok}; }
+        .cl-pay-req.wrong { border-left-color: ${K.warn}; }
+        .cl-pay-q-when { font-family: ${K.mono}; font-size: 10.5px; letter-spacing: 0.06em; text-transform: uppercase; color: ${K.muted}; }
+        .cl-pay-q-from { font-size: 13.5px; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .cl-pay-q-foot { margin-top: auto; display: flex; align-items: baseline; justify-content: space-between; gap: 6px; flex-wrap: wrap; }
+        .cl-pay-q-amt { font-family: ${K.mono}; font-size: 12.5px; font-weight: 700; font-variant-numeric: tabular-nums; }
+        .cl-pay-q-st { font-family: ${K.mono}; font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: ${K.faint}; }
+        .cl-pay-req.right .cl-pay-q-st { color: ${K.ok}; }
+        .cl-pay-req.wrong .cl-pay-q-st { color: ${K.warn}; }
+        .cl-pay-grid { display: flex; flex-direction: column; gap: 12px; }
+        .cl-pay-doc { scroll-margin-top: 70px; border: 1px solid ${K.edge}; border-radius: 14px; background: ${K.panel}; box-shadow: ${K.lift}; overflow: hidden; animation: cl-in 250ms ease both; }
+        .cl-pay-top { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 12px; padding: 9px 14px; background: ${K.grad}; color: ${K.onAccent}; font-family: ${K.mono}; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; }
+        .cl-pay-at { opacity: 0.9; }
+        .cl-pay-stamp { margin-left: auto; color: ${K.ink}; background: ${K.panel}; border-radius: 999px; padding: 3px 9px; font-size: 10.5px; }
+        .cl-pay-stamp.right { color: ${K.ok}; }
+        .cl-pay-stamp.wrong { color: ${K.warn}; }
+        .cl-pay-meta { margin: 0; }
+        .cl-pay-meta > div { display: grid; grid-template-columns: 84px minmax(0, 1fr); gap: 4px 12px; align-items: baseline; padding: 9px 14px; border-bottom: 1px solid ${K.edgeSoft}; }
+        .cl-pay-meta dt, .cl-pay-k { font-family: ${K.mono}; font-size: 10.5px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: ${K.faint}; }
+        .cl-pay-meta dd { margin: 0; min-width: 0; color: ${K.ink}; font-size: 14.5px; line-height: 1.4; overflow-wrap: anywhere; }
+        .cl-pay-meta dd b { margin-right: 8px; }
+        .cl-pay-addr { font-family: ${K.mono}; font-size: 12.5px; color: ${K.muted}; }
+        .cl-pay-text { margin: 0; padding: 12px 14px; font-size: 14.5px; line-height: 1.55; color: ${K.body}; }
+        .cl-pay-file { display: flex; align-items: center; gap: 8px; margin: 0 14px 12px; padding: 6px 10px; width: fit-content; max-width: calc(100% - 28px); box-sizing: border-box; font-size: 13px; color: ${K.ink}; background: ${K.sunk}; border-radius: 8px; overflow-wrap: anywhere; }
+        .cl-pay-file svg { flex: none; color: ${K.muted}; }
+        .cl-pay-slip { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px 16px; padding: 11px 14px; background: ${K.panelRaise}; border-top: 1px dashed ${K.edge}; }
+        .cl-pay-slip > div { display: flex; flex-direction: column; gap: 2px; min-width: 0; color: ${K.ink}; font-size: 14px; overflow-wrap: anywhere; }
+        .cl-pay-slip > div.wide { grid-column: 1 / -1; font-family: ${K.mono}; font-size: 12.5px; }
+        .cl-pay-amt { font-family: ${K.mono}; font-size: 17px; font-variant-numeric: tabular-nums; }
+        .cl-pay-checks ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+        .cl-pay-check { font: inherit; display: inline-flex; align-items: center; gap: 8px; font-size: 13.5px; font-weight: 600; color: ${K.accentInk}; background: ${K.accentSoft}; border: 1px solid transparent; border-radius: 9px; padding: 7px 12px; cursor: pointer; text-align: left; }
+        .cl-pay-check:hover { border-color: ${K.accent}; }
+        .cl-pay-check svg { flex: none; }
+        .cl-pay-found { border: 1px solid ${K.edge}; border-left: 3px solid ${K.accent}; border-radius: 9px; background: ${K.panel}; padding: 8px 12px; animation: cl-in 250ms ease both; }
+        .cl-pay-found.match { border-left-color: ${K.ok}; }
+        .cl-pay-found.mismatch { border-left-color: ${K.crit}; }
+        .cl-pay-found-h { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 10px; font-size: 13px; font-weight: 600; color: ${K.ink}; }
+        .cl-pay-res { font-family: ${K.mono}; font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: ${K.accentInk}; }
+        .cl-pay-found.match .cl-pay-res { color: ${K.ok}; }
+        .cl-pay-found.mismatch .cl-pay-res { color: ${K.crit}; }
+        .cl-pay-found p { margin: 4px 0 0; font-size: 13.5px; line-height: 1.5; color: ${K.body}; }
+        .cl-pay-decide { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+        .cl-pay-act { font: inherit; display: flex; flex-direction: column; align-items: center; gap: 2px; text-align: center; color: ${K.ink}; background: ${K.glassStrong}; border: 2px solid ${K.edge}; border-radius: 12px; padding: 9px 6px 8px; cursor: pointer; }
+        .cl-pay-act b { font-size: 14.5px; }
+        .cl-pay-act small { font-size: 11.5px; line-height: 1.3; color: ${K.muted}; }
+        .cl-pay-act:hover:not(:disabled) { border-color: ${K.ink}; }
+        .cl-pay-act:disabled { cursor: default; opacity: 0.55; }
+        .cl-pay-act.right, .cl-pay-act.wrong { opacity: 1; background: ${K.panel}; }
+        .cl-pay-act.right { border-color: ${K.ok}; }
+        .cl-pay-act.right b { color: ${K.ok}; }
+        .cl-pay-act.wrong { border-color: ${K.crit}; }
+        .cl-pay-act.wrong b { color: ${K.crit}; }
+        .cl-pay-out { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; animation: cl-in 250ms ease both; }
+        .cl-pay-fb { margin-top: 0; }
+        .cl-pay-why { display: block; margin-top: 6px; }
+        .cl-pay-log li { grid-template-columns: 76px minmax(0, 1fr) auto; }
+
         .cl-toggles { display: flex; flex-direction: column; gap: 12px; margin-top: 12px; }
         .cl-toggle { display: flex; gap: 14px; align-items: flex-start; border: 1px solid ${K.edge}; border-radius: 10px; padding: 14px; background: ${K.panelRaise}; }
         .cl-toggle b { display: block; color: ${K.ink}; font-size: 15px; margin-bottom: 4px; }
@@ -2895,6 +3153,19 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
           .cl-ob-send { margin-left: auto; }
           .cl-ob-log li { grid-template-columns: minmax(0, 1fr); }
           .cl-ob-log .cl-ph-log-c { grid-column: 1; }
+          .cl-pay-run { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+          .cl-pay-run > div:nth-child(3) { border-left: none; }
+          .cl-pay-run > div:nth-child(n + 3) { border-top: 1px solid ${K.edgeSoft}; }
+          .cl-pay-queue { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+          .cl-pay-q-foot { flex-direction: column; align-items: flex-start; gap: 2px; }
+          .cl-pay-meta > div { grid-template-columns: minmax(0, 1fr); gap: 2px; }
+          .cl-pay-meta dd b { display: block; margin-right: 0; }
+          .cl-pay-decide { gap: 6px; }
+          .cl-pay-act { padding: 8px 4px 7px; }
+          .cl-pay-act b { font-size: 13.5px; }
+          .cl-pay-act small { font-size: 10.5px; }
+          .cl-pay-log li { grid-template-columns: minmax(0, 1fr); }
+          .cl-pay-log .cl-ph-log-c { grid-column: 1; justify-content: flex-start; }
           .cl-row { grid-template-columns: 22px 1fr; }
           .cl-row .cl-v { grid-column: 2; }
           .cl-row.show { grid-template-columns: 1fr auto; }
@@ -2913,7 +3184,7 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
           .cl-top:has(.cl-desk-btn[aria-expanded="true"]) .cl-firm, .cl-top:has(.cl-desk-btn[aria-expanded="true"]) .cl-top-left .cl-sep { display: none; }
         }
         @media (prefers-reduced-motion: reduce) {
-          .cl-stage, .cl-rv, .cl-grader, .cl-card-detail, .cl-tl.after, .cl-peek-real, .cl-ph-ctx, .cl-ph-fb, .cl-ph-note, .cl-sc-spot, .cl-sc-out, .cl-ob-meant, .cl-ob-draft, .cl-ob-found, .cl-ob-fb { animation: none; }
+          .cl-stage, .cl-rv, .cl-grader, .cl-card-detail, .cl-tl.after, .cl-peek-real, .cl-ph-ctx, .cl-ph-fb, .cl-ph-note, .cl-sc-spot, .cl-sc-out, .cl-ob-meant, .cl-ob-draft, .cl-ob-found, .cl-ob-fb, .cl-pay-doc, .cl-pay-found, .cl-pay-out { animation: none; }
           .cl-bar i, .cl-meter i, .cl-knob { transition: none; }
         }
       `}</style>

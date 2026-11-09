@@ -21,10 +21,14 @@ import { getAwarenessModule } from "../../app/cyber-awareness/manifests";
  * check is answered too. A second pass answers every Prove item correctly
  * (found by text, because the options shuffle) and must pass; in the
  * outbox it makes the right call on every item and must see each one
- * stamped right.
+ * stamped right. In the payment queue it opens every request from the
+ * queue, takes a check by keyboard and sees what it finds, checks every
+ * decision is labelled, decides each one (the best decision on the passing
+ * run, which must be stamped right), checks each explains itself, and
+ * reaches the week's log.
  */
 
-const MODULES = [1, 2, 3, 4, 5];
+const MODULES = [1, 2, 3, 4, 5, 6];
 const MAX_SCREENS = 40;
 
 function collectErrors(page: Page) {
@@ -60,6 +64,13 @@ function rightOutboxFix(m: number, title: string): string | null {
   return part ? `Fix this: ${part.label}` : null;
 }
 
+/* The best decision on a payment request, by its subject, from the manifest. */
+function rightPayment(m: number, subject: string): string | null {
+  const pr = getAwarenessModule(m)!.tracks.general!.practise;
+  if (pr?.kind !== "payments") return null;
+  return pr.requests.find((r) => r.subject === subject)?.accept[0] ?? null;
+}
+
 async function playThrough(page: Page, query: string, opts: { m: number; answerRight?: boolean }) {
   const errors = collectErrors(page);
   await page.goto(`/dev/cyber-awareness?${query}`, { waitUntil: "domcontentloaded", timeout: 90_000 });
@@ -75,6 +86,10 @@ async function playThrough(page: Page, query: string, opts: { m: number; answerR
   let outboxRight = 0;
   let lookedCloser = 0;
   let outboxLogged = false;
+  let decided = 0;
+  let decidedRight = 0;
+  let payChecked = 0;
+  let payLogged = false;
   for (let guard = 0; guard < MAX_SCREENS; guard++) {
     await page.waitForTimeout(200);
     const eyebrow = (await page.locator(".cl-eyebrow").first().textContent().catch(() => "")) || "screen";
@@ -184,6 +199,42 @@ async function playThrough(page: Page, query: string, opts: { m: number; answerR
       outboxed++;
     }
     if (await page.locator(".cl-ob-log").count()) outboxLogged = true;
+    /* The payment queue: open each request from the queue, take its first
+     * check by keyboard and check what it finds shows, check every decision
+     * is labelled, then decide (in turn, or the best decision on the
+     * passing run) and check the reason shows. Then the week's log. */
+    if ((await page.locator(".cl-pay-queue").count()) && !(await page.locator(".cl-pay-log").count())) {
+      const reqs = page.locator(".cl-pay-req");
+      const n = await reqs.count();
+      for (let i = 0; i < n; i++) {
+        await expect(reqs.nth(i), "every request in the queue is labelled").toHaveAttribute("aria-label", /^Request \d+ of \d+: .{8,}/);
+        await reqs.nth(i).click();
+        await expect(reqs.nth(i)).toHaveAttribute("aria-pressed", "true");
+        const subject = ((await page.locator(".cl-pay-meta dd").nth(1).textContent()) ?? "").trim();
+        const check = page.locator(".cl-pay-check").first();
+        await check.focus();
+        await page.keyboard.press("Enter");
+        await expect(page.locator(".cl-pay-found").first(), "a check shows what it finds").toBeVisible();
+        payChecked++;
+        const acts = page.locator(".cl-pay-act");
+        await expect(acts).toHaveCount(3);
+        for (let k = 0; k < 3; k++) await expect(acts.nth(k), "every decision is labelled").toHaveAccessibleName(/^\S.{4,}/);
+        if (opts.answerRight) {
+          const best = rightPayment(opts.m, subject);
+          expect(best, `"${subject}" is in the manifest`).toBeTruthy();
+          await page.locator(`.cl-pay-act.${best}`).click();
+          await expect(page.locator(".cl-pay-stamp.right"), `"${subject}": the best decision is stamped right`).toBeVisible();
+          decidedRight++;
+        } else {
+          await acts.nth(decided % 3).click();
+        }
+        await expect(page.locator(".cl-pay-fb"), "every decision explains itself").toBeVisible();
+        decided++;
+      }
+      await page.locator(".cl-pay-next").click();
+      await expect(page.locator(".cl-pay-log"), "the week's log shows").toBeVisible();
+    }
+    if (await page.locator(".cl-pay-log").count()) payLogged = true;
     /* A prove item: the right answer on the passing run, else the first. */
     if (await page.locator(".cl-opts.col .cl-opt:not(:disabled)").count()) {
       const stem = ((await page.locator(".cl-h1").first().textContent()) ?? "").trim();
@@ -202,7 +253,7 @@ async function playThrough(page: Page, query: string, opts: { m: number; answerR
     await pri.click();
   }
   const stamp = (await page.locator(".cl-stamp").textContent().catch(() => "")) ?? "";
-  return { screens, stuckAt, errors, stamped: (await page.locator(".cl-stamp").count()) > 0, stamp, peeked, phoned, dayLogged, spotted, outboxed, outboxRight, lookedCloser, outboxLogged };
+  return { screens, stuckAt, errors, stamped: (await page.locator(".cl-stamp").count()) > 0, stamp, peeked, phoned, dayLogged, spotted, outboxed, outboxRight, lookedCloser, outboxLogged, decided, decidedRight, payChecked, payLogged };
 }
 
 /* Modules whose practice is an inbox, where the walker must have looked behind a sender and a link. */
@@ -221,6 +272,12 @@ const SCENE = new Map(MODULES.flatMap((m) => {
 const OUTBOX = new Map(MODULES.flatMap((m) => {
   const pr = getAwarenessModule(m)!.tracks.general!.practise;
   return pr?.kind === "outbox" ? [[m, pr.items.length] as const] : [];
+}));
+
+/* Modules whose practice is a payment queue: the walker must have decided every request, taken a check on each, and seen the week's log. */
+const PAYMENTS = new Map(MODULES.flatMap((m) => {
+  const pr = getAwarenessModule(m)!.tracks.general!.practise;
+  return pr?.kind === "payments" ? [[m, pr.requests.length] as const] : [];
 }));
 
 test.describe("Cyber Awareness modules play through to the result", () => {
@@ -243,6 +300,11 @@ test.describe("Cyber Awareness modules play through to the result", () => {
         expect(r.lookedCloser, "looked closer by keyboard").toBeGreaterThan(0);
         expect(r.outboxLogged, "saw the outbox log").toBe(true);
       }
+      if (PAYMENTS.has(m)) {
+        expect(r.decided, "decided every payment request").toBe(PAYMENTS.get(m));
+        expect(r.payChecked, "took a check on every request").toBe(PAYMENTS.get(m));
+        expect(r.payLogged, "saw the week's log").toBe(true);
+      }
     });
 
     test(`module ${m}, right answers pass`, async ({ page }) => {
@@ -251,6 +313,7 @@ test.describe("Cyber Awareness modules play through to the result", () => {
       expect(r.stamp).toMatch(/Module done/i);
       expect(r.errors).toEqual([]);
       if (OUTBOX.has(m)) expect(r.outboxRight, "the right call on every outbox item is stamped right").toBe(OUTBOX.get(m));
+      if (PAYMENTS.has(m)) expect(r.decidedRight, "the best decision on every payment request is stamped right").toBe(PAYMENTS.get(m));
     });
 
     test(`module ${m} on a phone`, async ({ page }) => {
@@ -268,6 +331,10 @@ test.describe("Cyber Awareness modules play through to the result", () => {
       if (OUTBOX.has(m)) {
         expect(r.outboxed).toBe(OUTBOX.get(m));
         expect(r.outboxLogged).toBe(true);
+      }
+      if (PAYMENTS.has(m)) {
+        expect(r.decided).toBe(PAYMENTS.get(m));
+        expect(r.payLogged).toBe(true);
       }
     });
   }
