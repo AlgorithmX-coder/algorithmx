@@ -3,10 +3,11 @@ import { notFound } from "next/navigation";
 import { prisma } from "@/app/lib/prisma";
 import { listClasses } from "@/app/lib/schoolClasses";
 import { trialStatus } from "@/app/lib/orgTrial";
-import { courseName } from "@/app/lib/schoolPlaces";
+import { courseName, placesUsed } from "@/app/lib/schoolPlaces";
 import { SchoolIcon, OrganisationIcon } from "./icons";
 import RevokeButton from "./schools/[slug]/RevokeButton";
 import DeleteOrgButton from "./DeleteOrgButton";
+import PlacesControl from "./PlacesControl";
 
 /**
  * One school, or one organisation: its classes, pupil counts and status.
@@ -39,6 +40,10 @@ export default async function LearnerOrgDetail({
     : { back: "/admin/organisations", backLabel: "All organisations", eyebrow: "organisations", Noun: "Organisation", learners: "", group: "Group", groups: "groups", lead: "leader" };
 
   const classes = await listClasses(org.id);
+  /* The ledger, not a count of pupils sitting in live classes. Those are
+     different numbers the moment a class is archived or a pupil leaves,
+     and the licence is counted against this one. */
+  const spent = await placesUsed(org.id);
   const pupilsUsed = classes.reduce((a, c) => a + c._count.pupils, 0);
   const status = trialStatus(org.trialExpiresAt);
   const day = (d: Date | null) => (d ? d.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" }) : "—");
@@ -50,7 +55,7 @@ export default async function LearnerOrgDetail({
       <h1 className="ad-h1">{org.name}</h1>
       <p className="ad-note">
         {org.sector ?? "sector not set"}
-        {org.country ? ` · ${org.country}` : ""} &middot; contact {org.contactName ?? "not set"}{org.contactRole ? `, ${org.contactRole}` : ""} &middot; {org.stripeCustomerId ? "paid through Stripe" : "manual deal"} &middot; {pupilsUsed} of {org.seatsPurchased} {w.learners ? `${w.learners} ` : ""}places used &middot; created {day(org.createdAt)}
+        {org.country ? ` · ${org.country}` : ""} &middot; contact {org.contactName ?? "not set"}{org.contactRole ? `, ${org.contactRole}` : ""} &middot; {org.stripeCustomerId ? "paid through Stripe" : "manual deal"} &middot; {spent} of {org.seatsPurchased} {w.learners ? `${w.learners} ` : ""}places spent, {pupilsUsed} sitting in live {w.groups} &middot; created {day(org.createdAt)}
         {status === "active" && <> &middot; <span className="ad-chip trial">Trial, expires {day(org.trialExpiresAt)}</span></>}
         {status === "expired" && <> &middot; <span className="ad-chip expired">Trial ended {day(org.trialExpiresAt)}</span></>}
         {org.revokedAt && <> &middot; <span className="ad-chip expired">Access closed</span></>}
@@ -76,6 +81,8 @@ export default async function LearnerOrgDetail({
           classes={classes.length}
         />
       </div>
+
+      <PlacesControl orgId={org.id} places={org.seatsPurchased} spent={spent} learners={w.learners} />
 
       <div className="ad-card ad-table-wrap">
         <table className="ad-table">
