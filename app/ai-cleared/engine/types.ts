@@ -589,7 +589,56 @@ export interface ScenePractise {
   views: SceneView[];
 }
 
-export type Practise = SandboxPractise | SortPractise | SituationsPractise | TriagePractise | InspectPractise | LoopPractise | SpotPractise | SourcesPractise | MomentsPractise | InboxPractise | PhonePractise | ScenePractise;
+/* An outbox before send: emails and file shares queued to go, one at a
+ * time. Each shows what you meant to do, then the draft itself, part by
+ * part (To, Bcc, the attachment, who can open a link, when it ends). The
+ * learner can look closer at a part (unhide the tabs, copy the text under
+ * the black boxes, show the full address), then either sends it as it is
+ * or presses Fix on the part that is wrong. Either way the item is put
+ * right, the parts that change show what they became, and the reason
+ * shows. An item with `fault` has something wrong: the ids it lists are
+ * the parts accepted as right, the first being the main one. Every other
+ * item is fine to send. Every control is a labelled button. */
+export interface OutboxPart {
+  id: string;
+  /* The field's name in the draft: "To", "Bcc", "Attached", "Who can open it". */
+  label: string;
+  /* What the draft shows. */
+  value: string;
+  /* An address outside the firm, tagged External the way a mail app does. */
+  external?: boolean;
+  /* A small preview of a document under the row. Text in [[double
+   * brackets]] sits under a black box, until the part is looked at closely. */
+  preview?: string;
+  /* Looking closer: the button's words, what you find, and a table when
+   * what you find is a sheet. */
+  look?: { action: string; found: string; table?: { columns: string[]; rows: string[][] } };
+  /* What the part reads once the item has been put right. */
+  fixed?: string;
+}
+export interface OutboxItem {
+  kind: "email" | "share";
+  /* The subject line, or the name of what is being shared. */
+  title: string;
+  /* What you meant to do, in a sentence. */
+  meant: string;
+  /* The firm's data class on the draft, shown as its label. */
+  cls?: DataClass;
+  parts: OutboxPart[];
+  /* The message itself, for an email. */
+  body?: string;
+  fault?: string[];
+  why: string;
+}
+export interface OutboxPractise {
+  kind: "outbox";
+  task: string;
+  /* One line under the task that sets the scene. */
+  scene?: string;
+  items: OutboxItem[];
+}
+
+export type Practise = SandboxPractise | SortPractise | SituationsPractise | TriagePractise | InspectPractise | LoopPractise | SpotPractise | SourcesPractise | MomentsPractise | InboxPractise | PhonePractise | ScenePractise | OutboxPractise;
 
 /* ---- Prove ---- */
 
@@ -672,14 +721,17 @@ export function resolveTrack(manifest: ModuleManifest, track: Track): { track: T
 }
 
 /* {{firm.name}}, {{firm.contact}}, {{firm.contactRole}}, {{firm.approved}},
- * {{tool}} resolve at render time so one manifest serves every firm. */
+ * {{tool}} resolve at render time so one manifest serves every firm, and
+ * {{class.P}}, {{class.I}}, {{class.C}}, {{class.R}} to the firm's own
+ * names for its four data classes. */
 export function fill(text: string, ctx: { firm: FirmView; tool: Tool }): string {
   return text
     .replaceAll("{{firm.name}}", ctx.firm.name)
     .replaceAll("{{firm.contact}}", ctx.firm.contactName)
     .replaceAll("{{firm.contactRole}}", ctx.firm.contactRole)
     .replaceAll("{{firm.approved}}", ctx.firm.approvedTools[0] ?? "your approved tool")
-    .replaceAll("{{tool}}", TOOL_LABEL[ctx.tool]);
+    .replaceAll("{{tool}}", TOOL_LABEL[ctx.tool])
+    .replace(/\{\{class\.([PICR])\}\}/g, (_, c: DataClass) => ctx.firm.classNames?.[c] || CLASS_DEFAULT_NAME[c]);
 }
 
 /* Where the firm stands on a tool at a tier, read from its three lists by

@@ -14,12 +14,17 @@ import { getAwarenessModule } from "../../app/cyber-awareness/manifests";
  * and checks what is behind them appears. On the phone it answers every
  * notification, checks each one explains itself, and reaches the day's
  * log. In a scene it opens every spot in every view, by keyboard as well
- * as by tap, makes a call on each and checks each one explains itself. A
- * second pass answers every Prove item correctly (found by text, because
- * the options shuffle) and must pass.
+ * as by tap, makes a call on each and checks each one explains itself. In
+ * the outbox it looks closer at a line by keyboard, checks every Fix is
+ * labelled, then sends or fixes each item in turn, checks each one
+ * explains itself, and reaches the outbox log. A learn screen's quick
+ * check is answered too. A second pass answers every Prove item correctly
+ * (found by text, because the options shuffle) and must pass; in the
+ * outbox it makes the right call on every item and must see each one
+ * stamped right.
  */
 
-const MODULES = [1, 2, 3, 4];
+const MODULES = [1, 2, 3, 4, 5];
 const MAX_SCREENS = 40;
 
 function collectErrors(page: Page) {
@@ -44,6 +49,17 @@ function rightAnswerFor(m: number, stem: string): string | null {
   return q.options[q.answer].split("{{")[0].slice(0, 30);
 }
 
+/* The right call on an outbox item, by its title, from the manifest: the
+ * Fix button's accessible name for the main faulty line, or null to send. */
+function rightOutboxFix(m: number, title: string): string | null {
+  const pr = getAwarenessModule(m)!.tracks.general!.practise;
+  if (pr?.kind !== "outbox") return null;
+  const item = pr.items.find((i) => i.title === title);
+  const main = item?.fault?.[0];
+  const part = main ? item!.parts.find((p) => p.id === main) : undefined;
+  return part ? `Fix this: ${part.label}` : null;
+}
+
 async function playThrough(page: Page, query: string, opts: { m: number; answerRight?: boolean }) {
   const errors = collectErrors(page);
   await page.goto(`/dev/cyber-awareness?${query}`, { waitUntil: "domcontentloaded", timeout: 90_000 });
@@ -55,6 +71,10 @@ async function playThrough(page: Page, query: string, opts: { m: number; answerR
   let phoned = 0;
   let dayLogged = false;
   let spotted = 0;
+  let outboxed = 0;
+  let outboxRight = 0;
+  let lookedCloser = 0;
+  let outboxLogged = false;
   for (let guard = 0; guard < MAX_SCREENS; guard++) {
     await page.waitForTimeout(200);
     const eyebrow = (await page.locator(".cl-eyebrow").first().textContent().catch(() => "")) || "screen";
@@ -131,6 +151,39 @@ async function playThrough(page: Page, query: string, opts: { m: number; answerR
         }
       }
     }
+    /* A learn screen's quick check (the firm's data classes): pick one, and
+     * check the reason shows. */
+    if (await page.locator(".cl-check:not(.solid) .cl-opt:not(:disabled)").count()) {
+      await page.locator(".cl-check:not(.solid) .cl-opt:not(:disabled)").first().click();
+      await expect(page.locator(".cl-check .cl-fb").first(), "the quick check explains itself").toBeVisible();
+    }
+    /* The outbox: look closer at a line by keyboard, check every Fix is
+     * labelled, then send or fix (in turn, or the right call on the
+     * passing run) and check the reason shows. The primary button then
+     * brings the next item, and after the last, the outbox log. */
+    if ((await page.locator(".cl-ob-draft").count()) && (await page.locator(".cl-ob-act").count())) {
+      const lookBtn = page.locator(".cl-ob-look").first();
+      if (await lookBtn.count()) {
+        await lookBtn.focus();
+        await page.keyboard.press("Enter");
+        await expect(page.locator(".cl-ob-found").first(), "looking closer shows what is there").toBeVisible();
+        lookedCloser++;
+      }
+      const fixes = page.locator(".cl-ob-fix");
+      for (let k = 0; k < (await fixes.count()); k++) await expect(fixes.nth(k), "every Fix names its line").toHaveAttribute("aria-label", /^Fix this: .{2,}/);
+      if (opts.answerRight) {
+        const title = ((await page.locator(".cl-ob-title b").first().textContent()) ?? "").trim();
+        const fix = rightOutboxFix(opts.m, title);
+        await (fix ? page.getByRole("button", { name: fix, exact: true }) : page.locator(".cl-ob-send")).click();
+        await expect(page.locator(".cl-ob-stamp.right"), `"${title}": the right call is stamped right`).toBeVisible();
+        outboxRight++;
+      } else {
+        await (outboxed % 2 ? page.locator(".cl-ob-send") : fixes.first()).click();
+      }
+      await expect(page.locator(".cl-ob-fb"), "every outbox item explains itself").toBeVisible();
+      outboxed++;
+    }
+    if (await page.locator(".cl-ob-log").count()) outboxLogged = true;
     /* A prove item: the right answer on the passing run, else the first. */
     if (await page.locator(".cl-opts.col .cl-opt:not(:disabled)").count()) {
       const stem = ((await page.locator(".cl-h1").first().textContent()) ?? "").trim();
@@ -149,7 +202,7 @@ async function playThrough(page: Page, query: string, opts: { m: number; answerR
     await pri.click();
   }
   const stamp = (await page.locator(".cl-stamp").textContent().catch(() => "")) ?? "";
-  return { screens, stuckAt, errors, stamped: (await page.locator(".cl-stamp").count()) > 0, stamp, peeked, phoned, dayLogged, spotted };
+  return { screens, stuckAt, errors, stamped: (await page.locator(".cl-stamp").count()) > 0, stamp, peeked, phoned, dayLogged, spotted, outboxed, outboxRight, lookedCloser, outboxLogged };
 }
 
 /* Modules whose practice is an inbox, where the walker must have looked behind a sender and a link. */
@@ -163,6 +216,11 @@ const PHONE = new Map(MODULES.flatMap((m) => {
 const SCENE = new Map(MODULES.flatMap((m) => {
   const pr = getAwarenessModule(m)!.tracks.general!.practise;
   return pr?.kind === "scene" ? [[m, pr.views.reduce((a, v) => a + v.spots.length, 0)] as const] : [];
+}));
+/* Modules whose practice is an outbox: the walker must have dealt with every item, looked closer, and seen the outbox log. */
+const OUTBOX = new Map(MODULES.flatMap((m) => {
+  const pr = getAwarenessModule(m)!.tracks.general!.practise;
+  return pr?.kind === "outbox" ? [[m, pr.items.length] as const] : [];
 }));
 
 test.describe("Cyber Awareness modules play through to the result", () => {
@@ -180,6 +238,11 @@ test.describe("Cyber Awareness modules play through to the result", () => {
         expect(r.dayLogged, "saw the day's log").toBe(true);
       }
       if (SCENE.has(m)) expect(r.spotted, "opened and called every spot in the scene").toBe(SCENE.get(m));
+      if (OUTBOX.has(m)) {
+        expect(r.outboxed, "dealt with every item in the outbox").toBe(OUTBOX.get(m));
+        expect(r.lookedCloser, "looked closer by keyboard").toBeGreaterThan(0);
+        expect(r.outboxLogged, "saw the outbox log").toBe(true);
+      }
     });
 
     test(`module ${m}, right answers pass`, async ({ page }) => {
@@ -187,6 +250,7 @@ test.describe("Cyber Awareness modules play through to the result", () => {
       expect(r.stuckAt).toBeNull();
       expect(r.stamp).toMatch(/Module done/i);
       expect(r.errors).toEqual([]);
+      if (OUTBOX.has(m)) expect(r.outboxRight, "the right call on every outbox item is stamped right").toBe(OUTBOX.get(m));
     });
 
     test(`module ${m} on a phone`, async ({ page }) => {
@@ -201,6 +265,10 @@ test.describe("Cyber Awareness modules play through to the result", () => {
         expect(r.dayLogged).toBe(true);
       }
       if (SCENE.has(m)) expect(r.spotted).toBe(SCENE.get(m));
+      if (OUTBOX.has(m)) {
+        expect(r.outboxed).toBe(OUTBOX.get(m));
+        expect(r.outboxLogged).toBe(true);
+      }
     });
   }
 });
