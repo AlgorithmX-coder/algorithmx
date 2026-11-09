@@ -281,3 +281,37 @@ export async function sendTeacherInvite(args: { to: string; token: string; schoo
   const text = `${args.schoolName} is ready for AlgorithmX.\n\n${onTrial ? `You are on a ${args.trialDays}-day trial, so everything is open and nothing is charged.` : `Your licence covers ${args.seats} pupil place(s).`}\n\nSet up your account: ${link}\n\nAny questions, write to ${SCHOOLS_EMAIL}.\n`;
   return sendEmail({ to: args.to, subject: `Your AlgorithmX account for ${args.schoolName}`, html, text, replyTo: SCHOOLS_EMAIL });
 }
+
+/**
+ * More places have landed on an account that already exists.
+ *
+ * Deliberately NOT an invite. The reader already has an account, and sending
+ * somebody a "set up your account" link for the account they are already
+ * signed into is how a repeat customer starts to wonder whether we know who
+ * they are. So this says what changed, says the new total, and points at
+ * their own overview rather than at a join link.
+ */
+export async function sendPlacesAdded(args: {
+  to: string;
+  orgName: string;
+  added: number;
+  total: number;
+  origin: string;
+}) {
+  const link = `${args.origin}/schools/overview`;
+  const org = esc(args.orgName);
+  const added = `${args.added} more place${args.added === 1 ? "" : "s"}`;
+  const headline = `${added} for ${org}.`;
+  const sub = `Your payment has cleared and the places are on your account already. ${org} now holds ${args.total} place${args.total === 1 ? "" : "s"} in total. Nothing else needs doing: you can spend them on any of our courses, a class at a time.`;
+  const html = `
+    <div style="font-family:Inter,Segoe UI,Helvetica,Arial,sans-serif;color:#14161d;max-width:560px;margin:0 auto;padding:24px">
+      <p style="font-family:ui-monospace,Consolas,monospace;font-size:11px;letter-spacing:.2em;color:#0a7085;margin:0 0 16px">ALGORITHMX &middot; FOR ORGANISATIONS</p>
+      <h1 style="font-size:22px;margin:0 0 12px">${headline}</h1>
+      <p style="font-size:15px;line-height:1.55;margin:0 0 12px">${sub}</p>
+      <p style="margin:18px 0 10px"><a href="${link}" style="display:inline-block;background:#0a7085;color:#fff;text-decoration:none;padding:11px 18px;border-radius:8px;font-weight:600">See your places</a></p>
+      <p style="font-size:13.5px;color:#5b6572;line-height:1.5;margin:0">Or copy this link: <a href="${link}" style="color:#0a7085">${link}</a></p>
+      <p style="font-size:13.5px;color:#5b6572;line-height:1.5;margin:14px 0 0">Your VAT invoice comes from Stripe separately. Anything else, write to <a href="mailto:${SCHOOLS_EMAIL}" style="color:#0a7085">${SCHOOLS_EMAIL}</a>.</p>
+    </div>`;
+  const text = `${added} for ${args.orgName}.\n\nYour payment has cleared and the places are on your account already. ${args.orgName} now holds ${args.total} place(s) in total.\n\nSee your places: ${link}\n\nYour VAT invoice comes from Stripe separately. Anything else, write to ${SCHOOLS_EMAIL}.\n`;
+  return sendEmail({ to: args.to, subject: `${added} for ${args.orgName}`, html, text, replyTo: SCHOOLS_EMAIL });
+}

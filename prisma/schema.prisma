@@ -507,6 +507,7 @@ model Organisation {
   purchases      SeatPurchase[]
   teacherInvites TeacherInvite[]
   places         PlaceRedemption[]
+  placePurchases PlacePurchase[]
 }
 
 /// One card purchase of seats: a new firm, or seats added to the firm the
@@ -857,6 +858,42 @@ model PlaceRedemption {
 
   org   Organisation  @relation(fields: [orgId], references: [id], onDelete: Cascade)
   child ChildProfile? @relation(fields: [childProfileId], references: [id], onDelete: SetNull)
+
+  @@index([orgId])
+}
+
+
+/// One card purchase of pupil places: a new organisation, or more places for
+/// the one the buyer already runs.
+///
+/// Before this, the only record of a places purchase was
+/// `Organisation.stripeCheckoutSessionId`, which holds exactly one session.
+/// A second purchase therefore had nowhere to be recorded, and fulfilment
+/// always took the only path it had: create another organisation. The buyer
+/// ended up with two records, two invites and their places split between
+/// them, with no way to merge.
+///
+/// Keyed by the Stripe session, so a repeated webhook delivery adds nothing
+/// twice. That uniqueness is the only thing standing between one payment and
+/// two lots of places, so it is a database constraint and not a check in
+/// application code.
+model PlacePurchase {
+  id     String @id @default(cuid())
+  orgId  String
+  places Int
+  /// What they paid, in pence, before VAT: taken from the Stripe session
+  /// rather than re-derived from the ladder, which may have changed price
+  /// between the purchase and the question being asked about it.
+  netPence Int
+  /// The lead's email as given at checkout. Kept because this is also the
+  /// evidence of WHY these places landed on this organisation: matching is
+  /// done on the buyer's email, and a wrong match is the kind of thing
+  /// somebody has to be able to look into afterwards.
+  leadEmail String
+  stripeCheckoutSessionId String @unique
+  createdAt DateTime @default(now())
+
+  org Organisation @relation(fields: [orgId], references: [id], onDelete: Cascade)
 
   @@index([orgId])
 }
