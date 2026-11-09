@@ -4,7 +4,7 @@ import { jsPDF } from "jspdf";
 import { auth } from "@/app/lib/auth";
 import { getEnrolment, firstNameOf, DB_TO_TRACK } from "@/app/lib/aiCleared";
 import { CERT_COPY, emailCertificate, fmtDate, issueCertificate } from "@/app/lib/aiClearedCertificate";
-import { COURSES, isCourseSlug, type CourseSlug } from "@/app/ai-cleared/engine/courses";
+import { COURSES, type CertifiedCourseSlug } from "@/app/ai-cleared/engine/courses";
 import { TRACK_LABEL } from "@/app/ai-cleared/engine/types";
 
 /* GET  /api/ai-cleared/certificate?course=   the PDF, for the signed-in holder
@@ -26,8 +26,11 @@ function originOf(req: NextRequest): string {
   return `${proto}://${host}`;
 }
 
-function courseOf(v: unknown): CourseSlug {
-  return isCourseSlug(v) ? v : "ai-cleared";
+/* Only the two courses that issue a certificate; Cyber Awareness never
+ * reaches this route (no certificate route for it), so an unrecognised
+ * or absent value falls back to AI Cleared as it always has. */
+function courseOf(v: unknown): CertifiedCourseSlug {
+  return v === "ai-fluent" ? "ai-fluent" : "ai-cleared";
 }
 
 export async function POST(req: NextRequest) {

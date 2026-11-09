@@ -3,17 +3,17 @@ import { redirect } from "next/navigation";
 import { auth } from "@/app/lib/auth";
 import { getEnrolment, firstNameOf, DB_TO_TRACK } from "@/app/lib/aiCleared";
 import { CERT_COPY, fmtDate, issueCertificate } from "@/app/lib/aiClearedCertificate";
-import { COURSES, type CourseSlug } from "../engine/courses";
+import { COURSES, type CertifiedCourseSlug } from "../engine/courses";
 import { TRACK_LABEL } from "../engine/types";
 import { K } from "../engine/tokens";
 import Frame from "../Frame";
 import CourseAside from "../CourseAside";
 import CertificateActions from "./CertificateActions";
 
-/* The certificate screen for either course, with the download and the
- * verify link. Issues the certificate on first visit once the course is
- * complete. */
-export default async function CertificateView({ course }: { course: CourseSlug }) {
+/* The certificate screen for the two courses that issue one, with the
+ * download and the verify link. Issues the certificate on first visit
+ * once the course is complete. Cyber Awareness has no certificate route. */
+export default async function CertificateView({ course }: { course: CertifiedCourseSlug }) {
   const c = COURSES[course];
   const session = await auth();
   if (!session?.user?.id) redirect(`/login?callbackUrl=${encodeURIComponent(`${c.base}/certificate`)}`);

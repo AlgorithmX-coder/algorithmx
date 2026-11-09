@@ -2,10 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { K } from "../engine/tokens";
-import type { CourseSlug } from "../engine/courses";
+import type { CertifiedCourseSlug } from "../engine/courses";
 
 /* Download, verify link, email me a copy. */
-export default function CertificateActions({ serial, course = "ai-cleared" }: { serial: string; course?: CourseSlug }) {
+export default function CertificateActions({ serial, course = "ai-cleared" }: { serial: string; course?: CertifiedCourseSlug }) {
   const [state, setState] = useState<"idle" | "sending" | "sent" | "failed">("idle");
   const [verify, setVerify] = useState(`/verify/${serial}`);
   useEffect(() => {

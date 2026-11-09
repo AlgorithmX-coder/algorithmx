@@ -10,7 +10,7 @@ import { TRACKS } from "@/app/ai-cleared/engine/types";
  * second change goes through the firm's admin. Modules already cleared
  * stay cleared. */
 
-const Body = z.object({ track: z.enum(TRACKS), course: z.enum(["ai-cleared", "ai-fluent"]).optional() });
+const Body = z.object({ track: z.enum(TRACKS), course: z.enum(["ai-cleared", "ai-fluent", "cyber-awareness"]).optional() });
 
 export async function POST(req: NextRequest) {
   const session = await auth();
