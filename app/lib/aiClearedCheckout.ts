@@ -4,7 +4,7 @@ import { createFirm } from "@/app/lib/aiClearedOps";
 import { sendSeatsAdded } from "@/app/lib/aiClearedAdmin";
 import { opsAlert } from "@/app/lib/opsAlert";
 import { COURSE_NAME, SEAT_MAX, SEAT_MIN, SEAT_STEP, planForSeats, priceIdFor, sellableCourses, stripe, stripeConfigured, vatMode, vatTaxRateId } from "@/app/lib/stripe";
-import { FLUENT_NEEDS_CLEARED_FIRM, type CorporateProductSlug, approvedToolLabel } from "@/app/lib/corporateProducts";
+import { type CorporateProductSlug, approvedToolLabel } from "@/app/lib/corporateProducts";
 
 /* Card checkout for a firm's seat pack, and the fulfilment that follows
  * the webhook. The checkout carries everything needed to create the firm
@@ -39,7 +39,7 @@ export async function createCorporateCheckout(input: CheckoutInput): Promise<{ u
   if (!sellableCourses().includes(input.course)) return { error: `${COURSE_NAME[input.course]} is not on sale by card yet.`, status: 400 };
   const seatsError = validateSeats(input.seats);
   if (seatsError) return { error: seatsError, status: 400 };
-  if (input.course === "ai-fluent" && !(await runsAFirm(input.adminEmail))) return { error: FLUENT_NEEDS_CLEARED_FIRM, status: 400 };
+
   const plan = planForSeats(input.seats);
   const price = priceIdFor(input.course, plan);
   if (!price) return { error: "That pack is priced on a call. Use the enquiry form.", status: 400 };
@@ -92,12 +92,6 @@ export async function createCorporateCheckout(input: CheckoutInput): Promise<{ u
 
 const COURSE_KEY = { "ai-cleared": "AI_CLEARED", "ai-fluent": "AI_FLUENT" } as const;
 
-/* The admin email of a firm that exists: an ADMIN seat under it. No firm
- * means no Cleared seats, so nobody who could claim a Fluent seat. */
-export async function runsAFirm(adminEmail: string): Promise<boolean> {
-  const seat = await prisma.seat.findFirst({ where: { email: adminEmail.trim().toLowerCase(), role: "ADMIN" }, select: { id: true } });
-  return !!seat;
-}
 
 /* Called by the webhook on checkout.session.completed. The same admin
  * email means the same firm: a buyer who already runs a firm with us gets
@@ -117,6 +111,10 @@ export async function fulfilCheckoutSession(session: Stripe.Checkout.Session, or
   const course: CorporateProductSlug = m.course === "ai-fluent" ? "ai-fluent" : "ai-cleared";
   /* The bundle rides on an AI Cleared purchase as a second count. */
   const fluentSeats = course === "ai-cleared" ? Number(m.fluentSeats) || 0 : 0;
+  /* What the firm gains is Cyber Secured seats: people. A Cleared line and
+     a Fluent line bought together are the same people on two tracks, and
+     one seat now opens every track, so the larger line is the head count. */
+  const people = Math.max(seats, fluentSeats);
   const adminEmail = (m.adminEmail || session.customer_details?.email || session.customer_email || "").toLowerCase();
   if (!adminEmail || !m.firmName) return { skipped: "session is missing the firm name or the admin email" };
   const customerId = typeof session.customer === "string" ? session.customer : session.customer?.id ?? null;
@@ -132,14 +130,14 @@ export async function fulfilCheckoutSession(session: Stripe.Checkout.Session, or
     await prisma.$transaction([
       prisma.organisation.update({
         where: { id: admin.org.id },
-        data: course === "ai-fluent" ? { fluentSeatsPurchased: { increment: seats } } : { seatsPurchased: { increment: seats }, fluentSeatsPurchased: { increment: fluentSeats } },
+        data: { seatsPurchased: { increment: people } },
       }),
       prisma.seatPurchase.create({ data: { orgId: admin.org.id, course: COURSE_KEY[course], seats, stripeCheckoutSessionId: session.id } }),
       ...(fluentSeats > 0 ? [prisma.seatPurchase.create({ data: { orgId: admin.org.id, course: COURSE_KEY["ai-fluent"], seats: fluentSeats, stripeCheckoutSessionId: `${session.id}:fluent` } })] : []),
     ]);
     let emailed = true;
     try {
-      await sendSeatsAdded({ to: adminEmail, firmName: admin.org.name, course, seats, fluentSeats, origin, staffName, staffEmail });
+      await sendSeatsAdded({ to: adminEmail, firmName: admin.org.name, seats: people, origin, staffName, staffEmail });
     } catch (err) {
       emailed = false;
       console.error("[corporate/checkout] seats-added email failed", err instanceof Error ? err.message : err);
@@ -155,8 +153,7 @@ export async function fulfilCheckoutSession(session: Stripe.Checkout.Session, or
     contactRole: m.contactRole || null,
     approvedTool: approvedToolLabel(m.tool),
     plan: planForSeats(seats),
-    seatsPurchased: course === "ai-cleared" ? seats : 0,
-    fluentSeatsPurchased: course === "ai-fluent" ? seats : fluentSeats,
+    seatsPurchased: people,
     adminEmail,
     origin,
     staffName,

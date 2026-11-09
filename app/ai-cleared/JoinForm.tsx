@@ -146,7 +146,7 @@ export default function JoinForm({ token, orgName, presetTrack, course = "ai-cle
         {track ? (
           <>
             <span className="jf-desk-dot" aria-hidden />
-            <span>Your desk: <b>{TRACK_LABEL[track]}</b>. The {course === "ai-fluent" ? "real task" : "practice"} uses documents this role handles. You can change it once from the course page.</span>
+            <span>Your desk: <b>{TRACK_LABEL[track]}</b>. The practice in every course uses documents this role handles. You can change it once from a course page.</span>
           </>
         ) : (
           <span>Pick the closest title. It decides which desk the practice uses.</span>

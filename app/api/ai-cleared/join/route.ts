@@ -6,9 +6,9 @@ import { COURSES } from "@/app/ai-cleared/engine/courses";
 import { TRACKS } from "@/app/ai-cleared/engine/types";
 
 /* POST /api/ai-cleared/join
- * Claims an invite seat for the signed-in user on the chosen track. The
- * invite landing page posts here after sign-in. The seat knows its course;
- * a Fluent seat is refused without a valid Cleared certificate. */
+ * Claims an invite seat for the signed-in user on the chosen desk, which
+ * enrols them on every Cyber Secured track. The invite landing page posts
+ * here after sign-in. */
 
 const Body = z.object({
   token: z.string().min(6).max(120),
@@ -24,17 +24,15 @@ export async function POST(req: NextRequest) {
 
   const result = await claimSeat({ token: parsed.data.token, userId: session.user.id, track: parsed.data.track });
   if (!result.ok) {
-    const status = result.reason === "not-found" ? 404 : result.reason === "taken" || result.reason === "needs-cleared" || result.reason === "closed" ? 409 : 500;
+    const status = result.reason === "not-found" ? 404 : result.reason === "taken" || result.reason === "closed" ? 409 : 500;
     const message =
       result.reason === "not-found"
         ? "That invite link is not valid. Ask your admin for a new one."
         : result.reason === "taken"
           ? "That seat has already been claimed by someone else."
-          : result.reason === "needs-cleared"
-            ? "AI Fluent needs a valid AI Cleared certificate on this login first. Finish AI Cleared, then open this link again."
-            : result.reason === "closed"
-              ? "Your firm's access to this course is closed. Your admin can reopen it with us at admissions@algorithmx.co.uk."
-              : "The course is not set up yet. Ask your admin.";
+          : result.reason === "closed"
+            ? "Your firm's access to these courses is closed. Your admin can reopen it with us at admissions@algorithmx.co.uk."
+            : "The courses are not set up yet. Ask your admin.";
     return Response.json({ error: message }, { status });
   }
   return Response.json({ ok: true, orgName: result.orgName, redirect: COURSES[result.course].base });

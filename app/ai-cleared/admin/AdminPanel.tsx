@@ -7,10 +7,13 @@ import { K } from "../engine/tokens";
 import { TRACKS, TRACK_LABEL, type Track } from "../engine/types";
 import { COURSES, COURSE_SLUGS, type CourseSlug } from "../engine/courses";
 import type { RegisterRow, ProfileInput } from "@/app/lib/aiClearedAdmin";
+import { CYBER_SECURED_NAME } from "@/app/lib/cyberSecured";
 
 /* The admin console: firm standing, the register per course with CSV
  * export, invites, nudges, the firm profile. One page, four glass cards.
- * The course switch is a link, so the server renders the right rows. */
+ * A seat is one person on every course of Cyber Secured, so the people are
+ * the same on each course; the switch shows how far they have got on it.
+ * It is a link, so the server renders the right rows. */
 
 type Standing = { claimed: number; cleared: number; invited: number; pct: number; firmCleared: boolean };
 
@@ -18,7 +21,6 @@ export default function AdminPanel({
   firmName,
   role,
   seatsPurchased,
-  fluentSeatsPurchased = 0,
   rows,
   standing,
   profile,
@@ -29,8 +31,8 @@ export default function AdminPanel({
 }: {
   firmName: string;
   role: "ADMIN" | "MANAGER" | "LEARNER";
+  /* Cyber Secured seats: one per person, every course. */
   seatsPurchased: number;
-  fluentSeatsPurchased?: number;
   rows: RegisterRow[];
   standing: Standing;
   profile: ProfileInput;
@@ -52,7 +54,7 @@ export default function AdminPanel({
   const [team, setTeam] = useState("");
   const [track, setTrack] = useState<Track | "">("");
   const [inviteRole, setInviteRole] = useState<"LEARNER" | "MANAGER" | "ADMIN">("LEARNER");
-  const [inviteCourse, setInviteCourse] = useState<CourseSlug>(course);
+
   const [busy, setBusy] = useState<string | null>(null);
   const [note, setNote] = useState<{ tone: "ok" | "warn"; text: string } | null>(null);
   const [prof, setProf] = useState<ProfileInput>(profile);
@@ -61,7 +63,7 @@ export default function AdminPanel({
   const origin = typeof window !== "undefined" ? window.location.origin : "";
   /* Every call names the firm when staff are acting on it, and the course. */
   const api = (path: string, extra = "") => `${path}?${orgId ? `org=${encodeURIComponent(orgId)}&` : ""}course=${course}&${extra}`.replace(/[?&]$/, "");
-  const licensed = fluent ? fluentSeatsPurchased : seatsPurchased;
+  const licensed = seatsPurchased;
   const used = rows.length;
   const pct = Math.round(standing.pct * 100);
   const r = 30;
@@ -85,12 +87,12 @@ export default function AdminPanel({
   }
 
   const invite = () =>
-    call("invite", () => fetch(api("/api/org/seats"), { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ emails: emails.split(/[\n,;]+/), team: team || null, track: track || null, role: inviteRole, course: inviteCourse }) }), (j) => {
+    call("invite", () => fetch(api("/api/org/seats"), { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ emails: emails.split(/[\n,;]+/), team: team || null, track: track || null, role: inviteRole }) }), (j) => {
       const created = (j.created as unknown[])?.length ?? 0;
       const skipped = (j.skipped as unknown[])?.length ?? 0;
       const failed = (j.emailFailed as unknown[])?.length ?? 0;
       setEmails("");
-      return `${created} ${COURSES[inviteCourse].name} invite${created === 1 ? "" : "s"} created${skipped ? `, ${skipped} already had a seat on it` : ""}${failed ? `, ${failed} email${failed === 1 ? "" : "s"} could not be sent (copy the link from the register)` : ""}.${inviteCourse !== course ? ` Switch to the ${COURSES[inviteCourse].name} register to see them.` : ""}`;
+      return `${created} invite${created === 1 ? "" : "s"} sent${skipped ? `, ${skipped} already had a seat` : ""}${failed ? `, ${failed} email${failed === 1 ? "" : "s"} could not be sent (copy the link from the register)` : ""}. Each seat opens every course.`;
     });
   const resend = (seatId: string) => call(`resend-${seatId}`, () => fetch(api("/api/org/seats"), { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ resend: seatId }) }), () => "Invite sent again.");
   const remove = (seatId: string) => call(`remove-${seatId}`, () => fetch(api("/api/org/seats"), { method: "DELETE", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ seatId }) }), () => "Seat removed.");
@@ -117,7 +119,7 @@ export default function AdminPanel({
         {COURSE_SLUGS.map((slug) => (
           <Link key={slug} href={switchHref(slug)} role="tab" aria-selected={slug === course} className={`ad-course-tab ${slug === course ? "on" : ""}`}>{COURSES[slug].name}</Link>
         ))}
-        <span className="cf-note">{fluent ? "Seats for staff who hold an AI Cleared certificate." : "Everyone's safety course. The firm's standing is measured here."}</span>
+        <span className="cf-note">{fluent ? "Getting real work out of AI tools." : "Everyone's safety course. The firm's standing is measured here."}</span>
       </div>
       <div className="ad-head">
         <svg width="76" height="76" viewBox="0 0 76 76" role="img" aria-label={`${pct} percent of claimed seats ${doneWord}`}>
@@ -131,7 +133,7 @@ export default function AdminPanel({
         <div>
           <h1 className="cf-h1" style={{ marginBottom: 6 }}>{!fluent && standing.firmCleared ? <>{firmName} is <span className="cf-grad">AI Cleared</span>.</> : <>{standing.cleared} of {standing.claimed} {doneWord}.</>}</h1>
           <p className="cf-note">
-            {licensed} {c.name} seats licensed · {used} invited · {standing.claimed} claimed · {standing.cleared} {doneWord}.{fluent ? " Fluent is individual: there is no firm-level bar." : ` The firm counts as cleared at 80% of claimed seats${standing.firmCleared ? "; you are there." : "."}`}
+            {licensed} {CYBER_SECURED_NAME} seats · {used} invited · {standing.claimed} claimed · {standing.cleared} {doneWord}.{fluent ? " Fluent is individual: there is no firm-level bar." : ` The firm counts as cleared at 80% of claimed seats${standing.firmCleared ? "; you are there." : "."}`}
           </p>
         </div>
       </div>
@@ -193,14 +195,13 @@ export default function AdminPanel({
         <div className="cf-card ad-form">
           <label className="cf-label" htmlFor="ad-emails">Email addresses, one per line</label>
           <textarea id="ad-emails" value={emails} onChange={(e) => setEmails(e.target.value)} rows={6} placeholder={"hannah.price@yourfirm.co.uk\ntom.reid@yourfirm.co.uk"} />
-          <div className="ad-row four">
-            <label>Course <select value={inviteCourse} onChange={(e) => setInviteCourse(e.target.value as CourseSlug)}>{COURSE_SLUGS.map((s) => <option key={s} value={s}>{COURSES[s].name}</option>)}</select></label>
+          <div className="ad-row three">
             <label>Team <input value={team} onChange={(e) => setTeam(e.target.value)} placeholder="Optional, e.g. Finance" /></label>
             <label>Desk <select value={track} onChange={(e) => setTrack(e.target.value as Track | "")}><option value="">Let them choose</option>{TRACKS.map((t) => <option key={t} value={t}>{TRACK_LABEL[t]}</option>)}</select></label>
             <label>Role <select value={inviteRole} onChange={(e) => setInviteRole(e.target.value as "LEARNER" | "MANAGER" | "ADMIN")}><option value="LEARNER">Learner</option><option value="MANAGER">Manager (sees the register)</option>{role === "ADMIN" && <option value="ADMIN">Admin</option>}</select></label>
           </div>
-          <p className="cf-note">Each address gets its own link by email, under your name, with replies coming to you. You can also copy links from the register.{inviteCourse === "ai-fluent" ? " A Fluent seat opens only for a login that holds a valid AI Cleared certificate; invite anyone now and the link waits." : ""}</p>
-          <button type="button" className="cf-btn cf-btn-pri" onClick={invite} disabled={busy === "invite" || !emails.trim()}>{busy === "invite" ? "Sending…" : `Send ${COURSES[inviteCourse].name} invites`}</button>
+          <p className="cf-note">Each address takes one seat and gets its own link by email, under your name, with replies coming to you. The seat opens every course. You can also copy links from the register.</p>
+          <button type="button" className="cf-btn cf-btn-pri" onClick={invite} disabled={busy === "invite" || !emails.trim()}>{busy === "invite" ? "Sending…" : "Send invites"}</button>
         </div>
       )}
 

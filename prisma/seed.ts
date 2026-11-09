@@ -233,7 +233,7 @@ async function seedAiClearedTestOrg() {
   ];
   for (const seat of seats) {
     await prisma.seat.upsert({
-      where: { orgId_email_course: { orgId: org.id, email: seat.email, course: "AI_CLEARED" } },
+      where: { orgId_email_course: { orgId: org.id, email: seat.email, course: "CYBER_SECURED" } },
       update: {},
       create: { orgId: org.id, ...seat },
     });

@@ -19,7 +19,7 @@ export default async function AdminFirmsPage() {
       <span className="ad-eyebrow firms"><FirmIcon /> Firms</span>
       <h1 className="ad-h1">{t.firms} firm{t.firms === 1 ? "" : "s"}</h1>
       <p className="ad-note">
-        {t.seatsLicensed} Cleared seats licensed &middot; {t.seatsClaimed} claimed &middot; {t.cleared} cleared &middot; {t.fluentLicensed} Fluent seats licensed &middot; {t.fluentClaimed} claimed &middot; {t.certificates} certificates live.
+        {t.seatsLicensed} Cyber Secured seats licensed &middot; {t.seatsInvited} people invited &middot; {t.seatsClaimed} claimed &middot; {t.cleared} finished AI Cleared &middot; {t.fluentDone} finished AI Fluent &middot; {t.certificates} certificates live.
       </p>
 
       <FirmsTable rows={rows} />

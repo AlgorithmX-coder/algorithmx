@@ -38,17 +38,16 @@ export default async function OpsPage() {
     <Frame firmName="AlgorithmX" meta={<span className="cf-meta">{firstNameOf(session.user.name, session.user.email)} · Staff</span>} courseLink>
       <span className="cf-eyebrow">Ops · every firm</span>
       <h1 className="cf-h1" style={{ marginBottom: 6 }}>
-        {t.firms} firm{t.firms === 1 ? "" : "s"}, <span className="cf-grad">{t.seatsClaimed + t.fluentClaimed} people</span> in the courses.
+        {t.firms} firm{t.firms === 1 ? "" : "s"}, <span className="cf-grad">{t.seatsClaimed} people</span> in the courses.
       </h1>
       <p className="cf-note">
-        AI Cleared: {t.seatsLicensed} seats licensed · {t.seatsInvited} invited · {t.seatsClaimed} claimed · {t.cleared} cleared · {t.firmsCleared} firm{t.firmsCleared === 1 ? "" : "s"} at the 80% bar.
-        {" "}AI Fluent: {t.fluentLicensed} seats licensed · {t.fluentClaimed} claimed · {t.fluentDone} done. {t.certificates} certificates live across both. {calls} model call{calls === 1 ? "" : "s"} in the last 24 hours, against an allowance of {DAILY_ALLOWANCE} a person a day.
+        Cyber Secured: {t.seatsLicensed} seats licensed · {t.seatsInvited} people invited · {t.seatsClaimed} claimed. AI Cleared: {t.cleared} finished · {t.firmsCleared} firm{t.firmsCleared === 1 ? "" : "s"} at the 80% bar. AI Fluent: {t.fluentDone} finished. {t.certificates} certificates live. {calls} model call{calls === 1 ? "" : "s"} in the last 24 hours, against an allowance of {DAILY_ALLOWANCE} a person a day.
       </p>
 
       <div className="cf-card op-table-wrap">
         <table className="op-table">
           <thead>
-            <tr><th>Firm</th><th>Plan</th><th>Cleared seats</th><th>Claimed</th><th>Cleared</th><th>Standing</th><th>Fluent seats</th><th>Claimed</th><th>Fluent</th><th>Certs</th><th>Paid via</th><th>Last activity</th></tr>
+            <tr><th>Firm</th><th>Plan</th><th>Seats</th><th>Claimed</th><th>Cleared</th><th>Standing</th><th>Fluent</th><th>Certs</th><th>Paid via</th><th>Last activity</th></tr>
           </thead>
           <tbody>
             {rows.map((r) => (
@@ -59,15 +58,13 @@ export default async function OpsPage() {
                 <td>{r.claimed}</td>
                 <td>{r.cleared}</td>
                 <td><span className={`op-standing ${r.firmCleared ? "yes" : r.claimed ? "part" : "none"}`}>{r.claimed ? `${Math.round(r.pct * 100)}%` : "—"}</span></td>
-                <td>{r.fluentSeats || r.fluentInvited ? `${r.fluentInvited} / ${r.fluentSeats}` : "—"}</td>
-                <td>{r.fluentSeats || r.fluentInvited ? r.fluentClaimed : "—"}</td>
-                <td>{r.fluentSeats || r.fluentInvited ? r.fluentDone : "—"}</td>
+                <td>{r.fluentDone}</td>
                 <td>{r.certificates}</td>
                 <td>{r.paidVia === "stripe" ? "Stripe" : "Manual"}</td>
                 <td>{day(r.lastActivity)}</td>
               </tr>
             ))}
-            {rows.length === 0 && <tr><td colSpan={12} style={{ color: K.muted }}>No firms yet. Create one below.</td></tr>}
+            {rows.length === 0 && <tr><td colSpan={10} style={{ color: K.muted }}>No firms yet. Create one below.</td></tr>}
           </tbody>
         </table>
       </div>

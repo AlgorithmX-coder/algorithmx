@@ -71,7 +71,7 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
         firmName={ctx.org.name}
         role={ctx.role}
         seatsPurchased={ctx.org.seatsPurchased}
-        fluentSeatsPurchased={ctx.org.fluentSeatsPurchased}
+
         rows={rows}
         standing={standing}
         profile={profile}

@@ -4,11 +4,11 @@ import { auth } from "@/app/lib/auth";
 import { prisma } from "@/app/lib/prisma";
 import { getAdminContext, orgRefOf, inviteSeats, sendInvite } from "@/app/lib/aiClearedAdmin";
 import { firstNameOf } from "@/app/lib/aiCleared";
-import { COURSES, courseByKey, corporateCourse, type CourseSlug } from "@/app/ai-cleared/engine/courses";
+import { CYBER_SECURED_NAME } from "@/app/lib/cyberSecured";
 import { TRACKS } from "@/app/ai-cleared/engine/types";
 
 /* POST /api/org/seats
- *   { emails: string[], team?, track?, role?, course? }  invite new seats
+ *   { emails: string[], team?, track?, role? }            invite new seats
  *   { resend: seatId }                                    resend one invite
  * DELETE /api/org/seats { seatId }                        remove an unclaimed seat */
 
@@ -17,7 +17,6 @@ const Invite = z.object({
   team: z.string().max(80).optional().nullable(),
   track: z.enum(TRACKS).optional().nullable(),
   role: z.enum(["LEARNER", "MANAGER", "ADMIN"]).optional(),
-  course: z.enum(["ai-cleared", "ai-fluent"]).optional(),
 });
 const Resend = z.object({ resend: z.string().min(1) });
 const Remove = z.object({ seatId: z.string().min(1) });
@@ -28,11 +27,11 @@ function originOf(req: NextRequest): string {
   return `${proto}://${host}`;
 }
 
-/* The refusal an admin reads when the firm has run out of seats on a
- * course. It names the three numbers they need in order to act: what the
- * firm holds, what is left, and what they just asked for. */
-function seatsFullMessage(firmName: string, course: CourseSlug, r: { licensed: number; used: number; left: number; asked: number }): string {
-  const name = COURSES[course].name;
+/* The refusal an admin reads when the firm has run out of seats. It names
+ * the three numbers they need in order to act: what the firm holds, what
+ * is left, and what they just asked for. */
+function seatsFullMessage(firmName: string, r: { licensed: number; used: number; left: number; asked: number }): string {
+  const name = CYBER_SECURED_NAME;
   if (r.licensed === 0) return `${firmName} has no ${name} seats yet. Ask admissions@algorithmx.co.uk to add some and these invites will go straight out.`;
   const left = r.left === 1 ? "1 left" : r.left === 0 ? "none left" : `${r.left} left`;
   return `${firmName} holds ${r.licensed} ${name} seat${r.licensed === 1 ? "" : "s"} and ${r.used} ${r.used === 1 ? "is" : "are"} taken, so there ${r.left === 1 ? "is" : "are"} ${left}. You asked to invite ${r.asked}. Remove an unclaimed seat from the register, or ask admissions@algorithmx.co.uk for more seats.`;
@@ -51,7 +50,7 @@ export async function POST(req: NextRequest) {
     const seat = await prisma.seat.findFirst({ where: { id: resend.data.resend, orgId: ctx.orgId } });
     if (!seat) return Response.json({ error: "No such seat." }, { status: 404 });
     try {
-      await sendInvite({ to: seat.email, token: seat.inviteToken, firmName: ctx.org.name, origin: originOf(req), adminName, adminEmail: ctx.user.email, course: courseByKey(corporateCourse(seat.course)).slug });
+      await sendInvite({ to: seat.email, token: seat.inviteToken, firmName: ctx.org.name, origin: originOf(req), adminName, adminEmail: ctx.user.email });
       return Response.json({ ok: true });
     } catch (err) {
       console.error("[ai-cleared/admin] resend failed", err instanceof Error ? err.message : err);
@@ -70,14 +69,13 @@ export async function POST(req: NextRequest) {
     team: parsed.data.team ?? null,
     track: parsed.data.track ?? null,
     role: parsed.data.role ?? "LEARNER",
-    course: parsed.data.course ?? "ai-cleared",
     origin: originOf(req),
     adminName,
     adminEmail: ctx.user.email,
     /* Staff acting from the ops console are deliberately uncapped. */
     staff: ctx.staff,
   });
-  if (!result.ok) return Response.json({ error: seatsFullMessage(ctx.org.name, parsed.data.course ?? "ai-cleared", result) }, { status: 409 });
+  if (!result.ok) return Response.json({ error: seatsFullMessage(ctx.org.name, result) }, { status: 409 });
   return Response.json({ ok: true, created: result.created, skipped: result.skipped, emailFailed: result.emailFailed });
 }
 
