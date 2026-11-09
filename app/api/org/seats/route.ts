@@ -4,7 +4,7 @@ import { auth } from "@/app/lib/auth";
 import { prisma } from "@/app/lib/prisma";
 import { getAdminContext, orgRefOf, inviteSeats, sendInvite } from "@/app/lib/aiClearedAdmin";
 import { firstNameOf } from "@/app/lib/aiCleared";
-import { courseByKey, corporateCourse } from "@/app/ai-cleared/engine/courses";
+import { COURSES, courseByKey, corporateCourse, type CourseSlug } from "@/app/ai-cleared/engine/courses";
 import { TRACKS } from "@/app/ai-cleared/engine/types";
 
 /* POST /api/org/seats
@@ -26,6 +26,16 @@ function originOf(req: NextRequest): string {
   const proto = req.headers.get("x-forwarded-proto") ?? "https";
   const host = req.headers.get("x-forwarded-host") ?? req.headers.get("host") ?? "www.algorithmx.co.uk";
   return `${proto}://${host}`;
+}
+
+/* The refusal an admin reads when the firm has run out of seats on a
+ * course. It names the three numbers they need in order to act: what the
+ * firm holds, what is left, and what they just asked for. */
+function seatsFullMessage(firmName: string, course: CourseSlug, r: { licensed: number; used: number; left: number; asked: number }): string {
+  const name = COURSES[course].name;
+  if (r.licensed === 0) return `${firmName} has no ${name} seats yet. Ask admissions@algorithmx.co.uk to add some and these invites will go straight out.`;
+  const left = r.left === 1 ? "1 left" : r.left === 0 ? "none left" : `${r.left} left`;
+  return `${firmName} holds ${r.licensed} ${name} seat${r.licensed === 1 ? "" : "s"} and ${r.used} ${r.used === 1 ? "is" : "are"} taken, so there ${r.left === 1 ? "is" : "are"} ${left}. You asked to invite ${r.asked}. Remove an unclaimed seat from the register, or ask admissions@algorithmx.co.uk for more seats.`;
 }
 
 export async function POST(req: NextRequest) {
@@ -64,8 +74,11 @@ export async function POST(req: NextRequest) {
     origin: originOf(req),
     adminName,
     adminEmail: ctx.user.email,
+    /* Staff acting from the ops console are deliberately uncapped. */
+    staff: ctx.staff,
   });
-  return Response.json({ ok: true, ...result });
+  if (!result.ok) return Response.json({ error: seatsFullMessage(ctx.org.name, parsed.data.course ?? "ai-cleared", result) }, { status: 409 });
+  return Response.json({ ok: true, created: result.created, skipped: result.skipped, emailFailed: result.emailFailed });
 }
 
 export async function DELETE(req: NextRequest) {
