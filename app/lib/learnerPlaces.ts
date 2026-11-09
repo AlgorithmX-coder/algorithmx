@@ -80,7 +80,7 @@ export async function createPlacesCheckout(
           unit_amount: quote.net,
           product_data: {
             name: `AlgorithmX, ${quote.places} pupil places`,
-            description: `${input.blocks} block${input.blocks === 1 ? "" : "s"} of ${PLACES_PER_BLOCK}. A place belongs to a child and never expires.`,
+            description: `${input.blocks} block${input.blocks === 1 ? "" : "s"} of ${PLACES_PER_BLOCK}. A place is one young person on one course, follows them between groups, and never expires.`,
           },
         },
       },

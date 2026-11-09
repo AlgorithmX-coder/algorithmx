@@ -2,6 +2,7 @@ import { randomInt } from "crypto";
 import { prisma } from "@/app/lib/prisma";
 import bcrypt from "bcryptjs";
 import { isSchoolCourse, placesUsed } from "@/app/lib/schoolPlaces";
+import { moveSpendsAPlace } from "@/app/lib/placeRule";
 import type { LearnerOrgKind } from "@prisma/client";
 
 /**
@@ -268,9 +269,13 @@ export async function addPupils(args: {
         select: { id: true },
       });
 
-      /* The place, spent. One row per child, kept for good: see schoolPlaces. */
+      /* The place, spent, ON THIS CLASS'S COURSE. Kept for good: see
+         schoolPlaces. The course is recorded because a place is good for
+         one course only, so the ledger has to know which, or moving this
+         child up next September could not be told apart from moving them
+         between two classes of the course they are already on. */
       await tx.placeRedemption.create({
-        data: { orgId: args.orgId, childProfileId: child.id },
+        data: { orgId: args.orgId, childProfileId: child.id, productId: klass.productId },
       });
 
       /* The course, granted. Without this a pupil signs in, lands on their
@@ -304,26 +309,31 @@ export async function listPupils(orgId: string, classId: string) {
 /**
  * Move a pupil into another class.
  *
- * WITHOUT THIS, THE PLACES MODEL CANNOT WORK. The owner decided on
- * 2026-11-08 that a place belongs to the CHILD, so a child moving up to the
- * next course in September re-points their existing place and costs
- * nothing. There was no way to move a child, so the only route was Remove
- * and re-add: that deletes the account and the progress, and the place
+ * WITHOUT THIS, THE PLACES MODEL CANNOT WORK. A place belongs to the CHILD,
+ * so there has to be a way to move one. Before it existed the only route was
+ * Remove and re-add: that deletes the account and the progress, and the place
  * stays spent. A school moving fifty children up a year would have burned
  * fifty places and thrown away a year of work.
  *
- * Nothing is deleted and nothing is spent. The profile keeps its id, so its
- * PlaceRedemption row, its Progress rows and its picture password all stay
- * exactly where they are.
+ * Nothing is deleted. The profile keeps its id, so its places, its Progress
+ * rows and its picture password all stay exactly where they are.
  *
- * MOVING TO A CLASS ON ANOTHER COURSE grants the new course and LEAVES THE
- * OLD ONE in place. A child who spent a year on Cyber Heroes keeps what
- * they did; taking it away to hand them Explorers would delete work they
- * can still see in their own hub. This is the 2026-11-08 reading, which is
- * also what the rest of the code already does.
- * WARNING: the 2026-10-27 partner ruling says the opposite (one place = one
- * child on ONE course, so moving spends a second place). The two have not
- * been reconciled. This follows November.
+ * WHAT IT COSTS (owner, 2026-11-09, which settles the October/November
+ * disagreement that used to be flagged here):
+ *
+ *  - SAME COURSE, another class: free. The place follows the child, so
+ *    shuffling a year group between 4A and 4B costs nothing.
+ *  - ANOTHER COURSE: a second place. A place is good for one course, so a
+ *    child finishing Cyber Heroes and starting Cyber Explorers spends
+ *    another one, and this call can be REFUSED when the licence is full.
+ *    That makes it a purchase, so it is checked before the move rather than
+ *    after: a half-done move leaving a child on a course the school has not
+ *    paid for is worse than a move that did not happen.
+ *
+ * Moving to another course grants the new course and LEAVES THE OLD ONE in
+ * place. A child who spent a year on Cyber Heroes keeps what they did;
+ * taking it away to hand them Explorers would delete work they can still
+ * see in their own hub. They have paid for both.
  *
  * Any class in the SAME school is a valid destination, including another
  * teacher's, because that is exactly what September looks like.
@@ -332,13 +342,21 @@ export async function movePupil(args: {
   orgId: string;
   childProfileId: string;
   toClassId: string;
-}): Promise<{ ok: true; className: string } | { ok: false; error: ClassFailure }> {
+}): Promise<
+  | { ok: true; className: string; courseChanged: boolean; placeSpent: boolean }
+  | { ok: false; error: ClassFailure; detail?: string }
+> {
   /* Both ends scoped to this school IN THE QUERY, so neither a child nor a
      class from another school can be named by a hand-made request. */
   const [child, target] = await Promise.all([
     prisma.childProfile.findFirst({
       where: { id: args.childProfileId, class: { orgId: args.orgId } },
-      select: { id: true, userId: true, classId: true },
+      select: {
+        id: true,
+        userId: true,
+        classId: true,
+        class: { select: { productId: true } },
+      },
     }),
     prisma.class.findFirst({
       where: { id: args.toClassId, orgId: args.orgId, archivedAt: null },
@@ -346,7 +364,48 @@ export async function movePupil(args: {
     }),
   ]);
   if (!child || !target) return { ok: false, error: "class_not_found" };
-  if (child.classId === target.id) return { ok: true, className: target.name };
+  if (child.classId === target.id) {
+    return { ok: true, className: target.name, courseChanged: false, placeSpent: false };
+  }
+
+  const courseChanged = child.class?.productId !== target.productId;
+
+  /* Has this child ever held a place on the course they are moving to? Two
+     reasons it might already exist: they were on that course before and have
+     come back, or staff credited that place back by mistake. Either way the
+     row is there and the unique index will not take a second one, so this
+     decides between reviving it, creating one, and doing nothing. */
+  const held = courseChanged
+    ? await prisma.placeRedemption.findFirst({
+        where: { childProfileId: child.id, productId: target.productId },
+        select: { id: true, creditedBackAt: true },
+      })
+    : null;
+  /* The rule itself lives in placeRule.ts, where a test can state all four
+     cases in plain terms. It is a commercial rule, and the kind that gets
+     quietly inverted by a later refactor with nobody noticing until a school
+     is billed twice or given a year free. */
+  const placeSpent = moveSpendsAPlace({
+    fromProductId: child.class?.productId,
+    toProductId: target.productId,
+    heldForTarget: held,
+  });
+
+  if (placeSpent) {
+    /* A SECOND COURSE IS A SECOND PLACE (owner, 2026-11-09), so this is a
+       purchase and it can be refused. Checked before the move rather than
+       after, because a half-done move that leaves a child on a course the
+       school has not paid for is worse than a move that did not happen. */
+    const org = await prisma.organisation.findUnique({
+      where: { id: args.orgId },
+      select: { seatsPurchased: true },
+    });
+    if (!org) return { ok: false, error: "not_a_school" };
+    const used = await placesUsed(args.orgId);
+    if (used + 1 > org.seatsPurchased) {
+      return { ok: false, error: "seats_full", detail: String(Math.max(0, org.seatsPurchased - used)) };
+    }
+  }
 
   await prisma.$transaction(async (tx) => {
     await tx.childProfile.update({ where: { id: child.id }, data: { classId: target.id } });
@@ -358,8 +417,24 @@ export async function movePupil(args: {
       update: {},
       create: { userId: child.userId, productId: target.productId, source: "BUNDLE" },
     });
+
+    if (placeSpent) {
+      if (held) {
+        /* Revive the credited-back row rather than insert beside it, which
+           the one-per-child-per-course index would refuse anyway. Re-dated,
+           because this is a new spend of it. */
+        await tx.placeRedemption.update({
+          where: { id: held.id },
+          data: { creditedBackAt: null, creditedBy: null, redeemedAt: new Date() },
+        });
+      } else {
+        await tx.placeRedemption.create({
+          data: { orgId: args.orgId, childProfileId: child.id, productId: target.productId },
+        });
+      }
+    }
   });
-  return { ok: true, className: target.name };
+  return { ok: true, className: target.name, courseChanged, placeSpent };
 }
 
 /**

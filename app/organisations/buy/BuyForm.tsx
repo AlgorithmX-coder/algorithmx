@@ -158,9 +158,10 @@ export default function BuyForm({ blocks0, vatPercent }: { blocks0: number; vatP
 
       <p className="oxb-note">
         Paid by card through Stripe. Your VAT invoice comes from Stripe straight after. Places never
-        expire, and a place belongs to a child rather than to a course, so moving a child up to the
-        next course next year costs nothing. Need an invoice instead, or buying for a school? Write
-        to <a href="mailto:schools@algorithmx.co.uk">schools@algorithmx.co.uk</a>.
+        expire. A place is one young person on one course: it follows them, so moving them between
+        groups on that course costs nothing, and starting them on a second course uses another
+        place. Need an invoice instead, or buying for a school? Write to{" "}
+        <a href="mailto:schools@algorithmx.co.uk">schools@algorithmx.co.uk</a>.
       </p>
     </form>
   );
