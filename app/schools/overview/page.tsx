@@ -90,7 +90,7 @@ export default async function SchoolOverviewPage() {
   }
 
   const [places, classes, staff, invites] = await Promise.all([
-    placesSummary(head.orgId),
+    placesSummary(head.orgId, head.kind),
     listClassRollUps(head.orgId),
     listStaff(head.orgId),
     listPendingInvites(head.orgId),

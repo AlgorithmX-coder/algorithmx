@@ -48,7 +48,7 @@ export default async function ClassesPage() {
        still be read: that is the whole reason a class is archived rather
        than deleted. */
     listArchivedClasses(school.orgId),
-    listSchoolCourses(),
+    listSchoolCourses(school.kind),
     /* Only to decide whether to offer the overview link below. A teacher
        bouncing off a link they were shown is worse than no link. */
     getHeadContext(session.user.id),

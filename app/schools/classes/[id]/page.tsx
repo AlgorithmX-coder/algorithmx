@@ -185,10 +185,17 @@ export default async function ClassPage({
                   : "Everybody has signed in."}
               </span>
             </div>
-            <div className="leg">
-              <h5>All {klass.weeksCount} weeks</h5>
-              <div className="bignum">{klass.finished}</div>
-            </div>
+            {/* Cyber Pro cannot say who has finished. Working that out needs
+                the list of topics in each module, which lives in the Pro
+                lesson manifests, and those import client components so a
+                server page cannot read them. A box reading 0 for ever is
+                worse than no box. */}
+            {klass.tracksWeeks && (
+              <div className="leg">
+                <h5>All {klass.weeksCount} weeks</h5>
+                <div className="bignum">{klass.finished}</div>
+              </div>
+            )}
           </div>
         )}
 
@@ -213,16 +220,25 @@ export default async function ClassPage({
                   <small className={p.signedIn ? "s-say" : "s-ask"}>
                     {!p.signedIn
                       ? "not signed in yet"
-                      : p.currentWeek === null
-                        ? "signed in, not started"
-                        : `${p.weeksComplete} of ${klass.weeksCount} weeks · ${p.totalStars} stars`}
+                      : p.pro
+                        ? p.pro.topics === 0
+                          ? "signed in, not started"
+                          : `${p.pro.topics} topic${p.pro.topics === 1 ? "" : "s"} done · ${p.pro.modules} module${p.pro.modules === 1 ? "" : "s"}`
+                        : p.currentWeek === null
+                          ? "signed in, not started"
+                          : `${p.weeksComplete} of ${klass.weeksCount} weeks · ${p.totalStars} stars`}
                   </small>
                 </div>
                 <div className="rs">
-                  <ClassStrip pupil={p} weeksCount={klass.weeksCount} />
+                  {/* Pips are weeks, and Cyber Pro has none: it records a row
+                      per topic completed instead. Drawing the strip for a Pro
+                      group gave twenty empty pips that never filled, which
+                      read as a broken product rather than as a different
+                      shape of course. */}
+                  {klass.tracksWeeks && <ClassStrip pupil={p} weeksCount={klass.weeksCount} />}
                   <small className="dim">
-                    {p.currentWeek !== null ? `Week ${p.currentWeek}` : ""}
-                    {p.lastSeen ? ` · last played ${WHEN(p.lastSeen)}` : ""}
+                    {klass.tracksWeeks && p.currentWeek !== null ? `Week ${p.currentWeek}` : ""}
+                    {p.lastSeen ? `${klass.tracksWeeks && p.currentWeek !== null ? " · " : ""}last worked ${WHEN(p.lastSeen)}` : ""}
                   </small>
                 </div>
                 <div className="rs pupilacts">
@@ -299,11 +315,18 @@ export default async function ClassPage({
                 </div>
               </div>
             ))}
-            <p className="legend">
-              <span className="pip done" /> finished
-              <span className="pip in_progress" /> started
-              <span className="pip not_started" /> not started
-            </p>
+            {klass.tracksWeeks ? (
+              <p className="legend">
+                <span className="pip done" /> finished
+                <span className="pip in_progress" /> started
+                <span className="pip not_started" /> not started
+              </p>
+            ) : (
+              <p className="legend">
+                {klass.courseName} records each topic finished rather than a week at a time, so
+                this {w.group} shows topics and modules instead of a row of weeks.
+              </p>
+            )}
           </div>
         )}
 

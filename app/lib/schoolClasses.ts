@@ -170,6 +170,9 @@ export async function createClass(args: {
   /** Which of the school courses this class runs. Every pupil added to it is
    *  entitled to this course, so it cannot be left unset. */
   productId: string;
+  /** SCHOOL or ORGANISATION, which decides whether Cyber Pro is allowed.
+   *  Defaults to the stricter list when a caller does not say. */
+  kind?: LearnerOrgKind;
 }): Promise<{ ok: true; id: string; code: string } | { ok: false; error: ClassFailure }> {
   const name = args.name.trim();
   if (!name || name.length > 40) return { ok: false, error: "bad_name" };
@@ -180,7 +183,9 @@ export async function createClass(args: {
   /* Checked here rather than trusted from the form: this is a server action's
      input, so the picker that offered the school courses is not a guarantee
      that one of them came back. */
-  if (!(await isSchoolCourse(args.productId))) return { ok: false, error: "bad_course" };
+  if (!(await isSchoolCourse(args.productId, args.kind ?? "SCHOOL"))) {
+    return { ok: false, error: "bad_course" };
+  }
 
   /* A unique code on the first try almost always; the loop is for the day it
      is not, because a collision would otherwise surface as a raw constraint
