@@ -257,19 +257,19 @@ function ScenarioGame({ steps, intro, onDidTry, doneKicker = "Played out", doneN
 export function MindsetScenarioLab({ onDidTry }: LabProps) {
   return <ScenarioGame onDidTry={onDidTry} intro="Play it out. First you think like the attacker, then like the defender. There is a best answer each time, with the reasoning." steps={[
     { role: "You're the attacker", prompt: "You want inside a mid-sized company. Where do you start?", options: [
-      { text: "Send a convincing, urgent email to a busy employee and hope they click.", correct: true, why: "Attackers go for the easiest door, and a rushed person is it. This is how most real breaches begin." },
-      { text: "Brute-force your way through the company firewall.", correct: false, why: "Modern firewalls are hard and noisy to attack. Real attackers skip the strong wall and target the weak person." },
-      { text: "Guess the CEO's password from the company website.", correct: false, why: "Slow and rarely works. The reliable way in is almost always a person, not a lucky guess." },
+      { text: "Phish a busy employee with an urgent email, hoping they click.", correct: true, why: "Attackers go for the easiest door, and a rushed person is it. This is how most real breaches begin." },
+      { text: "Try to brute-force your way straight through the company firewall.", correct: false, why: "Modern firewalls are hard and noisy to attack. Real attackers skip the strong wall and target the weak person." },
+      { text: "Guess the CEO's password from clues on the public website.", correct: false, why: "Slow and rarely works. The reliable way in is almost always a person, not a lucky guess." },
     ] },
     { role: "Now you're the defender", prompt: "You know phishing is the likely way in. What protects you best?", options: [
-      { text: "MFA on every account, plus training so staff spot and report phishing.", correct: true, why: "MFA means a stolen password alone fails, and training lowers the click rate. Good defence assumes some emails get through." },
-      { text: "Just make the minimum password longer.", correct: false, why: "Helps a little, but does nothing once a password is phished. MFA is what stops the stolen-password login." },
-      { text: "Tell staff to simply never make a mistake.", correct: false, why: "People will click sometimes. Real defence plans for that instead of wishing it away." },
+      { text: "MFA everywhere, plus training so that staff report phishing.", correct: true, why: "MFA means a stolen password alone fails, and training lowers the click rate. Good defence assumes some emails get through." },
+      { text: "Just make the minimum password length a good deal longer.", correct: false, why: "Helps a little, but does nothing once a password is phished. MFA is what stops the stolen-password login." },
+      { text: "Tell staff to simply never click a bad link, ever.", correct: false, why: "People will click sometimes. Real defence plans for that instead of wishing it away." },
     ] },
     { role: "The worst happens", prompt: "One employee's laptop gets infected anyway. What limits the damage most?", options: [
-      { text: "Least privilege and segmentation, so that laptop can reach very little.", correct: true, why: "Assume-breach in action: when one machine falls, tight access and segmentation stop it spreading. This is the defender's real edge." },
-      { text: "Hope the antivirus catches it eventually.", correct: false, why: "Hope is not a plan. You design so one infection is contained, not catastrophic." },
-      { text: "Unplug the whole company from the internet.", correct: false, why: "That stops the business too. The goal is to shrink the blast radius, not shut everything down." },
+      { text: "Least privilege and segmentation, so the laptop reaches little.", correct: true, why: "Assume-breach in action: when one machine falls, tight access and segmentation stop it spreading. This is the defender's real edge." },
+      { text: "Hope the antivirus finally catches and removes it before it spreads.", correct: false, why: "Hope is not a plan. You design so one infection is contained, not catastrophic." },
+      { text: "Unplug the entire company from the internet for good.", correct: false, why: "That stops the business too. The goal is to shrink the blast radius, not shut everything down." },
     ] },
   ]} />;
 }
@@ -482,19 +482,19 @@ export function DnsScenarioLab({ onDidTry }: LabProps) {
     doneNote="That whole chain, cache, resolver, root, the site's own name server, runs in milliseconds, every time anyone opens any website. And because everything depends on it, attacking it is attacking everything."
     steps={[
       { role: "You're the browser", prompt: "Someone types a website's name and hits enter. Names mean nothing to the network, it routes by IP address. What do you do first?", options: [
-        { text: "Check whether you already know this name's address from a recent visit.", correct: true, why: "Caching first: if you looked this name up recently, you reuse the answer and skip the whole journey. The web would crawl without it." },
+        { text: "Reuse the address if you looked this name up recently.", correct: true, why: "Caching first: if you looked this name up recently, you reuse the answer and skip the whole journey. The web would crawl without it." },
         { text: "Send the message to the name and hope the routers work it out.", correct: false, why: "Routers only understand IP addresses. Until the name becomes a number, nothing can be sent anywhere." },
-        { text: "Ask the website for its own address.", correct: false, why: "You cannot ask a server you cannot yet reach. That is the chicken-and-egg problem DNS exists to solve." },
+        { text: "Ask the website itself to hand over its own IP address.", correct: false, why: "You cannot ask a server you cannot yet reach. That is the chicken-and-egg problem DNS exists to solve." },
       ] },
       { role: "You're the resolver", prompt: "The browser had nothing cached, so it asked you, the DNS resolver. You have never seen this name either. Who do you ask?", options: [
-        { text: "Start at the root servers, which point you to the right registry, which points you to the site's own name server.", correct: true, why: "DNS is a hierarchy: the root knows who runs .com or .io, that registry knows who answers for the site, and the site's own name server holds the actual address." },
-        { text: "Broadcast the question to every server on the internet.", correct: false, why: "Billions of machines cannot all be asked. The hierarchy exists precisely so three targeted questions replace billions." },
-        { text: "Guess an address that looks about right.", correct: false, why: "A guessed address would send someone's banking login to a stranger's machine. Answers must come from the servers authorised to give them." },
+        { text: "Ask right down the hierarchy: root, then the registry, then the name server.", correct: true, why: "DNS is a hierarchy: the root knows who runs .com or .io, that registry knows who answers for the site, and the site's own name server holds the actual address." },
+        { text: "Broadcast the question out to every single server on the whole internet.", correct: false, why: "Billions of machines cannot all be asked. The hierarchy exists precisely so three targeted questions replace billions." },
+        { text: "Just guess an address that looks about right for the name.", correct: false, why: "A guessed address would send someone's banking login to a stranger's machine. Answers must come from the servers authorised to give them." },
       ] },
       { role: "You're the browser again", prompt: "The answer comes back: the name maps to 76.76.21.21. What happens now?", options: [
-        { text: "Connect to that IP address and start the real conversation.", correct: true, why: "DNS's job is done: name in, number out. Now the packets can actually be addressed and the page can load. Notice what this means: whoever controls your DNS answers controls where you go." },
-        { text: "Show the user the number and ask them to confirm it.", correct: false, why: "Users never see this layer, which is exactly why a poisoned answer is so dangerous: everything looks normal while you are sent to the wrong machine." },
-        { text: "Look the name up a second time to be sure.", correct: false, why: "The answer is cached and used. Fast, but it also means a bad answer, once cached, keeps misdirecting people until it expires." },
+        { text: "Connect to that IP address and start the conversation.", correct: true, why: "DNS's job is done: name in, number out. Now the packets can actually be addressed and the page can load. Notice what this means: whoever controls your DNS answers controls where you go." },
+        { text: "Show the user the raw number and ask them to confirm it first.", correct: false, why: "Users never see this layer, which is exactly why a poisoned answer is so dangerous: everything looks normal while you are sent to the wrong machine." },
+        { text: "Look the whole name up a second time, just to be sure.", correct: false, why: "The answer is cached and used. Fast, but it also means a bad answer, once cached, keeps misdirecting people until it expires." },
       ] },
     ]} />;
 }
@@ -613,19 +613,19 @@ export function ScopeConsentLab({ onDidTry }: LabProps) {
     doneNote="Every decision came back to one question: am I authorised to do this, right here, right now? A contract is permission for what is written in it, and nothing more. That discipline is what separates a professional from an offender."
     steps={[
       { role: "Day one", prompt: "The scope lists two web applications and their test servers. While testing, you notice the company's separate email server looks wide open and tempting. What do you do?", options: [
-        { text: "Leave it alone and note it to raise with the client; it is outside the written scope.", correct: true, why: "Out of scope means out of bounds, however easy the target looks. You flag it and let the client decide whether to extend the scope in writing." },
+        { text: "Leave it alone and note it to raise with the client later.", correct: true, why: "Out of scope means out of bounds, however easy the target looks. You flag it and let the client decide whether to extend the scope in writing." },
         { text: "Test it quickly; you are already hired, so it is all fair game.", correct: false, why: "A contract authorises exactly what the scope says. Touching the email server is unauthorised access, a potential offence, even mid-engagement." },
-        { text: "Test it but do not mention it, to avoid awkwardness.", correct: false, why: "That is both unauthorised and dishonest. The whole value of a tester is trust and a clean paper trail." },
+        { text: "Test it but do not mention it, to avoid any awkwardness.", correct: false, why: "That is both unauthorised and dishonest. The whole value of a tester is trust and a clean paper trail." },
       ] },
       { role: "A find", prompt: "On an in-scope app you confirm a flaw that would let you read other customers' data. How far do you go to 'prove' it?", options: [
-        { text: "Prove it just enough to show it is real, without hoarding or exposing actual customer data.", correct: true, why: "Minimum necessary: demonstrate the flaw, capture only enough evidence to prove it, and never exfiltrate real personal data. Scope governs depth as well as targets." },
-        { text: "Download the entire customer database as proof.", correct: false, why: "That turns a clean finding into a data breach you caused. You prove impact, you do not realise it." },
-        { text: "Post a redacted screenshot publicly to warn users.", correct: false, why: "Findings go to the client privately, under the engagement's rules. Public disclosure here would breach confidentiality and could break the law." },
+        { text: "Prove it just enough to show that it is real, and no further.", correct: true, why: "Minimum necessary: demonstrate the flaw, capture only enough evidence to prove it, and never exfiltrate real personal data. Scope governs depth as well as targets." },
+        { text: "Download the entire customer database as your proof.", correct: false, why: "That turns a clean finding into a data breach you caused. You prove impact, you do not realise it." },
+        { text: "Post a redacted screenshot publicly to warn all the users.", correct: false, why: "Findings go to the client privately, under the engagement's rules. Public disclosure here would breach confidentiality and could break the law." },
       ] },
       { role: "The clock", prompt: "The authorised testing window was 9am to 5pm. At 6pm you have one more idea you are itching to try. What now?", options: [
-        { text: "Stop. The authorisation was time-bound; you resume only within the agreed window.", correct: true, why: "Authorisation can be limited by time, not just by target. Outside the window you have no permission, so you wait or get the window extended in writing." },
-        { text: "Carry on; an hour over will not matter.", correct: false, why: "Permission that has expired is no permission. 'Just an hour more' is exactly how testers end up on the wrong side of the line." },
-        { text: "Hand your access to a colleague who is still working.", correct: false, why: "Authorisation is specific to who, what, and when it names. It is not yours to pass on." },
+        { text: "Stop; the authorisation was time-bound, so you wait.", correct: true, why: "Authorisation can be limited by time, not just by target. Outside the window you have no permission, so you wait or get the window extended in writing." },
+        { text: "Carry on; an extra hour over the window will not matter.", correct: false, why: "Permission that has expired is no permission. 'Just an hour more' is exactly how testers end up on the wrong side of the line." },
+        { text: "Hand your access to a colleague who is still working late.", correct: false, why: "Authorisation is specific to who, what, and when it names. It is not yours to pass on." },
       ] },
     ]} />;
 }
@@ -816,19 +816,19 @@ export function PhishResponseLab({ onDidTry }: LabProps) {
     doneNote="You did not click, you did not reply, you verified through a trusted channel, and you reported it so the whole organisation is protected. That calm, report-it-forward habit is worth more than any single clever catch."
     steps={[
       { role: "First glance", prompt: "The email claims to be from your CEO, marked urgent, asking you to buy gift cards and send the codes quietly. What is your first move?", options: [
-        { text: "Pause. The urgency and the unusual request are red flags, so do not act on it yet.", correct: true, why: "Stopping to think is the whole defence. Urgency plus an unusual, secretive request is a textbook business-email-compromise pattern." },
+        { text: "Pause; the urgency and odd request are red flags.", correct: true, why: "Stopping to think is the whole defence. Urgency plus an unusual, secretive request is a textbook business-email-compromise pattern." },
         { text: "Buy the gift cards quickly; it is the CEO and it is urgent.", correct: false, why: "That is exactly what the attack is engineered to make you do. Authority and urgency are the levers, not proof it is real." },
-        { text: "Reply to ask if it is genuine.", correct: false, why: "Replying talks to the attacker, who will simply reassure you. Never verify a suspicious message through the message itself." },
+        { text: "Reply to the email to ask whether it is really genuine.", correct: false, why: "Replying talks to the attacker, who will simply reassure you. Never verify a suspicious message through the message itself." },
       ] },
       { role: "Checking", prompt: "You want to confirm whether it is really from the CEO. How?", options: [
-        { text: "Verify out-of-band: contact them through a known number or channel you already trust.", correct: true, why: "Out-of-band verification, using contact details you already have, defeats impersonation because you reach the real person, not the attacker." },
-        { text: "Check that the sender's display name says the CEO's name.", correct: false, why: "Display names are trivial to fake. The friendly name proves nothing about who really sent it." },
+        { text: "Verify out-of-band, via a phone number or channel you already trust.", correct: true, why: "Out-of-band verification, using contact details you already have, defeats impersonation because you reach the real person, not the attacker." },
+        { text: "Check that the sender's display name really shows the CEO's name.", correct: false, why: "Display names are trivial to fake. The friendly name proves nothing about who really sent it." },
         { text: "Click the link in the email to 'confirm your identity'.", correct: false, why: "Never click to verify. Links in a suspicious message are part of the attack, not a safety check." },
       ] },
       { role: "Closing it out", prompt: "You are now fairly sure it is a scam. What is the most useful final step?", options: [
-        { text: "Report it through your organisation's channel (e.g. a 'report phishing' button or the security team).", correct: true, why: "Reporting protects everyone: the security team can warn others, block the sender, and hunt for who else got it. Your report is a defensive act for the whole organisation." },
-        { text: "Just delete it and move on.", correct: false, why: "Deleting protects only you. If you were targeted, colleagues probably were too, and only a report lets the team act." },
-        { text: "Forward it to colleagues to warn them yourself.", correct: false, why: "Well-meant, but it spreads the malicious content and muddies the investigation. Use the official reporting route instead." },
+        { text: "Report it through your organisation's phishing channel.", correct: true, why: "Reporting protects everyone: the security team can warn others, block the sender, and hunt for who else got it. Your report is a defensive act for the whole organisation." },
+        { text: "Just delete it quietly and get on with the rest of your day.", correct: false, why: "Deleting protects only you. If you were targeted, colleagues probably were too, and only a report lets the team act." },
+        { text: "Forward it to colleagues to warn them about it yourself.", correct: false, why: "Well-meant, but it spreads the malicious content and muddies the investigation. Use the official reporting route instead." },
       ] },
     ]} />;
 }
@@ -861,19 +861,19 @@ export function RansomwareResponseLab({ onDidTry }: LabProps) {
     doneNote="You isolated fast, protected the backups, brought in the right people, and did not reflexively pay. That calm, backups-first response is why offline backups and a tested recovery plan are the real answer to ransomware."
     steps={[
       { role: "First minutes", prompt: "Screens across the office show a ransom note. What is the most urgent first action?", options: [
-        { text: "Isolate the affected machines from the network to stop the spread.", correct: true, why: "Ransomware often keeps spreading. Disconnecting affected machines (and segments) first limits how much it can reach." },
-        { text: "Immediately pay the ransom to get the files back fastest.", correct: false, why: "Paying first is the worst reflex: it funds crime, there is no guarantee of recovery, and it does nothing to stop the spread happening right now." },
-        { text: "Reboot everything and hope it clears.", correct: false, why: "Rebooting can trigger further encryption or destroy forensic evidence, and does nothing to contain the spread." },
+        { text: "Isolate the affected machines to stop the spread.", correct: true, why: "Ransomware often keeps spreading. Disconnecting affected machines (and segments) first limits how much it can reach." },
+        { text: "Immediately pay the ransom to get all the files back fastest.", correct: false, why: "Paying first is the worst reflex: it funds crime, there is no guarantee of recovery, and it does nothing to stop the spread happening right now." },
+        { text: "Reboot every machine and simply hope the problem clears.", correct: false, why: "Rebooting can trigger further encryption or destroy forensic evidence, and does nothing to contain the spread." },
       ] },
       { role: "Protecting recovery", prompt: "You have backups. What matters most about them right now?", options: [
-        { text: "Make sure the backups are offline or otherwise out of the attacker's reach, and intact.", correct: true, why: "Attackers deliberately seek and encrypt backups. Offline, immutable backups the ransomware could not touch are what make recovery possible without paying." },
-        { text: "Restore immediately onto the still-infected network.", correct: false, why: "Restoring onto a network that is still compromised just gets your clean data re-encrypted. Contain and clean first." },
-        { text: "Assume the backups are fine and do not check them.", correct: false, why: "Untested backups fail exactly when you need them. You confirm they are intact and reachable before relying on them." },
+        { text: "Make sure the backups are offline, out of their reach, and intact.", correct: true, why: "Attackers deliberately seek and encrypt backups. Offline, immutable backups the ransomware could not touch are what make recovery possible without paying." },
+        { text: "Restore from them immediately onto the still-infected network.", correct: false, why: "Restoring onto a network that is still compromised just gets your clean data re-encrypted. Contain and clean first." },
+        { text: "Assume the backups are fine and do not bother to check them.", correct: false, why: "Untested backups fail exactly when you need them. You confirm they are intact and reachable before relying on them." },
       ] },
       { role: "Getting it right", prompt: "Beyond the technical response, what must happen?", options: [
-        { text: "Bring in incident response, and report it (to leadership, and often to regulators and law enforcement).", correct: true, why: "A serious ransomware incident is a reportable event, with legal duties (like data-protection breach notification) and value in law-enforcement involvement. It is not something to quietly handle alone." },
-        { text: "Keep it secret to avoid embarrassment.", correct: false, why: "Hiding a breach can break the law (notification duties) and makes everything worse. Serious incidents must be escalated and reported." },
-        { text: "Blame whoever clicked and move on.", correct: false, why: "Blame helps nothing and poisons reporting culture. The focus is contain, recover, learn, report." },
+        { text: "Bring in incident response and report it to leadership.", correct: true, why: "A serious ransomware incident is a reportable event, with legal duties (like data-protection breach notification) and value in law-enforcement involvement. It is not something to quietly handle alone." },
+        { text: "Keep the whole thing quiet to avoid any embarrassment later.", correct: false, why: "Hiding a breach can break the law (notification duties) and makes everything worse. Serious incidents must be escalated and reported." },
+        { text: "Blame whoever clicked the link and then move on.", correct: false, why: "Blame helps nothing and poisons reporting culture. The focus is contain, recover, learn, report." },
       ] },
     ]} />;
 }
@@ -1012,19 +1012,19 @@ export function LateralMovementLab({ onDidTry }: LabProps) {
     doneNote="Assume breach, then limit the blast radius. Segmentation, least privilege and monitoring mean one compromised laptop stays one compromised laptop, instead of becoming the whole network. That is the defender's answer to lateral movement."
     steps={[
       { role: "The foothold", prompt: "The attacker wants to move from this laptop to the valuable servers. What most limits how far they can go?", options: [
-        { text: "Network segmentation, so the laptop simply cannot reach the sensitive systems directly.", correct: true, why: "Segmentation divides the network so a foothold in one zone cannot freely reach another. It is the single biggest brake on lateral movement." },
+        { text: "Network segmentation, so the laptop cannot reach the crown jewels.", correct: true, why: "Segmentation divides the network so a foothold in one zone cannot freely reach another. It is the single biggest brake on lateral movement." },
         { text: "A flat network where everything can talk to everything, for convenience.", correct: false, why: "A flat network is the attacker's dream: one foothold reaches everything. This is what let several famous breaches spread." },
         { text: "Relying only on the antivirus that already missed the infection.", correct: false, why: "The malware is already past the antivirus. You need to limit reach, not hope the thing that failed catches up." },
       ] },
       { role: "The credentials", prompt: "The attacker tries to use the laptop's access to log into other systems. What blunts this?", options: [
-        { text: "Least privilege: the account can only reach the few things it genuinely needs.", correct: true, why: "If a compromised account can touch very little, a stolen foothold is worth very little. Least privilege caps the damage." },
+        { text: "Least privilege, so the account reaches only what it truly needs.", correct: true, why: "If a compromised account can touch very little, a stolen foothold is worth very little. Least privilege caps the damage." },
         { text: "Giving every user administrator rights so things 'just work'.", correct: false, why: "Over-privileged accounts hand the attacker the keys to everything. It is the opposite of what you want." },
-        { text: "Using the same password for every system to keep things simple.", correct: false, why: "Reused credentials let one stolen password unlock everything: exactly how attackers move sideways." },
+        { text: "Using one shared password for every system to keep things simple.", correct: false, why: "Reused credentials let one stolen password unlock everything: exactly how attackers move sideways." },
       ] },
       { role: "Seeing it", prompt: "How do you catch the attacker moving around before they reach the goal?", options: [
-        { text: "Monitoring and alerting on unusual internal activity, assuming a breach will happen.", correct: true, why: "Assume-breach means watching inside, not just at the perimeter. Detecting odd lateral activity early is how you stop a foothold becoming a disaster." },
+        { text: "Monitor and alert on unusual internal activity, assuming breach.", correct: true, why: "Assume-breach means watching inside, not just at the perimeter. Detecting odd lateral activity early is how you stop a foothold becoming a disaster." },
         { text: "Only watching the perimeter and trusting everything already inside.", correct: false, why: "'Hard shell, soft centre' fails once an attacker is in. Modern defence watches internal movement too." },
-        { text: "Assuming that if they got in, it is already too late.", correct: false, why: "Defeatist and wrong. Detection and containment inside the network routinely stop breaches before the goal is reached." },
+        { text: "Assuming that if they got in, it is already far too late.", correct: false, why: "Defeatist and wrong. Detection and containment inside the network routinely stop breaches before the goal is reached." },
       ] },
     ]} />;
 }
@@ -1057,19 +1057,19 @@ export function PatchRaceLab({ onDidTry }: LabProps) {
     doneNote="You treated a critical, exploited, internet-facing flaw as the emergency it was: assessed exposure, prioritised, patched fast, and mitigated where you could not. That is the patch race, and winning it is one of the highest-value things a defender does."
     steps={[
       { role: "The news breaks", prompt: "The advisory says the flaw is critical and already being exploited in the wild. What is your first move?", options: [
-        { text: "Find out whether, and where, you run the affected software, especially anything internet-facing.", correct: true, why: "You cannot fix what you cannot find. Knowing your exposure, starting with internet-facing systems, is step one." },
-        { text: "Wait a few weeks to see if the patch causes any problems for others.", correct: false, why: "'Actively exploited' and 'internet-facing' means the clock is running now. Waiting weeks is exactly the gap attackers need." },
-        { text: "Ignore it; if it mattered, someone would tell you.", correct: false, why: "Nobody is coming to patch it for you. Known, exploited flaws left open are how the biggest breaches start." },
+        { text: "Find where you run the affected, internet-facing software.", correct: true, why: "You cannot fix what you cannot find. Knowing your exposure, starting with internet-facing systems, is step one." },
+        { text: "Wait a few weeks to see whether the patch causes problems for others.", correct: false, why: "'Actively exploited' and 'internet-facing' means the clock is running now. Waiting weeks is exactly the gap attackers need." },
+        { text: "Ignore it; if it really mattered, someone would tell you.", correct: false, why: "Nobody is coming to patch it for you. Known, exploited flaws left open are how the biggest breaches start." },
       ] },
       { role: "Can't patch instantly", prompt: "Testing the patch properly will take a little time, but the server is exposed now. What do you do in the meantime?", options: [
-        { text: "Apply an interim mitigation (e.g. restrict access or use the vendor's workaround) to reduce exposure while you test.", correct: true, why: "When you cannot patch instantly, you shrink the exposure: limit who can reach it, apply a workaround, add monitoring. You reduce risk now, then patch." },
+        { text: "Apply an interim mitigation to cut exposure while you test.", correct: true, why: "When you cannot patch instantly, you shrink the exposure: limit who can reach it, apply a workaround, add monitoring. You reduce risk now, then patch." },
         { text: "Leave it fully exposed until the patch is tested, changing nothing.", correct: false, why: "Doing nothing on a critical, exploited, internet-facing flaw leaves the door wide open during the most dangerous window." },
-        { text: "Take the whole business offline indefinitely to be safe.", correct: false, why: "Disproportionate: the goal is to reduce exposure (access limits, workarounds) while you test, not to halt everything." },
+        { text: "Take the whole business offline indefinitely, just to be safe.", correct: false, why: "Disproportionate: the goal is to reduce exposure (access limits, workarounds) while you test, not to halt everything." },
       ] },
       { role: "Afterwards", prompt: "The patch is applied. What turns this scramble into something better next time?", options: [
-        { text: "Build an inventory and a patching process, so next time you know your exposure and act fast by default.", correct: true, why: "The lasting fix is process: know what you run (inventory), watch for advisories, and patch critical flaws fast as routine, not panic." },
-        { text: "Assume this was a one-off and change nothing.", correct: false, why: "Critical flaws are regular, not rare. Without a process, every one is a fresh scramble, and eventually one is missed." },
-        { text: "Disable all future updates to avoid the hassle.", correct: false, why: "That guarantees you fall behind and accumulate open doors. Updating is the defence, not the problem." },
+        { text: "Build an inventory and a proper patching process for next time.", correct: true, why: "The lasting fix is process: know what you run (inventory), watch for advisories, and patch critical flaws fast as routine, not panic." },
+        { text: "Assume this was a one-off and simply change nothing at all.", correct: false, why: "Critical flaws are regular, not rare. Without a process, every one is a fresh scramble, and eventually one is missed." },
+        { text: "Disable all future updates to avoid the hassle entirely.", correct: false, why: "That guarantees you fall behind and accumulate open doors. Updating is the defence, not the problem." },
       ] },
     ]} />;
 }
@@ -1256,19 +1256,19 @@ export function PatchOpsLab({ onDidTry }: LabProps) {
     doneNote="You built a real patch-management process: know what you run, patch critical and exposed systems fast, test sensibly, and automate the routine. That discipline closes the doors most breaches walk through."
     steps={[
       { role: "Know what you have", prompt: "Where does a reliable patching process start?", options: [
-        { text: "An inventory: you cannot patch what you do not know you run.", correct: true, why: "Asset inventory is the foundation. Unknown systems are unpatched systems waiting to be breached." },
-        { text: "Buying the most expensive security product.", correct: false, why: "Tools help, but without knowing what you run, you cannot patch it. Inventory comes first." },
-        { text: "Hoping vendors patch everything automatically for you.", correct: false, why: "Most systems need you to apply updates. Assuming otherwise leaves doors open." },
+        { text: "An inventory: you simply cannot patch what you do not know you run.", correct: true, why: "Asset inventory is the foundation. Unknown systems are unpatched systems waiting to be breached." },
+        { text: "Buying the single most expensive security product on the market.", correct: false, why: "Tools help, but without knowing what you run, you cannot patch it. Inventory comes first." },
+        { text: "Hoping that vendors patch everything automatically for you.", correct: false, why: "Most systems need you to apply updates. Assuming otherwise leaves doors open." },
       ] },
       { role: "What first", prompt: "A batch of updates is available. What do you prioritise?", options: [
-        { text: "Critical flaws on internet-facing systems, fast; schedule the rest sensibly.", correct: true, why: "Severity and exposure set priority (Module 11). Exposed, critical, exploited flaws cannot wait." },
+        { text: "Critical flaws on internet-facing systems first, fast.", correct: true, why: "Severity and exposure set priority (Module 11). Exposed, critical, exploited flaws cannot wait." },
         { text: "Apply every update to every system at the exact same second.", correct: false, why: "Reckless mass-patching risks outages. Prioritise by risk, and test where sensible." },
-        { text: "Wait months on everything to be totally safe from bugs.", correct: false, why: "Delay on critical, exposed flaws is exactly the gap attackers exploit." },
+        { text: "Wait months on everything to be totally safe from new bugs.", correct: false, why: "Delay on critical, exposed flaws is exactly the gap attackers exploit." },
       ] },
       { role: "Make it routine", prompt: "How do you stop every patch cycle being a panic?", options: [
-        { text: "Automate routine updates (e.g. auto-updates for endpoints) and schedule regular patch cycles.", correct: true, why: "Automation and a regular cadence turn patching into background routine, so humans focus on the hard cases." },
-        { text: "Rely on someone remembering to check manually now and then.", correct: false, why: "Ad-hoc memory fails. A defined, automated process is what keeps you consistently patched." },
-        { text: "Turn off updates to avoid the hassle.", correct: false, why: "That guarantees you fall behind and accumulate open doors. Updating is the defence." },
+        { text: "Automate routine updates and schedule regular patch cycles.", correct: true, why: "Automation and a regular cadence turn patching into background routine, so humans focus on the hard cases." },
+        { text: "Rely on someone remembering to check it all manually now and then.", correct: false, why: "Ad-hoc memory fails. A defined, automated process is what keeps you consistently patched." },
+        { text: "Turn off updates completely to avoid the whole hassle.", correct: false, why: "That guarantees you fall behind and accumulate open doors. Updating is the defence." },
       ] },
     ]} />;
 }
@@ -1371,19 +1371,19 @@ export function TriageLab({ onDidTry }: LabProps) {
     doneNote="You gathered context before judging, escalated a genuine concern through the proper path, and neither ignored it nor panicked. Calm, evidence-led triage, and knowing when to escalate, is the core craft of a SOC analyst."
     steps={[
       { role: "The alert", prompt: "An alert says an account had many failed logins, then a success, from an unusual location. First move?", options: [
-        { text: "Gather context: whose account, is the location plausible, what happened after the success?", correct: true, why: "Triage starts with context. An alert is a question, not a verdict; you gather evidence before deciding." },
-        { text: "Immediately shut down the whole network to be safe.", correct: false, why: "Disproportionate for an unconfirmed alert. You investigate first; drastic action without evidence causes its own harm." },
-        { text: "Dismiss it; failed logins happen all the time.", correct: false, why: "Failed-then-successful logins from an odd location is a classic account-takeover pattern. Do not wave it away." },
+        { text: "Gather context: whose account is it, and what happened next?", correct: true, why: "Triage starts with context. An alert is a question, not a verdict; you gather evidence before deciding." },
+        { text: "Immediately shut down the whole network, just to be safe.", correct: false, why: "Disproportionate for an unconfirmed alert. You investigate first; drastic action without evidence causes its own harm." },
+        { text: "Dismiss it; failed logins happen all of the time anyway.", correct: false, why: "Failed-then-successful logins from an odd location is a classic account-takeover pattern. Do not wave it away." },
       ] },
       { role: "The evidence", prompt: "Context shows the user is on holiday abroad and did not travel with work devices, yet their account is now active. What is this?", options: [
-        { text: "A likely real incident (account takeover): escalate it through the proper path.", correct: true, why: "The evidence now points to a genuine compromise. Escalating along the agreed path gets the right people responding fast." },
-        { text: "Definitely a false alarm; close the ticket.", correct: false, why: "The evidence points the other way. Closing it would let a real takeover continue." },
-        { text: "Handle the whole incident yourself without telling anyone.", correct: false, why: "A confirmed serious concern is escalated, not handled solo in silence. The escalation path exists for this." },
+        { text: "A likely account takeover: escalate through the proper path.", correct: true, why: "The evidence now points to a genuine compromise. Escalating along the agreed path gets the right people responding fast." },
+        { text: "Almost certainly a false alarm, so just close the ticket.", correct: false, why: "The evidence points the other way. Closing it would let a real takeover continue." },
+        { text: "Quietly handle the whole incident yourself without telling anyone.", correct: false, why: "A confirmed serious concern is escalated, not handled solo in silence. The escalation path exists for this." },
       ] },
       { role: "Doing it right", prompt: "What makes you a good analyst in this moment, beyond the technical call?", options: [
-        { text: "Clear, factual notes on what you saw and did, so others can pick it up fast.", correct: true, why: "Good triage is documented. Clear notes let the next tier act immediately and make the incident defensible later." },
-        { text: "Keeping your reasoning in your head to save time.", correct: false, why: "Undocumented work cannot be handed over or reviewed. Clear notes are part of the craft." },
-        { text: "Guessing at conclusions you cannot support yet.", correct: false, why: "Evidence-led beats guessing. State what you know, what you suspect, and what is still unconfirmed." },
+        { text: "Clear, factual notes on what you saw and did.", correct: true, why: "Good triage is documented. Clear notes let the next tier act immediately and make the incident defensible later." },
+        { text: "Keeping all of your reasoning in your head to save time.", correct: false, why: "Undocumented work cannot be handed over or reviewed. Clear notes are part of the craft." },
+        { text: "Guessing at firm conclusions you cannot yet support.", correct: false, why: "Evidence-led beats guessing. State what you know, what you suspect, and what is still unconfirmed." },
       ] },
     ]} />;
 }
@@ -1467,19 +1467,19 @@ export function TuningLab({ onDidTry }: LabProps) {
     doneNote="You cut the noise without going blind: tuned out the false positives, kept and sharpened the detections that matter, and measured the result. Reducing noise so real alerts stand out is as important as detection itself."
     steps={[
       { role: "The flood", prompt: "One rule fires hundreds of times a day, almost always on harmless, expected activity. What do you do?", options: [
-        { text: "Tune it: refine the rule so it only fires on the genuinely suspicious cases.", correct: true, why: "A rule that is almost always wrong trains analysts to ignore it. Tuning it to fire only on real concerns restores its value." },
-        { text: "Leave it; more alerts must mean more security.", correct: false, why: "Noise is not security. A flood of false positives causes alert fatigue and hides the real ones (the Target lesson)." },
-        { text: "Delete all detection rules to get some quiet.", correct: false, why: "Going blind is the opposite mistake. The goal is signal, not silence: keep real detections, cut the noise." },
+        { text: "Tune it, so it fires only on the truly suspicious cases.", correct: true, why: "A rule that is almost always wrong trains analysts to ignore it. Tuning it to fire only on real concerns restores its value." },
+        { text: "Leave it; more alerts must surely mean more security.", correct: false, why: "Noise is not security. A flood of false positives causes alert fatigue and hides the real ones (the Target lesson)." },
+        { text: "Delete all of the detection rules just to get yourself some quiet.", correct: false, why: "Going blind is the opposite mistake. The goal is signal, not silence: keep real detections, cut the noise." },
       ] },
       { role: "The balance", prompt: "How do you decide what to tune out versus keep?", options: [
-        { text: "Weigh each alert's track record: is it catching real threats, or almost always a false positive?", correct: true, why: "Tuning is evidence-based: keep and sharpen what catches real threats, reduce what reliably wastes time." },
+        { text: "Judge each rule by its track record, not by its noise.", correct: true, why: "Tuning is evidence-based: keep and sharpen what catches real threats, reduce what reliably wastes time." },
         { text: "Turn off whichever rules are the loudest, regardless of value.", correct: false, why: "A loud rule might be loud because it catches real things. Judge by value, not just volume." },
-        { text: "Keep everything forever and never review.", correct: false, why: "Detections drift and environments change; without review, noise accumulates and signal drowns." },
+        { text: "Keep everything running forever and never review any of it.", correct: false, why: "Detections drift and environments change; without review, noise accumulates and signal drowns." },
       ] },
       { role: "The goal", prompt: "What is the real aim of tuning detection?", options: [
-        { text: "So real alerts stand out and analysts can trust and act on them.", correct: true, why: "The point is signal-to-noise: a trusted, actionable alert stream beats an ignored flood every time." },
-        { text: "To have the fewest alerts possible, whatever the cost.", correct: false, why: "Too few can mean missing real attacks. The aim is the right alerts, not the fewest." },
-        { text: "To generate the most alerts to look busy.", correct: false, why: "Volume for its own sake causes fatigue and missed threats. Quality of signal is the goal." },
+        { text: "So that real alerts stand out and analysts can act on them fast.", correct: true, why: "The point is signal-to-noise: a trusted, actionable alert stream beats an ignored flood every time." },
+        { text: "To have the very fewest alerts possible, whatever the cost.", correct: false, why: "Too few can mean missing real attacks. The aim is the right alerts, not the fewest." },
+        { text: "To generate as many alerts as possible, to look busy.", correct: false, why: "Volume for its own sake causes fatigue and missed threats. Quality of signal is the goal." },
       ] },
     ]} />;
 }
@@ -1555,19 +1555,19 @@ export function IncidentReportLab({ onDidTry }: LabProps) {
     doneNote="You ran a blameless review, captured the real lessons, and wrote a clear, factual report that helps the organisation improve. The write-up, and the learning, is how one incident makes you stronger against the next."
     steps={[
       { role: "The review", prompt: "You gather the team to review the incident. What tone makes it most useful?", options: [
-        { text: "Blameless: focus on what happened and how to improve, not on who to punish.", correct: true, why: "A blameless review surfaces the real causes honestly. Blame makes people hide information, so you learn nothing." },
-        { text: "Find someone to blame and make an example of them.", correct: false, why: "Blame drives mistakes underground and poisons the culture, so the next incident is hidden, not prevented." },
-        { text: "Skip the review; the incident is over.", correct: false, why: "Lessons-learned is a stage of the lifecycle for a reason. Skipping it wastes the hardest-won knowledge." },
+        { text: "Blameless: focus on what happened and how to improve.", correct: true, why: "A blameless review surfaces the real causes honestly. Blame makes people hide information, so you learn nothing." },
+        { text: "Find someone to blame and make a public example of them.", correct: false, why: "Blame drives mistakes underground and poisons the culture, so the next incident is hidden, not prevented." },
+        { text: "Skip the review entirely; the incident is over now.", correct: false, why: "Lessons-learned is a stage of the lifecycle for a reason. Skipping it wastes the hardest-won knowledge." },
       ] },
       { role: "The report", prompt: "What makes a good incident report?", options: [
-        { text: "Clear, factual and structured: what happened, the impact, the timeline, and the lessons.", correct: true, why: "A clear, factual report lets others understand, act, and improve, and stands up to later scrutiny." },
-        { text: "Vague and reassuring, playing down what happened.", correct: false, why: "Downplaying hides the truth and prevents improvement (and can breach legal duties). Be factual." },
-        { text: "So technical and long that no one will read it.", correct: false, why: "A report no one reads helps no one. Clarity, including for non-technical readers, is the point." },
+        { text: "Clear and factual: what happened, the impact, and the lessons.", correct: true, why: "A clear, factual report lets others understand, act, and improve, and stands up to later scrutiny." },
+        { text: "Vague and reassuring, quietly playing down what happened.", correct: false, why: "Downplaying hides the truth and prevents improvement (and can breach legal duties). Be factual." },
+        { text: "So technical and so long that absolutely no one will read it.", correct: false, why: "A report no one reads helps no one. Clarity, including for non-technical readers, is the point." },
       ] },
       { role: "The payoff", prompt: "What is the real value of the whole exercise?", options: [
-        { text: "Turning this incident into concrete improvements that prevent or reduce the next one.", correct: true, why: "The point of response and review is to come out stronger: fixed root causes, better detection, a tested plan." },
+        { text: "Turning this incident into concrete improvements that stick.", correct: true, why: "The point of response and review is to come out stronger: fixed root causes, better detection, a tested plan." },
         { text: "Proving the incident was nobody's fault so everyone feels fine.", correct: false, why: "Comfort is not the goal; genuine improvement is. Honest lessons, acted on, are what matter." },
-        { text: "Filing the report and changing nothing.", correct: false, why: "A report that leads to no change wastes the incident's lessons. Improvement is the whole point." },
+        { text: "Filing the report away and then changing nothing at all.", correct: false, why: "A report that leads to no change wastes the incident's lessons. Improvement is the whole point." },
       ] },
     ]} />;
 }
@@ -1742,19 +1742,19 @@ export function RecoveryTestLab({ onDidTry }: LabProps) {
     doneNote="You tested recovery by actually restoring, measured against your RTO and RPO, and fixed what you found, before a real disaster. A recovery plan is only real once it has been proven to work."
     steps={[
       { role: "The assumption", prompt: "You have backups running nightly. Are you confident you can recover?", options: [
-        { text: "Not until you have actually tested a restore; untested backups often fail.", correct: true, why: "Backups that have never been restored frequently fail when needed, corrupt, incomplete, or unrestorable. Only a tested restore proves recovery." },
-        { text: "Yes, backups exist, so recovery is guaranteed.", correct: false, why: "Existence is not the same as working. The graveyard of breaches is full of 'we had backups' that could not actually restore." },
-        { text: "No need to check; the backup tool says 'success'.", correct: false, why: "A 'backup succeeded' message does not prove the data can be restored and used. Test the actual restore." },
+        { text: "Not until you have actually tested a full restore end to end.", correct: true, why: "Backups that have never been restored frequently fail when needed, corrupt, incomplete, or unrestorable. Only a tested restore proves recovery." },
+        { text: "Yes; backups exist, so recovery is effectively guaranteed.", correct: false, why: "Existence is not the same as working. The graveyard of breaches is full of 'we had backups' that could not actually restore." },
+        { text: "No need to check; the backup tool already says 'success'.", correct: false, why: "A 'backup succeeded' message does not prove the data can be restored and used. Test the actual restore." },
       ] },
       { role: "The test", prompt: "How do you properly test recovery?", options: [
-        { text: "Actually restore to a test environment and confirm the data and systems work, measuring the time taken.", correct: true, why: "A real restore, verified and timed against your RTO and RPO, is the only true test. It finds the gaps in calm, not crisis." },
-        { text: "Just confirm the backup files exist.", correct: false, why: "Files existing is not recovery. You must restore and verify the result actually works." },
-        { text: "Assume it will be fine on the day.", correct: false, why: "The day of a disaster is the worst time to discover your backups do not restore. Test beforehand." },
+        { text: "Restore to a test environment and confirm it works.", correct: true, why: "A real restore, verified and timed against your RTO and RPO, is the only true test. It finds the gaps in calm, not crisis." },
+        { text: "Just confirm that the backup files all exist on disk.", correct: false, why: "Files existing is not recovery. You must restore and verify the result actually works." },
+        { text: "Assume it will all be absolutely fine on the actual day.", correct: false, why: "The day of a disaster is the worst time to discover your backups do not restore. Test beforehand." },
       ] },
       { role: "The habit", prompt: "How often should you test recovery?", options: [
-        { text: "Regularly, and after major changes, because systems and backups drift over time.", correct: true, why: "Recovery testing is ongoing: a plan that worked last year may not work now. Regular tests keep it real." },
-        { text: "Once, years ago, is plenty.", correct: false, why: "Environments change constantly. A one-off test long ago gives false confidence today." },
-        { text: "Never; testing is a waste of time.", correct: false, why: "An untested recovery plan is a guess. Testing is exactly what turns it into a guarantee." },
+        { text: "Regularly, and after major changes, as systems drift.", correct: true, why: "Recovery testing is ongoing: a plan that worked last year may not work now. Regular tests keep it real." },
+        { text: "Once, years ago, is surely more than plenty for anyone.", correct: false, why: "Environments change constantly. A one-off test long ago gives false confidence today." },
+        { text: "Never; recovery testing is honestly just a waste of time.", correct: false, why: "An untested recovery plan is a guess. Testing is exactly what turns it into a guarantee." },
       ] },
     ]} />;
 }
@@ -1888,19 +1888,19 @@ export function InterviewLab({ onDidTry }: LabProps) {
     doneNote="You showed your reasoning, were honest about limits, and pointed to real work you had done. Demonstrating how you think, and backing it with your portfolio, is exactly what gets a capable beginner hired."
     steps={[
       { role: "A scenario question", prompt: "They ask: 'An alert shows many failed logins then a success from an odd location. What do you do?' How do you answer?", options: [
-        { text: "Walk through your reasoning step by step: gather context, judge the evidence, escalate if real.", correct: true, why: "Scenario questions test how you think. Showing a calm, structured triage process (Module 13) is exactly what they want." },
-        { text: "Say 'I'd fix it' and stop.", correct: false, why: "A vague answer shows no reasoning. They want to see your thought process, not a one-liner." },
-        { text: "Panic and say you have no idea.", correct: false, why: "Even if unsure, talk through how you would approach it. Reasoning matters more than a perfect answer." },
+        { text: "Walk through your reasoning: context, then evidence, then escalate.", correct: true, why: "Scenario questions test how you think. Showing a calm, structured triage process (Module 13) is exactly what they want." },
+        { text: "Just say that you would simply fix it, and then stop there.", correct: false, why: "A vague answer shows no reasoning. They want to see your thought process, not a one-liner." },
+        { text: "Panic, and say that you have absolutely no idea at all.", correct: false, why: "Even if unsure, talk through how you would approach it. Reasoning matters more than a perfect answer." },
       ] },
       { role: "A gap in your knowledge", prompt: "They ask about something you genuinely do not know. What is the best response?", options: [
-        { text: "Be honest, say you are not sure, and explain how you would find out.", correct: true, why: "Honesty plus a method ('I'd check the vendor advisory and the logs') is impressive. Nobody knows everything." },
-        { text: "Bluff and make something up.", correct: false, why: "Bluffing is easily spotted and destroys trust. Honesty about limits, with a method, is far stronger." },
-        { text: "Say the question is unfair and refuse to answer.", correct: false, why: "Defensiveness looks bad. Treat gaps as a chance to show how you learn." },
+        { text: "Be honest: say you are unsure, and how you would find out.", correct: true, why: "Honesty plus a method ('I'd check the vendor advisory and the logs') is impressive. Nobody knows everything." },
+        { text: "Confidently bluff your way through and make something up.", correct: false, why: "Bluffing is easily spotted and destroys trust. Honesty about limits, with a method, is far stronger." },
+        { text: "Say that the question is unfair and refuse to answer it at all.", correct: false, why: "Defensiveness looks bad. Treat gaps as a chance to show how you learn." },
       ] },
       { role: "Showing your work", prompt: "How do you stand out as a capable beginner?", options: [
-        { text: "Point to your portfolio: real pieces you built, and what you learned from them.", correct: true, why: "Demonstrable work (your audit, phishing guide, breach write-up, IR timeline, script) proves ability beyond words." },
-        { text: "Just insist you are passionate and a fast learner.", correct: false, why: "Everyone says that. Proof (a portfolio) is what actually sets you apart." },
-        { text: "Claim years of experience you do not have.", correct: false, why: "Dishonesty is easily caught and unethical. Your real work and honest reasoning are your strength." },
+        { text: "Point to your portfolio: real pieces you actually built.", correct: true, why: "Demonstrable work (your audit, phishing guide, breach write-up, IR timeline, script) proves ability beyond words." },
+        { text: "Just insist that you are passionate and a very fast learner.", correct: false, why: "Everyone says that. Proof (a portfolio) is what actually sets you apart." },
+        { text: "Claim years of real experience that you do not actually have.", correct: false, why: "Dishonesty is easily caught and unethical. Your real work and honest reasoning are your strength." },
       ] },
     ]} />;
 }
