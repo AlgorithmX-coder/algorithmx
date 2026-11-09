@@ -37,7 +37,7 @@ export default async function ThanksPage({ searchParams }: { searchParams: Promi
       </p>
 
       <p className="cf-note">Nothing after ten minutes? Check the junk folder, then email admissions@algorithmx.co.uk with your firm name and we will send the link by hand. Your VAT invoice comes separately from Stripe.</p>
-      <Link href={course === "ai-fluent" ? "/ai-fluent" : "/ai-cleared"} className="cf-btn cf-btn-pri" style={{ alignSelf: "flex-start" }}>Go to {fluentSeats > 0 ? COURSE_NAME["ai-cleared"] : name}</Link>
+      <Link href="/cyber-secured" className="cf-btn cf-btn-pri" style={{ alignSelf: "flex-start" }}>Go to your courses</Link>
     </Frame>
   );
 }

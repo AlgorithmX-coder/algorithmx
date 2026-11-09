@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 /* Staff-only actions on one firm: close/reopen its access, and refund a
- * purchase by a typed amount. Separate from AdminPanel (which a firm's
+ * purchase by a typed amount. Separate from TeamPanel (which a firm's
  * own admin also sees) - these are staff-only actions and must never
  * appear in a component a customer can render. Uses this page's own
  * cf-* style system, not /admin's admin.css. */

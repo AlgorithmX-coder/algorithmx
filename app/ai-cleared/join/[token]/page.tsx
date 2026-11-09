@@ -69,7 +69,7 @@ export default async function JoinPage({ params }: { params: Promise<{ token: st
     );
   }
 
-  if (seat.userId === session.user.id && seat.claimedAt) redirect(course.base);
+  if (seat.userId === session.user.id && seat.claimedAt) redirect("/cyber-secured");
 
   const first = firstNameOf(session.user.name, session.user.email);
   const preset = seat.trackHint ? DB_TO_TRACK[seat.trackHint] : await deskOf(session.user.id);

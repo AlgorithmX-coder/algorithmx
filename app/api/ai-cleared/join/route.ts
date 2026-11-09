@@ -2,7 +2,6 @@ import { NextRequest } from "next/server";
 import { z } from "zod";
 import { auth } from "@/app/lib/auth";
 import { claimSeat } from "@/app/lib/aiCleared";
-import { COURSES } from "@/app/ai-cleared/engine/courses";
 import { TRACKS } from "@/app/ai-cleared/engine/types";
 
 /* POST /api/ai-cleared/join
@@ -35,5 +34,6 @@ export async function POST(req: NextRequest) {
             : "The courses are not set up yet. Ask your admin.";
     return Response.json({ error: message }, { status });
   }
-  return Response.json({ ok: true, orgName: result.orgName, redirect: COURSES[result.course].base });
+  /* Into the portal: every course the seat opens, in one place. */
+  return Response.json({ ok: true, orgName: result.orgName, redirect: "/cyber-secured" });
 }
