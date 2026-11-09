@@ -77,7 +77,7 @@ describe("Cyber Awareness module 1", () => {
     const cases = m1.learn.flatMap((l) => (l.kind === "cards" ? l.cards ?? [] : [])).filter((c) => c.sources);
     expect(cases.map((c) => c.title)).toEqual(["UK businesses, 2025", "Marks & Spencer, 2025", "Arup, 2024"]);
     for (const c of cases) for (const s of c.sources!) expect(s.href).toMatch(/^https:\/\//);
-    expect(allText, "no em-dash").not.toMatch(/—/);
+    expect(allText.includes(String.fromCharCode(0x2014)), "no em-dash").toBe(false);
     expect(allText, "no emoji").not.toMatch(/\p{Extended_Pictographic}/u);
     expect(allText.includes(BACKSLASH), "no backslash anywhere").toBe(false);
     for (const word of ["organization", "recognize", "realize", "behavior", "color"]) expect(allText.toLowerCase(), `British spelling: ${word}`).not.toContain(word);
