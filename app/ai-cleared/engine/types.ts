@@ -638,7 +638,60 @@ export interface OutboxPractise {
   items: OutboxItem[];
 }
 
-export type Practise = SandboxPractise | SortPractise | SituationsPractise | TriagePractise | InspectPractise | LoopPractise | SpotPractise | SourcesPractise | MomentsPractise | InboxPractise | PhonePractise | ScenePractise | OutboxPractise;
+/* A queue of payment requests that reach your desk across a week: a
+ * supplier's new bank details, an urgent request from the top, an invoice
+ * that matches its order. All of them sit in the queue at once and can be
+ * opened in any order. On each, the learner can take checks (call the
+ * number on file, read the address letter by letter, match the purchase
+ * order), each of which shows what it finds, then decides: pay, hold and
+ * verify, or report. `accept` lists the decisions taken as right, the
+ * first being the best; `outcomes` says what each decision leads to, so
+ * every choice explains itself, and `why` is the lesson under all three.
+ * Every control is a labelled button. */
+export type PaymentDecision = "pay" | "hold" | "report";
+export interface PaymentCheck {
+  /* The button's words: "Call the number on file". */
+  action: string;
+  /* What the check finds. */
+  found: string;
+  /* How it reads against what you already hold: it matches, it does not,
+   * or it is simply information. Shown only once the check is taken. */
+  result: "match" | "mismatch" | "info";
+}
+export interface PaymentRequest {
+  /* When it arrived: "Mon 09:05". */
+  when: string;
+  /* How it arrived: "Email", "Text message", "Invoice by email". */
+  channel: string;
+  /* Who it is from, as your screen shows it. */
+  from: string;
+  /* The address or number behind it, as shown. */
+  address: string;
+  subject: string;
+  text: string;
+  /* An attachment, by name. */
+  file?: string;
+  /* Who the money would go to, and how much. */
+  payee: string;
+  amount: string;
+  /* The bank details on the request, when it gives any. */
+  bank?: string;
+  checks: PaymentCheck[];
+  accept: PaymentDecision[];
+  outcomes: Record<PaymentDecision, string>;
+  why: string;
+}
+export interface PaymentsPractise {
+  kind: "payments";
+  task: string;
+  /* One line under the task that sets the week up. */
+  scene?: string;
+  /* The three decisions, in the learner's words. */
+  decisions: { id: PaymentDecision; label: string; desc: string }[];
+  requests: PaymentRequest[];
+}
+
+export type Practise = SandboxPractise | SortPractise | SituationsPractise | TriagePractise | InspectPractise | LoopPractise | SpotPractise | SourcesPractise | MomentsPractise | InboxPractise | PhonePractise | ScenePractise | OutboxPractise | PaymentsPractise;
 
 /* ---- Prove ---- */
 
