@@ -1,9 +1,11 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { auth } from "@/app/lib/auth";
+import { auth, signOut } from "@/app/lib/auth";
 import { isStaffUser } from "@/app/lib/aiClearedStaff";
 import CubeMark from "@/app/components/CubeMark";
 import AdminNav from "./AdminNav";
+import RefreshButton from "./RefreshButton";
+import { SignOutIcon } from "./icons";
 import "./admin.css";
 
 /* /admin: the staff-only view of every customer - schools, firms and
@@ -28,12 +30,32 @@ export default async function AdminLayout({ children }: { children: React.ReactN
     );
   }
 
+  async function handleSignOut() {
+    "use server";
+    await signOut({ redirectTo: "/admin-login" });
+  }
+
   return (
     <div className="admin-ui">
       <header className="admin-top">
-        <span className="admin-brand"><CubeMark size={20} color="#0a7085" code /> AlgorithmX &middot; <i>Admin</i></span>
+        <Link href="/admin" className="admin-brand">
+          <CubeMark size={26} color="#0a7085" code />
+          <span className="admin-wordmark">
+            <span className="admin-wordmark-main">ALGORITHM</span>
+            <span className="admin-wordmark-x">X</span>
+          </span>
+          <span className="admin-badge">Admin</span>
+        </Link>
         <AdminNav />
-        <span className="admin-who">{session.user.email}</span>
+        <div className="admin-right">
+          <RefreshButton />
+          <span className="admin-who">{session.user.email}</span>
+          <form action={handleSignOut}>
+            <button type="submit" className="admin-signout">
+              <SignOutIcon /> Sign out
+            </button>
+          </form>
+        </div>
       </header>
       <main className="admin-main">{children}</main>
     </div>

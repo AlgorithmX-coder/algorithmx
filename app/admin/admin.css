@@ -346,3 +346,53 @@
   .admin-ui * { transition: none !important; }
   .admin-ui .ad-tile:hover { transform: none; }
 }
+
+/* ════════════════════════════════════════════════════════════════════
+   TASKBAR BRAND + ACCOUNT, PER-COURSE CHIPS
+
+   Additive only - nothing above this point is touched. The brand mark
+   replaces the small mono stamp with the real AlgorithmX wordmark, the
+   right-hand group adds a refresh button and sign-out, and course chips
+   give each course its own colour wherever it's listed on the
+   Individuals tab (app/admin/courseColors.ts), independent of the four
+   section colours above.
+   ════════════════════════════════════════════════════════════════════ */
+
+.admin-ui .admin-brand { text-decoration: none; }
+.admin-ui .admin-wordmark { font-family: var(--display); font-size: 19px; font-weight: 800; letter-spacing: -0.01em; line-height: 1; }
+.admin-ui .admin-wordmark-main { color: var(--ink); }
+.admin-ui .admin-wordmark-x { color: var(--firms-solid); }
+.admin-ui .admin-badge { font-family: var(--mono); font-size: 10.5px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--firms-solid); background: var(--firms-soft); border-radius: var(--r-sm); padding: 3px 8px; }
+
+.admin-ui .admin-right { margin-left: auto; display: flex; align-items: center; gap: var(--sp-md); }
+.admin-ui .admin-refresh { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: var(--r-full); border: 1px solid var(--edge); background: var(--panel); color: var(--muted); cursor: pointer; transition: color 150ms ease, border-color 150ms ease, background-color 150ms ease; }
+.admin-ui .admin-refresh svg { width: 16px; height: 16px; }
+.admin-ui .admin-refresh:hover { color: var(--firms-solid); border-color: var(--firms-bright); background: var(--firms-soft); }
+.admin-ui .admin-refresh:disabled { opacity: 0.6; cursor: default; }
+.admin-ui .admin-refresh-spin { animation: admin-spin 500ms linear; }
+@keyframes admin-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+.admin-ui .admin-signout { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 700; min-height: 36px; padding: 0 var(--sp-md); border-radius: var(--r-md); border: 1px solid var(--edge); background: var(--panel); color: var(--ink); cursor: pointer; transition: border-color 150ms ease, color 150ms ease; }
+.admin-ui .admin-signout svg { width: 15px; height: 15px; }
+.admin-ui .admin-signout:hover { border-color: #be123c; color: #be123c; }
+
+.admin-ui .ad-course-list { display: flex; flex-wrap: wrap; gap: 6px; }
+.admin-ui .ad-course { display: inline-flex; align-items: center; font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: 0.02em; color: var(--c); background: color-mix(in srgb, var(--c) 12%, white); border-radius: var(--r-full); padding: 3px 10px; white-space: nowrap; }
+.admin-ui .ad-pill[data-course] { color: var(--c); border-color: color-mix(in srgb, var(--c) 45%, var(--edge)); }
+.admin-ui .ad-pill[data-course]:hover { border-color: var(--c); }
+.admin-ui .ad-pill[data-course][aria-pressed="true"] { background: var(--c); border-color: var(--c); color: #fff; }
+
+/* A weight bolder throughout, per the owner's "make sure all the fonts
+   are bold" brief - the handful of spots the vibrant layer above didn't
+   already push to a solid colour and a heavier weight together. */
+.admin-ui .ad-table th { font-weight: 700; }
+.admin-ui .ad-btn { font-weight: 700; }
+.admin-ui .ad-form label, .admin-ui .al-card label { font-weight: 700; }
+
+@media (max-width: 720px) {
+  .admin-ui .admin-right { margin-left: 0; width: 100%; justify-content: space-between; }
+  .admin-ui .admin-who { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .admin-ui .admin-refresh-spin { animation: none; }
+}
