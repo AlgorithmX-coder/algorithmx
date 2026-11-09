@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 import { auth } from "@/app/lib/auth";
 import {
   addPupils,
@@ -141,6 +142,13 @@ export async function removePupilAction(formData: FormData): Promise<void> {
  * A plain form post rather than a client component, the same as the two
  * actions above it: a teacher does this a handful of times a year and in a
  * hurry, and a select plus a button needs no JavaScript to work.
+ *
+ * IT CAN NOW BE REFUSED, which a plain form post has to go out of its way to
+ * say. Moving a pupil to a class on a DIFFERENT course spends a second place
+ * (owner, 2026-11-09), so a full licence stops the move. A teacher pressing
+ * Move and seeing the page come back unchanged, with nothing said, would
+ * conclude the product was broken, so the outcome comes back on the query
+ * string and the page says what happened.
  */
 export async function movePupilAction(formData: FormData): Promise<void> {
   const session = await auth();
@@ -151,13 +159,24 @@ export async function movePupilAction(formData: FormData): Promise<void> {
   const childProfileId = String(formData.get("childProfileId") ?? "");
   const toClassId = String(formData.get("toClassId") ?? "");
   const fromClassId = String(formData.get("classId") ?? "");
+
+  let outcome: string | null = null;
   if (childProfileId && toClassId) {
-    await movePupil({ orgId: school.orgId, childProfileId, toClassId });
+    const res = await movePupil({ orgId: school.orgId, childProfileId, toClassId });
+    if (!res.ok) {
+      outcome = res.error === "seats_full" ? `full&left=${res.detail ?? 0}` : "failed";
+    } else if (res.placeSpent) {
+      outcome = "spent";
+    }
   }
+
   /* Both ends change: one loses a row, the other gains one. */
   revalidatePath(`/schools/classes/${fromClassId}`);
   revalidatePath(`/schools/classes/${toClassId}`);
   revalidatePath("/schools/classes");
+
+  /* Outside any try/catch, because redirect() works by throwing. */
+  if (outcome) redirect(`/schools/classes/${fromClassId}?move=${outcome}`);
 }
 
 /**

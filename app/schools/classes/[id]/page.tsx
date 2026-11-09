@@ -30,8 +30,18 @@ export const metadata: Metadata = {
 const WHEN = (d: Date | null) =>
   !d ? "" : new Date(d).toLocaleDateString("en-GB", { day: "numeric", month: "short" });
 
-export default async function ClassPage({ params }: { params: Promise<{ id: string }> }) {
+export default async function ClassPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ move?: string; left?: string }>;
+}) {
   const { id } = await params;
+  /* How the last move went, handed back by movePupilAction. A plain form
+     post has nowhere else to put an outcome, and a refused move that said
+     nothing would read as the product being broken. */
+  const { move, left: placesLeftAfterRefusal } = await searchParams;
 
   // ── GATE ─────────────────────────────────────────────────────────
   const session = await auth();
@@ -86,6 +96,28 @@ export default async function ClassPage({ params }: { params: Promise<{ id: stri
             <SignOut />
           </div>
         </header>
+
+        {move === "full" && (
+          <p className="ended" role="alert">
+            <b>That move needs another place and you have {placesLeftAfterRefusal ?? 0} left.</b>{" "}
+            Moving a {w.person}{" "}
+            to a {w.group} on a different course spends a place, because a place is one {w.person}{" "}
+            on one course. Moving between {w.groups} on the same course is still free. To buy more,
+            write to <a href="mailto:schools@algorithmx.co.uk">schools@algorithmx.co.uk</a>.
+          </p>
+        )}
+        {move === "spent" && (
+          <p className="ended" role="status">
+            <b>Moved, and that used another place.</b> The new {w.group} runs a different course,
+            and a place is one {w.person} on one course. They keep the course they were on as well.
+          </p>
+        )}
+        {move === "failed" && (
+          <p className="ended" role="alert">
+            <b>That {w.person} could not be moved.</b> The {w.group} you picked may have had its
+            year ended since this page loaded. Try again.
+          </p>
+        )}
 
         {archived ? (
           /* The board link and the code are hidden rather than greyed out,
@@ -209,10 +241,16 @@ export default async function ClassPage({ params }: { params: Promise<{ id: stri
                         <option value="" disabled>
                           Move to&hellip;
                         </option>
+                        {/* A different course costs a place, so the option
+                            says so before it is chosen rather than after.
+                            Naming the course alone was not enough: it reads
+                            as information, not as a price. */}
                         {others.map((c) => (
                           <option key={c.id} value={c.id}>
                             {c.name}
-                            {c.product.slug === klass.courseSlug ? "" : ` · ${c.product.name}`}
+                            {c.product.slug === klass.courseSlug
+                              ? ""
+                              : ` · ${c.product.name}, uses a place`}
                           </option>
                         ))}
                       </select>
@@ -258,6 +296,10 @@ export default async function ClassPage({ params }: { params: Promise<{ id: stri
           them playing the week. Removing a {w.person} deletes their account and their progress
           with it, and <b>the place stays used</b>, so do it when somebody leaves the {w.noun}, not
           when they change {w.group} or when a name is spelled wrong.
+          <br />
+          A place is one {w.person} on one course. Moving them to another {w.group} on{" "}
+          <b>this</b> course is free. Moving them to a {w.group} on a <b>different</b> course uses
+          another place, and they keep the course they were on as well.
         </footer>
       </div>
     </div>

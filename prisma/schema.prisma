@@ -150,6 +150,7 @@ model Product {
   progress       Progress[]
   waitlist       WaitlistEntry[]
   courseContents CourseContent[]
+  placeRedemptions PlaceRedemption[]
   enrolments     Enrolment[]
   classes        Class[]
 }
@@ -239,9 +240,12 @@ model ChildProfile {
   progress    Progress[]
   opsFindings OpsFinding[]
   opsResumes  OpsResume[]
-  /// The school place this pupil consumed, if they are a school pupil. The
-  /// row outlives this profile on purpose: see PlaceRedemption.
-  place       PlaceRedemption?
+  /// The school places this pupil has consumed, one per course they have
+  /// been put on. A list rather than a single row since 2026-11-09, when a
+  /// place became good for one course: a pupil who finishes Cyber Heroes and
+  /// moves up to Cyber Explorers holds two. The rows outlive this profile on
+  /// purpose: see PlaceRedemption.
+  places      PlaceRedemption[]
 
   @@index([userId])
   @@index([classId])
@@ -850,16 +854,40 @@ model Class {
 model PlaceRedemption {
   id             String    @id @default(cuid())
   orgId          String
-  childProfileId String?   @unique
+  childProfileId String?
+  /// WHICH COURSE this place was spent on.
+  ///
+  /// Owner, 2026-11-09: a place follows the child, but it is only good for
+  /// ONE course. Moving a pupil between classes of the same course is free,
+  /// and a pupil finishing a course and starting the next one spends a
+  /// second place. Before this column the ledger physically could not hold
+  /// that, because childProfileId was unique: one child was one place, full
+  /// stop.
+  ///
+  /// Nullable only for rows written before the rule existed. Those are
+  /// backfilled from the child's class where there is still a child to read
+  /// one from; a row whose pupil had already left carries no class, and a
+  /// guessed course would be worse than an honest gap.
+  productId      String?
   redeemedAt     DateTime  @default(now())
   creditedBackAt DateTime?
   /// The staff user who credited it back, so the correction has an author.
   creditedBy     String?
 
-  org   Organisation  @relation(fields: [orgId], references: [id], onDelete: Cascade)
-  child ChildProfile? @relation(fields: [childProfileId], references: [id], onDelete: SetNull)
+  org     Organisation  @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  child   ChildProfile? @relation(fields: [childProfileId], references: [id], onDelete: SetNull)
+  /// SET NULL, never cascade: retiring a course must not erase the record
+  /// that a school spent places on it.
+  product Product?      @relation(fields: [productId], references: [id], onDelete: SetNull)
 
+  /// One place per child PER COURSE: the rule itself, as a constraint.
+  /// Postgres counts rows with a null as distinct, so the departed pupils
+  /// whose childProfileId has gone to null never collide with each other,
+  /// which is exactly right: each of those is a separate place that was
+  /// spent and is not coming back.
+  @@unique([childProfileId, productId])
   @@index([orgId])
+  @@index([productId])
 }
 
 

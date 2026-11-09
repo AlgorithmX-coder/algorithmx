@@ -4,9 +4,15 @@ import { prisma } from "@/app/lib/prisma";
  * Places: what a school bought, what it has spent, and on which course.
  *
  * A school buys places course-blind. Adding a pupil spends one, and the
- * course comes from the class that pupil joins. A place belongs to the
- * child, not to the course, so moving a child up to the next course next
- * September re-points their existing place rather than costing another.
+ * course comes from the class that pupil joins.
+ *
+ * WHAT A PLACE BUYS (owner, 2026-11-09): one child on ONE course. It
+ * follows the child, so moving them between classes of the course they are
+ * already on is free, and so is a whole year group shuffling form groups.
+ * Starting a SECOND course spends a second place. That settles a
+ * disagreement between two earlier rulings, one of which said a place was
+ * the child outright and one of which said it was the child on one course;
+ * this is the second, with the "follows the child" part of the first kept.
  *
  * THE RULE THAT MAKES THIS A LEDGER RATHER THAN A COUNT: a place spent is
  * spent. Before this file, used places were counted live as "pupils sitting
@@ -118,6 +124,15 @@ export async function placesUsed(orgId: string): Promise<number> {
 export interface CourseUsage {
   slug: string;
   name: string;
+  /**
+   * Places SPENT on this course by pupils still at the school. This is the
+   * money figure, and since a place became good for one course it is no
+   * longer the same as `pupils`: a child who moved up from Cyber Heroes to
+   * Cyber Explorers counts one place against each, while sitting in one
+   * class.
+   */
+  places: number;
+  /** Pupils sitting in live classes on it today. */
   pupils: number;
   classes: number;
 }
@@ -126,57 +141,131 @@ export interface PlacesSummary {
   bought: number;
   redeemed: number;
   available: number;
-  /** Live classes, by course, youngest course first. */
+  /** Where the places went, by course, youngest course first. */
   byCourse: CourseUsage[];
   /** Places held by pupils in classes archived at the end of a year. */
   inArchivedClasses: number;
   /** Places spent on pupils who have since left. Not coming back. */
   leftTheSchool: number;
+  /**
+   * Places spent before a place recorded which course it was for. Zero on
+   * any school created after 2026-11-10, and shown only when it is not,
+   * because a figure that cannot be explained is worse than no figure.
+   */
+  courseNotRecorded: number;
 }
 
 /**
  * The three numbers a head logs in for, plus where the places went.
  *
- * `redeemed` is the ledger. The breakdown underneath it is computed live
- * from where the pupils actually sit today, which is why a place can move
- * between courses without the ledger changing. The three buckets add up:
- * redeemed = (pupils across byCourse) + inArchivedClasses + leftTheSchool.
+ * EVERY FIGURE BELOW COMES FROM THE LEDGER, which it did not used to. The
+ * per-course breakdown was a live count of pupils sitting in classes, and
+ * the three buckets were documented as adding up to `redeemed`. That stopped
+ * being true the moment a place became good for one course: a child who has
+ * moved up a course holds two places while sitting in one class, so counting
+ * pupils undercounts the money. Each bucket is now a count of ledger rows,
+ * which makes the partition real again:
+ *
+ *   redeemed = byCourse places + inArchivedClasses + leftTheSchool
+ *            + courseNotRecorded
+ *
+ * `pupils` and `classes` stay on each row as context, because "28 places
+ * spent on Cyber Heroes, 2 classes running it today" is the pair a head
+ * actually wants.
  */
 export async function placesSummary(orgId: string): Promise<PlacesSummary> {
-  const [org, redeemed, classes, archivedPupils, leftTheSchool] = await Promise.all([
-    prisma.organisation.findUnique({ where: { id: orgId }, select: { seatsPurchased: true } }),
-    placesUsed(orgId),
-    prisma.class.findMany({
-      where: { orgId, archivedAt: null },
-      select: {
-        product: { select: { slug: true, name: true, ageMin: true } },
-        _count: { select: { pupils: true } },
-      },
-    }),
-    prisma.childProfile.count({ where: { class: { orgId, archivedAt: { not: null } } } }),
-    prisma.placeRedemption.count({
-      where: { orgId, creditedBackAt: null, childProfileId: null },
-    }),
-  ]);
+  const [org, redeemed, classes, spentByCourse, inArchivedClasses, leftTheSchool] =
+    await Promise.all([
+      prisma.organisation.findUnique({ where: { id: orgId }, select: { seatsPurchased: true } }),
+      placesUsed(orgId),
+      prisma.class.findMany({
+        where: { orgId, archivedAt: null },
+        select: {
+          product: { select: { slug: true, name: true, ageMin: true } },
+          _count: { select: { pupils: true } },
+        },
+      }),
+      /* Ledger rows for pupils who are still here and in a live class, so
+         they can be tallied by the course the place was spent on.
+         Deliberately a plain select tallied below rather than a groupBy: the
+         row count is bounded by what the school bought, which is hundreds,
+         and this is readable without knowing Prisma's aggregate types. */
+      prisma.placeRedemption.findMany({
+        where: { orgId, creditedBackAt: null, child: { class: { archivedAt: null } } },
+        select: { productId: true },
+      }),
+      prisma.placeRedemption.count({
+        where: { orgId, creditedBackAt: null, child: { class: { archivedAt: { not: null } } } },
+      }),
+      prisma.placeRedemption.count({
+        where: { orgId, creditedBackAt: null, childProfileId: null },
+      }),
+    ]);
 
   const bought = org?.seatsPurchased ?? 0;
 
-  /* Every school course gets a row, including the ones with no classes yet:
-     a head deciding whether to run Explorers next year should see it sitting
-     there at zero rather than wonder whether it is included at all. */
+  /* Tally the ledger rows by course. */
+  const spentPerProduct = new Map<string, number>();
+  let courseNotRecorded = 0;
+  for (const row of spentByCourse) {
+    if (!row.productId) {
+      courseNotRecorded++;
+      continue;
+    }
+    spentPerProduct.set(row.productId, (spentPerProduct.get(row.productId) ?? 0) + 1);
+  }
+
+  /* Slugs for the courses the ledger mentions, read separately because the
+     ledger stores an id and every screen shows a name. */
+  const spentIds = [...spentPerProduct.keys()];
+  const products = spentIds.length
+    ? await prisma.product.findMany({
+        where: { id: { in: spentIds } },
+        select: { id: true, slug: true, name: true, ageMin: true },
+      })
+    : [];
+  const byId = new Map(products.map((p) => [p.id, p]));
+
   const order = new Map<string, number>();
   const byCourse = new Map<string, CourseUsage>();
+
+  const blank = (slug: string, name: string): CourseUsage => ({
+    slug,
+    name: courseName(slug, name),
+    places: 0,
+    pupils: 0,
+    classes: 0,
+  });
+
+  for (const [productId, count] of spentPerProduct) {
+    const p = byId.get(productId);
+    if (!p) {
+      /* A place spent on a course that has since been deleted from the
+         catalogue. The row survived, as it should, and the money with it. */
+      courseNotRecorded += count;
+      continue;
+    }
+    const got = byCourse.get(p.slug) ?? blank(p.slug, p.name);
+    got.places += count;
+    byCourse.set(p.slug, got);
+    order.set(p.slug, p.ageMin);
+  }
+
   for (const k of classes) {
     const key = k.product.slug;
     order.set(key, k.product.ageMin);
-    const row = byCourse.get(key) ?? { slug: key, name: courseName(key, k.product.name), pupils: 0, classes: 0 };
-    row.pupils += k._count.pupils;
-    row.classes += 1;
-    byCourse.set(key, row);
+    const got = byCourse.get(key) ?? blank(key, k.product.name);
+    got.pupils += k._count.pupils;
+    got.classes += 1;
+    byCourse.set(key, got);
   }
+
+  /* Every school course gets a row, including the ones with nothing on them:
+     a head deciding whether to run Explorers next year should see it sitting
+     there at zero rather than wonder whether it is included at all. */
   for (const c of await listSchoolCourses()) {
     if (!byCourse.has(c.slug)) {
-      byCourse.set(c.slug, { slug: c.slug, name: c.name, pupils: 0, classes: 0 });
+      byCourse.set(c.slug, blank(c.slug, c.name));
       order.set(c.slug, SCHOOL_COURSE_SLUGS.indexOf(c.slug as (typeof SCHOOL_COURSE_SLUGS)[number]));
     }
   }
@@ -188,8 +277,9 @@ export async function placesSummary(orgId: string): Promise<PlacesSummary> {
     byCourse: [...byCourse.values()].sort(
       (a, b) => (order.get(a.slug) ?? 0) - (order.get(b.slug) ?? 0),
     ),
-    inArchivedClasses: archivedPupils,
+    inArchivedClasses,
     leftTheSchool,
+    courseNotRecorded,
   };
 }
 

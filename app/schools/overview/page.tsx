@@ -99,7 +99,12 @@ export default async function SchoolOverviewPage() {
   const w = wordsFor(head.kind);
   const onTrial = trialStatus(head.trialExpiresAt) === "active";
   const pupilsNow = places.byCourse.reduce((n, c) => n + c.pupils, 0);
-  const running = places.byCourse.filter((c) => c.classes > 0);
+  /* A course belongs on the breakdown if places were spent on it OR a class
+     is running it. Those differ now: a year group that has moved up still
+     holds the places it spent on the course it came from, and that money
+     should not vanish off the chart the day the last class on it is
+     archived. */
+  const running = places.byCourse.filter((c) => c.places > 0 || c.classes > 0);
   const anyActivity = classes.some((k) => k.lastSeen !== null);
   const lastSeen = classes.reduce<Date | null>(
     (best, k) => (k.lastSeen && (!best || k.lastSeen > best) ? k.lastSeen : best),
@@ -146,9 +151,10 @@ export default async function SchoolOverviewPage() {
         <section className="sxh-sec" aria-labelledby="sxh-places-h">
           <h2 id="sxh-places-h" className="sxh-h2">Your places</h2>
           <p className="sxh-lede">
-            A place belongs to a child, not to a course. It is spent the moment a {w.staff} adds
-            them, and it stays spent: moving a child between {w.groups}, or up to a different
-            course next year, costs nothing more.
+            A place is one {w.person} on one course. It is spent the moment a {w.staff} adds them,
+            and it stays spent. It follows the {w.person}, so moving them between {w.groups} on the
+            same course costs nothing more. Starting them on a different course next year uses
+            another place.
           </p>
 
           <div className="sxh-figures">
@@ -171,7 +177,7 @@ export default async function SchoolOverviewPage() {
               <span
                 key={c.slug}
                 className="sxh-barseg"
-                style={{ width: pct(c.pupils), background: COURSE_HUE[c.slug] ?? "var(--c-heroes)" }}
+                style={{ width: pct(c.places), background: COURSE_HUE[c.slug] ?? "var(--c-heroes)" }}
               />
             ))}
             {places.inArchivedClasses > 0 && (
@@ -191,9 +197,10 @@ export default async function SchoolOverviewPage() {
               {running.map((c) => (
                 <li key={c.slug}>
                   <i style={{ background: COURSE_HUE[c.slug] ?? "var(--c-heroes)" }} />
-                  <b>{c.pupils}</b> on {c.name}
+                  <b>{c.places}</b> on {c.name}
                   <span className="sxh-keysub">
                     {c.classes} {c.classes === 1 ? w.group : w.groups}
+                    {c.pupils !== c.places ? `, ${c.pupils} there now` : ""}
                   </span>
                 </li>
               ))}
@@ -211,6 +218,17 @@ export default async function SchoolOverviewPage() {
                   <span className="sxh-keysub">
                     a mistake we can put right, email us
                   </span>
+                </li>
+              )}
+              {/* Only ever non-zero for a school that was already running
+                  before a place recorded which course it was for. Shown
+                  rather than folded into another figure, because a number
+                  that cannot be explained is worse than no number. */}
+              {places.courseNotRecorded > 0 && (
+                <li>
+                  <i className="archived" />
+                  <b>{places.courseNotRecorded}</b> spent before we recorded the course
+                  <span className="sxh-keysub">still theirs, nothing to do</span>
                 </li>
               )}
             </ul>
