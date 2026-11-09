@@ -25,6 +25,10 @@ describe("courseHomeFor", () => {
     expect(courseHomeFor("cyberstart-pro")).toBe("/pro/course");
   });
 
+  it("sends Desk Ready learners straight to their course map", () => {
+    expect(courseHomeFor("desk-ready")).toBe("/desk-ready/course");
+  });
+
   /* The hub is decommissioned (owner 2026-10-16). This is the test that
    * keeps it decommissioned: nothing may route a learner back to it. */
   it("never routes anyone to the hub", () => {

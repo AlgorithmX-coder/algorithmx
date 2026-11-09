@@ -103,7 +103,7 @@ function Inner({ course, mode }: { course: CourseAuthKey; mode: Mode }) {
     padding: "13px 15px",
     borderRadius: 11,
     border: `1px solid ${t.palette.border}`,
-    background: "rgba(0,0,0,0.3)",
+    background: t.palette.field ?? "rgba(0,0,0,0.3)",
     color: t.palette.text,
     fontFamily: t.fonts.body,
     fontSize: 15,
@@ -158,7 +158,7 @@ function Inner({ course, mode }: { course: CourseAuthKey; mode: Mode }) {
             border: `1px solid ${t.palette.border}`,
             borderRadius: 20,
             padding: "34px 32px 30px",
-            boxShadow: `0 26px 70px rgba(0,0,0,0.5), 0 0 52px -18px ${t.palette.accent}66`,
+            boxShadow: t.palette.shadow ?? `0 26px 70px rgba(0,0,0,0.5), 0 0 52px -18px ${t.palette.accent}66`,
           }}
         >
           <h1 style={{ fontFamily: t.fonts.display, fontSize: "1.75rem", fontWeight: 700, lineHeight: 1.12, margin: 0, color: t.palette.text }}>
@@ -272,7 +272,7 @@ function Inner({ course, mode }: { course: CourseAuthKey; mode: Mode }) {
 
       <style jsx global>{`
         .course-auth-root input::placeholder {
-          color: rgba(160, 170, 195, 0.55);
+          color: ${t.palette.placeholder ?? "rgba(160, 170, 195, 0.55)"};
         }
         .course-auth-root input:focus {
           border-color: ${t.palette.accent} !important;

@@ -42,6 +42,7 @@ const COURSE_HOME: Record<string, string> = {
   cyberexplorers: "/explorers",
   cyberstart: "/operators/portfolio",
   "cyberstart-pro": "/pro/course",
+  "desk-ready": "/desk-ready/course",
 };
 
 /**
