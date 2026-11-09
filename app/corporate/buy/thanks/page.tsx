@@ -35,7 +35,7 @@ export default async function ThanksPage({ searchParams }: { searchParams: Promi
       <p className="cf-lead">
         {email ? <>An email is on its way to {email}.</> : <>An email is on its way to the address you gave.</>} It usually lands within a minute. If this is your firm&rsquo;s first purchase, it is your admin invite: open it, sign up with that address, and invite your staff from the console. If you already run a firm with us under that email, the seats have been added to it and the console shows them.
       </p>
-      {course === "ai-fluent" || fluentSeats > 0 ? <p className="cf-note">An AI Fluent seat is claimed by someone who holds a valid AI Cleared certificate; the invite tells them so.</p> : null}
+
       <p className="cf-note">Nothing after ten minutes? Check the junk folder, then email admissions@algorithmx.co.uk with your firm name and we will send the link by hand. Your VAT invoice comes separately from Stripe.</p>
       <Link href={course === "ai-fluent" ? "/ai-fluent" : "/ai-cleared"} className="cf-btn cf-btn-pri" style={{ alignSelf: "flex-start" }}>Go to {fluentSeats > 0 ? COURSE_NAME["ai-cleared"] : name}</Link>
     </Frame>

@@ -10,7 +10,7 @@ import type { EvalResult } from "@/app/lib/aiClearedEval";
  * a certificate or a person up across every firm. */
 export default function OpsPanel() {
   const router = useRouter();
-  const [f, setF] = useState({ name: "", sector: "", contactName: "", contactRole: "", plan: "TEAM", seatsPurchased: "10", fluentSeatsPurchased: "0", adminEmail: "" });
+  const [f, setF] = useState({ name: "", sector: "", contactName: "", contactRole: "", plan: "TEAM", seatsPurchased: "10", adminEmail: "" });
   const [busy, setBusy] = useState<string | null>(null);
   const [made, setMade] = useState<{ name: string; slug: string; link: string; emailed: boolean } | null>(null);
   const [err, setErr] = useState<string | null>(null);
@@ -61,11 +61,11 @@ export default function OpsPanel() {
     setErr(null);
     setMade(null);
     try {
-      const res = await fetch("/api/ops/firms", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ...f, seatsPurchased: Number(f.seatsPurchased), fluentSeatsPurchased: Number(f.fluentSeatsPurchased) || 0 }) });
+      const res = await fetch("/api/ops/firms", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ...f, seatsPurchased: Number(f.seatsPurchased) }) });
       const j = (await res.json().catch(() => ({}))) as Record<string, unknown>;
       if (!res.ok) throw new Error((j.error as string) ?? "Something went wrong.");
       setMade({ name: j.name as string, slug: j.slug as string, link: j.link as string, emailed: !!j.emailed });
-      setF({ name: "", sector: "", contactName: "", contactRole: "", plan: "TEAM", seatsPurchased: "10", fluentSeatsPurchased: "0", adminEmail: "" });
+      setF({ name: "", sector: "", contactName: "", contactRole: "", plan: "TEAM", seatsPurchased: "10", adminEmail: "" });
       router.refresh();
     } catch (e) {
       setErr(e instanceof Error ? e.message : "Something went wrong.");
@@ -142,10 +142,9 @@ export default function OpsPanel() {
           <label>Contact name <input id="op-contact" value={f.contactName} onChange={(e) => set("contactName", e.target.value)} placeholder="Who staff ask" /></label>
           <label>Contact role <input id="op-contact-role" value={f.contactRole} onChange={(e) => set("contactRole", e.target.value)} placeholder="Data Protection Officer" /></label>
         </div>
-        <div className="op-row three">
+        <div className="op-row">
           <label>Plan <select id="op-plan" value={f.plan} onChange={(e) => set("plan", e.target.value)}><option value="TEAM">Team (10 to 49)</option><option value="FIRM">Firm (50 to 249)</option><option value="ENTERPRISE">Enterprise</option></select></label>
-          <label>Cleared seats <input id="op-seats" type="number" min={1} value={f.seatsPurchased} onChange={(e) => set("seatsPurchased", e.target.value)} /></label>
-          <label>Fluent seats <input id="op-fluent-seats" type="number" min={0} value={f.fluentSeatsPurchased} onChange={(e) => set("fluentSeatsPurchased", e.target.value)} /></label>
+          <label>Seats (one per person, every course) <input id="op-seats" type="number" min={1} value={f.seatsPurchased} onChange={(e) => set("seatsPurchased", e.target.value)} /></label>
         </div>
         <label>Admin email <input id="op-admin" type="email" value={f.adminEmail} onChange={(e) => set("adminEmail", e.target.value)} placeholder="admin@firm.co.uk" /></label>
         <button type="button" className="cf-btn cf-btn-pri" onClick={create} disabled={busy === "create" || !f.name.trim() || !f.adminEmail.trim()}>{busy === "create" ? "Creating…" : "Create firm and admin invite"}</button>

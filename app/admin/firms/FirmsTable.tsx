@@ -90,7 +90,7 @@ export default function FirmsTable({ rows }: { rows: FirmRow[] }) {
 
       <table className="ad-table">
         <thead>
-          <tr><th>Firm</th><th>Plan</th><th>Cleared seats</th><th>Claimed</th><th>Cleared</th><th>Fluent seats</th><th>Certs</th><th>Status</th><th>Last activity</th></tr>
+          <tr><th>Firm</th><th>Plan</th><th>Seats</th><th>Claimed</th><th>Cleared</th><th>Fluent</th><th>Certs</th><th>Status</th><th>Last activity</th></tr>
         </thead>
         <tbody>
           {filtered.map((r) => (
@@ -100,7 +100,7 @@ export default function FirmsTable({ rows }: { rows: FirmRow[] }) {
               <td>{r.invited} / {r.seatsPurchased}</td>
               <td>{r.claimed}</td>
               <td>{r.cleared}</td>
-              <td>{r.fluentSeats || r.fluentInvited ? `${r.fluentInvited} / ${r.fluentSeats}` : "—"}</td>
+              <td>{r.fluentDone}</td>
               <td>{r.certificates}</td>
               <td>{statusChip(r)}</td>
               <td>{day(r.lastActivity)}</td>

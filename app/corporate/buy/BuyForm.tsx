@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { K } from "@/app/ai-cleared/engine/tokens";
-import { COURSE_BLURB, COURSE_NAME, FIRM_TOOL_OPTIONS, FLUENT_NEEDS_CLEARED_FIRM, type CorporateProductSlug, type VatMode } from "@/app/lib/corporateProducts";
+import { COURSE_BLURB, COURSE_NAME, FIRM_TOOL_OPTIONS, type CorporateProductSlug, type VatMode } from "@/app/lib/corporateProducts";
 
 /* The seat-pack form: one course or both, seats in tens, firm details,
  * the admin's email, then off to Stripe. Prices are the published ones;
@@ -87,8 +87,7 @@ export default function BuyForm({ course: initialCourse, courses, seats: initial
           </span>
           <b>{totalLabel}</b>
         </div>
-        {mode === "ai-fluent" ? <p className="cf-note">An AI Fluent seat is claimed by someone who holds a valid AI Cleared certificate. {FLUENT_NEEDS_CLEARED_FIRM}</p> : null}
-        {mode === "both" ? <p className="cf-note">Everyone takes AI Cleared first; an AI Fluent seat is claimed by someone who holds their AI Cleared certificate. Buy fewer Fluent seats than Cleared if not everyone will go on, and add more later from the same admin email.</p> : null}
+        {mode === "both" ? <p className="cf-note">One seat is one person, and it opens both courses. Add more people later from the same admin email.</p> : null}
         <p className="cf-note">More than 249 seats is an Enterprise conversation: use the enquiry form and we will quote.</p>
       </div>
 

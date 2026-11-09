@@ -10,7 +10,8 @@ import {
   type Track,
   type Verdict,
 } from "@/app/ai-cleared/engine/types";
-import { COURSES, courseByKey, corporateCourse, isCourseSlug, type CourseSlug } from "@/app/ai-cleared/engine/courses";
+import { COURSES, isCourseSlug, type CourseSlug } from "@/app/ai-cleared/engine/courses";
+import { SECURED_TRACK_SLUGS, type SecuredTrackSlug } from "@/app/lib/cyberSecured";
 import { moduleListFor } from "@/app/lib/courseModules";
 
 /* Server-side helpers for the corporate courses, AI Cleared and AI Fluent.
@@ -121,29 +122,42 @@ export function firstNameOf(name: string | null | undefined, email: string | nul
   return e ? e.charAt(0).toUpperCase() + e.slice(1) : "there";
 }
 
-/* A valid AI Cleared certificate on this login: the entry ticket to AI
- * Fluent (design decision, 30 September 2026). */
-export async function hasValidClearedCertificate(userId: string): Promise<boolean> {
-  if (!userId) return false;
-  const c = await prisma.certificate.findFirst({
-    where: { enrolment: { userId, product: { slug: AI_CLEARED_SLUG } }, expiresAt: { gt: new Date() } },
-    select: { id: true },
-  });
-  return !!c;
-}
-
-/* The desk a Fluent seat inherits: the person's Cleared desk, when they
- * have one. The invite page offers it pre-picked and lets them change it. */
-export async function clearedTrackOf(userId: string): Promise<Track | null> {
-  const e = await prisma.enrolment.findFirst({ where: { userId, product: { slug: AI_CLEARED_SLUG } }, select: { track: true } });
+/* The desk this person already works at on any track, so a later invite
+ * offers it pre-picked. The join page lets them change it. */
+export async function deskOf(userId: string): Promise<Track | null> {
+  const e = await prisma.enrolment.findFirst({ where: { userId, org: FIRM_ORG }, orderBy: { startedAt: "asc" }, select: { track: true } });
   return e ? DB_TO_TRACK[e.track] : null;
 }
 
+/**
+ * Enrol a person on every Cyber Secured track that exists and that they
+ * are not on yet, at one firm and on one desk, each with its entitlement.
+ *
+ * A track exists once its Product row does, so a track built after
+ * someone claimed their seat reaches them the next time this runs. A track
+ * they are already on is left exactly as it is: progress, desk and all.
+ * Returns the tracks enrolled just now.
+ */
+export async function enrolOnEveryTrack(args: { userId: string; orgId: string; track: Track }): Promise<SecuredTrackSlug[]> {
+  const products = await prisma.product.findMany({ where: { slug: { in: [...SECURED_TRACK_SLUGS] } }, select: { id: true, slug: true } });
+  const held = new Set((await prisma.enrolment.findMany({ where: { userId: args.userId, productId: { in: products.map((p) => p.id) } }, select: { productId: true } })).map((e) => e.productId));
+  const missing = products.filter((p) => !held.has(p.id));
+  if (missing.length) {
+    await prisma.enrolment.createMany({
+      data: missing.map((p) => ({ userId: args.userId, productId: p.id, orgId: args.orgId, track: TRACK_TO_DB[args.track] })),
+      skipDuplicates: true,
+    });
+  }
+  for (const p of products) await grantEntitlement(args.userId, p.slug, "BUNDLE");
+  return missing.map((p) => p.slug as SecuredTrackSlug);
+}
+
 /* Claim a seat: the invite token's seat is bound to this user, they join
- * the firm with the seat's role, an Enrolment is created on the seat's
- * course and the chosen track, and the entitlement is granted through the
- * normal funnel. A Fluent seat is refused without a valid Cleared
- * certificate. Idempotent for a user re-opening their own invite. */
+ * the firm with the seat's role, and they are enrolled on every track of
+ * Cyber Secured on the desk they picked. No track waits on another: one
+ * seat is one person and the whole licence. A seat from before the
+ * licence (AI_CLEARED or AI_FLUENT) claims the same way. Idempotent for a
+ * user re-opening their own invite. */
 export async function claimSeat(args: { token: string; userId: string; track: Track }) {
   const seat = await prisma.seat.findUnique({ where: { inviteToken: args.token }, include: { org: true } });
   if (!seat) return { ok: false as const, reason: "not-found" as const };
@@ -151,12 +165,7 @@ export async function claimSeat(args: { token: string; userId: string; track: Tr
   /* A closed firm hands out nothing further. The seat and the invite stay
      exactly as they are, so unrevoking makes the link work again. */
   if (seat.org.revokedAt) return { ok: false as const, reason: "closed" as const };
-
-  const course = courseByKey(corporateCourse(seat.course));
-  if (course.slug === "ai-fluent" && !(await hasValidClearedCertificate(args.userId))) return { ok: false as const, reason: "needs-cleared" as const };
-
-  const product = await prisma.product.findUnique({ where: { slug: course.slug }, select: { id: true } });
-  if (!product) return { ok: false as const, reason: "no-product" as const };
+  if (!(await prisma.product.count({ where: { slug: { in: [...SECURED_TRACK_SLUGS] } } }))) return { ok: false as const, reason: "no-product" as const };
 
   const now = new Date();
   await prisma.$transaction([
@@ -167,14 +176,10 @@ export async function claimSeat(args: { token: string; userId: string; track: Tr
       update: seat.role === "ADMIN" ? { role: "ADMIN" } : {},
       create: { orgId: seat.orgId, userId: args.userId, role: seat.role, team: seat.team },
     }),
-    prisma.enrolment.upsert({
-      where: { userId_productId: { userId: args.userId, productId: product.id } },
-      update: {},
-      create: { userId: args.userId, productId: product.id, orgId: seat.orgId, track: TRACK_TO_DB[args.track] },
-    }),
   ]);
-  await grantEntitlement(args.userId, course.slug, "BUNDLE");
-  return { ok: true as const, orgName: seat.org.name, course: course.slug };
+  await enrolOnEveryTrack({ userId: args.userId, orgId: seat.orgId, track: args.track });
+  /* An old Fluent invite still lands on Fluent; everything else starts on Cleared. */
+  return { ok: true as const, orgName: seat.org.name, course: seat.course === "AI_FLUENT" ? ("ai-fluent" as const) : ("ai-cleared" as const) };
 }
 
 /* Written on every screen change. Scores max-merge, the verdicts keep the

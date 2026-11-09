@@ -7,10 +7,10 @@ import { COURSES, courseByKey, corporateCourse, courseOfSerial, type CourseSlug 
 import type { OrgPlan } from "@prisma/client";
 import { DEFAULT_FIRM } from "@/app/ai-cleared/engine/types";
 
-/* The AlgorithmX side of both courses: every firm at a glance with its
- * Cleared and Fluent numbers, the totals, creating a firm by hand, and
- * looking a certificate or a person up. Never import from a client
- * component. */
+/* The AlgorithmX side of Cyber Secured: every firm at a glance with its
+ * seats and how far its people have got on each track, the totals,
+ * creating a firm by hand, and looking a certificate or a person up.
+ * Never import from a client component. */
 
 export interface FirmRow {
   id: string;
@@ -19,15 +19,15 @@ export interface FirmRow {
   sector: string | null;
   plan: OrgPlan;
   contactName: string | null;
+  /* Cyber Secured seats, and the people holding them: one seat each. */
   seatsPurchased: number;
   invited: number;
   claimed: number;
+  /* People who finished AI Cleared, and the firm's standing on it. */
   cleared: number;
   pct: number;
   firmCleared: boolean;
-  fluentSeats: number;
-  fluentInvited: number;
-  fluentClaimed: number;
+  /* People who finished AI Fluent. */
   fluentDone: number;
   certificates: number;
   lastActivity: string | null;
@@ -46,15 +46,17 @@ export async function listFirms(): Promise<FirmRow[]> {
     where: FIRM_ORG,
     orderBy: { createdAt: "desc" },
     include: {
-      seats: { select: { claimedAt: true, course: true } },
+      seats: { select: { email: true, claimedAt: true } },
       enrolments: { select: { completedAt: true, startedAt: true, modules: { select: { updatedAt: true } }, product: { select: { slug: true } } } },
       _count: { select: { certificates: true } },
     },
   });
   return orgs.map((o) => {
-    const clearedSeats = o.seats.filter((s) => s.course === "AI_CLEARED");
-    const fluentSeats = o.seats.filter((s) => s.course === "AI_FLUENT");
-    const claimed = clearedSeats.filter((s) => s.claimedAt).length;
+    /* People, not seat rows: someone holding an old Cleared seat and an
+       old Fluent seat is one seat of the licence. */
+    const people = new Map<string, boolean>();
+    for (const s of o.seats) people.set(s.email, (people.get(s.email) ?? false) || !!s.claimedAt);
+    const claimed = [...people.values()].filter(Boolean).length;
     const cleared = o.enrolments.filter((e) => e.product.slug === AI_CLEARED_SLUG && e.completedAt).length;
     const pct = claimed ? cleared / claimed : 0;
     const stamps = o.enrolments.flatMap((e) => [e.startedAt, ...e.modules.map((m) => m.updatedAt)]);
@@ -67,14 +69,11 @@ export async function listFirms(): Promise<FirmRow[]> {
       plan: o.plan,
       contactName: o.contactName,
       seatsPurchased: o.seatsPurchased,
-      invited: clearedSeats.length,
+      invited: people.size,
       claimed,
       cleared,
       pct,
       firmCleared: claimed > 0 && pct >= FIRM_THRESHOLD,
-      fluentSeats: o.fluentSeatsPurchased,
-      fluentInvited: fluentSeats.length,
-      fluentClaimed: fluentSeats.filter((s) => s.claimedAt).length,
       fluentDone: o.enrolments.filter((e) => e.product.slug === AI_FLUENT_SLUG && e.completedAt).length,
       certificates: o._count.certificates,
       lastActivity: last ? last.toISOString() : null,
@@ -93,8 +92,6 @@ export function platformTotals(rows: FirmRow[]) {
     seatsInvited: rows.reduce((a, r) => a + r.invited, 0),
     seatsClaimed: rows.reduce((a, r) => a + r.claimed, 0),
     cleared: rows.reduce((a, r) => a + r.cleared, 0),
-    fluentLicensed: rows.reduce((a, r) => a + r.fluentSeats, 0),
-    fluentClaimed: rows.reduce((a, r) => a + r.fluentClaimed, 0),
     fluentDone: rows.reduce((a, r) => a + r.fluentDone, 0),
     certificates: rows.reduce((a, r) => a + r.certificates, 0),
     firmsCleared: rows.filter((r) => r.firmCleared).length,
@@ -123,7 +120,6 @@ export async function createFirm(args: {
   approvedTool?: string | null;
   plan: OrgPlan;
   seatsPurchased: number;
-  fluentSeatsPurchased?: number;
   adminEmail: string;
   origin: string;
   staffName: string;
@@ -141,7 +137,6 @@ export async function createFirm(args: {
       contactRole: args.contactRole?.trim() || null,
       plan: args.plan,
       seatsPurchased: args.seatsPurchased,
-      fluentSeatsPurchased: args.fluentSeatsPurchased ?? 0,
     },
   });
   if (args.approvedTool) {
@@ -157,10 +152,10 @@ export async function createFirm(args: {
     });
   }
   const token = newInviteToken(slug.slice(0, 6));
-  await prisma.seat.create({ data: { orgId: org.id, email: args.adminEmail.trim().toLowerCase(), inviteToken: token, team: "Admin", role: "ADMIN" } });
+  await prisma.seat.create({ data: { orgId: org.id, email: args.adminEmail.trim().toLowerCase(), inviteToken: token, team: "Admin", role: "ADMIN", course: "CYBER_SECURED" } });
   let emailed = true;
   try {
-    await sendAdminWelcome({ to: args.adminEmail, token, firmName: org.name, seats: args.seatsPurchased, fluentSeats: args.fluentSeatsPurchased ?? 0, origin: args.origin, staffName: args.staffName, staffEmail: args.staffEmail });
+    await sendAdminWelcome({ to: args.adminEmail, token, firmName: org.name, seats: args.seatsPurchased, origin: args.origin, staffName: args.staffName, staffEmail: args.staffEmail });
   } catch (err) {
     emailed = false;
     console.error("[ai-cleared/ops] admin invite email failed", err instanceof Error ? err.message : err);

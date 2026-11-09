@@ -4,6 +4,7 @@ import { sendEmail } from "@/app/lib/resend";
 import { DB_TO_TRACK, FIRM_ORG, TRACK_TO_DB } from "@/app/lib/aiCleared";
 import { moduleListFor } from "@/app/lib/courseModules";
 import { COURSES, type CourseSlug } from "@/app/ai-cleared/engine/courses";
+import { CYBER_SECURED_BRAND, CYBER_SECURED_NAME, SECURED_TRACKS, onePerPerson } from "@/app/lib/cyberSecured";
 import { opsAlert } from "@/app/lib/opsAlert";
 import { TRACK_LABEL, type Track } from "@/app/ai-cleared/engine/types";
 import { isStaffUser } from "@/app/lib/aiClearedStaff";
@@ -82,13 +83,19 @@ export interface RegisterRow {
   invitedAt: string;
 }
 
-/* The register for one course: every seat on it, with the enrolment
- * behind a claimed seat. "cleared" means the course is complete on either. */
+/* Every person holding a seat at the firm, once each (see onePerPerson). */
+async function seatsByPerson(orgId: string) {
+  return onePerPerson(await prisma.seat.findMany({ where: { orgId }, include: { user: { select: { name: true } } } }));
+}
+
+/* The register for one track: every person at the firm, with their
+ * enrolment on that track behind a claimed seat. One seat covers every
+ * track, so the people are the same on each; only the progress differs.
+ * "cleared" means the track is complete. */
 export async function getRegister(orgId: string, course: CourseSlug = "ai-cleared"): Promise<RegisterRow[]> {
-  const c = COURSES[course];
   const product = await prisma.product.findUnique({ where: { slug: course }, select: { id: true } });
   const [seats, enrolments] = await Promise.all([
-    prisma.seat.findMany({ where: { orgId, course: c.key }, orderBy: [{ claimedAt: "asc" }, { invitedAt: "asc" }], include: { user: { select: { name: true } } } }),
+    seatsByPerson(orgId),
     prisma.enrolment.findMany({ where: { orgId, ...(product ? { productId: product.id } : { id: "none" }) }, include: { modules: true, certificate: true } }),
   ]);
   const byUser = new Map(enrolments.map((e) => [e.userId, e]));
@@ -149,24 +156,29 @@ function esc(s: string): string {
 }
 
 /**
- * What a firm may still invite on a course: the seats it bought, less the
- * seats it already holds.
+ * What a firm may still invite: the Cyber Secured seats it bought, less
+ * the people it has already invited.
  *
- * Every seat on the course counts, whatever its role, including the admin
- * seat created along with the firm. It has to be every role for two
- * reasons: the console lets an admin invite a MANAGER or a second ADMIN,
- * and claiming a seat of any role grants the course, so exempting a role
- * would hand free seats to anyone who picked it from the dropdown.
+ * Counted in people, not seat rows, because one seat is one person on
+ * every track; someone holding an old Cleared seat and an old Fluent seat
+ * is one seat of the licence.
  *
- * Deliberately the same number the console already prints as "N invited",
- * so a refusal agrees with what the admin is looking at.
+ * Every person counts, whatever their role, including the admin invited
+ * along with the firm. It has to be every role for two reasons: the
+ * console lets an admin invite a MANAGER or a second ADMIN, and claiming a
+ * seat of any role opens every track, so exempting a role would hand free
+ * seats to anyone who picked it from the dropdown.
+ *
+ * Deliberately the same number the console prints as "N invited", so a
+ * refusal agrees with what the admin is looking at.
  */
-export async function seatsLeft(orgId: string, course: CourseSlug): Promise<{ licensed: number; used: number; left: number }> {
-  const [org, used] = await Promise.all([
-    prisma.organisation.findUnique({ where: { id: orgId }, select: { seatsPurchased: true, fluentSeatsPurchased: true } }),
-    prisma.seat.count({ where: { orgId, course: COURSES[course].key } }),
+export async function seatsLeft(orgId: string): Promise<{ licensed: number; used: number; left: number }> {
+  const [org, people] = await Promise.all([
+    prisma.organisation.findUnique({ where: { id: orgId }, select: { seatsPurchased: true } }),
+    prisma.seat.findMany({ where: { orgId }, select: { email: true }, distinct: ["email"] }),
   ]);
-  const licensed = course === "ai-fluent" ? org?.fluentSeatsPurchased ?? 0 : org?.seatsPurchased ?? 0;
+  const licensed = org?.seatsPurchased ?? 0;
+  const used = people.length;
   return { licensed, used, left: Math.max(0, licensed - used) };
 }
 
@@ -174,15 +186,13 @@ export type InviteSeatsResult =
   | { ok: true; created: { email: string; token: string }[]; skipped: string[]; emailFailed: string[] }
   | { ok: false; error: "seats_full"; licensed: number; used: number; left: number; asked: number };
 
-/* Create seats for new addresses on a course and email each an invite
- * link. An address that already has a seat on that course is skipped,
- * never duplicated. Emails go out under the admin's name with reply-to
- * set to them. Refused outright once the firm's seats are all taken. */
-export async function inviteSeats(args: { orgId: string; orgSlug: string; firmName: string; emails: string[]; team?: string | null; track?: Track | null; role?: OrgRole; course?: CourseSlug; origin: string; adminName: string; adminEmail: string | null; staff?: boolean }): Promise<InviteSeatsResult> {
-  const course = args.course ?? "ai-cleared";
-  const key = COURSES[course].key;
+/* Create a Cyber Secured seat for each new address and email each an
+ * invite link. An address that already holds a seat at the firm, of any
+ * kind, is skipped, never duplicated. Emails go out under the admin's name
+ * with reply-to set to them. Refused outright once the seats are taken. */
+export async function inviteSeats(args: { orgId: string; orgSlug: string; firmName: string; emails: string[]; team?: string | null; track?: Track | null; role?: OrgRole; origin: string; adminName: string; adminEmail: string | null; staff?: boolean }): Promise<InviteSeatsResult> {
   const clean = Array.from(new Set(args.emails.map((e) => e.trim().toLowerCase()).filter((e) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e))));
-  const existing = await prisma.seat.findMany({ where: { orgId: args.orgId, course: key, email: { in: clean } }, select: { email: true } });
+  const existing = await prisma.seat.findMany({ where: { orgId: args.orgId, email: { in: clean } }, select: { email: true } });
   const have = new Set(existing.map((e) => e.email));
   const wanted = clean.filter((e) => !have.has(e));
 
@@ -202,7 +212,7 @@ export async function inviteSeats(args: { orgId: string; orgSlug: string; firmNa
      Two admins inviting in the same second can still overshoot by a seat
      or two, the same bounded race the school side lives with; closing
      that needs a constraint in the database, not a second read here. */
-  const standing = await seatsLeft(args.orgId, course);
+  const standing = await seatsLeft(args.orgId);
   if (!args.staff && wanted.length > standing.left) {
     return { ok: false, error: "seats_full", licensed: standing.licensed, used: standing.used, left: standing.left, asked: wanted.length };
   }
@@ -210,75 +220,79 @@ export async function inviteSeats(args: { orgId: string; orgSlug: string; firmNa
   const created: { email: string; token: string }[] = [];
   const failed: string[] = [];
   for (const email of wanted) {
-    const t = token(`${args.orgSlug.slice(0, 6)}${course === "ai-fluent" ? "-f" : ""}`);
-    await prisma.seat.create({ data: { orgId: args.orgId, email, inviteToken: t, team: args.team ?? null, trackHint: args.track ? TRACK_TO_DB[args.track] : null, role: args.role ?? "LEARNER", course: key } });
+    const t = token(args.orgSlug.slice(0, 6));
+    await prisma.seat.create({ data: { orgId: args.orgId, email, inviteToken: t, team: args.team ?? null, trackHint: args.track ? TRACK_TO_DB[args.track] : null, role: args.role ?? "LEARNER", course: "CYBER_SECURED" } });
     created.push({ email, token: t });
     try {
-      await sendInvite({ to: email, token: t, firmName: args.firmName, origin: args.origin, adminName: args.adminName, adminEmail: args.adminEmail, course });
+      await sendInvite({ to: email, token: t, firmName: args.firmName, origin: args.origin, adminName: args.adminName, adminEmail: args.adminEmail });
     } catch (err) {
       console.error("[ai-cleared/admin] invite email failed", email, err instanceof Error ? err.message : err);
       failed.push(email);
     }
   }
-  if (failed.length) await opsAlert({ what: "Invite emails did not send", detail: { firm: args.firmName, course, failed, origin: args.origin, links: created.filter((c) => failed.includes(c.email)).map((c) => `${c.email}: ${args.origin}/ai-cleared/join/${c.token}`) } });
+  if (failed.length) await opsAlert({ what: "Invite emails did not send", detail: { firm: args.firmName, failed, origin: args.origin, links: created.filter((c) => failed.includes(c.email)).map((c) => `${c.email}: ${args.origin}/ai-cleared/join/${c.token}`) } });
   return { ok: true, created, skipped: clean.filter((e) => have.has(e)), emailFailed: failed };
 }
 
-export async function sendInvite(args: { to: string; token: string; firmName: string; origin: string; adminName: string; adminEmail: string | null; course?: CourseSlug }) {
-  const c = COURSES[args.course ?? "ai-cleared"];
+/* The tracks a seat opens, as list items for an email: the live ones only,
+ * so nothing is promised before it is built. */
+function trackItems(): { html: string; text: string } {
+  const live = SECURED_TRACKS.filter((t) => t.live);
+  return {
+    html: `<ul style="font-size:15px;line-height:1.55;margin:0 0 12px;padding-left:20px">${live.map((t) => `<li><b>${esc(t.name)}</b>: ${esc(t.line)}</li>`).join("")}</ul>`,
+    text: live.map((t) => `- ${t.name}: ${t.line}`).join("\n"),
+  };
+}
+
+export async function sendInvite(args: { to: string; token: string; firmName: string; origin: string; adminName: string; adminEmail: string | null }) {
   const link = `${args.origin}/ai-cleared/join/${args.token}`;
-  const body =
-    c.slug === "ai-fluent"
-      ? `${esc(args.adminName)} has enrolled you on AI Fluent, about three hours in nine short modules on getting real work out of the AI tool your firm uses: prompting that works, the five workflows, verification as a habit, and a real task on your own desk. You keep a playbook of the prompts that worked. Fluent opens with a valid AI Cleared certificate on your login.`
-      : `${esc(args.adminName)} has enrolled you on AI Cleared, about ninety minutes in five short modules on using AI tools safely at work. You practise inside a copy of the tool you already use, on invented data, and a certificate issues at the end.`;
+  const items = trackItems();
+  const lead = `${esc(args.adminName)} has given you a seat on ${CYBER_SECURED_NAME}. It opens every course below. Take them in any order, whenever suits, and stop and resume as you like.`;
   const html = `
     <div style="font-family:Inter,Segoe UI,Helvetica,Arial,sans-serif;color:#14161d;max-width:560px;margin:0 auto;padding:24px">
-      <p style="font-family:ui-monospace,Consolas,monospace;font-size:11px;letter-spacing:.2em;color:#0a7085;margin:0 0 16px">${c.brand}</p>
-      <h1 style="font-size:22px;margin:0 0 12px">${esc(args.firmName)} has reserved you a seat on ${esc(c.name)}.</h1>
-      <p style="font-size:15px;line-height:1.55;margin:0 0 12px">${body}</p>
+      <p style="font-family:ui-monospace,Consolas,monospace;font-size:11px;letter-spacing:.2em;color:#0a7085;margin:0 0 16px">${CYBER_SECURED_BRAND}</p>
+      <h1 style="font-size:22px;margin:0 0 12px">${esc(args.firmName)} has reserved you a seat on ${CYBER_SECURED_NAME}.</h1>
+      <p style="font-size:15px;line-height:1.55;margin:0 0 12px">${lead}</p>
+      ${items.html}
       <p style="margin:18px 0 10px"><a href="${link}" style="display:inline-block;background:#0a7085;color:#fff;text-decoration:none;padding:11px 18px;border-radius:8px;font-weight:600">Claim my seat</a></p>
       <p style="font-size:13.5px;color:#5b6572;line-height:1.5;margin:0">Or copy this link: <a href="${link}" style="color:#0a7085">${link}</a></p>
       <p style="font-size:13.5px;color:#5b6572;line-height:1.5;margin:14px 0 0">Questions go to ${esc(args.adminName)}${args.adminEmail ? ` (${esc(args.adminEmail)})` : ""}.</p>
     </div>`;
-  const text = `${args.firmName} has reserved you a seat on ${c.name}.\n\n${args.adminName} has enrolled you on ${c.name}, ${c.length}, on ${c.blurb}.\n\nClaim your seat: ${link}\n`;
-  return sendEmail({ to: args.to, subject: `${args.adminName} has enrolled you on ${c.name} at ${args.firmName}`, html, text, replyTo: args.adminEmail ?? undefined });
+  const text = `${args.firmName} has reserved you a seat on ${CYBER_SECURED_NAME}.\n\n${args.adminName} has given you a seat on ${CYBER_SECURED_NAME}. It opens every course below, in any order, whenever suits:\n${items.text}\n\nClaim your seat: ${link}\n`;
+  return sendEmail({ to: args.to, subject: `${args.adminName} has given you a seat on ${CYBER_SECURED_NAME} at ${args.firmName}`, html, text, replyTo: args.adminEmail ?? undefined });
 }
 
 /* The welcome to a firm's first admin, after a purchase or a hand set-up.
  * Different from a staff invite: this person runs the course for the
  * firm, so the email says what they can do and where. */
-export async function sendAdminWelcome(args: { to: string; token: string; firmName: string; seats: number; fluentSeats?: number; origin: string; staffName: string; staffEmail: string | null }) {
+export async function sendAdminWelcome(args: { to: string; token: string; firmName: string; seats: number; origin: string; staffName: string; staffEmail: string | null }) {
   const link = `${args.origin}/ai-cleared/join/${args.token}`;
-  const parts: string[] = [];
-  if (args.seats > 0) parts.push(`${args.seats} AI Cleared ${args.seats === 1 ? "seat" : "seats"}`);
-  if (args.fluentSeats) parts.push(`${args.fluentSeats} AI Fluent ${args.fluentSeats === 1 ? "seat" : "seats"}`);
-  const seatLine = parts.join(" and ") || "Your seats";
-  const brand = args.seats > 0 ? "AI CLEARED" : "AI FLUENT";
+  const seatLine = `${args.seats} ${CYBER_SECURED_NAME} ${args.seats === 1 ? "seat" : "seats"}`;
+  const items = trackItems();
   const html = `
     <div style="font-family:Inter,Segoe UI,Helvetica,Arial,sans-serif;color:#14161d;max-width:560px;margin:0 auto;padding:24px">
-      <p style="font-family:ui-monospace,Consolas,monospace;font-size:11px;letter-spacing:.2em;color:#0a7085;margin:0 0 16px">${brand}</p>
-      <h1 style="font-size:22px;margin:0 0 12px">${seatLine} are ready for ${esc(args.firmName)}.</h1>
-      <p style="font-size:15px;line-height:1.55;margin:0 0 12px">You are the admin for ${esc(args.firmName)}. Set up your account from the link below, then invite your staff from the admin console: paste their email addresses and each person gets their own invite. The same console shows who has finished, and their certificates.</p>
-      <p style="font-size:15px;line-height:1.55;margin:0 0 12px">Your own seat is included, so you can take the course too: about ninety minutes in five short modules, practised inside a copy of the tool your firm uses, on invented data.</p>
+      <p style="font-family:ui-monospace,Consolas,monospace;font-size:11px;letter-spacing:.2em;color:#0a7085;margin:0 0 16px">${CYBER_SECURED_BRAND}</p>
+      <h1 style="font-size:22px;margin:0 0 12px">${seatLine} ${args.seats === 1 ? "is" : "are"} ready for ${esc(args.firmName)}.</h1>
+      <p style="font-size:15px;line-height:1.55;margin:0 0 12px">You are the admin for ${esc(args.firmName)}. Set up your account from the link below, then invite your staff from the admin console: paste their email addresses and each person gets their own invite. One seat is one person, and it opens every course:</p>
+      ${items.html}
+      <p style="font-size:15px;line-height:1.55;margin:0 0 12px">The same console shows how far everyone has got. Your own seat is included, so you can take the courses too.</p>
       <p style="margin:18px 0 10px"><a href="${link}" style="display:inline-block;background:#0a7085;color:#fff;text-decoration:none;padding:11px 18px;border-radius:8px;font-weight:600">Set up my admin account</a></p>
       <p style="font-size:13.5px;color:#5b6572;line-height:1.5;margin:0">Or copy this link: <a href="${link}" style="color:#0a7085">${link}</a></p>
       <p style="font-size:13.5px;color:#5b6572;line-height:1.5;margin:14px 0 0">Questions go to ${esc(args.staffName)}${args.staffEmail ? ` (${esc(args.staffEmail)})` : ""}.</p>
     </div>`;
-  const text = `${seatLine} are ready for ${args.firmName}.\n\nYou are the admin. Set up your account, then invite your staff from the admin console; the same console shows who has finished and their certificates. Your own seat is included.\n\nSet up your admin account: ${link}\n`;
-  return sendEmail({ to: args.to, subject: `${args.seats > 0 ? "AI Cleared" : "AI Fluent"} is ready for ${args.firmName}: ${seatLine}`, html, text, replyTo: args.staffEmail ?? undefined });
+  const text = `${seatLine} ${args.seats === 1 ? "is" : "are"} ready for ${args.firmName}.\n\nYou are the admin. Set up your account, then invite your staff from the admin console. One seat is one person, and it opens every course:\n${items.text}\n\nThe same console shows how far everyone has got. Your own seat is included.\n\nSet up your admin account: ${link}\n`;
+  return sendEmail({ to: args.to, subject: `${CYBER_SECURED_NAME} is ready for ${args.firmName}: ${seatLine}`, html, text, replyTo: args.staffEmail ?? undefined });
 }
 
 /* Seats bought by card by an admin who already runs a firm: no new firm,
  * no new invite, just the count going up and a note saying so. */
-export async function sendSeatsAdded(args: { to: string; firmName: string; course: CourseSlug; seats: number; fluentSeats?: number; origin: string; staffName: string; staffEmail: string | null }) {
-  const c = COURSES[args.course];
+export async function sendSeatsAdded(args: { to: string; firmName: string; seats: number; origin: string; staffName: string; staffEmail: string | null }) {
   const link = `${args.origin}/ai-cleared/admin`;
-  const fluentSeats = args.course === "ai-cleared" ? args.fluentSeats ?? 0 : 0;
-  const seatLine = `${args.seats} ${c.name} ${args.seats === 1 ? "seat" : "seats"}` + (fluentSeats > 0 ? ` and ${fluentSeats} AI Fluent ${fluentSeats === 1 ? "seat" : "seats"}` : "");
-  const claim = args.course === "ai-fluent" || fluentSeats > 0 ? "Each AI Fluent seat is claimed by someone who holds a valid AI Cleared certificate; the invite tells them so." : "Each person you invite gets their own link and claims a seat on first sign-in.";
+  const seatLine = `${args.seats} ${CYBER_SECURED_NAME} ${args.seats === 1 ? "seat" : "seats"}`;
+  const claim = "Each person you invite gets their own link, claims their seat on first sign-in, and has every course from then on.";
   const html = `
     <div style="font-family:Inter,Segoe UI,Helvetica,Arial,sans-serif;color:#14161d;max-width:560px;margin:0 auto;padding:24px">
-      <p style="font-family:ui-monospace,Consolas,monospace;font-size:11px;letter-spacing:.2em;color:#0a7085;margin:0 0 16px">${c.brand}</p>
+      <p style="font-family:ui-monospace,Consolas,monospace;font-size:11px;letter-spacing:.2em;color:#0a7085;margin:0 0 16px">${CYBER_SECURED_BRAND}</p>
       <h1 style="font-size:22px;margin:0 0 12px">${seatLine} added to ${esc(args.firmName)}.</h1>
       <p style="font-size:15px;line-height:1.55;margin:0 0 12px">Thank you. The seats are on your firm's account now and the admin console shows the new total. Invite staff from there: paste their email addresses and each person gets their own invite. ${claim}</p>
       <p style="margin:18px 0 10px"><a href="${link}" style="display:inline-block;background:#0a7085;color:#fff;text-decoration:none;padding:11px 18px;border-radius:8px;font-weight:600">Open the admin console</a></p>

@@ -431,15 +431,23 @@ enum SandboxVerdict {
   CRIT
 }
 
-/// Which course a model call (or corporate seat) belongs to. The two
-/// corporate courses mirror the Product slugs ai-cleared and ai-fluent; a
-/// seat's course decides which product the claim enrols the person on.
-/// CYBER_PRO is the consumer course, used to label its AI tutor calls
-/// against the per-person model allowance (never for seats).
+/// Which course a model call (or corporate seat) belongs to.
+///
+/// CYBER_SECURED is the firm licence: one seat per person, and claiming it
+/// enrols that person on every track of Cyber Secured (AI Cleared, AI
+/// Fluent, Cyber Awareness). Every new firm seat is CYBER_SECURED. Seats
+/// made before the licence existed carry AI_CLEARED or AI_FLUENT; they
+/// still claim, and claim the whole licence, so nobody holding an old link
+/// loses anything.
+///
+/// AI_CLEARED, AI_FLUENT and CYBER_AWARENESS also label a track's model
+/// calls (ModelCall.course), as CYBER_PRO does for the consumer course.
 enum CourseKey {
   AI_CLEARED
   AI_FLUENT
   CYBER_PRO
+  CYBER_SECURED
+  CYBER_AWARENESS
 }
 
 /// AI Fluent's verdict on a practice: the loop was run well, one move was
@@ -462,8 +470,11 @@ model Organisation {
   country          String?
   contactName      String?
   contactRole      String?
+  /// Cyber Secured seats: one per person, every track. The cap inviteSeats
+  /// enforces, counted in people rather than seat rows.
   seatsPurchased   Int      @default(0)
-  /// AI Fluent seats, licensed separately from the Cleared seats above.
+  /// RETIRED. Fluent was once licensed separately; nothing reads or writes
+  /// this now that one seat covers every track. Kept so no data is dropped.
   fluentSeatsPurchased Int  @default(0)
   plan             OrgPlan  @default(TEAM)
   stripeCustomerId String?
@@ -555,8 +566,11 @@ model Seat {
   trackHint   ClearedTrack?
   /// The role the seat grants on claim. An admin invite is a seat with ADMIN.
   role        OrgRole       @default(LEARNER)
-  /// Which course the seat is for. A person can hold one seat per course.
-  course      CourseKey     @default(AI_CLEARED)
+  /// CYBER_SECURED for every seat made now: one per person, every track.
+  /// An older seat may say AI_CLEARED or AI_FLUENT; it claims the same
+  /// licence, and the seat cap counts people, so a person holding one of
+  /// each is still one seat.
+  course      CourseKey     @default(CYBER_SECURED)
   invitedAt   DateTime      @default(now())
   claimedAt   DateTime?
 
