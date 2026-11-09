@@ -102,6 +102,65 @@ export async function listClasses(orgId: string) {
   });
 }
 
+/**
+ * Last year's classes, most recently archived first.
+ *
+ * Archived rather than deleted, so the progress of a child who has moved on
+ * is still attached to something. Kept out of listClasses because a
+ * teacher's own page is about this year, and listed separately so a class
+ * archived by mistake can be reopened and last year's work still read.
+ */
+export async function listArchivedClasses(orgId: string) {
+  return prisma.class.findMany({
+    where: { orgId, archivedAt: { not: null } },
+    orderBy: [{ archivedAt: "desc" }, { name: "asc" }],
+    select: {
+      id: true, name: true, yearGroup: true, code: true, createdAt: true, archivedAt: true,
+      teacher: { select: { id: true, name: true, email: true } },
+      product: { select: { slug: true, name: true } },
+      _count: { select: { pupils: true } },
+    },
+  });
+}
+
+/**
+ * End a class's year.
+ *
+ * A bigger act than it looks, and the screen offering it has to say so: an
+ * archived class is filtered out of BOTH pupil sign-in gates, lookupClass
+ * and authorisePupil, so every child in it stops being able to sign in the
+ * moment this runs. The class code stops working too.
+ *
+ * Nothing is deleted and no place comes back. That is the commercial rule
+ * rather than an oversight: a place spent is spent, and before the ledger
+ * existed archiving a class in July quietly refunded the whole class.
+ *
+ * Scoped by orgId inside the update, not checked before it, so a class id
+ * from another school changes nothing and reports nothing.
+ */
+export async function archiveClass(args: { orgId: string; classId: string }): Promise<boolean> {
+  const done = await prisma.class.updateMany({
+    where: { id: args.classId, orgId: args.orgId, archivedAt: null },
+    data: { archivedAt: new Date() },
+  });
+  return done.count === 1;
+}
+
+/**
+ * Put a class back, for the one archived by mistake.
+ *
+ * Restores everything exactly: the children sign in again with the pictures
+ * they already chose, on the code that is already on their cards, because
+ * none of it was ever deleted.
+ */
+export async function unarchiveClass(args: { orgId: string; classId: string }): Promise<boolean> {
+  const done = await prisma.class.updateMany({
+    where: { id: args.classId, orgId: args.orgId, archivedAt: { not: null } },
+    data: { archivedAt: null },
+  });
+  return done.count === 1;
+}
+
 export async function createClass(args: {
   orgId: string;
   teacherId: string;

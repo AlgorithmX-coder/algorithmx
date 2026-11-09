@@ -4,10 +4,12 @@ import { revalidatePath } from "next/cache";
 import { auth } from "@/app/lib/auth";
 import {
   addPupils,
+  archiveClass,
   createClass,
   getSchoolContext,
   movePupil,
   removePupil,
+  unarchiveClass,
   type ClassFailure,
 } from "@/app/lib/schoolClasses";
 import { resetPupilPictures } from "@/app/lib/pupilAuth";
@@ -158,3 +160,40 @@ export async function movePupilAction(formData: FormData): Promise<void> {
   revalidatePath("/schools/classes");
 }
 
+/**
+ * End a class's year, and put one back.
+ *
+ * The one job September needs and the product could not do. The schema has
+ * carried `archivedAt` since the places ledger landed, the overview counts
+ * places sitting in archived classes, and nothing anywhere could set it, so
+ * a school reaching the end of its first year had no way to roll over.
+ *
+ * Plain form posts, like the three above: a teacher does this once a year,
+ * and a button that works without JavaScript is the right button for a
+ * school network.
+ */
+export async function archiveClassAction(formData: FormData): Promise<void> {
+  const session = await auth();
+  if (!session?.user?.id) return;
+  const school = await getSchoolContext(session.user.id);
+  if (!school) return;
+
+  const classId = String(formData.get("classId") ?? "");
+  if (classId) await archiveClass({ orgId: school.orgId, classId });
+  revalidatePath(`/schools/classes/${classId}`);
+  revalidatePath("/schools/classes");
+  revalidatePath("/schools/overview");
+}
+
+export async function unarchiveClassAction(formData: FormData): Promise<void> {
+  const session = await auth();
+  if (!session?.user?.id) return;
+  const school = await getSchoolContext(session.user.id);
+  if (!school) return;
+
+  const classId = String(formData.get("classId") ?? "");
+  if (classId) await unarchiveClass({ orgId: school.orgId, classId });
+  revalidatePath(`/schools/classes/${classId}`);
+  revalidatePath("/schools/classes");
+  revalidatePath("/schools/overview");
+}

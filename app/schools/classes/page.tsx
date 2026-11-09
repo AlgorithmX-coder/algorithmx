@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { auth } from "@/app/lib/auth";
-import { getSchoolContext, listClasses } from "@/app/lib/schoolClasses";
+import { getSchoolContext, listArchivedClasses, listClasses } from "@/app/lib/schoolClasses";
 import { getHeadContext } from "@/app/lib/schoolHead";
 import { listSchoolCourses } from "@/app/lib/schoolPlaces";
 import { trialStatus } from "@/app/lib/orgTrial";
@@ -41,8 +41,13 @@ export default async function ClassesPage() {
     return <TrialEnded orgName={school.orgName} trialExpiresAt={school.trialExpiresAt!} />;
   }
 
-  const [classes, courses, head] = await Promise.all([
+  const [classes, archived, courses, head] = await Promise.all([
     listClasses(school.orgId),
+    /* Last year's. Listed quietly underneath rather than hidden, so a class
+       archived by mistake can be found again, and so last year's work can
+       still be read: that is the whole reason a class is archived rather
+       than deleted. */
+    listArchivedClasses(school.orgId),
     listSchoolCourses(),
     /* Only to decide whether to offer the overview link below. A teacher
        bouncing off a link they were shown is worse than no link. */
@@ -110,6 +115,40 @@ export default async function ClassesPage() {
                 </div>
               </div>
             ))}
+          </div>
+        )}
+
+        {archived.length > 0 && (
+          <div className="sheet">
+            <div className="phase">Last year</div>
+            {archived.map((c) => (
+              <div key={c.id} className="row">
+                <span className="rn">{c.yearGroup ?? ""}</span>
+                <div className="rb">
+                  <Link href={`/schools/classes/${c.id}`}>{c.name}</Link>
+                  <small className="s-say">
+                    {c.product.name} &middot; {c._count.pupils}{" "}
+                    {c._count.pupils === 1 ? w.person : w.people}
+                  </small>
+                </div>
+                <div className="rs">
+                  <p>
+                    Year ended{" "}
+                    {c.archivedAt
+                      ? new Date(c.archivedAt).toLocaleDateString("en-GB", {
+                          day: "numeric",
+                          month: "short",
+                          year: "numeric",
+                        })
+                      : ""}
+                  </p>
+                </div>
+              </div>
+            ))}
+            <p className="legend">
+              Nobody in these can sign in. Open one to read the work, to move a {w.person} into a
+              live {w.group}, or to put the {w.group} back.
+            </p>
           </div>
         )}
 
