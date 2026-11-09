@@ -23,6 +23,19 @@ import { pupilCourseHomeFor } from "@/app/lib/courseIntent";
  * letter alphabet rather than the school's name.
  */
 
+/**
+ * A class code as it was written down, turned back into a class code.
+ *
+ * Codes are made as four characters, a hyphen, then three. Somebody
+ * retyping one off a whiteboard drops the hyphen or adds a space, and a
+ * child who is told their class is ABCDEFG should not be refused for it.
+ * The alphabet has no O/0, I/1/l or S/5 in it for the same reason.
+ */
+export function tidyCode(raw: string): string {
+  const c = (raw ?? "").trim().toUpperCase().replace(/[s_]+/g, "");
+  return !c.includes("-") && c.length === 7 ? `${c.slice(0, 4)}-${c.slice(4)}` : c;
+}
+
 const isSequence = (seq: unknown): seq is string[] =>
   Array.isArray(seq) &&
   seq.length === SEQUENCE_LENGTH &&
@@ -42,7 +55,7 @@ export interface ClassLookup {
  * stranger should not be told either.
  */
 export async function lookupClass(rawCode: string): Promise<ClassLookup | null> {
-  const code = rawCode.trim().toUpperCase();
+  const code = tidyCode(rawCode);
   if (!code || code.length > 16) return null;
 
   const klass = await prisma.class.findFirst({

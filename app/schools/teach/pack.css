@@ -443,6 +443,25 @@
 
 /* A class code is read off a screen and typed by a seven year old, so it is
    set large, spaced, and in the one face where 0 and O cannot be confused. */
+/* ============ THE CLASS LINK ON THE BOARD ============
+   The one thing a teacher needs in the first minute of a lesson, so it
+   sits above everything else and is set at a size that survives being
+   read from the back of a room. The link itself is the only monospace on
+   the page: it is a thing to be copied exactly, and it should look it. */
+.axtp .board {display:flex;flex-wrap:wrap;gap:14px 24px;align-items:center;justify-content:space-between;
+  background:var(--paper);border:1px solid var(--rule);border-left:3px solid var(--say-c);
+  border-radius:12px;padding:16px 18px;margin:0 0 14px}
+.axtp .boardsay {flex:1 1 260px;min-width:0}
+.axtp .boardsay h3 {margin:0 0 4px;font:600 1.02rem var(--font-fredoka),system-ui,sans-serif;color:var(--ink)}
+.axtp .boardsay p {margin:0;font-size:.86rem;line-height:1.55;color:var(--muted);max-width:52ch}
+.axtp .boardrow {display:flex;flex-wrap:wrap;gap:10px;align-items:center;min-width:0}
+.axtp .boardlink {font:700 1.12rem ui-monospace,Menlo,Consolas,monospace;letter-spacing:.01em;
+  background:rgba(10,112,133,.1);color:var(--say-c);padding:8px 13px;border-radius:8px;
+  overflow-wrap:anywhere;min-width:0}
+@media (max-width:560px) {
+  .axtp .board {flex-direction:column;align-items:flex-start}
+  .axtp .boardlink {font-size:1rem}
+}
 .axtp .axcode {font:800 1.05em ui-monospace,Menlo,monospace;letter-spacing:.08em;
   background:rgba(10,112,133,.1);color:var(--say-c);padding:2px 8px;border-radius:6px}
 
