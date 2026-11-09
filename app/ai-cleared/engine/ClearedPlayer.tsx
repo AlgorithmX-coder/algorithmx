@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { Fragment, useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import Link from "next/link";
 import { K, CLASS_COLOUR, VERDICT_COLOUR } from "./tokens";
 import {
@@ -13,7 +13,10 @@ import {
   TOOL_LABEL,
   VERDICT_RANK,
   type AttachedDocument,
+  type CallOption,
+  type CallsPractise,
   type DataClass,
+  type IncomingCall,
   type FirmView,
   type InboxMessage,
   type InboxPractise,
@@ -52,6 +55,7 @@ import { fluentScriptedReply } from "@/app/ai-fluent/engine/scripted";
 import { FLUENT_LABEL, FLUENT_RANK, type FluentGrade, type FluentVerdict } from "@/app/ai-fluent/engine/grading";
 import { FluentPanel, SpotReply } from "@/app/ai-fluent/engine/FluentPieces";
 import SceneArtView from "@/app/cyber-awareness/scenes/SceneArt";
+import CallArt from "@/app/cyber-awareness/scenes/CallArt";
 
 /* The engine that runs one module through Learn -> Practise -> Prove.
  * Structure only; every word of content comes from the manifest, the
@@ -113,6 +117,8 @@ type Screen =
   | { kind: "outbox"; p: number; phase: "practise" }
   /* Cyber Awareness: a week of payment requests in a queue, indexed by practice `p`. */
   | { kind: "payments"; p: number; phase: "practise" }
+  /* Cyber Awareness: a week of incoming calls, voice and video, indexed by practice `p`. */
+  | { kind: "calls"; p: number; phase: "practise" }
   | { kind: "prove"; i: number; phase: "prove" }
   | { kind: "result"; phase: "done" };
 
@@ -159,6 +165,23 @@ function outboxVerdict(item: OutboxItem, pick: OutboxPick): "right" | "held" | "
   if (pick.act === "send") return "sent";
   return fault.includes(pick.part) ? "right" : "part";
 }
+/* A Cyber Awareness call, walked along the responses picked (one per turn,
+ * in order): each turn reached with what was picked on it, and whether the
+ * call has ended. A response without `next` ends it. */
+function walkCall(call: IncomingCall, path: number[]): { steps: { turn: number; pick?: CallOption }[]; ended: boolean } {
+  const steps: { turn: number; pick?: CallOption }[] = [];
+  let turn = 0;
+  for (const i of path) {
+    const o = call.turns[turn]?.options[i];
+    if (!o) break;
+    steps.push({ turn, pick: o });
+    if (o.next === undefined) return { steps, ended: true };
+    turn = o.next;
+  }
+  steps.push({ turn });
+  return { steps, ended: false };
+}
+const CALL_RANK: Record<CallOption["grade"], number> = { best: 0, ok: 1, wrong: 2 };
 /* A document preview: [[text]] sits under a black box until looked at. */
 function Redacted({ text, open }: { text: string; open: boolean }) {
   return (
@@ -524,6 +547,8 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
         out.push({ kind: "outbox", p, phase: "practise" });
       } else if (pr.kind === "payments") {
         out.push({ kind: "payments", p, phase: "practise" });
+      } else if (pr.kind === "calls") {
+        out.push({ kind: "calls", p, phase: "practise" });
       }
     });
     proveSet.forEach((_, i) => out.push({ kind: "prove", i, phase: "prove" }));
@@ -581,6 +606,12 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
   const [payPicks, setPayPicks] = useState<Record<number, Record<number, PaymentDecision>>>({});
   const [payChecks, setPayChecks] = useState<Record<number, Record<string, true>>>({});
   const [payOpen, setPayOpen] = useState<Record<number, number | null>>({});
+  /* Cyber Awareness calls: per practice, the call on screen (past the last
+   * = the week's log), which calls have been answered, and the responses
+   * picked on each call, one per turn, in order. */
+  const [callAt, setCallAt] = useState<Record<number, number>>({});
+  const [callAnswered, setCallAnswered] = useState<Record<number, Record<number, true>>>({});
+  const [callPaths, setCallPaths] = useState<Record<number, Record<number, number[]>>>({});
   const bestFluentRank = useRef(99);
   const [bestFluent, setBestFluent] = useState<FluentVerdict | undefined>(undefined);
   /* one-action practises: answer per item */
@@ -854,7 +885,7 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
   const pct = Math.round(((cur + 1) / screens.length) * 100);
   const phaseIdx = (["learn", "practise", "prove", "done"] as Phase[]).indexOf(screen.phase);
   const practiseSub = (pr: Practise): string =>
-    pr.kind === "sandbox" ? "in the simulator" : pr.kind === "sort" ? "which tier is this" : pr.kind === "situations" ? "ten situations" : pr.kind === "inspect" ? "a document to check" : pr.kind === "triage" ? "six incidents" : pr.kind === "loop" ? `${pr.turns.length} send${pr.turns.length === 1 ? "" : "s"}, scored on the rubric` : pr.kind === "spot" ? "find the planted mistake" : pr.kind === "moments" ? "spot the moment" : pr.kind === "inbox" ? "triage the inbox" : pr.kind === "phone" ? "a day of sign-in prompts" : pr.kind === "scene" ? "spot the risk" : pr.kind === "outbox" ? "check the outbox" : pr.kind === "payments" ? "a week of payment requests" : "check the sources";
+    pr.kind === "sandbox" ? "in the simulator" : pr.kind === "sort" ? "which tier is this" : pr.kind === "situations" ? "ten situations" : pr.kind === "inspect" ? "a document to check" : pr.kind === "triage" ? "six incidents" : pr.kind === "loop" ? `${pr.turns.length} send${pr.turns.length === 1 ? "" : "s"}, scored on the rubric` : pr.kind === "spot" ? "find the planted mistake" : pr.kind === "moments" ? "spot the moment" : pr.kind === "inbox" ? "triage the inbox" : pr.kind === "phone" ? "a day of sign-in prompts" : pr.kind === "scene" ? "spot the risk" : pr.kind === "outbox" ? "check the outbox" : pr.kind === "payments" ? "a week of payment requests" : pr.kind === "calls" ? "a week of incoming calls" : "check the sources";
   const PHASES: { key: Phase; label: string; sub: string }[] = [
     { key: "learn", label: "Learn", sub: "the idea" },
     { key: "practise", label: "Practise", sub: practises.map(practiseSub).join(", then ") },
@@ -2418,6 +2449,178 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
         </div>
       </>
     );
+  } else if (screen.kind === "calls" && practises[screen.p]?.kind === "calls") {
+    const cp = practises[screen.p] as CallsPractise;
+    const p = screen.p;
+    const total = cp.calls.length;
+    const at = Math.min(callAt[p] ?? 0, total);
+    const summary = at >= total;
+    const paths = callPaths[p] ?? {};
+    const answered = callAnswered[p] ?? {};
+    const walks = cp.calls.map((c, i) => walkCall(c, paths[i] ?? []));
+    const worstOf = (i: number) => walks[i].steps.reduce<CallOption["grade"] | null>((w, s) => (s.pick && (!w || CALL_RANK[s.pick.grade] > CALL_RANK[w]) ? s.pick.grade : w), null);
+    const rightOn = (i: number) => walks[i].ended && worstOf(i) !== "wrong";
+    const endedCount = walks.filter((w) => w.ended).length;
+    const rightCount = cp.calls.filter((_, i) => rightOn(i)).length;
+    const genuineCount = cp.calls.filter((c) => c.genuine).length;
+    const ci = Math.min(at, total - 1);
+    const call = cp.calls[ci];
+    const walk = walks[ci];
+    const pickedUp = !!answered[ci];
+    const openTurn = walk.ended ? null : walk.steps[walk.steps.length - 1].turn;
+    const KIND = { voice: "Voice call", video: "Video call" } as const;
+    const firstName = (c: IncomingCall) => t(c.caller).split(" ")[0];
+    const bestOn = (c: IncomingCall, turn: number) => c.turns[turn].options.find((o) => o.grade === "best");
+    const headline = (o: CallOption, turn: number) => (o.grade === "best" ? "Correct." : `${o.grade === "ok" ? "Safe, but not the strongest move." : "Not quite."} Best: ${t(bestOn(call, turn)?.label ?? "")}.`);
+    /* Bring the newest part of the call to the top of the screen: the
+     * caller's opening once answered (on a phone, where it sits under the
+     * picture), then each of your lines, so its reply, its reason and the
+     * next moves follow it in reading order. */
+    const bringIntoView = (sel: string, narrowOnly?: boolean) => window.setTimeout(() => {
+      if (narrowOnly && !window.matchMedia("(max-width: 900px)").matches) return;
+      const els = document.querySelectorAll(sel);
+      els[els.length - 1]?.scrollIntoView({ block: "start", behavior: "smooth" });
+    }, 80);
+    const setStep = (i: number) => {
+      setCallAt((all) => ({ ...all, [p]: i }));
+      if (typeof window !== "undefined") window.scrollTo({ top: 0, behavior: "smooth" });
+    };
+    const answer = () => {
+      setCallAnswered((all) => ({ ...all, [p]: { ...(all[p] ?? {}), [ci]: true } }));
+      bringIntoView(".cl-call-log", true);
+    };
+    const respond = (oi: number) => {
+      setCallPaths((all) => ({ ...all, [p]: { ...(all[p] ?? {}), [ci]: [...(all[p]?.[ci] ?? []), oi] } }));
+      bringIntoView(".cl-call-line.you");
+    };
+    stage = (
+      <>
+        <Eyebrow>Practise · a week of incoming calls</Eyebrow>
+        <div className="cl-task"><span className="cl-label">Your task</span><p>{t(cp.task)}</p></div>
+        {cp.scene && <p className="cl-p">{t(cp.scene)}</p>}
+        <ol className="cl-ph-day" aria-label="Calls this week">
+          {cp.calls.map((c, i) => {
+            const state = i === at ? "current" : !walks[i].ended ? "upcoming" : rightOn(i) ? "right" : "wrong";
+            return (
+              <li key={i}>
+                <button type="button" className={`cl-ph-dot ${state}`} disabled={!walks[i].ended || i === at} onClick={() => setStep(i)} aria-current={i === at ? "step" : undefined}>
+                  {c.time}
+                </button>
+              </li>
+            );
+          })}
+          <li>
+            <button type="button" className={`cl-ph-dot end ${summary ? "current" : ""}`} disabled={summary || endedCount < total} onClick={() => setStep(total)}>Week done</button>
+          </li>
+        </ol>
+        {summary ? (
+          <div className="cl-call-sum">
+            <p className="cl-p"><b>{rightCount} of {total}</b> handled safely. {genuineCount} of the {total} callers were genuine, and each was happy to be checked. The habit under every call: an unusual request gets a check the caller cannot control, before anything is done.</p>
+            <ol className="cl-ph-log cl-calls-log">
+              {cp.calls.map((c, i) => {
+                const ok = rightOn(i);
+                const best = bestOn(c, 0);
+                return (
+                  <li key={i} className={ok ? "right" : "wrong"}>
+                    <span className="cl-mo-time">{c.time}</span>
+                    <span className="cl-ph-log-t">{t(c.caller)}, {t(c.role)} · {KIND[c.kind].toLowerCase()}<small><b>{c.genuine ? "Genuine." : "Impostor."}</b> {t(c.truth)}</small></span>
+                    <span className="cl-ph-log-c">
+                      <span>You: <b>{walks[i].steps.flatMap((s, si) => (s.pick ? [si ? t(s.pick.label).charAt(0).toLowerCase() + t(s.pick.label).slice(1) : t(s.pick.label)] : [])).join(", then ") || "-"}</b></span>
+                      {!ok && best && <span>Best: <b>{t(best.label)}</b></span>}
+                    </span>
+                  </li>
+                );
+              })}
+            </ol>
+          </div>
+        ) : (
+          <div className="cl-call" key={ci}>
+            <div className="cl-call-ctx">
+              <div className="cl-label">{call.time} · What you are doing</div>
+              <p>{t(call.doing)}</p>
+            </div>
+            <div className="cl-call-grid">
+              <section className={`cl-call-win ${call.kind}`} aria-label={`${pickedUp ? KIND[call.kind] : `Incoming ${KIND[call.kind].toLowerCase()}`} from ${t(call.caller)}`}>
+                <div className="cl-call-bar">
+                  <span>{!pickedUp ? `Incoming ${KIND[call.kind].toLowerCase()}` : walk.ended ? "Call ended" : KIND[call.kind]}</span>
+                  <span>{call.time.split(" ").pop()}</span>
+                </div>
+                <CallArt kind={call.kind} name={call.caller} ringing={!pickedUp} label={`${call.kind === "video" ? "A drawn video picture" : "The initials"} of ${t(call.caller)}`} />
+                <div className="cl-call-who">
+                  <b>{t(call.caller)}</b>
+                  <span>{t(call.role)}</span>
+                  <small>{t(call.shown)}</small>
+                </div>
+                {pickedUp && call.others && call.others.length > 0 && (
+                  <div className="cl-call-others">
+                    <span>Also on the call</span>
+                    {call.others.map((o) => <span key={o} className="cl-call-chip">{t(o)}</span>)}
+                  </div>
+                )}
+                {!pickedUp && (
+                  <button type="button" className="cl-call-answer" onClick={answer} aria-label={`Answer the ${call.kind} call from ${t(call.caller)}`}>
+                    <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M4.2 1.8l2 2.6c.3.4.3 1-.1 1.3l-1 .9c.7 1.6 2 2.9 3.6 3.6l.9-1c.4-.4.9-.4 1.3-.1l2.6 2c.4.3.5.9.1 1.3l-1.2 1.3c-.6.6-1.5.8-2.3.5C6.6 13 3 9.4 1.8 5.9c-.3-.8-.1-1.7.5-2.3l1.3-1.2c.4-.4 1-.3 1.3.1z" fill="currentColor" /></svg>
+                    Answer
+                  </button>
+                )}
+              </section>
+              <section className="cl-call-talk" aria-label="What is said on the call">
+                {!pickedUp ? (
+                  <p className="cl-call-wait">Answer the call to start. Nothing plays out loud: every word of the call appears here as text.</p>
+                ) : (
+                  <>
+                    <ol className="cl-call-log" aria-live="polite">
+                      {call.opening.map((line, li) => (
+                        <li key={`o${li}`} className="cl-call-line them"><span>{firstName(call)}</span><p>{t(line)}</p></li>
+                      ))}
+                      {walk.steps.map((s, si) =>
+                        s.pick ? (
+                          <Fragment key={si}>
+                            <li className="cl-call-line you"><span>You</span><p>{t(s.pick.say)}</p></li>
+                            {s.pick.reply && <li className="cl-call-line them"><span>{firstName(call)}</span><p>{t(s.pick.reply)}</p></li>}
+                            {s.pick.then && <li className="cl-call-line event"><span>What happens</span><p>{t(s.pick.then)}</p></li>}
+                            <li className={`cl-fb cl-call-fb ${s.pick.grade}`}><b>{headline(s.pick, s.turn)}</b> {t(s.pick.why)}</li>
+                          </Fragment>
+                        ) : null,
+                      )}
+                    </ol>
+                    {openTurn !== null && (
+                      <div className="cl-call-opts" role="group" aria-label="What do you do?">
+                        <div className="cl-label">What do you do?</div>
+                        {call.turns[openTurn].options.map((o, oi) => (
+                          <button key={oi} type="button" className="cl-call-opt" onClick={() => respond(oi)}>
+                            <b>{t(o.label)}</b>
+                            <small>&ldquo;{t(o.say)}&rdquo;</small>
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                    {walk.ended && (
+                      <div className={`cl-call-end ${rightOn(ci) ? "right" : "wrong"}`}>
+                        <div className="cl-call-end-h">
+                          <span>Call ended · who it really was</span>
+                          <span className={`cl-call-stamp ${worstOf(ci) === "best" ? "right" : rightOn(ci) ? "safe" : "wrong"}`}>{worstOf(ci) === "best" ? "Handled right" : rightOn(ci) ? "Handled safely" : "Not quite"}</span>
+                        </div>
+                        <p><b>{call.genuine ? "Genuine caller." : "Impostor."}</b> {t(call.truth)}</p>
+                      </div>
+                    )}
+                  </>
+                )}
+              </section>
+            </div>
+          </div>
+        )}
+        <div className="cl-nav">
+          <Btn onClick={summary ? () => setStep(total - 1) : at > 0 ? () => setStep(at - 1) : back}>Back</Btn>
+          <span className="cl-hint">{summary ? "That was your week." : `Call ${at + 1} of ${total}`}</span>
+          {summary ? (
+            <Btn primary onClick={next}>Continue to Prove</Btn>
+          ) : (
+            <button type="button" className="cl-btn cl-btn-pri cl-call-next" disabled={!walk.ended} onClick={() => setStep(at + 1)}>{at === total - 1 ? "See your week" : "Next call"}</button>
+          )}
+        </div>
+      </>
+    );
   } else if (screen.kind === "prove") {
     const q = proveSet[screen.i];
     const picked = proveAnswers[screen.i];
@@ -2987,6 +3190,60 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
         .cl-pay-why { display: block; margin-top: 6px; }
         .cl-pay-log li { grid-template-columns: 76px minmax(0, 1fr) auto; }
 
+        .cl-call { display: flex; flex-direction: column; gap: 12px; }
+        .cl-call-ctx { border-left: 3px solid ${K.accent}; padding: 2px 0 2px 14px; animation: cl-in 250ms ease both; }
+        .cl-call-ctx .cl-label { margin-bottom: 4px; }
+        .cl-call-ctx p { margin: 0; font-size: 15px; line-height: 1.55; color: ${K.ink}; }
+        .cl-call-grid { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 16px; align-items: start; }
+        .cl-call-win { position: sticky; top: 68px; display: flex; flex-direction: column; padding-bottom: 12px; border-radius: 16px; overflow: hidden; background: ${K.ink}; color: ${K.onAccent}; box-shadow: ${K.lift}; }
+        .cl-call-bar { display: flex; justify-content: space-between; gap: 8px; padding: 8px 12px; font-family: ${K.mono}; font-size: 10.5px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.78); }
+        .cl-call-art { display: block; width: 100%; height: auto; aspect-ratio: 320 / 200; }
+        .cl-call-art.ringing .cl-call-ring { transform-box: fill-box; transform-origin: center; animation: cl-ring 1.6s ease-out infinite; }
+        .cl-call-art.ringing .cl-call-ring.r2 { animation-delay: 0.4s; }
+        @keyframes cl-ring { from { opacity: 1; transform: scale(0.85); } to { opacity: 0; transform: scale(1.3); } }
+        .cl-call-who { display: flex; flex-direction: column; gap: 1px; padding: 10px 12px 0; min-width: 0; }
+        .cl-call-who b { font-size: 16px; color: ${K.onAccent}; }
+        .cl-call-who span { font-size: 13px; color: rgba(255,255,255,0.82); }
+        .cl-call-who small { margin-top: 3px; font-family: ${K.mono}; font-size: 11px; line-height: 1.4; color: rgba(255,255,255,0.66); overflow-wrap: anywhere; }
+        .cl-call-others { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 6px; padding: 8px 12px 0; }
+        .cl-call-others > span:first-child { flex-basis: 100%; font-family: ${K.mono}; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.6); }
+        .cl-call-chip { font-size: 12px; color: ${K.onAccent}; background: rgba(255,255,255,0.14); border-radius: 999px; padding: 2px 9px; }
+        .cl-call-answer { margin: 12px 12px 0; font: inherit; font-size: 15px; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; gap: 8px; color: ${K.onAccent}; background: ${K.ok}; border: none; border-radius: 999px; padding: 10px 14px; cursor: pointer; }
+        .cl-call-answer:hover { filter: brightness(1.1); }
+        .cl-call-answer:focus-visible { outline: 3px solid ${K.onAccent}; outline-offset: 2px; }
+        .cl-call-talk { min-width: 0; display: flex; flex-direction: column; gap: 12px; }
+        .cl-call-wait { margin: 0; padding: 14px 16px; border: 1px dashed ${K.edge}; border-radius: 12px; font-size: 14px; color: ${K.muted}; }
+        .cl-call-log { scroll-margin-top: 70px; list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+        .cl-call-line.you { scroll-margin-top: 70px; }
+        .cl-call-line { display: flex; flex-direction: column; gap: 2px; max-width: 92%; box-sizing: border-box; padding: 8px 12px; border-radius: 12px; animation: cl-in 250ms ease both; }
+        .cl-call-line > span { font-family: ${K.mono}; font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: ${K.faint}; }
+        .cl-call-line p { margin: 0; font-size: 14.5px; line-height: 1.5; color: ${K.ink}; }
+        .cl-call-line.them { align-self: flex-start; background: ${K.panel}; border: 1px solid ${K.edge}; border-top-left-radius: 4px; }
+        .cl-call-line.you { align-self: flex-end; background: ${K.accentSoft}; border: 1px solid transparent; border-top-right-radius: 4px; }
+        .cl-call-line.you > span { color: ${K.accentInk}; }
+        .cl-call-line.event { align-self: stretch; max-width: none; background: ${K.sunk}; border-radius: 10px; }
+        .cl-call-line.event p { color: ${K.body}; }
+        .cl-call-fb { margin: 0; padding: 8px 12px; border-left: 3px solid ${K.ok}; border-radius: 0 10px 10px 0; background: ${K.panelRaise}; font-size: 13.5px; line-height: 1.5; animation: cl-in 250ms ease both; }
+        .cl-call-fb.ok { border-left-color: ${K.warn}; }
+        .cl-call-fb.wrong { border-left-color: ${K.crit}; }
+        .cl-call-opts { scroll-margin-bottom: 16px; display: flex; flex-direction: column; gap: 6px; animation: cl-in 250ms ease both; }
+        .cl-call-opts .cl-label { margin-bottom: 2px; }
+        .cl-call-opt { font: inherit; text-align: left; display: flex; flex-direction: column; gap: 2px; color: ${K.ink}; background: ${K.glassStrong}; border: 1px solid ${K.edge}; border-radius: 10px; padding: 9px 12px; cursor: pointer; transition: border-color 140ms ease; }
+        .cl-call-opt b { font-size: 14.5px; }
+        .cl-call-opt small { font-size: 13px; line-height: 1.4; color: ${K.muted}; }
+        .cl-call-opt:hover { border-color: ${K.accent}; }
+        .cl-call-end { scroll-margin-bottom: 16px; border: 1px solid ${K.edge}; border-left: 4px solid ${K.ok}; border-radius: 12px; background: ${K.panel}; padding: 10px 14px; animation: cl-in 250ms ease both; }
+        .cl-call-end.wrong { border-left-color: ${K.warn}; }
+        .cl-call-end-h { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 10px; font-family: ${K.mono}; font-size: 10.5px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: ${K.faint}; }
+        .cl-call-stamp { font-weight: 700; border-radius: 999px; padding: 2px 9px; }
+        .cl-call-stamp.right { color: ${K.ok}; background: ${K.okSoft}; }
+        .cl-call-stamp.safe { color: ${K.accentInk}; background: ${K.accentSoft}; }
+        .cl-call-stamp.wrong { color: ${K.warn}; background: ${K.warnSoft}; }
+        .cl-call-end p { margin: 6px 0 0; font-size: 14px; line-height: 1.5; color: ${K.body}; }
+        .cl-call-end p b { color: ${K.ink}; }
+        .cl-calls-log li { grid-template-columns: 76px minmax(0, 1fr); }
+        .cl-calls-log .cl-ph-log-c { grid-column: 2; justify-content: flex-start; }
+
         .cl-toggles { display: flex; flex-direction: column; gap: 12px; margin-top: 12px; }
         .cl-toggle { display: flex; gap: 14px; align-items: flex-start; border: 1px solid ${K.edge}; border-radius: 10px; padding: 14px; background: ${K.panelRaise}; }
         .cl-toggle b { display: block; color: ${K.ink}; font-size: 15px; margin-bottom: 4px; }
@@ -3166,6 +3423,11 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
           .cl-pay-act small { font-size: 10.5px; }
           .cl-pay-log li { grid-template-columns: minmax(0, 1fr); }
           .cl-pay-log .cl-ph-log-c { grid-column: 1; justify-content: flex-start; }
+          .cl-call-grid { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+          .cl-call-win { position: static; }
+          .cl-call-art { aspect-ratio: 320 / 150; }
+          .cl-calls-log li { grid-template-columns: minmax(0, 1fr); }
+          .cl-calls-log .cl-ph-log-c { grid-column: 1; justify-content: flex-start; }
           .cl-row { grid-template-columns: 22px 1fr; }
           .cl-row .cl-v { grid-column: 2; }
           .cl-row.show { grid-template-columns: 1fr auto; }
@@ -3184,7 +3446,7 @@ export default function ClearedPlayer({ manifest, track, firm, tool, learnerName
           .cl-top:has(.cl-desk-btn[aria-expanded="true"]) .cl-firm, .cl-top:has(.cl-desk-btn[aria-expanded="true"]) .cl-top-left .cl-sep { display: none; }
         }
         @media (prefers-reduced-motion: reduce) {
-          .cl-stage, .cl-rv, .cl-grader, .cl-card-detail, .cl-tl.after, .cl-peek-real, .cl-ph-ctx, .cl-ph-fb, .cl-ph-note, .cl-sc-spot, .cl-sc-out, .cl-ob-meant, .cl-ob-draft, .cl-ob-found, .cl-ob-fb, .cl-pay-doc, .cl-pay-found, .cl-pay-out { animation: none; }
+          .cl-stage, .cl-rv, .cl-grader, .cl-card-detail, .cl-tl.after, .cl-peek-real, .cl-ph-ctx, .cl-ph-fb, .cl-ph-note, .cl-sc-spot, .cl-sc-out, .cl-ob-meant, .cl-ob-draft, .cl-ob-found, .cl-ob-fb, .cl-pay-doc, .cl-pay-found, .cl-pay-out, .cl-call-ctx, .cl-call-line, .cl-call-fb, .cl-call-opts, .cl-call-end, .cl-call-art .cl-call-ring { animation: none; }
           .cl-bar i, .cl-meter i, .cl-knob { transition: none; }
         }
       `}</style>

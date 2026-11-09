@@ -691,7 +691,65 @@ export interface PaymentsPractise {
   requests: PaymentRequest[];
 }
 
-export type Practise = SandboxPractise | SortPractise | SituationsPractise | TriagePractise | InspectPractise | LoopPractise | SpotPractise | SourcesPractise | MomentsPractise | InboxPractise | PhonePractise | ScenePractise | OutboxPractise | PaymentsPractise;
+/* Calls that come in across a week, voice and video, from people the
+ * learner knows: the managing director, a colleague in IT. Each makes an
+ * unusual request. The learner answers, reads what the caller says (the
+ * whole call is a visible transcript; nothing is heard), and picks a
+ * response at each turn: go along with it, ask the agreed challenge
+ * question, call back on the usual number, ask for it in writing. The
+ * call reacts: an impostor deflects, pushes or gets angry, while a genuine
+ * caller is happy to be checked. Some calls are genuine, so the lesson is
+ * verify, never assume. Each response is graded (best, ok, wrong) and
+ * explains itself, and `next` carries the call on to another turn; a
+ * response without `next` ends the call, and `truth` then says who it
+ * really was. Every control is a labelled button; the caller's picture is
+ * drawn (initials and shapes), never a face. */
+export interface CallOption {
+  /* The button's words: "Ask the challenge question". */
+  label: string;
+  /* What you say, or do, in a sentence. */
+  say: string;
+  /* What the caller says back, when they get to say anything. */
+  reply?: string;
+  /* What happens next, narrated: "You hang up and ring Helen's mobile...". */
+  then?: string;
+  grade: "best" | "ok" | "wrong";
+  why: string;
+  /* The turn the call goes on to; absent = the call ends here. */
+  next?: number;
+}
+export interface CallTurn {
+  options: CallOption[];
+}
+export interface IncomingCall {
+  kind: "voice" | "video";
+  /* When it comes in: "Mon 09:10". */
+  time: string;
+  /* What you are doing when it rings. */
+  doing: string;
+  /* Who your screen says is calling, and their role. */
+  caller: string;
+  role: string;
+  /* What the screen shows beneath the name: a number, an account, a link. */
+  shown: string;
+  /* Anyone else on a video call, by name, as the screen shows them. */
+  others?: string[];
+  /* What the caller says once you answer, line by line. */
+  opening: string[];
+  turns: CallTurn[];
+  /* Who it really was, once the call is over. */
+  genuine: boolean;
+  truth: string;
+}
+export interface CallsPractise {
+  kind: "calls";
+  task: string;
+  /* One line under the task that sets the week up. */
+  scene?: string;
+  calls: IncomingCall[];
+}
+
+export type Practise = SandboxPractise | SortPractise | SituationsPractise | TriagePractise | InspectPractise | LoopPractise | SpotPractise | SourcesPractise | MomentsPractise | InboxPractise | PhonePractise | ScenePractise | OutboxPractise | PaymentsPractise | CallsPractise;
 
 /* ---- Prove ---- */
 
