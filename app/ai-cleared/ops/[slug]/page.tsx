@@ -3,24 +3,24 @@ import { modelCallsLastDay } from "@/app/lib/modelAllowance";
 import { notFound, redirect } from "next/navigation";
 import { auth } from "@/app/lib/auth";
 import { isStaffUser } from "@/app/lib/aiClearedStaff";
-import { courseOf, getAdminContext, getRegister, firmStanding } from "@/app/lib/aiClearedAdmin";
+import { getAdminContext, getTeam } from "@/app/lib/aiClearedAdmin";
 import { firstNameOf } from "@/app/lib/aiCleared";
 import { prisma } from "@/app/lib/prisma";
 import { getPurchaseAmount } from "@/app/lib/refund";
 import { CLASS_DEFAULT_NAME } from "../../engine/types";
 import Frame from "../../Frame";
-import AdminPanel from "../../admin/AdminPanel";
+import TeamPanel from "@/app/cyber-secured/TeamPanel";
 import { PurchasesPanel, RevokeFirmButton, DeleteFirmButton, type PurchaseRow } from "./OpsFirmActions";
 
-/* /ai-cleared/ops/[slug][?course=ai-fluent]: one firm, exactly as its
- * admin sees it, with the same invite, resend, remove, nudge and profile
- * actions. Staff only. */
+/* /ai-cleared/ops/[slug]: one firm, exactly as its admin sees it on
+ * /cyber-secured/admin, with the same invite, resend, remove, nudge and
+ * profile actions, plus the staff-only purchases, revoke and delete. */
 export const dynamic = "force-dynamic";
 
 const PLAN: Record<string, string> = { TEAM: "Team", FIRM: "Firm", ENTERPRISE: "Enterprise" };
-const COURSE_LABEL: Record<string, string> = { AI_CLEARED: "AI Cleared", AI_FLUENT: "AI Fluent", CYBER_PRO: "Cyber Pro" };
+const COURSE_LABEL: Record<string, string> = { AI_CLEARED: "AI Cleared", AI_FLUENT: "AI Fluent", CYBER_PRO: "Cyber Pro", CYBER_SECURED: "Cyber Secured", CYBER_AWARENESS: "Cyber Awareness" };
 
-export default async function OpsFirmPage({ params, searchParams }: { params: Promise<{ slug: string }>; searchParams: Promise<{ course?: string }> }) {
+export default async function OpsFirmPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const session = await auth();
   if (!session?.user?.id) redirect(`/login?callbackUrl=${encodeURIComponent(`/ai-cleared/ops/${slug}`)}`);
@@ -28,10 +28,8 @@ export default async function OpsFirmPage({ params, searchParams }: { params: Pr
   const ctx = await getAdminContext(session.user.id, slug);
   if (!ctx) notFound();
 
-  const course = courseOf((await searchParams).course);
-  const rows = await getRegister(ctx.orgId, course);
+  const { tracks, rows } = await getTeam(ctx.orgId);
   const calls = await modelCallsLastDay(ctx.orgId);
-  const standing = firmStanding(rows);
   const p = ctx.org.profile;
   const profile = {
     approvedTools: p?.approvedTools ?? [],
@@ -80,7 +78,7 @@ export default async function OpsFirmPage({ params, searchParams }: { params: Pr
       </p>
       <span className="cf-eyebrow">Purchases</span>
       <PurchasesPanel purchases={purchases} />
-      <AdminPanel firmName={ctx.org.name} role="ADMIN" seatsPurchased={ctx.org.seatsPurchased} rows={rows} standing={standing} profile={profile} orgId={ctx.orgId} course={course} basePath={`/ai-cleared/ops/${ctx.org.slug}`} />
+      <TeamPanel firmName={ctx.org.name} role="ADMIN" seatsPurchased={ctx.org.seatsPurchased} tracks={tracks} rows={rows} profile={profile} orgId={ctx.orgId} />
     </Frame>
   );
 }

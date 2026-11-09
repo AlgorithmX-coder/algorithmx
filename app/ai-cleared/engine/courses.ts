@@ -105,12 +105,6 @@ export const COURSES: Record<CourseSlug, CourseDef> = {
   },
 };
 
-/* The courses the firm-admin seat console manages (its course switcher
- * and invite picker, AdminPanel.tsx). Deliberately not every CourseSlug:
- * Cyber Awareness has no Seat.course value, Product row or seat-purchase
- * plumbing yet, so it stays off this list until that ships elsewhere —
- * otherwise every existing firm's admin would see a dead-end tab today. */
-export const COURSE_SLUGS: readonly CourseSlug[] = ["ai-cleared", "ai-fluent"];
 
 export function isCourseSlug(s: unknown): s is CourseSlug {
   return s === "ai-cleared" || s === "ai-fluent" || s === "cyber-awareness";

@@ -25,7 +25,6 @@ export default function ConsoleHome({
   isAdmin,
   isStaff,
   course = "ai-cleared",
-  otherCourse,
   playbookCount,
 }: {
   firmName: string;
@@ -40,8 +39,6 @@ export default function ConsoleHome({
   isAdmin?: boolean;
   isStaff?: boolean;
   course?: CourseSlug;
-  /* A link to the person's other course, when they hold a seat on it. */
-  otherCourse?: { href: string; label: string } | null;
   /* Fluent only: how many playbook entries the learner has saved. */
   playbookCount?: number;
 }) {
@@ -59,7 +56,7 @@ export default function ConsoleHome({
     <Frame
       course={course}
       firmName={firmName}
-      meta={<><span className="cf-meta">{learnerName} · {TRACK_LABEL[track]} <TrackChange current={track} locked={trackLocked} course={course} /></span>{otherCourse && <Link href={otherCourse.href} className="cf-link">{otherCourse.label}</Link>}{isAdmin && <Link href="/ai-cleared/admin" className="cf-link">Admin</Link>}{isStaff && <Link href="/ai-cleared/ops" className="cf-link">Ops</Link>}</>}
+      meta={<><span className="cf-meta">{learnerName} · {TRACK_LABEL[track]} <TrackChange current={track} locked={trackLocked} course={course} /></span><Link href="/cyber-secured" className="cf-link">All my courses</Link>{isAdmin && <Link href="/cyber-secured/admin" className="cf-link">Your team</Link>}{isStaff && <Link href="/ai-cleared/ops" className="cf-link">Ops</Link>}</>}
       aside={<CourseAside course={course} firmName={firmName} contactName={contactName} contactRole={contactRole} learnerName={learnerName} done={modules.filter((m) => m.done).map((m) => m.n)} showModules={false} showWindow />}
     >
       <span className="cf-eyebrow">

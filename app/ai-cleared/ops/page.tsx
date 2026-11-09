@@ -23,7 +23,7 @@ export default async function OpsPage() {
       <Frame meta={<span className="cf-meta">{session.user.email}</span>} courseLink>
         <span className="cf-eyebrow">Ops</span>
         <h1 className="cf-h1">This page is for <span className="cf-grad">AlgorithmX staff</span>.</h1>
-        <p className="cf-lead">If you run AI Cleared for your own firm, your admin page is at /ai-cleared/admin.</p>
+        <p className="cf-lead">If you run Cyber Secured for your own firm, your team page is at /cyber-secured/admin.</p>
         <Link href="/ai-cleared" className="cf-btn cf-btn-pri">Back to the course</Link>
       </Frame>
     );

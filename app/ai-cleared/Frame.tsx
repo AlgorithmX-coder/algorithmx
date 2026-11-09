@@ -8,7 +8,8 @@ import Aurora from "./Aurora";
  * glass header strip, a two-column body (the action on the left, the
  * context on the right) and a footer line. Server component; the
  * responsive rules live in a plain style tag with cf- prefixed classes.
- * Both courses use it; the wordmark and the home link follow `course`. */
+ * Every course uses it; the wordmark and the home link follow `course`,
+ * unless `brand` names another home, as the Cyber Secured portal does. */
 export default function Frame({
   firmName,
   meta,
@@ -16,6 +17,7 @@ export default function Frame({
   children,
   courseLink,
   course = "ai-cleared",
+  brand,
 }: {
   firmName?: string;
   meta?: ReactNode;
@@ -23,16 +25,18 @@ export default function Frame({
   children: ReactNode;
   courseLink?: boolean;
   course?: CourseSlug;
+  brand?: { word: string; href: string };
 }) {
   const c = COURSES[course];
+  const home = brand ?? { word: c.brand, href: c.base };
   return (
     <div className="cf-page">
       <Aurora />
       <header className="cf-top">
         <div className="cf-top-left">
-          <Link href={c.base} className="cf-brand">
+          <Link href={home.href} className="cf-brand">
             <span className="cf-spark" aria-hidden />
-            <span className="cf-word">{c.brand}</span>
+            <span className="cf-word">{home.word}</span>
           </Link>
           {firmName && (
             <>

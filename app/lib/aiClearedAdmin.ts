@@ -3,8 +3,8 @@ import { prisma } from "@/app/lib/prisma";
 import { sendEmail } from "@/app/lib/resend";
 import { DB_TO_TRACK, FIRM_ORG, TRACK_TO_DB } from "@/app/lib/aiCleared";
 import { moduleListFor } from "@/app/lib/courseModules";
-import { COURSES, type CourseSlug } from "@/app/ai-cleared/engine/courses";
-import { CYBER_SECURED_BRAND, CYBER_SECURED_NAME, SECURED_TRACKS, onePerPerson } from "@/app/lib/cyberSecured";
+import type { CourseSlug } from "@/app/ai-cleared/engine/courses";
+import { CYBER_SECURED_BRAND, CYBER_SECURED_NAME, SECURED_TRACKS, liveTrackNames, onePerPerson, type SecuredTrackSlug } from "@/app/lib/cyberSecured";
 import { opsAlert } from "@/app/lib/opsAlert";
 import { TRACK_LABEL, type Track } from "@/app/ai-cleared/engine/types";
 import { isStaffUser } from "@/app/lib/aiClearedStaff";
@@ -64,20 +64,36 @@ export function courseOf(v: unknown): CourseSlug {
   return v === "ai-fluent" ? "ai-fluent" : "ai-cleared";
 }
 
-export interface RegisterRow {
+/* How far one person has got on one track. */
+export interface TrackProgress {
+  done: number;
+  total: number;
+  started: boolean;
+  complete: boolean;
+}
+
+/* A track as the register shows it: the live Cyber Secured tracks that
+ * have a Product row, with how many modules are open on each. */
+export interface TeamTrack {
+  slug: SecuredTrackSlug;
+  name: string;
+  base: string;
+  total: number;
+}
+
+/* One person on the firm's register: their seat, and how far they have
+ * got on every track. */
+export interface PersonRow {
   seatId: string;
-  course: CourseSlug;
   email: string;
   name: string | null;
   team: string | null;
   role: OrgRole;
-  track: Track | null;
-  status: "invited" | "started" | "cleared";
-  modulesDone: number;
-  modulesTotal: number;
-  finalScore: number | null;
-  serial: string | null;
-  certificateExpires: string | null;
+  desk: Track | null;
+  claimed: boolean;
+  progress: Partial<Record<SecuredTrackSlug, TrackProgress>>;
+  /* How many of the shown tracks they have finished. */
+  finished: number;
   lastActivity: string | null;
   inviteToken: string;
   invitedAt: string;
@@ -88,57 +104,68 @@ async function seatsByPerson(orgId: string) {
   return onePerPerson(await prisma.seat.findMany({ where: { orgId }, include: { user: { select: { name: true } } } }));
 }
 
-/* The register for one track: every person at the firm, with their
- * enrolment on that track behind a claimed seat. One seat covers every
- * track, so the people are the same on each; only the progress differs.
- * "cleared" means the track is complete. */
-export async function getRegister(orgId: string, course: CourseSlug = "ai-cleared"): Promise<RegisterRow[]> {
-  const product = await prisma.product.findUnique({ where: { slug: course }, select: { id: true } });
+/* The tracks a register shows: live, and with a Product row behind them. */
+export async function teamTracks(): Promise<TeamTrack[]> {
+  const live = SECURED_TRACKS.filter((t) => t.live);
+  const have = new Set((await prisma.product.findMany({ where: { slug: { in: live.map((t) => t.slug) } }, select: { slug: true } })).map((p) => p.slug));
+  return live.filter((t) => have.has(t.slug)).map((t) => ({ slug: t.slug, name: t.name, base: t.base, total: moduleListFor(t.slug).filter((m) => m.available).length }));
+}
+
+/* The firm's register: every person once, with their progress on every
+ * track. One seat is one person on every course, so this is one table
+ * rather than one per course. A person who claimed before a track existed
+ * shows "not started" on it until the portal enrols them. */
+export async function getTeam(orgId: string): Promise<{ tracks: TeamTrack[]; rows: PersonRow[] }> {
+  const tracks = await teamTracks();
   const [seats, enrolments] = await Promise.all([
     seatsByPerson(orgId),
-    prisma.enrolment.findMany({ where: { orgId, ...(product ? { productId: product.id } : { id: "none" }) }, include: { modules: true, certificate: true } }),
+    prisma.enrolment.findMany({
+      where: { orgId, product: { slug: { in: tracks.map((t) => t.slug) } } },
+      orderBy: { startedAt: "asc" },
+      select: { userId: true, track: true, startedAt: true, completedAt: true, product: { select: { slug: true } }, modules: { select: { completedAt: true, updatedAt: true } } },
+    }),
   ]);
-  const byUser = new Map(enrolments.map((e) => [e.userId, e]));
-  const total = moduleListFor(course).filter((m) => m.available).length;
-  return seats.map((s) => {
-    const enrolment = s.userId ? byUser.get(s.userId) : undefined;
-    const done = enrolment ? enrolment.modules.filter((m) => m.completedAt).length : 0;
-    const last = enrolment ? [enrolment.startedAt, ...enrolment.modules.map((m) => m.updatedAt)].sort((a, b) => b.getTime() - a.getTime())[0] : null;
+  const byUser = new Map<string, typeof enrolments>();
+  for (const e of enrolments) byUser.set(e.userId, [...(byUser.get(e.userId) ?? []), e]);
+  const rows = seats.map((s): PersonRow => {
+    const mine = s.userId ? byUser.get(s.userId) ?? [] : [];
+    const progress: PersonRow["progress"] = {};
+    for (const t of tracks) {
+      const e = mine.find((x) => x.product.slug === t.slug);
+      if (e) progress[t.slug] = { done: e.modules.filter((m) => m.completedAt).length, total: t.total, started: e.modules.length > 0, complete: !!e.completedAt };
+    }
+    const stamps = mine.flatMap((e) => [e.startedAt, ...e.modules.map((m) => m.updatedAt)]).map((d) => d.getTime());
     return {
       seatId: s.id,
-      course,
       email: s.email,
       name: s.user?.name ?? null,
       team: s.team,
       role: s.role,
-      track: enrolment ? DB_TO_TRACK[enrolment.track] : s.trackHint ? DB_TO_TRACK[s.trackHint] : null,
-      status: enrolment?.completedAt ? "cleared" : s.claimedAt ? "started" : "invited",
-      modulesDone: done,
-      modulesTotal: total,
-      finalScore: enrolment?.finalScore ?? null,
-      serial: enrolment?.certificate?.serial ?? null,
-      certificateExpires: enrolment?.certificate?.expiresAt.toISOString() ?? null,
-      lastActivity: last ? last.toISOString() : null,
+      desk: mine[0] ? DB_TO_TRACK[mine[0].track] : s.trackHint ? DB_TO_TRACK[s.trackHint] : null,
+      claimed: !!s.claimedAt,
+      progress,
+      finished: tracks.filter((t) => progress[t.slug]?.complete).length,
+      lastActivity: stamps.length ? new Date(Math.max(...stamps)).toISOString() : null,
       inviteToken: s.inviteToken,
       invitedAt: s.invitedAt.toISOString(),
     };
   });
+  return { tracks, rows };
 }
 
-/* The firm counts as cleared when at least 80% of claimed seats have
- * completed the course (owner decision 2026-09-28). The same sum on Fluent
- * rows gives the completion rate; there is no firm-level Fluent standing. */
-export function firmStanding(rows: RegisterRow[]) {
-  const claimed = rows.filter((r) => r.status !== "invited").length;
-  const cleared = rows.filter((r) => r.status === "cleared").length;
-  const pct = claimed ? cleared / claimed : 0;
-  return { claimed, cleared, invited: rows.length - claimed, pct, firmCleared: claimed > 0 && pct >= FIRM_THRESHOLD };
+/* What a person's cell says for one track, in the register and the CSV. */
+export function progressWord(row: PersonRow, slug: SecuredTrackSlug): string {
+  if (!row.claimed) return "Invited";
+  const p = row.progress[slug];
+  if (p?.complete) return "Finished";
+  if (!p || p.done === 0) return "Not started";
+  return `${p.done} of ${p.total}`;
 }
 
-export function registerCsv(rows: RegisterRow[], firmName: string): string {
+export function teamCsv(team: { tracks: TeamTrack[]; rows: PersonRow[] }, firmName: string): string {
   const esc = (v: string | number | null) => (v === null ? "" : `"${String(v).replace(/"/g, '""')}"`);
-  const head = ["Firm", "Course", "Email", "Name", "Team", "Track", "Status", "Modules done", "Final score %", "Certificate serial", "Certificate expires", "Last activity", "Invited"];
-  const lines = rows.map((r) => [firmName, COURSES[r.course].name, r.email, r.name, r.team, r.track ? TRACK_LABEL[r.track] : null, r.status === "cleared" ? "complete" : r.status, `${r.modulesDone}/${r.modulesTotal}`, r.finalScore, r.serial, r.certificateExpires?.slice(0, 10) ?? null, r.lastActivity?.slice(0, 10) ?? null, r.invitedAt.slice(0, 10)].map(esc).join(","));
+  const head = ["Firm", "Email", "Name", "Team", "Desk", "Seat", ...team.tracks.map((t) => t.name), "Last activity", "Invited"];
+  const lines = team.rows.map((r) => [firmName, r.email, r.name, r.team, r.desk ? TRACK_LABEL[r.desk] : null, r.claimed ? "claimed" : "invited", ...team.tracks.map((t) => progressWord(r, t.slug)), r.lastActivity?.slice(0, 10) ?? null, r.invitedAt.slice(0, 10)].map(esc).join(","));
   return [head.map(esc).join(","), ...lines].join("\r\n");
 }
 
@@ -287,7 +314,7 @@ export async function sendAdminWelcome(args: { to: string; token: string; firmNa
 /* Seats bought by card by an admin who already runs a firm: no new firm,
  * no new invite, just the count going up and a note saying so. */
 export async function sendSeatsAdded(args: { to: string; firmName: string; seats: number; origin: string; staffName: string; staffEmail: string | null }) {
-  const link = `${args.origin}/ai-cleared/admin`;
+  const link = `${args.origin}/cyber-secured/admin`;
   const seatLine = `${args.seats} ${CYBER_SECURED_NAME} ${args.seats === 1 ? "seat" : "seats"}`;
   const claim = "Each person you invite gets their own link, claims their seat on first sign-in, and has every course from then on.";
   const html = `
@@ -303,28 +330,29 @@ export async function sendSeatsAdded(args: { to: string; firmName: string; seats
   return sendEmail({ to: args.to, subject: `${seatLine} added to ${args.firmName}`, html, text, replyTo: args.staffEmail ?? undefined });
 }
 
-/* A reminder to everyone on a course who has not finished, under the
- * admin's name. */
-export async function nudge(args: { orgId: string; firmName: string; origin: string; adminName: string; adminEmail: string | null; course?: CourseSlug }) {
-  const course = args.course ?? "ai-cleared";
-  const c = COURSES[course];
-  const rows = await getRegister(args.orgId, course);
-  const targets = rows.filter((r) => r.status !== "cleared" && r.role !== "ADMIN");
+/* A reminder to everyone who has not claimed their seat or not finished
+ * every course, under the admin's name. Admins, and people deleted at
+ * their own request, are left alone. */
+export async function nudge(args: { orgId: string; firmName: string; origin: string; adminName: string; adminEmail: string | null }) {
+  const { tracks, rows } = await getTeam(args.orgId);
+  const targets = rows.filter((r) => r.role !== "ADMIN" && !r.email.endsWith("@removed.invalid") && (!r.claimed || r.finished < tracks.length));
   let sent = 0;
   const failed: string[] = [];
   for (const r of targets) {
-    const link = r.status === "invited" ? `${args.origin}/ai-cleared/join/${r.inviteToken}` : `${args.origin}${c.base}`;
-    const line = r.status === "invited" ? `Your seat is still waiting. It takes ${c.length}, and you can stop and resume.` : `You have done ${r.modulesDone} of ${r.modulesTotal} modules. You can stop and resume whenever suits.`;
+    const link = r.claimed ? `${args.origin}/cyber-secured` : `${args.origin}/ai-cleared/join/${r.inviteToken}`;
+    const line = r.claimed
+      ? `You have finished ${r.finished} of ${tracks.length} courses on ${CYBER_SECURED_NAME}. Pick up where you left off whenever suits.`
+      : `Your seat on ${CYBER_SECURED_NAME} is still waiting. It opens ${liveTrackNames()}, and you can stop and resume whenever suits.`;
     const html = `
       <div style="font-family:Inter,Segoe UI,Helvetica,Arial,sans-serif;color:#14161d;max-width:560px;margin:0 auto;padding:24px">
-        <p style="font-family:ui-monospace,Consolas,monospace;font-size:11px;letter-spacing:.2em;color:#0a7085;margin:0 0 16px">${c.brand}</p>
+        <p style="font-family:ui-monospace,Consolas,monospace;font-size:11px;letter-spacing:.2em;color:#0a7085;margin:0 0 16px">${CYBER_SECURED_BRAND}</p>
         <h1 style="font-size:22px;margin:0 0 12px">A reminder from ${esc(args.adminName)}</h1>
         <p style="font-size:15px;line-height:1.55;margin:0 0 12px">${line}</p>
-        <p style="margin:18px 0 10px"><a href="${link}" style="display:inline-block;background:#0a7085;color:#fff;text-decoration:none;padding:11px 18px;border-radius:8px;font-weight:600">${r.status === "invited" ? "Claim my seat" : "Continue the course"}</a></p>
+        <p style="margin:18px 0 10px"><a href="${link}" style="display:inline-block;background:#0a7085;color:#fff;text-decoration:none;padding:11px 18px;border-radius:8px;font-weight:600">${r.claimed ? "Continue my courses" : "Claim my seat"}</a></p>
         <p style="font-size:13.5px;color:#5b6572;line-height:1.5;margin:14px 0 0">${esc(args.adminName)}, ${esc(args.firmName)}</p>
       </div>`;
     try {
-      await sendEmail({ to: r.email, subject: `${args.adminName}: a reminder about ${c.name}`, html, text: `${line}\n\n${link}\n`, replyTo: args.adminEmail ?? undefined });
+      await sendEmail({ to: r.email, subject: `${args.adminName}: a reminder about ${CYBER_SECURED_NAME}`, html, text: `${line}\n\n${link}\n`, replyTo: args.adminEmail ?? undefined });
       sent++;
     } catch (err) {
       console.error("[ai-cleared/admin] nudge failed", r.email, err instanceof Error ? err.message : err);

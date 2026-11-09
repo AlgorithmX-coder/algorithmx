@@ -27,17 +27,19 @@ export default async function AiClearedHome() {
     isStaffUser(userId),
   ]);
   if (staff && !enrolment) redirect("/ai-cleared/ops");
-  if (adminRow && !enrolment) redirect("/ai-cleared/admin");
+  if (adminRow && !enrolment) redirect("/cyber-secured/admin");
+  /* Anyone at a firm without this enrolment yet: the portal enrols them. */
+  if ((!entitled || !enrolment) && fluent) redirect("/cyber-secured");
   if (!entitled || !enrolment) {
     return (
       <Frame meta={<span className="cf-meta">{session.user.email}</span>}>
         <span className="cf-eyebrow">No seat yet</span>
         <h1 className="cf-h1">Your firm reserves your seat. Then you are <span className="cf-grad">in</span>.</h1>
         <p className="cf-lead">
-          AI Cleared is licensed by firms, not bought by individuals. Your admin sends an invite link that claims your seat; open that link while signed in as {session.user.email}.
+          AI Cleared comes with a Cyber Secured seat, licensed by firms, not bought by individuals. Your admin sends an invite link that claims your seat; open that link while signed in as {session.user.email}.
         </p>
         <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
-          <Link href="/corporate" className="cf-btn cf-btn-pri">About AI Cleared for firms</Link>
+          <Link href="/corporate" className="cf-btn cf-btn-pri">About Cyber Secured for firms</Link>
           <a href="mailto:admissions@algorithmx.co.uk" className="cf-btn">Email admissions</a>
         </div>
       </Frame>
@@ -67,7 +69,7 @@ export default async function AiClearedHome() {
       complete={!!enrolment.completedAt}
       isAdmin={!!adminRow}
       isStaff={staff}
-      otherCourse={fluent ? { href: "/ai-fluent", label: "AI Fluent" } : null}
+
     />
   );
 }
