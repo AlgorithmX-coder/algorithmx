@@ -87,7 +87,7 @@ function DoneBadge() {
  * lives in week01, so w1t*) and Module 18 (the Code Lab, which has no topics).
  * A module counts as done when all five of its topics are done. */
 function moduleTopicIds(n: number): string[] {
-  if (n === 18) return [];
+  if (n === 18) return ["m18t1"]; // the Code Lab: one completion, recorded when every challenge is solved
   const prefix = n === 3 ? "w1" : `m${n}`;
   return [1, 2, 3, 4, 5].map((k) => `${prefix}t${k}`);
 }

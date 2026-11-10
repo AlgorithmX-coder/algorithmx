@@ -191,6 +191,22 @@ export default function CodeLab() {
     setResult(r);
     if (r.pass) markSolved(ch.id);
   }, [ch, markSolved]);
+  /* Module 18 is the Code Lab: it has no topic lessons, so "finished" means
+   * every challenge solved. Record it the way a lesson records a finished
+   * topic, so the course hub counts Module 18 and can send the learner on. */
+  const allSolved = CHALLENGES.every((c) => solved.has(c.id));
+  const leftToSolve = CHALLENGES.length - CHALLENGES.filter((c) => solved.has(c.id)).length;
+  const finishModule = useCallback(() => {
+    try {
+      localStorage.setItem("pro:lesson:m18t1", JSON.stringify({ id: "m18t1", phase: "done", didTry: true, explainDraft: "", quizAnswers: [] }));
+    } catch { /* ignore */ }
+    void fetch("/api/pro/progress", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ moduleId: "module-18", topicIds: ["m18t1"] }),
+    }).catch(() => { /* local progress is the source of truth; ignore */ });
+    window.location.href = "/pro/module19";
+  }, []);
 
   return (
     <div style={{ minHeight: "100vh", color: T.body, fontFamily: T.sans, background: `radial-gradient(1100px 560px at 50% -8%, rgba(139,109,255,0.13), transparent 60%), radial-gradient(820px 460px at 90% 2%, rgba(53,214,240,0.08), transparent 55%), ${T.bg}` }}>
@@ -221,7 +237,7 @@ export default function CodeLab() {
               return (
                 <button key={c.id} onClick={() => select(i)}
                   style={{ display: "inline-flex", alignItems: "center", gap: 7, fontFamily: T.display, fontSize: 13.5, fontWeight: 700, color: isActive ? "#fff" : T.muted, background: isActive ? `linear-gradient(135deg, ${T.primary}, ${T.cyan})` : T.panel, border: `1px solid ${isActive ? "transparent" : isSolved ? `${T.green}66` : T.edge}`, borderRadius: 9, padding: "9px 15px", cursor: "pointer" }}>
-                  <span style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: 16, height: 16, borderRadius: "50%", fontSize: 11, fontWeight: 700, color: isSolved ? "#fff" : (isActive ? "#fff" : T.faint), background: isSolved ? T.green : "transparent", border: isSolved ? "none" : `1px solid ${isActive ? "rgba(255,255,255,0.6)" : T.edge}` }}>{isSolved ? "✓" : i + 1}</span>
+                  <span style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", boxSizing: "border-box", flexShrink: 0, lineHeight: 1, width: 18, height: 18, borderRadius: "50%", fontSize: 11, fontWeight: 700, color: isSolved ? "#fff" : (isActive ? "#fff" : T.faint), background: isSolved ? T.green : "transparent", border: isSolved ? `1px solid ${T.green}` : `1px solid ${isActive ? "rgba(255,255,255,0.6)" : T.edge}` }}>{isSolved ? "✓" : i + 1}</span>
                   {c.title.replace(/^\d+\.\s*/, "")}
                 </button>
               );
@@ -270,6 +286,20 @@ export default function CodeLab() {
             <button onClick={() => select(active + 1)} disabled={atLast}
               style={{ fontFamily: T.display, fontSize: 13.5, fontWeight: 700, color: "#fff", background: atLast ? T.edge : `linear-gradient(135deg, ${T.primary}, ${T.cyan})`, border: "none", borderRadius: 9, padding: "10px 18px", cursor: atLast ? "default" : "pointer", opacity: atLast ? 0.6 : 1 }}>Next &rarr;</button>
           </div>
+          {/* ending the module: the way on, once every task is solved */}
+          {allSolved ? (
+            <div style={{ marginTop: 22, background: T.greenSoft, border: `1px solid ${T.green}66`, borderRadius: 12, padding: "18px 20px" }}>
+              <div style={{ fontFamily: T.mono, fontSize: 10.5, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: T.green, marginBottom: 6 }}>Module complete</div>
+              <p style={{ fontSize: 15, lineHeight: 1.6, color: T.body, margin: "0 0 14px", maxWidth: "60ch" }}>You solved all five tasks and built your own tool. That is real, working code you can point at in an interview.</p>
+              <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+                <button onClick={finishModule}
+                  style={{ fontFamily: T.display, fontSize: 14, fontWeight: 700, color: "#fff", background: `linear-gradient(135deg, ${T.primary}, ${T.cyan})`, border: "none", borderRadius: 9, padding: "11px 20px", cursor: "pointer" }}>Finish module, on to Module 19 &rarr;</button>
+                <a href="/pro/course" style={{ fontFamily: T.display, fontSize: 14, fontWeight: 700, color: T.ink, background: T.panel, border: `1px solid ${T.edge}`, borderRadius: 9, padding: "11px 20px", textDecoration: "none", display: "inline-flex", alignItems: "center" }}>Back to all modules</a>
+              </div>
+            </div>
+          ) : atLast ? (
+            <p style={{ marginTop: 18, fontSize: 13.5, color: T.faint, lineHeight: 1.5 }}>Solve every task to finish the module: {leftToSolve} still to go.</p>
+          ) : null}
 
           <p style={{ fontSize: 13, color: T.faint, marginTop: 24, maxWidth: "60ch", lineHeight: 1.5 }}>
             This is a sandbox: your code runs only in your own browser, and cannot touch anything outside this page. Experiment freely.
