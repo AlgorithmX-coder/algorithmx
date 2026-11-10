@@ -3,8 +3,9 @@ import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
 import { headers } from "next/headers";
 import { auth } from "@/app/lib/auth";
-import { getSchoolContext, listClasses } from "@/app/lib/schoolClasses";
+import { getSchoolContext, listClasses, planWholeClassMove } from "@/app/lib/schoolClasses";
 import { getClassProgress } from "@/app/lib/classProgress";
+import MoveWholeClass from "./MoveWholeClass";
 import Locked from "../../teach/Locked";
 import AddPupils from "./AddPupils";
 import ClassStrip from "./ClassStrip";
@@ -41,13 +42,27 @@ export default async function ClassPage({
   searchParams,
 }: {
   params: Promise<{ id: string }>;
-  searchParams: Promise<{ move?: string; left?: string }>;
+  searchParams: Promise<{
+    move?: string;
+    left?: string;
+    bulk?: string;
+    moved?: string;
+    spent?: string;
+  }>;
 }) {
   const { id } = await params;
   /* How the last move went, handed back by movePupilAction. A plain form
      post has nowhere else to put an outcome, and a refused move that said
-     nothing would read as the product being broken. */
-  const { move, left: placesLeftAfterRefusal } = await searchParams;
+     nothing would read as the product being broken. The bulk move uses the
+     same trick: `bulk` lands back on the class that did not move, `moved`
+     and `spent` land on the one the children arrived in. */
+  const {
+    move,
+    left: placesLeftAfterRefusal,
+    bulk,
+    moved: movedHere,
+    spent: placesSpentMoving,
+  } = await searchParams;
 
   // ── GATE ─────────────────────────────────────────────────────────
   const session = await auth();
@@ -66,6 +81,12 @@ export default async function ClassPage({
      including another teacher's, because that is what September is: a
      whole year group moving up at once. */
   const others = (await listClasses(school.orgId)).filter((c) => c.id !== id);
+
+  /* The same September move, priced for the whole class at once. Worked out
+     before anything is pressed, because a teacher finding out the cost of
+     the twenty-ninth child after twenty-eight moves is how the one-at-a-time
+     version failed. */
+  const plan = await planWholeClassMove({ orgId: school.orgId, fromClassId: id });
 
   const w = wordsFor(school.kind);
   /* The host as the browser asked for it, so the link on the board is the
@@ -125,6 +146,39 @@ export default async function ClassPage({
           <p className="ended" role="status">
             <b>Moved, and that used another place.</b> The new {w.group} runs a different course,
             and a place is one {w.person} on one course. They keep the course they were on as well.
+          </p>
+        )}
+
+        {/* The whole-class move, landing on the class the children arrived
+            in. Nothing else on this screen proves thirty moves happened, and
+            a teacher who has just spent thirty places should be told so in
+            the same breath. */}
+        {movedHere && (
+          <p className="ended" role="status">
+            <b>
+              {movedHere} {Number(movedHere) === 1 ? w.person : w.people} moved into this {w.group}.
+            </b>{" "}
+            {Number(placesSpentMoving) > 0
+              ? `That used ${placesSpentMoving} more place${placesSpentMoving === "1" ? "" : "s"}, because this ${w.group} runs a different course and a place is one ${w.person} on one course. They keep the course they were on as well.`
+              : `No extra places: this ${w.group} runs the same course they were already on.`}{" "}
+            Their old {w.group} is empty now, so end its year when you are ready.
+          </p>
+        )}
+        {bulk === "full" && (
+          <p className="ended" role="alert">
+            <b>
+              Moving this whole {w.group} needs more places than you have left (
+              {placesLeftAfterRefusal ?? 0}).
+            </b>{" "}
+            Nobody was moved: it is all or nothing, so you cannot end up with half the {w.group} on
+            a course you have not paid for. To buy more places, write to{" "}
+            <a href="mailto:schools@algorithmx.co.uk">schools@algorithmx.co.uk</a>.
+          </p>
+        )}
+        {bulk === "failed" && (
+          <p className="ended" role="alert">
+            <b>That {w.group} could not be moved.</b> The {w.group} you picked may have had its year
+            ended since this page loaded. Try again.
           </p>
         )}
         {move === "failed" && (
@@ -346,6 +400,12 @@ export default async function ClassPage({
             )}
           </div>
         )}
+
+        {/* SEPTEMBER. One decision about a whole year group, priced before
+            it is made. Offered on an archived {w.group} too, because the
+            ordinary case is a {w.group} whose year was ended in July and
+            whose children are moving up now. */}
+        {plan && <MoveWholeClass classId={id} plan={plan} w={w} />}
 
         {!archived && (
           <div className="endyear">

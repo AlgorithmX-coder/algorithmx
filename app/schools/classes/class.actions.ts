@@ -9,6 +9,7 @@ import {
   createClass,
   getSchoolContext,
   movePupil,
+  moveWholeClass,
   removePupil,
   unarchiveClass,
   type ClassFailure,
@@ -220,4 +221,41 @@ export async function unarchiveClassAction(formData: FormData): Promise<void> {
   revalidatePath(`/schools/classes/${classId}`);
   revalidatePath("/schools/classes");
   revalidatePath("/schools/overview");
+}
+
+/**
+ * Move a whole class on to another course, in one press.
+ *
+ * September, and the one thing the per-pupil dropdown could not do without
+ * thirty separate decisions. The price is on the screen before the press
+ * (see `planWholeClassMove`) and the move itself is all or nothing, so a
+ * school cannot end up with half a year group on a course it has paid for
+ * and half on one it has not.
+ *
+ * On success it lands the teacher on the DESTINATION class, which is where
+ * the children now are and the only screen that proves it worked.
+ */
+export async function moveWholeClassAction(formData: FormData): Promise<void> {
+  const session = await auth();
+  if (!session?.user?.id) return;
+  const school = await getSchoolContext(session.user.id);
+  if (!school) return;
+
+  const fromClassId = String(formData.get("classId") ?? "");
+  const toClassId = String(formData.get("toClassId") ?? "");
+  if (!fromClassId || !toClassId) return;
+
+  const res = await moveWholeClass({ orgId: school.orgId, fromClassId, toClassId });
+
+  revalidatePath(`/schools/classes/${fromClassId}`);
+  revalidatePath(`/schools/classes/${toClassId}`);
+  revalidatePath("/schools/classes");
+  revalidatePath("/schools/overview");
+
+  /* Outside any try/catch, because redirect() works by throwing. */
+  if (!res.ok) {
+    const why = res.error === "seats_full" ? `full&left=${res.detail ?? 0}` : "failed";
+    redirect(`/schools/classes/${fromClassId}?bulk=${why}`);
+  }
+  redirect(`/schools/classes/${toClassId}?moved=${res.moved}&spent=${res.placesSpent}`);
 }

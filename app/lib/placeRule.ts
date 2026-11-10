@@ -34,3 +34,33 @@ export function moveSpendsAPlace(args: {
   if (!held) return true;
   return held.creditedBackAt !== null;
 }
+
+/**
+ * The same rule, for a whole class at once.
+ *
+ * September moves a year group, not a child, and the price of that has to be
+ * on the screen BEFORE anybody presses anything: a teacher who finds out the
+ * cost of the twenty-ninth child after twenty-eight separate moves has been
+ * failed by the product.
+ *
+ * It is the same per-child rule counted up, deliberately. No bulk discount,
+ * no rounding, no special case for a full class, because a second way of
+ * pricing a move is exactly how the first one drifts.
+ */
+export function placesNeededForWholeClass(args: {
+  pupilIds: readonly string[];
+  fromProductId: string | null | undefined;
+  toProductId: string;
+  /** This pupil's ledger row for the TARGET course, if they have one. */
+  heldForTarget: (pupilId: string) => { creditedBackAt: Date | null } | null | undefined;
+}): number {
+  /* Same course, so nobody pays, however many of them there are. */
+  if (args.fromProductId === args.toProductId) return 0;
+  return args.pupilIds.filter((id) =>
+    moveSpendsAPlace({
+      fromProductId: args.fromProductId,
+      toProductId: args.toProductId,
+      heldForTarget: args.heldForTarget(id) ?? null,
+    }),
+  ).length;
+}
