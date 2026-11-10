@@ -18,6 +18,7 @@ export default function Frame({
   courseLink,
   course = "ai-cleared",
   brand,
+  courseNote = true,
 }: {
   firmName?: string;
   meta?: ReactNode;
@@ -26,6 +27,9 @@ export default function Frame({
   courseLink?: boolean;
   course?: CourseSlug;
   brand?: { word: string; href: string };
+  /* The footer's line about practice data. Off on pages that are not the
+   * course, such as the corporate buy and thanks pages. */
+  courseNote?: boolean;
 }) {
   const c = COURSES[course];
   const home = brand ?? { word: c.brand, href: c.base };
@@ -55,7 +59,7 @@ export default function Frame({
         {aside && <aside className="cf-aside">{aside}</aside>}
       </div>
       <footer className="cf-foot">
-        <span>Nothing in the course is real data, and nothing you type in it is stored.</span>
+        {courseNote && <span>Nothing in the course is real data, and practice chats are never stored.</span>}
         <span>Questions about your seat: <a href="mailto:admissions@algorithmx.co.uk">admissions@algorithmx.co.uk</a></span>
       </footer>
       <style>{`

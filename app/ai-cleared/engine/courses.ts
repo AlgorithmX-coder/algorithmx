@@ -62,6 +62,11 @@ export interface CourseDef {
    * every course since 2026-11-09; certificates already issued still
    * verify and still download for their holder. */
   certificate: boolean;
+  /* Whether each desk practises in its own copy of the firm's tool, so the
+   * course home shows that tool and offers the one-time desk change. False
+   * on Cyber Awareness: every desk plays the same module (everyDesk), so
+   * its home shows the reporting route instead and no desk change. */
+  deskPractice: boolean;
 }
 
 export const COURSES: Record<CourseSlug, CourseDef> = {
@@ -79,6 +84,7 @@ export const COURSES: Record<CourseSlug, CourseDef> = {
     doneName: "AI Cleared",
     blurb: "using AI tools safely at work: you practise inside a copy of the tool you already use, on invented data, and every module you finish goes on your firm's training register",
     certificate: false,
+    deskPractice: true,
   },
   "ai-fluent": {
     slug: "ai-fluent",
@@ -94,6 +100,7 @@ export const COURSES: Record<CourseSlug, CourseDef> = {
     doneName: "AI Fluent",
     blurb: "getting real work out of AI tools: prompting that works, the five workflows, verification as a habit, and a real task on your own desk; you keep a personal prompt playbook, and every module you finish goes on your firm's training register",
     certificate: false,
+    deskPractice: true,
   },
   "cyber-awareness": {
     slug: "cyber-awareness",
@@ -107,6 +114,7 @@ export const COURSES: Record<CourseSlug, CourseDef> = {
     doneName: "Cyber Aware",
     blurb: "everyday cyber hygiene for every member of staff: spotting phishing, handling passwords and devices, and knowing when to ask; completion is tracked module by module, with no certificate",
     certificate: false,
+    deskPractice: false,
   },
 };
 

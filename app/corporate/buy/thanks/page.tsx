@@ -35,7 +35,7 @@ export default async function ThanksPage({ searchParams }: { searchParams: Promi
   }
   const what = seats > 0 ? `${seats} ${CYBER_SECURED_NAME} ${seats === 1 ? "seat" : "seats"}` : `Your ${CYBER_SECURED_NAME} seats`;
   return (
-    <Frame brand={BRAND} meta={<Link href="/corporate" className="cf-link">Corporate page</Link>}>
+    <Frame brand={BRAND} courseNote={false} meta={<Link href="/corporate" className="cf-link">Corporate page</Link>}>
       <span className="cf-eyebrow">Payment received</span>
       <h1 className="cf-h1">
         {firm ? <>{what} for {firm} {seats === 1 ? "is" : "are"} being <span className="cf-grad">set up</span>.</> : <>{what} {seats === 1 ? "is" : "are"} being <span className="cf-grad">set up</span>.</>}

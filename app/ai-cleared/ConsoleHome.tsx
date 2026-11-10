@@ -10,8 +10,10 @@ import TrackChange from "./TrackChange";
 const WORDS = ["", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"];
 
 /* The course home for every course: a progress ring, the modules as
- * glass cards with their state, the playbook on Fluent, and the one-time
- * desk change. No certificate: completion is per module (owner,
+ * glass cards with their state, the playbook on Fluent, and, on the
+ * courses with desk practice, the one-time desk change and a look at the
+ * tool they practise in. Cyber Awareness has neither (every desk plays
+ * the same module); its aside shows the reporting route. No certificate: completion is per module (owner,
  * 2026-11-09). */
 export default function ConsoleHome({
   firmName,
@@ -59,8 +61,8 @@ export default function ConsoleHome({
     <Frame
       course={course}
       firmName={firmName}
-      meta={<><span className="cf-meta">{learnerName} · {TRACK_LABEL[track]} <TrackChange current={track} locked={trackLocked} course={course} /></span><Link href="/cyber-secured" className="cf-link">All my courses</Link>{isAdmin && <Link href="/cyber-secured/admin" className="cf-link">Your team</Link>}{isStaff && <Link href="/ai-cleared/ops" className="cf-link">Ops</Link>}</>}
-      aside={<CourseAside course={course} firmName={firmName} contactName={contactName} contactRole={contactRole} learnerName={learnerName} done={modules.filter((m) => m.done).map((m) => m.n)} showModules={false} showWindow />}
+      meta={<><span className="cf-meta">{learnerName}{c.deskPractice && <> · {TRACK_LABEL[track]} <TrackChange current={track} locked={trackLocked} course={course} /></>}</span><Link href="/cyber-secured" className="cf-link">All my courses</Link>{isAdmin && <Link href="/cyber-secured/admin" className="cf-link">Your team</Link>}{isStaff && <Link href="/ai-cleared/ops" className="cf-link">Ops</Link>}</>}
+      aside={<CourseAside course={course} firmName={firmName} contactName={contactName} contactRole={contactRole} learnerName={learnerName} done={modules.filter((m) => m.done).map((m) => m.n)} showModules={false} showWindow={c.deskPractice} showReport={!c.deskPractice} />}
     >
       <span className="cf-eyebrow">
         <span style={{ width: 7, height: 7, borderRadius: "50%", background: K.ok, boxShadow: `0 0 0 3px ${K.okSoft}` }} />
