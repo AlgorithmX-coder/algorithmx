@@ -104,11 +104,11 @@ const topic2: TopicManifest = {
     explain: {
       prompt: "Having done the lab, explain in your own words how SQL injection works and why parameterised queries defeat it completely, and why the TalkTalk fine was considered so avoidable.",
       modelAnswer: [
-        "SQL injection works because the website builds its database question as a sentence and glues the user's input straight into it, so a fragment of SQL typed as a value stops being mere data and becomes part of the command.",
-        "That lets an attacker rewrite the query, for example making a login condition always true, or dumping a whole table.",
-        "Parameterised queries defeat it completely by keeping data and command apart: the query is written with placeholders and the input is passed to the database separately, as a value only, so no crafted SQL can ever change the command.",
-        "This is structural, not a filter to sneak past.",
-        "The TalkTalk fine was so avoidable because this was a well-known flaw with a standard, long-established fix, left on a neglected legacy page; routine web-security practice would have prevented a breach of around 157,000 customers' data.",
+        "SQL injection happens when a site glues user input into its SQL command, so typed input becomes part of the command.",
+        "That lets an attacker rewrite the query: make a login condition always true, or dump a whole table.",
+        "Parameterised queries keep data and command apart: placeholders in the query, input passed separately as a value only.",
+        "That is structural, not a filter to sneak past, so no crafted SQL can ever change the command.",
+        "TalkTalk was avoidable: a well-known flaw with a standard fix, left on a neglected legacy page, exposing 157,000 customers.",
       ],
     },
     quiz: [

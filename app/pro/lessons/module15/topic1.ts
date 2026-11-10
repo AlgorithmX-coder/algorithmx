@@ -103,10 +103,10 @@ const topic1: TopicManifest = {
     explain: {
       prompt: "Explain the difference between signature-based and behaviour-based detection, their strengths and blind spots, and why living-off-the-land attacks make behaviour detection essential.",
       modelAnswer: [
-        "Signature-based detection matches known-bad things (a malware hash, a bad address, a recognised pattern), so it is precise and fast but blind to anything new, because a brand-new or slightly-tweaked variant has an unknown fingerprint and sails past.",
-        "Behaviour-based detection instead watches what something does, flagging suspicious actions like mass file encryption or odd-hours access whatever the specific file, so it catches novel and disguised threats, at the cost of being less clear-cut and needing tuning to avoid false alarms.",
-        "The two are complementary: signatures filter the huge volume of known-bad cheaply and precisely, while behaviour catches what slips past, so a good defence uses both.",
-        "Living-off-the-land attacks make behaviour detection essential because attackers increasingly use the legitimate tools already on a system rather than dropping malware, so there is no malicious file and no signature to match, and the only way to catch them is to notice trusted tools being used abnormally.",
+        "Signature detection matches known-bad hashes, addresses and patterns: precise and fast, but blind to any new or tweaked variant.",
+        "Behaviour detection watches what something does, flagging mass encryption or odd-hours access, so it catches novel, disguised threats.",
+        "Behaviour is less clear-cut and needs tuning against false alarms, so use both: signatures filter known-bad, behaviour catches the rest.",
+        "Living-off-the-land attacks abuse legitimate tools, leaving no malicious file and no signature, so only abnormal use betrays them.",
       ],
     },
     quiz: [

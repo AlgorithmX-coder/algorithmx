@@ -103,11 +103,11 @@ const topic2: TopicManifest = {
     explain: {
       prompt: "Explain the 3-2-1 rule, why it is not quite enough against modern ransomware, and what addition makes backups genuinely resilient.",
       modelAnswer: [
-        "The 3-2-1 rule is the foundation of reliable backups: keep at least three copies of your data, on at least two different media or locations, with at least one copy offsite where a single local disaster cannot reach it.",
-        "The logic is that multiple independent copies mean no single failure (a dead drive, a fire, a theft) destroys all of them, and the offsite copy in particular survives a local disaster.",
-        "It is not quite enough against modern ransomware because attackers deliberately hunt for and destroy reachable backups, encrypting or deleting any backup connected to the network or accessible with stolen credentials, which is why many victims who 'had backups' still could not recover.",
-        "The addition that makes backups genuinely resilient is at least one copy that is offline (physically disconnected) or immutable (stored so it cannot be altered or deleted for a period), as well as offsite, so ransomware simply cannot reach it.",
-        "3-2-1 with one offline or immutable copy survives failure, local disaster and ransomware, and is the single highest-value resilience measure, turning ransomware from a catastrophe into an inconvenience and removing the pressure to pay.",
+        "The 3-2-1 rule: three copies of your data, on two different media or locations, with one offsite beyond a local disaster.",
+        "Independent copies mean no single failure, a dead drive, fire or theft, destroys them all, and the offsite copy survives.",
+        "It is not enough against ransomware: attackers hunt and delete any backup reachable on the network or with stolen credentials.",
+        "So add one copy that is offline, physically disconnected, or immutable, unalterable for a period, as well as offsite.",
+        "3-2-1 plus an offline or immutable copy survives failure, disaster and ransomware, and removes the pressure to pay.",
       ],
     },
     quiz: [

@@ -103,10 +103,11 @@ const topic3: TopicManifest = {
     explain: {
       prompt: "NotPetya infected victims through a software update they trusted and installed themselves. Explain why supply-chain attacks are so hard to defend against, and what layered defence offers when 'just be careful' is not enough.",
       modelAnswer: [
-        "Supply-chain attacks are hard because they defeat the instinct to be careful: you are right to install updates and trust established software, and that very trust is what the attacker abuses by poisoning the update at its source.",
-        "There is no 'just be careful' answer, because the user did nothing wrong.",
-        "Layered defence is the response: limit what any one component can do and reach, monitor for odd behaviour, patch quickly to deny the worming spread (NotPetya also used an unpatched flaw), segment networks to contain the blast, and keep tested, offline backups so you can recover.",
-        "No single layer would have stopped NotPetya, but together they turn a fatal single point of failure into a survivable, contained one.",
+        "Supply-chain attacks defeat care itself: you are right to install updates and trust established software.",
+        "The attacker abuses that very trust by poisoning the update at its source, so the user did nothing wrong.",
+        "Layered defence is the response: limit what any one component can do and reach, and monitor for odd behaviour.",
+        "Patch fast to deny worming spread, NotPetya also used an unpatched flaw, and segment networks to contain the blast.",
+        "Keep tested offline backups; no single layer stopped NotPetya, but together they make a fatal failure survivable.",
       ],
     },
     quiz: [

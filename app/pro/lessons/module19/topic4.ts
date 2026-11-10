@@ -102,11 +102,11 @@ const topic4: TopicManifest = {
     explain: {
       prompt: "Explain redundancy and failover, why single points of failure are not only hardware, and how a major cloud-region outage illustrates concentration as a SPOF.",
       modelAnswer: [
-        "Redundancy means having no single point of failure, no one component whose loss stops everything, achieved by duplication (two servers, two internet connections, two data centres) so that if one fails another carries on and any single failure is survivable.",
-        "Failover is the act of switching to that redundant spare when the primary fails, ideally automatically and fast enough that users barely notice (how a tight RTO is met); the spare must be ready and current and the switch must actually work when triggered.",
-        "Single points of failure are not only hardware: a key person who alone understands a critical system, a single supplier everything depends on, a shared credential or a process nobody else knows are all SPOFs, so resilience thinking hunts for them across people, process and suppliers.",
-        "A major cloud-region outage illustrates concentration as a SPOF: when a huge number of services depend on the same region, that region becomes a shared single point of failure, and a problem there took down a vast, surprising range of apparently-unrelated services at once.",
-        "Services designed with multi-region redundancy and failover largely stayed up, showing that concentration is a single point of failure even at internet scale, and that redundancy and failover are what keep critical systems running when one component, even a huge one, fails.",
+        "Redundancy means no single point of failure: duplicate servers, internet links or data centres so any one loss is survivable.",
+        "Failover is switching to that spare when the primary fails, ideally automatic and fast enough to meet a tight RTO.",
+        "The spare must be ready and current, and the switch must actually work when it is triggered.",
+        "SPOFs are not only hardware: a sole expert, a single supplier, a shared credential or a process nobody else knows all count.",
+        "A major cloud-region outage showed concentration as a SPOF: unrelated services fell together, while multi-region designs stayed up.",
       ],
     },
     quiz: [

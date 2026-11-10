@@ -98,11 +98,11 @@ const topic1: TopicManifest = {
     explain: {
       prompt: "A friend says: 'Security is just about stopping hackers stealing data.' Using the CIA triad, explain what that view misses. Write a sentence or two, then reveal a model answer.",
       modelAnswer: [
-        "Stealing data is only one of the three things security protects: it is a confidentiality failure, not the whole picture.",
-        "An attacker who never steals a single file can still do enormous damage by breaking integrity, secretly changing data so you cannot trust it.",
-        "They can also break availability by locking or knocking systems offline so you cannot use them, even without taking anything.",
-        "Colonial Pipeline was not about stolen fuel: it was ransomware taking availability away, and that alone caused national shortages.",
-        "Good security balances all three pillars, not just secrecy.",
+        "Stealing data is only one pillar, confidentiality, so it is not the whole picture.",
+        "An attacker who steals nothing can still break integrity, quietly altering data so you cannot trust it.",
+        "They can also break availability, locking or knocking systems offline so you cannot use them.",
+        "Colonial Pipeline lost no fuel: ransomware removed availability, and that alone caused national shortages.",
+        "Strong security balances all three pillars, not secrecy alone.",
       ],
     },
     quiz: [

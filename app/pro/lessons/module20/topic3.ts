@@ -103,11 +103,11 @@ const topic3: TopicManifest = {
     explain: {
       prompt: "Describe the sensible certification roadmap for a beginner, explain why certs help but do not guarantee a job, and clarify what 'aligned to objectives' means for this course.",
       modelAnswer: [
-        "The sensible roadmap builds up in order: a foundational entry cert (such as ISC2's Certified in Cybersecurity) first, then CompTIA Security+ (the baseline most UK junior roles ask for), then a cert aligned to your chosen path, with prestige certs later and often employer-funded.",
-        "Order matters because building the base before chasing prestige names is cheaper and matches how hiring works; paying for an advanced cert before Security+ is usually a mis-investment.",
-        "Certs help but do not guarantee a job: they show knowledge and commitment and many ads require specific ones, but employers increasingly skills-test, so a portfolio and real ability matter as much as the letters. A cert plus demonstrable skill beats a cert alone.",
-        "'Aligned to objectives' means the course covers the knowledge recognised certs, especially Security+, test, so it is strong preparation but is not itself a certification: earning one means studying for and passing that exam.",
-        "The course gives you the genuine understanding and the portfolio, which is the hard part; the certifications are a defined next step.",
+        "Build up in order: a foundational entry cert such as ISC2 Certified in Cybersecurity, then CompTIA Security+.",
+        "Then a cert aligned to your chosen path, with prestige certs later and often employer-funded.",
+        "Order matters: Security+ is the baseline most UK junior roles ask for, so an advanced cert first is usually a mis-investment.",
+        "Certs show knowledge and commitment, but employers skills-test, so a portfolio and real ability matter as much as the letters.",
+        "Aligned to objectives means it covers what Security+ tests, not a certification: sitting the exam is a defined next step.",
       ],
     },
     quiz: [

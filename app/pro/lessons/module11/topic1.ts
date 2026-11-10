@@ -105,11 +105,11 @@ const topic1: TopicManifest = {
     explain: {
       prompt: "Using Heartbleed, explain the difference between a vulnerability and an exploit, and what the CVE and CVSS systems each add.",
       modelAnswer: [
-        "The vulnerability was Heartbleed itself, the flaw in OpenSSL that let a server be tricked into returning chunks of its own memory.",
-        "An exploit is the specific technique that actually abuses that flaw to pull out passwords or keys; the weakness was dangerous precisely because it was easy to exploit.",
-        "The CVE system gave it a unique public identifier, CVE-2014-0160, so advisories, tools, news and analysts could all refer unambiguously to the same flaw and ask 'are we affected?'.",
-        "CVSS would give it a severity score on the 0 to 10 scale, a standardised first read on how bad it is.",
-        "Together, CVE names the flaw and CVSS rates it, so the whole industry can coordinate a response, which for Heartbleed meant patching everywhere and rotating potentially exposed keys and passwords.",
+        "The vulnerability was Heartbleed itself: an OpenSSL flaw that tricked a server into returning chunks of its own memory.",
+        "An exploit is the technique that abuses that flaw to pull out passwords or keys; it was dangerous because it was so easy.",
+        "The CVE system gave it one public identifier, CVE-2014-0160, so advisories, tools and analysts could all ask: are we affected?",
+        "CVSS rates its severity on the 0 to 10 scale, a standardised first read on how bad the flaw is.",
+        "CVE names the flaw and CVSS rates it, so the industry could coordinate: patch everywhere, rotate exposed keys and passwords.",
       ],
     },
     quiz: [

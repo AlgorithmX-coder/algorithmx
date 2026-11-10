@@ -109,10 +109,10 @@ const topic1: TopicManifest = {
       prompt: "Explain the difference between eavesdropping and a man-in-the-middle attack, and why the Lenovo Superfish case was so serious even though HTTPS existed.",
       modelAnswer: [
         "Eavesdropping is passively listening to traffic as it crosses a network, reading whatever is sent in the clear.",
-        "A man-in-the-middle attack goes further: the attacker secretly sits between you and the service, able not just to read but to alter your traffic or impersonate the other side, while you see a normal-looking page.",
-        "HTTPS defends against both by encrypting the content and checking the server's identity with a certificate, so a middleman cannot convincingly impersonate your bank.",
-        "Superfish was so serious because it subverted that very defence from inside the device: by installing its own trusted root certificate it could act as an undetectable man-in-the-middle on HTTPS traffic without any warning, and its weaknesses risked letting others do the same.",
-        "It shows that encryption only protects you if the trust it depends on, what your device trusts, is intact.",
+        "A man-in-the-middle sits between you and the service, able to read, alter or impersonate, while the page looks normal.",
+        "HTTPS defends against both: it encrypts the content and checks the server's identity with a certificate.",
+        "Superfish subverted that from inside the device, installing its own trusted root certificate to intercept HTTPS unseen.",
+        "Its weaknesses risked letting others do the same: encryption only protects you if what your device trusts is intact.",
       ],
     },
     quiz: [

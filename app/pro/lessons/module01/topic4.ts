@@ -104,11 +104,11 @@ const topic4: TopicManifest = {
     explain: {
       prompt: "Using Change Healthcare, explain how defence in depth and least privilege would have changed the outcome. Write a sentence or two, then reveal a model answer.",
       modelAnswer: [
-        "The attackers got in through one internet-facing login with no second factor, a missing preventive layer.",
-        "They then moved freely across the network because there was too little segmentation and least privilege to stop them.",
-        "Defence in depth would have added more layers behind that login (MFA, then internal boundaries so a foothold hits a wall).",
+        "Attackers got in through one internet-facing login with no second factor, a missing preventive layer.",
+        "They then moved freely because there was too little segmentation and least privilege to stop them.",
+        "Defence in depth adds layers behind that login: MFA, then internal boundaries so a foothold hits a wall.",
         "Least privilege would have meant the stolen account could reach very little.",
-        "Neither would have made Change Healthcare unbreachable, but either would have turned a weeks-long, industry-wide outage into a contained incident.",
+        "Neither makes a breach impossible, but either turns a weeks-long, industry-wide outage into a contained incident.",
       ],
     },
     quiz: [

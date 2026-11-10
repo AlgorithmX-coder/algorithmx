@@ -103,10 +103,11 @@ const topic1: TopicManifest = {
     explain: {
       prompt: "Why does the Cyber Essentials scheme focus on five basic controls rather than advanced defences, and how does this connect to the breaches you have studied in this course?",
       modelAnswer: [
-        "Cyber Essentials focuses on five basic controls (firewalls, secure configuration, access control, update management and malware protection) because the large majority of real attacks are opportunistic and exploit the basics being wrong, not sophisticated zero-days.",
-        "Getting the basics right thoroughly removes you from the easy-target pool that most attackers rely on, giving far more risk reduction than an expensive tool on weak foundations.",
-        "This connects directly to nearly every breach in the course: reused passwords and weak authentication (access control), unpatched flaws like WannaCry and Equifax (update management), default or exposed configurations like Exactis (secure configuration), and malware delivered through basic gaps (malware protection).",
-        "Each was, at heart, a failure of one of the five basics, which is exactly why a deliberately basic, verifiable baseline is such a powerful and proportionate defence.",
+        "Cyber Essentials covers five basic controls: firewalls, secure configuration, access control, update management and malware protection.",
+        "Most real attacks are opportunistic and exploit the basics being wrong, not sophisticated zero-days.",
+        "Getting the basics right thoroughly removes you from the easy-target pool, beating an expensive tool on weak foundations.",
+        "Course breaches map onto them: reused passwords (access control), WannaCry and Equifax (update management), Exactis (configuration).",
+        "Each was a failure of one of the five, malware through basic gaps included, which is why a verifiable baseline is proportionate.",
       ],
     },
     quiz: [

@@ -101,11 +101,11 @@ const topic2: TopicManifest = {
     explain: {
       prompt: "Explain how to make a cyber CV and profile stand out as a beginner, covering specificity, tailoring, reframing your background, and honesty.",
       modelAnswer: [
-        "Be specific: replace vague claims like 'skilled in cyber security' with concrete statements of real things you did and can show (performing an audit that found and fixed X, building a phishing guide, reconstructing an incident timeline), and link to your portfolio so the reader sees the actual work.",
-        "This specificity plus proof compensates for a lack of professional experience, turning a list of claims into a demonstrable case.",
-        "Tailor each application to the role's actual requirements, reading the advert and showing clearly how you meet it in the same honest language, because a few well-targeted applications beat a hundred generic ones and employers can tell whether you engaged with their role.",
-        "Reframe your background as an asset rather than burying it, connecting transferable strengths explicitly to the role's needs (for example, years in customer service meaning calm under pressure and clear communication with non-technical people, relevant to a SOC or GRC role).",
-        "Present everything with clarity and honesty: a clear, error-free CV and tidy profile signal professionalism, and you must never claim certifications, skills or experience you do not have, because dishonesty is easily caught and costly and your genuine work is enough.",
+        "Be specific: swap skilled in cyber security for real work you can show, an audit that fixed something, an incident timeline.",
+        "Link to your portfolio so the reader sees the work: proof compensates for a lack of professional experience.",
+        "Tailor each application to the advert's requirements; a few well-targeted ones beat a hundred generic, and employers can tell.",
+        "Reframe your background as an asset, linking transferable strengths such as calm under pressure to a SOC or GRC role.",
+        "Be clear and honest: an error-free CV and tidy profile signal professionalism, and never claim certs or experience you lack.",
       ],
     },
     quiz: [

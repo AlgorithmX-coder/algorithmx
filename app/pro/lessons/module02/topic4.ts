@@ -109,11 +109,11 @@ const topic4: TopicManifest = {
     explain: {
       prompt: "An analyst scans a company server and finds port 3389 open to the internet. In your own words, explain why they would raise the alarm straight away.",
       modelAnswer: [
-        "Port 3389 is Remote Desktop, a full remote-control door into the machine, meant for administrators inside the network.",
-        "Exposed to the internet it is a login box the entire world can attack, and attackers find such doors automatically by mass-scanning.",
-        "With a weak password and no second factor, a crew can log straight in and spread, which is exactly how a great deal of ransomware starts.",
+        "Port 3389 is Remote Desktop, full remote control of the machine, meant for admins inside the network.",
+        "Exposed to the internet it is a login box the whole world can attack, and mass-scanning finds it automatically.",
+        "With a weak password and no second factor a crew logs straight in and spreads: how much ransomware starts.",
         "The fix is usually cheap: close the port, or put it behind a VPN with MFA.",
-        "It is a textbook reduce-your-attack-surface problem.",
+        "It is a textbook attack-surface problem: remove the door rather than defend it.",
       ],
     },
     quiz: [

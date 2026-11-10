@@ -103,11 +103,11 @@ const topic4: TopicManifest = {
     explain: {
       prompt: "Explain what a SIEM and EDR each do and how they complement each other, and why the FireEye discovery shows that tools and analysts work best together.",
       modelAnswer: [
-        "A SIEM (Security Information and Event Management) aggregates logs and events from across the whole organisation into one searchable place and correlates related events into meaningful alerts; it is the central console an analyst investigates in, giving breadth, the organisation-wide picture.",
-        "EDR (Endpoint Detection and Response) focuses on individual computers, watching each device's processes, files and connections for malicious behaviour and able to respond on the device itself (for example isolating an infected laptop); it gives depth, the close-up view of each machine.",
-        "The two complement each other as breadth plus depth.",
-        "The FireEye discovery shows tools and analysts work best together: security tooling surfaced a single small anomaly, an unusual device enrolment, but it took skilled humans investigating that thread, rather than dismissing it, to uncover a vast espionage campaign.",
-        "Tools surface the signal while humans investigate, judge and act, so you do not need to build tools to be valuable: you need to understand what they show and make good judgements about it.",
+        "A SIEM aggregates logs and events organisation-wide into one searchable console and correlates them into alerts: the breadth view.",
+        "EDR watches each device's processes, files and connections, and can respond on the device, for example isolating a laptop.",
+        "They complement each other: SIEM gives the organisation-wide picture, EDR the close-up of each machine, so breadth plus depth.",
+        "FireEye shows tools and analysts together: tooling flagged one odd device enrolment, and humans pulled that thread to find espionage.",
+        "Tools surface the signal, humans investigate and judge, so you need not build tools to be valuable, just read them well.",
       ],
     },
     quiz: [

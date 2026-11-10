@@ -104,11 +104,11 @@ const topic4: TopicManifest = {
     explain: {
       prompt: "GitHub was hit by one of the largest DDoS attacks ever recorded, yet it was over in minutes. Explain what a DDoS attacks, how amplification makes such floods possible, and why the right defence is specific to availability.",
       modelAnswer: [
-        "A DDoS attacks availability (the 'A' of the CIA triad): it overwhelms a service with traffic so real users cannot get through, without stealing or altering anything.",
-        "'Distributed' means the flood comes from many sources at once, often a botnet, so you cannot stop it by blocking one address.",
-        "Amplification makes record floods possible by bouncing small, spoofed requests off misconfigured internet services that send back huge responses aimed at the victim, so a modest attacker produces a colossal flood, as in the memcached attack on GitHub.",
-        "The defence must match the attack: because it is an availability problem, you defend availability with DDoS-protection/scrubbing services that absorb and filter the flood, CDNs that distribute load, and rate limiting.",
-        "GitHub shrugged it off in minutes precisely because it had that availability-specific mitigation in place; encryption or phishing training would have done nothing.",
+        "A DDoS attacks availability, the A of the CIA triad: real users cannot get through, nothing is stolen or altered.",
+        "Distributed means the flood comes from many sources at once, often a botnet, so blocking one address does not stop it.",
+        "Amplification bounces small, spoofed requests off misconfigured internet services that fire huge replies at the victim.",
+        "So a modest attacker produces a colossal flood, as in the memcached attack GitHub shrugged off in minutes.",
+        "Defend availability itself: DDoS scrubbing, CDNs, rate limiting. Encryption or phishing training would do nothing here.",
       ],
     },
     quiz: [

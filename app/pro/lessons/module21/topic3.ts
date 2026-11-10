@@ -101,11 +101,11 @@ const topic3: TopicManifest = {
     explain: {
       prompt: "Explain how cyber interviews often work, and how a beginner should handle scenario questions, gaps in their knowledge, and demonstrating ability.",
       modelAnswer: [
-        "Cyber interviews are frequently scenario-based ('an alert shows X, what do you do?', 'how would you secure Y?'), and these test how you think, your reasoning process, more than whether you know one 'right' answer, which is great news for a thoughtful beginner.",
-        "On scenario questions, think aloud: walk through your approach step by step (gathering context, weighing evidence, deciding and escalating), because a clear thought process impresses far more than a memorised one-liner, even without a perfect answer.",
-        "On gaps in your knowledge, respond with honesty plus method: admit you are not sure but explain how you would find out (checking the vendor advisory, looking at the logs, testing it in a lab), which shows integrity and problem-solving, whereas bluffing is easily spotted and destroys trust.",
-        "To demonstrate ability, use your portfolio: point to real pieces you built and be ready to discuss what you did, why, and what you learned, which proves ability rather than just asserting it.",
-        "Combining these, showing how you think, being honest about gaps, and proving ability through your portfolio, is a strong interview approach that shows you are capable, honest and thoughtful, exactly who gets hired.",
+        "Cyber interviews are often scenario-based, testing how you reason more than one right answer: good news for a thoughtful beginner.",
+        "Think aloud: walk step by step through gathering context, weighing evidence, deciding and escalating.",
+        "A clear thought process impresses far more than a memorised one-liner, even without a perfect answer.",
+        "On gaps, be honest and show method: say how you would find out, the vendor advisory, the logs, a lab; bluffing is easily spotted.",
+        "Use your portfolio: discuss what you built, why, and what you learned, which proves ability instead of asserting it.",
       ],
     },
     quiz: [

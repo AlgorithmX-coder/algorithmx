@@ -103,11 +103,11 @@ const topic5: TopicManifest = {
     explain: {
       prompt: "Explain what an audit is and its guiding principle, what counts as good evidence, and how audits keep security honest and improving.",
       modelAnswer: [
-        "An audit is an independent check that an organisation's controls really exist and work as claimed, and its guiding principle is 'prove it': an auditor requires evidence rather than accepting 'yes, we do that' at face value, which is the antidote to the 'policy on paper' trap.",
-        "Good evidence is verifiable and concrete: logs and configuration showing a control is enforced, dated records of a review actually done, and tool reports confirming a standard is met.",
-        "Verbal assurance, an unfollowed policy, or unbacked claims do not count; evidence must be something an independent person can examine and believe.",
-        "Audits keep security honest and improving because, by systematically checking controls and demanding evidence, they surface gaps (controls that are weak, missing or exist only on paper) as a prioritised list of fixes, and because audits recur, that improvement is ongoing.",
-        "This closes the GRC loop: policies and standards set what should be true, controls make it true, and audits verify it and find where it is not, moving an organisation from 'we think we are secure' to 'we can demonstrate we are, and we know our gaps'.",
+        "An audit independently checks that controls exist and work, demanding evidence rather than assurances: prove it, do not say it.",
+        "Good evidence is concrete: logs and configuration showing enforcement, dated review records, tool reports meeting a standard.",
+        "Verbal assurance, an unfollowed policy or unbacked claims do not count; evidence must be examinable by an independent person.",
+        "Audits keep security honest: they surface weak, missing or paper-only controls as a prioritised list of fixes, and they recur.",
+        "They close the GRC loop, moving you from we think we are secure to we can demonstrate it and we know our gaps.",
       ],
     },
     quiz: [

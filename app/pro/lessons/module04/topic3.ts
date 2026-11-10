@@ -104,11 +104,11 @@ const topic3: TopicManifest = {
     explain: {
       prompt: "Explain the core difference between hashing and encryption, why passwords must be hashed not encrypted, and what went wrong at Adobe.",
       modelAnswer: [
-        "The core difference is that encryption is reversible while hashing is one-way: with a key you can turn encrypted data back into the original, whereas a hash is a one-way fingerprint with no key and no way back.",
-        "This decides which to use: data that must be recoverable (a message, a file) is encrypted, while data that must only be checked and never recovered is hashed.",
-        "Passwords must be hashed, not encrypted, because a site never needs to recover your actual password, only to check whether what you typed matches, so it stores and compares hashes and the original is never recoverable even by the site.",
-        "If a site encrypts passwords instead, there is a key that can reverse them all, and if attackers steal both the encrypted passwords and the key, every password is instantly exposed.",
-        "Adobe went wrong by storing around 153 million users' passwords with reversible encryption instead of proper hashing, with plaintext hints alongside, so huge numbers could be worked out: the textbook mistake of using encryption where irreversible hashing was required.",
+        "Encryption is reversible with a key; hashing is one-way, a fingerprint with no key and no way back.",
+        "So data that must be recoverable is encrypted, and data only ever checked, never recovered, is hashed.",
+        "Passwords must be hashed: a site only needs to compare hashes, never to recover what you typed.",
+        "Encrypting them leaves a key that reverses them all, so stealing the passwords and the key exposes every one.",
+        "Adobe stored around 153 million passwords with reversible encryption plus plaintext hints, so many were worked out.",
       ],
     },
     quiz: [

@@ -102,10 +102,11 @@ const topic4: TopicManifest = {
     explain: {
       prompt: "Give the honest picture of the cyber job market, explain why 'millions of unfilled jobs' is misleading, and say what actually helps a beginner get in.",
       modelAnswer: [
-        "The honest picture sits between two extremes: the hype of millions of unfilled jobs and easy high salaries, and the gloom that it is impossible to break in. The truth is real, ongoing demand, but genuinely competitive entry-level roles that take effort and persistence.",
-        "'Millions of unfilled jobs' is misleading because those 'skills gap' figures are widely debated and often debunked, and much of the real demand is for experienced people, not beginners, so it does not match the scarce, competitive junior roles beginners actually find.",
-        "What helps a beginner is largely within their control: a portfolio of demonstrable work (because employers skills-test), the right certifications in order, networking that surfaces unadvertised roles, and persistence through many applications and some rejection.",
-        "The useful truth is not 'it's easy' or 'it's impossible' but 'it's achievable with the right, persistent effort', which is exactly what this course prepares you for.",
+        "The truth sits between the hype of millions of easy, well-paid jobs and the gloom that breaking in is impossible.",
+        "Demand is real and ongoing, but entry-level roles are genuinely competitive and take effort and persistence.",
+        "Skills-gap figures are widely debated and often debunked, and much of the real demand is for experienced people, not beginners.",
+        "What helps is in your control: a portfolio of demonstrable work, certs in order, networking for unadvertised roles, persistence.",
+        "Not easy and not impossible: achievable with the right, persistent effort, which is what this course prepares you for.",
       ],
     },
     quiz: [

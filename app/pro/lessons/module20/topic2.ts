@@ -102,11 +102,11 @@ const topic2: TopicManifest = {
     explain: {
       prompt: "Contrast the real day-to-day work of a SOC analyst, a GRC professional and a penetration tester, and explain why choosing a role by fit rather than title matters.",
       modelAnswer: [
-        "A SOC analyst's day is steady and methodical: working a queue of alerts, gathering context, deciding what is real, escalating what matters and documenting as they go, with the occasional real incident. It suits patient, detail-oriented people who stay calm under pressure.",
-        "A GRC professional's day is more advisory: assessing risks, writing and reviewing policies, checking suppliers, running audits and translating technical risk into business language. It suits strong communicators comfortable with process, people and documentation.",
-        "A penetration tester's day is careful, scoped, authorised testing followed by a lot of clear report writing, because a finding nobody can act on is worthless. Even this role is disciplined, documented work, not the frantic image.",
-        "Choosing by fit rather than title matters because the best role for you is the one whose daily work plays to your strengths: a methodical investigator thrives in a SOC but tires of policy deadlines, while a great communicator flourishes in GRC.",
-        "Honest self-matching makes for stronger applications and interviews, and a happier, more sustainable career.",
+        "SOC analyst: work an alert queue, gather context, decide what is real, escalate and document; suits patient, calm, methodical people.",
+        "GRC: risk assessments, policies, supplier checks, audits and putting technical risk in business language; suits strong communicators.",
+        "Penetration tester: carefully scoped, authorised testing, then clear report writing, since a finding nobody can act on is worthless.",
+        "Even pen testing is disciplined, documented work, so choose by fit, not title: the daily work should play to your strengths.",
+        "A methodical investigator thrives in a SOC, a communicator in GRC, and honest self-matching makes for a happier career.",
       ],
     },
     quiz: [

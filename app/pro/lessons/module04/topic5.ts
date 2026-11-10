@@ -104,11 +104,11 @@ const topic5: TopicManifest = {
     explain: {
       prompt: "Explain what digital signatures provide and how they use key pairs, what PKI is for, and how Stuxnet abused the signature trust model.",
       modelAnswer: [
-        "Digital signatures provide authenticity (confidence a message really came from the claimed sender) and integrity (confidence it was not altered since), rather than secrecy.",
-        "They use the key pair in reverse of encryption: you sign with your private key, and anyone verifies with your public key, so a valid signature proves it came from you and any change to the message breaks it.",
-        "PKI (public-key infrastructure) is the system of certificates and authorities, the same chain of trust as HTTPS, that binds public keys to identities so signatures can be trusted at scale.",
-        "Stuxnet abused this not by breaking the cryptography but by stealing it, using stolen legitimate code-signing certificates from real companies to sign its malicious drivers so that systems trusting validly-signed software accepted them as genuine.",
-        "It showed that digital signatures are only as trustworthy as the secrecy of the signing keys, and a stolen key turns the trust model to the attacker's advantage.",
+        "Digital signatures give authenticity (it came from the claimed sender) and integrity (it was not altered), not secrecy.",
+        "They use the key pair in reverse: you sign with your private key, and anyone verifies with your public key.",
+        "A valid signature proves it came from you, and any change to the message breaks it.",
+        "PKI, the certificates and authorities behind HTTPS, binds public keys to identities so signatures scale.",
+        "Stuxnet stole real code-signing certificates rather than breaking the maths, so trusting systems accepted its drivers.",
       ],
     },
     quiz: [

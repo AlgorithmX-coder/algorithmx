@@ -103,11 +103,11 @@ const topic2: TopicManifest = {
     explain: {
       prompt: "Target had monitoring that reportedly generated alerts about the intrusion, yet 40 million cards were stolen. Explain how a SOC is structured and escalates, and why this case shows that a SOC is only as good as whether it acts.",
       modelAnswer: [
-        "A SOC is organised in tiers: Tier 1 analysts (the entry role) first see and triage alerts, handle the routine ones and escalate the rest; Tier 2 investigates what is escalated; Tier 3 (senior analysts, threat hunters and incident responders) handle the hardest cases, hunt proactively and build detections; and a SOC manager oversees it all.",
-        "The escalation path is the defined route moving a concern to whoever needs to handle it, up to management and sometimes beyond the SOC (legal, executives, regulators), so the right people act fast.",
-        "Escalation is a judgement call, because escalating too much causes noise while escalating too little lets real incidents fester.",
-        "Target shows a SOC is only as good as whether it acts: its tooling generated alerts about the attack, but the human process of escalating and acting on them failed, so the attack proceeded and 40 million cards were stolen.",
-        "A missed or ignored alert has the same consequence as no alert at all, which is why triage and escalation are the point, not an afterthought.",
+        "A SOC runs in tiers: Tier 1 (the entry role) triages alerts, Tier 2 investigates escalations, Tier 3 hunts and builds detections.",
+        "A SOC manager oversees it, and escalation can run beyond the SOC to legal, executives or regulators so the right people act fast.",
+        "Escalation is a judgement call: too much creates noise, too little lets real incidents fester.",
+        "Target shows a SOC is only as good as its actions: tooling alerted but nobody escalated, so 40 million cards were stolen.",
+        "A missed or ignored alert has the same consequence as no alert, so triage and escalation are the point, not an afterthought.",
       ],
     },
     quiz: [

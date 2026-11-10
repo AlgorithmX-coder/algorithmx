@@ -103,11 +103,11 @@ const topic1: TopicManifest = {
     explain: {
       prompt: "Explain what logs are and why they are the foundation of investigation, why 'you cannot investigate what was never logged', and how knowing different log sources helps.",
       modelAnswer: [
-        "Logs are the records a system keeps of things that happen on it (a login, a file opened, a connection made, a request served), so every meaningful action leaves a footprint, and together these are the evidence of what occurred and the raw material of all detection and investigation.",
-        "Investigating anything means reading logs to reconstruct what happened.",
-        "'You cannot investigate what was never logged' because if an action left no record you have no evidence of it, which is why hardening includes turning logging on, why logs must be kept safely, and why attackers sometimes try to delete or disable them.",
-        "Knowing different log sources helps because different systems keep different logs that answer different questions: authentication logs record who logged in and whether it succeeded, web server logs record requests and their results, firewall logs record allowed and blocked connections, and DNS logs record name lookups (good for catching malware phoning home).",
-        "An effective investigator reaches for the right log for the question at hand, turning a vague 'check the logs' into targeted, efficient investigation.",
+        "Logs are the records a system keeps of what happens on it: a login, a file opened, a connection made, a request served.",
+        "Every meaningful action leaves a footprint, so logs are the evidence of what occurred and the raw material of all investigation.",
+        "You cannot investigate what was never logged, so hardening enables logging, logs are kept safely, and attackers try to delete them.",
+        "Different sources answer different questions: authentication logs show who logged in, web server logs show requests and results.",
+        "Firewall logs show allowed and blocked connections and DNS logs catch malware phoning home, so the right log makes work targeted.",
       ],
     },
     quiz: [

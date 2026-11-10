@@ -103,11 +103,11 @@ const topic5: TopicManifest = {
     explain: {
       prompt: "Explain why untested backups and plans so often fail, what proper recovery testing involves, and why testing must be ongoing.",
       modelAnswer: [
-        "Untested backups and recovery plans fail surprisingly often when finally needed, because they are rarely tested until a real disaster: backups turn out corrupt, incomplete or unrestorable, and plans have gaps, wrong assumptions or steps that no longer work.",
-        "'The backup succeeded' is not the same as 'we can recover': a successful backup job only means data was copied, not that it can be restored, is complete and works, so existence is not recovery and only an actual, tested restore proves you can come back.",
-        "Proper recovery testing means actually restoring to a test environment and confirming the data and systems genuinely work, and measuring how long it took and how much data was lost against your RTO and RPO, turning those targets into verified facts.",
-        "It also exercises the plan itself (can the team follow the steps, is access right, does failover trigger), finding gaps in calm conditions where they can be fixed.",
-        "Testing must be ongoing because systems, data and teams change constantly, so a plan that worked last year may not work now: an old one-off test gives false confidence, while regular testing turns an untested guess into a proven guarantee.",
+        "Untested backups and plans often fail when finally needed: backups prove corrupt or unrestorable, plans have gaps and stale steps.",
+        "A successful backup job only means data was copied; existence is not recovery, and only a real restore proves you can come back.",
+        "Proper testing restores into a test environment, confirms the systems genuinely work, and measures the result against RTO and RPO.",
+        "Exercise the plan itself: can the team follow the steps, is access right, does failover trigger, all found out calmly in advance.",
+        "Retest regularly, as systems, data and teams change; an old one-off test gives false confidence, not a proven guarantee.",
       ],
     },
     quiz: [

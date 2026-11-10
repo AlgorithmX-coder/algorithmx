@@ -103,11 +103,11 @@ const topic5: TopicManifest = {
     explain: {
       prompt: "Explain what a tabletop exercise is and why it is valuable, what makes a good incident report, and why the review behind it must be blameless.",
       modelAnswer: [
-        "A tabletop exercise is a discussion-based rehearsal of an incident: the team talks through a realistic scenario step by step, testing the plan, the roles and the decisions, without affecting any real systems.",
-        "It is valuable because it is cheap and low-risk yet revealing, surfacing gaps in the plan, confusion over who does what, and missing contacts or tools in calm conditions before a real incident finds them, so a rehearsed team responds far more calmly and effectively.",
-        "A good incident report is clear, factual and structured, covering what happened, the impact, the timeline, the root cause, and the lessons and actions.",
-        "It is also honest (not downplayed, which hides the truth and can breach legal duties) and readable (not buried in jargon, so people actually act on it).",
-        "The review behind it must be blameless because if people fear punishment they hide information and omit mistakes, so the organisation learns nothing and repeats the incident, whereas a blameless review focuses on what happened and how to improve, letting people tell the truth and closing the lifecycle back into better preparation.",
+        "A tabletop exercise is a discussion-based rehearsal: the team talks through a realistic scenario, testing plan, roles and decisions.",
+        "It is cheap and low-risk yet revealing, exposing plan gaps, role confusion and missing contacts or tools before a real incident does.",
+        "A good incident report is clear, factual and structured: what happened, the impact, the timeline, the root cause, lessons and actions.",
+        "It is honest, not downplayed (which can hide the truth and breach legal duties), and readable, not buried in jargon, so people act.",
+        "The review stays blameless: if people fear blame they hide mistakes and nothing is learned, so it closes back into better preparation.",
       ],
     },
     quiz: [

@@ -103,11 +103,11 @@ const topic3: TopicManifest = {
     explain: {
       prompt: "Explain how XSS works, why it is so dangerous, and the principle that defeats it, using the Samy worm to illustrate.",
       modelAnswer: [
-        "XSS works when a website shows user-supplied content as if it were code, so an attacker's script runs in other visitors' browsers as though the site itself wrote it: the 'never trust user input' failure aimed at the page rather than the database.",
-        "It is dangerous because it rides on trust and targets the users: a victim simply visits a trusted page, and the hidden script can steal their session cookie, capture input, or act as them.",
-        "The Samy worm shows its most dramatic form: a script on a MySpace profile that copied itself onto anyone who viewed it, spreading to over a million profiles in under a day and forcing the site offline.",
-        "The principle that defeats it is to treat all user content as data to display, never as code to run, achieved by escaping (encoding) user content on output so any script is shown as harmless text.",
-        "Modern frameworks do this by default, which is why using them properly prevents most XSS.",
+        "XSS happens when a site shows user content as code, so the attacker's script runs in other visitors' browsers.",
+        "It is the never trust user input failure aimed at the page rather than the database.",
+        "It rides on trust: a hidden script can steal the session cookie, capture input, or act as the victim.",
+        "The Samy worm copied itself onto every MySpace profile that viewed it: over a million in a day, forcing the site offline.",
+        "The fix is to treat user content as data, never code: escape it on output, as modern frameworks do by default.",
       ],
     },
     quiz: [

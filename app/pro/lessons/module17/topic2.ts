@@ -102,11 +102,11 @@ const topic2: TopicManifest = {
     explain: {
       prompt: "Distinguish ISO 27001, the NIST CSF and Cyber Essentials, explain where UK GDPR fits, and say why security certification matters commercially.",
       modelAnswer: [
-        "ISO 27001 is an international, certifiable standard for an information-security management system (ISMS): a whole, audited management approach to security, widely required in enterprise contracts.",
-        "The NIST Cybersecurity Framework is a flexible framework organised around five functions (identify, protect, detect, respond, recover) that helps structure a security programme, and is not a certification.",
-        "Cyber Essentials is the UK's basic-five-controls baseline (firewalls, secure configuration, access control, update management, malware protection), achievable and often required for UK government work.",
-        "UK GDPR is different: it is law, a mandatory legal requirement for handling personal data, not a voluntary framework you adopt, so it should be kept separate from frameworks.",
-        "Security certification matters commercially because certification against a recognised standard, especially ISO 27001, is often a precondition for doing business, so demonstrable security enables sales and partnerships and is a business enabler, not just a cost.",
+        "ISO 27001: international, certifiable standard for an ISMS, an audited management approach widely required in enterprise contracts.",
+        "NIST Cybersecurity Framework: five functions, identify, protect, detect, respond, recover, to structure a programme; not a certification.",
+        "Cyber Essentials: the UK five-controls baseline of firewalls, secure configuration, access control, updates and malware protection.",
+        "UK GDPR is law, not a voluntary framework: a mandatory legal duty for personal data, so keep it separate from frameworks.",
+        "Certification, especially ISO 27001, is often a precondition for business, so security enables sales; it is not just a cost.",
       ],
     },
     quiz: [

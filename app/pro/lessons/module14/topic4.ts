@@ -103,11 +103,11 @@ const topic4: TopicManifest = {
     explain: {
       prompt: "Explain why a single log entry rarely means much, how correlation across different logs reveals an attack, and how correlation produces a timeline.",
       modelAnswer: [
-        "A single log entry rarely means much because each one (a failed login, a connection, a command) is just an isolated fact, and ordinary ones happen constantly, so meaning emerges only when you connect entries.",
-        "Correlation across different logs reveals an attack because the most powerful picture spans sources a SIEM gathers together: the firewall log shows a scan, the authentication log shows failed then successful logins, the system log shows what the account then did, and the DNS and firewall logs show it contacting an external server.",
-        "None of those tells the whole story alone, but connected by a shared address, account and time sequence they reveal the complete attack from reconnaissance to data leaving, which would be invisible in any one log.",
-        "Correlation produces a timeline because connecting events into a story is really building the chronological reconstruction of the attack from the logs, each correlated event becoming a step: when the attacker arrived, what they tried, when they got in, what they did, and when it was detected.",
-        "So the module comes together: logs are the evidence, searching finds the relevant entries, and correlation connects them into the timeline, which is real understanding rather than just a pile of hits.",
+        "A single log entry rarely means much: a failed login or a connection is an isolated fact, and ordinary ones happen constantly.",
+        "Meaning emerges when you connect entries across the sources a SIEM gathers: a firewall scan, failed then successful logins, commands.",
+        "DNS and firewall logs then show the account contacting an external server, so no single log tells the whole story alone.",
+        "Linked by shared address, account and time, they reveal the whole attack from recon to data leaving, invisible in any one log.",
+        "Correlation builds a chronological timeline: logs are the evidence, search finds the entries, correlation turns them into meaning.",
       ],
     },
     quiz: [

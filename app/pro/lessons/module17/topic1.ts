@@ -104,11 +104,11 @@ const topic1: TopicManifest = {
     explain: {
       prompt: "Explain what GRC is and why it is an accessible career lane, what risk management really involves, and what the Uber 2016 cover-up shows about governance.",
       modelAnswer: [
-        "GRC (governance, risk and compliance) is the part of cyber security focused on managing an organisation's cyber risk sensibly, following the rules, and being able to prove it.",
-        "It is an accessible career lane because its roles are plentiful and draw on communication, organisation, analysis and business understanding, so they are often more open to people from non-technical backgrounds, whose prior experience becomes an asset.",
-        "Risk management, its core, treats cyber risk as business risk: identifying risks, weighing them by likelihood and impact, deciding to reduce, transfer, avoid or knowingly accept them, and translating technical threats into business terms so leaders can decide.",
-        "It is not about eliminating all risk but about taking the right risks knowingly and protecting what matters most, proportionately.",
-        "The Uber 2016 cover-up shows governance is a serious, consequential responsibility: Uber concealed a breach and paid off attackers rather than disclosing it, and the mishandling led to regulatory penalties and the criminal conviction of its then-security chief, a governance and accountability failure, not a technical one.",
+        "GRC means managing an organisation's cyber risk sensibly, following the rules, and being able to prove it.",
+        "An accessible lane: roles are plentiful and reward communication, organisation and analysis, so other careers become an asset.",
+        "Risk management is the core: identify risks, weigh likelihood and impact, then reduce, transfer, avoid or knowingly accept them.",
+        "Translate technical threats into business terms; the aim is taking the right risks knowingly, not eliminating all risk.",
+        "Uber 2016: concealing a breach and paying off attackers brought penalties and a criminal conviction, a governance failure.",
       ],
     },
     quiz: [

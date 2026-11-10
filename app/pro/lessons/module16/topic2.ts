@@ -102,11 +102,11 @@ const topic2: TopicManifest = {
     explain: {
       prompt: "Explain the difference between containment and eradication, why you usually contain first, and the hard trade-off the Colonial Pipeline containment decision illustrates.",
       modelAnswer: [
-        "Containment is limiting the damage and stopping the spread right now (isolating an infected machine, blocking the attacker's control channel, disabling a compromised account), fast and often temporary, to buy time and prevent things getting worse.",
-        "Eradication comes after: fully removing the threat, every foothold and the root cause that let it in, done thoroughly so it cannot return.",
-        "You usually contain first because stopping the damage spreading is the immediate priority, then eradicate once the situation is stable and understood, since skipping to clean-up lets the incident keep spreading and incomplete eradication that misses a backdoor lets the attacker simply resume.",
-        "The Colonial Pipeline decision illustrates the hard trade-off: faced with ransomware, the company shut down the pipeline itself to contain the attack and stop it spreading to operational systems, which prevented a potentially worse spread but also halted a major fuel supply and caused regional shortages.",
-        "It shows that the fastest containment can itself cause serious harm, so responders must weigh the damage of the attack spreading against the damage of the containment action, often under intense pressure with incomplete information.",
+        "Containment limits damage now: isolate the infected machine, block the attacker's control channel, disable a compromised account.",
+        "It is fast and often temporary, buying time; eradication follows, removing every foothold and the root cause so nothing returns.",
+        "Contain first, then eradicate once things are stable: spreading damage is the priority, and a missed backdoor lets the attacker resume.",
+        "Colonial Pipeline shut the pipeline itself to contain ransomware, stopping the spread but halting fuel supply and causing shortages.",
+        "So weigh the harm of the attack spreading against the harm of the containment action, often under pressure with partial information.",
       ],
     },
     quiz: [

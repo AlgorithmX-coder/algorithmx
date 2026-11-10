@@ -102,11 +102,11 @@ const topic1: TopicManifest = {
     explain: {
       prompt: "State the golden rule of web security in your own words, and explain why the Exactis case is a different kind of failure from an attack that exploits user input.",
       modelAnswer: [
-        "The golden rule of web security is: never trust input that came from the user.",
-        "Anything a person can type, edit or send (form fields, URL values, hidden fields, uploads) could be a deliberate attack, so all of it must be treated as hostile until it has been checked and handled safely.",
-        "Most web vulnerabilities are failures to respect this rule.",
-        "The Exactis case was a different kind of failure: not an attack through user input, but a breach by exposure, a database of around 340 million records left directly reachable on the internet, so it could simply be found and copied with no exploit needed.",
-        "It shows protecting data has two halves: respecting untrusted input to defend against attacks through the application, and basic hygiene (no internet-facing databases, strong authentication, protected backups) so the data is not left open in the first place.",
+        "The golden rule of web security is simple: never trust input that came from the user.",
+        "Form fields, URL values, hidden fields and uploads are all user-editable, so treat them as hostile until checked.",
+        "Most web vulnerabilities are failures to respect that rule.",
+        "Exactis was different: a breach by exposure, around 340 million records left reachable online, copied with no exploit.",
+        "So protection has two halves: respect untrusted input, and basic hygiene so the data is not left open at all.",
       ],
     },
     quiz: [

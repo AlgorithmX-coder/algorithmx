@@ -103,11 +103,11 @@ const topic5: TopicManifest = {
     explain: {
       prompt: "Explain why an investigation must be written up, what a good finding contains, and what to leave out.",
       modelAnswer: [
-        "An investigation must be written up because a brilliant investigation helps no one if you cannot communicate it clearly: the written finding is how the work becomes useful, letting others understand what happened, act on it and learn from it, which makes clear writing one of the most valued and underrated analyst skills.",
-        "A good finding has a clear, repeatable shape: what happened (stated plainly), the evidence (the specific log entries and timeline that support it), the impact (what it means and how serious, so the reader knows why it matters), and the recommendation (what to do about it, so it leads to action).",
-        "Leave out guesses stated as fact: instead state what you know and clearly flag what is uncertain.",
-        "Leave out blame aimed at individuals, because findings are factual and blameless, focused on what happened and the fix.",
-        "Write for your audience, matching detail to whoever reads it (an analyst needing technical depth, a manager needing impact and recommendation, or both), and avoid being so vague it is useless or so jargon-filled no one reads it.",
+        "An investigation must be written up: clear communication is how the work becomes useful, a valued and underrated analyst skill.",
+        "A good finding has a shape: what happened, the evidence of log entries and timeline, the impact and seriousness, the recommendation.",
+        "Leave out guesses stated as fact: state what you know and flag clearly what is still uncertain.",
+        "Leave out blame aimed at individuals; findings stay factual and blameless, focused on what happened and the fix.",
+        "Write for your audience: technical depth for an analyst, impact and recommendation for a manager, never vague or jargon-choked.",
       ],
     },
     quiz: [

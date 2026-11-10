@@ -102,11 +102,11 @@ const topic1: TopicManifest = {
     explain: {
       prompt: "Explain why 'cyber security' is many jobs, which roles are the realistic entry points, and why penetration testing is usually a destination rather than a first job.",
       modelAnswer: [
-        "Cyber security is a whole field of different roles, not one job: defenders and attackers, technical and advisory, hands-on and strategic, so there are many ways in and the right one may not be the one you first pictured.",
-        "The realistic entry roles are the SOC analyst (monitoring and triaging alerts), GRC and risk (compliance, audits and managing risk, friendly to non-technical backgrounds), and security-focused IT (hardening, patching and administering systems).",
-        "These are entry-accessible because they reward solid fundamentals and the right attitude over years of experience, and they are where most of the jobs actually are.",
-        "Penetration testing is usually a destination, not a first job: it needs deep technical skill and broad experience, often built first in one of the roles above.",
-        "So the realistic path is to get in through a door that is actually open to a capable beginner, build skills and experience, then specialise toward pen testing if that is your goal.",
+        "Cyber security is a whole field of roles, defensive and offensive, technical and advisory, so there are many ways in.",
+        "The realistic entry roles are SOC analyst triaging alerts, GRC and risk work, and security-focused IT hardening and patching.",
+        "GRC is friendly to non-technical backgrounds, and these roles reward solid fundamentals and attitude over years of experience.",
+        "They are also where most of the jobs actually are, so the open door may not be the one you first pictured.",
+        "Penetration testing is usually a destination, not a first job: build skill in an entry role, then specialise towards it.",
       ],
     },
     quiz: [

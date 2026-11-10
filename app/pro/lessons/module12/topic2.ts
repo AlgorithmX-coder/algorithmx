@@ -103,11 +103,11 @@ const topic2: TopicManifest = {
     explain: {
       prompt: "Capital One was breached through a misconfiguration, not an unknown exploit. Explain what a secure baseline and attack-surface reduction are, and how they target exactly this kind of self-inflicted breach.",
       modelAnswer: [
-        "A secure baseline is a defined, known-good configuration that makes a system safe by default (defaults removed, unneeded features off, security settings on), applied consistently so there are no odd one-off configurations to become the weak link.",
-        "Attack-surface reduction is the disciplined removal of everything that does not need to be there: unused software, open ports, spare accounts and any unnecessary exposure, because the less there is, the less there is to attack.",
-        "Both directly target misconfiguration (software set up unsafely rather than a software flaw), one of the most common and preventable causes of breaches.",
-        "Capital One's breach was exactly this: a misconfigured firewall that could be abused, plus access broader than it needed to be.",
-        "A secure baseline and regular configuration review would have aimed straight at that self-inflicted gap, and tighter access would have limited what the misconfiguration could reach.",
+        "A secure baseline is a defined, known-good configuration: defaults removed, unneeded features off, security settings on.",
+        "It is applied consistently, so no odd one-off configuration is left to become the weak link.",
+        "Attack-surface reduction removes all that need not be there: unused software, open ports, spare accounts, any unnecessary exposure.",
+        "Both target misconfiguration, software set up unsafely rather than a software flaw, a top preventable cause of breaches.",
+        "Capital One was exactly that: a misconfigured firewall plus access broader than needed, which a baseline and review would target.",
       ],
     },
     quiz: [

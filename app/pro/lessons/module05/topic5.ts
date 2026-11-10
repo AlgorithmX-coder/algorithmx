@@ -103,10 +103,10 @@ const topic5: TopicManifest = {
     explain: {
       prompt: "Disney+ itself was never breached, yet thousands of its accounts were taken over almost immediately. Explain how, and how your Personal Security Audit protects you from exactly this.",
       modelAnswer: [
-        "The accounts fell to credential stuffing: attackers took email-and-password pairs leaked from other sites and tried them automatically against Disney+.",
-        "Anywhere a customer had reused a password, the attackers logged straight in, with no breach of Disney needed.",
-        "A Personal Security Audit removes that exposure directly: a password manager gives every account a unique password, so a leak from one site cannot unlock another.",
-        "MFA on important accounts means a stolen or guessed password alone is not enough, so the audit closes the precise door this attack relies on.",
+        "The accounts fell to credential stuffing: email-and-password pairs leaked from other sites, replayed automatically.",
+        "Wherever a customer had reused a password the attackers simply logged in; Disney itself was never breached.",
+        "A password manager gives every account a unique password, so a leak from one site cannot unlock another.",
+        "MFA on important accounts means a stolen or guessed password alone is not enough, closing the exact door this attack needs.",
       ],
     },
     quiz: [

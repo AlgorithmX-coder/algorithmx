@@ -102,11 +102,11 @@ const topic1: TopicManifest = {
     explain: {
       prompt: "Explain why a portfolio beats claims for a beginner, what pieces you have already built in this course, and how to make a portfolio presentable.",
       modelAnswer: [
-        "A portfolio beats claims for a beginner because employers increasingly skills-test and want evidence you can actually do the work, not assurances that you are passionate and a fast learner; a portfolio of real artefacts turns 'I understand security' into 'here is security work I have done'.",
-        "It breaks the 'need experience to get experience' trap by demonstrating ability before anyone hires you, so a capable beginner with a strong portfolio can out-compete someone with a longer CV but nothing to show.",
-        "You have already built a portfolio throughout this course by design: a Personal Security Audit (Module 5), a Phishing Field Guide (Module 7), a vulnerability-assessment note (Module 11), a hardening checklist (Module 12), an incident report (Module 16), a small-business risk assessment (Module 17), and a working script with a README from the Code Lab.",
-        "These are concrete artefacts that mirror real role deliverables, which is what makes them credible.",
-        "To make a portfolio presentable, collect the pieces in one shareable place (a tidy document, a personal site, or a public code repository), tidy each so it reads clearly to a stranger, and aim for quality over quantity with a handful of clear, genuine pieces, keeping it honest because you may be asked to discuss each one.",
+        "Employers increasingly skills-test, so a portfolio of real artefacts proves ability where claims of passion cannot.",
+        "It breaks the need-experience-to-get-experience trap, letting a beginner out-compete a longer CV with nothing to show.",
+        "You built one by design: a Module 5 security audit, Module 7 phishing field guide, Module 11 vulnerability-assessment note.",
+        "Plus a Module 12 hardening checklist, Module 16 incident report, Module 17 risk assessment and a Code Lab script with README.",
+        "Make it presentable: one shareable place, each piece tidy for a stranger, quality over quantity, and honest enough to discuss.",
       ],
     },
     quiz: [

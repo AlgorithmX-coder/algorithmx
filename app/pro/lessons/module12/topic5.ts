@@ -102,10 +102,11 @@ const topic5: TopicManifest = {
     explain: {
       prompt: "Why is a hardening checklist such an effective tool, what sort of items belong on it, and why is it wise to start from a trusted baseline like the CIS Benchmarks rather than inventing your own?",
       modelAnswer: [
-        "A hardening checklist is effective because it turns the principles of secure configuration into concrete, repeatable action: it makes nothing easy to forget and lets anyone apply the same hardened baseline consistently, exactly why safety-critical fields like aviation and surgery rely on checklists.",
-        "Typical items draw straight from the module: change or remove default passwords and accounts, disable unused services and features, close unnecessary ports, apply least privilege and remove needless admin rights, enable automatic security updates, turn on logging and monitoring, and ensure malware protection.",
-        "It is wise to start from a trusted baseline like the CIS Benchmarks because you do not have to guess what matters: these free, consensus-built, expert-reviewed baselines give you a thorough checklist to adopt and adapt, so you benefit from the whole community's expertise and can often check systems against them automatically.",
-        "Adopting a trusted baseline, tailoring it, applying it consistently and reviewing against it is hardening done properly and at scale.",
+        "A hardening checklist turns secure configuration principles into concrete, repeatable action, so nothing is easy to forget.",
+        "Anyone can then apply the same hardened baseline consistently, which is why aviation and surgery rely on checklists.",
+        "Typical items: remove default passwords and accounts, disable unused services, close unnecessary ports, apply least privilege.",
+        "Also enable automatic security updates, turn on logging and monitoring, and make sure malware protection is in place.",
+        "Start from the CIS Benchmarks: free, consensus-built baselines you adopt, tailor, apply consistently and can often check automatically.",
       ],
     },
     quiz: [

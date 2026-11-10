@@ -108,11 +108,11 @@ const topic2: TopicManifest = {
     explain: {
       prompt: "Explain the difference between symmetric and asymmetric encryption, the key-distribution problem, and how HTTPS uses both.",
       modelAnswer: [
-        "Symmetric encryption uses a single shared secret key for both locking and unlocking; it is fast and ideal for bulk data, but it has the key-distribution problem: how do you get the shared key to a stranger securely without an eavesdropper grabbing it?",
-        "Asymmetric encryption solves this with a public/private key pair: everyone shares a public key freely and keeps a private key secret.",
-        "Anything encrypted with your public key can only be decrypted with your private key, so anyone can send you a secret with no prior shared secret needed, though it is slower than symmetric.",
-        "HTTPS uses both: the browser uses asymmetric encryption to safely agree a shared symmetric key with the server, then switches to fast symmetric encryption for the actual conversation.",
-        "This combination, enabled by public-key cryptography, gives the stranger-friendly key exchange of asymmetric with the speed of symmetric, and is what makes the secure internet possible.",
+        "Symmetric encryption uses one shared key to lock and unlock: fast, and ideal for bulk data.",
+        "Its flaw is key distribution: getting that shared key to a stranger without an eavesdropper grabbing it.",
+        "Asymmetric uses a key pair, a public key shared freely and a private key kept secret, but it is slower.",
+        "Only your private key opens what your public key locked, so anyone can send you a secret with no prior arrangement.",
+        "HTTPS uses both: asymmetric to agree a symmetric key, then symmetric for speed, making the secure internet possible.",
       ],
     },
     quiz: [
