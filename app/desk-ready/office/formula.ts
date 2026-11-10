@@ -22,6 +22,26 @@ const toNumber = (text: string): number | null => {
   return Number.isFinite(n) ? n : null;
 };
 
+/* Rewrite the cell references in a formula, leaving text in quotes alone.
+ * `fn` gets each reference's row and column (from 0) and returns the new
+ * row. Plain values come back unchanged. */
+function mapRefs(text: string, fn: (r: number, c: number) => number): string {
+  if (!text.trim().startsWith("=")) return text;
+  return text
+    .split(/("[^"]*")/)
+    .map((part, i) => (i % 2 === 1 ? part : part.replace(/\b([A-Za-z])([0-9]{1,3})\b/g, (_, col: string, row: string) => `${col.toUpperCase()}${Math.max(1, fn(Number(row) - 1, col.toUpperCase().charCodeAt(0) - 65) + 1)}`)))
+    .join("");
+}
+
+/* Copying a formula down by `dr` rows moves every reference with it, as
+ * Excel's fill handle does: =E2-F2 in row 2 becomes =E3-F3 in row 3. */
+export const shiftRefs = (text: string, dr: number) => mapRefs(text, (r) => r + dr);
+
+/* Moving a whole row (a sort) keeps the row's references to itself: a row
+ * that moves from 2 to 5 turns =E2-F2 into =E5-F5, and leaves =SUM(G2:G11)
+ * elsewhere alone. */
+export const moveRowRefs = (text: string, from: number, to: number) => mapRefs(text, (r) => (r === from ? to : r));
+
 class Bad extends Error {}
 /* A cell that leads back to itself, however far round. */
 class Loop extends Error {}

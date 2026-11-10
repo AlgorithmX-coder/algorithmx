@@ -89,7 +89,7 @@ export const PARTS: readonly DeskPart[] = [
         title: "What a spreadsheet is",
         promise: "Know your way round rows, columns and cells.",
         topics: ["Rows, columns and cells", "Cell addresses like B4", "Typing in and fixing mistakes", "Sheets and tabs", "Saving your work"],
-        ready: false,
+        ready: true,
       },
       {
         id: "m5",
