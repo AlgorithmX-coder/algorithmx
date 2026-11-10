@@ -3,11 +3,12 @@ import { notFound } from "next/navigation";
 import { prisma } from "@/app/lib/prisma";
 import { listClasses } from "@/app/lib/schoolClasses";
 import { trialStatus } from "@/app/lib/orgTrial";
-import { courseName, placesUsed } from "@/app/lib/schoolPlaces";
+import { courseName, listCreditablePlaces, placesUsed } from "@/app/lib/schoolPlaces";
 import { SchoolIcon, OrganisationIcon } from "./icons";
 import RevokeButton from "./schools/[slug]/RevokeButton";
 import DeleteOrgButton from "./DeleteOrgButton";
 import PlacesControl from "./PlacesControl";
+import CreditPlaces from "./CreditPlaces";
 
 /**
  * One school, or one organisation: its classes, pupil counts and status.
@@ -44,6 +45,12 @@ export default async function LearnerOrgDetail({
      different numbers the moment a class is archived or a pupil leaves,
      and the licence is counted against this one. */
   const spent = await placesUsed(org.id);
+  /* Places spent on pupils who have since been removed. Nothing frees one
+     automatically, on purpose: a place follows the child, which is what
+     stops a hundred children being taught on fifty places. Staff put one
+     back when it was a mistake, and until now that meant editing the
+     database by hand. */
+  const creditable = await listCreditablePlaces(org.id);
   const pupilsUsed = classes.reduce((a, c) => a + c._count.pupils, 0);
   const status = trialStatus(org.trialExpiresAt);
   const day = (d: Date | null) => (d ? d.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" }) : "—");
@@ -83,6 +90,14 @@ export default async function LearnerOrgDetail({
       </div>
 
       <PlacesControl orgId={org.id} places={org.seatsPurchased} spent={spent} learners={w.learners} />
+
+      {/* Dates formatted here rather than in the browser, so staff and the
+          server never disagree about which day a place was spent. */}
+      <CreditPlaces
+        orgId={org.id}
+        learners={w.learners}
+        places={creditable.map((p) => ({ id: p.id, spentOn: day(p.redeemedAt) }))}
+      />
 
       <div className="ad-card ad-table-wrap">
         <table className="ad-table">
