@@ -1,10 +1,12 @@
 import { describe, expect, it } from "vitest";
-import { display, evaluate } from "./formula";
+import { display, evaluate, moveRowRefs, shiftRefs } from "./formula";
+import { decemberRota } from "./jobs/decemberRota";
 import { lateDelivery } from "./jobs/lateDelivery";
 import { mondayInbox } from "./jobs/mondayInbox";
 import { morningReport } from "./jobs/morningReport";
+import { stockCount } from "./jobs/stockCount";
 import { PEOPLE, YOU } from "./northfield";
-import type { Email, Grid, OfficeState } from "./types";
+import { tabsOf, type Email, type Grid, type OfficeState } from "./types";
 
 /* The office engine held on every CI run: the formulas a learner types,
  * and the morning report's marking (a fresh office fails, a job done the
@@ -153,5 +155,78 @@ describe("Reply, Reply all or Forward", () => {
   });
   it("catches the customer copied into the internal forward", () => {
     expect(fails([replyAll, { ...forward, cc: kent.cc }])).toEqual(["internal"]);
+  });
+});
+
+describe("moving formulas", () => {
+  it("shifts every reference when copied down, and leaves text alone", () => {
+    expect(shiftRefs("=E2-F2", 1)).toBe("=E3-F3");
+    expect(shiftRefs("=SUM(G2:G11)", 2)).toBe("=SUM(G4:G13)");
+    expect(shiftRefs("Pallet wrap", 1)).toBe("Pallet wrap");
+  });
+  it("keeps a sorted row pointing at itself", () => {
+    expect(moveRowRefs("=E2-F2", 1, 4)).toBe("=E5-F5");
+    expect(moveRowRefs("=SUM(G2:G11)", 6, 2)).toBe("=SUM(G2:G11)");
+  });
+});
+
+const sentTo = (to: Email["to"]): Email => ({ ...reply(), id: "s1", to, links: [] });
+
+describe("Fix the stock count", () => {
+  const withAisleC = (edit: (g: Grid) => void, extra: Partial<OfficeState> = {}): OfficeState => {
+    const s = stockCount.seed();
+    return {
+      ...s,
+      ...extra,
+      files: s.files.map((f) => {
+        if (f.id !== "seed-stock") return f;
+        const tabs = tabsOf(f).map((t) => ({ ...t, grid: t.grid.map((r) => [...r]) }));
+        edit(tabs[2].grid);
+        return { ...f, tabs, sheet: tabs[0].grid, by: "You" };
+      }),
+      emails: [...s.emails, sentTo([PEOPLE.sarah])],
+    };
+  };
+  const fails = (s: OfficeState) => stockCount.check(s).filter((c) => !c.ok).map((c) => c.id);
+
+  it("passes with both fixes saved on Aisle C and Sarah told", () => {
+    expect(fails(withAisleC((g) => ((g[8][1] = "120"), (g[13][1] = "36"))))).toEqual([]);
+  });
+  it("names the wrong tab when B9 was changed on Aisle A", () => {
+    const s = stockCount.seed();
+    const wrong: OfficeState = { ...s, files: s.files.map((f) => (f.id === "seed-stock" ? { ...f, tabs: tabsOf(f).map((t, i) => (i === 0 ? { ...t, grid: t.grid.map((r, ri) => (ri === 8 ? ["Napkins", "120", "", ""] : r)) } : t)), by: "You" } : f)) };
+    const fix = stockCount.check(wrong).find((c) => c.id === "fix-B9")?.fix ?? "";
+    expect(fix).toContain("Aisle A tab");
+  });
+  it("catches a stray change elsewhere", () => {
+    expect(fails(withAisleC((g) => ((g[8][1] = "120"), (g[13][1] = "36"), (g[2][1] = "81"))))).toEqual(["nothing-else"]);
+  });
+});
+
+describe("Start December's rota", () => {
+  const withTabs = (tabs: { name: string; grid: Grid }[], tell = true): OfficeState => {
+    const s = decemberRota.seed();
+    return { ...s, files: s.files.map((f) => (f.id === "seed-rota" ? { ...f, tabs, sheet: tabs[0].grid, by: "You" } : f)), emails: tell ? [...s.emails, sentTo([PEOPLE.emma])] : s.emails };
+  };
+  const nov = tabsOf(decemberRota.seed().files.find((f) => f.id === "seed-rota")!)[0];
+  const blank = (): Grid => nov.grid.map((r) => r.map(() => ""));
+  const dec = () => {
+    const g = blank();
+    g[0] = ["Name", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    return { name: "December", grid: g };
+  };
+  const fails = (s: OfficeState) => decemberRota.check(s).filter((c) => !c.ok).map((c) => c.id);
+
+  it("passes with December after November, headings in, saved and Emma told", () => {
+    expect(fails(withTabs([nov, dec()]))).toEqual([]);
+  });
+  it("catches a tab left as Sheet2, and one put before November", () => {
+    expect(fails(withTabs([nov, { ...dec(), name: "Sheet2" }]))).toEqual(expect.arrayContaining(["tab"]));
+    expect(fails(withTabs([dec(), nov]))).toEqual(["after"]);
+  });
+  it("catches a missing heading", () => {
+    const d = dec();
+    d.grid[0][6] = "";
+    expect(fails(withTabs([nov, d]))).toEqual(["headings"]);
   });
 });

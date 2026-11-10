@@ -103,7 +103,7 @@ export default function Outlook({
   const addFile = (f: OfficeFile) => {
     if (!draft) return;
     if (picker === "link") setDraft({ ...draft, links: [...draft.links, { name: f.name, path: f.path, fileName: f.name }] });
-    else setDraft({ ...draft, attachments: [...draft.attachments, { name: f.name, sheet: f.sheet, paper: f.paper }] });
+    else setDraft({ ...draft, attachments: [...draft.attachments, { name: f.name, sheet: f.sheet, tabs: f.tabs, paper: f.paper }] });
     setPicker(null);
   };
 

@@ -24,6 +24,12 @@ export interface Paper {
 
 export type FileKind = "folder" | "xlsx" | "xltx" | "docx" | "pdf";
 
+/* One sheet of a workbook, by its tab name. */
+export interface Tab {
+  name: string;
+  grid: Grid;
+}
+
 export interface OfficeFile {
   id: string;
   path: Path; // the folder it sits in
@@ -31,7 +37,11 @@ export interface OfficeFile {
   kind: FileKind;
   modified: string; // as shown: "Today 08:12", "06/11/2026"
   by: string;
+  /* The first sheet, which most jobs read. */
   sheet?: Grid;
+  /* Every sheet, when a workbook has more than one. Saving keeps `sheet`
+   * equal to the first tab's grid. */
+  tabs?: Tab[];
   /* Column widths in px for a sheet, A first. */
   widths?: number[];
   paper?: Paper;
@@ -49,6 +59,7 @@ export interface Attachment {
   /* A copy travels with the email. */
   paper?: Paper;
   sheet?: Grid;
+  tabs?: Tab[];
 }
 
 export interface EmailLink {
@@ -122,4 +133,7 @@ export interface Job {
 }
 
 export const pathText = (p: Path) => p.join(" > ");
+
+/* A workbook's sheets, whether it was saved with tabs or as one sheet. */
+export const tabsOf = (f: { sheet?: Grid; tabs?: Tab[] }): Tab[] => f.tabs ?? (f.sheet ? [{ name: "Sheet1", grid: f.sheet }] : []);
 export const samePath = (a: Path, b: Path) => a.length === b.length && a.every((x, i) => x === b[i]);

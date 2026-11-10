@@ -12,7 +12,7 @@ import Outlook from "./apps/Outlook";
 import Viewer from "./apps/Viewer";
 import { PlacePicker } from "./places";
 import { newId, useOffice } from "./store";
-import { samePath, type Check, type Grid, type Job, type OfficeFile, type Paper, type Path } from "./types";
+import { samePath, tabsOf, type Check, type Job, type OfficeFile, type Paper, type Path } from "./types";
 import { AppButton, Dialog, OFFICE_CSS } from "./ui";
 
 /* The pretend office for one job: a task panel on the left (the brief,
@@ -47,11 +47,12 @@ export default function Office({ job }: { job: Job }) {
   const guard = (then: () => void) => (doc?.dirty ? setUnsaved({ then }) : then());
 
   const openFile = (f: OfficeFile) => {
-    if ((f.kind === "xlsx" || f.kind === "xltx") && f.sheet) {
-      const sheet = f.sheet.map((r) => [...r]);
-      const widths = f.widths ?? Array(sheet[0]?.length ?? 8).fill(100);
+    const book = tabsOf(f);
+    if ((f.kind === "xlsx" || f.kind === "xltx") && book.length) {
+      const tabs = book.map((t) => ({ name: t.name, grid: t.grid.map((r) => [...r]) }));
+      const widths = f.widths ?? Array(tabs[0].grid[0]?.length ?? 8).fill(100);
       guard(() => {
-        setDoc(f.kind === "xltx" ? { fileId: null, name: `${f.name.replace(/\.xltx$/i, "")}1`, path: null, sheet, widths, dirty: false } : { fileId: f.id, name: f.name, path: f.path, sheet, widths, dirty: false });
+        setDoc(f.kind === "xltx" ? { fileId: null, name: `${f.name.replace(/\.xltx$/i, "")}1`, path: null, tabs, active: 0, widths, dirty: false } : { fileId: f.id, name: f.name, path: f.path, tabs, active: 0, widths, dirty: false });
         setApp("excel");
       });
     } else {
@@ -68,7 +69,7 @@ export default function Office({ job }: { job: Job }) {
   const save = () => {
     if (!liveDoc) return;
     if (!liveDoc.fileId || !docFile) return setSaveAs(true);
-    dispatch({ type: "saveFile", file: { ...docFile, sheet: liveDoc.sheet, modified: "Today, just now", by: "You" } });
+    dispatch({ type: "saveFile", file: { ...docFile, ...bookFields(liveDoc), modified: "Today, just now", by: "You" } });
     setDoc({ ...liveDoc, dirty: false });
   };
 
@@ -76,7 +77,7 @@ export default function Office({ job }: { job: Job }) {
     if (!liveDoc) return;
     const replacing = replaceId ? state.files.find((f) => f.id === replaceId) : undefined;
     const id = replaceId ?? newId("file");
-    const file: OfficeFile = { id, path, name, kind: "xlsx", modified: "Today, just now", by: "You", sheet: liveDoc.sheet, widths: liveDoc.widths, seeded: replacing?.seeded };
+    const file: OfficeFile = { id, path, name, kind: "xlsx", modified: "Today, just now", by: "You", ...bookFields(liveDoc), widths: liveDoc.widths, seeded: replacing?.seeded };
     dispatch({ type: "saveFile", file });
     setDoc({ ...liveDoc, fileId: id, name, path, dirty: false });
     setSaveAs(false);
@@ -147,7 +148,7 @@ export default function Office({ job }: { job: Job }) {
           <section className="of-screen of-office" aria-label="Your desktop" style={{ colorScheme: "light" }}>
             <div className="of-window">
               <div style={{ display: app === "outlook" ? "block" : "none", height: "100%" }}>
-                <Outlook state={state} dispatch={dispatch} onAttachment={(a) => (a.sheet ? openFile({ id: "attachment", path: [], name: a.name, kind: "xlsx", modified: "", by: "", sheet: a.sheet }) : setViewer({ title: a.name, paper: a.paper, key: Date.now() }))} onLink={(l) => openLink(l.path, l.fileName)} />
+                <Outlook state={state} dispatch={dispatch} onAttachment={(a) => (a.sheet ? openFile({ id: "attachment", path: [], name: a.name, kind: "xlsx", modified: "", by: "", sheet: a.sheet, tabs: a.tabs }) : setViewer({ title: a.name, paper: a.paper, key: Date.now() }))} onLink={(l) => openLink(l.path, l.fileName)} />
               </div>
               <div style={{ display: app === "explorer" ? "block" : "none", height: "100%" }}>
                 <Explorer state={state} dispatch={dispatch} onOpen={openFile} />
@@ -155,7 +156,7 @@ export default function Office({ job }: { job: Job }) {
               <div style={{ display: app === "excel" ? "block" : "none", height: "100%" }}>
                 <Excel
                   doc={liveDoc}
-                  onEdit={(g: Grid) => liveDoc && setDoc({ ...liveDoc, sheet: g, dirty: true })}
+                  onChange={(tabs, active, dirty) => liveDoc && setDoc({ ...liveDoc, tabs, active, dirty })}
                   onSave={save}
                   onSaveAs={() => setSaveAs(true)}
                   onClose={() => guard(() => setDoc(null))}
@@ -304,6 +305,13 @@ function Scorecard({ job, results, onClose, onAgain }: { job: Job; results: Chec
       </div>
     </div>
   );
+}
+
+/* What a saved workbook stores: the first sheet for the jobs that read
+ * one, and every tab once there is more than the default Sheet1. */
+function bookFields(doc: ExcelDoc): Pick<OfficeFile, "sheet" | "tabs"> {
+  const plain = doc.tabs.length === 1 && doc.tabs[0].name === "Sheet1";
+  return { sheet: doc.tabs[0].grid, tabs: plain ? undefined : doc.tabs };
 }
 
 const OFFICE_SHELL_CSS = `
