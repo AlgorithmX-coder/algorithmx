@@ -98,6 +98,9 @@ export interface OfficeState {
   emails: Email[];
   /* The job's own mail folders, beside Inbox and Sent items. */
   mailFolders?: string[];
+  /* When this browser last changed it (ms), so the newer of this browser's
+   * copy and the account's copy wins. */
+  savedAt?: number;
 }
 
 export interface Check {

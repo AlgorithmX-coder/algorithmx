@@ -26,6 +26,7 @@ const PRIVATE_TEXT_ROUTES = [
   "/api/pro/tutor",
   "/api/pro/summarise",
   "/api/ops/eval",
+  "/api/desk/office",
 ];
 
 /** Headers that carry a session or a credential. Compared lower-case. */

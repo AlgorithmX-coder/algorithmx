@@ -1,12 +1,16 @@
-import { useEffect, useReducer } from "react";
+import { useEffect, useReducer, useRef } from "react";
 import { samePath, type Email, type Job, type OfficeFile, type OfficeState, type Path } from "./types";
 
 /* The office record for one job, kept in this browser like the rest of
- * Desk Ready's progress (server sync is a follow-up). It lives under its own
- * key per job, so starting again on one job never touches another. Read
- * once when the office mounts (the office renders on the client only), and
- * written back on every change. Storage can be blocked, so every access is
- * wrapped: the office still works, it just is not remembered. */
+ * Desk Ready's progress. It lives under its own key per job, so starting
+ * again on one job never touches another. Read once when the office mounts
+ * (the office renders on the client only), and written back on every
+ * change. Storage can be blocked, so every access is wrapped: the office
+ * still works, it just is not remembered.
+ *
+ * A signed-in learner's office is also kept on their account
+ * (/api/desk/office/[job]), best effort: on opening, the newer of the two
+ * copies wins, and changes go up a moment after they happen. */
 
 const VERSION = 1;
 const key = (job: Job) => `desk:office:${job.id}`;
@@ -32,7 +36,13 @@ export const newId = (prefix: string) => `${prefix}-${Date.now().toString(36)}-$
 const inside = (f: OfficeFile, folder: Path) => f.path.length >= folder.length && folder.every((x, i) => f.path[i] === x);
 const folderPath = (f: OfficeFile): Path => [...f.path, f.name];
 
+/* Every change is stamped, so the newer copy wins when the account's copy
+ * and this browser's copy differ. A reset brings its own stamp. */
 function reducer(s: OfficeState, a: Action): OfficeState {
+  return a.type === "reset" ? a.state : { ...apply(s, a), savedAt: Date.now() };
+}
+
+function apply(s: OfficeState, a: Action): OfficeState {
   switch (a.type) {
     case "saveFile": {
       const others = s.files.filter((f) => f.id !== a.file.id);
@@ -104,17 +114,65 @@ function load(job: Job): OfficeState {
   return { ...job.seed(), version: VERSION };
 }
 
+/* On opening, which copy wins: the account's when it is newer ("down"),
+ * this browser's when it is newer and signed in ("up"), else nothing. */
+export function newerCopy(local: OfficeState, server: unknown, signedIn: boolean): "down" | "up" | null {
+  const theirs = isOffice(server) ? server : null;
+  if (theirs && (theirs.savedAt ?? 0) > (local.savedAt ?? 0)) return "down";
+  if (signedIn && (local.savedAt ?? 0) > (theirs?.savedAt ?? 0)) return "up";
+  return null;
+}
+
+const isOffice = (x: unknown): x is OfficeState => {
+  const s = x as OfficeState | null;
+  return !!s && s.version === VERSION && Array.isArray(s.files) && Array.isArray(s.emails);
+};
+
 export function useOffice(job: Job) {
   const [state, dispatch] = useReducer(reducer, job, load);
+  const latest = useRef(state);
+  /* null until the account has answered; then whether to keep it in step */
+  const signedIn = useRef<boolean | null>(null);
+  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const url = `/api/desk/office/${job.id}`;
+
   useEffect(() => {
+    let gone = false;
+    fetch(url, { cache: "no-store" })
+      .then((r) => r.json())
+      .then((body: { state?: unknown; signedIn?: boolean }) => {
+        if (gone) return;
+        signedIn.current = !!body.signedIn;
+        const which = newerCopy(latest.current, body.state, signedIn.current);
+        if (which === "down" && isOffice(body.state)) dispatch({ type: "reset", state: body.state });
+        else if (which === "up") push(url, latest.current);
+      })
+      .catch(() => {
+        signedIn.current = false;
+      });
+    return () => {
+      gone = true;
+    };
+  }, [url]);
+
+  useEffect(() => {
+    latest.current = state;
     try {
       window.localStorage.setItem(key(job), JSON.stringify(state));
     } catch {
       /* not remembered, still works */
     }
-  }, [job, state]);
-  const reset = () => dispatch({ type: "reset", state: { ...job.seed(), version: VERSION } });
+    if (!signedIn.current) return;
+    if (timer.current) clearTimeout(timer.current);
+    timer.current = setTimeout(() => push(url, state), 1500);
+  }, [job, state, url]);
+
+  const reset = () => dispatch({ type: "reset", state: { ...job.seed(), version: VERSION, savedAt: Date.now() } });
   return { state, dispatch, reset };
+}
+
+function push(url: string, state: OfficeState): void {
+  void fetch(url, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ state }) }).catch(() => {});
 }
 
 /* What sits directly in a folder: folders first, then files, by name. */

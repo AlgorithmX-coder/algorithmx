@@ -41,6 +41,8 @@ model User {
   packShareLinks      PackShareLink[]
   classesTaught       Class[]
   proProgress         ProProgress[]
+  deskProgress        DeskProgress[]
+  deskOffices         DeskOffice[]
   teacherInvites      TeacherInvite[]
 }
 
@@ -951,4 +953,43 @@ model ProProgress {
   @@unique([userId, topicId])
   @@index([userId])
   @@index([userId, moduleId])
+}
+
+// ---------------------------------------------------------------------------
+// Desk Ready (consumer, individuals). Server-side progress, the same way as
+// Cyber Pro's: the client keeps localStorage as its primary store and syncs
+// here best-effort, so these tables being briefly absent never breaks the
+// course. DeskProgress has one row per finished lesson ("m2t1") or office
+// job ("m5j1"). DeskOffice keeps each job's pretend office (its inbox, sent
+// mail and files, as the learner left them) so a job can be carried on from
+// another computer. Both go when the user does.
+// ---------------------------------------------------------------------------
+
+model DeskProgress {
+  id          String   @id @default(cuid())
+  userId      String
+  /// The module, e.g. "m5".
+  moduleId    String
+  /// The finished lesson ("m5t2") or office job ("m5j1"). Unique per user.
+  itemId      String
+  completedAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, itemId])
+  @@index([userId])
+}
+
+model DeskOffice {
+  id        String   @id @default(cuid())
+  userId    String
+  /// The office job, e.g. "m5j1".
+  jobId     String
+  /// The office record as the client keeps it (app/desk-ready/office/types.ts).
+  state     Json
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, jobId])
 }
