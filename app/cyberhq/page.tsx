@@ -30,7 +30,10 @@ import PlaySignatureOnMount from "@/app/components/lesson/PlaySignatureOnMount";
 import PlayHubAmbientOnMount from "@/app/components/PlayHubAmbientOnMount";
 import PixIcon from "@/app/components/lesson/PixIcon";
 import PupilSignOut from "@/app/components/PupilSignOut";
+import CarryOn from "@/app/components/cyberhq/CarryOn";
 import { getAchievedMilestones, getCertificateUrl } from "@/app/lib/certificates";
+import { nextWeekFor, HEROES_WEEKS } from "@/app/lib/nextWeek";
+import { isSchoolPupil } from "@/app/lib/pupilAuth";
 
 const C = {
   pageBg: "#080a16",
@@ -50,7 +53,9 @@ const FONT_STACK =
 
 export default async function CyberHQPage() {
   const session = await auth();
-  if (!session?.user) redirect("/login");
+  /* The id, not just the user: everything below needs it, and the page used
+     to carry a guard that did not promise one. */
+  if (!session?.user?.id) redirect("/login");
 
   const [earned, earnedBadges, snapshot] = await Promise.all([
     getEarnedStickers(),
@@ -80,6 +85,22 @@ export default async function CyberHQPage() {
      badge case already derives from. */
   const certificates = getAchievedMilestones(snapshot.weeks.filter((w) => w.completed).length);
   const collectionsEmpty = earnedCount === 0 && badgeEarnedCount === 0;
+
+  /* The way back into a lesson. This page is the reward wall, and until now
+     every part of it was about what a child had already done: the only link
+     to an actual week appeared when they had no stickers at all, so it
+     vanished the moment they finished week one. A school pupil signs in and
+     lands here, so that left a child in a classroom standing in a trophy
+     cabinet with nowhere to go. */
+  const completedWeeks = snapshot.weeks.filter((w) => w.completed).map((w) => w.week);
+  const nextWeek = nextWeekFor(snapshot.weeks, HEROES_WEEKS);
+
+  /* Whose screen the back link belongs to. "Back to dashboard" is the
+     family account's screen, which is the right answer for a child playing
+     at home on a parent's account and the wrong one for a pupil on a
+     classroom machine: they did not come from there, cannot do anything
+     with it, and have their own sign-out on this page already. */
+  const pupil = await isSchoolPupil(session.user.id);
 
   return (
     <main
@@ -134,24 +155,28 @@ export default async function CyberHQPage() {
       </div>
 
       <div style={{ position: "relative", maxWidth: 1000, margin: "0 auto", zIndex: 1 }}>
-        {/* Back link */}
-        <Link
-          href="/dashboard"
-          style={{
-            display: "inline-block",
-            color: C.cyan,
-            textDecoration: "none",
-            fontSize: 13,
-            fontWeight: 700,
-            marginBottom: 18,
-            padding: "6px 14px",
-            background: "rgba(0, 229, 255, 0.08)",
-            border: `1px solid ${C.border}`,
-            borderRadius: 999,
-          }}
-        >
-          ← Back to dashboard
-        </Link>
+        {/* Back link, for a child playing at home. A school pupil never came
+            from the family dashboard and cannot use it, so they do not get
+            sent at it. Their way out is the sign-out pill on this page. */}
+        {!pupil && (
+          <Link
+            href="/dashboard"
+            style={{
+              display: "inline-block",
+              color: C.cyan,
+              textDecoration: "none",
+              fontSize: 13,
+              fontWeight: 700,
+              marginBottom: 18,
+              padding: "6px 14px",
+              background: "rgba(0, 229, 255, 0.08)",
+              border: `1px solid ${C.border}`,
+              borderRadius: 999,
+            }}
+          >
+            ← Back to dashboard
+          </Link>
+        )}
 
         {/* Header — the lab scene EMBEDDED into the page background: no card
             frame, edges feathered with a radial mask so it dissolves into the
@@ -188,6 +213,15 @@ export default async function CyberHQPage() {
             </p>
           </div>
         </div>
+
+        {/* The lesson, before the trophies. A child has forty minutes and
+            the first thing on the screen should be the thing they came to
+            do, not the things they did last week. */}
+        <CarryOn
+          nextWeek={nextWeek}
+          completedWeeks={completedWeeks}
+          totalWeeks={HEROES_WEEKS}
+        />
 
         {/* Progress summary */}
         <section
