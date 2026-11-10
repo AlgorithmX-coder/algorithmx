@@ -1,7 +1,8 @@
 import { prisma } from "@/app/lib/prisma";
 import { opsAlert } from "@/app/lib/opsAlert";
 import { AI_CLEARED_SLUG, AI_FLUENT_SLUG, FIRM_ORG } from "@/app/lib/aiCleared";
-import { FIRM_THRESHOLD, newInviteToken, sendAdminWelcome } from "@/app/lib/aiClearedAdmin";
+import { FIRM_THRESHOLD, newInviteToken, seatsLeft, sendAdminWelcome } from "@/app/lib/aiClearedAdmin";
+import { checkFirmSeats } from "@/app/lib/firmSeats";
 import { moduleListFor } from "@/app/lib/courseModules";
 import { COURSES, courseByKey, corporateCourse, courseOfSerial, type CourseSlug } from "@/app/ai-cleared/engine/courses";
 import type { OrgPlan } from "@prisma/client";
@@ -162,6 +163,68 @@ export async function createFirm(args: {
     await opsAlert({ what: "An admin welcome email did not send", detail: { firm: org.name, slug, adminEmail: args.adminEmail, link: `${args.origin}/ai-cleared/join/${token}` }, error: err });
   }
   return { org, token, link: `${args.origin}/ai-cleared/join/${token}`, emailed };
+}
+
+/* Staff change a firm's Cyber Secured seat count after it was created: an
+ * invoice paid for a top-up, a correction, a goodwill seat. Never touches
+ * Stripe and takes no money; it only moves the number the invite cap is
+ * checked against.
+ *
+ * The rules live in checkFirmSeats (pure, unit-tested); this recounts the
+ * people holding a seat at the moment of saving and runs them again, so a
+ * stale screen cannot sneak under the floor. Schools are refused: a school
+ * is re-licensed by setPlaces against its place ledger, a different floor.
+ *
+ * There is no audit table, so the trail is the same one a revoke or a
+ * school's place change leaves: an ops alert (Sentry + the ops mailbox)
+ * naming who, from, to and why, plus a log line. The write is conditional
+ * on the number not having moved since it was read, so two staff saving at
+ * once cannot silently overwrite each other. */
+export type SetFirmSeatsResult =
+  | { ok: true; seats: number; previous: number; held: number }
+  | { ok: false; error: "not_found" | "changed_meanwhile"; message: string }
+  | { ok: false; error: "invalid"; message: string; held: number };
+
+export async function setFirmSeats(args: {
+  orgId: string;
+  seats: unknown;
+  reason: unknown;
+  actor: { name: string; email: string | null };
+}): Promise<SetFirmSeatsResult> {
+  const org = await prisma.organisation.findFirst({
+    where: { id: args.orgId, ...FIRM_ORG },
+    select: { id: true, name: true, slug: true, seatsPurchased: true },
+  });
+  if (!org) return { ok: false, error: "not_found", message: "That firm does not exist." };
+
+  const { used: held } = await seatsLeft(org.id);
+  const check = checkFirmSeats({ seats: args.seats, held, current: org.seatsPurchased, reason: args.reason });
+  if (!check.ok) return { ok: false, error: "invalid", message: check.message, held };
+
+  /* Saying the same number again changes nothing and alerts nobody. */
+  if (check.unchanged) return { ok: true, seats: check.seats, previous: org.seatsPurchased, held };
+
+  const moved = await prisma.organisation.updateMany({
+    where: { id: org.id, seatsPurchased: org.seatsPurchased },
+    data: { seatsPurchased: check.seats },
+  });
+  if (moved.count === 0) {
+    return { ok: false, error: "changed_meanwhile", message: "Someone else changed this firm's seats a moment ago. Reload the page and try again." };
+  }
+
+  const detail = {
+    firm: org.name,
+    slug: org.slug,
+    from: org.seatsPurchased,
+    to: check.seats,
+    held,
+    reason: check.reason,
+    changedBy: args.actor.email ?? args.actor.name,
+    charged: "no (seat count only, Stripe untouched)",
+  };
+  console.info("[ops] firm seats changed", JSON.stringify(detail));
+  await opsAlert({ what: "Firm seats changed", detail });
+  return { ok: true, seats: check.seats, previous: org.seatsPurchased, held };
 }
 
 export interface LookupHit {

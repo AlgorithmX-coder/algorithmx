@@ -3,18 +3,19 @@ import { modelCallsLastDay } from "@/app/lib/modelAllowance";
 import { notFound, redirect } from "next/navigation";
 import { auth } from "@/app/lib/auth";
 import { isStaffUser } from "@/app/lib/aiClearedStaff";
-import { getAdminContext, getTeam } from "@/app/lib/aiClearedAdmin";
+import { getAdminContext, getTeam, seatsLeft } from "@/app/lib/aiClearedAdmin";
 import { firstNameOf } from "@/app/lib/aiCleared";
 import { prisma } from "@/app/lib/prisma";
 import { getPurchaseAmount } from "@/app/lib/refund";
 import { CLASS_DEFAULT_NAME } from "../../engine/types";
 import Frame from "../../Frame";
 import TeamPanel from "@/app/cyber-secured/TeamPanel";
-import { PurchasesPanel, RevokeFirmButton, DeleteFirmButton, type PurchaseRow } from "./OpsFirmActions";
+import { PurchasesPanel, RevokeFirmButton, DeleteFirmButton, SeatsControl, type PurchaseRow } from "./OpsFirmActions";
 
 /* /ai-cleared/ops/[slug]: one firm, exactly as its admin sees it on
  * /cyber-secured/admin, with the same invite, resend, remove, nudge and
- * profile actions, plus the staff-only purchases, revoke and delete. */
+ * profile actions, plus the staff-only seat editor, purchases, revoke and
+ * delete. */
 export const dynamic = "force-dynamic";
 
 const PLAN: Record<string, string> = { TEAM: "Team", FIRM: "Firm", ENTERPRISE: "Enterprise" };
@@ -30,6 +31,9 @@ export default async function OpsFirmPage({ params }: { params: Promise<{ slug: 
 
   const { tracks, rows } = await getTeam(ctx.orgId);
   const calls = await modelCallsLastDay(ctx.orgId);
+  /* The people holding a seat, counted as the invite cap counts them: the
+     floor the seat editor will not go below. */
+  const standing = await seatsLeft(ctx.orgId);
   const p = ctx.org.profile;
   const profile = {
     approvedTools: p?.approvedTools ?? [],
@@ -76,6 +80,8 @@ export default async function OpsFirmPage({ params }: { params: Promise<{ slug: 
         {/* Only once access is closed: same rule as the schools side. */}
         <DeleteFirmButton orgId={ctx.orgId} name={ctx.org.name} revoked={!!ctx.org.revokedAt} />
       </p>
+      <span className="cf-eyebrow">Edit seats</span>
+      <SeatsControl orgId={ctx.orgId} seats={ctx.org.seatsPurchased} held={standing.used} />
       <span className="cf-eyebrow">Purchases</span>
       <PurchasesPanel purchases={purchases} />
       <TeamPanel firmName={ctx.org.name} role="ADMIN" seatsPurchased={ctx.org.seatsPurchased} tracks={tracks} rows={rows} profile={profile} orgId={ctx.orgId} />

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { checkFirmSeats } from "@/app/lib/firmSeats";
 
 /* Staff-only actions on one firm: close/reopen its access, and refund a
  * purchase by a typed amount. Separate from TeamPanel (which a firm's
@@ -79,6 +80,108 @@ function RefundRow({ purchase }: { purchase: PurchaseRow }) {
 export function PurchasesPanel({ purchases }: { purchases: PurchaseRow[] }) {
   if (purchases.length === 0) return <p className="cf-note">No card purchases on this firm - set up by hand, or seats added without Stripe.</p>;
   return <ul style={{ listStyle: "none", margin: 0, padding: 0 }}>{purchases.map((p) => <RefundRow key={p.id} purchase={p} />)}</ul>;
+}
+
+/**
+ * Edit a firm's Cyber Secured seat count: an invoice-paid top-up, a
+ * correction, a goodwill seat. Seat count only; Stripe is never touched.
+ *
+ * Shows the floor (people already holding a seat) beside the box, the same
+ * way the schools PlacesControl does: the number staff type only means
+ * anything against the number already taken, and saying so up front is
+ * kinder than explaining a refusal. The same checkFirmSeats runs here and
+ * on the server; the server's is the one that counts.
+ */
+const field = { padding: "6px 8px", borderRadius: 8, border: "1px solid rgba(20,22,29,0.2)" } as const;
+
+export function SeatsControl({ orgId, seats, held }: { orgId: string; seats: number; held: number }) {
+  const router = useRouter();
+  const [value, setValue] = useState(String(seats));
+  const [reason, setReason] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [err, setErr] = useState<string | null>(null);
+  const [done, setDone] = useState<string | null>(null);
+
+  const check = checkFirmSeats({ seats: value, held, current: seats, reason });
+  const unchanged = check.ok && check.unchanged;
+  /* Only shout about the number while typing; the reason's own message
+     waits for Save, so an empty reason box is not an error on load. */
+  const numberProblem = !check.ok && (check.error === "not_whole" || check.error === "below_held" || check.error === "over_max") ? check.message : null;
+
+  async function save() {
+    if (!check.ok) {
+      setErr(check.message);
+      return;
+    }
+    setBusy(true);
+    setErr(null);
+    setDone(null);
+    try {
+      const res = await fetch("/api/ops/firms", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ orgId, seatsPurchased: check.seats, reason: check.reason }),
+      });
+      const j = (await res.json().catch(() => ({}))) as { error?: string; previous?: number; seats?: number };
+      if (!res.ok) throw new Error(j.error ?? "Something went wrong.");
+      setDone(j.previous !== j.seats ? `Changed from ${j.previous} to ${j.seats}. Logged with your reason.` : "Saved. Nothing changed.");
+      setReason("");
+      router.refresh();
+    } catch (e) {
+      setErr(e instanceof Error ? e.message : "Something went wrong.");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  return (
+    <div data-testid="seats-control" style={{ display: "flex", flexDirection: "column", gap: 8, padding: "10px 0 16px" }}>
+      <span className="cf-note">
+        {held === 0 ? "Nobody holds a seat yet, so this can be set to anything." : `${held} ${held === 1 ? "person holds" : "people hold"} a seat, so it cannot go below ${held}.`}
+      </span>
+      <span style={{ display: "flex", gap: 10, alignItems: "flex-end", flexWrap: "wrap" }}>
+        <label style={{ display: "flex", flexDirection: "column", gap: 4, fontSize: 13 }}>
+          Seats
+          <input
+            id="ops-seats"
+            type="number"
+            inputMode="numeric"
+            min={held}
+            max={10000}
+            step={1}
+            value={value}
+            onChange={(e) => { setValue(e.target.value); setErr(null); setDone(null); }}
+            style={{ ...field, width: 110 }}
+          />
+        </label>
+        <label style={{ display: "flex", flexDirection: "column", gap: 4, fontSize: 13, flex: "1 1 260px", minWidth: 0 }}>
+          Reason (required)
+          <input
+            id="ops-seats-reason"
+            value={reason}
+            maxLength={200}
+            placeholder="e.g. Invoice 1042 paid, 5 more seats"
+            onChange={(e) => { setReason(e.target.value); setErr(null); setDone(null); }}
+            style={field}
+          />
+        </label>
+        {/* cf-btn-pri has no disabled look of its own, so say it here: a
+            refused number should not leave a button that looks pressable. */}
+        <button
+          type="button"
+          className="cf-btn cf-btn-pri"
+          onClick={save}
+          disabled={busy || !!numberProblem || unchanged}
+          style={busy || numberProblem || unchanged ? { opacity: 0.45, cursor: "not-allowed" } : undefined}
+        >
+          {busy ? "Saving…" : "Save seats"}
+        </button>
+      </span>
+      <span className="cf-note">Changes the seat count only. No charge is made.</span>
+      {(numberProblem || err) && <span className="cf-note" role="alert" style={{ color: "#a63a08" }}>{err ?? numberProblem}</span>}
+      {done && <span className="cf-note" role="status">{done}</span>}
+    </div>
+  );
 }
 
 export function RevokeFirmButton({ orgId, revoked }: { orgId: string; revoked: boolean }) {

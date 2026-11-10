@@ -230,9 +230,9 @@ export async function inviteSeats(args: { orgId: string; orgSlug: string; firmNa
      than its first few, because quietly taking part of a pasted list
      leaves an admin with no way of knowing which addresses went out.
      AlgorithmX staff acting on a firm from the ops console are not
-     capped, and must not be: a firm's seat count can only be set when
-     the firm is created, so until there is a control for changing it,
-     going over is the only way to honour "add two seats and invoice us".
+     capped: "add two seats and invoice us" should not wait on a form.
+     The tidy way is the seat editor on the firm's ops page (setFirmSeats
+     in aiClearedOps.ts), which records who changed the count and why.
      The leak this closes is the firm's own admin, who cannot reach that
      path (orgRef is refused to anyone who is not staff).
 
