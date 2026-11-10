@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { auth } from "@/app/lib/auth";
 import { getTeacherContext } from "@/app/lib/schoolAccess";
 import { getPack, writtenWeeks } from "../packs";
+import { plain } from "../packs/text";
 import Locked from "../Locked";
 import Pack from "../Pack";
 
@@ -13,7 +14,7 @@ export const dynamic = "force-dynamic";
 export async function generateMetadata({ params }: { params: Promise<{ week: string }> }): Promise<Metadata> {
   const pack = getPack(Number((await params).week));
   return {
-    title: pack ? `Week ${pack.n}: ${pack.title} | Cyber Heroes teacher pack` : "Teacher pack",
+    title: pack ? `Week ${pack.n}: ${plain(pack.title)} | Cyber Heroes teacher pack` : "Teacher pack",
     /* nothing here should ever be indexed: it is the answers */
     robots: { index: false, follow: false },
   };

@@ -8,6 +8,7 @@ import { courseName } from "@/app/lib/schoolPlaces";
 import { WEEK_CONTENT, getAvailableWeeks } from "@/app/lesson/weekContent";
 import { listShareLinks } from "@/app/lib/packShare";
 import { writtenWeeks } from "./packs";
+import { plain } from "./packs/text";
 import Locked from "./Locked";
 import SharePanel from "./SharePanel";
 import SignOut from "../SignOut";
@@ -79,7 +80,7 @@ export default async function TeachIndexPage() {
         )}
 
         <SharePanel
-          weeks={writtenWeeks().map((p) => ({ n: p.n, title: p.title }))}
+          weeks={writtenWeeks().map((p) => ({ n: p.n, title: plain(p.title) }))}
           links={links}
         />
 
@@ -89,13 +90,13 @@ export default async function TeachIndexPage() {
             <div key={p.n} className="row">
               <span className="rn">{p.n}</span>
               <div className="rb">
-                <Link href={`/schools/teach/${p.n}`}>{p.title}</Link>
-                <small className="s-say">{p.sub}</small>
+                <Link href={`/schools/teach/${p.n}`}>{plain(p.title)}</Link>
+                <small className="s-say">{plain(p.sub)}</small>
               </div>
               <div className="rs">
                 <p>
                   {p.slides.length} slides. {p.brief ? "Carries a briefing to read before you teach it. " : ""}
-                  Games: {p.games}.
+                  Games: {plain(p.games)}.
                 </p>
               </div>
             </div>
