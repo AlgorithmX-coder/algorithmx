@@ -18,7 +18,7 @@ export default function OpsPanel() {
   const [hits, setHits] = useState<LookupHit[] | null>(null);
   const [copied, setCopied] = useState(false);
   const [erase, setErase] = useState<{ email: string; confirm: string } | null>(null);
-  const [erased, setErased] = useState<{ deletedAccount: boolean; seatsAnonymised: number; certificatesRemoved: number; firms: string[] } | null>(null);
+  const [erased, setErased] = useState<{ deletedAccount: boolean; seatsAnonymised: number; invitesRemoved: number; certificatesRemoved: number; firms: string[] } | null>(null);
 
   async function eraseNow() {
     if (!erase) return;
@@ -26,9 +26,9 @@ export default function OpsPanel() {
     setErr(null);
     try {
       const res = await fetch("/api/ops/erase", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(erase) });
-      const j = (await res.json().catch(() => ({}))) as { error?: string; deletedAccount?: boolean; seatsAnonymised?: number; certificatesRemoved?: number; firms?: string[] };
+      const j = (await res.json().catch(() => ({}))) as { error?: string; deletedAccount?: boolean; seatsAnonymised?: number; invitesRemoved?: number; certificatesRemoved?: number; firms?: string[] };
       if (!res.ok) throw new Error(j.error ?? "The removal did not run.");
-      setErased({ deletedAccount: !!j.deletedAccount, seatsAnonymised: j.seatsAnonymised ?? 0, certificatesRemoved: j.certificatesRemoved ?? 0, firms: j.firms ?? [] });
+      setErased({ deletedAccount: !!j.deletedAccount, seatsAnonymised: j.seatsAnonymised ?? 0, invitesRemoved: j.invitesRemoved ?? 0, certificatesRemoved: j.certificatesRemoved ?? 0, firms: j.firms ?? [] });
       setErase(null);
       setHits(null);
     } catch (e) {
@@ -183,7 +183,7 @@ export default function OpsPanel() {
         {erase && (
           <div className="op-made warn">
             <b>Deletion on request: {erase.email}</b>
-            <span>Their account, every attempt, playbook entry and certificate are deleted; their seats stay on the register with the address removed. Only on the firm&rsquo;s written request. Type the address again to confirm.</span>
+            <span>Their account, sign-ins, progress, attempts, playbook entries, certificates and AI usage log are deleted. A seat they claimed stays on the register, still used, with the address removed; an invite they never claimed is removed. Refused if they bought a course themselves or hold anything beyond the firm&rsquo;s seat. Only on the firm&rsquo;s written request. Type the address again to confirm.</span>
             <input id="op-erase-confirm" type="email" value={erase.confirm} onChange={(e) => setErase({ ...erase, confirm: e.target.value })} placeholder={erase.email} />
             <span>
               <button type="button" className="cf-btn cf-btn-pri" onClick={eraseNow} disabled={busy === "erase" || erase.confirm.trim().toLowerCase() !== erase.email.toLowerCase()}>{busy === "erase" ? "Removing…" : "Remove their data"}</button>
@@ -193,7 +193,7 @@ export default function OpsPanel() {
         )}
         {erased && (
           <div className="op-made">
-            <b>Removed.</b> {erased.deletedAccount ? "Account deleted" : "No account to delete"}; {erased.seatsAnonymised} seat{erased.seatsAnonymised === 1 ? "" : "s"} anonymised; {erased.certificatesRemoved} certificate{erased.certificatesRemoved === 1 ? "" : "s"} withdrawn{erased.firms.length ? `; firms: ${erased.firms.join(", ")}` : ""}.
+            <b>Removed.</b> {erased.deletedAccount ? "Account deleted" : "No account to delete"}; {erased.seatsAnonymised} seat{erased.seatsAnonymised === 1 ? "" : "s"} anonymised; {erased.invitesRemoved ? `${erased.invitesRemoved} unclaimed invite${erased.invitesRemoved === 1 ? "" : "s"} removed; ` : ""}{erased.certificatesRemoved} certificate{erased.certificatesRemoved === 1 ? "" : "s"} withdrawn{erased.firms.length ? `; firms: ${erased.firms.join(", ")}` : ""}.
           </div>
         )}
       </div>
