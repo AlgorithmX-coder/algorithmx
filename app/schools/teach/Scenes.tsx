@@ -3,6 +3,7 @@
 import React from "react";
 import { ART } from "./packs/art";
 import type { Pack, SceneKey, Slide } from "./packs/types";
+import { plain } from "./packs/text";
 
 /**
  * What goes on the board behind the teacher.
@@ -83,8 +84,8 @@ function Wall({ five, bare }: { five: Pack["five"]; bare?: boolean }) {
       {five.map((f) => (
         <div key={f.name}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={f.art} alt={bare ? f.name : ""} />
-          {!bare && <><b>{f.name}</b><i>{f.line}</i></>}
+          <img src={f.art} alt={bare ? plain(f.name) : ""} />
+          {!bare && <><b>{plain(f.name)}</b><i>{plain(f.line)}</i></>}
         </div>
       ))}
     </div>
@@ -164,7 +165,7 @@ function Scene({ slide, pack }: { slide: Slide; pack: Pack }) {
           <div className="card risk gold">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={ART.mail} alt="" />
-            <b>{pack.helpline?.label}</b>
+            <b>{plain(pack.helpline?.label ?? "")}</b>
             <Html as="small" html={pack.helpline?.note ?? ""} />
           </div>
         </div>
@@ -213,19 +214,19 @@ function Scene({ slide, pack }: { slide: Slide; pack: Pack }) {
             {r.slots.map((w, n) => (
               <React.Fragment key={n}>
                 {n > 0 && <span className="plus">+</span>}
-                <span className="rword">{w}</span>
+                <span className="rword">{plain(w)}</span>
               </React.Fragment>
             ))}
           </div>
           {r.add && r.add.length > 0 && (
             <div className="trow">
-              <span className="rthen">{r.thenLabel ?? "then add"}</span>
-              {r.add.map((a, n) => <span key={n} className="radd">{a}</span>)}
+              <span className="rthen">{plain(r.thenLabel ?? "then add")}</span>
+              {r.add.map((a, n) => <span key={n} className="radd">{plain(a)}</span>)}
             </div>
           )}
           {r.test && (
             <div className="trow">
-              <span className="rtest">{r.test}</span>
+              <span className="rtest">{plain(r.test)}</span>
             </div>
           )}
         </div>
