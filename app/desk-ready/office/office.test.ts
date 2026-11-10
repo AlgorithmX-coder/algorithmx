@@ -4,6 +4,7 @@ import { decemberRota } from "./jobs/decemberRota";
 import { lateDelivery } from "./jobs/lateDelivery";
 import { mondayInbox } from "./jobs/mondayInbox";
 import { morningReport } from "./jobs/morningReport";
+import { bestCustomer, oddNumber } from "./jobs/numbersMean";
 import { lateCount, sheetTotals, vatQuote } from "./jobs/sheetMaths";
 import { stockCount } from "./jobs/stockCount";
 import { PEOPLE, YOU } from "./northfield";
@@ -314,5 +315,52 @@ describe("Module 6 jobs", () => {
     });
     s = send(s, { to: [PEOPLE.daniel], body: "Hi Daniel, 7 deliveries were late in October." });
     expect(fails(lateCount, s)).toEqual([]);
+  });
+});
+
+describe("Module 7 jobs", () => {
+  const withTab = (job: typeof bestCustomer, id: string, fn: (g: Grid) => void, tabExtra: object, mail: Partial<Email>): OfficeState => {
+    const s = job.seed();
+    return {
+      ...s,
+      files: s.files.map((f) => {
+        if (f.id !== id || !f.sheet) return f;
+        const g = f.sheet.map((r) => [...r]);
+        fn(g);
+        return { ...f, sheet: g, tabs: [{ name: "Sheet1", grid: g, ...tabExtra }], by: "You" };
+      }),
+      emails: [...s.emails, { ...reply(), id: "s1", links: [], ...mail }],
+    };
+  };
+  const fails = (job: typeof bestCustomer, s: OfficeState) => job.check(s).filter((c) => !c.ok).map((c) => c.id);
+
+  it("SUMIF takes a cell as its condition", () => {
+    const g: Grid = [["Kent", "5"], ["Bright", "3"], ["Kent", "2"], ["Kent", '=SUMIF(A1:A3,A4,B1:B3)']];
+    expect(evaluate(g, 3, 1)).toBe(7);
+  });
+
+  it("best customer: passes with SUMIFs, change, a titled chart, saved, and a one-line answer", () => {
+    const s = withTab(
+      bestCustomer,
+      "seed-spend",
+      (g) => {
+        for (let r = 1; r <= 5; r++) {
+          g[r][9] = `=SUMIF(C2:C11,I${r + 1},G2:G11)`;
+          g[r][11] = `=(J${r + 1}-K${r + 1})/K${r + 1}`;
+        }
+      },
+      { chart: { title: "Spend by customer, November", labelCol: 8, valueCol: 9 } },
+      { to: [PEOPLE.daniel], body: "Hi Daniel,\nKent Bakery, £452.00 in November, up 16% on October.\nThanks" },
+    );
+    expect(fails(bestCustomer, s)).toEqual([]);
+  });
+
+  it("odd number: passes with the highlight, the fix, saved and Priya told", () => {
+    const s = withTab(oddNumber, "seed-week-sales", (g) => (g[5][3] = "£108.00"), { highlights: [{ col: 3, op: ">", value: "500" }] }, { to: [PEOPLE.priya], body: "Hi Priya, order 4415 had 1080 typed instead of £108.00. Fixed and saved." });
+    expect(fails(oddNumber, s)).toEqual([]);
+  });
+  it("odd number: a fix with no highlight, and a stray change, are both caught", () => {
+    const s = withTab(oddNumber, "seed-week-sales", (g) => ((g[5][3] = "£108.00"), (g[2][3] = "£100.00")), {}, { to: [PEOPLE.priya], body: "108, typo" });
+    expect(fails(oddNumber, s)).toEqual(["highlight", "nothing-else"]);
   });
 });

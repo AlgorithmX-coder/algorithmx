@@ -218,14 +218,23 @@ class Parser {
     return out;
   }
 
-  /* COUNTIF's second part: "Late" (text, any case), 5 (a number), or a
-   * comparison such as ">500" or "<>Late". */
+  /* COUNTIF's second part: "Late" (text, any case), 5 (a number), a
+   * comparison such as ">500" or "<>Late", or a cell holding the thing to
+   * match (=SUMIF(C2:C11,I2,G2:G11), one formula copied down a list). */
   private criterion(): (v: number | string) => boolean {
     let text: string;
     const quoted = /^"([^"]*)"/.exec(this.src.slice(this.i));
+    const ref = /^[A-Z][0-9]{1,3}(?![0-9:])/.exec(this.src.slice(this.i));
     if (quoted) {
       this.i += quoted[0].length;
       text = quoted[1];
+    } else if (ref) {
+      this.i += ref[0].length;
+      const at = parseRef(ref[0]);
+      if (!at) throw new Bad();
+      const v = this.get(at[0], at[1]);
+      if (v === "#REF!") throw new Loop();
+      text = String(v);
     } else {
       const num = /^-?[0-9]+(\.[0-9]+)?/.exec(this.src.slice(this.i));
       if (!num) throw new Bad();

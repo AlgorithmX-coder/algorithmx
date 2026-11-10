@@ -113,7 +113,7 @@ export const PARTS: readonly DeskPart[] = [
         title: "What the numbers mean",
         promise: "Answer a manager's question from a spreadsheet.",
         topics: ["Spotting data that looks wrong", "Colour that points things out", "One simple chart", "Answering the question", "Sending the answer in an email"],
-        ready: false,
+        ready: true,
       },
     ],
   },

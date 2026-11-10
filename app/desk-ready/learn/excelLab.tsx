@@ -16,8 +16,9 @@ import { Button, Cross, Kicker, StepBar, Tick, Workspace } from "./ui";
 
 export interface ExcelRule {
   label: string;
-  /* `formats` holds the cells set to £ or % on the first tab. */
-  test: (g: Grid, formats: NonNullable<Tab["formats"]>) => boolean;
+  /* `formats` holds the cells set to £ or % on the first tab; `tab` is the
+   * whole tab, with its highlights and chart. */
+  test: (g: Grid, formats: NonNullable<Tab["formats"]>, tab: Tab) => boolean;
   hint: string;
 }
 
@@ -54,7 +55,7 @@ export function ExcelLab({ tasks, onDone }: LabProps & { tasks: ExcelTask[] }) {
 
   function check() {
     const first = doc.tabs[0];
-    const r = task.rules.map((rule) => rule.test(first.grid, first.formats ?? {}));
+    const r = task.rules.map((rule) => rule.test(first.grid, first.formats ?? {}, first));
     setResults((rs) => rs.map((x, i) => (i === at ? r : x)));
   }
 
