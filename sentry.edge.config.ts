@@ -8,6 +8,7 @@
 
 import * as Sentry from "@sentry/nextjs";
 import { SENTRY_DSN as dsn } from "./sentry.dsn";
+import { scrubSentryEvent } from "./app/lib/sentryScrub";
 
 if (dsn) {
   Sentry.init({
@@ -17,5 +18,10 @@ if (dsn) {
       process.env.VERCEL_ENV ??
       process.env.NODE_ENV ??
       "development",
+    // Same privacy scrub as the Node server: no request bodies, cookies
+    // or credential headers, and no query strings on the practice routes.
+    sendDefaultPii: false,
+    beforeSend: scrubSentryEvent,
+    beforeSendTransaction: scrubSentryEvent,
   });
 }
