@@ -21,8 +21,29 @@ export const FLUENT_MODULE_1: ModuleManifest = {
       eyebrow: "Module 1 of 9 · about 18 minutes",
       heading: "The first answer is never the answer.",
       lead: "Most people ask an AI tool once, read what comes back, and either paste it or give up. The people who get real work out of these tools do something different, and it takes about a minute longer. This module shows you the difference and has you do it on your own desk.",
-      note: "The safety habits from AI Cleared still apply here, and the leak rules run under every send.",
-      cta: "Show me the difference",
+      note: "This course assumes the safety rules from AI Cleared. The courses run in any order, so the next screen has those rules in brief.",
+      cta: "Start with the rules",
+    },
+    /* The safety rules in brief. The three tracks of Cyber Secured run in
+     * any order with no prerequisite, so a learner can arrive here without
+     * AI Cleared. Every rule is distilled from what Cleared teaches (M2 the
+     * classes and placeholders, M3 the approved tool and the account, M4
+     * checking and accountability, M5 the same-day report); none is new.
+     * A reminder, not a gate: static cards, no quiz, no reveal. */
+    {
+      kind: "cards",
+      eyebrow: "Learn · the safety rules in brief",
+      heading: "Six rules run under every prompt you write.",
+      lead: "Whichever course you started with, these apply from your first send.",
+      cards: [
+        { title: "Use only {{firm.name}}'s approved tool", tag: "Rule 1", tint: "I", body: "Work goes into {{firm.approved}}. A personal account is never a work tool, even on a work laptop. Unsure? Ask {{firm.contact}} first." },
+        { title: "{{class.R}} never goes in", tag: "Rule 2", tint: "R", body: "Bank details, National Insurance numbers, salaries, health and HR records. Never in a prompt, not once." },
+        { title: "{{class.C}} goes in as placeholders", tag: "Rule 3", tint: "C", body: "Client names, contacts, disputes, draft advice: swap them for placeholders, then fill the gaps in yourself afterwards." },
+        { title: "Check it before you rely on it", tag: "Rule 4", tint: "warn", body: "Anything the tool supplied, rather than you, is a claim until you check it against a source you trust. Open every citation." },
+        { title: "You remain accountable", tag: "Rule 5", tint: "ok", body: "The tool is not accountable for what it wrote. You are. Would you sign it under your own name?" },
+        { title: "A slip? Tell {{firm.contact}} today", tag: "Rule 6", tint: "crit", body: "Stop. Do not delete and hope. Say what went in, which tool and account, and when. Early is containable." },
+      ],
+      note: "AI Cleared covers these in full, in any order. The leak rules also run under every send in the practice.",
     },
     {
       kind: "beforeAfter",
