@@ -1,4 +1,6 @@
+import { randomBytes } from "crypto";
 import { prisma } from "@/app/lib/prisma";
+import { eraseRefusal, planSeats } from "@/app/lib/eraseLearnerRule";
 import { opsAlert } from "@/app/lib/opsAlert";
 import { AI_CLEARED_SLUG, AI_FLUENT_SLUG, FIRM_ORG } from "@/app/lib/aiCleared";
 import { FIRM_THRESHOLD, newInviteToken, seatsLeft, sendAdminWelcome } from "@/app/lib/aiClearedAdmin";
@@ -302,37 +304,108 @@ export async function lookup(q: string): Promise<LookupHit[]> {
 
 export { COURSES };
 
-/* Deletion on request. The person's account goes, and with it every
- * enrolment, attempt, progress row, playbook entry and certificate (the
- * schema cascades). Their seats stay on the firm's register, counted as
- * used, with the address replaced so the register no longer carries their
- * data. Refused when the account is also a consumer account (children or
- * course purchases hang off it: that is a different request) or when the
- * person is a firm's only admin. */
-export async function eraseLearner(email: string): Promise<
-  | { ok: true; deletedAccount: boolean; seatsAnonymised: number; certificatesRemoved: number; firms: string[] }
-  | { ok: false; message: string }
-> {
+/* Deletion on a firm's written request. Who may be erased, and the
+ * refusals, are in eraseLearnerRule.ts: a firm learner whose only course
+ * access came from their seat goes; an account with a paid consumer
+ * course, child profiles or any access of its own does not.
+ *
+ * What goes, in one transaction: the person's AI-model call log
+ * (ModelCall has no relation to User, so nothing would cascade to it),
+ * every enrolment with its module progress, sandbox attempts, playbook
+ * entries and certificate, their entitlements, firm memberships, sign-in
+ * sessions, linked sign-in accounts, password-reset and email sign-in
+ * tokens, preferences, waitlist entries, share links they made, and the
+ * account itself. Each table is deleted explicitly rather than left to the
+ * schema's cascades, so the erase does not quietly depend on them. The
+ * seats are planned by planSeats: claimed seats stay, used and anonymised;
+ * unclaimed invites are removed. */
+export type EraseResult =
+  | {
+      ok: true;
+      deletedAccount: boolean;
+      seatsAnonymised: number;
+      invitesRemoved: number;
+      certificatesRemoved: number;
+      firms: string[];
+      /* Rows deleted, per table: what the PR and the tests pin. */
+      deleted: Record<string, number>;
+    }
+  | { ok: false; message: string };
+
+export async function eraseLearner(email: string): Promise<EraseResult> {
   const clean = email.trim().toLowerCase();
   const user = await prisma.user.findUnique({
     where: { email: clean },
-    select: { id: true, role: true, _count: { select: { children: true, entitlements: true } }, enrolments: { select: { certificate: { select: { id: true } }, org: { select: { name: true } } } }, orgMemberships: { select: { orgId: true, role: true } } },
+    select: {
+      id: true,
+      role: true,
+      _count: { select: { children: true, proProgress: true, classesTaught: true } },
+      entitlements: { select: { source: true, product: { select: { slug: true, name: true } } } },
+      enrolments: { select: { id: true, certificate: { select: { id: true } }, org: { select: { name: true } } } },
+      orgMemberships: { select: { orgId: true, role: true } },
+    },
   });
-  const seats = await prisma.seat.findMany({ where: { email: clean }, select: { id: true, orgId: true, role: true, org: { select: { name: true } } } });
-  if (!user && !seats.length) return { ok: false, message: "Nobody with that address is on any firm's register." };
-  if (user?.role === "staff") return { ok: false, message: "That is a staff account; remove the staff flag first." };
-  if (user && (user._count.children > 0 || user._count.entitlements > 0)) return { ok: false, message: "That account also holds consumer courses or child profiles. A consumer deletion is a different request; do it from the database with care." };
+  /* The seats sent to this address, and any this account claimed under
+     another address (a claim binds the seat to whoever signed in). */
+  const seats = await prisma.seat.findMany({
+    where: { OR: [{ email: clean }, ...(user ? [{ userId: user.id }] : [])] },
+    select: { id: true, orgId: true, course: true, userId: true, claimedAt: true, invitedAt: true, org: { select: { name: true } }, user: { select: { email: true } } },
+  });
+  if (!user && !seats.length) return { ok: false, message: "Nobody with that address is on any firm's register. Nothing has been deleted." };
+
+  const teacherInvites = await prisma.teacherInvite.count({ where: { OR: [{ email: clean }, ...(user ? [{ userId: user.id }] : [])] } });
+  const refusal = eraseRefusal({
+    role: user?.role ?? "learner",
+    entitlements: (user?.entitlements ?? []).map((e) => ({ source: e.source, productSlug: e.product.slug, productName: e.product.name })),
+    children: user?._count.children ?? 0,
+    proProgress: user?._count.proProgress ?? 0,
+    classesTaught: user?._count.classesTaught ?? 0,
+    teacherInvites,
+  });
+  if (refusal) return { ok: false, message: refusal };
+
+  const claimedByOther = seats.find((s) => s.userId && s.userId !== user?.id);
+  if (claimedByOther) {
+    return { ok: false, message: `A seat sent to that address at ${claimedByOther.org.name} was claimed by a different account (${claimedByOther.user?.email ?? "unknown"}). Check which account is the person's and erase that address. Nothing has been deleted.` };
+  }
   for (const m of user?.orgMemberships ?? []) {
     if (m.role !== "ADMIN") continue;
     const otherAdmins = await prisma.orgMember.count({ where: { orgId: m.orgId, role: "ADMIN", NOT: { userId: user!.id } } });
-    if (otherAdmins === 0) return { ok: false, message: "That person is the only admin of a firm. Give the firm another admin first." };
+    if (otherAdmins === 0) return { ok: false, message: "That person is the only admin of a firm. Give the firm another admin first. Nothing has been deleted." };
   }
-  const stamp = `removed-${Math.random().toString(36).slice(2, 10)}`;
+
+  const plan = planSeats(seats);
+  const removedAddress = `removed-${randomBytes(6).toString("hex")}@removed.invalid`;
   const certificates = user?.enrolments.filter((e) => e.certificate).length ?? 0;
   const firms = Array.from(new Set([...(user?.enrolments.map((e) => e.org.name) ?? []), ...seats.map((s) => s.org.name)]));
+  const deleted: Record<string, number> = {};
   await prisma.$transaction(async (tx) => {
-    if (user) await tx.user.delete({ where: { id: user.id } });
-    for (const [i, s] of seats.entries()) await tx.seat.update({ where: { id: s.id }, data: { email: `${stamp}-${i}@removed.invalid`, userId: null } });
+    for (const id of plan.anonymise) {
+      /* A fresh token as well as the address: the old invite link would
+         otherwise let anyone holding it claim the now-empty seat. */
+      await tx.seat.update({ where: { id }, data: { email: removedAddress, userId: null, inviteToken: newInviteToken("removed"), team: null, trackHint: null } });
+    }
+    deleted.seat = plan.remove.length ? (await tx.seat.deleteMany({ where: { id: { in: plan.remove } } })).count : 0;
+    deleted.verificationToken = (await tx.verificationToken.deleteMany({ where: { identifier: clean } })).count;
+    deleted.waitlistEntry = (await tx.waitlistEntry.deleteMany({ where: { email: clean } })).count;
+    if (!user) return;
+    const userId = user.id;
+    const enrolmentId = { in: user.enrolments.map((e) => e.id) };
+    deleted.modelCall = (await tx.modelCall.deleteMany({ where: { userId } })).count;
+    deleted.playbookEntry = (await tx.playbookEntry.deleteMany({ where: { enrolmentId } })).count;
+    deleted.sandboxAttempt = (await tx.sandboxAttempt.deleteMany({ where: { enrolmentId } })).count;
+    deleted.moduleProgress = (await tx.moduleProgress.deleteMany({ where: { enrolmentId } })).count;
+    deleted.certificate = (await tx.certificate.deleteMany({ where: { enrolmentId } })).count;
+    deleted.enrolment = (await tx.enrolment.deleteMany({ where: { userId } })).count;
+    deleted.entitlement = (await tx.entitlement.deleteMany({ where: { userId } })).count;
+    deleted.orgMember = (await tx.orgMember.deleteMany({ where: { userId } })).count;
+    deleted.session = (await tx.session.deleteMany({ where: { userId } })).count;
+    deleted.account = (await tx.account.deleteMany({ where: { userId } })).count;
+    deleted.passwordResetToken = (await tx.passwordResetToken.deleteMany({ where: { userId } })).count;
+    deleted.userPreference = (await tx.userPreference.deleteMany({ where: { userId } })).count;
+    deleted.packShareLink = (await tx.packShareLink.deleteMany({ where: { createdById: userId } })).count;
+    await tx.user.delete({ where: { id: userId } });
+    deleted.user = 1;
   });
-  return { ok: true, deletedAccount: !!user, seatsAnonymised: seats.length, certificatesRemoved: certificates, firms };
+  return { ok: true, deletedAccount: !!user, seatsAnonymised: plan.anonymise.length, invitesRemoved: plan.remove.length, certificatesRemoved: certificates, firms, deleted };
 }
