@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState, type CSSProperties } from "react";
 import DeskHeader from "../DeskHeader";
 import PartPreview, { PREVIEW_CSS, type PreviewKind } from "../PartPreview";
+import { jobsFor } from "../office/jobs";
 import { PARTS } from "../syllabus";
 import { D, PART_ACCENT } from "../tokens";
 import { markDone, useDone } from "./progress";
@@ -34,6 +35,7 @@ export default function ModulePlayer({ module: m }: { module: ModuleManifest }) 
   const firstOpen = m.topics.findIndex((t) => !done.includes(t.id));
   const resumeAt = firstOpen === -1 ? 0 : firstOpen;
   const allDone = finished === m.topics.length;
+  const jobs = jobsFor(m.id);
   const shellStyle = { "--acc": acc, "--dr-accent": acc } as CSSProperties;
 
   const styles = (
@@ -143,6 +145,30 @@ export default function ModulePlayer({ module: m }: { module: ModuleManifest }) 
             })}
           </ol>
         </section>
+
+        {/* on the job: a real piece of work in the pretend office */}
+        {jobs.length > 0 && (
+          <section aria-labelledby="mp-jobs-h" style={{ marginTop: 44 }}>
+            <Kicker color={D.faint}>On the job</Kicker>
+            <h2 id="mp-jobs-h" className="mp-h2">
+              Now do it for real
+            </h2>
+            <p className="mp-jobs-lede">A job from someone at Northfield Supplies, done in the pretend office with Outlook, File Explorer and Excel. You are marked on what you made and where you put it.</p>
+            {jobs.map((j) => {
+              const jobDone = done.includes(j.id);
+              return (
+                <Link key={j.id} href={`/desk-ready/office/${j.slug}`} className={jobDone ? "mp-job done" : "mp-job"}>
+                  <span style={{ flex: 1, minWidth: 0 }}>
+                    <span className="mp-row-meta">{jobDone ? "Finished" : `From the office · ${j.deadline}`}</span>
+                    <span className="mp-job-title">{j.title}</span>
+                    <span className="mp-job-sum">{j.summary}</span>
+                  </span>
+                  <span className="mp-job-go">{jobDone ? "Do it again" : "Start the job"} &rarr;</span>
+                </Link>
+              );
+            })}
+          </section>
+        )}
       </main>
       {styles}
     </div>
@@ -187,6 +213,19 @@ const MODULE_CSS = `
   .mp-timeline li.done .mp-row-meta { color: ${D.good}; }
   .mp-timeline li.next .mp-row-meta { color: var(--acc); }
   .mp-row-go { font-size: 20px; color: var(--acc); }
+
+  .mp-jobs-lede { margin: 10px 0 0; max-width: 680px; font-size: 17px; line-height: 1.6; color: ${D.muted}; }
+  .mp-job { margin-top: 18px; display: flex; align-items: center; gap: 18px; padding: 22px 24px; border-radius: 20px; text-decoration: none;
+    background: radial-gradient(80% 160% at 0% 50%, color-mix(in srgb, var(--acc) 18%, transparent), transparent 62%), ${D.card};
+    border: 1px solid color-mix(in srgb, var(--acc) 55%, transparent); box-shadow: ${D.lift}; transition: transform .18s ease, border-color .18s ease; }
+  .mp-job:hover { transform: translateY(-2px); border-color: var(--acc); }
+  .mp-job.done { border-color: ${D.goodEdge}; }
+  .mp-job.done .mp-row-meta { color: ${D.good}; }
+  .mp-job .mp-row-meta { color: var(--acc); }
+  .mp-job-title { display: block; margin-top: 6px; font-family: ${D.display}; font-size: 22px; font-weight: 500; letter-spacing: -0.015em; color: ${D.ink}; }
+  .mp-job-sum { display: block; margin-top: 4px; font-size: 16px; line-height: 1.5; color: ${D.muted}; }
+  .mp-job-go { flex-shrink: 0; display: inline-flex; align-items: center; min-height: 48px; padding: 0 22px; border-radius: 999px; background: ${D.action}; color: ${D.onAccent}; font-family: ${D.display}; font-weight: 600; font-size: 16px; box-shadow: ${D.actionGlow}; }
+  @media (max-width: 640px) { .mp-job { flex-direction: column; align-items: flex-start; } }
 
   @media (max-width: 860px) {
     .mp-hero { grid-template-columns: 1fr; padding: 26px 22px; }
