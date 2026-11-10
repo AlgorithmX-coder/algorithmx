@@ -24,12 +24,30 @@ export interface Paper {
 
 export type FileKind = "folder" | "xlsx" | "xltx" | "docx" | "pdf";
 
+/* A highlight rule (Excel's conditional formatting), on one column from
+ * row 2 down: cells that match are coloured. */
+export interface Highlight {
+  col: number;
+  op: ">" | "<" | "=";
+  value: string;
+}
+
+/* A bar chart drawn from two columns: names along the bottom, numbers up
+ * the side. */
+export interface Chart {
+  title: string;
+  labelCol: number;
+  valueCol: number;
+}
+
 /* One sheet of a workbook, by its tab name. `formats` holds the cells
  * set to show as money or a percentage, by cell name ("G2"). */
 export interface Tab {
   name: string;
   grid: Grid;
   formats?: Record<string, "money" | "percent">;
+  highlights?: Highlight[];
+  chart?: Chart;
 }
 
 export interface OfficeFile {

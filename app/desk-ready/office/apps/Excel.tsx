@@ -2,9 +2,9 @@
 
 import { useEffect, useRef, useState, type KeyboardEvent } from "react";
 import { W } from "../../tokens";
-import { cellName, colLetter, display, evaluate, moveRowRefs, shiftRefs } from "../formula";
-import type { Grid, Path, Tab } from "../types";
-import { AppButton, TitleBar } from "../ui";
+import { cellName, colLetter, display, evaluate, moveRowRefs, numeric, shiftRefs } from "../formula";
+import type { Chart, Grid, Highlight, Path, Tab } from "../types";
+import { AppButton, Dialog, TitleBar } from "../ui";
 
 /* Excel, for the office jobs. A workbook opened from a file is edited in
  * a working copy and only changes the file on Save, as Excel does with
@@ -79,6 +79,9 @@ export default function Excel({
   const [filter, setFilter] = useState<{ col: number; value: string } | null>(null);
   const [filterMenu, setFilterMenu] = useState<number | null>(null);
   const [renaming, setRenaming] = useState<{ i: number; name: string } | null>(null);
+  const [hlMenu, setHlMenu] = useState(false);
+  const [hlAsk, setHlAsk] = useState<{ op: Highlight["op"]; value: string } | null>(null);
+  const [chartAsk, setChartAsk] = useState<Chart | null>(null);
   const gridRef = useRef<HTMLDivElement>(null);
   const editRef = useRef<HTMLInputElement>(null);
 
@@ -114,8 +117,19 @@ export default function Excel({
     else next[key] = f;
     setGrid(g, next);
   };
+  /* Down as far as the column beside it has data, as Excel's double-click
+   * on the fill handle does; the whole list when there's nothing beside. */
+  const fillEnd = () => {
+    for (const side of [c - 1, c + 1]) {
+      if (side < 0 || side >= cols || !(g[r + 1]?.[side] ?? "").trim()) continue;
+      let end = r + 1;
+      while (end + 1 < rows && (g[end + 1]?.[side] ?? "").trim()) end++;
+      return end;
+    }
+    return lastDataRow(g);
+  };
   const fillDown = () => {
-    const end = lastDataRow(g);
+    const end = fillEnd();
     if (!raw.trim() || r >= end) return;
     const next = g.map((row) => [...row]);
     const nextFormats = { ...formats };
@@ -125,6 +139,20 @@ export default function Excel({
     }
     setGrid(next, nextFormats);
   };
+  /* Change the open tab's highlights or chart, keeping everything else. */
+  const setTab = (patch: Partial<Tab>) => onChange(doc.tabs.map((t, i) => (i === doc.active ? { ...t, ...patch } : t)), doc.active, true);
+  const highlighted = (rr: number, cc: number) =>
+    rr > 0 &&
+    (tab.highlights ?? []).some((h) => {
+      if (h.col !== cc) return false;
+      const shown = display(g, rr, cc, fmt(rr, cc)).trim();
+      if (!shown) return false;
+      const n = numeric(g, rr, cc);
+      const want = Number(h.value.replace(/[£,%\s]/g, ""));
+      if (h.op !== "=" && n !== null && !Number.isNaN(want)) return h.op === ">" ? n > want : n < want;
+      return h.op === "=" && (n !== null && !Number.isNaN(want) ? n === want : shown.toLowerCase() === h.value.trim().toLowerCase());
+    });
+  const headers = (g[0] ?? []).map((h, i) => ({ i, h: h.trim() || `Column ${colLetter(i)}` }));
   const put = (rr: number, cc: number, value: string) => {
     if ((g[rr]?.[cc] ?? "") === value) return;
     const next = g.map((row) => [...row]);
@@ -228,7 +256,7 @@ export default function Excel({
   const values = (cc: number) => [...new Set(g.slice(1, lastDataRow(g) + 1).map((_, i) => display(g, i + 1, cc, fmt(i + 1, cc)).trim()))].filter(Boolean).sort((a, b) => compare(a, b));
 
   return (
-    <div style={{ height: "100%", display: "flex", flexDirection: "column", background: W.page, fontFamily: W.font, color: W.ink }}>
+    <div style={{ position: "relative", height: "100%", display: "flex", flexDirection: "column", background: W.page, fontFamily: W.font, color: W.ink }}>
       <TitleBar colour={W.excel} app="Excel" name={practice ? doc.name : `${doc.name} · ${doc.dirty ? "Not saved" : "Saved"}`}>
         {!practice && <span style={{ fontSize: 12.5, opacity: 0.85 }}>AutoSave off</span>}
         {!practice && (
@@ -277,6 +305,52 @@ export default function Excel({
           style={filterOn ? { background: W.select, border: `1px solid ${W.excel}` } : undefined}
         >
           ⏷ Filter
+        </AppButton>
+        <span style={{ width: 1, alignSelf: "stretch", background: W.edge, margin: "0 2px" }} />
+        <span style={{ position: "relative" }}>
+          <AppButton onClick={() => setHlMenu((m) => !m)} title={`Colour cells in column ${colLetter(c)} that match a rule`} style={(tab.highlights ?? []).length ? { background: "#fde7e9", border: "1px solid #c4314b" } : undefined}>
+            🖍 Highlight ▾
+          </AppButton>
+          {hlMenu && (
+            <span role="menu" style={{ position: "absolute", top: "100%", left: 0, zIndex: 20, marginTop: 4, width: 240, background: W.page, border: `1px solid ${W.edge}`, borderRadius: 6, boxShadow: W.float, padding: 4, display: "block" }}>
+              {(
+                [
+                  [">", "Greater than…"],
+                  ["<", "Less than…"],
+                  ["=", "Equal to…"],
+                ] as const
+              ).map(([op, label]) => (
+                <button
+                  key={op}
+                  type="button"
+                  role="menuitem"
+                  className="of-row"
+                  onClick={() => {
+                    setHlMenu(false);
+                    setHlAsk({ op, value: "" });
+                  }}
+                  style={menuItem}
+                >
+                  {label} <span style={{ color: W.muted }}>in column {colLetter(c)}</span>
+                </button>
+              ))}
+              <button
+                type="button"
+                role="menuitem"
+                className="of-row"
+                onClick={() => {
+                  setHlMenu(false);
+                  setTab({ highlights: [] });
+                }}
+                style={menuItem}
+              >
+                Clear highlights
+              </button>
+            </span>
+          )}
+        </span>
+        <AppButton onClick={() => setChartAsk(tab.chart ?? { title: "", labelCol: 0, valueCol: Math.min(1, cols - 1) })} title="Make a bar chart from two columns">
+          📊 {tab.chart ? "Edit chart" : "Chart"}
         </AppButton>
         <span style={{ marginLeft: "auto", fontSize: 13, color: W.muted }}>Enter moves down · Tab moves right · formulas start with =</span>
         {menu && (
@@ -330,14 +404,15 @@ export default function Excel({
         </div>
       )}
 
-      {/* the grid */}
+      {/* the grid, and the chart beside it when there is one */}
+      <div style={{ flex: 1, minHeight: 0, display: "flex", position: "relative" }}>
       <div
         ref={gridRef}
         tabIndex={0}
         role="grid"
         aria-label={`${tab.name}, cell ${cellName(r, c)}`}
         onKeyDown={gridKey}
-        style={{ flex: 1, minHeight: 0, overflow: "auto", position: "relative", outline: "none", background: W.page }}
+        style={{ flex: 1, minWidth: 0, minHeight: 0, overflow: "auto", position: "relative", outline: "none", background: W.page }}
       >
         <div style={{ position: "relative", width: total, height: (shown.length + 1) * ROW_H, fontSize: 14.5 }}>
           {/* column letters */}
@@ -387,7 +462,8 @@ export default function Excel({
                       justifyContent: numberLike && rr > 0 ? "flex-end" : "flex-start",
                       borderRight: `1px solid ${W.edge}`,
                       borderBottom: `1px solid ${W.edge}`,
-                      background: rr === 0 && shownText ? "#e6f2ea" : W.page,
+                      background: rr === 0 && shownText ? "#e6f2ea" : highlighted(rr, cc) ? "#fde2e4" : W.page,
+                      color: highlighted(rr, cc) ? "#9c1c2c" : undefined,
                       fontWeight: rr === 0 ? 700 : 400,
                       whiteSpace: "nowrap",
                       overflow: "hidden",
@@ -465,6 +541,87 @@ export default function Excel({
           )}
         </div>
       </div>
+      {tab.chart && <BarChart g={g} chart={tab.chart} fmt={fmt} onEdit={() => setChartAsk(tab.chart ?? null)} />}
+      </div>
+
+      {hlAsk && (
+        <Dialog title={`Highlight cells in column ${colLetter(c)}`} onClose={() => setHlAsk(null)} width={460}>
+          <label style={{ display: "flex", alignItems: "center", gap: 10, fontSize: 15.5 }}>
+            <span>{hlAsk.op === ">" ? "Greater than" : hlAsk.op === "<" ? "Less than" : "Equal to"}</span>
+            <input
+              autoFocus
+              aria-label="Value"
+              value={hlAsk.value}
+              onChange={(e) => setHlAsk({ ...hlAsk, value: e.target.value })}
+              style={{ flex: 1, minHeight: 40, padding: "6px 10px", border: `1px solid ${W.faint}`, borderRadius: 4, fontFamily: W.font, fontSize: 16 }}
+            />
+          </label>
+          <p style={{ margin: "10px 0 0", fontSize: 14, color: W.muted }}>Cells in {headers[c]?.h ?? `column ${colLetter(c)}`} that match turn red, from row 2 down.</p>
+          <div style={{ display: "flex", justifyContent: "flex-end", gap: 10, marginTop: 16 }}>
+            <AppButton onClick={() => setHlAsk(null)}>Cancel</AppButton>
+            <AppButton
+              primary
+              colour={W.excel}
+              disabled={!hlAsk.value.trim()}
+              onClick={() => {
+                setTab({ highlights: [...(tab.highlights ?? []).filter((h) => h.col !== c), { col: c, op: hlAsk.op, value: hlAsk.value.trim() }] });
+                setHlAsk(null);
+              }}
+            >
+              OK
+            </AppButton>
+          </div>
+        </Dialog>
+      )}
+      {chartAsk && (
+        <Dialog title={tab.chart ? "Edit chart" : "Insert a bar chart"} onClose={() => setChartAsk(null)} width={520}>
+          {(
+            [
+              ["Names along the bottom", "labelCol"],
+              ["Numbers up the side", "valueCol"],
+            ] as const
+          ).map(([label, key]) => (
+            <label key={key} style={{ display: "flex", alignItems: "center", gap: 10, marginTop: 10, fontSize: 15.5 }}>
+              <span style={{ width: 200 }}>{label}</span>
+              <select aria-label={label} value={chartAsk[key]} onChange={(e) => setChartAsk({ ...chartAsk, [key]: Number(e.target.value) })} style={{ flex: 1, minHeight: 40, padding: "4px 8px", border: `1px solid ${W.faint}`, borderRadius: 4, fontFamily: W.font, fontSize: 15.5 }}>
+                {headers.map((h) => (
+                  <option key={h.i} value={h.i}>
+                    {colLetter(h.i)}: {h.h}
+                  </option>
+                ))}
+              </select>
+            </label>
+          ))}
+          <label style={{ display: "flex", alignItems: "center", gap: 10, marginTop: 10, fontSize: 15.5 }}>
+            <span style={{ width: 200 }}>Chart title</span>
+            <input aria-label="Chart title" value={chartAsk.title} onChange={(e) => setChartAsk({ ...chartAsk, title: e.target.value })} placeholder="Say what it shows" style={{ flex: 1, minHeight: 40, padding: "6px 10px", border: `1px solid ${W.faint}`, borderRadius: 4, fontFamily: W.font, fontSize: 16 }} />
+          </label>
+          <div style={{ display: "flex", justifyContent: "flex-end", gap: 10, marginTop: 18 }}>
+            {tab.chart && (
+              <AppButton
+                onClick={() => {
+                  setTab({ chart: undefined });
+                  setChartAsk(null);
+                }}
+                style={{ marginRight: "auto" }}
+              >
+                Remove chart
+              </AppButton>
+            )}
+            <AppButton onClick={() => setChartAsk(null)}>Cancel</AppButton>
+            <AppButton
+              primary
+              colour={W.excel}
+              onClick={() => {
+                setTab({ chart: { ...chartAsk, title: chartAsk.title.trim() } });
+                setChartAsk(null);
+              }}
+            >
+              OK
+            </AppButton>
+          </div>
+        </Dialog>
+      )}
 
       {/* sheet tabs */}
       <div style={{ display: "flex", alignItems: "stretch", minHeight: 36, background: W.chrome, borderTop: `1px solid ${W.edge}`, fontSize: 14, paddingLeft: HEAD_W - 8 }}>
@@ -507,3 +664,49 @@ export default function Excel({
 }
 
 const menuItem = { width: "100%", minHeight: 38, textAlign: "left", padding: "6px 12px", border: "none", background: "transparent", fontFamily: W.font, fontSize: 14.5, borderRadius: 4 } as const;
+
+/* The tab's bar chart, in a panel beside the grid: a bar for each row that
+ * has a name and a number, the title on top, and the two headings as the
+ * axis titles, the way Excel's quick chart labels them. */
+function BarChart({ g, chart, fmt, onEdit }: { g: Grid; chart: Chart; fmt: (r: number, c: number) => "money" | "percent" | undefined; onEdit: () => void }) {
+  const bars = g
+    .slice(1)
+    .map((row, i) => ({ label: (row[chart.labelCol] ?? "").trim(), n: numeric(g, i + 1, chart.valueCol), shown: display(g, i + 1, chart.valueCol, fmt(i + 1, chart.valueCol)) }))
+    .filter((b): b is { label: string; n: number; shown: string } => !!b.label && b.n !== null);
+  const max = Math.max(1, ...bars.map((b) => b.n));
+  const H = 180;
+  const bw = bars.length ? Math.min(46, 240 / bars.length) : 40;
+  return (
+    <aside aria-label={`Chart: ${chart.title || "untitled"}`} style={{ width: 340, flexShrink: 0, borderLeft: `1px solid ${W.edge}`, background: W.page, padding: "12px 14px", overflowY: "auto", fontFamily: W.font }}>
+      <div style={{ display: "flex", alignItems: "flex-start", gap: 8 }}>
+        <b style={{ flex: 1, fontSize: 15, fontWeight: 600, color: chart.title ? W.ink : W.faint, lineHeight: 1.3 }}>{chart.title || "Chart title"}</b>
+        <AppButton onClick={onEdit} style={{ minHeight: 32, padding: "2px 10px", fontSize: 13.5 }}>
+          Edit
+        </AppButton>
+      </div>
+      <svg width="312" height={H + 70} role="img" aria-hidden style={{ display: "block", marginTop: 10 }}>
+        <text x="10" y={H / 2 + 10} fontSize="11.5" fill={W.muted} transform={`rotate(-90 10 ${H / 2 + 10})`} textAnchor="middle">
+          {(g[0]?.[chart.valueCol] ?? "").trim()}
+        </text>
+        <line x1="30" y1="10" x2="30" y2={H + 10} stroke={W.edge} />
+        <line x1="30" y1={H + 10} x2="306" y2={H + 10} stroke={W.edge} />
+        {bars.map((b, i) => {
+          const x = 40 + i * (bw + 8);
+          const h = Math.max(1, (b.n / max) * (H - 20));
+          return (
+            <g key={i}>
+              <rect x={x} y={H + 10 - h} width={bw} height={h} rx="2" fill={W.excel} />
+              <text x={x + bw / 2} y={H + 4 - h} fontSize="10" textAnchor="middle" fill={W.ink}>
+                {b.shown}
+              </text>
+              <text x={x + bw / 2} y={H + 24} fontSize="10.5" textAnchor="end" fill={W.body} transform={`rotate(-35 ${x + bw / 2} ${H + 24})`}>
+                {b.label.length > 14 ? `${b.label.slice(0, 13)}…` : b.label}
+              </text>
+            </g>
+          );
+        })}
+      </svg>
+      <p style={{ margin: "2px 0 0", textAlign: "center", fontSize: 11.5, color: W.muted }}>{(g[0]?.[chart.labelCol] ?? "").trim()}</p>
+    </aside>
+  );
+}

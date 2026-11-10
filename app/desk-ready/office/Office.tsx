@@ -308,11 +308,11 @@ function Scorecard({ job, results, onClose, onAgain }: { job: Job; results: Chec
 }
 
 /* What a saved workbook stores: the first sheet for the jobs that read
- * one, and every tab (with its formats) unless it is a bare default
- * Sheet1. */
+ * one, and every tab (with its formats, highlights and chart) unless it
+ * is a bare default Sheet1. */
 function bookFields(doc: ExcelDoc): Pick<OfficeFile, "sheet" | "tabs"> {
   const t = doc.tabs[0];
-  const plain = doc.tabs.length === 1 && t.name === "Sheet1" && !Object.keys(t.formats ?? {}).length;
+  const plain = doc.tabs.length === 1 && t.name === "Sheet1" && !t.chart && !t.highlights?.length && !Object.keys(t.formats ?? {}).length;
   return { sheet: t.grid, tabs: plain ? undefined : doc.tabs };
 }
 
