@@ -4,6 +4,7 @@ import { decemberRota } from "./jobs/decemberRota";
 import { lateDelivery } from "./jobs/lateDelivery";
 import { mondayInbox } from "./jobs/mondayInbox";
 import { morningReport } from "./jobs/morningReport";
+import { lateCount, sheetTotals, vatQuote } from "./jobs/sheetMaths";
 import { stockCount } from "./jobs/stockCount";
 import { PEOPLE, YOU } from "./northfield";
 import { tabsOf, type Email, type Grid, type OfficeState } from "./types";
@@ -228,5 +229,90 @@ describe("Start December's rota", () => {
     const d = dec();
     d.grid[0][6] = "";
     expect(fails(withTabs([nov, d]))).toEqual(["headings"]);
+  });
+});
+
+describe("COUNTIF, SUMIF and formats", () => {
+  const g: Grid = [
+    ["Status", "Value"],
+    ["Late", "£568.00"],
+    ["On time", "£270.00"],
+    ["late", "£96.00"],
+    ["On time", "£612.00"],
+    ['=COUNTIF(A2:A5,"Late")', '=COUNTIF(B2:B5,">500")'],
+    ['=COUNTIF(A2:A5,"On time")', '=SUMIF(A2:A5,"Late",B2:B5)'],
+    ["=B2*0.2", "=(B3-B2)/B2"],
+  ];
+  it("counts text in any case, keeps spaces inside quotes, and compares numbers", () => {
+    expect(evaluate(g, 5, 0)).toBe(2);
+    expect(evaluate(g, 6, 0)).toBe(2);
+    expect(evaluate(g, 5, 1)).toBe(2);
+    expect(evaluate(g, 6, 1)).toBe(664);
+  });
+  it("shows money from money, counts as counts, and percent when asked", () => {
+    expect(display(g, 7, 0)).toBe("£113.60");
+    expect(display(g, 5, 1)).toBe("2");
+    expect(display(g, 7, 1, "percent")).toBe("-52.5%");
+  });
+});
+
+describe("Module 6 jobs", () => {
+  const edit = (s: OfficeState, id: string, fn: (g: Grid) => void, extra: Partial<OfficeState["files"][number]> = {}): OfficeState => ({
+    ...s,
+    files: s.files.map((f) => {
+      if (f.id !== id || !f.sheet) return f;
+      const g = f.sheet.map((r) => [...r]);
+      fn(g);
+      return { ...f, sheet: g, by: "You", ...extra };
+    }),
+  });
+  const send = (s: OfficeState, e: Partial<Email>): OfficeState => ({ ...s, emails: [...s.emails, { ...reply(), id: `s${s.emails.length}`, links: [], ...e }] });
+  const fails = (job: typeof sheetTotals, s: OfficeState) => job.check(s).filter((c) => !c.ok).map((c) => c.id);
+
+  it("order totals: passes with formulas, labels, saved and Priya told", () => {
+    let s = edit(sheetTotals.seed(), "seed-orders-nov", (g) => {
+      for (let r = 1; r <= 10; r++) g[r][6] = `=E${r + 1}*F${r + 1}`;
+      g[12][5] = "Total";
+      g[12][6] = "=SUM(G2:G11)";
+      g[13][5] = "Average order";
+      g[13][6] = "=AVERAGE(G2:G11)";
+      g[14][5] = "Orders";
+      g[14][6] = "=COUNT(G2:G11)";
+    });
+    s = send(s, { to: [PEOPLE.priya], body: "Hi Priya, the total is £934.32." });
+    expect(fails(sheetTotals, s)).toEqual([]);
+  });
+  it("order totals: a typed total is not a formula", () => {
+    const s = edit(sheetTotals.seed(), "seed-orders-nov", (g) => {
+      for (let r = 1; r <= 10; r++) g[r][6] = `=E${r + 1}*F${r + 1}`;
+      g[12][6] = "934.32";
+    });
+    expect(fails(sheetTotals, s)).toContain("total");
+  });
+
+  it("VAT quote: passes saved by the house rule and attached to Leah", () => {
+    const base = vatQuote.seed();
+    const tpl = base.files.find((f) => f.id === "seed-quote-template")!;
+    const g = tpl.sheet!.map((r) => [...r]);
+    g[1][1] = "Bright Cafe";
+    g[5] = ["Lids (500)", "20", "£11.40", "=B6*C6"];
+    g[7][3] = "=D6";
+    g[8][3] = "=D8*0.2";
+    g[9][3] = "=D8+D9";
+    let s: OfficeState = { ...base, files: [...base.files, { id: "q", path: ["Operations Team", "Documents", "Orders", "2026"], name: "2026-11-10 Quote Bright Cafe.xlsx", kind: "xlsx", modified: "now", by: "You", sheet: g }] };
+    const leah = base.emails.find((e) => e.id === "m-leah")!.from;
+    s = send(s, { to: [leah], body: "Hi Leah, 20 cases come to £273.60 including VAT. Quote attached.", attachments: [{ name: "2026-11-10 Quote Bright Cafe.xlsx", sheet: g }] });
+    expect(fails(vatQuote, s)).toEqual([]);
+    const linked = send({ ...s, emails: s.emails.slice(0, -1) }, { to: [leah], body: "£273.60", links: [{ name: "q", path: ["x"], fileName: "q" }] });
+    expect(fails(vatQuote, linked)).toContain("attached");
+  });
+
+  it("late count: passes with a labelled COUNTIF, saved, and 7 sent to Daniel", () => {
+    let s = edit(lateCount.seed(), "seed-log-oct", (g) => {
+      g[42][2] = "Late deliveries";
+      g[42][3] = '=COUNTIF(D2:D41,"Late")';
+    });
+    s = send(s, { to: [PEOPLE.daniel], body: "Hi Daniel, 7 deliveries were late in October." });
+    expect(fails(lateCount, s)).toEqual([]);
   });
 });

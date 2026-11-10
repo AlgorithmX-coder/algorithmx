@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState, type KeyboardEvent } from "react";
 import { W } from "../../tokens";
-import { cellName, colLetter, display, evaluate, moveRowRefs } from "../formula";
+import { cellName, colLetter, display, evaluate, moveRowRefs, shiftRefs } from "../formula";
 import type { Grid, Path, Tab } from "../types";
 import { AppButton, TitleBar } from "../ui";
 
@@ -15,7 +15,13 @@ import { AppButton, TitleBar } from "../ui";
  * click to rename, + to add one. Sort A to Z or Z to A sorts the data rows
  * by the selected column (row 1 is the headings), keeping each row's own
  * formulas pointing at itself, and Filter shows only the rows that match
- * one value, without deleting anything.
+ * one value, without deleting anything. £ and % show the selected cell as
+ * money or a percentage, and Fill down copies the selected cell's formula
+ * down to the last row of data, moving its references row by row, as
+ * double-clicking Excel's fill handle does.
+ *
+ * In `practice` mode (a lesson) there is no File, Save or Close: the sheet
+ * is the whole task, and the lesson checks it.
  *
  * Keys work as in Excel: type to replace a cell, F2 or a double click to
  * edit it, Enter moves down, Tab moves right, the arrows move, Delete
@@ -53,6 +59,7 @@ export default function Excel({
   onSave,
   onSaveAs,
   onClose,
+  practice,
 }: {
   doc: ExcelDoc | null;
   /* An edit to the sheets (dirty) or just a switch of tab (not dirty). */
@@ -60,6 +67,7 @@ export default function Excel({
   onSave: () => void;
   onSaveAs: () => void;
   onClose: () => void;
+  practice?: boolean;
 }) {
   const [sel, setSel] = useState<[number, number]>([1, 0]);
   const [draft, setDraft] = useState<string | null>(null);
@@ -96,7 +104,27 @@ export default function Excel({
   const [r, c] = sel;
   const raw = g[r]?.[c] ?? "";
 
-  const setGrid = (next: Grid) => onChange(doc.tabs.map((t, i) => (i === doc.active ? { ...t, grid: next } : t)), doc.active, true);
+  const formats = tab.formats ?? {};
+  const fmt = (rr: number, cc: number) => formats[cellName(rr, cc)];
+  const setGrid = (next: Grid, nextFormats: Tab["formats"] = tab.formats) => onChange(doc.tabs.map((t, i) => (i === doc.active ? { ...t, grid: next, formats: nextFormats } : t)), doc.active, true);
+  const toggleFormat = (f: "money" | "percent") => {
+    const key = cellName(r, c);
+    const next = { ...formats };
+    if (next[key] === f) delete next[key];
+    else next[key] = f;
+    setGrid(g, next);
+  };
+  const fillDown = () => {
+    const end = lastDataRow(g);
+    if (!raw.trim() || r >= end) return;
+    const next = g.map((row) => [...row]);
+    const nextFormats = { ...formats };
+    for (let rr = r + 1; rr <= end; rr++) {
+      next[rr][c] = shiftRefs(raw, rr - r);
+      if (formats[cellName(r, c)]) nextFormats[cellName(rr, c)] = formats[cellName(r, c)];
+    }
+    setGrid(next, nextFormats);
+  };
   const put = (rr: number, cc: number, value: string) => {
     if ((g[rr]?.[cc] ?? "") === value) return;
     const next = g.map((row) => [...row]);
@@ -118,11 +146,18 @@ export default function Excel({
     if (end < 2) return;
     const order = Array.from({ length: end }, (_, i) => i + 1).sort((a, b) => dir * compare(display(g, a, c), display(g, b, c)) || a - b);
     const next = g.map((row) => [...row]);
+    const nextFormats = { ...formats };
     order.forEach((from, i) => {
       const to = i + 1;
       next[to] = g[from].map((v) => moveRowRefs(v, from, to));
+      /* a row's formats travel with it */
+      for (let cc = 0; cc < cols; cc++) {
+        const f = formats[cellName(from, cc)];
+        if (f) nextFormats[cellName(to, cc)] = f;
+        else delete nextFormats[cellName(to, cc)];
+      }
     });
-    setGrid(next);
+    setGrid(next, nextFormats);
   };
 
   const switchTab = (i: number) => {
@@ -188,28 +223,44 @@ export default function Excel({
   const left = (cc: number) => HEAD_W + doc.widths.slice(0, cc).reduce((a, b) => a + b, 0);
   const total = left(cols);
   /* Rows on show: the headings always, data rows only when they match the filter. */
-  const shown = g.map((_, rr) => rr).filter((rr) => rr === 0 || !filter || display(g, rr, filter.col).trim() === filter.value);
+  const shown = g.map((_, rr) => rr).filter((rr) => rr === 0 || !filter || display(g, rr, filter.col, fmt(rr, filter.col)).trim() === filter.value);
   const at = (rr: number) => shown.indexOf(rr);
-  const values = (cc: number) => [...new Set(g.slice(1, lastDataRow(g) + 1).map((_, i) => display(g, i + 1, cc).trim()))].filter(Boolean).sort((a, b) => compare(a, b));
+  const values = (cc: number) => [...new Set(g.slice(1, lastDataRow(g) + 1).map((_, i) => display(g, i + 1, cc, fmt(i + 1, cc)).trim()))].filter(Boolean).sort((a, b) => compare(a, b));
 
   return (
     <div style={{ height: "100%", display: "flex", flexDirection: "column", background: W.page, fontFamily: W.font, color: W.ink }}>
-      <TitleBar colour={W.excel} app="Excel" name={`${doc.name} · ${doc.dirty ? "Not saved" : "Saved"}`}>
-        <span style={{ fontSize: 12.5, opacity: 0.85 }}>AutoSave off</span>
-        <button type="button" onClick={onClose} aria-label="Close workbook" style={{ width: 36, height: 32, border: "none", background: "transparent", color: "#fff", fontSize: 17, cursor: "pointer" }}>
-          ✕
-        </button>
+      <TitleBar colour={W.excel} app="Excel" name={practice ? doc.name : `${doc.name} · ${doc.dirty ? "Not saved" : "Saved"}`}>
+        {!practice && <span style={{ fontSize: 12.5, opacity: 0.85 }}>AutoSave off</span>}
+        {!practice && (
+          <button type="button" onClick={onClose} aria-label="Close workbook" style={{ width: 36, height: 32, border: "none", background: "transparent", color: "#fff", fontSize: 17, cursor: "pointer" }}>
+            ✕
+          </button>
+        )}
       </TitleBar>
 
       {/* ribbon */}
       <div style={{ position: "relative", display: "flex", alignItems: "center", gap: 8, padding: "6px 10px", background: W.chrome, borderBottom: `1px solid ${W.edge}`, flexWrap: "wrap" }}>
-        <AppButton primary colour={W.excel} onClick={() => setMenu((m) => !m)}>
-          File ▾
+        {!practice && (
+          <>
+            <AppButton primary colour={W.excel} onClick={() => setMenu((m) => !m)}>
+              File ▾
+            </AppButton>
+            <AppButton onClick={onSave} title="Ctrl+S">
+              Save
+            </AppButton>
+            <AppButton onClick={onSaveAs}>Save as</AppButton>
+            <span style={{ width: 1, alignSelf: "stretch", background: W.edge, margin: "0 2px" }} />
+          </>
+        )}
+        <AppButton onClick={() => toggleFormat("money")} title="Show the selected cell as money" style={fmt(r, c) === "money" ? { background: W.select, border: `1px solid ${W.excel}` } : undefined}>
+          £
         </AppButton>
-        <AppButton onClick={onSave} title="Ctrl+S">
-          Save
+        <AppButton onClick={() => toggleFormat("percent")} title="Show the selected cell as a percentage" style={fmt(r, c) === "percent" ? { background: W.select, border: `1px solid ${W.excel}` } : undefined}>
+          %
         </AppButton>
-        <AppButton onClick={onSaveAs}>Save as</AppButton>
+        <AppButton onClick={fillDown} disabled={!raw.trim().startsWith("=")} title="Copy this formula down to the last row of data">
+          ⇩ Fill down
+        </AppButton>
         <span style={{ width: 1, alignSelf: "stretch", background: W.edge, margin: "0 2px" }} />
         <AppButton onClick={() => sort(1)} title={`Sort the rows by column ${colLetter(c)}, smallest or A first`}>
           Sort A→Z
@@ -307,9 +358,9 @@ export default function Excel({
                 {rr + 1}
               </span>
               {g[rr].map((_, cc) => {
-                const shownText = display(g, rr, cc);
+                const shownText = display(g, rr, cc, fmt(rr, cc));
                 const v = evaluate(g, rr, cc);
-                const numberLike = typeof v === "number" || /^£?-?[0-9][0-9,.]*$/.test(shownText);
+                const numberLike = typeof v === "number" || /^-?£?-?[0-9][0-9,.]*%?$/.test(shownText);
                 const on = rr === r && cc === c;
                 return (
                   <span

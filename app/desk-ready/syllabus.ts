@@ -105,7 +105,7 @@ export const PARTS: readonly DeskPart[] = [
         title: "Making it do the maths",
         promise: "Add up, average and count with simple formulas.",
         topics: ["Your first formula", "SUM, AVERAGE and COUNT", "Adding VAT and working out a percentage", "Counting what matches: COUNTIF", "Copying a formula down"],
-        ready: false,
+        ready: true,
       },
       {
         id: "m7",
