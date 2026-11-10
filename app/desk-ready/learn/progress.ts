@@ -50,9 +50,15 @@ function writeDone(ids: string[]): void {
   window.dispatchEvent(new Event(EVENT));
 }
 
+/* Whether the account answered "signed in" on this page load. Until it
+ * does, nothing is sent: a signed-out learner's browser never asks the
+ * account to store anything, so their console stays free of refusals. Any
+ * id finished before the answer goes up with the next page's sync. */
+let signedIn = false;
+
 /* Tell the account, without waiting and without minding if it fails. */
 function pushDone(ids: string[]): void {
-  if (ids.length === 0) return;
+  if (ids.length === 0 || !signedIn) return;
   void fetch("/api/desk/progress", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ids }) }).catch(() => {});
 }
 
@@ -80,6 +86,7 @@ async function syncDone(): Promise<void> {
     const res = await fetch("/api/desk/progress", { cache: "no-store" });
     const body = (await res.json()) as { done?: unknown; signedIn?: boolean };
     if (!body.signedIn) return;
+    signedIn = true;
     const server = Array.isArray(body.done) ? body.done.filter((x): x is string => typeof x === "string") : [];
     const local = parseDone(readDoneRaw());
     const { here, up } = mergeDone(local, server);
