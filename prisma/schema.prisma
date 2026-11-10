@@ -927,6 +927,46 @@ model PlacePurchase {
 }
 
 // ---------------------------------------------------------------------------
+// A school asking to be sold to.
+//
+// The /schools enquiry form used to do exactly one thing with an enquiry:
+// email it. If Resend was down, or the mailbox had moved, or somebody
+// deleted the message, the lead was gone and nothing anywhere knew it had
+// ever arrived. For the one form on the site whose whole job is to produce
+// customers, that is the wrong order: write it down first, then try to tell
+// somebody.
+//
+// Deliberately NOT a relation to Organisation. An enquiry comes from a
+// school that does not exist in the system yet, and most never will.
+// ---------------------------------------------------------------------------
+
+model SchoolEnquiry {
+  id     String @id @default(cuid())
+  name   String
+  email  String
+  school String
+  /// The raw key chosen on the form (head, slt, computing, teacher, it,
+  /// other), read back through the same map the email uses, so adding an
+  /// option later does not need a migration.
+  role    String?
+  phase   String
+  size    String?
+  message String?
+  /// Whether the notification email actually went out. False means the lead
+  /// is safely here but nobody was told, which is precisely the case staff
+  /// need to be able to find.
+  emailed   Boolean   @default(false)
+  /// Set when somebody has dealt with it, so the list of new enquiries is a
+  /// list of work rather than an archive.
+  handledAt DateTime?
+  handledBy String?
+  createdAt DateTime  @default(now())
+
+  @@index([createdAt])
+  @@index([handledAt])
+}
+
+// ---------------------------------------------------------------------------
 // Cyber Pro (consumer, adult). Simple server-side progress for the 21-module
 // course, so a logged-in learner's completed topics follow them across
 // devices. Deliberately minimal and ADDITIVE: the client keeps using

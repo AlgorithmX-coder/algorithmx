@@ -1,38 +1,39 @@
 import { NextResponse } from "next/server";
 import { sendEmail } from "@/app/lib/resend";
+import { prisma } from "@/app/lib/prisma";
+import { opsAlert } from "@/app/lib/opsAlert";
+import { PHASE_LABELS, roleLabel, sizeLabel } from "@/app/lib/schoolEnquiries";
 
 /**
  * POST /api/schools/enquiry - the /schools contact form.
  *
- * Validates the form, logs a one-line record (so a lost email is still
- * recoverable from the server logs) and emails the enquiry to the schools
- * inbox with reply-to set to the enquirer. No database table yet: the
- * schools data model (schools, classes, pupils) lands with the pilot build,
- * and enquiries can move there then.
+ * WRITTEN DOWN FIRST, THEN EMAILED. This used to do exactly one thing with
+ * an enquiry: send it to the schools inbox, with a console.log as the only
+ * backup. If Resend was down, or the mailbox had moved, or somebody deleted
+ * the message, the lead was gone and nothing anywhere knew it had arrived.
+ * For the one form on the site whose whole job is to produce customers,
+ * that was the wrong order of operations.
+ *
+ * The row is now saved before the email is attempted, and a failed email no
+ * longer fails the request: the enquiry IS safe, and telling a head teacher
+ * to go and email support instead, when we already hold everything they
+ * typed, would be a lie that costs a sale. Ops is told instead, and the row
+ * is flagged `emailed: false` so staff can find exactly the ones nobody was
+ * notified about.
+ *
+ * If the SAVE itself fails, the old behaviour stands: try the email anyway,
+ * and only refuse if both fail. Two independent ways to keep a lead is the
+ * point of the change.
  */
 export const runtime = "nodejs";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-const ROLES: Record<string, string> = {
-  head: "Headteacher or principal",
-  slt: "Deputy head or SLT",
-  computing: "Computing or online-safety lead",
-  teacher: "Class teacher",
-  it: "IT or network manager",
-  other: "Other",
-};
-const PHASES: Record<string, string> = {
-  primary: "Primary",
-  secondary: "Secondary",
-  both: "Primary and secondary",
-};
-const SIZES: Record<string, string> = {
-  "u100": "Under 100 pupils",
-  "100-300": "100 to 300 pupils",
-  "300-600": "300 to 600 pupils",
-  "600+": "600+ pupils",
-};
+/* The labels moved to app/lib/schoolEnquiries.ts when the staff console
+   started reading these rows too. Two readers of the same stored key have
+   to turn it into the same words, or a staff member sees "slt" where the
+   email they were sent said "Deputy head". */
+const PHASES = PHASE_LABELS;
 function esc(s: string): string {
   return s.replace(/[&<>"']/g, (c) =>
     ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c] ?? c,
@@ -77,14 +78,45 @@ export async function POST(req: Request) {
     name,
     email,
     school,
-    role: ROLES[role] ?? "Not given",
+    role: roleLabel(role),
     phase: PHASES[phase],
-    size: SIZES[size] ?? "Not given",
+    size: sizeLabel(size),
     message,
     at: new Date().toISOString(),
   };
-  // Backup record in the server logs; the email is the primary channel.
+  // Still logged. It costs nothing and it is the one record that survives
+  // the database being the thing that is broken.
   console.log("[schools-enquiry]", JSON.stringify(record));
+
+  /* THE LEAD IS SAVED BEFORE ANYTHING IS SENT. The raw form keys go in, not
+     the prettified labels: the labels are presentation and can change, the
+     keys are what was chosen. */
+  let savedId: string | null = null;
+  try {
+    const saved = await prisma.schoolEnquiry.create({
+      data: {
+        name,
+        email,
+        school,
+        role: role || null,
+        phase,
+        size: size || null,
+        message: message || null,
+      },
+      select: { id: true },
+    });
+    savedId = saved.id;
+  } catch (err) {
+    /* Not fatal. The email below is now the only copy, which is exactly the
+       situation this change exists to end, so it is worth waking somebody
+       for even though the enquirer will see success. */
+    console.error("[schools-enquiry] save failed", err);
+    await opsAlert({
+      what: "School enquiry could not be saved",
+      detail: { school, email, name },
+      error: err,
+    });
+  }
 
   const to = process.env.SCHOOLS_ENQUIRY_TO ?? "support@algorithmx.co.uk";
   const subject = `School enquiry: ${school} (${record.phase})`;
@@ -115,12 +147,31 @@ export async function POST(req: Request) {
 
   try {
     await sendEmail({ to, subject, html, text, replyTo: email });
+    if (savedId) {
+      /* Best effort. The enquiry is already safe, so failing to record that
+         we emailed it must not turn into a failed enquiry. */
+      await prisma.schoolEnquiry
+        .update({ where: { id: savedId }, data: { emailed: true } })
+        .catch((err: unknown) => console.error("[schools-enquiry] emailed flag failed", err));
+    }
   } catch (err) {
     console.error("[schools-enquiry] email failed", err);
-    return NextResponse.json(
-      { error: "We couldn't send your enquiry just now. Please email support@algorithmx.co.uk and we'll pick it up." },
-      { status: 502 },
-    );
+    if (!savedId) {
+      /* Both ways of keeping it failed, so this is the only honest answer:
+         we really have lost it, and the enquirer needs to do something. */
+      return NextResponse.json(
+        { error: "We couldn't send your enquiry just now. Please email support@algorithmx.co.uk and we'll pick it up." },
+        { status: 502 },
+      );
+    }
+    /* Saved but not sent. The lead is safe and the head teacher is told the
+       truth, which is that we have it. Ops is told the part they need: that
+       nobody got the email, and the enquiry is sitting in /admin waiting. */
+    await opsAlert({
+      what: "School enquiry saved but the email failed",
+      detail: { school, email, name, enquiry: savedId, inbox: to },
+      error: err,
+    });
   }
 
   return NextResponse.json({ ok: true });
