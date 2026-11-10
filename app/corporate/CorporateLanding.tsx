@@ -15,19 +15,23 @@ import HeroSim from "./HeroSim";
 import PolicyBuilder from "./PolicyBuilder";
 
 /**
- * The corporate landing page: the two AI courses for firms.
+ * The corporate landing page: Cyber Secured, the one thing a firm buys.
  *
- * Owner 2026-09-26: "clear, concise, know exactly what we offer." Eight
- * blocks, in the order a buyer needs them: what it is (hero, with the paste
- * test as the proof), who backs us, the two courses, how it runs, what every
- * seat comes with, what it costs, the free policy, questions, the form.
- * Nothing is said twice. The earlier twelve-block page folded its "why now",
- * module list, role tracks, sector list, walkthrough card and regulation
- * cards into these.
+ * Owner 2026-11-09: one seat per person opens three courses (AI Cleared,
+ * AI Fluent, Cyber Awareness), all open from day one, in any order, with
+ * no certificates: completion shows on the admin's team register. The
+ * pitch is "attacks change daily, we have you covered", proved by the real,
+ * reported incidents the courses cite (each linked to its published
+ * source, phrased as reported, exactly as the course states it).
+ *
+ * Blocks, in the order a buyer needs them: what it is (hero), who backs
+ * us, the three courses, why it keeps up (the incidents), how it runs,
+ * what every seat comes with, what it costs, the free policy, questions,
+ * the form.
  *
  * Copy rules that apply here (owner): state the benefit, never the denial;
  * no em-dashes; no invented figures; never "ask for a quote"; never claim
- * the course makes a firm "compliant".
+ * the course makes a firm "compliant"; no certificate promises.
  */
 
 const eyebrow: React.CSSProperties = sectionMark;
@@ -88,6 +92,7 @@ const pillGhost: React.CSSProperties = {
 
 const SECTIONS: ReadonlyArray<readonly [id: string, label: string, cta?: boolean]> = [
   ["courses", "The courses"],
+  ["attacks", "Real attacks"],
   ["how", "How it runs"],
   ["included", "What you get"],
   ["pricing", "Pricing"],
@@ -96,52 +101,116 @@ const SECTIONS: ReadonlyArray<readonly [id: string, label: string, cta?: boolean
   ["enquiry", "Get in touch", true],
 ];
 
-/* The two courses. Cleared is the gate every member of staff passes; Fluent
-   is the upskill for the ones who have. */
-const COURSES = [
+/* The three courses one seat opens. All three are open from day one, in
+   any order; none waits on another (owner, 2026-11-09). All eight Cyber
+   Awareness modules are live (AWARENESS_MODULE_LIST in
+   app/cyber-awareness/manifests/index.ts). `live` tags a single module as
+   new; leave it off when every module is out. */
+type CourseItem = { text: string; live?: boolean };
+const COURSES: ReadonlyArray<{ id: string; name: string; tag: string; who: string; time: string; accent: string; intro: string; items: CourseItem[]; outcome: string; release?: string }> = [
   {
     id: "cleared",
     name: "AI Cleared",
-    tag: "The safety gate",
-    who: "Every member of staff, first",
-    time: "About 90 minutes, in 20 minute sittings",
+    tag: "Use AI safely",
+    who: "Every member of staff",
+    time: "5 modules, about 90 minutes",
     accent: "#0a7085",
-    intro: "Five modules that teach your whole firm to use Copilot, ChatGPT, Gemini and Claude without leaking a client, a colleague or a bank detail. Every practice screen is a live AI with a grader in front of it that shows exactly what would have left the building.",
+    intro: "Teaches your whole firm to use Copilot, ChatGPT, Gemini and Claude without leaking a client, a colleague or a bank detail. Every practice screen is a live AI with a grader in front of it that shows exactly what would have left the building.",
     items: [
-      "What happens to what you type: the four tiers of any AI tool and what each does with your data",
-      "The paste test: four data classes, three questions before every send, context without the facts",
-      "Your firm's approved tools, by name, and who to ask",
-      "Trust but verify: AI hallucination (invented facts, figures and citations), hidden instructions, Copilot surfacing the wrong files",
-      "Shadow AI, and what to do the moment something goes wrong",
+      { text: "What happens to what you type: the four tiers of any AI tool and what each does with your data" },
+      { text: "The paste test: four data classes, three questions before every send, context without the facts" },
+      { text: "Your firm's approved tools, by name, and who to ask" },
+      { text: "Trust but verify: AI hallucination (invented facts, figures and citations), hidden instructions, Copilot surfacing the wrong files" },
+      { text: "Shadow AI, and what to do the moment something goes wrong" },
     ],
-    outcome: "A certificate per person and per firm, and every completion on the training register.",
-    price: "From £25 per person, per year",
+    outcome: "Staff who check before they paste, and know who to tell the moment something goes wrong.",
   },
   {
     id: "fluent",
     name: "AI Fluent",
-    tag: "The upskill",
-    who: "Staff who hold an AI Cleared certificate",
-    time: "About 3 hours, in 20 minute sittings",
+    tag: "Get real work out of AI",
+    who: "Everyone who uses AI at work",
+    time: "9 modules, about 3 hours",
     accent: "#5744c9",
-    intro: "The course that turns a cleared member of staff into the person the team asks. Prompting that works, the tools used properly, and a track built around their own job, practised on invented data with the same grader running underneath.",
+    intro: "The course that turns a member of staff into the person the team asks. Prompting that works, the tools used properly, and a track built around their own job across eight role desks, practised on invented data with the same grader running underneath.",
     items: [
-      "Prompting that works: role, task, format, constraints, and iterating instead of starting again",
-      "Your tools, properly: Copilot in Word, Excel, Outlook and Teams; ChatGPT, Gemini and Claude",
-      "The five workflows: summarise, draft, analyse, research, automate",
-      "Verification as a two-minute habit before anything reaches a client",
-      "A role track that ends in a real task: finance, legal, HR, sales, support, operations, IT or leadership",
+      { text: "Prompting that works: role, task, format, constraints, and iterating instead of starting again" },
+      { text: "Your tools, properly: Copilot in Word, Excel, Outlook and Teams; ChatGPT, Gemini and Claude" },
+      { text: "The five workflows: summarise, draft, analyse, research, automate" },
+      { text: "Verification as a two-minute habit before anything reaches a client" },
+      { text: "A role track that ends in a real task: finance, legal, HR, sales, support, operations, IT or leadership" },
     ],
-    outcome: "A personal prompt playbook to keep, and an AI Fluent certificate on the register.",
-    price: "From £45 per person, per year",
+    outcome: "A personal prompt playbook to keep, and work done faster on the tools you already pay for.",
+  },
+  {
+    id: "awareness",
+    name: "Cyber Awareness",
+    tag: "Spot the attack",
+    who: "Every member of staff",
+    time: "8 modules, about 2 hours",
+    accent: "#0e7a45",
+    intro: "Short modules on the attacks aimed at people rather than systems, taught from real, reported cases with the published source on screen, and practised on an invented working day: a morning of pressure, an inbox of lures.",
+    items: [
+      { text: "The human firewall: why most attacks start with a person, and the one habit that beats them" },
+      { text: "Phishing and social engineering by email, text, phone, QR code and chat" },
+      { text: "Passwords, MFA and access" },
+      { text: "Malware, devices and working remotely" },
+      { text: "Data handling" },
+      { text: "Invoice fraud and business email compromise" },
+      { text: "AI-powered scams and deepfakes" },
+      { text: "Report it" },
+    ],
+    release: "All eight modules are live. A short new Threat Briefing follows each quarter, and every seat gets it the day it goes live.",
+    outcome: "Staff who pause and check through a channel they trust before they click, pay or reset a password.",
+  },
+];
+
+/* The incidents the courses teach from, worded exactly as Cyber Awareness
+   Module 1 states them (app/cyber-awareness/manifests/module1.ts, checked
+   against these sources on 9 November 2026). Never add a figure here that
+   the course does not cite. */
+const INCIDENTS = [
+  {
+    when: "Marks & Spencer, 2025",
+    tag: "Help desk impersonation",
+    accent: "#a63a08",
+    body: "M&S's chairman told MPs the way in was \"sophisticated impersonation\", and it was reported that IT help desk staff had been tricked into resetting passwords. Ransomware followed, and M&S estimated a £300m hit to operating profit.",
+    lesson: "The NCSC's advice afterwards: check how your help desk confirms who is calling before it resets a password.",
+    sources: [
+      { label: "Infosecurity Magazine", href: "https://www.infosecurity-magazine.com/news/ms-chairman-declines-ransom-payment/" },
+      { label: "LBC", href: "https://www.lbc.co.uk/article/co-op-marks-spencer-cyberattackers-tricked-it-workers-5Hjd6LG_2/" },
+      { label: "Bloomberg, via the Irish Examiner", href: "https://www.irishexaminer.com/business/companies/arid-41665775.html" },
+      { label: "NCSC", href: "https://www.ncsc.gov.uk/blog-post/incidents-impacting-retailers" },
+    ],
+  },
+  {
+    when: "Arup, 2024",
+    tag: "Deepfake video call",
+    accent: "#5744c9",
+    body: "A member of staff in Arup's Hong Kong office joined a video call with the \"chief financial officer\" and other colleagues, reported to be AI-generated fakes, and made 15 transfers of about US$25m. Arup confirmed that fake voices and images were used.",
+    lesson: "The habit the course drills: leave the channel the request came in on, and check through one you already trust.",
+    sources: [
+      { label: "Fortune", href: "https://fortune.com/europe/2024/05/17/arup-deepfake-fraud-scam-victim-hong-kong-25-million-cfo/" },
+      { label: "CFO Dive", href: "https://www.cfodive.com/news/deepfake-scam-engineering-firm-arup-25-million-fraud-hong-kong-cfo/716501/" },
+    ],
+  },
+  {
+    when: "UK businesses, 2025",
+    tag: "Cyber Security Breaches Survey",
+    accent: "#0a7085",
+    body: "43% of UK businesses reported a breach or attack in the past year. Of those, 85% had been hit by phishing, the most common type of attack in the government's survey.",
+    lesson: "Most attacks start with a person, so the training does too.",
+    sources: [
+      { label: "GOV.UK", href: "https://www.gov.uk/government/statistics/cyber-security-breaches-survey-2025/cyber-security-breaches-survey-2025" },
+    ],
   },
 ];
 
 const STEPS = [
-  { n: "01", colour: "#0a7085", title: "Tell us about your firm", text: "Ten minutes on a profile: your approved tools, your data class names, who staff should ask. Both courses read it from then on." },
-  { n: "02", colour: "#5744c9", title: "We set up your seats", text: "Your licence, your admin login and a seat pack sized to your headcount. It runs in the browser, so there is nothing to install." },
-  { n: "03", colour: "#0e7a45", title: "Staff learn in sittings", text: "Twenty minute modules that save on every screen. A job title picker gives each person scenarios from their own desk." },
-  { n: "04", colour: "#8a5400", title: "You get the register", text: "Who has completed what, with scores and dates, a certificate per person and one for the firm once your team has passed." },
+  { n: "01", colour: "#0a7085", title: "Tell us about your firm", text: "Ten minutes on a profile: your approved AI tools, your data class names, who staff should ask. The courses read it from then on." },
+  { n: "02", colour: "#5744c9", title: "We set up your seats", text: "Your licence, your admin login and one seat for each person. It runs in the browser, so there is nothing to install." },
+  { n: "03", colour: "#0e7a45", title: "Staff learn in sittings", text: "Short modules that save on every screen, on any of the three courses, in any order. A job title picker gives each person scenarios from their own desk." },
+  { n: "04", colour: "#8a5400", title: "You see the register", text: "Your team register shows who has a seat, who has started, and how far each person has got on every course, ready to download." },
 ];
 
 const PILLARS = [
@@ -152,44 +221,45 @@ const PILLARS = [
     points: ["Your approved and banned tools, by name", "Your data class names on every verdict", "Your escalation contact on every screen", "A starter AI policy written from your answers"],
   },
   {
-    title: "Evidence that stands up",
+    title: "A register you can show",
     accent: "#0e7a45",
     icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d="M12 3l7 3v6c0 4.4-3 7.6-7 9-4-1.4-7-4.6-7-9V6z" /><path d="M9 12l2 2 4-4" /></svg>,
-    points: ["A training register by person and team", "Scores, dates and certificate expiry", "An export for auditors, insurers and client questionnaires", "A firm certificate once your team has passed"],
+    points: ["Every person and every course, module by module", "Who has started, who has finished, and when each was last active", "A CSV download for auditors, insurers and client questionnaires", "One click to nudge everyone who has not finished"],
   },
   {
-    title: "Revised as fast as the tools change",
+    title: "Revised as fast as attacks change",
     accent: "#5744c9",
     icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d="M20 12a8 8 0 1 1-2.3-5.7" /><path d="M20 4v5h-5" /></svg>,
-    points: ["Every vendor fact carries the date it was last checked", "Reviewed every quarter, and within weeks of a major model or policy change", "Your admin is told what changed and why", "The certificate renews on the refreshed content, so it never goes stale"],
+    points: ["Real, reported incidents, with the published source on screen", "A new Cyber Awareness Threat Briefing every quarter", "Every AI vendor fact carries the date it was last checked", "The AI courses are reviewed every quarter, and within weeks of a major model or policy change"],
   },
   {
     title: "Practice data only",
     accent: "#8a5400",
     icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden><rect x="3" y="5" width="18" height="14" rx="2" /><path d="M7 10h6M7 14h10" /><path d="M15 9.5h3" strokeWidth="3" /></svg>,
-    points: ["Every firm, client and person in the courses is invented", "The sandbox stops a send that looks like real data", "Transcripts are not kept", "Cyber Essentials certified, the NCSC-backed standard"],
+    points: ["Every client, colleague and message in the courses is invented", "The sandbox stops a send that looks like real data", "Practice chats are never stored, only the scores", "Cyber Essentials certified, the NCSC-backed standard"],
   },
 ];
 
-/* Per person, per year, in packs of ten. Owner-set 2026-09-26; AI Cleared Firm tier £25 from 2026-09-29. */
+/* Per person, per year, VAT on top. Owner-confirmed 2026-11-09: Team is
+   fewer than 50 seats at £99, Firm is 50 or more at £85. One seat opens
+   all three courses. */
 const PACKS = [
-  { name: "Team", seats: "10 to 49 seats", cleared: "£29", fluent: "£59", note: "Running in your firm within a week.", accent: "#0a7085" },
-  { name: "Firm", seats: "50 to 249 seats", cleared: "£25", fluent: "£45", note: "The register with CSV export, and a named onboarding call.", accent: "#5744c9" },
-  { name: "Enterprise", seats: "250 seats and up", cleared: "Priced per firm", fluent: "Priced per firm", note: "A named onboarding call; SSO, SCORM export and data classes per division on request.", accent: "#8a5400" },
+  { name: "Team", seats: "Fewer than 50 seats", price: "£99", note: "Running in your firm within a week.", accent: "#0a7085", buy: "/corporate/buy" },
+  { name: "Firm", seats: "50 seats or more", price: "£85", note: "Our best price per seat, and a named onboarding call.", accent: "#5744c9", buy: "/corporate/buy?seats=50" },
 ];
 
 const FAQS = [
+  { q: "What does one seat include?", a: "All three courses for one person, for a year: AI Cleared, AI Fluent and Cyber Awareness, open from day one in any order. Each new Cyber Awareness module reaches every seat the day it goes live, and every seat includes the team register and the free policy." },
+  { q: "How do you keep up with how fast attacks change?", a: "By building the course from real ones. Cyber Awareness teaches from incidents that were reported in public, with the published source linked on screen. All eight modules are live, and a short new Threat Briefing follows each quarter. In the AI courses every fact about a tool carries the date it was last checked, and the content is reviewed every quarter and within weeks of a major model release or a change to a vendor's data terms." },
+  { q: "Do staff take the courses in order?", a: "Whatever order suits them. All three open on day one and none waits on another. A good start is AI Cleared and Cyber Awareness for everyone, then AI Fluent for the people who use AI most." },
   { q: "Which AI tools do the courses cover?", a: "Microsoft 365 Copilot, ChatGPT, Gemini and Claude, at every tier from a free personal account to an enterprise workspace, plus a five minute method for checking any tool you have not seen before. Every vendor fact carries the date it was last verified." },
   { q: "Does it cover AI hallucination?", a: "Yes, by name and by habit. AI Cleared module 4 shows the three shapes it takes (invented citations, invented figures, confident wrong answers), why it happens, and the two-minute check staff run before anything AI-written goes to a client. AI Fluent carries it into the work: the figure the tool guessed in a table, the source that reads perfectly and does not exist, and verification as a reflex." },
-  { q: "How do you keep up with how fast the tools change?", a: "By treating it as part of the product, not an afterthought. Every fact about a tool carries the date it was last checked and is shown on screen. The whole course is reviewed every quarter, and within weeks of a major model release or a change to a vendor's data terms. Your admin gets a note saying what changed and why, and the annual renewal is on the refreshed content." },
-  { q: "Do staff need AI Cleared before AI Fluent?", a: "Yes. AI Cleared is the ninety minute safety gate everyone passes; AI Fluent is the upskill for people who hold that certificate. Most firms clear everyone first and then put the people who use AI most through Fluent." },
-  { q: "Does our data go into the courses?", a: "No real data is needed. Both courses run on invented firms, clients and people. The sandbox stops any send that contains something that looks like a real identifier and explains why, and transcripts are not kept. Your firm profile holds tool names and a contact, and that is all." },
-  { q: "Does it make us compliant?", a: "It gives you training and evidence of training: a register with scores, dates and certificates, which is what auditors, insurers and regulators ask to see. Your own policies and legal advice stay yours, and the free policy below is written as a starting point for your review." },
-  { q: "Can we tailor it to our firm?", a: "Yes. The firm profile takes ten minutes and both courses read it from then on: your approved tools, your data class names, your escalation contact. Firms without an AI policy can write one now, free, further down this page." },
-  { q: "How is it licensed?", a: "Per person, per year, in packs of ten. AI Cleared is £29 a seat for ten to forty-nine seats and £25 from fifty; AI Fluent is £59 and £45. Every seat includes the sandbox, the register, the certificates and the policy pack. Larger firms can split seats across departments; please get in touch to find out about the onboarding process." },
+  { q: "Does our data go into the courses?", a: "The courses run entirely on invented clients, colleagues and messages. The AI sandbox stops any send that contains something that looks like a real identifier and explains why. The practice chats are never stored: the platform keeps each person's progress and scores, and a prompt only if they save it to their own AI Fluent playbook, which is private to them. Your firm profile holds tool names and a contact, and that is all." },
+  { q: "Does it make us compliant?", a: "It gives you training and a record of it: a register showing who has finished each course, module by module, which is the kind of evidence auditors, insurers and clients ask to see. Your own policies and legal advice stay yours, and the free policy below is written as a starting point for your review." },
+  { q: "How is it licensed?", a: "One seat per person, per year, and every seat opens all three courses. Fewer than fifty seats is £99 a seat; fifty or more is £85 a seat; VAT is added on top. Larger firms can group people by team on the register; please get in touch to find out about the onboarding process." },
 ];
 
-/* The /corporate header mark: the Cleared Shield (glowing cyan-to-violet edge,
+/* The /corporate header mark: the shield (glowing cyan-to-violet edge,
  * bright check). The nav flips night<->sand on scroll, so the wordmark uses the
  * nav's tone-aware ink and the check is a brand blue that reads on both grounds.
  * Passed to the shared Nav as its `brand`, so only this page changes. */
@@ -209,10 +279,10 @@ function CorporateBrand() {
         <path d="M27 33 L34 41 L48 24" fill="none" stroke="#5f8dff" strokeWidth="4.4" strokeLinecap="round" strokeLinejoin="round" />
       </svg>
       <span style={{ display: "flex", flexDirection: "column", gap: 2, lineHeight: 1 }}>
-        <span style={{ fontFamily: "var(--lv2-font-mono)", fontWeight: 700, fontSize: 14, letterSpacing: "0.2em", textTransform: "uppercase", color: "var(--lv2-word-mark, #eaf1ff)" }}>
-          CYBER <span style={{ color: "#5f8dff" }}>CORPORATE</span>
+        <span className="corp-wm" style={{ fontFamily: "var(--lv2-font-mono)", fontWeight: 700, fontSize: 14, letterSpacing: "0.2em", textTransform: "uppercase", color: "var(--lv2-word-mark, #eaf1ff)" }}>
+          CYBER <span className="corp-wm-secured" style={{ color: "#5f8dff" }}>SECURED</span>
         </span>
-        <span style={{ fontFamily: "var(--lv2-font-mono)", fontWeight: 500, fontSize: 8.5, letterSpacing: "0.24em", textTransform: "uppercase", color: "var(--lv2-word-mark, #eaf1ff)", display: "inline-flex", alignItems: "center" }}>
+        <span className="corp-wm-by" style={{ fontFamily: "var(--lv2-font-mono)", fontWeight: 500, fontSize: 8.5, letterSpacing: "0.24em", textTransform: "uppercase", color: "var(--lv2-word-mark, #eaf1ff)", display: "inline-flex", alignItems: "center" }}>
           <span style={{ opacity: 0.6 }}>by</span>
           <CubeMark size={12} color="#5f8dff" code style={{ display: "inline-block", margin: "0 3px", filter: "drop-shadow(0 0 4px rgba(95,141,255,0.7))" }} />
           <span style={{ opacity: 0.6 }}>AlgorithmX</span>
@@ -329,16 +399,16 @@ export default function CorporateLanding({ checkoutLive = false }: { checkoutLiv
           <div className="corp-hero-grid">
             <div className="corp-hero">
               <FadeUp>
-                <p style={sectionMarkBare} className="corp-hero-eyebrow">{"// AI at work · Two courses for firms of every size"}</p>
+                <p style={sectionMarkBare} className="corp-hero-eyebrow">{"// Cyber Secured · One seat, three courses"}</p>
               </FadeUp>
               <FadeUp delay={0.06}>
                 <h1 className="corp-h1">
-                  Every member of staff, <span className="corp-grad corp-grad-night">cleared to use AI.</span>
+                  Attacks change daily. <span className="corp-grad corp-grad-night">We have your firm covered.</span>
                 </h1>
               </FadeUp>
               <FadeUp delay={0.12}>
                 <p className="corp-hero-lede" style={{ ...lede, fontSize: "clamp(1.05rem, 1.35vw, 1.2rem)", maxWidth: 560 }}>
-                  <strong>AI Cleared</strong> teaches your whole firm to use Copilot, ChatGPT, Gemini and Claude without leaking a client, a colleague or a bank detail. <strong>AI Fluent</strong> then teaches them to get real work out of it. Both are interactive, both end in a certificate, and every completion goes on a training register you can show clients, auditors and insurers.
+                  <strong>Cyber Secured</strong> is one seat per person that opens three courses from day one: <strong>AI Cleared</strong> to use AI tools safely, <strong>AI Fluent</strong> to get real work out of them, and <strong>Cyber Awareness</strong> to spot the attacks aimed at staff. Built on real, reported incidents, with every completion on your team register.
                 </p>
               </FadeUp>
               <FadeUp delay={0.18}>
@@ -347,14 +417,14 @@ export default function CorporateLanding({ checkoutLive = false }: { checkoutLiv
                     {checkoutLive ? "See pricing and buy seats" : "Get in touch"}
                     <span aria-hidden style={{ marginLeft: 10, fontSize: 17, lineHeight: 1 }}>&rarr;</span>
                   </a>
-                  <a href="#courses" style={pillGhost} className="corp-hero-ghost">See the two courses</a>
+                  <a href="#courses" style={pillGhost} className="corp-hero-ghost">See the three courses</a>
                 </div>
               </FadeUp>
               <FadeUp delay={0.24}>
                 <ul className="corp-trust">
-                  <li>A live AI, real prompts, invented data</li>
-                  <li>Every role in the firm</li>
-                  <li>Certificate and training register</li>
+                  <li>Three courses, one seat</li>
+                  <li>Built on real attacks</li>
+                  <li>Every completion on your register</li>
                 </ul>
               </FadeUp>
             </div>
@@ -373,9 +443,9 @@ export default function CorporateLanding({ checkoutLive = false }: { checkoutLiv
         <section id="courses" className="corp-section">
           <span className="corp-glow corp-glow-amber" aria-hidden />
           <FadeUp>
-            <p style={eyebrow}>{"// The courses"}</p>
-            <h2 style={h2}>Two courses. <span className="corp-grad">Everybody safe first, then everybody efficient.</span></h2>
-            <p style={lede}>Get every member of staff safe on AI first with AI Cleared. Then teach the people who use it most to get real work out of it, efficiently, with AI Fluent. Both run in the browser, both practise against a live AI on invented data, and both leave a certificate on your register.</p>
+            <p style={eyebrow}>{"// One seat, three courses"}</p>
+            <h2 style={h2}>Three courses. <span className="corp-grad">One seat opens them all.</span></h2>
+            <p style={lede}>Everyone you give a seat to can start any of the three on day one, in any order, at their own pace. A good start is AI Cleared and Cyber Awareness for everyone, then AI Fluent for the people who use AI most. All three run in the browser on invented data, and every module finished shows on your register.</p>
           </FadeUp>
           <div className="corp-courses">
             {COURSES.map((c, i) => (
@@ -391,11 +461,17 @@ export default function CorporateLanding({ checkoutLive = false }: { checkoutLiv
                   </div>
                   <p className="corp-course-intro">{c.intro}</p>
                   <ol className="corp-course-list">
-                    {c.items.map((it) => <li key={it}>{it}</li>)}
+                    {c.items.map((it) => (
+                      <li key={it.text}>
+                        {it.text}
+                        {it.live ? <span className="corp-course-live">Live now</span> : null}
+                      </li>
+                    ))}
                   </ol>
+                  {c.release ? <p className="corp-course-release">{c.release}</p> : null}
                   <p className="corp-course-outcome">{c.outcome}</p>
                   <div className="corp-course-foot">
-                    <span className="corp-course-price">{c.price}</span>
+                    <span className="corp-course-price">Included in every seat</span>
                     {checkoutLive ? (
                       <a href="/corporate/buy" className="corp-course-cta">Buy seats <span aria-hidden>&rarr;</span></a>
                     ) : (
@@ -408,6 +484,41 @@ export default function CorporateLanding({ checkoutLive = false }: { checkoutLiv
           </div>
         </section>
 
+        {/* REAL ATTACKS ───────────────────────────────────── */}
+        {/* The proof behind "attacks change daily": the incidents the
+            courses teach from, each with its published sources. */}
+        <section id="attacks" className="corp-section">
+          <span className="corp-glow corp-glow-cyan" aria-hidden />
+          <FadeUp>
+            <p style={eyebrow}>{"// Why it keeps up"}</p>
+            <h2 style={h2}>Built on real attacks. <span className="corp-grad">Kept current as they change.</span></h2>
+            <p style={lede}>Cyber Awareness teaches from incidents reported in public, with the published source linked on screen so staff can read it for themselves. Three of the cases your staff will meet:</p>
+          </FadeUp>
+          <div className="corp-grid-3 corp-incidents" style={{ marginTop: 36 }}>
+            {INCIDENTS.map((x, i) => (
+              <FadeUp key={x.when} delay={0.06 * i}>
+                <article className="corp-card corp-incident" style={{ ["--corp-accent" as string]: x.accent }}>
+                  <span className="corp-incident-tag">{x.tag}</span>
+                  <h3>{x.when}</h3>
+                  <p>{x.body}</p>
+                  <p className="corp-incident-lesson">{x.lesson}</p>
+                  <p className="corp-incident-src">
+                    <span>As reported by</span>
+                    {x.sources.map((s) => (
+                      <a key={s.href} href={s.href} target="_blank" rel="noopener noreferrer">{s.label}</a>
+                    ))}
+                  </p>
+                </article>
+              </FadeUp>
+            ))}
+          </div>
+          <FadeUp>
+            <div className="corp-keepup">
+              <p><strong>Every quarter, something new.</strong> All eight Cyber Awareness modules are live, and a short new Threat Briefing follows each quarter on what attackers are doing now. Every seat gets it the day it goes live.</p>
+            </div>
+          </FadeUp>
+        </section>
+
         {/* HOW IT RUNS ────────────────────────────────────── */}
         <section id="how" className="corp-section">
           {/* The photography carries down the page as a half-width panel
@@ -418,7 +529,7 @@ export default function CorporateLanding({ checkoutLive = false }: { checkoutLiv
               <div>
                 <p style={eyebrow}>{"// Running in your firm within a week"}</p>
                 <h2 style={h2}>Four steps. <span className="corp-grad">Two of them are ours.</span></h2>
-                <p style={lede}>Ten minutes on a profile, a seat pack sized to your headcount, twenty-minute modules that save on every screen, and a register that turns completion into something you can hand to an auditor.</p>
+                <p style={lede}>Ten minutes on a profile, one seat for each person, short modules that save on every screen, and a register that turns completion into something you can hand to an auditor.</p>
               </div>
             </FadeUp>
             <FadeUp delay={0.08} y={20}>
@@ -449,7 +560,7 @@ export default function CorporateLanding({ checkoutLive = false }: { checkoutLiv
           <FadeUp>
             <p style={eyebrow}>{"// With every seat"}</p>
             <h2 style={h2}>Tailored to your firm. <span className="corp-grad">Evidence you can show.</span></h2>
-            <p style={lede}>Written once, personal to every firm, and kept current with the tools. The profile your admin fills in drives the scenarios, the verdicts and the policy; the register turns completion into something you can hand to an auditor; and the content is revised as fast as the AI tools themselves change.</p>
+            <p style={lede}>Written once, personal to every firm, and kept current with the threats. The profile your admin fills in drives the AI scenarios, the verdicts and the policy; the register shows who has finished what; and the content is revised as the tools and the attacks change.</p>
           </FadeUp>
           <div className="corp-grid-4 corp-pillars" style={{ marginTop: 36 }}>
             {PILLARS.map((p, i) => (
@@ -470,25 +581,27 @@ export default function CorporateLanding({ checkoutLive = false }: { checkoutLiv
           <span className="corp-glow corp-glow-cyan" aria-hidden />
           <FadeUp>
             <p style={eyebrow}>{"// Pricing"}</p>
-            <h2 style={h2}>One price per person. <span className="corp-grad">Everything included.</span></h2>
-            <p style={lede}>Per person, per year, in packs of ten, with the content refreshed as the tools change. Every seat carries the sandbox, the register, the certificates and the policy pack. Buy either course, or both, for the same people.</p>
+            <h2 style={h2}>One seat per person. <span className="corp-grad">All three courses included.</span></h2>
+            <p style={lede}>Per person, per year, plus VAT. Every seat opens AI Cleared, AI Fluent and Cyber Awareness, with the team register, the free policy and each quarterly Threat Briefing the day it is released.</p>
           </FadeUp>
-          <div className="corp-grid-3" style={{ marginTop: 36 }}>
+          <div className="corp-packs" style={{ marginTop: 36 }}>
             {PACKS.map((k, i) => (
               <FadeUp key={k.name} delay={0.06 * i}>
                 <div className="corp-card corp-pack" style={{ ["--corp-accent" as string]: k.accent }}>
                   <span className="corp-pack-name">{k.name}</span>
                   <span className="corp-pack-seats">{k.seats}</span>
-                  <dl className={k.name === "Enterprise" ? "corp-pack-prices corp-pack-prices-text" : "corp-pack-prices"}>
-                    <div><dt>AI Cleared</dt><dd>{k.cleared}</dd></div>
-                    <div><dt>AI Fluent</dt><dd>{k.fluent}</dd></div>
-                  </dl>
-                  <span className="corp-pack-unit">{k.name === "Enterprise" ? "on a signed agreement" : "per person, per year"}</span>
+                  <span className="corp-pack-price">{k.price}</span>
+                  <span className="corp-pack-unit">per person, per year, plus VAT</span>
+                  <ul className="corp-pack-incl">
+                    <li>AI Cleared</li>
+                    <li>AI Fluent</li>
+                    <li>Cyber Awareness</li>
+                  </ul>
                   <p>{k.note}</p>
-                  {checkoutLive && k.name !== "Enterprise" ? (
-                    <a href={`/corporate/buy?seats=${k.name === "Firm" ? 50 : 10}`} className="corp-pack-cta">Buy seats <span aria-hidden>&rarr;</span></a>
+                  {checkoutLive ? (
+                    <a href={k.buy} className="corp-pack-cta corp-pack-cta-pri">Buy seats <span aria-hidden>&rarr;</span></a>
                   ) : (
-                    <a href="#enquiry" className="corp-pack-cta">Get in touch <span aria-hidden>&rarr;</span></a>
+                    <a href="#enquiry" className="corp-pack-cta corp-pack-cta-pri">Get in touch <span aria-hidden>&rarr;</span></a>
                   )}
                 </div>
               </FadeUp>
@@ -496,6 +609,10 @@ export default function CorporateLanding({ checkoutLive = false }: { checkoutLiv
           </div>
           <FadeUp>
             <p className="corp-reg-line corp-pricing-line">
+              <span>Rolling out across several offices or teams?</span>
+              <a href="#enquiry">Get in touch</a>
+            </p>
+            <p className="corp-reg-line">
               <span>What procurement asks for, in writing:</span>
               <Link href="/corporate/security">Security and data handling</Link>
             </p>
@@ -546,9 +663,9 @@ export default function CorporateLanding({ checkoutLive = false }: { checkoutLiv
             <FadeUp>
               <div>
                 <p style={eyebrow}>{"// Get in touch"}</p>
-                <h2 style={h2}>Thinking of <span className="corp-grad">clearing your firm?</span></h2>
+                <h2 style={h2}>Thinking of <span className="corp-grad">securing your firm?</span></h2>
                 <p style={lede}>
-                  Tell us your headcount and the tools in use. We walk you through a module on your screen, explain onboarding from the firm profile to the first certificate, and reply within two working days.
+                  Tell us your headcount and the tools in use. We walk you through a module on your screen, explain onboarding from the firm profile to the first finished course, and reply within two working days.
                 </p>
                 <p style={{ ...lede, fontSize: 14.5, color: "rgba(17,22,38,0.63)" }}>
                   Prefer email? <a href="mailto:admissions@algorithmx.co.uk" style={{ color: "var(--lv2-cyan-soft)" }}>admissions@algorithmx.co.uk</a>
@@ -579,6 +696,23 @@ export default function CorporateLanding({ checkoutLive = false }: { checkoutLiv
           --lv2-ink: #14161d;
         }
         html, .corp-page { background: #f3ede4; }
+
+        /* The wordmark on phones (owner, 2026-11-09: hard to read at 390px).
+           Over the hero the bar is thin night glass, and on a phone the
+           bright top of the office photo shows through it, so the white and
+           blue letters had nothing dark behind them. On phones the bar gets
+           a firm night fill while it sits on the hero, SECURED takes a
+           lighter blue there and a deeper one on sand, and "by AlgorithmX"
+           comes up from 60% opacity. */
+        @media (max-width: 720px) {
+          .corp-page-dark nav[data-tone="night"] {
+            background: linear-gradient(180deg, rgba(8,13,30,0.9) 0%, rgba(6,9,22,0.82) 100%) !important;
+          }
+          .corp-page-dark .corp-wm { color: #ffffff !important; }
+          .corp-page-dark .corp-wm-secured { color: #9dbcff !important; }
+          .corp-page:not(.corp-page-dark) .corp-wm-secured { color: #2f55cc !important; }
+          .corp-wm-by > span { opacity: 0.9 !important; }
+        }
 
         /* ── the photographic hero band ─────────────────────────── */
         .corp-hero-band {
@@ -617,7 +751,7 @@ export default function CorporateLanding({ checkoutLive = false }: { checkoutLiv
         .corp-hero-band .corp-toplink { color: #9fdfe4; }
         .corp-hero-band .corp-hero-eyebrow { color: #46b7bf !important; }
         .corp-hero-band .corp-h1 { color: #ffffff; text-shadow: 0 2px 30px rgba(0,0,0,0.35); }
-        .corp-grad-night { background: linear-gradient(92deg, #5fd0d8 0%, #9d8cff 55%, #ff8fe0 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .corp-hero-band .corp-grad-night { background: linear-gradient(92deg, #5fd0d8 0%, #9d8cff 55%, #ff8fe0 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
         .corp-hero-band .corp-hero-lede { color: rgba(238,242,245,0.86) !important; }
         .corp-hero-band .corp-hero strong { color: #ffffff; }
         .corp-hero-band .corp-hero-ghost { background: rgba(255,255,255,0.08) !important; border-color: rgba(255,255,255,0.3) !important; color: #ffffff !important; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
@@ -641,7 +775,7 @@ export default function CorporateLanding({ checkoutLive = false }: { checkoutLiv
           border-color: #8ff0fa; background: linear-gradient(180deg, #67e6f2, #32c8da); color: #06181b;
           box-shadow: 0 11px 22px -9px rgba(48,198,216,0.65), inset 0 1px 0 rgba(255,255,255,0.4); transform: translateY(-1px);
         }
-        /* the subnav strip (below 1180px) sits under the nav on the dark band too */
+        /* the subnav strip (below 1360px) sits under the nav on the dark band too */
         .corp-page-dark .corp-subnav-wrap { background: rgba(11,17,23,0.72); border-color: rgba(255,255,255,0.1); }
         .corp-page-dark .corp-subnav-lead { color: #64e3f0; }
 
@@ -671,7 +805,7 @@ export default function CorporateLanding({ checkoutLive = false }: { checkoutLiv
         }
         .corp-h1 {
           margin: 18px 0 0; font-family: var(--lv2-font-display);
-          font-size: clamp(2.5rem, 5vw, 4.3rem); line-height: 1.0; letter-spacing: -0.03em; font-weight: 500;
+          font-size: clamp(2.4rem, 4.1vw, 3.7rem); line-height: 1.02; letter-spacing: -0.03em; font-weight: 500;
         }
         .corp-hero strong { font-weight: 600; color: #14161d; }
 
@@ -779,7 +913,9 @@ export default function CorporateLanding({ checkoutLive = false }: { checkoutLiv
         .corp-subnav { max-width: 1180px; margin: 0 auto; padding: 10px var(--lv2-rail); display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; scroll-behavior: smooth; }
         .corp-subnav::-webkit-scrollbar { display: none; }
         .corp-navsections { display: none; }
-        @media (min-width: 1180px) {
+        /* Seven section chips need 1360px beside the brand and the CTA;
+           below that the strip under the nav carries them. */
+        @media (min-width: 1360px) {
           .corp-navsections { display: flex; align-items: center; gap: 6px; min-width: 0; }
           .corp-subnav-wrap { display: none; }
           .corp-section { scroll-margin-top: 88px; }
@@ -828,8 +964,8 @@ export default function CorporateLanding({ checkoutLive = false }: { checkoutLiv
         @media (max-width: 820px) { .corp-grid-2, .corp-grid-2-form { grid-template-columns: 1fr; } }
         @media (max-width: 560px) { .corp-grid-4 { grid-template-columns: 1fr; } }
 
-        /* the two courses */
-        .corp-courses { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; margin-top: 36px; align-items: stretch; }
+        /* the three courses */
+        .corp-courses { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; margin-top: 36px; align-items: stretch; }
         .corp-courses > * { height: 100%; }
         .corp-course {
           display: flex; flex-direction: column; gap: 16px; height: 100%; box-sizing: border-box;
@@ -851,11 +987,27 @@ export default function CorporateLanding({ checkoutLive = false }: { checkoutLiv
         .corp-course-list li:first-child { border-top: 0; padding-top: 0; }
         .corp-course-list li::before { content: counter(c, decimal-leading-zero); position: absolute; left: 0; top: 11px; font-family: var(--lv2-font-mono); font-size: 11px; font-weight: 800; letter-spacing: 0.06em; color: var(--corp-accent); }
         .corp-course-list li:first-child::before { top: 2px; }
-        .corp-course-outcome { margin: 0; padding: 12px 14px; border-radius: 10px; background: color-mix(in srgb, var(--corp-accent) 9%, transparent); border: 1px solid color-mix(in srgb, var(--corp-accent) 30%, transparent); font-family: var(--lv2-font-display); font-size: 14px; line-height: 1.55; color: #14161d; }
-        .corp-course-foot { margin-top: auto; padding-top: 6px; display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+        .corp-course-outcome { margin: auto 0 0; padding: 12px 14px; border-radius: 10px; background: color-mix(in srgb, var(--corp-accent) 9%, transparent); border: 1px solid color-mix(in srgb, var(--corp-accent) 30%, transparent); font-family: var(--lv2-font-display); font-size: 14px; line-height: 1.55; color: #14161d; }
+        .corp-course-foot { padding-top: 6px; display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
         .corp-course-price { font-family: var(--lv2-font-display); font-size: 15px; font-weight: 600; color: #14161d; }
         .corp-course-cta { font-family: var(--lv2-font-mono); font-size: 12px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--corp-accent); text-decoration: none; }
-        @media (max-width: 900px) { .corp-courses { grid-template-columns: 1fr; } }
+        .corp-course-live { display: inline-flex; align-items: center; height: 20px; margin-left: 8px; padding: 0 8px; border-radius: 999px; vertical-align: 1px; background: color-mix(in srgb, var(--corp-accent) 14%, transparent); border: 1px solid color-mix(in srgb, var(--corp-accent) 45%, transparent); font-family: var(--lv2-font-mono); font-size: 9.5px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: var(--corp-accent); white-space: nowrap; }
+        .corp-course-release { margin: 0; font-family: var(--lv2-font-display); font-size: 13.5px; line-height: 1.5; color: rgba(17,22,38,0.7); }
+        @media (max-width: 1060px) { .corp-courses { grid-template-columns: 1fr; max-width: 680px; } }
+
+        /* the incidents */
+        .corp-incident { display: flex; flex-direction: column; gap: 10px; border-top: 2px solid var(--corp-accent); }
+        .corp-incident-tag { font-family: var(--lv2-font-mono); font-size: 10.5px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--corp-accent); }
+        .corp-incident h3 { margin: 0; font-family: var(--lv2-font-display); font-size: 1.3rem; font-weight: 500; letter-spacing: -0.015em; color: #14161d; }
+        .corp-incident p { margin: 0; font-family: var(--lv2-font-display); font-size: 14.5px; line-height: 1.6; color: rgba(17,22,38,0.84); }
+        .corp-incident .corp-incident-lesson { padding-top: 10px; border-top: 1px solid rgba(86,68,45,0.14); color: #14161d; font-weight: 500; }
+        .corp-incident .corp-incident-src { margin-top: auto; padding-top: 6px; display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: baseline; font-size: 12.5px; color: rgba(17,22,38,0.6); }
+        .corp-incident-src span { font-family: var(--lv2-font-mono); font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; }
+        .corp-incident-src a { color: #0a7085; text-decoration: underline; text-underline-offset: 2px; text-decoration-color: rgba(10,112,133,0.4); }
+        .corp-incident-src a:hover { text-decoration-color: #0a7085; }
+        .corp-keepup { margin-top: 24px; padding: 18px 22px; border-radius: 16px; border: 1px solid rgba(10,112,133,0.35); background: rgba(10,112,133,0.07); }
+        .corp-keepup p { margin: 0; font-family: var(--lv2-font-display); font-size: 15.5px; line-height: 1.6; color: rgba(17,22,38,0.86); max-width: 860px; }
+        .corp-keepup strong { font-weight: 600; color: #14161d; }
 
         /* the section photograph */
         .corp-how-head { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px; align-items: center; }
@@ -901,14 +1053,18 @@ export default function CorporateLanding({ checkoutLive = false }: { checkoutLiv
         .corp-pack { display: flex; flex-direction: column; gap: 4px; border-top: 2px solid var(--corp-accent); height: 100%; }
         .corp-pack-name { font-family: var(--lv2-font-mono); font-size: 11.5px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--corp-accent); }
         .corp-pack-seats { font-family: var(--lv2-font-display); font-size: 14px; color: rgba(17,22,38,0.7); }
-        .corp-pack-prices { margin: 16px 0 0; display: flex; flex-direction: column; gap: 10px; }
-        .corp-pack-prices div { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding-bottom: 10px; border-bottom: 1px solid rgba(86,68,45,0.14); }
-        .corp-pack-prices dt { font-family: var(--lv2-font-display); font-size: 14.5px; font-weight: 600; color: #14161d; }
-        .corp-pack-prices dd { margin: 0; font-family: var(--lv2-font-display); font-size: clamp(1.6rem, 2.2vw, 2rem); line-height: 1; letter-spacing: -0.03em; font-weight: 500; color: #14161d; font-variant-numeric: tabular-nums; white-space: nowrap; }
-        .corp-pack-prices-text dd { font-size: 1.05rem !important; font-weight: 600 !important; letter-spacing: 0 !important; color: rgba(17,22,38,0.78) !important; }
+        .corp-packs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; max-width: 860px; }
+        .corp-packs > * { height: 100%; }
+        @media (max-width: 700px) { .corp-packs { grid-template-columns: 1fr; } }
+        .corp-pack-price { margin-top: 16px; font-family: var(--lv2-font-display); font-size: clamp(2.6rem, 4vw, 3.4rem); line-height: 1; letter-spacing: -0.035em; font-weight: 500; color: #14161d; font-variant-numeric: tabular-nums; }
+        .corp-pack-incl { list-style: none; margin: 18px 0 0; padding: 12px 0 0; border-top: 1px solid rgba(86,68,45,0.14); display: flex; flex-wrap: wrap; gap: 8px 18px; }
+        .corp-pack-incl li { position: relative; padding-left: 20px; font-family: var(--lv2-font-display); font-size: 14.5px; font-weight: 600; color: #14161d; }
+        .corp-pack-incl li::before { content: ""; position: absolute; left: 2px; top: 4px; width: 9px; height: 5px; border-left: 2px solid var(--corp-accent); border-bottom: 2px solid var(--corp-accent); transform: rotate(-45deg); }
+        .corp-pack .corp-pack-cta-pri { display: inline-flex; align-items: center; gap: 8px; height: 46px; margin-top: auto; padding: 0 22px; border-radius: 999px; background: linear-gradient(135deg, #0a7085 0%, #086072 55%, #075464 100%); color: #fffdfa !important; font-family: var(--lv2-font-display) !important; font-size: 15px !important; font-weight: 600 !important; letter-spacing: 0.005em !important; text-transform: none !important; box-shadow: 0 12px 28px -12px rgba(10,112,133,0.9), inset 0 1px 0 rgba(255,255,255,0.3); }
+        .corp-pack .corp-pack-cta-pri:hover { filter: brightness(1.06); }
         .corp-pricing-line { margin-top: 26px; }
         .corp-pack-unit { font-family: var(--lv2-font-mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(17,22,38,0.62); margin-top: 8px; }
-        .corp-pack p { margin: 14px 0 0; font-family: var(--lv2-font-display); font-size: 14.5px; line-height: 1.6; color: rgba(17,22,38,0.79); }
+        .corp-pack p { margin: 14px 0 20px; font-family: var(--lv2-font-display); font-size: 14.5px; line-height: 1.6; color: rgba(17,22,38,0.79); }
         .corp-pack-cta { margin-top: auto; padding-top: 18px; align-self: flex-start; font-family: var(--lv2-font-mono); font-size: 12px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--corp-accent); text-decoration: none; }
 
         /* the regulation line under the policy heading */

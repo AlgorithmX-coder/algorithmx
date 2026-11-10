@@ -129,6 +129,7 @@ export default function Footer({ tone = "night", variant = "site" }: { tone?: Fo
               links={[
                 { name: "AI Cleared", href: "/corporate#courses" },
                 { name: "AI Fluent", href: "/corporate#courses" },
+                { name: "Cyber Awareness", href: "/corporate#courses" },
                 { name: "Pricing", href: "/corporate#pricing" },
                 { name: "Buy seats", href: "/corporate/buy" },
               ]}

@@ -96,7 +96,7 @@ export default function PolicyBuilder() {
     const w = window.open("", "_blank", "width=900,height=1000");
     if (!w) return;
     w.document.open();
-    w.document.write(policyToHtml(policy, { footer: "A starting point for your own review, written at algorithmx.io/corporate. The training that goes with it is AI Cleared by AlgorithmX." }));
+    w.document.write(policyToHtml(policy, { footer: "A starting point for your own review, written at algorithmx.io/corporate. The training that goes with it is Cyber Secured by AlgorithmX." }));
     w.document.close();
     w.focus();
     w.setTimeout(() => w.print(), 350);
