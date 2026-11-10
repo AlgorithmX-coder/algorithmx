@@ -28,12 +28,12 @@ export default function SecurityPage() {
     <CorporateSubpage
       eyebrow="// Security · how the courses handle a firm's data"
       title={<>What we hold, where it lives, <span className="corp-sub-grad">and who can see it.</span></>}
-      lede="A firm that puts its staff through Cyber Secured gives us very little: the names and work emails of the people on its seats, and what each of them typed into a practice sandbox that holds invented data. This page sets out how that is handled, in the order a procurement questionnaire asks."
-      asOf="5 October 2026"
+      lede="A firm that puts its staff through Cyber Secured gives us very little: the names and work emails of the people on its seats, the modules each of them has finished, and the score and verdict on each practice send. Practice chats are never stored. This page sets out how that is handled, in the order a procurement questionnaire asks."
+      asOf="10 November 2026"
       mapsHeading="// In one line each"
       maps={[
-        "The application and the database run in London; the only data that leaves the UK is the model request to Anthropic and Stripe's record of a payment.",
-        "Five sub-processors, named below. The model is never trained on what a learner types.",
+        "The application and the database run in London. Prompts go to Anthropic for the reply, error reports go to Sentry's EU region, and email and payments run through Resend and Stripe.",
+        "Six sub-processors, named below. The model is never trained on what a learner types.",
         "Practice data is invented by design, and a send that looks like real personal data is stopped in the browser before it goes anywhere.",
         "A person's account, attempts and playbook are deleted on their firm's written request.",
       ]}
@@ -42,8 +42,8 @@ export default function SecurityPage() {
           heading: "What we hold about a firm and its people",
           body: (
             <>
-              <p>For the firm: its name, sector, the name and role of the person staff should ask about AI, its approved tools and data class names, how many seats it bought and when. For each person on a seat: their work email, the name they sign up with, the modules they have finished on each course, the verdict and score on each practice send, and the serial of any certificate they hold.</p>
-              <p>For AI Fluent learners only: the prompts they chose to save to their personal playbook. The playbook is theirs; the firm&rsquo;s admin sees how many entries exist, never the text.</p>
+              <p>For the firm: its name, sector, the name and role of the person staff should ask about AI, its approved tools and data class names, how many seats it bought and when. For each person on a seat: their work email, the name they sign up with, the modules they have finished on each course, the verdict and score on each practice send, and a record of each call to the model (who, which course, which route, when) for the daily allowance. Not what they typed: practice chats are never stored. Where someone finished AI Cleared or AI Fluent while certificates were still issued, we also hold the serial of that certificate.</p>
+              <p>For AI Fluent learners only: a prompt they chose to save to their personal playbook. A prompt is kept only if the learner saves it. The playbook is theirs; the firm&rsquo;s admin sees how many entries exist, never the text.</p>
               <p>We do not hold payment card details. Stripe takes the card on its own page and gives us a reference and an invoice.</p>
             </>
           ),
@@ -57,7 +57,7 @@ export default function SecurityPage() {
                 <li><strong>Database:</strong> Neon Postgres in AWS London (eu-west-2), encrypted at rest, with point-in-time recovery.</li>
                 <li><strong>Email:</strong> Resend sends the invites, welcomes and reminders, and any certificate email, and keeps its own log of each send.</li>
                 <li><strong>Payments:</strong> Stripe holds the card and the invoice under its own PCI DSS Level 1 certification.</li>
-                <li><strong>Errors:</strong> Sentry&rsquo;s EU region (Frankfurt) receives error reports, which carry no learner content.</li>
+                <li><strong>Errors:</strong> Sentry&rsquo;s EU region (Frankfurt) receives error reports. Request bodies, cookies and sign-in headers are removed before a report is sent.</li>
               </ul>
             </>
           ),
@@ -66,7 +66,7 @@ export default function SecurityPage() {
           heading: "The model, and what it sees",
           body: (
             <>
-              <p>Every practice send and every reply in the sandbox runs on Anthropic&rsquo;s Claude through its commercial API. Under those terms Anthropic does not use inputs or outputs to train its models; it may hold them for up to thirty days for trust and safety monitoring, and no longer. We send the learner&rsquo;s prompt, the invented practice documents and the firm&rsquo;s name so the reply reads naturally. We never send the register, a real client document, or anything a learner did not type into the sandbox.</p>
+              <p>Every practice send and every reply in the sandbox runs on Anthropic&rsquo;s Claude through its commercial API. Under those terms Anthropic does not use inputs or outputs to train its models; it may hold them for up to thirty days for trust and safety monitoring, and no longer. We send the learner&rsquo;s prompt, the invented practice documents and the firm&rsquo;s name so the reply reads naturally. We never send the learner&rsquo;s name or email, the register, or a real client document.</p>
               <p>The sandbox is built so that real data should never reach it: every practice uses invented firms, people and figures, and a rules layer in the browser halts a send that looks like a real email address, a National Insurance number, a bank detail or a card number before anything leaves the page. The learner is told why and nothing is sent.</p>
               <p>Each person has a daily allowance of model calls; past it the course carries on with its rules-based grading until the next day. That is what stops a runaway session or a script from spending without limit.</p>
             </>
@@ -76,15 +76,16 @@ export default function SecurityPage() {
           heading: "Sub-processors",
           body: (
             <>
-              <p>Five organisations process a firm&rsquo;s data on our behalf, each under its own data processing terms. We tell admins before adding one.</p>
+              <p>Six organisations process a firm&rsquo;s data on our behalf, each under its own data processing terms. We tell admins before adding one.</p>
               <ul>
-                <li><strong>Vercel Inc.</strong> Hosting and serverless compute, London region.</li>
+                <li><strong>Vercel Inc.</strong> Hosting and serverless compute, London region, and cookieless page-view analytics.</li>
                 <li><strong>Neon Inc.</strong> The Postgres database, AWS London.</li>
                 <li><strong>Anthropic PBC.</strong> The model behind the grader and the simulator replies, under its commercial terms: no training on inputs, retention of up to thirty days for trust and safety.</li>
                 <li><strong>Resend Inc.</strong> Transactional email.</li>
                 <li><strong>Stripe Payments UK Ltd.</strong> Card payments, invoices and VAT receipts. The firm&rsquo;s billing contact and VAT number are held by Stripe under its own terms.</li>
+                <li><strong>Functional Software Inc. (Sentry).</strong> Error reports, in its EU region (ingest.de.sentry.io). Request bodies, cookies and sign-in headers are removed before a report is sent.</li>
               </ul>
-              <p>Sentry (Functional Software Inc.) receives error reports in its EU region; it sees no learner content. Vercel&rsquo;s cookieless analytics counts page views on the public pages and identifies nobody.</p>
+              <p>Vercel&rsquo;s cookieless analytics counts page views and identifies nobody.</p>
             </>
           ),
         },
@@ -107,8 +108,8 @@ export default function SecurityPage() {
             <>
               <ul>
                 <li><strong>The firm, its seats and its people&rsquo;s progress:</strong> for as long as the firm is a customer, and until it asks otherwise after that.</li>
-                <li><strong>Certificates:</strong> where a person holds one, the serial, holder name, firm, score and dates stay on the public verify page so a client or auditor can check them, until the firm or the holder asks for removal.</li>
-                <li><strong>Model call records:</strong> who called the model and when, kept to enforce the daily allowance. Never the content.</li>
+                <li><strong>Certificates:</strong> new completions no longer get a certificate; they show on the firm&rsquo;s team register. A certificate issued earlier can still be checked on its public verify page, which shows the serial, holder name, firm, course and dates so a client or auditor can check them, until the firm or the holder asks for removal.</li>
+                <li><strong>Model call records:</strong> who called the model, on which course and route, and when, kept to enforce the daily allowance. Never the content.</li>
                 <li><strong>Deletion on request:</strong> a firm&rsquo;s admin writes to <a href="mailto:admissions@algorithmx.co.uk">admissions@algorithmx.co.uk</a> naming the person. We delete the account, their attempts and their playbook within thirty days and mark the seat on the register as removed. A firm leaving us has the whole firm deleted the same way.</li>
               </ul>
             </>
