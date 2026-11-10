@@ -850,7 +850,8 @@ export default function LessonPlayer({ lesson, topicIndex, topicCount, weekTitle
               <h2 style={{ fontFamily: T.display, fontSize: 25, fontWeight: 700, margin: "0 0 18px", color: T.ink }}>Explain it back</h2>
               <div style={{ background: T.panel, border: `1px solid ${T.edge}`, borderRadius: 12, padding: "18px 20px", marginBottom: 24 }}>
                 <p style={{ fontSize: 15.5, color: T.body, lineHeight: 1.6 }}>{lesson.check.explain.prompt}</p>
-                <textarea value={explainDraft} onChange={(e) => setExplainDraft(e.target.value)} rows={4} placeholder="In your own words..."
+                <p style={{ fontSize: 13.5, color: T.muted, lineHeight: 1.55, margin: "10px 0 10px" }}>Write your answer as a short paragraph in your own words. Bullet points, or the model answer copied back, are not accepted.</p>
+                <textarea value={explainDraft} onChange={(e) => setExplainDraft(e.target.value)} rows={4} placeholder="In your own words, as a paragraph..."
                   style={{ width: "100%", boxSizing: "border-box", resize: "vertical", background: T.bgRaise, color: T.ink, border: `1px solid ${T.edge}`, borderRadius: 8, fontFamily: T.sans, fontSize: 15, lineHeight: 1.6, padding: "11px 13px" }} />
                 <TutorChat lesson={{ title: lesson.title, teaching: tutorTeaching }} getDraft={() => explainDraft} modelAnswer={lesson.check.explain.modelAnswer} />
               </div>

@@ -103,10 +103,11 @@ const topic2: TopicManifest = {
     explain: {
       prompt: "The Conti leaks showed a ransomware group with salaries, HR and performance reviews. Explain what this reveals about modern cybercrime, and why, counter-intuitively, it is encouraging for a defender.",
       modelAnswer: [
-        "It reveals that serious cybercrime is an industry, not a lone genius: specialists divide the work, and whole operations run like companies with staff and processes.",
-        "That is why attacks are so frequent and professional.",
-        "The encouraging part is that businesses are efficiency-driven: they chase the easiest money, overwhelmingly targeting the soft option, the unpatched system, the reused password, the person who clicks.",
-        "A defender does not have to be unbreakable, just more expensive to attack than the next target, which is exactly why the basics (patching, MFA, backups) defeat most real attacks.",
+        "Serious cybercrime is an industry, not a lone genius: specialists divide the work and operations run like companies.",
+        "Salaries, HR and performance reviews are why attacks are so frequent and so professional.",
+        "The encouraging part is that businesses chase the easiest money, so they target the soft option.",
+        "That means the unpatched system, the reused password, the person who clicks.",
+        "You need not be unbreakable, only costlier to attack than the next target, which is why patching, MFA and backups win.",
       ],
     },
     quiz: [

@@ -102,11 +102,11 @@ const topic5: TopicManifest = {
     explain: {
       prompt: "Explain what the capstone is, why it is written for two audiences, and why it is the fitting culmination of this whole course.",
       modelAnswer: [
-        "The capstone is one complete piece of security work, an investigation of an incident or a security assessment carried through from start to finish, then written up two ways.",
-        "It has a detailed technical write-up for a technical reader (the full story, evidence, timeline, technical findings, indicators of compromise, affected systems and technical recommendations) and a short executive summary for non-technical leaders (a plain-English account of what happened, its business impact and risk, and the key actionable recommendation), with a clear, honest statement of what the incident was and why it matters belonging in both at the right level.",
-        "It is written for two audiences because this exercises the two halves of being valuable in security, doing the technical work well and communicating it to whoever needs it, since a finding only matters if the right people can understand and act on it.",
-        "It is the fitting culmination of the course because it draws on everything (the foundations and law of Act 1, how attacks happen in Act 2, how to defend, detect and respond in Act 3, and how to communicate and present yourself in Act 4) and mirrors, in miniature, what a security professional does every day.",
-        "Completing it proves, to an employer and to yourself, that you have made the journey from a curious beginner with no technical background to someone genuinely job-ready.",
+        "The capstone is one complete piece of security work, an incident investigation or security assessment, carried through fully.",
+        "Write it up twice, first a technical account: evidence, timeline, findings, indicators of compromise, systems affected, fixes.",
+        "Then an executive summary in plain English: what happened, the business impact and risk, and the key actionable recommendation.",
+        "Two audiences exercise both halves of the job, since a finding only matters if the right people can understand and act on it.",
+        "It draws on all four acts, law, attacks, defence and communication, mirrors the daily job, and shows you are job-ready.",
       ],
     },
     quiz: [

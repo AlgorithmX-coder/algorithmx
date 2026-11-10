@@ -103,10 +103,11 @@ const topic4: TopicManifest = {
     explain: {
       prompt: "Explain how MITRE ATT&CK organises attacker behaviour, how mapping activity to it helps an analyst, and how it lets a team find its detection blind spots.",
       modelAnswer: [
-        "MITRE ATT&CK organises real attacker behaviour into tactics and techniques: a tactic is the attacker's goal at a stage (initial access, persistence, lateral movement, exfiltration) and a technique is a specific way of achieving it (such as phishing for initial access), forming a detailed, shared map built from observed attacks.",
-        "Mapping observed activity to it helps an analyst because a jumble of events (phishing, then persistence, then lateral movement, then data leaving) becomes a clear story of the attack's progress told in a precise language everyone shares.",
-        "Knowing which tactic you are seeing also hints at what the attacker will do next, so you can watch for it.",
-        "It lets a team find its detection blind spots because you can ask of each technique 'would we detect this?' and map your existing detections onto the framework, which reveals where you are strong and where you have gaps, and those gaps become your prioritised list, turning detection from guesswork into a measurable, improvable programme against a shared standard.",
+        "MITRE ATT&CK organises real attacker behaviour into tactics and techniques: a shared map and common language from observed attacks.",
+        "A tactic is the attacker's goal at a stage: initial access, persistence, lateral movement, exfiltration.",
+        "A technique is a specific way to achieve a tactic, such as phishing for initial access.",
+        "Mapping activity onto it turns scattered events into one clear story of progress, and hints at the attacker's next move.",
+        "Ask of each technique: would we detect this? Mapping your detections onto it exposes blind spots and gives a prioritised, measurable plan.",
       ],
     },
     quiz: [

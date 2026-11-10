@@ -103,10 +103,11 @@ const topic1: TopicManifest = {
     explain: {
       prompt: "Twitter has world-class engineers, yet it was breached through its staff, not its code. Explain why attackers so often target people, and why blaming the employees would be the wrong response.",
       modelAnswer: [
-        "Attackers target people because people cannot be patched: you can fix a server overnight, but human trust, helpfulness, respect for authority and response to pressure are permanent and exploitable.",
-        "Battling hardened technology is hard, so attackers go around it through the staff who operate it, as they did at Twitter by talking employees into granting access to internal tools.",
-        "Blaming the employees would be wrong because social engineering exploits good qualities, not stupidity, and blame drives mistakes underground where they fester.",
-        "The professional response is to defend people through awareness and verification habits, and to design systems so one person's mistake is survivable and safe to report.",
+        "People cannot be patched: trust, helpfulness, respect for authority and response to pressure stay permanently exploitable.",
+        "Hardened technology is hard to beat head-on, so attackers go around it through the staff who operate it.",
+        "At Twitter they talked employees into granting access to internal tools.",
+        "Blaming staff is wrong: social engineering exploits good qualities, not stupidity, and blame drives mistakes underground.",
+        "Defend people with awareness and verification habits, and design systems so one mistake is survivable and safe to report.",
       ],
     },
     quiz: [

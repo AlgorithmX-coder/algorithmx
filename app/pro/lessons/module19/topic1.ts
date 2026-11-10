@@ -102,11 +102,11 @@ const topic1: TopicManifest = {
     explain: {
       prompt: "Explain what resilience is, the difference between business continuity and disaster recovery, and what the OVHcloud fire teaches about assuming data is safe.",
       modelAnswer: [
-        "Resilience is planning in advance to survive and recover from disruptions (a cyber attack, hardware failure, fire or flood) so a disruption is a setback rather than an extinction event, planning for the impact (lost systems, site or data) regardless of cause (all-hazards).",
-        "Business continuity is about keeping the business running, or running in a reduced way, through a disruption: which functions must keep going, and what manual or alternative workarounds exist.",
-        "Disaster recovery is the technical restoration of the IT systems afterwards: rebuilding servers, restoring data, and bringing services back online.",
-        "You need both, because recovery takes time and continuity keeps the organisation alive meanwhile.",
-        "The OVHcloud fire teaches that assuming data is safe is how data is lost: a data-centre fire destroyed servers and data, customers who had no independent offsite backup or recovery plan lost it permanently, and those with offsite copies could recover, so resilience must be deliberate, ensuring data can survive a single disaster.",
+        "Resilience is planning in advance to survive and recover from disruption, so it is a setback, not an extinction event.",
+        "It is all-hazards: plan for the impact, lost systems, site or data, whatever the cause, cyber attack, failure, fire or flood.",
+        "Business continuity keeps the business running through a disruption: which functions must continue, and on what workarounds.",
+        "Disaster recovery is the technical restoration afterwards, rebuilding servers and data, while continuity keeps you alive meanwhile.",
+        "OVHcloud fire: customers with no independent offsite backup lost data for good, so resilience must be deliberate.",
       ],
     },
     quiz: [

@@ -104,10 +104,10 @@ const topic3: TopicManifest = {
       prompt: "In the Uber 2022 breach, the initial foothold mattered less than what it could reach. Explain least privilege, how it caps the blast radius, and two common ways it erodes in practice.",
       modelAnswer: [
         "Least privilege means every user, account and system has only the access it genuinely needs, and no more.",
-        "It caps the blast radius because an attacker's first foothold is rarely the prize; what decides the outcome is how far that foothold can reach, and minimal access makes a stolen account or compromised machine worth very little.",
-        "In the Uber breach, the foothold became serious precisely because it found broad access and reportedly hard-coded admin credentials, so it could reach much of the company; tight least privilege and protected credentials would have contained it.",
-        "Least privilege erodes in two common ways: access creep, where people accumulate permissions across role changes that are never removed; and standing privilege or over-provisioning, where powerful access is left permanently available or granted broadly 'to be safe' rather than minimised and granted just-in-time.",
-        "The defences are active: grant minimally, review regularly, separate and protect admin access, and never leave powerful credentials lying around.",
+        "It caps the blast radius: a foothold is rarely the prize; what decides the outcome is how far that foothold can reach.",
+        "In the Uber breach the foothold found broad access and reportedly hard-coded admin credentials, so it reached much of the company.",
+        "It erodes two ways: access creep across role changes, and standing privilege granted broadly rather than just-in-time.",
+        "The defences are active: grant minimally, review regularly, protect admin access, never leave powerful credentials lying around.",
       ],
     },
     quiz: [

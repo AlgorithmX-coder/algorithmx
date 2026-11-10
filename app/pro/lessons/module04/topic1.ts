@@ -107,11 +107,11 @@ const topic1: TopicManifest = {
     explain: {
       prompt: "Explain what encryption does and does not protect, and why a lost device is a breach or a non-event depending on encryption.",
       modelAnswer: [
-        "Encryption scrambles data with a key so an interceptor sees only meaningless noise while the key-holder can read it; it is the primary tool for confidentiality, protecting data in transit (HTTPS) and at rest (encrypted disks and databases).",
-        "It does nothing against someone who has the key or who can get you to hand over the secret, so it will not stop phishing, where you type your password into the fake site willingly.",
-        "It does not by itself verify who you are talking to (certificates add that), and it does not protect availability (ransomware actually weaponises encryption against you), so it is one tool for one job, not a cure-all.",
-        "A lost device shows this: if it was encrypted, the data is unreadable without the key, so the loss is a minor incident.",
-        "If it was not encrypted, the finder can read everything, so the same loss is a serious, reportable breach, which is why encryption at rest is such a basic, high-value control.",
+        "Encryption scrambles data with a key: an interceptor sees only noise, while the key-holder reads it.",
+        "It is the main confidentiality tool, for data in transit (HTTPS) and at rest (encrypted disks and databases).",
+        "It cannot help if the attacker holds the key, or phishes you into typing your password into a fake site.",
+        "It does not verify who you are talking to (certificates do), nor protect availability; ransomware weaponises it.",
+        "A lost encrypted device is a minor incident; the same device unencrypted is a serious, reportable breach.",
       ],
     },
     quiz: [

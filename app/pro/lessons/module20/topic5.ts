@@ -103,11 +103,11 @@ const topic5: TopicManifest = {
     explain: {
       prompt: "Explain why a non-technical background is often an asset in cyber security, which strengths transfer, and how to present your background to an employer.",
       modelAnswer: [
-        "A non-technical background is often an asset: many professionals came from teaching, healthcare, the military, finance, law or service, so the 'childhood prodigy' idea is false and the field benefits from the perspectives career-changers bring.",
-        "Cyber needs far more than technical skill, and the gaps are often where other careers build strength: clear communication (central to GRC), attention to detail and methodical work (triage, audit, investigation), understanding how a business works (risk and GRC), calm under pressure (incident response), and organising people and tasks (GRC and continuity).",
-        "These are genuinely sought-after strengths many purely technical people lack, so your background may have given you exactly what completes a team.",
-        "Present it deliberately and confidently: do not hide or apologise for it, name the real strengths it gave you, and connect each explicitly to what a cyber role needs, in your CV, applications and interviews (for example, 'years in customer service mean I stay calm under pressure and explain things clearly to non-technical people').",
-        "Combined with the foundation and portfolio this course built, that reframing turns 'someone like me' into 'exactly the person we need'.",
+        "A non-technical background is often an asset: people arrive from teaching, healthcare, the military, finance, law and service.",
+        "The childhood prodigy idea is false, and the field benefits from the perspectives career-changers bring.",
+        "Cyber needs clear communication for GRC, methodical detail for triage, audit and investigation, and business sense for risk.",
+        "It also needs calm under pressure for incident response and organising people and tasks, strengths many technical people lack.",
+        "Do not apologise for your past: name the strengths it gave you, link each to the role in your CV and interviews, show the work.",
       ],
     },
     quiz: [

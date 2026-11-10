@@ -102,11 +102,11 @@ const topic3: TopicManifest = {
     explain: {
       prompt: "Explain what RTO and RPO each mean, how each drives a decision, and how together they size an organisation's resilience plan.",
       modelAnswer: [
-        "RTO (Recovery Time Objective) is how quickly a system must be restored after a disruption, set by how much downtime the business can tolerate, and it drives the recovery design: a tight RTO (hours) needs fast recovery or automatic failover, while a loose one (days) allows a slower, cheaper approach.",
-        "RPO (Recovery Point Objective) is how much recent data you can afford to lose, and it drives backup frequency: a 15-minute RPO means backing up or replicating at least every 15 minutes, while data that can tolerate a day's loss needs only a daily backup.",
-        "Together they size and prioritise the whole resilience plan: for each important system the business sets an RTO and an RPO based on how critical it is, and those targets dictate the recovery design and backup frequency.",
-        "So a system with a two-hour RTO and 15-minute RPO gets fast recovery and very frequent backups, while one with a one-week RTO and one-day RPO can be handled simply and cheaply.",
-        "This turns resilience from a vague aspiration into a concrete, affordable, prioritised plan, directing effort and spend to the systems and data that truly matter.",
+        "RTO is how fast a system must be restored, set by tolerable downtime: hours needs failover, days allows a slower, cheaper design.",
+        "RPO is how much recent data you can afford to lose, and it drives backup frequency: a 15-minute RPO means replicating that often.",
+        "The business sets an RTO and an RPO per system by how critical it is, which sizes and prioritises the whole plan.",
+        "So a 2-hour RTO with a 15-minute RPO earns fast recovery and frequent backups; a 1-week, 1-day system stays simple and cheap.",
+        "Together they turn resilience into a concrete, affordable plan, directing effort and spend to what truly matters.",
       ],
     },
     quiz: [

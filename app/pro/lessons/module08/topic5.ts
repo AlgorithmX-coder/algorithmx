@@ -103,10 +103,11 @@ const topic5: TopicManifest = {
     explain: {
       prompt: "Explain how professionals study malware safely, and how the No More Ransom project shows that careful malware analysis is a constructive, protective act rather than a risky one.",
       modelAnswer: [
-        "Professionals never run suspicious files on real, connected machines; they use isolation: a sandbox or disposable virtual machine cut off from real systems and data, reset to clean between tests, so they can watch exactly what the malware does without it spreading or causing harm.",
-        "Safe checks like submitting a file's hash to a reputation service add information with zero risk.",
-        "No More Ransom shows the constructive payoff: by safely analysing how ransomware families encrypt data, researchers build free decryptor tools that let victims recover their files without paying the criminals.",
-        "So careful, contained analysis is not reckless; it is one of the most protective jobs in security, turning study of a threat into detections for everyone and, sometimes, free recovery that undercuts the crime itself.",
+        "Never run suspicious files on a real, connected machine; professionals use isolation.",
+        "A sandbox or disposable virtual machine, cut off from real data and reset clean between tests, shows what it does safely.",
+        "Zero-risk checks add information too, such as submitting a file's hash to a reputation service.",
+        "No More Ransom shows the payoff: safe analysis of how ransomware encrypts yields free decryptors, so victims need not pay.",
+        "Contained analysis is one of the most protective jobs in security, turning study of a threat into detections for everyone.",
       ],
     },
     quiz: [

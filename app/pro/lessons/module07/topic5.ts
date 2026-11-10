@@ -103,10 +103,11 @@ const topic5: TopicManifest = {
     explain: {
       prompt: "A Snapchat employee sent payroll data because a 'CEO' email asked for it. Explain how a reporting-and-verification culture would have changed the outcome, and why reporting matters even when you successfully spot a phish.",
       modelAnswer: [
-        "A verification culture would have made it normal, and safe, for the employee to pause on an unusual request for a whole workforce's sensitive data and confirm it out-of-band with the real CEO through a trusted channel before sending anything.",
+        "A verification culture makes it normal, and safe, to pause on an unusual request for a workforce's sensitive data.",
+        "The employee would have confirmed out-of-band with the real CEO through a trusted channel before sending anything.",
         "That single check would have exposed the impersonation and stopped the leak.",
-        "Reporting matters even when you spot a phish because spotting it protects only you; reporting it lets the security team warn everyone who received it, block the sender, and investigate.",
-        "One person's report turns an individual near-miss into protection for the whole organisation, which is why a blame-free, easy reporting culture is the real defence.",
+        "Spotting a phish protects only you; reporting lets the security team warn everyone, block the sender and investigate.",
+        "One report turns a near-miss into protection for the whole organisation, so blame-free, easy reporting is the real defence.",
       ],
     },
     quiz: [

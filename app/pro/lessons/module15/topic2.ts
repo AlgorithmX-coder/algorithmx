@@ -102,11 +102,11 @@ const topic2: TopicManifest = {
     explain: {
       prompt: "What is an indicator of compromise, why is sharing IOCs so powerful (use WannaCry), and what is the fundamental limit of IOCs that makes behaviour detection still necessary?",
       modelAnswer: [
-        "An indicator of compromise (IOC) is a concrete, observable, shareable sign that an attack has occurred, such as a malware file's hash, a malicious address, or a suspicious artefact it leaves behind.",
-        "Sharing IOCs is powerful because one organisation's or researcher's discovery becomes everyone's protection: extracted IOCs can be distributed through feeds, communities and national advisories so others immediately detect and block the same threat, often before it reaches them.",
-        "WannaCry shows this at global scale, as researchers analysing the malware shared its hashes, addresses and kill-switch domain, letting defenders worldwide detect and blunt the outbreak far faster than any one organisation could alone.",
-        "The fundamental limit of IOCs is that they describe only the known: an IOC exists only after an attack has been observed, and attackers can swap a file or address easily to evade indicator-based detection.",
-        "That is why behaviour detection, on harder-to-change behavioural patterns (TTPs), remains necessary to catch the genuinely new and the disguised, so IOCs are essential but one layer, best combined with behaviour.",
+        "An indicator of compromise (IOC) is a concrete, shareable sign of an attack: a file hash, a malicious address, an artefact left behind.",
+        "Shared IOCs turn one team's discovery into everyone's protection, spreading via feeds, communities and national advisories.",
+        "WannaCry: researchers shared its hashes, addresses and kill-switch domain, so defenders worldwide blunted the outbreak fast.",
+        "IOCs describe only the known; one exists only after an attack is seen, and a file or address is cheap for an attacker to swap.",
+        "So pair IOCs with behaviour detection on harder-to-change TTPs, which catches the genuinely new and the disguised.",
       ],
     },
     quiz: [

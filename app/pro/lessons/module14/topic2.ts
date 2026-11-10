@@ -103,11 +103,11 @@ const topic2: TopicManifest = {
     explain: {
       prompt: "Having done the investigation, explain how a SIEM helps you investigate, how you approached the capture, and what the Mirai pattern in the logs teaches about defence.",
       modelAnswer: [
-        "A SIEM turns an overwhelming pile of raw log lines into something you can investigate: it aggregates the logs and lets you search for what matters and filter to the relevant time, source address, user or event type, so you can ask the logs questions and build a picture of what happened.",
-        "I approached the capture the way a real analyst would: orienting first (what kind of activity is here?), then narrowing with filters by time, suspicious source and event type such as failed logins.",
-        "I looked for the story across the attack lifecycle (reconnaissance, then login attempts, then any success, then action), continually asking who, what and when, and whether it is normal or an attack, focusing on practising the process rather than chasing a perfect answer.",
-        "The Mirai pattern teaches the defensive lesson directly: Mirai spread by trying lists of common default usernames and passwords against exposed devices and logging straight in where owners had never changed the factory credentials, so in the logs it shows as repeated default-credential login attempts.",
-        "The evidence itself points to the fix, changing default passwords (the access-control and secure-configuration basics), which would have stopped the attack that built the botnet behind the 2016 Dyn disruption.",
+        "A SIEM turns raw log piles into something investigable: you search what matters and filter by time, address, user or event type.",
+        "I orientated first, asking what kind of activity was present, then narrowed by time, suspicious source and event type.",
+        "I traced the lifecycle: recon, login attempts, success, action, asking who, what and when, and practising process over perfection.",
+        "Mirai tried lists of default usernames and passwords against exposed devices, so logs show repeated default-credential logins.",
+        "The evidence names the fix: changing default passwords, the secure-configuration basics that would have stopped the 2016 Dyn botnet.",
       ],
     },
     quiz: [

@@ -109,10 +109,10 @@ const topic3: TopicManifest = {
     explain: {
       prompt: "A colleague says 'the site has a padlock, so it is safe to enter my details.' In your own words, say what the padlock really guarantees and what it does not.",
       modelAnswer: [
-        "The padlock means the connection is private and genuine: the conversation with that server is encrypted so nobody on the network can read or alter it, and the server proved its identity with a certificate.",
-        "It does not mean the site is run by honest people.",
-        "A scam or phishing site can show a valid padlock too, because encryption protects the channel, not the intentions behind it.",
-        "So the padlock answers 'is this connection private?', never 'should I trust this business?'.",
+        "The padlock means the connection is encrypted, so nobody on the network can read or alter it.",
+        "It also means the server proved its identity with a certificate.",
+        "It does not mean the site is run by honest people; a scam or phishing site can show a valid padlock too.",
+        "Encryption protects the channel, not the intentions behind it, so the padlock never vouches for a business.",
       ],
     },
     quiz: [

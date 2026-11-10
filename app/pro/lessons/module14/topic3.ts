@@ -102,11 +102,11 @@ const topic3: TopicManifest = {
     explain: {
       prompt: "Explain why you can never read all the logs, the filters that let you search at scale, and why starting with a precise question matters.",
       modelAnswer: [
-        "You can never read all the logs because the volume is staggering (a large organisation can generate millions or even billions of events a day), so the task is reframed from reading to finding, treating logs as a database to query rather than a wall to read.",
-        "Time is often the strongest filter: narrowing to the window around a suspected event cuts millions of lines to a slice instantly.",
-        "Entity filters pin to a specific user, IP or system to isolate that actor's activity, event-type filters show only failed logins or only blocked connections, and you can search for a specific indicator such as a known-bad IP or file hash.",
-        "The real skill is combining these to zero in, as 'failed logins, for this account, in this two-hour window' turns billions of lines into a handful.",
-        "Starting with a precise question matters because the search is only as good as what you ask: a precise question tells you exactly what to filter, while a vague 'is anything wrong?' gives you nothing to narrow on, and matching the right time window and entity is the difference between finding the evidence and missing it.",
+        "You can never read all the logs: a large organisation generates millions or billions of events a day, so you query, not read.",
+        "Time is often the strongest filter, as narrowing to the window around a suspected event cuts millions of lines to a slice.",
+        "Entity filters isolate a user, IP or system, event-type filters show only failed logins, and you can hunt a known-bad IP or hash.",
+        "Combining them is the skill: failed logins, this account, this two-hour window turns billions of lines into a handful.",
+        "Start precise: a sharp question names the window and entity to filter, while a vague is anything wrong gives nothing to narrow on.",
       ],
     },
     quiz: [

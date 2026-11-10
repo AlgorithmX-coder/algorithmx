@@ -103,10 +103,11 @@ const topic4: TopicManifest = {
     explain: {
       prompt: "First American exposed around 885 million documents through a flaw where changing a number in the URL showed a different document. Explain what broken access control is, why it must be enforced on the server, and why this flaw was so easy to exploit.",
       modelAnswer: [
-        "Broken access control is the failure to stop users reaching data or actions they are not allowed to, OWASP's number-one web risk.",
-        "First American's flaw was the classic insecure direct object reference: documents were reachable by a URL containing a sequential number, and the application never checked that the requester was authorised to view that specific document, so changing the number showed someone else's.",
-        "It must be enforced on the server because anything decided in the browser can be bypassed: hiding a button or trusting a client-side value does nothing, so the server must check on every request both who you are and whether you may access this exact item, ideally default-deny.",
-        "It was so easy to exploit because there was effectively no check at all: anyone who found one valid link could walk the entire archive just by counting, with no skill or authentication required.",
+        "Broken access control is failing to stop users reaching data or actions they are not allowed, OWASP's top web risk.",
+        "First American's flaw was a classic insecure direct object reference: documents reachable by a sequential number in the URL.",
+        "No check confirmed the requester was authorised for that document, so changing the number showed someone else's.",
+        "Browsers can be bypassed, so the server must check on every request who you are and whether you may reach this exact item.",
+        "Default-deny; with no check at all, anyone with one valid link could walk the whole archive by counting, no skill or login needed.",
       ],
     },
     quiz: [

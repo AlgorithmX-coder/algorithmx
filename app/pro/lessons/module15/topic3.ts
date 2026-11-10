@@ -103,11 +103,11 @@ const topic3: TopicManifest = {
     explain: {
       prompt: "Explain the difference between data and intelligence, what makes threat intelligence useful, and why the Mandiant APT1 report was a landmark.",
       modelAnswer: [
-        "Data is raw fact (a log entry, an IOC, a headline), while intelligence is data that has been analysed and given context so it can inform a decision: 'attacks are increasing' is data, but 'a group targeting your exact industry is using this technique right now' is intelligence you can act on.",
-        "Useful threat intelligence has three qualities: it is relevant (it applies to you, your industry and your systems), actionable (it tells you something you can actually do), and timely (it arrives while you can still act).",
-        "Its purpose is to make defence informed rather than generic: knowing who is likely to target you, how they operate and what they are doing now lets you prepare specifically by watching their techniques, blocking their infrastructure and prioritising the right defences.",
-        "This is far more effective than spreading limited resources evenly against every imaginable threat.",
-        "The Mandiant APT1 report was a landmark because it published deep intelligence on a specific, prolific adversary openly, detailing its targets, methods and indicators, turning private knowledge into collective defence and helping move serious threat intelligence into the shared public domain.",
+        "Data is raw fact (a log entry, an IOC, a headline); intelligence is data analysed and given context so it can drive a decision.",
+        "Saying attacks are increasing is data; naming a group now using a technique against your industry is intelligence you can act on.",
+        "Useful intelligence is relevant to your industry and systems, actionable (you can do something) and timely (it still helps).",
+        "It makes defence specific: watch a likely adversary's techniques and block their infrastructure instead of spreading resources evenly.",
+        "Mandiant's APT1 report openly detailed one adversary's targets, methods and indicators, turning private knowledge into collective defence.",
       ],
     },
     quiz: [

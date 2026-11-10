@@ -103,11 +103,11 @@ const topic2: TopicManifest = {
     explain: {
       prompt: "In 2021, Microsoft released patches for Exchange, yet tens of thousands of servers were still compromised. Explain why 'a patch exists' did not make organisations safe, and what winning the patch race actually requires.",
       modelAnswer: [
-        "A released patch is a starting gun, not a finish line: making the flaw public also tells attackers it exists and how it works, so they race to exploit every system that has not yet applied the fix.",
-        "Exchange servers are typically internet-facing, so the whole world could reach them, making the race brutally fast.",
-        "The victims were simply those who did not patch in time, often because they did not realise how exposed they were or had no rapid process.",
-        "Winning the race requires knowing your exposure (especially internet-facing systems), patching critical exposed flaws immediately, applying interim mitigations when you cannot patch instantly, and having a routine process so this is default behaviour rather than panic.",
-        "'A patch exists' protects no one until it is applied, fast, where it is most exposed.",
+        "A released patch is a starting gun, not a finish line: going public also tells attackers the flaw exists and how it works.",
+        "Exchange servers are typically internet-facing, so the whole world could reach them and the race was brutally fast.",
+        "The victims were those who did not patch in time, often unaware of their exposure or lacking any rapid process.",
+        "Winning means knowing your exposure, patching critical internet-facing flaws at once, and mitigating when you cannot patch.",
+        "Make it a routine process, not panic: a patch protects no one until it is applied, fast, where you are most exposed.",
       ],
     },
     quiz: [

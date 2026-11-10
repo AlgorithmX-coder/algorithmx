@@ -98,10 +98,10 @@ const topic3: TopicManifest = {
     explain: {
       prompt: "Using the MGM breach, explain why simply having controls is not the same as being protected. Write a sentence or two, then reveal a model answer.",
       modelAnswer: [
-        "MGM had controls, including MFA and a help desk that could reset access.",
-        "The process around one control failed: the help desk reset an account for an attacker who just phoned up and sounded convincing, so the strong technology was bypassed without any hacking at all.",
-        "A control is only as good as the people and process wrapped around it.",
-        "Real protection needs prevention to stop what it can, detection to catch the rest, a fast staffed process to respond, and corrective controls to recover.",
+        "MGM had controls in place, including MFA and a help desk that could reset access.",
+        "The process around one control failed: the help desk reset an account for a convincing caller.",
+        "Strong technology was bypassed with no hacking at all; a control is only as good as its people and process.",
+        "Real protection needs prevention, detection, a fast staffed response process, and corrective controls to recover.",
       ],
     },
     quiz: [

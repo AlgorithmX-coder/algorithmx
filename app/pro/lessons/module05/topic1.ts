@@ -104,10 +104,11 @@ const topic1: TopicManifest = {
     explain: {
       prompt: "Daniel Cuthbert found a real reason to be suspicious and meant no harm, yet he was still convicted. In your own words, explain why, and what the lawful alternatives were.",
       modelAnswer: [
-        "The Computer Misuse Act turns on authorisation, not intent or outcome.",
-        "Cuthbert probed a site he had no permission to test, so the attempt itself was unauthorised access under section 1, and his good motive of checking for a scam was not a defence.",
-        "The lawful alternatives were all available: he could have reported his suspicion to the charity or the authorities, or simply not probed a system he did not own.",
-        "The lasting lesson is that you never rely on meaning well to stay lawful; you rely on explicit permission, or you stay on your own systems.",
+        "The Computer Misuse Act turns on authorisation, not on intent or outcome.",
+        "Cuthbert probed a site he had no permission to test, so the attempt alone was unauthorised access under section 1.",
+        "His good motive, checking for a scam, is not a defence in law.",
+        "Lawful alternatives existed: report the suspicion to the charity or the authorities, or do not probe at all.",
+        "Meaning well never keeps you lawful; explicit permission or your own systems do.",
       ],
     },
     quiz: [

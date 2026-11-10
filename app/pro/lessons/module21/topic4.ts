@@ -102,11 +102,11 @@ const topic4: TopicManifest = {
     explain: {
       prompt: "Explain how to keep building skills safely and lawfully after the course, why the authorisation line still applies, and what staying current involves.",
       modelAnswer: [
-        "To keep building skills safely and lawfully, use a home lab, your own isolated environment (typically virtual machines on your own computer) where you can practise attacks and defences freely without risking real systems, data or the law, plus deliberately-vulnerable training applications and practice ranges built for safe learning.",
-        "These are the lawful playgrounds where theory becomes real skill.",
-        "The authorisation line from Module 5 still applies, always and without exception: practise only on systems you own or are explicitly authorised to test, and never target a real website, network or system you do not own or have written permission for, because unauthorised testing is a criminal offence and good intentions are no defence (recall Daniel Cuthbert).",
-        "This is not a limitation on growth but what makes growth legitimate and a career possible, since everything you need to practise is available lawfully.",
-        "Staying current involves simple, often-free habits because the field changes constantly: following reputable security news and advisories (like the NCSC's), engaging with communities, continuing to practise in your lab and to learn, making continuous, curious learning a sustainable habit that carries a whole career.",
+        "Practise in a home lab: your own isolated virtual machines, where attacks and defences risk no real system, data or law.",
+        "Use deliberately vulnerable training apps and practice ranges too: lawful playgrounds where theory becomes real skill.",
+        "The authorisation line from Module 5 always holds: test only systems you own or have explicit written permission for.",
+        "Unauthorised testing is a criminal offence and good intent is no defence (Daniel Cuthbert); lawful practice makes a career possible.",
+        "Stay current with simple, often free habits: NCSC advisories, reputable security news, communities and continued lab practice.",
       ],
     },
     quiz: [

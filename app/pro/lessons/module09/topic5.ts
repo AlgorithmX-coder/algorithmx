@@ -103,11 +103,11 @@ const topic5: TopicManifest = {
     explain: {
       prompt: "What is the OWASP Top 10, and why is it more useful to understand the handful of recurring fix mindsets than to memorise ten separate risks?",
       modelAnswer: [
-        "The OWASP Top 10 is the web-security community's free, periodically updated, data-driven list of the ten most critical web-application risks, used across the industry as a shared vocabulary and prioritised checklist by developers, testers, auditors and in interviews.",
-        "Understanding the recurring fix mindsets beats memorising ten separate risks because most of the list comes down to a few principles you already know.",
-        "Those principles are: never trust user input (fixing injection and XSS by keeping data separate from commands and code), enforce access on the server with default-deny (fixing broken access control), protect data, use strong authentication with MFA, patch known-vulnerable components, and configure securely.",
-        "Seeing it this way makes web security coherent rather than overwhelming.",
-        "Crucially, it lets you reason about brand-new flaws you have never seen by placing them against a mindset and knowing roughly how they are fixed, which is far more valuable than rote memorisation.",
+        "The OWASP Top 10 is a free, data-driven list of the ten most critical web-application risks, updated periodically.",
+        "The industry uses it as a shared vocabulary and prioritised checklist: developers, testers, auditors and interviews.",
+        "Most of the list reduces to a few mindsets you already know, so grasp those rather than memorise ten separate risks.",
+        "Never trust input (injection, XSS), enforce access server-side with default-deny, protect data, strong auth with MFA.",
+        "Patch vulnerable components and configure securely; mindsets also let you reason about brand-new flaws you have never seen.",
       ],
     },
     quiz: [

@@ -103,10 +103,11 @@ const topic4: TopicManifest = {
     explain: {
       prompt: "A friend says: 'MFA is annoying, and anyway I have a strong password, so I don't need it.' Using what you just did, explain why MFA matters even with a strong password. Write a sentence or two, then reveal a model answer.",
       modelAnswer: [
-        "A strong password only helps until it leaks, and passwords leak all the time through breaches, reuse and phishing, none of which your password's strength can prevent.",
-        "MFA defends the case a password cannot: when the attacker already has the correct password, the login still demands a second factor they do not have, so they are stopped at the door.",
-        "It is the single highest-value control against the most common attack, account takeover with a stolen password.",
-        "App or key-based MFA is stronger than SMS.",
+        "A strong password only helps until it leaks, and passwords leak constantly via breaches, reuse and phishing.",
+        "No amount of password strength can prevent any of those leaks happening.",
+        "MFA covers the case a password cannot: even with the right password, the login demands a second factor.",
+        "Attackers are stopped at the door, so MFA is the highest-value control against account takeover.",
+        "App-based or hardware-key MFA is stronger than codes sent by SMS.",
       ],
     },
     quiz: [

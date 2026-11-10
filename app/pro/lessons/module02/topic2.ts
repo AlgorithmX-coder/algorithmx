@@ -104,10 +104,11 @@ const topic2: TopicManifest = {
     explain: {
       prompt: "Twitter's own servers were healthy on 21 October 2016, yet millions could not reach it. In your own words, explain why, and why attacking DNS is such good value for an attacker.",
       modelAnswer: [
-        "Reaching a site needs its name translated to an IP address first, and Dyn was the service doing that translation for Twitter and many others.",
+        "Reaching a site needs its name translated to an IP address, and Dyn did that for Twitter and many others.",
         "The Mirai botnet flooded Dyn until lookups failed, so browsers never learned Twitter's address.",
         "Healthy servers that nobody can look up are effectively offline.",
-        "DNS is good value for attackers because it concentrates trust: one provider, or one poisoned cache, stands in front of thousands of sites and millions of users at once.",
+        "DNS pays off for attackers because it concentrates trust: one provider sits in front of thousands of sites.",
+        "One poisoned cache can likewise misdirect millions of users at once.",
       ],
     },
     quiz: [

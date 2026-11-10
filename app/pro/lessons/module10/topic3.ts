@@ -103,11 +103,11 @@ const topic3: TopicManifest = {
     explain: {
       prompt: "The iSpoof service let fraudsters display real banks' phone numbers on victims' phones. Explain the deeper lesson about spoofing this reveals, and why out-of-band verification defeats it.",
       modelAnswer: [
-        "The deeper lesson is that many systems we trust do not strongly verify identity by default: the phone network will display whatever number a caller claims, so caller ID is a claim, not proof.",
-        "iSpoof monetised exactly this, selling the ability to fake trusted numbers.",
-        "Fraudsters combined that with social engineering (an urgent 'fraud alert') to trick victims.",
-        "Out-of-band verification defeats it because it bypasses the forged identifier entirely: instead of trusting the number on the screen, you independently contact the organisation on a known, trusted number.",
-        "The spoofed caller ID becomes irrelevant, because you are no longer relying on it to decide who you are talking to.",
+        "Many systems we trust do not verify identity: the phone network displays whatever number a caller claims.",
+        "Caller ID is a claim, not proof; iSpoof monetised exactly that, selling the ability to fake trusted numbers.",
+        "Fraudsters paired it with social engineering, an urgent fraud alert, to pressure victims into acting.",
+        "Out-of-band verification bypasses the forged identifier: contact the organisation yourself on a known, trusted number.",
+        "The spoofed caller ID then becomes irrelevant, because you no longer rely on it to decide who you are talking to.",
       ],
     },
     quiz: [

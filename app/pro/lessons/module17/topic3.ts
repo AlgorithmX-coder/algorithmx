@@ -103,11 +103,11 @@ const topic3: TopicManifest = {
     explain: {
       prompt: "Explain the hierarchy of policy, standard, procedure and control, why controls are where security actually happens, and what the 'policy on paper' trap is.",
       modelAnswer: [
-        "The hierarchy flows from intent to safeguard: a policy states high-level intent, a standard is a specific, measurable rule that supports it, a procedure is the step-by-step how-to that implements standards, and a control is the actual safeguard that does the protecting.",
-        "Controls are where security actually happens because, however well written the policy and standard, if the control is not in place and working, nothing is protected: documents describe and require security, but controls deliver it.",
-        "The 'policy on paper' trap is the common, dangerous failure where an organisation has all the right documents but the controls behind them are not actually in place, enforced or tested, so it looks secure and compliant on paper while being exposed in reality.",
-        "This creates false assurance, with leaders believing they are protected because the documents say so while the real risk is unaddressed.",
-        "That is why audits exist to catch the gap, and why a good GRC professional always asks not just 'is there a policy?' but 'does the control actually work?'.",
+        "Hierarchy: policy states intent, a standard sets a measurable rule, a procedure gives the steps, a control is the safeguard.",
+        "Controls are where security happens: documents describe and require it, but only a working control protects anything.",
+        "The policy-on-paper trap: all the right documents, while the controls are not actually in place, enforced or tested.",
+        "That creates false assurance; leaders trust the documents while the real risk goes unaddressed.",
+        "Audits exist to catch the gap, so good GRC asks not just is there a policy, but does the control actually work.",
       ],
     },
     quiz: [

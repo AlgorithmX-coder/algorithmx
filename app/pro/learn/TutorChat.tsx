@@ -160,8 +160,8 @@ export default function TutorChat({
         <div style={{ marginTop: 12, background: T.greenSoft, border: `1px solid ${T.green}55`, borderRadius: 8, padding: "12px 15px" }}>
           <div style={{ fontFamily: T.mono, fontSize: 10, letterSpacing: "0.14em", color: T.green, marginBottom: 6 }}>{Array.isArray(modelAnswer) ? "POINTS THAT A STRONG ANSWER WOULD INCLUDE" : "A STRONG ANSWER LOOKS LIKE"}</div>
           {Array.isArray(modelAnswer) ? (
-            <ul style={{ margin: 0, paddingLeft: 20, display: "flex", flexDirection: "column", gap: 7 }}>
-              {modelAnswer.map((pt, i) => <li key={i} style={{ fontSize: 14.5, color: T.body, lineHeight: 1.55 }}>{pt}</li>)}
+            <ul style={{ margin: 0, paddingLeft: 22, listStyleType: "disc" }}>
+              {modelAnswer.map((pt, i) => <li key={i} style={{ display: "list-item", fontSize: 14.5, color: T.body, lineHeight: 1.55, marginBottom: 7 }}>{pt}</li>)}
             </ul>
           ) : (
             <div style={{ fontSize: 14.5, color: T.body, lineHeight: 1.6 }}>{modelAnswer}</div>
