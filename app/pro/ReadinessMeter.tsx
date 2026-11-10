@@ -10,7 +10,7 @@ import { T } from "./learn/tokens";
  * Best-effort and client-only: if nothing is read, it simply shows the
  * starting state. Grown-up framing, no childish gimmicks. */
 
-const TOTAL = 100; // ~20 modules x 5 topics (the Code Lab aside)
+const TOTAL = 101; // 20 modules x 5 topics, plus the Code Lab (module 18) as one
 
 const MILESTONES: { at: number; label: string }[] = [
   { at: 0, label: "Begin your climb to job-ready" },
