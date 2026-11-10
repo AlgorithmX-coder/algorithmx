@@ -69,7 +69,7 @@ export default async function BuyPage({ searchParams }: { searchParams: Promise<
   );
 
   return (
-    <Frame brand={BRAND} meta={<Link href="/corporate" className="cf-link">Corporate page</Link>} aside={aside}>
+    <Frame brand={BRAND} courseNote={false} meta={<Link href="/corporate" className="cf-link">Corporate page</Link>} aside={aside}>
       <span className="cf-eyebrow">Buy {CYBER_SECURED_NAME}</span>
       <h1 className="cf-h1">{CYBER_SECURED_NAME} for your firm, <span className="cf-grad">live the moment payment clears</span>.</h1>
       <p className="cf-lead">One seat per person, per year, and every seat opens {liveTrackNames()}. Your admin invite is emailed as soon as the card payment goes through; from that link you invite your staff.</p>
