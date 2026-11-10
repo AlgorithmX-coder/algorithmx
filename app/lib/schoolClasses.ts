@@ -2,7 +2,7 @@ import { randomInt } from "crypto";
 import { prisma } from "@/app/lib/prisma";
 import bcrypt from "bcryptjs";
 import { isSchoolCourse, placesUsed } from "@/app/lib/schoolPlaces";
-import { moveSpendsAPlace } from "@/app/lib/placeRule";
+import { moveSpendsAPlace, placesNeededForWholeClass } from "@/app/lib/placeRule";
 import type { LearnerOrgKind } from "@prisma/client";
 
 /**
@@ -467,4 +467,239 @@ export async function removePupil(orgId: string, childProfileId: string): Promis
  *  use the credentials provider that already exists. */
 export async function hashPictureSequence(sequence: readonly string[]): Promise<string> {
   return bcrypt.hash(sequence.join("."), 10);
+}
+
+/**
+ * Move a WHOLE class at once, and what it will cost before you press it.
+ *
+ * SEPTEMBER IS THE REASON. A year group finishing Cyber Heroes and starting
+ * Cyber Explorers is one decision a school makes about thirty children, and
+ * the only tool for it was a dropdown on every pupil row: thirty separate
+ * moves, each of which can be refused when the licence runs out. A teacher
+ * doing that discovers the price of the twenty-ninth child twenty-eight
+ * moves in.
+ *
+ * So the cost is worked out for every possible destination FIRST, shown on
+ * the screen, and the move itself is all or nothing.
+ *
+ * The rule is the same rule: `moveSpendsAPlace`, the one `movePupil` uses.
+ * Same course, another class: free. Another course: one more place each,
+ * minus any child who already holds one for it. There is deliberately no
+ * bulk discount and no special case, because a second way of pricing a move
+ * is how a commercial rule quietly drifts.
+ */
+export interface WholeClassOption {
+  toClassId: string;
+  toClassName: string;
+  toCourseSlug: string;
+  toCourseName: string;
+  /** How many of this class's pupils would spend another place. */
+  placesNeeded: number;
+  /** False when the licence cannot cover it. */
+  affordable: boolean;
+}
+
+export interface WholeClassPlan {
+  fromClassName: string;
+  pupils: number;
+  placesLeft: number;
+  options: WholeClassOption[];
+}
+
+/**
+ * What moving this class anywhere would cost. One query for the children, one
+ * for their places, one for the destinations, so a school with thirty classes
+ * does not get thirty round trips.
+ *
+ * An ARCHIVED class is a valid source. That is the ordinary September case:
+ * last year's class was ended in July and its children are moving up now.
+ */
+export async function planWholeClassMove(args: {
+  orgId: string;
+  fromClassId: string;
+}): Promise<WholeClassPlan | null> {
+  const from = await prisma.class.findFirst({
+    where: { id: args.fromClassId, orgId: args.orgId },
+    select: {
+      id: true,
+      name: true,
+      productId: true,
+      pupils: { select: { id: true } },
+    },
+  });
+  if (!from) return null;
+
+  const [org, used, targets] = await Promise.all([
+    prisma.organisation.findUnique({
+      where: { id: args.orgId },
+      select: { seatsPurchased: true },
+    }),
+    placesUsed(args.orgId),
+    prisma.class.findMany({
+      where: { orgId: args.orgId, archivedAt: null, id: { not: from.id } },
+      orderBy: [{ yearGroup: "asc" }, { name: "asc" }],
+      select: {
+        id: true,
+        name: true,
+        productId: true,
+        product: { select: { slug: true, name: true } },
+      },
+    }),
+  ]);
+  const placesLeft = Math.max(0, (org?.seatsPurchased ?? 0) - used);
+
+  const ids = from.pupils.map((p) => p.id);
+  /* Every place these children already hold, on any course, in one go. A
+     child who came back to a course, or whose place was credited back by
+     mistake, must not be charged for it twice. */
+  const heldRows = ids.length
+    ? await prisma.placeRedemption.findMany({
+        where: { childProfileId: { in: ids } },
+        select: { childProfileId: true, productId: true, creditedBackAt: true },
+      })
+    : [];
+  const heldBy = new Map<string, { creditedBackAt: Date | null }>();
+  for (const r of heldRows) {
+    if (r.childProfileId && r.productId) {
+      heldBy.set(`${r.childProfileId}:${r.productId}`, { creditedBackAt: r.creditedBackAt });
+    }
+  }
+
+  const options: WholeClassOption[] = targets.map((t) => {
+    /* The SAME function the move itself charges by, so the price quoted on
+       the screen and the price taken cannot drift apart. */
+    const placesNeeded = placesNeededForWholeClass({
+      pupilIds: ids,
+      fromProductId: from.productId,
+      toProductId: t.productId,
+      heldForTarget: (id) => heldBy.get(`${id}:${t.productId}`) ?? null,
+    });
+    return {
+      toClassId: t.id,
+      toClassName: t.name,
+      toCourseSlug: t.product.slug,
+      toCourseName: t.product.name,
+      placesNeeded,
+      affordable: placesNeeded <= placesLeft,
+    };
+  });
+
+  return { fromClassName: from.name, pupils: ids.length, placesLeft, options };
+}
+
+/**
+ * Do it. All or nothing: either every child lands on the new course with a
+ * place behind them, or nothing moves at all.
+ */
+export async function moveWholeClass(args: {
+  orgId: string;
+  fromClassId: string;
+  toClassId: string;
+}): Promise<
+  | { ok: true; moved: number; placesSpent: number; toClassName: string }
+  | { ok: false; error: ClassFailure; detail?: string }
+> {
+  const [from, target] = await Promise.all([
+    prisma.class.findFirst({
+      where: { id: args.fromClassId, orgId: args.orgId },
+      select: {
+        id: true,
+        productId: true,
+        pupils: { select: { id: true, userId: true } },
+      },
+    }),
+    prisma.class.findFirst({
+      /* The destination must still be running. Moving a year group INTO a
+         class whose year has been ended would put thirty children somewhere
+         they cannot sign in. */
+      where: { id: args.toClassId, orgId: args.orgId, archivedAt: null },
+      select: { id: true, name: true, productId: true },
+    }),
+  ]);
+  if (!from || !target || from.id === target.id) return { ok: false, error: "class_not_found" };
+  if (from.pupils.length === 0) return { ok: false, error: "no_pupils" };
+
+  const ids = from.pupils.map((p) => p.id);
+  const heldRows = await prisma.placeRedemption.findMany({
+    where: { childProfileId: { in: ids }, productId: target.productId },
+    select: { id: true, childProfileId: true, creditedBackAt: true },
+  });
+  const heldBy = new Map(heldRows.map((r) => [r.childProfileId as string, r]));
+
+  /* Per child here, because this one has to know WHICH children spend a
+     place: each of them needs a ledger row written or revived. The count is
+     the same number `placesNeededForWholeClass` quotes on the screen, and
+     placeRule.test.ts asserts that those two agree, because a screen that
+     quotes one price while the move takes another is the worst bug this
+     feature could have. */
+  const spenders = from.pupils.filter((p) =>
+    moveSpendsAPlace({
+      fromProductId: from.productId,
+      toProductId: target.productId,
+      heldForTarget: heldBy.get(p.id) ?? null,
+    }),
+  );
+
+  if (spenders.length > 0) {
+    /* Checked once, for the whole class, BEFORE anything moves. That is the
+       difference between this and thirty separate moves: a school cannot end
+       up with nineteen children on a course it has paid for and eleven
+       stranded on one it has not. */
+    const org = await prisma.organisation.findUnique({
+      where: { id: args.orgId },
+      select: { seatsPurchased: true },
+    });
+    if (!org) return { ok: false, error: "not_a_school" };
+    const used = await placesUsed(args.orgId);
+    if (used + spenders.length > org.seatsPurchased) {
+      return {
+        ok: false,
+        error: "seats_full",
+        detail: String(Math.max(0, org.seatsPurchased - used)),
+      };
+    }
+  }
+
+  /* Rows to revive versus rows to write, decided out here so the transaction
+     is a handful of set-based statements rather than one round trip per
+     child. */
+  const revive = spenders.map((p) => heldBy.get(p.id)?.id).filter((id): id is string => !!id);
+  const create = spenders
+    .filter((p) => !heldBy.get(p.id))
+    .map((p) => ({ orgId: args.orgId, childProfileId: p.id, productId: target.productId }));
+
+  await prisma.$transaction(async (tx) => {
+    await tx.childProfile.updateMany({
+      where: { id: { in: ids }, class: { orgId: args.orgId } },
+      data: { classId: target.id },
+    });
+
+    /* The new course granted to each of them, the old one left alone: a
+       child keeps what they already did. Idempotent through the composite
+       key, so a child who already had it is a no-op rather than an error. */
+    for (const p of from.pupils) {
+      await tx.entitlement.upsert({
+        where: { userId_productId: { userId: p.userId, productId: target.productId } },
+        update: {},
+        create: { userId: p.userId, productId: target.productId, source: "BUNDLE" },
+      });
+    }
+
+    if (revive.length) {
+      await tx.placeRedemption.updateMany({
+        where: { id: { in: revive } },
+        data: { creditedBackAt: null, creditedBy: null, redeemedAt: new Date() },
+      });
+    }
+    if (create.length) {
+      await tx.placeRedemption.createMany({ data: create });
+    }
+  });
+
+  return {
+    ok: true,
+    moved: from.pupils.length,
+    placesSpent: spenders.length,
+    toClassName: target.name,
+  };
 }
