@@ -1,0 +1,112 @@
+/*
+  The end of course report: one page a teacher prints for a head of year,
+  a governor, or a parents' evening folder.
+
+  PAPER IS THE REAL OUTPUT, the same as the login cards. The screen view is
+  there to check it before it goes to the printer, so the print rules come
+  first and the screen borrows them. Thirty names fit on one sheet of A4.
+
+  EVERY selector is scoped under .axrep. Next keeps a route stylesheet
+  loaded after you navigate away from the route, so an unscoped .row or
+  .num in here would follow the teacher around the rest of the site.
+
+  It is deliberately plain. A document that goes in front of a head teacher
+  should look like a document, not like a dashboard: no colour blocks, no
+  progress bars, nothing that costs ink and says nothing.
+*/
+.axrep {
+  --ink:#141824; --muted:#5a6273; --rule:rgba(20,24,36,.16);
+  --paper:#fffdf8; --sheet:#f4f1ea; --say:#0a7085;
+  background:var(--sheet); color:var(--ink);
+  font-family:var(--font-nunito),system-ui,sans-serif;
+  min-height:100vh;
+}
+.axrep * {box-sizing:border-box}
+.axrep .wrap {max-width:900px;margin:0 auto;padding:22px 20px 70px}
+
+/* ---- screen-only chrome --------------------------------------------- */
+.axrep .modes {display:flex;flex-wrap:wrap;gap:9px;margin:0 0 18px}
+.axrep .axbtn {font:600 .82rem var(--font-nunito),system-ui,sans-serif;padding:7px 14px;
+  border-radius:999px;border:1px solid var(--rule);background:var(--paper);color:var(--ink);
+  cursor:pointer;text-decoration:none;display:inline-block}
+.axrep .axbtn:hover {border-color:rgba(20,24,36,.4)}
+.axrep .axbtn:focus-visible {outline:2px solid var(--say);outline-offset:2px}
+.axrep .axbtn.go {background:var(--say);color:#fff;border-color:var(--say)}
+
+/* ---- the sheet ------------------------------------------------------- */
+.axrep .sheet {background:#fff;border:1px solid var(--rule);border-radius:12px;
+  padding:clamp(20px,3vw,34px)}
+
+.axrep .head {border-bottom:2px solid var(--ink);padding-bottom:12px;margin:0 0 16px}
+.axrep .eyebrow {margin:0 0 4px;font:800 .66rem var(--font-nunito),system-ui,sans-serif;
+  letter-spacing:.15em;text-transform:uppercase;color:var(--muted)}
+.axrep h1 {margin:0 0 6px;font:700 1.5rem var(--font-fredoka),system-ui,sans-serif;line-height:1.15}
+.axrep .meta {margin:0;font-size:.86rem;line-height:1.6;color:var(--muted)}
+.axrep .meta b {color:var(--ink);font-weight:700}
+
+/* The four numbers a head reads first. Numbers, not bars: a bar on paper
+   is an ink cost and a guess at a scale nobody asked for. */
+.axrep .nums {display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:0 0 18px}
+.axrep .num {border:1px solid var(--rule);border-radius:9px;padding:10px 12px}
+.axrep .num b {display:block;font:700 1.5rem var(--font-nunito),system-ui,sans-serif;line-height:1.1}
+.axrep .num span {display:block;margin-top:2px;font-size:.74rem;line-height:1.35;color:var(--muted)}
+
+.axrep h2 {margin:0 0 8px;font:700 .96rem var(--font-nunito),system-ui,sans-serif}
+
+/* On a phone the table is the one thing that cannot shrink: five columns of
+   numbers wrap into nonsense. It scrolls inside its own box instead, so the
+   page itself never scrolls sideways. On paper the box is not there. */
+.axrep .tablewrap {overflow-x:auto}
+.axrep table {width:100%;border-collapse:collapse;min-width:460px}
+.axrep th {text-align:left;font:700 .62rem var(--font-nunito),system-ui,sans-serif;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--muted);
+  padding:7px 8px;border-bottom:1px solid var(--ink)}
+.axrep td {padding:7px 8px;border-bottom:1px solid var(--rule);font-size:.86rem;vertical-align:top}
+.axrep th.n, .axrep td.n {text-align:right;white-space:nowrap}
+.axrep td.name {font-weight:700}
+.axrep td.dim {color:var(--muted)}
+
+.axrep .notes {margin:16px 0 0;padding-top:12px;border-top:1px solid var(--rule);
+  font-size:.76rem;line-height:1.6;color:var(--muted)}
+.axrep .notes p {margin:0 0 5px}
+.axrep .notes p:last-child {margin:0}
+
+.axrep .none {background:var(--paper);border:1px solid var(--rule);border-radius:12px;
+  padding:16px 18px;font-size:.9rem;line-height:1.6;max-width:74ch}
+.axrep .none b {display:block;margin-bottom:5px}
+
+/* ---- paper ----------------------------------------------------------- */
+@page {size:A4 portrait;margin:14mm}
+
+@media print {
+  .axrep {background:#fff;min-height:0}
+  .axrep .wrap {max-width:none;padding:0}
+  .axrep .modes, .axrep .noprint {display:none!important}
+  .axrep .sheet {border:0;border-radius:0;padding:0}
+  /* Everything below is sized so that THIRTY names, which is a full class,
+     land on one sheet of A4. The first print of twenty-eight ran nine per
+     cent over and put a sliver on a second page, which is the kind of
+     thing nobody notices until a head teacher is holding it. Measured, not
+     eyeballed: 269mm of usable height at a 14mm margin. */
+  .axrep h1 {font-size:16pt;margin-bottom:4pt}
+  .axrep .eyebrow {font-size:6.8pt;margin-bottom:2pt}
+  .axrep .meta {font-size:8.4pt;line-height:1.5}
+  .axrep .head {padding-bottom:7pt;margin-bottom:10pt}
+  .axrep .nums {gap:8pt;margin-bottom:10pt}
+  .axrep .num {padding:6pt 8pt}
+  .axrep .num b {font-size:13.5pt}
+  .axrep .num span {font-size:6.6pt}
+  .axrep h2 {font-size:9.5pt;margin-bottom:5pt}
+  .axrep th {font-size:6.6pt;padding:4pt 6pt}
+  .axrep td {font-size:8pt;padding:2.2pt 6pt}
+  .axrep .notes {font-size:6.6pt;margin-top:10pt;padding-top:8pt;line-height:1.5}
+  .axrep .notes p {margin-bottom:3pt}
+  .axrep .tablewrap {overflow:visible}
+  .axrep table {min-width:0}
+  .axrep tr {break-inside:avoid;page-break-inside:avoid}
+  .axrep thead {display:table-header-group}
+}
+
+@media screen and (max-width:620px) {
+  .axrep .nums {grid-template-columns:repeat(2,minmax(0,1fr))}
+}

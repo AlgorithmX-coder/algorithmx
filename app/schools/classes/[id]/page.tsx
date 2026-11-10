@@ -101,6 +101,11 @@ export default async function ClassPage({
             </div>
           </div>
           <div className="modes" role="group" aria-label="Elsewhere">
+            {/* The sheet to hand upwards. Offered even on an empty class,
+                because the page it leads to says so itself, and offered on
+                an archived one on purpose: the week after a year ends is
+                exactly when somebody asks what the children did. */}
+            <Link href={`/schools/classes/${id}/report`} className="axbtn">Report</Link>
             <Link href="/schools/classes" className="axbtn">All {w.groups}</Link>
             <Link href="/schools/teach" className="axbtn">{w.Staff} packs</Link>
             <SignOut />
