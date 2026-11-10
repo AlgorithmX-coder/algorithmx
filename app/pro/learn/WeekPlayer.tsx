@@ -42,7 +42,7 @@ function BriefingAudio({ src, kind, blurb, accent }: { src: string; kind: "brief
   const label = kind === "briefing" ? "Module briefing" : "Module recap";
   return (
     <div style={{ display: "flex", alignItems: "center", gap: 14, padding: "13px 15px", borderRadius: 14, background: `linear-gradient(140deg, ${accent}1f, ${T.panel})`, border: `1px solid ${accent}44` }}>
-      <audio ref={ref} src={src} preload="metadata" onPlay={() => setPlaying(true)} onPause={() => setPlaying(false)} onEnded={() => setPlaying(false)} onTimeUpdate={(e) => setCur(e.currentTarget.currentTime)} onLoadedMetadata={(e) => setDur(e.currentTarget.duration)} />
+      <audio ref={ref} src={src} preload="auto" onPlay={() => setPlaying(true)} onPause={() => setPlaying(false)} onEnded={() => setPlaying(false)} onTimeUpdate={(e) => setCur(e.currentTarget.currentTime)} onLoadedMetadata={(e) => setDur(e.currentTarget.duration)} />
       <button onClick={toggle} aria-label={playing ? `Pause the ${label.toLowerCase()}` : `Play the ${label.toLowerCase()}`} style={{ flexShrink: 0, width: 46, height: 46, borderRadius: "50%", border: "none", background: accent, color: T.bg, fontSize: 15, fontWeight: 700, cursor: "pointer", display: "grid", placeItems: "center", boxShadow: `0 0 18px -4px ${accent}`, boxSizing: "border-box", paddingLeft: playing ? 0 : 3 }}>{playing ? "❚❚" : "▶"}</button>
       <div style={{ flex: 1, minWidth: 0 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
