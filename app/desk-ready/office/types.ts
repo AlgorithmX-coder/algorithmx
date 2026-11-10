@@ -59,10 +59,12 @@ export interface EmailLink {
 
 export interface Email {
   id: string;
-  folder: "inbox" | "sent";
+  /* "inbox", "sent", "junk" (reported), or one of the job's mail folders. */
+  folder: string;
   from: Person;
   to: Person[];
   cc: Person[];
+  bcc?: Person[];
   subject: string;
   body: string;
   time: string;
@@ -71,12 +73,20 @@ export interface Email {
   links: EmailLink[];
   /* The email this one replies to or forwards. */
   inReplyTo?: string;
+  flagged?: boolean;
+  /* Reported as phishing with the Report button. */
+  reported?: boolean;
+  /* A link in the body (a scam's "View invoice"), and whether it was clicked. */
+  fakeLink?: { text: string; url: string };
+  clicked?: boolean;
 }
 
 export interface OfficeState {
   version: number;
   files: OfficeFile[];
   emails: Email[];
+  /* The job's own mail folders, beside Inbox and Sent items. */
+  mailFolders?: string[];
 }
 
 export interface Check {
@@ -100,6 +110,8 @@ export interface Job {
   /* The office clock, shown on the task panel. */
   clock: string;
   deadline: string;
+  /* The scorecard's headline when every check passes. */
+  doneLine: string;
   /* What the panel says before the learner starts. */
   brief: string;
   hints: string[];

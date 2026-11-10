@@ -1,5 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { display, evaluate } from "./formula";
+import { lateDelivery } from "./jobs/lateDelivery";
+import { mondayInbox } from "./jobs/mondayInbox";
 import { morningReport } from "./jobs/morningReport";
 import { PEOPLE, YOU } from "./northfield";
 import type { Email, Grid, OfficeState } from "./types";
@@ -109,5 +111,47 @@ describe("the morning delivery report", () => {
   it("wants Sarah told about the short delivery", () => {
     const s = solved((x) => ({ ...x, emails: x.emails.map((e) => (e.id === "mail-reply" ? reply({ body: "Hi Sarah, it's saved. JM" }) : e)) }));
     expect(failing(s)).toEqual(["short-told"]);
+  });
+});
+
+describe("Monday's inbox", () => {
+  const FILED: Record<string, string> = { "m-sarah-short": "Deliveries", "m-kent": "Deliveries", "m-flour": "Deliveries", "m-dn": "Deliveries", "m-hale": "Invoices", "m-bright": "Invoices", "m-credit": "Invoices", "m-rota": "HR", "m-xmas": "HR", "m-pay": "HR", "m-starter": "HR" };
+  const done = (): OfficeState => {
+    const s = mondayInbox.seed();
+    return { ...s, emails: s.emails.map((e) => (e.id === "m-scam" ? { ...e, reported: true, folder: "junk" } : FILED[e.id] ? { ...e, folder: FILED[e.id], flagged: e.id === "m-sarah-short" || e.id === "m-kent" } : e)) };
+  };
+  const fails = (s: OfficeState) => mondayInbox.check(s).filter((c) => !c.ok).map((c) => c.id);
+
+  it("passes when filed, flagged and the scam reported", () => {
+    expect(fails(done())).toEqual([]);
+  });
+  it("fails a fresh inbox, except the link not yet clicked", () => {
+    expect(fails(mondayInbox.seed())).not.toContain("no-click");
+    expect(fails(mondayInbox.seed())).toEqual(expect.arrayContaining(["folder-Deliveries", "empty", "flags", "reported"]));
+  });
+  it("catches a clicked scam link, an extra flag and a misfiled invoice", () => {
+    const s = done();
+    const bad = { ...s, emails: s.emails.map((e) => (e.id === "m-scam" ? { ...e, clicked: true } : e.id === "m-pay" ? { ...e, flagged: true } : e.id === "m-hale" ? { ...e, folder: "Deliveries" } : e)) };
+    expect(fails(bad)).toEqual(expect.arrayContaining(["no-click", "flags", "folder-Invoices", "folder-Deliveries"]));
+  });
+});
+
+describe("Reply, Reply all or Forward", () => {
+  const kent = lateDelivery.seed().emails.find((e) => e.id === "m-kent")!;
+  const replyAll: Email = { ...reply(), id: "r1", to: [kent.from], cc: kent.cc, subject: "Re: Late delivery on Friday", body: "Dear Imran,\n\nI'm sorry your flour was late. The haulier's van broke down on the M1.\n\nKind regards", links: [], inReplyTo: "m-kent" };
+  const forward: Email = { ...reply(), id: "f1", to: [PEOPLE.sarah], cc: [], subject: "FW: Late delivery on Friday", body: "Hi Sarah, can you take this up with the haulier please?", links: [], inReplyTo: "m-kent" };
+  const fails = (sent: Email[]) => lateDelivery.check({ ...lateDelivery.seed(), emails: [...lateDelivery.seed().emails, ...sent] }).filter((c) => !c.ok).map((c) => c.id);
+
+  it("passes a Reply all and a clean Forward", () => {
+    expect(fails([replyAll, forward])).toEqual([]);
+  });
+  it("catches a plain Reply that leaves the Cc people out", () => {
+    expect(fails([{ ...replyAll, cc: [] }, forward])).toEqual(["reply-all"]);
+  });
+  it("counts a plain Reply put right with a Reply all afterwards", () => {
+    expect(fails([{ ...replyAll, id: "r0", cc: [] }, replyAll, forward])).toEqual([]);
+  });
+  it("catches the customer copied into the internal forward", () => {
+    expect(fails([replyAll, { ...forward, cc: kent.cc }])).toEqual(["internal"]);
   });
 });
