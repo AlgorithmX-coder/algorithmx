@@ -18,6 +18,10 @@ export type Action =
   | { type: "delete"; id: string }
   | { type: "newFolder"; path: Path; name: string }
   | { type: "read"; id: string }
+  | { type: "moveMail"; id: string; folder: string }
+  | { type: "flag"; id: string }
+  | { type: "report"; id: string }
+  | { type: "clickLink"; id: string }
   | { type: "send"; email: Email }
   | { type: "reset"; state: OfficeState };
 
@@ -72,6 +76,14 @@ function reducer(s: OfficeState, a: Action): OfficeState {
       return { ...s, files: [...s.files, { id: newId("dir"), path: a.path, name: a.name, kind: "folder", modified: "Today, just now", by: "You" }] };
     case "read":
       return { ...s, emails: s.emails.map((e) => (e.id === a.id ? { ...e, unread: false } : e)) };
+    case "moveMail":
+      return { ...s, emails: s.emails.map((e) => (e.id === a.id ? { ...e, folder: a.folder } : e)) };
+    case "flag":
+      return { ...s, emails: s.emails.map((e) => (e.id === a.id ? { ...e, flagged: !e.flagged } : e)) };
+    case "report":
+      return { ...s, emails: s.emails.map((e) => (e.id === a.id ? { ...e, reported: true, folder: "junk", flagged: false } : e)) };
+    case "clickLink":
+      return { ...s, emails: s.emails.map((e) => (e.id === a.id ? { ...e, clicked: true } : e)) };
     case "send":
       return { ...s, emails: [...s.emails, a.email] };
     case "reset":

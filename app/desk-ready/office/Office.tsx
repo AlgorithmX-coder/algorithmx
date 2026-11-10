@@ -254,8 +254,8 @@ function Scorecard({ job, results, onClose, onAgain }: { job: Job; results: Chec
     <div className="of-overlay" role="dialog" aria-modal="true" aria-label="Your scorecard">
       <div className="of-card of-score dr-glass" style={{ "--acc": all ? D.good : D.accent } as CSSProperties}>
         <Kicker>{all ? "Job done" : "Not quite yet"}</Kicker>
-        <h2 className="of-h2">{all ? "Sarah has her report, and you did it the way an office does." : `${passed} of ${results.length} done. Here is what's left.`}</h2>
-        <div className="of-habits" aria-label="The five habits">
+        <h2 className="of-h2">{all ? job.doneLine :`${passed} of ${results.length} done. Here is what's left.`}</h2>
+        <div className="of-habits" aria-label="The office habits this job checks">
           {job.habits.map((h) => {
             const met = h.checks.every(ok);
             return (

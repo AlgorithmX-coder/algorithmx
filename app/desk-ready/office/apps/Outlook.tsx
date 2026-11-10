@@ -8,15 +8,18 @@ import { newId, type Action } from "../store";
 import type { Attachment, Email, EmailLink, OfficeFile, OfficeState, Path, Person } from "../types";
 import { AppButton, Dialog, FileGlyph, TitleBar } from "../ui";
 
-/* Outlook, for the office jobs: Inbox and Sent, a reading pane, and a
- * compose pane for Reply, Reply all, Forward and New mail, with Insert
- * link (a link to a file on OneDrive or SharePoint) and Attach (a copy).
- * Sent mail lands in Sent items, where the job's checks read it. Nothing
- * leaves the page. */
+/* Outlook, for the office jobs: Inbox, the job's own folders, Sent items
+ * and Junk email; a reading pane; Move to, Flag, Report (phishing) and
+ * Search; and a compose pane for Reply, Reply all, Forward and New mail,
+ * with Cc, Bcc, Insert link (a link to a file on OneDrive or SharePoint)
+ * and Attach (a copy). Sent mail lands in Sent items, where the job's
+ * checks read it. Nothing leaves the page. A link in a scam email is
+ * recorded when clicked, and shows what it would have done. */
 
 interface Draft {
   to: Person[];
   cc: Person[];
+  bcc: Person[];
   subject: string;
   body: string;
   links: EmailLink[];
@@ -25,7 +28,7 @@ interface Draft {
   quoted?: Email;
 }
 
-const EMPTY: Draft = { to: [], cc: [], subject: "", body: "", links: [], attachments: [] };
+const EMPTY: Draft = { to: [], cc: [], bcc: [], subject: "", body: "", links: [], attachments: [] };
 
 export default function Outlook({
   state,
@@ -38,18 +41,26 @@ export default function Outlook({
   onAttachment: (a: Attachment) => void;
   onLink: (l: EmailLink) => void;
 }) {
-  const [folder, setFolder] = useState<"inbox" | "sent">("inbox");
+  const [folder, setFolder] = useState("inbox");
   const [openId, setOpenId] = useState<string | null>(null);
   const [draft, setDraft] = useState<Draft | null>(null);
   const [picker, setPicker] = useState<"link" | "attach" | null>(null);
   const [noSubject, setNoSubject] = useState(false);
+  const [query, setQuery] = useState("");
+  const [moveMenu, setMoveMenu] = useState(false);
+  const [reporting, setReporting] = useState(false);
+  const [clickedScam, setClickedScam] = useState<Email | null>(null);
 
-  /* The inbox is seeded newest first; sent mail is added as it goes, so it is turned round. */
-  const inFolder = state.emails.filter((e) => e.folder === folder);
-  const mails = folder === "sent" ? inFolder.slice().reverse() : inFolder;
-  const inboxMails = state.emails.filter((e) => e.folder === "inbox");
-  const unread = inboxMails.filter((e) => e.unread).length;
+  const q = query.trim().toLowerCase();
+  const hit = (e: Email) => !q || [e.subject, e.body, e.from.name, ...e.to.map((p) => p.name)].some((t) => t.toLowerCase().includes(q));
+  /* Search looks in every folder, as Outlook's does. The inbox is seeded
+   * newest first; sent mail is added as it goes, so it is turned round. */
+  const inFolder = state.emails.filter((e) => (q ? true : e.folder === folder) && hit(e));
+  const mails = folder === "sent" && !q ? inFolder.slice().reverse() : inFolder;
+  const folders = ["inbox", ...(state.mailFolders ?? []), "sent", ...(state.emails.some((e) => e.folder === "junk") ? ["junk"] : [])];
+  const unreadIn = (f: string) => state.emails.filter((e) => e.folder === f && e.unread).length;
   const open = state.emails.find((e) => e.id === openId) ?? null;
+  const canFile = !!open && open.folder !== "sent";
 
   const read = (e: Email) => {
     setOpenId(e.id);
@@ -74,6 +85,7 @@ export default function Outlook({
       from: YOU,
       to: draft.to,
       cc: draft.cc,
+      bcc: draft.bcc,
       subject: draft.subject.trim(),
       body: draft.body,
       time: "Just now",
@@ -111,36 +123,82 @@ export default function Outlook({
         <AppButton onClick={() => start("forward")} disabled={!open}>
           ↪ Forward
         </AppButton>
+        <span style={{ width: 1, alignSelf: "stretch", background: W.edge }} />
+        <span style={{ position: "relative" }}>
+          <AppButton onClick={() => setMoveMenu((m) => !m)} disabled={!canFile}>
+            📁 Move to ▾
+          </AppButton>
+          {moveMenu && open && (
+            <span role="menu" style={{ position: "absolute", top: "100%", left: 0, zIndex: 20, marginTop: 4, width: 200, background: W.page, border: `1px solid ${W.edge}`, borderRadius: 6, boxShadow: W.float, padding: 4, display: "block" }}>
+              {["inbox", ...(state.mailFolders ?? [])]
+                .filter((f) => f !== open.folder)
+                .map((f) => (
+                  <button
+                    key={f}
+                    type="button"
+                    role="menuitem"
+                    className="of-row"
+                    onClick={() => {
+                      dispatch({ type: "moveMail", id: open.id, folder: f });
+                      setMoveMenu(false);
+                      setOpenId(null);
+                    }}
+                    style={{ width: "100%", minHeight: 40, textAlign: "left", padding: "6px 12px", border: "none", background: "transparent", fontFamily: W.font, fontSize: 15, borderRadius: 4 }}
+                  >
+                    {folderLabel(f)}
+                  </button>
+                ))}
+            </span>
+          )}
+        </span>
+        <AppButton onClick={() => open && dispatch({ type: "flag", id: open.id })} disabled={!canFile}>
+          <span style={{ color: "#c4314b" }}>⚑</span> {open?.flagged ? "Unflag" : "Flag"}
+        </AppButton>
+        <AppButton onClick={() => setReporting(true)} disabled={!canFile || open?.folder === "junk"}>
+          ⚠ Report
+        </AppButton>
+        <input
+          aria-label="Search mail"
+          type="search"
+          value={query}
+          onChange={(e) => {
+            setQuery(e.target.value);
+            setOpenId(null);
+          }}
+          placeholder="Search"
+          style={{ marginLeft: "auto", width: 190, minHeight: 40, padding: "0 12px", border: `1px solid ${W.edge}`, borderRadius: 6, fontFamily: W.font, fontSize: 15, color: W.ink, background: W.page }}
+        />
       </div>
       <div style={{ flex: 1, minHeight: 0, display: "flex" }}>
         {/* folders */}
-        <nav aria-label="Mail folders" style={{ width: 160, flexShrink: 0, padding: "10px 8px", borderRight: `1px solid ${W.edge}`, background: W.chrome }}>
-          {(
-            [
-              ["inbox", "Inbox", unread],
-              ["sent", "Sent items", 0],
-            ] as const
-          ).map(([id, label, n]) => (
-            <button
-              key={id}
-              type="button"
-              className={folder === id ? "of-row on" : "of-row"}
-              onClick={() => {
-                setFolder(id);
-                setOpenId(null);
-                setDraft(null);
-              }}
-              style={{ width: "100%", minHeight: 40, display: "flex", justifyContent: "space-between", alignItems: "center", padding: "6px 12px", border: "none", borderRadius: 6, background: folder === id ? W.select : "transparent", fontFamily: W.font, fontSize: 15, fontWeight: folder === id ? 600 : 400, color: W.ink }}
-            >
-              {label}
-              {n > 0 && <b style={{ color: W.outlook }}>{n}</b>}
-            </button>
-          ))}
+        <nav aria-label="Mail folders" style={{ width: 160, flexShrink: 0, padding: "10px 8px", borderRight: `1px solid ${W.edge}`, background: W.chrome, overflowY: "auto" }}>
+          {folders.map((id) => {
+            const n = unreadIn(id);
+            const top = id === "inbox" || id === "sent" || id === "junk";
+            return (
+              <button
+                key={id}
+                type="button"
+                className={folder === id && !q ? "of-row on" : "of-row"}
+                onClick={() => {
+                  setFolder(id);
+                  setQuery("");
+                  setOpenId(null);
+                  setDraft(null);
+                }}
+                style={{ width: "100%", minHeight: 40, display: "flex", justifyContent: "space-between", alignItems: "center", padding: `6px 12px 6px ${top ? 12 : 26}px`, border: "none", borderRadius: 6, background: folder === id && !q ? W.select : "transparent", fontFamily: W.font, fontSize: 15, fontWeight: folder === id ? 600 : 400, color: W.ink }}
+              >
+                {folderLabel(id)}
+                {n > 0 && <b style={{ color: W.outlook }}>{n}</b>}
+              </button>
+            );
+          })}
         </nav>
 
         {/* message list */}
-        <div role="list" aria-label={folder === "inbox" ? "Inbox" : "Sent items"} style={{ width: 290, flexShrink: 0, borderRight: `1px solid ${W.edge}`, overflowY: "auto" }}>
-          {mails.length === 0 && <p style={{ margin: 0, padding: 18, fontSize: 15, color: W.muted }}>{folder === "sent" ? "Nothing sent yet." : "No mail."}</p>}
+        <div role="list" aria-label={q ? "Search results" : folderLabel(folder)} style={{ width: 290, flexShrink: 0, borderRight: `1px solid ${W.edge}`, overflowY: "auto" }}>
+          {q && <p style={{ margin: 0, padding: "8px 14px", fontSize: 13, color: W.muted, borderBottom: `1px solid ${W.edge}` }}>Results in all folders for &ldquo;{query.trim()}&rdquo;</p>}
+          {mails.length === 0 && <p style={{ margin: 0, padding: 18, fontSize: 15, color: W.muted }}>{q ? "Nothing matches." : folder === "sent" ? "Nothing sent yet." : folder === "inbox" ? "Your inbox is empty. Nice work." : "Nothing in this folder yet."}</p>}
           {mails.map((e) => (
             <button
               key={e.id}
@@ -153,7 +211,14 @@ export default function Outlook({
               {e.unread && <span aria-label="Unread" style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: 4, background: W.outlook }} />}
               <span style={{ display: "flex", justifyContent: "space-between", gap: 8, fontSize: 15, fontWeight: e.unread ? 700 : 400 }}>
                 <span style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{folder === "sent" ? `To: ${e.to.map((p) => p.name).join(", ")}` : e.from.name}</span>
-                <span style={{ fontSize: 13, color: W.muted, fontWeight: 400, flexShrink: 0 }}>{e.time}</span>
+                <span style={{ fontSize: 13, color: W.muted, fontWeight: 400, flexShrink: 0 }}>
+                  {e.flagged && (
+                    <b aria-label="Flagged" style={{ color: "#c4314b", marginRight: 6 }}>
+                      ⚑
+                    </b>
+                  )}
+                  {e.time}
+                </span>
               </span>
               <span style={{ display: "flex", alignItems: "center", gap: 6, marginTop: 2, fontSize: 14, color: e.unread ? W.outlook : W.body, fontWeight: e.unread ? 600 : 400 }}>
                 <span style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{e.subject || "(no subject)"}</span>
@@ -169,7 +234,15 @@ export default function Outlook({
           {draft ? (
             <Compose draft={draft} setDraft={setDraft} onSend={() => send()} onDiscard={() => setDraft(null)} onLink={() => setPicker("link")} onAttach={() => setPicker("attach")} />
           ) : open ? (
-            <Reading email={open} onAttachment={onAttachment} onLink={onLink} />
+            <Reading
+              email={open}
+              onAttachment={onAttachment}
+              onLink={onLink}
+              onFakeLink={() => {
+                dispatch({ type: "clickLink", id: open.id });
+                setClickedScam(open);
+              }}
+            />
           ) : (
             <p style={{ margin: 0, padding: 28, fontSize: 16, color: W.muted }}>Select an email to read it.</p>
           )}
@@ -183,6 +256,42 @@ export default function Outlook({
           onCancel={() => setPicker(null)}
           onFile={addFile}
         />
+      )}
+      {reporting && open && (
+        <Dialog title="Report phishing" onClose={() => setReporting(false)} width={500}>
+          <p style={{ margin: 0, fontSize: 16, lineHeight: 1.5 }}>
+            Report &ldquo;{open.subject}&rdquo; from {open.from.address} as phishing? It goes to Junk email and IT are told, so they can warn everyone else.
+          </p>
+          <div style={{ display: "flex", justifyContent: "flex-end", gap: 10, marginTop: 18 }}>
+            <AppButton onClick={() => setReporting(false)}>Cancel</AppButton>
+            <AppButton
+              primary
+              colour="#c4314b"
+              onClick={() => {
+                dispatch({ type: "report", id: open.id });
+                setReporting(false);
+                setOpenId(null);
+              }}
+            >
+              Report
+            </AppButton>
+          </div>
+        </Dialog>
+      )}
+      {clickedScam && (
+        <Dialog title="That link was a trap" onClose={() => setClickedScam(null)} width={560}>
+          <p style={{ margin: 0, fontSize: 16, lineHeight: 1.55 }}>
+            It opened <b>{clickedScam.fakeLink?.url}</b>, a fake page made to look like a sign-in page. If you had typed your password there, the scammer would have it.
+          </p>
+          <p style={{ margin: "12px 0 0", fontSize: 16, lineHeight: 1.55 }}>
+            At work, tell IT straight away and change your password. Here, close this, then use <b>Report</b> on the email instead of opening its links.
+          </p>
+          <div style={{ display: "flex", justifyContent: "flex-end", marginTop: 18 }}>
+            <AppButton primary onClick={() => setClickedScam(null)}>
+              I understand
+            </AppButton>
+          </div>
+        </Dialog>
       )}
       {noSubject && (
         <Dialog title="No subject" onClose={() => setNoSubject(false)} width={460}>
@@ -199,9 +308,14 @@ export default function Outlook({
   );
 }
 
-function Reading({ email, onAttachment, onLink }: { email: Email; onAttachment: (a: Attachment) => void; onLink: (l: EmailLink) => void }) {
+function folderLabel(f: string) {
+  return f === "inbox" ? "Inbox" : f === "sent" ? "Sent items" : f === "junk" ? "Junk email" : f;
+}
+
+function Reading({ email, onAttachment, onLink, onFakeLink }: { email: Email; onAttachment: (a: Attachment) => void; onLink: (l: EmailLink) => void; onFakeLink: () => void }) {
   return (
     <article style={{ padding: "18px 22px 28px" }}>
+      {email.reported && <p style={{ margin: "0 0 14px", padding: "10px 12px", borderRadius: 6, background: "#fde7e9", fontSize: 14.5 }}>You reported this email as phishing. IT have been told.</p>}
       <h2 style={{ margin: 0, fontSize: 20, fontWeight: 600, lineHeight: 1.3 }}>{email.subject || "(no subject)"}</h2>
       <div style={{ display: "flex", alignItems: "center", gap: 12, marginTop: 14 }}>
         <span aria-hidden style={{ width: 40, height: 40, borderRadius: "50%", background: email.from.address.startsWith("you@") ? "#8a4fd8" : "#c2410c", color: "#fff", display: "inline-flex", alignItems: "center", justifyContent: "center", fontWeight: 700, fontSize: 14, flexShrink: 0 }}>
@@ -236,6 +350,13 @@ function Reading({ email, onAttachment, onLink }: { email: Email; onAttachment: 
         </div>
       )}
       <div style={{ marginTop: 18, whiteSpace: "pre-wrap", fontSize: 16, lineHeight: 1.6 }}>{email.body}</div>
+      {email.fakeLink && (
+        <p style={{ margin: "16px 0 0" }}>
+          <button type="button" onClick={onFakeLink} title={email.fakeLink.url} style={{ minHeight: 44, padding: "8px 18px", border: "none", borderRadius: 4, background: "#ffc83d", color: "#1b1b1b", fontFamily: W.font, fontSize: 15.5, fontWeight: 700, cursor: "pointer" }}>
+            {email.fakeLink.text}
+          </button>
+        </p>
+      )}
     </article>
   );
 }
@@ -271,6 +392,7 @@ function Compose({
       </div>
       <People label="To" people={draft.to} onChange={(to) => setDraft({ ...draft, to })} />
       <People label="Cc" people={draft.cc} onChange={(cc) => setDraft({ ...draft, cc })} />
+      <People label="Bcc" people={draft.bcc} onChange={(bcc) => setDraft({ ...draft, bcc })} />
       <label style={field}>
         <span style={fieldLabel}>Subject</span>
         <input aria-label="Subject" value={draft.subject} onChange={(e) => setDraft({ ...draft, subject: e.target.value })} style={fieldInput} />

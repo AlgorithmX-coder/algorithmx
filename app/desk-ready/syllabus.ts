@@ -57,7 +57,7 @@ export const PARTS: readonly DeskPart[] = [
         title: "The work inbox",
         promise: "Find your way round a work inbox without missing anything.",
         topics: ["What is in an email", "To, Cc and Bcc", "Reply, Reply all and Forward", "Attachments", "Folders, flags and search"],
-        ready: false,
+        ready: true,
       },
       {
         id: "m2",
