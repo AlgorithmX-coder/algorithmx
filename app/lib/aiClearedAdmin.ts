@@ -313,20 +313,21 @@ export async function sendAdminWelcome(args: { to: string; token: string; firmNa
 
 /* Seats bought by card by an admin who already runs a firm: no new firm,
  * no new invite, just the count going up and a note saying so. */
-export async function sendSeatsAdded(args: { to: string; firmName: string; seats: number; origin: string; staffName: string; staffEmail: string | null }) {
+export async function sendSeatsAdded(args: { to: string; firmName: string; seats: number; total?: number; origin: string; staffName: string; staffEmail: string | null }) {
   const link = `${args.origin}/cyber-secured/admin`;
   const seatLine = `${args.seats} ${CYBER_SECURED_NAME} ${args.seats === 1 ? "seat" : "seats"}`;
+  const totalLine = args.total ? `Your firm now has ${args.total} ${args.total === 1 ? "seat" : "seats"} in all. ` : "";
   const claim = "Each person you invite gets their own link, claims their seat on first sign-in, and has every course from then on.";
   const html = `
     <div style="font-family:Inter,Segoe UI,Helvetica,Arial,sans-serif;color:#14161d;max-width:560px;margin:0 auto;padding:24px">
       <p style="font-family:ui-monospace,Consolas,monospace;font-size:11px;letter-spacing:.2em;color:#0a7085;margin:0 0 16px">${CYBER_SECURED_BRAND}</p>
       <h1 style="font-size:22px;margin:0 0 12px">${seatLine} added to ${esc(args.firmName)}.</h1>
-      <p style="font-size:15px;line-height:1.55;margin:0 0 12px">Thank you. The seats are on your firm's account now and the admin console shows the new total. Invite staff from there: paste their email addresses and each person gets their own invite. ${claim}</p>
+      <p style="font-size:15px;line-height:1.55;margin:0 0 12px">Thank you. ${totalLine}The seats are on your firm's account now and the admin console shows them. Invite staff from there: paste their email addresses and each person gets their own invite. ${claim}</p>
       <p style="margin:18px 0 10px"><a href="${link}" style="display:inline-block;background:#0a7085;color:#fff;text-decoration:none;padding:11px 18px;border-radius:8px;font-weight:600">Open the admin console</a></p>
       <p style="font-size:13.5px;color:#5b6572;line-height:1.5;margin:0">Or copy this link: <a href="${link}" style="color:#0a7085">${link}</a></p>
       <p style="font-size:13.5px;color:#5b6572;line-height:1.5;margin:14px 0 0">Your VAT invoice comes separately from Stripe. Questions go to ${esc(args.staffName)}${args.staffEmail ? ` (${esc(args.staffEmail)})` : ""}.</p>
     </div>`;
-  const text = `${seatLine} added to ${args.firmName}.\n\nThe seats are on your firm's account now and the admin console shows the new total. Invite staff from there. ${claim}\n\nAdmin console: ${link}\n`;
+  const text = `${seatLine} added to ${args.firmName}.\n\n${totalLine}The seats are on your firm's account now and the admin console shows them. Invite staff from there. ${claim}\n\nAdmin console: ${link}\n`;
   return sendEmail({ to: args.to, subject: `${seatLine} added to ${args.firmName}`, html, text, replyTo: args.staffEmail ?? undefined });
 }
 

@@ -1,17 +1,16 @@
 import { NextRequest } from "next/server";
 import { z } from "zod";
 import { createCorporateCheckout } from "@/app/lib/aiClearedCheckout";
-import { CORPORATE_PRODUCT_SLUGS, FIRM_TOOL_KEYS } from "@/app/lib/corporateProducts";
+import { FIRM_TOOL_KEYS } from "@/app/lib/corporateProducts";
 
-/* POST /api/corporate/checkout: start a Stripe Checkout for a seat pack.
- * No sign-in needed: the buyer is the firm's admin-to-be, and the seat
- * pack is created by the webhook after payment, not here. */
+/* POST /api/corporate/checkout: start a Stripe Checkout for Cyber Secured
+ * seats. No sign-in needed: the buyer is the firm's admin-to-be, and the
+ * firm is created by the webhook after payment, not here. The seat range
+ * and the price are checked in createCorporateCheckout. A stale tab still
+ * posting the old course fields is fine: unknown keys are dropped. */
 
 const Body = z.object({
-  course: z.enum(CORPORATE_PRODUCT_SLUGS),
   seats: z.number().int(),
-  /* Fluent seats bought in the same checkout as AI Cleared; 0 or absent otherwise. */
-  fluentSeats: z.number().int().min(0).max(249).optional(),
   firmName: z.string().min(2).max(120),
   sector: z.string().max(80).optional().nullable(),
   contactName: z.string().max(120).optional().nullable(),

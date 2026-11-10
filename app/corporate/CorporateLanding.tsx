@@ -222,7 +222,7 @@ function CorporateBrand() {
   );
 }
 
-export default function CorporateLanding({ checkoutLive = false, fluentLive = false }: { checkoutLive?: boolean; fluentLive?: boolean }) {
+export default function CorporateLanding({ checkoutLive = false }: { checkoutLive?: boolean }) {
   const [activeSection, setActiveSection] = useState("");
   const subnavRef = useRef<HTMLElement>(null);
   /* The hero is a dark photograph and everything under it is sand, so the
@@ -396,8 +396,8 @@ export default function CorporateLanding({ checkoutLive = false, fluentLive = fa
                   <p className="corp-course-outcome">{c.outcome}</p>
                   <div className="corp-course-foot">
                     <span className="corp-course-price">{c.price}</span>
-                    {checkoutLive && (c.id === "cleared" || fluentLive) ? (
-                      <a href={`/corporate/buy?course=${c.id === "cleared" ? "ai-cleared" : "ai-fluent"}`} className="corp-course-cta">Buy seats <span aria-hidden>&rarr;</span></a>
+                    {checkoutLive ? (
+                      <a href="/corporate/buy" className="corp-course-cta">Buy seats <span aria-hidden>&rarr;</span></a>
                     ) : (
                       <a href="#enquiry" className="corp-course-cta">Get in touch <span aria-hidden>&rarr;</span></a>
                     )}
@@ -486,11 +486,7 @@ export default function CorporateLanding({ checkoutLive = false, fluentLive = fa
                   <span className="corp-pack-unit">{k.name === "Enterprise" ? "on a signed agreement" : "per person, per year"}</span>
                   <p>{k.note}</p>
                   {checkoutLive && k.name !== "Enterprise" ? (
-                    <>
-                      <a href={`/corporate/buy?course=ai-cleared&seats=${k.name === "Firm" ? 50 : 10}`} className="corp-pack-cta">Buy AI Cleared seats <span aria-hidden>&rarr;</span></a>
-                      {fluentLive ? <a href={`/corporate/buy?course=ai-fluent&seats=${k.name === "Firm" ? 50 : 10}`} className="corp-pack-cta">Buy AI Fluent seats <span aria-hidden>&rarr;</span></a> : null}
-                      {fluentLive ? <a href={`/corporate/buy?course=both&seats=${k.name === "Firm" ? 50 : 10}`} className="corp-pack-cta">Buy both together <span aria-hidden>&rarr;</span></a> : null}
-                    </>
+                    <a href={`/corporate/buy?seats=${k.name === "Firm" ? 50 : 10}`} className="corp-pack-cta">Buy seats <span aria-hidden>&rarr;</span></a>
                   ) : (
                     <a href="#enquiry" className="corp-pack-cta">Get in touch <span aria-hidden>&rarr;</span></a>
                   )}

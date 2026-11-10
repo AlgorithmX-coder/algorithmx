@@ -1,6 +1,6 @@
 import Stripe from "stripe";
 import type { OrgPlan } from "@prisma/client";
-import { CORPORATE_PRODUCT_SLUGS, COURSE_NAME, VAT_PERCENT, type CorporateProductSlug, type VatMode } from "@/app/lib/corporateProducts";
+import { COURSE_NAME, VAT_PERCENT, type VatMode } from "@/app/lib/corporateProducts";
 
 export { COURSE_NAME, VAT_PERCENT };
 
@@ -17,22 +17,14 @@ export function vatPercentShown(): number {
   return vatMode() === "fixed" ? VAT_PERCENT : 0;
 }
 
-/* Stripe for the corporate packs. Everything is driven by environment
- * variables so checkout switches on the moment they exist on Vercel and
- * stays off, with a plain message, until then. Never import from a
- * client component. */
-
-export const SEAT_MIN = 10;
-export const SEAT_MAX = 249;
-export const SEAT_STEP = 10;
-
-/* The published prices, pence per seat per year (owner-set 2026-09-29).
- * Shown to the buyer before checkout; Stripe's price objects must match. */
-export const SEAT_PRICE_PENCE: Record<CorporateProductSlug, Record<"TEAM" | "FIRM", number>> = {
-  "ai-cleared": { TEAM: 2900, FIRM: 2500 },
-  "ai-fluent": { TEAM: 5900, FIRM: 4500 },
-};
-
+/* Stripe for the firm lane. Checkout switches on the moment the key and
+ * the webhook secret exist on Vercel and stays off, with a plain message,
+ * until then. Never import from a client component.
+ *
+ * There are no Stripe Price objects to keep in step any more: Cyber
+ * Secured is charged with an inline price worked out in
+ * cyberSecuredPricing.ts, so the STRIPE_PRICE_AI_* variables are no longer
+ * read and can be deleted from Vercel at leisure. */
 
 export function planForSeats(seats: number): OrgPlan {
   if (seats >= 250) return "ENTERPRISE";
@@ -40,27 +32,8 @@ export function planForSeats(seats: number): OrgPlan {
   return "TEAM";
 }
 
-function priceEnv(course: CorporateProductSlug, plan: "TEAM" | "FIRM"): string | undefined {
-  const key = `STRIPE_PRICE_${course.toUpperCase().replace(/-/g, "_")}_${plan}`;
-  return process.env[key];
-}
-
-/* Which courses can be bought by card: the ones whose two Stripe prices
- * are set. AI Fluent joins the buy page the moment its prices exist. */
-export function sellableCourses(): CorporateProductSlug[] {
-  return CORPORATE_PRODUCT_SLUGS.filter((c) => priceEnv(c, "TEAM") && priceEnv(c, "FIRM"));
-}
-
-/* Checkout is live when the secret key, the webhook secret and AI
- * Cleared's two prices are present. */
 export function stripeConfigured(): boolean {
-  if (!process.env.STRIPE_SECRET_KEY || !process.env.STRIPE_WEBHOOK_SECRET) return false;
-  return sellableCourses().includes("ai-cleared");
-}
-
-export function priceIdFor(course: CorporateProductSlug, plan: OrgPlan): string | null {
-  if (plan === "ENTERPRISE") return null;
-  return priceEnv(course, plan) ?? null;
+  return Boolean(process.env.STRIPE_SECRET_KEY && process.env.STRIPE_WEBHOOK_SECRET);
 }
 
 let client: Stripe | null = null;

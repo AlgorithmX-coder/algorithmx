@@ -131,6 +131,22 @@ test.describe("Critical UI invariants", () => {
   });
 });
 
+/* Firms buy one product. The buy page names it, lists both rates and the
+ * threshold, and no longer offers a course chooser. Old links that still
+ * carry ?course= land on the same page. */
+test.describe("Cyber Secured buy page", () => {
+  test("sells Cyber Secured, at £99 under 50 seats and £85 from 50", async ({ page }) => {
+    const res = await page.goto("/corporate/buy?course=both&seats=49");
+    expect(res?.status()).toBeLessThan(500);
+    const text = await page.locator("body").innerText();
+    expect(text).toContain("Cyber Secured for your firm");
+    expect(text).toMatch(/Team, 10 to 49 seats\s*£99/);
+    expect(text).toMatch(/Firm, 50 seats or more\s*£85/);
+    expect(text).not.toMatch(/Both courses|Buy both/);
+    expect(text).not.toContain("—");
+  });
+});
+
 /* The launch password gate was lifted (owner 2026-10-18): the whole site is
  * public and no page redirects to /password. Member areas keep their own
  * account login, so a bare visitor is sent to that login, never to a gate.

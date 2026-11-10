@@ -3,19 +3,18 @@ import { prisma } from "@/app/lib/prisma";
 import { createFirm } from "@/app/lib/aiClearedOps";
 import { sendSeatsAdded } from "@/app/lib/aiClearedAdmin";
 import { opsAlert } from "@/app/lib/opsAlert";
-import { COURSE_NAME, SEAT_MAX, SEAT_MIN, SEAT_STEP, planForSeats, priceIdFor, sellableCourses, stripe, stripeConfigured, vatMode, vatTaxRateId } from "@/app/lib/stripe";
-import { type CorporateProductSlug, approvedToolLabel } from "@/app/lib/corporateProducts";
+import { planForSeats, stripe, stripeConfigured, vatMode, vatTaxRateId } from "@/app/lib/stripe";
+import { approvedToolLabel } from "@/app/lib/corporateProducts";
+import { CYBER_SECURED_NAME, liveTrackNames } from "@/app/lib/cyberSecured";
+import { SECURED_COURSE_META, TIER_NAME, purchaseFromMetadata, seatsAfterTopUp, securedQuote, validateSecuredSeats } from "@/app/lib/cyberSecuredPricing";
 
-/* Card checkout for a firm's seat pack, and the fulfilment that follows
+/* Card checkout for Cyber Secured seats, and the fulfilment that follows
  * the webhook. The checkout carries everything needed to create the firm
  * in the session's metadata; fulfilment is idempotent on the session id,
  * because Stripe delivers webhooks at least once. */
 
 export interface CheckoutInput {
-  course: CorporateProductSlug;
   seats: number;
-  /* AI Fluent seats in the same checkout as an AI Cleared purchase. */
-  fluentSeats?: number;
   firmName: string;
   sector?: string | null;
   contactName?: string | null;
@@ -26,56 +25,51 @@ export interface CheckoutInput {
   origin: string;
 }
 
-export function validateSeats(seats: number): string | null {
-  if (!Number.isInteger(seats)) return "Seats must be a whole number.";
-  if (seats < SEAT_MIN) return `The smallest pack is ${SEAT_MIN} seats.`;
-  if (seats > SEAT_MAX) return `For more than ${SEAT_MAX} seats, ask for an Enterprise quote.`;
-  if (seats % SEAT_STEP !== 0) return `Seats come in packs of ${SEAT_STEP}.`;
-  return null;
-}
-
 export async function createCorporateCheckout(input: CheckoutInput): Promise<{ url: string } | { error: string; status: number }> {
   if (!stripeConfigured()) return { error: "Card checkout is not switched on yet. Use the enquiry form and we will invoice you.", status: 503 };
-  if (!sellableCourses().includes(input.course)) return { error: `${COURSE_NAME[input.course]} is not on sale by card yet.`, status: 400 };
-  const seatsError = validateSeats(input.seats);
+  const seatsError = validateSecuredSeats(input.seats);
   if (seatsError) return { error: seatsError, status: 400 };
 
-  const plan = planForSeats(input.seats);
-  const price = priceIdFor(input.course, plan);
-  if (!price) return { error: "That pack is priced on a call. Use the enquiry form.", status: 400 };
-  /* The bundle: AI Fluent as a second line on an AI Cleared purchase. */
-  const fluentSeats = input.course === "ai-cleared" ? input.fluentSeats ?? 0 : 0;
-  let fluentPrice: string | null = null;
-  if (fluentSeats > 0) {
-    if (!sellableCourses().includes("ai-fluent")) return { error: `${COURSE_NAME["ai-fluent"]} is not on sale by card yet. Buy AI Cleared now and add Fluent later.`, status: 400 };
-    const fluentError = validateSeats(fluentSeats);
-    if (fluentError) return { error: `AI Fluent: ${fluentError}`, status: 400 };
-    fluentPrice = priceIdFor("ai-fluent", planForSeats(fluentSeats));
-    if (!fluentPrice) return { error: "That AI Fluent pack is priced on a call. Use the enquiry form.", status: 400 };
-  }
-
-  /* VAT: the fixed UK rate on every line, or Stripe Tax from the billing
+  /* VAT: the fixed UK rate on the line, or Stripe Tax from the billing
    * address, or none at all; the two Stripe mechanisms are never combined. */
   const mode = vatMode();
-  const automaticTax = mode === "automatic";
   const taxRates = mode === "fixed" ? [await vatTaxRateId()] : undefined;
+  const quote = securedQuote(input.seats, mode, 0);
 
+  /* One line, priced inline: the rate the seat count earns, times the
+   * seats. Worked out here, where it is tested, so nobody creates a Price
+   * in the Stripe dashboard or carries its id in a variable, and the same
+   * code charges the sandbox and the live account. */
   const session = await stripe().checkout.sessions.create({
     mode: "payment",
-    line_items: fluentPrice ? [{ price, quantity: input.seats, tax_rates: taxRates }, { price: fluentPrice, quantity: fluentSeats, tax_rates: taxRates }] : [{ price, quantity: input.seats, tax_rates: taxRates }],
+    line_items: [
+      {
+        quantity: input.seats,
+        tax_rates: taxRates,
+        price_data: {
+          currency: "gbp",
+          unit_amount: quote.ratePence,
+          tax_behavior: mode === "automatic" ? "exclusive" : undefined,
+          product_data: {
+            name: `${CYBER_SECURED_NAME}, one seat for a year`,
+            description: `${TIER_NAME[quote.tier]} rate. One seat is one person and opens ${liveTrackNames()}.`,
+          },
+        },
+      },
+    ],
     customer_email: input.adminEmail.trim().toLowerCase(),
     customer_creation: "always",
     billing_address_collection: "required",
     tax_id_collection: { enabled: true },
-    automatic_tax: { enabled: automaticTax },
+    automatic_tax: { enabled: mode === "automatic" },
     invoice_creation: { enabled: true },
     allow_promotion_codes: true,
     metadata: {
       product: "corporate-seats",
-      course: input.course,
+      course: SECURED_COURSE_META,
       seats: String(input.seats),
-      fluentSeats: String(fluentSeats),
-      plan,
+      plan: planForSeats(input.seats),
+      ratePence: String(quote.ratePence),
       firmName: input.firmName.trim().slice(0, 120),
       sector: (input.sector ?? "").trim().slice(0, 80),
       contactName: (input.contactName ?? "").trim().slice(0, 120),
@@ -84,19 +78,21 @@ export async function createCorporateCheckout(input: CheckoutInput): Promise<{ u
       adminEmail: input.adminEmail.trim().toLowerCase().slice(0, 200),
     },
     success_url: `${input.origin}/corporate/buy/thanks?session_id={CHECKOUT_SESSION_ID}`,
-    cancel_url: `${input.origin}/corporate/buy?course=${fluentSeats > 0 ? "both" : input.course}&seats=${input.seats}`,
+    cancel_url: `${input.origin}/corporate/buy?seats=${input.seats}`,
   });
   if (!session.url) return { error: "Stripe did not return a checkout page. Try again in a moment.", status: 502 };
   return { url: session.url };
 }
 
-const COURSE_KEY = { "ai-cleared": "AI_CLEARED", "ai-fluent": "AI_FLUENT" } as const;
-
-
 /* Called by the webhook on checkout.session.completed. The same admin
  * email means the same firm: a buyer who already runs a firm with us gets
  * the seats added to it and a note saying so; anyone else gets a new firm
- * and the admin invite, under AlgorithmX's name. Once per session. */
+ * and the admin invite, under AlgorithmX's name. Once per session.
+ *
+ * Reads both shapes of session: a Cyber Secured one, and one opened under
+ * the old per-course checkout and paid after the deploy (see
+ * purchaseFromMetadata). Either way the firm gains people, as seats on its
+ * one licence. */
 export async function fulfilCheckoutSession(session: Stripe.Checkout.Session, origin: string) {
   const m = session.metadata ?? {};
   if (m.product !== "corporate-seats") return { skipped: "not a corporate seat purchase" };
@@ -107,43 +103,40 @@ export async function fulfilCheckoutSession(session: Stripe.Checkout.Session, or
   const legacy = await prisma.organisation.findUnique({ where: { stripeCheckoutSessionId: session.id }, select: { id: true, slug: true } });
   if (legacy) return { already: true, slug: legacy.slug };
 
-  const seats = Number(m.seats) || 0;
-  const course: CorporateProductSlug = m.course === "ai-fluent" ? "ai-fluent" : "ai-cleared";
-  /* The bundle rides on an AI Cleared purchase as a second count. */
-  const fluentSeats = course === "ai-cleared" ? Number(m.fluentSeats) || 0 : 0;
-  /* What the firm gains is Cyber Secured seats: people. A Cleared line and
-     a Fluent line bought together are the same people on two tracks, and
-     one seat now opens every track, so the larger line is the head count. */
-  const people = Math.max(seats, fluentSeats);
+  const { people, rows } = purchaseFromMetadata(m);
   const adminEmail = (m.adminEmail || session.customer_details?.email || session.customer_email || "").toLowerCase();
   if (!adminEmail || !m.firmName) return { skipped: "session is missing the firm name or the admin email" };
+  if (people < 1) return { skipped: "session carries no seats" };
   const customerId = typeof session.customer === "string" ? session.customer : session.customer?.id ?? null;
   const staffName = "AlgorithmX";
   const staffEmail = process.env.CORPORATE_ENQUIRY_TO ?? "admissions@algorithmx.co.uk";
+  const purchaseRows = (orgId: string) => rows.map((r) => prisma.seatPurchase.create({ data: { orgId, course: r.course, seats: r.seats, stripeCheckoutSessionId: `${session.id}${r.sessionSuffix}` } }));
 
   const admin = await prisma.seat.findFirst({
     where: { email: adminEmail, role: "ADMIN" },
     orderBy: { invitedAt: "asc" },
-    select: { org: { select: { id: true, name: true, slug: true } } },
+    select: { org: { select: { id: true, name: true, slug: true, seatsPurchased: true } } },
   });
   if (admin) {
+    /* The seats and the record of why they are there land together, or a
+       retried webhook sees no purchase row and adds the seats again. */
     await prisma.$transaction([
       prisma.organisation.update({
         where: { id: admin.org.id },
         data: { seatsPurchased: { increment: people } },
       }),
-      prisma.seatPurchase.create({ data: { orgId: admin.org.id, course: COURSE_KEY[course], seats, stripeCheckoutSessionId: session.id } }),
-      ...(fluentSeats > 0 ? [prisma.seatPurchase.create({ data: { orgId: admin.org.id, course: COURSE_KEY["ai-fluent"], seats: fluentSeats, stripeCheckoutSessionId: `${session.id}:fluent` } })] : []),
+      ...purchaseRows(admin.org.id),
     ]);
+    const total = seatsAfterTopUp(admin.org.seatsPurchased, people);
     let emailed = true;
     try {
-      await sendSeatsAdded({ to: adminEmail, firmName: admin.org.name, seats: people, origin, staffName, staffEmail });
+      await sendSeatsAdded({ to: adminEmail, firmName: admin.org.name, seats: people, total, origin, staffName, staffEmail });
     } catch (err) {
       emailed = false;
       console.error("[corporate/checkout] seats-added email failed", err instanceof Error ? err.message : err);
-      await opsAlert({ what: "A seats-added email did not send", detail: { firm: admin.org.name, slug: admin.org.slug, adminEmail, course, seats, sessionId: session.id }, error: err });
+      await opsAlert({ what: "A seats-added email did not send", detail: { firm: admin.org.name, slug: admin.org.slug, adminEmail, seats: people, total, sessionId: session.id }, error: err });
     }
-    return { added: true, slug: admin.org.slug, course, seats, fluentSeats, emailed };
+    return { added: true, slug: admin.org.slug, seats: people, total, emailed };
   }
 
   const made = await createFirm({
@@ -152,7 +145,7 @@ export async function fulfilCheckoutSession(session: Stripe.Checkout.Session, or
     contactName: m.contactName || null,
     contactRole: m.contactRole || null,
     approvedTool: approvedToolLabel(m.tool),
-    plan: planForSeats(seats),
+    plan: planForSeats(people),
     seatsPurchased: people,
     adminEmail,
     origin,
@@ -161,8 +154,7 @@ export async function fulfilCheckoutSession(session: Stripe.Checkout.Session, or
   });
   await prisma.$transaction([
     prisma.organisation.update({ where: { id: made.org.id }, data: { stripeCheckoutSessionId: session.id, stripeCustomerId: customerId } }),
-    prisma.seatPurchase.create({ data: { orgId: made.org.id, course: COURSE_KEY[course], seats, stripeCheckoutSessionId: session.id } }),
-    ...(fluentSeats > 0 ? [prisma.seatPurchase.create({ data: { orgId: made.org.id, course: COURSE_KEY["ai-fluent"], seats: fluentSeats, stripeCheckoutSessionId: `${session.id}:fluent` } })] : []),
+    ...purchaseRows(made.org.id),
   ]);
-  return { created: true, slug: made.org.slug, course, seats, fluentSeats, emailed: made.emailed, link: made.link };
+  return { created: true, slug: made.org.slug, seats: people, emailed: made.emailed, link: made.link };
 }
