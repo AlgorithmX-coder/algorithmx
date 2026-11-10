@@ -24,10 +24,12 @@ export interface Paper {
 
 export type FileKind = "folder" | "xlsx" | "xltx" | "docx" | "pdf";
 
-/* One sheet of a workbook, by its tab name. */
+/* One sheet of a workbook, by its tab name. `formats` holds the cells
+ * set to show as money or a percentage, by cell name ("G2"). */
 export interface Tab {
   name: string;
   grid: Grid;
+  formats?: Record<string, "money" | "percent">;
 }
 
 export interface OfficeFile {

@@ -1,8 +1,9 @@
 import type { Grid } from "./types";
 
 /* Just enough of Excel's formulas for the office jobs: numbers, cell
- * references (B4), + - * / with brackets, and SUM, AVERAGE, COUNT, MIN and
- * MAX over a range (G2:G11) or a list. A formula that cannot be worked out
+ * references (B4), + - * / with brackets, SUM, AVERAGE, COUNT, MIN and
+ * MAX over a range (G2:G11) or a list, and COUNTIF and SUMIF with a
+ * condition ("Late", ">500"). A formula that cannot be worked out
  * shows #VALUE!, a loop shows #REF!, as Excel would. Text cells count as
  * nothing in a sum, also as in Excel. */
 
@@ -60,14 +61,34 @@ export function evaluate(g: Grid, r: number, c: number, seen: Set<string> = new 
   }
 }
 
-/* What a cell shows: its worked-out value, money kept to two places when
- * the formula reads money. */
-export function display(g: Grid, r: number, c: number): string {
+export type Format = "money" | "percent";
+
+/* Money looks after itself, as in Excel: a cell typed as £4.50 is money,
+ * and so is a formula that works from money (=E2*F2 where F2 is £4.50,
+ * or a SUM of such cells). */
+function isMoney(g: Grid, r: number, c: number, depth = 0): boolean {
+  const raw = (g[r]?.[c] ?? "").trim();
+  if (/£/.test(raw)) return true;
+  if (!raw.startsWith("=") || depth > 6) return false;
+  const refs = [...raw.toUpperCase().matchAll(/\b([A-Z])([0-9]{1,3})\b/g)].map((m) => [Number(m[2]) - 1, m[1].charCodeAt(0) - 65] as const);
+  /* a COUNT of money is a count, not money */
+  if (/\b(COUNT|COUNTIF)\(/i.test(raw) && !/\b(SUM|SUMIF|AVERAGE)\(/i.test(raw)) return false;
+  return refs.some(([rr, cc]) => !(rr === r && cc === c) && isMoney(g, rr, cc, depth + 1));
+}
+
+/* What a cell shows: its worked-out value, as money (£, two places) or a
+ * percentage when the cell is formatted that way, or when it works from
+ * money. */
+export function display(g: Grid, r: number, c: number, format?: Format): string {
   const v = evaluate(g, r, c);
   if (typeof v === "number") {
-    const raw = g[r]?.[c] ?? "";
-    return /£/.test(raw) ? `£${v.toFixed(2)}` : String(v);
+    if (format === "percent") return `${Math.round(v * 1000) / 10}%`;
+    if (format === "money" || isMoney(g, r, c)) return `${v < 0 ? "-" : ""}£${Math.abs(v).toFixed(2)}`;
+    return String(v);
   }
+  const n = toNumber(v);
+  if (n !== null && format === "money") return `£${n.toFixed(2)}`;
+  if (n !== null && format === "percent") return `${Math.round(n * 1000) / 10}%`;
   return v;
 }
 
@@ -83,7 +104,11 @@ class Parser {
     private src: string,
     private get: (r: number, c: number) => number | string,
   ) {
-    this.src = src.replace(/\s+/g, "").toUpperCase();
+    /* spaces and case don't matter outside quotes; inside them they do */
+    this.src = src
+      .split(/("[^"]*")/)
+      .map((part, i) => (i % 2 === 1 ? part : part.replace(/\s+/g, "").toUpperCase()))
+      .join("");
   }
 
   run(): number {
@@ -133,6 +158,31 @@ class Parser {
       this.i += num[0].length;
       return Number(num[0]);
     }
+    const cond = /^(COUNTIF|SUMIF)\(([A-Z][0-9]{1,3}):([A-Z][0-9]{1,3}),/.exec(this.src.slice(this.i));
+    if (cond) {
+      this.i += cond[0].length;
+      const test = this.criterion();
+      const cells = this.range(cond[2], cond[3]);
+      let sums = cells;
+      if (cond[1] === "SUMIF" && this.peek() === ",") {
+        this.i++;
+        const sumRange = /^([A-Z][0-9]{1,3}):([A-Z][0-9]{1,3})/.exec(this.src.slice(this.i));
+        if (!sumRange) throw new Bad();
+        this.i += sumRange[0].length;
+        sums = this.range(sumRange[1], sumRange[2]);
+      }
+      if (this.src[this.i++] !== ")") throw new Bad();
+      let count = 0;
+      let total = 0;
+      cells.forEach((v, k) => {
+        if (!test(v)) return;
+        count++;
+        const s = sums[k];
+        const n = typeof s === "number" ? s : toNumber(s ?? "");
+        total += n ?? 0;
+      });
+      return cond[1] === "COUNTIF" ? count : total;
+    }
     const fn = /^(SUM|AVERAGE|COUNT|MIN|MAX)\(/.exec(this.src.slice(this.i));
     if (fn) {
       this.i += fn[0].length;
@@ -151,6 +201,54 @@ class Parser {
       return toNumber(v) ?? 0;
     }
     throw new Bad();
+  }
+
+  /* Every cell's value in a range, row by row. */
+  private range(from: string, to: string): (number | string)[] {
+    const a = parseRef(from);
+    const b = parseRef(to);
+    if (!a || !b) throw new Bad();
+    const out: (number | string)[] = [];
+    for (let r = Math.min(a[0], b[0]); r <= Math.max(a[0], b[0]); r++)
+      for (let c = Math.min(a[1], b[1]); c <= Math.max(a[1], b[1]); c++) {
+        const v = this.get(r, c);
+        if (v === "#REF!") throw new Loop();
+        out.push(v);
+      }
+    return out;
+  }
+
+  /* COUNTIF's second part: "Late" (text, any case), 5 (a number), or a
+   * comparison such as ">500" or "<>Late". */
+  private criterion(): (v: number | string) => boolean {
+    let text: string;
+    const quoted = /^"([^"]*)"/.exec(this.src.slice(this.i));
+    if (quoted) {
+      this.i += quoted[0].length;
+      text = quoted[1];
+    } else {
+      const num = /^-?[0-9]+(\.[0-9]+)?/.exec(this.src.slice(this.i));
+      if (!num) throw new Bad();
+      this.i += num[0].length;
+      text = num[0];
+    }
+    const m = /^(>=|<=|<>|>|<|=)?(.*)$/.exec(text.trim())!;
+    const op = m[1] ?? "=";
+    const want = m[2].trim();
+    const wantN = toNumber(want);
+    return (v) => {
+      const n = typeof v === "number" ? v : toNumber(v);
+      if (wantN !== null && n !== null) {
+        if (op === ">") return n > wantN;
+        if (op === "<") return n < wantN;
+        if (op === ">=") return n >= wantN;
+        if (op === "<=") return n <= wantN;
+        if (op === "<>") return n !== wantN;
+        return n === wantN;
+      }
+      const same = String(v).trim().toLowerCase() === want.toLowerCase();
+      return op === "<>" ? !same : op === "=" ? same : false;
+    };
   }
 
   /* The inside of SUM( ... ): ranges, cells and numbers split by commas.
