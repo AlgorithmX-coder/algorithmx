@@ -4,6 +4,7 @@ import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react
 import Link from "next/link";
 import { Board, Html } from "./Scenes";
 import type { Pack as PackData, Slide } from "./packs/types";
+import { plain } from "./packs/text";
 
 /**
  * One week of Cyber Heroes, for the adult at the front of the room.
@@ -138,7 +139,7 @@ export default function Pack({ pack, weeks, shared = false }: {
           key={n}
           className={"d-" + x.kind}
           aria-current={n === i}
-          title={x.title.replace(/<br>/g, " ").replace(/"/g, "")}
+          title={plain(x.title)}
           onClick={() => setI(n)}
         >
           {n + 1}
@@ -153,10 +154,10 @@ export default function Pack({ pack, weeks, shared = false }: {
         <header className="top">
           <div>
             <div className="brand">
-              Cyber <span>Heroes</span> &middot; <i>Week {pack.n} &middot; {pack.title}</i>
+              Cyber <span>Heroes</span> &middot; <i>Week {pack.n} &middot; {plain(pack.title)}</i>
             </div>
             <div className="sub">
-              {pack.sub} &middot; ages 6&ndash;9 &middot; you set it up, they play and are tested
+              {plain(pack.sub)} &middot; ages 6&ndash;9 &middot; you set it up, they play and are tested
               by the game, then you talk it through
             </div>
             {/* No picker on a share link: it names one week, and holding a
@@ -275,7 +276,7 @@ export default function Pack({ pack, weeks, shared = false }: {
                     {next.at !== slide.at
                       ? "After the 45 minutes, when you are back together: "
                       : "Next: "}
-                    <b>{next.title.replace(/<br>/g, " ")}</b>
+                    <b>{plain(next.title)}</b>
                   </p>
                 ) : (
                   <p className="nnext">Last slide. Send them off.</p>
@@ -300,7 +301,7 @@ export default function Pack({ pack, weeks, shared = false }: {
 
         <footer className="note">
           The ideas, the characters and the wording are taken from the Week {pack.n} course, so the
-          board matches the screens the children play on. Games this week: {pack.games}.
+          board matches the screens the children play on. Games this week: {plain(pack.games)}.
         </footer>
       </div>
     </div>
@@ -325,7 +326,7 @@ function Sheet({ pack, linkText }: {
       <div key={n} className="row">
         <span className="rn">{n + 1}</span>
         <div className="rb">
-          {s.title.replace(/<br>/g, " ")}
+          {plain(s.title)}
           <small className={SHEET_LABEL[s.kind].cls}>{SHEET_LABEL[s.kind].label}</small>
         </div>
         <div className="rs">
@@ -353,7 +354,7 @@ function Sheet({ pack, linkText }: {
   return (
     <div className="printable" aria-hidden="true">
       <div className="sheet">
-        <h2>Week {pack.n} &middot; {pack.title}</h2>
+        <h2>Week {pack.n} &middot; {plain(pack.title)}</h2>
         <p className="lede">
           Everything in quote marks is yours to read out. Up front, a question is always followed
           by its answer on the very next slide. Afterwards there are no right answers: the game has
@@ -377,7 +378,7 @@ function Sheet({ pack, linkText }: {
           <div className="rb">They play Week {pack.n}</div>
           <div className="rs">
             <p>
-              {pack.games}, then the Week {pack.n} boss quiz. Sarah talks them through it, so you
+              {plain(pack.games)}, then the Week {pack.n} boss quiz. Sarah talks them through it, so you
               are free to move around the room. <b>The quiz is the test</b>, so you do not need to
               test them again afterwards. <b>Set an alarm for 10 minutes before the lesson ends</b>,
               stop them wherever they have got to, and bring everyone back together for the rest of
