@@ -56,6 +56,12 @@
 .axtp .whatis {margin:0 0 12px;font-size:.92rem;line-height:1.5;padding:9px 13px;border-radius:9px;
   background:rgba(10,112,133,.07);border-left:3px solid var(--say-c)}
 .axtp .whatis b {font-weight:800}
+/* The one link in this box, to the printable login cards. In the house teal
+   rather than a browser default blue, and underlined, because a teacher
+   scanning for something to click should not have to hover to find it. */
+.axtp .whatis a {color:var(--say-c);font-weight:800;text-decoration:underline;
+  text-underline-offset:2px}
+.axtp .whatis a:focus-visible {outline:2px solid var(--say-c);outline-offset:2px}
 /* A class whose year has been ended. Warm rather than alarming: nothing has
    gone wrong, but every child in it has stopped being able to sign in, and
    the screen has to say so before a teacher wonders why a code died. */

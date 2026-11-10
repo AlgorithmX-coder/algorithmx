@@ -165,7 +165,19 @@ export default async function ClassPage({
               <b>The {w.group} code is <code className="axcode">{klass.code}</code>.</b> Children
               who arrive any other way type this, pick their name, and tap their picture password.
               The first time they sign in they choose that password, so there is nothing for you to
-              set up beforehand.
+              set up beforehand.{" "}
+              {/* The way out of reading a seven character code aloud to
+                  thirty children. Offered here rather than buried in the
+                  header, next to the code it replaces. */}
+              {klass.pupils.length > 0 && (
+                <>
+                  Or{" "}
+                  <Link href={`/schools/classes/${id}/cards`}>
+                    print a login card for each {w.person}
+                  </Link>{" "}
+                  and hand them out.
+                </>
+              )}
             </p>
           </>
         )}
