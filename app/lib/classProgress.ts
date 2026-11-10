@@ -77,6 +77,10 @@ export interface ClassProgress {
    *  archived class is filtered out of both pupil sign-in gates, so its
    *  children cannot get in and its code no longer works. */
   archivedAt: Date | null;
+  /** When the class was made, which is the only honest "ran from" date we
+   *  hold. The end-of-course report says over what period the work
+   *  happened, and a made-up start date would be worse than none. */
+  startedOn: Date;
   /** The three numbers a teacher actually scans for. */
   notStarted: number;
   inProgress: number;
@@ -97,7 +101,7 @@ export async function getClassProgress(orgId: string, classId: string): Promise<
        it read-only. */
     where: { id: classId, orgId },
     select: {
-      name: true, yearGroup: true, code: true, archivedAt: true,
+      name: true, yearGroup: true, code: true, archivedAt: true, createdAt: true,
       product: { select: { id: true, slug: true, name: true, weeksCount: true } },
       pupils: {
         orderBy: { name: "asc" },
@@ -216,6 +220,7 @@ export async function getClassProgress(orgId: string, classId: string): Promise<
     className: klass.name,
     yearGroup: klass.yearGroup,
     archivedAt: klass.archivedAt,
+    startedOn: klass.createdAt,
     code: klass.code,
     courseName: courseName(klass.product.slug, klass.product.name),
     courseSlug: klass.product.slug,
