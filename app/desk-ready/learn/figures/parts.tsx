@@ -32,7 +32,9 @@ export function FigureProvider<K extends string>({ focus, info, children }: { fo
  * when it's lit, and fades it when another part is the subject. */
 /* `holds` names the parts drawn inside this one, so it stays clear (not
  * faded) when one of them is the subject. */
-export function Part({ k, children, style, badge = "left", block = true, holds = [] }: { k: string; children: ReactNode; style?: CSSProperties; badge?: "left" | "right" | "top" | "corner"; block?: boolean; holds?: string[] }) {
+/* `noBadge` outlines a second piece of the same part (the right hand's
+ * home keys) without numbering it twice. */
+export function Part({ k, children, style, badge = "left", block = true, holds = [], noBadge }: { k: string; children: ReactNode; style?: CSSProperties; badge?: "left" | "right" | "top" | "corner"; block?: boolean; holds?: string[]; noBadge?: boolean }) {
   const { focus, info } = useContext(FocusContext);
   const p = info[k];
   const whole = focus.length === 0;
@@ -56,7 +58,7 @@ export function Part({ k, children, style, badge = "left", block = true, holds =
       }}
     >
       {children}
-      {p && shown && <Badge n={p.n} side={badge} />}
+      {p && shown && !noBadge && <Badge n={p.n} side={badge} />}
     </Tag>
   );
 }
@@ -90,6 +92,14 @@ function Badge({ n, side }: { n: number; side: "left" | "right" | "top" | "corne
       {n}
     </span>
   );
+}
+
+/* A part's number when it's on show, for figures that draw the number
+ * themselves (a key on the keyboard carries its own). */
+export function usePartNumber(k: string): number | null {
+  const { focus, info } = useContext(FocusContext);
+  const p = info[k];
+  return p && (focus.length === 0 || focus.includes(k)) ? p.n : null;
 }
 
 /* The dark stage a figure sits on, with its key underneath. */
