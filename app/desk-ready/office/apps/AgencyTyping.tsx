@@ -160,7 +160,7 @@ export function TypingTest({ seconds, practice, passage = PASSAGE, onFinish, hei
         )}
         {practice && start !== null && !done && <AppButton onClick={restart}>Start again</AppButton>}
         <span style={{ fontSize: 14, color: W.muted }}>
-          {done ? "Time's up." : start === null ? "Type every word as it's written, capitals and full stops too. Press Space between words." : practice ? "Green words are right. A red word needs fixing: Backspace to it and type it again." : `The test stops by itself after ${Math.round(seconds / 60)} minutes.`}
+          {done ? "Time is up." : start === null ? "Type every word as it's written, capitals and full stops too. Press Space between words." : practice ? "Green words are right. A red word needs fixing: Backspace to it and type it again." : `The test stops by itself after ${Math.round(seconds / 60)} minutes.`}
         </span>
       </div>
     </div>
@@ -190,7 +190,7 @@ export function TypingResultCard({ r, practice }: { r: TypingScore; practice: bo
     <div style={{ display: "grid", gap: 12, fontFamily: W.font, color: W.ink }}>
       <div role="status" style={{ padding: "12px 16px", borderRadius: 6, background: pass ? "#dff6dd" : "#fff4ce", border: `1px solid ${pass ? "#9fd89f" : "#f2d48a"}`, fontSize: 16, lineHeight: 1.5 }}>
         <b>{pass ? "Pass." : "Not a pass yet."}</b> {pass ? `That meets what most office clients ask for: ${PASS.wpm} words a minute at ${PASS.accuracy}% accuracy.` : `Most office clients ask for ${PASS.wpm} words a minute (net) at ${PASS.accuracy}% accuracy. ${r.net < PASS.wpm && r.accuracy >= PASS.accuracy ? "Your accuracy is there; speed comes with practice." : r.accuracy < PASS.accuracy ? "Slow down a little and fix slips as you go: accuracy counts first." : ""}`}
-        {practice && <span style={{ display: "block", marginTop: 4, color: W.muted, fontSize: 14 }}>This was a practice run. It isn't sent to anyone.</span>}
+        {practice && <span style={{ display: "block", marginTop: 4, color: W.muted, fontSize: 14 }}>This was a practice run. It isn&apos;t sent to anyone.</span>}
       </div>
       <dl style={{ margin: 0, display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))", gap: 10 }}>
         {cells.map(([k, v, note]) => (

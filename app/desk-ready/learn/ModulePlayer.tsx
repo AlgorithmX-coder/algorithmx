@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState, type CSSProperties } from "react";
+import { useEffect, useState, useSyncExternalStore, type CSSProperties } from "react";
 import DeskHeader from "../DeskHeader";
 import PartPreview, { PREVIEW_CSS, type PreviewKind } from "../PartPreview";
 import { OFFICE_APPS } from "../office/apps/registry";
@@ -185,11 +185,15 @@ export default function ModulePlayer({ module: m }: { module: ModuleManifest }) 
   );
 }
 
+const subscribeStorage = (on: () => void) => {
+  window.addEventListener("storage", on);
+  return () => window.removeEventListener("storage", on);
+};
+
 /* ── Module 13 ── a job's best result so far ("Your best: typing 41 words a
  * minute at 97%"), read in the browser after the page has loaded. */
 function JobBest({ get }: { get: () => string | null }) {
-  const [line, setLine] = useState<string | null>(null);
-  useEffect(() => setLine(get()), [get]);
+  const line = useSyncExternalStore(subscribeStorage, get, () => null);
   return line ? <span className="mp-job-best">{line}</span> : null;
 }
 
