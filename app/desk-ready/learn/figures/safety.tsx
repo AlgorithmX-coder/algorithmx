@@ -44,6 +44,7 @@ export function tidy(s: string): string {
     .replace(/(\d+) (days|hours|minutes|seconds)/g, "$1\u00a0$2")
     .replace(/\b(0\d{3,4}) (\d{3}) (\d{3,4})\b/g, "$1\u00a0$2\u00a0$3")
     .replace(/\b(Ext|ext) (\d+)/g, "$1\u00a0$2")
+    .replace(/\b([A-Z]{1,3})-(\d+)/g, "$1\u2011$2")
     .replace(/\S*[@.]\S*/g, (t) => t.replace(/-/g, "\u2011"))
     .replace(/ \+ /g, "\u00a0+\u00a0")
     .replace(/ (\S{1,12})$/, "\u00a0$1");
@@ -96,7 +97,7 @@ export function ScamEmailFigure({ focus, title = "A scam email, every tell numbe
       >
         <div style={{ padding: "18px 26px 24px 54px", display: "grid", gap: 14 }}>
           <Part k="urgency" style={PAD}>
-            <div style={{ fontSize: 19, fontWeight: 600, lineHeight: 1.3 }}>{SCAM_SUBJECT}</div>
+            <div style={{ fontSize: 19, fontWeight: 600, lineHeight: 1.3 }}>{SCAM_SUBJECT.replace("HP-2291", "HP‑2291")}</div>
           </Part>
           <div style={{ display: "grid", gap: 12, fontSize: 14.5, lineHeight: 1.5 }}>
             <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 10 }}>
@@ -130,7 +131,7 @@ export function ScamEmailFigure({ focus, title = "A scam email, every tell numbe
             <Part k="greeting" style={{ ...PAD, justifySelf: "start" }}>
               <p style={p}>Dear Customer,</p>
             </Part>
-            <p style={{ ...p, ...dim }}>Please note our new bank details below and pay invoice HP-2291 today to avoid a late fee.</p>
+            <p style={{ ...p, ...dim }}>Please note our new bank details below and pay invoice {"HP‑2291"} today to avoid a late fee.</p>
             <Part k="bank">
               <div style={{ padding: "8px 12px", borderRadius: 6, background: W.chrome }}>
                 Account name: {SCAM_BANK.name}
@@ -391,7 +392,7 @@ export const UNEXPECTED_PARTS: Record<"screen" | "prompt" | "where" | "numbox" |
   yes: { n: 6, name: "Yes", what: "Never, for a request you didn't start. Saying yes lets them in." },
 };
 
-function PhoneFace({ where, children }: { where: string; children?: ReactNode }) {
+function PhoneFace({ where, children, fade = false }: { where: string; children?: ReactNode; fade?: boolean }) {
   return (
     <div style={{ width: 236, padding: 8, borderRadius: 30, background: "#1b1b1f", boxShadow: "0 24px 50px -20px rgba(0,0,0,0.8), inset 0 0 0 2px #3a3a40" }}>
       <div style={{ borderRadius: 23, background: "#f3f4f7", paddingBottom: 14 }}>
@@ -406,11 +407,14 @@ function PhoneFace({ where, children }: { where: string; children?: ReactNode })
               <Part k="prompt" style={{ padding: "2px 4px" }}>
                 <b style={{ display: "block", fontSize: 16 }}>Approve sign-in?</b>
               </Part>
-              <span style={{ display: "block", marginTop: 4, fontSize: 12.5, fontWeight: 600 }}>Northfield Supplies</span>
-              <span style={{ display: "block", fontSize: 11.5, color: W.muted }}>
-                <span style={NB}>you@</span>
-                <wbr />
-                <span style={NB}>northfieldsupplies.example</span>
+              {/* the account lines light and fade with the request */}
+              <span style={{ display: "block", padding: "0 4px", opacity: fade ? 0.32 : 1 }}>
+                <span style={{ display: "block", marginTop: 4, fontSize: 12.5, fontWeight: 600 }}>Northfield Supplies</span>
+                <span style={{ display: "block", fontSize: 11.5, color: W.muted }}>
+                  <span style={NB}>you@</span>
+                  <wbr />
+                  <span style={NB}>northfieldsupplies.example</span>
+                </span>
               </span>
               <Part k="where" style={{ marginTop: 10, padding: "0 4px 2px" }}>
                 <span style={{ display: "grid", gap: 2, paddingTop: 8, borderTop: "1px solid #e8eaef", fontSize: 11.5, color: W.body, textAlign: "left" }}>
@@ -470,7 +474,7 @@ export function SignInFigure({ focus, title, what, note, started = true }: FigPr
               </div>
             </AppWindow>
           </Part>
-          <PhoneFace where="Amsterdam, Netherlands">
+          <PhoneFace where="Amsterdam, Netherlands" fade={!!focus?.length && !focus.includes("prompt")}>
             <PhoneAnswers />
           </PhoneFace>
         </div>
@@ -501,7 +505,7 @@ export function SignInFigure({ focus, title, what, note, started = true }: FigPr
             </Part>
           </div>
         </div>
-        <PhoneFace where="Leicester, United Kingdom">
+        <PhoneFace where="Leicester, United Kingdom" fade={!!focus?.length && !focus.includes("prompt")}>
           <PhoneAnswers typed="42" />
         </PhoneFace>
       </div>
@@ -687,12 +691,12 @@ const PEOPLE_ROWS = [
 
 export function CustomerDataFigure({ focus, title = "A customer list, and what in it is personal", what, note }: FigProps<CustomerPart>) {
   const cols: { k: Exclude<CustomerPart, "file">; head: string; w: number }[] = [
-    { k: "business", head: "Customer", w: 92 },
+    { k: "business", head: "Customer", w: 104 },
     { k: "person", head: "Contact", w: 92 },
-    { k: "phone", head: "Phone", w: 104 },
-    { k: "email", head: "Email", w: 230 },
-    { k: "address", head: "Home address", w: 150 },
-    { k: "card", head: "Card", w: 60 },
+    { k: "phone", head: "Phone", w: 98 },
+    { k: "email", head: "Email", w: 206 },
+    { k: "address", head: "Home address", w: 144 },
+    { k: "card", head: "Card", w: 48 },
   ];
   return (
     <FigureFrame info={infoOf(CUSTOMER_PARTS, what)} focus={focus} title={title} note={note} minWidth={778}>
@@ -704,13 +708,13 @@ export function CustomerDataFigure({ focus, title = "A customer list, and what i
               <span style={{ opacity: 0.92 }}>Customer contacts.xlsx · Operations Team &gt; Documents &gt; Customers</span>
             </div>
           </Part>
-          <div style={{ display: "flex", padding: "40px 8px 14px 8px", gap: 6 }}>
+          <div style={{ display: "flex", padding: "40px 8px 14px 8px", gap: 14 }}>
             {cols.map((c) => (
               <Part key={c.k} k={c.k} badge="top" style={{ width: c.w, flexShrink: 0, borderRadius: 3, padding: 3, boxSizing: "border-box" }}>
-                <div style={{ fontSize: 12.5 }}>
-                  <div style={{ padding: "6px 8px", background: "#f3f9f5", borderBottom: `2px solid ${W.excel}`, fontWeight: 700, whiteSpace: "nowrap" }}>{c.head}</div>
+                <div style={{ fontSize: 12 }}>
+                  <div style={{ padding: "6px 6px", background: "#f3f9f5", borderBottom: `2px solid ${W.excel}`, fontWeight: 700, whiteSpace: "nowrap" }}>{c.head}</div>
                   {PEOPLE_ROWS.map((r) => (
-                    <div key={r[0]} style={{ padding: "6px 8px", borderBottom: `1px solid ${W.edge}`, whiteSpace: "nowrap" }}>
+                    <div key={r[0]} style={{ padding: "6px 6px", borderBottom: `1px solid ${W.edge}`, whiteSpace: "nowrap" }}>
                       {r[cols.indexOf(c)]}
                     </div>
                   ))}
@@ -760,7 +764,11 @@ export function LockScreenFigure({ focus, title = "Locking your screen", what, n
           </Part>
           <Part k="startlock">
             <div style={{ padding: "8px", borderRadius: 8, background: "#f3f3f3", boxShadow: W.float, fontSize: 13.5, color: W.ink }}>
-              <div style={{ padding: "4px 8px 6px", fontSize: 12, color: W.muted }}>you@northfieldsupplies.example</div>
+              <div style={{ padding: "4px 8px 6px", fontSize: 12, color: W.muted }}>
+                <span style={NB}>you@</span>
+                <wbr />
+                <span style={NB}>northfieldsupplies.example</span>
+              </div>
               <div style={{ padding: "6px 8px", color: W.faint }}>Change account settings</div>
               <div style={{ padding: "6px 8px", borderRadius: 4, background: W.select, fontWeight: 600 }}>Lock</div>
               <div style={{ padding: "6px 8px", color: W.faint }}>Sign out</div>
@@ -772,8 +780,10 @@ export function LockScreenFigure({ focus, title = "Locking your screen", what, n
           </Part>
         </div>
         <Part k="screen" holds={["time", "signin"]} badge="right" style={{ flex: "1 1 200px", minWidth: 0 }}>
-          <div style={{ position: "relative", height: 270, borderRadius: 8, overflow: "hidden", background: "radial-gradient(120% 90% at 70% 10%, #6f8fc9 0%, #2d4e8c 45%, #13254a 100%)", color: "#fff", border: "6px solid #1b1b1f", boxShadow: W.float }}>
-            <LockArt />
+          <div style={{ position: "relative", height: 270, borderRadius: 8, overflow: "visible", background: "radial-gradient(120% 90% at 70% 10%, #6f8fc9 0%, #2d4e8c 45%, #13254a 100%)", color: "#fff", border: "6px solid #1b1b1f", boxShadow: W.float }}>
+            <div style={{ position: "absolute", inset: 0, overflow: "hidden", borderRadius: 3 }}>
+              <LockArt />
+            </div>
             <div style={{ position: "absolute", left: 0, right: 0, top: 34, display: "grid", justifyItems: "center" }}>
               <Part k="time" badge="right">
                 <div style={{ textAlign: "center", padding: "0 8px" }}>
