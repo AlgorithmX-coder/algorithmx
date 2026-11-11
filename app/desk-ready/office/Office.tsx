@@ -64,7 +64,8 @@ export default function Office({ job }: { job: Job }) {
     }
     const book = tabsOf(f);
     if ((f.kind === "xlsx" || f.kind === "xltx") && book.length) {
-      const tabs = book.map((t) => ({ name: t.name, grid: t.grid.map((r) => [...r]) }));
+      /* a reopened workbook keeps its formats, highlights, chart and pictures */
+      const tabs = book.map((t) => ({ ...t, grid: t.grid.map((r) => [...r]) }));
       const widths = f.widths ?? Array(tabs[0].grid[0]?.length ?? 8).fill(100);
       guard(() => {
         setDoc(f.kind === "xltx" ? { fileId: null, name: `${f.name.replace(/\.xltx$/i, "")}1`, path: null, tabs, active: 0, widths, dirty: false } : { fileId: f.id, name: f.name, path: f.path, tabs, active: 0, widths, dirty: false });
@@ -188,6 +189,7 @@ export default function Office({ job }: { job: Job }) {
               <div style={{ display: app === "excel" ? "block" : "none", height: "100%" }}>
                 <Excel
                   doc={liveDoc}
+                  office={state}
                   onChange={(tabs, active, dirty) => liveDoc && setDoc({ ...liveDoc, tabs, active, dirty })}
                   onSave={save}
                   onSaveAs={() => setSaveAs(true)}
@@ -356,7 +358,7 @@ function Scorecard({ job, results, onClose, onAgain }: { job: Job; results: Chec
  * is a bare default Sheet1. */
 function bookFields(doc: ExcelDoc): Pick<OfficeFile, "sheet" | "tabs"> {
   const t = doc.tabs[0];
-  const plain = doc.tabs.length === 1 && t.name === "Sheet1" && !t.chart && !t.highlights?.length && !Object.keys(t.formats ?? {}).length;
+  const plain = doc.tabs.length === 1 && t.name === "Sheet1" && !t.chart && !t.highlights?.length && !Object.keys(t.formats ?? {}).length && !t.pictures?.length;
   return { sheet: t.grid, tabs: plain ? undefined : doc.tabs };
 }
 

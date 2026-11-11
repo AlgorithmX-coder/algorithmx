@@ -15,6 +15,7 @@ export const KIND_LABEL: Record<FileKind, string> = {
   docx: "Word document",
   dotx: "Word template",
   pdf: "PDF document",
+  jpg: "JPG picture",
 };
 
 const KIND_COLOUR: Record<Exclude<FileKind, "folder">, string> = {
@@ -23,6 +24,7 @@ const KIND_COLOUR: Record<Exclude<FileKind, "folder">, string> = {
   docx: W.word,
   dotx: W.word,
   pdf: "#c4314b",
+  jpg: W.outlook,
 };
 
 export function FileGlyph({ kind, size = 20 }: { kind: FileKind; size?: number }) {
@@ -34,6 +36,15 @@ export function FileGlyph({ kind, size = 20 }: { kind: FileKind; size?: number }
       </svg>
     );
   const c = KIND_COLOUR[kind];
+  /* a photo: a little landscape in a frame (Module 10) */
+  if (kind === "jpg")
+    return (
+      <svg width={size} height={size} viewBox="0 0 24 24" aria-hidden style={{ display: "inline-block", flexShrink: 0 }}>
+        <rect x="2.5" y="4" width="19" height="16" rx="2" fill="#ffffff" stroke={c} strokeWidth="1.5" />
+        <circle cx="8" cy="9" r="2" fill="#f2b84b" />
+        <path d="M3.5 18.5 L9.5 12.5 L13 16 L16 13 L20.5 18.5 Z" fill={c} />
+      </svg>
+    );
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" aria-hidden style={{ display: "inline-block", flexShrink: 0 }}>
       <path d="M5 2 H15 L20 7 V22 H5 Z" fill="#ffffff" stroke={c} strokeWidth="1.5" strokeLinejoin="round" />

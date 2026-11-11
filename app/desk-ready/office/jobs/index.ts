@@ -12,10 +12,17 @@ import { stockCount } from "./stockCount";
 import { holidayForm } from "./holidayForm";
 import { letterhead } from "./letterhead";
 import { procedureReview } from "./procedureReview";
+/* ── Module 10: Admin in practice ── */
+import { courierBooking } from "./courierBooking";
+import { invoiceCheck } from "./invoiceCheck";
+import { phoneMessage } from "./phoneMessage";
+import { timesheetExpense } from "./timesheet";
+const M10 = [invoiceCheck, timesheetExpense, phoneMessage, courierBooking];
+/* ── end Module 10 ── */
 
 /* Every office job, in course order. A module page lists its own jobs
  * under "On the job"; the route /desk-ready/office/[slug] runs one. */
-export const JOBS: readonly Job[] = [mondayInbox, lateDelivery, stockMeeting, rotaCall, chatOrEmail, stockCount, decemberRota, morningReport, sheetTotals, vatQuote, lateCount, bestCustomer, oddNumber, letterhead, holidayForm, procedureReview];
+export const JOBS: readonly Job[] = [mondayInbox, lateDelivery, stockMeeting, rotaCall, chatOrEmail, stockCount, decemberRota, morningReport, sheetTotals, vatQuote, lateCount, bestCustomer, oddNumber, letterhead, holidayForm, procedureReview, ...M10];
 
 export const jobBySlug = (slug: string) => JOBS.find((j) => j.slug === slug);
 export const jobsFor = (moduleId: string) => JOBS.filter((j) => j.moduleId === moduleId);

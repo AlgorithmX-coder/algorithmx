@@ -153,7 +153,7 @@ export const PARTS: readonly DeskPart[] = [
         title: "Admin in practice",
         promise: "Handle invoices, orders, timesheets and messages.",
         topics: ["Reading a purchase order and an invoice", "Checking an invoice against a delivery", "Timesheets, holidays and expenses", "Booking systems", "Turning a phone message into an email"],
-        ready: false,
+        ready: true,
       },
       {
         id: "m11",

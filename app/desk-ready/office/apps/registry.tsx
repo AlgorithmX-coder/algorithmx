@@ -9,6 +9,10 @@ import Teams, { TeamsToast } from "./Teams";
 /* ── end Module 3 ── */
 /* ── Module 8: Documents ── */
 import WordApp from "./Word";
+/* ── Module 10: Admin in practice ── */
+import Edge, { EDGE_COLOUR } from "./Edge";
+import Phone, { PHONE_COLOUR, PhoneRinging } from "./Phone";
+/* ── end Module 10 ── */
 
 /* The office's plug-in seam. Outlook, File Explorer and Excel are built
  * into Office.tsx; every other app (Calendar, Teams, Word, the Copilot
@@ -62,4 +66,8 @@ export const OFFICE_APPS: Record<string, OfficeApp> = {
   /* ── end Module 3 ── */
   /* ── Module 8: Documents ── */
   word: { label: "Word", colour: W.word, opens: ["docx", "dotx"], Window: WordApp },
+  /* ── Module 10: Admin in practice ── */
+  phone: { label: "Phone", colour: PHONE_COLOUR, badge: (s) => (s.phone?.calls ?? []).filter((c) => c.ringing && !(s.phone?.answered ?? []).includes(c.id)).length, Window: Phone, Layer: PhoneRinging },
+  browser: { label: "Microsoft Edge", colour: EDGE_COLOUR, Window: Edge },
+  /* ── end Module 10 ── */
 };

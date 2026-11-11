@@ -3,7 +3,9 @@
 import { useEffect, useRef, useState, type KeyboardEvent } from "react";
 import { W } from "../../tokens";
 import { cellName, colLetter, display, evaluate, moveRowRefs, numeric, shiftRefs } from "../formula";
-import type { Chart, Grid, Highlight, Path, Tab } from "../types";
+import { SheetPictureView } from "../paperwork";
+import { PlacePicker } from "../places";
+import type { Chart, Grid, Highlight, OfficeState, Path, Tab } from "../types";
 import { AppButton, Dialog, TitleBar } from "../ui";
 
 /* Excel, for the office jobs. A workbook opened from a file is edited in
@@ -60,6 +62,7 @@ export default function Excel({
   onSaveAs,
   onClose,
   practice,
+  office,
 }: {
   doc: ExcelDoc | null;
   /* An edit to the sheets (dirty) or just a switch of tab (not dirty). */
@@ -68,6 +71,9 @@ export default function Excel({
   onSaveAs: () => void;
   onClose: () => void;
   practice?: boolean;
+  /* The office's files, for Insert > Pictures (Module 10). Without it the
+   * Pictures button is not shown, as in a lesson. */
+  office?: OfficeState;
 }) {
   const [sel, setSel] = useState<[number, number]>([1, 0]);
   const [draft, setDraft] = useState<string | null>(null);
@@ -82,6 +88,10 @@ export default function Excel({
   const [hlMenu, setHlMenu] = useState(false);
   const [hlAsk, setHlAsk] = useState<{ op: Highlight["op"]; value: string } | null>(null);
   const [chartAsk, setChartAsk] = useState<Chart | null>(null);
+  /* Insert > Pictures: the file picker, a "not a picture" warning, and the picture selected on the sheet */
+  const [picPick, setPicPick] = useState(false);
+  const [picWarn, setPicWarn] = useState<string | null>(null);
+  const [picSel, setPicSel] = useState<number | null>(null);
   const gridRef = useRef<HTMLDivElement>(null);
   const editRef = useRef<HTMLInputElement>(null);
 
@@ -219,6 +229,12 @@ export default function Excel({
   const gridKey = (e: KeyboardEvent<HTMLDivElement>) => {
     if (draft !== null) return;
     const k = e.key;
+    if (picSel !== null && (k === "Delete" || k === "Backspace")) {
+      e.preventDefault();
+      setTab({ pictures: (tab.pictures ?? []).filter((_, i) => i !== picSel) });
+      setPicSel(null);
+      return;
+    }
     const moves: Record<string, [number, number]> = { ArrowDown: [1, 0], Enter: [1, 0], ArrowUp: [-1, 0], ArrowRight: [0, 1], ArrowLeft: [0, -1], Tab: [0, e.shiftKey ? -1 : 1] };
     if (moves[k]) {
       e.preventDefault();
@@ -250,6 +266,9 @@ export default function Excel({
 
   const left = (cc: number) => HEAD_W + doc.widths.slice(0, cc).reduce((a, b) => a + b, 0);
   const total = left(cols);
+  /* pictures float to the right of the cells, one under another */
+  const pictures = tab.pictures ?? [];
+  const PIC_W = 220;
   /* Rows on show: the headings always, data rows only when they match the filter. */
   const shown = g.map((_, rr) => rr).filter((rr) => rr === 0 || !filter || display(g, rr, filter.col, fmt(rr, filter.col)).trim() === filter.value);
   const at = (rr: number) => shown.indexOf(rr);
@@ -352,6 +371,11 @@ export default function Excel({
         <AppButton onClick={() => setChartAsk(tab.chart ?? { title: "", labelCol: 0, valueCol: Math.min(1, cols - 1) })} title="Make a bar chart from two columns">
           📊 {tab.chart ? "Edit chart" : "Chart"}
         </AppButton>
+        {office && (
+          <AppButton onClick={() => setPicPick(true)} title="Put a picture on the sheet, such as a photo of a receipt">
+            🖼 Pictures
+          </AppButton>
+        )}
         <span style={{ marginLeft: "auto", fontSize: 13, color: W.muted }}>Enter moves down · Tab moves right · formulas start with =</span>
         {menu && (
           <div role="menu" style={{ position: "absolute", top: "100%", left: 10, zIndex: 20, width: 200, background: W.page, border: `1px solid ${W.edge}`, borderRadius: 6, boxShadow: W.float, padding: 4 }}>
@@ -414,7 +438,7 @@ export default function Excel({
         onKeyDown={gridKey}
         style={{ flex: 1, minWidth: 0, minHeight: 0, overflow: "auto", position: "relative", outline: "none", background: W.page }}
       >
-        <div style={{ position: "relative", width: total, height: (shown.length + 1) * ROW_H, fontSize: 14.5 }}>
+        <div style={{ position: "relative", width: total + (pictures.length ? PIC_W + 40 : 0), height: Math.max((shown.length + 1) * ROW_H, pictures.length * 300 + ROW_H), fontSize: 14.5 }}>
           {/* column letters */}
           <div style={{ position: "sticky", top: 0, zIndex: 3, height: ROW_H, width: total }}>
             <span style={{ position: "absolute", left: 0, top: 0, width: HEAD_W, height: ROW_H, background: W.sunk, borderRight: `1px solid ${W.edge}`, borderBottom: `1px solid ${W.edge}` }} />
@@ -446,6 +470,7 @@ export default function Excel({
                       e.preventDefault();
                       if (draft !== null) put(r, c, draft);
                       setDraft(null);
+                      setPicSel(null);
                       setSel([rr, cc]);
                       gridRef.current?.focus();
                     }}
@@ -525,6 +550,37 @@ export default function Excel({
               ))}
             </div>
           )}
+          {pictures.map((p, i) => (
+            <div
+              key={`${p.fileId}-${i}`}
+              role="img"
+              aria-label={`Picture: ${p.name}`}
+              onMouseDown={(e) => {
+                e.preventDefault();
+                setPicSel(i);
+                gridRef.current?.focus();
+              }}
+              style={{ position: "absolute", zIndex: 5, left: total + 20, top: ROW_H + 10 + i * 300, width: PIC_W, cursor: "move", outline: picSel === i ? `2px solid ${W.excel}` : "none", outlineOffset: 3, boxShadow: "0 2px 8px rgba(0,0,0,0.25)" }}
+            >
+              <SheetPictureView paper={p.paper} name={p.name} width={PIC_W} />
+              {picSel === i && (
+                <span style={{ position: "absolute", left: 0, right: 0, top: "100%", marginTop: 6, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 6, fontFamily: W.font, fontSize: 12.5, color: W.muted }}>
+                  <span style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{p.name}</span>
+                  <button
+                    type="button"
+                    onMouseDown={(e) => e.stopPropagation()}
+                    onClick={() => {
+                      setTab({ pictures: pictures.filter((_, j) => j !== i) });
+                      setPicSel(null);
+                    }}
+                    style={{ minHeight: 30, padding: "2px 10px", border: `1px solid ${W.edge}`, borderRadius: 4, background: W.page, fontFamily: W.font, fontSize: 13, cursor: "pointer", color: W.ink }}
+                  >
+                    Delete picture
+                  </button>
+                </span>
+              )}
+            </div>
+          ))}
           {draft !== null && !inBar && at(r) >= 0 && (
             <input
               ref={editRef}
@@ -617,6 +673,30 @@ export default function Excel({
                 setChartAsk(null);
               }}
             >
+              OK
+            </AppButton>
+          </div>
+        </Dialog>
+      )}
+
+      {picPick && office && (
+        <PlacePicker
+          state={office}
+          mode={{ kind: "file", title: "Insert picture", action: "Insert", at: ["OneDrive", "Downloads"] as Path }}
+          onCancel={() => setPicPick(false)}
+          onFile={(f) => {
+            setPicPick(false);
+            if (f.kind !== "jpg") return setPicWarn(`"${f.name}" isn't a picture, so it can't go on the sheet. Pick a photo: its name ends in .jpg.`);
+            setTab({ pictures: [...pictures, { fileId: f.id, name: f.name, paper: f.paper }] });
+            setPicSel(pictures.length);
+          }}
+        />
+      )}
+      {picWarn && (
+        <Dialog title="Insert picture" onClose={() => setPicWarn(null)} width={480}>
+          <p style={{ margin: 0, fontSize: 16, lineHeight: 1.5 }}>{picWarn}</p>
+          <div style={{ display: "flex", justifyContent: "flex-end", marginTop: 16 }}>
+            <AppButton primary colour={W.excel} onClick={() => setPicWarn(null)}>
               OK
             </AppButton>
           </div>
