@@ -295,7 +295,7 @@ const m9: ModuleManifest = {
           heading: "Here is a whole team folder",
           body: [
             "This is File Explorer, open at the Operations Team's Deliveries folder. The numbers on the picture match the list underneath it.",
-            "On the left are your places (1) and the Recycle bin (16). Along the top, the buttons for working with files (3 to 10). In the middle, where you are (2), then the folders (11) and files (12) in it, with when (14) and who (15) last saved each one.",
+            "On the left are your places (1) and the Recycle bin (16). Along the top, the buttons for working with files (3 to 10), and under them where you are (2). In the middle, the folders (11) and files (12), with when (14) and who (15) last saved each one.",
           ],
           figure: <LibraryFigure />,
         },
@@ -336,7 +336,7 @@ const m9: ModuleManifest = {
           heading: "Move a file: drag it, or Move to",
           body: [
             "Press and hold on a file (12), drag it onto a folder (11), and let go. The folder lights up when you're over it. Here, this year's report goes into 2026.",
-            "Or select the file, press Move to (7), pick the folder and press Move here. Either way the file is in one place: moved, not copied.",
+            "Or select the file, press Move to (5), pick the folder and press Move here. Either way the file is in one place: moved, not copied.",
           ],
           figure: <LibraryFigure focus={["moveto", "folder", "file"]} title="Moving a file" />,
         },
@@ -404,7 +404,7 @@ const m9: ModuleManifest = {
             "No \"final\", no \"v2\", no \"new\", no initials. The date already says which one it is, and Version history keeps the older ones.",
           ],
           figure: <NameFigure focus={["words"]} title="What it is" />,
-          good: [{ text: "2026-11-06 Delivery report.xlsx" }],
+          good: [{ text: "2026-11-06 Delivery report.xlsx", note: "The date, then what it is." }],
           bad: [{ text: "report final v2.xlsx", note: "Final for now. Which report? When?" }, { text: "scan001.pdf", note: "Nobody can search for it." }],
         },
         {
@@ -426,10 +426,10 @@ const m9: ModuleManifest = {
         {
           heading: "Rename a file",
           body: [
-            "Here, the selected file (12) is called report final v2.xlsx. Open it to find its date, then press Rename (8), or F2 on the keyboard. Type the new name, like 2026-11-06 Delivery report, and press Enter.",
+            "Here, the selected file (12) is called report final v2.xlsx. Open it to find its date, then press Rename (6), or F2 on the keyboard. Type the new name, like 2026-11-06 Delivery report, and press Enter.",
             "Check it afterwards: the date year first, a space, a few words, and the ending as it was.",
           ],
-          figure: <LibraryFigure focus={["rename", "file"]} title="Rename" file="report final v2.xlsx" what={{ file: "A file whose name says nothing useful. Open it, find its date, then rename it." }} />,
+          figure: <LibraryFigure focus={["rename", "file"]} title="Rename" file="report final v2.xlsx" what={{ file: "Its name says nothing useful. Open it, find its date, then rename it." }} />,
         },
       ],
       tryIt: { title: "Rename three files", intro: "Three files have names nobody could search for. Open each one, then rename it the house way.", Lab: NamesLab },
@@ -497,10 +497,10 @@ const m9: ModuleManifest = {
         {
           heading: "Getting a file onto the team's site",
           body: [
-            "Here, the Bay C count (4) is in your OneDrive, but the team needs it. Select it and press Move to (2), then pick the team's folder from the places on the left (3): Operations Team, then its Stock folder. It's moved, so there's still only one.",
+            "Here, the Bay C count (4) is in your OneDrive, but the team needs it. Select it and press Move to (2). A box opens with the same places down its left side as File Explorer has here (3). Click Operations Team, double-click Documents and then Stock, and press Move here. It's moved, so there's still only one.",
             "A file that's only on your computer goes up with Upload (1), into the folder you're in.",
           ],
-          figure: <LibraryFigure view="onedrive" focus={["upload", "moveto", "places", "file"]} renumber={{ upload: 1, moveto: 2, places: 3, file: 4 }} title="Moving it to the team" what={{ places: "Your OneDrive at the top, then the team sites. Pick where the file should go.", file: "The Bay C count. The team needs it, but it is still in your OneDrive, where only you can see it." }} />,
+          figure: <LibraryFigure view="onedrive" focus={["upload", "moveto", "places", "file"]} renumber={{ upload: 1, moveto: 2, places: 3, file: 4 }} title="Moving it to the team" what={{ places: "Your OneDrive at the top, then the team sites. The Move to box lists the same places.", file: "The Bay C count. The team needs it, but it is still in your OneDrive, where only you can see it." }} />,
         },
         {
           heading: "Every save is kept",

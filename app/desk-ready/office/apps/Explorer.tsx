@@ -102,13 +102,6 @@ export default function Explorer({ state, dispatch, onOpen, start }: { state: Of
             <Cmd icon={Ico.open} onClick={() => sel && open(sel)} disabled={!sel}>
               Open
             </Cmd>
-            <Cmd icon={Ico.share} onClick={() => sel && setShare({ id: sel.id, start: "share" })} disabled={!sharable}>
-              Share
-            </Cmd>
-            <Cmd icon={Ico.link} onClick={() => sel && setShare({ id: sel.id, start: "copy" })} disabled={!sharable}>
-              Copy link
-            </Cmd>
-            <Sep />
             <Cmd icon={Ico.move} onClick={() => setMoving(true)} disabled={!sel || theirs}>
               Move to
             </Cmd>
@@ -117,6 +110,13 @@ export default function Explorer({ state, dispatch, onOpen, start }: { state: Of
             </Cmd>
             <Cmd icon={Ico.bin} onClick={() => setDeleting(true)} disabled={!sel || theirs}>
               Delete
+            </Cmd>
+            <Sep />
+            <Cmd icon={Ico.share} onClick={() => sel && setShare({ id: sel.id, start: "share" })} disabled={!sharable}>
+              Share
+            </Cmd>
+            <Cmd icon={Ico.link} onClick={() => sel && setShare({ id: sel.id, start: "copy" })} disabled={!sharable}>
+              Copy link
             </Cmd>
             <Sep />
             <Cmd icon={Ico.history} onClick={() => sel && setHistory(sel.id)} disabled={!sel || sel.kind === "folder"}>
