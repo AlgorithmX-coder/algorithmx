@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, type CSSProperties, type ReactNode } from "react";
+import { createContext, useContext, useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { D, W } from "../../tokens";
 
 /* The building blocks every Desk Ready figure uses (owner 2026-11-11: "show
@@ -45,6 +45,7 @@ export function Part({ k, children, style, badge = "left", block = true, holds =
   return (
     <Tag
       data-part={k}
+      data-lit={lit ? "" : undefined}
       style={{
         position: "relative",
         display: block ? "block" : "inline-block",
@@ -105,14 +106,69 @@ export function usePartNumber(k: string): number | null {
 /* The dark stage a figure sits on, with its key underneath. */
 /* `minWidth`: a figure that can't wrap (an inbox, a sheet) keeps its width
  * and scrolls sideways on a phone; an email wraps like a phone's Outlook. */
+/* The dark stage a figure scrolls in. A figure wider than the screen (a
+ * phone) scrolls sideways inside it, so on a phone: it opens scrolled to
+ * the part the card lights, never on a dimmed corner; faded edges show
+ * there is more on that side; and a line under it says to slide. A
+ * Module 10 review found 15 cards whose lit part was off-screen with no
+ * hint at all. */
+function Scroller({ children, focusKey }: { children: ReactNode; focusKey: string }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [edges, setEdges] = useState({ left: false, right: false });
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const measure = () => setEdges({ left: el.scrollLeft > 4, right: el.scrollLeft + el.clientWidth < el.scrollWidth - 4 });
+    /* bring the lit parts into view: centre them, or show their left edge
+     * when together they are wider than the screen */
+    const lit = [...el.querySelectorAll<HTMLElement>("[data-lit]")];
+    if (lit.length && el.scrollWidth > el.clientWidth + 4) {
+      const box = el.getBoundingClientRect();
+      const left = Math.min(...lit.map((n) => n.getBoundingClientRect().left)) - box.left + el.scrollLeft;
+      const right = Math.max(...lit.map((n) => n.getBoundingClientRect().right)) - box.left + el.scrollLeft;
+      const pad = 44; // room for the badge in the gutter
+      const target = right - left + pad * 2 <= el.clientWidth ? (left + right) / 2 - el.clientWidth / 2 : left - pad;
+      el.scrollLeft = Math.max(0, Math.min(target, el.scrollWidth - el.clientWidth));
+    } else if (!lit.length) el.scrollLeft = 0;
+    measure();
+    el.addEventListener("scroll", measure, { passive: true });
+    window.addEventListener("resize", measure);
+    return () => {
+      el.removeEventListener("scroll", measure);
+      window.removeEventListener("resize", measure);
+    };
+  }, [focusKey]);
+
+  const fade = (side: "left" | "right"): CSSProperties => ({ position: "absolute", top: 0, bottom: 0, [side]: 0, width: 40, pointerEvents: "none", borderRadius: side === "left" ? "18px 0 0 18px" : "0 18px 18px 0", background: `linear-gradient(to ${side === "left" ? "right" : "left"}, rgba(4,8,20,0.85), rgba(4,8,20,0))` });
+  const more = edges.left || edges.right;
+  return (
+    <>
+      <div style={{ position: "relative" }}>
+        <div ref={ref} className="dr-workspace" style={{ padding: "34px 26px 26px 26px", overflowX: "auto" }}>
+          {children}
+        </div>
+        {edges.left && <span aria-hidden style={fade("left")} />}
+        {edges.right && <span aria-hidden style={fade("right")} />}
+      </div>
+      {more && (
+        <p style={{ margin: "8px 0 0", display: "flex", alignItems: "center", gap: 8, fontFamily: D.mono, fontSize: 12.5, fontWeight: 700, letterSpacing: "0.08em", color: D.accent }}>
+          <span aria-hidden style={{ whiteSpace: "nowrap" }}>{edges.left && edges.right ? "\u2190 \u2192" : edges.left ? "\u2190" : "\u2192"}</span>
+          Slide sideways to see all of it
+        </p>
+      )}
+    </>
+  );
+}
+
 export function FigureFrame<K extends string>({ title, info, focus, children, note, minWidth = 0 }: { title?: string; info: Record<K, PartInfo>; focus?: readonly K[]; children: ReactNode; note?: string; minWidth?: number }) {
   const keys = (Object.keys(info) as K[]).filter((k) => !focus || focus.length === 0 || focus.includes(k)).sort((a, b) => info[a].n - info[b].n);
   return (
     <FigureProvider focus={focus} info={info}>
       <figure style={{ margin: "20px 0 0" }}>
-        <div className="dr-workspace" style={{ padding: "34px 26px 26px 26px", overflowX: "auto" }}>
+        <Scroller focusKey={(focus ?? []).join(",")}>
           <div style={{ minWidth, colorScheme: "light", fontFamily: W.font, color: W.ink, overflowWrap: "anywhere" }}>{children}</div>
-        </div>
+        </Scroller>
         <figcaption style={{ marginTop: 14 }}>
           {title && <p style={{ margin: "0 0 10px", fontFamily: D.mono, fontSize: 12, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", color: D.faint }}>{title}</p>}
           <ol style={{ listStyle: "none", margin: 0, padding: 0, display: "grid", gap: 8, gridTemplateColumns: keys.length > 4 ? "repeat(auto-fit, minmax(min(100%, 300px), 1fr))" : "1fr" }}>
