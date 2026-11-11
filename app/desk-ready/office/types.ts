@@ -130,6 +130,8 @@ export interface OfficeState {
   calendar?: CalendarState;
   teams?: TeamsState;
   /* ── end Module 3 ── */
+  /* ── Module 13: Show what you can do ── the agency's test results */
+  agency?: AgencyRecord;
 }
 
 export interface Check {
@@ -169,6 +171,9 @@ export interface Job {
   check: (s: OfficeState) => Check[];
   /* The five habits (criteria doc), each met when all its checks pass. */
   habits: { label: string; checks: string[] }[];
+  /* ── Module 13 ── a line for the job's card on the module page, read in
+   * the browser ("Your best: typing 41 wpm at 97%"), or null for none. */
+  best?: () => string | null;
 }
 
 export const pathText = (p: Path) => p.join(" > ");
@@ -345,3 +350,35 @@ export interface WordDoc {
   /* The template it was started from, e.g. "Letterhead.dotx". */
   template?: string;
 }
+/* ── Module 13: Show what you can do ────────────────────────────────────
+ * The recruitment agency's online tests (E13.2): every typing test and
+ * Excel test taken in its test centre, practice runs included, so a job's
+ * checks and the module page can read the best of them. */
+
+export interface TypingResult {
+  at: number; // when it was taken (ms)
+  practice: boolean;
+  seconds: number; // how long it ran
+  chars: number; // characters typed, spaces included
+  words: number; // words typed
+  errors: number; // words left wrong
+  gross: number; // words a minute, before mistakes
+  net: number; // words a minute, after mistakes
+  accuracy: number; // per cent of characters right
+}
+
+export interface ExcelTestResult {
+  at: number;
+  practice: boolean;
+  seconds: number;
+  /* The tasks marked right, by number (1 to 10). */
+  right: number[];
+  /* The clock ran out before it was handed in. */
+  timedOut?: boolean;
+}
+
+export interface AgencyRecord {
+  typing: TypingResult[];
+  excel: ExcelTestResult[];
+}
+/* ── end Module 13 ── */

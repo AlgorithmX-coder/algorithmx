@@ -9,6 +9,9 @@ import Teams, { TeamsToast } from "./Teams";
 /* ── end Module 3 ── */
 /* ── Module 8: Documents ── */
 import WordApp from "./Word";
+/* ── Module 13: Show what you can do ── */
+import { AGENCY } from "../agency";
+import Agency from "./Agency";
 
 /* The office's plug-in seam. Outlook, File Explorer and Excel are built
  * into Office.tsx; every other app (Calendar, Teams, Word, the Copilot
@@ -62,4 +65,6 @@ export const OFFICE_APPS: Record<string, OfficeApp> = {
   /* ── end Module 3 ── */
   /* ── Module 8: Documents ── */
   word: { label: "Word", colour: W.word, opens: ["docx", "dotx"], Window: WordApp },
+  /* ── Module 13: Show what you can do ── */
+  agency: { label: "Pennyford test centre", colour: AGENCY.colour, Window: Agency },
 };
