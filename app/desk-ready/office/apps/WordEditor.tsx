@@ -351,6 +351,7 @@ export default function WordEditor({ doc, onChange, docKey, name, status, onFile
   const [hover, setHover] = useState<[number, number]>([0, 0]);
   const [zoom, setZoom] = useState<number | null>(null);
   const [canvasW, setCanvasW] = useState(900);
+  const [rootW, setRootW] = useState(1000);
   const [ctx, setCtx] = useState<{ x: number; y: number; issue: Issue } | null>(null);
   const [pages, setPages] = useState(1);
   const [focusComment, setFocusComment] = useState<string | null>(null);
@@ -385,9 +386,15 @@ export default function WordEditor({ doc, onChange, docKey, name, status, onFile
   useEffect(() => {
     const el = canvasRef.current;
     if (!el || typeof ResizeObserver === "undefined") return;
-    const ro = new ResizeObserver(() => setCanvasW(el.clientWidth));
+    const root = rootRef.current;
+    const ro = new ResizeObserver(() => {
+      setCanvasW(el.clientWidth);
+      if (root) setRootW(root.clientWidth);
+    });
     ro.observe(el);
+    if (root) ro.observe(root);
     setCanvasW(el.clientWidth);
+    if (root) setRootW(root.clientWidth);
     return () => ro.disconnect();
   }, []);
 
@@ -412,8 +419,10 @@ export default function WordEditor({ doc, onChange, docKey, name, status, onFile
     reveal(canvasRef.current, el, r && r.height ? r : undefined);
   });
 
-  const mobile = canvasW < 600;
-  const fit = Math.max(0.5, Math.min(1, (canvasW - 48) / WORD.pageW));
+  /* a narrow window (a phone) shows the page the width of the screen, as
+   * Word's mobile view does, with any pane below it */
+  const mobile = rootW < 640;
+  const fit = Math.max(0.5, Math.min(1, (canvasW - 32) / WORD.pageW));
   const z = mobile ? 1 : (zoom ?? fit);
   const pageW = mobile ? Math.max(260, canvasW - 16) : WORD.pageW;
   const pad = mobile ? 20 : WORD.margin;
@@ -1031,7 +1040,7 @@ export default function WordEditor({ doc, onChange, docKey, name, status, onFile
 
       {/* the page, and the panes beside it */}
       <div style={{ flex: 1, minHeight: 0, display: "flex", flexDirection: mobile && side ? "column" : "row" }}>
-        <div ref={canvasRef} className="wd-page" onClick={(e) => pageClick(e.target as HTMLElement)} onContextMenu={(e) => contextMenu(e)} style={{ flex: 1, minWidth: 0, minHeight: 0, overflow: "auto", background: WORD.canvas, padding: mobile ? "8px 8px 24px" : "24px 24px 40px" }}>
+        <div ref={canvasRef} className="wd-page" onClick={(e) => pageClick(e.target as HTMLElement)} onContextMenu={(e) => contextMenu(e)} style={{ flex: 1, minWidth: 0, minHeight: 0, overflow: "auto", background: WORD.canvas, padding: mobile ? "8px 8px 24px" : "20px 16px 40px" }}>
           <div style={{ zoom: z, width: pageW, margin: "0 auto" } as CSSProperties}>
             <div ref={pageRef} style={{ width: pageW, minHeight: mobile ? 400 : WORD.pageH, boxSizing: "border-box", padding: pad, background: "#ffffff", boxShadow: "0 1px 3px rgba(0,0,0,0.16), 0 8px 24px -10px rgba(0,0,0,0.25)", color: "#000", position: "relative" }}>
               {doc.header && (
@@ -1053,7 +1062,7 @@ export default function WordEditor({ doc, onChange, docKey, name, status, onFile
           <SpellPane mobile={mobile} doc={doc} issue={curIssue} left={iss.length} pick={pick} setPick={setPick} onChange={fixIssue} onIgnore={ignore} onClose={() => setPane(null)} />
         ) : (
           showComments && (
-            <aside aria-label="Comments" style={{ width: mobile ? "auto" : 270, maxHeight: mobile ? "42%" : undefined, flexShrink: 0, overflowY: "auto", background: "#faf9f8", borderLeft: mobile ? "none" : `1px solid ${W.edge}`, borderTop: mobile ? `1px solid ${W.edge}` : "none", padding: 10, display: "grid", alignContent: "start", gap: 8 }}>
+            <aside aria-label="Comments" style={{ width: mobile ? "auto" : 236, maxHeight: mobile ? "42%" : undefined, flexShrink: 0, overflowY: "auto", background: "#faf9f8", borderLeft: mobile ? "none" : `1px solid ${W.edge}`, borderTop: mobile ? `1px solid ${W.edge}` : "none", padding: 10, display: "grid", alignContent: "start", gap: 8 }}>
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                 <b style={{ fontSize: 15, fontWeight: 600 }}>Comments</b>
                 <span style={{ fontSize: 12.5, color: W.muted }}>{comments.length}</span>
@@ -1225,7 +1234,7 @@ function SpellPane({ mobile, doc, issue, left, pick, setPick, onChange, onIgnore
   const sugg = issue?.suggestions ?? [];
   const chosen = sugg[Math.min(pick, sugg.length - 1)];
   return (
-    <aside aria-label="Spelling and grammar" style={{ width: mobile ? "auto" : 290, maxHeight: mobile ? "48%" : undefined, flexShrink: 0, overflowY: "auto", background: "#fff", borderLeft: mobile ? "none" : `1px solid ${W.edge}`, borderTop: mobile ? `1px solid ${W.edge}` : "none", padding: "12px 14px", display: "grid", alignContent: "start", gap: 12 }}>
+    <aside aria-label="Spelling and grammar" style={{ width: mobile ? "auto" : 264, maxHeight: mobile ? "48%" : undefined, flexShrink: 0, overflowY: "auto", background: "#fff", borderLeft: mobile ? "none" : `1px solid ${W.edge}`, borderTop: mobile ? `1px solid ${W.edge}` : "none", padding: "12px 14px", display: "grid", alignContent: "start", gap: 12 }}>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         <b style={{ fontSize: 16, fontWeight: 600 }}>Spelling and grammar</b>
         <button type="button" aria-label="Close the pane" onClick={onClose} className="of-btn" style={{ width: 36, height: 36, border: "none", background: "transparent", cursor: "pointer", fontSize: 16, color: W.muted }}>

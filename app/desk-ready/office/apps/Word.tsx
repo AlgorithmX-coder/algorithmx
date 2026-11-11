@@ -267,7 +267,7 @@ const stageBtn: CSSProperties = { minHeight: 44, padding: "0 22px", border: "non
 /* Word's start screen: a blank document, the templates, the recent files. */
 function Home({ templates, recent, onOpen, onBlank, onBrowse }: { templates: OfficeFile[]; recent: OfficeFile[]; onOpen: (f: OfficeFile) => void; onBlank: () => void; onBrowse?: () => void }) {
   const tile = (label: string, sub: string, body: ReactNode, onClick: () => void) => (
-    <button key={label} type="button" onClick={onClick} className="of-btn" title={sub} style={{ width: 150, display: "grid", gap: 6, padding: 0, border: "none", background: "transparent", cursor: "pointer", textAlign: "left", fontFamily: W.font, color: W.ink }}>
+    <button key={sub + label} type="button" onClick={onClick} className="of-btn" title={sub} style={{ width: 150, display: "grid", gap: 6, padding: 0, border: "none", background: "transparent", cursor: "pointer", textAlign: "left", fontFamily: W.font, color: W.ink }}>
       <span style={{ display: "block", height: 190, overflow: "hidden", border: `1px solid ${W.edge}`, borderRadius: 4, background: "#fff", boxShadow: "0 1px 3px rgba(0,0,0,0.1)" }}>{body}</span>
       <b style={{ fontSize: 14, fontWeight: 600 }}>{label}</b>
       <span style={{ fontSize: 12.5, color: W.muted, marginTop: -4 }}>{sub}</span>
