@@ -4,6 +4,11 @@ import { useEffect, useRef, useState } from "react";
 import { W } from "../../tokens";
 import { SPEED } from "../admin";
 import type { PhoneCall } from "../types";
+/* ── Module 11: Staying safe at work ── */
+import { newId } from "../store";
+import { reach } from "../safety";
+import type { PhoneEntry } from "../types";
+/* ── end Module 11 ── */
 import type { OfficeAppProps } from "./registry";
 
 /* The desk phone, for the office jobs (Module 10, criterion ADM-4): the
@@ -150,7 +155,7 @@ function WayIcon({ way }: { way: PhoneCall["way"] }) {
 }
 
 /* The phone's window: recent calls on the left, the chosen call on the right. */
-export default function Phone({ state, active }: OfficeAppProps) {
+export default function Phone({ state, active, dispatch, job }: OfficeAppProps) {
   const calls = state.phone?.calls ?? [];
   const raw = state.phone?.answered;
   const answered = raw ?? [];
@@ -161,6 +166,18 @@ export default function Phone({ state, active }: OfficeAppProps) {
   /* a call just answered plays straight away */
   const [justAnswered, setJustAnswered] = useState<string | null>(null);
   const [seen, setSeen] = useState(raw);
+  /* Module 11: ring a saved number, or type one on the keypad */
+  const book = state.phoneBook;
+  const [tab, setTab] = useState<"recent" | "contacts" | "keypad">("recent");
+  const dial = (number: string) => {
+    const script = reach(number, state.dialable, book);
+    const made = calls.filter((c) => c.way === "out" && c.id.startsWith("call-out")).length;
+    const call: PhoneCall = { ...script, id: newId("call-out"), time: later(job.clock, 2 + made * 3), way: "out" };
+    dispatch({ type: "update", fn: (s) => ({ ...s, phone: { calls: [call, ...(s.phone?.calls ?? [])], answered: s.phone?.answered ?? [] } }) });
+    setSel(call.id);
+    setJustAnswered(call.id);
+    setTab("recent");
+  };
   if (raw !== seen) {
     const fresh = (raw ?? []).find((id) => !(seen ?? []).includes(id));
     setSeen(raw);
@@ -178,7 +195,12 @@ export default function Phone({ state, active }: OfficeAppProps) {
         <span style={{ marginLeft: "auto", fontSize: 12.5, opacity: 0.85 }}>Some calls are recorded for training</span>
       </div>
       <div style={{ flex: 1, minHeight: 0, display: "flex" }}>
-        <nav aria-label="Recent calls" style={{ width: 290, flexShrink: 0, borderRight: `1px solid ${W.edge}`, background: W.chrome, overflowY: "auto" }}>
+        <nav aria-label={book ? "Calls and contacts" : "Recent calls"} style={{ width: 290, flexShrink: 0, borderRight: `1px solid ${W.edge}`, background: W.chrome, overflowY: "auto" }}>
+          {book && <PhoneTabs tab={tab} setTab={setTab} />}
+          {book && tab === "contacts" && <PhoneContacts book={book} onCall={dial} />}
+          {book && tab === "keypad" && <Keypad onCall={dial} />}
+          {tab === "recent" && (
+          <>
           <p style={{ margin: 0, padding: "12px 14px 8px", fontSize: 13, fontWeight: 700, color: W.muted }}>Recent calls</p>
           {ringing && (
             <div style={{ margin: "0 8px 8px", padding: "10px 12px", borderRadius: 8, background: "rgba(0,105,143,0.1)", fontSize: 14, display: "flex", gap: 10, alignItems: "center" }}>
@@ -213,6 +235,8 @@ export default function Phone({ state, active }: OfficeAppProps) {
               </span>
             </button>
           ))}
+          </>
+          )}
         </nav>
         <section aria-label="The call" style={{ flex: 1, minWidth: 0, overflowY: "auto", padding: "20px 24px" }}>
           {ringing ? (
@@ -294,3 +318,124 @@ const RING_CSS = `
   .ph-ring { display: inline-flex; animation: ph-ring 1.4s ease-out infinite; }
   @media (prefers-reduced-motion: reduce) { .ph-ring { animation: none; } }
 `;
+
+/* ── Module 11: Staying safe at work ───────────────────────────────────
+ * Making a call: the phone's saved contacts (the numbers the company
+ * already holds) and a keypad. A call plays out like a recorded one and
+ * lands in Recent calls, where a job's checks read who was rung. */
+
+/* The office clock a few minutes on: "Wed 11 Nov, 08:40" + 2 = "08:42". */
+function later(clockText: string, minutes: number): string {
+  const m = clockText.match(/(\d{1,2}):(\d{2})/);
+  if (!m) return "Just now";
+  const t = Number(m[1]) * 60 + Number(m[2]) + minutes;
+  return `${String(Math.floor(t / 60) % 24).padStart(2, "0")}:${String(t % 60).padStart(2, "0")}`;
+}
+
+type PhoneTab = "recent" | "contacts" | "keypad";
+
+function PhoneTabs({ tab, setTab }: { tab: PhoneTab; setTab: (t: PhoneTab) => void }) {
+  const tabs: [PhoneTab, string][] = [
+    ["recent", "Recent"],
+    ["contacts", "Contacts"],
+    ["keypad", "Keypad"],
+  ];
+  return (
+    <div role="tablist" aria-label="Phone" style={{ display: "flex", gap: 2, padding: "8px 8px 0", borderBottom: `1px solid ${W.edge}` }}>
+      {tabs.map(([id, label]) => (
+        <button
+          key={id}
+          type="button"
+          role="tab"
+          aria-selected={tab === id}
+          onClick={() => setTab(id)}
+          className="of-row"
+          style={{ flex: 1, minHeight: 40, border: "none", borderBottom: `3px solid ${tab === id ? PHONE_COLOUR : "transparent"}`, borderRadius: "4px 4px 0 0", background: "transparent", fontFamily: W.font, fontSize: 14.5, fontWeight: tab === id ? 700 : 400, color: tab === id ? W.ink : W.body, cursor: "pointer" }}
+        >
+          {label}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+function CallIcon({ size = 16, colour = "#fff" }: { size?: number; colour?: string }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" aria-hidden style={{ display: "inline-block", flexShrink: 0 }}>
+      <path d="M6.6 10.8 a15 15 0 0 0 6.6 6.6 l2.2-2.2 a1 1 0 0 1 1-.25 a11.4 11.4 0 0 0 3.6.6 a1 1 0 0 1 1 1 V20 a1 1 0 0 1-1 1 A17 17 0 0 1 3 4 a1 1 0 0 1 1-1 h3.5 a1 1 0 0 1 1 1 c0 1.25.2 2.45.6 3.6 a1 1 0 0 1-.25 1 Z" fill={colour} />
+    </svg>
+  );
+}
+
+/* The company's saved numbers, grouped, each with a Call button. */
+function PhoneContacts({ book, onCall }: { book: PhoneEntry[]; onCall: (n: string) => void }) {
+  const [q, setQ] = useState("");
+  const shown = book.filter((b) => !q.trim() || [b.name, b.company ?? "", b.role ?? "", b.number].some((t) => t.toLowerCase().includes(q.trim().toLowerCase())));
+  const groups = [...new Set(shown.map((b) => b.group))];
+  return (
+    <div>
+      <div style={{ padding: "10px 10px 6px" }}>
+        <input aria-label="Search contacts" type="search" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search contacts" style={{ width: "100%", minHeight: 38, padding: "0 10px", border: `1px solid ${W.edge}`, borderRadius: 6, fontFamily: W.font, fontSize: 14.5, color: W.ink, background: W.page, boxSizing: "border-box" }} />
+      </div>
+      {groups.map((g) => (
+        <div key={g}>
+          <p style={{ margin: 0, padding: "10px 14px 4px", fontSize: 12, fontWeight: 700, letterSpacing: "0.04em", color: W.muted }}>{g}</p>
+          {shown
+            .filter((b) => b.group === g)
+            .map((b) => (
+              <div key={b.number} style={{ display: "flex", gap: 10, alignItems: "center", padding: "8px 10px 8px 14px", borderBottom: `1px solid ${W.edge}` }}>
+                <Avatar name={b.name} size={32} />
+                <span style={{ flex: 1, minWidth: 0, fontSize: 13, color: W.muted, lineHeight: 1.35 }}>
+                  <b style={{ display: "block", fontSize: 14.5, fontWeight: 600, color: W.ink }}>{b.name}</b>
+                  {[b.role, b.company !== b.name ? b.company : undefined].filter(Boolean).join(", ")}
+                  <span style={{ display: "block", color: W.body, fontVariantNumeric: "tabular-nums" }}>{b.number}</span>
+                </span>
+                <button type="button" onClick={() => onCall(b.number)} aria-label={`Call ${b.name} on ${b.number}`} title={`Call ${b.number}`} className="of-btn" style={{ width: 38, height: 38, flexShrink: 0, border: "none", borderRadius: "50%", background: "#13a10e", display: "inline-flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}>
+                  <CallIcon />
+                </button>
+              </div>
+            ))}
+        </div>
+      ))}
+      {!shown.length && <p style={{ margin: 0, padding: 14, fontSize: 14, color: W.muted }}>No contact matches.</p>}
+    </div>
+  );
+}
+
+/* A keypad: type or click a number, then Call. */
+function Keypad({ onCall }: { onCall: (n: string) => void }) {
+  const [n, setN] = useState("");
+  const keys = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "*", "0", "#"];
+  const digits = n.replace(/[^\d*#]/g, "");
+  return (
+    <div style={{ padding: "14px 16px 18px" }}>
+      <input
+        aria-label="Number to call"
+        inputMode="tel"
+        value={n}
+        onChange={(e) => setN(e.target.value.replace(/[^\d\s*#+]/g, ""))}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" && digits) onCall(n.trim());
+        }}
+        placeholder="Type a number"
+        style={{ width: "100%", minHeight: 46, padding: "0 12px", border: `1px solid ${W.edge}`, borderRadius: 6, fontFamily: W.font, fontSize: 20, letterSpacing: "0.04em", textAlign: "center", color: W.ink, background: W.page, boxSizing: "border-box", fontVariantNumeric: "tabular-nums" }}
+      />
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 8, marginTop: 12 }}>
+        {keys.map((k) => (
+          <button key={k} type="button" onClick={() => setN((v) => v + k)} className="of-btn" style={{ minHeight: 46, border: `1px solid ${W.edge}`, borderRadius: 8, background: W.page, fontFamily: W.font, fontSize: 19, color: W.ink, cursor: "pointer" }}>
+            {k}
+          </button>
+        ))}
+      </div>
+      <div style={{ display: "flex", gap: 8, marginTop: 12 }}>
+        <button type="button" onClick={() => setN((v) => v.slice(0, -1))} disabled={!n} className="of-btn" style={{ minHeight: 46, padding: "0 14px", border: `1px solid ${W.edge}`, borderRadius: 8, background: W.page, fontFamily: W.font, fontSize: 14.5, color: W.ink, cursor: n ? "pointer" : "default", opacity: n ? 1 : 0.5 }}>
+          Delete
+        </button>
+        <button type="button" onClick={() => digits && onCall(n.trim())} disabled={!digits} style={{ flex: 1, minHeight: 46, border: "none", borderRadius: 23, background: "#13a10e", color: "#fff", fontFamily: W.font, fontSize: 16, fontWeight: 700, cursor: digits ? "pointer" : "default", opacity: digits ? 1 : 0.55, display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 8 }}>
+          <CallIcon size={18} /> Call
+        </button>
+      </div>
+    </div>
+  );
+}
+/* ── end Module 11 ── */
