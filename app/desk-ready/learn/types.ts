@@ -1,4 +1,4 @@
-import type { ComponentType } from "react";
+import type { ComponentType, ReactNode } from "react";
 
 /* Content contract for a Desk Ready lesson ("topic"). Lessons are content
  * (app/desk-ready/lessons/mN.tsx); the engine (TopicPlayer) is structure.
@@ -22,6 +22,10 @@ export interface Example {
 
 export interface LearnCard {
   heading: string;
+  /* A drawn picture of the real thing (learn/figures): the whole email or
+   * sheet with its parts numbered, or one part lit up. Every lesson opens
+   * with the whole picture (owner 2026-11-11). */
+  figure?: ReactNode;
   /* Plain English, short sentences. One idea per card. */
   body: string[];
   good?: Example[];

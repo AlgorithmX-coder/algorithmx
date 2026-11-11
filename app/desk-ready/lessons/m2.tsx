@@ -1,6 +1,7 @@
 "use client";
 
 import { ComposeLab, SignatureLab, SortLab, type Draft } from "../learn/labs";
+import { ComposeFigure, InboxFigure } from "../learn/figures/email";
 import type { LabProps, ModuleManifest } from "../learn/types";
 
 /* Module 2: Writing a work email. The pilot module (owner 2026-11-09).
@@ -156,7 +157,16 @@ const m2: ModuleManifest = {
       brief: "The subject line is the first thing anyone sees. In this lesson you will learn to write one that tells people what your email is about before they open it.",
       learn: [
         {
+          heading: "Here is a whole email, being written",
+          body: [
+            "This is what Outlook looks like when you write an email. Every part is numbered, and the list underneath says what each one is for.",
+            "This lesson is about the subject (5): the short line that tells people what the email is about.",
+          ],
+          figure: <ComposeFigure />,
+        },
+        {
           heading: "Why the subject line matters",
+          figure: <InboxFigure focus={["list"]} title="What people see: a list of subjects" />,
           body: [
             "People at work get dozens of emails a day. Most of them decide what to open, and what to leave for later, from the subject line alone.",
             "A good subject line tells them what the email is about before they open it. A vague one gets left until last.",
@@ -166,6 +176,7 @@ const m2: ModuleManifest = {
         },
         {
           heading: "Say what it is about, and what you need",
+          figure: <ComposeFigure focus={["subject"]} title="The subject line" />,
           body: ["A simple pattern works almost every time: the thing, then what about it.", "If you need something, you can put it in the subject too."],
           good: [
             { text: "Holiday request: 3 to 7 March" },
@@ -185,6 +196,7 @@ const m2: ModuleManifest = {
         },
         {
           heading: "When you reply, keep the subject",
+          figure: <ComposeFigure focus={["subject"]} title="A reply keeps the subject, with Re: in front" email={{ to: "Sarah Patel", subject: "Re: Pallet count for aisle C", greeting: "Hi Sarah,", message: ["Done: aisle C is recounted and the stock sheet is updated."], signoff: "Thanks,\nJordan", signature: ["Jordan Miles", "Office Administrator | Northfield Supplies", "01632 960 431"] }} hide={["attach", "cc"]} />,
           body: [
             "When you press Reply, the subject stays the same with \"RE:\" in front. Leave it as it is, so the whole conversation stays together.",
             "If you want to talk about something new, start a new email with its own subject.",
@@ -242,7 +254,16 @@ const m2: ModuleManifest = {
       brief: "How you start an email sets the tone. In this lesson you will learn which greeting to use for whom, so you always sound friendly and professional.",
       learn: [
         {
+          heading: "Where the greeting goes",
+          body: [
+            "Here is the same kind of email again. The greeting (7) is the first line of the message, on its own line, before anything else.",
+            "It's the first thing the person reads, so it sets the tone for everything after it.",
+          ],
+          figure: <ComposeFigure />,
+        },
+        {
           heading: "\"Hi\" and their name works most of the time",
+          figure: <ComposeFigure focus={["greeting"]} title="A greeting to a colleague" />,
           body: [
             "For people you work with, and most people at other companies, \"Hi\" and their first name is right.",
             "Put a comma after the name, then start your message on a new line.",
@@ -251,6 +272,7 @@ const m2: ModuleManifest = {
         },
         {
           heading: "\"Dear\" for formal emails",
+          figure: <ComposeFigure focus={["greeting"]} title="A formal greeting, to someone you haven't met" email={{ to: "Tom Hale", subject: "Invoice HP-2291: credit note for two pallets", greeting: "Dear Mr Hale,", message: ["Invoice HP-2291 charges us for 12 pallets of wrap, but delivery note DN-77812 shows only 10 arrived.", "Could you send a credit note for the two missing pallets by Friday 13 November?"], signoff: "Kind regards,\nJordan Miles", signature: ["Jordan Miles", "Office Administrator | Northfield Supplies", "01632 960 431"] }} hide={["cc"]} />,
           body: [
             "Use \"Dear\" for a first email to someone senior, a job application, or a complaint. Use their title and surname if you do not know them.",
             "Only write \"Dear Sir or Madam\" when you have no name at all.",
@@ -259,6 +281,7 @@ const m2: ModuleManifest = {
         },
         {
           heading: "Writing to a group",
+          figure: <ComposeFigure focus={["greeting"]} title="A greeting to a group" email={{ to: "Warehouse team", subject: "Fire drill on Thursday at 11:00", greeting: "Hi everyone,", message: ["There's a fire drill on Thursday at 11:00. When the alarm sounds, leave by the nearest exit and meet in the car park."], signoff: "Thanks,\nJordan", signature: ["Jordan Miles", "Office Administrator | Northfield Supplies", "01632 960 431"] }} hide={["attach", "cc"]} />,
           body: ["When the email goes to a team or several people, greet them all together."],
           good: [{ text: "Hi everyone," }, { text: "Hello all," }, { text: "Hi team," }],
         },
@@ -321,7 +344,16 @@ const m2: ModuleManifest = {
       brief: "Busy people read the first line and decide what to do. In this lesson you will learn to put your point first and give people everything they need to help you.",
       learn: [
         {
+          heading: "The message is the reason for the email",
+          body: [
+            "The message (8) comes straight after the greeting. It's where you say what you need, and by when.",
+            "Look at this one: the first line says exactly what's happening, and the second line gives the detail.",
+          ],
+          figure: <ComposeFigure focus={["greeting", "message"]} title="The message, after the greeting" />,
+        },
+        {
           heading: "Put the point first",
+          figure: <ComposeFigure focus={["message"]} title="The point, in the first line" />,
           body: [
             "After the greeting, say straight away why you are writing. Do not make people read a long story to find out what you want.",
           ],
@@ -401,7 +433,16 @@ const m2: ModuleManifest = {
       brief: "A good ending is polite and tells people who you are and how to reach you. In this lesson you will learn the right sign-off and build your own email signature.",
       learn: [
         {
+          heading: "How an email ends",
+          body: [
+            "Every work email ends the same way: a sign-off (9), like \"Kind regards,\" with your first name under it, then your signature (10).",
+            "The signature is the block with your full name, job title, company and phone number.",
+          ],
+          figure: <ComposeFigure focus={["signoff", "signature"]} title="The end of an email" />,
+        },
+        {
           heading: "The sign-off",
+          figure: <ComposeFigure focus={["signoff"]} title="The sign-off" />,
           body: ["End every work email with a short, polite sign-off, a comma, and then your name on the next line."],
           good: [
             { text: "Kind regards,\nDave", note: "Safe for anyone, any time." },
@@ -412,6 +453,7 @@ const m2: ModuleManifest = {
         },
         {
           heading: "What a signature is",
+          figure: <ComposeFigure focus={["signature"]} title="The signature" />,
           body: [
             "Your signature is the block of details under your name. You set it up once in your email program and it is added to every email you send.",
             "It saves people hunting for your phone number or asking which company you are from.",
@@ -482,6 +524,14 @@ const m2: ModuleManifest = {
       brief: "Sometimes people do not reply, and sometimes things go wrong. In this lesson you will learn to chase without sounding cross, say sorry well, and check an email before you send it.",
       learn: [
         {
+          heading: "A whole chaser, from top to bottom",
+          body: [
+            "A chaser is a polite reminder when someone hasn't replied. This one has every part of a good work email, numbered.",
+            "Notice how calm it is: it says what was asked, when, and what's needed now. No blame.",
+          ],
+          figure: <ComposeFigure email={{ to: "Mark Evans", subject: "Order 5520: delivery date?", greeting: "Hi Mark,", message: ["I emailed on Monday to ask when order 5520 will arrive, and wanted to check in.", "Could you let me know the delivery date by Thursday, please? We need it to plan the week."], signoff: "Kind regards,\nJordan", signature: ["Jordan Miles", "Office Administrator | Northfield Supplies", "01632 960 431"] }} hide={["attach", "cc"]} />,
+        },
+        {
           heading: "Chasing politely",
           body: [
             "If someone has not replied, wait a couple of working days. Then reply to your own email, so they can see what you asked before.",
@@ -505,6 +555,7 @@ const m2: ModuleManifest = {
         },
         {
           heading: "Check before you send",
+          figure: <ComposeFigure focus={["to", "subject", "attach", "send"]} title="Four things to check before Send" />,
           body: ["Before you press Send, take 20 seconds to check:"],
           good: [
             { text: "Is it going to the right person?" },

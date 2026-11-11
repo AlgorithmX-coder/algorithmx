@@ -1,6 +1,7 @@
 "use client";
 
 import { ChoiceLab, SortLab } from "../learn/labs";
+import { ComposeFigure, EmailFigure, FileNameFigure, InboxFigure, ReplyFigure } from "../learn/figures/email";
 import type { LabProps, ModuleManifest } from "../learn/types";
 
 /* Module 1: The work inbox (criteria OL-1, OL-5, OL-6, OL-8, SAFE-1).
@@ -14,18 +15,6 @@ import type { LabProps, ModuleManifest } from "../learn/types";
  * is never the obvious longest one. Every name and address is Northfield
  * Supplies, the course's pretend company. */
 
-const SARAH_EMAIL = `From: Sarah Patel <sarah.patel@northfieldsupplies.example>
-To: You
-Cc: Daniel Okafor
-Subject: Pallet count for aisle C
-Sent: Monday 10:12
-
-Hi,
-
-Could you recount the pallets in aisle C and update the stock sheet by 2pm tomorrow? The numbers on the sheet don't match what's on the floor.
-
-Thanks,
-Sarah`;
 
 /* ---------- Lesson 1: what is in an email ---------- */
 
@@ -36,7 +25,7 @@ function ReadEmailLab(p: LabProps) {
       steps={[
         {
           prompt: "Who sent this email?",
-          context: SARAH_EMAIL,
+          figure: <EmailFigure bare title="Sarah's email" />,
           options: [
             { text: "Sarah Patel", correct: true, why: "The From line always shows who sent it." },
             { text: "Daniel Okafor", why: "Daniel is on Cc. He was copied in to keep him informed, but he didn't send it." },
@@ -45,7 +34,7 @@ function ReadEmailLab(p: LabProps) {
         },
         {
           prompt: "What is Sarah asking you to do?",
-          context: SARAH_EMAIL,
+          figure: <EmailFigure bare title="Sarah's email" />,
           options: [
             { text: "Recount aisle C and update the stock sheet", correct: true, why: "That's the ask, and it sits in the first two lines where it should." },
             { text: "Reply to Daniel about the pallets", why: "Daniel is only copied in. Sarah hasn't asked you to email him." },
@@ -54,7 +43,7 @@ function ReadEmailLab(p: LabProps) {
         },
         {
           prompt: "By when does she need it?",
-          context: SARAH_EMAIL,
+          figure: <EmailFigure bare title="Sarah's email" />,
           options: [
             { text: "By 2pm on Tuesday", correct: true, why: "She sent it on Monday and said \"2pm tomorrow\", so that's Tuesday at 2pm." },
             { text: "By 10:12 on Monday", why: "That's when the email was sent, not when the work is due." },
@@ -63,7 +52,7 @@ function ReadEmailLab(p: LabProps) {
         },
         {
           prompt: "Why is Daniel on Cc?",
-          context: SARAH_EMAIL,
+          figure: <EmailFigure bare title="Sarah's email" />,
           options: [
             { text: "So he knows about it, without having to act", correct: true, why: "Cc means \"for your information\". The people in To are the ones who act." },
             { text: "So he can do the recount instead of you", why: "The person in To does the work. Cc is just to keep someone in the loop." },
@@ -223,29 +212,48 @@ const m1: ModuleManifest = {
       minutes: 7,
       brief: "Every work email has the same parts. In this lesson you will learn what each one tells you, and how to find the ask in seconds.",
       learn: [
-        {
-          heading: "The parts at the top",
+{
+          heading: "Here is a whole work email",
           body: [
-            "From is who sent it. To is who it's for: the people expected to act. Cc is anyone copied in to keep them informed.",
-            "The subject says what it's about, and the time says when it was sent. Attachments show as small boxes with a paperclip.",
+            "This is a real-looking email from Sarah, a supervisor at the warehouse. Almost every work email has these same ten parts, in this order.",
+            "The numbers on the email match the list underneath it. Take a minute to look at each part. The next screens go through them one at a time.",
           ],
-          good: [{ text: "From: Sarah Patel · To: You · Cc: Daniel Okafor", note: "Sarah wants you to act. Daniel is being kept informed." }],
+          figure: <EmailFigure />,
         },
         {
-          heading: "Read for three things",
-          body: ["You don't need to read every word twice. Look for three things, in this order.", "Who wants something? What do they want? By when?"],
-          good: [{ text: "\"Could you recount aisle C and update the sheet by 2pm tomorrow?\"", note: "Who: Sarah. What: recount and update. When: 2pm tomorrow." }],
-          tip: "\"Tomorrow\" means the day after the email was sent, not the day you read it.",
+          heading: "The top: what it's about, who and when",
+          body: [
+            "The subject (1) is the headline. It's what you see in your inbox before you open anything.",
+            "Under it: From (2) is who sent it, To (3) is who it's for, Cc (4) is anyone copied in to keep them informed, and the date and time (5) is when it was sent.",
+          ],
+          figure: <EmailFigure focus={["subject", "from", "to", "cc", "sent"]} title="The top of the email" />,
+          tip: "Your name in To means you're expected to act. Your name in Cc usually means read it and keep it in mind.",
         },
         {
-          heading: "The signature tells you who they are",
-          body: ["At the bottom, most people have a signature: name, job title, company and phone number.", "It tells you how senior they are and how to call them if an email isn't enough."],
-          good: [{ text: "Sarah Patel · Warehouse Supervisor · Northfield Supplies · 01632 960 412" }],
+          heading: "An attachment is a file that came with it",
+          body: [
+            "The box with the file name (6) is an attachment: a file Sarah sent along with the email. Here it's last week's stock count, as a PDF.",
+            "Click it to open it. In your inbox, a small paperclip next to an email tells you there's an attachment inside.",
+          ],
+          figure: <EmailFigure focus={["attachment"]} title="The attachment" />,
         },
         {
-          heading: "Your name in To or Cc changes what you do",
-          body: ["In To: you're expected to do something, or at least reply.", "In Cc: read it, but you usually don't need to act unless someone asks you by name."],
-          tip: "If you're in Cc and someone asks you something by name, answer it. Cc isn't an excuse.",
+          heading: "The message: who wants what, by when",
+          body: [
+            "The greeting (7) says who it's for. The message (8) is the reason for the email.",
+            "Read the message for three things, in this order: who wants something, what they want, and by when.",
+          ],
+          figure: <EmailFigure focus={["greeting", "message"]} title="The greeting and the message" />,
+          good: [{ text: "\"Could you recount the pallets in aisle C and update the stock sheet by 2pm tomorrow?\"", note: "Who: Sarah. What: recount aisle C and update the sheet. By when: 2pm tomorrow." }],
+          tip: "\"Tomorrow\" counts from when the email was sent (5), not from when you read it. Sent Monday means Tuesday at 2pm.",
+        },
+        {
+          heading: "The bottom: sign-off and signature",
+          body: [
+            "The sign-off (9) is how the email ends, with the sender's first name.",
+            "The signature (10) sits under it: full name, job title, company and phone number. It tells you who they are and how to ring them if an email isn't enough.",
+          ],
+          figure: <EmailFigure focus={["signoff", "signature"]} title="How it ends" />,
         },
       ],
       tryIt: { title: "Read a real email", intro: "Here's an email from Sarah. Answer four quick questions about it, as you would at your desk.", Lab: ReadEmailLab },
@@ -277,24 +285,35 @@ const m1: ModuleManifest = {
       minutes: 7,
       brief: "Who you put where says a lot. In this lesson you will learn who goes in To, who goes in Cc, and the one time Bcc matters.",
       learn: [
+{
+          heading: "Three boxes decide who gets an email",
+          body: [
+            "Here's an email being written. At the top are three boxes for people: To (2), Cc (3) and Bcc (4).",
+            "Who you put in which box tells each person what you expect of them. The numbers match the list underneath.",
+          ],
+          figure: <ComposeFigure email={{ to: "Priya Shah", cc: "Daniel Okafor", bcc: "", subject: "Invoice HP-2291: please pay by Friday", greeting: "Hi Priya,", message: ["Could you pay invoice HP-2291 from Harlow Packaging by Friday 13 November? I've checked it against the order and the delivery note, and it's right."], signoff: "Thanks,\nJordan", signature: ["Jordan Miles", "Office Administrator | Northfield Supplies", "01632 960 431"] }} />,
+        },
         {
           heading: "To: the people who must act",
-          body: ["Put people in To when you need them to do something or reply.", "If you need two people to act, put both in To and say who does what."],
-          good: [{ text: "To: Priya Shah · \"Could you pay invoice HP-2291 by Friday?\"" }],
+          body: ["Put people in To (2) when you need them to do something or reply.", "If two people need to act, put both in To and say in the message who does what."],
+          figure: <ComposeFigure focus={["to"]} title="The To box" email={{ to: "Priya Shah", cc: "Daniel Okafor", subject: "Invoice HP-2291: please pay by Friday", greeting: "Hi Priya,", message: ["Could you pay invoice HP-2291 from Harlow Packaging by Friday 13 November?"], signoff: "Thanks,\nJordan", signature: ["Jordan Miles", "Office Administrator | Northfield Supplies", "01632 960 431"] }} />,
         },
         {
           heading: "Cc: the people who need to know",
-          body: ["Cc means \"carbon copy\", from the days of paper. It keeps someone informed without asking them to act.", "Only copy people who really need to know. Too many Ccs and people stop reading them."],
-          good: [{ text: "Cc: Daniel Okafor", note: "Your manager asked to be kept in the loop." }],
-          bad: [{ text: "Cc: the whole company", note: "On a question for one person." }],
+          body: [
+            "Cc (3) stands for carbon copy, from the days of paper. It keeps someone informed without asking them to act. Here, Daniel asked to be kept in the loop on invoices.",
+            "Only copy people who really need to know. Too many Ccs and people stop reading them.",
+          ],
+          figure: <ComposeFigure focus={["cc"]} title="The Cc box" email={{ to: "Priya Shah", cc: "Daniel Okafor", subject: "Invoice HP-2291: please pay by Friday", greeting: "Hi Priya,", message: ["Could you pay invoice HP-2291 from Harlow Packaging by Friday 13 November?"], signoff: "Thanks,\nJordan", signature: ["Jordan Miles", "Office Administrator | Northfield Supplies", "01632 960 431"] }} />,
+          bad: [{ text: "Cc: everyone in the company", note: "On a question for one person." }],
         },
         {
           heading: "Bcc: hidden copies",
           body: [
-            "Bcc is a blind copy: the people in Bcc get the email, but nobody can see their address.",
-            "Use it when emailing lots of outside people who don't know each other, like customers. Sharing their addresses with each other can break data protection rules.",
+            "Bcc (4) is a blind copy: everyone in it gets the email, but nobody can see anyone else's address.",
+            "Use it when you email lots of outside people who don't know each other, like 40 customers. Showing their addresses to each other can break data protection rules.",
           ],
-          good: [{ text: "To: you · Bcc: 40 customers · \"Our Christmas opening hours\"" }],
+          figure: <ComposeFigure focus={["bcc"]} title="The Bcc box" email={{ to: "You", bcc: "40 customers", subject: "Our Christmas opening hours", greeting: "Hello,", message: ["We're closed from 24 December and open again on 2 January. Orders placed by 18 December will arrive before Christmas."], signoff: "Kind regards,\nNorthfield Supplies", signature: ["Northfield Supplies", "Unit 2, Abbey Trade Park, Leicester", "01632 960 400"] }} />,
           tip: "Don't use Bcc to secretly copy your manager on a colleague's email. If someone needs to know, Cc them openly.",
         },
       ],
@@ -327,26 +346,36 @@ const m1: ModuleManifest = {
       minutes: 8,
       brief: "Three buttons, three jobs. In this lesson you will learn which one to press, so the right people get your answer and nobody else does.",
       learn: [
+{
+          heading: "Three buttons, three different groups of people",
+          body: [
+            "Every email you open has three buttons above it: Reply, Reply all and Forward. They decide who gets your answer.",
+            "Here, Imran from Kent Bakery has emailed you (1), with four of his staff on Cc. Green names get your email; crossed-out names don't.",
+          ],
+          figure: <ReplyFigure />,
+        },
         {
           heading: "Reply: just the sender",
-          body: ["Reply sends your answer only to the person who sent the email.", "Use it when only they need your answer, even if lots of people got the first email."],
-          good: [{ text: "Emma asked 30 people for their holiday dates. You Reply with yours." }],
+          body: ["Reply (2) sends your answer only to the person who sent the email: Imran.", "Use it when only they need your answer, even if lots of people got the first email."],
+          figure: <ReplyFigure focus={["original", "reply"]} title="Reply" />,
+          good: [{ text: "Emma asked 30 people for their holiday dates. You Reply with yours, so only Emma gets them." }],
         },
         {
           heading: "Reply all: everyone on the email",
-          body: ["Reply all goes to the sender and everyone in To and Cc.", "Use it when everyone on the email needs your answer, like a customer who copied in their whole team."],
+          body: ["Reply all (3) goes to the sender and everyone who was in To and Cc: here, all five people at Kent Bakery.", "Use it when everyone on the email needs your answer, like a customer who copied in their team."],
+          figure: <ReplyFigure focus={["original", "replyall"]} title="Reply all" />,
           bad: [{ text: "Reply all to 30 people: \"Thanks!\"", note: "29 people now have a useless email." }],
           tip: "Before you press Reply all, look at the Cc line and ask: does every one of these people need this?",
         },
         {
           heading: "Forward: pass it on to someone new",
-          body: ["Forward sends the email, and its attachments, to someone who wasn't on it.", "Always add a line on top saying what you need from them."],
+          body: [
+            "Forward (4) sends the whole email, and its attachments, to someone who wasn't on it. You type their name in To, like Sarah.",
+            "Always add a line on top saying what you need from them. And keep it internal: nobody from Kent Bakery sees what you write to Sarah.",
+          ],
+          figure: <ReplyFigure focus={["original", "forward"]} title="Forward" />,
           good: [{ text: "\"Hi Sarah, can you take this up with the haulier? I've replied to the customer.\"" }],
-        },
-        {
-          heading: "Keep internal notes internal",
-          body: ["If you need to tell a colleague something the customer shouldn't see, Forward it to the colleague.", "Never add a colleague with Reply all and write an internal note: the customer reads it too."],
-          bad: [{ text: "Reply all to the customer: \"Sarah, these people are always complaining\"" }],
+          bad: [{ text: "Reply all to the customer: \"Sarah, these people are always complaining\"", note: "The customer reads it too." }],
         },
       ],
       tryIt: { title: "Which button?", intro: "Four everyday situations. Pick the button you'd press.", Lab: ReplyLab },
@@ -378,27 +407,37 @@ const m1: ModuleManifest = {
       minutes: 8,
       brief: "Files travel with emails all day. In this lesson you will learn when to attach a file, when to send a link instead, and how to spot an attachment you should never open.",
       learn: [
-        {
-          heading: "Link or attachment?",
+{
+          heading: "Where attachments show up",
           body: [
-            "If the file lives on OneDrive or the team's SharePoint, send colleagues a link. Everyone works on the one real file.",
-            "If the person is outside the company, or the file is final, attach it, usually as a PDF.",
+            "An attachment is a file that travels with an email: an invoice, a delivery note, a form. When you receive one, it sits under the email's details as a box with the file's name (6).",
+            "Click the box to open the file. In your inbox, a paperclip next to the email tells you there's one inside.",
           ],
+          figure: <EmailFigure focus={["attachment"]} title="An attachment you've received" />,
+        },
+        {
+          heading: "Adding one: attach a copy, or insert a link",
+          body: [
+            "When you write an email, there are two buttons for files (6). Attach file sends a copy of the file. Insert link sends a link to the real file on OneDrive or the team's SharePoint.",
+            "Colleagues get a link, so everyone works on the one real file. People outside the company get the file attached, usually as a PDF, because they can't open your links.",
+          ],
+          figure: <ComposeFigure focus={["attach"]} title="Adding a file to an email you're writing" />,
           good: [{ text: "Colleague: a link to Stock November.xlsx" }, { text: "Supplier: Letter to Harlow.pdf attached" }],
         },
         {
           heading: "Say it's there, and check it's there",
-          body: ["Mention the attachment in the email, so people know to look for it.", "Then check it's really attached before you press Send. Forgetting is the most common email slip of all."],
-          good: [{ text: "\"I've attached the delivery note, DN-77812.\"" }],
+          body: ["Mention the attachment in your message, so people know to look for it.", "Then check it's really attached before you press Send. Forgetting is the most common email slip of all."],
+          figure: <ComposeFigure focus={["attach", "message"]} title="Mention it, then check it" />,
+          good: [{ text: "\"I've attached their delivery note, which shows the 10 we received.\"" }],
         },
         {
-          heading: "Attachments that can hurt you",
+          heading: "Read the file's name before you open it",
           body: [
-            "Scammers hide harmful software in attachments. Be wary of anything you weren't expecting, especially .zip files, and files whose name ends in .exe.",
-            "A real invoice from a supplier you know is fine. A \"parcel label\" from a stranger is not.",
+            "A file's name has two parts: the name (1), then a dot and an ending (2) that says what kind of file it really is.",
+            "Scammers hide harmful programs in attachments by faking the ending (3). Be wary of anything you weren't expecting, especially .zip files and anything ending in .exe.",
           ],
-          bad: [{ text: "invoice.pdf.exe", note: "It isn't a PDF. The last part, .exe, is what it really is." }, { text: "label.zip from an address you don't know" }],
-          tip: "Not sure? Don't open it. Ask IT or report it. Nobody ever got in trouble for checking.",
+          figure: <FileNameFigure />,
+          tip: "Not sure? Don't open it. Ask IT, or report the email. Nobody ever got in trouble for checking.",
         },
       ],
       tryIt: { title: "Send it, or stop", intro: "Four attachment moments. Choose what you'd do.", Lab: AttachmentLab },
@@ -430,27 +469,54 @@ const m1: ModuleManifest = {
       minutes: 8,
       brief: "An inbox that's in order means nothing gets missed. In this lesson you will learn to file emails into folders, flag what needs doing, find anything with search, and report what looks wrong.",
       learn: [
+{
+          heading: "Here is the whole inbox",
+          body: [
+            "This is Outlook as you'll see it at work. On the left are your folders (1) and the Inbox (2). In the middle is the list of emails (3). On the right, the email you clicked on (11).",
+            "Along the top are the buttons that keep it in order: Move to (8), Flag (9), Report (10) and Search (7). The numbers match the list underneath.",
+          ],
+          figure: <InboxFigure />,
+        },
+        {
+          heading: "Reading the list",
+          body: [
+            "Each line in the list (3) is one email: who sent it, the subject, the first words, and when.",
+            "Bold with a blue bar (4) means you haven't opened it yet. A paperclip (6) means it has an attachment. The number next to Inbox (2) is how many you haven't opened.",
+          ],
+          figure: <InboxFigure focus={["inbox", "list", "unread", "clip"]} title="The list of emails" />,
+        },
         {
           heading: "Folders: a place for everything",
-          body: ["Most teams agree a few folders, like Deliveries, Invoices and HR. Once an email is dealt with or read, move it into its folder.", "Aim to leave only what still needs doing in your inbox."],
-          good: [{ text: "Open the email > Move to > Invoices" }],
+          body: [
+            "Most teams agree a few folders (1), like Deliveries, Invoices and HR. Once an email is dealt with, open it and use Move to (8) to file it.",
+            "Aim to leave only what still needs doing in your Inbox.",
+          ],
+          figure: <InboxFigure focus={["folders", "moveto"]} title="Filing an email" />,
         },
         {
           heading: "Flags: what you must act on",
-          body: ["A flag marks an email you need to do something about. It stays red until you clear it.", "Only flag what needs action. Flag everything and the flags mean nothing."],
-          good: [{ text: "⚑ \"Delivery 4417 is two pallets short\"", note: "Sarah wants an answer by 3pm today." }],
+          body: [
+            "A red flag (5) marks an email you still need to do something about. Press Flag (9) to add one, and again to clear it once it's done.",
+            "Only flag what needs action. Flag everything and the flags mean nothing.",
+          ],
+          figure: <InboxFigure focus={["flag", "flagbtn"]} title="Flagging an email" />,
         },
         {
           heading: "Search: find anything in seconds",
-          body: ["Type a name, an order number or a word in the search box. Outlook looks in every folder at once.", "This is why good subject lines matter: they make emails easy to find later."],
+          body: [
+            "Type a name, a word or an order number into Search (7). Outlook looks in every folder at once.",
+            "This is why good subject lines matter: they make emails easy to find later.",
+          ],
+          figure: <InboxFigure focus={["search"]} title="Searching" />,
           good: [{ text: "Search: 4417", note: "Every email about order 4417, wherever it was filed." }],
         },
         {
           heading: "Report what looks wrong",
           body: [
             "A scam email usually has a sender you don't know, a threat or a rush, and a link asking for your password or money.",
-            "Don't click anything in it. Press Report. It goes to Junk, and IT can warn everyone else.",
+            "Don't click anything in it. Open it and press Report (10). It goes to Junk, and IT can warn everyone else.",
           ],
+          figure: <InboxFigure focus={["report"]} title="Reporting a scam" />,
           bad: [{ text: "\"Sign in within 24 hours or your account will be closed\"" }],
         },
       ],

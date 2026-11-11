@@ -217,6 +217,7 @@ export default function TopicPlayer({
               {p}
             </p>
           ))}
+          {c.figure}
           <Examples c={c} />
           {c.tip && (
             <p className="tp-tip">
