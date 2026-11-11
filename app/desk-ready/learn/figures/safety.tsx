@@ -604,13 +604,12 @@ export function ToLineFigure({ focus, title = "Who is it really going to?", what
    * it is plain, so its avatar, name and other lines fade with the rest. */
   const row = (name: string, address: string, detail: string, outside: boolean, k: "first" | "second", on: boolean) => {
     const rowLit = !focus?.length || focus.includes(k);
-    const fade = rowLit ? {} : { opacity: 0.32 };
     const inner = (
       <div style={{ display: "flex", gap: 12, alignItems: "center", padding: "8px 10px", borderRadius: 4, background: on && rowLit ? W.select : "transparent" }}>
-        <span aria-hidden style={{ width: 30, height: 30, borderRadius: 15, background: outside ? "#8a6d1f" : W.outlook, color: "#fff", fontSize: 11.5, fontWeight: 700, display: "inline-flex", alignItems: "center", justifyContent: "center", flexShrink: 0, ...fade }}>EC</span>
+        <span aria-hidden style={{ width: 30, height: 30, borderRadius: 15, background: outside ? "#8a6d1f" : W.outlook, color: "#fff", fontSize: 11.5, fontWeight: 700, display: "inline-flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>EC</span>
         <span style={{ minWidth: 0, lineHeight: 1.35 }}>
           <span style={{ display: "flex", gap: 8, alignItems: "center", marginBottom: 3 }}>
-            <b style={{ fontSize: 14, fontWeight: 600, ...fade }}>{name}</b>
+            <b style={{ fontSize: 14, fontWeight: 600 }}>{name}</b>
             {outside && (
               <Part k="external" block={false} badge="right" style={{ padding: "2px 3px", marginLeft: 6 }}>
                 <span style={EXTERNAL}>External</span>
@@ -622,9 +621,9 @@ export function ToLineFigure({ focus, title = "Who is it really going to?", what
               <span style={{ fontSize: 12.5, color: W.body, whiteSpace: "nowrap" }}>{address}</span>
             </Part>
           ) : (
-            <span style={{ display: "block", fontSize: 12.5, color: W.body, whiteSpace: "nowrap", ...fade }}>{address}</span>
+            <span style={{ display: "block", fontSize: 12.5, color: W.body, whiteSpace: "nowrap" }}>{address}</span>
           )}
-          <span style={{ display: "block", fontSize: 12, color: W.muted, ...fade }}>{detail}</span>
+          <span style={{ display: "block", fontSize: 12, color: W.muted }}>{detail}</span>
         </span>
       </div>
     );
