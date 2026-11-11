@@ -101,7 +101,7 @@ export default function Teams({ state, dispatch, show, active, job }: OfficeAppP
             setPane(p);
             setInCallView(false);
           }}
-          call={call && call.stage === "in" ? () => setInCallView(true) : null}
+          call={call && call.stage === "in" && !onCall ? () => setInCallView(true) : null}
         />
         {onCall && call ? (
           <CallArea call={call} state={state} dispatch={dispatch} onBack={() => setInCallView(false)} />
@@ -261,7 +261,8 @@ function ChatPane({ chat, onSend }: { chat: Chat; onSend: (text: string) => void
         {chat.messages.map((m, i) => {
           const mine = m.from.address === YOU.address;
           const prev = chat.messages[i - 1];
-          const head = !prev || prev.from.address !== m.from.address;
+          const dayOf = (t: string) => (t.includes(" ") ? t.split(" ")[0] : "today");
+          const head = !prev || prev.from.address !== m.from.address || dayOf(prev.time) !== dayOf(m.time);
           return (
             <div key={m.id} style={{ display: "flex", justifyContent: mine ? "flex-end" : "flex-start", gap: 10, marginTop: head ? 14 : 4 }}>
               {!mine && <span style={{ width: 32, flexShrink: 0 }}>{head && <Avatar name={m.from.name} colour={avatarColour(m.from.address)} size={32} />}</span>}
@@ -669,7 +670,7 @@ export function WindowThumb({ w, windows, big }: { w: ShareWindow; windows: Shar
     <span style={{ display: "flex", flexDirection: "column", width: "100%", height: "100%", borderRadius: 4, overflow: "hidden", background: "#fff", color: W.ink }}>
       <span style={{ flexShrink: 0, height: big ? 22 : 10, background: colour, color: "#fff", fontSize: big ? 12 : 0, padding: "0 8px", display: "flex", alignItems: "center", whiteSpace: "nowrap", overflow: "hidden" }}>{big ? w.title : ""}</span>
       {w.app === "excel" ? (
-        <span style={{ flex: 1, display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gridAutoRows: "1fr", background: W.edge, gap: 1, padding: 1 }}>
+        <span style={{ flex: 1, display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gridAutoRows: big ? "26px" : "1fr", alignContent: "start", background: big ? `linear-gradient(${W.edge}, ${W.edge}) top / 100% ${6 * 27 + 1}px no-repeat, #fff` : W.edge, gap: 1, padding: 1 }}>
           {Array.from({ length: 30 }, (_, i) => (
             <span key={i} style={{ background: i < 5 ? "#e8f3ec" : "#fff", fontSize: big ? 11 : 0, padding: big ? "1px 4px" : 0, overflow: "hidden", whiteSpace: "nowrap", fontWeight: i < 5 ? 700 : 400 }}>
               {big ? ROTA_CELLS[i] ?? "" : ""}

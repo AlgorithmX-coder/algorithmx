@@ -172,6 +172,7 @@ export default function Calendar({ state, dispatch, show, job }: OfficeAppProps)
               selected={selected}
               onSelect={setSelected}
               onEmpty={(slot) => startNew(slot)}
+              short={!!open}
             />
             {open && (
               <Peek
@@ -322,7 +323,7 @@ function columns(ms: Meeting[]) {
   return out;
 }
 
-function WeekGrid({ state, days, today, now, selected, onSelect, onEmpty }: { state: OfficeState; days: string[]; today: string; now: number | null; selected: string | null; onSelect: (id: string) => void; onEmpty: (s: Slot) => void }) {
+function WeekGrid({ state, days, today, now, selected, onSelect, onEmpty, short }: { state: OfficeState; days: string[]; today: string; now: number | null; short?: boolean; selected: string | null; onSelect: (id: string) => void; onEmpty: (s: Slot) => void }) {
   const cal = calOf(state);
   const hours = Array.from({ length: (DAY_END - DAY_START) / 60 }, (_, i) => DAY_START / 60 + i);
   const top = (t: string) => ((toMin(t) - DAY_START) / 60) * HOUR;
@@ -333,7 +334,7 @@ function WeekGrid({ state, days, today, now, selected, onSelect, onEmpty }: { st
         {days.map((d) => (
           <div key={d} style={{ flex: 1, minWidth: 0, padding: "8px 8px 6px", borderLeft: `1px solid ${W.edge}`, display: "flex", alignItems: "baseline", gap: 6 }}>
             <span style={{ fontSize: 22, fontWeight: d === today ? 700 : 400, color: d === today ? W.outlook : W.ink, lineHeight: 1 }}>{Number(d.slice(8))}</span>
-            <span style={{ fontSize: 13.5, color: d === today ? W.outlook : W.muted, fontWeight: d === today ? 700 : 400 }}>{dayLong(d).split(" ")[0]}</span>
+            <span style={{ fontSize: 13.5, color: d === today ? W.outlook : W.muted, fontWeight: d === today ? 700 : 400, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{short ? dayLong(d).slice(0, 3) : dayLong(d).split(" ")[0]}</span>
           </div>
         ))}
       </div>
@@ -367,7 +368,7 @@ function WeekGrid({ state, days, today, now, selected, onSelect, onEmpty }: { st
                   );
                 })}
                 {d === today && now !== null && now >= DAY_START && now <= DAY_END && (
-                  <div aria-hidden style={{ position: "absolute", left: 0, right: 0, top: ((now - DAY_START) / 60) * HOUR, height: 2, background: "#c4314b", zIndex: 2, pointerEvents: "none" }}>
+                  <div aria-hidden style={{ position: "absolute", left: 0, right: 0, top: ((now - DAY_START) / 60) * HOUR, height: 2, background: "#c4314b", zIndex: 6, pointerEvents: "none" }}>
                     <span style={{ position: "absolute", left: -5, top: -4, width: 10, height: 10, borderRadius: "50%", background: "#c4314b" }} />
                   </div>
                 )}
@@ -512,14 +513,14 @@ export function Respond({ meeting: m, state, onRespond }: { meeting: Meeting; st
     <div>
       <div role="group" aria-label="Respond to the invite" style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
         {RESPONSES.map((x) => (
-          <AppButton key={x.r} onClick={() => onRespond(x.r)} style={r === x.r ? { background: W.select, borderColor: W.outlook, fontWeight: 700 } : undefined}>
+          <AppButton key={x.r} onClick={() => onRespond(x.r)} style={r === x.r ? { background: W.select, border: `1px solid ${W.outlook}`, fontWeight: 700 } : undefined}>
             <span style={{ color: x.colour }}>
               <Icon name={x.icon} size={16} stroke={2.4} />
             </span>
             {x.label}
           </AppButton>
         ))}
-        <AppButton onClick={() => setProposing(true)} style={r === "proposed" ? { background: W.select, borderColor: W.outlook, fontWeight: 700 } : undefined}>
+        <AppButton onClick={() => setProposing(true)} style={r === "proposed" ? { background: W.select, border: `1px solid ${W.outlook}`, fontWeight: 700 } : undefined}>
           <span style={{ color: W.outlook }}>
             <Icon name="clock" size={16} stroke={2.2} />
           </span>

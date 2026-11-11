@@ -138,7 +138,7 @@ export const stockMeeting: Job = {
     "Tell Daniel in his chat, in one line, that it's booked.",
   ],
   apps: ["calendar", "teams"],
-  start: "teams",
+  start: "outlook",
   seed: seedStock,
   check: checkStock,
   habits: [
@@ -329,14 +329,14 @@ function checkFive(s: OfficeState): Check[] {
   add(
     { id: "printer", code: "TM-4", group: "Quick ones: by chat", label: "\"Is the printer fixed?\" went to Sarah by Teams chat" },
     printerChat && !printerMail,
-    printerMail ? "You emailed the printer question. A quick yes-or-no question goes in a Teams chat: it's quicker for both of you, and nobody needs a record of it." : "Open Sarah's chat in Teams and ask her if the warehouse printer is fixed.",
+    printerMail ? "You emailed the printer question. A quick yes-or-no question goes in a Teams chat: it's quicker for both of you, and nobody needs a record of it. A sent email can't be taken back, so press Start the job again and use chat this time." : "Open Sarah's chat in Teams and ask her if the warehouse printer is fixed.",
   );
   const lateChat = saidTo(s, emma).some((x) => /late|minutes|mins|running/i.test(x.text));
   const lateMail = mailTo(s, emma).some((e) => /late|minutes|running/i.test(`${e.subject} ${e.body}`));
   add(
     { id: "late", code: "TM-4", group: "Quick ones: by chat", label: "\"Running 5 minutes late\" went to Emma by Teams chat" },
     lateChat && !lateMail,
-    lateMail ? "You emailed Emma that you're running late. She might not see an email before 11:30. A chat pops up straight away." : "Open Emma's chat in Teams and tell her you're running 5 minutes late.",
+    lateMail ? "You emailed Emma that you're running late. She might not see an email before 11:30. A chat pops up straight away. A sent email can't be taken back, so press Start the job again and use chat this time." : "Open Emma's chat in Teams and tell her you're running 5 minutes late.",
   );
 
   const credit = mailTo(s, tom).some((e) => /HP-?\s?2291/i.test(`${e.subject} ${e.body}`) && /credit/i.test(`${e.subject} ${e.body}`));
@@ -396,7 +396,7 @@ export const chatOrEmail: Job = {
     "Read the November stock count chat for the actions. Email Sarah and Priya one line per action: who, what, by when.",
   ],
   apps: ["teams", "calendar"],
-  start: "teams",
+  start: "outlook",
   seed: seedFive,
   check: checkFive,
   habits: [
