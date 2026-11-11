@@ -590,13 +590,13 @@ export function ToLineFigure({ focus, title = "Who is it really going to?", what
           <span style={{ display: "flex", gap: 8, alignItems: "center", marginBottom: 3 }}>
             <b style={{ fontSize: 14, fontWeight: 600 }}>{name}</b>
             {outside && (
-              <Part k="external" block={false} badge="right" style={{ padding: "2px 3px" }}>
+              <Part k="external" block={false} badge="right" style={{ padding: "2px 3px", marginLeft: 6 }}>
                 <span style={EXTERNAL}>External</span>
               </Part>
             )}
           </span>
           {k === "second" && !(focus?.includes("second") && !focus.includes("address")) ? (
-            <Part k="address" block={false} badge="right" style={{ padding: "2px 6px", margin: "0 -6px" }}>
+            <Part k="address" block={false} badge="right" style={{ padding: "2px 6px", margin: "2px -6px 6px" }}>
               <span style={{ fontSize: 12.5, color: W.body, whiteSpace: "nowrap" }}>{address}</span>
             </Part>
           ) : (
@@ -622,8 +622,8 @@ export function ToLineFigure({ focus, title = "Who is it really going to?", what
                 <span style={{ fontSize: 15 }}>Emma|</span>
               </Part>
             </div>
-            <div style={{ margin: "0 12px 12px 76px", padding: 4, border: `1px solid ${W.edge}`, borderRadius: 6, boxShadow: "0 8px 20px -10px rgba(0,0,0,0.3)", display: "grid", gap: 12, maxWidth: 400 }}>
-              <span style={{ padding: "2px 10px 4px", fontSize: 11.5, color: W.muted }}>Suggested contacts</span>
+            <div style={{ margin: "0 12px 12px 76px", padding: "6px 8px 10px", border: `1px solid ${W.edge}`, borderRadius: 6, boxShadow: "0 8px 20px -10px rgba(0,0,0,0.3)", display: "grid", gap: 20, maxWidth: 400 }}>
+              <span style={{ padding: "2px 10px 0", fontSize: 11.5, color: W.muted }}>Suggested contacts</span>
               {row(EMMA_CLARKSON.name, EMMA_CLARKSON.address, "Bright Cafe (a customer)", true, "first", true)}
               {row("Emma Clarke", "emma.clarke@northfieldsupplies.example", "HR Advisor, Northfield Supplies", false, "second", false)}
             </div>
