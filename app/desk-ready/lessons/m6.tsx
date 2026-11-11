@@ -1,6 +1,7 @@
 "use client";
 
 import { ExcelLab, sheetOf } from "../learn/excelLab";
+import { SheetFigure } from "../learn/figures/sheet";
 import type { LabProps, ModuleManifest } from "../learn/types";
 import { evaluate, numeric } from "../office/formula";
 import type { Grid } from "../office/types";
@@ -28,6 +29,35 @@ const ORDERS = sheetOf(
   5,
   8,
 );
+
+/* The sheets the lessons' figures show. Formulas show their answers. */
+const ORDERS_SUM = [
+  ["Order no", "Customer", "Qty", "Unit price", "Total"],
+  ["4401", "Harlow Foods", "12", "£4.50", "=C2*D2"],
+  ["4402", "Bright Cafe", "6", "£18.00", "=C3*D3"],
+  ["4403", "Kent Bakery", "20", "£14.20", "=C4*D4"],
+  ["", "", "", "Total", "=SUM(E2:E4)"],
+];
+const VAT_SHEET = [
+  ["", "Amount"],
+  ["Net (before VAT)", "£228.00"],
+  ["VAT at 20%", "=B2*0.2"],
+  ["Total with VAT", "=B2+B3"],
+];
+const CHANGE_SHEET = [
+  ["", "Sales"],
+  ["October", "£389.50"],
+  ["November", "£452.00"],
+  ["Change", "=(B3-B2)/B2"],
+];
+const LATE_SHEET = [
+  ["Delivery note", "Supplier", "Status"],
+  ["DN-77790", "Harlow Packaging", "On time"],
+  ["DN-40877", "Kent Flour Mills", "Late"],
+  ["DN-11618", "Brightwater Cups", "On time"],
+  ["DN-77801", "Harlow Packaging", "Late"],
+  ["", "Late deliveries", '=COUNTIF(C2:C5,"Late")'],
+];
 
 /* ---------- Lesson 1: your first formula ---------- */
 
@@ -230,6 +260,14 @@ const m6: ModuleManifest = {
       brief: "A formula is a sum Excel does for you. In this lesson you will write your first ones, and see why a formula beats typing the answer.",
       learn: [
         {
+          heading: "A formula, and the answer it gives",
+          body: [
+            "Here's an order list. Look at the selected cell (10), E2: it shows £54.00. But look at the formula bar (4): what's really in E2 is =C2*D2.",
+            "That's a formula. It tells Excel to work out the quantity (C2) times the unit price (D2), and show the answer. Change either number and the answer changes by itself.",
+          ],
+          figure: <SheetFigure grid={ORDERS_SUM} file="Orders.xlsx" tabs={["Orders"]} activeTab={0} widths={[90, 140, 60, 100, 100]} cell={[1, 4]} row={1} column={4} focus={["formulabar", "cell"]} title="What's typed, and what shows" what={{ formulabar: "=C2*D2: what's really typed in E2. The = tells Excel it's a formula.", cell: "E2 shows the answer: 12 times £4.50 is £54.00." }} />,
+        },
+        {
           heading: "Every formula starts with =",
           body: ["Type = in a cell, then the sum. Press Enter and Excel shows the answer.", "Click the cell again and the formula bar shows the formula behind it."],
           good: [{ text: "=12*4.50", note: "Shows 54." }],
@@ -237,6 +275,7 @@ const m6: ModuleManifest = {
         },
         {
           heading: "Use cell names, not numbers",
+          figure: <SheetFigure grid={ORDERS_SUM} file="Orders.xlsx" tabs={["Orders"]} activeTab={0} widths={[90, 140, 60, 100, 100]} cell={[1, 4]} row={1} column={4} focus={["formulabar"]} title="Cell names in a formula" what={{ formulabar: "=C2*D2 points at the cells. Type =12*4.50 instead and it won't change when the order does." }} />,
           body: ["Point the formula at the cells, like =C2*D2, rather than typing the numbers in.", "Then if C2 changes, the answer changes too."],
           good: [{ text: "=C2*D2", note: "Quantity times unit price, from the cells." }],
           bad: [{ text: "54", note: "Typed in. If the quantity changes, it's wrong." }],
@@ -277,7 +316,16 @@ const m6: ModuleManifest = {
       brief: "Three formulas do most of the work in an office. In this lesson you will add up a list, find its average and count it.",
       learn: [
         {
+          heading: "A total at the bottom of a list",
+          body: [
+            "The total in E5 (10) shows £446.00. The formula bar (4) shows how: =SUM(E2:E4).",
+            "SUM adds up every number from E2 down to E4. Add a row in the middle and widen the range, and the total keeps up.",
+          ],
+          figure: <SheetFigure grid={ORDERS_SUM} file="Orders.xlsx" tabs={["Orders"]} activeTab={0} widths={[90, 140, 60, 100, 100]} cell={[4, 4]} row={4} column={4} focus={["formulabar", "cell", "column"]} title="A SUM" what={{ formulabar: "=SUM(E2:E4): add up E2, E3 and E4.", cell: "E5 shows the answer: £446.00.", column: "The numbers it adds: E2 to E4." }} />,
+        },
+        {
           heading: "SUM adds up a list",
+          figure: <SheetFigure grid={ORDERS_SUM} file="Orders.xlsx" tabs={["Orders"]} activeTab={0} widths={[90, 140, 60, 100, 100]} cell={[4, 4]} row={4} column={4} focus={["formulabar", "column"]} title="E2:E4 means E2 down to E4" />,
           body: ["=SUM(B2:B6) adds every number from B2 down to B6.", "The colon means \"down to\", so you don't have to name every cell."],
           good: [{ text: "=SUM(B2:B6)" }],
           bad: [{ text: "=B2+B3+B4+B5+B6", note: "It works, but it's slow, and easy to miss a cell." }],
@@ -324,6 +372,14 @@ const m6: ModuleManifest = {
       brief: "Quotes and invoices need VAT, and managers love a percentage. In this lesson you will add VAT to a price and work out how much something has gone up.",
       learn: [
         {
+          heading: "VAT, worked out by a formula",
+          body: [
+            "Here the net price is in B2. The VAT in B3 (10) shows £45.60, and the formula bar (4) shows how: =B2*0.2, which is 20% of the net.",
+            "The total with VAT, in B4, is another formula: =B2+B3.",
+          ],
+          figure: <SheetFigure grid={VAT_SHEET} file="Quote.xlsx" tabs={["Quote"]} activeTab={0} widths={[180, 110]} cell={[2, 1]} row={2} column={1} focus={["formulabar", "cell"]} title="VAT at 20%" what={{ formulabar: "=B2*0.2: 20% of the net price in B2.", cell: "B3 shows the VAT: £45.60." }} />,
+        },
+        {
           heading: "VAT is 20% of the net price",
           body: ["The net price is before VAT. VAT is 20% of it, which is the net times 0.2.", "The total with VAT, sometimes called gross, is the net plus the VAT."],
           good: [{ text: "=B2*0.2", note: "VAT on the net in B2." }, { text: "=B2+B3", note: "Net plus VAT." }],
@@ -331,6 +387,7 @@ const m6: ModuleManifest = {
         },
         {
           heading: "A percentage change",
+          figure: <SheetFigure grid={CHANGE_SHEET} file="Sales.xlsx" tabs={["Sales"]} activeTab={0} widths={[150, 110]} cell={[3, 1]} row={3} column={1} shown={(r, c) => (r === 3 && c === 1 ? "16%" : undefined)} focus={["formulabar", "cell"]} title="How much it went up" what={{ formulabar: "=(B3-B2)/B2: take away first, then divide by the old number.", cell: "B4, shown as a percentage: up 16%." }} />,
           body: ["To see how much something went up: take the old number from the new one, then divide by the old one.", "=(new-old)/old. Brackets round the take-away part, so Excel does it first."],
           good: [{ text: "=(B7-B6)/B6", note: "£389.50 to £452.00 is up about 16%." }],
         },
@@ -369,7 +426,16 @@ const m6: ModuleManifest = {
       brief: "\"How many were late?\" is a question you'll hear a lot. In this lesson you will answer it in one formula with COUNTIF.",
       learn: [
         {
+          heading: "Counting what matches",
+          body: [
+            "This delivery log has a Status column. The cell under it (10) shows 2, and the formula bar (4) shows how: =COUNTIF(C2:C5,\"Late\").",
+            "COUNTIF looks down C2 to C5 and counts every cell that says Late.",
+          ],
+          figure: <SheetFigure grid={LATE_SHEET} file="Delivery log.xlsx" tabs={["October"]} activeTab={0} widths={[120, 170, 100]} cell={[5, 2]} row={5} column={2} focus={["formulabar", "cell", "column"]} title="A COUNTIF" what={{ formulabar: '=COUNTIF(C2:C5,"Late"): count the cells in C2 to C5 that say Late.', cell: "C6 shows the count: 2.", column: "Where it looks: the Status column, C2 to C5." }} tint={(r, c) => (c === 2 && r > 0 && r < 5 && LATE_SHEET[r][2] === "Late" ? "#fde2e4" : undefined)} />,
+        },
+        {
           heading: "COUNTIF counts what matches",
+          figure: <SheetFigure grid={LATE_SHEET} file="Delivery log.xlsx" tabs={["October"]} activeTab={0} widths={[120, 170, 100]} cell={[5, 2]} row={5} column={2} focus={["formulabar"]} title="Where to look, then what to look for" what={{ formulabar: 'C2:C5 is where to look. "Late" is what to count.' }} />,
           body: ["=COUNTIF(C2:C8,\"Late\") counts the cells in C2 to C8 that say Late.", "First where to look, then a comma, then what to look for in quote marks."],
           good: [{ text: "=COUNTIF(C2:C41,\"Late\")" }],
         },
@@ -414,11 +480,20 @@ const m6: ModuleManifest = {
       brief: "Lists are long. In this lesson you will write a formula once and copy it down the whole list, with every row working out its own answer.",
       learn: [
         {
+          heading: "One formula on every row",
+          body: [
+            "Every total in column E (9) is a formula. Select E3 (10) and the formula bar (4) shows =C3*D3: the same sum as E2, but using row 3's numbers.",
+            "You only write it once. Copying it down moves the row numbers for you.",
+          ],
+          figure: <SheetFigure grid={ORDERS_SUM} file="Orders.xlsx" tabs={["Orders"]} activeTab={0} widths={[90, 140, 60, 100, 100]} cell={[2, 4]} row={2} column={4} focus={["formulabar", "cell", "column"]} title="The same formula, row by row" what={{ formulabar: "=C3*D3: row 3's quantity times row 3's price.", cell: "E3 shows £108.00.", column: "E2 is =C2*D2, E3 is =C3*D3, E4 is =C4*D4." }} />,
+        },
+        {
           heading: "Write it once, copy it down",
           body: ["Write the formula in the first row. Then copy it down to every row below.", "In real Excel you double-click the small square at the corner of the cell. Here, press ⇩ Fill down."],
         },
         {
           heading: "The row numbers move for you",
+          figure: <SheetFigure grid={ORDERS_SUM} file="Orders.xlsx" tabs={["Orders"]} activeTab={0} widths={[90, 140, 60, 100, 100]} cell={[3, 4]} row={3} column={4} focus={["formulabar", "cell"]} title="Copied down to row 4" what={{ formulabar: "=C4*D4: the formula from E2, copied down, now uses row 4.", cell: "E4 shows £284.00." }} />,
           body: ["=C2*D2 in row 2 becomes =C3*D3 in row 3, =C4*D4 in row 4, and so on.", "Each row works out its own total, without you typing anything."],
           good: [{ text: "E2: =C2*D2 · E3: =C3*D3 · E9: =C9*D9" }],
         },

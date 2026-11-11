@@ -1,6 +1,7 @@
 "use client";
 
 import { SheetLab, cell, column, dataRows, type Grid, type SheetTask } from "../learn/sheet";
+import { SheetFigure } from "../learn/figures/sheet";
 import type { LabProps, ModuleManifest } from "../learn/types";
 
 /* Module 5: Putting business data in. The second pilot module (owner
@@ -16,6 +17,9 @@ const headerLocked = (r: number) => r === 0;
 
 /* Find the data row holding an order number, wherever sorting put it. */
 const rowFor = (g: Grid, order: string) => dataRows(g).find((row) => (row[2] ?? "").trim() === order);
+
+/* The delivery log the lessons' figures show. */
+const DELIVERY_LOG = [["Date", "Supplier", "Order no", "Pallets"], ["10/11/2026", "Brightline Supplies", "4417", "10"], ["10/11/2026", "Fenwick Packaging", "4420", "4"], ["10/11/2026", "Ashby Foods", "4425", "7"]];
 
 /* ---------- Lesson 1: one row for one thing ---------- */
 
@@ -214,6 +218,14 @@ const m5: ModuleManifest = {
       brief: "A spreadsheet is a list, and the way you lay it out matters. In this lesson you will learn the one rule that makes every spreadsheet work: one thing on each row.",
       learn: [
         {
+          heading: "Here is a delivery log",
+          body: [
+            "This is a real kind of business list: the warehouse's delivery log, in Excel. Every part is numbered, and the list underneath says what each one is for.",
+            "Look at how it's laid out: headings along the top, then one delivery on each row. The rest of this lesson is about why.",
+          ],
+          figure: <SheetFigure grid={DELIVERY_LOG} file="Deliveries.xlsx" tabs={["Sheet1"]} activeTab={0} widths={[110, 180, 100, 90]} cell={[1, 2]} row={2} column={1} />,
+        },
+        {
           heading: "A spreadsheet is a list",
           body: [
             "A spreadsheet is a grid of boxes. Each box is a cell. The rows go across and have numbers. The columns go down and have letters.",
@@ -223,12 +235,14 @@ const m5: ModuleManifest = {
         },
         {
           heading: "One row for one thing",
+          figure: <SheetFigure grid={DELIVERY_LOG} file="Deliveries.xlsx" tabs={["Sheet1"]} activeTab={0} widths={[110, 180, 100, 90]} cell={[1, 2]} row={2} column={1} focus={["row"]} title="One delivery, one row" what={{ row: "Row 3: everything about one delivery, and nothing else." }} />,
           body: ["Each row holds one thing: one delivery, one person, one order. Everything about that thing goes on its row, from left to right."],
           good: [{ text: "10/11/2026 | Brightline Supplies | 4417 | 10" }],
           bad: [{ text: "10/11/2026 | Brightline and Fenwick | 4417, 4420 | 14", note: "Two deliveries squashed into one row." }],
         },
         {
           heading: "One column for one kind of detail",
+          figure: <SheetFigure grid={DELIVERY_LOG} file="Deliveries.xlsx" tabs={["Sheet1"]} activeTab={0} widths={[110, 180, 100, 90]} cell={[1, 2]} row={2} column={1} focus={["column"]} title="One detail, one column" what={{ column: "Column B: only suppliers. Never a date or a count." }} />,
           body: [
             "Each column holds one kind of detail, the same all the way down: all the dates in one column, all the suppliers in the next.",
             "Then the sheet can sort, filter and add up for you. Mix them and it cannot.",
@@ -287,7 +301,16 @@ const m5: ModuleManifest = {
       brief: "Headings tell everyone what each column means. In this lesson you will learn to write short, clear headings, so anyone can read your sheet.",
       learn: [
         {
+          heading: "Where the headings go",
+          body: [
+            "The headings (7) are the top row of the list. Each one says what the column under it holds.",
+            "Without them, \"4417\" and \"10\" are just numbers. With them, they're an order number and a count of pallets.",
+          ],
+          figure: <SheetFigure grid={DELIVERY_LOG} file="Deliveries.xlsx" tabs={["Sheet1"]} activeTab={0} widths={[110, 180, 100, 90]} cell={[1, 2]} row={2} column={1} focus={["headings"]} title="The headings" />,
+        },
+        {
           heading: "Row 1 is for headings",
+          figure: <SheetFigure grid={DELIVERY_LOG} file="Deliveries.xlsx" tabs={["Sheet1"]} activeTab={0} widths={[110, 180, 100, 90]} cell={[1, 2]} row={2} column={1} focus={["headings"]} title="Row 1" />,
           body: ["The first row of a list holds a heading for each column. It says what is in that column, all the way down."],
           good: [{ text: "Date | Supplier | Order no | Pallets" }],
           bad: [{ text: "(no headings at all)", note: "Is 4417 an order, a phone extension or a price?" }],
@@ -300,6 +323,7 @@ const m5: ModuleManifest = {
         },
         {
           heading: "Put the unit in the heading",
+          figure: <SheetFigure grid={DELIVERY_LOG} file="Deliveries.xlsx" tabs={["Sheet1"]} activeTab={0} widths={[110, 180, 100, 90]} cell={[1, 3]} row={2} column={3} focus={["headings", "column"]} title="The unit goes in the heading" what={{ column: "Column D holds just numbers. The heading says what they count: pallets." }} />,
           body: ["If a column holds amounts, say what they are counted in. Then the cells only need the number."],
           good: [{ text: "Qty (boxes)", note: "The cells below just say 12, 8, 20." }, { text: "Cost (£)" }],
         },
@@ -343,7 +367,16 @@ const m5: ModuleManifest = {
       brief: "A spreadsheet can only sort and add up what it understands. In this lesson you will learn to type dates and numbers so the sheet can use them.",
       learn: [
         {
+          heading: "Every cell in a column, written the same way",
+          body: [
+            "Look down the Date column (9): every date is written the same way, 10/11/2026. That's what makes a list easy to sort, filter and add up.",
+            "This lesson is about keeping dates, numbers and money the same all the way down.",
+          ],
+          figure: <SheetFigure grid={DELIVERY_LOG} file="Deliveries.xlsx" tabs={["Sheet1"]} activeTab={0} widths={[110, 180, 100, 90]} cell={[1, 0]} row={2} column={0} focus={["column"]} title="One way, all the way down" what={{ column: "Column A: every date is DD/MM/YYYY." }} />,
+        },
+        {
           heading: "Dates: one way, every time",
+          figure: <SheetFigure grid={DELIVERY_LOG} file="Deliveries.xlsx" tabs={["Sheet1"]} activeTab={0} widths={[110, 180, 100, 90]} cell={[1, 0]} row={2} column={0} focus={["column", "formulabar"]} title="Dates" what={{ column: "Every date written DD/MM/YYYY.", formulabar: "Shows exactly what's typed in the cell: 10/11/2026." }} />,
           body: ["In the UK we write the day first, then the month, then the year. Use the same layout on every row."],
           good: [{ text: "03/11/2026" }],
           bad: [{ text: "3rd Nov" }, { text: "Nov 3 2026" }, { text: "11/03/26", note: "Month first is the American way, and it reads as 11 March here." }],
@@ -401,7 +434,16 @@ const m5: ModuleManifest = {
       brief: "Once your data is tidy, the sheet can do the hard work. In this lesson you will sort a list into order and filter it to show only what you need.",
       learn: [
         {
+          heading: "Sort and Filter live on the ribbon",
+          body: [
+            "Two buttons on the ribbon (2) change what you see without changing the data: Sort A→Z puts the rows in order, and Filter shows only the rows you pick.",
+            "Both work on the column of the cell you've selected (10).",
+          ],
+          figure: <SheetFigure grid={DELIVERY_LOG} file="Deliveries.xlsx" tabs={["Sheet1"]} activeTab={0} widths={[110, 180, 100, 90]} cell={[1, 1]} row={2} column={1} focus={["ribbon", "cell"]} title="Sort and Filter" what={{ ribbon: "Sort A→Z orders the rows by the selected column. Filter shows only the rows that match.", cell: "Select a cell in the column you want to sort or filter by: here, Supplier." }} />,
+        },
+        {
           heading: "Sort puts the list in order",
+          figure: <SheetFigure file="Deliveries.xlsx" tabs={["Sheet1"]} activeTab={0} widths={[110, 180, 100, 90]} cell={[1, 1]} row={2} column={1} focus={["ribbon", "column"]} title="Sorting by supplier" what={{ ribbon: "Sort A→Z: the rows move into A to Z order by the selected column.", column: "Sorted by Supplier: Ashby, Brightline, Fenwick." }} grid={[["Date", "Supplier", "Order no", "Pallets"], ["10/11/2026", "Ashby Foods", "4425", "7"], ["10/11/2026", "Brightline Supplies", "4417", "10"], ["10/11/2026", "Fenwick Packaging", "4420", "4"]]} />,
           body: [
             "Sort arranges the rows by one column: A to Z for words, smallest to largest for numbers, oldest to newest for dates.",
             "The whole row moves together, so every detail stays with its delivery.",
@@ -410,6 +452,7 @@ const m5: ModuleManifest = {
         },
         {
           heading: "Filter shows only what you need",
+          figure: <SheetFigure grid={DELIVERY_LOG} file="Deliveries.xlsx" tabs={["Sheet1"]} activeTab={0} widths={[110, 180, 100, 90]} cell={[1, 1]} row={2} column={1} focus={["ribbon"]} title="Filtering" what={{ ribbon: "Filter puts a small arrow on each heading. Pick a value, and only those rows show. The rest are hidden, not deleted." }} />,
           body: ["Filter hides the rows you do not need right now. Show only one supplier, one date or one person."],
           good: [{ text: "Only Brightline Supplies", note: "The other rows are hidden, not deleted." }],
         },
@@ -457,6 +500,14 @@ const m5: ModuleManifest = {
       brief: "Everyone makes typing mistakes. In this lesson you will learn the quick checks that catch them before anyone else does.",
       learn: [
         {
+          heading: "Check each row against the paperwork",
+          body: [
+            "Before you save, check your work one row (8) at a time against the paper it came from: the delivery note, the order form.",
+            "This lesson shows the four usual mistakes, and how to catch them before anyone else does.",
+          ],
+          figure: <SheetFigure grid={DELIVERY_LOG} file="Deliveries.xlsx" tabs={["Sheet1"]} activeTab={0} widths={[110, 180, 100, 90]} cell={[2, 3]} row={2} column={3} focus={["row"]} title="One row, one delivery note" what={{ row: "Row 3: Fenwick Packaging, order 4420, 4 pallets. Does the delivery note say the same?" }} />,
+        },
+        {
           heading: "The four usual mistakes",
           body: ["Most spreadsheet mistakes are one of four kinds. Once you know them, you will spot them fast."],
           bad: [
@@ -468,6 +519,7 @@ const m5: ModuleManifest = {
         },
         {
           heading: "Check against the paperwork",
+          figure: <SheetFigure grid={DELIVERY_LOG} file="Deliveries.xlsx" tabs={["Sheet1"]} activeTab={0} widths={[110, 180, 100, 90]} cell={[2, 3]} row={2} column={3} focus={["row", "cell"]} title="One row against its delivery note" />,
           body: ["Go down the paperwork one line at a time and find the same row in the sheet. Read across the whole row, not just the first cell."],
           tip: "Put a ruler or a sheet of paper under the line you are checking, so you do not skip one.",
         },

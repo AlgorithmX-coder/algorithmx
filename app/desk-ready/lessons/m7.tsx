@@ -2,6 +2,8 @@
 
 import { ExcelLab, sheetOf } from "../learn/excelLab";
 import { ChoiceLab, ComposeLab, type Draft } from "../learn/labs";
+import { ComposeFigure } from "../learn/figures/email";
+import { ChartFigure, SheetFigure } from "../learn/figures/sheet";
 import type { LabProps, ModuleManifest } from "../learn/types";
 import type { Grid } from "../office/types";
 
@@ -16,6 +18,37 @@ import type { Grid } from "../office/types";
  * is never the obvious longest one. */
 
 const cell = (g: Grid, r: number, c: number) => (g[r]?.[c] ?? "").trim();
+
+/* The sheets and chart the lessons' figures show. */
+const MESSY_LOG = [
+  ["Order no", "Date", "Customer", "Qty"],
+  ["4401", "28/09/2026", "Harlow Foods", "12"],
+  ["4403", "29/09/2026", "Kent Bakery", "200"],
+  ["4404", "31/09/2026", "Oak Street Deli", "10"],
+  ["4404", "31/09/2026", "Oak Street Deli", "10"],
+];
+const VALUE_LOG = [
+  ["Delivery note", "Supplier", "Status", "Value"],
+  ["DN-77790", "Harlow Packaging", "On time", "£384.00"],
+  ["DN-40877", "Kent Flour Mills", "Late", "£568.00"],
+  ["DN-11618", "Brightwater Cups", "On time", "£270.00"],
+  ["DN-11622", "Brightwater Cups", "Late", "£612.00"],
+];
+const SPEND_TABLE = [
+  ["Customer", "November", "October"],
+  ["Harlow Foods", "£128.97", "£140.20"],
+  ["Bright Cafe", "£176.40", "£150.00"],
+  ["Kent Bakery", "£452.00", "£389.50"],
+  ["Oak Street Deli", "£133.75", "£120.00"],
+];
+const WEEK_SALES: [string, number][] = [
+  ["Mon", 412.5],
+  ["Tue", 388],
+  ["Wed", 455.2],
+  ["Thu", 402.3],
+  ["Fri", 512],
+];
+const over500 = (r: number, c: number) => (c === 3 && r > 0 && Number((VALUE_LOG[r]?.[3] ?? "").replace(/[£,]/g, "")) > 500 ? "#fde2e4" : undefined);
 
 /* ---------- Lesson 1: spotting data that looks wrong ---------- */
 
@@ -224,12 +257,21 @@ const m7: ModuleManifest = {
       brief: "Spreadsheets are only as good as what's typed into them. In this lesson you will learn the classic slips to look for, and how to check them.",
       learn: [
         {
+          heading: "Three things in this sheet can't be right",
+          body: [
+            "Here's an order log. It looks fine at a glance, but three things are wrong. The red cells point them out.",
+            "Kent Bakery ordering 200 sacks (10) when every order is about 20. A date of 31 September, which doesn't exist. And order 4404 on two rows (8), so it's counted twice.",
+          ],
+          figure: <SheetFigure grid={MESSY_LOG} file="September orders.xlsx" tabs={["Orders"]} activeTab={0} widths={[100, 120, 160, 70]} cell={[2, 3]} row={4} column={1} focus={["cell", "row", "column"]} tint={(r, c) => ((r === 2 && c === 3) || (c === 1 && (r === 3 || r === 4)) ? "#fde2e4" : undefined)} title="Spot what's wrong" what={{ cell: "D3 says 200. Every other order is about 20.", row: "Row 5 is order 4404 again: a copy, counted twice.", column: "31/09/2026: September has only 30 days." }} />,
+        },
+        {
           heading: "Too big, too small, or impossible",
           body: ["Look for numbers far bigger or smaller than the ones around them: 200 sacks when every other order is 20.", "Look for dates that can't exist, like 31 September."],
           bad: [{ text: "Qty 200", note: "Every other flour order is about 20." }, { text: "31/09/2026", note: "September has 30 days." }],
         },
         {
           heading: "Twice is wrong too",
+          figure: <SheetFigure grid={MESSY_LOG} file="September orders.xlsx" tabs={["Orders"]} activeTab={0} widths={[100, 120, 160, 70]} cell={[4, 0]} row={4} column={0} focus={["row"]} tint={(r) => (r === 3 || r === 4 ? "#fde2e4" : undefined)} title="The same order twice" what={{ row: "Row 5 copies row 4. Every total that includes it is too high." }} />,
           body: ["The same order on two rows gets counted twice, and every total that uses it is too high.", "Sort by order number to bring copies together, then remove the extra one."],
         },
         {
@@ -268,7 +310,16 @@ const m7: ModuleManifest = {
       brief: "Colour can make the important numbers jump out. In this lesson you will make Excel colour the cells that matter, and keep it updating by itself.",
       learn: [
         {
+          heading: "Colour that does the looking for you",
+          body: [
+            "Here, a highlight rule colours every value over £500 red, in the Value column (9). It's set once, from the ribbon (2), and keeps itself up to date.",
+            "Change a value to £700 and it turns red. Change it to £300 and the red goes.",
+          ],
+          figure: <SheetFigure grid={VALUE_LOG} file="Delivery log.xlsx" tabs={["October"]} activeTab={0} widths={[120, 170, 90, 100]} cell={[1, 3]} row={2} column={3} focus={["ribbon", "column"]} tint={over500} title="A highlight rule" what={{ ribbon: "Highlight ▾, on the ribbon, sets the rule: here, greater than 500.", column: "Column D: every value over £500 turns red by itself." }} />,
+        },
+        {
           heading: "Let Excel do the colouring",
+          figure: <SheetFigure grid={VALUE_LOG} file="Delivery log.xlsx" tabs={["October"]} activeTab={0} widths={[120, 170, 90, 100]} cell={[1, 3]} row={2} column={3} focus={["ribbon", "cell"]} tint={over500} title="Setting the rule" what={{ ribbon: "Highlight ▾ > Greater than…, then type 500.", cell: "First select any cell in the column you want coloured." }} />,
           body: ["Select a cell in a column, then Highlight ▾ > Greater than…, and type a number.", "Every cell in that column over the number turns red, and it updates when the numbers change."],
           good: [{ text: "Highlight: Value greater than 500" }],
         },
@@ -313,11 +364,21 @@ const m7: ModuleManifest = {
       brief: "Some answers are easier to see than to read. In this lesson you will make one clear bar chart, with a title that says what it shows.",
       learn: [
         {
+          heading: "Here is a bar chart",
+          body: [
+            "A bar chart turns a column of numbers into bars you can compare at a glance. This one shows a week's sales. Every part is numbered.",
+            "Without reading a single number, you can see Friday was the best day.",
+          ],
+          figure: <ChartFigure data={WEEK_SALES} chartTitle="Sales this week" label="Day" value="Sales" />,
+        },
+        {
           heading: "A bar chart compares things",
+          figure: <ChartFigure data={WEEK_SALES} chartTitle="Sales this week" label="Day" value="Sales" focus={["bars", "names", "numbers"]} title="Names along the bottom, numbers up the side" />,
           body: ["Use a bar chart to compare a few things: sales by day, spend by customer.", "Names go along the bottom, numbers go up the side."],
         },
         {
           heading: "The title says what it shows",
+          figure: <ChartFigure data={WEEK_SALES} chartTitle="Sales this week" label="Day" value="Sales" focus={["title"]} title="The chart title" />,
           body: ["\"Chart 1\" tells nobody anything. Say what the chart shows, and when.", "Excel uses your headings to label the axes, so good headings matter."],
           good: [{ text: "Sales this week" }, { text: "Spend by customer, November 2026" }],
           bad: [{ text: "Chart 1" }, { text: "Data" }],
@@ -357,11 +418,20 @@ const m7: ModuleManifest = {
       brief: "Managers ask questions, not for spreadsheets. In this lesson you will learn to read what's really being asked and find exactly that.",
       learn: [
         {
+          heading: "Find the column the question is about",
+          body: [
+            "Daniel asks: \"Who was our biggest customer in November?\" The answer is in one column (9): November. October is right next to it, and easy to read by mistake.",
+            "The biggest number in the November column is Kent Bakery's: £452.00.",
+          ],
+          figure: <SheetFigure grid={SPEND_TABLE} file="Customer spend.xlsx" tabs={["Spend"]} activeTab={0} widths={[160, 110, 110]} cell={[3, 1]} row={3} column={1} focus={["headings", "column", "row"]} title="The right column, the right row" what={{ headings: "Check the heading: November, not October.", column: "Column B: November's spend.", row: "Row 4: Kent Bakery, £452.00, the biggest." }} />,
+        },
+        {
           heading: "Read the question twice",
           body: ["\"Who spent most?\" and \"Who grew most?\" sound alike but have different answers.", "Underline the important word: most, least, November, late."],
         },
         {
           heading: "Check you've got the right column",
+          figure: <SheetFigure grid={SPEND_TABLE} file="Customer spend.xlsx" tabs={["Spend"]} activeTab={0} widths={[160, 110, 110]} cell={[3, 2]} row={3} column={2} focus={["headings", "column"]} title="The wrong column" what={{ headings: "This column's heading says October.", column: "£389.50 is October's number. Daniel asked about November." }} />,
           body: ["Questions are easy to answer from the wrong month or the wrong column.", "Before you reply, check the heading of the column your answer came from."],
           bad: [{ text: "Kent Bakery, £389.50", note: "That's October. He asked about November." }],
         },
@@ -401,7 +471,16 @@ const m7: ModuleManifest = {
       brief: "The work is only done when the answer reaches the person who asked. In this lesson you will write the short email that gets it there.",
       learn: [
         {
+          heading: "The answer, in the first line",
+          body: [
+            "Here's how the answer goes back to Daniel. The greeting, then the answer straight away in the message (8): who, and the number.",
+            "Then a sign-off. That's it. He asked for one line.",
+          ],
+          figure: <ComposeFigure focus={["greeting", "message", "signoff"]} title="A one-line answer" email={{ to: "Daniel Okafor", subject: "Re: Late suppliers in October", greeting: "Hi Daniel,", message: ["Harlow Packaging: late 4 times in October, more than anyone else."], signoff: "Thanks,\nJordan", signature: ["Jordan Miles", "Office Administrator | Northfield Supplies", "01632 960 431"] }} hide={["attach"]} />,
+        },
+        {
           heading: "First line first",
+          figure: <ComposeFigure focus={["message"]} title="The answer, straight after the greeting" email={{ to: "Daniel Okafor", subject: "Re: Late suppliers in October", greeting: "Hi Daniel,", message: ["Harlow Packaging: late 4 times in October, more than anyone else."], signoff: "Thanks,\nJordan", signature: ["Jordan Miles", "Office Administrator | Northfield Supplies", "01632 960 431"] }} hide={["attach"]} />,
           body: ["Put the answer in the first line after the greeting. Busy people may read nothing else.", "Then one more line if it helps, and a sign-off."],
           good: [{ text: "Hi Daniel,\nHarlow Packaging, late 4 times in October.\nThanks," }],
         },

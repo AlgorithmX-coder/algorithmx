@@ -2,6 +2,7 @@
 
 import { ChoiceLab } from "../learn/labs";
 import { SheetLab, cell, type Grid } from "../learn/sheet";
+import { SheetFigure } from "../learn/figures/sheet";
 import type { LabProps, ModuleManifest } from "../learn/types";
 
 /* Module 4: What a spreadsheet is (criteria XL-1, WIN-4). Rows, columns
@@ -209,18 +210,29 @@ const m4: ModuleManifest = {
       brief: "A spreadsheet is a grid. In this lesson you will learn what rows, columns and cells are, and how a list of business data fits into them.",
       learn: [
         {
+          heading: "Here is a whole spreadsheet",
+          body: [
+            "This is Excel, open on the stock list for aisle C. Every part of the screen is numbered, and the list underneath says what each one is for.",
+            "Take a minute to find each number. The next screens go through the most important ones: rows, columns and cells.",
+          ],
+          figure: <SheetFigure />,
+        },
+        {
           heading: "Rows go across, columns go down",
+          figure: <SheetFigure focus={["numbers", "letters", "row", "column"]} title="Rows and columns" what={{ row: "Row 6, across: everything about napkins.", column: "Column B, down: the number of boxes, for every item." }} />,
           body: ["A row runs across the screen. Rows are numbered down the left: 1, 2, 3.", "A column runs down the screen. Columns are lettered across the top: A, B, C."],
           tip: "Think of a row as one line in a list, and a column as one question asked about every line.",
         },
         {
           heading: "A cell is where they meet",
+          figure: <SheetFigure focus={["cell", "namebox"]} title="A cell" what={{ cell: "B5: column B (Boxes) meets row 5 (Lids 8oz). It holds one thing: 35." }} />,
           body: ["Each box in the grid is a cell. You click a cell to select it, and type to put something in it.", "A cell holds one thing: a word, a number or a date."],
           good: [{ text: "Napkins", note: "One item in one cell." }],
           bad: [{ text: "Napkins 95 boxes C-08", note: "Three facts squashed into one cell." }],
         },
         {
           heading: "One row for each thing, one column for each detail",
+          figure: <SheetFigure focus={["headings", "row"]} title="Headings, then one row per thing" />,
           body: ["In a stock list, each item gets its own row. Each detail about it, like how many boxes or where it is, gets its own column.", "Row 1 holds the headings, so everyone knows what each column means."],
           good: [{ text: "Item | Boxes | Location" }, { text: "Napkins | 95 | C-08" }],
         },
@@ -255,12 +267,22 @@ const m4: ModuleManifest = {
       brief: "Every cell has a name, like B4. In this lesson you will learn to read it and jump straight to any cell someone mentions.",
       learn: [
         {
+          heading: "Every cell has a name",
+          body: [
+            "Here is the same stock list. The selected cell (10), with the green box, is the lids' number of boxes.",
+            "Its name is in the Name Box (3): B5. The rest of this lesson shows where that name comes from.",
+          ],
+          figure: <SheetFigure focus={["namebox", "letters", "numbers", "cell"]} title="A cell and its name" />,
+        },
+        {
           heading: "Letter first, then number",
+          figure: <SheetFigure focus={["letters", "numbers", "cell"]} title="Column letter, then row number" what={{ cell: "Column B, row 5, so its name is B5." }} />,
           body: ["A cell's name is its column letter, then its row number. B4 is column B, row 4.", "It's like a map grid reference, or a seat in a theatre."],
           good: [{ text: "B4", note: "Column B, row 4." }, { text: "C14", note: "Column C, row 14." }],
         },
         {
           heading: "Find it in two steps",
+          figure: <SheetFigure focus={["namebox", "cell"]} title="The Name Box shows where you are" />,
           body: ["Go to the column letter along the top, then down to the row number on the left. Where they meet is the cell.", "When a cell is selected, its name shows in the box just above the sheet, called the Name Box."],
           tip: "When someone says \"have a look at B9\", it's the quickest way to point at one number among hundreds.",
         },
@@ -300,12 +322,22 @@ const m4: ModuleManifest = {
       brief: "Typing into a spreadsheet works a little differently from a letter. In this lesson you will learn to type in data, move about with the keyboard, and fix mistakes cleanly.",
       learn: [
         {
+          heading: "Where you type",
+          body: [
+            "You type into the selected cell (10). Whatever's in it also shows in the formula bar (4), where you can see the whole of it, however long.",
+            "The Name Box (3) tells you which cell you're in, so you can be sure you're typing in the right place.",
+          ],
+          figure: <SheetFigure focus={["namebox", "formulabar", "cell"]} title="The cell you type in" />,
+        },
+        {
           heading: "Click and type",
+          figure: <SheetFigure focus={["cell"]} title="Click a cell, then type" />,
           body: ["Click a cell and start typing. What you type replaces whatever was in the cell.", "Press Enter to finish and move down, or Tab to finish and move right."],
           tip: "Enter down, Tab across. You'll type a whole row without touching the mouse.",
         },
         {
           heading: "Change part of a cell with F2",
+          figure: <SheetFigure focus={["formulabar", "cell"]} title="Editing in the formula bar" grid={[["Item", "Boxes", "Location", "Counted by"], ["Pallet wrapp", "24", "C-01", "SP"], ["Labels (1000)", "18", "C-02", "SP"]]} cell={[1, 0]} row={1} column={0} what={{ cell: "A2 has a typo: Pallet wrapp. Press F2 to change just the extra p.", formulabar: "Shows the whole of A2. You can click in here and fix it too." }} />,
           body: ["To change only part of a cell, like one letter, press F2 or double-click the cell. Now you're editing, not replacing.", "You can also click in the formula bar above the sheet and edit there."],
           good: [{ text: "\"Pallet wrapp\": press F2, delete one p, press Enter" }],
         },
@@ -316,6 +348,7 @@ const m4: ModuleManifest = {
         },
         {
           heading: "Type numbers as numbers",
+          figure: <SheetFigure focus={["headings", "column"]} title="The heading says what the numbers are" what={{ column: "Column B holds only numbers: 24, 18, 40. The heading, Boxes, says what they count." }} />,
           body: ["Type just the number: 18, not \"18 boxes\". The heading says what it counts.", "Keep codes the same way every time: C-03, not C-3."],
           good: [{ text: "18" }],
           bad: [{ text: "18 boxes" }, { text: "eighteen" }],
@@ -351,12 +384,22 @@ const m4: ModuleManifest = {
       brief: "One workbook can hold many sheets. In this lesson you will learn to find the sheet you need, add a new one and give it a sensible name.",
       learn: [
         {
+          heading: "One workbook, several sheets",
+          body: [
+            "Along the bottom of every workbook are its sheet tabs (11). This stock workbook has three: Aisle A, Aisle B and Aisle C.",
+            "Each tab is a separate sheet with its own rows and columns. The white, underlined tab is the one you're looking at.",
+          ],
+          figure: <SheetFigure focus={["tabs"]} title="Sheet tabs" />,
+        },
+        {
           heading: "A workbook holds sheets",
+          figure: <SheetFigure focus={["tabs"]} title="The tabs along the bottom" />,
           body: ["An Excel file is called a workbook. Inside it are one or more sheets, each a grid of its own.", "The tabs along the bottom show the sheets. Click a tab to open that sheet."],
           good: [{ text: "Stock November.xlsx · tabs: Aisle A | Aisle B | Aisle C" }],
         },
         {
           heading: "Add and rename a sheet",
+          figure: <SheetFigure focus={["tabs"]} title="Adding a sheet with ⊕" what={{ tabs: "Press ⊕ to add a sheet. Double-click its tab to give it a name." }} />,
           body: ["Press the ⊕ next to the tabs to add a new sheet. It's called Sheet2 to start with.", "Double-click its tab, type a name, and press Enter."],
           good: [{ text: "December", note: "A name that says what's on it." }],
           bad: [{ text: "Sheet2", note: "Nobody knows what's on it." }],
@@ -397,7 +440,16 @@ const m4: ModuleManifest = {
       brief: "Saving sounds simple, but it's where most spreadsheet work gets lost. In this lesson you will learn when to use Save, when to use Save as, and how to tell your changes are safe.",
       learn: [
         {
+          heading: "How to tell it's saved",
+          body: [
+            "The top of the window shows the file's name and whether it's saved (1). \"Not saved\" means your latest changes aren't in the file yet.",
+            "Save lives on the ribbon (2), and Ctrl+S does the same.",
+          ],
+          figure: <SheetFigure focus={["file", "ribbon"]} saved={false} title="Saved or not saved" what={{ file: "The workbook's name. Here it says Not saved: there are changes that aren't in the file yet." }} />,
+        },
+        {
           heading: "Save: update the file where it lives",
+          figure: <SheetFigure focus={["ribbon", "file"]} title="Save, on the ribbon" />,
           body: ["Save (or Ctrl+S) writes your changes into the same file, in the same place.", "Use it when you've changed a file that already exists, like the team's stock sheet."],
           tip: "Press Ctrl+S every few minutes. It costs nothing.",
         },
