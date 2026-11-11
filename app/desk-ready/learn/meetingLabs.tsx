@@ -123,7 +123,7 @@ const INVITES: InviteStep[] = [
     offers: [
       { label: "Wednesday 15:30 to 16:30", free: true, why: "Your call ends at 15:30, so you're free from then." },
       { label: "Wednesday 15:00 to 16:00", free: false, why: "That's the same time again: you're on the Kent Bakery call until 15:30." },
-      { label: "Wednesday 09:00 to 10:00", free: false, why: "The morning huddle is at 09:00. Look at your calendar on the right." },
+      { label: "Wednesday 09:00 to 10:00", free: false, why: "The morning huddle is at 09:00. " },
     ],
   },
   {
@@ -186,11 +186,11 @@ function DayStrip({ mine, meeting, title }: { mine: [number, number, string][]; 
         </div>
       ))}
       {mine.map(([s, e, t]) => (
-        <div key={t} style={{ position: "absolute", left: clash ? "50%" : 2, right: 2, top: y(s) + 1, height: Math.max(13, (e - s) * px - 2), background: "#dbe8f8", borderLeft: `3px solid ${W.outlook}`, borderRadius: 3, fontSize: 11, lineHeight: "13px", padding: "1px 4px", overflow: "hidden", whiteSpace: "nowrap", textOverflow: "ellipsis" }}>
+        <div key={t} style={{ position: "absolute", left: clash ? "50%" : 2, right: 2, top: y(s) + 1, height: Math.max(15, (e - s) * px - 2), background: "#dbe8f8", borderLeft: `3px solid ${W.outlook}`, borderRadius: 3, fontSize: 11, lineHeight: "13px", padding: "1px 4px", overflow: "hidden", whiteSpace: "nowrap", textOverflow: "ellipsis" }}>
           {t}
         </div>
       ))}
-      <div style={{ position: "absolute", left: 2, right: clash ? "51%" : 2, top: y(meeting[0]) + 1, height: Math.max(13, (meeting[1] - meeting[0]) * px - 2), background: "repeating-linear-gradient(135deg, #ffffff 0 5px, #dbe8f8 5px 10px)", border: `1px dashed ${clash ? "#c4314b" : W.outlook}`, borderRadius: 3, fontSize: 11, lineHeight: "13px", fontWeight: 600, padding: "1px 4px", overflow: "hidden", whiteSpace: "nowrap", textOverflow: "ellipsis" }}>
+      <div style={{ position: "absolute", left: 2, right: clash ? "51%" : 2, top: y(meeting[0]) + 1, height: Math.max(15, (meeting[1] - meeting[0]) * px - 2), background: "repeating-linear-gradient(135deg, #ffffff 0 5px, #dbe8f8 5px 10px)", border: `1px dashed ${clash ? "#c4314b" : W.outlook}`, borderRadius: 3, fontSize: 11, lineHeight: "13px", fontWeight: 600, padding: "1px 4px", overflow: "hidden", whiteSpace: "nowrap", textOverflow: "ellipsis" }}>
         {title}
       </div>
     </div>
@@ -344,7 +344,7 @@ export function InviteLab({ onDone }: LabProps) {
     <div>
       <StepBar at={at + 1} of={total} label="Step" />
       <Job>
-        {s.from} has sent you an invite. Look at your calendar on the right of it, then answer the way you would at work.
+        {s.from} has sent you an invite. Look at your own calendar for that day, drawn beside it, then answer the way you would at work.
       </Job>
       <Workspace style={{ marginTop: 14 }}>
         <div style={appWindow}>
@@ -522,7 +522,7 @@ export function JoinLab({ onDone }: LabProps) {
       <Job>
         {teams ? (
           <>
-            Emma&apos;s invite says: <b>&ldquo;Cameras on and microphones on mute when you join, please.&rdquo;</b> It&apos;s 14:00. Join her Teams call the way she asks.
+            Emma&apos;s invite says: <b>&ldquo;Cameras on and microphones on mute when you join, please.&rdquo;</b>{" "}It&apos;s 14:00. Join her Teams call the way she asks.
           </>
         ) : (
           <>
@@ -615,8 +615,8 @@ export function JoinLab({ onDone }: LabProps) {
           )}
           {stage === "in" && (
             <div style={{ position: "relative", background: W.call, color: "#fff", padding: 12 }}>
-              <div style={{ position: "relative", aspectRatio: "16 / 8", maxHeight: 260, borderRadius: 8, overflow: "hidden", background: "#3b3a39" }}>
-                <CameraPicture colour={avatarColour(teams ? "emma.clarke@northfieldsupplies.example" : "imran.ahmed@kentbakery.example")} />
+              <div style={{ position: "relative", height: "clamp(180px, 44vw, 260px)", borderRadius: 8, overflow: "hidden", background: "#3b3a39" }}>
+                <span style={{ position: "absolute", inset: 0 }}><CameraPicture colour={avatarColour(teams ? "emma.clarke@northfieldsupplies.example" : "imran.ahmed@kentbakery.example")} /></span>
                 <span style={{ position: "absolute", left: 8, bottom: 8, padding: "2px 7px", borderRadius: 4, background: "rgba(0,0,0,0.55)", fontSize: 12.5 }}>{teams ? "Emma Clarke" : "Imran Ahmed"}</span>
                 <div style={{ position: "absolute", right: 8, bottom: 8, width: 120, aspectRatio: "16 / 10", borderRadius: 6, overflow: "hidden", background: "#2b2b2b", display: "flex", alignItems: "center", justifyContent: "center" }}>
                   {(teams ? camera : !zVideoOff) ? <CameraPicture colour="#8a4fd8" /> : <Avatar name="You" colour="#8a4fd8" size={30} />}
@@ -661,6 +661,12 @@ const CALL_STEPS: { say: string; want: CallAct; done: string }[] = [
   { say: "Daniel asks you a question. Unmute so you can answer.", want: "mic", done: "Unmuted: they can hear you now." },
   { say: "The meeting's over. Leave the call.", want: "leave", done: "You've left. The meeting carries on for anyone still in it." },
 ];
+
+/* A tiny window drawing for the Share tray: a sheet's grid, or an inbox. */
+const thumbLook = (app: "excel" | "outlook"): CSSProperties =>
+  app === "excel"
+    ? { background: "#fff", borderTop: `6px solid ${W.excel}`, backgroundImage: `linear-gradient(${W.edge} 1px, transparent 1px), linear-gradient(90deg, ${W.edge} 1px, transparent 1px)`, backgroundSize: "24px 10px" }
+    : { borderTop: `6px solid ${W.outlook}`, background: `linear-gradient(90deg, ${W.chrome} 0 28%, #fff 28%)`, backgroundImage: `linear-gradient(#a4262c, #a4262c), linear-gradient(${W.edge}, ${W.edge}), linear-gradient(${W.edge}, ${W.edge}), linear-gradient(90deg, ${W.chrome} 0 28%, #fff 28%)`, backgroundSize: "45% 3px, 55% 3px, 50% 3px, 100% 100%", backgroundPosition: "36% 18%, 40% 38%, 38% 54%, 0 0", backgroundRepeat: "no-repeat" };
 
 const WRONG: Partial<Record<CallAct, string>> = {
   screen: "Your whole screen shows every window, including the private email in Outlook. Pick only the Excel window.",
@@ -748,7 +754,7 @@ export function CallLab({ onDone }: LabProps) {
                 </div>
               )}
               <div style={{ position: "relative", padding: 10 }}>
-                <div style={{ position: "relative", aspectRatio: "16 / 8", maxHeight: 280, borderRadius: 8, overflow: "hidden", background: "#3b3a39" }}>
+                <div style={{ position: "relative", height: "clamp(190px, 46vw, 270px)", borderRadius: 8, overflow: "hidden", background: "#3b3a39" }}>
                   {sharing ? (
                     <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", padding: 14 }}>
                       <div style={{ width: "86%", height: "84%", background: "#fff", borderRadius: 4, overflow: "hidden", display: "grid", gridTemplateRows: "16px 1fr" }}>
@@ -757,7 +763,9 @@ export function CallLab({ onDone }: LabProps) {
                       </div>
                     </div>
                   ) : (
-                    <CameraPicture colour={avatarColour("daniel.okafor@northfieldsupplies.example")} />
+                    <span style={{ position: "absolute", inset: 0 }}>
+                      <CameraPicture colour={avatarColour("daniel.okafor@northfieldsupplies.example")} />
+                    </span>
                   )}
                   <span style={{ position: "absolute", left: 8, bottom: 8, padding: "2px 7px", borderRadius: 4, background: "rgba(0,0,0,0.55)", fontSize: 12.5 }}>{sharing ? "What Daniel sees" : "Daniel Okafor"}</span>
                   <div style={{ position: "absolute", right: 8, bottom: 8, width: "min(130px, 34%)", aspectRatio: "16 / 10", borderRadius: 6, overflow: "hidden", background: "#2b2b2b", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 4px 12px rgba(0,0,0,0.5)" }}>
@@ -770,7 +778,7 @@ export function CallLab({ onDone }: LabProps) {
                 {tray && (
                   <div role="dialog" aria-label="Share content" style={{ position: "absolute", left: 10, right: 10, top: 10, padding: 12, borderRadius: 8, background: "#2b2b2b", border: "1px solid #444", boxShadow: "0 12px 30px rgba(0,0,0,0.6)" }}>
                     <b style={{ fontSize: 14.5 }}>Share content</b>
-                    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(118px, 1fr))", gap: 8, marginTop: 10 }}>
+                    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(118px, 170px))", gap: 8, marginTop: 10 }}>
                       {(
                         [
                           ["screen", "Screen 1 (whole screen)"],
@@ -780,8 +788,8 @@ export function CallLab({ onDone }: LabProps) {
                       ).map(([k, label]) => (
                         <button key={k} type="button" onClick={() => act(k)} style={{ display: "grid", gap: 5, padding: 6, border: "2px solid transparent", borderRadius: 7, background: "#3a3a3a", color: "#fff", fontFamily: W.font, fontSize: 12, textAlign: "left", cursor: "pointer" }}>
                           <span style={{ display: "block", aspectRatio: "16 / 10", borderRadius: 3, overflow: "hidden", background: k === "screen" ? W.desktop : "#fff", position: "relative" }}>
-                            <span style={{ position: "absolute", left: k === "screen" ? "8%" : 0, right: k === "screen" ? "30%" : 0, top: k === "screen" ? "10%" : 0, height: k === "screen" ? "60%" : "100%", background: "#fff", borderTop: `6px solid ${k === "outlook" ? W.outlook : W.excel}` }} />
-                            {k === "screen" && <span style={{ position: "absolute", left: "38%", right: "6%", top: "28%", height: "60%", background: "#fff", borderTop: `6px solid ${W.outlook}`, boxShadow: "0 2px 6px rgba(0,0,0,0.4)" }} />}
+                            <span style={{ position: "absolute", left: k === "screen" ? "8%" : 0, right: k === "screen" ? "30%" : 0, top: k === "screen" ? "10%" : 0, height: k === "screen" ? "60%" : "100%", ...thumbLook(k === "outlook" ? "outlook" : "excel") }} />
+                            {k === "screen" && <span style={{ position: "absolute", left: "38%", right: "6%", top: "28%", height: "60%", ...thumbLook("outlook"), boxShadow: "0 2px 6px rgba(0,0,0,0.4)" }} />}
                           </span>
                           {label}
                         </button>
@@ -910,7 +918,7 @@ export function ChatOrEmailLab({ onDone }: LabProps) {
               <div key={i} style={{ justifySelf: "end", maxWidth: "92%", display: "flex", gap: 6, alignItems: "flex-start", padding: "6px 10px", borderRadius: 7, background: W.teamsSoft, fontSize: 13.5, lineHeight: 1.4 }}>
                 {mark(x)}
                 <span>
-                  <b style={{ fontWeight: 600 }}>{x.m.to.split(" ")[0]}:</b> {x.m.text}
+                  <b style={{ fontWeight: 600 }}>To {x.m.to}:</b> {x.m.text}
                 </span>
               </div>
             ))}

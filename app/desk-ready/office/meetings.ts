@@ -168,7 +168,7 @@ export const initials = (name: string) =>
 /* A steady colour per person, as Teams and Outlook give each avatar. */
 const AVATAR = ["#c2410c", "#0e7a5a", "#7a3fb0", "#b4235a", "#1f6fb2", "#8a6d12", "#5b5fc7"];
 export function avatarColour(address: string) {
-  if (address === YOU.address) return "#8a4fd8";
+  if (address === YOU.address || /^you\b/i.test(address)) return "#8a4fd8";
   let h = 0;
   for (const ch of address) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
   return AVATAR[h % AVATAR.length];

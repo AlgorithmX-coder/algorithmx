@@ -70,7 +70,7 @@ export function TeamsFigure({ chat = PRINTER_CHAT, focus, title = "Microsoft Tea
   const info = infoWith(TEAMS_PARTS, what);
   const list = chat.group && !CHAT_LIST.some((c) => c.name === chat.name) ? [{ name: chat.name, preview: chat.lines[chat.lines.length - 1]?.text ?? "", time: chat.lines[chat.lines.length - 1]?.time ?? "", presence: "available" as const, group: true }, ...CHAT_LIST.slice(0, 3)] : CHAT_LIST;
   return (
-    <FigureFrame info={info} focus={focus} title={title} note={note} minWidth={720}>
+    <FigureFrame info={info} focus={focus} title={title} note={note} minWidth={740}>
       <AppWindow app="Microsoft Teams" colour={W.teams}>
         <div style={{ display: "flex", minHeight: 330 }}>
           <div style={{ width: 96, flexShrink: 0, padding: "10px 6px 10px 30px", background: "#ebebf3", borderRight: `1px solid ${W.edge}`, borderRadius: "0 0 0 8px" }}>
@@ -130,7 +130,7 @@ export function TeamsFigure({ chat = PRINTER_CHAT, focus, title = "Microsoft Tea
             </Part>
           </div>
           <div style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column" }}>
-            <div style={{ padding: "10px 14px 8px 46px", borderBottom: `1px solid ${W.edge}` }}>
+            <div style={{ padding: "10px 14px 8px 60px", borderBottom: `1px solid ${W.edge}` }}>
               <Part k="header" style={{ justifySelf: "start", display: "inline-block", paddingRight: 8 }}>
                 <span style={{ display: "inline-flex", alignItems: "center", gap: 8, fontSize: 15, fontWeight: 700 }}>
                   {chat.group ? (
@@ -145,7 +145,7 @@ export function TeamsFigure({ chat = PRINTER_CHAT, focus, title = "Microsoft Tea
                 </span>
               </Part>
             </div>
-            <div style={{ flex: 1, padding: "12px 14px 12px 46px", background: "#f5f5f5" }}>
+            <div style={{ flex: 1, padding: "12px 14px 12px 60px", background: "#f5f5f5" }}>
               <Part k="messages">
                 <div style={{ display: "grid", gap: 8 }}>
                   {chat.lines.map((l, i) => {
@@ -166,7 +166,7 @@ export function TeamsFigure({ chat = PRINTER_CHAT, focus, title = "Microsoft Tea
                 </div>
               </Part>
             </div>
-            <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "10px 46px 12px 46px", borderTop: `1px solid ${W.edge}` }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "10px 46px 12px 60px", borderTop: `1px solid ${W.edge}` }}>
               <Part k="compose" style={{ flex: 1, minWidth: 0 }}>
                 <div style={{ minHeight: 34, padding: "7px 10px", border: `1px solid ${W.edge}`, borderBottom: `2px solid ${W.teams}`, borderRadius: 5, fontSize: 13.5, color: chat.draft ? W.ink : W.faint, background: W.page }}>{chat.draft ?? "Type a message"}</div>
               </Part>
@@ -225,7 +225,7 @@ export function PreJoinFigure({ zoom, camera = false, mic = true, focus, title, 
               <span style={{ fontSize: 13, color: W.muted }}>{zoom ? "Meeting ID 000 000 0000 · Thursday 12 November, 15:00" : "Wednesday 11 November, 14:00 to 14:30"}</span>
             </div>
           </Part>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: 14 }}>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: "14px 50px" }}>
             <div style={{ flex: "1 1 260px", minWidth: 0, background: W.page, borderRadius: 8, boxShadow: "0 1px 6px rgba(0,0,0,0.1)" }}>
               <Part k="preview" badge="left" style={{ borderRadius: "8px 8px 0 0" }}>
                 <div style={{ position: "relative", aspectRatio: "16 / 9", background: W.call, borderRadius: "8px 8px 0 0", overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center" }}>
@@ -263,7 +263,7 @@ export function PreJoinFigure({ zoom, camera = false, mic = true, focus, title, 
                   </span>
                 </Part>
               )}
-              {!zoom && <span style={{ fontSize: 12.5, color: W.muted, paddingLeft: 4 }}>Phone audio · Don&apos;t use audio</span>}
+              <span style={{ fontSize: 12.5, color: W.muted, paddingLeft: 4 }}>{zoom ? "Test speaker and microphone" : <>Phone audio · Don&apos;t use audio</>}</span>
             </div>
           </div>
           <div style={{ display: "flex", justifyContent: "flex-end", gap: 10 }}>
@@ -338,9 +338,9 @@ export function CallFigure({ mic = false, camera = true, sharing, focus, title =
               </div>
             </Part>
           )}
-          <div style={{ position: "relative", display: "flex", gap: 10, marginTop: 12, minHeight: 210 }}>
+          <div style={{ position: "relative", display: "flex", gap: 10, marginTop: 12, height: 240 }}>
             <Part k="them" style={{ flex: 1, minWidth: 0 }}>
-              <div style={{ position: "relative", height: "100%", minHeight: 210, borderRadius: 8, overflow: "hidden", background: "#3b3a39" }}>
+              <div style={{ position: "relative", height: 240, borderRadius: 8, overflow: "hidden", background: "#3b3a39" }}>
                 {sharing ? (
                   <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", padding: 16 }}>
                     <div style={{ width: "80%", aspectRatio: "16 / 9", background: "#fff", borderRadius: 4, overflow: "hidden", display: "grid", gridTemplateRows: "14px 1fr" }}>
@@ -349,7 +349,9 @@ export function CallFigure({ mic = false, camera = true, sharing, focus, title =
                     </div>
                   </div>
                 ) : (
-                  <CameraPicture colour={avatarColour("emma.clarke@northfieldsupplies.example")} />
+                  <span style={{ position: "absolute", inset: 0 }}>
+                    <CameraPicture colour={avatarColour("emma.clarke@northfieldsupplies.example")} />
+                  </span>
                 )}
                 <span style={{ position: "absolute", left: 8, bottom: 8, padding: "2px 7px", borderRadius: 4, background: "rgba(0,0,0,0.55)", fontSize: 12 }}>{sharing ? "What Emma sees" : "Emma Clarke"}</span>
               </div>
@@ -413,7 +415,7 @@ export function ShareTrayFigure({ focus, title = "Share: what the others will se
   const label: CSSProperties = { fontSize: 12, fontWeight: 600, color: "rgba(255,255,255,0.7)", margin: "10px 0 6px" };
   return (
     <FigureFrame info={info} focus={focus} title={title} note={note} minWidth={470}>
-      <div style={{ display: "inline-block", padding: "14px 40px 16px 44px", borderRadius: 10, background: "#2b2b2b", color: "#fff", boxShadow: W.float }}>
+      <div style={{ display: "table", margin: "0 auto", padding: "14px 40px 16px 44px", borderRadius: 10, background: "#2b2b2b", color: "#fff", boxShadow: W.float }}>
         <b style={{ fontSize: 14.5 }}>Share content</b>
         <p style={label}>Screen</p>
         <Part k="screen" block={false} style={{ borderRadius: 7 }}>

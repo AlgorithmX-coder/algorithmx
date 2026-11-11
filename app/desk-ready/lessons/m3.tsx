@@ -119,7 +119,7 @@ const m3: ModuleManifest = {
           heading: "Here is a whole meeting invite",
           body: [
             "When someone wants you at a meeting, Outlook sends you an invite. It arrives in your inbox like an email, and sits in your calendar, shaded, until you answer.",
-            "Every part is numbered, and the key underneath says what each one is for. Notice your own calendar for that day (9), drawn right beside it.",
+            "Every part is numbered, and the key underneath says what each one is for. Notice your own calendar for that day (8), drawn right beside it.",
           ],
           figure: <InviteFigure />,
         },
@@ -127,7 +127,7 @@ const m3: ModuleManifest = {
           heading: "Check your calendar before you answer",
           figure: <InviteFigure focus={["when", "yourday"]} title="The time, and your own day around it" />,
           body: [
-            "Look at the date and time (3), then at your calendar (9). The shaded block is this meeting. If nothing else of yours sits beside it, you're free.",
+            "Look at the date and time (3), then at your calendar (8). The shaded block is this meeting. If nothing else of yours sits beside it, you're free.",
             "Here, 11:00 to 11:30 on Tuesday is clear: the huddle is at 09:00 and the shadowing starts at 14:00.",
           ],
           tip: "Words like \"tomorrow\" in an invite count from the day it was sent. The date in part 3 is the one that matters.",
@@ -135,7 +135,7 @@ const m3: ModuleManifest = {
         {
           heading: "Four ways to answer",
           figure: <InviteFigure focus={["respond"]} title="Your answer" chosen="Accept" />,
-          body: ["Your answer (8) goes back to the organiser and updates your calendar. Pick the one that's true:"],
+          body: ["Your answer (7) goes back to the organiser and updates your calendar. Pick the one that's true:"],
           good: [
             { text: "Accept", note: "You're free and you'll be there. It goes in your calendar." },
             { text: "Tentative", note: "Maybe: you're waiting to find out. Change it once you know." },
@@ -156,7 +156,7 @@ const m3: ModuleManifest = {
           heading: "Booking a meeting yourself",
           body: [
             "To book a meeting, open your calendar and press New event. This is the form you fill in, with every part numbered.",
-            "As you add people (3), Outlook shows under their names whether they're free at the time you've picked (4).",
+            "Add the people you need (3) and pick a time (4). The next screen shows how to choose a time they can all make.",
           ],
           figure: <BookingFigure />,
         },

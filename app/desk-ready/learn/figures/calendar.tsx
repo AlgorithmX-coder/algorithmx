@@ -34,9 +34,9 @@ export const INVITE_PARTS: Record<InvitePart, PartInfo> = {
   where: { n: 4, name: "Location", what: "Where to go: a meeting room, or somewhere like the warehouse." },
   join: { n: 5, name: "Teams meeting", what: "It's a video call too. At the time, press Join to go in from your computer." },
   people: { n: 6, name: "Attendees", what: "Everyone else who's been asked to come." },
-  agenda: { n: 7, name: "Agenda", what: "What the meeting is for. Read it before you go, and bring what it asks for." },
-  respond: { n: 8, name: "Your answer", what: "Accept, Tentative (maybe), Decline, or Propose new time when you can't make it but should be there." },
-  yourday: { n: 9, name: "Your calendar", what: "Your own day around the meeting, so you can see at a glance if you're free." },
+  agenda: { n: 9, name: "Agenda", what: "What the meeting is for. Read it before you go, and bring what it asks for." },
+  respond: { n: 7, name: "Your answer", what: "Accept, Tentative (maybe), Decline, or Propose new time when you can't make it but should be there." },
+  yourday: { n: 8, name: "Your calendar", what: "Your own day around the meeting, so you can see at a glance if you're free." },
 };
 
 export interface InviteExample {
@@ -73,7 +73,7 @@ export const ROTA_INVITE: InviteExample = {
   to: 13,
 };
 
-const HOUR_PX = 30;
+const HOUR_PX = 34;
 
 function MyDay({ ex }: { ex: InviteExample }) {
   const hours = Array.from({ length: ex.to - ex.from + 1 }, (_, i) => ex.from + i);
@@ -89,11 +89,11 @@ function MyDay({ ex }: { ex: InviteExample }) {
       {ex.mine
         .filter(([s, l]) => s + l > ex.from && s < ex.to)
         .map(([s, l, t]) => (
-          <div key={t} style={{ position: "absolute", left: clash ? "52%" : 2, right: 2, top: y(Math.max(s, ex.from)) + 1, height: Math.max(14, (Math.min(s + l, ex.to) - Math.max(s, ex.from)) * HOUR_PX - 2), background: "#dbe8f8", borderLeft: `3px solid ${W.outlook}`, borderRadius: 3, fontSize: 11.5, padding: "1px 5px", overflow: "hidden", whiteSpace: "nowrap", textOverflow: "ellipsis" }}>
+          <div key={t} style={{ position: "absolute", left: s < ex.meeting[0] + ex.meeting[1] && ex.meeting[0] < s + l ? "52%" : 2, right: 2, top: y(Math.max(s, ex.from)) + 1, height: Math.max(16, (Math.min(s + l, ex.to) - Math.max(s, ex.from)) * HOUR_PX - 2), background: "#dbe8f8", borderLeft: `3px solid ${W.outlook}`, borderRadius: 3, fontSize: 11, lineHeight: "14px", padding: "1px 5px", overflow: "hidden", whiteSpace: "nowrap", textOverflow: "ellipsis" }}>
             {t}
           </div>
         ))}
-      <div style={{ position: "absolute", left: 2, right: clash ? "50%" : 2, top: y(ex.meeting[0]) + 1, height: Math.max(14, ex.meeting[1] * HOUR_PX - 2), background: `repeating-linear-gradient(135deg, #ffffff 0 5px, #dbe8f8 5px 10px)`, border: `1px dashed ${clash ? "#c4314b" : W.outlook}`, borderRadius: 3, fontSize: 11.5, fontWeight: 600, padding: "1px 5px", overflow: "hidden", whiteSpace: "nowrap", textOverflow: "ellipsis" }}>
+      <div style={{ position: "absolute", left: 2, right: clash ? "50%" : 2, top: y(ex.meeting[0]) + 1, height: Math.max(16, ex.meeting[1] * HOUR_PX - 2), background: `repeating-linear-gradient(135deg, #ffffff 0 5px, #dbe8f8 5px 10px)`, border: `1px dashed ${clash ? "#c4314b" : W.outlook}`, borderRadius: 3, fontSize: 11, lineHeight: "14px", fontWeight: 600, padding: "1px 5px", overflow: "hidden", whiteSpace: "nowrap", textOverflow: "ellipsis" }}>
         {ex.title}
       </div>
     </div>
@@ -110,7 +110,7 @@ export function InviteFigure({ invite = ROTA_INVITE, focus, title = "A meeting i
     ["Propose new time", "clock", W.outlook],
   ];
   return (
-    <FigureFrame info={info} focus={focus} title={title} note={note}>
+    <FigureFrame info={info} focus={focus} title={title} note={note} minWidth={600}>
       <AppWindow app="Outlook" colour={W.outlook} title="Inbox">
         <div style={{ padding: "18px 22px 22px 52px", display: "grid", gap: 12 }}>
           <Part k="title" style={{ justifySelf: "start", paddingRight: 8 }}>
@@ -172,7 +172,7 @@ export function InviteFigure({ invite = ROTA_INVITE, focus, title = "A meeting i
                 </div>
               </Part>
             </div>
-            <Part k="yourday" badge="top" style={{ flex: "0 1 200px", minWidth: 170, alignSelf: "flex-start" }}>
+            <Part k="yourday" badge="top" style={{ flex: "0 1 230px", minWidth: 190, alignSelf: "flex-start" }}>
               <div style={{ background: W.chrome, borderRadius: 6, padding: "10px 10px 12px" }}>
                 <b style={{ display: "block", fontSize: 12.5, fontWeight: 600, color: W.muted, marginBottom: 10 }}>Your calendar</b>
                 <MyDay ex={invite} />
@@ -239,7 +239,7 @@ const pick = (text: string) => <span style={{ display: "inline-flex", alignItems
 export function BookingFigure({ meeting = DELIVERY_REVIEW, focus, title = "Booking a meeting in Outlook", note, what }: { meeting?: BookExample; focus?: BookPart[]; title?: string; note?: string; what?: Partial<Record<BookPart, string>> }) {
   const info = infoWith(BOOK_PARTS, what);
   return (
-    <FigureFrame info={info} focus={focus} title={title} note={note}>
+    <FigureFrame info={info} focus={focus} title={title} note={note} minWidth={560}>
       <AppWindow app="Outlook" colour={W.outlook} title="New event">
         <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 12, padding: "10px 46px 10px 52px", background: W.chrome, borderBottom: `1px solid ${W.edge}` }}>
           <Part k="send" block={false}>
@@ -339,8 +339,8 @@ export const REVIEW_ROWS: FindRow[] = [
   { name: "You (organiser)", busy: [[9, 9.25], [10.5, 11]] },
   { name: "Sarah Patel", busy: [[9, 9.25], [10, 12]] },
   { name: "Emma Clarke", busy: [[9, 9.25], [12, 13]] },
-  { name: "Room 1", room: true, busy: [[9, 10]] },
-  { name: "Room 2", room: true, busy: [[11, 12.5]] },
+  { name: "Room 1", room: true, busy: [[10.5, 12]] },
+  { name: "Room 2", room: true, busy: [[11.5, 12.5]] },
 ];
 
 const SLOT_PX = 44; // per half hour
@@ -373,7 +373,7 @@ export function SchedulingFigure({ rows = REVIEW_ROWS, day = "Wednesday 11 Novem
           const bar = <span style={{ display: "block", height: "100%", borderRadius: 3, background: "#2f6ab3" }} />;
           const style: CSSProperties = { position: "absolute", left: x(s) + 1, width: x(e) - x(s) - 2, top: 9, bottom: 9 };
           return i === lit && j === r.busy.length - 1 ? (
-            <Part key={j} k="busy" badge="top" style={{ ...style, borderRadius: 3 }}>
+            <Part key={j} k="busy" badge="right" style={{ ...style, borderRadius: 3 }}>
               {bar}
             </Part>
           ) : (
