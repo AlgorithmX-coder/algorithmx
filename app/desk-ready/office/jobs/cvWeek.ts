@@ -1,4 +1,3 @@
-import { parseDone, readDoneRaw } from "../../learn/progress";
 import { AGENCY, storedAgency } from "../agency";
 import { ALL_STARTING_LINES, CV_TEMPLATE, CV_TEMPLATE_PATH, agencyLines, cvFileName, cvName, cvStartingLines, cvTemplateDoc, homeAddress, isCopied, isSkillLine, pagesOf, section, skillLines, type ProofLine } from "../cv";
 import { PEOPLE, inbound, officeFolders } from "../northfield";
@@ -34,17 +33,30 @@ export function notesDoc(lines: readonly ProofLine[], general: boolean): WordDoc
       para(
         general
           ? "You haven't finished an office job in the course yet, so these are general lines. Only use one if you can really do it. Finish a few jobs and these notes fill with what you actually did."
-          : "Things you did this week, from what I saw. Pick three for your CV and put them in your own words. Daniel",
+          : "Things you did this week, from what I saw. Pick three for your CV and put them in your own words.",
       ),
+      ...(general ? [] : [para("Daniel")]),
       para("What you did", "h1"),
       ...lines.map((l) => para(l.line, "bullet")),
     ],
   };
 }
 
+/* The lessons and jobs finished in this browser: learn/progress's list,
+ * read straight from storage, because a job is also loaded by the server
+ * page (for its title) and must not pull in the progress hooks. */
+function finished(): string[] {
+  try {
+    const parsed: unknown = JSON.parse(window.localStorage.getItem("desk:done") ?? "[]");
+    return Array.isArray(parsed) ? parsed.filter((x): x is string => typeof x === "string") : [];
+  } catch {
+    return [];
+  }
+}
+
 /* The lines the job offers, from this browser's progress. */
 export function offeredLines(): { lines: ProofLine[]; general: boolean } {
-  return cvStartingLines(parseDone(readDoneRaw()), agencyLines(storedAgency()));
+  return cvStartingLines(finished(), agencyLines(storedAgency()));
 }
 
 const JO_BODY = `Hi,
@@ -191,6 +203,7 @@ export const cvWeek: Job = {
   doneLine: "Jo has a one-page CV with your name on it, in your words, ready to send to employers.",
   brief: "Jo at Pennyford Recruitment needs your CV. Read her email and Daniel's, then make it in Word. A CV is yours, so keep it in your own OneDrive > Documents, never on a team site. For the phone number, a made-up one like 07700 900461 is fine here. When you think it's done, press Check my work.",
   apps: ["word"],
+  hide: ["excel"],
   hints: [
     "Read Jo's email, then Daniel's. Open his note: File Explorer > OneDrive > Documents > My week at Northfield.",
     "Open Word and click CV under New. It opens as a new document.",

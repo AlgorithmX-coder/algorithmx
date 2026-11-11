@@ -54,7 +54,7 @@ export function ExcelTest({ practice, seconds = PASS.excelSeconds, onFinish, onL
       <aside aria-label="Your tasks" style={{ display: "flex", flexDirection: "column", minHeight: 0, borderRight: `1px solid ${W.edge}`, background: "#fbfbfa" }}>
         <div style={{ padding: "10px 12px", borderBottom: `1px solid ${W.edge}`, display: "grid", gap: 8 }}>
           <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 8 }}>
-            <span style={{ fontSize: 13, color: W.muted }}>{practice ? "Practice: no clock" : "Time left"}</span>
+            <span style={{ fontSize: 13, color: W.muted }}>{practice ? "Practice: no time limit" : "Time left"}</span>
             <b aria-label={practice ? "Time taken" : "Time left"} style={{ fontSize: 24, fontWeight: 600, fontVariantNumeric: "tabular-nums", color: !practice && left <= 60 ? BAD : W.ink }}>
               {clock(practice ? elapsed : Math.ceil(left))}
             </b>
