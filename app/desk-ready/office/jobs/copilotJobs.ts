@@ -83,7 +83,7 @@ function checkDraft(s: OfficeState): Check[] {
   add(
     { id: "day", code: "AI-2", group: "Checking the draft", label: "The day is right: Thursday 12 November, not Copilot's Friday" },
     !!mail && THURSDAY.test(body) && !FRIDAY.test(body),
-    !mail ? "Send the reply first, with the day checked against Sarah's email." : FRIDAY.test(body) ? (/\b13/.test(body) ? "Your reply still has Copilot's date, the 13th (that's Friday). Sarah's email says Thursday 12 November: change it." : "Your reply still says Friday. Sarah's email says Thursday 12 November: change it.") : "Say the day in your reply: Thursday 12 November.",
+    !mail ? "Send the reply first, with the day checked against Sarah's email." : FRIDAY.test(body) ? (/\bfri/i.test(body) ? "Your reply still says Friday, as Copilot wrote it. Sarah's email says Thursday 12 November: change it." : "Your reply still has Copilot's date, the 13th (that's Friday). Sarah's email says Thursday 12 November: change it.") : "Say the day in your reply: Thursday 12 November.",
   );
   add(
     { id: "discount", code: "AI-2", group: "Checking the draft", label: "Copilot's made-up 10% discount is gone" },

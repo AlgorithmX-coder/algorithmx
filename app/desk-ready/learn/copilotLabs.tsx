@@ -145,7 +145,7 @@ export function TrustLab({ onDone }: LabProps) {
       <StepBar at={at + 1} of={ROUNDS.length} label="Question" />
       <TheJob style={{ marginTop: 14 }}>Click the suggested prompt to put it in the box, then press Send. Read Copilot&apos;s answer, and decide whether you can use it.</TheJob>
       <Workspace style={{ marginTop: 14 }}>
-        <CopilotWindow height={turn ? 440 : 330}>
+        <CopilotWindow>
           <CopilotChat key={at} turns={turn ? [turn] : []} onAsk={(p) => setTurn(turnOf({ host: "app", prompt: p, kind: "help", reply: round.reply, refs: round.refs }))} layout="pane" suggestions={[{ label: round.prompt, fill: round.prompt }]} greeting="What would you like to ask?" placeholder="Ask Copilot" />
         </CopilotWindow>
       </Workspace>
@@ -306,7 +306,7 @@ export function ExplainLab({ onDone }: LabProps) {
       <TheJob>{'Daniel totals each customer\'s orders with SUMIF. Kent Bakery\'s is in C11. Ask Copilot what that formula does (press Copilot on the ribbon). Then write one like it in C12 for Oak Street Deli, and press Check my sheet.'}</TheJob>
       <Workspace style={{ marginTop: 14 }}>
         <div style={{ overflowX: "auto" }}>
-          <div className="of-office" style={{ minWidth: 720, height: 470, borderRadius: 8, overflow: "hidden", boxShadow: W.float, colorScheme: "light" }}>
+          <div className="of-office" style={{ minWidth: 720, height: 620, borderRadius: 8, overflow: "hidden", boxShadow: W.float, colorScheme: "light" }}>
             <Excel
               practice
               doc={doc}
