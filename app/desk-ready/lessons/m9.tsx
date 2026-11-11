@@ -319,7 +319,7 @@ const m9: ModuleManifest = {
         {
           heading: "One folder per year",
           body: [
-            "When last year's files sit with this year's (2), the folder only ever grows, and finding this week's report means reading past dozens of old ones.",
+            "Here, a file from last December sits among this month's (2). Let last year's files pile up like that and the folder only ever grows, and finding this week's report means reading past dozens of old ones.",
             "Give each year its own folder (4). This year's work goes in 2026. Last year's goes in 2025, where it's kept but out of the way.",
           ],
           figure: <TidyFigure focus={["mixed", "years"]} title="Years in their own folders" />,
@@ -395,7 +395,7 @@ const m9: ModuleManifest = {
           ],
           figure: <NameFigure focus={["date", "sorted"]} title="The date" />,
           good: [{ text: "2026-11-09", note: "Year, month, day. Sorts in order." }],
-          bad: [{ text: "9 Nov, 09-11-26, 11.9.2026", note: "Every one sorts out of order, and some are unclear." }],
+          bad: [{ text: "9 Nov, 09-11-26, 9.11.2026", note: "Every one sorts out of order, and some are unclear." }],
         },
         {
           heading: "Then say what it is",
@@ -405,7 +405,7 @@ const m9: ModuleManifest = {
           ],
           figure: <NameFigure focus={["words"]} title="What it is" />,
           good: [{ text: "2026-11-06 Delivery report.xlsx", note: "The date, then what it is." }],
-          bad: [{ text: "report final v2.xlsx", note: "Final for now. Which report? When?" }, { text: "scan001.pdf", note: "Nobody can search for it." }],
+          bad: [{ text: "report final v2.xlsx", note: "Final for now. Which report? When?" }, { text: "scan001.pdf", note: "Nobody can tell what it is." }],
         },
         {
           heading: "Leave the ending alone",
@@ -426,7 +426,7 @@ const m9: ModuleManifest = {
         {
           heading: "Rename a file",
           body: [
-            "Here, the selected file (12) is called report final v2.xlsx. Open it to find its date, then press Rename (6), or F2 on the keyboard. Type the new name, like 2026-11-06 Delivery report, and press Enter.",
+            "Here, the selected file (12) is called report final v2.xlsx. It was last saved on 9 November, but open it and the report inside is for 6 November. Use that date: press Rename (6), or F2 on the keyboard, type 2026-11-06 Delivery report, and press Enter.",
             "Check it afterwards: the date year first, a space, a few words, and the ending as it was.",
           ],
           figure: <LibraryFigure focus={["rename", "file"]} title="Rename" file="report final v2.xlsx" what={{ file: "Its name says nothing useful. Open it, find its date, then rename it." }} />,
@@ -462,10 +462,10 @@ const m9: ModuleManifest = {
       brief: "Your work files live in two kinds of place: your own OneDrive, and the team's SharePoint sites, which Teams shows too. In this lesson you'll see which is which, what goes where, and how every save is kept.",
       learn: [
         {
-          heading: "Here are the three places, side by side",
+          heading: "Two places, and Teams showing one of them",
           body: [
             "On the left, your OneDrive (1): only you can open it (2), so it's for your drafts (3).",
-            "In the middle, the Operations Team's site on SharePoint (4): the whole team can open it (5), so it holds the files the team works on (6). On the right, the Files tab in Teams (7), showing that very same file (8).",
+            "In the middle, the Operations Team's site on SharePoint (4): the whole team can open it (5), so it holds the files the team works on (6). On the right, the Files tab in Teams (7): not a third place, but the team's site again, showing that very same file (8).",
           ],
           figure: <PlacesFigure />,
         },
@@ -585,23 +585,23 @@ const m9: ModuleManifest = {
         {
           heading: "Here is Excel making a PDF of some rows",
           body: [
-            "To send only Harlow's rows, filter the sheet (1) so only theirs show (2), then make a PDF of what's on screen.",
-            "Press File (3), then Export, then Create PDF (4). The PDF gets exactly what you can see.",
+            "To send only Harlow's rows, filter the sheet (3) so only theirs show (4), then make a PDF of what's on screen.",
+            "Press File (1), then Export, then Create PDF (2). The PDF gets exactly what you can see.",
           ],
           figure: <ExportFigure />,
         },
         {
           heading: "Filter to the rows they need",
           body: [
-            "Press Filter on the ribbon, then the ▾ on the Supplier heading (1), and pick Harlow Packaging.",
-            "Only Harlow's rows show (2). The others are hidden, not deleted, and the yellow bar says how many are on show: 4 of 11.",
+            "Press Filter on the ribbon, then the ▾ on the Supplier heading (3), and pick Harlow Packaging.",
+            "Only Harlow's rows show (4). The others are hidden, not deleted, and the yellow bar says how many are on show: 4 of 11.",
           ],
           figure: <ExportFigure focus={["filter", "shown"]} title="The filter" menu={false} />,
         },
         {
           heading: "Export, then look at it",
           body: [
-            "Press File (3), Export, then Create PDF (4). Name it the house way, the date first and then what it is, like 2026-11-10\u00a0Harlow\u00a0stock, and press Save.",
+            "Press File (1), Export, then Create PDF (2). Name it the house way, the date first and then what it is, like 2026-11-10\u00a0Harlow\u00a0stock, and press Save.",
             "The PDF opens. Read it before you send it: Harlow's rows, and nobody else's. Then attach it to your email.",
           ],
           figure: <ExportFigure focus={["file", "export"]} title="Create PDF" />,
@@ -641,7 +641,7 @@ const m9: ModuleManifest = {
           heading: "Here is the Share box",
           body: [
             "Select a file and press Share, and this opens. At the top, what you're sharing (1). Then who (2), what they can do (3), a message (4), and Send (5).",
-            "Underneath, Copy link (6) with its settings (7). At the top right, Manage access (8): everyone who can open it now.",
+            "Underneath, Copy link: who the link works for (6), and Copy (7). At the top right, Manage access (8): everyone who can open it now.",
           ],
           figure: <ShareFigure />,
         },
@@ -657,16 +657,16 @@ const m9: ModuleManifest = {
         {
           heading: "Copy link, and who it works for",
           body: [
-            "Copy link (6) gives you a link to paste into an email or a chat. Who it works for is written in the bar beside it (7).",
-            "Read that bar every time. Here it says People in Northfield Supplies with the link can edit: anyone at the company who gets hold of the link could change the file.",
+            "Copy (7) gives you a link to paste into an email or a chat. Who it works for is written in the bar under Copy link (6).",
+            "Read that bar every time. Here it says \"People in Northfield Supplies with the link can edit\": anyone at the company who gets hold of the link could change the file.",
           ],
           figure: <ShareFigure focus={["copylink", "settings"]} title="Copy link" />,
         },
         {
           heading: "Here are the link settings",
           body: [
-            "Click the bar under Copy link and these settings open. Who the link works for: Anyone (1), People in Northfield Supplies (2), People with existing access (3), or Specific people (4).",
-            "Then what they can do (5): Can edit, or Can view. Press Apply, and copy the link.",
+            "Press the bar under Copy link and these settings open. Who the link works for: Anyone (1), People in Northfield Supplies (2), People with existing access (3), or Specific people (4).",
+            "Here, Specific people is picked (4), the safest choice. Then what they can do (5): Can edit, or Can view. Press Apply, and copy the link.",
           ],
           figure: <LinkSettingsFigure />,
         },

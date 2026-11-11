@@ -135,13 +135,14 @@ const ONEDRIVE_ROWS: LibRow[] = [
 export function LibraryFigure({ focus, title = "A team folder in File Explorer", what, note, view = "deliveries", file, renumber }: { focus?: LibraryPart[]; title?: string; what?: What<LibraryPart>; note?: string; view?: "deliveries" | "onedrive"; file?: string; renumber?: Partial<Record<LibraryPart, number>> }) {
   const cols = "minmax(0, 2.7fr) 1.1fr 0.9fr";
   const mine = view === "onedrive";
-  const rows = (mine ? ONEDRIVE_ROWS : LIB_ROWS).map((r) => (r.part === "file" && file ? { ...r, name: file, when: "06/11/2026 15:02" } : r));
+  const rows = (mine ? ONEDRIVE_ROWS : LIB_ROWS).map((r) => (r.part === "file" && file ? { ...r, name: file, when: "09/11/2026 10:14" } : r));
   const crumbs = mine ? ["OneDrive - Northfield", "Documents"] : ["Operations Team", "Documents", "Deliveries"];
   return (
-    <FigureFrame info={withWhat(LIBRARY_PARTS, what, renumber)} focus={focus} title={title} note={note} minWidth={780}>
+    <FigureFrame info={withWhat(LIBRARY_PARTS, what, renumber)} focus={focus} title={title} note={note} minWidth={600}>
+      <style>{LIB_PHONE_CSS}</style>
       <div style={frame}>
         {bar("#2b2b2b", <><b>File Explorer</b><span style={{ opacity: 0.9 }}>{mine ? "OneDrive > Documents" : "Operations Team > Documents > Deliveries"}</span></>)}
-        <div style={{ display: "flex", alignItems: "center", flexWrap: "wrap", gap: 7, padding: "40px 8px 8px", background: W.chrome, borderBottom: `1px solid ${W.edge}` }}>
+        <div style={{ display: "flex", alignItems: "center", flexWrap: "wrap", gap: 7, rowGap: 40, padding: "40px 8px 8px", background: W.chrome, borderBottom: `1px solid ${W.edge}` }}>
           <Part k="newfolder" block={false} badge="top">{cmd(Ico.newFolder, "New folder")}</Part>
           <Part k="upload" block={false} badge="top">{cmd(Ico.upload, "Upload")}</Part>
           {sep}
@@ -168,7 +169,7 @@ export function LibraryFigure({ focus, title = "A team folder in File Explorer",
           </Part>
         </div>
         <div style={{ display: "flex", minHeight: 280 }}>
-          <div style={{ width: 200, flexShrink: 0, display: "flex", flexDirection: "column", padding: "12px 6px 10px 44px", background: W.chrome, borderRight: `1px solid ${W.edge}`, borderRadius: "0 0 0 8px" }}>
+          <div className="lib-nav" style={{ width: 200, flexShrink: 0, display: "flex", flexDirection: "column", padding: "12px 6px 10px 44px", background: W.chrome, borderRight: `1px solid ${W.edge}`, borderRadius: "0 0 0 8px" }}>
             <Part k="places">
               <div>
                 <p style={{ margin: "2px 8px 4px", fontSize: 12, fontWeight: 700, color: W.muted, whiteSpace: "nowrap" }}>OneDrive - Northfield</p>
@@ -185,42 +186,47 @@ export function LibraryFigure({ focus, title = "A team folder in File Explorer",
             <Part k="bin">{line(<span style={{ display: "inline-flex", color: W.muted }}>{Ico.bin}</span>, "Recycle bin", undefined, { borderTop: `1px solid ${W.edge}` })}</Part>
           </div>
           <div style={{ flex: 1, minWidth: 0, padding: "10px 12px 14px 46px" }}>
-            <div style={{ display: "grid", gridTemplateColumns: cols, gap: 10, padding: "34px 8px 6px", fontSize: 12.5, color: W.muted, borderBottom: `1px solid ${W.edge}` }}>
+            <div className="lib-row" style={{ display: "grid", gridTemplateColumns: cols, gap: 10, padding: "34px 8px 6px", fontSize: 12.5, color: W.muted, borderBottom: `1px solid ${W.edge}` }}>
               <span>Name</span>
               <Part k="modified" block={false} badge="top">
                 <span>Modified</span>
               </Part>
-              <Part k="by" block={false} badge="top">
-                <span>Modified by</span>
-              </Part>
+              <span className="lib-by">
+                <Part k="by" block={false} badge="top">
+                  <span>Modified by</span>
+                </Part>
+              </span>
             </div>
             <div style={{ display: "grid", gap: 14, paddingTop: 10 }}>
             {rows.map((r) => {
-              const row = (
-                <div style={{ display: "grid", gridTemplateColumns: cols, gap: 10, alignItems: "center", minHeight: 36, padding: "0 8px", fontSize: 13.5, background: r.part === "file" ? W.select : undefined, borderRadius: 4 }}>
-                  <span style={{ display: "flex", alignItems: "center", gap: 9, minWidth: 0 }}>
-                    <FileGlyph kind={r.kind} size={18} />
-                    <span style={{ whiteSpace: "nowrap" }}>{r.name}</span>
-                    {r.part === "file" && !mine && !file && (
-                      <Part k="shared" block={false} badge="right">
-                        <SharedMark />
-                      </Part>
-                    )}
-                  </span>
-                  <span style={{ color: W.muted }}>{r.when}</span>
-                  <span style={{ color: W.muted }}>{r.who}</span>
-                </div>
+              /* the numbered part is the name, so on a phone the lit name shows */
+              const name = (
+                <span style={{ display: "flex", alignItems: "center", gap: 9, minWidth: 0, minHeight: 32, padding: "0 6px" }}>
+                  <FileGlyph kind={r.kind} size={18} />
+                  <span style={{ whiteSpace: "nowrap" }}>{r.name}</span>
+                  {r.part === "file" && !mine && !file && (
+                    <Part k="shared" block={false} badge="right">
+                      <SharedMark />
+                    </Part>
+                  )}
+                </span>
               );
-              return r.part === "file" ? (
-                <Group key={r.name} k="file" focus={focus} holds={["shared"]}>
-                  {row}
-                </Group>
-              ) : r.part ? (
-                <Part key={r.name} k={r.part}>
-                  {row}
-                </Part>
-              ) : (
-                <div key={r.name}>{row}</div>
+              return (
+                <div key={r.name} className="lib-row" style={{ display: "grid", gridTemplateColumns: cols, gap: 10, alignItems: "center", minHeight: 36, padding: "0 2px", fontSize: 13.5, background: r.part === "file" ? W.select : undefined, borderRadius: 4 }}>
+                  {r.part === "file" ? (
+                    <Group k="file" focus={focus} holds={["shared"]} style={{ justifySelf: "start" }}>
+                      {name}
+                    </Group>
+                  ) : r.part ? (
+                    <Part k={r.part} style={{ justifySelf: "start" }}>
+                      {name}
+                    </Part>
+                  ) : (
+                    name
+                  )}
+                  <span style={{ color: W.muted }}>{r.when}</span>
+                  <span className="lib-by" style={{ color: W.muted }}>{r.who}</span>
+                </div>
               );
             })}
             </div>
@@ -231,13 +237,17 @@ export function LibraryFigure({ focus, title = "A team folder in File Explorer",
   );
 }
 
+/* On a phone the places column narrows and Modified by goes, so a lit
+ * file name shows beside the places without sliding. */
+const LIB_PHONE_CSS = `@media (max-width: 720px) { .lib-nav { width: 168px !important; } .lib-by { display: none !important; } .lib-row { grid-template-columns: minmax(0, 1.9fr) 1fr !important; } }`;
+
 /* ── 2. a messy folder beside a tidy one ──────────────────────────────── */
 
 export type TidyPart = "vague" | "copy" | "mixed" | "years" | "dated" | "order";
 
 export const TIDY_PARTS: Record<TidyPart, PartInfo> = {
   copy: { n: 1, name: "A copy", what: "The same report twice. Which one is right? Someone will change one and not the other." },
-  mixed: { n: 2, name: "Years mixed up", what: "Last December's files sit among this month's, so the folder only grows." },
+  mixed: { n: 2, name: "Last year mixed in", what: "DR 14-12-25 is from last December, sitting among this month's files, so the folder only grows." },
   vague: { n: 3, name: "A name that says nothing", what: "scan001: you'd have to open it to find out what it is, and when." },
   years: { n: 4, name: "A folder per year", what: "Last year's files in 2025, this year's in 2026. The folder you need is always small." },
   order: { n: 5, name: "In date order by itself", what: "Because the date comes first, year first, the list sorts itself, oldest to newest." },
@@ -302,11 +312,13 @@ export const NAME_PARTS: Record<NamePart, PartInfo> = {
 };
 
 export function NameFigure({ focus, title = "A file name, the house way", what, note }: { focus?: NamePart[]; title?: string; what?: What<NamePart>; note?: string }) {
-  const seg: CSSProperties = { display: "inline-block", padding: "4px 4px", fontFamily: "Consolas, ui-monospace, monospace", fontSize: 26, letterSpacing: "0.01em", whiteSpace: "nowrap" };
+  const split = !!focus?.some((k) => k === "words" || k === "ending");
+  const seg: CSSProperties = { display: "inline-block", padding: "4px 0", fontFamily: "Consolas, ui-monospace, monospace", fontSize: 26, letterSpacing: "0.01em", whiteSpace: "nowrap" };
   return (
-    <FigureFrame info={withWhat(NAME_PARTS, what)} focus={focus} title={title} note={note} minWidth={700}>
+    <FigureFrame info={withWhat(NAME_PARTS, what)} focus={focus} title={title} note={note}>
       <div style={{ ...frame, padding: "46px 26px 22px 46px" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "nowrap" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 10, rowGap: 40, flexWrap: "wrap" }}>
+          <span style={{ display: "inline-flex", alignItems: "center", gap: 10 }}>
           <FileGlyph kind="xlsx" size={38} />
           <Part k="date" block={false} badge="top">
             <span style={{ ...seg, color: "#0f6cbd" }}>2026-11-10</span>
@@ -315,13 +327,19 @@ export function NameFigure({ focus, title = "A file name, the house way", what, 
             <span style={{ width: 22, height: 14, border: `2px solid ${W.muted}`, borderTop: "none", borderRadius: "0 0 3px 3px" }} />
             <span style={{ fontSize: 11.5, fontWeight: 600, color: W.body }}>space</span>
           </span>
+          </span>
+          {/* the words and the ending run straight on: no space before the
+           * ending. Only when one of them is lit do they part, so its
+           * outline has room. */}
+          <span style={{ display: "inline-flex", alignItems: "center", gap: split ? 12 : 0 }}>
           <Part k="words" block={false} badge="top">
-            <span style={{ ...seg, color: W.ink }}>Delivery report</span>
+            <span style={{ ...seg, color: W.ink, paddingRight: split ? 4 : 0 }}>Delivery report</span>
           </Part>
           {/* the ending follows the words straight on: there's no space before it */}
-          <Part k="ending" block={false} badge="top" style={{ marginLeft: -12, outlineOffset: 0 }}>
-            <span style={{ ...seg, color: W.excel }}>.xlsx</span>
+          <Part k="ending" block={false} badge="top">
+            <span style={{ ...seg, color: W.excel, paddingLeft: split ? 4 : 0 }}>.xlsx</span>
           </Part>
+          </span>
         </div>
         <Part k="sorted" style={{ marginTop: 26 }} badge="left">
           <div style={{ border: `1px solid ${W.edge}`, borderRadius: 6, overflow: "hidden" }}>
@@ -353,7 +371,7 @@ export const PLACES_PARTS: Record<PlacesPart, PartInfo> = {
 
 function Place({ head, children, colour }: { head: ReactNode; children: ReactNode; colour: string }) {
   return (
-    <div style={{ ...frame, width: 246, flexShrink: 0 }}>
+    <div style={{ ...frame, width: 254, flexShrink: 0 }}>
       {bar(colour, head)}
       {children}
     </div>
@@ -363,11 +381,11 @@ function Place({ head, children, colour }: { head: ReactNode; children: ReactNod
 export function PlacesFigure({ focus, title = "Your OneDrive, the team's site, and Teams", what, note }: { focus?: PlacesPart[]; title?: string; what?: What<PlacesPart>; note?: string }) {
   const stock = line(<FileGlyph kind="xlsx" size={18} />, "Stock November.xlsx");
   return (
-    <FigureFrame info={withWhat(PLACES_PARTS, what)} focus={focus} title={title} note={note} minWidth={770}>
+    <FigureFrame info={withWhat(PLACES_PARTS, what)} focus={focus} title={title} note={note} minWidth={790}>
       <div style={{ display: "flex", gap: 14, alignItems: "flex-start", paddingTop: 30 }}>
         <Group k="onedrive" focus={focus} badge="top" holds={["onlyyou", "drafts"]}>
           <Place colour="#6b3fb3" head={<><b>OneDrive</b><span style={{ opacity: 0.9 }}>Northfield Supplies</span></>}>
-            <div style={{ padding: "10px 12px 12px 44px" }}>
+            <div style={{ padding: "12px 18px 14px 44px" }}>
               <Part k="onlyyou">
                 <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "6px 8px", borderRadius: 5, background: "#f3eefb", fontSize: 13, color: "#4b2a85" }}>
                   {ShareIcon.lock(16)} Only you
@@ -377,7 +395,7 @@ export function PlacesFigure({ focus, title = "Your OneDrive, the team's site, a
               <Part k="drafts" style={{ marginTop: 9 }}>
                 <div>
                   {line(folderIcon(), "Drafts")}
-                  <div style={{ paddingLeft: 12 }}>{line(<FileGlyph kind="docx" size={18} />, <span style={{ whiteSpace: "nowrap" }}>2026-11-09 Notes.docx</span>)}</div>
+                  <div style={{ paddingLeft: 10, paddingRight: 6 }}>{line(<FileGlyph kind="docx" size={18} />, <span style={{ whiteSpace: "nowrap" }}>2026-11-09 Notes.docx</span>)}</div>
                 </div>
               </Part>
             </div>
@@ -385,7 +403,7 @@ export function PlacesFigure({ focus, title = "Your OneDrive, the team's site, a
         </Group>
         <Group k="site" focus={focus} badge="top" holds={["members", "teamfile"]}>
           <Place colour="#03787c" head={<><b>SharePoint</b><span style={{ opacity: 0.9 }}>Operations Team</span></>}>
-            <div style={{ padding: "10px 12px 12px 44px" }}>
+            <div style={{ padding: "12px 18px 14px 44px" }}>
               <Part k="members">
                 <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "6px 8px", borderRadius: 5, background: "#eef6f6", fontSize: 13, color: "#03575a" }}>
                   {ShareIcon.people(16)} Daniel, Sarah and you
@@ -406,7 +424,7 @@ export function PlacesFigure({ focus, title = "Your OneDrive, the team's site, a
               <span style={{ padding: "6px 0", color: W.muted }}>Posts</span>
               <span style={{ padding: "6px 0", borderBottom: `3px solid ${W.teams}`, fontWeight: 700 }}>Files</span>
             </div>
-            <div style={{ padding: "10px 12px 12px 44px" }}>
+            <div style={{ padding: "12px 18px 14px 44px" }}>
               <div style={{ fontSize: 12.5, color: W.muted }}>Documents › Stock</div>
               <Part k="samefile" style={{ marginTop: 9 }}>
                 {stock}
@@ -482,7 +500,14 @@ export function SendFigure({ focus, title = "A link, and an attachment", what, n
           toKey="outside"
           chipKey="attachment"
           footKey="copy"
-          chip={<span style={chipStyle}>📎 <FileGlyph kind="pdf" size={18} /> {keep("2026-11-10 Harlow stock.pdf")}</span>}
+          chip={
+            <span style={chipStyle}>
+              <svg width="18" height="18" viewBox="0 0 24 24" aria-label="Attached" fill="none" stroke={W.ink} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ display: "inline-block", flexShrink: 0 }}>
+                <path d="M20 11.5 L12.3 19.2 A5 5 0 0 1 5.2 12.1 L13.3 4 A3.4 3.4 0 0 1 18.1 8.8 L10.1 16.8 A1.7 1.7 0 0 1 7.7 14.4 L14.8 7.3" />
+              </svg>
+              <FileGlyph kind="pdf" size={18} /> {keep("2026-11-10 Harlow stock.pdf")}
+            </span>
+          }
           body={"Hi Tom,\n\nOur stock of your products is attached.\n\nKind regards"}
           foot={line(<FileGlyph kind="pdf" size={18} />, <span>A copy that goes with the email: <b style={{ fontWeight: 600 }}>Harlow&apos;s four rows only</b></span>, undefined, { padding: 0, alignItems: "flex-start" })}
         />
@@ -496,10 +521,10 @@ export function SendFigure({ focus, title = "A link, and an attachment", what, n
 export type ExportPart = "filter" | "shown" | "file" | "export";
 
 export const EXPORT_PARTS: Record<ExportPart, PartInfo> = {
-  filter: { n: 1, name: "The filter", what: "Filter puts a ▾ on each heading. Supplier is set to Harlow Packaging, so only their rows show." },
-  shown: { n: 2, name: "The rows on show", what: "Harlow's four rows, and the yellow bar saying 4 of 11 are on show. The other seven are hidden, not deleted." },
-  file: { n: 3, name: "File", what: "Opens the File menu: Save, Save as, Export and Close." },
-  export: { n: 4, name: "Export, Create PDF", what: "Makes a PDF of what's on screen now: the headings and the rows the filter leaves." },
+  file: { n: 1, name: "File", what: "Opens the File menu: Save, Save as, Export and Close." },
+  export: { n: 2, name: "Create PDF", what: "Under Export. Makes a PDF of what's on screen now: the headings and the rows the filter leaves." },
+  filter: { n: 3, name: "The filter", what: "Press Filter on the ribbon and a ▾ appears on each heading. Supplier is set to Harlow Packaging, so only their rows show." },
+  shown: { n: 4, name: "The rows on show", what: "Harlow's four rows, and the yellow bar saying 4 of 11 are on show. The other seven are hidden, not deleted." },
 };
 
 /* The sheet sits at the left, under the ribbon, so on a phone the filter,
@@ -512,7 +537,7 @@ export function ExportFigure({ focus, title = "Making a PDF of some rows", what,
     ["HP-120", "Harlow Packaging", "240"],
     ["HP-131", "Harlow Packaging", "86"],
   ];
-  const w = [66, 156, 100];
+  const cols = "minmax(66px, 0.7fr) minmax(150px, 1.6fr) minmax(96px, 1fr)";
   const cell: CSSProperties = { borderRight: `1px solid ${W.edge}`, borderBottom: `1px solid ${W.edge}`, padding: "0 8px", height: 30, display: "flex", alignItems: "center", gap: 8, fontSize: 13.5, boxSizing: "border-box", whiteSpace: "nowrap" };
   const arrow = (on: boolean) => <span style={{ width: 18, height: 18, flexShrink: 0, border: `1px solid ${W.edge}`, borderRadius: 3, background: on ? W.select : W.page, fontSize: 10, display: "inline-flex", alignItems: "center", justifyContent: "center" }}>▾</span>;
   return (
@@ -524,7 +549,9 @@ export function ExportFigure({ focus, title = "Making a PDF of some rows", what,
             <span style={{ display: "inline-flex", alignItems: "center", minHeight: 32, padding: "4px 12px", borderRadius: 5, background: W.excel, color: "#fff", fontSize: 13.5, fontWeight: 700 }}>File ▾</span>
           </Part>
           <span style={{ fontSize: 13.5, padding: "4px 10px", border: `1px solid ${W.edge}`, borderRadius: 5, background: W.page }}>Save</span>
-          <span style={{ fontSize: 13.5, padding: "4px 10px", border: `1px solid ${W.excel}`, borderRadius: 5, background: W.select }}>⏷ Filter</span>
+          <Part k="filter" block={false} noBadge>
+            <span style={{ display: "inline-block", fontSize: 13.5, padding: "4px 10px", border: `1px solid ${W.excel}`, borderRadius: 5, background: W.select }}>⏷ Filter</span>
+          </Part>
           {menu && (
             <div style={{ position: "absolute", left: 48, top: "100%", zIndex: 4, marginTop: 4, width: 210, background: W.page, border: `1px solid ${W.edge}`, borderRadius: 6, boxShadow: "0 14px 30px -12px rgba(0,0,0,0.4)", padding: 4, fontSize: 13.5 }}>
               {["Save", "Save as"].map((m) => (
@@ -535,26 +562,28 @@ export function ExportFigure({ focus, title = "Making a PDF of some rows", what,
               <div style={{ display: "flex", justifyContent: "space-between", padding: "7px 12px" }}>
                 Export <span style={{ color: W.muted }}>▾</span>
               </div>
-              <Part k="export" badge="left">
-                <div style={{ padding: "7px 12px 7px 26px", background: W.select, borderRadius: 4, fontWeight: 600 }}>Create PDF</div>
+              <Part k="export" badge="left" style={{ margin: "5px 6px" }}>
+                <div style={{ padding: "6px 12px 6px 20px", background: W.select, borderRadius: 4, fontWeight: 600 }}>Create PDF</div>
               </Part>
               <div style={{ padding: "7px 12px" }}>Close</div>
             </div>
           )}
         </div>
         <div style={{ padding: `${menu ? 206 : 14}px 16px 18px 48px` }}>
-          <Group k="shown" focus={focus} holds={["filter"]} style={{ display: "inline-block" }}>
+          <Group k="shown" focus={focus} holds={["filter"]}>
             <div>
               <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "6px 10px", marginBottom: 8, borderRadius: 4, background: "#fff4ce", fontSize: 13 }}>
-                <span>Showing only rows where Supplier is &ldquo;Harlow Packaging&rdquo; (4 of 11).</span>
+                <span style={{ flex: 1, minWidth: 0 }}>
+                  Showing only rows where Supplier is &ldquo;Harlow Packaging&rdquo; <span style={{ whiteSpace: "nowrap" }}>(4 of 11)</span>.
+                </span>
                 <span style={{ flexShrink: 0, padding: "2px 8px", border: `1px solid ${W.edge}`, borderRadius: 4, background: W.page, fontSize: 12.5, whiteSpace: "nowrap" }}>Clear filter</span>
               </div>
-              <div style={{ display: "flex", borderLeft: `1px solid ${W.edge}`, borderTop: `1px solid ${W.edge}` }}>
+              <div style={{ display: "grid", gridTemplateColumns: cols, borderLeft: `1px solid ${W.edge}`, borderTop: `1px solid ${W.edge}` }}>
                 {["Code", "Supplier", "In stock"].map((h, i) => (
-                  <div key={h} style={{ ...cell, width: w[i], fontWeight: 700, background: "#e6f2ea", justifyContent: "space-between" }}>
+                  <div key={h} style={{ ...cell, fontWeight: 700, background: "#e6f2ea", justifyContent: "space-between" }}>
                     <span>{h}</span>
                     {i === 1 ? (
-                      <Part k="filter" block={false} badge="left">
+                      <Part k="filter" block={false} badge="right">
                         {arrow(true)}
                       </Part>
                     ) : (
@@ -564,9 +593,9 @@ export function ExportFigure({ focus, title = "Making a PDF of some rows", what,
                 ))}
               </div>
               {rows.map((r) => (
-                <div key={r[0]} style={{ display: "flex", borderLeft: `1px solid ${W.edge}` }}>
+                <div key={r[0]} style={{ display: "grid", gridTemplateColumns: cols, borderLeft: `1px solid ${W.edge}` }}>
                   {r.map((c, i) => (
-                    <div key={i} style={{ ...cell, width: w[i], justifyContent: i === 2 ? "flex-end" : "flex-start", color: W.ink }}>
+                    <div key={i} style={{ ...cell, justifyContent: i === 2 ? "flex-end" : "flex-start", color: W.ink }}>
                       {c}
                     </div>
                   ))}
@@ -590,8 +619,8 @@ export const SHARE_PARTS: Record<SharePart, PartInfo> = {
   role: { n: 3, name: "Can edit or Can view", what: "Edit lets them change it. View lets them read it, nothing more." },
   message: { n: 4, name: "A message", what: "Say why you're sending it. It goes in the email they get." },
   send: { n: 5, name: "Send", what: "Lets them in and emails them a link. That's the whole job done." },
-  copylink: { n: 6, name: "Copy link", what: "A link to paste yourself, into an email or a chat. Who it works for is written in the bar beside it (7)." },
-  settings: { n: 7, name: "Who the link works for", what: "The bar under Copy link. It says who the link works for and what they can do. Click it to change that." },
+  settings: { n: 6, name: "Who the link works for", what: "The bar under Copy link. It says who the link works for and what they can do. Press it to change that." },
+  copylink: { n: 7, name: "Copy", what: "Copies the link, to paste into an email or a chat. Who it works for is written in the bar under Copy link (6)." },
   manage: { n: 8, name: "Manage access", what: "Everyone who can open the file now, and every link to it. Change or take away access here." },
 };
 
@@ -607,7 +636,9 @@ export function ShareFigure({ focus, title = "The Share box", what, note }: { fo
         <div style={{ display: "flex", alignItems: "center", gap: 6, padding: "12px 10px 12px 42px", borderBottom: `1px solid ${W.edge}` }}>
           <span style={{ flex: 1, minWidth: 0 }}>
             <Part k="file" block={false} badge="left">
-              <b style={{ fontSize: 16, fontWeight: 600 }}>Share &ldquo;Stock November.xlsx&rdquo;</b>
+              <b style={{ fontSize: 16, fontWeight: 600 }}>
+                Share <span style={{ whiteSpace: "nowrap" }}>&ldquo;Stock November.xlsx&rdquo;</span>
+              </b>
             </Part>
           </span>
           <span style={{ paddingLeft: 40, flexShrink: 0 }}>
@@ -695,7 +726,7 @@ export function LinkSettingsFigure({ focus, title = "Link settings", what, note 
           <span style={{ color: W.muted }}>←</span>
           <b style={{ fontSize: 16, fontWeight: 600 }}>Link settings</b>
         </div>
-        <div style={{ padding: "12px 16px 16px 46px", display: "grid", gap: 12 }}>
+        <div style={{ padding: "12px 16px 16px 46px", display: "grid", gap: 18 }}>
           <span style={{ fontSize: 13, color: W.muted }}>Share the link with</span>
           {opt("anyone", "anyone", "Anyone", "Even people outside Northfield. No sign-in.")}
           {opt("org", "org", "People in Northfield Supplies", "Anyone at the company who has the link.")}
@@ -733,14 +764,14 @@ export const ACCESS_PARTS: Record<AccessPart, PartInfo> = {
 export function AccessFigure({ focus, title = "Manage access", what, note }: { focus?: AccessPart[]; title?: string; what?: What<AccessPart>; note?: string }) {
   const btn = (t: string) => <span style={{ ...fieldBox, borderColor: W.edge, minHeight: 32, fontWeight: 600 }}>{t}</span>;
   return (
-    <FigureFrame info={withWhat(ACCESS_PARTS, what)} focus={focus} title={title} note={note} minWidth={600}>
+    <FigureFrame info={withWhat(ACCESS_PARTS, what)} focus={focus} title={title} note={note}>
       <div style={{ ...frame, maxWidth: 580, margin: "0 auto" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "12px 12px 12px 16px", borderBottom: `1px solid ${W.edge}` }}>
           <span style={{ color: W.muted }}>←</span>
           <b style={{ fontSize: 16, fontWeight: 600 }}>Manage access</b>
           <span style={{ marginLeft: "auto", fontSize: 13, color: W.muted }}>Stock November.xlsx</span>
         </div>
-        <div style={{ padding: "10px 16px 16px 46px" }}>
+        <div style={{ padding: "10px 42px 16px 46px" }}>
           <p style={{ margin: "4px 0 6px", fontSize: 12, fontWeight: 700, letterSpacing: "0.04em", color: W.muted }}>PEOPLE</p>
           <Part k="members">
             <div style={{ display: "flex", alignItems: "center", gap: 10, minHeight: 46, borderBottom: `1px solid ${W.edge}` }}>
@@ -752,29 +783,29 @@ export function AccessFigure({ focus, title = "Manage access", what, note }: { f
               <span style={{ fontSize: 13, color: W.muted }}>Can edit</span>
             </div>
           </Part>
-          <div style={{ display: "flex", alignItems: "center", gap: 10, minHeight: 52, borderBottom: `1px solid ${W.edge}`, paddingTop: 30 }}>
+          <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 12, rowGap: 14, minHeight: 52, borderBottom: `1px solid ${W.edge}`, padding: "14px 0 12px" }}>
             <Part k="person" block={false} badge="left">
               <span style={{ display: "inline-flex", alignItems: "center", gap: 10 }}>
                 <span style={{ width: 30, height: 30, borderRadius: "50%", background: W.outlook, color: "#fff", fontSize: 12, fontWeight: 700, display: "inline-flex", alignItems: "center", justifyContent: "center" }}>PS</span>
                 <span style={{ fontSize: 13.5 }}>
                   <b style={{ display: "block", fontWeight: 600 }}>Priya Shah</b>
-                  <span style={{ fontSize: 12.5, color: W.muted }}>priya.shah@northfieldsupplies.example</span>
+                  <span style={{ fontSize: 12.5, color: W.muted, overflowWrap: "anywhere" }}>priya.shah@northfieldsupplies.example</span>
                 </span>
               </span>
             </Part>
-            <span style={{ marginLeft: "auto", display: "inline-flex", gap: 14 }}>
-              <Part k="change" block={false} badge="top">
+            <span style={{ marginLeft: "auto", display: "inline-flex", gap: 22 }}>
+              <Part k="change" block={false} badge="left">
                 <span style={{ ...fieldBox, minWidth: 110 }}>
                   {ShareIcon.pencil(15)} Can edit <span style={{ marginLeft: "auto", fontSize: 10 }}>▾</span>
                 </span>
               </Part>
-              <Part k="remove" block={false} badge="top">
+              <Part k="remove" block={false} badge="right">
                 {btn("Remove")}
               </Part>
             </span>
           </div>
           <p style={{ margin: "14px 0 6px", fontSize: 12, fontWeight: 700, letterSpacing: "0.04em", color: W.muted }}>LINKS GIVING ACCESS</p>
-          <div style={{ display: "flex", alignItems: "center", gap: 10, minHeight: 52, paddingTop: 30 }}>
+          <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 12, rowGap: 14, minHeight: 52, padding: "8px 0 4px" }}>
             <Part k="links" block={false} badge="left">
               <span style={{ display: "inline-flex", alignItems: "center", gap: 10 }}>
                 <span style={{ width: 30, height: 30, borderRadius: "50%", background: W.select, color: W.outlook, display: "inline-flex", alignItems: "center", justifyContent: "center" }}>{scopeIcon("org", 17)}</span>
@@ -785,7 +816,7 @@ export function AccessFigure({ focus, title = "Manage access", what, note }: { f
               </span>
             </Part>
             <span style={{ marginLeft: "auto" }}>
-              <Part k="deletelink" block={false} badge="top">
+              <Part k="deletelink" block={false} badge="right">
                 {btn("Delete link")}
               </Part>
             </span>
