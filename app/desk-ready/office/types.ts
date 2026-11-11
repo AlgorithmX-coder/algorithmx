@@ -22,7 +22,7 @@ export interface Paper {
   footer?: string;
 }
 
-export type FileKind = "folder" | "xlsx" | "xltx" | "docx" | "dotx" | "pdf";
+export type FileKind = "folder" | "xlsx" | "xltx" | "docx" | "dotx" | "pdf" | "jpg"; // jpg: Module 10 (a photo of a receipt)
 
 /* A highlight rule (Excel's conditional formatting), on one column from
  * row 2 down: cells that match are coloured. */
@@ -345,3 +345,118 @@ export interface WordDoc {
   /* The template it was started from, e.g. "Letterhead.dotx". */
   template?: string;
 }
+/* ── Module 10: Admin in practice ───────────────────────────────────────
+ * Business paperwork drawn from data (a purchase order, an invoice, a
+ * delivery note, a receipt), pictures on a sheet (a receipt on an expense
+ * claim), the desk phone's calls and the courier site's bookings. Every
+ * field is optional, so the other modules' offices are untouched. These
+ * merge into the interfaces above. */
+
+/* A party on a piece of paperwork: who it is from, or who it is to. */
+export interface DocParty {
+  name: string;
+  lines: string[];
+  phone?: string;
+  email?: string;
+  vatNo?: string;
+}
+
+export interface DocLine {
+  code?: string;
+  item: string;
+  qty: number;
+  unit?: string; // "pallet", "sack"
+  price?: number; // each, before VAT
+  /* A delivery note: how many came off the van. */
+  delivered?: number;
+}
+
+export interface BizDoc {
+  kind: "po" | "invoice" | "delivery" | "receipt" | "credit";
+  number: string; // "3307", "HP-2291", "DN-77812"
+  date: string; // "02/11/2026"
+  from: DocParty;
+  to: DocParty;
+  /* Deliver to, when it differs from the buyer's address. */
+  shipTo?: DocParty;
+  /* Other references printed on it: ["Your order", "PO 3307"]. */
+  refs: [string, string][];
+  lines: DocLine[];
+  vatRate?: number; // 0.2
+  bank?: { name: string; sortCode: string; account: string };
+  terms?: string; // "30 days from invoice date"
+  due?: string; // "10/12/2026"
+  /* Who signed it, in handwriting: a delivery note's receiver, a PO's approver. */
+  signed?: string;
+  signedRole?: string;
+  /* Handwriting on the page: "Only 10 on the van. 2 short. SP". */
+  note?: string;
+  footer?: string;
+  /* A receipt's own lines, printed as a till or ticket office does. */
+  receipt?: { title: string; lines: [string, string][]; total: string; paid: string };
+}
+
+export interface Paper {
+  /* Drawn as a real document (paperwork.tsx) when present. */
+  doc?: BizDoc;
+}
+
+/* A picture inserted on a sheet (Insert > Pictures), with a copy of what
+ * it shows, so it still draws if the photo is later moved. */
+export interface SheetPicture {
+  fileId: string;
+  name: string;
+  paper?: Paper;
+}
+
+export interface Tab {
+  pictures?: SheetPicture[];
+}
+
+export interface CourierAddress {
+  name: string;
+  lines: string[];
+  postcode: string;
+  contact?: string;
+  phone?: string;
+}
+
+export interface CourierBooking {
+  ref: string;
+  status: "booked" | "cancelled";
+  /* "collect": the courier picks up from you. "dropoff": you take it to a shop. */
+  method: "collect" | "dropoff";
+  from: CourierAddress;
+  to: CourierAddress;
+  date: string; // "2026-11-13"
+  window: string; // "13:00 to 17:00"
+  parcels: { kg: number; cm?: string }[];
+  service: string;
+  price: number;
+  booked: string; // "12/11/2026 15:14"
+}
+
+/* A call on the desk phone. A recorded call keeps its words, so the
+ * learner can play it back and read along. */
+export interface PhoneCall {
+  id: string;
+  name: string;
+  company?: string;
+  number: string;
+  time: string; // "14:20"
+  /* "in": they rang you. "missed": nobody answered. "out": you rang them. */
+  way: "in" | "missed" | "out";
+  seconds: number;
+  /* Rings when the job opens, until it is answered. */
+  ringing?: boolean;
+  /* The conversation, line by line, each at its second into the call. */
+  lines?: { who: "them" | "you"; at: number; text: string }[];
+}
+
+export interface OfficeState {
+  /* The desk phone: its call list, and which ringing calls were answered. */
+  phone?: { calls: PhoneCall[]; answered: string[] };
+  /* The courier site's account: every booking made, cancelled ones too. */
+  courier?: { bookings: CourierBooking[] };
+}
+/* ── end Module 10 ── */

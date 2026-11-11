@@ -342,7 +342,7 @@ function Reading({ email, invite, onAttachment, onLink, onFakeLink }: { email: E
         <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginTop: 16 }}>
           {email.attachments.map((a, i) => (
             <button key={`a${i}`} type="button" onClick={() => onAttachment(a)} className="of-btn" title="Open" style={chip}>
-              <FileGlyph kind={a.name.endsWith(".pdf") ? "pdf" : a.name.endsWith(".docx") ? "docx" : "xlsx"} />
+              <FileGlyph kind={a.name.endsWith(".pdf") ? "pdf" : a.name.endsWith(".docx") ? "docx" : /\.jpe?g$/i.test(a.name) ? "jpg" : "xlsx"} />
               {a.name}
             </button>
           ))}
