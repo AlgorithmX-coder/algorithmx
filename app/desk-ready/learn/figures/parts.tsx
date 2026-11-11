@@ -106,6 +106,44 @@ export function usePartNumber(k: string): number | null {
 /* The dark stage a figure sits on, with its key underneath. */
 /* `minWidth`: a figure that can't wrap (an inbox, a sheet) keeps its width
  * and scrolls sideways on a phone; an email wraps like a phone's Outlook. */
+/* Where to scroll a figure wider than the screen, given where its lit
+ * parts sit (px from its left edge): the position that shows the most lit
+ * parts whole, with room for their badges. A lit part wider than the
+ * screen (a total row across a sheet) can never show whole, so it counts
+ * for nothing and the narrow parts beside it (the column the card is
+ * about) decide. Ties go to the rightmost position: on a document the left
+ * holds labels and the right the figures, the note, the bank details,
+ * which are what a card is usually about (Module 10 review, 2026-11-11).
+ * When no lit part can show whole, it opens at the first one's start.
+ * Exported for its tests. */
+export function bestScroll(spans: { left: number; right: number }[], view: number, max: number): number {
+  const pad = 44; // the badge sits in a 36px gutter beside its part; the edge fade is 24px
+  const clamp = (x: number) => Math.max(0, Math.min(max, x));
+  const candidates = new Set<number>([0, max]);
+  for (const sp of spans) {
+    candidates.add(clamp(sp.left - pad));
+    candidates.add(clamp(sp.right + pad - view));
+    candidates.add(clamp((sp.left + sp.right) / 2 - view / 2));
+  }
+  let best = 0;
+  let bestScore = -1;
+  for (const x of [...candidates].sort((p, q) => p - q)) {
+    /* sorted left to right, so on a tie the later (righter) one wins */
+    /* a part at the very edge of the figure needs no margin past that edge */
+    const whole = spans.filter((sp) => Math.max(0, sp.left - pad) >= x - 1 && Math.min(max + view, sp.right + pad) <= x + view + 1).length;
+    const score = whole;
+    if (score >= bestScore) {
+      best = x;
+      bestScore = score;
+    }
+  }
+  /* No lit part fits whole (an address bar, a form row wider than the
+   * phone): open at the start of the first one, where its badge and label
+   * are, not at its far end (Module 10 review, third pass). */
+  if (bestScore === 0) return clamp(Math.min(...spans.map((sp) => sp.left)) - pad);
+  return best;
+}
+
 /* The dark stage a figure scrolls in. A figure wider than the screen (a
  * phone) scrolls sideways inside it, so on a phone: it opens scrolled to
  * the part the card lights, never on a dimmed corner; faded edges show
@@ -120,16 +158,15 @@ function Scroller({ children, focusKey }: { children: ReactNode; focusKey: strin
     const el = ref.current;
     if (!el) return;
     const measure = () => setEdges({ left: el.scrollLeft > 4, right: el.scrollLeft + el.clientWidth < el.scrollWidth - 4 });
-    /* bring the lit parts into view: centre them, or show their left edge
-     * when together they are wider than the screen */
+    /* bring the lit parts into view */
     const lit = [...el.querySelectorAll<HTMLElement>("[data-lit]")];
     if (lit.length && el.scrollWidth > el.clientWidth + 4) {
       const box = el.getBoundingClientRect();
-      const left = Math.min(...lit.map((n) => n.getBoundingClientRect().left)) - box.left + el.scrollLeft;
-      const right = Math.max(...lit.map((n) => n.getBoundingClientRect().right)) - box.left + el.scrollLeft;
-      const pad = 44; // room for the badge in the gutter
-      const target = right - left + pad * 2 <= el.clientWidth ? (left + right) / 2 - el.clientWidth / 2 : left - pad;
-      el.scrollLeft = Math.max(0, Math.min(target, el.scrollWidth - el.clientWidth));
+      const spans = lit.map((n) => {
+        const r = n.getBoundingClientRect();
+        return { left: r.left - box.left + el.scrollLeft, right: r.right - box.left + el.scrollLeft };
+      });
+      el.scrollLeft = bestScroll(spans, el.clientWidth, el.scrollWidth - el.clientWidth);
     } else if (!lit.length) el.scrollLeft = 0;
     measure();
     el.addEventListener("scroll", measure, { passive: true });
@@ -140,7 +177,7 @@ function Scroller({ children, focusKey }: { children: ReactNode; focusKey: strin
     };
   }, [focusKey]);
 
-  const fade = (side: "left" | "right"): CSSProperties => ({ position: "absolute", top: 0, bottom: 0, [side]: 0, width: 40, pointerEvents: "none", borderRadius: side === "left" ? "18px 0 0 18px" : "0 18px 18px 0", background: `linear-gradient(to ${side === "left" ? "right" : "left"}, rgba(4,8,20,0.85), rgba(4,8,20,0))` });
+  const fade = (side: "left" | "right"): CSSProperties => ({ position: "absolute", top: 0, bottom: 0, [side]: 0, width: 16, pointerEvents: "none", borderRadius: side === "left" ? "18px 0 0 18px" : "0 18px 18px 0", background: `linear-gradient(to ${side === "left" ? "right" : "left"}, rgba(4,8,20,0.55), rgba(4,8,20,0))` });
   const more = edges.left || edges.right;
   return (
     <>
@@ -154,7 +191,7 @@ function Scroller({ children, focusKey }: { children: ReactNode; focusKey: strin
       {more && (
         <p style={{ margin: "8px 0 0", display: "flex", alignItems: "center", gap: 8, fontFamily: D.mono, fontSize: 12.5, fontWeight: 700, letterSpacing: "0.08em", color: D.accent }}>
           <span aria-hidden style={{ whiteSpace: "nowrap" }}>{edges.left && edges.right ? "\u2190 \u2192" : edges.left ? "\u2190" : "\u2192"}</span>
-          Slide sideways to see all of it
+          Slide to see more
         </p>
       )}
     </>
