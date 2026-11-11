@@ -156,9 +156,9 @@ export function ScamEmailFigure({ focus, title = "A scam email, every tell numbe
             </Part>
             <Part k="linkurl" style={{ justifySelf: "start", maxWidth: "100%", padding: 5, marginTop: 4 }}>
               <span style={{ display: "block", padding: "7px 10px", borderRadius: 4, border: `1px solid ${W.edge}`, background: W.page, boxShadow: "0 6px 18px -8px rgba(0,0,0,0.35)", fontSize: 12.5, lineHeight: 1.45 }}>
-                <span style={NB}>{SCAM_LINK.url.replace(//pay.*/, "")}</span>
+                <span style={NB}>{SCAM_LINK.url.split("/pay")[0]}</span>
                 <wbr />
-                <span style={NB}>{SCAM_LINK.url.replace(/^.*(?=/pay)/, "")}</span>
+                <span style={NB}>/pay{SCAM_LINK.url.split("/pay")[1]}</span>
                 <span style={{ display: "block", color: W.muted }}>Click or tap to follow link.</span>
               </span>
             </Part>
