@@ -73,7 +73,9 @@ export function ScamEmailFigure({ focus, title = "A scam email, every tell numbe
   /* words that are no part of their own fade with the rest when a part is lit */
   const dim = focus?.length ? { opacity: 0.32 } : {};
   const addressLit = !!focus?.includes("address");
-  const dimAddress = focus?.length && !addressLit ? { opacity: 0.32 } : {};
+  /* the brackets and the name before the @ fade when only the domain is lit
+   * (otherwise the whole address fades, or stays lit, as one) */
+  const dimAddress = focus?.includes("domain") && !addressLit ? { opacity: 0.32 } : {};
   return (
     <FigureFrame info={infoOf(SCAM_PARTS, what)} focus={focus} title={title} note={note}>
       <AppWindow
@@ -104,17 +106,19 @@ export function ScamEmailFigure({ focus, title = "A scam email, every tell numbe
               <span style={{ ...EXTERNAL, ...dim }}>External</span>
             </div>
             <Part k="address" block={false} holds={["domain"]} style={{ ...PAD, justifySelf: "start" }}>
-              <span style={{ color: W.body, whiteSpace: "nowrap", fontSize: 14 }}>
-                <span style={dimAddress}>&lt;{user}@</span>
+              <span style={{ color: W.body, fontSize: 14 }}>
+                <span style={{ ...dimAddress, whiteSpace: "nowrap" }}>&lt;{user}@</span>
                 {/* lit with the whole address, the domain mustn't fade inside it */}
                 {addressLit && !focus?.includes("domain") ? (
-                  <b style={{ color: "#a4262c" }}>{domain}</b>
+                  <>
+                    <b style={{ color: "#a4262c", whiteSpace: "nowrap" }}>{domain}</b>&gt;
+                  </>
                 ) : (
-                  <Part k="domain" block={false} badge="right" style={{ padding: "1px 4px", margin: "0 1px" }}>
-                    <b style={{ color: "#a4262c" }}>{domain}</b>
+                  <Part k="domain" block={false} badge="right" style={focus?.includes("domain") ? { padding: "1px 4px", marginLeft: 8 } : undefined}>
+                    <b style={{ color: "#a4262c", whiteSpace: "nowrap" }}>{domain}</b>
+                    <span style={dimAddress}>&gt;</span>
                   </Part>
                 )}
-                <span style={dimAddress}>&gt;</span>
               </span>
             </Part>
             <span style={{ color: W.muted, ...dim }}>
@@ -151,8 +155,10 @@ export function ScamEmailFigure({ focus, title = "A scam email, every tell numbe
               <span style={{ display: "inline-flex", minHeight: 40, alignItems: "center", padding: "6px 16px", borderRadius: 4, background: "#ffc83d", fontWeight: 700 }}>{SCAM_LINK.text}</span>
             </Part>
             <Part k="linkurl" style={{ justifySelf: "start", maxWidth: "100%", padding: 5, marginTop: 4 }}>
-              <span style={{ display: "block", padding: "7px 10px", borderRadius: 4, border: `1px solid ${W.edge}`, background: W.page, boxShadow: "0 6px 18px -8px rgba(0,0,0,0.35)", fontSize: 12.5, lineHeight: 1.45, overflowX: "auto" }}>
-                <span style={NB}>{SCAM_LINK.url}</span>
+              <span style={{ display: "block", padding: "7px 10px", borderRadius: 4, border: `1px solid ${W.edge}`, background: W.page, boxShadow: "0 6px 18px -8px rgba(0,0,0,0.35)", fontSize: 12.5, lineHeight: 1.45 }}>
+                <span style={NB}>{SCAM_LINK.url.replace(//pay.*/, "")}</span>
+                <wbr />
+                <span style={NB}>{SCAM_LINK.url.replace(/^.*(?=/pay)/, "")}</span>
                 <span style={{ display: "block", color: W.muted }}>Click or tap to follow link.</span>
               </span>
             </Part>
@@ -198,7 +204,11 @@ function MiniInvoice({ doc, real }: { doc: BizDoc; real: boolean }) {
         </div>
       </Part>
       <Part k="email" noBadge={off("email")} style={PAD}>
-        <span style={{ display: "block", fontSize: 12.5, whiteSpace: "nowrap" }}>{doc.from.email}</span>
+        <span style={{ display: "block", fontSize: 12.5 }}>
+          <span style={NB}>{doc.from.email?.split("@")[0]}@</span>
+          <wbr />
+          <span style={NB}>{doc.from.email?.split("@")[1]}</span>
+        </span>
       </Part>
       <Part k="phone" noBadge={off("phone")} style={PAD}>
         <span style={{ display: "block", fontSize: 12.5, whiteSpace: "nowrap" }}>{doc.from.phone}</span>
@@ -395,9 +405,13 @@ function PhoneFace({ where, children }: { where: string; children?: ReactNode })
           <div style={{ padding: "10px 12px 10px", borderRadius: 12, background: "#fff", boxShadow: "0 1px 3px rgba(0,0,0,0.12)", textAlign: "center" }}>
               <Part k="prompt" style={{ padding: "2px 4px" }}>
                 <b style={{ display: "block", fontSize: 16 }}>Approve sign-in?</b>
-                <span style={{ display: "block", marginTop: 4, fontSize: 12.5, fontWeight: 600 }}>Northfield Supplies</span>
-                <span style={{ display: "block", fontSize: 11.5, color: W.muted }}>you@northfieldsupplies.example</span>
               </Part>
+              <span style={{ display: "block", marginTop: 4, fontSize: 12.5, fontWeight: 600 }}>Northfield Supplies</span>
+              <span style={{ display: "block", fontSize: 11.5, color: W.muted }}>
+                <span style={NB}>you@</span>
+                <wbr />
+                <span style={NB}>northfieldsupplies.example</span>
+              </span>
               <Part k="where" style={{ marginTop: 10, padding: "0 4px 2px" }}>
                 <span style={{ display: "grid", gap: 2, paddingTop: 8, borderTop: "1px solid #e8eaef", fontSize: 11.5, color: W.body, textAlign: "left" }}>
                   <span>App: Microsoft 365</span>
@@ -422,7 +436,7 @@ function PhoneAnswers({ typed }: { typed?: string }) {
           <span style={{ width: 80, minHeight: 34, border: "1px solid #c8ccd6", borderRadius: 6, background: "#fff", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 18, letterSpacing: "0.1em", color: typed ? W.ink : W.faint }}>{typed ?? "  "}</span>
         </div>
       </Part>
-      <div style={{ display: "grid", gridTemplateColumns: "1.45fr 1fr", gap: 12, marginTop: 4 }}>
+      <div style={{ display: "grid", gridTemplateColumns: "1.5fr 1fr", gap: 18, marginTop: 12 }}>
         <Part k="deny" style={{ padding: 3 }}>
           <span style={{ display: "flex", minHeight: 34, alignItems: "center", justifyContent: "center", borderRadius: 17, border: "1px solid #c8ccd6", background: "#fff", fontSize: 12, fontWeight: 600 }}>No, it&apos;s not me</span>
         </Part>
@@ -673,16 +687,16 @@ const PEOPLE_ROWS = [
 
 export function CustomerDataFigure({ focus, title = "A customer list, and what in it is personal", what, note }: FigProps<CustomerPart>) {
   const cols: { k: Exclude<CustomerPart, "file">; head: string; w: number }[] = [
-    { k: "business", head: "Customer", w: 100 },
-    { k: "person", head: "Contact", w: 100 },
-    { k: "phone", head: "Phone", w: 106 },
-    { k: "email", head: "Email", w: 236 },
-    { k: "address", head: "Home address", w: 152 },
-    { k: "card", head: "Card", w: 70 },
+    { k: "business", head: "Customer", w: 92 },
+    { k: "person", head: "Contact", w: 92 },
+    { k: "phone", head: "Phone", w: 104 },
+    { k: "email", head: "Email", w: 230 },
+    { k: "address", head: "Home address", w: 150 },
+    { k: "card", head: "Card", w: 60 },
   ];
   return (
-    <FigureFrame info={infoOf(CUSTOMER_PARTS, what)} focus={focus} title={title} note={note} minWidth={880}>
-      <div style={{ padding: "0 4px 0 40px" }}>
+    <FigureFrame info={infoOf(CUSTOMER_PARTS, what)} focus={focus} title={title} note={note} minWidth={778}>
+      <div style={{ padding: "0 2px" }}>
         <div style={{ background: W.page, borderRadius: 8, boxShadow: W.float, border: `1px solid ${W.edge}`, overflow: "visible" }}>
           <Part k="file" style={{ borderRadius: "8px 8px 0 0" }}>
             <div style={{ display: "flex", alignItems: "center", gap: 10, minHeight: 34, padding: "0 12px", background: W.excel, color: "#fff", fontSize: 13.5, borderRadius: "8px 8px 0 0" }}>
@@ -690,9 +704,9 @@ export function CustomerDataFigure({ focus, title = "A customer list, and what i
               <span style={{ opacity: 0.92 }}>Customer contacts.xlsx · Operations Team &gt; Documents &gt; Customers</span>
             </div>
           </Part>
-          <div style={{ display: "flex", padding: "40px 14px 16px 14px", gap: 10 }}>
+          <div style={{ display: "flex", padding: "40px 8px 14px 8px", gap: 6 }}>
             {cols.map((c) => (
-              <Part key={c.k} k={c.k} badge="top" style={{ width: c.w, flexShrink: 0, borderRadius: 3, padding: 3 }}>
+              <Part key={c.k} k={c.k} badge="top" style={{ width: c.w, flexShrink: 0, borderRadius: 3, padding: 3, boxSizing: "border-box" }}>
                 <div style={{ fontSize: 12.5 }}>
                   <div style={{ padding: "6px 8px", background: "#f3f9f5", borderBottom: `2px solid ${W.excel}`, fontWeight: 700, whiteSpace: "nowrap" }}>{c.head}</div>
                   {PEOPLE_ROWS.map((r) => (
