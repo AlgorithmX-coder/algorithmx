@@ -109,6 +109,7 @@ export function ScamEmailFigure({ focus, title = "A scam email, every tell numbe
             <Part k="address" block={false} holds={["domain"]} style={{ ...PAD, justifySelf: "start" }}>
               <span style={{ color: W.body, fontSize: 14 }}>
                 <span style={{ ...dimAddress, whiteSpace: "nowrap" }}>&lt;{user}@</span>
+                <wbr />
                 {/* lit with the whole address, the domain mustn't fade inside it */}
                 {addressLit && !focus?.includes("domain") ? (
                   <>
@@ -304,9 +305,11 @@ export function CallCheckFigure({ focus, title = "Check by phone, on the number 
             {role}
           </span>
           {tom ? (
-            <Part k="held" block={false} style={{ ...PAD, marginTop: 4 }}>
+            <span style={{ display: "block", marginTop: 6 }}>
+            <Part k="held" block={false} badge="right" style={{ padding: "2px 8px", margin: "0 -8px" }}>
               <span style={{ color: W.ink, fontWeight: 600, whiteSpace: "nowrap" }}>{number}</span>
             </Part>
+            </span>
           ) : (
             <span style={{ display: "block", color: W.body, whiteSpace: "nowrap" }}>{number}</span>
           )}
@@ -600,7 +603,7 @@ export function ToLineFigure({ focus, title = "Who is it really going to?", what
             )}
           </span>
           {k === "second" && !(focus?.includes("second") && !focus.includes("address")) ? (
-            <Part k="address" block={false} badge="right" style={{ padding: "2px 6px", margin: "2px -6px 6px" }}>
+            <Part k="address" block={false} badge="corner" style={{ padding: "2px 6px", margin: "2px -6px 6px" }}>
               <span style={{ fontSize: 12.5, color: W.body, whiteSpace: "nowrap" }}>{address}</span>
             </Part>
           ) : (
@@ -658,7 +661,7 @@ export function ToLineFigure({ focus, title = "Who is it really going to?", what
               FW: November&apos;s overtime sheet
             </div>
             <div style={{ padding: "8px 12px 12px" }}>
-              <Part k="attach" block={false} badge="right" style={{ padding: 3 }}>
+              <Part k="attach" block={false} badge="left" style={{ padding: 3 }}>
                 <span style={{ display: "inline-flex", gap: 6, alignItems: "center", padding: "4px 10px", border: `1px solid ${W.edge}`, borderRadius: 5, fontSize: 13 }}>📎 2026-11 Overtime November.xlsx</span>
               </Part>
             </div>
@@ -794,7 +797,7 @@ export function LockScreenFigure({ focus, title = "Locking your screen", what, n
             </div>
             <div style={{ position: "absolute", left: 0, right: 0, bottom: 22, display: "grid", justifyItems: "center" }}>
               <Part k="signin" badge="right">
-                <span style={{ display: "block", padding: "2px 8px", fontSize: 12.5, opacity: 0.92 }}>Click, or press any key, to sign in</span>
+                <span style={{ display: "block", padding: "2px 8px", fontSize: 12.5, opacity: 0.92, whiteSpace: "nowrap" }}>Click to sign in</span>
               </Part>
             </div>
           </div>
