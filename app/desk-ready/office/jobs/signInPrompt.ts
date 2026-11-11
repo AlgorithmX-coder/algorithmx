@@ -41,7 +41,7 @@ function seed(): OfficeState {
     files: officeFolders(),
     emails,
     contacts: [IT_HELPDESK],
-    signIn: { at: "15:02", app: "Office 365", location: "Amsterdam, Netherlands", status: "waiting" },
+    signIn: { at: "15:02", app: "Microsoft 365", location: "Amsterdam, Netherlands", status: "waiting" },
     screen: { locked: false, locks: 0 },
   };
 }

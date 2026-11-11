@@ -668,7 +668,7 @@ function PromptStep({ round, onSolved }: { round: PromptRound; onSolved: (clean:
                   </div>
                 ) : (
                   <>
-                    <PromptCard p={{ at: round.started ? "08:31" : "15:02", app: "Office 365", location: round.location }} />
+                    <PromptCard p={{ at: round.started ? "08:31" : "15:02", app: "Microsoft 365", location: round.location }} />
                     <label style={{ display: "grid", gap: 4, justifyItems: "center", fontSize: 12, color: W.body, textAlign: "center" }}>
                       Enter the number shown to sign in.
                       <input aria-label="The number shown on the sign-in screen" inputMode="numeric" value={num} onChange={(e) => setNum(e.target.value.replace(/\D/g, "").slice(0, 2))} placeholder="Number" style={{ width: 90, minHeight: 38, border: "1px solid #c8ccd6", borderRadius: 6, textAlign: "center", fontFamily: W.font, fontSize: 18, color: W.ink, background: "#fff" }} />

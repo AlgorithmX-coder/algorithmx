@@ -491,7 +491,7 @@ export type DialScript = Pick<PhoneCall, "name" | "company" | "number" | "second
 /* The sign-in request that arrives on the learner's mobile. */
 export interface SignInPrompt {
   at: string; // "15:02"
-  app: string; // "Office 365"
+  app: string; // "Microsoft 365"
   location: string;
   /* "waiting": not arrived yet. "shown": on the phone, unanswered. */
   status: "waiting" | "shown" | "approved" | "denied";

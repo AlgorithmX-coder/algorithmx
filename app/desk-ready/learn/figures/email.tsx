@@ -191,8 +191,9 @@ const field = { display: "flex", alignItems: "center", gap: 10, minHeight: 34, p
 /* Every part is always drawn (an empty Cc or Bcc says "nobody"), so a part
  * keeps the same number on every card of a lesson. `hide` only leaves out
  * the attached file under the subject. */
-export function ComposeFigure({ email = DELIVERY_REPLY, focus, title = "An email you're writing", note, hide = [] }: { email?: WriteExample; focus?: WritePart[]; title?: string; note?: string; hide?: WritePart[] }) {
-  const parts = WRITE_PARTS;
+/* `what` overrides a part's key line for one figure (Module 11's group email). */
+export function ComposeFigure({ email = DELIVERY_REPLY, focus, title = "An email you're writing", note, hide = [], what = {} }: { email?: WriteExample; focus?: WritePart[]; title?: string; note?: string; hide?: WritePart[]; what?: Partial<Record<WritePart, string>> }) {
+  const parts = Object.fromEntries((Object.entries(WRITE_PARTS) as [WritePart, PartInfo][]).map(([k, p]) => [k, what[k] ? { ...p, what: what[k] } : p])) as Record<WritePart, PartInfo>;
   const noChip = hide.includes("attach");
   return (
     <FigureFrame info={parts} focus={focus} title={title} note={note}>

@@ -303,6 +303,17 @@ export function LockLayer({ state, dispatch, job, show }: OfficeAppProps) {
     return () => ro.disconnect();
   }, []);
 
+  /* A click on a taskbar app while Start is open closes Start and still
+   * switches to the app, as Windows does: the taskbar stays clickable. */
+  useEffect(() => {
+    if (!menu) return;
+    const bar = anchor.current?.parentElement?.querySelector(".of-taskbar");
+    if (!bar) return;
+    const close = () => setMenu(null);
+    bar.addEventListener("pointerdown", close);
+    return () => bar.removeEventListener("pointerdown", close);
+  }, [menu]);
+
   /* any key on the lock screen brings up Sign in, as Windows does */
   useEffect(() => {
     if (!locked) return;
@@ -334,7 +345,7 @@ export function LockLayer({ state, dispatch, job, show }: OfficeAppProps) {
 
       {menu && (
         <>
-          <div aria-hidden onClick={() => setMenu(null)} style={{ position: "absolute", inset: 0, zIndex: 44 }} />
+          <div aria-hidden onClick={() => setMenu(null)} style={{ position: "absolute", left: 0, right: 0, top: 0, bottom: 50, zIndex: 44 }} />
           <div role="dialog" aria-label="Start menu" style={{ position: "absolute", bottom: 58, left: "50%", transform: "translateX(-50%)", zIndex: 45, width: 520, maxWidth: "calc(100% - 24px)", borderRadius: 10, background: "rgba(243,243,243,0.97)", backdropFilter: "blur(20px)", border: "1px solid rgba(0,0,0,0.08)", boxShadow: "0 30px 70px -20px rgba(0,0,0,0.55)", fontFamily: W.font, color: W.ink }}>
             <div style={{ padding: "22px 28px 12px" }}>
               <div style={{ display: "flex", alignItems: "center", gap: 10, minHeight: 36, padding: "0 14px", borderRadius: 18, background: "#fff", border: `1px solid ${W.edge}`, color: W.faint, fontSize: 14 }}>⌕ Search for apps, settings and documents</div>

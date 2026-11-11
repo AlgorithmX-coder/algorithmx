@@ -1,7 +1,7 @@
 "use client";
 
 import { ComposeFigure, type WriteExample } from "../learn/figures/email";
-import { CallCheckFigure, CustomerDataFigure, InvoicePairFigure, LockScreenFigure, PasswordFigure, ScamEmailFigure, SignInFigure, ToLineFigure } from "../learn/figures/safety";
+import { tidy, CallCheckFigure, CustomerDataFigure, InvoicePairFigure, LockScreenFigure, PasswordFigure, ScamEmailFigure, SignInFigure, ToLineFigure } from "../learn/figures/safety";
 import type { ModuleManifest } from "../learn/types";
 import { FakeInvoiceLab, InspectLab, PasswordLab, PrivacyLab, ToLineLab } from "./m11labs";
 
@@ -26,6 +26,9 @@ const GROUP_EMAIL: WriteExample = {
   signature: ["Jordan Miles", "Office Administrator | Northfield Supplies", "01632 960 431"],
 };
 
+/* The group email has no one name to greet, so its key says so. */
+const GROUP_WHAT = { greeting: "\"Hello,\" on its own line. A group has no one name to use." };
+
 const m11: ModuleManifest = {
   id: "m11",
   number: 11,
@@ -49,7 +52,7 @@ const m11: ModuleManifest = {
           heading: "Here is a scam email",
           figure: <ScamEmailFigure />,
           body: [
-            "This arrived at Northfield at 08:40. It looks like it's from Harlow Packaging, one of our suppliers. It isn't. Every tell is numbered, 1 to 11.",
+            "This arrived at Northfield at 08:40. It looks like it's from Harlow Packaging, one of our suppliers. It isn't. Every part is numbered: ten tells (2 to 11), and the Report button (1) to press once you've spotted them.",
             "Read the key underneath. You don't need all eleven to be sure: two or three is plenty to stop and report it.",
           ],
         },
@@ -68,8 +71,8 @@ const m11: ModuleManifest = {
             "The part after the @ is the domain (5). It says which company the email really came from.",
             "Harlow's real one is harlowpackaging.example. This one is harlow-packaging-uk.co: extra dashes, extra letters. Scammers buy names that look right at a glance.",
           ],
-          good: [{ text: "tom.hale@harlowpackaging.example", note: "Harlow's real domain" }],
-          bad: [{ text: "accounts@harlow-packaging-uk.co", note: "Dashes and \"uk.co\" added" }],
+          good: [{ text: "harlowpackaging.example", note: "Harlow's real domain, after the @" }],
+          bad: [{ text: "harlow-packaging-uk.co", note: "Dashes and \"uk.co\" added" }],
         },
         {
           heading: "A rush, a threat, and no name",
@@ -80,7 +83,7 @@ const m11: ModuleManifest = {
           ],
         },
         {
-          heading: "Point at a link. Don't click it.",
+          heading: "Point at a link, but never click",
           figure: <ScamEmailFigure focus={["link", "linkurl"]} title="The link, and where it really goes" />,
           body: [
             "A link's words (10) can say anything. Rest the mouse pointer on it, without clicking, and its real address appears (11), in a small box and in the bottom corner of the window.",
@@ -130,15 +133,15 @@ const m11: ModuleManifest = {
           heading: "Here are two invoices",
           figure: <InvoicePairFigure />,
           body: [
-            "On the left, Harlow's real invoice HP-2291, as it sits in Finance. On the right, the one in a scam email. Every part is numbered.",
-            "Three things are the same on both: the look (1), the invoice number (4) and the amount (5). Four are different (2, 3, 6 and 7), and all four are about where your money and your questions go.",
+            "First, Harlow's real invoice HP-2291, as it sits in Finance. Then the fake one, from a scam email. Every part is numbered.",
+            "Three things are the same on both, numbered on the real one (1 to 3). Four are different, numbered on the fake (4 to 7), and all four are about where your money and your questions go.",
           ],
         },
         {
           heading: "Same look, same number, same amount",
           figure: <InvoicePairFigure focus={["look", "number", "total"]} title="What a scammer copies" />,
           body: [
-            "Anyone can copy a logo and a layout (1). Scammers often copy a real invoice number (4) and amount (5), sometimes from a mailbox they have broken into.",
+            "Anyone can copy a logo and a layout (1). Scammers often copy a real invoice number (2) and amount (3), sometimes from a mailbox they have broken into.",
             "So a fake can look perfect. Don't judge an invoice by its looks.",
           ],
         },
@@ -146,7 +149,7 @@ const m11: ModuleManifest = {
           heading: "The bank details have changed",
           figure: <InvoicePairFigure focus={["bank"]} title="Where the money goes" />,
           body: [
-            "This is the whole scam (6): pay the real bill, but into the scammer's account. Once the money has gone, your bank can rarely get it back.",
+            "This is the whole scam, on the fake (6): pay the real bill, but into the scammer's account. Once the money has gone, your bank can rarely get it back.",
             "Suppliers almost never change bank. When one really does, they tell you more than once, and expect you to check by phone.",
           ],
           bad: [{ text: "Please note our new bank details below and pay today.", note: "Stop. Check by phone first." }],
@@ -155,7 +158,7 @@ const m11: ModuleManifest = {
           heading: "New contact details, and a rush",
           figure: <InvoicePairFigure focus={["email", "phone", "terms"]} title="The email address, the phone number and the deadline" />,
           body: [
-            "The email address (2) and the phone number (3) are the scammer's own, so any question you ask goes straight back to them.",
+            "On the fake, the email address (4) and the phone number (5) are the scammer's own, so any question you ask goes straight back to them.",
             "And the deadline (7) is today, with a late fee. The real invoice gives 30 days.",
           ],
         },
@@ -171,7 +174,7 @@ const m11: ModuleManifest = {
           heading: "What to say, and who to tell",
           figure: <CallCheckFigure focus={["call"]} title="The call" />,
           body: [
-            "Keep it simple (4): \"We've had an email saying your bank details have changed. Is that right?\"",
+            "Press Call (4), and keep it simple: \"We've had an email saying your bank details have changed. Is that right?\"",
             "If they say no, it's a scam. Don't pay, report the email, and tell whoever pays suppliers straight away. At Northfield, that's Priya in Accounts.",
           ],
           tip: "Never reply to the email to ask if it's real. The scammer reads the replies.",
@@ -235,7 +238,7 @@ const m11: ModuleManifest = {
           figure: <PasswordFigure focus={["newpw", "strength"]} title="The new password and its strength" />,
           body: [
             "Pick three words that have nothing to do with each other, or with you. Join them, with a capital at the start of each (2).",
-            "Length beats cleverness (3): 19 letters of words is far stronger than 8 of squiggles, and much easier to remember.",
+            "Length beats cleverness (3). Three random words are longer, and easier to remember, than a short jumble like Password1!",
           ],
           good: [{ text: "CopperKettleHarbour" }, { text: "TulipCanyonBiscuit" }],
           bad: [
@@ -247,8 +250,8 @@ const m11: ModuleManifest = {
           heading: "Never share it, never reuse it",
           figure: <PasswordFigure focus={["rules"]} title="The rules" />,
           body: [
-            "Nobody needs your password: not your manager, not IT (5). IT never ask for it. If someone does, it's a scam.",
-            "Use it only for work. When a shop or a website is hacked, criminals try the stolen passwords everywhere else.",
+            "Nobody needs your password: not your manager, not even IT. IT will never ask for it. If someone does, it's a scam.",
+            "And use it nowhere else (5). When a shop or a website is hacked, criminals try the stolen passwords everywhere else.",
           ],
           tip: "Too many passwords to remember? Your company may give you a password manager. It remembers them, so you only need one.",
         },
@@ -264,7 +267,7 @@ const m11: ModuleManifest = {
           heading: "Say no, then report it",
           figure: <SignInFigure started={false} focus={["numbox", "deny", "yes"]} title="No number to type, so: No, it's not me" />,
           body: [
-            "There's no number to type (4), because you didn't start this. Press No, it's not me (5), then Report, or tell IT straight away. Never Yes (6).",
+            "There's no number to type (4), because you didn't start this. Press No, it's not me (5). The app then offers to report it: say yes, or tell IT straight away. Never Yes (6).",
             "If requests keep coming, don't press Yes to make them stop. That's exactly what the scammer is hoping for. Tell IT, and change your password.",
           ],
         },
@@ -326,7 +329,7 @@ const m11: ModuleManifest = {
           heading: "The yellow warning",
           figure: <ToLineFigure focus={["mailtip", "chip"]} title="The warning, and who it's going to" />,
           body: [
-            "Once someone outside the company is on an email, Outlook shows a yellow bar (6), and their name turns yellow too (7).",
+            "Once someone outside the company is on an email, Outlook shows a yellow bar (7), and their name turns yellow too (8).",
             "When you mean to email a customer, that's expected. When it's pay or anything private, stop: the wrong person is on it.",
           ],
         },
@@ -334,18 +337,18 @@ const m11: ModuleManifest = {
           heading: "Check before you send",
           figure: <ToLineFigure focus={["attach", "send"]} title="What's going, and Send" />,
           body: [
-            "What's going (8) decides how careful to be. Pay, staff details, customer details: read the To line twice before you press Send (9).",
+            "What's going (9) decides how careful to be. Pay, staff details, customer details: read the To line twice before you press Send (6).",
             "Once it has gone to someone outside the company, you can't take it back.",
           ],
         },
         {
           heading: "If it goes to the wrong person",
-          figure: <ToLineFigure focus={["chip"]} title="What to do straight away" />,
+          figure: <ToLineFigure focus={["chip"]} title="Who it went to" />,
           body: [
             "Tell your manager straight away. It isn't about blame: a data breach may have to be reported within days, so they need to know now.",
-            "Then ask the person who got it (7) to delete it, and to tell you when they have. Don't wait and hope.",
+            "Then ask the person who got it (8) to delete it, and to tell you when they have. Don't wait and hope.",
           ],
-          tip: "Every company has someone who handles this. At Northfield, it's Daniel first.",
+          tip: "Every company has someone who handles this. At Northfield, tell your manager, Daniel Okafor, first.",
         },
       ],
       tryIt: { title: "Pick the right person", intro: "Three emails in a pretend Outlook. Type the name, read the suggestions, and send each one to the right person.", Lab: ToLineLab },
@@ -397,7 +400,7 @@ const m11: ModuleManifest = {
           heading: "What isn't",
           figure: <CustomerDataFigure focus={["business"]} title="A business's name" />,
           body: [
-            "A business's name and shop address (2) are on the sign above the door. Prices, orders and products aren't personal either.",
+            "A business's name (2) isn't personal: it's on the sign above the door. Prices, orders and products aren't personal either.",
             "When you're not sure, treat it as personal.",
           ],
         },
@@ -411,7 +414,7 @@ const m11: ModuleManifest = {
         },
         {
           heading: "Here is an email to a group of customers",
-          figure: <ComposeFigure email={GROUP_EMAIL} title="An email to three customers" />,
+          figure: <ComposeFigure email={GROUP_EMAIL} title="An email to three customers" what={GROUP_WHAT} />,
           body: [
             "Christmas opening hours, going to three customers. Every part is numbered, as in Module 1.",
             "Look at To (2) and Bcc (4): the customers are in Bcc, and you're in To.",
@@ -419,7 +422,7 @@ const m11: ModuleManifest = {
         },
         {
           heading: "Bcc keeps their addresses private",
-          figure: <ComposeFigure email={GROUP_EMAIL} focus={["to", "bcc"]} title="To and Bcc" />,
+          figure: <ComposeFigure email={GROUP_EMAIL} focus={["to", "bcc"]} title="To and Bcc" what={GROUP_WHAT} />,
           body: [
             "Everyone in To and Cc can see everyone else's address. Put 30 customers in To and you've given each of them 29 other people's email addresses.",
             "Bcc (4) sends each one a copy without showing the others. Put yourself in To (2).",
@@ -468,5 +471,10 @@ const m11: ModuleManifest = {
     },
   ],
 };
+
+/* Copy that wraps well on a phone (learn/figures/safety 'tidy'): no lone last
+ * word, and "30 days", phone numbers and domains never split. */
+for (const t of m11.topics)
+  t.learn = t.learn.map((c) => ({ ...c, heading: tidy(c.heading), body: c.body.map(tidy), tip: c.tip && tidy(c.tip), good: c.good?.map((g) => ({ ...g, note: g.note && tidy(g.note) })), bad: c.bad?.map((b) => ({ ...b, note: b.note && tidy(b.note) })) }));
 
 export default m11;
