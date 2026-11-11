@@ -35,9 +35,16 @@ describe("bestScroll: where a wide figure opens on a phone", () => {
     expect(shows(x, overtime)).toBe(true);
   });
 
-  it("opens on the right end of a lit row wider than the screen, where its numbers are", () => {
-    const row = { left: 20, right: 780 };
-    expect(bestScroll([row], view, max)).toBe(max);
+  it("opens at the start of a lit part wider than the screen, where its badge and label are", () => {
+    const addressBar = { left: 120, right: 760 };
+    expect(bestScroll([addressBar], view, max)).toBe(120 - 44);
+  });
+
+  it("opens at the first of several lit parts that are each too wide to show whole", () => {
+    const from = { left: 100, right: 700 };
+    const phone = { left: 100, right: 700 };
+    const deliverTo = { left: 140, right: 760 };
+    expect(bestScroll([from, phone, deliverTo], view, max)).toBe(100 - 44);
   });
 
   it("never scrolls past either end", () => {
