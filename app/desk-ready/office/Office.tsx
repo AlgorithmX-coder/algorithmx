@@ -16,7 +16,7 @@ import { SaveDialog } from "./apps/Word";
 import { pdfOfRows } from "./files";
 import { PlacePicker } from "./places";
 import { newId, useOffice } from "./store";
-import { samePath, tabsOf, type Check, type Job, type OfficeFile, type Paper, type Path } from "./types";
+import { samePath, tabsOf, type Check, type CopilotPaneContext, type Job, type OfficeFile, type Paper, type Path } from "./types";
 import { AppButton, Dialog, OFFICE_CSS } from "./ui";
 
 /* The pretend office for one job: a task panel on the left (the brief,
@@ -154,6 +154,10 @@ export default function Office({ job }: { job: Job }) {
     openPaper: (title: string, paper?: Paper) => setViewer({ title, paper, key: nextKey() }),
     request: request?.app === id ? { fileId: request.fileId, key: request.key } : null,
   });
+  /* ── Module 12: an app that also opens as a pane in Outlook and Excel (Copilot) ── */
+  const paneId = extras.find((id) => OFFICE_APPS[id].Pane);
+  const Pane = paneId ? OFFICE_APPS[paneId].Pane : undefined;
+  const pane = Pane && paneId ? (ctx: CopilotPaneContext) => <Pane {...appProps(paneId)} ctx={ctx} /> : undefined;
 
   return (
     <div className="dr-shell" style={shell}>
@@ -198,7 +202,7 @@ export default function Office({ job }: { job: Job }) {
           <section className="of-screen of-office" aria-label="Your desktop" style={{ colorScheme: "light" }}>
             <div className="of-window">
               <div style={{ display: app === "outlook" ? "block" : "none", height: "100%" }}>
-                <Outlook state={state} dispatch={dispatch} onAttachment={(a) => (a.sheet ? openFile({ id: "attachment", path: [], name: a.name, kind: "xlsx", modified: "", by: "", sheet: a.sheet, tabs: a.tabs }) : setViewer({ title: a.name, paper: a.paper, doc: a.doc, key: nextKey() }))} onLink={(l) => openLink(l.path, l.fileName)} />
+                <Outlook state={state} dispatch={dispatch} onAttachment={(a) => (a.sheet ? openFile({ id: "attachment", path: [], name: a.name, kind: "xlsx", modified: "", by: "", sheet: a.sheet, tabs: a.tabs }) : setViewer({ title: a.name, paper: a.paper, doc: a.doc, key: nextKey() }))} onLink={(l) => openLink(l.path, l.fileName)} pane={pane} />
               </div>
               <div style={{ display: app === "explorer" ? "block" : "none", height: "100%" }}>
                 <Explorer state={state} dispatch={dispatch} onOpen={openFile} />
@@ -212,6 +216,7 @@ export default function Office({ job }: { job: Job }) {
                   onSaveAs={() => setSaveAs(true)}
                   onClose={() => guard(() => setDoc(null))}
                   onExportPdf={(rows, sheet) => setPdfAsk({ rows, sheet })}
+                  pane={pane}
                 />
               </div>
               {extras.map((id) => {

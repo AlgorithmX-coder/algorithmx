@@ -31,10 +31,14 @@ import { signInPrompt } from "./signInPrompt";
 import { wrongEmma } from "./wrongEmma";
 const M11 = [bankDetails, wrongEmma, signInPrompt];
 /* ── end Module 11 ── */
+/* ── Module 12: AI as your assistant ── */
+import { copilotDraft, explainFormula, whatNotToPaste } from "./copilotJobs";
+const M12 = [copilotDraft, whatNotToPaste, explainFormula];
+/* ── end Module 12 ── */
 
 /* Every office job, in course order. A module page lists its own jobs
  * under "On the job"; the route /desk-ready/office/[slug] runs one. */
-export const JOBS: readonly Job[] = [mondayInbox, lateDelivery, stockMeeting, rotaCall, chatOrEmail, stockCount, decemberRota, morningReport, sheetTotals, vatQuote, lateCount, bestCustomer, oddNumber, letterhead, holidayForm, procedureReview, ...M9, ...M10, ...M11];
+export const JOBS: readonly Job[] = [mondayInbox, lateDelivery, stockMeeting, rotaCall, chatOrEmail, stockCount, decemberRota, morningReport, sheetTotals, vatQuote, lateCount, bestCustomer, oddNumber, letterhead, holidayForm, procedureReview, ...M9, ...M10, ...M11, ...M12];
 
 export const jobBySlug = (slug: string) => JOBS.find((j) => j.slug === slug);
 export const jobsFor = (moduleId: string) => JOBS.filter((j) => j.moduleId === moduleId);

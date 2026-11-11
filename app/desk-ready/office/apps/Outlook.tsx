@@ -5,13 +5,14 @@ import { W } from "../../tokens";
 import { CONTACTS, YOU } from "../northfield";
 import { PlacePicker } from "../places";
 import { newId, type Action } from "../store";
-import type { Attachment, Email, EmailLink, OfficeFile, OfficeState, Path, Person } from "../types";
+import type { Attachment, CopilotPaneContext, Email, EmailLink, OfficeFile, OfficeState, Path, Person } from "../types";
 import { AppButton, Dialog, FileGlyph, TitleBar } from "../ui";
 import { InviteCard } from "./Calendar";
 /* ── Module 11: Staying safe at work ── */
 import { deliverReplies, detailOf, isInternal, PHONE_OF } from "../safety";
 import type { Contact } from "../types";
 /* ── end Module 11 ── */
+import { CopilotButton } from "./Copilot";
 
 /* Outlook, for the office jobs: Inbox, the job's own folders, Sent items
  * and Junk email; a reading pane; Move to, Flag, Report (phishing) and
@@ -40,11 +41,14 @@ export default function Outlook({
   dispatch,
   onAttachment,
   onLink,
+  pane,
 }: {
   state: OfficeState;
   dispatch: (a: Action) => void;
   onAttachment: (a: Attachment) => void;
   onLink: (l: EmailLink) => void;
+  /* ── Module 12 ── Draft with Copilot, when the job has Copilot. */
+  pane?: (ctx: CopilotPaneContext) => ReactNode;
 }) {
   const [folder, setFolder] = useState("inbox");
   const [openId, setOpenId] = useState<string | null>(null);
@@ -242,7 +246,7 @@ export default function Outlook({
         {/* reading or writing */}
         <div style={{ flex: 1, minWidth: 0, overflowY: "auto" }}>
           {draft ? (
-            <Compose draft={draft} setDraft={setDraft} onSend={() => send()} onDiscard={() => setDraft(null)} onLink={() => setPicker("link")} onAttach={() => setPicker("attach")} book={book} recent={recent} />
+            <Compose draft={draft} setDraft={setDraft} onSend={() => send()} onDiscard={() => setDraft(null)} onLink={() => setPicker("link")} onAttach={() => setPicker("attach")} book={book} recent={recent} pane={pane} />
           ) : open ? (
             <Reading
               key={open.id}
@@ -437,6 +441,7 @@ function Compose({
   onAttach,
   book,
   recent,
+  pane,
 }: {
   draft: Draft;
   setDraft: (d: Draft) => void;
@@ -446,7 +451,10 @@ function Compose({
   onAttach: () => void;
   book?: Contact[];
   recent?: string[];
+  pane?: (ctx: CopilotPaneContext) => ReactNode;
 }) {
+  /* ── Module 12 ── the Draft with Copilot card, open or closed */
+  const [ai, setAi] = useState(false);
   return (
     <div style={{ display: "flex", flexDirection: "column", minHeight: "100%" }}>
       <div style={{ display: "flex", flexWrap: "wrap", gap: 8, padding: "10px 14px", borderBottom: `1px solid ${W.edge}` }}>
@@ -455,6 +463,7 @@ function Compose({
         </AppButton>
         <AppButton onClick={onLink}>🔗 Insert link</AppButton>
         <AppButton onClick={onAttach}>📎 Attach file</AppButton>
+        {pane && <CopilotButton label="Draft with Copilot" on={ai} onClick={() => setAi((a) => !a)} />}
         <AppButton onClick={onDiscard} style={{ marginLeft: "auto" }}>
           Discard
         </AppButton>
@@ -487,6 +496,7 @@ function Compose({
           ))}
         </div>
       )}
+      {pane && ai && pane({ host: "outlook", replyTo: draft.quoted, insert: (body) => setDraft({ ...draft, body }), close: () => setAi(false) })}
       <textarea
         aria-label="Email message"
         value={draft.body}

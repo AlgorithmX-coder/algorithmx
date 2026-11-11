@@ -608,6 +608,8 @@ export interface CopilotTurn {
   tip?: string;
   /* A good prompt to copy, offered after two weak tries. */
   example?: string;
+  /* Which wording of the answer this is (Regenerate moves it on). */
+  variant?: number;
 }
 
 export interface CopilotState {
@@ -615,7 +617,7 @@ export interface CopilotState {
   /* The job's draft scenario (a key in ./copilot.ts BRIEFS). */
   brief?: string;
   /* Text the paste box can drop in, as if copied from an email. */
-  clip?: { label: string; text: string };
+  clip?: { label: string; text: string; people?: string[] };
 }
 
 /* What Outlook or Excel hands the Copilot pane it hosts. */

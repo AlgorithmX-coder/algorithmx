@@ -92,10 +92,11 @@ describe("Copilot's answers", () => {
   });
   it("counts loosely, and wrongly, when asked how many", () => {
     const grid = [
-      ["Date", "Status", "Notes"],
-      ["1", "Late", ""],
-      ["2", "On time", "Driver rang to say he'd be late, but made it"],
-      ["3", "Late", ""],
+      ["Date", "Supplier", "Status", "Notes"],
+      ["1", "Harlow", "Late", ""],
+      ["2", "Kent", "On time", "Driver rang to say he'd be late, but made it"],
+      ["3", "Harlow", "Late", ""],
+      ["", "Late in November", "", ""],
     ];
     const a = respond("How many deliveries were late?", { host: "excel", grid });
     expect(a.kind).toBe("count");

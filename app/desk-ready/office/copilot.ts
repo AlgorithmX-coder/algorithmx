@@ -397,7 +397,8 @@ export function explainFormula(formula: string, grid?: Grid): string | null {
  * any column. A note that says "late" on an on-time row gets counted too,
  * which is how a confident answer ends up wrong. */
 function looseCount(grid: Grid, word: string): number {
-  return grid.slice(1).filter((row) => row.some((v) => new RegExp(`\\b${word}\\b`, "i").test(v))).length;
+  const records = grid.slice(1).filter((row) => row.filter((v) => v.trim()).length >= 3);
+  return records.filter((row) => row.some((v) => new RegExp(`\\b${word}\\b`, "i").test(v))).length;
 }
 
 /* ── the answer ─────────────────────────────────────────────────────── */
