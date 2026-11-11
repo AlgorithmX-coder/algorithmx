@@ -32,7 +32,7 @@ function jobLine(j: JobScore, card: Scorecard): string {
     case "done":
       return `Arrived ${arrived}, done at ${clockAt(j.doneAt ?? card.endedAt)}. In good time: ${j.job.dueText}.`;
     case "late":
-      return `Arrived ${arrived}, done at ${clockAt(j.doneAt ?? card.endedAt)}: late, as ${j.job.dueText}. ${j.job.lateFix}`;
+      return `Arrived ${arrived}, done at ${clockAt(j.doneAt ?? card.endedAt)}: late. ${j.job.lateFix}`;
     case "missed":
       return `Arrived ${arrived}, and wasn't finished by ${clockAt(card.endedAt)}. Here's what was missing.`;
     default:
@@ -156,7 +156,7 @@ function Card({ card, rec, onAgain }: { card: Scorecard; rec: OfficeState; onAga
           <h2 className="sc-h2">What to work on first</h2>
           <p className="sc-p">
             {card.paidScammer || card.leaked.length
-              ? "One of the safety rules was broken, so this morning can't pass however much else was done. Read that job below first, then try the morning again."
+              ? `${card.paidScammer && card.leaked.length ? "Both safety rules were broken" : "A safety rule was broken"}, so this morning can't pass however much else was done. Read ${card.paidScammer && card.leaked.length ? "the scam and the overtime" : card.paidScammer ? "the scam" : "the overtime"} below first, then try the morning again.`
               : `You need ${PASS_MARK - total} more job${PASS_MARK - total === 1 ? "" : "s"} done to pass. Each missed job below says exactly what was missing.`}
           </p>
         </section>

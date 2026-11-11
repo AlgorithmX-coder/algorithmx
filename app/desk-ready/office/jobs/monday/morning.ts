@@ -1,7 +1,7 @@
 import { CLARKSON_REPLY, EMMA_CLARKSON } from "../../safety";
 import type { Job, MorningResult, MorningState, OfficeState, Person } from "../../types";
 import { checkMorning, isDone, MORNING_JOBS, overtimeLeaks, scamOf, type MorningCheck, type MorningJob } from "./checks";
-import { ARRIVALS, clockAt, LENGTH, minuteOf, MORNING_ID, seed, TODAY } from "./data";
+import { ARRIVALS, clockAt, LENGTH, minuteOf, MORNING_ID, RING_FOR, RITA_CALL_ID, RITA_VOICEMAIL, seed, TODAY } from "./data";
 
 /* The final task's clock and its scorecard, as pure functions of the office
  * record, so the timed morning, the scorecard page and the tests all agree.
@@ -33,8 +33,17 @@ export function advance(s: OfficeState, n: number): OfficeState {
   const m = morningOf(s);
   if (m.endedAt !== undefined) return s;
   const minute = Math.min(LENGTH, m.minute + Math.max(0, n));
-  const next = land({ ...s, morning: { ...m, minute, started: true } });
+  const next = voicemail(land({ ...s, morning: { ...m, minute, started: true } }));
   return minute >= LENGTH ? finish(next) : next;
+}
+
+/* A phone left ringing stops, as a real one does, and the caller leaves a voicemail. */
+function voicemail(s: OfficeState): OfficeState {
+  const rang = ARRIVALS.find((a) => a.how === "phone");
+  const calls = s.phone?.calls ?? [];
+  const call = calls.find((c) => c.id === RITA_CALL_ID);
+  if (!rang || !call?.ringing || (s.phone?.answered ?? []).includes(RITA_CALL_ID) || morningOf(s).minute < rang.at + RING_FOR) return s;
+  return { ...s, phone: { calls: calls.map((c) => (c.id === RITA_CALL_ID ? { ...RITA_VOICEMAIL, time: c.time } : c)), answered: s.phone?.answered ?? [] } };
 }
 
 /* What needs noting after a change, or null when nothing does (so the
@@ -205,7 +214,11 @@ export function score(s: OfficeState): Scorecard {
   const stopped = m.reportedAt ?? scamJob?.doneAt;
   let scamNote: Scorecard["scam"];
   if (!scamJob || scamJob.status === "unreached") scamNote = { tone: "none", note: `You finished before the scam arrived at ${arrived}, so there was nothing to stop.` };
-  else if (paidScammer) scamNote = { tone: "bad", note: `You opened the scam's "View and pay" link. On a real Monday, that's where the money goes, and it can't be got back. A sudden change of bank details is always checked by phone, on a number you already hold, before anyone pays a penny.` };
+  else if (paidScammer)
+    scamNote = {
+      tone: "bad",
+      note: `You opened the scam's "View and pay" link. On a real Monday, that's where the money goes, and it can't be got back.${stopped !== undefined && stopped > scamJob.job.due ? ` You reported it at ${clockAt(stopped)}; it arrived at ${arrived}.` : ""} A sudden change of bank details is always checked by phone, on a number you already hold, before anyone pays a penny.`,
+    };
   else if (stopped === undefined) scamNote = { tone: "bad", note: `The scam arrived at ${arrived} and was never reported. It sat in the inbox all morning, where anyone could have paid it. Next time, report it and tell Priya the moment you spot it.` };
   else if (stopped > (scamJob.job.due ?? minuteOf("09:30"))) scamNote = { tone: "late", note: `You reported the scam at ${clockAt(stopped)}; it arrived at ${arrived}. Every minute it sat there, someone could have paid it. Next time, deal with a scam the moment you spot it: it takes two minutes, and nothing else on the list can cost as much.` };
   else {

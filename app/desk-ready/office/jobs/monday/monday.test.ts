@@ -159,6 +159,16 @@ describe("the Monday morning clock", () => {
     expect(s4.files.some((f) => f.id === KF1180_ID)).toBe(true);
     expect(morningOf(s4).arrived).toHaveLength(6);
   });
+  it("stops ringing after a few minutes unanswered, and leaves a voicemail to play", () => {
+    const ringing = advance(fresh(), minuteOf("09:55"));
+    expect(ringing.phone!.calls[0]).toMatchObject({ id: "mm-call-rita", ringing: true });
+    const missed = advance(ringing, 1);
+    expect(missed.phone!.calls[0]).toMatchObject({ id: "mm-call-rita", way: "missed", time: "09:50" });
+    expect(missed.phone!.calls[0].ringing).toBeFalsy();
+    expect(missed.phone!.calls[0].lines!.map((l) => l.text).join(" ")).toMatch(/napkins[\s\S]*0116 496 0519/);
+    const answered = advance({ ...ringing, phone: { ...ringing.phone!, answered: ["mm-call-rita"] } }, 10);
+    expect(answered.phone!.calls[0].way).toBe("in");
+  });
   it("lands each arrival once, however the clock gets there", () => {
     const a = advance(mondayMorning.seed(), LENGTH - 1);
     const b = Array.from({ length: LENGTH - 1 }).reduce<OfficeState>((s) => advance(s, 1), advance(mondayMorning.seed(), 0));

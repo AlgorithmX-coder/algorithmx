@@ -441,6 +441,22 @@ export const RITA_CALL: PhoneCall = {
   ]),
 };
 
+/* Nobody answered: after a few minutes the phone stops ringing and Rita
+ * leaves a voicemail, which waits in the phone's call list. */
+export const RING_FOR = 6;
+export const RITA_VOICEMAIL: PhoneCall = {
+  id: RITA_CALL_ID,
+  name: "Rita Fenwick",
+  company: "Oak Street Deli · left a voicemail",
+  number: RITA_NUMBER,
+  time: "09:50",
+  way: "missed",
+  ...timed([
+    { who: "them", text: "Hello, it's Rita Fenwick from Oak Street Deli, for Sarah. We've got a delivery coming on Wednesday, order 4436. Could you add 10 packs of napkins to it, please? We've nearly run out." },
+    { who: "them", text: "Could Sarah ring me back to confirm before 12? I'm in the shop until then. The number is 0116 496 0519. Again, that's 0116 496 0519. Thanks, bye now." },
+  ]),
+};
+
 export const ARRIVALS: Arrival[] = [
   {
     id: "a-report",

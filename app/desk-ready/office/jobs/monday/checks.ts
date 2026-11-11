@@ -368,7 +368,7 @@ function checkPhone(s: OfficeState): MorningCheck[] {
     ? "You told Sarah on Teams. A phone message needs a record she can come back to, and she asked for those by email. Send it to her in Outlook."
     : answered
       ? "Nothing has gone to Sarah. In Outlook press New mail, send it to Sarah Patel, and put in who rang, what they want, the number and by when."
-      : "The phone rang at 09:50 and nobody answered. Answer it (or open Phone) and listen to the call, then email the message to Sarah.";
+      : "The phone rang at 09:50 and nobody answered, so Rita left a voicemail. Open Phone, play it, then email the message to Sarah. Next time, answer a ringing phone straight away: it's often a customer.";
   const group = "The message to Sarah";
   add({ id: "sent", code: "ADM-4", group, label: "You emailed the message to Sarah" }, !!mail, first);
   add({ id: "who", code: "ADM-4", group, label: "Who rang: Rita Fenwick from Oak Street Deli" }, !!mail && /(rita|fenwick)/i.test(b) && /oak street/i.test(b), !mail ? first : "Say who rang, with their company, in the email itself: Rita Fenwick from Oak Street Deli.");

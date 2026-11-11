@@ -131,7 +131,9 @@ export default function FinalStart() {
                   ? `${best.passed ? "You've passed." : "Not passed yet."} Your best morning: ${best.score} of ${best.outOf} jobs done${best.late ? `, ${best.late} late` : ""}.${tries > 1 ? ` You've played it ${tries} times.` : ""}`
                   : inProgress
                     ? `Your morning is paused at ${clockAt(m.minute)}. The clock waits for you.`
-                    : "The clock starts when you press Start the clock in the office, not before."}
+                    : best
+                      ? `Your best morning so far: ${best.score} of ${best.outOf} jobs done${best.passed ? ", a pass" : ""}. The clock starts when you press Start the clock in the office.`
+                      : "The clock starts when you press Start the clock in the office, not before."}
               </p>
             )}
           </div>
