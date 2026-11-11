@@ -47,6 +47,19 @@ describe("bestScroll: where a wide figure opens on a phone", () => {
     expect(bestScroll([from, phone, deliverTo], view, max)).toBe(100 - 44);
   });
 
+  it("shows as many lit badges as any position can, counting wide boxes by their start (the Share box)", () => {
+    const parts = [
+      { left: 60, right: 520 }, // name box
+      { left: 540, right: 640 }, // Can edit
+      { left: 60, right: 640 }, // message
+      { left: 680, right: 760 }, // Send
+    ];
+    const badges = (x: number) => parts.filter((p) => p.left - 44 >= x - 1 && p.left + 40 <= x + view).length;
+    const x = bestScroll(parts, view, max);
+    const best = Math.max(...Array.from({ length: max + 1 }, (_, i) => badges(i)));
+    expect(badges(x)).toBe(best);
+  });
+
   it("never scrolls past either end", () => {
     const x = bestScroll([{ left: 0, right: 10 }], view, max);
     expect(x).toBeGreaterThanOrEqual(0);

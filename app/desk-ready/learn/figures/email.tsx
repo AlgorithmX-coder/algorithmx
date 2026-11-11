@@ -196,7 +196,7 @@ export function ComposeFigure({ email = DELIVERY_REPLY, focus, title = "An email
   const parts = Object.fromEntries((Object.entries(WRITE_PARTS) as [WritePart, PartInfo][]).map(([k, p]) => [k, what[k] ? { ...p, what: what[k] } : p])) as Record<WritePart, PartInfo>;
   const noChip = hide.includes("attach");
   return (
-    <FigureFrame info={parts} focus={focus} title={title} note={note}>
+    <FigureFrame info={parts} focus={focus} title={title} note={note} minWidth={560}>
       <AppWindow app="Outlook" colour={W.outlook} title="New message">
         <div style={{ display: "flex", gap: 12, alignItems: "center", padding: "10px 12px 10px 52px", background: W.chrome, borderBottom: `1px solid ${W.edge}` }}>
           <Part k="send" block={false}>

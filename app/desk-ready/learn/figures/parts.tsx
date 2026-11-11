@@ -131,7 +131,11 @@ export function bestScroll(spans: { left: number; right: number }[], view: numbe
     /* sorted left to right, so on a tie the later (righter) one wins */
     /* a part at the very edge of the figure needs no margin past that edge */
     const whole = spans.filter((sp) => Math.max(0, sp.left - pad) >= x - 1 && Math.min(max + view, sp.right + pad) <= x + view + 1).length;
-    const score = whole;
+    /* then the most parts whose start, with its badge, is on screen */
+    const starts = spans.filter((sp) => Math.max(0, sp.left - pad) >= x - 1 && sp.left + 40 <= x + view).length;
+    /* a lit part counts first by its badge being on screen (so the key
+     * can be matched to it), then by showing whole */
+    const score = starts * 1000 + whole;
     if (score >= bestScore) {
       best = x;
       bestScore = score;
@@ -150,6 +154,17 @@ export function bestScroll(spans: { left: number; right: number }[], view: numbe
  * there is more on that side; and a line under it says to slide. A
  * Module 10 review found 15 cards whose lit part was off-screen with no
  * hint at all. */
+/* When a card lights some parts, everything drawn outside the numbered
+ * parts (a window's title, a table's other rows, the small print) dims
+ * with the unlit parts, so the lit part stands out. Parts dim themselves;
+ * this catches the rest. It picks only the outermost such element (whose
+ * parent holds a part, or is the figure), so nothing dims twice, and
+ * never anything inside a part. Reviews of Modules 9, 10 and 11 found
+ * this on nearly every lit card. */
+const FIG_FOCUS_CSS = `.dr-fig-focus > :not([data-part]):not(:has([data-part])), .dr-fig-focus :not([data-part]):not([data-part] *):has([data-part]) > :not([data-part]):not(:has([data-part])) { opacity: 0.32; transition: opacity .2s ease; }`;
+
+const FIG_SCROLL_CSS = `.dr-fig-scroll { padding: 34px 26px 26px; } @media (max-width: 720px) { .dr-fig-scroll { padding: 34px 42px 26px; } }`;
+
 function Scroller({ children, focusKey }: { children: ReactNode; focusKey: string }) {
   const ref = useRef<HTMLDivElement>(null);
   const [edges, setEdges] = useState({ left: false, right: false });
@@ -158,21 +173,39 @@ function Scroller({ children, focusKey }: { children: ReactNode; focusKey: strin
     const el = ref.current;
     if (!el) return;
     const measure = () => setEdges({ left: el.scrollLeft > 4, right: el.scrollLeft + el.clientWidth < el.scrollWidth - 4 });
-    /* bring the lit parts into view */
-    const lit = [...el.querySelectorAll<HTMLElement>("[data-lit]")];
-    if (lit.length && el.scrollWidth > el.clientWidth + 4) {
-      const box = el.getBoundingClientRect();
-      const spans = lit.map((n) => {
-        const r = n.getBoundingClientRect();
-        return { left: r.left - box.left + el.scrollLeft, right: r.right - box.left + el.scrollLeft };
-      });
-      el.scrollLeft = bestScroll(spans, el.clientWidth, el.scrollWidth - el.clientWidth);
-    } else if (!lit.length) el.scrollLeft = 0;
-    measure();
+    /* bring the lit parts into view; again when fonts or layout settle
+     * (a measure taken before the fonts load is off by tens of pixels),
+     * but never after the learner has moved it themselves */
+    let moved = false;
+    const place = () => {
+      if (moved) return;
+      const lit = [...el.querySelectorAll<HTMLElement>("[data-lit]")];
+      if (lit.length && el.scrollWidth > el.clientWidth + 4) {
+        const box = el.getBoundingClientRect();
+        const spans = lit.map((n) => {
+          const r = n.getBoundingClientRect();
+          return { left: r.left - box.left + el.scrollLeft, right: r.right - box.left + el.scrollLeft };
+        });
+        el.scrollLeft = bestScroll(spans, el.clientWidth, el.scrollWidth - el.clientWidth);
+      } else if (!lit.length) el.scrollLeft = 0;
+      measure();
+    };
+    const mine = () => {
+      moved = true;
+    };
+    place();
+    let live = true;
+    document.fonts?.ready.then(() => live && place());
+    const ro = typeof ResizeObserver === "undefined" ? null : new ResizeObserver(() => place());
+    if (ro && el.firstElementChild) ro.observe(el.firstElementChild);
     el.addEventListener("scroll", measure, { passive: true });
+    for (const ev of ["pointerdown", "wheel", "touchstart", "keydown"]) el.addEventListener(ev, mine, { passive: true });
     window.addEventListener("resize", measure);
     return () => {
+      live = false;
+      ro?.disconnect();
       el.removeEventListener("scroll", measure);
+      for (const ev of ["pointerdown", "wheel", "touchstart", "keydown"]) el.removeEventListener(ev, mine);
       window.removeEventListener("resize", measure);
     };
   }, [focusKey]);
@@ -182,12 +215,15 @@ function Scroller({ children, focusKey }: { children: ReactNode; focusKey: strin
   return (
     <>
       <div style={{ position: "relative" }}>
-        <div ref={ref} className="dr-workspace" style={{ padding: "34px 26px 26px 26px", overflowX: "auto" }}>
+        <div ref={ref} className="dr-workspace dr-fig-scroll" style={{ overflowX: "auto" }}>
           {children}
         </div>
         {edges.left && <span aria-hidden style={fade("left")} />}
         {edges.right && <span aria-hidden style={fade("right")} />}
       </div>
+      {/* on a phone the figure slides, so the sides need room for a badge
+       * (36px out from its part); on a laptop it fits, so they don't */}
+      <style>{FIG_SCROLL_CSS + FIG_FOCUS_CSS}</style>
       {more && (
         <p style={{ margin: "8px 0 0", display: "flex", alignItems: "center", gap: 8, fontFamily: D.mono, fontSize: 12.5, fontWeight: 700, letterSpacing: "0.08em", color: D.accent }}>
           <span aria-hidden style={{ whiteSpace: "nowrap" }}>{edges.left && edges.right ? "\u2190 \u2192" : edges.left ? "\u2190" : "\u2192"}</span>
@@ -204,7 +240,9 @@ export function FigureFrame<K extends string>({ title, info, focus, children, no
     <FigureProvider focus={focus} info={info}>
       <figure style={{ margin: "20px 0 0" }}>
         <Scroller focusKey={(focus ?? []).join(",")}>
-          <div style={{ minWidth, colorScheme: "light", fontFamily: W.font, color: W.ink, overflowWrap: "anywhere" }}>{children}</div>
+          <div className={focus && focus.length ? "dr-fig-focus" : undefined} style={{ minWidth, colorScheme: "light", fontFamily: W.font, color: W.ink, overflowWrap: "break-word" }}>
+            {children}
+          </div>
         </Scroller>
         <figcaption style={{ marginTop: 14 }}>
           {title && <p style={{ margin: "0 0 10px", fontFamily: D.mono, fontSize: 12, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", color: D.faint }}>{title}</p>}
