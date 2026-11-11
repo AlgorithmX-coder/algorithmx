@@ -27,6 +27,8 @@ export type Action =
   | { type: "report"; id: string }
   | { type: "clickLink"; id: string }
   | { type: "send"; email: Email }
+  /* Any other change, made by an app's own function (apps/registry). */
+  | { type: "update"; fn: (s: OfficeState) => OfficeState }
   | { type: "reset"; state: OfficeState };
 
 let counter = 0;
@@ -96,6 +98,8 @@ function apply(s: OfficeState, a: Action): OfficeState {
       return { ...s, emails: s.emails.map((e) => (e.id === a.id ? { ...e, clicked: true } : e)) };
     case "send":
       return { ...s, emails: [...s.emails, a.email] };
+    case "update":
+      return a.fn(s);
     case "reset":
       return a.state;
   }
