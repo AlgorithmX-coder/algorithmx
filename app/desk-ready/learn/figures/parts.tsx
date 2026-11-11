@@ -114,6 +114,7 @@ export function usePartNumber(k: string): number | null {
  * about) decide. Ties go to the rightmost position: on a document the left
  * holds labels and the right the figures, the note, the bank details,
  * which are what a card is usually about (Module 10 review, 2026-11-11).
+ * When no lit part can show whole, it opens at the first one's start.
  * Exported for its tests. */
 export function bestScroll(spans: { left: number; right: number }[], view: number, max: number): number {
   const pad = 44; // the badge sits in a 36px gutter beside its part; the edge fade is 24px
@@ -128,13 +129,18 @@ export function bestScroll(spans: { left: number; right: number }[], view: numbe
   let bestScore = -1;
   for (const x of [...candidates].sort((p, q) => p - q)) {
     /* sorted left to right, so on a tie the later (righter) one wins */
-    const whole = spans.filter((sp) => sp.left - pad >= x - 1 && sp.right + pad <= x + view + 1).length;
+    /* a part at the very edge of the figure needs no margin past that edge */
+    const whole = spans.filter((sp) => Math.max(0, sp.left - pad) >= x - 1 && Math.min(max + view, sp.right + pad) <= x + view + 1).length;
     const score = whole;
     if (score >= bestScore) {
       best = x;
       bestScore = score;
     }
   }
+  /* No lit part fits whole (an address bar, a form row wider than the
+   * phone): open at the start of the first one, where its badge and label
+   * are, not at its far end (Module 10 review, third pass). */
+  if (bestScore === 0) return clamp(Math.min(...spans.map((sp) => sp.left)) - pad);
   return best;
 }
 
@@ -171,7 +177,7 @@ function Scroller({ children, focusKey }: { children: ReactNode; focusKey: strin
     };
   }, [focusKey]);
 
-  const fade = (side: "left" | "right"): CSSProperties => ({ position: "absolute", top: 0, bottom: 0, [side]: 0, width: 24, pointerEvents: "none", borderRadius: side === "left" ? "18px 0 0 18px" : "0 18px 18px 0", background: `linear-gradient(to ${side === "left" ? "right" : "left"}, rgba(4,8,20,0.7), rgba(4,8,20,0))` });
+  const fade = (side: "left" | "right"): CSSProperties => ({ position: "absolute", top: 0, bottom: 0, [side]: 0, width: 16, pointerEvents: "none", borderRadius: side === "left" ? "18px 0 0 18px" : "0 18px 18px 0", background: `linear-gradient(to ${side === "left" ? "right" : "left"}, rgba(4,8,20,0.55), rgba(4,8,20,0))` });
   const more = edges.left || edges.right;
   return (
     <>
