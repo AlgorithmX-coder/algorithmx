@@ -27,6 +27,10 @@ function Rest({ children, style, block = true }: { children: ReactNode; style?: 
   );
 }
 
+/* Keep a number with its unit, a date with its day, or a menu path in one
+ * piece, so a phone never breaks "12 kg" or "Insert > Pictures" across a line. */
+const nb = (s: string) => s.split(" ").join("\u00a0");
+
 /* `what` overrides a part's key line for one card; `omit` leaves parts out. */
 function infoOf<K extends string>(parts: Record<K, PartInfo>, what: Partial<Record<K, string>> = {}): Record<K, PartInfo> {
   return Object.fromEntries((Object.entries(parts) as [K, PartInfo][]).map(([k, p]) => [k, what[k] ? { ...p, what: what[k] } : p])) as Record<K, PartInfo>;
@@ -88,7 +92,7 @@ export const DeliveryFigure = (p: { focus?: DocPart[]; title?: string; what?: Pa
 export const CREDIT_PARTS: Partial<Record<DocPart, PartInfo>> = {
   supplier: { n: 1, name: "Supplier", what: "Who owes us the money back." },
   number: { n: 2, name: "Credit note number", what: "The supplier's number for the credit. Accounts take it off what we owe." },
-  poRef: { n: 3, name: "Your order", what: "The PO it belongs to, beside the invoice it reduces." },
+  poRef: { n: 3, name: "Your order", what: "The PO it belongs to. The row under it names the invoice it reduces, HP-2291." },
   lines: { n: 4, name: "What is credited", what: "Only what didn't come: here the 2 missing pallets, at the same price." },
   total: { n: 5, name: "Total credit", what: "With VAT, so it cancels exactly what was overcharged: £115.20." },
 };
@@ -126,7 +130,7 @@ export const HP2291_MATCH: { heads: [string, string, string]; rows: MatchRow[]; 
     { key: "price", label: "Unit price", cells: ["£48.00", "no prices", "£48.00"] },
     { key: "total", label: "Total", cells: ["£576.00 + VAT", "", "£691.20 with VAT"] },
   ],
-  verdict: "Hold it. 2 of the 12 pallets of wrap never came: 2 × £48.00 = £96.00, plus VAT £19.20, so hold back £115.20 and ask Harlow for a credit note.",
+  verdict: "Hold it. 2 of the 12 pallets of pallet wrap never came: 2 × £48.00 = £96.00, plus VAT £19.20, so hold back £115.20 and ask Harlow for a credit note.",
   good: false,
 };
 
@@ -257,9 +261,12 @@ function MiniSheet({ grid, widths, boxes, file, place, tab, money = [], picture,
         </div>
         {picture}
       </div>
-      <div style={{ display: "flex", alignItems: "center", minHeight: 32, padding: `0 14px 0 ${pad + NUM}px`, background: W.chrome, borderTop: `1px solid ${W.edge}`, borderRadius: "0 0 8px 8px", fontSize: 13, opacity: fade(false), transition: "opacity .2s ease" }}>
+      <div style={{ display: "flex", alignItems: "center", minHeight: 32, padding: `0 14px 0 ${pad + NUM}px`, background: W.chrome, borderTop: `1px solid ${W.edge}`, borderRadius: "0 0 8px 8px", fontSize: 13, opacity: fade(focus.includes("file")), transition: "opacity .2s ease" }}>
         <span style={{ padding: "6px 12px", background: W.page, color: W.excel, fontWeight: 700, borderBottom: `3px solid ${W.excel}` }}>{tab}</span>
-        <span style={{ marginLeft: "auto", color: W.muted }}>{place}</span>
+        {/* the folder it's saved in is part of "the file" */}
+        <Part k="file" noBadge block={false} style={{ marginLeft: "auto", padding: "2px 6px" }}>
+          <span style={{ color: W.muted, whiteSpace: "nowrap" }}>{place}</span>
+        </Part>
       </div>
     </div>
   );
@@ -319,13 +326,13 @@ export function TimesheetFigure({ focus, title = "A timesheet, filled in", what,
 export type ClaimPart = "file" | "date" | "what" | "category" | "amount" | "total" | "receipt" | "who";
 
 export const CLAIM_PARTS: Record<ClaimPart, PartInfo> = {
-  file: { n: 1, name: "The file", what: "The claim, named date first, saved in Finance > Expenses > 2026 where Accounts pay from." },
+  file: { n: 1, name: "The file", what: `The claim, named date first, saved in ${nb("Finance > Expenses > 2026")}, where Accounts pay from.` },
   date: { n: 2, name: "Date spent", what: "The day you spent the money, not the day you fill in the form." },
   what: { n: 3, name: "What it was for", what: "Enough for a manager to approve it at a glance: what, where, and why it was for work." },
   category: { n: 4, name: "Category", what: "The kind of cost, from the list on the form: Travel, Meals, Postage or Other." },
   amount: { n: 5, name: "Amount", what: "Exactly what the receipt says, pence and all." },
   total: { n: 6, name: "Total", what: "Every line added up: what you will be paid back." },
-  receipt: { n: 7, name: "The receipt", what: "A photo of the receipt, put on the claim (Insert > Pictures). No receipt, no money back." },
+  receipt: { n: 7, name: "The receipt", what: `A photo of the receipt, put on the claim (${nb("Insert > Pictures")}). No receipt, no money back.` },
   who: { n: 8, name: "Your name and the date", what: "Who to pay, and when you claimed. Your manager approves it next." },
 };
 
@@ -356,7 +363,7 @@ export function ClaimFigure({ focus, title = "An expense claim, with its receipt
           { k: "what", r: -1, c: 1, rows: 3, badge: "top" },
           { k: "category", r: -1, c: 2, rows: 3, badge: "top" },
           { k: "amount", r: -1, c: 3, rows: 3, badge: "top" },
-          { k: "total", r: 3, c: 3, badge: "right" },
+          { k: "total", r: 3, c: 3, badge: "left" },
           { k: "who", r: 4, c: 0, rows: 2, cols: 2 },
         ]}
         picture={
@@ -377,7 +384,7 @@ export const HOLIDAY_PARTS: Record<HolidayPart, PartInfo> = {
   who: { n: 1, name: "Your name and team", what: "Who is asking, so HR know whose leave to take off." },
   from: { n: 2, name: "First day off", what: "The first day you are not at work." },
   to: { n: 3, name: "Last day off", what: "The last day you are not at work. Not the day you come back." },
-  days: { n: 4, name: "Working days", what: "Count only days you'd normally work. Monday 21 to Wednesday 23 December is 3." },
+  days: { n: 4, name: "Working days", what: `Count only days you'd normally work. ${nb("Monday 21")} to ${nb("Wednesday 23 December")} is 3.` },
   type: { n: 5, name: "Kind of leave", what: "Holiday (annual leave), unpaid, or something else your company lists." },
   approver: { n: 6, name: "Approved by", what: "Your manager signs it. It isn't booked until they do." },
 };
@@ -437,7 +444,7 @@ export const BOOKING_PARTS: Record<BookingPart, PartInfo> = {
   method: { n: 2, name: "Collect or drop off", what: "Whether they come to you, or you take it to them. Get this wrong and nobody turns up." },
   from: { n: 3, name: "Collect from", what: "Which address, and which door. Goods-in and reception are different places." },
   to: { n: 4, name: "Deliver to", what: "Where it is going. Pick from the address book carefully: names can be alike." },
-  parcels: { n: 5, name: "Parcels and weights", what: "One line per box, each with its own weight: two boxes of 12 kg are two lines of 12 kg." },
+  parcels: { n: 5, name: "Parcels and weights", what: `One line per box, each with its own weight: two boxes of ${nb("12 kg")} are two lines of ${nb("12 kg.")}` },
   day: { n: 6, name: "Day", what: "Check the date, not just the day name. \"Friday\" means the coming Friday." },
   time: { n: 7, name: "Time window", what: "When the driver can come. The afternoon is 13:00 to 17:00." },
   price: { n: 8, name: "Summary and price", what: "Everything you chose, in one place. Read it back against the request before you book." },
@@ -536,7 +543,7 @@ export function BookingFigure({ focus, title = "A booking website", what, note }
                     ))}
                   </div>
                 </Part>
-                <Part k="time" badge="left" style={{ marginTop: 8 }}>
+                <Part k="time" badge="left" style={{ marginTop: 14 }}>
                   <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
                     {["Morning, 09:00 to 13:00", "Afternoon, 13:00 to 17:00", "Any time"].map((d, i) => (
                       <span key={d} style={choice(i === 1)}>
@@ -547,7 +554,7 @@ export function BookingFigure({ focus, title = "A booking website", what, note }
                 </Part>
               </div>
             </div>
-            <div style={{ display: "grid", gap: 10 }}>
+            <div style={{ display: "grid", gap: 16 }}>
               <Part k="price" badge="right">
                 <div style={{ ...sec, fontSize: 12.5, lineHeight: 1.5 }}>
                   <b style={{ fontSize: 14 }}>Your booking</b>
@@ -584,7 +591,7 @@ export const CONFIRM_PARTS: Record<ConfirmPart, PartInfo> = {
 
 export function ConfirmFigure({ focus, title = "After you book", note }: { focus?: ConfirmPart[]; title?: string; note?: string }) {
   return (
-    <FigureFrame info={CONFIRM_PARTS} focus={focus} title={title} note={note} minWidth={500}>
+    <FigureFrame info={CONFIRM_PARTS} focus={focus} title={title} note={note} minWidth={380}>
       <div style={{ background: "#f4f6ef", borderRadius: 8, boxShadow: W.float, border: `1px solid ${W.edge}`, padding: "18px 44px 20px", color: "#14231d" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
           <Rest block={false}>
@@ -656,7 +663,7 @@ export const TOM_MESSAGE: PhoneNote = {
   phone: "01632 960 552",
   date: "Tue 10/11",
   time: "11:05",
-  message: "The 2 missing pallets from PO 3307 can come on Wednesday morning instead of Friday. He needs to know someone can sign for them.",
+  message: "The 2 missing pallets from PO\u00a03307 can come on Wednesday morning instead of Friday. He needs to know someone can sign for them.",
   callback: "Before 3pm today",
   taken: "Jordan",
   subject: "Phone message: Harlow can bring the 2 missing pallets on Wednesday",
@@ -722,14 +729,14 @@ export function MessagePadFigure({ focus, title = "A phone message, on the pad",
 export function MessageEmailFigure({ focus, title = "The same message, as an email", what, note, m = TOM_MESSAGE }: { focus?: MessagePart[]; title?: string; what?: Partial<Record<MessagePart, string>>; note?: string; m?: PhoneNote }) {
   const first = m.for.split(" ")[0];
   return (
-    <FigureFrame info={infoOf(MESSAGE_PARTS, what)} focus={focus} title={title} note={note}>
+    <FigureFrame info={infoOf(MESSAGE_PARTS, what)} focus={focus} title={title} note={note} minWidth={640}>
       <AppWindow app="Outlook" colour={W.outlook} title="New message">
         <Rest>
           <div style={{ display: "flex", gap: 10, alignItems: "center", padding: "8px 14px 8px 52px", background: W.chrome, borderBottom: `1px solid ${W.edge}` }}>
             <FakeButton primary>➤ Send</FakeButton>
           </div>
         </Rest>
-        <div style={{ padding: "4px 20px 0 52px" }}>
+        <div style={{ padding: "12px 20px 0 52px" }}>
           <Part k="for" style={{ padding: "0 6px", marginBottom: 14 }}>
             <div style={{ display: "flex", gap: 10, alignItems: "center", minHeight: 34, borderBottom: `1px solid ${W.edge}`, fontSize: 14 }}>
               <span style={{ width: 52, color: W.muted }}>To</span>
@@ -757,7 +764,7 @@ export function MessageEmailFigure({ focus, title = "The same message, as an ema
           </Part>
           <Part k="when" style={{ padding: "2px 6px" }}>
             <div>
-              <b>When:</b> {m.date} at {m.time}
+              <b>When:</b> <span style={{ whiteSpace: "nowrap" }}>{m.date} at {m.time}</span>
             </div>
           </Part>
           <Part k="message" style={{ padding: "2px 6px" }}>
@@ -767,12 +774,12 @@ export function MessageEmailFigure({ focus, title = "The same message, as an ema
           </Part>
           <Part k="phone" style={{ padding: "2px 6px" }}>
             <div>
-              <b>Number:</b> {m.phone}
+              <b>Number:</b> <span style={{ whiteSpace: "nowrap" }}>{m.phone}</span>
             </div>
           </Part>
           <Part k="callback" style={{ padding: "2px 6px" }}>
             <div>
-              <b>Call back:</b> {m.callback.toLowerCase()}
+              <b>Call back:</b> <span style={{ whiteSpace: "nowrap" }}>{m.callback.toLowerCase()}</span>
             </div>
           </Part>
           <Part k="taken" style={{ justifySelf: "start", padding: "4px 12px 4px 6px" }}>

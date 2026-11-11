@@ -29,6 +29,10 @@ import { D, W } from "../tokens";
  * em-dashes. Quiz options are kept to similar lengths so the right answer
  * is never the obvious longest. */
 
+/* Keep a number with its unit, a date with its day, or a menu path in one
+ * piece, so a phone never breaks "12 kg" or "Insert > Pictures" across a line. */
+const nb = (s: string) => s.split(" ").join("\u00a0");
+
 /* ── shared bits for this module's own labs ──────────────────────────── */
 
 function Job({ children }: { children: ReactNode }) {
@@ -469,7 +473,7 @@ const m10: ModuleManifest = {
           figure: <PoFigure />,
           body: [
             "Before Northfield buys anything, it sends the supplier a purchase order, called a PO for short. It says what we want, how many, and the price we agreed.",
-            "This one is PO 3307 (2). It asks Harlow Packaging (4) for 12 pallets of wrap at £48.00 each (6), delivered to Goods in (5), and Daniel has signed it (8).",
+            `This one is PO 3307 (2). It asks Harlow Packaging (4) for 12 pallets of pallet wrap at ${nb("£48.00 each")} (6), delivered to Goods in (5), and Daniel has signed it (8).`,
           ],
         },
         {
@@ -512,7 +516,7 @@ const m10: ModuleManifest = {
           figure: <InvoiceFigure focus={["poRef", "lines"]} title="What to compare with the PO" />,
           body: ["Before an invoice can be paid, compare it with the PO: the PO number (4), and the quantity and unit price on each line (7).", "If any of them is different, it isn't approved. You find out why first."],
           good: [{ text: "PO 3307 on both · 12 pallets on both · £48.00 on both", note: "Everything agrees: it can go on to the next check" }],
-          bad: [{ text: "Invoice says PO 3370 · 14 pallets · £52.00 each", note: "Any one of these means: query it" }],
+          bad: [{ text: `Invoice says ${nb("PO 3370")} · ${nb("14 pallets")} · ${nb("£52.00 each")}`, note: "Any one of these means: query it" }],
         },
       ],
       tryIt: { title: "Spot what doesn't match", intro: "Three invoices from Harlow for PO 3307. On each, click the part that doesn't match the order, or say it all matches.", Lab: SpotLab },
@@ -573,13 +577,13 @@ const m10: ModuleManifest = {
         {
           heading: "The quantity doesn't match",
           figure: <MatchFigure focus={["qty"]} title="The quantity row" />,
-          body: ["12 ordered, 10 delivered, 12 billed (5). Harlow are charging for 2 of the 12 pallets of wrap, and those 2 never came.", "The invoice matches the PO, which is why checking only the PO isn't enough."],
+          body: ["12 ordered, 10 delivered, 12 billed (5). Harlow are charging for all 12 pallets of pallet wrap, but 2 of them never came.", "The invoice matches the PO, which is why checking only the PO isn't enough."],
         },
         {
           heading: "Hold it, and say how much",
           figure: <MatchFigure focus={["verdict"]} title="What you decide" />,
-          body: ["Don't approve it. Tell Accounts what's wrong and how much to hold back (8).", "The 2 missing pallets of wrap cost £48.00 each: 2 × £48.00 = £96.00. Add VAT at 20%, £19.20: hold back £115.20."],
-          good: [{ text: "Only 10 of the 12 pallets of wrap arrived, so please hold back £115.20 including VAT." }],
+          body: ["Don't approve it. Tell Accounts what's wrong and how much to hold back (8).", "The 2 missing pallets of pallet wrap cost £48.00 each: 2 × £48.00 = £96.00. Add VAT at 20%, £19.20: hold back £115.20."],
+          good: [{ text: "Only 10 of the 12 pallets of pallet wrap arrived, so please hold back £115.20 including VAT.", note: "What's wrong, and exactly how much" }],
           bad: [{ text: "There's a problem with the Harlow invoice.", note: "Which problem? How much?" }],
         },
         {
@@ -652,18 +656,18 @@ const m10: ModuleManifest = {
         {
           heading: "No receipt, no money back",
           figure: <ClaimFigure focus={["date", "amount", "receipt"]} title="The date, the amount and the receipt" />,
-          body: ["The date is the day you spent it (2), and the amount is exactly what the receipt says (5).", "Photograph the receipt the same day and put it on the claim (7). In Excel: Insert > Pictures."],
+          body: ["The date is the day you spent it (2), and the amount is exactly what the receipt says (5).", `Photograph the receipt the same day and put it on the claim (7). In Excel: ${nb("Insert > Pictures")}.`],
           tip: "Only claim what was for work. A coffee on the way is yours to pay, unless your company says otherwise.",
         },
         {
           heading: "Here is a holiday request",
           figure: <HolidayFigure />,
-          body: ["Holidays are booked on a form like this, before you go. Every part is numbered.", "Count working days only (4): Monday 21 to Wednesday 23 December is 3. It isn't booked until your manager approves it (6)."],
+          body: ["Holidays are booked on a form like this, before you go. Every part is numbered.", `Count working days only (4): ${nb("Monday 21")} to ${nb("Wednesday 23 December")} is 3. It isn't booked until your manager approves it (6).`],
         },
         {
           heading: "Where they go, and what they're called",
           figure: <ClaimFigure focus={["file", "who"]} title="The file name, the folder and your name" />,
-          body: ["Name each form the house way, date first (1): 2026-11-13 Expense claim Jordan Miles.xlsx.", "Save it exactly where the email says, and put your name on it (8). A claim in the wrong folder doesn't get paid."],
+          body: ["Name each form the house way, date first (1): 2026-11-13 Expense claim Jordan Miles.xlsx.", `Save it exactly where you were told, here ${nb("Finance > Expenses > 2026")} (1), and put your name on it (8). A claim in the wrong folder doesn't get paid.`],
         },
       ],
       tryIt: { title: "Fill in your timesheet", intro: "A week's start and finish times are filled in. Work out the hours and the overtime, in the office's own Excel.", Lab: TimesheetLab },
@@ -707,7 +711,7 @@ const m10: ModuleManifest = {
           heading: "Check where you are",
           figure: <BookingFigure focus={["address"]} title="The web address" />,
           body: ["The address (1) should be the site your office really uses. Use the link in the Favourites bar rather than a search.", "The padlock means the connection is private. It doesn't prove the site is honest, so check the address too."],
-          bad: [{ text: "hopwell-couriers-bookings.example", note: "Not the real address: a look-alike" }],
+          bad: [{ text: "hopwell\u2011parcels.example", note: "Not the real address: a look-alike" }],
         },
         {
           heading: "Who, from where, to where",
@@ -717,7 +721,7 @@ const m10: ModuleManifest = {
         {
           heading: "What, when, and how many",
           figure: <BookingFigure focus={["parcels", "day", "time"]} title="Parcels, day and time" />,
-          body: ["One parcel line per box, each with its own weight (5): 2 boxes at 12 kg is two lines of 12, not one of 24.", "Check the date, not just the day (6). \"Friday afternoon\" on a Thursday means tomorrow, 13:00 to 17:00 (7)."],
+          body: [`One parcel line per box, each with its own weight (5): ${nb("2 boxes")} at ${nb("12 kg")} are two lines of ${nb("12 kg")}, not one line of ${nb("24 kg.")}`, `Check the date, not just the day (6). "Friday afternoon" on a Thursday means tomorrow, ${nb("13:00 to 17:00 (7).")}`],
           tip: "Booking a room or a table? The same goes for the number of people: count them twice.",
         },
         {
@@ -782,7 +786,7 @@ const m10: ModuleManifest = {
         {
           heading: "What, and by when",
           figure: <MessagePadFigure focus={["message", "callback"]} title="What they want, and by when" />,
-          body: ["Write what they want with the numbers in (5): what is changing, from what, to what.", "And the deadline (6). \"Before 3pm\" turns a message into something that gets done in time."],
+          body: ["Write down what they want, with every number they give you (5): what is changing, from what, to what.", "And the deadline (6). \"Before 3pm\" turns a message into something that gets done in time."],
         },
         {
           heading: "Here is the same message as an email",
