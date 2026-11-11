@@ -27,8 +27,9 @@ export interface ChoiceOption {
 export interface ChoiceStep {
   prompt: string;
   /* Optional context shown above the options, e.g. the email being
-   * replied to. Plain text keeps lessons data-only. */
+   * replied to: plain text, or a drawn figure (learn/figures). */
   context?: string;
+  figure?: ReactNode;
   options: ChoiceOption[];
 }
 
@@ -114,6 +115,7 @@ export function ChoiceLab({ steps, onDone }: LabProps & { steps: ChoiceStep[] })
     <div>
       {steps.length > 1 && <StepBar at={at + 1} of={steps.length} label="Question" />}
       <p style={{ margin: "16px 0 0", fontSize: 18, lineHeight: 1.5, fontWeight: 700, color: D.ink }}>{step.prompt}</p>
+      {step.figure}
       {step.context && <div style={contextBox}>{step.context}</div>}
       <div style={{ marginTop: 14, display: "grid", gap: 10 }}>
         {order[at].map((i) => {
