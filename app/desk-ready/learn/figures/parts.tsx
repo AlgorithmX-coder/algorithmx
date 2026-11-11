@@ -133,7 +133,9 @@ export function bestScroll(spans: { left: number; right: number }[], view: numbe
     const whole = spans.filter((sp) => Math.max(0, sp.left - pad) >= x - 1 && Math.min(max + view, sp.right + pad) <= x + view + 1).length;
     /* then the most parts whose start, with its badge, is on screen */
     const starts = spans.filter((sp) => Math.max(0, sp.left - pad) >= x - 1 && sp.left + 40 <= x + view).length;
-    const score = whole * 1000 + starts;
+    /* a lit part counts first by its badge being on screen (so the key
+     * can be matched to it), then by showing whole */
+    const score = starts * 1000 + whole;
     if (score >= bestScore) {
       best = x;
       bestScore = score;
@@ -142,7 +144,7 @@ export function bestScroll(spans: { left: number; right: number }[], view: numbe
   /* No lit part fits whole (an address bar, a form row wider than the
    * phone): open at the start of the first one, where its badge and label
    * are, not at its far end (Module 10 review, third pass). */
-  if (bestScore < 1000) return clamp(Math.min(...spans.map((sp) => sp.left)) - pad);
+  if (bestScore === 0) return clamp(Math.min(...spans.map((sp) => sp.left)) - pad);
   return best;
 }
 
