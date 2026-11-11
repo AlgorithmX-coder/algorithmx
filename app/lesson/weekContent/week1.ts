@@ -34,8 +34,10 @@ export const WEEK_1: WeekContent = {
   ],
 
   screens: [
-    // 0 - OPENING VIDEO: "One Night" - the heroes and their lock, then the
-    // Raccoon gets both paws on it and grins down the lens.
+    // 0 - OPENING VIDEO: "One Night" - Layla sets "Biscuit" as her game
+    // password, the Raccoon guesses it, her game is gone, and Adam says
+    // "Let's make a password NOBODY can guess!" (talking film, 2026-11-11;
+    // source + assembler in .scratch/w01-casting, not in the repo).
     { type: "video", videoPlaceholder: "Week 1: One Night", videoSrc: "/videos/module-01-intro.mp4" },
 
     // 1 - ALERT: incident report with this week's topic image (comes FIRST now,
@@ -857,7 +859,9 @@ export const WEEK_1: WeekContent = {
     // 19 - BOSS BATTLE (5 phases)
     { type: "bossBattle" },
 
-    // 20 - CLOSING VIDEO: "The Bounce" (Raccoon attacks again, bounces off)
+    // 20 - CLOSING VIDEO: "The Bounce" - a three-word passphrase on the
+    // tablet, the Raccoon's screen goes red ("How many dots IS that?!"),
+    // Layla laughs, Adam high-fives: "Locked tight, Cyber Hero!"
     { type: "video", videoPlaceholder: "Week 1: The Bounce", videoSrc: "/videos/module-01-outro.mp4" },
 
     // 21 - Mission Debrief (consolidate by concept)
