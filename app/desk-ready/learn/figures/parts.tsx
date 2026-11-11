@@ -116,7 +116,7 @@ export function usePartNumber(k: string): number | null {
  * which are what a card is usually about (Module 10 review, 2026-11-11).
  * Exported for its tests. */
 export function bestScroll(spans: { left: number; right: number }[], view: number, max: number): number {
-  const pad = 60; // the badge sits in a 36px gutter beside its part, clear of the edge fade
+  const pad = 44; // the badge sits in a 36px gutter beside its part; the edge fade is 24px
   const clamp = (x: number) => Math.max(0, Math.min(max, x));
   const candidates = new Set<number>([0, max]);
   for (const sp of spans) {
