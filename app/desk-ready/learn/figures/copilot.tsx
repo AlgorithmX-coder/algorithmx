@@ -140,7 +140,7 @@ const outlookField: CSSProperties = { display: "flex", alignItems: "center", gap
 
 export function DraftFigure({ focus, title = "Draft with Copilot, in an Outlook reply", what, note }: { focus?: DraftPart[]; title?: string; what?: What<DraftPart>; note?: string }) {
   return (
-    <FigureFrame info={withWhat(DRAFT_PARTS, what)} focus={focus} title={title} note={note} minWidth={560}>
+    <FigureFrame info={withWhat(DRAFT_PARTS, what)} focus={focus} title={title} note={note} minWidth={440}>
       <AppWindow app="Outlook" colour={W.outlook} title="Re: Thursday's flour">
         <div style={{ display: "flex", flexWrap: "wrap", gap: 8, alignItems: "center", padding: "9px 12px 9px 46px", background: W.chrome, borderBottom: `1px solid ${W.edge}` }}>
           <FakeButton primary>➤ Send</FakeButton>
@@ -272,9 +272,11 @@ export function CheckFigure({ focus, title = "Checking the draft against the fac
     </li>
   );
   return (
-    <FigureFrame info={withWhat(CHECK_PARTS, what)} focus={focus} title={title} note={note} minWidth={700}>
-      <div style={{ display: "grid", gridTemplateColumns: "220px minmax(0, 1fr)", gap: 22, alignItems: "start" }}>
-        <Part k="facts" badge="top" style={{ marginTop: 26 }}>
+    <FigureFrame info={withWhat(CHECK_PARTS, what)} focus={focus} title={title} note={note}>
+      {/* side by side on a wide screen; on a phone the facts sit on top and the
+       * email keeps its width, scrolling sideways inside the frame */}
+      <div style={{ display: "flex", flexWrap: "wrap", gap: "22px 22px", alignItems: "flex-start" }}>
+        <Part k="facts" badge="top" style={{ marginTop: 26, flex: "0 0 220px" }}>
           <div style={{ padding: "12px 14px", borderRadius: 8, background: W.paper, border: `1px solid ${W.edge}`, fontSize: 14, lineHeight: 1.5 }}>
             <b style={{ display: "block", fontSize: 12.5, color: W.muted, marginBottom: 6 }}>FROM SARAH&apos;S EMAIL</b>
             <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "grid", gap: 6 }}>
@@ -285,6 +287,7 @@ export function CheckFigure({ focus, title = "Checking the draft against the fac
             </ul>
           </div>
         </Part>
+        <div style={{ flex: "1 1 430px", minWidth: 430 }}>
         <AppWindow app="Outlook" colour={W.outlook} title="Re: Thursday's flour">
           <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "9px 12px 9px 46px", background: W.chrome, borderBottom: `1px solid ${W.edge}` }}>
             <Part k="send" block={false} badge="left">
@@ -305,6 +308,7 @@ export function CheckFigure({ focus, title = "Checking the draft against the fac
             </Part>
           </div>
         </AppWindow>
+        </div>
       </div>
     </FigureFrame>
   );
