@@ -157,7 +157,7 @@ function Letterhead({ d }: { d: BizDoc }) {
 
 function MetaRow({ name, value, strong }: { name: string; value: string; strong?: boolean }) {
   return (
-    <div style={{ display: "flex", justifyContent: "space-between", gap: 14, fontSize: 12, lineHeight: 1.7 }}>
+    <div style={{ display: "flex", justifyContent: "space-between", gap: 14, fontSize: 12, lineHeight: 1.7, padding: "3px 0" }}>
       <span style={{ color: "#666" }}>{name}</span>
       <span style={{ fontWeight: strong ? 800 : 600, fontVariantNumeric: "tabular-nums" }}>{value}</span>
     </div>

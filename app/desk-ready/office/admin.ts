@@ -72,6 +72,23 @@ export const INVOICE_HP2291: BizDoc = {
   footer: "Harlow Packaging Ltd, registered in England no 08812345. Queries to accounts@harlowpackaging.example or 01632 960 552.",
 };
 
+/* What a supplier sends when they have charged for something that didn't
+ * come: a credit note, taken off what we owe. */
+export const CREDIT_HPC118: BizDoc = {
+  kind: "credit",
+  number: "HP-C118",
+  date: "12/11/2026",
+  from: HARLOW,
+  to: NORTHFIELD_ACCOUNTS,
+  refs: [
+    ["Your order", "PO 3307"],
+    ["Against invoice", "HP-2291"],
+  ],
+  lines: [{ ...WRAP, item: "Pallet wrap, 400 mm clear: not delivered on DN-77812", qty: 2 }],
+  vatRate: 0.2,
+  footer: "This credit will be taken off your account. No payment is due on this note.",
+};
+
 /* Others in the same folders, so the right ones have to be found. */
 export const PO_3305: BizDoc = {
   kind: "po",
