@@ -300,10 +300,13 @@ export interface WordField {
   label: string;
   required?: boolean;
   options?: string[];
+}
 
 export interface WordBlock {
+  id: string;
   style: WordStyle;
   /* What the paragraph says now. A tick box holds "yes" or "". */
+  text: string;
   /* Formatting put straight on the paragraph, over its style. */
   bold?: boolean;
   italic?: boolean;
@@ -319,10 +322,15 @@ export interface WordBlock {
   /* A table, row by row; the first row is the heading row. */
   table?: string[][];
   field?: WordField;
+}
 
 export interface WordComment {
+  id: string;
   blockId: string;
   by: string;
+  time: string;
+  text: string;
+}
 
 export interface WordDoc {
   blocks: WordBlock[];
@@ -336,3 +344,4 @@ export interface WordDoc {
   ignored?: string[];
   /* The template it was started from, e.g. "Letterhead.dotx". */
   template?: string;
+}
