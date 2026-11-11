@@ -48,7 +48,7 @@ export const DN_77812: BizDoc = {
   lines: [{ ...WRAP, qty: 12, delivered: 10 }],
   signed: "Sarah Patel",
   signedRole: "Goods in",
-  note: "Only 10 on the van. 2 short. SP", //   keeps "2 short." together
+  note: "Only 10 on the van. 2 short. SP", // a non-breaking space keeps "2 short." on one line
   footer: "Goods received in good condition unless noted above. Please count before you sign.",
 };
 
