@@ -1,6 +1,6 @@
 "use client";
 
-import { AccessFigure, BinFigure, ExportFigure, LibraryFigure, LinkSettingsFigure, NameFigure, PlacesFigure, SendFigure, ShareFigure, TidyFigure, VersionsFigure } from "../learn/figures/files";
+import { AccessFigure, BinFigure, ExportFigure, keep, LibraryFigure, LinkSettingsFigure, NameFigure, PlacesFigure, SendFigure, ShareFigure, TidyFigure, VersionsFigure } from "../learn/figures/files";
 import { FilesLab, type FilesRule } from "../learn/filesLab";
 import { SendLab } from "../learn/sendLab";
 import type { LabProps, ModuleManifest } from "../learn/types";
@@ -195,12 +195,12 @@ function LinkOrAttachLab(p: LabProps) {
           org: "Harlow Packaging, a supplier",
           outside: true,
           ask: "Could you send me what you're holding of our products?",
-          subject: "Stock of your lines",
+          subject: "Stock of your products",
           files: [stock, harlow],
           how: "attach",
           file: 1,
-          right: "Tom is outside the company, so he gets his own copy, and only his lines: the PDF of Harlow's rows, attached.",
-          wrongHow: "A link to our files is no use to someone outside Northfield, and could let him into far more than his lines. Attach a copy instead.",
+          right: "Tom is outside the company, so he gets his own copy, and only his rows: the PDF of Harlow's rows, attached.",
+          wrongHow: "A link to our files is no use to someone outside Northfield, and could let him into far more than his rows. Attach a copy instead.",
           wrongFile: "The stock sheet has every supplier's numbers in it. Tom only gets Harlow's: attach the PDF of his rows.",
         },
         {
@@ -311,15 +311,15 @@ const m9: ModuleManifest = {
         {
           heading: "A messy folder, and a tidy one",
           body: [
-            "Here's the same folder twice. Before: names that say nothing (1), the same report twice (2), last year mixed with this year (3).",
-            "After: a folder for each year (4), names that start with the date (5), and a list that sorts itself into date order (6). Same files, nothing lost.",
+            "Here's the same folder twice. Before: the same report twice (1), last year mixed in with this year (2), and a name that says nothing (3).",
+            "After: a folder for each year (4), a list that sorts itself into date order (5), and names that start with the date, like the scan's new name (6). Same files, nothing lost.",
           ],
           figure: <TidyFigure />,
         },
         {
           heading: "One folder per year",
           body: [
-            "When last year's files sit with this year's (3), the folder only ever grows, and finding this week's report means reading past dozens of old ones.",
+            "When last year's files sit with this year's (2), the folder only ever grows, and finding this week's report means reading past dozens of old ones.",
             "Give each year its own folder (4). This year's work goes in 2026. Last year's goes in 2025, where it's kept but out of the way.",
           ],
           figure: <TidyFigure focus={["mixed", "years"]} title="Years in their own folders" />,
@@ -327,7 +327,7 @@ const m9: ModuleManifest = {
         {
           heading: "Make a folder",
           body: [
-            "Go into the folder where the new one belongs, then press New folder (3). Type its name and press Enter. It appears with the other folders (11).",
+            "Go into the folder where the new one belongs, then press New folder (3). Type its name and press Enter. It appears in the list, the way the 2026 folder does here (11).",
             "Name folders plainly, for what's in them: 2025, Invoices, Health and safety.",
           ],
           figure: <LibraryFigure focus={["newfolder", "folder"]} title="New folder" />,
@@ -335,7 +335,7 @@ const m9: ModuleManifest = {
         {
           heading: "Move a file: drag it, or Move to",
           body: [
-            "Press and hold on a file (12), drag it onto a folder (11), and let go. The folder lights up when you're over it.",
+            "Press and hold on a file (12), drag it onto a folder (11), and let go. The folder lights up when you're over it. Here, this year's report goes into 2026.",
             "Or select the file, press Move to (7), pick the folder and press Move here. Either way the file is in one place: moved, not copied.",
           ],
           figure: <LibraryFigure focus={["moveto", "folder", "file"]} title="Moving a file" />,
@@ -343,8 +343,8 @@ const m9: ModuleManifest = {
         {
           heading: "Delete, and get it back",
           body: [
-            "Delete sends a file to the Recycle bin, not away for ever. Here, two files sit in the bin: what each one is (1), where it was (2), and when it was deleted (3).",
-            "Deleted the wrong one? Select it and press Restore (4). It goes back where it was.",
+            "Delete sends a file to the Recycle bin, not away for ever. Here, two files sit in the bin. For each one you can see where it was (2), when it was deleted (3), and what it is (4).",
+            "Deleted the wrong one? Select it and press Restore (1). It goes back where it was.",
           ],
           figure: <BinFigure />,
           tip: "Before you delete a \"copy\", open both files and check they really are the same.",
@@ -391,7 +391,7 @@ const m9: ModuleManifest = {
           heading: "The date goes first, year first",
           body: [
             "Write the date as year, month, day, with dashes: 10 November 2026 is 2026-11-10 (1). Two digits for the month and the day, so 9 November is 2026-11-09.",
-            "Use the date the file is about: the day of the delivery, the date on the letter. Not the day you happened to save it.",
+            "Use the date the file is about: the day of the delivery, the date on the letter. Not the day you happened to save it. Then the folder lists every file in date order (4).",
           ],
           figure: <NameFigure focus={["date", "sorted"]} title="The date" />,
           good: [{ text: "2026-11-09", note: "Year, month, day. Sorts in order." }],
@@ -418,15 +418,18 @@ const m9: ModuleManifest = {
         {
           heading: "Open it to find its date",
           body: [
-            "A name like scan001 (1) gives nothing away. Double-click the file to open it, and read what it is and its date.",
-            "Here, scan001 turns out to be Harlow's delivery note DN-77790, dated 09/11/2026. So it becomes 2026-11-09 Delivery note DN-77790.pdf (5).",
+            "A name like scan001 (3) gives nothing away. Double-click the file to open it, and read what it is and its date.",
+            "Here, scan001 turns out to be Harlow's delivery note DN-77790, dated 09/11/2026. So it becomes 2026-11-09 Delivery note DN-77790.pdf (6).",
           ],
-          figure: <TidyFigure focus={["vague", "dated"]} title="From a vague name to a clear one" what={{ dated: "The scan, renamed after opening it: its own date, then what it is." }} />,
+          figure: <TidyFigure focus={["vague", "dated"]} title="From a vague name to a clear one" />,
         },
         {
           heading: "Rename a file",
-          body: ["Select the file (12), then press Rename (8), or F2 on the keyboard. Type the new name and press Enter.", "Check it afterwards: the date year first, a space, a few words, and the ending as it was."],
-          figure: <LibraryFigure focus={["rename", "file"]} title="Rename" />,
+          body: [
+            "Here, the selected file (12) is called report final v2.xlsx. Open it to find its date, then press Rename (8), or F2 on the keyboard. Type the new name, like 2026-11-06 Delivery report, and press Enter.",
+            "Check it afterwards: the date year first, a space, a few words, and the ending as it was.",
+          ],
+          figure: <LibraryFigure focus={["rename", "file"]} title="Rename" file="report final v2.xlsx" what={{ file: "A file whose name says nothing useful. Open it, find its date, then rename it." }} />,
         },
       ],
       tryIt: { title: "Rename three files", intro: "Three files have names nobody could search for. Open each one, then rename it the house way.", Lab: NamesLab },
@@ -494,15 +497,15 @@ const m9: ModuleManifest = {
         {
           heading: "Getting a file onto the team's site",
           body: [
-            "A file in your OneDrive that the team now needs? Select it and press Move to (7), then pick the team's folder in Places (1). It's moved, so there's still only one.",
-            "A file that's only on your computer goes up with Upload (4), into the folder you're in.",
+            "Here, the Bay C count is in your OneDrive, but the team needs it. Select it and press Move to (2), then pick the team's folder from the places on the left (3): Operations Team, then its Stock folder. It's moved, so there's still only one.",
+            "A file that's only on your computer goes up with Upload (1), into the folder you're in.",
           ],
-          figure: <LibraryFigure focus={["places", "moveto", "upload"]} title="Moving it to the team" />,
+          figure: <LibraryFigure view="onedrive" focus={["upload", "moveto", "places"]} renumber={{ upload: 1, moveto: 2, places: 3 }} title="Moving it to the team" what={{ places: "Your OneDrive at the top, then the team sites. Pick where the file should go." }} />,
         },
         {
           heading: "Every save is kept",
           body: [
-            "Files on OneDrive and SharePoint keep every version (1). Each time someone saves, the one before is kept, with when it was saved and by whom (3).",
+            "Files on OneDrive and SharePoint keep every version (3). Each time someone saves, the one before is kept, with when it was saved and by whom (1).",
             "Here, Sarah saved last month's numbers over the stock sheet at 08:31, so that's now the current version (2). Last night's count, from 17:42, is just underneath.",
           ],
           figure: <VersionsFigure />,
@@ -546,17 +549,17 @@ const m9: ModuleManifest = {
       brief: "There are two ways to send someone a file: a link to the one file, or a copy attached. In this lesson you'll learn which to use when, and how to make a PDF of only the rows someone should see.",
       learn: [
         {
-          heading: "Here are a link and an attachment",
+          heading: "A link, and an attachment",
           body: [
             "Two emails. On the left, to Priya, a colleague (1), with a link (2): it opens the team's own stock sheet (3).",
-            "On the right, to Tom at a supplier, outside the company (4), with an attachment (5): a PDF copy of just his lines (6), to keep.",
+            "On the right, to Tom at a supplier, outside the company (4), with an attachment (5): a PDF copy of just his rows (6), to keep.",
           ],
           figure: <SendFigure />,
         },
         {
           heading: "A link: everyone on the one file",
           body: [
-            "A link (2) copies nothing. It opens the file where it lives (3), so Priya's changes go into the team's file, and everyone sees the latest.",
+            "Priya is a colleague (1), so she gets a link (2). A link copies nothing. It opens the file where it lives (3), so her changes go into the team's file, and everyone sees the latest.",
             "That's why colleagues get links: one version, in one place. But a link only opens for people who can open the file, so share it with them first (the next lesson shows how).",
           ],
           figure: <SendFigure focus={["colleague", "link", "onefile"]} title="A link, for a colleague" />,
@@ -573,10 +576,10 @@ const m9: ModuleManifest = {
           heading: "Outside the company: a PDF, and only what's theirs",
           body: [
             "For someone outside (4), send a PDF (5), not the spreadsheet. A PDF can't be changed by mistake and looks the same on any computer.",
-            "And only what's theirs (6). The stock sheet has every supplier's numbers: Tom gets Harlow's four lines, never a link to the whole sheet.",
+            "And only what's theirs (6). The stock sheet has every supplier's numbers: Tom gets Harlow's four rows, never a link to the whole sheet.",
           ],
-          figure: <SendFigure focus={["outside", "attachment", "copy"]} title="What Tom gets" what={{ copy: "Harlow's four lines and nothing else. Other suppliers' stock is none of Tom's business." }} />,
-          good: [{ text: "PDF of Harlow's rows, attached", note: "His lines only, to keep." }],
+          figure: <SendFigure focus={["outside", "attachment", "copy"]} title="What Tom gets" what={{ copy: "Harlow's four rows and nothing else. Other suppliers' stock is none of Tom's business." }} />,
+          good: [{ text: "PDF of Harlow's rows, attached", note: "His rows only, to keep." }],
           bad: [{ text: "A link to Stock November.xlsx", note: "Every supplier's stock, and our own file." }],
         },
         {
@@ -593,16 +596,16 @@ const m9: ModuleManifest = {
             "Press Filter on the ribbon, then the ▾ on the Supplier heading (1), and pick Harlow Packaging.",
             "Only Harlow's rows show (2). The others are hidden, not deleted, and the yellow bar says how many are on show: 4 of 11.",
           ],
-          figure: <ExportFigure focus={["filter", "shown"]} title="The filter" />,
+          figure: <ExportFigure focus={["filter", "shown"]} title="The filter" menu={false} />,
         },
         {
           heading: "Export, then look at it",
           body: [
-            "Press File (3), Export, then Create PDF (4). Name it the house way, like 2026-11-10 Harlow stock, and press Save.",
+            "Press File (3), Export, then Create PDF (4). Name it the house way, the date first and then what it is, like 2026-11-10\u00a0Harlow\u00a0stock, and press Save.",
             "The PDF opens. Read it before you send it: Harlow's rows, and nobody else's. Then attach it to your email.",
           ],
           figure: <ExportFigure focus={["file", "export"]} title="Create PDF" />,
-          tip: "Filtering doesn't change the file, so there's nothing to save afterwards. Close Excel and the sheet is as it was.",
+          tip: "The stock sheet is the team's one file, so when you're done, press Clear filter in the yellow bar. Then the next person to open it sees every row.",
         },
       ],
       tryIt: { title: "Link or attach?", intro: "Four people need a file. For each one, insert a link or attach a copy, pick the right file, and send.", Lab: LinkOrAttachLab },
@@ -614,10 +617,10 @@ const m9: ModuleManifest = {
           reasons: ["Her prices go into the one team file.", "She'd fill in a copy, and the team's sheet would never get them.", "Nobody can type prices into a PDF."],
         },
         {
-          q: "Tom at Harlow wants to see his stock lines. How do you send them?",
+          q: "Tom at Harlow wants to see his stock rows. How do you send them?",
           options: ["A PDF of just his rows, attached", "A link to the whole stock sheet", "The spreadsheet, as an attachment"],
           answer: 0,
-          reasons: ["His own copy of his lines, and nothing else.", "He's outside the company, and it shows every supplier.", "That's every supplier's stock, in a file he could change."],
+          reasons: ["His own copy of his rows, and nothing else.", "He's outside the company, and it shows every supplier.", "That's every supplier's stock, in a file he could change."],
         },
         {
           q: "You filter the sheet to Harlow and press Create PDF. What's in the PDF?",
@@ -655,7 +658,7 @@ const m9: ModuleManifest = {
           heading: "Copy link, and who it works for",
           body: [
             "Copy link (6) gives you a link to paste into an email or a chat. Who it works for is written in the bar beside it (7).",
-            "Read that bar every time. Here it says People in Northfield Supplies can edit: anyone at the company who gets hold of the link could change the file.",
+            "Read that bar every time. Here it says People in Northfield Supplies with the link can edit: anyone at the company who gets hold of the link could change the file.",
           ],
           figure: <ShareFigure focus={["copylink", "settings"]} title="Copy link" />,
         },
@@ -671,7 +674,7 @@ const m9: ModuleManifest = {
           heading: "Anyone means anyone",
           body: [
             "An Anyone link (1) works for whoever has it, with no sign-in. Forwarded once, it's out of your hands. Never use it for company files.",
-            "People in Northfield Supplies (2) lets in the whole company. Specific people (4) lets in only the people you name: the right choice when the brief names someone.",
+            "People in Northfield Supplies (2) lets in the whole company. Specific people (4) lets in only the people you name: the right choice when you're asked to share with someone by name.",
           ],
           figure: <LinkSettingsFigure focus={["anyone", "org", "people"]} title="Who a link lets in" />,
           good: [{ text: "Specific people: Priya Shah, Can edit", note: "Only Priya, and she can change it." }],
@@ -680,8 +683,8 @@ const m9: ModuleManifest = {
         {
           heading: "Here is Manage access",
           body: [
-            "The people icon in the Share box opens Manage access. It shows the team (1), who can open the site's files anyway, and anyone the file was shared with by name (2), with what they can do (3).",
-            "Below, every link made to it (5). This one works for the whole company.",
+            "The people icon in the Share box opens Manage access. It shows the team (1), who can open everything on the team's SharePoint site anyway, and anyone the file was shared with by name (2), with what they can do (3).",
+            "Below, every link that opens it (5). This one works for the whole company.",
           ],
           figure: <AccessFigure />,
         },
@@ -721,4 +724,19 @@ const m9: ModuleManifest = {
   ],
 };
 
-export default m9;
+/* Dates, codes, short paths and file names never split across two lines. */
+function keptWhole(m: ModuleManifest): ModuleManifest {
+  const ex = (e?: { text: string; note?: string }[]) => e?.map((x) => ({ text: keep(x.text), note: x.note && keep(x.note) }));
+  return {
+    ...m,
+    topics: m.topics.map((t) => ({
+      ...t,
+      brief: keep(t.brief),
+      learn: t.learn.map((c) => ({ ...c, heading: keep(c.heading), body: c.body.map(keep), tip: c.tip && keep(c.tip), good: ex(c.good), bad: ex(c.bad) })),
+      check: t.check.map((q) => ({ ...q, q: keep(q.q), options: q.options.map(keep), reasons: q.reasons.map(keep) })),
+      takeaways: t.takeaways.map(keep),
+    })),
+  };
+}
+
+export default keptWhole(m9);
