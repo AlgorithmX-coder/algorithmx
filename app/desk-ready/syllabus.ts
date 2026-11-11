@@ -169,7 +169,7 @@ export const PARTS: readonly DeskPart[] = [
         title: "AI as your assistant",
         promise: "Use Copilot or ChatGPT to help, and check what it gives you.",
         topics: ["What AI is good and bad at", "Asking it to draft an email", "Asking it to explain a formula", "Checking what it wrote", "What you must never paste in"],
-        ready: false,
+        ready: true,
       },
     ],
   },

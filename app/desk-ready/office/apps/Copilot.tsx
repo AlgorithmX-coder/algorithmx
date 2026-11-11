@@ -116,7 +116,7 @@ export function Lit({ text, found }: { text: string; found: Personal[] }) {
 /* A textarea over a copy of its own text with the personal details marked,
  * so they light up as you type. The box grows with its text and the frame
  * around both scrolls, so the two layers never drift apart. */
-function Composer({
+export function Composer({
   value,
   setValue,
   onSend,
@@ -470,6 +470,11 @@ export function CopilotApp({ state, dispatch }: OfficeAppProps) {
 /* Copilot down the side of Excel. */
 function ExcelPane({ state, dispatch, ctx }: OfficeAppProps & { ctx: CopilotPaneContext }) {
   const { turns, ask, regenerate, known } = useCopilot(state, dispatch, "excel", ctx);
+  return <SidePane turns={turns} onAsk={(p) => ask(p)} onRegenerate={regenerate} known={known} ctx={ctx} />;
+}
+
+/* The pane itself, so a lesson can run it beside its own sheet. */
+export function SidePane({ turns, onAsk, onRegenerate, known = [], ctx }: { turns: CopilotTurn[]; onAsk: (p: string) => void; onRegenerate?: (t: CopilotTurn) => void; known?: string[]; ctx: CopilotPaneContext }) {
   const sel = ctx.cell?.raw.trim().startsWith("=") ? ctx.cell : undefined;
   const suggestions: Suggestion[] = [{ label: "Explain a formula", fill: "Explain this formula: " }, ...(sel ? [{ label: `Explain the formula in ${sel.name}`, fill: `Explain the formula in ${sel.name}` }] : [])];
   return (
@@ -483,19 +488,17 @@ function ExcelPane({ state, dispatch, ctx }: OfficeAppProps & { ctx: CopilotPane
         </button>
       </div>
       <div style={{ flex: 1, minHeight: 0 }}>
-        <CopilotChat turns={turns} onAsk={(p) => ask(p)} onRegenerate={regenerate} layout="pane" suggestions={suggestions} known={known} greeting="Hi. Ask me about this sheet." />
+        <CopilotChat turns={turns} onAsk={onAsk} onRegenerate={onRegenerate} layout="pane" suggestions={suggestions} known={known} greeting="Hi. Ask me about this sheet." />
       </div>
     </aside>
   );
 }
 
-/* "Draft with Copilot" in an Outlook reply: say what to write, Generate,
- * then Keep it puts the draft into the email for you to check and edit. */
-function DraftCard({ state, dispatch, ctx }: OfficeAppProps & { ctx: CopilotPaneContext }) {
-  const { turns, ask, regenerate } = useCopilot(state, dispatch, "outlook", ctx);
+/* "Draft with Copilot": say what to write, Generate, then Keep it puts the
+ * draft into the email for you to check and edit. The panel itself, so a
+ * lesson can run it too; DraftCard wires it to the office record. */
+export function DraftPanel({ turn, onGenerate, onRegenerate, onKeep, onDiscard, onClose }: { turn: CopilotTurn | null; onGenerate: (prompt: string) => void; onRegenerate: () => void; onKeep: () => void; onDiscard: () => void; onClose?: () => void }) {
   const [prompt, setPrompt] = useState("");
-  const [shownId, setShownId] = useState<string | null>(null);
-  const turn = turns.find((t) => t.id === shownId) ?? null;
   /* bring a new draft into view: it lands below the fold of the reading pane */
   const result = useRef<HTMLDivElement>(null);
   const shownKey = turn ? `${turn.id}:${turn.variant ?? 0}` : "";
@@ -509,7 +512,7 @@ function DraftCard({ state, dispatch, ctx }: OfficeAppProps & { ctx: CopilotPane
   }, [shownKey]);
   const generate = () => {
     if (!prompt.trim()) return;
-    setShownId(ask(prompt).id);
+    onGenerate(prompt);
   };
   return (
     <section aria-label="Draft with Copilot" style={{ margin: "12px 14px 4px", padding: 2, borderRadius: 12, background: W.copilotMark }}>
@@ -517,9 +520,11 @@ function DraftCard({ state, dispatch, ctx }: OfficeAppProps & { ctx: CopilotPane
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
           <CopilotMark size={24} />
           <b style={{ fontSize: 15.5, fontWeight: 600 }}>Draft with Copilot</b>
-          <button type="button" onClick={ctx.close} aria-label="Close Draft with Copilot" className="of-btn" style={{ marginLeft: "auto", width: 36, height: 36, border: "none", borderRadius: 6, background: "transparent", color: W.muted, fontSize: 16, cursor: "pointer" }}>
+          {onClose && (
+          <button type="button" onClick={onClose} aria-label="Close Draft with Copilot" className="of-btn" style={{ marginLeft: "auto", width: 36, height: 36, border: "none", borderRadius: 6, background: "transparent", color: W.muted, fontSize: 16, cursor: "pointer" }}>
             ✕
           </button>
+          )}
         </div>
         <label style={{ display: "block", marginTop: 10 }}>
           <span style={{ display: "block", fontSize: 13.5, color: W.muted, marginBottom: 6 }}>Tell Copilot what to write: the facts, who it&apos;s for, and how it should sound.</span>
@@ -561,19 +566,16 @@ function DraftCard({ state, dispatch, ctx }: OfficeAppProps & { ctx: CopilotPane
             <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginTop: 10 }}>
               <button
                 type="button"
-                onClick={() => {
-                  ctx.insert?.(turn.reply);
-                  ctx.close();
-                }}
+                onClick={onKeep}
                 className="of-btn"
                 style={{ minHeight: 40, padding: "6px 16px", border: "none", borderRadius: 6, background: W.copilot, color: "#fff", fontFamily: W.font, fontSize: 15, fontWeight: 700, cursor: "pointer" }}
               >
                 Keep it
               </button>
-              <button type="button" onClick={() => regenerate(turn)} className="of-btn" style={{ ...smallBtn(), minHeight: 40 }}>
+              <button type="button" onClick={onRegenerate} className="of-btn" style={{ ...smallBtn(), minHeight: 40 }}>
                 {Icon.again} Regenerate
               </button>
-              <button type="button" onClick={() => setShownId(null)} className="of-btn" style={{ ...smallBtn(), minHeight: 40 }}>
+              <button type="button" onClick={onDiscard} className="of-btn" style={{ ...smallBtn(), minHeight: 40 }}>
                 Discard
               </button>
             </div>
@@ -583,6 +585,26 @@ function DraftCard({ state, dispatch, ctx }: OfficeAppProps & { ctx: CopilotPane
         )}
       </div>
     </section>
+  );
+}
+
+/* Draft with Copilot inside an Outlook reply, kept in the office record. */
+function DraftCard({ state, dispatch, ctx }: OfficeAppProps & { ctx: CopilotPaneContext }) {
+  const { turns, ask, regenerate } = useCopilot(state, dispatch, "outlook", ctx);
+  const [shownId, setShownId] = useState<string | null>(null);
+  const turn = turns.find((t) => t.id === shownId) ?? null;
+  return (
+    <DraftPanel
+      turn={turn}
+      onGenerate={(p) => setShownId(ask(p).id)}
+      onRegenerate={() => turn && regenerate(turn)}
+      onKeep={() => {
+        if (turn) ctx.insert?.(turn.reply);
+        ctx.close();
+      }}
+      onDiscard={() => setShownId(null)}
+      onClose={ctx.close}
+    />
   );
 }
 
