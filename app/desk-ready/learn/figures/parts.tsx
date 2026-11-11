@@ -154,6 +154,15 @@ export function bestScroll(spans: { left: number; right: number }[], view: numbe
  * there is more on that side; and a line under it says to slide. A
  * Module 10 review found 15 cards whose lit part was off-screen with no
  * hint at all. */
+/* When a card lights some parts, everything drawn outside the numbered
+ * parts (a window's title, a table's other rows, the small print) dims
+ * with the unlit parts, so the lit part stands out. Parts dim themselves;
+ * this catches the rest. It picks only the outermost such element (whose
+ * parent holds a part, or is the figure), so nothing dims twice, and
+ * never anything inside a part. Reviews of Modules 9, 10 and 11 found
+ * this on nearly every lit card. */
+const FIG_FOCUS_CSS = `.dr-fig-focus > :not([data-part]):not(:has([data-part])), .dr-fig-focus :not([data-part]):not([data-part] *):has([data-part]) > :not([data-part]):not(:has([data-part])) { opacity: 0.32; transition: opacity .2s ease; }`;
+
 const FIG_SCROLL_CSS = `.dr-fig-scroll { padding: 34px 26px 26px; } @media (max-width: 720px) { .dr-fig-scroll { padding: 34px 42px 26px; } }`;
 
 function Scroller({ children, focusKey }: { children: ReactNode; focusKey: string }) {
@@ -214,7 +223,7 @@ function Scroller({ children, focusKey }: { children: ReactNode; focusKey: strin
       </div>
       {/* on a phone the figure slides, so the sides need room for a badge
        * (36px out from its part); on a laptop it fits, so they don't */}
-      <style>{FIG_SCROLL_CSS}</style>
+      <style>{FIG_SCROLL_CSS + FIG_FOCUS_CSS}</style>
       {more && (
         <p style={{ margin: "8px 0 0", display: "flex", alignItems: "center", gap: 8, fontFamily: D.mono, fontSize: 12.5, fontWeight: 700, letterSpacing: "0.08em", color: D.accent }}>
           <span aria-hidden style={{ whiteSpace: "nowrap" }}>{edges.left && edges.right ? "\u2190 \u2192" : edges.left ? "\u2190" : "\u2192"}</span>
@@ -231,7 +240,9 @@ export function FigureFrame<K extends string>({ title, info, focus, children, no
     <FigureProvider focus={focus} info={info}>
       <figure style={{ margin: "20px 0 0" }}>
         <Scroller focusKey={(focus ?? []).join(",")}>
-          <div style={{ minWidth, colorScheme: "light", fontFamily: W.font, color: W.ink, overflowWrap: "break-word" }}>{children}</div>
+          <div className={focus && focus.length ? "dr-fig-focus" : undefined} style={{ minWidth, colorScheme: "light", fontFamily: W.font, color: W.ink, overflowWrap: "break-word" }}>
+            {children}
+          </div>
         </Scroller>
         <figcaption style={{ marginTop: 14 }}>
           {title && <p style={{ margin: "0 0 10px", fontFamily: D.mono, fontSize: 12, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", color: D.faint }}>{title}</p>}
