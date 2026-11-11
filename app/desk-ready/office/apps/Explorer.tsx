@@ -39,7 +39,7 @@ export default function Explorer({ state, dispatch, onOpen, start }: { state: Of
   const inBin = at[0] === BIN;
   const bin = state.recycle ?? [];
   const items = inBin ? [] : listFolder(state, at);
-  const sel = state.files.find((f) => f.id === selected) ?? null;
+  const sel = items.find((f) => f.id === selected) ?? null;
   const binSel = inBin ? bin.find((b) => b.id === selected) ?? null : null;
   const go = (p: Path) => {
     setAt(p);
@@ -79,7 +79,7 @@ export default function Explorer({ state, dispatch, onOpen, start }: { state: Of
   const place = placeLine(at);
 
   return (
-    <div style={{ position: "relative", display: "flex", flexDirection: "column", height: "100%", background: W.page }}>
+    <div style={{ position: "relative", display: "flex", flexDirection: "column", height: "100%", background: W.page, color: W.ink, fontFamily: W.font }}>
       <TitleBar colour="#2b2b2b" app="File Explorer" name={inBin ? BIN : pathText(at)} />
       <div role="toolbar" aria-label="Commands" style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 4, padding: "6px 8px", borderBottom: `1px solid ${W.edge}`, background: W.chrome }}>
         {inBin ? (
@@ -121,7 +121,6 @@ export default function Explorer({ state, dispatch, onOpen, start }: { state: Of
           </>
         )}
       </div>
-      {sel && theirs && !inBin && <p style={{ margin: 0, padding: "6px 14px", fontSize: 13.5, color: W.muted, background: "#faf9f8", borderBottom: `1px solid ${W.edge}` }}>{sel.by === "You" ? "" : `This is ${sel.by}'s file. You can open it, not change it.`}</p>}
       <div style={{ flex: 1, minHeight: 0, display: "flex" }}>
         <PlacesNav
           at={inBin ? [] : at}
@@ -166,7 +165,7 @@ export default function Explorer({ state, dispatch, onOpen, start }: { state: Of
             )}
           </div>
           <div style={{ padding: "6px 14px", borderTop: `1px solid ${W.edge}`, fontSize: 13, color: W.muted }}>
-            {inBin ? `${bin.length} ${bin.length === 1 ? "item" : "items"}${binSel ? ` · ${binSel.file.name} selected` : ""}` : `${items.length} ${items.length === 1 ? "item" : "items"}${sel ? ` · ${sel.name} selected` : items.length ? " · double-click to open, or drag a file onto a folder" : ""}`}
+            {inBin ? `${bin.length} ${bin.length === 1 ? "item" : "items"}${binSel ? ` · ${binSel.file.name} selected` : ""}` : `${items.length} ${items.length === 1 ? "item" : "items"}${sel ? ` · ${sel.name} selected${theirs && sel.by !== "You" ? `. It belongs to ${sel.by}: you can open it, not change it.` : ""}` : items.length ? " · double-click to open, or drag a file onto a folder" : ""}`}
           </div>
         </div>
       </div>

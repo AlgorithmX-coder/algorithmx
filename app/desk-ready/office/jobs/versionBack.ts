@@ -13,6 +13,7 @@ import { sameGrid, STOCK, STOCK_NAME, stockFirst, stockNeighbours, stockRight, s
 
 const DRAFTS = ["OneDrive", "Documents", "Drafts"] as const;
 const NOTES = "seed-notes";
+const SARAH_CHAT = "chat-sarah";
 
 function seed(): OfficeState {
   const files: OfficeFile[] = [...officeFolders(), stockSavedOver(), ...stockNeighbours()];
@@ -55,12 +56,28 @@ function seed(): OfficeState {
         links: [],
       },
     ],
-    teamsNote: {
-      with: PEOPLE.sarah,
-      messages: [
-        { id: "msg-1", from: PEOPLE.sarah, text: "Help! I saved over the stock sheet with last month's numbers.", time: "08:51" },
-        { id: "msg-2", from: PEOPLE.sarah, text: "It's Stock November, in Operations Team > Documents > Stock. Last night's count was right when I went home. Can you get it back? I'm on the warehouse floor till 10.", time: "08:52" },
+    /* the brief arrives as a Teams chat, in Module 3's Teams */
+    teams: {
+      chats: [
+        {
+          id: SARAH_CHAT,
+          people: [PEOPLE.sarah],
+          unread: 2,
+          messages: [
+            { id: "msg-1", from: PEOPLE.sarah, text: "Help! I saved over the stock sheet with last month's numbers.", time: "08:51" },
+            { id: "msg-2", from: PEOPLE.sarah, text: "It's Stock November, in Operations Team > Documents > Stock. Last night's count was right when I went home. Can you get it back? I'm on the warehouse floor till 10.", time: "08:52" },
+          ],
+        },
+        {
+          id: "chat-priya",
+          people: [PEOPLE.priya],
+          messages: [
+            { id: "msg-p1", from: PEOPLE.priya, text: "Thanks for the help with the PO numbers yesterday!", time: "Mon 16:10" },
+            { id: "msg-p2", from: YOU, text: "No problem at all.", time: "Mon 16:12" },
+          ],
+        },
       ],
+      windows: [],
     },
   };
 }
@@ -122,7 +139,7 @@ function check(s: OfficeState): Check[] {
   );
 
   /* Telling Sarah */
-  const replied = !!s.teamsNote?.messages.some((m) => m.from.address === YOU.address) || s.emails.some((e) => e.folder === "sent" && e.to.some((p) => p.address === PEOPLE.sarah.address));
+  const replied = !!s.teams?.chats.find((c) => c.id === SARAH_CHAT)?.messages.some((m) => m.from.address === YOU.address) || s.emails.some((e) => e.folder === "sent" && e.to.some((p) => p.address === PEOPLE.sarah.address));
   add({ id: "told", code: "OL-5", group: "Telling Sarah", label: "You told Sarah it's back" }, replied, "Close the loop: reply to Sarah in the Teams chat, in one line, like \"Done, last night's version is back.\"");
   return out;
 }
@@ -138,8 +155,8 @@ export const versionBack: Job = {
   deadline: "Tuesday 10 November",
   doneLine: "The stock sheet has last night's count again, and your notes are where only you see them.",
   brief: "Sarah has messaged you on Teams, and there's an email from Daniel. Read both and put things right. When you think it's done, press Check my work.",
-  apps: ["teamsChat"],
-  start: "teamsChat",
+  apps: ["teams"],
+  start: "teams",
   hints: [
     "Read Sarah's Teams message, then Daniel's email in Outlook.",
     "In File Explorer, go to Operations Team > Documents > Stock and select Stock November.xlsx.",

@@ -10,6 +10,8 @@ import { AppButton } from "../ui";
 import { Switch } from "./Calendar";
 import { Avatar, CameraPicture, Icon, type IconName } from "./icons";
 import type { OfficeAppProps } from "./registry";
+/* ── Module 9: Files and sharing ── the team's channel and its Files tab */
+import { TeamsChannel } from "./TeamsFiles";
 
 /* Microsoft Teams, for Module 3 (criteria TM-3, TM-4): the left rail,
  * the chat list and a chat (send a message with Enter), today's meetings
@@ -28,7 +30,7 @@ type Pane = "activity" | "chat" | "teams" | "calendar" | "calls";
 const setTeams = (dispatch: (a: Action) => void, fn: (t: TeamsState) => TeamsState) => dispatch({ type: "update", fn: (s: OfficeState) => ({ ...s, teams: fn(teamsOf(s)) }) });
 const setCall = (dispatch: (a: Action) => void, fn: (c: Call) => Call) => setTeams(dispatch, (t) => (t.call ? { ...t, call: fn(t.call) } : t));
 
-export default function Teams({ state, dispatch, show, active, job }: OfficeAppProps) {
+export default function Teams({ state, dispatch, show, active, job, openFile }: OfficeAppProps) {
   const t = teamsOf(state);
   const call = t.call;
   const [pane, setPane] = useState<Pane>("chat");
@@ -113,8 +115,11 @@ export default function Teams({ state, dispatch, show, active, job }: OfficeAppP
           }} />
         ) : pane === "activity" ? (
           <Activity chats={t.chats} onOpen={(id) => { setPane("chat"); setChatId(id); }} />
+        ) : pane === "teams" ? (
+          /* ── Module 9 ── */
+          <TeamsChannel state={state} openFile={openFile} />
         ) : (
-          <Empty icon={pane === "teams" ? "teams" : "phone"} text={pane === "teams" ? "Your teams and channels show here. For this job, everything you need is under Chat." : "Your recent calls show here. To call into a meeting, use Join on it in the Calendar."} />
+          <Empty icon="phone" text="Your recent calls show here. To call into a meeting, use Join on it in the Calendar." />
         )}
       </div>
     </div>

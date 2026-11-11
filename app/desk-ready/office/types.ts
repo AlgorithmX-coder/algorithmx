@@ -143,9 +143,8 @@ export interface OfficeState {
   teams?: TeamsState;
   /* ── end Module 3 ── */
   /* ── Module 9: Files and sharing ── what was deleted, newest last, so it
-   * can be put back; and a Teams chat a job's brief arrives in. */
+   * can be put back. */
   recycle?: RecycledItem[];
-  teamsNote?: TeamsNote;
 }
 
 export interface Check {
@@ -525,21 +524,5 @@ export interface RecycledItem {
   file: OfficeFile;
   inside: OfficeFile[];
   deleted: string;
-}
-
-/* A Teams chat with one person, where a job's brief can arrive ("Help! I
- * saved over the stock sheet"). */
-export interface NoteMessage {
-  id: string;
-  from: Person;
-  text: string;
-  time: string;
-}
-
-export interface TeamsNote {
-  with: Person;
-  messages: NoteMessage[];
-  /* The learner has opened it. */
-  read?: boolean;
 }
 /* ── end Module 9 ── */

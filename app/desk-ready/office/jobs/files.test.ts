@@ -196,7 +196,7 @@ function putRight(): OfficeState {
   const i = stock.versions!.findIndex((v) => v.modified === "09/11/2026 17:42");
   s = restoreVersion(s, "seed-stock", i);
   s = move(s, "seed-notes", ["OneDrive", "Documents", "Drafts"]);
-  s = { ...s, teamsNote: { ...s.teamsNote!, messages: [...s.teamsNote!.messages, { id: "m", from: YOU, text: "Done, last night's version is back.", time: "Just now" }] } };
+  s = { ...s, teams: { ...s.teams!, chats: s.teams!.chats.map((c) => (c.id === "chat-sarah" ? { ...c, messages: [...c.messages, { id: "m", from: YOU, text: "Done, last night's version is back.", time: "08:58" }] } : c)) } };
   return s;
 }
 
@@ -226,6 +226,6 @@ describe("E9.3 Get yesterday's version back", () => {
     const s = putRight();
     const copy = { ...s, files: [...s.files, { id: "c", path: ["OneDrive", "Documents"], name: "Stock November old.xlsx", kind: "xlsx" as const, modified: "", by: "You", sheet: stockRight() }] };
     expect(failed(versionBack.check(copy))).toEqual(["kept"]);
-    expect(failed(versionBack.check({ ...s, teamsNote: versionBack.seed().teamsNote }))).toEqual(["told"]);
+    expect(failed(versionBack.check({ ...s, teams: versionBack.seed().teams }))).toEqual(["told"]);
   });
 });

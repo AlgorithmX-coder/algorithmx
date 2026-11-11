@@ -10,7 +10,7 @@ import type { FileVersion, Grid, OfficeFile } from "../types";
 export const STOCK = ["Operations Team", "Documents", "Stock"] as const;
 export const STOCK_NAME = "Stock November.xlsx";
 export const STOCK_HEAD = ["Code", "Item", "Supplier", "In stock", "Reorder at", "Counted"];
-export const STOCK_WIDTHS = [78, 232, 156, 84, 92, 104];
+export const STOCK_WIDTHS = [86, 232, 164, 100, 116, 116];
 
 /* code, item, supplier, reorder at, then the count on 2 Nov, 9 Nov (right)
  * and 30 Oct (the numbers Sarah saved over it by mistake) */

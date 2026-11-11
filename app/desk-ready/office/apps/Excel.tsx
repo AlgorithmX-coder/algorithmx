@@ -388,7 +388,6 @@ export default function Excel({
               [
                 ["Save", onSave],
                 ["Save as", onSaveAs],
-                ["Close", onClose],
               ] as const
             ).map(([label, fn]) => (
               <button
@@ -430,6 +429,18 @@ export default function Excel({
                 )}
               </>
             )}
+            <button
+              type="button"
+              role="menuitem"
+              className="of-row"
+              onClick={() => {
+                setMenu(false);
+                onClose();
+              }}
+              style={{ width: "100%", minHeight: 40, textAlign: "left", padding: "6px 12px", border: "none", background: "transparent", fontFamily: W.font, fontSize: 15, borderRadius: 4 }}
+            >
+              Close
+            </button>
           </div>
         )}
       </div>
