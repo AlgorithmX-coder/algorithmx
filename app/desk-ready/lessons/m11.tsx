@@ -86,7 +86,7 @@ const m11: ModuleManifest = {
           heading: "Point at a link, but never click",
           figure: <ScamEmailFigure focus={["link", "linkurl"]} title="The link, and where it really goes" />,
           body: [
-            "A link's words (10) can say anything. Rest the mouse pointer on it, without clicking, and its real address appears (11), in a small box and in the bottom corner of the window.",
+            "A link's words (10) can say anything. Rest the mouse pointer on it, without clicking, and its real address appears in a small box (11).",
             "On a phone, press and hold the link instead of tapping it.",
           ],
           tip: "If the address isn't the company's own, or you're not sure, don't click. Nobody was ever told off for not clicking.",
@@ -134,7 +134,7 @@ const m11: ModuleManifest = {
           figure: <InvoicePairFigure />,
           body: [
             "First, Harlow's real invoice HP-2291, as it sits in Finance. Then the fake one, from a scam email. Every part is numbered.",
-            "Three things are the same on both, numbered on the real one (1 to 3). Four are different, numbered on the fake (4 to 7), and all four are about where your money and your questions go.",
+            "Three things are the same on both, numbered on the real one (1 to 3). Four are different, numbered on the fake (4 to 7): where your money and your questions go, and how fast you are pushed to pay.",
           ],
         },
         {
@@ -414,7 +414,7 @@ const m11: ModuleManifest = {
         },
         {
           heading: "Here is an email to a group of customers",
-          figure: <ComposeFigure email={GROUP_EMAIL} title="An email to three customers" what={GROUP_WHAT} />,
+          figure: <ComposeFigure email={GROUP_EMAIL} title="An email to three customers" what={GROUP_WHAT} note="Numbered as in Module 1: Send is 1, Attach file and Insert link are 6, then the rest from the top." />,
           body: [
             "Christmas opening hours, going to three customers. Every part is numbered, as in Module 1.",
             "Look at To (2) and Bcc (4): the customers are in Bcc, and you're in To.",

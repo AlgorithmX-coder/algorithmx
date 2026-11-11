@@ -336,8 +336,8 @@ type PhoneTab = "recent" | "contacts" | "keypad";
 
 function PhoneTabs({ tab, setTab }: { tab: PhoneTab; setTab: (t: PhoneTab) => void }) {
   const tabs: [PhoneTab, string][] = [
-    ["recent", "Recent"],
     ["contacts", "Contacts"],
+    ["recent", "Recent"],
     ["keypad", "Keypad"],
   ];
   return (

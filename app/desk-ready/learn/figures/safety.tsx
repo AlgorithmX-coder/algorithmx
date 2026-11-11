@@ -20,7 +20,7 @@ import { AppWindow, FakeButton, FigureFrame, Part, type PartInfo } from "./parts
 
 /* `what` overrides a part's key line for one card. */
 function infoOf<K extends string>(parts: Record<K, PartInfo>, what: Partial<Record<K, string>> = {}): Record<K, PartInfo> {
-  return Object.fromEntries((Object.entries(parts) as [K, PartInfo][]).map(([k, p]) => [k, { ...p, what: tidy(what[k] ?? p.what) }])) as Record<K, PartInfo>;
+  return Object.fromEntries((Object.entries(parts) as [K, PartInfo][]).map(([k, p]) => [k, { ...p, name: tidy(p.name), what: tidy(what[k] ?? p.what) }])) as Record<K, PartInfo>;
 }
 
 interface FigProps<K extends string> {
@@ -36,6 +36,8 @@ const EXTERNAL: CSSProperties = { display: "inline-block", padding: "0 6px", bor
  * them or on its neighbour's. The margin keeps the words where they were. */
 const PAD: CSSProperties = { padding: "4px 8px", margin: "0 -8px" };
 const NB: CSSProperties = { whiteSpace: "nowrap" };
+/* the invoices' parts sit close together, so they get a little more room */
+const IPAD: CSSProperties = { padding: "6px 10px", margin: "0 -10px" };
 /* Copy that wraps well on a phone: "30 days", a phone number, an address
  * or a domain never splits across lines (non-breaking spaces and hyphens),
  * and a paragraph never ends on one word alone. */
@@ -47,7 +49,12 @@ export function tidy(s: string): string {
     .replace(/\b([A-Z]{1,3})-(\d+)/g, "$1\u2011$2")
     .replace(/\S*[@.]\S*/g, (t) => t.replace(/-/g, "\u2011"))
     .replace(/ \+ /g, "\u00a0+\u00a0")
-    .replace(/ (\S{1,12})$/, "\u00a0$1");
+    .replace(/ > /g, "\u00a0>\u00a0")
+    .replace(/\b(Daniel Okafor|Emma Clarkson|Emma Clarke|Tom Hale|Priya Shah|Sarah Patel|IT Service Desk|Bright Cafe)\b/g, (n) => n.replace(/ /g, "\u00a0"))
+    .replace(/\((\d+) to (\d+)\)/g, "($1\u00a0to\u00a0$2)")
+    /* a part's number stays with the word before it */
+    .replace(/ (\(\d+\))/g, "\u00a0$1")
+    .replace(/ ([^ ]{1,18})$/, "\u00a0$1");
 }
 
 /* ── 1. the scam email, every tell numbered ──────────────────────────── */
@@ -78,7 +85,7 @@ export function ScamEmailFigure({ focus, title = "A scam email, every tell numbe
    * (otherwise the whole address fades, or stays lit, as one) */
   const dimAddress = focus?.includes("domain") && !addressLit ? { opacity: 0.32 } : {};
   return (
-    <FigureFrame info={infoOf(SCAM_PARTS, what)} focus={focus} title={title} note={note}>
+    <FigureFrame info={infoOf(SCAM_PARTS, what)} focus={focus} title={tidy(title)} note={note}>
       <AppWindow
         app="Outlook"
         colour={W.outlook}
@@ -89,7 +96,7 @@ export function ScamEmailFigure({ focus, title = "A scam email, every tell numbe
               <FakeButton>↩ Reply</FakeButton>
               <FakeButton>↪ Forward</FakeButton>
             </span>
-            <Part k="report" block={false} badge="right" style={PAD}>
+            <Part k="report" block={false} badge="right" style={{ padding: 3 }}>
               <FakeButton>⚠ Report</FakeButton>
             </Part>
           </>
@@ -116,10 +123,12 @@ export function ScamEmailFigure({ focus, title = "A scam email, every tell numbe
                     <b style={{ color: "#a4262c", whiteSpace: "nowrap" }}>{domain}</b>&gt;
                   </>
                 ) : (
-                  <Part k="domain" block={false} badge="right" style={focus?.includes("domain") ? { padding: "1px 4px", marginLeft: 8 } : undefined}>
-                    <b style={{ color: "#a4262c", whiteSpace: "nowrap" }}>{domain}</b>
+                  <span style={{ whiteSpace: "nowrap" }}>
+                    <Part k="domain" block={false} badge="right" style={focus?.includes("domain") ? { padding: "1px 4px", margin: "0 4px 0 8px" } : undefined}>
+                      <b style={{ color: "#a4262c" }}>{domain}</b>
+                    </Part>
                     <span style={dimAddress}>&gt;</span>
-                  </Part>
+                  </span>
                 )}
               </span>
             </Part>
@@ -195,8 +204,8 @@ function MiniInvoice({ doc, real }: { doc: BizDoc; real: boolean }) {
   const off = (k: InvoicePairPart) => SAME.includes(k) !== real;
   const row = { display: "flex", justifyContent: "space-between", gap: 10, fontSize: 12.5, lineHeight: 1.6 } as const;
   return (
-    <div style={{ background: W.page, color: "#222", padding: "16px 22px 18px", borderRadius: 4, boxShadow: "0 1px 3px rgba(0,0,0,0.18)", display: "grid", gap: 14, fontFamily: W.font }}>
-      <Part k="look" noBadge={off("look")} style={PAD}>
+    <div style={{ background: W.page, color: "#222", padding: "16px 24px 18px", borderRadius: 4, boxShadow: "0 1px 3px rgba(0,0,0,0.18)", display: "grid", gap: 18, fontFamily: W.font }}>
+      <Part k="look" noBadge={off("look")} style={IPAD}>
         <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
           <span aria-hidden style={{ width: 30, height: 30, flexShrink: 0, borderRadius: 5, background: "#0b6b62", color: "#fff", fontWeight: 800, fontSize: 12.5, display: "inline-flex", alignItems: "center", justifyContent: "center" }}>HP</span>
           <span style={{ fontSize: 12, lineHeight: 1.35 }}>
@@ -205,29 +214,29 @@ function MiniInvoice({ doc, real }: { doc: BizDoc; real: boolean }) {
           </span>
         </div>
       </Part>
-      <Part k="email" noBadge={off("email")} style={PAD}>
+      <Part k="email" noBadge={off("email")} style={IPAD}>
         <span style={{ display: "block", fontSize: 12.5 }}>
           <span style={NB}>{doc.from.email?.split("@")[0]}@</span>
           <wbr />
           <span style={NB}>{doc.from.email?.split("@")[1]}</span>
         </span>
       </Part>
-      <Part k="phone" noBadge={off("phone")} style={PAD}>
+      <Part k="phone" noBadge={off("phone")} style={IPAD}>
         <span style={{ display: "block", fontSize: 12.5, whiteSpace: "nowrap" }}>{doc.from.phone}</span>
       </Part>
-      <Part k="number" noBadge={off("number")} style={PAD}>
+      <Part k="number" noBadge={off("number")} style={IPAD}>
         <div style={row}>
           <b style={{ fontSize: 15, letterSpacing: "0.04em" }}>INVOICE</b>
           <b style={{ fontSize: 14 }}>{doc.number}</b>
         </div>
       </Part>
-      <Part k="total" noBadge={off("total")} style={PAD}>
+      <Part k="total" noBadge={off("total")} style={IPAD}>
         <div style={{ ...row, padding: "6px 8px", background: "#f4f4f2", borderRadius: 3 }}>
           <span>Total due</span>
           <b>{money(t.gross)}</b>
         </div>
       </Part>
-      <Part k="bank" noBadge={off("bank")} style={PAD}>
+      <Part k="bank" noBadge={off("bank")} style={IPAD}>
         <div style={{ fontSize: 12.5, lineHeight: 1.55 }}>
           <span style={{ fontSize: 10.5, fontWeight: 700, letterSpacing: "0.08em", color: "#777" }}>PAY TO</span>
           <br />
@@ -236,7 +245,7 @@ function MiniInvoice({ doc, real }: { doc: BizDoc; real: boolean }) {
           <span style={NB}>Sort code {doc.bank?.sortCode}</span> · <span style={NB}>Account {doc.bank?.account}</span>
         </div>
       </Part>
-      <Part k="terms" noBadge={off("terms")} style={PAD}>
+      <Part k="terms" noBadge={off("terms")} style={IPAD}>
         <div style={{ fontSize: 12.5 }}>
           <span style={{ color: "#666" }}>Terms:</span> {tidy(doc.terms ?? "")} {doc.due && doc.terms?.startsWith("30") ? <span style={NB}>Due {doc.due}.</span> : ""}
         </div>
@@ -248,7 +257,7 @@ function MiniInvoice({ doc, real }: { doc: BizDoc; real: boolean }) {
 export function InvoicePairFigure({ focus, title = "The real invoice and the fake one", what, note }: FigProps<InvoicePairPart>) {
   const label = (text: string, colour: string) => <p style={{ margin: "0 0 8px", fontSize: 12.5, fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase", color: colour }}>{text}</p>;
   return (
-    <FigureFrame info={infoOf(INVOICE_PAIR_PARTS, what)} focus={focus} title={title} note={note}>
+    <FigureFrame info={infoOf(INVOICE_PAIR_PARTS, what)} focus={focus} title={tidy(title)} note={note}>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 280px), 1fr))", gap: "26px 48px", padding: "0 0 0 40px" }}>
         <div>
           {label("First, the real one, on file", "#9fe0b0")}
@@ -281,7 +290,7 @@ export const CALL_PARTS: Record<CallPart, PartInfo> = {
   contacts: { n: 1, name: "Contacts", what: "The numbers the company already holds, saved in the desk phone long before any email arrived." },
   tom: { n: 2, name: "The supplier's contact", what: "Tom Hale, our account manager at Harlow. The person who would know about a change." },
   held: { n: 3, name: "The number on file", what: `${TOM_NUMBER}. Use this one: a scammer can't change what we already have.` },
-  call: { n: 4, name: "Call", what: `Rings it from the desk phone. Then ask: "${CALL_SCRIPT}"` },
+  call: { n: 4, name: "Call", what: `Rings Tom from the desk phone. Then ask: "${CALL_SCRIPT}"` },
   emailnum: { n: 5, name: "The number in the email", what: "Never this one. It rings the scammer, who will happily say it's all genuine." },
 };
 
@@ -315,7 +324,7 @@ export function CallCheckFigure({ focus, title = "Check by phone, on the number 
           )}
         </span>
         {tom ? (
-          <Part k="call" block={false} badge="corner" style={{ padding: 3, borderRadius: 20 }}>
+          <Part k="call" block={false} badge="right" style={{ padding: 3, borderRadius: 20 }}>
             <CallButton />
           </Part>
         ) : (
@@ -326,7 +335,7 @@ export function CallCheckFigure({ focus, title = "Check by phone, on the number 
       </div>
     );
     return tom ? (
-      <Part k="tom" holds={["held", "call"]} badge="top">
+      <Part k="tom" holds={["held", "call"]} badge="left">
         {inner}
       </Part>
     ) : (
@@ -334,14 +343,15 @@ export function CallCheckFigure({ focus, title = "Check by phone, on the number 
     );
   };
   return (
-    <FigureFrame info={infoOf(CALL_PARTS, what)} focus={focus} title={title} note={note}>
+    <FigureFrame info={infoOf(CALL_PARTS, what)} focus={focus} title={tidy(title)} note={note}>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 280px), 1fr))", gap: "30px 52px", alignItems: "start", padding: "0 6px 0 40px" }}>
-        <div style={{ paddingRight: 16 }}>
+        <div style={{ paddingRight: 30 }}>
           <AppWindow app="Phone" colour={PHONE_COLOUR}>
             <div style={{ display: "flex", borderBottom: `1px solid ${W.edge}`, fontSize: 13.5 }}>
-              {["Recent", "Contacts", "Keypad"].map((t) =>
+              {/* Contacts comes first, as in the office's Phone, so its badge sits beside it */}
+              {["Contacts", "Recent", "Keypad"].map((t) =>
                 t === "Contacts" ? (
-                  <Part key={t} k="contacts" badge="top" style={{ flex: 1, borderRadius: 2 }}>
+                  <Part key={t} k="contacts" badge="left" style={{ flex: 1, borderRadius: 2 }}>
                     <span style={{ display: "block", textAlign: "center", padding: "8px 0", fontWeight: 700, borderBottom: `3px solid ${PHONE_COLOUR}` }}>{t}</span>
                   </Part>
                 ) : (
@@ -351,7 +361,7 @@ export function CallCheckFigure({ focus, title = "Check by phone, on the number 
                 ),
               )}
             </div>
-            <p style={{ margin: 0, padding: "10px 12px 30px", fontSize: 11.5, fontWeight: 700, color: W.muted, ...fade(!focus?.length) }}>Suppliers</p>
+            <p style={{ margin: 0, padding: "10px 12px 6px", fontSize: 11.5, fontWeight: 700, color: W.muted, ...fade(!focus?.length) }}>Suppliers</p>
             {entry("Tom Hale", "Account Manager, Harlow Packaging", TOM_NUMBER, true)}
             {entry("Harlow Packaging", "Main line", "01632 960 552")}
             {entry("Kent Flour Mills", "Orders", "01632 960 870")}
@@ -463,7 +473,7 @@ const field: CSSProperties = { display: "block", padding: "7px 0", borderBottom:
 export function SignInFigure({ focus, title, what, note, started = true }: FigProps<SignInPart> & { started?: boolean }) {
   if (!started) {
     return (
-      <FigureFrame info={infoOf(UNEXPECTED_PARTS, what as Partial<Record<keyof typeof UNEXPECTED_PARTS, string>>)} focus={focus as (keyof typeof UNEXPECTED_PARTS)[]} title={title ?? "A request you didn't start"} note={note} minWidth={330}>
+      <FigureFrame info={infoOf(UNEXPECTED_PARTS, what as Partial<Record<keyof typeof UNEXPECTED_PARTS, string>>)} focus={focus as (keyof typeof UNEXPECTED_PARTS)[]} title={tidy(title ?? "A request you didn't start")} note={note} minWidth={330}>
         <div style={{ display: "flex", flexWrap: "wrap", gap: "30px 44px", alignItems: "flex-start", padding: "0 34px 0 40px" }}>
           <Part k="screen" style={{ flex: "1 1 280px", minWidth: 0 }}>
             <AppWindow app="Outlook" colour={W.outlook} title="Inbox">
@@ -485,7 +495,7 @@ export function SignInFigure({ focus, title, what, note, started = true }: FigPr
     );
   }
   return (
-    <FigureFrame info={infoOf(SIGNIN_PARTS, what as Partial<Record<keyof typeof SIGNIN_PARTS, string>>)} focus={focus as (keyof typeof SIGNIN_PARTS)[]} title={title ?? "Two-step sign-in: your screen, then your phone"} note={note} minWidth={330}>
+    <FigureFrame info={infoOf(SIGNIN_PARTS, what as Partial<Record<keyof typeof SIGNIN_PARTS, string>>)} focus={focus as (keyof typeof SIGNIN_PARTS)[]} title={tidy(title ?? "Two-step sign-in: your screen, then your phone")} note={note} minWidth={330}>
       <div style={{ display: "flex", flexWrap: "wrap", gap: "30px 44px", alignItems: "flex-start", padding: "0 34px 0 40px" }}>
         <div style={{ flex: "1 1 280px", minWidth: 0, display: "grid", gap: 16 }}>
           <div style={box}>
@@ -533,8 +543,8 @@ export function PasswordFigure({ focus, title = "Changing your password", what, 
   const label = { fontSize: 12.5, color: W.muted, marginBottom: 2 } as const;
   const input = { display: "block", padding: "8px 10px", border: `1px solid ${W.edge}`, borderRadius: 4, fontSize: 14.5, background: W.page } as const;
   return (
-    <FigureFrame info={infoOf(PASSWORD_PARTS, what)} focus={focus} title={title} note={note}>
-      <AppWindow app="Account" colour="#2357c6" title="Change password">
+    <FigureFrame info={infoOf(PASSWORD_PARTS, what)} focus={focus} title={tidy(title)} note={note}>
+      <AppWindow app="Account" colour="#2357c6" title="· Change password">
         <div style={{ padding: "18px 26px 22px 54px", display: "grid", gap: 18, maxWidth: 520 }}>
           <Part k="current" style={{ padding: "6px 10px", margin: "0 -10px" }}>
             <div style={label}>Current password</div>
@@ -561,7 +571,7 @@ export function PasswordFigure({ focus, title = "Changing your password", what, 
           <Part k="rules" style={{ padding: "6px 10px", margin: "0 -10px" }}>
             <div style={{ fontSize: 13, lineHeight: 1.5, color: W.body }}>At least 12 characters. Don&apos;t use your name, the company&apos;s name, or a password you use anywhere else.</div>
           </Part>
-          <Part k="save" style={{ justifySelf: "start", padding: 4, margin: "0 -4px" }}>
+          <Part k="save" style={{ justifySelf: "start", padding: "4px 10px", margin: "0 -10px" }}>
             <FakeButton primary colour="#2357c6">
               Save
             </FakeButton>
@@ -583,19 +593,24 @@ export const TOLINE_PARTS: Record<ToLinePart, PartInfo> = {
   second: { n: 4, name: "The one you meant", what: "Emma Clarke, HR Advisor. Second in the list today." },
   address: { n: 5, name: "The address", what: "Read it, always. @northfieldsupplies.example is us. Anything else is outside the company." },
   mailtip: { n: 7, name: "The yellow warning", what: "Once she's on the email, Outlook warns you she's outside your organisation. Stop and look." },
-  chip: { n: 8, name: "Who it's going to", what: "The name you picked, in yellow because she's outside. Not the one Daniel meant." },
+  chip: { n: 8, name: "The person you picked", what: "The name you picked, in yellow because she's outside. Not the one Daniel meant." },
   attach: { n: 9, name: "What's going", what: "Everyone's overtime pay: personal data. It must only go to HR." },
   send: { n: 6, name: "Send", what: "Last chance. Read the To line once more before you press it." },
 };
 
 export function ToLineFigure({ focus, title = "Who is it really going to?", what, note }: FigProps<ToLinePart>) {
-  const row = (name: string, address: string, detail: string, outside: boolean, k: "first" | "second", on: boolean) => (
-    <Part k={k} holds={k === "first" ? ["external"] : ["address"]}>
-      <div style={{ display: "flex", gap: 10, alignItems: "center", padding: "8px 10px", borderRadius: 4, background: on ? W.select : "transparent" }}>
-        <span aria-hidden style={{ width: 30, height: 30, borderRadius: 15, background: outside ? "#8a6d1f" : W.outlook, color: "#fff", fontSize: 11.5, fontWeight: 700, display: "inline-flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>EC</span>
+  /* A suggestion row is a part of its own only when it is lit, or on the
+   * whole picture. When only a piece of it is lit (External, an address),
+   * it is plain, so its avatar, name and other lines fade with the rest. */
+  const row = (name: string, address: string, detail: string, outside: boolean, k: "first" | "second", on: boolean) => {
+    const rowLit = !focus?.length || focus.includes(k);
+    const fade = rowLit ? {} : { opacity: 0.32 };
+    const inner = (
+      <div style={{ display: "flex", gap: 12, alignItems: "center", padding: "8px 10px", borderRadius: 4, background: on && rowLit ? W.select : "transparent" }}>
+        <span aria-hidden style={{ width: 30, height: 30, borderRadius: 15, background: outside ? "#8a6d1f" : W.outlook, color: "#fff", fontSize: 11.5, fontWeight: 700, display: "inline-flex", alignItems: "center", justifyContent: "center", flexShrink: 0, ...fade }}>EC</span>
         <span style={{ minWidth: 0, lineHeight: 1.35 }}>
           <span style={{ display: "flex", gap: 8, alignItems: "center", marginBottom: 3 }}>
-            <b style={{ fontSize: 14, fontWeight: 600 }}>{name}</b>
+            <b style={{ fontSize: 14, fontWeight: 600, ...fade }}>{name}</b>
             {outside && (
               <Part k="external" block={false} badge="right" style={{ padding: "2px 3px", marginLeft: 6 }}>
                 <span style={EXTERNAL}>External</span>
@@ -603,27 +618,28 @@ export function ToLineFigure({ focus, title = "Who is it really going to?", what
             )}
           </span>
           {k === "second" && !(focus?.includes("second") && !focus.includes("address")) ? (
-            <Part k="address" block={false} badge="corner" style={{ padding: "2px 6px", margin: "2px -6px 6px" }}>
+            <Part k="address" block={false} badge="top" style={{ padding: "3px 8px", margin: "2px 0 6px" }}>
               <span style={{ fontSize: 12.5, color: W.body, whiteSpace: "nowrap" }}>{address}</span>
             </Part>
           ) : (
-            <span style={{ display: "block", fontSize: 12.5, color: W.body, whiteSpace: "nowrap" }}>{address}</span>
+            <span style={{ display: "block", fontSize: 12.5, color: W.body, whiteSpace: "nowrap", ...fade }}>{address}</span>
           )}
-          <span style={{ display: "block", fontSize: 12, color: W.muted }}>{detail}</span>
+          <span style={{ display: "block", fontSize: 12, color: W.muted, ...fade }}>{detail}</span>
         </span>
       </div>
-    </Part>
-  );
+    );
+    return rowLit ? <Part k={k}>{inner}</Part> : inner;
+  };
   const fieldRow = { display: "flex", alignItems: "center", gap: 10, minHeight: 38, padding: "4px 12px", borderBottom: `1px solid ${W.edge}`, fontSize: 14 } as const;
   const lab = { width: 54, color: W.muted, flexShrink: 0 } as const;
   const head = (t: string) => <p style={{ margin: "0 0 8px", fontSize: 12.5, fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase", color: "#9db9ec" }}>{t}</p>;
   return (
-    <FigureFrame info={infoOf(TOLINE_PARTS, what)} focus={focus} title={title} note={note} minWidth={600}>
+    <FigureFrame info={infoOf(TOLINE_PARTS, what)} focus={focus} title={tidy(title)} note={note} minWidth={600}>
       <div style={{ display: "grid", gap: 26, padding: "0 40px" }}>
         <div>
           {head("As you type")}
           <AppWindow app="Outlook" colour={W.outlook} title="Forward">
-            <div style={fieldRow}>
+            <div style={{ ...fieldRow, paddingTop: 8, paddingBottom: 8 }}>
               <span style={lab}>To</span>
               <Part k="typed" block={false} badge="right" style={{ padding: "2px 8px", margin: "0 -8px" }}>
                 <span style={{ fontSize: 15 }}>Emma|</span>
@@ -644,13 +660,13 @@ export function ToLineFigure({ focus, title = "Who is it really going to?", what
                 <FakeButton primary>➤ Send</FakeButton>
               </Part>
             </div>
-            <Part k="mailtip" style={{ borderRadius: 0 }}>
-              <div style={{ padding: "7px 12px", background: "#fff4ce", borderBottom: "1px solid #f2d27a", fontSize: 13, lineHeight: 1.45, color: "#3b2e00" }}>
+            <Part k="mailtip" style={{ margin: "6px 6px 4px", padding: 2 }}>
+              <div style={{ padding: "7px 12px", background: "#fff4ce", border: "1px solid #f2d27a", borderRadius: 3, fontSize: 13, lineHeight: 1.45, color: "#3b2e00" }}>
                 ⓘ Emma Clarkson is outside your organisation.
                 <span style={{ display: "block", color: "#6b4f00" }}>{EMMA_CLARKSON.address}</span>
               </div>
             </Part>
-            <div style={{ ...fieldRow, paddingTop: 10, paddingBottom: 8 }}>
+            <div style={{ ...fieldRow, paddingTop: 14, paddingBottom: 8 }}>
               <span style={lab}>To</span>
               <Part k="chip" block={false} badge="right" style={{ padding: "3px 4px" }}>
                 <span style={{ padding: "2px 10px", borderRadius: 12, background: "#fff4ce", border: "1px solid #f2d27a", fontSize: 13.5 }}>Emma Clarkson</span>
@@ -660,7 +676,7 @@ export function ToLineFigure({ focus, title = "Who is it really going to?", what
               <span style={lab}>Subject</span>
               FW: November&apos;s overtime sheet
             </div>
-            <div style={{ padding: "8px 12px 12px" }}>
+            <div style={{ padding: "8px 12px 16px" }}>
               <Part k="attach" block={false} badge="left" style={{ padding: 3 }}>
                 <span style={{ display: "inline-flex", gap: 6, alignItems: "center", padding: "4px 10px", border: `1px solid ${W.edge}`, borderRadius: 5, fontSize: 13 }}>📎 2026-11 Overtime November.xlsx</span>
               </Part>
@@ -687,9 +703,9 @@ export const CUSTOMER_PARTS: Record<CustomerPart, PartInfo> = {
 };
 
 const PEOPLE_ROWS = [
-  ["Bright Cafe", "Jo Marsh", "07700 900 318", "jo.marsh@brightcafe.example", "4 Clarendon Rd, LE2 3AF", "..4417"],
-  ["Kent Bakery", "Imran Ahmed", "0116 496 0738", "imran.ahmed@kentbakery.example", "18 Mill Hill, LE3 8GQ", "..2290"],
-  ["Oak Street Deli", "Rosa Bianchi", "07700 900 527", "rosa@oakstreetdeli.example", "12 Elm Close, LE5 2PB", "..6631"],
+  ["Bright Cafe", "Jo Marsh", "07700 900 318", "jo.marsh@brightcafe.example", "4 Clarendon Rd, LE2 3AF", "•••• 4417"],
+  ["Kent Bakery", "Imran Ahmed", "0116 496 0738", "imran.ahmed@kentbakery.example", "18 Mill Hill, LE3 8GQ", "•••• 2290"],
+  ["Oak Street Deli", "Rosa Bianchi", "07700 900 527", "rosa@oakstreetdeli.example", "12 Elm Close, LE5 2PB", "•••• 6631"],
 ];
 
 export function CustomerDataFigure({ focus, title = "A customer list, and what in it is personal", what, note }: FigProps<CustomerPart>) {
@@ -697,21 +713,21 @@ export function CustomerDataFigure({ focus, title = "A customer list, and what i
     { k: "business", head: "Customer", w: 104 },
     { k: "person", head: "Contact", w: 92 },
     { k: "phone", head: "Phone", w: 98 },
-    { k: "email", head: "Email", w: 206 },
+    { k: "email", head: "Email", w: 196 },
     { k: "address", head: "Home address", w: 144 },
-    { k: "card", head: "Card", w: 48 },
+    { k: "card", head: "Card", w: 72 },
   ];
   return (
-    <FigureFrame info={infoOf(CUSTOMER_PARTS, what)} focus={focus} title={title} note={note} minWidth={778}>
+    <FigureFrame info={infoOf(CUSTOMER_PARTS, what)} focus={focus} title={tidy(title)} note={note} minWidth={778}>
       <div style={{ padding: "0 2px" }}>
         <div style={{ background: W.page, borderRadius: 8, boxShadow: W.float, border: `1px solid ${W.edge}`, overflow: "visible" }}>
-          <Part k="file" style={{ borderRadius: "8px 8px 0 0" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 10, minHeight: 34, padding: "0 12px", background: W.excel, color: "#fff", fontSize: 13.5, borderRadius: "8px 8px 0 0" }}>
+          <Part k="file" style={{ margin: "5px 5px 0", borderRadius: 6 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 10, minHeight: 34, padding: "0 12px", background: W.excel, color: "#fff", fontSize: 13.5, borderRadius: 5 }}>
               <b>Excel</b>
               <span style={{ opacity: 0.92 }}>Customer contacts.xlsx · Operations Team &gt; Documents &gt; Customers</span>
             </div>
           </Part>
-          <div style={{ display: "flex", padding: "40px 8px 14px 8px", gap: 14 }}>
+          <div style={{ display: "flex", padding: "40px 14px 14px 14px", gap: 14 }}>
             {cols.map((c) => (
               <Part key={c.k} k={c.k} badge="top" style={{ width: c.w, flexShrink: 0, borderRadius: 3, padding: 3, boxSizing: "border-box" }}>
                 <div style={{ fontSize: 12 }}>
@@ -753,7 +769,7 @@ function Keycap({ children, wide }: { children: ReactNode; wide?: boolean }) {
 
 export function LockScreenFigure({ focus, title = "Locking your screen", what, note }: FigProps<LockPart>) {
   return (
-    <FigureFrame info={infoOf(LOCK_PARTS, what)} focus={focus} title={title} note={note}>
+    <FigureFrame info={infoOf(LOCK_PARTS, what)} focus={focus} title={tidy(title)} note={note}>
       <div style={{ display: "flex", flexWrap: "wrap", gap: "30px 44px", alignItems: "flex-start", padding: "0 38px" }}>
         <div style={{ width: 230, maxWidth: "100%", flexShrink: 0, display: "grid", gap: 30 }}>
           <Part k="keys" style={{ justifySelf: "start" }}>
@@ -782,13 +798,13 @@ export function LockScreenFigure({ focus, title = "Locking your screen", what, n
             </div>
           </Part>
         </div>
-        <Part k="screen" holds={["time", "signin"]} badge="right" style={{ flex: "1 1 200px", minWidth: 0 }}>
+        <Part k="screen" holds={["time", "signin"]} badge="top" style={{ flex: "1 1 200px", minWidth: 0 }}>
           <div style={{ position: "relative", height: 270, borderRadius: 8, overflow: "visible", background: "radial-gradient(120% 90% at 70% 10%, #6f8fc9 0%, #2d4e8c 45%, #13254a 100%)", color: "#fff", border: "6px solid #1b1b1f", boxShadow: W.float }}>
             <div style={{ position: "absolute", inset: 0, overflow: "hidden", borderRadius: 3 }}>
               <LockArt />
             </div>
             <div style={{ position: "absolute", left: 0, right: 0, top: 34, display: "grid", justifyItems: "center" }}>
-              <Part k="time" badge="right">
+              <Part k="time" badge="corner">
                 <div style={{ textAlign: "center", padding: "0 8px" }}>
                   <div style={{ fontSize: 54, fontWeight: 600, lineHeight: 1 }}>15:04</div>
                   <div style={{ marginTop: 6, fontSize: 15 }}>Wednesday 11 November</div>
