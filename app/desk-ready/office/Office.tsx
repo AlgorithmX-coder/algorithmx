@@ -10,6 +10,7 @@ import Excel, { type ExcelDoc } from "./apps/Excel";
 import Explorer from "./apps/Explorer";
 import Outlook from "./apps/Outlook";
 import Viewer from "./apps/Viewer";
+import { OFFICE_APPS } from "./apps/registry";
 import { PlacePicker } from "./places";
 import { newId, useOffice } from "./store";
 import { samePath, tabsOf, type Check, type Job, type OfficeFile, type Paper, type Path } from "./types";
@@ -23,12 +24,20 @@ import { AppButton, Dialog, OFFICE_CSS } from "./ui";
  * record and shows a scorecard: every criterion and the five habits, with
  * how to put right anything missed. */
 
-type AppId = "outlook" | "explorer" | "excel";
+/* A fresh key each time a window is asked to open something. */
+let opened = 0;
+const nextKey = () => ++opened;
+
+/* "outlook", "explorer", "excel", or a registered app's id. */
+type AppId = string;
 
 export default function Office({ job }: { job: Job }) {
   const { state, dispatch, reset } = useOffice(job);
   const done = useDone();
-  const [app, setApp] = useState<AppId>("outlook");
+  const [app, setApp] = useState<AppId>(job.start ?? "outlook");
+  /* The file a registered app was last asked to open. */
+  const [request, setRequest] = useState<{ app: string; fileId: string; key: number } | null>(null);
+  const extras = (job.apps ?? []).filter((id) => OFFICE_APPS[id]);
   const [doc, setDoc] = useState<ExcelDoc | null>(null);
   const [viewer, setViewer] = useState<{ title: string; paper?: Paper; key: number } | null>(null);
   const [saveAs, setSaveAs] = useState(false);
@@ -47,6 +56,12 @@ export default function Office({ job }: { job: Job }) {
   const guard = (then: () => void) => (doc?.dirty ? setUnsaved({ then }) : then());
 
   const openFile = (f: OfficeFile) => {
+    const opener = extras.find((id) => OFFICE_APPS[id].opens?.includes(f.kind));
+    if (opener) {
+      setRequest({ app: opener, fileId: f.id, key: nextKey() });
+      setApp(opener);
+      return;
+    }
     const book = tabsOf(f);
     if ((f.kind === "xlsx" || f.kind === "xltx") && book.length) {
       const tabs = book.map((t) => ({ name: t.name, grid: t.grid.map((r) => [...r]) }));
@@ -56,14 +71,14 @@ export default function Office({ job }: { job: Job }) {
         setApp("excel");
       });
     } else {
-      setViewer({ title: f.name, paper: f.paper, key: Date.now() });
+      setViewer({ title: f.name, paper: f.paper, key: nextKey() });
     }
   };
 
   const openLink = (path: Path, fileName: string) => {
     const f = state.files.find((x) => samePath(x.path, path) && x.name === fileName);
     if (f) openFile(f);
-    else setViewer({ title: fileName, key: Date.now() });
+    else setViewer({ title: fileName, key: nextKey() });
   };
 
   const save = () => {
@@ -94,7 +109,8 @@ export default function Office({ job }: { job: Job }) {
     setDoc(null);
     setViewer(null);
     setResults(null);
-    setApp("outlook");
+    setRequest(null);
+    setApp(job.start ?? "outlook");
     setConfirmReset(false);
   };
 
@@ -103,7 +119,23 @@ export default function Office({ job }: { job: Job }) {
     { id: "outlook", label: "Outlook", colour: W.outlook, badge: unread },
     { id: "explorer", label: "File Explorer", colour: W.folder },
     { id: "excel", label: liveDoc ? `Excel · ${liveDoc.name}` : "Excel", colour: W.excel, on: !!liveDoc },
-  ];
+    ...extras
+      .filter((id) => !OFFICE_APPS[id].noTaskbar && OFFICE_APPS[id].Window)
+      .map((id) => {
+        const a = OFFICE_APPS[id];
+        return { id, label: typeof a.label === "function" ? a.label(state) : a.label, colour: a.colour, badge: a.badge?.(state) };
+      }),
+  ].filter((t) => !job.hide?.includes(t.id as "outlook"));
+  const appProps = (id: string) => ({
+    state,
+    dispatch,
+    job,
+    active: app === id,
+    show: setApp,
+    openFile,
+    openPaper: (title: string, paper?: Paper) => setViewer({ title, paper, key: nextKey() }),
+    request: request?.app === id ? { fileId: request.fileId, key: request.key } : null,
+  });
 
   return (
     <div className="dr-shell" style={shell}>
@@ -148,7 +180,7 @@ export default function Office({ job }: { job: Job }) {
           <section className="of-screen of-office" aria-label="Your desktop" style={{ colorScheme: "light" }}>
             <div className="of-window">
               <div style={{ display: app === "outlook" ? "block" : "none", height: "100%" }}>
-                <Outlook state={state} dispatch={dispatch} onAttachment={(a) => (a.sheet ? openFile({ id: "attachment", path: [], name: a.name, kind: "xlsx", modified: "", by: "", sheet: a.sheet, tabs: a.tabs }) : setViewer({ title: a.name, paper: a.paper, key: Date.now() }))} onLink={(l) => openLink(l.path, l.fileName)} />
+                <Outlook state={state} dispatch={dispatch} onAttachment={(a) => (a.sheet ? openFile({ id: "attachment", path: [], name: a.name, kind: "xlsx", modified: "", by: "", sheet: a.sheet, tabs: a.tabs }) : setViewer({ title: a.name, paper: a.paper, key: nextKey() }))} onLink={(l) => openLink(l.path, l.fileName)} />
               </div>
               <div style={{ display: app === "explorer" ? "block" : "none", height: "100%" }}>
                 <Explorer state={state} dispatch={dispatch} onOpen={openFile} />
@@ -162,7 +194,19 @@ export default function Office({ job }: { job: Job }) {
                   onClose={() => guard(() => setDoc(null))}
                 />
               </div>
+              {extras.map((id) => {
+                const Win = OFFICE_APPS[id].Window;
+                return Win ? (
+                  <div key={id} style={{ display: app === id ? "block" : "none", height: "100%" }}>
+                    <Win {...appProps(id)} />
+                  </div>
+                ) : null;
+              })}
             </div>
+            {extras.map((id) => {
+              const Layer = OFFICE_APPS[id].Layer;
+              return Layer ? <Layer key={id} {...appProps(id)} /> : null;
+            })}
             {viewer && <Viewer key={viewer.key} title={viewer.title} paper={viewer.paper} onClose={() => setViewer(null)} />}
 
             <nav className="of-taskbar" aria-label="Taskbar">

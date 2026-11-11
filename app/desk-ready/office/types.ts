@@ -149,6 +149,13 @@ export interface Job {
   /* What the panel says before the learner starts. */
   brief: string;
   hints: string[];
+  /* The apps beyond Outlook, File Explorer and Excel that this job puts
+   * on the taskbar, by their id in apps/registry. */
+  apps?: string[];
+  /* Built-in apps this job leaves off the taskbar. */
+  hide?: ("outlook" | "explorer" | "excel")[];
+  /* The app in front when the job opens. Outlook if not given. */
+  start?: string;
   seed: () => OfficeState;
   check: (s: OfficeState) => Check[];
   /* The five habits (criteria doc), each met when all its checks pass. */
