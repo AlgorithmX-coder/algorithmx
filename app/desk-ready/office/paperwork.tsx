@@ -327,10 +327,19 @@ export function DocSheet({ doc, ...p }: { doc: BizDoc } & PickProps) {
             <Signature name={doc.signed} role={doc.signedRole ?? ""} title="Authorised by" />
           </Bit>
         )}
+        {/* goods-in sign, then write what they found underneath, down the left */}
         {isDn && (
-          <Bit k="signed" p={p} style={{ padding: "4px 10px 6px" }}>
-            <Signature name={doc.signed ?? ""} role={doc.signedRole ?? ""} title="Received by" />
-          </Bit>
+          <div style={{ display: "grid", gap: 10, justifyItems: "start" }}>
+            <Bit k="signed" p={p} style={{ padding: "4px 10px 6px" }}>
+              <Signature name={doc.signed ?? ""} role={doc.signedRole ?? ""} title="Received by" />
+            </Bit>
+            {doc.note && (
+              <Bit k="note" p={p} style={{ padding: "18px 14px 8px 10px" }}>
+                {/* written at a slant: the padding above leaves room for the rising end */}
+                <div style={{ fontFamily: PEN, fontSize: 17, color: PEN_BLUE, transform: "rotate(-3deg)", transformOrigin: "left", lineHeight: 1.35, maxWidth: 250 }}>{doc.note}</div>
+              </Bit>
+            )}
+          </div>
         )}
         {/* when to pay, and the bank details under it, read down the left as invoices print them */}
         {(doc.terms || doc.due || doc.bank) && (
@@ -361,12 +370,6 @@ export function DocSheet({ doc, ...p }: { doc: BizDoc } & PickProps) {
           </Bit>
         )}
           </div>
-        )}
-        {isDn && doc.note && (
-          <Bit k="note" badge="right" p={p} style={{ padding: "18px 14px 8px 10px" }}>
-            {/* written at a slant: the padding above leaves room for the rising end */}
-            <div style={{ fontFamily: PEN, fontSize: 17, color: PEN_BLUE, transform: "rotate(-3deg)", transformOrigin: "left", lineHeight: 1.35, maxWidth: 250 }}>{doc.note}</div>
-          </Bit>
         )}
       </div>
       {doc.footer && (
