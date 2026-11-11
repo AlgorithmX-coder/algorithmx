@@ -32,31 +32,27 @@ export default function Teams({ state, dispatch, show, active, job }: OfficeAppP
   const t = teamsOf(state);
   const call = t.call;
   const [pane, setPane] = useState<Pane>("chat");
-  const [chatId, setChatId] = useState<string | null>(() => t.chats.find((c) => c.unread)?.id ?? t.chats[0]?.id ?? null);
+  /* null: show the newest unread chat, or the first */
+  const [chatId, setChatId] = useState<string | null>(null);
   const [newChat, setNewChat] = useState(false);
-  const [inCallView, setInCallView] = useState(!!call && call.stage !== "left");
+  /* The call's ask number when the learner stepped away from it. A new
+   * Join (from an invite, the Calendar or Rejoin) bumps the number, so
+   * the call comes back into view without an effect. */
+  const [away, setAway] = useState<number | undefined>(() => (call?.stage === "left" ? call.ask : undefined));
   const clock = /(\d{1,2}:\d{2})/.exec(job.clock)?.[1] ?? "Now";
 
-  /* another app's Join button: come to the front, on the call */
+  /* another app's Join button: bring Teams to the front */
   const asked = useRef(call?.ask ?? 0);
   useEffect(() => {
     if (call?.ask && call.ask !== asked.current) {
       asked.current = call.ask;
-      setInCallView(true);
       show("teams");
     }
   }, [call?.ask, show]);
 
-  /* opening Teams on a new message shows that chat */
   const unreadId = t.chats.find((c) => c.unread)?.id;
-  useEffect(() => {
-    if (active && unreadId && !inCallView) {
-      setPane("chat");
-      setChatId(unreadId);
-    }
-  }, [active, unreadId, inCallView]);
-
-  const chat = t.chats.find((c) => c.id === chatId) ?? null;
+  const shownId = chatId ?? unreadId ?? t.chats[0]?.id ?? null;
+  const chat = t.chats.find((c) => c.id === shownId) ?? null;
   useEffect(() => {
     if (active && pane === "chat" && chat?.unread) setTeams(dispatch, (x) => ({ ...x, chats: x.chats.map((c) => (c.id === chat.id ? { ...c, unread: 0 } : c)) }));
   }, [active, pane, chat?.id, chat?.unread, dispatch]);
@@ -79,7 +75,7 @@ export default function Teams({ state, dispatch, show, active, job }: OfficeAppP
     setPane("chat");
   };
 
-  const onCall = !!call && inCallView;
+  const onCall = !!call && call.ask !== away;
 
   return (
     <div style={{ position: "relative", height: "100%", display: "flex", flexDirection: "column", background: W.page, fontFamily: W.font, color: W.ink }}>
@@ -99,24 +95,21 @@ export default function Teams({ state, dispatch, show, active, job }: OfficeAppP
           unread={unreadChats(state)}
           onPane={(p) => {
             setPane(p);
-            setInCallView(false);
+            setAway(call?.ask);
           }}
-          call={call && call.stage === "in" && !onCall ? () => setInCallView(true) : null}
+          call={call && call.stage === "in" && !onCall ? () => setAway(undefined) : null}
         />
         {onCall && call ? (
-          <CallArea call={call} state={state} dispatch={dispatch} onBack={() => setInCallView(false)} />
+          <CallArea call={call} state={state} dispatch={dispatch} onBack={() => setAway(call.ask)} />
         ) : pane === "chat" ? (
           <>
-            <ChatList chats={t.chats} openId={chatId} onOpen={(id) => { setChatId(id); setNewChat(false); }} onNew={() => setNewChat(true)} />
+            <ChatList chats={t.chats} openId={shownId} onOpen={(id) => { setChatId(id); setNewChat(false); }} onNew={() => setNewChat(true)} />
             {newChat ? <NewChat onPick={startChat} onCancel={() => setNewChat(false)} /> : chat ? <ChatPane key={chat.id} chat={chat} onSend={send} /> : <Empty icon="chat" text="Pick a chat on the left, or start a new one." />}
           </>
         ) : pane === "calendar" ? (
           <TeamsCalendar state={state} onJoin={(id) => {
             const m = calOf(state).meetings.find((x) => x.id === id);
-            if (m) {
-              dispatch({ type: "update", fn: (s) => withCall(s, m) });
-              setInCallView(true);
-            }
+            if (m) dispatch({ type: "update", fn: (s) => withCall(s, m) });
           }} />
         ) : pane === "activity" ? (
           <Activity chats={t.chats} onOpen={(id) => { setPane("chat"); setChatId(id); }} />
