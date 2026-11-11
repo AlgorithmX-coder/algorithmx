@@ -5,7 +5,7 @@ import { W } from "../../tokens";
 import { accessFor, recycle, restoreItem, restoreVersion, SITE_MEMBERS } from "../files";
 import { YOU } from "../northfield";
 import { Breadcrumb, FileList, PlacePicker, PlacesNav } from "../places";
-import { listFolder, type Action } from "../store";
+import { listFolder, newId, type Action } from "../store";
 import { pathText, samePath, type OfficeFile, type OfficeState, type Path } from "../types";
 import { AppButton, Dialog, FileGlyph, TitleBar } from "../ui";
 import { canSaveIn } from "../word";
@@ -36,6 +36,7 @@ export default function Explorer({ state, dispatch, onOpen, start }: { state: Of
   const [share, setShare] = useState<{ id: string; start: "share" | "copy" | "access" } | null>(null);
   const [history, setHistory] = useState<string | null>(null);
   const [problem, setProblem] = useState<string | null>(null);
+  const [uploading, setUploading] = useState(false);
   const inBin = at[0] === BIN;
   const bin = state.recycle ?? [];
   const items = inBin ? [] : listFolder(state, at);
@@ -93,6 +94,9 @@ export default function Explorer({ state, dispatch, onOpen, start }: { state: Of
           <>
             <Cmd icon={Ico.newFolder} onClick={() => setFolderName("New folder")} disabled={at.length < 2 || !canSaveIn(at)}>
               New folder
+            </Cmd>
+            <Cmd icon={Ico.upload} onClick={() => setUploading(true)} disabled={at.length < 2 || !canSaveIn(at)}>
+              Upload
             </Cmd>
             <Sep />
             <Cmd icon={Ico.open} onClick={() => sel && open(sel)} disabled={!sel}>
@@ -196,6 +200,21 @@ export default function Explorer({ state, dispatch, onOpen, start }: { state: Of
             </AppButton>
           </div>
         </Dialog>
+      )}
+      {uploading && (
+        <PlacePicker
+          state={state}
+          mode={{ kind: "file", title: `Upload a copy to ${at[at.length - 1]}`, action: "Upload", at: ["OneDrive", "Downloads"] }}
+          onCancel={() => setUploading(false)}
+          onFile={(f) => {
+            setUploading(false);
+            if (nameTaken(at, f.name)) return setProblem(`There's already a file called "${f.name}" in ${pathText(at)}.`);
+            /* a copy lands here; the one on your computer stays where it was */
+            const copy: OfficeFile = { ...f, id: newId("file"), path: at, modified: "Today, just now", by: "You", seeded: undefined, editable: undefined, versions: undefined, access: undefined, shareLinks: undefined, restoredFrom: undefined };
+            dispatch({ type: "saveFile", file: copy });
+            setSelected(copy.id);
+          }}
+        />
       )}
       {moving && sel && (
         <PlacePicker
@@ -354,6 +373,7 @@ const svg = (d: ReactNode) => (
 /* The command bar's icons, drawn as a few lines each. */
 export const Ico = {
   newFolder: svg(<path d="M3 7 A1.5 1.5 0 0 1 4.5 5.5 H9 L11 7.5 H19.5 A1.5 1.5 0 0 1 21 9 V17.5 A1.5 1.5 0 0 1 19.5 19 H4.5 A1.5 1.5 0 0 1 3 17.5 Z M12 10.5 V16 M9.25 13.25 H14.75" />),
+  upload: svg(<path d="M12 16 V4 M7 9 L12 4 L17 9 M4 15 V19 A1 1 0 0 0 5 20 H19 A1 1 0 0 0 20 19 V15" />),
   open: svg(<path d="M14 4 H20 V10 M20 4 L11 13 M18 14 V19 A1 1 0 0 1 17 20 H5 A1 1 0 0 1 4 19 V7 A1 1 0 0 1 5 6 H10" />),
   share: svg(<path d="M13 5 L20 11 L13 17 V13.5 C8.5 13.5 5.5 15 3.5 19 C4 13 7 9.5 13 8.5 Z" />),
   link: svg(<path d="M10 14 L14 10 M8.5 11.5 L6.6 13.4 A3.6 3.6 0 0 0 11.7 18.5 L13.6 16.6 M15.5 12.5 L17.4 10.6 A3.6 3.6 0 0 0 12.3 5.5 L10.4 7.4" />),
