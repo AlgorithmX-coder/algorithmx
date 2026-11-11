@@ -109,7 +109,7 @@ function Card({ card, rec, onAgain }: { card: Scorecard; rec: OfficeState; onAga
         <div className="sc-head-top">
           <div style={{ minWidth: 0 }}>
             <Kicker color={card.passed ? D.good : ACC}>Your scorecard · Monday morning at the desk</Kicker>
-            <h1 className="sc-h1">{card.passed ? "You passed Monday morning." : "Not a pass this time. You're close to it, and here's how."}</h1>
+            <h1 className="sc-h1">{card.passed ? "You passed Monday morning." : total >= PASS_MARK - 2 && !card.paidScammer && !card.leaked.length ? "Not a pass this time, but you're close. Here's how." : "Not a pass this time. Here's what to work on."}</h1>
             <p className="sc-p">
               Monday 16 November 2026, 08:30 to {clockAt(card.endedAt)}. {total} of 10 jobs done{card.late ? ` (${card.late} late)` : ""}, {habitsMet} of 5 habits kept every time.
               {playedOn ? ` Played on ${playedOn}.` : ""}
@@ -171,6 +171,15 @@ function Card({ card, rec, onAgain }: { card: Scorecard; rec: OfficeState; onAga
             const st = STATUS[j.status];
             const arrival = ARRIVALS.find((a) => a.id === j.job.arrival);
             const misses = j.checks.filter((c) => !c.ok);
+            /* each fix said once: a later "do that first" hint, or the same words again, adds nothing */
+            const said = new Set<string>();
+            const showFix = (fix: string | undefined) => {
+              if (!fix) return false;
+              const first = said.size === 0;
+              if (said.has(fix) || (!first && /^(Add|Save|Reply|Email|Open)[^.]{0,60}\bfirst[.:]/.test(fix))) return false;
+              said.add(fix);
+              return true;
+            };
             return (
               <li key={j.job.id} className="sc-job" style={{ "--st": st.colour, "--st-soft": st.soft, "--st-edge": st.edge } as CSSProperties}>
                 <div className="sc-job-top">
@@ -194,7 +203,7 @@ function Card({ card, rec, onAgain }: { card: Scorecard; rec: OfficeState; onAga
                         </span>
                         <span style={{ flex: 1, minWidth: 0 }}>
                           <span className="sc-label">{c.label}</span>
-                          {!c.ok && c.fix && <span className="sc-fix">{c.fix}</span>}
+                          {!c.ok && showFix(c.fix) && <span className="sc-fix">{c.fix}</span>}
                         </span>
                         <code>{c.code}</code>
                       </li>
@@ -224,13 +233,9 @@ function Card({ card, rec, onAgain }: { card: Scorecard; rec: OfficeState; onAga
                   <span className="sc-habit-n">{h.of ? `${h.met} of ${h.of}` : "Not reached"}</span>
                 </div>
                 {h.misses.length > 0 && (
-                  <ul className="sc-habit-misses">
-                    {h.misses.map((x, i) => (
-                      <li key={i}>
-                        <b>{x.job}:</b> {x.fix}
-                      </li>
-                    ))}
-                  </ul>
+                  <p className="sc-habit-misses">
+                    Missed in: {[...new Set(h.misses.map((x) => x.job))].join("; ")}. The jobs above say how to put each right.
+                  </p>
                 )}
               </li>
             );
@@ -364,8 +369,7 @@ const CSS = `
   .sc-habit-top { display: flex; align-items: center; gap: 10px; }
   .sc-habit-top b { flex: 1; font-size: 16px; color: ${D.ink}; }
   .sc-habit-n { font-family: ${D.mono}; font-size: 12.5px; font-weight: 700; color: ${D.muted}; white-space: nowrap; }
-  .sc-habit-misses { margin: 8px 0 0 34px; padding: 0; display: grid; gap: 6px; font-size: 14.5px; line-height: 1.5; color: ${D.body}; }
-  .sc-habit-misses b { color: ${D.ink}; }
+  .sc-habit-misses { margin: 6px 0 0 34px; font-size: 14.5px; line-height: 1.5; color: ${D.body}; }
   .sc-criteria { list-style: none; margin: 14px 0 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
   .sc-criteria li { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 12px; background: ${D.badSoft}; border: 1px solid ${D.badEdge}; font-size: 14.5px; color: ${D.body}; break-inside: avoid; }
   .sc-criteria li.met { background: ${D.glass}; border-color: ${D.edge}; }
@@ -395,7 +399,8 @@ const CSS = `
   @media print {
     @page { margin: 14mm; }
     .sc-shell, .sc-shell * { color: #111 !important; box-shadow: none !important; text-shadow: none !important; }
-    .sc-shell { background: #fff !important; }
+    .sc-shell { background: #fff !important; color-scheme: light; }
+    .sc-shell::before, .sc-shell::after, .sc-shell .dr-glass::before, .sc-shell .dr-glass::after { display: none !important; }
     .sc-shell header, .sc-noprint { display: none !important; }
     .sc-main { padding: 0; max-width: none; }
     .sc-head, .sc-job, .sc-scam, .sc-habits li, .sc-criteria li, .sc-rules li, .sc-checks li { background: #fff !important; border-color: #bbb !important; }

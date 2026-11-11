@@ -2,10 +2,12 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState, useSyncExternalStore, type CSSProperties } from "react";
+import { createPortal } from "react-dom";
 import { markDone } from "../../learn/progress";
 import { Button, Kicker } from "../../learn/ui";
 import { D, W } from "../../tokens";
 import { ARRIVALS, clockAt, LENGTH, MORNING_ID } from "../jobs/monday/data";
+import { unreadChats } from "../meetings";
 import { advance, finish, morningOf, watch } from "../jobs/monday/morning";
 import type { Action } from "../store";
 import type { OfficeState } from "../types";
@@ -64,6 +66,7 @@ interface Toast {
   id: string;
   from: string;
   what: string;
+  at: string;
 }
 
 export function MorningLayer({ state, dispatch, show }: OfficeAppProps) {
@@ -131,13 +134,16 @@ export function MorningLayer({ state, dispatch, show }: OfficeAppProps) {
     seen.current = m.arrived;
     const mails = ARRIVALS.filter((a) => fresh.includes(a.id) && a.how === "email");
     if (!mails.length) return;
-    setToasts((t) => [...t, ...mails.map((a) => ({ id: a.id, from: a.from, what: a.what }))].slice(-3));
+    setToasts((t) => [...t, ...mails.map((a) => ({ id: a.id, from: a.from, what: a.what, at: clockAt(a.at) }))].slice(-3));
     const ids = mails.map((a) => a.id);
     timers.current.push(window.setTimeout(() => setToasts((t) => t.filter((x) => !ids.includes(x.id))), 9000));
   }, [m.arrived]);
   useEffect(() => () => timers.current.forEach((t) => window.clearTimeout(t)), []);
 
   const now = clockAt(m.endedAt ?? m.minute);
+  /* Windows stacks notifications above the taskbar: above a Teams toast or a ringing phone, when one is showing */
+  const ringing = (state.phone?.calls ?? []).some((c) => c.ringing && !(state.phone?.answered ?? []).includes(c.id));
+  const toastBottom = 62 + (ringing ? 186 : unreadChats(state) > 0 ? 112 : 0);
   let card: { kicker: string; title: string; body: string[]; action?: { label: string; onClick: () => void }; link?: boolean } | null = null;
   if (over) {
     card = {
@@ -162,7 +168,7 @@ export function MorningLayer({ state, dispatch, show }: OfficeAppProps) {
   return (
     <>
       {toasts.length > 0 && !card && (
-        <div className="mm-toasts" aria-live="polite">
+        <div className="mm-toasts" aria-live="polite" style={{ bottom: toastBottom }}>
           {toasts.map((t) => (
             <button
               key={t.id}
@@ -180,7 +186,7 @@ export function MorningLayer({ state, dispatch, show }: OfficeAppProps) {
                     <path d="M3 7l9 6 9-6" />
                   </svg>
                 </span>
-                Outlook · New email · {now}
+                Outlook · New email · {t.at}
               </span>
               <b>{t.from}</b>
               <span>{t.what}</span>
@@ -217,7 +223,7 @@ export function MorningLayer({ state, dispatch, show }: OfficeAppProps) {
 }
 
 const LAYER_CSS = `
-  .mm-toasts { position: absolute; top: 54px; right: 18px; z-index: 40; display: grid; gap: 8px; width: 330px; }
+  .mm-toasts { position: absolute; right: 14px; z-index: 40; display: flex; flex-direction: column-reverse; gap: 8px; width: 330px; }
   .mm-toast { display: grid; gap: 3px; text-align: left; padding: 12px 14px 13px; border: none; border-radius: 8px; background: #ffffff; box-shadow: 0 14px 38px rgba(0,0,0,0.35); border-top: 3px solid ${W.outlook}; font-family: ${W.font}; color: ${W.ink}; cursor: pointer; animation: mm-in .28s ease-out both; }
   .mm-toast:hover { background: #f7faff; }
   .mm-toast b { font-size: 15px; }
@@ -295,7 +301,11 @@ export function MorningPanel({ state, dispatch, restart }: { state: OfficeState;
             ) : (
               <Button onClick={() => carryOn(dispatch)}>{m.started ? "Carry on" : "Start the clock"}</Button>
             )}
-            {m.started && <Button onClick={() => setAsk("finish")}>I&apos;m done for the morning</Button>}
+            {m.started && (
+              <Button kind={running ? "primary" : "secondary"} onClick={() => setAsk("finish")}>
+                I&apos;m done for the morning
+              </Button>
+            )}
           </div>
           <p className="mm-small">The clock runs four times faster than real time: an office hour takes 15 minutes. It stops when you pause it or leave the page, so you can come back to it.</p>
           <button type="button" className="mm-hint-btn" onClick={() => setHints((h) => !h)} aria-expanded={hints}>
@@ -309,15 +319,19 @@ export function MorningPanel({ state, dispatch, restart }: { state: OfficeState;
               <li>When a job is done, tell the person who asked, in one line.</li>
             </ol>
           )}
-          <button type="button" className="of-reset" onClick={() => setAsk("restart")}>
-            Start the morning again
-          </button>
+          {m.started && (
+            <button type="button" className="of-reset" onClick={() => setAsk("restart")}>
+              Start the morning again
+            </button>
+          )}
         </>
       )}
       <p className="of-note">Nothing here is sent anywhere. It is a pretend office, so you can&apos;t break anything.</p>
 
-      {ask && (
-        <div className="of-overlay" role="dialog" aria-modal="true" aria-label={ask === "finish" ? "Finish the morning" : "Start the morning again"}>
+      {/* drawn on the page itself: the panel is its own layer, so a dialog inside it would sit under the desktop */}
+      {ask &&
+        createPortal(
+        <div className="of-overlay" role="dialog" aria-modal="true" aria-label={ask === "finish" ? "Finish the morning" : "Start the morning again"} style={{ fontFamily: D.sans, color: D.body, zIndex: 90 }}>
           <div className="of-card dr-glass">
             <Kicker>{ask === "finish" ? `Office time ${now}` : "Start again"}</Kicker>
             <h2 className="of-h2">{ask === "finish" ? "Finish the morning now?" : "Start the morning again?"}</h2>
@@ -346,8 +360,9 @@ export function MorningPanel({ state, dispatch, restart }: { state: OfficeState;
               </Button>
             </div>
           </div>
-        </div>
-      )}
+        </div>,
+          document.body,
+        )}
       <style>{PANEL_CSS}</style>
     </>
   );

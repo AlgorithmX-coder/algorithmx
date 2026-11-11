@@ -78,7 +78,9 @@ export default function FinalStart() {
         <section className="fs-hero">
           <div style={{ minWidth: 0 }}>
             <Kicker color={ACC}>The final task</Kicker>
-            <h1 className="fs-h1">Monday morning at the desk.</h1>
+            <h1 className="fs-h1">
+              Monday morning <span style={{ whiteSpace: "nowrap" }}>at the desk.</span>
+            </h1>
             <p className="fs-lede">
               It&apos;s Monday 16 November at Northfield Supplies, and the desk is yours. From 08:30, work lands the way it does on a real Monday: emails, a Teams message, a phone call. Nobody tells you which app to use or what to do first. You decide, and you do it.
             </p>
@@ -192,6 +194,20 @@ export default function FinalStart() {
               <HowIcon how="phone" /> The phone rings
             </li>
           </ul>
+          {/* on a phone, the same morning as a list */}
+          <ol className="fs-list" aria-label="When things land">
+            {ARRIVALS.map((a) => (
+              <li key={a.id} className={a.how}>
+                <b>{clockAt(a.at)}</b>
+                <HowIcon how={a.how} size={15} />
+                <span>{HOW_WORD[a.how]}</span>
+              </li>
+            ))}
+            <li className="end">
+              <b>12:30</b>
+              <span>The morning ends</span>
+            </li>
+          </ol>
         </section>
 
         <section className="fs-section" aria-labelledby="fs-pass">
@@ -300,6 +316,13 @@ export default function FinalStart() {
         .fs-link-btn { flex-shrink: 0; display: inline-flex; align-items: center; min-height: 48px; padding: 0 22px; border-radius: 999px; border: 1px solid ${D.edgeStrong}; color: ${D.ink}; text-decoration: none; font-family: ${D.display}; font-weight: 600; font-size: 15.5px; }
         .fs-tries { list-style: none; margin: 14px 0 0; padding: 0; display: grid; gap: 8px; }
         .fs-tries li { display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-radius: 12px; background: ${D.glass}; border: 1px solid ${D.edge}; font-size: 15.5px; color: ${D.body}; }
+        .fs-list { display: none; list-style: none; margin: 20px 0 0; padding: 0 0 0 14px; border-left: 2px solid rgba(127,178,255,0.45); }
+        .fs-list li { display: flex; align-items: center; gap: 10px; padding: 7px 0; font-size: 15.5px; color: ${D.body}; }
+        .fs-list li b { width: 46px; font-family: ${D.mono}; font-size: 13.5px; color: ${D.ink}; }
+        .fs-list li.email svg { color: ${D.accent}; }
+        .fs-list li.teams svg { color: #9d8cff; }
+        .fs-list li.phone svg { color: ${D.good}; }
+        .fs-list li.end span { color: ${D.faint}; }
 
         @media (max-width: 980px) {
           .fs-hero { grid-template-columns: 1fr; gap: 28px; }
@@ -314,6 +337,8 @@ export default function FinalStart() {
           .fs-dot > svg { padding: 5px; }
           .fs-dot i { font-size: 9.5px; }
           .fs-btn { width: 100%; justify-content: center; }
+          .fs-line, .fs-key { display: none; }
+          .fs-list { display: block; }
         }
       `}</style>
     </div>

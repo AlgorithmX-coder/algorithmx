@@ -199,7 +199,7 @@ describe("Monday morning: the ten jobs", () => {
       expect(c.code).toMatch(/^[A-Z]{2,4}-\d$/);
       expect(c.label.length).toBeGreaterThan(5);
       if (!c.ok) expect(c.fix?.length ?? 0, c.id).toBeGreaterThan(10);
-      expect(`${c.label} ${c.fix ?? ""}`).not.toMatch(/—|–/);
+      expect(`${c.label} ${c.fix ?? ""}`).not.toMatch(/[–—]/);
     }
   });
 
