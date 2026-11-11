@@ -127,7 +127,7 @@ export const HARLOW_MAIN_CALL: DialScript = {
 };
 
 export const SCAM_CALL: DialScript = {
-  name: "Harlow accounts?",
+  name: SCAM_NUMBER,
   company: "The number in the email",
   number: SCAM_NUMBER,
   ...timed([

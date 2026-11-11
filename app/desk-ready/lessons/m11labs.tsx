@@ -114,7 +114,7 @@ function InspectMail({ m, onLink }: { m: Mail; onLink: () => void }) {
     <div className="of-office" style={{ ...pane, position: "relative", padding: "16px 18px 18px", minHeight: 330 }}>
       <style>{OFFICE_CSS}</style>
       <div style={{ fontSize: 18, fontWeight: 600, lineHeight: 1.3 }}>{m.subject}</div>
-      <div style={{ position: "relative", marginTop: 10, fontSize: 14.5, lineHeight: 1.5 }}>
+      <div onMouseLeave={() => setCard(false)} style={{ position: "relative", marginTop: 10, fontSize: 14.5, lineHeight: 1.5 }}>
         <button
           type="button"
           onClick={() => setCard((c) => !c)}

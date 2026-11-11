@@ -357,7 +357,7 @@ function Reading({ email, invite, onAttachment, onLink, onFakeLink, book = [], o
             .join("")
             .slice(0, 2)}
         </span>
-        <span style={{ position: "relative", fontSize: 14.5, lineHeight: 1.45 }}>
+        <span onMouseLeave={() => setCard(false)} style={{ position: "relative", fontSize: 14.5, lineHeight: 1.45 }}>
           <button
             type="button"
             className="ol-name"

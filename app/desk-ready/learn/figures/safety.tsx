@@ -87,10 +87,10 @@ export function ScamEmailFigure({ focus, title = "A scam email, every tell numbe
                 &lt;{user}@
                 {/* lit with the whole address, the domain mustn't fade inside it */}
                 {focus?.includes("address") && !focus.includes("domain") ? (
-                  <b style={{ color: "#a4262c" }}>{domain}&gt;</b>
+                  <b style={{ color: "#a4262c", whiteSpace: "nowrap" }}>{domain}&gt;</b>
                 ) : (
                   <Part k="domain" block={false} badge="right">
-                    <b style={{ color: "#a4262c" }}>{domain}</b>&gt;
+                    <b style={{ color: "#a4262c", whiteSpace: "nowrap" }}>{domain}<span style={{ color: W.body, fontWeight: 400 }}>&gt;</span></b>
                   </Part>
                 )}
               </span>
@@ -205,8 +205,8 @@ function MiniInvoice({ doc, badges }: { doc: BizDoc; badges: boolean }) {
 export function InvoicePairFigure({ focus, title = "The real invoice and the fake one", what, note }: FigProps<InvoicePairPart>) {
   const label = (text: string, colour: string) => <p style={{ margin: "0 0 8px", fontSize: 12.5, fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase", color: colour }}>{text}</p>;
   return (
-    <FigureFrame info={infoOf(INVOICE_PAIR_PARTS, what)} focus={focus} title={title} note={note} minWidth={680}>
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 28, padding: "0 0 0 40px" }}>
+    <FigureFrame info={infoOf(INVOICE_PAIR_PARTS, what)} focus={focus} title={title} note={note}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 280px), 1fr))", gap: 28, padding: "0 0 0 40px" }}>
         <div>
           {label("The real one, on file", "#9fe0b0")}
           <MiniInvoice doc={REAL_INVOICE} badges />
@@ -243,7 +243,7 @@ export const CALL_PARTS: Record<CallPart, PartInfo> = {
 export function CallCheckFigure({ focus, title = "Check by phone, on the number you already hold", what, note }: FigProps<CallPart>) {
   const entry = (name: string, role: string, number: string, k?: "tom") => {
     const inner = (
-      <div style={{ display: "flex", gap: 10, alignItems: "center", padding: "8px 10px", borderBottom: `1px solid ${W.edge}`, opacity: !k && focus?.length ? 0.32 : 1 }}>
+      <div style={{ display: "flex", gap: 10, alignItems: "flex-start", padding: "8px 10px", borderBottom: `1px solid ${W.edge}`, opacity: !k && focus?.length ? 0.32 : 1 }}>
         <span aria-hidden style={{ width: 30, height: 30, borderRadius: 15, background: PHONE_COLOUR, color: "#fff", fontSize: 11, fontWeight: 700, display: "inline-flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
           {name
             .split(" ")
@@ -257,10 +257,10 @@ export function CallCheckFigure({ focus, title = "Check by phone, on the number 
           <span style={{ display: "block", height: k ? 6 : 0 }} />
           {k ? (
             <Part k="held" block={false} badge="right">
-              <span style={{ color: W.ink, fontWeight: 600 }}>{number}</span>
+              <span style={{ color: W.ink, fontWeight: 600, whiteSpace: "nowrap" }}>{number}</span>
             </Part>
           ) : (
-            <span style={{ color: W.body }}>{number}</span>
+            <span style={{ color: W.body, whiteSpace: "nowrap" }}>{number}</span>
           )}
         </span>
         {k ? (
@@ -281,10 +281,10 @@ export function CallCheckFigure({ focus, title = "Check by phone, on the number 
     );
   };
   return (
-    <FigureFrame info={infoOf(CALL_PARTS, what)} focus={focus} title={title} note={note}>
+    <FigureFrame info={infoOf(CALL_PARTS, what)} focus={focus} title={title} note={note} minWidth={330}>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 300px), 1fr))", gap: 30, alignItems: "start", padding: "0 6px 0 40px" }}>
         <div style={{ paddingRight: 34 }}>
-          <AppWindow app="Phone" colour={PHONE_COLOUR} title="Your extension 431">
+          <AppWindow app="Phone" colour={PHONE_COLOUR} title="Contacts">
             <Part k="contacts" style={{ borderRadius: 0 }}>
               <div style={{ display: "flex", borderBottom: `1px solid ${W.edge}`, fontSize: 13.5 }}>
                 {["Recent", "Contacts", "Keypad"].map((t) => (
@@ -295,7 +295,7 @@ export function CallCheckFigure({ focus, title = "Check by phone, on the number 
               </div>
             </Part>
             <p style={{ margin: 0, padding: "8px 10px 2px", fontSize: 11.5, fontWeight: 700, color: W.muted }}>Suppliers</p>
-            {entry("Tom Hale", "Account Manager, Harlow", TOM_NUMBER, "tom")}
+            {entry("Tom Hale", "Account Manager", TOM_NUMBER, "tom")}
             {entry("Harlow Packaging", "Main line", "01632 960 552")}
             {entry("Kent Flour Mills", "Orders", "01632 960 870")}
           </AppWindow>
@@ -401,9 +401,9 @@ const field: CSSProperties = { display: "block", padding: "7px 0", borderBottom:
 export function SignInFigure({ focus, title, what, note, started = true }: FigProps<SignInPart> & { started?: boolean }) {
   if (!started) {
     return (
-      <FigureFrame info={infoOf(UNEXPECTED_PARTS, what as Partial<Record<keyof typeof UNEXPECTED_PARTS, string>>)} focus={focus as (keyof typeof UNEXPECTED_PARTS)[]} title={title ?? "A request you didn't start"} note={note} minWidth={640}>
-        <div style={{ display: "flex", gap: 40, alignItems: "flex-start", padding: "0 34px 0 40px" }}>
-          <Part k="screen" style={{ flex: 1, minWidth: 0 }}>
+      <FigureFrame info={infoOf(UNEXPECTED_PARTS, what as Partial<Record<keyof typeof UNEXPECTED_PARTS, string>>)} focus={focus as (keyof typeof UNEXPECTED_PARTS)[]} title={title ?? "A request you didn't start"} note={note} minWidth={330}>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: "30px 44px", alignItems: "flex-start", padding: "0 34px 0 40px" }}>
+          <Part k="screen" style={{ flex: "1 1 280px", minWidth: 0 }}>
             <AppWindow app="Outlook" colour={W.outlook} title="Inbox">
               <div style={{ padding: "12px 14px", display: "grid", gap: 8, fontSize: 13 }}>
                 {["Daniel Okafor · Quick chat at 15:05?", "IT Helpdesk · Your two-step sign-in is set up", "Facilities Team · Fire drill on Thursday"].map((m) => (
@@ -423,9 +423,9 @@ export function SignInFigure({ focus, title, what, note, started = true }: FigPr
     );
   }
   return (
-    <FigureFrame info={infoOf(SIGNIN_PARTS, what as Partial<Record<keyof typeof SIGNIN_PARTS, string>>)} focus={focus as (keyof typeof SIGNIN_PARTS)[]} title={title ?? "Two-step sign-in: your screen, then your phone"} note={note} minWidth={660}>
-      <div style={{ display: "flex", gap: 44, alignItems: "flex-start", padding: "0 34px 0 40px" }}>
-        <div style={{ flex: 1, minWidth: 0, display: "grid", gap: 16 }}>
+    <FigureFrame info={infoOf(SIGNIN_PARTS, what as Partial<Record<keyof typeof SIGNIN_PARTS, string>>)} focus={focus as (keyof typeof SIGNIN_PARTS)[]} title={title ?? "Two-step sign-in: your screen, then your phone"} note={note} minWidth={330}>
+      <div style={{ display: "flex", flexWrap: "wrap", gap: "30px 44px", alignItems: "flex-start", padding: "0 34px 0 40px" }}>
+        <div style={{ flex: "1 1 280px", minWidth: 0, display: "grid", gap: 16 }}>
           <div style={box}>
             <b style={{ fontSize: 16 }}>Sign in</b>
             <Part k="account">
@@ -691,8 +691,8 @@ function Keycap({ children, wide }: { children: ReactNode; wide?: boolean }) {
 
 export function LockScreenFigure({ focus, title = "Locking your screen", what, note }: FigProps<LockPart>) {
   return (
-    <FigureFrame info={infoOf(LOCK_PARTS, what)} focus={focus} title={title} note={note} minWidth={640}>
-      <div style={{ display: "flex", gap: 44, alignItems: "flex-start", padding: "0 30px 0 40px" }}>
+    <FigureFrame info={infoOf(LOCK_PARTS, what)} focus={focus} title={title} note={note} minWidth={330}>
+      <div style={{ display: "flex", flexWrap: "wrap", gap: "30px 44px", alignItems: "flex-start", padding: "0 30px 0 40px" }}>
         <div style={{ width: 230, flexShrink: 0, display: "grid", gap: 30 }}>
           <Part k="keys" style={{ justifySelf: "start" }}>
             <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "4px 6px" }}>
@@ -716,7 +716,7 @@ export function LockScreenFigure({ focus, title = "Locking your screen", what, n
             </div>
           </Part>
         </div>
-        <Part k="screen" holds={["time", "signin"]} style={{ flex: 1, minWidth: 0 }}>
+        <Part k="screen" holds={["time", "signin"]} style={{ flex: "1 1 240px", minWidth: 0 }}>
           <div style={{ position: "relative", height: 270, borderRadius: 8, overflow: "hidden", background: "radial-gradient(120% 90% at 70% 10%, #6f8fc9 0%, #2d4e8c 45%, #13254a 100%)", color: "#fff", border: "6px solid #1b1b1f", boxShadow: W.float }}>
             <LockArt />
             <div style={{ position: "absolute", left: 0, right: 0, top: 34, display: "grid", justifyItems: "center" }}>
