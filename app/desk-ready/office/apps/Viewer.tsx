@@ -1,8 +1,9 @@
 "use client";
 
-import { useRef, useState, type PointerEvent as ReactPointerEvent } from "react";
+import { useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent } from "react";
 import { W } from "../../tokens";
-import type { Paper } from "../types";
+import type { Paper, WordDoc } from "../types";
+import { DocSheet } from "./WordParts";
 
 /* A scanned page (a delivery note) in a small window that floats over
  * whatever app is open, so the learner can read it while they type, the
@@ -68,7 +69,7 @@ export function PaperSheet({ paper }: { paper: Paper }) {
   );
 }
 
-export default function Viewer({ title, paper, onClose }: { title: string; paper?: Paper; onClose: () => void }) {
+export default function Viewer({ title, paper, doc, onClose }: { title: string; paper?: Paper; doc?: WordDoc; onClose: () => void }) {
   const [pos, setPos] = useState({ x: 40, y: 60 });
   const drag = useRef<{ dx: number; dy: number } | null>(null);
 
@@ -86,7 +87,7 @@ export default function Viewer({ title, paper, onClose }: { title: string; paper
     <div
       role="dialog"
       aria-label={title}
-      style={{ position: "absolute", left: pos.x, top: pos.y, zIndex: 30, width: 460, maxWidth: "calc(100% - 20px)", borderRadius: 8, overflow: "hidden", background: W.page, boxShadow: "0 24px 60px -18px rgba(0,0,0,0.55), 0 0 0 1px rgba(0,0,0,0.12)", fontFamily: W.font }}
+      style={{ position: "absolute", left: pos.x, top: pos.y, zIndex: 30, width: doc ? 660 : 460, maxWidth: "calc(100% - 20px)", borderRadius: 8, overflow: "hidden", background: W.page, boxShadow: "0 24px 60px -18px rgba(0,0,0,0.55), 0 0 0 1px rgba(0,0,0,0.12)", fontFamily: W.font }}
     >
       <div
         onPointerDown={down}
@@ -102,7 +103,14 @@ export default function Viewer({ title, paper, onClose }: { title: string; paper
         </button>
       </div>
       <div style={{ maxHeight: 460, overflowY: "auto", background: "#e9e7e2", padding: 12 }}>
-        {paper ? (
+        {doc ? (
+          /* ── Module 8: Documents ── a PDF made from a Word document: its pages, read-only */
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <div style={{ zoom: 612 / 794 } as CSSProperties}>
+              <DocSheet doc={doc} />
+            </div>
+          </div>
+        ) : paper ? (
           <PaperSheet paper={paper} />
         ) : (
           <div style={{ background: "#fff", padding: 24, fontSize: 15, color: W.muted, lineHeight: 1.5 }}>This file is here to make the office feel real. You don&apos;t need it for this job.</div>

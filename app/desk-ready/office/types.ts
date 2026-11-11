@@ -22,7 +22,7 @@ export interface Paper {
   footer?: string;
 }
 
-export type FileKind = "folder" | "xlsx" | "xltx" | "docx" | "pdf";
+export type FileKind = "folder" | "xlsx" | "xltx" | "docx" | "dotx" | "pdf";
 
 /* A highlight rule (Excel's conditional formatting), on one column from
  * row 2 down: cells that match are coloured. */
@@ -67,6 +67,9 @@ export interface OfficeFile {
   paper?: Paper;
   /* Seeded by the job, so a check can tell the learner's files apart. */
   seeded?: boolean;
+  /* ── Module 8: Documents ── a Word document (.docx, .dotx), or the
+   * snapshot a PDF made from one carries, so it opens read-only. */
+  doc?: WordDoc;
 }
 
 export interface Person {
@@ -80,6 +83,8 @@ export interface Attachment {
   paper?: Paper;
   sheet?: Grid;
   tabs?: Tab[];
+  /* ── Module 8: Documents ── a PDF or Word file's pages. */
+  doc?: WordDoc;
 }
 
 export interface EmailLink {
@@ -276,3 +281,67 @@ export interface TeamsState {
   call?: Call;
 }
 /* ── end Module 3 ── */
+/* ── Module 8: Documents (Word) ──────────────────────────────────────────
+ * A Word document as data, so a check can read real styles, placeholders,
+ * form answers and tracked changes. It is a list of blocks (paragraphs, a
+ * table, a form field), each with a style, as Word keeps it. Formatting
+ * typed straight onto a paragraph (bold, a bigger size) is kept apart from
+ * the style, which is how a check tells a real Heading 1 from Normal text
+ * made bold and bigger. Kept general, so a CV or a report can use it too. */
+
+export type WordStyle = "title" | "h1" | "h2" | "normal" | "bullet" | "number";
+
+/* A form field (Word calls it a content control): a grey box to click and
+ * type in, a date picker, a drop-down list, or a tick box. */
+export interface WordField {
+  /* What a check reads it by: "start", "approver". */
+  key: string;
+  kind: "text" | "date" | "choice" | "check";
+  label: string;
+  required?: boolean;
+  options?: string[];
+}
+
+export interface WordBlock {
+  id: string;
+  style: WordStyle;
+  /* What the paragraph says now. A tick box holds "yes" or "". */
+  text: string;
+  /* Formatting put straight on the paragraph, over its style. */
+  bold?: boolean;
+  italic?: boolean;
+  underline?: boolean;
+  size?: number; // points
+  align?: "left" | "center" | "right";
+  /* Tracked changes: the paragraph before them, and whose they are. The
+   * changes themselves are the difference between `base` and `text`. A
+   * whole paragraph added or removed is marked `revPara`. */
+  base?: string;
+  revBy?: string;
+  revPara?: "ins" | "del";
+  /* A table, row by row; the first row is the heading row. */
+  table?: string[][];
+  field?: WordField;
+}
+
+export interface WordComment {
+  id: string;
+  blockId: string;
+  by: string;
+  time: string;
+  text: string;
+}
+
+export interface WordDoc {
+  blocks: WordBlock[];
+  /* The letterhead, printed at the top of every page. */
+  header?: { name: string; lines: string[] };
+  footer?: string;
+  comments?: WordComment[];
+  /* Track Changes is on: edits show as changes for someone to accept. */
+  tracking?: boolean;
+  /* Words the spelling check was told to ignore. */
+  ignored?: string[];
+  /* The template it was started from, e.g. "Letterhead.dotx". */
+  template?: string;
+}

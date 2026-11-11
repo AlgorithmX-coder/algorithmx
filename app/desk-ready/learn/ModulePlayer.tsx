@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState, type CSSProperties } from "react";
 import DeskHeader from "../DeskHeader";
 import PartPreview, { PREVIEW_CSS, type PreviewKind } from "../PartPreview";
+import { OFFICE_APPS } from "../office/apps/registry";
 import { jobsFor } from "../office/jobs";
 import { PARTS } from "../syllabus";
 import { D, PART_ACCENT } from "../tokens";
@@ -11,6 +12,13 @@ import { markDone, useDone } from "./progress";
 import TopicPlayer from "./TopicPlayer";
 import type { ModuleManifest } from "./types";
 import { Button, Kicker, SHELL_CSS, Tick } from "./ui";
+
+/* The apps a module's jobs use, in words: "Outlook, File Explorer, Excel and Word". */
+function officeApps(jobs: ReturnType<typeof jobsFor>): string {
+  const extra = [...new Set(jobs.flatMap((j) => j.apps ?? []))].map((id) => OFFICE_APPS[id]?.label).filter((l): l is string => typeof l === "string");
+  const all = ["Outlook", "File Explorer", "Excel", ...extra];
+  return `${all.slice(0, -1).join(", ")} and ${all[all.length - 1]}`;
+}
 
 /* A Desk Ready module: a hero band in its part's colour (the app it teaches,
  * drawn large, what you will be able to do, your progress), then the
@@ -153,7 +161,7 @@ export default function ModulePlayer({ module: m }: { module: ModuleManifest }) 
             <h2 id="mp-jobs-h" className="mp-h2">
               Now do it for real
             </h2>
-            <p className="mp-jobs-lede">A job from someone at Northfield Supplies, done in the pretend office with Outlook, File Explorer and Excel. You are marked on what you made and where you put it.</p>
+            <p className="mp-jobs-lede">A job from someone at Northfield Supplies, done in the pretend office with {officeApps(jobs)}. You are marked on what you made and where you put it.</p>
             {jobs.map((j) => {
               const jobDone = done.includes(j.id);
               return (

@@ -128,8 +128,8 @@ export const PARTS: readonly DeskPart[] = [
         number: 8,
         title: "Documents",
         promise: "Write and lay out a letter or a short report.",
-        topics: ["Headings, bullets and tables", "Using a template", "Spelling and grammar checks", "Saving as a PDF", "Filling in and uploading a form"],
-        ready: false,
+        topics: ["Headings, bullets and tables", "Using a template", "Spelling checks and tracked changes", "Saving as a PDF", "Filling in and uploading a form"],
+        ready: true,
       },
       {
         id: "m9",

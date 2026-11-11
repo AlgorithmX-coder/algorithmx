@@ -104,7 +104,7 @@ export default function Outlook({
   const addFile = (f: OfficeFile) => {
     if (!draft) return;
     if (picker === "link") setDraft({ ...draft, links: [...draft.links, { name: f.name, path: f.path, fileName: f.name }] });
-    else setDraft({ ...draft, attachments: [...draft.attachments, { name: f.name, sheet: f.sheet, tabs: f.tabs, paper: f.paper }] });
+    else setDraft({ ...draft, attachments: [...draft.attachments, { name: f.name, sheet: f.sheet, tabs: f.tabs, paper: f.paper, doc: f.doc }] });
     setPicker(null);
   };
 
@@ -342,7 +342,7 @@ function Reading({ email, invite, onAttachment, onLink, onFakeLink }: { email: E
         <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginTop: 16 }}>
           {email.attachments.map((a, i) => (
             <button key={`a${i}`} type="button" onClick={() => onAttachment(a)} className="of-btn" title="Open" style={chip}>
-              <FileGlyph kind={a.name.endsWith(".pdf") ? "pdf" : "xlsx"} />
+              <FileGlyph kind={a.name.endsWith(".pdf") ? "pdf" : a.name.endsWith(".docx") ? "docx" : "xlsx"} />
               {a.name}
             </button>
           ))}
