@@ -14,6 +14,10 @@ import { samePath, type Email, type Job, type OfficeFile, type OfficeState, type
 
 const VERSION = 1;
 const key = (job: Job) => `desk:office:${job.id}`;
+/* ── Final task ── the same key and version, for the pages outside the
+ * office (the final task's start page and scorecard) that read the record. */
+export const officeKey = (jobId: string) => `desk:office:${jobId}`;
+export const OFFICE_VERSION = VERSION;
 
 export type Action =
   | { type: "saveFile"; file: OfficeFile }
@@ -172,7 +176,12 @@ export function useOffice(job: Job) {
     timer.current = setTimeout(() => push(url, state), 1500);
   }, [job, state, url]);
 
-  const reset = () => dispatch({ type: "reset", state: { ...job.seed(), version: VERSION, savedAt: Date.now() } });
+  /* ── Final task ── `keep` carries something from the old record into the
+   * fresh one (a timed job's earlier scorecards). */
+  const reset = (keep?: (fresh: OfficeState) => OfficeState) => {
+    const fresh: OfficeState = { ...job.seed(), version: VERSION, savedAt: Date.now() };
+    dispatch({ type: "reset", state: keep ? keep(fresh) : fresh });
+  };
   return { state, dispatch, reset };
 }
 

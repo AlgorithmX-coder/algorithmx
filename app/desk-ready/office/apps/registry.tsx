@@ -18,6 +18,8 @@ import { LockLayer, SECURITY_COLOUR, SignInLayer } from "./Security";
 /* ── end Module 11 ── */
 /* ── Module 12: AI as your assistant ── */
 import { CopilotApp, CopilotPane } from "./Copilot";
+/* ── Final task: Monday morning at the desk ── */
+import { MORNING_COLOUR, MorningLayer } from "./Morning";
 
 /* The office's plug-in seam. Outlook, File Explorer and Excel are built
  * into Office.tsx; every other app (Calendar, Teams, Word, the Copilot
@@ -84,4 +86,7 @@ export const OFFICE_APPS: Record<string, OfficeApp> = {
   /* ── end Module 11 ── */
   /* ── Module 12: AI as your assistant ── */
   copilot: { label: "Copilot", colour: W.copilot, Window: CopilotApp, Pane: CopilotPane },
+  /* ── Final task: Monday morning at the desk ── the office clock and what lands on it */
+  morning: { label: "Monday morning", colour: MORNING_COLOUR, Layer: MorningLayer, noTaskbar: true },
+  /* ── end Final task ── */
 };

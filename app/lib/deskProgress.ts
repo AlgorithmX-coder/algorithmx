@@ -8,9 +8,10 @@ import { prisma } from "@/app/lib/prisma";
  * table (before its migration deploys) or a passing DB fault can never
  * break the course, only pause cross-device sync. */
 
-/* Ids look like "m5t2" (a lesson) or "m5j1" (an office job); the module is
+/* Ids look like "m5t2" (a lesson) or "m5j1" (an office job), or "finalj1"
+ * (the final task, Monday morning at the desk); the module is
  * the part before the t or j. */
-export const DESK_ITEM = /^m(1[0-3]|[0-9])[tj][0-9]{1,2}$/;
+export const DESK_ITEM = /^(m(1[0-3]|[0-9])|final)[tj][0-9]{1,2}$/;
 export const moduleOfItem = (itemId: string) => itemId.replace(/[tj][0-9]+$/, "");
 
 /* An office record is capped well above any real job (a job seeds a few

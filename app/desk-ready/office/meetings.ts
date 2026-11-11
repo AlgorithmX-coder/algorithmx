@@ -11,10 +11,37 @@ export const WEEK = ["2026-11-09", "2026-11-10", "2026-11-11", "2026-11-12", "20
 const DAY_NAMES = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
 
 export const dayIndex = (day: string) => WEEK.indexOf(day as (typeof WEEK)[number]);
+
+/* ── Final task ── the names below read the date itself, so the calendar
+ * can show the week of Monday 16 November too. A weekday in the course's
+ * week reads exactly as before. */
+const WEEKDAYS = ["Sunday", ...DAY_NAMES, "Saturday"];
+const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+const dateOf = (day: string) => (/^\d{4}-\d{2}-\d{2}$/.test(day) ? new Date(`${day}T12:00:00Z`) : null);
+/* The Monday to Friday that holds a day: weekOf("2026-11-18") is 16 to 20 November. */
+export function weekOf(day: string): string[] {
+  const d = dateOf(day);
+  if (!d) return [...WEEK];
+  const monday = new Date(d.getTime() - ((d.getUTCDay() + 6) % 7) * 86400000);
+  return Array.from({ length: 5 }, (_, i) => new Date(monday.getTime() + i * 86400000).toISOString().slice(0, 10));
+}
+/* "9 to 13 November 2026" */
+export const weekTitle = (week: readonly string[]) => {
+  const a = dateOf(week[0]);
+  const b = dateOf(week[week.length - 1]);
+  return a && b ? `${a.getUTCDate()} to ${b.getUTCDate()} ${MONTHS[b.getUTCMonth()]} ${b.getUTCFullYear()}` : "";
+};
 /* "Thursday 12 November" */
-export const dayLong = (day: string) => (dayIndex(day) < 0 ? day : `${DAY_NAMES[dayIndex(day)]} ${Number(day.slice(8))} November`);
+export const dayLong = (day: string) => {
+  const d = dateOf(day);
+  return d ? `${WEEKDAYS[d.getUTCDay()]} ${d.getUTCDate()} ${MONTHS[d.getUTCMonth()]}` : day;
+};
 /* "Thu 12" */
-export const dayShort = (day: string) => (dayIndex(day) < 0 ? day : `${DAY_NAMES[dayIndex(day)].slice(0, 3)} ${Number(day.slice(8))}`);
+export const dayShort = (day: string) => {
+  const d = dateOf(day);
+  return d ? `${WEEKDAYS[d.getUTCDay()].slice(0, 3)} ${d.getUTCDate()}` : day;
+};
+/* ── end Final task ── */
 
 /* The working day the apps draw, and the times the pickers offer. */
 export const DAY_START = 8 * 60;

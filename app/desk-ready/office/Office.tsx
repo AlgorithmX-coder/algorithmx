@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState, type CSSProperties } from "react";
+import { useEffect, useMemo, useState, type CSSProperties } from "react";
 import DeskHeader from "../DeskHeader";
 import { markDone, useDone } from "../learn/progress";
 import { Button, Kicker, SHELL_CSS, Tick } from "../learn/ui";
@@ -54,6 +54,11 @@ export default function Office({ job }: { job: Job }) {
 
   const finished = done.includes(job.id);
   const unread = state.emails.filter((e) => e.folder === "inbox" && e.unread).length;
+  /* ── Final task ── a timed job's clock moves, and the apps (Calendar's
+   * now line, a call's time, a chat's time) read it as the job's clock. */
+  const clock = job.live ? job.live.clock(state) : job.clock;
+  const appJob = useMemo(() => (job.live ? { ...job, clock } : job), [job, clock]);
+  const LivePanel = job.live?.Panel;
   /* An open workbook follows its file if it is renamed or moved. */
   const docFile = doc?.fileId ? state.files.find((f) => f.id === doc.fileId) : undefined;
   const liveDoc: ExcelDoc | null = doc && (docFile ? { ...doc, name: docFile.name, path: docFile.path } : doc.fileId ? { ...doc, fileId: null, path: null } : doc);
@@ -123,7 +128,8 @@ export default function Office({ job }: { job: Job }) {
   };
 
   const startAgain = () => {
-    reset();
+    const carry = job.live?.carry;
+    reset(carry ? (fresh) => carry(state, fresh) : undefined);
     setDoc(null);
     setViewer(null);
     setResults(null);
@@ -147,7 +153,7 @@ export default function Office({ job }: { job: Job }) {
   const appProps = (id: string) => ({
     state,
     dispatch,
-    job,
+    job: appJob,
     active: app === id,
     show: setApp,
     openFile,
@@ -161,12 +167,17 @@ export default function Office({ job }: { job: Job }) {
 
   return (
     <div className="dr-shell" style={shell}>
-      <DeskHeader link={{ href: `/desk-ready/${job.moduleId}`, label: "Back to the module" }} trail={`On the job · ${job.moduleLabel}`} />
+      <DeskHeader link={{ href: `/desk-ready/${job.moduleId}`, label: job.live ? "Leave the office" : "Back to the module" }} trail={`On the job · ${job.moduleLabel}`} />
       <main className="of-main">
         {/* the task panel */}
         <aside className="of-panel dr-glass">
           <Kicker>On the job</Kicker>
           <h1 className="of-h1">{job.title}</h1>
+          {/* ── Final task ── a timed job draws its own panel: the moving clock, pause, and finishing the morning */}
+          {LivePanel ? (
+            <LivePanel state={state} dispatch={dispatch} restart={startAgain} />
+          ) : (
+          <>
           <p className="of-clock">
             <span>Office time {job.clock}</span>
             <span>{job.deadline}</span>
@@ -195,6 +206,8 @@ export default function Office({ job }: { job: Job }) {
             Start the job again
           </button>
           <p className="of-note">Nothing here is sent anywhere. It is a pretend office, so you can&apos;t break anything.</p>
+          </>
+          )}
         </aside>
 
         {/* the desktop */}
@@ -243,7 +256,14 @@ export default function Office({ job }: { job: Job }) {
                   {t.on && app !== t.id && <i className="of-dot" aria-hidden />}
                 </button>
               ))}
-              <span className="of-time">{job.clock}</span>
+              {job.live?.date ? (
+                <span className="of-time of-time-live" aria-label={`Office time ${clock}, ${job.live.date}`}>
+                  <span>{clock}</span>
+                  <span>{job.live.date}</span>
+                </span>
+              ) : (
+                <span className="of-time">{clock}</span>
+              )}
             </nav>
 
             {saveAs && liveDoc && (
@@ -430,6 +450,7 @@ const OFFICE_SHELL_CSS = `
   .of-badge { min-width: 20px; height: 20px; padding: 0 5px; border-radius: 10px; background: ${W.outlook}; color: #fff; font-size: 12px; display: inline-flex; align-items: center; justify-content: center; }
   .of-dot { position: absolute; bottom: 3px; left: 50%; width: 6px; height: 3px; border-radius: 2px; background: ${W.muted}; transform: translateX(-50%); }
   .of-time { position: absolute; right: 16px; font-family: ${W.font}; font-size: 13px; color: ${W.ink}; }
+  .of-time-live { display: flex; flex-direction: column; align-items: flex-end; gap: 1px; font-size: 12.5px; line-height: 1.25; font-variant-numeric: tabular-nums; }
   .of-overlay { position: fixed; inset: 0; z-index: 60; display: flex; align-items: flex-start; justify-content: center; padding: 6vh 16px 24px; background: rgba(3,6,14,0.72); backdrop-filter: blur(6px); overflow-y: auto; }
   .of-card { position: relative; width: 100%; max-width: 760px; padding: 26px 26px 24px; border-radius: 22px; background: ${D.card}; border: 1px solid ${D.edgeStrong}; box-shadow: ${D.lift}; }
   .of-habits { margin-top: 18px; display: flex; flex-wrap: wrap; gap: 8px; }
