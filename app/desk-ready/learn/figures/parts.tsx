@@ -153,8 +153,8 @@ function Scroller({ children, focusKey }: { children: ReactNode; focusKey: strin
       </div>
       {more && (
         <p style={{ margin: "8px 0 0", display: "flex", alignItems: "center", gap: 8, fontFamily: D.mono, fontSize: 12.5, fontWeight: 700, letterSpacing: "0.08em", color: D.accent }}>
-          <span aria-hidden>{edges.left && edges.right ? "\u2190 \u2192" : edges.left ? "\u2190" : "\u2192"}</span>
-          Slide the picture sideways to see all of it
+          <span aria-hidden style={{ whiteSpace: "nowrap" }}>{edges.left && edges.right ? "\u2190 \u2192" : edges.left ? "\u2190" : "\u2192"}</span>
+          Slide sideways to see all of it
         </p>
       )}
     </>
