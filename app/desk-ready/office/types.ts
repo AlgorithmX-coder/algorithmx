@@ -423,7 +423,7 @@ export interface CourierAddress {
 
 export interface CourierBooking {
   ref: string;
-  status: "booked" | "cancelled";
+  status: "booked" | "cancelled" | "collected";
   /* "collect": the courier picks up from you. "dropoff": you take it to a shop. */
   method: "collect" | "dropoff";
   from: CourierAddress;

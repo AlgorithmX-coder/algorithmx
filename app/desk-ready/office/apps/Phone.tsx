@@ -16,8 +16,11 @@ import type { OfficeAppProps } from "./registry";
 
 export const PHONE_COLOUR = "#00698f";
 
+/* An unknown caller (just a number) gets a plain handset, not "01". */
 const initials = (name: string) =>
-  name
+  /^[\d\s+]+$/.test(name)
+    ? "☎"
+    : name
     .replace(/^(Mr|Mrs|Ms|Miss|Dr)\s+/i, "")
     .split(" ")
     .map((w) => w[0])
@@ -47,25 +50,25 @@ export function CallPlayer({ call, auto = false, you = "You", onEnd }: { call: P
   const lines = call.lines ?? [];
   const end = call.seconds;
 
+  /* the call stops by itself when it reaches the end */
+  const done = t >= end;
+  const running = playing && !done;
   useEffect(() => {
-    if (!playing) return;
+    if (!running) return;
     const id = setInterval(() => setT((v) => Math.min(end, v + (x2 ? 0.2 : 0.1))), 100);
     return () => clearInterval(id);
-  }, [playing, x2, end]);
+  }, [running, x2, end]);
   useEffect(() => {
-    if (t >= end && playing) {
-      setPlaying(false);
-      if (!ended.current) {
-        ended.current = true;
-        onEnd?.();
-      }
+    if (done && !ended.current) {
+      ended.current = true;
+      onEnd?.();
     }
-  }, [t, end, playing, onEnd]);
+  }, [done, onEnd]);
   /* keep the newest words in view, inside the transcript box only */
   useEffect(() => {
     const el = box.current;
-    if (el && playing) el.scrollTop = el.scrollHeight;
-  }, [t, playing]);
+    if (el && running) el.scrollTop = el.scrollHeight;
+  }, [t, running]);
 
   if (!lines.length) return <p style={{ margin: 0, padding: 18, fontSize: 15, color: W.muted }}>This call wasn&apos;t recorded.</p>;
   const shown = lines.filter((l) => l.at <= t);
@@ -76,14 +79,16 @@ export function CallPlayer({ call, auto = false, you = "You", onEnd }: { call: P
         <button
           type="button"
           onClick={() => {
-            if (t >= end) setT(0);
-            setPlaying((p) => !p);
+            if (done) {
+              setT(0);
+              setPlaying(true);
+            } else setPlaying((p) => !p);
           }}
           className="of-btn"
-          aria-label={playing ? "Pause the recording" : "Play the recording"}
+          aria-label={running ? "Pause the recording" : "Play the recording"}
           style={{ minHeight: 42, padding: "0 18px", border: "none", borderRadius: 21, background: PHONE_COLOUR, color: "#fff", fontFamily: W.font, fontSize: 15, fontWeight: 700, cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 8 }}
         >
-          <span aria-hidden>{playing ? "❚❚" : "▶"}</span> {playing ? "Pause" : t > 0 && t < end ? "Carry on" : t >= end ? "Play again" : "Play the recording"}
+          <span aria-hidden>{running ? "❚❚" : "▶"}</span> {running ? "Pause" : t > 0 && !done ? "Carry on" : done ? "Play again" : "Play the recording"}
         </button>
         <div aria-hidden style={{ flex: "1 1 140px", height: 6, borderRadius: 3, background: W.sunk, position: "relative", overflow: "hidden" }}>
           <span style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: `${(t / end) * 100}%`, background: PHONE_COLOUR, borderRadius: 3 }} />
@@ -107,7 +112,7 @@ export function CallPlayer({ call, auto = false, you = "You", onEnd }: { call: P
         </button>
       </div>
       {/* the words */}
-      <div ref={box} aria-live="polite" style={{ marginTop: 12, flex: 1, minHeight: 120, maxHeight: 360, overflowY: "auto", padding: "12px 14px", borderRadius: 8, background: "#f7f9fa", border: `1px solid ${W.edge}`, display: "grid", gap: 10, alignContent: "start" }}>
+      <div ref={box} aria-live="polite" style={{ marginTop: 12, flex: 1, minHeight: 120, maxHeight: "min(56vh, 470px)", overflowY: "auto", padding: "12px 14px", borderRadius: 8, background: "#f7f9fa", border: `1px solid ${W.edge}`, display: "grid", gap: 10, alignContent: "start" }}>
         {shown.length === 0 && <p style={{ margin: 0, fontSize: 15, color: W.muted }}>Press play. The words appear as they are said.</p>}
         {shown.map((l, i) => {
           const typed = Math.max(1, Math.floor((t - l.at) * SPEED));
@@ -147,22 +152,23 @@ function WayIcon({ way }: { way: PhoneCall["way"] }) {
 /* The phone's window: recent calls on the left, the chosen call on the right. */
 export default function Phone({ state, active }: OfficeAppProps) {
   const calls = state.phone?.calls ?? [];
-  const answered = state.phone?.answered ?? [];
+  const raw = state.phone?.answered;
+  const answered = raw ?? [];
   const live = calls.filter((c) => !c.ringing || answered.includes(c.id));
   const [sel, setSel] = useState<string | null>(null);
   const chosen = live.find((c) => c.id === sel) ?? live.find((c) => c.lines?.length) ?? live[0];
   const ringing = calls.find((c) => c.ringing && !answered.includes(c.id));
   /* a call just answered plays straight away */
   const [justAnswered, setJustAnswered] = useState<string | null>(null);
-  const seen = useRef(answered);
-  useEffect(() => {
-    const fresh = answered.find((id) => !seen.current.includes(id));
-    seen.current = answered;
+  const [seen, setSeen] = useState(raw);
+  if (raw !== seen) {
+    const fresh = (raw ?? []).find((id) => !(seen ?? []).includes(id));
+    setSeen(raw);
     if (fresh) {
       setSel(fresh);
       setJustAnswered(fresh);
     }
-  }, [answered]);
+  }
 
   return (
     <div style={{ height: "100%", display: "flex", flexDirection: "column", background: W.page, fontFamily: W.font, color: W.ink }}>
@@ -209,7 +215,7 @@ export default function Phone({ state, active }: OfficeAppProps) {
           ))}
         </nav>
         <section aria-label="The call" style={{ flex: 1, minWidth: 0, overflowY: "auto", padding: "20px 24px" }}>
-          {ringing && !live.length ? (
+          {ringing ? (
             <Ringing call={ringing} />
           ) : chosen ? (
             <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>

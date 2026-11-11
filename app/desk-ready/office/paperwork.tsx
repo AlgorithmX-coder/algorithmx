@@ -135,7 +135,12 @@ function Letterhead({ d }: { d: BizDoc }) {
             <>
               <br />
               {d.from.phone}
-              {d.from.email ? ` · ${d.from.email}` : ""}
+              {d.from.email && (
+                <>
+                  <br />
+                  {d.from.email}
+                </>
+              )}
             </>
           )}
           {d.from.vatNo && (
@@ -250,11 +255,12 @@ export function DocSheet({ doc, ...p }: { doc: BizDoc } & PickProps) {
                 <td style={td(1)}>{l.item}</td>
                 <td style={td(2)}>{l.qty}</td>
                 {isDn ? (
-                  <td style={{ ...td(3), position: "relative" }}>
-                    {l.delivered ?? l.qty}
-                    {l.delivered !== undefined && l.delivered !== l.qty && (
-                      <span aria-hidden style={{ position: "absolute", inset: "1px -2px", border: `2px solid ${PEN_BLUE}`, borderRadius: "50%", transform: "rotate(-4deg)" }} />
-                    )}
+                  <td style={td(3)}>
+                    {/* a short delivery is ringed in pen, as goods-in do */}
+                    <span style={{ position: "relative", display: "inline-block", padding: "0 3px" }}>
+                      {l.delivered ?? l.qty}
+                      {l.delivered !== undefined && l.delivered !== l.qty && <span aria-hidden style={{ position: "absolute", inset: "-5px -9px", border: `2px solid ${PEN_BLUE}`, borderRadius: "50%", transform: "rotate(-8deg)" }} />}
+                    </span>
                   </td>
                 ) : (
                   <>
@@ -336,7 +342,7 @@ export function DocSheet({ doc, ...p }: { doc: BizDoc } & PickProps) {
         )}
         {isDn && doc.note && (
           <Bit k="note" badge="right" p={p}>
-            <div style={{ fontFamily: PEN, fontSize: 17, color: PEN_BLUE, transform: "rotate(-3deg)", transformOrigin: "left", lineHeight: 1.35, maxWidth: 230, padding: "0 4px" }}>{doc.note}</div>
+            <div style={{ fontFamily: PEN, fontSize: 17, color: PEN_BLUE, transform: "rotate(-3deg)", transformOrigin: "left", lineHeight: 1.35, maxWidth: 270, padding: "0 4px" }}>{doc.note}</div>
           </Bit>
         )}
       </div>

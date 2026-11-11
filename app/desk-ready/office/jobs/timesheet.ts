@@ -1,4 +1,4 @@
-import { CLAIM_TEMPLATE, CLAIM_WIDTHS, COFFEE_RECEIPT, pad, paperOf, TIMESHEET_TEMPLATE, TIMESHEET_WIDTHS, TRAIN_RECEIPT } from "../admin";
+import { CLAIM_MONEY, CLAIM_TEMPLATE, CLAIM_WIDTHS, COFFEE_RECEIPT, pad, paperOf, TIMESHEET_TEMPLATE, TIMESHEET_WIDTHS, TRAIN_RECEIPT } from "../admin";
 import { display, numeric } from "../formula";
 import { inbound, officeFolders, PEOPLE, SIGNATURE, YOU } from "../northfield";
 import { pathText, samePath, tabsOf, type Check, type Grid, type Job, type OfficeFile, type OfficeState, type Path } from "../types";
@@ -47,7 +47,7 @@ function seed(): OfficeState {
     folder(["HR", "Forms"], "Completed"),
     folder(["Finance", "Expenses"], "2026", "Priya Shah"),
     { id: "seed-timesheet", path: BLANK, name: "Timesheet.xltx", kind: "xltx", modified: "05/01/2026", by: "Emma Clarke", sheet: TIMESHEET_TEMPLATE, tabs: [{ name: "Timesheet", grid: TIMESHEET_TEMPLATE }], widths: TIMESHEET_WIDTHS, seeded: true },
-    { id: "seed-claim", path: BLANK, name: "Expense claim.xltx", kind: "xltx", modified: "05/01/2026", by: "Emma Clarke", sheet: CLAIM_TEMPLATE, tabs: [{ name: "Expense claim", grid: CLAIM_TEMPLATE }], widths: CLAIM_WIDTHS, seeded: true },
+    { id: "seed-claim", path: BLANK, name: "Expense claim.xltx", kind: "xltx", modified: "05/01/2026", by: "Emma Clarke", sheet: CLAIM_TEMPLATE, tabs: [{ name: "Expense claim", grid: CLAIM_TEMPLATE, formats: CLAIM_MONEY }], widths: CLAIM_WIDTHS, seeded: true },
     { id: "seed-holiday", path: BLANK, name: "Holiday request.docx", kind: "docx", modified: "05/01/2026", by: "Emma Clarke", seeded: true },
     { id: "seed-claim-sarah", path: EXPENSES, name: "2026-11-06 Expense claim Sarah Patel.xlsx", kind: "xlsx", modified: "06/11/2026", by: "Sarah Patel", sheet: sarahsClaim(), tabs: [{ name: "Expense claim", grid: sarahsClaim() }], widths: CLAIM_WIDTHS, seeded: true },
     { id: COFFEE_ID, path: DOWNLOADS, name: "IMG_4469.jpg", kind: "jpg", modified: "10/11/2026", by: "You", paper: paperOf(COFFEE_RECEIPT), seeded: true },

@@ -324,3 +324,6 @@ export function timed(lines: { who: "them" | "you"; text: string }[], pause = 0.
   return { lines: out, seconds: Math.ceil(t) };
 }
 
+
+/* The claim's Amount column shows as money, D2 to D7, as the real form does. */
+export const CLAIM_MONEY: Record<string, "money"> = { D2: "money", D3: "money", D4: "money", D5: "money", D6: "money", D7: "money" };

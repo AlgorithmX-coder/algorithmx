@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type KeyboardEvent } from "react";
+import { useEffect, useRef, useState, type KeyboardEvent } from "react";
 import { W } from "../../tokens";
 import type { CourierBooking } from "../types";
 import type { OfficeAppProps } from "./registry";
@@ -60,6 +60,11 @@ export function Browser({ bookings, onBook, onCancel, now, start = NEW_TAB }: { 
   const [typing, setTyping] = useState<string | null>(null);
   const tab = tabs.find((t) => t.id === active) ?? tabs[0];
   const url = tab.stack[tab.at];
+  /* a new page opens at its top, as in a real browser */
+  const pageRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (pageRef.current) pageRef.current.scrollTop = 0;
+  }, [url, active]);
 
   const navigate = (to: string) => {
     setTyping(null);
@@ -163,7 +168,7 @@ export function Browser({ bookings, onBook, onCancel, now, start = NEW_TAB }: { 
       </nav>
 
       {/* the page */}
-      <div style={{ flex: 1, minHeight: 0, overflowY: "auto", background: W.page }}>
+      <div ref={pageRef} style={{ flex: 1, minHeight: 0, overflowY: "auto", background: W.page }}>
         {url === NEW_TAB ? (
           <NewTabPage onGo={navigate} />
         ) : hostOf(url) === HOPWELL_HOST ? (

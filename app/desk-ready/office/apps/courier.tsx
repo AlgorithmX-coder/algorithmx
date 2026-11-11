@@ -50,7 +50,12 @@ const SERVICES = [
   { id: "Economy", what: "Delivered in 2 to 3 working days", off: 2.5 },
 ] as const;
 
-export const dayLabel = (iso: string) => DAYS.find((d) => d.iso === iso)?.label ?? iso;
+/* "2026-11-13" as "Fri 13 Nov". */
+export function dayLabel(iso: string): string {
+  const d = new Date(`${iso}T12:00:00Z`);
+  if (Number.isNaN(d.getTime())) return iso;
+  return d.toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short", timeZone: "UTC" });
+}
 
 /* Price per parcel by weight, before VAT. */
 const band = (kg: number) => (kg <= 10 ? 7.95 : kg <= 20 ? 10.95 : 14.95);
@@ -97,7 +102,7 @@ export function HopwellSite(p: SiteProps) {
   const page = p.path.replace(/\/+$/, "") || "/";
   const booked = /^\/booking\/(HW-[A-Z0-9]+)$/i.exec(page);
   return (
-    <div className="hw" style={{ minHeight: "100%", background: C.soft, color: C.ink, fontFamily: W.font, containerType: "inline-size" }}>
+    <div className="hw" style={{ minHeight: "100%", display: "flex", flexDirection: "column", background: C.soft, color: C.ink, fontFamily: W.font, containerType: "inline-size" }}>
       <style>{SITE_CSS}</style>
       <SiteHeader go={p.go} />
       {page === "/" ? (
@@ -111,7 +116,7 @@ export function HopwellSite(p: SiteProps) {
       ) : (
         <NotFound go={p.go} />
       )}
-      <footer style={{ padding: "22px 24px 26px", color: C.muted, fontSize: 12.5, borderTop: `1px solid ${C.edge}`, background: "#fff" }}>Hopwell Couriers · Collections and deliveries across the UK · Business account: Northfield Supplies (NFS-2041) · Help: 01632 960 980</footer>
+      <footer style={{ marginTop: "auto", padding: "22px 24px 26px", color: C.muted, fontSize: 12.5, borderTop: `1px solid ${C.edge}`, background: "#fff" }}>Hopwell Couriers · Collections and deliveries across the UK · Business account: Northfield Supplies (NFS-2041) · Help: 01632 960 980</footer>
     </div>
   );
 }
@@ -152,11 +157,36 @@ function SiteHeader({ go }: { go: (p: string) => void }) {
   );
 }
 
+/* The hero's picture: a Hopwell van with two boxes going in. */
+function VanArt() {
+  return (
+    <svg className="hw-van" width="300" height="170" viewBox="0 0 300 170" aria-hidden>
+      <ellipse cx="150" cy="156" rx="132" ry="9" fill="rgba(0,0,0,0.22)" />
+      <path d="M30 60 Q30 46 44 46 H176 V146 H30 Z" fill="#ffffff" />
+      <path d="M176 70 H222 Q232 70 238 80 L262 112 Q266 118 266 126 V146 H176 Z" fill="#f1f4ec" />
+      <path d="M186 80 H220 Q226 80 230 86 L246 108 H186 Z" fill="#2c4a5a" />
+      <rect x="30" y="118" width="236" height="10" fill={C.lime} />
+      <path d="M52 92 C 60 66, 92 60, 108 78" fill="none" stroke={C.green} strokeWidth="6" strokeLinecap="round" />
+      <path d="M100 66 L110 79 L95 82" fill="none" stroke={C.green} strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" />
+      <text x="120" y="100" fontFamily="Segoe UI, sans-serif" fontWeight="800" fontSize="22" fill={C.green}>hopwell</text>
+      <circle cx="78" cy="148" r="15" fill="#1d2b24" />
+      <circle cx="78" cy="148" r="6" fill="#c9d0c4" />
+      <circle cx="222" cy="148" r="15" fill="#1d2b24" />
+      <circle cx="222" cy="148" r="6" fill="#c9d0c4" />
+      <rect x="4" y="112" width="30" height="30" rx="2" fill="#c89b5f" />
+      <path d="M4 122 H34 M19 112 V142" stroke="#a87c44" strokeWidth="2" />
+      <rect x="10" y="88" width="24" height="24" rx="2" fill="#d8ac6e" />
+      <path d="M10 96 H34 M22 88 V112" stroke="#a87c44" strokeWidth="2" />
+    </svg>
+  );
+}
+
 function Home({ go }: { go: (p: string) => void }) {
   return (
     <main>
-      <section style={{ background: `linear-gradient(135deg, ${C.green}, ${C.greenDark})`, color: "#fff", padding: "34px 28px 38px" }}>
+      <section style={{ position: "relative", overflow: "hidden", background: `linear-gradient(135deg, ${C.green}, ${C.greenDark})`, color: "#fff", padding: "34px 28px 38px" }}>
         <p style={{ margin: 0, color: C.lime, fontWeight: 700, fontSize: 13, letterSpacing: "0.12em", textTransform: "uppercase" }}>Business account</p>
+        <VanArt />
         <h1 style={{ margin: "8px 0 0", fontSize: 32, lineHeight: 1.12, fontWeight: 800, letterSpacing: "-0.02em", maxWidth: 520 }}>We collect from your door, and deliver across the UK.</h1>
         <p style={{ margin: "12px 0 0", fontSize: 16, lineHeight: 1.5, maxWidth: 520, opacity: 0.92 }}>Book by 12:00 for a collection the same day. Pay on your monthly account.</p>
         <div style={{ display: "flex", gap: 10, marginTop: 20, flexWrap: "wrap" }}>
@@ -240,7 +270,7 @@ function AddressPick({ value, onChange, which }: { value: CourierAddress | null;
             <input value={f[k]} onChange={(e) => setF({ ...f, [k]: e.target.value })} aria-label={`${which === "from" ? "Collect from" : "Deliver to"}: ${l}`} />
           </label>
         ))}
-        {f.postcode.trim() && !/^[A-Z]{1,2}[0-9][0-9A-Z]?\s*[0-9][A-Z]{2}$/i.test(f.postcode.trim()) && <p className="hw-warn">That doesn't look like a UK postcode, like LE4 5AQ.</p>}
+        {f.postcode.trim() && !/^[A-Z]{1,2}[0-9][0-9A-Z]?\s*[0-9][A-Z]{2}$/i.test(f.postcode.trim()) && <p className="hw-warn">That doesn&apos;t look like a UK postcode, like LE4 5AQ.</p>}
         <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
           <button
             type="button"
@@ -572,7 +602,7 @@ function MyBookings({ bookings, onCancel, go }: SiteProps) {
                 <br />
                 {b.from.name} to {b.to.name} · {b.parcels.length} {b.parcels.length === 1 ? "parcel" : "parcels"}
               </span>
-              <span className={b.status === "cancelled" ? "hw-tag off" : "hw-tag"}>{b.status === "cancelled" ? "Cancelled" : "Booked"}</span>
+              <span className={b.status === "booked" ? "hw-tag" : "hw-tag off"}>{b.status === "cancelled" ? "Cancelled" : b.status === "collected" ? "Collected" : "Booked"}</span>
               {b.status === "booked" &&
                 (asking === b.ref ? (
                   <span style={{ display: "inline-flex", gap: 8, alignItems: "center", fontSize: 13.5 }}>
@@ -637,7 +667,7 @@ const SITE_CSS = `
   .hw-choice:disabled { opacity: 0.5; cursor: not-allowed; background: ${C.soft}; }
   .hw-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 8px; }
   .hw-grid.three { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
-  .hw-days { display: grid; grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); gap: 8px; }
+  .hw-days { display: grid; grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); gap: 8px; }
   .hw-parcel { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 16px; padding: 10px 12px; border: 1px solid ${C.edge}; border-radius: 10px; }
   .hw-field { display: grid; gap: 4px; font-size: 13px; color: ${C.muted}; }
   .hw-field.inline { display: inline-flex; align-items: center; gap: 8px; }
@@ -648,10 +678,12 @@ const SITE_CSS = `
   .hw-summary { position: sticky; top: 12px; background: #fff; border: 1px solid ${C.edge}; border-radius: 12px; padding: 16px; }
   .hw-tag { padding: 3px 10px; border-radius: 999px; background: color-mix(in srgb, ${C.lime} 40%, #fff); color: ${C.greenDark}; font-size: 12.5px; font-weight: 700; }
   .hw-tag.off { background: ${C.edge}; color: ${C.muted}; }
+  .hw-van { position: absolute; right: 28px; bottom: 26px; }
   .hw-details { margin: 16px 0 0; display: grid; grid-template-columns: 130px minmax(0, 1fr); gap: 10px 14px; background: #fff; border: 1px solid ${C.edge}; border-radius: 12px; padding: 14px 16px; font-size: 14px; }
   .hw-details dt { color: ${C.muted}; }
   .hw-details dd { margin: 0; }
   .hw :is(button, input, select):focus-visible { outline: 2px solid ${C.green}; outline-offset: 2px; }
+  @container (max-width: 860px) { .hw-van { display: none; } }
   @container (max-width: 720px) {
     .hw-book { grid-template-columns: 1fr; }
     .hw-summary { position: static; }

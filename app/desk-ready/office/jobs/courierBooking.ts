@@ -21,7 +21,7 @@ function seed(): OfficeState {
       bookings: [
         {
           ref: "HW-7KQ2MD",
-          status: "booked",
+          status: "collected",
           method: "collect",
           from: { name: "Northfield Supplies, Goods in", lines: ["Unit 2, Abbey Trade Park", "Rear yard, gate B", "Leicester"], postcode: "LE4 5AQ", contact: "Sarah Patel", phone: "01632 960 412" },
           to: { name: "Kent Flour Mills", lines: ["Mill Lane, Ashford", "Kent"], postcode: "TN24 8QH", contact: "Orders", phone: "01632 960 870" },
