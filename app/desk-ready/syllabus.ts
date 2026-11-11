@@ -73,7 +73,7 @@ export const PARTS: readonly DeskPart[] = [
         title: "Meetings and messages",
         promise: "Accept a meeting, join a video call and use Teams chat.",
         topics: ["Calendar invites", "Joining a Teams or Zoom call", "Mute, camera and sharing your screen", "Chat or email: which one?", "Writing down the actions"],
-        ready: false,
+        ready: true,
       },
     ],
   },

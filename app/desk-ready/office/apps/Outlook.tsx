@@ -1,12 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import { W } from "../../tokens";
 import { CONTACTS, YOU } from "../northfield";
 import { PlacePicker } from "../places";
 import { newId, type Action } from "../store";
 import type { Attachment, Email, EmailLink, OfficeFile, OfficeState, Path, Person } from "../types";
 import { AppButton, Dialog, FileGlyph, TitleBar } from "../ui";
+import { InviteCard } from "./Calendar";
 
 /* Outlook, for the office jobs: Inbox, the job's own folders, Sent items
  * and Junk email; a reading pane; Move to, Flag, Report (phishing) and
@@ -236,6 +237,7 @@ export default function Outlook({
           ) : open ? (
             <Reading
               email={open}
+              invite={<InviteCard state={state} dispatch={dispatch} emailId={open.id} />}
               onAttachment={onAttachment}
               onLink={onLink}
               onFakeLink={() => {
@@ -312,7 +314,9 @@ function folderLabel(f: string) {
   return f === "inbox" ? "Inbox" : f === "sent" ? "Sent items" : f === "junk" ? "Junk email" : f;
 }
 
-function Reading({ email, onAttachment, onLink, onFakeLink }: { email: Email; onAttachment: (a: Attachment) => void; onLink: (l: EmailLink) => void; onFakeLink: () => void }) {
+/* `invite`: a meeting invite's answer buttons, drawn above the message
+ * when the email carries one (Module 3, ./Calendar). */
+function Reading({ email, invite, onAttachment, onLink, onFakeLink }: { email: Email; invite?: ReactNode; onAttachment: (a: Attachment) => void; onLink: (l: EmailLink) => void; onFakeLink: () => void }) {
   return (
     <article style={{ padding: "18px 22px 28px" }}>
       {email.reported && <p style={{ margin: "0 0 14px", padding: "10px 12px", borderRadius: 6, background: "#fde7e9", fontSize: 14.5 }}>You reported this email as phishing. IT have been told.</p>}
@@ -349,6 +353,7 @@ function Reading({ email, onAttachment, onLink, onFakeLink }: { email: Email; on
           ))}
         </div>
       )}
+      {invite}
       <div style={{ marginTop: 18, whiteSpace: "pre-wrap", fontSize: 16, lineHeight: 1.6 }}>{email.body}</div>
       {email.fakeLink && (
         <p style={{ margin: "16px 0 0" }}>
