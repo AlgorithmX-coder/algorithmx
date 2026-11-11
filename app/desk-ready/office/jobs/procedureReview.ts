@@ -134,7 +134,7 @@ function check(s: OfficeState): Check[] {
   add(
     { id: "pallet", code: "WD-6", group: "Sarah's changes", label: '"Count every second pallet" is rejected: every pallet is counted' },
     saved && !!pallet && !open(pallet) && palletText === RIGHT["gp-pallet"],
-    open(pallet) || !saved ? `${pre}"second" is still waiting. Click it and press Reject: counting every second pallet would miss a short delivery.` : `Step 3 says "${palletText}". Counting every second pallet would let shortages through. Start the job again and reject that change.`,
+    open(pallet) || !saved ? `${pre}"second" is still waiting. Click it and press Reject: counting every second pallet would miss a short delivery.` : `Step 3 now reads "${palletText.replace(/\.$/, "")}". Counting every second pallet would let shortages through. Use Undo (Ctrl+Z) until the change is back, or start the job again, then Reject it.`,
   );
   const why = (doc?.comments ?? []).find((c) => c.by === "You" && c.text.split(/\s+/).filter(Boolean).length >= 3 && (c.blockId === "gp-pallet" || /pallet|second|every|count/i.test(c.text)));
   const anyMine = (doc?.comments ?? []).some((c) => c.by === "You");

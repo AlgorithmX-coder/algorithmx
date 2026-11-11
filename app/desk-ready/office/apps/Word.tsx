@@ -37,7 +37,7 @@ let untitled = 0;
 
 type SaveType = "docx" | "pdf";
 
-export default function WordApp({ state, dispatch, request, openFile, show, practice, onDoc }: Pick<OfficeAppProps, "state" | "dispatch" | "request" | "openFile" | "show"> & { practice?: boolean; onDoc?: (d: OpenDoc | null) => void }) {
+export default function WordApp({ state, dispatch, request, openFile, show, active, practice, onDoc }: Pick<OfficeAppProps, "state" | "dispatch" | "request" | "openFile" | "show"> & { active?: boolean; practice?: boolean; onDoc?: (d: OpenDoc | null) => void }) {
   const [open, setOpen] = useState<OpenDoc | null>(null);
   const [backstage, setBackstage] = useState<"info" | "export" | null>(null);
   const [dialog, setDialog] = useState<{ type: SaveType; note?: string; then?: () => void } | null>(null);
@@ -54,6 +54,21 @@ export default function WordApp({ state, dispatch, request, openFile, show, prac
   }, [open, file?.name, file?.path]);
 
   const ask = (then: () => void) => (open?.dirty ? setUnsaved({ then }) : then());
+
+  /* Ctrl+S saves wherever the focus is, while Word is the window in front,
+   * rather than the browser offering to save the web page */
+  const saveRef = useRef<() => void>(() => {});
+  useEffect(() => {
+    if (active === false || !open) return;
+    const key = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && !e.altKey && e.key.toLowerCase() === "s" && !e.defaultPrevented) {
+        e.preventDefault();
+        saveRef.current();
+      }
+    };
+    window.addEventListener("keydown", key);
+    return () => window.removeEventListener("keydown", key);
+  }, [active, open]);
 
   const load = (f: OfficeFile) => {
     const doc: WordDoc = f.doc ?? { blocks: [para("")] };
@@ -83,6 +98,10 @@ export default function WordApp({ state, dispatch, request, openFile, show, prac
     setOpen({ ...live, dirty: false });
     then?.();
   };
+
+  useEffect(() => {
+    saveRef.current = () => save();
+  });
 
   const saved = (path: Path, name: string, type: SaveType, openAfter: boolean, replaceId?: string) => {
     if (!live) return;

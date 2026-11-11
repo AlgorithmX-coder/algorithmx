@@ -87,7 +87,7 @@ export default function Viewer({ title, paper, doc, onClose }: { title: string; 
     <div
       role="dialog"
       aria-label={title}
-      style={{ position: "absolute", left: pos.x, top: pos.y, zIndex: 30, width: doc ? 560 : 460, maxWidth: "calc(100% - 20px)", borderRadius: 8, overflow: "hidden", background: W.page, boxShadow: "0 24px 60px -18px rgba(0,0,0,0.55), 0 0 0 1px rgba(0,0,0,0.12)", fontFamily: W.font }}
+      style={{ position: "absolute", left: pos.x, top: pos.y, zIndex: 30, width: doc ? 660 : 460, maxWidth: "calc(100% - 20px)", borderRadius: 8, overflow: "hidden", background: W.page, boxShadow: "0 24px 60px -18px rgba(0,0,0,0.55), 0 0 0 1px rgba(0,0,0,0.12)", fontFamily: W.font }}
     >
       <div
         onPointerDown={down}
@@ -106,7 +106,7 @@ export default function Viewer({ title, paper, doc, onClose }: { title: string; 
         {doc ? (
           /* ── Module 8: Documents ── a PDF made from a Word document: its pages, read-only */
           <div style={{ display: "flex", justifyContent: "center" }}>
-            <div style={{ zoom: 512 / 794 } as CSSProperties}>
+            <div style={{ zoom: 612 / 794 } as CSSProperties}>
               <DocSheet doc={doc} />
             </div>
           </div>

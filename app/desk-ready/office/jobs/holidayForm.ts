@@ -111,7 +111,7 @@ function check(s: OfficeState): Check[] {
 
   /* The form */
   const empty = doc ? emptyRequired(doc) : [];
-  add({ id: "filled", code: "WD-5", group: "The form", label: "Every box marked * is filled in" }, !!doc && empty.length === 0, !doc ? none : `"${empty[0]}" is empty. Click its grey box and fill it in${empty.length > 1 ? `, and ${empty.length - 1} more` : ""}.`);
+  add({ id: "filled", code: "WD-5", group: "The form", label: "Every box marked * is filled in" }, !!doc && empty.length === 0, !doc ? none : `${doc.blocks.find((x) => x.field?.label === empty[0])?.field?.kind === "check" ? `"${empty[0]}" isn't ticked. Click its box to tick it` : `"${empty[0]}" is empty. Click its grey box and fill it in`}${empty.length > 1 ? `, and ${empty.length - 1} more` : ""}.`);
   add({ id: "start", code: "ADM-3", group: "The form", label: "First day off: Monday 21 December 2026" }, sameDay(v("start"), 21, 12, 2026), !doc ? none : `First day off says "${v("start") || "nothing"}". It should be Monday 21 December 2026: 21/12/2026.`);
   add({ id: "end", code: "ADM-3", group: "The form", label: "Last day off: Wednesday 23 December 2026" }, sameDay(v("end"), 23, 12, 2026), !doc ? none : `Last day off says "${v("end") || "nothing"}". It should be Wednesday 23 December 2026: 23/12/2026.`);
   add({ id: "days", code: "ADM-3", group: "The form", label: "Working days off: 3" }, /^(3|three)\b/i.test(v("days")), !doc ? none : `It says "${v("days") || "nothing"}". Monday, Tuesday and Wednesday are 3 working days.`);

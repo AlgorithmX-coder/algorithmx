@@ -32,11 +32,12 @@ export const blockMargin = (b: WordBlock) => `${px(STYLES[b.style].before)}px 0 
 
 /* The number each "number" paragraph shows: 1, 2, 3, starting again after
  * anything that isn't a numbered paragraph. */
-export function listNumbers(blocks: WordBlock[]): Record<string, number> {
+export function listNumbers(blocks: WordBlock[], markup = false): Record<string, number> {
   const out: Record<string, number> = {};
   let n = 0;
   for (const b of blocks) {
-    if (b.style === "number" && b.revPara !== "del") out[b.id] = ++n;
+    /* a step crossed out as a tracked change keeps its number until it's accepted */
+    if (b.style === "number" && (markup || b.revPara !== "del")) out[b.id] = ++n;
     else if (b.style !== "number") n = 0;
   }
   return out;

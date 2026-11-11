@@ -728,7 +728,7 @@ export default function WordEditor({ doc, onChange, docKey, name, status, onFile
   };
 
   /* ── the page ── */
-  const nums = listNumbers(blocks);
+  const nums = listNumbers(blocks, true);
   const issuesFor = (id: string) => iss.filter((x) => x.blockId === id);
   const commented = new Set(comments.map((c) => c.blockId));
   const lit = focusComment ? comments.find((c) => c.id === focusComment)?.blockId : draft?.blockId;
@@ -1271,7 +1271,8 @@ function SpellPane({ mobile, doc, issue, left, pick, setPick, onChange, onIgnore
       ) : (
         <div style={{ display: "grid", gap: 10 }}>
           <p style={{ margin: 0, fontSize: 15, lineHeight: 1.5 }}>
-            <b>The spelling and grammar check is complete.</b> You&apos;re good to go.
+            <b style={{ display: "block" }}>The spelling and grammar check is complete.</b>
+            You&apos;re good to go.
           </p>
           <p style={{ margin: 0, padding: "10px 12px", borderRadius: 6, background: "#fff4ce", fontSize: 14, lineHeight: 1.5 }}>A spelling check doesn&apos;t know people&apos;s names, and can&apos;t tell a wrong number or date. Read those back against where you got them.</p>
           <button type="button" className="of-btn" onClick={onClose} style={{ ...smallBtn, justifySelf: "start", minHeight: 40 }}>
@@ -1313,6 +1314,11 @@ const MONTHS = ["January", "February", "March", "April", "May", "June", "July", 
 function Control({ b, onSet, onFocus }: { b: WordBlock; onSet: (v: string) => void; onFocus: () => void }) {
   const f = b.field!;
   const [open, setOpen] = useState(false);
+  const pop = useRef<HTMLSpanElement>(null);
+  /* a list or calendar that opens below the bottom of the window scrolls into view */
+  useEffect(() => {
+    if (open) reveal(pop.current?.closest<HTMLElement>(".wd-page") ?? null, pop.current);
+  }, [open]);
   const parsed = b.text.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
   const [month, setMonth] = useState<[number, number]>(() => (parsed ? [Number(parsed[2]) - 1, Number(parsed[3])] : [10, 2026]));
   const box: CSSProperties = { display: "flex", alignItems: "center", gap: 4, minHeight: 32, borderRadius: 2, position: "relative" };
@@ -1338,7 +1344,7 @@ function Control({ b, onSet, onFocus }: { b: WordBlock; onSet: (v: string) => vo
           </span>
         </button>
         {open && (
-          <span role="listbox" aria-label={f.label} style={{ position: "absolute", top: "100%", left: 0, right: 0, zIndex: 20, background: "#fff", border: `1px solid ${W.faint}`, boxShadow: W.float, padding: 2 }}>
+          <span ref={pop} role="listbox" aria-label={f.label} style={{ position: "absolute", top: "100%", left: 0, right: 0, zIndex: 20, background: "#fff", border: `1px solid ${W.faint}`, boxShadow: W.float, padding: 2 }}>
             {(f.options ?? []).map((o) => (
               <button
                 key={o}
@@ -1382,7 +1388,7 @@ function Control({ b, onSet, onFocus }: { b: WordBlock; onSet: (v: string) => vo
         </button>
       )}
       {open && f.kind === "date" && (
-        <span role="dialog" aria-label="Pick a date" style={{ position: "absolute", top: "100%", right: 0, zIndex: 20, width: 252, background: "#fff", border: `1px solid ${W.faint}`, boxShadow: W.float, padding: 8, fontFamily: W.font }}>
+        <span ref={pop} role="dialog" aria-label="Pick a date" style={{ position: "absolute", top: "100%", right: 0, zIndex: 20, width: 252, background: "#fff", border: `1px solid ${W.faint}`, boxShadow: W.float, padding: 8, fontFamily: W.font }}>
           <span style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 6 }}>
             <button type="button" aria-label="Previous month" onClick={() => setMonth(([m, y]) => (m === 0 ? [11, y - 1] : [m - 1, y]))} style={calNav}>
               ‹
