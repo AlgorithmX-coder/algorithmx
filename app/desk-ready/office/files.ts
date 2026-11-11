@@ -1,5 +1,4 @@
 import { PEOPLE, YOU } from "./northfield";
-import { newId } from "./store";
 import { pathText, samePath, type AccessGrant, type Email, type OfficeFile, type OfficeState, type Path, type Person, type RecycledItem, type ShareLink, type ShareRole, type WordDoc } from "./types";
 import { para } from "./word";
 
@@ -100,6 +99,11 @@ export function pastedLinks(s: OfficeState, e: Email): { file: OfficeFile; link:
 }
 
 /* ── sharing ─────────────────────────────────────────────────────────── */
+
+/* Ids made here, not in ./store, so the job checks (which a server page
+ * imports) never pull in React. */
+let counter = 0;
+const newId = (prefix: string) => `${prefix}-${Date.now().toString(36)}-m9${(counter++).toString(36)}`;
 
 const mapFile = (s: OfficeState, id: string, fn: (f: OfficeFile) => OfficeFile): OfficeState => ({ ...s, files: s.files.map((f) => (f.id === id ? fn(f) : f)) });
 

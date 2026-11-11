@@ -99,7 +99,7 @@ export function FileList({
   onKey?: (f: OfficeFile, key: string) => void;
 }) {
   return (
-    <div role="listbox" aria-label="Files" style={{ fontFamily: W.font }}>
+    <div role="listbox" aria-label="Files" style={{ fontFamily: W.font, color: W.ink }}>
       <div style={{ display: "grid", gridTemplateColumns: "minmax(0, 2.4fr) 1fr 1.1fr", gap: 10, padding: "8px 14px", fontSize: 13, color: W.muted, borderBottom: `1px solid ${W.edge}` }}>
         <span>Name</span>
         <span>Modified</span>
