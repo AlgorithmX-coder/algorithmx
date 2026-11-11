@@ -192,11 +192,11 @@ export function LibraryFigure({ focus, title = "A team folder in File Explorer",
                 </div>
               );
               return r.part ? (
-                <Part key={r.name} k={r.part} holds={r.part === "file" ? ["shared"] : []}>
+                <Part key={r.name} k={r.part} holds={r.part === "file" ? ["shared"] : []} style={{ margin: "5px 0" }}>
                   {row}
                 </Part>
               ) : (
-                <div key={r.name}>{row}</div>
+                <div key={r.name} style={{ margin: "5px 0" }}>{row}</div>
               );
             })}
           </div>
@@ -276,7 +276,7 @@ export const NAME_PARTS: Record<NamePart, PartInfo> = {
 };
 
 export function NameFigure({ focus, title = "A file name, the house way", what, note }: { focus?: NamePart[]; title?: string; what?: What<NamePart>; note?: string }) {
-  const seg: CSSProperties = { display: "inline-block", padding: "4px 6px", fontFamily: "Consolas, ui-monospace, monospace", fontSize: 30, letterSpacing: "0.01em" };
+  const seg: CSSProperties = { display: "inline-block", padding: "4px 6px", fontFamily: "Consolas, ui-monospace, monospace", fontSize: 30, letterSpacing: "0.01em", whiteSpace: "nowrap" };
   return (
     <FigureFrame info={withWhat(NAME_PARTS, what)} focus={focus} title={title} note={note} minWidth={660}>
       <div style={{ ...frame, padding: "46px 26px 22px 46px" }}>
@@ -285,7 +285,7 @@ export function NameFigure({ focus, title = "A file name, the house way", what, 
           <Part k="date" block={false} badge="top">
             <span style={{ ...seg, color: "#0f6cbd" }}>2026-11-10</span>
           </Part>
-          <span aria-label="a space" style={{ display: "inline-flex", flexDirection: "column", alignItems: "center", gap: 3, marginTop: 18 }}>
+          <span aria-label="a space" style={{ display: "inline-flex", flexDirection: "column", alignItems: "center", gap: 3, marginTop: 18, flexShrink: 0, whiteSpace: "nowrap" }}>
             <span style={{ width: 22, height: 14, border: `2px solid ${W.muted}`, borderTop: "none", borderRadius: "0 0 3px 3px" }} />
             <span style={{ fontSize: 11.5, fontWeight: 600, color: W.body }}>space</span>
           </span>
@@ -350,7 +350,7 @@ export function PlacesFigure({ focus, title = "Your OneDrive, the team's site, a
               <Part k="drafts" style={{ marginTop: 2 }}>
                 <div>
                   {line(folderIcon(), "Drafts")}
-                  <div style={{ paddingLeft: 22 }}>{line(<FileGlyph kind="docx" size={18} />, keep("2026-11-09 My stock notes.docx"))}</div>
+                  <div style={{ paddingLeft: 14 }}>{line(<FileGlyph kind="docx" size={18} />, <span style={{ whiteSpace: "nowrap" }}>2026-11-09 My notes.docx</span>, undefined, { fontSize: 12.5 })}</div>
                 </div>
               </Part>
             </div>
@@ -665,7 +665,7 @@ export function LinkSettingsFigure({ focus, title = "Link settings", what, note 
               {ShareIcon.eye(15)} Can view <span style={{ marginLeft: "auto", fontSize: 10 }}>▾</span>
             </span>
           </Part>
-          <div style={{ display: "flex", justifyContent: "flex-end", gap: 10, marginTop: 4 }}>
+          <div style={{ display: "flex", justifyContent: "flex-start", gap: 10, marginTop: 4 }}>
             <span style={{ ...fieldBox, borderColor: W.edge, fontWeight: 600 }}>Cancel</span>
             <span style={{ ...fieldBox, border: "none", background: W.outlook, color: "#fff", fontWeight: 700 }}>Apply</span>
           </div>

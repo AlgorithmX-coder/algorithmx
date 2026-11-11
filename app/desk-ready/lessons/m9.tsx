@@ -497,10 +497,10 @@ const m9: ModuleManifest = {
         {
           heading: "Getting a file onto the team's site",
           body: [
-            "Here, the Bay C count is in your OneDrive, but the team needs it. Select it and press Move to (2), then pick the team's folder from the places on the left (3): Operations Team, then its Stock folder. It's moved, so there's still only one.",
+            "Here, the Bay C count (4) is in your OneDrive, but the team needs it. Select it and press Move to (2), then pick the team's folder from the places on the left (3): Operations Team, then its Stock folder. It's moved, so there's still only one.",
             "A file that's only on your computer goes up with Upload (1), into the folder you're in.",
           ],
-          figure: <LibraryFigure view="onedrive" focus={["upload", "moveto", "places"]} renumber={{ upload: 1, moveto: 2, places: 3 }} title="Moving it to the team" what={{ places: "Your OneDrive at the top, then the team sites. Pick where the file should go." }} />,
+          figure: <LibraryFigure view="onedrive" focus={["upload", "moveto", "places", "file"]} renumber={{ upload: 1, moveto: 2, places: 3, file: 4 }} title="Moving it to the team" what={{ places: "Your OneDrive at the top, then the team sites. Pick where the file should go.", file: "The Bay C count. The team needs it, but it is still in your OneDrive, where only you can see it." }} />,
         },
         {
           heading: "Every save is kept",
