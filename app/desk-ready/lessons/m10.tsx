@@ -260,7 +260,7 @@ function MatchLab(p: LabProps) {
           prompt: "So how much of HP-2291 should Priya hold back? VAT is 20%.",
           figure: <MatchFigure data={HP2291_MATCH} bare />,
           options: [
-            { text: "£115.20: two pallets, with VAT", correct: true, why: "2 x £48.00 = £96.00, plus 20% VAT of £19.20: £115.20." },
+            { text: "£115.20: two pallets, with VAT", correct: true, why: "2 × £48.00 = £96.00, plus 20% VAT of £19.20: £115.20." },
             { text: "£96.00: two pallets at £48.00", why: "That's before VAT. The invoice charges VAT on them too, so hold that as well." },
             { text: "£691.20: the whole invoice", why: "10 pallets did arrive, and Harlow should be paid for those." },
           ],
@@ -469,7 +469,7 @@ const m10: ModuleManifest = {
           figure: <PoFigure />,
           body: [
             "Before Northfield buys anything, it sends the supplier a purchase order, called a PO for short. It says what we want, how many, and the price we agreed.",
-            "This one is PO 3307 (2). It asks Harlow Packaging (4) for 12 pallets of wrap at £48.00 each (6), delivered to goods-in (5), and Daniel has signed it (8).",
+            "This one is PO 3307 (2). It asks Harlow Packaging (4) for 12 pallets of wrap at £48.00 each (6), delivered to Goods in (5), and Daniel has signed it (8).",
           ],
         },
         {
@@ -481,7 +481,7 @@ const m10: ModuleManifest = {
         {
           heading: "What we ordered, line by line",
           figure: <PoFigure focus={["lines", "total"]} title="The order lines and the total" />,
-          body: ["Each line (6) says what, how many (the quantity) and the price of one (the unit price).", "Quantity times unit price is the line total: 12 x £48.00 = £576.00 (7). VAT isn't on a PO: it is added on the invoice."],
+          body: ["Each line (6) says what, how many (the quantity) and the price of one (the unit price).", "Quantity times unit price is the line's total, at the end of the line (6): 12 × £48.00 = £576.00. With only one line, the Total before VAT (7) is the same. VAT isn't on a PO: it is added on the invoice."],
         },
         {
           heading: "Here is the invoice",
@@ -499,7 +499,7 @@ const m10: ModuleManifest = {
         {
           heading: "Net, VAT and the total",
           figure: <InvoiceFigure focus={["net", "vat", "total"]} title="Net total, VAT and the total due" />,
-          body: ["The net total (8) is the lines added up before tax: £576.00.", "VAT (9) is usually 20% of the net: £576.00 x 20% = £115.20. Add them for the total due (10): £691.20. Work it out yourself; don't just trust the print."],
+          body: ["The net total (8) is the lines added up before tax: £576.00.", "VAT (9) is usually 20% of the net: £576.00 × 20% = £115.20. Add them for the total due (10): £691.20. Work it out yourself; don't just trust the print."],
           good: [{ text: "£576.00 + £115.20 = £691.20", note: "Net plus VAT is the total" }],
         },
         {
@@ -508,10 +508,10 @@ const m10: ModuleManifest = {
           body: ["The terms (11) say how long we have: here 30 days, so pay by 10/12/2026.", "The bank details (12) must match the ones we already hold for Harlow. If they've changed, stop: that's how invoice scams work. Module 11 shows you what to do."],
         },
         {
-          heading: "Match the three things",
-          figure: <InvoiceFigure focus={["poRef", "lines"]} title="What to match against the PO" />,
-          body: ["Before an invoice can be paid, check it against the PO: the PO number (4), the quantity and the unit price on each line (7).", "If any of them is different, it isn't approved. You find out why first."],
-          good: [{ text: "PO 3307 on both · 12 pallets on both · £48.00 on both" }],
+          heading: "Check it against the PO",
+          figure: <InvoiceFigure focus={["poRef", "lines"]} title="What to compare with the PO" />,
+          body: ["Before an invoice can be paid, compare it with the PO: the PO number (4), and the quantity and unit price on each line (7).", "If any of them is different, it isn't approved. You find out why first."],
+          good: [{ text: "PO 3307 on both · 12 pallets on both · £48.00 on both", note: "Everything agrees: it can go on to the next check" }],
           bad: [{ text: "Invoice says PO 3370 · 14 pallets · £52.00 each", note: "Any one of these means: query it" }],
         },
       ],
@@ -527,7 +527,7 @@ const m10: ModuleManifest = {
           q: "An invoice's net total is £576.00 and VAT is 20%. What is the total due?",
           options: ["£691.20", "£576.00", "£595.20"],
           answer: 0,
-          reasons: ["£576.00 x 20% is £115.20, and £576.00 + £115.20 = £691.20.", "That's before VAT. The total adds the VAT on top.", "That adds £19.20, which is VAT on only two pallets."],
+          reasons: ["£576.00 × 20% is £115.20, and £576.00 + £115.20 = £691.20.", "That's before VAT. The total adds the VAT on top.", "That adds £19.20, which is VAT on only two pallets."],
         },
         {
           q: "The invoice quotes PO 3370. Our order was PO 3307. What do you do?",
@@ -573,13 +573,13 @@ const m10: ModuleManifest = {
         {
           heading: "The quantity doesn't match",
           figure: <MatchFigure focus={["qty"]} title="The quantity row" />,
-          body: ["12 ordered, 10 delivered, 12 billed (5). Harlow are charging for 2 pallets we never got.", "The invoice matches the PO, which is why checking only the PO isn't enough."],
+          body: ["12 ordered, 10 delivered, 12 billed (5). Harlow are charging for 2 of the 12 pallets of wrap, and those 2 never came.", "The invoice matches the PO, which is why checking only the PO isn't enough."],
         },
         {
           heading: "Hold it, and say how much",
           figure: <MatchFigure focus={["verdict"]} title="What you decide" />,
-          body: ["Don't approve it. Tell Accounts what's wrong and how much to hold back (8).", "2 pallets x £48.00 = £96.00. Add VAT at 20%, £19.20: hold back £115.20."],
-          good: [{ text: "Only 10 of the 12 pallets arrived (DN-77812), so please hold back £115.20 including VAT." }],
+          body: ["Don't approve it. Tell Accounts what's wrong and how much to hold back (8).", "The 2 missing pallets of wrap cost £48.00 each: 2 × £48.00 = £96.00. Add VAT at 20%, £19.20: hold back £115.20."],
+          good: [{ text: "Only 10 of the 12 pallets of wrap arrived, so please hold back £115.20 including VAT." }],
           bad: [{ text: "There's a problem with the Harlow invoice.", note: "Which problem? How much?" }],
         },
         {
@@ -633,7 +633,7 @@ const m10: ModuleManifest = {
           heading: "Working out a day's hours",
           figure: <TimesheetFigure focus={["times", "lunch", "hours"]} title="Start, finish, lunch and hours worked" />,
           body: ["Finish take away start, then take away lunch. 09:00 to 17:30 is 8.5 hours; less 0.5 for lunch is 8 (5).", "Write half an hour as 0.5 and a quarter of an hour as 0.25, so the formula can add them up."],
-          good: [{ text: "08:30 to 17:00, 30 minutes lunch: 8" }, { text: "08:30 to 18:30, 30 minutes lunch: 9.5" }],
+          good: [{ text: "09:00 to 17:30, 30 minutes lunch: 8" }, { text: "09:00 to 18:00, 30 minutes lunch: 8.5" }],
         },
         {
           heading: "Overtime is only the extra",
@@ -792,7 +792,7 @@ const m10: ModuleManifest = {
         {
           heading: "A subject that says it all",
           figure: <MessageEmailFigure focus={["subject"]} title="The subject" />,
-          body: ["Start with \"Phone message:\", then who wants what, and when (8).", "Sarah can see from her inbox what it's about, and how urgent, before she opens it."],
+          body: ["Start with \"Phone message:\", then who wants what, and when (8).", "Sarah can see from her inbox who rang and what they want, before she opens it."],
           good: [{ text: "Phone message: Harlow can bring the 2 missing pallets on Wednesday" }],
           bad: [{ text: "Message" }, { text: "Call for you!!" }],
         },

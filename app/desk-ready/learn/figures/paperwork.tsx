@@ -1,6 +1,6 @@
 "use client";
 
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import { CREDIT_HPC118, DN_77812, INVOICE_HP2291, PO_3307, TRAIN_RECEIPT } from "../../office/admin";
 import { HopwellMark } from "../../office/apps/courier";
 import { EdgeLogo, Padlock } from "../../office/apps/Edge";
@@ -17,6 +17,16 @@ import { AppWindow, FakeButton, FigureFrame, Part, type PartInfo } from "./parts
  * the holiday form, the courier's booking page, and a phone message on
  * its pad and as an email. */
 
+/* Anything drawn that isn't a numbered part: dimmed with the rest of the
+ * picture when a card lights one part, so the lit part reads clearly. */
+function Rest({ children, style, block = true }: { children: ReactNode; style?: CSSProperties; block?: boolean }) {
+  return (
+    <Part k="_rest" noBadge style={style} block={block}>
+      {children}
+    </Part>
+  );
+}
+
 /* `what` overrides a part's key line for one card; `omit` leaves parts out. */
 function infoOf<K extends string>(parts: Record<K, PartInfo>, what: Partial<Record<K, string>> = {}): Record<K, PartInfo> {
   return Object.fromEntries((Object.entries(parts) as [K, PartInfo][]).map(([k, p]) => [k, what[k] ? { ...p, what: what[k] } : p])) as Record<K, PartInfo>;
@@ -29,7 +39,7 @@ export const PO_PARTS: Partial<Record<DocPart, PartInfo>> = {
   number: { n: 2, name: "PO number", what: "Our number for this order. The supplier must quote it on the delivery note and the invoice, so the three can be matched." },
   date: { n: 3, name: "Date", what: "When we placed the order." },
   supplier: { n: 4, name: "Supplier", what: "Who we are buying from." },
-  shipTo: { n: 5, name: "Deliver to", what: "Where the goods should go. Here, goods-in at the back of the building." },
+  shipTo: { n: 5, name: "Deliver to", what: "Where the goods should go. Here, Goods in, at the back of the building." },
   lines: { n: 6, name: "What we ordered", what: "One line per thing: its code, what it is, how many (quantity), and the price of one (unit price)." },
   total: { n: 7, name: "Total before VAT", what: "Quantity times unit price, added up. VAT is added later, on the invoice." },
   signed: { n: 8, name: "Authorised by", what: "The manager who agreed to spend the money. An order with no signature hasn't been agreed." },
@@ -94,7 +104,7 @@ export const MATCH_PARTS: Record<MatchPart, PartInfo> = {
   dn: { n: 2, name: "The delivery note", what: "What actually arrived, counted and signed for at goods-in." },
   inv: { n: 3, name: "The invoice", what: "What the supplier wants paying for." },
   ref: { n: 4, name: "Order number", what: "All three should name the same PO. If one doesn't, it may be someone else's order." },
-  qty: { n: 5, name: "Quantity", what: "Ordered, delivered and billed should be the same number. Here only 10 came, but 12 are billed." },
+  qty: { n: 5, name: "Quantity", what: "Ordered, delivered and billed should be the same number. Here only 10 of the 12 pallets came, but all 12 are billed." },
   price: { n: 6, name: "Unit price", what: "The invoice's price should be the one on the PO. The delivery note has no prices." },
   total: { n: 7, name: "Total", what: "Work it out yourself from the lines. Don't trust the bottom line just because it's printed." },
   verdict: { n: 8, name: "What you decide", what: "All three match: approve it. Anything differs: hold it and tell Accounts what's wrong and how much." },
@@ -112,11 +122,11 @@ export const HP2291_MATCH: { heads: [string, string, string]; rows: MatchRow[]; 
   heads: ["PO 3307", "DN-77812", "HP-2291"],
   rows: [
     { key: "ref", label: "Order number", cells: ["PO 3307", "PO 3307", "PO 3307"] },
-    { key: "qty", label: "Pallets of wrap", cells: ["12 ordered", "10 delivered", "12 billed"], odd: 1 },
+    { key: "qty", label: "Quantity (pallets)", cells: ["12 ordered", "10 delivered", "12 billed"], odd: 1 },
     { key: "price", label: "Unit price", cells: ["£48.00", "no prices", "£48.00"] },
     { key: "total", label: "Total", cells: ["£576.00 + VAT", "", "£691.20 with VAT"] },
   ],
-  verdict: "Hold it. 2 pallets are missing: 2 x £48.00 = £96.00, plus VAT £19.20, so hold back £115.20 and ask Harlow for a credit note.",
+  verdict: "Hold it. 2 of the 12 pallets of wrap never came: 2 × £48.00 = £96.00, plus VAT £19.20, so hold back £115.20 and ask Harlow for a credit note.",
   good: false,
 };
 
@@ -174,8 +184,11 @@ export function MatchFigure({ focus, title = "Three pieces of paper, side by sid
 
 /* ── a timesheet and an expense claim, in Excel ──────────────────────── */
 
-const ROW = 28;
+const ROW = 30;
 const NUM = 34;
+/* How far a part's outline sits inside its cells, so two lit parts side
+ * by side never touch, and an outline never sits on a number. */
+const INSET = 6;
 
 interface Box {
   k: string;
@@ -186,22 +199,27 @@ interface Box {
   badge?: "left" | "right" | "top" | "corner";
 }
 
-/* A small drawn sheet: the cells, then each part as an outline over them. */
-function MiniSheet({ grid, widths, boxes, file, place, tab, money = [], picture, odd = [] }: { grid: string[][]; widths: number[]; boxes: Box[]; file: string; place: string; tab: string; money?: number[]; picture?: ReactNode; odd?: [number, number][] }) {
+/* A small drawn sheet: the cells, then each part as an outline over them.
+ * When a card lights some parts (`focus`), every cell outside them fades,
+ * as the rest of any figure does. */
+function MiniSheet({ grid, widths, boxes, file, place, tab, money = [], picture, odd = [], focus = [], pad = 42, gap = 44 }: { grid: string[][]; widths: number[]; boxes: Box[]; file: string; place: string; tab: string; money?: number[]; picture?: ReactNode; odd?: [number, number][]; focus?: readonly string[]; pad?: number; gap?: number }) {
   const left = (c: number) => NUM + widths.slice(0, c).reduce((a, b) => a + b, 0);
   const width = left(widths.length);
+  const lit = boxes.filter((b) => focus.includes(b.k));
+  const inLit = (r: number, c: number) => lit.some((b) => r >= b.r && r < b.r + (b.rows ?? 1) && c >= b.c && c < b.c + (b.cols ?? 1));
+  const fade = (on: boolean) => (focus.length === 0 || on ? 1 : 0.32);
   return (
     <div style={{ background: W.page, borderRadius: 8, boxShadow: W.float, border: `1px solid ${W.edge}`, overflow: "visible", width: "max-content", minWidth: "100%", boxSizing: "border-box" }}>
-      <div style={{ display: "flex", alignItems: "center", gap: 10, minHeight: 34, padding: "0 12px 0 42px", background: W.excel, color: "#fff", fontSize: 13.5, borderRadius: "8px 8px 0 0" }}>
-        <Part k="file" block={false} badge="right">
+      <div style={{ display: "flex", alignItems: "center", gap: 10, minHeight: 34, padding: `0 12px 0 ${pad}px`, background: W.excel, color: "#fff", fontSize: 13.5, borderRadius: "8px 8px 0 0" }}>
+        <Part k="file" block={false} badge="right" style={{ padding: "2px 6px" }}>
           <span>
             <b>Excel</b> &nbsp;{file} · Saved
           </span>
         </Part>
       </div>
-      <div style={{ display: "flex", gap: 44, padding: "38px 42px 14px", alignItems: "flex-start" }}>
+      <div style={{ display: "flex", gap, padding: `38px ${pad}px 14px`, alignItems: "flex-start" }}>
         <div style={{ position: "relative", width, height: (grid.length + 1) * ROW, fontSize: 13, flexShrink: 0 }}>
-          <div style={{ position: "absolute", left: 0, top: 0, width, height: ROW, background: W.sunk, borderBottom: `1px solid ${W.edge}` }}>
+          <div style={{ position: "absolute", left: 0, top: 0, width, height: ROW, background: W.sunk, borderBottom: `1px solid ${W.edge}`, opacity: fade(false), transition: "opacity .2s ease" }}>
             {widths.map((w, c) => (
               <span key={c} style={{ position: "absolute", left: left(c), width: w, height: ROW, display: "flex", alignItems: "center", justifyContent: "center", color: W.muted, fontSize: 12, borderRight: `1px solid ${W.edge}` }}>
                 {String.fromCharCode(65 + c)}
@@ -209,7 +227,7 @@ function MiniSheet({ grid, widths, boxes, file, place, tab, money = [], picture,
             ))}
           </div>
           {grid.map((row, r) => (
-            <span key={`n${r}`} style={{ position: "absolute", left: 0, top: (r + 1) * ROW, width: NUM, height: ROW, display: "flex", alignItems: "center", justifyContent: "center", background: W.sunk, color: W.muted, fontSize: 12, borderBottom: `1px solid ${W.edge}`, borderRight: `1px solid ${W.edge}` }}>
+            <span key={`n${r}`} style={{ position: "absolute", left: 0, top: (r + 1) * ROW, width: NUM, height: ROW, display: "flex", alignItems: "center", justifyContent: "center", background: W.sunk, color: W.muted, fontSize: 12, borderBottom: `1px solid ${W.edge}`, borderRight: `1px solid ${W.edge}`, opacity: fade(inLit(r, 0) && lit.some((b) => b.c === 0)), transition: "opacity .2s ease" }}>
               {r + 1}
             </span>
           ))}
@@ -220,23 +238,26 @@ function MiniSheet({ grid, widths, boxes, file, place, tab, money = [], picture,
               return (
                 <span
                   key={`${r}-${c}`}
-                  style={{ position: "absolute", left: left(c), top: (r + 1) * ROW, width: widths[c], height: ROW, boxSizing: "border-box", padding: "0 6px", display: "flex", alignItems: "center", justifyContent: num ? "flex-end" : "flex-start", borderRight: `1px solid ${W.edge}`, borderBottom: `1px solid ${W.edge}`, background: r === 0 ? "#e6f2ea" : bad ? "#fde7e9" : W.page, color: bad ? "#a4262c" : W.ink, fontWeight: r === 0 || bad ? 700 : 400, whiteSpace: "nowrap", overflow: "hidden" }}
+                  style={{ position: "absolute", left: left(c), top: (r + 1) * ROW, width: widths[c], height: ROW, boxSizing: "border-box", padding: "0 12px", display: "flex", alignItems: "center", justifyContent: num ? "flex-end" : "flex-start", borderRight: `1px solid ${W.edge}`, borderBottom: `1px solid ${W.edge}`, background: r === 0 ? "#e6f2ea" : bad ? "#fde7e9" : W.page, color: bad ? "#a4262c" : W.ink, fontWeight: r === 0 || bad ? 700 : 400, whiteSpace: "nowrap", overflow: "hidden", opacity: fade(inLit(r, c)), transition: "opacity .2s ease" }}
                 >
                   {money.includes(c) && num && !v.startsWith("£") ? `£${Number(v).toFixed(2)}` : v}
                 </span>
               );
             }),
           )}
-          {boxes.map((b) => (
+          {boxes.map((b) => {
             /* a part on column A takes in the row numbers, so its badge sits in the margin, not on them */
-            <Part key={b.k} k={b.k} badge={b.badge ?? "left"} style={{ position: "absolute", left: b.c === 0 ? 0 : left(b.c), top: (b.r + 1) * ROW, width: left(b.c + (b.cols ?? 1)) - (b.c === 0 ? 0 : left(b.c)), height: (b.rows ?? 1) * ROW, pointerEvents: "none", zIndex: 2 }}>
-              <span />
-            </Part>
-          ))}
+            const x = b.c === 0 ? 0 : left(b.c);
+            return (
+              <Part key={b.k} k={b.k} badge={b.badge ?? "left"} style={{ position: "absolute", left: x + INSET, top: (b.r + 1) * ROW + INSET, width: left(b.c + (b.cols ?? 1)) - x - 2 * INSET, height: (b.rows ?? 1) * ROW - 2 * INSET, pointerEvents: "none", zIndex: 2 }}>
+                <span />
+              </Part>
+            );
+          })}
         </div>
         {picture}
       </div>
-      <div style={{ display: "flex", alignItems: "center", minHeight: 32, padding: `0 14px 0 ${46 + NUM}px`, background: W.chrome, borderTop: `1px solid ${W.edge}`, borderRadius: "0 0 8px 8px", fontSize: 13 }}>
+      <div style={{ display: "flex", alignItems: "center", minHeight: 32, padding: `0 14px 0 ${pad + NUM}px`, background: W.chrome, borderTop: `1px solid ${W.edge}`, borderRadius: "0 0 8px 8px", fontSize: 13, opacity: fade(false), transition: "opacity .2s ease" }}>
         <span style={{ padding: "6px 12px", background: W.page, color: W.excel, fontWeight: 700, borderBottom: `3px solid ${W.excel}` }}>{tab}</span>
         <span style={{ marginLeft: "auto", color: W.muted }}>{place}</span>
       </div>
@@ -249,10 +270,10 @@ export type TimesheetPart = "file" | "days" | "times" | "lunch" | "hours" | "ove
 export const TIMESHEET_PARTS: Record<TimesheetPart, PartInfo> = {
   file: { n: 1, name: "The file", what: "Your own copy of the team's timesheet template, named date first and saved where HR asked." },
   days: { n: 2, name: "Day and date", what: "One row per working day, already filled in by the template." },
-  times: { n: 3, name: "Start and finish", what: "When you really started and stopped, written like the form: 08:30, 17:00." },
+  times: { n: 3, name: "Start and finish", what: "When you really started and stopped, written like the form: 09:00, 17:30." },
   lunch: { n: 4, name: "Lunch", what: "Your unpaid break, in hours: half an hour is 0.5." },
-  hours: { n: 5, name: "Hours worked", what: "Finish take away start, then take away lunch. 08:30 to 17:00 is 8.5 hours, less 0.5 for lunch: 8." },
-  overtime: { n: 6, name: "Overtime", what: "Hours over your normal day (8 here). Only the extra goes in: a 9.5 hour day is 1.5 overtime." },
+  hours: { n: 5, name: "Hours worked", what: "Finish take away start, then take away lunch. 09:00 to 17:30 is 8.5 hours, less 0.5 for lunch: 8." },
+  overtime: { n: 6, name: "Overtime", what: "Hours over your normal day (8 here). Only the extra goes in: Wednesday's 8.5 hours is 0.5 overtime." },
   total: { n: 7, name: "Total", what: "The week added up by a formula, =SUM(F2:F6). Check it against your own sum." },
   who: { n: 8, name: "Your name and the week", what: "Whose hours these are, and which week. Payroll can't pay a timesheet with no name." },
 };
@@ -271,10 +292,12 @@ export const MY_WEEK: string[][] = [
 
 export function TimesheetFigure({ focus, title = "A timesheet, filled in", what, note, grid = MY_WEEK, odd }: { focus?: TimesheetPart[]; title?: string; what?: Partial<Record<TimesheetPart, string>>; note?: string; grid?: string[][]; odd?: [number, number][] }) {
   return (
-    <FigureFrame info={infoOf(TIMESHEET_PARTS, what)} focus={focus} title={title} note={note} minWidth={760}>
+    <FigureFrame info={infoOf(TIMESHEET_PARTS, what)} focus={focus} title={title} note={note} minWidth={770}>
       <MiniSheet
+        focus={focus}
+        pad={40}
         grid={grid}
-        widths={[104, 96, 64, 64, 60, 104, 84]}
+        widths={[104, 100, 70, 70, 66, 112, 92]}
         file="2026-11-06 Timesheet Jordan Miles.xlsx"
         place="HR > Forms > Completed"
         tab="Timesheet"
@@ -308,7 +331,7 @@ export const CLAIM_PARTS: Record<ClaimPart, PartInfo> = {
 
 export const MY_CLAIM: string[][] = [
   ["Date", "What it was for", "Category", "Amount"],
-  ["10/11/2026", "Return train, Leicester to Nottingham", "Travel", "14.60"],
+  ["10/11/2026", "Return train to Nottingham", "Travel", "14.60"],
   ["", "", "", ""],
   ["Total", "", "", "14.60"],
   ["Name", "Jordan Miles", "", ""],
@@ -317,10 +340,13 @@ export const MY_CLAIM: string[][] = [
 
 export function ClaimFigure({ focus, title = "An expense claim, with its receipt", what, note }: { focus?: ClaimPart[]; title?: string; what?: Partial<Record<ClaimPart, string>>; note?: string }) {
   return (
-    <FigureFrame info={infoOf(CLAIM_PARTS, what)} focus={focus} title={title} note={note} minWidth={770}>
+    <FigureFrame info={infoOf(CLAIM_PARTS, what)} focus={focus} title={title} note={note} minWidth={780}>
       <MiniSheet
+        focus={focus}
+        pad={36}
+        gap={34}
         grid={MY_CLAIM}
-        widths={[92, 212, 76, 72]}
+        widths={[100, 212, 84, 84]}
         file="2026-11-13 Expense claim Jordan Miles.xlsx"
         place="Finance > Expenses > 2026"
         tab="Expense claim"
@@ -335,7 +361,7 @@ export function ClaimFigure({ focus, title = "An expense claim, with its receipt
         ]}
         picture={
           <Part k="receipt" badge="right" style={{ flexShrink: 0, boxShadow: "0 2px 8px rgba(0,0,0,0.25)" }}>
-            <ReceiptPhoto doc={TRAIN_RECEIPT} scale={0.62} />
+            <ReceiptPhoto doc={TRAIN_RECEIPT} scale={0.82} />
           </Part>
         }
       />
@@ -358,10 +384,10 @@ export const HOLIDAY_PARTS: Record<HolidayPart, PartInfo> = {
 
 function FormRow({ label, children, k, badge = "left" }: { label: string; children: ReactNode; k: HolidayPart; badge?: "left" | "right" }) {
   return (
-    <Part k={k} badge={badge}>
-      <div style={{ display: "grid", gridTemplateColumns: "150px 1fr", gap: 12, alignItems: "center", padding: "7px 0", borderBottom: `1px solid ${W.edge}` }}>
+    <Part k={k} badge={badge} style={{ padding: "0 8px", marginBottom: 11 }}>
+      <div style={{ display: "grid", gridTemplateColumns: "128px 1fr", gap: 12, alignItems: "center", padding: "7px 0", borderBottom: `1px solid ${W.edge}` }}>
         <span style={{ fontSize: 13.5, color: W.muted }}>{label}</span>
-        <span style={{ fontSize: 15, fontWeight: 600, color: "#1f3a6e" }}>{children}</span>
+        <span style={{ fontSize: 15, fontWeight: 600, color: "#1f3a6e", whiteSpace: "nowrap" }}>{children}</span>
       </div>
     </Part>
   );
@@ -369,12 +395,14 @@ function FormRow({ label, children, k, badge = "left" }: { label: string; childr
 
 export function HolidayFigure({ focus, title = "A holiday request form", what, note }: { focus?: HolidayPart[]; title?: string; what?: Partial<Record<HolidayPart, string>>; note?: string }) {
   return (
-    <FigureFrame info={infoOf(HOLIDAY_PARTS, what)} focus={focus} title={title} note={note} minWidth={420}>
+    <FigureFrame info={infoOf(HOLIDAY_PARTS, what)} focus={focus} title={title} note={note} minWidth={540}>
       <AppWindow app="Word" colour={W.word} title="2026-11-13 Holiday request Jordan Miles.docx">
         <div style={{ background: W.sunk, padding: "18px 22px" }}>
           <div style={{ background: W.page, padding: "22px 44px 26px", boxShadow: "0 1px 3px rgba(0,0,0,0.15)", maxWidth: 560, margin: "0 auto" }}>
-            <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.1em", color: W.muted, textTransform: "uppercase" }}>Northfield Supplies · HR</div>
-            <div style={{ fontSize: 20, fontWeight: 700, margin: "4px 0 10px" }}>Holiday request</div>
+            <Rest style={{ padding: "0 8px" }}>
+              <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.1em", color: W.muted, textTransform: "uppercase" }}>Northfield Supplies · HR</div>
+              <div style={{ fontSize: 20, fontWeight: 700, margin: "4px 0 10px" }}>Holiday request</div>
+            </Rest>
             <FormRow k="who" label="Name and team">
               Jordan Miles, Office
             </FormRow>
@@ -409,7 +437,7 @@ export const BOOKING_PARTS: Record<BookingPart, PartInfo> = {
   method: { n: 2, name: "Collect or drop off", what: "Whether they come to you, or you take it to them. Get this wrong and nobody turns up." },
   from: { n: 3, name: "Collect from", what: "Which address, and which door. Goods-in and reception are different places." },
   to: { n: 4, name: "Deliver to", what: "Where it is going. Pick from the address book carefully: names can be alike." },
-  parcels: { n: 5, name: "Parcels and weights", what: "One line per box, each with its weight. 2 boxes at 12 kg is two lines, not one of 24." },
+  parcels: { n: 5, name: "Parcels and weights", what: "One line per box, each with its own weight: two boxes of 12 kg are two lines of 12 kg." },
   day: { n: 6, name: "Day", what: "Check the date, not just the day name. \"Friday\" means the coming Friday." },
   time: { n: 7, name: "Time window", what: "When the driver can come. The afternoon is 13:00 to 17:00." },
   price: { n: 8, name: "Summary and price", what: "Everything you chose, in one place. Read it back against the request before you book." },
@@ -441,11 +469,13 @@ export function BookingFigure({ focus, title = "A booking website", what, note }
         </div>
         {/* the page */}
         <div style={{ background: "#f4f6ef", padding: "12px 44px 16px", color: "#14231d", borderRadius: "0 0 8px 8px" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
-            <HopwellMark size={22} />
-            <b style={{ color: "#0d5c46", fontSize: 17 }}>hopwell</b>
-            <b style={{ marginLeft: 14, fontSize: 16 }}>Book a collection</b>
-          </div>
+          <Rest>
+            <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
+              <HopwellMark size={22} />
+              <b style={{ color: "#0d5c46", fontSize: 17 }}>hopwell</b>
+              <b style={{ marginLeft: 14, fontSize: 16 }}>Book a collection</b>
+            </div>
+          </Rest>
           <div style={{ display: "grid", gridTemplateColumns: "minmax(0, 1fr) 180px", gap: 12, alignItems: "start" }}>
             <div style={{ display: "grid", gap: 8 }}>
               <Part k="method" badge="left">
@@ -459,7 +489,7 @@ export function BookingFigure({ focus, title = "A booking website", what, note }
                   </div>
                 </div>
               </Part>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
+              <div style={{ display: "grid", gap: 12 }}>
                 <Part k="from" badge="left">
                   <div style={sec}>
                     <div style={h}>2 Collect from</div>
@@ -470,7 +500,7 @@ export function BookingFigure({ focus, title = "A booking website", what, note }
                     </span>
                   </div>
                 </Part>
-                <Part k="to" badge="corner">
+                <Part k="to" badge="left">
                   <div style={sec}>
                     <div style={h}>3 Deliver to</div>
                     <span style={{ ...choice(true), display: "block" }}>
@@ -494,7 +524,9 @@ export function BookingFigure({ focus, title = "A booking website", what, note }
                 </div>
               </Part>
               <div style={sec}>
-                <div style={h}>5 Collection day and time</div>
+                <Rest>
+                  <div style={h}>5 Collection day and time</div>
+                </Rest>
                 <Part k="day" badge="left">
                   <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
                     {["Thu 12 Nov", "Fri 13 Nov", "Mon 16 Nov", "Tue 17 Nov"].map((d, i) => (
@@ -552,13 +584,17 @@ export const CONFIRM_PARTS: Record<ConfirmPart, PartInfo> = {
 
 export function ConfirmFigure({ focus, title = "After you book", note }: { focus?: ConfirmPart[]; title?: string; note?: string }) {
   return (
-    <FigureFrame info={CONFIRM_PARTS} focus={focus} title={title} note={note}>
-      <div style={{ background: "#f4f6ef", borderRadius: 8, boxShadow: W.float, border: `1px solid ${W.edge}`, padding: "18px 48px 20px", color: "#14231d" }}>
+    <FigureFrame info={CONFIRM_PARTS} focus={focus} title={title} note={note} minWidth={500}>
+      <div style={{ background: "#f4f6ef", borderRadius: 8, boxShadow: W.float, border: `1px solid ${W.edge}`, padding: "18px 44px 20px", color: "#14231d" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
-          <span aria-hidden style={{ width: 34, height: 34, borderRadius: "50%", background: "#0d5c46", color: "#c8f169", display: "inline-flex", alignItems: "center", justifyContent: "center", fontWeight: 800 }}>
-            ✓
-          </span>
-          <b style={{ fontSize: 21 }}>Collection booked</b>
+          <Rest block={false}>
+            <span style={{ display: "inline-flex", alignItems: "center", gap: 10, whiteSpace: "nowrap" }}>
+              <span aria-hidden style={{ width: 34, height: 34, borderRadius: "50%", background: "#0d5c46", color: "#c8f169", display: "inline-flex", alignItems: "center", justifyContent: "center", fontWeight: 800 }}>
+                ✓
+              </span>
+              <b style={{ fontSize: 21 }}>Collection booked</b>
+            </span>
+          </Rest>
           <span style={{ marginLeft: "auto" }}>
             <Part k="list" block={false} badge="right">
               <FakeButton>My bookings</FakeButton>
@@ -568,15 +604,16 @@ export function ConfirmFigure({ focus, title = "After you book", note }: { focus
         <Part k="ref" badge="left" style={{ marginTop: 12 }}>
           <div style={{ padding: "10px 14px", borderRadius: 10, background: W.page, border: "2px solid #0d5c46", display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
             <span style={{ fontSize: 13, color: "#5b6b63" }}>Your booking reference</span>
-            <b style={{ fontFamily: "Consolas, ui-monospace, monospace", fontSize: 22, letterSpacing: "0.06em" }}>HW-4QJ7TC</b>
+            <b style={{ fontFamily: "Consolas, ui-monospace, monospace", fontSize: 22, letterSpacing: "0.06em", whiteSpace: "nowrap" }}>HW-4QJ7TC</b>
           </div>
         </Part>
         <Part k="details" badge="left" style={{ marginTop: 10 }}>
           <div style={{ padding: "10px 14px", borderRadius: 10, background: W.page, border: "1px solid #d9dfd3", fontSize: 13.5, lineHeight: 1.6 }}>
-            <b>Fri 13 Nov, 13:00 to 17:00</b>
+            <b style={{ whiteSpace: "nowrap" }}>Fri 13 Nov, 13:00 to 17:00</b>
             <br />
             Northfield Supplies, Goods in to Brightwater Cups Ltd, Derby
-            <br />2 parcels: 12 kg, 12 kg · Next day
+            <br />
+            <span style={{ whiteSpace: "nowrap" }}>2 parcels: 12 kg, 12 kg</span> · Next day
           </div>
         </Part>
       </div>
@@ -596,7 +633,7 @@ export const MESSAGE_PARTS: Record<MessagePart, PartInfo> = {
   message: { n: 5, name: "What they want", what: "In their words, with the numbers: what is changing, from what, to what." },
   callback: { n: 6, name: "Call back by", what: "Their deadline. A message that misses it is no use at all." },
   taken: { n: 7, name: "Taken by", what: "You, so the person can ask you about it." },
-  subject: { n: 8, name: "Subject", what: '"Phone message:" then who wants what, and when. It tells them everything before they open it.' },
+  subject: { n: 8, name: "Subject", what: '"Phone message:" then who wants what, and when. They know what it is about before they open it.' },
 };
 
 export interface PhoneNote {
@@ -627,9 +664,9 @@ export const TOM_MESSAGE: PhoneNote = {
 
 function Line({ label, children, k, badge = "left" }: { label: string; children: ReactNode; k: MessagePart; badge?: "left" | "right" }) {
   return (
-    <Part k={k} badge={badge}>
+    <Part k={k} badge={badge} style={{ padding: "0 8px", marginBottom: 11 }}>
       <div style={{ display: "flex", gap: 8, alignItems: "baseline", padding: "4px 0", borderBottom: "1px solid #e7c9a5" }}>
-        <span style={{ flexShrink: 0, width: 66, fontSize: 11.5, fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase", color: "#8a5a2b" }}>{label}</span>
+        <span style={{ flexShrink: 0, width: 78, fontSize: 11.5, fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase", color: "#8a5a2b", whiteSpace: "nowrap" }}>{label}</span>
         <span style={{ fontFamily: PEN, fontSize: 16, color: "#1d4fb8", lineHeight: 1.35 }}>{children}</span>
       </div>
     </Part>
@@ -640,9 +677,11 @@ export function MessagePadFigure({ focus, title = "A phone message, on the pad",
   const info = infoOf(MESSAGE_PARTS, what);
   delete (info as Partial<Record<MessagePart, PartInfo>>).subject;
   return (
-    <FigureFrame info={info} focus={focus} title={title} note={note}>
-      <div style={{ maxWidth: 440, margin: "0 auto", background: "#fff7e8", borderRadius: 4, boxShadow: "0 18px 40px -16px rgba(0,0,0,0.6), 0 0 0 1px rgba(0,0,0,0.08)", padding: "16px 40px 18px", backgroundImage: "linear-gradient(#f4c98f 0 6px, transparent 6px)" }}>
-        <div style={{ textAlign: "center", fontSize: 13, fontWeight: 800, letterSpacing: "0.16em", textTransform: "uppercase", color: "#8a5a2b", marginTop: 4 }}>Telephone message</div>
+    <FigureFrame info={info} focus={focus} title={title} note={note} minWidth={460}>
+      <div style={{ maxWidth: 460, margin: "0 auto", background: "#fff7e8", borderRadius: 4, boxShadow: "0 18px 40px -16px rgba(0,0,0,0.6), 0 0 0 1px rgba(0,0,0,0.08)", padding: "16px 40px 18px", backgroundImage: "linear-gradient(#f4c98f 0 6px, transparent 6px)" }}>
+        <Rest>
+          <div style={{ textAlign: "center", fontSize: 13, fontWeight: 800, letterSpacing: "0.16em", textTransform: "uppercase", color: "#8a5a2b", marginTop: 4 }}>Telephone message</div>
+        </Rest>
         <div style={{ marginTop: 8 }}>
           <Line k="for" label="For">
             {m.for}
@@ -651,10 +690,12 @@ export function MessagePadFigure({ focus, title = "A phone message, on the pad",
             {m.caller}, {m.company}
           </Line>
           <Line k="phone" label="Phone" badge="right">
-            {m.phone}
+            <span style={{ whiteSpace: "nowrap" }}>{m.phone}</span>
           </Line>
           <Line k="when" label="When" badge="right">
-            {m.date} at {m.time}
+            <span style={{ whiteSpace: "nowrap" }}>
+              {m.date} at {m.time}
+            </span>
           </Line>
           <Line k="message" label="Message">
             {m.message}
@@ -666,11 +707,13 @@ export function MessagePadFigure({ focus, title = "A phone message, on the pad",
             {m.taken}
           </Line>
         </div>
-        <div style={{ display: "flex", gap: 14, marginTop: 10, fontSize: 12, color: "#8a5a2b", flexWrap: "wrap" }}>
-          <span>☑ Please call back</span>
-          <span>☐ Will call again</span>
-          <span>☑ Urgent</span>
-        </div>
+        <Rest style={{ marginTop: 10, padding: "0 8px" }}>
+          <div style={{ display: "flex", gap: 14, fontSize: 12, color: "#8a5a2b", flexWrap: "wrap" }}>
+            <span>☑ Please call back</span>
+            <span>☐ Will call again</span>
+            <span>☑ Urgent</span>
+          </div>
+        </Rest>
       </div>
     </FigureFrame>
   );
@@ -681,52 +724,58 @@ export function MessageEmailFigure({ focus, title = "The same message, as an ema
   return (
     <FigureFrame info={infoOf(MESSAGE_PARTS, what)} focus={focus} title={title} note={note}>
       <AppWindow app="Outlook" colour={W.outlook} title="New message">
-        <div style={{ display: "flex", gap: 10, alignItems: "center", padding: "8px 14px 8px 52px", background: W.chrome, borderBottom: `1px solid ${W.edge}` }}>
-          <FakeButton primary>➤ Send</FakeButton>
-        </div>
+        <Rest>
+          <div style={{ display: "flex", gap: 10, alignItems: "center", padding: "8px 14px 8px 52px", background: W.chrome, borderBottom: `1px solid ${W.edge}` }}>
+            <FakeButton primary>➤ Send</FakeButton>
+          </div>
+        </Rest>
         <div style={{ padding: "4px 20px 0 52px" }}>
-          <Part k="for">
+          <Part k="for" style={{ padding: "0 6px", marginBottom: 10 }}>
             <div style={{ display: "flex", gap: 10, alignItems: "center", minHeight: 34, borderBottom: `1px solid ${W.edge}`, fontSize: 14 }}>
               <span style={{ width: 52, color: W.muted }}>To</span>
               <span style={{ padding: "2px 10px", borderRadius: 12, background: W.select }}>{m.for}</span>
             </div>
           </Part>
-          <Part k="subject">
+          <Part k="subject" style={{ padding: "0 6px" }}>
             <div style={{ display: "flex", gap: 10, alignItems: "center", minHeight: 34, borderBottom: `1px solid ${W.edge}`, fontSize: 14 }}>
               <span style={{ width: 52, color: W.muted, flexShrink: 0 }}>Subject</span>
               <b style={{ fontWeight: 600 }}>{m.subject}</b>
             </div>
           </Part>
         </div>
-        <div style={{ padding: "14px 26px 18px 62px", display: "grid", gap: 8, fontSize: 14.5, lineHeight: 1.55 }}>
-          <div>Hi {first},</div>
-          <div>You had a call while you were away from your desk.</div>
-          <Part k="caller">
+        <div style={{ padding: "14px 26px 18px 56px", display: "grid", gap: 12, fontSize: 14.5, lineHeight: 1.55 }}>
+          <Rest style={{ padding: "2px 6px" }}>
+            <div>Hi {first},</div>
+          </Rest>
+          <Rest style={{ padding: "2px 6px" }}>
+            <div>You had a call while you were away from your desk.</div>
+          </Rest>
+          <Part k="caller" style={{ padding: "2px 6px" }}>
             <div>
               <b>Who:</b> {m.caller}, {m.company}
             </div>
           </Part>
-          <Part k="when">
+          <Part k="when" style={{ padding: "2px 6px" }}>
             <div>
               <b>When:</b> {m.date} at {m.time}
             </div>
           </Part>
-          <Part k="message">
+          <Part k="message" style={{ padding: "2px 6px" }}>
             <div>
               <b>Message:</b> {m.message}
             </div>
           </Part>
-          <Part k="phone">
+          <Part k="phone" style={{ padding: "2px 6px" }}>
             <div>
               <b>Number:</b> {m.phone}
             </div>
           </Part>
-          <Part k="callback">
+          <Part k="callback" style={{ padding: "2px 6px" }}>
             <div>
               <b>Call back:</b> {m.callback.toLowerCase()}
             </div>
           </Part>
-          <Part k="taken" style={{ justifySelf: "start", paddingRight: 8 }}>
+          <Part k="taken" style={{ justifySelf: "start", padding: "4px 12px 4px 6px" }}>
             <div>
               Thanks,
               <br />

@@ -61,7 +61,20 @@ export interface PickProps {
   marks?: Partial<Record<DocPart, "right" | "wrong">>;
 }
 
-/* One part of the page: numbered in a figure, clickable in a practice. */
+/* Everything on the page that isn't a numbered part (the title, the
+ * extra reference rows, the small print): plain on its own, and dimmed with
+ * the rest of the page when a figure lights one part. */
+function Rest({ children, style }: { children: ReactNode; style?: CSSProperties }) {
+  return (
+    <Part k="_rest" noBadge style={style}>
+      {children}
+    </Part>
+  );
+}
+
+/* One part of the page: numbered in a figure, clickable in a practice.
+ * Each carries a little padding of its own, so a lit outline sits clear of
+ * its words and of the next part. */
 function Bit({ k, children, badge = "left", style, block = true, p }: { k: DocPart; children: ReactNode; badge?: "left" | "right" | "top" | "corner"; style?: CSSProperties; block?: boolean; p: PickProps }) {
   if (p.pick) {
     const mark = p.marks?.[k];
@@ -92,7 +105,7 @@ function Bit({ k, children, badge = "left", style, block = true, p }: { k: DocPa
     );
   }
   return (
-    <Part k={k} badge={badge} style={style} block={block}>
+    <Part k={k} badge={badge} style={{ padding: "3px 6px", ...style }} block={block}>
       {children}
     </Part>
   );
@@ -157,9 +170,9 @@ function Letterhead({ d }: { d: BizDoc }) {
 
 function MetaRow({ name, value, strong }: { name: string; value: string; strong?: boolean }) {
   return (
-    <div style={{ display: "flex", justifyContent: "space-between", gap: 14, fontSize: 12, lineHeight: 1.7, padding: "3px 0" }}>
-      <span style={{ color: "#666" }}>{name}</span>
-      <span style={{ fontWeight: strong ? 800 : 600, fontVariantNumeric: "tabular-nums" }}>{value}</span>
+    <div style={{ display: "flex", justifyContent: "space-between", gap: 14, fontSize: 12, lineHeight: 1.6 }}>
+      <span style={{ color: "#666", whiteSpace: "nowrap" }}>{name}</span>
+      <span style={{ fontWeight: strong ? 800 : 600, fontVariantNumeric: "tabular-nums", whiteSpace: "nowrap" }}>{value}</span>
     </div>
   );
 }
@@ -193,8 +206,10 @@ export function DocSheet({ doc, ...p }: { doc: BizDoc } & PickProps) {
         <Bit k={isPo ? "buyer" : "supplier"} p={p} style={{ maxWidth: 290 }}>
           <Letterhead d={doc} />
         </Bit>
-        <div style={{ minWidth: 190 }}>
-          <div style={{ fontSize: 20, fontWeight: 800, letterSpacing: "0.04em", textTransform: "uppercase", color: c, textAlign: "right", marginBottom: 6 }}>{TITLE[doc.kind]}</div>
+        <div style={{ minWidth: 200, display: "grid", gap: 10 }}>
+          <Rest>
+            <div style={{ fontSize: 20, fontWeight: 800, letterSpacing: "0.04em", textTransform: "uppercase", color: c, textAlign: "right", padding: "0 6px" }}>{TITLE[doc.kind]}</div>
+          </Rest>
           <Bit k="number" badge="right" p={p}>
             <MetaRow name={`${TITLE[doc.kind]} no`} value={doc.number} strong />
           </Bit>
@@ -219,25 +234,27 @@ export function DocSheet({ doc, ...p }: { doc: BizDoc } & PickProps) {
           {doc.refs
             .filter(([k]) => !["Your order", "PO number", "Delivery note", "Account"].includes(k))
             .map(([k, v]) => (
-              <MetaRow key={k} name={k} value={v} />
+              <Rest key={k} style={{ padding: "3px 6px" }}>
+                <MetaRow name={k} value={v} />
+              </Rest>
             ))}
         </div>
       </div>
 
       {/* who it's to, and where it goes */}
       <div style={{ display: "flex", justifyContent: "space-between", gap: 18, marginTop: 18, flexWrap: "wrap" }}>
-        <Bit k={isPo ? "supplier" : "billTo"} p={p} style={{ minWidth: 170 }}>
+        <Bit k={isPo ? "supplier" : "billTo"} p={p} style={{ minWidth: 170, padding: "4px 8px" }}>
           <Party title={isPo ? "Supplier" : isDn ? "Customer" : doc.kind === "credit" ? "Credit to" : "Invoice to"} party={doc.to} />
         </Bit>
         {doc.shipTo && (
-          <Bit k="shipTo" badge="right" p={p} style={{ minWidth: 170 }}>
+          <Bit k="shipTo" badge="right" p={p} style={{ minWidth: 170, padding: "4px 8px" }}>
             <Party title="Deliver to" party={doc.shipTo} />
           </Bit>
         )}
       </div>
 
       {/* the lines */}
-      <Bit k="lines" p={p} style={{ marginTop: 18 }}>
+      <Bit k="lines" p={p} style={{ marginTop: 18, padding: "4px 6px" }}>
         <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 12, fontVariantNumeric: "tabular-nums" }}>
           <thead>
             <tr style={{ background: isDn ? "transparent" : `color-mix(in srgb, ${c} 10%, #fff)` }}>
@@ -278,7 +295,7 @@ export function DocSheet({ doc, ...p }: { doc: BizDoc } & PickProps) {
       {/* the sums */}
       {priced && (
         <div style={{ display: "flex", justifyContent: "flex-end", marginTop: 10 }}>
-          <div style={{ width: 230 }}>
+          <div style={{ width: 240, display: "grid", gap: 10 }}>
             {isPo ? (
               <Bit k="total" badge="right" p={p}>
                 <MetaRow name="Total before VAT" value={money(t.net)} strong />
@@ -291,7 +308,7 @@ export function DocSheet({ doc, ...p }: { doc: BizDoc } & PickProps) {
                 <Bit k="vat" badge="right" p={p}>
                   <MetaRow name={`VAT at ${Math.round((doc.vatRate ?? 0) * 100)}%`} value={money(t.vat)} />
                 </Bit>
-                <Bit k="total" badge="right" p={p} style={{ marginTop: 2 }}>
+                <Bit k="total" badge="right" p={p}>
                   <div style={{ display: "flex", justifyContent: "space-between", gap: 14, padding: "5px 7px", background: c, color: "#fff", fontSize: 13, fontWeight: 800, borderRadius: 3 }}>
                     <span>{doc.kind === "credit" ? "Total credit" : "Total due"}</span>
                     <span style={{ fontVariantNumeric: "tabular-nums" }}>{money(t.gross)}</span>
@@ -306,17 +323,17 @@ export function DocSheet({ doc, ...p }: { doc: BizDoc } & PickProps) {
       {/* the bottom: who ordered or signed, when to pay and where */}
       <div style={{ display: "flex", justifyContent: "space-between", gap: 18, marginTop: 18, flexWrap: "wrap", alignItems: "flex-end" }}>
         {isPo && doc.signed && (
-          <Bit k="signed" p={p}>
+          <Bit k="signed" p={p} style={{ padding: "4px 10px 6px" }}>
             <Signature name={doc.signed} role={doc.signedRole ?? ""} title="Authorised by" />
           </Bit>
         )}
         {isDn && (
-          <Bit k="signed" p={p}>
+          <Bit k="signed" p={p} style={{ padding: "4px 10px 6px" }}>
             <Signature name={doc.signed ?? ""} role={doc.signedRole ?? ""} title="Received by" />
           </Bit>
         )}
         {(doc.terms || doc.due) && (
-          <Bit k="due" p={p} style={{ maxWidth: 250 }}>
+          <Bit k="due" p={p} style={{ maxWidth: 260, padding: "4px 8px" }}>
             <div style={{ fontSize: 12, lineHeight: 1.55 }}>
               <div style={label}>Payment</div>
               {doc.terms && <div>{doc.terms}</div>}
@@ -341,17 +358,23 @@ export function DocSheet({ doc, ...p }: { doc: BizDoc } & PickProps) {
           </Bit>
         )}
         {isDn && doc.note && (
-          <Bit k="note" badge="right" p={p}>
-            <div style={{ fontFamily: PEN, fontSize: 17, color: PEN_BLUE, transform: "rotate(-3deg)", transformOrigin: "left", lineHeight: 1.35, maxWidth: 270, padding: "0 4px" }}>{doc.note}</div>
+          <Bit k="note" badge="right" p={p} style={{ padding: "18px 14px 8px 10px" }}>
+            {/* written at a slant: the padding above leaves room for the rising end */}
+            <div style={{ fontFamily: PEN, fontSize: 17, color: PEN_BLUE, transform: "rotate(-3deg)", transformOrigin: "left", lineHeight: 1.35, maxWidth: 250 }}>{doc.note}</div>
           </Bit>
         )}
       </div>
-      {doc.footer && <p style={{ ...small, margin: "16px 0 0", borderTop: "1px solid #ddd", paddingTop: 8 }}>{doc.footer}</p>}
+      {doc.footer && (
+        <Rest style={{ marginTop: 16 }}>
+          <p style={{ ...small, margin: 0, borderTop: "1px solid #ddd", paddingTop: 8 }}>{doc.footer}</p>
+        </Rest>
+      )}
     </div>
   );
 }
 
-const td = (i: number): CSSProperties => ({ textAlign: i < 2 ? "left" : "right", padding: "7px 7px", borderBottom: "1px solid #e4e4e4", verticalAlign: "top" });
+/* Codes, numbers and money never break across lines; only the description wraps. */
+const td = (i: number): CSSProperties => ({ textAlign: i < 2 ? "left" : "right", padding: "7px 7px", borderBottom: "1px solid #e4e4e4", verticalAlign: "top", whiteSpace: i === 1 ? "normal" : "nowrap" });
 
 function Signature({ name, role, title }: { name: string; role: string; title: string }) {
   return (
@@ -386,7 +409,8 @@ export function ReceiptPhoto({ doc, scale = 1 }: { doc: BizDoc; scale?: number }
           background: "linear-gradient(180deg, #fbfaf6, #f1efe8)",
           color: "#2b2b2b",
           fontFamily: "'Courier New', ui-monospace, monospace",
-          fontSize: 11.5 * scale,
+          /* never smaller than a readable 10px, however small the photo */
+          fontSize: Math.max(10, 11.5 * scale),
           lineHeight: 1.45,
           padding: `${14 * scale}px ${14 * scale}px ${18 * scale}px`,
           transform: "rotate(-2.2deg)",

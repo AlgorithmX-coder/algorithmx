@@ -84,7 +84,7 @@ export const CREDIT_HPC118: BizDoc = {
     ["Your order", "PO 3307"],
     ["Against invoice", "HP-2291"],
   ],
-  lines: [{ ...WRAP, item: "Pallet wrap, 400 mm clear: not delivered on DN-77812", qty: 2 }],
+  lines: [{ ...WRAP, item: "Pallet wrap, 400 mm clear (not delivered)", qty: 2 }],
   vatRate: 0.2,
   footer: "This credit will be taken off your account. No payment is due on this note.",
 };

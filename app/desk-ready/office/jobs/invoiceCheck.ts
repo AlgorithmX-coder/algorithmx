@@ -105,7 +105,7 @@ function check(s: OfficeState): Check[] {
       : /\b96(\.00)?\b/.test(body)
         ? "£96.00 is the 2 pallets before VAT. Priya pays the total with VAT, so add the 20%: £96.00 + £19.20 = £115.20."
         : /691\.20?/.test(body)
-          ? "£691.20 is the whole invoice. Only the 2 missing pallets should be held back: 2 x £48.00 = £96.00, plus VAT £19.20, is £115.20."
+          ? "£691.20 is the whole invoice. Only the 2 missing pallets should be held back: 2 × £48.00 = £96.00, plus VAT £19.20, is £115.20."
           : "Tell her how much to hold back: 2 pallets at £48.00 is £96.00, plus 20% VAT (£19.20), so £115.20.",
   );
   add(
