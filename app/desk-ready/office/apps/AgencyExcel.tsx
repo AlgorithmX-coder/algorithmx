@@ -28,6 +28,16 @@ export function ExcelTest({ practice, seconds = PASS.excelSeconds, onFinish, onL
   const [checked, setChecked] = useState<number[] | null>(null);
   const [confirm, setConfirm] = useState(false);
   const handed = useRef(false);
+  /* on a narrow screen the tasks sit above the sheet instead of beside it */
+  const rootRef = useRef<HTMLDivElement>(null);
+  const [narrow, setNarrow] = useState(false);
+  useEffect(() => {
+    const el = rootRef.current;
+    if (!el || typeof ResizeObserver === "undefined") return;
+    const ro = new ResizeObserver(() => setNarrow(el.clientWidth < 640));
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
   const elapsed = (now - start) / 1000;
   const left = Math.max(0, seconds - elapsed);
 
@@ -49,9 +59,9 @@ export function ExcelTest({ practice, seconds = PASS.excelSeconds, onFinish, onL
   }, [left, practice]);
 
   return (
-    <div style={{ position: "relative", height, display: "grid", gridTemplateColumns: "minmax(250px, 300px) minmax(0, 1fr)", minHeight: 0, fontFamily: W.font, color: W.ink }}>
+    <div ref={rootRef} style={{ position: "relative", height, display: "grid", gridTemplateColumns: narrow ? "minmax(0, 1fr)" : "minmax(250px, 300px) minmax(0, 1fr)", gridTemplateRows: narrow ? "auto minmax(0, 1fr)" : undefined, minHeight: 0, fontFamily: W.font, color: W.ink }}>
       {/* the test sheet */}
-      <aside aria-label="Your tasks" style={{ display: "flex", flexDirection: "column", minHeight: 0, borderRight: `1px solid ${W.edge}`, background: "#fbfbfa" }}>
+      <aside aria-label="Your tasks" style={{ display: "flex", flexDirection: "column", minHeight: 0, maxHeight: narrow ? 210 : undefined, borderRight: narrow ? "none" : `1px solid ${W.edge}`, borderBottom: narrow ? `1px solid ${W.edge}` : "none", background: "#fbfbfa" }}>
         <div style={{ padding: "10px 12px", borderBottom: `1px solid ${W.edge}`, display: "grid", gap: 8 }}>
           <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 8 }}>
             <span style={{ fontSize: 13, color: W.muted }}>{practice ? "Practice: no time limit" : "Time left"}</span>
@@ -71,16 +81,16 @@ export function ExcelTest({ practice, seconds = PASS.excelSeconds, onFinish, onL
           </div>
         </div>
         <ol style={{ listStyle: "none", margin: 0, padding: "8px 8px 14px", overflowY: "auto", flex: 1, minHeight: 0, display: "grid", gap: 6, alignContent: "start" }}>
-          {tasks.map((t) => {
+          {tasks.map((t, i) => {
             const mark = checked ? checked.includes(t.n) : null;
             return (
               <li key={t.n} style={{ display: "flex", gap: 10, padding: "8px 8px", borderRadius: 6, background: mark === true ? "#dff6dd" : mark === false ? "#fff4ce" : W.page, border: `1px solid ${W.edge}` }}>
                 <span aria-hidden style={{ flexShrink: 0, width: 24, height: 24, borderRadius: "50%", background: mark === true ? W.excel : AGENCY.colour, color: "#fff", fontSize: 12.5, fontWeight: 700, display: "inline-flex", alignItems: "center", justifyContent: "center" }}>
-                  {mark === true ? "✓" : t.n}
+                  {mark === true ? "✓" : i + 1}
                 </span>
                 <span style={{ fontSize: 14, lineHeight: 1.45, minWidth: 0 }}>
                   <span className="sr-only" style={{ position: "absolute", width: 1, height: 1, overflow: "hidden", clip: "rect(0 0 0 0)" }}>
-                    Task {t.n}{mark === true ? ", right" : mark === false ? ", not right yet" : ""}.
+                    Task {i + 1}{mark === true ? ", right" : mark === false ? ", not right yet" : ""}.
                   </span>
                   {t.text}
                   {mark === false && <span style={{ display: "block", marginTop: 4, fontSize: 13, color: "#7a5a00" }}>{t.hint}</span>}
@@ -125,21 +135,24 @@ export function ExcelTest({ practice, seconds = PASS.excelSeconds, onFinish, onL
 
 /* The marked test: the score, then every task with a tick or a pointer. */
 export function ExcelResultCard({ run, practice, tasks = EXCEL_TASKS }: { run: Pick<ExcelRun, "right" | "seconds" | "timedOut">; practice: boolean; tasks?: typeof EXCEL_TASKS }) {
-  const pass = run.right.length >= PASS.excel;
+  /* the full test is marked against the agency's 8 of 10; a short
+   * practice set wants every task */
+  const full = tasks.length >= 10;
+  const pass = run.right.length >= (full ? PASS.excel : tasks.length);
   return (
     <div style={{ display: "grid", gap: 12, fontFamily: W.font, color: W.ink }}>
       <div role="status" style={{ padding: "12px 16px", borderRadius: 6, background: pass ? "#dff6dd" : "#fff4ce", border: `1px solid ${pass ? "#9fd89f" : "#f2d48a"}`, fontSize: 16, lineHeight: 1.5 }}>
         <b style={{ fontSize: 20 }}>
           {run.right.length} of {tasks.length} right.
         </b>{" "}
-        {pass ? `A pass: our clients ask for ${PASS.excel} or more.` : `Our clients ask for ${PASS.excel} or more. Practise the ones below, then take it again.`}
+        {full ? (pass ? `A pass: our clients ask for ${PASS.excel} or more.` : `Our clients ask for ${PASS.excel} or more. Practise the ones below, then take it again.`) : pass ? "Every one right." : "Look at how to do the ones below, then try them in the office job."}
         <span style={{ display: "block", marginTop: 4, color: W.muted, fontSize: 14 }}>
           {run.timedOut ? "The clock ran out, so it was handed in for you." : `Handed in after ${clock(run.seconds)}.`}
           {practice ? " This was a practice run. It isn't sent to anyone." : ""}
         </span>
       </div>
       <ol style={{ listStyle: "none", margin: 0, padding: 0, display: "grid", gap: 6 }}>
-        {tasks.map((t) => {
+        {tasks.map((t, i) => {
           const ok = run.right.includes(t.n);
           return (
             <li key={t.n} style={{ display: "flex", gap: 10, padding: "8px 10px", borderRadius: 6, border: `1px solid ${W.edge}`, background: W.page }}>
@@ -147,7 +160,7 @@ export function ExcelResultCard({ run, practice, tasks = EXCEL_TASKS }: { run: P
                 {ok ? "✓" : "✕"}
               </span>
               <span style={{ fontSize: 14.5, lineHeight: 1.45 }}>
-                <b style={{ fontWeight: 600 }}>{t.n}.</b> {t.text}
+                <b style={{ fontWeight: 600 }}>{i + 1}.</b> {t.text}
                 {!ok && <span style={{ display: "block", marginTop: 3, fontSize: 13.5, color: W.muted }}>How to do it: {t.hint}</span>}
               </span>
             </li>

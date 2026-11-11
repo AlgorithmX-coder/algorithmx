@@ -92,8 +92,8 @@ export function TypingTest({ seconds, practice, passage = PASSAGE, onFinish, hei
   };
 
   let index = 0;
-  const shownSpeed = start === null || elapsed < 3 ? "–" : String(live.net);
-  const shownAcc = start === null || !typed.trim() ? "–" : `${Math.floor(live.accuracy)}%`;
+  const shownSpeed = start === null || elapsed < 3 ? "-" : String(live.net);
+  const shownAcc = start === null || !typed.trim() ? "-" : `${Math.floor(live.accuracy)}%`;
   const accOk = live.accuracy >= PASS.accuracy;
   const speedOk = live.net >= PASS.wpm;
 
@@ -101,9 +101,9 @@ export function TypingTest({ seconds, practice, passage = PASSAGE, onFinish, hei
     <div style={{ display: "grid", gap: 12, fontFamily: W.font, color: W.ink }}>
       {/* the live readout */}
       <div role="group" aria-label="How you're doing" style={{ display: "grid", gridTemplateColumns: "repeat(3, minmax(0, 1fr))", gap: 10 }}>
-        <Stat label={practice ? "Practice: time left" : "Time left"} value={clock(Math.ceil(left))} strong={start !== null && left <= 15 && !done} />
-        <Stat label="Speed (words a minute)" value={shownSpeed} tone={start === null || elapsed < 3 ? undefined : speedOk ? "good" : undefined} />
-        <Stat label="Accuracy" value={shownAcc} tone={shownAcc === "–" ? undefined : accOk ? "good" : "bad"} />
+        <Stat label="Time left" value={clock(Math.ceil(left))} strong={start !== null && left <= 15 && !done} />
+        <Stat label="Words a minute" value={shownSpeed} tone={start === null || elapsed < 3 ? undefined : speedOk ? "good" : undefined} />
+        <Stat label="Accuracy" value={shownAcc} tone={shownAcc === "-" ? undefined : accOk ? "good" : "bad"} />
       </div>
 
       {/* the letter to copy */}
@@ -170,7 +170,7 @@ export function TypingTest({ seconds, practice, passage = PASSAGE, onFinish, hei
 function Stat({ label, value, tone, strong }: { label: string; value: string; tone?: "good" | "bad"; strong?: boolean }) {
   return (
     <div style={{ padding: "8px 12px", borderRadius: 6, background: strong ? "#fde7e9" : W.chrome, border: `1px solid ${W.edge}`, minWidth: 0 }}>
-      <span style={{ display: "block", fontSize: 12.5, color: W.muted, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{label}</span>
+      <span style={{ display: "block", fontSize: 12.5, lineHeight: 1.3, color: W.muted }}>{label}</span>
       <b style={{ display: "block", fontSize: 26, fontWeight: 600, lineHeight: 1.2, fontVariantNumeric: "tabular-nums", color: tone === "good" ? W.excel : tone === "bad" ? BAD : W.ink }}>{value}</b>
     </div>
   );

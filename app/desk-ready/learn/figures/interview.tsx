@@ -66,10 +66,10 @@ export function InterviewFigure({ focus, title = "A video interview", what, note
   const info = { ...CALL_PARTS } as Record<CallPart, PartInfo>;
   for (const k of Object.keys(what ?? {}) as CallPart[]) info[k] = { ...info[k], what: what![k]! };
   return (
-    <FigureFrame info={info} focus={focus} title={title} note={note} minWidth={660}>
-      <div style={{ display: "grid", gridTemplateColumns: "minmax(0, 1.7fr) minmax(190px, 1fr)", gap: 46, alignItems: "start", overflowWrap: "normal" }}>
+    <FigureFrame info={info} focus={focus} title={title} note={note} minWidth={430}>
+      <div style={{ display: "flex", flexWrap: "wrap", gap: "30px 46px", alignItems: "flex-start", overflowWrap: "normal" }}>
         {/* the call window */}
-        <div style={{ borderRadius: 8, boxShadow: W.float, background: W.call, color: "#fff", overflow: "visible" }}>
+        <div style={{ flex: "1.7 1 400px", minWidth: 0, borderRadius: 8, boxShadow: W.float, background: W.call, color: "#fff", overflow: "visible" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 10, minHeight: 34, padding: "0 12px", background: W.teams, borderRadius: "8px 8px 0 0", fontSize: 13 }}>
             <b>Teams</b>
           </div>
@@ -94,10 +94,10 @@ export function InterviewFigure({ focus, title = "A video interview", what, note
             {/* your own picture, in the corner */}
             <div style={{ position: "absolute", right: 22, bottom: 18 }}>
               <Part k="you" holds={["background"]} badge="left">
+                <Part k="background" badge="right" style={{ position: "absolute", left: 4, right: 4, top: 4, height: 40, zIndex: 2, borderRadius: 4 }}>
+                  <span />
+                </Part>
                 <div style={{ position: "relative", width: 132, height: 92, borderRadius: 6, overflow: "hidden", background: "#e9e4dc", border: "2px solid #fff" }}>
-                  <Part k="background" noBadge style={{ position: "absolute", left: 3, right: 3, top: 3, height: 40, borderRadius: 4 }}>
-                    <span />
-                  </Part>
                   <span aria-hidden style={{ position: "absolute", right: 10, top: 14, width: 14, height: 22, borderRadius: "40% 40% 4px 4px", background: "#6d9b6a" }} />
                   <div style={{ position: "absolute", left: 0, right: 0, bottom: -2, display: "flex", justifyContent: "center" }}>
                     <Person shirt="#7a4b8c" hair="#5a3825" skin="#e8b896" size={110} />
@@ -107,7 +107,7 @@ export function InterviewFigure({ focus, title = "A video interview", what, note
               </Part>
             </div>
           </div>
-          <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: 30, padding: "8px 10px 12px 48px", borderTop: "1px solid rgba(255,255,255,0.08)", flexWrap: "wrap" }}>
+          <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: 30, padding: "36px 10px 12px 48px", borderTop: "1px solid rgba(255,255,255,0.08)", flexWrap: "wrap" }}>
             {btn("Chat", false)}
             <Part k="mute" block={false} badge="top">
               {btn("Mic", true)}
@@ -122,7 +122,7 @@ export function InterviewFigure({ focus, title = "A video interview", what, note
         </div>
 
         {/* the set-up, from the side */}
-        <div style={{ borderRadius: 8, boxShadow: W.float, background: W.page, color: W.ink, padding: "10px 12px 12px 12px" }}>
+        <div style={{ flex: "1 1 210px", maxWidth: 340, borderRadius: 8, boxShadow: W.float, background: W.page, color: W.ink, padding: "10px 12px 12px 12px" }}>
           <b style={{ display: "block", fontSize: 13.5 }}>Your set-up, from the side</b>
           <div style={{ position: "relative", marginTop: 8 }}>
             <svg width="100%" viewBox="0 0 220 170" aria-hidden style={{ display: "block" }}>
@@ -148,7 +148,7 @@ export function InterviewFigure({ focus, title = "A video interview", what, note
               {/* eye line */}
               <line x1="62" y1="60" x2="164" y2="62" stroke={W.teams} strokeWidth="1.6" strokeDasharray="5 4" />
             </svg>
-            <Part k="eyelevel" style={{ position: "absolute", left: "26%", top: "30%", width: "52%", height: "12%", borderRadius: 4 }}>
+            <Part k="eyelevel" badge="top" style={{ position: "absolute", left: "26%", top: "30%", width: "52%", height: "12%", borderRadius: 4 }}>
               <span />
             </Part>
             <Part k="light" badge="right" style={{ position: "absolute", right: "1%", top: "6%", width: "19%", height: "44%", borderRadius: 4 }}>

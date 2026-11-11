@@ -238,7 +238,7 @@ export function LineFigure({ focus, title = "One line of experience, in office w
   );
   return (
     <FigureFrame info={info} focus={focus} title={title} note={note}>
-      <div style={{ display: "grid", gap: 16, overflowWrap: "normal", maxWidth: 680 }}>
+      <div style={{ display: "grid", gap: 16, overflowWrap: "normal", maxWidth: 780 }}>
         {/* the note it starts as */}
         <div style={{ paddingLeft: 40 }}>
           <Part k="before" style={{ display: "inline-block" }}>
@@ -253,16 +253,18 @@ export function LineFigure({ focus, title = "One line of experience, in office w
         </div>
         {/* the same thing on the CV */}
         <div style={{ background: "#fff", borderRadius: 6, boxShadow: W.float, padding: "16px 20px 18px 54px", fontFamily: body, color: "#000" }}>
-          <div style={{ ...h1, margin: "0 0 6px" }}>Experience</div>
-          <Part k="role">
-            <div style={{ fontFamily: display, fontSize: 15.5, color: blue }}>{x.role}</div>
+          <div style={{ ...h1, fontSize: 20, margin: "0 0 8px" }}>Experience</div>
+          <div>
+            <Part k="role" style={{ display: "inline-block" }}>
+              <span style={{ fontFamily: display, fontSize: 17.5, color: blue }}>{x.role}</span>
+            </Part>
+          </div>
+          <Part k="dates" style={{ marginTop: 6, display: "inline-block" }}>
+            <span style={{ color: "#404040", fontSize: 15, ...keep }}>{x.dates}</span>
           </Part>
-          <Part k="dates" style={{ marginTop: 4, display: "inline-block" }}>
-            <span style={{ color: "#404040", fontSize: 13.5, ...keep }}>{x.dates}</span>
-          </Part>
-          <div style={{ display: "flex", alignItems: "baseline", gap: 6, marginTop: 30 }}>
-            <span aria-hidden style={{ fontSize: 14 }}>•</span>
-            <span style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "34px 4px", fontSize: 14.5, lineHeight: 1.4 }}>
+          <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginTop: 36 }}>
+            <span aria-hidden style={{ fontSize: 16 }}>•</span>
+            <span style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "38px 12px", fontSize: 16.5, lineHeight: 1.4 }}>
               {piece("verb", x.verb, { fontWeight: 600 })}
               {piece("task", x.task)}
               {piece("number", x.number)}

@@ -302,7 +302,7 @@ const m13: ModuleManifest = {
         {
           heading: "Save it as a PDF, with your name",
           body: ["Make a PDF: File > Export > Create PDF. It looks the same on any computer, and nobody can change it by mistake.", "Name it your name, then CV (1): Jordan Miles CV.pdf. A recruiter with a hundred files called CV.pdf will thank you."],
-          figure: <CvFigure focus={["file"]} title="The file name" fileName="Jordan Miles CV.pdf" />,
+          figure: <CvFigure focus={["file"]} title="The file name" />,
           good: [{ text: "Jordan Miles CV.pdf" }],
           bad: [{ text: "CV final new.pdf", note: "Whose is it? Which one?" }],
         },

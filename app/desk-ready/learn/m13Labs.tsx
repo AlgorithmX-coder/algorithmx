@@ -302,10 +302,8 @@ export function TestsLab({ onDone }: LabProps) {
             </div>
           )}
           {stage === "excel" && (
-            <div style={{ height: 470, overflowX: "auto" }}>
-              <div style={{ height: "100%", minWidth: 760 }}>
-                <ExcelTest practice tasks={LAB_TASKS} onFinish={finish} />
-              </div>
+            <div style={{ height: "calc(520px + max(0px, 640px - 100vw) * 0.9)" }}>
+              <ExcelTest practice tasks={LAB_TASKS} onFinish={finish} />
             </div>
           )}
           {stage === "done" && excel && (

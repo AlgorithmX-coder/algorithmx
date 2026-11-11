@@ -100,7 +100,7 @@ export function JobAdFigure({ focus, title, what, note, scam }: { focus?: AdPart
           <Part k="title">
             <div style={{ fontSize: 22, fontWeight: 700, lineHeight: 1.2, ...bad(true) }}>{ad.title}</div>
           </Part>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: "10px 18px", alignItems: "center" }}>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: "12px 48px", alignItems: "center" }}>
             <Part k="employer" block={false}>
               <span style={{ fontSize: 15, ...keep }}>
                 <span style={{ color: SITE, textDecoration: scam ? "none" : "underline", fontWeight: 600, ...bad(true) }}>{ad.employer}</span>
@@ -111,7 +111,7 @@ export function JobAdFigure({ focus, title, what, note, scam }: { focus?: AdPart
               <span style={{ fontSize: 15, ...keep, ...bad(true) }}>{ad.location}</span>
             </Part>
           </div>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: "10px 12px", alignItems: "center" }}>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: "12px 48px", alignItems: "center" }}>
             <Part k="pay" block={false}>
               <span style={{ display: "inline-block", padding: "4px 10px", borderRadius: 6, background: SITE_SOFT, fontSize: 14.5, fontWeight: 600, ...bad(true) }}>{ad.pay}</span>
             </Part>
@@ -128,16 +128,17 @@ export function JobAdFigure({ focus, title, what, note, scam }: { focus?: AdPart
           <Part k="details">
             <div style={{ fontSize: 14.5, lineHeight: 1.5 }}>
               <b style={{ display: "block", fontSize: 15 }}>{scam ? "About the role" : "What you'll do"}</b>
-              <ul style={{ margin: "4px 0 0", paddingLeft: 20 }}>
+              <ul style={{ listStyle: "none", margin: "4px 0 0", padding: 0 }}>
                 {ad.details.map((d) => (
-                  <li key={d} style={bad(true)}>
+                  <li key={d} style={{ position: "relative", paddingLeft: 16, ...bad(true) }}>
+                    <span aria-hidden style={{ position: "absolute", left: 2 }}>•</span>
                     {d}
                   </li>
                 ))}
               </ul>
             </div>
           </Part>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: "12px 18px", alignItems: "center", marginTop: 4 }}>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: "12px 48px", alignItems: "center", marginTop: 4 }}>
             <Part k="apply" block={false}>
               <span style={{ display: "inline-flex", alignItems: "center", minHeight: 38, padding: "0 18px", borderRadius: 8, background: scam ? "#25a35a" : SITE, color: "#fff", fontWeight: 700, fontSize: 14.5, ...keep }}>{ad.apply}</span>
             </Part>

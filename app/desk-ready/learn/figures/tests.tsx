@@ -54,20 +54,20 @@ export const TYPING_PARTS: Record<TypingPart, PartInfo> = {
 };
 
 const WORDS = "Thank you for your order, which arrived this morning. We have checked the stock and can send everything on your list by Thursday, apart from the large paper cups. These are due in from our supplier next week.".split(" ");
-const DONE = 15;
-const SLIP = 9;
+const DONE = 7;
+const SLIP = 4;
 
 export function TypingFigure({ focus, title = "An agency typing test", what, note }: { focus?: TypingPart[]; title?: string; what?: Partial<Record<TypingPart, string>>; note?: string }) {
   const info = { ...TYPING_PARTS } as Record<TypingPart, PartInfo>;
   for (const k of Object.keys(what ?? {}) as TypingPart[]) info[k] = { ...info[k], what: what![k]! };
-  const typed = WORDS.slice(0, DONE).map((w, i) => (i === SLIP ? "stcok" : w)).join(" ") + " ever";
+  const typed = WORDS.slice(0, DONE).map((w, i) => (i === SLIP ? "ordre," : w)).join(" ") + " th";
   return (
     <FigureFrame info={info} focus={focus} title={title} note={note} minWidth={560}>
       <Site path="candidate/typing-test">
         <div style={{ padding: "14px 18px 18px 52px", display: "grid", gap: 12 }}>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(3, minmax(0, 1fr))", gap: 44 }}>
             <Part k="timer">
-              <Stat label="Time left" value="2:21" />
+              <Stat label="Time left" value="2:49" />
             </Part>
             <Part k="speed">
               <Stat label="Speed (words a minute)" value="38" colour={W.excel} />
@@ -77,7 +77,7 @@ export function TypingFigure({ focus, title = "An agency typing test", what, not
             </Part>
           </div>
           <Part k="passage">
-            <p style={{ margin: 0, padding: "10px 14px", border: `1px solid ${W.edge}`, borderRadius: 6, fontSize: 15.5, lineHeight: 1.9 }}>
+            <p style={{ margin: 0, padding: "34px 14px 10px", border: `1px solid ${W.edge}`, borderRadius: 6, fontSize: 15.5, lineHeight: 1.9 }}>
               {WORDS.map((w, i) => {
                 const word =
                   i === DONE ? (
@@ -186,7 +186,7 @@ export function ExcelTestFigure({ focus, title = "An agency Excel test", what, n
   return (
     <FigureFrame info={info} focus={focus} title={title} note={note} minWidth={620}>
       <Site path="candidate/excel-test">
-        <div style={{ display: "grid", gridTemplateColumns: "200px minmax(0, 1fr)", minHeight: 250 }}>
+        <div style={{ display: "grid", gridTemplateColumns: "240px minmax(0, 1fr)", minHeight: 250 }}>
           <div style={{ padding: "12px 12px 12px 48px", borderRight: `1px solid ${W.edge}`, background: "#fbfbfa", display: "grid", gap: 12, alignContent: "start" }}>
             <Part k="timer">
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", ...keep }}>
