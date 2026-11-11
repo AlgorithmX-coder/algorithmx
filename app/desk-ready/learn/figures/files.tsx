@@ -466,7 +466,7 @@ export function ExportFigure({ focus, title = "Making a PDF of some rows", what,
             <div style={{ display: "flex", justifyContent: "space-between", padding: "7px 12px" }}>
               Export <span style={{ color: W.muted }}>▾</span>
             </div>
-            <Part k="export" badge="right">
+            <Part k="export" badge="left">
               <div style={{ padding: "7px 12px 7px 26px", background: W.select, borderRadius: 4, fontWeight: 600 }}>Create PDF</div>
             </Part>
             <div style={{ padding: "7px 12px" }}>Close</div>
@@ -780,7 +780,7 @@ export function VersionsFigure({ focus, title = "Version history", what, note }:
                   </div>
                 );
                 return r.current ? (
-                  <Part key={r.no} k="current" style={{ borderRadius: 0 }}>
+                  <Part key={r.no} k="current" badge="corner" style={{ borderRadius: 0 }}>
                     {row}
                   </Part>
                 ) : (
