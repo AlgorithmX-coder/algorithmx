@@ -19,6 +19,8 @@ export const PEOPLE = {
   hr: { name: "HR Team", address: `hr@${DOMAIN}` },
   facilities: { name: "Facilities Team", address: `facilities@${DOMAIN}` },
   tom: { name: "Tom Hale", address: "tom.hale@harlowpackaging.example" },
+  /* ── Module 8: Documents ── the manager at Oak Street Deli, a customer */
+  rita: { name: "Rita Fenwick", address: "rita.fenwick@oakstreetdeli.example" },
   imran: { name: "Imran Ahmed", address: "imran.ahmed@kentbakery.example" },
   kentFlour: { name: "Kent Flour Mills", address: "orders@kentflourmills.example" },
   brightwater: { name: "Brightwater Cups Accounts", address: "accounts@brightwatercups.example" },
@@ -64,7 +66,7 @@ export function officeFolders(): OfficeFile[] {
   folder(["HR"], "Forms");
   folder(["HR"], "Templates");
   out.push({ id: "seed-fire", path: ["Operations Team", "Documents", "Health and safety"], name: "Fire procedure.pdf", kind: "pdf", modified: "20/10/2026", by: "Facilities Team", seeded: true });
-  out.push({ id: "seed-letterhead", path: ["HR", "Templates"], name: "Letterhead.docx", kind: "docx", modified: "11/03/2026", by: "Emma Clarke", seeded: true });
+  out.push({ id: "seed-letterhead", path: ["HR", "Templates"], name: "Letterhead.dotx", kind: "dotx", modified: "11/03/2026", by: "Emma Clarke", seeded: true });
   return out;
 }
 

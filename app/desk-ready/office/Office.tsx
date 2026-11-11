@@ -39,7 +39,7 @@ export default function Office({ job }: { job: Job }) {
   const [request, setRequest] = useState<{ app: string; fileId: string; key: number } | null>(null);
   const extras = (job.apps ?? []).filter((id) => OFFICE_APPS[id]);
   const [doc, setDoc] = useState<ExcelDoc | null>(null);
-  const [viewer, setViewer] = useState<{ title: string; paper?: Paper; key: number } | null>(null);
+  const [viewer, setViewer] = useState<{ title: string; paper?: Paper; doc?: OfficeFile["doc"]; key: number } | null>(null);
   const [saveAs, setSaveAs] = useState(false);
   /* An action waiting on "Save changes?": close Excel, or open another file. */
   const [unsaved, setUnsaved] = useState<{ then: () => void } | null>(null);
@@ -71,7 +71,7 @@ export default function Office({ job }: { job: Job }) {
         setApp("excel");
       });
     } else {
-      setViewer({ title: f.name, paper: f.paper, key: nextKey() });
+      setViewer({ title: f.name, paper: f.paper, doc: f.doc, key: nextKey() });
     }
   };
 
@@ -180,7 +180,7 @@ export default function Office({ job }: { job: Job }) {
           <section className="of-screen of-office" aria-label="Your desktop" style={{ colorScheme: "light" }}>
             <div className="of-window">
               <div style={{ display: app === "outlook" ? "block" : "none", height: "100%" }}>
-                <Outlook state={state} dispatch={dispatch} onAttachment={(a) => (a.sheet ? openFile({ id: "attachment", path: [], name: a.name, kind: "xlsx", modified: "", by: "", sheet: a.sheet, tabs: a.tabs }) : setViewer({ title: a.name, paper: a.paper, key: nextKey() }))} onLink={(l) => openLink(l.path, l.fileName)} />
+                <Outlook state={state} dispatch={dispatch} onAttachment={(a) => (a.sheet ? openFile({ id: "attachment", path: [], name: a.name, kind: "xlsx", modified: "", by: "", sheet: a.sheet, tabs: a.tabs }) : setViewer({ title: a.name, paper: a.paper, doc: a.doc, key: nextKey() }))} onLink={(l) => openLink(l.path, l.fileName)} />
               </div>
               <div style={{ display: app === "explorer" ? "block" : "none", height: "100%" }}>
                 <Explorer state={state} dispatch={dispatch} onOpen={openFile} />
@@ -207,7 +207,7 @@ export default function Office({ job }: { job: Job }) {
               const Layer = OFFICE_APPS[id].Layer;
               return Layer ? <Layer key={id} {...appProps(id)} /> : null;
             })}
-            {viewer && <Viewer key={viewer.key} title={viewer.title} paper={viewer.paper} onClose={() => setViewer(null)} />}
+            {viewer && <Viewer key={viewer.key} title={viewer.title} paper={viewer.paper} doc={viewer.doc} onClose={() => setViewer(null)} />}
 
             <nav className="of-taskbar" aria-label="Taskbar">
               {taskbar.map((t) => (

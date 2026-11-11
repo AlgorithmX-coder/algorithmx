@@ -7,6 +7,8 @@ import { pendingInvites, unreadChats } from "../meetings";
 import Calendar from "./Calendar";
 import Teams, { TeamsToast } from "./Teams";
 /* ── end Module 3 ── */
+/* ── Module 8: Documents ── */
+import WordApp from "./Word";
 
 /* The office's plug-in seam. Outlook, File Explorer and Excel are built
  * into Office.tsx; every other app (Calendar, Teams, Word, the Copilot
@@ -58,4 +60,6 @@ export const OFFICE_APPS: Record<string, OfficeApp> = {
   calendar: { label: "Calendar", colour: W.outlook, badge: pendingInvites, Window: Calendar },
   teams: { label: "Teams", colour: W.teams, badge: unreadChats, Window: Teams, Layer: TeamsToast },
   /* ── end Module 3 ── */
+  /* ── Module 8: Documents ── */
+  word: { label: "Word", colour: W.word, opens: ["docx", "dotx"], Window: WordApp },
 };

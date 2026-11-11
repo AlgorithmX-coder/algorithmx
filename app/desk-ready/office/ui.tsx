@@ -13,6 +13,7 @@ export const KIND_LABEL: Record<FileKind, string> = {
   xlsx: "Excel workbook",
   xltx: "Excel template",
   docx: "Word document",
+  dotx: "Word template",
   pdf: "PDF document",
 };
 
@@ -20,6 +21,7 @@ const KIND_COLOUR: Record<Exclude<FileKind, "folder">, string> = {
   xlsx: W.excel,
   xltx: W.excel,
   docx: W.word,
+  dotx: W.word,
   pdf: "#c4314b",
 };
 
@@ -37,7 +39,7 @@ export function FileGlyph({ kind, size = 20 }: { kind: FileKind; size?: number }
       <path d="M5 2 H15 L20 7 V22 H5 Z" fill="#ffffff" stroke={c} strokeWidth="1.5" strokeLinejoin="round" />
       <path d="M15 2 V7 H20" fill="none" stroke={c} strokeWidth="1.5" strokeLinejoin="round" />
       <rect x="2" y="10" width="12" height="9" rx="1.5" fill={c} />
-      {kind === "xltx" && <rect x="15.5" y="15" width="3.5" height="3.5" fill={c} opacity="0.5" />}
+      {(kind === "xltx" || kind === "dotx") && <rect x="15.5" y="15" width="3.5" height="3.5" fill={c} opacity="0.5" />}
       <path d={kind === "pdf" ? "M5 12.5 H11 M5 16 H9" : "M4.5 12.5 H11.5 M4.5 16 H11.5"} stroke="#ffffff" strokeWidth="1.5" />
     </svg>
   );
