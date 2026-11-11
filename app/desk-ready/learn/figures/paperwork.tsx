@@ -130,7 +130,7 @@ export const HP2291_MATCH: { heads: [string, string, string]; rows: MatchRow[]; 
     { key: "price", label: "Unit price", cells: ["£48.00", "no prices", "£48.00"] },
     { key: "total", label: "Total", cells: ["£576.00 + VAT", "", "£691.20 with VAT"] },
   ],
-  verdict: "Hold it. 2 of the 12 pallets of pallet wrap never came: 2 × £48.00 = £96.00, plus VAT £19.20, so hold back £115.20 and ask Harlow for a credit note.",
+  verdict: "Hold it. 2 of the 12 pallets of wrap (PW-400) never came: 2\u00a0×\u00a0£48.00\u00a0=\u00a0£96.00, plus VAT £19.20, so hold back £115.20 and ask Harlow for a credit note.",
   good: false,
 };
 
@@ -264,7 +264,7 @@ function MiniSheet({ grid, widths, boxes, file, place, tab, money = [], picture,
       <div style={{ display: "flex", alignItems: "center", minHeight: 32, padding: `0 14px 0 ${pad + NUM}px`, background: W.chrome, borderTop: `1px solid ${W.edge}`, borderRadius: "0 0 8px 8px", fontSize: 13, opacity: fade(focus.includes("file")), transition: "opacity .2s ease" }}>
         <span style={{ padding: "6px 12px", background: W.page, color: W.excel, fontWeight: 700, borderBottom: `3px solid ${W.excel}` }}>{tab}</span>
         {/* the folder it's saved in is part of "the file" */}
-        <Part k="file" noBadge block={false} style={{ marginLeft: "auto", padding: "2px 6px" }}>
+        <Part k="file" badge="left" block={false} style={{ marginLeft: "auto", padding: "2px 6px" }}>
           <span style={{ color: W.muted, whiteSpace: "nowrap" }}>{place}</span>
         </Part>
       </div>
@@ -444,7 +444,7 @@ export const BOOKING_PARTS: Record<BookingPart, PartInfo> = {
   method: { n: 2, name: "Collect or drop off", what: "Whether they come to you, or you take it to them. Get this wrong and nobody turns up." },
   from: { n: 3, name: "Collect from", what: "Which address, and which door. Goods-in and reception are different places." },
   to: { n: 4, name: "Deliver to", what: "Where it is going. Pick from the address book carefully: names can be alike." },
-  parcels: { n: 5, name: "Parcels and weights", what: `One line per box, each with its own weight: two boxes of ${nb("12 kg")} are two lines of ${nb("12 kg.")}` },
+  parcels: { n: 5, name: "Parcels and weights", what: `One line per box, each with its own weight: ${nb("2 boxes")} at ${nb("12 kg")} are two lines of ${nb("12 kg.")}` },
   day: { n: 6, name: "Day", what: "Check the date, not just the day name. \"Friday\" means the coming Friday." },
   time: { n: 7, name: "Time window", what: "When the driver can come. The afternoon is 13:00 to 17:00." },
   price: { n: 8, name: "Summary and price", what: "Everything you chose, in one place. Read it back against the request before you book." },
@@ -643,6 +643,19 @@ export const MESSAGE_PARTS: Record<MessagePart, PartInfo> = {
   subject: { n: 8, name: "Subject", what: '"Phone message:" then who wants what, and when. They know what it is about before they open it.' },
 };
 
+/* The email numbers its parts top to bottom, as it is read: To, Subject,
+ * then the facts in the pad's order. */
+export const EMAIL_PARTS: Record<MessagePart, PartInfo> = {
+  for: { n: 1, name: "To", what: "The person they asked for, the one the message is for." },
+  subject: { n: 2, name: "Subject", what: '"Phone message:" then who wants what, and when. They know what it is about before they open it.' },
+  caller: { n: 3, name: "Who rang", what: "Their name and their company, as they said them." },
+  phone: { n: 4, name: "Their number", what: "Copied from the pad, the number you read back to them." },
+  when: { n: 5, name: "When", what: "The time they rang, so the message's age is clear." },
+  message: { n: 6, name: "What they want", what: "With the numbers: what is changing, from what, to what." },
+  callback: { n: 7, name: "Call back by", what: "Their deadline. A message that misses it is no use at all." },
+  taken: { n: 8, name: "Signed", what: "You, so the person can ask you about it." },
+};
+
 export interface PhoneNote {
   for: string;
   caller: string;
@@ -729,7 +742,7 @@ export function MessagePadFigure({ focus, title = "A phone message, on the pad",
 export function MessageEmailFigure({ focus, title = "The same message, as an email", what, note, m = TOM_MESSAGE }: { focus?: MessagePart[]; title?: string; what?: Partial<Record<MessagePart, string>>; note?: string; m?: PhoneNote }) {
   const first = m.for.split(" ")[0];
   return (
-    <FigureFrame info={infoOf(MESSAGE_PARTS, what)} focus={focus} title={title} note={note} minWidth={640}>
+    <FigureFrame info={infoOf(EMAIL_PARTS, what)} focus={focus} title={title} note={note} minWidth={640}>
       <AppWindow app="Outlook" colour={W.outlook} title="New message">
         <Rest>
           <div style={{ display: "flex", gap: 10, alignItems: "center", padding: "8px 14px 8px 52px", background: W.chrome, borderBottom: `1px solid ${W.edge}` }}>
@@ -762,6 +775,11 @@ export function MessageEmailFigure({ focus, title = "The same message, as an ema
               <b>Who:</b> {m.caller}, {m.company}
             </div>
           </Part>
+          <Part k="phone" style={{ padding: "2px 6px" }}>
+            <div>
+              <b>Number:</b> <span style={{ whiteSpace: "nowrap" }}>{m.phone}</span>
+            </div>
+          </Part>
           <Part k="when" style={{ padding: "2px 6px" }}>
             <div>
               <b>When:</b> <span style={{ whiteSpace: "nowrap" }}>{m.date} at {m.time}</span>
@@ -770,11 +788,6 @@ export function MessageEmailFigure({ focus, title = "The same message, as an ema
           <Part k="message" style={{ padding: "2px 6px" }}>
             <div>
               <b>Message:</b> {m.message}
-            </div>
-          </Part>
-          <Part k="phone" style={{ padding: "2px 6px" }}>
-            <div>
-              <b>Number:</b> <span style={{ whiteSpace: "nowrap" }}>{m.phone}</span>
             </div>
           </Part>
           <Part k="callback" style={{ padding: "2px 6px" }}>

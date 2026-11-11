@@ -473,7 +473,7 @@ const m10: ModuleManifest = {
           figure: <PoFigure />,
           body: [
             "Before Northfield buys anything, it sends the supplier a purchase order, called a PO for short. It says what we want, how many, and the price we agreed.",
-            `This one is PO 3307 (2). It asks Harlow Packaging (4) for 12 pallets of pallet wrap at ${nb("£48.00 each")} (6), delivered to Goods in (5), and Daniel has signed it (8).`,
+            `This one is PO 3307 (2). It asks Harlow Packaging (4) for pallet wrap (code PW-400): 12 pallets at ${nb("£48.00 each")} (6), delivered to Goods in (5), and Daniel has signed it (8).`,
           ],
         },
         {
@@ -485,14 +485,14 @@ const m10: ModuleManifest = {
         {
           heading: "What we ordered, line by line",
           figure: <PoFigure focus={["lines", "total"]} title="The order lines and the total" />,
-          body: ["Each line (6) says what, how many (the quantity) and the price of one (the unit price).", "Quantity times unit price is the line's total, at the end of the line (6): 12 × £48.00 = £576.00. With only one line, the Total before VAT (7) is the same. VAT isn't on a PO: it is added on the invoice."],
+          body: ["Each line (6) says what, how many (the quantity) and the price of one (the unit price).", "Quantity times unit price is the line's total, at the end of the line (6): 12\u00a0×\u00a0£48.00\u00a0=\u00a0£576.00. With only one line, the Total before VAT (7) is the same. VAT isn't on a PO: it is added on the invoice."],
         },
         {
           heading: "Here is the invoice",
           figure: <InvoiceFigure />,
           body: [
             "An invoice is the supplier's bill. This is Harlow's invoice HP-2291 (2) for that same order. Every part is numbered.",
-            "It names our PO (4) and the delivery it's for (5), lists what it charges for (7), adds VAT (9) and says when and where to pay (11, 12).",
+            "It names our PO (4) and the delivery it's for (5), lists what it charges for (7), adds VAT (9) and says when and where to pay (11,\u00a012).",
           ],
         },
         {
@@ -564,7 +564,7 @@ const m10: ModuleManifest = {
         {
           heading: "Read the signature and the note",
           figure: <DeliveryFigure focus={["signed", "note"]} title="Who signed for it, and what they wrote" />,
-          body: ["Sarah signed for it (7), and wrote what she found (8): \"Only 10 on the van. 2 short.\"", "A signature with no note means it all came in good order. A note means something didn't."],
+          body: ["Sarah signed for it (7), and wrote what she found (8): \"Only 10 on the van. 2\u00a0short.\"", "A signature with no note means it all came in good order. A note means something didn't."],
         },
         {
           heading: "Three pieces of paper, side by side",
@@ -577,13 +577,13 @@ const m10: ModuleManifest = {
         {
           heading: "The quantity doesn't match",
           figure: <MatchFigure focus={["qty"]} title="The quantity row" />,
-          body: ["12 ordered, 10 delivered, 12 billed (5). Harlow are charging for all 12 pallets of pallet wrap, but 2 of them never came.", "The invoice matches the PO, which is why checking only the PO isn't enough."],
+          body: ["12 ordered, 10 delivered, 12 billed (5). Harlow are charging for all 12 pallets of wrap (PW-400), but 2 of them never came.", "The invoice matches the PO, which is why checking only the PO isn't enough."],
         },
         {
           heading: "Hold it, and say how much",
           figure: <MatchFigure focus={["verdict"]} title="What you decide" />,
-          body: ["Don't approve it. Tell Accounts what's wrong and how much to hold back (8).", "The 2 missing pallets of pallet wrap cost £48.00 each: 2 × £48.00 = £96.00. Add VAT at 20%, £19.20: hold back £115.20."],
-          good: [{ text: "Only 10 of the 12 pallets of pallet wrap arrived, so please hold back £115.20 including VAT.", note: "What's wrong, and exactly how much" }],
+          body: ["Don't approve it. Tell Accounts what's wrong and how much to hold back (8).", "The 2 missing pallets cost £48.00 each: 2\u00a0×\u00a0£48.00\u00a0=\u00a0£96.00. Add VAT at 20%, £19.20: hold back £115.20."],
+          good: [{ text: "Only 10 of the 12 pallets of wrap (PW-400) arrived, so please hold back £115.20 including VAT.", note: "What's wrong, and exactly how much" }],
           bad: [{ text: "There's a problem with the Harlow invoice.", note: "Which problem? How much?" }],
         },
         {
@@ -722,7 +722,7 @@ const m10: ModuleManifest = {
           heading: "What, when, and how many",
           figure: <BookingFigure focus={["parcels", "day", "time"]} title="Parcels, day and time" />,
           body: [`One parcel line per box, each with its own weight (5): ${nb("2 boxes")} at ${nb("12 kg")} are two lines of ${nb("12 kg")}, not one line of ${nb("24 kg.")}`, `Check the date, not just the day (6). "Friday afternoon" on a Thursday means tomorrow, ${nb("13:00 to 17:00 (7).")}`],
-          tip: "Booking a room or a table? The same goes for the number of people: count them twice.",
+          tip: "Before you book, check the number of parcels and each weight against the request. Booking a room or a table? Check the number of people the same way.",
         },
         {
           heading: "Read it back, then book",
@@ -735,7 +735,7 @@ const m10: ModuleManifest = {
           body: ["After booking you get a reference (1) and a summary (2). Every part is numbered.", "Copy the reference exactly and send it to whoever asked. They need it to label, track or change the booking."],
         },
         {
-          heading: "Booked it wrong? Cancel it",
+          heading: "Booked it wrong? Cancel and rebook",
           figure: <ConfirmFigure focus={["list"]} title="My bookings" />,
           body: ["Mistakes happen. Open My bookings (3), cancel the wrong one, and book it again.", "Never leave two live bookings for one job: the courier comes twice, and you pay twice."],
         },
@@ -791,19 +791,19 @@ const m10: ModuleManifest = {
         {
           heading: "Here is the same message as an email",
           figure: <MessageEmailFigure />,
-          body: ["Most offices pass messages on by email, so the person sees it on their phone wherever they are. Every part is numbered.", "The same facts carry the same numbers as on the pad, with a subject (8) on top."],
+          body: ["Most offices pass messages on by email, so the person sees it on their phone wherever they are. Every part is numbered.", "The same facts as on the pad, in the same order, with a subject (2) on top. The email numbers its parts from top to bottom."],
         },
         {
           heading: "A subject that says it all",
           figure: <MessageEmailFigure focus={["subject"]} title="The subject" />,
-          body: ["Start with \"Phone message:\", then who wants what, and when (8).", "Sarah can see from her inbox who rang and what they want, before she opens it."],
-          good: [{ text: "Phone message: Harlow can bring the 2 missing pallets on Wednesday" }],
+          body: ["Start with \"Phone message:\", then who wants what, and when (2).", "Sarah can see from her inbox who rang and what they want, before she opens it."],
+          good: [{ text: "Phone message: Harlow can bring the 2\u00a0missing\u00a0pallets on Wednesday" }],
           bad: [{ text: "Message" }, { text: "Call for you!!" }],
         },
         {
           heading: "Send it straight away",
           figure: <MessageEmailFigure focus={["for", "taken"]} title="Who it's to, and who it's from" />,
-          body: ["Send it to the person they asked for (1), as soon as you put the phone down, while it's fresh.", "Sign it (7), so they can ask you about it. If it's urgent and they're away, tell someone who can act."],
+          body: ["Send it to the person they asked for (1), as soon as you put the phone down, while it's fresh.", "Sign it (8), so they can ask you about it. If it's urgent and they're away, tell someone who can act."],
         },
       ],
       tryIt: { title: "Take the message", intro: "Listen to a recorded call from Bright Cafe, then email the message to Sarah.", Lab: PhoneLab },
