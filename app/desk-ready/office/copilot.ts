@@ -307,10 +307,12 @@ export const topicsIn = (text: string) => COMPLAINT_TOPICS.filter((t) => t.test.
 export function complaintPersonalLeft(text: string): string[] {
   const left = new Set<string>();
   for (const full of COMPLAINT_PEOPLE) for (const part of full.split(" ")) if (new RegExp(`\\b${part}\\b`, "i").test(text)) left.add(full);
-  const digits = text.replace(/[\s-]/g, "");
-  for (const phone of ["07700900214", "01164960738", "01164960583"]) if (digits.includes(phone)) left.add(phone.replace(/^(\d{4,5})(\d{3})(\d+)$/, "$1 $2 $3"));
+  const bare = (s: string) => s.replace(/[\s-]/g, "");
+  const phones = ["07700 900214", "0116 496 0738", "0116 496 0583"];
+  for (const phone of phones) if (bare(text).includes(bare(phone))) left.add(phone);
   if (/\b4417\b/.test(text)) left.add("card ending 4417");
-  for (const p of findPersonal(text)) if (p.kind === "phone" || p.kind === "email" || p.kind === "address") left.add(p.text);
+  /* anything else personal the learner typed in, once each */
+  for (const p of findPersonal(text)) if ((p.kind === "phone" || p.kind === "email" || p.kind === "address") && !phones.some((x) => bare(x) === bare(p.text))) left.add(p.text);
   return [...left];
 }
 

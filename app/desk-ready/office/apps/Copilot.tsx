@@ -323,9 +323,13 @@ export function CopilotChat({
   const [copied, setCopied] = useState<string | null>(null);
   const list = useRef<HTMLDivElement>(null);
   const last = turns[turns.length - 1];
+  const lastRef = useRef<HTMLDivElement>(null);
+  /* bring the newest answer into view from its first line, with the end
+   * of your question just above it */
   useEffect(() => {
     const el = list.current;
-    if (el) el.scrollTop = el.scrollHeight;
+    const at = lastRef.current;
+    if (el && at) el.scrollTop += at.getBoundingClientRect().top - el.getBoundingClientRect().top - 56;
   }, [turns.length, last?.reply]);
   const send = () => {
     if (!value.trim()) return;
@@ -368,15 +372,17 @@ export function CopilotChat({
             <div key={t.id} style={{ display: "grid", gap: 12 }}>
               <Sent turn={t} known={known} />
               {t.reply && (
-                <Answer
-                  turn={t}
-                  copied={copied === t.id}
-                  onCopy={() => copy(t)}
-                  onInsert={onInsert && isDraft(t) ? () => onInsert(t.reply) : undefined}
-                  insertLabel={insertLabel}
-                  onRegenerate={onRegenerate && t === last ? () => onRegenerate(t) : undefined}
-                  onUse={setValue}
-                />
+                <div ref={t === last ? lastRef : undefined}>
+                  <Answer
+                    turn={t}
+                    copied={copied === t.id}
+                    onCopy={() => copy(t)}
+                    onInsert={onInsert && isDraft(t) ? () => onInsert(t.reply) : undefined}
+                    insertLabel={insertLabel}
+                    onRegenerate={onRegenerate && t === last ? () => onRegenerate(t) : undefined}
+                    onUse={setValue}
+                  />
+                </div>
               )}
             </div>
           ))}
@@ -490,6 +496,17 @@ function DraftCard({ state, dispatch, ctx }: OfficeAppProps & { ctx: CopilotPane
   const [prompt, setPrompt] = useState("");
   const [shownId, setShownId] = useState<string | null>(null);
   const turn = turns.find((t) => t.id === shownId) ?? null;
+  /* bring a new draft into view: it lands below the fold of the reading pane */
+  const result = useRef<HTMLDivElement>(null);
+  const shownKey = turn ? `${turn.id}:${turn.variant ?? 0}` : "";
+  useEffect(() => {
+    const el = result.current;
+    if (!shownKey || !el) return;
+    /* scroll the reading pane only, never the page around the office */
+    let box = el.parentElement;
+    while (box && !/(auto|scroll)/.test(getComputedStyle(box).overflowY)) box = box.parentElement;
+    box?.scrollTo({ top: box.scrollTop + el.getBoundingClientRect().top - box.getBoundingClientRect().top - 12, behavior: "smooth" });
+  }, [shownKey]);
   const generate = () => {
     if (!prompt.trim()) return;
     setShownId(ask(prompt).id);
@@ -528,7 +545,7 @@ function DraftCard({ state, dispatch, ctx }: OfficeAppProps & { ctx: CopilotPane
           <span style={{ fontSize: 13, color: W.muted }}>Enter generates. Shift+Enter starts a new line.</span>
         </div>
         {turn && (
-          <div style={{ marginTop: 14 }}>
+          <div ref={result} style={{ marginTop: 14, scrollMarginTop: 12 }}>
             <p style={{ margin: "0 0 6px", fontSize: 13, color: W.muted }}>
               Your prompt: <i style={{ color: W.body }}>{turn.prompt}</i>
             </p>
@@ -575,9 +592,9 @@ export function CopilotPane(p: OfficeAppProps & { ctx: CopilotPaneContext }) {
 }
 
 /* The button that opens it, the same in Outlook's reply bar and Excel's ribbon. */
-export function CopilotButton({ onClick, on, label = "Copilot" }: { onClick: () => void; on?: boolean; label?: string }) {
+export function CopilotButton({ onClick, on, label = "Copilot", title = "Draft with Copilot, or ask it about what's open" }: { onClick: () => void; on?: boolean; label?: string; title?: string }) {
   return (
-    <button type="button" onClick={onClick} aria-pressed={on} className="of-btn" style={{ minHeight: 40, padding: "6px 14px 6px 8px", borderRadius: 6, border: `1px solid ${on ? W.copilot : W.edge}`, background: on ? W.copilotSoft : W.page, color: W.ink, fontFamily: W.font, fontSize: 15, fontWeight: 500, cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 7, whiteSpace: "nowrap" }}>
+    <button type="button" onClick={onClick} aria-pressed={on} title={title} className="of-btn" style={{ minHeight: 40, padding: "6px 14px 6px 8px", borderRadius: 6, border: `1px solid ${on ? W.copilot : W.edge}`, background: on ? W.copilotSoft : W.page, color: W.ink, fontFamily: W.font, fontSize: 15, fontWeight: 500, cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 7, whiteSpace: "nowrap" }}>
       <CopilotMark size={22} />
       {label}
     </button>

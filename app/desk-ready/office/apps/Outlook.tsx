@@ -463,7 +463,7 @@ function Compose({
         </AppButton>
         <AppButton onClick={onLink}>🔗 Insert link</AppButton>
         <AppButton onClick={onAttach}>📎 Attach file</AppButton>
-        {pane && <CopilotButton label="Draft with Copilot" on={ai} onClick={() => setAi((a) => !a)} />}
+        {pane && <CopilotButton on={ai} onClick={() => setAi((a) => !a)} />}
         <AppButton onClick={onDiscard} style={{ marginLeft: "auto" }}>
           Discard
         </AppButton>
