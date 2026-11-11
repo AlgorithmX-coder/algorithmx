@@ -131,7 +131,9 @@ export function bestScroll(spans: { left: number; right: number }[], view: numbe
     /* sorted left to right, so on a tie the later (righter) one wins */
     /* a part at the very edge of the figure needs no margin past that edge */
     const whole = spans.filter((sp) => Math.max(0, sp.left - pad) >= x - 1 && Math.min(max + view, sp.right + pad) <= x + view + 1).length;
-    const score = whole;
+    /* then the most parts whose start, with its badge, is on screen */
+    const starts = spans.filter((sp) => Math.max(0, sp.left - pad) >= x - 1 && sp.left + 40 <= x + view).length;
+    const score = whole * 1000 + starts;
     if (score >= bestScore) {
       best = x;
       bestScore = score;
@@ -140,7 +142,7 @@ export function bestScroll(spans: { left: number; right: number }[], view: numbe
   /* No lit part fits whole (an address bar, a form row wider than the
    * phone): open at the start of the first one, where its badge and label
    * are, not at its far end (Module 10 review, third pass). */
-  if (bestScore === 0) return clamp(Math.min(...spans.map((sp) => sp.left)) - pad);
+  if (bestScore < 1000) return clamp(Math.min(...spans.map((sp) => sp.left)) - pad);
   return best;
 }
 
@@ -158,21 +160,39 @@ function Scroller({ children, focusKey }: { children: ReactNode; focusKey: strin
     const el = ref.current;
     if (!el) return;
     const measure = () => setEdges({ left: el.scrollLeft > 4, right: el.scrollLeft + el.clientWidth < el.scrollWidth - 4 });
-    /* bring the lit parts into view */
-    const lit = [...el.querySelectorAll<HTMLElement>("[data-lit]")];
-    if (lit.length && el.scrollWidth > el.clientWidth + 4) {
-      const box = el.getBoundingClientRect();
-      const spans = lit.map((n) => {
-        const r = n.getBoundingClientRect();
-        return { left: r.left - box.left + el.scrollLeft, right: r.right - box.left + el.scrollLeft };
-      });
-      el.scrollLeft = bestScroll(spans, el.clientWidth, el.scrollWidth - el.clientWidth);
-    } else if (!lit.length) el.scrollLeft = 0;
-    measure();
+    /* bring the lit parts into view; again when fonts or layout settle
+     * (a measure taken before the fonts load is off by tens of pixels),
+     * but never after the learner has moved it themselves */
+    let moved = false;
+    const place = () => {
+      if (moved) return;
+      const lit = [...el.querySelectorAll<HTMLElement>("[data-lit]")];
+      if (lit.length && el.scrollWidth > el.clientWidth + 4) {
+        const box = el.getBoundingClientRect();
+        const spans = lit.map((n) => {
+          const r = n.getBoundingClientRect();
+          return { left: r.left - box.left + el.scrollLeft, right: r.right - box.left + el.scrollLeft };
+        });
+        el.scrollLeft = bestScroll(spans, el.clientWidth, el.scrollWidth - el.clientWidth);
+      } else if (!lit.length) el.scrollLeft = 0;
+      measure();
+    };
+    const mine = () => {
+      moved = true;
+    };
+    place();
+    let live = true;
+    document.fonts?.ready.then(() => live && place());
+    const ro = typeof ResizeObserver === "undefined" ? null : new ResizeObserver(() => place());
+    if (ro && el.firstElementChild) ro.observe(el.firstElementChild);
     el.addEventListener("scroll", measure, { passive: true });
+    for (const ev of ["pointerdown", "wheel", "touchstart", "keydown"]) el.addEventListener(ev, mine, { passive: true });
     window.addEventListener("resize", measure);
     return () => {
+      live = false;
+      ro?.disconnect();
       el.removeEventListener("scroll", measure);
+      for (const ev of ["pointerdown", "wheel", "touchstart", "keydown"]) el.removeEventListener(ev, mine);
       window.removeEventListener("resize", measure);
     };
   }, [focusKey]);
@@ -182,7 +202,7 @@ function Scroller({ children, focusKey }: { children: ReactNode; focusKey: strin
   return (
     <>
       <div style={{ position: "relative" }}>
-        <div ref={ref} className="dr-workspace" style={{ padding: "34px 26px 26px 26px", overflowX: "auto" }}>
+        <div ref={ref} className="dr-workspace" style={{ padding: "34px 42px 26px 42px", overflowX: "auto" }}>
           {children}
         </div>
         {edges.left && <span aria-hidden style={fade("left")} />}
@@ -204,7 +224,7 @@ export function FigureFrame<K extends string>({ title, info, focus, children, no
     <FigureProvider focus={focus} info={info}>
       <figure style={{ margin: "20px 0 0" }}>
         <Scroller focusKey={(focus ?? []).join(",")}>
-          <div style={{ minWidth, colorScheme: "light", fontFamily: W.font, color: W.ink, overflowWrap: "anywhere" }}>{children}</div>
+          <div style={{ minWidth, colorScheme: "light", fontFamily: W.font, color: W.ink, overflowWrap: "break-word" }}>{children}</div>
         </Scroller>
         <figcaption style={{ marginTop: 14 }}>
           {title && <p style={{ margin: "0 0 10px", fontFamily: D.mono, fontSize: 12, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", color: D.faint }}>{title}</p>}
