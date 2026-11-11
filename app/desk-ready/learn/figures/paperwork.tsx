@@ -188,7 +188,7 @@ const ROW = 30;
 const NUM = 34;
 /* How far a part's outline sits inside its cells, so two lit parts side
  * by side never touch, and an outline never sits on a number. */
-const INSET = 6;
+const INSET = 7;
 
 interface Box {
   k: string;
@@ -344,9 +344,9 @@ export function ClaimFigure({ focus, title = "An expense claim, with its receipt
       <MiniSheet
         focus={focus}
         pad={36}
-        gap={34}
+        gap={28}
         grid={MY_CLAIM}
-        widths={[100, 212, 84, 84]}
+        widths={[92, 196, 80, 76]}
         file="2026-11-13 Expense claim Jordan Miles.xlsx"
         place="Finance > Expenses > 2026"
         tab="Expense claim"
@@ -361,7 +361,7 @@ export function ClaimFigure({ focus, title = "An expense claim, with its receipt
         ]}
         picture={
           <Part k="receipt" badge="right" style={{ flexShrink: 0, boxShadow: "0 2px 8px rgba(0,0,0,0.25)" }}>
-            <ReceiptPhoto doc={TRAIN_RECEIPT} scale={0.82} />
+            <ReceiptPhoto doc={TRAIN_RECEIPT} scale={0.76} />
           </Part>
         }
       />
@@ -384,7 +384,7 @@ export const HOLIDAY_PARTS: Record<HolidayPart, PartInfo> = {
 
 function FormRow({ label, children, k, badge = "left" }: { label: string; children: ReactNode; k: HolidayPart; badge?: "left" | "right" }) {
   return (
-    <Part k={k} badge={badge} style={{ padding: "0 8px", marginBottom: 11 }}>
+    <Part k={k} badge={badge} style={{ padding: "0 8px", marginBottom: 16 }}>
       <div style={{ display: "grid", gridTemplateColumns: "128px 1fr", gap: 12, alignItems: "center", padding: "7px 0", borderBottom: `1px solid ${W.edge}` }}>
         <span style={{ fontSize: 13.5, color: W.muted }}>{label}</span>
         <span style={{ fontSize: 15, fontWeight: 600, color: "#1f3a6e", whiteSpace: "nowrap" }}>{children}</span>
@@ -477,7 +477,7 @@ export function BookingFigure({ focus, title = "A booking website", what, note }
             </div>
           </Rest>
           <div style={{ display: "grid", gridTemplateColumns: "minmax(0, 1fr) 180px", gap: 12, alignItems: "start" }}>
-            <div style={{ display: "grid", gap: 8 }}>
+            <div style={{ display: "grid", gap: 14 }}>
               <Part k="method" badge="left">
                 <div style={sec}>
                   <div style={h}>1 How should we get your parcels?</div>
@@ -489,7 +489,7 @@ export function BookingFigure({ focus, title = "A booking website", what, note }
                   </div>
                 </div>
               </Part>
-              <div style={{ display: "grid", gap: 12 }}>
+              <div style={{ display: "grid", gap: 14 }}>
                 <Part k="from" badge="left">
                   <div style={sec}>
                     <div style={h}>2 Collect from</div>
@@ -664,7 +664,7 @@ export const TOM_MESSAGE: PhoneNote = {
 
 function Line({ label, children, k, badge = "left" }: { label: string; children: ReactNode; k: MessagePart; badge?: "left" | "right" }) {
   return (
-    <Part k={k} badge={badge} style={{ padding: "0 8px", marginBottom: 11 }}>
+    <Part k={k} badge={badge} style={{ padding: "0 8px", marginBottom: 16 }}>
       <div style={{ display: "flex", gap: 8, alignItems: "baseline", padding: "4px 0", borderBottom: "1px solid #e7c9a5" }}>
         <span style={{ flexShrink: 0, width: 78, fontSize: 11.5, fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase", color: "#8a5a2b", whiteSpace: "nowrap" }}>{label}</span>
         <span style={{ fontFamily: PEN, fontSize: 16, color: "#1d4fb8", lineHeight: 1.35 }}>{children}</span>
@@ -730,7 +730,7 @@ export function MessageEmailFigure({ focus, title = "The same message, as an ema
           </div>
         </Rest>
         <div style={{ padding: "4px 20px 0 52px" }}>
-          <Part k="for" style={{ padding: "0 6px", marginBottom: 10 }}>
+          <Part k="for" style={{ padding: "0 6px", marginBottom: 14 }}>
             <div style={{ display: "flex", gap: 10, alignItems: "center", minHeight: 34, borderBottom: `1px solid ${W.edge}`, fontSize: 14 }}>
               <span style={{ width: 52, color: W.muted }}>To</span>
               <span style={{ padding: "2px 10px", borderRadius: 12, background: W.select }}>{m.for}</span>
@@ -743,7 +743,7 @@ export function MessageEmailFigure({ focus, title = "The same message, as an ema
             </div>
           </Part>
         </div>
-        <div style={{ padding: "14px 26px 18px 56px", display: "grid", gap: 12, fontSize: 14.5, lineHeight: 1.55 }}>
+        <div style={{ padding: "14px 26px 18px 56px", display: "grid", gap: 14, fontSize: 14.5, lineHeight: 1.55 }}>
           <Rest style={{ padding: "2px 6px" }}>
             <div>Hi {first},</div>
           </Rest>

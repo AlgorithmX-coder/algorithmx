@@ -206,7 +206,7 @@ export function DocSheet({ doc, ...p }: { doc: BizDoc } & PickProps) {
         <Bit k={isPo ? "buyer" : "supplier"} p={p} style={{ maxWidth: 290 }}>
           <Letterhead d={doc} />
         </Bit>
-        <div style={{ minWidth: 200, display: "grid", gap: 10 }}>
+        <div style={{ minWidth: 200, display: "grid", gap: 12 }}>
           <Rest>
             <div style={{ fontSize: 20, fontWeight: 800, letterSpacing: "0.04em", textTransform: "uppercase", color: c, textAlign: "right", padding: "0 6px" }}>{TITLE[doc.kind]}</div>
           </Rest>
@@ -295,7 +295,7 @@ export function DocSheet({ doc, ...p }: { doc: BizDoc } & PickProps) {
       {/* the sums */}
       {priced && (
         <div style={{ display: "flex", justifyContent: "flex-end", marginTop: 10 }}>
-          <div style={{ width: 240, display: "grid", gap: 10 }}>
+          <div style={{ width: 240, display: "grid", gap: 12 }}>
             {isPo ? (
               <Bit k="total" badge="right" p={p}>
                 <MetaRow name="Total before VAT" value={money(t.net)} strong />
