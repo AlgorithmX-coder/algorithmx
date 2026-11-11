@@ -746,9 +746,9 @@ function Keycap({ children, wide }: { children: ReactNode; wide?: boolean }) {
 
 export function LockScreenFigure({ focus, title = "Locking your screen", what, note }: FigProps<LockPart>) {
   return (
-    <FigureFrame info={infoOf(LOCK_PARTS, what)} focus={focus} title={title} note={note} minWidth={330}>
-      <div style={{ display: "flex", flexWrap: "wrap", gap: "30px 44px", alignItems: "flex-start", padding: "0 44px 0 40px" }}>
-        <div style={{ width: 230, flexShrink: 0, display: "grid", gap: 30 }}>
+    <FigureFrame info={infoOf(LOCK_PARTS, what)} focus={focus} title={title} note={note}>
+      <div style={{ display: "flex", flexWrap: "wrap", gap: "30px 44px", alignItems: "flex-start", padding: "0 38px" }}>
+        <div style={{ width: 230, maxWidth: "100%", flexShrink: 0, display: "grid", gap: 30 }}>
           <Part k="keys" style={{ justifySelf: "start" }}>
             <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "4px 6px" }}>
               <Keycap wide>
@@ -771,7 +771,7 @@ export function LockScreenFigure({ focus, title = "Locking your screen", what, n
             </div>
           </Part>
         </div>
-        <Part k="screen" holds={["time", "signin"]} badge="right" style={{ flex: "1 1 240px", minWidth: 0 }}>
+        <Part k="screen" holds={["time", "signin"]} badge="right" style={{ flex: "1 1 200px", minWidth: 0 }}>
           <div style={{ position: "relative", height: 270, borderRadius: 8, overflow: "hidden", background: "radial-gradient(120% 90% at 70% 10%, #6f8fc9 0%, #2d4e8c 45%, #13254a 100%)", color: "#fff", border: "6px solid #1b1b1f", boxShadow: W.float }}>
             <LockArt />
             <div style={{ position: "absolute", left: 0, right: 0, top: 34, display: "grid", justifyItems: "center" }}>
