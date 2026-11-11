@@ -152,6 +152,8 @@ export function bestScroll(spans: { left: number; right: number }[], view: numbe
  * there is more on that side; and a line under it says to slide. A
  * Module 10 review found 15 cards whose lit part was off-screen with no
  * hint at all. */
+const FIG_SCROLL_CSS = `.dr-fig-scroll { padding: 34px 26px 26px; } @media (max-width: 720px) { .dr-fig-scroll { padding: 34px 42px 26px; } }`;
+
 function Scroller({ children, focusKey }: { children: ReactNode; focusKey: string }) {
   const ref = useRef<HTMLDivElement>(null);
   const [edges, setEdges] = useState({ left: false, right: false });
@@ -202,12 +204,15 @@ function Scroller({ children, focusKey }: { children: ReactNode; focusKey: strin
   return (
     <>
       <div style={{ position: "relative" }}>
-        <div ref={ref} className="dr-workspace" style={{ padding: "34px 42px 26px 42px", overflowX: "auto" }}>
+        <div ref={ref} className="dr-workspace dr-fig-scroll" style={{ overflowX: "auto" }}>
           {children}
         </div>
         {edges.left && <span aria-hidden style={fade("left")} />}
         {edges.right && <span aria-hidden style={fade("right")} />}
       </div>
+      {/* on a phone the figure slides, so the sides need room for a badge
+       * (36px out from its part); on a laptop it fits, so they don't */}
+      <style>{FIG_SCROLL_CSS}</style>
       {more && (
         <p style={{ margin: "8px 0 0", display: "flex", alignItems: "center", gap: 8, fontFamily: D.mono, fontSize: 12.5, fontWeight: 700, letterSpacing: "0.08em", color: D.accent }}>
           <span aria-hidden style={{ whiteSpace: "nowrap" }}>{edges.left && edges.right ? "\u2190 \u2192" : edges.left ? "\u2190" : "\u2192"}</span>
