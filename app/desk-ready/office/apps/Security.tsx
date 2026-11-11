@@ -68,7 +68,7 @@ export function SignInLayer({ state, dispatch }: OfficeAppProps) {
         type="button"
         onClick={() => p.status !== "waiting" && setOpen(true)}
         aria-label={pending ? "Your phone: a sign-in request is waiting" : "Your phone"}
-        style={{ position: "absolute", right: 18, bottom: 64, zIndex: 62, display: "inline-flex", alignItems: "center", gap: 8, minHeight: 40, padding: "0 14px 0 10px", border: "none", borderRadius: 20, background: "#1b1b1f", color: "#fff", fontFamily: W.font, fontSize: 13.5, boxShadow: "0 10px 26px -10px rgba(0,0,0,0.7)", cursor: p.status === "waiting" ? "default" : "pointer" }}
+        style={{ position: "absolute", right: 18, bottom: 64, zIndex: 48, display: "inline-flex", alignItems: "center", gap: 8, minHeight: 40, padding: "0 14px 0 10px", border: "none", borderRadius: 20, background: "#1b1b1f", color: "#fff", fontFamily: W.font, fontSize: 13.5, boxShadow: "0 10px 26px -10px rgba(0,0,0,0.7)", cursor: p.status === "waiting" ? "default" : "pointer" }}
       >
         <MiniPhone />
         Your phone
@@ -77,7 +77,7 @@ export function SignInLayer({ state, dispatch }: OfficeAppProps) {
     );
 
   return (
-    <div role="dialog" aria-label="Your phone" className={pending ? "sec-buzz" : undefined} style={{ position: "absolute", right: 18, bottom: 62, zIndex: 62, width: 262, maxHeight: "calc(100% - 80px)", padding: 9, borderRadius: 34, background: "#1b1b1f", boxShadow: "0 30px 60px -18px rgba(0,0,0,0.75), inset 0 0 0 2px #3a3a40", fontFamily: W.font }}>
+    <div role="dialog" aria-label="Your phone" className={pending ? "sec-buzz" : undefined} style={{ position: "absolute", right: 18, bottom: 62, zIndex: 48, width: 262, maxHeight: "calc(100% - 80px)", padding: 9, borderRadius: 34, background: "#1b1b1f", boxShadow: "0 30px 60px -18px rgba(0,0,0,0.75), inset 0 0 0 2px #3a3a40", fontFamily: W.font }}>
       <div style={{ position: "relative", height: 496, maxHeight: "calc(100svh - 200px)", minHeight: 400, borderRadius: 26, overflow: "hidden", background: "#f3f4f7", color: W.ink, display: "flex", flexDirection: "column" }}>
         <StatusBar time={p.at} />
         <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "6px 14px 10px", borderBottom: "1px solid #e2e4ea", background: "#fff" }}>
@@ -102,7 +102,7 @@ export function SignInLayer({ state, dispatch }: OfficeAppProps) {
                   style={{ justifySelf: "center", width: 110, minHeight: 46, border: "1px solid #c8ccd6", borderRadius: 8, textAlign: "center", fontFamily: W.font, fontSize: 22, letterSpacing: "0.1em", color: W.ink, background: "#fff" }}
                 />
               </label>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
+              <div style={{ display: "grid", gridTemplateColumns: "1.45fr 1fr", gap: 8 }}>
                 <PhoneButton onClick={() => dispatch({ type: "update", fn: setPrompt(() => ({ status: "denied" })) })}>No, it&apos;s not me</PhoneButton>
                 <PhoneButton primary disabled={num.length < 2} onClick={() => dispatch({ type: "update", fn: setPrompt(() => ({ status: "approved" })) })}>
                   Yes
@@ -334,8 +334,8 @@ export function LockLayer({ state, dispatch, job, show }: OfficeAppProps) {
 
       {menu && (
         <>
-          <div aria-hidden onClick={() => setMenu(null)} style={{ position: "absolute", inset: 0, zIndex: 54 }} />
-          <div role="dialog" aria-label="Start menu" style={{ position: "absolute", bottom: 58, left: "50%", transform: "translateX(-50%)", zIndex: 55, width: 520, maxWidth: "calc(100% - 24px)", borderRadius: 10, background: "rgba(243,243,243,0.97)", backdropFilter: "blur(20px)", border: "1px solid rgba(0,0,0,0.08)", boxShadow: "0 30px 70px -20px rgba(0,0,0,0.55)", fontFamily: W.font, color: W.ink }}>
+          <div aria-hidden onClick={() => setMenu(null)} style={{ position: "absolute", inset: 0, zIndex: 44 }} />
+          <div role="dialog" aria-label="Start menu" style={{ position: "absolute", bottom: 58, left: "50%", transform: "translateX(-50%)", zIndex: 45, width: 520, maxWidth: "calc(100% - 24px)", borderRadius: 10, background: "rgba(243,243,243,0.97)", backdropFilter: "blur(20px)", border: "1px solid rgba(0,0,0,0.08)", boxShadow: "0 30px 70px -20px rgba(0,0,0,0.55)", fontFamily: W.font, color: W.ink }}>
             <div style={{ padding: "22px 28px 12px" }}>
               <div style={{ display: "flex", alignItems: "center", gap: 10, minHeight: 36, padding: "0 14px", borderRadius: 18, background: "#fff", border: `1px solid ${W.edge}`, color: W.faint, fontSize: 14 }}>⌕ Search for apps, settings and documents</div>
               <p style={{ margin: "20px 0 10px", fontSize: 14, fontWeight: 600 }}>Pinned</p>
@@ -395,7 +395,7 @@ export function LockLayer({ state, dispatch, job, show }: OfficeAppProps) {
           role="dialog"
           aria-label="Lock screen"
           onClick={() => setSignIn(true)}
-          style={{ position: "absolute", inset: 0, zIndex: 60, overflow: "hidden", background: "radial-gradient(120% 90% at 70% 10%, #6f8fc9 0%, #2d4e8c 45%, #13254a 100%)", color: "#fff", fontFamily: W.font, cursor: "default" }}
+          style={{ position: "absolute", inset: 0, zIndex: 46, overflow: "hidden", background: "radial-gradient(120% 90% at 70% 10%, #6f8fc9 0%, #2d4e8c 45%, #13254a 100%)", color: "#fff", fontFamily: W.font, cursor: "default" }}
         >
           <LockArt />
           {!signIn ? (

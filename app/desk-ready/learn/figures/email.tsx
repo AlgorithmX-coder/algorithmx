@@ -52,7 +52,7 @@ export const SARAH_EMAIL: ReadExample = {
 };
 
 const row = { display: "flex", gap: 10, alignItems: "baseline", fontSize: 14.5, lineHeight: 1.5 } as const;
-const label = { width: 44, flexShrink: 0, color: W.muted, whiteSpace: "nowrap" } as const;
+const label = { width: 56, flexShrink: 0, color: W.muted, whiteSpace: "nowrap" } as const;
 
 /* `bare` draws the email with no numbers or key: for a practice task,
  * where the learner reads it for real. */
