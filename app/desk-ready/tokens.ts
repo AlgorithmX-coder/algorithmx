@@ -66,6 +66,10 @@ export const W = Object.freeze({
   outlook: "#0f6cbd",
   excel: "#107c41",
   word: "#185abd",
+  /* Module 3: Teams' purple, and the dark of a video call */
+  teams: "#5b5fc7",
+  teamsSoft: "#e8ebfa",
+  call: "#1f1f1f",
   /* printed paperwork (a delivery note) laid beside a sheet */
   paper: "#fffdf6",
   /* the pretend desktop: folders, the File Explorer bar, wallpaper */

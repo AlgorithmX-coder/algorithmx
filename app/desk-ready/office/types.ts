@@ -121,6 +121,10 @@ export interface OfficeState {
   /* When this browser last changed it (ms), so the newer of this browser's
    * copy and the account's copy wins. */
   savedAt?: number;
+  /* ── Module 3: Meetings and messages (the Calendar and Teams apps) ── */
+  calendar?: CalendarState;
+  teams?: TeamsState;
+  /* ── end Module 3 ── */
 }
 
 export interface Check {
@@ -167,3 +171,108 @@ export const pathText = (p: Path) => p.join(" > ");
 /* A workbook's sheets, whether it was saved with tabs or as one sheet. */
 export const tabsOf = (f: { sheet?: Grid; tabs?: Tab[] }): Tab[] => f.tabs ?? (f.sheet ? [{ name: "Sheet1", grid: f.sheet }] : []);
 export const samePath = (a: Path, b: Path) => a.length === b.length && a.every((x, i) => x === b[i]);
+
+/* ── Module 3: Meetings and messages ─────────────────────────────────
+ * The learner's calendar and everyone else's free/busy, and the Teams
+ * chats and the one call a job can hold, kept in the office record so a
+ * job's checks can read them (criteria TM-1 to TM-5). A day is written
+ * "2026-11-12" and a time "10:00", always in the week of Monday 9
+ * November 2026. */
+
+export type InviteResponse = "none" | "accepted" | "tentative" | "declined" | "proposed";
+
+export interface Slot {
+  day: string;
+  start: string;
+  end: string;
+}
+
+export interface Meeting extends Slot {
+  id: string;
+  title: string;
+  organiser: Person;
+  /* Required attendees, not counting the organiser. */
+  attendees: Person[];
+  /* A meeting room booked for it (a room is a Person with a room address). */
+  room?: Person;
+  /* Somewhere that isn't a bookable room ("Warehouse, aisle C"). */
+  place?: string;
+  /* Held as a Teams meeting, with a Join button. */
+  teams: boolean;
+  /* The agenda, or the message that came with the invite. */
+  body: string;
+  /* An invite the learner booked and sent. */
+  sent?: boolean;
+  /* An invite to the learner, and their answer to it. */
+  response?: InviteResponse;
+  proposed?: Slot;
+  /* The inbox email that carried the invite, when there is one. */
+  emailId?: string;
+}
+
+/* Someone else's (or a room's) busy time, as the Scheduling Assistant
+ * shows it: no titles, just when. `who` is the person's or room's address. */
+export interface Busy extends Slot {
+  who: string;
+}
+
+export interface CalendarState {
+  /* The office's today, so the week view can mark it. */
+  today: string;
+  meetings: Meeting[];
+  busy: Busy[];
+  rooms: Person[];
+}
+
+export interface ChatMessage {
+  id: string;
+  from: Person;
+  text: string;
+  time: string;
+}
+
+export interface Chat {
+  id: string;
+  /* A group chat's name; a one-to-one chat is named after the person. */
+  title?: string;
+  /* Everyone in it except the learner. */
+  people: Person[];
+  messages: ChatMessage[];
+  /* Messages the learner hasn't opened yet. */
+  unread?: number;
+}
+
+/* A window the Share tray offers. `private` marks one nobody else should
+ * see (an email about your pay); the whole screen shows every window,
+ * private ones included. */
+export interface ShareWindow {
+  id: string;
+  app: "excel" | "outlook" | "explorer" | "screen";
+  title: string;
+  private?: boolean;
+}
+
+export interface Call {
+  meetingId: string;
+  title: string;
+  people: Person[];
+  stage: "prejoin" | "in" | "left";
+  /* true is on: the microphone live, the camera showing you. */
+  mic: boolean;
+  camera: boolean;
+  /* How the learner had them set as they pressed Join now. */
+  joinedWith?: { mic: boolean; camera: boolean };
+  /* What is on show now, and everything shown at any point in the call. */
+  sharing: string | null;
+  shared: string[];
+  /* Bumped when another app (an invite's Join button) asks Teams to come
+   * to the front. */
+  ask?: number;
+}
+
+export interface TeamsState {
+  chats: Chat[];
+  windows: ShareWindow[];
+  call?: Call;
+}
+/* ── end Module 3 ── */

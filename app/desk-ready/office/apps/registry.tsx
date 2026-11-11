@@ -1,6 +1,12 @@
 import type { ComponentType } from "react";
 import type { Action } from "../store";
 import type { FileKind, Job, OfficeFile, OfficeState, Paper } from "../types";
+/* ── Module 3 ── */
+import { W } from "../../tokens";
+import { pendingInvites, unreadChats } from "../meetings";
+import Calendar from "./Calendar";
+import Teams, { TeamsToast } from "./Teams";
+/* ── end Module 3 ── */
 
 /* The office's plug-in seam. Outlook, File Explorer and Excel are built
  * into Office.tsx; every other app (Calendar, Teams, Word, the Copilot
@@ -47,4 +53,9 @@ export interface OfficeApp {
 }
 
 /* Module builds add their apps here, one line each, in course order. */
-export const OFFICE_APPS: Record<string, OfficeApp> = {};
+export const OFFICE_APPS: Record<string, OfficeApp> = {
+  /* ── Module 3: Meetings and messages ── */
+  calendar: { label: "Calendar", colour: W.outlook, badge: pendingInvites, Window: Calendar },
+  teams: { label: "Teams", colour: W.teams, badge: unreadChats, Window: Teams, Layer: TeamsToast },
+  /* ── end Module 3 ── */
+};
