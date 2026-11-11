@@ -319,7 +319,7 @@ export function NameFigure({ focus, title = "A file name, the house way", what, 
             <span style={{ ...seg, color: W.ink }}>Delivery report</span>
           </Part>
           {/* the ending follows the words straight on: there's no space before it */}
-          <Part k="ending" block={false} badge="top" style={{ marginLeft: -6, outlineOffset: 0 }}>
+          <Part k="ending" block={false} badge="top" style={{ marginLeft: -12, outlineOffset: 0 }}>
             <span style={{ ...seg, color: W.excel }}>.xlsx</span>
           </Part>
         </div>
