@@ -32,7 +32,7 @@ export function FigureProvider<K extends string>({ focus, info, children }: { fo
  * when it's lit, and fades it when another part is the subject. */
 /* `holds` names the parts drawn inside this one, so it stays clear (not
  * faded) when one of them is the subject. */
-export function Part({ k, children, style, badge = "left", block = true, holds = [] }: { k: string; children: ReactNode; style?: CSSProperties; badge?: "left" | "right" | "top"; block?: boolean; holds?: string[] }) {
+export function Part({ k, children, style, badge = "left", block = true, holds = [] }: { k: string; children: ReactNode; style?: CSSProperties; badge?: "left" | "right" | "top" | "corner"; block?: boolean; holds?: string[] }) {
   const { focus, info } = useContext(FocusContext);
   const p = info[k];
   const whole = focus.length === 0;
@@ -61,9 +61,9 @@ export function Part({ k, children, style, badge = "left", block = true, holds =
   );
 }
 
-function Badge({ n, side }: { n: number; side: "left" | "right" | "top" }) {
+function Badge({ n, side }: { n: number; side: "left" | "right" | "top" | "corner" }) {
     /* in the gutter beside the part, never on top of its words */
-  const pos: CSSProperties = side === "left" ? { left: -36, top: "50%", transform: "translateY(-50%)" } : side === "right" ? { right: -36, top: "50%", transform: "translateY(-50%)" } : { left: "50%", top: -32, transform: "translateX(-50%)" };
+  const pos: CSSProperties = side === "left" ? { left: -36, top: "50%", transform: "translateY(-50%)" } : side === "right" ? { right: -36, top: "50%", transform: "translateY(-50%)" } : side === "corner" ? { right: -14, top: -14 } : { left: "50%", top: -32, transform: "translateX(-50%)" };
   return (
     <span
       aria-hidden
