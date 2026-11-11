@@ -332,6 +332,9 @@ export function DocSheet({ doc, ...p }: { doc: BizDoc } & PickProps) {
             <Signature name={doc.signed ?? ""} role={doc.signedRole ?? ""} title="Received by" />
           </Bit>
         )}
+        {/* when to pay, and the bank details under it, read down the left as invoices print them */}
+        {(doc.terms || doc.due || doc.bank) && (
+          <div style={{ display: "grid", gap: 12, justifyItems: "start" }}>
         {(doc.terms || doc.due) && (
           <Bit k="due" p={p} style={{ maxWidth: 260, padding: "4px 8px" }}>
             <div style={{ fontSize: 12, lineHeight: 1.55 }}>
@@ -346,7 +349,7 @@ export function DocSheet({ doc, ...p }: { doc: BizDoc } & PickProps) {
           </Bit>
         )}
         {doc.bank && (
-          <Bit k="bank" badge="right" p={p}>
+          <Bit k="bank" p={p}>
             <div style={{ fontSize: 12, lineHeight: 1.55, padding: "8px 10px", border: `1px solid ${c}`, borderRadius: 4 }}>
               <div style={label}>Pay by bank transfer to</div>
               <div>{doc.bank.name}</div>
@@ -356,6 +359,8 @@ export function DocSheet({ doc, ...p }: { doc: BizDoc } & PickProps) {
               <div>Reference: {doc.number}</div>
             </div>
           </Bit>
+        )}
+          </div>
         )}
         {isDn && doc.note && (
           <Bit k="note" badge="right" p={p} style={{ padding: "18px 14px 8px 10px" }}>

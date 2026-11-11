@@ -709,10 +709,10 @@ export function MessagePadFigure({ focus, title = "A phone message, on the pad",
           <Line k="caller" label="From">
             {m.caller}, {m.company}
           </Line>
-          <Line k="phone" label="Phone" badge="right">
+          <Line k="phone" label="Phone">
             <span style={{ whiteSpace: "nowrap" }}>{m.phone}</span>
           </Line>
-          <Line k="when" label="When" badge="right">
+          <Line k="when" label="When">
             <span style={{ whiteSpace: "nowrap" }}>
               {m.date} at {m.time}
             </span>
@@ -720,7 +720,7 @@ export function MessagePadFigure({ focus, title = "A phone message, on the pad",
           <Line k="message" label="Message">
             {m.message}
           </Line>
-          <Line k="callback" label="Call back" badge="right">
+          <Line k="callback" label="Call back">
             {m.callback}
           </Line>
           <Line k="taken" label="Taken by">
