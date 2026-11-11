@@ -163,7 +163,10 @@ export function bestScroll(spans: { left: number; right: number }[], view: numbe
  * this on nearly every lit card. */
 const FIG_FOCUS_CSS = `.dr-fig-focus > :not([data-part]):not(:has([data-part])), .dr-fig-focus :not([data-part]):not([data-part] *):has([data-part]) > :not([data-part]):not(:has([data-part])) { opacity: 0.32; transition: opacity .2s ease; }`;
 
-const FIG_SCROLL_CSS = `.dr-fig-scroll { padding: 34px 26px 26px; } @media (max-width: 720px) { .dr-fig-scroll { padding: 34px 42px 26px; } }`;
+/* On a laptop a figure fits, so its frame does not scroll and a badge at
+ * the figure's very edge may sit over the frame's border rather than be
+ * cut off. On a phone it slides, with room at the sides for a badge. */
+const FIG_SCROLL_CSS = `.dr-workspace.dr-fig-scroll { padding: 34px 26px 26px; overflow-x: visible; } @media (max-width: 720px) { .dr-workspace.dr-fig-scroll { padding: 34px 42px 26px; overflow-x: auto; } }`;
 
 function Scroller({ children, focusKey }: { children: ReactNode; focusKey: string }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -172,7 +175,9 @@ function Scroller({ children, focusKey }: { children: ReactNode; focusKey: strin
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    const measure = () => setEdges({ left: el.scrollLeft > 4, right: el.scrollLeft + el.clientWidth < el.scrollWidth - 4 });
+    /* only a frame that scrolls (a phone) has more to see */
+    const scrolls = () => getComputedStyle(el).overflowX !== "visible";
+    const measure = () => setEdges(scrolls() ? { left: el.scrollLeft > 4, right: el.scrollLeft + el.clientWidth < el.scrollWidth - 4 } : { left: false, right: false });
     /* bring the lit parts into view; again when fonts or layout settle
      * (a measure taken before the fonts load is off by tens of pixels),
      * but never after the learner has moved it themselves */
@@ -180,7 +185,7 @@ function Scroller({ children, focusKey }: { children: ReactNode; focusKey: strin
     const place = () => {
       if (moved) return;
       const lit = [...el.querySelectorAll<HTMLElement>("[data-lit]")];
-      if (lit.length && el.scrollWidth > el.clientWidth + 4) {
+      if (lit.length && scrolls() && el.scrollWidth > el.clientWidth + 4) {
         const box = el.getBoundingClientRect();
         const spans = lit.map((n) => {
           const r = n.getBoundingClientRect();
@@ -215,7 +220,7 @@ function Scroller({ children, focusKey }: { children: ReactNode; focusKey: strin
   return (
     <>
       <div style={{ position: "relative" }}>
-        <div ref={ref} className="dr-workspace dr-fig-scroll" style={{ overflowX: "auto" }}>
+        <div ref={ref} className="dr-workspace dr-fig-scroll">
           {children}
         </div>
         {edges.left && <span aria-hidden style={fade("left")} />}
