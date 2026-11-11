@@ -92,7 +92,7 @@ export const DeliveryFigure = (p: { focus?: DocPart[]; title?: string; what?: Pa
 export const CREDIT_PARTS: Partial<Record<DocPart, PartInfo>> = {
   supplier: { n: 1, name: "Supplier", what: "Who owes us the money back." },
   number: { n: 2, name: "Credit note number", what: "The supplier's number for the credit. Accounts take it off what we owe." },
-  poRef: { n: 3, name: "Your order", what: "The PO it belongs to. The row under it names the invoice it reduces, HP20112291." },
+  poRef: { n: 3, name: "Your order", what: "The PO it belongs to. The row under it names the invoice it reduces, HP‑2291." },
   lines: { n: 4, name: "What is credited", what: "Only what didn't come: here the 2 missing pallets, at the same price." },
   total: { n: 5, name: "Total credit", what: "With VAT, so it cancels exactly what was overcharged: £115.20." },
 };
