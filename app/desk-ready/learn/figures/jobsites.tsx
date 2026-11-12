@@ -89,7 +89,7 @@ export function JobAdFigure({ focus, title, what, note, scam }: { focus?: AdPart
   for (const k of Object.keys(what ?? {}) as AdPart[]) info[k] = { ...info[k], what: what![k]! };
   const bad = (on: boolean): CSSProperties => (scam && on ? { color: WARN } : {});
   return (
-    <FigureFrame info={info} focus={focus} title={title ?? (scam ? "A fake job advert" : "A job advert")} note={note} minWidth={340}>
+    <FigureFrame info={info} focus={focus} title={title ?? (scam ? "A fake job advert" : "A job advert")} note={note}>
       <Browser url={ad.url}>
         <div style={{ display: "flex", alignItems: "center", gap: 10, minHeight: 46, padding: "0 16px", borderBottom: `1px solid ${W.edge}` }}>
           <b style={{ fontSize: 17, color: SITE, letterSpacing: "-0.01em" }}>jobsnearby</b>
@@ -195,7 +195,7 @@ export function ProfileFigure({ focus, title = "A work profile", what, note }: {
   const info = { ...PROFILE_PARTS } as Record<ProfilePart, PartInfo>;
   for (const k of Object.keys(what ?? {}) as ProfilePart[]) info[k] = { ...info[k], what: what![k]! };
   return (
-    <FigureFrame info={info} focus={focus} title={title} note={note} minWidth={340}>
+    <FigureFrame info={info} focus={focus} title={title} note={note}>
       <Browser url="https://www.worknet.example/in/jordan-miles">
         <div style={{ display: "flex", alignItems: "center", gap: 10, minHeight: 42, padding: "0 16px", borderBottom: `1px solid ${W.edge}` }}>
           <b style={{ fontSize: 16, color: "#0a66c2" }}>worknet</b>

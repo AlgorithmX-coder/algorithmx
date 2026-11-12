@@ -21,25 +21,21 @@ const keep: CSSProperties = { whiteSpace: "nowrap" };
 const frame: CSSProperties = { borderRadius: 8, boxShadow: W.float, border: `1px solid ${W.edge}`, background: W.page, overflowWrap: "normal" };
 
 function WordTitle({ name, fileKey }: { name: string; fileKey?: string }) {
-  const text = (
-    <span style={{ fontSize: 13.5 }}>
-      <b style={{ fontWeight: 600 }}>{name}</b>
-      <span style={{ opacity: 0.85 }}> · Saved</span>
-    </span>
-  );
+  const title = <b style={{ fontWeight: 600 }}>{name}</b>;
   return (
     <div style={{ display: "flex", alignItems: "center", gap: 10, minHeight: 34, padding: "0 12px", background: W.word, color: "#fff", borderRadius: "8px 8px 0 0" }}>
       <span aria-hidden style={{ width: 20, height: 20, borderRadius: 4, background: "#fff", color: W.word, fontWeight: 800, fontSize: 12.5, display: "inline-flex", alignItems: "center", justifyContent: "center" }}>
         W
       </span>
-      <span style={{ flex: 1, display: "flex", justifyContent: "center" }}>
+      <span style={{ flex: 1, display: "flex", justifyContent: "center", alignItems: "center", gap: 6, fontSize: 13.5 }}>
         {fileKey ? (
-          <Part k={fileKey} block={false}>
-            {text}
+          <Part k={fileKey} block={false} style={{ padding: "1px 4px", margin: "0 -4px" }}>
+            {title}
           </Part>
         ) : (
-          text
+          title
         )}
+        <span style={{ opacity: 0.85, ...keep }}>· Saved</span>
       </span>
       <span style={{ fontSize: 12, opacity: 0.85, ...keep }}>AutoSave off</span>
     </div>
@@ -135,7 +131,7 @@ export function CvFigure({ focus, title = "A one-page CV", what, note, blank }: 
     </div>
   );
   const heading = (t: string, badge: boolean) => (
-    <Part k="headings" noBadge={!badge} style={pad(14)}>
+    <Part k="headings" noBadge={!badge} style={pad(16)}>
       <div style={{ ...h1, margin: 0 }}>{t}</div>
     </Part>
   );
@@ -151,7 +147,7 @@ export function CvFigure({ focus, title = "A one-page CV", what, note, blank }: 
                 <Ph t={cv.name} />
               </div>
             </Part>
-            <Part k="contact" style={pad(10)}>
+            <Part k="contact" style={pad(14)}>
               <div style={{ display: "flex", flexWrap: "wrap", gap: "0 6px", color: "#262626" }}>
                 {cv.contact.map((c, i) => (
                   <span key={i} style={keep}>
@@ -162,19 +158,19 @@ export function CvFigure({ focus, title = "A one-page CV", what, note, blank }: 
               </div>
             </Part>
             {heading("Profile", false)}
-            <Part k="profile" style={pad(8)}>
+            <Part k="profile" style={pad(14)}>
               <div>
                 <Ph t={cv.profile} />
               </div>
             </Part>
             {heading("Skills", true)}
-            <Part k="skills" style={pad(8)}>
+            <Part k="skills" style={pad(14)}>
               <div>{cv.skills.map(bullet)}</div>
             </Part>
             {heading("Experience", false)}
             {/* each job is outlined; the number sits by the first, where the section starts */}
             {cv.jobs.map((j, ji) => (
-              <Part key={j.role} k="experience" noBadge={ji > 0} style={pad(ji ? 10 : 8)}>
+              <Part key={j.role} k="experience" noBadge={ji > 0} style={pad(14)}>
                 <div>
                   <div style={{ fontFamily: display, fontSize: 14, color: blue }}>
                     <Ph t={j.role} />
@@ -187,7 +183,7 @@ export function CvFigure({ focus, title = "A one-page CV", what, note, blank }: 
               </Part>
             ))}
             {heading("Education", false)}
-            <Part k="education" style={pad(8)}>
+            <Part k="education" style={pad(14)}>
               <div>
                 {cv.education.map((e) => (
                   <div key={e}>
@@ -197,7 +193,7 @@ export function CvFigure({ focus, title = "A one-page CV", what, note, blank }: 
               </div>
             </Part>
             {heading("References", false)}
-            <Part k="refs" style={pad(8)}>
+            <Part k="refs" style={pad(14)}>
               <div>Available on request.</div>
             </Part>
           </div>
@@ -247,7 +243,7 @@ export function LineFigure({ focus, title = "One line of experience, in office w
   /* one flowing sentence: each part is a span inside it, so the line wraps
    * like text; the tall line height leaves room for a badge above a part */
   const piece = (k: LinePart, t: string, style?: CSSProperties) => (
-    <Part k={k} block={false} badge="top" style={{ display: "inline", borderRadius: 3, padding: "2px 3px", boxDecorationBreak: "clone", WebkitBoxDecorationBreak: "clone", ...style }}>
+    <Part k={k} block={false} badge="top" style={{ display: "inline", borderRadius: 3, padding: "2px 3px", margin: "0 4px", boxDecorationBreak: "clone", WebkitBoxDecorationBreak: "clone", ...style }}>
       {t}
     </Part>
   );
@@ -267,7 +263,7 @@ export function LineFigure({ focus, title = "One line of experience, in office w
           ↓ in office words
         </div>
         {/* the same thing on the CV */}
-        <div style={{ background: "#fff", borderRadius: 6, boxShadow: W.float, padding: `16px 20px 18px calc(${gutter(36)} + 18px)`, fontFamily: body, color: "#000" }}>
+        <div style={{ background: "#fff", borderRadius: 6, boxShadow: W.float, padding: `16px 14px 18px calc(${gutter(36)} + 14px)`, fontFamily: body, color: "#000" }}>
           <div style={{ ...h1, fontSize: 20, margin: "0 0 10px" }}>Experience</div>
           <div>
             <Part k="role" style={{ display: "inline-block", padding: "2px 5px", margin: "0 -5px" }}>

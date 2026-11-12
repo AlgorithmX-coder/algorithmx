@@ -67,7 +67,7 @@ export function TypingFigure({ focus, title = "An agency typing test", what, not
   for (const k of Object.keys(what ?? {}) as TypingPart[]) info[k] = { ...info[k], what: what![k]! };
   const typed = WORDS.slice(0, DONE).map((w, i) => (i === SLIP ? "ordre," : w)).join(" ") + " th";
   return (
-    <FigureFrame info={info} focus={focus} title={title} note={note} minWidth={340}>
+    <FigureFrame info={info} focus={focus} title={title} note={note}>
       <Site path="candidate/typing-test">
         <div style={{ padding: "14px 18px 18px 52px", display: "grid", gap: 14 }}>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(110px, 1fr))", gap: "12px 44px" }}>
@@ -149,7 +149,7 @@ export function TypingResultFigure({ focus, title = "A typing test result", what
               <b>Pass.</b> That meets what most office clients ask for.
             </div>
           </Part>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))", gap: "14px 44px" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(190px, 1fr))", gap: "14px 44px" }}>
             {cell("gross", "Gross speed", "42 wpm")}
             {cell("mistakes", "Mistakes", "3")}
             {cell("net", "Net speed", "41 wpm")}
@@ -187,7 +187,7 @@ const XL_ROWS: string[][] = [
   ["12", "Total", "", "", "", "£501.90"],
 ];
 const XL_COLS = ["", "A", "B", "C", "D", "E"];
-const XL_W = [30, 112, 86, 34, 46, 66];
+const XL_W = [26, 108, 80, 30, 42, 62];
 
 export function ExcelTestFigure({ focus, title = "An agency Excel test", what, note }: { focus?: XlTestPart[]; title?: string; what?: Partial<Record<XlTestPart, string>>; note?: string }) {
   const info = { ...XLTEST_PARTS } as Record<XlTestPart, PartInfo>;
@@ -227,14 +227,14 @@ export function ExcelTestFigure({ focus, title = "An agency Excel test", what, n
                 <b style={{ fontSize: 20, fontWeight: 600 }}>11:39</b>
               </div>
             </Part>
-            <Part k="task" style={{ ...tight, marginTop: 20 }}>
+            <Part k="task" style={{ ...tight, marginTop: 28 }}>
               <div style={{ padding: "8px 10px", borderRadius: 6, border: `1px solid ${W.edge}`, background: W.page, fontSize: 13.5, lineHeight: 1.5 }}>
-                <span style={{ display: "block", fontSize: 11, fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase", color: W.muted }}>Task 5 of 10</span>
                 In{" "}
                 <Part k="address" block={false} badge="top" style={{ padding: "0 2px", borderRadius: 3 }}>
                   <b style={{ background: "#fff1b8", padding: "0 2px" }}>E12</b>
                 </Part>
                 , add up the costs of all the items with the SUM function.
+                <span style={{ display: "block", marginTop: 4, fontSize: 11, fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase", color: W.muted }}>Task 5 of 10</span>
               </div>
             </Part>
             <Part k="handin" style={{ ...tight, justifySelf: "start" }}>
@@ -255,7 +255,7 @@ export function ExcelTestFigure({ focus, title = "An agency Excel test", what, n
                 <span style={{ display: "block", minHeight: 26, padding: "3px 8px", border: `1px solid ${W.edge}`, fontFamily: "Consolas, ui-monospace, monospace", fontSize: 13, ...keep }}>=SUM(E2:E10)</span>
               </Part>
             </div>
-            <div style={{ padding: "8px 48px 6px 46px", fontSize: 13 }}>
+            <div style={{ padding: "8px 40px 6px 46px", fontSize: 12.5 }}>
               <div style={{ display: "flex" }}>{XL_COLS.map((c, ci) => <span key={ci}>{cellBox(c, -1, ci, true)}</span>)}</div>
               {XL_ROWS.map((r, ri) => (
                 <div key={ri} style={{ display: "flex" }}>

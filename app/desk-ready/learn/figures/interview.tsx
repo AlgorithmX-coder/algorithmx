@@ -67,10 +67,10 @@ export function InterviewFigure({ focus, title = "A video interview", what, note
   for (const k of Object.keys(what ?? {}) as CallPart[]) info[k] = { ...info[k], what: what![k]! };
   const tight: CSSProperties = { padding: 3, margin: -3 };
   return (
-    <FigureFrame info={info} focus={focus} title={title} note={note} minWidth={330}>
+    <FigureFrame info={info} focus={focus} title={title} note={note}>
       <div style={{ display: "flex", flexWrap: "wrap", gap: "30px 46px", alignItems: "flex-start", overflowWrap: "normal" }}>
         {/* the call window */}
-        <div style={{ flex: "1.7 1 300px", minWidth: 0, borderRadius: 8, boxShadow: W.float, background: W.call, color: "#fff", overflow: "visible" }}>
+        <div style={{ flex: "1.7 1 260px", minWidth: 0, borderRadius: 8, boxShadow: W.float, background: W.call, color: "#fff", overflow: "visible" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 10, minHeight: 34, padding: "0 12px", background: W.teams, borderRadius: "8px 8px 0 0", fontSize: 13 }}>
             <b>Teams</b>
           </div>
@@ -119,7 +119,7 @@ export function InterviewFigure({ focus, title = "A video interview", what, note
         </div>
 
         {/* the set-up, from the side: wall behind you, laptop on books, window in front */}
-        <div style={{ flex: "1 1 220px", maxWidth: 340, borderRadius: 8, boxShadow: W.float, background: W.page, color: W.ink, padding: "10px 12px 12px 12px" }}>
+        <div style={{ flex: "1 1 200px", maxWidth: 340, borderRadius: 8, boxShadow: W.float, background: W.page, color: W.ink, padding: "10px 12px 12px 12px" }}>
           <b style={{ display: "block", fontSize: 13.5 }}>Your set-up, from the side</b>
           <div style={{ position: "relative", marginTop: 40 }}>
             <svg width="100%" viewBox="0 0 220 170" aria-hidden style={{ display: "block" }}>
