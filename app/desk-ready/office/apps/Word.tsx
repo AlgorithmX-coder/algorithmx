@@ -35,7 +35,7 @@ export interface OpenDoc {
 let opened = 0;
 let untitled = 0;
 
-type SaveType = "docx" | "pdf";
+export type SaveType = "docx" | "pdf";
 
 export default function WordApp({ state, dispatch, request, openFile, show, active, practice, onDoc }: Pick<OfficeAppProps, "state" | "dispatch" | "request" | "openFile" | "show"> & { active?: boolean; practice?: boolean; onDoc?: (d: OpenDoc | null) => void }) {
   const [open, setOpen] = useState<OpenDoc | null>(null);
@@ -326,7 +326,7 @@ function Home({ templates, recent, onOpen, onBlank, onBrowse }: { templates: Off
 /* Save As, the Word way: a place, a name, and what to save it as (a Word
  * document or a PDF). Built on the office's own places, so it shows the
  * same OneDrive and SharePoint sites as File Explorer. */
-export function SaveDialog({ state, type: startType, name: startName, at: startAt, note, onCancel, onSave }: { state: OfficeAppProps["state"]; type: SaveType; name: string; at: Path; note?: string; onCancel: () => void; onSave: (path: Path, name: string, type: SaveType, openAfter: boolean, replaceId?: string) => void }) {
+export function SaveDialog({ state, type: startType, name: startName, at: startAt, note, onCancel, onSave, pdfOnly, info, colour = W.word }: { state: OfficeAppProps["state"]; type: SaveType; name: string; at: Path; note?: string; /* ── Module 9 ── Excel's Export > Create PDF: a PDF, nothing else, with a line on what it will show */ pdfOnly?: boolean; info?: string; colour?: string; onCancel: () => void; onSave: (path: Path, name: string, type: SaveType, openAfter: boolean, replaceId?: string) => void }) {
   const [at, setAt] = useState<Path>(startAt);
   const [name, setName] = useState(startName);
   const [type, setType] = useState<SaveType>(startType);
@@ -351,6 +351,7 @@ export function SaveDialog({ state, type: startType, name: startName, at: startA
   return (
     <Dialog title={type === "pdf" ? "Save as PDF" : "Save as"} onClose={onCancel} width={840}>
       {note && <p style={{ margin: "0 0 12px", padding: "10px 12px", borderRadius: 6, background: "#fff4ce", fontSize: 14.5 }}>{note}</p>}
+      {info && <p style={{ margin: "0 0 12px", padding: "10px 12px", borderRadius: 6, background: W.chrome, border: `1px solid ${W.edge}`, fontSize: 14.5 }}>{info}</p>}
       <div style={{ display: "flex", height: 320, border: `1px solid ${W.edge}`, borderRadius: 8, overflow: "hidden" }}>
         <PlacesNav at={at} go={go} />
         <div style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column" }}>
@@ -393,7 +394,7 @@ export function SaveDialog({ state, type: startType, name: startName, at: startA
           }}
           style={{ minHeight: 40, padding: "4px 8px", border: `1px solid ${W.faint}`, borderRadius: 4, fontFamily: W.font, fontSize: 15, color: W.ink, background: W.page, minWidth: 0 }}
         >
-          <option value="docx">Word Document (*.docx)</option>
+          {!pdfOnly && <option value="docx">Word Document (*.docx)</option>}
           <option value="pdf">PDF (*.pdf)</option>
         </select>
         {type === "pdf" && (
@@ -421,7 +422,7 @@ export function SaveDialog({ state, type: startType, name: startName, at: startA
       )}
       <div style={{ display: "flex", justifyContent: "flex-end", gap: 10, marginTop: 16 }}>
         <AppButton onClick={onCancel}>Cancel</AppButton>
-        <AppButton primary colour={W.word} onClick={save} disabled={!name.trim() || !allowed}>
+        <AppButton primary colour={colour} onClick={save} disabled={!name.trim() || !allowed}>
           Save
         </AppButton>
       </div>

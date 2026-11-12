@@ -137,7 +137,7 @@ export const PARTS: readonly DeskPart[] = [
         title: "Files and sharing",
         promise: "Name, save and share files the way offices expect.",
         topics: ["Folders that make sense", "File names you can find again", "OneDrive, SharePoint and Teams files", "Send a link or attach a file?", "Who can see it: sharing settings"],
-        ready: false,
+        ready: true,
       },
     ],
   },

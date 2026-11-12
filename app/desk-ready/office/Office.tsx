@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState, type CSSProperties } from "react";
+import { useEffect, useState, type CSSProperties } from "react";
 import DeskHeader from "../DeskHeader";
 import { markDone, useDone } from "../learn/progress";
 import { Button, Kicker, SHELL_CSS, Tick } from "../learn/ui";
@@ -11,6 +11,9 @@ import Explorer from "./apps/Explorer";
 import Outlook from "./apps/Outlook";
 import Viewer from "./apps/Viewer";
 import { OFFICE_APPS } from "./apps/registry";
+/* ── Module 9: Files and sharing ── Excel's Export > Create PDF */
+import { SaveDialog } from "./apps/Word";
+import { pdfOfRows } from "./files";
 import { PlacePicker } from "./places";
 import { newId, useOffice } from "./store";
 import { samePath, tabsOf, type Check, type Job, type OfficeFile, type Paper, type Path } from "./types";
@@ -46,6 +49,8 @@ export default function Office({ job }: { job: Job }) {
   const [results, setResults] = useState<Check[] | null>(null);
   const [hints, setHints] = useState(false);
   const [confirmReset, setConfirmReset] = useState(false);
+  /* ── Module 9 ── the rows Excel's Export > Create PDF is making a PDF of */
+  const [pdfAsk, setPdfAsk] = useState<{ rows: string[][]; sheet: string } | null>(null);
 
   const finished = done.includes(job.id);
   const unread = state.emails.filter((e) => e.folder === "inbox" && e.unread).length;
@@ -54,6 +59,18 @@ export default function Office({ job }: { job: Job }) {
   const liveDoc: ExcelDoc | null = doc && (docFile ? { ...doc, name: docFile.name, path: docFile.path } : doc.fileId ? { ...doc, fileId: null, path: null } : doc);
 
   const guard = (then: () => void) => (doc?.dirty ? setUnsaved({ then }) : then());
+
+  /* ── Module 9 ── a workbook that is open but unchanged follows its file,
+   * so a version restored in File Explorer shows in Excel at once, and a
+   * later Save can't put the old numbers back. */
+  const fileTabs = docFile ? tabsOf(docFile) : null;
+  const fileGrids = fileTabs ? JSON.stringify(fileTabs.map((t) => t.grid)) : "";
+  useEffect(() => {
+    if (!doc || doc.dirty || !fileTabs?.length) return;
+    if (fileGrids === JSON.stringify(doc.tabs.map((t) => t.grid))) return;
+    setDoc({ ...doc, tabs: fileTabs.map((t) => ({ name: t.name, grid: t.grid.map((r) => [...r]) })), active: Math.min(doc.active, fileTabs.length - 1) });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fileGrids]);
 
   const openFile = (f: OfficeFile) => {
     const opener = extras.find((id) => OFFICE_APPS[id].opens?.includes(f.kind));
@@ -194,6 +211,7 @@ export default function Office({ job }: { job: Job }) {
                   onSave={save}
                   onSaveAs={() => setSaveAs(true)}
                   onClose={() => guard(() => setDoc(null))}
+                  onExportPdf={(rows, sheet) => setPdfAsk({ rows, sheet })}
                 />
               </div>
               {extras.map((id) => {
@@ -229,6 +247,26 @@ export default function Office({ job }: { job: Job }) {
                 mode={{ kind: "saveAs", name: liveDoc.fileId ? liveDoc.name : `${liveDoc.name}.xlsx`, at: liveDoc.path ?? ["OneDrive", "Documents"] }}
                 onCancel={() => setSaveAs(false)}
                 onSave={savedAs}
+              />
+            )}
+            {pdfAsk && liveDoc && (
+              /* ── Module 9 ── Export > Create PDF: a PDF of what the sheet shows */
+              <SaveDialog
+                state={state}
+                type="pdf"
+                pdfOnly
+                colour={W.excel}
+                name={liveDoc.name.replace(/\.(xlsx|xltx)$/i, "")}
+                at={liveDoc.path && liveDoc.path.length > 1 ? liveDoc.path : ["OneDrive", "Documents"]}
+                info={`The PDF shows what's on screen in ${pdfAsk.sheet} now: the headings and ${pdfAsk.rows.slice(1).filter((r) => r.some((c) => c.trim())).length} rows.`}
+                onCancel={() => setPdfAsk(null)}
+                onSave={(path, name, _type, openAfter, replaceId) => {
+                  const replacing = replaceId ? state.files.find((x) => x.id === replaceId) : undefined;
+                  const pdf: OfficeFile = { id: replaceId ?? newId("file"), path, name, kind: "pdf", modified: "Today, just now", by: "You", doc: pdfOfRows(pdfAsk.rows), seeded: replacing?.seeded };
+                  dispatch({ type: "saveFile", file: pdf });
+                  setPdfAsk(null);
+                  if (openAfter) openFile(pdf);
+                }}
               />
             )}
             {unsaved && liveDoc && (

@@ -70,6 +70,18 @@ export interface OfficeFile {
   /* ── Module 8: Documents ── a Word document (.docx, .dotx), or the
    * snapshot a PDF made from one carries, so it opens read-only. */
   doc?: WordDoc;
+  /* ── Module 9: Files and sharing ── */
+  /* A seeded file the learner may rename, move, delete and share (Sarah
+   * asked them to tidy it), unlike other people's files. */
+  editable?: boolean;
+  /* Earlier versions, oldest first. The file itself is the current one. */
+  versions?: FileVersion[];
+  /* People given access to this file directly, beyond the site's members. */
+  access?: AccessGrant[];
+  /* Sharing links made for it with Copy link or Share. */
+  shareLinks?: ShareLink[];
+  /* The version a restore brought back, e.g. "2.0", shown in its history. */
+  restoredFrom?: string;
 }
 
 export interface Person {
@@ -130,6 +142,9 @@ export interface OfficeState {
   calendar?: CalendarState;
   teams?: TeamsState;
   /* ── end Module 3 ── */
+  /* ── Module 9: Files and sharing ── what was deleted, newest last, so it
+   * can be put back. */
+  recycle?: RecycledItem[];
 }
 
 export interface Check {
@@ -461,6 +476,56 @@ export interface OfficeState {
 }
 /* ── end Module 10 ── */
 
+/* ── Module 9: Files and sharing ─────────────────────────────────────────
+ * What OneDrive and SharePoint keep about a file beyond its contents: its
+ * earlier versions, who can open it and how, and the Recycle bin. Kept as
+ * data so a job's checks read who can edit, what was sent to whom, and
+ * which version is current, never the clicks. */
+
+/* One earlier version of a file, as Version history lists it. */
+export interface FileVersion {
+  /* "1.0", "2.0": SharePoint numbers every saved version. */
+  no: string;
+  /* When it was saved, as shown: "09/11/2026 17:42". */
+  modified: string;
+  by: string;
+  sheet?: Grid;
+  tabs?: Tab[];
+  doc?: WordDoc;
+  paper?: Paper;
+  /* "Restored from version 2.0", when it came from a restore. */
+  comment?: string;
+}
+
+export type ShareRole = "edit" | "view";
+
+/* A person with access to one file: someone it was shared with by name. */
+export interface AccessGrant {
+  person: Person;
+  role: ShareRole;
+}
+
+/* A sharing link, as OneDrive makes them: who it works for and what they
+ * can do. "people" works only for the people named in it; "org" for anyone
+ * at Northfield who has the link; "anyone" for anyone at all, even outside
+ * the company; "existing" only for people who already have access. */
+export interface ShareLink {
+  id: string;
+  scope: "anyone" | "org" | "people" | "existing";
+  role: ShareRole;
+  people: Person[];
+  url: string;
+}
+
+/* A file or folder in the Recycle bin, with everything that was inside a
+ * folder, and where it was. Restore puts them all back. */
+export interface RecycledItem {
+  id: string;
+  file: OfficeFile;
+  inside: OfficeFile[];
+  deleted: string;
+}
+/* ── end Module 9 ── */
 /* ── Module 11: Staying safe at work ───────────────────────────────────
  * The address book's extra people (a customer who shares a first name
  * with HR), the desk phone's contacts and the numbers it can ring, an

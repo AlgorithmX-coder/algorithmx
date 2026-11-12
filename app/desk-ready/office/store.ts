@@ -44,7 +44,8 @@ function reducer(s: OfficeState, a: Action): OfficeState {
   return a.type === "reset" ? a.state : { ...apply(s, a), savedAt: Date.now() };
 }
 
-function apply(s: OfficeState, a: Action): OfficeState {
+/* ── Module 9 ── exported so a lesson lab can run the office's own rules on a practice record. */
+export function apply(s: OfficeState, a: Action): OfficeState {
   switch (a.type) {
     case "saveFile": {
       const others = s.files.filter((f) => f.id !== a.file.id);

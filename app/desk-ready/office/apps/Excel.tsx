@@ -63,6 +63,7 @@ export default function Excel({
   onClose,
   practice,
   office,
+  onExportPdf,
 }: {
   doc: ExcelDoc | null;
   /* An edit to the sheets (dirty) or just a switch of tab (not dirty). */
@@ -74,10 +75,14 @@ export default function Excel({
   /* The office's files, for Insert > Pictures (Module 10). Without it the
    * Pictures button is not shown, as in a lesson. */
   office?: OfficeState;
+  /* ── Module 9 ── File > Export > Create PDF: what the sheet shows now
+   * (the headings and the rows the filter leaves), as the cells display. */
+  onExportPdf?: (rows: string[][], sheet: string) => void;
 }) {
   const [sel, setSel] = useState<[number, number]>([1, 0]);
   const [draft, setDraft] = useState<string | null>(null);
   const [menu, setMenu] = useState(false);
+  const [exportOpen, setExportOpen] = useState(false);
   /* Editing in the formula bar keeps focus there; editing in the cell
    * moves focus into the cell. */
   const [inBar, setInBar] = useState(false);
@@ -378,12 +383,11 @@ export default function Excel({
         )}
         <span style={{ marginLeft: "auto", fontSize: 13, color: W.muted }}>Enter moves down · Tab moves right · formulas start with =</span>
         {menu && (
-          <div role="menu" style={{ position: "absolute", top: "100%", left: 10, zIndex: 20, width: 200, background: W.page, border: `1px solid ${W.edge}`, borderRadius: 6, boxShadow: W.float, padding: 4 }}>
+          <div role="menu" style={{ position: "absolute", top: "100%", left: 10, zIndex: 20, width: 220, background: W.page, border: `1px solid ${W.edge}`, borderRadius: 6, boxShadow: W.float, padding: 4 }}>
             {(
               [
                 ["Save", onSave],
                 ["Save as", onSaveAs],
-                ["Close", onClose],
               ] as const
             ).map(([label, fn]) => (
               <button
@@ -400,6 +404,43 @@ export default function Excel({
                 {label}
               </button>
             ))}
+            {onExportPdf && (
+              <>
+                <button type="button" role="menuitem" aria-expanded={exportOpen} className="of-row" onClick={() => setExportOpen((o) => !o)} style={{ width: "100%", minHeight: 40, display: "flex", justifyContent: "space-between", alignItems: "center", textAlign: "left", padding: "6px 12px", border: "none", background: "transparent", fontFamily: W.font, fontSize: 15, borderRadius: 4 }}>
+                  Export <span style={{ color: W.muted }}>{exportOpen ? "▾" : "›"}</span>
+                </button>
+                {exportOpen && (
+                  <button
+                    type="button"
+                    role="menuitem"
+                    className="of-row"
+                    onClick={() => {
+                      setMenu(false);
+                      setExportOpen(false);
+                      onExportPdf(
+                        shown.map((rr) => g[rr].map((_, cc) => display(g, rr, cc, fmt(rr, cc)))),
+                        tab.name,
+                      );
+                    }}
+                    style={{ width: "100%", minHeight: 40, textAlign: "left", padding: "6px 12px 6px 28px", border: "none", background: "transparent", fontFamily: W.font, fontSize: 15, borderRadius: 4 }}
+                  >
+                    Create PDF
+                  </button>
+                )}
+              </>
+            )}
+            <button
+              type="button"
+              role="menuitem"
+              className="of-row"
+              onClick={() => {
+                setMenu(false);
+                onClose();
+              }}
+              style={{ width: "100%", minHeight: 40, textAlign: "left", padding: "6px 12px", border: "none", background: "transparent", fontFamily: W.font, fontSize: 15, borderRadius: 4 }}
+            >
+              Close
+            </button>
           </div>
         )}
       </div>

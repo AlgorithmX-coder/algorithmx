@@ -12,6 +12,12 @@ import { stockCount } from "./stockCount";
 import { holidayForm } from "./holidayForm";
 import { letterhead } from "./letterhead";
 import { procedureReview } from "./procedureReview";
+/* ── Module 9: Files and sharing ── */
+import { shareRightWay } from "./shareRightWay";
+import { sharedFolder } from "./sharedFolder";
+import { versionBack } from "./versionBack";
+const M9 = [sharedFolder, shareRightWay, versionBack];
+/* ── end Module 9 ── */
 /* ── Module 10: Admin in practice ── */
 import { courierBooking } from "./courierBooking";
 import { invoiceCheck } from "./invoiceCheck";
@@ -28,7 +34,7 @@ const M11 = [bankDetails, wrongEmma, signInPrompt];
 
 /* Every office job, in course order. A module page lists its own jobs
  * under "On the job"; the route /desk-ready/office/[slug] runs one. */
-export const JOBS: readonly Job[] = [mondayInbox, lateDelivery, stockMeeting, rotaCall, chatOrEmail, stockCount, decemberRota, morningReport, sheetTotals, vatQuote, lateCount, bestCustomer, oddNumber, letterhead, holidayForm, procedureReview, ...M10, ...M11];
+export const JOBS: readonly Job[] = [mondayInbox, lateDelivery, stockMeeting, rotaCall, chatOrEmail, stockCount, decemberRota, morningReport, sheetTotals, vatQuote, lateCount, bestCustomer, oddNumber, letterhead, holidayForm, procedureReview, ...M9, ...M10, ...M11];
 
 export const jobBySlug = (slug: string) => JOBS.find((j) => j.slug === slug);
 export const jobsFor = (moduleId: string) => JOBS.filter((j) => j.moduleId === moduleId);
