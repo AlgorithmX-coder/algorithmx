@@ -526,3 +526,55 @@ export interface RecycledItem {
   deleted: string;
 }
 /* ── end Module 9 ── */
+/* ── Module 11: Staying safe at work ───────────────────────────────────
+ * The address book's extra people (a customer who shares a first name
+ * with HR), the desk phone's contacts and the numbers it can ring, an
+ * email's automatic answer, the two-step sign-in prompt on the learner's
+ * own mobile, and the computer's lock screen. Every field is optional, so
+ * the other modules' offices are untouched. These merge into the
+ * interfaces above. */
+
+/* Someone the To box can suggest, with the line Outlook shows under the
+ * name ("HR Advisor, Northfield Supplies"). */
+export interface Contact extends Person {
+  detail?: string;
+}
+
+/* A saved number on the desk phone: the numbers the company already holds. */
+export interface PhoneEntry {
+  name: string;
+  company?: string;
+  role?: string;
+  number: string;
+  group: "Northfield Supplies" | "Suppliers" | "Customers";
+}
+
+/* A number the desk phone can ring, and the call that happens when it
+ * does. Lines are timed when the job is seeded (admin.ts `timed`). */
+export type DialScript = Pick<PhoneCall, "name" | "company" | "number" | "seconds" | "lines">;
+
+/* The sign-in request that arrives on the learner's mobile. */
+export interface SignInPrompt {
+  at: string; // "15:02"
+  app: string; // "Microsoft 365"
+  location: string;
+  /* "waiting": not arrived yet. "shown": on the phone, unanswered. */
+  status: "waiting" | "shown" | "approved" | "denied";
+  /* Reported to IT from the app, after denying it. */
+  reported?: boolean;
+}
+
+export interface OfficeState {
+  /* People the To box suggests on top of the company's own list. */
+  contacts?: Contact[];
+  /* The desk phone's saved numbers, and what happens when one is rung. */
+  phoneBook?: PhoneEntry[];
+  dialable?: DialScript[];
+  /* An answer that arrives when the learner emails a given address. */
+  replies?: { to: string; reply: Email; sent?: boolean }[];
+  signIn?: SignInPrompt;
+  /* The computer's lock screen: whether it is locked now, and whether it
+   * was locked after the sign-in prompt had been dealt with. */
+  screen?: { locked: boolean; locks: number; afterPrompt?: boolean };
+}
+/* ── end Module 11 ── */

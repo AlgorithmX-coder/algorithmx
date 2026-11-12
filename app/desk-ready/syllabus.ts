@@ -161,7 +161,7 @@ export const PARTS: readonly DeskPart[] = [
         title: "Staying safe at work",
         promise: "Spot a scam email and keep other people's details safe.",
         topics: ["Spotting a scam email", "Fake invoices and changed bank details", "Passwords and two-step sign-in", "Sending to the wrong person", "Keeping customer details private"],
-        ready: false,
+        ready: true,
       },
       {
         id: "m12",

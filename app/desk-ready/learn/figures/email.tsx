@@ -52,7 +52,7 @@ export const SARAH_EMAIL: ReadExample = {
 };
 
 const row = { display: "flex", gap: 10, alignItems: "baseline", fontSize: 14.5, lineHeight: 1.5 } as const;
-const label = { width: 44, flexShrink: 0, color: W.muted, whiteSpace: "nowrap" } as const;
+const label = { width: 56, flexShrink: 0, color: W.muted, whiteSpace: "nowrap" } as const;
 
 /* `bare` draws the email with no numbers or key: for a practice task,
  * where the learner reads it for real. */
@@ -191,8 +191,9 @@ const field = { display: "flex", alignItems: "center", gap: 10, minHeight: 34, p
 /* Every part is always drawn (an empty Cc or Bcc says "nobody"), so a part
  * keeps the same number on every card of a lesson. `hide` only leaves out
  * the attached file under the subject. */
-export function ComposeFigure({ email = DELIVERY_REPLY, focus, title = "An email you're writing", note, hide = [] }: { email?: WriteExample; focus?: WritePart[]; title?: string; note?: string; hide?: WritePart[] }) {
-  const parts = WRITE_PARTS;
+/* `what` overrides a part's key line for one figure (Module 11's group email). */
+export function ComposeFigure({ email = DELIVERY_REPLY, focus, title = "An email you're writing", note, hide = [], what = {} }: { email?: WriteExample; focus?: WritePart[]; title?: string; note?: string; hide?: WritePart[]; what?: Partial<Record<WritePart, string>> }) {
+  const parts = Object.fromEntries((Object.entries(WRITE_PARTS) as [WritePart, PartInfo][]).map(([k, p]) => [k, what[k] ? { ...p, what: what[k] } : p])) as Record<WritePart, PartInfo>;
   const noChip = hide.includes("attach");
   return (
     <FigureFrame info={parts} focus={focus} title={title} note={note} minWidth={560}>
