@@ -9,6 +9,9 @@ import Teams, { TeamsToast } from "./Teams";
 /* ── end Module 3 ── */
 /* ── Module 8: Documents ── */
 import WordApp from "./Word";
+/* ── Module 13: Show what you can do ── */
+import { AGENCY } from "../agency";
+import Agency from "./Agency";
 /* ── Module 10: Admin in practice ── */
 import Edge, { EDGE_COLOUR } from "./Edge";
 import Phone, { PHONE_COLOUR, PhoneRinging } from "./Phone";
@@ -76,6 +79,8 @@ export const OFFICE_APPS: Record<string, OfficeApp> = {
   /* ── end Module 3 ── */
   /* ── Module 8: Documents ── */
   word: { label: "Word", colour: W.word, opens: ["docx", "dotx"], Window: WordApp },
+  /* ── Module 13: Show what you can do ── */
+  agency: { label: "Pennyford test centre", colour: AGENCY.colour, Window: Agency },
   /* ── Module 10: Admin in practice ── */
   phone: { label: "Phone", colour: PHONE_COLOUR, badge: (s) => (s.phone?.calls ?? []).filter((c) => c.ringing && !(s.phone?.answered ?? []).includes(c.id)).length, Window: Phone, Layer: PhoneRinging },
   browser: { label: "Microsoft Edge", colour: EDGE_COLOUR, Window: Edge },

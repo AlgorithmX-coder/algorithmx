@@ -74,7 +74,7 @@ function isMoney(g: Grid, r: number, c: number, depth = 0): boolean {
   const raw = (g[r]?.[c] ?? "").trim();
   if (/£/.test(raw)) return true;
   if (!raw.startsWith("=") || depth > 6) return false;
-  const up = raw.toUpperCase();
+  const up = raw.toUpperCase().replace(/\$/g, "");
   const refs = [...up.matchAll(/\b([A-Z])([0-9]{1,3})\b/g)].map((m) => [Number(m[2]) - 1, m[1].charCodeAt(0) - 65] as const);
   /* a whole column (F:F) is money when any cell in it is */
   for (const m of up.matchAll(/\b([A-Z]):([A-Z])\b/g)) for (let cc = m[1].charCodeAt(0) - 65; cc <= m[2].charCodeAt(0) - 65; cc++) g.forEach((_, rr) => refs.push([rr, cc] as const));
@@ -116,7 +116,9 @@ class Parser {
     /* spaces and case don't matter outside quotes; inside them they do */
     this.src = src
       .split(/("[^"]*")/)
-      .map((part, i) => (i % 2 === 1 ? part : part.replace(/\s+/g, "").toUpperCase()))
+      /* Module 13: a $ fixes a reference when it is copied ($E$12); working
+       * the formula out, it reads as the plain reference */
+      .map((part, i) => (i % 2 === 1 ? part : part.replace(/\s+/g, "").replace(/\$/g, "").toUpperCase()))
       .join("");
   }
 

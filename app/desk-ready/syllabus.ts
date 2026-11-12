@@ -185,7 +185,7 @@ export const PARTS: readonly DeskPart[] = [
         title: "Show what you can do",
         promise: "Write a CV that shows your skills and pass the tests agencies set.",
         topics: ["Your experience, in office words", "A CV for a desk job", "Indeed and LinkedIn", "Typing and Excel tests", "Video interviews"],
-        ready: false,
+        ready: true,
       },
     ],
   },

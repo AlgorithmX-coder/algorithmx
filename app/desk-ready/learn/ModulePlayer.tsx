@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState, type CSSProperties } from "react";
+import { useEffect, useState, useSyncExternalStore, type CSSProperties } from "react";
 import DeskHeader from "../DeskHeader";
 import PartPreview, { PREVIEW_CSS, type PreviewKind } from "../PartPreview";
 import { OFFICE_APPS } from "../office/apps/registry";
@@ -170,6 +170,8 @@ export default function ModulePlayer({ module: m }: { module: ModuleManifest }) 
                     <span className="mp-row-meta">{jobDone ? "Finished" : `From the office · ${j.deadline}`}</span>
                     <span className="mp-job-title">{j.title}</span>
                     <span className="mp-job-sum">{j.summary}</span>
+                    {/* ── Module 13 ── */}
+                    {j.best && <JobBest get={j.best} />}
                   </span>
                   <span className="mp-job-go">{jobDone ? "Do it again" : "Start the job"} &rarr;</span>
                 </Link>
@@ -181,6 +183,18 @@ export default function ModulePlayer({ module: m }: { module: ModuleManifest }) 
       {styles}
     </div>
   );
+}
+
+const subscribeStorage = (on: () => void) => {
+  window.addEventListener("storage", on);
+  return () => window.removeEventListener("storage", on);
+};
+
+/* ── Module 13 ── a job's best result so far ("Your best: typing 41 words a
+ * minute at 97%"), read in the browser after the page has loaded. */
+function JobBest({ get }: { get: () => string | null }) {
+  const line = useSyncExternalStore(subscribeStorage, get, () => null);
+  return line ? <span className="mp-job-best">{line}</span> : null;
 }
 
 const MODULE_CSS = `
@@ -232,6 +246,7 @@ const MODULE_CSS = `
   .mp-job .mp-row-meta { color: var(--acc); }
   .mp-job-title { display: block; margin-top: 6px; font-family: ${D.display}; font-size: 22px; font-weight: 500; letter-spacing: -0.015em; color: ${D.ink}; }
   .mp-job-sum { display: block; margin-top: 4px; font-size: 16px; line-height: 1.5; color: ${D.muted}; }
+  .mp-job-best { display: inline-block; margin-top: 10px; padding: 4px 12px; border-radius: 999px; background: ${D.goodSoft}; border: 1px solid ${D.goodEdge}; font-size: 14.5px; font-weight: 600; color: ${D.ink}; }
   .mp-job-go { flex-shrink: 0; display: inline-flex; align-items: center; min-height: 48px; padding: 0 22px; border-radius: 999px; background: ${D.action}; color: ${D.onAccent}; font-family: ${D.display}; font-weight: 600; font-size: 16px; box-shadow: ${D.actionGlow}; }
   @media (max-width: 640px) { .mp-job { flex-direction: column; align-items: flex-start; } }
 
