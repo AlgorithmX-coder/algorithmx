@@ -1,4 +1,4 @@
-import { readCapstoneResult, type CapstoneResult } from "../../final/result";
+import { savedCapstoneResult, type CapstoneResult } from "../../final/score";
 import { AGENCY, storedAgency } from "../agency";
 import { ALL_STARTING_LINES, CV_TEMPLATE, CV_TEMPLATE_PATH, agencyLines, cvFileName, cvName, cvStartingLines, cvTemplateDoc, homeAddress, isCopied, isSkillLine, pagesOf, section, skillLines, type ProofLine } from "../cv";
 import { PEOPLE, inbound, officeFolders } from "../northfield";
@@ -67,7 +67,7 @@ export function morningLines(r: CapstoneResult | null): ProofLine[] {
 
 /* The lines the job offers, from this browser's progress. */
 export function offeredLines(): { lines: ProofLine[]; general: boolean } {
-  return cvStartingLines(finished(), [...agencyLines(storedAgency()), ...morningLines(readCapstoneResult())]);
+  return cvStartingLines(finished(), [...agencyLines(storedAgency()), ...morningLines(savedCapstoneResult())]);
 }
 
 const JO_BODY = `Hi,
