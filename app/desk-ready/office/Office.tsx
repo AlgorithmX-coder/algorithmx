@@ -49,6 +49,9 @@ export default function Office({ job }: { job: Job }) {
   const [results, setResults] = useState<Check[] | null>(null);
   const [hints, setHints] = useState(false);
   const [confirmReset, setConfirmReset] = useState(false);
+  /* Each start of the job. Apps are keyed by it, so starting again gives
+   * every app a fresh mount: no folder, menu or answer left from last time. */
+  const [run, setRun] = useState(0);
   /* ── Module 9 ── the rows Excel's Export > Create PDF is making a PDF of */
   const [pdfAsk, setPdfAsk] = useState<{ rows: string[][]; sheet: string } | null>(null);
 
@@ -136,6 +139,7 @@ export default function Office({ job }: { job: Job }) {
     setRequest(null);
     setApp(job.start ?? "outlook");
     setConfirmReset(false);
+    setRun((n) => n + 1);
   };
 
   const shell = { "--acc": D.accent } as CSSProperties;
@@ -215,10 +219,10 @@ export default function Office({ job }: { job: Job }) {
           <section className="of-screen of-office" aria-label="Your desktop" style={{ colorScheme: "light" }}>
             <div className="of-window">
               <div style={{ display: app === "outlook" ? "block" : "none", height: "100%" }}>
-                <Outlook state={state} dispatch={dispatch} onAttachment={(a) => (a.sheet ? openFile({ id: "attachment", path: [], name: a.name, kind: "xlsx", modified: "", by: "", sheet: a.sheet, tabs: a.tabs }) : setViewer({ title: a.name, paper: a.paper, doc: a.doc, key: nextKey() }))} onLink={(l) => openLink(l.path, l.fileName)} pane={pane} />
+                <Outlook key={run} state={state} dispatch={dispatch} onAttachment={(a) => (a.sheet ? openFile({ id: "attachment", path: [], name: a.name, kind: "xlsx", modified: "", by: "", sheet: a.sheet, tabs: a.tabs }) : setViewer({ title: a.name, paper: a.paper, doc: a.doc, key: nextKey() }))} onLink={(l) => openLink(l.path, l.fileName)} pane={pane} />
               </div>
               <div style={{ display: app === "explorer" ? "block" : "none", height: "100%" }}>
-                <Explorer state={state} dispatch={dispatch} onOpen={openFile} />
+                <Explorer key={run} state={state} dispatch={dispatch} onOpen={openFile} />
               </div>
               <div style={{ display: app === "excel" ? "block" : "none", height: "100%" }}>
                 <Excel
@@ -235,7 +239,7 @@ export default function Office({ job }: { job: Job }) {
               {extras.map((id) => {
                 const Win = OFFICE_APPS[id].Window;
                 return Win ? (
-                  <div key={id} style={{ display: app === id ? "block" : "none", height: "100%" }}>
+                  <div key={`${id}-${run}`} style={{ display: app === id ? "block" : "none", height: "100%" }}>
                     <Win {...appProps(id)} />
                   </div>
                 ) : null;
@@ -243,7 +247,7 @@ export default function Office({ job }: { job: Job }) {
             </div>
             {extras.map((id) => {
               const Layer = OFFICE_APPS[id].Layer;
-              return Layer ? <Layer key={id} {...appProps(id)} /> : null;
+              return Layer ? <Layer key={`${id}-${run}`} {...appProps(id)} /> : null;
             })}
             {viewer && <Viewer key={viewer.key} title={viewer.title} paper={viewer.paper} doc={viewer.doc} onClose={() => setViewer(null)} />}
 
