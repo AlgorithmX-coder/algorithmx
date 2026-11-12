@@ -670,3 +670,65 @@ export interface CopilotPaneContext {
   cell?: { name: string; raw: string };
 }
 /* ── end Module 12 ── */
+
+/* ── Final task: Monday morning at the desk ──────────────────────────────
+ * The capstone is one long timed job: Monday 16 November 2026, 08:30 to
+ * 12:30 office time, played in about an hour. Its clock, what has arrived
+ * so far, when each of its ten jobs was finished, and the scorecard it left
+ * are all kept in the office record, so leaving and coming back carries on
+ * where the learner was, and a signed-in learner's morning follows them to
+ * another computer. Every field is optional, so the other jobs' offices are
+ * untouched. These merge into the interfaces above. */
+
+/* One finished morning, as kept for the learner (and offered to Module 13
+ * as proof for a CV). Minutes are office minutes after 08:30. */
+export interface MorningResult {
+  /* When it was played (an ISO date and time). */
+  on: string;
+  endedAt: number;
+  passed: boolean;
+  done: number;
+  late: number;
+  jobs: { id: string; status: "done" | "late" | "missed" | "unreached"; doneAt?: number }[];
+  paidScammer: boolean;
+  leaked: boolean;
+}
+
+export interface MorningState {
+  /* Office minutes since 08:30, from 0 to 240 (12:30). */
+  minute: number;
+  /* The clock has been started at least once. */
+  started: boolean;
+  paused: boolean;
+  /* The arrivals that have landed, by id. */
+  arrived: string[];
+  /* When each of the ten jobs was last seen finished, by job id. */
+  doneAt: Record<string, number>;
+  /* When the scam email was reported, if it was. */
+  reportedAt?: number;
+  /* The morning is over: at 12:30, or when the learner said so. */
+  endedAt?: number;
+  result?: MorningResult;
+  /* Earlier mornings, oldest first, kept when the learner tries again. */
+  history?: MorningResult[];
+}
+
+export interface OfficeState {
+  morning?: MorningState;
+}
+
+/* A timed job brings its own clock (shown on the taskbar, the task panel
+ * and in the apps), and its own task panel in place of Check my work. */
+export interface LiveJob {
+  clock: (s: OfficeState) => string;
+  /* The date under the time on the taskbar, "16/11/2026". */
+  date?: string;
+  /* What a fresh start keeps from the old record (earlier scorecards). */
+  carry?: (old: OfficeState, fresh: OfficeState) => OfficeState;
+  Panel?: import("react").ComponentType<{ state: OfficeState; dispatch: (a: import("./store").Action) => void; restart: () => void }>;
+}
+
+export interface Job {
+  live?: LiveJob;
+}
+/* ── end Final task ── */

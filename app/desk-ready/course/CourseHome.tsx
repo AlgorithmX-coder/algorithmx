@@ -220,7 +220,11 @@ export default function CourseHome() {
               );
             })}
           </div>
-          <article className="cs-final dr-glass" style={{ "--acc": "#ff8fe0" } as CSSProperties}>
+          {(() => {
+            /* ── Final task ── it links like a module once it's open, with its own status */
+            const passedFinal = done.includes("finalj1");
+            const inner = (
+              <>
             <span className="cs-final-glyph" aria-hidden>
               <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" style={{ display: "block" }}>
                 <path d="M6 3h12v4a6 6 0 0 1-12 0z" />
@@ -232,8 +236,27 @@ export default function CourseHome() {
               <h3>{FINAL.title}</h3>
               <p>{FINAL.promise}</p>
             </span>
-            {!FINAL.ready && <span className="cs-pill soon cs-final-pill">Coming soon</span>}
-          </article>
+            {!FINAL.ready ? (
+              <span className="cs-pill soon cs-final-pill">Coming soon</span>
+            ) : passedFinal ? (
+              <span className="cs-pill done cs-final-pill">
+                <Tick size={11} color={D.good} /> Passed
+              </span>
+            ) : (
+              <span className="cs-pill open cs-final-pill">Open</span>
+            )}
+              </>
+            );
+            return FINAL.ready ? (
+              <Link href={`/desk-ready/${FINAL.id}`} className="cs-final dr-glass ready" style={{ "--acc": "#ff8fe0" } as CSSProperties}>
+                {inner}
+              </Link>
+            ) : (
+              <article className="cs-final dr-glass" style={{ "--acc": "#ff8fe0" } as CSSProperties}>
+                {inner}
+              </article>
+            );
+          })()}
         </section>
       </main>
 
@@ -299,6 +322,9 @@ export default function CourseHome() {
         .cs-final p { margin: 6px 0 0; max-width: 720px; font-size: 15.5px; line-height: 1.6; color: ${D.muted}; }
         .cs-final-glyph { flex-shrink: 0; width: 56px; height: 56px; border-radius: 16px; display: inline-flex; align-items: center; justify-content: center; color: ${D.warn}; background: ${D.warnSoft}; border: 1px solid ${D.warnEdge}; box-shadow: 0 0 26px -6px ${D.warn}; }
         .cs-final-pill { margin-left: auto; align-self: flex-start; }
+        a.cs-final { text-decoration: none; transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease; }
+        a.cs-final:hover { transform: translateY(-2px); border-color: var(--acc); box-shadow: 0 26px 54px -28px var(--acc); }
+        a.cs-final:focus-visible { outline: 3px solid ${D.accent}; outline-offset: 3px; }
 
         @media (max-width: 980px) {
           .cs-hero { grid-template-columns: 1fr; }
