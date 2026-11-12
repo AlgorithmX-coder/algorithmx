@@ -67,7 +67,7 @@ export const SCAM_PARTS: Record<ScamPart, PartInfo> = {
   name: { n: 3, name: "The display name", what: "Anyone can type any name here. \"Harlow Packaging Accounts\" proves nothing on its own." },
   address: { n: 4, name: "The real address", what: "Where it really came from. Point at the name, or read inside the brackets." },
   domain: { n: 5, name: "A look-alike domain", what: "The part after the @. Harlow's real one is harlowpackaging.example. This one adds dashes and \"uk.co\"." },
-  greeting: { n: 6, name: "No name", what: "\"Dear Customer\". Harlow's account manager, Tom Hale, always writes to us by name. A real supplier knows who you are." },
+  greeting: { n: 6, name: "No name", what: "\"Dear Customer\". Harlow's account manager, Tom Hale, knows us: his emails talk about our own orders, by number. A real supplier knows who you are." },
   bank: { n: 7, name: "New bank details", what: "The biggest tell of all. Suppliers almost never change bank, and never by email alone." },
   payment: { n: 8, name: "A demand to pay now", what: "A deadline and a threat (a late fee). Real invoices give you 30 days." },
   number: { n: 9, name: "A number to call", what: "The scammer's own number. Ring it and they will say it's all genuine." },
