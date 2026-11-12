@@ -161,7 +161,7 @@ const outlookField: CSSProperties = { display: "flex", alignItems: "center", gap
 
 export function DraftFigure({ focus, title = "Draft with Copilot, in an Outlook reply", what, note }: { focus?: DraftPart[]; title?: string; what?: What<DraftPart>; note?: string }) {
   return (
-    <FigureFrame info={withWhat(DRAFT_PARTS, what)} focus={focus} title={title} note={note}>
+    <FigureFrame info={withWhat(DRAFT_PARTS, what)} focus={focus} title={title} note={note} minWidth={380}>
       <AppWindow app="Outlook" colour={W.outlook} title="Re: Thursday's flour">
         <div style={{ display: "flex", flexWrap: "wrap", gap: 8, alignItems: "center", padding: `9px 12px 9px ${GUTTER}px`, background: W.chrome, borderBottom: `1px solid ${W.edge}` }}>
           <FakeButton primary>➤ Send</FakeButton>
