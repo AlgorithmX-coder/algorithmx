@@ -364,7 +364,7 @@ const LOG_COLS = [
   { col: "D", head: "Booked", w: 48 },
   { col: "E", head: "Arrived", w: 48 },
   { col: "F", head: "Status", w: 56 },
-  { col: "G", head: "Notes", w: 132 },
+  { col: "G", head: "Notes", w: 152 },
 ] as const;
 const LOG_ROWS: string[][] = [
   ["Harlow Packaging", "08:30", "08:40", "On time", ""],
