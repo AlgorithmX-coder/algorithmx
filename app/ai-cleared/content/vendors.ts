@@ -155,7 +155,7 @@ export const VENDORS: VendorFact[] = [
     tool: "copilot",
     tier: "consumer-free",
     label: "Copilot on a personal Microsoft account",
-    tell: "Personal account in the rail, no firm name, and the top bar says Chat rather than Work.",
+    tell: "A Personal badge in the rail, no firm name, and no Work IQ control in the top bar.",
     trains: "Two Microsoft pages are live. The privacy FAQ for the older app says Microsoft uses Copilot conversations for AI training unless you opt out of model training in the app's privacy settings, which you can do at any time. The newer app's page says prompts, responses and file contents are not used to train foundation models. Which applies depends on the app version, so assume the older answer until you have checked.",
     retention: "Conversation history is kept for 18 months by default. You can delete chats in the app or all activity from the Microsoft privacy dashboard; how long deletion takes to complete is not stated on the pages we checked.",
     adminSees: "Nobody at your firm. It is your account.",
