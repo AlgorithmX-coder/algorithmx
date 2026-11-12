@@ -65,67 +65,67 @@ const btn = (label: string, on: boolean, red?: boolean) => (
 export function InterviewFigure({ focus, title = "A video interview", what, note }: { focus?: CallPart[]; title?: string; what?: Partial<Record<CallPart, string>>; note?: string }) {
   const info = { ...CALL_PARTS } as Record<CallPart, PartInfo>;
   for (const k of Object.keys(what ?? {}) as CallPart[]) info[k] = { ...info[k], what: what![k]! };
+  const tight: CSSProperties = { padding: 3, margin: -3 };
   return (
-    <FigureFrame info={info} focus={focus} title={title} note={note} minWidth={430}>
+    <FigureFrame info={info} focus={focus} title={title} note={note} minWidth={330}>
       <div style={{ display: "flex", flexWrap: "wrap", gap: "30px 46px", alignItems: "flex-start", overflowWrap: "normal" }}>
         {/* the call window */}
-        <div style={{ flex: "1.7 1 400px", minWidth: 0, borderRadius: 8, boxShadow: W.float, background: W.call, color: "#fff", overflow: "visible" }}>
+        <div style={{ flex: "1.7 1 300px", minWidth: 0, borderRadius: 8, boxShadow: W.float, background: W.call, color: "#fff", overflow: "visible" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 10, minHeight: 34, padding: "0 12px", background: W.teams, borderRadius: "8px 8px 0 0", fontSize: 13 }}>
             <b>Teams</b>
           </div>
-          <div style={{ padding: "10px 14px 0 48px" }}>
-            <Part k="join">
-              <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "6px 10px", borderRadius: 6, background: "rgba(255,255,255,0.08)", fontSize: 12.5, lineHeight: 1.35 }}>
-                <span style={{ minWidth: 0 }}>
+          <div style={{ padding: "12px 14px 0 48px" }}>
+            <Part k="join" style={tight}>
+              <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "6px 10px", padding: "6px 10px", borderRadius: 6, background: "rgba(255,255,255,0.08)", fontSize: 12.5, lineHeight: 1.35 }}>
+                <span style={{ minWidth: 0, flex: "1 1 160px" }}>
                   <b style={{ display: "block", fontSize: 13.5 }}>Interview: Office Administrator</b>
-                  <span style={{ opacity: 0.8 }}>Castlegate Builders Merchants · Thursday 10:00</span>
+                  <span style={{ opacity: 0.8 }}>
+                    Castlegate Builders Merchants · <span style={keep}>Thursday 10:00</span>
+                  </span>
                 </span>
-                <span style={{ marginLeft: "auto", padding: "3px 10px", borderRadius: 4, background: W.teams, fontWeight: 700, ...keep }}>Join</span>
+                <span style={{ padding: "3px 12px", borderRadius: 4, background: W.teams, fontWeight: 700, ...keep }}>Join</span>
               </div>
             </Part>
           </div>
-          <div style={{ position: "relative", padding: "12px 14px 10px 48px" }}>
-            <Part k="them">
-              <div style={{ height: 176, borderRadius: 6, background: "linear-gradient(180deg, #50606e, #3a4752)", display: "flex", alignItems: "flex-end", justifyContent: "center", position: "relative" }}>
-                <Person shirt="#1f3b57" hair="#2b2b2b" skin="#c58c6a" size={170} />
-                <span style={{ position: "absolute", left: 8, bottom: 6, fontSize: 11.5, padding: "1px 6px", borderRadius: 3, background: "rgba(0,0,0,0.5)", ...keep }}>Helen Wright, Office Manager</span>
+          {/* the interviewer, and your own picture beside them */}
+          <div style={{ display: "flex", flexWrap: "wrap", alignItems: "flex-end", gap: "14px 46px", padding: "16px 14px 12px 48px" }}>
+            <Part k="them" style={{ ...tight, flex: "1 1 170px", minWidth: 0 }}>
+              <div style={{ height: 160, borderRadius: 6, background: "linear-gradient(180deg, #50606e, #3a4752)", display: "flex", alignItems: "flex-end", justifyContent: "center", position: "relative", overflow: "hidden" }}>
+                <Person shirt="#1f3b57" hair="#2b2b2b" skin="#c58c6a" size={160} />
+                <span style={{ position: "absolute", left: 8, bottom: 6, fontSize: 11.5, padding: "1px 6px", borderRadius: 3, background: "rgba(0,0,0,0.5)" }}>Helen Wright, Office Manager</span>
               </div>
             </Part>
-            {/* your own picture, in the corner */}
-            <div style={{ position: "absolute", right: 22, bottom: 18 }}>
-              <Part k="you" holds={["background"]} badge="left">
-                <Part k="background" badge="right" style={{ position: "absolute", left: 4, right: 4, top: 4, height: 40, zIndex: 2, borderRadius: 4 }}>
-                  <span />
-                </Part>
-                <div style={{ position: "relative", width: 132, height: 92, borderRadius: 6, overflow: "hidden", background: "#e9e4dc", border: "2px solid #fff" }}>
-                  <span aria-hidden style={{ position: "absolute", right: 10, top: 14, width: 14, height: 22, borderRadius: "40% 40% 4px 4px", background: "#6d9b6a" }} />
-                  <div style={{ position: "absolute", left: 0, right: 0, bottom: -2, display: "flex", justifyContent: "center" }}>
-                    <Person shirt="#7a4b8c" hair="#5a3825" skin="#e8b896" size={110} />
-                  </div>
-                  <span style={{ position: "absolute", left: 4, bottom: 3, fontSize: 10, color: "#fff", padding: "0 4px", borderRadius: 2, background: "rgba(0,0,0,0.45)" }}>You</span>
+            <Part k="you" style={tight}>
+              <div style={{ position: "relative", width: 132, height: 92, borderRadius: 6, overflow: "hidden", background: "#e9e4dc", border: "2px solid #fff" }}>
+                <span aria-hidden style={{ position: "absolute", right: 10, top: 14, width: 14, height: 22, borderRadius: "40% 40% 4px 4px", background: "#6d9b6a" }} />
+                <div style={{ position: "absolute", left: 0, right: 0, bottom: -2, display: "flex", justifyContent: "center" }}>
+                  <Person shirt="#7a4b8c" hair="#5a3825" skin="#e8b896" size={110} />
                 </div>
-              </Part>
-            </div>
+                <span style={{ position: "absolute", left: 4, bottom: 3, fontSize: 10, color: "#fff", padding: "0 4px", borderRadius: 2, background: "rgba(0,0,0,0.45)" }}>You</span>
+              </div>
+            </Part>
           </div>
-          <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: 30, padding: "36px 10px 12px 48px", borderTop: "1px solid rgba(255,255,255,0.08)", flexWrap: "wrap" }}>
-            {btn("Chat", false)}
-            <Part k="mute" block={false} badge="top">
+          <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", alignItems: "center", gap: "12px 46px", padding: "12px 12px 14px 48px", borderTop: "1px solid rgba(255,255,255,0.08)" }}>
+            <Part k="mute" block={false} style={tight}>
               {btn("Mic", true)}
             </Part>
-            <Part k="camera" block={false} badge="top">
+            <Part k="camera" block={false} style={tight}>
               {btn("Camera", true)}
             </Part>
-            <Part k="leave" block={false} badge="top">
+            <Part k="leave" block={false} style={tight}>
               {btn("Leave", false, true)}
             </Part>
           </div>
         </div>
 
-        {/* the set-up, from the side */}
-        <div style={{ flex: "1 1 210px", maxWidth: 340, borderRadius: 8, boxShadow: W.float, background: W.page, color: W.ink, padding: "10px 12px 12px 12px" }}>
+        {/* the set-up, from the side: wall behind you, laptop on books, window in front */}
+        <div style={{ flex: "1 1 220px", maxWidth: 340, borderRadius: 8, boxShadow: W.float, background: W.page, color: W.ink, padding: "10px 12px 12px 12px" }}>
           <b style={{ display: "block", fontSize: 13.5 }}>Your set-up, from the side</b>
-          <div style={{ position: "relative", marginTop: 8 }}>
+          <div style={{ position: "relative", marginTop: 40 }}>
             <svg width="100%" viewBox="0 0 220 170" aria-hidden style={{ display: "block" }}>
+              {/* a plain wall behind you */}
+              <rect x="0" y="6" width="22" height="160" fill="#e7e3dc" />
+              <rect x="0" y="150" width="22" height="16" fill="#d3cdc3" />
               {/* window in front of you, behind the laptop */}
               <rect x="176" y="14" width="38" height="70" rx="2" fill="#dbeafe" stroke="#93b4d8" />
               <line x1="195" y1="14" x2="195" y2="84" stroke="#93b4d8" />
@@ -148,14 +148,17 @@ export function InterviewFigure({ focus, title = "A video interview", what, note
               {/* eye line */}
               <line x1="62" y1="60" x2="164" y2="62" stroke={W.teams} strokeWidth="1.6" strokeDasharray="5 4" />
             </svg>
-            <Part k="eyelevel" badge="top" style={{ position: "absolute", left: "26%", top: "30%", width: "52%", height: "12%", borderRadius: 4 }}>
+            <Part k="background" style={{ position: "absolute", left: "-1%", top: "2%", width: "12%", height: "96%", borderRadius: 4 }}>
               <span />
             </Part>
-            <Part k="light" badge="right" style={{ position: "absolute", right: "1%", top: "6%", width: "19%", height: "44%", borderRadius: 4 }}>
+            <Part k="eyelevel" badge="top" style={{ position: "absolute", left: "55%", top: "32%", width: "26%", height: "42%", borderRadius: 4 }}>
+              <span />
+            </Part>
+            <Part k="light" badge="top" style={{ position: "absolute", right: "1%", top: "6%", width: "19%", height: "44%", borderRadius: 4 }}>
               <span />
             </Part>
           </div>
-          <p style={{ margin: "8px 0 0", fontSize: 12, lineHeight: 1.45, color: W.muted }}>Laptop on two books, camera level with your eyes, window in front of you.</p>
+          <p style={{ margin: "8px 0 0", fontSize: 12, lineHeight: 1.45, color: W.muted }}>A plain wall behind you, the laptop on two books with its camera level with your eyes, and a window in front of you.</p>
         </div>
       </div>
     </FigureFrame>
@@ -167,7 +170,7 @@ export function InterviewFigure({ focus, title = "A video interview", what, note
 export type StarPart = "question" | "situation" | "task" | "action" | "result";
 
 export const STAR_PARTS: Record<StarPart, PartInfo> = {
-  question: { n: 1, name: "\"Tell me about a time...\"", what: "They want one true story, not \"I always...\". Pick a real moment before the interview." },
+  question: { n: 1, name: "The question", what: "\"Tell me about a time...\" asks for one true story, not \"I always...\". Pick a real moment before the interview." },
   situation: { n: 2, name: "S: Situation", what: "Where you were and what was going on. One sentence." },
   task: { n: 3, name: "T: Task", what: "What you had to do, or the problem to solve. One sentence." },
   action: { n: 4, name: "A: Action", what: "What YOU did, step by step. The longest part: say \"I\", not \"we\"." },
@@ -186,8 +189,8 @@ export function StarFigure({ focus, title = "An answer, the STAR way", what, not
   const info = { ...STAR_PARTS } as Record<StarPart, PartInfo>;
   for (const k of Object.keys(what ?? {}) as StarPart[]) info[k] = { ...info[k], what: what![k]! };
   const row = (k: Exclude<StarPart, "question">, letter: string, colour: string) => (
-    <Part k={k}>
-      <div style={{ display: "flex", gap: 12, alignItems: "flex-start", padding: "10px 12px", borderRadius: 8, background: W.page, borderLeft: `5px solid ${colour}` }}>
+    <Part k={k} style={{ padding: 3, margin: -3 }}>
+      <div style={{ display: "flex", gap: 10, alignItems: "flex-start", padding: "10px 12px", borderRadius: 8, background: W.page, borderLeft: `5px solid ${colour}` }}>
         <b aria-hidden style={{ flexShrink: 0, width: 28, height: 28, borderRadius: 6, background: colour, color: "#fff", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: 15 }}>{letter}</b>
         <span style={{ fontSize: 15, lineHeight: 1.5, color: W.ink }}>{STAR[k]}</span>
       </div>
@@ -195,8 +198,8 @@ export function StarFigure({ focus, title = "An answer, the STAR way", what, not
   );
   return (
     <FigureFrame info={info} focus={focus} title={title} note={note}>
-      <div style={{ display: "grid", gap: 10, paddingLeft: 40, maxWidth: 700, overflowWrap: "normal" }}>
-        <Part k="question">
+      <div style={{ display: "grid", gap: 16, paddingLeft: "clamp(0px, calc((100vw - 560px) * 0.25), 40px)", maxWidth: 700, overflowWrap: "normal" }}>
+        <Part k="question" style={{ padding: 3, margin: -3 }}>
           <div style={{ padding: "10px 14px", borderRadius: 8, background: W.teamsSoft, color: W.ink, fontSize: 16, fontWeight: 600 }}>
             <span style={{ display: "block", fontSize: 11.5, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", color: W.teams }}>Helen asks</span>
             {STAR.question}

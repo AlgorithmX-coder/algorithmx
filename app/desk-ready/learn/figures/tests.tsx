@@ -8,10 +8,15 @@ import { FigureFrame, Part, type PartInfo } from "./parts";
 /* An agency's online tests, drawn with every part numbered (Module 13):
  * the typing test while it runs, its result, and one task of the Excel
  * test. They match the Pennyford test centre the learner uses in the
- * office, so nothing there is new when they meet it. */
+ * office, so nothing there is new when they meet it. The figures agree
+ * with the test's own marking (office/agency, scoreTyping): accuracy is
+ * letters typed right, and net speed takes the mistakes left in off the
+ * gross speed, shared over the minutes of the test. */
 
 const keep: CSSProperties = { whiteSpace: "nowrap" };
 const BAD = "#a4262c";
+/* a lit part's outline sits a few pixels clear of what it holds */
+const tight: CSSProperties = { padding: 3, margin: -3 };
 
 function Site({ path, children }: { path: string; children: ReactNode }) {
   return (
@@ -21,7 +26,7 @@ function Site({ path, children }: { path: string; children: ReactNode }) {
           https://{AGENCY.site}/{path}
         </span>
       </div>
-      <div style={{ display: "flex", alignItems: "center", gap: 10, minHeight: 40, padding: "0 14px", background: AGENCY.colour, color: "#fff" }}>
+      <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "0 10px", minHeight: 40, padding: "4px 14px", background: AGENCY.colour, color: "#fff" }}>
         <b style={{ fontSize: 14.5 }}>{AGENCY.name}</b>
         <span style={{ fontSize: 12, opacity: 0.9 }}>Candidate test centre</span>
       </div>
@@ -41,15 +46,15 @@ function Stat({ label, value, colour }: { label: string; value: string; colour?:
 
 /* ── 1. the typing test, running ──────────────────────────────────────── */
 
-export type TypingPart = "timer" | "speed" | "accuracy" | "passage" | "current" | "slip" | "box";
+export type TypingPart = "timer" | "speed" | "accuracy" | "passage" | "slip" | "current" | "box";
 
 export const TYPING_PARTS: Record<TypingPart, PartInfo> = {
   timer: { n: 1, name: "Time left", what: "Three minutes, counting down. It starts when you type the first letter, not before." },
-  speed: { n: 2, name: "Speed", what: "Words a minute, so far. A \"word\" is any five keys, spaces included, so long words don't count against you." },
-  accuracy: { n: 3, name: "Accuracy", what: "The share of letters typed right. It drops with every slip you leave in." },
+  speed: { n: 2, name: "Speed", what: "Words a minute, so far, with the mistakes taken off. A \"word\" is any five keys, spaces included, so long words don't count against you." },
+  accuracy: { n: 3, name: "Accuracy", what: "The share of letters typed right. Here 40 of the 42 letters and spaces typed are right: 95%." },
   passage: { n: 4, name: "The text to copy", what: "An ordinary business letter. Words you've typed right turn green." },
-  current: { n: 5, name: "The word you're on", what: "Shaded, so your eyes can keep their place while your fingers type." },
-  slip: { n: 6, name: "A word left wrong", what: "Red and underlined. Backspace and fix it, or it costs you a word a minute." },
+  slip: { n: 5, name: "A wrong word", what: "Red and underlined: \"ordre\" for \"order\". Backspace and fix it, or it counts as a mistake." },
+  current: { n: 6, name: "The word you're on", what: "Shaded, so your eyes can keep their place while your fingers type." },
   box: { n: 7, name: "Where you type", what: "Click here and type. You can't paste into it." },
 };
 
@@ -62,30 +67,30 @@ export function TypingFigure({ focus, title = "An agency typing test", what, not
   for (const k of Object.keys(what ?? {}) as TypingPart[]) info[k] = { ...info[k], what: what![k]! };
   const typed = WORDS.slice(0, DONE).map((w, i) => (i === SLIP ? "ordre," : w)).join(" ") + " th";
   return (
-    <FigureFrame info={info} focus={focus} title={title} note={note} minWidth={560}>
+    <FigureFrame info={info} focus={focus} title={title} note={note} minWidth={340}>
       <Site path="candidate/typing-test">
-        <div style={{ padding: "14px 18px 18px 52px", display: "grid", gap: 12 }}>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, minmax(0, 1fr))", gap: 44 }}>
-            <Part k="timer">
+        <div style={{ padding: "14px 18px 18px 52px", display: "grid", gap: 14 }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(110px, 1fr))", gap: "12px 44px" }}>
+            <Part k="timer" style={tight}>
               <Stat label="Time left" value="2:49" />
             </Part>
-            <Part k="speed">
-              <Stat label="Speed (words a minute)" value="38" colour={W.excel} />
+            <Part k="speed" style={tight}>
+              <Stat label="Words a minute" value="40" colour={W.excel} />
             </Part>
-            <Part k="accuracy">
-              <Stat label="Accuracy" value="97%" colour={W.excel} />
+            <Part k="accuracy" style={tight}>
+              <Stat label="Accuracy" value="95%" colour={W.excel} />
             </Part>
           </div>
-          <Part k="passage">
+          <Part k="passage" style={tight}>
             <p style={{ margin: 0, padding: "34px 14px 10px", border: `1px solid ${W.edge}`, borderRadius: 6, fontSize: 15.5, lineHeight: 1.9 }}>
               {WORDS.map((w, i) => {
                 const word =
                   i === DONE ? (
-                    <Part k="current" block={false} badge="top">
+                    <Part k="current" block={false} badge="top" style={{ padding: "0 2px", borderRadius: 3 }}>
                       <span style={{ background: "#fff1b8", borderRadius: 3, padding: "0 2px" }}>{w}</span>
                     </Part>
                   ) : i === SLIP ? (
-                    <Part k="slip" block={false} badge="top">
+                    <Part k="slip" block={false} badge="top" style={{ padding: "0 2px", borderRadius: 3 }}>
                       <span style={{ color: BAD, textDecoration: "underline wavy", textDecorationColor: BAD }}>{w}</span>
                     </Part>
                   ) : (
@@ -99,7 +104,7 @@ export function TypingFigure({ focus, title = "An agency typing test", what, not
               })}
             </p>
           </Part>
-          <Part k="box">
+          <Part k="box" style={tight}>
             <div style={{ minHeight: 64, padding: "8px 12px", border: `2px solid ${AGENCY.colour}`, borderRadius: 6, fontSize: 15.5, lineHeight: 1.5 }}>
               {typed}
               <span aria-hidden style={{ display: "inline-block", width: 2, height: 18, marginLeft: 1, verticalAlign: "-3px", background: W.ink }} />
@@ -117,17 +122,17 @@ export type ResultPart = "verdict" | "gross" | "mistakes" | "net" | "acc";
 
 export const RESULT_PARTS: Record<ResultPart, PartInfo> = {
   verdict: { n: 1, name: "Pass or not yet", what: "Against what the agency's clients ask for. Most office jobs: 35 words a minute at 95% accuracy." },
-  gross: { n: 2, name: "Gross speed", what: "Everything you typed, right or wrong, in words a minute." },
+  gross: { n: 2, name: "Gross speed", what: "Everything you typed, right or wrong, in words a minute: 126 words in 3 minutes is 42." },
   mistakes: { n: 3, name: "Mistakes", what: "Words left wrong when the clock stopped. Ones you fixed don't count." },
-  net: { n: 4, name: "Net speed", what: "Gross speed, less a word a minute for every mistake. This is the speed employers mean." },
-  acc: { n: 5, name: "Accuracy", what: "Letters typed right, as a percentage. Agencies want 95% or more." },
+  net: { n: 4, name: "Net speed", what: "Gross speed with the mistakes taken off, shared over the minutes of the test: 3 mistakes in 3 minutes takes 1 off 42. This is the speed employers mean." },
+  acc: { n: 5, name: "Accuracy", what: "Letters typed right, as a percentage: 3 wrong words in about 630 letters is 99%. Agencies want 95% or more." },
 };
 
 export function TypingResultFigure({ focus, title = "A typing test result", what, note }: { focus?: ResultPart[]; title?: string; what?: Partial<Record<ResultPart, string>>; note?: string }) {
   const info = { ...RESULT_PARTS } as Record<ResultPart, PartInfo>;
   for (const k of Object.keys(what ?? {}) as ResultPart[]) info[k] = { ...info[k], what: what![k]! };
   const cell = (k: ResultPart, label: string, value: string) => (
-    <Part k={k}>
+    <Part k={k} style={tight}>
       <div style={{ padding: "8px 12px", borderRadius: 6, border: `1px solid ${W.edge}` }}>
         <span style={{ display: "block", fontSize: 12.5, color: W.muted, ...keep }}>{label}</span>
         <b style={{ display: "block", fontSize: 22, fontWeight: 600, ...keep }}>{value}</b>
@@ -135,20 +140,20 @@ export function TypingResultFigure({ focus, title = "A typing test result", what
     </Part>
   );
   return (
-    <FigureFrame info={info} focus={focus} title={title} note={note} minWidth={520}>
+    <FigureFrame info={info} focus={focus} title={title} note={note}>
       <Site path="candidate/typing-test">
-        <div style={{ padding: "14px 18px 18px 52px", display: "grid", gap: 12 }}>
+        <div style={{ padding: "14px 18px 18px 52px", display: "grid", gap: 14 }}>
           <b style={{ fontSize: 19 }}>Your typing test result</b>
-          <Part k="verdict">
+          <Part k="verdict" style={tight}>
             <div style={{ padding: "10px 14px", borderRadius: 6, background: "#dff6dd", border: "1px solid #9fd89f", fontSize: 14.5 }}>
               <b>Pass.</b> That meets what most office clients ask for.
             </div>
           </Part>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(2, minmax(0, 1fr))", gap: "14px 44px" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))", gap: "14px 44px" }}>
             {cell("gross", "Gross speed", "42 wpm")}
             {cell("mistakes", "Mistakes", "3")}
             {cell("net", "Net speed", "41 wpm")}
-            {cell("acc", "Accuracy", "97%")}
+            {cell("acc", "Accuracy", "99%")}
           </div>
         </div>
       </Site>
@@ -171,79 +176,103 @@ export const XLTEST_PARTS: Record<XlTestPart, PartInfo> = {
   handin: { n: 8, name: "Hand in my test", what: "Marks what's in the sheet. If time runs out, it hands itself in." },
 };
 
+/* Rows 7 to 12 of the test's Orders sheet, every column from A to E, as
+ * Excel shows them when you scroll down to the total. */
+const XL_ROWS: string[][] = [
+  ["7", "Desk diary 2027", "Paper Direct", "5", "6.80", "34"],
+  ["8", "Whiteboard markers", "Office Hub", "8", "4.25", "34"],
+  ["9", "Lever arch files", "Paper Direct", "12", "2.60", "31.2"],
+  ["10", "Sticky notes", "Paper Direct", "12", "1.85", "22.2"],
+  ["11", "", "", "", "", ""],
+  ["12", "Total", "", "", "", "£501.90"],
+];
+const XL_COLS = ["", "A", "B", "C", "D", "E"];
+const XL_W = [30, 112, 86, 34, 46, 66];
+
 export function ExcelTestFigure({ focus, title = "An agency Excel test", what, note }: { focus?: XlTestPart[]; title?: string; what?: Partial<Record<XlTestPart, string>>; note?: string }) {
   const info = { ...XLTEST_PARTS } as Record<XlTestPart, PartInfo>;
   for (const k of Object.keys(what ?? {}) as XlTestPart[]) info[k] = { ...info[k], what: what![k]! };
-  const rows: string[][] = [
-    ["", "A", "B", "E"],
-    ["1", "Item", "Supplier", "Cost"],
-    ["9", "Lever arch files", "Paper Direct", "31.2"],
-    ["10", "Sticky notes", "Paper Direct", "22.2"],
-    ["11", "", "", ""],
-    ["12", "Total", "", "£501.90"],
-  ];
-  const widths = [36, 150, 112, 96];
+  const cellBox = (c: string, ri: number, ci: number, head: boolean) => (
+    <span
+      style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: head || ci === 0 ? "center" : ci >= 3 ? "flex-end" : "flex-start",
+        width: XL_W[ci],
+        height: 24,
+        padding: "0 4px",
+        boxSizing: "border-box",
+        borderRight: `1px solid ${W.edge}`,
+        borderBottom: `1px solid ${W.edge}`,
+        background: head || ci === 0 ? W.sunk : W.page,
+        color: head || ci === 0 ? W.muted : W.ink,
+        outline: ri === 5 && ci === 5 ? `2px solid ${W.excel}` : "none",
+        outlineOffset: -2,
+        overflow: "hidden",
+        ...keep,
+      }}
+    >
+      {c}
+    </span>
+  );
   return (
-    <FigureFrame info={info} focus={focus} title={title} note={note} minWidth={620}>
+    <FigureFrame info={info} focus={focus} title={title} note={note} minWidth={340}>
       <Site path="candidate/excel-test">
-        <div style={{ display: "grid", gridTemplateColumns: "240px minmax(0, 1fr)", minHeight: 250 }}>
-          <div style={{ padding: "12px 12px 12px 48px", borderRight: `1px solid ${W.edge}`, background: "#fbfbfa", display: "grid", gap: 12, alignContent: "start" }}>
-            <Part k="timer">
+        <div style={{ display: "flex", flexWrap: "wrap" }}>
+          {/* the test sheet: time, the task, then hand in, top to bottom */}
+          <div style={{ flex: "1 1 230px", padding: "14px 14px 14px 48px", background: "#fbfbfa", borderRight: `1px solid ${W.edge}`, display: "grid", gap: 16, alignContent: "start" }}>
+            <Part k="timer" style={tight}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", ...keep }}>
                 <span style={{ fontSize: 12, color: W.muted }}>Time left</span>
                 <b style={{ fontSize: 20, fontWeight: 600 }}>11:39</b>
               </div>
             </Part>
-            <Part k="handin">
-              <span style={{ display: "inline-flex", alignItems: "center", minHeight: 30, padding: "0 10px", borderRadius: 6, background: AGENCY.colour, color: "#fff", fontWeight: 700, fontSize: 13, ...keep }}>Hand in my test</span>
-            </Part>
-            <Part k="task" style={{ marginTop: 22 }}>
-              <div style={{ display: "flex", gap: 8, padding: "8px", borderRadius: 6, border: `1px solid ${W.edge}`, background: W.page, fontSize: 13, lineHeight: 1.45 }}>
-                <span style={{ flexShrink: 0, width: 20, height: 20, borderRadius: "50%", background: AGENCY.colour, color: "#fff", fontSize: 11, fontWeight: 700, display: "inline-flex", alignItems: "center", justifyContent: "center" }}>5</span>
-                <span>
-                  In{" "}
-                  <Part k="address" block={false} badge="top">
-                    <b style={{ background: "#fff1b8", padding: "0 2px" }}>E12</b>
-                  </Part>
-                  , add up the costs of all the items with the SUM function.
-                </span>
+            <Part k="task" style={{ ...tight, marginTop: 20 }}>
+              <div style={{ padding: "8px 10px", borderRadius: 6, border: `1px solid ${W.edge}`, background: W.page, fontSize: 13.5, lineHeight: 1.5 }}>
+                <span style={{ display: "block", fontSize: 11, fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase", color: W.muted }}>Task 5 of 10</span>
+                In{" "}
+                <Part k="address" block={false} badge="top" style={{ padding: "0 2px", borderRadius: 3 }}>
+                  <b style={{ background: "#fff1b8", padding: "0 2px" }}>E12</b>
+                </Part>
+                , add up the costs of all the items with the SUM function.
               </div>
             </Part>
+            <Part k="handin" style={{ ...tight, justifySelf: "start" }}>
+              <span style={{ display: "inline-flex", alignItems: "center", minHeight: 30, padding: "0 10px", borderRadius: 6, background: AGENCY.colour, color: "#fff", fontWeight: 700, fontSize: 13, ...keep }}>Hand in my test</span>
+            </Part>
           </div>
-          <div style={{ minWidth: 0 }}>
+          {/* the office's Excel, scrolled down to the total */}
+          <div style={{ flex: "1 1 470px", minWidth: 0 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 8, minHeight: 32, padding: "0 10px", background: W.excel, color: "#fff", fontSize: 13 }}>
               <b>Excel</b> <span style={{ opacity: 0.9 }}>Pennyford Excel test.xlsx</span>
             </div>
-            <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "8px 10px 8px 46px", borderBottom: `1px solid ${W.edge}` }}>
-              <Part k="namebox" block={false}>
-                <span style={{ display: "inline-flex", alignItems: "center", width: 54, minHeight: 26, padding: "0 6px", border: `1px solid ${W.edge}`, fontSize: 13 }}>E12</span>
+            <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "36px 12px 8px 46px", borderBottom: `1px solid ${W.edge}` }}>
+              <Part k="namebox" block={false} style={{ padding: 2, margin: -2 }}>
+                <span style={{ display: "inline-flex", alignItems: "center", width: 50, minHeight: 26, padding: "0 6px", border: `1px solid ${W.edge}`, fontSize: 13 }}>E12</span>
               </Part>
-              <i style={{ fontFamily: "serif", color: W.muted }}>fx</i>
-              <Part k="formula" block={false} badge="right" style={{ flex: 1, minWidth: 0 }}>
+              <i style={{ fontFamily: "serif", color: W.muted, marginLeft: 6 }}>fx</i>
+              <Part k="formula" block={false} badge="top" style={{ flex: 1, minWidth: 0, padding: 2, margin: -2 }}>
                 <span style={{ display: "block", minHeight: 26, padding: "3px 8px", border: `1px solid ${W.edge}`, fontFamily: "Consolas, ui-monospace, monospace", fontSize: 13, ...keep }}>=SUM(E2:E10)</span>
               </Part>
             </div>
-            <div style={{ padding: "8px 10px 6px 46px", fontSize: 13 }}>
-              {rows.map((r, ri) => (
+            <div style={{ padding: "8px 48px 6px 46px", fontSize: 13 }}>
+              <div style={{ display: "flex" }}>{XL_COLS.map((c, ci) => <span key={ci}>{cellBox(c, -1, ci, true)}</span>)}</div>
+              {XL_ROWS.map((r, ri) => (
                 <div key={ri} style={{ display: "flex" }}>
-                  {r.map((c, ci) => {
-                    const sel = ri === 5 && ci === 3;
-                    const content = (
-                      <span style={{ display: "flex", alignItems: "center", justifyContent: ci === 3 && ri > 1 ? "flex-end" : ci === 0 || ri === 0 ? "center" : "flex-start", width: widths[ci], height: 24, padding: "0 5px", boxSizing: "border-box", borderRight: `1px solid ${W.edge}`, borderBottom: `1px solid ${W.edge}`, background: ri === 0 || ci === 0 ? W.sunk : ri === 1 ? "#e6f2ea" : W.page, color: ri === 0 || ci === 0 ? W.muted : W.ink, fontWeight: ri === 1 ? 700 : 400, outline: sel ? `2px solid ${W.excel}` : "none", outlineOffset: -2, ...keep }}>{c}</span>
-                    );
-                    return sel ? (
-                      <Part key={ci} k="cell" block={false} badge="right">
-                        {content}
+                  {r.map((c, ci) =>
+                    ri === 5 && ci === 5 ? (
+                      <Part key={ci} k="cell" block={false} badge="right" style={{ padding: 2, margin: -2 }}>
+                        {cellBox(c, ri, ci, false)}
                       </Part>
                     ) : (
-                      <span key={ci}>{content}</span>
-                    );
-                  })}
+                      <span key={ci}>{cellBox(c, ri, ci, false)}</span>
+                    ),
+                  )}
                 </div>
               ))}
             </div>
-            <div style={{ display: "flex", gap: 2, padding: "4px 10px 8px 46px" }}>
-              <Part k="tabs" block={false}>
+            <div style={{ display: "flex", gap: 2, padding: "4px 10px 10px 46px" }}>
+              <Part k="tabs" block={false} style={{ padding: 2, margin: -2 }}>
                 <span style={{ display: "inline-flex", gap: 2, fontSize: 12.5 }}>
                   <span style={{ padding: "3px 12px", borderBottom: `3px solid ${W.excel}`, color: W.excel, fontWeight: 700 }}>Orders</span>
                   <span style={{ padding: "3px 12px" }}>Staff</span>

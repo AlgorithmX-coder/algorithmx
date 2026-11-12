@@ -6,7 +6,7 @@ import { FigureFrame, Part, type PartInfo } from "./parts";
 
 /* Job sites, drawn with every part numbered (Module 13): a job advert as
  * the big job boards show one (Indeed and the like), the same kind of
- * advert from a scammer, and the top of a profile on a work networking
+ * advert from a scammer, and a profile on a work networking
  * site (LinkedIn and the like). The sites are invented and drawn plainly;
  * the lessons name the real ones in words. */
 
@@ -14,6 +14,8 @@ const keep: CSSProperties = { whiteSpace: "nowrap" };
 const SITE = "#2557a7";
 const SITE_SOFT = "#eef3fc";
 const WARN = "#a4262c";
+/* a lit part's outline sits a few pixels clear of its words */
+const tight: CSSProperties = { padding: "3px 6px", margin: "0 -6px" };
 
 function Browser({ url, children }: { url: string; children: ReactNode }) {
   return (
@@ -34,25 +36,25 @@ function Browser({ url, children }: { url: string; children: ReactNode }) {
 export type AdPart = "title" | "employer" | "location" | "pay" | "hours" | "details" | "apply" | "alert";
 
 export const AD_PARTS: Record<AdPart, PartInfo> = {
-  title: { n: 1, name: "Job title", what: "The job in a few words. Search for the titles offices use: Office Administrator, Receptionist, Data Entry Clerk." },
-  employer: { n: 2, name: "Employer", what: "Who you'd work for. Look them up: a real firm has a website, an address and reviews." },
+  title: { n: 1, name: "Job title", what: "The job in a few words. Search for the titles offices use: Office Administrator, Admin Assistant, Receptionist, Data Entry Clerk." },
+  employer: { n: 2, name: "Employer", what: "Who you'd work for. Look them up: a real firm has a website, an address and reviews. Find the firm's own website yourself, not through a link in the advert." },
   location: { n: 3, name: "Where", what: "The town, or \"Hybrid\" (some days at home) or \"Remote\". Work out the journey before you apply." },
   pay: { n: 4, name: "Pay", what: "A year's pay, or an hourly rate. Compare a few adverts for the same job to see what's usual where you live." },
   hours: { n: 5, name: "Hours and contract", what: "Full-time or part-time; permanent or temporary; the days and times." },
   details: { n: 6, name: "What you'd do", what: "The work itself. Match your CV's skill lines to the words used here." },
   apply: { n: 7, name: "How to apply", what: "Apply now sends your CV through the site. Some adverts send you to the company's own website." },
-  alert: { n: 8, name: "Job alert", what: "Turn it on and the site emails you new jobs like this one, so you don't have to search every day." },
+  alert: { n: 8, name: "Job alert", what: "Turn it on and the site emails you new jobs like this one, every day or every week, as you choose." },
 };
 
 export const SCAM_PARTS: Record<AdPart, PartInfo> = {
   title: { n: 1, name: "A vague job", what: "\"Office assistant, work from home\": no team, no product, nothing you could check." },
   employer: { n: 2, name: "No company name", what: "\"Recruiting now\" isn't an employer. A real advert names who you'd work for." },
-  location: { n: 3, name: "\"Anywhere\"", what: "No town and no office to visit, so nobody you could ever go and see." },
+  location: { n: 3, name: "Anywhere, and no company to check", what: "Remote jobs are real, but this one has no firm behind it: no town, no office, nobody you could look up." },
   pay: { n: 4, name: "Pay too good to be true", what: "£850 a week for two hours a day, no experience. Real office pay is nothing like it." },
   hours: { n: 5, name: "Too easy", what: "\"Pick your own hours\" and \"start today\": made to rush you." },
   details: { n: 6, name: "It asks you for money and bank details", what: "A real employer never charges you to work, and only asks for bank details after a written job offer." },
   apply: { n: 7, name: "Apply by chat app", what: "\"Message Dave\" on a phone number, not through the site or a company's own address." },
-  alert: { n: 8, name: "Report job", what: "Every job site has one. Press it, and don't reply." },
+  alert: { n: 8, name: "Report job", what: "Most job sites have one. Press it, and don't reply." },
 };
 
 const REAL = {
@@ -87,7 +89,7 @@ export function JobAdFigure({ focus, title, what, note, scam }: { focus?: AdPart
   for (const k of Object.keys(what ?? {}) as AdPart[]) info[k] = { ...info[k], what: what![k]! };
   const bad = (on: boolean): CSSProperties => (scam && on ? { color: WARN } : {});
   return (
-    <FigureFrame info={info} focus={focus} title={title ?? (scam ? "A fake job advert" : "A job advert")} note={note} minWidth={560}>
+    <FigureFrame info={info} focus={focus} title={title ?? (scam ? "A fake job advert" : "A job advert")} note={note} minWidth={340}>
       <Browser url={ad.url}>
         <div style={{ display: "flex", alignItems: "center", gap: 10, minHeight: 46, padding: "0 16px", borderBottom: `1px solid ${W.edge}` }}>
           <b style={{ fontSize: 17, color: SITE, letterSpacing: "-0.01em" }}>jobsnearby</b>
@@ -96,26 +98,23 @@ export function JobAdFigure({ focus, title, what, note, scam }: { focus?: AdPart
             <span style={{ padding: "5px 10px", border: `1px solid ${W.edge}`, borderRadius: 6, fontSize: 13, color: W.body, ...keep }}>Leicester</span>
           </span>
         </div>
-        <div style={{ padding: "16px 22px 20px 56px", display: "grid", gap: 10 }}>
-          <Part k="title">
+        <div style={{ padding: "16px 22px 20px 56px", display: "grid", gap: 12, justifyItems: "start" }}>
+          <Part k="title" style={tight}>
             <div style={{ fontSize: 22, fontWeight: 700, lineHeight: 1.2, ...bad(true) }}>{ad.title}</div>
           </Part>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: "12px 48px", alignItems: "center" }}>
-            <Part k="employer" block={false}>
-              <span style={{ fontSize: 15, ...keep }}>
+          <Part k="employer" block={false} style={tight}>
+              <span style={{ fontSize: 15 }}>
                 <span style={{ color: SITE, textDecoration: scam ? "none" : "underline", fontWeight: 600, ...bad(true) }}>{ad.employer}</span>
-                <span style={{ color: W.muted, fontSize: 13 }}> · {ad.rating}</span>
+                <span style={{ color: W.muted, fontSize: 13, ...keep }}> · {ad.rating}</span>
               </span>
-            </Part>
-            <Part k="location" block={false}>
-              <span style={{ fontSize: 15, ...keep, ...bad(true) }}>{ad.location}</span>
-            </Part>
-          </div>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: "12px 48px", alignItems: "center" }}>
-            <Part k="pay" block={false}>
+          </Part>
+          <Part k="location" block={false} style={tight}>
+            <span style={{ fontSize: 15, ...keep, ...bad(true) }}>{ad.location}</span>
+          </Part>
+          <Part k="pay" block={false} style={tight}>
               <span style={{ display: "inline-block", padding: "4px 10px", borderRadius: 6, background: SITE_SOFT, fontSize: 14.5, fontWeight: 600, ...bad(true) }}>{ad.pay}</span>
-            </Part>
-            <Part k="hours" block={false}>
+          </Part>
+          <Part k="hours" block={false} style={tight}>
               <span style={{ display: "inline-flex", flexWrap: "wrap", gap: 6 }}>
                 {ad.hours.map((h) => (
                   <span key={h} style={{ padding: "4px 10px", borderRadius: 6, background: W.chrome, fontSize: 13.5, ...keep, ...bad(true) }}>
@@ -123,9 +122,8 @@ export function JobAdFigure({ focus, title, what, note, scam }: { focus?: AdPart
                   </span>
                 ))}
               </span>
-            </Part>
-          </div>
-          <Part k="details">
+          </Part>
+          <Part k="details" style={{ ...tight, justifySelf: "stretch", marginTop: 2 }}>
             <div style={{ fontSize: 14.5, lineHeight: 1.5 }}>
               <b style={{ display: "block", fontSize: 15 }}>{scam ? "About the role" : "What you'll do"}</b>
               <ul style={{ listStyle: "none", margin: "4px 0 0", padding: 0 }}>
@@ -138,11 +136,10 @@ export function JobAdFigure({ focus, title, what, note, scam }: { focus?: AdPart
               </ul>
             </div>
           </Part>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: "12px 48px", alignItems: "center", marginTop: 4 }}>
-            <Part k="apply" block={false}>
+          <Part k="apply" block={false} style={{ ...tight, marginTop: 4 }}>
               <span style={{ display: "inline-flex", alignItems: "center", minHeight: 38, padding: "0 18px", borderRadius: 8, background: scam ? "#25a35a" : SITE, color: "#fff", fontWeight: 700, fontSize: 14.5, ...keep }}>{ad.apply}</span>
-            </Part>
-            <Part k="alert" block={false}>
+          </Part>
+          <Part k="alert" block={false} style={tight}>
               {scam ? (
                 <span style={{ display: "inline-flex", alignItems: "center", gap: 6, minHeight: 34, padding: "0 12px", borderRadius: 8, border: `1px solid ${W.edge}`, fontSize: 13.5, ...keep }}>⚑ Report job</span>
               ) : (
@@ -153,8 +150,7 @@ export function JobAdFigure({ focus, title, what, note, scam }: { focus?: AdPart
                   Email me jobs like this
                 </span>
               )}
-            </Part>
-          </div>
+          </Part>
           <span style={{ fontSize: 12.5, color: W.muted }}>{ad.sub}</span>
         </div>
       </Browser>
@@ -192,14 +188,14 @@ export const PROFILE_PARTS: Record<ProfilePart, PartInfo> = {
   location: { n: 4, name: "Location", what: "Your town, so local employers find you. Never your street." },
   open: { n: 5, name: "Open to work", what: "Tells recruiters which jobs you want. You choose whether everyone sees it, or recruiters only." },
   about: { n: 6, name: "About", what: "Your CV's profile, a little longer, in your own voice." },
-  skills: { n: 7, name: "Skills", what: "The skills recruiters search for. Add the ones you can show: Excel, Outlook, customer service." },
+  skills: { n: 7, name: "Skills", what: "The skills recruiters search for. Add the ones you can show: Excel, Outlook, Word, customer service." },
 };
 
-export function ProfileFigure({ focus, title = "The top of a profile", what, note }: { focus?: ProfilePart[]; title?: string; what?: Partial<Record<ProfilePart, string>>; note?: string }) {
+export function ProfileFigure({ focus, title = "A work profile", what, note }: { focus?: ProfilePart[]; title?: string; what?: Partial<Record<ProfilePart, string>>; note?: string }) {
   const info = { ...PROFILE_PARTS } as Record<ProfilePart, PartInfo>;
   for (const k of Object.keys(what ?? {}) as ProfilePart[]) info[k] = { ...info[k], what: what![k]! };
   return (
-    <FigureFrame info={info} focus={focus} title={title} note={note} minWidth={540}>
+    <FigureFrame info={info} focus={focus} title={title} note={note} minWidth={340}>
       <Browser url="https://www.worknet.example/in/jordan-miles">
         <div style={{ display: "flex", alignItems: "center", gap: 10, minHeight: 42, padding: "0 16px", borderBottom: `1px solid ${W.edge}` }}>
           <b style={{ fontSize: 16, color: "#0a66c2" }}>worknet</b>
@@ -215,17 +211,17 @@ export function ProfileFigure({ focus, title = "The top of a profile", what, not
                   <path d="M14 84 C16 62 30 54 42 54 C54 54 68 62 70 84 Z" fill="#37597a" />
                 </svg>
               </Part>
-              <div style={{ display: "grid", gap: 8, marginTop: 8 }}>
-                <Part k="name">
+              <div style={{ display: "grid", gap: 12, marginTop: 8, justifyItems: "start" }}>
+                <Part k="name" style={tight}>
                   <div style={{ fontSize: 22, fontWeight: 700 }}>Jordan Miles</div>
                 </Part>
-                <Part k="headline">
+                <Part k="headline" style={tight}>
                   <div style={{ fontSize: 15, lineHeight: 1.4 }}>Office administrator | Excel, Outlook and Word | Calm with customers</div>
                 </Part>
-                <Part k="location" style={{ display: "inline-block", justifySelf: "start" }}>
+                <Part k="location" style={{ ...tight, display: "inline-block" }}>
                   <span style={{ fontSize: 13.5, color: W.muted, ...keep }}>Leicester, England</span>
                 </Part>
-                <Part k="open" style={{ justifySelf: "start" }}>
+                <Part k="open" style={tight}>
                   <div style={{ padding: "8px 12px", borderRadius: 8, background: "#e7f3e9", fontSize: 13.5, lineHeight: 1.4 }}>
                     <b style={{ display: "block" }}>Open to work</b>
                     Office Administrator, Receptionist and Data Entry Clerk roles
@@ -234,18 +230,18 @@ export function ProfileFigure({ focus, title = "The top of a profile", what, not
               </div>
             </div>
           </div>
-          <div style={{ marginTop: 12, background: W.page, borderRadius: 8, border: `1px solid ${W.edge}`, padding: "12px 20px 14px 56px", display: "grid", gap: 12 }}>
-            <Part k="about">
+          <div style={{ marginTop: 12, background: W.page, borderRadius: 8, border: `1px solid ${W.edge}`, padding: "14px 20px 16px 56px", display: "grid", gap: 20 }}>
+            <Part k="about" style={tight}>
               <div style={{ fontSize: 14, lineHeight: 1.5 }}>
                 <b style={{ display: "block", fontSize: 16, marginBottom: 2 }}>About</b>
                 Six years on a busy shop till, now trained in office work. I keep records tidy in Excel, write clear emails and stay calm when it&apos;s busy.
               </div>
             </Part>
-            <Part k="skills">
+            <Part k="skills" style={tight}>
               <div style={{ fontSize: 14 }}>
                 <b style={{ display: "block", fontSize: 16, marginBottom: 6 }}>Skills</b>
                 <span style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
-                  {["Microsoft Excel", "Microsoft Outlook", "Customer service", "Data entry"].map((s) => (
+                  {["Microsoft Excel", "Microsoft Outlook", "Microsoft Word", "Customer service"].map((s) => (
                     <span key={s} style={{ padding: "3px 10px", borderRadius: 99, border: `1px solid ${W.edge}`, ...keep }}>
                       {s}
                     </span>

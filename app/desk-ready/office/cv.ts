@@ -15,7 +15,7 @@ export const CV_TEMPLATE_PATH = ["OneDrive", "Documents", "Custom Office Templat
 
 /* A one-page CV for a desk job: the name as the Title, a contact line with
  * a town (never a home address), then Profile, Skills, Experience and
- * Education as real Heading 1s. Every gap is a [placeholder] of 40
+ * Education (and References) as real Heading 1s. Every gap is a [placeholder] of 40
  * characters or fewer, so Word selects it in one click. */
 export function cvTemplateDoc(): WordDoc {
   return {
@@ -35,7 +35,8 @@ export function cvTemplateDoc(): WordDoc {
       para("[What you did, in office words]", "bullet"),
       para("Education", "h1"),
       para("[School or college, what you got, year]"),
-      para("References available on request."),
+      para("References", "h1"),
+      para("Available on request."),
     ],
   };
 }

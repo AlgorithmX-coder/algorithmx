@@ -556,7 +556,7 @@ export function InterviewLab({ onDone }: LabProps) {
       )}
       {complete && (
         <>
-          <Feedback ok>That&apos;s the answer in STAR order. Said out loud, it takes about a minute: long enough to be real, short enough to keep them listening.</Feedback>
+          <Feedback ok>That&apos;s the answer in STAR order. Said out loud, it takes about a minute or two: long enough to be real, short enough to keep them listening.</Feedback>
           <div style={{ marginTop: 16 }}>
             <Button onClick={nextQuestion}>{q + 1 < STAR_SETS.length ? "Next question" : "Finish"}</Button>
           </div>

@@ -168,7 +168,7 @@ function cv(over: { skills?: string[]; name?: string; extra?: string[]; contact?
   const d = fromTemplate(cvTemplateDoc(), CV_TEMPLATE);
   const name = over.name ?? NAME;
   const skills = over.skills ?? OWN;
-  const text = [name, over.contact ?? "Leicester · 07700 900461 · jordan.miles@email.example", "Profile", "Organised and careful, with a week's office experience. Looking for an office administrator job in Leicester.", "Skills", ...skills, "Experience", "Office Administrator (placement), Northfield Supplies", "November 2026", "Logged deliveries and stock in Excel for the warehouse team", "Wrote and sent customer letters as PDFs", "Education", "Leicester College, Functional Skills Maths Level 2, 2025", "References available on request."];
+  const text = [name, over.contact ?? "Leicester · 07700 900461 · jordan.miles@email.example", "Profile", "Organised and careful, with a week's office experience. Looking for an office administrator job in Leicester.", "Skills", ...skills, "Experience", "Office Administrator (placement), Northfield Supplies", "November 2026", "Logged deliveries and stock in Excel for the warehouse team", "Wrote and sent customer letters as PDFs", "Education", "Leicester College, Functional Skills Maths Level 2, 2025", "References", "Available on request."];
   d.blocks = d.blocks.map((b, i) => ({ ...b, text: text[i] ?? b.text }));
   if (over.fake) d.blocks = d.blocks.map((b) => (b.text === "Skills" ? { ...b, style: "normal", bold: true, size: 16 } : b));
   if (over.extra) d.blocks.push(...over.extra.map((t) => para(t)));

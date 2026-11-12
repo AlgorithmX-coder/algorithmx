@@ -183,7 +183,7 @@ export function TypingResultCard({ r, practice }: { r: TypingScore; practice: bo
   const cells: [string, string, string][] = [
     ["Gross speed", `${r.gross} wpm`, "Every word you typed, right or wrong"],
     ["Mistakes", String(r.errors), r.errors === 1 ? "One word left wrong" : "Words left wrong"],
-    ["Net speed", `${r.net} wpm`, "Gross speed, less one word a minute for each mistake"],
+    ["Net speed", `${r.net} wpm`, "Gross speed, with the mistakes taken off, shared over the minutes"],
     ["Accuracy", `${Math.floor(r.accuracy)}%`, "Letters typed right"],
   ];
   return (

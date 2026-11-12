@@ -29,7 +29,7 @@ const LINE_TASKS: LineTask[] = [
     before: "Worked on the tills at a corner shop.",
     role: "shop job",
     hint: "Think: how many customers, and what happened at closing time?",
-    example: "Handled cash and card payments for up to 200 customers a day, and cashed up with the takings right every night.",
+    example: "Handled cash and card payments for up to 200 customers a day, and the till was right to the penny every night.",
   },
   {
     before: "Worked in a warehouse.",
@@ -71,7 +71,8 @@ function deeCv(): WordDoc {
       para("Trained two new starters on the till", "bullet"),
       fake("Education"),
       para("Leicester College, Functional Skills English Level 2, 2024"),
-      para("References available on request."),
+      para("References", "h1"),
+      para("Available on request."),
     ],
   };
 }
@@ -194,7 +195,7 @@ const m13: ModuleManifest = {
         },
         {
           heading: "Say what it led to",
-          body: ["End with why it mattered (7): the money was right, nothing was missed, a customer came back.", "If there's no result to tell, the line can stop after the number. It still beats the plain version."],
+          body: ["End with what it led to (7): the money was right, nothing was missed, a customer came back. That's a result, not another task.", "If there's no result to tell, the line can stop after the number. It still beats the plain version."],
           figure: <LineFigure focus={["result"]} title="What it led to" />,
         },
         {
@@ -251,7 +252,7 @@ const m13: ModuleManifest = {
           heading: "Here is a whole one-page CV",
           body: [
             "This is Jordan's CV, open in Word. It fits on one page (10), and the file has Jordan's name in it (1).",
-            "From the top: the name (2), how to reach Jordan (3), a short profile (4), then the sections, each with a heading (5): skills (6), experience (7) and education (8), with references at the end (9).",
+            "From the top: the name (2), how to reach Jordan (3), a short profile (4), then the sections, each with a heading (5): skills (6), experience (7), education (8) and references (9).",
           ],
           figure: <CvFigure />,
         },
@@ -264,7 +265,7 @@ const m13: ModuleManifest = {
           heading: "Your name and how to reach you",
           body: [
             "Your name, in the Title style (2). Underneath, on one line: your town, a phone number and an email address (3).",
-            "Leave off your home address, your date of birth and a photo: UK employers don't need them, and a CV gets passed around. In this course's practice, use a made-up number like 07700 900461, and Leicester as your town.",
+            "Leave off your home address, your date of birth and a photo: UK employers don't need them, and a CV gets passed around. Jordan's town is Leicester. In this course's practice, use a made-up phone number like 07700 900461.",
           ],
           figure: <CvFigure focus={["name", "contact"]} title="Name and contact line" />,
           tip: "Use an email address with your name in it, not an old nickname.",
@@ -273,22 +274,22 @@ const m13: ModuleManifest = {
           heading: "A short profile",
           body: ["Two or three lines (4): who you are, what you're good at, and the job you want.", "Write it last, once the rest is done: it sums up the page."],
           figure: <CvFigure focus={["profile"]} title="The profile" />,
-          good: [{ text: "Organised and calm under pressure, with six years on the tills and a week's office placement. Looking for an office administrator job in Leicester." }],
+          good: [{ text: "Organised and calm under pressure, with six years on the tills, a year caring for my mum and a week's office placement. Looking for an office administrator job in Leicester." }],
           bad: [{ text: "A hard-working team player who can also work on their own.", note: "Everyone writes this. It says nothing about you." }],
         },
         {
           heading: "Skills: three lines in your own words",
-          body: ["Three lines (6), each a skill an office needs, said the way you did it. Use what you learned in lesson 1: a doing word, the task, a number.", "Write them in your own words. Recruiters see the same stock phrases all day, and a copied line tells them nothing about you."],
+          body: ["Three lines (6), each a skill an office needs, said the way you did it. Use what you learned in lesson 1: each has a doing word, the task and a number.", "Write them in your own words. Recruiters see the same stock phrases all day, and a copied line tells them nothing about you."],
           figure: <CvFigure focus={["skills"]} title="Skills" />,
         },
         {
           heading: "Experience, newest first",
-          body: ["Each job (7): the title and employer on one line, the dates under it, then two or three lines on what you did.", "Newest first, so the office placement sits above the shop job. Older or less useful jobs can have one line, or none."],
+          body: ["Each job (7): the title and employer on one line, the dates under it, then what you did. Two or three lines for the newest job; one for older ones.", "Newest first, so the office placement sits above the caring and the shop job. Fill any gap with what you were doing: Jordan's year caring for a parent goes in like a job."],
           figure: <CvFigure focus={["experience"]} title="Experience" />,
         },
         {
           heading: "Education and references",
-          body: ["Education (8): where, what and when. Courses count: a college course, Functional Skills, this course.", "References (9): one line is enough. Have two names ready, such as a past manager and someone who knows your work, and ask them first."],
+          body: ["Education (8): where, what and when. Short courses count too, like Functional Skills or an online office skills course.", "References (9) get their own heading, or are left off: many UK CVs now leave them off, as employers ask anyway. Either way, have two names ready, such as a past manager and someone who knows your work, and ask them first."],
           figure: <CvFigure focus={["education", "refs"]} title="Education and references" />,
         },
         {
@@ -301,7 +302,7 @@ const m13: ModuleManifest = {
         },
         {
           heading: "Save it as a PDF, with your name",
-          body: ["Make a PDF: File > Export > Create PDF. It looks the same on any computer, and nobody can change it by mistake.", "Name it your name, then CV (1): Jordan Miles CV.pdf. A recruiter with a hundred files called CV.pdf will thank you."],
+          body: ["Make a PDF: in Word, File > Export > Create PDF/XPS Document, choose the folder and the name, then press Publish. (The practice Word in this course shortens these to Create PDF and Save.) A PDF looks the same on any computer, and nobody can change it by mistake.", "Name it your name, then CV (1). Saved as a PDF, it becomes Jordan Miles CV.pdf. A recruiter with a hundred files called CV.pdf will thank you."],
           figure: <CvFigure focus={["file"]} title="The file name" />,
           good: [{ text: "Jordan Miles CV.pdf" }],
           bad: [{ text: "CV final new.pdf", note: "Whose is it? Which one?" }],
@@ -351,7 +352,7 @@ const m13: ModuleManifest = {
         },
         {
           heading: "Who, and where",
-          body: ["Look up the employer (2). A real firm has a website, an address and reviews.", "Check where it is (3) and how you'd get there every day. \"Hybrid\" means some days at home; \"Remote\" means all of them."],
+          body: ["Look up the employer (2). A real firm has a website, an address and reviews. Find its website yourself, not through a link in the advert.", "Check where it is (3) and how you'd get there every day. \"Hybrid\" means some days at home; \"Remote\" means all of them."],
           figure: <JobAdFigure focus={["employer", "location"]} title="The employer and the place" />,
         },
         {
@@ -364,13 +365,13 @@ const m13: ModuleManifest = {
         },
         {
           heading: "Let the jobs come to you",
-          body: ["Turn on a job alert (8) and the site emails you new jobs like this one, once a day.", "Set one for each job title you'd take, in your town. Check the emails each morning and apply early: the first good CVs get read first."],
+          body: ["Turn on a job alert (8) and the site emails you new jobs like this one, every day or every week, as you choose.", "Set one for each job title you'd take, in your town. Check the emails when they come and apply early: the first good CVs get read first."],
           figure: <JobAdFigure focus={["alert"]} title="A job alert" />,
         },
         {
           heading: "Here is a fake job advert",
           body: [
-            "Scammers post adverts too. This one has every sign: a vague job (1), no company name (2), \"anywhere\" (3), pay too good to be true (4) and hours too easy (5).",
+            "Scammers post adverts too. This one has every sign: a vague job (1), no company name (2), \"anywhere\" with no firm you could check (3), pay too good to be true (4) and hours too easy (5).",
             "Worst of all, it asks for money and your bank details (6), and wants you to message someone on a chat app (7). Report it (8) and move on.",
           ],
           figure: <JobAdFigure scam />,
@@ -378,14 +379,14 @@ const m13: ModuleManifest = {
         {
           heading: "Never pay, and never send bank details early",
           body: [
-            "A real employer never asks you to pay for training, a starter pack, an ID check or a DBS check before you start.",
+            "A real employer never asks you to pay for training, a starter pack or an ID check to get a job. Some care and school jobs need a DBS check: that's arranged through the employer after a job offer, never paid to a stranger over chat.",
             "Your bank details go on the new-starter form, after a written job offer from an employer you can look up. Never before an interview, and never by chat.",
           ],
           figure: <JobAdFigure scam focus={["details", "apply"]} title="What a real employer never asks" />,
           tip: "Already sent money or bank details? Ring your bank straight away, on the number on the back of your card.",
         },
         {
-          heading: "Here is the top of a profile",
+          heading: "Here is a whole work profile",
           body: [
             "LinkedIn is a site for your working life: a profile like an online CV, where recruiters search for people. The basic account is free.",
             "The parts that matter: a photo if you want one (1), your name (2), a headline (3), your town (4), Open to work (5), an About (6) and your skills (7).",
@@ -405,7 +406,7 @@ const m13: ModuleManifest = {
         {
           heading: "Photo, About and skills",
           body: ["A photo (1) is optional. If you add one, make it just you, face on, in good light.", "About (6) is your CV's profile in your own voice. Skills (7) are the words recruiters search for: add the ones you can show."],
-          figure: <ProfileFigure focus={["photo", "about", "skills"]} title="The rest of the profile" />,
+          figure: <ProfileFigure focus={["photo", "about", "skills"]} title="Photo, About and Skills" />,
         },
       ],
       tryIt: { title: "Real job, or a scam?", intro: "Six adverts. For each one, decide: would you apply, or report it?", Lab: JobSitesLab },
@@ -441,7 +442,7 @@ const m13: ModuleManifest = {
           heading: "Here is an agency typing test",
           body: [
             "Agencies test typing on a screen like this one: a short business letter (4) to copy into a box (7), with the time left (1), your speed (2) and your accuracy (3) shown as you go.",
-            "Words you've typed right turn green, the one you're on is shaded (5), and a word left wrong turns red (6).",
+            "Words you've typed right turn green, a wrong word turns red (5), and the word you're on is shaded (6).",
           ],
           figure: <TypingFigure />,
         },
@@ -452,22 +453,22 @@ const m13: ModuleManifest = {
         },
         {
           heading: "Fix it as you go",
-          body: ["A slip left in (6) costs you. Spot one straight away? Backspace and type the word again.", "Keep your eyes on the shaded word (5) and the ones just ahead, not on your fingers."],
-          figure: <TypingFigure focus={["slip", "current"]} title="Slips and your place" />,
+          body: ["A wrong word left in (5) costs you. Spot one straight away? Backspace and type the word again.", "Keep your eyes on the shaded word (6) and the ones just ahead, not on your fingers."],
+          figure: <TypingFigure focus={["slip", "current"]} title="Wrong words and your place" />,
         },
         {
           heading: "Here is a typing test result",
           body: [
-            "When the clock stops you get a result like this. Gross speed (2) counts everything you typed. Each mistake left in (3) takes a word a minute off it, which gives your net speed (4).",
+            "When the clock stops you get a result like this. Gross speed (2) counts everything you typed. Every mistake left in (3) is taken off your speed, shared over the minutes of the test: 3 mistakes in 3 minutes takes 1 off 42, which gives your net speed (4) of 41.",
             "Accuracy (5) is the share of letters typed right. Most office jobs ask for 35 words a minute (net) at 95% accuracy or better (1).",
           ],
           figure: <TypingResultFigure />,
         },
         {
           heading: "Accuracy first, speed second",
-          body: ["An employer would rather have 38 words a minute, all right, than 60 full of mistakes: every mistake is something someone has to fix.", "Practise 10 minutes a day. Speed comes by itself once your fingers know where the keys are."],
+          body: ["Net speed (4) and accuracy (5) are the two numbers employers look at. They would rather have 38 words a minute with no mistakes than 60 full of them: every mistake is something someone has to fix.", "Practise 10 minutes a day. Speed comes by itself once your fingers know where the keys are."],
           figure: <TypingResultFigure focus={["net", "acc"]} title="The two numbers that count" />,
-          tip: "Free typing practice sites are easy to find: search for \"typing test\". Take the same 3-minute test each day and write your score down.",
+          tip: "Free typing practice sites are easy to find: search for \"typing test\". Take the same 3‑minute test each day and write your score down.",
         },
         {
           heading: "Here is an agency Excel test",
@@ -500,7 +501,7 @@ const m13: ModuleManifest = {
       check: [
         {
           q: "What's the difference between gross and net typing speed?",
-          options: ["Net takes off a word a minute per mistake", "Net counts only the words typed in capitals", "Gross is your speed over the first minute"],
+          options: ["Net takes your mistakes off your speed", "Net counts only the words typed in capitals", "Gross is your speed over the first minute"],
           answer: 0,
           reasons: ["Net speed is what's left once mistakes are counted.", "Capitals have nothing to do with it.", "Both cover the whole test."],
         },
@@ -528,8 +529,8 @@ const m13: ModuleManifest = {
         {
           heading: "Here is a video interview",
           body: [
-            "This is a job interview on Teams. The invite (1) gives the time and the link. The interviewer fills the screen (2), and your own picture sits in the corner (3).",
-            "Beside it is a good set-up, seen from the side: camera at eye level (4), light in front of you (5), a plain background (6). At the bottom: the microphone (7), camera (8) and Leave (9).",
+            "This is a job interview on Teams. The invite (1) gives the time and the link. The interviewer fills most of the screen (2), and your own picture sits beside them (3).",
+            "Beside the call is a good set-up, seen from the side: the camera at eye level (4), light in front of you (5) and a plain wall behind you (6). At the bottom of the call: the microphone (7), camera (8) and Leave (9).",
           ],
           figure: <InterviewFigure />,
         },
@@ -546,7 +547,7 @@ const m13: ModuleManifest = {
         },
         {
           heading: "Light and background",
-          body: ["Sit facing a window or a lamp (5). Light behind you turns your face into a shadow.", "Choose a plain, tidy wall behind you (6), or turn on background blur. Nothing personal on show."],
+          body: ["Sit facing a window or a lamp (5). Light behind you turns your face into a shadow.", "Sit with a plain, tidy wall behind you (6), or turn on background blur. Nothing personal on show."],
           figure: <InterviewFigure focus={["light", "background"]} title="Light and background" />,
         },
         {
@@ -558,7 +559,7 @@ const m13: ModuleManifest = {
           heading: "Here is an answer, the STAR way",
           body: [
             "Interviewers often say \"Tell me about a time...\" (1). They want one real story, told in four parts.",
-            "Situation (2): where you were. Task (3): what you had to do. Action (4): what you did. Result (5): how it ended. This answer comes from a week like yours at Northfield.",
+            "Situation (2): where you were. Task (3): what you had to do. Action (4): what you did. Result (5): how it ended. This answer comes from a week like the ones in this course's pretend office, at Northfield Supplies.",
           ],
           figure: <StarFigure />,
         },
@@ -570,10 +571,10 @@ const m13: ModuleManifest = {
         {
           heading: "Have two stories ready",
           body: [
-            "Before the interview, write down two true stories: a time you put a mistake right, and a time you helped a customer or a colleague. Practise saying each out loud in about a minute.",
+            "Questions like this one (1) are easy to guess, so get ready before the interview. Write down two true stories: a time you put a mistake right, and a time you helped a customer or a colleague. Practise saying each out loud in about a minute or two.",
             "At the end they'll ask if you have any questions. Have one ready, like \"What would a normal day look like?\"",
           ],
-          figure: <StarFigure focus={["question", "situation", "task"]} title="Getting a story ready" />,
+          figure: <StarFigure focus={["question"]} title="The question to get ready for" />,
           tip: "A few words on a sticky note just under the camera are fine. Reading out a script isn't.",
         },
       ],

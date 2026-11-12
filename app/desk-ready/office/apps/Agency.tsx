@@ -101,7 +101,7 @@ export default function Agency({ state, dispatch }: Pick<OfficeAppProps, "state"
               "You'll see a short business letter. Type it into the box underneath, word for word, capitals and full stops too.",
               "Press Space between words. At the end of a paragraph, press Space and carry on.",
               "The clock starts with the first letter you type, and stops by itself after 3 minutes.",
-              "Spot a slip? Backspace and fix it. A word left wrong costs you a word a minute.",
+              "Spot a slip? Backspace and fix it. A word left wrong counts as a mistake, and mistakes are taken off your speed.",
               view.practice ? "This is practice: nothing is recorded against you, and you can stop or start again any time." : `To pass: ${PASS.wpm} words a minute (net) at ${PASS.accuracy}% accuracy. You can take it again if you need to.`,
             ]}
             start={view.practice ? "Start practising" : "Start the test"}
