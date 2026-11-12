@@ -247,14 +247,14 @@ const PROMPT: [PromptPart, string, string][] = [
 export function PromptFigure({ focus, title = "A good prompt, part by part", what, note }: { focus?: PromptPart[]; title?: string; what?: What<PromptPart>; note?: string }) {
   return (
     <FigureFrame info={withWhat(PROMPT_PARTS, what)} focus={focus} title={title} note={note}>
-      <div style={{ maxWidth: 620, margin: "0 auto", padding: `14px 10px 18px ${GUTTER}px`, borderRadius: 12, border: "1px solid #d6d1f0", background: W.page, boxShadow: W.float }}>
+      <div style={{ maxWidth: 620, margin: "0 auto", padding: `14px 6px 18px ${GUTTER}px`, borderRadius: 12, border: "1px solid #d6d1f0", background: W.page, boxShadow: W.float }}>
         <span style={{ display: "inline-flex", alignItems: "center", gap: 8, fontSize: 13, fontWeight: 600, color: W.muted }}>
           <CopilotMark size={20} /> Draft with Copilot
         </span>
-        <div style={{ display: "grid", gridTemplateColumns: "minmax(0, 1fr)", gap: 16, marginTop: 14, fontSize: 15.5, lineHeight: 1.5 }}>
+        <div style={{ display: "grid", gridTemplateColumns: "minmax(0, 1fr)", gap: 16, marginTop: 14, fontSize: 15, lineHeight: 1.5 }}>
           {PROMPT.map(([k, text, colour]) => (
             <Part key={k} k={k} badge="left" style={{ justifySelf: "start", maxWidth: "100%" }}>
-              <span style={{ display: "block", padding: "4px 8px", borderRadius: 4, background: colour }}>{keep(text)}</span>
+              <span style={{ display: "block", padding: "4px 6px", borderRadius: 4, background: colour }}>{keep(text)}</span>
             </Part>
           ))}
         </div>
@@ -360,11 +360,11 @@ export const EXCEL_AI_PARTS: Record<ExcelAiPart, PartInfo> = {
 /* Columns C to G of the log; A and B (the date and the delivery note) are
  * hidden, as Excel shows it, with the double line. */
 const LOG_COLS = [
-  { col: "C", head: "Supplier", w: 112 },
+  { col: "C", head: "Supplier", w: 108 },
   { col: "D", head: "Booked", w: 58 },
   { col: "E", head: "Arrived", w: 60 },
   { col: "F", head: "Status", w: 66 },
-  { col: "G", head: "Notes", w: 156 },
+  { col: "G", head: "Notes", w: 146 },
 ] as const;
 const LOG_ROWS: string[][] = [
   ["Harlow Packaging", "08:30", "08:40", "On time", ""],
@@ -416,7 +416,7 @@ export function ExcelCopilotFigure({ focus, title = "Excel, with Copilot down th
         </div>
         <div style={{ display: "flex", flexWrap: "wrap", alignItems: "stretch" }}>
           {/* the sheet: wider than a phone, so there it slides in its own box */}
-          <div ref={sheet} style={{ flex: "1 1 520px", minWidth: 0, overflowX: "auto", padding: "12px 14px 16px 40px" }}>
+          <div ref={sheet} style={{ flex: "1 1 520px", minWidth: 0, overflowX: "auto", padding: "12px 40px 16px 40px" }}>
             <Part k="bar">
               <div style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 13 }}>
                 <span style={{ width: 40, padding: "4px 6px", border: `1px solid ${W.edge}` }}>D9</span>
@@ -473,10 +473,10 @@ export function ExcelCopilotFigure({ focus, title = "Excel, with Copilot down th
                 );
               })}
             </div>
-            {slides && <p style={{ margin: "10px 0 0", fontSize: 12.5, color: W.muted }}>Slide the sheet sideways to see the other columns.</p>}
+            {slides && <p style={{ position: "sticky", left: 0, margin: "10px 0 0", fontSize: 12.5, color: W.muted }}>Slide the sheet sideways to see the other columns.</p>}
           </div>
           {/* the pane: beside the sheet on a laptop, under it on a phone */}
-          <div style={{ flex: "1 1 250px", minWidth: 0, maxWidth: 340, borderLeft: `1px solid ${W.edge}`, background: W.copilotTint, padding: "38px 14px 14px 14px" }}>
+          <div style={{ flex: "1 1 230px", minWidth: 0, maxWidth: 260, borderLeft: `1px solid ${W.edge}`, background: W.copilotTint, padding: "38px 14px 14px 14px" }}>
             <Part k="pane" badge="top" holds={["question", "explain", "note"]}>
               <div style={{ display: "grid", gap: 38, padding: 4 }}>
                 <span style={{ display: "flex", alignItems: "center", gap: 8, fontWeight: 600, fontSize: 14 }}>
