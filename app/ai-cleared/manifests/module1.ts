@@ -79,10 +79,10 @@ export const MODULE_1: ModuleManifest = {
         items: [
           { sim: { tool: "chatgpt", tier: "consumer-free" }, tell: "The badge at the bottom of the rail says Personal · Free. No firm name anywhere on the screen." },
           { sim: { tool: "copilot", tier: "enterprise" }, tell: "The rail shows the firm's name with “work account”, and the top bar has Work IQ and the green data-protection shield. That is the firm's tenant." },
-          { sim: { tool: "gemini", tier: "consumer-paid" }, tell: "A Pro pill next to the model picker, but no Workspace domain at the bottom of the nav. Paid, still personal." },
+          { sim: { tool: "gemini", tier: "consumer-paid" }, tell: "Pro under the name at the bottom of the nav, but no Workspace domain there. Paid, still personal." },
           { sim: { tool: "claude", tier: "enterprise" }, tell: "The account line at the bottom of the rail shows the firm's name and Team. That is a workspace the firm pays for." },
           { sim: { tool: "chatgpt", tier: "enterprise" }, tell: "The badge names the firm and says Business workspace (OpenAI now calls the old Team tier Business). Same chat box as the free one; different contract." },
-          { sim: { tool: "claude", tier: "consumer-free" }, tell: "Free plan in the account line, no firm name. Whatever you type here is under consumer terms." },
+          { sim: { tool: "claude", tier: "consumer-free" }, tell: "Free after your name in the account line, no firm name. Whatever you type here is under consumer terms." },
         ],
       },
       prove: [
