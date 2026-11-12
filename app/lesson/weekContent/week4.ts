@@ -58,7 +58,10 @@ export const WEEK_4: WeekContent = {
   ],
 
   screens: [
-    // 0 - OPENING VIDEO: the V-Bucks blast
+    // 0 - OPENING VIDEO: the V-Bucks blast - a "free game coins" chest pops up
+    // for Layla, Adam asks why it wants her password, the Raccoon dangles his
+    // shiny lure, and Adam says "Let's learn to spot a scam!" (talking film,
+    // 2026-11-12; source + assembler in .scratch/w04, not in the repo).
     { type: "video", videoPlaceholder: "Week 4: The Prize That Wasn't", videoSrc: "/videos/module-04-intro.mp4" },
 
     // 1 - ALERT: incident report (Sarah's hook)
@@ -1067,7 +1070,9 @@ export const WEEK_4: WeekContent = {
     // 25 - BOSS BATTLE: the carnival showdown (QuizBoss, 5 Q / pass 4)
     { type: "bossBattle" },
 
-    // 26 - CLOSING VIDEO: every scam returns to sender
+    // 26 - CLOSING VIDEO: every scam returns to sender - Layla closes the chest,
+    // the Raccoon stares at an empty hook, Adam: "Stop, check, and show a
+    // grown-up!" (talking film, 2026-11-12).
     { type: "video", videoPlaceholder: "Week 4: Return to Sender", videoSrc: "/videos/module-04-outro.mp4" },
 
     // 27 - Mission Debrief
