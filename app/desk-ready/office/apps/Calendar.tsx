@@ -9,7 +9,8 @@ import {
   DAY_START,
   HALF_HOURS,
   ROOM_SEATS,
-  WEEK,
+  weekOf,
+  weekTitle,
   WORK_END,
   WORK_START,
   busyFor,
@@ -47,6 +48,8 @@ const SLOT_W = 34; // px per half hour in the Scheduling Assistant
 const EVENT_BG = "#dbe8f8";
 const BUSY = "#2f6ab3";
 const HATCH = `repeating-linear-gradient(135deg, #ffffff 0 6px, ${EVENT_BG} 6px 12px)`;
+/* ── Final task ── every quarter hour of the drawn day, for the end time */
+const QUARTER_HOURS = Array.from({ length: (DAY_END - DAY_START) / 15 + 1 }, (_, i) => fromMin(DAY_START + i * 15));
 
 interface Draft extends Slot {
   /* set when editing a meeting already sent */
@@ -72,7 +75,9 @@ export default function Calendar({ state, dispatch, show, job }: OfficeAppProps)
   const [cancelling, setCancelling] = useState<Meeting | null>(null);
   const [noTitle, setNoTitle] = useState(false);
   const open = cal.meetings.find((m) => m.id === selected) ?? null;
-  const days = view === "week" ? [...WEEK] : [dayAt];
+  /* ── Final task ── the work week that holds today (9 to 13 November for the modules, 16 to 20 for the final task) */
+  const week = weekOf(cal.today);
+  const days = view === "week" ? week : [dayAt];
   const clock = /(\d{1,2}):(\d{2})/.exec(job.clock);
   const now = clock ? Number(clock[1]) * 60 + Number(clock[2]) : null;
 
@@ -141,11 +146,11 @@ export default function Calendar({ state, dispatch, show, job }: OfficeAppProps)
             </AppButton>
             {view === "day" && (
               <span style={{ display: "inline-flex", gap: 2 }}>
-                <IconBtn label="Previous day" icon="left" disabled={dayAt === WEEK[0]} onClick={() => setDayAt(WEEK[Math.max(0, WEEK.indexOf(dayAt as (typeof WEEK)[number]) - 1)])} />
-                <IconBtn label="Next day" icon="right" disabled={dayAt === WEEK[4]} onClick={() => setDayAt(WEEK[Math.min(4, WEEK.indexOf(dayAt as (typeof WEEK)[number]) + 1)])} />
+                <IconBtn label="Previous day" icon="left" disabled={dayAt === week[0]} onClick={() => setDayAt(week[Math.max(0, week.indexOf(dayAt) - 1)])} />
+                <IconBtn label="Next day" icon="right" disabled={dayAt === week[4]} onClick={() => setDayAt(week[Math.min(4, week.indexOf(dayAt) + 1)])} />
               </span>
             )}
-            <b style={{ fontSize: 17, fontWeight: 600, marginLeft: 4 }}>{view === "week" ? "9 to 13 November 2026" : `${dayLong(dayAt)} 2026`}</b>
+            <b style={{ fontSize: 17, fontWeight: 600, marginLeft: 4 }}>{view === "week" ? weekTitle(week) : `${dayLong(dayAt)} 2026`}</b>
             <span role="group" aria-label="View" style={{ marginLeft: "auto", display: "inline-flex", border: `1px solid ${W.edge}`, borderRadius: 6, overflow: "hidden", background: W.page }}>
               {(["day", "week"] as const).map((v) => (
                 <button key={v} type="button" aria-pressed={view === v} onClick={() => setView(v)} className="of-btn" style={{ minHeight: 38, padding: "0 14px", border: "none", background: view === v ? W.select : "transparent", color: view === v ? W.outlook : W.ink, fontFamily: W.font, fontSize: 14.5, fontWeight: view === v ? 700 : 500, cursor: "pointer" }}>
@@ -253,6 +258,7 @@ function MiniMonth({ today, picked, onPick }: { today: string; picked: string | 
   const cells: (number | null)[] = [...Array(6).fill(null), ...Array.from({ length: 30 }, (_, i) => i + 1)];
   while (cells.length % 7) cells.push(null);
   const t = Number(today.slice(8));
+  const week = weekOf(today); // ── Final task ──
   return (
     <nav aria-label="November 2026" style={{ width: 196, flexShrink: 0, padding: "12px 10px", borderRight: `1px solid ${W.edge}`, background: W.chrome, overflowY: "auto" }}>
       <b style={{ display: "block", padding: "2px 4px 8px", fontSize: 14, fontWeight: 600 }}>November 2026</b>
@@ -264,7 +270,7 @@ function MiniMonth({ today, picked, onPick }: { today: string; picked: string | 
         ))}
         {cells.map((n, i) => {
           const day = n ? `2026-11-${String(n).padStart(2, "0")}` : "";
-          const inWeek = !!n && n >= 9 && n <= 13;
+          const inWeek = !!n && week.includes(day);
           const isToday = n === t;
           return n ? (
             <button
@@ -589,7 +595,7 @@ function SlotPicker({ slot, onChange, compact }: { slot: Slot; onChange: (s: Slo
   return (
     <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 8, marginTop: compact ? 0 : 14 }}>
       <select aria-label="Date" value={slot.day} onChange={(e) => onChange({ ...slot, day: e.target.value })} style={select}>
-        {WEEK.map((d) => (
+        {weekOf(slot.day).map((d) => (
           <option key={d} value={d}>
             {dayLong(d)}
           </option>
@@ -604,7 +610,8 @@ function SlotPicker({ slot, onChange, compact }: { slot: Slot; onChange: (s: Slo
       </select>
       <span style={{ color: W.muted }}>to</span>
       <select aria-label="End time" value={slot.end} onChange={(e) => onChange({ ...slot, end: e.target.value })} style={select}>
-        {HALF_HOURS.filter((t) => toMin(t) > toMin(slot.start)).map((t) => (
+        {/* ── Final task ── the end can fall on a quarter hour, so a 45-minute meeting can be booked */}
+        {QUARTER_HOURS.filter((t) => toMin(t) > toMin(slot.start)).map((t) => (
           <option key={t} value={t}>
             {t}
           </option>
@@ -897,12 +904,13 @@ function Assistant({ state, draft, setDraft }: { state: OfficeState; draft: Draf
   const hits = clashes(state, draft, draft.room ? [...people, draft.room] : people, draft.id);
   const x = (t: number) => ((t - DAY_START) / 30) * SLOT_W;
   const moveTo = (start: number) => setDraft({ ...draft, start: fromMin(start), end: fromMin(Math.min(DAY_END, start + len)) });
-  const dayAt = WEEK.indexOf(draft.day as (typeof WEEK)[number]);
+  const week = weekOf(draft.day); // ── Final task ──
+  const dayAt = week.indexOf(draft.day);
   return (
     <div style={{ padding: "12px 16px 20px" }}>
       <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 8 }}>
-        <IconBtn label="Previous day" icon="left" disabled={dayAt <= 0} onClick={() => setDraft({ ...draft, day: WEEK[Math.max(0, dayAt - 1)] })} />
-        <IconBtn label="Next day" icon="right" disabled={dayAt >= 4} onClick={() => setDraft({ ...draft, day: WEEK[Math.min(4, dayAt + 1)] })} />
+        <IconBtn label="Previous day" icon="left" disabled={dayAt <= 0} onClick={() => setDraft({ ...draft, day: week[Math.max(0, dayAt - 1)] })} />
+        <IconBtn label="Next day" icon="right" disabled={dayAt >= 4} onClick={() => setDraft({ ...draft, day: week[Math.min(4, dayAt + 1)] })} />
         <SlotPicker compact slot={draft} onChange={(s) => setDraft({ ...draft, ...s })} />
       </div>
       <p role="status" style={{ margin: "10px 0 0", padding: "8px 12px", borderRadius: 6, fontSize: 14.5, background: hits.length ? "#fde7e9" : draft.attendees.length ? "#dff6dd" : W.chrome, color: hits.length ? "#a4262c" : draft.attendees.length ? "#0e5c0e" : W.muted }}>

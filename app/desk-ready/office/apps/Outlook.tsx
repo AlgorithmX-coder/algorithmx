@@ -305,10 +305,19 @@ export default function Outlook({
       {clickedScam && (
         <Dialog title="That link was a trap" onClose={() => setClickedScam(null)} width={560}>
           <p style={{ margin: 0, fontSize: 16, lineHeight: 1.55 }}>
-            It opened <b>{clickedScam.fakeLink?.url}</b>, a fake page made to look like a sign-in page. If you had typed your password there, the scammer would have it.
+            {/* ── Final task ── a payment link is a payment page, not a sign-in page */}
+            {/\bpay\b/i.test(clickedScam.fakeLink?.text ?? "") ? (
+              <>
+                It opened <b>{clickedScam.fakeLink?.url}</b>, the scammer&apos;s own payment page. If the invoice had been paid there, the money would have gone straight to the scammer, and it can&apos;t be got back.
+              </>
+            ) : (
+              <>
+                It opened <b>{clickedScam.fakeLink?.url}</b>, a fake page made to look like a sign-in page. If you had typed your password there, the scammer would have it.
+              </>
+            )}
           </p>
           <p style={{ margin: "12px 0 0", fontSize: 16, lineHeight: 1.55 }}>
-            At work, tell IT straight away and change your password. Here, close this, then use <b>Report</b> on the email instead of opening its links.
+            At work, tell IT straight away{/\bpay\b/i.test(clickedScam.fakeLink?.text ?? "") ? " and your manager" : " and change your password"}. Here, close this, then use <b>Report</b> on the email instead of opening its links.
           </p>
           <div style={{ display: "flex", justifyContent: "flex-end", marginTop: 18 }}>
             <AppButton primary onClick={() => setClickedScam(null)}>

@@ -195,8 +195,8 @@ export const PARTS: readonly DeskPart[] = [
 export const FINAL = {
   id: "final",
   title: "Monday morning at the desk",
-  promise: "Eight emails, a spreadsheet to update, a meeting to book and one scam hidden in the pile. Get through the morning and keep what you made.",
-  ready: false,
+  promise: "Eight emails, a Teams message, a phone call and one scam hidden in the pile, in four office hours. Get through the morning and keep your scorecard.",
+  ready: true,
 } as const;
 
 export const ALL_MODULES: readonly DeskModule[] = PARTS.flatMap((p) => p.modules);
