@@ -111,6 +111,17 @@ describe("E11.1 The bank details have changed", () => {
     expect(failing(bankDetails, fw)).toEqual(["priya"]);
     expect(bankDetails.check(fw).find((c) => c.id === "priya")?.fix).toMatch(/forwarded/);
   });
+  it("fails a vague email to Priya that doesn't warn her, and says so", () => {
+    const vague = solved((s) => ({ ...s, emails: [...s.emails.filter((e) => e !== priyaMail), sent([PEOPLE.priya], "Harlow", "Hi Priya,\n\nCan you have a look at the Harlow email?\n\nThanks")] }));
+    expect(failing(bankDetails, vague)).toEqual(["priya"]);
+    expect(bankDetails.check(vague).find((c) => c.id === "priya")?.fix).toMatch(/doesn't warn her/);
+  });
+  it("accepts any plain warning to Priya about the payment", () => {
+    for (const body of ["Please hold the Harlow payment, the new bank details are fake.", "Don't pay HP-2291 today.", "The Harlow bank details email is a scam."]) {
+      const ok = solved((s) => ({ ...s, emails: [...s.emails.filter((e) => e !== priyaMail), sent([PEOPLE.priya], "HP-2291", body)] }));
+      expect(failing(bankDetails, ok)).toEqual([]);
+    }
+  });
 });
 
 /* ── E11.2 ────────────────────────────────────────────────────────────── */
@@ -131,7 +142,7 @@ describe("E11.2 The wrong Emma", () => {
   });
   it("fails when it goes to Emma Clarkson, and teaches what to do", () => {
     const r = wrongEmma.check(withMail(fw([EMMA_CLARKSON])));
-    expect(r.filter((c) => !c.ok).map((c) => c.id)).toEqual(["to-hr", "only-hr"]);
+    expect(r.filter((c) => !c.ok).map((c) => c.id)).toEqual(["to-hr", "only-hr", "attached"]);
     expect(r.find((c) => c.id === "only-hr")?.fix).toMatch(/tell Daniel straight away/);
     expect(r.find((c) => c.id === "only-hr")?.fix).toMatch(/delete it/);
   });
@@ -139,6 +150,11 @@ describe("E11.2 The wrong Emma", () => {
     expect(failing(wrongEmma, withMail(fw([PEOPLE.emma, EMMA_CLARKSON])))).toEqual(["only-hr"]);
     expect(failing(wrongEmma, withMail(fw([PEOPLE.emma]), fw([EMMA_CLARKSON])))).toEqual(["only-hr"]);
     expect(failing(wrongEmma, withMail(fw([PEOPLE.emma], { bcc: [PEOPLE.sarah] })))).toEqual(["only-hr"]);
+  });
+  it("doesn't tick the sheet as on the email to HR when it only went to Clarkson", () => {
+    const r = wrongEmma.check(withMail(fw([EMMA_CLARKSON]), sent([PEOPLE.emma], "Overtime", "Sorry, here it is")));
+    expect(r.find((c) => c.id === "attached")?.ok).toBe(false);
+    expect(r.find((c) => c.id === "attached")?.fix).toMatch(/didn't carry the overtime sheet/);
   });
   it("fails an email to Emma Clarke with no sheet on it", () => {
     expect(failing(wrongEmma, withMail(sent([PEOPLE.emma], "Overtime", "Here it is")))).toEqual(["to-hr", "attached"]);
