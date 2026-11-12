@@ -89,11 +89,11 @@ export function TypingFigure({ focus, title = "An agency typing test", what, not
               {WORDS.map((w, i) => {
                 const word =
                   i === DONE ? (
-                    <Part k="current" block={false} badge="top" style={{ padding: "0 2px", borderRadius: 3 }}>
+                    <Part k="current" block={false} badge="top" style={{ padding: "0 2px", borderRadius: 3, lineHeight: 1.4 }}>
                       <span style={{ background: "#fff1b8", borderRadius: 3, padding: "0 2px" }}>{w}</span>
                     </Part>
                   ) : i === SLIP ? (
-                    <Part k="slip" block={false} badge="top" style={{ padding: "0 2px", borderRadius: 3 }}>
+                    <Part k="slip" block={false} badge="top" style={{ padding: "0 2px", borderRadius: 3, lineHeight: 1.4 }}>
                       <span style={{ color: BAD, textDecoration: "underline wavy", textDecorationColor: BAD }}>{w}</span>
                     </Part>
                   ) : (
