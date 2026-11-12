@@ -98,7 +98,7 @@ export default function HeroSim() {
         .corp-hs-sep { opacity: 0.5; }
         .corp-hs-chip { font-family: var(--lv2-font-mono); font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: #0a7085; border: 1px solid rgba(10,112,133,0.45); border-radius: 999px; padding: 4px 9px; white-space: nowrap; }
         .corp-hs-host { position: relative; overflow: hidden; background: #ffffff; }
-        .corp-hs-host :global(.sim-copilot) { border: none !important; border-radius: 0 !important; height: 100%; }
+        .corp-hs-host :global(.sim-copilot) { border: none !important; border-radius: 0 !important; height: 100%; min-height: 0 !important; }
         .corp-hs-narrow :global(.sim-copilot) { grid-template-columns: minmax(0, 1fr) !important; }
         .corp-hs-narrow :global(.sim-copilot-rail) { display: none !important; }
       `}</style>
