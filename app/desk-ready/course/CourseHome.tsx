@@ -5,6 +5,7 @@ import type { CSSProperties } from "react";
 import DeskHeader from "../DeskHeader";
 import PartPreview, { PREVIEW_CSS, type PreviewKind } from "../PartPreview";
 import { doneIn, useDone } from "../learn/progress";
+import { resumeAt } from "./resume";
 import { Kicker, SHELL_CSS, Tick } from "../learn/ui";
 import { FINAL, PARTS, type DeskModule } from "../syllabus";
 import { D, PART_ACCENT } from "../tokens";
@@ -65,10 +66,11 @@ export default function CourseHome() {
   const finishedModules = open.filter((m) => doneIn(done, m.id) >= lessonsOf(m)).length;
   const pct = openLessons ? doneLessons / openLessons : 0;
 
-  /* the next lesson: first open module with lessons left, in course order */
-  const nextModule = open.find((m) => doneIn(done, m.id) < lessonsOf(m));
+  /* the next lesson: where the learner last worked (see ./resume) */
+  const resume = resumeAt(open, done);
+  const nextModule = resume?.module;
   const nextPart = nextModule ? PARTS.findIndex((p) => p.modules.includes(nextModule)) : -1;
-  const nextLesson = nextModule ? Math.min(doneIn(done, nextModule.id), lessonsOf(nextModule) - 1) : 0;
+  const nextLesson = resume?.lesson ?? 0;
 
   return (
     <div className="dr-shell">
