@@ -50,13 +50,13 @@ export const AD_PARTS: Record<AdPart, PartInfo> = {
 };
 
 export const SCAM_PARTS: Record<AdPart, PartInfo> = {
-  title: { n: 1, name: "A vague job", what: "\"Office assistant, work from home\": no team, no product, nothing you could check." },
+  title: { n: 1, name: "A vague job", what: "\"Office Assistant, work from home\": no team, no product, nothing you could check." },
   employer: { n: 2, name: "No company name", what: "\"Recruiting now\" isn't an employer. A real advert names who you'd work for." },
   location: { n: 3, name: "Anywhere, and no company to check", what: "Remote jobs are real, but this one has no firm behind it: no town, no office, nobody you could look up." },
   pay: { n: 4, name: "Pay too good to be true", what: "£850 a week for two hours a day, no experience. Real office pay is nothing like it." },
   hours: { n: 5, name: "Too easy", what: "\"Pick your own hours\" and \"start today\": made to rush you." },
   details: { n: 6, name: "It asks you for money and bank details", what: "A real employer never charges you to work, and only asks for bank details after a written job offer." },
-  apply: { n: 7, name: "Apply by chat app", what: "\"Message Dave\" on a phone number, not through the site or a company's own address." },
+  apply: { n: 7, name: "Apply by chat app", what: "\"Message Dave\" on a phone number, not through the site or a company's own website." },
   alert: { n: 8, name: "Report job", what: "Most job sites have one. Press it, and don't reply." },
 };
 
@@ -67,7 +67,7 @@ const REAL = {
   rating: "4.1 ★ · 38 reviews",
   location: "Leicester LE4",
   pay: "£25,500 a year",
-  hours: ["Full-time", "Permanent", "Monday to Friday, 8:30 to 5:00"],
+  hours: ["Full-time", "Permanent", "Monday to Friday, 8:30 to 5:00"],
   details: ["Answer the phone and the shared inbox", "Keep the orders spreadsheet up to date", "Book deliveries and send out invoices"],
   apply: "Apply now",
   sub: "Posted 3 days ago · Easy apply with your CV",
@@ -82,7 +82,7 @@ const SCAM = {
   pay: "£850 a week, no experience needed",
   hours: ["2 hours a day", "Pick your own hours", "Start today"],
   details: ["Pay a £45 fee for your starter pack and ID check", "Send your bank details today so we can set up your pay"],
-  apply: "Message Dave: 07700 900913",
+  apply: "Message Dave: 07700 900913",
   sub: "Posted today",
 };
 
@@ -94,14 +94,14 @@ export function JobAdFigure({ focus, title, what, note, scam }: { focus?: AdPart
   return (
     <FigureFrame info={info} focus={focus} title={title ?? (scam ? "A fake job advert" : "A job advert")} note={note}>
       <Browser url={ad.url}>
-        <div style={{ display: "flex", alignItems: "center", gap: 10, minHeight: 46, padding: "0 16px", borderBottom: `1px solid ${W.edge}` }}>
+        <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 10, minHeight: 46, padding: "8px 16px", borderBottom: `1px solid ${W.edge}` }}>
           <b style={{ fontSize: 17, color: SITE, letterSpacing: "-0.01em" }}>jobsnearby</b>
-          <span style={{ flex: 1, minWidth: 0, display: "flex", gap: 6 }}>
-            <span style={{ flex: 1, minWidth: 0, padding: "5px 10px", border: `1px solid ${W.edge}`, borderRadius: 6, fontSize: 13, color: W.body, overflow: "hidden", textOverflow: "ellipsis", ...keep }}>{scam ? "office work from home" : "office administrator"}</span>
+          <span style={{ flex: "1 1 160px", minWidth: 0, display: "flex", flexWrap: "wrap", gap: 6 }}>
+            <span style={{ flex: "1 1 90px", minWidth: 0, padding: "5px 10px", border: `1px solid ${W.edge}`, borderRadius: 6, fontSize: 13, color: W.body, ...keep }}>{scam ? "work from home" : "office admin"}</span>
             <span style={{ padding: "5px 10px", border: `1px solid ${W.edge}`, borderRadius: 6, fontSize: 13, color: W.body, ...keep }}>Leicester</span>
           </span>
         </div>
-        <div style={{ padding: `16px 22px 20px ${G(56)}`, display: "grid", gridTemplateColumns: "minmax(0, 1fr)", gap: 12, justifyItems: "start" }}>
+        <div style={{ padding: `16px 22px 20px ${G(56)}`, display: "grid", gridTemplateColumns: "minmax(0, 1fr)", gap: 18, justifyItems: "start" }}>
           <Part k="title" style={tight}>
             <div style={{ fontSize: 22, fontWeight: 700, lineHeight: 1.2, ...bad(true) }}>{ad.title}</div>
           </Part>

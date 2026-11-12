@@ -73,7 +73,7 @@ export function TypingFigure({ focus, title = "An agency typing test", what, not
     <FigureFrame info={info} focus={focus} title={title} note={note}>
       <Site path="candidate/typing-test">
         <div style={{ padding: `14px 18px 18px ${G(52)}`, display: "grid", gap: 14 }}>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(110px, 1fr))", gap: "12px 44px" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(110px, 1fr))", gap: "20px 44px" }}>
             <Part k="timer" style={tight}>
               <Stat label="Time left" value="2:49" />
             </Part>
@@ -89,11 +89,11 @@ export function TypingFigure({ focus, title = "An agency typing test", what, not
               {WORDS.map((w, i) => {
                 const word =
                   i === DONE ? (
-                    <Part k="current" block={false} badge="top" style={{ padding: "0 2px", borderRadius: 3, lineHeight: 1.4 }}>
+                    <Part k="current" block={false} badge="top" style={{ padding: "0 2px", margin: "0 4px", borderRadius: 3, lineHeight: 1.4 }}>
                       <span style={{ background: "#fff1b8", borderRadius: 3, padding: "0 2px" }}>{w}</span>
                     </Part>
                   ) : i === SLIP ? (
-                    <Part k="slip" block={false} badge="top" style={{ padding: "0 2px", borderRadius: 3, lineHeight: 1.4 }}>
+                    <Part k="slip" block={false} badge="top" style={{ padding: "0 2px", margin: "0 4px", borderRadius: 3, lineHeight: 1.4 }}>
                       <span style={{ color: BAD, textDecoration: "underline wavy", textDecorationColor: BAD }}>{w}</span>
                     </Part>
                   ) : (
@@ -128,7 +128,7 @@ export const RESULT_PARTS: Record<ResultPart, PartInfo> = {
   gross: { n: 2, name: "Gross speed", what: "Everything you typed, right or wrong, in words a minute: 126 words in 3 minutes is 42." },
   mistakes: { n: 3, name: "Mistakes", what: "Words left wrong when the clock stopped. Ones you fixed don't count." },
   net: { n: 4, name: "Net speed", what: "Gross speed with the mistakes taken off, shared over the minutes of the test: 3 mistakes in 3 minutes takes 1 off 42. This is the speed employers mean." },
-  acc: { n: 5, name: "Accuracy", what: "Letters typed right, as a percentage: 3 wrong words in about 630 letters is 99%. Agencies want 95% or more." },
+  acc: { n: 5, name: "Accuracy", what: "Letters typed right, as a percentage: a few wrong letters in about 630 is 99%. Agencies want 95% or more." },
 };
 
 export function TypingResultFigure({ focus, title = "A typing test result", what, note }: { focus?: ResultPart[]; title?: string; what?: Partial<Record<ResultPart, string>>; note?: string }) {
@@ -152,7 +152,7 @@ export function TypingResultFigure({ focus, title = "A typing test result", what
               <b>Pass.</b> That meets what most office clients ask for.
             </div>
           </Part>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(190px, 1fr))", gap: "14px 44px" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(190px, 1fr))", gap: "22px 44px" }}>
             {cell("gross", "Gross speed", "42 wpm")}
             {cell("mistakes", "Mistakes", "3")}
             {cell("net", "Net speed", "41 wpm")}
@@ -190,7 +190,10 @@ const XL_ROWS: string[][] = [
   ["12", "Total", "", "", "", "£501.90"],
 ];
 const XL_COLS = ["", "A", "B", "C", "D", "E"];
-const XL_W = [26, 108, 80, 30, 42, 62];
+const XL_W = [26, 128, 80, 30, 42, 62];
+/* On a narrow page the sheet shows columns C to E, as Excel does scrolled
+ * right, so the total and its cell fit without hiding a column between. */
+const XL_CSS = `.xlt { container-type: inline-size; } @container (max-width: 400px) { .xlt-ab { display: none !important; } }`;
 
 export function ExcelTestFigure({ focus, title = "An agency Excel test", what, note }: { focus?: XlTestPart[]; title?: string; what?: Partial<Record<XlTestPart, string>>; note?: string }) {
   const info = { ...XLTEST_PARTS } as Record<XlTestPart, PartInfo>;
@@ -219,11 +222,12 @@ export function ExcelTestFigure({ focus, title = "An agency Excel test", what, n
     </span>
   );
   return (
-    <FigureFrame info={info} focus={focus} title={title} note={note} minWidth={340}>
+    <FigureFrame info={info} focus={focus} title={title} note={note}>
+      <style>{XL_CSS}</style>
       <Site path="candidate/excel-test">
         <div style={{ display: "flex", flexWrap: "wrap" }}>
           {/* the test sheet: time, the task, then hand in, top to bottom */}
-          <div style={{ flex: "1 1 230px", padding: `14px 14px 14px ${G(48)}`, background: "#fbfbfa", borderRight: `1px solid ${W.edge}`, display: "grid", gap: 16, alignContent: "start" }}>
+          <div style={{ flex: "1 1 180px", minWidth: 0, padding: `14px 20px 16px ${G(48)}`, background: "#fbfbfa", borderRight: `1px solid ${W.edge}`, display: "grid", gap: 24, alignContent: "start" }}>
             <Part k="timer" style={tight}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", ...keep }}>
                 <span style={{ fontSize: 12, color: W.muted }}>Time left</span>
@@ -233,7 +237,7 @@ export function ExcelTestFigure({ focus, title = "An agency Excel test", what, n
             <Part k="task" style={{ ...tight, marginTop: 28 }}>
               <div style={{ padding: "8px 10px", borderRadius: 6, border: `1px solid ${W.edge}`, background: W.page, fontSize: 13.5, lineHeight: 1.5 }}>
                 In{" "}
-                <Part k="address" block={false} badge="top" style={{ padding: "0 2px", borderRadius: 3 }}>
+                <Part k="address" block={false} badge="top" style={{ padding: "0 2px", margin: "0 3px", borderRadius: 3 }}>
                   <b style={{ background: "#fff1b8", padding: "0 2px" }}>E12</b>
                 </Part>
                 , add up the costs of all the items with the SUM function.
@@ -245,7 +249,7 @@ export function ExcelTestFigure({ focus, title = "An agency Excel test", what, n
             </Part>
           </div>
           {/* the office's Excel, scrolled down to the total */}
-          <div style={{ flex: "1 1 470px", minWidth: 0 }}>
+          <div className="xlt" style={{ flex: "1 1 470px", minWidth: 0 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 8, minHeight: 32, padding: "0 10px", background: W.excel, color: "#fff", fontSize: 13 }}>
               <b>Excel</b> <span style={{ opacity: 0.9 }}>Pennyford Excel test.xlsx</span>
             </div>
@@ -258,8 +262,14 @@ export function ExcelTestFigure({ focus, title = "An agency Excel test", what, n
                 <span style={{ display: "block", minHeight: 26, padding: "3px 8px", border: `1px solid ${W.edge}`, fontFamily: "Consolas, ui-monospace, monospace", fontSize: 13, ...keep }}>=SUM(E2:E10)</span>
               </Part>
             </div>
-            <div style={{ padding: `8px 40px 6px ${G(46)}`, fontSize: 12.5 }}>
-              <div style={{ display: "flex" }}>{XL_COLS.map((c, ci) => <span key={ci}>{cellBox(c, -1, ci, true)}</span>)}</div>
+            <div style={{ padding: `8px 34px 6px ${G(46)}`, fontSize: 12.5 }}>
+              <div style={{ display: "flex" }}>
+                {XL_COLS.map((c, ci) => (
+                  <span key={ci} className={ci === 1 || ci === 2 ? "xlt-ab" : undefined}>
+                    {cellBox(c, -1, ci, true)}
+                  </span>
+                ))}
+              </div>
               {XL_ROWS.map((r, ri) => (
                 <div key={ri} style={{ display: "flex" }}>
                   {r.map((c, ci) =>
@@ -268,7 +278,9 @@ export function ExcelTestFigure({ focus, title = "An agency Excel test", what, n
                         {cellBox(c, ri, ci, false)}
                       </Part>
                     ) : (
-                      <span key={ci}>{cellBox(c, ri, ci, false)}</span>
+                      <span key={ci} className={ci === 1 || ci === 2 ? "xlt-ab" : undefined}>
+                        {cellBox(c, ri, ci, false)}
+                      </span>
                     ),
                   )}
                 </div>

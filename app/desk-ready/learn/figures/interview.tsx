@@ -91,7 +91,7 @@ export function InterviewFigure({ focus, title = "A video interview", what, note
             </Part>
           </div>
           {/* the interviewer, and your own picture beside them */}
-          <div style={{ display: "flex", flexWrap: "wrap", alignItems: "flex-end", gap: "14px 46px", padding: `16px 14px 12px ${G(48)}` }}>
+          <div style={{ display: "flex", flexWrap: "wrap", alignItems: "flex-end", gap: "28px 46px", padding: `16px 14px 12px ${G(48)}` }}>
             <Part k="them" style={{ ...tight, flex: "1 1 170px", minWidth: 0 }}>
               <div style={{ height: 160, borderRadius: 6, background: "linear-gradient(180deg, #50606e, #3a4752)", display: "flex", alignItems: "flex-end", justifyContent: "center", position: "relative", overflow: "hidden" }}>
                 <Person shirt="#1f3b57" hair="#2b2b2b" skin="#c58c6a" size={160} />
@@ -108,14 +108,14 @@ export function InterviewFigure({ focus, title = "A video interview", what, note
               </div>
             </Part>
           </div>
-          <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", alignItems: "center", gap: "12px 46px", padding: `12px 12px 14px ${G(48)}`, borderTop: "1px solid rgba(255,255,255,0.08)" }}>
-            <Part k="mute" block={false} style={tight}>
+          <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", alignItems: "center", gap: "40px 34px", padding: `40px 12px 14px ${G(48)}`, borderTop: "1px solid rgba(255,255,255,0.08)" }}>
+            <Part k="mute" block={false} badge="top" style={tight}>
               {btn("Mic", true)}
             </Part>
-            <Part k="camera" block={false} style={tight}>
+            <Part k="camera" block={false} badge="top" style={tight}>
               {btn("Camera", true)}
             </Part>
-            <Part k="leave" block={false} style={tight}>
+            <Part k="leave" block={false} badge="top" style={tight}>
               {btn("Leave", false, true)}
             </Part>
           </div>
@@ -127,8 +127,8 @@ export function InterviewFigure({ focus, title = "A video interview", what, note
           <div style={{ position: "relative", marginTop: 40 }}>
             <svg width="100%" viewBox="0 0 220 170" aria-hidden style={{ display: "block" }}>
               {/* a plain wall behind you */}
-              <rect x="0" y="6" width="22" height="160" fill="#e7e3dc" />
-              <rect x="0" y="150" width="22" height="16" fill="#d3cdc3" />
+              <rect x="10" y="6" width="20" height="160" fill="#e7e3dc" />
+              <rect x="10" y="150" width="20" height="16" fill="#d3cdc3" />
               {/* window in front of you, behind the laptop */}
               <rect x="176" y="14" width="38" height="70" rx="2" fill="#dbeafe" stroke="#93b4d8" />
               <line x1="195" y1="14" x2="195" y2="84" stroke="#93b4d8" />
@@ -151,10 +151,10 @@ export function InterviewFigure({ focus, title = "A video interview", what, note
               {/* eye line */}
               <line x1="62" y1="60" x2="164" y2="62" stroke={W.teams} strokeWidth="1.6" strokeDasharray="5 4" />
             </svg>
-            <Part k="background" style={{ position: "absolute", left: "-1%", top: "2%", width: "12%", height: "96%", borderRadius: 4 }}>
+            <Part k="background" badge="top" style={{ position: "absolute", left: "3.5%", top: "2%", width: "10.5%", height: "96%", borderRadius: 4 }}>
               <span />
             </Part>
-            <Part k="eyelevel" badge="top" style={{ position: "absolute", left: "55%", top: "32%", width: "26%", height: "42%", borderRadius: 4 }}>
+            <Part k="eyelevel" badge="top" style={{ position: "absolute", left: "55%", top: "31%", width: "26%", height: "29%", borderRadius: 4 }}>
               <span />
             </Part>
             <Part k="light" badge="top" style={{ position: "absolute", right: "1%", top: "6%", width: "19%", height: "44%", borderRadius: 4 }}>
@@ -201,7 +201,7 @@ export function StarFigure({ focus, title = "An answer, the STAR way", what, not
   );
   return (
     <FigureFrame info={info} focus={focus} title={title} note={note}>
-      <div style={{ display: "grid", gap: 16, paddingLeft: "clamp(0px, calc((100vw - 560px) * 0.25), 40px)", maxWidth: 700, overflowWrap: "normal" }}>
+      <div style={{ display: "grid", gap: 22, paddingLeft: "clamp(0px, calc((100vw - 560px) * 0.25), 40px)", maxWidth: 700, overflowWrap: "normal" }}>
         <Part k="question" style={{ padding: 3, margin: -3 }}>
           <div style={{ padding: "10px 14px", borderRadius: 8, background: W.teamsSoft, color: W.ink, fontSize: 16, fontWeight: 600 }}>
             <span style={{ display: "block", fontSize: 11.5, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", color: W.teams }}>Helen asks</span>

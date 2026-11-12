@@ -68,11 +68,11 @@ export const CV_PARTS: Record<CvPart, PartInfo> = {
   name: { n: 2, name: "Your name", what: "Big and first, in the Title style. Just your name: no \"CV\" or \"Curriculum Vitae\" above it." },
   contact: { n: 3, name: "How to reach you", what: "Your town, a phone number and an email address. Never your home address, date of birth or a photo." },
   profile: { n: 4, name: "Profile", what: "Two or three lines: who you are, what you're good at, and the job you want." },
-  headings: { n: 5, name: "Section headings", what: "Profile, Skills, Experience, Education and References, each in the Heading 1 style, so the eye can jump between them." },
+  headings: { n: 5, name: "Section headings", what: "Profile, Skills, Experience and Education, each in the Heading 1 style, so the eye can jump between them." },
   skills: { n: 6, name: "Skills", what: "Three lines a recruiter can check, in your own words, each with a doing word, the task and a number." },
   experience: { n: 7, name: "Experience", what: "Newest first: the job title and employer, the dates, then two or three lines for the newest job and one for older ones." },
   education: { n: 8, name: "Education", what: "Where you studied, what you got, and the year. Short courses count too, like an online office skills course." },
-  refs: { n: 9, name: "References", what: "One line, or none: many CVs now leave it off. Have two names ready, and ask the people first." },
+  refs: { n: 9, name: "References", what: "A Heading 1 and one line, or nothing at all. Have two names ready, and ask the people first." },
   pages: { n: 10, name: "Page 1 of 1", what: "The status bar shows how many pages it fills. A first CV fits on one." },
 };
 
@@ -80,7 +80,7 @@ export const JORDAN = {
   name: "Jordan Miles",
   contact: ["Leicester", "07700 900461", "jordan.miles@email.example"],
   profile: "Organised and calm under pressure, with six years on the tills, a year caring for my mum and a week's office placement. Looking for an office administrator job in Leicester.",
-  skills: ["Logged up to 30 deliveries a morning in Excel and flagged anything short", "Handled cash and card payments for up to 200 customers a day", "Wrote 6 customer letters on the company letterhead and sent them as PDFs"],
+  skills: ["Logged up to 30 deliveries a morning in Excel on my placement, and flagged anything short", "Handled cash and card payments for up to 200 customers a day", "Wrote 6 customer letters on the company letterhead and sent them as PDFs"],
   jobs: [
     { role: "Office Administrator (placement), Northfield Supplies", dates: "November 2026", lines: ["Sorted a busy shared inbox and booked meetings in Outlook", "Worked out customer quotes with VAT in Excel, using formulas"] },
     { role: "Carer for a family member", dates: "July 2025 to October 2026", lines: ["Organised my mum's appointments and medicines, with a written log for her GP"] },
@@ -118,7 +118,7 @@ function Ph({ t }: { t: string }) {
 
 /* A lit part's outline sits a few pixels clear of its words: padding
  * inside, the same taken back as margin so the words don't move. */
-const pad = (top = 0): CSSProperties => ({ padding: "3px 6px", margin: `${top}px -6px 0` });
+const pad = (top = 0): CSSProperties => ({ padding: "3px 6px", margin: `${top ? top + 4 : 0}px -6px 0` });
 
 export function CvFigure({ focus, title = "A one-page CV", what, note, blank }: { focus?: CvPart[]; title?: string; what?: Partial<Record<CvPart, string>>; note?: string; blank?: boolean }) {
   const cv = blank ? BLANK_CV : JORDAN;
@@ -192,9 +192,9 @@ export function CvFigure({ focus, title = "A one-page CV", what, note, blank }: 
                 ))}
               </div>
             </Part>
-            {heading("References", false)}
-            <Part k="refs" style={pad(14)}>
-              <div>Available on request.</div>
+            <Part k="refs" style={pad(16)}>
+              <div style={{ ...h1, margin: 0 }}>References</div>
+              <div style={{ marginTop: 4 }}>Available on request.</div>
             </Part>
           </div>
         </div>
@@ -219,7 +219,7 @@ export const LINE_PARTS: Record<LinePart, PartInfo> = {
   role: { n: 2, name: "Job title and employer", what: "What you were, and where. For something unpaid, say what it was: carer, volunteer, parent." },
   dates: { n: 3, name: "Dates", what: "Month and year to month and year. A gap is fine: say what you were doing." },
   verb: { n: 4, name: "A doing word", what: "Start every line with one: Handled, Kept, Checked, Organised, Logged. Never \"Responsible for\"." },
-  task: { n: 5, name: "The task, in office words", what: "Name the thing an office does too: payments, records, stock, bookings, customers." },
+  task: { n: 5, name: "The task, in office words", what: "Name the thing an office does too: payments, records, stock, orders, bookings, scheduling, customers." },
   number: { n: 6, name: "A number", what: "How many, how often or how much. A true number makes it real." },
   result: { n: 7, name: "What it led to", what: "Why it mattered: right first time, nothing missed, money saved." },
 };
@@ -240,12 +240,14 @@ export function LineFigure({ focus, title = "One line of experience, in office w
   const x = LINE_EXAMPLES[example];
   const info = { ...LINE_PARTS } as Record<LinePart, PartInfo>;
   for (const k of Object.keys(what ?? {}) as LinePart[]) info[k] = { ...info[k], what: what![k]! };
-  /* one flowing sentence: each part is a span inside it, so the line wraps
-   * like text; the tall line height leaves room for a badge above a part */
+  /* the bullet laid out one short phrase per line, as a sentence read
+   * slowly: each part is one box, with its number in the gutter beside it */
   const piece = (k: LinePart, t: string, style?: CSSProperties) => (
-    <Part k={k} block={false} badge="top" style={{ display: "inline", borderRadius: 3, padding: "2px 3px", margin: "0 4px", boxDecorationBreak: "clone", WebkitBoxDecorationBreak: "clone", ...style }}>
-      {t}
-    </Part>
+    <div style={{ marginTop: 10 }}>
+      <Part k={k} style={{ display: "inline-block", borderRadius: 4, padding: "2px 6px", margin: "0 -6px", ...style }}>
+        {t}
+      </Part>
+    </div>
   );
   return (
     <FigureFrame info={info} focus={focus} title={title} note={note}>
@@ -275,12 +277,15 @@ export function LineFigure({ focus, title = "One line of experience, in office w
               <span style={{ color: "#404040", fontSize: 15, ...keep }}>{x.dates}</span>
             </Part>
           </div>
-          <p style={{ position: "relative", margin: "18px 0 0", paddingLeft: 18, fontSize: 16.5, lineHeight: 3.3 }}>
-            <span aria-hidden style={{ position: "absolute", left: 2 }}>
+          <div style={{ position: "relative", marginTop: 8, paddingLeft: 18, fontSize: 16.5, lineHeight: 1.4 }}>
+            <span aria-hidden style={{ position: "absolute", left: 2, top: 12 }}>
               •
             </span>
-            {piece("verb", x.verb, { fontWeight: 600 })} {piece("task", x.task)} {piece("number", x.number)} {piece("result", x.result)}
-          </p>
+            {piece("verb", x.verb, { fontWeight: 600 })}
+            {piece("task", x.task)}
+            {piece("number", x.number)}
+            {piece("result", x.result)}
+          </div>
         </div>
       </div>
     </FigureFrame>

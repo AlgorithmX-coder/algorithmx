@@ -214,7 +214,7 @@ const m13: ModuleManifest = {
         },
         {
           heading: "True, every word",
-          body: ["Everything on your CV must be true. An interviewer will pick a line and say \"tell me about that\".", "Making it sound good is fine. Making it up is not: no jobs you didn't do, no skills you can't show, no qualifications you don't have."],
+          body: ["Everything on your CV must be true. An interviewer will pick a line and say \"tell me about that\". A true number (6) is easy to explain: you were there.", "Making it sound good is fine. Making it up is not: no jobs you didn't do, no skills you can't show, no qualifications you don't have."],
           figure: <LineFigure example="warehouse" focus={["number"]} title="A warehouse job, in office words" what={{ number: "True, and easy to explain: \"we had about 40 pallets on a normal shift\"." }} />,
           bad: [{ text: "Managed the whole warehouse", note: "Not if you didn't. One question and it falls apart." }],
         },
@@ -265,7 +265,7 @@ const m13: ModuleManifest = {
           heading: "Your name and how to reach you",
           body: [
             "Your name, in the Title style (2). Underneath, on one line: your town, a phone number and an email address (3).",
-            "Leave off your home address, your date of birth and a photo: UK employers don't need them, and a CV gets passed around. Jordan's town is Leicester. In this course's practice, use a made-up phone number like 07700 900461.",
+            "Leave off your home address, your date of birth and a photo: UK employers don't need them, and a CV gets passed around. Jordan's town is Leicester. When you practise in this course, use a made-up number like 07700 900461.",
           ],
           figure: <CvFigure focus={["name", "contact"]} title="Name and contact line" />,
           tip: "Use an email address with your name in it, not an old nickname.",
@@ -289,7 +289,7 @@ const m13: ModuleManifest = {
         },
         {
           heading: "Education and references",
-          body: ["Education (8): where, what and when. Short courses count too, like Functional Skills or an online office skills course.", "References (9) get their own heading, or are left off: many UK CVs now leave them off, as employers ask anyway. Either way, have two names ready, such as a past manager and someone who knows your work, and ask them first."],
+          body: ["Education (8): where, what and when. Short courses count too, like Functional Skills or an online office skills course.", "References (9): a heading and one line, or leave them off. Many UK CVs now leave them off, because employers ask for referees when they offer you the job. Either way, have two names ready, such as a past manager and someone who knows your work, and ask them first."],
           figure: <CvFigure focus={["education", "refs"]} title="Education and references" />,
         },
         {
@@ -302,7 +302,7 @@ const m13: ModuleManifest = {
         },
         {
           heading: "Save it as a PDF, with your name",
-          body: ["Make a PDF: in Word, File > Export > Create PDF/XPS Document, choose the folder and the name, then press Publish. (The practice Word in this course shortens these to Create PDF and Save.) A PDF looks the same on any computer, and nobody can change it by mistake.", "Name it your name, then CV (1). Saved as a PDF, it becomes Jordan Miles CV.pdf. A recruiter with a hundred files called CV.pdf will thank you."],
+          body: ["Make a PDF: in Word, File > Export > Create PDF/XPS Document, choose the folder and the name, then press Publish. (The practice Word in this course shortens these to Create PDF and Save.) A PDF looks the same on any computer, and nobody can change it by mistake.", "Name it your name, then CV (1). Saved as a PDF, it becomes Jordan Miles CV.pdf. A recruiter with a hundred files called CV.pdf will thank you."],
           figure: <CvFigure focus={["file"]} title="The file name" />,
           good: [{ text: "Jordan Miles CV.pdf" }],
           bad: [{ text: "CV final new.pdf", note: "Whose is it? Which one?" }],
@@ -459,8 +459,8 @@ const m13: ModuleManifest = {
         {
           heading: "Here is a typing test result",
           body: [
-            "When the clock stops you get a result like this. Gross speed (2) counts everything you typed. Every mistake left in (3) is taken off your speed, shared over the minutes of the test: 3 mistakes in 3 minutes takes 1 off 42, which gives your net speed (4) of 41.",
-            "Accuracy (5) is the share of letters typed right. Most office jobs ask for 35 words a minute (net) at 95% accuracy or better (1).",
+            "When the clock stops you get a result like this. Gross speed (2) counts everything you typed. Every mistake left in (3) is taken off your speed, shared over the minutes of the test: 3 mistakes in 3 minutes takes 1 off 42, which gives your net speed (4) of 41.",
+            "Accuracy (5) is the share of letters typed right. Most office jobs ask for 35 words a minute (net) at 95% accuracy or better (1).",
           ],
           figure: <TypingResultFigure />,
         },
@@ -529,7 +529,7 @@ const m13: ModuleManifest = {
         {
           heading: "Here is a video interview",
           body: [
-            "This is a job interview on Teams. The invite (1) gives the time and the link. The interviewer fills most of the screen (2), and your own picture sits beside them (3).",
+            "This is a job interview on Teams. The invite (1) gives the time and the link. The interviewer fills most of the screen (2), and your own picture sits beside or below them (3).",
             "Beside the call is a good set-up, seen from the side: the camera at eye level (4), light in front of you (5) and a plain wall behind you (6). At the bottom of the call: the microphone (7), camera (8) and Leave (9).",
           ],
           figure: <InterviewFigure />,
@@ -559,14 +559,14 @@ const m13: ModuleManifest = {
           heading: "Here is an answer, the STAR way",
           body: [
             "Interviewers often say \"Tell me about a time...\" (1). They want one real story, told in four parts.",
-            "Situation (2): where you were. Task (3): what you had to do. Action (4): what you did. Result (5): how it ended. This answer comes from a week like the ones in this course's pretend office, at Northfield Supplies.",
+            "Situation (2): where you were. Task (3): what you had to do. Action (4): what you did. Result (5): how it ended. This answer comes from this course's pretend office, at Northfield Supplies.", "Yours should be a real moment of your own: from a job, from home, from volunteering. Interviewers ask follow-up questions, and a true story holds up.",
           ],
           figure: <StarFigure />,
         },
         {
           heading: "Most of it is the Action",
           body: ["Spend most of your answer on the Action (4): what you did, step by step. Say \"I\", not \"we\": they're interviewing you.", "Finish with the Result (5): a fact or a number if you have one, and what you'd do again next time."],
-          figure: <StarFigure focus={["action", "result"]} title="Action and Result" />,
+          figure: <StarFigure focus={["action", "result"]} title="Action and Result" note="This is the course's example, from its pretend office. In your interview, use a real moment of your own." />,
         },
         {
           heading: "Have two stories ready",
@@ -574,7 +574,7 @@ const m13: ModuleManifest = {
             "Questions like this one (1) are easy to guess, so get ready before the interview. Write down two true stories: a time you put a mistake right, and a time you helped a customer or a colleague. Practise saying each out loud in about a minute or two.",
             "At the end they'll ask if you have any questions. Have one ready, like \"What would a normal day look like?\"",
           ],
-          figure: <StarFigure focus={["question"]} title="The question to get ready for" />,
+          figure: <StarFigure focus={["question"]} title="The question to get ready for" note="This is the course's example, from its pretend office. In your interview, use a real moment of your own." />,
           tip: "A few words on a sticky note just under the camera are fine. Reading out a script isn't.",
         },
       ],
