@@ -388,7 +388,7 @@ export function ExcelCopilotFigure({ focus, title = "Excel, with Copilot down th
     const el = sheet.current;
     if (!el) return;
     const place = () => {
-      const more = el.scrollWidth > el.clientWidth + 4;
+      const more = el.scrollWidth > el.clientWidth + 30;
       setSlides(more);
       if (!more) return;
       const lit = [...el.querySelectorAll<HTMLElement>("[data-lit]")].filter((n) => n.dataset.part !== "bar");
