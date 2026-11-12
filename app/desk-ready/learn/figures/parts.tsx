@@ -160,8 +160,9 @@ export function bestScroll(spans: { left: number; right: number }[], view: numbe
  * this catches the rest. It picks only the outermost such element (whose
  * parent holds a part, or is the figure), so nothing dims twice, and
  * never anything inside a part. Reviews of Modules 9, 10 and 11 found
- * this on nearly every lit card. */
-const FIG_FOCUS_CSS = `.dr-fig-focus > :not([data-part]):not(:has([data-part])), .dr-fig-focus :not([data-part]):not([data-part] *):has([data-part]) > :not([data-part]):not(:has([data-part])) { opacity: 0.32; transition: opacity .2s ease; }`;
+ * this on nearly every lit card. A part inside a lit part stays bright:
+ * lighting the draft lights everything in it (Module 12 review). */
+const FIG_FOCUS_CSS = `.dr-fig-focus > :not([data-part]):not(:has([data-part])), .dr-fig-focus :not([data-part]):not([data-part] *):has([data-part]) > :not([data-part]):not(:has([data-part])) { opacity: 0.32; transition: opacity .2s ease; } .dr-fig-focus [data-lit] [data-part]:not([data-lit]) { opacity: 1 !important; }`;
 
 /* On a laptop a figure fits, so its frame does not scroll and a badge at
  * the figure's very edge may sit over the frame's border rather than be
