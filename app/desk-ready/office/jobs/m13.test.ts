@@ -6,7 +6,7 @@ import { YOU } from "../northfield";
 import type { Check, Email, OfficeFile, OfficeState, Tab, TypingResult, WordDoc } from "../types";
 import { fromTemplate, para, placeholdersIn } from "../word";
 import { agencyTests } from "./agencyTests";
-import { cvWeek, notesDoc, seed as cvSeed } from "./cvWeek";
+import { cvWeek, morningLines, notesDoc, seed as cvSeed } from "./cvWeek";
 
 /* Module 13: the CV and the agency tests. A fresh office fails, a job done
  * the way the brief asks passes every check, and each planted mistake
@@ -16,6 +16,21 @@ const failing = (cs: Check[]) => cs.filter((c) => !c.ok).map((c) => c.id);
 const JO = AGENCY.consultant;
 
 /* ── formulas: the $ that fixes a reference ─────────────────────────── */
+
+describe("the final task as CV proof", () => {
+  const result = { passed: true, score: 9, outOf: 10, late: 1, finishedOn: "2026-11-16T12:30:00.000Z", jobsDone: [] };
+  it("a passed Monday morning offers one line, with its score and month", () => {
+    const lines = morningLines(result);
+    expect(lines).toHaveLength(1);
+    expect(lines[0].from).toBe("Monday morning at the desk");
+    expect(lines[0].line).toContain("9 of 10 tasks");
+    expect(lines[0].line).toContain("November 2026");
+  });
+  it("a morning that didn't pass, or none at all, offers nothing", () => {
+    expect(morningLines({ ...result, passed: false })).toEqual([]);
+    expect(morningLines(null)).toEqual([]);
+  });
+});
 
 describe("absolute references", () => {
   it("works out $E$12 as E12, and keeps it fixed when copied down", () => {

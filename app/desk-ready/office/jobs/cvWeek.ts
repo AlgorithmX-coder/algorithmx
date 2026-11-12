@@ -1,3 +1,4 @@
+import { readCapstoneResult, type CapstoneResult } from "../../final/result";
 import { AGENCY, storedAgency } from "../agency";
 import { ALL_STARTING_LINES, CV_TEMPLATE, CV_TEMPLATE_PATH, agencyLines, cvFileName, cvName, cvStartingLines, cvTemplateDoc, homeAddress, isCopied, isSkillLine, pagesOf, section, skillLines, type ProofLine } from "../cv";
 import { PEOPLE, inbound, officeFolders } from "../northfield";
@@ -54,9 +55,19 @@ function finished(): string[] {
   }
 }
 
+/* The course's final task as proof: a passed Monday morning offers one
+ * honest line, how many of its ten jobs were done and when. A morning that
+ * didn't pass offers nothing. */
+export function morningLines(r: CapstoneResult | null): ProofLine[] {
+  if (!r?.passed) return [];
+  const when = new Date(r.finishedOn);
+  const month = Number.isNaN(when.getTime()) ? "" : ` (${when.toLocaleDateString("en-GB", { month: "long", year: "numeric" })})`;
+  return [{ from: "Monday morning at the desk", line: `Completed a timed office assessment: ${r.score} of ${r.outOf} tasks, from invoices to a phishing email, in a four-hour simulated office morning${month}` }];
+}
+
 /* The lines the job offers, from this browser's progress. */
 export function offeredLines(): { lines: ProofLine[]; general: boolean } {
-  return cvStartingLines(finished(), agencyLines(storedAgency()));
+  return cvStartingLines(finished(), [...agencyLines(storedAgency()), ...morningLines(readCapstoneResult())]);
 }
 
 const JO_BODY = `Hi,
