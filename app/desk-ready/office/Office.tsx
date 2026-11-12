@@ -356,15 +356,15 @@ export default function Office({ job }: { job: Job }) {
 }
 
 function Scorecard({ job, results, onClose, onAgain }: { job: Job; results: Check[]; onClose: () => void; onAgain: () => void }) {
-  const passed = results.filter((c) => c.ok).length;
-  const all = passed === results.length;
+  const left = results.filter((c) => !c.ok).length;
+  const all = left === 0;
   const groups = [...new Set(results.map((c) => c.group))];
   const ok = (id: string) => results.find((c) => c.id === id)?.ok ?? false;
   return (
     <div className="of-overlay" role="dialog" aria-modal="true" aria-label="Your scorecard">
       <div className="of-card of-score dr-glass" style={{ "--acc": all ? D.good : D.accent } as CSSProperties}>
         <Kicker>{all ? "Job done" : "Not quite yet"}</Kicker>
-        <h2 className="of-h2">{all ? job.doneLine :`${passed} of ${results.length} done. Here is what's left.`}</h2>
+        <h2 className="of-h2">{all ? job.doneLine : left === 1 ? "One thing still to do. Here is how." : `${left} things still to do. Here is how.`}</h2>
         <div className="of-habits" aria-label="The office habits this job checks">
           {job.habits.map((h) => {
             const met = h.checks.every(ok);
@@ -388,10 +388,11 @@ function Scorecard({ job, results, onClose, onAgain }: { job: Job; results: Chec
                       {c.ok ? <Tick size={16} color={D.good} /> : "!"}
                     </span>
                     <span style={{ flex: 1, minWidth: 0 }}>
+                      {/* the label says what the job needs; this says whether it's there yet */}
+                      <span className="of-state">{c.ok ? "Done" : "Still to do"}</span>
                       <span className="of-label">{c.label}</span>
                       {c.fix && <span className="of-fix">{c.fix}</span>}
                     </span>
-                    <code className="of-code">{c.code}</code>
                   </li>
                 ))}
             </ul>
@@ -465,7 +466,8 @@ const OFFICE_SHELL_CSS = `
   .of-group li.ok .of-mark { color: ${D.good}; }
   .of-label { display: block; font-size: 16px; line-height: 1.45; color: ${D.ink}; }
   .of-fix { display: block; margin-top: 4px; font-size: 15px; line-height: 1.5; color: ${D.body}; }
-  .of-code { flex-shrink: 0; font-family: ${D.mono}; font-size: 11.5px; font-weight: 700; letter-spacing: 0.08em; color: ${D.faint}; padding-top: 4px; }
+  .of-state { display: block; margin-bottom: 2px; font-family: ${D.mono}; font-size: 11.5px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: ${D.warn}; }
+  .of-group li.ok .of-state { color: ${D.good}; }
   .of-link-btn { display: inline-flex; align-items: center; min-height: 50px; padding: 0 24px; border-radius: 999px; background: ${D.action}; color: ${D.onAccent}; font-family: ${D.display}; font-weight: 600; font-size: 16.5px; text-decoration: none; box-shadow: ${D.actionGlow}; }
   .of-small { display: none; margin: 12px 0 0; padding: 10px 12px; border-radius: 12px; background: ${D.accentSoft}; border: 1px solid ${D.accentEdge}; font-size: 15px; line-height: 1.5; color: ${D.body}; }
   @media (max-width: 980px) { .of-small { display: block; } }
