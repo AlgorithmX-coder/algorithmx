@@ -61,6 +61,9 @@ function seed(): OfficeState {
 
 /* ── marking ─────────────────────────────────────────────────────────── */
 
+const ABOUT_IT = /hp-?2291|harlow|bank|invoice|supplier|pay/i;
+const WARNS = /scam|phish|fake|fraud|suspicious|dodgy|not (real|genuine)|isn'?t (real|genuine)|(don'?t|do not|not to|mustn'?t|shouldn'?t|never) (pay|change)|\bhold\b|\bstop\b/i;
+
 const rang = (s: OfficeState, number: string) => (s.phone?.calls ?? []).some((c) => c.way === "out" && fold(c.number) === fold(number));
 const toAddr = (e: Email) => [...e.to, ...e.cc, ...(e.bcc ?? [])].map((p) => p.address.toLowerCase());
 
@@ -69,8 +72,13 @@ function check(s: OfficeState): Check[] {
   const sent = s.emails.filter((e) => e.folder === "sent");
   const toScammer = sent.filter((e) => toAddr(e).some((a) => a.endsWith(`@${SCAM_DOMAIN}`)));
   const toPriya = sent.filter((e) => toAddr(e).includes(PEOPLE.priya.address));
-  /* Priya needs a fresh email that's about it, not the scam passed on, link and all */
-  const fresh = toPriya.filter((e) => e.inReplyTo !== SCAM_EMAIL_ID && /hp-?2291|harlow|bank|scam|phish|fake|pay/i.test(`${e.subject}\n${e.body}`));
+  /* Priya needs a fresh email, not the scam passed on, link and all. It
+   * must say which payment and warn her: "have a look at the Harlow
+   * email" leaves her free to pay it at 2pm. */
+  const fresh = toPriya.filter((e) => {
+    const text = `${e.subject}\n${e.body}`;
+    return e.inReplyTo !== SCAM_EMAIL_ID && ABOUT_IT.test(text) && WARNS.test(text);
+  });
   const forwarded = toPriya.some((e) => e.inReplyTo === SCAM_EMAIL_ID);
   const told = fresh.length > 0 || rang(s, "Ext 405");
   const calledTom = rang(s, TOM_NUMBER) || rang(s, HARLOW_MAIN);
@@ -118,7 +126,9 @@ function check(s: OfficeState): Check[] {
     told,
     forwarded
       ? "You forwarded the scam itself to Priya. Write her a new email instead (or ring her on ext 405), saying HP-2291's \"new bank details\" email is a scam and not to pay it. A forward passes the trap on."
-      : "Priya pays the suppliers at 2pm. Email her (or ring her on ext 405): the email about HP-2291's new bank details is a scam, so she mustn't pay it or change Harlow's details.",
+      : toPriya.length
+        ? "Your email to Priya doesn't warn her, so she could still pay it at 2pm. Say it plainly: the email about HP-2291's new bank details is a scam, so she mustn't pay it or change Harlow's details."
+        : "Priya pays the suppliers at 2pm. Email her (or ring her on ext 405): the email about HP-2291's new bank details is a scam, so she mustn't pay it or change Harlow's details.",
   );
   return out;
 }

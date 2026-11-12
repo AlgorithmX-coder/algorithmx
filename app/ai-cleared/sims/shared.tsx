@@ -6,9 +6,9 @@ import type { CSSProperties, ReactNode } from "react";
  * reply (paragraphs, numbered and bulleted lists, bold), a typing indicator,
  * an action row under replies, and a line-icon helper. No vendor artwork. */
 
-export function Icon({ d, size = 18, stroke = "currentColor", strokeWidth = 1.7, fill = "none", style }: { d: string; size?: number; stroke?: string; strokeWidth?: number; fill?: string; style?: CSSProperties }) {
+export function Icon({ d, size = 18, stroke = "currentColor", strokeWidth = 1.7, fill = "none", dash, style }: { d: string; size?: number; stroke?: string; strokeWidth?: number; fill?: string; dash?: string; style?: CSSProperties }) {
   return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill={fill} stroke={stroke} strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" aria-hidden style={style}>
+    <svg width={size} height={size} viewBox="0 0 24 24" fill={fill} stroke={stroke} strokeWidth={strokeWidth} strokeDasharray={dash} strokeLinecap="round" strokeLinejoin="round" aria-hidden style={style}>
       <path d={d} />
     </svg>
   );
@@ -45,6 +45,16 @@ export const ICONS = {
   clock: "M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM12 7v5l3 2",
   speaker: "M4 10v4h4l5 4V6L8 10H4zM16 9a4 4 0 0 1 0 6M19 6a8 8 0 0 1 0 12",
   attach: "M21 11.5l-8.5 8.5a5 5 0 0 1-7-7l9-9a3.5 3.5 0 0 1 5 5l-9 9a2 2 0 0 1-3-3l8-8",
+  /* Copilot chrome: the waffle app launcher, the pane toggle, New, Library,
+   * Automations, the data-protection shield, the voice bars. */
+  waffle: "M5 5h.01M12 5h.01M19 5h.01M5 12h.01M12 12h.01M19 12h.01M5 19h.01M12 19h.01M19 19h.01",
+  sidebar: "M4 5h16v14H4V5zM9 5v14",
+  plusCircle: "M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM12 8v8M8 12h8",
+  library: "M4 4h3v16H4V4zM10 4h3v16h-3V4zM15.5 4.6l2.9-.8 4.1 15.4-2.9.8-4.1-15.4z",
+  bolt: "M13 2L4 14h7l-1 8 9-12h-7l1-8z",
+  shieldCheck: "M12 3l8 3v6c0 4.8-3.4 8-8 9-4.6-1-8-4.2-8-9V6l8-3zM9 12l2 2 4-4",
+  wave: "M4 10v4M8 7v10M12 4v16M16 7v10M20 10v4",
+  check: "M5 12l4 4 10-10",
 };
 
 /* Paragraphs, "1. " numbered lists, "- " bullets, **bold**, `code`. Enough

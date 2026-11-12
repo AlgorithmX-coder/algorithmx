@@ -89,8 +89,10 @@ function check(s: OfficeState): Check[] {
   );
   add(
     { id: "attached", code: "OL-6", group: "Check your own work", label: "The sheet was on the email to HR" },
-    withSheet.length > 0,
-    "The email didn't carry the overtime sheet. Forward Daniel's email (the attachment comes with it), or use Attach file.",
+    toEmma.some(carries),
+    toEmma.length
+      ? "Your email to Emma Clarke didn't carry the overtime sheet. Forward Daniel's email (the attachment comes with it), or use Attach file."
+      : "No email has gone to HR yet, so the sheet hasn't either. Forward Daniel's email to Emma Clarke: the attachment comes with it.",
   );
   return out;
 }
