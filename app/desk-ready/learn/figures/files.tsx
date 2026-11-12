@@ -583,7 +583,7 @@ export function ExportFigure({ focus, title = "Making a PDF of some rows", what,
                   <div key={h} style={{ ...cell, fontWeight: 700, background: "#e6f2ea", justifyContent: "space-between" }}>
                     <span>{h}</span>
                     {i === 1 ? (
-                      <Part k="filter" block={false} badge="right">
+                      <Part k="filter" block={false} badge="top">
                         {arrow(true)}
                       </Part>
                     ) : (
