@@ -223,7 +223,7 @@ export function InspectLab({ onDone }: LabProps) {
           ) : (
             <>
               <b>{last === right ? "Right. " : "Not this time. "}</b>
-              {last === right ? m.why : m.scam ? "Look again at the sender's real address and where the link goes." : "Look at the address: it's one of ours. Nothing here asks for money or a password."}
+              {last === right ? m.why : m.scam ? "Look again at the sender's real address and where the link goes." : isInternal(m.from.address) ? "Look at the address: it's one of ours. Nothing here asks for money or a password." : "Look at the address: it's the supplier's real one, the one we already know. Nothing here asks for money or a password."}
               {last !== right && " Have another go."}
             </>
           )}
@@ -547,7 +547,7 @@ function PasswordStep({ onSolved }: { onSolved: (clean: boolean) => void }) {
               </div>
               {pw && (
                 <p style={{ margin: "6px 0 0", fontSize: 13.5, color: W.body }}>
-                  <b style={{ color: meter }}>{s.label}.</b> A computer guessing would need about {s.time}.
+                  <b style={{ color: meter }}>{s.label}.</b> Time for a computer to guess it: {s.time}.
                 </p>
               )}
             </div>
@@ -859,7 +859,12 @@ function ToStep({ task, onSolved }: { task: ToTask; onSolved: (clean: boolean) =
             <span style={{ fontSize: 13.5, color: W.muted }}>Type &ldquo;{task.typeHint}&rdquo; in To</span>
           </div>
           <MailTip people={to} />
-          <People label="To" people={to} onChange={(p) => !ok && setTo(p)} book={book} recent={task.recent} />
+          <People label="To" people={to} onChange={(p) => {
+            if (ok) return;
+            setTo(p);
+            /* "Wrong person" was about the last send, not the new To line */
+            setSaid(null);
+          }} book={book} recent={task.recent} />
           <div style={{ display: "flex", alignItems: "center", gap: 10, minHeight: 46, padding: "4px 14px", borderBottom: `1px solid ${W.edge}`, fontSize: 15 }}>
             <span style={{ width: 60, color: W.muted }}>Subject</span>
             {task.subject}
