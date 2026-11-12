@@ -51,7 +51,10 @@ export const WEEK_5: WeekContent = {
   ],
 
   screens: [
-    // 0 - OPENING VIDEO: the group chat pile-on
+    // 0 - OPENING VIDEO: the group chat pile-on - mean messages land on Adam's tablet,
+    // the Raccoon urges "Make it MEANER!", and Layla: "No! And it's NOT your
+    // fault. Let's learn what to do." (talking film, 2026-11-12; source +
+    // assembler in .scratch/w05, not in the repo).
     { type: "video", videoPlaceholder: "Week 5: The Pile-On", videoSrc: "/videos/module-05-intro.mp4" },
 
     // 1 - ALERT: incident report (Sarah reads the caption word for word, then reacts)
@@ -927,7 +930,9 @@ export const WEEK_5: WeekContent = {
     // 25 - BOSS: the standard quiz (5 questions, pass 4)
     { type: "bossBattle" },
 
-    // 26 - CLOSING VIDEO: the chat turns kind
+    // 26 - CLOSING VIDEO: the chat turns kind - Adam won't reply or pass it on, blocks
+    // with the shield, Layla: "And we told a grown-up. Together!", Adam: "Send
+    // kind words, Cyber Hero!" (covers all three Week 5 stickers; 2026-11-12).
     { type: "video", videoPlaceholder: "Week 5: The Chat Turns Kind", videoSrc: "/videos/module-05-outro.mp4" },
 
     // 27 - Mission Debrief
