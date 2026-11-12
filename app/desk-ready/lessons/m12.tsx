@@ -203,7 +203,7 @@ const m12: ModuleManifest = {
         {
           heading: "Who it's for",
           figure: <PromptFigure focus={["reader"]} title="Who it's for" />,
-          body: ["Say who will read it, and who they are to you: a customer, a supplier, your manager (2). Copilot may guess from the email, and it can guess wrong. Telling it chooses the right greeting, and how formal to be."],
+          body: ["Say who will read it, and who they are to you: a customer, a supplier, your manager (2). Copilot may guess from the email, and it can guess wrong. Telling it means it picks the right greeting, and how formal to be."],
           good: [{ text: "to Imran Ahmed, a customer at Kent Bakery" }],
           bad: [{ text: "to him", note: "Copilot has to guess who \"him\" is." }],
         },
@@ -271,7 +271,7 @@ const m12: ModuleManifest = {
         {
           heading: "Here is Copilot in Excel",
           body: [
-            "In Excel, Copilot opens down the side of your sheet (5). It can read the sheet, so you can ask it about a formula and get an answer in plain words. Every part is numbered.",
+            "In Excel, Copilot opens beside or below your sheet (5). It can read the sheet, so you can ask it about a formula and get an answer in plain words. Every part is numbered.",
             "Here someone asked what =COUNTIF(F:F,\"Late\") does (6), and Copilot explained it (7).",
           ],
           figure: <ExcelCopilotFigure />,
@@ -279,7 +279,7 @@ const m12: ModuleManifest = {
         {
           heading: "Open it from the ribbon",
           figure: <ExcelCopilotFigure focus={["button", "pane"]} title="The Copilot button, and its pane" />,
-          body: ["Press Copilot on the ribbon (1). The pane (5) opens beside your sheet. Press the button again, or the cross at the top right of the pane, to close it."],
+          body: ["Press Copilot on the ribbon (1). The pane (5) opens beside or below your sheet. Press the button again, or the cross at the top right of the pane, to close it."],
         },
         {
           heading: "Ask about one formula at a time",
@@ -308,9 +308,9 @@ const m12: ModuleManifest = {
         },
         {
           heading: "Don't ask it to count for you",
-          figure: <ExcelCopilotFigure focus={["note"]} title="The warning, meant" />,
+          figure: <ExcelCopilotFigure focus={["late", "note"]} title="Copilot's count can be wrong" />,
           body: [
-            "You can ask Copilot \"How many deliveries were late?\" and it will give you a number. It can be wrong: it reads the sheet loosely, and a note in column G saying \"Rang to say he'd be late\", on a delivery that came on time, can get counted too.",
+            "You can ask Copilot \"How many deliveries were late?\" and it will give you a number. It can be wrong: it reads the sheet loosely, and a note in G5 (9) saying \"Rang to say he'd be late\", on a delivery that came on time, can get counted too. That's what the warning (8) is for.",
             "Use Copilot to understand the formula, and the formula to get the number.",
           ],
           tip: "If Copilot's number and your formula's number differ, trust the formula. Then look at why.",
@@ -362,14 +362,14 @@ const m12: ModuleManifest = {
           figure: <CheckFigure />,
         },
         {
-          heading: "Put the facts beside the draft",
+          heading: "The facts beside the draft",
           figure: <CheckFigure focus={["facts", "draft"]} title="The facts beside the draft" />,
           body: ["Before you read the draft (2), open the email or note the facts came from (1). Not your memory, and not Copilot: the original.", "Then go through the draft one line at a time."],
         },
         {
           heading: "Tick off what matches",
-          figure: <CheckFigure focus={["qty", "time"]} title="What matches" />,
-          body: ["For every number, day, date, time and name in the draft, find it in the facts. 30 sacks: yes (3). Before 10:00: yes (4)."],
+          figure: <CheckFigure focus={["facts", "qty", "time"]} title="What matches" />,
+          body: ["For every number, day, date, time and name in the draft, find it in the facts (1). 30 sacks: yes (3). Before 10:00: yes (4)."],
           tip: "Numbers, days, dates, times and names: check those one by one. They're where AI slips.",
         },
         {
@@ -389,7 +389,7 @@ const m12: ModuleManifest = {
         {
           heading: "Then, and only then, Send",
           figure: <CheckFigure fixed focus={["draft", "send"]} title="Checked, fixed and ready to send" what={{ draft: "Fixed now: Thursday\u00a012\u00a0November, and no discount. Everything in it matches Sarah's email." }} />,
-          body: ["Here it is fixed: Thursday 12 November, and no discount. Read it once more, as the customer will. The right day, the right amount, nothing extra? Then press Send (7). Once it's gone, the customer holds you to every word."],
+          body: ["Here the draft (2) is fixed: Thursday 12 November, and no discount. Read it once more, as the customer will. The right day, the right amount, nothing extra? Then press Send (7). Once it's gone, the customer holds you to every word."],
         },
       ],
       tryIt: {
@@ -440,8 +440,8 @@ const m12: ModuleManifest = {
         {
           heading: "Names",
           figure: <PasteFigure focus={["name", "clean"]} title="A name, and what to put instead" />,
-          body: ["A customer's name (1) tells Copilot who complained. It doesn't need to know. Swap the name for Customer A, Customer B, and the summary still makes sense (7)."],
-          good: [{ text: "Customer A at Bright Cafe says their card was charged twice." }],
+          body: ["A customer's name (1) tells Copilot who complained. It doesn't need to know. Swap the name for a label like Customer A, and the summary still makes sense (7)."],
+          good: [{ text: "Customer A at Bright Cafe says their card was charged twice for order 4429." }],
         },
         {
           heading: "Phone numbers, emails and addresses",

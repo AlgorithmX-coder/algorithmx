@@ -1,6 +1,6 @@
 "use client";
 
-import { Fragment, type CSSProperties, type ReactNode } from "react";
+import { Fragment, useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { CopilotMark, Protected } from "../../office/apps/Copilot";
 import { W } from "../../tokens";
 import { AppWindow, FakeButton, FigureFrame, Part, type PartInfo } from "./parts";
@@ -37,9 +37,9 @@ const draftBox: CSSProperties = { whiteSpace: "pre-wrap", padding: "9px 11px", b
 const chip: CSSProperties = { display: "inline-flex", alignItems: "center", gap: 5, padding: "4px 10px", borderRadius: 999, border: "1px solid #d6d1f0", background: W.page, fontSize: 12.5, whiteSpace: "nowrap" };
 const small: CSSProperties = { display: "inline-flex", alignItems: "center", gap: 5, padding: "3px 9px", borderRadius: 5, border: `1px solid ${W.edge}`, background: W.page, fontSize: 12.5, whiteSpace: "nowrap" };
 /* the warning under an answer, with room inside its outline */
-const noteText: CSSProperties = { display: "inline-block", padding: "3px 6px", fontSize: 12, color: W.muted };
+const noteText: CSSProperties = { display: "inline-block", padding: "5px 9px", fontSize: 12, color: W.muted };
 /* a part drawn round a few words in a sentence: clear of the words beside it */
-const inWords: CSSProperties = { borderRadius: 4, margin: "0 4px 0 5px", outlineOffset: 0 };
+const inWords: CSSProperties = { borderRadius: 4, margin: "0 2px", outlineOffset: -3 };
 const ref = (name: string) => (
   <span style={{ display: "inline-flex", alignItems: "center", gap: 5, padding: "2px 8px", borderRadius: 999, background: W.chrome, fontSize: 12, color: W.body }}>
     <b style={{ color: W.copilot, fontSize: 11 }}>1</b> {name}
@@ -145,7 +145,7 @@ export type DraftPart = "button" | "reply" | "prompt" | "generate" | "draft" | "
 
 export const DRAFT_PARTS: Record<DraftPart, PartInfo> = {
   button: { n: 1, name: "Copilot", what: "In your reply's bar, beside Send. It opens Draft with Copilot, right inside your email." },
-  reply: { n: 2, name: "Your reply", what: "You pressed Reply on Imran's email, so it's already addressed to him, with Re: and his subject." },
+  reply: { n: 2, name: "Your reply", what: "You pressed Reply on Imran's email, so it's already addressed to him, and the subject starts with Re:." },
   prompt: { n: 3, name: "Your prompt", what: "What you want written. The better this is, the better the draft: what you want, who it's for, the tone and the facts." },
   generate: { n: 4, name: "Generate", what: "Copilot writes a draft from your prompt, in a few seconds." },
   draft: { n: 5, name: "The draft", what: "Copilot's attempt. It reads well. That doesn't make it right." },
@@ -247,14 +247,14 @@ const PROMPT: [PromptPart, string, string][] = [
 export function PromptFigure({ focus, title = "A good prompt, part by part", what, note }: { focus?: PromptPart[]; title?: string; what?: What<PromptPart>; note?: string }) {
   return (
     <FigureFrame info={withWhat(PROMPT_PARTS, what)} focus={focus} title={title} note={note}>
-      <div style={{ maxWidth: 620, margin: "0 auto", padding: `14px 14px 18px ${GUTTER}px`, borderRadius: 12, border: "1px solid #d6d1f0", background: W.page, boxShadow: W.float }}>
+      <div style={{ maxWidth: 620, margin: "0 auto", padding: `14px 10px 18px ${GUTTER}px`, borderRadius: 12, border: "1px solid #d6d1f0", background: W.page, boxShadow: W.float }}>
         <span style={{ display: "inline-flex", alignItems: "center", gap: 8, fontSize: 13, fontWeight: 600, color: W.muted }}>
           <CopilotMark size={20} /> Draft with Copilot
         </span>
-        <div style={{ display: "grid", gap: 14, marginTop: 14, fontSize: 17, lineHeight: 1.5 }}>
+        <div style={{ display: "grid", gridTemplateColumns: "minmax(0, 1fr)", gap: 16, marginTop: 14, fontSize: 15.5, lineHeight: 1.5 }}>
           {PROMPT.map(([k, text, colour]) => (
-            <Part key={k} k={k} badge="left" style={{ justifySelf: "start" }}>
-              <span style={{ display: "block", padding: "3px 8px", borderRadius: 4, background: colour }}>{keep(text)}</span>
+            <Part key={k} k={k} badge="left" style={{ justifySelf: "start", maxWidth: "100%" }}>
+              <span style={{ display: "block", padding: "4px 8px", borderRadius: 4, background: colour }}>{keep(text)}</span>
             </Part>
           ))}
         </div>
@@ -279,7 +279,7 @@ export const CHECK_PARTS: Record<CheckPart, PartInfo> = {
 
 const lit = (k: CheckPart, text: string, ok: boolean) => (
   <Part k={k} block={false} badge="top" style={inWords}>
-    <span style={{ padding: "1px 4px", borderRadius: 4, background: ok ? "#dff6dd" : "#fde2e4", boxShadow: ok ? "inset 0 -2px 0 #107c10" : "inset 0 -2px 0 #c4314b" }}>{nb(text)}</span>
+    <span style={{ display: "inline-block", padding: "1px 7px", borderRadius: 4, background: ok ? "#dff6dd" : "#fde2e4", boxShadow: ok ? "inset 0 -2px 0 #107c10" : "inset 0 -2px 0 #c4314b", whiteSpace: "pre" }}>{text.includes("\n") ? text : nb(text)}</span>
   </Part>
 );
 
@@ -319,18 +319,17 @@ export function CheckFigure({ focus, title = "Checking the draft against the fac
                 <div style={{ fontSize: 14.5, padding: "4px 4px 6px" }}>
                   <Line gap={10}>Hi Imran,</Line>
                   <Line>
-                    <span>Good news: your flour order is now</span>
+                    <span>Good news: your flour order is now </span>
                     {lit("qty", "30 sacks", true)}
-                    <span>,</span>
+                    <span>, delivered</span>
                   </Line>
                   <Line>
-                    <span>delivered on</span>
-                    {fixed ? lit("day", "Thursday 12 November", true) : lit("day", "Friday 13 November", false)}
-                    <span>,</span>
                     {lit("time", "before 10:00", true)}
+                    <span> on </span>
+                    {fixed ? lit("day", "Thursday 12 November", true) : lit("day", "Friday 13 November", false)}
                     <span>.</span>
                   </Line>
-                  {!fixed && <Line>{lit("offer", "We'd also like to give you 10% off this order.", false)}</Line>}
+                  {!fixed && <Line>{lit("offer", "We'd also like to give you\n10% off this order.", false)}</Line>}
                   <Line gap={fixed ? 18 : 14}>Best wishes,</Line>
                 </div>
               </Part>
@@ -344,27 +343,28 @@ export function CheckFigure({ focus, title = "Checking the draft against the fac
 
 /* ── Excel, with Copilot explaining a formula ───────────────────────── */
 
-export type ExcelAiPart = "button" | "bar" | "column" | "cell" | "pane" | "question" | "explain" | "note";
+export type ExcelAiPart = "button" | "bar" | "column" | "cell" | "pane" | "question" | "explain" | "note" | "late";
 
 export const EXCEL_AI_PARTS: Record<ExcelAiPart, PartInfo> = {
   button: { n: 1, name: "Copilot on the ribbon", what: "Opens Copilot down the side of Excel, where it can see the sheet that's open." },
   bar: { n: 2, name: "The formula bar", what: "Shows what's really in the selected cell: the formula, not just its answer." },
   column: { n: 3, name: "Column F, Status", what: "What the formula looks through: every row of column F. Three of them say Late." },
-  cell: { n: 4, name: "The cell", what: "D9, where the count goes. You type the formula here yourself, and Excel shows the answer: 3." },
-  pane: { n: 5, name: "The Copilot pane", what: "Copilot, beside your sheet. It reads the sheet to answer. The cross at its top right closes it." },
+  cell: { n: 4, name: "The cell", what: "D9, where the count goes. You type the formula here yourself, and Excel shows the\u00a0answer:\u00a03." },
+  pane: { n: 5, name: "The Copilot pane", what: "Copilot, beside your sheet (below it on a phone). It reads the sheet to answer. The cross at its top right closes it." },
   question: { n: 6, name: "Your question", what: "The formula, pasted in, and what you want to know about it." },
   explain: { n: 7, name: "The explanation", what: "What each piece means, in plain words. Read it, then use the formula yourself." },
   note: { n: 8, name: "\"May be incorrect\"", what: "Explaining is a strength. Counting for you isn't: check any number it gives you." },
+  late: { n: 9, name: "A note that says \"late\"", what: "G5: the driver rang to say he'd be late, but the delivery came on time. Copilot reading loosely can count this row too." },
 };
 
 /* Columns C to G of the log; A and B (the date and the delivery note) are
  * hidden, as Excel shows it, with the double line. */
 const LOG_COLS = [
   { col: "C", head: "Supplier", w: 112 },
-  { col: "D", head: "Booked", w: 48 },
-  { col: "E", head: "Arrived", w: 48 },
-  { col: "F", head: "Status", w: 56 },
-  { col: "G", head: "Notes", w: 152 },
+  { col: "D", head: "Booked", w: 58 },
+  { col: "E", head: "Arrived", w: 60 },
+  { col: "F", head: "Status", w: 66 },
+  { col: "G", head: "Notes", w: 156 },
 ] as const;
 const LOG_ROWS: string[][] = [
   ["Harlow Packaging", "08:30", "08:40", "On time", ""],
@@ -380,9 +380,30 @@ const LOG_ROWS: string[][] = [
 export function ExcelCopilotFigure({ focus, title = "Excel, with Copilot down the side", what, note = "Columns A and B, the date and the delivery note, are hidden here to save space: the double line in the headings shows where.", done = true }: { focus?: ExcelAiPart[]; title?: string; what?: What<ExcelAiPart>; note?: string; done?: boolean }) {
   const cellS: CSSProperties = { padding: "0 6px", height: 26, display: "flex", alignItems: "center", borderRight: `1px solid ${W.edge}`, borderBottom: `1px solid ${W.edge}`, fontSize: 12, whiteSpace: "nowrap", overflow: "hidden", boxSizing: "border-box" };
   const head: CSSProperties = { ...cellS, justifyContent: "center", background: W.sunk, color: W.muted, fontSize: 12 };
-  const rowsN = LOG_ROWS.length + 1;
+  /* the sheet scrolls in its own box on a phone, opened on the lit cell or column */
+  const sheet = useRef<HTMLDivElement>(null);
+  const [slides, setSlides] = useState(false);
+  const focusKey = (focus ?? []).join(",");
+  useEffect(() => {
+    const el = sheet.current;
+    if (!el) return;
+    const place = () => {
+      const more = el.scrollWidth > el.clientWidth + 4;
+      setSlides(more);
+      if (!more) return;
+      const lit = [...el.querySelectorAll<HTMLElement>("[data-lit]")].filter((n) => n.dataset.part !== "bar");
+      if (!lit.length) return void (el.scrollLeft = 0);
+      const box = el.getBoundingClientRect();
+      const right = Math.max(...lit.map((n) => n.getBoundingClientRect().right - box.left + el.scrollLeft));
+      el.scrollLeft = Math.max(0, right + 44 - el.clientWidth);
+    };
+    place();
+    const ro = typeof ResizeObserver === "undefined" ? null : new ResizeObserver(place);
+    ro?.observe(el);
+    return () => ro?.disconnect();
+  }, [focusKey]);
   return (
-    <FigureFrame info={withWhat(EXCEL_AI_PARTS, what)} focus={focus} title={title} note={note} minWidth={450}>
+    <FigureFrame info={withWhat(EXCEL_AI_PARTS, what)} focus={focus} title={title} note={note}>
       <AppWindow app="Excel" colour={W.excel} title="2026-11-06 Deliveries this week.xlsx">
         <div style={{ display: "flex", flexWrap: "wrap", gap: 8, alignItems: "center", padding: `8px 12px 8px ${GUTTER}px`, background: W.chrome, borderBottom: `1px solid ${W.edge}` }}>
           <Part k="button" block={false} badge="left">
@@ -394,8 +415,8 @@ export function ExcelCopilotFigure({ focus, title = "Excel, with Copilot down th
           <FakeButton>⏷ Filter</FakeButton>
         </div>
         <div style={{ display: "flex", flexWrap: "wrap", alignItems: "stretch" }}>
-          {/* the sheet: wider than a phone, so it scrolls in the frame there */}
-          <div style={{ flex: "1 1 440px", minWidth: 440, padding: "12px 12px 16px 30px" }}>
+          {/* the sheet: wider than a phone, so there it slides in its own box */}
+          <div ref={sheet} style={{ flex: "1 1 520px", minWidth: 0, overflowX: "auto", padding: "12px 14px 16px 40px" }}>
             <Part k="bar">
               <div style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 13 }}>
                 <span style={{ width: 40, padding: "4px 6px", border: `1px solid ${W.edge}` }}>D9</span>
@@ -407,9 +428,9 @@ export function ExcelCopilotFigure({ focus, title = "Excel, with Copilot down th
               {/* row numbers, with the hidden columns' double line on their right */}
               <div style={{ width: 24, borderRight: `3px double ${W.faint}` }}>
                 <span style={head} />
-                {Array.from({ length: rowsN - 1 }, (_, i) => (
+                {Array.from({ length: LOG_ROWS.length + 1 }, (_, i) => (
                   <span key={i} style={head}>
-                    {i + 2}
+                    {i + 1}
                   </span>
                 ))}
               </div>
@@ -427,18 +448,24 @@ export function ExcelCopilotFigure({ focus, title = "Excel, with Copilot down th
                           {count ? (done ? "3" : "") : v}
                         </span>
                       );
-                      return count ? (
-                        <Part key={ri} k="cell" badge="right" style={{ borderRadius: 0 }}>
-                          {cell}
-                        </Part>
-                      ) : (
-                        cell
-                      );
+                      if (count)
+                        return (
+                          <Part key={ri} k="cell" badge="right" style={{ borderRadius: 0 }}>
+                            {cell}
+                          </Part>
+                        );
+                      if (c.col === "G" && /late/i.test(v))
+                        return (
+                          <Part key={ri} k="late" badge="right" style={{ borderRadius: 0, outlineOffset: -3 }}>
+                            {cell}
+                          </Part>
+                        );
+                      return cell;
                     })}
                   </div>
                 );
                 return c.col === "F" ? (
-                  <Part key={c.col} k="column" badge="top" style={{ borderRadius: 0 }}>
+                  <Part key={c.col} k="column" badge="top" style={{ borderRadius: 0, outlineOffset: -3 }}>
                     {column}
                   </Part>
                 ) : (
@@ -446,9 +473,10 @@ export function ExcelCopilotFigure({ focus, title = "Excel, with Copilot down th
                 );
               })}
             </div>
+            {slides && <p style={{ margin: "10px 0 0", fontSize: 12.5, color: W.muted }}>Slide the sheet sideways to see the other columns.</p>}
           </div>
           {/* the pane: beside the sheet on a laptop, under it on a phone */}
-          <div style={{ flex: "1 1 250px", minWidth: 0, maxWidth: "min(340px, calc(100vw - 130px))", borderLeft: `1px solid ${W.edge}`, background: W.copilotTint, padding: "38px 14px 14px 14px" }}>
+          <div style={{ flex: "1 1 250px", minWidth: 0, maxWidth: 340, borderLeft: `1px solid ${W.edge}`, background: W.copilotTint, padding: "38px 14px 14px 14px" }}>
             <Part k="pane" badge="top" holds={["question", "explain", "note"]}>
               <div style={{ display: "grid", gap: 38, padding: 4 }}>
                 <span style={{ display: "flex", alignItems: "center", gap: 8, fontWeight: 600, fontSize: 14 }}>
@@ -488,13 +516,13 @@ export const PASTE_PARTS: Record<PastePart, PartInfo> = {
   email: { n: 3, name: "An email address", what: "Personal, even at work. Delete it." },
   card: { n: 4, name: "Card digits", what: "Even the last four. Payment details stay out." },
   address: { n: 5, name: "An address", what: "Where someone lives or works. Leave it out, or just say the town." },
-  warning: { n: 6, name: "The warning line", what: "The office's paste box spots details like these and lights them up. It won't stop you sending. That's your job." },
+  warning: { n: 6, name: "The warning line", what: "The paste box in this course's office spots details like these and lights them up. Real tools may not, so check it yourself. It won't stop you sending either: that's your job." },
   clean: { n: 7, name: "What to send instead", what: "The same complaint, with nobody in it. Copilot can summarise this just as well." },
 };
 
 const pii = (k: PastePart, text: string) => (
   <Part k={k} block={false} badge="top" style={inWords}>
-    <mark style={{ background: "#fde2e4", color: "inherit", borderRadius: 3, boxShadow: "inset 0 -2px 0 #c4314b", padding: "0 3px" }}>{nb(text)}</mark>
+    <mark style={{ display: "inline-block", background: "#fde2e4", color: "inherit", borderRadius: 3, boxShadow: "inset 0 -2px 0 #c4314b", padding: "1px 7px" }}>{nb(text)}</mark>
   </Part>
 );
 
@@ -511,19 +539,19 @@ export function PasteFigure({ focus, title = `A paste, with the personal ${nb("d
             <Line gap={4}>Summarise this complaint:</Line>
             <Line>
               {pii("name", "Leah Moss")}
-              <span>(</span>
+              <span> (</span>
               {pii("phone", "07700 900214")}
-              <span>,</span>
+              <span>, </span>
               {pii("email", "leah.moss@brightcafe.example")}
               <span>) says</span>
             </Line>
             <Line>
-              <span>her</span>
+              <span>her </span>
               {pii("card", "card ending 5582")}
-              <span>was charged twice for order 4429.</span>
+              <span> was charged twice for order 4429.</span>
             </Line>
             <Line>
-              <span>Bright Cafe,</span>
+              <span>Bright Cafe, </span>
               {pii("address", "4 Example Road")}
               <span>, Leicester.</span>
             </Line>
@@ -566,7 +594,7 @@ export function ToolsFigure({ focus, title = "Work Copilot, and a free tool", wh
   const frame: CSSProperties = { borderRadius: 10, border: `1px solid ${W.edge}`, background: W.page, boxShadow: W.float, overflow: "hidden" };
   return (
     <FigureFrame info={withWhat(TOOL_PARTS, what)} focus={focus} title={title} note={note}>
-      <div style={{ display: "grid", gap: 22, gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 230px), 1fr))", paddingLeft: GUTTER - 10 }}>
+      <div style={{ display: "grid", gap: "26px 56px", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 230px), 1fr))", paddingLeft: GUTTER - 10 }}>
         <Part k="work" badge="left">
           <div style={frame}>
             <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 10, padding: "10px 12px", borderBottom: `1px solid ${W.edge}` }}>
