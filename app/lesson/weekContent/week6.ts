@@ -45,7 +45,10 @@ export const WEEK_6: WeekContent = {
   ],
 
   screens: [
-    // 0 - OPENING VIDEO: the raccoon joins the lobby
+    // 0 - OPENING VIDEO: the raccoon joins the lobby - the kids at their gaming corner,
+    // the Raccoon offers "FREE skins" from his neon arcade, and Adam: "Let's
+    // lock down our game zone!" (talking film, 2026-11-12; source + assembler
+    // in .scratch/w06, not in the repo).
     { type: "video", videoPlaceholder: "Week 6: The Lobby Intruder", videoSrc: "/videos/module-06-intro.mp4" },
 
     // 1 - ALERT: incident report (Sarah reads the caption word for word, then reacts)
@@ -1076,7 +1079,9 @@ export const WEEK_6: WeekContent = {
     // 25 - BOSS: the standard quiz (5 questions, pass 4)
     { type: "bossBattle" },
 
-    // 26 - CLOSING VIDEO: the intruder is reported and booted
+    // 26 - CLOSING VIDEO: the intruder is reported and booted - Layla spots the fake download, the
+    // Raccoon fumes at his padlocked screen, Layla: "Report, block, and tell,
+    // Cyber Hero!" (covers all three Week 6 stickers; 2026-11-12).
     { type: "video", videoPlaceholder: "Week 6: Booted From the Lobby", videoSrc: "/videos/module-06-outro.mp4" },
 
     // 27 - Mission Debrief
