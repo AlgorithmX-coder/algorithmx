@@ -39,7 +39,7 @@ const small: CSSProperties = { display: "inline-flex", alignItems: "center", gap
 /* the warning under an answer, with room inside its outline */
 const noteText: CSSProperties = { display: "inline-block", padding: "3px 6px", fontSize: 12, color: W.muted };
 /* a part drawn round a few words in a sentence: clear of the words beside it */
-const inWords: CSSProperties = { borderRadius: 4, margin: "0 5px", outlineOffset: 0 };
+const inWords: CSSProperties = { borderRadius: 4, margin: "0 4px 0 5px", outlineOffset: 0 };
 const ref = (name: string) => (
   <span style={{ display: "inline-flex", alignItems: "center", gap: 5, padding: "2px 8px", borderRadius: 999, background: W.chrome, fontSize: 12, color: W.body }}>
     <b style={{ color: W.copilot, fontSize: 11 }}>1</b> {name}
@@ -360,11 +360,11 @@ export const EXCEL_AI_PARTS: Record<ExcelAiPart, PartInfo> = {
 /* Columns C to G of the log; A and B (the date and the delivery note) are
  * hidden, as Excel shows it, with the double line. */
 const LOG_COLS = [
-  { col: "C", head: "Supplier", w: 78 },
+  { col: "C", head: "Supplier", w: 112 },
   { col: "D", head: "Booked", w: 48 },
   { col: "E", head: "Arrived", w: 48 },
   { col: "F", head: "Status", w: 56 },
-  { col: "G", head: "Notes", w: 140 },
+  { col: "G", head: "Notes", w: 132 },
 ] as const;
 const LOG_ROWS: string[][] = [
   ["Harlow Packaging", "08:30", "08:40", "On time", ""],
