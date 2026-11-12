@@ -186,13 +186,13 @@ export function DraftFigure({ focus, title = "Draft with Copilot, in an Outlook 
             </div>
           </Part>
         </div>
-        <div style={{ margin: `16px 12px 0 ${GUTTER}px`, padding: 2, borderRadius: 10, background: W.copilotMark }}>
-          <div style={{ padding: "11px 12px 14px", borderRadius: 8, background: W.page, display: "grid", gap: 22 }}>
+        <div style={{ margin: `16px 6px 0 ${GUTTER}px`, padding: 2, borderRadius: 10, background: W.copilotMark }}>
+          <div style={{ padding: "11px 8px 14px", borderRadius: 8, background: W.page, display: "grid", gridTemplateColumns: "minmax(0, 1fr)", gap: 22 }}>
             <span style={{ display: "inline-flex", alignItems: "center", gap: 8, fontWeight: 600, fontSize: 14.5 }}>
               <CopilotMark size={20} /> Draft with Copilot
             </span>
             <Part k="prompt" badge="left" style={{ marginLeft: -4 }}>
-              <div style={{ padding: "8px 10px", border: "1px solid #d6d1f0", borderRadius: 6, fontSize: 14, lineHeight: 1.5 }}>{keep(KENT_PROMPT)}</div>
+              <div style={{ padding: "8px 8px", border: "1px solid #d6d1f0", borderRadius: 6, fontSize: 14, lineHeight: 1.5 }}>{keep(KENT_PROMPT)}</div>
             </Part>
             <Part k="generate" block={false} badge="left" style={{ justifySelf: "start", marginLeft: -4 }}>
               <span style={{ display: "inline-flex", minHeight: 30, alignItems: "center", padding: "3px 14px", borderRadius: 5, background: W.copilot, color: "#fff", fontWeight: 700, fontSize: 13.5 }}>Generate</span>
