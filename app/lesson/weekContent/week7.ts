@@ -43,7 +43,10 @@ export const WEEK_7: WeekContent = {
   ],
 
   screens: [
-    // 0 - OPENING VIDEO: the shop that drained an account
+    // 0 - OPENING VIDEO: the shop that drained an account - at the kitchen table Adam
+    // buys "just a few gems", the Raccoon pushes a mystery box from his gem shop,
+    // and Layla: "Let's learn the Gem Bucks trap!" (talking film, 2026-11-12;
+    // source + assembler in .scratch/w07, not in the repo).
     { type: "video", videoPlaceholder: "Week 7: The Gem Bucks Trap", videoSrc: "/videos/module-07-intro.mp4" },
 
     // 1 - ALERT: incident report (Sarah reads the caption word for word, then reacts)
@@ -960,7 +963,9 @@ export const WEEK_7: WeekContent = {
     // 25 - BOSS: the standard quiz (5 questions, pass 4)
     { type: "bossBattle" },
 
-    // 26 - CLOSING VIDEO: the trap shop shuts down
+    // 26 - CLOSING VIDEO: the trap shop shuts down - Adam passes on the gamble, the
+    // Raccoon fumes, Layla: "Always ask a grown-up before you buy!" (covers all
+    // three Week 7 stickers; 2026-11-12).
     { type: "video", videoPlaceholder: "Week 7: The Shop Shuts Down", videoSrc: "/videos/module-07-outro.mp4" },
 
     // 27 - Mission Debrief
