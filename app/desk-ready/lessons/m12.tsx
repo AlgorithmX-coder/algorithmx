@@ -1,7 +1,7 @@
 "use client";
 
 import { ExplainLab, PasteLab, PromptLab, TrustLab } from "../learn/copilotLabs";
-import { CheckFigure, CopilotFigure, DraftFigure, ExcelCopilotFigure, PasteFigure, PromptFigure } from "../learn/figures/copilot";
+import { CheckFigure, CopilotFigure, DraftFigure, ExcelCopilotFigure, PasteFigure, PromptFigure, ToolsFigure } from "../learn/figures/copilot";
 import { ComposeLab, type Draft } from "../learn/labs";
 import type { LabProps, ModuleManifest } from "../learn/types";
 
@@ -92,7 +92,7 @@ const m12: ModuleManifest = {
           figure: <CopilotFigure focus={["asked", "answer"]} title="You ask, it writes" />,
           body: [
             "AI tools like Copilot have read a huge amount of writing. From that, they are very good at working out which words should come next, so they can write an email, a summary or an explanation that reads well.",
-            "What they don't do is know things the way you do. Copilot hasn't been to your warehouse, and it wasn't on yesterday's phone call. It only knows what you tell it (3) and what's in the files it can see.",
+            "What they don't do is know your business. Copilot hasn't been to your warehouse, and it wasn't on yesterday's phone call. It only has what you tell it (3), the files it can see, and general knowledge.",
           ],
         },
         {
@@ -105,11 +105,11 @@ const m12: ModuleManifest = {
           heading: "What it's bad at: facts, numbers and dates",
           figure: <CopilotFigure focus={["refs", "note"]} title="Watch for: the references and the warning" />,
           body: [
-            "It's bad at facts it doesn't have: today's stock, what a customer said on the phone, what was agreed. It's bad at numbers and dates, like a total or the day of the week. And when it doesn't know, it doesn't say so. It writes something that sounds right.",
+            "It's bad at facts it doesn't have: today's stock, what a customer said on the phone, what was agreed. It's bad at numbers and dates, like a total or the day of the week. And when it doesn't know, it often doesn't say so. It writes something that sounds right.",
             "The references line (5) shows what it read to answer. No reference means it was working from general knowledge, so treat any fact in the answer as a guess.",
           ],
           bad: [
-            { text: "What time does Kent Bakery's van arrive?", note: "It can't know. It will still give you a time." },
+            { text: "What time does Kent Bakery's van arrive?", note: "It can't know. It may still give you one." },
             { text: "What's 15 cases at £18.00, plus VAT?", note: "Do sums in Excel or on a calculator." },
           ],
         },
@@ -117,7 +117,7 @@ const m12: ModuleManifest = {
           heading: "You're responsible for what goes",
           figure: <CopilotFigure focus={["buttons", "note"]} title="Insert puts it in. You send it." />,
           body: [
-            "Copy and Insert (6) put Copilot's words into your email in one click. From that moment they're your words. If a customer gets the wrong day, they won't blame Copilot.",
+            "Insert (6) puts Copilot's words straight into your email in one click. Copy copies them, so you can paste them anywhere. Either way, from that moment they're your words. If a customer gets the wrong day, they won't blame Copilot.",
             "That's what the note under every answer (7) means. Read every line before you send.",
           ],
           tip: "A simple rule: Copilot writes the first draft. You write the last one.",
@@ -181,37 +181,37 @@ const m12: ModuleManifest = {
           heading: "Here is Draft with Copilot",
           body: [
             "In Outlook, Copilot can write a reply for you, right inside the email. Here's one being drafted, with every part numbered.",
-            "You press Reply (1), then Copilot (2). You say what you want (3) and press Generate (4). A few seconds later, the draft (5) appears.",
+            "You open Imran's email and press Reply. Your reply (2) opens, already addressed to him. Press Copilot (1) in its bar, say what you want (3) and press Generate (4). A few seconds later, the draft (5) appears.",
           ],
           figure: <DraftFigure />,
         },
         {
           heading: "Your prompt, close up",
           figure: <PromptFigure />,
-          body: ["What you type in the box is called a prompt. Here's the good one from the last picture, taken apart.", "It has four parts: what you want (1), the tone (2), who it's for (3) and the facts (4)."],
+          body: ["What you type in the box is called a prompt. Here's the good one from the last picture, taken apart.", "It has four parts: what you want (1), who it's for (2), the tone (3) and the facts (4)."],
         },
         {
           heading: "The facts",
           figure: <PromptFigure focus={["facts"]} title="The facts" />,
           body: [
-            "Copilot can't know the facts: how many, which day, what time. Give it every one, copied from the email or note they came from (4).",
-            "Leave one out and it either writes round it (\"the change to your order\") or fills the gap with a guess.",
+            "Copilot can read the email you're answering, but it doesn't know what was agreed: how many, which day, what time. Left to itself, it may guess from the email, and a guess reads just like a fact.",
+            "So give it every fact, copied from the email or note it came from (4). Leave one out and it either writes round it (\"the change to your order\") or fills the gap with a guess.",
           ],
           good: [{ text: "Confirm his flour order is now 30 sacks, delivered on Thursday 12 November, before 10:00." }],
-          bad: [{ text: "Confirm the change.", note: "Which change? When? Copilot can't know." }],
+          bad: [{ text: "Confirm the change.", note: "Which change? When? Copilot would have to guess." }],
         },
         {
           heading: "Who it's for",
           figure: <PromptFigure focus={["reader"]} title="Who it's for" />,
-          body: ["Say who will read it, and who they are to you: a customer, a supplier, your manager (3). Copilot uses that to choose the greeting and how formal to be."],
-          good: [{ text: "to Imran Ahmed at Kent Bakery" }],
-          bad: [{ text: "to him", note: "Copilot doesn't know who \"him\" is." }],
+          body: ["Say who will read it, and who they are to you: a customer, a supplier, your manager (2). Copilot may guess from the email, and it can guess wrong. Telling it chooses the right greeting, and how formal to be."],
+          good: [{ text: "to Imran Ahmed, a customer at Kent Bakery" }],
+          bad: [{ text: "to him", note: "Copilot has to guess who \"him\" is." }],
         },
         {
           heading: "The tone",
           figure: <PromptFigure focus={["tone", "ask"]} title="What you want, and how it should sound" />,
-          body: ["Start with what you want (1): a reply, an email, a short note. Then say how it should sound, in a word or two (2): short, friendly, polite or formal. Without it, you get stiff, wordy emails."],
-          good: [{ text: "Write a short, friendly reply ..." }, { text: "Write a polite, formal email ..." }],
+          body: ["Start with what you want (1): a reply, an email, a short note. Then say how it should sound, in a word or two (3): short, friendly, polite or formal. Without it, you get stiff, wordy emails."],
+          good: [{ text: "Keep it short and friendly." }, { text: "Make it polite and formal." }],
           tip: "If the first draft isn't right, don't start again. Add what's missing to your prompt, and press Generate again.",
         },
         {
@@ -279,30 +279,30 @@ const m12: ModuleManifest = {
         {
           heading: "Open it from the ribbon",
           figure: <ExcelCopilotFigure focus={["button", "pane"]} title="The Copilot button, and its pane" />,
-          body: ["Press Copilot on the ribbon (1). The pane (5) opens beside your sheet. Press the button again, or the cross at the top of the pane, to close it."],
+          body: ["Press Copilot on the ribbon (1). The pane (5) opens beside your sheet. Press the button again, or the cross at the top right of the pane, to close it."],
         },
         {
           heading: "Ask about one formula at a time",
           figure: <ExcelCopilotFigure focus={["bar", "question"]} title="The formula, and your question" />,
           body: [
-            "Click the cell with the formula and look at the formula bar (3). That shows the formula itself, not just its answer.",
+            "Click the cell with the formula and look at the formula bar (2). That shows the formula itself, not just its answer.",
             "Copy it into your question (6), or click the cell and ask Copilot to explain the formula in it.",
           ],
-          good: [{ text: "What does =COUNTIF(F:F,\"Late\") do?" }, { text: "Explain the formula in D15." }],
+          good: [{ text: "What does =COUNTIF(F:F,\"Late\") do?" }, { text: "Explain the formula in D9." }],
         },
         {
           heading: "Read the explanation, piece by piece",
           figure: <ExcelCopilotFigure focus={["explain", "column"]} title="The explanation, against the sheet" />,
           body: [
-            "A good explanation (7) takes the formula apart. COUNTIF means \"count the cells that match\". F:F means every row of column F (4). \"Late\" is what to look for.",
-            "Check it against the sheet: is column F really the Status column? Do the cells really say Late?",
+            "A good explanation (7) takes the formula apart. COUNTIF means \"count the cells that match\". F:F means every row of column F (3). \"Late\" is what to look for.",
+            "Check it against the sheet: is column F really the Status column? Do three of its cells really say Late?",
           ],
         },
         {
           heading: "Then use it yourself",
           figure: <ExcelCopilotFigure focus={["cell", "bar"]} title="The formula, typed in" />,
           body: [
-            "Understanding it is half the job. Now click the cell where the answer goes (2), type the formula and press Enter. Excel works out the answer: 3.",
+            "Understanding it is half the job. Now click the cell where the answer goes (4), type the formula and press Enter. Excel works out the answer: 3.",
             "A formula you typed keeps itself up to date as the sheet changes. A number Copilot told you doesn't.",
           ],
         },
@@ -310,7 +310,7 @@ const m12: ModuleManifest = {
           heading: "Don't ask it to count for you",
           figure: <ExcelCopilotFigure focus={["note"]} title="The warning, meant" />,
           body: [
-            "You can ask Copilot \"How many deliveries were late?\" and it will give you a number. It can be wrong: it reads the sheet loosely, and a note saying \"the driver rang to say he'd be late\" can get counted too.",
+            "You can ask Copilot \"How many deliveries were late?\" and it will give you a number. It can be wrong: it reads the sheet loosely, and a note in column G saying \"Rang to say he'd be late\", on a delivery that came on time, can get counted too.",
             "Use Copilot to understand the formula, and the formula to get the number.",
           ],
           tip: "If Copilot's number and your formula's number differ, trust the formula. Then look at why.",
@@ -356,40 +356,40 @@ const m12: ModuleManifest = {
         {
           heading: "Here is a draft, checked against the facts",
           body: [
-            "This is the draft from lesson 2, kept into the reply to Imran. Beside it are the facts, from Sarah's email (1). Every part is numbered.",
+            "This is the draft from lesson 2, in the reply to Imran after you pressed Keep it. Beside it are the facts, from Sarah's email (1). Every part is numbered.",
             "Two things are lit red. Neither is a typo: they read perfectly well. That's why you check every line.",
           ],
           figure: <CheckFigure />,
         },
         {
           heading: "Put the facts beside the draft",
-          figure: <CheckFigure focus={["facts", "draft"]} title="The facts, and the draft" />,
+          figure: <CheckFigure focus={["facts", "draft"]} title="The facts beside the draft" />,
           body: ["Before you read the draft (2), open the email or note the facts came from (1). Not your memory, and not Copilot: the original.", "Then go through the draft one line at a time."],
         },
         {
           heading: "Tick off what matches",
-          figure: <CheckFigure focus={["match"]} title="What matches" />,
-          body: ["For every number, day, date, time and name in the draft, find it in the facts. 30 sacks: yes. Before 10:00: yes (3)."],
+          figure: <CheckFigure focus={["qty", "time"]} title="What matches" />,
+          body: ["For every number, day, date, time and name in the draft, find it in the facts. 30 sacks: yes (3). Before 10:00: yes (4)."],
           tip: "Numbers, days, dates, times and names: check those one by one. They're where AI slips.",
         },
         {
           heading: "Fix what's wrong",
           figure: <CheckFigure focus={["day"]} title="A wrong day" />,
           body: [
-            "Friday 13 November (4). Sarah said Thursday 12 November. Copilot often slips on days and dates, and it reads just as confidently when it does.",
+            "Friday 13 November (5). Sarah said Thursday 12 November. Copilot often slips on days and dates, and it reads just as confidently when it does.",
             "Click in the email and change it, as you would fix anything you'd typed.",
           ],
         },
         {
           heading: "Take out what nobody said",
           figure: <CheckFigure focus={["offer"]} title="Something nobody said" />,
-          body: ["A 10% discount (5). Nobody agreed that: Sarah said same price as always. AI fills gaps with things that sound kind or helpful. If it isn't in your facts, it doesn't go out."],
-          bad: [{ text: "We'd also like to give you 10% off this order.", note: "Sounds nice. Nobody agreed it." }],
+          body: ["A 10% discount (6). Nobody agreed to that: Sarah said same price per sack. AI fills gaps with things that sound kind or helpful. If it isn't in your facts, it doesn't go out."],
+          bad: [{ text: "We'd also like to give you 10% off this order.", note: "Sounds nice. Nobody agreed to it." }],
         },
         {
           heading: "Then, and only then, Send",
-          figure: <CheckFigure focus={["send"]} title="Send is yours" />,
-          body: ["Read it once more, as the customer will. The right day, the right amount, nothing extra? Then press Send (6). Once it's gone, the customer holds you to every word."],
+          figure: <CheckFigure fixed focus={["send"]} title="Checked, fixed and ready to send" />,
+          body: ["Here it is fixed: Thursday 12 November, and no discount. Read it once more, as the customer will. The right day, the right amount, nothing extra? Then press Send (7). Once it's gone, the customer holds you to every word."],
         },
       ],
       tryIt: {
@@ -450,10 +450,10 @@ const m12: ModuleManifest = {
         },
         {
           heading: "Card details and passwords",
-          figure: <PasteFigure focus={["card"]} title="Anything to do with payment" />,
+          figure: <PasteFigure focus={["card"]} title="Payment details" />,
           body: [
-            "Anything to do with payment stays out: card numbers, even just the last four digits (4), and bank details.",
-            "So do passwords and PINs. Never type a password into any AI tool, for any reason.",
+            "Payment details stay out: card numbers, even just the last four digits (4), and bank details.",
+            "Passwords and PINs stay out too. Never type a password into any AI tool, for any reason.",
           ],
         },
         {
@@ -462,7 +462,7 @@ const m12: ModuleManifest = {
             "Some things don't go in at all, even with the names taken out: pay, payroll, overtime figures, National Insurance numbers, and anything from HR about a person.",
             "If a job needs them, do it yourself, or ask the person who looks after that information.",
           ],
-          bad: [{ text: "October overtime: Jordan Miles, 12 hours, £186.00", note: "Pay. Not even with the name swapped." }],
+          bad: [{ text: "October overtime: Jordan Miles, 12 hours, £186.00", note: "Pay. Not even with the name swapped." }],
         },
         {
           heading: "Copilot won't stop you",
@@ -474,9 +474,9 @@ const m12: ModuleManifest = {
         },
         {
           heading: "Work Copilot, and free tools",
-          figure: <CopilotFigure focus={["shield"]} title="Signed in with your work account" />,
+          figure: <ToolsFigure />,
           body: [
-            "At work, you sign in to Copilot with your work account, shown by the shield (2), so your company's data protection covers it. Free AI tools on the internet may keep what you type, and some use it to train their next version.",
+            "At work, you sign in to Copilot with your work account, shown by its shield (1), so your company's data protection covers it. A free AI tool on the web (2) may keep what you type, and some use it to train their next version.",
             "Never paste work information into a free tool unless your workplace says you can. And even in work Copilot, customer details, passwords and payroll stay out.",
           ],
         },

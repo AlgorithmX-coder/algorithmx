@@ -124,7 +124,7 @@ const KENT: DraftBrief = {
     v % 2 === 0
       ? "Hi,\n\nThank you for your email. I'm happy to confirm the change to your order.\n\nPlease let me know if there's anything else you need.\n\nKind regards"
       : "Hello,\n\nThanks for your message. The change you asked for has been made.\n\nIf you have any questions, just let me know.\n\nBest regards",
-  example: "Write a short, friendly reply to Imran Ahmed at Kent Bakery. Confirm his flour order is now 30 sacks, delivered on Thursday 12 November, before 10:00.",
+  example: "Write a reply to Imran Ahmed, a customer at Kent Bakery. Keep it short and friendly. Confirm his flour order is now 30 sacks, delivered on Thursday 12 November, before 10:00.",
   refs: ["Re: Thursday's flour"],
 };
 
@@ -286,7 +286,7 @@ export const COMPLAINTS_TEXT = [
   "Napkins arrived at 14:00, after the lunch rush. Asks for morning deliveries.",
   "",
   "Wed 11 Nov. Bright Cafe. Leah Moss, 07700 900214.",
-  "Card ending 4417 was charged twice for order 4429. Wants the second payment refunded.",
+  "Card ending 5582 was charged twice for order 4429. Wants the second payment refunded.",
   "",
   "Thu 12 Nov. Oak Street Deli. Rita Fenwick, 0116 496 0583.",
   "Driver left 3 boxes outside in the rain. The paper bags inside got wet.",
@@ -310,7 +310,7 @@ export function complaintPersonalLeft(text: string): string[] {
   const bare = (s: string) => s.replace(/[\s-]/g, "");
   const phones = ["07700 900214", "0116 496 0738", "0116 496 0583"];
   for (const phone of phones) if (bare(text).includes(bare(phone))) left.add(phone);
-  if (/\b4417\b/.test(text)) left.add("card ending 4417");
+  if (/\b5582\b/.test(text)) left.add("card ending 5582");
   /* anything else personal the learner typed in, once each */
   for (const p of findPersonal(text)) if ((p.kind === "phone" || p.kind === "email" || p.kind === "address") && !phones.some((x) => bare(x) === bare(p.text))) left.add(p.text);
   return [...left];

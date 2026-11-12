@@ -56,7 +56,7 @@ describe("E12.1 Let Copilot draft it, then check it", () => {
   });
 });
 
-const CLEAN = COMPLAINTS_TEXT.replace(/Leah Moss, 07700 900214/g, "Customer A").replace(/Imran Ahmed, 0116 496 0738/g, "Customer B").replace(/Rita Fenwick, 0116 496 0583/g, "Customer C").replace("Card ending 4417", "Their card");
+const CLEAN = COMPLAINTS_TEXT.replace(/Leah Moss, 07700 900214/g, "Customer A").replace(/Imran Ahmed, 0116 496 0738/g, "Customer B").replace(/Rita Fenwick, 0116 496 0583/g, "Customer C").replace("Card ending 5582", "Their card");
 
 describe("E12.2 What not to paste", () => {
   const start = whatNotToPaste.seed();
@@ -74,10 +74,10 @@ describe("E12.2 What not to paste", () => {
     s = ask(s, `Summarise these complaints:\n${CLEAN}`, "app");
     s = send(s, PEOPLE.daniel, s.copilot!.turns[1].reply);
     expect(failing(whatNotToPaste, s)).toEqual(["private"]);
-    expect(whatNotToPaste.check(s)[0].fix).toMatch(/Leah Moss.*4417/);
+    expect(whatNotToPaste.check(s)[0].fix).toMatch(/Leah Moss.*5582/);
   });
   it("catches a single card number left in", () => {
-    let s = ask(start, `Summarise these complaints:\n${CLEAN.replace("Their card", "Card ending 4417")}`, "app");
+    let s = ask(start, `Summarise these complaints:\n${CLEAN.replace("Their card", "Card ending 5582")}`, "app");
     s = send(s, PEOPLE.daniel, s.copilot!.turns[0].reply);
     expect(failing(whatNotToPaste, s)).toEqual(["private"]);
   });

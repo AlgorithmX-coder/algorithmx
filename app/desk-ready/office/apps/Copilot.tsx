@@ -290,9 +290,13 @@ function Sent({ turn, known }: { turn: CopilotTurn; known: string[] }) {
 
 export interface Suggestion {
   label: string;
-  /* What goes in the box when it is clicked; the learner finishes it. */
+  /* The prompt it stands for. A whole prompt is sent straight away, as
+   * Copilot's suggested prompts are; one that ends in a space or a colon
+   * goes in the box for the learner to finish. */
   fill: string;
 }
+
+const unfinished = (s: Suggestion) => /[\s:]$/.test(s.fill);
 
 export function CopilotChat({
   turns,
@@ -360,7 +364,7 @@ export function CopilotChat({
               {suggestions.length > 0 && (
                 <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginTop: 16, justifyContent: app ? "center" : "flex-start" }}>
                   {suggestions.map((s) => (
-                    <button key={s.label} type="button" onClick={() => setValue(s.fill)} className="of-btn" style={{ minHeight: 38, padding: "6px 14px", borderRadius: 999, border: `1px solid #d6d1f0`, background: W.page, color: W.ink, fontFamily: W.font, fontSize: 14, cursor: "pointer", textAlign: "left" }}>
+                    <button key={s.label} type="button" onClick={() => (unfinished(s) ? setValue(s.fill) : onAsk(s.fill))} className="of-btn" style={{ minHeight: 38, padding: "6px 14px", borderRadius: 999, border: `1px solid #d6d1f0`, background: W.page, color: W.ink, fontFamily: W.font, fontSize: 14, cursor: "pointer", textAlign: "left" }}>
                       {s.label}
                     </button>
                   ))}

@@ -143,7 +143,7 @@ export function TrustLab({ onDone }: LabProps) {
   return (
     <div>
       <StepBar at={at + 1} of={ROUNDS.length} label="Question" />
-      <TheJob style={{ marginTop: 14 }}>Click the suggested prompt to put it in the box, then press Send. Read Copilot&apos;s answer, and decide whether you can use it.</TheJob>
+      <TheJob style={{ marginTop: 14 }}>Click the suggested prompt: like Copilot&apos;s own suggestions, it sends straight away. Read Copilot&apos;s answer, and decide whether you can use it.</TheJob>
       <Workspace style={{ marginTop: 14 }}>
         <CopilotWindow>
           <CopilotChat key={at} turns={turn ? [turn] : []} onAsk={(p) => setTurn(turnOf({ host: "app", prompt: p, kind: "help", reply: round.reply, refs: round.refs }))} layout="pane" suggestions={[{ label: round.prompt, fill: round.prompt }]} greeting="What would you like to ask?" placeholder="Ask Copilot" />
@@ -289,7 +289,7 @@ export function ExplainLab({ onDone }: LabProps) {
   const ask = (prompt: string, ctx: { grid?: Grid; cell?: { name: string; raw: string } }) => setTurns((ts) => [...ts, turnOf(respond(prompt, { host: "excel", grid: ctx.grid, cell: ctx.cell, fileName: doc.name }))]);
   const oak = g[11]?.[2] ?? "";
   const rules = [
-    { label: "You asked Copilot to explain the formula", hint: "Press Copilot on the ribbon. Click C11, then the suggestion Explain the formula in C11, then Send." },
+    { label: "You asked Copilot to explain the formula", hint: "Press Copilot on the ribbon. Click C11, then the suggestion Explain the formula in C11." },
     { label: "C12 holds a SUMIF for Oak Street Deli", hint: 'Click C12 and type =SUMIF(A2:A9,"Oak Street Deli",C2:C9). Copy Kent Bakery\'s and change the name.' },
     { label: "It gives Oak Street Deli's total: £192.00", hint: "Check the name is spelled exactly as in column A, in quotes, and the ranges are the same as C11: A2:A9 and C2:C9." },
   ];

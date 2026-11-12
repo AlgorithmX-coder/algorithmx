@@ -115,7 +115,7 @@ describe("personal details (AI-4)", () => {
     const kinds = found.map((p) => p.kind);
     expect(kinds.filter((k) => k === "name")).toHaveLength(5);
     expect(kinds.filter((k) => k === "phone")).toHaveLength(5);
-    expect(found.find((p) => p.kind === "card")?.text).toBe("4417");
+    expect(found.find((p) => p.kind === "card")?.text).toBe("5582");
     expect(describePersonal(found)).toBe("5 names, 5 phone numbers and card digits");
   });
   it("leaves business names, dates and order numbers alone", () => {
@@ -126,7 +126,7 @@ describe("personal details (AI-4)", () => {
     expect(kinds).toEqual(["name", "address", "address", "email", "password"]);
   });
   it("knows when a cleaned list still makes sense", () => {
-    const clean = COMPLAINTS_TEXT.replace(/Leah Moss, 07700 900214/g, "Customer A").replace(/Imran Ahmed, 0116 496 0738/g, "Customer B").replace(/Rita Fenwick, 0116 496 0583/g, "Customer C").replace("Card ending 4417", "A card");
+    const clean = COMPLAINTS_TEXT.replace(/Leah Moss, 07700 900214/g, "Customer A").replace(/Imran Ahmed, 0116 496 0738/g, "Customer B").replace(/Rita Fenwick, 0116 496 0583/g, "Customer C").replace("Card ending 5582", "A card");
     expect(complaintPersonalLeft(clean)).toEqual([]);
     expect(topicsIn(clean)).toHaveLength(5);
     expect(complaintPersonalLeft(COMPLAINTS_TEXT).length).toBeGreaterThanOrEqual(7);
