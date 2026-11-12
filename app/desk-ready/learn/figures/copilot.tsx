@@ -50,6 +50,10 @@ const ref = (name: string) => (
  * of the parts lit in it (a badge sits 32px above its part). */
 const Line = ({ children, gap = 36 }: { children: ReactNode; gap?: number }) => <div style={{ marginTop: gap, whiteSpace: "nowrap", lineHeight: 1.6 }}>{children}</div>;
 
+/* Words that must not be split, inside a sentence: the amounts, days,
+ * dates, times and order numbers. */
+const keep = (s: string) => s.replace(/\b(\d+ (?:sacks|packs|pallets)|(?:Monday|Tuesday|Wednesday|Thursday|Friday) \d+ November|before \d+:\d+|order \d+)\b/g, (m) => nb(m));
+
 /* The left gutter a one-column figure keeps for its badges. */
 const GUTTER = 40;
 
@@ -73,7 +77,7 @@ export function CopilotFigure({ focus, title = "The Copilot pane", what, note }:
   return (
     <FigureFrame info={withWhat(PANE_PARTS, what)} focus={focus} title={title} note={note}>
       <div style={{ maxWidth: 520, margin: "0 auto", background: W.copilotTint, borderRadius: 10, border: `1px solid ${W.edge}`, boxShadow: W.float }}>
-        <div style={{ position: "relative", display: "flex", flexWrap: "wrap", alignItems: "center", columnGap: 48, rowGap: 10, padding: `10px 44px 10px ${GUTTER}px`, background: W.page, borderBottom: `1px solid ${W.edge}`, borderRadius: "10px 10px 0 0" }}>
+        <div style={{ position: "relative", display: "flex", flexWrap: "wrap", alignItems: "center", columnGap: 48, rowGap: 18, padding: `10px 44px 10px ${GUTTER}px`, background: W.page, borderBottom: `1px solid ${W.edge}`, borderRadius: "10px 10px 0 0" }}>
           <Part k="header" block={false} badge="left">
             <span style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "2px 4px" }}>
               <CopilotMark size={24} />
@@ -87,7 +91,7 @@ export function CopilotFigure({ focus, title = "The Copilot pane", what, note }:
         </div>
         <div style={{ display: "grid", gap: 16, padding: `16px 14px 14px ${GUTTER}px` }}>
           <Part k="asked" badge="left">
-            <div style={bubble}>Write a short, friendly reply to Sarah. The two missing pallets from order 4417 arrive tomorrow before 10:00.</div>
+            <div style={bubble}>{keep("Write a short, friendly reply to Sarah. The two missing pallets from order 4417 arrive tomorrow before 10:00.")}</div>
           </Part>
           <div style={{ display: "grid", gap: 8 }}>
             <span style={{ display: "inline-flex", alignItems: "center", gap: 8, fontSize: 13, fontWeight: 600 }}>
@@ -95,7 +99,7 @@ export function CopilotFigure({ focus, title = "The Copilot pane", what, note }:
             </span>
             <div style={{ ...card, display: "grid", gap: 12, marginLeft: -2 }}>
               <Part k="answer" badge="left">
-                <div style={draftBox}>{"Hi Sarah,\n\nGood news: the two missing pallets from order 4417 arrive tomorrow before 10:00.\n\nThanks,\nJordan"}</div>
+                <div style={draftBox}>{keep("Hi Sarah,\n\nGood news: the two missing pallets from order 4417 arrive tomorrow before 10:00.\n\nThanks,\nJordan")}</div>
               </Part>
               <Part k="refs" block={false} badge="left" style={{ justifySelf: "start" }}>
                 <span style={{ display: "inline-flex", flexWrap: "wrap", alignItems: "center", gap: 6, padding: "2px 4px", fontSize: 12, color: W.muted }}>
@@ -110,7 +114,7 @@ export function CopilotFigure({ focus, title = "The Copilot pane", what, note }:
                 </span>
               </Part>
             </div>
-            <Part k="note" block={false} badge="left" style={{ justifySelf: "start", marginTop: 4 }}>
+            <Part k="note" block={false} badge="left" style={{ justifySelf: "start", marginTop: 12 }}>
               <span style={noteText}>AI-generated content may be incorrect.</span>
             </Part>
           </div>
@@ -183,18 +187,18 @@ export function DraftFigure({ focus, title = "Draft with Copilot, in an Outlook 
           </Part>
         </div>
         <div style={{ margin: `16px 12px 0 ${GUTTER}px`, padding: 2, borderRadius: 10, background: W.copilotMark }}>
-          <div style={{ padding: "11px 12px 14px", borderRadius: 8, background: W.page, display: "grid", gap: 16 }}>
+          <div style={{ padding: "11px 12px 14px", borderRadius: 8, background: W.page, display: "grid", gap: 22 }}>
             <span style={{ display: "inline-flex", alignItems: "center", gap: 8, fontWeight: 600, fontSize: 14.5 }}>
               <CopilotMark size={20} /> Draft with Copilot
             </span>
             <Part k="prompt" badge="left" style={{ marginLeft: -4 }}>
-              <div style={{ padding: "8px 10px", border: "1px solid #d6d1f0", borderRadius: 6, fontSize: 14, lineHeight: 1.5 }}>{KENT_PROMPT}</div>
+              <div style={{ padding: "8px 10px", border: "1px solid #d6d1f0", borderRadius: 6, fontSize: 14, lineHeight: 1.5 }}>{keep(KENT_PROMPT)}</div>
             </Part>
             <Part k="generate" block={false} badge="left" style={{ justifySelf: "start", marginLeft: -4 }}>
               <span style={{ display: "inline-flex", minHeight: 30, alignItems: "center", padding: "3px 14px", borderRadius: 5, background: W.copilot, color: "#fff", fontWeight: 700, fontSize: 13.5 }}>Generate</span>
             </Part>
             <Part k="draft" badge="left" style={{ marginLeft: -4 }}>
-              <div style={draftBox}>{KENT_DRAFT}</div>
+              <div style={draftBox}>{keep(KENT_DRAFT)}</div>
             </Part>
             <Part k="keep" block={false} badge="left" style={{ justifySelf: "start", marginLeft: -4 }}>
               <span style={{ display: "inline-flex", flexWrap: "wrap", gap: 6, padding: 2 }}>
@@ -250,7 +254,7 @@ export function PromptFigure({ focus, title = "A good prompt, part by part", wha
         <div style={{ display: "grid", gap: 14, marginTop: 14, fontSize: 17, lineHeight: 1.5 }}>
           {PROMPT.map(([k, text, colour]) => (
             <Part key={k} k={k} badge="left" style={{ justifySelf: "start" }}>
-              <span style={{ display: "block", padding: "3px 8px", borderRadius: 4, background: colour }}>{text}</span>
+              <span style={{ display: "block", padding: "3px 8px", borderRadius: 4, background: colour }}>{keep(text)}</span>
             </Part>
           ))}
         </div>
@@ -356,8 +360,8 @@ export const EXCEL_AI_PARTS: Record<ExcelAiPart, PartInfo> = {
 /* Columns C to G of the log; A and B (the date and the delivery note) are
  * hidden, as Excel shows it, with the double line. */
 const LOG_COLS = [
-  { col: "C", head: "Supplier", w: 100 },
-  { col: "D", head: "Booked", w: 44 },
+  { col: "C", head: "Supplier", w: 78 },
+  { col: "D", head: "Booked", w: 48 },
   { col: "E", head: "Arrived", w: 48 },
   { col: "F", head: "Status", w: 56 },
   { col: "G", head: "Notes", w: 140 },
@@ -378,7 +382,7 @@ export function ExcelCopilotFigure({ focus, title = "Excel, with Copilot down th
   const head: CSSProperties = { ...cellS, justifyContent: "center", background: W.sunk, color: W.muted, fontSize: 12 };
   const rowsN = LOG_ROWS.length + 1;
   return (
-    <FigureFrame info={withWhat(EXCEL_AI_PARTS, what)} focus={focus} title={title} note={note} minWidth={480}>
+    <FigureFrame info={withWhat(EXCEL_AI_PARTS, what)} focus={focus} title={title} note={note} minWidth={450}>
       <AppWindow app="Excel" colour={W.excel} title="2026-11-06 Deliveries this week.xlsx">
         <div style={{ display: "flex", flexWrap: "wrap", gap: 8, alignItems: "center", padding: `8px 12px 8px ${GUTTER}px`, background: W.chrome, borderBottom: `1px solid ${W.edge}` }}>
           <Part k="button" block={false} badge="left">
@@ -391,7 +395,7 @@ export function ExcelCopilotFigure({ focus, title = "Excel, with Copilot down th
         </div>
         <div style={{ display: "flex", flexWrap: "wrap", alignItems: "stretch" }}>
           {/* the sheet: wider than a phone, so it scrolls in the frame there */}
-          <div style={{ flex: "1 1 470px", minWidth: 470, padding: `12px 12px 16px ${GUTTER}px` }}>
+          <div style={{ flex: "1 1 440px", minWidth: 440, padding: "12px 12px 16px 30px" }}>
             <Part k="bar">
               <div style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 13 }}>
                 <span style={{ width: 40, padding: "4px 6px", border: `1px solid ${W.edge}` }}>D9</span>
@@ -401,7 +405,7 @@ export function ExcelCopilotFigure({ focus, title = "Excel, with Copilot down th
             </Part>
             <div style={{ marginTop: 40, display: "flex", borderLeft: `1px solid ${W.edge}`, borderTop: `1px solid ${W.edge}`, width: "fit-content" }}>
               {/* row numbers, with the hidden columns' double line on their right */}
-              <div style={{ width: 28, borderRight: `3px double ${W.faint}` }}>
+              <div style={{ width: 24, borderRight: `3px double ${W.faint}` }}>
                 <span style={head} />
                 {Array.from({ length: rowsN - 1 }, (_, i) => (
                   <span key={i} style={head}>
@@ -444,7 +448,7 @@ export function ExcelCopilotFigure({ focus, title = "Excel, with Copilot down th
             </div>
           </div>
           {/* the pane: beside the sheet on a laptop, under it on a phone */}
-          <div style={{ flex: "1 1 250px", minWidth: 0, maxWidth: "min(340px, calc(100vw - 110px))", borderLeft: `1px solid ${W.edge}`, background: W.copilotTint, padding: "38px 14px 14px 14px" }}>
+          <div style={{ flex: "1 1 250px", minWidth: 0, maxWidth: "min(340px, calc(100vw - 130px))", borderLeft: `1px solid ${W.edge}`, background: W.copilotTint, padding: "38px 14px 14px 14px" }}>
             <Part k="pane" badge="top" holds={["question", "explain", "note"]}>
               <div style={{ display: "grid", gap: 38, padding: 4 }}>
                 <span style={{ display: "flex", alignItems: "center", gap: 8, fontWeight: 600, fontSize: 14 }}>
@@ -570,7 +574,7 @@ export function ToolsFigure({ focus, title = "Work Copilot, and a free tool", wh
               <b style={{ fontSize: 15, fontWeight: 600 }}>Copilot</b>
               <Protected />
             </div>
-            <p style={{ margin: 0, padding: "12px", fontSize: 13.5, color: W.muted, background: W.copilotTint }}>you@northfieldsupplies.example</p>
+            <p style={{ margin: 0, padding: "12px", fontSize: 13.5, color: W.muted, background: W.copilotTint }}>Signed in with your work account</p>
           </div>
         </Part>
         <Part k="free" badge="left">

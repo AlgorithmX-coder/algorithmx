@@ -388,7 +388,7 @@ const m12: ModuleManifest = {
         },
         {
           heading: "Then, and only then, Send",
-          figure: <CheckFigure fixed focus={["send"]} title="Checked, fixed and ready to send" />,
+          figure: <CheckFigure fixed focus={["draft", "send"]} title="Checked, fixed and ready to send" what={{ draft: "Fixed now: Thursday\u00a012\u00a0November, and no discount. Everything in it matches Sarah's email." }} />,
           body: ["Here it is fixed: Thursday 12 November, and no discount. Read it once more, as the customer will. The right day, the right amount, nothing extra? Then press Send (7). Once it's gone, the customer holds you to every word."],
         },
       ],
