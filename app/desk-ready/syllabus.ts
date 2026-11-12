@@ -137,7 +137,7 @@ export const PARTS: readonly DeskPart[] = [
         title: "Files and sharing",
         promise: "Name, save and share files the way offices expect.",
         topics: ["Folders that make sense", "File names you can find again", "OneDrive, SharePoint and Teams files", "Send a link or attach a file?", "Who can see it: sharing settings"],
-        ready: false,
+        ready: true,
       },
     ],
   },
@@ -153,7 +153,7 @@ export const PARTS: readonly DeskPart[] = [
         title: "Admin in practice",
         promise: "Handle invoices, orders, timesheets and messages.",
         topics: ["Reading a purchase order and an invoice", "Checking an invoice against a delivery", "Timesheets, holidays and expenses", "Booking systems", "Turning a phone message into an email"],
-        ready: false,
+        ready: true,
       },
       {
         id: "m11",
@@ -161,7 +161,7 @@ export const PARTS: readonly DeskPart[] = [
         title: "Staying safe at work",
         promise: "Spot a scam email and keep other people's details safe.",
         topics: ["Spotting a scam email", "Fake invoices and changed bank details", "Passwords and two-step sign-in", "Sending to the wrong person", "Keeping customer details private"],
-        ready: false,
+        ready: true,
       },
       {
         id: "m12",

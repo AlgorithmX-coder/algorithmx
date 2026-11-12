@@ -2,7 +2,9 @@
 
 import { useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent } from "react";
 import { W } from "../../tokens";
-import type { Paper, WordDoc } from "../types";
+import { DocSheet as PaperworkSheet, PAPERWORK_CSS } from "../paperwork";
+import type { Grid, Paper, WordDoc } from "../types";
+import { MiniGrid } from "./MiniGrid";
 import { DocSheet } from "./WordParts";
 
 /* A scanned page (a delivery note) in a small window that floats over
@@ -11,6 +13,8 @@ import { DocSheet } from "./WordParts";
  * bar. Files with nothing to read show a short note instead. */
 
 export function PaperSheet({ paper }: { paper: Paper }) {
+  /* Module 10: real paperwork (an invoice, a receipt) draws itself */
+  if (paper.doc) return <PaperworkSheet doc={paper.doc} />;
   return (
     <div style={{ position: "relative", background: "#fffdf6", padding: "22px 24px 26px", fontFamily: "'Courier New', ui-monospace, monospace", color: "#2a2a2a", fontSize: 13.5, lineHeight: 1.45, boxShadow: "inset 0 0 40px rgba(120,100,60,0.08)" }}>
       <div style={{ display: "flex", justifyContent: "space-between", gap: 16, alignItems: "flex-start" }}>
@@ -69,8 +73,11 @@ export function PaperSheet({ paper }: { paper: Paper }) {
   );
 }
 
-export default function Viewer({ title, paper, doc, onClose }: { title: string; paper?: Paper; doc?: WordDoc; onClose: () => void }) {
+export default function Viewer({ title, paper, doc, sheet, label, onClose }: { title: string; paper?: Paper; doc?: WordDoc; /* ── Module 9 ── a workbook or a Word file, looked at but not edited (a lesson lab) */ sheet?: Grid; label?: string; onClose: () => void }) {
   const [pos, setPos] = useState({ x: 40, y: 60 });
+  /* Module 10: a full page of paperwork needs a wider window; a photo opens in Photos */
+  const paperwork = paper?.doc;
+  const photo = /\.(jpe?g|png)$/i.test(title);
   const drag = useRef<{ dx: number; dy: number } | null>(null);
 
   const down = (e: ReactPointerEvent<HTMLDivElement>) => {
@@ -87,23 +94,28 @@ export default function Viewer({ title, paper, doc, onClose }: { title: string; 
     <div
       role="dialog"
       aria-label={title}
-      style={{ position: "absolute", left: pos.x, top: pos.y, zIndex: 30, width: doc ? 660 : 460, maxWidth: "calc(100% - 20px)", borderRadius: 8, overflow: "hidden", background: W.page, boxShadow: "0 24px 60px -18px rgba(0,0,0,0.55), 0 0 0 1px rgba(0,0,0,0.12)", fontFamily: W.font }}
+      style={{ position: "absolute", left: pos.x, top: pos.y, zIndex: 30, width: doc || sheet ? 660 : paperwork && !photo ? 640 : 460, maxWidth: "calc(100% - 20px)", borderRadius: 8, overflow: "hidden", background: W.page, boxShadow: "0 24px 60px -18px rgba(0,0,0,0.55), 0 0 0 1px rgba(0,0,0,0.12)", fontFamily: W.font }}
     >
       <div
         onPointerDown={down}
         onPointerMove={move}
         onPointerUp={() => (drag.current = null)}
-        style={{ display: "flex", alignItems: "center", gap: 10, minHeight: 40, padding: "0 6px 0 12px", background: "#c4314b", color: "#fff", fontSize: 14, cursor: "grab", touchAction: "none", userSelect: "none" }}
+        style={{ display: "flex", alignItems: "center", gap: 10, minHeight: 40, padding: "0 6px 0 12px", background: photo ? "#1f1f1f" : label === "Word" ? W.word : sheet ? W.excel : "#c4314b", color: "#fff", fontSize: 14, cursor: "grab", touchAction: "none", userSelect: "none" }}
       >
-        <b>PDF</b>
+        <b>{photo ? "Photos" : (label ?? (sheet ? "Excel" : "PDF"))}</b>
         <span style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{title}</span>
         <span style={{ marginLeft: "auto", fontSize: 12.5, opacity: 0.85 }}>drag me</span>
         <button type="button" onClick={onClose} aria-label={`Close ${title}`} style={{ width: 40, height: 36, border: "none", background: "transparent", color: "#fff", fontSize: 18, cursor: "pointer" }}>
           ✕
         </button>
       </div>
-      <div style={{ maxHeight: 460, overflowY: "auto", background: "#e9e7e2", padding: 12 }}>
-        {doc ? (
+      <div style={{ maxHeight: paperwork ? 500 : 460, overflowY: "auto", background: photo ? "#1f1f1f" : "#e9e7e2", padding: 12 }}>
+        {paperwork && <style>{PAPERWORK_CSS}</style>}
+        {sheet ? (
+          <div style={{ background: W.page, overflow: "auto" }}>
+            <MiniGrid g={sheet} />
+          </div>
+        ) : doc ? (
           /* ── Module 8: Documents ── a PDF made from a Word document: its pages, read-only */
           <div style={{ display: "flex", justifyContent: "center" }}>
             <div style={{ zoom: 612 / 794 } as CSSProperties}>

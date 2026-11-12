@@ -48,7 +48,10 @@ export const WEEK_2: WeekContent = {
   ],
 
   screens: [
-    // 0 - OPENING VIDEO: "The Break-In" (the free-game trap)
+    // 0 - OPENING VIDEO: "The Break-In" - a "free prize" asks Layla for her
+    // name and school, the Raccoon adds it to his collection, and Adam says
+    // "Let's learn what to keep PRIVATE!" (talking film, 2026-11-11;
+    // source + assembler in .scratch/w02, not in the repo).
     { type: "video", videoPlaceholder: "Week 2: The Break-In", videoSrc: "/videos/module-02-intro.mp4" },
 
     // 1 - ALERT: incident report with this week's topic image
@@ -866,7 +869,9 @@ export const WEEK_2: WeekContent = {
     // 24 - BOSS BATTLE: The Profile Forge (5 phases)
     { type: "bossBattle" },
 
-    // 25 - CLOSING VIDEO: "The Bounce" (the blank form)
+    // 25 - CLOSING VIDEO: "The Bounce" - another prize asks for her address,
+    // Layla closes it, the Raccoon gets nothing, Adam: "Not sure? Ask a
+    // grown-up first!" (talking film, 2026-11-11).
     { type: "video", videoPlaceholder: "Week 2: The Bounce", videoSrc: "/videos/module-02-outro.mp4" },
 
     // 26 - Mission Debrief

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
+import { useEffect, useId, useState, type ReactNode } from "react";
 import { W } from "../../tokens";
 import { CONTACTS, YOU } from "../northfield";
 import { PlacePicker } from "../places";
@@ -8,6 +8,10 @@ import { newId, type Action } from "../store";
 import type { Attachment, Email, EmailLink, OfficeFile, OfficeState, Path, Person } from "../types";
 import { AppButton, Dialog, FileGlyph, TitleBar } from "../ui";
 import { InviteCard } from "./Calendar";
+/* ── Module 11: Staying safe at work ── */
+import { deliverReplies, detailOf, isInternal, PHONE_OF } from "../safety";
+import type { Contact } from "../types";
+/* ── end Module 11 ── */
 
 /* Outlook, for the office jobs: Inbox, the job's own folders, Sent items
  * and Junk email; a reading pane; Move to, Flag, Report (phishing) and
@@ -51,6 +55,7 @@ export default function Outlook({
   const [moveMenu, setMoveMenu] = useState(false);
   const [reporting, setReporting] = useState(false);
   const [clickedScam, setClickedScam] = useState<Email | null>(null);
+  const [statusUrl, setStatusUrl] = useState<string | null>(null); // Module 11
 
   const q = query.trim().toLowerCase();
   const hit = (e: Email) => !q || [e.subject, e.body, e.from.name, ...e.to.map((p) => p.name)].some((t) => t.toLowerCase().includes(q));
@@ -62,6 +67,9 @@ export default function Outlook({
   const unreadIn = (f: string) => state.emails.filter((e) => e.folder === f && e.unread).length;
   const open = state.emails.find((e) => e.id === openId) ?? null;
   const canFile = !!open && open.folder !== "sent";
+  /* Module 11: everyone the To box knows, and who wrote to you most recently */
+  const book = addressBook(state);
+  const recent = [...new Set(state.emails.filter((e) => e.folder !== "sent").map((e) => e.from.address))];
 
   const read = (e: Email) => {
     setOpenId(e.id);
@@ -95,6 +103,7 @@ export default function Outlook({
       inReplyTo: draft.inReplyTo,
     };
     dispatch({ type: "send", email });
+    if (state.replies?.length) dispatch({ type: "update", fn: (s) => deliverReplies(s, email) }); // Module 11
     setDraft(null);
     setNoSubject(false);
     setFolder("sent");
@@ -233,9 +242,12 @@ export default function Outlook({
         {/* reading or writing */}
         <div style={{ flex: 1, minWidth: 0, overflowY: "auto" }}>
           {draft ? (
-            <Compose draft={draft} setDraft={setDraft} onSend={() => send()} onDiscard={() => setDraft(null)} onLink={() => setPicker("link")} onAttach={() => setPicker("attach")} />
+            <Compose draft={draft} setDraft={setDraft} onSend={() => send()} onDiscard={() => setDraft(null)} onLink={() => setPicker("link")} onAttach={() => setPicker("attach")} book={book} recent={recent} />
           ) : open ? (
             <Reading
+              key={open.id}
+              book={book}
+              onUrl={setStatusUrl}
               email={open}
               invite={<InviteCard state={state} dispatch={dispatch} emailId={open.id} />}
               onAttachment={onAttachment}
@@ -251,6 +263,12 @@ export default function Outlook({
         </div>
       </div>
 
+      {/* Module 11: where a link really goes, in the bottom corner, as a browser shows it */}
+      {statusUrl && open?.fakeLink && (
+        <div aria-hidden style={{ position: "absolute", left: 0, bottom: 0, zIndex: 16, maxWidth: "70%", padding: "3px 10px", background: W.chrome, border: `1px solid ${W.edge}`, borderLeft: "none", borderBottom: "none", borderTopRightRadius: 4, fontSize: 12.5, color: W.body, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+          {statusUrl}
+        </div>
+      )}
       {picker && (
         <PlacePicker
           state={state}
@@ -316,7 +334,17 @@ function folderLabel(f: string) {
 
 /* `invite`: a meeting invite's answer buttons, drawn above the message
  * when the email carries one (Module 3, ./Calendar). */
-function Reading({ email, invite, onAttachment, onLink, onFakeLink }: { email: Email; invite?: ReactNode; onAttachment: (a: Attachment) => void; onLink: (l: EmailLink) => void; onFakeLink: () => void }) {
+function Reading({ email, invite, onAttachment, onLink, onFakeLink, book = [], onUrl }: { email: Email; invite?: ReactNode; onAttachment: (a: Attachment) => void; onLink: (l: EmailLink) => void; onFakeLink: () => void; book?: Contact[]; onUrl?: (url: string | null) => void }) {
+  /* Module 11: the sender's contact card, and the link's real address on hover */
+  const [card, setCard] = useState(false);
+  const [hover, setHoverOnly] = useState(false);
+  const url = email.fakeLink ? (email.fakeLink.url.startsWith("http") ? email.fakeLink.url : `https://${email.fakeLink.url}`) : "";
+  const setHover = (on: boolean) => {
+    setHoverOnly(on);
+    onUrl?.(on ? url : null);
+  };
+  useEffect(() => () => onUrl?.(null), [onUrl]);
+  const outside = !isInternal(email.from.address) && !email.from.address.startsWith("you@");
   return (
     <article style={{ padding: "18px 22px 28px" }}>
       {email.reported && <p style={{ margin: "0 0 14px", padding: "10px 12px", borderRadius: 6, background: "#fde7e9", fontSize: 14.5 }}>You reported this email as phishing. IT have been told.</p>}
@@ -329,8 +357,21 @@ function Reading({ email, invite, onAttachment, onLink, onFakeLink }: { email: E
             .join("")
             .slice(0, 2)}
         </span>
-        <span style={{ fontSize: 14.5, lineHeight: 1.45 }}>
-          <b style={{ fontWeight: 600, fontSize: 15.5 }}>{email.from.name}</b> <span style={{ color: W.muted }}>&lt;{email.from.address}&gt;</span>
+        <span onMouseLeave={() => setCard(false)} style={{ position: "relative", fontSize: 14.5, lineHeight: 1.45 }}>
+          <button
+            type="button"
+            className="ol-name"
+            aria-expanded={card}
+            aria-label={`${email.from.name}: show their contact card`}
+            onClick={() => setCard((c) => !c)}
+            onMouseEnter={() => setCard(true)}
+            style={{ padding: 0, border: "none", background: "none", fontFamily: W.font, fontWeight: 600, fontSize: 15.5, color: W.ink, cursor: "pointer" }}
+          >
+            {email.from.name}
+          </button>{" "}
+          <span style={{ color: W.muted }}>&lt;{email.from.address}&gt;</span>
+          {outside && <ExternalTag />}
+          {card && <ContactCard person={email.from} known={book.some((p) => p.address === email.from.address)} onClose={() => setCard(false)} />}
           <br />
           <span style={{ color: W.muted }}>
             To: {email.to.map((p) => p.name).join(", ")}
@@ -342,7 +383,7 @@ function Reading({ email, invite, onAttachment, onLink, onFakeLink }: { email: E
         <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginTop: 16 }}>
           {email.attachments.map((a, i) => (
             <button key={`a${i}`} type="button" onClick={() => onAttachment(a)} className="of-btn" title="Open" style={chip}>
-              <FileGlyph kind={a.name.endsWith(".pdf") ? "pdf" : a.name.endsWith(".docx") ? "docx" : "xlsx"} />
+              <FileGlyph kind={a.name.endsWith(".pdf") ? "pdf" : a.name.endsWith(".docx") ? "docx" : /\.jpe?g$/i.test(a.name) ? "jpg" : "xlsx"} />
               {a.name}
             </button>
           ))}
@@ -356,10 +397,29 @@ function Reading({ email, invite, onAttachment, onLink, onFakeLink }: { email: E
       {invite}
       <div style={{ marginTop: 18, whiteSpace: "pre-wrap", fontSize: 16, lineHeight: 1.6 }}>{email.body}</div>
       {email.fakeLink && (
-        <p style={{ margin: "16px 0 0" }}>
-          <button type="button" onClick={onFakeLink} title={email.fakeLink.url} style={{ minHeight: 44, padding: "8px 18px", border: "none", borderRadius: 4, background: "#ffc83d", color: "#1b1b1b", fontFamily: W.font, fontSize: 15.5, fontWeight: 700, cursor: "pointer" }}>
+        <p style={{ position: "relative", margin: "16px 0 0", paddingBottom: 66 }}>
+          <button
+            type="button"
+            onClick={() => {
+              setHover(false);
+              onFakeLink();
+            }}
+            onMouseEnter={() => setHover(true)}
+            onMouseLeave={() => setHover(false)}
+            onFocus={() => setHover(true)}
+            onBlur={() => setHover(false)}
+            aria-describedby={hover ? `url-${email.id}` : undefined}
+            style={{ minHeight: 44, padding: "8px 18px", border: "none", borderRadius: 4, background: "#ffc83d", color: "#1b1b1b", fontFamily: W.font, fontSize: 15.5, fontWeight: 700, cursor: "pointer" }}
+          >
             {email.fakeLink.text}
           </button>
+          {/* Outlook's tooltip: where the link really goes */}
+          {hover && (
+            <span id={`url-${email.id}`} role="tooltip" style={{ position: "absolute", left: 0, top: "calc(100% + 6px)", zIndex: 15, maxWidth: 440, padding: "8px 10px", borderRadius: 4, background: W.page, border: `1px solid ${W.edge}`, boxShadow: W.float, fontSize: 13.5, lineHeight: 1.45, color: W.ink, overflowWrap: "anywhere" }}>
+              {url}
+              <span style={{ display: "block", color: W.muted }}>Click or tap to follow link.</span>
+            </span>
+          )}
         </p>
       )}
     </article>
@@ -375,6 +435,8 @@ function Compose({
   onDiscard,
   onLink,
   onAttach,
+  book,
+  recent,
 }: {
   draft: Draft;
   setDraft: (d: Draft) => void;
@@ -382,6 +444,8 @@ function Compose({
   onDiscard: () => void;
   onLink: () => void;
   onAttach: () => void;
+  book?: Contact[];
+  recent?: string[];
 }) {
   return (
     <div style={{ display: "flex", flexDirection: "column", minHeight: "100%" }}>
@@ -395,9 +459,10 @@ function Compose({
           Discard
         </AppButton>
       </div>
-      <People label="To" people={draft.to} onChange={(to) => setDraft({ ...draft, to })} />
-      <People label="Cc" people={draft.cc} onChange={(cc) => setDraft({ ...draft, cc })} />
-      <People label="Bcc" people={draft.bcc} onChange={(bcc) => setDraft({ ...draft, bcc })} />
+      <MailTip people={[...draft.to, ...draft.cc, ...draft.bcc]} />
+      <People label="To" people={draft.to} onChange={(to) => setDraft({ ...draft, to })} book={book} recent={recent} />
+      <People label="Cc" people={draft.cc} onChange={(cc) => setDraft({ ...draft, cc })} book={book} recent={recent} />
+      <People label="Bcc" people={draft.bcc} onChange={(bcc) => setDraft({ ...draft, bcc })} book={book} recent={recent} />
       <label style={field}>
         <span style={fieldLabel}>Subject</span>
         <input aria-label="Subject" value={draft.subject} onChange={(e) => setDraft({ ...draft, subject: e.target.value })} style={fieldInput} />
@@ -449,20 +514,35 @@ const fieldInput = { flex: 1, minWidth: 0, minHeight: 38, border: "none", outlin
 const xBtn = { width: 28, height: 28, border: "none", background: "transparent", cursor: "pointer", color: W.muted, fontSize: 13 } as const;
 
 /* The To and Cc boxes: people as chips, and a box that suggests contacts
- * as you type their name, as Outlook does. */
-function People({ label, people, onChange }: { label: string; people: Person[]; onChange: (p: Person[]) => void }) {
+ * as you type their name, as Outlook does. Module 11: the people you have
+ * heard from most recently come first (so Enter picks them), each with
+ * their address and a line saying who they are, and anyone outside the
+ * company is marked. Arrow keys move through the suggestions. */
+export function People({ label, people, onChange, book = CONTACTS, recent = [] }: { label: string; people: Person[]; onChange: (p: Person[]) => void; book?: Contact[]; recent?: string[] }) {
   const [text, setText] = useState("");
+  const [at, setAt] = useState(0);
+  const listId = useId();
   const q = text.trim().toLowerCase();
-  const matches = q ? CONTACTS.filter((p) => !people.some((x) => x.address === p.address) && (p.name.toLowerCase().includes(q) || p.address.includes(q))) : [];
+  const rank = (p: Person) => {
+    const i = recent.indexOf(p.address);
+    return i < 0 ? recent.length : i;
+  };
+  const matches = q
+    ? book
+        .filter((p) => !people.some((x) => x.address === p.address) && (p.name.toLowerCase().includes(q) || p.address.includes(q)))
+        .sort((a, b) => rank(a) - rank(b))
+    : [];
+  const active = Math.min(at, Math.max(0, matches.length - 1));
   const add = (p: Person) => {
-    onChange([...people, p]);
+    onChange([...people, { name: p.name, address: p.address }]);
     setText("");
+    setAt(0);
   };
   return (
     <div style={{ ...field, position: "relative", flexWrap: "wrap" }}>
       <span style={fieldLabel}>{label}</span>
       {people.map((p) => (
-        <span key={p.address} title={p.address} style={{ display: "inline-flex", alignItems: "center", gap: 4, padding: "2px 4px 2px 10px", borderRadius: 14, background: W.select, fontSize: 14.5 }}>
+        <span key={p.address} title={p.address} style={{ display: "inline-flex", alignItems: "center", gap: 4, padding: "2px 4px 2px 10px", borderRadius: 14, background: isInternal(p.address) ? W.select : "#fff4ce", border: isInternal(p.address) ? "1px solid transparent" : "1px solid #f2d27a", fontSize: 14.5 }}>
           {p.name}
           <button type="button" aria-label={`Remove ${p.name}`} onClick={() => onChange(people.filter((x) => x.address !== p.address))} style={xBtn}>
             ✕
@@ -471,27 +551,146 @@ function People({ label, people, onChange }: { label: string; people: Person[]; 
       ))}
       <input
         aria-label={label}
+        role="combobox"
+        aria-expanded={matches.length > 0}
+        aria-autocomplete="list"
+        aria-controls={listId}
         value={text}
-        onChange={(e) => setText(e.target.value)}
+        onChange={(e) => {
+          setText(e.target.value);
+          setAt(0);
+        }}
         onKeyDown={(e) => {
-          if (e.key === "Enter" && matches[0]) {
+          if (e.key === "Enter" && matches[active]) {
             e.preventDefault();
-            add(matches[0]);
-          } else if (e.key === "Backspace" && !text && people.length) onChange(people.slice(0, -1));
+            add(matches[active]);
+          } else if (e.key === "ArrowDown" && matches.length) {
+            e.preventDefault();
+            setAt((active + 1) % matches.length);
+          } else if (e.key === "ArrowUp" && matches.length) {
+            e.preventDefault();
+            setAt((active - 1 + matches.length) % matches.length);
+          } else if (e.key === "Escape") setText("");
+          else if (e.key === "Backspace" && !text && people.length) onChange(people.slice(0, -1));
         }}
         placeholder={people.length ? "" : "Type a name"}
         style={{ ...fieldInput, minWidth: 140 }}
       />
       {matches.length > 0 && (
-        <div role="listbox" style={{ position: "absolute", left: 84, top: "100%", zIndex: 10, width: 320, background: W.page, border: `1px solid ${W.edge}`, borderRadius: 6, boxShadow: W.float, padding: 4 }}>
-          {matches.map((p) => (
-            <button key={p.address} type="button" role="option" aria-selected={false} className="of-row" onClick={() => add(p)} style={{ width: "100%", minHeight: 44, textAlign: "left", padding: "6px 10px", border: "none", background: "transparent", borderRadius: 4, fontFamily: W.font }}>
-              <b style={{ display: "block", fontSize: 15, fontWeight: 600 }}>{p.name}</b>
-              <span style={{ fontSize: 13, color: W.muted }}>{p.address}</span>
-            </button>
-          ))}
+        <div id={listId} role="listbox" aria-label="Suggested contacts" style={{ position: "absolute", left: 84, top: "100%", zIndex: 10, width: 380, maxWidth: "calc(100% - 96px)", background: W.page, border: `1px solid ${W.edge}`, borderRadius: 6, boxShadow: W.float, padding: 4 }}>
+          <p style={{ margin: 0, padding: "4px 10px 6px", fontSize: 12, color: W.muted }}>Suggested contacts</p>
+          {matches.map((p, i) => {
+            const detail = detailOf(p);
+            const outside = !isInternal(p.address);
+            return (
+              <button
+                key={p.address}
+                type="button"
+                role="option"
+                aria-selected={i === active}
+                className="of-row"
+                onMouseEnter={() => setAt(i)}
+                onClick={() => add(p)}
+                style={{ width: "100%", minHeight: 52, display: "flex", gap: 10, alignItems: "center", textAlign: "left", padding: "6px 10px", border: "none", background: i === active ? W.select : "transparent", borderRadius: 4, fontFamily: W.font, color: W.ink }}
+              >
+                <Initials name={p.name} outside={outside} />
+                <span style={{ minWidth: 0 }}>
+                  <span style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                    <b style={{ fontSize: 15, fontWeight: 600 }}>{p.name}</b>
+                    {outside && <ExternalTag />}
+                  </span>
+                  <span style={{ display: "block", fontSize: 13, color: W.body, overflowWrap: "anywhere" }}>{p.address}</span>
+                  {detail && <span style={{ display: "block", fontSize: 12.5, color: W.muted }}>{detail}</span>}
+                </span>
+              </button>
+            );
+          })}
         </div>
       )}
     </div>
   );
 }
+
+/* ── Module 11: Staying safe at work ────────────────────────────────── */
+
+/* The company's people, plus anyone the job adds (a customer who emailed). */
+export function addressBook(s: OfficeState): Contact[] {
+  const extra = (s.contacts ?? []).filter((c) => !CONTACTS.some((p) => p.address === c.address));
+  return [...CONTACTS, ...extra];
+}
+
+function Initials({ name, outside, size = 32 }: { name: string; outside?: boolean; size?: number }) {
+  return (
+    <span aria-hidden style={{ width: size, height: size, borderRadius: "50%", flexShrink: 0, background: outside ? "#8a6d1f" : W.outlook, color: "#fff", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: size * 0.38, fontWeight: 700 }}>
+      {name
+        .split(" ")
+        .map((w) => w[0])
+        .join("")
+        .slice(0, 2)
+        .toUpperCase()}
+    </span>
+  );
+}
+
+/* Outlook's mark on a person from outside the company. */
+export function ExternalTag() {
+  return <span style={{ display: "inline-block", marginLeft: 6, padding: "0 6px", borderRadius: 3, background: "#fff4ce", border: "1px solid #f2d27a", color: "#6b4f00", fontSize: 11.5, fontWeight: 600, lineHeight: "18px", verticalAlign: "1px" }}>External</span>;
+}
+
+/* The yellow bar above To: who on this email is outside the company. */
+export function MailTip({ people }: { people: Person[] }) {
+  const outside = people.filter((p) => !isInternal(p.address));
+  if (!outside.length) return null;
+  const names = outside.map((p) => p.name);
+  const who = names.length === 1 ? names[0] : `${names.slice(0, -1).join(", ")} and ${names[names.length - 1]}`;
+  return (
+    <div role="status" style={{ display: "flex", gap: 10, alignItems: "flex-start", padding: "8px 14px", background: "#fff4ce", borderBottom: "1px solid #f2d27a", fontSize: 14, lineHeight: 1.45, color: "#3b2e00" }}>
+      <span aria-hidden style={{ flexShrink: 0, fontWeight: 700 }}>ⓘ</span>
+      <span>
+        {who} {outside.length === 1 ? "is" : "are"} outside your organisation.
+        <span style={{ display: "block", color: "#6b4f00", overflowWrap: "anywhere" }}>{outside.map((p) => p.address).join(", ")}</span>
+      </span>
+    </div>
+  );
+}
+
+/* The card Outlook shows when you point at or click a sender's name: who
+ * they really are, by address. */
+function ContactCard({ person, known, onClose }: { person: Person; known: boolean; onClose: () => void }) {
+  const outside = !isInternal(person.address);
+  const [user, domain] = person.address.split("@");
+  const detail = detailOf(person);
+  const phone = PHONE_OF[person.address];
+  return (
+    <span role="dialog" aria-label={`Contact card: ${person.name}`} onMouseLeave={onClose} style={{ position: "absolute", left: 0, top: "100%", zIndex: 18, marginTop: 4, width: 330, display: "block", padding: "14px 14px 12px", background: W.page, border: `1px solid ${W.edge}`, borderRadius: 8, boxShadow: W.float, fontSize: 14, lineHeight: 1.45, color: W.ink }}>
+      <span style={{ display: "flex", gap: 12, alignItems: "center" }}>
+        <Initials name={person.name} outside={outside} size={44} />
+        <span style={{ minWidth: 0 }}>
+          <b style={{ display: "block", fontSize: 16, fontWeight: 600 }}>{person.name}</b>
+          <span style={{ color: W.muted, fontSize: 13 }}>{known ? (detail ?? "In your contacts") : "Not in your contacts"}</span>
+        </span>
+        <button type="button" aria-label="Close the contact card" onClick={onClose} style={{ ...xBtn, marginLeft: "auto", alignSelf: "flex-start" }}>
+          ✕
+        </button>
+      </span>
+      <span style={{ display: "block", marginTop: 12, paddingTop: 10, borderTop: `1px solid ${W.edge}` }}>
+        <span style={{ display: "block", fontSize: 12, color: W.muted }}>Email</span>
+        <span style={{ overflowWrap: "anywhere" }}>
+          {user}@<b style={{ fontWeight: 700 }}>{domain}</b>
+        </span>
+        {phone && (
+          <>
+            <span style={{ display: "block", marginTop: 8, fontSize: 12, color: W.muted }}>Work phone</span>
+            <span>{phone}</span>
+          </>
+        )}
+        {outside && (
+          <span style={{ display: "block", marginTop: 10, padding: "6px 8px", borderRadius: 4, background: "#fff4ce", color: "#3b2e00", fontSize: 13 }}>
+            Outside your organisation.{known ? "" : " You haven't had an email from this address before."}
+          </span>
+        )}
+      </span>
+    </span>
+  );
+}
+/* ── end Module 11 ── */

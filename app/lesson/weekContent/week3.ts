@@ -52,7 +52,10 @@ export const WEEK_3: WeekContent = {
   ],
 
   screens: [
-    // 0 - OPENING VIDEO: the fake-kid profile trap
+    // 0 - OPENING VIDEO: the fake-kid profile trap - a "new friend" says he's
+    // ten, the Raccoon hides behind a kid mask, and Layla says "Online, you
+    // can't see who's REALLY typing!" (talking film, 2026-11-11; source +
+    // assembler in .scratch/w03, not in the repo).
     { type: "video", videoPlaceholder: "Week 3: The Fake Friend", videoSrc: "/videos/module-03-intro.mp4" },
 
     // 1 - ALERT: incident report (Sarah's hook)
@@ -1042,7 +1045,9 @@ export const WEEK_3: WeekContent = {
     // 25 - BOSS BATTLE: the Disguise Kit showdown (QuizBoss, 5 Q / pass 4)
     { type: "bossBattle" },
 
-    // 26 - CLOSING VIDEO: the mask falls off
+    // 26 - CLOSING VIDEO: the mask falls off - Adam blocks the stranger, the
+    // Raccoon's screen shows him blocked, Layla: "Uh-oh feeling? Stop, and
+    // tell a grown-up!" (talking film, 2026-11-11).
     { type: "video", videoPlaceholder: "Week 3: The Mask Falls", videoSrc: "/videos/module-03-outro.mp4" },
 
     // 27 - Mission Debrief

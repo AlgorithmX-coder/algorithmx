@@ -22,7 +22,7 @@ export interface Paper {
   footer?: string;
 }
 
-export type FileKind = "folder" | "xlsx" | "xltx" | "docx" | "dotx" | "pdf";
+export type FileKind = "folder" | "xlsx" | "xltx" | "docx" | "dotx" | "pdf" | "jpg"; // jpg: Module 10 (a photo of a receipt)
 
 /* A highlight rule (Excel's conditional formatting), on one column from
  * row 2 down: cells that match are coloured. */
@@ -70,6 +70,18 @@ export interface OfficeFile {
   /* ── Module 8: Documents ── a Word document (.docx, .dotx), or the
    * snapshot a PDF made from one carries, so it opens read-only. */
   doc?: WordDoc;
+  /* ── Module 9: Files and sharing ── */
+  /* A seeded file the learner may rename, move, delete and share (Sarah
+   * asked them to tidy it), unlike other people's files. */
+  editable?: boolean;
+  /* Earlier versions, oldest first. The file itself is the current one. */
+  versions?: FileVersion[];
+  /* People given access to this file directly, beyond the site's members. */
+  access?: AccessGrant[];
+  /* Sharing links made for it with Copy link or Share. */
+  shareLinks?: ShareLink[];
+  /* The version a restore brought back, e.g. "2.0", shown in its history. */
+  restoredFrom?: string;
 }
 
 export interface Person {
@@ -132,6 +144,9 @@ export interface OfficeState {
   /* ── end Module 3 ── */
   /* ── Module 13: Show what you can do ── the agency's test results */
   agency?: AgencyRecord;
+  /* ── Module 9: Files and sharing ── what was deleted, newest last, so it
+   * can be put back. */
+  recycle?: RecycledItem[];
 }
 
 export interface Check {
@@ -382,3 +397,221 @@ export interface AgencyRecord {
   excel: ExcelTestResult[];
 }
 /* ── end Module 13 ── */
+/* ── Module 10: Admin in practice ───────────────────────────────────────
+ * Business paperwork drawn from data (a purchase order, an invoice, a
+ * delivery note, a receipt), pictures on a sheet (a receipt on an expense
+ * claim), the desk phone's calls and the courier site's bookings. Every
+ * field is optional, so the other modules' offices are untouched. These
+ * merge into the interfaces above. */
+
+/* A party on a piece of paperwork: who it is from, or who it is to. */
+export interface DocParty {
+  name: string;
+  lines: string[];
+  phone?: string;
+  email?: string;
+  vatNo?: string;
+}
+
+export interface DocLine {
+  code?: string;
+  item: string;
+  qty: number;
+  unit?: string; // "pallet", "sack"
+  price?: number; // each, before VAT
+  /* A delivery note: how many came off the van. */
+  delivered?: number;
+}
+
+export interface BizDoc {
+  kind: "po" | "invoice" | "delivery" | "receipt" | "credit";
+  number: string; // "3307", "HP-2291", "DN-77812"
+  date: string; // "02/11/2026"
+  from: DocParty;
+  to: DocParty;
+  /* Deliver to, when it differs from the buyer's address. */
+  shipTo?: DocParty;
+  /* Other references printed on it: ["Your order", "PO 3307"]. */
+  refs: [string, string][];
+  lines: DocLine[];
+  vatRate?: number; // 0.2
+  bank?: { name: string; sortCode: string; account: string };
+  terms?: string; // "30 days from invoice date"
+  due?: string; // "10/12/2026"
+  /* Who signed it, in handwriting: a delivery note's receiver, a PO's approver. */
+  signed?: string;
+  signedRole?: string;
+  /* Handwriting on the page: "Only 10 on the van. 2 short. SP". */
+  note?: string;
+  footer?: string;
+  /* A receipt's own lines, printed as a till or ticket office does. */
+  receipt?: { title: string; lines: [string, string][]; total: string; paid: string };
+}
+
+export interface Paper {
+  /* Drawn as a real document (paperwork.tsx) when present. */
+  doc?: BizDoc;
+}
+
+/* A picture inserted on a sheet (Insert > Pictures), with a copy of what
+ * it shows, so it still draws if the photo is later moved. */
+export interface SheetPicture {
+  fileId: string;
+  name: string;
+  paper?: Paper;
+}
+
+export interface Tab {
+  pictures?: SheetPicture[];
+}
+
+export interface CourierAddress {
+  name: string;
+  lines: string[];
+  postcode: string;
+  contact?: string;
+  phone?: string;
+}
+
+export interface CourierBooking {
+  ref: string;
+  status: "booked" | "cancelled" | "collected";
+  /* "collect": the courier picks up from you. "dropoff": you take it to a shop. */
+  method: "collect" | "dropoff";
+  from: CourierAddress;
+  to: CourierAddress;
+  date: string; // "2026-11-13"
+  window: string; // "13:00 to 17:00"
+  parcels: { kg: number; cm?: string }[];
+  service: string;
+  price: number;
+  booked: string; // "12/11/2026 15:14"
+}
+
+/* A call on the desk phone. A recorded call keeps its words, so the
+ * learner can play it back and read along. */
+export interface PhoneCall {
+  id: string;
+  name: string;
+  company?: string;
+  number: string;
+  time: string; // "14:20"
+  /* "in": they rang you. "missed": nobody answered. "out": you rang them. */
+  way: "in" | "missed" | "out";
+  seconds: number;
+  /* Rings when the job opens, until it is answered. */
+  ringing?: boolean;
+  /* The conversation, line by line, each at its second into the call. */
+  lines?: { who: "them" | "you"; at: number; text: string }[];
+}
+
+export interface OfficeState {
+  /* The desk phone: its call list, and which ringing calls were answered. */
+  phone?: { calls: PhoneCall[]; answered: string[] };
+  /* The courier site's account: every booking made, cancelled ones too. */
+  courier?: { bookings: CourierBooking[] };
+}
+/* ── end Module 10 ── */
+
+/* ── Module 9: Files and sharing ─────────────────────────────────────────
+ * What OneDrive and SharePoint keep about a file beyond its contents: its
+ * earlier versions, who can open it and how, and the Recycle bin. Kept as
+ * data so a job's checks read who can edit, what was sent to whom, and
+ * which version is current, never the clicks. */
+
+/* One earlier version of a file, as Version history lists it. */
+export interface FileVersion {
+  /* "1.0", "2.0": SharePoint numbers every saved version. */
+  no: string;
+  /* When it was saved, as shown: "09/11/2026 17:42". */
+  modified: string;
+  by: string;
+  sheet?: Grid;
+  tabs?: Tab[];
+  doc?: WordDoc;
+  paper?: Paper;
+  /* "Restored from version 2.0", when it came from a restore. */
+  comment?: string;
+}
+
+export type ShareRole = "edit" | "view";
+
+/* A person with access to one file: someone it was shared with by name. */
+export interface AccessGrant {
+  person: Person;
+  role: ShareRole;
+}
+
+/* A sharing link, as OneDrive makes them: who it works for and what they
+ * can do. "people" works only for the people named in it; "org" for anyone
+ * at Northfield who has the link; "anyone" for anyone at all, even outside
+ * the company; "existing" only for people who already have access. */
+export interface ShareLink {
+  id: string;
+  scope: "anyone" | "org" | "people" | "existing";
+  role: ShareRole;
+  people: Person[];
+  url: string;
+}
+
+/* A file or folder in the Recycle bin, with everything that was inside a
+ * folder, and where it was. Restore puts them all back. */
+export interface RecycledItem {
+  id: string;
+  file: OfficeFile;
+  inside: OfficeFile[];
+  deleted: string;
+}
+/* ── end Module 9 ── */
+/* ── Module 11: Staying safe at work ───────────────────────────────────
+ * The address book's extra people (a customer who shares a first name
+ * with HR), the desk phone's contacts and the numbers it can ring, an
+ * email's automatic answer, the two-step sign-in prompt on the learner's
+ * own mobile, and the computer's lock screen. Every field is optional, so
+ * the other modules' offices are untouched. These merge into the
+ * interfaces above. */
+
+/* Someone the To box can suggest, with the line Outlook shows under the
+ * name ("HR Advisor, Northfield Supplies"). */
+export interface Contact extends Person {
+  detail?: string;
+}
+
+/* A saved number on the desk phone: the numbers the company already holds. */
+export interface PhoneEntry {
+  name: string;
+  company?: string;
+  role?: string;
+  number: string;
+  group: "Northfield Supplies" | "Suppliers" | "Customers";
+}
+
+/* A number the desk phone can ring, and the call that happens when it
+ * does. Lines are timed when the job is seeded (admin.ts `timed`). */
+export type DialScript = Pick<PhoneCall, "name" | "company" | "number" | "seconds" | "lines">;
+
+/* The sign-in request that arrives on the learner's mobile. */
+export interface SignInPrompt {
+  at: string; // "15:02"
+  app: string; // "Microsoft 365"
+  location: string;
+  /* "waiting": not arrived yet. "shown": on the phone, unanswered. */
+  status: "waiting" | "shown" | "approved" | "denied";
+  /* Reported to IT from the app, after denying it. */
+  reported?: boolean;
+}
+
+export interface OfficeState {
+  /* People the To box suggests on top of the company's own list. */
+  contacts?: Contact[];
+  /* The desk phone's saved numbers, and what happens when one is rung. */
+  phoneBook?: PhoneEntry[];
+  dialable?: DialScript[];
+  /* An answer that arrives when the learner emails a given address. */
+  replies?: { to: string; reply: Email; sent?: boolean }[];
+  signIn?: SignInPrompt;
+  /* The computer's lock screen: whether it is locked now, and whether it
+   * was locked after the sign-in prompt had been dealt with. */
+  screen?: { locked: boolean; locks: number; afterPrompt?: boolean };
+}
+/* ── end Module 11 ── */

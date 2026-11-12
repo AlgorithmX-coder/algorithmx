@@ -12,6 +12,13 @@ import WordApp from "./Word";
 /* ── Module 13: Show what you can do ── */
 import { AGENCY } from "../agency";
 import Agency from "./Agency";
+/* ── Module 10: Admin in practice ── */
+import Edge, { EDGE_COLOUR } from "./Edge";
+import Phone, { PHONE_COLOUR, PhoneRinging } from "./Phone";
+/* ── end Module 10 ── */
+/* ── Module 11: Staying safe at work ── */
+import { LockLayer, SECURITY_COLOUR, SignInLayer } from "./Security";
+/* ── end Module 11 ── */
 
 /* The office's plug-in seam. Outlook, File Explorer and Excel are built
  * into Office.tsx; every other app (Calendar, Teams, Word, the Copilot
@@ -67,4 +74,12 @@ export const OFFICE_APPS: Record<string, OfficeApp> = {
   word: { label: "Word", colour: W.word, opens: ["docx", "dotx"], Window: WordApp },
   /* ── Module 13: Show what you can do ── */
   agency: { label: "Pennyford test centre", colour: AGENCY.colour, Window: Agency },
+  /* ── Module 10: Admin in practice ── */
+  phone: { label: "Phone", colour: PHONE_COLOUR, badge: (s) => (s.phone?.calls ?? []).filter((c) => c.ringing && !(s.phone?.answered ?? []).includes(c.id)).length, Window: Phone, Layer: PhoneRinging },
+  browser: { label: "Microsoft Edge", colour: EDGE_COLOUR, Window: Edge },
+  /* ── end Module 10 ── */
+  /* ── Module 11: Staying safe at work ── */
+  authenticator: { label: "Your phone", colour: SECURITY_COLOUR, Layer: SignInLayer, noTaskbar: true },
+  lock: { label: "Lock screen", colour: SECURITY_COLOUR, Layer: LockLayer, noTaskbar: true },
+  /* ── end Module 11 ── */
 };

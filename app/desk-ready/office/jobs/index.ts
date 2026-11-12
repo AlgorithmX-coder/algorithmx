@@ -12,13 +12,33 @@ import { stockCount } from "./stockCount";
 import { holidayForm } from "./holidayForm";
 import { letterhead } from "./letterhead";
 import { procedureReview } from "./procedureReview";
+/* ── Module 9: Files and sharing ── */
+import { shareRightWay } from "./shareRightWay";
+import { sharedFolder } from "./sharedFolder";
+import { versionBack } from "./versionBack";
+const M9 = [sharedFolder, shareRightWay, versionBack];
+/* ── end Module 9 ── */
+/* ── Module 10: Admin in practice ── */
+import { courierBooking } from "./courierBooking";
+import { invoiceCheck } from "./invoiceCheck";
+import { phoneMessage } from "./phoneMessage";
+import { timesheetExpense } from "./timesheet";
+const M10 = [invoiceCheck, timesheetExpense, phoneMessage, courierBooking];
+/* ── end Module 10 ── */
+/* ── Module 11: Staying safe at work ── */
+import { bankDetails } from "./bankDetails";
+import { signInPrompt } from "./signInPrompt";
+import { wrongEmma } from "./wrongEmma";
+const M11 = [bankDetails, wrongEmma, signInPrompt];
+/* ── end Module 11 ── */
 /* ── Module 13: Show what you can do ── */
 import { agencyTests } from "./agencyTests";
 import { cvWeek } from "./cvWeek";
+/* ── end Module 13 ── */
 
 /* Every office job, in course order. A module page lists its own jobs
  * under "On the job"; the route /desk-ready/office/[slug] runs one. */
-export const JOBS: readonly Job[] = [mondayInbox, lateDelivery, stockMeeting, rotaCall, chatOrEmail, stockCount, decemberRota, morningReport, sheetTotals, vatQuote, lateCount, bestCustomer, oddNumber, letterhead, holidayForm, procedureReview, cvWeek, agencyTests];
+export const JOBS: readonly Job[] = [mondayInbox, lateDelivery, stockMeeting, rotaCall, chatOrEmail, stockCount, decemberRota, morningReport, sheetTotals, vatQuote, lateCount, bestCustomer, oddNumber, letterhead, holidayForm, procedureReview, ...M9, ...M10, ...M11, cvWeek, agencyTests];
 
 export const jobBySlug = (slug: string) => JOBS.find((j) => j.slug === slug);
 export const jobsFor = (moduleId: string) => JOBS.filter((j) => j.moduleId === moduleId);
