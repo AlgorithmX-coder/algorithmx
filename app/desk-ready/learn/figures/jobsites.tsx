@@ -14,6 +14,9 @@ const keep: CSSProperties = { whiteSpace: "nowrap" };
 const SITE = "#2557a7";
 const SITE_SOFT = "#eef3fc";
 const WARN = "#a4262c";
+/* the badge gutter: wide on a wide screen; on a phone the frame's own
+ * padding holds the badges, so the window keeps its width */
+const G = (wide: number) => `clamp(14px, calc((100vw - 560px) * 0.3 + 14px), ${wide}px)`;
 /* a lit part's outline sits a few pixels clear of its words */
 const tight: CSSProperties = { padding: "3px 6px", margin: "0 -6px" };
 
@@ -98,14 +101,14 @@ export function JobAdFigure({ focus, title, what, note, scam }: { focus?: AdPart
             <span style={{ padding: "5px 10px", border: `1px solid ${W.edge}`, borderRadius: 6, fontSize: 13, color: W.body, ...keep }}>Leicester</span>
           </span>
         </div>
-        <div style={{ padding: "16px 22px 20px 56px", display: "grid", gridTemplateColumns: "minmax(0, 1fr)", gap: 12, justifyItems: "start" }}>
+        <div style={{ padding: `16px 22px 20px ${G(56)}`, display: "grid", gridTemplateColumns: "minmax(0, 1fr)", gap: 12, justifyItems: "start" }}>
           <Part k="title" style={tight}>
             <div style={{ fontSize: 22, fontWeight: 700, lineHeight: 1.2, ...bad(true) }}>{ad.title}</div>
           </Part>
           <Part k="employer" block={false} style={tight}>
               <span style={{ fontSize: 15 }}>
                 <span style={{ color: SITE, textDecoration: scam ? "none" : "underline", fontWeight: 600, ...bad(true) }}>{ad.employer}</span>
-                <span style={{ color: W.muted, fontSize: 13, ...keep }}> · {ad.rating}</span>
+                <span style={{ color: W.muted, fontSize: 13 }}> · {ad.rating}</span>
               </span>
           </Part>
           <Part k="location" block={false} style={tight}>
@@ -143,7 +146,7 @@ export function JobAdFigure({ focus, title, what, note, scam }: { focus?: AdPart
               {scam ? (
                 <span style={{ display: "inline-flex", alignItems: "center", gap: 6, minHeight: 34, padding: "0 12px", borderRadius: 8, border: `1px solid ${W.edge}`, fontSize: 13.5, ...keep }}>⚑ Report job</span>
               ) : (
-                <span style={{ display: "inline-flex", alignItems: "center", gap: 8, minHeight: 34, padding: "0 12px", borderRadius: 8, border: `1px solid ${W.edge}`, fontSize: 13.5, ...keep }}>
+                <span style={{ display: "inline-flex", alignItems: "center", gap: 8, minHeight: 34, padding: "4px 12px", borderRadius: 8, border: `1px solid ${W.edge}`, fontSize: 13.5 }}>
                   <span aria-hidden style={{ width: 30, height: 16, borderRadius: 8, background: SITE, position: "relative", display: "inline-block" }}>
                     <span style={{ position: "absolute", right: 2, top: 2, width: 12, height: 12, borderRadius: "50%", background: "#fff" }} />
                   </span>
@@ -204,7 +207,7 @@ export function ProfileFigure({ focus, title = "A work profile", what, note }: {
         <div style={{ background: "#f4f2ee", padding: "14px 16px 18px" }}>
           <div style={{ background: W.page, borderRadius: 8, border: `1px solid ${W.edge}`, overflow: "visible" }}>
             <div style={{ height: 64, borderRadius: "8px 8px 0 0", background: "linear-gradient(120deg, #a7c4e8, #d9e5f3)" }} />
-            <div style={{ padding: "0 20px 16px 56px", marginTop: -40 }}>
+            <div style={{ padding: `0 20px 16px ${G(56)}`, marginTop: -40 }}>
               <Part k="photo" style={{ display: "inline-block", borderRadius: "50%" }}>
                 <svg width="84" height="84" viewBox="0 0 84 84" aria-hidden style={{ display: "block", borderRadius: "50%", border: "3px solid #fff", background: "#dfe7f1" }}>
                   <circle cx="42" cy="34" r="15" fill="#8d6e63" />
@@ -230,7 +233,7 @@ export function ProfileFigure({ focus, title = "A work profile", what, note }: {
               </div>
             </div>
           </div>
-          <div style={{ marginTop: 12, background: W.page, borderRadius: 8, border: `1px solid ${W.edge}`, padding: "14px 20px 16px 56px", display: "grid", gap: 20 }}>
+          <div style={{ marginTop: 12, background: W.page, borderRadius: 8, border: `1px solid ${W.edge}`, padding: `14px 20px 16px ${G(56)}`, display: "grid", gap: 20 }}>
             <Part k="about" style={tight}>
               <div style={{ fontSize: 14, lineHeight: 1.5 }}>
                 <b style={{ display: "block", fontSize: 16, marginBottom: 2 }}>About</b>

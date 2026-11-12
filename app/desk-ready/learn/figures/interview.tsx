@@ -11,6 +11,9 @@ import { FigureFrame, Part, type PartInfo } from "./parts";
  * split into its four STAR parts. */
 
 const keep: CSSProperties = { whiteSpace: "nowrap" };
+/* the badge gutter: wide on a wide screen; on a phone the frame's own
+ * padding holds the badges, so the window keeps its width */
+const G = (wide: number) => `clamp(14px, calc((100vw - 560px) * 0.3 + 14px), ${wide}px)`;
 
 /* ── 1. the call ──────────────────────────────────────────────────────── */
 
@@ -74,7 +77,7 @@ export function InterviewFigure({ focus, title = "A video interview", what, note
           <div style={{ display: "flex", alignItems: "center", gap: 10, minHeight: 34, padding: "0 12px", background: W.teams, borderRadius: "8px 8px 0 0", fontSize: 13 }}>
             <b>Teams</b>
           </div>
-          <div style={{ padding: "12px 14px 0 48px" }}>
+          <div style={{ padding: `12px 14px 0 ${G(48)}` }}>
             <Part k="join" style={tight}>
               <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "6px 10px", padding: "6px 10px", borderRadius: 6, background: "rgba(255,255,255,0.08)", fontSize: 12.5, lineHeight: 1.35 }}>
                 <span style={{ minWidth: 0, flex: "1 1 160px" }}>
@@ -88,7 +91,7 @@ export function InterviewFigure({ focus, title = "A video interview", what, note
             </Part>
           </div>
           {/* the interviewer, and your own picture beside them */}
-          <div style={{ display: "flex", flexWrap: "wrap", alignItems: "flex-end", gap: "14px 46px", padding: "16px 14px 12px 48px" }}>
+          <div style={{ display: "flex", flexWrap: "wrap", alignItems: "flex-end", gap: "14px 46px", padding: `16px 14px 12px ${G(48)}` }}>
             <Part k="them" style={{ ...tight, flex: "1 1 170px", minWidth: 0 }}>
               <div style={{ height: 160, borderRadius: 6, background: "linear-gradient(180deg, #50606e, #3a4752)", display: "flex", alignItems: "flex-end", justifyContent: "center", position: "relative", overflow: "hidden" }}>
                 <Person shirt="#1f3b57" hair="#2b2b2b" skin="#c58c6a" size={160} />
@@ -105,7 +108,7 @@ export function InterviewFigure({ focus, title = "A video interview", what, note
               </div>
             </Part>
           </div>
-          <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", alignItems: "center", gap: "12px 46px", padding: "12px 12px 14px 48px", borderTop: "1px solid rgba(255,255,255,0.08)" }}>
+          <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", alignItems: "center", gap: "12px 46px", padding: `12px 12px 14px ${G(48)}`, borderTop: "1px solid rgba(255,255,255,0.08)" }}>
             <Part k="mute" block={false} style={tight}>
               {btn("Mic", true)}
             </Part>

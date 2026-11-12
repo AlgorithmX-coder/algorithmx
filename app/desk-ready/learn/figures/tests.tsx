@@ -15,6 +15,9 @@ import { FigureFrame, Part, type PartInfo } from "./parts";
 
 const keep: CSSProperties = { whiteSpace: "nowrap" };
 const BAD = "#a4262c";
+/* the badge gutter: wide on a wide screen; on a phone the frame's own
+ * padding holds the badges, so the window keeps its width */
+const G = (wide: number) => `clamp(14px, calc((100vw - 560px) * 0.3 + 14px), ${wide}px)`;
 /* a lit part's outline sits a few pixels clear of what it holds */
 const tight: CSSProperties = { padding: 3, margin: -3 };
 
@@ -69,7 +72,7 @@ export function TypingFigure({ focus, title = "An agency typing test", what, not
   return (
     <FigureFrame info={info} focus={focus} title={title} note={note}>
       <Site path="candidate/typing-test">
-        <div style={{ padding: "14px 18px 18px 52px", display: "grid", gap: 14 }}>
+        <div style={{ padding: `14px 18px 18px ${G(52)}`, display: "grid", gap: 14 }}>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(110px, 1fr))", gap: "12px 44px" }}>
             <Part k="timer" style={tight}>
               <Stat label="Time left" value="2:49" />
@@ -82,7 +85,7 @@ export function TypingFigure({ focus, title = "An agency typing test", what, not
             </Part>
           </div>
           <Part k="passage" style={tight}>
-            <p style={{ margin: 0, padding: "34px 14px 10px", border: `1px solid ${W.edge}`, borderRadius: 6, fontSize: 15.5, lineHeight: 2.9 }}>
+            <p style={{ margin: 0, padding: "34px 14px 10px", border: `1px solid ${W.edge}`, borderRadius: 6, fontSize: 15.5, lineHeight: 3.4 }}>
               {WORDS.map((w, i) => {
                 const word =
                   i === DONE ? (
@@ -142,7 +145,7 @@ export function TypingResultFigure({ focus, title = "A typing test result", what
   return (
     <FigureFrame info={info} focus={focus} title={title} note={note}>
       <Site path="candidate/typing-test">
-        <div style={{ padding: "14px 18px 18px 52px", display: "grid", gap: 14 }}>
+        <div style={{ padding: `14px 18px 18px ${G(52)}`, display: "grid", gap: 14 }}>
           <b style={{ fontSize: 19 }}>Your typing test result</b>
           <Part k="verdict" style={tight}>
             <div style={{ padding: "10px 14px", borderRadius: 6, background: "#dff6dd", border: "1px solid #9fd89f", fontSize: 14.5 }}>
@@ -220,7 +223,7 @@ export function ExcelTestFigure({ focus, title = "An agency Excel test", what, n
       <Site path="candidate/excel-test">
         <div style={{ display: "flex", flexWrap: "wrap" }}>
           {/* the test sheet: time, the task, then hand in, top to bottom */}
-          <div style={{ flex: "1 1 230px", padding: "14px 14px 14px 48px", background: "#fbfbfa", borderRight: `1px solid ${W.edge}`, display: "grid", gap: 16, alignContent: "start" }}>
+          <div style={{ flex: "1 1 230px", padding: `14px 14px 14px ${G(48)}`, background: "#fbfbfa", borderRight: `1px solid ${W.edge}`, display: "grid", gap: 16, alignContent: "start" }}>
             <Part k="timer" style={tight}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", ...keep }}>
                 <span style={{ fontSize: 12, color: W.muted }}>Time left</span>
@@ -246,7 +249,7 @@ export function ExcelTestFigure({ focus, title = "An agency Excel test", what, n
             <div style={{ display: "flex", alignItems: "center", gap: 8, minHeight: 32, padding: "0 10px", background: W.excel, color: "#fff", fontSize: 13 }}>
               <b>Excel</b> <span style={{ opacity: 0.9 }}>Pennyford Excel test.xlsx</span>
             </div>
-            <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "36px 12px 8px 46px", borderBottom: `1px solid ${W.edge}` }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 10, padding: `36px 12px 8px ${G(46)}`, borderBottom: `1px solid ${W.edge}` }}>
               <Part k="namebox" block={false} style={{ padding: 2, margin: -2 }}>
                 <span style={{ display: "inline-flex", alignItems: "center", width: 50, minHeight: 26, padding: "0 6px", border: `1px solid ${W.edge}`, fontSize: 13 }}>E12</span>
               </Part>
@@ -255,7 +258,7 @@ export function ExcelTestFigure({ focus, title = "An agency Excel test", what, n
                 <span style={{ display: "block", minHeight: 26, padding: "3px 8px", border: `1px solid ${W.edge}`, fontFamily: "Consolas, ui-monospace, monospace", fontSize: 13, ...keep }}>=SUM(E2:E10)</span>
               </Part>
             </div>
-            <div style={{ padding: "8px 40px 6px 46px", fontSize: 12.5 }}>
+            <div style={{ padding: `8px 40px 6px ${G(46)}`, fontSize: 12.5 }}>
               <div style={{ display: "flex" }}>{XL_COLS.map((c, ci) => <span key={ci}>{cellBox(c, -1, ci, true)}</span>)}</div>
               {XL_ROWS.map((r, ri) => (
                 <div key={ri} style={{ display: "flex" }}>
@@ -271,7 +274,7 @@ export function ExcelTestFigure({ focus, title = "An agency Excel test", what, n
                 </div>
               ))}
             </div>
-            <div style={{ display: "flex", gap: 2, padding: "4px 10px 10px 46px" }}>
+            <div style={{ display: "flex", gap: 2, padding: `4px 10px 10px ${G(46)}` }}>
               <Part k="tabs" block={false} style={{ padding: 2, margin: -2 }}>
                 <span style={{ display: "inline-flex", gap: 2, fontSize: 12.5 }}>
                   <span style={{ padding: "3px 12px", borderBottom: `3px solid ${W.excel}`, color: W.excel, fontWeight: 700 }}>Orders</span>
