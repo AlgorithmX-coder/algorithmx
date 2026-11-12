@@ -147,6 +147,8 @@ export interface OfficeState {
   /* ── Module 9: Files and sharing ── what was deleted, newest last, so it
    * can be put back. */
   recycle?: RecycledItem[];
+  /* ── Module 12: AI as your assistant ── */
+  copilot?: CopilotState;
 }
 
 export interface Check {
@@ -615,3 +617,56 @@ export interface OfficeState {
   screen?: { locked: boolean; locks: number; afterPrompt?: boolean };
 }
 /* ── end Module 11 ── */
+/* ── Module 12: AI as your assistant (Copilot) ───────────────────────────
+ * Everything the learner sends to Copilot, and what came back, kept in the
+ * office record so a check can read exactly what went in: the prompt for a
+ * draft (AI-1), the question about a formula (AI-3), and whether any
+ * personal details were pasted (AI-4). Copilot here is scripted, not live
+ * AI (owner, 2026-11-10): ./copilot.ts reads the prompt and picks a written
+ * answer, and its drafts carry planted mistakes to catch (AI-2). */
+
+/* Where Copilot was asked: its own app, a reply in Outlook, or Excel's pane. */
+export type CopilotHost = "app" | "outlook" | "excel";
+
+export interface CopilotTurn {
+  id: string;
+  host: CopilotHost;
+  /* Exactly what the learner sent. */
+  prompt: string;
+  /* Which scripted answer it got: "draft", "vague", "summary", "explain",
+   * "count", "nothing" or "help". */
+  kind: string;
+  reply: string;
+  /* For a draft: which of the three a good prompt gives. */
+  marks?: { facts: boolean; reader: boolean; tone: boolean };
+  /* What the reply was drawn from, as Copilot's references line shows it. */
+  refs?: string[];
+  /* A note from Desk Ready (not from Copilot) on what to try next. */
+  tip?: string;
+  /* A good prompt to copy, offered after two weak tries. */
+  example?: string;
+  /* Which wording of the answer this is (Regenerate moves it on). */
+  variant?: number;
+}
+
+export interface CopilotState {
+  turns: CopilotTurn[];
+  /* The job's draft scenario (a key in ./copilot.ts BRIEFS). */
+  brief?: string;
+  /* Text the paste box can drop in, as if copied from an email. */
+  clip?: { label: string; text: string; people?: string[] };
+}
+
+/* What Outlook or Excel hands the Copilot pane it hosts. */
+export interface CopilotPaneContext {
+  host: "outlook" | "excel";
+  close: () => void;
+  /* Outlook: the email being answered, and putting a draft into the reply. */
+  replyTo?: Email;
+  insert?: (text: string) => void;
+  /* Excel: the open workbook's name and sheet, and the selected cell. */
+  fileName?: string;
+  grid?: Grid;
+  cell?: { name: string; raw: string };
+}
+/* ── end Module 12 ── */

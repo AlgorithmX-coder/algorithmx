@@ -77,6 +77,11 @@ export const W = Object.freeze({
   folderLight: "#f8cf6f",
   files: "#c28a14",
   desktop: "linear-gradient(160deg, #3b6fd1, #22468f)",
+  /* Module 12: Copilot's purple, its pale tint and lavender, and its mark */
+  copilot: "#6a4ee0",
+  copilotTint: "#f7f6fd",
+  copilotSoft: "#ece8fb",
+  copilotMark: "linear-gradient(135deg, #3f8cf2 0%, #7b5cf0 52%, #d86ad0 100%)",
 
   /* how an app window sits on the dark desk: deep shadow, faint rim, blue glow */
   float: "0 30px 70px -30px rgba(0,0,0,0.85), 0 0 0 1px rgba(255,255,255,0.08), 0 0 44px -14px rgba(127,178,255,0.5)",

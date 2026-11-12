@@ -1,6 +1,6 @@
 import type { ComponentType } from "react";
 import type { Action } from "../store";
-import type { FileKind, Job, OfficeFile, OfficeState, Paper } from "../types";
+import type { CopilotPaneContext, FileKind, Job, OfficeFile, OfficeState, Paper } from "../types";
 /* ── Module 3 ── */
 import { W } from "../../tokens";
 import { pendingInvites, unreadChats } from "../meetings";
@@ -19,6 +19,8 @@ import Phone, { PHONE_COLOUR, PhoneRinging } from "./Phone";
 /* ── Module 11: Staying safe at work ── */
 import { LockLayer, SECURITY_COLOUR, SignInLayer } from "./Security";
 /* ── end Module 11 ── */
+/* ── Module 12: AI as your assistant ── */
+import { CopilotApp, CopilotPane } from "./Copilot";
 
 /* The office's plug-in seam. Outlook, File Explorer and Excel are built
  * into Office.tsx; every other app (Calendar, Teams, Word, the Copilot
@@ -62,6 +64,9 @@ export interface OfficeApp {
   Layer?: ComponentType<OfficeAppProps>;
   /* Leave it off the taskbar (a layer-only app). */
   noTaskbar?: boolean;
+  /* ── Module 12 ── A pane the app also opens inside Outlook (a reply) and
+   * Excel (down the side), as Copilot does. */
+  Pane?: ComponentType<OfficeAppProps & { ctx: CopilotPaneContext }>;
 }
 
 /* Module builds add their apps here, one line each, in course order. */
@@ -82,4 +87,6 @@ export const OFFICE_APPS: Record<string, OfficeApp> = {
   authenticator: { label: "Your phone", colour: SECURITY_COLOUR, Layer: SignInLayer, noTaskbar: true },
   lock: { label: "Lock screen", colour: SECURITY_COLOUR, Layer: LockLayer, noTaskbar: true },
   /* ── end Module 11 ── */
+  /* ── Module 12: AI as your assistant ── */
+  copilot: { label: "Copilot", colour: W.copilot, Window: CopilotApp, Pane: CopilotPane },
 };
