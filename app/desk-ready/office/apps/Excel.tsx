@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect, useRef, useState, type KeyboardEvent } from "react";
+import { useEffect, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
 import { W } from "../../tokens";
 import { cellName, colLetter, display, evaluate, moveRowRefs, numeric, shiftRefs } from "../formula";
 import { SheetPictureView } from "../paperwork";
 import { PlacePicker } from "../places";
-import type { Chart, Grid, Highlight, OfficeState, Path, Tab } from "../types";
+import type { Chart, CopilotPaneContext, Grid, Highlight, OfficeState, Path, Tab } from "../types";
 import { AppButton, Dialog, TitleBar } from "../ui";
+import { CopilotButton } from "./Copilot";
 
 /* Excel, for the office jobs. A workbook opened from a file is edited in
  * a working copy and only changes the file on Save, as Excel does with
@@ -64,8 +65,11 @@ export default function Excel({
   practice,
   office,
   onExportPdf,
+  pane,
 }: {
   doc: ExcelDoc | null;
+  /* ── Module 12 ── the Copilot pane down the side, when the job has Copilot. */
+  pane?: (ctx: CopilotPaneContext) => ReactNode;
   /* An edit to the sheets (dirty) or just a switch of tab (not dirty). */
   onChange: (tabs: Tab[], active: number, dirty: boolean) => void;
   onSave: () => void;
@@ -97,6 +101,7 @@ export default function Excel({
   const [picPick, setPicPick] = useState(false);
   const [picWarn, setPicWarn] = useState<string | null>(null);
   const [picSel, setPicSel] = useState<number | null>(null);
+  const [ai, setAi] = useState(false);
   const gridRef = useRef<HTMLDivElement>(null);
   const editRef = useRef<HTMLInputElement>(null);
 
@@ -381,6 +386,7 @@ export default function Excel({
             🖼 Pictures
           </AppButton>
         )}
+        {pane && <CopilotButton on={ai} onClick={() => setAi((a) => !a)} />}
         <span style={{ marginLeft: "auto", fontSize: 13, color: W.muted }}>Enter moves down · Tab moves right · formulas start with =</span>
         {menu && (
           <div role="menu" style={{ position: "absolute", top: "100%", left: 10, zIndex: 20, width: 220, background: W.page, border: `1px solid ${W.edge}`, borderRadius: 6, boxShadow: W.float, padding: 4 }}>
@@ -639,6 +645,7 @@ export default function Excel({
         </div>
       </div>
       {tab.chart && <BarChart g={g} chart={tab.chart} fmt={fmt} onEdit={() => setChartAsk(tab.chart ?? null)} />}
+      {pane && ai && pane({ host: "excel", fileName: doc.name, grid: g, cell: { name: cellName(r, c), raw }, close: () => setAi(false) })}
       </div>
 
       {hlAsk && (

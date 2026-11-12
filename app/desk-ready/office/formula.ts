@@ -2,8 +2,8 @@ import type { Grid } from "./types";
 
 /* Just enough of Excel's formulas for the office jobs: numbers, cell
  * references (B4), + - * / with brackets, SUM, AVERAGE, COUNT, MIN and
- * MAX over a range (G2:G11) or a list, and COUNTIF and SUMIF with a
- * condition ("Late", ">500"). A formula that cannot be worked out
+ * MAX over a range (G2:G11), a whole column (F:F) or a list, and COUNTIF
+ * and SUMIF with a condition ("Late", ">500"). A formula that cannot be worked out
  * shows #VALUE!, a loop shows #REF!, as Excel would. Text cells count as
  * nothing in a sum, also as in Excel. */
 
@@ -15,6 +15,10 @@ function parseRef(ref: string): [number, number] | null {
   if (!m) return null;
   return [Number(m[2]) - 1, m[1].charCodeAt(0) - 65];
 }
+
+/* A range, written either way Excel allows: two corners (F2:F19) or a
+ * whole column (F:F, every row of the sheet). ── Module 12 added F:F. ── */
+const RANGE = "([A-Z][0-9]{1,3}:[A-Z][0-9]{1,3}|[A-Z]:[A-Z])";
 
 const toNumber = (text: string): number | null => {
   const t = text.replace(/[£,\s]/g, "");
@@ -54,7 +58,7 @@ export function evaluate(g: Grid, r: number, c: number, seen: Set<string> = new 
   if (seen.has(here)) return "#REF!";
   const next = new Set(seen).add(here);
   try {
-    const v = new Parser(raw.slice(1), (rr, cc) => evaluate(g, rr, cc, next)).run();
+    const v = new Parser(raw.slice(1), (rr, cc) => evaluate(g, rr, cc, next), g.length).run();
     return Number.isFinite(v) ? Math.round(v * 1e6) / 1e6 : "#DIV/0!";
   } catch (e) {
     return e instanceof Loop ? "#REF!" : "#VALUE!";
@@ -70,7 +74,10 @@ function isMoney(g: Grid, r: number, c: number, depth = 0): boolean {
   const raw = (g[r]?.[c] ?? "").trim();
   if (/£/.test(raw)) return true;
   if (!raw.startsWith("=") || depth > 6) return false;
-  const refs = [...raw.toUpperCase().matchAll(/\b([A-Z])([0-9]{1,3})\b/g)].map((m) => [Number(m[2]) - 1, m[1].charCodeAt(0) - 65] as const);
+  const up = raw.toUpperCase();
+  const refs = [...up.matchAll(/\b([A-Z])([0-9]{1,3})\b/g)].map((m) => [Number(m[2]) - 1, m[1].charCodeAt(0) - 65] as const);
+  /* a whole column (F:F) is money when any cell in it is */
+  for (const m of up.matchAll(/\b([A-Z]):([A-Z])\b/g)) for (let cc = m[1].charCodeAt(0) - 65; cc <= m[2].charCodeAt(0) - 65; cc++) g.forEach((_, rr) => refs.push([rr, cc] as const));
   /* a COUNT of money is a count, not money */
   if (/\b(COUNT|COUNTIF)\(/i.test(raw) && !/\b(SUM|SUMIF|AVERAGE)\(/i.test(raw)) return false;
   return refs.some(([rr, cc]) => !(rr === r && cc === c) && isMoney(g, rr, cc, depth + 1));
@@ -103,6 +110,8 @@ class Parser {
   constructor(
     private src: string,
     private get: (r: number, c: number) => number | string,
+    /* how many rows the sheet has, for a whole column (F:F) */
+    private rows = 0,
   ) {
     /* spaces and case don't matter outside quotes; inside them they do */
     this.src = src
@@ -158,18 +167,18 @@ class Parser {
       this.i += num[0].length;
       return Number(num[0]);
     }
-    const cond = /^(COUNTIF|SUMIF)\(([A-Z][0-9]{1,3}):([A-Z][0-9]{1,3}),/.exec(this.src.slice(this.i));
+    const cond = new RegExp(`^(COUNTIF|SUMIF)\\(${RANGE},`).exec(this.src.slice(this.i));
     if (cond) {
       this.i += cond[0].length;
       const test = this.criterion();
-      const cells = this.range(cond[2], cond[3]);
+      const cells = this.range(cond[2]);
       let sums = cells;
       if (cond[1] === "SUMIF" && this.peek() === ",") {
         this.i++;
-        const sumRange = /^([A-Z][0-9]{1,3}):([A-Z][0-9]{1,3})/.exec(this.src.slice(this.i));
+        const sumRange = new RegExp(`^${RANGE}`).exec(this.src.slice(this.i));
         if (!sumRange) throw new Bad();
         this.i += sumRange[0].length;
-        sums = this.range(sumRange[1], sumRange[2]);
+        sums = this.range(sumRange[1]);
       }
       if (this.src[this.i++] !== ")") throw new Bad();
       let count = 0;
@@ -203,11 +212,21 @@ class Parser {
     throw new Bad();
   }
 
-  /* Every cell's value in a range, row by row. */
-  private range(from: string, to: string): (number | string)[] {
+  /* The two corners of a range, from 0. A whole column runs from the top
+   * row to the sheet's last. */
+  private corners(text: string): [[number, number], [number, number]] {
+    const col = /^([A-Z]):([A-Z])$/.exec(text);
+    if (col) return [[0, col[1].charCodeAt(0) - 65], [Math.max(0, this.rows - 1), col[2].charCodeAt(0) - 65]];
+    const [from, to] = text.split(":");
     const a = parseRef(from);
     const b = parseRef(to);
     if (!a || !b) throw new Bad();
+    return [a, b];
+  }
+
+  /* Every cell's value in a range, row by row. */
+  private range(text: string): (number | string)[] {
+    const [a, b] = this.corners(text);
     const out: (number | string)[] = [];
     for (let r = Math.min(a[0], b[0]); r <= Math.max(a[0], b[0]); r++)
       for (let c = Math.min(a[1], b[1]); c <= Math.max(a[1], b[1]); c++) {
@@ -265,12 +284,10 @@ class Parser {
   private args(): number[] {
     const out: number[] = [];
     for (;;) {
-      const range = /^([A-Z][0-9]{1,3}):([A-Z][0-9]{1,3})/.exec(this.src.slice(this.i));
+      const range = new RegExp(`^${RANGE}`).exec(this.src.slice(this.i));
       if (range) {
         this.i += range[0].length;
-        const a = parseRef(range[1]);
-        const b = parseRef(range[2]);
-        if (!a || !b) throw new Bad();
+        const [a, b] = this.corners(range[1]);
         for (let r = Math.min(a[0], b[0]); r <= Math.max(a[0], b[0]); r++)
           for (let c = Math.min(a[1], b[1]); c <= Math.max(a[1], b[1]); c++) {
             const v = this.get(r, c);
