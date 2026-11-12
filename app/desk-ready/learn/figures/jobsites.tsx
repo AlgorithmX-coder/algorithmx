@@ -98,7 +98,7 @@ export function JobAdFigure({ focus, title, what, note, scam }: { focus?: AdPart
             <span style={{ padding: "5px 10px", border: `1px solid ${W.edge}`, borderRadius: 6, fontSize: 13, color: W.body, ...keep }}>Leicester</span>
           </span>
         </div>
-        <div style={{ padding: "16px 22px 20px 56px", display: "grid", gap: 12, justifyItems: "start" }}>
+        <div style={{ padding: "16px 22px 20px 56px", display: "grid", gridTemplateColumns: "minmax(0, 1fr)", gap: 12, justifyItems: "start" }}>
           <Part k="title" style={tight}>
             <div style={{ fontSize: 22, fontWeight: 700, lineHeight: 1.2, ...bad(true) }}>{ad.title}</div>
           </Part>
@@ -112,12 +112,12 @@ export function JobAdFigure({ focus, title, what, note, scam }: { focus?: AdPart
             <span style={{ fontSize: 15, ...keep, ...bad(true) }}>{ad.location}</span>
           </Part>
           <Part k="pay" block={false} style={tight}>
-              <span style={{ display: "inline-block", padding: "4px 10px", borderRadius: 6, background: SITE_SOFT, fontSize: 14.5, fontWeight: 600, ...bad(true) }}>{ad.pay}</span>
+              <span style={{ display: "inline-block", padding: "4px 10px", borderRadius: 6, background: SITE_SOFT, fontSize: 14.5, fontWeight: 600, overflowWrap: "normal", ...bad(true) }}>{ad.pay}</span>
           </Part>
           <Part k="hours" block={false} style={tight}>
               <span style={{ display: "inline-flex", flexWrap: "wrap", gap: 6 }}>
                 {ad.hours.map((h) => (
-                  <span key={h} style={{ padding: "4px 10px", borderRadius: 6, background: W.chrome, fontSize: 13.5, ...keep, ...bad(true) }}>
+                  <span key={h} style={{ padding: "4px 10px", borderRadius: 6, background: W.chrome, fontSize: 13.5, ...bad(true) }}>
                     {h}
                   </span>
                 ))}
@@ -137,7 +137,7 @@ export function JobAdFigure({ focus, title, what, note, scam }: { focus?: AdPart
             </div>
           </Part>
           <Part k="apply" block={false} style={{ ...tight, marginTop: 4 }}>
-              <span style={{ display: "inline-flex", alignItems: "center", minHeight: 38, padding: "0 18px", borderRadius: 8, background: scam ? "#25a35a" : SITE, color: "#fff", fontWeight: 700, fontSize: 14.5, ...keep }}>{ad.apply}</span>
+              <span style={{ display: "inline-flex", alignItems: "center", minHeight: 38, padding: "4px 18px", borderRadius: 8, background: scam ? "#25a35a" : SITE, color: "#fff", fontWeight: 700, fontSize: 14.5 }}>{ad.apply}</span>
           </Part>
           <Part k="alert" block={false} style={tight}>
               {scam ? (

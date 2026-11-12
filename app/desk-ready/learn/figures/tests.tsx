@@ -82,7 +82,7 @@ export function TypingFigure({ focus, title = "An agency typing test", what, not
             </Part>
           </div>
           <Part k="passage" style={tight}>
-            <p style={{ margin: 0, padding: "34px 14px 10px", border: `1px solid ${W.edge}`, borderRadius: 6, fontSize: 15.5, lineHeight: 1.9 }}>
+            <p style={{ margin: 0, padding: "34px 14px 10px", border: `1px solid ${W.edge}`, borderRadius: 6, fontSize: 15.5, lineHeight: 2.9 }}>
               {WORDS.map((w, i) => {
                 const word =
                   i === DONE ? (
