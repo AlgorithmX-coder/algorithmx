@@ -2,9 +2,11 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { CSSProperties } from "react";
 import { getIndividual } from "@/app/lib/individualOps";
+import { prisma } from "@/app/lib/prisma";
 import { IndividualsIcon } from "../../icons";
 import { courseColor } from "../../courseColors";
 import RevokeEntitlementButton from "./RevokeEntitlementButton";
+import GrantCourseButton from "./GrantCourseButton";
 
 /* /admin/individuals/[id]: one person - their courses, how they got
  * each one, and any family children on their account. Styling in
@@ -17,6 +19,14 @@ export default async function AdminIndividualPage({ params }: { params: Promise<
   const { id } = await params;
   const person = await getIndividual(id);
   if (!person) notFound();
+
+  /* Only what they do not already hold. Offering a course somebody bought
+     would let a careless press rewrite a purchase as a freebie, which
+     grantEntitlement refuses anyway: better not to offer it. */
+  const held = new Set(person.products.map((p) => p.slug));
+  const grantable = (
+    await prisma.product.findMany({ orderBy: { name: "asc" }, select: { slug: true, name: true } })
+  ).filter((p) => !held.has(p.slug));
 
   const day = (iso: string | null) => (iso ? new Date(iso).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" }) : "—");
 
@@ -46,6 +56,15 @@ export default async function AdminIndividualPage({ params }: { params: Promise<
             {person.products.length === 0 && <tr><td colSpan={4} className="ad-empty">No courses.</td></tr>}
           </tbody>
         </table>
+      </div>
+
+      {/* The other half of Revoke, which shipped on its own: there was no
+          way to GIVE anybody a course from here. It is also what makes
+          gating a course safe, since a tester shut out by a new gate can be
+          let back in from this box. */}
+      <div className="ad-card ad-form" style={{ padding: "16px 20px" }}>
+        <h2 className="ad-h2" style={{ margin: 0 }}>Course access</h2>
+        <GrantCourseButton userId={person.id} courses={grantable} />
       </div>
 
       {person.children.length > 0 && (
