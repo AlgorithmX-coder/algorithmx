@@ -1,0 +1,114 @@
+/*
+  The three documents a school's data protection officer reads: the privacy
+  notice, the safeguarding statement and the school data processing terms.
+
+  One stylesheet for all three, because a compliance pack that looks like
+  three different companies wrote it invites exactly the questions it is
+  meant to close. Warm sand, like /schools and the homepage.
+
+  EVERY selector is scoped under .axlegal. Next keeps a route stylesheet
+  loaded after you navigate away from the route, so an unscoped h2 or table
+  in here would follow the reader around the rest of the site.
+
+  Built to be PRINTED and attached to an email, because that is what a DPO
+  does with it: no chrome on paper, no page-break inside a table row.
+*/
+.axlegal {
+  --ink: #14161d;
+  --muted: #4a5160;
+  --rule: rgba(20, 24, 36, 0.14);
+  --accent: #0a7085;
+  --paper: #fffdf8;
+  color: var(--ink);
+  background:
+    radial-gradient(ellipse at 50% 70%, #fbf7f0 0%, #f6f1e7 35%, #f3ede4 70%, #efe8dc 100%);
+  min-height: 100vh;
+  font-family: "Nunito", system-ui, sans-serif;
+  padding: clamp(28px, 6vw, 72px) max(18px, env(safe-area-inset-left, 0px))
+    80px max(18px, env(safe-area-inset-right, 0px));
+}
+.axlegal * { box-sizing: border-box; }
+
+.axlegal .wrap { max-width: 760px; margin: 0 auto; }
+
+.axlegal .back { margin: 0 0 18px; font-size: 13px }
+.axlegal .back a { color: var(--accent); text-decoration: none }
+.axlegal .back a:hover { text-decoration: underline }
+
+.axlegal h1 {
+  font-family: "Space Grotesk", system-ui, sans-serif;
+  font-size: clamp(28px, 5vw, 40px);
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin: 0 0 10px;
+  text-wrap: balance;
+}
+.axlegal .lede { margin: 0 0 6px; font-size: 17px; line-height: 1.6; color: var(--muted); max-width: 62ch }
+.axlegal .asof { margin: 0 0 28px; font-size: 13px; color: var(--muted) }
+
+.axlegal h2 {
+  font-family: "Space Grotesk", system-ui, sans-serif;
+  font-size: 21px;
+  font-weight: 800;
+  margin: 34px 0 10px;
+  padding-top: 14px;
+  border-top: 1px solid var(--rule);
+}
+.axlegal h3 { font-size: 16px; font-weight: 800; margin: 20px 0 6px }
+
+.axlegal p, .axlegal li { font-size: 15.5px; line-height: 1.65; color: var(--ink) }
+.axlegal p { margin: 0 0 12px; max-width: 70ch }
+.axlegal ul, .axlegal ol { margin: 0 0 14px; padding-left: 22px; max-width: 70ch }
+.axlegal li { margin-bottom: 6px }
+.axlegal b, .axlegal strong { font-weight: 800 }
+.axlegal a { color: var(--accent) }
+
+/* The sub-processor list and the retention schedule. A DPO reads these two
+   first and often reads nothing else, so they get to be tables. */
+.axlegal .tablewrap { overflow-x: auto; margin: 0 0 18px }
+.axlegal table { width: 100%; border-collapse: collapse; min-width: 480px; background: var(--paper) }
+.axlegal th {
+  text-align: left;
+  font: 800 11px "Nunito", system-ui, sans-serif;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 9px 11px;
+  border-bottom: 2px solid var(--ink);
+}
+.axlegal td { padding: 9px 11px; border-bottom: 1px solid var(--rule); font-size: 14.5px; vertical-align: top }
+.axlegal td b { display: block }
+.axlegal td small { display: block; color: var(--muted); font-size: 12.5px; line-height: 1.45 }
+
+/* The one thing on these pages that is a promise rather than a description. */
+.axlegal .pledge {
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--accent);
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin: 0 0 18px;
+}
+.axlegal .pledge p:last-child { margin: 0 }
+
+.axlegal footer.note {
+  margin-top: 36px;
+  padding-top: 14px;
+  border-top: 1px solid var(--rule);
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+@media print {
+  .axlegal { background: #fff; padding: 0; min-height: 0 }
+  .axlegal .back, .axlegal .noprint { display: none !important }
+  .axlegal .wrap { max-width: none }
+  .axlegal h1 { font-size: 22pt }
+  .axlegal h2 { font-size: 13pt; break-after: avoid }
+  .axlegal p, .axlegal li, .axlegal td { font-size: 10pt }
+  .axlegal tr, .axlegal .pledge { break-inside: avoid }
+  .axlegal table { min-width: 0 }
+  .axlegal .tablewrap { overflow: visible }
+}
