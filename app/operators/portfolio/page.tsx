@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import { auth } from "@/app/lib/auth";
-import { redirect } from "next/navigation";
 import Link from "next/link";
 import { getPortfolio, getOpsResumes } from "@/app/lib/opsPortfolio.actions";
+import { courseGate } from "@/app/lib/courseGate";
+import CourseLocked from "@/app/components/CourseLocked";
 import { HIGHEST_BUILT_MODULE } from "@/app/operators/range/modules";
 import { CURRICULUM, PHASE_ORDER, PHASE_COLOR } from "@/app/operators/range/curriculum";
 import { OPS_RANKS } from "@/app/lib/opsRank";
@@ -49,8 +49,20 @@ const SEV_COLOR: Record<string, string> = { LOW: C.soft, MEDIUM: C.amber, HIGH: 
 const SEV_LABEL: Record<string, string> = { LOW: "Low", MEDIUM: "Medium", HIGH: "High", CRITICAL: "Critical" };
 
 export default async function OperatorsPortfolioPage() {
-  const session = await auth();
-  if (!session?.user?.id) redirect("/login?callbackUrl=/operators/portfolio");
+  /* The same licence gate as a module. A portfolio is this learner's own
+     findings and rank, so it is no more public than the modules that wrote
+     it, and it used to be reachable by any signed-in account at all. */
+  const gate = await courseGate("cyberstart");
+  if (!gate.ok) {
+    return (
+      <CourseLocked
+        gate={gate}
+        courseName="Cyber Ops"
+        slug="cyberstart"
+        here="/operators/portfolio"
+      />
+    );
+  }
 
   const [p, resumes] = await Promise.all([getPortfolio(), getOpsResumes()]);
   const findings = p?.findings ?? [];
