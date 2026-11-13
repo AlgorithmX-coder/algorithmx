@@ -14,5 +14,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${base}/corporate/eu-ai-act`, lastModified: now, changeFrequency: "monthly", priority: 0.6 },
     { url: `${base}/privacy`, lastModified: now, changeFrequency: "yearly", priority: 0.3 },
     { url: `${base}/terms`, lastModified: now, changeFrequency: "yearly", priority: 0.3 },
+    /* A school hunting for this searches for it by name, and finding it
+       before they have spoken to anybody is the whole point of writing it.
+       /schools/data-protection stays OUT while it is an unreviewed draft,
+       and carries its own noindex to match. */
+    { url: `${base}/safeguarding`, lastModified: now, changeFrequency: "yearly", priority: 0.4 },
   ];
 }
