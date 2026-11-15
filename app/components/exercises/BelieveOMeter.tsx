@@ -287,7 +287,11 @@ export default function BelieveOMeter({
           transition={reduce ? { duration: 0.2 } : { type: "spring", stiffness: 380, damping: 14 }}
           style={{
             position: "absolute",
-            bottom: 10,
+            // On the poster the stamp sat 10px off the bottom border and read
+            // as falling off the card (UAT W4: "move the check first message
+            // further up, away from the bottom border"). The poster keeps a
+            // clear band at its foot for it instead.
+            bottom: doors ? 10 : 30,
             left: "50%",
             x: "-50%",
             padding: "6px 14px",
@@ -417,7 +421,7 @@ export default function BelieveOMeter({
                 background: "linear-gradient(180deg, #fff3d6 0%, #f3ddb0 100%)",
                 border: "2px solid #c99a4a",
                 boxShadow: "0 18px 40px -22px rgba(0,0,0,0.7), inset 0 0 0 5px rgba(201,154,74,0.18)",
-                padding: "18px 18px 22px",
+                padding: "18px 18px 72px",
                 color: "#3a1a34",
                 display: "flex",
                 flexDirection: "column",
