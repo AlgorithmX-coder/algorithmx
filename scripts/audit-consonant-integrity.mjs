@@ -83,6 +83,7 @@ const SR = 16000;
  */
 /** Final single s that is /s/ and not /z/, where the spelling cannot say so. */
 const VOICELESS_FINAL_S = new Set(["this", "yes", "gas", "bias", "atlas", "canvas", "chaos"]);
+const VOICED_ENDING = new Set(["ok", "with"]);
 function expectsQuietTail(word) {
   let w = String(word || "").toLowerCase().replace(/[^a-z']/g, "");
   if (!w) return false;
@@ -96,6 +97,11 @@ function expectsQuietTail(word) {
    * BOTH directions - words that must be measured, and words that must be
    * skipped - which is the only way a change here can be trusted. */
   const whole = w;
+  /* Spelled with an unvoiced ending, said without one: "OK" is read "okay"
+   * (a vowel), and "with" ends on the voiced th of "this", not the th of
+   * "thin". Both were flagged as cut on every clean take in the 2026-11-15
+   * re-record, whatever the take sounded like. */
+  if (VOICED_ENDING.has(whole)) return false;
   if (VOICELESS_FINAL_S.has(whole)) return true;
   if (/(ous|us)$/.test(whole)) return true;
 

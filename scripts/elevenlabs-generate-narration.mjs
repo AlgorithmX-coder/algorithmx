@@ -37,6 +37,7 @@ import { sayYears } from "./lib/say-years.mjs";
 import { spawnSync } from "node:child_process";
 import ffmpegPath from "ffmpeg-static";
 import { SPEC_GAP, SPEC_TAIL } from "./lib/pause-spec.mjs";
+import { recordBlockLineTake } from "./lib/line-take.mjs";
 import { copyFileSync, renameSync } from "node:fs";
 import { mkdir, readdir, readFile, stat, unlink, writeFile } from "node:fs/promises";
 import { join } from "node:path";
@@ -960,10 +961,21 @@ if (ONLY_WEEK) {
   console.log(`--week=${ONLY_WEEK}: recording ${selected} of ${blocks.length} blocks; the rest keep the clips they have`);
 }
 
-if (FORCE && !ONLY_WEEK) {
-  console.error("--force needs --week=N. On its own it would re-record all 5,166 clips.");
+/* --all: with --force, re-record the WHOLE course (owner-approved 2026-11-15
+ * line-take re-record). Resumable: every clip finished under line-take is
+ * listed in LINETAKE_DONE, and a rerun skips those. */
+const ALL = process.argv.includes("--all");
+if (FORCE && !ONLY_WEEK && !ALL) {
+  console.error("--force needs --week=N (or --all for the whole course). On its own it would re-record all 5,166 clips.");
   process.exit(2);
 }
+const JOBS = Number((process.argv.find((a) => a.startsWith("--jobs=")) || "").split("=")[1]) || 6;
+const LINETAKE_DONE = ".linetake-done.txt";
+const LINETAKE_REPORT = ".linetake-report.jsonl";
+const linetakeDone = new Set();
+try {
+  for (const l of (await readFile(LINETAKE_DONE, "utf8")).split("\n")) if (l.trim()) linetakeDone.add(l.trim());
+} catch { /* first run */ }
 console.log(`Found ${blocks.length} narration blocks (${blocks.reduce((n, b) => n + b.lines.length, 0)} lines)`);
 
 // Existing manifest for caching on re-runs.
@@ -2146,7 +2158,7 @@ async function generateBlock(speaker, lines, source, skipRecord) {
 
   // A file named by this exact hash IS this block's recording, so it counts as
   // cached even when an interrupted run never wrote its manifest entry.
-  if (await fileExists(filepath) && !(FORCE && !skipRecord) && !redo) {
+  if (await fileExists(filepath) && !(FORCE && !skipRecord && !linetakeDone.has(filename)) && !redo) {
     return { key, filename, cached: true, speaker, blockText, lines };
   }
 
@@ -2162,6 +2174,26 @@ async function generateBlock(speaker, lines, source, skipRecord) {
     return { key, filename, missing: true, speaker, blockText, lines };
   }
 
+  /* LINE-TAKE (owner-approved 2026-11-15). Every new recording goes through
+   * scripts/lib/line-take.mjs; the per-sentence + shapeToSpec path below is
+   * kept only as dead reference until it is deleted. Written to a temp name
+   * and renamed, so an interrupted run never leaves a half-written clip under
+   * the real name. */
+  {
+    const tmpOut = `${filepath}.new.mp3`;
+    const r = await recordBlockLineTake({
+      key: KEY, voiceId: voice.id, model: MODELS_IN_PRIORITY_ORDER[0], settings: VOICE_SETTINGS, lines, outFile: tmpOut,
+    });
+    renameSync(tmpOut, filepath);
+    const { appendFile } = await import("node:fs/promises");
+    await appendFile(LINETAKE_REPORT, JSON.stringify({ file: filename, ok: r.ok, notes: r.notes, tempo: +r.cardTempo.toFixed(3), rawWpm: Math.round(r.rawWpm), text: blockText.slice(0, 160) }) + "\n");
+    await appendFile(LINETAKE_DONE, filename + "\n");
+    linetakeDone.add(filename);
+    const buf = await readFile(filepath);
+    return { key, filename, cached: false, speaker, blockText, lines, bytes: buf.byteLength, modelUsed: MODELS_IN_PRIORITY_ORDER[0], ok: r.ok, notes: r.notes };
+  }
+
+  // eslint-disable-next-line no-unreachable
   const url = `https://api.elevenlabs.io/v1/text-to-speech/${voice.id}?output_format=${OUTPUT_FORMAT}`;
 
   // Determine which models to try this call. If we've already pinned
@@ -2277,16 +2309,52 @@ let generated = 0;
 let cachedCount = 0;
 let totalBytes = 0;
 
+/* Blocks run JOBS at a time (line-take makes ~3 API calls per line, so one at
+ * a time would take over a day for the course). Results land in block order.
+ * Two blocks that resolve to the same clip share ONE recording. A block that
+ * fails keeps the clip it already has, and its manifest entry - dropping the
+ * entry is what once sent nineteen weeks to the browser's robot voice. */
+const inflight = new Map();
+const results = new Array(blocks.length);
+const failures = [];
+let finished = 0;
+async function runBlock(i) {
+  const block = blocks[i];
+  const voice = voiceFor(block.speaker, block.source);
+  const fname = `${hashKey(block.speaker, voice.id, sayYears(joinBlock(block.lines)))}.mp3`;
+  let p = inflight.get(fname);
+  if (!p) { p = generateBlock(block.speaker, block.lines, block.source, block.skipRecord); inflight.set(fname, p); }
+  try {
+    results[i] = await p;
+  } catch (e) {
+    failures.push({ i, file: fname, error: String(e.message || e).slice(0, 300) });
+    if (await fileExists(join(OUT_DIR, fname))) {
+      results[i] = { key: fname.replace(".mp3", ""), filename: fname, cached: true, speaker: block.speaker, blockText: joinBlock(block.lines), lines: block.lines };
+    } else {
+      results[i] = { key: fname.replace(".mp3", ""), filename: fname, missing: true, speaker: block.speaker, blockText: joinBlock(block.lines), lines: block.lines };
+    }
+  }
+  finished++;
+  const r = results[i];
+  if (!CHECK_ONLY && !r.cached && !r.missing) {
+    console.log(`${String(finished).padStart(4)}/${blocks.length} ${r.ok ? "ok  " : "FLAG"} ${r.filename} "${joinBlock(block.lines).slice(0, 70)}"${r.notes && r.notes.length ? "  [" + r.notes.join(" | ").slice(0, 200) + "]" : ""}`);
+  }
+}
+{
+  let next = 0;
+  await Promise.all(Array.from({ length: CHECK_ONLY ? 1 : JOBS }, async () => {
+    while (next < blocks.length) { const i = next++; await runBlock(i); }
+  }));
+}
+if (failures.length) {
+  console.log(`\n${failures.length} block(s) FAILED and kept their old clip:`);
+  for (const f of failures) console.log(`  ${f.file}: ${f.error}`);
+}
+
 for (let i = 0; i < blocks.length; i++) {
   const block = blocks[i];
-  const previewText = joinBlock(block.lines).slice(0, 80);
-  if (!CHECK_ONLY) {
-    process.stdout.write(
-      `${(i + 1).toString().padStart(2)}/${blocks.length} ${block.speaker.padEnd(6)} (${block.lines.length} lines) "${previewText}${previewText.length === 80 ? "…" : ""}" … `,
-    );
-  }
   try {
-    const r = await generateBlock(block.speaker, block.lines, block.source, block.skipRecord);
+    const r = results[i];
     if (r.missing) {
       unrecorded.push({ speaker: r.speaker, file: r.filename, text: r.blockText, source: block.source });
       continue;
@@ -2309,11 +2377,11 @@ for (let i = 0; i < blocks.length; i++) {
     });
     if (r.cached) {
       cachedCount++;
-      if (!CHECK_ONLY) console.log("cached");
-    } else {
+    } else if (!r.counted) {
+      // a shared clip is one result object for several blocks: count it once
+      r.counted = true;
       generated++;
       totalBytes += r.bytes;
-      console.log(`${r.bytes} bytes`);
     }
   } catch (e) {
     console.log("FAILED");
