@@ -389,7 +389,7 @@ export const WEEK_4: WeekContent = {
         speaker: "layla",
         lines: [
           "[proud] Every offer measured! You can tell a real prize from bait, so the Raccoon's giant giveaways can't dazzle you.",
-          "[warmly] When it happens for real, enormous prizes from strangers go straight to no way.",
+          "[warmly] When it happens for real, enormous prizes from strangers go straight to \"No way!\"",
           "And when you are not sure, you check with a grown-up first.",
         ],
       },
@@ -996,7 +996,7 @@ export const WEEK_4: WeekContent = {
           prompt: "'You WON a family trip to the beach!' from LuckyMail. You never entered anything. Where does the needle go?",
           readAloud: "You won a family trip to the beach, says LuckyMail. You never entered anything. Where does the needle go?",
           choices: [
-            { text: "No way, I never entered", isCorrect: true, explanation: "Straight to no way.", why: "A giant prize from a stranger, for a contest you never entered, is bait. The needle goes straight to no way." },
+            { text: "No way, I never entered", isCorrect: true, explanation: "Straight to \"No way!\"", why: "A giant prize from a stranger, for a contest you never entered, is bait. The needle goes straight to \"No way!\"" },
             { text: "Could be real, beaches are real", isCorrect: false, explanation: "Beaches are real, but the prize isn't. Nobody hands a stranger a free holiday for a contest they never entered." },
             { text: "Hmm, maybe tap to see", isCorrect: false, explanation: "One tap to see is the bite the trick is waiting for. An enormous prize from a stranger needs no checking: it's no way." },
           ],

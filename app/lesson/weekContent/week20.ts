@@ -691,7 +691,7 @@ export const WEEK_20: WeekContent = {
           id: "bus",
           label: "The bus going past",
           icon: "🌍",
-          readAloud: "And last, a bus going past in the background.",
+          readAloud: "And last, the bus going past in the background.",
           options: [
             { id: "u-right", label: "Roughly which part of town", icon: "🌍", isRight: true, why: "A bus number only runs on one route. So it narrows the town down without anybody meaning it to.", explanation: "Think about where a bus with that number actually goes. It only runs one route." },
             { id: "u-rich", label: "Whether their family has a car", icon: "💎", isRight: false, explanation: "A bus in the background says nothing about anybody's car." },
@@ -829,7 +829,7 @@ export const WEEK_20: WeekContent = {
           readAloud: "Second photo. Backstage, everybody laughing, and Maya caught mid sneeze.",
           friends: [
             { id: "g-ada", name: "Ada", answer: "yes", says: "Fine by me!", readAloud: "Ada says fine by her." },
-            { id: "g-maya", name: "Maya", answer: "no", noMove: "leaveOut", says: "Ugh, not that one of me. Crop me out?", readAloud: "Maya says not that one of her, and asks to be cropped out.", why: "She asked to be left out and you left her out. No arguing, no persuading, and the photo still goes up.", whyWrong: "Listen to what Maya actually asked for. She did not say do not post it. She said crop me out." },
+            { id: "g-maya", name: "Maya", answer: "no", noMove: "leaveOut", says: "Ugh, not that one of me. Crop me out?", readAloud: "Maya says no, not that photo of her, and asks to be cropped out.", why: "She asked to be left out and you left her out. No arguing, no persuading, and the photo still goes up.", whyWrong: "Listen to what Maya actually asked for. She did not say do not post it. She said crop me out." },
             { id: "g-sam", name: "Sam", answer: "yes", says: "Ha, post it.", readAloud: "Sam says ha, post it." },
           ],
           why: "Two yeses and one leave me out, so you crop her and post the rest. Everybody got what they asked for.",

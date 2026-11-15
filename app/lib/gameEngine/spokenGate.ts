@@ -7,8 +7,12 @@
  *
  * At 15 s it was not: the Clue Stamper's how-to runs 14.6 s and a case
  * read-aloud 16 s, so the gate unmounted the narration and the child heard the
- * last word cut off ("tap Close the ..."; UAT round 2, W3 items 3a/3b). The
- * longest gated block today is ~26 s (a boss ask); 45 s never cuts a real clip
- * and still frees a stuck board well inside a lesson beat.
+ * last word cut off ("tap Close the ..."; UAT round 2, W3 items 3a/3b).
+ *
+ * At 45 s it stopped being enough after the 2026-11-15 course re-record: the
+ * new recordings give every bullet a full break and read at a calmer pace, so
+ * game how-tos grew (W4 Name Tag Check 51 s, the longest card 63 s) and 45 s
+ * would have cut them mid-sentence. 90 s clears the longest clip by a wide
+ * margin and still frees a stuck board.
  */
-export const SPOKEN_GATE_MAX_MS = 45000;
+export const SPOKEN_GATE_MAX_MS = 90000;

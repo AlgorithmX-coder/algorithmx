@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-26T21:36:16.274Z",
+  "generatedAt": "2026-11-15T23:02:46.188Z",
   "model": "eleven_v4",
   "voiceSettings": {
     "stability": 0.6,
@@ -26121,14 +26121,14 @@
       "file": "/audio/voice/4253c37e72d5a806.mp3"
     },
     {
-      "key": "935d7ae590fd8c1a",
+      "key": "3a41231d31b69bb1",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "And last, a bus going past in the background.",
+      "text": "And last, the bus going past in the background.",
       "lines": [
-        "And last, a bus going past in the background."
+        "And last, the bus going past in the background."
       ],
-      "file": "/audio/voice/935d7ae590fd8c1a.mp3"
+      "file": "/audio/voice/3a41231d31b69bb1.mp3"
     },
     {
       "key": "9c41f731361fca6e",
@@ -26191,14 +26191,14 @@
       "file": "/audio/voice/8b6aca1381f21412.mp3"
     },
     {
-      "key": "a124d7fc62fb5ccd",
+      "key": "2e8e7457766cf7cc",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "Maya says not that one of her, and asks to be cropped out.",
+      "text": "Maya says no, not that photo of her, and asks to be cropped out.",
       "lines": [
-        "Maya says not that one of her, and asks to be cropped out."
+        "Maya says no, not that photo of her, and asks to be cropped out."
       ],
-      "file": "/audio/voice/a124d7fc62fb5ccd.mp3"
+      "file": "/audio/voice/2e8e7457766cf7cc.mp3"
     },
     {
       "key": "aa240ae0135a6492",
@@ -28307,16 +28307,16 @@
       "file": "/audio/voice/d23eafab2bb8f125.mp3"
     },
     {
-      "key": "e141839b77afb6cb",
+      "key": "69b330b1ced2322a",
       "speaker": "layla",
       "voice": "Emma (Kids Educator)",
-      "text": "[proud] Every offer measured! You can tell a real prize from bait, so the Raccoon's giant giveaways can't dazzle you. [warmly] When it happens for real, enormous prizes from strangers go straight to no way. And when you are not sure, you check with a grown-up first.",
+      "text": "[proud] Every offer measured! You can tell a real prize from bait, so the Raccoon's giant giveaways can't dazzle you. [warmly] When it happens for real, enormous prizes from strangers go straight to \"No way!\" And when you are not sure, you check with a grown-up first.",
       "lines": [
         "[proud] Every offer measured! You can tell a real prize from bait, so the Raccoon's giant giveaways can't dazzle you.",
-        "[warmly] When it happens for real, enormous prizes from strangers go straight to no way.",
+        "[warmly] When it happens for real, enormous prizes from strangers go straight to \"No way!\"",
         "And when you are not sure, you check with a grown-up first."
       ],
-      "file": "/audio/voice/e141839b77afb6cb.mp3"
+      "file": "/audio/voice/69b330b1ced2322a.mp3"
     },
     {
       "key": "405383c2a11eee9a",
@@ -29513,14 +29513,14 @@
       "file": "/audio/voice/fb224ad7e53c7466.mp3"
     },
     {
-      "key": "9107ec002c748475",
+      "key": "f461d62eba81aafb",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "A giant prize from a stranger, for a contest you never entered, is bait. The needle goes straight to no way.",
+      "text": "A giant prize from a stranger, for a contest you never entered, is bait. The needle goes straight to \"No way!\"",
       "lines": [
-        "A giant prize from a stranger, for a contest you never entered, is bait. The needle goes straight to no way."
+        "A giant prize from a stranger, for a contest you never entered, is bait. The needle goes straight to \"No way!\""
       ],
-      "file": "/audio/voice/9107ec002c748475.mp3"
+      "file": "/audio/voice/f461d62eba81aafb.mp3"
     },
     {
       "key": "dec9897203e8518b",
@@ -29583,14 +29583,14 @@
       "file": "/audio/voice/52973f2a35797c24.mp3"
     },
     {
-      "key": "1e67e6fcbc405607",
+      "key": "7602fa8b374f01f1",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "Straight to no way.",
+      "text": "Straight to \"No way!\"",
       "lines": [
-        "Straight to no way."
+        "Straight to \"No way!\""
       ],
-      "file": "/audio/voice/1e67e6fcbc405607.mp3"
+      "file": "/audio/voice/7602fa8b374f01f1.mp3"
     },
     {
       "key": "84a4044297ee958a",
@@ -43735,15 +43735,15 @@
       "file": "/audio/voice/0b2fd43e8d216dab.mp3"
     },
     {
-      "key": "a86971454ff1d647",
+      "key": "c9c6e2c3ca6db7ae",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "That's right! A giant prize from a stranger, for a contest you never entered, is bait. The needle goes straight to no way.",
+      "text": "That's right! A giant prize from a stranger, for a contest you never entered, is bait. The needle goes straight to \"No way!\"",
       "lines": [
         "That's right!",
-        "A giant prize from a stranger, for a contest you never entered, is bait. The needle goes straight to no way."
+        "A giant prize from a stranger, for a contest you never entered, is bait. The needle goes straight to \"No way!\""
       ],
-      "file": "/audio/voice/a86971454ff1d647.mp3"
+      "file": "/audio/voice/c9c6e2c3ca6db7ae.mp3"
     },
     {
       "key": "aea0ddd6ea098bea",
