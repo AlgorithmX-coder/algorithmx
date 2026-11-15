@@ -497,9 +497,12 @@ export default function PlaquePeek({
                     <PixIcon emoji={door.icon} size={40} />
                     <motion.span
                       aria-hidden
-                      animate={peeked ? { y: -14, rotate: -18, opacity: 0.35 } : { y: 0, rotate: 0, opacity: 1 }}
+                      /* Owner UAT 2026-11-15: the mask sits on the frame's TOP
+                       * corner, not across the bottom of the friend's face. On a
+                       * peek it lifts off sideways, so it stays inside the card. */
+                      animate={peeked ? { x: 8, y: -4, rotate: 18, opacity: 0.35 } : { x: 0, y: 0, rotate: 0, opacity: 1 }}
                       transition={reduce ? { duration: 0 } : { type: "spring", stiffness: 200, damping: 16 }}
-                      style={{ position: "absolute", right: -8, bottom: -8, display: "inline-flex", padding: 3, borderRadius: "50%", background: "#1d1a3a", border: `1.5px solid ${sk.accent}` }}
+                      style={{ position: "absolute", right: -8, top: -8, display: "inline-flex", padding: 3, borderRadius: "50%", background: "#1d1a3a", border: `1.5px solid ${sk.accent}` }}
                     >
                       <PixIcon emoji="🎭" size={20} />
                     </motion.span>
