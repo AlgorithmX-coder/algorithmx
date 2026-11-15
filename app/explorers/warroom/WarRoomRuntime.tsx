@@ -56,8 +56,10 @@ const CSS = `
 @keyframes srStamp{0%{transform:rotate(-3deg) scale(1.15);opacity:0}30%{transform:rotate(-3deg) scale(1);opacity:1}38%{transform:rotate(-3deg) scale(1) translate(2px,0)}46%{transform:rotate(-3deg) scale(1) translate(0,0)}100%{transform:rotate(-3deg) scale(1);opacity:.9}}
 .sr-xpnum{display:inline-block;animation:srXpNum .5s cubic-bezier(.2,0,0,1)}
 @keyframes srXpNum{0%{transform:scale(1.35)}100%{transform:scale(1)}}
-@keyframes wr-clue-in{0%{opacity:0;transform:translateX(16px) scale(.96)}60%{opacity:1;transform:translateX(0) scale(1.02)}100%{opacity:1;transform:translateX(0) scale(1)}}
-.wr-clue-toast{animation:wr-clue-in .35s cubic-bezier(.2,0,0,1) both}
+@keyframes wr-clue-in{0%{transform:translate(100%,-50%)}100%{transform:translate(0,-50%)}}
+@keyframes wr-clue-out{0%{transform:translate(0,-50%)}100%{transform:translate(100%,-50%)}}
+.wr-clue-toast{animation:wr-clue-in .45s cubic-bezier(.2,0,0,1) both}
+.wr-clue-leave{animation:wr-clue-out .32s cubic-bezier(.4,0,1,1) both}
 @media (prefers-reduced-motion: reduce){.wr *{animation-duration:.001ms !important}}
 ${SAFE_CENTER_CSS}
 `;
@@ -121,11 +123,21 @@ export default function WarRoomRuntime({ warCase, onExit, onNextCase, autostart,
       setClueToast(clue);
     }
   };
+  // The toast slides out of the ZERO FILE tab and back into it (UAT: it
+  // popped up mid-screen and vanished with no transition), so leaving is
+  // its own short state: slide away first, unmount after.
+  const [clueLeaving, setClueLeaving] = useState(false);
   useEffect(() => {
     if (!clueToast) return;
-    const t = setTimeout(() => setClueToast(null), 6000);
+    setClueLeaving(false);
+    const t = setTimeout(() => setClueLeaving(true), 6000);
     return () => clearTimeout(t);
   }, [clueToast]);
+  useEffect(() => {
+    if (!clueLeaving) return;
+    const t = setTimeout(() => { setClueToast(null); setClueLeaving(false); }, 340);
+    return () => clearTimeout(t);
+  }, [clueLeaving]);
   // UAT skip: one click fast-forwards through whatever's left of the CURRENT
   // skill only (narration + any dock waiting on input), then clears itself —
   // same one-click-per-skill contract as Phone's "Skip this whole skill".
@@ -374,23 +386,28 @@ export default function WarRoomRuntime({ warCase, onExit, onNextCase, autostart,
       )}
       <ZeroFile clues={zeroClues} total={ZERO_CLUES.length} />
       {clueToast && (
+        // Docked flush to the right edge at the ZERO FILE tab's height, so the
+        // clue reads as sliding out of the file it's being added to, the way
+        // a phone notification slides in from the edge.
         <button
-          className="wr-clue-toast"
-          onClick={() => setClueToast(null)}
+          className={clueLeaving ? "wr-clue-toast wr-clue-leave" : "wr-clue-toast"}
+          onClick={() => setClueLeaving(true)}
           aria-label="New Zero File clue added, dismiss"
           style={{
             position: "fixed",
-            right: 14,
-            bottom: 108,
+            right: 0,
+            top: "74%",
+            transform: "translateY(-50%)",
             zIndex: 80,
-            width: "min(300px, calc(100vw - 28px))",
+            width: "min(320px, calc(100vw - 40px))",
             textAlign: "left",
             background: "linear-gradient(180deg,#1c0f10,#120a0b)",
             border: "1px solid rgba(255,77,77,0.5)",
+            borderRight: "none",
             borderLeft: "3px solid #FF4D4D",
-            borderRadius: 10,
-            padding: "11px 13px",
-            boxShadow: "0 10px 26px rgba(0,0,0,0.5)",
+            borderRadius: "10px 0 0 10px",
+            padding: "12px 16px 12px 14px",
+            boxShadow: "-10px 10px 26px rgba(0,0,0,0.5)",
             cursor: "pointer",
           }}
         >
