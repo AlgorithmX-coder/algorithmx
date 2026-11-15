@@ -509,12 +509,14 @@ function DockView({ dock, nudge, acc, onResolve, onBad, onOpenWatchlist }: { doc
     setPool(dock?.type === "sequence" ? shuffled(dock.cards.length) : []);
     if (dock?.type === "flip") { setFlipSide("you"); setFlipToggleOn(false); setFlipChoiceIdx(null); flipFiredRef.current = false; }
   }, [dock]);
-  // auto-resolves the instant the GOOD state has been viewed on THEIR face.
-  useEffect(() => {
-    if (dock?.type !== "flip" || flipFiredRef.current) return;
-    const good = dock.you.kind === "toggle" ? flipToggleOn : dock.you.options[flipChoiceIdx ?? -1]?.outcome === "good";
-    if (flipSide === "them" && good) { flipFiredRef.current = true; onResolve("ok"); }
-  }, [dock, flipSide, flipToggleOn, flipChoiceIdx, onResolve]);
+  // The flip never moves on by itself: auto-resolving the instant the GOOD
+  // state reached THEIR face cut to the next question before the attacker's
+  // side could be read (UAT). CONTINUE under the card resolves it once.
+  const continueFlip = () => {
+    if (flipFiredRef.current) return;
+    flipFiredRef.current = true;
+    onResolve("ok");
+  };
 
   if (!dock || dock.type === "idle") return <div style={{ fontFamily: MONO, fontSize: 12, color: C.faint, opacity: 0.6, textAlign: "center", padding: "6px 0" }}>board idle…</div>;
   if (dock.type === "clear") {
@@ -683,6 +685,12 @@ function DockView({ dock, nudge, acc, onResolve, onBad, onOpenWatchlist }: { doc
           style={{ width: "100%", fontFamily: MONO, fontWeight: 700, fontSize: 13, letterSpacing: ".04em", color: C.page, background: !canFlip ? "#3a2f5e" : acc, border: 0, borderRadius: 6, padding: "11px", cursor: !canFlip ? "not-allowed" : "pointer" }}>
           {flipSide === "you" ? `FLIP → SEE ${dock.them.label.toUpperCase()}` : "FLIP BACK"}
         </button>
+        {flipSide === "them" && themGood && (
+          <button className="wr-btn" onClick={continueFlip}
+            style={{ width: "100%", marginTop: 8, fontFamily: MONO, fontWeight: 700, fontSize: 13, letterSpacing: ".04em", color: C.page, background: C.mint, border: 0, borderRadius: 6, padding: "11px", cursor: "pointer" }}>
+            CONTINUE →
+          </button>
+        )}
       </>
     );
   }

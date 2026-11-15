@@ -523,13 +523,15 @@ function DockView({ dock, nudge, acc, onResolve, onBad }: { dock: Dock; nudge: s
     const t = setTimeout(() => { setSolved(true); resolveLatest.current("ok"); }, 600);
     return () => clearTimeout(t);
   }, [dock, dial, solved]);
-  // auto-resolves the instant the GOOD state has been viewed on THEIR face —
-  // same "latches, no submit button" feel as the decode dial above.
-  useEffect(() => {
-    if (dock?.type !== "flip" || flipFiredRef.current) return;
-    const good = dock.you.kind === "toggle" ? flipToggleOn : dock.you.options[flipChoiceIdx ?? -1]?.outcome === "good";
-    if (flipSide === "them" && good) { flipFiredRef.current = true; onResolve("ok"); }
-  }, [dock, flipSide, flipToggleOn, flipChoiceIdx, onResolve]);
+  // The flip never moves on by itself: it used to resolve the instant the
+  // GOOD state reached THEIR face, which cut straight to the next question
+  // before the attacker's side could be read (UAT, Cases 11-15). A CONTINUE
+  // button under the card resolves it once (see the flip dock below).
+  const continueFlip = () => {
+    if (flipFiredRef.current) return;
+    flipFiredRef.current = true;
+    onResolve("ok");
+  };
 
   if (!dock || dock.type === "idle") {
     return <div style={{ fontFamily: MONO, fontSize: 12, color: C.faint, opacity: 0.6, textAlign: "center", padding: "6px 0" }}>console idle…</div>;
@@ -692,6 +694,12 @@ function DockView({ dock, nudge, acc, onResolve, onBad }: { dock: Dock; nudge: s
           style={{ width: "100%", fontFamily: MONO, fontWeight: 700, fontSize: 13, letterSpacing: ".04em", color: C.page, background: !canFlip ? "#4a3d20" : acc, border: 0, borderRadius: R.btn, padding: "11px", cursor: !canFlip ? "not-allowed" : "pointer" }}>
           {flipSide === "you" ? `[ FLIP → SEE ${dock.them.label.toUpperCase()} ]` : "[ FLIP BACK ]"}
         </button>
+        {flipSide === "them" && themGood && (
+          <button className="cn-btn" onClick={continueFlip}
+            style={{ width: "100%", marginTop: 8, fontFamily: MONO, fontWeight: 700, fontSize: 13, letterSpacing: ".04em", color: C.page, background: C.mint, border: 0, borderRadius: R.btn, padding: "11px", cursor: "pointer" }}>
+            [ CONTINUE → ]
+          </button>
+        )}
       </>
     );
   }

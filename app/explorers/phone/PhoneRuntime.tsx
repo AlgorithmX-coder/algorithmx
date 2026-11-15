@@ -830,13 +830,16 @@ function DockView({ dock, wrongId, nudge, onLever, onReply, onContinue, onSubmit
   useEffect(() => {
     if (dock?.type === "flip") { setFlipSide("you"); setFlipChoiceIdx(null); flipFiredRef.current = false; }
   }, [dock]);
-  // auto-resolves the instant the GOOD pick has been viewed on THEIR face —
-  // same "latches, no submit button" feel as Console/War Room's flip.
-  useEffect(() => {
+  // The flip never moves on by itself: auto-resolving the instant the GOOD
+  // pick reached THEIR face cut to the next message before the attacker's
+  // side could be read (UAT). Continue under the card resolves it once.
+  const continueFlip = () => {
     if (dock?.type !== "flip" || flipFiredRef.current) return;
     const picked = flipChoiceIdx !== null ? dock.you.options[flipChoiceIdx] : null;
-    if (flipSide === "them" && picked?.outcome === "good") { flipFiredRef.current = true; onFlip(picked.label); }
-  }, [dock, flipSide, flipChoiceIdx, onFlip]);
+    if (picked?.outcome !== "good") return;
+    flipFiredRef.current = true;
+    onFlip(picked.label);
+  };
   if (!dock || dock.type === "composer") {
     return (
       <div style={{ display: "flex", alignItems: "center", gap: 9, opacity: 0.55 }}>
@@ -926,6 +929,12 @@ function DockView({ dock, wrongId, nudge, onLever, onReply, onContinue, onSubmit
           style={{ width: "100%", fontFamily: UI, fontWeight: 700, fontSize: 13.5, color: C.page, background: !canFlip ? C.chip : C.pink, border: 0, borderRadius: 999, padding: "11px", cursor: !canFlip ? "not-allowed" : "pointer" }}>
           {flipSide === "you" ? `Flip → see ${dock.them.label}` : "Flip back"}
         </button>
+        {flipSide === "them" && themGood && (
+          <button className="ph-btn" onClick={continueFlip}
+            style={{ width: "100%", marginTop: 8, fontFamily: UI, fontWeight: 700, fontSize: 13.5, color: C.page, background: C.mint, border: 0, borderRadius: 999, padding: "11px", cursor: "pointer" }}>
+            Continue →
+          </button>
+        )}
       </>
     );
   }
