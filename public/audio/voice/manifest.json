@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-16T08:38:58.168Z",
+  "generatedAt": "2026-11-16T10:03:11.823Z",
   "model": "eleven_v4",
   "voiceSettings": {
     "stability": 0.6,
@@ -26201,14 +26201,14 @@
       "file": "/audio/voice/2e8e7457766cf7cc.mp3"
     },
     {
-      "key": "aa240ae0135a6492",
+      "key": "d64acc725f20c2fd",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "Sam says ha, post it.",
+      "text": "Sam laughs and says yes, post that one.",
       "lines": [
-        "Sam says ha, post it."
+        "Sam laughs and says yes, post that one."
       ],
-      "file": "/audio/voice/aa240ae0135a6492.mp3"
+      "file": "/audio/voice/d64acc725f20c2fd.mp3"
     },
     {
       "key": "34f1c7fde6638e70",
@@ -31785,24 +31785,24 @@
       "file": "/audio/voice/32536f65d0b22917.mp3"
     },
     {
-      "key": "3f4f0130e5f66443",
+      "key": "9b26eae33b0c785c",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "Haha, you fell in the lava again! And you both crack up laughing.",
+      "text": "Your friend laughs: you fell in the lava again! And you both crack up laughing.",
       "lines": [
-        "Haha, you fell in the lava again! And you both crack up laughing."
+        "Your friend laughs: you fell in the lava again! And you both crack up laughing."
       ],
-      "file": "/audio/voice/3f4f0130e5f66443.mp3"
+      "file": "/audio/voice/9b26eae33b0c785c.mp3"
     },
     {
-      "key": "a1ff90ab86df313a",
+      "key": "1993ccc7169385e4",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "Everyone laugh at Sam's drawing! Posted to the whole class chat.",
+      "text": "Someone posts to the whole class chat: Everyone laugh at Sam's drawing!",
       "lines": [
-        "Everyone laugh at Sam's drawing! Posted to the whole class chat."
+        "Someone posts to the whole class chat: Everyone laugh at Sam's drawing!"
       ],
-      "file": "/audio/voice/a1ff90ab86df313a.mp3"
+      "file": "/audio/voice/1993ccc7169385e4.mp3"
     },
     {
       "key": "8daef97402c3119a",

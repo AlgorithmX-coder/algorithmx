@@ -387,7 +387,7 @@ async function recordLine(ctx, line, prev, next, tmp) {
  * Returns { ok, notes[], transcript } - ok=false means a line never came out
  * clean; the clip is still written (best take) and the caller reports it.
  */
-export async function recordBlockLineTake({ key, voiceId, model, settings, lines, outFile, sttCacheDir = ".stt-cache" }) {
+export async function recordBlockLineTake({ key, voiceId, model, settings, lines, outFile, sttCacheDir = ".stt-cache", targetWpm = TARGET_WPM }) {
   const clean = lines.map(cleanLine).filter((l) => /[a-z0-9]/i.test(l));
   if (!clean.length) throw new Error("block has no speakable text");
   const tmp = `${outFile}.lt${process.pid}${Math.random().toString(36).slice(2, 7)}`;
@@ -406,7 +406,7 @@ export async function recordBlockLineTake({ key, voiceId, model, settings, lines
     const nWords = takes.reduce((s, t) => s + t.words.length, 0);
     const speech = takes.reduce((s, t) => s + Math.max(0.3, t.words.at(-1).end - t.words[0].start), 0);
     const rawWpm = (nWords / speech) * 60;
-    const cardTempo = Math.min(1.1, Math.max(0.92, TARGET_WPM / rawWpm));
+    const cardTempo = Math.min(1.1, Math.max(0.92, targetWpm / rawWpm));
     const parts = [];
     for (const [i, t] of takes.entries()) {
       const lw = (t.words.length / Math.max(0.3, t.words.at(-1).end - t.words[0].start)) * 60 * cardTempo;
