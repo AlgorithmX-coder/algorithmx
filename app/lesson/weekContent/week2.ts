@@ -48,11 +48,12 @@ export const WEEK_2: WeekContent = {
   ],
 
   screens: [
-    // 0 - OPENING VIDEO: "The Break-In" - a "free prize" asks Layla for her
-    // name and school, the Raccoon adds it to his collection, and Adam says
-    // "Let's learn what to keep PRIVATE!" (talking film, 2026-11-11;
-    // source + assembler in .scratch/w02, not in the repo).
-    { type: "video", videoPlaceholder: "Week 2: The Break-In", videoSrc: "/videos/module-02-intro.mp4" },
+    // 0 - OPENING VIDEO: "The Free Prize" (episode, 2026-11-16, ~61s) - Layla
+    // types her name and school into a Sticker Storm prize form, the Raccoon
+    // stamps it into his collection, Adam: "Let's learn what to keep PRIVATE!",
+    // the private treasures, and "Come on, Cyber Hero! Let's find out together!"
+    // (source + assembler in .scratch/w02-episode, not in the repo).
+    { type: "video", videoPlaceholder: "Week 2: The Free Prize", videoSrc: "/videos/module-02-intro.mp4" },
 
     // 1 - ALERT: incident report with this week's topic image
     {
@@ -869,10 +870,12 @@ export const WEEK_2: WeekContent = {
     // 24 - BOSS BATTLE: The Profile Forge (5 phases)
     { type: "bossBattle" },
 
-    // 25 - CLOSING VIDEO: "The Bounce" - another prize asks for her address,
-    // Layla closes it, the Raccoon gets nothing, Adam: "Not sure? Ask a
-    // grown-up first!" (talking film, 2026-11-11).
-    { type: "video", videoPlaceholder: "Week 2: The Bounce", videoSrc: "/videos/module-02-outro.mp4" },
+    // 25 - CLOSING VIDEO: "Secrets Safe" (episode, 2026-11-16, ~50s) - Mom
+    // helped, what's fine to share and what never is, Adam's safe game name,
+    // Layla taps "No thanks" on an address pop-up, the Raccoon's form comes
+    // back BLANK and his screen says NOTHING FOUND, his "Psst!" fails, Adam:
+    // "Not sure? Ask a grown-up first!", high five.
+    { type: "video", videoPlaceholder: "Week 2: Secrets Safe", videoSrc: "/videos/module-02-outro.mp4" },
 
     // 26 - Mission Debrief
     {
