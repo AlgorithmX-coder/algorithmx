@@ -146,7 +146,8 @@ export const WEEK_5: WeekContent = {
           story: "'Haha, you fell in the lava AGAIN!' and you both crack up laughing.",
           blockLabel: "Lava laugh",
           blockIcon: "💬",
-          readAloud: "Haha, you fell in the lava again! And you both crack up laughing.",
+          // Spoken as reported speech: the voice skipped "Haha" on every take (owner UAT 2026-11-16).
+          readAloud: "Your friend laughs: you fell in the lava again! And you both crack up laughing.",
           options: [
             { label: "A joke: both laughing", icon: "💬", isBalancing: true, note: "", why: "You are both laughing, so nobody is hurting. That is two friends having fun." },
             { label: "Bullying: one side hurting", icon: "💬", isBalancing: false, note: "Look again: both of you are laughing. When nobody is hurting, it is a joke, not bullying." },
@@ -158,7 +159,8 @@ export const WEEK_5: WeekContent = {
           story: "'Everyone laugh at Sam's drawing!' posted to the whole class chat.",
           blockLabel: "Class pile-on",
           blockIcon: "💬",
-          readAloud: "Everyone laugh at Sam's drawing! Posted to the whole class chat.",
+          // Who posted it first, then the post: "...drawing! Posted to..." did not flow (owner UAT 2026-11-16).
+          readAloud: "Someone posts to the whole class chat: Everyone laugh at Sam's drawing!",
           options: [
             { label: "Bullying: mean on purpose", icon: "💬", isBalancing: true, note: "", why: "Getting a whole class to laugh AT one kid is mean on purpose. Sam is not laughing." },
             { label: "A joke: both laughing", icon: "💬", isBalancing: false, note: "Ask who is laughing. The class might be, but Sam is hurting. One side laughing is not a joke." },

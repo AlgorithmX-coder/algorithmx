@@ -211,6 +211,21 @@ function voiceFor(speaker, source) {
  * [proud] tags, which eleven_v3 consumes properly, and the pacing comes from
  * the delivery spec rather than from letting the model improvise.
  */
+/* SLOWER DELIVERY for read-aloud MESSAGES (owner, by ear, 2026-11-16): the
+ * Barker's Booth messages read too fast at the course pace, while hints and
+ * cards are right as they are, so this is per clip, never global. The voice
+ * itself speaks slower (SLOW_SPEED), and the card tempo aims at 140 words a
+ * minute so it is not sped back up. A time-stretch was tried first and the
+ * owner heard an echo on every message: never stretch, re-voice. */
+const SLOW_SPEED = 0.8;
+const SLOW_TARGET_WPM = 140;
+const SLOW_DELIVERY = new Set([
+  "From Account Security. Urgent: your game account will be deleted in ten minutes! We found a problem. Press fix it now within ten minutes, or lose everything you own, forever!",
+  "From Mrs. Patel at Maple Hill School. Library books due back Friday. Just a reminder that class four B's library books are due back this Friday. Thanks! Signed, Mrs. Patel.",
+  "From PrizeBot three thousand. Last chance! Your free tablet expires tonight! You were chosen. Claim your free tablet before midnight or it goes to someone else. Hurry!",
+  "From Smile Dental. Reminder: Adam's check-up is Tuesday at four. Hi! A friendly reminder that Adam's check-up is on Tuesday at four. See you then. Smile Dental.",
+]);
+
 const VOICE_SETTINGS = {
   stability: 0.6,
   similarity_boost: 0.75,
@@ -2181,8 +2196,11 @@ async function generateBlock(speaker, lines, source, skipRecord) {
    * the real name. */
   {
     const tmpOut = `${filepath}.new.mp3`;
+    const slow = SLOW_DELIVERY.has(blockText);
     const r = await recordBlockLineTake({
-      key: KEY, voiceId: voice.id, model: MODELS_IN_PRIORITY_ORDER[0], settings: VOICE_SETTINGS, lines, outFile: tmpOut,
+      key: KEY, voiceId: voice.id, model: MODELS_IN_PRIORITY_ORDER[0], lines, outFile: tmpOut,
+      settings: slow ? { ...VOICE_SETTINGS, speed: SLOW_SPEED } : VOICE_SETTINGS,
+      ...(slow ? { targetWpm: SLOW_TARGET_WPM } : {}),
     });
     renameSync(tmpOut, filepath);
     const { appendFile } = await import("node:fs/promises");
