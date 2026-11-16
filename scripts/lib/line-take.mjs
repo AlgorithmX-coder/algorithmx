@@ -50,6 +50,11 @@ const TARGET_WPM = 160;
 const LINE_MAX_WPM = 180;
 const LINE_CAP_WPM = 172;
 const MAX_TAKES = Number(process.env.LINETAKE_MAX_TAKES) || 5;
+/* Shortest final t/s/k a take may keep, measured on the raw take. CI's
+ * audit-consonant-integrity wants 0.08s on the SHIPPED clip, and the card
+ * tempo (up to 1.1x) shortens a tail after this check, so a follow-up run can
+ * ask for margin with LINETAKE_MIN_TAIL=0.1. */
+const MIN_TAIL = Number(process.env.LINETAKE_MIN_TAIL) || 0.08;
 const FILLER = " Okay.";
 const TARGET_SPEECH_DB = -15.0;
 const PEAK_CEILING_DB = -1.5;
@@ -84,7 +89,7 @@ function numWords(n) {
 const SAME_SOUND = {
   phishing: "fishing", phish: "fish", mom: "mum", moms: "mums", pajamas: "pyjamas", byte: "bite", bytes: "bites",
   reel: "real", latter: "ladder", borough: "burrow", missus: "misses", tally: "telly", em: "him", their: "theyre",
-  there: "theyre", adore: "adoor", britebox: "brightbox", pryzebot: "prizebot", petz: "pets",
+  there: "theyre", practise: "practice", practised: "practiced", adore: "adoor", britebox: "brightbox", pryzebot: "prizebot", petz: "pets",
 };
 /* One canonical spelling, so a transcriber's American spelling or digits are
  * not mistaken for a different word. Applied to BOTH sides. */
@@ -99,6 +104,14 @@ function canon(tok) {
 function wordsOf(text) {
   return String(text)
     .replace(/\[[a-z ]+\]/gi, " ")
+    /* How a transcriber WRITES what was said (2026-11-16, second opinions on
+     * shipped clips): "$1" is "one dollar", ".win" is "dot win", "4.8" is
+     * "four point eight", "gift@roblox" is "gift at roblox". Each is the exact
+     * spoken form, so nothing that was not said can pass through here. */
+    .replace(/\$(\d+)\b/g, (m, d) => `${d} ${d === "1" ? "dollar" : "dollars"}`)
+    .replace(/(\d)\.(\d)/g, "$1 point $2")
+    .replace(/(^|\s)\.(?=[a-z])/gi, "$1dot ")
+    .replace(/@/g, " at ")
     .replace(/(\d)[,](\d)/g, "$1$2")
     // Clock times: "6:00" is said "six", "3:15" is said "three fifteen".
     .replace(/\b(\d{1,2}):00\b/g, "$1").replace(/\b(\d{1,2}):(\d\d)\b/g, "$1 $2")
@@ -154,11 +167,11 @@ async function tts(key, voiceId, model, settings, text, prev, next) {
   throw new Error("TTS retries exhausted");
 }
 
-export async function transcribeFull(key, file) {
+export async function transcribeFull(key, file, model = "scribe_v1") {
   const buf = await readFile(file);
   for (let a = 0; a < 8; a++) {
     const fd = new FormData();
-    fd.append("model_id", "scribe_v1");
+    fd.append("model_id", model);
     fd.append("tag_audio_events", "true");
     fd.append("file", new Blob([buf], { type: "audio/mpeg" }), "clip.mp3");
     let r;
@@ -175,9 +188,10 @@ export async function transcribeFull(key, file) {
  * end in an unvoiced sound that needs 100-250ms of quiet speech after the
  * vowel? Kept in step with the audit by hand; the audit is what CI runs. */
 const VOICELESS_FINAL_S = new Set(["this", "yes", "gas", "bias", "atlas", "canvas", "chaos"]);
-/* Spelled with an unvoiced ending, said without one: "OK" is "okay", and
- * "with" ends on the voiced th of "this". Same list as the audit. */
-const VOICED_ENDING = new Set(["ok", "with"]);
+/* Spelled with an unvoiced ending, said without one: "OK" is "okay",
+ * "with" ends on the voiced th of "this", "recipe" on a vowel. Same list as
+ * the audit. */
+const VOICED_ENDING = new Set(["ok", "with", "recipe"]);
 export function expectsQuietTail(word) {
   let w = String(word || "").toLowerCase().replace(/[^a-z']/g, "");
   if (!w) return false;
@@ -212,6 +226,68 @@ function pcm(file) {
  * filler, both from the transcript. Returns { at } in seconds, or { err }.
  */
 export function acousticCut(raw, before, last) {
+  const w = windowCut(raw, before, last);
+  if (!w.err) return w;
+  const s = soundCut(raw, before);
+  return s.err ? { err: `${w.err}/${s.err}` } : s;
+}
+
+/* The final t/s/k kept before `at`, measured the way CI's
+ * audit-consonant-integrity does: loud end -> last trace of sound. */
+function tailCheck(a, before, at, peak) {
+  if (!expectsQuietTail(before.text)) return null;
+  const s0 = Math.floor(before.start * PCM_SR), s1 = Math.floor(at * PCM_SR), w = Math.round(PCM_SR * 0.02);
+  const l2 = (i0) => { let s = 0, c = 0; for (let i = i0; i < Math.min(s1, i0 + w); i++) { s += a[i] * a[i]; c++; } return c ? Math.sqrt(s / c) : 0; };
+  let loudEnd = -1; for (let i = s1 - w; i >= s0; i -= w) if (l2(i) > peak * 0.06) { loudEnd = i + w; break; }
+  let tail = loudEnd; for (let i = loudEnd; i + w <= s1; i += w) if (l2(i) > peak * 0.004) tail = i + w;
+  const m = (tail - loudEnd) / PCM_SR;
+  return loudEnd < 0 || m < MIN_TAIL ? `short-tail(${Math.round(m * 1000)}ms)` : null;
+}
+
+/**
+ * The cut found from the SOUND alone, for takes whose transcript puts the
+ * filler's start on top of the line's last word (2026-11-16: "I replied once",
+ * "...cool stuff!\"", "...asked politely." failed every take that way, though
+ * every one had ~0.5s of clean silence before "Okay"). The filler is the last
+ * island of sound; only a quiet run of 150ms+ in front of it counts, so a stop
+ * closure inside the line (under 100ms) or inside "Okay" can never be taken
+ * for it. Whatever this cuts is still re-transcribed and must match the line.
+ */
+export function soundCut(raw, before) {
+  const a = pcm(raw), n = a.length, W = PCM_SR / 100;
+  const lv = (f) => { let s = 0; const i0 = f * W; for (let i = i0; i < Math.min(n, i0 + W); i++) s += a[i] * a[i]; return Math.sqrt(s / W); };
+  const frames = Math.floor(n / W);
+  const L = Array.from({ length: frames }, (_, f) => lv(f));
+  const all = Math.max(...L);
+  if (!all) return { err: "silent-take" };
+  let end = frames - 1; while (end > 0 && L[end] < all * 0.02) end--;
+  /* Walk back over the filler to the first run of 15+ quiet frames. */
+  let f = end, run = 0, onset = -1;
+  for (; f > 0; f--) { if (L[f] < all * 0.01) { if (++run >= 15) { onset = f + run; break; } } else run = 0; }
+  if (onset < 0) return { err: "no-silence-before-filler" };
+  const fillerLen = (end - onset + 1) / 100;
+  if (fillerLen < 0.2 || fillerLen > 1.0) return { err: `filler-shape(${fillerLen.toFixed(2)}s)` };
+  /* Peak and quiet level from the LINE, not the filler. */
+  let peak = 0; for (let k = 0; k < onset - 15; k++) peak = Math.max(peak, L[k]);
+  if (!peak) return { err: "silent-line" };
+  let q0 = onset - 1; while (q0 > 0 && L[q0 - 1] < peak * 0.01) q0--;
+  if (q0 <= Math.floor(before.start * 100)) return { err: "cut-before-last-word" };
+  const at = (q0 + keepIntoQuiet(onset - q0)) / 100;
+  const t = tailCheck(a, before, at, peak);
+  return t ? { err: t } : { at, via: "sound" };
+}
+
+/* How far into the quiet run before the filler the cut goes, in 10ms frames.
+ * The run is under 1% of the line's peak, so keeping more of it adds only
+ * near-silence, but it is where the faint end of a final t/s/ch fades out:
+ * cutting 30ms in (until 2026-11-16) trimmed that fade, and "itself.",
+ * "bait", "fast" failed every take on a 40-60ms tail. Now up to 150ms in,
+ * never past 60% of the run, so the filler's soft attack is never reached. */
+function keepIntoQuiet(run) {
+  return Math.max(Math.min(3, Math.floor(run / 2)), Math.min(15, Math.floor(run * 0.6)));
+}
+
+function windowCut(raw, before, last) {
   const a = pcm(raw), n = a.length, W = PCM_SR / 100; // 10ms frames
   const lv = (f) => { let s = 0; const i0 = f * W; for (let i = i0; i < Math.min(n, i0 + W); i++) s += a[i] * a[i]; return Math.sqrt(s / W); };
   const frames = Math.floor(n / W);
@@ -233,16 +309,10 @@ export function acousticCut(raw, before, last) {
   if (q1 <= f0 || onset - q1 > 6) return { err: "filler-runs-on" };
   let q0 = q1; while (q0 > f0 && quiet(q0 - 1)) q0--;
   if (q1 - q0 + 1 < 4) return { err: "no-gap-before-filler" };      // under 40ms of quiet
-  const at = (q0 + Math.min(3, Math.floor((q1 - q0 + 1) / 2))) / 100;
+  const at = (q0 + keepIntoQuiet(q1 - q0 + 1)) / 100;
   /* Measure the kept ending the way CI does: loud end -> last trace of sound. */
-  if (expectsQuietTail(before.text)) {
-    const s0 = Math.floor(before.start * PCM_SR), s1 = Math.floor(at * PCM_SR), w = Math.round(PCM_SR * 0.02);
-    const l2 = (i0) => { let s = 0, c = 0; for (let i = i0; i < Math.min(s1, i0 + w); i++) { s += a[i] * a[i]; c++; } return c ? Math.sqrt(s / c) : 0; };
-    let loudEnd = -1; for (let i = s1 - w; i >= s0; i -= w) if (l2(i) > peak * 0.06) { loudEnd = i + w; break; }
-    let tail = loudEnd; for (let i = loudEnd; i + w <= s1; i += w) if (l2(i) > peak * 0.004) tail = i + w;
-    if (loudEnd < 0 || (tail - loudEnd) / PCM_SR < 0.08) return { err: `short-tail(${Math.round(((tail - loudEnd) / PCM_SR) * 1000)}ms)` };
-  }
-  return { at };
+  const t = tailCheck(a, before, at, peak);
+  return t ? { err: t } : { at };
 }
 
 async function recordLine(ctx, line, prev, next, tmp) {
@@ -250,7 +320,12 @@ async function recordLine(ctx, line, prev, next, tmp) {
   const seen = new Map();
   for (let take = 1; take <= MAX_TAKES; take++) {
     const raw = `${tmp}.t${take}.raw.mp3`;
-    await writeFile(raw, await tts(ctx.key, ctx.voiceId, ctx.model, ctx.settings, line + FILLER, prev, next));
+    /* A line with no closing punctuation ("I waited to tell", an answer
+     * label) runs straight on into the filler ("tell okay") with no gap to
+     * cut in, so the model gets a full stop. Sent text only; the check and
+     * the screen use the line as written. */
+    const said = /[.!?…]["'”’)\]]*$/.test(line) ? line : `${line}.`;
+    await writeFile(raw, await tts(ctx.key, ctx.voiceId, ctx.model, ctx.settings, said + FILLER, prev, next));
     const heard = (await transcribeFull(ctx.key, raw)).filter((w) => w.type === "word");
     const last = heard.at(-1), before = heard.at(-2);
     if (!last || !before || canon(last.text) !== "okay") { await unlink(raw).catch(() => {}); ctx.log(`filler-not-last t${take}`); continue; }
@@ -258,7 +333,11 @@ async function recordLine(ctx, line, prev, next, tmp) {
      * past it (audit-consonant-integrity). 0.12s clipped "it!" and "guess." in
      * the first run, so keep up to 0.28s, but never into the filler. A filler
      * that starts under 0.15s after the word leaves no clean cut: retake. */
-    if (last.start - before.end < 0.15) { await unlink(raw).catch(() => {}); ctx.log(`filler-too-close t${take}`); continue; }
+    /* 2026-11-16: the transcript often stamps "Okay" right against the last
+     * word when there is really half a second of silence between them, so a
+     * "too close" take now gets the sound-only cut, which needs 150ms+ of
+     * real quiet in front of the filler, instead of being thrown away. */
+    const tooClose = last.start - before.end < 0.15;
     /* ⚠️ The full run (2026-11-15) still clipped 75 clip endings ("minute" ->
      * "minut") with the timing rule alone: the transcript's word end and the
      * filler's start are both estimates, and a final t's release burst comes
@@ -267,8 +346,8 @@ async function recordLine(ctx, line, prev, next, tmp) {
      * runs into the filler, which only exists once the burst is over. Then the
      * consonant is measured exactly as CI's audit-consonant-integrity does;
      * short means retake, never ship. */
-    const cut = acousticCut(raw, before, last);
-    if (cut.err) { await unlink(raw).catch(() => {}); ctx.log(`${cut.err} t${take}`); continue; }
+    const cut = tooClose ? soundCut(raw, before) : acousticCut(raw, before, last);
+    if (cut.err) { await unlink(raw).catch(() => {}); ctx.log(`${tooClose ? "filler-too-close/" : ""}${cut.err} t${take}`); continue; }
     const wav = `${tmp}.t${take}.wav`;
     ff(["-i", raw, "-t", cut.at.toFixed(3), "-af", `afade=t=out:st=${Math.max(0, cut.at - 0.03).toFixed(3)}:d=0.03`, "-ar", "44100", "-ac", "1", "-c:a", "pcm_s16le", wav]);
     await unlink(raw).catch(() => {});
@@ -276,19 +355,27 @@ async function recordLine(ctx, line, prev, next, tmp) {
     const probeMp3 = `${tmp}.t${take}.chk.mp3`;
     ff(["-i", wav, "-c:a", "libmp3lame", "-b:a", "128k", probeMp3]);
     const check = await transcribeFull(ctx.key, probeMp3);
-    await unlink(probeMp3).catch(() => {});
     const probs = compareTake(line, check);
     const words = check.filter((w) => w.type === "word");
     const info = { wav, words, probs, take };
-    if (!probs.length && words.length) { if (best && best.wav !== wav) await unlink(best.wav).catch(() => {}); return info; }
-    ctx.log(`t${take} ${probs.join("; ").slice(0, 160)}`);
-    const sig = probs.join("|");
-    if (words.length && seen.has(sig) && !/sound:/.test(sig)) {
-      /* Same mismatch twice: the transcriber, not the take. */
-      if (best && best.wav !== wav) await unlink(best.wav).catch(() => {});
-      return { ...info, quirk: true };
+    if (!probs.length && words.length) { await unlink(probeMp3).catch(() => {}); if (best && best.wav !== wav) await unlink(best.wav).catch(() => {}); return info; }
+    /* A mismatch gets a second opinion from a DIFFERENT model. Until
+     * 2026-11-16 the same mismatch twice was taken as the transcriber's
+     * quirk, and that let real slips ship when the voice made them twice:
+     * "guard the door" said "bar the door", "you were" said "you are". Two
+     * models both hearing the same wrong word is the voice, so only a second
+     * model hearing the line EXACTLY lets a take through. */
+    if (words.length && !/sound:/.test(probs.join("|"))) {
+      const check2 = await transcribeFull(ctx.key, probeMp3, "scribe_v2").catch(() => []);
+      if (check2.length && !compareTake(line, check2).length) {
+        await unlink(probeMp3).catch(() => {});
+        if (best && best.wav !== wav) await unlink(best.wav).catch(() => {});
+        return { ...info, quirk: true };
+      }
     }
-    seen.set(sig, true);
+    await unlink(probeMp3).catch(() => {});
+    ctx.log(`t${take} ${probs.join("; ").slice(0, 160)}`);
+    seen.set(probs.join("|"), true);
     if (!best && words.length) best = info; else await unlink(wav).catch(() => {});
   }
   if (!best) throw new Error(`no usable take for line: ${line.slice(0, 80)}`);
@@ -309,8 +396,10 @@ export async function recordBlockLineTake({ key, voiceId, model, settings, lines
   try {
     for (let i = 0; i < clean.length; i++) {
       const ctx = { key, voiceId, model, settings, log: (s) => notes.push(`L${i + 1}: ${s}`) };
-      const t = await recordLine(ctx, clean[i], clean[i - 1], clean[i + 1], `${tmp}.L${i}`);
-      if (t.quirk) notes.push(`L${i + 1}: accepted (transcriber quirk)`);
+      let t;
+      try { t = await recordLine(ctx, clean[i], clean[i - 1], clean[i + 1], `${tmp}.L${i}`); }
+      catch (e) { e.message += ` [${notes.filter((s) => s.startsWith(`L${i + 1}:`)).join("; ").slice(0, 400)}]`; throw e; }
+      if (t.quirk) notes.push(`L${i + 1}: accepted (scribe_v2 heard it exactly)`);
       if (t.failed) notes.push(`L${i + 1}: NO CLEAN TAKE`);
       takes.push(t);
     }
@@ -358,12 +447,16 @@ export async function recordBlockLineTake({ key, voiceId, model, settings, lines
     /* Final whole-clip check; cached under the shipped file's hash so every
      * later audit is free. */
     const fin = await transcribeFull(key, outFile);
-    const finProbs = compareTake(clean.join(" "), fin);
+    let finProbs = compareTake(clean.join(" "), fin);
+    if (finProbs.length) {
+      const fin2 = await transcribeFull(key, outFile, "scribe_v2").catch(() => []);
+      if (fin2.length && !compareTake(clean.join(" "), fin2).length) finProbs = [];
+    }
     if (finProbs.length) notes.push(`FINAL: ${finProbs.join("; ").slice(0, 200)}`);
     const h = createHash("sha1").update(await readFile(outFile)).digest("hex").slice(0, 20);
     await mkdir(sttCacheDir, { recursive: true });
     await writeFile(join(sttCacheDir, `${h}.json`), JSON.stringify(fin.filter((w) => w.type === "word").map((w) => ({ text: w.text, start: w.start, end: w.end }))));
-    const ok = !takes.some((t) => t.failed) && (!finProbs.length || takes.some((t) => t.quirk));
+    const ok = !takes.some((t) => t.failed) && !finProbs.length;
     return { ok, notes, cardTempo, rawWpm };
   } finally {
     const { readdir } = await import("node:fs/promises");
