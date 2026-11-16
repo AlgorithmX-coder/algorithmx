@@ -34,11 +34,12 @@ export const WEEK_1: WeekContent = {
   ],
 
   screens: [
-    // 0 - OPENING VIDEO: "One Night" - Layla sets "Biscuit" as her game
-    // password, the Raccoon guesses it, her game is gone, and Adam says
-    // "Let's make a password NOBODY can guess!" (talking film, 2026-11-11;
-    // source + assembler in .scratch/w01-casting, not in the repo).
-    { type: "video", videoPlaceholder: "Week 1: One Night", videoSrc: "/videos/module-01-intro.mp4" },
+    // 0 - OPENING VIDEO: "Biscuit" (episode, 2026-11-16, ~62s) - Layla's
+    // dragon goes gold, she locks it with her dog's name, the Raccoon finds
+    // the dog photo, logs in and takes the dragon; Adam: "A password is a
+    // key. Biscuit is a weak one." (source + assembler in .scratch/w01-episode,
+    // not in the repo).
+    { type: "video", videoPlaceholder: "Week 1: Biscuit", videoSrc: "/videos/module-01-intro.mp4" },
 
     // 1 - ALERT: incident report with this week's topic image (comes FIRST now,
     // so the incident lands before Mission Command briefs the plan - owner 2026-09-10)
@@ -859,10 +860,11 @@ export const WEEK_1: WeekContent = {
     // 19 - BOSS BATTLE (5 phases)
     { type: "bossBattle" },
 
-    // 20 - CLOSING VIDEO: "The Bounce" - a three-word passphrase on the
-    // tablet, the Raccoon's screen goes red ("How many dots IS that?!"),
-    // Layla laughs, Adam high-fives: "Locked tight, Cyber Hero!"
-    { type: "video", videoPlaceholder: "Week 1: The Bounce", videoSrc: "/videos/module-01-outro.mp4" },
+    // 20 - CLOSING VIDEO: "Locked Tight" (episode, 2026-11-16, ~48s) - Mom
+    // helps get the dragon back, three silly words + numbers and symbols, the
+    // Raccoon's login is refused ("What?! I can't crack it!"), he asks for the
+    // password, Layla: "My password stays secret!", Adam: "Locked tight, Cyber Hero!"
+    { type: "video", videoPlaceholder: "Week 1: Locked Tight", videoSrc: "/videos/module-01-outro.mp4" },
 
     // 21 - Mission Debrief (consolidate by concept)
     {
@@ -1198,7 +1200,7 @@ export const WEEK_1: WeekContent = {
     23: { adam: null, layla: { mood: "excited", message: "All five! You're ready for the boss!" } }, // recap 5
     24: { adam: null, layla: { mood: "excited", message: "Rip the weak ones from his notebook!" } }, // consolidation
     25: { adam: { mood: "worried", message: "Boss battle - lock him out!" }, layla: null }, // boss
-    26: { adam: null, layla: { mood: "excited", message: "Watch the Raccoon bounce right off!" } }, // outro video
+    26: { adam: null, layla: { mood: "excited", message: "Watch the Raccoon get locked out!" } }, // outro video
     27: { adam: { mood: "thumbsup", message: "Look at everything you mastered!" }, layla: null }, // debrief
     28: { adam: null, layla: { mood: "excited", message: "Stickers earned - off to your Cyber HQ!" } }, // stickers
     29: { adam: { mood: "thumbsup", message: "Password Protector badge earned!" }, layla: null }, // completion
