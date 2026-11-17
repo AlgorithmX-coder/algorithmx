@@ -18,6 +18,11 @@
  *   sentence = the final sentence as written (what must be heard)
  *   said     = what to send the model (IPA/respellings), default = sentence
  *   whole    = the clip IS one short line: replace all of it
+ *   tempo    = atempo for the new take, for a clip whose original line was
+ *              already tempo-shaped (Heroes line-take clips run at up to 1.1x,
+ *              so a raw take of their last sentence reads ~15% slower than the
+ *              line around it). Use the same factor the line-take applied,
+ *              never more than its 0.92-1.1 range.
  *
  * Every result is checked before it replaces the original: the new ending is
  * transcribed and must say the sentence exactly (scribe_v1, or scribe_v2 as a
@@ -155,8 +160,16 @@ for (const job of jobs) {
     }
     if (!clean.length) throw new Error(`no clean take [${fails.join("; ")}]`);
     // Keep the take closest in length to the original sentence: same pace.
-    clean.sort((a, b) => Math.abs(a.speech - origSpeech) - Math.abs(b.speech - origSpeech));
-    const t = clean[0];
+    const tempo = job.tempo ?? 1;
+    if (tempo < 0.92 || tempo > 1.1) throw new Error(`tempo ${tempo} outside the line-take range 0.92-1.1`);
+    clean.sort((a, b) => Math.abs(a.speech / tempo - origSpeech) - Math.abs(b.speech / tempo - origSpeech));
+    let t = clean[0];
+    if (tempo !== 1) {
+      const wavT = t.wav.replace(/\.wav$/, ".tempo.wav");
+      ff(["-i", t.wav, "-af", `atempo=${tempo.toFixed(4)}`, "-ar", String(SR), "-ac", "1", wavT]);
+      const sc = (x) => x / tempo;
+      t = { ...t, wav: wavT, lead: sc(t.lead), speech: sc(t.speech), words: t.words.map((w) => ({ ...w, start: sc(w.start), end: sc(w.end) })) };
+    }
     let tk = pcm(t.wav);
     const gain = origLevel / segLevel(tk, t.words[0].start, t.words.at(-1).end);
     /* Level-matched, and if that pushes a peak over -1 dBFS (a hot original),
