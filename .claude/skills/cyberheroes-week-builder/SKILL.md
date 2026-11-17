@@ -56,4 +56,4 @@ Every boss = a machine the Raccoon wheels in, themed to the week. Arrival taunt 
 
 ## Copy rules
 
-Kid-first US English (Childhelp 1-800-422-4453, 911). Coach copy must never contain any click-label phrase (Playwright getByText is case-insensitive substring); all click labels unique on screen. "Trusted grown-up" is the locked term. No guilt, FOMO, or countdown pressure — see the cyber-heroes-gamification skill's child-safety checklist before shipping anything reward-flavored.
+Kid-first US English. Never name a child line service, helpline, phone number, charity or country in anything a child or teacher sees (owner 2026-11-17). Coach copy must never contain any click-label phrase (Playwright getByText is case-insensitive substring); all click labels unique on screen. "Trusted grown-up" is the locked term. No guilt, FOMO, or countdown pressure — see the cyber-heroes-gamification skill's child-safety checklist before shipping anything reward-flavored.
