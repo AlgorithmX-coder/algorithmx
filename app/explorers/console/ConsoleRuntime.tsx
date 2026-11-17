@@ -11,7 +11,7 @@
 import { useEffect, useReducer, useRef, useState } from "react";
 import { HubStarfield, HubEnergy } from "./HubField";
 import { playWren, primeAudio, setVoiceRate, stopWren, useVoiceRate, useWrenSpeaking, VOICE_RATES } from "../engine/audio";
-import { useArrowAdvance, SkipButton, BackButton } from "../engine/arrowAdvance";
+import { useArrowAdvance, SkipButton, QaOnly, BackButton } from "../engine/arrowAdvance";
 import { playBGM, stopBGM } from "@/app/lib/sounds";
 import { type CaseStage, readProgress, saveProgress, clearProgress, markCaseComplete, isResumable, stageLabel } from "../engine/caseProgress";
 import { saveExplorersProgress } from "@/app/lib/explorersProgress.actions";
@@ -364,6 +364,7 @@ export default function ConsoleRuntime({ consoleCase, onExit, onNextCase, autost
       {/* UAT skip: fast-forwards the rest of the current skill in one click
           (narration + any dock resolved as if answered correctly), same
           one-click-per-skill contract as Phone's "Skip this whole skill". */}
+      <QaOnly>
       <button
         onClick={() => setSkipRequested(true)}
         disabled={phase !== "play"}
@@ -388,6 +389,7 @@ export default function ConsoleRuntime({ consoleCase, onExit, onNextCase, autost
       >
         Skip skill ⏭
       </button>
+      </QaOnly>
       <CaseJournal entries={journal} accent={acc} caseTitle={consoleCase.title} />
       <button className="cn-btn" onClick={onExit} style={{ position: "fixed", top: 14, left: 14, zIndex: 20, fontFamily: MONO, fontSize: 11.5, fontWeight: 600, color: C.dim, background: "rgba(0,0,0,0.5)", border: `1px solid ${C.edge}`, borderRadius: R.btn, padding: "6px 12px", cursor: "pointer" }}>&lt; Leave</button>
       <button className="cn-btn" onClick={() => { const v = !voiceOn; setVoiceOn(v); if (!v) stopWren(); }} aria-pressed={voiceOn} style={{ position: "fixed", top: 14, right: 14, zIndex: 20, fontFamily: MONO, fontSize: 11.5, fontWeight: 700, color: voiceOn ? C.wren : C.dim, background: "rgba(0,0,0,0.5)", border: `1px solid ${voiceOn ? "rgba(43,212,180,.5)" : C.edge}`, borderRadius: R.btn, padding: "6px 12px", cursor: "pointer" }}>{voiceOn ? "🔊 WREN on" : "🔇 WREN off"}</button>

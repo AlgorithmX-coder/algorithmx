@@ -16,7 +16,7 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import type { CSSProperties } from "react";
 import { playWren, setVoiceRate, stopWren, useSignalAudio, useVoiceRate, useWrenSpeaking, VOICE_RATES } from "./audio";
-import { useArrowAdvance, useSkipToComplete, SkipButton, BackButton } from "./arrowAdvance";
+import { useArrowAdvance, useSkipToComplete, SkipButton, QaOnly, BackButton } from "./arrowAdvance";
 import { playBGM, stopBGM } from "@/app/lib/sounds";
 import { saveExplorersProgress } from "@/app/lib/explorersProgress.actions";
 
@@ -514,6 +514,7 @@ export default function MissionRuntime({ manifest, devStartBeat, onExit, onNextC
       <EngineStyles />
       <SkipButton />
       <BackButton onBack={retreat} />
+      <QaOnly>
       <button
         onClick={skipSkill}
         aria-label="Skip this whole skill (testing)"
@@ -537,6 +538,7 @@ export default function MissionRuntime({ manifest, devStartBeat, onExit, onNextC
       >
         Skip skill ⏭
       </button>
+      </QaOnly>
       {/* matrix-terminal backdrop, dimmed in-mission so it never fights the reading (kept for identity) */}
       <BlockBackdrop variant={theme.backdrop} colors={theme.matrix} accent={theme.accent} accentHi={theme.accentHi} reduced={reduced} opacity={0.42} />
       <div aria-hidden style={{ position: "fixed", inset: 0, zIndex: 0, pointerEvents: "none", background: "repeating-linear-gradient(0deg, rgba(0,0,0,0.24) 0 1px, transparent 1px 3px)", opacity: 0.32 }} />

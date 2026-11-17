@@ -13,7 +13,7 @@ import { useEffect, useReducer, useRef, useState } from "react";
 import { MatrixRain } from "../MatrixRain";
 import { BlockBackdrop } from "../BlockBackdrop";
 import { playWren, primeAudio, setVoiceRate, stopWren, useVoiceRate, useWrenSpeaking, VOICE_RATES } from "../engine/audio";
-import { useArrowAdvance, SkipButton, BackButton } from "../engine/arrowAdvance";
+import { useArrowAdvance, SkipButton, QaOnly, BackButton } from "../engine/arrowAdvance";
 import { playBGM, stopBGM } from "@/app/lib/sounds";
 import { type CaseStage, readProgress, saveProgress, clearProgress, markCaseComplete, isResumable, stageLabel } from "../engine/caseProgress";
 import { saveExplorersProgress } from "@/app/lib/explorersProgress.actions";
@@ -354,6 +354,7 @@ export default function WarRoomRuntime({ warCase, onExit, onNextCase, autostart,
       {/* UAT skip: fast-forwards the rest of the current skill in one click
           (narration + any dock resolved as if answered correctly), same
           one-click-per-skill contract as Phone's "Skip this whole skill". */}
+      <QaOnly>
       <button
         onClick={() => setSkipRequested(true)}
         disabled={phase !== "play"}
@@ -378,6 +379,7 @@ export default function WarRoomRuntime({ warCase, onExit, onNextCase, autostart,
       >
         Skip skill ⏭
       </button>
+      </QaOnly>
       <CaseJournal entries={journal} accent={acc} caseTitle={warCase.title} />
       {warCase.id === "explorers-m16" ? (
         <CaseBoardFileExplorer leads={warCase.skills} clearedCount={journal.length} accent={acc} caseTitle={warCase.title} actor={warCase.actor} />

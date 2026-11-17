@@ -1,5 +1,5 @@
 "use client";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { skipWrenWait } from "./audio";
 
 /**
@@ -55,11 +55,40 @@ export function advanceNow() {
   next?.click();
 }
 
+/**
+ * The tester unlock. These controls let someone jump past the learning, and
+ * one of them records the skipped exercise as mastered, so they must never be
+ * reachable by a child. They now sit behind the same `explorers:qa` flag that
+ * already gates the ?case= deep-link and the Zero File reset (app/explorers/
+ * page.tsx): a tester visits /explorers?qa=1 once and keeps them for that
+ * browser; ?qa=0 turns them off again. Nothing is deleted, so a re-test round
+ * costs one query parameter.
+ */
+export function qaUnlocked(): boolean {
+  try {
+    return localStorage.getItem("explorers:qa") === "1";
+  } catch {
+    return false; // private mode / storage blocked: treat as locked
+  }
+}
+
+/**
+ * Render-time twin of qaUnlocked(). Reads in an effect so the server and the
+ * first client render agree (localStorage does not exist on the server), the
+ * same pattern the map page uses for its own `qa` state.
+ */
+export function useQaUnlocked(): boolean {
+  const [on, setOn] = useState(false);
+  useEffect(() => { setOn(qaUnlocked()); }, []);
+  return on;
+}
+
 /** ArrowRight fast-forwards through a case for UAT. See advanceNow(). */
 export function useArrowAdvance() {
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key !== "ArrowRight") return;
+      if (!qaUnlocked()) return; // tester-only; see qaUnlocked()
       const t = e.target as HTMLElement | null;
       if (t && /^(input|textarea)$/i.test(t.tagName)) return; // don't hijack a text field
       e.preventDefault();
@@ -76,7 +105,20 @@ export function useArrowAdvance() {
  * requested, temporary for the UAT push: fixed bottom-right in every
  * block, out of the way of each block's own Leave/voice-toggle buttons.
  */
+/**
+ * Wrapper for a tester-only control that lives inside a block runtime (each
+ * block has its own "Skip this whole skill" button). Renders nothing unless
+ * the explorers:qa unlock is on, so the control is gated without having to
+ * restructure the runtime around a hook.
+ */
+export function QaOnly({ children }: { children: React.ReactNode }) {
+  const qa = useQaUnlocked();
+  return qa ? <>{children}</> : null;
+}
+
 export function SkipButton() {
+  const qa = useQaUnlocked();
+  if (!qa) return null; // tester-only; see qaUnlocked()
   return (
     <button
       onClick={advanceNow}
