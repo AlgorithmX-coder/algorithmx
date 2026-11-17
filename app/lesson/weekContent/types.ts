@@ -3199,9 +3199,9 @@ export type ScreenDef = (
        * Team Poster (Week 11 debut). The poster-building BUILD drill: a
        * warm poster with empty slots and a tray of candidate tiles. Tap
        * a tile that belongs → it fills the next slot with a glow; tap
-       * one that doesn't → a gentle teach panel. Special tiles (the
-       * children's helpline, described and never named, because the service
-       * differs in every country the course sells into) get a golden frame.
+       * one that doesn't → a gentle teach panel. Special tiles (e.g.
+       * the class teacher; never a helpline or phone number, owner 2026-11-17)
+       * get a golden frame.
        * Re-dressable via the copy props (W19 family-rules quilt is the
        * earmarked reuse).
        */
@@ -3215,7 +3215,7 @@ export type ScreenDef = (
         icon: string;
         /** True = belongs on the poster. */
         isTeam: boolean;
-        /** Golden frame on the poster (e.g. the children's helpline). */
+        /** Golden frame on the poster (e.g. the class teacher). */
         special?: boolean;
         /** Teach copy: why it belongs / why it doesn't. */
         note: string;

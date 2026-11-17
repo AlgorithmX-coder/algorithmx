@@ -68,7 +68,7 @@ A phase badge is earned by completing every week in the phase, including each we
 
 ## Voice and copy rules for reward surfaces
 
-- Address the child as **"Agent"** (second person). Warm, capable, brisk. **US English** — superseded by user decision, shipped 2026-07-10: the whole course was localized to kid-first US English (~340 strings; Childhelp 1-800-422-4453, 911), and the locked narrator spec is an American-accent Sarah. Product copy follows the narrator.
+- Address the child as **"Agent"** (second person). Warm, capable, brisk. **US English** — superseded by user decision, shipped 2026-07-10: the whole course was localized to kid-first US English (~340 strings; owner 2026-11-17: no helpline, child line service, phone number or charity anywhere in the course), and the locked narrator spec is an American-accent Sarah. Product copy follows the narrator.
 - Locked phrasing: **"trusted grown-up"** is the consistent term for the password-sharing rule and any adult-involvement copy.
 - Adam/Layla celebrate; the Raccoon grumbles. Never sarcasm at the child's expense.
 - Banned copy patterns: guilt ("we missed you", "Adam is sad"), FOMO ("last chance!", "don't miss out"), countdown pressure on rewards, streak-shame ("you broke your streak"), comparisons to other named children.
