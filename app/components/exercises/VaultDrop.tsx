@@ -146,7 +146,7 @@ const DOCK_COPY = {
   introIcon: "📥",
   keep: "REAL SHOP SHELF",
   away: "SEND IT BACK",
-  motto: "Apps come from the real app store. Everything else goes back.",
+  motto: "Apps come from the App Store or Play Store. Everything else goes back.",
   keepToast: "ON THE SHELF!",
   awayToast: "SENT BACK!",
   keepWrong: "That one came from the real shop!",
