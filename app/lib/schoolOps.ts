@@ -128,10 +128,9 @@ export async function createSchool(args: {
       seatsPurchased: args.seatsPurchased,
     },
   });
-  /* No child line number here. It is the school's own country's number and
-     the school is the only party who can give it; asking a salesperson for
-     it at the moment of sale produced a blank field every time. The column
-     stays, to be filled in from the school's own screen. */
+  /* No phone number is collected here. The course shows children no phone
+     line, number or named service (owner rule, 2026-11-17); their team is the
+     trusted grown-ups they name themselves. */
   await prisma.schoolProfile.create({
     data: {
       orgId: org.id,

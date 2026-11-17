@@ -188,7 +188,6 @@ export default function Pack({ pack, weeks, shared = false }: {
           <div className="brief">
             <h4>{pack.brief.head}</h4>
             {pack.brief.body.map((p, n) => <Html key={n} as="p" html={p} />)}
-            {pack.helpline && <Html as="p" className="line" html={pack.helpline.setup} />}
           </div>
         )}
 
@@ -364,7 +363,6 @@ function Sheet({ pack, linkText }: {
           <>
             <div className="phase">{pack.brief.head}</div>
             {pack.brief.body.map((p, n) => <Html key={n} as="p" html={p} />)}
-            {pack.helpline && <Html as="p" html={pack.helpline.setup} />}
           </>
         )}
 

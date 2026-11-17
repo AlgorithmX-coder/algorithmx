@@ -150,8 +150,8 @@ function Scene({ slide, pack }: { slide: Slide; pack: Pack }) {
         </div>
       );
 
-    /* the two halves of a team: people you name, and a number that never
-       sleeps. The number is the centre's to supply, never ours. */
+    /* the two halves of a team: the grown-ups you name now, and telling one
+       of them. OWNER RULE 2026-11-17: no phone line, number or named service. */
     case "team":
       return (
         <div className="cards">
@@ -164,8 +164,8 @@ function Scene({ slide, pack }: { slide: Slide; pack: Pack }) {
           <div className="card risk gold">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={ART.mail} alt="" />
-            <b>{pack.helpline?.label}</b>
-            <Html as="small" html={pack.helpline?.note ?? ""} />
+            <b>Tell one of them</b>
+            <small>show them what happened &middot; it is never your fault</small>
           </div>
         </div>
       );

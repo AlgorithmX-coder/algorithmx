@@ -34,9 +34,9 @@ const SLIDES: readonly Slide[] = [
     hear:[
       ["&ldquo;My mum.&rdquo; &ldquo;My dad.&rdquo;", "&ldquo;Good. And who else? A team is more than one person, so you are never stuck.&rdquo;"],
       ["&ldquo;My teacher.&rdquo;", "&ldquo;Yes. Any grown-up here counts, and you can always come to me.&rdquo;"],
-      ["A child cannot name anybody", "Do not let it sit. &ldquo;Everyone in this room has me, and everyone has the number on the board.&rdquo; Then check in with them privately, today."],
+      ["A child cannot name anybody", "Do not let it sit. &ldquo;Everyone in this room has me, so nobody here has an empty team.&rdquo; Then check in with them privately, today."],
     ],
-    warn:"If a child cannot name anyone at home, note it and follow it up quietly the same day. And leave your country's child line service on the board beside the names: it is free, it is open any hour, and a child can ring it <em>without telling anybody first</em>, which is exactly why it belongs on the list rather than instead of it." },
+    warn:"If a child cannot name anyone at home, note it and follow it up quietly the same day. Help every child name at least one grown-up in school as well, so nobody goes home with an empty team." },
 
   { at:"before", kind:"tell", scene:"protocol", eyebrow:"The four steps",
     title:"Stop. Screenshot.<br>Block. Tell.",
@@ -77,8 +77,8 @@ const SLIDES: readonly Slide[] = [
 
   { at:"after", kind:"tell", scene:"team", eyebrow:"Take this home",
     title:"Put your team<br>where you can see it.",
-    say:"&ldquo;Tonight, write your team down. Two or three grown-ups you would tell. Stick it up somewhere you can see it. And copy the number off the board onto it too: it is free, it is open any time of the day or night, and you do not have to tell anybody you are ringing.&rdquo;",
-    warn:"Make sure your country's number is on the board before you say this, and hand out the team card if your centre has one. A child is far more likely to use a number already on their wall than one they have to go looking for when they are upset." },
+    say:"&ldquo;Tonight, write your team down. Two or three grown-ups you would tell. Stick it up somewhere you can see it. If something ever feels wrong, you only have to tell <b>one</b> of them.&rdquo;",
+    warn:"Hand out the team card if your centre has one. A child is far more likely to tell a grown-up whose name is already on their wall than to go looking for one when they are upset." },
 
   { at:"after", kind:"ask", scene:"heroes", eyebrow:"Talk about it",
     title:"What if it happens<br>to a friend?",
@@ -103,25 +103,9 @@ export const WEEK_11: Pack = {
   five: FIVE,
   slides: SLIDES,
   games: "Reveal, Team Poster, Button Hunt, Reply Cards, Step Order, Drill Run",
-  /* Country neutral by design: the board teaches the IDEA of a free line for
-     children and never a number, because the number is different everywhere
-     this course is sold and a wrong one in a safeguarding lesson is worse than
-     none at all. The number is the school's to supply.
-
-     CHANGED IN THE PORT: the prototype's last sentence told the teacher to
-     "put it in HELPLINE at the top of this pack". That was an editable
-     constant in a single HTML file and it does not exist here, so the
-     instruction pointed at nothing. Until a school can store its own number
-     (it belongs on the school record, which arrives with phase 3), the board
-     is the right place for it and the copy now says so. */
-  helpline: {
-         label:"The child line service",
-         note:"free &middot; any hour &middot; and you do not have to tell anybody you are ringing",
-         setup:"<b>Write your country's child line service number on the board before you teach "
-           + "this.</b> Whoever handles child protection at your school will have it, and most countries have a free line "
-           + "just for children. Once you know it, leave it up where the class can see it for the "
-           + "rest of the week.",
-       },
+  /* OWNER RULE 2026-11-17: no phone line, no phone number and no named
+     service anywhere in this pack. The team is the grown-ups the children
+     name themselves, and the move is to tell one of them. */
   brief: {
          head:"Read this before you teach it",
          body:[

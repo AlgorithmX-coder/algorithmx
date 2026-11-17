@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-17T13:16:37.393Z",
+  "generatedAt": "2026-11-17T20:08:21.750Z",
   "model": "eleven_v4",
   "voiceSettings": {
     "stability": 0.6,
@@ -4504,19 +4504,19 @@
       "file": "/audio/voice/0f3163a01ac3dc89.mp3"
     },
     {
-      "key": "d29f5f8c8fa7c45d",
+      "key": "904fbb7f101c8abd",
       "speaker": "layla",
       "voice": "Emma (Kids Educator)",
-      "text": "[warmly] No lighthouse keeper works alone, Cyber Hero. Neither do you. Your team is the grown-ups who come running. A parent. A teacher. A grandparent. Somebody you'd shout for. Name them NOW, while everything is calm and easy. [warmly] And if they're all asleep, there's a free child line service that never sleeps. Ask a grown-up to put the number on your poster. [excited] Come to the radio. Let's call your crew in!",
+      "text": "[warmly] No lighthouse keeper works alone, Cyber Hero. Neither do you. Your team is the grown-ups who come running. A parent. A teacher. A grandparent. Somebody you'd shout for. Name them NOW, while everything is calm and easy. [warmly] Then, if something ever feels wrong, you only have to tell ONE of them. [excited] Come to the radio. Let's call your crew in!",
       "lines": [
         "[warmly] No lighthouse keeper works alone, Cyber Hero. Neither do you.",
         "Your team is the grown-ups who come running.",
         "A parent. A teacher. A grandparent. Somebody you'd shout for.",
         "Name them NOW, while everything is calm and easy.",
-        "[warmly] And if they're all asleep, there's a free child line service that never sleeps. Ask a grown-up to put the number on your poster.",
+        "[warmly] Then, if something ever feels wrong, you only have to tell ONE of them.",
         "[excited] Come to the radio. Let's call your crew in!"
       ],
-      "file": "/audio/voice/d29f5f8c8fa7c45d.mp3"
+      "file": "/audio/voice/904fbb7f101c8abd.mp3"
     },
     {
       "key": "5f1e4dc70c063196",
@@ -4931,21 +4931,21 @@
       "file": "/audio/voice/ea250b79c792bcbf.mp3"
     },
     {
-      "key": "fb5be5df11cda5cf",
+      "key": "27dcc32bc0142679",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "It's the middle of the night, everyone at home is asleep, and a worry is growing. Who can you still reach? Is it option A... A friendly player from my game, they're online all night. Option B... Nobody until morning, worries have to wait. Or is it option C... The child line service, free and always awake. So, what do you think?",
+      "text": "You're naming your team today, while everything is calm. Who goes on it? Is it option A... A friendly player from my game, they're online all night. Option B... Nobody yet, I'll pick someone when something goes wrong. Or is it option C... Grown-ups who know me, like a parent or a teacher. So, what do you think?",
       "lines": [
-        "It's the middle of the night, everyone at home is asleep, and a worry is growing. Who can you still reach?",
+        "You're naming your team today, while everything is calm. Who goes on it?",
         "Is it option A...",
         "A friendly player from my game, they're online all night.",
         "Option B...",
-        "Nobody until morning, worries have to wait.",
+        "Nobody yet, I'll pick someone when something goes wrong.",
         "Or is it option C...",
-        "The child line service, free and always awake.",
+        "Grown-ups who know me, like a parent or a teacher.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/fb5be5df11cda5cf.mp3"
+      "file": "/audio/voice/27dcc32bc0142679.mp3"
     },
     {
       "key": "d8bd7aa38bb1296f",
@@ -5021,26 +5021,26 @@
       "file": "/audio/voice/de0eb7d2d9c20aa3.mp3"
     },
     {
-      "key": "822b18b68945a349",
+      "key": "c43e25db9decc4eb",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "That's right! Worries don't have to wait for morning, and a game stranger isn't a helper. The child line service is free, just for kids, and always awake. Your team never fully sleeps.",
+      "text": "That's right! Your team is real grown-ups who come running when you call. A game friend can't come over, and you pick them now, before you ever need them.",
       "lines": [
         "That's right!",
-        "Worries don't have to wait for morning, and a game stranger isn't a helper. The child line service is free, just for kids, and always awake. Your team never fully sleeps."
+        "Your team is real grown-ups who come running when you call. A game friend can't come over, and you pick them now, before you ever need them."
       ],
-      "file": "/audio/voice/822b18b68945a349.mp3"
+      "file": "/audio/voice/c43e25db9decc4eb.mp3"
     },
     {
-      "key": "09764341f6f6bb60",
+      "key": "6c537023fb152b2a",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "Not quite. Worries don't have to wait for morning, and a game stranger isn't a helper. The child line service is free, just for kids, and always awake. Your team never fully sleeps.",
+      "text": "Not quite. Your team is real grown-ups who come running when you call. A game friend can't come over, and you pick them now, before you ever need them.",
       "lines": [
         "Not quite.",
-        "Worries don't have to wait for morning, and a game stranger isn't a helper. The child line service is free, just for kids, and always awake. Your team never fully sleeps."
+        "Your team is real grown-ups who come running when you call. A game friend can't come over, and you pick them now, before you ever need them."
       ],
-      "file": "/audio/voice/09764341f6f6bb60.mp3"
+      "file": "/audio/voice/6c537023fb152b2a.mp3"
     },
     {
       "key": "9eeb0428db1945b1",
@@ -5229,14 +5229,14 @@
       "file": "/audio/voice/3e0d009a318d8746.mp3"
     },
     {
-      "key": "34733bd165b51b56",
+      "key": "0a8d9d8c2ed12e83",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "That line is awake every hour of every night. It costs nothing to ring. And the person who answers is there to help a child exactly like you.",
+      "text": "A coach you trust knows you, and you see them every week. That makes Coach Sam a great pick for your team.",
       "lines": [
-        "That line is awake every hour of every night. It costs nothing to ring. And the person who answers is there to help a child exactly like you."
+        "A coach you trust knows you, and you see them every week. That makes Coach Sam a great pick for your team."
       ],
-      "file": "/audio/voice/34733bd165b51b56.mp3"
+      "file": "/audio/voice/0a8d9d8c2ed12e83.mp3"
     },
     {
       "key": "2c1f0840a387ad0d",
@@ -5659,14 +5659,14 @@
       "file": "/audio/voice/5108ee479062f8cf.mp3"
     },
     {
-      "key": "c089ec5db3b7d8ae",
+      "key": "dd5a6e589dab5601",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "Worries don't have to wait for morning, and a game stranger isn't a helper. The child line service is free, just for kids, and always awake. Your team never fully sleeps.",
+      "text": "Your team is real grown-ups who come running when you call. A game friend can't come over, and you pick them now, before you ever need them.",
       "lines": [
-        "Worries don't have to wait for morning, and a game stranger isn't a helper. The child line service is free, just for kids, and always awake. Your team never fully sleeps."
+        "Your team is real grown-ups who come running when you call. A game friend can't come over, and you pick them now, before you ever need them."
       ],
-      "file": "/audio/voice/c089ec5db3b7d8ae.mp3"
+      "file": "/audio/voice/dd5a6e589dab5601.mp3"
     },
     {
       "key": "ddab4e7891d5f1f7",
@@ -5709,14 +5709,14 @@
       "file": "/audio/voice/85db8e046770b827.mp3"
     },
     {
-      "key": "0cc906cf7c65f4e3",
+      "key": "9d2b93aab7d3431d",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "The child line service - free, just for kids, always awake. Emergency services are for emergencies, and an unkind message is not one.",
+      "text": "Your team is grown-ups you trust, named now, before you ever need them. Someone you only know online can't come over to help.",
       "lines": [
-        "The child line service - free, just for kids, always awake. Emergency services are for emergencies, and an unkind message is not one."
+        "Your team is grown-ups you trust, named now, before you ever need them. Someone you only know online can't come over to help."
       ],
-      "file": "/audio/voice/0cc906cf7c65f4e3.mp3"
+      "file": "/audio/voice/9d2b93aab7d3431d.mp3"
     },
     {
       "key": "050be48810746201",
@@ -5769,14 +5769,14 @@
       "file": "/audio/voice/32f6a9232282b201.mp3"
     },
     {
-      "key": "c46c2ed4e71c2b2c",
+      "key": "f8ce48293064e27a",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "Fingers, camera, door, team, phone - freeze the proof BEFORE the door shuts.",
+      "text": "Fingers, camera, door, team - freeze the proof BEFORE the door shuts.",
       "lines": [
-        "Fingers, camera, door, team, phone - freeze the proof BEFORE the door shuts."
+        "Fingers, camera, door, team - freeze the proof BEFORE the door shuts."
       ],
-      "file": "/audio/voice/c46c2ed4e71c2b2c.mp3"
+      "file": "/audio/voice/f8ce48293064e27a.mp3"
     },
     {
       "key": "ee702beca6d25284",
@@ -5869,14 +5869,14 @@
       "file": "/audio/voice/6710b4683cd24e8d.mp3"
     },
     {
-      "key": "f6971c5a6f7697a2",
+      "key": "21976fc4d6582315",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "The child line service",
+      "text": "Coach Sam, from swim club",
       "lines": [
-        "The child line service"
+        "Coach Sam, from swim club"
       ],
-      "file": "/audio/voice/f6971c5a6f7697a2.mp3"
+      "file": "/audio/voice/21976fc4d6582315.mp3"
     },
     {
       "key": "575aed763e43a9d4",
@@ -48630,15 +48630,15 @@
       "file": "/audio/voice/ce2cbb7d55edf895.mp3"
     },
     {
-      "key": "11b6e7da701dd193",
+      "key": "f69f172edf3657d2",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "That's right! That line is awake every hour of every night. It costs nothing to ring. And the person who answers is there to help a child exactly like you.",
+      "text": "That's right! A coach you trust knows you, and you see them every week. That makes Coach Sam a great pick for your team.",
       "lines": [
         "That's right!",
-        "That line is awake every hour of every night. It costs nothing to ring. And the person who answers is there to help a child exactly like you."
+        "A coach you trust knows you, and you see them every week. That makes Coach Sam a great pick for your team."
       ],
-      "file": "/audio/voice/11b6e7da701dd193.mp3"
+      "file": "/audio/voice/f69f172edf3657d2.mp3"
     },
     {
       "key": "6837d809d1d0678b",

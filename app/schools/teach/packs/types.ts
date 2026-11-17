@@ -119,20 +119,6 @@ export interface Slide {
   };
 }
 
-/** Country neutral by design. Every country has a different child line service,
- *  so the pack ships without a number and the board teaches the IDEA under one
- *  name the whole course uses: "the child line service". The centre fills the
- *  number in once, because only the centre knows which country it is in. A
- *  wrong number in a safeguarding lesson is worse than no number at all, so we
- *  never guess one and never ship a table of them. */
-export interface HelplineSlot {
-  /** What the board says when no number is set. */
-  label: string;
-  note: string;
-  /** What the teacher deck tells the teacher to do about it. */
-  setup: string;
-}
-
 /** Shown before the deck, on weeks that need the teacher prepared. */
 export interface Briefing {
   head: string;
@@ -148,6 +134,5 @@ export interface Pack {
   /** The mini games in this week, named so the teacher can recognise what
    *  they see on the children's screens. */
   games: string;
-  helpline?: HelplineSlot;
   brief?: Briefing;
 }

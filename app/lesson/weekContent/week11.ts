@@ -6,10 +6,10 @@ import { WEEK_INTROS } from "./weekIntros";
  *
  * SENSITIVE WEEK, built warmth-first like Week 5: the Raccoon stays out of the
  * feelings beats (concepts 1, 2 and 4 carry no threat line at all), the child is
- * never blamed, and nothing here is frightening. The lesson points at a free
- * CHILD LINE SERVICE and never at one country's: the
- * number differs everywhere the course is sold, so it belongs on the wall of
- * the room, written up by a grown-up, not baked into a film or a recording.
+ * never blamed, and nothing here is frightening. The lesson points the child
+ * at the trusted grown-ups they name themselves, and at telling one of them.
+ * OWNER RULE 2026-11-17: no phone line, no phone number and no named service
+ * anywhere in this week, the films, the lessons or the teacher pack.
  *
  * Rebuilt to the Learn-Loop Build Standard v0.10. World: THE LIGHTHOUSE - a warm
  * rescue station on a dark coast, where the light never goes out.
@@ -208,15 +208,15 @@ export const WEEK_11: WeekContent = {
       type: "info",
       title: "Name Your Team",
       content:
-        "Every lighthouse has a crew, and so do you. Your team is the grown-ups who come running: a parent or carer, a teacher you like, a grandparent, an aunt or uncle, a club leader. Name them NOW, while nothing is wrong, because a name you already know is much easier to reach for when your tummy drops. And if your team is asleep or far away, there is a child line service that is awake all night, every night, and it costs nothing to ring.",
+        "Every lighthouse has a crew, and so do you. Your team is the grown-ups who come running: a parent or carer, a teacher you like, a grandparent, an aunt or uncle, a club leader. Name them NOW, while nothing is wrong, because a name you already know is much easier to reach for when your tummy drops. Then, if something ever feels wrong, you only have to tell one of them.",
       bullets: [
         "Your team is grown-ups who come running",
         "Name them now, before anything is wrong",
         "Three is plenty. One is a start",
         "A grown-up you only know online is not on it",
-        "A free child line service, awake all night",
+        "When something feels wrong, tell one of them",
       ],
-      bulletIcons: ["👪", "📌", "🔢", "🚫", "🔔"],
+      bulletIcons: ["👪", "📌", "🔢", "🚫", "💬"],
       emblem: "👪",
       narration: {
         speaker: "layla",
@@ -225,7 +225,7 @@ export const WEEK_11: WeekContent = {
           "Your team is the grown-ups who come running.",
           "A parent. A teacher. A grandparent. Somebody you'd shout for.",
           "Name them NOW, while everything is calm and easy.",
-          "[warmly] And if they're all asleep, there's a free child line service that never sleeps. Ask a grown-up to put the number on your poster.",
+          "[warmly] Then, if something ever feels wrong, you only have to tell ONE of them.",
           "[excited] Come to the radio. Let's call your crew in!",
         ],
       },
@@ -246,7 +246,7 @@ export const WEEK_11: WeekContent = {
         { id: "mum", label: "Mum or Dad at home", icon: "🏠", isTeam: true, why: "The people at home come running first. They would rather know at midnight than find out next week.", explanation: "" },
         { id: "teacher", label: "Mrs Okafor, my teacher", icon: "🎓", isTeam: true, why: "A teacher you like can sort out things that happen with people at school. And they have done it many times before.", explanation: "" },
         { id: "gran", label: "Gran, two streets away", icon: "👪", isTeam: true, why: "Gran is a brilliant pick. Two streets away is close enough to come round, and a grandparent is never too busy for you.", explanation: "" },
-        { id: "helpline", label: "The child line service", icon: "🔔", isTeam: true, why: "That line is awake every hour of every night. It costs nothing to ring. And the person who answers is there to help a child exactly like you.", explanation: "" },
+        { id: "coach", label: "Coach Sam, from swim club", icon: "🏅", isTeam: true, why: "A coach you trust knows you, and you see them every week. That makes Coach Sam a great pick for your team.", explanation: "" },
         { id: "static", label: "Static, nobody there", icon: "📱", isTeam: false, why: "", explanation: "That channel is just hiss. When you really need somebody, pick a person you could name out loud instead." },
         { id: "gamer", label: "ShadowFox99, from my game", icon: "🎮", isTeam: false, why: "", explanation: "Somebody from your game cannot come round, cannot ring your school, and might not be who they say they are. Your team stands in the same room as you." },
         { id: "influencer", label: "My favourite streamer", icon: "📣", isTeam: false, why: "", explanation: "A streamer does not know your name and never will. Your team is people who know you back." },
@@ -888,7 +888,7 @@ export const WEEK_11: WeekContent = {
       subtitle: "Here's everything you mastered this week.",
       concepts: [
         { id: "fault", label: "Never Your Fault", accent: "#7df0ff", icon: "💪", summary: "Someone unkind made THEIR choice, and it was never yours to carry." },
-        { id: "team", label: "My Team", accent: "#ffd158", icon: "👪", summary: "Named before you needed them, plus the free child line service, always awake." },
+        { id: "team", label: "My Team", accent: "#ffd158", icon: "👪", summary: "Grown-ups you named before you needed them, ready the moment you tell one." },
         { id: "block", label: "Stop & Block", accent: "#c084fc", icon: "🚫", summary: "Your reply is the fuel, so you send nothing and close the door." },
         { id: "camera", label: "Camera, Not Trash", accent: "#ff5fb3", icon: "📸", summary: "A screenshot freezes the proof a delete would throw away." },
         { id: "protocol", label: "The Protocol", accent: "#7eff97", icon: "🚀", summary: "Breathe, snap, stop, block, tell, in that order, calmly." },
@@ -978,25 +978,25 @@ export const WEEK_11: WeekContent = {
         label: "Name Your Team",
         ask: {
           slug: "quiz-w11-ask-c2-1",
-          text: "It's the middle of the night, everyone at home is asleep, and a worry is growing. Who can you still reach?",
+          text: "You're naming your team today, while everything is calm. Who goes on it?",
         },
         options: [
-          { text: "The child line service, free and always awake" },
-          { text: "Nobody until morning, worries have to wait" },
+          { text: "Grown-ups who know me, like a parent or a teacher" },
+          { text: "Nobody yet, I'll pick someone when something goes wrong" },
           { text: "A friendly player from my game, they're online all night" },
         ],
         correctIndex: 0,
         teachOnWrong: {
-          title: "Someone is always awake!",
-          explanation: "Worries don't have to wait for morning, and a game stranger isn't a helper. The child line service is free, just for kids, and always awake. Your team never fully sleeps.",
+          title: "Name them now!",
+          explanation: "Your team is real grown-ups who come running when you call. A game friend can't come over, and you pick them now, before you ever need them.",
         },
         villainRight: {
           slug: "quiz-w11-right-c2-1",
-          text: "The golden number?! Everyone asleep, and there is STILL a helper awake?! Who approved this?!",
+          text: "A whole team, named BEFORE anything went wrong?! That ruins my sneaky surprise!",
         },
         villainWrong: {
           slug: "quiz-w11-wrong-c2-1",
-          text: "Wait till morning, wait till NEXT week! Worries age beautifully overnight!",
+          text: "Pick them later? Perfect! Later is my favorite time of day!",
         },
       },
       {
@@ -1099,7 +1099,7 @@ export const WEEK_11: WeekContent = {
   bossQuestions: {
     easy: [
       { question: "Someone sends you a horrid message. Whose fault is it?", answers: ["Theirs - they chose to send it", "Yours", "A little bit yours", "Nobody knows"], correctIndex: 0, explanation: "The sender made the choice - it is never your fault." },
-      { question: "What goes on every kid's team poster, next to the grown-ups?", answers: ["The child line service", "The emergency services number", "Your best friend's number", "There isn't one"], correctIndex: 0, explanation: "The child line service - free, just for kids, always awake. Emergency services are for emergencies, and an unkind message is not one." },
+      { question: "Who goes on your team poster?", answers: ["Grown-ups you trust, like a parent or a teacher", "A friend you only know from a game", "A streamer you like", "Nobody, keep it to yourself"], correctIndex: 0, explanation: "Your team is grown-ups you trust, named now, before you ever need them. Someone you only know online can't come over to help." },
       { question: "A nasty message arrives. What happens to it FIRST?", answers: ["Screenshot - freeze the proof", "Delete it fast", "Reply to it", "Forward it to friends"], correctIndex: 0, explanation: "Camera, not trash - your team helps best when they can see." },
     ],
     medium: [
@@ -1109,7 +1109,7 @@ export const WEEK_11: WeekContent = {
     ],
     hard: [
       { question: "Why does 'keep it secret' make everything heavier?", answers: ["Carrying it alone grows the worry - telling shares the weight", "Secrets are illegal", "Grown-ups always find out", "It doesn't"], correctIndex: 0, explanation: "Telling someone starts making it lighter right away - that's the whole trick." },
-      { question: "The full protocol, in order, is...", answers: ["Stop → Screenshot → Block → Tell → the child line service if you need more", "Reply → Delete → Forget", "Stop → Block → Screenshot → Tell", "Screenshot → Fire back → Tell"], correctIndex: 0, explanation: "Fingers, camera, door, team, phone - freeze the proof BEFORE the door shuts." },
+      { question: "The full protocol, in order, is...", answers: ["Stop → Screenshot → Block → Tell", "Reply → Delete → Forget", "Stop → Block → Screenshot → Tell", "Screenshot → Fire back → Tell"], correctIndex: 0, explanation: "Fingers, camera, door, team - freeze the proof BEFORE the door shuts." },
       { question: "Your friend says 'don't tell anyone what happened to me online.' What's the hero move?", answers: ["Tell a trusted grown-up anyway - some secrets need helpers", "Promise and keep the secret", "Post about it", "Ignore your friend"], correctIndex: 0, explanation: "Safety secrets are the kind you SHARE with a grown-up - that's real friendship." },
     ],
   },
