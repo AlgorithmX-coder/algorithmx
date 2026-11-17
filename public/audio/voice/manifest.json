@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-17T20:08:21.750Z",
+  "generatedAt": "2026-11-17T20:28:57.263Z",
   "model": "eleven_v4",
   "voiceSettings": {
     "stability": 0.6,
@@ -38391,33 +38391,33 @@
       "file": "/audio/voice/7e6d85f5ef8a7499.mp3"
     },
     {
-      "key": "508ba545e45b9f5f",
+      "key": "0472b37313a9143e",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "[excited] Welcome back, Cyber Hero! This week we run the app warehouse. And here is rule one, a big one. New apps come from ONE real shop: the official app store on your device. [warmly] That shop checks every app before it goes on the shelf. [whispers] Random websites, pop-ups, comment links? Nobody checked those. [excited] Come and work the Delivery Dock, and send back anything sketchy!",
+      "text": "[excited] Welcome back, Cyber Hero! This week we run the app warehouse. And here is rule one, a big one. New apps come from ONE real shop: the official App Store or Play Store on your device. [warmly] That shop checks every app before it goes on the shelf. [whispers] Random websites, pop-ups, comment links? Nobody checked those. [excited] Come and work the Delivery Dock, and send back anything sketchy!",
       "lines": [
         "[excited] Welcome back, Cyber Hero! This week we run the app warehouse.",
         "And here is rule one, a big one.",
-        "New apps come from ONE real shop: the official app store on your device.",
+        "New apps come from ONE real shop: the official App Store or Play Store on your device.",
         "[warmly] That shop checks every app before it goes on the shelf.",
         "[whispers] Random websites, pop-ups, comment links? Nobody checked those.",
         "[excited] Come and work the Delivery Dock, and send back anything sketchy!"
       ],
-      "file": "/audio/voice/508ba545e45b9f5f.mp3"
+      "file": "/audio/voice/0472b37313a9143e.mp3"
     },
     {
-      "key": "27191dc6da9d2a03",
+      "key": "8745b76dc68e3a7f",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "[excited] On your first challenge, you run the Delivery Dock! This game is all about where an app comes from. Out in the real world, apps turn up from everywhere. Shops. Websites. Pop-ups. Comment links. Here is what you do. A parcel rolls onto the dock, and I read its label. If it came from the official app store, tap REAL SHOP SHELF. If it came from anywhere else, tap SEND IT BACK. [warmly] Read every label before you choose. Ready? First parcel!",
+      "text": "[excited] On your first challenge, you run the Delivery Dock! This game is all about where an app comes from. Out in the real world, apps turn up from everywhere. Shops. Websites. Pop-ups. Comment links. Here is what you do. A parcel rolls onto the dock, and I read its label. If it came from the official App Store or Play Store, tap REAL SHOP SHELF. If it came from anywhere else, tap SEND IT BACK. [warmly] Read every label before you choose. Ready? First parcel!",
       "lines": [
         "[excited] On your first challenge, you run the Delivery Dock!",
         "This game is all about where an app comes from.",
         "Out in the real world, apps turn up from everywhere. Shops. Websites. Pop-ups. Comment links.",
-        "Here is what you do. A parcel rolls onto the dock, and I read its label. If it came from the official app store, tap REAL SHOP SHELF. If it came from anywhere else, tap SEND IT BACK.",
+        "Here is what you do. A parcel rolls onto the dock, and I read its label. If it came from the official App Store or Play Store, tap REAL SHOP SHELF. If it came from anywhere else, tap SEND IT BACK.",
         "[warmly] Read every label before you choose. Ready? First parcel!"
       ],
-      "file": "/audio/voice/27191dc6da9d2a03.mp3"
+      "file": "/audio/voice/8745b76dc68e3a7f.mp3"
     },
     {
       "key": "a166409b3ce46f60",
@@ -38430,28 +38430,28 @@
       "file": "/audio/voice/a166409b3ce46f60.mp3"
     },
     {
-      "key": "8f55b3d9e2a784dc",
+      "key": "ead235e866364167",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "[proud] Every parcel sorted, Cyber Hero! Only official store apps made the shelf. [warmly] Out in the real world, new apps come from the official app store. Anything else goes straight back.",
+      "text": "[proud] Every parcel sorted, Cyber Hero! Only official store apps made the shelf. [warmly] Out in the real world, new apps come from the official App Store or Play Store. Anything else goes straight back.",
       "lines": [
         "[proud] Every parcel sorted, Cyber Hero! Only official store apps made the shelf.",
-        "[warmly] Out in the real world, new apps come from the official app store. Anything else goes straight back."
+        "[warmly] Out in the real world, new apps come from the official App Store or Play Store. Anything else goes straight back."
       ],
-      "file": "/audio/voice/8f55b3d9e2a784dc.mp3"
+      "file": "/audio/voice/ead235e866364167.mp3"
     },
     {
-      "key": "77056653e0a7bdf0",
+      "key": "3006a0c5ff8715cc",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "[proud] Well done! The official app store is the one safe place. It checks every app before the shelf. [warmly] Anywhere else, nobody checked.",
+      "text": "[proud] Well done! The official App Store or Play Store is the one safe place. It checks every app before the shelf. [warmly] Anywhere else, nobody checked.",
       "lines": [
         "[proud] Well done!",
-        "The official app store is the one safe place.",
+        "The official App Store or Play Store is the one safe place.",
         "It checks every app before the shelf.",
         "[warmly] Anywhere else, nobody checked."
       ],
-      "file": "/audio/voice/77056653e0a7bdf0.mp3"
+      "file": "/audio/voice/3006a0c5ff8715cc.mp3"
     },
     {
       "key": "2a600516b5e86aaa",
@@ -38748,17 +38748,17 @@
       "file": "/audio/voice/987e505c2c1f41c7.mp3"
     },
     {
-      "key": "3a26eedb1f53ccff",
+      "key": "1ae454fd94f754fe",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "[proud] Well done! Find it in the official app store. Check it together. Install it together. The real shop comes first, because nothing else gets checked. [warmly] Then four eyes, every time.",
+      "text": "[proud] Well done! Find it in the official App Store or Play Store. Check it together. Install it together. The real shop comes first, because nothing else gets checked. [warmly] Then four eyes, every time.",
       "lines": [
         "[proud] Well done!",
-        "Find it in the official app store. Check it together. Install it together.",
+        "Find it in the official App Store or Play Store. Check it together. Install it together.",
         "The real shop comes first, because nothing else gets checked.",
         "[warmly] Then four eyes, every time."
       ],
-      "file": "/audio/voice/3a26eedb1f53ccff.mp3"
+      "file": "/audio/voice/1ae454fd94f754fe.mp3"
     },
     {
       "key": "e89b42a443575462",
@@ -38873,21 +38873,21 @@
       "file": "/audio/voice/7314ba69ce1767cf.mp3"
     },
     {
-      "key": "aaee3b3524275ae3",
+      "key": "10373e9ab828e106",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "Adam's cousin messages: 'Skip the app store, download my favourite game straight from this chat link!' What's the safe move? Is it option A... Say no thanks, new apps come from the official app store only. Option B... Download it, links from family are family-checked. Or is it option C... Download it, then run a free virus scan right after. So, what do you think?",
+      "text": "Adam's cousin messages: 'Skip the app store, download my favourite game straight from this chat link!' What's the safe move? Is it option A... Say no thanks, apps come from the App Store or Play Store. Option B... Download it, links from family are family-checked. Or is it option C... Download it, then run a free virus scan right after. So, what do you think?",
       "lines": [
         "Adam's cousin messages: 'Skip the app store, download my favourite game straight from this chat link!' What's the safe move?",
         "Is it option A...",
-        "Say no thanks, new apps come from the official app store only.",
+        "Say no thanks, apps come from the App Store or Play Store.",
         "Option B...",
         "Download it, links from family are family-checked.",
         "Or is it option C...",
         "Download it, then run a free virus scan right after.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/aaee3b3524275ae3.mp3"
+      "file": "/audio/voice/10373e9ab828e106.mp3"
     },
     {
       "key": "a45e804ca26b6cbd",
@@ -38941,43 +38941,43 @@
       "file": "/audio/voice/4eb3b97a8d8c3715.mp3"
     },
     {
-      "key": "9d0af6ad4bf8b234",
+      "key": "23448ae167b29a3e",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "A pop-up in Adam's game says: 'Update needed! Tap here to update now!' It isn't from the app store. What's the hero move? Is it option A... Tap it quickly, updates like this keep games safe. Option B... Tap it, but only because it's his favourite game. Or is it option C... Close it, and check the real app store with a grown-up. So, what do you think?",
+      "text": "A pop-up in Adam's game says: 'Update needed! Tap here to update now!' It isn't from the App Store or Play Store. What's the hero move? Is it option A... Tap it quickly, updates like this keep games safe. Option B... Tap it, but only because it's his favourite game. Or is it option C... Close it, and check the real store with a grown-up. So, what do you think?",
       "lines": [
-        "A pop-up in Adam's game says: 'Update needed! Tap here to update now!' It isn't from the app store. What's the hero move?",
+        "A pop-up in Adam's game says: 'Update needed! Tap here to update now!' It isn't from the App Store or Play Store. What's the hero move?",
         "Is it option A...",
         "Tap it quickly, updates like this keep games safe.",
         "Option B...",
         "Tap it, but only because it's his favourite game.",
         "Or is it option C...",
-        "Close it, and check the real app store with a grown-up.",
+        "Close it, and check the real store with a grown-up.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/9d0af6ad4bf8b234.mp3"
+      "file": "/audio/voice/23448ae167b29a3e.mp3"
     },
     {
-      "key": "a0eb2e59a026cd5f",
+      "key": "2351d8f56696ec4b",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "That's right! The official app store checks apps before they reach the shelf. A chat link skips that check, whoever sent it, and a scan afterwards can be too late. Not in the real shop, not coming home.",
+      "text": "That's right! The App Store and Play Store check apps before they reach the shelf. A chat link skips that check, whoever sent it, and a scan afterwards can be too late. Not in the real shop, not coming home.",
       "lines": [
         "That's right!",
-        "The official app store checks apps before they reach the shelf. A chat link skips that check, whoever sent it, and a scan afterwards can be too late. Not in the real shop, not coming home."
+        "The App Store and Play Store check apps before they reach the shelf. A chat link skips that check, whoever sent it, and a scan afterwards can be too late. Not in the real shop, not coming home."
       ],
-      "file": "/audio/voice/a0eb2e59a026cd5f.mp3"
+      "file": "/audio/voice/2351d8f56696ec4b.mp3"
     },
     {
-      "key": "e607fdddd3da6beb",
+      "key": "f197de56df43dd65",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "Not quite. The official app store checks apps before they reach the shelf. A chat link skips that check, whoever sent it, and a scan afterwards can be too late. Not in the real shop, not coming home.",
+      "text": "Not quite. The App Store and Play Store check apps before they reach the shelf. A chat link skips that check, whoever sent it, and a scan afterwards can be too late. Not in the real shop, not coming home.",
       "lines": [
         "Not quite.",
-        "The official app store checks apps before they reach the shelf. A chat link skips that check, whoever sent it, and a scan afterwards can be too late. Not in the real shop, not coming home."
+        "The App Store and Play Store check apps before they reach the shelf. A chat link skips that check, whoever sent it, and a scan afterwards can be too late. Not in the real shop, not coming home."
       ],
-      "file": "/audio/voice/e607fdddd3da6beb.mp3"
+      "file": "/audio/voice/f197de56df43dd65.mp3"
     },
     {
       "key": "beadc13a58a1d406",
@@ -39046,26 +39046,26 @@
       "file": "/audio/voice/05fc9aa48bf12b74.mp3"
     },
     {
-      "key": "a47e6c0ec74534e8",
+      "key": "f220ac715a48329c",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "That's right! Real updates come from the official app store, never from shouty pop-ups. Close it, then check for updates in the real store together with a grown-up.",
+      "text": "That's right! Real updates come from the App Store or Play Store, never from shouty pop-ups. Close it, then check for updates in the real store together with a grown-up.",
       "lines": [
         "That's right!",
-        "Real updates come from the official app store, never from shouty pop-ups. Close it, then check for updates in the real store together with a grown-up."
+        "Real updates come from the App Store or Play Store, never from shouty pop-ups. Close it, then check for updates in the real store together with a grown-up."
       ],
-      "file": "/audio/voice/a47e6c0ec74534e8.mp3"
+      "file": "/audio/voice/f220ac715a48329c.mp3"
     },
     {
-      "key": "13d480414ccdf9a7",
+      "key": "abe5910f360b7632",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "Not quite. Real updates come from the official app store, never from shouty pop-ups. Close it, then check for updates in the real store together with a grown-up.",
+      "text": "Not quite. Real updates come from the App Store or Play Store, never from shouty pop-ups. Close it, then check for updates in the real store together with a grown-up.",
       "lines": [
         "Not quite.",
-        "Real updates come from the official app store, never from shouty pop-ups. Close it, then check for updates in the real store together with a grown-up."
+        "Real updates come from the App Store or Play Store, never from shouty pop-ups. Close it, then check for updates in the real store together with a grown-up."
       ],
-      "file": "/audio/voice/13d480414ccdf9a7.mp3"
+      "file": "/audio/voice/abe5910f360b7632.mp3"
     },
     {
       "key": "62bb8df82521a31a",
@@ -39158,14 +39158,14 @@
       "file": "/audio/voice/07c0ec28f998cef5.mp3"
     },
     {
-      "key": "27d9cfd6b5b853f7",
+      "key": "e952e8c707e73e51",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "Websites don't check apps. The official app store does.",
+      "text": "Websites don't check apps. The App Store and Play Store do.",
       "lines": [
-        "Websites don't check apps. The official app store does."
+        "Websites don't check apps. The App Store and Play Store do."
       ],
-      "file": "/audio/voice/27d9cfd6b5b853f7.mp3"
+      "file": "/audio/voice/e952e8c707e73e51.mp3"
     },
     {
       "key": "aa0383a394831187",
@@ -39498,14 +39498,14 @@
       "file": "/audio/voice/861437661493db0a.mp3"
     },
     {
-      "key": "2636472143f4f829",
+      "key": "d7be3bfc955c75c0",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "Only the official app store checks apps before the shelf. A website button skips that check.",
+      "text": "Only the App Store and Play Store check apps before the shelf. A website button skips that check.",
       "lines": [
-        "Only the official app store checks apps before the shelf. A website button skips that check."
+        "Only the App Store and Play Store check apps before the shelf. A website button skips that check."
       ],
-      "file": "/audio/voice/2636472143f4f829.mp3"
+      "file": "/audio/voice/d7be3bfc955c75c0.mp3"
     },
     {
       "key": "ef6aead0e0dde9c4",
@@ -39548,14 +39548,14 @@
       "file": "/audio/voice/67f6ed362e9e2906.mp3"
     },
     {
-      "key": "6ed8fa6dbef082bc",
+      "key": "acf9b09028dadb0f",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "This one came from the official app store, which checks every app first. It belongs on the real shop shelf.",
+      "text": "This one came from the official App Store, which checks every app first. It belongs on the real shop shelf.",
       "lines": [
-        "This one came from the official app store, which checks every app first. It belongs on the real shop shelf."
+        "This one came from the official App Store, which checks every app first. It belongs on the real shop shelf."
       ],
-      "file": "/audio/voice/6ed8fa6dbef082bc.mp3"
+      "file": "/audio/voice/acf9b09028dadb0f.mp3"
     },
     {
       "key": "d0096efbaf28d56b",
@@ -39628,14 +39628,14 @@
       "file": "/audio/voice/2da46b9991123030.mp3"
     },
     {
-      "key": "09e52a2a626c03d4",
+      "key": "b76e445c5ae89812",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "The official app store.",
+      "text": "The official App Store or Play Store.",
       "lines": [
-        "The official app store."
+        "The official App Store or Play Store."
       ],
-      "file": "/audio/voice/09e52a2a626c03d4.mp3"
+      "file": "/audio/voice/b76e445c5ae89812.mp3"
     },
     {
       "key": "fc9f1979a593a62f",
@@ -39648,14 +39648,14 @@
       "file": "/audio/voice/fc9f1979a593a62f.mp3"
     },
     {
-      "key": "3c71efea986eb4a8",
+      "key": "0cbe1b4e6adc925a",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "A button can say anything. Only the official app store checks what's behind it.",
+      "text": "A button can say anything. Only the App Store and Play Store check what's behind it.",
       "lines": [
-        "A button can say anything. Only the official app store checks what's behind it."
+        "A button can say anything. Only the App Store and Play Store check what's behind it."
       ],
-      "file": "/audio/voice/3c71efea986eb4a8.mp3"
+      "file": "/audio/voice/0cbe1b4e6adc925a.mp3"
     },
     {
       "key": "6399117a8fbf069b",
@@ -39778,14 +39778,14 @@
       "file": "/audio/voice/7f48dccd298952cb.mp3"
     },
     {
-      "key": "72ddd1cd79f8e99c",
+      "key": "4411783d1c36eb1d",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "The official app store checks apps before they reach the shelf. A chat link skips that check, whoever sent it, and a scan afterwards can be too late. Not in the real shop, not coming home.",
+      "text": "The App Store and Play Store check apps before they reach the shelf. A chat link skips that check, whoever sent it, and a scan afterwards can be too late. Not in the real shop, not coming home.",
       "lines": [
-        "The official app store checks apps before they reach the shelf. A chat link skips that check, whoever sent it, and a scan afterwards can be too late. Not in the real shop, not coming home."
+        "The App Store and Play Store check apps before they reach the shelf. A chat link skips that check, whoever sent it, and a scan afterwards can be too late. Not in the real shop, not coming home."
       ],
-      "file": "/audio/voice/72ddd1cd79f8e99c.mp3"
+      "file": "/audio/voice/4411783d1c36eb1d.mp3"
     },
     {
       "key": "15489d6188095502",
@@ -39818,14 +39818,14 @@
       "file": "/audio/voice/6599b1df1926730d.mp3"
     },
     {
-      "key": "07d20620a26696d6",
+      "key": "f1adbe046c837a30",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "Real updates come from the official app store, never from shouty pop-ups. Close it, then check for updates in the real store together with a grown-up.",
+      "text": "Real updates come from the App Store or Play Store, never from shouty pop-ups. Close it, then check for updates in the real store together with a grown-up.",
       "lines": [
-        "Real updates come from the official app store, never from shouty pop-ups. Close it, then check for updates in the real store together with a grown-up."
+        "Real updates come from the App Store or Play Store, never from shouty pop-ups. Close it, then check for updates in the real store together with a grown-up."
       ],
-      "file": "/audio/voice/07d20620a26696d6.mp3"
+      "file": "/audio/voice/f1adbe046c837a30.mp3"
     },
     {
       "key": "71c0b39757e64edd",
@@ -39878,14 +39878,14 @@
       "file": "/audio/voice/e99bc70f1eaf73a4.mp3"
     },
     {
-      "key": "78e0ecc70e54570b",
+      "key": "80ab357fda692440",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "Updates come from the app store itself, never from shouty pop-ups.",
+      "text": "Updates come from the App Store or Play Store, never from shouty pop-ups.",
       "lines": [
-        "Updates come from the app store itself, never from shouty pop-ups."
+        "Updates come from the App Store or Play Store, never from shouty pop-ups."
       ],
-      "file": "/audio/voice/78e0ecc70e54570b.mp3"
+      "file": "/audio/voice/80ab357fda692440.mp3"
     },
     {
       "key": "8c507b7bc56f9544",
@@ -39918,14 +39918,14 @@
       "file": "/audio/voice/cacad5324580292c.mp3"
     },
     {
-      "key": "3af67512211e8f5d",
+      "key": "7ea702eab6093971",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "A parcel from the official app store: Blast Birds.",
+      "text": "A parcel from the official App Store: Blast Birds.",
       "lines": [
-        "A parcel from the official app store: Blast Birds."
+        "A parcel from the official App Store: Blast Birds."
       ],
-      "file": "/audio/voice/3af67512211e8f5d.mp3"
+      "file": "/audio/voice/7ea702eab6093971.mp3"
     },
     {
       "key": "d7d3f242b2b77467",
@@ -39938,14 +39938,14 @@
       "file": "/audio/voice/d7d3f242b2b77467.mp3"
     },
     {
-      "key": "4549279af306c084",
+      "key": "9f547a02fe0b9a7e",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "A parcel from the official app store: Pixel Pets.",
+      "text": "A parcel from the official Play Store: Pixel Pets.",
       "lines": [
-        "A parcel from the official app store: Pixel Pets."
+        "A parcel from the official Play Store: Pixel Pets."
       ],
-      "file": "/audio/voice/4549279af306c084.mp3"
+      "file": "/audio/voice/9f547a02fe0b9a7e.mp3"
     },
     {
       "key": "aedbf074cb15e1ba",
@@ -39958,14 +39958,14 @@
       "file": "/audio/voice/aedbf074cb15e1ba.mp3"
     },
     {
-      "key": "fc811f79601b4e53",
+      "key": "ac5b9ebd8efef85c",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "A parcel from the official app store: the reading app your school picked.",
+      "text": "A parcel from the official App Store: the reading app your school picked.",
       "lines": [
-        "A parcel from the official app store: the reading app your school picked."
+        "A parcel from the official App Store: the reading app your school picked."
       ],
-      "file": "/audio/voice/fc811f79601b4e53.mp3"
+      "file": "/audio/voice/ac5b9ebd8efef85c.mp3"
     },
     {
       "key": "bf8d5798be6cbf26",
@@ -39978,14 +39978,14 @@
       "file": "/audio/voice/bf8d5798be6cbf26.mp3"
     },
     {
-      "key": "6c50034eac30e3b3",
+      "key": "4e6d58c767854b04",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "A parcel from inside the official app store: an update for your game.",
+      "text": "A parcel from inside the official Play Store: an update for your game.",
       "lines": [
-        "A parcel from inside the official app store: an update for your game."
+        "A parcel from inside the official Play Store: an update for your game."
       ],
-      "file": "/audio/voice/6c50034eac30e3b3.mp3"
+      "file": "/audio/voice/4e6d58c767854b04.mp3"
     },
     {
       "key": "babd007804db9b01",
@@ -40628,14 +40628,14 @@
       "file": "/audio/voice/a67a47b027694ac4.mp3"
     },
     {
-      "key": "5e2661f9c2ec4939",
+      "key": "fe8225fc04405a6d",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "And they check the shop: it's in the official app store.",
+      "text": "And they check the shops: it's in the official App Store and Play Store.",
       "lines": [
-        "And they check the shop: it's in the official app store."
+        "And they check the shops: it's in the official App Store and Play Store."
       ],
-      "file": "/audio/voice/5e2661f9c2ec4939.mp3"
+      "file": "/audio/voice/fe8225fc04405a6d.mp3"
     },
     {
       "key": "e09de873332444bd",
@@ -46639,15 +46639,15 @@
       "file": "/audio/voice/1f06e9c81c4ee6d8.mp3"
     },
     {
-      "key": "4d8b32a29eaeb223",
+      "key": "2747eab15bef88c1",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "Not quite. This one came from the official app store, which checks every app first. It belongs on the real shop shelf.",
+      "text": "Not quite. This one came from the official App Store, which checks every app first. It belongs on the real shop shelf.",
       "lines": [
         "Not quite.",
-        "This one came from the official app store, which checks every app first. It belongs on the real shop shelf."
+        "This one came from the official App Store, which checks every app first. It belongs on the real shop shelf."
       ],
-      "file": "/audio/voice/4d8b32a29eaeb223.mp3"
+      "file": "/audio/voice/2747eab15bef88c1.mp3"
     },
     {
       "key": "227a9ac4ec1cdfc5",
@@ -46815,15 +46815,15 @@
       "file": "/audio/voice/2157ae771c9804e2.mp3"
     },
     {
-      "key": "8572bd6f1f942b39",
+      "key": "b80232a910056ce6",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "Not quite. Websites don't check apps. The official app store does.",
+      "text": "Not quite. Websites don't check apps. The App Store and Play Store do.",
       "lines": [
         "Not quite.",
-        "Websites don't check apps. The official app store does."
+        "Websites don't check apps. The App Store and Play Store do."
       ],
-      "file": "/audio/voice/8572bd6f1f942b39.mp3"
+      "file": "/audio/voice/b80232a910056ce6.mp3"
     },
     {
       "key": "ee9b05b53db5dd16",
@@ -47321,15 +47321,15 @@
       "file": "/audio/voice/68cff8793e079eac.mp3"
     },
     {
-      "key": "a3be6125e02b0e67",
+      "key": "3778a035abd9c2ba",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "That's right! Only the official app store checks apps before the shelf. A website button skips that check.",
+      "text": "That's right! Only the App Store and Play Store check apps before the shelf. A website button skips that check.",
       "lines": [
         "That's right!",
-        "Only the official app store checks apps before the shelf. A website button skips that check."
+        "Only the App Store and Play Store check apps before the shelf. A website button skips that check."
       ],
-      "file": "/audio/voice/a3be6125e02b0e67.mp3"
+      "file": "/audio/voice/3778a035abd9c2ba.mp3"
     },
     {
       "key": "6e506c57b9ac0658",
@@ -47343,15 +47343,15 @@
       "file": "/audio/voice/6e506c57b9ac0658.mp3"
     },
     {
-      "key": "4113c73b8aefc87c",
+      "key": "f943e7cf454977e8",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "Not quite. A button can say anything. Only the official app store checks what's behind it.",
+      "text": "Not quite. A button can say anything. Only the App Store and Play Store check what's behind it.",
       "lines": [
         "Not quite.",
-        "A button can say anything. Only the official app store checks what's behind it."
+        "A button can say anything. Only the App Store and Play Store check what's behind it."
       ],
-      "file": "/audio/voice/4113c73b8aefc87c.mp3"
+      "file": "/audio/voice/f943e7cf454977e8.mp3"
     },
     {
       "key": "6cbd779b01663c83",

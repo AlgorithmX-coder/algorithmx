@@ -26,8 +26,10 @@ import { WEEK_INTROS } from "./weekIntros";
  * weeks, under cap, at most two concept-game re-themes. The design table's
  * Install Handshake (a GuardCount re-theme) is the new Four Eyes engine instead.
  *
- * Content fixes carried in: no game before Learn 1, no real store brands (the
- * "official app store on your device"), invented app names only, every item
+ * Content fixes carried in: no game before Learn 1, the two real stores named
+ * together ("the official App Store or Play Store", owner 2026-11-17, so
+ * Android children are included and the lessons match the episode films),
+ * invented app names only, every item
  * has a readAloud, verdicts are one take with the reason, a teach on every
  * Prove-it, a spoken payoff on every complete beat, and no dash-style
  * punctuation in child-facing copy. Dialogue audited to 0 flags on both layers
@@ -90,7 +92,7 @@ export const WEEK_9: WeekContent = {
       conceptTotal: 5,
       title: "The One Real Shop",
       content:
-        "New apps come from ONE place: the official app store on your device. That shop CHECKS apps before they go on the shelf. A download button on a random website, a pop-up, or a link in the comments? Nobody checked that. If an app isn't in the official store, it doesn't come home.",
+        "New apps come from ONE place: the official App Store or Play Store on your device. That shop CHECKS apps before they go on the shelf. A download button on a random website, a pop-up, or a link in the comments? Nobody checked that. If an app isn't in the official store, it doesn't come home.",
       bullets: [
         "The official store checks apps first",
         "Random websites: nobody checked",
@@ -105,7 +107,7 @@ export const WEEK_9: WeekContent = {
         lines: [
           "[excited] Welcome back, Cyber Hero! This week we run the app warehouse.",
           "And here is rule one, a big one.",
-          "New apps come from ONE real shop: the official app store on your device.",
+          "New apps come from ONE real shop: the official App Store or Play Store on your device.",
           "[warmly] That shop checks every app before it goes on the shelf.",
           "[whispers] Random websites, pop-ups, comment links? Nobody checked those.",
           "[excited] Come and work the Delivery Dock, and send back anything sketchy!",
@@ -132,12 +134,12 @@ export const WEEK_9: WeekContent = {
       items: [
         {
           id: "store-blast",
-          text: "Blast Birds, from the official app store",
+          text: "Blast Birds, from the official App Store",
           icon: "📱",
           isPrivate: false,
-          readAloud: "A parcel from the official app store: Blast Birds.",
+          readAloud: "A parcel from the official App Store: Blast Birds.",
           why: "The official store checked Blast Birds before the shelf, so on the shelf it goes.",
-          explanation: "This one came from the official app store, which checks every app first. It belongs on the real shop shelf.",
+          explanation: "This one came from the official App Store, which checks every app first. It belongs on the real shop shelf.",
         },
         {
           id: "web-free",
@@ -150,10 +152,10 @@ export const WEEK_9: WeekContent = {
         },
         {
           id: "store-pets",
-          text: "Pixel Pets, from the official app store",
+          text: "Pixel Pets, from the official Play Store",
           icon: "📱",
           isPrivate: false,
-          readAloud: "A parcel from the official app store: Pixel Pets.",
+          readAloud: "A parcel from the official Play Store: Pixel Pets.",
           why: "Official store, checked before the shelf. Pixel Pets goes on the shelf.",
           explanation: "Pixel Pets came from the one shop that checks apps first. It belongs on the shelf.",
         },
@@ -168,10 +170,10 @@ export const WEEK_9: WeekContent = {
         },
         {
           id: "school-app",
-          text: "The school's reading app, in the official app store",
+          text: "The school's reading app, in the official App Store",
           icon: "🏫",
           isPrivate: false,
-          readAloud: "A parcel from the official app store: the reading app your school picked.",
+          readAloud: "A parcel from the official App Store: the reading app your school picked.",
           why: "School picked it, and the real shop checked it. Double checked, so it goes on the shelf.",
           explanation: "Your school chose it, and the real shop checked it. That parcel belongs on the shelf.",
         },
@@ -186,10 +188,10 @@ export const WEEK_9: WeekContent = {
         },
         {
           id: "store-update",
-          text: "An update for your game, inside the official app store",
+          text: "An update for your game, inside the official Play Store",
           icon: "✅",
           isPrivate: false,
-          readAloud: "A parcel from inside the official app store: an update for your game.",
+          readAloud: "A parcel from inside the official Play Store: an update for your game.",
           why: "Real updates live inside the real shop, so on the shelf it goes.",
           explanation: "This update came from inside the real shop, where real updates live. It goes on the shelf.",
         },
@@ -204,8 +206,8 @@ export const WEEK_9: WeekContent = {
         },
       ],
       hints: {
-        tier1: "Read the label: did it come from the official app store, or somewhere else?",
-        tier2: "Official app store, even when school picked it: shelf. Websites, pop-ups, forums and comment links: send it back.",
+        tier1: "Read the label: is it from the official App Store or Play Store? Anything else goes back.",
+        tier2: "App Store or Play Store, even when school picked it: shelf. Websites, pop-ups, forums and comment links: send it back.",
       },
       narration: {
         speaker: "adam",
@@ -213,7 +215,7 @@ export const WEEK_9: WeekContent = {
           "[excited] On your first challenge, you run the Delivery Dock!",
           "This game is all about where an app comes from.",
           "Out in the real world, apps turn up from everywhere. Shops. Websites. Pop-ups. Comment links.",
-          "Here is what you do. A parcel rolls onto the dock, and I read its label. If it came from the official app store, tap REAL SHOP SHELF. If it came from anywhere else, tap SEND IT BACK.",
+          "Here is what you do. A parcel rolls onto the dock, and I read its label. If it came from the official App Store or Play Store, tap REAL SHOP SHELF. If it came from anywhere else, tap SEND IT BACK.",
           "[warmly] Read every label before you choose. Ready? First parcel!",
         ],
       },
@@ -225,7 +227,7 @@ export const WEEK_9: WeekContent = {
         speaker: "adam",
         lines: [
           "[proud] Every parcel sorted, Cyber Hero! Only official store apps made the shelf.",
-          "[warmly] Out in the real world, new apps come from the official app store. Anything else goes straight back.",
+          "[warmly] Out in the real world, new apps come from the official App Store or Play Store. Anything else goes straight back.",
         ],
       },
     },
@@ -235,18 +237,18 @@ export const WEEK_9: WeekContent = {
       mode: "recall",
       prompt: "Where's the ONE safe place to get a new app?",
       choices: [
-        { text: "The official app store", isCorrect: true },
+        { text: "The App Store or Play Store", isCorrect: true },
         { text: "A pop-up that says FREE", isCorrect: false, why: "Pop-ups aren't shops. Nobody checked what's behind that button." },
-        { text: "A website's download button", isCorrect: false, why: "Websites don't check apps. The official app store does." },
+        { text: "A website's download button", isCorrect: false, why: "Websites don't check apps. The App Store and Play Store do." },
         { text: "A link in the comments", isCorrect: false, why: "Comments aren't shops. A link down there could lead anywhere." },
       ],
-      praise: "The official app store, every time. ✓",
+      praise: "The App Store or Play Store, every time. ✓",
       nudge: "Which shop checked every parcel before the shelf?",
       teachNarration: {
         speaker: "adam",
         lines: [
           "[proud] Well done!",
-          "The official app store is the one safe place.",
+          "The official App Store or Play Store is the one safe place.",
           "It checks every app before the shelf.",
           "[warmly] Anywhere else, nobody checked.",
         ],
@@ -257,7 +259,7 @@ export const WEEK_9: WeekContent = {
       type: "recap",
       concept: 1,
       total: 5,
-      learned: "New apps come from the official app store only. It checks apps before the shelf, and random sources don't.",
+      learned: "New apps come from the official App Store or Play Store only. Both check apps before the shelf, and random sources don't.",
       next: "how to catch the copycats that sneak into the real shop",
       emblem: "📱",
       narration: {
@@ -910,7 +912,7 @@ export const WEEK_9: WeekContent = {
           spots: [
             { id: "maker", label: "Made by: Brightbox Studio, 8 million downloads", icon: "👤", fishy: false, readAloud: "Your grown-up checks the maker: Brightbox Studio, with eight million downloads." },
             { id: "keys", label: "Wants: to play sounds", icon: "🔔", fishy: false, readAloud: "They check the keys: it only wants to play sounds." },
-            { id: "store", label: "Found in: the official app store", icon: "📱", fishy: false, readAloud: "And they check the shop: it's in the official app store." },
+            { id: "store", label: "Found in: the App Store and Play Store", icon: "📱", fishy: false, readAloud: "And they check the shops: it's in the official App Store and Play Store." },
           ],
           rightMove: "install",
           why: "A real maker, a key that fits the job, and the real shop. You both checked, so installing it together is fine.",
@@ -949,9 +951,9 @@ export const WEEK_9: WeekContent = {
       mode: "order",
       prompt: "A new app looks great. Tap the hero steps IN ORDER:",
       choices: [
-        { text: "Find it in the official app store", isCorrect: true },
+        { text: "Find it in the App Store or Play Store", isCorrect: true },
         { text: "Check it together with a grown-up", isCorrect: true },
-        { text: "Install it together", isCorrect: true },
+        { text: "Install it together, side by side", isCorrect: true },
       ],
       praise: "Real shop, check together, install together! ✓",
       nudge: "Where does a new app always come from first?",
@@ -960,7 +962,7 @@ export const WEEK_9: WeekContent = {
         speaker: "adam",
         lines: [
           "[proud] Well done!",
-          "Find it in the official app store. Check it together. Install it together.",
+          "Find it in the official App Store or Play Store. Check it together. Install it together.",
           "The real shop comes first, because nothing else gets checked.",
           "[warmly] Then four eyes, every time.",
         ],
@@ -1011,9 +1013,9 @@ export const WEEK_9: WeekContent = {
           prompt: "A game website shows a big DOWNLOAD NOW button for Pixel Pets. Where should you get Pixel Pets?",
           readAloud: "A game website shows a big download now button for Pixel Pets. Where should you get Pixel Pets?",
           choices: [
-            { text: "The official app store on your device", isCorrect: true, explanation: "The official app store.", why: "Only the official app store checks apps before the shelf. A website button skips that check." },
+            { text: "The official App Store or Play Store", isCorrect: true, explanation: "The official App Store or Play Store.", why: "Only the App Store and Play Store check apps before the shelf. A website button skips that check." },
             { text: "The website's big button, it's faster", isCorrect: false, explanation: "Faster isn't safer. Nobody checked the app behind that button." },
-            { text: "Any button that says Pixel Pets", isCorrect: false, explanation: "A button can say anything. Only the official app store checks what's behind it." },
+            { text: "Any button that says Pixel Pets", isCorrect: false, explanation: "A button can say anything. Only the App Store and Play Store check what's behind it." },
           ],
           recap: "One real shop",
         },
@@ -1105,7 +1107,7 @@ export const WEEK_9: WeekContent = {
       title: "Mission Complete!",
       subtitle: "Here's everything you mastered this week.",
       concepts: [
-        { id: "store", label: "One Real Shop", accent: "#7df0ff", icon: "📱", summary: "Apps come from the official app store only, checked before the shelf." },
+        { id: "store", label: "One Real Shop", accent: "#7df0ff", icon: "📱", summary: "Apps come from the App Store or Play Store only, checked before the shelf." },
         { id: "copycat", label: "Copycat Eyes", accent: "#c084fc", icon: "🎭", summary: "Name, maker, downloads. You count the whiskers on every app." },
         { id: "keys", label: "Key Checker", accent: "#ffd158", icon: "🔑", summary: "Job keys yes, greedy keys no. Why does it need that?" },
         { id: "free", label: "Price Finder", accent: "#ff5fb3", icon: "🏷️", summary: "FREE apps get paid with time, coins or info, unless they're truly free." },
@@ -1168,14 +1170,14 @@ export const WEEK_9: WeekContent = {
           text: "Adam's cousin messages: 'Skip the app store, download my favourite game straight from this chat link!' What's the safe move?",
         },
         options: [
-          { text: "Say no thanks, new apps come from the official app store only" },
+          { text: "Say no thanks, apps come from the App Store or Play Store" },
           { text: "Download it, links from family are family-checked" },
           { text: "Download it, then run a free virus scan right after" },
         ],
         correctIndex: 0,
         teachOnWrong: {
           title: "One real shop, no exceptions!",
-          explanation: "The official app store checks apps before they reach the shelf. A chat link skips that check, whoever sent it, and a scan afterwards can be too late. Not in the real shop, not coming home.",
+          explanation: "The App Store and Play Store check apps before they reach the shelf. A chat link skips that check, whoever sent it, and a scan afterwards can be too late. Not in the real shop, not coming home.",
         },
         villainRight: {
           slug: "quiz-w9-right-c1-1",
@@ -1273,17 +1275,17 @@ export const WEEK_9: WeekContent = {
         label: "Install Together",
         ask: {
           slug: "quiz-w9-ask-c5-1",
-          text: "A pop-up in Adam's game says: 'Update needed! Tap here to update now!' It isn't from the app store. What's the hero move?",
+          text: "A pop-up in Adam's game says: 'Update needed! Tap here to update now!' It isn't from the App Store or Play Store. What's the hero move?",
         },
         options: [
-          { text: "Close it, and check the real app store with a grown-up" },
+          { text: "Close it, and check the real store with a grown-up" },
           { text: "Tap it quickly, updates like this keep games safe" },
           { text: "Tap it, but only because it's his favourite game" },
         ],
         correctIndex: 0,
         teachOnWrong: {
           title: "Real updates, real store, together!",
-          explanation: "Real updates come from the official app store, never from shouty pop-ups. Close it, then check for updates in the real store together with a grown-up.",
+          explanation: "Real updates come from the App Store or Play Store, never from shouty pop-ups. Close it, then check for updates in the real store together with a grown-up.",
         },
         villainRight: {
           slug: "quiz-w9-right-c5-1",
@@ -1310,14 +1312,14 @@ export const WEEK_9: WeekContent = {
   // is what renders.
   bossQuestions: {
     easy: [
-      { question: "Where do new apps come from?", answers: ["The official app store only", "Any website with a download button", "Pop-ups", "Video comments"], correctIndex: 0, explanation: "The official store checks apps before the shelf. Nowhere else does." },
+      { question: "Where do new apps come from?", answers: ["The App Store or Play Store only", "Any website with a download button", "Pop-ups", "Video comments"], correctIndex: 0, explanation: "The official store checks apps before the shelf. Nowhere else does." },
       { question: "'Blast Birdz', 12 downloads, new yesterday. What is it?", answers: ["A copycat in a costume", "The real game", "A special edition", "A free upgrade"], correctIndex: 0, explanation: "A swapped letter and no history. The whiskers don't add up." },
       { question: "Before installing a new app, you...", answers: ["Check it and install it together with a grown-up", "Tap install fast", "Ask a friend", "Install it secretly"], correctIndex: 0, explanation: "Four eyes catch what two miss." },
     ],
     medium: [
       { question: "A flashlight app wants your contacts and location. What do you do?", answers: ["Block them, its job only needs the light", "Allow everything, it asked nicely", "Allow just the contacts", "Allow them, big apps always need extras"], correctIndex: 0, explanation: "Job keys yes, greedy keys no. A light never needs your friends." },
       { question: "A FREE game shows ads every minute. What's the real price?", answers: ["Your time and attention", "Nothing, it's free", "A tiny fee later on", "Your high score"], correctIndex: 0, explanation: "FREE apps get paid another way, and ads sell your time." },
-      { question: "A pop-up says 'UPDATE your game HERE now!'. Real or fake?", answers: ["Fake, real updates live inside the real store", "Real, updates are always urgent", "Real if it's colourful", "Real, games do need updates"], correctIndex: 0, explanation: "Updates come from the app store itself, never from shouty pop-ups." },
+      { question: "A pop-up says 'UPDATE your game HERE now!'. Real or fake?", answers: ["Fake, real updates live inside the real store", "Real, updates are always urgent", "Real if it's colourful", "Real, games do need updates"], correctIndex: 0, explanation: "Updates come from the App Store or Play Store, never from shouty pop-ups." },
     ],
     hard: [
       { question: "Why do copycat apps use the SAME icon as the real one?", answers: ["So you'll trust the costume and skip the whisker check", "Icons are expensive", "They're made by the same company", "Because the store gave them permission"], correctIndex: 0, explanation: "The icon IS the disguise, so you check the name, the maker and the downloads." },
