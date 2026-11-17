@@ -43,11 +43,13 @@ export const WEEK_7: WeekContent = {
   ],
 
   screens: [
-    // 0 - OPENING VIDEO: the shop that drained an account - at the kitchen table Adam
-    // buys "just a few gems", the Raccoon pushes a mystery box from his gem shop,
-    // and Layla: "Let's learn the Gem Bucks trap!" (talking film, 2026-11-12;
-    // source + assembler in .scratch/w07, not in the repo).
-    { type: "video", videoPlaceholder: "Week 7: The Gem Bucks Trap", videoSrc: "/videos/module-07-intro.mp4" },
+    // 0 - OPENING VIDEO: "The Mystery Box" (episode, 2026-11-17, ~59s) - Adam's gem
+    // shop counts down ("Offer ends in 00:59", "Everyone's buying!"), the Raccoon's
+    // Gem Bucks Trap board shows every trick of the week and sells a box, "One very
+    // RARE sock!", Layla: "Gem Bucks are real money. And a mystery box is a gamble.",
+    // and "Come on, Cyber Hero! Let's guard our Gem Bucks!" (source + assembler in
+    // .scratch/w07-episode, not in the repo).
+    { type: "video", videoPlaceholder: "Week 7: The Mystery Box", videoSrc: "/videos/module-07-intro.mp4" },
 
     // 1 - ALERT: incident report (Sarah reads the caption word for word, then reacts)
     {
@@ -963,10 +965,12 @@ export const WEEK_7: WeekContent = {
     // 25 - BOSS: the standard quiz (5 questions, pass 4)
     { type: "bossBattle" },
 
-    // 26 - CLOSING VIDEO: the trap shop shuts down - Adam passes on the gamble, the
-    // Raccoon fumes, Layla: "Always ask a grown-up before you buy!" (covers all
-    // three Week 7 stickers; 2026-11-12).
-    { type: "video", videoPlaceholder: "Week 7: The Shop Shuts Down", videoSrc: "/videos/module-07-outro.mp4" },
+    // 26 - CLOSING VIDEO: "Money Safe" (episode, 2026-11-17, ~66s) - covers all five
+    // Mission Debrief skills: Adam asked his mom first, counted the real money
+    // (coins fill a till, the tag flips to "Real money"), the countdown freezes,
+    // "One gold marble, ninety-nine grey", the Raccoon's board is beaten trick by
+    // trick and CLOSES, his "Psst! FREE Gem Bucks!" gets "They don't exist. Nice try!"
+    { type: "video", videoPlaceholder: "Week 7: Money Safe", videoSrc: "/videos/module-07-outro.mp4" },
 
     // 27 - Mission Debrief
     {
