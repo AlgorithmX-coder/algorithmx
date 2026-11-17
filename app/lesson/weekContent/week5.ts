@@ -51,11 +51,12 @@ export const WEEK_5: WeekContent = {
   ],
 
   screens: [
-    // 0 - OPENING VIDEO: the group chat pile-on - mean messages land on Adam's tablet,
-    // the Raccoon urges "Make it MEANER!", and Layla: "No! And it's NOT your
-    // fault. Let's learn what to do." (talking film, 2026-11-12; source +
-    // assembler in .scratch/w05, not in the repo).
-    { type: "video", videoPlaceholder: "Week 5: The Pile-On", videoSrc: "/videos/module-05-intro.mp4" },
+    // 0 - OPENING VIDEO: "Words Have Power" (episode, 2026-11-17, ~57s) - the
+    // class chat piles on Adam's drawing, the Raccoon's "Forward to everyone"
+    // counter races up as his flames grow, Layla: "No! And it's NOT your
+    // fault.", and "Come on, Cyber Hero! Let's be kind AND brave!" (source +
+    // assembler in .scratch/w05-episode, not in the repo).
+    { type: "video", videoPlaceholder: "Week 5: Words Have Power", videoSrc: "/videos/module-05-intro.mp4" },
 
     // 1 - ALERT: incident report (Sarah reads the caption word for word, then reacts)
     {
@@ -932,10 +933,11 @@ export const WEEK_5: WeekContent = {
     // 25 - BOSS: the standard quiz (5 questions, pass 4)
     { type: "bossBattle" },
 
-    // 26 - CLOSING VIDEO: the chat turns kind - Adam won't reply or pass it on, blocks
-    // with the shield, Layla: "And we told a grown-up. Together!", Adam: "Send
-    // kind words, Cyber Hero!" (covers all three Week 5 stickers; 2026-11-12).
-    { type: "video", videoPlaceholder: "Week 5: The Chat Turns Kind", videoSrc: "/videos/module-05-outro.mp4" },
+    // 26 - CLOSING VIDEO: "Kind Words" (episode, 2026-11-17, ~51s) - Adam told
+    // his teacher and his mom, won't reply or pass it on, Layla taps "Don't
+    // send" and sends a kind message instead, the Raccoon's flames go out and
+    // his counter drops to 0, Adam: "Send kind words, Cyber Hero!"
+    { type: "video", videoPlaceholder: "Week 5: Kind Words", videoSrc: "/videos/module-05-outro.mp4" },
 
     // 27 - Mission Debrief
     {
