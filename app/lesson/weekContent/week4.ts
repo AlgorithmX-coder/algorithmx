@@ -58,11 +58,12 @@ export const WEEK_4: WeekContent = {
   ],
 
   screens: [
-    // 0 - OPENING VIDEO: the V-Bucks blast - a "free game coins" chest pops up
-    // for Layla, Adam asks why it wants her password, the Raccoon dangles his
-    // shiny lure, and Adam says "Let's learn to spot a scam!" (talking film,
-    // 2026-11-12; source + assembler in .scratch/w04, not in the repo).
-    { type: "video", videoPlaceholder: "Week 4: The Prize That Wasn't", videoSrc: "/videos/module-04-intro.mp4" },
+    // 0 - OPENING VIDEO: "The Shiny Bait" (episode, 2026-11-17, ~55s) -
+    // "PIayQuest" (a capital I posing as an l) offers 1,000 free coins on a
+    // countdown, Layla rushes, the Raccoon's fake log-in page logs "1 new
+    // catch!", Adam: "A scam is a trick. It rushes you so you don't think."
+    // (source + assembler in .scratch/w04-episode, not in the repo).
+    { type: "video", videoPlaceholder: "Week 4: The Shiny Bait", videoSrc: "/videos/module-04-intro.mp4" },
 
     // 1 - ALERT: incident report (Sarah's hook)
     {
@@ -1070,10 +1071,11 @@ export const WEEK_4: WeekContent = {
     // 25 - BOSS BATTLE: the carnival showdown (QuizBoss, 5 Q / pass 4)
     { type: "bossBattle" },
 
-    // 26 - CLOSING VIDEO: every scam returns to sender - Layla closes the chest,
-    // the Raccoon stares at an empty hook, Adam: "Stop, check, and show a
-    // grown-up!" (talking film, 2026-11-12).
-    { type: "video", videoPlaceholder: "Week 4: Return to Sender", videoSrc: "/videos/module-04-outro.mp4" },
+    // 26 - CLOSING VIDEO: "No Bite" (episode, 2026-11-17, ~51s) - Mom helped get
+    // the coins back, the sender's name is checked letter by letter against
+    // the real PlayQuest, the Raccoon's screen reads "Bites today: 0" over an
+    // empty hook, his "Psst!" fails, "Stop, check and show a grown-up."
+    { type: "video", videoPlaceholder: "Week 4: No Bite", videoSrc: "/videos/module-04-outro.mp4" },
 
     // 27 - Mission Debrief
     {
@@ -1336,7 +1338,7 @@ export const WEEK_4: WeekContent = {
     23: { adam: null, layla: { mood: "excited", message: "All five powers, one drill to go!" } }, // recap 5
     24: { adam: null, layla: { mood: "excited", message: "Clear every mirror!" } }, // consolidation
     25: { adam: { mood: "worried", message: "The carnival showdown. Don't bite!" }, layla: null }, // boss
-    26: { adam: null, layla: { mood: "excited", message: "Return to sender, all of them!" } }, // outro video
+    26: { adam: null, layla: { mood: "excited", message: "Watch his hook come up empty!" } }, // outro video
     27: { adam: { mood: "thumbsup", message: "Look at everything you mastered!" }, layla: null }, // debrief
     28: { adam: null, layla: { mood: "excited", message: "Stickers earned, off to Cyber HQ!" } }, // stickers
     29: { adam: { mood: "thumbsup", message: "Trick Catcher badge earned!" }, layla: null }, // completion

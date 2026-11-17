@@ -52,11 +52,13 @@ export const WEEK_3: WeekContent = {
   ],
 
   screens: [
-    // 0 - OPENING VIDEO: the fake-kid profile trap - a "new friend" says he's
-    // ten, the Raccoon hides behind a kid mask, and Layla says "Online, you
-    // can't see who's REALLY typing!" (talking film, 2026-11-11; source +
-    // assembler in .scratch/w03, not in the repo).
-    { type: "video", videoPlaceholder: "Week 3: The Fake Friend", videoSrc: "/videos/module-03-intro.mp4" },
+    // 0 - OPENING VIDEO: "The New Friend" (episode, 2026-11-17, ~55s) - a
+    // "Max_10" friend request (joined today, 0 friends), Adam: "No... but he
+    // likes dragons!", the Raccoon builds the fake profile behind his mask,
+    // Layla: "Online, you can't see who's REALLY typing!", and "Come on, Cyber
+    // Hero! Let's lift that mask!" (source + assembler in .scratch/w03-episode,
+    // not in the repo).
+    { type: "video", videoPlaceholder: "Week 3: The New Friend", videoSrc: "/videos/module-03-intro.mp4" },
 
     // 1 - ALERT: incident report (Sarah's hook)
     {
@@ -1045,10 +1047,11 @@ export const WEEK_3: WeekContent = {
     // 25 - BOSS BATTLE: the Disguise Kit showdown (QuizBoss, 5 Q / pass 4)
     { type: "bossBattle" },
 
-    // 26 - CLOSING VIDEO: the mask falls off - Adam blocks the stranger, the
-    // Raccoon's screen shows him blocked, Layla: "Uh-oh feeling? Stop, and
-    // tell a grown-up!" (talking film, 2026-11-11).
-    { type: "video", videoPlaceholder: "Week 3: The Mask Falls", videoSrc: "/videos/module-03-outro.mp4" },
+    // 26 - CLOSING VIDEO: "Mask Lifted" (episode, 2026-11-17, ~53s) - Adam told
+    // his dad, the clues ("Joined today", "0 friends") get circled, he taps
+    // Block, the Raccoon's chat greys out, his "Psst!" fails, Layla: "Uh-oh
+    // feeling? Stop, and tell a grown-up!"
+    { type: "video", videoPlaceholder: "Week 3: Mask Lifted", videoSrc: "/videos/module-03-outro.mp4" },
 
     // 27 - Mission Debrief
     {

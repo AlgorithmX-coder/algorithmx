@@ -45,11 +45,13 @@ export const WEEK_6: WeekContent = {
   ],
 
   screens: [
-    // 0 - OPENING VIDEO: the raccoon joins the lobby - the kids at their gaming corner,
-    // the Raccoon offers "FREE skins" from his neon arcade, and Adam: "Let's
-    // lock down our game zone!" (talking film, 2026-11-12; source + assembler
-    // in .scratch/w06, not in the repo).
-    { type: "video", videoPlaceholder: "Week 6: The Lobby Intruder", videoSrc: "/videos/module-06-intro.mp4" },
+    // 0 - OPENING VIDEO: "Game Zone" (episode, 2026-11-17, ~57s) - the kids win
+    // the Dragon Cup, "ProGamer_99" knocks on the lobby offering free skins,
+    // the Raccoon's arcade shows a fake FreeSkins download and "let's chat on
+    // another app", Adam: "That's a big red flag.", and "Come on, Cyber Hero!
+    // Defend your game zone!" (source + assembler in .scratch/w06-episode,
+    // not in the repo).
+    { type: "video", videoPlaceholder: "Week 6: Game Zone", videoSrc: "/videos/module-06-intro.mp4" },
 
     // 1 - ALERT: incident report (Sarah reads the caption word for word, then reacts)
     {
@@ -1079,10 +1081,11 @@ export const WEEK_6: WeekContent = {
     // 25 - BOSS: the standard quiz (5 questions, pass 4)
     { type: "bossBattle" },
 
-    // 26 - CLOSING VIDEO: the intruder is reported and booted - Layla spots the fake download, the
-    // Raccoon fumes at his padlocked screen, Layla: "Report, block, and tell,
-    // Cyber Hero!" (covers all three Week 6 stickers; 2026-11-12).
-    { type: "video", videoPlaceholder: "Week 6: Booted From the Lobby", videoSrc: "/videos/module-06-outro.mp4" },
+    // 26 - CLOSING VIDEO: "Lobby Locked" (episode, 2026-11-17, ~51s) - Dad helped
+    // set the lobby to Friends only, Layla spots the fake download, reports,
+    // then blocks, the Raccoon's "Join lobby" hits a padlock, his "Psst!"
+    // fails, Layla: "Report, block, and tell, Cyber Hero!"
+    { type: "video", videoPlaceholder: "Week 6: Lobby Locked", videoSrc: "/videos/module-06-outro.mp4" },
 
     // 27 - Mission Debrief
     {
@@ -1332,7 +1335,7 @@ export const WEEK_6: WeekContent = {
     23: { adam: null, layla: { mood: "excited", message: "All five powers. Review time!" } }, // recap 5
     24: { adam: null, layla: { mood: "excited", message: "Bingo the whole game zone!" } }, // review: Game Zone Bingo
     25: { adam: { mood: "worried", message: "He's in YOUR lobby. Boot him!" }, layla: null }, // boss
-    26: { adam: null, layla: { mood: "excited", message: "Watch him get booted!" } }, // outro video
+    26: { adam: null, layla: { mood: "excited", message: "Watch the lobby lock him out!" } }, // outro video
     27: { adam: { mood: "thumbsup", message: "Look at everything you mastered!" }, layla: null }, // debrief
     28: { adam: null, layla: { mood: "excited", message: "Stickers earned, off to Cyber HQ!" } }, // stickers
     29: { adam: { mood: "thumbsup", message: "Lobby Guardian badge earned!" }, layla: null }, // completion
