@@ -1062,18 +1062,18 @@ export const WEEK_11: WeekContent = {
           text: "A horrid message is on your screen RIGHT NOW and your heart is going fast. What's step one?",
         },
         options: [
-          { text: "STOP, hands off, send nothing back" },
+          { text: "BREATHE, one slow breath in and out" },
           { text: "Screenshot it before anything else" },
           { text: "Block the sender before they send more" },
         ],
         correctIndex: 0,
         teachOnWrong: {
-          title: "STOP comes first!",
-          explanation: "Screenshot and block are real steps, but they come after. Step one is STOP, hands off, send nothing back. Calm fingers first, then the camera, then the door.",
+          title: "BREATHE comes first!",
+          explanation: "Screenshot and block are real steps, but they come after. Step one is BREATHE, because a calm head thinks better. Then snap, stop, block and tell.",
         },
         villainRight: {
           slug: "quiz-w11-right-c5-1",
-          text: "Hands off FIRST?! But itchy fingers are my favorite fingers!",
+          text: "A calm breath FIRST?! But panicky fingers are my favorite fingers!",
         },
         villainWrong: {
           slug: "quiz-w11-wrong-c5-1",

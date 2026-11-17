@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-16T10:03:11.823Z",
+  "generatedAt": "2026-11-17T13:16:37.393Z",
   "model": "eleven_v4",
   "voiceSettings": {
     "stability": 0.6,
@@ -4982,10 +4982,10 @@
       "file": "/audio/voice/252344230ea73568.mp3"
     },
     {
-      "key": "2cedd7c9ea7e3674",
+      "key": "245273669f4eefb9",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "A horrid message is on your screen RIGHT NOW and your heart is going fast. What's step one? Is it option A... Screenshot it before anything else. Option B... Block the sender before they send more. Or is it option C... STOP, hands off, send nothing back. So, what do you think?",
+      "text": "A horrid message is on your screen RIGHT NOW and your heart is going fast. What's step one? Is it option A... Screenshot it before anything else. Option B... Block the sender before they send more. Or is it option C... BREATHE, one slow breath in and out. So, what do you think?",
       "lines": [
         "A horrid message is on your screen RIGHT NOW and your heart is going fast. What's step one?",
         "Is it option A...",
@@ -4993,10 +4993,10 @@
         "Option B...",
         "Block the sender before they send more.",
         "Or is it option C...",
-        "STOP, hands off, send nothing back.",
+        "BREATHE, one slow breath in and out.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/2cedd7c9ea7e3674.mp3"
+      "file": "/audio/voice/245273669f4eefb9.mp3"
     },
     {
       "key": "73caf80f2e6ee4f4",
@@ -5087,26 +5087,26 @@
       "file": "/audio/voice/e67a852483eaf4b2.mp3"
     },
     {
-      "key": "b490b915c7fdfd3f",
+      "key": "434786fdfe02b4b3",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "That's right! Screenshot and block are real steps, but they come after. Step one is STOP, hands off, send nothing back. Calm fingers first, then the camera, then the door.",
+      "text": "That's right! Screenshot and block are real steps, but they come after. Step one is BREATHE, because a calm head thinks better. Then snap, stop, block and tell.",
       "lines": [
         "That's right!",
-        "Screenshot and block are real steps, but they come after. Step one is STOP, hands off, send nothing back. Calm fingers first, then the camera, then the door."
+        "Screenshot and block are real steps, but they come after. Step one is BREATHE, because a calm head thinks better. Then snap, stop, block and tell."
       ],
-      "file": "/audio/voice/b490b915c7fdfd3f.mp3"
+      "file": "/audio/voice/434786fdfe02b4b3.mp3"
     },
     {
-      "key": "d196275e01cd13c8",
+      "key": "ea430dc65dab3824",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "Not quite. Screenshot and block are real steps, but they come after. Step one is STOP, hands off, send nothing back. Calm fingers first, then the camera, then the door.",
+      "text": "Not quite. Screenshot and block are real steps, but they come after. Step one is BREATHE, because a calm head thinks better. Then snap, stop, block and tell.",
       "lines": [
         "Not quite.",
-        "Screenshot and block are real steps, but they come after. Step one is STOP, hands off, send nothing back. Calm fingers first, then the camera, then the door."
+        "Screenshot and block are real steps, but they come after. Step one is BREATHE, because a calm head thinks better. Then snap, stop, block and tell."
       ],
-      "file": "/audio/voice/d196275e01cd13c8.mp3"
+      "file": "/audio/voice/ea430dc65dab3824.mp3"
     },
     {
       "key": "83971f272f1f5628",
@@ -5689,14 +5689,14 @@
       "file": "/audio/voice/4db53cb5acee93cf.mp3"
     },
     {
-      "key": "8fc99079bfbe8de4",
+      "key": "2cd0864eee4c1c93",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "Screenshot and block are real steps, but they come after. Step one is STOP, hands off, send nothing back. Calm fingers first, then the camera, then the door.",
+      "text": "Screenshot and block are real steps, but they come after. Step one is BREATHE, because a calm head thinks better. Then snap, stop, block and tell.",
       "lines": [
-        "Screenshot and block are real steps, but they come after. Step one is STOP, hands off, send nothing back. Calm fingers first, then the camera, then the door."
+        "Screenshot and block are real steps, but they come after. Step one is BREATHE, because a calm head thinks better. Then snap, stop, block and tell."
       ],
-      "file": "/audio/voice/8fc99079bfbe8de4.mp3"
+      "file": "/audio/voice/2cd0864eee4c1c93.mp3"
     },
     {
       "key": "85db8e046770b827",
