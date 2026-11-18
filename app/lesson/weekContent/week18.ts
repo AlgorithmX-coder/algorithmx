@@ -69,8 +69,11 @@ export const WEEK_18: WeekContent = {
   ],
 
   screens: [
-    // 0 - OPENING VIDEO: the family tablet
-    { type: "video", videoPlaceholder: "Week 18: The Family Tablet", videoSrc: "/videos/module-18-intro.mp4" },
+    // 0 - OPENING VIDEO: "Left Logged In" (episode, 2026-11-18, ~50s) - Adam leaves the
+    // family laptop signed in, Layla: "Open isn't an invitation", the Raccoon moves in and
+    // posts "I LOVE broccoli!" as Adam, "Shared screens need you to log out and lock up."
+    // (source + assembler in .scratch/batch1620, not in the repo).
+    { type: "video", videoPlaceholder: "Week 18: Left Logged In", videoSrc: "/videos/module-18-intro.mp4" },
 
     // 1 - ALERT: incident report
     {
@@ -937,8 +940,10 @@ export const WEEK_18: WeekContent = {
     // 25 - Boss
     { type: "bossBattle" },
 
-    // 26 - CLOSING VIDEO: every screen locked
-    { type: "video", videoPlaceholder: "Week 18: Lock Master", videoSrc: "/videos/module-18-outro.mp4" },
+    // 26 - CLOSING VIDEO: "Screen Locked" (episode, 2026-11-18, ~61s) - covers all five
+    // skills: close, log out, lock, look back, a shared screen never remembers a password,
+    // every lock lives in Settings, on shared screens we're just visitors, DEN LOCKED OUT.
+    { type: "video", videoPlaceholder: "Week 18: Screen Locked", videoSrc: "/videos/module-18-outro.mp4" },
 
     // 27 - Mission Debrief
     {

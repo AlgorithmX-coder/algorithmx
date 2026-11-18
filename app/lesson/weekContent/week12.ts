@@ -53,7 +53,10 @@ export const WEEK_12: WeekContent = {
   ],
 
   screens: [
-    // 0 - OPENING VIDEO: the snowfield
+    // 0 - OPENING VIDEO: "Tracks in the Snow" (episode, 2026-11-18, ~62s) - Layla's pepper
+    // dare video ("I can delete it later"), every tap leaves a print like footprints in the
+    // snow, one send makes three copies, the Raccoon's ice Map Room: "Mine FOREVER!"
+    // (source + assembler in .scratch/batch815, not in the repo).
     { type: "video", videoPlaceholder: "Week 12: Tracks in the Snow", videoSrc: "/videos/module-12-intro.mp4" },
 
     // 1 - ALERT: incident report
@@ -1038,8 +1041,10 @@ export const WEEK_12: WeekContent = {
     // 25 - BOSS: the standard quiz (5 questions, pass 4)
     { type: "bossBattle" },
 
-    // 26 - CLOSING VIDEO: the golden trail
-    { type: "video", videoPlaceholder: "Week 12: The Golden Trail", videoSrc: "/videos/module-12-outro.mp4" },
+    // 26 - CLOSING VIDEO: "Golden Tracks" (episode, 2026-11-18, ~62s) - covers all five
+    // skills: think before the first share, check the trail with Dad, proud and kind with a
+    // friend named, MAP USELESS, "Older me will see it one day. Nope!"
+    { type: "video", videoPlaceholder: "Week 12: Golden Tracks", videoSrc: "/videos/module-12-outro.mp4" },
 
     // 27 - Mission Debrief
     {

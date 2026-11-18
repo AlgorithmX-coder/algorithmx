@@ -69,8 +69,11 @@ export const WEEK_17: WeekContent = {
   ],
 
   screens: [
-    // 0 - OPENING VIDEO: the highlight reel
-    { type: "video", videoPlaceholder: "Week 17: The Highlight Reel", videoSrc: "/videos/module-17-intro.mp4" },
+    // 0 - OPENING VIDEO: "Thirteen Plus" (episode, 2026-11-18, ~61s) - Adam signs up for
+    // the app his class has with a different birthday, Layla: "Thirteen plus means not
+    // yet", the Raccoon's public profile fills with 1,000 strangers: "Followers aren't
+    // friends." (source + assembler in .scratch/batch1620, not in the repo).
+    { type: "video", videoPlaceholder: "Week 17: Thirteen Plus", videoSrc: "/videos/module-17-intro.mp4" },
 
     // 1 - ALERT: incident report
     {
@@ -1076,8 +1079,10 @@ export const WEEK_17: WeekContent = {
     // 25 - Boss
     { type: "bossBattle" },
 
-    // 26 - CLOSING VIDEO: the hall goes dark
-    { type: "video", videoPlaceholder: "Week 17: Shield Bearer", videoSrc: "/videos/module-17-outro.mp4" },
+    // 26 - CLOSING VIDEO: "Shield Up" (episode, 2026-11-18, ~58s) - covers all five skills:
+    // Mom and Adam deleted it, he'll wait till thirteen, friends only, take out the where
+    // and the when, perfect pictures are one chosen minute, CASTLE LOCKED.
+    { type: "video", videoPlaceholder: "Week 17: Shield Up", videoSrc: "/videos/module-17-outro.mp4" },
 
     // 27 - Mission Debrief
     {
@@ -1341,7 +1346,7 @@ export const WEEK_17: WeekContent = {
     23: { adam: { mood: "excited", message: "All five powers - one last walk!" }, layla: null }, // recap 5
     24: { adam: { mood: "excited", message: "Four checks on every profile!" }, layla: null }, // review: profileInspector
     25: { adam: { mood: "worried", message: "His hall - darken it for good!" }, layla: null }, // boss
-    26: { adam: null, layla: { mood: "excited", message: "Shield forged - hall closed!" } }, // outro video
+    26: { adam: null, layla: { mood: "excited", message: "Watch the castle lock him out!" } }, // outro video
     27: { adam: null, layla: { mood: "thumbsup", message: "Look at everything you mastered!" } }, // debrief
     28: { adam: { mood: "excited", message: "Stickers earned, Shield Bearer!" }, layla: null }, // stickers
     29: { adam: { mood: "thumbsup", message: "Shield Bearer badge earned!" }, layla: null }, // completion

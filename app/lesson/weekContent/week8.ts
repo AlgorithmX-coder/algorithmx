@@ -45,11 +45,11 @@ export const WEEK_8: WeekContent = {
   ],
 
   screens: [
-    // 0 - OPENING VIDEO: the photo that ran away - in the treehouse Layla snaps a selfie with
-    // Adam and wants to post it for everyone; the Raccoon spots a school badge in it from his
-    // darkroom, and Adam: "Let's learn to think before we share!" (talking film, 2026-11-12;
-    // source + assembler in .scratch/w08, not in the repo).
-    { type: "video", videoPlaceholder: "Week 8: The Runaway Photo", videoSrc: "/videos/module-08-intro.mp4" },
+    // 0 - OPENING VIDEO: "Say Cheese" (episode, 2026-11-18, ~60s) - Layla posts a funny
+    // photo of Adam without asking ("Too late, it's posted"), the Raccoon's Snapshot Heist
+    // board finds the school badge, "Photos TALK!", and delete only deletes YOUR copy.
+    // (source + assembler in .scratch/batch815, not in the repo).
+    { type: "video", videoPlaceholder: "Week 8: Say Cheese", videoSrc: "/videos/module-08-intro.mp4" },
 
     // 1 - ALERT: incident report (Sarah reads the caption word for word, then reacts)
     {
@@ -1053,10 +1053,11 @@ export const WEEK_8: WeekContent = {
     // 25 - BOSS: the standard quiz (5 questions, pass 4)
     { type: "bossBattle" },
 
-    // 26 - CLOSING VIDEO: the darkroom heist falls apart - Layla: "Look, think, and ASK before I
-    // share", the Raccoon gets no clues, Adam: "Their face, their choice. Always ask!" (covers
-    // all three Week 8 stickers; 2026-11-12).
-    { type: "video", videoPlaceholder: "Week 8: Case Closed", videoSrc: "/videos/module-08-outro.mp4" },
+    // 26 - CLOSING VIDEO: "Picture Perfect" (episode, 2026-11-18, ~60s) - covers all five
+    // Mission Debrief skills: Layla said sorry, look, think, ask, her 3-second check (no
+    // house number, no school name, Friends door only), the board shows NOTHING TO DEVELOP,
+    // his "Psst!" school-uniform ask gets "No way."
+    { type: "video", videoPlaceholder: "Week 8: Picture Perfect", videoSrc: "/videos/module-08-outro.mp4" },
 
     // 27 - Mission Debrief (ids kept from the legacy week so saved progress still lines up)
     {

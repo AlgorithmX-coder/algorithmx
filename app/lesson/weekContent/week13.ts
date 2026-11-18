@@ -62,8 +62,11 @@ export const WEEK_13: WeekContent = {
   ],
 
   screens: [
-    // 0 - OPENING VIDEO: the power station
-    { type: "video", videoPlaceholder: "Week 13: Balance Your Power", videoSrc: "/videos/module-13-intro.mp4" },
+    // 0 - OPENING VIDEO: "One More Level" (episode, 2026-11-18, ~61s) - 11:42 PM, Level 48
+    // unlocked, the Raccoon's Battery Thief strikes, next morning Adam missed football:
+    // "Screens are brilliant, but a day only holds so much." (source + assembler in
+    // .scratch/batch815, not in the repo).
+    { type: "video", videoPlaceholder: "Week 13: One More Level", videoSrc: "/videos/module-13-intro.mp4" },
 
     // 1 - ALERT: incident report
     {
@@ -1012,8 +1015,10 @@ export const WEEK_13: WeekContent = {
     // 25 - BOSS: the standard quiz (5 questions, pass 4)
     { type: "bossBattle" },
 
-    // 26 - CLOSING VIDEO: the battery keeper
-    { type: "video", videoPlaceholder: "Week 13: Battery Keeper", videoSrc: "/videos/module-13-outro.mp4" },
+    // 26 - CLOSING VIDEO: "Balanced and Rested" (episode, 2026-11-18, ~61s) - covers all
+    // five skills: a plan set before play, save, say bye, plug in, a day's a jug, the
+    // tablet sleeps by the door, "Nope! The plan says bedtime. Goodnight!"
+    { type: "video", videoPlaceholder: "Week 13: Balanced and Rested", videoSrc: "/videos/module-13-outro.mp4" },
 
     // 27 - Mission Debrief
     {
@@ -1244,7 +1249,7 @@ export const WEEK_13: WeekContent = {
   // if a screen is inserted or removed, shift these too (the trailing labels help).
   // The 5 "recap" checkpoints (after each Prove beat) are indices 7/11/15/19/23.
   reactions: {
-    0: { adam: { mood: "excited", message: "Mission 13 - power station ahead!" }, layla: null }, // intro video
+    0: { adam: { mood: "excited", message: "Mission 13: one more level?" }, layla: null }, // intro video
     1: { adam: { mood: "worried", message: "He's been thieving KID batteries..." }, layla: null }, // alert
     2: { adam: null, layla: { mood: "curious", message: "Keeper kit ready? Here's the plan." } }, // ATLAS briefing
     3: { adam: null, layla: { mood: "curious", message: "Three powers to pack. Let's go." } }, // mission brief
