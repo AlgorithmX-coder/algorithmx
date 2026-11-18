@@ -47,8 +47,12 @@ export const WEEK_10: WeekContent = {
   ],
 
   screens: [
-    // 0 - OPENING VIDEO: down the rabbit hole
-    { type: "video", videoPlaceholder: "Week 10: Down the Rabbit Hole", videoSrc: "/videos/module-10-intro.mp4" },
+    // 0 - OPENING VIDEO: "One More Video" (episode, 2026-11-18, ~63s) - Layla's sixth "one
+    // more", the fizzy-pop video with six million views ("A video saying it doesn't make it
+    // true"), the Raccoon's Never-Ending Belt, and a scary video she didn't choose: "Feels
+    // wrong? Pause it, back out, and tell a grown-up." (source + assembler in
+    // .scratch/batch815, not in the repo).
+    { type: "video", videoPlaceholder: "Week 10: One More Video", videoSrc: "/videos/module-10-intro.mp4" },
 
     // 1 - ALERT: incident report
     {
@@ -925,8 +929,11 @@ export const WEEK_10: WeekContent = {
     // 25 - BOSS BATTLE
     { type: "bossBattle" },
 
-    // 26 - CLOSING VIDEO: unplugging the conveyor
-    { type: "video", videoPlaceholder: "Week 10: The Climb Out", videoSrc: "/videos/module-10-outro.mp4" },
+    // 26 - CLOSING VIDEO: "Rabbit Hole Escaped" (episode, 2026-11-18, ~69s) - covers all
+    // five skills: she paused, backed out and told her mom, spots the belt, gives the
+    // comment pond nothing, hears her body's bell, SHOW CANCELLED, "Nice try. We'd ask a
+    // doctor."
+    { type: "video", videoPlaceholder: "Week 10: Rabbit Hole Escaped", videoSrc: "/videos/module-10-outro.mp4" },
 
     // 27 - Mission Debrief
     {

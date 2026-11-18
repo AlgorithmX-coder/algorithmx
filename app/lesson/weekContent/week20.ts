@@ -66,7 +66,10 @@ export const WEEK_20: WeekContent = {
   ],
 
   screens: [
-    // 0 - OPENING VIDEO: the final mission
+    // 0 - OPENING VIDEO: "The Final Mission" (episode, 2026-11-18, ~54s) - back in the
+    // bedroom where it began, all twenty badges light up, the Raccoon in a graduation gown
+    // sends every trick at once, Adam: "Remember what we learned. One at a time!" (source +
+    // assembler in .scratch/batch1620, not in the repo).
     { type: "video", videoPlaceholder: "Week 20: The Final Mission", videoSrc: "/videos/module-20-intro.mp4" },
 
     // 1 - ALERT: incident report
@@ -932,8 +935,10 @@ export const WEEK_20: WeekContent = {
     // 25 - Boss: the last one. He does not escape this time.
     { type: "bossBattle" },
 
-    // 26 - CLOSING VIDEO: dawn over the city
-    { type: "video", videoPlaceholder: "Week 20: Certified Cyber Hero", videoSrc: "/videos/module-20-outro.mp4" },
+    // 26 - CLOSING VIDEO: "You Graduated" (episode, 2026-11-18, ~58s) - every trick of the
+    // season beaten in turn, Certified Cyber Hero, EXAM FAILED (BY HIM), "Beaten by kids.
+    // AGAIN!" "We didn't do it alone. We did it TOGETHER."
+    { type: "video", videoPlaceholder: "Week 20: You Graduated", videoSrc: "/videos/module-20-outro.mp4" },
 
     // 27 - Mission Debrief
     {
@@ -1194,7 +1199,7 @@ export const WEEK_20: WeekContent = {
     23: { adam: { mood: "excited", message: "Five out of five. To the stage!" }, layla: null }, // recap 5
     24: { adam: { mood: "excited", message: "Watch it, then play it back!" }, layla: null }, // review: encoreOfTwenty
     25: { adam: { mood: "worried", message: "Last one ever. Finish it." }, layla: null }, // boss
-    26: { adam: null, layla: { mood: "excited", message: "Dawn over the city. You did it!" } }, // outro video
+    26: { adam: null, layla: { mood: "excited", message: "Certified Cyber Hero. You did it!" } }, // outro video
     27: { adam: null, layla: { mood: "thumbsup", message: "Twenty weeks. Look at all of it." } }, // debrief
     28: { adam: { mood: "excited", message: "The last stickers, Cyber Hero!" }, layla: null }, // stickers
     29: { adam: { mood: "thumbsup", message: "CERTIFIED CYBER HERO!" }, layla: null }, // completion

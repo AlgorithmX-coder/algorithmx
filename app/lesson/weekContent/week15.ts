@@ -41,8 +41,11 @@ export const WEEK_15: WeekContent = {
   ],
 
   screens: [
-    // 0 - OPENING VIDEO: the know-it-all that didn't
-    { type: "video", videoPlaceholder: "Week 15: The Know-It-All That Didn't", videoSrc: "/videos/module-15-intro.mp4" },
+    // 0 - OPENING VIDEO: "Robot or Real?" (episode, 2026-11-18, ~65s) - "My homework bot is
+    // my best friend." "It's a tool, not a friend." The bot says volcanoes spray ice cream
+    // ("Sure isn't true"), the Raccoon collects names and schools, then a fake dog picture.
+    // (source + assembler in .scratch/batch815, not in the repo).
+    { type: "video", videoPlaceholder: "Week 15: Robot or Real?", videoSrc: "/videos/module-15-intro.mp4" },
 
     // 1 - ALERT: incident report
     {
@@ -959,8 +962,11 @@ export const WEEK_15: WeekContent = {
     // 24 - BOSS BATTLE (placeholder quiz boss - the bespoke W15 fight comes with the boss batch)
     { type: "bossBattle" },
 
-    // 25 - CLOSING VIDEO: robot or real
-    { type: "video", videoPlaceholder: "Week 15: Robot or Real?", videoSrc: "/videos/module-15-outro.mp4" },
+    // 25 - CLOSING VIDEO: "Robot Spotted" (episode, 2026-11-18, ~65s) - covers all five
+    // skills: check a real book (lava, not ice cream), five legs on one dog means look
+    // twice and count, secrets stay out of the jar, flowers not thorns, "Nope! Sure isn't
+    // true."
+    { type: "video", videoPlaceholder: "Week 15: Robot Spotted", videoSrc: "/videos/module-15-outro.mp4" },
 
     // 26 - Mission Debrief
     {

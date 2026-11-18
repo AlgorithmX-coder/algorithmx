@@ -78,8 +78,11 @@ export const WEEK_19: WeekContent = {
   ],
 
   screens: [
-    // 0 - OPENING VIDEO: the expert in the house
-    { type: "video", videoPlaceholder: "Week 19: The Expert in the House", videoSrc: "/videos/module-19-intro.mp4" },
+    // 0 - OPENING VIDEO: "Grandpa's Prize" (episode, 2026-11-18, ~52s) - on a video call
+    // Grandpa shares a "Pay $1 to claim" cruise prize, the Raccoon knits in his granny
+    // disguise ("Grown-ups click too, dearie!"), Layla asks, never tells. (source +
+    // assembler in .scratch/batch1620, not in the repo).
+    { type: "video", videoPlaceholder: "Week 19: Grandpa's Prize", videoSrc: "/videos/module-19-intro.mp4" },
 
     // 1 - ALERT: incident report
     {
@@ -1156,7 +1159,10 @@ export const WEEK_19: WeekContent = {
     // 25 - Boss
     { type: "bossBattle" },
 
-    // 26 - CLOSING VIDEO: the whole house covered
+    // 26 - CLOSING VIDEO: "Family Firewall" (episode, 2026-11-18, ~65s) - covers all five
+    // skills: point at the clues so Grandpa spots it himself, short words, a family rules
+    // card on the fridge for grown-ups too, already clicked? tell and fix it, no
+    // told-you-so, NET CUT.
     { type: "video", videoPlaceholder: "Week 19: Family Firewall", videoSrc: "/videos/module-19-outro.mp4" },
 
     // 27 - Mission Debrief

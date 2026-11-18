@@ -67,7 +67,10 @@ export const WEEK_14: WeekContent = {
   ],
 
   screens: [
-    // 0 - OPENING VIDEO: the listening house
+    // 0 - OPENING VIDEO: "Who's Listening?" (episode, 2026-11-18, ~58s) - Layla nearly
+    // tells the smart speaker her diary password, speakers, the TV and talking toys have
+    // ears, the Raccoon: "Every word, saved in a diary. Lovely." (source + assembler in
+    // .scratch/batch815, not in the repo).
     { type: "video", videoPlaceholder: "Week 14: Who's Listening?", videoSrc: "/videos/module-14-intro.mp4" },
 
     // 1 - ALERT: incident report
@@ -1087,8 +1090,10 @@ export const WEEK_14: WeekContent = {
     // 25 - BOSS: the standard quiz (5 questions, pass 4)
     { type: "bossBattle" },
 
-    // 26 - CLOSING VIDEO: the quiet house
-    { type: "video", videoPlaceholder: "Week 14: Settings Scout", videoSrc: "/videos/module-14-outro.mp4" },
+    // 26 - CLOSING VIDEO: "Mic Muted" (episode, 2026-11-18, ~63s) - covers all five skills:
+    // Layla and Dad flipped the switches together, a lens with its light on is awake,
+    // Nova's diary is empty, private stuff moves room or gets written down.
+    { type: "video", videoPlaceholder: "Week 14: Mic Muted", videoSrc: "/videos/module-14-outro.mp4" },
 
     // 27 - Mission Debrief
     {

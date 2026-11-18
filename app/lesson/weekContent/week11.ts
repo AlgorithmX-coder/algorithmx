@@ -51,8 +51,11 @@ export const WEEK_11: WeekContent = {
   ],
 
   screens: [
-    // 0 - OPENING VIDEO: something feels wrong
-    { type: "video", videoPlaceholder: "Week 11: Something Wrong?", videoSrc: "/videos/module-11-intro.mp4" },
+    // 0 - OPENING VIDEO: "The Heavy Secret" (episode, 2026-11-18, ~57s) - "Don't tell
+    // anyone, or you'll get in trouble" is a trick to keep you quiet, the Raccoon's Blame
+    // Machine runs on replies, Layla: "It's NEVER your fault. And you won't be in trouble."
+    // (source + assembler in .scratch/batch815, not in the repo).
+    { type: "video", videoPlaceholder: "Week 11: The Heavy Secret", videoSrc: "/videos/module-11-intro.mp4" },
 
     // 1 - ALERT: incident report (warm, never frightening)
     {
@@ -878,8 +881,10 @@ export const WEEK_11: WeekContent = {
     // 25 - BOSS BATTLE
     { type: "bossBattle" },
 
-    // 26 - CLOSING VIDEO: the calm captain
-    { type: "video", videoPlaceholder: "Week 11: Team Captain", videoSrc: "/videos/module-11-outro.mp4" },
+    // 26 - CLOSING VIDEO: "Brave Move" (episode, 2026-11-18, ~62s) - covers all five
+    // skills: breathe, screenshot, stop, block, tell (he told his mom), name your team now
+    // before you ever need them, "He told someone? My machine stopped!"
+    { type: "video", videoPlaceholder: "Week 11: Brave Move", videoSrc: "/videos/module-11-outro.mp4" },
 
     // 27 - Mission Debrief
     {
@@ -1121,7 +1126,7 @@ export const WEEK_11: WeekContent = {
   // if a screen is inserted/removed, shift these too (the trailing labels help).
   // The 5 "recap" checkpoints (after each Prove beat) are indices 7/11/15/19/23.
   reactions: {
-    0: { adam: { mood: "excited", message: "Mission 11 - the lighthouse!" }, layla: null }, // intro video
+    0: { adam: { mood: "excited", message: "Mission 11: the heavy secret!" }, layla: null }, // intro video
     1: { adam: { mood: "worried", message: "Tummy-drop messages. Let's help." }, layla: null }, // alert
     2: { adam: null, layla: { mood: "curious", message: "Here's the calm plan, hero." } }, // ATLAS briefing
     3: { adam: null, layla: { mood: "thumbsup", message: "Five steps, one light." } }, // mission brief
@@ -1147,7 +1152,7 @@ export const WEEK_11: WeekContent = {
     23: { adam: null, layla: { mood: "excited", message: "All five powers - last shift!" } }, // recap 5
     24: { adam: null, layla: { mood: "excited", message: "The board is lighting up!" } }, // review: rescue board
     25: { adam: { mood: "worried", message: "His blame machine - unplug it!" }, layla: null }, // boss
-    26: { adam: null, layla: { mood: "excited", message: "Watch the calm captain!" } }, // outro video
+    26: { adam: null, layla: { mood: "excited", message: "Watch his machine stop!" } }, // outro video
     27: { adam: { mood: "thumbsup", message: "Look at everything you mastered!" }, layla: null }, // debrief
     28: { adam: null, layla: { mood: "excited", message: "Stickers earned, Team Captain!" } }, // stickers
     29: { adam: { mood: "thumbsup", message: "Team Captain badge earned!" }, layla: null }, // completion

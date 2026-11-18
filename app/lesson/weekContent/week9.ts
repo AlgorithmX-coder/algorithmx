@@ -47,8 +47,11 @@ export const WEEK_9: WeekContent = {
   ],
 
   screens: [
-    // 0 - OPENING VIDEO: the copycat shop
-    { type: "video", videoPlaceholder: "Week 9: The Copycat Shop", videoSrc: "/videos/module-09-intro.mp4" },
+    // 0 - OPENING VIDEO: "The Free Download" (episode, 2026-11-18, ~59s) - Adam gets a game
+    // "for free" from a website, not the App Store or Play Store, taps Allow, Allow, Allow,
+    // and in the Raccoon's Copycat Factory: "Free? Ha! You pay me with your info." (source
+    // + assembler in .scratch/batch815, not in the repo).
+    { type: "video", videoPlaceholder: "Week 9: The Free Download", videoSrc: "/videos/module-09-intro.mp4" },
 
     // 1 - ALERT: incident report (Sarah reads the caption word for word, then reacts)
     {
@@ -1098,8 +1101,11 @@ export const WEEK_9: WeekContent = {
     // 25 - BOSS: the standard quiz (5 questions, pass 4)
     { type: "bossBattle" },
 
-    // 26 - CLOSING VIDEO: the copycat shop shuts down
-    { type: "video", videoPlaceholder: "Week 9: The Copycat Caught", videoSrc: "/videos/module-09-outro.mp4" },
+    // 26 - CLOSING VIDEO: "Fakes Spotted" (episode, 2026-11-18, ~62s) - covers all five
+    // skills: Dad helped delete it, official App Store or Play Store only, check the
+    // whiskers (name, maker, downloads), job keys yes, greedy keys no, "Denied? But my fake
+    // looked so real!"
+    { type: "video", videoPlaceholder: "Week 9: Fakes Spotted", videoSrc: "/videos/module-09-outro.mp4" },
 
     // 27 - Mission Debrief (ids kept from the legacy week so saved progress still lines up)
     {

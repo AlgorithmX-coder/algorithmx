@@ -52,8 +52,11 @@ export const WEEK_16: WeekContent = {
   ],
 
   screens: [
-    // 0 - OPENING VIDEO: the doorway maze
-    { type: "video", videoPlaceholder: "Week 16: Don't Take the Bait", videoSrc: "/videos/module-16-intro.mp4" },
+    // 0 - OPENING VIDEO: "The Sticker Swap" (episode, 2026-11-18, ~61s) - Layla scans a
+    // code on a Street Fun Day poster for "free pets", the Raccoon's paint shop sticks fake
+    // signs over real ones, Adam: "A link is a door. Read where it goes first." (source +
+    // assembler in .scratch/batch1620, not in the repo).
+    { type: "video", videoPlaceholder: "Week 16: The Sticker Swap", videoSrc: "/videos/module-16-intro.mp4" },
 
     // 1 - ALERT: incident report
     {
@@ -1079,8 +1082,11 @@ export const WEEK_16: WeekContent = {
     // 25 - BOSS: the standard quiz (5 questions, pass 4)
     { type: "bossBattle" },
 
-    // 26 - CLOSING VIDEO: the checked maze
-    { type: "video", videoPlaceholder: "Week 16: Door Checker", videoSrc: "/videos/module-16-outro.mp4" },
+    // 26 - CLOSING VIDEO: "Bait Dodged" (episode, 2026-11-18, ~64s) - covers all five
+    // skills: Mom and Layla found the sticker, the sign is paint and the address is the
+    // fact, passwords only at the real door, short links are frosted glass, SHOP SHUT, the
+    // countdown "Psst!" gets a grown-up.
+    { type: "video", videoPlaceholder: "Week 16: Bait Dodged", videoSrc: "/videos/module-16-outro.mp4" },
 
     // 27 - Mission Debrief
     {
@@ -1311,7 +1317,7 @@ export const WEEK_16: WeekContent = {
   // if a screen is inserted or removed, shift these too (the trailing labels help).
   // The 5 "recap" checkpoints (after each Prove beat) are indices 7/11/15/19/23.
   reactions: {
-    0: { adam: { mood: "excited", message: "Mission 16 - into the doorway maze!" }, layla: null }, // intro video
+    0: { adam: { mood: "excited", message: "Mission 16: read the door first!" }, layla: null }, // intro video
     1: { adam: { mood: "worried", message: "His Doorway Trick is everywhere..." }, layla: null }, // alert
     2: { adam: null, layla: { mood: "curious", message: "Checker kit ready? Here's the plan." } }, // ATLAS briefing
     3: { adam: null, layla: { mood: "curious", message: "Three powers to pack. Let's go." } }, // mission brief
@@ -1337,7 +1343,7 @@ export const WEEK_16: WeekContent = {
     23: { adam: null, layla: { mood: "excited", message: "All five powers - poster time!" } }, // recap 5
     24: { adam: null, layla: { mood: "excited", message: "Every power up on the poster!" } }, // review: power poster
     25: { adam: { mood: "worried", message: "His Doorway Trick - shut it down!" }, layla: null }, // boss
-    26: { adam: null, layla: { mood: "excited", message: "Look at that maze, all checked!" } }, // outro video
+    26: { adam: null, layla: { mood: "excited", message: "Watch his sticker shop shut!" } }, // outro video
     27: { adam: { mood: "thumbsup", message: "Look at everything you mastered!" }, layla: null }, // debrief
     28: { adam: null, layla: { mood: "excited", message: "Stickers earned, Cyber Hero!" } }, // stickers
     29: { adam: { mood: "thumbsup", message: "Door Checker badge earned!" }, layla: null }, // completion
