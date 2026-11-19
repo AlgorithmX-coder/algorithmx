@@ -365,8 +365,8 @@ export const WEEK_11: WeekContent = {
         {
           id: "ping-1",
           from: "grumble_gull",
-          text: "You're rubbish at this game. Answer me!",
-          readAloud: "A ping from grumble gull. You're rubbish at this game. Answer me!",
+          text: "You're terrible at this game. Answer me!",
+          readAloud: "A ping from grumble gull. You're terrible at this game. Answer me!",
           why: "You gave it nothing, so there was nothing to burn. Notice how it ends with a demand: answer me. That is the whole trick.",
         },
         {

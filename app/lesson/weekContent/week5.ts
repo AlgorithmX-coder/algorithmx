@@ -873,7 +873,7 @@ export const WEEK_5: WeekContent = {
           id: "me-mean",
           label: "A mean message lands on YOU",
           icon: "💬",
-          readAloud: "First moment: a mean message lands on you. It says you're rubbish at the game.",
+          readAloud: "First moment: a mean message lands on you. It says you're terrible at the game.",
           correctMoveId: "keep-tell",
           why: "Mean words aimed at you: don't reply, keep the message, tell someone you trust. That is the calm path.",
           whyWrong: "This one is aimed at you. Think about the three stones: don't reply, keep it, tell.",

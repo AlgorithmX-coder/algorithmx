@@ -5909,14 +5909,14 @@
       "file": "/audio/voice/32d166cb1710fa42.mp3"
     },
     {
-      "key": "d1800e016e5f5c12",
+      "key": "1aae1bc38b3e563c",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "A ping from grumble gull. You're rubbish at this game. Answer me!",
+      "text": "A ping from grumble gull. You're terrible at this game. Answer me!",
       "lines": [
-        "A ping from grumble gull. You're rubbish at this game. Answer me!"
+        "A ping from grumble gull. You're terrible at this game. Answer me!"
       ],
-      "file": "/audio/voice/d1800e016e5f5c12.mp3"
+      "file": "/audio/voice/1aae1bc38b3e563c.mp3"
     },
     {
       "key": "d7b942e6fcc0006d",
@@ -16460,19 +16460,19 @@
       "file": "/audio/voice/4518d809e3196789.mp3"
     },
     {
-      "key": "a0e6f3cdd3288e71",
+      "key": "a622611197da3fb1",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "[thinking] Have you ever scrolled for a bit and come away feeling a bit rubbish? I have. Everybody looks like they are having the best day of their life, all at once. [warmly] Here is what is really going on. People post their shiniest minute. The cake that worked. The goal that went in. Not the forty photos before the good one. So you end up putting your whole ordinary day next to everybody else's best bit. That is not a fair race. [excited] Come backstage with me. Let's see what is really behind these posts!",
+      "text": "[thinking] Have you ever scrolled for a bit and come away feeling a bit down? I have. Everybody looks like they are having the best day of their life, all at once. [warmly] Here is what is really going on. People post their shiniest minute. The cake that worked. The goal that went in. Not the forty photos before the good one. So you end up putting your whole ordinary day next to everybody else's best bit. That is not a fair race. [excited] Come backstage with me. Let's see what is really behind these posts!",
       "lines": [
-        "[thinking] Have you ever scrolled for a bit and come away feeling a bit rubbish? I have.",
+        "[thinking] Have you ever scrolled for a bit and come away feeling a bit down? I have.",
         "Everybody looks like they are having the best day of their life, all at once.",
         "[warmly] Here is what is really going on. People post their shiniest minute.",
         "The cake that worked. The goal that went in. Not the forty photos before the good one.",
         "So you end up putting your whole ordinary day next to everybody else's best bit. That is not a fair race.",
         "[excited] Come backstage with me. Let's see what is really behind these posts!"
       ],
-      "file": "/audio/voice/a0e6f3cdd3288e71.mp3"
+      "file": "/audio/voice/a622611197da3fb1.mp3"
     },
     {
       "key": "94614d3263b3c5cd",
@@ -31985,14 +31985,14 @@
       "file": "/audio/voice/09e3734877041073.mp3"
     },
     {
-      "key": "b59e386cd4995b34",
+      "key": "846ed1a7f6748412",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "First moment: a mean message lands on you. It says you're rubbish at the game.",
+      "text": "First moment: a mean message lands on you. It says you're terrible at the game.",
       "lines": [
-        "First moment: a mean message lands on you. It says you're rubbish at the game."
+        "First moment: a mean message lands on you. It says you're terrible at the game."
       ],
-      "file": "/audio/voice/b59e386cd4995b34.mp3"
+      "file": "/audio/voice/846ed1a7f6748412.mp3"
     },
     {
       "key": "192f38401c08480e",
@@ -32198,18 +32198,18 @@
       "file": "/audio/voice/c0d7126c8e79d087.mp3"
     },
     {
-      "key": "94d2befabc96dcf5",
+      "key": "25b8d719f6e67c9f",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "[excited] On your third challenge, you count the guards in Guard Count! Spot it when a chat tries to move you away from the guards. On a real phone, the move always comes with a friendly reason. Laggy chat. A secret trick. A private server. A player asks you to chat somewhere else. Two places appear. Tap each guard slot in both places to see if that guard is there or missing. When you have checked them all, tap STAY HERE under the place you would stay in. [warmly] Count first, then choose, and no trickster can talk you out of the guarded playground. Ready? First invite!",
+      "text": "[excited] On your third challenge, you count the guards in Guard Count! Spot it when a chat tries to move you away from the guards. On a real phone, the move always comes with a friendly reason. Laggy chat. A secret trick. A private server. A player asks you to chat somewhere else. Two places appear. Tap each guard slot in both places to see if that guard is there or missing. When you have checked them all, tap STAY HERE under the place you would stay in. [warmly] Count first, then choose, and no trickster can talk you out of the guarded playground. Ready? First invitation!",
       "lines": [
         "[excited] On your third challenge, you count the guards in Guard Count!",
         "Spot it when a chat tries to move you away from the guards.",
         "On a real phone, the move always comes with a friendly reason. Laggy chat. A secret trick. A private server.",
         "A player asks you to chat somewhere else. Two places appear. Tap each guard slot in both places to see if that guard is there or missing. When you have checked them all, tap STAY HERE under the place you would stay in.",
-        "[warmly] Count first, then choose, and no trickster can talk you out of the guarded playground. Ready? First invite!"
+        "[warmly] Count first, then choose, and no trickster can talk you out of the guarded playground. Ready? First invitation!"
       ],
-      "file": "/audio/voice/94d2befabc96dcf5.mp3"
+      "file": "/audio/voice/25b8d719f6e67c9f.mp3"
     },
     {
       "key": "874afbd3f2aad42c",
@@ -32582,24 +32582,24 @@
       "file": "/audio/voice/b0a9309f66a41ae6.mp3"
     },
     {
-      "key": "61101116a2941836",
+      "key": "f0f4d663ede7454d",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "Your school says where you are every weekday. Level 4 keeps it about the game, and the message still works.",
+      "text": "Using 'level 4', the message stays about the game and still works. Your school says where you are every weekday.",
       "lines": [
-        "Your school says where you are every weekday. Level 4 keeps it about the game, and the message still works."
+        "Using 'level 4', the message stays about the game and still works. Your school says where you are every weekday."
       ],
-      "file": "/audio/voice/61101116a2941836.mp3"
+      "file": "/audio/voice/f0f4d663ede7454d.mp3"
     },
     {
-      "key": "ffb994e05c3ebfd2",
+      "key": "6142c12891a19de6",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "When you are home alone is the one thing a stranger must never know. I'm free till 6 says the same about the game and nothing about you.",
+      "text": "Using 'free', the message says the same about the game and nothing about you. When you are home alone is the one thing a stranger must never know.",
       "lines": [
-        "When you are home alone is the one thing a stranger must never know. I'm free till 6 says the same about the game and nothing about you."
+        "Using 'free', the message says the same about the game and nothing about you. When you are home alone is the one thing a stranger must never know."
       ],
-      "file": "/audio/voice/ffb994e05c3ebfd2.mp3"
+      "file": "/audio/voice/6142c12891a19de6.mp3"
     },
     {
       "key": "fd66e5c8d9e18a05",
@@ -32612,24 +32612,24 @@
       "file": "/audio/voice/fd66e5c8d9e18a05.mp3"
     },
     {
-      "key": "cb256ac2c902f01d",
+      "key": "9095d90815f49413",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "Your birthday is a real-life clue, and with your age it is two. This week keeps the happy news and drops the date.",
+      "text": "Using 'this week', you keep the happy news and drop the date. Your birthday is a real-life clue, and with your age it is two.",
       "lines": [
-        "Your birthday is a real-life clue, and with your age it is two. This week keeps the happy news and drops the date."
+        "Using 'this week', you keep the happy news and drop the date. Your birthday is a real-life clue, and with your age it is two."
       ],
-      "file": "/audio/voice/cb256ac2c902f01d.mp3"
+      "file": "/audio/voice/9095d90815f49413.mp3"
     },
     {
-      "key": "40eba2744d318a9f",
+      "key": "a05d3e8de70dff45",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "A phone number reaches you outside the game. Planning here in game chat keeps the plan and keeps the guards.",
+      "text": "Using 'here in game chat', you keep the plan and keep the guards. A phone number reaches you outside the game.",
       "lines": [
-        "A phone number reaches you outside the game. Planning here in game chat keeps the plan and keeps the guards."
+        "Using 'here in game chat', you keep the plan and keep the guards. A phone number reaches you outside the game."
       ],
-      "file": "/audio/voice/40eba2744d318a9f.mp3"
+      "file": "/audio/voice/a05d3e8de70dff45.mp3"
     },
     {
       "key": "61ed47fa8417bdc6",
@@ -33177,14 +33177,14 @@
       "file": "/audio/voice/d07f1b219d844802.mp3"
     },
     {
-      "key": "61101116a2941836",
+      "key": "f0f4d663ede7454d",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "Your school says where you are every weekday. Level 4 keeps it about the game, and the message still works.",
+      "text": "Using 'level 4', the message stays about the game and still works. Your school says where you are every weekday.",
       "lines": [
-        "Your school says where you are every weekday. Level 4 keeps it about the game, and the message still works."
+        "Using 'level 4', the message stays about the game and still works. Your school says where you are every weekday."
       ],
-      "file": "/audio/voice/61101116a2941836.mp3"
+      "file": "/audio/voice/f0f4d663ede7454d.mp3"
     },
     {
       "key": "8dc39b4672138f1f",
@@ -33217,14 +33217,14 @@
       "file": "/audio/voice/ab9900d59ced898b.mp3"
     },
     {
-      "key": "ffb994e05c3ebfd2",
+      "key": "6142c12891a19de6",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "When you are home alone is the one thing a stranger must never know. I'm free till 6 says the same about the game and nothing about you.",
+      "text": "Using 'free', the message says the same about the game and nothing about you. When you are home alone is the one thing a stranger must never know.",
       "lines": [
-        "When you are home alone is the one thing a stranger must never know. I'm free till 6 says the same about the game and nothing about you."
+        "Using 'free', the message says the same about the game and nothing about you. When you are home alone is the one thing a stranger must never know."
       ],
-      "file": "/audio/voice/ffb994e05c3ebfd2.mp3"
+      "file": "/audio/voice/6142c12891a19de6.mp3"
     },
     {
       "key": "34229469bf1375b0",
@@ -33277,14 +33277,14 @@
       "file": "/audio/voice/e1957a76508ef612.mp3"
     },
     {
-      "key": "cb256ac2c902f01d",
+      "key": "9095d90815f49413",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "Your birthday is a real-life clue, and with your age it is two. This week keeps the happy news and drops the date.",
+      "text": "Using 'this week', you keep the happy news and drop the date. Your birthday is a real-life clue, and with your age it is two.",
       "lines": [
-        "Your birthday is a real-life clue, and with your age it is two. This week keeps the happy news and drops the date."
+        "Using 'this week', you keep the happy news and drop the date. Your birthday is a real-life clue, and with your age it is two."
       ],
-      "file": "/audio/voice/cb256ac2c902f01d.mp3"
+      "file": "/audio/voice/9095d90815f49413.mp3"
     },
     {
       "key": "98bc9d9cb24c11b9",
@@ -33317,14 +33317,14 @@
       "file": "/audio/voice/ea797bb0842d28c9.mp3"
     },
     {
-      "key": "40eba2744d318a9f",
+      "key": "a05d3e8de70dff45",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "A phone number reaches you outside the game. Planning here in game chat keeps the plan and keeps the guards.",
+      "text": "Using 'here in game chat', you keep the plan and keep the guards. A phone number reaches you outside the game.",
       "lines": [
-        "A phone number reaches you outside the game. Planning here in game chat keeps the plan and keeps the guards."
+        "Using 'here in game chat', you keep the plan and keep the guards. A phone number reaches you outside the game."
       ],
-      "file": "/audio/voice/40eba2744d318a9f.mp3"
+      "file": "/audio/voice/a05d3e8de70dff45.mp3"
     },
     {
       "key": "6dabd642c726248a",
@@ -44395,15 +44395,15 @@
       "file": "/audio/voice/0211b93149c9e1ef.mp3"
     },
     {
-      "key": "b89feb637d261fc4",
+      "key": "8a527e3e70423414",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "That's right! Your school says where you are every weekday. Level 4 keeps it about the game, and the message still works.",
+      "text": "That's right! Using 'level 4', the message stays about the game and still works. Your school says where you are every weekday.",
       "lines": [
         "That's right!",
-        "Your school says where you are every weekday. Level 4 keeps it about the game, and the message still works."
+        "Using 'level 4', the message stays about the game and still works. Your school says where you are every weekday."
       ],
-      "file": "/audio/voice/b89feb637d261fc4.mp3"
+      "file": "/audio/voice/8a527e3e70423414.mp3"
     },
     {
       "key": "52020ed644efa90a",
@@ -44439,15 +44439,15 @@
       "file": "/audio/voice/4735135a8259369a.mp3"
     },
     {
-      "key": "da7223b210ea4a76",
+      "key": "912e30c444072c8d",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "That's right! When you are home alone is the one thing a stranger must never know. I'm free till 6 says the same about the game and nothing about you.",
+      "text": "That's right! Using 'free', the message says the same about the game and nothing about you. When you are home alone is the one thing a stranger must never know.",
       "lines": [
         "That's right!",
-        "When you are home alone is the one thing a stranger must never know. I'm free till 6 says the same about the game and nothing about you."
+        "Using 'free', the message says the same about the game and nothing about you. When you are home alone is the one thing a stranger must never know."
       ],
-      "file": "/audio/voice/da7223b210ea4a76.mp3"
+      "file": "/audio/voice/912e30c444072c8d.mp3"
     },
     {
       "key": "fa8e119626e18816",
@@ -44505,15 +44505,15 @@
       "file": "/audio/voice/bbbe4b803ff941fb.mp3"
     },
     {
-      "key": "a30c99e17200dde9",
+      "key": "79fbf259148594df",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "That's right! Your birthday is a real-life clue, and with your age it is two. This week keeps the happy news and drops the date.",
+      "text": "That's right! Using 'this week', you keep the happy news and drop the date. Your birthday is a real-life clue, and with your age it is two.",
       "lines": [
         "That's right!",
-        "Your birthday is a real-life clue, and with your age it is two. This week keeps the happy news and drops the date."
+        "Using 'this week', you keep the happy news and drop the date. Your birthday is a real-life clue, and with your age it is two."
       ],
-      "file": "/audio/voice/a30c99e17200dde9.mp3"
+      "file": "/audio/voice/79fbf259148594df.mp3"
     },
     {
       "key": "ef58a8f41ae3b833",
@@ -44549,15 +44549,15 @@
       "file": "/audio/voice/77c78cf1a8328999.mp3"
     },
     {
-      "key": "b0f36ce4ca8cd1f2",
+      "key": "af5370873b24fa56",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "That's right! A phone number reaches you outside the game. Planning here in game chat keeps the plan and keeps the guards.",
+      "text": "That's right! Using 'here in game chat', you keep the plan and keep the guards. A phone number reaches you outside the game.",
       "lines": [
         "That's right!",
-        "A phone number reaches you outside the game. Planning here in game chat keeps the plan and keeps the guards."
+        "Using 'here in game chat', you keep the plan and keep the guards. A phone number reaches you outside the game."
       ],
-      "file": "/audio/voice/b0f36ce4ca8cd1f2.mp3"
+      "file": "/audio/voice/af5370873b24fa56.mp3"
     },
     {
       "key": "b25b6fe3caccc48a",
