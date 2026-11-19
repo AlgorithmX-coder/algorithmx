@@ -466,7 +466,7 @@ export default function NameTagCheck({
         /* Bottom padding is the Raccoon's floor: he pops out in the corner and
            his feet were cut off by the frame (UAT W4: "make the frame slightly
            taller"). */
-        <div style={{ position: "relative", zIndex: 1, padding: "0 22px 44px" }}>
+        <div style={{ position: "relative", zIndex: 1, padding: "0 22px 64px" }}>
           {/* The whole board is inset: flush content collided with the frame's
               28px rounded corners and its corner ornaments. */}
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10, padding: "2px 0 0" }}>
@@ -640,7 +640,7 @@ export default function NameTagCheck({
                 animate={reduce ? { opacity: 1 } : { opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0 }}
                 transition={{ type: "spring", stiffness: 260, damping: 16 }}
-                style={{ position: "absolute", right: 0, bottom: 0, height: 104, objectFit: "contain", filter: "drop-shadow(0 0 14px rgba(0,0,0,0.45))", pointerEvents: "none", zIndex: 3 }}
+                style={{ position: "absolute", right: 16, bottom: 14, height: 104, objectFit: "contain", filter: "drop-shadow(0 0 14px rgba(0,0,0,0.45))", pointerEvents: "none", zIndex: 3 }}
               />
             )}
           </AnimatePresence>
