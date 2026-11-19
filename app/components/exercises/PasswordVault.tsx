@@ -443,12 +443,16 @@ export default function PasswordVault({
     locked: climax.stage !== null || !established || showIntro || narr !== "idle" || verdict.speaking,
   });
 
+  /* The celebration waits for Sarah to finish the last verdict (UAT
+   * 2026-11-18, Hall of Mirrors: "That's right!" + why played under the
+   * victory and badge chimes; one, then the other). say() raises `speaking` in
+   * the same tap that activates the last lock, so this never starts early. */
   useEffect(() => {
-    if (hotspot.allActive && !climaxStartedRef.current) {
+    if (hotspot.allActive && !verdict.speaking && !climaxStartedRef.current) {
       climaxStartedRef.current = true;
       climax.start();
     }
-  }, [hotspot.allActive, climax]);
+  }, [hotspot.allActive, verdict.speaking, climax]);
 
   /* ───────── Derived stage flags ───────── */
   const stage = climax.stage;

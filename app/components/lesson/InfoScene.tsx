@@ -100,6 +100,7 @@ export default function InfoScene({
 
   // Tap-to-power-up state: which clue rows the child has lit.
   const [lit, setLit] = useState<Set<number>>(new Set());
+  const [narrDone, setNarrDone] = useState(false);
   const [nudgeNonce, setNudgeNonce] = useState(0);
   const total = bullets?.length ?? 0;
   const allLit = total === 0 || lit.size >= total;
@@ -110,7 +111,10 @@ export default function InfoScene({
     setLit((s) => {
       const next = new Set(s);
       next.add(i);
-      if (next.size >= total) playSound("streak3");
+      // The "all lit" jingle only once Sarah has finished: over her voice it
+      // landed on a word as an arcade sound (UAT 2026-11-18, W6 "Game Chat Is
+      // For Game Talk": "a strange arcade sound plays on 'Game'").
+      if (next.size >= total && (narrDone || !narration)) playSound("streak3");
       return next;
     });
   };
@@ -253,7 +257,7 @@ export default function InfoScene({
 
         {/* Narration */}
         {narration && !sweep && (
-          <InfoNarration lines={narration.lines} speaker={narration.speaker ?? "adam"} />
+          <InfoNarration lines={narration.lines} speaker={narration.speaker ?? "adam"} onDone={() => setNarrDone(true)} />
         )}
 
         {/* Content fallback (only when no narration) */}
