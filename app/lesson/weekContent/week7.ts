@@ -106,7 +106,7 @@ export const WEEK_7: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[excited] Welcome back, Cyber Hero. Today we open the game shop!",
+          "[excited] Cyber Hero, welcome back. Today we open the game shop!",
           "Gem Bucks. Robo Coins. Blast Coins. Fun names, bright colours!",
           "[whispers] But every single coin is bought with real money.",
           "Money someone in your family worked for.",
@@ -187,7 +187,7 @@ export const WEEK_7: WeekContent = {
       completeNarration: {
         speaker: "adam",
         lines: [
-          "[proud] Every pack counted, Cyber Hero! You saw the real coins behind every gem.",
+          "[proud] Cyber Hero, every pack counted! You saw the real coins behind every gem.",
           "[warmly] Out in the real world, when a shop shows you gems, count them back into coins in your head.",
           "The price is always real money.",
         ],
@@ -227,7 +227,7 @@ export const WEEK_7: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[proud] What a counter, Cyber Hero. Every pack rang up at its real price.",
+          "[proud] Cyber Hero, what a counter. Every pack rang up at its real price.",
           "Fun names, bright colours, real coins underneath.",
           "[whispers] But the shop has a box it will not let you count. It is a mystery on purpose.",
           "Next, we'll learn what is really hiding inside a loot box. Come and see!",
@@ -261,7 +261,7 @@ export const WEEK_7: WeekContent = {
           "[whispers] You pay real money to pull one out, and you do not know which.",
           "That 'SO close!' feeling? Designed on purpose.",
           "[warmly] And box number ten has the same tiny chance as box number one. Boxes have no memory.",
-          "[excited] Come and open the jar with me, and count what it costs!",
+          "[excited] Come and open the jar with me and count what it costs!",
         ],
       },
     },
@@ -290,7 +290,7 @@ export const WEEK_7: WeekContent = {
           id: "dragon",
           prize: "Dragon Pet",
           oddsLine: "1 gold marble in 100",
-          readAloud: "The Dragon Pet box. One gold marble in a hundred. Tap OPEN ten times, and count what you spend.",
+          readAloud: "The Dragon Pet box. One gold marble in a hundred. Tap OPEN ten times and count what you spend.",
           opens: 10,
           cardPrompt: "So what is true?",
           cards: [
@@ -336,7 +336,7 @@ export const WEEK_7: WeekContent = {
       completeNarration: {
         speaker: "layla",
         lines: [
-          "[proud] The odds never moved, Cyber Hero! Sixteen opens, and the gold marble stayed home.",
+          "[proud] Cyber Hero, the odds never moved! Sixteen opens, and the gold marble stayed home.",
           "[warmly] Out in the real world, a loot box is a jar you cannot see. Remember the one gold marble, and the next one is never due.",
         ],
       },
@@ -374,7 +374,7 @@ export const WEEK_7: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[proud] Two powers, Cyber Hero. You saw through the shine to the jar.",
+          "[proud] Cyber Hero, two powers. You saw through the shine to the jar.",
           "One gold marble. Ninety-nine grey. No memory.",
           "[whispers] But the shop does not only hide things. Sometimes it shouts. Countdowns. Only four left!",
           "Next, we'll learn the shop tricks that make your heart race. Come and see!",
@@ -548,7 +548,7 @@ export const WEEK_7: WeekContent = {
           "This game is all about freezing the rush and reading what a deal really costs.",
           "Out in the real world, the sign flashes and the clock ticks so you buy before you read.",
           "Here is what you do. A deal appears with its shiny tag. Pull the brass lever down and HOLD it. The receipt prints the real total, line by line, and any countdown freezes. Then tap BUY or WALK AWAY.",
-          "[warmly] Hold the lever until the stamp lands, every time. Ready? First deal!",
+          "[warmly] Hold the lever until the stamp lands every time. Ready? First deal!",
         ],
       },
       coachLines: {
@@ -558,7 +558,7 @@ export const WEEK_7: WeekContent = {
       completeNarration: {
         speaker: "adam",
         lines: [
-          "[proud] Every true price printed, Cyber Hero! The clock never rushed you once.",
+          "[proud] Cyber Hero, every true price printed! The clock never rushed you once.",
           "[warmly] Out in the real world, when a shop counts down at you, that is your signal. Slow down, and read the real price.",
         ],
       },
@@ -596,7 +596,7 @@ export const WEEK_7: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[proud] Three powers, Cyber Hero. Every clock froze, every receipt printed.",
+          "[proud] Cyber Hero, three powers. Every clock froze, every receipt printed.",
           "Countdowns, gone forever, only four left. All paint.",
           "[whispers] Even a fair deal has one more step before you tap BUY. Whose money is it?",
           "Next, we'll learn the golden rule that guards every wallet. Come and see!",
@@ -705,7 +705,7 @@ export const WEEK_7: WeekContent = {
       completeNarration: {
         speaker: "layla",
         lines: [
-          "[proud] Every buy moment decided, Cyber Hero! You asked first, and you knew a real yes when you saw one.",
+          "[proud] Cyber Hero, every buy moment decided! You asked first, and you knew a real yes when you saw one.",
           "[warmly] Out in the real world, the ask takes ten seconds and keeps the shop fun for everyone. Their money, their call, every time.",
         ],
       },
@@ -743,7 +743,7 @@ export const WEEK_7: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[proud] Four powers, Cyber Hero. The golden rule is locked in.",
+          "[proud] Cyber Hero, four powers. The golden rule is locked in.",
           "Ask first. Every buy. Even the tiny ones.",
           "[whispers] One trap is left, and it does not even ask for money. It says the word FREE.",
           "Next, we'll learn why free game money does not exist. Come and see!",
@@ -773,9 +773,9 @@ export const WEEK_7: WeekContent = {
         speaker: "adam",
         lines: [
           "[excited] Does free game money exist? Let's find out. FREE Gem Bucks! FREE Robo Coins! Just log in here!",
-          "[warmly] Listen carefully, Cyber Hero. There is no such thing as free game money.",
+          "[warmly] Cyber Hero, listen carefully. There is no such thing as free game money.",
           "Coins cost the game company real money. Nobody gives them away.",
-          "[whispers] Every free coins pop-up wants one thing: your account, or a grown-up's card.",
+          "[whispers] Every free coins pop-up wants one thing: your account or a grown-up's card.",
           "Real rewards come from inside the game, and they ask for nothing.",
           "[excited] Come and follow the strings on some free offers!",
         ],
@@ -874,7 +874,7 @@ export const WEEK_7: WeekContent = {
       completeNarration: {
         speaker: "adam",
         lines: [
-          "[proud] Every string followed, Cyber Hero! Four tricks exposed, two real rewards kept.",
+          "[proud] Cyber Hero, every string followed! Four tricks exposed, two real rewards kept.",
           "[warmly] Out in the real world, free game money does not exist, but real rewards inside the game do. Follow the string before you tap.",
         ],
       },
@@ -898,7 +898,7 @@ export const WEEK_7: WeekContent = {
           "[proud] Well done!",
           "Don't tap CLAIM. Close the pop-up. Tell a grown-up.",
           "Hands off first, because the shiny button is the trap.",
-          "[warmly] Then close it, and let a grown-up know.",
+          "[warmly] Then close it and let a grown-up know.",
         ],
       },
     },
@@ -913,7 +913,7 @@ export const WEEK_7: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[excited] That's all FIVE wallet powers, Cyber Hero!",
+          "[excited] Cyber Hero, that's all FIVE wallet powers!",
           "Coins counted, odds seen, clocks frozen, asks made, strings followed.",
           "[whispers] The Raccoon's whole shop is glass to you now.",
           "One quick review to make it all stick, then he opens his quiz counter. Come on!",
@@ -932,7 +932,7 @@ export const WEEK_7: WeekContent = {
       introWelcome: "Ring it up!",
       introSubtitle: "Flip the cards and match each shop trick to its hero move. Fewer flips earn more stars.",
       pairs: [
-        { term: "500 gems for sale", match: "Real money in disguise", colour: "#ffd158", why: "Gems are coins with a costume on. Five hundred gems is real money, every time." },
+        { term: "500 gems for sale", match: "Real money in disguise", colour: "#ffd158", why: "Gems are coins with a costume on. Five hundred gems is real money every time." },
         { term: "'One more loot box!'", match: "Same odds, no memory", colour: "#c084fc", why: "Boxes have no memory. The next one has the same one-in-a-hundred chance as the last." },
         { term: "'Only 3 minutes left!'", match: "A fake clock, walk away", colour: "#ff5fb3", why: "A countdown on a shop is paint. Freeze it, read the price, walk away." },
         { term: "'Card already saved'", match: "Still ask first", colour: "#00e5ff", why: "Saved is not allowed. Nobody said yes to this buy, so you ask the grown-up whose money it is." },
@@ -1047,7 +1047,7 @@ export const WEEK_7: WeekContent = {
         correctIndex: 0,
         teachOnWrong: {
           title: "Coins are money in disguise!",
-          explanation: "Every coin pack, big or small, is bought with real money someone in your family worked for. The fun name and bright colours are just the costume. Count the coins out, every time.",
+          explanation: "Every coin pack, big or small, is bought with real money someone in your family worked for. The fun name and bright colours are just the costume. Count the coins out every time.",
         },
         villainRight: {
           slug: "quiz-w7-right-c1-1",

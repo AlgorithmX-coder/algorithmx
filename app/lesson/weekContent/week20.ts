@@ -84,11 +84,11 @@ export const WEEK_20: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[nervous] Cyber Hero, look at that sky, and read this last incident report with me.",
+          "[nervous] Cyber Hero, look at that sky and read this last incident report with me.",
           "Storm clouds over the city. Nineteen weeks of defeats have left the Raccoon exactly one plan: everything, all at once, in one night. Every trick he owns, thrown at you in one last heist.",
           "Here is the bit he has not understood. You have beaten every one of these before. Tonight is not a lesson, it is a graduation.",
           "[whispers] Every trick he owns. And you have already beaten all of them.",
-          "[warmly] By the end of tonight, Cyber Hero, you graduate.",
+          "[warmly] Cyber Hero, by the end of tonight you graduate.",
           "Let's see what Mission Command has for us!",
         ],
       },
@@ -128,7 +128,7 @@ export const WEEK_20: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[warmly] Well. Here we are, Cyber Hero. Graduation night.",
+          "[warmly] Well. Cyber Hero, here we are. Graduation night.",
           "And look where it starts. A password, which is exactly where you started nineteen weeks ago.",
           "[thinking] There is an envelope on the mat saying your account wants a new one.",
           "Nothing tonight is new. This is Week 1, Week 4 and Week 16 standing next to each other.",
@@ -183,7 +183,7 @@ export const WEEK_20: WeekContent = {
           prompt: "Which one is built the way you were taught in Week 1?",
           speaker: "adam",
           choices: [
-            { text: "otter-lamp-thunder", isCorrect: true, why: "Three words that have nothing to do with each other. Easy for you to remember, and horrible for a machine to guess.", explanation: "Count the words, and check they have nothing to do with each other." },
+            { text: "otter-lamp-thunder", isCorrect: true, why: "Three words that have nothing to do with each other. Easy for you to remember, and horrible for a machine to guess.", explanation: "Count the words and check they have nothing to do with each other." },
             { text: "football-football-football", isCorrect: false, explanation: "It is built from words, yes. But it is one word said three times, so there is far less to guess." },
             { text: "mydogsname2014", isCorrect: false, explanation: "That is a fact about you plus a year, and both of those are on your profile somewhere." },
           ],
@@ -255,7 +255,7 @@ export const WEEK_20: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[proud] Mission one down, Cyber Hero, and you did not stop to think once.",
+          "[proud] Cyber Hero, mission one down, and you did not stop to think once.",
           "That is what happens when something has become a habit rather than a rule.",
           "[whispers] He is already onto the next one. Something is asking to be installed...",
           "Next, we'll take on the app that asks for far more than it needs. Come and see!",
@@ -345,7 +345,7 @@ export const WEEK_20: WeekContent = {
           isNosy: false,
           zones: [
             { id: "job", label: "What it does:", note: "Takes a photo you already have and makes it brighter.", isRedFlag: false },
-            { id: "photos", label: "Your photos:", note: "It has to see a photo to fix one. That is the job, exactly.", isRedFlag: false },
+            { id: "photos", label: "Your photos:", note: "It has to see a photo to fix one. That is the job exactly.", isRedFlag: false },
             { id: "camera", label: "Your camera:", note: "And the camera so you can take a new photo inside it. Fair for something that edits pictures.", isRedFlag: false },
             { id: "rest", label: "Anything else:", note: "Nothing else at all. No contacts, no location, no microphone.", isRedFlag: false },
           ],
@@ -418,7 +418,7 @@ export const WEEK_20: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[proud] Two missions down, Cyber Hero. Two nosy caught, and one fair one let through.",
+          "[proud] Cyber Hero, two missions down. Two nosy caught, and one fair one let through.",
           "Job on one side, asks on the other. It never gets harder than that.",
           "[whispers] He has gone quiet. Which usually means something is about to be free...",
           "Next, we'll take on the last money trap he has left. Come and see!",
@@ -595,8 +595,8 @@ export const WEEK_20: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[proud] Mission three down, Cyber Hero. Fifty coins still in your pocket.",
-          "Renews, and each. Two little words that change every price there is.",
+          "[proud] Cyber Hero, mission three down. Fifty coins still in your pocket.",
+          "Renews and each. Two little words that change every price there is.",
           "[thinking] Now. He has one photo left, and he thinks it is enough...",
           "Next, we'll see how much one photo can give away. Come and see!",
         ],
@@ -663,7 +663,7 @@ export const WEEK_20: WeekContent = {
           icon: "🏫",
           readAloud: "First thing in the photo. A school badge, right there on the jumper.",
           options: [
-            { id: "b-right", label: "Which school they go to", icon: "🏫", isRight: true, why: "A badge is a building with a name on it. Anybody can look up where that building is.", explanation: "Think about what a badge is FOR. It says which school, to everybody who sees it." },
+            { id: "b-right", label: "Which school they go to", icon: "🏫", isRight: true, why: "A badge is a building with a name on it. Anybody can look up where that building is.", explanation: "Think about what a badge is FOR. It says which school to everybody who sees it." },
             { id: "b-colour", label: "Their favourite colour", icon: "🎨", isRight: false, explanation: "The colours belong to the school, not to them, and the colours are not the useful bit." },
             { id: "b-nothing", label: "Nothing at all", icon: "🚫", isRight: false, explanation: "A badge names a school. That is the one thing it definitely does." },
           ],
@@ -749,7 +749,7 @@ export const WEEK_20: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[proud] Mission four down, Cyber Hero. His map fell apart in your hands.",
+          "[proud] Cyber Hero, mission four down. His map fell apart in your hands.",
           "Alone nothing, together a map. You have known that since the snowfield.",
           "[warmly] And now the last one. It is not a trick at all, this one.",
           "Next, we'll learn the one habit the whole twenty weeks comes down to. Come and see!",
@@ -779,7 +779,7 @@ export const WEEK_20: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[warmly] Last mission, Cyber Hero. And there is no trick in this one at all.",
+          "[warmly] Cyber Hero, last mission. And there is no trick in this one at all.",
           "It is graduation night, you have a photo of everybody, and it is not posted yet.",
           "[thinking] So you are going to do the thing this whole course has really been about.",
           "You are going to ask the people in it first. Some will say yes. Some will say leave me out.",
@@ -882,7 +882,7 @@ export const WEEK_20: WeekContent = {
           "[proud] Perfect.",
           "Leave me out means crop me out. It is a small ask.",
           "Do the thing they actually said.",
-          "[warmly] And that is the last power of twenty, Cyber Hero.",
+          "[warmly] Cyber Hero, that is the last power of twenty.",
         ],
       },
     },
@@ -897,7 +897,7 @@ export const WEEK_20: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[proud] Five missions, Cyber Hero. Five out of five, on graduation night.",
+          "[proud] Cyber Hero, five missions. Five out of five, on graduation night.",
           "The vault, the asking, the lever, the photo, and the ring.",
           "[warmly] There is a stage out there and a crowd on it, and they have come to see you.",
           "Next, we'll take the stage and play all twenty back. Come and see!",
@@ -959,7 +959,7 @@ export const WEEK_20: WeekContent = {
           "The vault, the inspection, the lever, the photo,",
           "and the one that matters most of all: asking first.",
           "[laughs] Twenty weeks. He threw the lot at you and not one of them landed.",
-          "[excited] Sticker time, Cyber Hero. The last ones!",
+          "[excited] Cyber Hero, sticker time. The last ones!",
         ],
       },
     },

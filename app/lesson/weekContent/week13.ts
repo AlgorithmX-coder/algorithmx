@@ -123,7 +123,7 @@ export const WEEK_13: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[warmly] Welcome to the Power Station, Cyber Hero. This is where a hero's charge gets made.",
+          "[warmly] Cyber Hero, welcome to the Power Station. This is where a hero's charge gets made.",
           "And before we start, let's get one thing straight.",
           "[excited] Screens are BRILLIANT. Nobody here is taking them off you.",
           "But your day is a bit like a rucksack. It holds a lot... and it does not hold everything.",
@@ -198,7 +198,7 @@ export const WEEK_13: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[excited] Here is your first challenge, Cyber Hero. The See-Saw Day!",
+          "[excited] Cyber Hero, here is your first challenge. The See-Saw Day!",
           "This game is all about getting a day to sit level.",
           "Out in the real world, a day tips over when one thing quietly takes the lot.",
           "So here is what you do.",
@@ -214,7 +214,7 @@ export const WEEK_13: WeekContent = {
       completeNarration: {
         speaker: "adam",
         lines: [
-          "[proud] Look at that plank, Cyber Hero. Dead level.",
+          "[proud] Cyber Hero, look at that plank. Dead level.",
           "And look what is still aboard. Saturday cartoons. The game hour after homework.",
           "[warmly] Nobody took your screens away. You just gave them a size.",
         ],
@@ -254,7 +254,7 @@ export const WEEK_13: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[proud] One power down, Cyber Hero, and it is the friendliest one.",
+          "[proud] Cyber Hero, one power down, and it is the friendliest one.",
           "Level, not empty. Your cartoons are safe.",
           "[whispers] But there is a reason that plank creaks...",
           "Next, we'll learn why a day only holds so much. Come and see!",
@@ -283,7 +283,7 @@ export const WEEK_13: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[warmly] So why does that plank creak, Cyber Hero? Here is the honest reason.",
+          "[warmly] Cyber Hero, why does that plank creak? Here is the honest reason.",
           "Your day is a jug. And the jug does not get bigger just because you would like it to.",
           "Sleep, school, food, football, the game, the film. All of it pours from the same jug.",
           "[thinking] Which means every hour you pour into one cup... is an hour not going into another.",
@@ -334,7 +334,7 @@ export const WEEK_13: WeekContent = {
           icon: "👪",
           readAloud: "Sunday. Gran wants a video call, your friend wants you online, and you want to finish your model. There is one hour left in the jug.",
           options: [
-            { id: "choose", label: "Pick one, and say when for the others", icon: "⏱️", isRight: true, why: "One hour only pours one way. So you choose it, and the others get a real time instead of a maybe.", explanation: "" },
+            { id: "choose", label: "Pick one and say when for the others", icon: "⏱️", isRight: true, why: "One hour only pours one way. So you choose it, and the others get a real time instead of a maybe.", explanation: "" },
             { id: "all3", label: "Squeeze all three into the hour", icon: "🔀", isRight: false, why: "", explanation: "Three things in one hour gives everybody twenty rushed minutes. The jug does not get bigger for being hurried." },
             { id: "avoid", label: "Do none of them and scroll", icon: "📱", isRight: false, why: "", explanation: "That still pours the hour out, it just pours it where nobody chose. The jug empties either way." },
           ],
@@ -358,7 +358,7 @@ export const WEEK_13: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[excited] Your second challenge, Cyber Hero. The Day Jug!",
+          "[excited] Cyber Hero, your second challenge. The Day Jug!",
           "This game is all about noticing what an hour costs.",
           "Out in the real world, nobody announces the trade. It just happens while you are busy.",
           "So here is what you do.",
@@ -374,7 +374,7 @@ export const WEEK_13: WeekContent = {
       completeNarration: {
         speaker: "adam",
         lines: [
-          "[proud] Four days poured, Cyber Hero, and not one of them tipped over.",
+          "[proud] Cyber Hero, four days poured, and not one of them tipped over.",
           "You kept the game AND the football. The film AND the homework.",
           "[warmly] That is what knowing the jug gets you. Not less fun. Better aim.",
         ],
@@ -414,7 +414,7 @@ export const WEEK_13: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[proud] Two powers, Cyber Hero. You can see the trade now.",
+          "[proud] Cyber Hero, two powers. You can see the trade now.",
           "One jug, and you are the one aiming it.",
           "[whispers] Although... there is one moment when aiming is easy, and one when it is nearly impossible...",
           "Next, we'll find the easy moment. Come and see!",
@@ -443,7 +443,7 @@ export const WEEK_13: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[warmly] So when is aiming easy, Cyber Hero? It is right now. Before.",
+          "[warmly] Cyber Hero, when is aiming easy? It is right now. Before.",
           "Before you press play, you are standing outside the game.",
           "[thinking] Thirty seconds in there and it is a completely different story.",
           "Inside, every part of you wants one more. And a game never FEELS finished, because they are built that way.",
@@ -549,7 +549,7 @@ export const WEEK_13: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[excited] Third challenge, Cyber Hero. The Plan Desk!",
+          "[excited] Cyber Hero, third challenge. The Plan Desk!",
           "This game is all about setting the plan while you are still outside the game.",
           "Out in the real world, this is the thirty seconds before you press play.",
           "So here is what you do.",
@@ -565,7 +565,7 @@ export const WEEK_13: WeekContent = {
       completeNarration: {
         speaker: "adam",
         lines: [
-          "[proud] Three plans, all agreed, Cyber Hero, and every one took about ten seconds.",
+          "[proud] Cyber Hero, three plans, all agreed, and every one took about ten seconds.",
           "That is the trick nobody tells you. The deciding is easy out here.",
           "[warmly] Do it out here, and the you who is deep in a game does not have to.",
         ],
@@ -606,7 +606,7 @@ export const WEEK_13: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[proud] Three powers, Cyber Hero. Your plan is set before you even start.",
+          "[proud] Cyber Hero, three powers. Your plan is set before you even start.",
           "How long, what after, who knows. Ten seconds, out here.",
           "[whispers] Now for the bit everyone finds hard. The moment the time actually arrives...",
           "Next, we'll learn how to stop like a pro. Come and see!",
@@ -635,7 +635,7 @@ export const WEEK_13: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[warmly] So the time arrives, Cyber Hero. And here is what nobody admits.",
+          "[warmly] Cyber Hero, the time arrives. And here is what nobody admits.",
           "Stopping BADLY is what makes stopping feel horrible.",
           "Screen yanked off mid-level. Friends left staring at an empty space. Flat controller tomorrow.",
           "[thinking] Of course that hurts. Anybody would hate that.",
@@ -726,7 +726,7 @@ export const WEEK_13: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[excited] Fourth challenge, Cyber Hero. The Shutdown Panel!",
+          "[excited] Cyber Hero, fourth challenge. The Shutdown Panel!",
           "This game is all about landing instead of crashing.",
           "Out in the real world, the panel is crowded and only three buttons end things well.",
           "So here is what you do.",
@@ -742,7 +742,7 @@ export const WEEK_13: WeekContent = {
       completeNarration: {
         speaker: "adam",
         lines: [
-          "[proud] Three landings, Cyber Hero, and not one crash.",
+          "[proud] Cyber Hero, three landings, and not one crash.",
           "Nothing lost, nobody left hanging, and a full battery in the morning.",
           "[warmly] Stopping only feels bad when it is done badly. You just did it well three times.",
         ],
@@ -783,7 +783,7 @@ export const WEEK_13: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[proud] Four powers, Cyber Hero, and that landing was smooth.",
+          "[proud] Cyber Hero, four powers, and that landing was smooth.",
           "Save, say bye, plug in. Twenty seconds, no fight.",
           "[whispers] There is one hour left in the day, and it does not belong to the screen...",
           "Next, we'll learn who the last hour really belongs to. Come and see!",
@@ -812,7 +812,7 @@ export const WEEK_13: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[warmly] Last power of the week, Cyber Hero, and it is the calmest one.",
+          "[warmly] Cyber Hero, last power of the week, and it is the calmest one.",
           "The last hour before bed belongs to your body. It has been waiting all day for it.",
           "[thinking] And here is why screens make that hard.",
           "A screen shines light right into your eyes, and your brain reads bright light as daytime.",
@@ -908,7 +908,7 @@ export const WEEK_13: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[warmly] Last challenge of the week, Cyber Hero. Night Fall.",
+          "[warmly] Cyber Hero, last challenge of the week. Night Fall.",
           "This game is all about giving the night a clear run at you.",
           "Out in the real world, this is a two minute job you do once. Then it is just how your room works.",
           "So here is what you do.",
@@ -924,7 +924,7 @@ export const WEEK_13: WeekContent = {
       completeNarration: {
         speaker: "adam",
         lines: [
-          "[proud] Look at that sky, Cyber Hero. Full dark, stars and all.",
+          "[proud] Cyber Hero, look at that sky. Full dark, stars and all.",
           "Screens on charge by the door. Book, lamp and water right where they should be.",
           "[warmly] That room is not empty. It is just quiet. And quiet is what the night needed.",
         ],
@@ -990,7 +990,7 @@ export const WEEK_13: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[excited] Time for your review, Cyber Hero. The Power Station Match!",
+          "[excited] Cyber Hero, time for your review. The Power Station Match!",
           "This game is all about using every Battery Keeper power at once.",
           "Out in the real world, the Thief's tricks turn up in any order. So all five have to be ready.",
           "So here is what you do.",
@@ -1006,7 +1006,7 @@ export const WEEK_13: WeekContent = {
       completeNarration: {
         speaker: "layla",
         lines: [
-          "[proud] Every pair matched, Cyber Hero, and every one of them was a trick you can now name.",
+          "[proud] Cyber Hero, every pair matched, and every one of them was a trick you can now name.",
           "[warmly] Out in the real world, the Thief does not announce himself. He just hopes you never gave your day a size. And you have.",
         ],
       },
@@ -1039,7 +1039,7 @@ export const WEEK_13: WeekContent = {
           "The see-saw level, the jug read, the plan set,",
           "the landing smooth... and the night handed back to your body.",
           "[laughs] The Battery Thief did not get a single drop.",
-          "[excited] Sticker time, Cyber Hero!",
+          "[excited] Cyber Hero, sticker time!",
         ],
       },
     },
@@ -1086,7 +1086,7 @@ export const WEEK_13: WeekContent = {
         },
         options: [
           { text: "Get outside and move, then eat something real" },
-          { text: "Switch to a calmer, quieter show to rest" },
+          { text: "Switch to a calmer quieter show to rest" },
           { text: "Play a different game so my brain gets a change" },
         ],
         correctIndex: 0,
@@ -1200,7 +1200,7 @@ export const WEEK_13: WeekContent = {
         correctIndex: 0,
         teachOnWrong: {
           title: "'Done' never comes!",
-          explanation: "Every level ends at a shiny new level, that's how games are built, short ones too. Waiting for 'done' waits forever. A Battery Keeper decides the ending on purpose.",
+          explanation: "Every level ends at a shiny new level, that's how games are built short ones too. Waiting for 'done' waits forever. A Battery Keeper decides the ending on purpose.",
         },
         villainRight: {
           slug: "quiz-w13-right-c5-1",

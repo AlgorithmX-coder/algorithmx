@@ -125,12 +125,12 @@ export const WEEK_12: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[warmly] Welcome to the snowfield, Cyber Hero. Fresh snow, all the way to the hills.",
+          "[warmly] Cyber Hero, welcome to the snowfield. Fresh snow, all the way to the hills.",
           "Walk across it and you leave prints. You know that already.",
           "Here is the part almost nobody knows.",
           "The internet is snow too. Every search, every like, every comment presses a print.",
           "You cannot feel it happen... but the print is there.",
-          "[excited] Grab the lamp. Let's go and read some tracks, together!",
+          "[excited] Grab the lamp. Let's go and read some tracks together!",
         ],
       },
     },
@@ -177,7 +177,7 @@ export const WEEK_12: WeekContent = {
           icon: "💬",
           readAloud: "Print number three. They left a comment: see you at Saturday club!",
           options: [
-            { id: "when", label: "When they will be somewhere", icon: "⏱️", isRight: true, why: "Saturday and club, in one short comment. A when is a print a stranger can plan around.", explanation: "Five friendly words, and one of them is a day. A when is the most useful print a stranger can find." },
+            { id: "when", label: "When they will be somewhere", icon: "⏱️", isRight: true, why: "Saturday and club in one short comment. A when is a print a stranger can plan around.", explanation: "Five friendly words, and one of them is a day. A when is the most useful print a stranger can find." },
             { id: "friendly", label: "Only that they are friendly", icon: "👍", isRight: false, why: "", explanation: "They are friendly, and the comment still carries a day of the week inside it. That day is the part a stranger reads." },
             { id: "pass", label: "Their password", icon: "🔑", isRight: false, why: "", explanation: "Nobody types a password into a comment. What this one gives away is the day." },
           ],
@@ -212,7 +212,7 @@ export const WEEK_12: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[excited] Here is your first challenge, Cyber Hero. Track Back!",
+          "[excited] Cyber Hero, here is your first challenge. Track Back!",
           "This game is all about seeing what an ordinary tap leaves behind.",
           "Out in the real world, nobody tells a stranger where they go. The trail does it for them.",
           "So here is what you do.",
@@ -269,7 +269,7 @@ export const WEEK_12: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[proud] One power down, Cyber Hero. You can see the prints now, and you will never stop seeing them.",
+          "[proud] Cyber Hero, one power down. You can see the prints now, and you will never stop seeing them.",
           "Searches, likes, comments, bios. All of them press in.",
           "[whispers] Now, there is something out here that is worse than a print...",
           "Next, we'll learn why a copy cannot be gathered back in. Come and see!",
@@ -298,10 +298,10 @@ export const WEEK_12: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[warmly] So a copy, Cyber Hero. Let's talk about what one really does.",
+          "[warmly] Cyber Hero, let's talk about a copy, and what one really does.",
           "When you send something, it does not walk over to your friend and leave your side.",
           "It copies. Yours stays, theirs arrives, and the app keeps one as well.",
-          "That is three, from one tap, before anybody has passed it on.",
+          "That is three from one tap, before anybody has passed it on.",
           "[excited] Come and stand at the top of the hill with me. I want you to see this for yourself!",
         ],
       },
@@ -338,7 +338,7 @@ export const WEEK_12: WeekContent = {
           "So here is what you do.",
           "A post sits in the card with a SHARE IT button. Tap it once, just this once, and watch.",
           "Copies roll off down the hill. Tap every copy you can to gather it back in.",
-          "[warmly] Try your hardest, Cyber Hero, and watch what the hill does. Ready? Tap the button.",
+          "[warmly] Cyber Hero, try your hardest, and watch what the hill does. Ready? Tap the button.",
         ],
       },
       coachLines: {
@@ -348,7 +348,7 @@ export const WEEK_12: WeekContent = {
       completeNarration: {
         speaker: "adam",
         lines: [
-          "[warmly] You were quick, Cyber Hero, and the copies still got away. That is not your fault. That is how copies work.",
+          "[warmly] Cyber Hero, you were quick, and the copies still got away. That is not your fault. That is how copies work.",
           "There is nothing wrong with that bike post. That is the whole point of this one.",
           "Even a lovely thing cannot be gathered back up once it rolls.",
           "So the moment you are in charge of is the tap at the top of the hill.",
@@ -390,7 +390,7 @@ export const WEEK_12: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[proud] Two powers, Cyber Hero. You know what one share really costs now.",
+          "[proud] Cyber Hero, two powers. You know what one share really costs now.",
           "Copies roll, and no broom is fast enough. So you choose at the top of the hill.",
           "[whispers] And there is somebody out here who reads every trail, years later...",
           "Next, we'll meet the one person who walks this snow after you. Come and see!",
@@ -419,7 +419,7 @@ export const WEEK_12: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[warmly] So who actually reads your trail, Cyber Hero? Here is the honest answer.",
+          "[warmly] Cyber Hero, who actually reads your trail? Here is the honest answer.",
           "You do. Older you. The one who turns up for a team, or a new school, or a first job.",
           "[thinking] And nothing melts out here. So today's prints are still lying there when older you walks past.",
           "That is why a ranger carries a mirror.",
@@ -512,7 +512,7 @@ export const WEEK_12: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[excited] Your third challenge, Cyber Hero. The Future Mirror!",
+          "[excited] Cyber Hero, your third challenge. The Future Mirror!",
           "This game is all about checking a post against the person who reads it later.",
           "Out in the real world, that person is you, a few years further on.",
           "So here is what you do.",
@@ -528,7 +528,7 @@ export const WEEK_12: WeekContent = {
       completeNarration: {
         speaker: "adam",
         lines: [
-          "[proud] Beautifully done, Cyber Hero. You did not ask whether those posts were funny.",
+          "[proud] Cyber Hero, beautifully done. You did not ask whether those posts were funny.",
           "You asked whether older you would be glad. That is a different question, with a much better answer.",
           "[warmly] The mirror takes one second. Prints last a great deal longer.",
         ],
@@ -568,7 +568,7 @@ export const WEEK_12: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[proud] Three powers, Cyber Hero, and older you says thank you.",
+          "[proud] Cyber Hero, three powers, and older you says thank you.",
           "Glad, not scared. One second in the mirror, every time.",
           "[whispers] Which brings us to the best part of the whole week...",
           "Next, we'll learn how to leave prints you actually want found. Come and see!",
@@ -597,7 +597,7 @@ export const WEEK_12: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[warmly] Now for the happy half of the week, Cyber Hero.",
+          "[warmly] Cyber Hero, now for the happy half of the week.",
           "Prints lasting is only bad news if the print was a bad one.",
           "A ranger does not creep about trying to touch nothing. A ranger stamps.",
           "[thinking] Because the same moment can go into the snow two different ways.",
@@ -691,7 +691,7 @@ export const WEEK_12: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[excited] Your fourth challenge, Cyber Hero. Stamp It Gold!",
+          "[excited] Cyber Hero, your fourth challenge. Stamp It Gold!",
           "This game is all about choosing which version of a moment goes into the snow.",
           "Out in the real world, the same brilliant day can be posted two completely different ways.",
           "So here is what you do.",
@@ -707,7 +707,7 @@ export const WEEK_12: WeekContent = {
       completeNarration: {
         speaker: "adam",
         lines: [
-          "[proud] Every single one judged, Cyber Hero, and look at what you stamped.",
+          "[proud] Cyber Hero, every single one judged, and look at what you stamped.",
           "A win with a name in it. A thing you built. A kind afternoon with a burnt tray.",
           "[warmly] That is a trail worth having. Lasting is a gift when the print is a good one.",
         ],
@@ -748,7 +748,7 @@ export const WEEK_12: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[proud] Four powers, Cyber Hero, and that stamp suits you.",
+          "[proud] Cyber Hero, four powers, and that stamp suits you.",
           "Proud and kind, with the helper named. That is the golden version.",
           "[whispers] There is one power left, and it looks backwards instead of forwards...",
           "Next, we'll learn how to walk back along the trail you already left. Come and see!",
@@ -777,7 +777,7 @@ export const WEEK_12: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[warmly] Last power of the week, Cyber Hero, and this one looks backwards.",
+          "[warmly] Cyber Hero, last power of the week, and this one looks backwards.",
           "Every so often, a ranger walks their own trail the way a stranger would read it.",
           "Not to panic about it. Not to delete everything either.",
           "[thinking] Just to find the pointy prints. A school in a bio. A where and a when in a caption.",
@@ -817,7 +817,7 @@ export const WEEK_12: WeekContent = {
           icon: "⏱️",
           readAloud: "Here is a stretch. A caption on a photo of you and your friends: park, same time every Saturday!",
           options: [
-            { id: "pattern", label: "Take the when out, keep the photo", icon: "✋", isRight: true, why: "The park on its own is a moment. The park plus every Saturday, on repeat, is a plan somebody else can join.", explanation: "The photo is lovely and the repeat is the problem. Every Saturday turns a moment into a timetable, so take the when out." },
+            { id: "pattern", label: "Take the when out, keep the photo", icon: "✋", isRight: true, why: "The park on its own is a moment. The park plus every Saturday on repeat is a plan somebody else can join.", explanation: "The photo is lovely and the repeat is the problem. Every Saturday turns a moment into a timetable, so take the when out." },
             { id: "delete", label: "Delete the whole photo", icon: "🗑️", isRight: false, why: "", explanation: "You do not have to lose the photo to fix this. The pointy part is the repeat, not the park." },
             { id: "leave", label: "Leave it, loads of people use that park", icon: "🌍", isRight: false, why: "", explanation: "Plenty of people use that park, and only one of them posted exactly when they will be there." },
           ],
@@ -828,7 +828,7 @@ export const WEEK_12: WeekContent = {
           icon: "😂",
           readAloud: "Further back now. An old post from last year, a mean joke about Priya, with her photo on it.",
           options: [
-            { id: "both", label: "Take it down, and say sorry to Priya", icon: "👪", isRight: true, why: "Taking the post down clears your snow. Saying sorry is the part that reaches Priya, who was standing in it.", explanation: "Both halves matter. Taking it down stops it being read, and the apology reaches Priya, who never chose to be on your trail." },
+            { id: "both", label: "Take it down and say sorry to Priya", icon: "👪", isRight: true, why: "Taking the post down clears your snow. Saying sorry is the part that reaches Priya, who was standing in it.", explanation: "Both halves matter. Taking it down stops it being read, and the apology reaches Priya, who never chose to be on your trail." },
             { id: "onlydelete", label: "Just take it down quietly", icon: "🗑️", isRight: false, why: "", explanation: "Taking it down is the right first move, and it only cleans your snow. Priya still remembers it, so she gets the apology too." },
             { id: "leaveold", label: "Leave it, it was ages ago", icon: "⏱️", isRight: false, why: "", explanation: "Last year is exactly how long that joke has been sitting there being read. Snow out here does not melt." },
           ],
@@ -863,7 +863,7 @@ export const WEEK_12: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[excited] Last challenge of the week, Cyber Hero. The Trail Planner!",
+          "[excited] Cyber Hero, last challenge of the week. The Trail Planner!",
           "This game is all about reading your own trail the way a stranger would.",
           "Out in the real world, this is the ten minutes you spend with a trusted grown-up. Every now and then.",
           "So here is what you do.",
@@ -879,7 +879,7 @@ export const WEEK_12: WeekContent = {
       completeNarration: {
         speaker: "adam",
         lines: [
-          "[proud] All the way home, Cyber Hero, and look at what you did NOT do.",
+          "[proud] Cyber Hero, all the way home, and look at what you did NOT do.",
           "You did not panic, and you did not wipe the whole field clean.",
           "You tidied the pointy prints. You handed over the one on somebody else's page. And you left the golden ones shining.",
           "[warmly] Ten calm minutes. That is a trail check.",
@@ -902,7 +902,7 @@ export const WEEK_12: WeekContent = {
         lines: [
           "[proud] Straight away!",
           "A where and a when together, happening every week. That is the pointiest print there is.",
-          "[warmly] Tidy that one, and keep the dragon.",
+          "[warmly] Tidy that one and keep the dragon.",
         ],
       },
     },
@@ -1016,13 +1016,13 @@ export const WEEK_12: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[excited] Time for your review, Cyber Hero. The Snow Maze!",
+          "[excited] Cyber Hero, time for your review. The Snow Maze!",
           "This game is all about using every ranger power, one gate at a time.",
           "Out in the real world, trail choices turn up in any order. So all five have to be ready.",
           "So here is what you do.",
           "Tap a glowing square next to your hero to move.",
           "When a gate blocks the way, a friend brings a trail choice and three replies appear. Tap the ranger move to open it.",
-          "[warmly] Collect the lanterns, and find the hut. Five gates, five powers. Off you go!",
+          "[warmly] Collect the lanterns and find the hut. Five gates, five powers. Off you go!",
         ],
       },
       coachLines: {
@@ -1032,7 +1032,7 @@ export const WEEK_12: WeekContent = {
       completeNarration: {
         speaker: "layla",
         lines: [
-          "[proud] Across the whole snowfield, Cyber Hero, and every gate opened with a ranger move.",
+          "[proud] Cyber Hero, across the whole snowfield, and every gate opened with a ranger move.",
           "[warmly] Out in the real world, every trail choice gets the same care. See the print, count the copies, check the mirror, stamp the good one, and tidy the pointy ones with a grown-up.",
         ],
       },
@@ -1065,7 +1065,7 @@ export const WEEK_12: WeekContent = {
           "Prints seen, copies counted, the mirror checked,",
           "gold stamped... and your own trail walked all the way home.",
           "[laughs] His map room just became completely useless.",
-          "[excited] Sticker time, Cyber Hero!",
+          "[excited] Cyber Hero, sticker time!",
         ],
       },
     },

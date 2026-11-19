@@ -108,7 +108,7 @@ export const WEEK_9: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[excited] Welcome back, Cyber Hero! This week we run the app warehouse.",
+          "[excited] Cyber Hero, welcome back! This week we run the app warehouse.",
           "And here is rule one, a big one.",
           "New apps come from ONE real shop: the official App Store or Play Store on your device.",
           "[warmly] That shop checks every app before it goes on the shelf.",
@@ -224,12 +224,12 @@ export const WEEK_9: WeekContent = {
       },
       coachLines: {
         speaker: "adam",
-        lines: ["Here comes the first parcel, with its label on top."],
+        lines: ["Here comes the first parcel with its label on top."],
       },
       completeNarration: {
         speaker: "adam",
         lines: [
-          "[proud] Every parcel sorted, Cyber Hero! Only official store apps made the shelf.",
+          "[proud] Cyber Hero, every parcel sorted! Only official store apps made the shelf.",
           "[warmly] Out in the real world, new apps come from the official App Store or Play Store. Anything else goes straight back.",
         ],
       },
@@ -268,7 +268,7 @@ export const WEEK_9: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[proud] What a dock, Cyber Hero. Every label read, every sketchy parcel sent back.",
+          "[proud] Cyber Hero, what a dock. Every label read, every sketchy parcel sent back.",
           "Official store in, everything else out.",
           "[whispers] But here's the twist. Some fakes sneak into the real shop itself, wearing a costume.",
           "Next, we'll learn how to catch the copycats that sneak into the real shop. Come and see!",
@@ -297,10 +297,10 @@ export const WEEK_9: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[whispers] So, Cyber Hero, copycat apps wear costumes. Same icon, almost the same name.",
+          "[whispers] Cyber Hero, copycat apps wear costumes. Same icon, almost the same name.",
           "But a copycat always misses a whisker!",
           "Check the name, letter by letter. Check who made it.",
-          "And check the downloads. Five million, or twelve since yesterday?",
+          "And check the downloads. Five million or twelve since yesterday?",
           "[warmly] Real apps have a history. Copycats are brand new and a little bit wrong.",
           "[excited] Come and catch every copycat in the Whisker Check!",
         ],
@@ -351,7 +351,7 @@ export const WEEK_9: WeekContent = {
             { text: "by Brightbox Studio", isWrong: false, teach: "Brightbox Studio is spelled exactly like the real maker. That piece checks out, so leave it clean." },
             { text: "8 million downloads", isWrong: false, teach: "Eight million downloads matches the real history. That piece checks out, so leave it clean." },
           ],
-          readAloud: "Pixel Pets, on both cards this time. Check the one underneath against the one on top, piece by piece.",
+          readAloud: "Pixel Pets on both cards this time. Check the one underneath against the one on top, piece by piece.",
           rightWhy: "Every piece matches the real Pixel Pets, letter for letter. No swaps, so this one is the real app.",
         },
         {
@@ -401,7 +401,7 @@ export const WEEK_9: WeekContent = {
       completeNarration: {
         speaker: "layla",
         lines: [
-          "[proud] Every copycat caught, Cyber Hero! And every real app cleared.",
+          "[proud] Cyber Hero, every copycat caught! And every real app cleared.",
           "[warmly] Out in the real world, you check the name, the maker and the downloads.",
           "A copycat's missing whisker never slips past you.",
         ],
@@ -440,7 +440,7 @@ export const WEEK_9: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[proud] Two powers, Cyber Hero. Your copycat eyes are sharp.",
+          "[proud] Cyber Hero, two powers. Your copycat eyes are sharp.",
           "Swapped letters, missing letters, tiny downloads. No costume gets past you.",
           "[whispers] But even a real app can get greedy. Once it's on your device, it starts asking for keys.",
           "Next, we'll learn which keys an app really needs. Come and see!",
@@ -469,7 +469,7 @@ export const WEEK_9: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[warmly] Now, Cyber Hero, apps ask for permissions: little keys to your device.",
+          "[warmly] Cyber Hero, apps ask for permissions: little keys to your device.",
           "Here's the only question that matters.",
           // Lower case on purpose. ElevenLabs read the all-caps JOB as an
           // initialism, so Sarah said jay oh bee out loud (Abdullah, retest).
@@ -479,7 +479,7 @@ export const WEEK_9: WeekContent = {
           "Does it need that key for its job?",
           "A flashlight app needs the light. Of course!",
           "[nervous] But your contacts? Your microphone? Your photos? A flashlight needs none of that.",
-          "[excited] Come and flip the app boxes, and check every key they ask for!",
+          "[excited] Come and flip the app boxes and check every key they ask for!",
         ],
       },
     },
@@ -576,7 +576,7 @@ export const WEEK_9: WeekContent = {
           "[excited] On your third challenge, you work the Flip the Box belt!",
           "This game is all about checking every side of an app, especially the keys it asks for.",
           "Out in the real world, the front of an app always looks perfect. The truth is on the other sides.",
-          "Here is what you do. An app box rolls in. Tap the arrows to turn it, and read every side.",
+          "Here is what you do. An app box rolls in. Tap the arrows to turn it and read every side.",
           "The front. The maker. The reviews. And the keys it asks for.",
           "When you have seen all four, tap SAFE APP or BIN IT.",
           "[warmly] Check every key against the app's job. Ready? First box!",
@@ -584,12 +584,12 @@ export const WEEK_9: WeekContent = {
       },
       coachLines: {
         speaker: "adam",
-        lines: ["The belt is rolling, with the first box front side up."],
+        lines: ["The belt is rolling with the first box front side up."],
       },
       completeNarration: {
         speaker: "adam",
         lines: [
-          "[proud] Every box checked, Cyber Hero! Job keys kept, greedy apps binned.",
+          "[proud] Cyber Hero, every box checked! Job keys kept, greedy apps binned.",
           "[warmly] Out in the real world, you ask why does it need that. And no greedy app gets a key it doesn't need.",
         ],
       },
@@ -627,7 +627,7 @@ export const WEEK_9: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[proud] Three powers, Cyber Hero. Not one greedy key got through.",
+          "[proud] Cyber Hero, three powers. Not one greedy key got through.",
           "Light for the flashlight, saving for the drawing app, and nothing extra.",
           "[whispers] Now for the trickiest word in the whole warehouse. FREE.",
           "Next, we'll learn what FREE really costs. Come and see!",
@@ -661,7 +661,7 @@ export const WEEK_9: WeekContent = {
           "So a FREE app gets paid another way.",
           "With your time, watching ads. With coins, in a shop inside. Or with your info, collected and sold.",
           "[warmly] And some apps, like the library's, really are free.",
-          "[excited] Come and see what FREE really costs, on a Test Drive!",
+          "[excited] Come and see what FREE really costs on a Test Drive!",
         ],
       },
     },
@@ -689,7 +689,7 @@ export const WEEK_9: WeekContent = {
           id: "bubble-pop",
           appName: "Bubble Pop Party",
           appIcon: "🎉",
-          readAloud: "Bubble Pop Party, and it's FREE! Play it one minute at a time, and watch the meters.",
+          readAloud: "Bubble Pop Party, and it's FREE! Play it one minute at a time and watch the meters.",
           minutes: [
             { id: "m1", text: "Level 1: pop, pop, pop! So much fun.", icon: "🎮", cost: "none", readAloud: "Minute one: pop, pop, pop! So much fun." },
             { id: "m2", text: "A 30-second ad!", icon: "🔔", cost: "time", readAloud: "Minute two: an ad. Thirty seconds of waiting." },
@@ -704,7 +704,7 @@ export const WEEK_9: WeekContent = {
           id: "rocket-dash",
           appName: "Rocket Dash",
           appIcon: "🚀",
-          readAloud: "Rocket Dash, and it's FREE too! Play it one minute at a time, and watch the meters.",
+          readAloud: "Rocket Dash, and it's FREE too! Play it one minute at a time and watch the meters.",
           minutes: [
             { id: "m1", text: "Level 1: zoom through the stars!", icon: "🚀", cost: "none", readAloud: "Minute one: zoom through the stars!" },
             { id: "m2", text: "Level 2 is locked: 500 coins", icon: "🔒", cost: "coins", readAloud: "Minute two: level two is locked. It costs five hundred coins." },
@@ -719,7 +719,7 @@ export const WEEK_9: WeekContent = {
           id: "quiz-buddy",
           appName: "Quiz Buddy",
           appIcon: "🧠",
-          readAloud: "Quiz Buddy, FREE as well. Play it one minute at a time, and watch the meters.",
+          readAloud: "Quiz Buddy, FREE as well. Play it one minute at a time and watch the meters.",
           minutes: [
             { id: "m1", text: "Before you play: what's your full name?", icon: "🆔", cost: "info", readAloud: "Minute one: before you play, what's your full name?" },
             { id: "m2", text: "How old are you?", icon: "🆔", cost: "info", readAloud: "Minute two: how old are you?" },
@@ -734,7 +734,7 @@ export const WEEK_9: WeekContent = {
           id: "story-library",
           appName: "Story Library",
           appIcon: "🎓",
-          readAloud: "Story Library, and it says FREE. Play it one minute at a time, and watch the meters.",
+          readAloud: "Story Library, and it says FREE. Play it one minute at a time and watch the meters.",
           minutes: [
             { id: "m1", text: "A new story to read!", icon: "⭐", cost: "none", readAloud: "Minute one: a new story to read!" },
             { id: "m2", text: "No ads. The next chapter!", icon: "✅", cost: "none", readAloud: "Minute two: no ads, just the next chapter." },
@@ -756,7 +756,7 @@ export const WEEK_9: WeekContent = {
           "[excited] On your fourth challenge, you take FREE apps for a Test Drive!",
           "This game is all about finding out what FREE really costs.",
           "Out in the real world, the price hides inside the app, so you only see it by playing.",
-          "Here is what you do. Tap PLAY ONE MINUTE, and watch what happens on the screen. The meters show what each minute cost. When every minute is played, tap FLIP THE TAG, and pick the real price.",
+          "Here is what you do. Tap PLAY ONE MINUTE and watch what happens on the screen. The meters show what each minute cost. When every minute is played, tap FLIP THE TAG and pick the real price.",
           "[warmly] Watch the meters the whole time. Ready? First app!",
         ],
       },
@@ -767,7 +767,7 @@ export const WEEK_9: WeekContent = {
       completeNarration: {
         speaker: "layla",
         lines: [
-          "[proud] Every FREE tag flipped, Cyber Hero! Time, coins, info, and one that was truly free.",
+          "[proud] Cyber Hero, every FREE tag flipped! Time, coins, info, and one that was truly free.",
           "[warmly] Out in the real world, you know apps get paid somehow. A FREE tag can't hide its real price from you.",
         ],
       },
@@ -806,7 +806,7 @@ export const WEEK_9: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[proud] Four powers, Cyber Hero. No FREE tag fools you now.",
+          "[proud] Cyber Hero, four powers. No FREE tag fools you now.",
           "Ads, coin shops and nosy questions, all caught on the meters.",
           "[whispers] One power is left, and it catches anything the others might miss.",
           "Next, we'll learn the rule that catches everything else. Come and see!",
@@ -835,12 +835,12 @@ export const WEEK_9: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[warmly] Last power, Cyber Hero, and it catches everything else.",
+          "[warmly] Cyber Hero, last power, and it catches everything else.",
           "Every new app gets installed together with a grown-up.",
           "Four eyes catch what two miss. A whisker, a greedy key, a coin shop.",
           "[whispers] It isn't babyish. It's what smart teams do.",
           "And when you both check and it's fine, installing is fine.",
-          "[excited] Come and play Four Eyes, and call in your grown-up!",
+          "[excited] Come and play Four Eyes and call in your grown-up!",
         ],
       },
     },
@@ -870,7 +870,7 @@ export const WEEK_9: WeekContent = {
           appName: "Doodle Star",
           appIcon: "🎨",
           kidView: { tagline: "Draw anything!", stars: "★★★★★", perks: ["100 colours", "Magic brushes"] },
-          readAloud: "Doodle Star: draw anything, with a hundred colours and magic brushes. Before you tap GET, call your grown-up.",
+          readAloud: "Doodle Star: draw anything with a hundred colours and magic brushes. Before you tap GET, call your grown-up.",
           spots: [
             { id: "maker", label: "Made by: Unknown Dev 4412, new today", icon: "👤", fishy: true, readAloud: "Your grown-up spots the maker: Unknown Dev four four one two, and it only appeared today." },
             { id: "contacts", label: "Wants: your contacts", icon: "👪", fishy: true, readAloud: "They spot a key it wants: your contacts. A drawing app doesn't need those." },
@@ -890,8 +890,8 @@ export const WEEK_9: WeekContent = {
             { id: "keys", label: "Wants: nothing extra", icon: "🔑", fishy: false, readAloud: "They check the keys: it doesn't ask for anything extra." },
           ],
           rightMove: "install",
-          why: "You both checked, and everything was fine: your real library, and no extra keys. So you installed it together.",
-          whyWrong: "Look again at what your grown-up found: your real library, and no extra keys. Checked together and fine means install together.",
+          why: "You both checked, and everything was fine: your real library and no extra keys. So you installed it together.",
+          whyWrong: "Look again at what your grown-up found: your real library and no extra keys. Checked together and fine means install together.",
         },
         {
           id: "star-racer",
@@ -904,7 +904,7 @@ export const WEEK_9: WeekContent = {
           ],
           rightMove: "skip",
           why: "A coin shop with real-money packs was hiding inside. Your grown-up spotted it, so you skipped it together.",
-          whyWrong: "That coin shop, with its real-money packs, means this one gets skipped, together.",
+          whyWrong: "That coin shop, with its real-money packs, means this one gets skipped together.",
         },
         {
           id: "puzzle-town",
@@ -943,7 +943,7 @@ export const WEEK_9: WeekContent = {
       completeNarration: {
         speaker: "adam",
         lines: [
-          "[proud] Four eyes every time, Cyber Hero! You caught what one pair of eyes would miss, and you installed the good ones together.",
+          "[proud] Cyber Hero, four eyes every time! You caught what one pair of eyes would miss, and you installed the good ones together.",
           "[warmly] Out in the real world, every new app is a team job. Checking together keeps your device safe.",
         ],
       },
@@ -967,7 +967,7 @@ export const WEEK_9: WeekContent = {
           "[proud] Well done!",
           "Find it in the official App Store or Play Store. Check it together. Install it together.",
           "The real shop comes first, because nothing else gets checked.",
-          "[warmly] Then four eyes, every time.",
+          "[warmly] Then four eyes every time.",
         ],
       },
     },
@@ -982,7 +982,7 @@ export const WEEK_9: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[excited] That's all FIVE app powers, Cyber Hero!",
+          "[excited] Cyber Hero, that's all FIVE app powers!",
           "Real shop only, whiskers counted, keys checked, FREE tags flipped, and every install together.",
           "[whispers] The Raccoon's copycat warehouse doesn't stand a chance.",
           "One quick review to make it all stick, then he opens his quiz stall. Come on!",
@@ -1040,7 +1040,7 @@ export const WEEK_9: WeekContent = {
           ruleLabel: "THE KEYS",
           icon: "🔑",
           prompt: "A music player app asks to play sounds and to see your photos. Which key does its job need?",
-          readAloud: "A music player app asks to play sounds, and to see your photos. Which key does its job need?",
+          readAloud: "A music player app asks to play sounds and to see your photos. Which key does its job need?",
           choices: [
             { text: "Playing sounds, that's a music player's job", isCorrect: true, explanation: "Playing sounds.", why: "Playing sounds is exactly a music player's job. Your photos aren't, so that key stays locked." },
             { text: "Seeing your photos, for album covers", isCorrect: false, explanation: "Songs play without anyone looking at your photos. That's a greedy key." },
@@ -1057,7 +1057,7 @@ export const WEEK_9: WeekContent = {
           choices: [
             { text: "Free to start isn't free to play", isCorrect: true, explanation: "Free to start, not free to play.", why: "That shop inside means the game gets paid with coins, and coins cost real money. Free to start isn't free to play." },
             { text: "Your friend is right, FREE means free", isCorrect: false, explanation: "Apps always get paid somehow, and the shop inside is how this one gets paid." },
-            { text: "Game coins aren't real money", isCorrect: false, explanation: "Remember the Loot Shop? Game coins are bought with real money, every time." },
+            { text: "Game coins aren't real money", isCorrect: false, explanation: "Remember the Loot Shop? Game coins are bought with real money every time." },
           ],
           recap: "Flip the FREE tag",
         },
@@ -1284,7 +1284,7 @@ export const WEEK_9: WeekContent = {
           text: "A pop-up in Adam's game says: 'Update needed! Tap here to update now!' It isn't from the App Store or Play Store. What's the hero move?",
         },
         options: [
-          { text: "Close it, and check the real store with a grown-up" },
+          { text: "Close it and check the real store with a grown-up" },
           { text: "Tap it quickly, updates like this keep games safe" },
           { text: "Tap it, but only because it's his favourite game" },
         ],

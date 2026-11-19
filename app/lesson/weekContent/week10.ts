@@ -107,7 +107,7 @@ export const WEEK_10: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[excited] Welcome back, Cyber Hero! Week ten, the rabbit hole.",
+          "[excited] Cyber Hero, welcome back! Week ten, the rabbit hole.",
           "Ever notice how the next video just... starts?",
           "You didn't pick it. Nobody picked it.",
           "[whispers] Something under the screen picked it FOR you.",
@@ -186,8 +186,8 @@ export const WEEK_10: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[whispers] Look down, Cyber Hero. That's how deep the belt rolled you.",
-          "Now look UP. Daylight, five rungs away.",
+          "[whispers] Cyber Hero, look down. That's how deep the belt rolled you.",
+          "Now look UP. Daylight five rungs away.",
           "Every rung, three things float past. One is your grip.",
           "[excited] Tap the hero move and climb. Let's go!",
         ],
@@ -238,7 +238,7 @@ export const WEEK_10: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[excited] One power down, Cyber Hero! You can see the belt now.",
+          "[excited] Cyber Hero, one power down! You can see the belt now.",
           "But the burrow has another trick, and this one is loud.",
           "[whispers] Videos that shout things that simply aren't true...",
           "Next, we learn how to weigh a wild claim. Come and see!",
@@ -265,7 +265,7 @@ export const WEEK_10: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[curious] Here's a wild one, Cyber Hero. A video shouts that carrots give you cat eyes.",
+          "[curious] Cyber Hero, here's a wild one. A video shouts that carrots give you cat eyes.",
           "Two million views! Everyone is sharing it!",
           "[whispers] But hang on. Who actually CHECKED that?",
           "Anyone can film anything. Saying it doesn't make it so.",
@@ -366,7 +366,7 @@ export const WEEK_10: WeekContent = {
       prompt: "Is that true?",
       raccoonLine: "The moon is made of cheese, and I watched a video that PROVED it!",
       choices: [
-        { text: "TRUE", isCorrect: false, why: "A video is not proof. Ask who would really know: an astronomer, or your science book." },
+        { text: "TRUE", isCorrect: false, why: "A video is not proof. Ask who would really know: an astronomer or your science book." },
         { text: "FALSE", isCorrect: true },
       ],
       praise: "Busted! A video saying it doesn't make it true. ✓",
@@ -418,9 +418,9 @@ export const WEEK_10: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[warmly] This one matters, Cyber Hero, so I'll say it gently.",
+          "[warmly] Cyber Hero, this one matters, so I'll say it gently.",
           "Sometimes the belt rolls in a video that is NOT for kids.",
-          "If that happens, it is never, ever your fault.",
+          "If that happens, it is never ever your fault.",
           "And leaving? Leaving is STRONG, not scared.",
           "[whispers] You notice it. Then three calm taps: pause... back... tell.",
           "[excited] Let's find those three in the Back-Out Panel!",
@@ -509,7 +509,7 @@ export const WEEK_10: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[warmly] Deep breath, Cyber Hero. You've got this.",
+          "[warmly] Cyber Hero, deep breath. You've got this.",
           "The player is crowded, and only three buttons make the escape.",
           "Pause stops it. Back gets you out. Tell gets you backup.",
           "[excited] Calm and quick. Find them in order!",
@@ -725,7 +725,7 @@ export const WEEK_10: WeekContent = {
         lines: [
           "[excited] Four powers! The pond went home with nothing.",
           "[laughs] School questions, wizard names, free coins... all named, none taken.",
-          "[warmly] The last power isn't on the screen at all, Cyber Hero.",
+          "[warmly] Cyber Hero, the last power isn't on the screen at all.",
           "Next, we learn the little bell that rings inside your own body. Come and see!",
         ],
       },
@@ -812,7 +812,7 @@ export const WEEK_10: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[warmly] Three watching moments, Cyber Hero. Three little bells.",
+          "[warmly] Cyber Hero, three watching moments. Three little bells.",
           "Press the big pause and HOLD it until the belt stops.",
           "[whispers] Then the screen goes quiet, and the choosing is yours.",
           "[excited] Hear the bell, hold the pause, pick what's next!",
@@ -863,7 +863,7 @@ export const WEEK_10: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[excited] That's all FIVE rabbit-hole powers, Cyber Hero!",
+          "[excited] Cyber Hero, that's all FIVE rabbit-hole powers!",
           "Belt spotted, claims weighed, exit found,",
           "pond emptied... and your own bell heard.",
           "[whispers] Now let's put them together. Every power is a rung...",
@@ -906,7 +906,7 @@ export const WEEK_10: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[excited] Here it is, Cyber Hero. The ladder out of the burrow.",
+          "[excited] Cyber Hero, here it is. The ladder out of the burrow.",
           "Rungs are coming up one at a time.",
           "Every hero move goes into the ladder.",
           "[whispers] Every one of HIS tricks goes down the burrow. Build it!",
@@ -976,7 +976,7 @@ export const WEEK_10: WeekContent = {
           "[excited] Five stickers, straight up the ladder!",
           "Machine Spotter. Claim Weigher. Calm Escaper.",
           "Pond Watcher... and Bell Noticer.",
-          "[proud] Out of the burrow and into the daylight, Cyber Hero.",
+          "[proud] Cyber Hero, out of the burrow and into the daylight.",
         ],
       },
     },
@@ -1157,7 +1157,7 @@ export const WEEK_10: WeekContent = {
     easy: [
       { question: "When a video ends and the next one starts by itself, who picked it?", answers: ["The autoplay machine", "You did", "Your best friend", "The video maker picked it"], correctIndex: 0, explanation: "That's the belt, a machine built to keep you watching." },
       { question: "A video says the moon is made of cheese. What do you do?", answers: ["Ask who would really know", "Believe it, videos are proof", "Share it with 5 friends", "Watch it twice to be sure"], correctIndex: 0, explanation: "A video saying it doesn't make it true. Books, teachers and grown-ups can check." },
-      { question: "Who lives in the comments under a video?", answers: ["Strangers", "Your classmates", "Your family", "Other kids who love the video"], correctIndex: 0, explanation: "Week 3 rules apply. No information, and no reply you didn't want to send." },
+      { question: "Who lives in the comments under a video?", answers: ["Strangers", "Your classmates", "Your family", "Other kids who love the video"], correctIndex: 0, explanation: "Week 3 rules apply. No information and no reply you didn't want to send." },
     ],
     medium: [
       { question: "A not-for-kids video starts. What's the calm escape?", answers: ["Pause it, back out, tell a grown-up if it felt icky", "Watch it to the end", "Comment 'this is scary'", "Share it to ask friends"], correctIndex: 0, explanation: "Stop it, leave it, then get your backup. Leaving is strong, not scared." },

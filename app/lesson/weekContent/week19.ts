@@ -140,7 +140,7 @@ export const WEEK_19: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[warmly] Something has happened over these nineteen weeks, Cyber Hero, and I want to name it.",
+          "[warmly] Cyber Hero, something has happened over these nineteen weeks, and I want to name it.",
           "You know more about this than most of the grown-ups in your house. That is just true now.",
           "[thinking] But here is the tricky bit. Knowing a thing and handing it to somebody else are two different skills.",
           "When Gran asks you why a text looks wrong, being right is the easy half.",
@@ -328,7 +328,7 @@ export const WEEK_19: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[proud] One power down, Cyber Hero. You explain like somebody who wants to be understood.",
+          "[proud] Cyber Hero, one power down. You explain like somebody who wants to be understood.",
           "Short words, about the thing, and nobody feeling small.",
           "[whispers] Now. That text on Gran's phone is still sitting there...",
           "Next, we'll learn how to help a grown-up see a trick for themselves. Come and see!",
@@ -357,7 +357,7 @@ export const WEEK_19: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[thinking] Cast your mind right back to Week 4, Cyber Hero. The tells.",
+          "[thinking] Cyber Hero, cast your mind right back to Week 4. The tells.",
           "A stranger's address. A rush. A prize nobody entered. A link that does not match.",
           "[warmly] Here is the thing about grown-ups. Most of them never learned those, because nobody ever taught them.",
           "So when a trick lands on Gran's phone, we do not say it is fake.",
@@ -492,9 +492,9 @@ export const WEEK_19: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[proud] Two powers down, Cyber Hero. Three phones checked and nobody made to feel silly.",
+          "[proud] Cyber Hero, two powers down. Three phones checked and nobody made to feel silly.",
           "Point at the evidence. Let them spot it. That is how it sticks.",
-          "[thinking] Now, the house wants to write some rules about all this...",
+          "[thinking] Now the house wants to write some rules about all this...",
           "Next, we'll learn how a whole house agrees on rules everybody can live with. Come and see!",
         ],
       },
@@ -677,7 +677,7 @@ export const WEEK_19: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[proud] Three powers down, Cyber Hero. That quilt covers the whole house.",
+          "[proud] Cyber Hero, three powers down. That quilt covers the whole house.",
           "Gran's square especially. Anybody can say they got tricked, and nobody laughs.",
           "[thinking] Which is handy. Because sometimes somebody has already been tricked...",
           "Next, we'll learn what to do when something has already gone wrong. Come and see!",
@@ -708,7 +708,7 @@ export const WEEK_19: WeekContent = {
         lines: [
           "[thinking] Nineteen weeks of stopping things before they start. Now let's say the other bit out loud.",
           "Sometimes it happens anyway. Somebody taps the link. Types the password. Sends the money.",
-          "[warmly] And that is not the end of anything, Cyber Hero. It really is not.",
+          "[warmly] Cyber Hero, that is not the end of anything. It really is not.",
           "But it is absolutely not the moment for I told you so. Nobody has ever been helped by that.",
           "It is the moment to move fast. Tell somebody who can help, change the password, ring the bank.",
           "[excited] Come and build the wall of what we actually do!",
@@ -782,7 +782,7 @@ export const WEEK_19: WeekContent = {
           id: "b-say-nothing",
           text: "Say nothing and hope it was fine",
           good: false,
-          readAloud: "This brick says: say nothing, and hope it was fine.",
+          readAloud: "This brick says: say nothing and hope it was fine.",
           why: "Hoping it was fine is the one move that uses up the hour that mattered. It is also exactly what he is counting on.",
           whyWrong: "Have another look at hoping it was fine. What is actually happening to Dad's account while everybody waits?",
         },
@@ -837,7 +837,7 @@ export const WEEK_19: WeekContent = {
           "[proud] Straight in!",
           "The first hour is worth more than the whole rest of the week.",
           "Tell somebody, change it, ring the bank.",
-          "[warmly] And never, ever, I told you so.",
+          "[warmly] And never ever, I told you so.",
         ],
       },
     },
@@ -852,7 +852,7 @@ export const WEEK_19: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[proud] Four powers down, Cyber Hero. That wall goes up fast and it goes up kindly.",
+          "[proud] Cyber Hero, four powers down. That wall goes up fast and it goes up kindly.",
           "Tell somebody, change it, ring the bank, and sit with them while they check.",
           "[thinking] Although... it would be even better to catch it two seconds earlier...",
           "Next, we'll learn how to stop it in the two seconds before it happens at all. Come and see!",
@@ -884,7 +884,7 @@ export const WEEK_19: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[warmly] This is the hardest thing the whole course asks of you, Cyber Hero. I want to say that first.",
+          "[warmly] Cyber Hero, this is the hardest thing the whole course asks of you. I want to say that first.",
           "Somebody you love is about to tap the thing, and you have about two seconds.",
           "[thinking] Knowing it is a trick is not the skill any more. You have known that for weeks.",
           "Saying it out loud, to a grown-up in a hurry, is the skill. And it needs to be short.",
@@ -955,7 +955,7 @@ export const WEEK_19: WeekContent = {
               id: "s2-works",
               says: "Dad, hang on. Were you expecting a parcel?",
               works: true,
-              why: "One short question, about the parcel rather than about him. And it is the exact question that makes the whole thing fall over.",
+              why: "One short question about the parcel rather than about him. And it is the exact question that makes the whole thing fall over.",
             },
             {
               id: "s2-quiet",
@@ -1030,7 +1030,7 @@ export const WEEK_19: WeekContent = {
         speaker: "adam",
         lines: [
           "[proud] Four moments, and you had a sentence ready for every single one.",
-          "Not one of them was clever, and not one of them made anybody feel small. They were just short, and in time.",
+          "Not one of them was clever, and not one of them made anybody feel small. They were just short and in time.",
           "[warmly] And if you ever do freeze and say nothing, that is alright too. You get the next one.",
         ],
       },
@@ -1069,7 +1069,7 @@ export const WEEK_19: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[proud] Five powers down, Cyber Hero, and this was the hardest week yet.",
+          "[proud] Cyber Hero, five powers down, and this was the hardest week yet.",
           "Explaining, spotting, agreeing, fixing, and saying the thing out loud.",
           "[warmly] Now let's walk round the house one last time and put them all to work.",
           "Next, we'll take the whole house one more time, one person at a time. Come and see!",
@@ -1092,7 +1092,7 @@ export const WEEK_19: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[excited] Last walk of the house, Cyber Hero, and everybody needs something different.",
+          "[excited] Cyber Hero, last walk of the house, and everybody needs something different.",
           "Tap a person to hear what has happened to them.",
           "Then hand them the one power from this week that actually fits.",
         ],
@@ -1184,7 +1184,7 @@ export const WEEK_19: WeekContent = {
           "Explaining it kindly, pointing at tells, sewing a fair quilt,",
           "building the morning-after wall... and saying it out loud in time.",
           "[laughs] He went after your family and walked straight into the expert.",
-          "[excited] Sticker time, Cyber Hero!",
+          "[excited] Cyber Hero, sticker time!",
         ],
       },
     },

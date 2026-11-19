@@ -113,7 +113,7 @@ export const WEEK_5: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[warmly] Welcome back, Cyber Hero. This week is a big-hearted one.",
+          "[warmly] Cyber Hero, welcome back. This week is a big-hearted one.",
           "Friends joke around. When BOTH of you are laughing, that is just fun.",
           "[whispers] Bullying is different. It is mean on purpose, and it happens again and again.",
           "Here is your test: is everyone laughing, or is someone hurting?",
@@ -187,7 +187,7 @@ export const WEEK_5: WeekContent = {
           blockIcon: "💬",
           readAloud: "The same kid gets called loser, every single day.",
           options: [
-            { label: "Bullying: again and again", icon: "💬", isBalancing: true, note: "", why: "That kid hears it every day, and it is mean on purpose. Mean, again and again: that is the pattern, and it is bullying." },
+            { label: "Bullying: again and again", icon: "💬", isBalancing: true, note: "", why: "That kid hears it every day, and it is mean on purpose. Mean again and again: that is the pattern, and it is bullying." },
             { label: "A joke: both laughing", icon: "💬", isBalancing: false, note: "Is that kid laughing at being called loser? No. Only one side is, and it keeps happening every day." },
             { label: "Just a game, forget it", icon: "💬", isBalancing: false, note: "Hurting someone every single day is never a game. That is exactly what bullying looks like." },
           ],
@@ -215,7 +215,7 @@ export const WEEK_5: WeekContent = {
           "[excited] On your first challenge, we weigh chat moments on the Laughing Scales!",
           "Can you tell a joke from bullying? That is what this one asks.",
           "Away from this screen, a mean message often hides behind the word joke. The test tells you the truth.",
-          "A chat moment appears in the gold card. Read it, and ask: is everyone laughing, or is someone hurting? Then tap the card that says what it is.",
+          "A chat moment appears in the gold card. Read it and ask: is everyone laughing, or is someone hurting? Then tap the card that says what it is.",
           "[warmly] Weigh all five, and nobody will ever fool you with the word joke. Ready? Let's weigh!",
         ],
       },
@@ -373,7 +373,7 @@ export const WEEK_5: WeekContent = {
       completeNarration: {
         speaker: "adam",
         lines: [
-          "[proud] The whole ring is glowing, Cyber Hero. Every stone told the truth.",
+          "[proud] Cyber Hero, the whole ring is glowing. Every stone told the truth.",
           "[warmly] When it happens for real, a gray thought might whisper that it was your fault.",
           "And you know four true things that say it never was.",
         ],
@@ -413,7 +413,7 @@ export const WEEK_5: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[proud] That truth is your armour now, Cyber Hero.",
+          "[proud] Cyber Hero, that truth is your armour now.",
           "Not your fault. Not ever.",
           "[whispers] But what do you actually DO when mean words land and your face goes hot?",
           "Up next: the clever move for that exact moment. Come and see!",
@@ -525,8 +525,8 @@ export const WEEK_5: WeekContent = {
       completeNarration: {
         speaker: "layla",
         lines: [
-          "[proud] The fire went quiet, Cyber Hero. Three sparks, no firewood, and a friend who is not alone.",
-          "[warmly] Back in the real world, when your face goes hot, remember the stone. Stay calm, and then tell a grown-up.",
+          "[proud] Cyber Hero, the fire went quiet. Three sparks, no firewood, and a friend who is not alone.",
+          "[warmly] Back in the real world, when your face goes hot, remember the stone. Stay calm and then tell a grown-up.",
         ],
       },
     },
@@ -563,9 +563,9 @@ export const WEEK_5: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[proud] Three powers, Cyber Hero. You kept your cool in the hottest moments.",
+          "[proud] Cyber Hero, three powers. You kept your cool in the hottest moments.",
           "No wood for the fire. Not one stick.",
-          "[whispers] Now, here is something huge: you can join a pile-on without typing a single word.",
+          "[whispers] Now here is something huge: you can join a pile-on without typing a single word.",
           "Now for why passing a message on is joining in. Come and see!",
         ],
       },
@@ -594,7 +594,7 @@ export const WEEK_5: WeekContent = {
         lines: [
           "[warmly] Here's the huge thing: you don't have to WRITE a mean message to spread one.",
           "Forwarding it, laughing at it, even one little laughing emoji.",
-          "[whispers] Every one of those tells the bully: more, please.",
+          "[whispers] Every one of those tells the bully: more please.",
           "But flip it around. One kind message can turn a whole chat.",
           "That is your superpower this week.",
           "[excited] Come and see what happens when one message gets passed on!",
@@ -631,7 +631,7 @@ export const WEEK_5: WeekContent = {
           "Watch what happens when a mean message gets passed on.",
           "In real life, one forward makes copies you can never get back.",
           "A mean message sits in the card with a PASS IT ON button. Tap it once, just this once, to see what happens. Embers scatter across the field. Tap every ember you can to catch it back.",
-          "[warmly] Try your hardest, and watch what the embers do. Ready? Tap the button.",
+          "[warmly] Try your hardest and watch what the embers do. Ready? Tap the button.",
         ],
       },
       coachLines: {
@@ -641,7 +641,7 @@ export const WEEK_5: WeekContent = {
       completeNarration: {
         speaker: "adam",
         lines: [
-          "[warmly] You tried so hard, Cyber Hero, and the embers still got away. That is not your fault. That is how copies work.",
+          "[warmly] Cyber Hero, you tried so hard, and the embers still got away. That is not your fault. That is how copies work.",
           "Out in the real world, the only time you can stop a message is BEFORE you pass it on.",
           "So you don't. You check on the person instead.",
         ],
@@ -654,7 +654,7 @@ export const WEEK_5: WeekContent = {
       prompt: "Quick! Which one HELPS?",
       choices: [
         { text: "Checking the person is OK", isCorrect: true },
-        { text: "Adding one little laughing emoji", isCorrect: false, why: "Even one emoji joins in. It tells the bully: more, please." },
+        { text: "Adding one little laughing emoji", isCorrect: false, why: "Even one emoji joins in. It tells the bully: more please." },
         { text: "Forwarding it to one friend", isCorrect: false, why: "One forward is one more copy, and you can never catch it back." },
       ],
       praise: "Yes: kindness helps, everything else joins in. ✓",
@@ -679,7 +679,7 @@ export const WEEK_5: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[proud] Four powers, Cyber Hero. You know what one forward really does.",
+          "[proud] Cyber Hero, four powers. You know what one forward really does.",
           "No forwards, no laughing along. One kind message instead.",
           "[whispers] There is one more power, and it is the warmest one of all.",
           "Last of all, how heroes never carry heavy words alone. Come and see!",
@@ -752,7 +752,7 @@ export const WEEK_5: WeekContent = {
           prompt: "The second stone",
           readAloud: "The second stone. You didn't reply. Now, what happens to the message?",
           options: [
-            { digits: "Keep the message", tell: "A grown-up needs to see it", isStrong: true, explanation: "", why: "Keeping it means a grown-up can see exactly what happened, and help properly." },
+            { digits: "Keep the message", tell: "A grown-up needs to see it", isStrong: true, explanation: "", why: "Keeping it means a grown-up can see exactly what happened and help properly." },
             { digits: "Forward it to a friend", tell: "Now it spreads", isStrong: false, explanation: "Forwarding the message makes a copy, and copies fly. Keep it, don't spread it." },
             { digits: "Delete it", tell: "Gone, and no proof", isStrong: false, explanation: "If the message is gone, nobody can help with it. Keep it, so a grown-up can see." },
           ],
@@ -776,7 +776,7 @@ export const WEEK_5: WeekContent = {
         speaker: "layla",
         lines: [
           "[excited] On your last challenge, we cross the stream on the Stepping Stones!",
-          "Three hero steps, for when mean words land.",
+          "Three hero steps for when mean words land.",
           "Away from here, the steps go in order, and each one makes the next one easier.",
           "Three stones are offered for each step across the stream. Read all three, then tap the safe one. A wobbly stone teaches you why, and you try again.",
           "[warmly] Cross all three, and you never carry it alone. Ready? First stone!",
@@ -792,7 +792,7 @@ export const WEEK_5: WeekContent = {
       completeNarration: {
         speaker: "layla",
         lines: [
-          "[proud] You're across, Cyber Hero! Don't reply, keep it, tell.",
+          "[proud] Cyber Hero, you're across! Don't reply, keep it, tell.",
           "[warmly] Out there, those three stones are always there. Step on them in order, and you never carry heavy words alone.",
         ],
       },
@@ -831,7 +831,7 @@ export const WEEK_5: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[excited] That's all FIVE powers, Cyber Hero!",
+          "[excited] Cyber Hero, that's all FIVE powers!",
           "You can weigh a moment. You know it is never your fault. You starve the fire. You stop the chain...",
           "[warmly] and you never carry heavy words alone.",
           // The sign-off ran straight off the end of the sentence and was gone
@@ -924,7 +924,7 @@ export const WEEK_5: WeekContent = {
       completeNarration: {
         speaker: "adam",
         lines: [
-          "[proud] Every moment answered, Cyber Hero. Three moments, three different hero moves.",
+          "[proud] Cyber Hero, every moment answered. Three moments, three different hero moves.",
           "[warmly] In real life, you will meet all three. Now you know which move each one needs, and the Raccoon's echo has nothing to copy.",
         ],
       },
@@ -958,7 +958,7 @@ export const WEEK_5: WeekContent = {
           "You know the laugh test, you know it's never your fault,",
           "you starve the fire, you stop the chain...",
           "[warmly] and you never carry heavy words alone.",
-          "[excited] The whole chat turned kind, because of YOU. Sticker time!",
+          "[excited] The whole chat turned kind because of YOU. Sticker time!",
         ],
       },
     },
@@ -1009,7 +1009,7 @@ export const WEEK_5: WeekContent = {
           text: "Adam teases his friend Leo about a typo in the class chat, and Leo posts three laughing faces back. What's the verdict?",
         },
         options: [
-          { text: "A shared joke, both of them are laughing" },
+          { text: "A shared joke: both of them are laughing" },
           { text: "Bullying, teasing always counts as mean" },
           { text: "Bullying, because it happened in the chat" },
         ],
@@ -1036,14 +1036,14 @@ export const WEEK_5: WeekContent = {
           text: "A mean comment lands on Adam's dinosaur drawing, and he thinks: 'I shouldn't have posted it.' What's the truth?",
         },
         options: [
-          { text: "Posting was fine, the meanness is the typer's choice" },
+          { text: "Posting was fine. The meanness is the typer's choice" },
           { text: "He should wait to post until he draws better" },
           { text: "It's a little bit his fault for posting in public" },
         ],
         correctIndex: 0,
         teachOnWrong: {
           title: "Sharing isn't wrong. Meanness is.",
-          explanation: "His drawing made kind people smile, sharing it was a nice thing to do. One person chose to be mean, and that choice belongs completely to the typer, never to Adam.",
+          explanation: "His drawing made kind people smile. Sharing it was a nice thing to do. One person chose to be mean, and that choice belongs completely to the typer, never to Adam.",
         },
         villainRight: {
           slug: "quiz-w5-right-c2-1",
@@ -1063,7 +1063,7 @@ export const WEEK_5: WeekContent = {
           text: "'You're the WORST goalie ever' pops up after Layla's game, and her fingers are already typing something meaner back. What happens if she sends it?",
         },
         options: [
-          { text: "The fire grows, now there are two mean messages" },
+          { text: "The fire grows. Now there are two mean messages" },
           { text: "The bully learns a lesson and stops" },
           { text: "Nothing much, they started it first" },
         ],
@@ -1149,7 +1149,7 @@ export const WEEK_5: WeekContent = {
       { question: "A mean message lands. What do you do FIRST?", answers: ["Don't reply", "Reply in capitals", "Delete everything", "Forward it for advice"], correctIndex: 0, explanation: "No wood for the fire: don't reply, keep it, then tell." },
     ],
     medium: [
-      { question: "Why shouldn't you fire back a meaner reply?", answers: ["It feeds the fire", "Because you might lose", "It takes too long to type", "You might get in trouble too"], correctIndex: 0, explanation: "Angry replies are wood, the fire grows. Calm stops it growing." },
+      { question: "Why shouldn't you fire back a meaner reply?", answers: ["It feeds the fire", "Because you might lose", "It takes too long to type", "You might get in trouble too"], correctIndex: 0, explanation: "Angry replies are wood. The fire grows. Calm stops it growing." },
       { question: "Adding one laughing emoji to a pile-on is...", answers: ["Joining in", "Totally harmless", "Being friendly", "Staying neutral"], correctIndex: 0, explanation: "Even one emoji tells the bully 'more please', and the hurt kid sees it." },
       { question: "Why KEEP a mean message instead of deleting it?", answers: ["A grown-up can see it", "To read it again later", "To forward it to friends", "To reply when you're calmer"], correctIndex: 0, explanation: "Proof helps grown-ups stop it. Keep it, don't delete it." },
     ],

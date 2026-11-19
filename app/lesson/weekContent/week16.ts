@@ -114,7 +114,7 @@ export const WEEK_16: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[warmly] Welcome to the Doorway Maze, Cyber Hero. Doors as far as you can see.",
+          "[warmly] Cyber Hero, welcome to the Doorway Maze. Doors as far as you can see.",
           "Every link you tap and every code you scan is one of these. A door.",
           "[thinking] And here is the thing about a door. The sign on it was painted by whoever put it there.",
           "A door can say FREE PUPPIES in beautiful letters and open straight onto a broom cupboard.",
@@ -252,7 +252,7 @@ export const WEEK_16: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[excited] Here is your first challenge, Cyber Hero. The Address Plate!",
+          "[excited] Cyber Hero, here is your first challenge. The Address Plate!",
           "This game is all about reading where a door really goes.",
           "Out in the real world, the sign is the loud bit and the plate is the true bit.",
           "So here is what you do.",
@@ -308,7 +308,7 @@ export const WEEK_16: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[proud] One power down, Cyber Hero. You read plates now, not paint.",
+          "[proud] Cyber Hero, one power down. You read plates now, not paint.",
           "A sign is a promise. An address is a fact.",
           "[whispers] But plenty of doors do not even have a plate you can read...",
           "Next, we'll learn how a Door Checker knows which doors are theirs. Come and see!",
@@ -337,7 +337,7 @@ export const WEEK_16: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[warmly] Now for the Door Checker's real tool, Cyber Hero. It is simpler than you think.",
+          "[warmly] Cyber Hero, now for the Door Checker's real tool. It is simpler than you think.",
           "You carry a keyring. On it are the people and places you actually know.",
           "Your mum. Your school. The library. Your football club.",
           "[thinking] A door claims to be from somebody. You look at your ring.",
@@ -426,7 +426,7 @@ export const WEEK_16: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[excited] Your second challenge, Cyber Hero. Your Keyring!",
+          "[excited] Cyber Hero, your second challenge. Your Keyring!",
           "This game is all about whether a door belongs to somebody you actually know.",
           "Out in the real world, that one question sorts almost every door there is.",
           "So here is what you do.",
@@ -445,7 +445,7 @@ export const WEEK_16: WeekContent = {
       completeNarration: {
         speaker: "adam",
         lines: [
-          "[proud] Every door checked, Cyber Hero, and notice what you did NOT do.",
+          "[proud] Cyber Hero, every door checked, and notice what you did NOT do.",
           "You did not chain the lot. Mum's opened, and so did your school's.",
           "[warmly] The ring is not about saying no. It is about knowing whose door it is.",
         ],
@@ -485,7 +485,7 @@ export const WEEK_16: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[proud] Two powers, Cyber Hero. The ring does the hard work for you.",
+          "[proud] Cyber Hero, two powers. The ring does the hard work for you.",
           "On the ring... fine. Not on the ring, no key.",
           "[whispers] Now. What if somebody covered up a REAL code with their own...",
           "Next, we'll learn the sticker trick. Come and see!",
@@ -514,11 +514,11 @@ export const WEEK_16: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[warmly] This one happens out in the world, Cyber Hero. Not on a screen at all.",
+          "[warmly] Cyber Hero, this one happens out in the world. Not on a screen at all.",
           "A cafe prints a code on its menu. Somebody sticks their own code right on top of it.",
           "[thinking] And here is the bit that matters. You cannot spot that by staring.",
           "A good sticker lies perfectly flat. Looking harder will not help you.",
-          "So we do not look. We TEST. Press a corner, and see whether it lifts.",
+          "So we do not look. We TEST. Press a corner and see whether it lifts.",
           "[excited] Come and run some peel tests with me!",
         ],
       },
@@ -588,7 +588,7 @@ export const WEEK_16: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[excited] Your third challenge, Cyber Hero. The Peel Test!",
+          "[excited] Cyber Hero, your third challenge. The Peel Test!",
           "This game is all about testing a code instead of staring at it.",
           "Out in the real world, a good sticker looks exactly as flat as printed ink.",
           "So here is what you do.",
@@ -604,7 +604,7 @@ export const WEEK_16: WeekContent = {
       completeNarration: {
         speaker: "adam",
         lines: [
-          "[proud] Every code tested, Cyber Hero, and look how you did it.",
+          "[proud] Cyber Hero, every code tested, and look how you did it.",
           "You did not squint at a single one. You pressed a corner and found out.",
           "[warmly] Two of those were stickers, and neither of them looked like one.",
         ],
@@ -630,7 +630,7 @@ export const WEEK_16: WeekContent = {
           "[proud] Got him!",
           "If stickers looked crooked and bubbly, nobody would ever fall for one.",
           "The good ones are flat and tidy. That is why they work.",
-          "[warmly] Which is why we press, instead of peering.",
+          "[warmly] Which is why we press instead of peering.",
         ],
       },
     },
@@ -645,7 +645,7 @@ export const WEEK_16: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[proud] Three powers, Cyber Hero. Thumb beats eyeball.",
+          "[proud] Cyber Hero, three powers. Thumb beats eyeball.",
           "Flat and tidy proves nothing at all. Only the peel does.",
           "[whispers] Although... some doors cannot be read even when nobody has stuck anything on them...",
           "Next, we'll learn about clear glass and frosted glass. Come and see!",
@@ -674,7 +674,7 @@ export const WEEK_16: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[warmly] Some of these doors have clear glass, Cyber Hero. Some have frosted.",
+          "[warmly] Cyber Hero, some of these doors have clear glass. Some have frosted.",
           "A link is clear glass. It shows you its address, so you can read where it goes.",
           "[thinking] A code is frosted. It is a pattern for a machine, and no person can read it.",
           "Not you. Not me. Not your teacher. Nobody.",
@@ -735,7 +735,7 @@ export const WEEK_16: WeekContent = {
           id: "library-clear",
           sign: "Summer reading club",
           icon: "🔍",
-          readAloud: "A clear pane, on the library's reading club door.",
+          readAloud: "A clear pane on the library's reading club door.",
           pane: "library.gov.uk/reading",
           verdict: "walk",
           why: "The library is on your ring and the pane says the library. Read it, recognised it, walk through.",
@@ -745,7 +745,7 @@ export const WEEK_16: WeekContent = {
           id: "poster-frosted",
           sign: "WIN A BIKE! Scan here",
           icon: "🌀",
-          readAloud: "This door has a frosted pane, on a poster shouting about winning a bike.",
+          readAloud: "This door has a frosted pane on a poster shouting about winning a bike.",
           pane: "",
           verdict: "grown-up",
           why: "Still nothing to read, so it is still a grown-up. A loud sign on a frosted door does not make the glass any clearer.",
@@ -759,7 +759,7 @@ export const WEEK_16: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[excited] Fourth challenge, Cyber Hero. Clear Glass, Frosted Glass!",
+          "[excited] Cyber Hero, fourth challenge. Clear Glass, Frosted Glass!",
           "This game is all about knowing when you CAN read a door and when you honestly cannot.",
           "Out in the real world, a link shows its address and a code shows a pattern.",
           "So here is what you do.",
@@ -816,7 +816,7 @@ export const WEEK_16: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[proud] Four powers, Cyber Hero, and that fourth one is the grown-up one.",
+          "[proud] Cyber Hero, four powers, and that fourth one is the grown-up one.",
           "Clear glass you read. Frosted glass nobody reads, and you say so.",
           "[whispers] Which leaves one last thing. What do you actually DO when you are stuck...",
           "Next, we'll wheel out the barrier. Come and see!",
@@ -943,7 +943,7 @@ export const WEEK_16: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[excited] Last challenge of the week, Cyber Hero. The Barrier!",
+          "[excited] Cyber Hero, last challenge of the week. The Barrier!",
           "This game is all about what you do when you cannot tell.",
           "Out in the real world, that little voice saying just tap it is the whole trick.",
           "So here is what you do.",
@@ -959,7 +959,7 @@ export const WEEK_16: WeekContent = {
       completeNarration: {
         speaker: "adam",
         lines: [
-          "[proud] Every door handled, Cyber Hero, and you got the balance exactly right.",
+          "[proud] Cyber Hero, every door handled, and you got the balance exactly right.",
           "Barriers on the three you could not tell about. Gran and your club straight through.",
           "[warmly] The barrier is not for being scared of doors. It is for being honest about which ones you can read.",
         ],
@@ -996,7 +996,7 @@ export const WEEK_16: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[proud] Five powers, Cyber Hero. Every single one.",
+          "[proud] Cyber Hero, five powers. Every single one.",
           "Sign ignored, ring checked, corner pressed, pane read, barrier ready.",
           "[whispers] So there is one thing left to do with them...",
           "Next, you put all five up on the poster at once. Come and see!",
@@ -1056,7 +1056,7 @@ export const WEEK_16: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[excited] Time for your review, Cyber Hero. The Power Board!",
+          "[excited] Cyber Hero, time for your review. The Power Board!",
           "This game is all about knowing which moves a Door Checker actually uses.",
           "Out in the real world, plenty of sensible sounding rules are quietly useless.",
           "So here is what you do.",
@@ -1072,7 +1072,7 @@ export const WEEK_16: WeekContent = {
       completeNarration: {
         speaker: "layla",
         lines: [
-          "[proud] Five powers up on the wall, Cyber Hero, and look what you left in the tray.",
+          "[proud] Cyber Hero, five powers up on the wall, and look what you left in the tray.",
           "The right logo. A friend of a friend. A neat sticker. A real poster.",
           "[warmly] Every one of those sounds sensible, and every one of them trusts the outside of a door. You did not.",
         ],
@@ -1107,7 +1107,7 @@ export const WEEK_16: WeekContent = {
           "Signs ignored, the keyring checked, corners pressed,",
           "panes read honestly... and the barrier always ready.",
           "[laughs] His whole Doorway Trick just stopped working on you.",
-          "[excited] Sticker time, Cyber Hero!",
+          "[excited] Cyber Hero, sticker time!",
         ],
       },
     },
@@ -1261,7 +1261,7 @@ export const WEEK_16: WeekContent = {
           text: "A pop-up yells: 'SCAN THIS CODE IN TEN SECONDS OR LOSE YOUR PRIZE!' Adam isn't sure about it. What wins here?",
         },
         options: [
-          { text: "Don't scan, unsure means DON'T, a trusted grown-up can look with him" },
+          { text: "Don't scan, unsure means DON'T. A trusted grown-up can look with him" },
           { text: "Scan fast, ten seconds is too short to go ask anybody" },
           { text: "Scan it, but keep his fingers crossed the entire time" },
         ],

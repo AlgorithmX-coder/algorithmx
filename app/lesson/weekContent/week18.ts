@@ -131,7 +131,7 @@ export const WEEK_18: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[warmly] Quick question, Cyber Hero. How many screens did you use this week?",
+          "[warmly] Cyber Hero, quick question. How many screens did you use this week?",
           "The tablet at home. The computer at school. Somebody's phone when you wanted a photo.",
           "[thinking] Now the harder one. How many of those are only YOURS? Probably none of them.",
           "That is completely normal. It just means you are a visitor on most screens you touch.",
@@ -281,7 +281,7 @@ export const WEEK_18: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[proud] One power down, Cyber Hero. You can spot a shared screen across a room now.",
+          "[proud] Cyber Hero, one power down. You can spot a shared screen across a room now.",
           "Borrowed screen, visitor rules. Simple as that.",
           "[whispers] Although... he did say nobody ever tidies up after themselves...",
           "Next, we'll learn exactly how a good visitor leaves a screen. Come and see!",
@@ -312,7 +312,7 @@ export const WEEK_18: WeekContent = {
         lines: [
           "[warmly] Right. Here is how a good visitor leaves a screen. It is four moves, always the same order.",
           "Close everything you opened. Log out, so it stops wearing your name.",
-          "Lock the screen. And then, Cyber Hero, look back and check one more time.",
+          "Lock the screen. Cyber Hero, then look back and check one more time.",
           "[thinking] That last one is the bit almost everybody skips.",
           "A shared screen can change behind you while you are still putting your shoes on.",
           "[excited] Come and clear a tablet with me. You'll see exactly what I mean!",
@@ -410,7 +410,7 @@ export const WEEK_18: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[proud] Two powers down, Cyber Hero. You leave a screen like a proper guest now.",
+          "[proud] Cyber Hero, two powers down. You leave a screen like a proper guest now.",
           "Close it, lock it, and always that one look over your shoulder.",
           "[whispers] But hang on. What if you pick up a screen that has no lock on it at all...",
           "Next, we'll learn where the lock actually lives on any screen you meet. Come and see!",
@@ -534,7 +534,7 @@ export const WEEK_18: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[proud] Three powers down, Cyber Hero. You can fit a front door to anything now.",
+          "[proud] Cyber Hero, three powers down. You can fit a front door to anything now.",
           "Settings, then Lock. Same sort of place on every device there is.",
           "[thinking] Now. A shared screen has other people's doors on it too...",
           "Next, we'll learn what to do about all the things on a shared screen that are not yours. Come and see!",
@@ -615,7 +615,7 @@ export const WEEK_18: WeekContent = {
           label: "A chat, half open",
           detail: "Sam was talking to his football team",
           icon: "💬",
-          readAloud: "Here is a thing on the shelf. A chat, still half open, about a football team.",
+          readAloud: "Here is a thing on the shelf. A chat still half open, about a football team.",
           ownerId: "sam",
           why: "Sam would go pink if he knew somebody had read that. Lid down, and he never has to feel it.",
           explanation: "Look at the line underneath. It says who was doing the talking.",
@@ -635,7 +635,7 @@ export const WEEK_18: WeekContent = {
           label: "An email, open",
           detail: "About work, from somebody called Ravi",
           icon: "📧",
-          readAloud: "Now this one. An email, open, about work, from somebody called Ravi.",
+          readAloud: "Now this one. An open email, about work, from somebody called Ravi.",
           ownerId: "dad",
           why: "Grown-up work post is nobody's business but the grown-up's. Dad would want that lid down without even being asked.",
           explanation: "Who in this house gets work emails? That is your answer.",
@@ -710,7 +710,7 @@ export const WEEK_18: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[proud] Four powers down, Cyber Hero. You put three lids down today and nobody ever had to ask you.",
+          "[proud] Cyber Hero, four powers down. You put three lids down today and nobody ever had to ask you.",
           "Whose is this. It is such a small question and it settles everything.",
           "[thinking] Now there is one last thing a borrowed screen tries to do, and it is very sneaky indeed...",
           "Next, we'll learn the one thing you must never let a borrowed screen do. Come and see!",
@@ -739,7 +739,7 @@ export const WEEK_18: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[thinking] Last one, Cyber Hero, and it is the sneakiest of the lot.",
+          "[thinking] Cyber Hero, last one, and it is the sneakiest of the lot.",
           "You log in on a borrowed tablet and a little balloon floats up. Shall I remember this for you?",
           "[warmly] On your own device, with your own lock on it, that is a perfectly fair offer.",
           "But on a borrowed one? Saying yes means the next person who picks it up is already you.",
@@ -881,7 +881,7 @@ export const WEEK_18: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[proud] Five powers down, Cyber Hero. Every single one of them earned.",
+          "[proud] Cyber Hero, five powers down. Every single one of them earned.",
           "Shared screens spotted. A clean leave. A front door fitted. Lids put down. Balloons popped.",
           "[warmly] Now here is the best bit. All five of those happen in an order.",
           "Next, we'll put them together into the routine you do every time. Come and see!",
@@ -904,7 +904,7 @@ export const WEEK_18: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[excited] Last job of the week, Cyber Hero, and it is the one that ties the lot together.",
+          "[excited] Cyber Hero, last job of the week, and it is the one that ties the lot together.",
           "Six moves. They are all things you already know how to do.",
           "Put them on the rail in the order you would actually do them. Start from the moment you sit down.",
         ],
@@ -917,7 +917,7 @@ export const WEEK_18: WeekContent = {
         { id: "notice", text: "Notice the screen is not yours", icon: "📱", affirmation: "First move. You spotted it was a borrowed screen before you touched anything." },
         { id: "no-save", text: "Tell the balloon no thank you", icon: "🎈", affirmation: "Second. A borrowed screen, so when the balloon asked, you said no thank you." },
         { id: "lids", text: "Leave other people's things shut", icon: "👪", affirmation: "Third. You said no to the balloon, and you left everything that was not yours alone too." },
-        { id: "logout", text: "Close your cards and log out", icon: "🚪", affirmation: "Fourth. What WAS yours, you closed, and your name came off the screen." },
+        { id: "logout", text: "Close your cards and log out", icon: "🚪", affirmation: "Fourth. What WAS yours you closed, and your name came off the screen." },
         { id: "lock", text: "Lock the screen", icon: "🔒", affirmation: "Fifth. Your name is off it, and now the front door is shut behind you." },
         { id: "lookback", text: "Look back and check once more", icon: "👀", affirmation: "And sixth, the one everybody skips. Door shut, and you still turned round and looked back." },
       ],
@@ -964,7 +964,7 @@ export const WEEK_18: WeekContent = {
           "Shared screens spotted, clean leaves, front doors fitted,",
           "lids put down... and not one balloon said yes to.",
           "[laughs] He was counting on you being in a hurry. You weren't.",
-          "[excited] Sticker time, Cyber Hero!",
+          "[excited] Cyber Hero, sticker time!",
         ],
       },
     },
