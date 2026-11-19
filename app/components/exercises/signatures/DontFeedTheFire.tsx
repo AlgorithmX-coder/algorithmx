@@ -187,7 +187,7 @@ const SIGNAL_PINGS: FireSpark[] = [
   {
     id: "ping-1",
     from: "grumble_gull",
-    text: "You're rubbish at this game. Answer me!",
+    text: "You're terrible at this game. Answer me!",
   },
   {
     id: "ping-2",

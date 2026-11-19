@@ -153,7 +153,7 @@ export const WEEK_6: WeekContent = {
             { text: "level 4,", isSafe: true, whyWrong: "" },
             { text: "Maple Hill,", isSafe: false, whyWrong: "That is still the school's name, just shorter. A stranger can look it up." },
           ],
-          why: "Your school says where you are every weekday. Level 4 keeps it about the game, and the message still works.",
+          why: "Using 'level 4', the message stays about the game and still works. Your school says where you are every weekday.",
           whyWrong: "Your school is where you are. A stranger with your school can find you, so that word cannot fly.",
         },
         {
@@ -166,7 +166,7 @@ export const WEEK_6: WeekContent = {
             { text: "by myself", isSafe: false, whyWrong: "By myself means the same as home alone. Nobody online ever needs to know that." },
             { text: "at 42 Rainbow Road", isSafe: false, whyWrong: "Now you have added your address. That is an even bigger leak." },
           ],
-          why: "When you are home alone is the one thing a stranger must never know. I'm free till 6 says the same about the game and nothing about you.",
+          why: "Using 'free', the message says the same about the game and nothing about you. When you are home alone is the one thing a stranger must never know.",
           whyWrong: "Home alone tells a stranger there is no grown-up with you. That never goes in chat, not ever.",
         },
         {
@@ -186,7 +186,7 @@ export const WEEK_6: WeekContent = {
             { text: "on the 12th!", isSafe: false, whyWrong: "The day is still your birthday. Keep the date to yourself." },
             { text: "on June 12th, I'm 9!", isSafe: false, whyWrong: "Now the date AND your age are in the chat. Two clues instead of one." },
           ],
-          why: "Your birthday is a real-life clue, and with your age it is two. This week keeps the happy news and drops the date.",
+          why: "Using 'this week', you keep the happy news and drop the date. Your birthday is a real-life clue, and with your age it is two.",
           whyWrong: "The date of your birthday is real-life info. Strangers use it to guess passwords and pretend to know you.",
         },
         {
@@ -199,7 +199,7 @@ export const WEEK_6: WeekContent = {
             { text: "555-0123 after 6", isSafe: false, whyWrong: "That is the same number with a time added. Even more to give away." },
             { text: "here in game chat", isSafe: true, whyWrong: "" },
           ],
-          why: "A phone number reaches you outside the game. Planning here in game chat keeps the plan and keeps the guards.",
+          why: "Using 'here in game chat', you keep the plan and keep the guards. A phone number reaches you outside the game.",
           whyWrong: "A phone number lets a stranger reach you anywhere. It never goes in chat.",
         },
       ],
@@ -576,7 +576,7 @@ export const WEEK_6: WeekContent = {
           "Spot it when a chat tries to move you away from the guards.",
           "On a real phone, the move always comes with a friendly reason. Laggy chat. A secret trick. A private server.",
           "A player asks you to chat somewhere else. Two places appear. Tap each guard slot in both places to see if that guard is there or missing. When you have checked them all, tap STAY HERE under the place you would stay in.",
-          "[warmly] Count first, then choose, and no trickster can talk you out of the guarded playground. Ready? First invite!",
+          "[warmly] Count first, then choose, and no trickster can talk you out of the guarded playground. Ready? First invitation!",
         ],
       },
       coachLines: {

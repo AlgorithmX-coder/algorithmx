@@ -813,7 +813,7 @@ export const WEEK_17: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[thinking] Have you ever scrolled for a bit and come away feeling a bit rubbish? I have.",
+          "[thinking] Have you ever scrolled for a bit and come away feeling a bit down? I have.",
           "Everybody looks like they are having the best day of their life, all at once.",
           "[warmly] Here is what is really going on. People post their shiniest minute.",
           "The cake that worked. The goal that went in. Not the forty photos before the good one.",
