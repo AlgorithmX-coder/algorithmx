@@ -110,7 +110,7 @@ export const WEEK_11: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[warmly] Come in, Cyber Hero. This is the lighthouse, and the light stays on all night.",
+          "[warmly] Cyber Hero, come in. This is the lighthouse, and the light stays on all night.",
           "Sometimes a message lands and your tummy drops.",
           "So here is the biggest truth I know.",
           "When somebody is unkind to you, that was THEIR choice.",
@@ -160,7 +160,7 @@ export const WEEK_11: WeekContent = {
         lines: [
           "[proud] Look how straight you're standing.",
           "Every one of those stones was somebody else's choice.",
-          "[warmly] You were carrying them for nothing, Cyber Hero.",
+          "[warmly] Cyber Hero, you were carrying them for nothing.",
         ],
       },
     },
@@ -197,7 +197,7 @@ export const WEEK_11: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[warmly] One power down, Cyber Hero, and it's the biggest one.",
+          "[warmly] Cyber Hero, one power down, and it's the biggest one.",
           "The stones are on the floor where they belong.",
           "[whispers] Now, a lighthouse keeper never works alone...",
           "Next, we name the people who come running. Come and meet them!",
@@ -224,7 +224,7 @@ export const WEEK_11: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[warmly] No lighthouse keeper works alone, Cyber Hero. Neither do you.",
+          "[warmly] Cyber Hero, no lighthouse keeper works alone. Neither do you.",
           "Your team is the grown-ups who come running.",
           "A parent. A teacher. A grandparent. Somebody you'd shout for.",
           "Name them NOW, while everything is calm and easy.",
@@ -264,7 +264,7 @@ export const WEEK_11: WeekContent = {
           "[excited] Here's the lighthouse radio. Every channel is somebody you could call.",
           "Turn the dial and tap CALL.",
           "[warmly] The ones who come running join your board.",
-          "Let's find three, Cyber Hero!",
+          "Cyber Hero, let's find three!",
         ],
       },
       coachLines: {
@@ -276,7 +276,7 @@ export const WEEK_11: WeekContent = {
         lines: [
           "[proud] Look at that board. Three people who come running.",
           "You named them while everything was calm.",
-          "[warmly] That's the trick, Cyber Hero. Now you'll never have to think of one in a hurry.",
+          "[warmly] Cyber Hero, that's the trick. Now you'll never have to think of one in a hurry.",
         ],
       },
     },
@@ -298,7 +298,7 @@ export const WEEK_11: WeekContent = {
         lines: [
           "[proud] Exactly!",
           "You name your team while everything is calm.",
-          "Then, on a bad day, the name is already waiting for you.",
+          "Then on a bad day, the name is already waiting for you.",
         ],
       },
     },
@@ -344,7 +344,7 @@ export const WEEK_11: WeekContent = {
           "They're running on your replies.",
           "[whispers] Every answer you send is fuel. Even a clever one. Even an angry one.",
           "So we do the opposite. We stop feeding it.",
-          "[excited] Come and watch a signal starve, Cyber Hero!",
+          "[excited] Cyber Hero, come and watch a signal starve!",
         ],
       },
     },
@@ -428,7 +428,7 @@ export const WEEK_11: WeekContent = {
         lines: [
           "[proud] Look at the mast. Not a flicker left on it.",
           "You never sent a single word back.",
-          "[warmly] That's not running away, Cyber Hero. That's you choosing who reaches you.",
+          "[warmly] Cyber Hero, that's not running away. That's you choosing who reaches you.",
         ],
       },
     },
@@ -465,7 +465,7 @@ export const WEEK_11: WeekContent = {
         speaker: "layla",
         lines: [
           "[excited] Three powers, and the mast has gone dark.",
-          "[warmly] Now, one thing heroes almost always want to do is delete it.",
+          "[warmly] Now one thing heroes almost always want to do is delete it.",
           "[whispers] Wait until you hear why we keep it instead...",
           "Next, the camera. Come and see!",
         ],
@@ -496,7 +496,7 @@ export const WEEK_11: WeekContent = {
           "[whispers] But when it vanishes, so does the proof.",
           "A picture freezes it: who sent it, what it said, when.",
           "[warmly] Then you hand it over, and you never have to look at it again.",
-          "[excited] Into the tray, Cyber Hero. Let's develop some proof!",
+          "[excited] Cyber Hero, into the tray. Let's develop some proof!",
         ],
       },
     },
@@ -567,7 +567,7 @@ export const WEEK_11: WeekContent = {
         lines: [
           "[proud] Every piece of proof, clear as day.",
           "Who sent it, when it came, and what it said.",
-          "[warmly] Your team can take it from here, Cyber Hero. You're done carrying it.",
+          "[warmly] Cyber Hero, your team can take it from here. You're done carrying it.",
         ],
       },
     },
@@ -602,7 +602,7 @@ export const WEEK_11: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[excited] Four powers, Cyber Hero! The proof is safe and so are you.",
+          "[excited] Cyber Hero, four powers! The proof is safe and so are you.",
           "[warmly] Now let's put them together, the way firefighters practise.",
           "[whispers] Not because anything is wrong...",
           "but so your hands know what to do. To the drill!",
@@ -629,7 +629,7 @@ export const WEEK_11: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[warmly] Five steps, Cyber Hero, and you already know every one.",
+          "[warmly] Cyber Hero, five steps, and you already know every one.",
           "Breathe. Snap. Stop. Block. Tell.",
           "Firefighters practise on calm days so their hands know the way.",
           "[whispers] That's all this is. A practice run.",
@@ -709,7 +709,7 @@ export const WEEK_11: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[warmly] Practice run, Cyber Hero. Nothing here is real.",
+          "[warmly] Cyber Hero, practice run. Nothing here is real.",
           "A call-out comes in and you pick the next move.",
           "[whispers] Get it right and the drill rolls on.",
           "[excited] Breathe, snap, stop, block, tell. Off we go!",
@@ -760,7 +760,7 @@ export const WEEK_11: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[excited] That's all FIVE powers, Cyber Hero!",
+          "[excited] Cyber Hero, that's all FIVE powers!",
           "Never your fault. Your team named. The signal starved,",
           "the proof developed... and the drill run clean.",
           "[whispers] One last shift in the lighthouse...",
@@ -858,7 +858,7 @@ export const WEEK_11: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[excited] Your last shift, Cyber Hero. The board is lighting up.",
+          "[excited] Cyber Hero, your last shift. The board is lighting up.",
           "Every call-out is a hero who needs one of your five powers.",
           "[warmly] Read each one, then send the right help.",
           "[excited] The light's on you!",
@@ -873,7 +873,7 @@ export const WEEK_11: WeekContent = {
         lines: [
           "[proud] Every light on the board answered.",
           "Five heroes, five powers, and not one of them carrying it alone now.",
-          "[excited] You're ready for him, Team Captain. Let's go!",
+          "[excited] Cyber Hero, you're ready for him. Let's go!",
         ],
       },
     },
@@ -922,9 +922,9 @@ export const WEEK_11: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[excited] Three stickers, Team Captain!",
+          "[excited] Cyber Hero, three stickers!",
           "Stone Lifter. Team Namer. Evidence Freezer.",
-          "[warmly] And a lighthouse that never goes dark, Cyber Hero.",
+          "[warmly] And a lighthouse that never goes dark.",
         ],
       },
     },
@@ -1014,7 +1014,7 @@ export const WEEK_11: WeekContent = {
         },
         options: [
           { text: "Don't reply at all, block instead, even STOP feeds them" },
-          { text: "Reply STOP once, politely, then wait and see" },
+          { text: "Reply STOP once politely, then wait and see" },
           { text: "Reply STOP in capitals so they know you mean it" },
         ],
         correctIndex: 0,

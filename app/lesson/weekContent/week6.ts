@@ -108,7 +108,7 @@ export const WEEK_6: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[excited] Welcome back, Cyber Hero. Grab your controller!",
+          "[excited] Cyber Hero, welcome back. Grab your controller!",
           "Game chat is brilliant for game talk. Tactics, rematches, nice shot!",
           "[whispers] But your real-life info never goes in there.",
           "Your name. Your age. Your school. Where you live.",
@@ -226,7 +226,7 @@ export const WEEK_6: WeekContent = {
       completeNarration: {
         speaker: "adam",
         lines: [
-          "[proud] Every message sent safely, Cyber Hero! You caught every leak.",
+          "[proud] Cyber Hero, every message sent safely! You caught every leak.",
           "[warmly] In real life, read your message once before you send it. Game talk flies, real-life info stays home.",
         ],
       },
@@ -249,7 +249,7 @@ export const WEEK_6: WeekContent = {
           "[proud] Well done!",
           "Home alone tells a stranger there is no grown-up with you.",
           "Rematches and tactics are game talk, and game talk is safe.",
-          "[warmly] One quick read before you send, every time.",
+          "[warmly] One quick read before you send every time.",
         ],
       },
     },
@@ -264,7 +264,7 @@ export const WEEK_6: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[proud] What a fixer, Cyber Hero. Not one leak got past you.",
+          "[proud] Cyber Hero, what a fixer. Not one leak got past you.",
           "Game talk flew, real-life info stayed home.",
           "[whispers] But checking every message is hard work. What if the lobby could guard itself?",
           "Up next: the setting that does exactly that. Come and see!",
@@ -369,8 +369,8 @@ export const WEEK_6: WeekContent = {
       completeNarration: {
         speaker: "layla",
         lines: [
-          "[proud] Lobby locked, Cyber Hero! Friends in, strangers out.",
-          "[warmly] When it happens for real, ask a grown-up to flip friends only with you once. After that, the lobby does the checking for you, every game.",
+          "[proud] Cyber Hero, lobby locked! Friends in, strangers out.",
+          "[warmly] When it happens for real, ask a grown-up to flip friends only with you once. After that, the lobby does the checking for you every game.",
         ],
       },
     },
@@ -586,7 +586,7 @@ export const WEEK_6: WeekContent = {
       completeNarration: {
         speaker: "adam",
         lines: [
-          "[proud] Every guard counted, Cyber Hero! You stayed where they are, every time.",
+          "[proud] Cyber Hero, every guard counted! You stayed where they are, every time.",
           "[warmly] Back in the real world, when someone says let's chat somewhere else, count the guards. If they would be left behind, so would your safety.",
         ],
       },
@@ -624,7 +624,7 @@ export const WEEK_6: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[proud] Three powers, Cyber Hero. The somewhere-else trick bounced right off you.",
+          "[proud] Cyber Hero, three powers. The somewhere-else trick bounced right off you.",
           "You counted the guards and you stayed with them.",
           "[whispers] Speaking of guards, two of them live in every game, hiding in a menu.",
           "Report and block come next. Where do they live? Come and see!",
@@ -745,10 +745,10 @@ export const WEEK_6: WeekContent = {
         speaker: "layla",
         lines: [
           "[excited] On your fourth challenge, you take on the Power Panel!",
-          "Find report and block. Fast, in any game.",
+          "Find report and block. Fast in any game.",
           "In real life, every game hides these buttons in a different spot. So you look for the WORD, not the place.",
           "A nasty message sits at the top. Below it, a menu full of buttons. Tap REPORT first. Then tap BLOCK. Then tap TELL A GROWN-UP. If you tap something else, I will tell you why it does not help, and you try again.",
-          "[warmly] Three menus, and three times through it. Report. Block. Tell. Ready? First menu!",
+          "[warmly] Three menus and three times through it. Report. Block. Tell. Ready? First menu!",
         ],
       },
       coachLines: {
@@ -797,7 +797,7 @@ export const WEEK_6: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[proud] Four powers, Cyber Hero. You found both buttons in every menu.",
+          "[proud] Cyber Hero, four powers. You found both buttons in every menu.",
           "Report. Block. Tell.",
           "[whispers] One last trap guards the game zone, and it comes wrapped as a gift.",
           "Last of all, why a free download is never free. Come and see!",
@@ -929,8 +929,8 @@ export const WEEK_6: WeekContent = {
       completeNarration: {
         speaker: "adam",
         lines: [
-          "[proud] Every download inspected, Cyber Hero! Two traps closed, one real pack spotted.",
-          "[warmly] Out there, real games sell their stuff inside the game. Anything outside gets a grown-up check first, every time.",
+          "[proud] Cyber Hero, every download inspected! Two traps closed, one real pack spotted.",
+          "[warmly] Out there, real games sell their stuff inside the game. Anything outside gets a grown-up check first every time.",
         ],
       },
     },
@@ -968,7 +968,7 @@ export const WEEK_6: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[excited] That's all FIVE powers, Cyber Hero!",
+          "[excited] Cyber Hero, that's all FIVE powers!",
           "Chat fixed, lobby locked, guards counted, buttons found, traps closed.",
           "[whispers] Your game zone is a fortress now.",
           "One quick review to make it all stick, then the Raccoon comes to test it. Come on!",
@@ -1016,7 +1016,7 @@ export const WEEK_6: WeekContent = {
           sceneIcon: "🎮",
           signId: "friends-only",
           note: "Strangers reaching your lobby means the door is open. The move is the friends only lock.",
-          why: "Strangers keep dropping into your lobby because the door is open. Flipping friends only locks it once, for every game after.",
+          why: "Strangers keep dropping into your lobby because the door is open. Flipping friends only locks it once for every game after.",
         },
         {
           id: "snaptalk",
@@ -1072,7 +1072,7 @@ export const WEEK_6: WeekContent = {
       completeNarration: {
         speaker: "layla",
         lines: [
-          "[proud] Bingo, Cyber Hero! Every lobby moment met its hero move.",
+          "[proud] Cyber Hero, bingo! Every lobby moment met its hero move.",
           "[warmly] In real life, your game zone has a guard on every door now. And you know which one to call.",
         ],
       },

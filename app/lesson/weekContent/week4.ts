@@ -120,7 +120,7 @@ export const WEEK_4: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[warmly] Welcome back, Cyber Hero. This week we hunt SCAMS.",
+          "[warmly] Cyber Hero, welcome back. This week we hunt SCAMS.",
           "A scam is a trick... wearing a costume.",
           "[whispers] Under the costume, it always wants something back. Your password. Your money. Or your tap.",
           "[excited] And that is how you catch one. Real messages want NOTHING from you.",
@@ -258,7 +258,7 @@ export const WEEK_4: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[warmly] Great start, Cyber Hero!",
+          "[warmly] Cyber Hero, great start!",
           "You followed every string, and you saw what each prize really wanted.",
           "Real messages ask for nothing. Scams always want something back.",
           "[whispers] But the Raccoon's biggest booth is still open, and its prizes are ENORMOUS...",
@@ -390,7 +390,7 @@ export const WEEK_4: WeekContent = {
         speaker: "layla",
         lines: [
           "[proud] Every offer measured! You can tell a real prize from bait, so the Raccoon's giant giveaways can't dazzle you.",
-          "[warmly] When it happens for real, enormous prizes from strangers go straight to \"No way!\"",
+          "[warmly] A giant prize from a stranger? The answer is always NO way!",
           "And when you are not sure, you check with a grown-up first.",
         ],
       },
@@ -761,7 +761,7 @@ export const WEEK_4: WeekContent = {
         speaker: "layla",
         lines: [
           "[excited] On your fourth challenge, you run the Name Tag Check!",
-          "Lookalike senders now, and the tiny swaps that give them away.",
+          "Lookalike senders now and the tiny swaps that give them away.",
           "Out in the real world, a copycat picks a name that is ALMOST right. It is hoping you never look closely.",
           "The real sender's name tag is on top.",
           "The sender to check hangs underneath, split into the same pieces.",
@@ -946,9 +946,9 @@ export const WEEK_4: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[excited] That's all FIVE trick-beating powers, Cyber Hero!",
+          "[excited] Cyber Hero, that's all FIVE trick-beating powers!",
           "You follow the strings. You measure the bait. You never rush. You catch every copycat...",
-          "[whispers] and you never, ever bite.",
+          "[whispers] and you never ever bite.",
           "[warmly] Now, the Raccoon has one last attraction: a hall of mirrors, with a fake hiding in every one.",
           "One quick final drill to make it all stick, then the Raccoon gets what's coming. Come on!",
         ],
@@ -1046,7 +1046,7 @@ export const WEEK_4: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[excited] Final drill, Cyber Hero! Every trick you beat this week is hiding in the Hall of Mirrors.",
+          "[excited] Cyber Hero, final drill! Every trick you beat this week is hiding in the Hall of Mirrors.",
           "This drill mixes up all five powers you learned about scams.",
           "When it happens for real, tricks don't come one at a time. A hero keeps every power ready at once.",
           "Tap a glowing mirror and it asks you a question. I'll read it.",

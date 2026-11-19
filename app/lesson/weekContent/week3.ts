@@ -76,10 +76,10 @@ export const WEEK_3: WeekContent = {
           // (UAT round 2, W3 item 1a: the tester followed the caption as a
           // transcript). NB: no quoted words in comments inside this array,
           // the narration generator scans the file for string literals.
-          "[nervous] Oh no, Cyber Hero, look at this incident report!",
+          "[nervous] Oh no! Cyber Hero, look at this incident report!",
           "The Raccoon built a FAKE kid profile. A copied photo, a typed age, a made-up name.",
           "Then he tricked a hero into telling him secrets.",
-          "[whispers] He's sending friend requests right now, to more kids.",
+          "[whispers] He's sending friend requests right now to more kids.",
           "[warmly] But YOU are about to see straight through every disguise he owns.",
           "Let's see what Mission Command has for us!",
         ],
@@ -120,7 +120,7 @@ export const WEEK_3: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[warmly] Welcome back, Cyber Hero. Today we learn something big: online, you can't SEE who's typing.",
+          "[warmly] Cyber Hero, welcome back. Today we learn something big: online you can't SEE who's typing.",
           "A friendly kid's photo can be copied from anywhere.",
           "An age? Anyone can type a nine.",
           "[whispers] And a kid-sounding name is just picked, not proved.",
@@ -165,7 +165,7 @@ export const WEEK_3: WeekContent = {
           name: "Cousin Maya",
           icon: "👪",
           claim: "Hey, it's your cousin Maya! Grandma said to say hi.",
-          address: "You know your cousin in real life, you've sat at Grandma's table together. That is real proof of who is typing.",
+          address: "You know your cousin in real life. You've sat at Grandma's table together. That is real proof of who is typing.",
           matches: true,
           note: "You know Maya offline, in real life. Knowing someone in the real world is the proof that actually counts.",
         },
@@ -268,7 +268,7 @@ export const WEEK_3: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[warmly] Awesome start, Cyber Hero!",
+          "[warmly] Cyber Hero, awesome start!",
           "You peeked behind six masks and called every one.",
           "Copied photo, typed age, picked name... proves nothing. Your cousin, your classmate... real proof.",
           "Up next: the four clues that give a fake profile away. Come and see!",
@@ -395,7 +395,7 @@ export const WEEK_3: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[excited] Your second challenge, Cyber Hero! Friend requests are landing, and you are the one who checks them.",
+          "[excited] Cyber Hero, your second challenge! Friend requests are landing, and you are the one who checks them.",
           "Every profile leaves four clues. When it joined. Who its friends are. How it talks. What it asks for.",
           "A fake gives itself away on at least one clue. A real friend checks out on all four.",
           "The Raccoon thinks his costume works every time. Not on your watch.",
@@ -641,7 +641,7 @@ export const WEEK_3: WeekContent = {
         lines: [
           "[excited] Three powers! Your red-flag radar is ON.",
           "Secrets, photos, gifts, and don't tell your parents... you flagged every single one.",
-          "[warmly] But what if a friend asks to MEET you, or wants a photo just this once? For that, heroes have two rules that never, ever bend.",
+          "[warmly] But what if a friend asks to MEET you, or wants a photo just this once? For that, heroes have two rules that never ever bend.",
           "Two never-rules come next, and they keep every hero safe. Come and see!",
         ],
       },
@@ -918,7 +918,7 @@ export const WEEK_3: WeekContent = {
         speaker: "adam",
         lines: [
           "[excited] On your last challenge, a chat request is about to pop up!",
-          "Now your uh-oh feeling, and the three hero steps. Feel it. Stop. Tell.",
+          "Now your uh-oh feeling and the three hero steps. Feel it. Stop. Tell.",
           "Out in the real world, a chat can start friendly and slowly turn icky. Your tummy notices before your brain does.",
           "Watch the meter at the top of the phone.",
           "Messages arrive, and I'll read each one.",
@@ -970,7 +970,7 @@ export const WEEK_3: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[excited] That's all FIVE powers, Cyber Hero!",
+          "[excited] Cyber Hero, that's all FIVE powers!",
           "You see through masks, spot fake profiles, catch red flags, hold the two never-rules...",
           "[whispers] and you trust your uh-oh feeling.",
           "[warmly] Now, a real detective pins every clue to the case board before closing a case.",
@@ -1019,7 +1019,7 @@ export const WEEK_3: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[excited] Final drill, Cyber Hero! Every clue you found this week goes on the Case Board.",
+          "[excited] Cyber Hero, final drill! Every clue you found this week goes on the Case Board.",
           "This drill mixes up all five powers you learned about fake friends.",
           "Out there, a detective checks every clue before closing a case. And so do you.",
           "The tray below the board holds clue cards.",

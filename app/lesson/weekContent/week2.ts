@@ -120,7 +120,7 @@ export const WEEK_2: WeekContent = {
           "Your name. Your address. Your school. Your phone number.",
           "[whispers] They tell a stranger WHO you are, and WHERE you are.",
           "[nervous] And the sneaky Raccoon? He collects them like treasure.",
-          "[excited] So today, we learn to guard them like heroes!",
+          "[excited] So today we learn to guard them like heroes!",
         ],
       },
     },
@@ -250,7 +250,7 @@ export const WEEK_2: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[warmly] Awesome start, Cyber Hero!",
+          "[warmly] Cyber Hero, awesome start!",
           "You found all five treasures the Raccoon hunts for.",
           "Your name, address, school, phone, and where you are... all PRIVATE.",
           "Next, we'll learn what's fine to share and what stays locked away. Come and see!",
@@ -405,7 +405,7 @@ export const WEEK_2: WeekContent = {
           "A drawing app needs a nickname. Fair enough!",
           "[nervous] But a kitten quiz that wants your HOME ADDRESS?",
           "[laughs] A quiz doesn't visit your house! Too nosy!",
-          "[excited] Let's inspect some forms, Cyber Hero.",
+          "[excited] Cyber Hero, let's inspect some forms.",
         ],
       },
     },
@@ -489,7 +489,7 @@ export const WEEK_2: WeekContent = {
       completeNarration: {
         speaker: "layla",
         lines: [
-          "[proud] Case closed, Cyber Hero! Now you can ask WHY any app wants your info.",
+          "[proud] Cyber Hero, case closed! Now you can ask WHY any app wants your info.",
           "[warmly] If it asks for more than it needs to work, it is too nosy. So you close it. Then you tell a grown-up.",
         ],
       },
@@ -559,7 +559,7 @@ export const WEEK_2: WeekContent = {
         speaker: "layla",
         lines: [
           "[whispers] Every hero has a secret identity...",
-          "[excited] and online, your username IS your mask!",
+          "[excited] and online your username IS your mask!",
           "But careful. Put your real name or birthday in it...",
           "[nervous] and the mask has a hole in it.",
           "[laughs] emma2017? The Raccoon reads that like a name tag!",
@@ -604,7 +604,7 @@ export const WEEK_2: WeekContent = {
         speaker: "layla",
         lines: [
           "[excited] On your next challenge, we fire up the Secret Identity Machine!",
-          "Now you build a username. A perfect mask, with none of the real you inside.",
+          "Now you build a username. A perfect mask with none of the real you inside.",
           "Out there, a username with your name in it is a mask with a hole. So is one with your birthday. The Raccoon peeks right through.",
           "Tap a hero word, a sidekick and a lucky number for each reel.",
           "Dodge any part that leaks the real you.",
@@ -766,7 +766,7 @@ export const WEEK_2: WeekContent = {
       teachNarration: {
         speaker: "adam",
         lines: [
-          "[warmly] Exactly right, Cyber Hero. The answer is always a grown-up you trust.",
+          "[warmly] Cyber Hero, exactly right. The answer is always a grown-up you trust.",
           "Not a guess, not a quick type, not the Raccoon. A parent, a carer or a teacher.",
           "They're your backup team, and asking first is the smartest hero move there is.",
           "[excited] Pause and ask, every single time. You've got this!",
@@ -785,9 +785,9 @@ export const WEEK_2: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[excited] That's all FIVE powers, Cyber Hero!",
+          "[excited] Cyber Hero, that's all FIVE powers!",
           "You know what's private, what to share, when to ask why...",
-          "you've got a secret identity, AND the golden rule.",
+          "you've got a secret identity AND the golden rule.",
           "[whispers] The Raccoon has no idea what's coming.",
           "[excited] One quick final drill to make it all stick... then we send that Raccoon home empty-pawed. Come on!",
         ],
@@ -849,7 +849,7 @@ export const WEEK_2: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[excited] Final drill, Cyber Hero! The Raccoon has emptied his whole grab bag at you.",
+          "[excited] Cyber Hero, final drill! The Raccoon has emptied his whole grab bag at you.",
           "This one mixes up everything you learned about guarding your secrets.",
           "Back in the real world, grabs for your private info and perfectly safe messages fly past you all the time.",
           "Messages fly toward your device.",

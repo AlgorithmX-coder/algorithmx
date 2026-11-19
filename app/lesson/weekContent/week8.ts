@@ -106,7 +106,7 @@ export const WEEK_8: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[excited] Welcome back, Cyber Hero. Today we step into the darkroom, where photos are made!",
+          "[excited] Cyber Hero, welcome back. Today we step into the darkroom, where photos are made!",
           "And here is the biggest photo secret of all.",
           "[whispers] When you share a photo, copies land on other phones. And DELETE only deletes YOUR copy.",
           "Your friend's copy stays on your friend's phone. The app keeps one too.",
@@ -206,12 +206,12 @@ export const WEEK_8: WeekContent = {
       },
       coachLines: {
         speaker: "adam",
-        lines: ["Here is your phone, with a photo on it, and your friends' phones all around."],
+        lines: ["Here is your phone with a photo on it, and your friends' phones all around."],
       },
       completeNarration: {
         speaker: "adam",
         lines: [
-          "[proud] Undo Test passed, Cyber Hero! You watched the copies stay put.",
+          "[proud] Cyber Hero, Undo Test passed! You watched the copies stay put.",
           "[warmly] Out in the real world, delete only ever deletes your copy. So you do your thinking before you share.",
         ],
       },
@@ -250,7 +250,7 @@ export const WEEK_8: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[proud] What a test, Cyber Hero. Delete got caught out.",
+          "[proud] Cyber Hero, what a test. Delete got caught out.",
           "Your copy gone, every other copy still there.",
           "[whispers] But some photos have more than your face in them. What about your friends' faces?",
           "Next, we'll learn whose photo it really is when a friend is in it. Come and see!",
@@ -279,7 +279,7 @@ export const WEEK_8: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[warmly] So, Cyber Hero, when your friend is in a photo, whose face is it?",
+          "[warmly] Cyber Hero, when your friend is in a photo, whose face is it?",
           "Theirs! So posting it is their call too.",
           "Before you post or send anyone's picture, you ask them first.",
           "[whispers] If they say no, you listen. Leave them out, or don't post it at all.",
@@ -374,7 +374,7 @@ export const WEEK_8: WeekContent = {
           "[excited] On your second challenge, you step into the Ask Ring!",
           "This game is all about asking everyone in a photo before it goes anywhere.",
           "Out in the real world, it only takes one quick question, and it keeps everyone's face safe.",
-          "Here is what you do. A photo appears with your friends in it. Tap each friend to ask, and listen to their answer. A yes glows. For a no, tap the hero move: leave them out, or don't post it. When every face is settled, tap POST.",
+          "Here is what you do. A photo appears with your friends in it. Tap each friend to ask and listen to their answer. A yes glows. For a no, tap the hero move: leave them out, or don't post it. When every face is settled, tap POST.",
           "[warmly] Listen to exactly what each friend says. Ready? First photo!",
         ],
       },
@@ -385,7 +385,7 @@ export const WEEK_8: WeekContent = {
       completeNarration: {
         speaker: "layla",
         lines: [
-          "[proud] Every face asked, Cyber Hero! Yeses posted, and every no respected.",
+          "[proud] Cyber Hero, every face asked! Yeses posted, and every no respected.",
           "[warmly] Out in the real world, their face is their call. One quick ask before you post keeps everyone smiling.",
         ],
       },
@@ -424,7 +424,7 @@ export const WEEK_8: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[proud] Two powers, Cyber Hero. Every friend got a say.",
+          "[proud] Cyber Hero, two powers. Every friend got a say.",
           "Yeses posted, and every no respected.",
           "[whispers] But even a photo with a yes can talk. It can tell strangers things you never said out loud.",
           "Next, we'll learn the secret clues hiding in the corners of a photo. Come and see!",
@@ -453,12 +453,12 @@ export const WEEK_8: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[whispers] Now lean in close, Cyber Hero. Photos talk.",
+          "[whispers] Cyber Hero, lean in close. Photos talk.",
           "A house number points right at your front door.",
           "A school name tells a stranger where you are all day.",
           "[nervous] And strangers can read every word of it.",
           "[warmly] So detectives check every corner before a photo goes anywhere.",
-          "[excited] Come and develop a photo in the tray, and find what it gives away!",
+          "[excited] Come and develop a photo in the tray and find what it gives away!",
         ],
       },
     },
@@ -473,7 +473,7 @@ export const WEEK_8: WeekContent = {
       introSubtitle: "A photo is hiding in the tray. Tap every square to develop it, tap everything it gives away, then decide: SHARE or KEEP.",
       introIcon: "📸",
       developPrompt: "Tap every square to develop the photo",
-      developReadAloud: "A photo is hiding in the developing tray. Tap every square of film, and watch the photo appear.",
+      developReadAloud: "A photo is hiding in the developing tray. Tap every square of film and watch the photo appear.",
       spotPrompt: "Tap everything this photo gives away",
       spotReadAloud: "There it is: a party, a trophy and a big smile. Now check every corner of the photo, the door, the wall and the edges. Tap everything it gives away.",
       leakCopy: {
@@ -494,7 +494,7 @@ export const WEEK_8: WeekContent = {
         },
       },
       decidePrompt: "Three clues found. SHARE it, or KEEP it?",
-      decideReadAloud: "So, three clues in one happy photo. Share it, or keep it?",
+      decideReadAloud: "So three clues in one happy photo. Share it, or keep it?",
       shareLabel: "SHARE",
       keepLabel: "KEEP",
       why: "A home, a school and a friend with no yes. A happy photo can still say far too much, so this one stays with you.",
@@ -526,7 +526,7 @@ export const WEEK_8: WeekContent = {
       completeNarration: {
         speaker: "adam",
         lines: [
-          "[proud] Photo developed and every clue found, Cyber Hero!",
+          "[proud] Cyber Hero, photo developed and every clue found!",
           "[warmly] Out in the real world, you check the corners before the smile. A house number or a school name never slips past you.",
         ],
       },
@@ -564,7 +564,7 @@ export const WEEK_8: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[proud] Three powers, Cyber Hero. Not one corner got past you.",
+          "[proud] Cyber Hero, three powers. Not one corner got past you.",
           "House numbers, school names, friends with no yes. All found.",
           "[whispers] But even a clean photo leaves one question. Who is going to see it?",
           "Next, we'll learn who can actually see a photo once it is shared. Come and see!",
@@ -703,7 +703,7 @@ export const WEEK_8: WeekContent = {
       completeNarration: {
         speaker: "layla",
         lines: [
-          "[proud] Every photo through the right door, Cyber Hero!",
+          "[proud] Cyber Hero, every photo through the right door!",
           "[warmly] Out in the real world, you ask who will see it before you share. Faces and clues get small doors, and Just Me photos get none.",
         ],
       },
@@ -741,7 +741,7 @@ export const WEEK_8: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[proud] Four powers, Cyber Hero. Every photo found its door.",
+          "[proud] Cyber Hero, four powers. Every photo found its door.",
           "Small doors for faces, no door for private photos, and his private-is-magic fib, busted.",
           "[whispers] One power is left, and it puts all the others together in three seconds.",
           "Next, we'll learn the ritual that uses every photo power at once. Come and see!",
@@ -859,7 +859,7 @@ export const WEEK_8: WeekContent = {
           clues: [
             { id: "when", evidence: "Your whole team", isRedFlag: false, teach: "Your team being in it is fine, because the ask has its own row. That row checks out, so lift the stamp." },
             { id: "who", evidence: "A plain green pitch", isRedFlag: false, teach: "Grass looks the same at every pitch. That row checks out, so lift the stamp." },
-            { id: "how", evidence: "Team families chat", isRedFlag: false, teach: "That chat is a small door, full of grown-ups who know the team. That row checks out, so lift the stamp." },
+            { id: "how", evidence: "Team families chat", isRedFlag: false, teach: "That chat is a small door full of grown-ups who know the team. That row checks out, so lift the stamp." },
             { id: "what", evidence: "Yes, every player", isRedFlag: false, teach: "Every player said yes. That row checks out, so lift the stamp." },
           ],
           rightWhy: "Every player said yes, nothing leaks from behind, and it's going through a small door. Every row checks out, so share away!",
@@ -891,7 +891,7 @@ export const WEEK_8: WeekContent = {
       completeNarration: {
         speaker: "adam",
         lines: [
-          "[proud] Every print checked, Cyber Hero! Leaks kept back, safe photos shared.",
+          "[proud] Cyber Hero, every print checked! Leaks kept back, safe photos shared.",
           "[warmly] Out in the real world, look, think, ask takes three seconds. And it is yours for every photo from now on.",
         ],
       },
@@ -930,7 +930,7 @@ export const WEEK_8: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[excited] That's all FIVE photo powers, Cyber Hero!",
+          "[excited] Cyber Hero, that's all FIVE photo powers!",
           "Delete tested, faces asked, corners checked, doors picked, and the ritual runs itself.",
           "[whispers] The Raccoon can't sneak a single photo past you now.",
           "One quick review to make it all stick, then he brings out his photo quiz. Come on!",
@@ -988,7 +988,7 @@ export const WEEK_8: WeekContent = {
           ],
           correctIndex: 0,
           why: "Her face, her call. Zara gets asked before her photo goes anywhere, and asleep means she can't say yes.",
-          explanation: "Zara hasn't said yes, and deleting later can't call the copies back. Ask her first, every time.",
+          explanation: "Zara hasn't said yes, and deleting later can't call the copies back. Ask her first every time.",
         },
         {
           from: "Ava",
@@ -999,7 +999,7 @@ export const WEEK_8: WeekContent = {
             "I'll post it just for my friends.",
           ],
           correctIndex: 0,
-          why: "The house number points straight to your home. Move, or crop it out, and the photo stops talking.",
+          why: "The house number points straight to your home. Move or crop it out, and the photo stops talking.",
           explanation: "Friends can screenshot and send it on, so the house number could still reach strangers. Keep the number out of the photo.",
         },
         {
@@ -1033,7 +1033,7 @@ export const WEEK_8: WeekContent = {
           "[excited] Time for your review: the Share Maze!",
           "This game is all about using every photo power, one gate at a time.",
           "Out in the real world, photo moments come in any order, so every power has to be ready.",
-          "Here is what you do. Tap a glowing square next to your hero to move. When a gate blocks the way, a friend brings a photo moment, and three replies appear. Tap the hero move to open the gate. Collect the film rolls, and find the exit.",
+          "Here is what you do. Tap a glowing square next to your hero to move. When a gate blocks the way, a friend brings a photo moment, and three replies appear. Tap the hero move to open the gate. Collect the film rolls and find the exit.",
           "[warmly] Five gates, five powers. Ready? Into the darkroom!",
         ],
       },
@@ -1044,7 +1044,7 @@ export const WEEK_8: WeekContent = {
       completeNarration: {
         speaker: "layla",
         lines: [
-          "[proud] Out of the darkroom, Cyber Hero! Every gate opened with a hero move.",
+          "[proud] Cyber Hero, out of the darkroom! Every gate opened with a hero move.",
           "[warmly] Out in the real world, every photo moment gets the same care: think first, ask the faces, check the corners, pick the door.",
         ],
       },

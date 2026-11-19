@@ -200,7 +200,7 @@ export const WEEK_14: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[excited] Here is your first challenge, Cyber Hero. The Ears Check!",
+          "[excited] Cyber Hero, here is your first challenge. The Ears Check!",
           "This game is all about knowing which things in a room can hear you.",
           "Out in the real world, most people only ever think of the speaker.",
           "So here is what you do.",
@@ -216,7 +216,7 @@ export const WEEK_14: WeekContent = {
       completeNarration: {
         speaker: "adam",
         lines: [
-          "[proud] The whole room mapped, Cyber Hero, and I bet the telly surprised you.",
+          "[proud] Cyber Hero, the whole room mapped, and I bet the telly surprised you.",
           "Speaker, telly, console, talking toy. Ears. Kettle, teddy, lamp, clock. Nothing.",
           "[warmly] That is not a scary list. It is just a list, and now you know it.",
         ],
@@ -285,7 +285,7 @@ export const WEEK_14: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[warmly] So why does it listen at all, Cyber Hero? Here is the honest answer.",
+          "[warmly] Cyber Hero, why does it listen at all? Here is the honest answer.",
           "It listens so it can help. You say its name, you ask for a song, you get the song.",
           "[thinking] And to catch its name, it has to stay half-awake all the time.",
           "When it does wake up, it writes down what came next. Every time.",
@@ -354,7 +354,7 @@ export const WEEK_14: WeekContent = {
           options: [
             { id: "grownup", label: "A grown-up can empty it", icon: "👪", isRight: true, why: "The diary is not locked away. A grown-up can open it, read it and clear the lot, and that is worth knowing.", explanation: "" },
             { id: "auto", label: "It empties itself every night", icon: "⏱️", isRight: false, why: "", explanation: "It does not tidy up on its own. Somebody went in and cleared it, which is exactly why knowing about it matters." },
-            { id: "cant", label: "Nobody can ever delete it", icon: "🚫", isRight: false, why: "", explanation: "It can absolutely be deleted. Dad just did it, in about four taps." },
+            { id: "cant", label: "Nobody can ever delete it", icon: "🚫", isRight: false, why: "", explanation: "It can absolutely be deleted. Dad just did it in about four taps." },
           ],
         },
       ],
@@ -365,7 +365,7 @@ export const WEEK_14: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[excited] Your second challenge, Cyber Hero. The Speaker Diary!",
+          "[excited] Cyber Hero, your second challenge. The Speaker Diary!",
           "This game is all about what a helpful gadget keeps a copy of.",
           "Out in the real world, that diary sits there all week and hardly anybody opens it.",
           "So here is what you do.",
@@ -381,7 +381,7 @@ export const WEEK_14: WeekContent = {
       completeNarration: {
         speaker: "adam",
         lines: [
-          "[proud] The whole diary, Cyber Hero. And look what was in it.",
+          "[proud] Cyber Hero, the whole diary. And look what was in it.",
           "One thing you asked for. One mix-up off the telly. One row it never should have caught.",
           "[warmly] And one grown-up, clearing the lot in four taps. That is the bit to remember.",
         ],
@@ -422,7 +422,7 @@ export const WEEK_14: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[proud] Two powers, Cyber Hero. Ears, and the diary behind them.",
+          "[proud] Cyber Hero, two powers. Ears and the diary behind them.",
           "It helps, it keeps a copy, and a grown-up holds the key.",
           "[whispers] Now. Ears are not the only thing some of these gadgets have...",
           "Next, we'll go looking for little glass eyes. Come and see!",
@@ -451,7 +451,7 @@ export const WEEK_14: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[warmly] Ears are not the only thing, Cyber Hero. Some of these have eyes too.",
+          "[warmly] Cyber Hero, ears are not the only thing. Some of these have eyes too.",
           "A little glass circle, small and shiny. That is a lens.",
           "The doorbell has one, watching the step. That is its job, and it keeps the house safe.",
           "[thinking] And here is the Scout's trick. A lens that is awake nearly always shows it. A tiny light, or a cover sliding back.",
@@ -551,7 +551,7 @@ export const WEEK_14: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[excited] Your third challenge, Cyber Hero. Little Glass Eyes!",
+          "[excited] Cyber Hero, your third challenge. Little Glass Eyes!",
           "This game is all about spotting a lens that has woken up.",
           "Out in the real world, a lens that is on nearly always shows you, if you look.",
           "So here is what you do.",
@@ -567,7 +567,7 @@ export const WEEK_14: WeekContent = {
       completeNarration: {
         speaker: "adam",
         lines: [
-          "[proud] Every corner checked, Cyber Hero, and you did not miss one.",
+          "[proud] Cyber Hero, every corner checked, and you did not miss one.",
           "A doorbell doing its job. A tablet on a call. A laptop cover sliding back.",
           "[warmly] And a lens in a bedroom, which you tell a grown-up about. Every time, no exceptions.",
         ],
@@ -606,7 +606,7 @@ export const WEEK_14: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[proud] Three powers, Cyber Hero. Ears, the diary, and now the eyes.",
+          "[proud] Cyber Hero, three powers. Ears, the diary, and now the eyes.",
           "A light on, a cover back. You will spot those forever now.",
           "[whispers] So here is the question that changes everything...",
           "Next, we'll learn what you do when you KNOW something is listening. Come and see!",
@@ -635,7 +635,7 @@ export const WEEK_14: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[warmly] Now, you already know what is private, Cyber Hero. You learned that a long time ago.",
+          "[warmly] Cyber Hero, now you already know what is private. You learned that a long time ago.",
           "So here is the bit almost nobody thinks about.",
           "[thinking] You can be brilliant at never typing something... and then say the exact same thing out loud, in a room with ears.",
           "Saying it is still recording it.",
@@ -684,7 +684,7 @@ export const WEEK_14: WeekContent = {
           from: "Your friend, on a video call",
           fromIcon: "💬",
           message: "Your friend is coming over and asks: 'What's your address again?'",
-          readAloud: "Your friend is coming over, and asks on the call: what is your address again?",
+          readAloud: "Your friend is coming over and asks on the call: what is your address again?",
           keptLabel: "Home address",
           replies: [
             { text: "Type it into the chat instead", isSafe: true,
@@ -714,7 +714,7 @@ export const WEEK_14: WeekContent = {
           from: "Gran, on the speakerphone",
           fromIcon: "👪",
           message: "Gran asks: 'Which class are you in this year, love?'",
-          readAloud: "Gran is on the speakerphone. Which class are you in this year, love?",
+          readAloud: "Gran is on the speakerphone. Love, which class are you in this year?",
           keptLabel: "School and class",
           replies: [
             { text: "Tell her, and let it be", isSafe: true,
@@ -732,23 +732,23 @@ export const WEEK_14: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[excited] Fourth challenge, Cyber Hero. The Megaphone Rule!",
+          "[excited] Cyber Hero, fourth challenge. The Megaphone Rule!",
           "This game is all about the moment you choose, not the thing you know.",
           "Out in the real world, people who would never type a thing announce it across the kitchen.",
           "So here is what you do.",
           "A moment happens, and Nova is sitting right there on the table.",
-          "Three cards come up. Tap what you would actually say out loud, right here.",
+          "Three cards come up. Tap what you would actually say out loud right here.",
           "[warmly] And watch the last one. Not everything needs moving. Off you go.",
         ],
       },
       coachLines: {
         speaker: "adam",
-        lines: ["Tap what you would say out loud, right here."],
+        lines: ["Tap what you would say out loud right here."],
       },
       completeNarration: {
         speaker: "adam",
         lines: [
-          "[proud] Every moment handled, Cyber Hero, and you never once went quiet.",
+          "[proud] Cyber Hero, every moment handled, and you never once went quiet.",
           "A room changed. A message typed. A nod and a chat in the kitchen.",
           "[warmly] And Gran got her answer, because that one never needed moving at all.",
         ],
@@ -785,7 +785,7 @@ export const WEEK_14: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[proud] Four powers, Cyber Hero, and not a whisper among them.",
+          "[proud] Cyber Hero, four powers, and not a whisper among them.",
           "You just picked your moments. That is all it ever was.",
           "[whispers] There is one more thing a Scout can do, and it is the most useful of the lot...",
           "Next, we'll find the switches. Come and see!",
@@ -814,11 +814,11 @@ export const WEEK_14: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[warmly] Last power, Cyber Hero, and it is the best one.",
+          "[warmly] Cyber Hero, last power, and it is the best one.",
           "All of these gadgets have switches. And you are allowed to use them.",
           "The microphone turns off. The camera gets a cover. The diary can empty itself from now on.",
           "[thinking] Nothing breaks. Nothing is sneaky. It is just a job somebody has to actually do.",
-          "And you do it WITH a grown-up. Ten minutes, on a rainy Sunday.",
+          "And you do it WITH a grown-up. Ten minutes on a rainy Sunday.",
           "[excited] The wall plate is right here. Let's flip some switches!",
         ],
       },
@@ -926,7 +926,7 @@ export const WEEK_14: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[excited] Last challenge of the week, Cyber Hero. Flip It Together!",
+          "[excited] Cyber Hero, last challenge of the week. Flip It Together!",
           "This game is all about the switches a Scout is allowed to use.",
           "Out in the real world, this is a ten minute job with a grown-up. And hardly anybody does it.",
           "So here is what you do.",
@@ -942,7 +942,7 @@ export const WEEK_14: WeekContent = {
       completeNarration: {
         speaker: "adam",
         lines: [
-          "[proud] Every switch checked, Cyber Hero. Microphone muted, diary tidying itself, recordings off, telly quiet.",
+          "[proud] Cyber Hero, every switch checked. Microphone muted, diary tidying itself, recordings off, telly quiet.",
           "And you left the doorbell and the night-light exactly alone, because they were already fine.",
           "[warmly] That is a Settings Scout. Ten minutes, a grown-up, and a house that behaves itself.",
         ],
@@ -983,7 +983,7 @@ export const WEEK_14: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[proud] Five powers, Cyber Hero. Every single one.",
+          "[proud] Cyber Hero, five powers. Every single one.",
           "Ears found, diary read, eyes spotted, moments picked, switches flipped.",
           "[whispers] So there is one thing left to find out...",
           "Next, every power at once, over on the hall table. Come and see!",
@@ -1065,7 +1065,7 @@ export const WEEK_14: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[excited] Time for your review, Cyber Hero. The Scout's Check-Card!",
+          "[excited] Cyber Hero, time for your review. The Scout's Check-Card!",
           "This game is all about using every Scout power, one moment at a time.",
           "Out in the real world, these moments turn up in any order. So all five have to be ready.",
           "So here is what you do.",
@@ -1081,7 +1081,7 @@ export const WEEK_14: WeekContent = {
       completeNarration: {
         speaker: "layla",
         lines: [
-          "[proud] Every moment stamped, Cyber Hero, and every power used.",
+          "[proud] Cyber Hero, every moment stamped, and every power used.",
           "[warmly] Out in the real world, nobody announces which one you need. The house just carries on being a house, and now you know exactly what is in it.",
         ],
       },
@@ -1114,7 +1114,7 @@ export const WEEK_14: WeekContent = {
           "Ears found, the diary opened, the little glass eyes spotted,",
           "your moments picked... and every switch flipped.",
           "[laughs] His lazy listening trick just stopped working in your house.",
-          "[excited] Sticker time, Cyber Hero!",
+          "[excited] Cyber Hero, sticker time!",
         ],
       },
     },
@@ -1314,7 +1314,7 @@ export const WEEK_14: WeekContent = {
       { question: "Why is push-to-talk better than always-on?", answers: ["The ear only opens while YOU hold the button", "It makes the TV louder", "It isn't better", "It records more"], correctIndex: 0, explanation: "Push-to-talk hands the ON switch to you - the ear hears only when you choose." },
     ],
     hard: [
-      { question: "You said a password out loud near an awake speaker. What's the Scout move?", answers: ["Tell a grown-up and change the password", "Nothing - speakers forget instantly", "Whisper the same password next time", "Unplug every device forever"], correctIndex: 0, explanation: "A password in a recording isn't fully yours. Change it, and keep the next one off the air." },
+      { question: "You said a password out loud near an awake speaker. What's the Scout move?", answers: ["Tell a grown-up and change the password", "Nothing - speakers forget instantly", "Whisper the same password next time", "Unplug every device forever"], correctIndex: 0, explanation: "A password in a recording isn't fully yours. Change it and keep the next one off the air." },
       { question: "Why do Scouts flip switches WITH a grown-up instead of alone?", answers: ["Together you pick the right settings - and they stay picked", "Alone is fine if you're really careful", "So the grown-up takes the blame", "Scouts never flip anything"], correctIndex: 0, explanation: "Patrol, point, flip together - that's how settings get right AND stay right." },
       { question: "Robo-Pup answers when you talk to it. What does a Scout know?", answers: ["It has ears - so it counts as a smart device, switches and all", "Toys can't listen", "It's magic", "Only phones can hear"], correctIndex: 0, explanation: "Answering back = ears. Even toys join the ears list - the Scout surprise of the week." },
     ],

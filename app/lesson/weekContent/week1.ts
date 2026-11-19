@@ -115,7 +115,7 @@ export const WEEK_1: WeekContent = {
           "A weak key lets the Raccoon walk straight in.",
           "[warmly] A strong one keeps him outside, every single time.",
           "Before we build one, we need the words that heroes use.",
-          "Let's play Cyber Word Match, and learn them.",
+          "Let's play Cyber Word Match and learn them.",
         ],
       },
     },
@@ -484,7 +484,7 @@ export const WEEK_1: WeekContent = {
         lines: [
           "Not true, and you spotted it.",
           "All small letters is an easy job for him. Add capitals, numbers and symbols. Now there are so many MORE guesses to make that his machine gives up.",
-          "[proud] Sharp eyes, Cyber Hero.",
+          "[proud] Cyber Hero, sharp eyes.",
         ],
       },
     },
@@ -502,7 +502,7 @@ export const WEEK_1: WeekContent = {
         speaker: "layla",
         lines: [
           "Third power learned. You mix in capitals, numbers and symbols, so no plain word is left inside.",
-          "Long, and mixed up. That is a very hard password to crack.",
+          "Long and mixed up. That is a very hard password to crack.",
           "[warmly] But there is one way he gets a password without cracking anything at all. That is the thing we most need to talk about.",
         ],
       },
@@ -535,7 +535,7 @@ export const WEEK_1: WeekContent = {
           "Not your best friend. Not somebody in your game. Not a message that says it is urgent.",
           "The only place you ever type it is your own real login screen.",
           "[whispers] And the only person who ever helps you with it is a trusted grown-up.",
-          "Come and meet some of his tricks, and decide what to do!",
+          "Come and meet some of his tricks and decide what to do!",
         ],
       },
     },
@@ -579,7 +579,7 @@ export const WEEK_1: WeekContent = {
           setup: "A website pops up: \"Type your password here and we'll tell you how STRONG it is!\"",
           choices: [
             { text: "Type it in", isSafe: false, consequence: "That box checks nothing. It keeps whatever you type." },
-            { text: "PAUSE - close it", isSafe: true, consequence: "Closed, and quite right. A real checker never asks for your actual password." },
+            { text: "PAUSE - close it", isSafe: true, consequence: "Closed and quite right. A real checker never asks for your actual password." },
           ],
         },
         {
@@ -630,7 +630,7 @@ export const WEEK_1: WeekContent = {
       teachNarration: {
         speaker: "adam",
         lines: [
-          "Correct. You, and a trusted grown-up at home.",
+          "Correct. You and a trusted grown-up at home.",
           "Not your best friend, not your class, not ANYBODY who asks nicely.",
           "[proud] Exactly right.",
         ],
@@ -681,7 +681,7 @@ export const WEEK_1: WeekContent = {
           "And right at the top, one two three four five six.",
           "These are the first things he tries, because they are the things people pick MOST.",
           "[warmly] So we pick something that is on nobody's list.",
-          "Your turn to sort some weak passwords, and work out why each one is weak.",
+          "Your turn to sort some weak passwords and work out why each one is weak.",
         ],
       },
     },
@@ -718,7 +718,7 @@ export const WEEK_1: WeekContent = {
         lines: [
           "Look at each weak password and tap the reason it is weak.",
           "Too short. A real word. Something about you. Or just keys in a row.",
-          "[warmly] Sort them all, Cyber Hero.",
+          "[warmly] Cyber Hero, sort them all.",
         ],
       },
       completeNarration: {
@@ -763,7 +763,7 @@ export const WEEK_1: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[proud] That is all five powers, Cyber Hero!",
+          "[proud] Cyber Hero, that is all five powers!",
           "A key that proves it is you. Long. Mixed up. Secret. Nothing obvious.",
           "[warmly] Before we face him, let's put all five together one more time in Power Bingo.",
         ],
@@ -881,7 +881,7 @@ export const WEEK_1: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[warmly] Look at what you can do now, Cyber Hero.",
+          "[warmly] Cyber Hero, look at what you can do now.",
           "You know your password is a key that proves it is you.",
           "You make it long with three random words.",
           "You mix in capitals, numbers and symbols.",

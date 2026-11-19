@@ -87,7 +87,7 @@ export const WEEK_17: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[nervous] Cyber Hero, mind your reflection, and read this incident report with me.",
+          "[nervous] Cyber Hero, mind your reflection and read this incident report with me.",
           "The Raccoon has opened a Hall of Mirrors. Endless perfect posts. Follower numbers spinning round and round. Unlocked profiles anyone at all can stand and stare into.",
           "This week you forge the Profile Shield, so the mirror shows only what you choose.",
           "[whispers] Dazzled, comparing, and wide open. That is exactly how he likes them.",
@@ -131,7 +131,7 @@ export const WEEK_17: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[warmly] Welcome to the Hall of Mirrors, Cyber Hero. Look at all these rooms.",
+          "[warmly] Cyber Hero, welcome to the Hall of Mirrors. Look at all these rooms.",
           "Every one of them has a number on a little brass stand outside.",
           "[thinking] And I know how that number feels. Like somebody looked at YOU and said no.",
           "It is not you. That number is a label on the ROOM, like the label on a jam jar.",
@@ -271,7 +271,7 @@ export const WEEK_17: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[proud] One power down, Cyber Hero. You read the room now, not the telling off.",
+          "[proud] Cyber Hero, one power down. You read the room now, not the telling off.",
           "A number is a label. A label is a fact. Facts are easy to walk past.",
           "[whispers] But there is one room you are already standing in. And it has no door on it at all...",
           "Next, we'll learn how to choose who is allowed to look at your own profile. Come and see!",
@@ -300,7 +300,7 @@ export const WEEK_17: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[thinking] So. That room with no door on it? It is yours, Cyber Hero. It is your profile.",
+          "[thinking] So. That room with no door on it? Cyber Hero, it is yours. It is your profile.",
           "It hangs right here in the hall, and anybody walking past can stop and look straight through it.",
           "[warmly] Now here is the lovely part. Every pane of that mirror has a little setting on it.",
           "The setting says who may look. Just your friends, or absolutely anybody.",
@@ -451,7 +451,7 @@ export const WEEK_17: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[proud] Two powers down, Cyber Hero. Your mirror is frosted exactly where it needed to be.",
+          "[proud] Cyber Hero, two powers down. Your mirror is frosted exactly where it needed to be.",
           "Friends see everything. Strangers see the dragon and nothing else.",
           "[whispers] Although... he is awfully quiet about that big number spinning at the top of your mirror...",
           "Next, we'll learn why that big follower number is not a list of your friends. Come and see!",
@@ -611,7 +611,7 @@ export const WEEK_17: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[proud] Three powers down, Cyber Hero. Gold in the pan, glitter in the river.",
+          "[proud] Cyber Hero, three powers down. Gold in the pan, glitter in the river.",
           "Watching is easy. Knowing somebody takes an actual place and an actual day.",
           "[whispers] Now. All those watchers are still out there, and you are about to post something...",
           "Next, we'll learn how to check a post before it goes anywhere. Come and see!",
@@ -642,7 +642,7 @@ export const WEEK_17: WeekContent = {
         lines: [
           "[warmly] So you have written a post. Lovely. And here is the best bit: it has not gone anywhere.",
           "There is a little gap between writing a thing and sending it, and that gap is all yours.",
-          "[thinking] So we read it back with a highlighter, hunting for two words. Where, and when.",
+          "[thinking] So we read it back with a highlighter, hunting for two words. Where and when.",
           "Those two stuck together make a map. And a map is the only part a stranger can actually use.",
           "And listen, we are not deleting your news. We swap the map out and keep every bit of the fun.",
           "[excited] Come and run the highlighter over a draft with me!",
@@ -674,7 +674,7 @@ export const WEEK_17: WeekContent = {
       coachLines: {
         speaker: "adam",
         lines: [
-          "Two words to hunt for on every line. Where, and when.",
+          "Two words to hunt for on every line. Where and when.",
         ],
       },
       threat: {
@@ -722,7 +722,7 @@ export const WEEK_17: WeekContent = {
           safe: false,
           readAloud: "Fifth line. My badge has my full name and my school on it.",
           why: "A full name and a school in one line is the whole map at once. I got my new badge is still the proud bit, with the map taken out.",
-          explanation: "Count what is in that line. A full name, and a school. That is two of the biggest things on your mirror.",
+          explanation: "Count what is in that line. A full name and a school. That is two of the biggest things on your mirror.",
         },
         {
           id: "l6",
@@ -782,7 +782,7 @@ export const WEEK_17: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[proud] Four powers down, Cyber Hero. No draft of yours leaves without a read back now.",
+          "[proud] Cyber Hero, four powers down. No draft of yours leaves without a read back now.",
           "Map out, news in. That is the whole highlighter trick.",
           "[thinking] And now the strangest room in his whole hall. The one where everything looks perfect...",
           "Next, we'll learn what is really behind a perfect looking post. Come and see!",
@@ -858,7 +858,7 @@ export const WEEK_17: WeekContent = {
       coachLines: {
         speaker: "adam",
         lines: [
-          "There is no wrong tap in here, Cyber Hero. Open them all and see everything.",
+          "Cyber Hero, there is no wrong tap in here. Open them all and see everything.",
         ],
       },
       items: [
@@ -904,7 +904,7 @@ export const WEEK_17: WeekContent = {
             { icon: "🙈", text: "...and one foot to the left, the entire floor covered in everything that was on the shelves." },
             { icon: "🌀", text: "So the camera was pointed at the one tidy corner, with that floor carefully just out of shot." },
           ],
-          counter: "So a tidy room is often one tidy corner, carefully aimed at.",
+          counter: "So a tidy room is often one tidy corner carefully aimed at.",
         },
         {
           id: "friends",
@@ -915,7 +915,7 @@ export const WEEK_17: WeekContent = {
             { icon: "⏱️", text: "...all three photos were taken on the same afternoon and posted across a week." },
             { icon: "🙈", text: "The Tuesday, the Wednesday and the Thursday were homework and telly, same as yours." },
           ],
-          counter: "So a busy week can be one busy hour, stretched out.",
+          counter: "So a busy week can be one busy hour stretched out.",
         },
       ],
       finale: "Not one of those frames was a whole day. Every single one of them was a minute somebody chose.",
@@ -924,7 +924,7 @@ export const WEEK_17: WeekContent = {
         lines: [
           "[warmly] Five frames, and not one of them was a whole day.",
           "Behind every single one there was a bin. Or an argument. Or eleven misses. Or a floor covered in stuff.",
-          "[proud] So the next time a feed makes you feel small, you already know what you are looking at. A minute, Cyber Hero. Not a life.",
+          "[proud] So the next time a feed makes you feel small, you already know what you are looking at. Cyber Hero, a minute. Not a life.",
         ],
       },
     },
@@ -947,7 +947,7 @@ export const WEEK_17: WeekContent = {
           "[proud] That is exactly it!",
           "Your whole day, ordinary bits and all, against their one best minute.",
           "Nobody could win that, and nobody is meant to.",
-          "[warmly] Knowing that is the shield, Cyber Hero. It takes all the sting straight out.",
+          "[warmly] Cyber Hero, knowing that is the shield. It takes all the sting straight out.",
         ],
       },
     },
@@ -962,7 +962,7 @@ export const WEEK_17: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[proud] Five powers down, Cyber Hero. Every single one of them earned.",
+          "[proud] Cyber Hero, five powers down. Every single one of them earned.",
           "Room numbers. Frosted panes. Gold in the pan. A scrubbed draft. And the backstage truth.",
           "[warmly] Now let's put the whole lot together at once.",
           "Next, we'll walk the hall once more and check a profile all the way round. Come and see!",
@@ -984,7 +984,7 @@ export const WEEK_17: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[excited] Last walk of the hall, Cyber Hero, and you are doing the checking this time.",
+          "[excited] Cyber Hero, last walk of the hall, and you are doing the checking this time.",
           "Three profiles. On each one, tap all four checks before you decide anything.",
           "Then call it. Shield up, or still open.",
         ],
@@ -1103,7 +1103,7 @@ export const WEEK_17: WeekContent = {
           "Rooms read, panes frosted, gold panned,",
           "drafts checked... and the backstage seen for what it is.",
           "[laughs] His whole Hall of Mirrors just stopped working on you.",
-          "[excited] Sticker time, Cyber Hero!",
+          "[excited] Cyber Hero, sticker time!",
         ],
       },
     },
