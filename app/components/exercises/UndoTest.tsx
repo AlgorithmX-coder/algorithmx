@@ -142,7 +142,10 @@ export default function UndoTest({
   const [idx, setIdx] = useState(0);
   // Read-aloud chain: the how-to once as the board appears, then each round as
   // it arrives. Taps are held while she speaks. "idle" = nothing playing.
-  const [narr, setNarr] = useState<"howto" | "read" | "idle">("idle");
+  // When the cards appear she reads the question, then each card in the order
+  // it sits on screen (UAT 2026-11-18: "read the options out loud").
+  const [narr, setNarr] = useState<"howto" | "read" | "prompt" | "card" | "idle">("idle");
+  const [cardRead, setCardRead] = useState(0);
   // Which beat of the round is live (see Step).
   const [step, setStep] = useState<Step>("share");
   // "sealed" = the true card: the seal lands while Sarah says why, then the
@@ -186,7 +189,15 @@ export default function UndoTest({
     if (narr === "idle") return;
     const id = window.setTimeout(() => setNarr("idle"), SPOKEN_GATE_MAX_MS);
     return () => window.clearTimeout(id);
-  }, [narr]);
+  }, [narr, cardRead]);
+
+  // The cards have appeared: read the question and the options, once per round.
+  const roundId = r?.id;
+  useEffect(() => {
+    if (!decide || !roundId || isAudioMuted()) return;
+    const id = window.setTimeout(() => { setCardRead(0); setNarr("prompt"); }, reduce ? 0 : 400);
+    return () => window.clearTimeout(id);
+  }, [decide, roundId, reduce]);
   useEffect(() => subscribeAudioMute((muted) => { if (muted) setNarr("idle"); }), []);
 
   // Hint tiers reported once each (for the parent dashboard).
@@ -661,6 +672,19 @@ export default function UndoTest({
           )}
           {narr === "read" && (
             <InfoNarration key={`ut-read-${r.id}`} speaker={voice} lines={[r.readAloud]} accent={accent} recordedOnly onDone={() => setNarr("idle")} />
+          )}
+          {narr === "prompt" && (
+            <InfoNarration key={`ut-prompt-${r.id}`} speaker={voice} lines={[r.cardPrompt ?? DEFAULT_CARD_PROMPT]} accent={accent} recordedOnly onDone={() => setNarr(cards.length ? "card" : "idle")} />
+          )}
+          {narr === "card" && cards[cardRead] && (
+            <InfoNarration
+              key={`ut-card-${r.id}-${cardRead}`}
+              speaker={voice}
+              lines={[cards[cardRead].text]}
+              accent={accent}
+              recordedOnly
+              onDone={() => (cardRead + 1 < cards.length ? setCardRead(cardRead + 1) : setNarr("idle"))}
+            />
           )}
         </div>
       )}

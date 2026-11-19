@@ -792,6 +792,13 @@ for (const fname of weekFiles) {
       if (["coinCounter", "oddsJar", "truePriceLever"].includes(st.type)) {
         pushAll(span, /\breadAloud:\s*"((?:[^"\\]|\\.)*)"/g);
       }
+      /* Odds Jar and the Undo Test read the "So what is true?" question and
+       * every answer card aloud (UAT 2026-11-18), the way the Great Climb-Out
+       * reads its options. In these spans `text:` only ever appears on a card. */
+      if (["oddsJar", "undoTest"].includes(st.type)) {
+        pushAll(span, /\bcardPrompt:\s*"((?:[^"\\]|\\.)*)"/g);
+        pushAll(span, /\btext:\s*"((?:[^"\\]|\\.)*)"/g);
+      }
       if (st.type === "truePriceLever") {
         // each deal's teach panel speaks its body ("Not quite." + body)
         pushAll(span, /\bbody:\s*"((?:[^"\\]|\\.)*)"/g);
