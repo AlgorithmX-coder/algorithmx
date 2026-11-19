@@ -33,8 +33,9 @@
  *     transcriber's quirk (deliberate misspellings like "HAPYP BIRHTDAY"), so
  *     it is accepted and reported;
  *   - lines are joined by a fixed LINE_GAP, every edge faded, never a hard cut;
- *   - one tempo for the whole card toward TARGET_WPM, and a line that still
- *     reads faster than LINE_MAX_WPM is slowed to LINE_CAP_WPM;
+ *   - one tempo for the whole card toward TARGET_SYL syllables a second, a
+ *     line that still reads faster than LINE_MAX_SYL is calmed to it, and no
+ *     line's tempo leaves [TEMPO_MIN, TEMPO_MAX] (see TARGET_SYL);
  *   - no mood tags and no shouted CAPS: the owner found both made the tone and
  *     stress uneven ("unnecessary stressing", "inconsistent tone").
  */
@@ -45,10 +46,48 @@ import { join, dirname } from "node:path";
 import ffmpegPath from "ffmpeg-static";
 
 export const LINE_GAP = 0.75;
-const MAX_INNER_GAP = 0.6;
-const TARGET_WPM = 160;
-const LINE_MAX_WPM = 180;
-const LINE_CAP_WPM = 172;
+export const MAX_INNER_GAP = 0.6;
+/* PACE IS MEASURED IN SYLLABLES (UAT 2026-11-18). Until then the card aimed
+ * at 160 words a minute and any line over 180 wpm was slowed to 172 with NO
+ * lower limit on the tempo. A line of one-syllable words reads ~240 wpm at a
+ * perfectly calm pace, so "So here is what you do.", "Come and guard the door
+ * with me!" and "Then tap lock it in." were stretched to about 0.6x: 2.8
+ * syllables a second against a course median of 3.75. The tester heard
+ * "0.5x", "laggy", "last line very slow" on 342 lines in 311 clips, while the
+ * longer-worded lines in the same cards ran at 4.5-4.7 and sounded "too fast".
+ * Now: one card tempo toward TARGET_SYL, a line still faster than
+ * LINE_MAX_SYL is calmed to it, and no line's tempo ever leaves
+ * [TEMPO_MIN, TEMPO_MAX], so nothing can be dragged again. Measured the same
+ * way as the owner-approved standard (scripts/repace-closing.mjs): syllables
+ * over the line's span, commas included. */
+export const TARGET_SYL = 3.75;
+export const LINE_MAX_SYL = 4.3;
+export const TEMPO_MIN = 0.88;
+export const TEMPO_MAX = 1.1;
+const TARGET_WPM = 160; // kept only to translate a caller's targetWpm into syllables
+export function syllables(word) {
+  /* Digits are said as words: "ShadowFox99" is 3 + 4, "12th" is 1. */
+  if (/\d/.test(String(word))) {
+    const s = String(word);
+    const num = (s.match(/\d+/g) || []).reduce((n, d) => n + (d.length < 7 ? syllables(numWords(Number(d))) : d.length), 0);
+    return num + s.replace(/\d+(st|nd|rd|th)?/gi, " ").split(/\s+/).filter(Boolean).reduce((n, x) => n + syllables(x), 0);
+  }
+  const bare = String(word).replace(/[^A-Za-z-]/g, "");
+  if (/^[A-Z]{2,5}$/.test(bare) || /^([A-Z]-){1,4}[A-Z]$/.test(bare)) return bare.replace(/-/g, "").length;
+  let w = String(word).toLowerCase().replace(/[^a-z]/g, "");
+  if (!w) return /\d/.test(word) ? String(word).replace(/\D/g, "").length : 0;
+  if (w.length <= 3) return 1;
+  w = w.replace(/(?:[^laeiouy]es|ed|[^laeiouy]e)$/, "").replace(/^y/, "");
+  return (w.match(/[aeiouy]{1,2}/g) || [1]).length;
+}
+export const lineSyllables = (line) => String(line).split(/[\s\-–—/]+/).reduce((s, w) => s + syllables(w), 0);
+/** Tempo for one line: the card tempo, calmed if the line would still read
+ *  faster than LINE_MAX_SYL, never outside [TEMPO_MIN, TEMPO_MAX]. */
+export function lineTempo(cardTempo, rawLineRate, nWords) {
+  let t = cardTempo;
+  if (nWords >= 3 && rawLineRate * cardTempo > LINE_MAX_SYL) t = LINE_MAX_SYL / rawLineRate;
+  return Math.min(TEMPO_MAX, Math.max(TEMPO_MIN, t));
+}
 const MAX_TAKES = Number(process.env.LINETAKE_MAX_TAKES) || 5;
 /* Shortest final t/s/k a take may keep, measured on the raw take. CI's
  * audit-consonant-integrity wants 0.08s on the SHIPPED clip, and the card
@@ -75,6 +114,11 @@ export function cleanLine(line) {
 
 const ONES = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen"];
 const TENS = ["", "", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety"];
+function ordinal(w) {
+  const irregular = { one: "first", two: "second", three: "third", five: "fifth", eight: "eighth", nine: "ninth", twelve: "twelfth" };
+  for (const [k, v] of Object.entries(irregular)) if (w.endsWith(k)) return w.slice(0, -k.length) + v;
+  return w.endsWith("y") ? w.slice(0, -1) + "ieth" : w + "th";
+}
 function numWords(n) {
   if (n < 20) return ONES[n];
   if (n < 100) return TENS[Math.floor(n / 10)] + (n % 10 ? ONES[n % 10] : "");
@@ -90,18 +134,21 @@ const SAME_SOUND = {
   phishing: "fishing", phish: "fish", mom: "mum", moms: "mums", pajamas: "pyjamas", byte: "bite", bytes: "bites",
   reel: "real", latter: "ladder", borough: "burrow", missus: "misses", tally: "telly", em: "him", their: "theyre",
   there: "theyre", practise: "practice", practised: "practiced", adore: "adoor", britebox: "brightbox", pryzebot: "prizebot", petz: "pets",
+  hear: "here", too: "two",
 };
 /* One canonical spelling, so a transcriber's American spelling or digits are
  * not mistaken for a different word. Applied to BOTH sides. */
 function canon(tok) {
   let w = tok.toLowerCase().replace(/[’]/g, "'").replace(/[^a-z0-9']/g, "");
+  /* "12th" and "twelfth" are the same word. */
+  w = w.replace(/^(\d{1,3})(st|nd|rd|th)$/, (m, d) => ordinal(numWords(Number(d))));
   w = w.replace(/\d+/g, (d) => (d.length < 7 ? numWords(Number(d)) : d));
   w = w.replace(/'/g, "");
   w = SAME_SOUND[w] ?? w;
   w = w.replace(/our(s?)$/, "or$1").replace(/is(e|ed|es|ing)$/, "iz$1").replace(/tre$/, "ter").replace(/^grey/, "gray").replace(/^ok$/, "okay");
   return w;
 }
-function wordsOf(text) {
+export function wordsOf(text) {
   return String(text)
     .replace(/\[[a-z ]+\]/gi, " ")
     /* How a transcriber WRITES what was said (2026-11-16, second opinions on
@@ -315,7 +362,7 @@ function windowCut(raw, before, last) {
   return t ? { err: t } : { at };
 }
 
-async function recordLine(ctx, line, prev, next, tmp) {
+export async function recordLine(ctx, line, prev, next, tmp) {
   let best = null;
   const seen = new Map();
   for (let take = 1; take <= MAX_TAKES; take++) {
@@ -382,6 +429,23 @@ async function recordLine(ctx, line, prev, next, tmp) {
   return { ...best, failed: true };
 }
 
+/** One accepted take -> a finished line part (wav): long inner silences
+ *  shortened inside the silence, every edge faded, then the tempo. */
+export function shapeLine(t, tempo, out) {
+  const total = duration(t.wav);
+  const segs = [];
+  let from = Math.max(0, t.words[0].start - 0.1);
+  for (let k = 1; k < t.words.length; k++) {
+    const gap = t.words[k].start - t.words[k - 1].end;
+    if (gap > MAX_INNER_GAP + 0.1) { segs.push([from, t.words[k - 1].end + MAX_INNER_GAP / 2]); from = t.words[k].start - MAX_INNER_GAP / 2; }
+  }
+  segs.push([from, total]);
+  const filt = segs.map((s, k) => `[0:a]atrim=${s[0].toFixed(3)}:${s[1].toFixed(3)},asetpts=PTS-STARTPTS,afade=t=in:d=0.012,afade=t=out:st=${Math.max(0, s[1] - s[0] - 0.012).toFixed(3)}:d=0.012[s${k}]`).join(";")
+    + ";" + segs.map((_, k) => `[s${k}]`).join("") + `concat=n=${segs.length}:v=0:a=1,atempo=${tempo.toFixed(4)}[o]`;
+  ff(["-i", t.wav, "-filter_complex", filt, "-map", "[o]", "-ar", "44100", "-ac", "1", out]);
+  return out;
+}
+
 /**
  * Record a block (card) with the line-take method into `outFile` (mp3).
  * Returns { ok, notes[], transcript } - ok=false means a line never came out
@@ -404,27 +468,20 @@ export async function recordBlockLineTake({ key, voiceId, model, settings, lines
       takes.push(t);
     }
     const nWords = takes.reduce((s, t) => s + t.words.length, 0);
-    const speech = takes.reduce((s, t) => s + Math.max(0.3, t.words.at(-1).end - t.words[0].start), 0);
+    const span = (t) => Math.max(0.3, t.words.at(-1).end - t.words[0].start);
+    const speech = takes.reduce((s, t) => s + span(t), 0);
     const rawWpm = (nWords / speech) * 60;
-    const cardTempo = Math.min(1.1, Math.max(0.92, targetWpm / rawWpm));
+    const rawSyl = clean.reduce((s, l) => s + lineSyllables(l), 0) / speech;
+    const targetSyl = targetWpm === TARGET_WPM ? TARGET_SYL : (TARGET_SYL * targetWpm) / TARGET_WPM;
+    const cardTempo = Math.min(1.1, Math.max(0.92, targetSyl / rawSyl));
     const parts = [];
+    const tempos = [];
     for (const [i, t] of takes.entries()) {
-      const lw = (t.words.length / Math.max(0.3, t.words.at(-1).end - t.words[0].start)) * 60 * cardTempo;
-      const tempo = t.words.length >= 4 && lw > LINE_MAX_WPM ? (cardTempo * LINE_CAP_WPM) / lw : cardTempo;
-      const total = duration(t.wav);
-      const segs = [];
-      let from = Math.max(0, t.words[0].start - 0.1);
-      for (let k = 1; k < t.words.length; k++) {
-        const gap = t.words[k].start - t.words[k - 1].end;
-        if (gap > MAX_INNER_GAP + 0.1) { segs.push([from, t.words[k - 1].end + MAX_INNER_GAP / 2]); from = t.words[k].start - MAX_INNER_GAP / 2; }
-      }
-      segs.push([from, total]);
-      const p = `${tmp}.part${i}.wav`;
-      const filt = segs.map((s, k) => `[0:a]atrim=${s[0].toFixed(3)}:${s[1].toFixed(3)},asetpts=PTS-STARTPTS,afade=t=in:d=0.012,afade=t=out:st=${Math.max(0, s[1] - s[0] - 0.012).toFixed(3)}:d=0.012[s${k}]`).join(";")
-        + ";" + segs.map((_, k) => `[s${k}]`).join("") + `concat=n=${segs.length}:v=0:a=1,atempo=${tempo.toFixed(4)}[o]`;
-      ff(["-i", t.wav, "-filter_complex", filt, "-map", "[o]", "-ar", "44100", "-ac", "1", p]);
-      parts.push(p);
+      const tempo = lineTempo(cardTempo, lineSyllables(clean[i]) / span(t), t.words.length);
+      tempos.push(+tempo.toFixed(3));
+      parts.push(shapeLine(t, tempo, `${tmp}.part${i}.wav`));
     }
+    notes.push(`tempo card ${cardTempo.toFixed(3)} lines ${tempos.join(",")}`);
     /* Loudness from the SPEECH only (parts without the breaks), so the voice
      * sits where the old clips did against the music however many breaks. */
     const speechOnly = `${tmp}.speech.wav`;
