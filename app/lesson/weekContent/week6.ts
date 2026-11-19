@@ -758,7 +758,7 @@ export const WEEK_6: WeekContent = {
       completeNarration: {
         speaker: "layla",
         lines: [
-          "[proud] Every button found, Cyber Hero! Three menus, three times report, block, tell.",
+          "[proud] Cyber Hero, every button found! Three menus, three times report, block, tell.",
           "[warmly] Away from here, the buttons move around but the words stay the same. Look for the word, and the order never changes.",
         ],
       },

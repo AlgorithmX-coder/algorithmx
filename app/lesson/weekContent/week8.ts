@@ -593,7 +593,7 @@ export const WEEK_8: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[warmly] Picture four doors, Cyber Hero.",
+          "[warmly] Cyber Hero, picture four doors.",
           "A tiny door marked Just Me. A small door for friends. A bigger door for school. And a HUGE door marked Everyone.",
           "[whispers] Whatever walks through a door can't walk back out.",
           "So faces and clues get the smallest door that fits. A photo with no faces and no clues can go to everyone.",

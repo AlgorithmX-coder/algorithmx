@@ -115,7 +115,7 @@ export const WEEK_2: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[warmly] Welcome back, Cyber Hero. Lean in... this one's big.",
+          "[warmly] Cyber Hero, welcome back. Lean in... this one's big.",
           "Some things about you are PRIVATE. That means... just for you.",
           "Your name. Your address. Your school. Your phone number.",
           "[whispers] They tell a stranger WHO you are, and WHERE you are.",
@@ -174,7 +174,7 @@ export const WEEK_2: WeekContent = {
           icon: "📱",
           steps: [
             { icon: "🦝", text: "If he gets your number..." },
-            { icon: "🔔", text: "...it's RING RING at dinner, RING RING at bedtime. Pranks that never, ever stop!" },
+            { icon: "🔔", text: "...it's RING RING at dinner, RING RING at bedtime. Pranks that never ever stop!" },
             { icon: "💬", text: "And in between the pranks, sneaky texts pretending to be someone you trust." },
           ],
           counter: "So your number is for family and real friends only.",
@@ -855,7 +855,7 @@ export const WEEK_2: WeekContent = {
           "Messages fly toward your device.",
           "Tap a grab for private info to ZAP it. Leave the safe ones alone.",
           "Those land in your vault.",
-          "[warmly] Trust your training, you guard this vault now. Ready? Let's zap!",
+          "[warmly] Trust your training. You guard this vault now. Ready? Let's zap!",
         ],
       },
       completeNarration: {

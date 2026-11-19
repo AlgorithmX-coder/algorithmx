@@ -852,7 +852,7 @@ export const WEEK_12: WeekContent = {
           options: [
             { id: "grownup", label: "Ask a grown-up to help you sort it out", icon: "👪", isRight: true, why: "This print is on somebody else's page, which is exactly the kind a ranger hands over.", explanation: "You cannot tidy a print that is not on your page, and you should not have to do it alone. This is the one you take to a trusted grown-up." },
             { id: "ignore", label: "Leave it, it is not your page", icon: "🚫", isRight: false, why: "", explanation: "It is not your page and it is your street. Not-mine is a reason to ask for help, never a reason to ignore it." },
-            { id: "argue", label: "Argue with your friend in the comments", icon: "💬", isRight: false, why: "", explanation: "An argument in the comments points even more people at the photo. Quietly, with a grown-up, works far better." },
+            { id: "argue", label: "Argue with your friend in the comments", icon: "💬", isRight: false, why: "", explanation: "An argument in the comments points even more people at the photo. Quietly with a grown-up works far better." },
           ],
         },
       ],
