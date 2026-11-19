@@ -243,12 +243,12 @@ export const WEEK_5: WeekContent = {
         { text: "A silly nickname you gave yourself", isCorrect: false, why: "You chose it and you like it. Nobody is hurting." },
         { text: "'I'll beat you next race!' before a rematch", isCorrect: false, why: "That is game talk with everyone smiling. Nobody is hurting." },
       ],
-      praise: "Exactly: mean, on purpose, again and again. ✓",
+      praise: "Exactly: mean on purpose, again and again. ✓",
       teachNarration: {
         speaker: "layla",
         lines: [
           "[proud] Well done!",
-          "Mean, on purpose, again and again. That is bullying.",
+          "Mean on purpose, again and again, that's bullying.",
           "The others had everyone laughing, so they were just fun.",
           "[warmly] Keep asking your test question: is someone hurting?",
         ],

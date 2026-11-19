@@ -223,7 +223,7 @@ export const WEEK_10: WeekContent = {
         lines: [
           "[proud] Well done!",
           "When the next video starts by itself, that's autoplay.",
-          "A machine, with one job: keep you watching.",
+          "A machine with one job: keep you watching.",
         ],
       },
     },
@@ -750,7 +750,7 @@ export const WEEK_10: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[warmly] Last power, Cyber Hero, and it's already inside you.",
+          "[warmly] Cyber Hero, this last power is already inside you.",
           "When you've watched a while, your body rings a little bell.",
           "Dry blinky eyes. A jiggly leg. A stiff neck.",
           "[whispers] Outside, the sky changed colour... and you missed it.",

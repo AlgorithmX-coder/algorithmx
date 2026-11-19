@@ -945,7 +945,7 @@ export const WEEK_15: WeekContent = {
         lines: [
           "[warmly] Okay, one last big review before we face the Know-It-All!",
           "Lots of AI moments will drift past you, one at a time.",
-          "If it's a smart, fact-checker move, stamp it WISE MOVE.",
+          "If it's a smart fact-checker move, stamp it WISE MOVE.",
           "If it's one of the booth's tricks, stamp it BOT TRAP.",
           "[excited] Show me everything you've learned. Off we go!",
         ],

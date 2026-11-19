@@ -329,16 +329,16 @@
       "file": "/audio/voice/cdee2766ba5c949b.mp3"
     },
     {
-      "key": "3b138dcaab0eabb5",
+      "key": "51eb533f1f07acb7",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "That's right. A password proves it's YOU. It is a key only you have, so the computer lets you in and keeps everybody else out. [proud] Good start, Cyber Hero.",
+      "text": "That's right. A password proves it's YOU. It is a key only you have, so the computer lets you in and keeps everybody else out. [proud] Cyber Hero, good start.",
       "lines": [
         "That's right. A password proves it's YOU.",
         "It is a key only you have, so the computer lets you in and keeps everybody else out.",
-        "[proud] Good start, Cyber Hero."
+        "[proud] Cyber Hero, good start."
       ],
-      "file": "/audio/voice/3b138dcaab0eabb5.mp3"
+      "file": "/audio/voice/51eb533f1f07acb7.mp3"
     },
     {
       "key": "02569abbccbc3cb1",
@@ -2212,16 +2212,16 @@
       "file": "/audio/voice/12b3d6b89f1c74b1.mp3"
     },
     {
-      "key": "9ddd8fc70bed5995",
+      "key": "a1290811f5f113c5",
       "speaker": "layla",
       "voice": "Emma (Kids Educator)",
-      "text": "[proud] Well done! When the next video starts by itself, that's autoplay. A machine, with one job: keep you watching.",
+      "text": "[proud] Well done! When the next video starts by itself, that's autoplay. A machine with one job: keep you watching.",
       "lines": [
         "[proud] Well done!",
         "When the next video starts by itself, that's autoplay.",
-        "A machine, with one job: keep you watching."
+        "A machine with one job: keep you watching."
       ],
-      "file": "/audio/voice/9ddd8fc70bed5995.mp3"
+      "file": "/audio/voice/a1290811f5f113c5.mp3"
     },
     {
       "key": "0d6c6278d445fb75",
@@ -2462,19 +2462,19 @@
       "file": "/audio/voice/4b49ed0b6d57d06c.mp3"
     },
     {
-      "key": "1ffeb552fd9b9594",
+      "key": "63298c1dee1446ce",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "[warmly] Last power, Cyber Hero, and it's already inside you. When you've watched a while, your body rings a little bell. Dry blinky eyes. A jiggly leg. A stiff neck. [whispers] Outside, the sky changed colour... and you missed it. That bell isn't bad news. It's your signal. [excited] Let's use it. Time for Pause Power!",
+      "text": "[warmly] Cyber Hero, this last power is already inside you. When you've watched a while, your body rings a little bell. Dry blinky eyes. A jiggly leg. A stiff neck. [whispers] Outside, the sky changed colour... and you missed it. That bell isn't bad news. It's your signal. [excited] Let's use it. Time for Pause Power!",
       "lines": [
-        "[warmly] Last power, Cyber Hero, and it's already inside you.",
+        "[warmly] Cyber Hero, this last power is already inside you.",
         "When you've watched a while, your body rings a little bell.",
         "Dry blinky eyes. A jiggly leg. A stiff neck.",
         "[whispers] Outside, the sky changed colour... and you missed it.",
         "That bell isn't bad news. It's your signal.",
         "[excited] Let's use it. Time for Pause Power!"
       ],
-      "file": "/audio/voice/1ffeb552fd9b9594.mp3"
+      "file": "/audio/voice/63298c1dee1446ce.mp3"
     },
     {
       "key": "fa4127c7a71887d0",
@@ -4519,17 +4519,17 @@
       "file": "/audio/voice/904fbb7f101c8abd.mp3"
     },
     {
-      "key": "5f1e4dc70c063196",
+      "key": "fa1ca3d3fe8ccc2e",
       "speaker": "layla",
       "voice": "Emma (Kids Educator)",
-      "text": "[excited] Here's the lighthouse radio. Every channel is somebody you could call. Turn the dial, and tap CALL. [warmly] The ones who come running join your board. Let's find three, Cyber Hero!",
+      "text": "[excited] Here's the lighthouse radio. Every channel is somebody you could call. Turn the dial and tap CALL. [warmly] The ones who come running join your board. Let's find three, Cyber Hero!",
       "lines": [
         "[excited] Here's the lighthouse radio. Every channel is somebody you could call.",
-        "Turn the dial, and tap CALL.",
+        "Turn the dial and tap CALL.",
         "[warmly] The ones who come running join your board.",
         "Let's find three, Cyber Hero!"
       ],
-      "file": "/audio/voice/5f1e4dc70c063196.mp3"
+      "file": "/audio/voice/fa1ca3d3fe8ccc2e.mp3"
     },
     {
       "key": "d238822cff44eba3",
@@ -4838,18 +4838,18 @@
       "file": "/audio/voice/7e0bbd9f242215fd.mp3"
     },
     {
-      "key": "7d6dde525a8e6257",
+      "key": "68fb7936a1a0f492",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "[excited] Look at EVERYTHING you mastered this week! The stones put down, the crew named, the signal starved, the proof developed... and the drill run clean. [warmly] Whatever lands on your screen, you know exactly what to do. [excited] Sticker time, Team Captain!",
+      "text": "[excited] Look at EVERYTHING you mastered this week! The stones put down, the crew named, the signal starved, the proof developed... and the drill run clean. [warmly] Whatever lands on your screen, you know exactly what to do. [excited] Cyber Hero, sticker time!",
       "lines": [
         "[excited] Look at EVERYTHING you mastered this week!",
         "The stones put down, the crew named,",
         "the signal starved, the proof developed... and the drill run clean.",
         "[warmly] Whatever lands on your screen, you know exactly what to do.",
-        "[excited] Sticker time, Team Captain!"
+        "[excited] Cyber Hero, sticker time!"
       ],
-      "file": "/audio/voice/7d6dde525a8e6257.mp3"
+      "file": "/audio/voice/68fb7936a1a0f492.mp3"
     },
     {
       "key": "9303b7655cf9c515",
@@ -7625,14 +7625,14 @@
       "file": "/audio/voice/0f63bf4e9f733ef9.mp3"
     },
     {
-      "key": "5c937003dcb25ba3",
+      "key": "6b1069efb118483f",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "An argument in the comments points even more people at the photo. Quietly, with a grown-up, works far better.",
+      "text": "An argument in the comments points even more people at the photo. Quietly with a grown-up works far better.",
       "lines": [
-        "An argument in the comments points even more people at the photo. Quietly, with a grown-up, works far better."
+        "An argument in the comments points even more people at the photo. Quietly with a grown-up works far better."
       ],
-      "file": "/audio/voice/5c937003dcb25ba3.mp3"
+      "file": "/audio/voice/6b1069efb118483f.mp3"
     },
     {
       "key": "14a93c2b7fbfb5f6",
@@ -13141,18 +13141,18 @@
       "file": "/audio/voice/308409287011842b.mp3"
     },
     {
-      "key": "5f2178b5d0cffbbe",
+      "key": "5908a87487a9e2dc",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "[warmly] Okay, one last big review before we face the Know-It-All! Lots of AI moments will drift past you, one at a time. If it's a smart, fact-checker move, stamp it WISE MOVE. If it's one of the booth's tricks, stamp it BOT TRAP. [excited] Show me everything you've learned. Off we go!",
+      "text": "[warmly] Okay, one last big review before we face the Know-It-All! Lots of AI moments will drift past you, one at a time. If it's a smart fact-checker move, stamp it WISE MOVE. If it's one of the booth's tricks, stamp it BOT TRAP. [excited] Show me everything you've learned. Off we go!",
       "lines": [
         "[warmly] Okay, one last big review before we face the Know-It-All!",
         "Lots of AI moments will drift past you, one at a time.",
-        "If it's a smart, fact-checker move, stamp it WISE MOVE.",
+        "If it's a smart fact-checker move, stamp it WISE MOVE.",
         "If it's one of the booth's tricks, stamp it BOT TRAP.",
         "[excited] Show me everything you've learned. Off we go!"
       ],
-      "file": "/audio/voice/5f2178b5d0cffbbe.mp3"
+      "file": "/audio/voice/5908a87487a9e2dc.mp3"
     },
     {
       "key": "4f11112e3d1303dd",
@@ -16310,19 +16310,19 @@
       "file": "/audio/voice/cfd5f15e811e8258.mp3"
     },
     {
-      "key": "61f07a9ce2b930be",
+      "key": "c1c449853bb07f3c",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "[thinking] Right. That big number at the top of your mirror. Let's talk about that one. It counts followers. And a follower is just somebody watching. That is the whole job. A friend is a different thing entirely, and there is one question that sorts them out. [warmly] Could you say WHERE you know them from? Sam, from football. Your nana. That is gold. Somebody lovely who replies to everything but has never been anywhere near you? That is glitter. [excited] Come and pan the river with me. You'll spot the difference in a second!",
+      "text": "[thinking] Right. That big number at the top of your mirror. Let's talk about that one. It counts followers. And a follower is just somebody watching. That is the whole job. A friend is a different thing entirely, and there is one question that sorts them out. [warmly] Could you say WHERE you know them from? Sam from football. Your nana. That is gold. Somebody lovely who replies to everything but has never been anywhere near you? That is glitter. [excited] Come and pan the river with me. You'll spot the difference in a second!",
       "lines": [
         "[thinking] Right. That big number at the top of your mirror. Let's talk about that one.",
         "It counts followers. And a follower is just somebody watching. That is the whole job.",
         "A friend is a different thing entirely, and there is one question that sorts them out.",
-        "[warmly] Could you say WHERE you know them from? Sam, from football. Your nana. That is gold.",
+        "[warmly] Could you say WHERE you know them from? Sam from football. Your nana. That is gold.",
         "Somebody lovely who replies to everything but has never been anywhere near you? That is glitter.",
         "[excited] Come and pan the river with me. You'll spot the difference in a second!"
       ],
-      "file": "/audio/voice/61f07a9ce2b930be.mp3"
+      "file": "/audio/voice/c1c449853bb07f3c.mp3"
     },
     {
       "key": "6c6922b0e0a8b2d1",
@@ -17418,14 +17418,14 @@
       "file": "/audio/voice/6a61563589e27d7d.mp3"
     },
     {
-      "key": "fc3e191b11acc778",
+      "key": "a80b10b9a210ebd8",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "Put the two halves together. A place, and a time you are always there. That is somewhere to wait.",
+      "text": "Put the two halves together. A place and a time you are always there. That is somewhere to wait.",
       "lines": [
-        "Put the two halves together. A place, and a time you are always there. That is somewhere to wait."
+        "Put the two halves together. A place and a time you are always there. That is somewhere to wait."
       ],
-      "file": "/audio/voice/fc3e191b11acc778.mp3"
+      "file": "/audio/voice/a80b10b9a210ebd8.mp3"
     },
     {
       "key": "d07ba375383a6ae5",
@@ -17948,14 +17948,14 @@
       "file": "/audio/voice/090ce1942d793573.mp3"
     },
     {
-      "key": "f1f5fa3d64ebed05",
+      "key": "4b7a44f4092abec2",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "Fourth line. Same time next Saturday, ten in the morning, sharp.",
+      "text": "Fourth line. Same time next Saturday, ten in the morning sharp.",
       "lines": [
-        "Fourth line. Same time next Saturday, ten in the morning, sharp."
+        "Fourth line. Same time next Saturday, ten in the morning sharp."
       ],
-      "file": "/audio/voice/f1f5fa3d64ebed05.mp3"
+      "file": "/audio/voice/4b7a44f4092abec2.mp3"
     },
     {
       "key": "c470e06f54b325f5",
@@ -22128,19 +22128,19 @@
       "file": "/audio/voice/6946409f9ae4f9fb.mp3"
     },
     {
-      "key": "65f85e6075a3c2a9",
+      "key": "497c9e8a08106791",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "[warmly] Welcome back, Cyber Hero. Lean in... this one's big. Some things about you are PRIVATE. That means... just for you. Your name. Your address. Your school. Your phone number. [whispers] They tell a stranger WHO you are, and WHERE you are. [nervous] And the sneaky Raccoon? He collects them like treasure. [excited] So today, we learn to guard them like heroes!",
+      "text": "[warmly] Cyber Hero, welcome back. Lean in... this one's big. Some things about you are PRIVATE. That means... just for you. Your name. Your address. Your school. Your phone number. [whispers] They tell a stranger WHO you are, and WHERE you are. [nervous] And the sneaky Raccoon? He collects them like treasure. [excited] So today, we learn to guard them like heroes!",
       "lines": [
-        "[warmly] Welcome back, Cyber Hero. Lean in... this one's big.",
+        "[warmly] Cyber Hero, welcome back. Lean in... this one's big.",
         "Some things about you are PRIVATE. That means... just for you.",
         "Your name. Your address. Your school. Your phone number.",
         "[whispers] They tell a stranger WHO you are, and WHERE you are.",
         "[nervous] And the sneaky Raccoon? He collects them like treasure.",
         "[excited] So today, we learn to guard them like heroes!"
       ],
-      "file": "/audio/voice/65f85e6075a3c2a9.mp3"
+      "file": "/audio/voice/497c9e8a08106791.mp3"
     },
     {
       "key": "bf76a55679571cff",
@@ -22522,10 +22522,10 @@
       "file": "/audio/voice/4fb5e42c90f608bd.mp3"
     },
     {
-      "key": "cd32540851d0e6e4",
+      "key": "d8d9db123dc230b0",
       "speaker": "layla",
       "voice": "Emma (Kids Educator)",
-      "text": "[excited] Final drill, Cyber Hero! The Raccoon has emptied his whole grab bag at you. This one mixes up everything you learned about guarding your secrets. Back in the real world, grabs for your private info and perfectly safe messages fly past you all the time. Messages fly toward your device. Tap a grab for private info to ZAP it. Leave the safe ones alone. Those land in your vault. [warmly] Trust your training, you guard this vault now. Ready? Let's zap!",
+      "text": "[excited] Final drill, Cyber Hero! The Raccoon has emptied his whole grab bag at you. This one mixes up everything you learned about guarding your secrets. Back in the real world, grabs for your private info and perfectly safe messages fly past you all the time. Messages fly toward your device. Tap a grab for private info to ZAP it. Leave the safe ones alone. Those land in your vault. [warmly] Trust your training. You guard this vault now. Ready? Let's zap!",
       "lines": [
         "[excited] Final drill, Cyber Hero! The Raccoon has emptied his whole grab bag at you.",
         "This one mixes up everything you learned about guarding your secrets.",
@@ -22533,9 +22533,9 @@
         "Messages fly toward your device.",
         "Tap a grab for private info to ZAP it. Leave the safe ones alone.",
         "Those land in your vault.",
-        "[warmly] Trust your training, you guard this vault now. Ready? Let's zap!"
+        "[warmly] Trust your training. You guard this vault now. Ready? Let's zap!"
       ],
-      "file": "/audio/voice/cd32540851d0e6e4.mp3"
+      "file": "/audio/voice/d8d9db123dc230b0.mp3"
     },
     {
       "key": "96fd6cb69ccb7148",
@@ -23907,14 +23907,14 @@
       "file": "/audio/voice/98bc2f95e065f7b1.mp3"
     },
     {
-      "key": "bd3b2b25ef0fcbec",
+      "key": "0b10b8a1263f504a",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "...it's RING RING at dinner, RING RING at bedtime. Pranks that never, ever stop!",
+      "text": "...it's RING RING at dinner, RING RING at bedtime. Pranks that never ever stop!",
       "lines": [
-        "...it's RING RING at dinner, RING RING at bedtime. Pranks that never, ever stop!"
+        "...it's RING RING at dinner, RING RING at bedtime. Pranks that never ever stop!"
       ],
-      "file": "/audio/voice/bd3b2b25ef0fcbec.mp3"
+      "file": "/audio/voice/0b10b8a1263f504a.mp3"
     },
     {
       "key": "b2093098a66b7797",
@@ -30568,17 +30568,17 @@
       "file": "/audio/voice/abd4fdaab409ab36.mp3"
     },
     {
-      "key": "6326c721fde9216f",
+      "key": "3f6f1dde79c6333b",
       "speaker": "layla",
       "voice": "Emma (Kids Educator)",
-      "text": "[proud] Well done! Mean, on purpose, again and again. That is bullying. The others had everyone laughing, so they were just fun. [warmly] Keep asking your test question: is someone hurting?",
+      "text": "[proud] Well done! Mean on purpose, again and again, that's bullying. The others had everyone laughing, so they were just fun. [warmly] Keep asking your test question: is someone hurting?",
       "lines": [
         "[proud] Well done!",
-        "Mean, on purpose, again and again. That is bullying.",
+        "Mean on purpose, again and again, that's bullying.",
         "The others had everyone laughing, so they were just fun.",
         "[warmly] Keep asking your test question: is someone hurting?"
       ],
-      "file": "/audio/voice/6326c721fde9216f.mp3"
+      "file": "/audio/voice/3f6f1dde79c6333b.mp3"
     },
     {
       "key": "bcdc4f47ce0096d5",
@@ -32298,15 +32298,15 @@
       "file": "/audio/voice/1ababcf4ff36440d.mp3"
     },
     {
-      "key": "0c64ebb3a13bdcbf",
+      "key": "fa882fba199bf46a",
       "speaker": "layla",
       "voice": "Emma (Kids Educator)",
-      "text": "[proud] Every button found, Cyber Hero! Three menus, three times report, block, tell. [warmly] Away from here, the buttons move around but the words stay the same. Look for the word, and the order never changes.",
+      "text": "[proud] Cyber Hero, every button found! Three menus, three times report, block, tell. [warmly] Away from here, the buttons move around but the words stay the same. Look for the word, and the order never changes.",
       "lines": [
-        "[proud] Every button found, Cyber Hero! Three menus, three times report, block, tell.",
+        "[proud] Cyber Hero, every button found! Three menus, three times report, block, tell.",
         "[warmly] Away from here, the buttons move around but the words stay the same. Look for the word, and the order never changes."
       ],
-      "file": "/audio/voice/0c64ebb3a13bdcbf.mp3"
+      "file": "/audio/voice/fa882fba199bf46a.mp3"
     },
     {
       "key": "9c2768e3034f3a2a",
@@ -34955,17 +34955,17 @@
       "file": "/audio/voice/4775ba97a1801b0b.mp3"
     },
     {
-      "key": "5657cfe89861363f",
+      "key": "b0802cc0a80b1edf",
       "speaker": "layla",
       "voice": "Emma (Kids Educator)",
-      "text": "[proud] What a counter, Cyber Hero. Every pack rang up at its real price. Fun names, bright colours, real coins underneath. [whispers] But the shop has a box it will not let you count. It is a mystery, on purpose. Next, we'll learn what is really hiding inside a loot box. Come and see!",
+      "text": "[proud] What a counter, Cyber Hero. Every pack rang up at its real price. Fun names, bright colours, real coins underneath. [whispers] But the shop has a box it will not let you count. It is a mystery on purpose. Next, we'll learn what is really hiding inside a loot box. Come and see!",
       "lines": [
         "[proud] What a counter, Cyber Hero. Every pack rang up at its real price.",
         "Fun names, bright colours, real coins underneath.",
-        "[whispers] But the shop has a box it will not let you count. It is a mystery, on purpose.",
+        "[whispers] But the shop has a box it will not let you count. It is a mystery on purpose.",
         "Next, we'll learn what is really hiding inside a loot box. Come and see!"
       ],
-      "file": "/audio/voice/5657cfe89861363f.mp3"
+      "file": "/audio/voice/b0802cc0a80b1edf.mp3"
     },
     {
       "key": "405f2cd3bc1412f1",
@@ -36679,19 +36679,19 @@
       "file": "/audio/voice/55ab44364eef3715.mp3"
     },
     {
-      "key": "85566e3edac08300",
+      "key": "2d5931c92f225a20",
       "speaker": "layla",
       "voice": "Emma (Kids Educator)",
-      "text": "[warmly] Picture four doors, Cyber Hero. A tiny door marked Just Me. A small door for friends. A bigger door for school. And a HUGE door marked Everyone. [whispers] Whatever walks through a door can't walk back out. So faces and clues get the smallest door that fits. A photo with no faces and no clues can go to everyone. [warmly] And photos of your body, like bath time or getting changed, are Just Me photos. They get no door at all. If anyone ever asks you for one, tell a trusted grown-up. [excited] Come and find the door that fits on the Door Dial!",
+      "text": "[warmly] Cyber Hero, picture four doors. A tiny door marked Just Me. A small door for friends. A bigger door for school. And a HUGE door marked Everyone. [whispers] Whatever walks through a door can't walk back out. So faces and clues get the smallest door that fits. A photo with no faces and no clues can go to everyone. [warmly] And photos of your body, like bath time or getting changed, are Just Me photos. They get no door at all. If anyone ever asks you for one, tell a trusted grown-up. [excited] Come and find the door that fits on the Door Dial!",
       "lines": [
-        "[warmly] Picture four doors, Cyber Hero.",
+        "[warmly] Cyber Hero, picture four doors.",
         "A tiny door marked Just Me. A small door for friends. A bigger door for school. And a HUGE door marked Everyone.",
         "[whispers] Whatever walks through a door can't walk back out.",
         "So faces and clues get the smallest door that fits. A photo with no faces and no clues can go to everyone.",
         "[warmly] And photos of your body, like bath time or getting changed, are Just Me photos. They get no door at all. If anyone ever asks you for one, tell a trusted grown-up.",
         "[excited] Come and find the door that fits on the Door Dial!"
       ],
-      "file": "/audio/voice/85566e3edac08300.mp3"
+      "file": "/audio/voice/2d5931c92f225a20.mp3"
     },
     {
       "key": "071fa0dc12130e18",
@@ -49796,15 +49796,15 @@
       "file": "/audio/voice/97756e1b52523b0f.mp3"
     },
     {
-      "key": "cec489dbafcf5ad7",
+      "key": "dc27d0e44e5909f8",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "Not quite. An argument in the comments points even more people at the photo. Quietly, with a grown-up, works far better.",
+      "text": "Not quite. An argument in the comments points even more people at the photo. Quietly with a grown-up works far better.",
       "lines": [
         "Not quite.",
-        "An argument in the comments points even more people at the photo. Quietly, with a grown-up, works far better."
+        "An argument in the comments points even more people at the photo. Quietly with a grown-up works far better."
       ],
-      "file": "/audio/voice/cec489dbafcf5ad7.mp3"
+      "file": "/audio/voice/dc27d0e44e5909f8.mp3"
     },
     {
       "key": "6ba5b7cbcd913643",
@@ -53305,15 +53305,15 @@
       "file": "/audio/voice/bc03ab873728e07a.mp3"
     },
     {
-      "key": "3234f6cdce39f385",
+      "key": "4dd7a073c0c8f65a",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "Not quite. Put the two halves together. A place, and a time you are always there. That is somewhere to wait.",
+      "text": "Not quite. Put the two halves together. A place and a time you are always there. That is somewhere to wait.",
       "lines": [
         "Not quite.",
-        "Put the two halves together. A place, and a time you are always there. That is somewhere to wait."
+        "Put the two halves together. A place and a time you are always there. That is somewhere to wait."
       ],
-      "file": "/audio/voice/3234f6cdce39f385.mp3"
+      "file": "/audio/voice/4dd7a073c0c8f65a.mp3"
     },
     {
       "key": "8e554ea1a9ef8361",

@@ -262,7 +262,7 @@ export const WEEK_11: WeekContent = {
         speaker: "layla",
         lines: [
           "[excited] Here's the lighthouse radio. Every channel is somebody you could call.",
-          "Turn the dial, and tap CALL.",
+          "Turn the dial and tap CALL.",
           "[warmly] The ones who come running join your board.",
           "Let's find three, Cyber Hero!",
         ],
@@ -905,7 +905,7 @@ export const WEEK_11: WeekContent = {
           "The stones put down, the crew named,",
           "the signal starved, the proof developed... and the drill run clean.",
           "[warmly] Whatever lands on your screen, you know exactly what to do.",
-          "[excited] Sticker time, Team Captain!",
+          "[excited] Cyber Hero, sticker time!",
         ],
       },
     },

@@ -182,7 +182,7 @@ export const WEEK_1: WeekContent = {
         lines: [
           "That's right. A password proves it's YOU.",
           "It is a key only you have, so the computer lets you in and keeps everybody else out.",
-          "[proud] Good start, Cyber Hero.",
+          "[proud] Cyber Hero, good start.",
         ],
       },
     },

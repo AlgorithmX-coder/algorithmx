@@ -229,7 +229,7 @@ export const WEEK_7: WeekContent = {
         lines: [
           "[proud] What a counter, Cyber Hero. Every pack rang up at its real price.",
           "Fun names, bright colours, real coins underneath.",
-          "[whispers] But the shop has a box it will not let you count. It is a mystery, on purpose.",
+          "[whispers] But the shop has a box it will not let you count. It is a mystery on purpose.",
           "Next, we'll learn what is really hiding inside a loot box. Come and see!",
         ],
       },
