@@ -961,7 +961,7 @@ export const WEEK_13: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[proud] Five powers, Cyber Hero. Every one of them.",
+          "[proud] Cyber Hero, five powers. Every one of them.",
           "Level, the jug, the plan, the landing, and the night.",
           "[whispers] So there is one thing left to find out...",
           "Next, you take all five of them down to the station floor at once. Come and see!",
