@@ -2148,18 +2148,18 @@
       "file": "/audio/voice/03c465ab9501faa8.mp3"
     },
     {
-      "key": "2025e4b50c37f1c9",
+      "key": "b15579e7c0896ab0",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "[nervous] Cyber Hero, sit down with me and read this incident report. The Raccoon rigged the video app so the next video ALWAYS starts by itself. Kids sat down for ONE video and looked up two hours later. And some of what they watched wasn't even true. This week you learn to notice the pull, and climb out. [whispers] Two hours. And after the first one, nobody chose a single video. [warmly] By the end of today, you will feel the pull coming and climb out whenever you want. Let's see what Mission Command has for us!",
+      "text": "[nervous] Cyber Hero, sit down with me and read this incident report. The Raccoon rigged the video app so the next video ALWAYS starts by itself. Kids sat down for ONE video and looked up two hours later. And some of what they watched wasn't even true. This week you learn to notice the pull and climb out. [whispers] Two hours. And after the first one, nobody chose a single video. [warmly] By the end of today, you will feel the pull coming and climb out whenever you want. Let's see what Mission Command has for us!",
       "lines": [
         "[nervous] Cyber Hero, sit down with me and read this incident report.",
-        "The Raccoon rigged the video app so the next video ALWAYS starts by itself. Kids sat down for ONE video and looked up two hours later. And some of what they watched wasn't even true. This week you learn to notice the pull, and climb out.",
+        "The Raccoon rigged the video app so the next video ALWAYS starts by itself. Kids sat down for ONE video and looked up two hours later. And some of what they watched wasn't even true. This week you learn to notice the pull and climb out.",
         "[whispers] Two hours. And after the first one, nobody chose a single video.",
         "[warmly] By the end of today, you will feel the pull coming and climb out whenever you want.",
         "Let's see what Mission Command has for us!"
       ],
-      "file": "/audio/voice/2025e4b50c37f1c9.mp3"
+      "file": "/audio/voice/b15579e7c0896ab0.mp3"
     },
     {
       "key": "d8f3c679d88e6d14",
@@ -6546,17 +6546,17 @@
       "file": "/audio/voice/a00697a972cd8f74.mp3"
     },
     {
-      "key": "649e855143162f88",
+      "key": "509d00bd754e930a",
       "speaker": "layla",
       "voice": "Emma (Kids Educator)",
-      "text": "[proud] Five powers, Cyber Hero. Every single one of them. Seen, counted, mirrored, stamped, and read back. [whispers] So there is only one thing left to find out... Next comes the Snow Maze, where you need all five at once. Come and see!",
+      "text": "[proud] Cyber Hero, five powers. Every single one of them. Seen, counted, mirrored, stamped, and read back. [whispers] So there is only one thing left to find out... Next comes the Snow Maze, where you need all five at once. Come and see!",
       "lines": [
-        "[proud] Five powers, Cyber Hero. Every single one of them.",
+        "[proud] Cyber Hero, five powers. Every single one of them.",
         "Seen, counted, mirrored, stamped, and read back.",
         "[whispers] So there is only one thing left to find out...",
         "Next comes the Snow Maze, where you need all five at once. Come and see!"
       ],
-      "file": "/audio/voice/649e855143162f88.mp3"
+      "file": "/audio/voice/509d00bd754e930a.mp3"
     },
     {
       "key": "5f84e35bcc73ff5e",
@@ -8810,17 +8810,17 @@
       "file": "/audio/voice/15392d51fc847322.mp3"
     },
     {
-      "key": "c79b84cb1995d706",
+      "key": "8781c1861ef37678",
       "speaker": "layla",
       "voice": "Emma (Kids Educator)",
-      "text": "[proud] Five powers, Cyber Hero. Every one of them. Level, the jug, the plan, the landing, and the night. [whispers] So there is one thing left to find out... Next, you take all five of them down to the station floor at once. Come and see!",
+      "text": "[proud] Cyber Hero, five powers. Every one of them. Level, the jug, the plan, the landing, and the night. [whispers] So there is one thing left to find out... Next, you take all five of them down to the station floor at once. Come and see!",
       "lines": [
-        "[proud] Five powers, Cyber Hero. Every one of them.",
+        "[proud] Cyber Hero, five powers. Every one of them.",
         "Level, the jug, the plan, the landing, and the night.",
         "[whispers] So there is one thing left to find out...",
         "Next, you take all five of them down to the station floor at once. Come and see!"
       ],
-      "file": "/audio/voice/c79b84cb1995d706.mp3"
+      "file": "/audio/voice/8781c1861ef37678.mp3"
     },
     {
       "key": "f2c9146f78a2a22d",
@@ -10363,19 +10363,19 @@
       "file": "/audio/voice/7dfcf1d9ebc86204.mp3"
     },
     {
-      "key": "59f35f0cebcfbacc",
+      "key": "289279d712ae3bc3",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "[warmly] Welcome to the Listening House, Cyber Hero. Lamps on, curtains shut, everything cosy. And some of the things in this room have EARS. The speaker, obviously. But also the telly, the console, the tablet. Sometimes even a toy. [thinking] They are not spying on you. They are waiting for their name, like a dog by the door. But a Scout knows which ones can hear, and which ones really cannot. [excited] Let's do the ears check together. You'll be surprised by one or two!",
+      "text": "[warmly] Cyber Hero, welcome to the Listening House. Lamps on, curtains shut, everything cosy. And some of the things in this room have EARS. The speaker, obviously. But also the telly, the console, the tablet. Sometimes even a toy. [thinking] They are not spying on you. They are waiting for their name, like a dog by the door. But a Scout knows which ones can hear and which ones really cannot. [excited] Let's do the ears check together. You'll be surprised by one or two!",
       "lines": [
-        "[warmly] Welcome to the Listening House, Cyber Hero. Lamps on, curtains shut, everything cosy.",
+        "[warmly] Cyber Hero, welcome to the Listening House. Lamps on, curtains shut, everything cosy.",
         "And some of the things in this room have EARS.",
         "The speaker, obviously. But also the telly, the console, the tablet. Sometimes even a toy.",
         "[thinking] They are not spying on you. They are waiting for their name, like a dog by the door.",
-        "But a Scout knows which ones can hear, and which ones really cannot.",
+        "But a Scout knows which ones can hear and which ones really cannot.",
         "[excited] Let's do the ears check together. You'll be surprised by one or two!"
       ],
-      "file": "/audio/voice/59f35f0cebcfbacc.mp3"
+      "file": "/audio/voice/289279d712ae3bc3.mp3"
     },
     {
       "key": "704915042b73f296",
@@ -10429,17 +10429,17 @@
       "file": "/audio/voice/7ce754cb4f2f879d.mp3"
     },
     {
-      "key": "70c42f2debeaf90c",
+      "key": "8941e5f5cbf705ab",
       "speaker": "layla",
       "voice": "Emma (Kids Educator)",
-      "text": "[proud] One power down, Cyber Hero. You can read a room now. Ears here, no ears there. Nothing spooky about it. [whispers] But when something DOES hear you... where does that go? Next, we'll open the diary and find out. Come and see!",
+      "text": "[proud] Cyber Hero, one power down. You can read a room now. Ears here, no ears there. Nothing spooky about it. [whispers] But when something DOES hear you... where does that go? Next, we'll open the diary and find out. Come and see!",
       "lines": [
-        "[proud] One power down, Cyber Hero. You can read a room now.",
+        "[proud] Cyber Hero, one power down. You can read a room now.",
         "Ears here, no ears there. Nothing spooky about it.",
         "[whispers] But when something DOES hear you... where does that go?",
         "Next, we'll open the diary and find out. Come and see!"
       ],
-      "file": "/audio/voice/70c42f2debeaf90c.mp3"
+      "file": "/audio/voice/8941e5f5cbf705ab.mp3"
     },
     {
       "key": "142bc7e7ffc09a8e",
@@ -12592,14 +12592,14 @@
       "file": "/audio/voice/b7ee0292d901efd2.mp3"
     },
     {
-      "key": "44482ef0fcf0e6e6",
+      "key": "a33a3dc23b7c8a08",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "First entry. You said Nova's name, and asked for your favourite song.",
+      "text": "First entry. You said Nova's name and asked for your favourite song.",
       "lines": [
-        "First entry. You said Nova's name, and asked for your favourite song."
+        "First entry. You said Nova's name and asked for your favourite song."
       ],
-      "file": "/audio/voice/44482ef0fcf0e6e6.mp3"
+      "file": "/audio/voice/a33a3dc23b7c8a08.mp3"
     },
     {
       "key": "5ae818a50625b8a9",
@@ -14258,19 +14258,19 @@
       "file": "/audio/voice/fd61c4f84a2e0356.mp3"
     },
     {
-      "key": "28dab0c5de6a3e92",
+      "key": "d38ff397ae6ba601",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "[nervous] Cyber Hero, do not touch anything yet. Read this incident report with me. The Raccoon's Doorway Trick is everywhere. Links and QR codes are doors. He paints their signs with parties and prizes while the doors open onto his slide. This week you become a Door Checker, and learn to read a door before you walk through it. [whispers] His own stickers, stuck straight over the real ones. On a poster. On a menu. [warmly] By the end of today, no painted sign gets you through a door you did not choose. Let's see what Mission Command has for us!",
+      "text": "[nervous] Cyber Hero, do not touch anything yet. Read this incident report with me. The Raccoon's Doorway Trick is everywhere. Links and QR codes are doors. He paints their signs with parties and prizes while the doors open onto his slide. This week you become a Door Checker and learn to read a door before you walk through it. [whispers] His own stickers stuck straight over the real ones. On a poster. On a menu. [warmly] By the end of today, no painted sign gets you through a door you did not choose. Let's see what Mission Command has for us!",
       "lines": [
         "[nervous] Cyber Hero, do not touch anything yet. Read this incident report with me.",
         "The Raccoon's Doorway Trick is everywhere. Links and QR codes are doors. He paints their signs with parties and prizes while the doors open onto his slide.",
-        "This week you become a Door Checker, and learn to read a door before you walk through it.",
-        "[whispers] His own stickers, stuck straight over the real ones. On a poster. On a menu.",
+        "This week you become a Door Checker and learn to read a door before you walk through it.",
+        "[whispers] His own stickers stuck straight over the real ones. On a poster. On a menu.",
         "[warmly] By the end of today, no painted sign gets you through a door you did not choose.",
         "Let's see what Mission Command has for us!"
       ],
-      "file": "/audio/voice/28dab0c5de6a3e92.mp3"
+      "file": "/audio/voice/d38ff397ae6ba601.mp3"
     },
     {
       "key": "0b97b4d61e07205c",
@@ -14552,16 +14552,16 @@
       "file": "/audio/voice/f64168b44c3adea7.mp3"
     },
     {
-      "key": "d1937f3428570022",
+      "key": "3765bf529dfc0b5b",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "[proud] Every pane sorted, Cyber Hero, and the frosted ones were the best bit. You did not guess at them. You said the honest thing: I cannot read this one. [warmly] That is not giving up. That is the whole skill.",
+      "text": "[proud] Cyber Hero, every pane sorted, and the frosted ones were the best bit. You did not guess at them. You said the honest thing: I cannot read this one. [warmly] That is not giving up. That is the whole skill.",
       "lines": [
-        "[proud] Every pane sorted, Cyber Hero, and the frosted ones were the best bit.",
+        "[proud] Cyber Hero, every pane sorted, and the frosted ones were the best bit.",
         "You did not guess at them. You said the honest thing: I cannot read this one.",
         "[warmly] That is not giving up. That is the whole skill."
       ],
-      "file": "/audio/voice/d1937f3428570022.mp3"
+      "file": "/audio/voice/3765bf529dfc0b5b.mp3"
     },
     {
       "key": "1058b50a5ce2a7ff",
@@ -32170,17 +32170,17 @@
       "file": "/audio/voice/dc3137f2fedb5558.mp3"
     },
     {
-      "key": "07e5aa80bdc80419",
+      "key": "c04ed693cfa97904",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "[proud] Lobby locked, Cyber Hero. Friends only, hero name, friends-only mic. The doors check the badges for you now. [whispers] But every so often a trickster still slips in, and they all try one sneaky move. Now for what 'let's chat somewhere else' really means. Come and see!",
+      "text": "[proud] Cyber Hero, lobby locked. Friends only, hero name, friends-only mic. The doors check the badges for you now. [whispers] But every so often a trickster still slips in, and they all try one sneaky move. Now for what 'let's chat somewhere else' really means. Come and see!",
       "lines": [
-        "[proud] Lobby locked, Cyber Hero. Friends only, hero name, friends-only mic.",
+        "[proud] Cyber Hero, lobby locked. Friends only, hero name, friends-only mic.",
         "The doors check the badges for you now.",
         "[whispers] But every so often a trickster still slips in, and they all try one sneaky move.",
         "Now for what 'let's chat somewhere else' really means. Come and see!"
       ],
-      "file": "/audio/voice/07e5aa80bdc80419.mp3"
+      "file": "/audio/voice/c04ed693cfa97904.mp3"
     },
     {
       "key": "c0d7126c8e79d087",

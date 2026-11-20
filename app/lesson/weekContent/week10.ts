@@ -60,14 +60,14 @@ export const WEEK_10: WeekContent = {
       photoSrc: "/cyberheroes/alerts/week-10.png",
       title: "ALERT INCOMING",
       badge: "Incident Report",
-      caption: "The Raccoon rigged the video app so the next video ALWAYS starts by itself. Kids sat down for ONE video and looked up two hours later. And some of what they watched wasn't even true. This week you learn to notice the pull, and climb out.",
+      caption: "The Raccoon rigged the video app so the next video ALWAYS starts by itself. Kids sat down for ONE video and looked up two hours later. And some of what they watched wasn't even true. This week you learn to notice the pull and climb out.",
       photoCaption: "Wk 10 - Escape the Rabbit Hole",
       ctaLabel: "See the Mission →",
       narration: {
         speaker: "adam",
         lines: [
           "[nervous] Cyber Hero, sit down with me and read this incident report.",
-          "The Raccoon rigged the video app so the next video ALWAYS starts by itself. Kids sat down for ONE video and looked up two hours later. And some of what they watched wasn't even true. This week you learn to notice the pull, and climb out.",
+          "The Raccoon rigged the video app so the next video ALWAYS starts by itself. Kids sat down for ONE video and looked up two hours later. And some of what they watched wasn't even true. This week you learn to notice the pull and climb out.",
           "[whispers] Two hours. And after the first one, nobody chose a single video.",
           "[warmly] By the end of today, you will feel the pull coming and climb out whenever you want.",
           "Let's see what Mission Command has for us!",

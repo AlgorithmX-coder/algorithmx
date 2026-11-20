@@ -72,8 +72,8 @@ export const WEEK_16: WeekContent = {
         lines: [
           "[nervous] Cyber Hero, do not touch anything yet. Read this incident report with me.",
           "The Raccoon's Doorway Trick is everywhere. Links and QR codes are doors. He paints their signs with parties and prizes while the doors open onto his slide.",
-          "This week you become a Door Checker, and learn to read a door before you walk through it.",
-          "[whispers] His own stickers, stuck straight over the real ones. On a poster. On a menu.",
+          "This week you become a Door Checker and learn to read a door before you walk through it.",
+          "[whispers] His own stickers stuck straight over the real ones. On a poster. On a menu.",
           "[warmly] By the end of today, no painted sign gets you through a door you did not choose.",
           "Let's see what Mission Command has for us!",
         ],
@@ -775,7 +775,7 @@ export const WEEK_16: WeekContent = {
       completeNarration: {
         speaker: "adam",
         lines: [
-          "[proud] Every pane sorted, Cyber Hero, and the frosted ones were the best bit.",
+          "[proud] Cyber Hero, every pane sorted, and the frosted ones were the best bit.",
           "You did not guess at them. You said the honest thing: I cannot read this one.",
           "[warmly] That is not giving up. That is the whole skill.",
         ],

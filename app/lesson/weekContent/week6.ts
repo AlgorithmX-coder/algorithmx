@@ -407,7 +407,7 @@ export const WEEK_6: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[proud] Lobby locked, Cyber Hero. Friends only, hero name, friends-only mic.",
+          "[proud] Cyber Hero, lobby locked. Friends only, hero name, friends-only mic.",
           "The doors check the badges for you now.",
           "[whispers] But every so often a trickster still slips in, and they all try one sneaky move.",
           "Now for what 'let's chat somewhere else' really means. Come and see!",

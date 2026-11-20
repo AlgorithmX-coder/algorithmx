@@ -128,11 +128,11 @@ export const WEEK_14: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[warmly] Welcome to the Listening House, Cyber Hero. Lamps on, curtains shut, everything cosy.",
+          "[warmly] Cyber Hero, welcome to the Listening House. Lamps on, curtains shut, everything cosy.",
           "And some of the things in this room have EARS.",
           "The speaker, obviously. But also the telly, the console, the tablet. Sometimes even a toy.",
           "[thinking] They are not spying on you. They are waiting for their name, like a dog by the door.",
-          "But a Scout knows which ones can hear, and which ones really cannot.",
+          "But a Scout knows which ones can hear and which ones really cannot.",
           "[excited] Let's do the ears check together. You'll be surprised by one or two!",
         ],
       },
@@ -256,7 +256,7 @@ export const WEEK_14: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[proud] One power down, Cyber Hero. You can read a room now.",
+          "[proud] Cyber Hero, one power down. You can read a room now.",
           "Ears here, no ears there. Nothing spooky about it.",
           "[whispers] But when something DOES hear you... where does that go?",
           "Next, we'll open the diary and find out. Come and see!",
@@ -313,7 +313,7 @@ export const WEEK_14: WeekContent = {
           id: "song",
           moment: "You asked for your favourite song",
           icon: "🔔",
-          readAloud: "First entry. You said Nova's name, and asked for your favourite song.",
+          readAloud: "First entry. You said Nova's name and asked for your favourite song.",
           wrote: "'Hey Nova, play my favourite song' - 4:12pm",
           options: [
             { id: "asked", label: "You asked it for something", icon: "👆", isRight: true, why: "That is the helping part working exactly as it should. You asked, it wrote it down, it played the song.", explanation: "" },
