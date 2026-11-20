@@ -265,7 +265,7 @@ export const WEEK_5: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[proud] Great start, Cyber Hero. You can weigh a chat moment now.",
+          "[proud] Cyber Hero, great start. You can weigh a chat moment now.",
           "Joke or bullying: is everyone laughing, or is someone hurting?",
           "[whispers] Now lean in close, because the next lesson is the most important truth in this whole course.",
           "Come and hear it.",

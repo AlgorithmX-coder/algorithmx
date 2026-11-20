@@ -134,7 +134,7 @@ export const WEEK_11: WeekContent = {
       stones: [
         { id: "opened", label: "I opened it", icon: "👀", why: "You opened it, and opening a message is only reading it. You cannot know what is inside until you look, and looking has never made anybody the bad guy." },
         { id: "replied", label: "I replied once", icon: "💬", why: "You replied once, and replying usually means you wanted it to stop. That is a kind instinct, and it hands nothing back to you." },
-        { id: "waited", label: "I waited to tell", icon: "⏱️", why: "You waited, and waiting usually means you were scared, or hoping it would go away on its own. Telling late is still telling, and it still counts." },
+        { id: "waited", label: "I waited to tell", icon: "⏱️", why: "You waited, and waiting usually means you were scared or hoping it would go away on its own. Telling late is still telling, and it still counts." },
         { id: "laughed", label: "I laughed along", icon: "😂", why: "Laughing when you are uncomfortable is something bodies do all by themselves. It was never you agreeing." },
         { id: "clicked", label: "I clicked their link", icon: "👆", why: "A link that hides what it really is was built to be clicked. Falling for a trap is the trap working, not you failing." },
       ],
@@ -316,7 +316,7 @@ export const WEEK_11: WeekContent = {
           "[excited] Two powers! Your crew is named and on the board.",
           "[whispers] But what about the sender, still tapping away out there?",
           "Next, we learn how their signal runs out of fuel.",
-          "Come and see, Cyber Hero!",
+          "Cyber Hero, come and see!",
         ],
       },
     },

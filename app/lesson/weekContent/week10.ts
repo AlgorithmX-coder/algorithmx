@@ -340,7 +340,7 @@ export const WEEK_10: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[excited] Four wild claims, shouting their loudest.",
+          "[excited] Four wild claims shouting their loudest.",
           "Under each one, three faces.",
           "[whispers] Only one of them could actually check it.",
           "[excited] Pick the one who would really know. Weigh it!",
@@ -517,7 +517,7 @@ export const WEEK_10: WeekContent = {
       },
       coachLines: {
         speaker: "adam",
-        lines: ["Pause first, every time. Find it in the panel."],
+        lines: ["Pause first every time. Find it in the panel."],
       },
       completeNarration: {
         speaker: "adam",
@@ -586,7 +586,7 @@ export const WEEK_10: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[whispers] Look under the video, Cyber Hero. See the comment pond?",
+          "[whispers] Cyber Hero, look under the video. See the comment pond?",
           "Every single person down there is a STRANGER.",
           "Remember week three? Same rule, new place.",
           "[nervous] And some of them are fishing. For your name. Your school. A tap on a link.",
@@ -1045,7 +1045,7 @@ export const WEEK_10: WeekContent = {
         correctIndex: 0,
         teachOnWrong: {
           title: "Check before you believe!",
-          explanation: "Watching it again just plays the same claim twice, and trying it only tests carrots for dinner. A real source, a science book, a teacher, a trusted grown-up, is what can actually check it.",
+          explanation: "Watching it again just plays the same claim twice, and trying it only tests carrots for dinner. A real source, a science book, a teacher, a trusted grown-up is what can actually check it.",
         },
         villainRight: {
           slug: "quiz-w10-right-c2-1",
