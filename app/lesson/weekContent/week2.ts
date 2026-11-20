@@ -731,7 +731,7 @@ export const WEEK_2: WeekContent = {
         speaker: "adam",
         lines: [
           "[excited] On your LAST challenge, you learn the Hero Pause!",
-          "What do you do when you are just not sure? Stop, and ask a grown-up.",
+          "What do you do when you are just not sure? Stop and ask a grown-up.",
           "On a real phone, tricky pop-ups appear all the time. The smartest heroes never guess.",
           "Four hero moves are jumbled up below.",
           "Tap them in the order a hero does them. Each one lights up on the path.",

@@ -228,7 +228,7 @@ export const WEEK_12: WeekContent = {
       completeNarration: {
         speaker: "adam",
         lines: [
-          "[proud] Look at that, Cyber Hero. Nobody introduced themselves.",
+          "[proud] Cyber Hero, look at that. Nobody introduced themselves.",
           "And you know their game. Their team. Their Saturday. Their class. And their street.",
           "Not one of those taps felt like telling anybody anything.",
           "[warmly] That is what a trail does. It adds up.",
@@ -978,7 +978,7 @@ export const WEEK_12: WeekContent = {
         },
         {
           from: "Ava",
-          question: "We lost the final and the ref was hopeless. I'm posting exactly what I think of him, right now.",
+          question: "We lost the final and the ref was hopeless. I'm posting exactly what I think of him right now.",
           answers: [
             "Hold the mirror up first. Would older me be glad it is still there?",
             "Post it, you can always delete the whole thing tomorrow.",

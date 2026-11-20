@@ -807,7 +807,7 @@ export const WEEK_15: WeekContent = {
           prompt: "A new kid starts Monday. The class wants to welcome her...",
           options: [
             { label: "Design a WELCOME banner together with it", why: "A welcome banner made together is the tool used for kindness; nobody gets hurt and someone gets happy.", icon: "🌱", isProud: true, note: "" },
-            { label: "Generate a 'funny' nickname to laugh at", icon: "🌱", isProud: false, note: "A nickname she never chose, on day one? That's planting thorns along her whole first week." },
+            { label: "Generate a 'funny' nickname to laugh at", icon: "🌱", isProud: false, note: "A nickname she never chose on day one? That's planting thorns along her whole first week." },
           ],
         },
         {

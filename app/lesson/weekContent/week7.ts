@@ -152,7 +152,7 @@ export const WEEK_7: WeekContent = {
           name: "Mega Gem Chest",
           gems: 1000,
           price: 8,
-          readAloud: "Next: the Mega Gem Chest, one thousand gems. Count the coins in, and keep an eye on the piggy bank.",
+          readAloud: "Next: the Mega Gem Chest, one thousand gems. Count the coins in and keep an eye on the piggy bank.",
           receipt: "1,000 gems = 8 real coins. Real money again.",
           why: "Eight more coins gone. Two packs in, and the piggy bank is already looking thin.",
         },
@@ -956,7 +956,7 @@ export const WEEK_7: WeekContent = {
       completeNarration: {
         speaker: "layla",
         lines: [
-          "[proud] Till matched, Cyber Hero! Every shop trick met its hero move.",
+          "[proud] Cyber Hero, till matched! Every shop trick met its hero move.",
           "[warmly] Out in the real world, your wallet has a guard on every trick now. And you know which move to make.",
         ],
       },

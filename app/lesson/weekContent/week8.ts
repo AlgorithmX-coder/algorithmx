@@ -200,7 +200,7 @@ export const WEEK_8: WeekContent = {
           "[excited] On your first challenge, you run the Undo Test!",
           "This game is all about what the delete button really does.",
           "Out in the real world, a photo lands on other phones the instant you share it.",
-          "Here is what you do. A photo sits on your phone. Tap SHARE, and watch it land on three friends' phones. Then tap DELETE on your phone. Then tap each friend's phone to check what is on it. Last, three cards appear. Tap the one that is TRUE.",
+          "Here is what you do. A photo sits on your phone. Tap SHARE and watch it land on three friends' phones. Then tap DELETE on your phone. Then tap each friend's phone to check what is on it. Last, three cards appear. Tap the one that is TRUE.",
           "[warmly] Keep your eyes on all the phones, not just yours. Ready? First photo!",
         ],
       },
@@ -651,7 +651,7 @@ export const WEEK_8: WeekContent = {
           from: "For the friends' group chat",
           readAloud: "A party photo with three friends in it. All three said yes to the friends' group chat.",
           answer: "friends",
-          why: "Three faces, three yeses, for friends. Their faces are still not for strangers, so the Friends door fits.",
+          why: "Three faces, three yeses for friends. Their faces are still not for strangers, so the Friends door fits.",
           whyWrong: "They said yes to friends seeing it. Everyone is too big a door, and Just Me would hide it from the friends it's for. The Friends door fits.",
         },
         {
@@ -770,12 +770,12 @@ export const WEEK_8: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[warmly] Time for the ritual that puts it all together, Cyber Hero.",
-          "LOOK. Who is in it, and what is behind them?",
+          "[warmly] Cyber Hero, time for the ritual that puts it all together.",
+          "LOOK. Who is in it and what is behind them?",
           "THINK. Where is it going, and would you be happy for anyone to see it, forever?",
           "ASK. The people in it, and a grown-up if you're not sure.",
           "[whispers] Look. Think. Ask. Three seconds.",
-          "[excited] Come and be the Photo Detective, and run the ritual on real prints!",
+          "[excited] Come and be the Photo Detective and run the ritual on real prints!",
         ],
       },
     },

@@ -268,7 +268,7 @@ export const WEEK_16: WeekContent = {
       completeNarration: {
         speaker: "adam",
         lines: [
-          "[proud] Four doors read, and you never once went by the sign, Cyber Hero.",
+          "[proud] Cyber Hero, four doors read, and you never once went by the sign.",
           "Your school and the library opened. The tablet and the coins did not.",
           "[warmly] And the two you turned away had the prettiest signs of the lot.",
         ],
@@ -845,7 +845,7 @@ export const WEEK_16: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[warmly] Last power, Cyber Hero, and it catches everything the others miss.",
+          "[warmly] Cyber Hero, last power, and it catches everything the others miss.",
           "Sometimes you genuinely cannot tell. The sign is ordinary, the address is half familiar.",
           "[thinking] And there is a little voice saying: go on, just tap it and find out.",
           "That is exactly when a Door Checker wheels out the barrier.",

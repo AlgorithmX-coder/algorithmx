@@ -89,7 +89,7 @@ export const WEEK_18: WeekContent = {
         lines: [
           "[nervous] Cyber Hero, check the shelf, then read this incident report with me.",
           "The Raccoon does not need to crack anything this week. He just waits. A family tablet left signed in on the kitchen shelf, SAVE PASSWORD balloons bobbing over every login. Every left open screen is a door he can stroll through wearing YOUR face.",
-          "This week you become the Lock Master, and learn to close a door behind you.",
+          "This week you become the Lock Master and learn to close a door behind you.",
           "[whispers] He does not crack anything. He just waits for somebody to walk away.",
           "[warmly] By the end of today, you will never leave a door open behind you again.",
           "Let's see what Mission Command has for us!",
@@ -337,7 +337,7 @@ export const WEEK_18: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[excited] Break is over and look at the state of this tablet. Your cards, all over it.",
+          "[excited] Break is over and look at the state of this tablet. Your cards all over it.",
           "Tap every open card to log it out. Then press the big lock and off you go.",
           "Keep an eye on the little light at the top. It tells you the truth about this tablet.",
         ],
@@ -566,7 +566,7 @@ export const WEEK_18: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[warmly] Think of a shared tablet as a shelf, Cyber Hero. Everybody's things are on it.",
+          "[warmly] Cyber Hero, think of a shared tablet as a shelf. Everybody's things are on it.",
           "Your brother's messages. Dad's email. Mum's photos. And somewhere in the middle, yours.",
           "[thinking] There is one question that sorts the whole shelf, and it comes before every other question.",
           "Whose is this? That is it. That is the whole thing.",

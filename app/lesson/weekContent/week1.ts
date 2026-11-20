@@ -452,7 +452,7 @@ export const WEEK_1: WeekContent = {
         lines: [
           "Each patient is a weak password. Tap what is wrong with it, then use your tools to fix it.",
           "Watch the strength meter climb as you go.",
-          "[warmly] Heal them all, Cyber Hero.",
+          "[warmly] Cyber Hero, heal them all.",
         ],
       },
       coachLines: {

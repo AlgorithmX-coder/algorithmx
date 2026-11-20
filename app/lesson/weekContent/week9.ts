@@ -877,7 +877,7 @@ export const WEEK_9: WeekContent = {
           ],
           rightMove: "skip",
           why: "Your grown-up spotted an unknown new maker and a greedy key you couldn't see. Four eyes caught it, so you skipped it together.",
-          whyWrong: "Look at what your grown-up spotted: an unknown new maker and a greedy key. That's one to skip, together.",
+          whyWrong: "Look at what your grown-up spotted: an unknown new maker and a greedy key. That's one to skip together.",
         },
         {
           id: "story-time",
@@ -1027,7 +1027,7 @@ export const WEEK_9: WeekContent = {
           ruleLabel: "THE WHISKERS",
           icon: "🎭",
           prompt: "Two apps called Moon Jump. One is by Starlight Games, with 4 million downloads. The other is by Star1ight Games, with 9 downloads. Which is the copycat?",
-          readAloud: "Two apps called Moon Jump. Look closely at who made each one, and how many downloads they have. Which one is the copycat?",
+          readAloud: "Two apps called Moon Jump. Look closely at who made each one and how many downloads they have. Which one is the copycat?",
           choices: [
             { text: "The one by Star1ight Games, with 9 downloads", isCorrect: true, explanation: "That's the copycat.", why: "A number one where the l should be, and only nine downloads. Almost right is all wrong, so that's the copycat." },
             { text: "The one by Starlight Games, with 4 million downloads", isCorrect: false, explanation: "Four million downloads and a maker spelled right is a real history. Look at the other maker's name." },
@@ -1092,7 +1092,7 @@ export const WEEK_9: WeekContent = {
       completeNarration: {
         speaker: "layla",
         lines: [
-          "[proud] Warehouse cleared, Cyber Hero! Every crate checked.",
+          "[proud] Cyber Hero, warehouse cleared! Every crate checked.",
           "[warmly] Out in the real world, the real shop, the whiskers, the keys, the real price and four eyes keep every copycat off your device.",
         ],
       },

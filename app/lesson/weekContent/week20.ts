@@ -914,7 +914,7 @@ export const WEEK_20: WeekContent = {
       narration: {
         speaker: "adam",
         lines: [
-          "[excited] There it is, Cyber Hero. The stage, and everybody you have met all twenty weeks.",
+          "[excited] Cyber Hero, there it is. The stage, and everybody you have met all twenty weeks.",
           "The floor is going to light your power emblems up in order. Watch it, then tap them back.",
           "[warmly] Three encores, and the whole place is yours.",
         ],
@@ -927,7 +927,7 @@ export const WEEK_20: WeekContent = {
         lines: [
           "[proud] Listen to them. That is all for you.",
           "Twenty weeks ago you could not have done one of tonight's five missions. And you did all of them without stopping to think.",
-          "[excited] Caps in the air, Cyber Hero. You did it.",
+          "[excited] Cyber Hero, caps in the air. You did it.",
         ],
       },
     },

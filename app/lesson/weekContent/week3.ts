@@ -1209,10 +1209,10 @@ export const WEEK_3: WeekContent = {
         label: "The Two Nevers",
         ask: {
           slug: "quiz-w3-ask-c4-1",
-          text: "An online teammate says: 'Meet me at the library tomorrow, it's the safest place in town!' The library really is safe. So what's the answer?",
+          text: "An online teammate says: 'Meet me at the library tomorrow. It's the safest place in town!' The library really is safe. So what's the answer?",
         },
         options: [
-          { text: "Still no, online-only friends are never met" },
+          { text: "Still no. Online-only friends are never met" },
           { text: "Yes, libraries are full of grown-ups" },
           { text: "Yes, but only for five minutes" },
         ],
