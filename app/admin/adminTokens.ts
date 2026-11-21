@@ -4,35 +4,45 @@
  * and individuals, so it keeps its own copy rather than reaching into
  * one product's engine folder.
  *
- * This is an internal tool, not a customer surface: the brief is "a
- * theme, but light-touch" - one accent colour, a plain spacing/radius
- * scale so every page agrees on what "a card" or "a gap" means, and
- * nothing beyond that (no gradients, no glass, no motion). Every page
- * under /admin and /admin-login pulls its look from admin.css, which
- * reads these same values - change a colour once, here. */
+ * "Mission Control" (2026-11-20): dark, to match the public site's own
+ * dark + cyan-neon brand, with the brand light (cyan -> violet) as the
+ * constant and one hue per customer segment. admin.css is the source of
+ * truth for every page under /admin and /admin-login; these values mirror
+ * it for the rare TSX that needs a colour in code. Change a colour there
+ * first, then here. */
 export const K = Object.freeze({
-  ground: "#f3ede4",
-  panel: "#ffffff",
-  sunk: "#ece6da",
-  edge: "#d9d2c4",
-  edgeSoft: "rgba(20,22,29,0.08)",
+  ground: "#070b14",
+  panel: "rgba(255,255,255,0.035)",
+  sunk: "rgba(255,255,255,0.06)",
+  edge: "rgba(255,255,255,0.14)",
+  edgeSoft: "rgba(255,255,255,0.08)",
 
-  ink: "#14161d",
-  body: "#2b2f36",
-  muted: "#5b6572",
-  faint: "#8a8f98",
+  ink: "#eef2ff",
+  body: "#c7cfdd",
+  muted: "#8a94a8",
+  faint: "#5d667a",
 
-  accent: "#0a7085",
-  accentInk: "#0a7085",
-  accentSoft: "rgba(10,112,133,0.10)",
+  accent: "#00e5ff",
+  accentInk: "#00e5ff",
+  accentSoft: "rgba(0,229,255,0.12)",
   onAccent: "#ffffff",
+  violet: "#7c5cff",
 
-  ok: "#0e7a45",
-  okSoft: "rgba(14,122,69,0.10)",
-  warn: "#8a5400",
-  warnSoft: "rgba(138,84,0,0.10)",
+  ok: "#34d399",
+  okSoft: "rgba(52,211,153,0.14)",
+  warn: "#fbbf24",
+  warnSoft: "rgba(251,191,36,0.14)",
+  danger: "#fb7185",
+  dangerSoft: "rgba(251,113,133,0.14)",
 
-  glassStrong: "rgba(255,255,255,0.88)",
+  sections: {
+    schools: "#fb923c",
+    organisations: "#34d399",
+    firms: "#22d3ee",
+    individuals: "#a78bfa",
+  },
+
+  glassStrong: "rgba(14,21,38,0.72)",
 
   sans: "var(--font-inter), Inter, system-ui, -apple-system, 'Segoe UI', sans-serif",
   display: "var(--font-space-grotesk), 'Space Grotesk', var(--font-inter), Inter, system-ui, sans-serif",
@@ -40,10 +50,8 @@ export const K = Object.freeze({
 
   /* One scale, used everywhere, so spacing is a decision made once. */
   space: { xs: "4px", sm: "8px", md: "12px", lg: "16px", xl: "24px", xxl: "32px", xxxl: "48px" },
-  radius: { sm: "8px", md: "12px", lg: "16px", full: "999px" },
-  /* The one shadow in the system - a card lifted a little off the sand
-   * ground. Used on panels and, slightly stronger, on hover. Nothing
-   * else carries a shadow. */
-  shadow: "0 1px 2px rgba(20,22,29,0.04), 0 6px 16px rgba(20,22,29,0.05)",
-  shadowHover: "0 2px 4px rgba(20,22,29,0.05), 0 10px 24px rgba(20,22,29,0.08)",
+  radius: { sm: "10px", md: "14px", lg: "18px", full: "999px" },
+  /* Glass on dark: a lit top edge and a deep soft drop, never a grey blur. */
+  shadow: "0 1px 0 rgba(255,255,255,0.04) inset, 0 30px 60px -40px rgba(0,0,0,0.9)",
+  shadowHover: "0 1px 0 rgba(255,255,255,0.06) inset, 0 40px 80px -40px rgba(0,0,0,0.9)",
 });
