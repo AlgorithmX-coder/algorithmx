@@ -86,13 +86,13 @@
 .hv4 .keys .sp{grid-column:span 6}
 .hv4 .trackpad{position:absolute;left:36%;right:36%;bottom:3%;height:9%;border-radius:8px;box-shadow:inset 0 0 0 1px rgba(10,112,133,.25)}
 .hv4 .badge{position:absolute;right:5%;bottom:4%;font-family:var(--mono);font-size:8px;letter-spacing:.2em;color:var(--muted)}
-.hv4 .pane{position:absolute;left:50%;top:0;width:min(520px,94%);height:282px;margin-left:min(-260px,-47%);transform:translateZ(60px) rotateX(-6deg);transform-style:preserve-3d;border-radius:14px;background:linear-gradient(180deg,rgba(6,18,36,.95),rgba(6,18,36,.88));box-shadow:inset 0 0 0 1px rgba(0,229,255,.45),inset 0 0 60px rgba(0,229,255,.08),0 0 60px rgba(0,229,255,.25),0 30px 60px -20px rgba(20,30,60,.45);overflow:hidden;opacity:0;animation:hv-paneIn 1.1s .9s cubic-bezier(.2,.7,.2,1) forwards;font-family:var(--mono);color:#9ad7e6}
+.hv4 .pane{position:absolute;left:50%;top:0;width:min(520px,94%);height:282px;margin-left:min(-260px,-47%);transform:translateZ(calc(var(--open,0) * 60px)) translateY(calc((1 - var(--open,0)) * var(--lidDrop,0px))) rotateX(calc(-6deg - (1 - var(--open,0)) * var(--lidSwing,112deg)));transform-origin:50% 100%;transform-style:preserve-3d;border-radius:14px;background:transparent;box-shadow:inset 0 0 0 1px rgba(0,229,255,.45),inset 0 0 60px rgba(0,229,255,.08),0 0 60px rgba(0,229,255,.25),0 30px 60px -20px rgba(20,30,60,.45);overflow:visible;opacity:1;font-family:var(--mono);color:#9ad7e6}
 @keyframes hv-paneIn{from{opacity:0;transform:translateZ(60px) rotateX(-6deg) translateY(30px) scaleY(.6);filter:brightness(2)}to{opacity:1;transform:translateZ(60px) rotateX(-6deg)}}
-.hv4 .pane::after{content:"";position:absolute;left:0;right:0;height:60px;top:-60px;background:linear-gradient(to bottom,transparent,rgba(0,229,255,.22),transparent);animation:hv-scan 6s 2s linear infinite}
+.hv4 .pane .os::after{content:"";position:absolute;left:0;right:0;height:60px;top:-60px;background:linear-gradient(to bottom,transparent,rgba(0,229,255,.22),transparent);animation:hv-scan 6s 2s linear infinite;opacity:var(--open,0);}
 @keyframes hv-scan{0%{top:-60px}40%,100%{top:110%}}
 .hv4 .pane .corner{position:absolute;width:12px;height:12px;border:1px solid var(--cyan)}
 .hv4 .pane .corner.tl{left:6px;top:6px;border-right:0;border-bottom:0}.pane .corner.tr{right:6px;top:6px;border-left:0;border-bottom:0}.pane .corner.bl{left:6px;bottom:6px;border-right:0;border-top:0}.pane .corner.br{right:6px;bottom:6px;border-left:0;border-top:0}
-.hv4 .os{position:absolute;inset:14px 16px;display:grid;grid-template-columns:84px 1fr 150px;grid-template-rows:auto 1fr auto;gap:10px 14px;font-size:9px;letter-spacing:.08em}
+.hv4 .os{position:absolute;inset:14px 16px;overflow:hidden;display:grid;grid-template-columns:84px 1fr 150px;grid-template-rows:auto 1fr auto;gap:10px 14px;font-size:9px;letter-spacing:.08em}
 .hv4 .os .bar{grid-column:1/-1;display:flex;align-items:center;gap:14px;padding-bottom:8px;border-bottom:1px solid rgba(0,229,255,.2)}
 .hv4 .os .bar .t{color:#fff;letter-spacing:.2em;font-weight:600}
 .hv4 .os .bar .tabs{display:flex;gap:10px;color:rgba(154,215,230,.6)}
@@ -276,3 +276,23 @@
 @media (prefers-reduced-motion:reduce){.hv4 *,.hv4 *::before,.hv4 *::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}}
 /* phones: the machine is wider than the viewport, so scale the whole scene down */
 @media (max-width:640px){.hv4 .stage{height:380px;overflow:visible}.hv4 .machine{transform:scale(.66) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transform-origin:50% 30%}.hv4 h1.h{font-size:clamp(34px,10vw,40px)}}
+
+/* closed lid: a sleek glass top with the brand mark, fading out as the lid opens */
+.hv4 .machine{--open:0}
+.hv4 .pane .os{opacity:var(--open,0);transition:none}
+.hv4 .pane .os,.hv4 .pane .corner{backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.hv4 .pane .lid{position:absolute;inset:0;z-index:3;border-radius:14px;overflow:hidden;transform:rotateX(180deg) translateZ(1px);backface-visibility:hidden;-webkit-backface-visibility:hidden;pointer-events:none;background:linear-gradient(135deg,rgba(255,255,255,.96),rgba(228,240,255,.9) 45%,rgba(205,228,250,.92));box-shadow:inset 0 0 0 1px rgba(255,255,255,.95),inset 0 -2px 0 rgba(10,112,133,.18)}
+.hv4 .pane .lidGrid{position:absolute;inset:0;background-image:linear-gradient(rgba(10,112,133,.09) 1px,transparent 1px),linear-gradient(90deg,rgba(10,112,133,.09) 1px,transparent 1px);background-size:28px 28px;mask-image:radial-gradient(ellipse at 50% 50%,#000 30%,transparent 80%);-webkit-mask-image:radial-gradient(ellipse at 50% 50%,#000 30%,transparent 80%)}
+.hv4 .pane .lidSweep{position:absolute;inset:-20% -60%;background:linear-gradient(105deg,transparent 42%,rgba(255,255,255,.95) 50%,rgba(0,229,255,.25) 54%,transparent 62%);animation:hv-lidSweep 5.5s ease-in-out infinite}
+@keyframes hv-lidSweep{0%,55%{transform:translateX(-45%)}100%{transform:translateX(45%)}}
+.hv4 .pane .lidMark{position:absolute;inset:0;display:grid;place-items:center;align-content:center;gap:14px}
+.hv4 .pane .lidMark .lv2-cube-wrap{filter:drop-shadow(0 0 10px rgba(0,229,255,.75)) drop-shadow(0 0 26px rgba(0,229,255,.35))}
+.hv4 .pane .lidWord{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.42em;color:#0b0d12;padding-left:.42em}
+.hv4 .pane .lidWord b{color:#0a7085;font-weight:700;text-shadow:0 0 12px rgba(0,229,255,.8)}
+.hv4 .pane .lidEdge{position:absolute;left:8%;right:8%;bottom:0;height:3px;border-radius:3px 3px 0 0;background:linear-gradient(90deg,transparent,rgba(0,229,255,.9),transparent);box-shadow:0 0 18px rgba(0,229,255,.6)}
+/* keys sleep while the lid is shut */
+.hv4 .keys i{opacity:calc(.3 + var(--open,0) * .7)}
+.hv4 .slab .pool{opacity:calc(.15 + var(--open,0) * .85)!important}
+
+/* the screen face: dark glass with the lit frame, clipped, front-facing only */
+.hv4 .pane .face{position:absolute;inset:0;border-radius:14px;overflow:hidden;background:linear-gradient(180deg,rgba(6,18,36,.95),rgba(6,18,36,.88));box-shadow:inset 0 0 0 1px rgba(0,229,255,.45),inset 0 0 60px rgba(0,229,255,.08);backface-visibility:hidden;-webkit-backface-visibility:hidden;opacity:calc(.15 + var(--open,0) * .85)}

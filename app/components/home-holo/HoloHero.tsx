@@ -56,7 +56,15 @@ export default function HoloHero() {
     if (!ctx) return;
     const holdParam = parseFloat(new URLSearchParams(window.location.search).get("hold") || "");
     const HOLD = Number.isFinite(holdParam) && holdParam >= 0 ? holdParam : 9;
-    const T: Record<Phase, number> = { construct: 1600, settle: 600, hold: HOLD * 1000, off: 900, dark: 1200 };
+    /* Owner (14:58): slower merge of the dots into the words, and the laptop
+     * opens with them. construct = lid opening + dots flying in; settle = dots
+     * melting into crisp type; off + dark = lid closing again. */
+    const T: Record<Phase, number> = { construct: 2400, settle: 1200, hold: HOLD * 1000, off: 900, dark: 1500 };
+    const machine = machineRef.current;
+    /* ?open=0.4 freezes the lid at that angle (tuning aid, harmless in production) */
+    const openParam = parseFloat(new URLSearchParams(window.location.search).get("open") || "");
+    const openLock = Number.isFinite(openParam) ? Math.max(0, Math.min(1, openParam)) : null;
+    const setOpen = (v: number) => { if (machine) machine.style.setProperty("--open", (openLock ?? v).toFixed(4)); };
     const total = PHASES.reduce((a, k) => a + T[k], 0);
     const palette: string[] = ["#0b0d12", "#0a7085"];
     for (let b = 0; b < NB; b++) { const t = (b / (NB - 1)) * (STOPS.length - 1), i = Math.min(STOPS.length - 2, Math.floor(t)), f = t - i; const c = STOPS[i].map((v, k) => Math.round(v + (STOPS[i + 1][k] - v) * f)); palette.push(`rgb(${c[0]},${c[1]},${c[2]})`); }
@@ -141,8 +149,12 @@ export default function HoloHero() {
       const f = ph.f, t = now * 0.001;
       project(now);
       let aCol = 1, aSpk = 0, toScatter = false, flare = 0, jitter = 0.6, ease = 0.07;
-      if (ph.k === "construct") { aCol = Math.min(1, f * 3); jitter = 1.2; }
-      else if (ph.k === "settle") { aCol = 1 - f; aSpk = f * 0.22; jitter = 0.3; }
+      /* the lid: eases open through construct, stays open, eases shut across off + dark */
+      if (ph.k === "construct") setOpen(f * f * (3 - 2 * f));
+      else if (ph.k === "settle" || ph.k === "hold") setOpen(1);
+      else { const c = ph.k === "off" ? (f * T.off) / (T.off + T.dark) : (T.off + f * T.dark) / (T.off + T.dark); setOpen(1 - (c < 0.5 ? 2 * c * c : 1 - Math.pow(-2 * c + 2, 2) / 2)); }
+      if (ph.k === "construct") { aCol = Math.min(1, f * 2.2); jitter = 1.2; ease = 0.05; }
+      else if (ph.k === "settle") { const g = f * f * (3 - 2 * f); aCol = 1 - g; aSpk = g * 0.22; jitter = 0.3; }
       else if (ph.k === "hold") { aCol = 0; aSpk = 0.22; jitter = 0.2; }
       else if (ph.k === "off") { if (f < 0.17) { aCol = 1; flare = 1; } else { toScatter = true; const g = (f - 0.17) / 0.83; aCol = 1 - g; ease = 0.05; } }
       else { toScatter = true; aCol = 0; }
@@ -213,6 +225,8 @@ export default function HoloHero() {
             <div className="badge">{sc.deckModel}</div>
           </div>
           <div className="pane">
+            <div className="face" aria-hidden="true" />
+            <div className="lid" aria-hidden="true"><div className="lidGrid" /><div className="lidSweep" /><div className="lidMark"><BrandCube size={40} /><span className="lidWord">ALGORITHM<b>X</b></span></div><div className="lidEdge" /></div>
             <span className="corner tl" /><span className="corner tr" /><span className="corner bl" /><span className="corner br" />
             <div className="os">
               <div className="bar"><span className="t">{sc.os}</span><span className="tabs">{sc.tabs.map((t) => <span key={t}>{t}</span>)}</span><span className="r"><span>{sc.clock}</span><span>{sc.sys}</span></span></div>
