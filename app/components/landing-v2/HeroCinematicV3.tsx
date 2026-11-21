@@ -100,7 +100,11 @@ function smoothstep(a: number, b: number, x: number): number {
  *            features the laptop). Also suppresses the nebula/galaxy
  *            ambience, which would paint fog over the host's backdrop.
  */
-export default function HeroCinematicV3({ overlay = true, staticOpen = false }: { overlay?: boolean; staticOpen?: boolean } = {}) {
+/* embedded + drive (2026-11-21, Hologram Deck homepage): the machine sits
+ * inside another hero's layout and its progress (0 closed .. 1 open and
+ * lit) comes from the caller's MotionValue instead of scroll. No rail, no
+ * pinning, no studio ground of its own. */
+export default function HeroCinematicV3({ overlay = true, staticOpen = false, embedded = false, drive }: { overlay?: boolean; staticOpen?: boolean; embedded?: boolean; drive?: MotionValue<number> } = {}) {
   const railRef = useRef<HTMLElement>(null);
   const [reducedMotion, setReducedMotion] = useState(false);
   const [isCompact, setIsCompact] = useState(false);
@@ -159,7 +163,9 @@ export default function HeroCinematicV3({ overlay = true, staticOpen = false }: 
     damping: 19,
     mass: 0.5,
   });
-  const progress = useTransform(smoothScroll, (v) => (reducedMotion || staticOpen ? 1 : v));
+  const source = drive ?? smoothScroll;
+  const progress = useTransform(source, (v) => (reducedMotion || staticOpen ? 1 : v));
+  const flat = staticOpen || embedded;
 
   /* ── beat-derived motion values (all scroll-pure) ────────────────── */
   /* Lid: 0deg = closed flat over the deck; +108deg = open (positive
@@ -254,7 +260,7 @@ export default function HeroCinematicV3({ overlay = true, staticOpen = false }: 
       ref={railRef}
       style={{
         position: "relative",
-        height: staticOpen ? "100%" : isCompact ? "170vh" : "220vh",
+        height: flat ? "100%" : isCompact ? "170vh" : "220vh",
         background: "transparent",
       }}
     >
@@ -270,7 +276,7 @@ export default function HeroCinematicV3({ overlay = true, staticOpen = false }: 
       <div
         className="hv3-pinFrame"
         style={
-          staticOpen
+          flat
             ? { position: "relative", width: "100%", height: "100%", overflow: "visible" }
             : { position: "sticky", top: 0, width: "100%", overflow: "hidden" }
         }
@@ -278,7 +284,7 @@ export default function HeroCinematicV3({ overlay = true, staticOpen = false }: 
         {/* ambient cosmic wash — pure CSS, sits over GlobalBackdrop.
          *  Wrapped so the bottom-fade mask feathers the wash into the
          *  backdrop instead of cutting on the section edge. */}
-        {!staticOpen && (
+        {!flat && (
           <div
             aria-hidden
             className="hv3-bottomFade"

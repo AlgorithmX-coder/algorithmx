@@ -1,9 +1,11 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useMotionValue } from "framer-motion";
 import BrandCube from "@/app/components/BrandCube";
+import HeroCinematicV3 from "@/app/components/landing-v2/HeroCinematicV3";
 import { AX } from "./content";
-import { ICONS, reduced, seeded, tilt } from "./fx";
+import { ICONS, reduced } from "./fx";
 
 /* The Hologram Deck hero (owner's pick, 2026-11-21, iterated to v3 in the
  * landing-lab). Left: the headline drawn by coloured points with the real
@@ -18,7 +20,7 @@ type Phase = (typeof PHASES)[number];
 const STOPS = [[10, 112, 133], [79, 70, 229], [87, 68, 201], [165, 17, 127]];
 const NB = 24;
 
-interface Pt { x: number; y: number; vx: number; vy: number; j: number; s: number; stray: boolean; tx: number; ty: number; sx: number; sy: number; c: number; spk: number; o?: [number, number, number]; depth?: number; }
+interface Pt { x: number; y: number; vx: number; vy: number; j: number; s: number; stray: boolean; tx: number; ty: number; sx: number; sy: number; c: number; spk: number; o?: [number, number, number]; depth?: number; line?: number; }
 
 /* The dotted cube that builds and scatters with the words: 12 edges plus a
  * sparse </> on the front face, in unit coordinates. While the headline
@@ -44,10 +46,9 @@ export default function HoloHero() {
   const accRef = useRef<HTMLSpanElement>(null);
   const slotRef = useRef<HTMLSpanElement>(null);
   const cvRef = useRef<HTMLCanvasElement>(null);
-  const machineRef = useRef<HTMLDivElement>(null);
   const [cubePx, setCubePx] = useState(52);
-
-  useEffect(() => { const m = machineRef.current; return m ? tilt(m, 5) : undefined; }, []);
+  /* The original laptop (HeroCinematicV3) opens on this value: 0 shut, 1 open and lit. */
+  const drive = useMotionValue(0);
 
   useEffect(() => {
     const cv = cvRef.current, hwrap = hwrapRef.current, h1 = h1Ref.current, txt = txtRef.current, lead = leadRef.current, acc = accRef.current, slot = slotRef.current, hero = heroRef.current;
@@ -59,12 +60,18 @@ export default function HoloHero() {
     /* Owner (14:58): slower merge of the dots into the words, and the laptop
      * opens with them. construct = lid opening + dots flying in; settle = dots
      * melting into crisp type; off + dark = lid closing again. */
-    const T: Record<Phase, number> = { construct: 2400, settle: 1200, hold: HOLD * 1000, off: 900, dark: 1500 };
-    const machine = machineRef.current;
+    /* Owner (15:40): one splat, then always in motion. The laptop opens with
+     * the dots (construct), the dots melt into type (settle), and from then
+     * on a wave runs left to right, line by line, re-drawing the title. No
+     * closing cycle unless ?loop=1 (hold then uses ?hold= seconds). */
+    const LOOP = new URLSearchParams(window.location.search).get("loop") === "1";
+    const T: Record<Phase, number> = { construct: 1800, settle: 900, hold: LOOP ? HOLD * 1000 : Infinity, off: 900, dark: 1500 };
     /* ?open=0.4 freezes the lid at that angle (tuning aid, harmless in production) */
     const openParam = parseFloat(new URLSearchParams(window.location.search).get("open") || "");
     const openLock = Number.isFinite(openParam) ? Math.max(0, Math.min(1, openParam)) : null;
-    const setOpen = (v: number) => { if (machine) machine.style.setProperty("--open", (openLock ?? v).toFixed(4)); };
+    let lastOpen = -1;
+    const setOpen = (v: number) => { const o = openLock ?? v; if (o !== lastOpen) { lastOpen = o; drive.set(o); } };
+    let lines: { min: number; max: number }[] = [];
     const total = PHASES.reduce((a, k) => a + T[k], 0);
     const palette: string[] = ["#0b0d12", "#0a7085"];
     for (let b = 0; b < NB; b++) { const t = (b / (NB - 1)) * (STOPS.length - 1), i = Math.min(STOPS.length - 2, Math.floor(t)), f = t - i; const c = STOPS[i].map((v, k) => Math.round(v + (STOPS[i + 1][k] - v) * f)); palette.push(`rgb(${c[0]},${c[1]},${c[2]})`); }
@@ -117,6 +124,10 @@ export default function HoloHero() {
         p.sx = p.tx + Math.cos(a) * d; p.sy = p.ty + Math.sin(a) * d - 30;
         return p;
       });
+      /* line membership for the left-to-right wave */
+      const tops = [...new Set([...lr, ...ar].map((q) => Math.round(q.r.top - oy)))].sort((a, b) => a - b);
+      lines = tops.map(() => ({ min: 1e9, max: -1e9 }));
+      for (const p of pts) { let li = 0; for (let k = 0; k < tops.length; k++) if (p.ty >= tops[k] - 2) li = k; p.line = li; lines[li].min = Math.min(lines[li].min, p.tx); lines[li].max = Math.max(lines[li].max, p.tx); }
       const sr = slot!.getBoundingClientRect();
       cubeC = { x: sr.left - ox + sr.width / 2, y: sr.top - oy + sr.height / 2, s: sr.width * 0.36 };
       cube.forEach((q) => { if (!q.sx && !q.sy) { q.x = cubeC.x + rand(-120, 120); q.y = cubeC.y + rand(-90, 90); } const a = rand(0, Math.PI * 2), d = rand(80, 200); q.sx = cubeC.x + Math.cos(a) * d; q.sy = cubeC.y + Math.sin(a) * d - 20; });
@@ -138,13 +149,13 @@ export default function HoloHero() {
       if (p === "off") { txt!.classList.add("flick"); slot!.classList.add("flick"); offTimer = window.setTimeout(() => { txt!.classList.remove("on", "flick"); slot!.classList.remove("on", "flick"); }, 320); }
       if (p === "dark") { pts.forEach((q) => { if (Math.random() < 0.35) { q.x = center.x + rand(-W * 0.45, W * 0.45); q.y = center.y + rand(-Hh * 0.55, Hh * 0.55); q.vx = 0; q.vy = 0; } }); }
     }
-    function phaseAt(el: number) { let a = 0; for (const k of PHASES) { a += T[k]; if (el < a) return { k, f: (el - (a - T[k])) / T[k] }; } return { k: "dark" as Phase, f: 1 }; }
+    function phaseAt(el: number) { let a = 0; for (const k of PHASES) { if (!Number.isFinite(T[k])) return { k, f: 0 }; a += T[k]; if (el < a) return { k, f: (el - (a - T[k])) / T[k] }; } return { k: "dark" as Phase, f: 1 }; }
     function step(now: number) {
       raf = 0;
       if (!built) { raf = requestAnimationFrame(step); return; }
       const dt = Math.min(32, now - last) / 16.7; last = now;
       let el = now - cycle0;
-      if (el >= total) { cycle0 = now - (el % total); el = now - cycle0; }
+      if (Number.isFinite(total) && el >= total) { cycle0 = now - (el % total); el = now - cycle0; }
       const ph = phaseAt(el); setPhase(ph.k);
       const f = ph.f, t = now * 0.001;
       project(now);
@@ -159,16 +170,36 @@ export default function HoloHero() {
       else if (ph.k === "off") { if (f < 0.17) { aCol = 1; flare = 1; } else { toScatter = true; const g = (f - 0.17) / 0.83; aCol = 1 - g; ease = 0.05; } }
       else { toScatter = true; aCol = 0; }
       ctx!.clearRect(0, 0, W, Hh);
+      /* the wave: during hold a band sweeps each line left to right in turn,
+       * lifting the points off the letters and letting them resettle */
+      let waveLine = -1, waveX = 0;
+      const BW = 64, LINE_MS = 1500, GAP_MS = 250, PAUSE_MS = 700;
+      if (ph.k === "hold" && lines.length) {
+        const holdEl = el - (T.construct + T.settle);
+        const per = LINE_MS + GAP_MS, cyc = lines.length * per + PAUSE_MS, u = holdEl % cyc;
+        const li = Math.floor(u / per);
+        if (li < lines.length) { const w = (u - li * per) / LINE_MS; if (w <= 1) { waveLine = li; const L = lines[li]; waveX = L.min - BW + (L.max - L.min + 2 * BW) * w; } }
+      }
       const buckets = new Map<number, (Pt | number)[]>();
       const push = (ci: number, p: Pt, a: number, s: number) => { let arr = buckets.get(ci); if (!arr) { arr = []; buckets.set(ci, arr); } arr.push(p, a, s); };
       for (let i = 0; i < pts.length; i++) {
         const p = pts[i];
-        const tx = (toScatter ? p.sx : p.tx) + Math.sin(t * 1.4 + p.j) * jitter, ty = (toScatter ? p.sy : p.ty) + Math.cos(t * 1.2 + p.j * 1.7) * jitter;
-        const ax = (tx - p.x) * ease, ay = (ty - p.y) * ease;
+        let k = 0;
+        if (waveLine === p.line) { const d = Math.abs(p.tx - waveX); if (d < BW) k = Math.cos((d / BW) * Math.PI * 0.5); }
+        const lift = k > 0 ? k : 0;
+        const tx = (toScatter ? p.sx : p.tx) + Math.sin(t * 1.4 + p.j) * jitter + Math.sin(p.j * 3) * 10 * lift, ty = (toScatter ? p.sy : p.ty) + Math.cos(t * 1.2 + p.j * 1.7) * jitter - (16 + Math.cos(p.j * 5) * 10) * lift;
+        const e2 = lift > 0 ? 0.14 : ease;
+        const ax = (tx - p.x) * e2, ay = (ty - p.y) * e2;
         p.vx = (p.vx + ax * dt) * 0.78; p.vy = (p.vy + ay * dt) * 0.78; p.x += p.vx * dt; p.y += p.vy * dt;
         if (ph.k === "dark") { if (p.stray) push(p.c, p, 0.16, p.s); continue; }
         if (aCol > 0) push(p.c, p, aCol, p.s + flare);
-        if (aSpk > 0 && p.j < 3.4) push(p.spk, p, aSpk * (0.6 + 0.4 * Math.sin(t * 3 + p.j)), 1.5);
+        if (ph.k === "hold") {
+          /* points near the band glow in colour; points that have just been passed are still resettling, drawn in colour too */
+          const settling = Math.hypot(p.x - p.tx, p.y - p.ty);
+          if (lift > 0) push(p.c, p, 0.55 + 0.45 * lift, p.s + 0.8 * lift);
+          else if (settling > 1.2) push(p.c, p, Math.min(1, settling / 14) * 0.9, p.s);
+        }
+        if (aSpk > 0 && p.j < 3.4 && lift === 0) push(p.spk, p, aSpk * (0.6 + 0.4 * Math.sin(t * 3 + p.j)), 1.5);
       }
       /* the dotted cube: builds and scatters with the words, hides while the real cube shows */
       for (const q of cube) {
@@ -192,11 +223,7 @@ export default function HoloHero() {
     const ready = document.fonts && document.fonts.load ? document.fonts.load('700 40px "Space Grotesk"') : Promise.resolve();
     ready.then(() => { if (!cancelled) boot(); }, () => { if (!cancelled) boot(); });
     return () => { cancelled = true; stop(); io.disconnect(); document.removeEventListener("visibilitychange", onVis); removeEventListener("resize", onResize); clearTimeout(rt); clearTimeout(offTimer); };
-  }, []);
-
-  /* keyboard of light: deterministic delays so server and client agree */
-  const rnd = seeded(26);
-  const keys = (n: number) => Array.from({ length: n }, (_, i) => <i key={i} style={{ "--d": (rnd() * 2).toFixed(2) } as React.CSSProperties} />);
+  }, [drive]);
 
   return (
     <section className="hero wrap" id="hero" ref={heroRef}>
@@ -216,27 +243,10 @@ export default function HoloHero() {
         <p className="sub">{AX.hero.sub}</p>
         <a className="cta" href="#accreditations">{AX.hero.cta}<span className="chev"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d={ICONS.chevron} /></svg></span></a>
       </div>
-      <div className="stage">
-        <div className="machine" ref={machineRef}>
-          <div className="slab">
-            <div className="pool" />
-            <div className="keys">{keys(14)}{keys(14)}{keys(14)}{keys(14)}{keys(4)}<i className="sp" style={{ "--d": 1.2 } as React.CSSProperties} />{keys(4)}</div>
-            <div className="trackpad" />
-            <div className="badge">{sc.deckModel}</div>
-          </div>
-          <div className="pane">
-            <div className="face" aria-hidden="true" />
-            <div className="lid" aria-hidden="true"><div className="lidGrid" /><div className="lidSweep" /><div className="lidMark"><BrandCube size={40} /><span className="lidWord">ALGORITHM<b>X</b></span></div><div className="lidEdge" /></div>
-            <span className="corner tl" /><span className="corner tr" /><span className="corner bl" /><span className="corner br" />
-            <div className="os">
-              <div className="bar"><span className="t">{sc.os}</span><span className="tabs">{sc.tabs.map((t) => <span key={t}>{t}</span>)}</span><span className="r"><span>{sc.clock}</span><span>{sc.sys}</span></span></div>
-              <div className="side"><div className="lab">{sc.shield.label}</div><div className="ring" /><div className="big">{sc.shield.value}</div><div className="lab">{sc.shield.sub}</div><ul>{sc.side.map((s) => <li key={s}>{s}</li>)}</ul><div className="lab" style={{ marginTop: "auto" }}>{sc.blocked.label} <b style={{ color: "#fff" }}>{sc.blocked.value}</b></div></div>
-              <div className="main"><div className="hd"><span>{sc.opsTitle}</span><span>{sc.opsStatus}</span></div>{sc.ops.map((o, i) => <div className="row" key={o.name} style={{ "--i": i } as React.CSSProperties}><i /><span className="nm">{o.name}</span><span className="mt">{o.meta}</span><span className="st">{o.status}</span></div>)}</div>
-              <div className="right"><div className="box"><div className="hd">{sc.scan.title}</div>{sc.scan.rows.map((r) => <div className="kv" key={r[0]}><span>{r[0]}</span><b>{r[1]}</b></div>)}</div><div className="box log"><div className="hd">{sc.log.title}</div>{sc.log.rows.map((r) => <div key={r[0]}><span>{r[0]}</span><span>{r[1]}</span></div>)}</div></div>
-              <div className="foot">{sc.foot.map((f) => <span key={f}>{f}</span>)}</div>
-            </div>
-          </div>
-        </div>
+      {/* The original homepage laptop (HeroCinematicV3), same position as
+          before, opening like a real one on the headline's timeline. */}
+      <div className="stage old" aria-label="AlgorithmX laptop">
+        <HeroCinematicV3 overlay={false} embedded drive={drive} />
       </div>
     </section>
   );

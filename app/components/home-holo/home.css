@@ -370,3 +370,12 @@
 .hv4 .pane-card.locked .redact.tall{gap:14px;margin:22px 0 18px}
 .hv4 .pane-card.locked .cipher{margin-top:0}
 .hv4 .pane-card.locked .more{margin-top:auto;padding-top:14px}
+
+/* the original laptop embedded in the right column: no rail, no bottom fade, sized to the column */
+.hv4 .stage.old{position:relative;height:min(560px,72vh);perspective:none;z-index:2;overflow:visible}
+.hv4 .stage.old::before{display:none}
+.hv4 .stage.old .hv3-bottomFade{mask-image:none;-webkit-mask-image:none}
+.hv4 .stage.old .hv3-sceneScale{transform:scale(var(--mscale,.74))}
+@media (max-width:1180px){.hv4 .stage.old .hv3-sceneScale{transform:scale(.64)}}
+@media (max-width:900px){.hv4 .stage.old{height:420px}.hv4 .stage.old .hv3-sceneScale{transform:scale(.5)}}
+@media (max-width:640px){.hv4 .stage.old{height:360px}.hv4 .stage.old .hv3-sceneScale{transform:scale(.38)}}
