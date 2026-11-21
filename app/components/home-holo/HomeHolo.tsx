@@ -4,6 +4,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import BrandCube from "@/app/components/BrandCube";
+import CourseLockup, { type LockupId } from "@/app/components/CourseLockup";
 import HoloHero from "./HoloHero";
 import { AX } from "./content";
 import { ICONS, countUp, reveal, scramble, sparkPath } from "./fx";
@@ -23,21 +24,37 @@ function Spark({ pts, color }: { pts: ReadonlyArray<number>; color: string }) {
   return <svg viewBox="0 0 140 40" width="140" height="40" fill="none" aria-hidden="true"><path d={d} stroke={color} strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" pathLength={1} className="spark-path" /><circle cx={cx} cy={cy} r="3" fill={color} /></svg>;
 }
 
-/* Contrast-safe twins of the neon section colours wherever they carry text on white. */
-const SAFE: Record<string, string> = { "#e0981f": "#8a5400", "#2bbdd0": "#0a7085", "#8b7bff": "#5744c9", "#ff7a3d": "#a63a08", "#7fb2ff": "#1d4ed8", "#f06ab8": "#c0157f", "#3a9fff": "#1d4ed8", "#9a7bff": "#5744c9", "#ffb84d": "#8a5400", "#ffd24d": "#a63a08", "#ff5a78": "#c0157f" };
-const safe = (c: string) => SAFE[c] || c;
-
 type Track = { family: string; label: string; accent: string; verb: string; ages: string; items: ReadonlyArray<readonly [string, string]>; n?: string; status?: string };
 
+/* The course artwork and branded lockups, the same ones the /cybersecurity
+ * cards use (owner: "these cards need their logos in there, and the
+ * background art like the course cards; we should still see the modules"). */
+const TRACK_ART: Record<string, { art: string; lockup?: LockupId; pos?: string }> = {
+  Heroes: { art: "/characters/cyberheroes-card.jpg", lockup: "heroes", pos: "72% 30%" },
+  Explorers: { art: "/explorers/scenes/explorers-card-v4.jpg", lockup: "explorers", pos: "70% 35%" },
+  Ops: { art: "/operators/cyberops-card-v2.jpg", lockup: "ops", pos: "60% 30%" },
+  Pro: { art: "/characters/cyberpro-card.jpg", lockup: "pro", pos: "65% 35%" },
+  Ready: { art: "/desk-ready/home.webp", pos: "50% 40%" },
+};
+
 function TrackCard({ t, i, icon, more }: { t: Track; i: number; icon: keyof typeof ICONS; more: string }) {
+  const a = TRACK_ART[t.label];
   return (
-    <article className="pane-card" style={{ "--a": t.accent, "--i": i } as React.CSSProperties}>
+    <article className={`pane-card ${a ? "art" : ""}`} style={{ "--a": t.accent, "--i": i } as React.CSSProperties}>
+      {a && <div className="artBg" aria-hidden="true" style={{ backgroundImage: `url(${a.art})`, backgroundPosition: a.pos || "center" }} />}
+      {a && <div className="artScrim" aria-hidden="true" />}
       <span className="pdot" />
-      <div className="top"><span className="ic"><Icon name={icon} size={18} sw={1.9} /></span><span className="nm">{t.family} <span>{t.label}</span></span>{t.status ? <span className="live">{t.status}</span> : <span className="n">{t.n}</span>}</div>
-      <span className="verb"><i />{t.verb}</span>
-      <div className="ag">{t.ages}</div>
-      <ul>{t.items.map((it) => <li key={it[0] + it[1]}><span>{it[0]}</span>{it[1]}</li>)}</ul>
-      <div className="more">{more}</div>
+      <div className="inner">
+        <div className="top">
+          {a?.lockup ? <span className="lockup"><CourseLockup id={a.lockup} tone="night" size={0.86} /></span> : <><span className="ic"><Icon name={icon} size={18} sw={1.9} /></span><span className="nm">{t.family} <span>{t.label}</span></span></>}
+          {t.status ? <span className="live">{t.status}</span> : <span className="n">{t.n}</span>}
+        </div>
+        <div className="chips"><span className="agePill">{t.ages}</span><span className="verb"><i />{t.verb}</span></div>
+        <div className="syll">
+          <ul>{t.items.map((it) => <li key={it[0] + it[1]}><span>{it[0]}</span>{it[1]}</li>)}</ul>
+          <div className="more">{more}</div>
+        </div>
+      </div>
     </article>
   );
 }
@@ -46,11 +63,13 @@ function LockedCard({ accent, n, i, label, foot }: { accent: string; n: string; 
   return (
     <article className="pane-card locked" style={{ "--a": accent, "--i": i } as React.CSSProperties}>
       <span className="pdot" />
-      <div className="top"><span className="ic"><Icon name="lock" size={18} sw={1.9} /></span><span className="nm" data-scramble="10" /><span className="n">{n}</span></div>
-      <span className="verb"><i />{label}</span>
-      <div className="ag" data-scramble="12" />
-      <div className="cipher"><div data-scramble="18" /><div data-scramble="18" /><div data-scramble="18" /><div data-scramble="18" /></div>
-      <div className="more">{foot}</div>
+      <div className="inner">
+        <div className="top"><span className="ic"><Icon name="lock" size={18} sw={1.9} /></span><span className="nm" data-scramble="10" /><span className="n">{n}</span></div>
+        <div className="chips"><span className="verb"><i />{label}</span></div>
+        <div className="redact tall"><i style={{ width: "78%" }} /><i style={{ width: "54%" }} /><i style={{ width: "66%" }} /><i style={{ width: "42%" }} /><i style={{ width: "72%" }} /><i style={{ width: "48%" }} /></div>
+        <div className="cipher"><div data-scramble="18" /><div data-scramble="18" /><div data-scramble="18" /></div>
+        <div className="more">{foot}</div>
+      </div>
     </article>
   );
 }
@@ -75,6 +94,9 @@ function Nav() {
   );
 }
 
+/* FAQ: a two-column spread, heading on the left, questions in a glass panel on
+ * the right. Open state is React state only; the items carry no data-reveal
+ * (a re-render used to wipe the imperative .in class and the item vanished). */
 function Faq() {
   const [open, setOpen] = useState(0);
   const listRef = useRef<HTMLDivElement>(null);
@@ -84,14 +106,18 @@ function Faq() {
   const F = AX.faq;
   return (
     <section className="s wrap" id="faq">
-      <div data-reveal style={{ textAlign: "center" }}><span className="kicker"><i />{F.kicker}</span><h2 className="t">{F.title}</h2><p className="lead" style={{ marginInline: "auto" }}>{F.sub}</p></div>
-      <div className="faq" ref={listRef}>
-        {F.items.map((it, i) => (
-          <div className={`faq-item ${i === open ? "open" : ""}`} key={it.q} data-reveal style={{ "--d": `${i * 0.05}s` } as React.CSSProperties}>
-            <button aria-expanded={i === open} onClick={() => setOpen(i === open ? -1 : i)}><span className="n">{String(i + 1).padStart(2, "0")}</span><span className="q">{it.q}</span><span className="pm"><Icon name="plus" size={14} sw={2.2} /></span></button>
-            <div className="faq-a"><p>{it.a}</p></div>
+      <div className="faq2">
+        <div className="faq2-head" data-reveal><span className="kicker"><i />{F.kicker}</span><h2 className="t">{F.title}</h2><p className="lead">{F.sub}</p></div>
+        <div className="glass faq2-panel" data-reveal style={{ "--d": ".1s" } as React.CSSProperties}>
+          <div className="faq" ref={listRef}>
+            {F.items.map((it, i) => (
+              <div className={`faq-item ${i === open ? "open" : ""}`} key={it.q}>
+                <button aria-expanded={i === open} onClick={() => setOpen(i === open ? -1 : i)}><span className="n">{String(i + 1).padStart(2, "0")}</span><span className="q">{it.q}</span><span className="pm"><Icon name="plus" size={14} sw={2.2} /></span></button>
+                <div className="faq-a"><p>{it.a}</p></div>
+              </div>
+            ))}
           </div>
-        ))}
+        </div>
       </div>
     </section>
   );
@@ -128,7 +154,9 @@ export default function HomeHolo() {
 
   const A = AX.accreditations, S = AX.stats, ST = AX.streams, C = ST.cyber, W = ST.workplace, R = ST.roadmap, T = AX.toolkit, Fo = AX.footer;
   const icons: Array<keyof typeof ICONS> = ["bolt", "search", "target", "terminal"];
-  const logos = T.logos.map((l) => <span className="logo" key={l.name}><img src={l.src} alt={l.name} /><span>{l.name.toUpperCase()}</span></span>);
+  /* colour logos (owner: "put colours on it"); Apple and Unity ship as white marks, so they go to ink */
+  const INK = new Set(["Apple", "Unity"]);
+  const logos = T.logos.map((l) => <span className="logo" key={l.name}><img src={l.src} alt={l.name} className={INK.has(l.name) ? "ink" : ""} /><span>{l.name.toUpperCase()}</span></span>);
 
   return (
     <div className="hv4" ref={rootRef}>
@@ -164,7 +192,18 @@ export default function HomeHolo() {
           </article>
           <div className="road">
             <div data-reveal><span className="kicker"><i />{R.kicker}</span><h2 className="t"><span className="acc">{R.titleAccent}</span>{R.titleTail}</h2><p className="lead">{R.sub}</p></div>
-            <div className="shards">{R.cards.map((c, i) => <article className="shard" key={c.accent} data-reveal style={{ "--a": safe(c.accent), "--d": `${i * 0.09}s` } as React.CSSProperties}><span className="lk"><Icon name="lock" size={16} sw={1.9} /></span><br /><span className="lab">{R.label}</span><div className="cipher" data-scramble="22" /><div className="ln">{R.line}</div><div className="cl">{R.classified}</div></article>)}</div>
+            <div className="vaults">{R.cards.map((c, i) => (
+              <article className="vault" key={c.accent} data-reveal style={{ "--a": c.accent, "--d": `${i * 0.09}s` } as React.CSSProperties}>
+                <span className="vbrk tl" /><span className="vbrk tr" /><span className="vbrk bl" /><span className="vbrk br" />
+                <div className="vscan" aria-hidden="true" />
+                <div className="vtop"><span className="vlock"><Icon name="lock" size={18} sw={1.9} /></span><span className="vnum">{String(i + 3).padStart(2, "0")}</span></div>
+                <div className="vtitle" data-scramble="12" />
+                <div className="redact"><i style={{ width: "82%" }} /><i style={{ width: "58%" }} /><i style={{ width: "70%" }} /></div>
+                <div className="vcipher" data-scramble="24" />
+                <div className="vfoot"><span className="lab">{R.label}</span><span className="ln">{R.line}</span></div>
+                <div className="cl">{R.classified}</div>
+              </article>
+            ))}</div>
           </div>
         </section>
 

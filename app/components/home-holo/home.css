@@ -296,3 +296,77 @@
 
 /* the screen face: dark glass with the lit frame, clipped, front-facing only */
 .hv4 .pane .face{position:absolute;inset:0;border-radius:14px;overflow:hidden;background:linear-gradient(180deg,rgba(6,18,36,.95),rgba(6,18,36,.88));box-shadow:inset 0 0 0 1px rgba(0,229,255,.45),inset 0 0 60px rgba(0,229,255,.08);backface-visibility:hidden;-webkit-backface-visibility:hidden;opacity:calc(.15 + var(--open,0) * .85)}
+
+/* ── Track cards with the course art behind the modules (owner, 15:20) ── */
+.hv4 .pane-card{padding:0;min-height:440px;display:flex;flex-direction:column;isolation:isolate}
+.hv4 .pane-card .inner{position:relative;z-index:2;display:flex;flex-direction:column;flex:1;padding:20px 18px 18px}
+.hv4 .pane-card .artBg{position:absolute;inset:0;z-index:0;background-size:cover;background-repeat:no-repeat;transform:scale(1.02);transition:transform 1.2s cubic-bezier(.2,.7,.2,1);filter:saturate(1.05)}
+.hv4 .pane-card:hover .artBg{transform:scale(1.08)}
+.hv4 .pane-card .artScrim{position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(4,9,18,.22) 0%,rgba(4,9,18,.42) 34%,rgba(4,9,18,.86) 58%,rgba(4,9,18,.96) 100%),radial-gradient(120% 60% at 0% 0%,color-mix(in srgb,var(--a) 28%,transparent),transparent 60%)}
+.hv4 .pane-card.art{border-color:color-mix(in srgb,var(--a) 35%,rgba(255,255,255,.12));box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 24px 60px rgba(0,0,0,.45)}
+.hv4 .pane-card .lockup{display:inline-flex;align-items:center;min-height:38px;filter:drop-shadow(0 2px 10px rgba(0,0,0,.6))}
+.hv4 .pane-card .chips{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:12px}
+.hv4 .pane-card .agePill{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.18em;color:#06111f;background:var(--a);padding:6px 10px;border-radius:999px;box-shadow:0 0 18px color-mix(in srgb,var(--a) 55%,transparent)}
+.hv4 .pane-card .chips .verb{margin:0;background:rgba(4,9,18,.55);backdrop-filter:blur(6px)}
+.hv4 .pane-card .syll{margin-top:auto;padding:14px 14px 12px;border-radius:12px;background:rgba(4,9,18,.62);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:inset 0 0 0 1px rgba(255,255,255,.1),inset 0 1px 0 rgba(255,255,255,.08)}
+.hv4 .pane-card .syll ul li{padding:5px 0}
+.hv4 .pane-card .syll .more{margin-top:10px}
+.hv4 .pane-card.art .top .n{color:#fff;opacity:.75;text-shadow:0 1px 8px rgba(0,0,0,.8)}
+.hv4 .pane-card .live{text-shadow:none}
+/* locked cards in the Workplace grid: redaction bars over a dim scan */
+.hv4 .pane-card.locked{background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.02)),repeating-linear-gradient(0deg,transparent 0 6px,rgba(255,255,255,.02) 6px 7px)}
+.hv4 .redact{display:grid;gap:10px;margin:18px 0 14px}
+.hv4 .redact i{display:block;height:10px;border-radius:3px;background:linear-gradient(90deg,color-mix(in srgb,var(--a) 35%,transparent),color-mix(in srgb,var(--a) 12%,transparent));position:relative;overflow:hidden}
+.hv4 .redact i::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent);transform:translateX(-120%);animation:hv-redactSweep 3.2s ease-in-out infinite;animation-delay:calc(var(--i,0) * .4s)}
+@keyframes hv-redactSweep{0%,60%{transform:translateX(-120%)}100%{transform:translateX(120%)}}
+.hv4 .pane-card.locked .cipher{margin-top:auto}
+
+/* ── Roadmap: five sealed vaults ── */
+.hv4 .vaults{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-top:34px}
+.hv4 .vault{position:relative;overflow:hidden;min-height:330px;display:flex;flex-direction:column;padding:20px 18px 16px;border-radius:18px;color:#d7dee9;background:radial-gradient(120% 80% at 50% 0%,color-mix(in srgb,var(--a) 22%,transparent),transparent 55%),linear-gradient(180deg,#0b1222,#070c18 70%,#060a14);border:1px solid color-mix(in srgb,var(--a) 35%,rgba(255,255,255,.1));box-shadow:0 30px 70px -30px rgba(10,20,50,.55),inset 0 1px 0 rgba(255,255,255,.08);transition:transform .45s cubic-bezier(.2,.7,.2,1),box-shadow .45s}
+.hv4 .vault:hover{transform:translateY(-6px);box-shadow:0 40px 80px -30px color-mix(in srgb,var(--a) 45%,transparent),inset 0 1px 0 rgba(255,255,255,.1)}
+.hv4 .vault::before{content:"";position:absolute;left:14%;right:14%;top:-1px;height:2px;background:linear-gradient(90deg,transparent,var(--a),transparent);box-shadow:0 0 16px var(--a)}
+.hv4 .vault .vbrk{position:absolute;width:14px;height:14px;border:1px solid color-mix(in srgb,var(--a) 70%,transparent)}
+.hv4 .vault .vbrk.tl{left:10px;top:10px;border-right:0;border-bottom:0}.hv4 .vault .vbrk.tr{right:10px;top:10px;border-left:0;border-bottom:0}.hv4 .vault .vbrk.bl{left:10px;bottom:10px;border-right:0;border-top:0}.hv4 .vault .vbrk.br{right:10px;bottom:10px;border-left:0;border-top:0}
+.hv4 .vault .vscan{position:absolute;left:0;right:0;height:50px;top:-50px;background:linear-gradient(to bottom,transparent,color-mix(in srgb,var(--a) 18%,transparent),transparent);animation:hv-vscan 7s linear infinite;animation-delay:calc(var(--d,0s) * 6)}
+@keyframes hv-vscan{0%{top:-50px}45%,100%{top:110%}}
+.hv4 .vault .vtop{display:flex;align-items:center;justify-content:space-between;margin-top:6px}
+.hv4 .vault .vlock{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;color:var(--a);background:color-mix(in srgb,var(--a) 10%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--a) 55%,transparent),0 0 24px color-mix(in srgb,var(--a) 30%,transparent);animation:hv-vlock 3s ease-in-out infinite}
+@keyframes hv-vlock{0%,100%{box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--a) 55%,transparent),0 0 18px color-mix(in srgb,var(--a) 25%,transparent)}50%{box-shadow:inset 0 0 0 1px var(--a),0 0 36px color-mix(in srgb,var(--a) 55%,transparent)}}
+.hv4 .vault .vnum{font-family:var(--disp);font-weight:700;font-size:40px;line-height:1;letter-spacing:-.03em;color:rgba(255,255,255,.08)}
+.hv4 .vault .vtitle{font-family:var(--mono);font-size:15px;font-weight:600;letter-spacing:.08em;color:#fff;margin-top:18px;min-height:1.2em}
+.hv4 .vault .redact{margin:16px 0 12px}
+.hv4 .vault .vcipher{font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:rgba(255,255,255,.4);line-height:1.8;word-break:break-all}
+.hv4 .vault .vfoot{margin-top:auto;display:flex;flex-direction:column;gap:10px;padding-top:14px;border-top:1px solid rgba(255,255,255,.08)}
+.hv4 .vault .lab{display:inline-flex;align-self:flex-start;font-family:var(--mono);font-size:9px;letter-spacing:.2em;color:var(--a);padding:4px 9px;border-radius:999px;border:1px solid color-mix(in srgb,var(--a) 50%,transparent);background:color-mix(in srgb,var(--a) 10%,transparent)}
+.hv4 .vault .ln{font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:var(--a)}
+.hv4 .vault .cl{font-family:var(--mono);font-size:9px;letter-spacing:.18em;color:rgba(255,255,255,.35);margin-top:8px}
+
+/* ── FAQ as a two-column spread ── */
+.hv4 .faq2{display:grid;grid-template-columns:minmax(260px,.8fr) minmax(0,1.3fr);gap:clamp(28px,5vw,72px);align-items:start}
+.hv4 .faq2-head{position:sticky;top:110px}
+.hv4 .faq2-panel{padding:10px 26px}
+.hv4 .faq{max-width:none;margin:0}
+.hv4 .faq-item{border-top:1px solid var(--line);position:relative}
+.hv4 .faq-item:first-child{border-top:0}
+.hv4 .faq-item:last-child{border-bottom:0}
+.hv4 .faq-item::before{content:"";position:absolute;left:-26px;top:18px;bottom:18px;width:3px;border-radius:3px;background:linear-gradient(180deg,var(--teal),var(--indigo));opacity:0;transform:scaleY(.4);transition:opacity .35s,transform .45s cubic-bezier(.2,.7,.2,1)}
+.hv4 .faq-item.open::before{opacity:1;transform:none}
+.hv4 .faq-item button{grid-template-columns:40px 1fr 36px;padding:20px 0}
+.hv4 .faq-item .q{font-size:18px}
+.hv4 .faq-item.open .q{color:var(--teal)}
+.hv4 .faq-item .pm{width:36px;height:36px;background:#fff}
+.hv4 .faq-item.open .pm{background:var(--teal);color:#fff;border-color:var(--teal);box-shadow:0 0 20px rgba(0,229,255,.35)}
+.hv4 .faq-item .faq-a p{margin:0 0 20px 40px;padding:16px 18px;border-radius:12px;background:linear-gradient(135deg,rgba(0,229,255,.08),rgba(124,92,255,.06));box-shadow:inset 0 0 0 1px rgba(10,112,133,.14);font-size:15px;line-height:1.65;color:var(--body)}
+
+/* ── Toolkit logos in colour ── */
+.hv4 .logo img{filter:none;opacity:1}
+.hv4 .logo img.ink{filter:brightness(0);opacity:.85}
+.hv4 .logo{box-shadow:0 1px 0 #fff inset;transition:border-color .3s,box-shadow .3s,transform .3s}
+.hv4 .logo:hover{transform:translateY(-2px)}
+
+@media (max-width:1180px){.hv4 .vaults{grid-template-columns:repeat(3,1fr)}.hv4 .faq2{grid-template-columns:1fr}.hv4 .faq2-head{position:static}}
+@media (max-width:640px){.hv4 .vaults{grid-template-columns:1fr}.hv4 .faq-item .faq-a p{margin-left:0}.hv4 .faq2-panel{padding:6px 16px}.hv4 .faq-item::before{display:none}}
+.hv4 .pane-card.locked .redact.tall{gap:14px;margin:22px 0 18px}
+.hv4 .pane-card.locked .cipher{margin-top:0}
+.hv4 .pane-card.locked .more{margin-top:auto;padding-top:14px}
