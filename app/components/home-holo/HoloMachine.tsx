@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, type CSSProperties } from "react";
 import { motion, useMotionValue, useSpring, useTransform, type MotionValue } from "framer-motion";
 import BrandCube from "@/app/components/BrandCube";
 import { AX } from "./content";
@@ -71,6 +71,23 @@ export default function HoloMachine({ drive }: { drive: MotionValue<number> }) {
   /* the lid top is a touch more opaque than the deck so the keys only ghost through it when shut */
   const lidGlass = "linear-gradient(148deg, rgba(252,253,255,.98) 0%, rgba(236,243,251,.96) 40%, rgba(218,229,242,.97) 74%, rgba(230,238,249,.98) 100%)";
 
+  /* The body is a rounded rectangle (radius 16) but its edge faces are straight,
+   * so a straight face running the full length pokes out past each rounded
+   * corner as a small dark spike. The straight faces are inset by the radius
+   * and each corner is closed with a 45-degree chord face instead. */
+  const R = 16, CHORD = R * Math.SQRT2;
+  const corners = (depth: number, pre = "") => {
+    const base: CSSProperties = { position: "absolute", width: CHORD, height: depth, background: edge, boxShadow: "inset 0 1px 0 rgba(255,255,255,.55)" };
+    return (
+      <>
+        <div className="hm-face" aria-hidden style={{ ...base, left: 0, top: 430 - R, transformOrigin: "0 0", transform: `${pre} rotateZ(45deg) rotateX(-90deg)` }} />
+        <div className="hm-face" aria-hidden style={{ ...base, right: 0, top: 430 - R, transformOrigin: "100% 0", transform: `${pre} rotateZ(-45deg) rotateX(-90deg)` }} />
+        <div className="hm-face" aria-hidden style={{ ...base, left: 0, top: R, transformOrigin: "0 0", transform: `${pre} rotateZ(-45deg) rotateX(-90deg)` }} />
+        <div className="hm-face" aria-hidden style={{ ...base, right: 0, top: R, transformOrigin: "100% 0", transform: `${pre} rotateZ(45deg) rotateX(-90deg)` }} />
+      </>
+    );
+  };
+
   return (
     <div className="hm-frame" style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
       <div className="hm-scale" style={{ perspective: 1900, perspectiveOrigin: "55% 34%", transformStyle: "preserve-3d" }}>
@@ -84,11 +101,12 @@ export default function HoloMachine({ drive }: { drive: MotionValue<number> }) {
               {/* ── deck: frosted glass ── */}
               <div className="hm-deck" style={{ position: "absolute", inset: 0, borderRadius: 16, transformStyle: "preserve-3d", background: glass, boxShadow: `${chamfer}, inset 0 0 70px rgba(0,229,255,.06), 0 30px 80px -30px rgba(20,30,60,.5)`, backgroundImage: `${glass}, linear-gradient(rgba(10,112,133,.06) 1px, transparent 1px), linear-gradient(90deg, rgba(10,112,133,.06) 1px, transparent 1px)`, backgroundSize: "100% 100%, 28px 28px, 28px 28px" }}>
                 {/* the body's thickness: front and side faces hanging below the deck */}
-                <div className="hm-face" aria-hidden style={{ position: "absolute", left: 0, right: 0, bottom: 0, height: 18, transformOrigin: "50% 0%", transform: "rotateX(-90deg)", background: edge, borderRadius: "0 0 10px 10px", boxShadow: "inset 0 1px 0 rgba(255,255,255,.7), inset 0 -1px 0 rgba(120,145,175,.6)" }}>
+                <div className="hm-face" aria-hidden style={{ position: "absolute", left: R, right: R, top: 430, height: 18, transformOrigin: "50% 0%", transform: "rotateX(-90deg)", background: edge, boxShadow: "inset 0 1px 0 rgba(255,255,255,.7), inset 0 -1px 0 rgba(120,145,175,.6)" }}>
                   <div style={{ position: "absolute", left: 40, right: 40, top: 5, height: 2, borderRadius: 2, background: "linear-gradient(90deg, transparent, rgba(0,229,255,.95), transparent)", boxShadow: "0 0 14px rgba(0,229,255,.7)" }} />
                 </div>
-                <div className="hm-face" aria-hidden style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: 18, transformOrigin: "0% 50%", transform: "rotateY(90deg)", background: edge, boxShadow: "inset 1px 0 0 rgba(255,255,255,.6)" }} />
-                <div className="hm-face" aria-hidden style={{ position: "absolute", right: 0, top: 0, bottom: 0, width: 18, transformOrigin: "100% 50%", transform: "rotateY(-90deg)", background: edge, boxShadow: "inset -1px 0 0 rgba(255,255,255,.6)" }} />
+                <div className="hm-face" aria-hidden style={{ position: "absolute", left: 0, top: R, bottom: R, width: 18, transformOrigin: "0% 50%", transform: "rotateY(90deg)", background: edge, boxShadow: "inset 1px 0 0 rgba(255,255,255,.6)" }} />
+                <div className="hm-face" aria-hidden style={{ position: "absolute", right: 0, top: R, bottom: R, width: 18, transformOrigin: "100% 50%", transform: "rotateY(-90deg)", background: edge, boxShadow: "inset -1px 0 0 rgba(255,255,255,.6)" }} />
+                {corners(18)}
                 {/* a crisp shadow under the body, for grounding */}
                 <div aria-hidden style={{ position: "absolute", inset: -2, borderRadius: 18, transform: "translateZ(-20px) translate(10px, 14px)", background: "rgba(20,40,70,.34)", filter: "blur(12px)" }} />
                 {/* gloss: one soft highlight across the deck */}
@@ -146,9 +164,10 @@ export default function HoloMachine({ drive }: { drive: MotionValue<number> }) {
                 </div>
 
                 {/* the lid's thickness: a 6px glass edge on its free end and sides */}
-                <div className="hm-face" aria-hidden style={{ position: "absolute", left: 0, right: 0, bottom: 0, height: 6, transformOrigin: "50% 0%", transform: "translateZ(1.2px) rotateX(-90deg)", background: edge, borderRadius: "0 0 6px 6px" }} />
-                <div className="hm-face" aria-hidden style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: 6, transformOrigin: "0% 50%", transform: "translateZ(1.2px) rotateY(90deg)", background: edge }} />
-                <div className="hm-face" aria-hidden style={{ position: "absolute", right: 0, top: 0, bottom: 0, width: 6, transformOrigin: "100% 50%", transform: "translateZ(1.2px) rotateY(-90deg)", background: edge }} />
+                <div className="hm-face" aria-hidden style={{ position: "absolute", left: R, right: R, top: 430, height: 6, transformOrigin: "50% 0%", transform: "translateZ(1.2px) rotateX(-90deg)", background: edge }} />
+                <div className="hm-face" aria-hidden style={{ position: "absolute", left: 0, top: R, bottom: R, width: 6, transformOrigin: "0% 50%", transform: "translateZ(1.2px) rotateY(90deg)", background: edge }} />
+                <div className="hm-face" aria-hidden style={{ position: "absolute", right: 0, top: R, bottom: R, width: 6, transformOrigin: "100% 50%", transform: "translateZ(1.2px) rotateY(-90deg)", background: edge }} />
+                {corners(6, "translateZ(1.2px)")}
                 {/* inner face: the hologram pane */}
                 <div style={{ position: "absolute", inset: 0, borderRadius: 16, backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden", transform: "rotateX(180deg) translateZ(3.5px)", background: "linear-gradient(160deg, #101a2a, #0a121f)", boxShadow: "inset 0 0 0 1px rgba(255,255,255,.08), 0 0 0 1px rgba(150,172,198,.55)", padding: 11 }}>
                   <div aria-hidden style={{ position: "absolute", left: "50%", bottom: 3, width: 5, height: 5, marginLeft: -2.5, borderRadius: 99, background: "radial-gradient(circle at 40% 35%, #3a5577 0%, #0a1220 70%)", boxShadow: "0 0 0 1.5px rgba(120,150,190,.35)" }} />
