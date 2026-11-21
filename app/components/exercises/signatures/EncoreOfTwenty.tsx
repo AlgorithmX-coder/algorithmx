@@ -714,8 +714,17 @@ export default function EncoreOfTwenty({
                 // `auto` margins keep the card centered when it fits but stop
                 // the flex-centering from clipping its top edge on overflow.
                 margin: "auto",
-                maxWidth: 460,
+                maxWidth: 520,
+                width: "100%",
                 textAlign: "center",
+                // A real card, like every other game's briefing: before this
+                // the text floated loose on the dimmed stage (UAT 2026-11-21,
+                // W20 "no proper frame around this activity briefing").
+                padding: "26px 30px 28px",
+                borderRadius: 24,
+                background: "linear-gradient(180deg, rgba(30, 38, 82, 0.96), rgba(14, 18, 44, 0.96))",
+                border: "1px solid rgba(255, 209, 102, 0.55)",
+                boxShadow: "0 20px 60px rgba(0, 0, 0, 0.55), 0 0 36px rgba(255, 209, 102, 0.16)",
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
