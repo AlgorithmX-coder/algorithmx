@@ -56,7 +56,7 @@
 .hv4 h1.h .txt.still{opacity:1;transition:none}
 .hv4 h1.h .acc{display:inline;background:linear-gradient(100deg,var(--teal),var(--indigo) 35%,var(--violet) 65%,var(--magenta));background-size:220% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:hv-sheen 9s linear infinite}
 /* the real neon brand cube, inline after "firms.", pink glyph inside; it switches on and off with the headline */
-.hv4 h1.h .cubeSlot{display:inline-grid;place-items:center;width:1em;height:1em;margin-left:.3em;vertical-align:-.12em;opacity:0;transition:opacity .5s ease}
+.hv4 h1.h .cubeSlot{display:inline-grid;place-items:center;width:.76em;height:.76em;margin-left:.28em;vertical-align:-.03em;opacity:0;transition:opacity .5s ease}
 .hv4 h1.h .cubeSlot.on{opacity:1}
 .hv4 h1.h .cubeSlot.flick{animation:hv-flick .3s steps(1,end) forwards}
 .hv4 h1.h .cubeSlot .lv2-cube-wrap{margin:0;filter:drop-shadow(0 0 calc(var(--u) * 3) rgba(0,229,255,.75)) drop-shadow(0 0 calc(var(--u) * 7) rgba(0,229,255,.35))}

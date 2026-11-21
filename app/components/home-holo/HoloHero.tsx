@@ -18,7 +18,21 @@ type Phase = (typeof PHASES)[number];
 const STOPS = [[10, 112, 133], [79, 70, 229], [87, 68, 201], [165, 17, 127]];
 const NB = 24;
 
-interface Pt { x: number; y: number; vx: number; vy: number; j: number; s: number; stray: boolean; tx: number; ty: number; sx: number; sy: number; c: number; spk: number; }
+interface Pt { x: number; y: number; vx: number; vy: number; j: number; s: number; stray: boolean; tx: number; ty: number; sx: number; sy: number; c: number; spk: number; o?: [number, number, number]; depth?: number; }
+
+/* The dotted cube that builds and scatters with the words: 12 edges plus a
+ * sparse </> on the front face, in unit coordinates. While the headline
+ * holds, these points hide and the real neon BrandCube shows in their place. */
+function makeCubePoints(cyan: number, lite: number, mag: number): Pt[] {
+  const out: Pt[] = [];
+  const V: [number, number, number][] = [[-1, -1, -1], [1, -1, -1], [1, 1, -1], [-1, 1, -1], [-1, -1, 1], [1, -1, 1], [1, 1, 1], [-1, 1, 1]];
+  const E: [number, number][] = [[0, 1], [1, 2], [2, 3], [3, 0], [4, 5], [5, 6], [6, 7], [7, 4], [0, 4], [1, 5], [2, 6], [3, 7]];
+  const seg = (a: [number, number, number], b: [number, number, number], n: number, c: number) => { for (let i = 0; i <= n; i++) { const f = i / n; out.push({ x: 0, y: 0, vx: 0, vy: 0, j: Math.random() * Math.PI * 2, s: 2, stray: false, tx: 0, ty: 0, sx: 0, sy: 0, c, spk: 0, o: [a[0] + (b[0] - a[0]) * f, a[1] + (b[1] - a[1]) * f, a[2] + (b[2] - a[2]) * f] }); } };
+  E.forEach(([a, b], i) => seg(V[a], V[b], 11, i % 5 === 0 ? lite : cyan));
+  const g = (x: number, y: number): [number, number, number] => [x, y, 1.001];
+  ([[g(-0.6, 0), g(-0.24, -0.38)], [g(-0.6, 0), g(-0.24, 0.38)], [g(0.12, -0.44), g(-0.12, 0.44)], [g(0.6, 0), g(0.24, -0.38)], [g(0.6, 0), g(0.24, 0.38)]] as [[number, number, number], [number, number, number]][]).forEach(([a, b]) => seg(a, b, 5, mag));
+  return out;
+}
 
 export default function HoloHero() {
   const sc = AX.hero.screen;
@@ -48,7 +62,11 @@ export default function HoloHero() {
     for (let b = 0; b < NB; b++) { const t = (b / (NB - 1)) * (STOPS.length - 1), i = Math.min(STOPS.length - 2, Math.floor(t)), f = t - i; const c = STOPS[i].map((v, k) => Math.round(v + (STOPS[i + 1][k] - v) * f)); palette.push(`rgb(${c[0]},${c[1]},${c[2]})`); }
     const SPK_LEAD = palette.length; palette.push("#8ff4ff");
     const SPK_ACC = palette.length; palette.push("#ffffff");
-    let W = 0, Hh = 0, pts: Pt[] = [], raf = 0, last = 0, cycle0 = 0, phase: Phase | "" = "", center = { x: 0, y: 0 }, built = false, paused = false, offTimer = 0;
+    const CUBE_CYAN = palette.length; palette.push("#00bfe0");
+    const CUBE_LITE = palette.length; palette.push("#7df0ff");
+    const CUBE_MAG = palette.length; palette.push("#ff2bd6");
+    const cube = makeCubePoints(CUBE_CYAN, CUBE_LITE, CUBE_MAG);
+    let W = 0, Hh = 0, pts: Pt[] = [], raf = 0, last = 0, cycle0 = 0, phase: Phase | "" = "", center = { x: 0, y: 0 }, cubeC = { x: 0, y: 0, s: 18 }, built = false, paused = false, offTimer = 0;
     const rand = (a: number, b: number) => a + Math.random() * (b - a);
     const wordRects = (node: HTMLElement) => { const tn = node.firstChild; if (!tn || tn.nodeType !== 3) return [] as { w: string; r: DOMRect }[]; const text = tn.textContent || "", out: { w: string; r: DOMRect }[] = [], re = /\S+/g; let m: RegExpExecArray | null; while ((m = re.exec(text))) { const r = document.createRange(); r.setStart(tn, m.index); r.setEnd(tn, m.index + m[0].length); out.push({ w: m[0], r: r.getBoundingClientRect() }); } return out; };
 
@@ -59,7 +77,8 @@ export default function HoloHero() {
       cv!.width = Math.round(W * dpr); cv!.height = Math.round(Hh * dpr); ctx!.setTransform(dpr, 0, 0, dpr, 0, 0);
       const ox = hr.left - PAD_X, oy = hr.top - PAD_Y;
       const cs = getComputedStyle(h1!);
-      setCubePx(Math.round((parseFloat(cs.fontSize) || 56) * 0.92));
+      /* the cube is the height of the word next to it: cap height, about 0.7 em */
+      setCubePx(Math.round((parseFloat(cs.fontSize) || 56) * 0.7));
       const oc = document.createElement("canvas"); oc.width = W; oc.height = Hh; const o = oc.getContext("2d")!;
       o.font = `${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`; if ("letterSpacing" in o) (o as CanvasRenderingContext2D & { letterSpacing: string }).letterSpacing = cs.letterSpacing; o.textBaseline = "alphabetic";
       const asc = o.measureText("H").fontBoundingBoxAscent || parseFloat(cs.fontSize) * 0.78;
@@ -90,12 +109,24 @@ export default function HoloHero() {
         p.sx = p.tx + Math.cos(a) * d; p.sy = p.ty + Math.sin(a) * d - 30;
         return p;
       });
+      const sr = slot!.getBoundingClientRect();
+      cubeC = { x: sr.left - ox + sr.width / 2, y: sr.top - oy + sr.height / 2, s: sr.width * 0.36 };
+      cube.forEach((q) => { if (!q.sx && !q.sy) { q.x = cubeC.x + rand(-120, 120); q.y = cubeC.y + rand(-90, 90); } const a = rand(0, Math.PI * 2), d = rand(80, 200); q.sx = cubeC.x + Math.cos(a) * d; q.sy = cubeC.y + Math.sin(a) * d - 20; });
       built = true;
+    }
+    function project(now: number) {
+      const ry = (now / 14000) * Math.PI * 2, rx = -0.42, cy = Math.cos(ry), sy = Math.sin(ry), cx = Math.cos(rx), sx = Math.sin(rx), S = cubeC.s;
+      for (const q of cube) {
+        const [X, Y, Z] = q.o!;
+        const x1 = X * cy + Z * sy, z1 = -X * sy + Z * cy;
+        const y2 = Y * cx - z1 * sx, z2 = Y * sx + z1 * cx;
+        q.tx = cubeC.x + x1 * S; q.ty = cubeC.y + y2 * S; q.depth = (z2 + 1.8) / 3.6;
+      }
     }
     function setPhase(p: Phase) {
       if (p === phase) return; phase = p;
-      if (p === "construct") { txt!.classList.remove("on", "flick"); slot!.classList.remove("flick"); slot!.classList.add("on"); }
-      if (p === "settle") { txt!.classList.add("on"); }
+      if (p === "construct") { txt!.classList.remove("on", "flick"); slot!.classList.remove("on", "flick"); }
+      if (p === "settle") { txt!.classList.add("on"); slot!.classList.add("on"); }
       if (p === "off") { txt!.classList.add("flick"); slot!.classList.add("flick"); offTimer = window.setTimeout(() => { txt!.classList.remove("on", "flick"); slot!.classList.remove("on", "flick"); }, 320); }
       if (p === "dark") { pts.forEach((q) => { if (Math.random() < 0.35) { q.x = center.x + rand(-W * 0.45, W * 0.45); q.y = center.y + rand(-Hh * 0.55, Hh * 0.55); q.vx = 0; q.vy = 0; } }); }
     }
@@ -108,6 +139,7 @@ export default function HoloHero() {
       if (el >= total) { cycle0 = now - (el % total); el = now - cycle0; }
       const ph = phaseAt(el); setPhase(ph.k);
       const f = ph.f, t = now * 0.001;
+      project(now);
       let aCol = 1, aSpk = 0, toScatter = false, flare = 0, jitter = 0.6, ease = 0.07;
       if (ph.k === "construct") { aCol = Math.min(1, f * 3); jitter = 1.2; }
       else if (ph.k === "settle") { aCol = 1 - f; aSpk = f * 0.22; jitter = 0.3; }
@@ -126,11 +158,19 @@ export default function HoloHero() {
         if (aCol > 0) push(p.c, p, aCol, p.s + flare);
         if (aSpk > 0 && p.j < 3.4) push(p.spk, p, aSpk * (0.6 + 0.4 * Math.sin(t * 3 + p.j)), 1.5);
       }
+      /* the dotted cube: builds and scatters with the words, hides while the real cube shows */
+      for (const q of cube) {
+        const tx = toScatter ? q.sx : q.tx, ty = toScatter ? q.sy : q.ty;
+        const ax = (tx - q.x) * (ease + 0.04), ay = (ty - q.y) * (ease + 0.04);
+        q.vx = (q.vx + ax * dt) * 0.74; q.vy = (q.vy + ay * dt) * 0.74; q.x += q.vx * dt; q.y += q.vy * dt;
+        if (ph.k === "dark" || ph.k === "hold" || aCol <= 0) continue;
+        push(q.c, q, aCol * (0.45 + 0.55 * (q.depth || 0.5)), 1.3 + (q.depth || 0.5) * 1.1 + flare);
+      }
       for (const [ci, arr] of buckets) { ctx!.fillStyle = palette[ci]; for (let i = 0; i < arr.length; i += 3) { const p = arr[i] as Pt, a = arr[i + 1] as number, s = arr[i + 2] as number; ctx!.globalAlpha = Math.max(0, Math.min(1, a)); ctx!.fillRect(p.x - s / 2, p.y - s / 2, s, s); } }
       ctx!.globalAlpha = 1;
       if (!paused && !document.hidden) raf = requestAnimationFrame(step);
     }
-    function start() { if (!raf && !paused && !document.hidden) { last = performance.now(); cycle0 = last; phase = ""; pts.forEach((p) => { p.x = p.sx + rand(-40, 40); p.y = p.sy + rand(-30, 30); p.vx = 0; p.vy = 0; }); txt!.classList.remove("on", "flick"); slot!.classList.remove("on", "flick"); raf = requestAnimationFrame(step); } }
+    function start() { if (!raf && !paused && !document.hidden) { last = performance.now(); cycle0 = last; phase = ""; pts.forEach((p) => { p.x = p.sx + rand(-40, 40); p.y = p.sy + rand(-30, 30); p.vx = 0; p.vy = 0; }); cube.forEach((q) => { q.x = q.sx; q.y = q.sy; q.vx = 0; q.vy = 0; }); txt!.classList.remove("on", "flick"); slot!.classList.remove("on", "flick"); raf = requestAnimationFrame(step); } }
     function stop() { if (raf) cancelAnimationFrame(raf); raf = 0; }
     const onVis = () => { if (document.hidden) stop(); else start(); };
     const io = new IntersectionObserver((ents) => ents.forEach((en) => { paused = !en.isIntersecting; if (paused) stop(); else start(); }), { threshold: 0.05 });
