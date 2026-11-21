@@ -379,3 +379,22 @@
 @media (max-width:1180px){.hv4 .stage.old .hv3-sceneScale{transform:scale(.64)}}
 @media (max-width:900px){.hv4 .stage.old{height:420px}.hv4 .stage.old .hv3-sceneScale{transform:scale(.5)}}
 @media (max-width:640px){.hv4 .stage.old{height:360px}.hv4 .stage.old .hv3-sceneScale{transform:scale(.38)}}
+
+/* ── HoloMachine: the hologram laptop on the old rig ── */
+.hv4 .stage.holo{position:relative;height:min(560px,72vh);z-index:2;overflow:visible}
+.hv4 .stage.holo::before{display:none}
+.hv4 .stage.holo .hm-scale{transform:scale(var(--mscale,.74))}
+.hv4 .hm-rim{position:absolute;inset:-1px;border-radius:17px;padding:1.5px;background:linear-gradient(90deg,transparent,rgba(0,229,255,.95),transparent);background-size:200% 100%;mask:linear-gradient(#000,#000) content-box,linear-gradient(#000,#000);-webkit-mask:linear-gradient(#000,#000) content-box,linear-gradient(#000,#000);-webkit-mask-composite:xor;mask-composite:exclude;opacity:.9;animation:hv-rim 6s linear infinite;pointer-events:none}
+.hv4 .hm-key{position:relative;overflow:hidden}
+.hv4 .hm-key::after{content:"";position:absolute;inset:0;border-radius:5px;background:var(--hue);opacity:0;animation:hv-keyPulse 4.5s var(--d,0s) ease-in-out infinite;mix-blend-mode:multiply}
+@keyframes hv-keyPulse{0%,70%,100%{opacity:0}8%{opacity:.55}}
+.hv4 .hm-led{animation:hv-ledBreathe 2.6s ease-in-out infinite}
+@keyframes hv-ledBreathe{0%,100%{filter:brightness(.7)}50%{filter:brightness(1.3)}}
+.hv4 .hm-corner{position:absolute;width:12px;height:12px;border:1px solid var(--cyan);z-index:4}
+.hv4 .hm-corner.tl{left:8px;top:8px;border-right:0;border-bottom:0}.hv4 .hm-corner.tr{right:8px;top:8px;border-left:0;border-bottom:0}.hv4 .hm-corner.bl{left:8px;bottom:8px;border-right:0;border-top:0}.hv4 .hm-corner.br{right:8px;bottom:8px;border-left:0;border-top:0}
+.hv4 .hm-scan{position:absolute;left:0;right:0;height:60px;top:-60px;background:linear-gradient(to bottom,transparent,rgba(0,229,255,.22),transparent);animation:hv-scan 6s 2s linear infinite;z-index:5;pointer-events:none}
+.hv4 .stage.holo .os{position:absolute;inset:14px 16px;overflow:visible}
+@media (max-width:1180px){.hv4 .stage.holo .hm-scale{transform:scale(.64)}}
+@media (max-width:900px){.hv4 .stage.holo{height:420px}.hv4 .stage.holo .hm-scale{transform:scale(.5)}}
+@media (max-width:640px){.hv4 .stage.holo{height:360px}.hv4 .stage.holo .hm-scale{transform:scale(.38)}}
+@media (prefers-reduced-motion:reduce){.hv4 .hm-key::after,.hv4 .hm-led,.hv4 .hm-scan,.hv4 .hm-rim{animation:none}}
