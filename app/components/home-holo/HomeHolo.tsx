@@ -34,7 +34,7 @@ const TRACK_ART: Record<string, { art: string; lockup?: LockupId; pos?: string }
   Explorers: { art: "/explorers/scenes/explorers-card-v4.jpg", lockup: "explorers", pos: "70% 35%" },
   Ops: { art: "/operators/cyberops-card-v2.jpg", lockup: "ops", pos: "60% 30%" },
   Pro: { art: "/characters/cyberpro-card.jpg", lockup: "pro", pos: "65% 35%" },
-  Ready: { art: "/desk-ready/home.webp", pos: "50% 40%" },
+  Ready: { art: "/desk-ready/home.webp", pos: "60% 24%" },
 };
 
 function TrackCard({ t, i, icon, more }: { t: Track; i: number; icon: keyof typeof ICONS; more: string }) {
