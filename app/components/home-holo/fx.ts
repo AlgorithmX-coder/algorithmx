@@ -8,14 +8,19 @@ export const reduced = () =>
 export function reveal(root: ParentNode, sel = "[data-reveal]"): () => void {
   const els = Array.from(root.querySelectorAll<HTMLElement>(sel));
   if (reduced() || !("IntersectionObserver" in window)) {
-    els.forEach((e) => e.classList.add("in"));
+    els.forEach((e) => { e.setAttribute("data-in", ""); e.classList.add("in"); });
     return () => {};
   }
+  /* Revealed state is an attribute React does not manage (data-in), so a
+   * later re-render of the component cannot wipe it the way it wipes a
+   * class added to className. The .in class is kept for any styles that
+   * still read it. */
+  const mark = (el: Element) => { el.setAttribute("data-in", ""); el.classList.add("in"); };
   const io = new IntersectionObserver(
-    (ents) => ents.forEach((en) => { if (en.isIntersecting) { en.target.classList.add("in"); io.unobserve(en.target); } }),
+    (ents) => ents.forEach((en) => { if (en.isIntersecting) { mark(en.target); io.unobserve(en.target); } }),
     { threshold: 0.15, rootMargin: "0px 0px -8% 0px" },
   );
-  els.forEach((e) => io.observe(e));
+  els.forEach((e) => { if (e.hasAttribute("data-in")) e.classList.add("in"); else io.observe(e); });
   return () => io.disconnect();
 }
 

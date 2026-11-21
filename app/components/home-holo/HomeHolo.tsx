@@ -30,25 +30,34 @@ type Track = { family: string; label: string; accent: string; verb: string; ages
  * cards use (owner: "these cards need their logos in there, and the
  * background art like the course cards; we should still see the modules"). */
 const TRACK_ART: Record<string, { art: string; lockup?: LockupId; pos?: string }> = {
-  Heroes: { art: "/characters/cyberheroes-card.jpg", lockup: "heroes", pos: "72% 30%" },
-  Explorers: { art: "/explorers/scenes/explorers-card-v4.jpg", lockup: "explorers", pos: "70% 35%" },
-  Ops: { art: "/operators/cyberops-card-v2.jpg", lockup: "ops", pos: "60% 30%" },
-  Pro: { art: "/characters/cyberpro-card.jpg", lockup: "pro", pos: "65% 35%" },
-  Ready: { art: "/desk-ready/home.webp", pos: "60% 24%" },
+  Heroes: { art: "/characters/cyberheroes-card.jpg", lockup: "heroes", pos: "70% 38%" },
+  Explorers: { art: "/explorers/scenes/explorers-card-v4.jpg", lockup: "explorers", pos: "68% 40%" },
+  Ops: { art: "/operators/cyberops-card-v2.jpg", lockup: "ops", pos: "55% 40%" },
+  Pro: { art: "/characters/cyberpro-card.jpg", lockup: "pro", pos: "62% 42%" },
+  /* purpose-made for this card: OpenArt (Nano Banana 2), 2026-11-21, saved in Personal Project */
+  Ready: { art: "/desk-ready/card.webp", pos: "50% 34%" },
 };
 
 function TrackCard({ t, i, icon, more }: { t: Track; i: number; icon: keyof typeof ICONS; more: string }) {
   const a = TRACK_ART[t.label];
+  /* Structure (owner: "the images need to be structured better"): a fixed
+   * picture window at the top with the lockup on a plate at its foot, then a
+   * clean body with the chips and the modules. Nothing overlaps the picture. */
   return (
     <article className={`pane-card ${a ? "art" : ""}`} style={{ "--a": t.accent, "--i": i } as React.CSSProperties}>
-      {a && <div className="artBg" aria-hidden="true" style={{ backgroundImage: `url(${a.art})`, backgroundPosition: a.pos || "center" }} />}
-      {a && <div className="artScrim" aria-hidden="true" />}
       <span className="pdot" />
-      <div className="inner">
-        <div className="top">
-          {a?.lockup ? <span className="lockup"><CourseLockup id={a.lockup} tone="night" size={0.86} /></span> : <><span className="ic"><Icon name={icon} size={18} sw={1.9} /></span><span className="nm">{t.family} <span>{t.label}</span></span></>}
+      {a && (
+        <div className="artWin">
+          <div className="artBg" aria-hidden="true" style={{ backgroundImage: `url(${a.art})`, backgroundPosition: a.pos || "center" }} />
+          <div className="artFade" aria-hidden="true" />
           {t.status ? <span className="live">{t.status}</span> : <span className="n">{t.n}</span>}
+          <div className="lockupPlate">
+            {a.lockup ? <CourseLockup id={a.lockup} tone="night" size={0.86} /> : <><span className="ic"><Icon name={icon} size={18} sw={1.9} /></span><span className="nm">{t.family} <span>{t.label}</span></span></>}
+          </div>
         </div>
+      )}
+      <div className="inner">
+        {!a && <div className="top"><span className="ic"><Icon name={icon} size={18} sw={1.9} /></span><span className="nm">{t.family} <span>{t.label}</span></span>{t.status ? <span className="live">{t.status}</span> : <span className="n">{t.n}</span>}</div>}
         <div className="chips"><span className="agePill">{t.ages}</span><span className="verb"><i />{t.verb}</span></div>
         <div className="syll">
           <ul>{t.items.map((it) => <li key={it[0] + it[1]}><span>{it[0]}</span>{it[1]}</li>)}</ul>
