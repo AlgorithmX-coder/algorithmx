@@ -22,20 +22,29 @@ export const dynamic = "force-dynamic";
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const session = await auth();
   if (!session?.user?.id) redirect("/admin-login?callbackUrl=%2Fadmin");
+
+  async function handleSignOut() {
+    "use server";
+    await signOut({ redirectTo: "/admin-login" });
+  }
+
   if (!(await isStaffUser(session.user.id))) {
+    /* Signed in, but not as staff: say who, and give a way to switch
+     * account right here. Without the sign-out this screen is a dead end
+     * for anyone whose browser still holds an ordinary customer session. */
     return (
       <div className="admin-ui admin-gate">
         <BrandCube size={44} />
         <p className="admin-gate-who">Signed in as {session.user.email}</p>
         <p>This area is for AlgorithmX staff.</p>
-        <Link href="/">Back to the site</Link>
+        <div className="admin-gate-actions">
+          <form action={handleSignOut}>
+            <button type="submit" className="ad-btn ad-btn-pri">Sign out and switch account</button>
+          </form>
+          <Link href="/">Back to the site</Link>
+        </div>
       </div>
     );
-  }
-
-  async function handleSignOut() {
-    "use server";
-    await signOut({ redirectTo: "/admin-login" });
   }
 
   const email = session.user.email ?? "";
