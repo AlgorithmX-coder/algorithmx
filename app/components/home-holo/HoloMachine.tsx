@@ -64,9 +64,12 @@ export default function HoloMachine({ drive }: { drive: MotionValue<number> }) {
   const parRotX = useSpring(useTransform(pointerY, (v) => v * -2.2), { stiffness: 46, damping: 16 });
 
   const sc = AX.hero.screen;
-  const glass = "linear-gradient(145deg, rgba(255,255,255,.80) 0%, rgba(240,247,255,.62) 48%, rgba(222,236,252,.70) 100%)";
+  /* frosted platinum glass: cool and a touch denser than the page, so the body reads as an object */
+  const glass = "linear-gradient(148deg, rgba(250,252,255,.96) 0%, rgba(232,240,249,.9) 38%, rgba(214,226,240,.92) 72%, rgba(226,236,248,.94) 100%)";
+  const edge = "linear-gradient(180deg, rgba(214,226,240,.99) 0%, rgba(172,190,212,.99) 50%, rgba(138,160,188,.99) 100%)";
+  const chamfer = "inset 0 1px 0 rgba(255,255,255,.98), inset 0 0 0 1px rgba(168,190,214,.6), inset 0 -1px 0 rgba(140,165,195,.55), 0 0 0 1px rgba(150,172,198,.55)";
   /* the lid top is a touch more opaque than the deck so the keys only ghost through it when shut */
-  const lidGlass = "linear-gradient(145deg, rgba(255,255,255,.94) 0%, rgba(240,247,255,.86) 48%, rgba(222,236,252,.9) 100%)";
+  const lidGlass = "linear-gradient(148deg, rgba(252,253,255,.98) 0%, rgba(236,243,251,.96) 40%, rgba(218,229,242,.97) 74%, rgba(230,238,249,.98) 100%)";
 
   return (
     <div className="hm-frame" style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
@@ -79,17 +82,28 @@ export default function HoloMachine({ drive }: { drive: MotionValue<number> }) {
             {/* ══ the machine ══ */}
             <div style={{ position: "relative", width: 620, height: 430, transformStyle: "preserve-3d" }}>
               {/* ── deck: frosted glass ── */}
-              <div className="hm-deck" style={{ position: "absolute", inset: 0, borderRadius: 16, transformStyle: "preserve-3d", background: glass, backdropFilter: "blur(10px)", WebkitBackdropFilter: "blur(10px)", boxShadow: "inset 0 0 0 1px rgba(255,255,255,.95), 0 0 0 1px rgba(10,112,133,.22), inset 0 0 60px rgba(0,229,255,.08), 0 30px 80px -30px rgba(20,30,60,.45)", backgroundImage: `${glass}, linear-gradient(rgba(10,112,133,.07) 1px, transparent 1px), linear-gradient(90deg, rgba(10,112,133,.07) 1px, transparent 1px)`, backgroundSize: "100% 100%, 28px 28px, 28px 28px" }}>
+              <div className="hm-deck" style={{ position: "absolute", inset: 0, borderRadius: 16, transformStyle: "preserve-3d", background: glass, boxShadow: `${chamfer}, inset 0 0 70px rgba(0,229,255,.06), 0 30px 80px -30px rgba(20,30,60,.5)`, backgroundImage: `${glass}, linear-gradient(rgba(10,112,133,.06) 1px, transparent 1px), linear-gradient(90deg, rgba(10,112,133,.06) 1px, transparent 1px)`, backgroundSize: "100% 100%, 28px 28px, 28px 28px" }}>
+                {/* the body's thickness: front and side faces hanging below the deck */}
+                <div className="hm-face" aria-hidden style={{ position: "absolute", left: 0, right: 0, bottom: 0, height: 18, transformOrigin: "50% 0%", transform: "rotateX(-90deg)", background: edge, borderRadius: "0 0 10px 10px", boxShadow: "inset 0 1px 0 rgba(255,255,255,.7), inset 0 -1px 0 rgba(120,145,175,.6)" }}>
+                  <div style={{ position: "absolute", left: 40, right: 40, top: 5, height: 2, borderRadius: 2, background: "linear-gradient(90deg, transparent, rgba(0,229,255,.95), transparent)", boxShadow: "0 0 14px rgba(0,229,255,.7)" }} />
+                </div>
+                <div className="hm-face" aria-hidden style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: 18, transformOrigin: "0% 50%", transform: "rotateY(90deg)", background: edge, boxShadow: "inset 1px 0 0 rgba(255,255,255,.6)" }} />
+                <div className="hm-face" aria-hidden style={{ position: "absolute", right: 0, top: 0, bottom: 0, width: 18, transformOrigin: "100% 50%", transform: "rotateY(-90deg)", background: edge, boxShadow: "inset -1px 0 0 rgba(255,255,255,.6)" }} />
+                {/* a crisp shadow under the body, for grounding */}
+                <div aria-hidden style={{ position: "absolute", inset: -2, borderRadius: 18, transform: "translateZ(-20px) translate(10px, 14px)", background: "rgba(20,40,70,.34)", filter: "blur(12px)" }} />
+                {/* gloss: one soft highlight across the deck */}
+                <div className="hm-gloss" aria-hidden />
                 {/* lit rim, sweeping */}
                 <div className="hm-rim" aria-hidden />
-                {/* hinge barrels along the back edge: glass with a cyan core */}
-                {[86, 402].map((x) => (
-                  <div key={x} style={{ position: "absolute", left: x, top: -3, width: 132, height: 9, borderRadius: 5, background: "linear-gradient(180deg, rgba(255,255,255,.95), rgba(215,232,255,.85))", boxShadow: "inset 0 0 0 1px rgba(10,112,133,.25), 0 0 10px rgba(0,229,255,.35)" }} />
-                ))}
+                {/* hinge: one continuous bar along the back edge with a light seam */}
+                <div aria-hidden style={{ position: "absolute", left: 36, right: 36, top: -5, height: 11, borderRadius: 6, background: "linear-gradient(180deg, rgba(255,255,255,.98) 0%, rgba(222,232,244,.98) 45%, rgba(176,194,216,.98) 100%)", boxShadow: "inset 0 1px 0 #fff, inset 0 -1px 0 rgba(120,145,175,.7), 0 1px 3px rgba(20,40,70,.25)" }}>
+                  <div style={{ position: "absolute", left: 10, right: 10, top: 5, height: 1, background: "rgba(110,135,165,.6)" }} />
+                  <motion.div style={{ position: "absolute", left: 60, right: 60, top: 4, height: 2, borderRadius: 2, background: "linear-gradient(90deg, transparent, rgba(0,229,255,.9), transparent)", boxShadow: "0 0 10px rgba(0,229,255,.6)", opacity: kbGlow }} />
+                </div>
                 {/* caustic pool under the keys */}
                 <motion.div aria-hidden style={{ position: "absolute", left: "18%", right: "18%", top: "2%", height: "48%", borderRadius: "50%", opacity: kbGlow, background: "radial-gradient(ellipse, rgba(0,229,255,.45), rgba(124,92,255,.18) 50%, transparent 72%)", filter: "blur(14px)" }} />
                 {/* keyboard of light */}
-                <div style={{ position: "absolute", left: 44, right: 44, top: 34, height: 208, borderRadius: 10, padding: "12px 14px", display: "flex", flexDirection: "column", justifyContent: "space-between", background: "rgba(255,255,255,.35)", boxShadow: "inset 0 0 0 1px rgba(255,255,255,.8), inset 0 2px 10px rgba(10,112,133,.08)" }}>
+                <div style={{ position: "absolute", left: 44, right: 44, top: 34, height: 208, borderRadius: 10, padding: "12px 14px", display: "flex", flexDirection: "column", justifyContent: "space-between", background: "linear-gradient(180deg, rgba(196,212,232,.7), rgba(206,220,238,.6))", boxShadow: "inset 0 0 0 1px rgba(150,172,198,.55), inset 0 2px 8px rgba(20,40,70,.18), inset 0 -1px 0 rgba(255,255,255,.7)" }}>
                   <motion.div aria-hidden style={{ position: "absolute", inset: 6, borderRadius: 8, opacity: kbGlow, background: "linear-gradient(90deg, rgba(0,229,255,.18), rgba(124,92,255,.14), rgba(255,43,214,.12), rgba(255,210,122,.12), rgba(95,255,163,.14))", filter: "blur(10px)" }} />
                   {KEY_ROWS.map((row, r) => (
                     <div key={r} style={{ display: "flex", gap: 6, position: "relative", flex: 1 }}>
@@ -97,7 +111,7 @@ export default function HoloMachine({ drive }: { drive: MotionValue<number> }) {
                         const wide = legend.length > 1 && legend !== "⌘" ? 1.7 : legend === "" ? 4.4 : 1;
                         const hue = KEY_HUES[Math.floor((k / row.length) * KEY_HUES.length)];
                         return (
-                          <motion.div key={k} className="hm-key" style={{ flex: wide, borderRadius: 5, display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "var(--mono)", fontSize: legend.length > 1 ? 6.5 : 8.5, fontWeight: 600, color: "rgba(10,40,60,.78)", userSelect: "none", background: "linear-gradient(180deg, rgba(255,255,255,.92), rgba(232,243,255,.85))", boxShadow: `inset 0 0 0 1px rgba(255,255,255,.9), 0 1px 2px rgba(20,40,70,.18), 0 0 8px ${hue}22`, ["--hue" as string]: hue, ["--d" as string]: `${((r * 7 + k * 3) % 20) / 10}s`, opacity: keyOpacity }}>
+                          <motion.div key={k} className="hm-key" style={{ flex: wide, borderRadius: 5, display: "flex", alignItems: "center", justifyContent: "center", fontFamily: "var(--mono)", fontSize: legend.length > 1 ? 6.5 : 8.5, fontWeight: 600, color: "rgba(16,44,68,.8)", userSelect: "none", background: "linear-gradient(180deg, #ffffff 0%, #f1f6fc 55%, #e4edf8 100%)", boxShadow: `inset 0 1px 0 #fff, inset 0 -1px 0 rgba(150,172,198,.55), 0 1.5px 0 rgba(120,145,175,.6), 0 2px 3px rgba(20,40,70,.16), 0 0 8px ${hue}1f`, ["--hue" as string]: hue, ["--d" as string]: `${((r * 7 + k * 3) % 20) / 10}s`, opacity: keyOpacity }}>
                             {legend}
                           </motion.div>
                         );
@@ -106,7 +120,7 @@ export default function HoloMachine({ drive }: { drive: MotionValue<number> }) {
                   ))}
                 </div>
                 {/* trackpad */}
-                <div style={{ position: "absolute", left: "50%", bottom: 38, width: 200, height: 118, transform: "translateX(-58%)", borderRadius: 12, background: "linear-gradient(155deg, rgba(255,255,255,.7), rgba(236,245,255,.85))", boxShadow: "inset 0 0 0 1px rgba(10,112,133,.25), inset 0 1px 0 rgba(255,255,255,.9), inset 0 -8px 22px rgba(10,112,133,.08)" }} />
+                <div style={{ position: "absolute", left: "50%", bottom: 38, width: 200, height: 118, transform: "translateX(-58%)", borderRadius: 12, background: "linear-gradient(155deg, rgba(246,250,255,.95), rgba(226,236,248,.95))", boxShadow: "inset 0 0 0 1px rgba(160,182,208,.6), inset 0 1px 0 #fff, inset 0 -10px 24px rgba(20,40,70,.08), 0 1px 0 rgba(255,255,255,.8)" }} />
                 {/* deck badge + model line */}
                 <div style={{ position: "absolute", right: 58, bottom: 52, fontFamily: "var(--mono)", fontWeight: 700, fontSize: 12, letterSpacing: ".22em", color: "#0a7085", textShadow: "0 0 10px rgba(0,229,255,.6)" }}>ALGORITHM<span style={{ color: "#00bfe0" }}>X</span></div>
                 <div style={{ position: "absolute", right: 58, bottom: 38, fontFamily: "var(--mono)", fontSize: 5.5, letterSpacing: ".12em", color: "rgba(10,60,80,.55)", userSelect: "none" }}>{sc.deckModel}</div>
@@ -119,7 +133,8 @@ export default function HoloMachine({ drive }: { drive: MotionValue<number> }) {
               {/* ── lid, hinged on the far edge ── */}
               <motion.div style={{ position: "absolute", inset: 0, transformOrigin: "50% 0%", rotateX: lidAngle, transformStyle: "preserve-3d", willChange: "transform", z: 2 }}>
                 {/* outer shell: a sheet of glass with the cube etched in */}
-                <div style={{ position: "absolute", inset: 0, borderRadius: 16, backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden", transform: "translateZ(1.2px)", background: lidGlass, boxShadow: "inset 0 0 0 1px rgba(255,255,255,.95), 0 0 0 1px rgba(10,112,133,.22), inset 0 -2px 0 rgba(0,229,255,.45)", backgroundImage: `${lidGlass}, linear-gradient(rgba(10,112,133,.07) 1px, transparent 1px), linear-gradient(90deg, rgba(10,112,133,.07) 1px, transparent 1px)`, backgroundSize: "100% 100%, 28px 28px, 28px 28px", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
+                <div style={{ position: "absolute", inset: 0, borderRadius: 16, backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden", transform: "translateZ(1.2px)", background: lidGlass, boxShadow: chamfer, backgroundImage: `${lidGlass}, linear-gradient(rgba(10,112,133,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(10,112,133,.05) 1px, transparent 1px)`, backgroundSize: "100% 100%, 28px 28px, 28px 28px", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
+                  <div className="hm-gloss" aria-hidden />
                   <div style={{ display: "grid", placeItems: "center", gap: 14 }}>
                     <span style={{ filter: "drop-shadow(0 0 12px rgba(0,229,255,.8)) drop-shadow(0 0 30px rgba(0,229,255,.35))" }}><BrandCube size={56} /></span>
                     <span style={{ fontFamily: "var(--mono)", fontWeight: 800, fontSize: 22, letterSpacing: ".4em", paddingLeft: ".4em", color: "#0a7085", textShadow: "0 0 14px rgba(0,229,255,.7), 0 0 40px rgba(0,229,255,.35)" }}>ALGORITHM<span style={{ color: "#00bfe0" }}>X</span></span>
@@ -130,8 +145,13 @@ export default function HoloMachine({ drive }: { drive: MotionValue<number> }) {
                   <motion.div aria-hidden style={{ position: "absolute", top: "-25%", bottom: "-25%", left: 0, width: "48%", x: sweepX, opacity: sweepOpacity, background: "linear-gradient(105deg, transparent 0%, rgba(255,255,255,.75) 46%, rgba(0,229,255,.25) 54%, transparent 78%)", pointerEvents: "none" }} />
                 </div>
 
+                {/* the lid's thickness: a 6px glass edge on its free end and sides */}
+                <div className="hm-face" aria-hidden style={{ position: "absolute", left: 0, right: 0, bottom: 0, height: 6, transformOrigin: "50% 0%", transform: "translateZ(1.2px) rotateX(-90deg)", background: edge, borderRadius: "0 0 6px 6px" }} />
+                <div className="hm-face" aria-hidden style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: 6, transformOrigin: "0% 50%", transform: "translateZ(1.2px) rotateY(90deg)", background: edge }} />
+                <div className="hm-face" aria-hidden style={{ position: "absolute", right: 0, top: 0, bottom: 0, width: 6, transformOrigin: "100% 50%", transform: "translateZ(1.2px) rotateY(-90deg)", background: edge }} />
                 {/* inner face: the hologram pane */}
-                <div style={{ position: "absolute", inset: 0, borderRadius: 16, backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden", transform: "rotateX(180deg) translateZ(3.5px)", background: "linear-gradient(160deg, rgba(240,247,255,.9), rgba(255,255,255,.95))", boxShadow: "inset 0 0 0 1px rgba(255,255,255,.95), 0 0 0 1px rgba(10,112,133,.2)", padding: 12 }}>
+                <div style={{ position: "absolute", inset: 0, borderRadius: 16, backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden", transform: "rotateX(180deg) translateZ(3.5px)", background: "linear-gradient(160deg, #101a2a, #0a121f)", boxShadow: "inset 0 0 0 1px rgba(255,255,255,.08), 0 0 0 1px rgba(150,172,198,.55)", padding: 11 }}>
+                  <div aria-hidden style={{ position: "absolute", left: "50%", bottom: 3, width: 5, height: 5, marginLeft: -2.5, borderRadius: 99, background: "radial-gradient(circle at 40% 35%, #3a5577 0%, #0a1220 70%)", boxShadow: "0 0 0 1.5px rgba(120,150,190,.35)" }} />
                   <div style={{ position: "relative", width: "100%", height: "100%", borderRadius: 10, overflow: "hidden", background: "linear-gradient(180deg, rgba(6,18,36,.97), rgba(6,18,36,.92))", boxShadow: "inset 0 0 0 1px rgba(0,229,255,.45), inset 0 0 60px rgba(0,229,255,.08)" }}>
                     {/* dormant: a faint cyan grid, fading as the console lights */}
                     <motion.div aria-hidden style={{ position: "absolute", inset: 0, opacity: dormant, backgroundImage: "linear-gradient(rgba(0,229,255,.08) 1px, transparent 1px), linear-gradient(90deg, rgba(0,229,255,.08) 1px, transparent 1px)", backgroundSize: "24px 24px" }} />

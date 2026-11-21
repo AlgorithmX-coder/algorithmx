@@ -422,3 +422,8 @@
 /* revealed state lives in data-in (survives React re-renders); .in kept for compatibility */
 .hv4 [data-reveal][data-in]{opacity:1;transform:none}
 .hv4 [data-in] .pane-card{transform:none;opacity:1}
+
+/* ── HoloMachine casing ── */
+.hv4 .hm-face{backface-visibility:visible}
+.hv4 .hm-gloss{position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:linear-gradient(112deg,rgba(255,255,255,.65) 0%,rgba(255,255,255,.18) 22%,rgba(255,255,255,0) 40%,rgba(255,255,255,0) 68%,rgba(255,255,255,.22) 100%)}
+.hv4 .hm-rim{padding:1px;opacity:.55}
