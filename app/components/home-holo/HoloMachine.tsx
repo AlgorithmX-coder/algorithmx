@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, type CSSProperties } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { motion, useMotionValue, useSpring, useTransform, type MotionValue } from "framer-motion";
 import BrandCube from "@/app/components/BrandCube";
 import { AX } from "./content";
@@ -74,18 +74,31 @@ export default function HoloMachine({ drive }: { drive: MotionValue<number> }) {
   /* The body is a rounded rectangle (radius 16) but its edge faces are straight,
    * so a straight face running the full length pokes out past each rounded
    * corner as a small dark spike. The straight faces are inset by the radius
-   * and each corner is closed with a 45-degree chord face instead. */
-  const R = 16, CHORD = R * Math.SQRT2;
+   * and each corner is closed with a short arc of five small faces (a single
+   * 45-degree chord read as a bevelled cut). */
+  const R = 16, W = 620, H = 430, SEGS = 5;
   const corners = (depth: number, pre = "") => {
-    const base: CSSProperties = { position: "absolute", width: CHORD, height: depth, background: edge, boxShadow: "inset 0 1px 0 rgba(255,255,255,.55)" };
-    return (
-      <>
-        <div className="hm-face" aria-hidden style={{ ...base, left: 0, top: 430 - R, transformOrigin: "0 0", transform: `${pre} rotateZ(45deg) rotateX(-90deg)` }} />
-        <div className="hm-face" aria-hidden style={{ ...base, right: 0, top: 430 - R, transformOrigin: "100% 0", transform: `${pre} rotateZ(-45deg) rotateX(-90deg)` }} />
-        <div className="hm-face" aria-hidden style={{ ...base, left: 0, top: R, transformOrigin: "0 0", transform: `${pre} rotateZ(-45deg) rotateX(-90deg)` }} />
-        <div className="hm-face" aria-hidden style={{ ...base, right: 0, top: R, transformOrigin: "100% 0", transform: `${pre} rotateZ(45deg) rotateX(-90deg)` }} />
-      </>
-    );
+    const faces: ReactNode[] = [];
+    const arcs: [number, number, number, number][] = [
+      [R, H - R, 180, 90],      // front-left
+      [W - R, H - R, 90, 0],    // front-right
+      [W - R, R, 0, -90],       // back-right
+      [R, R, -90, -180],        // back-left
+    ];
+    arcs.forEach(([cx, cy, a0, a1], ci) => {
+      for (let i = 0; i < SEGS; i++) {
+        const t0 = (a0 + ((a1 - a0) * i) / SEGS) * (Math.PI / 180);
+        const t1 = (a0 + ((a1 - a0) * (i + 1)) / SEGS) * (Math.PI / 180);
+        const x0 = cx + R * Math.cos(t0), y0 = cy + R * Math.sin(t0);
+        const x1 = cx + R * Math.cos(t1), y1 = cy + R * Math.sin(t1);
+        const len = Math.hypot(x1 - x0, y1 - y0) + 0.4; // a hair of overlap hides seams
+        const rot = (Math.atan2(y1 - y0, x1 - x0) * 180) / Math.PI;
+        faces.push(
+          <div key={`${ci}-${i}`} className="hm-face" aria-hidden style={{ position: "absolute", left: x0, top: y0, width: len, height: depth, transformOrigin: "0 0", transform: `${pre} rotateZ(${rot}deg) rotateX(-90deg)`, background: edge, boxShadow: "inset 0 1px 0 rgba(255,255,255,.55)" }} />,
+        );
+      }
+    });
+    return <>{faces}</>;
   };
 
   return (
