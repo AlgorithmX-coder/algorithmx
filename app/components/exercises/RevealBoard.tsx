@@ -298,6 +298,12 @@ export default function RevealBoard({
           narration={introNarration}
           threat={threat}
           character={introNarration?.speaker}
+          // A threat-less intro (W17 "The Backstage Pass") otherwise renders
+          // INSIDE the board frame, which is short on a laptop screen: the
+          // card grew its own scrollbar (UAT 2026-11-21, W17). As a modal it
+          // gets the whole viewport and the fit-to-viewport zoom, like the
+          // threat intros on this board already do.
+          overlay
           onDismiss={() => setPhase("board")}
         />
       )}
