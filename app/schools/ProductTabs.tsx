@@ -16,82 +16,8 @@ import { CURRICULUM, STRAND_COLOUR } from "./curriculum";
  * opened full size.
  */
 
-/** Product frames live at /schools/<img>.webp (1000w) + /schools/<img>@2x.webp (2000w). */
-export const shotSrc = (img: string) => `/schools/${img}.webp`;
-export const shotSet = (img: string) => `/schools/${img}.webp 1000w, /schools/${img}@2x.webp 2000w`;
-export const shotFull = (img: string) => `/schools/${img}@2x.webp`;
-
-type Shot = { img: string; caption: string };
-
-type Tab = {
-  id: string;
-  n: string;
-  title: string;
-  desc: string;
-  kind: "shot" | "teacher" | "curriculum";
-  shot?: Record<Phase, Shot>;
-};
-
-const TABS: Tab[] = [
-  {
-    id: "learn",
-    n: "01",
-    title: "Students learn",
-    desc: "Every idea is taught by doing, with a narrator and captions on screen, so every pupil can follow along.",
-    kind: "shot",
-    shot: {
-      primary: { img: "heroes-learn", caption: "Password Hospital, Week 1. Diagnose a sick password, fix it, and watch the strength meter climb." },
-      secondary: { img: "explorers-meter", caption: "Case 3, The Guessing Game. Drag the password length and watch the rig's clock jump from an instant to centuries." },
-    },
-  },
-  {
-    id: "play",
-    n: "02",
-    title: "Practise every module",
-    desc: "A hands-on game for every idea. A wrong answer gets a spoken reason and another go.",
-    kind: "shot",
-    shot: {
-      primary: { img: "heroes-play", caption: "Passphrase Forge, Week 1. Three random words make a password the Raccoon's machine can't crack." },
-      secondary: { img: "explorers-phone", caption: "The Phone, Block 2. WREN briefs the pupil by text, then a scammer wearing a friend's account arrives." },
-    },
-  },
-  {
-    id: "prove",
-    n: "03",
-    title: "Test after every module",
-    desc: "Every lesson ends in a boss battle or a must-pass test, so pupils prove what they have learned before they move on.",
-    kind: "shot",
-    shot: {
-      primary: { img: "heroes-boss", caption: "The Week 1 boss: the Hacker Raccoon's Quiz Showdown." },
-      secondary: { img: "explorers-boss", caption: "Case 2's boss, The Prize Factory. Three phases that reward thinking before acting." },
-    },
-  },
-  {
-    id: "progress",
-    n: "04",
-    title: "Track their own progress",
-    desc: "Stickers, badges and personal bests that keep every pupil motivated from one week to the next.",
-    kind: "shot",
-    shot: {
-      primary: { img: "heroes-reward", caption: "The Week 1 badge, Password Protector, on its way to the pupil's Cyber HQ." },
-      secondary: { img: "explorers-map", caption: "The mission map. Every closed case earns a stamp, so pupils see their progress build across the course." },
-    },
-  },
-  {
-    id: "teacher",
-    n: "05",
-    title: "Teacher class review",
-    desc: "Who has finished, who is stuck, and which question the class got wrong. Three answers on one screen.",
-    kind: "teacher",
-  },
-  {
-    id: "curriculum",
-    n: "06",
-    title: "The curriculum map",
-    desc: "Every lesson mapped to Education for a Connected World and the computing programme of study.",
-    kind: "curriculum",
-  },
-];
+import { TABS, TEACHER_MOCK, MOCK_CAPTION, pupilStatus, shotSrc, shotSet, shotFull } from "./productData";
+export { shotSrc, shotSet, shotFull };
 
 export default function ProductTabs({ phase }: { phase: Phase }) {
   const [active, setActive] = useState(0);
@@ -126,11 +52,7 @@ export default function ProductTabs({ phase }: { phase: Phase }) {
     return () => { window.removeEventListener("keydown", onKey); document.body.style.overflow = prev; };
   }, [open]);
 
-  const caption = shot
-    ? shot.caption
-    : tab.kind === "teacher"
-      ? "Who has finished, who needs a nudge and what the class found hard, on one screen for the class teacher."
-      : "One row per lesson, so the computing lead can evidence coverage in minutes.";
+  const caption = shot ? shot.caption : MOCK_CAPTION[tab.kind === "teacher" ? "teacher" : "curriculum"];
 
   return (
     <div className="sch-tabs" style={{ ["--sch-accent" as string]: info.accent, ["--sch-accent2" as string]: info.accent2 }}>
@@ -238,29 +160,9 @@ export default function ProductTabs({ phase }: { phase: Phase }) {
 
 /* ── Teacher view preview ─────────────────────────────────────────────── */
 
-const PUPILS_PRIMARY = [
-  ["Amara", 100], ["Ben", 100], ["Chloe", 100], ["Dev", 72], ["Ella", 100],
-  ["Farah", 40], ["George", 100], ["Hana", 88], ["Isaac", 100], ["Jo", 12],
-] as const;
-
-const PUPILS_SECONDARY = [
-  ["Aisha", 100], ["Callum", 100], ["Daniel", 64], ["Esme", 100], ["Femi", 100],
-  ["Grace", 28], ["Harry", 100], ["Imogen", 91], ["Jack", 100], ["Kai", 0],
-] as const;
-
 function TeacherMock({ phase }: { phase: Phase }) {
   const primary = phase === "primary";
-  const pupils = primary ? PUPILS_PRIMARY : PUPILS_SECONDARY;
-  const cls = primary ? "4 Oak" : "8B";
-  const course = primary ? "Cyber Heroes" : "Cyber Explorers";
-  const unit = primary ? "Week 3: Spot the Scam" : "Case 2: Too Good To Be True";
-  /* Owner: say where in the course this is. A class review with no
-     position in it could be week 1 or week 19. */
-  const unitN = primary ? 3 : 2;
-  const unitOf = 20;
-  const missed = primary
-    ? { q: "Which message is the scam?", n: 6, why: "Most picked the one with the school logo. The tell was the link." }
-    : { q: "Which address is the real shop?", n: 5, why: "Most trusted the display name. The tell was the domain." };
+  const { pupils, cls, course, unit, unitN, unitOf, missed, school } = TEACHER_MOCK[phase];
   const done = pupils.filter((p) => p[1] === 100).length;
   const stuck = pupils.filter((p) => p[1] > 0 && p[1] < 100).length;
   const not = pupils.length - done - stuck;
@@ -278,7 +180,7 @@ function TeacherMock({ phase }: { phase: Phase }) {
         </ul>
         <div className="sch-mock-school">
           <span>School</span>
-          <strong>{primary ? "St Mary's Primary" : "Riverside Academy"}</strong>
+          <strong>{school}</strong>
         </div>
       </div>
       <div className="sch-mock-main">
@@ -312,7 +214,7 @@ function TeacherMock({ phase }: { phase: Phase }) {
                     and both clear 3:1 on the track, the bar for a UI
                     element rather than text. */}
                 <span className="sch-mock-bar"><i style={{ width: `${pct}%`, background: pct === 100 ? "#0e7a45" : "#b8730a" }} /></span>
-                <span className="sch-mock-pct">{pct === 100 ? "Done" : pct === 0 ? "Not started" : `${pct}%`}</span>
+                <span className="sch-mock-pct">{pupilStatus(pct)}</span>
               </li>
             ))}
           </ul>
