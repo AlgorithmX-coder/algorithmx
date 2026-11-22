@@ -401,7 +401,8 @@ export default function WeakSorter({
           letterSpacing: "0.04em",
           wordBreak: "break-all",
           transition: "background 200ms ease-out, border-color 200ms ease-out, color 200ms ease-out",
-          overflow: "hidden",
+          // No overflow clip: it sliced the ends off the tilted stamp
+          // (UAT 11-22, W1-5). The password text wraps via break-all.
         }}
       >
         {current?.text}
@@ -421,21 +422,24 @@ export default function WeakSorter({
           >
             <span
               style={{
-                padding: "6px 18px",
+                padding: "5px 14px",
                 border: "3px solid #7eff97",
                 borderRadius: 8,
                 color: "#7eff97",
                 background: "rgba(15, 21, 48, 0.85)",
                 fontFamily: "'Space Grotesk', sans-serif",
-                fontSize: 18,
+                fontSize: 14,
                 fontWeight: 900,
-                letterSpacing: "0.18em",
+                letterSpacing: "0.08em",
                 textTransform: "uppercase",
                 boxShadow: "0 0 18px rgba(126, 255, 151, 0.45)",
-                transform: "rotate(-6deg)",
+                // The tilt lives here only. The wrapper's keyframes used to add
+                // another -6deg on top (-12deg total), so the long stamp's ends
+                // swung out of the card and were cut off (UAT 11-22, W1-5).
+                transform: "rotate(-3deg)",
                 // Long labels ("Has your name or birthday") used to run past the
                 // card's edges (UAT batch 2, item 5): wrap inside the card instead.
-                maxWidth: "calc(100% - 36px)",
+                maxWidth: "calc(100% - 56px)",
                 whiteSpace: "normal",
                 textAlign: "center",
                 lineHeight: 1.25,
@@ -448,10 +452,10 @@ export default function WeakSorter({
         )}
         <style>{`
           @keyframes wsStamp {
-            0%   { opacity: 0; transform: scale(0.4) rotate(-30deg); }
-            55%  { opacity: 1; transform: scale(1.06) rotate(-6deg); }
-            85%  { opacity: 1; transform: scale(1) rotate(-6deg); }
-            100% { opacity: 0; transform: scale(1) rotate(-6deg); }
+            0%   { opacity: 0; transform: scale(0.4) rotate(-24deg); }
+            55%  { opacity: 1; transform: scale(1.04) rotate(0deg); }
+            85%  { opacity: 1; transform: scale(1) rotate(0deg); }
+            100% { opacity: 0; transform: scale(1) rotate(0deg); }
           }
         `}</style>
       </motion.div>
