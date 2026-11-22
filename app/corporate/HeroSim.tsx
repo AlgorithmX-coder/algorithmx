@@ -41,7 +41,11 @@ function KestrelMark({ size = 22 }: { size?: number }) {
   );
 }
 
-export default function HeroSim() {
+/* baseHeight: the window's unscaled height. The sand page shows it at 548;
+ * the Hologram Office hero floats it as a wider, shorter glass pane over the
+ * desk photograph, where 420 keeps the rail, the welcome and the composer in
+ * view (the rail's last lines clip, as the approved concept shows). */
+export default function HeroSim({ baseHeight = BASE_H }: { baseHeight?: number } = {}) {
   const hostRef = useRef<HTMLDivElement>(null);
   const [k, setK] = useState(0.7);
   /* A narrow column drops the app rail and lays the window out at 480px,
@@ -76,9 +80,9 @@ export default function HeroSim() {
         </span>
         <span className="corp-hs-chip">Module 1</span>
       </div>
-      <div ref={hostRef} className={narrow ? "corp-hs-host corp-hs-narrow" : "corp-hs-host"} style={{ height: Math.round(BASE_H * k) }}>
-        <div style={{ width: baseW, height: BASE_H, transform: `scale(${k})`, transformOrigin: "top left" }}>
-          <div style={{ height: BASE_H, display: "grid" }}>
+      <div ref={hostRef} className={narrow ? "corp-hs-host corp-hs-narrow" : "corp-hs-host"} style={{ height: Math.round(baseHeight * k) }}>
+        <div style={{ width: baseW, height: baseHeight, transform: `scale(${k})`, transformOrigin: "top left" }}>
+          <div style={{ height: baseHeight, display: "grid" }}>
             <Simulator tool="copilot" tier="enterprise" firmName={FIRM} learnerName={LEARNER} messages={WELCOME} draft="" onSend={() => {}} canSend={false} composerLocked status={undefined} />
           </div>
         </div>
