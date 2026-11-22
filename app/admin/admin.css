@@ -20,44 +20,52 @@
   every animation and transition off at the bottom of this file.
 */
 
-:root:has(.admin-ui) { background: #070b14; color-scheme: dark; }
+:root:has(.admin-ui) { background: #ffffff; color-scheme: light; }
 
 .admin-ui {
-  --bg: #070b14;
-  --bg-2: #0b1120;
-  --panel: rgba(255, 255, 255, 0.035);
-  --panel-2: rgba(255, 255, 255, 0.06);
-  --panel-solid: #0e1526;
-  --line: rgba(255, 255, 255, 0.08);
-  --line-2: rgba(255, 255, 255, 0.14);
+  /* WHITE, on every page (owner, 2026-11-22). The console was built dark a
+     day before and the owner asked for the opposite: white, and clear.
+     Nothing structural changed to do it. Every colour in this file was
+     already a token, so the console goes light by re-pointing the tokens
+     and dropping the two pieces of atmosphere that only work on black: the
+     glow behind the page, and panels made of white at four per cent. On
+     white the borders carry the shape instead of the fills. */
+  --bg: #ffffff;
+  --bg-2: #f6f7fb;
+  --panel: #ffffff;
+  --panel-2: #f4f6fa;
+  --panel-solid: #ffffff;
+  --line: rgba(15, 23, 42, 0.11);
+  --line-2: rgba(15, 23, 42, 0.2);
 
-  --ink: #eef2ff;
-  --body: #c7cfdd;
-  --muted: #8a94a8;
-  --faint: #5d667a;
+  --ink: #0f172a;
+  --body: #334155;
+  --muted: #5b6678;
+  --faint: #93a0b4;
 
-  --cyan: #00e5ff;
-  --violet: #7c5cff;
+  /* Darkened to clear 4.5:1 on white. A dark console can use neon; a white
+     one cannot, and a number nobody can read is worse than a duller one. */
+  --cyan: #0e7490;
+  --violet: #6d28d9;
   --accent: var(--cyan);
-  --accent-soft: rgba(0, 229, 255, 0.12);
+  --accent-soft: rgba(14, 116, 144, 0.1);
   --on-accent: #ffffff;
-  --ok: #34d399;
-  --ok-soft: rgba(52, 211, 153, 0.14);
-  --warn: #fbbf24;
-  --warn-soft: rgba(251, 191, 36, 0.14);
-  --danger: #fb7185;
-  --danger-soft: rgba(251, 113, 133, 0.14);
+  --ok: #047857;
+  --ok-soft: rgba(4, 120, 87, 0.1);
+  --warn: #b45309;
+  --warn-soft: rgba(180, 83, 9, 0.12);
+  --danger: #be123c;
+  --danger-soft: rgba(190, 18, 60, 0.09);
 
-  /* Section identity colours (the same hues the console already used,
-     brightened for a dark ground). */
-  --schools: #fb923c;
-  --schools-soft: rgba(251, 146, 60, 0.14);
-  --organisations: #34d399;
-  --organisations-soft: rgba(52, 211, 153, 0.14);
-  --firms: #22d3ee;
-  --firms-soft: rgba(34, 211, 238, 0.14);
-  --individuals: #a78bfa;
-  --individuals-soft: rgba(167, 139, 250, 0.14);
+  /* The same four section identities, taken down to ink weight. */
+  --schools: #c2410c;
+  --schools-soft: rgba(194, 65, 12, 0.1);
+  --organisations: #047857;
+  --organisations-soft: rgba(4, 120, 87, 0.1);
+  --firms: #0e7490;
+  --firms-soft: rgba(14, 116, 144, 0.1);
+  --individuals: #6d28d9;
+  --individuals-soft: rgba(109, 40, 217, 0.1);
 
   --sans: var(--font-inter), Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
   --display: var(--font-space-grotesk), "Space Grotesk", var(--font-inter), Inter, system-ui, sans-serif;
@@ -74,8 +82,10 @@
   --r-lg: 18px;
   --r-full: 999px;
   --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
-  --shadow: 0 1px 0 rgba(255, 255, 255, 0.04) inset, 0 30px 60px -40px rgba(0, 0, 0, 0.9);
-  --shadow-hover: 0 1px 0 rgba(255, 255, 255, 0.06) inset, 0 40px 80px -40px rgba(0, 0, 0, 0.9);
+  /* A real shadow rather than an inner highlight: on white, depth is the
+     only thing separating a card from the page behind it. */
+  --shadow: 0 1px 2px rgba(15, 23, 42, 0.05), 0 14px 30px -22px rgba(15, 23, 42, 0.45);
+  --shadow-hover: 0 1px 2px rgba(15, 23, 42, 0.07), 0 22px 44px -24px rgba(15, 23, 42, 0.5);
 
   position: relative;
   isolation: isolate;
@@ -89,30 +99,23 @@
 .admin-ui * { box-sizing: border-box; }
 .admin-ui a { color: inherit; }
 .admin-ui :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 6px; }
-.admin-ui ::selection { background: rgba(0, 229, 255, 0.3); color: #fff; }
+.admin-ui ::selection { background: rgba(14, 116, 144, 0.18); color: var(--ink); }
 
-/* ── Atmosphere: grid, four corner glows, one slow aurora ───────── */
+/* ── Atmosphere: a whisper of grid, and nothing else ─────────────
+   The dark console had four corner glows and a slow rotating aurora. On
+   black they read as depth. On white they read as a smudge, and the owner
+   asked for clear, so the glows are gone and the grid is barely there. */
 .admin-ui::before {
   content: ""; position: fixed; inset: 0; z-index: -2; pointer-events: none;
   background:
-    radial-gradient(900px 600px at 0% 0%, rgba(251, 146, 60, 0.07), transparent 60%),
-    radial-gradient(900px 600px at 100% 0%, rgba(167, 139, 250, 0.09), transparent 60%),
-    radial-gradient(900px 600px at 100% 100%, rgba(34, 211, 238, 0.08), transparent 60%),
-    radial-gradient(900px 600px at 0% 100%, rgba(52, 211, 153, 0.06), transparent 60%),
-    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.025) 0 1px, transparent 1px 48px),
-    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.025) 0 1px, transparent 1px 48px),
-    linear-gradient(180deg, #080d19, var(--bg) 40%);
-  mask-image: linear-gradient(180deg, #000 0%, #000 60%, rgba(0, 0, 0, 0.4) 100%);
+    repeating-linear-gradient(0deg, rgba(15, 23, 42, 0.028) 0 1px, transparent 1px 48px),
+    repeating-linear-gradient(90deg, rgba(15, 23, 42, 0.028) 0 1px, transparent 1px 48px),
+    linear-gradient(180deg, #f7f9fc, var(--bg) 42%);
+  mask-image: linear-gradient(180deg, #000 0%, #000 55%, rgba(0, 0, 0, 0.25) 100%);
 }
-.admin-ui::after {
-  content: ""; position: fixed; z-index: -1; pointer-events: none;
-  width: 70vw; height: 70vw; left: 15vw; top: -25vw; opacity: 0.32;
-  background: conic-gradient(from 90deg, rgba(0, 229, 255, 0.35), rgba(124, 92, 255, 0.35), rgba(52, 211, 153, 0.2), rgba(251, 146, 60, 0.2), rgba(0, 229, 255, 0.35));
-  filter: blur(90px);
-  border-radius: 50%;
-  animation: ad-aurora 40s linear infinite;
-  will-change: transform;
-}
+/* The aurora is retired rather than deleted: its keyframes stay defined at
+   the foot of this file, so nothing that referenced them breaks. */
+.admin-ui::after { content: none; }
 
 /* ── Shell: sidebar + body ──────────────────────────────────────── */
 .admin-ui .admin-shell { display: grid; grid-template-columns: 252px minmax(0, 1fr); min-height: 100vh; }
@@ -122,7 +125,7 @@
   display: flex; flex-direction: column; gap: var(--sp-xl);
   padding: 22px 16px 18px;
   border-right: 1px solid var(--line);
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.01) 40%, transparent);
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0.03), rgba(15, 23, 42, 0.01) 40%, transparent);
   backdrop-filter: blur(16px);
 }
 .admin-ui .admin-brand { display: flex; align-items: center; gap: 12px; padding: 4px 8px; text-decoration: none; color: var(--ink); }
@@ -161,12 +164,12 @@
 
 .admin-ui .admin-account { margin-top: auto; display: flex; flex-direction: column; gap: 10px; padding: 12px; border-radius: 14px; border: 1px solid var(--line); background: var(--panel); }
 .admin-ui .admin-account-row { display: flex; align-items: center; gap: 10px; min-width: 0; }
-.admin-ui .admin-avatar { width: 32px; height: 32px; flex-shrink: 0; border-radius: 50%; display: grid; place-items: center; font-family: var(--display); font-size: 13px; font-weight: 800; color: #fff; background: linear-gradient(135deg, #0891b2, #6d28d9); box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1), 0 8px 20px -10px rgba(124, 92, 255, 0.8); }
+.admin-ui .admin-avatar { width: 32px; height: 32px; flex-shrink: 0; border-radius: 50%; display: grid; place-items: center; font-family: var(--display); font-size: 13px; font-weight: 800; color: #fff; background: linear-gradient(135deg, #0891b2, #6d28d9); box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.08), 0 8px 20px -10px rgba(124, 92, 255, 0.8); }
 .admin-ui .admin-who { min-width: 0; font-size: 12.5px; font-weight: 600; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .admin-ui .admin-who small { display: block; font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--faint); }
 .admin-ui .admin-signout { display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 100%; min-height: 36px; font-size: 13px; font-weight: 700; color: var(--body); background: var(--panel-2); border: 1px solid var(--line-2); border-radius: 10px; cursor: pointer; transition: border-color 180ms, color 180ms, background-color 180ms; }
 .admin-ui .admin-signout svg { width: 15px; height: 15px; }
-.admin-ui .admin-signout:hover { border-color: rgba(251, 113, 133, 0.6); color: #fecdd3; background: rgba(251, 113, 133, 0.1); }
+.admin-ui .admin-signout:hover { border-color: rgba(251, 113, 133, 0.6); color: var(--danger); background: rgba(251, 113, 133, 0.1); }
 
 .admin-ui .admin-body { min-width: 0; display: flex; flex-direction: column; }
 .admin-ui .admin-topbar {
@@ -248,14 +251,14 @@
 .admin-ui .ad-tile:nth-child(4) { animation-delay: 300ms; }
 .admin-ui .ad-tile::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--tile-colour), transparent 80%); }
 .admin-ui .ad-tile::after { content: ""; position: absolute; width: 220px; height: 220px; right: -90px; top: -110px; border-radius: 50%; background: radial-gradient(closest-side, color-mix(in srgb, var(--tile-colour) 28%, transparent), transparent); opacity: 0.7; transition: opacity 260ms, transform 400ms var(--ease); }
-.admin-ui .ad-tile:hover { transform: translateY(-4px); border-color: color-mix(in srgb, var(--tile-colour) 55%, transparent); box-shadow: 0 1px 0 rgba(255, 255, 255, 0.06) inset, 0 30px 60px -30px color-mix(in srgb, var(--tile-colour) 60%, transparent); }
+.admin-ui .ad-tile:hover { transform: translateY(-4px); border-color: color-mix(in srgb, var(--tile-colour) 55%, transparent); box-shadow: 0 14px 30px -20px color-mix(in srgb, var(--tile-colour) 60%, transparent); }
 .admin-ui .ad-tile:hover::after { opacity: 1; transform: scale(1.15); }
 .admin-ui .ad-tile.schools { --tile-colour: var(--schools); }
 .admin-ui .ad-tile.organisations { --tile-colour: var(--organisations); }
 .admin-ui .ad-tile.firms { --tile-colour: var(--firms); }
 .admin-ui .ad-tile.individuals { --tile-colour: var(--individuals); }
 .admin-ui .ad-tile-top { display: flex; align-items: center; justify-content: space-between; }
-.admin-ui .ad-tile-icon { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; color: #fff; background: linear-gradient(135deg, var(--tile-colour), color-mix(in srgb, var(--tile-colour) 55%, var(--violet))); box-shadow: 0 10px 24px -12px var(--tile-colour), 0 0 0 1px rgba(255, 255, 255, 0.08) inset; }
+.admin-ui .ad-tile-icon { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; color: #fff; background: linear-gradient(135deg, var(--tile-colour), color-mix(in srgb, var(--tile-colour) 55%, var(--violet))); box-shadow: 0 10px 24px -12px var(--tile-colour), 0 0 0 1px rgba(15, 23, 42, 0.06) inset; }
 .admin-ui .ad-tile-icon svg { width: 20px; height: 20px; }
 .admin-ui .ad-tile-arrow { width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; color: var(--muted); border: 1px solid var(--line); transition: transform 260ms var(--ease), color 200ms, border-color 200ms, background-color 200ms; }
 .admin-ui .ad-tile-arrow svg { width: 14px; height: 14px; }
@@ -284,7 +287,7 @@
 .admin-ui .ad-panel-head .ad-count { margin: 0; }
 .admin-ui .ad-feed { display: flex; flex-direction: column; }
 .admin-ui .ad-feed-item { --sec: var(--cyan); display: grid; grid-template-columns: 34px minmax(0, 1fr) auto; align-items: center; gap: 12px; padding: 11px 20px; border-top: 1px solid var(--line); text-decoration: none; color: var(--body); transition: background-color 160ms; animation: ad-rise 500ms var(--ease) both; }
-.admin-ui .ad-feed-item:hover { background: rgba(255, 255, 255, 0.03); }
+.admin-ui .ad-feed-item:hover { background: rgba(15, 23, 42, 0.035); }
 .admin-ui .ad-feed-item.schools { --sec: var(--schools); } .admin-ui .ad-feed-item.organisations { --sec: var(--organisations); }
 .admin-ui .ad-feed-item.firms { --sec: var(--firms); } .admin-ui .ad-feed-item.individuals { --sec: var(--individuals); }
 .admin-ui .ad-feed-item:nth-child(1) { animation-delay: 200ms; } .admin-ui .ad-feed-item:nth-child(2) { animation-delay: 250ms; }
@@ -299,7 +302,7 @@
 .admin-ui .ad-feed-tag { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--sec); }
 .admin-ui .ad-attn { display: flex; flex-direction: column; }
 .admin-ui .ad-attn-item { display: flex; align-items: center; gap: 12px; padding: 12px 20px; border-top: 1px solid var(--line); text-decoration: none; color: var(--body); transition: background-color 160ms; }
-.admin-ui .ad-attn-item:hover { background: rgba(255, 255, 255, 0.03); }
+.admin-ui .ad-attn-item:hover { background: rgba(15, 23, 42, 0.035); }
 .admin-ui .ad-attn-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; background: var(--tone, var(--warn)); box-shadow: 0 0 12px var(--tone, var(--warn)); }
 .admin-ui .ad-attn-item.warn { --tone: var(--warn); } .admin-ui .ad-attn-item.danger { --tone: var(--danger); } .admin-ui .ad-attn-item.ok { --tone: var(--ok); }
 .admin-ui .ad-attn-main { flex: 1; min-width: 0; }
@@ -312,7 +315,7 @@
 /* ── Tables ─────────────────────────────────────────────────────── */
 .admin-ui .ad-table-wrap { padding: 0 0 var(--sp-xs); overflow-x: auto; }
 .admin-ui .ad-table { width: 100%; border-collapse: collapse; font-size: 13.5px; min-width: 560px; }
-.admin-ui .ad-table th { text-align: left; font-family: var(--mono); font-size: 10.5px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--faint); padding: 12px 18px; background: rgba(255, 255, 255, 0.025); border-bottom: 1px solid var(--line); }
+.admin-ui .ad-table th { text-align: left; font-family: var(--mono); font-size: 10.5px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--faint); padding: 12px 18px; background: rgba(15, 23, 42, 0.03); border-bottom: 1px solid var(--line); }
 .admin-ui .ad-table td { padding: 13px 18px; border-top: 1px solid var(--line); color: var(--body); vertical-align: top; }
 .admin-ui .ad-table tbody tr { position: relative; transition: background-color 160ms; animation: ad-rise 450ms var(--ease) both; }
 .admin-ui .ad-table tbody tr:first-child td { border-top: 0; }
@@ -332,7 +335,7 @@
 .admin-ui .ad-empty { color: var(--muted); text-align: center; padding: 28px 18px !important; }
 
 /* ── Search / sort / filter controls ────────────────────────────── */
-.admin-ui .ad-controls { display: flex; align-items: center; gap: var(--sp-md); flex-wrap: wrap; padding: 14px 18px; border-bottom: 1px solid var(--line); background: rgba(255, 255, 255, 0.015); }
+.admin-ui .ad-controls { display: flex; align-items: center; gap: var(--sp-md); flex-wrap: wrap; padding: 14px 18px; border-bottom: 1px solid var(--line); background: rgba(15, 23, 42, 0.02); }
 .admin-ui .ad-search { flex: 1 1 240px; min-width: 180px; position: relative; }
 .admin-ui .ad-search svg { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); width: 15px; height: 15px; color: var(--faint); pointer-events: none; }
 .admin-ui .ad-search input,
@@ -342,23 +345,23 @@
 .admin-ui .al-card input,
 .admin-ui .ad-confirm input {
   width: 100%; min-height: 40px; font: inherit; font-size: 14px; font-weight: 500; color: var(--ink);
-  background: rgba(255, 255, 255, 0.045); border: 1px solid var(--line-2); border-radius: 12px; padding: 8px 12px;
+  background: #ffffff; border: 1px solid var(--line-2); border-radius: 12px; padding: 8px 12px;
   transition: border-color 160ms, box-shadow 160ms, background-color 160ms;
 }
 .admin-ui .ad-search input { padding-left: 36px; }
 .admin-ui input::placeholder { color: var(--faint); }
 .admin-ui .ad-search input:focus, .admin-ui .ad-sort select:focus, .admin-ui .ad-form input:focus, .admin-ui .ad-form select:focus, .admin-ui .al-card input:focus, .admin-ui .ad-confirm input:focus {
-  outline: none; border-color: rgba(0, 229, 255, 0.7); background: rgba(255, 255, 255, 0.07); box-shadow: 0 0 0 3px rgba(0, 229, 255, 0.16), 0 0 24px -8px rgba(0, 229, 255, 0.6);
+  outline: none; border-color: var(--accent); background: #ffffff; box-shadow: 0 0 0 3px rgba(14, 116, 144, 0.16);
 }
 .admin-ui .ad-sort { display: flex; align-items: center; gap: var(--sp-sm); font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--faint); }
 .admin-ui .ad-sort select { width: auto; min-height: 38px; font-size: 13px; cursor: pointer; }
 .admin-ui .ad-pills { display: flex; gap: 6px; flex-wrap: wrap; }
 .admin-ui .ad-pill { font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: 0.04em; color: var(--muted); background: var(--panel-2); border: 1px solid var(--line-2); border-radius: var(--r-full); padding: 6px 12px; cursor: pointer; transition: all 160ms var(--ease); }
 .admin-ui .ad-pill:hover { border-color: rgba(0, 229, 255, 0.6); color: var(--ink); transform: translateY(-1px); }
-.admin-ui .ad-pill[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: #0b1120; }
+.admin-ui .ad-pill[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: #ffffff; }
 .admin-ui .ad-pill[data-course] { color: var(--c); border-color: color-mix(in srgb, var(--c) 45%, transparent); background: color-mix(in srgb, var(--c) 8%, transparent); }
 .admin-ui .ad-pill[data-course]:hover { border-color: var(--c); }
-.admin-ui .ad-pill[data-course][aria-pressed="true"] { background: var(--c); border-color: var(--c); color: #0b1120; }
+.admin-ui .ad-pill[data-course][aria-pressed="true"] { background: var(--c); border-color: var(--c); color: #ffffff; }
 .admin-ui .ad-count { font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; color: var(--faint); margin-left: auto; }
 
 /* ── Status chips / course chips ────────────────────────────────── */
@@ -387,11 +390,11 @@
 }
 .admin-ui .ad-btn:hover { border-color: rgba(0, 229, 255, 0.55); background: var(--accent-soft); transform: translateY(-1px); }
 .admin-ui .ad-btn:active { transform: translateY(0); }
-.admin-ui .ad-btn-pri, .admin-ui .al-btn { background: linear-gradient(135deg, #0891b2, #6d28d9); border-color: transparent; color: #fff; box-shadow: 0 12px 28px -14px rgba(124, 92, 255, 0.9), 0 0 0 1px rgba(255, 255, 255, 0.06) inset; }
+.admin-ui .ad-btn-pri, .admin-ui .al-btn { background: linear-gradient(135deg, #0891b2, #6d28d9); border-color: transparent; color: #fff; box-shadow: 0 12px 24px -14px rgba(109, 40, 217, 0.55); }
 .admin-ui .ad-btn-pri::after, .admin-ui .al-btn::after { content: ""; position: absolute; top: 0; bottom: 0; width: 40%; left: 0; background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent); transform: translateX(-120%) skewX(-18deg); }
 .admin-ui .ad-btn-pri:hover, .admin-ui .al-btn:hover { background: linear-gradient(135deg, #0ea5e9, #7c3aed); border-color: transparent; box-shadow: 0 16px 36px -14px rgba(124, 92, 255, 1); }
 .admin-ui .ad-btn-pri:hover::after, .admin-ui .al-btn:hover::after { animation: ad-sheen 700ms var(--ease); }
-.admin-ui .ad-btn-danger { background: var(--danger-soft); border-color: rgba(251, 113, 133, 0.5); color: #fecdd3; }
+.admin-ui .ad-btn-danger { background: var(--danger-soft); border-color: rgba(251, 113, 133, 0.5); color: var(--danger); }
 .admin-ui .ad-btn-danger:hover { background: #e11d48; border-color: #e11d48; color: #fff; }
 .admin-ui .ad-btn:disabled, .admin-ui .al-btn:disabled { opacity: 0.45; cursor: default; transform: none; box-shadow: none; }
 .admin-ui .ad-btn:disabled::after { display: none; }
@@ -407,11 +410,11 @@
 .admin-ui .ad-confirm b { color: var(--ink); }
 .admin-ui .ad-confirm input { display: block; margin-top: 8px; max-width: 340px; border-color: rgba(251, 113, 133, 0.5); }
 .admin-ui .ad-confirm input:focus { border-color: var(--danger); box-shadow: 0 0 0 3px rgba(251, 113, 133, 0.18); }
-.admin-ui .ad-err { padding: 10px 14px; border-radius: 12px; font-size: 13.5px; font-weight: 600; background: var(--danger-soft); border: 1px solid rgba(251, 113, 133, 0.4); color: #fecdd3; animation: ad-pop 320ms var(--ease) both; }
+.admin-ui .ad-err { padding: 10px 14px; border-radius: 12px; font-size: 13.5px; font-weight: 600; background: var(--danger-soft); border: 1px solid rgba(251, 113, 133, 0.4); color: var(--danger); animation: ad-pop 320ms var(--ease) both; }
 
 /* ── Staff sign-in (/admin-login) ───────────────────────────────── */
 .admin-ui.al-shell { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: var(--sp-xl); }
-.admin-ui .al-card { position: relative; overflow: hidden; display: flex; flex-direction: column; gap: var(--sp-md); width: 100%; max-width: 420px; background: rgba(14, 21, 38, 0.72); border: 1px solid var(--line-2); border-radius: 22px; box-shadow: 0 1px 0 rgba(255, 255, 255, 0.06) inset, 0 40px 100px -40px rgba(0, 0, 0, 0.9), 0 0 80px -30px rgba(0, 229, 255, 0.35); backdrop-filter: blur(18px); padding: 36px 34px 30px; animation: ad-rise 700ms var(--ease) both; }
+.admin-ui .al-card { position: relative; overflow: hidden; display: flex; flex-direction: column; gap: var(--sp-md); width: 100%; max-width: 420px; background: #ffffff; border: 1px solid var(--line-2); border-radius: 22px; box-shadow: 0 2px 4px rgba(15, 23, 42, 0.05), 0 30px 70px -36px rgba(15, 23, 42, 0.5); backdrop-filter: blur(18px); padding: 36px 34px 30px; animation: ad-rise 700ms var(--ease) both; }
 .admin-ui .al-card::before { content: ""; position: absolute; top: 0; left: 10%; right: 10%; height: 1px; background: linear-gradient(90deg, transparent, rgba(0, 229, 255, 0.8), rgba(124, 92, 255, 0.8), transparent); }
 .admin-ui .al-brand { display: flex; align-items: center; gap: 14px; margin-bottom: 10px; }
 .admin-ui .al-brand .admin-wordmark-main { font-size: 20px; }
@@ -421,7 +424,7 @@
 .admin-ui .al-btn:hover { transform: translateY(-1px); }
 .admin-ui .al-forgot { align-self: center; font-family: var(--mono); font-size: 11.5px; letter-spacing: 0.04em; color: var(--muted); text-decoration: none; margin-top: var(--sp-xs); transition: color 150ms; }
 .admin-ui .al-forgot:hover { color: var(--cyan); }
-.admin-ui .al-err { font-size: 13px; font-weight: 600; color: #fecdd3; background: var(--danger-soft); border: 1px solid rgba(251, 113, 133, 0.4); border-radius: 12px; padding: 10px 14px; animation: ad-pop 320ms var(--ease) both; }
+.admin-ui .al-err { font-size: 13px; font-weight: 600; color: var(--danger); background: var(--danger-soft); border: 1px solid rgba(251, 113, 133, 0.4); border-radius: 12px; padding: 10px 14px; animation: ad-pop 320ms var(--ease) both; }
 .admin-ui .al-foot { margin-top: 18px; display: flex; align-items: center; justify-content: center; gap: 10px; font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--faint); }
 .admin-ui .al-foot .admin-live-dot { width: 6px; height: 6px; }
 
