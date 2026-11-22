@@ -85,6 +85,9 @@ export interface OrgWords {
   emailHint: string;
   /** What the first person invited is called. */
   firstPerson: string;
+  /** "a" / "an". Without it every sentence built around `noun` reads
+   *  "a organisation" on the organisations side of the console. */
+  article: "a" | "an";
 }
 
 export default function AdminSchoolsPanel({ w }: { w: OrgWords }) {
@@ -152,12 +155,65 @@ export default function AdminSchoolsPanel({ w }: { w: OrgWords }) {
 
   const ready = (f: typeof BLANK) => f.name.trim() !== "" && f.teacherEmail.trim() !== "";
 
+  /* One card, two tabs. Both forms used to sit open underneath each other,
+     which made a long scroll of near-identical fields and left it easy to
+     fill in the wrong one. The panel that is not chosen is hidden rather
+     than unmounted, so anything half-typed in it is still there on the way
+     back, and so a created school's invite link is not thrown away by a
+     stray click on the other tab. */
+  const [tab, setTab] = useState<"licence" | "trial">("licence");
+  /** "A" / "An", for the start of a sentence. */
+  const A = w.article === "an" ? "An" : "A";
+  const TABS = [
+    { id: "licence" as const, label: `Onboard ${w.article} ${w.noun}` },
+    { id: "trial" as const, label: "Grant a free trial" },
+  ];
+
+  /* Left/right (and Home/End) move between tabs, which is what a tablist
+     is expected to do once it takes the arrow keys away from the page. */
+  function onTabKey(e: React.KeyboardEvent<HTMLButtonElement>) {
+    const i = TABS.findIndex((t) => t.id === tab);
+    let next = i;
+    if (e.key === "ArrowRight") next = (i + 1) % TABS.length;
+    else if (e.key === "ArrowLeft") next = (i - 1 + TABS.length) % TABS.length;
+    else if (e.key === "Home") next = 0;
+    else if (e.key === "End") next = TABS.length - 1;
+    else return;
+    e.preventDefault();
+    setTab(TABS[next].id);
+    document.getElementById(`ad-tab-${TABS[next].id}`)?.focus();
+  }
+
   return (
-    <>
-      <div className="ad-card ad-form">
+    <div className="ad-card ad-form ad-tabbed">
+      <div className="ad-tabs" role="tablist" aria-label={`Add ${w.article} ${w.noun}`}>
+        {TABS.map((t) => (
+          <button
+            key={t.id}
+            type="button"
+            role="tab"
+            id={`ad-tab-${t.id}`}
+            className="ad-tab"
+            aria-selected={tab === t.id}
+            aria-controls={`ad-panel-${t.id}`}
+            tabIndex={tab === t.id ? 0 : -1}
+            onClick={() => setTab(t.id)}
+            onKeyDown={onTabKey}
+          >
+            {t.label}
+          </button>
+        ))}
+      </div>
+
+      <div
+        role="tabpanel"
+        id="ad-panel-licence"
+        aria-labelledby="ad-tab-licence"
+        hidden={tab !== "licence"}
+      >
         <h2 className="ad-h2">New {w.noun}, on a licence</h2>
         <p className="ad-note">
-          A {w.noun} that has agreed to buy. Set the pupil places they bought. The {w.firstPerson.toLowerCase()} gets an invite by email, and the link shows here too.
+          {A} {w.noun} that has agreed to buy. Set the pupil places they bought. The {w.firstPerson.toLowerCase()} gets an invite by email, and the link shows here too.
         </p>
         <SharedFields f={lf} set={(k, v) => setLf({ ...lf, [k]: v })} w={w} />
         <label>Pupil places <input type="number" min={1} value={places} onChange={(e) => setPlaces(e.target.value)} /></label>
@@ -173,7 +229,12 @@ export default function AdminSchoolsPanel({ w }: { w: OrgWords }) {
         {lErr && <div className="ad-err">{lErr}</div>}
       </div>
 
-      <div className="ad-card ad-form">
+      <div
+        role="tabpanel"
+        id="ad-panel-trial"
+        aria-labelledby="ad-tab-trial"
+        hidden={tab !== "trial"}
+      >
         <h2 className="ad-h2">Grant a free trial</h2>
         <p className="ad-note">
           A look at the product for a set number of days, with places to try with. Nothing has been
@@ -206,6 +267,6 @@ export default function AdminSchoolsPanel({ w }: { w: OrgWords }) {
         {tMade && <MadeBox made={tMade} />}
         {tErr && <div className="ad-err">{tErr}</div>}
       </div>
-    </>
+    </div>
   );
 }

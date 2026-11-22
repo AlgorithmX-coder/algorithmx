@@ -19,6 +19,7 @@ export const SCHOOL_WORDS: OrgWords = {
   contactPlaceholder: "Head of computing",
   emailHint: "teacher@school.sch.uk",
   firstPerson: "First teacher",
+  article: "a",
 };
 
 export const ORGANISATION_WORDS: OrgWords = {
@@ -30,4 +31,5 @@ export const ORGANISATION_WORDS: OrgWords = {
   contactPlaceholder: "Who runs the sessions",
   emailHint: "their.name@example.com",
   firstPerson: "First leader",
+  article: "an",
 };

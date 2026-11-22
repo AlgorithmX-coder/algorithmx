@@ -375,6 +375,31 @@
 
 /* ── Forms, buttons, notices ────────────────────────────────────── */
 .admin-ui .ad-form { padding: 22px 24px 24px; display: flex; flex-direction: column; gap: var(--sp-md); max-width: 680px; }
+
+/* A form card that holds more than one form, one tab each. The card loses
+   its own padding and gap: the chosen panel supplies both, so the tab strip
+   can sit flush against the card's top edge. */
+.admin-ui .ad-tabbed { padding: 0; gap: 0; }
+.admin-ui .ad-tabs { display: flex; gap: 4px; padding: 8px 8px 0; border-bottom: 1px solid var(--line); }
+.admin-ui .ad-tab {
+  appearance: none; border: 0; background: none; cursor: pointer; position: relative;
+  font-family: inherit; font-size: 14px; font-weight: 700; color: var(--muted);
+  padding: 10px 14px; border-radius: 10px 10px 0 0;
+  transition: color 180ms var(--ease), background-color 180ms var(--ease);
+}
+.admin-ui .ad-tab:hover { color: var(--ink); background: var(--panel-2); }
+.admin-ui .ad-tab[aria-selected="true"] { color: var(--ink); }
+/* The underline sits on the strip's own border, so the chosen tab reads as
+   joined to the panel below it. */
+.admin-ui .ad-tab[aria-selected="true"]::after {
+  content: ""; position: absolute; left: 10px; right: 10px; bottom: -1px; height: 2px;
+  border-radius: 2px; background: var(--accent);
+}
+.admin-ui .ad-tabbed [role="tabpanel"] { display: flex; flex-direction: column; gap: var(--sp-md); padding: 22px 24px 24px; }
+/* Needed explicitly: the rule above would otherwise beat the browser's own
+   [hidden] { display: none }, and both panels would show at once. */
+.admin-ui .ad-tabbed [role="tabpanel"][hidden] { display: none; }
+
 .admin-ui .ad-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--sp-md); }
 .admin-ui .ad-row.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .admin-ui .ad-form label, .admin-ui .al-card label { display: flex; flex-direction: column; gap: 6px; font-family: var(--mono); font-size: 10.5px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
