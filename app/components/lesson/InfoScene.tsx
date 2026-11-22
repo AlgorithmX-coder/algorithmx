@@ -26,7 +26,7 @@ import { playSound } from "@/app/lib/sounds";
 import ExerciseFrame from "@/app/components/lesson/ExerciseFrame";
 import GameButton from "@/app/components/lesson/GameButton";
 import InfoNarration from "@/app/components/lesson/InfoNarration";
-import PixIcon from "@/app/components/lesson/PixIcon";
+import PixIcon, { iconFor } from "@/app/components/lesson/PixIcon";
 import { useLessonTheme } from "@/app/components/lesson/LessonThemeContext";
 import { useShortViewport } from "@/app/components/lesson/LessonStage";
 import { useWeekWorld, WorldBackdrop, CARD_MATERIALS, CardDecoration } from "@/app/components/game/missionWorldStyles";
@@ -49,6 +49,33 @@ export interface InfoSceneProps {
 }
 
 const ROW_COLOURS = ["#3a93f5", "#34bd6c", "#eaa53c", "#df72c0"];
+
+/**
+ * Optical centring for the emblem disc. Every icon PNG is centred by its
+ * bounding box, but some carry their visual weight off to one side (the
+ * jigsaw's knobs pull it left and low, the banana's curve sits low right),
+ * so in a round frame they read as off-centre (UAT 11-22, W19-3a). These
+ * nudges, in px at the 46px emblem size and scaled for other sizes, move
+ * each icon part of the way from its box centre toward its alpha-weighted
+ * centre, tuned by eye on the emblem disc. Keyed by icon file, so every
+ * emoji spelling of the same icon gets the same nudge.
+ */
+const EMBLEM_NUDGE: Record<string, readonly [number, number]> = {
+  puzzle: [2.5, -1.5],
+  magnifier: [1.5, 3],
+  banana: [-1, -3],
+  "hero-cape": [0, -2.5],
+  "thumbs-up": [0, -2],
+  school: [0, -2],
+};
+
+function emblemNudge(emoji: string, size: number) {
+  const name = iconFor(emoji)?.split("/").pop()?.slice(0, -".png".length);
+  const n = name ? EMBLEM_NUDGE[name] : undefined;
+  if (!n) return undefined;
+  const k = size / 46;
+  return { transform: `translate(${n[0] * k}px, ${n[1] * k}px)` };
+}
 // Static decorative star dots (no twinkle) - depth without motion.
 const STARS = [
   { x: "8%", y: "14%", s: 3 }, { x: "22%", y: "8%", s: 2 },
@@ -225,7 +252,7 @@ export default function InfoScene({
                 boxShadow: `0 6px 20px -6px ${gold}80, inset 0 2px 6px ${gold}59, inset 0 -6px 12px rgba(0,0,0,0.4)`,
               }}
             >
-              <PixIcon emoji={emblem} size={46} />
+              <PixIcon emoji={emblem} size={46} style={emblemNudge(emblem, 46)} />
             </motion.div>
             <span aria-hidden style={{ color: gold, fontSize: 14, opacity: 0.85, textShadow: `0 0 10px ${gold}99` }}>✦</span>
           </div>
@@ -437,7 +464,7 @@ export default function InfoScene({
                   boxShadow: `0 0 48px -8px ${gold}aa, inset 0 2px 6px ${gold}59`,
                 }}
               >
-                <PixIcon emoji={emblem} size={70} />
+                <PixIcon emoji={emblem} size={70} style={emblemNudge(emblem, 70)} />
               </motion.div>
               <motion.div
                 initial={reduce ? false : { y: 10, opacity: 0 }}
