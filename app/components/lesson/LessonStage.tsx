@@ -256,6 +256,16 @@ export interface LessonStageProps {
    * monitor, which would distort the cinematic centring.
    */
   maxWidth?: number;
+  /**
+   * Optional full-bleed layer painted across the WHOLE stage (edge to edge,
+   * HUD to bottom), above the glow and below the content. For a backdrop that
+   * must not be cut to the content column: the completion screen's week world
+   * was drawn inside its 720px column, so it stopped in two hard vertical
+   * edges either side of the badge (Abdullah, UAT 2026-11-22, W15 row 8:
+   * "stretch the edges here"). Not zoomed by the stage fit, since it is not
+   * content.
+   */
+  backdrop?: ReactNode;
   children: ReactNode;
 }
 
@@ -264,6 +274,7 @@ export default function LessonStage({
   glow,
   scrollable = true,
   maxWidth = 1500,
+  backdrop,
   children,
 }: LessonStageProps) {
   // A themed week overrides the per-screen gradient with its own world bg/glow;
@@ -369,6 +380,18 @@ export default function LessonStage({
               willChange: "opacity",
             }}
           />
+        </div>
+      )}
+      {backdrop && (
+        /* Own stacking context at z 0 (like the glow above), so a backdrop
+         * that paints itself at a negative z-index still lands ABOVE the
+         * stage's background instead of behind it. Clipped to the stage so
+         * it can never extend the scrollable area. */
+        <div
+          aria-hidden
+          style={{ position: "absolute", inset: 0, overflow: "hidden", pointerEvents: "none", zIndex: 0 }}
+        >
+          {backdrop}
         </div>
       )}
       <div
