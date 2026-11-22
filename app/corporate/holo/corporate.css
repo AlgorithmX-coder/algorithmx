@@ -77,9 +77,9 @@
 .kv1 .trust li i{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 10px rgba(14,122,69,.8),0 0 0 3px rgba(14,122,69,.12);animation:kv-pulse 2.4s infinite}
 @keyframes kv-pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.35)}}
 /* the office stage: photo + floating glass pane */
-.kv1 .stage{position:relative;height:min(560px,calc(100vh - 170px));perspective:1400px;perspective-origin:50% 40%}
+.kv1 .stage{position:relative;height:min(600px,calc(100vh - 150px));perspective:1400px;perspective-origin:50% 40%}
 .kv1 .rig{position:absolute;inset:0;transform-style:preserve-3d}
-.kv1 .photo{position:absolute;left:0;right:12%;top:0;height:66%;border-radius:22px;overflow:hidden;background:#0b1020;box-shadow:0 0 0 8px rgba(233,238,246,.9),0 0 0 9px var(--line2),0 40px 80px -30px rgba(20,30,60,.45);transform:rotateX(calc(var(--rx,0deg)*.35)) rotateY(calc(var(--ry,0deg)*.35));opacity:0;animation:kv-photoIn 1.3s .4s var(--ease) forwards;will-change:transform}
+.kv1 .photo{position:absolute;left:0;right:12%;top:0;height:62%;border-radius:22px;overflow:hidden;background:#0b1020;box-shadow:0 0 0 8px rgba(233,238,246,.9),0 0 0 9px var(--line2),0 40px 80px -30px rgba(20,30,60,.45);transform:rotateX(calc(var(--rx,0deg)*.35)) rotateY(calc(var(--ry,0deg)*.35));opacity:0;animation:kv-photoIn 1.3s .4s var(--ease) forwards;will-change:transform}
 @keyframes kv-photoIn{from{opacity:0;transform:translateY(18px) scale(.97)}to{opacity:1;transform:none}}
 .kv1 .photo img{width:100%;height:100%;object-fit:cover;object-position:60% 40%;animation:kv-kb 26s ease-in-out infinite alternate}
 @keyframes kv-kb{from{transform:scale(1)}to{transform:scale(1.06)}}
@@ -273,7 +273,7 @@
 .kv1 .enq .line a{color:var(--teal);font-weight:600;text-decoration:underline;text-underline-offset:3px;text-decoration-color:rgba(10,112,133,.4)}
 .kv1 .form{padding:28px}
 .kv1 .corp-form-grid{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.kv1 .corp-form-span{grid-column:1/-1}
+.kv1 .corp-form-span,.kv1 .corp-form-grid > div:has(> .corp-form-tools){grid-column:1/-1}
 /* footer */
 .kv1 footer{margin-top:40px;background:linear-gradient(180deg,var(--bg),#e6ebf4 40%);border-top:1px solid var(--line2);position:relative;overflow:hidden}
 .kv1 footer .bigcube{position:absolute;right:-70px;bottom:-90px;opacity:.08;color:var(--teal);animation:kv-spin 70s linear infinite}
@@ -291,5 +291,5 @@
 @media (max-width:1180px){.kv1 .pillars{grid-template-columns:repeat(2,1fr)}.kv1 .steps{grid-template-columns:repeat(2,1fr)}.kv1 .steps::before{display:none}.kv1 .step .node{position:static;margin:0 0 14px}.kv1 .ccards,.kv1 .dossiers{grid-template-columns:1fr}.kv1 .power{padding-top:110px}}
 @media (max-width:1240px){.kv1 .chips{display:none}}
 @media (max-width:980px){.kv1 .hgrid{grid-template-columns:1fr;padding-top:110px;min-height:0}.kv1 .stage{height:460px}.kv1 .marks,.kv1 .packs,.kv1 .enqGrid,.kv1 .corp-pol{grid-template-columns:1fr}.kv1 .corp-pol-doc{position:static}.kv1 .pane{width:100%}}
-@media (max-width:640px){.kv1 .pillars,.kv1 .corp-form-grid{grid-template-columns:1fr}.kv1 .corp-form-span{grid-column:auto}.kv1 footer .fgridf{grid-template-columns:1fr}.kv1 .nav .lockup > span{display:none}.kv1 .nav .lockup{border:0;padding-right:0}.kv1 .faq-item .faq-a p{padding:0 0 20px 54px}.kv1 .band{padding:20px}.kv1 .stage{height:420px}.kv1 .photo{right:0;height:52%}.kv1 .form{padding:20px 16px}.kv1 .aisle .over{display:none}.kv1 .corp-pol-two{grid-template-columns:1fr}}
+@media (max-width:640px){.kv1 .pillars,.kv1 .corp-form-grid{grid-template-columns:1fr}.kv1 .corp-form-span{grid-column:auto}.kv1 footer .fgridf{grid-template-columns:1fr}.kv1 .nav .lockup > span{display:none!important}.kv1 .nav .lockup{border:0;padding-right:0}.kv1 .faq-item .faq-a p{padding:0 0 20px 54px}.kv1 .band{padding:20px}.kv1 .stage{height:420px}.kv1 .photo{right:0;height:52%}.kv1 .form{padding:20px 16px}.kv1 .aisle .over{display:none}.kv1 .corp-pol-two{grid-template-columns:1fr}}
 @media (prefers-reduced-motion:reduce){.kv1 *,.kv1 *::before,.kv1 *::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}}

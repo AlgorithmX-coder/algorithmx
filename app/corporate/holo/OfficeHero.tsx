@@ -75,7 +75,7 @@ export default function OfficeHero({ checkoutLive }: { checkoutLive: boolean }) 
             <div className="pane">
               <span className="scan" aria-hidden="true" />
               <span className="corner tl" /><span className="corner tr" /><span className="corner bl" /><span className="corner br" />
-              <HeroSim baseHeight={420} />
+              <HeroSim baseHeight={470} />
             </div>
           </div>
         </div>

@@ -43,7 +43,7 @@ function KestrelMark({ size = 22 }: { size?: number }) {
 
 /* baseHeight: the window's unscaled height. The sand page shows it at 548;
  * the Hologram Office hero floats it as a wider, shorter glass pane over the
- * desk photograph, where 420 keeps the rail, the welcome and the composer in
+ * desk photograph, where 470 keeps the rail, the welcome and the composer in
  * view (the rail's last lines clip, as the approved concept shows). */
 export default function HeroSim({ baseHeight = BASE_H }: { baseHeight?: number } = {}) {
   const hostRef = useRef<HTMLDivElement>(null);
