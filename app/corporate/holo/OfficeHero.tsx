@@ -1,8 +1,8 @@
 "use client";
-/* eslint-disable @next/next/no-img-element */
 
 import { Fragment, useEffect, useRef } from "react";
 import HeroSim from "../HeroSim";
+import HeroVideo from "../HeroVideo";
 import { AXC } from "./content";
 import { holoAccent, tilt } from "./fx";
 
@@ -13,8 +13,10 @@ import { holoAccent, tilt } from "./fx";
  * stays underneath for assistive tech and search), the lede with its four
  * bold spans, the two CTAs and the trust lines.
  *
- * Right: the office stage. The desk-row photograph as a large rounded picture
- * in a platinum frame, and floating above it in CSS 3D a frosted glass pane
+ * Right: the office stage. The desk-row loop (the REAL HeroVideo: poster,
+ * muted, loop, the Pause video control, remembered in localStorage, paused
+ * under reduced motion) as a large rounded picture in a platinum frame, and
+ * floating above it in CSS 3D a frosted glass pane
  * carrying the REAL Copilot practice window (HeroSim, the course's own
  * simulator scaled to the pane). The pane tilts to the pointer with the
  * photograph following at a third of the angle; a scan band crosses the pane
@@ -71,7 +73,7 @@ export default function OfficeHero({ checkoutLive }: { checkoutLive: boolean }) 
 
         <div className="stage">
           <div className="rig" ref={rigRef}>
-            <div className="photo" aria-hidden="true"><img src={H.video.poster} alt="" width={1600} height={900} /></div>
+            <div className="photo"><HeroVideo /></div>
             <div className="pane">
               <span className="scan" aria-hidden="true" />
               <span className="corner tl" /><span className="corner tr" /><span className="corner bl" /><span className="corner br" />
