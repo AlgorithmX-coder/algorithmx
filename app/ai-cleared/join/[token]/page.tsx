@@ -15,6 +15,17 @@ import JoinForm from "../../JoinForm";
  * track at once. No track waits on another. */
 export const dynamic = "force-dynamic";
 
+/* The learner notice (DRAFT for the solicitor, held on the legal drafts
+ * branch): what happens to what a person types, and what their admin
+ * sees. Shown before they sign in and again on the claim step. */
+function LearnerNotice() {
+  return (
+    <p className="cf-note">
+      Before you start: in AI Cleared and AI Fluent, what you type into a practice is sent to our AI model provider to grade it and to reply, under our <Link href="/corporate/dpa">processor terms</Link>. It is never used to train the model, and we do not keep the conversation; we keep your progress and scores. Every practice uses invented data, so do not type anything real. Your firm&rsquo;s admin sees how far you have got on each course, module by module, and when you were last active, never what you type. A prompt you save to your AI Fluent playbook is private to you.
+    </p>
+  );
+}
+
 export default async function JoinPage({ params }: { params: Promise<{ token: string }> }) {
   const { token } = await params;
   const seat = await prisma.seat.findUnique({ where: { inviteToken: token }, include: { org: { include: { profile: { select: { escalationContact: true, escalationRole: true } } } } } });
@@ -55,6 +66,7 @@ export default async function JoinPage({ params }: { params: Promise<{ token: st
           <Link href={`/login?callbackUrl=${encodeURIComponent(here)}`} className="cf-btn">I already have one</Link>
         </div>
         <p className="cf-note" style={{ marginTop: 18 }}>Use your work email, so your firm&rsquo;s admin can see your progress against your name.</p>
+        <LearnerNotice />
       </Frame>
     );
   }
@@ -81,6 +93,7 @@ export default async function JoinPage({ params }: { params: Promise<{ token: st
         Everyone learns the same habits. Your job title picks the desk the practice happens on in every course, so the invoices, emails and documents look like the ones you actually handle.
       </p>
       <JoinForm token={token} orgName={seat.org.name} presetTrack={preset} course={course.slug} />
+      <LearnerNotice />
     </Frame>
   );
 }

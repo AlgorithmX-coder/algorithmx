@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { K } from "@/app/ai-cleared/engine/tokens";
 import { FIRM_TOOL_OPTIONS, type VatMode } from "@/app/lib/corporateProducts";
 import { FIRM_RATE_FROM, SECURED_RATE_PENCE, SECURED_SEAT_MAX, SECURED_SEAT_MIN, TIER_NAME, cheaperAtThreshold, clampSeats, gbp, securedQuote } from "@/app/lib/cyberSecuredPricing";
@@ -85,6 +86,7 @@ export default function BuyForm({ seats: initialSeats, vatPercent, vatMode }: { 
         <p className="cf-note bf-tight">AI Cleared and AI Fluent name it as your approved tool, and their practice screens are a copy of it. Your admin can change the list at any time.</p>
         <label>Admin email, where the invite goes <input id="bf-admin" type="email" value={f.adminEmail} onChange={(e) => set("adminEmail", e.target.value)} placeholder="you@yourfirm.co.uk" /></label>
         <p className="cf-note bf-tight">The admin runs Cyber Secured for the firm: invites staff, sees how far everyone has got, edits the firm profile. It can be you. Already run a firm with us? Use the same admin email and the seats are added to that firm.</p>
+        <p className="cf-note bf-tight">By paying you accept the <Link href="/corporate/terms">terms for firms</Link> and the <Link href="/corporate/dpa">data processing agreement</Link>; the <Link href="/corporate/security">security page</Link> says where your people&rsquo;s data lives.</p>
         {err && <div className="bf-err">{err}</div>}
         <button type="button" id="bf-pay" className="bf-pay" onClick={pay} disabled={busy || !valid || !f.firmName.trim() || !f.adminEmail.trim()}>{busy ? "Opening secure checkout…" : payLabel}</button>
         <p className="cf-note bf-tight">Payment is taken by Stripe on a secure page. You receive {vatMode === "none" ? "an invoice" : "a VAT invoice"} by email; enter your firm&rsquo;s VAT number at checkout and it appears on the invoice.</p>
