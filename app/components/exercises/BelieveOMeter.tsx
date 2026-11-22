@@ -506,8 +506,11 @@ export default function BelieveOMeter({
                               style={lit ? { filter: "drop-shadow(0 0 6px rgba(255,196,120,0.9))" } : undefined}
                             />
                             <circle cx={cx + w * 0.24} cy={cy + h * 0.12} r={1.2} fill={lit ? "#8a3a14" : "#ffb347"} />
-                            {/* Labels sit clear of the rail: the two ends under its feet, the middle two above their doors. */}
-                            <text x={end ? (i === 0 ? 30 : 170) : cx} y={end ? 122 : 6} textAnchor="middle" fontSize={10} fontWeight={800} fill="#ffe9d0" fontFamily="'Space Grotesk', sans-serif">
+                            {/* Every label sits above its own door, clear of the rail. The two
+                                ends used to sit under the rail's feet, away from their doors
+                                (UAT 11-22, W8-4); they nudge outward so their inner corner
+                                clears the rail's curve. */}
+                            <text x={end ? (i === 0 ? 25 : 175) : cx} y={end ? 36 : 6} textAnchor="middle" fontSize={10} fontWeight={800} fill="#ffe9d0" fontFamily="'Space Grotesk', sans-serif">
                               {stopLabels?.[s.id] ?? s.label}
                             </text>
                           </g>
