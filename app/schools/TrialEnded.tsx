@@ -1,4 +1,6 @@
 import Link from "next/link";
+import SchoolSwitcher from "./SchoolSwitcher";
+import type { SchoolChoice } from "@/app/lib/schoolChoice";
 
 /**
  * What a trial teacher sees once their staff-granted trial window closes.
@@ -6,8 +8,25 @@ import Link from "next/link";
  * Deliberately a page and not a redirect, same reasoning as Locked: a
  * teacher who was shown this during a sales trial needs to know what
  * happened and what to do next, not land somewhere that looks broken.
+ *
+ * IT TAKES OVER THE WHOLE SCREEN, which is why the switcher is on it. This
+ * notice is where the wrong-school bug surfaced: a lapsed school&rsquo;s
+ * trial notice shown while a working school sat behind it, with no way to
+ * reach the working one. The choice now prefers a live school, and if
+ * somebody still lands here with another school available, the way out is
+ * on the page rather than in a support email.
  */
-export default function TrialEnded({ orgName, trialExpiresAt }: { orgName: string; trialExpiresAt: Date }) {
+export default function TrialEnded({
+  orgName,
+  trialExpiresAt,
+  schools = [],
+  currentOrgId = "",
+}: {
+  orgName: string;
+  trialExpiresAt: Date;
+  schools?: SchoolChoice[];
+  currentOrgId?: string;
+}) {
   const day = trialExpiresAt.toLocaleDateString("en-GB", { day: "numeric", month: "long" });
   return (
     <div className="axtp">
@@ -33,6 +52,7 @@ export default function TrialEnded({ orgName, trialExpiresAt }: { orgName: strin
           <p className="line">
             <Link href="/schools">See what a licence includes</Link>
           </p>
+          <SchoolSwitcher schools={schools} currentOrgId={currentOrgId} />
         </div>
       </div>
     </div>
