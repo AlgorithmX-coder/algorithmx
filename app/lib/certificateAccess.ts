@@ -1,7 +1,7 @@
 import { prisma } from "@/app/lib/prisma";
 import { MILESTONES } from "@/app/lib/certificates";
 import { resolveActiveChildProfileId } from "@/app/lib/progressService";
-import { getSchoolContext } from "@/app/lib/schoolClasses";
+import { isSchoolStaffOf } from "@/app/lib/schoolClasses";
 
 /**
  * May this caller have this child's certificate for this milestone, and has
@@ -67,15 +67,20 @@ export async function certificateFor(args: {
       select: { id: true },
     });
     if (!own) {
-      const school = await getSchoolContext(args.userId);
-      const pupil = school
-        ? await prisma.childProfile.findFirst({
-            /* Scoped in the query. Another school's pupil is not found. */
-            where: { id: childProfileId, class: { orgId: school.orgId } },
-            select: { id: true },
-          })
-        : null;
-      if (!pupil) {
+      /* ASKED ABOUT THE CHILD'S SCHOOL, not the asker's current one. This
+         used to call getSchoolContext and compare against whichever single
+         school that returned, so a teacher who works at two schools was
+         refused their own pupil's certificate whenever the portal happened
+         to be pointed at the other school. The question is whether this
+         person is staff at the school that owns this child, and that is the
+         question now asked. */
+      const pupil = await prisma.childProfile.findFirst({
+        where: { id: childProfileId, class: { orgId: { not: undefined } } },
+        select: { id: true, class: { select: { orgId: true } } },
+      });
+      const mine =
+        pupil?.class?.orgId && (await isSchoolStaffOf(args.userId, pupil.class.orgId));
+      if (!mine) {
         return {
           ok: false,
           reason: "not_yours",

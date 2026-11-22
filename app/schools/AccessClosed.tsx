@@ -1,11 +1,20 @@
-import Link from "next/link";
+import SchoolSwitcher from "./SchoolSwitcher";
+import type { SchoolChoice } from "@/app/lib/schoolChoice";
 
 /**
  * What a teacher sees once staff close their school's access via the
  * admin portal's "Revoke" action. Distinct from TrialEnded: this is a
  * deliberate staff action, not a trial running its natural course.
  */
-export default function AccessClosed({ orgName }: { orgName: string }) {
+export default function AccessClosed({
+  orgName,
+  schools = [],
+  currentOrgId = "",
+}: {
+  orgName: string;
+  schools?: SchoolChoice[];
+  currentOrgId?: string;
+}) {
   return (
     <div className="axtp">
       <div className="wrap">
@@ -23,6 +32,9 @@ export default function AccessClosed({ orgName }: { orgName: string }) {
             is a mistake, email{" "}
             <a href="mailto:schools@algorithmx.co.uk">schools@algorithmx.co.uk</a>.
           </p>
+          {/* A closed account takes over the screen, so anybody who also
+              belongs to a working school needs the way out right here. */}
+          <SchoolSwitcher schools={schools} currentOrgId={currentOrgId} />
         </div>
       </div>
     </div>
