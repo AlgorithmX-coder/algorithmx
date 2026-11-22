@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import CorporateLanding from "./CorporateLanding";
+import CorporateHolo from "./holo/CorporateHolo";
 import { stripeConfigured } from "@/app/lib/stripe";
 
 /**
@@ -9,6 +9,12 @@ import { stripeConfigured } from "@/app/lib/stripe";
  * The one page an HR lead, IT manager, DPO or managing partner needs: the
  * three courses, the real attacks they teach from, how it runs in the firm,
  * what every seat comes with, the price, and a form.
+ *
+ * 2026-11-21: the Hologram Office design (landing lab round two, concept
+ * k01, the owner's pick) replaces the sand page. Copy, section order and the
+ * real interactive parts (the Copilot practice window, the policy builder,
+ * the enquiry form) are unchanged; everything visual lives in ./holo. The
+ * previous composition (CorporateLanding, HeroVideo) is kept on disk.
  */
 const OG_ALT = "Attacks change daily. We have your firm covered. Cyber Secured by AlgorithmX: AI Cleared, AI Fluent and Cyber Awareness for every member of staff.";
 
@@ -30,5 +36,5 @@ export const metadata: Metadata = {
 };
 
 export default function CorporatePage() {
-  return <CorporateLanding checkoutLive={stripeConfigured()} />;
+  return <CorporateHolo checkoutLive={stripeConfigured()} />;
 }
