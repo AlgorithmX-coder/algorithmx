@@ -373,6 +373,31 @@
 .admin-ui .ad-course-list { display: flex; flex-wrap: wrap; gap: 6px; }
 .admin-ui .ad-course { display: inline-flex; align-items: center; font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: 0.02em; color: var(--c); background: color-mix(in srgb, var(--c) 14%, transparent); border: 1px solid color-mix(in srgb, var(--c) 35%, transparent); border-radius: var(--r-full); padding: 3px 10px; white-space: nowrap; }
 
+/* ── The paid tick ──────────────────────────────────────────────
+   A switch, not a chip: staff set it, so it has to look pressable and
+   carry its own state. Ticked goes green and says so in words, because
+   colour alone is not an answer to "have they paid?". */
+.admin-ui .ad-paid {
+  display: inline-flex; align-items: center; gap: 8px;
+  appearance: none; border: 0; background: none; cursor: pointer; padding: 4px 6px;
+  margin: -4px -6px; border-radius: 9px;
+  font-family: inherit; font-size: 12.5px; font-weight: 600; color: var(--muted);
+  transition: color 180ms var(--ease), background-color 180ms var(--ease);
+}
+.admin-ui .ad-paid:hover { color: var(--ink); background: var(--panel-2); }
+.admin-ui .ad-paid:disabled { cursor: default; opacity: 0.6; }
+.admin-ui .ad-paid-box {
+  display: grid; place-items: center; width: 18px; height: 18px; flex-shrink: 0;
+  border: 1.5px solid var(--line-2); border-radius: 5px; background: var(--panel);
+  color: #fff; transition: background-color 180ms var(--ease), border-color 180ms var(--ease);
+}
+.admin-ui .ad-paid-box svg { width: 13px; height: 13px; }
+.admin-ui .ad-paid[aria-checked="true"] { color: var(--ok); }
+.admin-ui .ad-paid[aria-checked="true"] .ad-paid-box { background: var(--ok); border-color: var(--ok); }
+/* Stripe set this one, so there is nothing to press. */
+.admin-ui .ad-paid.is-card { color: var(--ok); cursor: default; font-weight: 700; }
+.admin-ui .ad-paid-err { display: block; margin-top: 4px; font-size: 11.5px; color: var(--danger); }
+
 /* ── Forms, buttons, notices ────────────────────────────────────── */
 .admin-ui .ad-form { padding: 22px 24px 24px; display: flex; flex-direction: column; gap: var(--sp-md); max-width: 680px; }
 
