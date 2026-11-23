@@ -99,6 +99,24 @@ const STAGE_FIT_PAD_TALL = 72;
 const STAGE_FIT_HEADROOM = 12;
 
 /**
+ * Growing the fit back up is deferred and damped; shrinking never is. See
+ * "GROW SLOWLY, SHRINK AT ONCE" in useStageFit (UAT 2026-11-22, W3 row 1,
+ * W6 rows 7 and 12, W13 row 3: the frame "expands and shrinks rapidly").
+ *
+ * - SETTLE: the content must hold its size this long before a grow lands, so
+ *   a screen that is still mounting (sweep, narration, rows, feedback) is not
+ *   zoomed up between two steps of its own entrance.
+ * - BAND: a grow smaller than this is not worth a visible jump of the whole
+ *   board; the cost is at most a few pixels of air under it.
+ * - UNDO: a shrink this soon after a grow means the two are chasing each
+ *   other, so the screen stops growing on content changes until the window
+ *   itself is resized.
+ */
+const STAGE_FIT_GROW_SETTLE_MS = 450;
+const STAGE_FIT_GROW_BAND = 0.03;
+const STAGE_FIT_GROW_UNDO_MS = 1500;
+
+/**
  * Is the window too short for the layouts this course was drawn for?
  *
  * The fit can only scale a board down so far before the type stops being
@@ -138,7 +156,17 @@ export function useStageFit(ref: RefObject<HTMLDivElement | null>): number {
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    const measure = () => {
+    // Grow bookkeeping (see "GROW SLOWLY, SHRINK AT ONCE" below).
+    let growTimer = 0;
+    let lastGrowAt = Number.NEGATIVE_INFINITY;
+    let growLocked = false;
+    const cancelGrow = () => {
+      if (growTimer) window.clearTimeout(growTimer);
+      growTimer = 0;
+    };
+    /** fromResize: the window changed, so re-fit both ways at once.
+     *  settled: the content held still through a pending grow; apply it. */
+    const measure = (fromResize: boolean, settled = false) => {
       const h = window.innerHeight;
       // getBoundingClientRect reflects zoom, so divide it back out - reading
       // the zoom BACK OFF the element rather than from a variable holding
@@ -205,15 +233,62 @@ export function useStageFit(ref: RefObject<HTMLDivElement | null>): number {
       // True no-op guard: once clamped at STAGE_FIT_MIN, next stops moving,
       // React bails on the identical state and this settles rather than loops.
       if (Math.abs(next - applied) < 0.0005) return;
-      setFit(next);
+      // GROW SLOWLY, SHRINK AT ONCE (Abdullah, UAT 2026-11-22: W3 row 1 "the
+      // Power 1 of 5 title card glitches, expands and shrinks rapidly"; W6
+      // rows 7 and 12, W13 row 3, the same "frame auto-sizing lag").
+      //
+      // Every change in the content's height used to be followed both ways on
+      // the very next ResizeObserver callback. A screen mounts in steps (the
+      // chapter sweep, then the narration, then rows animating in, then an
+      // answer's feedback panel), so the height dips and rises for the first
+      // second and the whole board was zoomed up and down with it. Measured
+      // at the tester's 1093x525 on week 6's Game Zone Bingo, one answer
+      // produced 0.88 -> 0.93 -> 0.73 -> 0.75 inside half a second.
+      //
+      // A shrink still lands at once: the board is past the fold and must not
+      // scroll. A GROW is what turned one settle into a flicker, so a grow now
+      // waits for the content to hold still for STAGE_FIT_GROW_SETTLE_MS, must
+      // be worth at least STAGE_FIT_GROW_BAND, and once a grow has been undone
+      // by a shrink straight after it, this screen stops growing on content
+      // changes (a window resize still re-fits both ways).
+      if (next < applied) {
+        cancelGrow();
+        if (!fromResize && performance.now() - lastGrowAt < STAGE_FIT_GROW_UNDO_MS) growLocked = true;
+        setFit(next);
+        return;
+      }
+      if (fromResize) {
+        setFit(next);
+        return;
+      }
+      if (growLocked || next - applied < STAGE_FIT_GROW_BAND) return;
+      if (settled) {
+        lastGrowAt = performance.now();
+        setFit(next);
+        return;
+      }
+      // (Re)start the settle: any further content change cancels it above or
+      // here, so the grow only lands once the board has stopped moving. The
+      // settled pass re-measures first, so it never applies a stale value.
+      cancelGrow();
+      growTimer = window.setTimeout(() => {
+        growTimer = 0;
+        measure(false, true);
+      }, STAGE_FIT_GROW_SETTLE_MS);
     };
-    measure();
-    const ro = new ResizeObserver(measure);
+    const onContentResize = () => measure(false);
+    const onWindowResize = () => {
+      growLocked = false;
+      measure(true);
+    };
+    measure(false);
+    const ro = new ResizeObserver(onContentResize);
     ro.observe(el);
-    window.addEventListener("resize", measure);
+    window.addEventListener("resize", onWindowResize);
     return () => {
+      cancelGrow();
       ro.disconnect();
-      window.removeEventListener("resize", measure);
+      window.removeEventListener("resize", onWindowResize);
     };
   }, [ref]);
   return fit;
