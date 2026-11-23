@@ -37,6 +37,9 @@ import InfoNarration from "@/app/components/lesson/InfoNarration";
 import PixIcon from "@/app/components/lesson/PixIcon";
 import { SPOKEN_GATE_MAX_MS } from "@/app/lib/gameEngine/spokenGate";
 
+/** Height of a ring-name pill (px); it is centred in its ring's band. */
+const LABEL_PILL_H = 20;
+
 // Audio-only narration: Sarah's voice with no visible narration box (the text
 // she reads is already on screen), same recipe as ClueStamper.
 const AUDIO_ONLY_STYLE = {
@@ -203,7 +206,17 @@ export default function GrowthRings({
   };
 
   // Concentric slice geometry: outermost ring drawn first, centre on top.
-  const SIZE = 320;
+  // 380px (was 320) gives every ring a ~40px band, so its name sits on a
+  // readable pill inside its own band instead of four small dim words stacked
+  // in one column (UAT W5-5). A phone keeps 320, which is all its width holds.
+  const [narrowSlice, setNarrowSlice] = useState(false);
+  useEffect(() => {
+    const onResize = () => setNarrowSlice(window.innerWidth < 480);
+    onResize();
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
+  const SIZE = narrowSlice ? 320 : 380;
   const step = SIZE / (rings.length * 2 + 1.6);
 
   return (
@@ -295,19 +308,31 @@ export default function GrowthRings({
                 }}
                 aria-label={ring.label}
               >
-                {/* ring label pinned to the top band of its circle */}
+                {/* The ring's name, centred in the top of its OWN band (the
+                    strip between this circle and the next one in) on a dark
+                    pill, so the four names read as four labels, not one
+                    smudged column. */}
                 <span
                   style={{
                     position: "absolute",
-                    top: 6,
+                    top: Math.max(2, Math.round((step - LABEL_PILL_H) / 2)),
                     left: "50%",
                     transform: "translateX(-50%)",
-                    fontSize: 10.5,
+                    height: LABEL_PILL_H,
+                    boxSizing: "border-box",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    padding: "0 8px",
+                    borderRadius: 999,
+                    background: "rgba(14,9,28,0.86)",
+                    border: `1px solid ${lit ? `${colours[i % colours.length]}99` : isNext ? "#7df0ff99" : "rgba(125,140,201,0.35)"}`,
+                    fontSize: narrowSlice ? 11 : 12,
                     fontWeight: 900,
-                    letterSpacing: "0.08em",
+                    letterSpacing: "0.06em",
+                    lineHeight: 1,
                     whiteSpace: "nowrap",
-                    color: lit ? colours[i % colours.length] : isNext ? "#7df0ff" : "rgba(125,140,201,0.75)",
-                    textShadow: "0 2px 6px rgba(0,0,0,0.8)",
+                    color: lit ? colours[i % colours.length] : isNext ? "#7df0ff" : "#aab6e8",
+                    pointerEvents: "none",
                   }}
                 >
                   {ring.label}
