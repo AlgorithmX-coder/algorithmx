@@ -7,8 +7,15 @@
  * emblem from the journey (key, mask, diamond, gamepad, globe, shield). The
  * stage PERFORMS: tiles light up in a sequence with a little visual sting on
  * each, and the child ECHOES it back by tapping the same tiles in the same
- * order (watch-then-repeat). The sequence grows 2 -> 4 -> 6 across three
+ * order (watch-then-repeat). The sequence grows 2 -> 3 -> 4 across three
  * rounds, and every landed echo makes the crowd of characters cheer louder.
+ *
+ * Memory help (UAT W20-12, "children may find it hard to remember so many
+ * steps so fast"): the sequences used to grow 2 -> 4 -> 6 at under a second a
+ * step. Now they are shorter and slower, every lit tile shows its step number
+ * while the stage performs, a step counter says how far through the echo the
+ * child is, and a WATCH AGAIN button replays the same sequence, slowly, as
+ * often as they like, at no cost.
  *
  * A miss is NEVER a fail: the stage replays the SAME sequence slower, and on
  * the retry the next expected tile is ghost-hinted so every child gets there.
@@ -51,8 +58,8 @@ const TILES: readonly TileDef[] = [
   { emoji: "🛡️", label: "Shield Up", color: "#fb7185", rgb: "251,113,133" },
 ] as const;
 
-/** Sequence length per round: grows 2 -> 4 -> 6. */
-const ROUND_LENGTHS = [2, 4, 6] as const;
+/** Sequence length per round: grows 2 -> 3 -> 4 (it was 2 -> 4 -> 6). */
+const ROUND_LENGTHS = [2, 3, 4] as const;
 const ROUNDS = ROUND_LENGTHS.length;
 
 const CHEERS = [
@@ -72,11 +79,11 @@ const CROWD_LABELS = [
 const CROWD = ["🦸", "🕵️", "👪", "🦝", "🦸‍♀️", "💪", "🦸‍♂️"] as const;
 
 /* Timing (ms) */
-const WATCH_LEAD_MS = 750;
-const STEP_MS = 950;
-const LIT_MS = 580;
-const SLOW_STEP_MS = 1350;
-const SLOW_LIT_MS = 900;
+const WATCH_LEAD_MS = 900;
+const STEP_MS = 1200;
+const LIT_MS = 760;
+const SLOW_STEP_MS = 1600;
+const SLOW_LIT_MS = 1050;
 const MISS_PAUSE_MS = 1400;
 const LANDED_PAUSE_MS = 2000;
 const CELEBRATE_MS = 4200;
@@ -142,6 +149,12 @@ export default function EncoreOfTwenty({
   const [progress, setProgress] = useState(0);
   const [slowMode, setSlowMode] = useState(false);
   const [litTile, setLitTile] = useState<number | null>(null);
+  // Which step of the sequence is lit right now (0-based), so the tile can
+  // show its number while the stage performs.
+  const [litStep, setLitStep] = useState<number | null>(null);
+  // WATCH AGAIN: the same sequence replayed slowly, on request. Unlike a miss
+  // it changes nothing else (no ghost hint is forced on the echo after it).
+  const [replay, setReplay] = useState(false);
   const [cheer, setCheer] = useState(0);
   const [flash, setFlash] = useState<{ tile: number; kind: "good" | "bad"; id: number } | null>(null);
   const [sting, setSting] = useState<{ tile: number; id: number } | null>(null);
@@ -162,6 +175,7 @@ export default function EncoreOfTwenty({
     setRound(r);
     setSeq(existing ?? makeSequence(ROUND_LENGTHS[r]));
     setSlowMode(slow);
+    setReplay(false);
     setProgress(0);
     setFlash(null);
     setPhase("watch");
@@ -172,18 +186,31 @@ export default function EncoreOfTwenty({
     beginRound(0, false);
   };
 
+  /** WATCH AGAIN: replay this round's sequence slowly, then echo from the start. */
+  const watchAgain = () => {
+    if (phase !== "echo" || missLockRef.current || completedRef.current) return;
+    playSound("select");
+    progressRef.current = 0;
+    setProgress(0);
+    setFlash(null);
+    setReplay(true);
+    setPhase("watch");
+  };
+
   /* ----------------------- watch: stage performs ------------------- */
 
   useEffect(() => {
     if (phase !== "watch") return;
-    const step = slowMode ? SLOW_STEP_MS : STEP_MS;
-    const lit = slowMode ? SLOW_LIT_MS : LIT_MS;
+    const slow = slowMode || replay;
+    const step = slow ? SLOW_STEP_MS : STEP_MS;
+    const lit = slow ? SLOW_LIT_MS : LIT_MS;
     const timers: ReturnType<typeof setTimeout>[] = [];
 
     seq.forEach((tile, i) => {
       timers.push(
         setTimeout(() => {
           setLitTile(tile);
+          setLitStep(i);
           setSting({ tile, id: nextId() });
           playSound("pop");
         }, WATCH_LEAD_MS + i * step),
@@ -191,6 +218,7 @@ export default function EncoreOfTwenty({
       timers.push(
         setTimeout(() => {
           setLitTile(null);
+          setLitStep(null);
           setSting(null);
         }, WATCH_LEAD_MS + i * step + lit),
       );
@@ -206,7 +234,7 @@ export default function EncoreOfTwenty({
     );
 
     return () => timers.forEach(clearTimeout);
-  }, [phase, seq, slowMode]);
+  }, [phase, seq, slowMode, replay]);
 
   /* -------------------------- echo: taps --------------------------- */
 
@@ -297,7 +325,9 @@ export default function EncoreOfTwenty({
     case "watch":
       message = slowMode
         ? "Watch again, nice and slow. The glowing hint will help you!"
-        : "Watch the stage light up your power emblems...";
+        : replay
+          ? "Watch again, nice and slow. Follow the numbers!"
+          : "Watch the stage light up your power emblems...";
       break;
     case "echo":
       message = slowMode
@@ -316,6 +346,16 @@ export default function EncoreOfTwenty({
   }
 
   const ghostTile = phase === "echo" && slowMode ? seq[progress] ?? null : null;
+  // The step counter under the dots: which light the stage is on while it
+  // performs, which tap the child is on while they echo.
+  const stepCounter =
+    phase === "watch"
+      ? litStep !== null
+        ? `Light ${litStep + 1} of ${seq.length}`
+        : `${seq.length} lights to watch`
+      : phase === "echo"
+        ? `Step ${Math.min(progress + 1, seq.length)} of ${seq.length}`
+        : "";
   const crowdLevel = phase === "celebrate" ? 3 : Math.min(3, cheer);
   // The spoken payoff over the cap toss, audio only (the celebration is
   // already on screen). It finishes the exercise itself, so Sarah is never
@@ -425,26 +465,86 @@ export default function EncoreOfTwenty({
           </AnimatePresence>
         </div>
 
-        {/* Progress dots for the current sequence */}
-        <div style={{ minHeight: 18, display: "flex", gap: 8, alignItems: "center" }}>
-          {phase !== "intro" &&
-            seq.map((_, i) => {
-              const filled = phase === "landed" || phase === "celebrate" || i < progress;
-              return (
-                <motion.span
-                  key={i}
-                  animate={{ scale: filled ? 1 : 0.85 }}
-                  style={{
-                    width: 13,
-                    height: 13,
-                    borderRadius: "50%",
-                    background: filled ? GOOD_GREEN : "rgba(231,236,255,0.18)",
-                    border: `2px solid ${filled ? GOOD_GREEN : "rgba(231,236,255,0.35)"}`,
-                    boxShadow: filled ? "0 0 10px rgba(52,211,153,0.6)" : "none",
-                  }}
-                />
-              );
-            })}
+        {/* Progress dots for the current sequence, the step counter, and
+            WATCH AGAIN. The button keeps its space in every phase (hidden, not
+            removed) so the stage never jumps when it appears. */}
+        <div
+          style={{
+            minHeight: 34,
+            display: "flex",
+            flexWrap: "wrap",
+            justifyContent: "center",
+            columnGap: 14,
+            rowGap: 6,
+            alignItems: "center",
+          }}
+        >
+          <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+            {phase !== "intro" &&
+              seq.map((_, i) => {
+                const filled = phase === "landed" || phase === "celebrate" || i < progress;
+                const now = phase === "watch" && litStep === i;
+                return (
+                  <motion.span
+                    key={i}
+                    animate={{ scale: filled || now ? 1 : 0.85 }}
+                    style={{
+                      width: 13,
+                      height: 13,
+                      borderRadius: "50%",
+                      background: filled ? GOOD_GREEN : now ? "#7df0ff" : "rgba(231,236,255,0.18)",
+                      border: `2px solid ${filled ? GOOD_GREEN : now ? "#7df0ff" : "rgba(231,236,255,0.35)"}`,
+                      boxShadow: filled ? "0 0 10px rgba(52,211,153,0.6)" : now ? "0 0 10px rgba(125,240,255,0.6)" : "none",
+                    }}
+                  />
+                );
+              })}
+          </div>
+          {stepCounter && (
+            <span
+              aria-live="polite"
+              style={{
+                minWidth: 108,
+                fontSize: 14,
+                fontWeight: 800,
+                letterSpacing: 0.6,
+                color: phase === "echo" ? GOOD_GREEN : "#7df0ff",
+                textAlign: "center",
+              }}
+            >
+              {stepCounter}
+            </span>
+          )}
+          {phase !== "intro" && phase !== "celebrate" && (
+            <motion.button
+              type="button"
+              onClick={watchAgain}
+              disabled={phase !== "echo"}
+              whileTap={phase === "echo" && !reduce ? { scale: 0.95 } : undefined}
+              aria-hidden={phase !== "echo"}
+              tabIndex={phase === "echo" ? 0 : -1}
+              style={{
+                visibility: phase === "echo" ? "visible" : "hidden",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 6,
+                minHeight: 34,
+                padding: "5px 14px",
+                borderRadius: 999,
+                border: "2px solid rgba(125,240,255,0.6)",
+                background: "rgba(125,240,255,0.12)",
+                color: "#bff6ff",
+                fontSize: 13,
+                fontWeight: 900,
+                letterSpacing: 1,
+                cursor: "pointer",
+                fontFamily: "inherit",
+              }}
+            >
+              <PixIcon emoji="👀" size={18} />
+              WATCH AGAIN
+            </motion.button>
+          )}
         </div>
 
         {/* Stage: ring of emblem tiles around a center spotlight */}
@@ -485,6 +585,7 @@ export default function EncoreOfTwenty({
                 tile={tile}
                 pos={pos}
                 lit={isLit}
+                stepNumber={isLit && phase === "watch" && litStep !== null ? litStep + 1 : null}
                 ghost={isGhost}
                 flash={tileFlash}
                 ignited={ignited}
@@ -525,19 +626,33 @@ export default function EncoreOfTwenty({
       {/* Badge shower falls over the whole frame in the finale */}
       {ignited && <BadgeShower reduce={reduce} />}
 
-      {/* Finale banner */}
+      {/* Finale banner. The centring lives on a static full-frame wrapper:
+          Motion animates scale and y here, which REPLACES the element's whole
+          transform, so a translate(-50%, -50%) on the banner itself was
+          dropped and it hung off its own top-left corner, right of centre and
+          low, over the ring (UAT W20-13). */}
       <AnimatePresence>
         {ignited && (
+          <div
+            key="encore-banner"
+            style={{
+              position: "absolute",
+              inset: 0,
+              zIndex: 30,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              padding: 16,
+              pointerEvents: "none",
+            }}
+          >
           <motion.div
             initial={{ opacity: 0, scale: 0.7, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             transition={{ delay: 0.9, type: "spring", stiffness: 220, damping: 18 }}
             style={{
-              position: "absolute",
-              left: "50%",
-              top: "44%",
-              transform: "translate(-50%, -50%)",
-              zIndex: 30,
+              maxWidth: "100%",
+              boxSizing: "border-box",
               padding: "18px 34px",
               borderRadius: 22,
               background: "linear-gradient(180deg, rgba(15,21,48,0.92), rgba(37,45,94,0.92))",
@@ -565,6 +680,7 @@ export default function EncoreOfTwenty({
               A Cyber Hero performs their powers from memory.
             </div>
           </motion.div>
+          </div>
         )}
       </AnimatePresence>
 
@@ -669,6 +785,7 @@ function StageTile({
   tile,
   pos,
   lit,
+  stepNumber,
   ghost,
   flash,
   ignited,
@@ -680,6 +797,8 @@ function StageTile({
   tile: TileDef;
   pos: { left: string; top: string };
   lit: boolean;
+  /** 1-based step shown on the tile while it is lit in the performance. */
+  stepNumber: number | null;
   ghost: boolean;
   flash: { kind: "good" | "bad"; id: number } | null;
   ignited: boolean;
@@ -749,6 +868,33 @@ function StageTile({
         zIndex: 2,
       }}
     >
+      {/* Step number while the stage performs: "this is light 2". A plain
+          span (no Motion transform), pinned to the tile's top-right rim. */}
+      {stepNumber !== null && (
+        <span
+          aria-hidden
+          style={{
+            position: "absolute",
+            top: -6,
+            right: -6,
+            width: 28,
+            height: 28,
+            borderRadius: "50%",
+            display: "grid",
+            placeItems: "center",
+            background: GOLD,
+            color: "#1a2147",
+            fontSize: 16,
+            fontWeight: 900,
+            lineHeight: 1,
+            boxShadow: "0 0 14px rgba(255,209,102,0.8), 0 2px 6px rgba(0,0,0,0.5)",
+            pointerEvents: "none",
+            zIndex: 3,
+          }}
+        >
+          {stepNumber}
+        </span>
+      )}
       {/* Ghost hint ring: shows the next tile to tap after a miss */}
       {ghost && (
         <motion.span
