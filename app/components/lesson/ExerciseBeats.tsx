@@ -70,6 +70,12 @@ const THREAT_CARD_W = 610;
  * small gap kept under it.
  */
 const TIGHT_BOTTOM = 16;
+/**
+ * The narrowest window on which the card is drawn at more than its layout
+ * size: room for the threat card at full scale (610 x 1.12) plus the
+ * overlay's 20px side padding. Below it the card keeps the old fit.
+ */
+const WIDE_CARD_MIN_W = Math.ceil(THREAT_CARD_W * THREAT_SCALE) + 40;
 import { useGameAudio } from "@/app/lib/gameEngine/useGameAudio";
 import GameButton from "@/app/components/lesson/GameButton";
 import InfoNarration from "@/app/components/lesson/InfoNarration";
@@ -176,7 +182,7 @@ export default function ExerciseIntroBeat({
   // (unlike transform), so the overlay never grows a scrollbar for a fitted card.
   const cardRef = useRef<HTMLDivElement | null>(null);
   const baseScale = threat ? THREAT_SCALE : 1;
-  const [fit, setFit] = useState(baseScale);
+  const [fit, setFit] = useState(1);
   // True while the card cannot fit the symmetric reserve, so the bottom
   // reserve drops to TIGHT_BOTTOM (see the overlay padding).
   const [tight, setTight] = useState(false);
@@ -209,11 +215,21 @@ export default function ExerciseIntroBeat({
       // a short board's zoom shrink a card that had room to spare.
       const stageZoom = parseFloat(cs.getPropertyValue("--stage-zoom")) || 1;
       const h = window.innerHeight;
-      const isTight = natural * (baseScale / stageZoom) > h - HUD_RESERVE * 2;
+      // Only on a window wide enough for the card at its full drawn size. The
+      // card is `width: 100%` up to its maxWidth; on a narrower window it is
+      // already as wide as it can be, and zooming it past 1 only shrinks the
+      // width its text lays out in, so the text re-wraps taller and the fit
+      // chases its own tail. Measured on a 390x844 phone: the week 15 card ran
+      // off the bottom of the screen. Narrow windows keep the old bounds
+      // (card zoom between MIN_FIT and 1), exactly as before this change.
+      const wide = window.innerWidth >= WIDE_CARD_MIN_W;
+      const maxZoom = wide ? baseScale / stageZoom : 1;
+      const minZoom = wide ? MIN_FIT / stageZoom : MIN_FIT;
+      const isTight = wide && natural * maxZoom > h - HUD_RESERVE * 2;
       const avail = h - HUD_RESERVE - (isTight ? TIGHT_BOTTOM : HUD_RESERVE);
       setTight(isTight);
       if (natural <= 0 || avail <= 0) return;
-      const next = Math.max(MIN_FIT / stageZoom, Math.min(baseScale / stageZoom, avail / natural));
+      const next = Math.max(minZoom, Math.min(maxZoom, avail / natural));
       if (Math.abs(next - applied) < 0.01) return;
       setFit(next);
     };
