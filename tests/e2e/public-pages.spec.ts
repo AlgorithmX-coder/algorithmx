@@ -152,7 +152,7 @@ test.describe("Cyber Secured buy page", () => {
  * account login, so a bare visitor is sent to that login, never to a gate.
  * `bare` carries no site_auth cookie. */
 bare.describe("No launch gate", () => {
-  for (const path of ["/", "/corporate", "/corporate/buy", "/ai-cleared", "/ai-fluent", "/pro", "/pro/course", "/ai-cleared/join/not-a-real-token", "/verify/AXC-0000-0000", "/login", "/signup", "/forgot-password", "/privacy", "/terms", "/cyberheroes", "/cyberexplorers", "/ops", "/schools", "/cybersecurity"]) {
+  for (const path of ["/", "/corporate", "/corporate/buy", "/ai-cleared", "/ai-fluent", "/pro", "/pro/course", "/ai-cleared/join/not-a-real-token", "/login", "/signup", "/forgot-password", "/privacy", "/terms", "/cyberheroes", "/cyberexplorers", "/ops", "/schools", "/cybersecurity"]) {
     bare(`${path} is reachable without a site password`, async ({ page }) => {
       const res = await page.goto(path);
       expect(res?.status(), "answers rather than errors").toBeLessThan(500);

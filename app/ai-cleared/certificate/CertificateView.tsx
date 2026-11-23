@@ -10,8 +10,8 @@ import CourseAside from "../CourseAside";
 import CertificateActions from "./CertificateActions";
 
 /* The certificate screen for a holder of an AI Cleared or AI Fluent
- * certificate issued before 2026-11-09, with the download and the verify
- * link. Nothing links here any more and no new certificate issues; it
+ * certificate issued before 2026-11-09, with the download. Nothing links
+ * here any more and no new certificate issues; it
  * stays so the people who hold one can still reach it. Anyone without
  * one goes back to their course. Cyber Awareness never had one. */
 export default async function CertificateView({ course }: { course: CertifiedCourseSlug }) {
@@ -38,7 +38,7 @@ export default async function CertificateView({ course }: { course: CertifiedCou
       <span className="cf-eyebrow" style={{ color: valid ? K.ok : K.warn }}>{valid ? "Course complete" : "Certificate expired"}</span>
       <h1 className="cf-h1">You are <span className="cf-grad">{c.doneName}</span>, {holder}.</h1>
       <p className="cf-lead">
-        Every module done and the final assessment passed. The certificate below was issued to you and is yours to download; the serial lets a manager, an auditor or an insurer check it without asking you.
+        Every module done and the final assessment passed. The certificate below was issued to you and is yours to download; it carries its own serial.
       </p>
 
       <div style={{ position: "relative", borderRadius: 18, padding: 1.5, background: K.grad, boxShadow: K.lift }}>
@@ -67,7 +67,7 @@ export default async function CertificateView({ course }: { course: CertifiedCou
         </div>
       </div>
 
-      <CertificateActions serial={issued.serial} course={course} />
+      <CertificateActions course={course} />
 
       <p className="cf-note" style={{ marginTop: 26, maxWidth: "60ch" }}>
         Valid for twelve months from the day it was issued. The course no longer issues new certificates; every module you finish stays on your firm&rsquo;s training register.

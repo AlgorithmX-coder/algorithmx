@@ -69,7 +69,7 @@ export async function POST(req: NextRequest) {
     } catch (err) {
       console.error("[ai-cleared/certificate] email failed", err instanceof Error ? err.message : err);
       await opsAlert({ what: "A certificate email did not send", detail: { serial: issued.serial, to: enrolment.user.email, firm: enrolment.org.name, course }, error: err });
-      emailError = "The email could not be sent just now. The download and the verify link still work.";
+      emailError = "The email could not be sent just now. The download still works.";
     }
   }
   return Response.json({ ok: true, serial: issued.serial, issuedAt: issued.issuedAt, expiresAt: issued.expiresAt, score: issued.score, emailed, emailError });
@@ -89,7 +89,6 @@ export async function GET(req: NextRequest) {
   const holder = enrolment.user.name?.trim() || firstNameOf(enrolment.user.name, enrolment.user.email);
   const firm = enrolment.org.name;
   const track = TRACK_LABEL[DB_TO_TRACK[enrolment.track]];
-  const verify = `${originOf(req)}/verify/${issued.serial}`;
 
   /* Landscape A4, printable: paper ground, graphite ink, one teal accent. */
   const doc = new jsPDF({ orientation: "landscape", unit: "mm", format: "a4" });
@@ -180,10 +179,9 @@ export async function GET(req: NextRequest) {
   doc.setFont("helvetica", "normal");
   doc.setFontSize(9);
   doc.setTextColor(MUTED);
-  doc.text(`Check this certificate at ${verify}`, x, 178);
-  doc.text("Content reviewed quarterly and within weeks of a major change to any tool. Renewal is on the refreshed content.", x, 184);
+  doc.text("Content reviewed quarterly and within weeks of a major change to any tool. Renewal is on the refreshed content.", x, 178);
   doc.setTextColor(FAINT);
-  doc.text("AlgorithmX  ·  algorithmx.co.uk  ·  admissions@algorithmx.co.uk", x, 190);
+  doc.text("AlgorithmX  ·  algorithmx.co.uk  ·  admissions@algorithmx.co.uk", x, 184);
 
   const bytes = doc.output("arraybuffer");
   const safe = holder.replace(/[^a-zA-Z0-9-_]+/g, "_");
