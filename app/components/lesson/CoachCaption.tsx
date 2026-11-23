@@ -104,8 +104,10 @@ export default function CoachCaption({
   const [playing, setPlaying] = useState(false);
   // Re-placed as the board settles; null until the first placement.
   // The bottom-centre lane is the caption's: a Listening pill already there
-  // moves aside rather than pushing the caption into a corner (W14 row 4).
-  const slot = useClearSlot(boxRef, true, undefined, CAPTION_YIELDS_TO);
+  // moves aside rather than pushing the caption into a corner, and board text
+  // at the bottom edge does not push it off-centre either; only a control
+  // does (W14 row 4, see captionSlots.ts).
+  const slot = useClearSlot(boxRef, true, undefined, CAPTION_YIELDS_TO, true);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   // Latest onDone without re-running the play effect (which is keyed on
   // triggerKey only, deliberately).

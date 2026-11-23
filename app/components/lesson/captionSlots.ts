@@ -69,6 +69,36 @@ export const SLOTS: Slot[] = [
  */
 export const CAPTION_YIELDS_TO = "[data-narration-pill]";
 
+/**
+ * The bottom-centre lane: SLOTS 0 and 1. A coach caption keeps to it.
+ *
+ * The same W14 row 4, second cause: on a short window the stage fit sizes a
+ * board to the full height it has, so its bottom edge (often a strip of text,
+ * "PRESS THE STAMP ON THE POWER THAT ANSWERS IT") sits where both centre
+ * slots are. Scored as covered, the caption went to the first clear slot,
+ * the bottom-left corner, or failing that the top, over the board's header.
+ * Either way it read as an instruction parked off to the side. The caption
+ * IS the instruction, it is up for a few seconds while Sarah reads it, and it
+ * says what that strip says; so it stays centred unless the centre would put
+ * it on something the child taps, and only then falls back to the corners.
+ */
+const CENTRE_LANE = [0, 1];
+
+/** Does the box sit on anything a child can tap? */
+function coversControl(box: Box, guard: HTMLElement | null, yieldSelector?: string): boolean {
+  const yielded = yieldSelector ? Array.from(document.querySelectorAll(yieldSelector)) : [];
+  for (const el of Array.from(document.querySelectorAll(CONTROL_SELECTOR))) {
+    if (guard && guard.contains(el)) continue;
+    if (yielded.some((y) => y.contains(el))) continue;
+    const r = el.getBoundingClientRect();
+    if (r.width < 2 || r.height < 2) continue;
+    const cs = window.getComputedStyle(el);
+    if (cs.visibility === "hidden" || cs.display === "none") continue;
+    if (Math.min(box.right, r.right) > Math.max(box.left, r.left) && Math.min(box.bottom, r.bottom) > Math.max(box.top, r.top)) return true;
+  }
+  return false;
+}
+
 /** Anything a child can tap. A floating pill must never sit on one of these. */
 const CONTROL_SELECTOR = "button, a[href], [role='button'], input, select, textarea, [data-pd-card], [data-mm-card]";
 
@@ -210,6 +240,8 @@ export function useClearSlot(
   guardRef?: RefObject<HTMLElement | null>,
   /** Floating pills this element may take a slot from (CAPTION_YIELDS_TO). */
   yieldSelector?: string,
+  /** Keep to the bottom-centre lane unless it would sit on a control. */
+  centreLane = false,
 ): number | null {
   const [slot, setSlot] = useState<number | null>(null);
 
@@ -224,12 +256,27 @@ export function useClearSlot(
       const { width: w, height: h } = el.getBoundingClientRect();
       const vw = window.innerWidth;
       const vh = window.innerHeight;
+      const guard = guardRef?.current ?? null;
       let best = 0;
       let bestArea = Number.POSITIVE_INFINITY;
       for (let i = 0; i < SLOTS.length; i++) {
-        const a = coveredArea(SLOTS[i].box(vw, vh, w, h), guardRef?.current ?? null, yieldSelector);
+        const a = coveredArea(SLOTS[i].box(vw, vh, w, h), guard, yieldSelector);
         if (a === 0) { best = i; break; }
         if (a < bestArea) { best = i; bestArea = a; }
+      }
+      // The bottom-centre lane (see CENTRE_LANE): rather than a corner or the
+      // top, take the clearer of the two bottom-centre slots as long as it
+      // sits on no control.
+      if (centreLane && !CENTRE_LANE.includes(best)) {
+        let laneBest = -1;
+        let laneArea = Number.POSITIVE_INFINITY;
+        for (const i of CENTRE_LANE) {
+          const box = SLOTS[i].box(vw, vh, w, h);
+          if (coversControl(box, guard, yieldSelector)) continue;
+          const a = coveredArea(box, guard, yieldSelector);
+          if (a < laneArea) { laneBest = i; laneArea = a; }
+        }
+        if (laneBest >= 0) best = laneBest;
       }
       setSlot(best);
     };
@@ -252,7 +299,7 @@ export function useClearSlot(
       if (raf) cancelAnimationFrame(raf);
       observer.disconnect();
     };
-  }, [active, elRef, guardRef, yieldSelector]);
+  }, [active, elRef, guardRef, yieldSelector, centreLane]);
 
   return slot;
 }
