@@ -126,12 +126,17 @@ const STRIP_H = 40;
 /**
  * Window height that is not the burrow scene: lesson HUD 64 + stage padding 80
  * + frame padding 32 + header 28 + gaps 24 + strip 40 + token band 96 + hint
- * room 70 + 8 spare. At 1414x771 the scene takes its full height and nothing
- * needs a scroll.
+ * room 70 + 8 spare.
+ *
+ * The ladder used to stop at 300px (196 on a short window), which read as a
+ * squat strip, not a burrow you climb out of (UAT W10-1, "make the ladder
+ * taller and so the whole frame taller"). It now runs to 360, and never below
+ * 240: on a short window the lesson stage scales the whole board down to fit,
+ * so a taller burrow costs a little zoom rather than a scroll bar.
  */
 const HEIGHT_RESERVE_PX = 442;
-const MAX_SCENE_H = 300;
-const MIN_SCENE_H = 196;
+const MAX_SCENE_H = 360;
+const MIN_SCENE_H = 240;
 
 /** Scene geometry. */
 const LADDER_W = 62;
@@ -716,7 +721,7 @@ export default function GreatClimbOut({
             <RootDoodle bottom={Math.round(sceneH * 0.5)} flip={false} />
             <RootDoodle bottom={Math.round(sceneH * 0.16)} flip />
 
-            <Daylight sunD={sunD} label={surfaceLabel} reduce={reduce} />
+            <Daylight sunD={sunD} reduce={reduce} />
             <Ladder height={ladderTop} gap={gap} steps={steps} />
 
             {wallThumbs.map(({ def, bottom }) => (
@@ -780,6 +785,11 @@ export default function GreatClimbOut({
                 transition: "opacity 320ms ease",
               }}
             />
+
+            {/* The surface, named. It sits ABOVE the ladder and the vignette:
+                inside the daylight layer it was painted under the ladder's
+                rails and read as half hidden (UAT W10-1). */}
+            <SurfaceLabel top={sunD + 8} label={surfaceLabel} />
 
             {/* the top rung: the sky takes the burrow and the banner lands */}
             {surfaced && (
@@ -1035,7 +1045,7 @@ function TokenTile({
 /* ------------------------------------------------------------------ */
 
 /** The burrow mouth at the top: the light shaft, the daylight circle, grass. */
-function Daylight({ sunD, label, reduce }: { sunD: number; label: string; reduce: boolean }) {
+function Daylight({ sunD, reduce }: { sunD: number; reduce: boolean }) {
   return (
     <div aria-hidden style={{ position: "absolute", top: 0, left: 0, right: 0, height: sunD + 46, pointerEvents: "none", zIndex: 1 }}>
       {/* light shaft spilling down the tunnel */}
@@ -1104,27 +1114,37 @@ function Daylight({ sunD, label, reduce }: { sunD: number; label: string; reduce
           );
         })}
       </svg>
-      {/* the surface, named */}
-      <span
-        style={{
-          position: "absolute",
-          top: sunD + 8,
-          left: "50%",
-          transform: "translateX(-50%)",
-          padding: "2px 10px",
-          borderRadius: 999,
-          background: "rgba(10,7,20,0.72)",
-          border: "1.5px solid rgba(255,238,170,0.55)",
-          color: "#ffe9a0",
-          fontSize: 10.5,
-          fontWeight: 900,
-          letterSpacing: "0.16em",
-          whiteSpace: "nowrap",
-        }}
-      >
-        {label}
-      </span>
     </div>
+  );
+}
+
+/** The surface, named: a pill just under the burrow mouth, painted over the
+ *  ladder's rails (zIndex 4 here, the ladder is 2) so it always reads whole. */
+function SurfaceLabel({ top, label }: { top: number; label: string }) {
+  return (
+    <span
+      aria-hidden
+      style={{
+        position: "absolute",
+        top,
+        left: "50%",
+        transform: "translateX(-50%)",
+        zIndex: 4,
+        pointerEvents: "none",
+        padding: "3px 12px",
+        borderRadius: 999,
+        background: "rgba(10,7,20,0.88)",
+        border: "1.5px solid rgba(255,238,170,0.7)",
+        boxShadow: "0 4px 12px rgba(0,0,0,0.55)",
+        color: "#ffe9a0",
+        fontSize: 11.5,
+        fontWeight: 900,
+        letterSpacing: "0.16em",
+        whiteSpace: "nowrap",
+      }}
+    >
+      {label}
+    </span>
   );
 }
 
