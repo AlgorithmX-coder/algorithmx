@@ -325,12 +325,17 @@ const canRead = (text?: string) => !isAudioMuted() && !!text;
 /** The burrow scene height for a window: never taller than the design, never
  *  so short the ladder stops reading. Read through useSyncExternalStore, so a
  *  resize re-renders with no effect-driven state. */
-const sceneHeightFor = (vh: number) => Math.round(clamp(vh - HEIGHT_RESERVE_PX, MIN_SCENE_H, MAX_SCENE_H));
+/** A phone stacks the three tokens, so it keeps the old 300px ceiling: the
+ *  taller burrow pushed a 390x844 board 7px past the fold. */
+const NARROW_W = 600;
+const NARROW_MAX_SCENE_H = 300;
+const sceneHeightFor = (vh: number, vw = 1024) =>
+  Math.round(clamp(vh - HEIGHT_RESERVE_PX, MIN_SCENE_H, vw < NARROW_W ? NARROW_MAX_SCENE_H : MAX_SCENE_H));
 const subscribeViewport = (onChange: () => void) => {
   window.addEventListener("resize", onChange);
   return () => window.removeEventListener("resize", onChange);
 };
-const readSceneH = () => sceneHeightFor(window.innerHeight);
+const readSceneH = () => sceneHeightFor(window.innerHeight, window.innerWidth);
 const serverSceneH = () => MAX_SCENE_H;
 
 /* ------------------------------------------------------------------ */
@@ -549,7 +554,9 @@ export default function GreatClimbOut({
   const wallSpan = sceneH - 104;
   const lastOnSide: Record<"left" | "right", number> = { left: -999, right: -999 };
   const wallThumbs = WALL_THUMBS.map((def) => ({ def, bottom: Math.round(18 + def.t * wallSpan) })).filter(({ def, bottom }) => {
-    if (bottom - lastOnSide[def.side] < 58) return false;
+    // 84px: a thumbnail (~50px) plus its two-line caption. At 58 two thumbs on
+    // one wall could pass and still overlap, which the taller burrow exposed.
+    if (bottom - lastOnSide[def.side] < 84) return false;
     lastOnSide[def.side] = bottom;
     return true;
   });
