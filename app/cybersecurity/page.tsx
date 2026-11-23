@@ -1,38 +1,28 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 
 import { prisma } from "@/app/lib/prisma";
-import { sectionMarkBare } from "@/app/components/sectionMark";
 import { landingRouteFor } from "@/app/lib/courseLandings";
 
-import Nav from "@/app/components/landing-v2/Nav";
-import Footer from "@/app/components/landing-v2/Footer";
-import GlobalBackdrop from "@/app/components/landing-v2/GlobalBackdrop";
-import { FadeUp } from "@/app/components/landing-v2/utilities";
-
-import TrackCard from "./TrackCard";
+import CatalogueDeck, { type CatalogueTrack } from "./CatalogueDeck";
 
 /**
- * /cybersecurity — the subject browse page.
+ * /cybersecurity — the subject browse page (the catalogue).
  *
- * Sits between the homepage SubjectShowcase card and the four individual
- * track landing pages (/cyberheroes, /cyberexplorers, /cyberstart,
- * /cyberstart-pro). Parents come here to see the full age progression
- * across a single subject and choose by their child's age.
+ * Sits between the homepage's Cybersecurity stream and the four individual
+ * track landing pages. Parents come here to see the full age progression
+ * across a single subject and choose by their child's age. It is also where
+ * a signed-in account lands when it does not own what it asked for
+ * (CATALOGUE in app/lib/courseIntent.ts), so it stays public with NO
+ * entitlement gate. Browse-not-buy: every card's CTA is "View course",
+ * pointing at the track's landing page, where the purchase flow lives.
  *
- * Public — NO entitlement gate. Browse-not-buy: every track card's
- * primary CTA is "View course →" pointing at the per-track landing
- * page (where the actual purchase flow lives). Even COMING_SOON tracks
- * are linked, because their landing pages collect waitlist sign-ups.
+ * Round 6 (owner, 2026-11-23, "Code Deck"): the page joins the Hologram
+ * house, the homepage's light style, with the 3D live-typing code panes in
+ * the hero. The data below is unchanged: the four tracks come from the
+ * catalogue by slug, in age order, with the same display overrides.
  *
- * Server component. Fetches the four tracks by slug from the catalogue
- * and the signed-in user's children (if any) to drive a soft
- * "great fit for {name}" highlight on the matching track card.
- *
- * Rendered dynamically: this page reads the catalogue from the DB and
- * personalises on the signed-in user's children, so it can't be a
- * static prerender. force-dynamic keeps it out of build-time static
- * generation (the build has no database); it's rendered per request.
+ * Rendered dynamically: this page reads the catalogue from the DB, so it
+ * can't be a static prerender (the build has no database).
  */
 export const dynamic = "force-dynamic";
 
@@ -44,12 +34,7 @@ const CYBER_TRACK_SLUGS = [
 ] as const;
 
 /* Track-level taglines NOT in the DB (the DB carries weekly content
- * only). Keyed by slug so a change here lands without a migration.
- *
- * Copy is marketing-led, parent-facing, and built around a shared
- * shape: one value/benefit beat for the parent, then the technical
- * proof-point that backs it up. Reads as premium and credible, not
- * as a dry syllabus. */
+ * only). Keyed by slug so a change here lands without a migration. */
 const TRACK_BLURBS: Record<string, string> = {
   "cyber-heroes":
     "A confident, safe start in technology. Through animated missions with Adam and Layla, children learn strong passwords, scam-spotting and smart online habits they can use every day.",
@@ -63,70 +48,25 @@ const TRACK_BLURBS: Record<string, string> = {
 
 /* Display-layer overrides for track name + age range. The DB still
  * carries the seeded names ("Cyber Heroes Academy", "CyberStart",
- * "CyberStart Pro") and original age bands, but the homepage now
- * markets the four courses under simpler names and slightly retuned
- * ranges. Overriding at render time avoids touching the DB schema /
- * Stripe / entitlement plumbing which is keyed on slug, not name. */
-const TRACK_DISPLAY_OVERRIDES: Record<
-  string,
-  { name: string; ageRange: string }
-> = {
+ * "CyberStart Pro") and original age bands; overriding at render time
+ * avoids touching the DB / Stripe / entitlement plumbing, which is keyed
+ * on slug, not name. */
+const TRACK_DISPLAY_OVERRIDES: Record<string, { name: string; ageRange: string }> = {
   "cyber-heroes": { name: "Cyber Heroes", ageRange: "6–9" },
   cyberexplorers: { name: "Cyber Explorers", ageRange: "10–13" },
   cyberstart: { name: "Cyber Ops", ageRange: "14–17" },
   "cyberstart-pro": { name: "Cyber Pro", ageRange: "18+" },
 };
 
-/* Per-track character art. Only the LIVE Cyber Heroes track has a
- * dedicated animated cast (Adam + Layla) — they replace the emoji on
- * the card to signal the story-led, animated format. Other tracks
- * omit this and keep their abstract emoji identifier. */
-const TRACK_CHARACTER_IMAGES: Record<string, string> = {
-  /* Heroes card art (owner pick 2026-10-16, "HA5"): a cinematic scene of
-   * Adam & Layla as the heroes — carried on-model from the existing
-   * render via a reference generation so the brand cast stays intact,
-   * now in a cleaner warm world that matches the other three cards.
-   * (The original render at /characters/adam-layla-happy.png is still
-   * used across the lessons and /cyberheroes; only the browse card moved.) */
-  "cyber-heroes": "/characters/cyberheroes-card.jpg",
-  /* v4 card art (owner pick 2026-10-16): a bright, kid-friendly spy
-   * gadget lab — young agents around a glowing holographic globe. Keeps
-   * v3's sunny register (v2's dark-silhouette scene read too scary for
-   * 10–13); the light scrim holds the copy on the left. */
-  cyberexplorers: "/explorers/scenes/explorers-card-v4.jpg",
-  /* Ops v2 card art (owner pick 2026-10-16): an over-the-shoulder
-   * hands-on hacking-lab rig — a teen operator at a dense multi-monitor
-   * wall. 16:9 with no baked chrome, so it crops on cover; the split
-   * scrim keeps the copy column solid on the left. */
-  cyberstart: "/operators/cyberops-card-v2.jpg",
-  /* Pro card art (owner pick 2026-10-16, "PR6"): a REAL photograph, not
-   * a render — a professional at a night workstation over a lit city.
-   * Owner call: for an 18+ into-work audience the card must read as
-   * authentic, so Pro drops its CSS code terminal for this photo. The
-   * subject sits on the right; the dark left holds the copy. */
-  "cyberstart-pro": "/characters/cyberpro-card.jpg",
+/* Display-layer status overrides: Cyber Explorers and Cyber Ops are LIVE in
+ * the product but their DB rows still say COMING_SOON pending the checkout
+ * flip, so the browse card shouldn't under-sell a live course. */
+const TRACK_STATUS_OVERRIDES: Record<string, "ACTIVE" | "COMING_SOON"> = {
+  cyberexplorers: "ACTIVE",
+  cyberstart: "ACTIVE",
 };
 
-/* Cyber Pro used TrackCard's black coding-theme backdrop until 2026-10-16;
- * it now carries the real photo above instead, so no track runs the CSS
- * terminal. Kept as an (empty) hook in case a future track wants it. */
-const TRACK_CODE_BACKDROP: Record<string, boolean> = {};
-
-/* Ops gets the drawn network-diagram overlay on top of its scene art
- * (owner call: "more diagram") - extends the map into the card's quiet
- * zones without re-exposing the art's baked chrome. */
-const TRACK_DIAGRAM_OVERLAY: Record<string, boolean> = {
-  cyberstart: true,
-};
-
-/* Spec chips anchoring the lower zone of the two coming-soon cards. */
-const TRACK_SPECS: Record<string, string[]> = {
-  cyberstart: ["Live range", "Attack + defend", "Real portfolio"],
-  "cyberstart-pro": ["Pen-testing", "Threat modelling", "Security projects"],
-};
-
-/* Feature tag shown with the art (TrackCard defaults to the Heroes
- * cast line when omitted). */
+/* Feature tag shown under the chips. */
 const TRACK_KICKERS: Record<string, string> = {
   "cyber-heroes": "Animation-led · Adam & Layla",
   cyberexplorers: "Story-driven · Agent WREN vs SIREN",
@@ -134,237 +74,10 @@ const TRACK_KICKERS: Record<string, string> = {
   "cyberstart-pro": "Career-grade · pen-testing",
 };
 
-/* Display-layer status + weeks overrides, same rationale as
- * TRACK_DISPLAY_OVERRIDES: Cyber Explorers and Cyber Ops are both LIVE
- * in the product (Explorers missions ship at /explorers; Cyber Ops runs
- * its live range) but their DB catalogue rows still say COMING_SOON
- * pending the checkout flip — the browse card shouldn't under-sell a
- * live course. */
-const TRACK_STATUS_OVERRIDES: Record<string, "ACTIVE" | "COMING_SOON"> = {
-  cyberexplorers: "ACTIVE",
-  cyberstart: "ACTIVE",
-};
-/* Per-track accent. Heroes runs the hub palette's warm amber-orange
- * (kid-energy, matches the hub card's accent) — kept lighter than
- * Cyber Pro's deep orange so the two never read as the same track.
- * The age-range itself does the heavy lifting; accent is the
- * supporting cue. */
-const TRACK_ACCENTS: Record<string, string> = {
-  "cyber-heroes": "#ffb347",
-  cyberexplorers: "#7df0ff",
-  cyberstart: "#8b7bff",
-  "cyberstart-pro": "#ff7a3d",
-};
-
-/* Per-track emoji override (the DB emoji is the fallback). Cyber Ops
- * swaps the generic rocket for a shield so the card reads as
- * security/defence, not a startup launch. */
-const TRACK_EMOJI_OVERRIDES: Record<string, string> = {
-  cyberstart: "🛡️",
-};
-
-/* ── Branded course-name lockups ─────────────────────────────────────
- * The logo system from the track landings' navs (glyph + wordmark in
- * the course's own display font — PR #103), rendered inside each
- * card's title <h3> in place of the plain name. Glyphs are the same
- * marks the landings use, scaled to card size. The "by AlgorithmX"
- * byline is deliberately omitted: these cards already sit under the
- * AlgorithmX site nav, so the byline would be redundant. Fredoka /
- * Chakra Petch are provided by this route's layout.tsx; Explorers'
- * mono is the app-wide Geist Mono. Pro's terminal cursor is static
- * here (the landing blinks) — the browse page stays animation-quiet.
- */
-const LOCKUP_ROW: React.CSSProperties = {
-  display: "inline-flex",
-  alignItems: "center",
-  gap: 9,
-  whiteSpace: "nowrap",
-};
-
-const TRACK_LOCKUPS: Record<string, React.ReactNode> = {
-  "cyber-heroes": (
-    <span style={LOCKUP_ROW}>
-      <svg
-        width="21"
-        height="21"
-        viewBox="0 0 24 24"
-        aria-hidden
-        style={{
-          transform: "rotate(-7deg)",
-          filter: "drop-shadow(0 0 10px rgba(255,179,71,0.4))",
-          flexShrink: 0,
-        }}
-      >
-        <path d="M12 2 L20 5 V12 C20 17 16.5 20.5 12 22 C7.5 20.5 4 17 4 12 V5 Z" fill="#ffb347" />
-        <path d="M13.2 6 L8.6 13 H11.4 L10.6 18 L15.6 11 H12.6 Z" fill="#08101f" />
-      </svg>
-      <span
-        style={{
-          fontFamily: "var(--font-fredoka), system-ui, sans-serif",
-          fontWeight: 700,
-          fontSize: "1.3rem",
-          letterSpacing: "0.02em",
-          color: "#eaf6ff",
-        }}
-      >
-        CYBER <span style={{ color: "#ffb347" }}>HEROES</span>
-      </span>
-    </span>
-  ),
-  cyberexplorers: (
-    <span style={LOCKUP_ROW}>
-      <svg
-        width="18"
-        height="18"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="#22D3EE"
-        strokeWidth="1.8"
-        aria-hidden
-        style={{ filter: "drop-shadow(0 0 8px rgba(34,211,238,0.35))", flexShrink: 0 }}
-      >
-        <circle cx="12" cy="12" r="6.4" />
-        <path d="M12 2.6 V6 M12 18 V21.4 M2.6 12 H6 M18 12 H21.4" />
-        <circle cx="12" cy="12" r="1.6" fill="#22D3EE" stroke="none" />
-      </svg>
-      <span
-        style={{
-          fontFamily: "var(--font-geist-mono), ui-monospace, monospace",
-          fontWeight: 600,
-          fontSize: "1.1rem",
-          letterSpacing: "0.12em",
-          color: "#eaf6ff",
-        }}
-      >
-        CYBER EXPLORERS
-      </span>
-    </span>
-  ),
-  cyberstart: (
-    <span style={LOCKUP_ROW}>
-      <svg
-        width="20"
-        height="20"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="#8B7BFF"
-        strokeWidth="1.8"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        aria-hidden
-        style={{ filter: "drop-shadow(0 0 10px rgba(139,123,255,0.4))", flexShrink: 0 }}
-      >
-        <path d="M3.4 7.4 V3.4 H7.4 M16.6 3.4 H20.6 V7.4 M20.6 16.6 V20.6 H16.6 M7.4 20.6 H3.4 V16.6" strokeWidth="1.5" />
-        <circle cx="12" cy="12" r="5.4" />
-        <circle cx="12" cy="12" r="2.9" strokeWidth="1" opacity="0.5" />
-        <path d="M12 4.8 V7 M12 17 V19.2 M4.8 12 H7 M17 12 H19.2" strokeWidth="1.5" />
-        <circle cx="12" cy="12" r="1.2" fill="#8B7BFF" stroke="none" />
-      </svg>
-      <span
-        style={{
-          fontFamily: "var(--font-chakra), ui-sans-serif, system-ui, sans-serif",
-          fontWeight: 700,
-          fontSize: "1.2rem",
-          letterSpacing: "0.16em",
-          color: "#eaf6ff",
-        }}
-      >
-        CYBER OPS
-      </span>
-    </span>
-  ),
-  "cyberstart-pro": (
-    <span style={LOCKUP_ROW}>
-      <svg
-        width="20"
-        height="20"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="#ff7a3d"
-        strokeWidth="2"
-        aria-hidden
-        style={{ filter: "drop-shadow(0 0 9px rgba(255,122,61,0.35))", flexShrink: 0 }}
-      >
-        <path d="M4 4 H14.5 L20 9.5 V20 H4 Z" strokeLinejoin="round" />
-        <path d="M8 9.5 L11.2 12.5 L8 15.5" strokeLinecap="round" strokeLinejoin="round" />
-        <path d="M13 15.5 H16.2" strokeLinecap="round" />
-      </svg>
-      <span
-        style={{
-          fontFamily: "var(--font-chakra), ui-sans-serif, system-ui, sans-serif",
-          fontWeight: 700,
-          fontSize: "1.2rem",
-          letterSpacing: "0.07em",
-          color: "#eaf6ff",
-        }}
-      >
-        CYBER PRO
-      </span>
-    </span>
-  ),
-};
-
-/* Per-track art-layer tuning for the three cards that carry a scene.
- *
- * Cyber Explorers is a bright daylight photo: a light scrim keeps it
- * bright, a focal crop settles the subject centre-right, ~full opacity.
- *
- * Cyber Ops (14-17) and Cyber Pro (18+) share the same split-scene
- * treatment - Pro is the warm/amber sibling (matching its orange accent)
- * with career-grade content (a live pen-test to root, a CVSS/STRIDE
- * threat model, a remediation report). Both use opacity 1 / centre /
- * split scrim / a capped left text column, described below for Ops.
- *
- * Cyber Ops is the operator-console art, composed as a deliberate split
- * — a dark left half (the copy sits here) and a bright, code-dense right
- * half (terminal + HTTP + a fix diff). Shown near-full and centred so
- * the split maps across the card; the "split" scrim only firms up the
- * left column (it clears by ~66% so the bright right stays bright); and
- * the copy is capped to a left column (contentMaxWidth) so it never runs
- * over the code. This is what keeps it bright AND readable at once. */
-const TRACK_IMAGE_FILTER: Record<string, string> = {
-  "cyber-heroes": "saturate(1.08) brightness(1.04)",
-  cyberexplorers: "saturate(1.12) brightness(1.05)",
-  cyberstart: "saturate(1.06) brightness(1.03)",
-};
-const TRACK_IMAGE_OPACITY: Record<string, number> = {
-  /* Heroes & Pro now carry full scenes like the other two, so they show
-   * near-full rather than the old 0.48 ghost treatment. */
-  "cyber-heroes": 0.95,
-  cyberexplorers: 0.95,
-  cyberstart: 1,
-  "cyberstart-pro": 1,
-};
-const TRACK_IMAGE_POSITION: Record<string, string> = {
-  /* Heroes HA5: Adam & Layla sit centre; bias right so they clear the
-   * copy column, which the light scrim darkens. */
-  "cyber-heroes": "64% 46%",
-  /* v4 globe-lab: bias right so the glowing globe and agents settle
-   * centre-right, clear of the copy column on the left. */
-  cyberexplorers: "60% 42%",
-  /* v2 hacking rig (16:9, cover): bias right so the bright monitor wall
-   * sits on the right and the operator's darker side falls under the
-   * split scrim on the left. No zoom needed — the source has no baked
-   * chrome to crop away. */
-  cyberstart: "66% 48%",
-  /* PR6 photo: the professional and lit city sit right; hold a touch
-   * right of centre so the dark left stays clear for the copy. */
-  "cyberstart-pro": "58% 50%",
-};
-const TRACK_IMAGE_SIZE: Record<string, string> = {};
-const TRACK_SCRIM: Record<string, "default" | "light" | "split"> = {
-  /* Heroes HA5 is a bright scene, so the light scrim (fast falloff +
-   * a copy-area pool) keeps it bright while the title stays legible. */
-  "cyber-heroes": "light",
-  cyberexplorers: "light",
-  cyberstart: "split",
-  /* Pro keeps the default scrim: the photo is already dark on the left
-   * where the copy sits, and the strong left gradient guarantees it. */
-};
-const TRACK_CONTENT_MAX_WIDTH: Record<string, number> = {
-  cyberstart: 265,
-  /* Pro's ghost code sits upper-right; cap the copy so they never meet. */
-  "cyberstart-pro": 330,
+/* Spec chips on the two older-age cards. */
+const TRACK_SPECS: Record<string, string[]> = {
+  cyberstart: ["Live range", "Attack + defend", "Real portfolio"],
+  "cyberstart-pro": ["Pen-testing", "Threat modelling", "Security projects"],
 };
 
 export const metadata: Metadata = {
@@ -383,284 +96,28 @@ export const metadata: Metadata = {
 };
 
 export default async function CybersecurityPage() {
-  /* Real DB fetch — emoji, ageRange, duration, priceGBP, weeksCount,
-   * status all come from the catalogue. The seed order
-   * (cyber-heroes → … → cyberstart-pro) maps to ascending ageMin so
-   * ordering by ageMin gives the age-progression layout the page is
-   * built around. */
+  /* Real DB fetch. The seed order maps to ascending ageMin, so ordering by
+   * ageMin gives the age-progression layout the page is built around. */
   const products = await prisma.product.findMany({
     where: { slug: { in: CYBER_TRACK_SLUGS as unknown as string[] } },
     orderBy: { ageMin: "asc" },
   });
 
-  /* The "great fit for {child}" personalisation was REMOVED 2026-07-18
-   * at the owner's request — no child names are shown on the cards for
-   * anyone. (The bright accent age chips carry the "which track is for
-   * my child" job now.) */
+  const tracks: CatalogueTrack[] = products.map((p) => {
+    const display = TRACK_DISPLAY_OVERRIDES[p.slug];
+    return {
+      slug: p.slug,
+      name: display?.name ?? p.name,
+      ageRange: display?.ageRange ?? p.ageRange,
+      status: TRACK_STATUS_OVERRIDES[p.slug] ?? (p.status as "ACTIVE" | "COMING_SOON"),
+      /* every cyber track has a landing page; fall back to this catalogue so
+       * a future schema change can never render a dead href */
+      href: landingRouteFor(p.slug) ?? "/cybersecurity",
+      blurb: TRACK_BLURBS[p.slug] ?? "Hands-on cybersecurity at the right level for this age.",
+      kicker: TRACK_KICKERS[p.slug],
+      specs: TRACK_SPECS[p.slug],
+    };
+  });
 
-  return (
-    <>
-      {/* Owner 2026-09-24: this page joins the homepage and /schools on
-          the warm sand ground. The four track cards below keep their own
-          art and colour: they are product identities, and Pro's black
-          coding theme is a taste call on record. They sit on the paper
-          the way the dark product screenshots sit on /schools. */}
-      <GlobalBackdrop tone="sand" />
-      <Nav tone="sand" />
-      <main
-        className="cs-page"
-        style={{
-          position: "relative",
-          color: "var(--lv2-ink)",
-          minHeight: "100vh",
-        }}
-      >
-        <style>{`
-          /* The sand token layer, the same one the other two light pages
-             carry. Without it this page reads the neon values straight
-             out of globals.css, and --lv2-cyan-soft is 1.1:1 on paper. */
-          .cs-page, .cs-page :is(section, div, nav, header, footer, span, p, li, a, h1, h2, h3) {
-            --lv2-cyan: #0a7085;
-            --lv2-cyan-soft: #0a7085;
-            --lv2-lime: #0e7a45;
-            --lv2-cosmic: #5744c9;
-            --lv2-text-muted: #5d6472;
-            --lv2-ink: #14161d;
-          }
-          /* The ground goes on html: the backdrop is fixed at z-index -1
-             and a background on body paints straight over it. */
-          html { background: #f3ede4; }
-          body { background: transparent; }
-          /* the same three sand accents the other two pages highlight with */
-          .cs-grad {
-            background: linear-gradient(92deg, #0a7085 0%, #5744c9 55%, #a5117f 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-          }
-        `}</style>
-        {/* HERO ────────────────────────────────────────────── */}
-        <section
-          style={{
-            position: "relative",
-            /* Owner 2026-10-16: tightened so all four track cards clear the
-               fold in one screen (1366x768). Hero 597->~478px. */
-            padding:
-              "calc(var(--lv2-rail) * 2.1) var(--lv2-rail) calc(var(--lv2-rail) * 0.9)",
-            maxWidth: 1180,
-            margin: "0 auto",
-            textAlign: "center",
-          }}
-        >
-          {/* Escape hatch back to the homepage (owner request): the
-           *  shared Nav's brand mark links home but doesn't read as
-           *  navigation, so visitors landing here directly had no
-           *  obvious way out. Same treatment as the auth pages. */}
-          <FadeUp>
-            <div style={{ textAlign: "left", marginBottom: 30 }}>
-              <Link
-                href="/"
-                className="transition hover:opacity-80"
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: 6,
-                  fontFamily: "var(--lv2-font-mono)",
-                  fontSize: 11.5,
-                  fontWeight: 700,
-                  letterSpacing: "0.18em",
-                  textTransform: "uppercase",
-                  color: "var(--lv2-cyan-soft)",
-                  textDecoration: "none",
-                  whiteSpace: "nowrap",
-                }}
-              >
-                <span aria-hidden>←</span> Back to home
-              </Link>
-            </div>
-          </FadeUp>
-
-          <FadeUp>
-            {/* The same bare mark the other two heroes take: teal on the
-                ground, no badge. */}
-            <p style={{ ...sectionMarkBare, marginBottom: 18 }}>
-              {"// Cybersecurity · 4 tracks · Ages 6 to 18+"}
-            </p>
-          </FadeUp>
-
-          <FadeUp delay={0.06}>
-            <h1
-              style={{
-                fontFamily: "var(--lv2-font-display)",
-                fontSize: "clamp(2.4rem, 5.2vw, 4.4rem)",
-                lineHeight: 1.02,
-                letterSpacing: "-0.028em",
-                fontWeight: 400,
-                margin: "0 auto",
-                maxWidth: 900,
-                color: "var(--lv2-ink)",
-              }}
-            >
-              {/* The payoff phrase carries the gradient, the way the
-                  homepage and /schools headlines do. */}
-              Cybersecurity for{" "}
-              <span className="cs-grad">every age.</span>
-            </h1>
-          </FadeUp>
-
-          <FadeUp delay={0.12}>
-            <p
-              style={{
-                fontFamily: "var(--lv2-font-display)",
-                fontSize: "clamp(1rem, 1.25vw, 1.125rem)",
-                lineHeight: 1.6,
-                color: "rgba(17,22,38,0.8)",
-                marginTop: 22,
-                marginBottom: 0,
-                maxWidth: 640,
-                marginLeft: "auto",
-                marginRight: "auto",
-              }}
-            >
-              From spotting scams at age 6 to portfolio-grade pen-testing at
-              18+. Four tracks, one subject, one continuous arc. Start your
-              child&rsquo;s journey, or your own.
-            </p>
-          </FadeUp>
-
-          {/* Aligned with the NCSC (alignment, not endorsement — the NCSC
-              runs no endorsement scheme). One trust mark across all four
-              cybersecurity tracks. */}
-          <FadeUp delay={0.18}>
-            <div style={{ display: "flex", justifyContent: "center", marginTop: 32 }}>
-              <span style={{
-                display: "inline-flex", alignItems: "center", gap: 14,
-                padding: "10px 20px", borderRadius: 999,
-                /* The crest is white artwork and may not be recoloured,
-                   so its plate stays dark. It is the one dark object in
-                   the hero, which is how the homepage handles it too. */
-                background: "#14161d",
-                border: "1px solid rgba(20,22,29,0.5)",
-                boxShadow: "0 14px 34px -20px rgba(20,22,29,0.7)",
-              }}>
-                <span style={{
-                  fontFamily: "var(--lv2-font-mono)",
-                  fontSize: 10.5, fontWeight: 700, letterSpacing: "0.24em",
-                  textTransform: "uppercase", color: "#9fe8f5",
-                }}>
-                  Aligned with UK&rsquo;s National Cyber Security Centre
-                </span>
-                <span aria-hidden style={{ width: 1, height: 22, background: "rgba(232,237,255,0.18)" }} />
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/logos/ncsc.svg" alt="National Cyber Security Centre" loading="lazy" style={{ height: 30, width: "auto" }} />
-              </span>
-            </div>
-          </FadeUp>
-
-        </section>
-
-        {/* TRACK GRID ──────────────────────────────────────── */}
-        <section
-          aria-label="Cybersecurity tracks"
-          style={{
-            position: "relative",
-            padding:
-              "calc(var(--lv2-rail) * 0.5) var(--lv2-rail) calc(var(--lv2-rail) * 3)",
-            maxWidth: 1180,
-            margin: "0 auto",
-          }}
-        >
-          <div className="lv2-cyber-tracks-grid">
-            {products.map((p, i) => {
-              /* landingRouteFor returns null for products without a
-               * landing page, but all four cyber tracks DO have one
-               * (verified at the top of courseLandings.ts). Fall back
-               * to this catalogue if a future schema change ever breaks
-               * this so we never render a dead href. */
-              const landingHref = landingRouteFor(p.slug) ?? "/cybersecurity";
-              const accent = TRACK_ACCENTS[p.slug] ?? "#5fffa3";
-              const blurb =
-                TRACK_BLURBS[p.slug] ??
-                "Hands-on cybersecurity at the right level for this age.";
-              const displayOverride = TRACK_DISPLAY_OVERRIDES[p.slug];
-              const characterImage = TRACK_CHARACTER_IMAGES[p.slug];
-              return (
-                <TrackCard
-                  tone="sand"
-                  key={p.slug}
-                  slug={p.slug}
-                  emoji={TRACK_EMOJI_OVERRIDES[p.slug] ?? p.emoji}
-                  name={displayOverride?.name ?? p.name}
-                  ageRange={displayOverride?.ageRange ?? p.ageRange}
-                  status={TRACK_STATUS_OVERRIDES[p.slug] ?? (p.status as "ACTIVE" | "COMING_SOON")}
-                  blurb={blurb}
-                  landingHref={landingHref}
-                  accent={accent}
-                  index={i}
-                  characterImage={characterImage}
-                  kicker={TRACK_KICKERS[p.slug]}
-                  lockup={TRACK_LOCKUPS[p.slug]}
-                  imageFilter={TRACK_IMAGE_FILTER[p.slug]}
-                  imageOpacity={TRACK_IMAGE_OPACITY[p.slug]}
-                  imagePosition={TRACK_IMAGE_POSITION[p.slug]}
-                  imageSize={TRACK_IMAGE_SIZE[p.slug]}
-                  scrim={TRACK_SCRIM[p.slug]}
-                  contentMaxWidth={TRACK_CONTENT_MAX_WIDTH[p.slug]}
-                  specs={TRACK_SPECS[p.slug]}
-                  codeBackdrop={TRACK_CODE_BACKDROP[p.slug]}
-                  diagramOverlay={TRACK_DIAGRAM_OVERLAY[p.slug]}
-                />
-              );
-            })}
-          </div>
-
-          {/* Subtle reassurance under the grid */}
-          <FadeUp delay={0.4}>
-            <p
-              style={{
-                marginTop: 48,
-                textAlign: "center",
-                fontFamily: "var(--lv2-font-display)",
-                fontSize: 14,
-                lineHeight: 1.6,
-                color: "rgba(17,22,38,0.68)",
-                maxWidth: 560,
-                marginLeft: "auto",
-                marginRight: "auto",
-              }}
-            >
-                            <Link
-                href="/login"
-                style={{
-                  color: "var(--lv2-cyan-soft)",
-                  textDecoration: "underline",
-                  textDecorationThickness: 1,
-                  textUnderlineOffset: 3,
-                }}
-              >
-                Already enrolled? Log in
-              </Link>
-              .
-            </p>
-          </FadeUp>
-
-        </section>
-      </main>
-
-      <Footer tone="sand" />
-
-      <style>{`
-        .lv2-cyber-tracks-grid {
-          display: grid;
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-          gap: 22px;
-        }
-        @media (max-width: 820px) {
-          .lv2-cyber-tracks-grid {
-            grid-template-columns: 1fr;
-          }
-        }
-      `}</style>
-    </>
-  );
+  return <CatalogueDeck tracks={tracks} />;
 }

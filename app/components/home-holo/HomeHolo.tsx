@@ -2,10 +2,10 @@
 /* eslint-disable @next/next/no-img-element */
 
 import { useEffect, useRef, useState } from "react";
-import Link from "next/link";
 import BrandCube from "@/app/components/BrandCube";
 import CourseLockup, { type LockupId } from "@/app/components/CourseLockup";
 import HoloHero from "./HoloHero";
+import { HoloFooter, HoloNav } from "./HoloChrome";
 import { AX } from "./content";
 import { ICONS, countUp, reveal, scramble, sparkPath } from "./fx";
 import "./home.css";
@@ -74,24 +74,6 @@ function TrackCard({ t, i, icon, more }: { t: Track; i: number; icon: keyof type
 
 const Brackets = () => <><span className="brk tl" /><span className="brk tr" /><span className="brk bl" /><span className="brk br" /></>;
 
-function Nav() {
-  const segRef = useRef<HTMLElement>(null);
-  const glowRef = useRef<HTMLSpanElement>(null);
-  const lit = (a: HTMLAnchorElement) => { const g = glowRef.current, s = segRef.current; if (!g || !s) return; g.style.left = a.offsetLeft + "px"; g.style.width = a.offsetWidth + "px"; s.classList.add("lit"); };
-  return (
-    <header className="nav">
-      <div className="capsule">
-        <Link className="ax-brand" href="/" aria-label="AlgorithmX home"><BrandCube size={24} /><span className="lv2-wordmark"><span className="lv2-wordmark-main">ALGORITHM</span><span className="lv2-wordmark-x">X</span></span></Link>
-        <div className="trust">{AX.nav.trust.map((t) => <span className="mark" key={t.word} title={t.name}><span className={`plate ${"dark" in t && t.dark ? "dark" : ""}`}><img src={t.logo} alt={t.name} /></span><span className="word">{t.word}</span></span>)}</div>
-        <nav className="seg" ref={segRef} aria-label="Site" onPointerLeave={() => segRef.current?.classList.remove("lit")}>
-          <span className="glow" ref={glowRef} />
-          {AX.nav.tabs.map((t) => <a key={t.label} href={t.href} onPointerEnter={(e) => lit(e.currentTarget)} onFocus={(e) => lit(e.currentTarget)}>{t.label}</a>)}
-        </nav>
-      </div>
-    </header>
-  );
-}
-
 /* FAQ: a two-column spread, heading on the left, questions in a glass panel on
  * the right. Open state is React state only; the items carry no data-reveal
  * (a re-render used to wipe the imperative .in class and the item vanished). */
@@ -150,7 +132,7 @@ export default function HomeHolo() {
     return () => stops.forEach((s) => s());
   }, []);
 
-  const A = AX.accreditations, S = AX.stats, ST = AX.streams, C = ST.cyber, W = ST.workplace, R = ST.roadmap, T = AX.toolkit, Fo = AX.footer;
+  const A = AX.accreditations, S = AX.stats, ST = AX.streams, C = ST.cyber, W = ST.workplace, R = ST.roadmap, T = AX.toolkit;
   const icons: Array<keyof typeof ICONS> = ["bolt", "search", "target", "terminal"];
   const firmIcons: Array<keyof typeof ICONS> = ["bolt", "shield", "search"];
   /* colour logos (owner: "put colours on it"); Apple and Unity ship as white marks, so they go to ink */
@@ -160,7 +142,7 @@ export default function HomeHolo() {
   return (
     <div className="hv4" ref={rootRef}>
       <div className="atmo" aria-hidden="true"><div className="pool c" /><div className="pool v" /><div className="floor" /></div>
-      <Nav />
+      <HoloNav />
       <main>
         <HoloHero />
 
@@ -215,16 +197,7 @@ export default function HomeHolo() {
         <Faq />
       </main>
 
-      <footer>
-        <div className="bigcube" aria-hidden="true"><svg width="520" height="520" viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth=".6" strokeLinejoin="round"><polygon points="16,2 28.12,9 28.12,23 16,30 3.88,23 3.88,9" /><path d="M16 16 L28.12 9 M16 16 L3.88 9 M16 16 L16 30" /></svg></div>
-        <div className="wrap">
-          <div className="grid">
-            <div><Link className="ax-brand" href="/" aria-label="AlgorithmX"><BrandCube size={24} /><span className="lv2-wordmark"><span className="lv2-wordmark-main">ALGORITHM</span><span className="lv2-wordmark-x">X</span></span></Link><p className="tag">{Fo.tagline}</p></div>
-            {Fo.cols.map((c) => <div key={c.title}><h4>{c.title}</h4><ul>{c.links.map((l) => <li key={l[0]}><a href={l[1]}>{l[0]}</a></li>)}</ul>{"note" in c && c.note ? <div className="note">{c.note}</div> : null}</div>)}
-          </div>
-          <div className="legal"><a href={`mailto:${Fo.email}`}>{Fo.email}</a><span>{Fo.legal}</span></div>
-        </div>
-      </footer>
+      <HoloFooter />
     </div>
   );
 }
