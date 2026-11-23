@@ -3535,6 +3535,7 @@ function DynamicLessonInner({
               introSubtitle={def.introSubtitle}
               introIcon={def.introIcon}
               postLabel={def.postLabel}
+              keepOffLabel={def.keepOffLabel}
               leaveOutLabel={def.leaveOutLabel}
               dontPostLabel={def.dontPostLabel}
               yesChip={def.yesChip}

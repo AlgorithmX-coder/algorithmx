@@ -796,6 +796,7 @@ export const WEEK_20: WeekContent = {
       introSubtitle: "Graduation night, one photo, and everybody in it gets a say.",
       introIcon: "🤝",
       postLabel: "POST IT",
+      keepOffLabel: "KEEP IT OFF THE INTERNET",
       leaveOutLabel: "LEAVE THEM OUT",
       dontPostLabel: "DON'T POST IT",
       narration: {
