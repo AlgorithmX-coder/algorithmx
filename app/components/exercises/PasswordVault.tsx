@@ -359,21 +359,6 @@ export default function PasswordVault({
     ro.observe(stageEl);
     return () => ro.disconnect();
   }, [stageEl]);
-  const guideBand = isNarrow ? GUIDE_BAND_NARROW : GUIDE_BAND;
-  const fit = stageSize
-    ? Math.max(
-        0.2,
-        Math.min(
-          1,
-          (stageSize.h - guideBand - FIT_MARGIN) / DOOR_SIZE,
-          (stageSize.w - FIT_MARGIN * 2) / DOOR_SIZE,
-        ),
-      )
-    : 1;
-  const basis = DOOR_SIZE * fit;
-  // The box sits half a band lower than the stage centre; a focus camera adds
-  // that back so whatever it focuses still lands dead centre.
-  const boxDropPct = ((guideBand / 2) / basis) * 100;
 
   useEffect(
     () => () => {
@@ -508,6 +493,25 @@ export default function PasswordVault({
     stage === "anticipation" ? SHAKE_MD : stage === "unlocking" ? SHAKE_LG : "";
   const revealVisible = gatewayOpen;
   const revealActive = stage === "revealed" || stage === "master";
+
+  // Once the climax starts the ribbon band is not needed (the pips go and the
+  // reveal hides the ribbon), so the box grows into the whole stage: the
+  // reveal chamber and its badges get the room, not an empty strip.
+  const guideBand = vaultLocked ? 0 : isNarrow ? GUIDE_BAND_NARROW : GUIDE_BAND;
+  const fit = stageSize
+    ? Math.max(
+        0.2,
+        Math.min(
+          1,
+          (stageSize.h - guideBand - FIT_MARGIN) / DOOR_SIZE,
+          (stageSize.w - FIT_MARGIN * 2) / DOOR_SIZE,
+        ),
+      )
+    : 1;
+  const basis = DOOR_SIZE * fit;
+  // The box sits half a band lower than the stage centre; a focus camera adds
+  // that back so whatever it focuses still lands dead centre.
+  const boxDropPct = ((guideBand / 2) / basis) * 100;
 
   /* ───────── Camera ───────── */
   const establishing = !established && !vaultLocked;
@@ -915,6 +919,8 @@ export default function PasswordVault({
           width: DOOR_SIZE,
           height: DOOR_SIZE,
           transform: `translate(-50%, -50%) scale(${fit})`,
+          // Grows with the camera push-in when the climax frees the ribbon band.
+          transition: "transform 720ms cubic-bezier(0.22, 1, 0.36, 1), top 720ms cubic-bezier(0.22, 1, 0.36, 1)",
           filter: mirrors ? "hue-rotate(108deg) saturate(1.1)" : undefined,
         }}
       >
@@ -1915,8 +1921,8 @@ function WarehouseBackdrop({ fit, drop }: { fit: number; drop: number }) {
       ))}
 
       {/* Concrete floor with a safety stripe along its edge */}
-      <div style={{ position: "absolute", left: 0, right: 0, top: `calc(50% + ${floorBelowCentre}px)`, bottom: 0, background: "linear-gradient(180deg, #1d2838 0%, #111925 100%)", borderTop: "3px solid #33455f" }} />
-      <div style={{ position: "absolute", left: 0, right: 0, top: `calc(50% + ${floorBelowCentre - 9}px)`, height: 9, background: HAZARD_STRIPES, opacity: 0.75 }} />
+      <div style={{ position: "absolute", left: 0, right: 0, top: `calc(50% + ${floorBelowCentre}px)`, bottom: 0, transition: "top 720ms cubic-bezier(0.22, 1, 0.36, 1)", background: "linear-gradient(180deg, #1d2838 0%, #111925 100%)", borderTop: "3px solid #33455f" }} />
+      <div style={{ position: "absolute", left: 0, right: 0, top: `calc(50% + ${floorBelowCentre - 9}px)`, height: 9, transition: "top 720ms cubic-bezier(0.22, 1, 0.36, 1)", background: HAZARD_STRIPES, opacity: 0.75 }} />
     </div>
   );
 }
