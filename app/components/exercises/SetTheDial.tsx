@@ -119,6 +119,25 @@ export interface PlanRound {
   why: string;              // Sarah's reason when the whole plan is good
   explanation: string;      // Sarah's teach when something is missing
 }
+/**
+ * Board chrome a re-theme can repaint (never spoken). Every field is optional
+ * and defaults to Week 13's Plan Desk copy, so Week 13 is unchanged. Week 1's
+ * "Off His List" uses it to build a PASSWORD on the three dials instead of a
+ * plan, without "plan" words or screen-time icons leaking onto its board.
+ */
+export interface SetTheDialChrome {
+  deskIcon?: string;          // eyebrow icon over the situation (default ⚡)
+  situationIcon?: string;     // badge beside the situation (default 🎮)
+  dialIcons?: Partial<Record<"howLong" | "whatAfter" | "whoKnows", string>>; // default ⏱️ 💪 👪
+  agreeIcon?: string;         // on the commit press (default 👍)
+  roundLabel?: string;        // header noun, "Plan 1 of 3" (default "Plan")
+  turnPrompt?: string;        // strip before all three dials are set
+  readyPrompt?: string;       // strip once all three are set (default "Happy with your plan? Press {agreeLabel}")
+  lookAgainPrompt?: string;   // strip after a wrong commit
+  setToast?: string;          // toast + strip on a good commit (default "PLAN SET!")
+  wrongTitle?: string;        // WrongAnswerPanel title (default "Your plan is nearly there")
+  doneStat?: string;          // first stat line on the complete beat
+}
 export interface SetTheDialProps {
   rounds: PlanRound[];
   introTitle?: string; introSubtitle?: string; introIcon?: string;
@@ -133,6 +152,7 @@ export interface SetTheDialProps {
   coachLines?: { speaker?: "adam" | "layla"; lines: string[] };
   threat?: { raccoonLine: string };
   completeNarration?: { speaker?: "adam" | "layla"; lines: string[] };
+  chrome?: SetTheDialChrome;
   onComplete: (score: number) => void;
   onCorrect?: () => void; onWrong?: () => void;
   onHintReached?: (tier: 1 | 2 | 3) => void;
@@ -182,12 +202,16 @@ export default function SetTheDial({
   coachLines,
   threat,
   completeNarration,
+  chrome,
   onComplete,
   onCorrect,
   onWrong,
   onHintReached,
   onAnswered,
 }: SetTheDialProps) {
+  const setToast = chrome?.setToast ?? PLAN_TOAST;
+  const wrongTitle = chrome?.wrongTitle ?? WRONG_TITLE;
+  const roundLabel = chrome?.roundLabel ?? "Plan";
   const audio = useGameAudio();
   const fx = useExerciseFeedback();
   const intensity = useMotionIntensity();
@@ -224,7 +248,7 @@ export default function SetTheDial({
   const whoKnowsDeck = useShuffledOnce(r?.dials.whoKnows ?? EMPTY_CHOICES, { key: `${roundKey}-who-knows` });
   const decks: Record<DialKey, DialChoice[]> = { howLong: howLongDeck, whatAfter: whatAfterDeck, whoKnows: whoKnowsDeck };
   const dialNames: Record<DialKey, string> = { howLong: howLongLabel, whatAfter: whatAfterLabel, whoKnows: whoKnowsLabel };
-  const dialIcons: Record<DialKey, string> = { howLong: "⏱️", whatAfter: "💪", whoKnows: "👪" };
+  const dialIcons: Record<DialKey, string> = { howLong: "⏱️", whatAfter: "💪", whoKnows: "👪", ...chrome?.dialIcons };
 
   // Spoken verdicts: Sarah says "That's right!" + why, and the next round waits
   // for her. A plan with a gap speaks through WrongAnswerPanel.
@@ -304,7 +328,7 @@ export default function SetTheDial({
       wasCorrect: planGood,
     });
     if (planGood) {
-      fx.correct({ xp: 25, text: PLAN_TOAST });
+      fx.correct({ xp: 25, text: setToast });
       onCorrect?.();
       setAgreed(true);
       // Sarah: "That's right!" + this plan's why, then the next situation.
@@ -324,7 +348,7 @@ export default function SetTheDial({
       setLookAgain(DIAL_KEYS.filter((k) => choiceAt(k)?.isGood !== true));
       // WrongAnswerPanel speaks "Not quite." + this teach line itself; every
       // dial keeps its value, so the fix is one turn and one press.
-      setFeedback({ title: WRONG_TITLE, explanation: r.explanation, tip: rw >= 2 ? hints?.tier2 : hints?.tier1 });
+      setFeedback({ title: wrongTitle, explanation: r.explanation, tip: rw >= 2 ? hints?.tier2 : hints?.tier1 });
       agreeingRef.current = false;
     }
   };
@@ -342,14 +366,14 @@ export default function SetTheDial({
       ? { boxShadow: `0 0 0 3px ${accent}66, 0 0 22px ${accent}88`, animation: reduce ? undefined : "sdGuide 1.4s ease-in-out infinite" }
       : {};
   const strip = agreed
-    ? PLAN_TOAST
+    ? setToast
     : lookAgain.length > 0
-      ? "Give that dial another turn, then agree it again"
+      ? chrome?.lookAgainPrompt ?? "Give that dial another turn, then agree it again"
       : !allSet
         ? guided
           ? "Round 1: tap each dial to turn it"
-          : "Turn all three dials to build your plan"
-        : `Happy with your plan? Press ${agreeLabel}`;
+          : chrome?.turnPrompt ?? "Turn all three dials to build your plan"
+        : chrome?.readyPrompt ?? `Happy with your plan? Press ${agreeLabel}`;
 
   const eyebrowStyle: CSSProperties = {
     fontFamily: LABEL_FONT,
@@ -364,7 +388,7 @@ export default function SetTheDial({
   const situation: ReactNode = r ? (
     <div style={{ width: "100%", display: "flex", flexDirection: "column", gap: 6 }}>
       <div style={{ display: "flex", alignItems: "center", gap: 6, minHeight: 16, ...eyebrowStyle }}>
-        <PixIcon emoji="⚡" size={16} />
+        <PixIcon emoji={chrome?.deskIcon ?? "⚡"} size={16} />
         <span>{deskLabel}</span>
         <span style={{ marginLeft: "auto", color: "rgba(255,247,230,0.65)" }}>
           {Math.min(idx + (agreed ? 1 : 0), rounds.length)} of {rounds.length}
@@ -407,7 +431,7 @@ export default function SetTheDial({
                 border: "2px solid rgba(255,209,88,0.5)",
               }}
             >
-              <PixIcon emoji="🎮" size={32} />
+              <PixIcon emoji={chrome?.situationIcon ?? "🎮"} size={32} />
             </span>
             <span style={{ flex: 1, minWidth: 0, fontFamily: KID_FONT, fontSize: 16.5, fontWeight: 800, lineHeight: 1.3, overflowWrap: "anywhere" }}>
               {r.situation}
@@ -613,7 +637,7 @@ export default function SetTheDial({
               {introTitle}
             </span>
             <span style={{ fontFamily: LABEL_FONT, fontSize: 11, fontWeight: 800, letterSpacing: "0.14em", textTransform: "uppercase", color: "#c9b8ff" }}>
-              Plan {Math.min(idx + 1, rounds.length)} of {rounds.length}
+              {roundLabel} {Math.min(idx + 1, rounds.length)} of {rounds.length}
             </span>
           </div>
 
@@ -683,7 +707,7 @@ export default function SetTheDial({
                 ...guideStyle(guideAgree),
               }}
             >
-              <PixIcon emoji="👍" size={24} />
+              <PixIcon emoji={chrome?.agreeIcon ?? "👍"} size={24} />
               <span style={{ overflowWrap: "anywhere" }}>{agreeLabel}</span>
             </motion.button>
           </div>
@@ -721,7 +745,7 @@ export default function SetTheDial({
           title={completeTitle}
           stars={stars}
           statLines={[
-            `${rounds.length} plan${rounds.length === 1 ? "" : "s"} set at the desk, before a single screen switched on`,
+            chrome?.doneStat ?? `${rounds.length} plan${rounds.length === 1 ? "" : "s"} set at the desk, before a single screen switched on`,
             completeLine,
           ]}
           narration={completeNarration}
