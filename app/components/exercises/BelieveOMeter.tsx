@@ -290,7 +290,8 @@ export default function BelieveOMeter({
             // On the poster the stamp sat 10px off the bottom border and read
             // as falling off the card (UAT W4: "move the check first message
             // further up, away from the bottom border"). The poster keeps a
-            // clear band at its foot for it instead.
+            // clear band at its foot for it instead. On the doors skin it
+            // sits 10px up from the foot of the photo, clear of the caption.
             bottom: doors ? 10 : 30,
             left: "50%",
             x: "-50%",
@@ -388,7 +389,6 @@ export default function BelieveOMeter({
               <span aria-hidden style={{ ...TAPE_STYLE, left: -18, transform: "rotate(-38deg)" }} />
               <span aria-hidden style={{ ...TAPE_STYLE, right: -18, transform: "rotate(38deg)" }} />
               <div
-                aria-hidden
                 style={{
                   position: "relative",
                   flex: "1 1 auto",
@@ -400,7 +400,10 @@ export default function BelieveOMeter({
                   boxShadow: "inset 0 0 0 1px rgba(0,0,0,0.4), inset 0 0 30px rgba(255,107,61,0.32)",
                 }}
               >
-                <PixIcon emoji="📸" size={44} />
+                <span aria-hidden><PixIcon emoji="📸" size={44} /></span>
+                {/* The door stamp lands on the photo itself. At the card's foot
+                    (bottom 10) it sat on top of the photo's caption. */}
+                {stampEl}
               </div>
               <div style={{ fontFamily: "'Space Grotesk', sans-serif", fontSize: 18, fontWeight: 900, lineHeight: 1.2 }}>{o.text}</div>
               {o.from && (
@@ -408,7 +411,6 @@ export default function BelieveOMeter({
                   {fromLabel ? `${fromLabel} ` : ""}{o.from}
                 </div>
               )}
-              {stampEl}
             </div>
             ) : (
             /* The poster: same paper, same icon, same pins on every offer. */
