@@ -28,7 +28,7 @@ import { useEffect, useRef, useState } from "react";
 import { isAudioMuted, subscribeAudioMute } from "@/app/lib/audioMute";
 import NarrationClickGuard from "@/app/components/lesson/NarrationClickGuard";
 import { claimSpokenSlot, releaseSpokenSlot } from "@/app/components/lesson/InfoNarration";
-import { SLOTS, useClearSlot } from "@/app/components/lesson/captionSlots";
+import { CAPTION_YIELDS_TO, SLOTS, useClearSlot } from "@/app/components/lesson/captionSlots";
 
 const NARRATION_VOLUME = 0.5;
 const MANIFEST_URL = "/audio/voice/manifest.json";
@@ -103,7 +103,9 @@ export default function CoachCaption({
   // the click-guard below.
   const [playing, setPlaying] = useState(false);
   // Re-placed as the board settles; null until the first placement.
-  const slot = useClearSlot(boxRef, true);
+  // The bottom-centre lane is the caption's: a Listening pill already there
+  // moves aside rather than pushing the caption into a corner (W14 row 4).
+  const slot = useClearSlot(boxRef, true, undefined, CAPTION_YIELDS_TO);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   // Latest onDone without re-running the play effect (which is keyed on
   // triggerKey only, deliberately).
