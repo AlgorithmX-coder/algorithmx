@@ -1619,15 +1619,22 @@ function HexSigil({
         style={{
           position: "absolute",
           left: "50%",
-          bottom: -19,
+          // Under the sigil, wrapping to two centred lines: one long name on a
+          // single nowrap line ran across the hexagon's own edge (UAT W20-2,
+          // "text touches the sides of the shape").
+          top: "100%",
+          marginTop: 4,
+          width: 150,
           transform: "translateX(-50%)",
-          fontSize: 9,
-          letterSpacing: "0.18em",
+          fontSize: 12,
+          letterSpacing: "0.1em",
+          lineHeight: 1.15,
+          textAlign: "center",
           fontWeight: 800,
           fontFamily: TYPE.mono,
           color: active ? "#7eff97" : "#7df0ff",
           textShadow: active ? "0 0 8px rgba(126,255,151,0.6)" : "0 0 8px rgba(0,229,255,0.5)",
-          whiteSpace: "nowrap",
+          whiteSpace: "normal",
         }}
       >
         {lock.ruleLabel}
