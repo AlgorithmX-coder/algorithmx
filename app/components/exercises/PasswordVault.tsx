@@ -117,12 +117,10 @@ export interface PasswordVaultProps {
  * dial-over-PERSONAL overlap. Order follows the lock array.
  */
 const LOCK_POSITIONS: Record<string, { x: number; y: number }> = {
-  // NOTE (UAT W20 2a, "the top of the hexagon is not visible"): the guidance
-  // ribbon is pinned at top:12 inside this stage and overlaps the top lock.
-  // Dropping the whole ring by 4 points was tried and REVERTED - it cleared
-  // the pill but pushed the bottom two locks into the stage's lower edge,
-  // which is worse. A real fix means moving the ribbon out of the stage, not
-  // moving the ring. Left as it was rather than trading one clip for another.
+  // The ring itself never moves. What used to clip it (UAT W4-10, W20-2) was
+  // the DOOR_SIZE box being drawn at 660px in a stage that is often only
+  // 380-630px tall, with the guidance ribbon on top of it: see `fit` and
+  // GUIDE_BAND below, which scale the whole box into the room under the ribbon.
   length:   { x:   0, y: -27 },
   mix:      { x:  26, y: -8 },
   personal: { x:  16, y:  22 },
@@ -147,8 +145,19 @@ const AUDIO_ONLY_STYLE = {
 } as const;
 // SPOKEN_GATE_MAX_MS is shared: see app/lib/gameEngine/spokenGate.ts.
 
-const DOOR_SIZE = 660; // gateway diameter (also the camera focus basis)
+const DOOR_SIZE = 660; // gateway diameter, at a fit of 1 (the camera focus basis is DOOR_SIZE * fit)
 const ZOOM_FACTOR = 1.75;
+/**
+ * Room kept clear at the top of the stage for the guidance ribbon and the
+ * progress pips (px, unscaled). The gateway box is scaled to fit the stage
+ * height that is left under it and pushed down by half of it, so the top
+ * mirror / lock / crate is never under the ribbon (UAT W4-10, W20-2). A phone
+ * wraps the ribbon to two lines, so it keeps a deeper band.
+ */
+const GUIDE_BAND = 70;
+const GUIDE_BAND_NARROW = 92;
+/** Breathing room (px) between the scaled box and the stage edges. */
+const FIT_MARGIN = 8;
 
 const STAGE_MS = {
   armed: 360,
@@ -330,6 +339,42 @@ export default function PasswordVault({
     return () => window.removeEventListener("resize", onResize);
   }, []);
 
+  /* The stage's own size, so the 660px gateway box can be scaled into it.
+   * The box used to be drawn at 660px whatever the stage was: a 16:9 stage is
+   * 385px tall at the tester's 1093x525 and 631px at 1414x771, so the hexagon
+   * lost its top and bottom and the reveal lost its top badge (UAT W4-10,
+   * W4-11, W9-2, W20-2). Measured off a plain inset:0 layer inside the camera
+   * rig: client sizes ignore the camera's transform. */
+  const [stageEl, setStageEl] = useState<HTMLDivElement | null>(null);
+  const [stageSize, setStageSize] = useState<{ w: number; h: number } | null>(null);
+  useEffect(() => {
+    if (!stageEl) return;
+    const measure = () => {
+      const w = stageEl.clientWidth;
+      const h = stageEl.clientHeight;
+      setStageSize((s) => (s && s.w === w && s.h === h ? s : { w, h }));
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(stageEl);
+    return () => ro.disconnect();
+  }, [stageEl]);
+  const guideBand = isNarrow ? GUIDE_BAND_NARROW : GUIDE_BAND;
+  const fit = stageSize
+    ? Math.max(
+        0.2,
+        Math.min(
+          1,
+          (stageSize.h - guideBand - FIT_MARGIN) / DOOR_SIZE,
+          (stageSize.w - FIT_MARGIN * 2) / DOOR_SIZE,
+        ),
+      )
+    : 1;
+  const basis = DOOR_SIZE * fit;
+  // The box sits half a band lower than the stage centre; a focus camera adds
+  // that back so whatever it focuses still lands dead centre.
+  const boxDropPct = ((guideBand / 2) / basis) * 100;
+
   useEffect(
     () => () => {
       extraTimersRef.current.forEach((id) => window.clearTimeout(id));
@@ -466,11 +511,17 @@ export default function PasswordVault({
 
   /* ───────── Camera ───────── */
   const establishing = !established && !vaultLocked;
-  const camera: SceneCamera = vaultLocked
+  const rawCamera: SceneCamera = vaultLocked
     ? { kind: "focus", x: 0, y: 0, zoom: STAGE_ZOOM[stage] ?? 1.4 }
     : establishing
       ? { kind: "focus", x: 0, y: -4, zoom: 1.22 }
       : hotspot.camera;
+  // Overview leaves the box where it is drawn (under the ribbon band); every
+  // focus shot is measured from the stage centre, so it adds the box's drop.
+  // The reveal is a focus on the box centre, so the chamber is framed dead
+  // centre once the ribbon has gone.
+  const camera: SceneCamera =
+    rawCamera.kind === "focus" ? { ...rawCamera, y: rawCamera.y + boxDropPct } : rawCamera;
   const cameraTransitionMs = vaultLocked ? 720 : establishing ? 0 : 900;
 
   /* ───────── Guidance ───────── */
@@ -519,7 +570,9 @@ export default function PasswordVault({
 
   return (
     <SceneShell
-      aspectRatio={{ w: 16, h: 9 }}
+      // A phone gets a square stage: at 16:9 it was ~200px tall, too short
+      // for a gateway whose locks have to stay big enough to tap.
+      aspectRatio={isNarrow ? { w: 1, h: 1 } : { w: 16, h: 9 }}
       background={mirrors
         ? "radial-gradient(ellipse at 50% 36%, #4a0c3e 0%, #260721 45%, #12030f 100%)"
         : warehouse
@@ -527,7 +580,7 @@ export default function PasswordVault({
           : "radial-gradient(ellipse at 50% 36%, #141a44 0%, #0a0e28 45%, #04050f 100%)"}
       camera={camera}
       cameraTransitionMs={cameraTransitionMs}
-      focusBasis={DOOR_SIZE}
+      focusBasis={basis}
       defaultZoom={ZOOM_FACTOR}
       shakeClass={shakeClass}
       maxWidth={1480}
@@ -578,7 +631,7 @@ export default function PasswordVault({
           <div
             style={{
               position: "absolute",
-              top: 12,
+              top: 8,
               left: "50%",
               transform: "translateX(-50%)",
               zIndex: 30,
@@ -612,7 +665,7 @@ export default function PasswordVault({
           <div
             style={{
               position: "absolute",
-              top: 56,
+              top: isNarrow ? 70 : 52,
               left: "50%",
               transform: "translateX(-50%)",
               zIndex: 30,
@@ -835,13 +888,15 @@ export default function PasswordVault({
       <JuiceKeyframes />
       <VaultV2FX />
       {warehouse && <WarehouseFX />}
+      {/* Measures the stage for `fit` (an untransformed full-size layer). */}
+      <div ref={setStageEl} aria-hidden style={{ position: "absolute", inset: 0, pointerEvents: "none" }} />
 
       {/* Camera-transformed world. The mirrors skin turns the cyan gateway
           magenta (the week's accent) with one hue shift on the world layer
           only; the overlay's semantic greens and golds stay untouched. The
           warehouse skin paints its own loading bay instead. */}
       {warehouse ? (
-      <WarehouseBackdrop />
+      <WarehouseBackdrop fit={fit} drop={guideBand / 2} />
       ) : (
       <div style={{ position: "absolute", inset: 0, filter: mirrors ? "hue-rotate(108deg) saturate(1.1)" : undefined }}>
       <SpaceField intensity={intensity} />
@@ -854,11 +909,12 @@ export default function PasswordVault({
         className={warehouse ? "pv-wh-box" : undefined}
         style={{
           position: "absolute",
-          top: "50%",
+          // Half a ribbon band below centre, and scaled to the stage (see fit).
+          top: `calc(50% + ${guideBand / 2}px)`,
           left: "50%",
           width: DOOR_SIZE,
           height: DOOR_SIZE,
-          transform: "translate(-50%, -50%)",
+          transform: `translate(-50%, -50%) scale(${fit})`,
           filter: mirrors ? "hue-rotate(108deg) saturate(1.1)" : undefined,
         }}
       >
@@ -1781,11 +1837,12 @@ function WarehouseFX() {
 }
 
 /** The loading bay's walls: corrugated steel, the roof beam and its hanging lamps, far pallet racks and the floor. */
-function WarehouseBackdrop() {
-  // The floor line sits just under the conveyor's feet. The world layer is
-  // centred on the bay box, so a px offset from 50% lines up with the box.
-  const floorBelowCentre = BELT_TOP + 22 + 14 + 32 - DOOR_SIZE / 2;
-  const rackEdge = `calc(50% + ${DOOR_SIZE / 2 + 24}px)`;
+function WarehouseBackdrop({ fit, drop }: { fit: number; drop: number }) {
+  // The floor line sits just under the conveyor's feet. The bay box is drawn
+  // `drop` px below the stage centre and scaled by `fit`, so every px offset
+  // from the box centre here is scaled the same way and lands on the box.
+  const floorBelowCentre = drop + (BELT_TOP + 22 + 14 + 32 - DOOR_SIZE / 2) * fit;
+  const rackEdge = `calc(50% + ${(DOOR_SIZE / 2 + 24) * fit}px)`;
   return (
     <div
       aria-hidden
