@@ -51,13 +51,32 @@ const MIN_FIT = 0.62;
  * nothing could scroll up to them).
  */
 const HUD_RESERVE = LESSON_HUD_HEIGHT;
+/**
+ * A Spot-the-Danger card is drawn this much larger than its layout size, and
+ * laid out a little wider (THREAT_CARD_W), so on a window with room it reads as
+ * the big moment it is: 610 x 1.12 is about 683px across.
+ *
+ * Abdullah, UAT 2026-11-22, W1 row 1: "Too small. Make 'Spot the danger'
+ * cards bigger." It was 560px of 15px type, and on his 1093x525 window it was
+ * zoomed to about two thirds of that again. The fit below still shrinks it to
+ * whatever the window can hold, so it can only grow where there is room.
+ */
+const THREAT_SCALE = 1.12;
+const THREAT_CARD_W = 610;
+/**
+ * The bottom reserve on a window the card does not fit. The symmetric
+ * HUD_RESERVE keeps a fitting card's centre where it always was; a card that
+ * must shrink anyway is better off spending that 64px on its own size, with a
+ * small gap kept under it.
+ */
+const TIGHT_BOTTOM = 16;
 import { useGameAudio } from "@/app/lib/gameEngine/useGameAudio";
 import GameButton from "@/app/components/lesson/GameButton";
 import InfoNarration from "@/app/components/lesson/InfoNarration";
 import PixIcon from "@/app/components/lesson/PixIcon";
 import { useLessonTheme } from "@/app/components/lesson/LessonThemeContext";
 import { LESSON_HUD_HEIGHT } from "@/app/components/lesson/LessonStage";
-import { useWeekWorld, WorldBackdrop, CARD_MATERIALS, CardDecoration } from "@/app/components/game/missionWorldStyles";
+import { useWeekWorld, WorldBackdrop, CARD_MATERIALS, CardDecoration, TOP_EDGE_DECOS } from "@/app/components/game/missionWorldStyles";
 
 /* ─────────────── Intro beat ─────────────── */
 
@@ -156,7 +175,11 @@ export default function ExerciseIntroBeat({
   // down until it fits instead of relying on scroll. `zoom` changes layout
   // (unlike transform), so the overlay never grows a scrollbar for a fitted card.
   const cardRef = useRef<HTMLDivElement | null>(null);
-  const [fit, setFit] = useState(1);
+  const baseScale = threat ? THREAT_SCALE : 1;
+  const [fit, setFit] = useState(baseScale);
+  // True while the card cannot fit the symmetric reserve, so the bottom
+  // reserve drops to TIGHT_BOTTOM (see the overlay padding).
+  const [tight, setTight] = useState(false);
   useEffect(() => {
     if (!fullScreen) return;
     const el = cardRef.current;
@@ -174,12 +197,23 @@ export default function ExerciseIntroBeat({
       // top edge - the header and title simply gone, which is what the owner
       // photographed on week 5 and what UAT W5 5c describes. Computed style
       // is what is actually painted, so the two can never disagree.
-      const applied = parseFloat(window.getComputedStyle(el).zoom) || 1;
+      const cs = window.getComputedStyle(el);
+      const applied = parseFloat(cs.zoom) || 1;
       const rect = el.getBoundingClientRect().height;
       const natural = rect / applied;
-      const avail = window.innerHeight - HUD_RESERVE * 2;
+      // The card lives inside the stage, which may itself be zoomed by the
+      // stage fit (--stage-zoom). `natural` already includes that factor, so
+      // the bounds are divided by it: the card's EFFECTIVE size is capped at
+      // its base scale and floored at MIN_FIT, whatever the board behind it
+      // happens to be zoomed to. Capping the card's own zoom at 1 instead let
+      // a short board's zoom shrink a card that had room to spare.
+      const stageZoom = parseFloat(cs.getPropertyValue("--stage-zoom")) || 1;
+      const h = window.innerHeight;
+      const isTight = natural * (baseScale / stageZoom) > h - HUD_RESERVE * 2;
+      const avail = h - HUD_RESERVE - (isTight ? TIGHT_BOTTOM : HUD_RESERVE);
+      setTight(isTight);
       if (natural <= 0 || avail <= 0) return;
-      const next = Math.max(MIN_FIT, Math.min(1, avail / natural));
+      const next = Math.max(MIN_FIT / stageZoom, Math.min(baseScale / stageZoom, avail / natural));
       if (Math.abs(next - applied) < 0.01) return;
       setFit(next);
     };
@@ -191,7 +225,9 @@ export default function ExerciseIntroBeat({
       ro.disconnect();
       window.removeEventListener("resize", measure);
     };
-  }, [fullScreen]);
+  }, [fullScreen, baseScale]);
+  // A pin, peg, nameplate or vent strip drawn across the card's top edge.
+  const topDeco = !!(mat && paced && TOP_EDGE_DECOS.has(mat.deco));
   const dismiss = () => {
     if (leaving) return;
     if (intensity === 0) {
@@ -266,7 +302,9 @@ export default function ExerciseIntroBeat({
         // overlays are unchanged.
         // Divided by the stage fit: the reserve is measured against the
         // viewport, but this overlay lives inside the zoomed stage.
-        padding: fullScreen ? `calc(${HUD_RESERVE}px / var(--stage-zoom, 1)) 20px` : 20,
+        padding: fullScreen
+          ? `calc(${HUD_RESERVE}px / var(--stage-zoom, 1)) 20px calc(${tight ? TIGHT_BOTTOM : HUD_RESERVE}px / var(--stage-zoom, 1))`
+          : 20,
         background: "rgba(8, 10, 22, 0.88)",
         backdropFilter: "blur(10px)",
         WebkitBackdropFilter: "blur(10px)",
@@ -293,8 +331,8 @@ export default function ExerciseIntroBeat({
         style={{
           position: "relative",
           width: "100%",
-          maxWidth: threat ? 560 : paced ? 470 : 420,
-          zoom: fullScreen && fit < 1 ? fit : undefined,
+          maxWidth: threat ? THREAT_CARD_W : paced ? 470 : 420,
+          zoom: fullScreen && fit !== 1 ? fit : undefined,
           // Card grows to fit ALL its content (danger + title + the FULL
           // narration + button) so nothing is squeezed into a scroll sliver.
           // The overlay itself (inset:0, overflowY:auto) scrolls if the whole
@@ -313,7 +351,16 @@ export default function ExerciseIntroBeat({
           // it read as pinned to the bottom rail: Abdullah flagged the low
           // "I'm ready" and noted it was the same on every card of this type,
           // which it was, because this padding is shared by all twenty weeks.
-          padding: threat ? "18px 22px 32px" : paced ? "26px 22px 34px" : 0,
+          //
+          // The top clears any ornament the week's card material draws across
+          // its top edge (TOP_EDGE_DECOS): at 18px the W7 price-tag pin and
+          // the W18 locker vents sat on the "SPOT THE DANGER" heading
+          // (Abdullah, UAT 2026-11-22, W7 row 3 and W18 row 2).
+          padding: threat
+            ? `${topDeco ? 34 : 18}px 22px 32px`
+            : paced
+              ? `${topDeco ? 36 : 26}px 22px 34px`
+              : 0,
           boxShadow: paced
             ? mat
               ? `0 24px 60px -28px rgba(0,0,0,0.7), inset 0 0 0 2px ${mat.edge}66, inset 0 1px 0 rgba(255,255,255,0.08)`
@@ -364,7 +411,9 @@ export default function ExerciseIntroBeat({
               />
               <div
                 style={{
-                  maxWidth: 320,
+                  // Wider than the 320 it was: the line wraps less, so the
+                  // bigger card is not also a much taller one.
+                  maxWidth: 400,
                   padding: "13px 18px",
                   borderRadius: 16,
                   background: `${accent}1c`,

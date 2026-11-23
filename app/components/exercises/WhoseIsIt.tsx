@@ -384,6 +384,10 @@ export default function WhoseIsIt({
       {showIntro && (
         <ExerciseIntroBeat
           title={introTitle}
+          // Full-screen like a Spot-the-Danger intro. In the board frame a
+          // narrated intro with no threat ran taller than the frame and showed
+          // a scroll bar (Abdullah, UAT 2026-11-22, W19 row 8).
+          overlay
           subtitle={introSubtitle}
           icon={introIcon}
           narration={introNarration}
