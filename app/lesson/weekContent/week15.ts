@@ -105,7 +105,7 @@ export const WEEK_15: WeekContent = {
         lines: [
           "[warmly] Okay, let's start your very first lesson!",
           "Today we're learning to tell a robot chatbot from a real person.",
-          "You might have heard of an AI chatbot called ChatGPT.",
+          "You might have heard of a chatbot called ChatGPT.",
           "They can joke and chat and sound just like a person...",
           "but an AI is really a clever computer program.",
           "It has no feelings, no birthday, and it never gets tired.",

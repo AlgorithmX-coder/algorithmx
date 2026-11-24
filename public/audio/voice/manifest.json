@@ -12803,21 +12803,21 @@
       "file": "/audio/voice/e0967e0b809e8086.mp3"
     },
     {
-      "key": "cea5e130adcd024d",
+      "key": "3d1627ba5f6f6605",
       "speaker": "layla",
       "voice": "Emma (Kids Educator)",
-      "text": "[warmly] Okay, let's start your very first lesson! Today we're learning to tell a robot chatbot from a real person. You might have heard of an AI chatbot called ChatGPT. They can joke and chat and sound just like a person... but an AI is really a clever computer program. It has no feelings, no birthday, and it never gets tired. [warmly] That makes it a TOOL, a very powerful one, not a friend. [excited] Let's go and practise telling them apart!",
+      "text": "[warmly] Okay, let's start your very first lesson! Today we're learning to tell a robot chatbot from a real person. You might have heard of a chatbot called ChatGPT. They can joke and chat and sound just like a person... but an AI is really a clever computer program. It has no feelings, no birthday, and it never gets tired. [warmly] That makes it a TOOL, a very powerful one, not a friend. [excited] Let's go and practise telling them apart!",
       "lines": [
         "[warmly] Okay, let's start your very first lesson!",
         "Today we're learning to tell a robot chatbot from a real person.",
-        "You might have heard of an AI chatbot called ChatGPT.",
+        "You might have heard of a chatbot called ChatGPT.",
         "They can joke and chat and sound just like a person...",
         "but an AI is really a clever computer program.",
         "It has no feelings, no birthday, and it never gets tired.",
         "[warmly] That makes it a TOOL, a very powerful one, not a friend.",
         "[excited] Let's go and practise telling them apart!"
       ],
-      "file": "/audio/voice/cea5e130adcd024d.mp3"
+      "file": "/audio/voice/3d1627ba5f6f6605.mp3"
     },
     {
       "key": "a6483dfddaf8ac55",
