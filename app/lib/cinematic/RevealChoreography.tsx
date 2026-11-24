@@ -63,6 +63,11 @@ export interface RevealStageProps {
  *  a circle: the badges landed between 273px and 391px from the centre (UAT W4
  *  5b, "not a semicircle concentric to the middle badge"). Polar coordinates in
  *  px put every badge on one true circle, whatever the stage aspect ratio. */
+/** Artifact orb diameter (px): the orb's centre is what sits on the ring. */
+const ORB_SIZE = 54;
+/** The shield's visual centre relative to the mount's 54% anchor: the aura
+ *  ring is drawn 14px from the top of a 260px mount, so its centre is 6px up. */
+const CORE_VISUAL_DY = -6;
 const ARC_RADIUS = 320;
 const ARC_SPAN = 130; // degrees swept, centred on straight up
 function autoArc(i: number, n: number): { x: number; y: number } {
@@ -371,6 +376,14 @@ function ArtifactPedestal({
   // static translate(-50%, -50%) on it is dropped: it used to hang off its own
   // top-left corner instead of sitting on its point. A plain zero-size anchor
   // does the centring (grid + placeItems) so the ring really is concentric.
+  //
+  // It is the ORB that sits on the ring point, not the middle of the whole
+  // column. Centring the column (orb + caption chip + glow, ~120px tall) put
+  // every orb ~33px above its point: the top one further out, the side ones
+  // straight up, so the orbs drew a lopsided arc, not a circle round the
+  // shield (UAT W20-3, "badges not concentric with the middle shield"). The
+  // column now hangs from the orb's centre, and the ring is centred on the
+  // shield's own visual centre (CORE_VISUAL_DY above the mount's anchor).
   return (
     <div
       style={{
@@ -378,7 +391,7 @@ function ArtifactPedestal({
         top: "54%", // the centrepiece's own anchor
         left: "50%",
         marginLeft: x,
-        marginTop: y,
+        marginTop: y + CORE_VISUAL_DY - ORB_SIZE / 2,
         width: 0,
         height: 0,
         display: "grid",
@@ -390,7 +403,10 @@ function ArtifactPedestal({
         // item on the point, -65..65.
         gridTemplateColumns: "0px",
         gridTemplateRows: "0px",
-        placeItems: "center",
+        // Centred across, hung from the top: the orb's top edge sits ORB/2
+        // above the ring point, so its centre is on it.
+        justifyItems: "center",
+        alignItems: "start",
       }}
     >
     <motion.div
@@ -420,8 +436,8 @@ function ArtifactPedestal({
       <span
         aria-hidden
         style={{
-          width: 54,
-          height: 54,
+          width: ORB_SIZE,
+          height: ORB_SIZE,
           borderRadius: "50%",
           display: "grid",
           placeItems: "center",

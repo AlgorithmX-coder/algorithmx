@@ -759,9 +759,9 @@ export default function QuizBoss({ quiz, onEnd, onQuestionAnswered }: QuizBossPr
             * Sprite and desk live in ONE positioned box, so the desk tracks
             * him whatever width his pose happens to be - the mistake the old
             * fixed-width ground ellipse made, which left it sitting beside
-            * him instead of under him. He keeps his idle bob; the desk is
-            * still, so he bobs BEHIND it, which is what sells him standing
-            * at it. */}
+            * him instead of under him. Since UAT 2026-11-22 the desk is a
+            * plinth below his feet rather than a counter over his legs (see
+            * the plinth below), so the whole sprite shows. */}
           <div
             style={{
               position: "absolute",
@@ -805,23 +805,31 @@ export default function QuizBoss({ quiz, onEnd, onQuestionAnswered }: QuizBossPr
               filter: "drop-shadow(0 0 16px rgba(5,10,30,0.6))",
             }}
           />
-          {/* The host desk. Drawn AFTER the sprite and above it, so it
-              occludes his legs and he reads as standing behind it rather
-              than in front of it. */}
+          {/* The host's plinth, UNDER his feet.
+              *
+              * It used to be a desk drawn over the bottom 30% of the sprite,
+              * so it hid his legs and the scorecard dots sat on top of him.
+              * Abdullah, UAT 2026-11-22 (W1 row 7): "move the question counter
+              * off the raccoon and below it so the raccoon is fully shown.
+              * DEPLOY TO ALL WEEKS." One component, so this is all twenty
+              * weeks: the plinth starts where the sprite ends, nothing is
+              * drawn over him, and he still reads as standing on something.
+              * It sits behind the sprite (zIndex 0), so his hurt / defeated
+              * slump lands in front of it instead of being cut by it. */}
           <div
             aria-hidden
             style={{
               position: "absolute",
               left: "-8%",
               right: "-8%",
-              bottom: "-7%",
-              height: "30%",
-              zIndex: 2,
-              borderRadius: "10px 10px 6px 6px",
-              background: `linear-gradient(180deg, ${accent}2e 0%, rgba(8,12,28,0.96) 22%, rgba(5,8,20,0.99) 100%)`,
+              top: "100%",
+              height: "24%",
+              minHeight: 20,
+              zIndex: 0,
+              borderRadius: 8,
+              background: `linear-gradient(180deg, ${accent}2e 0%, rgba(8,12,28,0.96) 30%, rgba(5,8,20,0.99) 100%)`,
               border: `1px solid ${accent}66`,
-              borderBottom: "none",
-              boxShadow: `0 -2px 0 ${accent}aa inset, 0 18px 34px -14px rgba(2,4,12,0.9)`,
+              boxShadow: `0 2px 0 ${accent}aa inset, 0 18px 34px -14px rgba(2,4,12,0.9)`,
               backdropFilter: "blur(3px)",
               WebkitBackdropFilter: "blur(3px)",
             }}
@@ -849,7 +857,8 @@ export default function QuizBoss({ quiz, onEnd, onQuestionAnswered }: QuizBossPr
                 position: "absolute",
                 left: "14%",
                 right: "14%",
-                top: "30%",
+                top: "50%",
+                transform: "translateY(-50%)",
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "center",

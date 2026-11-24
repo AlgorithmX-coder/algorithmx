@@ -1,0 +1,284 @@
+/* The certificate page ("Light Table", landing lab round 6, family certs, v1,
+ * 2026-11-23): the AI Cleared or AI Fluent certificate as an A4 landscape
+ * sheet lit on the course's night table (the Night Console palettes), the
+ * actions beside it. The sheet is paper and prints alone. Scoped under .lt;
+ * keyframes prefixed lt. Fonts are next/font variables set on the root by
+ * LightTable.tsx (--lt-inter, --lt-jet, --lt-fraunces) plus the root
+ * layout's --font-space-grotesk and --font-geist-mono. */
+
+.lt{
+  --lt-sans:var(--lt-inter),Inter,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --lt-disp:var(--font-space-grotesk),"Space Grotesk",var(--lt-sans);
+  --lt-serif:var(--lt-fraunces),Fraunces,"Iowan Old Style",Georgia,serif;
+  --lt-mono:var(--lt-jet),"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+  --lt-label:var(--font-geist-mono),"Geist Mono",var(--lt-mono);
+  --lt-ease:cubic-bezier(.16,1,.3,1);
+  --lt-r:16px;--lt-br:10px;
+  /* paper */
+  --paper:#fbfaf7;--paper2:#f3f0e9;--p-ink:#14161d;--p-body:#2b2f36;--p-muted:#5b6572;--p-faint:#8a8f98;--p-line:#d9dde2;--p-line2:#c6ccd3;
+}
+/* ── course palettes, v1 DARK (Night Console) ── */
+.lt[data-course="cleared"]{
+  --bg0:#04141a;--bg1:#0a2630;--bg2:#061b22;
+  --panel:rgba(8,30,38,.80);--panel2:rgba(6,24,31,.90);--field:rgba(1,10,14,.58);
+  --line:rgba(205,247,255,.12);--line2:rgba(205,247,255,.22);--keyw:205,247,255;
+  --acc:#2bbdd0;--acc2:#7fe3ef;--acc-rgb:43,189,208;--on-acc:#032024;--link:#5fd7e6;
+  --ink:#eafcff;--body:#b9d6dd;--muted:#a3c3cb;--faint:#8fb0b8;
+  --p-acc:#0a7085;--p-acc2:#2bbdd0;--p-acc-rgb:10,112,133;
+  --seal-a:#2bbdd0;--seal-b:#0a7085;--seal-c:#7fe3ef;
+}
+.lt[data-course="fluent"]{
+  --bg0:#0a0a1d;--bg1:#171646;--bg2:#0e0e2c;
+  --panel:rgba(19,18,52,.80);--panel2:rgba(14,13,42,.90);--field:rgba(5,5,18,.58);
+  --line:rgba(230,228,255,.12);--line2:rgba(230,228,255,.22);--keyw:230,228,255;
+  --acc:#8b7bff;--acc2:#c9c2ff;--acc-rgb:139,123,255;--on-acc:#0b0820;--link:#b3a8ff;
+  --ink:#f0eeff;--body:#c3c0e2;--muted:#aeaad6;--faint:#9a96c4;
+  --p-acc:#4b3fc0;--p-acc2:#8b7bff;--p-acc-rgb:75,63,192;
+  --seal-a:#8b7bff;--seal-b:#4b3fc0;--seal-c:#c9c2ff;
+}
+.lt{min-height:100vh;min-height:100dvh;margin:0;color:var(--body);font-family:var(--lt-sans);font-size:15px;line-height:1.55;
+  background:linear-gradient(168deg,var(--bg1) 0%,var(--bg0) 56%,var(--bg2) 100%);display:flex;flex-direction:column;overflow-x:clip}
+/* resets at zero specificity so the component classes always win */
+:where(.lt) *,:where(.lt) *::before,:where(.lt) *::after{box-sizing:border-box}
+:where(.lt) a{color:inherit;text-decoration:none}
+:where(.lt) button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+:where(.lt) h1,:where(.lt) p,:where(.lt) dl,:where(.lt) dd{margin:0}
+.lt :focus-visible{outline:2px solid var(--acc2);outline-offset:3px;border-radius:6px}
+.lt ::selection{background:rgba(var(--acc-rgb),.35)}
+.lt-wrap{width:min(1320px,100% - 48px);margin-inline:auto}
+
+/* ── layers: key light (1) · vignette (2) · chrome and table (3) ── */
+.lt-key{position:fixed;inset:0;z-index:1;pointer-events:none;overflow:hidden}
+.lt-key i{position:absolute;left:18vw;top:-62vh;width:84vw;height:110vh;border-radius:50%;
+  background:radial-gradient(closest-side,rgba(var(--acc-rgb),.30),rgba(var(--acc-rgb),.10) 40%,transparent 70%);filter:blur(18px);
+  opacity:0;transition:opacity 1.4s var(--lt-ease) .05s}
+.lt-key i.b{left:-26vw;top:44vh;width:56vw;height:70vh;background:radial-gradient(closest-side,rgba(var(--acc-rgb),.07),transparent 70%);transition-delay:.3s}
+.lt-key i.breath{animation:ltbreathe 9s ease-in-out 1.5s infinite alternate}
+.lt[data-in] .lt-key i{opacity:1}
+@keyframes ltbreathe{from{filter:blur(18px) brightness(1)}to{filter:blur(22px) brightness(1.14)}}
+.lt-vignette{position:fixed;inset:0;z-index:2;pointer-events:none;background:radial-gradient(120% 90% at 55% 45%,transparent 50%,rgba(0,0,0,.30) 100%)}
+
+/* ── chrome ── */
+.lt-chrome{position:relative;z-index:3;display:flex;align-items:center;justify-content:space-between;gap:16px;padding-top:20px;
+  opacity:0;transform:translateY(-6px);transition:opacity .9s var(--lt-ease) .1s,transform .9s var(--lt-ease) .1s}
+.lt[data-in] .lt-chrome{opacity:1;transform:none}
+.lt-left{display:flex;align-items:center;gap:14px;min-width:0}
+.lt-lockup{display:inline-flex;align-items:center;gap:10px;line-height:1;color:var(--ink);padding:6px 8px;margin:-6px -8px;border-radius:10px}
+.lt-lockup .lk-col{display:flex;flex-direction:column;gap:3px}
+.lt-lockup .lk-name{font-family:var(--lt-label);font-weight:700;font-size:12.5px;letter-spacing:.16em;white-space:nowrap;color:var(--ink)}
+.lt-lockup .lk-name b{font-weight:inherit;color:var(--acc2)}
+.lt-lockup .lk-by{font-family:var(--lt-mono);font-weight:500;font-size:8.5px;letter-spacing:.24em;text-transform:uppercase;display:inline-flex;align-items:center;white-space:nowrap;color:var(--ink)}
+.lt-lockup .lk-by .dim{opacity:.7}
+.lt-lockup .lk-by svg{display:inline-block;margin:0 3px;filter:drop-shadow(0 0 4px rgba(95,141,255,.7))}
+.lt-sep{width:1px;height:16px;background:var(--line2)}
+.lt-firm{font-weight:600;font-size:13.5px;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lt-back{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 14px 0 12px;border-radius:999px;border:1px solid var(--line2);background:var(--panel);backdrop-filter:blur(12px);
+  font-family:var(--lt-mono);font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ink);white-space:nowrap;transition:border-color .2s,color .2s}
+.lt-back svg{transition:transform .35s var(--lt-ease)}
+.lt-back:hover{border-color:rgba(var(--acc-rgb),.7)}
+.lt-back:hover svg{transform:translateX(-3px)}
+
+/* ── the table: actions beside the sheet ── */
+.lt-main{position:relative;z-index:3;flex:1;display:grid;grid-template-columns:minmax(330px,380px) minmax(0,1fr);gap:40px;align-items:center;padding:22px 0 34px}
+.lt-col{min-width:0}
+.lt-rise{opacity:0;transform:translateY(12px);transition:opacity .9s var(--lt-ease) var(--d,.2s),transform .9s var(--lt-ease) var(--d,.2s)}
+.lt[data-in] .lt-rise{opacity:1;transform:none}
+.lt-eyebrow{display:inline-flex;align-items:center;gap:8px;font-family:var(--lt-label);font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#7be8b6;margin:0 0 14px;padding:7px 12px;border-radius:999px;background:rgba(123,232,182,.09);border:1px solid rgba(123,232,182,.32)}
+/* an issued certificate past its twelve months: the live "Certificate expired" in amber */
+.lt:not([data-valid]) .lt-eyebrow{color:#ffd166;background:rgba(255,209,102,.09);border-color:rgba(255,209,102,.34)}
+.lt-eyebrow i{width:7px;height:7px;border-radius:50%;background:currentColor;box-shadow:0 0 8px currentColor}
+.lt-h1{font-family:var(--lt-disp);font-weight:700;font-size:40px;line-height:1.06;letter-spacing:-.015em;color:var(--ink);margin:0 0 14px;text-wrap:balance;max-width:16ch}
+.lt-h1 .acc{color:var(--acc2)}
+.lt-lead{font-size:16px;line-height:1.55;color:var(--body);margin:0 0 22px;max-width:46ch}
+.lt-actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:0 0 20px}
+.lt-btn{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:48px;padding:0 20px;border-radius:var(--lt-br);
+  font-family:var(--lt-mono);font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;white-space:nowrap;cursor:pointer;
+  border:1px solid var(--line2);background:var(--field);color:var(--ink);transition:transform .25s var(--lt-ease),border-color .2s,filter .2s,box-shadow .3s}
+.lt-btn:hover{transform:translateY(-1px);border-color:rgba(var(--acc-rgb),.7)}
+.lt-btn:active{transform:none}
+.lt-btn.pri{background:var(--acc);color:var(--on-acc);border-color:transparent;box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 12px 30px -12px rgba(var(--acc-rgb),.75)}
+.lt-btn.pri:hover{filter:brightness(1.05)}
+.lt-btn:disabled{cursor:default;opacity:.72}
+.lt-btn[aria-busy="true"]{cursor:wait}
+.lt-btn[aria-busy="true"]::after{content:"";position:absolute;inset:0;border-radius:inherit;background:linear-gradient(100deg,transparent 20%,rgba(255,255,255,.18) 50%,transparent 80%);transform:translateX(-120%);animation:ltsweep 1.4s ease-in-out infinite}
+@keyframes ltsweep{to{transform:translateX(120%)}}
+.lt-btn[data-state="sent"]{border-color:rgba(123,232,182,.5);color:#7be8b6}
+.lt-btn[data-state="failed"]{border-color:rgba(255,147,164,.5);color:#ff93a4}
+.lt-btn .dots{display:inline-flex;gap:4px;vertical-align:middle}
+.lt-btn .dots i{width:4px;height:4px;border-radius:50%;background:currentColor;opacity:.4;animation:ltdot 1.1s ease-in-out infinite}
+.lt-btn .dots i:nth-child(2){animation-delay:.18s}.lt-btn .dots i:nth-child(3){animation-delay:.36s}
+@keyframes ltdot{40%{opacity:1;transform:translateY(-2px)}}
+.lt-live{margin:0}
+.lt-live:empty{display:none}
+.lt-live{font-size:13.5px;font-weight:600;line-height:1.45;padding:10px 13px;border-radius:9px;margin:-8px 0 18px}
+.lt-live.ok{background:rgba(123,232,182,.1);border:1px solid rgba(123,232,182,.4);color:#7be8b6}
+.lt-live.err{background:rgba(255,147,164,.1);border:1px solid rgba(255,147,164,.42);color:#ff93a4}
+
+/* the record card: the facts, readable at any size */
+.lt-card{position:relative;isolation:isolate;border-radius:var(--lt-r);padding:16px 18px 14px;background:linear-gradient(180deg,var(--panel),var(--panel2));border:1px solid var(--line);
+  backdrop-filter:blur(18px) saturate(1.2);-webkit-backdrop-filter:blur(18px) saturate(1.2);box-shadow:inset 0 1px 0 rgba(var(--keyw),.12),0 30px 60px -36px rgba(0,0,0,.9)}
+.lt-corner{position:absolute;width:12px;height:12px;pointer-events:none;z-index:3;opacity:.7}
+.lt-corner::before,.lt-corner::after{content:"";position:absolute;background:rgba(var(--keyw),.55)}
+.lt-corner::before{width:12px;height:1px}.lt-corner::after{width:1px;height:12px}
+.lt-corner.tl{left:-1px;top:-1px}.lt-corner.tr{right:-1px;top:-1px;transform:scaleX(-1)}.lt-corner.bl{left:-1px;bottom:-1px;transform:scaleY(-1)}.lt-corner.br{right:-1px;bottom:-1px;transform:scale(-1)}
+.lt-card .lab{font-family:var(--lt-label);font-size:10.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin:0 0 10px}
+.lt-facts{display:grid;grid-template-columns:1fr 1fr;gap:10px 16px;margin:0}
+.lt-facts div{min-width:0}
+.lt-facts dt{font-family:var(--lt-label);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:0 0 3px}
+.lt-facts dd{margin:0;font-size:14.5px;font-weight:600;color:var(--ink);line-height:1.3}
+.lt-facts dd.serial{display:flex;align-items:center;gap:8px;font-family:var(--lt-mono);font-size:13.5px;letter-spacing:.06em}
+.lt-copy{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:7px;border:1px solid var(--line2);color:var(--muted);transition:color .2s,border-color .2s}
+.lt-copy:hover{color:var(--ink);border-color:rgba(var(--acc-rgb),.7)}
+.lt-copy[data-done="1"]{color:#7be8b6;border-color:rgba(123,232,182,.5)}
+.lt-note{margin:16px 0 0;font-size:13px;line-height:1.5;color:var(--muted);max-width:46ch}
+.lt-note a{color:var(--link);font-weight:600}
+
+/* ── the sheet: A4 landscape, paper, scales with its box, prints alone ── */
+.lt-stage{position:relative;display:grid;justify-items:center;min-width:0}
+.lt-sheetwrap{position:relative;width:min(100%,calc((100vh - 168px) * 1.4143));min-width:min(100%,520px);container-type:inline-size;
+  opacity:0;transform:translateY(18px) scale(.985);transition:opacity 1s var(--lt-ease) .26s,transform 1.1s var(--lt-ease) .26s}
+.lt[data-in] .lt-sheetwrap{opacity:1;transform:none}
+.lt-sheetwrap::before{content:"";position:absolute;inset:-6% -5%;border-radius:50%;background:radial-gradient(closest-side,rgba(var(--acc-rgb),.22),transparent 72%);filter:blur(24px);z-index:-1;pointer-events:none}
+.lt-sheet{position:relative;aspect-ratio:297/210;width:100%;background:var(--paper);color:var(--p-ink);border-radius:.5cqw;overflow:hidden;
+  box-shadow:0 40px 90px -30px rgba(0,0,0,.85),0 0 0 1px rgba(255,255,255,.06),0 2px 0 rgba(255,255,255,.5) inset;
+  font-family:var(--lt-sans);-webkit-print-color-adjust:exact;print-color-adjust:exact}
+/* paper grain and the faint guilloche in the top corner */
+.lt-sheet::before{content:"";position:absolute;inset:0;pointer-events:none;background:
+  radial-gradient(ellipse at 100% 0%,rgba(var(--p-acc-rgb),.07),transparent 42%),
+  repeating-linear-gradient(0deg,rgba(20,22,29,.018) 0 1px,transparent 1px 3px)}
+.lt-sheet .frame{position:absolute;inset:3.2cqw;border:1px solid var(--p-line2);pointer-events:none}
+.lt-sheet .frame::after{content:"";position:absolute;inset:.5cqw;border:1px solid var(--p-line)}
+.lt-sheet .rule{position:absolute;left:3.2cqw;top:3.2cqw;bottom:3.2cqw;width:.55cqw;background:linear-gradient(180deg,var(--p-acc2),var(--p-acc));}
+.lt-sheet .guil{position:absolute;right:-9cqw;top:-10cqw;width:34cqw;height:34cqw;color:var(--p-acc);opacity:.11;pointer-events:none}
+.lt-sheet .guil svg{width:100%;height:100%;animation:ltturn 90s linear infinite}
+@keyframes ltturn{to{transform:rotate(360deg)}}
+.lt-in{position:absolute;inset:6.2cqw 7cqw 5.6cqw 8.2cqw;display:flex;flex-direction:column}
+.lt-sheet .top{display:flex;align-items:center;justify-content:space-between;gap:2cqw}
+.lt-sheet .mark{display:inline-flex;align-items:center;gap:1.2cqw}
+.lt-sheet .mark svg{width:3.6cqw;height:3.6cqw}
+.lt-sheet .word{font-family:var(--lt-label);font-weight:700;font-size:1.45cqw;letter-spacing:.2em;color:var(--p-ink)}
+.lt-sheet .word b{font-weight:inherit;color:#275cff}
+.lt-sheet .brand{font-family:var(--lt-label);font-weight:700;font-size:1.3cqw;letter-spacing:.24em;color:var(--p-acc)}
+.lt-sheet .title{margin-top:3.4cqw;font-family:var(--lt-label);font-size:1.25cqw;font-weight:700;letter-spacing:.26em;text-transform:uppercase;color:var(--p-muted)}
+.lt-sheet .certifies{margin-top:2.2cqw;font-family:var(--lt-serif);font-style:italic;font-size:2cqw;color:var(--p-muted)}
+.lt-sheet .holder{margin-top:.5cqw;font-family:var(--lt-serif);font-weight:600;font-size:6.2cqw;line-height:1.02;letter-spacing:-.015em;color:var(--p-ink);font-variation-settings:"opsz" 144}
+.lt-sheet .of{margin-top:.9cqw;font-size:1.75cqw;color:var(--p-muted)}
+.lt-sheet .body{margin-top:1.9cqw;font-size:1.78cqw;line-height:1.5;color:var(--p-body);max-width:62ch}
+.lt-sheet .chips{display:flex;flex-wrap:wrap;gap:.8cqw;margin-top:1.8cqw}
+.lt-sheet .chip{font-family:var(--lt-label);font-size:1cqw;font-weight:700;letter-spacing:.14em;padding:.55cqw 1cqw;border:1px solid currentColor;border-radius:.5cqw;color:var(--p-acc)}
+.lt-sheet .chip[data-c="P"]{color:#3f7f96}.lt-sheet .chip[data-c="I"]{color:#0a7085}.lt-sheet .chip[data-c="C"]{color:#8a5400}.lt-sheet .chip[data-c="R"]{color:#a63a08}
+.lt-sheet .foot{margin-top:auto;display:grid;grid-template-columns:1fr auto;gap:3cqw;align-items:end}
+.lt-sheet .facts{display:grid;grid-template-columns:repeat(4,auto);gap:1.2cqw 3.2cqw;padding-top:1.6cqw;border-top:1px solid var(--p-line);margin:0}
+.lt-sheet .facts dt{font-family:var(--lt-label);font-size:.95cqw;letter-spacing:.14em;text-transform:uppercase;color:var(--p-faint);margin:0 0 .35cqw}
+.lt-sheet .facts dd{margin:0;font-size:1.55cqw;font-weight:600;color:var(--p-ink);white-space:nowrap}
+.lt-sheet .facts dd.serial{font-family:var(--lt-mono);letter-spacing:.08em}
+.lt-sheet .sign{display:flex;align-items:flex-end;gap:2.6cqw}
+.lt-sheet .sigblock{text-align:left;min-width:20cqw}
+.lt-sheet .sig{height:5.2cqw;color:var(--p-ink);opacity:.86}
+.lt-sheet .sig svg{height:100%;width:auto}
+.lt-sheet .sigline{border-top:1px solid var(--p-line2);padding-top:.6cqw;font-family:var(--lt-label);font-size:.95cqw;letter-spacing:.16em;text-transform:uppercase;color:var(--p-muted)}
+.lt-sheet .sigline b{display:block;font-family:var(--lt-sans);font-size:1.25cqw;font-weight:600;letter-spacing:0;text-transform:none;color:var(--p-ink);margin-bottom:.2cqw}
+/* the seal: the course colour as a foil, catching the light */
+.lt-seal{position:relative;width:10.4cqw;height:10.4cqw;border-radius:50%;display:grid;place-items:center;color:#fff;
+  background:conic-gradient(from 210deg,var(--seal-b),var(--seal-a),var(--seal-c),var(--seal-a),var(--seal-b));
+  box-shadow:0 .6cqw 1.6cqw rgba(var(--p-acc-rgb),.35),inset 0 0 0 .3cqw rgba(255,255,255,.55),inset 0 0 0 .55cqw var(--seal-a)}
+.lt-seal::before{content:"";position:absolute;inset:0;border-radius:50%;background:linear-gradient(115deg,transparent 30%,rgba(255,255,255,.55) 48%,transparent 62%);mix-blend-mode:soft-light;animation:ltfoil 7s ease-in-out infinite;pointer-events:none}
+@keyframes ltfoil{0%,100%{transform:translateX(-40%)}50%{transform:translateX(40%)}}
+.lt-seal svg.ring{position:absolute;inset:0;width:100%;height:100%}
+.lt-seal .cube{width:3.6cqw;height:3.6cqw;filter:drop-shadow(0 .2cqw .4cqw rgba(0,0,0,.25))}
+.lt-sheet .fine{margin-top:1.6cqw;padding-top:1cqw;border-top:1px solid var(--p-line);display:flex;justify-content:space-between;gap:2cqw;flex-wrap:wrap;font-size:1.05cqw;color:var(--p-muted)}
+.lt-sheet .fine span:last-child{color:var(--p-faint)}
+/* the sweep of light across the sheet on arrival */
+.lt-sheet .sweep{position:absolute;inset:0;pointer-events:none;background:linear-gradient(105deg,transparent 35%,rgba(255,255,255,.55) 50%,transparent 65%);transform:translateX(-110%);mix-blend-mode:soft-light}
+.lt[data-in] .lt-sheet .sweep{animation:ltsheetsweep 1.6s var(--lt-ease) .55s 1 forwards}
+@keyframes ltsheetsweep{to{transform:translateX(110%)}}
+/* ── footer, pause ── */
+.lt-foot{position:relative;z-index:3;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:14px 0 76px;border-top:1px solid var(--line);font-size:12.5px;color:var(--muted)}
+.lt-foot a{color:var(--link);font-weight:600}
+.lt-pause{position:fixed;left:16px;bottom:16px;z-index:5;display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 14px;border-radius:999px;border:1px solid var(--line2);background:var(--panel);backdrop-filter:blur(12px);font:700 10.5px var(--lt-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--ink)}
+.lt-pause i{width:8px;height:8px;border-radius:50%;background:var(--acc);box-shadow:0 0 8px rgba(var(--acc-rgb),.8)}
+.lt-pause[aria-pressed="true"] i{background:var(--faint);box-shadow:none}
+.lt[data-paused] .lt-key i.breath,.lt[data-paused] .lt-seal::before,.lt[data-paused] .lt-sheet .guil svg,.lt[data-paused] .lt-btn .dots i{animation-play-state:paused!important}
+
+/* ── responsive ── */
+@media (min-width:1600px){.lt-main{grid-template-columns:minmax(360px,420px) minmax(0,1fr);gap:56px;padding-top:30px}.lt-h1{font-size:46px;max-width:15ch}.lt-lead{font-size:17px}.lt-chrome{padding-top:26px}}
+@media (max-height:740px) and (min-width:981px){.lt-main{padding-top:14px}.lt-h1{font-size:36px}.lt-lead{margin-bottom:16px}}
+@media (max-width:980px){
+  .lt-main{grid-template-columns:minmax(0,1fr);gap:26px;align-items:start;padding-top:18px}
+  .lt-sheetwrap{width:100%;min-width:0}
+  .lt-stage{order:2}
+  .lt-h1{max-width:none}
+}
+@media (max-width:640px){
+  .lt-wrap{width:calc(100% - 32px)}
+  .lt-chrome{padding-top:14px}
+  .lt-lockup .lk-col{display:none}
+  .lt-firm{display:none}.lt-sep{display:none}
+  .lt-back{font-size:10.5px;letter-spacing:.12em}
+  .lt-h1{font-size:30px}
+  .lt-lead{font-size:15px}
+  .lt-btn{flex:1 1 100%}
+  .lt-facts{grid-template-columns:1fr 1fr}
+  .lt-key i{left:-30vw;top:-22vh;width:160vw;height:70vh}
+  .lt-vignette{display:none}
+  .lt-foot{flex-direction:column;gap:6px}
+}
+
+/* ── reduced motion: everything is simply there ── */
+@media (prefers-reduced-motion:reduce){
+  .lt-chrome,.lt-rise,.lt-sheetwrap,.lt-key i{transition:none!important;opacity:1!important;transform:none!important}
+  .lt-key i.breath,.lt-seal::before,.lt-sheet .guil svg,.lt-sheet .sweep,.lt-btn[aria-busy="true"]::after,.lt-btn .dots i{animation:none!important}
+  .lt-pause{display:none}
+}
+
+/* ── print: only the sheet, A4 landscape, edge to edge ── */
+@media print{
+  @page{size:A4 landscape;margin:0}
+  .lt{background:#fff!important;min-height:0!important;height:210mm;overflow:hidden;display:block}
+  .lt *{visibility:hidden}
+  .lt .lt-sheetwrap,.lt .lt-sheetwrap *{visibility:visible}
+  .lt-key,.lt-vignette,.lt-pause{display:none!important}
+  .lt-sheetwrap{position:fixed;left:0;top:0;margin:0;opacity:1!important;transform:none!important;width:297mm!important;min-width:0!important;transition:none!important}
+  .lt-sheetwrap::before{display:none}
+  .lt-sheet{border-radius:0;box-shadow:none;height:210mm;-webkit-print-color-adjust:exact;print-color-adjust:exact;filter:none!important}
+  .lt-sheet .sweep{display:none}
+  .lt-sheet .guil svg,.lt-seal::before{animation:none!important}
+}
+
+/* ── review pass (builder, 23 Nov) ── */
+/* the glow under the sheet never widens the page */
+@media (max-width:980px){.lt-sheetwrap::before{inset:-4% 0}}
+.lt-facts dd.serial span{white-space:nowrap}
+/* phone: the certificate is the point, so the sheet leads, then the words and actions */
+@media (max-width:640px){
+  .lt-stage{order:-1}
+  .lt-main{gap:20px;padding-top:12px}
+  .lt-lockup{min-height:44px;min-width:44px;justify-content:center}
+  .lt-facts dd.serial{font-size:12.5px;letter-spacing:.03em}
+  .lt-seal{box-shadow:0 .6cqw 1.6cqw rgba(var(--p-acc-rgb),.35),inset 0 0 0 .3cqw rgba(255,255,255,.55),inset 0 0 0 .55cqw var(--seal-a)}
+}
+/* the seal moves up beside the holder's name (it used to push past the sheet's right edge at laptop widths) */
+.lt-sheet .lt-seal{position:absolute;right:1.2cqw;top:10.5cqw;width:12cqw;height:12cqw}
+.lt-sheet .lt-seal .cube{width:4.2cqw;height:4.2cqw}
+.lt-sheet .foot{grid-template-columns:minmax(0,1fr) auto}
+.lt-sheet .facts{gap:1.2cqw 2.8cqw}
+@media (max-width:640px){.lt-copy{width:44px;height:44px}}
+/* the four facts and the signature never touch, whatever the dates and serial */
+.lt-sheet .facts{gap:1.2cqw 2.2cqw}
+.lt-sheet .facts dd{font-size:1.45cqw}
+.lt-sheet .facts dd.serial{letter-spacing:.04em}
+.lt-sheet .sigblock{min-width:17cqw}
+.lt-sheet .foot{gap:3.6cqw}
+.lt{--p-faint:#646b75}
+.lt-sheet .chip[data-c="P"]{color:#336c80}
+/* big screens: a larger sheet, and the table centred in the height so 1920x1080 is not half empty */
+@media (min-width:1600px){
+  .lt-wrap{width:min(1580px,100% - 96px)}
+  .lt-main{grid-template-columns:minmax(380px,440px) minmax(0,1fr);align-content:center}
+  .lt-sheetwrap{width:min(100%,calc((100vh - 230px) * 1.4143))}
+}
+/* port: the Pause control sits in the footer row, never fixed over the page, so it can never cover a line of text */
+.lt-pause{position:static;flex:0 0 auto}
+.lt-foot{align-items:center;padding-bottom:22px}
+/* port: clip the seal's layers to its circle (a square edge showed round the foil) */
+.lt-sheet .lt-seal{overflow:hidden}

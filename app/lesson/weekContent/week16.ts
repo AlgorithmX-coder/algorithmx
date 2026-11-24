@@ -1104,8 +1104,7 @@ export const WEEK_16: WeekContent = {
         speaker: "adam",
         lines: [
           "[excited] Look at EVERYTHING you mastered this week!",
-          "Signs ignored, the keyring checked, corners pressed,",
-          "panes read honestly... and the barrier always ready.",
+          "Signs ignored, the keyring checked, corners pressed, panes read honestly... and the barrier always ready.",
           "[laughs] His whole Doorway Trick just stopped working on you.",
           "[excited] Cyber Hero, sticker time!",
         ],
@@ -1234,8 +1233,8 @@ export const WEEK_16: WeekContent = {
           text: "Two links lead to the same cartoon: 'toon-town.tv/silly-cat-show' and 'bit.ly/x7qz2'. Which one can Layla actually CHECK before walking through?",
         },
         options: [
-          { text: "toon-town.tv/silly-cat-show, the whole address is readable" },
-          { text: "bit.ly/x7qz2, a shorter address is quicker to check" },
+          { text: "The long link, you can read the whole address" },
+          { text: "The short link, a shorter address is quicker to check" },
           { text: "Either one, all links show where they're going" },
         ],
         correctIndex: 0,

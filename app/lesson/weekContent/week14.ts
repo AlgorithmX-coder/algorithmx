@@ -340,9 +340,9 @@ export const WEEK_14: WeekContent = {
           readAloud: "Third entry. Somebody said its name during a loud disagreement about the washing up.",
           wrote: "'Nova, stop! ...no, YOU said you would do it...' - 7:05pm",
           options: [
-            { id: "kept", label: "It kept what came after its name", icon: "📋", isRight: true, why: "Its name got said in the middle of the washing up row. So it woke and wrote the next bit down. It cannot tell what is private.", explanation: "" },
-            { id: "listening", label: "It was recording the whole row", icon: "⏱️", isRight: false, why: "", explanation: "It was not taking down the whole row. It woke on its name and kept what came next, which was enough of it." },
-            { id: "nothing", label: "Nothing, rows do not count", icon: "🚫", isRight: false, why: "", explanation: "It cannot tell a row from a song request. Its name was said, so the diary got a line." },
+            { id: "kept", label: "It kept what came after its name", icon: "📋", isRight: true, why: "Its name got said in the middle of an argument about the washing up. So it woke and wrote the next bit down. It cannot tell what is private.", explanation: "" },
+            { id: "listening", label: "It was recording the whole argument", icon: "⏱️", isRight: false, why: "", explanation: "It was not taking down the whole argument. It woke on its name and kept what came next, which was enough of it." },
+            { id: "nothing", label: "Nothing, arguments do not count", icon: "🚫", isRight: false, why: "", explanation: "It cannot tell an argument from a song request. Its name was said, so the diary got a line." },
           ],
         },
         {
@@ -382,7 +382,7 @@ export const WEEK_14: WeekContent = {
         speaker: "adam",
         lines: [
           "[proud] Cyber Hero, the whole diary. And look what was in it.",
-          "One thing you asked for. One mix-up off the telly. One row it never should have caught.",
+          "One thing you asked for. One mix-up off the telly. One argument it never should have caught.",
           "[warmly] And one grown-up, clearing the lot in four taps. That is the bit to remember.",
         ],
       },
@@ -1027,7 +1027,7 @@ export const WEEK_14: WeekContent = {
         },
         {
           id: "r-diary",
-          scene: "Somebody said the speaker's name in the middle of a row, and now there is a line about it saved on the app.",
+          scene: "Somebody said the speaker's name in the middle of an argument, and now there is a line about it saved on the app.",
           sceneIcon: "📋",
           signId: "diary",
           why: "It woke on its name and kept what came next. That is the diary doing what a diary does. And a grown-up can clear it.",
@@ -1111,8 +1111,7 @@ export const WEEK_14: WeekContent = {
         speaker: "adam",
         lines: [
           "[excited] Look at EVERYTHING you mastered this week!",
-          "Ears found, the diary opened, the little glass eyes spotted,",
-          "your moments picked... and every switch flipped.",
+          "Ears found, the diary opened, the little glass eyes spotted, your moments picked... and every switch flipped.",
           "[laughs] His lazy listening trick just stopped working in your house.",
           "[excited] Cyber Hero, sticker time!",
         ],
