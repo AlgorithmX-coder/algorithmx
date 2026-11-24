@@ -706,7 +706,26 @@ export default function EncoreOfTwenty({
               overflowY: "auto",
             }}
           >
+            {/* A real card, like every other game's briefing: before this the
+                text floated loose on the dimmed stage (UAT 2026-11-21, W20 "no
+                proper frame around this activity briefing"). The chrome lives
+                in a class, not inline, so a phone can drop it: under 600px
+                wide the stage panel is already the frame, and a second card
+                inside it pushed TAKE THE STAGE! below the fold. */}
+            <style>{`
+              .encore-brief-card {
+                padding: 26px 30px 28px;
+                border-radius: 24px;
+                background: linear-gradient(180deg, rgba(30, 38, 82, 0.96), rgba(14, 18, 44, 0.96));
+                border: 1px solid rgba(255, 209, 102, 0.55);
+                box-shadow: 0 20px 60px rgba(0, 0, 0, 0.55), 0 0 36px rgba(255, 209, 102, 0.16);
+              }
+              @media (max-width: 599px) {
+                .encore-brief-card { padding: 0; border: 0; border-radius: 0; background: none; box-shadow: none; }
+              }
+            `}</style>
             <motion.div
+              className="encore-brief-card"
               initial={{ scale: 0.9, y: 16 }}
               animate={{ scale: 1, y: 0 }}
               transition={{ type: "spring", stiffness: 240, damping: 22 }}
@@ -714,7 +733,8 @@ export default function EncoreOfTwenty({
                 // `auto` margins keep the card centered when it fits but stop
                 // the flex-centering from clipping its top edge on overflow.
                 margin: "auto",
-                maxWidth: 460,
+                maxWidth: 520,
+                width: "100%",
                 textAlign: "center",
                 display: "flex",
                 flexDirection: "column",
