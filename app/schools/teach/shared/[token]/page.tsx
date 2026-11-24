@@ -1,8 +1,8 @@
-import Link from "next/link";
 import type { Metadata } from "next";
 import { openShareLink } from "@/app/lib/packShare";
 import { getPack } from "../../packs";
 import Pack from "../../Pack";
+import PackTrouble from "./PackTrouble";
 
 /**
  * A teacher pack shown to somebody with no account.
@@ -41,24 +41,8 @@ export default async function SharedPackPage({ params }: { params: Promise<{ tok
 
   if (!result.ok) {
     const t = TROUBLE[result.reason] ?? TROUBLE.unknown;
-    return (
-      <div className="axtp">
-        <div className="wrap">
-          <header className="top">
-            <div>
-              <div className="brand">Cyber <span>Heroes</span> &middot; <i>Teacher pack</i></div>
-            </div>
-          </header>
-          <div className="brief">
-            <h4>{t.head}</h4>
-            <p>{t.body}</p>
-            <p className="line">
-              <Link href="/schools">See what a school licence includes</Link>
-            </p>
-          </div>
-        </div>
-      </div>
-    );
+    /* The round 6 Campus Console; the words are the TROUBLE entries above. */
+    return <PackTrouble head={t.head} body={t.body} link />;
   }
 
   const pack = getPack(result.week);
@@ -66,16 +50,7 @@ export default async function SharedPackPage({ params }: { params: Promise<{ tok
      unless a pack were deleted out from under a live link. Say something
      truthful rather than throwing at somebody we invited to look. */
   if (!pack) {
-    return (
-      <div className="axtp">
-        <div className="wrap">
-          <div className="brief">
-            <h4>This pack is not available</h4>
-            <p>The week this link points at is not published. Please ask for a new link.</p>
-          </div>
-        </div>
-      </div>
-    );
+    return <PackTrouble head="This pack is not available" body="The week this link points at is not published. Please ask for a new link." link={false} />;
   }
 
   /* `weeks` empty renders no picker: the link is for this week and no other. */
