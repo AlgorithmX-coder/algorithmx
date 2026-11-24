@@ -1613,6 +1613,21 @@ export type ScreenDef = (
       completeTitle?: string;
       completeLine?: string;
       hints?: { tier1: string; tier2: string };
+      /** Board chrome for a re-theme (never spoken); every field defaults to
+       *  the Week 13 Plan Desk. Week 1's "Off His List" builds a password. */
+      chrome?: {
+        deskIcon?: string;
+        situationIcon?: string;
+        dialIcons?: Partial<Record<"howLong" | "whatAfter" | "whoKnows", string>>;
+        agreeIcon?: string;
+        roundLabel?: string;
+        turnPrompt?: string;
+        readyPrompt?: string;
+        lookAgainPrompt?: string;
+        setToast?: string;
+        wrongTitle?: string;
+        doneStat?: string;
+      };
     }
   | {
       /**

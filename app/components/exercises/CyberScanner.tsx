@@ -857,6 +857,7 @@ export default function CyberScanner({
       }}
     >
       <ExerciseHowTo
+        flush={{ side: 16, top: 16 }}
         title="Cyber Scanner"
         steps={[
           { glyph: "🛡", text: L.positiveHint },
@@ -871,6 +872,10 @@ export default function CyberScanner({
           width: "100%",
           height: "auto",
           display: "block",
+          // Air between the how-to band and the scanner (Abdullah, UAT
+          // 2026-11-22, W15 row 5a: "make a gap between the scanner and the
+          // how to play part"). The band now sits flush at the frame top.
+          marginTop: 12,
         }}
         aria-label="Cyber Scanner game"
       />

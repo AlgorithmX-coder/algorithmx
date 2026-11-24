@@ -430,14 +430,14 @@ function WeekNotReady({ week }: { week: number }) {
 
 /* ─────────────── FULL-SCREEN CONTENT SCREEN WRAPPERS ─────────────── */
 
-function FullScene({ children, bg, glow }: { children: React.ReactNode; bg?: string; glow?: string }) {
+function FullScene({ children, bg, glow, backdrop }: { children: React.ReactNode; bg?: string; glow?: string; backdrop?: React.ReactNode }) {
   // Thin wrapper around the shared LessonStage. Existing call sites
   // keep their <FullScene bg=… glow=…> usage and inherit the new
   // viewport-safe sizing (100dvh - HUD - safe-area). The glow
   // cross-fade keyframe lives at the document level so every stage
   // can reference it without duplicating the @keyframes block.
   return (
-    <LessonStage bg={bg} glow={glow}>
+    <LessonStage bg={bg} glow={glow} backdrop={backdrop}>
       {children}
     </LessonStage>
   );
@@ -2850,6 +2850,7 @@ function DynamicLessonInner({
               whatAfterLabel={def.whatAfterLabel}
               whoKnowsLabel={def.whoKnowsLabel}
               agreeLabel={def.agreeLabel}
+              chrome={def.chrome}
               completeTitle={def.completeTitle}
               completeLine={def.completeLine}
               introNarration={def.narration}
@@ -4579,6 +4580,11 @@ function DynamicLessonInner({
           <FullScene
             bg="radial-gradient(ellipse at 50% 30%, #2a1a08 0%, #1a1033 50%, #04050d 100%)"
             glow="radial-gradient(circle, rgba(253,224,71,0.4), transparent)"
+            // The week's world + motes behind the badge (world weeks only),
+            // across the WHOLE stage. It used to sit inside the 720px column
+            // below, so it ended in two hard vertical edges either side of the
+            // badge (Abdullah, UAT 2026-11-22, W15 row 8: "stretch the edges").
+            backdrop={<WorldBackdrop intensity={0.4} motes moteCount={14} fade={false} />}
           >
             <div
               style={{
@@ -4594,8 +4600,6 @@ function DynamicLessonInner({
                 textAlign: "center",
               }}
             >
-              {/* The week's world + motes behind the badge (world weeks only) */}
-              <WorldBackdrop intensity={0.4} motes moteCount={14} fade={false} />
               {/* Rotating laurels / rays behind the badge */}
               <div
                 aria-hidden

@@ -223,6 +223,19 @@ export const CARD_MATERIALS: Record<MissionCardMaterial, CardMaterial> = {
   certificate: { up: "linear-gradient(180deg, #fffaf0 0%, #f6ecd2 100%)", down: "linear-gradient(180deg, #fbf3e0 0%, #efe1c2 100%)", edge: "#ffd158", text: "#1c2450", label: "#5b76ff", deco: "foil" },
 };
 
+/**
+ * Decorations that draw something ACROSS or at the centre of the card's top
+ * edge (within ~22px of it): a pin, a peg, a nameplate, a vent grille, a
+ * marquee or ticket strip, a bezel bar. A card whose first line is centred
+ * text has to start below them, or the ornament sits on the heading (Abdullah,
+ * UAT 2026-11-22: W7 row 3, the price-tag pin on "SPOT THE DANGER"; W18 row 2,
+ * the locker vents). Corner-only decorations (rivets, bolts, moss, the manila
+ * tab, the post avatar) leave the centre clear and are not listed.
+ */
+export const TOP_EDGE_DECOS: ReadonlySet<CardDeco> = new Set<CardDeco>([
+  "string", "peg", "plaque", "vents", "marquee", "perforation", "bezel",
+]);
+
 /** Small material details drawn inside a card face as real nodes. */
 // Card decorations must never catch clicks: a full-card border frame sat on top
 // of the Week 15 intro's "I'm ready" button, so a real tap did nothing. Every

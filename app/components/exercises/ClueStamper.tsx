@@ -185,6 +185,24 @@ const TAPE_STYLE = {
   pointerEvents: "none",
 } as const;
 
+/** The child's red row stamp: the ink shared by the overlay and the long-stamp column. */
+const ROW_STAMP_STYLE = {
+  display: "inline-block",
+  border: "3px solid #d5262e",
+  borderRadius: 6,
+  color: "#d5262e",
+  fontFamily: "'Space Grotesk', sans-serif",
+  fontWeight: 900,
+  textTransform: "uppercase",
+  background: "rgba(255,255,255,0.55)",
+  mixBlendMode: "multiply",
+  pointerEvents: "none",
+} as const;
+/** A stamp label longer than this gets its own column (it would cover the evidence). */
+const LONG_STAMP_CHARS = 8;
+/** Width of that column: fits "STAMP THE" on one line at 11.5px. */
+const LONG_STAMP_COL = 96;
+
 const DEFAULT_TIER3 = "Let me help. I fixed that one clue for you. Now close the case.";
 const DEFAULT_BOARD_PROMPT = "Read all four · tap a sneaky clue to stamp it · tap again to lift it · then close the case";
 const DEFAULT_CAUGHT = { one: "fake unmasked", many: "fakes unmasked" };
@@ -228,6 +246,7 @@ export default function ClueStamper({
   // intro / how-to / complete blocks keep their own authored speaker).
   const voice = "adam" as const;
   const photo = skin === "photo";
+  const longStamp = stampLabel.length > LONG_STAMP_CHARS;
 
   const [showIntro, setShowIntro] = useState(true);
   const [idx, setIdx] = useState(0);
@@ -456,8 +475,10 @@ export default function ClueStamper({
             <div
               style={{
                 position: "relative",
-                flex: "1 1 260px",
-                minWidth: 240,
+                // Wider than the friend card (was 260/240) so the W8 SAFE TO
+                // SHARE seal gets room to breathe (UAT 11-22, W8-5).
+                flex: "1 1 300px",
+                minWidth: 260,
                 borderRadius: 8,
                 background: "linear-gradient(180deg, #fffdf8 0%, #f3eadb 100%)",
                 border: "1px solid rgba(120,70,30,0.3)",
@@ -532,7 +553,9 @@ export default function ClueStamper({
                       display: "flex",
                       alignItems: "center",
                       gap: 8,
-                      padding: "8px 16px",
+                      // Roomier frame round the words (UAT 11-22, W8-5: the
+                      // SAFE TO SHARE frame "is not big enough").
+                      padding: "10px 20px",
                       borderRadius: 10,
                       border: `4px double ${isFake ? "#ffb347" : "#34d399"}`,
                       color: isFake ? "#ffd9a0" : "#a0ffb0",
@@ -543,14 +566,13 @@ export default function ClueStamper({
                       // long one (W8's SAFE TO SHARE, 13 chars, ~240px) ran past
                       // the photo's clipped edge and lost the end of SHARE (UAT
                       // W8 4b). Size it to its length; W3's REAL FRIEND (11) is
-                      // unchanged.
-                      // W19's NOTHING WRONG (13) still reached both edges of the
-                      // card at the tester's viewport, and its glow crossed
-                      // them, so the seal read as unconfined (UAT W19 2a). A
-                      // third rung takes about 13% off the width. Narrowed by
-                      // TYPE, never by a maxWidth: the seal cannot wrap, so a
-                      // width cap would clip its end - the W8 4b bug above.
-                      fontSize: (isFake ? fakeSeal : realSeal).length > 12 ? 13 : (isFake ? fakeSeal : realSeal).length > 11 ? 15 : 18,
+                      // unchanged. Narrowed by TYPE, never by a maxWidth: the
+                      // seal cannot wrap, so a width cap would clip its end.
+                      // (A 13px third rung for W19's NOTHING WRONG used to sit
+                      // here, but W19 uses the friend-request card, not this
+                      // photo print; it only shrank W8's seal. It now lives in
+                      // the friend-request branch below.)
+                      fontSize: (isFake ? fakeSeal : realSeal).length > 11 ? 15 : 18,
                       letterSpacing: (isFake ? fakeSeal : realSeal).length > 11 ? "0.08em" : "0.12em",
                       textTransform: "uppercase",
                       whiteSpace: "nowrap",
@@ -653,15 +675,17 @@ export default function ClueStamper({
                     // Centring lives in the motion values (x), not a CSS transform:
                     // motion owns `transform`, so a CSS translateX would be dropped
                     // and the seal would hang off the card's right edge.
+                    // A shallower tilt (was -8deg) so the seal's low corner stays
+                    // off the card's bottom edge (UAT 11-22, W19-2a).
                     initial={reduce ? { opacity: 0, x: "-50%" } : { opacity: 0, x: "-50%", scale: 1.8, rotate: -20 }}
-                    animate={{ opacity: 1, x: "-50%", scale: 1, rotate: -8 }}
+                    animate={{ opacity: 1, x: "-50%", scale: 1, rotate: -5 }}
                     exit={{ opacity: 0, x: "-50%" }}
                     transition={reduce ? { duration: 0.2 } : { type: "spring", stiffness: 380, damping: 14, delay: 0.15 }}
                     style={{
                       position: "absolute",
                       left: "50%",
-                      bottom: 14,
-                      padding: "8px 16px",
+                      bottom: 20,
+                      padding: "8px 14px",
                       borderRadius: 10,
                       border: `4px double ${isFake ? "#ff5fb3" : "#34d399"}`,
                       color: isFake ? "#ff9bcb" : "#a0ffb0",
@@ -673,11 +697,16 @@ export default function ClueStamper({
                       // the photo's clipped edge and lost the end of SHARE (UAT
                       // W8 4b). Size it to its length; W3's REAL FRIEND (11) is
                       // unchanged.
-                      fontSize: (isFake ? fakeSeal : realSeal).length > 11 ? 15 : 18,
+                      // W19's NOTHING WRONG (13) and IT'S A TRICK (12) still
+                      // reached the card's edges at the tester's 1093x525, glow
+                      // included (UAT W19 2a, again 11-22). Their third rung
+                      // and tighter glow were added to the photo branch by
+                      // mistake; W19 renders this friend-request card.
+                      fontSize: (isFake ? fakeSeal : realSeal).length > 11 ? 13 : 18,
                       letterSpacing: (isFake ? fakeSeal : realSeal).length > 11 ? "0.08em" : "0.12em",
                       textTransform: "uppercase",
                       whiteSpace: "nowrap",
-                      boxShadow: `0 0 18px ${isFake ? "rgba(255,95,179,0.5)" : "rgba(52,211,153,0.5)"}`,
+                      boxShadow: `0 0 10px ${isFake ? "rgba(255,95,179,0.5)" : "rgba(52,211,153,0.5)"}`,
                     }}
                   >
                     {isFake ? "🐾 " : "✅ "}
@@ -749,6 +778,29 @@ export default function ClueStamper({
                       <span style={{ display: "block", fontFamily: "'Space Grotesk', sans-serif", fontSize: 12, fontWeight: 900, letterSpacing: "0.06em", color: "#8a5a12" }}>{r.label}</span>
                       <span style={{ display: "block", fontSize: 16, fontWeight: 700, lineHeight: 1.25 }}>{r.clue?.evidence ?? ""}</span>
                     </span>
+                    {/* A long stamp (W19's STAMP THE TELL) gets its own column at the
+                        row's right, so it never lands on the evidence text or runs
+                        off the notebook's edge (UAT 11-22, W19-7). The column is
+                        there before the tap too, so stamping never reflows a row.
+                        Short stamps (SNEAKY!, LEAK!) keep the overlay below. */}
+                    {longStamp && (
+                      <span aria-hidden style={{ flexShrink: 0, width: LONG_STAMP_COL, alignSelf: "stretch", display: "grid", placeItems: "center" }}>
+                        <AnimatePresence>
+                          {on && (
+                            <motion.span
+                              key="stamp"
+                              initial={reduce ? { opacity: 0 } : { opacity: 0, scale: 1.6, rotate: -14 }}
+                              animate={{ opacity: 1, scale: 1, rotate: -6 }}
+                              exit={{ opacity: 0, transition: { duration: 0.12 } }}
+                              transition={reduce ? { duration: 0.15 } : { type: "spring", stiffness: 420, damping: 16 }}
+                              style={{ ...ROW_STAMP_STYLE, maxWidth: LONG_STAMP_COL, padding: "3px 6px", fontSize: 11.5, letterSpacing: "0.06em", lineHeight: 1.15, textAlign: "center", whiteSpace: "normal" }}
+                            >
+                              {stampLabel}
+                            </motion.span>
+                          )}
+                        </AnimatePresence>
+                      </span>
+                    )}
                     {/* Post-commit only: the per-clue why (paw on a sneaky row, tick on a clean one;
                         photo skin: a warning sign on a risky row). */}
                     {sealed && (photo ? (
@@ -760,7 +812,7 @@ export default function ClueStamper({
                     ))}
                     {/* The child's own stamp: identical red on whichever row they tap. */}
                     <AnimatePresence>
-                      {on && (
+                      {on && !longStamp && (
                         <motion.span
                           key="stamp"
                           aria-hidden
@@ -769,22 +821,14 @@ export default function ClueStamper({
                           exit={{ opacity: 0, transition: { duration: 0.12 } }}
                           transition={reduce ? { duration: 0.15 } : { type: "spring", stiffness: 420, damping: 16 }}
                           style={{
+                            ...ROW_STAMP_STYLE,
                             position: "absolute",
                             right: sealed ? 44 : 14,
                             top: "50%",
                             marginTop: -16,
                             padding: "4px 10px",
-                            border: "3px solid #d5262e",
-                            borderRadius: 6,
-                            color: "#d5262e",
-                            fontFamily: "'Space Grotesk', sans-serif",
-                            fontWeight: 900,
                             fontSize: 15,
                             letterSpacing: "0.12em",
-                            textTransform: "uppercase",
-                            background: "rgba(255,255,255,0.55)",
-                            mixBlendMode: "multiply",
-                            pointerEvents: "none",
                             whiteSpace: "nowrap",
                           }}
                         >
