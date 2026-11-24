@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-17T20:28:57.263Z",
+  "generatedAt": "2026-11-23T21:10:25.609Z",
   "model": "eleven_v4",
   "voiceSettings": {
     "stability": 0.6,
@@ -559,42 +559,53 @@
       "file": "/audio/voice/a9deb7b73b3ebedc.mp3"
     },
     {
-      "key": "590aff492c0e54ca",
+      "key": "eda769a0e02f5513",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "Let's look at his list. Your name. Your birthday. Your pet. Your favorite team. And right at the top, one two three four five six. These are the first things he tries, because they are the things people pick MOST. [warmly] So we pick something that is on nobody's list. Your turn to sort some weak passwords and work out why each one is weak.",
+      "text": "Let's look at his list. Your name. Your birthday. Your pet. Your favorite team. And right at the top, one two three four five six. These are the first things he tries, because they are the things people pick MOST. [warmly] So we pick something that is on nobody's list. Your turn to build some passwords he could never guess.",
       "lines": [
         "Let's look at his list.",
         "Your name. Your birthday. Your pet. Your favorite team.",
         "And right at the top, one two three four five six.",
         "These are the first things he tries, because they are the things people pick MOST.",
         "[warmly] So we pick something that is on nobody's list.",
-        "Your turn to sort some weak passwords and work out why each one is weak."
+        "Your turn to build some passwords he could never guess."
       ],
-      "file": "/audio/voice/590aff492c0e54ca.mp3"
+      "file": "/audio/voice/eda769a0e02f5513.mp3"
     },
     {
-      "key": "7b79a9cbcbe6dcf7",
+      "key": "aa52f62c6eaf15a3",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "Look at each weak password and tap the reason it is weak. Too short. A real word. Something about you. Or just keys in a row. [warmly] Cyber Hero, sort them all.",
+      "text": "Each card shows what the Raccoon already knows about a kid. Build that kid a password with none of it inside. [warmly] Cyber Hero, keep every one off his list.",
       "lines": [
-        "Look at each weak password and tap the reason it is weak.",
-        "Too short. A real word. Something about you. Or just keys in a row.",
-        "[warmly] Cyber Hero, sort them all."
+        "Each card shows what the Raccoon already knows about a kid.",
+        "Build that kid a password with none of it inside.",
+        "[warmly] Cyber Hero, keep every one off his list."
       ],
-      "file": "/audio/voice/7b79a9cbcbe6dcf7.mp3"
+      "file": "/audio/voice/aa52f62c6eaf15a3.mp3"
     },
     {
-      "key": "d7fb78b42f74fdd6",
+      "key": "630c498194f697b3",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "[proud] All sorted. You can see why a password is weak before you ever choose one. [warmly] No names, no birthdays, no numbers in a row.",
+      "text": "Tap a dial to turn it, and tap it again for the next choice. When nothing on the dials is about the kid, press LOCK IT.",
       "lines": [
-        "[proud] All sorted. You can see why a password is weak before you ever choose one.",
-        "[warmly] No names, no birthdays, no numbers in a row."
+        "Tap a dial to turn it, and tap it again for the next choice.",
+        "When nothing on the dials is about the kid, press LOCK IT."
       ],
-      "file": "/audio/voice/d7fb78b42f74fdd6.mp3"
+      "file": "/audio/voice/630c498194f697b3.mp3"
+    },
+    {
+      "key": "96b206ffe2719a66",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "[proud] Three passwords, and not one pet, birthday or favorite thing in any of them. [warmly] He tries the obvious ones first, so you never gave him one.",
+      "lines": [
+        "[proud] Three passwords, and not one pet, birthday or favorite thing in any of them.",
+        "[warmly] He tries the obvious ones first, so you never gave him one."
+      ],
+      "file": "/audio/voice/96b206ffe2719a66.mp3"
     },
     {
       "key": "1948127b1d3ca50b",
@@ -1048,6 +1059,36 @@
         "Anyone who asks is exactly who must not get it; the Raccoon asks nicely too."
       ],
       "file": "/audio/voice/c4cd39da412fdc6d.mp3"
+    },
+    {
+      "key": "c10cbe7069d39e37",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Otter, pickle, fifty-eight. Nothing in it is about Leo, and nothing is from the top of his list.",
+      "lines": [
+        "Otter, pickle, fifty-eight. Nothing in it is about Leo, and nothing is from the top of his list."
+      ],
+      "file": "/audio/voice/c10cbe7069d39e37.mp3"
+    },
+    {
+      "key": "b8bbd1779711ab35",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Cactus, lantern, seventy-three. He could know everything about Ava and still never guess that.",
+      "lines": [
+        "Cactus, lantern, seventy-three. He could know everything about Ava and still never guess that."
+      ],
+      "file": "/audio/voice/b8bbd1779711ab35.mp3"
+    },
+    {
+      "key": "4f04eea8747f74ff",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Walrus, trumpet, forty-six. Biscuit is a great name for a dog, and a terrible password.",
+      "lines": [
+        "Walrus, trumpet, forty-six. Biscuit is a great name for a dog, and a terrible password."
+      ],
+      "file": "/audio/voice/4f04eea8747f74ff.mp3"
     },
     {
       "key": "0eef87b93902c920",
@@ -1568,6 +1609,36 @@
       "file": "/audio/voice/c4cd39da412fdc6d.mp3"
     },
     {
+      "key": "c10cbe7069d39e37",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Otter, pickle, fifty-eight. Nothing in it is about Leo, and nothing is from the top of his list.",
+      "lines": [
+        "Otter, pickle, fifty-eight. Nothing in it is about Leo, and nothing is from the top of his list."
+      ],
+      "file": "/audio/voice/c10cbe7069d39e37.mp3"
+    },
+    {
+      "key": "b8bbd1779711ab35",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Cactus, lantern, seventy-three. He could know everything about Ava and still never guess that.",
+      "lines": [
+        "Cactus, lantern, seventy-three. He could know everything about Ava and still never guess that."
+      ],
+      "file": "/audio/voice/b8bbd1779711ab35.mp3"
+    },
+    {
+      "key": "4f04eea8747f74ff",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Walrus, trumpet, forty-six. Biscuit is a great name for a dog, and a terrible password.",
+      "lines": [
+        "Walrus, trumpet, forty-six. Biscuit is a great name for a dog, and a terrible password."
+      ],
+      "file": "/audio/voice/4f04eea8747f74ff.mp3"
+    },
+    {
       "key": "0eef87b93902c920",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
@@ -1638,84 +1709,34 @@
       "file": "/audio/voice/21b6aab2b9a4a9c6.mp3"
     },
     {
-      "key": "97f57876abd946f6",
+      "key": "4b8744830fa56f24",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "Only 3 letters - far too tiny to keep anything safe.",
+      "text": "A dial still shows something he would try first. Look at what he knows about Leo, then turn that dial again.",
       "lines": [
-        "Only 3 letters - far too tiny to keep anything safe."
+        "A dial still shows something he would try first. Look at what he knows about Leo, then turn that dial again."
       ],
-      "file": "/audio/voice/97f57876abd946f6.mp3"
+      "file": "/audio/voice/4b8744830fa56f24.mp3"
     },
     {
-      "key": "181af9ad0109e412",
+      "key": "0dc0ed766d5e2dc2",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "A word from the dictionary - hackers try common words first.",
+      "text": "A dial is still on his list. Look at what he knows about Ava, then turn that dial again.",
       "lines": [
-        "A word from the dictionary - hackers try common words first."
+        "A dial is still on his list. Look at what he knows about Ava, then turn that dial again."
       ],
-      "file": "/audio/voice/181af9ad0109e412.mp3"
+      "file": "/audio/voice/0dc0ed766d5e2dc2.mp3"
     },
     {
-      "key": "d7d6aac689533262",
+      "key": "1d43e80651d61a92",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "A name and a birthday - the easiest things to guess about you.",
+      "text": "A dial still gives Layla away. Look at what he knows about her, then turn that dial again.",
       "lines": [
-        "A name and a birthday - the easiest things to guess about you."
+        "A dial still gives Layla away. Look at what he knows about her, then turn that dial again."
       ],
-      "file": "/audio/voice/d7d6aac689533262.mp3"
-    },
-    {
-      "key": "de126564c36320bf",
-      "speaker": "adam",
-      "voice": "Emma (Kids Educator)",
-      "text": "These letters sit in a row on the keyboard - the FIRST pattern hackers try.",
-      "lines": [
-        "These letters sit in a row on the keyboard - the FIRST pattern hackers try."
-      ],
-      "file": "/audio/voice/de126564c36320bf.mp3"
-    },
-    {
-      "key": "c6d3f05758025b46",
-      "speaker": "adam",
-      "voice": "Emma (Kids Educator)",
-      "text": "Only 3 characters, and numbers in order - cracked in under a second.",
-      "lines": [
-        "Only 3 characters, and numbers in order - cracked in under a second."
-      ],
-      "file": "/audio/voice/c6d3f05758025b46.mp3"
-    },
-    {
-      "key": "2f596d1ca630eced",
-      "speaker": "adam",
-      "voice": "Emma (Kids Educator)",
-      "text": "A popular word - 'dragon' is in every hacker's top-100 list.",
-      "lines": [
-        "A popular word - 'dragon' is in every hacker's top-100 list."
-      ],
-      "file": "/audio/voice/2f596d1ca630eced.mp3"
-    },
-    {
-      "key": "570fa9b23e674499",
-      "speaker": "adam",
-      "voice": "Emma (Kids Educator)",
-      "text": "A name plus what looks like a date - quick to guess if someone knows you.",
-      "lines": [
-        "A name plus what looks like a date - quick to guess if someone knows you."
-      ],
-      "file": "/audio/voice/570fa9b23e674499.mp3"
-    },
-    {
-      "key": "347558b85528188c",
-      "speaker": "adam",
-      "voice": "Emma (Kids Educator)",
-      "text": "Another row of keys in order - just like qwerty.",
-      "lines": [
-        "Another row of keys in order - just like qwerty."
-      ],
-      "file": "/audio/voice/347558b85528188c.mp3"
+      "file": "/audio/voice/1d43e80651d61a92.mp3"
     },
     {
       "key": "c9e1a7278278851b",
@@ -2146,6 +2167,36 @@
         "Birthdays are easy to guess about you."
       ],
       "file": "/audio/voice/03c465ab9501faa8.mp3"
+    },
+    {
+      "key": "566bde276671a471",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Leo has a dog called Rex, a birthday in twenty seventeen, and a favorite team called the Lions.",
+      "lines": [
+        "Leo has a dog called Rex, a birthday in twenty seventeen, and a favorite team called the Lions."
+      ],
+      "file": "/audio/voice/566bde276671a471.mp3"
+    },
+    {
+      "key": "6318d0db0c55f498",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Ava has a cat called Luna, a birthday in twenty sixteen, and a big love of unicorns.",
+      "lines": [
+        "Ava has a cat called Luna, a birthday in twenty sixteen, and a big love of unicorns."
+      ],
+      "file": "/audio/voice/6318d0db0c55f498.mp3"
+    },
+    {
+      "key": "5e46b7b6341501cf",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Layla has a dog called Biscuit, she loves dragons, and her lucky number is seven.",
+      "lines": [
+        "Layla has a dog called Biscuit, she loves dragons, and her lucky number is seven."
+      ],
+      "file": "/audio/voice/5e46b7b6341501cf.mp3"
     },
     {
       "key": "b15579e7c0896ab0",
@@ -36297,6 +36348,86 @@
       "file": "/audio/voice/efddeb3caf6bf845.mp3"
     },
     {
+      "key": "5da633720463f74c",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "So what is true?",
+      "lines": [
+        "So what is true?"
+      ],
+      "file": "/audio/voice/5da633720463f74c.mp3"
+    },
+    {
+      "key": "5da633720463f74c",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "So what is true?",
+      "lines": [
+        "So what is true?"
+      ],
+      "file": "/audio/voice/5da633720463f74c.mp3"
+    },
+    {
+      "key": "4c7768cac49a0b85",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "The odds never changed: still one in a hundred.",
+      "lines": [
+        "The odds never changed: still one in a hundred."
+      ],
+      "file": "/audio/voice/4c7768cac49a0b85.mp3"
+    },
+    {
+      "key": "ca9e172a18335f19",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "The next one HAS to be gold now.",
+      "lines": [
+        "The next one HAS to be gold now."
+      ],
+      "file": "/audio/voice/ca9e172a18335f19.mp3"
+    },
+    {
+      "key": "695d0e5ac4326fd4",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "You were SO close that time.",
+      "lines": [
+        "You were SO close that time."
+      ],
+      "file": "/audio/voice/695d0e5ac4326fd4.mp3"
+    },
+    {
+      "key": "a1f192608427223a",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Six more coins, and the jar is exactly the same.",
+      "lines": [
+        "Six more coins, and the jar is exactly the same."
+      ],
+      "file": "/audio/voice/a1f192608427223a.mp3"
+    },
+    {
+      "key": "67b655d6bb6ccda0",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Two boxes in a row means a win is due.",
+      "lines": [
+        "Two boxes in a row means a win is due."
+      ],
+      "file": "/audio/voice/67b655d6bb6ccda0.mp3"
+    },
+    {
+      "key": "42586a52f225b4b1",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Opening faster gives better odds.",
+      "lines": [
+        "Opening faster gives better odds."
+      ],
+      "file": "/audio/voice/42586a52f225b4b1.mp3"
+    },
+    {
       "key": "8be017090f62060b",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
@@ -37785,6 +37916,126 @@
         "Each clue is small. Together they tell a stranger everything they need."
       ],
       "file": "/audio/voice/24307b16ba34ad2f.mp3"
+    },
+    {
+      "key": "5da633720463f74c",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "So what is true?",
+      "lines": [
+        "So what is true?"
+      ],
+      "file": "/audio/voice/5da633720463f74c.mp3"
+    },
+    {
+      "key": "5da633720463f74c",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "So what is true?",
+      "lines": [
+        "So what is true?"
+      ],
+      "file": "/audio/voice/5da633720463f74c.mp3"
+    },
+    {
+      "key": "5da633720463f74c",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "So what is true?",
+      "lines": [
+        "So what is true?"
+      ],
+      "file": "/audio/voice/5da633720463f74c.mp3"
+    },
+    {
+      "key": "36d64fdc951190b5",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Your copy is gone. Their copies are still there.",
+      "lines": [
+        "Your copy is gone. Their copies are still there."
+      ],
+      "file": "/audio/voice/36d64fdc951190b5.mp3"
+    },
+    {
+      "key": "7c6454fa9916f50c",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Delete took it back from every phone.",
+      "lines": [
+        "Delete took it back from every phone."
+      ],
+      "file": "/audio/voice/7c6454fa9916f50c.mp3"
+    },
+    {
+      "key": "57a127338c4171cc",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "It was only shared for a second, so it doesn't count.",
+      "lines": [
+        "It was only shared for a second, so it doesn't count."
+      ],
+      "file": "/audio/voice/57a127338c4171cc.mp3"
+    },
+    {
+      "key": "982825b647611a20",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "A screenshot beats the timer, so copies still exist.",
+      "lines": [
+        "A screenshot beats the timer, so copies still exist."
+      ],
+      "file": "/audio/voice/982825b647611a20.mp3"
+    },
+    {
+      "key": "00f70a24765084ca",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Vanishing photos always vanish for everyone.",
+      "lines": [
+        "Vanishing photos always vanish for everyone."
+      ],
+      "file": "/audio/voice/00f70a24765084ca.mp3"
+    },
+    {
+      "key": "a6f7b560771ee73b",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "The app deletes their screenshots too.",
+      "lines": [
+        "The app deletes their screenshots too."
+      ],
+      "file": "/audio/voice/a6f7b560771ee73b.mp3"
+    },
+    {
+      "key": "451c2b2ccebd2389",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Copies can make more copies you never sent.",
+      "lines": [
+        "Copies can make more copies you never sent."
+      ],
+      "file": "/audio/voice/451c2b2ccebd2389.mp3"
+    },
+    {
+      "key": "14bcff77548ffb4b",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Only the people you sent it to can ever have it.",
+      "lines": [
+        "Only the people you sent it to can ever have it."
+      ],
+      "file": "/audio/voice/14bcff77548ffb4b.mp3"
+    },
+    {
+      "key": "61d1380eb301ad42",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "The app throws its copy away when you delete yours.",
+      "lines": [
+        "The app throws its copy away when you delete yours."
+      ],
+      "file": "/audio/voice/61d1380eb301ad42.mp3"
     },
     {
       "key": "d61058791a9c9a49",
@@ -41095,180 +41346,70 @@
       "file": "/audio/voice/113e75355ed7e0e1.mp3"
     },
     {
-      "key": "817fc7c90fe3c7c8",
+      "key": "74e8527944fee049",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "That's right! Only 3 letters - far too tiny to keep anything safe.",
+      "text": "That's right! Otter, pickle, fifty-eight. Nothing in it is about Leo, and nothing is from the top of his list.",
       "lines": [
         "That's right!",
-        "Only 3 letters - far too tiny to keep anything safe."
+        "Otter, pickle, fifty-eight. Nothing in it is about Leo, and nothing is from the top of his list."
       ],
-      "file": "/audio/voice/817fc7c90fe3c7c8.mp3"
+      "file": "/audio/voice/74e8527944fee049.mp3"
     },
     {
-      "key": "a95b44bf852ee1f7",
+      "key": "fda4ea585de8d717",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "Not quite. Only 3 letters - far too tiny to keep anything safe.",
+      "text": "Not quite. A dial still shows something he would try first. Look at what he knows about Leo, then turn that dial again.",
       "lines": [
         "Not quite.",
-        "Only 3 letters - far too tiny to keep anything safe."
+        "A dial still shows something he would try first. Look at what he knows about Leo, then turn that dial again."
       ],
-      "file": "/audio/voice/a95b44bf852ee1f7.mp3"
+      "file": "/audio/voice/fda4ea585de8d717.mp3"
     },
     {
-      "key": "4e9a7f8c9090883a",
+      "key": "86f91434af85c981",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "That's right! A word from the dictionary - hackers try common words first.",
+      "text": "That's right! Cactus, lantern, seventy-three. He could know everything about Ava and still never guess that.",
       "lines": [
         "That's right!",
-        "A word from the dictionary - hackers try common words first."
+        "Cactus, lantern, seventy-three. He could know everything about Ava and still never guess that."
       ],
-      "file": "/audio/voice/4e9a7f8c9090883a.mp3"
+      "file": "/audio/voice/86f91434af85c981.mp3"
     },
     {
-      "key": "e873cda5279c4539",
+      "key": "9991f1d913373806",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "Not quite. A word from the dictionary - hackers try common words first.",
+      "text": "Not quite. A dial is still on his list. Look at what he knows about Ava, then turn that dial again.",
       "lines": [
         "Not quite.",
-        "A word from the dictionary - hackers try common words first."
+        "A dial is still on his list. Look at what he knows about Ava, then turn that dial again."
       ],
-      "file": "/audio/voice/e873cda5279c4539.mp3"
+      "file": "/audio/voice/9991f1d913373806.mp3"
     },
     {
-      "key": "57b3cc8f5ef58ae0",
+      "key": "720436a1fcdf119c",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "That's right! A name and a birthday - the easiest things to guess about you.",
+      "text": "That's right! Walrus, trumpet, forty-six. Biscuit is a great name for a dog, and a terrible password.",
       "lines": [
         "That's right!",
-        "A name and a birthday - the easiest things to guess about you."
+        "Walrus, trumpet, forty-six. Biscuit is a great name for a dog, and a terrible password."
       ],
-      "file": "/audio/voice/57b3cc8f5ef58ae0.mp3"
+      "file": "/audio/voice/720436a1fcdf119c.mp3"
     },
     {
-      "key": "69b325909b8acac4",
+      "key": "bff89922249f3bec",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "Not quite. A name and a birthday - the easiest things to guess about you.",
+      "text": "Not quite. A dial still gives Layla away. Look at what he knows about her, then turn that dial again.",
       "lines": [
         "Not quite.",
-        "A name and a birthday - the easiest things to guess about you."
+        "A dial still gives Layla away. Look at what he knows about her, then turn that dial again."
       ],
-      "file": "/audio/voice/69b325909b8acac4.mp3"
-    },
-    {
-      "key": "44d60fc09a673c69",
-      "speaker": "adam",
-      "voice": "Emma (Kids Educator)",
-      "text": "That's right! These letters sit in a row on the keyboard - the FIRST pattern hackers try.",
-      "lines": [
-        "That's right!",
-        "These letters sit in a row on the keyboard - the FIRST pattern hackers try."
-      ],
-      "file": "/audio/voice/44d60fc09a673c69.mp3"
-    },
-    {
-      "key": "688d32022130c403",
-      "speaker": "adam",
-      "voice": "Emma (Kids Educator)",
-      "text": "Not quite. These letters sit in a row on the keyboard - the FIRST pattern hackers try.",
-      "lines": [
-        "Not quite.",
-        "These letters sit in a row on the keyboard - the FIRST pattern hackers try."
-      ],
-      "file": "/audio/voice/688d32022130c403.mp3"
-    },
-    {
-      "key": "1b582986027a18fe",
-      "speaker": "adam",
-      "voice": "Emma (Kids Educator)",
-      "text": "That's right! Only 3 characters, and numbers in order - cracked in under a second.",
-      "lines": [
-        "That's right!",
-        "Only 3 characters, and numbers in order - cracked in under a second."
-      ],
-      "file": "/audio/voice/1b582986027a18fe.mp3"
-    },
-    {
-      "key": "c0cd047379689abc",
-      "speaker": "adam",
-      "voice": "Emma (Kids Educator)",
-      "text": "Not quite. Only 3 characters, and numbers in order - cracked in under a second.",
-      "lines": [
-        "Not quite.",
-        "Only 3 characters, and numbers in order - cracked in under a second."
-      ],
-      "file": "/audio/voice/c0cd047379689abc.mp3"
-    },
-    {
-      "key": "c4ae76d4e5636814",
-      "speaker": "adam",
-      "voice": "Emma (Kids Educator)",
-      "text": "That's right! A popular word - 'dragon' is in every hacker's top-100 list.",
-      "lines": [
-        "That's right!",
-        "A popular word - 'dragon' is in every hacker's top-100 list."
-      ],
-      "file": "/audio/voice/c4ae76d4e5636814.mp3"
-    },
-    {
-      "key": "2d97a1f063f9a73c",
-      "speaker": "adam",
-      "voice": "Emma (Kids Educator)",
-      "text": "Not quite. A popular word - 'dragon' is in every hacker's top-100 list.",
-      "lines": [
-        "Not quite.",
-        "A popular word - 'dragon' is in every hacker's top-100 list."
-      ],
-      "file": "/audio/voice/2d97a1f063f9a73c.mp3"
-    },
-    {
-      "key": "e41ed5caa1258d03",
-      "speaker": "adam",
-      "voice": "Emma (Kids Educator)",
-      "text": "That's right! A name plus what looks like a date - quick to guess if someone knows you.",
-      "lines": [
-        "That's right!",
-        "A name plus what looks like a date - quick to guess if someone knows you."
-      ],
-      "file": "/audio/voice/e41ed5caa1258d03.mp3"
-    },
-    {
-      "key": "f0aa30250edc7b72",
-      "speaker": "adam",
-      "voice": "Emma (Kids Educator)",
-      "text": "Not quite. A name plus what looks like a date - quick to guess if someone knows you.",
-      "lines": [
-        "Not quite.",
-        "A name plus what looks like a date - quick to guess if someone knows you."
-      ],
-      "file": "/audio/voice/f0aa30250edc7b72.mp3"
-    },
-    {
-      "key": "6ec0f47b1ebe4bec",
-      "speaker": "adam",
-      "voice": "Emma (Kids Educator)",
-      "text": "That's right! Another row of keys in order - just like qwerty.",
-      "lines": [
-        "That's right!",
-        "Another row of keys in order - just like qwerty."
-      ],
-      "file": "/audio/voice/6ec0f47b1ebe4bec.mp3"
-    },
-    {
-      "key": "918a7ce9aa4f4d63",
-      "speaker": "adam",
-      "voice": "Emma (Kids Educator)",
-      "text": "Not quite. Another row of keys in order - just like qwerty.",
-      "lines": [
-        "Not quite.",
-        "Another row of keys in order - just like qwerty."
-      ],
-      "file": "/audio/voice/918a7ce9aa4f4d63.mp3"
+      "file": "/audio/voice/bff89922249f3bec.mp3"
     },
     {
       "key": "c1363bb41c24204e",
@@ -55943,206 +56084,6 @@
         "That is not asking, that is wearing somebody down. They already answered."
       ],
       "file": "/audio/voice/2e6208bfc411bd34.mp3"
-    },
-    {
-      "key": "5da633720463f74c",
-      "speaker": "adam",
-      "voice": "Emma (Kids Educator)",
-      "text": "So what is true?",
-      "lines": [
-        "So what is true?"
-      ],
-      "file": "/audio/voice/5da633720463f74c.mp3"
-    },
-    {
-      "key": "5da633720463f74c",
-      "speaker": "adam",
-      "voice": "Emma (Kids Educator)",
-      "text": "So what is true?",
-      "lines": [
-        "So what is true?"
-      ],
-      "file": "/audio/voice/5da633720463f74c.mp3"
-    },
-    {
-      "key": "4c7768cac49a0b85",
-      "speaker": "adam",
-      "voice": "Emma (Kids Educator)",
-      "text": "The odds never changed: still one in a hundred.",
-      "lines": [
-        "The odds never changed: still one in a hundred."
-      ],
-      "file": "/audio/voice/4c7768cac49a0b85.mp3"
-    },
-    {
-      "key": "ca9e172a18335f19",
-      "speaker": "adam",
-      "voice": "Emma (Kids Educator)",
-      "text": "The next one HAS to be gold now.",
-      "lines": [
-        "The next one HAS to be gold now."
-      ],
-      "file": "/audio/voice/ca9e172a18335f19.mp3"
-    },
-    {
-      "key": "695d0e5ac4326fd4",
-      "speaker": "adam",
-      "voice": "Emma (Kids Educator)",
-      "text": "You were SO close that time.",
-      "lines": [
-        "You were SO close that time."
-      ],
-      "file": "/audio/voice/695d0e5ac4326fd4.mp3"
-    },
-    {
-      "key": "a1f192608427223a",
-      "speaker": "adam",
-      "voice": "Emma (Kids Educator)",
-      "text": "Six more coins, and the jar is exactly the same.",
-      "lines": [
-        "Six more coins, and the jar is exactly the same."
-      ],
-      "file": "/audio/voice/a1f192608427223a.mp3"
-    },
-    {
-      "key": "67b655d6bb6ccda0",
-      "speaker": "adam",
-      "voice": "Emma (Kids Educator)",
-      "text": "Two boxes in a row means a win is due.",
-      "lines": [
-        "Two boxes in a row means a win is due."
-      ],
-      "file": "/audio/voice/67b655d6bb6ccda0.mp3"
-    },
-    {
-      "key": "42586a52f225b4b1",
-      "speaker": "adam",
-      "voice": "Emma (Kids Educator)",
-      "text": "Opening faster gives better odds.",
-      "lines": [
-        "Opening faster gives better odds."
-      ],
-      "file": "/audio/voice/42586a52f225b4b1.mp3"
-    },
-    {
-      "key": "5da633720463f74c",
-      "speaker": "adam",
-      "voice": "Emma (Kids Educator)",
-      "text": "So what is true?",
-      "lines": [
-        "So what is true?"
-      ],
-      "file": "/audio/voice/5da633720463f74c.mp3"
-    },
-    {
-      "key": "5da633720463f74c",
-      "speaker": "adam",
-      "voice": "Emma (Kids Educator)",
-      "text": "So what is true?",
-      "lines": [
-        "So what is true?"
-      ],
-      "file": "/audio/voice/5da633720463f74c.mp3"
-    },
-    {
-      "key": "5da633720463f74c",
-      "speaker": "adam",
-      "voice": "Emma (Kids Educator)",
-      "text": "So what is true?",
-      "lines": [
-        "So what is true?"
-      ],
-      "file": "/audio/voice/5da633720463f74c.mp3"
-    },
-    {
-      "key": "36d64fdc951190b5",
-      "speaker": "adam",
-      "voice": "Emma (Kids Educator)",
-      "text": "Your copy is gone. Their copies are still there.",
-      "lines": [
-        "Your copy is gone. Their copies are still there."
-      ],
-      "file": "/audio/voice/36d64fdc951190b5.mp3"
-    },
-    {
-      "key": "7c6454fa9916f50c",
-      "speaker": "adam",
-      "voice": "Emma (Kids Educator)",
-      "text": "Delete took it back from every phone.",
-      "lines": [
-        "Delete took it back from every phone."
-      ],
-      "file": "/audio/voice/7c6454fa9916f50c.mp3"
-    },
-    {
-      "key": "57a127338c4171cc",
-      "speaker": "adam",
-      "voice": "Emma (Kids Educator)",
-      "text": "It was only shared for a second, so it doesn't count.",
-      "lines": [
-        "It was only shared for a second, so it doesn't count."
-      ],
-      "file": "/audio/voice/57a127338c4171cc.mp3"
-    },
-    {
-      "key": "982825b647611a20",
-      "speaker": "adam",
-      "voice": "Emma (Kids Educator)",
-      "text": "A screenshot beats the timer, so copies still exist.",
-      "lines": [
-        "A screenshot beats the timer, so copies still exist."
-      ],
-      "file": "/audio/voice/982825b647611a20.mp3"
-    },
-    {
-      "key": "00f70a24765084ca",
-      "speaker": "adam",
-      "voice": "Emma (Kids Educator)",
-      "text": "Vanishing photos always vanish for everyone.",
-      "lines": [
-        "Vanishing photos always vanish for everyone."
-      ],
-      "file": "/audio/voice/00f70a24765084ca.mp3"
-    },
-    {
-      "key": "a6f7b560771ee73b",
-      "speaker": "adam",
-      "voice": "Emma (Kids Educator)",
-      "text": "The app deletes their screenshots too.",
-      "lines": [
-        "The app deletes their screenshots too."
-      ],
-      "file": "/audio/voice/a6f7b560771ee73b.mp3"
-    },
-    {
-      "key": "451c2b2ccebd2389",
-      "speaker": "adam",
-      "voice": "Emma (Kids Educator)",
-      "text": "Copies can make more copies you never sent.",
-      "lines": [
-        "Copies can make more copies you never sent."
-      ],
-      "file": "/audio/voice/451c2b2ccebd2389.mp3"
-    },
-    {
-      "key": "14bcff77548ffb4b",
-      "speaker": "adam",
-      "voice": "Emma (Kids Educator)",
-      "text": "Only the people you sent it to can ever have it.",
-      "lines": [
-        "Only the people you sent it to can ever have it."
-      ],
-      "file": "/audio/voice/14bcff77548ffb4b.mp3"
-    },
-    {
-      "key": "61d1380eb301ad42",
-      "speaker": "adam",
-      "voice": "Emma (Kids Educator)",
-      "text": "The app throws its copy away when you delete yours.",
-      "lines": [
-        "The app throws its copy away when you delete yours."
-      ],
-      "file": "/audio/voice/61d1380eb301ad42.mp3"
     }
   ]
 }

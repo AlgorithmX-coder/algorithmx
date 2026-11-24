@@ -2850,6 +2850,7 @@ function DynamicLessonInner({
               whatAfterLabel={def.whatAfterLabel}
               whoKnowsLabel={def.whoKnowsLabel}
               agreeLabel={def.agreeLabel}
+              chrome={def.chrome}
               completeTitle={def.completeTitle}
               completeLine={def.completeLine}
               introNarration={def.narration}
