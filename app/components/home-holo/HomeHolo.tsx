@@ -36,6 +36,10 @@ const TRACK_ART: Record<string, { art: string; lockup?: LockupId; pos?: string }
   Pro: { art: "/characters/cyberpro-card.jpg", lockup: "pro", pos: "62% 42%" },
   /* purpose-made for this card: OpenArt (Nano Banana 2), 2026-11-21, saved in Personal Project */
   Ready: { art: "/desk-ready/card.webp", pos: "50% 34%" },
+  /* the three firm tracks sold together as Cyber Secured: OpenArt (Nano Banana 2), 2026-11-22, Personal Project */
+  Fluent: { art: "/corporate/cards/ai-fluent.webp", pos: "50% 30%" },
+  Cleared: { art: "/corporate/cards/ai-cleared.webp", pos: "50% 30%" },
+  Awareness: { art: "/corporate/cards/cyber-awareness.webp", pos: "50% 30%" },
 };
 
 function TrackCard({ t, i, icon, more }: { t: Track; i: number; icon: keyof typeof ICONS; more: string }) {
@@ -63,21 +67,6 @@ function TrackCard({ t, i, icon, more }: { t: Track; i: number; icon: keyof type
           <ul>{t.items.map((it) => <li key={it[0] + it[1]}><span>{it[0]}</span>{it[1]}</li>)}</ul>
           <div className="more">{more}</div>
         </div>
-      </div>
-    </article>
-  );
-}
-
-function LockedCard({ accent, n, i, label, foot }: { accent: string; n: string; i: number; label: string; foot: string }) {
-  return (
-    <article className="pane-card locked" style={{ "--a": accent, "--i": i } as React.CSSProperties}>
-      <span className="pdot" />
-      <div className="inner">
-        <div className="top"><span className="ic"><Icon name="lock" size={18} sw={1.9} /></span><span className="nm" data-scramble="10" /><span className="n">{n}</span></div>
-        <div className="chips"><span className="verb"><i />{label}</span></div>
-        <div className="redact tall"><i style={{ width: "78%" }} /><i style={{ width: "54%" }} /><i style={{ width: "66%" }} /><i style={{ width: "42%" }} /><i style={{ width: "72%" }} /><i style={{ width: "48%" }} /></div>
-        <div className="cipher"><div data-scramble="18" /><div data-scramble="18" /><div data-scramble="18" /></div>
-        <div className="more">{foot}</div>
       </div>
     </article>
   );
@@ -163,6 +152,7 @@ export default function HomeHolo() {
 
   const A = AX.accreditations, S = AX.stats, ST = AX.streams, C = ST.cyber, W = ST.workplace, R = ST.roadmap, T = AX.toolkit, Fo = AX.footer;
   const icons: Array<keyof typeof ICONS> = ["bolt", "search", "target", "terminal"];
+  const firmIcons: Array<keyof typeof ICONS> = ["bolt", "shield", "search"];
   /* colour logos (owner: "put colours on it"); Apple and Unity ship as white marks, so they go to ink */
   const INK = new Set(["Apple", "Unity"]);
   const logos = T.logos.map((l) => <span className="logo" key={l.name}><img src={l.src} alt={l.name} className={INK.has(l.name) ? "ink" : ""} /><span>{l.name.toUpperCase()}</span></span>);
@@ -196,7 +186,7 @@ export default function HomeHolo() {
           <article className="dossier blue" data-reveal id="workPanel"><Brackets />
             <div className="hud"><span>{W.tag}</span><span>{W.meta}</span></div>
             <div className="head"><div className="hex"><Icon name="monitor" size={34} sw={1.6} /></div><div><h3>{W.name}</h3><div className="ages">{W.ages}</div><p className="blurb">{W.blurb}</p></div><span className="badge2">{W.badge}</span></div>
-            <div className="panesWrap"><span className="srcCube"><BrandCube size={28} /></span><svg className="wires" aria-hidden="true" /><div className="panes"><TrackCard t={W.live} i={0} icon="monitor" more={W.more} />{W.locked.map((l, i) => <LockedCard key={l.n} accent={l.accent} n={l.n} i={i + 1} label={W.lockedLabel} foot={W.lockedFoot} />)}</div></div>
+            <div className="panesWrap"><span className="srcCube"><BrandCube size={28} /></span><svg className="wires" aria-hidden="true" /><div className="panes"><TrackCard t={W.live} i={0} icon="monitor" more={W.more} />{W.firm.map((t, i) => <TrackCard key={t.label} t={t} i={i + 1} icon={firmIcons[i]} more={W.more} />)}</div></div>
             <div className="ctaRow"><a className="btn2" href={W.href}>{W.cta} <Icon name="arrow" size={18} sw={2.2} /></a></div>
           </article>
           <div className="road">

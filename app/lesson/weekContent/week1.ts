@@ -12,7 +12,7 @@ import { WEEK_INTROS } from "./weekIntros";
  *     2 LONG    long is strong (3 words)      | BUILD  | speed
  *     3 MIX     letters+numbers+symbols       | REPAIR | lie
  *     4 SECRET  never share it                | DECIDE | recall
- *     5 OBVIOUS not name/birthday/123456       | SORT   | recall
+ *     5 OBVIOUS not name/birthday/123456       | DIALS  | recall
  *   Consolidation (cyberScanner) -> 5-phase boss -> closing video -> reward.
  *
  * The 5 games are 5 DISTINCT mechanic patterns (never repeat in one sitting).
@@ -681,51 +681,148 @@ export const WEEK_1: WeekContent = {
           "And right at the top, one two three four five six.",
           "These are the first things he tries, because they are the things people pick MOST.",
           "[warmly] So we pick something that is on nobody's list.",
-          "Your turn to sort some weak passwords and work out why each one is weak.",
+          "Your turn to build some passwords he could never guess.",
         ],
       },
     },
-    // 16 - Game: SORT (Why Is It Weak?)
+    // 16 - Game: DIALS "Off His List" (live screen index 21; setTheDial,
+    // re-themed from Week 13's Plan Desk). UAT 2026-11-22 (W1-4): the old weakSorter here asked the
+    // child to tap why a password is weak, with the same four reasons and
+    // near-identical examples as the Password Hospital on screen 13, so it
+    // played as the same game twice. This board turns three dials instead
+    // (a verb nothing else in Week 1 uses) and asks the Power 5 question
+    // directly: here is what the Raccoon already knows about a kid, so build
+    // a password with none of it inside and nothing from the top of his list.
+    // Each dial holds one personal trap, one list trap and one random choice;
+    // the whole password is judged only at LOCK IT, so no dial gives itself
+    // away. Neutral icons on every choice for the same reason.
     {
-      type: "weakSorter",
+      type: "setTheDial",
       threat: {
         raccoonLine:
           "I always try the OBVIOUS ones first: names, birthdays, one-two-three! You'd be amazed how many kids pick those. Please, make it easy for me!",
       },
-      reasons: [
-        { id: "too-short", label: "Too short", example: "abc" },
-        { id: "common-word", label: "Common word", example: "football" },
-        { id: "personal", label: "Has your name or birthday", example: "OliviaSmith2016" },
-        { id: "keyboard", label: "Keyboard pattern", example: "qwerty" },
-      ],
-      items: [
-        { text: "abc", reasonId: "too-short", explanation: "Only 3 letters - far too tiny to keep anything safe." },
-        { text: "football", reasonId: "common-word", explanation: "A word from the dictionary - hackers try common words first." },
-        { text: "OliviaSmith2016", reasonId: "personal", explanation: "A name and a birthday - the easiest things to guess about you." },
-        { text: "qwerty", reasonId: "keyboard", explanation: "These letters sit in a row on the keyboard - the FIRST pattern hackers try." },
-        { text: "123", reasonId: "too-short", alsoAccept: ["keyboard"], explanation: "Only 3 characters, and numbers in order - cracked in under a second." },
-        { text: "dragon", reasonId: "common-word", explanation: "A popular word - 'dragon' is in every hacker's top-100 list." },
-        { text: "JacobSmith0511", reasonId: "personal", explanation: "A name plus what looks like a date - quick to guess if someone knows you." },
-        { text: "asdfgh", reasonId: "keyboard", explanation: "Another row of keys in order - just like qwerty." },
+      introTitle: "Off His List",
+      introSubtitle: "See what the Raccoon knows. Tap a dial to turn it, and tap again for the next choice. Keep everything he knows off the dials, then press LOCK IT.",
+      introIcon: "🔐",
+      deskLabel: "WHAT HE KNOWS",
+      howLongLabel: "FIRST WORD",
+      whatAfterLabel: "SECOND WORD",
+      whoKnowsLabel: "NUMBER",
+      agreeLabel: "LOCK IT",
+      completeTitle: "Off his list!",
+      completeLine: "Nothing about the kid, nothing from his list. He never even tries it.",
+      chrome: {
+        deskIcon: "🦝",
+        situationIcon: "🏷️",
+        dialIcons: { howLong: "🔠", whatAfter: "🔠", whoKnows: "🔢" },
+        agreeIcon: "🔒",
+        roundLabel: "Password",
+        turnPrompt: "Turn all three dials to build the password",
+        readyPrompt: "Nothing he knows on the dials? Press LOCK IT",
+        lookAgainPrompt: "Give that dial another turn, then lock it again",
+        setToast: "LOCKED!",
+        wrongTitle: "He could still guess that",
+        doneStat: "3 passwords built, and not one is on his list",
+      },
+      rounds: [
+        {
+          id: "leo",
+          situation: "Leo has a dog called Rex. He was born in 2017. He loves the Lions.",
+          readAloud: "Leo has a dog called Rex, a birthday in twenty seventeen, and a favorite team called the Lions.",
+          dials: {
+            howLong: [
+              { id: "rex", label: "Rex", icon: "🔠", isGood: false },
+              { id: "password", label: "password", icon: "🔠", isGood: false },
+              { id: "otter", label: "otter", icon: "🔠", isGood: true },
+            ],
+            whatAfter: [
+              { id: "lions", label: "Lions", icon: "🔠", isGood: false },
+              { id: "qwerty", label: "qwerty", icon: "🔠", isGood: false },
+              { id: "pickle", label: "pickle", icon: "🔠", isGood: true },
+            ],
+            whoKnows: [
+              { id: "2017", label: "2017", icon: "🔢", isGood: false },
+              { id: "123456", label: "123456", icon: "🔢", isGood: false },
+              { id: "58", label: "58", icon: "🔢", isGood: true },
+            ],
+          },
+          why: "Otter, pickle, fifty-eight. Nothing in it is about Leo, and nothing is from the top of his list.",
+          explanation: "A dial still shows something he would try first. Look at what he knows about Leo, then turn that dial again.",
+        },
+        {
+          id: "ava",
+          situation: "Ava has a cat called Luna. She was born in 2016. She loves unicorns.",
+          readAloud: "Ava has a cat called Luna, a birthday in twenty sixteen, and a big love of unicorns.",
+          dials: {
+            howLong: [
+              { id: "luna", label: "Luna", icon: "🔠", isGood: false },
+              { id: "qwerty", label: "qwerty", icon: "🔠", isGood: false },
+              { id: "cactus", label: "cactus", icon: "🔠", isGood: true },
+            ],
+            whatAfter: [
+              { id: "unicorn", label: "unicorn", icon: "🔠", isGood: false },
+              { id: "password", label: "password", icon: "🔠", isGood: false },
+              { id: "lantern", label: "lantern", icon: "🔠", isGood: true },
+            ],
+            whoKnows: [
+              { id: "2016", label: "2016", icon: "🔢", isGood: false },
+              { id: "1234", label: "1234", icon: "🔢", isGood: false },
+              { id: "73", label: "73", icon: "🔢", isGood: true },
+            ],
+          },
+          why: "Cactus, lantern, seventy-three. He could know everything about Ava and still never guess that.",
+          explanation: "A dial is still on his list. Look at what he knows about Ava, then turn that dial again.",
+        },
+        {
+          id: "layla",
+          situation: "Layla has a dog called Biscuit. She loves dragons. Her lucky number is 7.",
+          readAloud: "Layla has a dog called Biscuit, she loves dragons, and her lucky number is seven.",
+          dials: {
+            howLong: [
+              { id: "biscuit", label: "Biscuit", icon: "🔠", isGood: false },
+              { id: "password", label: "password", icon: "🔠", isGood: false },
+              { id: "walrus", label: "walrus", icon: "🔠", isGood: true },
+            ],
+            whatAfter: [
+              { id: "dragon", label: "dragon", icon: "🔠", isGood: false },
+              { id: "layla", label: "Layla", icon: "🔠", isGood: false },
+              { id: "trumpet", label: "trumpet", icon: "🔠", isGood: true },
+            ],
+            whoKnows: [
+              { id: "lucky7", label: "7", icon: "🔢", isGood: false },
+              { id: "123", label: "123", icon: "🔢", isGood: false },
+              { id: "46", label: "46", icon: "🔢", isGood: true },
+            ],
+          },
+          why: "Walrus, trumpet, forty-six. Biscuit is a great name for a dog, and a terrible password.",
+          explanation: "A dial still gives Layla away. Look at what he knows about her, then turn that dial again.",
+        },
       ],
       hints: {
-        tier1: "Look at WHY it's weak: too short, a real word, about you, or just keyboard keys in a row?",
-        tier2: "Is it really tiny - just a few letters? That's 'Too short'. Or is it a word you'd find in a book?",
-        tier3: "'too-short' = really tiny, just a few letters. 'common-word' = a real word. 'personal' = a name/birthday. 'keyboard' = letters in a straight line.",
+        tier1: "Read what he knows about the kid. Every one of those things stays off the dials.",
+        tier2: "Numbers in a row, qwerty and the word password are on his list too. Pick the random ones.",
       },
       narration: {
         speaker: "adam",
         lines: [
-          "Look at each weak password and tap the reason it is weak.",
-          "Too short. A real word. Something about you. Or just keys in a row.",
-          "[warmly] Cyber Hero, sort them all.",
+          "Each card shows what the Raccoon already knows about a kid.",
+          "Build that kid a password with none of it inside.",
+          "[warmly] Cyber Hero, keep every one off his list.",
+        ],
+      },
+      coachLines: {
+        speaker: "adam",
+        lines: [
+          "Tap a dial to turn it, and tap it again for the next choice.",
+          "When nothing on the dials is about the kid, press LOCK IT.",
         ],
       },
       completeNarration: {
         speaker: "adam",
         lines: [
-          "[proud] All sorted. You can see why a password is weak before you ever choose one.",
-          "[warmly] No names, no birthdays, no numbers in a row.",
+          "[proud] Three passwords, and not one pet, birthday or favorite thing in any of them.",
+          "[warmly] He tries the obvious ones first, so you never gave him one.",
         ],
       },
     },
@@ -1195,7 +1292,7 @@ export const WEEK_1: WeekContent = {
     18: { adam: null, layla: { mood: "thumbsup", message: "Who should know it? You decide." } }, // prove: recall
     19: { adam: { mood: "thumbsup", message: "Almost there, Cyber Hero!" }, layla: null }, // recap 4
     20: { adam: { mood: "worried", message: "Never pick the obvious ones." }, layla: null }, // learn: obvious
-    21: { adam: { mood: "thinking", message: "Tell me WHY each one is weak." }, layla: null }, // game: sort
+    21: { adam: { mood: "thinking", message: "Keep what he knows OFF the dials!" }, layla: null }, // game: dials (Off His List)
     22: { adam: { mood: "excited", message: "Which would he guess first?" }, layla: null }, // prove: recall
     23: { adam: null, layla: { mood: "excited", message: "All five! You're ready for the boss!" } }, // recap 5
     24: { adam: null, layla: { mood: "excited", message: "Rip the weak ones from his notebook!" } }, // consolidation
