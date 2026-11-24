@@ -1176,6 +1176,8 @@ export type ScreenDef = (
       introSubtitle?: string;
       introIcon?: string;
       postLabel?: string;
+      /** The button beside POST that keeps the whole photo private (AskRing default: "Keep it off the internet"). */
+      keepOffLabel?: string;
       leaveOutLabel?: string;
       dontPostLabel?: string;
       yesChip?: string;
