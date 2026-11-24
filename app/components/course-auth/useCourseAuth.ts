@@ -1,9 +1,8 @@
 "use client";
 
 /**
- * The auth plumbing behind every course-themed login and signup page,
- * shared by the skins (Night Console for the four cyber courses, the desk
- * console for Desk Ready). Same plumbing as the platform pages: next-auth
+ * The auth plumbing behind every course-themed login and signup page
+ * (the Night Console skin, every course). Same plumbing as the platform pages: next-auth
  * credentials sign-in, the existing signup endpoint, the shared
  * forgot-password flow. Only the skin differs per course.
  *
@@ -28,12 +27,13 @@ export function useCourseAuth(course: CourseAuthKey, mode: AuthMode) {
   const searchParams = useSearchParams();
 
   /* Post-login destination: a same-origin callbackUrl wins, else the
-   * course's own home via the shared course-intent helper. */
+   * course's own home via the shared course-intent helper (or the pack's
+   * own home, for the firm tracks that helper does not map). */
   const callbackRaw = searchParams.get("callbackUrl");
   const destination =
     callbackRaw && callbackRaw.startsWith("/") && !callbackRaw.startsWith("//")
       ? callbackRaw
-      : courseHomeFor(safeCourseSlug(t.slug));
+      : t.home ?? courseHomeFor(safeCourseSlug(t.slug));
   const justRegistered = searchParams.get("registered") === "true";
 
   const [name, setName] = useState("");
