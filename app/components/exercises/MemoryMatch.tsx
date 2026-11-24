@@ -450,7 +450,7 @@ export default function MemoryMatch({
     // window, so what they study is a fresh arrangement. (Shuffling at
     // startRebuild instead would make the memorise window pointless.)
     setCards((prev) => shuffle(prev));
-    setMemoriseSecs(10);
+    setMemoriseSecs(15);
     setPhase("memorise");
   };
 
@@ -1176,7 +1176,7 @@ function PhaseTransitionCard({
               lineHeight: 1.55,
             }}
           >
-            First, take 10 seconds to memorise where all the cards are! Then
+            First, take 15 seconds to memorise where all the cards are! Then
             they flip over and we&apos;ll test you, so tap the card you remember
             holds each meaning. Hit them all in one go for a 3-star finish!
           </p>

@@ -1062,8 +1062,7 @@ export const WEEK_12: WeekContent = {
         speaker: "adam",
         lines: [
           "[excited] Look at EVERYTHING you mastered this week!",
-          "Prints seen, copies counted, the mirror checked,",
-          "gold stamped... and your own trail walked all the way home.",
+          "Prints seen, copies counted, the mirror checked, gold stamped... and your own trail walked all the way home.",
           "[laughs] His map room just became completely useless.",
           "[excited] Cyber Hero, sticker time!",
         ],

@@ -1103,8 +1103,7 @@ export const WEEK_6: WeekContent = {
         speaker: "layla",
         lines: [
           "[excited] Look at EVERYTHING you mastered this week!",
-          "You fix the chat, you lock the lobby,",
-          "you stay with the guards, you wield the power buttons...",
+          "You fix the chat, you lock the lobby, you stay with the guards, you wield the power buttons...",
           "[warmly] and no free-skin trap will ever fool you.",
           "[excited] The intruder got booted from the lobby. Sticker time!",
         ],
