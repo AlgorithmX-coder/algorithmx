@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-23T21:10:25.609Z",
+  "generatedAt": "2026-11-24T02:47:38.118Z",
   "model": "eleven_v4",
   "voiceSettings": {
     "stability": 0.6,
@@ -306,16 +306,16 @@
       "file": "/audio/voice/51c17c7babbfdddd.mp3"
     },
     {
-      "key": "f0bfe0877c65083f",
+      "key": "c25135d2a38a35d9",
       "speaker": "layla",
       "voice": "Emma (Kids Educator)",
-      "text": "Good matching. Now a memory round. You have ten seconds to learn where each card sits. Then they flip over, and you tap where you think they are.",
+      "text": "Good matching. Now a memory round. You have fifteen seconds to learn where each card is. Then they flip over, and you tap where you think they are.",
       "lines": [
         "Good matching. Now a memory round.",
-        "You have ten seconds to learn where each card sits.",
+        "You have fifteen seconds to learn where each card is.",
         "Then they flip over, and you tap where you think they are."
       ],
-      "file": "/audio/voice/f0bfe0877c65083f.mp3"
+      "file": "/audio/voice/c25135d2a38a35d9.mp3"
     },
     {
       "key": "cdee2766ba5c949b",
@@ -2581,8 +2581,7 @@
       "text": "[excited] Cyber Hero, that's all FIVE rabbit-hole powers! Belt spotted, claims weighed, exit found, pond emptied... and your own bell heard. [whispers] Now let's put them together. Every power is a rung... [excited] and we're building the Ladder Out. Come and build it!",
       "lines": [
         "[excited] Cyber Hero, that's all FIVE rabbit-hole powers!",
-        "Belt spotted, claims weighed, exit found,",
-        "pond emptied... and your own bell heard.",
+        "Belt spotted, claims weighed, exit found, pond emptied... and your own bell heard.",
         "[whispers] Now let's put them together. Every power is a rung...",
         "[excited] and we're building the Ladder Out. Come and build it!"
       ],
@@ -2630,8 +2629,7 @@
       "text": "[excited] Look at EVERYTHING you mastered this week! The belt spotted, wild claims weighed, the exit found, the pond emptied... and your bell heard. [laughs] His conveyor is unplugged and squeaking. [excited] Sticker time!",
       "lines": [
         "[excited] Look at EVERYTHING you mastered this week!",
-        "The belt spotted, wild claims weighed,",
-        "the exit found, the pond emptied... and your bell heard.",
+        "The belt spotted, wild claims weighed, the exit found, the pond emptied... and your bell heard.",
         "[laughs] His conveyor is unplugged and squeaking.",
         "[excited] Sticker time!"
       ],
@@ -4846,8 +4844,7 @@
       "text": "[excited] Cyber Hero, that's all FIVE powers! Never your fault. Your team named. The signal starved, the proof developed... and the drill run clean. [whispers] One last shift in the lighthouse... [excited] and real call-outs coming in. Come on!",
       "lines": [
         "[excited] Cyber Hero, that's all FIVE powers!",
-        "Never your fault. Your team named. The signal starved,",
-        "the proof developed... and the drill run clean.",
+        "Never your fault. Your team named. The signal starved, the proof developed... and the drill run clean.",
         "[whispers] One last shift in the lighthouse...",
         "[excited] and real call-outs coming in. Come on!"
       ],
@@ -4895,8 +4892,7 @@
       "text": "[excited] Look at EVERYTHING you mastered this week! The stones put down, the crew named, the signal starved, the proof developed... and the drill run clean. [warmly] Whatever lands on your screen, you know exactly what to do. [excited] Cyber Hero, sticker time!",
       "lines": [
         "[excited] Look at EVERYTHING you mastered this week!",
-        "The stones put down, the crew named,",
-        "the signal starved, the proof developed... and the drill run clean.",
+        "The stones put down, the crew named, the signal starved, the proof developed... and the drill run clean.",
         "[warmly] Whatever lands on your screen, you know exactly what to do.",
         "[excited] Cyber Hero, sticker time!"
       ],
@@ -6653,8 +6649,7 @@
       "text": "[excited] Look at EVERYTHING you mastered this week! Prints seen, copies counted, the mirror checked, gold stamped... and your own trail walked all the way home. [laughs] His map room just became completely useless. [excited] Cyber Hero, sticker time!",
       "lines": [
         "[excited] Look at EVERYTHING you mastered this week!",
-        "Prints seen, copies counted, the mirror checked,",
-        "gold stamped... and your own trail walked all the way home.",
+        "Prints seen, copies counted, the mirror checked, gold stamped... and your own trail walked all the way home.",
         "[laughs] His map room just became completely useless.",
         "[excited] Cyber Hero, sticker time!"
       ],
@@ -8653,30 +8648,30 @@
       "file": "/audio/voice/d9dcd6120056e357.mp3"
     },
     {
-      "key": "27507bfe3d7c8275",
+      "key": "0865d41e6d5c936e",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "[excited] Cyber Hero, third challenge. The Plan Desk! This game is all about setting the plan while you are still outside the game. Out in the real world, this is the thirty seconds before you press play. So here is what you do. A situation comes up on the desk, and three dials sit under it. Tap a dial to turn it. How long, what after, and who knows. [warmly] When all three look right to you, press AGREE IT. Off you go.",
+      "text": "[excited] Cyber Hero, third challenge. The Plan Desk! This game is all about setting the plan while you are still outside the game. Out in the real world, this is the thirty seconds before you press play. So here is what you do. A situation comes up on the desk, and three dials sit under it. Tap a dial to turn it, and tap it again for the next choice. How long, what after, and who knows. [warmly] When all three look right to you, press AGREE. Off you go.",
       "lines": [
         "[excited] Cyber Hero, third challenge. The Plan Desk!",
         "This game is all about setting the plan while you are still outside the game.",
         "Out in the real world, this is the thirty seconds before you press play.",
         "So here is what you do.",
         "A situation comes up on the desk, and three dials sit under it.",
-        "Tap a dial to turn it. How long, what after, and who knows.",
-        "[warmly] When all three look right to you, press AGREE IT. Off you go."
+        "Tap a dial to turn it, and tap it again for the next choice. How long, what after, and who knows.",
+        "[warmly] When all three look right to you, press AGREE. Off you go."
       ],
-      "file": "/audio/voice/27507bfe3d7c8275.mp3"
+      "file": "/audio/voice/0865d41e6d5c936e.mp3"
     },
     {
-      "key": "55cb3cbca972e8f5",
+      "key": "6774c64fa5949383",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "Turn all three dials, then press AGREE IT.",
+      "text": "Keep tapping each dial until it looks right, then press AGREE.",
       "lines": [
-        "Turn all three dials, then press AGREE IT."
+        "Keep tapping each dial until it looks right, then press AGREE."
       ],
-      "file": "/audio/voice/55cb3cbca972e8f5.mp3"
+      "file": "/audio/voice/6774c64fa5949383.mp3"
     },
     {
       "key": "dacbb3b2b9d0629e",
@@ -8890,14 +8885,16 @@
       "file": "/audio/voice/f2c9146f78a2a22d.mp3"
     },
     {
-      "key": "33512fefcde3a640",
+      "key": "c25135d2a38a35d9",
       "speaker": "layla",
       "voice": "Emma (Kids Educator)",
-      "text": "Tap a card to flip it, then find its pair.",
+      "text": "Good matching. Now a memory round. You have fifteen seconds to learn where each card is. Then they flip over, and you tap where you think they are.",
       "lines": [
-        "Tap a card to flip it, then find its pair."
+        "Good matching. Now a memory round.",
+        "You have fifteen seconds to learn where each card is.",
+        "Then they flip over, and you tap where you think they are."
       ],
-      "file": "/audio/voice/33512fefcde3a640.mp3"
+      "file": "/audio/voice/c25135d2a38a35d9.mp3"
     },
     {
       "key": "f86380a3001a7cd2",
@@ -8917,8 +8914,7 @@
       "text": "[excited] Look at EVERYTHING you mastered this week! The see-saw level, the jug read, the plan set, the landing smooth... and the night handed back to your body. [laughs] The Battery Thief did not get a single drop. [excited] Cyber Hero, sticker time!",
       "lines": [
         "[excited] Look at EVERYTHING you mastered this week!",
-        "The see-saw level, the jug read, the plan set,",
-        "the landing smooth... and the night handed back to your body.",
+        "The see-saw level, the jug read, the plan set, the landing smooth... and the night handed back to your body.",
         "[laughs] The Battery Thief did not get a single drop.",
         "[excited] Cyber Hero, sticker time!"
       ],
@@ -9390,14 +9386,14 @@
       "file": "/audio/voice/c5176c5f0780a107.mp3"
     },
     {
-      "key": "feeed9f4505d7be2",
+      "key": "c79c7626da857db0",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "Saved, said bye, plugged in. The level is safe, your friends know you left, and tomorrow-you gets a full battery.",
+      "text": "Saved, said bye, plugged in. The level is safe, your friends know you left, and you will have a full battery tomorrow.",
       "lines": [
-        "Saved, said bye, plugged in. The level is safe, your friends know you left, and tomorrow-you gets a full battery."
+        "Saved, said bye, plugged in. The level is safe, your friends know you left, and you will have a full battery tomorrow."
       ],
-      "file": "/audio/voice/feeed9f4505d7be2.mp3"
+      "file": "/audio/voice/c79c7626da857db0.mp3"
     },
     {
       "key": "f564ce00aad9dfb7",
@@ -10170,6 +10166,36 @@
       "file": "/audio/voice/5adc3173b14b8afd.mp3"
     },
     {
+      "key": "4c063fe84d4bfe90",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "First option...",
+      "lines": [
+        "First option..."
+      ],
+      "file": "/audio/voice/4c063fe84d4bfe90.mp3"
+    },
+    {
+      "key": "1b49fe147cc46edd",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Second option...",
+      "lines": [
+        "Second option..."
+      ],
+      "file": "/audio/voice/1b49fe147cc46edd.mp3"
+    },
+    {
+      "key": "65246d0a44b94e66",
+      "speaker": "adam",
+      "voice": "Emma (Kids Educator)",
+      "text": "Third option...",
+      "lines": [
+        "Third option..."
+      ],
+      "file": "/audio/voice/65246d0a44b94e66.mp3"
+    },
+    {
       "key": "b6b75718e62d1cfa",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
@@ -10534,16 +10560,16 @@
       "file": "/audio/voice/e1753e1236accec0.mp3"
     },
     {
-      "key": "2f511d6daea5d6f7",
+      "key": "3b6354e6fca7b167",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "[proud] Cyber Hero, the whole diary. And look what was in it. One thing you asked for. One mix-up off the telly. One row it never should have caught. [warmly] And one grown-up, clearing the lot in four taps. That is the bit to remember.",
+      "text": "[proud] Cyber Hero, the whole diary. And look what was in it. One thing you asked for. One mix-up off the telly. One argument it never should have caught. [warmly] And one grown-up, clearing the lot in four taps. That is the bit to remember.",
       "lines": [
         "[proud] Cyber Hero, the whole diary. And look what was in it.",
-        "One thing you asked for. One mix-up off the telly. One row it never should have caught.",
+        "One thing you asked for. One mix-up off the telly. One argument it never should have caught.",
         "[warmly] And one grown-up, clearing the lot in four taps. That is the bit to remember."
       ],
-      "file": "/audio/voice/2f511d6daea5d6f7.mp3"
+      "file": "/audio/voice/3b6354e6fca7b167.mp3"
     },
     {
       "key": "b361b9c5078a5d51",
@@ -10850,8 +10876,7 @@
       "text": "[excited] Look at EVERYTHING you mastered this week! Ears found, the diary opened, the little glass eyes spotted, your moments picked... and every switch flipped. [laughs] His lazy listening trick just stopped working in your house. [excited] Cyber Hero, sticker time!",
       "lines": [
         "[excited] Look at EVERYTHING you mastered this week!",
-        "Ears found, the diary opened, the little glass eyes spotted,",
-        "your moments picked... and every switch flipped.",
+        "Ears found, the diary opened, the little glass eyes spotted, your moments picked... and every switch flipped.",
         "[laughs] His lazy listening trick just stopped working in your house.",
         "[excited] Cyber Hero, sticker time!"
       ],
@@ -10918,14 +10943,14 @@
       "file": "/audio/voice/953a0f7de16a5caf.mp3"
     },
     {
-      "key": "0600c47f866af9f6",
+      "key": "95a1321c17273cbf",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "Somebody said the speaker's name in the middle of a row, and now there is a line about it saved on the app.",
+      "text": "Somebody said the speaker's name in the middle of an argument, and now there is a line about it saved on the app.",
       "lines": [
-        "Somebody said the speaker's name in the middle of a row, and now there is a line about it saved on the app."
+        "Somebody said the speaker's name in the middle of an argument, and now there is a line about it saved on the app."
       ],
-      "file": "/audio/voice/0600c47f866af9f6.mp3"
+      "file": "/audio/voice/95a1321c17273cbf.mp3"
     },
     {
       "key": "6af193640b9fbf70",
@@ -11088,14 +11113,14 @@
       "file": "/audio/voice/ddb9c9187d6dda28.mp3"
     },
     {
-      "key": "3db0e7f2802ae188",
+      "key": "7b5cb2e5aad425bf",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "Its name got said in the middle of the washing up row. So it woke and wrote the next bit down. It cannot tell what is private.",
+      "text": "Its name got said in the middle of an argument about the washing up. So it woke and wrote the next bit down. It cannot tell what is private.",
       "lines": [
-        "Its name got said in the middle of the washing up row. So it woke and wrote the next bit down. It cannot tell what is private."
+        "Its name got said in the middle of an argument about the washing up. So it woke and wrote the next bit down. It cannot tell what is private."
       ],
-      "file": "/audio/voice/3db0e7f2802ae188.mp3"
+      "file": "/audio/voice/7b5cb2e5aad425bf.mp3"
     },
     {
       "key": "6afa3446770f57f9",
@@ -11693,14 +11718,14 @@
       "file": "/audio/voice/ddb9c9187d6dda28.mp3"
     },
     {
-      "key": "3db0e7f2802ae188",
+      "key": "7b5cb2e5aad425bf",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "Its name got said in the middle of the washing up row. So it woke and wrote the next bit down. It cannot tell what is private.",
+      "text": "Its name got said in the middle of an argument about the washing up. So it woke and wrote the next bit down. It cannot tell what is private.",
       "lines": [
-        "Its name got said in the middle of the washing up row. So it woke and wrote the next bit down. It cannot tell what is private."
+        "Its name got said in the middle of an argument about the washing up. So it woke and wrote the next bit down. It cannot tell what is private."
       ],
-      "file": "/audio/voice/3db0e7f2802ae188.mp3"
+      "file": "/audio/voice/7b5cb2e5aad425bf.mp3"
     },
     {
       "key": "6afa3446770f57f9",
@@ -12113,24 +12138,24 @@
       "file": "/audio/voice/4015773d72de1908.mp3"
     },
     {
-      "key": "9e0ec353936d4693",
+      "key": "81ef173bf84d6a25",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "It was not taking down the whole row. It woke on its name and kept what came next, which was enough of it.",
+      "text": "It was not taking down the whole argument. It woke on its name and kept what came next, which was enough of it.",
       "lines": [
-        "It was not taking down the whole row. It woke on its name and kept what came next, which was enough of it."
+        "It was not taking down the whole argument. It woke on its name and kept what came next, which was enough of it."
       ],
-      "file": "/audio/voice/9e0ec353936d4693.mp3"
+      "file": "/audio/voice/81ef173bf84d6a25.mp3"
     },
     {
-      "key": "724f55e45fe22479",
+      "key": "bbb79517fea5eb24",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "It cannot tell a row from a song request. Its name was said, so the diary got a line.",
+      "text": "It cannot tell an argument from a song request. Its name was said, so the diary got a line.",
       "lines": [
-        "It cannot tell a row from a song request. Its name was said, so the diary got a line."
+        "It cannot tell an argument from a song request. Its name was said, so the diary got a line."
       ],
-      "file": "/audio/voice/724f55e45fe22479.mp3"
+      "file": "/audio/voice/bbb79517fea5eb24.mp3"
     },
     {
       "key": "9710b8d91a23e37d",
@@ -12795,12 +12820,12 @@
       "file": "/audio/voice/cea5e130adcd024d.mp3"
     },
     {
-      "key": "95a9dc8c41aededd",
+      "key": "a6483dfddaf8ac55",
       "speaker": "layla",
       "voice": "Emma (Kids Educator)",
-      "text": "[warmly] On your next challenge, we visit the Message Belt! This game is all about telling a REAL person apart from a robot. Out in the real world, chatbots try to sound just like people. So this is how we catch them. Here is what you do. One at a time, a little speech bubble slides along the belt. Read it, then decide who is talking. If it has a body or feelings, tap the REAL PERSON booth. A sore tummy. A loose tooth. If it does instant, endless things no real person could, tap the ROBOT booth. [excited] Get good at this and no robot message can trick you. Ready? Let's read!",
+      "text": "[warmly] On your first challenge, we visit the Message Belt! This game is all about telling a REAL person apart from a robot. Out in the real world, chatbots try to sound just like people. So this is how we catch them. Here is what you do. One at a time, a little speech bubble slides along the belt. Read it, then decide who is talking. If it has a body or feelings, tap the REAL PERSON booth. A sore tummy. A loose tooth. If it does instant, endless things no real person could, tap the ROBOT booth. [excited] Get good at this and no robot message can trick you. Ready? Let's read!",
       "lines": [
-        "[warmly] On your next challenge, we visit the Message Belt!",
+        "[warmly] On your first challenge, we visit the Message Belt!",
         "This game is all about telling a REAL person apart from a robot.",
         "Out in the real world, chatbots try to sound just like people. So this is how we catch them.",
         "Here is what you do. One at a time, a little speech bubble slides along the belt. Read it, then decide who is talking.",
@@ -12808,7 +12833,7 @@
         "If it does instant, endless things no real person could, tap the ROBOT booth.",
         "[excited] Get good at this and no robot message can trick you. Ready? Let's read!"
       ],
-      "file": "/audio/voice/95a9dc8c41aededd.mp3"
+      "file": "/audio/voice/a6483dfddaf8ac55.mp3"
     },
     {
       "key": "e4bbd4e31a1499d5",
@@ -12870,8 +12895,7 @@
         "[whispers] Ready for the Know-It-All's secret?",
         "[warmly] Today we are learning that a chatbot like ChatGPT can sound sure but be wrong. So we check it.",
         "Sometimes... it makes things up.",
-        "Not fibbing on purpose - just guessing out loud,",
-        "in the same big confident voice as its facts.",
+        "Not fibbing on purpose - just guessing out loud, in the same big confident voice as its facts.",
         "[warmly] So the golden rule: sounding sure isn't being right.",
         "[excited] A bot answer just landed on the desk - check every line!"
       ],
@@ -13223,8 +13247,7 @@
       "text": "[excited] Look at everything you mastered this week! You heard the robot voices, fact-checked the fibs, zipped the jar, caught the fakes, and grew a kind garden. [warmly] You've learned how to stay safe from every one of the Know-It-All's tricks. [excited] I'm so proud of you. Cyber Hero, sticker time!",
       "lines": [
         "[excited] Look at everything you mastered this week!",
-        "You heard the robot voices, fact-checked the fibs,",
-        "zipped the jar, caught the fakes, and grew a kind garden.",
+        "You heard the robot voices, fact-checked the fibs, zipped the jar, caught the fakes, and grew a kind garden.",
         "[warmly] You've learned how to stay safe from every one of the Know-It-All's tricks.",
         "[excited] I'm so proud of you. Cyber Hero, sticker time!"
       ],
@@ -13421,12 +13444,12 @@
       "file": "/audio/voice/a7d8444f369a117d.mp3"
     },
     {
-      "key": "551f68ee73cd2fce",
+      "key": "7747a5ef3e88716f",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "A chatbot says, very sure: 'Sharks are older than trees!' What should Adam do before he believes it? Is it option A... Ask the very same bot the question again. Option B... Believe it, the bot sounded really sure. Or is it option C... Check it in a real book first. So, what do you think?",
+      "text": "A chatbot sounds very sure when it says 'Sharks are older than trees!' What should Adam do before he believes it? Is it option A... Ask the very same bot the question again. Option B... Believe it, the bot sounded really sure. Or is it option C... Check it in a real book first. So, what do you think?",
       "lines": [
-        "A chatbot says, very sure: 'Sharks are older than trees!' What should Adam do before he believes it?",
+        "A chatbot sounds very sure when it says 'Sharks are older than trees!' What should Adam do before he believes it?",
         "Is it option A...",
         "Ask the very same bot the question again.",
         "Option B...",
@@ -13435,7 +13458,7 @@
         "Check it in a real book first.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/551f68ee73cd2fce.mp3"
+      "file": "/audio/voice/7747a5ef3e88716f.mp3"
     },
     {
       "key": "f7e767650ca5a0d3",
@@ -14763,8 +14786,7 @@
       "text": "[excited] Look at EVERYTHING you mastered this week! Signs ignored, the keyring checked, corners pressed, panes read honestly... and the barrier always ready. [laughs] His whole Doorway Trick just stopped working on you. [excited] Cyber Hero, sticker time!",
       "lines": [
         "[excited] Look at EVERYTHING you mastered this week!",
-        "Signs ignored, the keyring checked, corners pressed,",
-        "panes read honestly... and the barrier always ready.",
+        "Signs ignored, the keyring checked, corners pressed, panes read honestly... and the barrier always ready.",
         "[laughs] His whole Doorway Trick just stopped working on you.",
         "[excited] Cyber Hero, sticker time!"
       ],
@@ -14872,21 +14894,21 @@
       "file": "/audio/voice/49bd447c5a5a9f84.mp3"
     },
     {
-      "key": "7f20844377ab0c4b",
+      "key": "fd2736ea3c854dcf",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "Two links lead to the same cartoon: 'toon-town.tv/silly-cat-show' and 'bit.ly/x7qz2'. Which one can Layla actually CHECK before walking through? Is it option A... toon-town.tv/silly-cat-show, the whole address is readable. Option B... bit.ly/x7qz2, a shorter address is quicker to check. Or is it option C... Either one, all links show where they're going. So, what do you think?",
+      "text": "Two links lead to the same cartoon: 'toon-town.tv/silly-cat-show' and 'bit.ly/x7qz2'. Which one can Layla actually CHECK before walking through? Is it option A... The long link, you can read the whole address. Option B... The short link, a shorter address is quicker to check. Or is it option C... Either one, all links show where they're going. So, what do you think?",
       "lines": [
         "Two links lead to the same cartoon: 'toon-town.tv/silly-cat-show' and 'bit.ly/x7qz2'. Which one can Layla actually CHECK before walking through?",
         "Is it option A...",
-        "toon-town.tv/silly-cat-show, the whole address is readable.",
+        "The long link, you can read the whole address.",
         "Option B...",
-        "bit.ly/x7qz2, a shorter address is quicker to check.",
+        "The short link, a shorter address is quicker to check.",
         "Or is it option C...",
         "Either one, all links show where they're going.",
         "So, what do you think?"
       ],
-      "file": "/audio/voice/7f20844377ab0c4b.mp3"
+      "file": "/audio/voice/fd2736ea3c854dcf.mp3"
     },
     {
       "key": "dfb2591ce39416b0",
@@ -16626,8 +16648,7 @@
       "text": "[excited] Look at EVERYTHING you mastered this week! Rooms read, panes frosted, gold panned, drafts checked... and the backstage seen for what it is. [laughs] His whole Hall of Mirrors just stopped working on you. [excited] Cyber Hero, sticker time!",
       "lines": [
         "[excited] Look at EVERYTHING you mastered this week!",
-        "Rooms read, panes frosted, gold panned,",
-        "drafts checked... and the backstage seen for what it is.",
+        "Rooms read, panes frosted, gold panned, drafts checked... and the backstage seen for what it is.",
         "[laughs] His whole Hall of Mirrors just stopped working on you.",
         "[excited] Cyber Hero, sticker time!"
       ],
@@ -18809,8 +18830,7 @@
       "text": "[excited] Look at EVERYTHING you mastered this week! Shared screens spotted, clean leaves, front doors fitted, lids put down... and not one balloon said yes to. [laughs] He was counting on you being in a hurry. You weren't. [excited] Cyber Hero, sticker time!",
       "lines": [
         "[excited] Look at EVERYTHING you mastered this week!",
-        "Shared screens spotted, clean leaves, front doors fitted,",
-        "lids put down... and not one balloon said yes to.",
+        "Shared screens spotted, clean leaves, front doors fitted, lids put down... and not one balloon said yes to.",
         "[laughs] He was counting on you being in a hurry. You weren't.",
         "[excited] Cyber Hero, sticker time!"
       ],
@@ -20592,8 +20612,7 @@
       "text": "[excited] Look at EVERYTHING you mastered this week! Explaining it kindly, pointing at tells, sewing a fair quilt, building the morning-after wall... and saying it out loud in time. [laughs] He went after your family and walked straight into the expert. [excited] Cyber Hero, sticker time!",
       "lines": [
         "[excited] Look at EVERYTHING you mastered this week!",
-        "Explaining it kindly, pointing at tells, sewing a fair quilt,",
-        "building the morning-after wall... and saying it out loud in time.",
+        "Explaining it kindly, pointing at tells, sewing a fair quilt, building the morning-after wall... and saying it out loud in time.",
         "[laughs] He went after your family and walked straight into the expert.",
         "[excited] Cyber Hero, sticker time!"
       ],
@@ -22272,30 +22291,30 @@
       "file": "/audio/voice/0e6d88fa9acb2bbe.mp3"
     },
     {
-      "key": "ac64d865b35b3d3e",
+      "key": "eb9975dc1c37413a",
       "speaker": "layla",
       "voice": "Emma (Kids Educator)",
-      "text": "[excited] On your next challenge, you're the guard at the Treasure Table! You are going to sort what is safe to share from what stays locked away. When it happens for real, mixing those two up is exactly how the Raccoon grabs a clue about you. So: grab each card and drag it. Favorites go up to the share board. Who-you-are and where-you-are drop straight into the vault. [excited] Guard every treasure and he gets nothing. Ready? Let's sort!",
+      "text": "[excited] On your next challenge, you're the guard at the Treasure Table! You are going to sort what is safe to share from what stays locked away. When it happens for real, mixing those two up is exactly how the Raccoon grabs a clue about you. So: drag each card, or tap where it goes. Favorites go up to the share board. Who-you-are and where-you-are drop straight into the vault. [excited] Guard every treasure and he gets nothing. Ready? Let's sort!",
       "lines": [
         "[excited] On your next challenge, you're the guard at the Treasure Table!",
         "You are going to sort what is safe to share from what stays locked away.",
         "When it happens for real, mixing those two up is exactly how the Raccoon grabs a clue about you.",
-        "So: grab each card and drag it.",
+        "So: drag each card, or tap where it goes.",
         "Favorites go up to the share board.",
         "Who-you-are and where-you-are drop straight into the vault.",
         "[excited] Guard every treasure and he gets nothing. Ready? Let's sort!"
       ],
-      "file": "/audio/voice/ac64d865b35b3d3e.mp3"
+      "file": "/audio/voice/eb9975dc1c37413a.mp3"
     },
     {
-      "key": "c05cad575bf95d1b",
+      "key": "6fe7138617aa1a0f",
       "speaker": "layla",
       "voice": "Emma (Kids Educator)",
-      "text": "Grab that first treasure and drag it - board or vault?",
+      "text": "Drag that first treasure, or tap where it goes. Board or vault?",
       "lines": [
-        "Grab that first treasure and drag it - board or vault?"
+        "Drag that first treasure, or tap where it goes. Board or vault?"
       ],
-      "file": "/audio/voice/c05cad575bf95d1b.mp3"
+      "file": "/audio/voice/6fe7138617aa1a0f.mp3"
     },
     {
       "key": "d1f2772d846891da",
@@ -22606,8 +22625,7 @@
       "text": "[excited] Look at EVERYTHING you mastered this week! You guard your private treasure, share the safe stuff, ask WHY, wear your hero mask... [laughs] and when you're not sure, you ask your backup team! [excited] The Raccoon's form came back BLANK. Time for stickers!",
       "lines": [
         "[excited] Look at EVERYTHING you mastered this week!",
-        "You guard your private treasure, share the safe stuff,",
-        "ask WHY, wear your hero mask...",
+        "You guard your private treasure, share the safe stuff, ask WHY, wear your hero mask...",
         "[laughs] and when you're not sure, you ask your backup team!",
         "[excited] The Raccoon's form came back BLANK. Time for stickers!"
       ],
@@ -24674,8 +24692,7 @@
       "text": "[excited] Look at EVERYTHING you mastered this week! The vault, the inspection, the lever, the photo, and the one that matters most of all: asking first. [laughs] Twenty weeks. He threw the lot at you and not one of them landed. [excited] Cyber Hero, sticker time. The last ones!",
       "lines": [
         "[excited] Look at EVERYTHING you mastered this week!",
-        "The vault, the inspection, the lever, the photo,",
-        "and the one that matters most of all: asking first.",
+        "The vault, the inspection, the lever, the photo, and the one that matters most of all: asking first.",
         "[laughs] Twenty weeks. He threw the lot at you and not one of them landed.",
         "[excited] Cyber Hero, sticker time. The last ones!"
       ],
@@ -26595,17 +26612,16 @@
       "file": "/audio/voice/ae29b1c5b32e3511.mp3"
     },
     {
-      "key": "f49427953392f0dd",
+      "key": "e528837b7d90639d",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "You found the way out! [proud] Five different tricks, and not one of them worked on you. [warmly] Away from here, nothing gets past you. No park. No party. No photo swap. And a trusted grown-up is always waiting at the exit.",
+      "text": "[proud] Five different tricks, and not one of them worked on you. [warmly] Away from here, nothing gets past you. No park. No party. No photo swap. And a trusted grown-up is always waiting at the exit.",
       "lines": [
-        "You found the way out!",
         "[proud] Five different tricks, and not one of them worked on you.",
         "[warmly] Away from here, nothing gets past you. No park. No party. No photo swap.",
         "And a trusted grown-up is always waiting at the exit."
       ],
-      "file": "/audio/voice/f49427953392f0dd.mp3"
+      "file": "/audio/voice/e528837b7d90639d.mp3"
     },
     {
       "key": "996628a32537971a",
@@ -28679,8 +28695,7 @@
       "text": "[excited] Look at EVERYTHING you mastered this week! You follow every string. No giant prize can dazzle you. No countdown can rush you, no copycat can fool you... [laughs] and you never, ever bite! [excited] Every scam went straight back to sender. Sticker time!",
       "lines": [
         "[excited] Look at EVERYTHING you mastered this week!",
-        "You follow every string. No giant prize can dazzle you. No countdown can rush you,",
-        "no copycat can fool you...",
+        "You follow every string. No giant prize can dazzle you. No countdown can rush you, no copycat can fool you...",
         "[laughs] and you never, ever bite!",
         "[excited] Every scam went straight back to sender. Sticker time!"
       ],
@@ -30983,8 +30998,7 @@
       "text": "[excited] Look at EVERYTHING you mastered this week! You know the laugh test, you know it's never your fault, you starve the fire, you stop the chain... [warmly] and you never carry heavy words alone. [excited] The whole chat turned kind because of YOU. Sticker time!",
       "lines": [
         "[excited] Look at EVERYTHING you mastered this week!",
-        "You know the laugh test, you know it's never your fault,",
-        "you starve the fire, you stop the chain...",
+        "You know the laugh test, you know it's never your fault, you starve the fire, you stop the chain...",
         "[warmly] and you never carry heavy words alone.",
         "[excited] The whole chat turned kind because of YOU. Sticker time!"
       ],
@@ -31916,14 +31930,14 @@
       "file": "/audio/voice/891b9f92f5d7aa9b.mp3"
     },
     {
-      "key": "313a57f9d5d1f9eb",
+      "key": "5aebed340b659535",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "And you are never alone with it. Grown-ups you trust were picked on too, once. They can help you carry it, so you never carry it alone.",
+      "text": "You are never alone with it. Grown-ups you trust were picked on too, once. They can help you carry it, so you never carry it alone.",
       "lines": [
-        "And you are never alone with it. Grown-ups you trust were picked on too, once. They can help you carry it, so you never carry it alone."
+        "You are never alone with it. Grown-ups you trust were picked on too, once. They can help you carry it, so you never carry it alone."
       ],
-      "file": "/audio/voice/313a57f9d5d1f9eb.mp3"
+      "file": "/audio/voice/5aebed340b659535.mp3"
     },
     {
       "key": "0ac78520cc8416d7",
@@ -32036,34 +32050,34 @@
       "file": "/audio/voice/09e3734877041073.mp3"
     },
     {
-      "key": "846ed1a7f6748412",
+      "key": "02ef218142ce67a4",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "First moment: a mean message lands on you. It says you're terrible at the game.",
+      "text": "A mean message lands on you. It says you're terrible at the game.",
       "lines": [
-        "First moment: a mean message lands on you. It says you're terrible at the game."
+        "A mean message lands on you. It says you're terrible at the game."
       ],
-      "file": "/audio/voice/846ed1a7f6748412.mp3"
+      "file": "/audio/voice/02ef218142ce67a4.mp3"
     },
     {
-      "key": "192f38401c08480e",
+      "key": "5826e1e36d5d8229",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "Second moment: kids are piling on your friend Sam in the class chat.",
+      "text": "Kids are piling on your friend Sam in the class chat.",
       "lines": [
-        "Second moment: kids are piling on your friend Sam in the class chat."
+        "Kids are piling on your friend Sam in the class chat."
       ],
-      "file": "/audio/voice/192f38401c08480e.mp3"
+      "file": "/audio/voice/5826e1e36d5d8229.mp3"
     },
     {
-      "key": "0d22f3d595e8ce9a",
+      "key": "dc03393d1b080cf1",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "Third moment: an embarrassing photo arrives with pass it on, lol.",
+      "text": "An embarrassing photo arrives with pass it on, lol.",
       "lines": [
-        "Third moment: an embarrassing photo arrives with pass it on, lol."
+        "An embarrassing photo arrives with pass it on, lol."
       ],
-      "file": "/audio/voice/0d22f3d595e8ce9a.mp3"
+      "file": "/audio/voice/dc03393d1b080cf1.mp3"
     },
     {
       "key": "19183196d72ee646",
@@ -32505,8 +32519,7 @@
       "text": "[excited] Look at EVERYTHING you mastered this week! You fix the chat, you lock the lobby, you stay with the guards, you wield the power buttons... [warmly] and no free-skin trap will ever fool you. [excited] The intruder got booted from the lobby. Sticker time!",
       "lines": [
         "[excited] Look at EVERYTHING you mastered this week!",
-        "You fix the chat, you lock the lobby,",
-        "you stay with the guards, you wield the power buttons...",
+        "You fix the chat, you lock the lobby, you stay with the guards, you wield the power buttons...",
         "[warmly] and no free-skin trap will ever fool you.",
         "[excited] The intruder got booted from the lobby. Sticker time!"
       ],
@@ -35314,28 +35327,30 @@
       "file": "/audio/voice/19dbab24f9dfd389.mp3"
     },
     {
-      "key": "ef5db8547c98c15d",
+      "key": "b65b1836eec8aae8",
       "speaker": "layla",
       "voice": "Emma (Kids Educator)",
-      "text": "[excited] Time for your review: the Till Match! This game is all about pairing each shop trick with its hero move. Out in the real world, the tricks come one at a time. So the moves have to be ready in any order. Here is what you do. The cards are face down. Flip two. If a shop trick meets its hero move, they stay up and I tell you why. If not, they flip back and you try again. Fewer flips, more stars. [warmly] Six pairs, one till, one fortress. Ready? Flip a card!",
+      "text": "[excited] Time for your review: the Till Match! This game is all about pairing each shop trick with its hero move. Out in the real world, the tricks come one at a time. So the moves have to be ready in any order. Here is what you do. The cards are face down. Flip two. If a shop trick meets its hero move, they stay up and I tell you why. If not, they flip back and you try again. Fewer flips, more stars. [warmly] Five pairs, one till, one fortress. Ready? Flip a card!",
       "lines": [
         "[excited] Time for your review: the Till Match!",
         "This game is all about pairing each shop trick with its hero move.",
         "Out in the real world, the tricks come one at a time. So the moves have to be ready in any order.",
         "Here is what you do. The cards are face down. Flip two. If a shop trick meets its hero move, they stay up and I tell you why. If not, they flip back and you try again. Fewer flips, more stars.",
-        "[warmly] Six pairs, one till, one fortress. Ready? Flip a card!"
+        "[warmly] Five pairs, one till, one fortress. Ready? Flip a card!"
       ],
-      "file": "/audio/voice/ef5db8547c98c15d.mp3"
+      "file": "/audio/voice/b65b1836eec8aae8.mp3"
     },
     {
-      "key": "7aad0434b2267849",
+      "key": "c25135d2a38a35d9",
       "speaker": "layla",
       "voice": "Emma (Kids Educator)",
-      "text": "Flip any card to start, then find its matching move.",
+      "text": "Good matching. Now a memory round. You have fifteen seconds to learn where each card is. Then they flip over, and you tap where you think they are.",
       "lines": [
-        "Flip any card to start, then find its matching move."
+        "Good matching. Now a memory round.",
+        "You have fifteen seconds to learn where each card is.",
+        "Then they flip over, and you tap where you think they are."
       ],
-      "file": "/audio/voice/7aad0434b2267849.mp3"
+      "file": "/audio/voice/c25135d2a38a35d9.mp3"
     },
     {
       "key": "53c9a522df287742",
@@ -35355,8 +35370,7 @@
       "text": "[excited] Look at EVERYTHING you mastered this week! You count the real coins, you see the odds in the jar, no countdown can rush you, you ask before every buy... [warmly] and free-coin strings lead you straight to the trick. [excited] The trap shop is OUT of business. Sticker time!",
       "lines": [
         "[excited] Look at EVERYTHING you mastered this week!",
-        "You count the real coins, you see the odds in the jar,",
-        "no countdown can rush you, you ask before every buy...",
+        "You count the real coins, you see the odds in the jar, no countdown can rush you, you ask before every buy...",
         "[warmly] and free-coin strings lead you straight to the trick.",
         "[excited] The trap shop is OUT of business. Sticker time!"
       ],
@@ -36146,16 +36160,6 @@
         "Free game money does not exist. Log in here is fishing for your password."
       ],
       "file": "/audio/voice/7ff63d02e759dcc1.mp3"
-    },
-    {
-      "key": "1a9061184fe98852",
-      "speaker": "adam",
-      "voice": "Emma (Kids Educator)",
-      "text": "Inside the real game, with a real yes from the grown-up whose money it is. That is the one safe way.",
-      "lines": [
-        "Inside the real game, with a real yes from the grown-up whose money it is. That is the one safe way."
-      ],
-      "file": "/audio/voice/1a9061184fe98852.mp3"
     },
     {
       "key": "14d954705c3a11fd",
@@ -36999,18 +37003,17 @@
       "file": "/audio/voice/49cc7025140d42b6.mp3"
     },
     {
-      "key": "7271fe3d36b843e5",
+      "key": "5021e9360f5d557f",
       "speaker": "layla",
       "voice": "Emma (Kids Educator)",
-      "text": "[excited] Look at EVERYTHING you mastered this week! You know delete only deletes your copy, you ask every face, you check every corner, you pick the door that fits... [warmly] and look, think, ask runs before every photo. [excited] The Raccoon's darkroom heist is OVER. Sticker time!",
+      "text": "[excited] Look at EVERYTHING you mastered this week! You know delete only deletes your copy, you ask every face, you check every corner, you pick the right door... [warmly] and look, think, ask runs before every photo. [excited] The Raccoon's darkroom heist is OVER. Sticker time!",
       "lines": [
         "[excited] Look at EVERYTHING you mastered this week!",
-        "You know delete only deletes your copy, you ask every face,",
-        "you check every corner, you pick the door that fits...",
+        "You know delete only deletes your copy, you ask every face, you check every corner, you pick the right door...",
         "[warmly] and look, think, ask runs before every photo.",
         "[excited] The Raccoon's darkroom heist is OVER. Sticker time!"
       ],
-      "file": "/audio/voice/7271fe3d36b843e5.mp3"
+      "file": "/audio/voice/5021e9360f5d557f.mp3"
     },
     {
       "key": "13de72e3b0d92ea5",
@@ -39066,8 +39069,7 @@
       "text": "[excited] Look at EVERYTHING you mastered this week! One real shop, whiskers counted, keys checked, FREE tags flipped, and every install done together. [warmly] His copycat warehouse just lost its last customer. [excited] Sticker time!",
       "lines": [
         "[excited] Look at EVERYTHING you mastered this week!",
-        "One real shop, whiskers counted, keys checked,",
-        "FREE tags flipped, and every install done together.",
+        "One real shop, whiskers counted, keys checked, FREE tags flipped, and every install done together.",
         "[warmly] His copycat warehouse just lost its last customer.",
         "[excited] Sticker time!"
       ],
@@ -45999,17 +46001,6 @@
       "file": "/audio/voice/b55e02477ea80a68.mp3"
     },
     {
-      "key": "1ed5a9e66ca74a6a",
-      "speaker": "adam",
-      "voice": "Emma (Kids Educator)",
-      "text": "That's right! Inside the real game, with a real yes from the grown-up whose money it is. That is the one safe way.",
-      "lines": [
-        "That's right!",
-        "Inside the real game, with a real yes from the grown-up whose money it is. That is the one safe way."
-      ],
-      "file": "/audio/voice/1ed5a9e66ca74a6a.mp3"
-    },
-    {
       "key": "c1131e7457880003",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
@@ -50476,15 +50467,15 @@
       "file": "/audio/voice/6476324deabb0708.mp3"
     },
     {
-      "key": "7a8aef06f7020c95",
+      "key": "04c031c4fc0425a2",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "That's right! Saved, said bye, plugged in. The level is safe, your friends know you left, and tomorrow-you gets a full battery.",
+      "text": "That's right! Saved, said bye, plugged in. The level is safe, your friends know you left, and you will have a full battery tomorrow.",
       "lines": [
         "That's right!",
-        "Saved, said bye, plugged in. The level is safe, your friends know you left, and tomorrow-you gets a full battery."
+        "Saved, said bye, plugged in. The level is safe, your friends know you left, and you will have a full battery tomorrow."
       ],
-      "file": "/audio/voice/7a8aef06f7020c95.mp3"
+      "file": "/audio/voice/04c031c4fc0425a2.mp3"
     },
     {
       "key": "94d652beb886a4d2",
@@ -51114,37 +51105,37 @@
       "file": "/audio/voice/5e1bf09421d9ea08.mp3"
     },
     {
-      "key": "10862d4c9e95a24f",
+      "key": "081a570c977ce944",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "That's right! Its name got said in the middle of the washing up row. So it woke and wrote the next bit down. It cannot tell what is private.",
+      "text": "That's right! Its name got said in the middle of an argument about the washing up. So it woke and wrote the next bit down. It cannot tell what is private.",
       "lines": [
         "That's right!",
-        "Its name got said in the middle of the washing up row. So it woke and wrote the next bit down. It cannot tell what is private."
+        "Its name got said in the middle of an argument about the washing up. So it woke and wrote the next bit down. It cannot tell what is private."
       ],
-      "file": "/audio/voice/10862d4c9e95a24f.mp3"
+      "file": "/audio/voice/081a570c977ce944.mp3"
     },
     {
-      "key": "f9d3c9fd80891901",
+      "key": "a51d1ad780ca7950",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "Not quite. It was not taking down the whole row. It woke on its name and kept what came next, which was enough of it.",
+      "text": "Not quite. It was not taking down the whole argument. It woke on its name and kept what came next, which was enough of it.",
       "lines": [
         "Not quite.",
-        "It was not taking down the whole row. It woke on its name and kept what came next, which was enough of it."
+        "It was not taking down the whole argument. It woke on its name and kept what came next, which was enough of it."
       ],
-      "file": "/audio/voice/f9d3c9fd80891901.mp3"
+      "file": "/audio/voice/a51d1ad780ca7950.mp3"
     },
     {
-      "key": "5a37894c79076ba6",
+      "key": "603c5f009b4418e7",
       "speaker": "adam",
       "voice": "Emma (Kids Educator)",
-      "text": "Not quite. It cannot tell a row from a song request. Its name was said, so the diary got a line.",
+      "text": "Not quite. It cannot tell an argument from a song request. Its name was said, so the diary got a line.",
       "lines": [
         "Not quite.",
-        "It cannot tell a row from a song request. Its name was said, so the diary got a line."
+        "It cannot tell an argument from a song request. Its name was said, so the diary got a line."
       ],
-      "file": "/audio/voice/5a37894c79076ba6.mp3"
+      "file": "/audio/voice/603c5f009b4418e7.mp3"
     },
     {
       "key": "00ce2602082711c3",

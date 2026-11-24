@@ -1,39 +1,45 @@
 "use client";
 
 /**
- * CourseAuthPage - the shared login/signup surface behind the course-themed
- * auth routes (/cyberheroes, /cyberexplorers, /ops, /pro, /desk-ready
- * + /login|/signup).
+ * CourseAuthPage - the shared surface behind the course-themed auth routes
+ * (/cyberheroes, /cyberexplorers, /ops, /pro, /desk-ready, /ai-cleared,
+ * /ai-fluent, /cyber-awareness + /login | /signup | /forgot-password |
+ * /reset-password).
  *
  * Same auth plumbing as the platform pages (next-auth credentials sign-in;
- * the existing signup endpoint; the shared forgot-password flow), in
- * useCourseAuth. Only the skin and the post-auth destination are
- * per-course: the four cyber courses render the Night Console (owner's
- * pick, 2026-11-22), Desk Ready keeps its desk. Route pages pass a course
- * KEY string; everything client-side is looked up from it.
+ * the existing signup endpoint, in useCourseAuth; the existing
+ * forgot-password and reset-password endpoints, in NightFlows). Only the
+ * skin and the post-auth destination are per-course: every course renders
+ * the Night Console (owner's pick, 2026-11-22, extended in round 6,
+ * 2026-11-23). Route pages pass a course KEY string; everything
+ * client-side is looked up from it.
  */
 
 import { Suspense } from "react";
 import type { CourseAuthKey } from "./content";
-import type { AuthMode } from "./useCourseAuth";
 import NightConsole from "./NightConsole";
-import DeskConsole from "./DeskConsole";
-import { DESK_THEME } from "./themes";
+import { NightForgot, NightReset } from "./NightFlows";
+import type { NightMode } from "./NightShell";
 
 export type { CourseAuthKey } from "./content";
 
-const NIGHT_BG: Record<Exclude<CourseAuthKey, "desk">, string> = {
+const NIGHT_BG: Record<CourseAuthKey, string> = {
   cyberheroes: "#0b1026",
   cyberexplorers: "#06101a",
   ops: "#0a0814",
   pro: "#0c0a09",
+  desk: "#070b17",
+  cleared: "#04141a",
+  fluent: "#0a0a1d",
+  awareness: "#150816",
 };
 
-export default function CourseAuthPage({ course, mode }: { course: CourseAuthKey; mode: AuthMode }) {
-  const page = course === "desk" ? DESK_THEME.palette.page : NIGHT_BG[course];
+export default function CourseAuthPage({ course, mode }: { course: CourseAuthKey; mode: NightMode }) {
   return (
-    <Suspense fallback={<div style={{ minHeight: "100vh", background: page }} />}>
-      {course === "desk" ? <DeskConsole mode={mode} /> : <NightConsole course={course} mode={mode} />}
+    <Suspense fallback={<div style={{ minHeight: "100vh", background: NIGHT_BG[course] }} />}>
+      {mode === "forgot" ? <NightForgot course={course} />
+        : mode === "reset" ? <NightReset course={course} />
+        : <NightConsole course={course} mode={mode} />}
     </Suspense>
   );
 }

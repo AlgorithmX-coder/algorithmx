@@ -149,12 +149,17 @@ const STRIP_H = 40;
 /**
  * Window height that is not the corridor: lesson HUD 64 + stage padding 80 +
  * frame padding 32 + header 28 + gaps 24 + strip 40 + keyring band 152 + hint
- * room 70 + 10 spare. At 1414x771 the corridor takes its full height and
- * nothing needs a scroll.
+ * room 70 + 10 spare.
+ *
+ * The corridor floor is 220px (it was 180): at the tester's 1093x525 the door
+ * came out about 128px tall, and a long door like "a code for five hundred
+ * free coins" crushed its sign and sender into it (UAT W16-3). On a short
+ * window the lesson stage scales the whole board to fit, so the extra corridor
+ * costs a little zoom, never a scroll bar.
  */
-const HEIGHT_RESERVE_PX = 500;
-const MAX_SCENE_H = 270;
-const MIN_SCENE_H = 180;
+const HEIGHT_RESERVE_PX = 480;
+const MAX_SCENE_H = 290;
+const MIN_SCENE_H = 220;
 
 /** Room the keyring band needs under the corridor (ring row + commit slot). */
 const BAND_MIN_H = 152;
@@ -1163,7 +1168,7 @@ function MazeDoorPanel({
   const signH = Math.round(clamp(height * 0.3, 44, 72));
 
   return (
-    <div style={{ position: "relative", width: "min(330px, 66%)", height }}>
+    <div style={{ position: "relative", width: "min(350px, 70%)", height }}>
       {/* the warm room behind the door, revealed when it swings */}
       <div
         aria-hidden
@@ -1178,16 +1183,21 @@ function MazeDoorPanel({
         }}
       />
 
+      {/* The swing stops at 36 degrees. It used to go to 64 on a soft spring
+          that overshot past 70, and at that angle the door's face foreshortens
+          to well under half its width, so the sign and the sender looked
+          crushed while it opened (UAT W16-2). 36 still reads as an open door
+          and keeps the face at about four fifths of its width. */}
       <motion.div
         animate={
           reduce
-            ? { rotateY: open ? -40 : 0 }
+            ? { rotateY: open ? -36 : 0 }
             : rattling
               ? { x: [0, -8, 7, -5, 4, 0], rotateY: 0 }
-              : { rotateY: open ? -64 : 0, x: 0 }
+              : { rotateY: open ? -36 : 0, x: 0 }
         }
         transition={
-          reduce ? { duration: 0.2 } : rattling ? { duration: 0.44 } : { type: "spring", stiffness: 90, damping: 16 }
+          reduce ? { duration: 0.2 } : rattling ? { duration: 0.44 } : { type: "spring", stiffness: 120, damping: 22 }
         }
         style={{
           position: "absolute",

@@ -153,7 +153,7 @@ export const WEEK_1: WeekContent = {
         speaker: "layla",
         lines: [
           "Good matching. Now a memory round.",
-          "You have ten seconds to learn where each card sits.",
+          "You have fifteen seconds to learn where each card is.",
           "Then they flip over, and you tap where you think they are.",
         ],
       },

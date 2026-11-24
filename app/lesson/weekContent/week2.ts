@@ -318,7 +318,7 @@ export const WEEK_2: WeekContent = {
           "[excited] On your next challenge, you're the guard at the Treasure Table!",
           "You are going to sort what is safe to share from what stays locked away.",
           "When it happens for real, mixing those two up is exactly how the Raccoon grabs a clue about you.",
-          "So: grab each card and drag it.",
+          "So: drag each card, or tap where it goes.",
           "Favorites go up to the share board.",
           "Who-you-are and where-you-are drop straight into the vault.",
           "[excited] Guard every treasure and he gets nothing. Ready? Let's sort!",
@@ -326,7 +326,7 @@ export const WEEK_2: WeekContent = {
       },
       coachLines: {
         speaker: "layla",
-        lines: ["Grab that first treasure and drag it - board or vault?"],
+        lines: ["Drag that first treasure, or tap where it goes. Board or vault?"],
       },
       completeNarration: {
         speaker: "adam",
@@ -893,8 +893,7 @@ export const WEEK_2: WeekContent = {
         speaker: "layla",
         lines: [
           "[excited] Look at EVERYTHING you mastered this week!",
-          "You guard your private treasure, share the safe stuff,",
-          "ask WHY, wear your hero mask...",
+          "You guard your private treasure, share the safe stuff, ask WHY, wear your hero mask...",
           "[laughs] and when you're not sure, you ask your backup team!",
           "[excited] The Raccoon's form came back BLANK. Time for stickers!",
         ],

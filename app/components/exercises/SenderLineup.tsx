@@ -264,7 +264,11 @@ export default function SenderLineup({
                 gridTemplateColumns: "repeat(4, minmax(0,1fr))",
                 gap: 16,
                 padding: "0 12px",
-                alignItems: "end",
+                // Stretch, not end: a card whose name or clue wraps to an extra
+                // line stood taller than its neighbours, so the photos' tops
+                // were out of line (UAT 11-22, W15-4). Every card is now the
+                // row's height, photo at the top, podium at the foot.
+                alignItems: "stretch",
               }}
             >
               {senders.map((s, i) => {
