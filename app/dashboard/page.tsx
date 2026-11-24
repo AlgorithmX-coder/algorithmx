@@ -8,6 +8,8 @@ import { resolveActiveChildProfileId } from "@/app/lib/progressService";
 import { isSchoolPupil } from "@/app/lib/pupilAuth";
 import DashboardView, { type WeekItem, type WeekState } from "./DashboardView";
 import PlayDashboardAmbientOnMount from "@/app/components/PlayDashboardAmbientOnMount";
+import { BADGE_CATALOGUE } from "@/app/lib/badges-data";
+import { heroColour, inkOn } from "@/app/lib/heroColours";
 
 const PRODUCT_SLUG = "cyber-heroes";
 
@@ -72,6 +74,14 @@ export default async function DashboardPage() {
   const childAge = getAge(activeChild.dateOfBirth);
   const userName = activeChild.name ?? session.user.name ?? "Cyber Hero";
   const raccoonPower = Math.round(100 - progressPct);
+  const colour = heroColour(activeChild.favouriteColour);
+
+  /* The medal art of the latest badges, which are earned week by week the
+     same way the Cyber HQ badge case counts them: a week completed. */
+  const completedWeeks = new Set(progressRows.filter((p) => p.completedAt !== null).map((p) => p.week));
+  const medals = BADGE_CATALOGUE.filter((b) => completedWeeks.has(b.week) && b.art)
+    .slice(-3)
+    .map((b) => ({ src: b.art as string, alt: b.name }));
 
   // Per-week presentation state. Every week is open/startable once entitled;
   // the "current" (next-to-play) week is just visually highlighted.
@@ -118,6 +128,8 @@ export default async function DashboardPage() {
       <DashboardView
       userName={userName}
       childAge={childAge}
+      kid={{ hex: colour.hex, ink: inkOn(colour.hex) }}
+      medals={medals}
       completedCount={completedCount}
       totalWeeks={totalWeeks}
       progressPct={progressPct}
