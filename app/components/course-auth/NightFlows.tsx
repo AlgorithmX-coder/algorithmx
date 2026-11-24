@@ -141,7 +141,7 @@ export function NightForgot({ course }: { course: CourseAuthKey }) {
           <p>{F.sentBefore}<em>{email}</em>{F.sentAfter}</p>
         </div>
       ) : (
-        <form className="na1-form" onSubmit={handleSubmit} noValidate>
+        <form className="na1-form" method="post" onSubmit={handleSubmit} noValidate>
           <FlowField
             id="ca-email"
             label={SHARED.labels.email}
@@ -270,7 +270,7 @@ export function NightReset({ course }: { course: CourseAuthKey }) {
       lightRef={lightRef}
       foot={foot}
     >
-      <form className="na1-form" onSubmit={handleSubmit} noValidate>
+      <form className="na1-form" method="post" onSubmit={handleSubmit} noValidate>
         <FlowField
           id="ca-password"
           label={F.labelPw}

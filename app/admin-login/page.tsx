@@ -52,7 +52,7 @@ function AdminLoginInner() {
 
   return (
     <div className="admin-ui al-shell">
-      <form className="al-card" onSubmit={handleSubmit}>
+      <form className="al-card" method="post" onSubmit={handleSubmit}>
         <div className="al-brand">
           <BrandCube size={44} />
           <Wordmark tag="Staff access" />

@@ -45,7 +45,6 @@ export default function NightConsole({ course, mode }: { course: CourseAuthKey; 
           <input
             className={`na1-input${toggle ? " has-toggle" : ""}`}
             id={id}
-            name={k}
             type={type}
             autoComplete={auto}
             inputMode={type === "email" ? "email" : undefined}
@@ -85,7 +84,7 @@ export default function NightConsole({ course, mode }: { course: CourseAuthKey; 
       lightRef={lightRef}
       foot={<p className="na1-switch">{sw.lead} <Link href={sibling}>{sw.link}</Link></p>}
     >
-      <form className="na1-form" onSubmit={onSubmit} noValidate>
+      <form className="na1-form" method="post" onSubmit={onSubmit} noValidate>
         {!isLogin && renderField({ id: "ca-name", k: "name", type: "text", auto: "name", i: 0 })}
         {renderField({ id: "ca-email", k: "email", type: "email", auto: "email", i: isLogin ? 0 : 1 })}
         {renderField({ id: "ca-password", k: "password", type: pwType, auto: isLogin ? "current-password" : "new-password", i: isLogin ? 1 : 2, toggle: true })}
