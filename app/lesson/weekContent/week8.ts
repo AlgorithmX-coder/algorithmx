@@ -374,7 +374,7 @@ export const WEEK_8: WeekContent = {
           "[excited] On your second challenge, you step into the Ask Ring!",
           "This game is all about asking everyone in a photo before it goes anywhere.",
           "Out in the real world, it only takes one quick question, and it keeps everyone's face safe.",
-          "Here is what you do. A photo appears with your friends in it. Tap each friend to ask and listen to their answer. A yes glows. For a no, tap the hero move: leave them out, or don't post it. When every face is settled, tap POST.",
+          "Here is what you do. A photo appears with your friends in it. Tap each friend to ask and listen to their answer. A yes glows. For a no, tap the hero move: leave them out, or don't post it. When every face is settled, tap POST. If someone said don't post it, tap Keep it off the internet instead.",
           "[warmly] Listen to exactly what each friend says. Ready? First photo!",
         ],
       },
