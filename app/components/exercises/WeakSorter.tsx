@@ -441,6 +441,9 @@ export default function WeakSorter({
                 // card's edges (UAT batch 2, item 5): wrap inside the card instead.
                 maxWidth: "calc(100% - 56px)",
                 whiteSpace: "normal",
+                // The card sets break-all for long passwords; the stamp must
+                // wrap between words, never mid-word ("BIRTHD / AY" at 390px).
+                wordBreak: "normal",
                 textAlign: "center",
                 lineHeight: 1.25,
                 boxSizing: "border-box",
