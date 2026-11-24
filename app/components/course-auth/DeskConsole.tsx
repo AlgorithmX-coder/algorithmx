@@ -97,7 +97,7 @@ export default function DeskConsole({ mode }: { mode: AuthMode }) {
             </p>
           )}
 
-          <form onSubmit={(e) => { e.preventDefault(); void submit(); }} noValidate>
+          <form method="post" onSubmit={(e) => { e.preventDefault(); void submit(); }} noValidate>
             {!isLogin && (
               <div style={{ marginBottom: 15 }}>
                 <label htmlFor="ca-name" style={labelStyle}>{SHARED.labels.name}</label>
