@@ -1,5 +1,19 @@
 # Database migrations + Neon preview branch
 
+> **Where prod lives (updated 2026-10-04).** Neon deprecated its Azure
+> regions, so production moved off `algorithmx` (Azure Germany West
+> Central) to a new project **`algorithmx-uk`, AWS Europe West 2
+> (London), Postgres 17**. Default branch `production`, database
+> `neondb`. Every connection string in this file that still shows the
+> old `...gwc.azure.neon.tech` host is dead - take the current one from
+> the Connect panel of `algorithmx-uk`. Use the **pooled** URL for the
+> app and the **direct** (no `-pooler`) URL for `prisma migrate`
+> commands and for dump/restore.
+>
+> The move was a `pg_dump -Fc` / `pg_restore` through the `postgres:17`
+> Docker image, verified by matching row counts on all 23 tables plus
+> `_prisma_migrations`.
+
 This is the post-launch hardening. Two things changed this session:
 
 1. The local + prod database is now under proper migration control.
@@ -47,7 +61,7 @@ panel (pooled connection).
 Open a terminal in this repo. Run, with your real URL substituted:
 
 ```bash
-DATABASE_URL='postgresql://neondb_owner:YOURPASS@ep-square-scene-a910p769-pooler.gwc.azure.neon.tech/neondb?sslmode=require&channel_binding=require' \
+DATABASE_URL='postgresql://neondb_owner:YOURPASS@ep-YOUR-ENDPOINT.eu-west-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require' \
   npx prisma migrate resolve --applied "20260510000000_baseline"
 ```
 
@@ -91,14 +105,26 @@ prod automatically.
 
 ---
 
-## Setting up the Neon preview branch (optional but recommended)
+## Setting up the Neon preview branch (NOT DONE - see warning)
+
+> **Status as of 2026-10-04: this was never set up.** Vercel has a
+> single `DATABASE_URL` row covering **Production and Preview**, so
+> preview deploys talk to the live production database. Combined with
+> `vercel-build` running `prisma migrate deploy`, that means **a PR
+> that adds a migration applies it to production the moment its
+> preview deploys, before the PR is reviewed or merged** - and a
+> preview signup writes a real row to the prod `User` table.
+>
+> Nothing has leaked ahead so far (prod and `main` both sit at 15
+> migrations), but the next schema-changing PR is exposed. Doing the
+> steps below on the new `algorithmx-uk` project closes it.
 
 This lets every Vercel PR preview deploy use a forked copy of the prod
 DB so destructive schema changes can't reach prod customers.
 
 ### Step 1 - Create the branch on Neon
 
-1. Go to https://console.neon.tech → your `algorithmx` project.
+1. Go to https://console.neon.tech → your `algorithmx-uk` project.
 2. Left sidebar → **Branches**.
 3. Click **Create branch**.
 4. Source: `production` (the default branch). Compute: keep the
