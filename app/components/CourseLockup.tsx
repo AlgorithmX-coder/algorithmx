@@ -38,6 +38,21 @@ const TONES = {
   sand: { word: "#14161d", heroes: "#8a5400", explorers: "#0a6675", ops: "#5744c9", pro: "#a63a08", glow: false },
 } as const;
 
+/* The Ops mark on its own (the bracketed scope reticle), for surfaces that
+ * need the glyph without the wordmark, such as the /ops power source. The
+ * lockup below draws the same element. */
+export function OpsMark({ size = 19, color = "currentColor", style }: { size?: number; color?: string; style?: React.CSSProperties }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden style={{ flexShrink: 0, ...style }}>
+      <path d="M3.4 7.4 V3.4 H7.4 M16.6 3.4 H20.6 V7.4 M20.6 16.6 V20.6 H16.6 M7.4 20.6 H3.4 V16.6" strokeWidth="1.5" />
+      <circle cx="12" cy="12" r="5.4" />
+      <circle cx="12" cy="12" r="2.9" strokeWidth="1" opacity="0.5" />
+      <path d="M12 4.8 V7 M12 17 V19.2 M4.8 12 H7 M17 12 H19.2" strokeWidth="1.5" />
+      <circle cx="12" cy="12" r="1.2" fill={color} stroke="none" />
+    </svg>
+  );
+}
+
 export default function CourseLockup({
   id,
   size = 1,
@@ -79,13 +94,7 @@ export default function CourseLockup({
   if (id === "ops") {
     return (
       <span style={ROW}>
-        <svg width={19 * size} height={19 * size} viewBox="0 0 24 24" fill="none" stroke={T.ops} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden style={{ filter: glow("rgba(139,123,255,0.45)", 7), flexShrink: 0 }}>
-          <path d="M3.4 7.4 V3.4 H7.4 M16.6 3.4 H20.6 V7.4 M20.6 16.6 V20.6 H16.6 M7.4 20.6 H3.4 V16.6" strokeWidth="1.5" />
-          <circle cx="12" cy="12" r="5.4" />
-          <circle cx="12" cy="12" r="2.9" strokeWidth="1" opacity="0.5" />
-          <path d="M12 4.8 V7 M12 17 V19.2 M4.8 12 H7 M17 12 H19.2" strokeWidth="1.5" />
-          <circle cx="12" cy="12" r="1.2" fill={T.ops} stroke="none" />
-        </svg>
+        <OpsMark size={19 * size} color={T.ops} style={{ filter: glow("rgba(139,123,255,0.45)", 7) }} />
         <span style={{ fontFamily: "var(--font-chakra), ui-sans-serif, system-ui, sans-serif", fontWeight: 700, fontSize: `${1.05 * size}rem`, letterSpacing: "0.16em", color: T.word }}>
           CYBER OPS
         </span>

@@ -1,8 +1,11 @@
 import { randomInt } from "crypto";
+import { cookies } from "next/headers";
 import { prisma } from "@/app/lib/prisma";
 import bcrypt from "bcryptjs";
 import { isSchoolCourse, placesUsed } from "@/app/lib/schoolPlaces";
 import { moveSpendsAPlace, placesNeededForWholeClass } from "@/app/lib/placeRule";
+import { pickSchool, SCHOOL_CHOICE_COOKIE, type SchoolChoice } from "@/app/lib/schoolChoice";
+import { trialStatus } from "@/app/lib/orgTrial";
 import type { LearnerOrgKind } from "@prisma/client";
 
 /**
@@ -56,6 +59,13 @@ export interface SchoolContext {
   trialExpiresAt: Date | null;
   /* Set once staff close this school's access. See orgRevoke.ts. */
   revokedAt: Date | null;
+  /**
+   * Every school this person belongs to, newest membership first, so a
+   * screen can offer the switch. One entry for almost everybody; the list
+   * exists because the day it has two is the day the portal used to get it
+   * wrong.
+   */
+  schools: SchoolChoice[];
 }
 
 /**
@@ -64,29 +74,78 @@ export interface SchoolContext {
  * Requires a `SchoolProfile`, which is what finally separates a school from a
  * law firm. `app/lib/schoolAccess.ts` could not make that distinction and
  * said so in a comment; this is the fix that comment promised.
+ *
+ * WHICH SCHOOL, when there is more than one. This used to be `findFirst`
+ * with no `orderBy`, which means the database answered with whichever
+ * membership row it happened to reach first. The owner onboarded a school,
+ * opened the portal and was shown a trial-ended notice for a DIFFERENT
+ * school from an earlier test. Nothing was wrong with the new one; the
+ * portal was looking at the wrong one, and because that one was dead, every
+ * screen behind it was blocked.
+ *
+ * Now: all of their schools, newest first, and `pickSchool` chooses. The
+ * choice reads a cookie so a teacher at two schools can switch and stay
+ * switched, and it is read HERE rather than passed in by each of the
+ * fifteen callers, so no screen can disagree with another about which
+ * school you are in.
  */
 export async function getSchoolContext(userId: string): Promise<SchoolContext | null> {
   if (!userId) return null;
-  const member = await prisma.orgMember.findFirst({
+  const members = await prisma.orgMember.findMany({
     where: { userId, role: { in: ["ADMIN", "MANAGER"] }, org: { school: { isNot: null } } },
+    /* Newest membership first: the school you joined last is the one you
+       are most likely looking for, and it is also a stable order, which
+       the old query did not have at all. */
+    orderBy: { createdAt: "desc" },
     select: { org: { select: { id: true, name: true, seatsPurchased: true, trialExpiresAt: true, revokedAt: true, school: { select: { kind: true } } } } },
   });
-  if (!member) return null;
+  if (members.length === 0) return null;
+
+  const schools: SchoolChoice[] = members.map((m) => ({
+    orgId: m.org.id,
+    name: m.org.name,
+    live: m.org.revokedAt === null && trialStatus(m.org.trialExpiresAt) !== "expired",
+  }));
+
+  /* A preference, never an authorisation: pickSchool can only return one of
+     the schools above, so a stale or forged cookie selects nothing. */
+  const preferred = (await cookies()).get(SCHOOL_CHOICE_COOKIE)?.value ?? null;
+  const chosen = pickSchool(schools, preferred);
+  const org = members.find((m) => m.org.id === chosen?.orgId)!.org;
+
   /* The ledger, not a head count of pupils in live classes. A place spent is
      spent: removing a pupil does not hand it back, and archiving a class at
      the end of a year does not hand back the whole class. See schoolPlaces. */
-  const seatsUsed = await placesUsed(member.org.id);
+  const seatsUsed = await placesUsed(org.id);
   return {
-    orgId: member.org.id,
-    orgName: member.org.name,
+    orgId: org.id,
+    orgName: org.name,
     /* The where clause above requires a SchoolProfile, so this is never
        null; SCHOOL is the safe reading if that ever changes. */
-    kind: member.org.school?.kind ?? "SCHOOL",
-    seatsPurchased: member.org.seatsPurchased,
+    kind: org.school?.kind ?? "SCHOOL",
+    seatsPurchased: org.seatsPurchased,
     seatsUsed,
-    trialExpiresAt: member.org.trialExpiresAt,
-    revokedAt: member.org.revokedAt,
+    trialExpiresAt: org.trialExpiresAt,
+    revokedAt: org.revokedAt,
+    schools,
   };
+}
+
+/**
+ * Is this person staff at THAT school? Not "at the school they are
+ * currently looking at", which is a different question and the wrong one
+ * for an authorisation check.
+ *
+ * Anything that asks "may this person see this pupil" has to ask about the
+ * pupil's own school. Asking about the current one quietly refuses a
+ * teacher who works at two schools and is looking at the other one.
+ */
+export async function isSchoolStaffOf(userId: string, orgId: string): Promise<boolean> {
+  if (!userId || !orgId) return false;
+  const n = await prisma.orgMember.count({
+    where: { userId, orgId, role: { in: ["ADMIN", "MANAGER"] }, org: { school: { isNot: null } } },
+  });
+  return n > 0;
 }
 
 /** Every class at the school, with how many pupils are in each. */

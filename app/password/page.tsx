@@ -168,7 +168,7 @@ export default function PasswordGatePage() {
                 )}
               </AnimatePresence>
 
-              <form onSubmit={handleSubmit} className="space-y-1" noValidate>
+              <form method="post" onSubmit={handleSubmit} className="space-y-1" noValidate>
                 <AuthField
                   id="gate-password"
                   label="Access password"

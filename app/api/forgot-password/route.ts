@@ -2,11 +2,16 @@ import { NextResponse } from "next/server";
 import crypto from "node:crypto";
 import { prisma } from "@/app/lib/prisma";
 import { sendEmail, passwordResetTemplate } from "@/app/lib/resend";
+import { resetPathFor } from "@/app/lib/courseResetPath";
 
 /**
  * POST /api/forgot-password
  *
- * Body: { email: string }
+ * Body: { email: string, course?: string }
+ *
+ * `course` (optional, a catalog slug) only picks which page the emailed
+ * link opens: that course's own reset page from a fixed allowlist, else the
+ * generic /reset-password (app/lib/courseResetPath.ts).
  *
  * Generates a single-use password-reset token, stores its SHA-256 hash
  * in the DB (so a leaked DB can't reuse live tokens), and emails the
@@ -36,7 +41,8 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: true });
   }
 
-  const email = ((body ?? {}) as { email?: string }).email?.trim().toLowerCase();
+  const { email: rawEmail, course } = (body ?? {}) as { email?: string; course?: unknown };
+  const email = rawEmail?.trim().toLowerCase();
   if (!email || !EMAIL_RE.test(email)) {
     // Same generic 200 - don't leak whether validation failed vs the
     // user not existing.
@@ -71,7 +77,7 @@ export async function POST(req: Request) {
     process.env.NEXTAUTH_URL ??
     req.headers.get("origin") ??
     "http://localhost:3000";
-  const resetUrl = `${origin}/reset-password?token=${rawToken}`;
+  const resetUrl = `${origin}${resetPathFor(course)}?token=${rawToken}`;
 
   const tpl = passwordResetTemplate({
     resetUrl,

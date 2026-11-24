@@ -649,6 +649,8 @@ export default function NameTagCheck({
 
       {/* App skin (Week 9): the same drill on two app-store listing cards. */}
       {!showIntro && !finished && c && app && (
+        /* No extra floor here: a 64px floor (as on the tag skin) made this
+           taller board shrink at 1093x525. The Raccoon stands beside CHECK DONE. */
         <div style={{ position: "relative", zIndex: 1, padding: "0 22px" }}>
           {/* The whole board is inset: flush content collided with the frame's
               28px rounded corners and its corner ornaments. */}
@@ -775,7 +777,7 @@ export default function NameTagCheck({
               </div>
             </div>
 
-            {/* The verdict seal lands only after a correct lock; the Raccoon pops out of a copycat. */}
+            {/* The verdict seal lands only after a correct lock; the Raccoon pops out on the board floor below. */}
             <AnimatePresence>
               {phase === "sealed" && (
                 <motion.div
@@ -810,20 +812,6 @@ export default function NameTagCheck({
                   {isCopycat ? fakeSeal : realSeal}
                 </motion.div>
               )}
-              {phase === "sealed" && isCopycat && (
-                <motion.img
-                  key="raccoon"
-                  src={weekCharacterSrc(week ?? undefined, "raccoon", "taunt")}
-                  onError={fallbackToShared("raccoon", "taunt")}
-                  alt=""
-                  aria-hidden
-                  initial={reduce ? { opacity: 0 } : { opacity: 0, scale: 0.4, y: 30 }}
-                  animate={reduce ? { opacity: 1 } : { opacity: 1, scale: 1, y: 0 }}
-                  exit={{ opacity: 0, transition: { duration: 0.12 } }}
-                  transition={{ type: "spring", stiffness: 260, damping: 16 }}
-                  style={{ position: "absolute", right: -10, top: -40, height: 110, objectFit: "contain", filter: "drop-shadow(0 0 14px rgba(0,0,0,0.45))", pointerEvents: "none", zIndex: 3 }}
-                />
-              )}
             </AnimatePresence>
           </div>
 
@@ -839,6 +827,26 @@ export default function NameTagCheck({
           <div style={{ maxWidth: 560, margin: "8px auto 0" }}>
             {hintText && <HintBubble tier={hintTier} speaker={voice} text={hintText} />}
           </div>
+
+          {/* The Raccoon pops out of a copycat at the board's foot, bottom-right,
+              beside the CHECK DONE button. He used to perch on the app card's
+              top corner, over its rows and their stamps (UAT 11-22, W9-1). */}
+          <AnimatePresence>
+            {phase === "sealed" && isCopycat && (
+              <motion.img
+                key="raccoon"
+                src={weekCharacterSrc(week ?? undefined, "raccoon", "taunt")}
+                onError={fallbackToShared("raccoon", "taunt")}
+                alt=""
+                aria-hidden
+                initial={reduce ? { opacity: 0 } : { opacity: 0, scale: 0.4, y: 30 }}
+                animate={reduce ? { opacity: 1 } : { opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, transition: { duration: 0.12 } }}
+                transition={{ type: "spring", stiffness: 260, damping: 16 }}
+                style={{ position: "absolute", right: 10, bottom: 0, height: 72, objectFit: "contain", filter: "drop-shadow(0 0 14px rgba(0,0,0,0.45))", pointerEvents: "none", zIndex: 3 }}
+              />
+            )}
+          </AnimatePresence>
         </div>
       )}
 

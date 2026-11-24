@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Icon } from "@/app/components/heroes-portal/HeroesShell";
 
 /**
  * "Carry on with Week N", and every week within reach.
@@ -18,18 +19,10 @@ import Link from "next/link";
  * them, and a teacher sometimes sets one out of order. So every week is a
  * link, the finished ones are marked, and the next one is the one that
  * stands out.
+ *
+ * Drawn in the Cyber Heroes portal skin ("Lit Map", landing lab round 6):
+ * the classes live in heroes-portal.css, under the page's HeroesShell.
  */
-const C = {
-  card: "rgba(15, 21, 48, 0.72)",
-  border: "rgba(0, 229, 255, 0.22)",
-  text: "#e8edff",
-  textSoft: "#c5cdf0",
-  gold: "#fde047",
-  cyan: "#00e5ff",
-  violet: "#7c5cff",
-  deep: "#0f1530",
-};
-
 export default function CarryOn({
   nextWeek,
   completedWeeks,
@@ -44,73 +37,30 @@ export default function CarryOn({
   const fresh = done.size === 0;
 
   return (
-    <section
-      aria-label="Your lessons"
-      style={{
-        padding: "18px 22px",
-        background: C.card,
-        border: `1px solid ${C.border}`,
-        borderRadius: 16,
-        marginBottom: 20,
-      }}
-    >
-      <div
-        style={{
-          display: "flex",
-          flexWrap: "wrap",
-          gap: 14,
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
-      >
-        <div style={{ minWidth: 0 }}>
-          <h2 style={{ margin: "0 0 2px", fontSize: 18, fontWeight: 900, color: C.text }}>
+    <section className="hlm-card lit hq-carry" aria-labelledby="hq-carry-h" data-rise>
+      <div className="top">
+        <div>
+          <h2 id="hq-carry-h">
             {nextWeek === null
               ? "You have finished all " + totalWeeks + " weeks"
               : fresh
                 ? "Ready to start?"
                 : "Pick up where you left off"}
           </h2>
-          <p style={{ margin: 0, fontSize: 13, color: C.textSoft }}>
+          <p>
             {nextWeek === null
               ? "Every mission is done. Go back to any week whenever you want to play it again."
               : `You have finished ${done.size} of ${totalWeeks} weeks.`}
           </p>
         </div>
-
         {nextWeek !== null && (
-          <Link
-            href={`/lesson/${nextWeek}`}
-            style={{
-              display: "inline-block",
-              padding: "14px 30px",
-              background: `linear-gradient(135deg, ${C.cyan}, ${C.violet})`,
-              color: C.deep,
-              fontWeight: 900,
-              borderRadius: 12,
-              textDecoration: "none",
-              fontSize: 15,
-              /* 44px of target at the smallest, because this is tapped by a
-                 six year old on a shared tablet. */
-              minHeight: 44,
-            }}
-          >
-            {fresh ? `Start Week ${nextWeek}` : `Carry on with Week ${nextWeek}`} →
+          <Link className="hlm-btn" href={`/lesson/${nextWeek}`}>
+            {fresh ? `Start Week ${nextWeek}` : `Carry on with Week ${nextWeek}`} <Icon name="arr" />
           </Link>
         )}
       </div>
 
-      <ol
-        aria-label="All weeks"
-        style={{
-          listStyle: "none",
-          display: "flex",
-          flexWrap: "wrap",
-          gap: 8,
-          margin: "16px 0 0",
-          padding: 0,
-        }}
-      >
+      <ol className="hq-weeks" aria-label="All weeks">
         {Array.from({ length: totalWeeks }, (_, i) => i + 1).map((week) => {
           const finished = done.has(week);
           const isNext = week === nextWeek;
@@ -118,21 +68,8 @@ export default function CarryOn({
             <li key={week}>
               <Link
                 href={`/lesson/${week}`}
+                data-s={isNext ? "here" : finished ? "done" : "todo"}
                 aria-label={`Week ${week}${finished ? ", finished" : isNext ? ", carry on here" : ""}`}
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  width: 44,
-                  height: 44,
-                  borderRadius: 12,
-                  textDecoration: "none",
-                  fontSize: 14,
-                  fontWeight: 800,
-                  color: isNext ? C.deep : finished ? C.gold : C.textSoft,
-                  background: isNext ? C.gold : finished ? "rgba(253, 224, 71, 0.12)" : "rgba(255,255,255,0.05)",
-                  border: `1px solid ${isNext ? C.gold : finished ? "rgba(253, 224, 71, 0.5)" : C.border}`,
-                }}
               >
                 {week}
               </Link>

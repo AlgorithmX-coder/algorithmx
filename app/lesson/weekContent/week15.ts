@@ -105,7 +105,7 @@ export const WEEK_15: WeekContent = {
         lines: [
           "[warmly] Okay, let's start your very first lesson!",
           "Today we're learning to tell a robot chatbot from a real person.",
-          "You might have heard of an AI chatbot called ChatGPT.",
+          "You might have heard of a chatbot called ChatGPT.",
           "They can joke and chat and sound just like a person...",
           "but an AI is really a clever computer program.",
           "It has no feelings, no birthday, and it never gets tired.",
@@ -186,7 +186,7 @@ export const WEEK_15: WeekContent = {
       narration: {
         speaker: "layla",
         lines: [
-          "[warmly] On your next challenge, we visit the Message Belt!",
+          "[warmly] On your first challenge, we visit the Message Belt!",
           "This game is all about telling a REAL person apart from a robot.",
           "Out in the real world, chatbots try to sound just like people. So this is how we catch them.",
           "Here is what you do. One at a time, a little speech bubble slides along the belt. Read it, then decide who is talking.",
@@ -277,8 +277,7 @@ export const WEEK_15: WeekContent = {
           "[whispers] Ready for the Know-It-All's secret?",
           "[warmly] Today we are learning that a chatbot like ChatGPT can sound sure but be wrong. So we check it.",
           "Sometimes... it makes things up.",
-          "Not fibbing on purpose - just guessing out loud,",
-          "in the same big confident voice as its facts.",
+          "Not fibbing on purpose - just guessing out loud, in the same big confident voice as its facts.",
           "[warmly] So the golden rule: sounding sure isn't being right.",
           "[excited] A bot answer just landed on the desk - check every line!",
         ],
@@ -984,8 +983,7 @@ export const WEEK_15: WeekContent = {
         speaker: "layla",
         lines: [
           "[excited] Look at everything you mastered this week!",
-          "You heard the robot voices, fact-checked the fibs,",
-          "zipped the jar, caught the fakes, and grew a kind garden.",
+          "You heard the robot voices, fact-checked the fibs, zipped the jar, caught the fakes, and grew a kind garden.",
           "[warmly] You've learned how to stay safe from every one of the Know-It-All's tricks.",
           "[excited] I'm so proud of you. Cyber Hero, sticker time!",
         ],
@@ -1059,7 +1057,7 @@ export const WEEK_15: WeekContent = {
         label: "Sure Isn't True",
         ask: {
           slug: "quiz-w15-ask-c2-1",
-          text: "A chatbot says, very sure: 'Sharks are older than trees!' What should Adam do before he believes it?",
+          text: "A chatbot sounds very sure when it says 'Sharks are older than trees!' What should Adam do before he believes it?",
         },
         options: [
           { text: "Check it in a real book first." },

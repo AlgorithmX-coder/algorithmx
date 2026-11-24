@@ -134,7 +134,7 @@ const SAME_SOUND = {
   phishing: "fishing", phish: "fish", mom: "mum", moms: "mums", pajamas: "pyjamas", byte: "bite", bytes: "bites",
   reel: "real", latter: "ladder", borough: "burrow", missus: "misses", tally: "telly", em: "him", their: "theyre",
   there: "theyre", practise: "practice", practised: "practiced", adore: "adoor", britebox: "brightbox", pryzebot: "prizebot", petz: "pets",
-  hear: "here", too: "two",
+  read: "red", hear: "here", too: "two", wren: "ren", mrs: "misses", mike: "mic", cozy: "cosy", pane: "pain", favourite: "favorite", favourites: "favorites",
 };
 /* One canonical spelling, so a transcriber's American spelling or digits are
  * not mistaken for a different word. Applied to BOTH sides. */
@@ -162,13 +162,19 @@ export function wordsOf(text) {
     .replace(/(\d)[,](\d)/g, "$1$2")
     // Clock times: "6:00" is said "six", "3:15" is said "three fifteen".
     .replace(/\b(\d{1,2}):00\b/g, "$1").replace(/\b(\d{1,2}):(\d\d)\b/g, "$1 $2")
+    // "AI" said as two letters: the script may spell it A.I., a transcriber writes "a eye" (UAT 11-22)
+    // A transcriber also writes the two crisp letters as "A, Eye"; the slurred one Abdullah reported comes out "A-E" and stays a miss.
+    .replace(/\bA\.I\.?/g, "AI").replace(/\ba[,.]? eye\b/gi, "AI")
+    // A year said "twenty seventeen" comes back from the transcriber as "2017"; compare both as "twenty 17".
+    .replace(/\b20([1-9]\d)\b/g, "twenty $1")
     .split(/[\s\-–—/]+/).map(canon).filter(Boolean);
 }
 
 /** Problems with a take, [] = says exactly the line. */
 export function compareTake(lineText, heard) {
   const want = wordsOf(lineText);
-  const got = heard.filter((w) => w.type === "word").flatMap((w) => wordsOf(w.text));
+  // Normalise the heard words as ONE string, so an alias that spans two of them ("A, Eye" -> AI) can match.
+  const got = wordsOf(heard.filter((w) => w.type === "word").map((w) => w.text).join(" "));
   const probs = [];
   const events = heard.filter((w) => w.type === "audio_event").map((w) => w.text);
   if (events.length) probs.push(`sound: ${events.join(", ")}`);
@@ -421,7 +427,7 @@ export async function recordLine(ctx, line, prev, next, tmp) {
       }
     }
     await unlink(probeMp3).catch(() => {});
-    ctx.log(`t${take} ${probs.join("; ").slice(0, 160)}`);
+    ctx.log(`t${take} ${probs.join("; ").slice(0, 1200)}`);
     seen.set(probs.join("|"), true);
     if (!best && words.length) best = info; else await unlink(wav).catch(() => {});
   }

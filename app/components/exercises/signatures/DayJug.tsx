@@ -345,6 +345,10 @@ const clamp = (n: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, n
 // A read-aloud only starts when there is something to say and the lesson is not
 // muted, so the spoken gate never waits on a clip that cannot play.
 const canRead = (text?: string) => !isAudioMuted() && !!text;
+/* Spoken before each option label (UAT 11-22 W13: without it the three labels
+ * ran together). Each is its own recorded clip; keep this list identical to
+ * DAY_JUG_OPTION_LEADS in scripts/elevenlabs-generate-narration.mjs. */
+export const OPTION_LEADS = ["First option...", "Second option...", "Third option..."];
 
 /** The station height for a window: never taller than the design, never so
  *  short the cups stop reading. Read through useSyncExternalStore, so a
@@ -413,6 +417,8 @@ export default function DayJug({
   // shown ("option", which one = optionRead). Taps are held while she speaks.
   const [narr, setNarr] = useState<Narr>("idle");
   const [optionRead, setOptionRead] = useState(0);
+  // The "First option..." lead for the option being read has finished.
+  const [leadDone, setLeadDone] = useState(false);
   const [phase, setPhase] = useState<Phase>("pour");
   // The jug tipping and the stream running into the cup just traded.
   const [streaming, setStreaming] = useState(false);
@@ -483,14 +489,17 @@ export default function DayJug({
       return;
     }
     setOptionRead(0);
+    setLeadDone(false);
     setNarr(canRead(p.readAloud) ? "read" : canRead(p.options[0]?.label) ? "option" : "idle");
   };
   const onReadDone = () => {
     setOptionRead(0);
+    setLeadDone(false);
     setNarr(canRead(options[0]?.label) ? "option" : "idle");
   };
   const onOptionDone = () => {
     const next = optionRead + 1;
+    setLeadDone(false);
     if (next < options.length && canRead(options[next]?.label)) setOptionRead(next);
     else setNarr("idle");
   };
@@ -658,7 +667,17 @@ export default function DayJug({
               onDone={onReadDone}
             />
           )}
-          {narr === "option" && readingLabel && (
+          {narr === "option" && readingLabel && !leadDone && OPTION_LEADS[optionRead] && (
+            <InfoNarration
+              key={`djg-lead-${pour.id}-${optionRead}`}
+              speaker={voice}
+              lines={[OPTION_LEADS[optionRead]]}
+              accent={tint}
+              recordedOnly
+              onDone={() => setLeadDone(true)}
+            />
+          )}
+          {narr === "option" && readingLabel && (leadDone || !OPTION_LEADS[optionRead]) && (
             <InfoNarration
               key={`djg-label-${pour.id}-${optionRead}`}
               speaker={voice}

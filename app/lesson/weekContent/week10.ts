@@ -864,8 +864,7 @@ export const WEEK_10: WeekContent = {
         speaker: "layla",
         lines: [
           "[excited] Cyber Hero, that's all FIVE rabbit-hole powers!",
-          "Belt spotted, claims weighed, exit found,",
-          "pond emptied... and your own bell heard.",
+          "Belt spotted, claims weighed, exit found, pond emptied... and your own bell heard.",
           "[whispers] Now let's put them together. Every power is a rung...",
           "[excited] and we're building the Ladder Out. Come and build it!",
         ],
@@ -951,8 +950,7 @@ export const WEEK_10: WeekContent = {
         speaker: "adam",
         lines: [
           "[excited] Look at EVERYTHING you mastered this week!",
-          "The belt spotted, wild claims weighed,",
-          "the exit found, the pond emptied... and your bell heard.",
+          "The belt spotted, wild claims weighed, the exit found, the pond emptied... and your bell heard.",
           "[laughs] His conveyor is unplugged and squeaking.",
           "[excited] Sticker time!",
         ],
