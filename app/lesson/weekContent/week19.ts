@@ -1181,8 +1181,7 @@ export const WEEK_19: WeekContent = {
         speaker: "adam",
         lines: [
           "[excited] Look at EVERYTHING you mastered this week!",
-          "Explaining it kindly, pointing at tells, sewing a fair quilt,",
-          "building the morning-after wall... and saying it out loud in time.",
+          "Explaining it kindly, pointing at tells, sewing a fair quilt, building the morning-after wall... and saying it out loud in time.",
           "[laughs] He went after your family and walked straight into the expert.",
           "[excited] Cyber Hero, sticker time!",
         ],

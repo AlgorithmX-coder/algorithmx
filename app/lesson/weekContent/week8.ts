@@ -1075,8 +1075,7 @@ export const WEEK_8: WeekContent = {
         speaker: "layla",
         lines: [
           "[excited] Look at EVERYTHING you mastered this week!",
-          "You know delete only deletes your copy, you ask every face,",
-          "you check every corner, you pick the door that fits...",
+          "You know delete only deletes your copy, you ask every face, you check every corner, you pick the right door...",
           "[warmly] and look, think, ask runs before every photo.",
           "[excited] The Raccoon's darkroom heist is OVER. Sticker time!",
         ],
