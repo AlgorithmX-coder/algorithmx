@@ -63,7 +63,8 @@ export default function CampusShell({
     const host = backRef.current, con = consoleRef.current;
     if (!host || !con) return;
     const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (still) { pausedRef.current = true; setPaused(true); }
+    /* reduced motion: the CSS already stills every loop and hides the control, so only the canvas needs telling */
+    if (still) pausedRef.current = true;
     const env = { paused: () => pausedRef.current, still };
     const fx = family === "schools" ? campusGlobe(host, con, env) : officePulse(host, env);
     fxRef.current = fx;

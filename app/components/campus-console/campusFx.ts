@@ -14,14 +14,16 @@ function fullCanvas(host: HTMLElement, onFit?: () => void) {
   const cv = document.createElement("canvas");
   host.appendChild(cv);
   let ctx: CanvasRenderingContext2D | null = null;
-  const fit = () => {
+  /* onFit runs on resize only: the callers draw their own first frame once the handle exists */
+  const fit = (resized = true) => {
     const set = setupHiDpiCanvas(cv, { logicalWidth: window.innerWidth, logicalHeight: window.innerHeight, maxDpr: 1.5 });
     ctx = set ? set.ctx : null;
-    onFit?.();
+    if (resized) onFit?.();
   };
-  fit();
-  window.addEventListener("resize", fit);
-  return { ctx: () => ctx, destroy: () => { window.removeEventListener("resize", fit); cv.remove(); } };
+  fit(false);
+  const onResize = () => fit();
+  window.addEventListener("resize", onResize);
+  return { ctx: () => ctx, destroy: () => { window.removeEventListener("resize", onResize); cv.remove(); } };
 }
 
 function loop(env: FxEnv, draw: (dt: number) => void, fps = 30): Backdrop {
@@ -197,7 +199,7 @@ export function officePulse(host: HTMLElement, env: FxEnv): Backdrop {
     for (let y = G; y < H; y += G) for (let x = (W / 2) % G; x < W; x += G) { const a = 0.5 + 0.5 * Math.sin(T * 0.6 + x * 0.012 + y * 0.009); ctx.moveTo(x + 1.2, y); ctx.arc(x, y, 1.2 + a * 0.6, 0, 7); }
     ctx.globalAlpha = 0.22; ctx.fill(); ctx.globalAlpha = 1;
   };
-  const c = fullCanvas(host, () => { const ctx = c?.ctx(); if (env.still && ctx) points(ctx); });
+  const c = fullCanvas(host, () => { const ctx = c.ctx(); if (env.still && ctx) points(ctx); });
   if (env.still) { const ctx = c.ctx(); if (ctx) points(ctx); return { kick: () => {}, destroy: c.destroy }; }
   const l = loop(env, (dt) => {
     const ctx = c.ctx(); if (!ctx) return;
