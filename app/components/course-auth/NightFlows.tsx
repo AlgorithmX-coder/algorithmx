@@ -11,6 +11,10 @@
  * allowlist to this course's reset page for the emailed link. The token
  * itself is untouched.
  *
+ * The inputs carry no `name`, as the live AuthField inputs do not: a form
+ * submitted before hydration falls back to a native GET, and a named
+ * password field would land in the URL.
+ *
  * The submit button is not truly `disabled` while the form is not ready (the
  * live pages disable it); it carries aria-disabled and the dimmed look and a
  * click still runs the live checks, so their error strings are reachable by
@@ -51,7 +55,6 @@ function FlowField({
         <input
           className={`na1-input${toggle ? " has-toggle" : ""}`}
           id={id}
-          name={id.replace(/^ca-/, "")}
           type={type}
           autoComplete={auto}
           inputMode={inputMode}
