@@ -54,7 +54,8 @@ import { resetZeroFile, ZERO_CLUES } from "./engine/zeroFile";
 import { VillainGallery } from "./VillainGallery";
 import { loadExplorersProgress } from "@/app/lib/explorersProgress.actions";
 import { CaseGlyph } from "./CaseGlyphs";
-import { MatrixRain } from "./MatrixRain";
+import CourseHomeShell, { CourseHomePause } from "@/app/components/course-home/CourseHomeShell";
+import { CourseHomeLockup, ExplorersMark } from "@/app/components/course-home/marks";
 import { mission01 } from "./missions/mission01";
 import { mission02 } from "./missions/mission02";
 import { mission03 } from "./missions/mission03";
@@ -147,20 +148,16 @@ const WAR_CASES: Record<string, WarCase> = {
   "explorers-m20": case20War,
 };
 
-const RAIN_COLORS = ["#34E1FF", "#FF5CA8", "#FFB23E", "#B98BFF", "#3BF57E"];
 
-// terminal palette (scoped to this page)
-const SYS = "#34E1FF"; // system / chrome
-const TXT = "#D3E6F7"; // readable body
-const DIM = "#617a9e"; // muted
-const AMBER = "#FFC24B"; // the next case
+// the next case (the board itself is styled by app/components/course-home)
+const AMBER = "#FFC24B";
+type CSSVars = CSSProperties & Record<`--${string}`, string | number>;
 
 // The agent ID card's rank badge: a hex security-clearance shield
-// (two-layer clip-path for the coloured border) with a glyph that
+// (the two-layer clip-path lives in course-home.css, .ch6-hex) with a glyph that
 // changes per rank — not just a recoloured icon — so RECRUIT through
 // MAVERICK each read as a distinct clearance tier, cybersecurity-styled
 // to match the rest of /explorers (hex grids, scan rings, terminal chrome).
-const BADGE_HEX = "polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%)";
 const BADGE_STAR = "M12 1.5 14.9 8.6 22.5 9.3 16.7 14.3 18.5 21.8 12 17.8 5.5 21.8 7.3 14.3 1.5 9.3 9.1 8.6Z";
 const BADGE_SPECIALIST_RAY = "M12 0l1 2.4-1 1-1-1Z";
 
@@ -217,86 +214,6 @@ function RankGlyph({ name, size, color }: { name: string; size: number; color: s
   }
 }
 
-/* Locked cards read as "encrypted intel awaiting decryption", not dead grey
- * boxes, and each of the four blocks gets its OWN texture so they feel distinct:
- *   signal   -> intercepted waveform / spectrum (Signals)
- *   redacted -> a censored classified file (The Human Factor)
- *   hex      -> a scrolling memory dump (Systems)
- *   network  -> the mastermind's node web (The Long Game)
- * All pure CSS (no Math.random at render, so no hydration mismatch); motion is
- * dropped under prefers-reduced-motion but each texture still reads. */
-const LOCK_VARIANTS = ["signal", "redacted", "hex", "network"] as const;
-type LockVariant = (typeof LOCK_VARIANTS)[number];
-
-const REDACT_ROWS: { w: number; rd?: boolean }[][] = [
-  [{ w: 34 }, { w: 48, rd: true }, { w: 22 }],
-  [{ w: 20 }, { w: 30 }, { w: 54, rd: true }],
-  [{ w: 60, rd: true }, { w: 18 }, { w: 26 }],
-  [{ w: 28 }, { w: 40, rd: true }, { w: 20 }],
-  [{ w: 44, rd: true }, { w: 24 }, { w: 34 }],
-];
-const HEX_BLOCK = [
-  "4F2A 8B01 D39C 77", "1A0E FF42 8BA4 2D", "C7 91 3E 5B 0A F8", "6D14 2277 E0 9C 3F",
-  "AA 05 B2 7E 44 10", "9F3C 81 D6 2B 5508", "07 EE 4A 1C 90 63", "B8 2F 7D 00 4E A1",
-].join("\n");
-const NET_NODES: [number, number, number][] = [
-  [60, 35, 3.4], [20, 16, 2], [99, 22, 2], [28, 56, 2], [94, 52, 2], [58, 9, 1.7],
-];
-const NET_EDGES: [number, number, number, number][] = [
-  [60, 35, 20, 16], [60, 35, 99, 22], [60, 35, 28, 56], [60, 35, 94, 52], [60, 35, 58, 9], [20, 16, 58, 9], [99, 22, 94, 52],
-];
-
-function LockedFX({ variant, accent }: { variant: LockVariant; accent: string }) {
-  if (variant === "signal") {
-    return (
-      <span aria-hidden className="lf lf-radar" style={{ color: accent }}>
-        <svg className="radar-grid" viewBox="0 0 100 100">
-          <circle cx="50" cy="50" r="46" />
-          <circle cx="50" cy="50" r="31" />
-          <circle cx="50" cy="50" r="16" />
-          <line x1="50" y1="3" x2="50" y2="97" />
-          <line x1="3" y1="50" x2="97" y2="50" />
-        </svg>
-        <span className="radar-sweep" style={{ background: `conic-gradient(from 0deg, ${accent}, transparent 62deg)` }} />
-        <span className="radar-blip" style={{ top: "34%", left: "64%" }} />
-        <span className="radar-blip" style={{ top: "60%", left: "40%", animationDelay: "1.5s" }} />
-      </span>
-    );
-  }
-  if (variant === "redacted") {
-    return (
-      <span aria-hidden className="lf lf-redact" style={{ color: accent }}>
-        {REDACT_ROWS.map((row, r) => (
-          <span className="row" key={r}>
-            {row.map((seg, i) => (
-              <span key={i} className={seg.rd ? "rd" : "w"} style={{ width: seg.w, animationDelay: `${(r * 2 + i) * 0.22}s` }} />
-            ))}
-          </span>
-        ))}
-      </span>
-    );
-  }
-  if (variant === "hex") {
-    return (
-      <span aria-hidden className="lf lf-hex" style={{ color: accent, fontFamily: MONO }}>
-        <span className="hexroll">{HEX_BLOCK + "\n" + HEX_BLOCK}</span>
-      </span>
-    );
-  }
-  return (
-    <span aria-hidden className="lf lf-net" style={{ color: accent }}>
-      <svg viewBox="0 0 120 70" preserveAspectRatio="xMidYMid slice" style={{ width: "100%", height: "100%" }}>
-        {NET_EDGES.map((e, i) => (
-          <line key={i} className="edge" x1={e[0]} y1={e[1]} x2={e[2]} y2={e[3]} />
-        ))}
-        {NET_NODES.map((n, i) => (
-          <circle key={i} className="node" cx={n[0]} cy={n[1]} r={n[2]} style={{ animationDelay: `${i * 0.3}s` }} />
-        ))}
-      </svg>
-    </span>
-  );
-}
-const BG = "#060810";
 
 export default function ExplorersPage() {
   const reduced = useReducedMotion();
@@ -594,85 +511,23 @@ export default function ExplorersPage() {
         ? `START · ${nextCase.caseNumber}`
         : `NEXT · ${nextCase.caseNumber}`;
 
+  /* The first screen (landing lab round 6, homes-a explorers v1): a RESUME
+   * plate for the next case, the big CONTINUE, the Watchlist and a 20-case
+   * tape, with the Agent ID card beside it. Every value is the agent's own
+   * (status, XP, streak, rank); nothing here is sample data. */
+  const nb = nextCase ? blockStats[nextCase.block - 1] : null;
+  const nextAccent = nextCase ? MISSION_INTROS[nextCase.id]?.theme.accent ?? nb?.color ?? AMBER : AMBER;
+  const lastClosed = nextIdx > 0 && status[CASES[nextIdx - 1].id] === "CLOSED" ? CASES[nextIdx - 1] : null;
+  const rankPct = Math.round(rank.progress * 100);
+  const pad2 = (n: number) => String(n).padStart(2, "0");
+  const hex = (name: string, colour: string, s: number, g: number) => (
+    <span className="ch6-hex" style={{ "--rank": colour, width: s, height: s } as CSSVars} aria-hidden="true">
+      <span className="h1" /><span className="h2" /><RankGlyph name={name} size={g} color={colour} />
+    </span>
+  );
+
   return (
-    <main style={{ minHeight: "100vh", background: BG, color: TXT, fontFamily: MONO, position: "relative", overflow: "hidden" }}>
-      <style>{`
-        .tc-cur{animation:tcBlink 1s steps(1) infinite}
-        .tc-blink{animation:tcBlink 1.1s steps(1) infinite}
-        @keyframes tcBlink{50%{opacity:0}}
-        .tc-scan{position:fixed;inset:0;z-index:1;pointer-events:none;background:repeating-linear-gradient(0deg, rgba(0,0,0,0.24) 0 1px, transparent 1px 3px);opacity:.5}
-        .tc-vig{position:fixed;inset:0;z-index:1;pointer-events:none;background:radial-gradient(ellipse 80% 70% at 50% 36%, transparent 44%, rgba(3,5,12,0.82) 100%)}
-        .tc-h1{font-family:var(--font-inter),system-ui,-apple-system,sans-serif;font-size:clamp(30px,6vw,56px);font-weight:800;letter-spacing:.005em;margin:8px 0 2px;color:${TXT};text-shadow:0 0 22px ${SYS}66}
-        .tc-cta{font-family:inherit;font-size:14px;font-weight:700;letter-spacing:.06em;color:#101006;background:${AMBER};border:none;border-radius:3px;padding:12px 22px;cursor:pointer;box-shadow:0 0 22px ${AMBER}66;transition:box-shadow .15s, transform .15s}
-        .tc-cta:hover{box-shadow:0 0 34px ${AMBER}AA;transform:translateY(-1px)}
-        .tc-bar{display:flex;align-items:center;gap:7px;font-size:11px;padding:8px 12px;border:1px solid ${SYS}33;border-bottom:none;border-radius:7px 7px 0 0;background:rgba(8,14,26,0.72)}
-        .tc-win{border:1px solid ${SYS}2E;border-radius:0 0 7px 7px;background:rgba(6,10,20,0.5);padding:24px 22px 26px}
-        .tc-dot{width:9px;height:9px;border-radius:50%;display:inline-block}
-        .tc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(184px,1fr));gap:12px;margin-top:14px}
-        .tc-card{position:relative;text-align:left;border:1px solid color-mix(in srgb, var(--accent) 34%, transparent);border-radius:4px;background:rgba(8,13,24,0.74);cursor:pointer;overflow:hidden;padding:0;transition:box-shadow .18s,border-color .18s,transform .18s}
-        .tc-card:hover{border-color:var(--accent);box-shadow:0 0 26px color-mix(in srgb, var(--accent) 45%, transparent);transform:translateY(-2px)}
-        .tc-next{border-color:var(--accent);box-shadow:0 0 24px color-mix(in srgb, var(--accent) 46%, transparent)}
-        .tc-locked{cursor:not-allowed}
-        .tc-locked:hover{border-color:color-mix(in srgb, var(--accent) 55%, transparent);box-shadow:0 0 22px color-mix(in srgb, var(--accent) 28%, transparent);transform:none}
-        .lf{position:absolute;inset:0;z-index:1;overflow:hidden;pointer-events:none;user-select:none}
-        .tc-locked:hover .lf{filter:brightness(1.6)}
-        /* live FX plays in every card: subtle behind an open card's text, fainter
-           on a closed one, and it wakes up on hover. */
-        .tc-card:not(.tc-locked):not(.tc-closed) .lf{opacity:.24}
-        .tc-card:not(.tc-locked):not(.tc-closed):hover .lf{opacity:.42;filter:brightness(1.3)}
-        .tc-closed .lf{opacity:.22}
-        .tc-closed:hover .lf{opacity:.36;filter:brightness(1.2)}
-        .lf-radar{opacity:.5}
-        .radar-grid{position:absolute;top:52%;left:50%;transform:translate(-50%,-50%);width:120px;height:120px;opacity:.4}
-        .radar-grid circle{fill:none;stroke:currentColor;stroke-width:.6}
-        .radar-grid line{stroke:currentColor;stroke-width:.5;opacity:.7}
-        .radar-sweep{position:absolute;top:52%;left:50%;width:120px;height:120px;transform:translate(-50%,-50%);border-radius:50%;opacity:.5;animation:radarSpin 3.4s linear infinite}
-        @keyframes radarSpin{from{transform:translate(-50%,-50%) rotate(0)}to{transform:translate(-50%,-50%) rotate(360deg)}}
-        .radar-blip{position:absolute;width:5px;height:5px;border-radius:50%;background:currentColor;box-shadow:0 0 7px currentColor;opacity:0;animation:radarBlip 3.4s ease-in-out infinite}
-        @keyframes radarBlip{0%,100%{opacity:0}18%{opacity:1}42%{opacity:0}}
-        .lf-redact{display:flex;flex-direction:column;justify-content:center;gap:7px;padding:34px 14px 16px;opacity:.5}
-        .lf-redact .row{display:flex;gap:5px;align-items:center}
-        .lf-redact .w{height:5px;border-radius:2px;background:currentColor;opacity:.22}
-        .lf-redact .rd{height:8px;border-radius:2px;background:rgba(6,9,16,.92);box-shadow:inset 0 0 0 1px currentColor;opacity:.55;animation:lfRedact 2.6s ease-in-out infinite}
-        @keyframes lfRedact{0%,100%{opacity:.4}50%{opacity:.75}}
-        .lf-hex{padding-top:30px;font-size:10px;line-height:1.55;letter-spacing:.08em;opacity:.16}
-        .lf-hex .hexroll{display:block;white-space:pre;animation:lfHex 10s linear infinite}
-        @keyframes lfHex{from{transform:translateY(0)}to{transform:translateY(-50%)}}
-        .lf-net{opacity:.55}
-        .lf-net .edge{stroke:currentColor;stroke-width:.5;opacity:.25}
-        .lf-net .node{fill:currentColor;animation:lfNode 2.4s ease-in-out infinite}
-        @keyframes lfNode{0%,100%{opacity:.3}50%{opacity:.95}}
-        .tc-cardbar{position:relative;z-index:2}
-        .tc-lockpulse{animation:tcLock 2.6s ease-in-out infinite}
-        @keyframes tcLock{0%,100%{opacity:.85;filter:drop-shadow(0 0 5px var(--accent))}50%{opacity:1;filter:drop-shadow(0 0 12px var(--accent))}}
-        .tc-cardbar{display:flex;justify-content:space-between;align-items:center;font-size:10.5px;letter-spacing:.06em;padding:6px 10px;border-bottom:1px solid color-mix(in srgb, var(--accent) 22%, transparent);background:rgba(3,6,14,0.55)}
-        .tc-glyph{display:inline-flex;align-items:center;justify-content:center;width:46px;height:46px;border-radius:6px;border:1px solid;background:rgba(255,255,255,0.03)}
-        .tc-title{font-family:var(--font-inter),system-ui,-apple-system,sans-serif;font-size:17px;font-weight:800;letter-spacing:.02em;text-transform:uppercase;line-height:1.15;margin-top:12px}
-        .tc-chip{font-size:9.5px;letter-spacing:.14em;border:1px solid;border-radius:2px;padding:2px 7px}
-        .tc-hero-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:28px;align-items:center}
-        @media (max-width:760px){.tc-hero-grid{grid-template-columns:1fr}}
-        .tc-brk{position:absolute;width:11px;height:11px;z-index:3;pointer-events:none;opacity:.9}
-        .tc-brk.tl{top:7px;left:7px;border-top:2px solid var(--accent);border-left:2px solid var(--accent)}
-        .tc-brk.tr{top:7px;right:7px;border-top:2px solid var(--accent);border-right:2px solid var(--accent)}
-        .tc-brk.bl{bottom:7px;left:7px;border-bottom:2px solid var(--accent);border-left:2px solid var(--accent)}
-        .tc-brk.br{bottom:7px;right:7px;border-bottom:2px solid var(--accent);border-right:2px solid var(--accent)}
-        .tc-sweep{position:absolute;left:0;right:0;height:64px;top:-64px;z-index:1;pointer-events:none;background:linear-gradient(180deg, color-mix(in srgb, var(--accent) 32%, transparent), transparent);animation:tcSweep 3.4s linear infinite}
-        @keyframes tcSweep{from{transform:translateY(0)}to{transform:translateY(232px)}}
-        .tc-gauge{width:32px;height:32px;border-radius:50%;flex:none;display:grid;place-items:center}
-        .tc-gauge i{width:21px;height:21px;border-radius:50%;background:#070b16;display:grid;place-items:center;font:700 7.5px/1 ${MONO};font-style:normal;letter-spacing:0}
-        .tc-glitch{position:relative;display:inline-block}
-        .tc-glitch::before,.tc-glitch::after{content:attr(data-t);position:absolute;left:0;top:0;width:100%;overflow:hidden}
-        .tc-glitch::before{color:#36f0ff;clip-path:inset(0 0 55% 0);transform:translate(-2px,-1px);animation:tcGlitchA 2.8s infinite}
-        .tc-glitch::after{color:#ff2d94;clip-path:inset(55% 0 0 0);transform:translate(2px,1px);animation:tcGlitchB 2.8s infinite}
-        @keyframes tcGlitchA{0%,88%,100%{opacity:0;transform:translate(-2px,-1px)}90%{opacity:.85;transform:translate(-4px,-2px)}}
-        @keyframes tcGlitchB{0%,86%,100%{opacity:0;transform:translate(2px,1px)}92%{opacity:.85;transform:translate(4px,2px)}}
-        @media (prefers-reduced-motion: reduce){.tc-cur,.tc-blink{animation:none}.tc-card:hover,.tc-cta:hover{transform:none}.tc-lockpulse,.radar-sweep,.radar-blip,.lf-redact .rd,.lf-hex .hexroll,.lf-net .node,.tc-sweep,.tc-glitch::before,.tc-glitch::after{animation:none}}
-      `}</style>
-
-      <MatrixRain reduced={reduced} opacity={0.24} colors={RAIN_COLORS} />
-      <div className="tc-scan" aria-hidden />
-      <div className="tc-vig" aria-hidden />
-
+    <>
       {cluesReset && (
         <button
           onClick={() => setCluesReset(false)}
@@ -720,294 +575,198 @@ export default function ExplorersPage() {
         />
       )}
 
-      <div style={{ position: "relative", zIndex: 2, maxWidth: 1080, margin: "0 auto", padding: "36px 22px 90px" }}>
-        {/* terminal window */}
-        <div className="tc-bar">
-          <span className="tc-dot" style={{ background: "#ff5f56" }} />
-          <span className="tc-dot" style={{ background: "#ffbd2e" }} />
-          <span className="tc-dot" style={{ background: "#27c93f" }} />
-          <span style={{ marginLeft: 10, color: DIM }}>ARC · MISSION BOARD</span>
-          <span style={{ marginLeft: "auto", color: DIM }}>SECURE · ENCRYPTED</span>
-        </div>
+      {/* the overlays sit outside the board shell so its scoped styles never reach them */}
+      <CourseHomeShell course="explorers">
+        <header className="ch6-chrome wrap" data-rise style={{ "--i": 0 } as CSSVars}>
+          <CourseHomeLockup mark={<ExplorersMark />} lead="CYBER" accent="EXPLORERS" label="Cyber Explorers by AlgorithmX" />
+          <div className="ch6-chrome-r">
+            <span className="ch6-who"><i className="dot" aria-hidden="true" /><span className="hide">Agent ·&nbsp;</span><b>{rank.current.name}</b></span>
+            <CourseHomePause />
+          </div>
+        </header>
 
-        <div className="tc-win">
-          {/* hero — split: headline + actions left, agent ID card right */}
-          <div className="tc-hero-grid">
-            <div>
-              <div style={{ color: SYS, fontSize: 12.5, letterSpacing: "0.06em" }}>
-                AGENT, YOUR MISSIONS<span className="tc-cur" style={{ color: SYS }}>▊</span>
+        <main className="ch6-main wrap" id="main">
+          <section className="ch6-now" aria-labelledby="ch6-h1">
+            <div className="ch6-console" data-rise style={{ "--i": 1 } as CSSVars}>
+              <i className="ch6-corner tl" aria-hidden="true" /><i className="ch6-corner tr" aria-hidden="true" /><i className="ch6-corner bl" aria-hidden="true" /><i className="ch6-corner br" aria-hidden="true" />
+              <div className="ch6-tbar">
+                <span className="tdot" style={{ background: "#ff5f56" }} /><span className="tdot" style={{ background: "#ffbd2e" }} /><span className="tdot" style={{ background: "#27c93f" }} />
+                <span className="tname">ARC · MISSION BOARD</span>
+                <span className="tstat"><i aria-hidden="true" />SECURE · ENCRYPTED</span>
               </div>
-              <h1 className="tc-h1">
-                PICK YOUR CASE, <span style={{ color: SYS }}>AGENT</span>
-              </h1>
-              <div style={{ marginTop: 18, display: "flex", gap: 12, flexWrap: "wrap", alignItems: "center" }}>
-                <button className="tc-cta" onClick={() => nextCase && openCase(nextCase)} disabled={!nextCase}>
-                  {nextCase ? "▶ " : "✓ "}
-                  {continueLabel}
-                </button>
-                <button
-                  onClick={() => setShowWatchlist(true)}
-                  style={{ display: "inline-flex", alignItems: "center", gap: 8, fontFamily: MONO, fontSize: 12.5, fontWeight: 700, letterSpacing: "0.06em", color: SYS, background: "rgba(52,225,255,0.07)", border: `1px solid ${SYS}55`, borderRadius: 3, padding: "11px 18px", cursor: "pointer" }}
-                >
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
-                    <path d="M4 6a1 1 0 0 1 1-1h4l2 2h8a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6Z" />
-                  </svg>
-                  THE WATCHLIST
-                </button>
-              </div>
-            </div>
-
-            {/* agent ID card — the badge itself IS the progress ring: how
-                far this agent is from their next rank, at a glance. The
-                card's own background tints to the CURRENT rank's colour,
-                and every rank already passed collects below as a clearly
-                labelled army-style badge, so the card visibly fills up
-                with a trophy case over the course of the 20 cases instead
-                of looking the same at every rank. */}
-            <div
-              style={{
-                position: "relative",
-                border: `1px solid ${rank.current.colour}44`,
-                borderRadius: 10,
-                background: `radial-gradient(ellipse 100% 90% at 75% 10%, ${rank.current.colour}1c, transparent 60%), rgba(8,13,24,0.68)`,
-                padding: "22px 20px",
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                textAlign: "center",
-                gap: 8,
-              }}
-            >
-              <span
-                aria-hidden
-                style={{
-                  width: 78, height: 78, borderRadius: "50%", display: "grid", placeItems: "center",
-                  background: `conic-gradient(${rank.current.colour} ${Math.round(rank.progress * 100)}%, rgba(255,255,255,0.12) 0)`,
-                  boxShadow: `0 0 18px ${rank.current.colour}55`,
-                }}
-              >
-                <span style={{ width: 62, height: 62, borderRadius: "50%", background: "#070b16", display: "grid", placeItems: "center" }}>
-                  <span style={{ position: "relative", width: 48, height: 48, display: "grid", placeItems: "center" }}>
-                    <span aria-hidden style={{ position: "absolute", inset: 0, clipPath: BADGE_HEX, background: rank.current.colour, boxShadow: `0 0 10px ${rank.current.colour}66` } as CSSProperties} />
-                    <span aria-hidden style={{ position: "absolute", inset: 2.5, clipPath: BADGE_HEX, background: "#0d1420" } as CSSProperties} />
-                    <RankGlyph name={rank.current.name} size={20} color={rank.current.colour} />
-                  </span>
-                </span>
-              </span>
-              <div style={{ fontFamily: MONO, fontSize: 15, fontWeight: 800, letterSpacing: "0.06em", color: TXT, marginTop: 2 }}>{rank.current.name}</div>
-              <div style={{ fontFamily: MONO, fontSize: 9.5, letterSpacing: "0.08em", color: DIM, marginBottom: 4 }}>
-                {rank.next ? `${rank.next.minXP - totalXp} XP TO ${rank.next.name}` : "MAX RANK REACHED"}
-              </div>
-              <div style={{ display: "flex", gap: 18, width: "100%", justifyContent: "center", borderTop: "1px solid rgba(255,255,255,0.08)", paddingTop: 12, marginTop: 4 }}>
+              <div className="ch6-grid">
                 <div>
-                  <div style={{ fontFamily: MONO, fontSize: 15, fontWeight: 800, color: "#3BF57E" }}>{closedCount}<span style={{ color: DIM, fontWeight: 600 }}>/20</span></div>
-                  <div style={{ fontFamily: MONO, fontSize: 7.5, letterSpacing: "0.1em", color: DIM, marginTop: 3 }}>CASES</div>
-                </div>
-                <div>
-                  <div style={{ fontFamily: MONO, fontSize: 15, fontWeight: 800, color: AMBER }}>{totalXp}</div>
-                  <div style={{ fontFamily: MONO, fontSize: 7.5, letterSpacing: "0.1em", color: DIM, marginTop: 3 }}>XP</div>
-                </div>
-                {streak > 0 && (
-                  <div>
-                    <div style={{ fontFamily: MONO, fontSize: 15, fontWeight: 800, color: "#FF8A3D" }}>🔥 {streak}d</div>
-                    <div style={{ fontFamily: MONO, fontSize: 7.5, letterSpacing: "0.1em", color: DIM, marginTop: 3 }}>STREAK</div>
+                  <div className="ch6-eyebrow" data-rise style={{ "--i": 2 } as CSSVars}>AGENT, YOUR MISSIONS<span className="cur" aria-hidden="true" /></div>
+                  <h1 className="ch6-h1" id="ch6-h1" data-rise style={{ "--i": 3 } as CSSVars}>PICK YOUR CASE, <b>AGENT</b></h1>
+                  {nextCase && nb && (
+                    <div className="ch6-next" style={{ "--nx": "var(--amber)", "--i": 4 } as CSSVars} data-rise>
+                      <div className="ch6-next-head">
+                        <span className="ch6-chip live"><i aria-hidden="true" />{status[nextCase.id] === "IN PROGRESS" ? "RESUME" : "PLAY"}</span>
+                        <span style={{ color: "var(--amber)" }}>{nextCase.caseNumber}</span>
+                        <span className="ch6-chip c" style={{ "--c": nb.color } as CSSVars}>[{pad2(nb.n)}] {nb.name}</span>
+                        <span className="ch6-chip c" style={{ "--c": nb.color } as CSSVars}>{nb.classification}</span>
+                      </div>
+                      <div className="ch6-next-body">
+                        <span className="ch6-glyph" style={{ borderColor: nextAccent, color: nextAccent, boxShadow: `0 0 16px ${nextAccent}55` }}><CaseGlyph id={nextCase.id} size={30} color={nextAccent} /></span>
+                        <div style={{ minWidth: 0 }}>
+                          <div className="ch6-next-title">{nextCase.title}</div>
+                          <div className="ch6-next-sub">{TOPICS[nextCase.id] ?? ""} · Villain: <b>{nextCase.actor.codename}</b></div>
+                        </div>
+                        <span className="ch6-gauge" style={{ background: `conic-gradient(${nextAccent} ${nb.sev * 20}%,rgba(255,255,255,.12) 0)` }} role="img" aria-label={`Threat level ${nb.sev} of 5`}><i>{nb.sev}/5</i></span>
+                      </div>
+                      <div className="ch6-next-meta">
+                        <span>Block <b>{pad2(nb.n)}</b> · <b>{nb.closed}/{nb.total}</b> closed</span>
+                        <span><b>{closedCount}/{CASES.length}</b> cases solved</span>
+                        {lastClosed && <span>Last closed: <b>{lastClosed.caseNumber} · {lastClosed.title}</b></span>}
+                      </div>
+                    </div>
+                  )}
+                  <div className="ch6-actions" data-rise style={{ "--i": 5 } as CSSVars}>
+                    <button className="ch6-cta" type="button" onClick={() => nextCase && openCase(nextCase)} disabled={!nextCase}>
+                      {nextCase
+                        ? <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 4l14 8-14 8z" /></svg>
+                        : <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5" /></svg>}
+                      {continueLabel}<span className="sheen" aria-hidden="true" />
+                    </button>
+                    <button className="ch6-ghost" type="button" onClick={() => setShowWatchlist(true)}>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M4 6a1 1 0 0 1 1-1h4l2 2h8a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6Z" /></svg>
+                      THE WATCHLIST
+                    </button>
                   </div>
-                )}
-              </div>
-
-              {/* collection of every rank already passed — the same badge
-                  shape as the current one, just smaller, each clearly
-                  labelled with the rank it was, in the order earned */}
-              {earnedBadges.length > 0 && (
-                <div style={{ width: "100%", borderTop: "1px solid rgba(255,255,255,0.08)", paddingTop: 10, marginTop: 2 }}>
-                  <div style={{ fontFamily: MONO, fontSize: 8, letterSpacing: "0.14em", color: DIM, textTransform: "uppercase", marginBottom: 8 }}>Previous ranks</div>
-                  <div style={{ display: "flex", flexWrap: "wrap", gap: 10, justifyContent: "center" }}>
-                    {earnedBadges.map((r) => (
-                      <div key={r.name} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 4, width: 46 }}>
-                        <span style={{ position: "relative", width: 34, height: 34, display: "grid", placeItems: "center" }}>
-                          <span aria-hidden style={{ position: "absolute", inset: 0, clipPath: BADGE_HEX, background: r.colour } as CSSProperties} />
-                          <span aria-hidden style={{ position: "absolute", inset: 2, clipPath: BADGE_HEX, background: "#0d1420" } as CSSProperties} />
-                          <RankGlyph name={r.name} size={15} color={r.colour} />
-                        </span>
-                        <span style={{ fontFamily: MONO, fontSize: 6.5, fontWeight: 800, letterSpacing: "0.04em", color: r.colour, textTransform: "uppercase", lineHeight: 1.15 }}>{r.name}</span>
+                  <div className="ch6-tape" data-rise style={{ "--i": 6 } as CSSVars} role="img" aria-label={`${closedCount} of ${CASES.length} cases closed${nextCase ? `; next is ${nextCase.caseNumber}` : ""}`}>
+                    {blockStats.map((b) => (
+                      <div className="tb" key={b.n} style={{ "--c": b.color } as CSSVars}>
+                        <div className="tl"><span>[{pad2(b.n)}] {b.name}</span><b>{b.closed}/{b.total}</b></div>
+                        <div className="td">{b.cases.map((m) => <i key={m.id} className={status[m.id] === "CLOSED" ? "closed" : m.id === nextCase?.id ? "next" : ""} />)}</div>
                       </div>
                     ))}
                   </div>
                 </div>
-              )}
+                {/* agent ID card: the badge is the progress ring to the next rank;
+                    every rank already passed collects below it */}
+                <aside className="ch6-id" style={{ "--rank": rank.current.colour, "--p": rankPct, "--i": 4 } as CSSVars} data-rise aria-label="Agent ID card">
+                  <span className="ch6-ring" role="img" aria-label={rank.next ? `${rankPct}% of the way to ${rank.next.name}` : "Max rank reached"}><span className="in">{hex(rank.current.name, rank.current.colour, 48, 20)}</span></span>
+                  <div className="ch6-rank">{rank.current.name}</div>
+                  <div className="ch6-rank-sub">{rank.next ? `${rank.next.minXP - totalXp} XP TO ${rank.next.name}` : "MAX RANK REACHED"}</div>
+                  <div className="ch6-stats">
+                    <div className="ch6-stat" style={{ "--sc": "var(--green)" } as CSSVars}><b>{closedCount}<small>/{CASES.length}</small></b><span>CASES</span></div>
+                    <div className="ch6-stat" style={{ "--sc": "var(--amber)" } as CSSVars}><b>{totalXp}</b><span>XP</span></div>
+                    {streak > 0 && (
+                      <div className="ch6-stat" style={{ "--sc": "#FF8A3D" } as CSSVars}><b><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2c1 4 5 6 5 11a5 5 0 0 1-10 0c0-2 1-3 2-4 0 2 1 3 2 3 0-4 1-7 1-10z" /></svg>{streak}d</b><span>STREAK</span></div>
+                    )}
+                  </div>
+                  {earnedBadges.length > 0 && (
+                    <div className="ch6-prev">
+                      <div className="pl">Previous ranks</div>
+                      <div className="pr">{earnedBadges.map((r) => <div className="pb" key={r.name}>{hex(r.name, r.colour, 32, 14)}<span style={{ "--rc": r.colour } as CSSVars}>{r.name}</span></div>)}</div>
+                    </div>
+                  )}
+                </aside>
+              </div>
             </div>
-          </div>
+          </section>
 
-          {/* blocks */}
-          {blockStats.map((b) => (
-            <section key={b.n} style={{ marginTop: 40 }}>
-              <div style={{ display: "flex", alignItems: "baseline", gap: 12, flexWrap: "wrap", marginTop: 8 }}>
-                <span style={{ fontSize: 18, fontWeight: 700, color: b.color }}>[{String(b.n).padStart(2, "0")}]</span>
-                <span style={{ fontFamily: "var(--font-inter),system-ui,-apple-system,sans-serif", fontSize: "clamp(18px,3vw,24px)", fontWeight: 800, letterSpacing: "0.02em", color: TXT, textShadow: `0 0 14px ${b.color}66` }}>
-                  {b.name}
-                </span>
-                <span className="tc-chip" style={{ color: b.color, borderColor: `${b.color}88` }}>
-                  {b.classification}
-                </span>
-                <span style={{ marginLeft: "auto", fontSize: 12, color: b.done ? b.color : DIM }}>
-                  [{b.closed}/{b.total} CLOSED]
-                </span>
-              </div>
-              <div style={{ fontSize: 12.5, color: DIM, marginTop: 4 }}>{b.blurb}</div>
-
-              <div className="tc-grid">
-                {b.cases.map((m) => {
-                  const st = status[m.id];
-                  const isClosed = st === "CLOSED";
-                  const isNext = nextCase?.id === m.id;
-                  const locked = !qa && CASES.indexOf(m) > nextIdx;
-                  // Every case carries its OWN colour (the same accent already
-                  // canonical for it in missionIntroData.ts / its runtime case
-                  // file) instead of just its block's — so all 20 cards on the
-                  // board read as 20 distinct cases, not 4 colours repeated 5x.
-                  const caseAccent = MISSION_INTROS[m.id]?.theme.accent ?? b.color;
-                  const accent = isNext ? AMBER : caseAccent;
-                  // A closed case stays fully lit in its own colour — "closed"
-                  // is the CASE CLOSED stamp's job, not a wash to grey. Only
-                  // a genuinely locked (not-yet-reached) card dims out.
-                  const ring = accent;
-                  const titleColor = caseAccent;
-                  const active = !isClosed && !locked;
-                  return (
-                    <button
-                      key={m.id}
-                      className={`tc-card${isNext ? " tc-next" : ""}${isClosed ? " tc-closed" : ""}${locked ? " tc-locked" : ""}`}
-                      onClick={locked ? undefined : () => openCase(m)}
-                      disabled={locked}
-                      aria-label={`${m.caseNumber}: ${m.title}.${isClosed ? " Closed." : locked ? " Locked. Finish the earlier cases first." : isNext ? " Play next." : ""}`}
-                      style={{ ["--accent"]: accent, position: "relative" } as CSSProperties}
-                    >
-                      {/* Live ambient FX behind every card — the block's own "world"
-                          (radar / redaction / hex / network) tinted in THIS case's
-                          own accent, subtle on open cards and brighter on hover.
-                          Locked cards keep the stronger look. */}
-                      <LockedFX variant={LOCK_VARIANTS[b.n - 1] ?? "signal"} accent={caseAccent} />
-                      {active && (
-                        <>
-                          <span className="tc-sweep" aria-hidden />
-                          <span className="tc-brk tl" aria-hidden />
-                          <span className="tc-brk tr" aria-hidden />
-                          <span className="tc-brk bl" aria-hidden />
-                          <span className="tc-brk br" aria-hidden />
-                        </>
-                      )}
-                      {isClosed && (
-                        <span
-                          aria-hidden
-                          className="tc-stamp"
-                          style={{
-                            position: "absolute",
-                            top: "47%",
-                            left: "50%",
-                            transform: "translate(-50%, -50%) rotate(-10deg)",
-                            padding: "5px 13px",
-                            border: "3px solid #FF4D5E",
-                            borderRadius: 4,
-                            color: "#FF4D5E",
-                            background: "rgba(24,8,12,0.5)",
-                            fontFamily: MONO,
-                            fontWeight: 800,
-                            fontSize: 14,
-                            letterSpacing: "0.12em",
-                            textTransform: "uppercase",
-                            whiteSpace: "nowrap",
-                            boxShadow: "0 0 16px rgba(255,77,94,0.45), inset 0 0 10px rgba(255,77,94,0.16)",
-                            pointerEvents: "none",
-                            zIndex: 4,
-                          }}
-                        >
-                          Case Closed
-                        </span>
-                      )}
-                      {locked && (
-                        <>
-                          <span
-                            aria-hidden
-                            className="tc-lockpulse"
-                            style={{
-                              position: "absolute",
-                              top: 44,
-                              left: "50%",
-                              transform: "translateX(-50%)",
-                              zIndex: 4,
-                              color: caseAccent,
-                              ["--accent"]: caseAccent,
-                              pointerEvents: "none",
-                            } as CSSProperties}
-                          >
-                            <svg width="34" height="34" viewBox="0 0 24 24" fill="none">
-                              <rect x="4" y="10.5" width="16" height="10.5" rx="2.2" stroke="currentColor" strokeWidth="2" fill="rgba(3,6,14,0.6)" />
-                              <path d="M7.5 10.5V7.5a4.5 4.5 0 0 1 9 0v3" stroke="currentColor" strokeWidth="2" />
-                            </svg>
-                          </span>
-                        </>
-                      )}
-                      <div className="tc-cardbar">
-                        <span style={{ color: isNext ? AMBER : caseAccent }}>{m.caseNumber}</span>
-                        {isClosed ? (
-                          <span style={{ color: caseAccent }}>{"✓"} CLOSED</span>
-                        ) : locked ? (
-                          <span style={{ color: caseAccent, display: "inline-flex", alignItems: "center", gap: 5, opacity: 0.9 }}>
-                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" aria-hidden>
-                              <rect x="5" y="11" width="14" height="9" rx="2" stroke="currentColor" strokeWidth="2.4" />
-                              <path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="currentColor" strokeWidth="2.4" />
-                            </svg>
-                            ENCRYPTED
-                          </span>
-                        ) : isNext ? (
-                          <span className="tc-blink" style={{ color: AMBER }}>{"●"} {st === "IN PROGRESS" ? "RESUME" : "PLAY"}</span>
-                        ) : st === "IN PROGRESS" ? (
-                          <span style={{ color: caseAccent }}>{"◐"} STARTED</span>
-                        ) : (
-                          <span style={{ color: DIM }}>{"○"} OPEN</span>
+          <section className="ch6-board" aria-label="The mission board">
+            {blockStats.map((b) => (
+              <section className="ch6-sec" key={b.n} style={{ "--c": b.color, "--i": 0 } as CSSVars} data-reveal aria-labelledby={`ch6-b${b.n}`}>
+                <div className="ch6-sech">
+                  <span className="no">[{pad2(b.n)}]</span><h2 id={`ch6-b${b.n}`}>{b.name}</h2>
+                  <span className="ch6-chip c" style={{ "--c": b.color } as CSSVars}>{b.classification}</span>
+                  <span className={`count${b.done ? " done" : ""}`}>[{b.closed}/{b.total} CLOSED]</span>
+                </div>
+                <div className="ch6-blurb">{b.blurb}</div>
+                <div className="ch6-cards">
+                  {b.cases.map((m, ci) => {
+                    const st = status[m.id];
+                    const isClosed = st === "CLOSED";
+                    const isNext = nextCase?.id === m.id;
+                    const locked = !qa && CASES.indexOf(m) > nextIdx;
+                    const active = !isClosed && !locked;
+                    // every case carries its own canonical accent (missionIntroData.ts)
+                    const caseAccent = MISSION_INTROS[m.id]?.theme.accent ?? b.color;
+                    return (
+                      <button
+                        key={m.id}
+                        type="button"
+                        className={`ch6-card${isNext ? " next" : ""}${isClosed ? " closed" : ""}${locked ? " locked" : ""}`}
+                        onClick={locked ? undefined : () => openCase(m)}
+                        disabled={locked}
+                        aria-label={`${m.caseNumber}: ${m.title}.${isClosed ? " Closed." : locked ? " Locked. Finish the earlier cases first." : isNext ? " Play next." : ""}`}
+                        style={{ "--c": caseAccent, "--ct": caseAccent, "--i": ci } as CSSVars}
+                      >
+                        {active && (
+                          <>
+                            <span className="ch6-sweep" aria-hidden="true" />
+                            <i className="ch6-brk tl" aria-hidden="true" /><i className="ch6-brk tr" aria-hidden="true" /><i className="ch6-brk bl" aria-hidden="true" /><i className="ch6-brk br" aria-hidden="true" />
+                          </>
                         )}
-                      </div>
-
-                      <div style={{ padding: "12px 13px 14px", position: "relative", zIndex: 2 }}>
-                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
-                          <span className="tc-glyph" style={{ borderColor: ring, color: ring, boxShadow: `0 0 14px ${ring}55` }}>
-                            <CaseGlyph id={m.id} size={26} color={ring} />
-                          </span>
-                          <span
-                            className="tc-gauge"
-                            style={{ background: `conic-gradient(${ring} ${b.sev * 20}%, rgba(255,255,255,0.1) 0)` }}
-                            aria-label={`Threat level ${b.sev} of 5`}
-                          >
-                            <i style={{ color: ring }}>{b.sev}/5</i>
-                          </span>
+                        {isClosed && <span className="ch6-stamp" aria-hidden="true">Case Closed</span>}
+                        {locked && (
+                          <>
+                            <span className="ch6-lock" aria-hidden="true">
+                              <svg width="34" height="34" viewBox="0 0 24 24" fill="none"><rect x="4" y="10.5" width="16" height="10.5" rx="2.2" stroke="currentColor" strokeWidth="2" fill="rgba(3,6,14,.6)" /><path d="M7.5 10.5V7.5a4.5 4.5 0 0 1 9 0v3" stroke="currentColor" strokeWidth="2" /></svg>
+                            </span>
+                            <span className="ch6-cipher" data-cipher aria-hidden="true" />
+                          </>
+                        )}
+                        <div className="ch6-cb">
+                          <span style={{ color: isNext ? "var(--amber)" : caseAccent }}>{m.caseNumber}</span>
+                          {isClosed ? (
+                            <span className="st"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5" /></svg> CLOSED</span>
+                          ) : locked ? (
+                            <span className="st enc"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2" stroke="currentColor" strokeWidth="2.4" /><path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="currentColor" strokeWidth="2.4" /></svg> ENCRYPTED</span>
+                          ) : isNext ? (
+                            <span className="st play">{"●"} {st === "IN PROGRESS" ? "RESUME" : "PLAY"}</span>
+                          ) : st === "IN PROGRESS" ? (
+                            <span className="st">{"◐"} STARTED</span>
+                          ) : (
+                            <span className="st open">{"○"} OPEN</span>
+                          )}
                         </div>
-
-                        <div
-                          className={locked ? "tc-title tc-glitch" : "tc-title"}
-                          data-t={locked ? m.title.toUpperCase() : undefined}
-                          style={{ color: titleColor, textShadow: `0 0 12px ${titleColor}66` }}
-                        >
-                          {m.title}
+                        <div className="ch6-cbody">
+                          <div className="ch6-crow">
+                            <span className="ch6-cglyph"><CaseGlyph id={m.id} size={24} color={isNext ? AMBER : caseAccent} /></span>
+                            <span className="ch6-gauge" style={{ background: `conic-gradient(var(--c) ${b.sev * 20}%,rgba(255,255,255,.1) 0)`, margin: 0 }} aria-hidden="true"><i>{b.sev}/5</i></span>
+                          </div>
+                          <div className="ch6-ct">{m.title}</div>
+                          <div className="ch6-ctopic">{TOPICS[m.id] ?? ""}</div>
+                          <div className="ch6-cvil">Villain: {m.actor.codename}</div>
                         </div>
-                        <div style={{ fontSize: 11, color: TXT, opacity: 0.7, marginTop: 4 }}>{TOPICS[m.id] ?? ""}</div>
-                        <div style={{ fontSize: 10.5, color: locked ? DIM : AMBER, opacity: 0.85, marginTop: 9 }}>
-                          {"Villain: "}
-                          {m.actor.codename}
-                        </div>
-                      </div>
-                    </button>
-                  );
-                })}
-              </div>
-            </section>
-          ))}
-
-          <div style={{ marginTop: 40, fontSize: 12.5, color: DIM }}>
-            <span style={{ color: SYS }}>Solve all 20 cases to reach ULTRA rank</span>
-            <span className="tc-cur" style={{ color: SYS }}>▊</span>
-          </div>
-        </div>
-      </div>
-    </main>
+                      </button>
+                    );
+                  })}
+                </div>
+              </section>
+            ))}
+            <p className="ch6-foot"><b>Solve all 20 cases to reach ULTRA rank</b><span className="cur" aria-hidden="true" /></p>
+          </section>
+        </main>
+        <CipherLines />
+      </CourseHomeShell>
+    </>
   );
+}
+
+/* The locked cards' cipher line scrambles a character at a time (as the live
+ * encrypted cards do). Filled after mount, so the server HTML and the first
+ * client render agree; still under reduced motion, paused with the page. */
+const CIPHER = "0123456789ABCDEF%#@&<>=/+$";
+function CipherLines() {
+  useEffect(() => {
+    const els = Array.from(document.querySelectorAll<HTMLElement>(".ch6 [data-cipher]"));
+    const fresh = () => Array.from({ length: 26 }, () => CIPHER[(Math.random() * CIPHER.length) | 0]).join("");
+    els.forEach((el) => { el.textContent = fresh(); });
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const id = window.setInterval(() => {
+      if (document.hidden || document.querySelector(".ch6[data-paused]")) return;
+      els.forEach((el) => {
+        if (!el.isConnected) return;
+        const a = (el.textContent || fresh()).split("");
+        a[(Math.random() * a.length) | 0] = CIPHER[(Math.random() * CIPHER.length) | 0];
+        el.textContent = a.join("");
+      });
+    }, 140);
+    return () => clearInterval(id);
+  });
+  return null;
 }
