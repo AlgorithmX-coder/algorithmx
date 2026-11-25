@@ -30,6 +30,9 @@ export interface SchoolRow {
   trialExpiresAt: string | null;
   revokedAt: string | null;
   paidVia: "stripe" | "manual";
+  /** Set by staff when a manual deal’s money arrived. See paidState.ts. */
+  paidAt: string | null;
+  stripeCustomerId: string | null;
 }
 
 /**
@@ -69,6 +72,8 @@ export async function listLearnerOrgs(kind: LearnerOrgKind): Promise<SchoolRow[]
       trialExpiresAt: o.trialExpiresAt ? o.trialExpiresAt.toISOString() : null,
       revokedAt: o.revokedAt ? o.revokedAt.toISOString() : null,
       paidVia: o.stripeCustomerId ? "stripe" : "manual",
+      paidAt: o.paidAt ? o.paidAt.toISOString() : null,
+      stripeCustomerId: o.stripeCustomerId,
     };
   });
 }
