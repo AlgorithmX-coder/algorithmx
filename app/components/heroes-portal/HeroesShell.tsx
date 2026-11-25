@@ -172,6 +172,7 @@ export default function HeroesShell({
             </button>
             <span>Cyber Heroes by AlgorithmX</span>
             <span>Ages 6 to 9 · 20 weekly missions</span>
+            <span className="hlm-legal"><a href="/terms">Terms</a> · <a href="/privacy">Privacy</a></span>
           </div>
         </footer>
       </div>

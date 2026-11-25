@@ -142,6 +142,7 @@ export const AXE = {
     /* the year is new Date().getFullYear() on the live page; kept dynamic */
     copyrightPrefix: "© ",
     copyrightSuffix: " ALGORITHMX · CYBER EXPLORERS",
+    legal: "AlgorithmX Limited. Company 17266946, registered in England and Wales. Registered office: 301b Uppingham Road, Leicester LE5 4DG.",
     ariaLabel: "Footer",
     links: [
       { label: "PRIVACY", href: "/privacy" },

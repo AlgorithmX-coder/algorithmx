@@ -174,9 +174,11 @@ export const AXO = {
       { label: "Safety", href: "#safety" },
       { label: "FAQ", href: "#faq" },
       { label: "Sign up", href: "/ops/signup" },
+      { label: "Terms", href: "/terms" },
+      { label: "Privacy", href: "/privacy" },
     ],
     linksAriaLabel: "Footer",
-    fine: "Cyber Ops is the 14-17 tier of AlgorithmX, a UK cybersecurity course for young people. All training takes place in a simulated, sandboxed range; no real systems are ever involved. © AlgorithmX. Working name - brand and pricing subject to change.",
+    fine: "Cyber Ops is the 14-17 tier of AlgorithmX, a UK cybersecurity course for young people. All training takes place in a simulated, sandboxed range; no real systems are ever involved. © 2026 AlgorithmX Limited. Company 17266946, registered in England and Wales. Registered office: 301b Uppingham Road, Leicester LE5 4DG. Working name - brand and pricing subject to change.",
   },
 } as const;
 

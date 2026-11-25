@@ -309,6 +309,8 @@
 .na1-switch{text-align:center;margin:20px 0 0;font-size:13.5px;font-weight:500;color:var(--na1-body);opacity:0;animation:na1rise .9s var(--na1-ease) .74s forwards}
 .na1-switch a{color:var(--na1-link);font-weight:700;padding:2px 3px;border-radius:5px;text-decoration:underline;text-decoration-color:transparent;text-underline-offset:3px;transition:text-decoration-color .2s}
 .na1-switch a:hover{text-decoration-color:currentColor}
+.na1-legal{text-align:center;margin:12px 0 0;font-size:12px;color:var(--na1-body)}
+.na1-legal a{color:inherit;text-decoration:underline;text-underline-offset:3px}
 
 /* ── round 6 flows: forgot-password and reset-password in the same console ── */
 .na1[data-mode="forgot"] .na1-head,.na1[data-mode="reset"] .na1-head{margin-bottom:20px}

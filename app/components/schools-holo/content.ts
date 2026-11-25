@@ -214,6 +214,8 @@ export const AXS = {
           { name: "For Schools", href: "/schools" },
           { name: "Corporate training", href: "/corporate" },
           { name: "Contact", href: "mailto:support@algorithmx.co.uk" },
+          { name: "Terms", href: "/terms" },
+          { name: "Privacy", href: "/privacy" },
         ],
         note: "",
       },

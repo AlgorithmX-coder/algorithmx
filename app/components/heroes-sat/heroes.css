@@ -270,6 +270,7 @@
 .hv4sat footer .tg{font-size:12px;color:var(--muted)}
 .hv4sat footer nav{margin-left:auto;display:flex;gap:18px;font:600 12.5px var(--sans);color:var(--muted)}
 .hv4sat footer nav a:hover{color:var(--ink)}
+.hv4sat footer .lg{flex-basis:100%;margin:4px 0 0;font-size:12px;line-height:1.6;color:var(--muted)}
 
 @media (max-width:1100px){
   .hv4sat .tv-grid{grid-template-columns:repeat(2,1fr)}

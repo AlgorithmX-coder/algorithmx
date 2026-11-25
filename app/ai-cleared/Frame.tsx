@@ -61,6 +61,7 @@ export default function Frame({
       <footer className="cf-foot">
         {courseNote && <span>Nothing in the course is real data, and practice chats are never stored.</span>}
         <span>Questions about your seat: <a href="mailto:admissions@algorithmx.co.uk">admissions@algorithmx.co.uk</a></span>
+        <span><a href="/terms">Terms</a> · <a href="/privacy">Privacy</a></span>
       </footer>
       <style>{`
         .cf-page { position: relative; min-height: 100svh; display: flex; flex-direction: column; background: ${K.ground}; color: ${K.body}; font-family: ${K.sans}; overflow: hidden; }

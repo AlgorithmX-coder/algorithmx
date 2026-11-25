@@ -287,6 +287,7 @@ export default function ProHolo({ product }: { product: Product }) {
             {FO.links.map((l) => <a key={l.href} href={l.href} className={l.current ? "cur" : undefined} aria-current={l.current ? "page" : undefined}>{l.label}</a>)}
           </nav>
         </div>
+        <p className="wrap legal">{FO.legal}</p>
       </footer>
     </div>
   );

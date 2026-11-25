@@ -242,6 +242,7 @@
 .pv1 footer .links a{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;color:var(--body);padding:8px 12px;border-radius:999px;border:1px solid var(--line2);background:rgba(255,255,255,.7);transition:border-color .25s,color .25s}
 .pv1 footer .links a:hover{border-color:var(--cInk);color:var(--cInk)}
 .pv1 footer .links a.cur{color:var(--cInk);border-color:rgba(194,65,12,.45)}
+.pv1 footer .legal{position:relative;margin-top:-18px;padding-bottom:30px;font-size:12px;line-height:1.6;color:var(--muted)}
 @media (max-width:1180px){.pv1 .tiles4{grid-template-columns:1fr 1fr}.pv1 .acts{grid-template-columns:1fr 1fr}.pv1 .out .tiles5{grid-template-columns:repeat(3,1fr)}}
 @media (max-width:1100px){.pv1 .chips,.pv1 .nav .login{display:none}}
 @media (max-width:980px){.pv1 .hgrid{grid-template-columns:1fr;padding-top:110px;min-height:0}.pv1 .stage{max-width:620px}.pv1 .hooks,.pv1 .breaches,.pv1 .tiles3,.pv1 .why{grid-template-columns:1fr}.pv1 .power{padding-top:100px}.pv1 .why{padding:28px}.pv1 .out{padding:28px}}

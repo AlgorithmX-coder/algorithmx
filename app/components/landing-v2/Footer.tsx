@@ -156,6 +156,7 @@ export default function Footer({ tone = "night", variant = "site" }: { tone?: Fo
               links={[
                 { name: "Security and data handling", href: "/corporate/security" },
                 { name: "Free AI use policy", href: "/corporate#policy" },
+                { name: "Terms", href: "/terms" },
                 { name: "Privacy", href: "/privacy" },
               ]}
             />
@@ -180,6 +181,8 @@ export default function Footer({ tone = "night", variant = "site" }: { tone?: Fo
                     { name: "For Schools", href: "/schools" },
                     { name: "Corporate training", href: "/corporate" },
                     { name: "Contact", href: "mailto:support@algorithmx.co.uk" },
+                    { name: "Terms", href: "/terms" },
+                    { name: "Privacy", href: "/privacy" },
                   ]
             }
           />
