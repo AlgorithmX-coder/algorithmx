@@ -2,7 +2,8 @@ import { redirect } from "next/navigation";
 import type { Session } from "next-auth";
 import { auth } from "@/app/lib/auth";
 import { prisma } from "@/app/lib/prisma";
-import { hasEntitlement } from "@/app/lib/entitlements";
+import { grantEntitlement, hasEntitlement } from "@/app/lib/entitlements";
+import { TESTER_FREE_ACCESS } from "@/app/lib/launchSwitch";
 import { pupilCourseHomeFor } from "@/app/lib/courseIntent";
 import { COURSE_LANDING_ROUTES } from "@/app/lib/courseLandings";
 
@@ -21,7 +22,9 @@ import { COURSE_LANDING_ROUTES } from "@/app/lib/courseLandings";
  *   - Signed in and holding the entitlement for THIS course: allowed.
  *     hasEntitlement already honours school BUNDLE grants and switches
  *     them off when the school's access is closed.
- *   - Signed in without it: that course's landing (buy) page.
+ *   - Signed in without it: that course's landing (buy) page. Until launch
+ *     (TESTER_FREE_ACCESS in app/lib/launchSwitch.ts) an adult is instead
+ *     granted the course and let in, so testers stay fully open.
  *   - A school pupil without it is never sent to a sales page. If their
  *     class is on another course they still hold, they go there; if not
  *     (their school's access was closed), a quiet page that tells them to
@@ -63,12 +66,22 @@ export function courseSignInUrl(slug: ConsumerCourseSlug, here: string): string 
  * Where a signed-in person who does not hold `slug` is sent.
  * Exported for the unit test; pages call requireCourse.
  */
-export async function deniedDestination(userId: string, slug: ConsumerCourseSlug): Promise<string> {
-  const pupil = await prisma.childProfile.findFirst({
+type PupilRow = { class: { product: { slug: string } } | null } | null;
+
+function findPupil(userId: string): Promise<PupilRow> {
+  return prisma.childProfile.findFirst({
     where: { userId, classId: { not: null } },
     orderBy: { createdAt: "asc" },
     select: { class: { select: { product: { select: { slug: true } } } } },
   });
+}
+
+export async function deniedDestination(
+  userId: string,
+  slug: ConsumerCourseSlug,
+  pupilRow?: PupilRow,
+): Promise<string> {
+  const pupil = pupilRow === undefined ? await findPupil(userId) : pupilRow;
   if (!pupil) return CONSUMER_COURSES[slug].landing;
 
   const own = pupil.class?.product.slug;
@@ -90,5 +103,20 @@ export async function requireCourse(
   const userId = session?.user?.id;
   if (!session || !userId) redirect(courseSignInUrl(slug, here));
   if (await hasEntitlement(userId, slug)) return { userId, session: session as SignedInSession };
-  redirect(await deniedDestination(userId, slug));
+
+  const pupil = await findPupil(userId);
+  /* Tester period (app/lib/launchSwitch.ts): a signed-in adult who lacks
+     this course is granted it, the same way signup grants it, and let in.
+     A school pupil is never auto-granted: their access is their school's. */
+  if (TESTER_FREE_ACCESS && !pupil) {
+    let granted = false;
+    try {
+      await grantEntitlement(userId, slug, "MANUAL");
+      granted = true;
+    } catch (err) {
+      console.error("[requireCourse] tester grant failed", slug, err);
+    }
+    if (granted) return { userId, session: session as SignedInSession };
+  }
+  redirect(await deniedDestination(userId, slug, pupil));
 }
