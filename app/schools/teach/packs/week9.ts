@@ -21,9 +21,9 @@
  *    way week 4 does, and the job tonight is the fix itself: one app, checked
  *    together.
  *
- * 3. The source never names a real app store ("the official app store on
- *    your device") and only ever uses invented apps. The pack keeps to that,
- *    and tells the teacher they do not need to name one either.
+ * 3. The two real stores are named, as the week names them: "the official
+ *    App Store or Play Store on your device" (owner, 2026-11-17, live in
+ *    #1075). The apps themselves are still all invented.
  *
  * 4. "FREE isn't free" can tip into "nothing free is real". The game is
  *    careful (the library app really is free), so the pack says it out loud
@@ -55,8 +55,8 @@ const SLIDES: readonly Slide[] = [
   /* ───────── 10 MINUTES: TALKING IT THROUGH BEFORE THEY PLAY ───────── */
   { at:"before", kind:"tell", scene:"solo", art:ART.phone, eyebrow:"Week 9 &middot; Spot the Fakes",
     title:"Check it before<br>it comes home.",
-    say:"&ldquo;Eyes up. This week you are working in an app warehouse. An app is like a parcel: once you open it, it lives on your tablet. So before it comes home, a hero checks it.&rdquo; Then the rule for the whole week. &ldquo;New apps come from <b>one</b> place: the shop that came built into your tablet or phone. That shop checks every app before it goes on the shelf. A button on a website, a pop-up, a link in the comments? Nobody checked those. <b>Not in the real shop? Not coming home.</b>&rdquo;",
-    warn:"The game never names a real app shop. It always says &ldquo;the official app store on your device&rdquo;, and it only uses made-up apps. You do not need to name one either. Children will call out the ones they know, which is fine: just agree that it is the one that came on the device." },
+    say:"&ldquo;Eyes up. This week you are working in an app warehouse. An app is like a parcel: once you open it, it lives on your tablet. So before it comes home, a hero checks it.&rdquo; Then the rule for the whole week. &ldquo;New apps come from <b>one</b> place: the App Store or the Play Store on your tablet or phone. That shop checks every app before it goes on the shelf. A button on a website, a pop-up, a link in the comments? Nobody checked those. <b>Not in the real shop? Not coming home.</b>&rdquo;",
+    warn:"The game says &ldquo;the official App Store or Play Store on your device&rdquo; every time, so say both names: which one a child has depends on the family&rsquo;s device, and neither is the better one. The apps in the game are all made up, so if a child names a real app, just bring it back to where it came from." },
 
   { at:"before", kind:"ask", scene:"racc", eyebrow:"Ask the class",
     title:"Spot what<br>he changed.",
@@ -82,7 +82,7 @@ const SLIDES: readonly Slide[] = [
   { at:"before", kind:"ask", scene:"scenarios", eyebrow:"Ask the class",
     cards:[
       { art:ART.link,   sub:"A big DOWNLOAD NOW button on a website" },
-      { art:ART.phone,  sub:"The shop that came on your tablet" },
+      { art:ART.phone,  sub:"The App Store or Play Store on your tablet" },
       { art:ART.speech, sub:"A link somebody left in the comments" },
     ],
     title:"Your friend says<br>get this game.",
@@ -140,7 +140,7 @@ const SLIDES: readonly Slide[] = [
     recipe:{ slots:["Real shop","Check it together","Install together"],
       thenLabel:"check", add:["the name","the maker","the downloads","the keys"],
       test:"Not in the real shop? Not coming home." },
-    say:"&ldquo;Three steps for every new app, in this order. Say them with me.&rdquo; Do it twice. &ldquo;<b>Real shop.</b> It comes from the shop on your tablet and nowhere else. <b>Check it together</b>, with a grown-up: the name, the maker, the downloads, the keys. <b>Install together.</b>&rdquo; Then the line the game uses. &ldquo;Four eyes catch what two miss. That is not babyish. <b>It is what smart teams do.</b>&rdquo;",
+    say:"&ldquo;Three steps for every new app, in this order. Say them with me.&rdquo; Do it twice. &ldquo;<b>Real shop.</b> It comes from the App Store or the Play Store and nowhere else. <b>Check it together</b>, with a grown-up: the name, the maker, the downloads, the keys. <b>Install together.</b>&rdquo; Then the line the game uses. &ldquo;Four eyes catch what two miss. That is not babyish. <b>It is what smart teams do.</b>&rdquo;",
     hear:[
       ["&ldquo;My mum says just do it yourself.&rdquo;", "&ldquo;Then ask her to look for ten seconds. Four eyes still means four eyes.&rdquo;"],
       ["&ldquo;I already have loads of apps.&rdquo;", "&ldquo;Most of them will be completely fine. And tonight&rsquo;s job is about exactly that.&rdquo;"],
@@ -160,7 +160,7 @@ const SLIDES: readonly Slide[] = [
     say:"&ldquo;Last one, and it is the question from earlier. Your cousin messages you: <em>skip the app shop, get my favourite game straight from this link!</em> What do you do?&rdquo;",
     hear:[
       ["&ldquo;It is fine, it is my cousin.&rdquo;", "&ldquo;Your cousin is lovely. But your cousin did not check that app, and nobody else did either. <b>A link skips the check, whoever sends it.</b>&rdquo;"],
-      ["&ldquo;Find it in the real shop.&rdquo;", "&ldquo;Exactly that. Say thanks, then go and find it in the shop on your tablet, with your grown-up.&rdquo;"],
+      ["&ldquo;Find it in the real shop.&rdquo;", "&ldquo;Exactly that. Say thanks, then go and look for it in the App Store or Play Store, with your grown-up.&rdquo;"],
       ["&ldquo;What if it is not in the shop?&rdquo;", "&ldquo;Then it does not come home. Not in the real shop, not coming home.&rdquo;"],
       ["&ldquo;Could it be him pretending to be my cousin?&rdquo;", "&ldquo;It could, that is week 4. But even if it really is your cousin, the answer is the same.&rdquo;"],
     ],
