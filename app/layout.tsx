@@ -45,6 +45,10 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
+  /* Resolves every relative metadata URL (Open Graph and Twitter images,
+   * canonicals) against the live domain, on every route. Without it Next
+   * falls back to localhost or the deployment URL. */
+  metadataBase: new URL("https://algorithmx.io"),
   title: "AlgorithmX - Cyber and AI Skills for Every Age",
   description: "Cyber and AI skills for people, schools and firms. Interactive cybersecurity courses from age 6 to adult, plus AI training for every member of staff. UK-based and aligned with NCSC guidance.",
   icons: {
@@ -55,6 +59,13 @@ export const metadata: Metadata = {
     description: "Cyber and AI skills for people, schools and firms. Interactive cybersecurity courses from age 6 to adult, plus AI training for every member of staff. UK-based and aligned with NCSC guidance.",
     type: "website",
     url: "https://algorithmx.io",
+    siteName: "AlgorithmX",
+    locale: "en_GB",
+  },
+  /* The image comes from app/opengraph-image.tsx; Next copies the Open
+   * Graph title, description and image into the Twitter card. */
+  twitter: {
+    card: "summary_large_image",
   },
 };
 
