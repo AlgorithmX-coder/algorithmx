@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/app/lib/prisma";
 import { grantEntitlement } from "@/app/lib/entitlements";
+import { emailTaken, normaliseEmail } from "@/app/lib/emailIdentity";
 
 const HAS_UPPER = /[A-Z]/;
 const HAS_SPECIAL = /[^A-Za-z0-9]/;
@@ -27,7 +28,10 @@ const FREE_ON_SIGNUP: ReadonlySet<string> = new Set([
 
 export async function POST(request: Request) {
   try {
-    const { name, email, password, course } = await request.json();
+    const { name, email: rawEmail, password, course } = await request.json();
+    /* Stored trimmed and lowercased, and refused if any account already
+       holds the address in any case (app/lib/emailIdentity.ts says why). */
+    const email = normaliseEmail(rawEmail);
 
     if (!name || !email || !password) {
       return NextResponse.json(
@@ -55,11 +59,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const existingUser = await prisma.user.findUnique({
-      where: { email },
-    });
-
-    if (existingUser) {
+    if (await emailTaken(email)) {
       return NextResponse.json(
         { error: "Email already in use" },
         { status: 400 }

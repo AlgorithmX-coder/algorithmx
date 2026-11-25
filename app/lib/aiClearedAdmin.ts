@@ -8,6 +8,7 @@ import { CYBER_SECURED_BRAND, CYBER_SECURED_NAME, SECURED_TRACKS, liveTrackNames
 import { opsAlert } from "@/app/lib/opsAlert";
 import { TRACK_LABEL, type Track } from "@/app/ai-cleared/engine/types";
 import { isStaffUser } from "@/app/lib/aiClearedStaff";
+import { normaliseEmail } from "@/app/lib/emailIdentity";
 import type { FirmProfile, Organisation, OrgRole } from "@prisma/client";
 
 /* Admin-side helpers for both corporate courses: who may administer a
@@ -218,7 +219,7 @@ export type InviteSeatsResult =
  * kind, is skipped, never duplicated. Emails go out under the admin's name
  * with reply-to set to them. Refused outright once the seats are taken. */
 export async function inviteSeats(args: { orgId: string; orgSlug: string; firmName: string; emails: string[]; team?: string | null; track?: Track | null; role?: OrgRole; origin: string; adminName: string; adminEmail: string | null; staff?: boolean }): Promise<InviteSeatsResult> {
-  const clean = Array.from(new Set(args.emails.map((e) => e.trim().toLowerCase()).filter((e) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e))));
+  const clean = Array.from(new Set(args.emails.map((e) => normaliseEmail(e)).filter((e) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e))));
   const existing = await prisma.seat.findMany({ where: { orgId: args.orgId, email: { in: clean } }, select: { email: true } });
   const have = new Set(existing.map((e) => e.email));
   const wanted = clean.filter((e) => !have.has(e));

@@ -3,6 +3,7 @@ import crypto from "node:crypto";
 import { prisma } from "@/app/lib/prisma";
 import { sendEmail, passwordResetTemplate } from "@/app/lib/resend";
 import { resetPathFor } from "@/app/lib/courseResetPath";
+import { findUserByEmail, normaliseEmail } from "@/app/lib/emailIdentity";
 
 /**
  * POST /api/forgot-password
@@ -42,7 +43,7 @@ export async function POST(req: Request) {
   }
 
   const { email: rawEmail, course } = (body ?? {}) as { email?: string; course?: unknown };
-  const email = rawEmail?.trim().toLowerCase();
+  const email = normaliseEmail(rawEmail);
   if (!email || !EMAIL_RE.test(email)) {
     // Same generic 200 - don't leak whether validation failed vs the
     // user not existing.
@@ -50,10 +51,7 @@ export async function POST(req: Request) {
   }
 
   // Look up user - silent if not found.
-  const user = await prisma.user.findUnique({
-    where: { email },
-    select: { id: true, email: true, name: true },
-  });
+  const user = await findUserByEmail(email);
 
   if (!user) {
     // No-op response - same shape so attackers can't enumerate.
