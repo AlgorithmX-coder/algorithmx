@@ -1,19 +1,31 @@
 /**
  * Which weeks have a written teacher pack.
  *
- * Seven of twenty are written. The first three were not an accident of ordering:
- * these are the three the format was proved against, because they are the
- * three that break a format if anything does. Week 1 is ordinary, week 11
- * has no villain and carries a safeguarding briefing, week 20 teaches
- * nothing new. The other seventeen are content work, and each one is a data
- * file in this folder and nothing else.
+ * All twenty are written. Weeks 1, 11 and 20 came first on purpose: they are
+ * the three that break a format if anything does. Week 1 is ordinary, week 11
+ * has no villain and carries a safeguarding briefing, week 20 teaches nothing
+ * new. None of them needed a special case, which is why each of the other
+ * seventeen is a data file in this folder and nothing else.
  */
 import { WEEK_1 } from "./week1";
 import { WEEK_2 } from "./week2";
 import { WEEK_3 } from "./week3";
 import { WEEK_4 } from "./week4";
 import { WEEK_5 } from "./week5";
+import { WEEK_6 } from "./week6";
+import { WEEK_7 } from "./week7";
+import { WEEK_8 } from "./week8";
+import { WEEK_9 } from "./week9";
+import { WEEK_10 } from "./week10";
 import { WEEK_11 } from "./week11";
+import { WEEK_12 } from "./week12";
+import { WEEK_13 } from "./week13";
+import { WEEK_14 } from "./week14";
+import { WEEK_15 } from "./week15";
+import { WEEK_16 } from "./week16";
+import { WEEK_17 } from "./week17";
+import { WEEK_18 } from "./week18";
+import { WEEK_19 } from "./week19";
 import { WEEK_20 } from "./week20";
 import type { Pack } from "./types";
 
@@ -25,7 +37,20 @@ const PACKS: Record<number, Pack> = {
   3: WEEK_3,
   4: WEEK_4,
   5: WEEK_5,
+  6: WEEK_6,
+  7: WEEK_7,
+  8: WEEK_8,
+  9: WEEK_9,
+  10: WEEK_10,
   11: WEEK_11,
+  12: WEEK_12,
+  13: WEEK_13,
+  14: WEEK_14,
+  15: WEEK_15,
+  16: WEEK_16,
+  17: WEEK_17,
+  18: WEEK_18,
+  19: WEEK_19,
   20: WEEK_20,
 };
 

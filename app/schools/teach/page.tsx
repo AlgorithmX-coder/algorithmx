@@ -28,6 +28,7 @@ export default async function TeachIndexPage() {
   if (!ctx) return <Locked email={session.user.email} />;
 
   const ready = new Map(writtenWeeks().map((p) => [p.n, p]));
+  const unwritten = getAvailableWeeks().filter((n) => !ready.has(n));
   const links = await listShareLinks(ctx.orgId);
 
   /* Which OTHER courses this school actually runs. Packs exist for Cyber
@@ -103,9 +104,10 @@ export default async function TeachIndexPage() {
           ))}
 
           {/* The remaining weeks, named from the course itself rather than from
-              a second list here that could drift out of step with it. */}
-          <div className="phase">Being written</div>
-          {getAvailableWeeks().filter((n) => !ready.has(n)).map((n) => (
+              a second list here that could drift out of step with it. With
+              every week written there are none, and the heading goes too. */}
+          {unwritten.length > 0 && <div className="phase">Being written</div>}
+          {unwritten.map((n) => (
             <div key={n} className="row">
               <span className="rn">{n}</span>
               <div className="rb">{WEEK_CONTENT[n].title}</div>
