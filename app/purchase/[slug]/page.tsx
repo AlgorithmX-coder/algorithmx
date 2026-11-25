@@ -1,27 +1,18 @@
 /**
- * /purchase/[slug] — real order-summary + stub payment + success view.
+ * /purchase/[slug]: where a signed-in visitor buys a consumer course.
  *
- * Three states funnel through one server component:
+ *   1. opens soon (default). Requires sign-in. Refuses slugs that do not
+ *      resolve to an ACTIVE Product. Someone who already owns the course
+ *      is sent straight into it. Everyone else is told buying opens soon.
+ *      This page and its action never grant an entitlement: until
+ *      2026-11-25 a stub "Pay" button granted any course for free.
  *
- *   1. order-summary — default landing. Requires login (bounces with
- *      ?callbackUrl so the user returns here after auth). Refuses
- *      slugs that don't resolve to an ACTIVE Product. Refuses to
- *      upsell what the user already owns. Renders the real DB-driven
- *      summary + the stub PaymentButton.
+ *   2. success (?status=success). Re-verifies the entitlement so a typed
+ *      URL cannot show it to someone who has not paid.
  *
- *   2. payment — the PaymentButton calls startCheckoutAction which
- *      grants the entitlement (today; Stripe later) and redirects
- *      back here with ?status=success.
- *
- *   3. success — confirmation panel with "Enter <track>" CTA.
- *      Defensively re-verifies the entitlement so a hand-crafted
- *      `?status=success` URL can't render the success view to a
- *      user who hasn't actually paid.
- *
- * The grant is written by the standalone grantEntitlement() function
- * in lib/entitlements.ts. Stripe's webhook will call the same
- * function with source="PURCHASE" so this page stays unchanged when
- * real payments land.
+ * When real checkout lands, the Stripe webhook writes the entitlement via
+ * grantEntitlement(userId, slug, "PURCHASE") and returns the buyer to the
+ * success view.
  */
 
 import { CATALOGUE, courseHomeFor, safeCourseSlug } from "@/app/lib/courseIntent";
@@ -37,7 +28,6 @@ import {
   CYBER_SHADOW,
 } from "@/app/components/scene/cyberTokens";
 import FadeIn from "./FadeIn";
-import PaymentButton from "./PaymentButton";
 
 const C = CYBER_PALETTE;
 
@@ -110,14 +100,27 @@ export default async function PurchasePage({ params, searchParams }: PageProps) 
   // they own (owner 2026-10-16: no hub, log in and you are in the course).
   if (owned) redirect(courseHomeFor(safeCourseSlug(product.slug)));
 
-  return <OrderSummary product={product} />;
+  return <OpensSoon product={product} />;
 }
 
 /* ─────────────────────────────────────────────────────────────────────
-   STATE 1 — order summary (real, DB-driven)
+   STATE 1 — buying opens soon
+   Nothing is sold or granted here yet. Real checkout lands in a later
+   change; until then a signed-in visitor who does not own the course is
+   told, calmly, that buying is not open, and pointed back to the course.
    ──────────────────────────────────────────────────────────────────── */
 
-function OrderSummary({
+/* Each consumer course's own landing page, where "Back to the course"
+ * goes. Anything unknown falls back to the catalogue. */
+const COURSE_LANDING: Record<string, string> = {
+  "cyber-heroes": "/cyberheroes",
+  cyberexplorers: "/cyberexplorers",
+  cyberstart: "/ops",
+  "cyberstart-pro": "/pro",
+  "desk-ready": "/desk-ready",
+};
+
+function OpensSoon({
   product,
 }: {
   product: {
@@ -131,19 +134,13 @@ function OrderSummary({
   };
 }) {
   const priceLabel = formatPrice(product.priceGBP);
-
-  const included = [
-    `${product.weeksCount > 0 ? `${product.weeksCount} weekly` : "Weekly"} interactive missions`,
-    "Boss battles, badges and a printable hero certificate",
-    "Progress saved per child. Multiple kids on one account",
-    "Family-safe: COPPA-aware, no third-party tracking",
-    "Lifetime access. Buy once, replay any time",
-  ];
+  const landing = COURSE_LANDING[product.slug] ?? CATALOGUE;
 
   return (
     <PurchaseFrame>
       <FadeIn>
         <article
+          data-purchase-state="opens-soon"
           style={{
             display: "grid",
             gridTemplateColumns: "1fr",
@@ -156,7 +153,6 @@ function OrderSummary({
             backdropFilter: "blur(10px)",
           }}
         >
-          {/* Header row: emoji tile + name + meta */}
           <header style={{ display: "flex", alignItems: "center", gap: 16 }}>
             <div
               style={{
@@ -183,11 +179,11 @@ function OrderSummary({
                   fontSize: 11,
                   letterSpacing: 2,
                   textTransform: "uppercase",
-                  color: C.cyan,
+                  color: C.amber,
                   marginBottom: 4,
                 }}
               >
-                Order summary
+                Buying opens soon
               </div>
               <h1
                 style={{
@@ -204,144 +200,70 @@ function OrderSummary({
             </div>
           </header>
 
-          {/* Meta chips */}
           <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
             <MetaPill label={`Ages ${product.ageRange}`} accent={C.cyan} />
             <MetaPill label={product.duration} accent={C.cosmicSoft} />
             {product.weeksCount > 0 && (
               <MetaPill label={`${product.weeksCount} weeks`} accent={C.lime} />
             )}
-            <MetaPill label="Lifetime access" accent={C.amber} />
+            <MetaPill label={`${priceLabel} once`} accent={C.amber} />
           </div>
 
-          {/* What's included list */}
-          <section
-            aria-label="What's included"
+          <p
+            role="status"
             style={{
+              margin: 0,
               padding: "16px 18px",
               borderRadius: 14,
               background: "rgba(8, 10, 22, 0.4)",
               border: `1px solid ${C.cyan}1f`,
-            }}
-          >
-            <div
-              style={{
-                fontFamily: "ui-monospace, 'JetBrains Mono', Menlo, monospace",
-                fontSize: 11,
-                letterSpacing: 2,
-                textTransform: "uppercase",
-                color: C.cyan,
-                marginBottom: 12,
-              }}
-            >
-              {/* TODO: tailor this per-product when more tracks ship. */}
-              What&apos;s included
-            </div>
-            <ul style={{ margin: 0, padding: 0, listStyle: "none", display: "grid", gap: 10 }}>
-              {included.map((line) => (
-                <li
-                  key={line}
-                  style={{
-                    display: "flex",
-                    gap: 10,
-                    alignItems: "flex-start",
-                    color: C.text,
-                    fontSize: 14.5,
-                    lineHeight: 1.45,
-                    fontFamily: "'DM Sans', system-ui, sans-serif",
-                  }}
-                >
-                  <span
-                    aria-hidden
-                    style={{
-                      flexShrink: 0,
-                      marginTop: 2,
-                      width: 18,
-                      height: 18,
-                      borderRadius: "50%",
-                      display: "inline-flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      background: `${C.lime}1f`,
-                      color: C.lime,
-                      fontSize: 11,
-                      fontWeight: 900,
-                      border: `1px solid ${C.lime}66`,
-                    }}
-                  >
-                    ✓
-                  </span>
-                  {line}
-                </li>
-              ))}
-            </ul>
-          </section>
-
-          {/* Total row */}
-          <div
-            style={{
-              display: "flex",
-              alignItems: "baseline",
-              justifyContent: "space-between",
-              padding: "14px 18px",
-              borderRadius: 14,
-              background: "rgba(8, 10, 22, 0.55)",
-              border: `1px solid ${C.cyan}33`,
-            }}
-          >
-            <span
-              style={{
-                fontSize: 14,
-                fontWeight: 700,
-                color: C.textSoft,
-                fontFamily: "'DM Sans', system-ui, sans-serif",
-                letterSpacing: 0.5,
-              }}
-            >
-              Total today
-            </span>
-            <span
-              style={{
-                fontSize: 30,
-                fontWeight: 900,
-                color: C.textBright,
-                fontFamily: "'Space Grotesk', system-ui, sans-serif",
-                letterSpacing: "-0.02em",
-              }}
-            >
-              {priceLabel}
-            </span>
-          </div>
-
-          {/* Payment step */}
-          <PaymentButton slug={product.slug} priceLabel={priceLabel} />
-
-          {/* Reassurance line + back link */}
-          <div
-            style={{
-              display: "flex",
-              flexWrap: "wrap",
-              justifyContent: "space-between",
-              alignItems: "center",
-              gap: 12,
-              paddingTop: 4,
-              fontSize: 12.5,
-              color: C.textSoft,
+              color: C.text,
+              fontSize: 15,
+              lineHeight: 1.55,
               fontFamily: "'DM Sans', system-ui, sans-serif",
             }}
           >
-            <span>One-time payment · No subscription · Lifetime access.</span>
-            <Link
-              href={CATALOGUE}
-              style={{
-                color: C.cyanSoft,
-                fontWeight: 800,
-                textDecoration: "none",
-              }}
-            >
-              ← Back to all courses
-            </Link>
-          </div>
+            We are getting checkout ready. Soon you will be able to buy{" "}
+            {product.name} here, once, for {priceLabel}. Nothing has been
+            charged and nothing on your account has changed.
+          </p>
+
+          <Link
+            href={landing}
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: 8,
+              alignSelf: "stretch",
+              padding: "14px 22px",
+              borderRadius: 14,
+              background: CYBER_GRAD.hero,
+              color: C.abyss,
+              fontFamily: "'Space Grotesk', system-ui, sans-serif",
+              fontWeight: 900,
+              fontSize: 16,
+              letterSpacing: "0.01em",
+              textDecoration: "none",
+              boxShadow: CYBER_SHADOW.buttonGlow,
+            }}
+          >
+            Back to {product.name}
+          </Link>
+
+          <Link
+            href={CATALOGUE}
+            style={{
+              justifySelf: "center",
+              color: C.cyanSoft,
+              fontWeight: 700,
+              fontSize: 13,
+              textDecoration: "none",
+              fontFamily: "'DM Sans', system-ui, sans-serif",
+            }}
+          >
+            See all courses
+          </Link>
         </article>
       </FadeIn>
     </PurchaseFrame>
