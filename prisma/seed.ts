@@ -72,7 +72,7 @@ const cyberOpsWeeks = [
 const products = [
   {
     slug: "cyber-heroes",
-    name: "Cyber Heroes Academy",
+    name: "Cyber Heroes",
     ageMin: 6,
     ageMax: 9,
     priceGBP: 9900,

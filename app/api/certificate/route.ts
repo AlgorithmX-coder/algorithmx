@@ -156,7 +156,7 @@ export async function GET(req: NextRequest) {
   doc.setFont("helvetica", "normal");
   doc.setFontSize(8);
   doc.setTextColor(BRAND.light);
-  doc.text("Cyber Heroes Academy", shieldCX, shieldTopY + shieldH + 11, {
+  doc.text("Cyber Heroes", shieldCX, shieldTopY + shieldH + 11, {
     align: "center",
   });
 
@@ -233,7 +233,7 @@ export async function GET(req: NextRequest) {
      Saying less is the only safe direction for a claim like that, so it
      says what we can stand behind: which course it is and how many weeks
      it took. If the agreements exist, put the line back. */
-  doc.text(`Cyber Heroes Academy · ${milestone.week} of 20 weeks`, W - 28, bottomY + 10, {
+  doc.text(`Cyber Heroes · ${milestone.week} of 20 weeks`, W - 28, bottomY + 10, {
     align: "right",
   });
 
@@ -260,9 +260,9 @@ export async function GET(req: NextRequest) {
   // PDF metadata
   doc.setProperties({
     title: `${childName} - ${milestone.title} Certificate`,
-    subject: `Cyber Heroes Academy - Week ${weekNumber} milestone`,
+    subject: `Cyber Heroes - Week ${weekNumber} milestone`,
     creator: "AlgorithmX",
-    author: "AlgorithmX - Cyber Heroes Academy",
+    author: "AlgorithmX",
   });
 
   const pdfBuffer = Buffer.from(doc.output("arraybuffer"));
