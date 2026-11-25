@@ -5,6 +5,8 @@
  * Tuned for the dark console: each reads as text on the near-black
  * ground and as a tint behind itself at ~14% alpha. */
 export const COURSE_COLORS: Record<string, string> = {
+  "Cyber Heroes": "#fb923c",
+  /* the production Product row still carries the old name */
   "Cyber Heroes Academy": "#fb923c",
   "Cyber Explorers": "#34d399",
   "Cyber Ops": "#c084fc",

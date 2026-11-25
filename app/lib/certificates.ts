@@ -25,7 +25,7 @@ export const MILESTONES = [
     title: "Certified Cyber Hero",
     icon: "🎓",
     description:
-      "Completed the entire Cyber Heroes Academy with comprehensive online safety knowledge",
+      "Completed all 20 weeks of Cyber Heroes with comprehensive online safety knowledge",
   },
 ] as const;
 
