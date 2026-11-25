@@ -44,7 +44,10 @@ const useGo = () =>
     () => false,
   );
 
+/* ?speed=N runs the Monday-morning clock N times faster for testing.
+   Development builds only: on production the clock always runs at real speed. */
 function speedFromUrl(): number {
+  if (process.env.NODE_ENV === "production") return REAL_SPEED;
   try {
     const n = Number(new URLSearchParams(window.location.search).get("speed"));
     return Number.isFinite(n) && n >= 1 ? Math.min(n, 600) : REAL_SPEED;

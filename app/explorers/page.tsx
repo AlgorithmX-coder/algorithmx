@@ -239,12 +239,13 @@ export default function ExplorersPage() {
   // runtime — every one of the 20 cases gets this, not just block openers
   // (owner: "every single mission I start, I should see that screen").
   const [showMissionBrief, setShowMissionBrief] = useState(false);
-  // QA/owner unlock. Visit ?qa=1 once to persist it (this browser only): it
-  // enables the ?case= deep-link on prod and unlocks every case on the map for
-  // testing. ?qa=0 clears it. Content is already behind auth, so this only
-  // reorders access for someone who has it, never exposes it publicly.
+  // Tester unlock, DEVELOPMENT BUILDS ONLY. Visit ?qa=1 once to persist it
+  // (this browser only): it unlocks every case on the map, the end-of-case
+  // shortcuts (engine/arrowAdvance.tsx) and the Zero File reset; ?qa=0 clears
+  // it. Owner 2026-11-25: no tester shortcuts for customers, so a production
+  // build ignores ?qa and clears any flag a browser kept from before.
   // Starts false and is set in an effect (never in the initializer) so the
-  // server + first client render agree — otherwise the lock state hydration-
+  // server + first client render agree, otherwise the lock state hydration-
   // mismatches. Mirrors how `status` is read below.
   const [qa, setQa] = useState(false);
   // Set when /explorers?clues=0 has just emptied the Zero File, so the tester
@@ -253,6 +254,7 @@ export default function ExplorersPage() {
   const [cluesReset, setCluesReset] = useState(false);
   useEffect(() => {
     try {
+      if (process.env.NODE_ENV === "production") { localStorage.removeItem("explorers:qa"); return; }
       const p = new URLSearchParams(window.location.search);
       let on = localStorage.getItem("explorers:qa") === "1";
       if (p.get("qa") === "1") { localStorage.setItem("explorers:qa", "1"); on = true; }
@@ -336,10 +338,10 @@ export default function ExplorersPage() {
   }, []);
 
   // Deep link: /explorers?case=16 opens that case; &at=boss jumps to the boss;
-  // &at=test jumps straight to the end-of-case test. Dev always; on prod only
-  // with the ?qa unlock set (so testers get clickable per-case links).
+  // &at=test jumps straight to the end-of-case test. Development builds only:
+  // on production a child could otherwise skip straight to any boss.
   useEffect(() => {
-    if (process.env.NODE_ENV === "production" && !qa) return;
+    if (process.env.NODE_ENV === "production") return;
     const p = new URLSearchParams(window.location.search);
     const c = p.get("case");
     if (!c) return;

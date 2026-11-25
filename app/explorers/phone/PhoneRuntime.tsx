@@ -116,7 +116,7 @@ export default function PhoneRuntime({ phoneCase, onExit, onNextCase, autostart 
   useArrowAdvance(); // ArrowRight: fast-forward through narration for UAT
   // Fast test mode (?fast=1): skip the narrator wait so the owner can click
   // through quickly. Real users never set it, so the anti-skip stays on.
-  const fast = typeof window !== "undefined" && new URLSearchParams(window.location.search).get("fast") === "1";
+  const fast = process.env.NODE_ENV !== "production" && typeof window !== "undefined" && new URLSearchParams(window.location.search).get("fast") === "1"; // tester speed-up, dev builds only
   const [phase, setPhase] = useState<"home" | "lock" | "play" | "test" | "debrief">("home");
   const [header, setHeader] = useState<Header>(WREN_HEADER);
   const [items, setItems] = useState<Item[]>([]);
