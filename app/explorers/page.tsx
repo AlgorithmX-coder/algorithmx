@@ -55,6 +55,7 @@ import { VillainGallery } from "./VillainGallery";
 import { loadExplorersProgress } from "@/app/lib/explorersProgress.actions";
 import { CaseGlyph } from "./CaseGlyphs";
 import CourseHomeShell, { CourseHomePause } from "@/app/components/course-home/CourseHomeShell";
+import CourseSignOut from "@/app/components/CourseSignOut";
 import { CourseHomeLockup, ExplorersMark } from "@/app/components/course-home/marks";
 import { mission01 } from "./missions/mission01";
 import { mission02 } from "./missions/mission02";
@@ -583,6 +584,7 @@ export default function ExplorersPage() {
           <CourseHomeLockup mark={<ExplorersMark />} lead="CYBER" accent="EXPLORERS" label="Cyber Explorers by AlgorithmX" />
           <div className="ch6-chrome-r">
             <span className="ch6-who"><i className="dot" aria-hidden="true" /><span className="hide">Agent ·&nbsp;</span><b>{rank.current.name}</b></span>
+            <CourseSignOut course="cyberexplorers" className="ch6-link">Sign out</CourseSignOut>
             <CourseHomePause />
           </div>
         </header>
