@@ -83,7 +83,8 @@ export default function RootLayout({
         {/* The App Router does not server-render styled-jsx without this.
             Everything that uses it goes inside; the scripts below do not. */}
         <StyledJsxRegistry>{children}</StyledJsxRegistry>
-        <Analytics />
+        {/* Only on Vercel: off it, /_vercel/insights is absent and the nosniff header makes the browser refuse the placeholder. */}
+        {process.env.VERCEL ? <Analytics /> : null}
         <PlausibleScript />
         <DevFpsCounter />
       </body>
