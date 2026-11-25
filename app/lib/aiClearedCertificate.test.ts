@@ -2,17 +2,17 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 /* No new certificate issues on AI Cleared or AI Fluent (owner,
  * 2026-11-09), but a certificate already issued must keep working for its
- * holder and on /verify. The database is stubbed: these check what
- * issueCertificate and verifyCertificate do with what it returns. */
+ * holder. The database is stubbed: these check what issueCertificate does
+ * with what it returns. */
 
 const db = vi.hoisted(() => ({
   enrolment: { findUnique: vi.fn() },
-  certificate: { create: vi.fn(), findUnique: vi.fn() },
+  certificate: { create: vi.fn() },
 }));
 vi.mock("@/app/lib/prisma", () => ({ prisma: db }));
 vi.mock("@/app/lib/resend", () => ({ sendEmail: vi.fn() }));
 
-import { issueCertificate, verifyCertificate } from "./aiClearedCertificate";
+import { issueCertificate } from "./aiClearedCertificate";
 
 const issuedAt = new Date("2026-10-01T09:00:00Z");
 const expiresAt = new Date("2099-10-01T09:00:00Z");
@@ -25,7 +25,6 @@ describe("certificates after issuing stopped", () => {
   beforeEach(() => {
     db.enrolment.findUnique.mockReset();
     db.certificate.create.mockReset();
-    db.certificate.findUnique.mockReset();
   });
 
   for (const slug of ["ai-cleared", "ai-fluent", "cyber-awareness"]) {
@@ -44,26 +43,4 @@ describe("certificates after issuing stopped", () => {
     expect(db.certificate.create).not.toHaveBeenCalled();
   });
 
-  it("still verifies an existing AXC serial", async () => {
-    db.certificate.findUnique.mockResolvedValue({
-      serial: "AXC-B7KD-3NQ2",
-      issuedAt,
-      expiresAt,
-      enrolment: { user: { name: "Hannah Clarke", email: "hannah@example.com" }, org: { name: "Marlow Fenwick LLP" }, product: { slug: "ai-cleared" } },
-    });
-    const v = await verifyCertificate("axc-b7kd-3nq2");
-    expect(db.certificate.findUnique).toHaveBeenCalledWith(expect.objectContaining({ where: { serial: "AXC-B7KD-3NQ2" } }));
-    expect(v).toMatchObject({ serial: "AXC-B7KD-3NQ2", holder: "Hannah Clarke", firm: "Marlow Fenwick LLP", valid: true, course: "ai-cleared" });
-  });
-
-  it("still verifies an existing AXF serial", async () => {
-    db.certificate.findUnique.mockResolvedValue({
-      serial: "AXF-B7KD-3NQ2",
-      issuedAt,
-      expiresAt,
-      enrolment: { user: { name: null, email: "sam@example.com" }, org: { name: "Marlow Fenwick LLP" }, product: { slug: "ai-fluent" } },
-    });
-    const v = await verifyCertificate("AXF-B7KD-3NQ2");
-    expect(v).toMatchObject({ serial: "AXF-B7KD-3NQ2", holder: "sam", valid: true, course: "ai-fluent" });
-  });
 });

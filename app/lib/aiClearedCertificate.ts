@@ -1,16 +1,15 @@
 import { randomBytes } from "crypto";
 import { prisma } from "@/app/lib/prisma";
 import { sendEmail } from "@/app/lib/resend";
-import { COURSES, courseOfSerial, isCourseSlug, type CertifiedCourseSlug, type CourseDef } from "@/app/ai-cleared/engine/courses";
+import { COURSES, isCourseSlug, type CertifiedCourseSlug } from "@/app/ai-cleared/engine/courses";
 
 /* Certificates for AI Cleared and AI Fluent. They were issued once per
  * enrolment when the course was complete, valid for 12 months (owner
- * decision 2026-09-28), with a serial anyone can check at
- * /verify/[serial]: AXC for AI Cleared, AXF for AI Fluent. Since
- * 2026-11-09 no new certificate issues (owner: Cyber Secured tracks
- * completion per module only); the ones already out keep working until
- * they expire, so nothing here deletes a Certificate row. Cyber Awareness
- * never had one. Never import from a client component. */
+ * decision 2026-09-28), each with a serial: AXC for AI Cleared, AXF for
+ * AI Fluent. Since 2026-11-09 no new certificate issues (owner: Cyber
+ * Secured tracks completion per module only); the ones already out keep
+ * working until they expire, so nothing here deletes a Certificate row.
+ * Cyber Awareness never had one. Never import from a client component. */
 
 export const CERTIFICATE_MONTHS = 12;
 
@@ -24,22 +23,18 @@ export function makeSerial(prefix = "AXC"): string {
   return `${prefix}-${s.slice(0, 4)}-${s.slice(4)}`;
 }
 
-/* What each certificate says, on screen, in the PDF and on the verify page. */
-export const CERT_COPY: Record<CertifiedCourseSlug, { tagline: string; completed: string; pdfBody: string; verifyValid: string; verifyExpired: string; chips: string[] }> = {
+/* What each certificate says, on screen and in the PDF. */
+export const CERT_COPY: Record<CertifiedCourseSlug, { tagline: string; completed: string; pdfBody: string; chips: string[] }> = {
   "ai-cleared": {
     tagline: "Safe and effective AI use for staff",
     completed: "has completed AI Cleared, the five modules on safe and effective AI use, and passed the final assessment.",
     pdfBody: "has completed AI Cleared: the five modules on what happens to what you type, the paste test, the firm's approved tools, trust but verify, and shadow AI, and passed the final assessment.",
-    verifyValid: "Completed AI Cleared, the five-module course on safe and effective AI use for staff, including recognising and checking AI hallucination, and passed the final assessment.",
-    verifyExpired: "Completed AI Cleared, but this certificate has passed its twelve-month validity. Renewal is on the refreshed course content.",
     chips: ["PUBLIC", "INTERNAL", "CONFIDENTIAL", "RESTRICTED"],
   },
   "ai-fluent": {
     tagline: "Getting real work out of AI, for staff who hold AI Cleared",
     completed: "has completed AI Fluent, the nine modules on prompting, the five workflows, verification and a real task on their own desk, and passed the final assessment.",
     pdfBody: "has completed AI Fluent: the nine modules on the loop, saying what you want, fixing the prompt not the output, summarising, drafting, analysing, researching, verifying and automating, and a real task on their own desk, and passed the final assessment.",
-    verifyValid: "Completed AI Fluent, the nine-module course on getting real work out of AI tools, and passed the final assessment. AI Fluent is taken by staff who already hold AI Cleared.",
-    verifyExpired: "Completed AI Fluent, but this certificate has passed its twelve-month validity. Renewal is on the refreshed course content.",
     chips: ["SUMMARISE", "DRAFT", "ANALYSE", "RESEARCH", "AUTOMATE"],
   },
 };
@@ -49,10 +44,10 @@ export type IssueResult =
   | { ok: false; reason: "not-complete" | "not-found" | "not-issued" };
 
 /* Idempotent: a certificate already issued is always returned, so its
- * holder keeps the page, the PDF and the verify link. A new one is made
- * only on a course whose `certificate` flag is on, and since 2026-11-09
- * none is (owner: completion per module only), so this now only ever
- * finds; "not-issued" means there is no certificate and none will come.
+ * holder keeps the page and the PDF. A new one is made only on a course
+ * whose `certificate` flag is on, and since 2026-11-09 none is (owner:
+ * completion per module only), so this now only ever finds; "not-issued"
+ * means there is no certificate and none will come.
  * The serial prefix follows the enrolment's course. */
 export async function issueCertificate(enrolmentId: string): Promise<IssueResult> {
   const enrolment = await prisma.enrolment.findUnique({ where: { id: enrolmentId }, include: { certificate: true, product: { select: { slug: true } } } });
@@ -82,51 +77,25 @@ export async function issueCertificate(enrolmentId: string): Promise<IssueResult
   throw new Error("issueCertificate: could not allocate a serial");
 }
 
-/* What the public verify page shows. Name, firm and course only; no
- * scores, no track, nothing from the register. */
-export async function verifyCertificate(serial: string) {
-  const c = await prisma.certificate.findUnique({
-    where: { serial: serial.trim().toUpperCase() },
-    include: { enrolment: { include: { user: { select: { name: true, email: true } }, org: { select: { name: true } }, product: { select: { slug: true } } } } },
-  });
-  if (!c) return null;
-  const now = new Date();
-  const course: CourseDef = courseOfSerial(c.serial) ?? (c.enrolment.product.slug === "ai-fluent" ? COURSES["ai-fluent"] : COURSES["ai-cleared"]);
-  return {
-    serial: c.serial,
-    holder: c.enrolment.user.name?.trim() || c.enrolment.user.email.split("@")[0],
-    firm: c.enrolment.org.name,
-    issuedAt: c.issuedAt,
-    expiresAt: c.expiresAt,
-    valid: c.expiresAt > now,
-    /* Cyber Awareness never issues a certificate, so no real serial ever
-     * resolves here; the fallback keeps the return type the two courses
-     * CERT_COPY actually knows. */
-    course: (course.slug === "cyber-awareness" ? "ai-cleared" : course.slug) as CertifiedCourseSlug,
-  };
-}
-
 export function fmtDate(d: Date): string {
   return d.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
 }
 
 /* The learner's copy by email: a link to the certificate page and the
- * public verify link. The PDF itself stays behind sign-in. */
+ * serial. The PDF itself stays behind sign-in. */
 export async function emailCertificate(args: { to: string; holder: string; firm: string; serial: string; expiresAt: Date; origin: string; course?: CertifiedCourseSlug }) {
   const course = COURSES[args.course ?? "ai-cleared"];
-  const verify = `${args.origin}/verify/${args.serial}`;
   const page = `${args.origin}${course.base}/certificate`;
   const html = `
     <div style="font-family:Inter,Segoe UI,Helvetica,Arial,sans-serif;color:#14161d;max-width:560px;margin:0 auto;padding:24px">
       <p style="font-family:ui-monospace,Consolas,monospace;font-size:11px;letter-spacing:.2em;color:#0a7085;margin:0 0 16px">${course.brand}</p>
       <h1 style="font-size:22px;margin:0 0 12px">You are ${escapeHtml(course.doneName)}, ${escapeHtml(args.holder)}.</h1>
-      <p style="font-size:15px;line-height:1.55;margin:0 0 12px">You completed every module of ${escapeHtml(course.name)} at ${escapeHtml(args.firm)}. Your certificate is ready to download, and anyone can check it with the serial below.</p>
+      <p style="font-size:15px;line-height:1.55;margin:0 0 12px">You completed every module of ${escapeHtml(course.name)} at ${escapeHtml(args.firm)}. Your certificate is ready to download; its serial is below.</p>
       <p style="font-size:15px;line-height:1.55;margin:0 0 4px"><b>Serial:</b> ${escapeHtml(args.serial)}</p>
       <p style="font-size:15px;line-height:1.55;margin:0 0 20px"><b>Valid until:</b> ${fmtDate(args.expiresAt)}</p>
       <p style="margin:0 0 10px"><a href="${page}" style="display:inline-block;background:#0a7085;color:#fff;text-decoration:none;padding:11px 18px;border-radius:8px;font-weight:600">Download your certificate</a></p>
-      <p style="font-size:13.5px;color:#5b6572;line-height:1.5;margin:0">Verify link for a manager or an auditor: <a href="${verify}" style="color:#0a7085">${verify}</a></p>
     </div>`;
-  const text = `You are ${course.doneName}, ${args.holder}.\n\nYou completed every module of ${course.name} at ${args.firm}.\nSerial: ${args.serial}\nValid until: ${fmtDate(args.expiresAt)}\n\nDownload: ${page}\nVerify: ${verify}\n`;
+  const text = `You are ${course.doneName}, ${args.holder}.\n\nYou completed every module of ${course.name} at ${args.firm}.\nSerial: ${args.serial}\nValid until: ${fmtDate(args.expiresAt)}\n\nDownload: ${page}\n`;
   return sendEmail({ to: args.to, subject: `Your ${course.name} certificate`, html, text });
 }
 
