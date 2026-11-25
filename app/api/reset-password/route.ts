@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import crypto from "node:crypto";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/app/lib/prisma";
+import { passwordProblem } from "@/app/lib/passwordPolicy";
 
 /**
  * POST /api/reset-password
@@ -15,8 +16,6 @@ import { prisma } from "@/app/lib/prisma";
  */
 
 export const runtime = "nodejs";
-
-const MIN_PASSWORD = 8;
 
 function sha256(input: string): string {
   return crypto.createHash("sha256").update(input).digest("hex");
@@ -38,11 +37,11 @@ export async function POST(req: Request) {
   if (!token || typeof token !== "string") {
     return NextResponse.json({ error: "Invalid or expired link" }, { status: 400 });
   }
-  if (!password || typeof password !== "string" || password.length < MIN_PASSWORD) {
-    return NextResponse.json(
-      { error: `Password must be at least ${MIN_PASSWORD} characters` },
-      { status: 400 },
-    );
+  /* The same rule as signup. This used to ask for eight characters only,
+     so a reset could swap a strong password for a weak one. */
+  const weak = passwordProblem(password);
+  if (weak || typeof password !== "string") {
+    return NextResponse.json({ error: weak ?? "Invalid request" }, { status: 400 });
   }
 
   const tokenHash = sha256(token);
