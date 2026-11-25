@@ -1,5 +1,7 @@
 import type { NextConfig } from "next";
 import { withSentryConfig } from "@sentry/nextjs";
+import { securityHeaders, sentryCspReportUri } from "./app/lib/securityHeaders";
+import { SENTRY_DSN } from "./sentry.dsn";
 
 const nextConfig: NextConfig = {
   // Set by `next upgrade --agent=security` (16.4.1 -> 16.4.6). Records which
@@ -12,6 +14,21 @@ const nextConfig: NextConfig = {
   // subject to change). The internal course slug stays "cyberstart".
   async redirects() {
     return [{ source: "/cyberstart", destination: "/ops", permanent: false }];
+  },
+
+  // Security headers on every response (app/lib/securityHeaders.ts says
+  // what each one does). The CSP is report-only: it blocks nothing, and
+  // violations go to Sentry so it can be tightened and enforced later.
+  async headers() {
+    return [
+      {
+        source: "/:path*",
+        headers: securityHeaders({
+          dev: process.env.NODE_ENV !== "production",
+          reportUri: sentryCspReportUri(SENTRY_DSN),
+        }),
+      },
+    ];
   },
 };
 
