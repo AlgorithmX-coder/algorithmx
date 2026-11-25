@@ -1,9 +1,8 @@
 import { logoutDestinationFor } from "@/app/lib/courseLandings";
-import { CATALOGUE } from "@/app/lib/courseIntent";
-import { auth } from "@/app/lib/auth";
+import { requireCourse } from "@/app/lib/courseAccess";
 import { prisma } from "@/app/lib/prisma";
 import { redirect } from "next/navigation";
-import { hasEntitlement, getAge } from "@/app/lib/entitlements";
+import { getAge } from "@/app/lib/entitlements";
 import { resolveActiveChildProfileId } from "@/app/lib/progressService";
 import { isSchoolPupil } from "@/app/lib/pupilAuth";
 import DashboardView, { type WeekItem, type WeekState } from "./DashboardView";
@@ -15,13 +14,9 @@ const PRODUCT_SLUG = "cyber-heroes";
 
 export default async function DashboardPage() {
   // ── GATE ─────────────────────────────────────────────────────────
-  const session = await auth();
-  if (!session?.user?.id) redirect("/login");
-  const ok = await hasEntitlement(session.user.id, PRODUCT_SLUG);
-  if (!ok) redirect(CATALOGUE);
+  const { userId, session } = await requireCourse(PRODUCT_SLUG, "/dashboard");
 
   // ── DATA ─────────────────────────────────────────────────────────
-  const userId = session.user.id;
 
   const childProfiles = await prisma.childProfile.findMany({
     where: { userId },

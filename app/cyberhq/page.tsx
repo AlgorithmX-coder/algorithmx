@@ -15,10 +15,10 @@
  * earned and the next week's stickers to find. Every figure is the child's
  * own, read exactly as before.
  *
- * Auth-gated only; not paywall-gated (matches /parent's posture).
+ * Gated on the cyber-heroes entitlement (requireCourse), like every other
+ * Cyber Heroes surface: HQ is part of the course a family buys.
  */
-import { auth } from "@/app/lib/auth";
-import { redirect } from "next/navigation";
+import { requireCourse } from "@/app/lib/courseAccess";
 import Link from "next/link";
 // STICKER_CATALOGUE moved to a plain data module (Next.js 16 forbids
 // non-async exports from "use server" files). Actions stay in
@@ -46,10 +46,7 @@ import { nextWeekFor, HEROES_WEEKS } from "@/app/lib/nextWeek";
 import { isSchoolPupil } from "@/app/lib/pupilAuth";
 
 export default async function CyberHQPage() {
-  const session = await auth();
-  /* The id, not just the user: everything below needs it, and the page used
-     to carry a guard that did not promise one. */
-  if (!session?.user?.id) redirect("/login");
+  const { session } = await requireCourse("cyber-heroes", "/cyberhq");
 
   const [earned, earnedBadges, snapshot] = await Promise.all([
     getEarnedStickers(),

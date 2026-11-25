@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import FinalStart from "./FinalStart";
+import { requireCourse } from "@/app/lib/courseAccess";
 
 /**
  * /desk-ready/final - the final task's start page: what Monday morning at
@@ -12,6 +13,7 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-export default function DeskFinalPage() {
+export default async function DeskFinalPage() {
+  await requireCourse("desk-ready", "/desk-ready/final");
   return <FinalStart />;
 }

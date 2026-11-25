@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import ModuleZero from "./ModuleZero";
+import { requireCourse } from "@/app/lib/courseAccess";
 
 /**
  * /desk-ready/m0 - Module 0: Your computer, your way (6 lessons). Mouse,
@@ -11,6 +12,7 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-export default function DeskModuleZeroPage() {
+export default async function DeskModuleZeroPage() {
+  await requireCourse("desk-ready", "/desk-ready/m0");
   return <ModuleZero />;
 }

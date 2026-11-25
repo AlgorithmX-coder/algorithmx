@@ -1,17 +1,5 @@
-import { CATALOGUE } from "@/app/lib/courseIntent";
-import { auth } from "@/app/lib/auth";
-import { redirect } from "next/navigation";
-import { hasEntitlement } from "@/app/lib/entitlements";
+import { requireCourse } from "@/app/lib/courseAccess";
 import DynamicLesson from "./DynamicLesson";
-
-/**
- * Flip to `true` only for local dev / QA when you don't want to
- * provision a Stripe entitlement just to walk into Week 1. Lives at
- * module scope so flipping it requires a server restart - intentional,
- * so the bypass can't be hot-reloaded into a real environment.
- * Production: must be `false`.
- */
-const BYPASS_ENTITLEMENT_FOR_TESTING = false;
 
 /**
  * Owner accounts that may use the `?screen=` / `?boss=1` preview deep-links
@@ -30,14 +18,9 @@ const OWNER_EMAILS = ["asadjalal96@outlook.com"];
  * to bounce unauthenticated and unentitled users before any client JS
  * loads.
  */
-export default async function WeekRoutePage() {
-  const session = await auth();
-  if (!session?.user?.id) redirect("/login");
-
-  if (!BYPASS_ENTITLEMENT_FOR_TESTING) {
-    const ok = await hasEntitlement(session.user.id, "cyber-heroes");
-    if (!ok) redirect(CATALOGUE);
-  }
+export default async function WeekRoutePage({ params }: { params: Promise<{ week: string }> }) {
+  const { week } = await params;
+  const { session } = await requireCourse("cyber-heroes", `/lesson/${encodeURIComponent(week)}`);
 
   // E2E_TESTS (set only by the Playwright webServer) re-enables the
   // ?screen QA deep-link so the click-through test can visit every screen.

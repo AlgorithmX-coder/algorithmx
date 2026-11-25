@@ -1,16 +1,15 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { JOBS, jobBySlug } from "../jobs";
+import { jobBySlug } from "../jobs";
 import OfficeJob from "./OfficeJob";
+import { requireCourse } from "@/app/lib/courseAccess";
 
 /**
  * /desk-ready/office/[job] - one Desk Ready office job (the pretend office:
  * Outlook, File Explorer and Excel sharing one record, marked on the end
- * state). Open during UAT like the rest of the course; noindex until launch.
+ * state). Gated on the Desk Ready entitlement like the rest of the course,
+ * so it renders per request (no generateStaticParams); noindex until launch.
  */
-export function generateStaticParams() {
-  return JOBS.map((j) => ({ job: j.slug }));
-}
 
 export async function generateMetadata({ params }: { params: Promise<{ job: string }> }): Promise<Metadata> {
   const { job } = await params;
@@ -21,5 +20,6 @@ export async function generateMetadata({ params }: { params: Promise<{ job: stri
 export default async function DeskOfficeJobPage({ params }: { params: Promise<{ job: string }> }) {
   const { job } = await params;
   if (!jobBySlug(job)) notFound();
+  await requireCourse("desk-ready", `/desk-ready/office/${job}`);
   return <OfficeJob slug={job} />;
 }

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import WeekPlayer from "../learn/WeekPlayer";
 import module04 from "../lessons/module04";
+import { requireCourse } from "@/app/lib/courseAccess";
 
 /**
  * /pro/module04 - Module 4: Cryptography without the maths (5 topics).
@@ -14,6 +15,7 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-export default function ProModule04Page() {
+export default async function ProModule04Page() {
+  await requireCourse("cyberstart-pro", "/pro/module04");
   return <WeekPlayer week={module04} />;
 }

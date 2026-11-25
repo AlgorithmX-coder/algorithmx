@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import { auth } from "@/app/lib/auth";
-import { redirect } from "next/navigation";
+import { requireCourse } from "@/app/lib/courseAccess";
 import Link from "next/link";
 import { getPortfolio, getOpsResumes } from "@/app/lib/opsPortfolio.actions";
 import { HIGHEST_BUILT_MODULE } from "@/app/operators/range/modules";
@@ -34,8 +33,9 @@ const Arrow = () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" 
 const Tick = () => <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5" /></svg>;
 
 export default async function OperatorsPortfolioPage() {
-  const session = await auth();
-  if (!session?.user?.id) redirect("/login?callbackUrl=/operators/portfolio");
+  /* A portfolio is this learner's own findings and rank: no more public
+     than the modules that wrote it. */
+  await requireCourse("cyberstart", "/operators/portfolio");
 
   const [p, resumes] = await Promise.all([getPortfolio(), getOpsResumes()]);
   const findings = p?.findings ?? [];

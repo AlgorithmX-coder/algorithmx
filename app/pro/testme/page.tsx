@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import TestMe from "../learn/TestMe";
+import { requireCourse } from "@/app/lib/courseAccess";
 
 /**
  * /pro/testme - the optional "Test me" self-test.
@@ -13,6 +14,7 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-export default function ProTestMePage() {
+export default async function ProTestMePage() {
+  await requireCourse("cyberstart-pro", "/pro/testme");
   return <TestMe />;
 }

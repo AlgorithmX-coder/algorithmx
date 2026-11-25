@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import MorningOffice from "./MorningOffice";
+import { requireCourse } from "@/app/lib/courseAccess";
 
 /**
  * /desk-ready/final/morning - the final task itself: Monday morning at the
@@ -12,6 +13,7 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-export default function DeskFinalMorningPage() {
+export default async function DeskFinalMorningPage() {
+  await requireCourse("desk-ready", "/desk-ready/final/morning");
   return <MorningOffice />;
 }

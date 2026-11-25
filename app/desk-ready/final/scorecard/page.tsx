@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import MorningScorecard from "./MorningScorecard";
+import { requireCourse } from "@/app/lib/courseAccess";
 
 /**
  * /desk-ready/final/scorecard - the one-page scorecard for the final task:
@@ -11,6 +12,7 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-export default function DeskFinalScorecardPage() {
+export default async function DeskFinalScorecardPage() {
+  await requireCourse("desk-ready", "/desk-ready/final/scorecard");
   return <MorningScorecard />;
 }

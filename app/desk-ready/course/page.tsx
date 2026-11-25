@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import CourseHome from "./CourseHome";
+import { requireCourse } from "@/app/lib/courseAccess";
 
 /**
  * /desk-ready/course - "Your desk": progress, the next lesson, and every
@@ -14,6 +15,7 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-export default function DeskCoursePage() {
+export default async function DeskCoursePage() {
+  await requireCourse("desk-ready", "/desk-ready/course");
   return <CourseHome />;
 }

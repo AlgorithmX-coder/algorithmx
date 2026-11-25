@@ -2,6 +2,7 @@ import { NextRequest } from "next/server";
 import { z } from "zod";
 import { anthropicClient, safeErrorMessage } from "@/app/lib/anthropicClient";
 import { auth } from "@/app/lib/auth";
+import { hasEntitlement } from "@/app/lib/entitlements";
 import { ALLOWANCE_MESSAGE, modelAllowance, recordModelCall } from "@/app/lib/modelAllowance";
 
 /* POST /api/pro/summarise
@@ -50,6 +51,9 @@ How to write the note:
 export async function POST(req: NextRequest) {
   const session = await auth();
   if (!session?.user?.id) return Response.json({ error: "Sign in to make notes." }, { status: 401 });
+  /* The tutor and notes are part of Cyber Pro, and every call costs money,
+     so only an account holding the course may use them. */
+  if (!(await hasEntitlement(session.user.id, "cyberstart-pro"))) return Response.json({ error: "Cyber Pro is not on your account." }, { status: 403 });
   if ((await modelAllowance(session.user.id)).over) return Response.json({ error: ALLOWANCE_MESSAGE }, { status: 429 });
 
   const parsed = Body.safeParse(await req.json().catch(() => null));

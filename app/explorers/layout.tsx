@@ -1,11 +1,22 @@
 import { Suspense } from "react";
 import PupilSignOut from "@/app/components/PupilSignOut";
+import { requireCourse } from "@/app/lib/courseAccess";
 
 /**
- * A layout for Cyber Explorers that exists for one reason: the page itself
- * is a client component, so it cannot ask the server who is signed in, and
- * a school pupil playing Explorers on a shared classroom machine had no way
- * to sign out at all.
+ * A layout for Cyber Explorers. The page itself is a client component, so
+ * it cannot ask the server who is signed in. That makes this layout the
+ * last server code above it, which is why two things live here:
+ *
+ * THE COURSE GATE. Until 2026-11-25 there was none: anybody past the site
+ * password played all twenty cases. requireCourse checks, on the server,
+ * that the signed-in account holds Cyber Explorers (a school pupil's class
+ * grant counts) and otherwise redirects. /explorers is the only route in
+ * this segment and it carries no server data of its own, so a gate here
+ * runs on every arrival at it. Reading the session makes the segment
+ * dynamic, which is right for an answer that depends on who is asking.
+ *
+ * THE PUPIL SIGN-OUT. A school pupil playing Explorers on a shared
+ * classroom machine had no way to sign out at all.
  *
  * Deliberately a bare fragment around the children. Explorers paints its own
  * full-screen chrome and this must add nothing to it: no wrapper element, no
@@ -19,7 +30,8 @@ import PupilSignOut from "@/app/components/PupilSignOut";
  */
 const HIDE_SCROLLBARS = "*{scrollbar-width:none !important}*::-webkit-scrollbar{display:none !important}";
 
-export default function ExplorersLayout({ children }: { children: React.ReactNode }) {
+export default async function ExplorersLayout({ children }: { children: React.ReactNode }) {
+  await requireCourse("cyberexplorers", "/explorers");
   return (
     <>
       <style>{HIDE_SCROLLBARS}</style>

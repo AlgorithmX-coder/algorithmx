@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import WeekPlayer from "../learn/WeekPlayer";
 import module01 from "../lessons/module01";
+import { requireCourse } from "@/app/lib/courseAccess";
 
 /**
  * /pro/module01 - Module 1: What security actually means (5 topics).
@@ -13,6 +14,7 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-export default function ProModule01Page() {
+export default async function ProModule01Page() {
+  await requireCourse("cyberstart-pro", "/pro/module01");
   return <WeekPlayer week={module01} />;
 }
