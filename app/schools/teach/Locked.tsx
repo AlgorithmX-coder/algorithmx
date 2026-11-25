@@ -34,7 +34,7 @@ export default function Locked({ email }: { email?: string | null }) {
           <p>
             If your school has one and you cannot get in, your account is not on it yet. Ask
             whoever set the licence up to add you, or email{" "}
-            <a href="mailto:schools@algorithmx.co.uk">schools@algorithmx.co.uk</a> and we will sort
+            <a href="mailto:admissions@algorithmx.co.uk">admissions@algorithmx.co.uk</a> and we will sort
             it out.
           </p>
           <p className="line">

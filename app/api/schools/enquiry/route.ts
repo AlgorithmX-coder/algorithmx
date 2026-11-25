@@ -118,7 +118,7 @@ export async function POST(req: Request) {
     });
   }
 
-  const to = process.env.SCHOOLS_ENQUIRY_TO ?? "support@algorithmx.co.uk";
+  const to = process.env.SCHOOLS_ENQUIRY_TO ?? "admissions@algorithmx.co.uk";
   const subject = `School enquiry: ${school} (${record.phase})`;
   const rows: Array<[string, string]> = [
     ["Name", name],

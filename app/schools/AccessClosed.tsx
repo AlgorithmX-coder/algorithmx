@@ -30,7 +30,7 @@ export default function AccessClosed({
           <p>
             {orgName}&rsquo;s access to AlgorithmX has been closed. If you believe this
             is a mistake, email{" "}
-            <a href="mailto:schools@algorithmx.co.uk">schools@algorithmx.co.uk</a>.
+            <a href="mailto:admissions@algorithmx.co.uk">admissions@algorithmx.co.uk</a>.
           </p>
           {/* A closed account takes over the screen, so anybody who also
               belongs to a working school needs the way out right here. */}

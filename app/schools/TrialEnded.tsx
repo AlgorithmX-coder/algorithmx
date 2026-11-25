@@ -46,7 +46,7 @@ export default function TrialEnded({
           </p>
           <p>
             To carry on, email{" "}
-            <a href="mailto:schools@algorithmx.co.uk">schools@algorithmx.co.uk</a> and we will set
+            <a href="mailto:admissions@algorithmx.co.uk">admissions@algorithmx.co.uk</a> and we will set
             up a licence for {orgName}.
           </p>
           <p className="line">

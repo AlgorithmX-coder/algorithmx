@@ -4,9 +4,12 @@ import { sendEmail } from "@/app/lib/resend";
 /* When a paid firm is not set up, an invite or a welcome does not go out,
  * or a certificate email fails, a person hears about it: an email to the
  * ops address and a Sentry event tagged for an alert rule. Never throws;
- * an alert that cannot be sent is logged and the caller carries on. */
+ * an alert that cannot be sent is logged and the caller carries on.
+ *
+ * Ops alerts are technical, so they go to support@ (the owner), not to
+ * the admissions inbox; OPS_ALERT_TO still overrides. */
 
-export const OPS_ALERT_TO = process.env.OPS_ALERT_TO ?? process.env.CORPORATE_ENQUIRY_TO ?? "admissions@algorithmx.co.uk";
+export const OPS_ALERT_TO = process.env.OPS_ALERT_TO ?? "support@algorithmx.co.uk";
 
 export async function opsAlert(args: { what: string; detail: Record<string, unknown>; error?: unknown }): Promise<void> {
   const message = args.error instanceof Error ? args.error.message : args.error ? String(args.error) : "";
