@@ -44,6 +44,7 @@ model User {
   deskProgress        DeskProgress[]
   deskOffices         DeskOffice[]
   teacherInvites      TeacherInvite[]
+  emailVerificationTokens EmailVerificationToken[]
 }
 
 model Account {
@@ -98,6 +99,23 @@ model PasswordResetToken {
 
   @@index([userId])
   @@index([expiresAt])
+}
+
+/// A link that proves an account receives mail at its address
+/// (app/lib/emailVerification.ts). Same shape as PasswordResetToken: only
+/// the SHA-256 of the token is stored, it lasts seven days and works once.
+/// Opening it stamps User.emailVerified.
+model EmailVerificationToken {
+  id        String    @id @default(cuid())
+  tokenHash String    @unique
+  userId    String
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }
 
 /// Per-account accessibility / comfort preferences. Lives on the
