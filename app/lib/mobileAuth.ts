@@ -8,6 +8,7 @@
  * does not touch the web NextAuth flow.
  */
 import { SignJWT, jwtVerify } from "jose";
+import { sessionStillValid } from "@/app/lib/sessionValidity";
 
 const secretStr = process.env.AUTH_SECRET ?? process.env.NEXTAUTH_SECRET ?? "";
 const secret = new TextEncoder().encode(secretStr);
@@ -19,6 +20,8 @@ export interface MobileClaims {
   email: string;
   name?: string | null;
   role?: string;
+  /** When the token was issued, in seconds (the JWT iat). */
+  iat?: number;
 }
 
 export async function signMobileToken(claims: MobileClaims): Promise<string> {
@@ -50,6 +53,7 @@ export async function verifyMobileToken(token: string): Promise<MobileClaims | n
       email: typeof payload.email === "string" ? payload.email : "",
       name: typeof payload.name === "string" ? payload.name : null,
       role: typeof payload.role === "string" ? payload.role : "learner",
+      iat: typeof payload.iat === "number" ? payload.iat : undefined,
     };
   } catch {
     return null;
@@ -60,5 +64,14 @@ export async function verifyMobileToken(token: string): Promise<MobileClaims | n
 export async function getMobileUser(request: Request): Promise<MobileClaims | null> {
   const authz = request.headers.get("authorization") ?? "";
   const token = authz.startsWith("Bearer ") ? authz.slice(7).trim() : "";
-  return token ? verifyMobileToken(token) : null;
+  const claims = token ? await verifyMobileToken(token) : null;
+  if (!claims) return null;
+  /* Same rule as the web session: a token issued before the password last
+     changed is refused. iat is whole seconds, so it counts as the end of
+     the second it was issued in: a token issued in the same second as a
+     reset survives, which is the only rounding that never signs out a
+     token issued just after one. */
+  const issuedMs = typeof claims.iat === "number" ? claims.iat * 1000 + 999 : undefined;
+  if (!(await sessionStillValid(claims.sub, issuedMs))) return null;
+  return claims;
 }

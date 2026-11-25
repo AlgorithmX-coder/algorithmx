@@ -69,7 +69,9 @@ export async function POST(req: Request) {
   await prisma.$transaction([
     prisma.user.update({
       where: { id: record.userId },
-      data: { hashedPassword },
+      /* Stamped so every other session for this account ends
+         (app/lib/sessionValidity.ts). */
+      data: { hashedPassword, passwordChangedAt: new Date() },
     }),
     prisma.passwordResetToken.update({
       where: { tokenHash },

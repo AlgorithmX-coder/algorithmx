@@ -1,5 +1,6 @@
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
+import { sessionStillValid } from "./sessionValidity";
 import bcrypt from "bcryptjs";
 import { prisma } from "./prisma";
 import { authorisePupil } from "./pupilAuth";
@@ -75,10 +76,23 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   },
   session: {
     strategy: "jwt",
+    /* Fourteen days, rolling: every visit pushes the end back, so someone
+       who uses the site stays signed in and an abandoned session dies in
+       a fortnight rather than the default thirty days. */
+    maxAge: 14 * 24 * 60 * 60,
   },
   callbacks: {
-    jwt: ({ token, user }) => {
-      if (user) token.sub = user.id;
+    jwt: async ({ token, user }) => {
+      if (user) {
+        token.sub = user.id;
+        /* When this session signed in, so a later password reset can end
+           it (app/lib/sessionValidity.ts). */
+        token.authAt = Date.now();
+        return token;
+      }
+      /* A session that signed in before the password last changed is over:
+         returning null clears the cookie. */
+      if (token.sub && !(await sessionStillValid(token.sub, token.authAt))) return null;
       return token;
     },
     session: ({ session, token }) => ({
