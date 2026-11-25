@@ -1,8 +1,19 @@
-import NextAuth from "next-auth";
+import NextAuth, { CredentialsSignin } from "next-auth";
+import { clientIp, loginAllowed, loginFailed } from "./rateLimit";
+import { LOGIN_LIMITED_CODE, PUPIL_LOCKED_CODE } from "./rateLimitWords";
 import Credentials from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 import { authorisePupil } from "./pupilAuth";
 import { findUserByEmail } from "./emailIdentity";
+
+/* A refusal the sign-in form can tell apart from a wrong password: NextAuth
+   returns `code` from signIn() to the browser. */
+class LoginLimited extends CredentialsSignin {
+  code = LOGIN_LIMITED_CODE;
+}
+class PupilLocked extends CredentialsSignin {
+  code = PUPIL_LOCKED_CODE;
+}
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
@@ -12,20 +23,31 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" },
       },
-      async authorize(credentials) {
+      async authorize(credentials, request) {
         if (!credentials?.email || !credentials?.password) return null;
+        /* Too many wrong passwords for this address or from this IP: refuse
+           before checking, so guessing stops paying. */
+        const limitEmail = String(credentials.email).trim().toLowerCase();
+        const ip = clientIp(request);
+        if (!(await loginAllowed(limitEmail, ip)).ok) throw new LoginLimited();
 
         /* Case-insensitive: "Me@x.com" and "me@x.com" are one person. */
         const user = await findUserByEmail(credentials.email);
 
-        if (!user || !user.hashedPassword) return null;
+        if (!user || !user.hashedPassword) {
+          await loginFailed(limitEmail, ip);
+          return null;
+        }
 
         const isValid = await bcrypt.compare(
           credentials.password as string,
           user.hashedPassword
         );
 
-        if (!isValid) return null;
+        if (!isValid) {
+          await loginFailed(limitEmail, ip);
+          return null;
+        }
 
         return { id: user.id, name: user.name, email: user.email };
       },
@@ -49,7 +71,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         childProfileId: { label: "Pupil", type: "text" },
         sequence: { label: "Pictures", type: "text" },
       },
-      async authorize(credentials) {
+      async authorize(credentials, request) {
         const id = credentials?.childProfileId;
         const raw = credentials?.sequence;
         if (typeof id !== "string" || typeof raw !== "string") return null;
@@ -61,7 +83,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           return null;
         }
 
-        const res = await authorisePupil(id, sequence);
+        const res = await authorisePupil(id, sequence, clientIp(request));
+        if (!res.ok && res.reason === "locked") throw new PupilLocked();
         if (!res.ok) return null;
         /* No email on the session: a pupil has none worth carrying, and the
            synthetic one should not travel to the browser. */

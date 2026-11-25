@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { RULES, clientIp, hit, rateKey, tooManyResponse } from "@/app/lib/rateLimit";
 import crypto from "node:crypto";
 import { prisma } from "@/app/lib/prisma";
 import { sendEmail, passwordResetTemplate } from "@/app/lib/resend";
@@ -35,6 +36,11 @@ function sha256(input: string): string {
 }
 
 export async function POST(req: Request) {
+  /* Without these, anyone could flood a stranger's inbox with reset emails
+     by pressing the button in a loop. Per IP first, then per address. */
+  const byIp = await hit(rateKey("forgot-ip", clientIp(req)), RULES.forgotIp);
+  if (!byIp.ok) return tooManyResponse(byIp);
+
   let body: unknown;
   try {
     body = await req.json();
@@ -49,6 +55,11 @@ export async function POST(req: Request) {
     // user not existing.
     return NextResponse.json({ ok: true });
   }
+
+  /* Counted whether or not an account exists, so the answer is the same
+     either way and says nothing about who has one. */
+  const byEmail = await hit(rateKey("forgot-email", email), RULES.forgotEmail);
+  if (!byEmail.ok) return tooManyResponse(byEmail);
 
   // Look up user - silent if not found.
   const user = await findUserByEmail(email);

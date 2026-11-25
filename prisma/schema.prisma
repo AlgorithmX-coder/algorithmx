@@ -1048,3 +1048,22 @@ model DeskOffice {
 
   @@unique([userId, jobId])
 }
+
+// ---------------------------------------------------------------------------
+// RATE LIMITING
+// ---------------------------------------------------------------------------
+
+/// Fixed-window counters for app/lib/rateLimit.ts. One row per key per
+/// window; `key` is a bucket name plus a SHA-256 of the subject (an email,
+/// an IP, a pupil), never the raw value. Rows older than two days are
+/// pruned as the limiter runs, so the table stays small. A lock row (a
+/// pupil after too many wrong pictures) is the same shape with
+/// windowStart set to the moment the lock began.
+model RateLimit {
+  key         String
+  windowStart DateTime
+  count       Int      @default(0)
+
+  @@id([key, windowStart])
+  @@index([windowStart])
+}

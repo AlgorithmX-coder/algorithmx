@@ -2,6 +2,7 @@ import bcrypt from "bcryptjs";
 import { prisma } from "@/app/lib/prisma";
 import { PICTURE_KEYS, SEQUENCE_LENGTH } from "@/app/lib/pictures";
 import { pupilCourseHomeFor } from "@/app/lib/courseIntent";
+import { PUPIL_LOCK_SEC, RULES, clear, hit, lock, lockedFor, peek, rateKey } from "@/app/lib/rateLimit";
 
 /**
  * Signing a child in without an email address or a typed password.
@@ -92,7 +93,7 @@ export async function lookupClass(rawCode: string): Promise<ClassLookup | null> 
 
 export type PupilSignIn =
   | { ok: true; userId: string; name: string }
-  | { ok: false; reason: "unknown" | "wrong_pictures" | "bad_sequence" };
+  | { ok: false; reason: "unknown" | "wrong_pictures" | "bad_sequence" | "locked" };
 
 /**
  * Check a child's pictures, or set them the first time.
@@ -108,6 +109,7 @@ export type PupilSignIn =
 export async function authorisePupil(
   childProfileId: string,
   sequence: unknown,
+  ip = "unknown",
 ): Promise<PupilSignIn> {
   if (!childProfileId || !isSequence(sequence)) return { ok: false, reason: "bad_sequence" };
 
@@ -116,9 +118,21 @@ export async function authorisePupil(
        closed school's classes are nobody's. Both are also filtered in
        lookupClass, so this is the second gate on a page left open. */
     where: { id: childProfileId, class: { archivedAt: null, org: { revokedAt: null } } },
-    select: { name: true, user: { select: { id: true, hashedPassword: true } } },
+    select: { name: true, classId: true, user: { select: { id: true, hashedPassword: true } } },
   });
   if (!child) return { ok: false, reason: "unknown" };
+
+  /* Three of twelve pictures is 1,728 sequences, which a script gets
+     through in minutes. So one pupil is locked for 15 minutes after five
+     wrong goes, and one IP gets a capped number of wrong goes across a
+     whole class, which stops the same guessing being spread over every
+     name on the card. The class cap is generous because a whole room
+     shares one school IP. */
+  const failKey = rateKey("pupil-fail", childProfileId);
+  const lockKey = rateKey("pupil-lock", childProfileId);
+  const classKey = rateKey("pupil-class-fail-ip", `${child.classId ?? "none"}|${ip}`);
+  if ((await lockedFor(lockKey, PUPIL_LOCK_SEC)) > 0) return { ok: false, reason: "locked" };
+  if (!(await peek(classKey, RULES.pupilClassFailIp)).ok) return { ok: false, reason: "locked" };
 
   const secret = sequence.join(".");
 
@@ -135,7 +149,16 @@ export async function authorisePupil(
   }
 
   const matches = await bcrypt.compare(secret, child.user.hashedPassword);
-  if (!matches) return { ok: false, reason: "wrong_pictures" };
+  if (!matches) {
+    const [mine] = await Promise.all([hit(failKey, RULES.pupilFail), hit(classKey, RULES.pupilClassFailIp)]);
+    if (mine.count >= RULES.pupilFail.limit) {
+      await lock(lockKey);
+      return { ok: false, reason: "locked" };
+    }
+    return { ok: false, reason: "wrong_pictures" };
+  }
+  /* Got them right: earlier slips do not carry over to the next lesson. */
+  await clear(failKey);
   return { ok: true, userId: child.user.id, name: child.name };
 }
 
@@ -149,6 +172,8 @@ export async function resetPupilPictures(orgId: string, childProfileId: string):
   });
   if (!child) return false;
   await prisma.user.update({ where: { id: child.userId }, data: { hashedPassword: null } });
+  /* "Ask your teacher" is the way out of a lock, so a reset lifts it. */
+  await Promise.all([clear(rateKey("pupil-lock", childProfileId)), clear(rateKey("pupil-fail", childProfileId))]);
   return true;
 }
 

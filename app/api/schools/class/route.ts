@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { lookupClass } from "@/app/lib/pupilAuth";
+import { PUPIL_TOO_MANY, RULES, clientIp, hit, peek, rateKey, tooManyResponse } from "@/app/lib/rateLimit";
 
 /**
  * Turn a class code into the names on the login cards.
@@ -25,8 +26,16 @@ export async function POST(req: Request) {
     /* a malformed body is just a wrong code as far as the child is concerned */
   }
 
+  /* Codes that match nothing are what guessing looks like, so only those
+     count. A room of thirty children typing the right code is never
+     stopped. */
+  const ipKey = rateKey("class-lookup-fail-ip", clientIp(req));
+  const allowed = await peek(ipKey, RULES.classLookupFailIp);
+  if (!allowed.ok) return tooManyResponse(allowed, PUPIL_TOO_MANY);
+
   const found = await lookupClass(code);
   if (!found) {
+    await hit(ipKey, RULES.classLookupFailIp);
     return NextResponse.json(
       { error: "We cannot find that class. Check the code on your card." },
       { status: 404 },

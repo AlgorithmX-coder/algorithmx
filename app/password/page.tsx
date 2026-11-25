@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { TOO_MANY } from "@/app/lib/rateLimitWords";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import AuthBackdrop from "@/app/components/auth/AuthBackdrop";
@@ -69,6 +70,9 @@ export default function PasswordGatePage() {
           router.push("/");
           router.refresh();
         }, 750);
+      } else if (res.status === 429) {
+        setError(typeof data.error === "string" ? data.error : TOO_MANY);
+        setPhase("idle");
       } else {
         setError("Hmm, that doesn't unlock the gate. Try again?");
         setPhase("idle");

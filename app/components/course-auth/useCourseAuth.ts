@@ -15,6 +15,7 @@
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { signIn } from "next-auth/react";
+import { LOGIN_LIMITED_CODE, TOO_MANY } from "@/app/lib/rateLimitWords";
 import { courseHomeFor, safeCourseSlug } from "@/app/lib/courseIntent";
 import { COURSE_AUTH_CONTENT, SHARED, type CourseAuthKey } from "./content";
 
@@ -97,7 +98,7 @@ export function useCourseAuth(course: CourseAuthKey, mode: AuthMode) {
       if (isLogin) {
         const res = await signIn("credentials", { email, password, redirect: false });
         if (res?.error) {
-          setError(SHARED.errors.noMatch);
+          setError(res.code === LOGIN_LIMITED_CODE ? TOO_MANY : SHARED.errors.noMatch);
           setBusy(false);
           return;
         }
