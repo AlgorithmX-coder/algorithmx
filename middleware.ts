@@ -16,9 +16,9 @@ export function middleware(req: NextRequest) {
   }
 
   // Launch password is BACK ON (owner 2026-10-20): the whole site requires the
-  // site password before anything is reachable. /password, /api, /verify and
-  // static assets are excluded by the matcher below, so the gate page and its
-  // POST endpoint stay open to take the password. CI e2e runs with E2E_TESTS=1
+  // site password before anything is reachable. /password, /api and static
+  // assets are excluded by the matcher below, so the gate page and its POST
+  // endpoint stay open to take the password. CI e2e runs with E2E_TESTS=1
   // and bypasses the gate so the suite can drive the app directly.
   if (process.env.E2E_TESTS === "1") return NextResponse.next();
 
@@ -35,7 +35,7 @@ export const config = {
   matcher: [
     /*
      * Match all paths except:
-     *  - /password, /verify (open pages that need no middleware)
+     *  - /password (the gate page itself needs no middleware)
      *  - /api/* (API routes)
      *  - /_next/* (Next.js internals: static, image, etc.)
      *  - /favicon.ico
@@ -43,6 +43,6 @@ export const config = {
      *  - anything with a file extension (static files)
      * /dev and /test stay INCLUDED so the guard above can 404 them in prod.
      */
-    "/((?!password|api|verify|_next|favicon.ico|logos|.*\\..*).*)",
+    "/((?!password|api|_next|favicon.ico|logos|.*\\..*).*)",
   ],
 };

@@ -2,7 +2,6 @@
 
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import { K } from "./engine/tokens";
 import { JOB_TITLES, OTHER_ROLES, TRACK_KEYWORDS, TRACK_ORDER } from "./engine/jobTitles";
 import { TRACK_LABEL, type Track } from "./engine/types";
 import { COURSES, type CourseSlug } from "./engine/courses";
@@ -11,7 +10,9 @@ import { COURSES, type CourseSlug } from "./engine/courses";
  * as the AI tools' own), every desk with its common titles, the desk the
  * pick resolves to, and one gradient action. Typing narrows the titles
  * across every desk; "IT" on its own finds the IT desk through keywords.
- * Both courses use it; the seat's course decides where the claim lands. */
+ * Both courses use it; the seat's course decides where the claim lands.
+ * The look comes from the Campus Console (campus-console.css, the .jf
+ * rules), which the invite page wraps it in. */
 const PER_DESK = 4;
 
 export default function JoinForm({ token, orgName, presetTrack, course = "ai-cleared" }: { token: string; orgName: string; presetTrack: Track | null; course?: CourseSlug }) {
@@ -152,53 +153,11 @@ export default function JoinForm({ token, orgName, presetTrack, course = "ai-cle
           <span>Pick the closest title. It decides which desk the practice uses.</span>
         )}
       </div>
-      {error && <div className="jf-error">{error}</div>}
-      <button type="button" className="cf-btn cf-btn-pri jf-cta" onClick={claim} disabled={!track || busy}>
-        {busy ? "Claiming your seat…" : `Claim my seat at ${orgName}`}
+      {error && <div className="jf-error" role="alert">{error}</div>}
+      <button type="button" className="r6-btn pri jf-cta" onClick={claim} disabled={!track || busy} aria-busy={busy}>
+        <span className="lbl">{busy ? "Claiming your seat…" : `Claim my seat at ${orgName}`}</span>
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d="M5 12h14M13 6l6 6-6 6" /></svg>
       </button>
-      <style jsx>{`
-        .jf { display: flex; flex-direction: column; gap: 14px; }
-        .jf-composer { display: flex; align-items: center; gap: 10px; background: ${K.glassStrong}; backdrop-filter: blur(16px); border: 1px solid ${K.glassEdge}; border-radius: 16px; padding: 8px 10px 8px 14px; box-shadow: 0 8px 30px rgba(20,22,29,0.08); transition: box-shadow 160ms ease, border-color 160ms ease; }
-        .jf-composer:focus-within { border-color: rgba(87,68,201,0.5); box-shadow: 0 0 0 4px rgba(87,68,201,0.12), 0 8px 30px rgba(20,22,29,0.08); }
-        .jf-spark { display: inline-flex; color: ${K.accentInk}; }
-        .jf-composer input { flex: 1; min-width: 0; font: inherit; font-size: 15.5px; color: ${K.ink}; background: transparent; border: none; outline: none; padding: 8px 0; }
-        .jf-composer input::placeholder { color: ${K.faint}; }
-        .jf-picked { flex-shrink: 0; font-size: 12.5px; font-weight: 600; color: ${K.onAccent}; background: ${K.grad}; border-radius: 999px; padding: 6px 11px; white-space: nowrap; }
-        .jf-tabs { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
-        .jf-tab { font: inherit; font-size: 13.5px; font-weight: 600; color: ${K.muted}; background: ${K.glass}; border: 1px solid ${K.glassEdge}; border-radius: 999px; padding: 7px 14px; cursor: pointer; transition: color 120ms ease, background 120ms ease; }
-        .jf-tab:hover { color: ${K.ink}; }
-        .jf-tab.on { color: ${K.onAccent}; background: ${K.ink}; border-color: ${K.ink}; }
-        .jf-tabs-hint { font-size: 13px; color: ${K.muted}; margin-left: 6px; }
-        .jf-other { display: flex; flex-direction: column; gap: 16px; }
-        .jf-chip.tagged { display: inline-flex; align-items: baseline; gap: 8px; }
-        .jf-chip.tagged small { font-family: ${K.mono}; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: ${K.muted}; }
-        .jf-chip.tagged.on small { color: rgba(255,255,255,0.7); }
-        .jf-direct { display: flex; flex-direction: column; gap: 8px; padding-top: 14px; border-top: 1px solid ${K.glassEdge}; }
-        .jf-direct .jf-desk-name { padding-top: 0; }
-        .jf-desks { display: flex; flex-direction: column; gap: 10px; }
-        .jf-desk-row { display: grid; grid-template-columns: 148px 1fr; gap: 6px 14px; align-items: start; padding: 8px 0; border-top: 1px solid ${K.glassEdge}; }
-        .jf-desk-row:first-child { border-top: none; padding-top: 0; }
-        .jf-desk-name { font-family: ${K.mono}; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: ${K.muted}; padding-top: 9px; line-height: 1.3; }
-        .jf-desk-row.here .jf-desk-name { color: ${K.accentInk}; }
-        .jf-chips { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
-        .jf-chip { font: inherit; font-size: 13.5px; color: ${K.ink}; background: ${K.glass}; backdrop-filter: blur(10px); border: 1px solid ${K.glassEdge}; border-radius: 999px; padding: 7px 13px; cursor: pointer; transition: transform 120ms ease, border-color 120ms ease; }
-        .jf-chip:hover { border-color: ${K.accent}; transform: translateY(-1px); }
-        .jf-chip.on { background: ${K.ink}; color: #fff; border-color: ${K.ink}; }
-        .jf-chip.more { color: ${K.accentInk}; background: transparent; border-style: dashed; }
-        .jf-none { font-size: 14px; color: ${K.muted}; }
-        .jf-desk { display: flex; align-items: flex-start; gap: 10px; font-size: 14px; color: ${K.muted}; min-height: 22px; }
-        .jf-desk b { color: ${K.ink}; }
-        .jf-desk-dot { flex-shrink: 0; margin-top: 6px; width: 8px; height: 8px; border-radius: 50%; background: ${K.grad}; box-shadow: 0 0 0 4px rgba(87,68,201,0.14); }
-        .jf-error { color: ${K.crit}; font-size: 14px; }
-        .jf-cta { align-self: flex-start; margin-top: 4px; }
-        .jf-cta:disabled { opacity: 0.5; cursor: default; transform: none; }
-        @media (max-width: 640px) {
-          .jf-desk-row { grid-template-columns: 1fr; gap: 6px; }
-          .jf-desk-name { padding-top: 0; }
-          .jf-tabs-hint { flex-basis: 100%; margin-left: 0; }
-        }
-      `}</style>
     </div>
   );
 }

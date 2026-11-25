@@ -456,13 +456,13 @@ export const WEEK_13: WeekContent = {
     {
       type: "setTheDial",
       introTitle: "The Plan Desk",
-      introSubtitle: "Set the three dials before you press play, then agree it. How long, what after, and who knows.",
+      introSubtitle: "Set the three dials before you press play, then press AGREE. How long, what after, and who knows.",
       introIcon: "⏸️",
       deskLabel: "THE PLAN DESK",
       howLongLabel: "HOW LONG",
       whatAfterLabel: "WHAT AFTER",
       whoKnowsLabel: "WHO KNOWS",
-      agreeLabel: "AGREE IT",
+      agreeLabel: "AGREE",
       completeTitle: "Every plan agreed!",
       completeLine: "Set outside, so it holds inside.",
       threat: {
@@ -554,13 +554,13 @@ export const WEEK_13: WeekContent = {
           "Out in the real world, this is the thirty seconds before you press play.",
           "So here is what you do.",
           "A situation comes up on the desk, and three dials sit under it.",
-          "Tap a dial to turn it. How long, what after, and who knows.",
-          "[warmly] When all three look right to you, press AGREE IT. Off you go.",
+          "Tap a dial to turn it, and tap it again for the next choice. How long, what after, and who knows.",
+          "[warmly] When all three look right to you, press AGREE. Off you go.",
         ],
       },
       coachLines: {
         speaker: "adam",
-        lines: ["Turn all three dials, then press AGREE IT."],
+        lines: ["Keep tapping each dial until it looks right, then press AGREE."],
       },
       completeNarration: {
         speaker: "adam",
@@ -678,7 +678,7 @@ export const WEEK_13: WeekContent = {
             "Save comes first. Everything else can wait twenty seconds, but an unsaved level cannot.",
             "Say bye before you plug in. Your friends are still standing there waiting for you.",
           ],
-          why: "Saved, said bye, plugged in. The level is safe, your friends know you left, and tomorrow-you gets a full battery.",
+          why: "Saved, said bye, plugged in. The level is safe, your friends know you left, and you will have a full battery tomorrow.",
         },
         {
           id: "friends",
@@ -1001,7 +1001,11 @@ export const WEEK_13: WeekContent = {
       },
       coachLines: {
         speaker: "layla",
-        lines: ["Tap a card to flip it, then find its pair."],
+        lines: [
+          "Good matching. Now a memory round.",
+          "You have fifteen seconds to learn where each card is.",
+          "Then they flip over, and you tap where you think they are.",
+        ],
       },
       completeNarration: {
         speaker: "layla",
@@ -1036,8 +1040,7 @@ export const WEEK_13: WeekContent = {
         speaker: "adam",
         lines: [
           "[excited] Look at EVERYTHING you mastered this week!",
-          "The see-saw level, the jug read, the plan set,",
-          "the landing smooth... and the night handed back to your body.",
+          "The see-saw level, the jug read, the plan set, the landing smooth... and the night handed back to your body.",
           "[laughs] The Battery Thief did not get a single drop.",
           "[excited] Cyber Hero, sticker time!",
         ],
@@ -1262,7 +1265,7 @@ export const WEEK_13: WeekContent = {
     10: { adam: { mood: "thinking", message: "Finish the rule, Cyber Hero." }, layla: null }, // prove: finish
     11: { adam: { mood: "excited", message: "Now YOU aim the hours!" }, layla: null }, // recap 2
     12: { adam: { mood: "thinking", message: "Deciding is easy out HERE." }, layla: null }, // learn: set
-    13: { adam: { mood: "curious", message: "Three dials, then agree it!" }, layla: null }, // game: plan desk
+    13: { adam: { mood: "curious", message: "Three dials, then press agree!" }, layla: null }, // game: plan desk
     14: { adam: { mood: "worried", message: "He's fibbing about stopping - catch him!" }, layla: null }, // prove: lie
     15: { adam: null, layla: { mood: "excited", message: "Plan set before you start!" } }, // recap 3
     16: { adam: null, layla: { mood: "curious", message: "Land it, don't crash it." } }, // learn: off

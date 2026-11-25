@@ -27,6 +27,10 @@ import {
  * screen never displays the answer back at the room.
  */
 
+const BACK_ARROW = (
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6" /></svg>
+);
+
 /** Fisher-Yates, seeded by nothing: a fresh order on every mount and after
  *  every wrong attempt. */
 function shuffled<T>(xs: readonly T[]): T[] {
@@ -97,29 +101,29 @@ export default function PicturePassword({
       : "Pick three you will remember. The order matters.";
 
   return (
-    <div className="pp">
-      <button type="button" className="ppback" onClick={onBack} disabled={busy}>
-        &larr; Not {pupilName}?
+    <div className="r6-pp">
+      <button type="button" className="r6-plain" onClick={onBack} disabled={busy}>
+        {BACK_ARROW} Not {pupilName}?
       </button>
 
-      <h2 className="pphead">{heading}</h2>
-      <p className="ppunder">{under}</p>
+      <h2 id="sxa-pupil-h" className="r6-h2">{heading}</h2>
+      <p className="r6-body">{under}</p>
 
-      <div className="ppdots" aria-label={`${picked.length} of ${SEQUENCE_LENGTH} chosen`}>
+      <div className="r6-ppdots" role="img" aria-label={`${picked.length} of ${SEQUENCE_LENGTH} chosen`}>
         {Array.from({ length: SEQUENCE_LENGTH }, (_, i) => (
-          <span key={i} className={"ppdot" + (i < picked.length ? " on" : "")} />
+          <span key={i} className={"r6-ppdot" + (i < picked.length ? " on" : "")} />
         ))}
       </div>
 
-      {mismatch && <p className="pperr">Those were not the same three. Have another go.</p>}
-      {error && <p className="pperr">{error}</p>}
+      {mismatch && <p className="r6-pperr" role="alert">Those were not the same three. Have another go.</p>}
+      {error && <p className="r6-pperr" role="alert">{error}</p>}
 
-      <div className="ppgrid">
+      <div className="r6-ppgrid">
         {grid.map((k) => (
           <button
             key={k}
             type="button"
-            className="ppcell"
+            className="r6-ppcell"
             onClick={() => tap(k)}
             disabled={busy}
             aria-label={PICTURE_LABEL[k]}
@@ -130,7 +134,7 @@ export default function PicturePassword({
         ))}
       </div>
 
-      {busy && <p className="ppbusy">Signing you in&hellip;</p>}
+      {busy && <p className="r6-ppbusy" role="status">Signing you in&hellip;</p>}
     </div>
   );
 }

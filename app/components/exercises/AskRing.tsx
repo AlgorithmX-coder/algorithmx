@@ -12,8 +12,10 @@
  * appear by that friend, "Leave them out" and "Don't post it", with the sides
  * flipped at random on every no. The right move is the friend's own call:
  * leaving someone out crops them from the post (settled); not posting keeps
- * the whole photo private and ends the round there, no POST needed. POST
- * lights up only once every face is a yes or left out.
+ * the whole photo private. POST lights up only once every face is a yes or
+ * left out; once every face is asked and one of them said don't post it, the
+ * "Keep it off the internet" button beside POST lights instead, and the child
+ * taps it to end the round.
  *
  * Why it is not the inspectors, the Lobby Doors or the Growth Rings (owner:
  * "we never copy an exercise"): nothing is judged real or fake, nobody is let
@@ -70,7 +72,7 @@ export interface AskRound { id: string; caption: string; photoIcon: string; read
 export interface AskRingProps {
   rounds: AskRound[];
   introTitle?: string; introSubtitle?: string; introIcon?: string;
-  postLabel?: string; leaveOutLabel?: string; dontPostLabel?: string; yesChip?: string; noChip?: string; leftOutChip?: string; keptChip?: string;
+  postLabel?: string; keepOffLabel?: string; leaveOutLabel?: string; dontPostLabel?: string; yesChip?: string; noChip?: string; leftOutChip?: string; keptChip?: string;
   postToast?: string; keptToast?: string; wrongTitle?: string; completeTitle?: string; completeLine?: string;
   hints?: { tier1: string; tier2: string };
   introNarration?: { speaker?: "adam" | "layla"; lines: string[] };
@@ -129,6 +131,7 @@ export default function AskRing({
   introSubtitle = "Ask every face in the photo before you post it.",
   introIcon = "📸",
   postLabel = "POST",
+  keepOffLabel = "Keep it off the internet",
   leaveOutLabel = "Leave them out",
   dontPostLabel = "Don't post it",
   yesChip = "Yes!",
@@ -323,12 +326,17 @@ export default function AskRing({
     }
   };
 
-  // Every face asked, and at least one no that covers the whole photo: it
-  // stays off the internet. This waits for Sarah so it can never cut off the
-  // line she is in the middle of, and phase flips to "sealed" on the first
-  // pass so it cannot fire twice.
-  useEffect(() => {
-    if (!round || phase !== "play" || !allAsked || !anyKept || speaking) return;
+  // KEEP IT OFF THE INTERNET: every face asked, and at least one no that
+  // covers the whole photo. This used to seal the round by itself the moment
+  // the last face was asked, so the photo got labelled "kept" without the
+  // child ever choosing it (UAT W8-2: "there should be an option to keep the
+  // photo off the internet instead of the photo being automatically
+  // labelled; add it next to the Post button"). Now it is the child's own
+  // tap on the button beside POST, which lights only then. Sarah says the
+  // same round line she said before, so no new recording is needed.
+  const keepOff = () => {
+    if (!round || speaking || phase !== "play" || !allAsked || !anyKept) return;
+    onAnswered?.({ questionKey: `keep-${round.id}`, selectedIndex: 0, correctIndex: 0, wasCorrect: true });
     fx.correct({ xp: 25, text: keptToast });
     onCorrect?.();
     setKeptCount((k) => k + 1);
@@ -337,8 +345,7 @@ export default function AskRing({
     verdict.say("right", round.why, () => {
       window.setTimeout(advance, reduce ? 200 : 900);
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [round, phase, allAsked, anyKept, speaking]);
+  };
 
   // POST: only reachable once every face is a yes or left out.
   const post = () => {
@@ -359,6 +366,11 @@ export default function AskRing({
   const hintTier = (roundWrongs >= 2 ? 2 : 1) as 1 | 2;
   const postReady = allSettled && phase === "play";
   const postGlow = guided && postReady && !speaking;
+  const keepReady = allAsked && anyKept && phase === "play";
+  // The first time the button is the move, it breathes like POST does in
+  // round 1: the child has already made the respectful choice, so the glow
+  // only shows them where the new button is.
+  const keepGlow = keepReady && keptCount === 0 && !speaking;
   const guideStyle = (on: boolean): CSSProperties =>
     on
       ? { boxShadow: `0 0 0 3px ${accent}66, 0 0 22px ${accent}88`, animation: reduce ? undefined : "arGuide 1.4s ease-in-out infinite" }
@@ -371,7 +383,9 @@ export default function AskRing({
         : postToast
       : pending
         ? `${pending.name} said no. Pick the move that respects them`
-        : allSettled
+        : allAsked && anyKept
+          ? `Every face is asked. Tap ${keepOffLabel}`
+          : allSettled
           ? guided
             ? `Round 1: every face is settled. Tap ${postLabel}`
             : `Every face is settled. Tap ${postLabel}`
@@ -647,13 +661,16 @@ export default function AskRing({
 
   const photo: ReactNode = round ? (
     <div style={{ position: "relative" }}>
-      {/* The ring itself, drawn round the photo and under the seats. */}
+      {/* The ring itself, drawn round the photo and under the seats. Its
+          vertical reach stays inside the board: the photo sits 24px from the
+          board's edge (10px cell padding + 14px board padding), and at -34px
+          the bottom of the oval ran 10px off the board (UAT W20-6). */}
       {wide && (
         <div
           aria-hidden
           style={{
             position: "absolute",
-            inset: "-34px -92px",
+            inset: "-18px -92px",
             zIndex: -1,
             borderRadius: "50%",
             border: `2px dashed ${accent}44`,
@@ -745,6 +762,10 @@ export default function AskRing({
       {showIntro && (
         <ExerciseIntroBeat
           title={introTitle}
+          // Full-screen like a Spot-the-Danger intro. In the board frame a
+          // narrated intro with no threat ran taller than the frame and showed
+          // a scroll bar (Abdullah, UAT 2026-11-22, W19 row 8).
+          overlay
           subtitle={introSubtitle}
           icon={introIcon}
           narration={introNarration}
@@ -838,16 +859,26 @@ export default function AskRing({
             )}
           </div>
 
-          {/* On-board instructions + POST, which lights only when every face is settled. */}
+          {/* On-board instructions, then the two ways a round can end, side by
+              side: POST (lights when every face is a yes or left out) and KEEP
+              IT OFF THE INTERNET (lights when every face is asked and one of
+              them asked for the whole photo to stay private). */}
           <div style={{ textAlign: "center", marginTop: 14 }}>
             <div style={{ fontFamily: LABEL_FONT, fontSize: 11, fontWeight: 800, letterSpacing: "0.14em", textTransform: "uppercase", color: accent, minHeight: 16, marginBottom: 10, padding: "0 16px" }}>
               {strip}
             </div>
-            <span style={{ display: "inline-block", borderRadius: 16, ...guideStyle(postGlow) }}>
-              <GameButton variant="primary" size="lg" icon="📣" onClick={post} disabled={speaking || !postReady} aria-label={postLabel} style={{ minWidth: 170 }}>
-                {postLabel}
-              </GameButton>
-            </span>
+            <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: 12, padding: "0 16px" }}>
+              <span style={{ display: "inline-block", borderRadius: 16, ...guideStyle(postGlow) }}>
+                <GameButton variant="primary" size="lg" icon="📣" onClick={post} disabled={speaking || !postReady} aria-label={postLabel} style={{ minWidth: 170 }}>
+                  {postLabel}
+                </GameButton>
+              </span>
+              <span style={{ display: "inline-block", borderRadius: 16, ...guideStyle(keepGlow) }}>
+                <GameButton variant="secondary" size="lg" icon="🔒" onClick={keepOff} disabled={speaking || !keepReady} aria-label={keepOffLabel} data-keep-off="" style={{ minWidth: 170 }}>
+                  {keepOffLabel}
+                </GameButton>
+              </span>
+            </div>
           </div>
 
           <div style={{ maxWidth: 560, margin: "8px auto 0" }}>

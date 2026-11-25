@@ -74,6 +74,13 @@
 .axtp .endyear {margin:18px 0 0;padding:13px 15px;border-radius:10px;border:1px dashed var(--rule)}
 .axtp .endyear h4 {margin:0 0 5px;font:800 .9rem var(--font-nunito),system-ui,sans-serif;color:var(--ink)}
 .axtp .endyear p {margin:0 0 9px;font-size:.86rem;line-height:1.5;color:var(--muted)}
+/* "You are in X. Switch to Y." Renders only for somebody who belongs to
+   more than one school, which is rare in a school and ordinary while
+   testing. It sits on the trial-ended and access-closed screens too, where
+   it is the only way out of a lapsed school. */
+.axtp .switcher {display:flex;flex-wrap:wrap;gap:9px;align-items:center;margin:12px 0 0;
+  font-size:.86rem;color:var(--muted)}
+.axtp .switcher form {margin:0}
 /* Moving a whole year group up, which is the same shape of job as ending a
    year and sits next to it. Solid border rather than dashed: this one spends
    places, so it is an action rather than a warning. */

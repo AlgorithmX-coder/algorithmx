@@ -339,12 +339,15 @@ export default function SignBingo({
 
   // Vault skin geometry: a 760x350 board; door 240px centred, dials 130px in
   // the four corners, tracks run from each dial into a bolt socket on the door.
+  // The two dials on each side used to sit 128px apart (tops 46/174), so the
+  // 130px dials overlapped by 2px (UAT 11-22, W1-6). Tops 30/190 leave a 30px
+  // gap; the tracks and the door's bolt sockets moved with them.
   const DIAL = 130;
   const dialSlots = [
-    { left: 40, top: 46, side: "left" as const, trackTop: 101, trackLeft: 170, trackWidth: 92 },
-    { left: 40, top: 174, side: "left" as const, trackTop: 229, trackLeft: 170, trackWidth: 92 },
-    { left: 590, top: 46, side: "right" as const, trackTop: 101, trackLeft: 498, trackWidth: 92 },
-    { left: 590, top: 174, side: "right" as const, trackTop: 229, trackLeft: 498, trackWidth: 92 },
+    { left: 40, top: 30, side: "left" as const, trackTop: 85, trackLeft: 170, trackWidth: 105 },
+    { left: 40, top: 190, side: "left" as const, trackTop: 245, trackLeft: 170, trackWidth: 105 },
+    { left: 590, top: 30, side: "right" as const, trackTop: 85, trackLeft: 485, trackWidth: 105 },
+    { left: 590, top: 190, side: "right" as const, trackTop: 245, trackLeft: 485, trackWidth: 105 },
   ];
   const socketLit = (i: number) => !!shownSigns[i] && stamped.has(shownSigns[i].id);
 
@@ -521,12 +524,12 @@ export default function SignBingo({
                 return <circle key={deg} cx={150 + Math.cos(a) * 139} cy={150 + Math.sin(a) * 139} r="4.5" fill="#fff1c2" stroke="#7a5812" strokeWidth="1.5" />;
               })}
               <circle cx="150" cy="150" r="104" fill="none" stroke="url(#sbBrass2)" strokeWidth="4" opacity=".85" />
-              {/* bolt sockets: lit once the matching dial is bolted */}
+              {/* bolt sockets: lit once the matching dial is bolted (level with each dial's centre) */}
               {[
-                { x: 14, y: 61, i: 0 },
-                { x: 14, y: 221, i: 1 },
-                { x: 258, y: 61, i: 2 },
-                { x: 258, y: 221, i: 3 },
+                { x: 30, y: 41, i: 0 },
+                { x: 30, y: 241, i: 1 },
+                { x: 242, y: 41, i: 2 },
+                { x: 242, y: 241, i: 3 },
               ].map((s) => (
                 <rect key={s.i} x={s.x} y={s.y} width="28" height="18" rx="4" fill={socketLit(s.i) ? "#ffe08a" : "#0a0d13"} stroke={socketLit(s.i) ? "#fff6d6" : "rgba(227,179,65,.55)"} strokeWidth="2" style={{ transition: "fill 300ms ease" }} />
               ))}
@@ -544,8 +547,27 @@ export default function SignBingo({
                 <circle cx="150" cy="150" r="24" fill="url(#sbBrass)" stroke="#fff1c2" strokeWidth="2" />
                 <circle cx="150" cy="150" r="9" fill="#2b1d02" opacity=".7" />
               </motion.g>
-              <text x="150" y="242" textAnchor="middle" fontFamily="inherit" fontWeight="700" fontSize="10.5" letterSpacing="2" fill="#ffe08a">{allBolted ? "VAULT SEALED" : "BOLT EVERY POWER HOME"}</text>
             </motion.svg>
+            {/* The door's caption sits under the door, not on it (UAT 11-22,
+                W1-6: "the instruction shouldn't sit in the middle of the vault"). */}
+            <div
+              aria-hidden
+              style={{
+                position: "absolute",
+                left: 260,
+                top: 304,
+                width: 240,
+                textAlign: "center",
+                fontSize: 11,
+                fontWeight: 800,
+                letterSpacing: "0.18em",
+                color: "#ffe08a",
+                whiteSpace: "nowrap",
+                textShadow: allBolted ? "0 0 12px rgba(255,220,120,0.8)" : undefined,
+              }}
+            >
+              {allBolted ? "VAULT SEALED" : "BOLT EVERY POWER HOME"}
+            </div>
 
             {/* tracks + bolts */}
             {dialSlots.map((slot, i) => {

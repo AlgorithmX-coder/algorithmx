@@ -33,6 +33,15 @@ const CAP = 3;
 // reversible: under option A (strict), delete the week's entry and the listed
 // engines must become new builds.
 const RETHEME_ALLOWED = {
+  // W1 (UAT 2026-11-22, row W1-4): concept 5's weakSorter asked the child to
+  // tap why a password is weak, with the same four reasons and look-alike
+  // examples as the Password Hospital two beats earlier, so it played as the
+  // same game twice. It is replaced by SetTheDial (W13's Plan Desk, 12 weeks
+  // away) as "Off His List": three dials build a password with nothing the
+  // Raccoon knows about a kid in it. Turning dials and committing the whole
+  // thing at once is a verb no other W1 game uses. StepOrder (a ranking game)
+  // was the other candidate and is ruled out: W2 uses it, a neighbour week.
+  1: ["SetTheDial"], // Off His List (W13 plan desk)
   // W12's two concept re-themes both change the QUESTION, not just the paint:
   // Week 5 chased embers of a mean message and this hill rolls an ordinary,
   // perfectly nice post (the lesson is arithmetic, not kindness); Week 3 peeked

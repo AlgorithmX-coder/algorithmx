@@ -36,9 +36,9 @@ export default async function ClassesPage() {
   if (!session?.user?.id) redirect("/schools/login?callbackUrl=%2Fschools%2Fclasses");
   const school = await getSchoolContext(session.user.id);
   if (!school) return <Locked email={session.user.email} />;
-  if (school.revokedAt) return <AccessClosed orgName={school.orgName} />;
+  if (school.revokedAt) return <AccessClosed orgName={school.orgName} schools={school.schools} currentOrgId={school.orgId} />;
   if (trialStatus(school.trialExpiresAt) === "expired") {
-    return <TrialEnded orgName={school.orgName} trialExpiresAt={school.trialExpiresAt!} />;
+    return <TrialEnded orgName={school.orgName} trialExpiresAt={school.trialExpiresAt!} schools={school.schools} currentOrgId={school.orgId} />;
   }
 
   const [classes, archived, courses, head] = await Promise.all([

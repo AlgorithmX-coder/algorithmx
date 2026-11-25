@@ -8,6 +8,7 @@ import { courseName } from "@/app/lib/schoolPlaces";
 import { WEEK_CONTENT, getAvailableWeeks } from "@/app/lesson/weekContent";
 import { listShareLinks } from "@/app/lib/packShare";
 import { writtenWeeks } from "./packs";
+import { plain } from "./packs/text";
 import Locked from "./Locked";
 import SharePanel from "./SharePanel";
 import SignOut from "../SignOut";
@@ -27,6 +28,7 @@ export default async function TeachIndexPage() {
   if (!ctx) return <Locked email={session.user.email} />;
 
   const ready = new Map(writtenWeeks().map((p) => [p.n, p]));
+  const unwritten = getAvailableWeeks().filter((n) => !ready.has(n));
   const links = await listShareLinks(ctx.orgId);
 
   /* Which OTHER courses this school actually runs. Packs exist for Cyber
@@ -79,7 +81,7 @@ export default async function TeachIndexPage() {
         )}
 
         <SharePanel
-          weeks={writtenWeeks().map((p) => ({ n: p.n, title: p.title }))}
+          weeks={writtenWeeks().map((p) => ({ n: p.n, title: plain(p.title) }))}
           links={links}
         />
 
@@ -89,22 +91,23 @@ export default async function TeachIndexPage() {
             <div key={p.n} className="row">
               <span className="rn">{p.n}</span>
               <div className="rb">
-                <Link href={`/schools/teach/${p.n}`}>{p.title}</Link>
-                <small className="s-say">{p.sub}</small>
+                <Link href={`/schools/teach/${p.n}`}>{plain(p.title)}</Link>
+                <small className="s-say">{plain(p.sub)}</small>
               </div>
               <div className="rs">
                 <p>
                   {p.slides.length} slides. {p.brief ? "Carries a briefing to read before you teach it. " : ""}
-                  Games: {p.games}.
+                  Games: {plain(p.games)}.
                 </p>
               </div>
             </div>
           ))}
 
           {/* The remaining weeks, named from the course itself rather than from
-              a second list here that could drift out of step with it. */}
-          <div className="phase">Being written</div>
-          {getAvailableWeeks().filter((n) => !ready.has(n)).map((n) => (
+              a second list here that could drift out of step with it. With
+              every week written there are none, and the heading goes too. */}
+          {unwritten.length > 0 && <div className="phase">Being written</div>}
+          {unwritten.map((n) => (
             <div key={n} className="row">
               <span className="rn">{n}</span>
               <div className="rb">{WEEK_CONTENT[n].title}</div>
