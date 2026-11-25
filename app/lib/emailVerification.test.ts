@@ -11,7 +11,7 @@ const h = vi.hoisted(() => ({
   userUpdate: vi.fn(async () => ({})),
   userFind: vi.fn(),
   userFindFirst: vi.fn(),
-  sendEmail: vi.fn(async () => ({ id: "e1" })),
+  sendEmail: vi.fn(async (_opts: { to: string; subject: string; html: string; text: string }) => ({ id: "e1" })),
 }));
 
 vi.mock("@/app/lib/prisma", () => ({
@@ -46,7 +46,7 @@ describe("createVerifyToken", () => {
 describe("sendWelcomeVerify", () => {
   it("emails a /verify-email link to the address", async () => {
     expect(await sendWelcomeVerify({ userId: "u1", email: "a@b.com", name: "Ada Lovelace", origin: "https://algorithmx.io" })).toBe(true);
-    const sent = h.sendEmail.mock.calls[0][0] as { to: string; html: string; text: string };
+    const sent = h.sendEmail.mock.calls[0][0];
     expect(sent.to).toBe("a@b.com");
     expect(sent.text).toMatch(/https:\/\/algorithmx\.io\/verify-email\/[A-Za-z0-9_-]+/);
     expect(sent.html).toContain("Hi Ada,");
