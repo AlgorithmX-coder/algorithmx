@@ -4,7 +4,7 @@ import { FadeUp } from "./landing-v2/utilities";
 import { sectionMark } from "@/app/components/sectionMark";
 
 /**
- * ProofBand — the four accreditations, given a section of their own.
+ * ProofBand — the three trust marks, given a section of their own.
  *
  * Used by the homepage and by /schools (owner 2026-09-21: "the same way
  * on the schools page"). One component, so the wording and the artwork
@@ -18,7 +18,7 @@ import { sectionMark } from "@/app/components/sectionMark";
  * not depend on the window height, and each one has room for a line
  * saying what it actually means.
  *
- * Two rules constrain the artwork. Cyber Essentials, Microsoft and ASDAN
+ * Two rules constrain the artwork. Cyber Essentials and Microsoft
  * are dark marks and need a light plate. The NCSC crest is white artwork
  * and cannot sit on one, and neither that crest nor the Microsoft logo
  * may be recoloured to match, so the NCSC keeps a dark field. Every line
@@ -62,20 +62,13 @@ const MARKS: Mark[] = [
     alt: "Microsoft for Startups",
     width: 140,
   },
-  {
-    name: "ASDAN accredited courses",
-    copy: "Courses carry accreditation that schools already recognise.",
-    src: "/logos/asdan.jpg",
-    alt: "ASDAN",
-    width: 96,
-  },
 ];
 
-export default function ProofBand({ tone = "night", forFirms = false }: { tone?: "night" | "sand"; forFirms?: boolean } = {}) {
+export default function ProofBand({ tone = "night" }: { tone?: "night" | "sand"; forFirms?: boolean } = {}) {
   const onSand = tone === "sand";
-  /* The ASDAN mark speaks to schools; a page for firms shows the three
-   * that apply to them. */
-  const marks = forFirms ? MARKS.filter((m) => !m.name.startsWith("ASDAN")) : MARKS;
+  /* Every page shows the same three marks. forFirms is kept so existing
+   * callers still type-check; it used to drop a fourth, schools-only mark. */
+  const marks = MARKS;
   return (
     <section
       id="accreditations"
@@ -90,7 +83,7 @@ export default function ProofBand({ tone = "night", forFirms = false }: { tone?:
         <FadeUp>
           <div className="lv2-proof">
             <p style={{ margin: "0 0 18px", textAlign: "left" }}>
-              <span style={sectionMark}>{"// Accredited, certified and backed"}</span>
+              <span style={sectionMark}>{"// Certified, aligned and backed"}</span>
             </p>
             <ul className={marks.length === 3 ? "lv2-proof-cols lv2-proof-cols-three" : "lv2-proof-cols"}>
               {marks.map((m) => (

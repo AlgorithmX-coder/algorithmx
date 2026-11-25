@@ -146,7 +146,7 @@ export const AX = {
     }
   },
   "accreditations": {
-    "kicker": "// ACCREDITED, CERTIFIED AND BACKED",
+    "kicker": "// CERTIFIED, ALIGNED AND BACKED",
     "items": [
       {
         "logo": "/logos/cyber-essentials.png",
@@ -163,11 +163,6 @@ export const AX = {
         "logo": "/logos/microsoft-for-startups.webp",
         "title": "Collaborating with Microsoft",
         "desc": "AlgorithmX is part of the Microsoft for Startups programme."
-      },
-      {
-        "logo": "/logos/asdan.jpg",
-        "title": "ASDAN accredited courses",
-        "desc": "Courses carry accreditation that schools already recognise."
       }
     ]
   },

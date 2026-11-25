@@ -473,8 +473,7 @@ export default function SchoolsLanding() {
             ))}
           </div>
 
-          {/* The range the room gets, and the mark it is aligned to. Wording
-              follows /cyberheroes: ASDAN is an alignment, not an award. */}
+          {/* The range the room gets. */}
           <FadeUp delay={0.2}>
             <div className="sch-marks">
               <div className="sch-marks-courses">
@@ -494,16 +493,6 @@ export default function SchoolsLanding() {
                     </li>
                   ))}
                 </ul>
-              </div>
-              <div className="sch-marks-accred">
-                <span className="sch-marks-plate">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src="/logos/asdan.jpg" alt="ASDAN" loading="lazy" />
-                </span>
-                <span className="sch-marks-accred-text">
-                  <strong>ASDAN</strong>
-                  <span>Accreditation aligned</span>
-                </span>
               </div>
             </div>
           </FadeUp>

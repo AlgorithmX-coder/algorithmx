@@ -189,7 +189,7 @@ export const AXC = {
     }
   },
   proof: {
-    eyebrow: "// Accredited, certified and backed",
+    eyebrow: "// Certified, aligned and backed",
     ariaLabel: "Accreditations",
     marks: [
       {

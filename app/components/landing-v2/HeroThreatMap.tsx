@@ -37,7 +37,6 @@ const ACCREDITATIONS: Array<{
   { src: "/logos/cyber-essentials.png", alt: "Cyber Essentials", label: "Certified", h: 20 },
   { src: "/logos/ncsc.svg", alt: "National Cyber Security Centre", label: "Aligned", dark: true, h: 19 },
   { src: "/logos/microsoft-for-startups.webp", alt: "Microsoft for Startups", label: "Collaborating", h: 15 },
-  { src: "/logos/asdan.jpg", alt: "ASDAN", label: "Accredited", h: 20 },
 ];
 
 export default function HeroThreatMap() {

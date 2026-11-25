@@ -329,12 +329,7 @@ export const STEPS = [
   { n: 2, title: "Pick Your Level", desc: "Find the right course for your age", accent: SUBJ_LIME },
   { n: 3, title: "Enrol", desc: "One-time payment, instant access", accent: SUBJ_AMBER },
   { n: 4, title: "Learn & Build", desc: "Interactive lessons with real projects", accent: SUBJ_GOLD },
-  /* Honest qualification framing: AlgorithmX is *working toward* the
-   * CyberFirst (NCSC) and ASDAN recognition routes, not yet awarded.
-   * The copy stays truthful pre-accreditation and avoids the
-   * "X accredited" overclaim — update the wording the moment a
-   * route is confirmed. */
-  { n: 5, title: "Earn a Qualification", desc: "Working toward CyberFirst & ASDAN recognition", accent: SUBJ_VIOLET },
+  { n: 5, title: "Earn a Certificate", desc: "An AlgorithmX certificate as you progress", accent: SUBJ_VIOLET },
 ];
 
 /* TESTIMONIALS removed 2026-07-17 (honesty pass): the entries were

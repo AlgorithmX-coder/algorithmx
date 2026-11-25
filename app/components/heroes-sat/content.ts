@@ -28,7 +28,7 @@ export const AXH = {
      * access, no subscriptions." The concept splits it at its full stops into
      * three stickers: same words, same order. */
     price: ["20 weeks.", "40+ missions.", "Lifetime access, no subscriptions."],
-    trustLine: ["CyberFirst (UK) aligned", "ASDAN aligned", "GDPR compliant"],
+    trustLine: ["AlgorithmX certificates", "GDPR compliant"],
     ncsc: { text: "Aligned with UK’s National Cyber Security Centre", logo: "/logos/ncsc.svg", logoAlt: "National Cyber Security Centre" },
     honestLine: { check: "✓", text: "Built by parents, for parents. UK-based." },
     ctas: [
@@ -147,7 +147,7 @@ export const AXH = {
     items: [
       { q: "How long does it take?", a: "20 weeks, one 45-minute session per week. Children can go at their own pace. There's no pressure to keep to a schedule." },
       { q: "Can I see what my child is learning?", a: "Yes. The parent dashboard shows you which lessons they've completed, badges earned, time spent, and a snapshot of how they're progressing each week. You'll also receive a milestone certificate at the end of each module." },
-      { q: "Is it accredited?", a: "Yes. Designed in alignment with CyberFirst and ASDAN accreditation frameworks from day one." },
+      { q: "Is it accredited?", a: "Every Cyber Heroes journey ends with an AlgorithmX certificate: milestone certificates at weeks 5, 10 and 15, and the Certified Cyber Hero certificate when all 20 weeks are done. The lessons follow guidance from the UK's National Cyber Security Centre." },
       { q: "What devices does it work on?", a: "Modern browsers on desktop or laptop (Chrome, Safari, Firefox, Edge: last two major versions) and on tablets (iPad 6th gen+, Android 9+). For the boss-battle visuals we recommend a screen of at least 10 inches. Headphones are optional but help kids focus." },
       { q: "Do we get lifetime access?", a: "Yes. Your one-time purchase of £99 gives you lifetime access with continuous updates. As new threats emerge, we update the content so your child's knowledge stays current." },
       { q: "I have more than one child. Do I need to pay £99 each time?", a: "Yes, enrolment is per child at £99. There's no sibling discount. Each child gets their own dedicated account, progress tracking, badges, and milestone certificates, so they can each move at their own pace. It's a one-time payment per child with lifetime access; no subscriptions, no renewals." },
