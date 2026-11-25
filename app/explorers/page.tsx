@@ -5,7 +5,7 @@
  * terminal. Multi-colour matrix rain + CRT chrome; each of the 4 clearance
  * blocks owns a neon colour (cyan / pink / amber / violet) so the page has
  * real colour variety for a young-teen audience while staying a cool hacker
- * terminal. Every case is playable in any order. PoC lives at /explorers/poc.
+ * terminal. Every case is playable in any order.
  */
 
 import { useCallback, useEffect, useMemo, useState } from "react";
