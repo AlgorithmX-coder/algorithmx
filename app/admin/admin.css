@@ -373,6 +373,24 @@
 .admin-ui .ad-course-list { display: flex; flex-wrap: wrap; gap: 6px; }
 .admin-ui .ad-course { display: inline-flex; align-items: center; font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: 0.02em; color: var(--c); background: color-mix(in srgb, var(--c) 14%, transparent); border: 1px solid color-mix(in srgb, var(--c) 35%, transparent); border-radius: var(--r-full); padding: 3px 10px; white-space: nowrap; }
 
+/* ── One account at a glance ────────────────────────────────────
+   A tile grid that wraps rather than a fixed column count, so the seven
+   tiles a busy school shows and the five a new one shows both sit evenly
+   at any width, down to one column on a phone. */
+.admin-ui .ad-stats {
+  display: grid; gap: var(--sp-md); margin: var(--sp-lg) 0;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+.admin-ui .ad-stat {
+  display: flex; flex-direction: column; gap: 4px; min-width: 0;
+  padding: 14px 16px; border: 1px solid var(--line); border-radius: var(--r-md);
+  background: var(--panel); box-shadow: var(--shadow);
+}
+.admin-ui .ad-stat-label { font-family: var(--mono); font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--faint); }
+.admin-ui .ad-stat-value { font-family: var(--display); font-size: 24px; font-weight: 800; letter-spacing: -0.02em; color: var(--ink); line-height: 1.15; }
+.admin-ui .ad-stat-value.is-text { font-size: 16px; letter-spacing: -0.005em; margin-top: 2px; }
+.admin-ui .ad-stat-sub { font-size: 12px; color: var(--muted); overflow-wrap: anywhere; }
+
 /* ── The paid tick ──────────────────────────────────────────────
    A switch, not a chip: staff set it, so it has to look pressable and
    carry its own state. Ticked goes green and says so in words, because
