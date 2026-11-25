@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState, type CSSProperties } from "react";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
+import { PUPIL_LOCKED_CODE, PUPIL_TOO_MANY } from "@/app/lib/rateLimitWords";
 import SchoolBrand from "@/app/schools/SchoolBrand";
 import CampusShell, { BackLink } from "@/app/components/campus-console/CampusShell";
 import PicturePassword from "./PicturePassword";
@@ -70,6 +71,10 @@ export default function SchoolLogin({ initialCode = null }: { initialCode?: stri
         headers: { "content-type": "application/json" },
         body: JSON.stringify({ code: c }),
       });
+      if (res.status === 429) {
+        setMsg({ kind: "warn", text: PUPIL_TOO_MANY });
+        return;
+      }
       if (!res.ok) {
         setMsg({ kind: "info", text: "We cannot find that class. Check the code on your card, or ask your teacher." });
         return;
@@ -111,7 +116,7 @@ export default function SchoolLogin({ initialCode = null }: { initialCode?: stri
     });
     setBusy(false);
     if (res?.error) {
-      setAuthError("Those were not your three pictures. Have another go, or ask your teacher.");
+      setAuthError(res.code === PUPIL_LOCKED_CODE ? PUPIL_TOO_MANY : "Those were not your three pictures. Have another go, or ask your teacher.");
       return;
     }
     /* Straight to their own work, which is what they came for. The course

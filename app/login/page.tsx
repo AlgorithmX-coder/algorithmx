@@ -3,6 +3,7 @@
 import { Suspense, useState } from "react";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
+import { LOGIN_LIMITED_CODE, TOO_MANY } from "@/app/lib/rateLimitWords";
 import { useRouter, useSearchParams } from "next/navigation";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import AuthBackdrop from "@/app/components/auth/AuthBackdrop";
@@ -100,7 +101,7 @@ function LoginPageInner() {
     const res = await signIn("credentials", { email, password, redirect: false });
 
     if (res?.error) {
-      setFormError("Those details don't match an account.");
+      setFormError(res.code === LOGIN_LIMITED_CODE ? TOO_MANY : "Those details don't match an account.");
       setPhase("idle");
       return;
     }

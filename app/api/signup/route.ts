@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { RULES, clientIp, hit, rateKey, tooManyResponse } from "@/app/lib/rateLimit";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/app/lib/prisma";
 import { grantEntitlement } from "@/app/lib/entitlements";
@@ -26,6 +27,11 @@ const FREE_ON_SIGNUP: ReadonlySet<string> = new Set([
 ]);
 
 export async function POST(request: Request) {
+  /* New accounts per IP, generous enough for a staff room setting up
+     together, tight enough that a script cannot mint thousands. */
+  const limited = await hit(rateKey("signup-ip", clientIp(request)), RULES.signupIp);
+  if (!limited.ok) return tooManyResponse(limited);
+
   try {
     const { name, email, password, course } = await request.json();
 

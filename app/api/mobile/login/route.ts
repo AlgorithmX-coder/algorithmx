@@ -1,3 +1,4 @@
+import { clientIp, loginAllowed, loginFailed, tooManyResponse } from "@/app/lib/rateLimit";
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/app/lib/prisma";
@@ -19,9 +20,15 @@ export async function POST(request: Request) {
         { status: 400 },
       );
     }
+    /* The same counters as the web sign-in (app/lib/auth.ts). */
+    const limitEmail = email.toLowerCase();
+    const ip = clientIp(request);
+    const allowed = await loginAllowed(limitEmail, ip);
+    if (!allowed.ok) return tooManyResponse(allowed);
 
     const user = await prisma.user.findUnique({ where: { email } });
     if (!user || !user.hashedPassword) {
+      await loginFailed(limitEmail, ip);
       return NextResponse.json(
         { error: "Invalid email or password." },
         { status: 401 },
@@ -30,6 +37,7 @@ export async function POST(request: Request) {
 
     const valid = await bcrypt.compare(password, user.hashedPassword);
     if (!valid) {
+      await loginFailed(limitEmail, ip);
       return NextResponse.json(
         { error: "Invalid email or password." },
         { status: 401 },
