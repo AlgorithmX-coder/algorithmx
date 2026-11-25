@@ -781,6 +781,10 @@ export const AXC = {
             href: "/corporate#policy"
           },
           {
+            name: "Terms",
+            href: "/terms"
+          },
+          {
             name: "Privacy",
             href: "/privacy"
           }

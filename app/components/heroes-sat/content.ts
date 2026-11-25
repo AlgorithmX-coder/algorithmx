@@ -168,6 +168,7 @@ export const AXH = {
   footer: {
     copyright: "© 2026 AlgorithmX. All rights reserved.",
     tagline: "Cybersecurity Education for Kids",
+    legal: "AlgorithmX Limited. Company 17266946, registered in England and Wales. Registered office: 301b Uppingham Road, Leicester LE5 4DG.",
     links: [
       { label: "Privacy", href: "/privacy" },
       { label: "Terms", href: "/terms" },

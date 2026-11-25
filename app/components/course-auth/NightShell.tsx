@@ -233,6 +233,7 @@ export default function NightShell({
           {children}
 
           {foot}
+          <p className="na1-legal"><Link href="/terms">Terms</Link><span aria-hidden="true"> · </span><Link href="/privacy">Privacy</Link></p>
         </section>
       </main>
 

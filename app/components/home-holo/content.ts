@@ -651,6 +651,14 @@ export const AX = {
           [
             "Contact",
             "mailto:support@algorithmx.co.uk"
+          ],
+          [
+            "Terms",
+            "/terms"
+          ],
+          [
+            "Privacy",
+            "/privacy"
           ]
         ]
       }

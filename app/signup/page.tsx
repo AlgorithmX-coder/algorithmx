@@ -426,6 +426,11 @@ function SignupPageInner() {
                   Log in
                 </a>
               </p>
+              <p className="text-center mt-3" style={{ color: ACCESS.textSoft, fontSize: 12 }}>
+                <a href="/terms" style={{ color: "inherit", textDecoration: "underline" }}>Terms</a>
+                <span aria-hidden> · </span>
+                <a href="/privacy" style={{ color: "inherit", textDecoration: "underline" }}>Privacy</a>
+              </p>
             </AuthTerminalPanel>
 
             {/* Dormant identity line (replaces the old "Secure terminal" chrome) */}

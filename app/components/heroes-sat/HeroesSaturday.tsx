@@ -432,6 +432,7 @@ export default function HeroesSaturday() {
           <span className="mk" aria-hidden="true"><CubeMark size={18} color="#fff" strokeWidth={1.8} /></span>
           <div><div className="cp">{Fo.copyright}</div><div className="tg">{Fo.tagline}</div></div>
           <nav aria-label="Footer">{Fo.links.map((l) => <a key={l.label} href={l.href}>{l.label}</a>)}</nav>
+          <p className="lg">{Fo.legal}</p>
         </div>
       </footer>
     </div>

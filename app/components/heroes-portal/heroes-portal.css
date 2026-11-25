@@ -502,6 +502,7 @@
 .hlm .hq-empty{margin:0 0 14px;color:var(--hlm-body);font-weight:700}
 /* the footer: Pause first, the brand line beside it, the course line at the far end */
 .hlm .hlm-foot .hlm-wrap>span:first-of-type{margin-right:auto}
+.hlm .hlm-foot .hlm-legal a{color:inherit;text-decoration:underline;text-underline-offset:3px}
 /* the name tags sit under each hero, clear of the Raccoon peeking in at the corner */
 .hlm .wl-names{display:block;height:34px}
 .hlm .wl-names span{position:absolute;bottom:0;transform:translateX(-50%);white-space:nowrap}
