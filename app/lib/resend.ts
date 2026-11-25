@@ -168,3 +168,93 @@ export function passwordResetTemplate(args: {
 
   return { subject, html, text };
 }
+
+/**
+ * Welcome email sent on signup, carrying the link that confirms the
+ * address (app/lib/emailVerification.ts). Same inline-styled card as the
+ * reset email so the two read as one family.
+ */
+export function verifyEmailTemplate(args: {
+  verifyUrl: string;
+  name: string | null;
+  expiryDays: number;
+}): { subject: string; html: string; text: string } {
+  const { verifyUrl, expiryDays } = args;
+  const first = (args.name ?? "").trim().split(/\s+/)[0] ?? "";
+  const hi = first ? `Hi ${escapeHtml(first)},` : "Hi,";
+  const subject = "Welcome to AlgorithmX: confirm your email";
+  const text = [
+    first ? `Hi ${first},` : "Hi,",
+    "",
+    "Welcome to AlgorithmX. Your account is ready to use.",
+    "",
+    `Please confirm this is your email address by opening this link within ${expiryDays} days:`,
+    verifyUrl,
+    "",
+    "If you didn't create an AlgorithmX account, you can safely ignore this email.",
+    "",
+    "AlgorithmX",
+  ].join("\n");
+
+  const html = `
+<!doctype html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width">
+    <title>${subject}</title>
+  </head>
+  <body style="margin:0;padding:0;background:#04050d;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+    <table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="background:#04050d;padding:40px 20px;">
+      <tr>
+        <td align="center">
+          <table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="max-width:520px;background:#0f1530;border-radius:18px;overflow:hidden;border:1px solid rgba(125,240,255,0.32);">
+            <tr>
+              <td style="padding:32px 32px 8px 32px;">
+                <div style="font-size:11px;letter-spacing:5px;text-transform:uppercase;color:#7df0ff;font-weight:800;font-family:ui-monospace,'JetBrains Mono',Menlo,monospace;margin-bottom:14px;">
+                  &#9674; Welcome &#9674;
+                </div>
+                <h1 style="margin:0 0 12px 0;font-size:24px;line-height:1.25;color:#e8edff;font-weight:900;letter-spacing:-0.5px;">
+                  Confirm your email
+                </h1>
+                <p style="margin:0 0 12px 0;font-size:15px;line-height:1.6;color:#c5cdf0;">
+                  ${hi}
+                </p>
+                <p style="margin:0 0 20px 0;font-size:15px;line-height:1.6;color:#c5cdf0;">
+                  Welcome to AlgorithmX. Your account is ready to use. Click the button below to confirm this is your email address. This link works for <strong style="color:#7df0ff;">${expiryDays} days</strong>.
+                </p>
+                <p style="margin:0 0 28px 0;text-align:center;">
+                  <a href="${verifyUrl}" style="display:inline-block;background:linear-gradient(135deg,#00e5ff,#7c5cff);color:#080a16;font-weight:900;text-decoration:none;padding:14px 32px;border-radius:999px;font-size:15px;letter-spacing:1px;text-transform:uppercase;">
+                    Confirm Email
+                  </a>
+                </p>
+                <p style="margin:0 0 12px 0;font-size:13px;line-height:1.55;color:rgba(197,205,240,0.78);">
+                  Or copy this link into your browser:
+                </p>
+                <p style="margin:0 0 22px 0;font-size:12px;font-family:ui-monospace,'JetBrains Mono',Menlo,monospace;word-break:break-all;color:#7df0ff;background:rgba(0,229,255,0.06);padding:10px 14px;border-radius:10px;border:1px solid rgba(125,240,255,0.18);">
+                  ${verifyUrl}
+                </p>
+                <p style="margin:0;font-size:13px;line-height:1.6;color:rgba(197,205,240,0.65);">
+                  Didn&rsquo;t create an AlgorithmX account? You can safely ignore this email.
+                </p>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:18px 32px;background:rgba(8,10,22,0.6);border-top:1px solid rgba(125,240,255,0.12);">
+                <p style="margin:0;font-size:12px;color:rgba(197,205,240,0.55);">
+                  AlgorithmX &middot; <a href="https://algorithmx.io" style="color:#7df0ff;text-decoration:none;">algorithmx.io</a>
+                </p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>`;
+
+  return { subject, html, text };
+}
+
+function escapeHtml(s: string): string {
+  return s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c] as string);
+}

@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
+import { after } from "next/server";
+import { sendWelcomeVerify } from "@/app/lib/emailVerification";
 import { prisma } from "@/app/lib/prisma";
 import { grantEntitlement } from "@/app/lib/entitlements";
 
@@ -84,6 +86,13 @@ export async function POST(request: Request) {
         console.error("Signup free-grant failed:", course, grantError);
       }
     }
+
+    /* The welcome email, with the link that confirms the address. Sent
+       after the response so signup is not kept waiting on the mail
+       provider, and never able to fail it. Nothing waits on the link:
+       courses open straight away. */
+    const origin = process.env.NEXTAUTH_URL ?? request.headers.get("origin") ?? "http://localhost:3000";
+    after(() => sendWelcomeVerify({ userId: user.id, email: user.email, name: user.name, origin }));
 
     return NextResponse.json(
       { message: "Account created", userId: user.id },
