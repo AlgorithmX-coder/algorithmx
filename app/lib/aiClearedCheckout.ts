@@ -5,6 +5,7 @@ import { sendSeatsAdded } from "@/app/lib/aiClearedAdmin";
 import { opsAlert } from "@/app/lib/opsAlert";
 import { planForSeats, stripe, stripeConfigured, vatMode, vatTaxRateId } from "@/app/lib/stripe";
 import { approvedToolLabel } from "@/app/lib/corporateProducts";
+import { normaliseEmail } from "@/app/lib/emailIdentity";
 import { CYBER_SECURED_NAME, liveTrackNames } from "@/app/lib/cyberSecured";
 import { SECURED_COURSE_META, TIER_NAME, purchaseFromMetadata, seatsAfterTopUp, securedQuote, validateSecuredSeats } from "@/app/lib/cyberSecuredPricing";
 
@@ -104,7 +105,7 @@ export async function fulfilCheckoutSession(session: Stripe.Checkout.Session, or
   if (legacy) return { already: true, slug: legacy.slug };
 
   const { people, rows } = purchaseFromMetadata(m);
-  const adminEmail = (m.adminEmail || session.customer_details?.email || session.customer_email || "").toLowerCase();
+  const adminEmail = normaliseEmail(m.adminEmail || session.customer_details?.email || session.customer_email || "");
   if (!adminEmail || !m.firmName) return { skipped: "session is missing the firm name or the admin email" };
   if (people < 1) return { skipped: "session carries no seats" };
   const customerId = typeof session.customer === "string" ? session.customer : session.customer?.id ?? null;

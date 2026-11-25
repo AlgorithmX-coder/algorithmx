@@ -1,8 +1,8 @@
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
-import { prisma } from "./prisma";
 import { authorisePupil } from "./pupilAuth";
+import { findUserByEmail } from "./emailIdentity";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
@@ -15,9 +15,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) return null;
 
-        const user = await prisma.user.findUnique({
-          where: { email: credentials.email as string },
-        });
+        /* Case-insensitive: "Me@x.com" and "me@x.com" are one person. */
+        const user = await findUserByEmail(credentials.email);
 
         if (!user || !user.hashedPassword) return null;
 

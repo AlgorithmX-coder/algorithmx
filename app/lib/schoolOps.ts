@@ -4,6 +4,7 @@ import { opsAlert } from "@/app/lib/opsAlert";
 import { newInviteToken } from "@/app/lib/aiClearedAdmin";
 import { createClass } from "@/app/lib/schoolClasses";
 import { placesUsed } from "@/app/lib/schoolPlaces";
+import { normaliseEmail } from "@/app/lib/emailIdentity";
 import type { LearnerOrgKind } from "@prisma/client";
 
 /* The AlgorithmX side of schools and the other organisations that teach
@@ -144,7 +145,7 @@ export async function createSchool(args: {
     },
   });
   const token = newInviteToken(slug.slice(0, 6));
-  await prisma.teacherInvite.create({ data: { orgId: org.id, email: args.teacherEmail.trim().toLowerCase(), inviteToken: token, role: "ADMIN" } });
+  await prisma.teacherInvite.create({ data: { orgId: org.id, email: normaliseEmail(args.teacherEmail), inviteToken: token, role: "ADMIN" } });
   let emailed = true;
   try {
     await sendTeacherInvite({ to: args.teacherEmail, token, schoolName: org.name, kind: args.kind ?? "SCHOOL", seats: args.seatsPurchased, trialDays: args.trialDays ?? null, origin: args.origin });

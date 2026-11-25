@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
-import { prisma } from "@/app/lib/prisma";
 import { signMobileToken } from "@/app/lib/mobileAuth";
+import { findUserByEmail, normaliseEmail } from "@/app/lib/emailIdentity";
 
 /**
  * POST /api/mobile/login — credentials login for the native app.
@@ -11,7 +11,7 @@ import { signMobileToken } from "@/app/lib/mobileAuth";
 export async function POST(request: Request) {
   try {
     const body = await request.json().catch(() => null);
-    const email = typeof body?.email === "string" ? body.email.trim() : "";
+    const email = normaliseEmail(body?.email);
     const password = typeof body?.password === "string" ? body.password : "";
     if (!email || !password) {
       return NextResponse.json(
@@ -20,7 +20,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const user = await prisma.user.findUnique({ where: { email } });
+    const user = await findUserByEmail(email);
     if (!user || !user.hashedPassword) {
       return NextResponse.json(
         { error: "Invalid email or password." },

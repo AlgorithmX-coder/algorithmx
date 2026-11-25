@@ -9,6 +9,7 @@ import { moduleListFor } from "@/app/lib/courseModules";
 import { COURSES, courseByKey, corporateCourse, courseOfSerial, type CourseSlug } from "@/app/ai-cleared/engine/courses";
 import type { OrgPlan } from "@prisma/client";
 import { DEFAULT_FIRM } from "@/app/ai-cleared/engine/types";
+import { emailEquals, normaliseEmail } from "@/app/lib/emailIdentity";
 
 /* The AlgorithmX side of Cyber Secured: every firm at a glance with its
  * seats and how far its people have got on each track, the totals,
@@ -155,7 +156,7 @@ export async function createFirm(args: {
     });
   }
   const token = newInviteToken(slug.slice(0, 6));
-  await prisma.seat.create({ data: { orgId: org.id, email: args.adminEmail.trim().toLowerCase(), inviteToken: token, team: "Admin", role: "ADMIN", course: "CYBER_SECURED" } });
+  await prisma.seat.create({ data: { orgId: org.id, email: normaliseEmail(args.adminEmail), inviteToken: token, team: "Admin", role: "ADMIN", course: "CYBER_SECURED" } });
   let emailed = true;
   try {
     await sendAdminWelcome({ to: args.adminEmail, token, firmName: org.name, seats: args.seatsPurchased, origin: args.origin, staffName: args.staffName, staffEmail: args.staffEmail });
@@ -256,9 +257,9 @@ export async function lookup(q: string): Promise<LookupHit[]> {
     const total = moduleListFor(course).filter((m) => m.available).length;
     return [{ kind: "certificate", course, name: c.enrolment.user.name, email: c.enrolment.user.email, firm: c.org.name, firmSlug: c.org.slug, serial: c.serial, score: c.score, issuedAt: c.issuedAt.toISOString(), expiresAt: c.expiresAt.toISOString(), status: "cleared", modulesDone: total }];
   }
-  const email = s.toLowerCase();
+  const email = normaliseEmail(s);
   const seats = await prisma.seat.findMany({ where: { email }, include: { org: true, user: true }, orderBy: [{ course: "asc" }] });
-  const enrolments = await prisma.enrolment.findMany({ where: { user: { email } }, include: { certificate: true, modules: true, org: true, product: { select: { slug: true } } } });
+  const enrolments = await prisma.enrolment.findMany({ where: { user: { email: emailEquals(email) } }, include: { certificate: true, modules: true, org: true, product: { select: { slug: true } } } });
   const byOrgCourse = new Map(enrolments.map((e) => [`${e.orgId}:${e.product.slug}`, e]));
   const hits: LookupHit[] = seats.map((seat) => {
     const course = courseByKey(corporateCourse(seat.course)).slug;

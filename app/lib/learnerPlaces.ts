@@ -22,6 +22,7 @@ import type Stripe from "stripe";
 import { prisma } from "@/app/lib/prisma";
 import { createSchool, sendPlacesAdded } from "@/app/lib/schoolOps";
 import { opsAlert } from "@/app/lib/opsAlert";
+import { emailEquals, normaliseEmail } from "@/app/lib/emailIdentity";
 import { stripe, vatMode, vatTaxRateId, VAT_PERCENT } from "@/app/lib/stripe";
 import { PLACES_PER_BLOCK, placesPricePence, validateBlocks } from "@/app/lib/learnerPlacesPricing";
 
@@ -122,7 +123,7 @@ async function learnerOrgsLedBy(email: string) {
     where: {
       school: { isNot: null },
       OR: [
-        { members: { some: { role: { in: ["ADMIN", "MANAGER"] }, user: { email } } } },
+        { members: { some: { role: { in: ["ADMIN", "MANAGER"] }, user: { email: emailEquals(email) } } } },
         { teacherInvites: { some: { email, role: { in: ["ADMIN", "MANAGER"] } } } },
       ],
     },
@@ -169,7 +170,7 @@ export async function fulfilPlacesSession(session: Stripe.Checkout.Session, orig
   if (legacy) return { already: true, slug: legacy.slug };
 
   const places = Number(m.places) || 0;
-  const leadEmail = (m.leadEmail || session.customer_details?.email || session.customer_email || "").toLowerCase();
+  const leadEmail = normaliseEmail(m.leadEmail || session.customer_details?.email || session.customer_email || "");
   if (!leadEmail || !m.orgName) return { skipped: "session is missing the organisation name or the lead's email" };
   if (places < 1) return { skipped: "session carries no places" };
 
