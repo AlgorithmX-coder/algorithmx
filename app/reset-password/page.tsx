@@ -235,7 +235,7 @@ function ResetPasswordInner() {
                     )}
                   </AnimatePresence>
 
-                  <form onSubmit={handleSubmit} className="space-y-1" noValidate>
+                  <form method="post" onSubmit={handleSubmit} className="space-y-1" noValidate>
                     <div>
                       <AuthField
                         id="reset-password"

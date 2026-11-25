@@ -84,9 +84,9 @@ export default async function SchoolOverviewPage() {
     if (teacher) redirect("/schools/classes");
     return <Locked email={session.user.email} />;
   }
-  if (head.revokedAt) return <AccessClosed orgName={head.orgName} />;
+  if (head.revokedAt) return <AccessClosed orgName={head.orgName} schools={head.schools} currentOrgId={head.orgId} />;
   if (trialStatus(head.trialExpiresAt) === "expired") {
-    return <TrialEnded orgName={head.orgName} trialExpiresAt={head.trialExpiresAt!} />;
+    return <TrialEnded orgName={head.orgName} trialExpiresAt={head.trialExpiresAt!} schools={head.schools} currentOrgId={head.orgId} />;
   }
 
   const [places, classes, staff, invites] = await Promise.all([

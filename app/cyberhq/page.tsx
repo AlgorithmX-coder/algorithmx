@@ -1,17 +1,22 @@
+/* eslint-disable @next/next/no-img-element */
 /**
  * Cyber HQ - the reward-loop hub.
  *
- * First cut: a server component that lists earned stickers from the
- * EarnedSticker table joined against STICKER_CATALOGUE, plus the
- * stickers the child hasn't earned yet (greyed silhouettes) so the
- * future weeks feel tangible. Future iterations will add a base /
- * room with unlockable items, the Cyber Detective Notebook, and a
- * companion robot - the API in stickers.actions is built to support
- * that growth without further schema changes.
+ * Lists earned stickers from the EarnedSticker table joined against
+ * STICKER_CATALOGUE, the badge case, the milestone certificates, the agent
+ * wardrobe and the child's rank and XP, under a way straight back into a
+ * lesson.
+ *
+ * Skin: "Lit Map" (landing lab round 6, v1, owner 2026-11-23). The lab
+ * painting feathered into the sky as a banner, the rank card beside the
+ * title, then the live order. Locked things are one invitation, never a
+ * wall of padlocks: the badge case shows what is earned, the next badge as a
+ * silhouette and the numbers of the rest; the sticker wall shows what is
+ * earned and the next week's stickers to find. Every figure is the child's
+ * own, read exactly as before.
  *
  * Auth-gated only; not paywall-gated (matches /parent's posture).
  */
-
 import { auth } from "@/app/lib/auth";
 import { redirect } from "next/navigation";
 import Link from "next/link";
@@ -31,25 +36,14 @@ import PlayHubAmbientOnMount from "@/app/components/PlayHubAmbientOnMount";
 import PixIcon from "@/app/components/lesson/PixIcon";
 import PupilSignOut from "@/app/components/PupilSignOut";
 import CarryOn from "@/app/components/cyberhq/CarryOn";
+import HeroesShell, { CertIcon, Icon, KidChip } from "@/app/components/heroes-portal/HeroesShell";
+import { prisma } from "@/app/lib/prisma";
+import { resolveActiveChildProfileId } from "@/app/lib/progressService";
+import { getAge } from "@/app/lib/entitlements";
+import { heroColour, inkOn } from "@/app/lib/heroColours";
 import { getAchievedMilestones, getCertificateUrl } from "@/app/lib/certificates";
 import { nextWeekFor, HEROES_WEEKS } from "@/app/lib/nextWeek";
 import { isSchoolPupil } from "@/app/lib/pupilAuth";
-
-const C = {
-  pageBg: "#080a16",
-  card: "rgba(15, 21, 48, 0.72)",
-  border: "rgba(0, 229, 255, 0.22)",
-  borderEarned: "rgba(253, 224, 71, 0.7)",
-  text: "#e8edff",
-  textSoft: "#c5cdf0",
-  textMuted: "rgba(125, 240, 255, 0.55)",
-  gold: "#fde047",
-  cyan: "#00e5ff",
-  violet: "#7c5cff",
-};
-
-const FONT_STACK =
-  "ui-rounded, 'Fredoka', 'Quicksand', 'Nunito', system-ui, -apple-system, sans-serif";
 
 export default async function CyberHQPage() {
   const session = await auth();
@@ -81,6 +75,7 @@ export default async function CyberHQPage() {
   // before the ladder was re-scaled; to close that, the rank would have to be
   // persisted server-side alongside totalXp.
   const rank = getRank(totalXp);
+
   /* Milestone certificates, against the same completed-week count the
      badge case already derives from. */
   const certificates = getAchievedMilestones(snapshot.weeks.filter((w) => w.completed).length);
@@ -102,652 +97,173 @@ export default async function CyberHQPage() {
      with it, and have their own sign-out on this page already. */
   const pupil = await isSchoolPupil(session.user.id);
 
+  /* The child's chip in the nav: the same active profile every reward on
+     this page is read for. */
+  const childId = await resolveActiveChildProfileId(session.user.id);
+  const child = childId
+    ? await prisma.childProfile.findUnique({ where: { id: childId }, select: { name: true, dateOfBirth: true, favouriteColour: true } })
+    : null;
+  const kid = child ? heroColour(child.favouriteColour) : null;
+
+  /* One invitation each, never a wall of padlocks: the next badge to win,
+     and the next week's stickers to find. */
+  const badgesEarned = BADGE_CATALOGUE.filter((b) => earnedBadgeIds.has(b.id));
+  const badgesLeft = BADGE_CATALOGUE.filter((b) => !earnedBadgeIds.has(b.id));
+  const nextBadge = badgesLeft.find((b) => b.week === nextWeek) ?? badgesLeft[0] ?? null;
+  const restBadges = badgesLeft.filter((b) => b !== nextBadge);
+  const stickersEarned = STICKER_CATALOGUE.filter((s) => earnedIds.has(s.id));
+  const stickersLeft = STICKER_CATALOGUE.filter((s) => !earnedIds.has(s.id));
+  const stickerWeek = stickersLeft.some((s) => s.weekNumber === nextWeek) ? nextWeek : stickersLeft[0]?.weekNumber ?? null;
+  const stickersNext = stickersLeft.filter((s) => s.weekNumber === stickerWeek);
+  const stickersRest = stickersLeft.length - stickersNext.length;
+  const firstOpen = certificates.find((c) => !c.achieved);
+
   return (
-    <main
-      style={{
-        position: "relative",
-        minHeight: "100vh",
-        background: `radial-gradient(ellipse at 50% -10%, #1d1f4d 0%, #0f1530 35%, ${C.pageBg} 70%, #04050d 100%)`,
-        color: C.text,
-        fontFamily: FONT_STACK,
-        padding: "32px 18px 60px",
-        overflow: "hidden",
-      }}
+    <HeroesShell
+      brandHref={pupil ? undefined : "/dashboard"}
+      brandLabel={pupil ? "Cyber Heroes by AlgorithmX" : "Cyber Heroes by AlgorithmX, your mission map"}
+      navRight={
+        <>
+          {child && kid ? <KidChip name={child.name} age={getAge(child.dateOfBirth)} hex={kid.hex} ink={inkOn(kid.hex)} /> : null}
+          {!pupil ? <Link className="hlm-pill acc" href="/dashboard"><Icon name="back" /><span className="t">Back to dashboard</span></Link> : null}
+        </>
+      }
     >
       {/* Signature SFX: gentle door-open swoosh + chamber ambience
           when the child enters Cyber HQ. Tiny client island - parent
           stays server-rendered. */}
       <PlaySignatureOnMount id="hq-entry" delayMs={150} />
-
       {/* Looping ambient bed ("Guardian Calm") while the child is in the
           hub. Client island; fades out on leave and honors the global
           mute. Only the hub gets BGM (see BGM_ALLOWLIST in sounds.ts). */}
       <PlayHubAmbientOnMount />
-
       {/* Only for a school pupil on a shared machine; renders nothing
           for a parent's child. */}
       <PupilSignOut />
 
-      {/* Ambient particle field - subtle drifting dots so the room is
-          never visually still. CSS-only; respects reduced motion via
-          @media (prefers-reduced-motion). */}
-      <div aria-hidden className="hq-ambient-field">
-        {Array.from({ length: 14 }).map((_, i) => (
-          <span
-            key={i}
-            className="hq-ambient-dot"
-            style={{
-              left: `${(i * 73) % 100}%`,
-              animationDelay: `${(i * 0.6) % 5}s`,
-              animationDuration: `${10 + (i % 5) * 2}s`,
-            }}
-          />
-        ))}
-      </div>
-
-      {/* Rich cosmic backdrop — nebulae, a constellation, a planet + the
-          glowing horizon arc, matching the dashboard mockup. */}
-      <div aria-hidden className="hq-cosmos">
-        <span className="hq-neb hq-neb-a" />
-        <span className="hq-neb hq-neb-b" />
-        <span className="hq-grid" />
-        <span className="hq-scan" />
-      </div>
-
-      <div style={{ position: "relative", maxWidth: 1000, margin: "0 auto", zIndex: 1 }}>
-        {/* Back link, for a child playing at home. A school pupil never came
-            from the family dashboard and cannot use it, so they do not get
-            sent at it. Their way out is the sign-out pill on this page. */}
-        {!pupil && (
-          <Link
-            href="/dashboard"
-            style={{
-              display: "inline-block",
-              color: C.cyan,
-              textDecoration: "none",
-              fontSize: 13,
-              fontWeight: 700,
-              marginBottom: 18,
-              padding: "6px 14px",
-              background: "rgba(0, 229, 255, 0.08)",
-              border: `1px solid ${C.border}`,
-              borderRadius: 999,
-            }}
-          >
-            ← Back to dashboard
-          </Link>
-        )}
-
-        {/* Header — the lab scene EMBEDDED into the page background: no card
-            frame, edges feathered with a radial mask so it dissolves into the
-            techy backdrop instead of sitting in a box. */}
-        <div style={{ position: "relative", marginBottom: 22 }}>
-          <div
-            style={{
-              position: "relative",
-              WebkitMaskImage: "radial-gradient(ellipse 94% 96% at 50% 42%, #000 50%, transparent 100%)",
-              maskImage: "radial-gradient(ellipse 94% 96% at 50% 42%, #000 50%, transparent 100%)",
-            }}
-          >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/cyberhq/lab-v3.png"
-              alt="Adam and Layla in the Cyber HQ lab"
-              width={1500}
-              height={838}
-              style={{ width: "100%", height: "clamp(250px, 40vw, 420px)", objectFit: "cover", objectPosition: "center 40%", display: "block" }}
-            />
-            {/* Darken the lower band for the title (feathers with the mask). */}
-            <div aria-hidden style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg, rgba(8,10,22,0) 44%, rgba(8,10,22,0.38) 74%, rgba(8,10,22,0.85) 100%)" }} />
+      <div className="hlm-wrap hq-main">
+        <section className="hq-head" aria-labelledby="hq-h1">
+          <div className="hq-art" data-rise><img src="/cyberhq/lab-v3.png" alt="Adam and Layla in the Cyber HQ lab" width={1500} height={838} /></div>
+          <div className="hq-title">
+            <span className="hlm-eyebrow" data-rise>Cyber Hero Headquarters</span>
+            <h1 id="hq-h1" data-rise>Your <span className="hlm-grad">Cyber HQ</span></h1>
+            <p data-rise>Badges, stickers and XP you and your heroes have earned by beating the Hacker Raccoon.</p>
           </div>
-          {/* Title — crisp, over the feathered lower area. */}
-          <div style={{ position: "absolute", left: "clamp(18px, 4vw, 40px)", right: 24, bottom: "clamp(2px, 1.5vw, 14px)" }}>
-            <span style={{ display: "inline-block", fontSize: 11, letterSpacing: "0.22em", color: C.gold, textTransform: "uppercase", fontWeight: 800, marginBottom: 6, textShadow: `0 0 14px ${C.gold}, 0 1px 6px rgba(0,0,0,0.9)` }}>
-              ✦ Cyber Hero Headquarters
-            </span>
-            <h1 style={{ fontSize: "clamp(26px, 5vw, 40px)", fontWeight: 900, margin: "0 0 4px", background: `linear-gradient(135deg, ${C.cyan}, ${C.violet}, ${C.gold})`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text", lineHeight: 1.1, filter: "drop-shadow(0 2px 12px rgba(0,0,0,0.85))" }}>
-              Your Cyber HQ
-            </h1>
-            <p style={{ color: C.text, fontSize: 14, margin: 0, maxWidth: 460, textShadow: "0 1px 10px rgba(0,0,0,0.95)" }}>
-              Badges, stickers and XP you and your heroes have earned by beating the Hacker Raccoon.
-            </p>
-          </div>
-        </div>
-
-        {/* The lesson, before the trophies. A child has forty minutes and
-            the first thing on the screen should be the thing they came to
-            do, not the things they did last week. */}
-        <CarryOn
-          nextWeek={nextWeek}
-          completedWeeks={completedWeeks}
-          totalWeeks={HEROES_WEEKS}
-        />
-
-        {/* Progress summary */}
-        <section
-          style={{
-            padding: "18px 22px",
-            background: C.card,
-            border: `1px solid ${C.border}`,
-            borderRadius: 16,
-            marginBottom: 28,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            gap: 18,
-            flexWrap: "wrap",
-          }}
-        >
           {/* Rank + durable total XP (summed server-side across weeks). */}
-          <div>
-            <div
-              style={{
-                fontSize: 10,
-                letterSpacing: "0.18em",
-                color: C.textMuted,
-                textTransform: "uppercase",
-                fontWeight: 800,
-                marginBottom: 4,
-              }}
-            >
-              Rank
-            </div>
-            <div style={{ display: "flex", alignItems: "center", gap: 9 }}>
-              <span style={{ display: "inline-flex", lineHeight: 1 }} aria-hidden>
-                <PixIcon emoji={rank.current.icon} size={30} />
-              </span>
-              <div>
-                <div
-                  style={{
-                    fontSize: 20,
-                    fontWeight: 900,
-                    color: rank.current.colour,
-                    lineHeight: 1.1,
-                  }}
-                >
-                  {rank.current.name}
-                </div>
-                <div
-                  style={{
-                    fontFamily: "'JetBrains Mono', monospace",
-                    fontSize: 12,
-                    color: C.textSoft,
-                  }}
-                >
-                  {totalXp.toLocaleString()} XP
-                  {rank.next
-                    ? ` · ${rank.xpNeededForNext.toLocaleString()} to ${rank.next.name}`
-                    : " · max rank"}
-                </div>
+          <div className="hlm-card hq-rank" data-pop data-delay="420" style={{ "--rk": rank.current.colour } as React.CSSProperties}>
+            <span className="m" aria-hidden="true"><PixIcon emoji={rank.current.icon} size={30} /></span>
+            <div>
+              <div className="lab">Rank</div>
+              <b>{rank.current.name}</b>
+              <div className="xp">
+                {totalXp.toLocaleString("en-GB")} XP
+                {rank.next ? ` · ${rank.xpNeededForNext.toLocaleString("en-GB")} to ${rank.next.name}` : " · max rank"}
               </div>
-            </div>
-          </div>
-
-          <div>
-            <div
-              style={{
-                fontSize: 10,
-                letterSpacing: "0.18em",
-                color: C.textMuted,
-                textTransform: "uppercase",
-                fontWeight: 800,
-                marginBottom: 4,
-              }}
-            >
-              Stickers collected
-            </div>
-            <div
-              style={{
-                fontFamily: "'JetBrains Mono', monospace",
-                fontSize: 28,
-                fontWeight: 900,
-                color: C.gold,
-                textShadow: `0 0 14px ${C.gold}55`,
-              }}
-            >
-              {earnedCount}
-              <span style={{ opacity: 0.55, fontSize: 18, marginLeft: 4 }}>
-                / {totalCount}
-              </span>
-            </div>
-          </div>
-          <div style={{ flex: 1, minWidth: 200 }}>
-            <div
-              style={{
-                position: "relative",
-                height: 14,
-                background: "rgba(15, 23, 42, 0.85)",
-                border: "1px solid rgba(148, 163, 184, 0.25)",
-                borderRadius: 7,
-                overflow: "hidden",
-              }}
-            >
-              <div
-                className="hq-progress-fill"
-                style={{
-                  position: "relative",
-                  height: "100%",
-                  width: `${earnedPct}%`,
-                  background: `linear-gradient(90deg, ${C.gold}, #ff7a59)`,
-                  boxShadow: `0 0 12px ${C.gold}88`,
-                  transition: "width 380ms cubic-bezier(0.16, 1, 0.3, 1)",
-                  overflow: "hidden",
-                }}
-              >
-                {/* Shimmer overlay sweeps across the filled portion */}
-                <span aria-hidden className="hq-progress-shimmer" />
-              </div>
-            </div>
-            <div
-              style={{
-                marginTop: 6,
-                fontSize: 12,
-                color: C.textSoft,
-                textAlign: "right",
-                fontFamily: "'JetBrains Mono', monospace",
-              }}
-            >
-              {earnedPct}% complete
             </div>
           </div>
         </section>
 
-        {/* Certificates.
-            The certificate existed and was reachable from exactly one place:
-            the moment a child finished a milestone week, inside the lesson
-            player. Close that screen and it was gone for good, so nothing
-            could be reprinted, nothing could be collected later, and a
-            parent who was not in the room never saw it. They live here now,
-            which is where a child comes back to look at what they have
-            won. */}
-        <h2
-          style={{
-            fontSize: 18,
-            fontWeight: 800,
-            margin: "0 0 4px",
-            color: C.text,
-            letterSpacing: "0.02em",
-          }}
-        >
-          Certificates
-        </h2>
-        <p style={{ color: C.textMuted, fontSize: 12, margin: "0 0 14px" }}>
-          One at week 5, 10, 15 and 20. Yours to keep and print.
-        </p>
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
-            gap: 12,
-            marginBottom: 30,
-          }}
-        >
-          {certificates.map((m) => (
-            <div
-              key={m.week}
-              style={{
-                padding: "15px 14px",
-                borderRadius: 14,
-                background: m.achieved
-                  ? "linear-gradient(180deg, rgba(255, 209, 88, 0.2), rgba(15, 21, 48, 0.85))"
-                  : "rgba(15, 21, 48, 0.55)",
-                border: m.achieved
-                  ? `2.5px solid ${C.borderEarned}`
-                  : "2px dashed rgba(148, 163, 184, 0.3)",
-                textAlign: "center",
-              }}
-            >
-              <div
-                style={{
-                  fontSize: 9,
-                  letterSpacing: "0.16em",
-                  color: m.achieved ? C.gold : C.textMuted,
-                  textTransform: "uppercase",
-                  fontWeight: 800,
-                  marginBottom: 4,
-                }}
-              >
-                Week {m.week}
-              </div>
-              <div
-                style={{
-                  fontSize: 15,
-                  fontWeight: 900,
-                  color: m.achieved ? C.text : "#475569",
-                  marginBottom: 9,
-                  fontFamily: "'Space Grotesk', sans-serif",
-                }}
-              >
-                {m.title}
-              </div>
-              {m.achieved ? (
-                <a
-                  href={getCertificateUrl(m.week)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{
-                    display: "inline-block",
-                    minHeight: 40,
-                    lineHeight: "40px",
-                    padding: "0 16px",
-                    borderRadius: 10,
-                    background: `linear-gradient(135deg, ${C.gold}, #ff9f43)`,
-                    color: "#0f1530",
-                    fontWeight: 900,
-                    fontSize: 13,
-                    textDecoration: "none",
-                  }}
-                >
-                  Get it
-                </a>
-              ) : (
-                <span style={{ fontSize: 12, color: "#475569" }}>
-                  {m.weeksRemaining} more {m.weeksRemaining === 1 ? "week" : "weeks"}
-                </span>
-              )}
-            </div>
-          ))}
-        </div>
+        {/* The lesson, before the trophies. A child has forty minutes and
+            the first thing on the screen should be the thing they came to
+            do, not the things they did last week. */}
+        <CarryOn nextWeek={nextWeek} completedWeeks={completedWeeks} totalWeeks={HEROES_WEEKS} />
+
+        <section className="hlm-card hq-sum" aria-label="Stickers collected" data-rise>
+          <div>
+            <div className="lab">Stickers collected</div>
+            <div className="big">{earnedCount}<small> / {totalCount}</small></div>
+          </div>
+          <div>
+            <div className="hq-bar" data-rise role="img" aria-label={`${earnedPct}% of stickers collected`}><i style={{ "--w": `${earnedPct}%` } as React.CSSProperties} /></div>
+            <div className="pct"><span>Every week has stickers to find</span><span>{earnedPct}% complete</span></div>
+          </div>
+        </section>
+
+        {/* Certificates. They live here, which is where a child comes back
+            to look at what they have won, and can be printed again. */}
+        <section className="hq-sec" aria-labelledby="hq-cert-h">
+          <div className="hlm-sec-h" data-rise><div><h2 id="hq-cert-h">Certificates</h2><p>One at week 5, 10, 15 and 20. Yours to keep and print.</p></div></div>
+          <ol className="hq-certs">
+            {certificates.map((m) => (
+              <li key={m.week} className="hq-cert" data-s={m.achieved ? "earned" : m === firstOpen ? "near" : "far"} data-rise>
+                <CertIcon className="seal" />
+                <div className="wk">Week {m.week}</div>
+                <b>{m.title}</b>
+                {m.achieved ? (
+                  <a className="hlm-btn get" href={getCertificateUrl(m.week)} target="_blank" rel="noopener noreferrer">Get it</a>
+                ) : (
+                  <>
+                    <div className="meter" role="img" aria-label={`${m.progress}% of the way`}><i style={{ width: `${m.progress}%` }} /></div>
+                    <div className="left">{m.weeksRemaining} more {m.weeksRemaining === 1 ? "week" : "weeks"}</div>
+                  </>
+                )}
+              </li>
+            ))}
+          </ol>
+        </section>
 
         {/* The Agent Wardrobe - "Your Kit".
             TRIAL, 27 October 2026: docs/cyberheroes/agent-wardrobe-design.md.
             Unlocks derive from the SAME `completedAt` the badge case below
             already uses, so there is no new query and nothing new stored. */}
-        <AgentWardrobe
-          completedWeeks={snapshot.weeks.filter((w) => w.completed).map((w) => w.week)}
-        />
+        <AgentWardrobe completedWeeks={completedWeeks} />
 
         {/* Badge case — one trophy per week (earned = completed that week). */}
-        <h2
-          style={{
-            fontSize: 18,
-            fontWeight: 800,
-            margin: "0 0 4px",
-            color: C.text,
-            letterSpacing: "0.02em",
-          }}
-        >
-          Badge case
-        </h2>
-        <p style={{ color: C.textMuted, fontSize: 12, margin: "0 0 14px" }}>
-          {badgeEarnedCount} of {badgeTotalCount} week badges earned
-        </p>
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))",
-            gap: 12,
-            marginBottom: 34,
-          }}
-        >
-          {BADGE_CATALOGUE.map((b) => {
-            const isEarned = earnedBadgeIds.has(b.id);
-            return (
-              <div
-                key={b.id}
-                className={isEarned ? "hq-sticker-earned" : undefined}
-                style={{
-                  padding: "16px 12px 14px",
-                  borderRadius: 16,
-                  background: isEarned
-                    ? "linear-gradient(180deg, rgba(255, 209, 88, 0.22), rgba(15, 21, 48, 0.85))"
-                    : "rgba(15, 21, 48, 0.55)",
-                  border: isEarned
-                    ? `2.5px solid ${C.borderEarned}`
-                    : "2px dashed rgba(148, 163, 184, 0.3)",
-                  boxShadow: isEarned
-                    ? "0 14px 36px rgba(253, 224, 71, 0.25), 0 0 0 1px rgba(255, 209, 88, 0.4) inset"
-                    : "none",
-                  textAlign: "center",
-                  opacity: isEarned ? 1 : 0.5,
-                  overflow: "hidden",
-                }}
-              >
-                <div
-                  style={{
-                    marginBottom: 6,
-                    display: "flex",
-                    justifyContent: "center",
-                    filter: isEarned
-                      ? "drop-shadow(0 0 14px rgba(253, 224, 71, 0.55))"
-                      : "grayscale(85%) opacity(0.55)",
-                  }}
-                  aria-hidden
-                >
-                  <StickerArt icon={b.icon} art={b.art} locked={!isEarned} size={54} alt="" />
-                </div>
-                <div
-                  style={{
-                    fontSize: 9,
-                    letterSpacing: "0.16em",
-                    color: isEarned ? C.gold : C.textMuted,
-                    textTransform: "uppercase",
-                    fontWeight: 800,
-                    marginBottom: 3,
-                  }}
-                >
-                  Week {b.week}
-                </div>
-                <div
-                  style={{
-                    fontSize: 13,
-                    fontWeight: 800,
-                    color: isEarned ? C.text : "#475569",
-                    lineHeight: 1.2,
-                    fontFamily: "'Space Grotesk', sans-serif",
-                  }}
-                >
-                  {b.name}
-                </div>
-              </div>
-            );
-          })}
-        </div>
+        <section className="hq-sec" aria-labelledby="hq-badge-h">
+          <div className="hlm-sec-h" data-rise><div><h2 id="hq-badge-h">Badge case</h2><p>{badgeEarnedCount} of {badgeTotalCount} week badges earned</p></div></div>
+          <ul className="hq-shelf">
+            {badgesEarned.map((b) => (
+              <li key={b.id} className="hq-medal" data-s="earned" data-rise>
+                <StickerArt icon={b.icon} art={b.art} size={92} alt={`${b.name} badge`} />
+                <span className="wk">Week {b.week}</span>
+                <b>{b.name}</b>
+              </li>
+            ))}
+            {nextBadge ? (
+              <li className="hq-medal" data-s="next" data-rise>
+                {nextBadge.art ? <img src={nextBadge.art} alt="" /> : <span className="q" aria-hidden="true">?</span>}
+                <span className="wk">Week {nextBadge.week} · up next</span>
+                <b>{nextBadge.name}</b>
+              </li>
+            ) : null}
+            {restBadges.length ? (
+              <li className="hq-rest" data-rise>
+                <p>Each of the other {restBadges.length} week{restBadges.length === 1 ? "" : "s"} adds a badge to your case.</p>
+                <ol aria-hidden="true">{restBadges.map((b) => <li key={b.id}>{b.week}</li>)}</ol>
+              </li>
+            ) : null}
+          </ul>
+        </section>
 
         {/* Sticker wall */}
-        <h2
-          style={{
-            fontSize: 18,
-            fontWeight: 800,
-            margin: "0 0 14px",
-            color: C.text,
-            letterSpacing: "0.02em",
-          }}
-        >
-          Sticker wall
-        </h2>
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-            gap: 14,
-          }}
-        >
-          {STICKER_CATALOGUE.map((s) => {
-            const isEarned = earnedIds.has(s.id);
-            return (
-              <div
-                key={s.id}
-                className={isEarned ? "hq-sticker-earned" : undefined}
-                style={{
-                  padding: "20px 18px 18px",
-                  borderRadius: 18,
-                  background: isEarned
-                    ? "linear-gradient(180deg, rgba(255, 209, 88, 0.22), rgba(15, 21, 48, 0.85))"
-                    : "rgba(15, 21, 48, 0.55)",
-                  border: isEarned
-                    ? `2.5px solid ${C.borderEarned}`
-                    : "2px dashed rgba(148, 163, 184, 0.3)",
-                  boxShadow: isEarned
-                    ? "0 14px 36px rgba(253, 224, 71, 0.25), 0 0 0 1px rgba(255, 209, 88, 0.4) inset"
-                    : "none",
-                  textAlign: "center",
-                  position: "relative",
-                  opacity: isEarned ? 1 : 0.55,
-                  overflow: "hidden",
-                }}
-              >
-                <div
-                  style={{
-                    marginBottom: 8,
-                    display: "flex",
-                    justifyContent: "center",
-                    filter: isEarned
-                      ? "drop-shadow(0 0 18px rgba(253, 224, 71, 0.55))"
-                      : "grayscale(85%) opacity(0.55)",
-                  }}
-                  aria-hidden
-                >
-                  <StickerArt icon={s.icon} art={s.art} locked={!isEarned} size={72} />
-                </div>
-                <div
-                  style={{
-                    fontSize: 9,
-                    letterSpacing: "0.16em",
-                    color: isEarned ? C.gold : C.textMuted,
-                    textTransform: "uppercase",
-                    fontWeight: 800,
-                    marginBottom: 4,
-                  }}
-                >
-                  Week {s.weekNumber}
-                </div>
-                <div
-                  style={{
-                    fontSize: 16,
-                    fontWeight: 900,
-                    color: isEarned ? C.text : "#475569",
-                    marginBottom: 6,
-                    fontFamily: "'Space Grotesk', sans-serif",
-                  }}
-                >
-                  {s.name}
-                </div>
-                <div
-                  style={{
-                    fontSize: 12,
-                    color: isEarned ? C.textSoft : "#475569",
-                    lineHeight: 1.4,
-                  }}
-                >
-                  {isEarned ? s.description : "Complete the mission to unlock"}
-                </div>
-              </div>
-            );
-          })}
-        </div>
-
-        {/* Ambient + shimmer + breathing keyframes. Server component =
-            inline <style> for the global selectors. Reduced-motion users
-            get a hard stop on all of these. */}
-        <style>{`
-          .hq-cosmos { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
-          .hq-neb { position: absolute; border-radius: 50%; filter: blur(38px); }
-          .hq-neb-a { top: -14%; left: -10%; width: 54vw; height: 54vw; background: radial-gradient(circle, rgba(124,92,255,0.17), transparent 62%); }
-          .hq-neb-b { bottom: -12%; right: -10%; width: 50vw; height: 50vw; background: radial-gradient(circle, rgba(0,229,255,0.13), transparent 60%); }
-          .hq-grid { position: absolute; inset: -2px; background-image: linear-gradient(rgba(0,229,255,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(0,229,255,0.06) 1px, transparent 1px); background-size: 46px 46px; -webkit-mask-image: radial-gradient(ellipse 92% 82% at 50% 22%, #000 26%, transparent 82%); mask-image: radial-gradient(ellipse 92% 82% at 50% 22%, #000 26%, transparent 82%); }
-          .hq-scan { position: absolute; inset: 0; background: repeating-linear-gradient(0deg, rgba(0,229,255,0.022) 0, rgba(0,229,255,0.022) 1px, transparent 1px, transparent 3px); opacity: 0.55; }
-          .hq-ambient-field {
-            position: absolute;
-            inset: 0;
-            pointer-events: none;
-            z-index: 0;
-          }
-          .hq-ambient-dot {
-            position: absolute;
-            top: -8px;
-            width: 4px;
-            height: 4px;
-            border-radius: 50%;
-            background: #fff8dc;
-            box-shadow: 0 0 8px rgba(253, 224, 71, 0.75);
-            opacity: 0;
-            animation-name: hqAmbientDrift;
-            animation-iteration-count: infinite;
-            animation-timing-function: linear;
-          }
-          @keyframes hqAmbientDrift {
-            0%   { opacity: 0; transform: translateY(0)    scale(0.6); }
-            15%  { opacity: 0.85; }
-            85%  { opacity: 0.85; }
-            100% { opacity: 0; transform: translateY(110vh) scale(1.05); }
-          }
-          .hq-progress-shimmer {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(90deg, transparent 0%, rgba(255, 248, 220, 0.65) 50%, transparent 100%);
-            transform: translateX(-100%);
-            animation: hqShimmerSweep 2.8s ease-in-out infinite;
-          }
-          @keyframes hqShimmerSweep {
-            0%   { transform: translateX(-100%); }
-            60%  { transform: translateX(100%); }
-            100% { transform: translateX(100%); }
-          }
-          .hq-sticker-earned {
-            animation: hqStickerBreathe 4.6s ease-in-out infinite;
-          }
-          @keyframes hqStickerBreathe {
-            0%, 100% {
-              box-shadow:
-                0 14px 36px rgba(253, 224, 71, 0.25),
-                0 0 0 1px rgba(255, 209, 88, 0.4) inset;
-            }
-            50% {
-              box-shadow:
-                0 16px 44px rgba(253, 224, 71, 0.4),
-                0 0 0 1px rgba(255, 209, 88, 0.55) inset;
-            }
-          }
-          .hq-heroes { animation: hqHeroFloat 5s ease-in-out infinite; }
-          @keyframes hqHeroFloat {
-            0%, 100% { transform: translateY(0); }
-            50%      { transform: translateY(-9px); }
-          }
-          @media (prefers-reduced-motion: reduce) {
-            .hq-ambient-dot,
-            .hq-progress-shimmer,
-            .hq-sticker-earned,
-            .hq-heroes {
-              animation: none !important;
-            }
-            .hq-ambient-dot { opacity: 0; }
-          }
-        `}</style>
-
-        {/* Helpful CTA */}
-        {collectionsEmpty && (
-          <div
-            style={{
-              marginTop: 28,
-              padding: 24,
-              background: C.card,
-              border: `1px solid ${C.border}`,
-              borderRadius: 16,
-              textAlign: "center",
-            }}
-          >
-            <p style={{ color: C.textSoft, fontSize: 14, margin: "0 0 14px" }}>
-              No stickers yet - finish Week 1 to start your collection.
-            </p>
-            <Link
-              href="/lesson/1"
-              style={{
-                display: "inline-block",
-                padding: "12px 28px",
-                background: `linear-gradient(135deg, ${C.cyan}, ${C.violet})`,
-                color: "#0f1530",
-                fontWeight: 900,
-                borderRadius: 12,
-                textDecoration: "none",
-                fontSize: 14,
-              }}
-            >
-              Start Week 1 →
-            </Link>
+        <section className="hq-sec" aria-labelledby="hq-st-h">
+          <div className="hlm-sec-h" data-rise>
+            <div>
+              <h2 id="hq-st-h">Sticker wall</h2>
+              {stickersRest > 0 ? <p>{stickersRest} more stickers to find in the weeks still to play.</p> : null}
+            </div>
           </div>
-        )}
+          {collectionsEmpty ? <p className="hq-empty" data-rise>No stickers yet. Finish Week 1 to start your collection.</p> : null}
+          <ul className="hq-stickers">
+            {stickersEarned.map((s) => (
+              <li key={s.id} className="hq-st" data-rise>
+                <StickerArt icon={s.icon} art={s.art} size={76} />
+                <span className="wk">Week {s.weekNumber}</span>
+                <b>{s.name}</b>
+                <small>{s.description}</small>
+              </li>
+            ))}
+            {stickersNext.map((s) => (
+              <li key={s.id} className="hq-st" data-s="next" data-rise>
+                <span className="q" aria-hidden="true">?</span>
+                <span className="wk">Week {s.weekNumber}</span>
+                <b>{s.name}</b>
+                <small>Complete the mission to unlock</small>
+              </li>
+            ))}
+          </ul>
+        </section>
       </div>
-    </main>
+    </HeroesShell>
   );
 }

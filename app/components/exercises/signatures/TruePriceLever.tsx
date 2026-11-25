@@ -1192,7 +1192,10 @@ function LeverStation({
 }) {
   const [holding, setHolding] = useState(false);
   const progress = useMotionValue(0);
-  const angle = useTransform(progress, [0, 1], [-52, 54]);
+  // Arm 70px and a +-42deg swing keep the knob inside the 120px lever box at
+  // both ends. The old 86px arm swinging -52..+54 put the knob ~20px past the
+  // box on each side, over the panel edge and the receipt (UAT 11-22, W7-4).
+  const angle = useTransform(progress, [0, 1], [-42, 42]);
   const fullH = 18 + deal.receipt.length * 30 + 54;
   const paperH = useTransform(progress, (p) => Math.max(10, p * fullH));
   const barScale = useTransform(progress, (p) => Math.max(0.001, p));
@@ -1380,7 +1383,7 @@ function LeverStation({
             aria-hidden
           >
             <path
-              d="M 22 74 A 46 46 0 0 1 98 74"
+              d="M 27 68 A 46 46 0 0 1 93 68"
               fill="none"
               stroke="#4a3413"
               strokeWidth="9"
@@ -1394,7 +1397,7 @@ function LeverStation({
               left: 53,
               bottom: 36,
               width: 14,
-              height: 86,
+              height: 70,
               borderRadius: 8,
               transformOrigin: "50% calc(100% - 8px)",
               rotate: angle,

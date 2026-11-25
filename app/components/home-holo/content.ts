@@ -372,10 +372,10 @@ export const AX = {
     },
     "workplace": {
       "tag": "AX // WORK.SKILLS",
-      "meta": "STATUS:LIVE · TRACKS:1/4",
+      "meta": "STATUS:LIVE · TRACKS:4/4",
       "name": "Workplace Skills",
-      "ages": "ADULTS · 1 OF 4 TRACKS LIVE",
-      "blurb": "The fundamentals every desk job runs on: email, spreadsheets, files and AI, practised in a pretend office until they are second nature.",
+      "ages": "ADULTS · 4 TRACKS LIVE",
+      "blurb": "The fundamentals every desk job runs on: email, spreadsheets, files and AI, practised in a pretend office, plus the AI and cyber training firms give every seat.",
       "badge": "PRACTISE IN A PRETEND OUTLOOK, EXCEL AND DESKTOP",
       "cta": "View course",
       "href": "/desk-ready",
@@ -406,22 +406,89 @@ export const AX = {
           ]
         ]
       },
-      "locked": [
+      "firm": [
         {
-          "n": "02",
-          "accent": "#8b7bff"
+          "family": "AI",
+          "label": "Fluent",
+          "accent": "#8b7bff",
+          "verb": "GET WORK DONE",
+          "ages": "FIRMS · 9 MODULES",
+          "status": "LIVE",
+          "href": "/corporate",
+          "items": [
+            [
+              "MODULE 2",
+              "Say what you want"
+            ],
+            [
+              "MODULE 5",
+              "Draft"
+            ],
+            [
+              "MODULE 7",
+              "Research"
+            ],
+            [
+              "MODULE 8",
+              "Verify and automate"
+            ]
+          ]
         },
         {
-          "n": "03",
-          "accent": "#2bbdd0"
+          "family": "AI",
+          "label": "Cleared",
+          "accent": "#2bbdd0",
+          "verb": "USE AI SAFELY",
+          "ages": "FIRMS · 5 MODULES",
+          "status": "LIVE",
+          "href": "/corporate",
+          "items": [
+            [
+              "MODULE 2",
+              "The paste test"
+            ],
+            [
+              "MODULE 3",
+              "Your firm's approved tools"
+            ],
+            [
+              "MODULE 4",
+              "Trust but verify"
+            ],
+            [
+              "MODULE 5",
+              "Shadow AI and when to ask"
+            ]
+          ]
         },
         {
-          "n": "04",
-          "accent": "#f06ab8"
+          "family": "Cyber",
+          "label": "Awareness",
+          "accent": "#f06ab8",
+          "verb": "SPOT THE SCAM",
+          "ages": "FIRMS · 8 MODULES",
+          "status": "LIVE",
+          "href": "/corporate",
+          "items": [
+            [
+              "MODULE 2",
+              "Phishing & Social Engineering"
+            ],
+            [
+              "MODULE 3",
+              "Passwords, MFA & Access"
+            ],
+            [
+              "MODULE 6",
+              "Invoice Fraud & BEC"
+            ],
+            [
+              "MODULE 8",
+              "Report It"
+            ]
+          ]
         }
       ],
-      "lockedLabel": "UNLOCKS SOON",
-      "lockedFoot": "> ENCRYPTED UNTIL LAUNCH_",
       "more": "PLUS MANY MORE"
     },
     "roadmap": {

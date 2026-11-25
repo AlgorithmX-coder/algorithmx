@@ -141,7 +141,10 @@ const CARD_W = 240;
 const CARD_H = 70;
 const CARD_Y = BEAM_Y;
 const SHIELD_X = CANVAS_W - 54;
-const SHIELD_Y = 54;
+// 70, not 54: at 54 the shield's halo (r36) reached up into the SCORE
+// counter (drawn at y 12), so the badge read as squashed against it
+// (UAT 11-22, W15-5b).
+const SHIELD_Y = 70;
 
 /* ───────────────── COSMIC CANVAS PALETTE ─────────────────
  * Was the warm Pixar parchment / sunset-gold treatment; swept to the
@@ -733,7 +736,11 @@ export default function CyberScanner({
 
         // Password text
         ctx.fillStyle = CV.cardText;
-        ctx.font = "700 18px 'JetBrains Mono', 'Courier New', monospace";
+        // The course's rounded face, as on every other label on this canvas
+        // (floaters, explanation pill, HUD), not a code font (UAT 11-22,
+        // W15-5c). Canvas ctx.font cannot resolve a CSS var(), so it names
+        // the families directly.
+        ctx.font = "800 18px ui-rounded, 'Fredoka', system-ui, sans-serif";
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
         ctx.fillText(c.text, 0, -2, CARD_W - 20);
@@ -857,6 +864,7 @@ export default function CyberScanner({
       }}
     >
       <ExerciseHowTo
+        flush={{ side: 16, top: 16 }}
         title="Cyber Scanner"
         steps={[
           { glyph: "🛡", text: L.positiveHint },
@@ -871,6 +879,10 @@ export default function CyberScanner({
           width: "100%",
           height: "auto",
           display: "block",
+          // Air between the how-to band and the scanner (Abdullah, UAT
+          // 2026-11-22, W15 row 5a: "make a gap between the scanner and the
+          // how to play part"). The band now sits flush at the frame top.
+          marginTop: 12,
         }}
         aria-label="Cyber Scanner game"
       />

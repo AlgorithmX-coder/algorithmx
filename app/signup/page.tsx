@@ -326,7 +326,7 @@ function SignupPageInner() {
                 )}
               </AnimatePresence>
 
-              <form onSubmit={handleSubmit} className="space-y-1" noValidate>
+              <form method="post" onSubmit={handleSubmit} className="space-y-1" noValidate>
                 <AuthField
                   id="signup-name"
                   label="Full name"

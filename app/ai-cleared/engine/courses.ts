@@ -17,9 +17,9 @@ export type CourseKey = "AI_CLEARED" | "AI_FLUENT";
 /* The two courses that once issued a certificate, so still have serials
  * in the wild. No course issues a new one (owner, 2026-11-09: Cyber
  * Secured tracks completion per module only), but an AXC or AXF
- * certificate already issued stays good until it expires: /verify/[serial]
- * checks it and its holder can still open and download it. This type keys
- * the words those certificates carry (CERT_COPY). Cyber Awareness never
+ * certificate already issued stays good until it expires and its holder
+ * can still open and download it. This type keys the words those
+ * certificates carry (CERT_COPY). Cyber Awareness never
  * had one. */
 export type CertifiedCourseSlug = "ai-cleared" | "ai-fluent";
 

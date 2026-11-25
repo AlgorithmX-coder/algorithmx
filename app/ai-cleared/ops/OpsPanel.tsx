@@ -174,7 +174,7 @@ export default function OpsPanel() {
               <li key={i}>
                 <b>{h.name ?? h.email}</b>
                 <span>{h.name ? h.email : ""} · <a href={`/ai-cleared/ops/${h.firmSlug}?course=${h.course}`}>{h.firm}</a> · {h.course === "ai-fluent" ? "AI Fluent" : "AI Cleared"} · {h.status === "cleared" ? (h.course === "ai-fluent" ? "Fluent" : "Cleared") : h.status === "started" ? `${h.modulesDone} modules done` : "Invited, not yet claimed"}</span>
-                {h.serial && <span>Certificate <a href={`/verify/${h.serial}`} target="_blank" rel="noopener noreferrer">{h.serial}</a>, {h.score}%, issued {day(h.issuedAt)}, expires {day(h.expiresAt)}</span>}
+                {h.serial && <span>Certificate {h.serial}, {h.score}%, issued {day(h.issuedAt)}, expires {day(h.expiresAt)}</span>}
                 {i === 0 && h.kind === "person" && !erase && <span><button type="button" className="cf-btn" onClick={() => setErase({ email: h.email, confirm: "" })}>Remove this person&rsquo;s data</button></span>}
               </li>
             ))}

@@ -83,7 +83,7 @@ Feature Adam and/or Layla reacting + the Raccoon where it fits. Topic-relevant, 
 | `adam-head.png` / `layla-head.png` | `app/components/LessonHUD.tsx`, `app/components/game/MissionBriefScene.tsx` |
 | `raccoon-head.png` | `app/dashboard/DashboardView.tsx` (Raccoon Power), `app/components/game/BossBattle.tsx` (HUD) |
 | `adam-cheer.png` / `layla-cheer.png` | `app/components/lesson/StickerUnlock.tsx` |
-| `adam-layla-duo.png` | `app/components/hub/ProductCard.tsx` / `HubTrackCard.tsx`, `app/parent/ParentView.tsx` |
+| `adam-layla-duo.png` | `app/components/hub/ProductCard.tsx` / `HubTrackCard.tsx` |
 | `raccoon-villain.png` | `app/components/game/WelcomeScene.tsx` (replaces 🦝) |
 | `raccoon-*.png`, `cyber-classroom.png` | **none — drop-in** |
 | `learn-command-center.png` | `app/components/lesson/InfoScene.tsx` (`background`) |

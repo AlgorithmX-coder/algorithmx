@@ -450,7 +450,7 @@ export default function MemoryMatch({
     // window, so what they study is a fresh arrangement. (Shuffling at
     // startRebuild instead would make the memorise window pointless.)
     setCards((prev) => shuffle(prev));
-    setMemoriseSecs(10);
+    setMemoriseSecs(15);
     setPhase("memorise");
   };
 
@@ -560,6 +560,7 @@ export default function MemoryMatch({
   };
 
   const totalPairs = pairList.length;
+  const showHint = mismatchCount >= 3 && matchedPairIds.length < pairList.length;
   const totalCards = totalPairs * 2;
   const cols = totalCards >= 16 ? 4 : totalCards >= 12 ? 4 : 3;
 
@@ -623,6 +624,7 @@ export default function MemoryMatch({
 
       <div style={{ position: "relative", zIndex: 1, padding: "0 18px", display: finished ? "none" : undefined }}>
         <ExerciseHowTo
+          flush={{ side: 18 }}
           title="Memory Match"
           steps={[
             { glyph: "🧠", text: "Flip two cards to find a matching pair" },
@@ -633,9 +635,11 @@ export default function MemoryMatch({
         />
         <div style={{ height: 14 }} />
         {/* Title */}
-        <div style={{ textAlign: "center", marginBottom: 14 }}>
+        {/* The title block doubles as the hint's slot (see showHint). */}
+        <div style={{ position: "relative", textAlign: "center", marginBottom: 14 }}>
           <h2
             style={{
+              visibility: showHint ? "hidden" : undefined,
               margin: "0 0 4px",
               fontFamily: "'Space Grotesk', sans-serif",
               fontSize: 26,
@@ -667,10 +671,39 @@ export default function MemoryMatch({
               );
             })()}
           </h2>
-          <p style={{ margin: 0, fontSize: 14, color: isStation ? "#c3b49a" : "#94a3b8" }}>
+          <p style={{ visibility: showHint ? "hidden" : undefined, margin: 0, fontSize: 14, color: isStation ? "#c3b49a" : "#94a3b8" }}>
             Flip two cards to find a word and its matching meaning. Remember where they are!{" "}
             <span aria-hidden>✦</span>
           </p>
+          {/* Tiered hint: after a few mismatches Adam steps in.
+            *
+            * It takes the title's place instead of being inserted above the
+            * grid. Inserted, it made the card taller the moment it appeared,
+            * the stage fit zoomed the whole board down to make room, and the
+            * game visibly shrank mid-play (Abdullah, UAT 2026-11-22, W1 row
+            * 2b: "when you find one pair but your attempts reach a certain
+            * limit, the screen for the game shrinks slightly"). Laid over the
+            * title block, it changes nothing's size; the title and the line
+            * under it are the least needed thing on the card by then, and the
+            * hint repeats what that line says. */}
+          {showHint && (
+            <div
+              style={{
+                position: "absolute",
+                inset: 0,
+                zIndex: 2,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <HintBubble
+                tier={mismatchCount >= 5 ? 3 : 2}
+                speaker="adam"
+                text="Remember where each card was. Tap a cyber word, then the meaning that matches it."
+              />
+            </div>
+          )}
         </div>
         {/* HUD */}
         <div
@@ -780,16 +813,6 @@ export default function MemoryMatch({
           </div>
         )}
 
-        {/* Tiered hint: after a few mismatches Adam steps in. */}
-        {mismatchCount >= 3 && matchedPairIds.length < pairList.length && (
-          <div style={{ padding: "0 12px 12px" }}>
-            <HintBubble
-              tier={mismatchCount >= 5 ? 3 : 2}
-              speaker="adam"
-              text="Remember where each card was. Tap a cyber word, then the meaning that matches it."
-            />
-          </div>
-        )}
 
         {/* Card grid */}
         <div
@@ -1176,7 +1199,7 @@ function PhaseTransitionCard({
               lineHeight: 1.55,
             }}
           >
-            First, take 10 seconds to memorise where all the cards are! Then
+            First, take 15 seconds to memorise where all the cards are! Then
             they flip over and we&apos;ll test you, so tap the card you remember
             holds each meaning. Hit them all in one go for a 3-star finish!
           </p>
