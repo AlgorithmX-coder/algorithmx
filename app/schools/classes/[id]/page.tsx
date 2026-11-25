@@ -139,7 +139,7 @@ export default async function ClassPage({
             Moving a {w.person}{" "}
             to a {w.group} on a different course spends a place, because a place is one {w.person}{" "}
             on one course. Moving between {w.groups} on the same course is still free. To buy more,
-            write to <a href="mailto:schools@algorithmx.co.uk">schools@algorithmx.co.uk</a>.
+            write to <a href="mailto:admissions@algorithmx.co.uk">admissions@algorithmx.co.uk</a>.
           </p>
         )}
         {move === "spent" && (
@@ -172,7 +172,7 @@ export default async function ClassPage({
             </b>{" "}
             Nobody was moved: it is all or nothing, so you cannot end up with half the {w.group} on
             a course you have not paid for. To buy more places, write to{" "}
-            <a href="mailto:schools@algorithmx.co.uk">schools@algorithmx.co.uk</a>.
+            <a href="mailto:admissions@algorithmx.co.uk">admissions@algorithmx.co.uk</a>.
           </p>
         )}
         {bulk === "failed" && (

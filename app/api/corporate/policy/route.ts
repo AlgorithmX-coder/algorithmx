@@ -66,7 +66,7 @@ export async function POST(req: Request) {
     footer: `A starting point for your own review, written from the answers ${name} gave at algorithmx.io/corporate. The training that goes with it is AI Cleared by AlgorithmX. Reply to this email and a real person will pick it up.`,
   });
 
-  const to = process.env.CORPORATE_ENQUIRY_TO ?? process.env.SCHOOLS_ENQUIRY_TO ?? "support@algorithmx.co.uk";
+  const to = process.env.CORPORATE_ENQUIRY_TO ?? process.env.SCHOOLS_ENQUIRY_TO ?? "admissions@algorithmx.co.uk";
   const leadRows: Array<[string, string]> = [
     ["Name", name],
     ["Email", email],

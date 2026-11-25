@@ -90,7 +90,7 @@ export async function POST(req: Request) {
   console.log("[corporate-enquiry]", JSON.stringify(record));
 
   const to =
-    process.env.CORPORATE_ENQUIRY_TO ?? process.env.SCHOOLS_ENQUIRY_TO ?? "support@algorithmx.co.uk";
+    process.env.CORPORATE_ENQUIRY_TO ?? process.env.SCHOOLS_ENQUIRY_TO ?? "admissions@algorithmx.co.uk";
   const subject = `AI Cleared enquiry: ${company} (${record.size})`;
   const rows: Array<[string, string]> = [
     ["Name", name],

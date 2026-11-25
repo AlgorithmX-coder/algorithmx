@@ -1,7 +1,7 @@
 /* Shared words for the organisations buy and thanks pages (Order Desk skin). */
 
 export const ORG_FOOT_LEFT = (
-  <>Questions about places: <a href="mailto:schools@algorithmx.co.uk">schools@algorithmx.co.uk</a></>
+  <>Questions about places: <a href="mailto:admissions@algorithmx.co.uk">admissions@algorithmx.co.uk</a></>
 );
 export const ORG_FOOT_RIGHT = "AlgorithmX · For organisations";
 

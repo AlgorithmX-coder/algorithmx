@@ -94,7 +94,7 @@ export default async function ThanksPage({
               <div data-rise><OrgSteps /></div>
               <p className="odk-note odk-measure" data-rise>
                 Nothing after ten minutes? Check the junk folder, then email{" "}
-                <a href="mailto:schools@algorithmx.co.uk">schools@algorithmx.co.uk</a> with your
+                <a href="mailto:admissions@algorithmx.co.uk">admissions@algorithmx.co.uk</a> with your
                 organisation&rsquo;s name and we will send the link by hand. Your VAT invoice comes
                 separately from Stripe.
               </p>

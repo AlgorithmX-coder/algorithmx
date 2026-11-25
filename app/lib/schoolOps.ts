@@ -280,7 +280,7 @@ function esc(s: string): string {
 /** Where a school writes in. Never a person: staff change, an address does
  *  not, and a teacher should not be replying to whoever happened to set
  *  their school up. */
-export const SCHOOLS_EMAIL = "schools@algorithmx.co.uk";
+export const SCHOOLS_EMAIL = "admissions@algorithmx.co.uk";
 
 /**
  * The first teacher's invite.
