@@ -31,7 +31,7 @@ export const AXE = {
     },
     ctaPrimary: { label: "ENROLL NOW · £99", href: "/cyberexplorers/signup" },
     ctaSecondary: { label: "SEE WHAT’S INCLUDED ↓", href: "#course" },
-    finePrint: "One payment. Lifetime access. Money-back guarantee: if it doesn’t land with your kid, you get it back.",
+    finePrint: "One payment. Lifetime access. Every future update included.",
     ticks: ["ICO CHILDREN’S CODE–ALIGNED", "NO ADS, NO LOOT BOXES", "SESSIONS END ON PURPOSE"],
     video: {
       src: "/explorers/trailer-cyberexplorers.mp4",
@@ -82,14 +82,14 @@ export const AXE = {
       { n: "1", t: "Voice-acted mentor", d: "WREN, their handler, talks them through every mission like a colleague, never a lecture." },
       { n: "6", t: "Villains to unmask", d: "Each one is a real internet threat in a story costume: phishing, fake voices, data theft." },
       { n: "∞", t: "Progress you can check", d: "XP, clearance ranks, and quiz records: evidence of learning, visible any time." },
-      { n: "£99", t: "Once. Lifetime access", d: "Every mission, every future update, no subscription, and a money-back guarantee." },
+      { n: "£99", t: "Once. Lifetime access", d: "Every mission, every future update, and no subscription, ever." },
     ],
   },
 
   proof: {
     eyebrow: "Why trust us",
     title: "We already built this for the little ones.",
-    body: "Cyber Explorers comes from the team behind Cyber Heroes, our cybersecurity course for ages 6–9, live today with all 20 weeks and 20 bespoke boss battles shipped. Same platform, same safety rules, built up for the next age. CyberFirst and ASDAN aligned; GDPR and ICO Children’s Code by design.",
+    body: "Cyber Explorers comes from the team behind Cyber Heroes, our cybersecurity course for ages 6–9, live today with all 20 weeks and 20 bespoke boss battles shipped. Same platform, same safety rules, built up for the next age. GDPR and ICO Children’s Code by design.",
     bodyBold: "Cyber Heroes",
     link: { label: "SEE CYBER HEROES (AGES 6–9) →", href: "/cyberheroes" },
   },
@@ -120,7 +120,7 @@ export const AXE = {
       { q: "What does it run on?", a: "Any modern browser: laptop, desktop, or tablet. Nothing to install." },
       { q: "My kid says they already know about scams.", a: "Most kids can recite 'don't click suspicious links.' Very few can tell you WHY gamehub.support-verify.net isn't GameHub, or what a pressure deadline is doing to their brain. Explorers teaches the mechanism, not the slogan. And kids who 'already know' tend to be the ones who love it most, because it finally treats them as capable." },
       { q: "How much does it cost?", a: "£99, once. That's all 20 missions, lifetime access, and every future update. No subscription, no in-app purchases, nothing sold to your child, ever." },
-      { q: "What if my child loses interest?", a: "Every mission is a complete case with a real ending, built for 45–60 minutes: no cliffhanger traps, no daily-streak guilt. And enrollment comes with a simple money-back guarantee: if it doesn't land with your kid, you get your money back." },
+      { q: "What if my child loses interest?", a: "Every mission is a complete case with a real ending, built for 45–60 minutes: no cliffhanger traps, no daily-streak guilt. Each case stands on its own, and save-and-resume means a child who takes a break picks up exactly where they left off." },
     ],
   },
 
@@ -132,7 +132,7 @@ export const AXE = {
       "All 20 missions, every incident, the full dossier archive",
       "Lifetime access, including every future update to the course",
       "One payment. No subscription, no in-app purchases, ever",
-      "Money-back guarantee if it doesn't land with your kid",
+      "Save-and-resume in any modern browser, nothing to install",
     ],
     primary: { label: "ENROLL NOW · £99", href: "/cyberexplorers/signup" },
     secondary: { label: "ALREADY ENROLLED? LOG IN", href: "/cyberexplorers/login" },

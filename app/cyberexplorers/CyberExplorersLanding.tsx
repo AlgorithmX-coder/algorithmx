@@ -167,7 +167,7 @@ const FAQS = [
   },
   {
     q: "What if my child loses interest?",
-    a: "Every mission is a complete case with a real ending, built for 45–60 minutes: no cliffhanger traps, no daily-streak guilt. And enrollment comes with a simple money-back guarantee: if it doesn't land with your kid, you get your money back.",
+    a: "Every mission is a complete case with a real ending, built for 45–60 minutes: no cliffhanger traps, no daily-streak guilt. Each case stands on its own, and save-and-resume means a child who takes a break picks up exactly where they left off.",
   },
 ];
 
@@ -841,7 +841,7 @@ export default function CyberExplorersLanding() {
               </a>
             </div>
             <p style={{ fontSize: 12.5, color: T.textSecondary, margin: "12px 0 0", maxWidth: 440 }}>
-              One payment. Lifetime access. Money-back guarantee: if it doesn&rsquo;t land with your kid, you get it back.
+              One payment. Lifetime access. Every future update included.
             </p>
             <div style={{ display: "flex", flexWrap: "wrap", gap: "6px 16px", margin: "18px 0 0", fontFamily: MONO, fontSize: 10.5, letterSpacing: "0.05em", color: T.textSecondary }}>
               <span><span style={{ color: T.confirmedGreen }}>✓</span> ICO CHILDREN&rsquo;S CODE–ALIGNED</span>
@@ -947,7 +947,7 @@ export default function CyberExplorersLanding() {
               { n: "1", t: "Voice-acted mentor", d: "WREN, their handler, talks them through every mission like a colleague, never a lecture." },
               { n: "6", t: "Villains to unmask", d: "Each one is a real internet threat in a story costume: phishing, fake voices, data theft." },
               { n: "∞", t: "Progress you can check", d: "XP, clearance ranks, and quiz records: evidence of learning, visible any time." },
-              { n: "£99", t: "Once. Lifetime access", d: "Every mission, every future update, no subscription, and a money-back guarantee." },
+              { n: "£99", t: "Once. Lifetime access", d: "Every mission, every future update, and no subscription, ever." },
             ].map((g, i) => (
               <div key={g.t} data-scroll data-scroll-delay={String((i % 3) * 0.08)} className="cx-card" style={{ background: `${T.panel}E6`, border: `1px solid ${T.hairline}`, borderRadius: 9, padding: "20px 22px", "--ac": T.arcCyan } as React.CSSProperties}>
                 <div className="cx-num" style={{ fontFamily: MONO, fontSize: 38, fontWeight: 700, lineHeight: 1 }}>{g.n}</div>
@@ -970,7 +970,7 @@ export default function CyberExplorersLanding() {
             <p className="cx-sub" style={{ fontSize: 16, lineHeight: 1.7, color: T.textSecondary, margin: "0 auto 22px", maxWidth: 640 }}>
               Cyber Explorers comes from the team behind <span style={{ color: T.textPrimary }}>Cyber Heroes</span>,
               our cybersecurity course for ages 6–9, live today with all 20 weeks and 20 bespoke boss battles shipped.
-              Same platform, same safety rules, built up for the next age. CyberFirst and ASDAN aligned; GDPR and ICO
+              Same platform, same safety rules, built up for the next age. GDPR and ICO
               Children&rsquo;s Code by design.
             </p>
             <Link href="/cyberheroes" className="cx-navlink" style={{ fontSize: 12, border: `1px solid ${T.hairline}`, borderRadius: 3, padding: "10px 16px", display: "inline-block" }}>
@@ -1027,7 +1027,7 @@ export default function CyberExplorersLanding() {
                 "All 20 missions, every incident, the full dossier archive",
                 "Lifetime access, including every future update to the course",
                 "One payment. No subscription, no in-app purchases, ever",
-                "Money-back guarantee if it doesn't land with your kid",
+                "Save-and-resume in any modern browser, nothing to install",
               ].map((b) => (
                 <div key={b} style={{ fontSize: 14.5, lineHeight: 1.6, color: T.textSecondary, display: "flex", gap: 10 }}>
                   <span style={{ color: T.confirmedGreen, fontFamily: MONO }}>✓</span>

@@ -46,13 +46,13 @@ const dmSans = DM_Sans({
 
 export const metadata: Metadata = {
   title: "AlgorithmX - Cyber and AI Skills for Every Age",
-  description: "Cyber and AI skills for people, schools and firms. Interactive cybersecurity courses from age 6 to adult, plus AI training for every member of staff. UK-based and accreditation aligned.",
+  description: "Cyber and AI skills for people, schools and firms. Interactive cybersecurity courses from age 6 to adult, plus AI training for every member of staff. UK-based and aligned with NCSC guidance.",
   icons: {
     icon: "/favicon.svg",
   },
   openGraph: {
     title: "AlgorithmX - Cyber and AI Skills for Every Age",
-    description: "Cyber and AI skills for people, schools and firms. Interactive cybersecurity courses from age 6 to adult, plus AI training for every member of staff. UK-based and accreditation aligned.",
+    description: "Cyber and AI skills for people, schools and firms. Interactive cybersecurity courses from age 6 to adult, plus AI training for every member of staff. UK-based and aligned with NCSC guidance.",
     type: "website",
     url: "https://algorithmx.io",
   },
