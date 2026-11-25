@@ -2,6 +2,11 @@ import type { NextConfig } from "next";
 import { withSentryConfig } from "@sentry/nextjs";
 
 const nextConfig: NextConfig = {
+  // Set by `next upgrade --agent=security` (16.4.1 -> 16.4.6). Records which
+  // upgrade track this app opted into, so later runs know a security upgrade
+  // has been adopted here.
+  experimental: { agentUpgrade: "security" },
+
   // The Cyber Ops landing moved from /cyberstart to /ops. Keep old links
   // and bookmarks working (temporary redirect - the working name is still
   // subject to change). The internal course slug stays "cyberstart".

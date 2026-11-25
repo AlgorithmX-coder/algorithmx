@@ -1,20 +1,31 @@
 /**
- * Course auth content: the words and routes behind the five course-themed
- * login and signup pages. Every string here is frozen copy (it was lifted
- * verbatim from the live pages on 2026-11-22 for the auth design lab and
- * ported back unchanged); the skins read it, they never add words.
+ * Course auth content: the words and routes behind the course-themed login,
+ * signup, forgot-password and reset-password pages. The five original packs
+ * are frozen copy (lifted verbatim from the live pages on 2026-11-22 for the
+ * auth design lab and ported back unchanged); the AI Cleared, AI Fluent and
+ * Cyber Awareness packs and the FLOW strings come from the round 6 lab
+ * (2026-11-23). The skins read it, they never add words.
  *
  * Route pages pass a course KEY (a string, server-component safe) and the
  * client-side skin looks its pack up here.
  */
 
-export type CourseAuthKey = "cyberheroes" | "cyberexplorers" | "ops" | "pro" | "desk";
+export type CourseAuthKey = "cyberheroes" | "cyberexplorers" | "ops" | "pro" | "desk" | "cleared" | "fluent" | "awareness";
 
 export interface CourseAuthCopy {
   /** Catalog slug, carried through the auth flow for the hub target. */
   slug: string;
-  /** Landing base path; also where "Back to course" points. */
+  /** Route base: login, signup, forgot-password and reset-password live
+   *  under it. Also where "Back to course" points unless `landing` is set. */
   base: string;
+  /** Where "Back to course" and the lockup point, when that is not `base`.
+   *  The three firm tracks have no landing of their own (their base is the
+   *  signed-in console, which sends a signed-out visitor to /login), so they
+   *  point at the Cyber Secured page that sells them. */
+  landing?: string;
+  /** Post-login destination for a course the shared course-intent map does
+   *  not know (courseHomeFor sends unknown slugs to the catalogue). */
+  home?: string;
   courseName: string;
   copy: {
     loginTitle: string;
@@ -98,11 +109,60 @@ export const COURSE_AUTH_CONTENT: Record<CourseAuthKey, CourseAuthCopy> = {
       submitSignup: "Create account",
     },
   },
+  cleared: {
+    slug: "ai-cleared",
+    base: "/ai-cleared",
+    landing: "/corporate",
+    home: "/ai-cleared",
+    courseName: "AI Cleared",
+    copy: {
+      loginTitle: "Sign in",
+      loginSub: "Pick up your clearance where you left off. Your sims are saved.",
+      signupTitle: "Create your account",
+      signupSub: "Learn the rules for AI at work and practise them in a live sandbox.",
+      registeredNotice: "Account created. Sign in to start your first module.",
+      submitLogin: "Sign in",
+      submitSignup: "Create account",
+    },
+  },
+  fluent: {
+    slug: "ai-fluent",
+    base: "/ai-fluent",
+    landing: "/corporate",
+    home: "/ai-fluent",
+    courseName: "AI Fluent",
+    copy: {
+      loginTitle: "Welcome back",
+      loginSub: "Back to the loop. Your prompts and progress are saved.",
+      signupTitle: "Create your account",
+      signupSub: "Get real work done with AI, one short module at a time.",
+      registeredNotice: "Account created. Sign in to open your first module.",
+      submitLogin: "Sign in",
+      submitSignup: "Create account",
+    },
+  },
+  awareness: {
+    slug: "cyber-awareness",
+    base: "/cyber-awareness",
+    landing: "/corporate",
+    home: "/cyber-awareness",
+    courseName: "Cyber Awareness",
+    copy: {
+      loginTitle: "Sign in",
+      loginSub: "Back on watch. Pick up where you left off.",
+      signupTitle: "Create your account",
+      signupSub: "Spot the scam before it lands. Short modules, real examples.",
+      registeredNotice: "Account created. Sign in to start your first module.",
+      submitLogin: "Sign in",
+      submitSignup: "Create account",
+    },
+  },
 };
 
 /* The strings every course shares: labels, placeholders, the toggle, the
  * forgot row, the switch lines, the busy label and the client error text.
- * Same words on all five courses. */
+ * Same words on every course. The forgot row goes to the course's own
+ * forgot-password page (base + path). */
 export const SHARED = {
   labels: { name: "Your name", email: "Email", password: "Password", confirm: "Confirm password" },
   placeholders: {
@@ -113,7 +173,7 @@ export const SHARED = {
     confirm: "Type your password again",
   },
   toggle: { show: "SHOW", hide: "HIDE", ariaShow: "Show password", ariaHide: "Hide password" },
-  forgot: { text: "Forgot password?", href: "/forgot-password" },
+  forgot: { text: "Forgot password?", path: "/forgot-password" },
   back: "Back to",
   busy: "One moment",
   switchLine: {
@@ -127,5 +187,54 @@ export const SHARED = {
     noMatch: "Those details don't match an account.",
     network: "Something went wrong. Check your connection and try again.",
     fallback: "That didn't work. Try again.",
+  },
+} as const;
+
+/* The forgot-password and reset-password strings: the live generic pages'
+ * own (app/forgot-password, app/reset-password), with the round 6 changes
+ * the owner's lab carried: no em-dash in the reset sub, and the family line
+ * only on Cyber Heroes (a Cyber Pro or AI Fluent learner has no family
+ * account). The server error strings are the live page's. */
+export const FLOW = {
+  forgot: {
+    title: "Reset your password",
+    sub: "Enter your email and we'll send a secure link to set a new one.",
+    submit: "Send reset link",
+    busy: "Sending…",
+    hint: "Enter your email to continue.",
+    errInvalid: "Enter a valid email address.",
+    fieldErr: "That email doesn't look right.",
+    sentTitle: "Check your email",
+    sentBefore: "If an account exists for ",
+    sentAfter: ", a reset link is on its way.",
+    switchLead: "Remembered it?",
+    switchLink: "Log in",
+  },
+  reset: {
+    title: "Choose a new password",
+    subFamily: "Make it strong. It protects your family's account.",
+    sub: "Make it strong. It protects your account.",
+    labelPw: "New password",
+    rules: ["8+ chars", "Capital", "Special char"],
+    rulesAria: "Password requirements",
+    submit: "Set new password",
+    busy: "Saving…",
+    hintPw: "Choose a stronger password.",
+    hintConfirm: "Confirm your password.",
+    errWeak: "Password needs 8+ characters, a capital and a special character.",
+    errMismatch: "Those passwords don't match.",
+    fieldMismatch: "Those passwords don't match yet.",
+    errServer: "Could not reset your password. Try requesting a new link.",
+    errNetwork: "Couldn't reach the server. Please try again.",
+    ariaShowC: "Show confirmation password",
+    ariaHideC: "Hide confirmation password",
+    expiredTitle: "Link expired",
+    expiredBody: "This reset link is broken or has expired. Request a fresh one and we'll send it over.",
+    expiredBtn: "Request a new link",
+    doneTitle: "Password updated",
+    doneHead: "You're all set",
+    doneBody: "Taking you to log in with your new password…",
+    backLead: "Back to",
+    backLink: "Log in",
   },
 } as const;

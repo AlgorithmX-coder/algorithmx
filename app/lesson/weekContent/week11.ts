@@ -761,8 +761,7 @@ export const WEEK_11: WeekContent = {
         speaker: "layla",
         lines: [
           "[excited] Cyber Hero, that's all FIVE powers!",
-          "Never your fault. Your team named. The signal starved,",
-          "the proof developed... and the drill run clean.",
+          "Never your fault. Your team named. The signal starved, the proof developed... and the drill run clean.",
           "[whispers] One last shift in the lighthouse...",
           "[excited] and real call-outs coming in. Come on!",
         ],
@@ -902,8 +901,7 @@ export const WEEK_11: WeekContent = {
         speaker: "adam",
         lines: [
           "[excited] Look at EVERYTHING you mastered this week!",
-          "The stones put down, the crew named,",
-          "the signal starved, the proof developed... and the drill run clean.",
+          "The stones put down, the crew named, the signal starved, the proof developed... and the drill run clean.",
           "[warmly] Whatever lands on your screen, you know exactly what to do.",
           "[excited] Cyber Hero, sticker time!",
         ],

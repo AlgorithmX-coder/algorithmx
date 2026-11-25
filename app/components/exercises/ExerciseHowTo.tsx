@@ -28,10 +28,23 @@ export default function ExerciseHowTo({
   title,
   steps,
   accent = "#3a7bff",
+  flush,
 }: {
   title: string;
   steps: Step[];
   accent?: string;
+  /**
+   * Seat the strip flush against the top of its rounded game frame: it
+   * reaches past the host's padding (`side` px left and right, `top` px up)
+   * to the frame's edges, drops its own side and top borders and corner
+   * radii, and lets the frame's overflow clip give it the frame's own top
+   * curve. Only the bottom rule stays, so it reads as the frame's header band.
+   *
+   * Abdullah, UAT 2026-11-22, W1 row 2a: the strip "should sit flush (same
+   * shape) as the outer frame". Inset by the host's padding, its square top
+   * corners floated inside the frame's 28px curve.
+   */
+  flush?: { side: number; top?: number };
 }) {
   return (
     <div
@@ -43,10 +56,11 @@ export default function ExerciseHowTo({
         background: "rgba(15, 21, 48, 0.62)",
         backdropFilter: "blur(10px)",
         WebkitBackdropFilter: "blur(10px)",
-        borderBottomLeftRadius: 18,
-        borderBottomRightRadius: 18,
+        ...(flush
+          ? { margin: `-${flush.top ?? 0}px -${flush.side}px 0` }
+          : { borderBottomLeftRadius: 18, borderBottomRightRadius: 18 }),
         borderStyle: "solid",
-        borderWidth: 1,
+        borderWidth: flush ? "0 0 1px" : 1,
         borderColor: "rgba(0, 229, 255, 0.22)",
         boxShadow: "0 8px 18px -8px rgba(8, 10, 22, 0.4)",
         userSelect: "none",

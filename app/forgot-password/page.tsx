@@ -153,7 +153,7 @@ export default function ForgotPasswordPage() {
                     )}
                   </AnimatePresence>
 
-                  <form onSubmit={handleSubmit} className="space-y-1" noValidate>
+                  <form method="post" onSubmit={handleSubmit} className="space-y-1" noValidate>
                     <AuthField
                       id="forgot-email"
                       label="Email"

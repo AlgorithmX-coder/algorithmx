@@ -937,7 +937,6 @@ export const WEEK_7: WeekContent = {
         { term: "'Only 3 minutes left!'", match: "A fake clock, walk away", colour: "#ff5fb3", why: "A countdown on a shop is paint. Freeze it, read the price, walk away." },
         { term: "'Card already saved'", match: "Still ask first", colour: "#00e5ff", why: "Saved is not allowed. Nobody said yes to this buy, so you ask the grown-up whose money it is." },
         { term: "'FREE coins, log in here'", match: "An account thief", colour: "#ff7a59", why: "Free game money does not exist. Log in here is fishing for your password." },
-        { term: "Grown-up said yes, real shop", match: "The one safe way to buy", colour: "#7eff97", why: "Inside the real game, with a real yes from the grown-up whose money it is. That is the one safe way." },
       ],
       narration: {
         speaker: "layla",
@@ -946,12 +945,16 @@ export const WEEK_7: WeekContent = {
           "This game is all about pairing each shop trick with its hero move.",
           "Out in the real world, the tricks come one at a time. So the moves have to be ready in any order.",
           "Here is what you do. The cards are face down. Flip two. If a shop trick meets its hero move, they stay up and I tell you why. If not, they flip back and you try again. Fewer flips, more stars.",
-          "[warmly] Six pairs, one till, one fortress. Ready? Flip a card!",
+          "[warmly] Five pairs, one till, one fortress. Ready? Flip a card!",
         ],
       },
       coachLines: {
         speaker: "layla",
-        lines: ["Flip any card to start, then find its matching move."],
+        lines: [
+          "Good matching. Now a memory round.",
+          "You have fifteen seconds to learn where each card is.",
+          "Then they flip over, and you tap where you think they are.",
+        ],
       },
       completeNarration: {
         speaker: "layla",
@@ -988,8 +991,7 @@ export const WEEK_7: WeekContent = {
         speaker: "layla",
         lines: [
           "[excited] Look at EVERYTHING you mastered this week!",
-          "You count the real coins, you see the odds in the jar,",
-          "no countdown can rush you, you ask before every buy...",
+          "You count the real coins, you see the odds in the jar, no countdown can rush you, you ask before every buy...",
           "[warmly] and free-coin strings lead you straight to the trick.",
           "[excited] The trap shop is OUT of business. Sticker time!",
         ],

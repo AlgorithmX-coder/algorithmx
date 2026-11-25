@@ -348,6 +348,10 @@ export default function SpeakUp({
       {showIntro && (
         <ExerciseIntroBeat
           title={introTitle}
+          // Full-screen like a Spot-the-Danger intro. In the board frame a
+          // narrated intro with no threat ran taller than the frame and showed
+          // a scroll bar (Abdullah, UAT 2026-11-22, W19 row 8).
+          overlay
           subtitle={introSubtitle}
           icon={introIcon}
           narration={introNarration}
@@ -446,10 +450,10 @@ export default function SpeakUp({
             </div>
           </div>
 
-          /* Last line on the board, so its bottom margin IS the board's bottom
+          {/* Last line on the board, so its bottom margin IS the board's bottom
               clearance: measured 7-9px at the tester's 1093x525 (the recurring
               "frame size / no offset at the bottom" reports in weeks 17 and 19).
-              A fit-scaled board shrinks margins with it, so 26 lands near 20. */
+              A fit-scaled board shrinks margins with it, so 26 lands near 20. */}
           <div style={{ textAlign: "center", margin: "12px 0 26px" }}>
             <div style={{ fontFamily: LABEL_FONT, fontSize: 11, fontWeight: 800, letterSpacing: "0.14em", textTransform: "uppercase", color: accent, minHeight: 16, padding: "0 16px" }}>
               {strip}

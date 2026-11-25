@@ -67,6 +67,30 @@ test.describe("Public pages render", () => {
     await expect(page.getByText("test@example.com")).toBeVisible({ timeout: 15_000 });
   });
 
+  test("a course's own forgot-password page validates and shows success", async ({
+    page,
+  }) => {
+    // Every course has its own forgot page in its Night Console (round 6);
+    // the behaviour is the generic page's. Same requestSubmit() reasoning
+    // and 15s budgets as the generic forgot-password test above.
+    await page.goto("/cyberheroes/forgot-password");
+    await expect(page.getByRole("heading", { name: /Reset your password/i })).toBeVisible();
+    await expect(page.locator('a[href="/cyberheroes/login"]').first()).toBeVisible();
+    await page.locator("#ca-email").fill("test@example.com");
+    await expect(page.getByRole("button", { name: /Send reset link/i })).not.toHaveAttribute("aria-disabled", "true");
+    await page.evaluate(() => document.querySelector("form")?.requestSubmit());
+    await expect(page.getByText(/Check your email/i)).toBeVisible({ timeout: 15_000 });
+    await expect(page.getByText("test@example.com")).toBeVisible({ timeout: 15_000 });
+  });
+
+  test("a course's own reset-password page without a token offers a new link", async ({
+    page,
+  }) => {
+    await page.goto("/ai-fluent/reset-password");
+    await expect(page.getByRole("heading", { name: /Link expired/i })).toBeVisible();
+    await expect(page.locator('a[href="/ai-fluent/forgot-password"]').first()).toBeVisible();
+  });
+
   test("course pages don't crash", async ({ page }) => {
     // We have four course landing pages. They've all rendered before;
     // this just guards against a future shared-component change taking

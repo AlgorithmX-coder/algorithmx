@@ -4,16 +4,16 @@ import { getEnrolment, firstNameOf, DB_TO_TRACK } from "@/app/lib/aiCleared";
 import { CERT_COPY, fmtDate, issueCertificate } from "@/app/lib/aiClearedCertificate";
 import { COURSES, type CertifiedCourseSlug } from "../engine/courses";
 import { TRACK_LABEL } from "../engine/types";
-import { K } from "../engine/tokens";
-import Frame from "../Frame";
-import CourseAside from "../CourseAside";
-import CertificateActions from "./CertificateActions";
+import LightTable from "./LightTable";
 
 /* The certificate screen for a holder of an AI Cleared or AI Fluent
  * certificate issued before 2026-11-09, with the download. Nothing links
- * here any more and no new certificate issues; it
- * stays so the people who hold one can still reach it. Anyone without
- * one goes back to their course. Cyber Awareness never had one. */
+ * here any more and no new certificate issues; it stays so the people who
+ * hold one can still reach it. Anyone without one goes back to their
+ * course. Cyber Awareness never had one.
+ *
+ * The page is the round 6 "Light Table" (LightTable.tsx); the gates, the
+ * lookups and the facts are unchanged. */
 export default async function CertificateView({ course }: { course: CertifiedCourseSlug }) {
   const c = COURSES[course];
   const session = await auth();
@@ -22,8 +22,6 @@ export default async function CertificateView({ course }: { course: CertifiedCou
   if (!enrolment) redirect(c.base);
 
   const holder = enrolment.user.name?.trim() || firstNameOf(enrolment.user.name, enrolment.user.email);
-  const profile = enrolment.org.profile;
-  const aside = <CourseAside course={course} firmName={enrolment.org.name} contactName={profile?.escalationContact ?? enrolment.org.contactName} contactRole={profile?.escalationRole ?? enrolment.org.contactRole} learnerName={holder} done={enrolment.modules.filter((m) => m.completedAt).map((m) => m.module)} />;
 
   /* No new certificate issues (owner, 2026-11-09), so this only finds one
    * issued before then. Without one there is nothing to show: back to
@@ -34,44 +32,22 @@ export default async function CertificateView({ course }: { course: CertifiedCou
   const valid = issued.expiresAt > new Date();
   const copy = CERT_COPY[course];
   return (
-    <Frame course={course} firmName={enrolment.org.name} courseLink aside={aside}>
-      <span className="cf-eyebrow" style={{ color: valid ? K.ok : K.warn }}>{valid ? "Course complete" : "Certificate expired"}</span>
-      <h1 className="cf-h1">You are <span className="cf-grad">{c.doneName}</span>, {holder}.</h1>
-      <p className="cf-lead">
-        Every module done and the final assessment passed. The certificate below was issued to you and is yours to download; it carries its own serial.
-      </p>
-
-      <div style={{ position: "relative", borderRadius: 18, padding: 1.5, background: K.grad, boxShadow: K.lift }}>
-        <div style={{ background: "#fbfaf7", color: "#14161d", borderRadius: 17, padding: "26px 28px" }}>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12 }}>
-            <div style={{ fontFamily: K.mono, fontSize: 10.5, letterSpacing: "0.2em", color: "#0a7085", fontWeight: 700 }}>{c.brand}</div>
-            <span style={{ width: 12, height: 12, borderRadius: 3, background: K.grad, transform: "rotate(45deg)" }} aria-hidden />
-          </div>
-          <div style={{ fontSize: 13, color: "#5b6572", marginTop: 16 }}>This certifies that</div>
-          <div style={{ fontFamily: K.display, fontSize: 30, fontWeight: 600, letterSpacing: "-0.02em", marginTop: 2 }}>{holder}</div>
-          <div style={{ fontSize: 14, color: "#5b6572", marginTop: 2 }}>of {enrolment.org.name}</div>
-          <p style={{ fontSize: 14.5, lineHeight: 1.55, margin: "16px 0 0", maxWidth: "60ch" }}>{copy.completed}</p>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))", gap: 14, marginTop: 22, paddingTop: 16, borderTop: "1px solid #d9dde2" }}>
-            {[
-              ["Track", TRACK_LABEL[DB_TO_TRACK[enrolment.track]]],
-              ["Issued", fmtDate(issued.issuedAt)],
-              ["Valid until", fmtDate(issued.expiresAt)],
-              ["Serial", issued.serial],
-            ].map(([k, v]) => (
-              <div key={k}>
-                <div style={{ fontFamily: K.mono, fontSize: 10, letterSpacing: "0.12em", textTransform: "uppercase", color: "#98a0aa" }}>{k}</div>
-                <div style={{ fontSize: 14.5, fontWeight: 600, marginTop: 2 }}>{v}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      <CertificateActions course={course} />
-
-      <p className="cf-note" style={{ marginTop: 26, maxWidth: "60ch" }}>
-        Valid for twelve months from the day it was issued. The course no longer issues new certificates; every module you finish stays on your firm&rsquo;s training register.
-      </p>
-    </Frame>
+    <LightTable
+      course={course}
+      name={c.name}
+      brand={c.brand}
+      doneName={c.doneName}
+      base={c.base}
+      holder={holder}
+      firm={enrolment.org.name}
+      email={enrolment.user.email}
+      track={TRACK_LABEL[DB_TO_TRACK[enrolment.track]]}
+      issued={fmtDate(issued.issuedAt)}
+      until={fmtDate(issued.expiresAt)}
+      serial={issued.serial}
+      valid={valid}
+      completed={copy.completed}
+      chips={copy.chips}
+    />
   );
 }

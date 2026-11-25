@@ -47,7 +47,7 @@ const CODE =
  * half a degree and stripped of anything smaller than a dot. Antarctica is
  * left out, since the sampled band stops at 56S. [lat, lon] to match vec().
  */
-const LAND: number[][][] = [
+export const LAND: number[][][] = [
   [
     [77,107], [75.8,114.1], [74.2,109.4], [73,123.2], [73.7,123.3], [73.6,127], [70.8,131.3], [71.8,132.3],
     [71.5,139.9], [72.4,139.1], [72.8,140.5], [72.2,149.5], [70.8,153], [70.9,159], [69.4,160.9], [69.6,167.8],
@@ -299,7 +299,7 @@ const LAND: number[][][] = [
 ];
 
 /* Mainland Britain, kept finer so it reads as a shape, not a blob. */
-const UK: number[][] = [
+export const UK: number[][] = [
   [58.6,-3], [57.6,-4.1], [57.7,-2], [56.9,-2.2], [56,-3.1], [55.9,-2.1],
   [54.6,-1.1], [54.5,-0.4], [52.9,0.5], [52.7,1.7], [52.1,1.6], [51.8,1.1],
   [51.3,1.4], [50.8,0.6], [50.8,-0.8], [50.5,-2.5], [50.7,-3], [50.2,-3.6],

@@ -4,7 +4,8 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 /* The one action on the teacher invite landing: no job-title picker,
- * since a teacher enrols on nothing. */
+ * since a teacher enrols on nothing. The request, the redirect and the
+ * error text are unchanged; the look is the Campus Console's. */
 export default function TeacherJoinButton({ token, orgName }: { token: string; orgName: string }) {
   const router = useRouter();
   const [busy, setBusy] = useState(false);
@@ -28,10 +29,17 @@ export default function TeacherJoinButton({ token, orgName }: { token: string; o
 
   return (
     <div>
-      {error && <p className="shareerr">{error}</p>}
-      <button type="button" className="axbtn" onClick={claim} disabled={busy}>
-        {busy ? "Setting up…" : `Set up my teacher account at ${orgName}`}
-      </button>
+      <p className="r6-msg err" role="alert" aria-live="polite" hidden={!error} style={{ marginTop: 16 }}>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9" /><path d="M12 8v5M12 16h.01" /></svg>
+        <span>{error}</span>
+      </p>
+      <div className="r6-actions">
+        <button type="button" className="r6-btn pri wide" onClick={claim} disabled={busy} aria-busy={busy}>
+          <span className="lbl">
+            {busy ? <>Setting up…<span className="r6-dots" aria-hidden="true"><i /><i /><i /></span></> : `Set up my teacher account at ${orgName}`}
+          </span>
+        </button>
+      </div>
     </div>
   );
 }

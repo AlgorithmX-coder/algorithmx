@@ -33,6 +33,8 @@
 //   --check --quiet   just the count
 
 import { createHash } from "node:crypto";
+// Day Jug option leads (UAT 11-22 W13), mirrored from DayJug.tsx OPTION_LEADS.
+const DAY_JUG_OPTION_LEADS = ["First option...", "Second option...", "Third option..."];
 import { sayYears } from "./lib/say-years.mjs";
 import { spawnSync } from "node:child_process";
 import ffmpegPath from "ffmpeg-static";
@@ -842,7 +844,12 @@ for (const fname of weekFiles) {
         pushAll(span, /\breadAloud:\s*"((?:[^"\\]|\\.)*)"/g);
       }
       if (st.type === "trailPlanner") pushAll(span, /\blabel:\s*"((?:[^"\\]|\\.)*)"/g);
-      if (st.type === "dayJug") pushAll(span, /\blabel:\s*"((?:[^"\\]|\\.)*)"/g);
+      if (st.type === "dayJug") {
+        pushAll(span, /\blabel:\s*"((?:[^"\\]|\\.)*)"/g);
+        // The lead Sarah says before each option label. Keep identical to
+        // OPTION_LEADS in app/components/exercises/signatures/DayJug.tsx.
+        for (const lead of DAY_JUG_OPTION_LEADS) { blocks.push({ speaker: "adam", lines: [lead], source: fname }); fileBlocks++; }
+      }
       // Week 13 engines: Sarah reads each pour as the day opens, each plan
       // situation as it lands on the desk, and each thing in the room as it is
       // tapped. The See-Saw Day's swap stories are read too.
