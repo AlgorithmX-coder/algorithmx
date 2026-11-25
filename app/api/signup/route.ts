@@ -5,8 +5,7 @@ import { prisma } from "@/app/lib/prisma";
 import { grantEntitlement } from "@/app/lib/entitlements";
 import { emailTaken, normaliseEmail } from "@/app/lib/emailIdentity";
 
-const HAS_UPPER = /[A-Z]/;
-const HAS_SPECIAL = /[^A-Za-z0-9]/;
+import { passwordProblem } from "@/app/lib/passwordPolicy";
 
 /* Launch policy: a fresh account signing up through a course's own
  * themed auth page gets that course for free, there and then, so they
@@ -46,23 +45,10 @@ export async function POST(request: Request) {
       );
     }
 
-    if (typeof password !== "string" || password.length < 8) {
-      return NextResponse.json(
-        { error: "Password must be at least 8 characters" },
-        { status: 400 }
-      );
-    }
-    if (!HAS_UPPER.test(password)) {
-      return NextResponse.json(
-        { error: "Password must include a capital letter" },
-        { status: 400 }
-      );
-    }
-    if (!HAS_SPECIAL.test(password)) {
-      return NextResponse.json(
-        { error: "Password must include a special character (e.g. ! @ # ?)" },
-        { status: 400 }
-      );
+    /* One rule for every place a password is set (app/lib/passwordPolicy.ts). */
+    const weak = passwordProblem(password);
+    if (weak) {
+      return NextResponse.json({ error: weak }, { status: 400 });
     }
 
     if (await emailTaken(email)) {

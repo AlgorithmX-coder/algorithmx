@@ -2,6 +2,7 @@
 
 import { Suspense, useState } from "react";
 import Link from "next/link";
+import { passwordProblem, passwordRules } from "@/app/lib/passwordPolicy";
 import { useRouter, useSearchParams } from "next/navigation";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import AuthBackdrop from "@/app/components/auth/AuthBackdrop";
@@ -60,10 +61,9 @@ function ResetPasswordInner() {
   const [error, setError] = useState("");
   const [phase, setPhase] = useState<"idle" | "loading" | "done">("idle");
 
-  const ruleLength = password.length >= 8;
-  const ruleUpper = /[A-Z]/.test(password);
-  const ruleSpecial = /[^A-Za-z0-9]/.test(password);
-  const passwordOk = ruleLength && ruleUpper && ruleSpecial;
+  /* The same rule the server enforces (app/lib/passwordPolicy.ts). */
+  const { length: ruleLength, upper: ruleUpper, special: ruleSpecial } = passwordRules(password);
+  const passwordOk = passwordProblem(password) === null;
   const confirmOk = confirm.length > 0 && password === confirm;
   const allReady = passwordOk && confirmOk;
   const done = phase === "done";

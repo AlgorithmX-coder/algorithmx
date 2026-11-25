@@ -13,6 +13,7 @@ import AccessGrantedOverlay from "@/app/components/auth/AccessGrantedOverlay";
 import { useIsDesktop } from "@/app/components/auth/useIsDesktop";
 import CubeMark from "@/app/components/CubeMark";
 import { safeCourseSlug, courseHomeFor } from "@/app/lib/courseIntent";
+import { passwordProblem, passwordRules } from "@/app/lib/passwordPolicy";
 import { ACCESS, ACCESS_FONT, ACCESS_GRAD, rgba } from "@/app/components/auth/accessTokens";
 import {
   IconIdentity,
@@ -94,10 +95,9 @@ function SignupPageInner() {
    * map cleanly against it. */
   const nameOk = name.trim().length > 0;
   const emailOk = EMAIL_RE.test(email);
-  const ruleLength = password.length >= 8;
-  const ruleUpper = /[A-Z]/.test(password);
-  const ruleSpecial = /[^A-Za-z0-9]/.test(password);
-  const passwordOk = ruleLength && ruleUpper && ruleSpecial;
+  /* The same rule the server enforces (app/lib/passwordPolicy.ts). */
+  const { length: ruleLength, upper: ruleUpper, special: ruleSpecial } = passwordRules(password);
+  const passwordOk = passwordProblem(password) === null;
   const confirmOk = confirmPassword.length > 0 && password === confirmPassword;
   const allReady = nameOk && emailOk && passwordOk && confirmOk;
 
