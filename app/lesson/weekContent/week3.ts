@@ -786,13 +786,14 @@ export const WEEK_3: WeekContent = {
         speaker: "layla",
         lines: ["Tap a glowing square beside your hero to move. Head for the exit at the bottom right!"],
       },
+      /* Sarah must not read the screen back. The printed title (You found the
+       * way out!) and the stat line already say five gates with a hero reply,
+       * so saying either aloud is the repetition the owner reported. She adds
+       * what the screen cannot: what it MEANT. Never put a quoted sentence in a
+       * comment inside lines: the recorder reads it as a spoken line (UAT 11-22). */
       completeNarration: {
         speaker: "adam",
         lines: [
-          /* Sarah must not read the screen back. "You found the way out!" is
-           * the printed title and the stat line already says five gates with
-           * a hero reply, so saying either aloud is the repetition the owner
-           * reported. She adds what the screen cannot: what it MEANT. */
           "[proud] Five different tricks, and not one of them worked on you.",
           "[warmly] Away from here, nothing gets past you. No park. No party. No photo swap.",
           "And a trusted grown-up is always waiting at the exit.",

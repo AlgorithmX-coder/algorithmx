@@ -1,19 +1,17 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { T } from "./learn/tokens";
-import CodeRainBg from "./CodeRainBg";
-import ReadinessMeter from "./ReadinessMeter";
+import NightHomeShell, { ByCube, NightHomePause } from "@/app/components/course-home/NightHomeShell";
 
-/* The Cyber Pro course hub: every module, grouped into the four acts, with
- * a clear route into the ones that are built. Static and link-based so it
- * stays fast and robust.
+/* The Cyber Pro course hub: every module, grouped into the four acts, with a
+ * clear route into the ones that are built.
  *
- * Structure pass (owner 2026-10-16: "make the module structure clearer,
- * headings standing out more"): each act now opens with a bold, accent-
- * banded header (a large numbered tile, an "ACT n · N modules" kicker, a
- * real h2 name) and a quick-nav jumps between the four acts. Module titles
- * are h3s with accent number badges, so the hierarchy reads at a glance. */
+ * Round 6 (landing lab homes-b pro v1, owner 2026-11-23): the Night Console
+ * look, ember on graphite. The first screen answers "where am I and what do I
+ * do next": the readiness meter and the next module with its topic bar sit in
+ * the console beside the hero. Every number is the learner's own: topics come
+ * from the lesson checkpoints in this browser (pro:lesson:*) merged with the
+ * server's record (/api/pro/progress), exactly as before. */
 
 type Status = "live" | "preview" | "soon";
 type Mod = { n: number; title: string; blurb: string; tag: string; href?: string; status: Status };
@@ -63,24 +61,24 @@ const ACTS: Act[] = [
   },
 ];
 
-function Pill({ status }: { status: Status }) {
-  const map = {
-    live: { label: "Live", color: T.green, bg: T.greenSoft },
-    preview: { label: "Preview", color: T.cyan, bg: T.cyanSoft },
-    soon: { label: "Soon", color: T.faint, bg: T.panelSoft },
-  }[status];
-  return <span style={{ fontFamily: T.mono, fontSize: 9.5, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: map.color, background: map.bg, border: `1px solid ${map.color}44`, borderRadius: 5, padding: "3px 8px", whiteSpace: "nowrap", flexShrink: 0 }}>{map.label}</span>;
+/* job-readiness (the old ReadinessMeter): 20 modules x 5 topics, plus the Code Lab as one */
+const TOTAL = 101;
+const MILESTONES: { at: number; label: string }[] = [
+  { at: 0, label: "Begin your climb to job-ready" },
+  { at: 1, label: "You have started. Keep the streak." },
+  { at: 20, label: "Building your foundations" },
+  { at: 45, label: "Starting to think like an analyst" },
+  { at: 70, label: "Nearly job-ready" },
+  { at: 100, label: "Job-ready. Every module done." },
+];
+function milestoneFor(pct: number): string {
+  let m = MILESTONES[0].label;
+  for (const x of MILESTONES) if (pct >= x.at) m = x.label;
+  return m;
 }
 
-/* Shown in place of the status pill once every topic in a module is done. */
-function DoneBadge() {
-  return (
-    <span style={{ display: "inline-flex", alignItems: "center", gap: 4, fontFamily: T.mono, fontSize: 9.5, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: T.green, background: T.greenSoft, border: `1px solid ${T.green}66`, borderRadius: 5, padding: "3px 8px", whiteSpace: "nowrap", flexShrink: 0 }}>
-      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke={T.green} strokeWidth="3.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d="M5 13l4 4L19 7" /></svg>
-      Done
-    </span>
-  );
-}
+/* per-act accent (the four act colours), as CSS variables on each act block */
+const ACT_VARS = (k: number) => ({ "--ac": `var(--hb6-a${k})`, "--ac-rgb": `var(--hb6-a${k}-rgb)`, "--ac-text": `var(--hb6-a${k}-text)` }) as React.CSSProperties;
 
 /* Topic ids per module number, matching the lesson checkpoint keys
  * (pro:lesson:<id>). Every module is m{n}t1..5 except Module 3 (its content
@@ -92,250 +90,189 @@ function moduleTopicIds(n: number): string[] {
   return [1, 2, 3, 4, 5].map((k) => `${prefix}t${k}`);
 }
 
+const Arrow = ({ s = 18 }: { s?: number }) => <svg width={s} height={s} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>;
+const Tick = () => <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 13l4 4L19 7" /></svg>;
+const Corners = () => <><i className="hb6-corner tl" aria-hidden="true" /><i className="hb6-corner tr" aria-hidden="true" /><i className="hb6-corner bl" aria-hidden="true" /><i className="hb6-corner br" aria-hidden="true" /></>;
+
+function Pill({ status }: { status: Status }) {
+  const label = { live: "Live", preview: "Preview", soon: "Soon" }[status];
+  return <span className={`hb6-pill ${status === "soon" ? "soon" : "live"}`}>{label}</span>;
+}
+
 export default function CourseHub() {
   const built = ACTS.flatMap((a) => a.modules).filter((m) => m.href).length;
 
-  // Which modules the learner has finished (every topic done). Read from the
-  // same lesson checkpoints the ReadinessMeter uses: localStorage first, then
-  // merge the server's cross-device record. Best-effort and client-only.
-  const [doneMods, setDoneMods] = useState<Set<number>>(new Set());
+  // Which topics the learner has finished. Read from the lesson checkpoints in
+  // localStorage first, then merge the server's cross-device record.
+  // Best-effort and client-only; null until read, so nothing flashes.
+  const [doneTopics, setDoneTopics] = useState<Set<string> | null>(null);
   useEffect(() => {
-    const doneTopics = new Set<string>();
+    const ids = new Set<string>();
     try {
       for (let i = 0; i < localStorage.length; i++) {
         const k = localStorage.key(i);
         if (!k || !k.startsWith("pro:lesson:")) continue;
         try {
           const cp = JSON.parse(localStorage.getItem(k) || "null");
-          if (cp && cp.phase === "done" && cp.id) doneTopics.add(cp.id);
+          if (cp && cp.phase === "done" && cp.id) ids.add(cp.id);
         } catch { /* ignore a corrupt checkpoint */ }
       }
     } catch { /* localStorage unavailable */ }
-    const recompute = () => {
-      const mods = new Set<number>();
-      for (const a of ACTS) for (const m of a.modules) {
-        const ids = moduleTopicIds(m.n);
-        if (ids.length > 0 && ids.every((id) => doneTopics.has(id))) mods.add(m.n);
-      }
-      setDoneMods(mods);
-    };
-    recompute();
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- reading localStorage once on mount (client-only store)
+    setDoneTopics(new Set(ids));
     (async () => {
       try {
         const res = await fetch("/api/pro/progress", { cache: "no-store" });
         if (!res.ok) return;
         const data = (await res.json()) as { done?: string[] };
         if (Array.isArray(data.done) && data.done.length) {
-          for (const id of data.done) doneTopics.add(id);
-          recompute();
+          for (const id of data.done) ids.add(id);
+          setDoneTopics(new Set(ids));
         }
       } catch { /* no server sync; local stands */ }
     })();
   }, []);
 
+  const topics = doneTopics ?? new Set<string>();
+  const doneMods = new Set<number>();
+  for (const a of ACTS) for (const m of a.modules) {
+    const ids = moduleTopicIds(m.n);
+    if (ids.length > 0 && ids.every((id) => topics.has(id))) doneMods.add(m.n);
+  }
+
   // Where the primary CTA should send the learner: the first module they have
-  // not finished (skipping the Code Lab, which has no topic checkpoints), or
-  // Module 1 for a fresh start, or the final test once everything is done.
+  // not finished, or Module 1 for a fresh start, or the final test once
+  // everything is done.
   const orderedMods = ACTS.flatMap((a) => a.modules);
   const nextMod = orderedMods.find((m) => moduleTopicIds(m.n).length > 0 && !doneMods.has(m.n));
+  const nextAct = nextMod ? ACTS.findIndex((a) => a.modules.includes(nextMod)) + 1 : 0;
   const started = doneMods.size > 0;
   const ctaHref = nextMod?.href ?? "/pro/testme";
   const ctaLabel = !started ? "Start with Module 1" : nextMod ? `Continue: Module ${nextMod.n}` : "You're ready, take the test";
+  const nextIds = nextMod ? moduleTopicIds(nextMod.n) : [];
+  const nextDone = nextIds.filter((id) => topics.has(id)).length;
+  const firstOpen = nextIds.findIndex((id) => !topics.has(id));
+
+  const pct = Math.max(0, Math.min(100, Math.round((topics.size / TOTAL) * 100)));
 
   return (
-    <div className="pro-hub">
-      <style>{`
-        .pro-hub { min-height: 100vh; color: ${T.body}; font-family: ${T.sans}; background: ${T.bg}; }
-        .pro-hub :focus-visible { outline: 2px solid ${T.cyan}; outline-offset: 2px; }
-        .hub-wrap { position: relative; z-index: 1; max-width: 1080px; margin: 0 auto; padding: 22px 24px 110px; }
-        .hub-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 6px 0 18px; border-bottom: 1px solid ${T.edge}; }
-
-        /* hero */
-        .hub-eyebrow { display: inline-flex; align-items: center; gap: 9px; font-family: ${T.mono}; font-size: 11px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: ${T.primary}; margin: 44px 0 16px; }
-        .hub-eyebrow::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: ${T.primary}; box-shadow: 0 0 10px ${T.primary}; }
-        .hub-h1 { font-family: ${T.display}; font-size: clamp(33px, 5vw, 48px); font-weight: 800; line-height: 1.08; letter-spacing: -0.02em; margin: 0 0 16px; color: ${T.ink}; text-wrap: balance; }
-        .hub-lede { font-size: 18px; line-height: 1.6; color: ${T.muted}; max-width: 62ch; margin: 0 0 24px; }
-        .hub-lede b { color: ${T.body}; }
-        .hub-chips { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 26px; }
-        .hub-chip { font-family: ${T.mono}; font-size: 11.5px; font-weight: 600; color: ${T.muted}; background: ${T.panel}; border: 1px solid ${T.edge}; border-radius: 8px; padding: 6px 11px; }
-        .hub-chip b { color: ${T.ink}; font-weight: 700; }
-        .hub-cta-row { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin-bottom: 8px; }
-        .hub-cta { display: inline-flex; align-items: center; gap: 9px; font-family: ${T.display}; font-size: 15.5px; font-weight: 700; color: #fff; text-decoration: none; background: linear-gradient(135deg, ${T.primary}, ${T.cyan}); border-radius: 12px; padding: 14px 26px; box-shadow: 0 8px 26px rgba(139,109,255,0.32); transition: transform 150ms ease, box-shadow 150ms ease; }
-        .hub-cta:hover { transform: translateY(-1px); box-shadow: 0 12px 32px rgba(139,109,255,0.44); }
-        .hub-cta svg { transition: transform 150ms ease; }
-        .hub-cta:hover svg { transform: translateX(3px); }
-        .hub-testme { display: inline-flex; align-items: center; gap: 8px; font-family: ${T.display}; font-size: 14.5px; font-weight: 700; color: ${T.ink}; text-decoration: none; background: ${T.panel}; border: 1px solid ${T.edge}; border-radius: 12px; padding: 13px 20px; transition: border-color 150ms ease, transform 150ms ease; }
-        .hub-testme:hover { border-color: ${T.primary}; transform: translateY(-1px); }
-        .hub-testme svg { color: ${T.primary}; }
-        .hub-cta-note { font-size: 13.5px; color: ${T.faint}; }
-
-        /* act quick-nav: a compact map of the four acts, each in its accent */
-        .act-nav { display: grid; grid-template-columns: 1fr; gap: 9px; margin: 34px 0 6px; }
-        @media (min-width: 620px) { .act-nav { grid-template-columns: 1fr 1fr; } }
-        @media (min-width: 900px) { .act-nav { grid-template-columns: repeat(4, 1fr); } }
-        .nav-item { display: flex; align-items: center; gap: 11px; text-decoration: none; background: ${T.panel}; border: 1px solid ${T.edge}; border-radius: 12px; padding: 11px 13px; transition: transform 150ms ease, border-color 150ms ease, background 150ms ease; }
-        .nav-item:hover { transform: translateY(-2px); background: ${T.bgRaise}; }
-        .nav-num { flex-shrink: 0; width: 28px; height: 28px; border-radius: 8px; display: grid; place-items: center; font-family: ${T.mono}; font-size: 12.5px; font-weight: 800; }
-        .nav-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
-        .nav-kicker { font-family: ${T.mono}; font-size: 9.5px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: ${T.faint}; }
-        .nav-name { font-family: ${T.display}; font-size: 13.5px; font-weight: 700; color: ${T.ink}; line-height: 1.18; letter-spacing: -0.01em; }
-        .a1 .nav-num, .a1.nav-item .nav-num { color: ${T.primary}; background: ${T.primarySoft}; border: 1px solid ${T.primary}55; }
-        .a2 .nav-num, .a2.nav-item .nav-num { color: ${T.red}; background: ${T.redSoft}; border: 1px solid ${T.red}55; }
-        .a3 .nav-num, .a3.nav-item .nav-num { color: ${T.cyan}; background: ${T.cyanSoft}; border: 1px solid ${T.cyan}55; }
-        .a4 .nav-num, .a4.nav-item .nav-num { color: ${T.green}; background: ${T.greenSoft}; border: 1px solid ${T.green}55; }
-        .a1.nav-item:hover { border-color: ${T.primary}; }
-        .a2.nav-item:hover { border-color: ${T.red}; }
-        .a3.nav-item:hover { border-color: ${T.cyan}; }
-        .a4.nav-item:hover { border-color: ${T.green}; }
-
-        /* act section + header: a bold, accent-banded block so each act stands out */
-        .act { margin-top: 52px; scroll-margin-top: 16px; }
-        .act-head { display: flex; align-items: center; gap: 16px; padding: 15px 18px; border-radius: 16px; margin-bottom: 20px; position: relative; overflow: hidden; }
-        .a1 .act-head { background: linear-gradient(100deg, ${T.primarySoft} 0%, transparent 72%); border: 1px solid ${T.primary}33; }
-        .a2 .act-head { background: linear-gradient(100deg, ${T.redSoft} 0%, transparent 72%); border: 1px solid ${T.red}33; }
-        .a3 .act-head { background: linear-gradient(100deg, ${T.cyanSoft} 0%, transparent 72%); border: 1px solid ${T.cyan}33; }
-        .a4 .act-head { background: linear-gradient(100deg, ${T.greenSoft} 0%, transparent 72%); border: 1px solid ${T.green}33; }
-        .act-num { flex-shrink: 0; width: 56px; height: 56px; border-radius: 14px; display: grid; place-items: center; font-family: ${T.display}; font-size: 26px; font-weight: 800; line-height: 1; }
-        .a1 .act-num { color: ${T.primary}; background: ${T.primarySoft}; border: 1px solid ${T.primary}55; box-shadow: inset 0 1px 0 ${T.primary}33; }
-        .a2 .act-num { color: ${T.red}; background: ${T.redSoft}; border: 1px solid ${T.red}55; box-shadow: inset 0 1px 0 ${T.red}33; }
-        .a3 .act-num { color: ${T.cyan}; background: ${T.cyanSoft}; border: 1px solid ${T.cyan}55; box-shadow: inset 0 1px 0 ${T.cyan}33; }
-        .a4 .act-num { color: ${T.green}; background: ${T.greenSoft}; border: 1px solid ${T.green}55; box-shadow: inset 0 1px 0 ${T.green}33; }
-        .act-meta { flex: 1; min-width: 0; }
-        .act-kicker { font-family: ${T.mono}; font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; }
-        .a1 .act-kicker { color: ${T.primary}; } .a2 .act-kicker { color: ${T.red}; } .a3 .act-kicker { color: ${T.cyan}; } .a4 .act-kicker { color: ${T.green}; }
-        .act-name { font-family: ${T.display}; font-size: clamp(21px, 3vw, 27px); font-weight: 800; color: ${T.ink}; letter-spacing: -0.015em; line-height: 1.14; margin: 3px 0 0; }
-        .act-focus { font-size: 14px; color: ${T.muted}; margin: 5px 0 0; }
-
-        /* module cards */
-        .mods { display: grid; grid-template-columns: 1fr; gap: 13px; }
-        @media (min-width: 720px) { .mods { grid-template-columns: 1fr 1fr; } }
-        .mod { position: relative; display: flex; flex-direction: column; text-decoration: none; background: ${T.panel}; border: 1px solid ${T.edge}; border-radius: 15px; padding: 17px 19px 15px 22px; overflow: hidden; min-height: 136px; }
-        .mod::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; opacity: 0.95; }
-        .a1 .mod::before { background: linear-gradient(${T.primary}, transparent); }
-        .a2 .mod::before { background: linear-gradient(${T.red}, transparent); }
-        .a3 .mod::before { background: linear-gradient(${T.cyan}, transparent); }
-        .a4 .mod::before { background: linear-gradient(${T.green}, transparent); }
-
-        a.mod { cursor: pointer; transition: border-color 160ms ease, transform 160ms ease, background 160ms ease, box-shadow 160ms ease, opacity 220ms ease, filter 220ms ease; }
-        a.mod.live { border-color: ${T.green}44; }
-        a.mod:hover { transform: translateY(-3px); background: ${T.bgRaise}; box-shadow: 0 14px 30px rgba(0,0,0,0.34); }
-        a.mod.live:hover { border-color: ${T.green}; }
-        a.mod.preview:hover { border-color: ${T.cyan}; }
-        .mod.soon { opacity: 0.5; }
-        .mod.soon::before { opacity: 0.4; }
-
-        /* Completed modules: ticked and dimmed/blurred so attention goes to
-           what is left; hover clears it so going back to review stays easy. */
-        .mod.done { opacity: 0.5; filter: blur(0.8px) saturate(0.6); }
-        .mod.done::before { background: linear-gradient(${T.green}, transparent); }
-        a.mod.done { border-color: ${T.green}33; }
-        a.mod.done:hover { opacity: 1; filter: none; border-color: ${T.green}; }
-        a.mod.done .mod-go { color: ${T.green}; }
-        @media (prefers-reduced-motion: reduce) { .mod.done { filter: saturate(0.6); } }
-
-        .mod-top { display: flex; align-items: center; gap: 12px; margin-bottom: 11px; }
-        .mod-n { flex-shrink: 0; width: 34px; height: 34px; border-radius: 9px; font-family: ${T.mono}; font-size: 14px; font-weight: 800; display: inline-flex; align-items: center; justify-content: center; }
-        .a1 .mod-n { color: ${T.primary}; background: ${T.primarySoft}; border: 1px solid ${T.primary}44; }
-        .a2 .mod-n { color: ${T.red}; background: ${T.redSoft}; border: 1px solid ${T.red}44; }
-        .a3 .mod-n { color: ${T.cyan}; background: ${T.cyanSoft}; border: 1px solid ${T.cyan}44; }
-        .a4 .mod-n { color: ${T.green}; background: ${T.greenSoft}; border: 1px solid ${T.green}44; }
-        .mod-title { flex: 1; min-width: 0; font-family: ${T.display}; font-size: 18px; font-weight: 800; color: ${T.ink}; line-height: 1.2; letter-spacing: -0.01em; margin: 0; }
-        .mod-blurb { flex: 1; font-size: 13.5px; line-height: 1.5; color: ${T.muted}; margin: 0 0 12px; }
-        .mod-foot { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
-        .mod-tag { font-family: ${T.mono}; font-size: 10.5px; letter-spacing: 0.03em; color: ${T.faint}; }
-        .mod-go { display: inline-flex; align-items: center; gap: 5px; font-family: ${T.display}; font-size: 13px; font-weight: 700; }
-        a.mod.live .mod-go { color: ${T.green}; } a.mod.preview .mod-go { color: ${T.cyan}; }
-
-        @media (prefers-reduced-motion: reduce) { a.mod, .hub-cta, .hub-cta svg, .nav-item { transition: none; } a.mod:hover, .hub-cta:hover, .nav-item:hover { transform: none; } }
-      `}</style>
-
-      <CodeRainBg />
-
-      <div className="hub-wrap">
-        <header className="hub-head">
-          <span style={{ fontFamily: T.display, fontWeight: 700, fontSize: 16, letterSpacing: "0.07em", color: T.ink }}>CYBER PRO</span>
-          <span style={{ fontFamily: T.mono, fontSize: 11, color: T.muted }}>0 to hired &middot; 18+</span>
-        </header>
-
-        <main>
-          <div className="hub-eyebrow">The course</div>
-          <h1 className="hub-h1">Cyber security, from zero to hired</h1>
-          <p className="hub-lede">Real certificate content, taught for a curious adult with no technical background. Every module is <b>plain-English theory, a real breach, and a hands-on lab</b> in your browser. Work through them in order, or dip into any that is open.</p>
-
-          <div className="hub-chips">
-            <span className="hub-chip"><b>21</b> modules</span>
-            <span className="hub-chip"><b>4</b> acts</span>
-            <span className="hub-chip"><b>{built}</b> open now</span>
-            {doneMods.size > 0 && (
-              <span className="hub-chip" style={{ color: T.green, borderColor: `${T.green}55` }}><b style={{ color: T.green }}>{doneMods.size}</b> done</span>
-            )}
-            <span className="hub-chip">aligned to <b>Security+</b> &middot; ISC² CC</span>
+    <NightHomeShell course="pro">
+      <header className="hb6-chrome">
+        <div className="hb6-chrome-in">
+          <div className="hb6-chrome-l">
+            <span className="hb6-lockup" role="img" aria-label="Cyber Pro by AlgorithmX">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ff7a3d" strokeWidth="2" aria-hidden="true" style={{ flexShrink: 0, filter: "drop-shadow(0 0 9px rgba(255,122,61,.35))" }}><path d="M4 4 H14.5 L20 9.5 V20 H4 Z" strokeLinejoin="round" /><path d="M8 9.5 L11.2 12.5 L8 15.5" strokeLinecap="round" strokeLinejoin="round" /><path d="M13 15.5 H16.2" strokeLinecap="round" /></svg>
+              <span className="lk-col" aria-hidden="true"><span className="lk-name">CYBER <b>PRO</b></span><span className="lk-by"><span className="dim">by</span><ByCube /><span className="dim">AlgorithmX</span></span></span>
+            </span>
+            <span className="hb6-trail">The course</span>
           </div>
-
-          <div className="hub-cta-row">
-            <a className="hub-cta" href={ctaHref}>
-              {ctaLabel}
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d="M5 12h14M13 6l6 6-6 6" /></svg>
-            </a>
-            <a className="hub-testme" href="/pro/testme">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden><path d="M12 2l2.2 6.3L20.5 10.5 14.2 12.7 12 19l-2.2-6.3L3.5 10.5 9.8 8.3z" /></svg>
-              Test me
-            </a>
-            <span className="hub-cta-note">or pick any open module below.</span>
+          <div className="hb6-chrome-r">
+            <span className="hb6-tag">0 to hired &middot; 18+</span>
+            <NightHomePause />
           </div>
+        </div>
+      </header>
 
-          <ReadinessMeter />
-
-          {/* Quick-nav: the four acts at a glance, each jumping to its section. */}
-          <nav className="act-nav" aria-label="The four acts">
-            {ACTS.map((a, ai) => (
-              <a key={a.tag} className={`nav-item ${a.cls}`} href={`#act-${ai + 1}`}>
-                <span className="nav-num" aria-hidden>{ai + 1}</span>
-                <span className="nav-text">
-                  <span className="nav-kicker">Act {ai + 1}</span>
-                  <span className="nav-name">{a.name}</span>
-                </span>
-              </a>
-            ))}
-          </nav>
-
-          {ACTS.map((a, ai) => (
-            <section key={a.tag} id={`act-${ai + 1}`} className={`act ${a.cls}`} aria-labelledby={`act-${ai + 1}-name`}>
-              <div className="act-head">
-                <span className="act-num" aria-hidden>{String(ai + 1).padStart(2, "0")}</span>
-                <div className="act-meta">
-                  <div className="act-kicker">Act {ai + 1} &middot; {a.modules.length} modules</div>
-                  <h2 id={`act-${ai + 1}-name`} className="act-name">{a.name}</h2>
-                  <p className="act-focus">{a.focus}</p>
+      <main className="hb6-main" id="main">
+        <section className="hb6-hero" aria-labelledby="hb6-h1">
+          <div className="hb6-hero-l">
+            <p className="hb6-kicker hb6-rise" style={{ "--i": 0 } as React.CSSProperties}>The course{nextAct > 0 && started ? <> &middot; Act {nextAct} of 4</> : null}</p>
+            <h1 id="hb6-h1" className="hb6-h1 hb6-rise" style={{ "--i": 1 } as React.CSSProperties}>Cyber security, from zero to hired<span className="hb6-caret" aria-hidden="true" /></h1>
+            <p className="hb6-lede hb6-rise" style={{ "--i": 2 } as React.CSSProperties}>Real certificate content, taught for a curious adult with no technical background. Every module is <b>plain-English theory, a real breach, and a hands-on lab</b> in your browser. Work through them in order, or dip into any that is open.</p>
+            <ul className="hb6-chips hb6-rise" style={{ "--i": 3 } as React.CSSProperties} aria-label="Course facts">
+              <li><b>21</b> modules</li>
+              <li><b>4</b> acts</li>
+              <li><b>{built}</b> open now</li>
+              {doneMods.size > 0 && <li className="ok"><b>{doneMods.size}</b> done</li>}
+              <li>aligned to <b>Security+</b> &middot; ISC² CC</li>
+            </ul>
+            <div className="hb6-row hb6-rise" style={{ "--i": 4 } as React.CSSProperties}>
+              <a className="hb6-sec" href="/pro/testme"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.2 6.3L20.5 10.5 14.2 12.7 12 19l-2.2-6.3L3.5 10.5 9.8 8.3z" /></svg>Test me</a>
+              <span className="hb6-note">or pick any open module below.</span>
+            </div>
+          </div>
+          <aside className="hb6-console hb6-rise" style={{ "--i": 2 } as React.CSSProperties} aria-label="Where you are and what is next">
+            <Corners />
+            {doneTopics && (
+              <div className="hb6-ready">
+                <div className="hb6-ready-top">
+                  <div><span className="hb6-con-kicker">Your readiness</span><b className="hb6-ready-label">{milestoneFor(pct)}</b></div>
+                  <div className="hb6-ready-num"><span className="pct">{pct}%</span><span className="of">{topics.size} of {TOTAL} topics</span></div>
                 </div>
+                <div className="hb6-bar" role="progressbar" aria-valuenow={pct} aria-valuemin={0} aria-valuemax={100} aria-label="Readiness"><i style={{ "--w": `${pct}%` } as React.CSSProperties} /></div>
               </div>
-              <div className="mods">
-                {a.modules.map((m) => {
-                  const isDone = doneMods.has(m.n);
-                  const inner = (
-                    <>
-                      <div className="mod-top">
-                        <span className="mod-n" aria-hidden>{m.n}</span>
-                        <h3 className="mod-title">{m.title}</h3>
-                        {isDone ? <DoneBadge /> : <Pill status={m.status} />}
-                      </div>
-                      <p className="mod-blurb">{m.blurb}</p>
-                      <div className="mod-foot">
-                        <span className="mod-tag">{m.tag}</span>
-                        {m.href && <span className="mod-go">{isDone ? "Review" : m.status === "preview" ? "Preview lesson" : "Start module"} <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d="M5 12h14M13 6l6 6-6 6" /></svg></span>}
-                      </div>
-                    </>
-                  );
-                  const cls = `mod ${m.status}${isDone ? " done" : ""}`;
-                  return m.href
-                    ? <a key={m.n} className={cls} href={m.href} aria-label={isDone ? `${m.title} (completed, open to review)` : undefined}>{inner}</a>
-                    : <div key={m.n} className={cls}>{inner}</div>;
-                })}
-              </div>
-            </section>
+            )}
+            <div className="hb6-next">
+              {nextMod ? (
+                <>
+                  <span className="hb6-con-kicker">Up next &middot; Act {nextAct} &middot; Module {nextMod.n}</span>
+                  <h2 className="hb6-con-title">{nextMod.title}</h2>
+                  {nextIds.length > 1 && firstOpen >= 0 && <p className="hb6-con-sub">Topic {firstOpen + 1} of {nextIds.length}</p>}
+                  {nextIds.length > 1 && (
+                    <ol className="hb6-steps" aria-label={`Topics in Module ${nextMod.n}`}>
+                      {nextIds.map((id, i) => {
+                        const s = topics.has(id) ? "done" : i === firstOpen ? "next" : "todo";
+                        return <li key={id} data-s={s}><span className="sr-only">Topic {i + 1}: {s === "done" ? "done" : s === "next" ? "next" : "to do"}</span></li>;
+                      })}
+                    </ol>
+                  )}
+                </>
+              ) : null}
+              <a className="hb6-cta" href={ctaHref}>{ctaLabel} <Arrow /></a>
+              {nextMod && <div className="hb6-con-foot"><span>{nextMod.tag}</span><span>{nextDone} of {nextIds.length} {nextIds.length === 1 ? "topic" : "topics"} done</span></div>}
+            </div>
+          </aside>
+        </section>
+
+        {/* Quick-nav: the four acts at a glance, each jumping to its section. */}
+        <nav className="hb6-actnav" aria-label="The four acts" data-reveal>
+          {ACTS.map((a, ai) => (
+            <a key={a.tag} href={`#act-${ai + 1}`} style={ACT_VARS(ai + 1)}>
+              <span className="n" aria-hidden="true">{ai + 1}</span>
+              <span className="t"><span className="k">Act {ai + 1}</span><span className="nm">{a.name}</span></span>
+            </a>
           ))}
-        </main>
-      </div>
-    </div>
+        </nav>
+
+        {ACTS.map((a, ai) => (
+          <section key={a.tag} className="hb6-act" id={`act-${ai + 1}`} aria-labelledby={`act-${ai + 1}-name`} style={ACT_VARS(ai + 1)} data-reveal>
+            <div className="hb6-act-head">
+              <span className="hb6-act-num" aria-hidden="true">{String(ai + 1).padStart(2, "0")}</span>
+              <div className="hb6-act-meta">
+                <div className="hb6-act-kicker">Act {ai + 1} &middot; {a.modules.length} modules</div>
+                <h2 id={`act-${ai + 1}-name`} className="hb6-act-name">{a.name}</h2>
+                <p className="hb6-act-focus">{a.focus}</p>
+              </div>
+            </div>
+            <div className="hb6-mods">
+              {a.modules.map((m) => {
+                const isDone = doneMods.has(m.n);
+                const isCurrent = !isDone && started && nextMod?.n === m.n;
+                const ids = moduleTopicIds(m.n);
+                const curDone = ids.filter((id) => topics.has(id)).length;
+                const state = isDone ? "done" : isCurrent ? "current" : "open";
+                const inner = (
+                  <>
+                    <div className="hb6-mod-top">
+                      <span className="hb6-mod-n" aria-hidden="true">{m.n}</span>
+                      <h3 className="hb6-mod-title">{m.title}</h3>
+                      {isDone ? <span className="hb6-pill done"><Tick /> Done</span> : isCurrent && ids.length > 1 ? <span className="hb6-pill now">Topic {Math.min(curDone + 1, ids.length)} of {ids.length}</span> : <Pill status={m.status} />}
+                    </div>
+                    <p className="hb6-mod-blurb">{m.blurb}</p>
+                    <div className="hb6-mod-foot">
+                      <span className="hb6-mod-tag">{m.tag}</span>
+                      {m.href && <span className="hb6-mod-go">{isDone ? "Review" : isCurrent ? "Continue" : m.status === "preview" ? "Preview lesson" : "Start module"} <Arrow s={13} /></span>}
+                    </div>
+                  </>
+                );
+                return m.href
+                  ? <a key={m.n} className="hb6-mod" data-state={state} href={m.href} aria-label={isDone ? `${m.title} (completed, open to review)` : undefined}>{inner}</a>
+                  : <div key={m.n} className="hb6-mod soon" data-state={state}>{inner}</div>;
+              })}
+            </div>
+          </section>
+        ))}
+      </main>
+    </NightHomeShell>
   );
 }

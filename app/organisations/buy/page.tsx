@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { vatPercentShown } from "@/app/lib/stripe";
 import { MAX_BLOCKS } from "@/app/lib/learnerPlacesPricing";
+import OrderDesk from "@/app/components/order-desk/OrderDesk";
 import BuyForm from "./BuyForm";
-import "./buy.css";
+import { ORG_FOOT_LEFT, ORG_FOOT_RIGHT, OrgSteps } from "./parts";
 
 /**
  * /organisations/buy: a club, tutoring business or training provider buys
@@ -12,6 +13,8 @@ import "./buy.css";
  * budget after a conversation, so it is invoiced and created by staff in
  * /admin/schools. Keeping the two apart is the owner's decision, not an
  * oversight: an organisation buys off a published sheet, a school does not.
+ *
+ * Skin: the Order Desk (landing lab round 6, v1, 2026-11-23).
  */
 export const dynamic = "force-dynamic";
 
@@ -29,47 +32,38 @@ export default async function OrganisationsBuyPage({
   const asked = Number((await searchParams).blocks);
   const blocks0 = Number.isInteger(asked) && asked >= 1 && asked <= MAX_BLOCKS ? asked : 1;
 
+  const intro = (
+    <>
+      <span className="odk-eyebrow" data-rise><i />AlgorithmX &middot; For organisations</span>
+      <h1 className="odk-h1" data-rise>
+        Buy places for your <span className="acc">young people</span>.
+      </h1>
+      {/* All four, Cyber Pro included. This page is for ORGANISATIONS, and
+          owner, 2026-11-09: "for schools, remove CyberPro because we're not
+          doing pro. Pro is only for organizations." The /schools landing
+          names three; this one names four, and the group picker matches
+          whichever kind of account the buyer ends up with. Keep the two in
+          step: this is the page that takes the money, so naming a course
+          the picker will not offer is the one place that mistake costs
+          something. */}
+      <p className="odk-lead" data-rise>
+        A place is one young person on one of our four courses: <b>Cyber Heroes, Cyber Explorers,
+        Cyber Ops and Cyber Pro for over 18s</b>. You choose the course for each group when you make
+        it, and you can run different groups on different courses at the same time.
+      </p>
+    </>
+  );
+
+  const after = (
+    <section className="odk-section" data-rise aria-labelledby="lab-after">
+      <div className="odk-label" id="lab-after">After payment, in three steps</div>
+      <OrgSteps />
+    </section>
+  );
+
   return (
-    <div className="oxb">
-      <main className="oxb-wrap">
-        <p className="oxb-eyebrow">AlgorithmX &middot; For organisations</p>
-        <h1 className="oxb-h1">
-          Buy places for your <span className="oxb-grad">young people</span>.
-        </h1>
-        {/* All four, Cyber Pro included. This page is for ORGANISATIONS, and
-            owner, 2026-11-09: "for schools, remove CyberPro because we're not
-            doing pro. Pro is only for organizations." The /schools landing
-            names three; this one names four, and the group picker matches
-            whichever kind of account the buyer ends up with. Keep the two in
-            step: this is the page that takes the money, so naming a course
-            the picker will not offer is the one place that mistake costs
-            something. */}
-        <p className="oxb-lede">
-          A place is one young person on one of our four courses: Cyber Heroes, Cyber Explorers,
-          Cyber Ops and Cyber Pro for over 18s. You choose the course for each group when you make
-          it, and you can run different groups on different courses at the same time.
-        </p>
-
-        <BuyForm blocks0={blocks0} vatPercent={vatPercentShown()} />
-
-        <div className="oxb-after">
-          <div className="oxb-step">
-            <b>1. You get an email</b>
-            <span>It lands within a minute of paying and sets up your account.</span>
-          </div>
-          <div className="oxb-step">
-            <b>2. Make your groups</b>
-            <span>Name a group, pick its course, and paste in your register of first names.</span>
-          </div>
-          <div className="oxb-step">
-            <b>3. They sign in and play</b>
-            <span>
-              Each one gets a login card with the group code on it. No email address, no password to
-              remember.
-            </span>
-          </div>
-        </div>
-      </main>
-    </div>
+    <OrderDesk family="org" footLeft={ORG_FOOT_LEFT} footRight={ORG_FOOT_RIGHT}>
+      <BuyForm blocks0={blocks0} vatPercent={vatPercentShown()} intro={intro} after={after} />
+    </OrderDesk>
   );
 }

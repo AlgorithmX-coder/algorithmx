@@ -76,8 +76,6 @@ the only active product right now.
 ### Authed pages
 - `/dashboard` — parent + child progress overview. Shows £99 upsell
   card when paywall is enforced AND user is unpaid.
-- `/parent` — parent-dashboard view (week-by-week summaries, raccoon
-  power meter, certificates).
 - `/lesson` — Week 1 entry point. Bounces to dashboard if paywall is
   enforced and stripeStatus is not active/paid.
 - `/lesson/[week]` — dynamic week route (Week 2+ when shipped)

@@ -796,6 +796,7 @@ export const WEEK_20: WeekContent = {
       introSubtitle: "Graduation night, one photo, and everybody in it gets a say.",
       introIcon: "🤝",
       postLabel: "POST IT",
+      keepOffLabel: "KEEP IT OFF THE INTERNET",
       leaveOutLabel: "LEAVE THEM OUT",
       dontPostLabel: "DON'T POST IT",
       narration: {
@@ -956,8 +957,7 @@ export const WEEK_20: WeekContent = {
         speaker: "adam",
         lines: [
           "[excited] Look at EVERYTHING you mastered this week!",
-          "The vault, the inspection, the lever, the photo,",
-          "and the one that matters most of all: asking first.",
+          "The vault, the inspection, the lever, the photo, and the one that matters most of all: asking first.",
           "[laughs] Twenty weeks. He threw the lot at you and not one of them landed.",
           "[excited] Cyber Hero, sticker time. The last ones!",
         ],

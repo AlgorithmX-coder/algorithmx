@@ -6,47 +6,32 @@ import { getPortfolio, getOpsResumes } from "@/app/lib/opsPortfolio.actions";
 import { HIGHEST_BUILT_MODULE } from "@/app/operators/range/modules";
 import { CURRICULUM, PHASE_ORDER, PHASE_COLOR } from "@/app/operators/range/curriculum";
 import { OPS_RANKS } from "@/app/lib/opsRank";
-import PortfolioBackdrop from "./PortfolioBackdrop";
-import ResumeStrip from "./ResumeStrip";
+import CourseHomeShell, { CourseHomePause } from "@/app/components/course-home/CourseHomeShell";
+import { CourseHomeLockup, OpsMark } from "@/app/components/course-home/marks";
 
 export const metadata: Metadata = {
   title: "Cyber Ops · Portfolio",
   robots: { index: false, follow: false },
 };
 
-/* Tier tokens (mirrors the range's design system; inlined so this server
- * component doesn't import the "use client" Engagement module). */
-const C = {
-  carbon: "#16181f", panel: "#1d212c", line: "rgba(139,123,255,0.20)", lineSoft: "rgba(166,178,214,0.12)",
-  ink: "#eef2fb", soft: "#c3cce0", mute: "#8e98b4", indigo: "#8b7bff", indigo2: "#c2b8ff",
-  cyan: "#5fe6ff", green: "#55d98c", red: "#f26d72", amber: "#e8a33d",
-};
-/* Glass surfaces: translucent panels, now with enough body to hold the type
- * clear of the live terminal behind them. backdropFilter frosts the backdrop. */
-const GLASS = "rgba(20,23,33,0.90)";
-const GLASS_SOFT = "rgba(20,23,33,0.82)";
-const BLUR = "blur(8px)";
-/* Cool glowing theme for the NEXT module - electric cyan over indigo. */
-const NEXT_BG = "linear-gradient(135deg, rgba(18,46,64,0.92), rgba(38,32,80,0.92))";
-/* Shadow for text sitting directly on the backdrop (no panel behind it), so it
- * stays legible over the terminal chatter. */
-const TSHADOW = "0 1px 12px rgba(6,8,14,0.9), 0 0 3px rgba(6,8,14,0.7)";
-const DISP = "var(--font-chakra),'Chakra Petch',system-ui,sans-serif";
-const MONO = "var(--font-plex-mono),ui-monospace,Menlo,monospace";
-const SANS = "var(--font-plex-sans),system-ui,sans-serif";
+/* The Cyber Ops home (URL is legacy): "Redoubt · Operator file", landing lab
+ * round 6, homes-a ops v1 DARK (owner 2026-11-23). The first screen resumes:
+ * where you are, what is next, one big Resume, your standing and your latest
+ * finding; the full posting and every finding filed sit below. Every number,
+ * module, beat and finding is the learner's own (getPortfolio, getOpsResumes);
+ * the auth redirect, links and the empty state are as before. */
 
-/* Pulse for the NEXT card's glow; disabled under reduced motion. */
-const GLOW_CSS = `
-@keyframes opsNextPulse {
-  0%,100% { box-shadow: 0 0 0 1px rgba(95,230,255,0.30), 0 0 20px rgba(95,230,255,0.24), 0 10px 28px rgba(0,0,0,0.45); }
-  50%     { box-shadow: 0 0 0 1px rgba(95,230,255,0.55), 0 0 34px rgba(95,230,255,0.48), 0 10px 28px rgba(0,0,0,0.5); }
-}
-.ops-next { animation: opsNextPulse 2.6s ease-in-out infinite; }
-@media (prefers-reduced-motion: reduce) { .ops-next { animation: none; box-shadow: 0 0 0 1px rgba(95,230,255,0.4), 0 0 26px rgba(95,230,255,0.33), 0 10px 28px rgba(0,0,0,0.45); } }
-`;
+/* The six beats of a module, in order (the Engagement shell's resume beats). */
+const BEATS: Array<[string, string]> = [["lesson", "Lesson"], ["authorize", "Scope"], ["act", "Capture"], ["drills", "Drills"], ["challenge", "Challenge"], ["defend", "Defend"]];
+const BEAT_LABEL = Object.fromEntries(BEATS) as Record<string, string>;
 
-const SEV_COLOR: Record<string, string> = { LOW: C.soft, MEDIUM: C.amber, HIGH: C.red, CRITICAL: C.red };
+const SEV_COLOR: Record<string, string> = { LOW: "var(--body)", MEDIUM: "var(--amber)", HIGH: "var(--red)", CRITICAL: "var(--red)" };
 const SEV_LABEL: Record<string, string> = { LOW: "Low", MEDIUM: "Medium", HIGH: "High", CRITICAL: "Critical" };
+const pad = (n: number) => String(n).padStart(2, "0");
+type V = React.CSSProperties & Record<`--${string}`, string | number>;
+
+const Arrow = () => <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>;
+const Tick = () => <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5" /></svg>;
 
 export default async function OperatorsPortfolioPage() {
   const session = await auth();
@@ -55,171 +40,172 @@ export default async function OperatorsPortfolioPage() {
   const [p, resumes] = await Promise.all([getPortfolio(), getOpsResumes()]);
   const findings = p?.findings ?? [];
   const rank = p?.rank;
+  const rankName = rank?.rank ?? "Recruit";
+  const rep = p?.totalRep ?? 0;
+  const callsign = p?.callsign ?? null;
   const done = new Set(findings.map((f) => f.module));
   const nextModule = CURRICULUM.find((m) => !done.has(m.no) && m.no <= HIGHEST_BUILT_MODULE)?.no ?? null;
+  const titleOf = new Map(CURRICULUM.map((m) => [m.no, m] as const));
+
+  /* "Continue where you left off": the account's in-progress modules (as the
+   * old ResumeStrip listed them). The first not yet cleared leads the card;
+   * any others stay one tap away under it. With nothing in progress the card
+   * shows the next module to start instead. */
+  const rows = resumes.filter((r) => BEAT_LABEL[r.beat] && titleOf.has(r.module));
+  const lead = rows.find((r) => !done.has(r.module)) ?? rows[0] ?? null;
+  const others = rows.filter((r) => r !== lead);
+  const focusNo = lead?.module ?? nextModule;
+  const focus = focusNo ? titleOf.get(focusNo) ?? null : null;
+  const beatI = lead ? BEATS.findIndex((b) => b[0] === lead.beat) : -1;
+
+  const tier = Math.max(0, OPS_RANKS.findIndex((r) => r.name === rankName));
+  const pct = Math.round((rank?.fraction ?? 0) * 100);
+  const latest = findings[findings.length - 1];
+  const continueHref = `/operators/play/${Math.min(HIGHEST_BUILT_MODULE, (findings[findings.length - 1]?.module ?? 0) + 1)}`;
 
   return (
-    <main style={{ position: "relative", minHeight: "100vh", background: "transparent", color: C.ink, fontFamily: SANS, display: "grid", placeItems: "start center", padding: "56px 20px 100px" }}>
-      <PortfolioBackdrop />
-      <style>{GLOW_CSS}</style>
-      <div style={{ position: "relative", zIndex: 1, width: "100%", maxWidth: 880 }}>
-        {/* header */}
-        <div style={{ fontFamily: MONO, fontSize: 11.5, letterSpacing: ".26em", textTransform: "uppercase", color: C.cyan, fontWeight: 700, textShadow: TSHADOW }}>Redoubt · Operator file</div>
-        <h1 style={{ fontFamily: DISP, fontSize: "clamp(28px,5vw,40px)", fontWeight: 700, margin: "12px 0 6px", letterSpacing: "-.01em", color: "#ffffff", textShadow: TSHADOW }}>Your portfolio</h1>
-        <p style={{ color: C.ink, fontSize: 15, lineHeight: 1.6, margin: "0 0 28px", maxWidth: "58ch", textShadow: TSHADOW }}>
-          Every module you clear files a professional-grade finding here. This is the real thing you walk away with: show a teacher, a UCAS form, or a first employer.
-        </p>
-
-        {/* operator standing - the hero dashboard (stats stand out, not a plain row) */}
-        <OperatorCard rank={rank} rep={p?.totalRep ?? 0} findingsCount={findings.length} cleared={done.size} />
-
-        {/* continue where you left off: in-progress modules (account-wide) */}
-        <ResumeStrip items={resumes} />
-
-        {/* course map — the full posting, status per module */}
-        <div style={{ marginBottom: 34 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 12, margin: "0 0 14px" }}>
-            <span style={{ width: 18, height: 2, background: C.cyan, borderRadius: 2, boxShadow: `0 0 8px ${C.cyan}` }} />
-            <span style={{ fontFamily: MONO, fontSize: 11.5, letterSpacing: ".14em", textTransform: "uppercase", color: C.ink, fontWeight: 700, textShadow: TSHADOW }}>The posting · {done.size}/{CURRICULUM.length} modules cleared</span>
-          </div>
-          {PHASE_ORDER.map((phase) => {
-            const pc = PHASE_COLOR[phase];
-            const mods = CURRICULUM.filter((m) => m.phase === phase);
-            const clearedN = mods.filter((m) => done.has(m.no)).length;
-            return (
-            <div key={phase} style={{ marginBottom: 22 }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 11, marginBottom: 11 }}>
-                <span style={{ width: 22, height: 3, borderRadius: 2, background: pc, boxShadow: `0 0 10px ${pc}` }} />
-                <span style={{ fontFamily: DISP, fontSize: 13, letterSpacing: ".14em", textTransform: "uppercase", color: pc, fontWeight: 700, textShadow: TSHADOW }}>{phase}</span>
-                <span style={{ fontFamily: MONO, fontSize: 10.5, color: C.mute }}>{clearedN}/{mods.length}</span>
+    <CourseHomeShell course="ops">
+      <header className="ch6-chrome wrap" data-rise style={{ "--i": 0 } as V}>
+        <CourseHomeLockup mark={<OpsMark />} lead="CYBER" accent="OPS" label="Cyber Ops by AlgorithmX" />
+        <div className="ch6-chrome-r">
+          {callsign ? <span className="ch6-who"><i className="dot" aria-hidden="true" /><b>{callsign}</b><span className="hide">&nbsp;· {rankName}</span></span> : <span className="ch6-who"><i className="dot" aria-hidden="true" /><b>{rankName}</b></span>}
+          <CourseHomePause />
+        </div>
+      </header>
+      <main className="ch6-main wrap" id="main">
+        <section className="ch6-now" aria-labelledby="ch6-h1">
+          <div className="ch6-console" data-rise style={{ "--i": 1 } as V}>
+            <i className="ch6-corner tl" aria-hidden="true" /><i className="ch6-corner tr" aria-hidden="true" /><i className="ch6-corner bl" aria-hidden="true" /><i className="ch6-corner br" aria-hidden="true" />
+            <div className="ch6-fbar"><span className="fname">Redoubt · Operator file</span>{callsign && <span>{callsign}</span>}<span className="fstat" role="status"><i aria-hidden="true" />Saved to your account</span></div>
+            <div className="ch6-grid">
+              <div>
+                <h1 className="ch6-h1" id="ch6-h1" data-rise style={{ "--i": 2 } as V}>Your portfolio</h1>
+                <p className="ch6-lede" data-rise style={{ "--i": 3 } as V}>Every module you clear files a professional-grade finding here. This is the real thing you walk away with: show a teacher, a UCAS form, or a first employer.</p>
+                {focus && (
+                  <div className="ch6-next" style={{ "--nx": "var(--cyan)", "--i": 4 } as V} data-rise>
+                    <div className="ch6-next-head">
+                      <span className="ch6-chip" style={{ color: "var(--cyan)", borderColor: "rgba(var(--cyan-rgb),.6)" }}>{lead ? "Continue where you left off" : "Start here"}</span>
+                      <span className="ch6-chip c" style={{ "--c": PHASE_COLOR[focus.phase] } as V}>{focus.phase}</span>
+                    </div>
+                    <div className="ch6-next-body">
+                      <span className="ch6-glyph" style={{ borderColor: PHASE_COLOR[focus.phase], color: PHASE_COLOR[focus.phase], boxShadow: `0 0 16px ${PHASE_COLOR[focus.phase]}55`, fontFamily: "var(--mono)", fontWeight: 700, fontSize: 15 }}>M{pad(focus.no)}</span>
+                      <div style={{ minWidth: 0 }}>
+                        <div className="ch6-next-title">{focus.title}</div>
+                        <div className="ch6-next-sub">M{pad(focus.no)}{lead && <> · <b style={{ color: "var(--cyan)" }}>{BEAT_LABEL[lead.beat]}</b></>} · {done.size}/{CURRICULUM.length} modules cleared</div>
+                      </div>
+                    </div>
+                    {lead && (
+                      <div className="ch6-beats" role="img" aria-label={`Six beats; you are at ${BEAT_LABEL[lead.beat]}`}>
+                        {BEATS.map((b, i) => <span key={b[0]} className={i < beatI ? "done" : i === beatI ? "cur" : ""}><i />{b[1]}</span>)}
+                      </div>
+                    )}
+                    {others.length > 0 && (
+                      <div className="ch6-next-meta">{others.map((o) => <Link key={o.module} href={`/operators/play/${o.module}`}>Also in progress: <b>M{pad(o.module)} · {BEAT_LABEL[o.beat]}</b></Link>)}</div>
+                    )}
+                  </div>
+                )}
+                <div className="ch6-actions" data-rise style={{ "--i": 5 } as V}>
+                  {focus && <Link className="ch6-cta" href={`/operators/play/${focus.no}`}>{lead ? "Resume" : "Start here"} <Arrow /><span className="sheen" aria-hidden="true" /></Link>}
+                  <a className="ch6-ghost" href="#posting">The posting</a>
+                  <a className="ch6-ghost" href="#findings">Findings filed</a>
+                </div>
+                <div className="ch6-rail" data-rise style={{ "--i": 6 } as V} role="img" aria-label={`${done.size} of ${CURRICULUM.length} modules cleared${nextModule ? `; next is M${pad(nextModule)}` : ""}`}>
+                  {PHASE_ORDER.map((ph) => {
+                    const ms = CURRICULUM.filter((m) => m.phase === ph);
+                    const d = ms.filter((m) => done.has(m.no)).length;
+                    return (
+                      <div className="rb" key={ph} style={{ "--c": PHASE_COLOR[ph], "--n": ms.length } as V}>
+                        <div className="rl">{ph} <b>{d}/{ms.length}</b></div>
+                        <div className="rd">{ms.map((m) => <i key={m.no} className={done.has(m.no) ? "done" : m.no === nextModule ? "next" : ""} />)}</div>
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(170px, 1fr))", gap: 10 }}>
-                {mods.map((m) => (
-                  <ModuleTile key={m.no} no={m.no} title={m.title} pc={pc} isDone={done.has(m.no)} isNext={m.no === nextModule} playable={m.no <= HIGHEST_BUILT_MODULE} />
-                ))}
-              </div>
+              <aside className="ch6-id" style={{ "--rank": "var(--acc)", "--p": pct, "--i": 4 } as V} data-rise aria-label="Operator standing">
+                <div className="ch6-ops-rank">
+                  <span className="ch6-hexbig" aria-hidden="true">
+                    <svg width="60" height="66" viewBox="0 0 64 70"><polygon points="32,2 60,17 60,53 32,68 4,53 4,17" fill="rgba(139,123,255,.16)" stroke="#8b7bff" strokeWidth="1.5" /><polygon points="32,10 53,21 53,49 32,60 11,49 11,21" fill="none" stroke="rgba(95,230,255,.4)" strokeWidth="1" /></svg>
+                    <span className="chev">{Array.from({ length: tier + 1 }).map((_, i) => <svg key={i} width="23" height="7" viewBox="0 0 23 7" aria-hidden="true"><path d="M2 6 L11.5 1.6 L21 6" fill="none" stroke="#c2b8ff" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" /></svg>)}</span>
+                  </span>
+                  <div><div className="rk">Current rank</div><div className="ch6-rank">{rankName}</div></div>
+                </div>
+                <div className="ch6-stats">
+                  <div className="ch6-stat" style={{ "--sc": "var(--amber)" } as V}><b data-count={rep}>{rep}</b><span>reputation</span></div>
+                  <div className="ch6-stat" style={{ "--sc": "var(--green)" } as V}><b>{findings.length}</b><span>findings filed</span></div>
+                  <div className="ch6-stat" style={{ "--sc": "var(--cyan)" } as V}><b>{done.size}<small>/{CURRICULUM.length}</small></b><span>modules cleared</span></div>
+                </div>
+                {rank?.next ? (
+                  <div className="ch6-bar">
+                    <div className="bl"><b>{rankName}</b><span>{rank.label}</span></div>
+                    <div className="bt" role="img" aria-label={rank.label}><i /></div>
+                  </div>
+                ) : null}
+                {latest && (
+                  <a className="ch6-latest" href="#findings" style={{ "--sv": SEV_COLOR[latest.severity] } as V} aria-label={`Latest finding filed, M-${pad(latest.module)}: ${latest.title}. Read it in your findings.`}>
+                    <span className="ll">Latest finding filed <span className="m">M-{pad(latest.module)}</span></span>
+                    <span className="lt">{latest.title}</span>
+                    <span className="lw">{latest.location}</span>
+                    <span className="lf"><span className="sev">{SEV_LABEL[latest.severity]} · CVSS {latest.cvss}</span><span className="flag">{latest.flag}</span></span>
+                  </a>
+                )}
+              </aside>
             </div>
+          </div>
+        </section>
+
+        <section className="ch6-board ch6-posting" id="posting" aria-label="The posting">
+          <div className="ch6-h2" data-reveal>The posting <span className="n">· {done.size}/{CURRICULUM.length} modules cleared</span></div>
+          {PHASE_ORDER.map((ph, pi) => {
+            const pc = PHASE_COLOR[ph];
+            const ms = CURRICULUM.filter((m) => m.phase === ph);
+            const d = ms.filter((m) => done.has(m.no)).length;
+            return (
+              <section className="ch6-sec" key={ph} style={{ "--c": pc, marginTop: 20 } as V} data-reveal aria-labelledby={`ch6-p${pi}`}>
+                <div className="ch6-sech"><span className="sw" aria-hidden="true" /><h2 id={`ch6-p${pi}`} style={{ color: pc }}>{ph}</h2><span className="count" style={{ marginLeft: 0 }}>{d}/{ms.length}</span></div>
+                <div className="ch6-tiles">
+                  {ms.map((m, i) => {
+                    const isDone = done.has(m.no), isNext = m.no === nextModule, playable = m.no <= HIGHEST_BUILT_MODULE;
+                    const inner = (
+                      <>
+                        <div className="th"><span className="ch6-mno">M{pad(m.no)}</span>{isDone ? <span className="tick" aria-hidden="true"><Tick /></span> : isNext ? <span className="nx">NEXT ▸</span> : !playable ? <span className="soon">soon</span> : null}</div>
+                        <span className="tt">{m.title}</span>
+                        {isDone ? <span className="tf done">FINDING FILED</span> : isNext ? <span className="tf next">START HERE</span> : null}
+                      </>
+                    );
+                    const cls = `ch6-tile${isDone ? " done" : ""}${isNext ? " next" : ""}${playable ? "" : " unbuilt"}`;
+                    return playable
+                      ? <Link key={m.no} className={cls} href={`/operators/play/${m.no}`} style={{ "--c": pc, "--i": i } as V} aria-label={`M${pad(m.no)}: ${m.title}.${isDone ? " Finding filed." : isNext ? " Next." : ""}`}>{inner}</Link>
+                      : <div key={m.no} className={cls} style={{ "--c": pc, "--i": i } as V}>{inner}</div>;
+                  })}
+                </div>
+              </section>
             );
           })}
-        </div>
 
-        {/* findings */}
-        <div style={{ display: "flex", alignItems: "center", gap: 12, margin: "0 0 14px" }}>
-          <span style={{ width: 18, height: 2, background: C.cyan, borderRadius: 2, boxShadow: `0 0 8px ${C.cyan}` }} />
-          <span style={{ fontFamily: MONO, fontSize: 11.5, letterSpacing: ".14em", textTransform: "uppercase", color: C.ink, fontWeight: 700, textShadow: TSHADOW }}>Findings filed</span>
-        </div>
-        {findings.length === 0 ? (
-          <div style={{ padding: "40px 28px", textAlign: "center", background: GLASS, backdropFilter: BLUR, WebkitBackdropFilter: BLUR, border: `1px dashed ${C.line}`, borderRadius: 16, boxShadow: "0 10px 30px rgba(0,0,0,0.3)" }}>
-            <div style={{ fontFamily: DISP, fontWeight: 700, fontSize: 19, marginBottom: 8 }}>No findings yet.</div>
-            <p style={{ color: C.soft, fontSize: 14, lineHeight: 1.6, maxWidth: "42ch", margin: "0 auto 20px" }}>
-              Clear your first module to file your first finding. It takes about an hour, and you act for real on day one.
-            </p>
-            <Link href="/operators/play/1" className="ops-next" style={{ display: "inline-block", padding: "12px 22px", borderRadius: 9, background: "linear-gradient(135deg, #5fe6ff, #8b7bff)", color: "#071018", fontFamily: MONO, fontWeight: 700, fontSize: 13, letterSpacing: ".06em", textDecoration: "none" }}>
-              Begin Module 01 →
-            </Link>
-          </div>
-        ) : (
-          <div style={{ display: "grid", gap: 12 }}>
-            {findings.map((f) => (
-              <div key={f.module} style={{ background: GLASS, backdropFilter: BLUR, WebkitBackdropFilter: BLUR, border: `1px solid ${C.line}`, borderRadius: 14, padding: "18px 20px", boxShadow: "0 8px 24px rgba(0,0,0,0.28)" }}>
-                <div style={{ display: "flex", alignItems: "baseline", gap: 10, flexWrap: "wrap" }}>
-                  <span style={{ fontFamily: MONO, fontSize: 11.5, color: C.indigo, fontWeight: 600 }}>M-{String(f.module).padStart(2, "0")}</span>
-                  <span style={{ fontFamily: DISP, fontWeight: 700, fontSize: 16.5 }}>{f.title}</span>
-                  <span style={{ marginLeft: "auto", fontFamily: MONO, fontSize: 11, color: SEV_COLOR[f.severity], border: `1px solid ${SEV_COLOR[f.severity]}55`, padding: "2px 8px", borderRadius: 6 }}>
-                    {SEV_LABEL[f.severity]} · CVSS {f.cvss}
-                  </span>
-                </div>
-                <div style={{ fontFamily: MONO, fontSize: 12.5, color: C.mute, marginTop: 6 }}>{f.location}</div>
-                <p style={{ fontSize: 13.5, color: C.soft, marginTop: 10, lineHeight: 1.55 }}><b style={{ color: C.ink }}>Impact.</b> {f.impact}</p>
-                <p style={{ fontSize: 13.5, color: C.soft, marginTop: 5, lineHeight: 1.55 }}><b style={{ color: C.ink }}>Fix.</b> {f.fix}</p>
-                <div style={{ fontFamily: MONO, fontSize: 12, color: C.green, marginTop: 10 }}>{f.flag}</div>
-              </div>
-            ))}
-            {HIGHEST_BUILT_MODULE > findings.length && (
-              <Link href={`/operators/play/${Math.min(HIGHEST_BUILT_MODULE, (findings[findings.length - 1]?.module ?? 0) + 1)}`} style={{ textAlign: "center", padding: "14px", borderRadius: 11, background: GLASS_SOFT, backdropFilter: BLUR, WebkitBackdropFilter: BLUR, border: `1px solid ${C.line}`, color: C.indigo2, fontFamily: MONO, fontSize: 13, fontWeight: 600, textDecoration: "none" }}>
-                Continue the posting →
-              </Link>
-            )}
-          </div>
-        )}
-      </div>
-    </main>
+          <div className="ch6-h2" id="findings" style={{ marginTop: 34 }} data-reveal>Findings filed</div>
+          {findings.length === 0 ? (
+            <div className="ch6-empty" data-reveal>
+              <div className="et">No findings yet.</div>
+              <p>Clear your first module to file your first finding. It takes about an hour, and you act for real on day one.</p>
+              <Link className="ch6-cta" href="/operators/play/1">Begin Module 01 <Arrow /><span className="sheen" aria-hidden="true" /></Link>
+            </div>
+          ) : (
+            <div className="ch6-finds">
+              {findings.map((f, i) => (
+                <article className="ch6-find" key={f.module} style={{ "--sv": SEV_COLOR[f.severity], "--i": i % 3 } as V} data-reveal aria-labelledby={`ch6-f${f.module}`}>
+                  <div className="fh"><span className="m">M-{pad(f.module)}</span><span className="t" id={`ch6-f${f.module}`}>{f.title}</span><span className="sev">{SEV_LABEL[f.severity]} · CVSS {f.cvss}</span></div>
+                  <div className="fw">{f.location}</div>
+                  <p><b>Impact.</b> {f.impact}</p>
+                  <p><b>Fix.</b> {f.fix}</p>
+                  <div className="ff">{f.flag}</div>
+                </article>
+              ))}
+              {HIGHEST_BUILT_MODULE > findings.length && <Link className="ch6-more" href={continueHref} data-reveal>Continue the posting <Arrow /></Link>}
+            </div>
+          )}
+        </section>
+      </main>
+    </CourseHomeShell>
   );
-}
-
-/* ---------- operator dashboard (the hero: stats stand out) ---------- */
-function OperatorCard({ rank, rep, findingsCount, cleared }: { rank?: { rank: string; next?: unknown; label?: string; fraction?: number } | null; rep: number; findingsCount: number; cleared: number }) {
-  const rankName = rank?.rank ?? "Recruit";
-  const pct = Math.round((rank?.fraction ?? 0) * 100);
-  return (
-    <div style={{ position: "relative", overflow: "hidden", borderRadius: 22, padding: "26px 28px", marginBottom: 30, background: `radial-gradient(120% 150% at 0% 0%, rgba(139,123,255,0.30), transparent 55%), radial-gradient(120% 150% at 100% 0%, rgba(95,230,255,0.22), transparent 52%), linear-gradient(150deg, rgba(22,25,34,0.92), #0c0e16)`, border: `1px solid ${C.indigo}66`, boxShadow: `0 30px 70px -34px #000, 0 0 60px -30px ${C.indigo}`, backdropFilter: BLUR, WebkitBackdropFilter: BLUR }}>
-      <div style={{ display: "flex", gap: 22, alignItems: "center", justifyContent: "space-between", flexWrap: "wrap" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 16, minWidth: 200 }}>
-          <RankBadge rank={rankName} />
-          <div>
-            <div style={{ fontFamily: MONO, fontSize: 10, letterSpacing: ".22em", textTransform: "uppercase", color: C.cyan, fontWeight: 700 }}>Current rank</div>
-            <div style={{ fontFamily: DISP, fontSize: "clamp(26px,5vw,38px)", fontWeight: 700, color: "#fff", lineHeight: 1, marginTop: 4, textShadow: `0 0 20px ${C.indigo}55` }}>{rankName}</div>
-          </div>
-        </div>
-        <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
-          <StatBig n={String(rep)} l="reputation" tone={C.amber} />
-          <StatBig n={String(findingsCount)} l="findings filed" tone={C.green} />
-          <StatBig n={`${cleared}/${CURRICULUM.length}`} l="modules cleared" tone={C.cyan} />
-        </div>
-      </div>
-      {rank?.next ? (
-        <div style={{ marginTop: 22 }}>
-          <div style={{ display: "flex", justifyContent: "space-between", fontFamily: MONO, fontSize: 11, color: C.soft, marginBottom: 7 }}>
-            <span style={{ color: C.indigo2 }}>{rankName}</span><span>{rank?.label}</span>
-          </div>
-          <div style={{ height: 10, borderRadius: 999, background: "rgba(255,255,255,0.08)", overflow: "hidden" }}>
-            <div style={{ height: "100%", width: `${pct}%`, borderRadius: 999, background: `linear-gradient(90deg, ${C.indigo}, ${C.cyan}, ${C.amber})`, boxShadow: `0 0 16px ${C.cyan}` }} />
-          </div>
-        </div>
-      ) : null}
-    </div>
-  );
-}
-/* Rank insignia: a hexagon with chevrons (one per rank tier you've reached), so
- * it reads as a real rank emblem rather than a single placeholder letter. */
-function RankBadge({ rank }: { rank: string }) {
-  const tier = Math.max(0, OPS_RANKS.findIndex((r) => r.name === rank));
-  return (
-    <div style={{ position: "relative", width: 64, height: 70, flexShrink: 0, display: "grid", placeItems: "center" }}>
-      <svg width="64" height="70" viewBox="0 0 64 70" style={{ position: "absolute", inset: 0 }} aria-hidden>
-        <polygon points="32,2 60,17 60,53 32,68 4,53 4,17" fill="rgba(139,123,255,0.16)" stroke="#8b7bff" strokeWidth="1.5" />
-        <polygon points="32,10 53,21 53,49 32,60 11,49 11,21" fill="none" stroke="rgba(95,230,255,0.4)" strokeWidth="1" />
-      </svg>
-      <div style={{ position: "relative", display: "flex", flexDirection: "column", gap: 3.5, alignItems: "center", filter: `drop-shadow(0 0 4px ${C.indigo}aa)` }} aria-hidden>
-        {Array.from({ length: tier + 1 }).map((_, i) => (
-          <svg key={i} width="23" height="7" viewBox="0 0 23 7"><path d="M2 6 L11.5 1.6 L21 6" fill="none" stroke="#c2b8ff" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" /></svg>
-        ))}
-      </div>
-    </div>
-  );
-}
-function StatBig({ n, l, tone }: { n: string; l: string; tone: string }) {
-  return (
-    <div style={{ minWidth: 96, padding: "13px 17px", borderRadius: 14, background: "rgba(0,0,0,0.32)", border: `1px solid ${tone}3a` }}>
-      <div style={{ fontFamily: DISP, fontWeight: 700, fontSize: "clamp(26px,4vw,34px)", color: tone, lineHeight: 1, textShadow: `0 0 18px ${tone}55` }}>{n}</div>
-      <div style={{ fontFamily: MONO, fontSize: 9.5, letterSpacing: ".1em", textTransform: "uppercase", color: C.mute, marginTop: 7 }}>{l}</div>
-    </div>
-  );
-}
-/* ---------- a module tile on the mission board ---------- */
-function ModuleTile({ no, title, pc, isDone, isNext, playable }: { no: number; title: string; pc: string; isDone: boolean; isNext: boolean; playable: boolean }) {
-  const inner = (
-    <div className={isNext ? "ops-next" : undefined} style={{ position: "relative", height: "100%", minHeight: 96, display: "flex", flexDirection: "column", padding: "13px 14px", borderRadius: 13, background: isNext ? NEXT_BG : GLASS_SOFT, backdropFilter: BLUR, WebkitBackdropFilter: BLUR, border: `1px solid ${isNext ? "rgba(95,230,255,0.55)" : C.lineSoft}`, borderTop: `3px solid ${isDone ? C.green : isNext ? C.cyan : pc}`, boxShadow: isNext ? undefined : "0 6px 18px rgba(0,0,0,0.26)", opacity: playable ? 1 : 0.6 }}>
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8 }}>
-        <span style={{ fontFamily: MONO, fontSize: 12, fontWeight: 700, color: isDone ? C.green : isNext ? C.cyan : pc, textShadow: isNext ? `0 0 12px ${C.cyan}` : undefined }}>M{String(no).padStart(2, "0")}</span>
-        {isDone ? <span aria-hidden style={{ color: C.green, fontSize: 14, fontWeight: 700 }}>✓</span>
-          : isNext ? <span style={{ fontFamily: MONO, fontSize: 9, fontWeight: 700, letterSpacing: ".1em", color: "#eafbff", background: "rgba(95,230,255,0.16)", border: "1px solid rgba(95,230,255,0.7)", borderRadius: 5, padding: "2px 7px" }}>NEXT ▸</span>
-          : !playable ? <span style={{ fontFamily: MONO, fontSize: 9.5, color: C.mute }}>soon</span> : null}
-      </div>
-      <span style={{ fontFamily: DISP, fontWeight: 700, fontSize: 14.5, color: isNext ? "#fff" : playable ? C.ink : C.mute, lineHeight: 1.25, marginTop: 9 }}>{title}</span>
-      {isDone && <span style={{ marginTop: "auto", paddingTop: 10, fontFamily: MONO, fontSize: 10, letterSpacing: ".06em", color: C.green }}>FINDING FILED</span>}
-      {isNext && <span style={{ marginTop: "auto", paddingTop: 10, fontFamily: MONO, fontSize: 10, letterSpacing: ".06em", color: C.cyan }}>START HERE</span>}
-    </div>
-  );
-  return playable ? <Link href={`/operators/play/${no}`} style={{ textDecoration: "none", height: "100%" }}>{inner}</Link> : <div style={{ height: "100%" }}>{inner}</div>;
 }

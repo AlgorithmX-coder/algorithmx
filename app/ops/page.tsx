@@ -1,26 +1,21 @@
 import type { Metadata } from "next";
-import { Chakra_Petch, IBM_Plex_Mono, IBM_Plex_Sans } from "next/font/google";
-import CyberStartLanding from "./CyberStartLanding";
+import { Chakra_Petch, JetBrains_Mono } from "next/font/google";
+import OpsHolo from "./holo/OpsHolo";
 
 // Self-hosted via next/font (no Google request at runtime - better for a
-// UK product aimed at minors). Exposed as CSS variables the landing maps
-// onto its --display / --mono / --sans tokens.
+// UK product aimed at minors). Chakra Petch is the Ops wordmark and label
+// face; JetBrains Mono the design's mono. The display and body faces
+// (Space Grotesk, Inter) come from the root layout.
 const display = Chakra_Petch({
   subsets: ["latin"],
   weight: ["600", "700"],
   variable: "--font-chakra",
   display: "swap",
 });
-const mono = IBM_Plex_Mono({
+const mono = JetBrains_Mono({
   subsets: ["latin"],
-  weight: ["400", "600"],
-  variable: "--font-plex-mono",
-  display: "swap",
-});
-const sans = IBM_Plex_Sans({
-  subsets: ["latin"],
-  weight: ["400", "600"],
-  variable: "--font-plex-sans",
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-jetbrains",
   display: "swap",
 });
 
@@ -32,6 +27,11 @@ const sans = IBM_Plex_Sans({
  * engines. Remove the `robots` block to make it publicly discoverable.
  *
  * All copy is authored and static, so no DB read is needed.
+ *
+ * 2026-11-22: the Hologram design (landing lab round 4, concept o01, the
+ * owner's pick) replaces the dark violet page. Copy, section order, routes
+ * and the reel's playback rules are unchanged; everything visual lives in
+ * ./holo. The previous composition (CyberStartLanding) is kept on disk.
  */
 export const metadata: Metadata = {
   title: "Cyber Ops - AlgorithmX",
@@ -42,8 +42,8 @@ export const metadata: Metadata = {
 
 export default function CyberStartPage() {
   return (
-    <div className={`${display.variable} ${mono.variable} ${sans.variable}`}>
-      <CyberStartLanding />
+    <div className={`${display.variable} ${mono.variable}`} style={{ display: "contents" }}>
+      <OpsHolo />
     </div>
   );
 }

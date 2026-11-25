@@ -1100,8 +1100,7 @@ export const WEEK_17: WeekContent = {
         speaker: "adam",
         lines: [
           "[excited] Look at EVERYTHING you mastered this week!",
-          "Rooms read, panes frosted, gold panned,",
-          "drafts checked... and the backstage seen for what it is.",
+          "Rooms read, panes frosted, gold panned, drafts checked... and the backstage seen for what it is.",
           "[laughs] His whole Hall of Mirrors just stopped working on you.",
           "[excited] Cyber Hero, sticker time!",
         ],

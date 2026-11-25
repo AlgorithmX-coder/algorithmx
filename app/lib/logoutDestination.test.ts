@@ -42,8 +42,8 @@ describe("logging out of Cyber Heroes", () => {
     expect(logoutDestinationFor({ slug: "no-such-course" })).toBe("/");
   });
 
-  it("is what both logout actions actually go through", () => {
-    for (const f of ["app/dashboard/page.tsx", "app/parent/page.tsx"]) {
+  it("is what the logout action actually goes through", () => {
+    for (const f of ["app/dashboard/page.tsx"]) {
       const src = readFileSync(f, "utf8");
       expect(src, `${f} does not use the shared logout destination`).toContain(
         "logoutDestinationFor",

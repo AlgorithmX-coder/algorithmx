@@ -1093,8 +1093,7 @@ export const WEEK_4: WeekContent = {
         speaker: "layla",
         lines: [
           "[excited] Look at EVERYTHING you mastered this week!",
-          "You follow every string. No giant prize can dazzle you. No countdown can rush you,",
-          "no copycat can fool you...",
+          "You follow every string. No giant prize can dazzle you. No countdown can rush you, no copycat can fool you...",
           "[laughs] and you never, ever bite!",
           "[excited] Every scam went straight back to sender. Sticker time!",
         ],

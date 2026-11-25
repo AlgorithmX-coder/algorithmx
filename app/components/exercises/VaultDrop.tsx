@@ -813,7 +813,7 @@ export default function VaultDrop({
         {/* ── The treasure ── */}
         <div style={{ position: "relative", zIndex: 3, textAlign: "center", padding: "16px 0 6px" }}>
           <div style={{ fontSize: 15, fontWeight: 900, color: "#ffffff", textShadow: "0 2px 8px rgba(0,0,0,0.7)" }}>
-            ↖ Drag it to the right place ↗
+            ↖ Drag it, or tap where it goes ↗
           </div>
           <div style={{ fontSize: 12, fontWeight: 800, color: "#ffd158", marginTop: 2, letterSpacing: "0.06em" }}>
             ✦ Treasure {Math.min(idx + 1, shownItems.length)} of {shownItems.length} ✦

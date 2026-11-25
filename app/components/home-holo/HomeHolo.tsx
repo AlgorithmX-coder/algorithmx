@@ -2,10 +2,10 @@
 /* eslint-disable @next/next/no-img-element */
 
 import { useEffect, useRef, useState } from "react";
-import Link from "next/link";
 import BrandCube from "@/app/components/BrandCube";
 import CourseLockup, { type LockupId } from "@/app/components/CourseLockup";
 import HoloHero from "./HoloHero";
+import { HoloFooter, HoloNav } from "./HoloChrome";
 import { AX } from "./content";
 import { ICONS, countUp, reveal, scramble, sparkPath } from "./fx";
 import "./home.css";
@@ -36,6 +36,10 @@ const TRACK_ART: Record<string, { art: string; lockup?: LockupId; pos?: string }
   Pro: { art: "/characters/cyberpro-card.jpg", lockup: "pro", pos: "62% 42%" },
   /* purpose-made for this card: OpenArt (Nano Banana 2), 2026-11-21, saved in Personal Project */
   Ready: { art: "/desk-ready/card.webp", pos: "50% 34%" },
+  /* the three firm tracks sold together as Cyber Secured: OpenArt (Nano Banana 2), 2026-11-22, Personal Project */
+  Fluent: { art: "/corporate/cards/ai-fluent.webp", pos: "50% 30%" },
+  Cleared: { art: "/corporate/cards/ai-cleared.webp", pos: "50% 30%" },
+  Awareness: { art: "/corporate/cards/cyber-awareness.webp", pos: "50% 30%" },
 };
 
 function TrackCard({ t, i, icon, more }: { t: Track; i: number; icon: keyof typeof ICONS; more: string }) {
@@ -68,40 +72,7 @@ function TrackCard({ t, i, icon, more }: { t: Track; i: number; icon: keyof type
   );
 }
 
-function LockedCard({ accent, n, i, label, foot }: { accent: string; n: string; i: number; label: string; foot: string }) {
-  return (
-    <article className="pane-card locked" style={{ "--a": accent, "--i": i } as React.CSSProperties}>
-      <span className="pdot" />
-      <div className="inner">
-        <div className="top"><span className="ic"><Icon name="lock" size={18} sw={1.9} /></span><span className="nm" data-scramble="10" /><span className="n">{n}</span></div>
-        <div className="chips"><span className="verb"><i />{label}</span></div>
-        <div className="redact tall"><i style={{ width: "78%" }} /><i style={{ width: "54%" }} /><i style={{ width: "66%" }} /><i style={{ width: "42%" }} /><i style={{ width: "72%" }} /><i style={{ width: "48%" }} /></div>
-        <div className="cipher"><div data-scramble="18" /><div data-scramble="18" /><div data-scramble="18" /></div>
-        <div className="more">{foot}</div>
-      </div>
-    </article>
-  );
-}
-
 const Brackets = () => <><span className="brk tl" /><span className="brk tr" /><span className="brk bl" /><span className="brk br" /></>;
-
-function Nav() {
-  const segRef = useRef<HTMLElement>(null);
-  const glowRef = useRef<HTMLSpanElement>(null);
-  const lit = (a: HTMLAnchorElement) => { const g = glowRef.current, s = segRef.current; if (!g || !s) return; g.style.left = a.offsetLeft + "px"; g.style.width = a.offsetWidth + "px"; s.classList.add("lit"); };
-  return (
-    <header className="nav">
-      <div className="capsule">
-        <Link className="ax-brand" href="/" aria-label="AlgorithmX home"><BrandCube size={24} /><span className="lv2-wordmark"><span className="lv2-wordmark-main">ALGORITHM</span><span className="lv2-wordmark-x">X</span></span></Link>
-        <div className="trust">{AX.nav.trust.map((t) => <span className="mark" key={t.word} title={t.name}><span className={`plate ${"dark" in t && t.dark ? "dark" : ""}`}><img src={t.logo} alt={t.name} /></span><span className="word">{t.word}</span></span>)}</div>
-        <nav className="seg" ref={segRef} aria-label="Site" onPointerLeave={() => segRef.current?.classList.remove("lit")}>
-          <span className="glow" ref={glowRef} />
-          {AX.nav.tabs.map((t) => <a key={t.label} href={t.href} onPointerEnter={(e) => lit(e.currentTarget)} onFocus={(e) => lit(e.currentTarget)}>{t.label}</a>)}
-        </nav>
-      </div>
-    </header>
-  );
-}
 
 /* FAQ: a two-column spread, heading on the left, questions in a glass panel on
  * the right. Open state is React state only; the items carry no data-reveal
@@ -161,8 +132,9 @@ export default function HomeHolo() {
     return () => stops.forEach((s) => s());
   }, []);
 
-  const A = AX.accreditations, S = AX.stats, ST = AX.streams, C = ST.cyber, W = ST.workplace, R = ST.roadmap, T = AX.toolkit, Fo = AX.footer;
+  const A = AX.accreditations, S = AX.stats, ST = AX.streams, C = ST.cyber, W = ST.workplace, R = ST.roadmap, T = AX.toolkit;
   const icons: Array<keyof typeof ICONS> = ["bolt", "search", "target", "terminal"];
+  const firmIcons: Array<keyof typeof ICONS> = ["bolt", "shield", "search"];
   /* colour logos (owner: "put colours on it"); Apple and Unity ship as white marks, so they go to ink */
   const INK = new Set(["Apple", "Unity"]);
   const logos = T.logos.map((l) => <span className="logo" key={l.name}><img src={l.src} alt={l.name} className={INK.has(l.name) ? "ink" : ""} /><span>{l.name.toUpperCase()}</span></span>);
@@ -170,7 +142,7 @@ export default function HomeHolo() {
   return (
     <div className="hv4" ref={rootRef}>
       <div className="atmo" aria-hidden="true"><div className="pool c" /><div className="pool v" /><div className="floor" /></div>
-      <Nav />
+      <HoloNav />
       <main>
         <HoloHero />
 
@@ -196,7 +168,7 @@ export default function HomeHolo() {
           <article className="dossier blue" data-reveal id="workPanel"><Brackets />
             <div className="hud"><span>{W.tag}</span><span>{W.meta}</span></div>
             <div className="head"><div className="hex"><Icon name="monitor" size={34} sw={1.6} /></div><div><h3>{W.name}</h3><div className="ages">{W.ages}</div><p className="blurb">{W.blurb}</p></div><span className="badge2">{W.badge}</span></div>
-            <div className="panesWrap"><span className="srcCube"><BrandCube size={28} /></span><svg className="wires" aria-hidden="true" /><div className="panes"><TrackCard t={W.live} i={0} icon="monitor" more={W.more} />{W.locked.map((l, i) => <LockedCard key={l.n} accent={l.accent} n={l.n} i={i + 1} label={W.lockedLabel} foot={W.lockedFoot} />)}</div></div>
+            <div className="panesWrap"><span className="srcCube"><BrandCube size={28} /></span><svg className="wires" aria-hidden="true" /><div className="panes"><TrackCard t={W.live} i={0} icon="monitor" more={W.more} />{W.firm.map((t, i) => <TrackCard key={t.label} t={t} i={i + 1} icon={firmIcons[i]} more={W.more} />)}</div></div>
             <div className="ctaRow"><a className="btn2" href={W.href}>{W.cta} <Icon name="arrow" size={18} sw={2.2} /></a></div>
           </article>
           <div className="road">
@@ -225,16 +197,7 @@ export default function HomeHolo() {
         <Faq />
       </main>
 
-      <footer>
-        <div className="bigcube" aria-hidden="true"><svg width="520" height="520" viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth=".6" strokeLinejoin="round"><polygon points="16,2 28.12,9 28.12,23 16,30 3.88,23 3.88,9" /><path d="M16 16 L28.12 9 M16 16 L3.88 9 M16 16 L16 30" /></svg></div>
-        <div className="wrap">
-          <div className="grid">
-            <div><Link className="ax-brand" href="/" aria-label="AlgorithmX"><BrandCube size={24} /><span className="lv2-wordmark"><span className="lv2-wordmark-main">ALGORITHM</span><span className="lv2-wordmark-x">X</span></span></Link><p className="tag">{Fo.tagline}</p></div>
-            {Fo.cols.map((c) => <div key={c.title}><h4>{c.title}</h4><ul>{c.links.map((l) => <li key={l[0]}><a href={l[1]}>{l[0]}</a></li>)}</ul>{"note" in c && c.note ? <div className="note">{c.note}</div> : null}</div>)}
-          </div>
-          <div className="legal"><a href={`mailto:${Fo.email}`}>{Fo.email}</a><span>{Fo.legal}</span></div>
-        </div>
-      </footer>
+      <HoloFooter />
     </div>
   );
 }

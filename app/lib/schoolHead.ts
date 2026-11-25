@@ -1,6 +1,9 @@
 import type { LearnerOrgKind } from "@prisma/client";
+import { cookies } from "next/headers";
 import { prisma } from "@/app/lib/prisma";
 import { courseName } from "@/app/lib/schoolPlaces";
+import { pickSchool, SCHOOL_CHOICE_COOKIE, type SchoolChoice } from "@/app/lib/schoolChoice";
+import { trialStatus } from "@/app/lib/orgTrial";
 import { newInviteToken } from "@/app/lib/aiClearedAdmin";
 import { sendTeacherInvite } from "@/app/lib/schoolOps";
 
@@ -34,6 +37,8 @@ export interface HeadContext {
   seatsPurchased: number;
   trialExpiresAt: Date | null;
   revokedAt: Date | null;
+  /** Every school they head, newest first, so a screen can offer the switch. */
+  schools: SchoolChoice[];
 }
 
 /**
@@ -47,8 +52,14 @@ export interface HeadContext {
  */
 export async function getHeadContext(userId: string): Promise<HeadContext | null> {
   if (!userId) return null;
-  const member = await prisma.orgMember.findFirst({
+  /* The same choice as getSchoolContext, deliberately. This was its own
+     `findFirst` with no `orderBy`, so somebody who heads two schools could
+     be shown one school on /schools/overview and the other on
+     /schools/classes, which is worse than either screen being wrong alone.
+     One picker, one cookie, one answer. */
+  const members = await prisma.orgMember.findMany({
     where: { userId, role: "ADMIN", org: { school: { isNot: null } } },
+    orderBy: { createdAt: "desc" },
     select: {
       org: {
         select: {
@@ -62,14 +73,26 @@ export async function getHeadContext(userId: string): Promise<HeadContext | null
       },
     },
   });
-  if (!member?.org.school) return null;
+  if (members.length === 0) return null;
+
+  const schools: SchoolChoice[] = members.map((m) => ({
+    orgId: m.org.id,
+    name: m.org.name,
+    live: m.org.revokedAt === null && trialStatus(m.org.trialExpiresAt) !== "expired",
+  }));
+  const preferred = (await cookies()).get(SCHOOL_CHOICE_COOKIE)?.value ?? null;
+  const chosen = pickSchool(schools, preferred);
+  const org = members.find((m) => m.org.id === chosen?.orgId)!.org;
+  if (!org.school) return null;
+
   return {
-    orgId: member.org.id,
-    orgName: member.org.name,
-    kind: member.org.school.kind,
-    seatsPurchased: member.org.seatsPurchased,
-    trialExpiresAt: member.org.trialExpiresAt,
-    revokedAt: member.org.revokedAt,
+    orgId: org.id,
+    orgName: org.name,
+    kind: org.school.kind,
+    seatsPurchased: org.seatsPurchased,
+    trialExpiresAt: org.trialExpiresAt,
+    revokedAt: org.revokedAt,
+    schools,
   };
 }
 
