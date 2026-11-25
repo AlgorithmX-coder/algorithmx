@@ -1,0 +1,525 @@
+/* The crash screens: app/error.tsx and app/global-error.tsx.
+ *
+ * Ported from the owner-approved bright design (landing lab round 7,
+ * "Daylight Console", r7-front-error.html + r7-front.css): the light
+ * Hologram house, a #f7f8fb ground with the homepage's 64px hairline grid,
+ * a cyan pool top left and a violet pool bottom right, and one white glass
+ * console with a cyan-to-violet seam along its top edge.
+ *
+ * Everything is scoped under .axcrash so nothing here can reach another
+ * page. State is carried by data attributes, never by swapping classes:
+ *   [data-variant="page"|"global"]  global-error draws no pools and uses
+ *                                   system fonts, as it renders without the app
+ *   [data-busy="true"]              on the Try again button while it retries
+ *   [data-done="true"]              on COPY once the reference is copied
+ * The design's animated course streams are not ported: a crash screen
+ * should be quiet and cheap. */
+
+.axcrash {
+  --ax-bg: #f7f8fb;
+  --ax-ink: #0b0d12;
+  --ax-body: #2a3140;
+  --ax-muted: #4b5565;
+  --ax-teal: #0a7085;
+  --ax-line: #dfe4ec;
+  --ax-line2: #cfd6e2;
+  --ax-err: #b42318;
+  --ax-err-rgb: 217, 45, 32;
+  --ax-ok: #0e7a45;
+  --ax-ok-rgb: 14, 122, 69;
+  --ax-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --ax-disp: var(--axcrash-disp, "Space Grotesk"), system-ui, -apple-system, "Segoe UI", sans-serif;
+  --ax-sans: var(--axcrash-sans, Inter), system-ui, -apple-system, "Segoe UI", sans-serif;
+  --ax-mono: var(--axcrash-mono, "Geist Mono"), ui-monospace, Menlo, Consolas, monospace;
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100dvh;
+  width: 100%;
+  margin: 0;
+  overflow-x: clip;
+  background: var(--ax-bg);
+  color: var(--ax-body);
+  color-scheme: light;
+  font-family: var(--ax-sans);
+  font-size: 15px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+.axcrash *,
+.axcrash *::before,
+.axcrash *::after {
+  box-sizing: border-box;
+}
+.axcrash :focus-visible {
+  outline: 2px solid var(--ax-teal);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+.axcrash svg {
+  display: inline-block;
+  flex: 0 0 auto;
+}
+
+/* The ground: the hairline grid, masked to the centre, and two soft pools. */
+.axcrash-grid {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: linear-gradient(var(--ax-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--ax-line) 1px, transparent 1px);
+  background-size: 64px 64px;
+  background-position: center top;
+  opacity: 0.75;
+  -webkit-mask-image: radial-gradient(ellipse 85% 75% at 50% 42%, #000 25%, transparent 100%);
+  mask-image: radial-gradient(ellipse 85% 75% at 50% 42%, #000 25%, transparent 100%);
+}
+.axcrash-pool {
+  position: fixed;
+  z-index: 0;
+  pointer-events: none;
+  border-radius: 50%;
+  opacity: 0;
+  animation: axcrash-in 1.4s var(--ax-ease) 0.05s forwards;
+}
+.axcrash-pool[data-pool="cyan"] {
+  left: -22vw;
+  top: -46vh;
+  width: 70vw;
+  height: 92vh;
+  filter: blur(40px);
+  background: radial-gradient(closest-side, rgba(0, 229, 255, 0.24), rgba(0, 229, 255, 0.08) 45%, transparent 72%);
+  animation: axcrash-in 1.4s var(--ax-ease) 0.05s forwards, axcrash-breathe 12s ease-in-out 1.5s infinite alternate;
+}
+.axcrash-pool[data-pool="violet"] {
+  right: -20vw;
+  top: 42vh;
+  width: 58vw;
+  height: 80vh;
+  filter: blur(50px);
+  animation-delay: 0.3s;
+  background: radial-gradient(closest-side, rgba(139, 123, 255, 0.2), rgba(139, 123, 255, 0.06) 50%, transparent 75%);
+}
+
+/* The chrome: the lockup on a white capsule, as the homepage nav. */
+.axcrash-chrome {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  width: min(1240px, 100% - 48px);
+  margin: 0 auto;
+  padding-top: 22px;
+  opacity: 0;
+  animation: axcrash-rise 0.9s var(--ax-ease) 0.1s forwards;
+}
+.axcrash-lockup {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  line-height: 1;
+  color: var(--ax-ink);
+  text-decoration: none;
+  padding: 7px 16px 7px 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.82);
+  border: 1px solid var(--ax-line2);
+  box-shadow: 0 10px 34px -16px rgba(20, 30, 60, 0.3), inset 0 1px 0 #fff;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+.axcrash-lockup .lv2-cube-wrap {
+  margin: 4px 6px 4px 4px;
+  border-radius: 7px;
+  box-shadow: 0 0 0 6px #e4fbff, 0 0 0 7px rgba(0, 229, 255, 0.35), 0 6px 16px -6px rgba(0, 180, 216, 0.5);
+}
+.axcrash-word {
+  display: inline-flex;
+  align-items: baseline;
+  font-family: var(--ax-mono);
+  font-size: 13.5px;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: #04050d;
+}
+.axcrash-word b {
+  font-weight: inherit;
+  margin-left: 0.04em;
+  color: #00b4d8;
+  background-image: linear-gradient(150deg, #7df0ff, #00b4d8);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* The stage and the console: white glass, a lit seam on top, a soft lift. */
+.axcrash-stage {
+  position: relative;
+  z-index: 3;
+  flex: 1;
+  display: grid;
+  place-items: center;
+  padding: 22px 16px 64px;
+}
+.axcrash-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+.axcrash-console {
+  position: relative;
+  width: min(444px, 100%);
+  padding: 32px 32px 28px;
+  border-radius: 20px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.84));
+  border: 1px solid var(--ax-line2);
+  box-shadow: inset 0 1px 0 #fff, 0 30px 70px -30px rgba(20, 30, 60, 0.26), 0 2px 6px rgba(20, 30, 60, 0.05),
+    0 0 0 6px rgba(255, 255, 255, 0.45), 0 0 120px -40px rgba(0, 229, 255, 0.35);
+  backdrop-filter: blur(20px) saturate(1.4);
+  -webkit-backdrop-filter: blur(20px) saturate(1.4);
+  opacity: 0;
+  transform: translateY(14px);
+  animation: axcrash-rise 1s var(--ax-ease) 0.18s forwards;
+}
+.axcrash-console::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(90deg, transparent 8%, rgba(0, 229, 255, 0.9) 38%, rgba(139, 123, 255, 0.75) 66%, transparent 92%) top / 100% 1.5px no-repeat,
+    radial-gradient(620px circle at 12% -30%, rgba(0, 229, 255, 0.07), transparent 60%);
+}
+
+.axcrash-head {
+  position: relative;
+  margin-bottom: 22px;
+}
+.axcrash-kick {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 16px;
+  padding: 7px 13px 7px 11px;
+  border-radius: 999px;
+  font-family: var(--ax-mono);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ax-err);
+  background: #fff;
+  border: 1px solid rgba(var(--ax-err-rgb), 0.3);
+  box-shadow: 0 0 18px rgba(var(--ax-err-rgb), 0.08);
+  opacity: 0;
+  animation: axcrash-rise 0.9s var(--ax-ease) 0.24s forwards;
+}
+.axcrash-title {
+  margin: 0;
+  font-family: var(--ax-disp);
+  font-weight: 700;
+  font-size: 31px;
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  color: var(--ax-ink);
+  text-wrap: balance;
+  opacity: 0;
+  animation: axcrash-rise 0.9s var(--ax-ease) 0.3s forwards;
+}
+.axcrash-sub {
+  margin: 9px 0 0;
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: var(--ax-body);
+  opacity: 0;
+  animation: axcrash-rise 0.9s var(--ax-ease) 0.38s forwards;
+}
+
+/* The actions: Try again (the house pill) and Back to home (the ghost pill). */
+.axcrash-actions {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.axcrash-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  width: 100%;
+  height: 52px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 999px;
+  cursor: pointer;
+  font-family: var(--ax-mono);
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+  overflow: hidden;
+  background: linear-gradient(90deg, #0a7085, #0b7b92);
+  color: #fff;
+  box-shadow: 0 0 0 1px rgba(10, 112, 133, 0.4), 0 14px 34px -12px rgba(10, 112, 133, 0.55), 0 0 26px rgba(0, 229, 255, 0.22);
+  transition: transform 0.25s var(--ax-ease), box-shadow 0.3s;
+  opacity: 0;
+  animation: axcrash-rise 0.9s var(--ax-ease) 0.66s forwards;
+}
+.axcrash-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 0 0 1px rgba(10, 112, 133, 0.6), 0 18px 40px -12px rgba(10, 112, 133, 0.6), 0 0 36px rgba(0, 229, 255, 0.36);
+}
+.axcrash-btn:active {
+  transform: translateY(0) scale(0.99);
+}
+.axcrash-btn[data-kind="ghost"] {
+  background: #fff;
+  color: var(--ax-teal);
+  box-shadow: 0 0 0 1px rgba(10, 112, 133, 0.35), 0 10px 26px -14px rgba(20, 30, 60, 0.3);
+}
+.axcrash-btn[data-kind="ghost"]:hover {
+  box-shadow: 0 0 0 1px rgba(10, 112, 133, 0.6), 0 14px 30px -14px rgba(20, 30, 60, 0.35), 0 0 26px rgba(0, 229, 255, 0.22);
+}
+.axcrash-btn[data-busy="true"] {
+  cursor: wait;
+}
+.axcrash-btn[data-busy="true"]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(100deg, transparent 20%, rgba(255, 255, 255, 0.35) 50%, transparent 80%);
+  transform: translateX(-120%);
+  animation: axcrash-sweep 1.4s ease-in-out infinite;
+}
+
+/* The reference: the error's digest (or Sentry's event id) and when. */
+.axcrash-ref {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 18px 0 0;
+  padding: 8px 8px 8px 13px;
+  border-radius: 12px;
+  background: #f6f9fc;
+  border: 1px solid var(--ax-line);
+  opacity: 0;
+  animation: axcrash-rise 0.9s var(--ax-ease) 0.8s forwards;
+}
+.axcrash-ref-t {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+.axcrash-ref-k {
+  font-family: var(--ax-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ax-muted);
+}
+.axcrash-ref code {
+  display: block;
+  font-family: var(--ax-mono);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ax-ink);
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.axcrash-copy {
+  flex: 0 0 auto;
+  min-width: 64px;
+  height: 44px;
+  padding: 0 12px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-family: var(--ax-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--ax-teal);
+  background: #fff;
+  border: 1px solid rgba(10, 112, 133, 0.35);
+  transition: box-shadow 0.2s, border-color 0.2s;
+}
+.axcrash-copy:hover {
+  border-color: rgba(10, 112, 133, 0.6);
+  box-shadow: 0 0 18px rgba(0, 229, 255, 0.25);
+}
+.axcrash-copy[data-done="true"] {
+  color: var(--ax-ok);
+  border-color: rgba(var(--ax-ok-rgb), 0.5);
+}
+
+.axcrash-help {
+  position: relative;
+  z-index: 3;
+  margin: 16px 0 0;
+  text-align: center;
+  font-size: 13.5px;
+  color: var(--ax-body);
+  opacity: 0;
+  animation: axcrash-rise 0.9s var(--ax-ease) 0.86s forwards;
+}
+.axcrash-help a {
+  color: var(--ax-teal);
+  font-weight: 700;
+  padding: 2px 3px;
+  border-radius: 5px;
+  text-decoration: none;
+}
+.axcrash-help a:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.axcrash-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* global-error renders without the root layout: system fonts, no pools. */
+.axcrash[data-variant="global"] {
+  --ax-disp: system-ui, -apple-system, "Segoe UI", sans-serif;
+  --ax-sans: system-ui, -apple-system, "Segoe UI", sans-serif;
+  --ax-mono: ui-monospace, Menlo, Consolas, monospace;
+}
+.axcrash[data-variant="global"] .axcrash-title {
+  letter-spacing: -0.01em;
+}
+.axcrash[data-variant="global"] .axcrash-btn {
+  letter-spacing: 0.04em;
+  text-transform: none;
+  font-size: 14.5px;
+}
+.axcrash[data-variant="global"] .axcrash-pool {
+  display: none;
+}
+.axcrash[data-variant="global"] .axcrash-lockup {
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+@keyframes axcrash-rise {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes axcrash-in {
+  to {
+    opacity: 1;
+  }
+}
+@keyframes axcrash-breathe {
+  from {
+    filter: blur(40px) saturate(1);
+  }
+  to {
+    filter: blur(48px) saturate(1.25);
+  }
+}
+@keyframes axcrash-sweep {
+  to {
+    transform: translateX(120%);
+  }
+}
+
+@media (min-width: 1600px) {
+  .axcrash-console {
+    width: min(464px, 100%);
+    padding: 36px 36px 30px;
+  }
+  .axcrash-chrome {
+    padding-top: 28px;
+  }
+}
+@media (max-height: 740px) {
+  .axcrash-stage {
+    padding-top: 14px;
+  }
+  .axcrash-console {
+    padding: 26px 28px 24px;
+  }
+  .axcrash-head {
+    margin-bottom: 16px;
+  }
+}
+@media (max-width: 640px) {
+  .axcrash-chrome {
+    width: calc(100% - 32px);
+    padding-top: 16px;
+  }
+  .axcrash-lockup {
+    padding: 6px 12px 6px 6px;
+  }
+  .axcrash-word {
+    font-size: 12px;
+    letter-spacing: 0.24em;
+  }
+  .axcrash-stage {
+    padding: 16px 16px 70px;
+    align-items: start;
+  }
+  .axcrash-console {
+    padding: 24px 20px 22px;
+  }
+  .axcrash-title {
+    font-size: 28px;
+  }
+  .axcrash-btn {
+    height: 50px;
+  }
+  .axcrash-actions {
+    grid-template-columns: 1fr;
+  }
+  .axcrash-ref code {
+    white-space: normal;
+  }
+  .axcrash-pool[data-pool="cyan"] {
+    left: -50vw;
+    top: -24vh;
+    width: 150vw;
+    height: 60vh;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .axcrash *,
+  .axcrash *::after,
+  .axcrash-pool {
+    animation: none !important;
+  }
+  .axcrash-chrome,
+  .axcrash-console,
+  .axcrash-kick,
+  .axcrash-title,
+  .axcrash-sub,
+  .axcrash-btn,
+  .axcrash-ref,
+  .axcrash-help,
+  .axcrash-pool {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
