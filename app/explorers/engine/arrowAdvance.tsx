@@ -63,8 +63,13 @@ export function advanceNow() {
  * page.tsx): a tester visits /explorers?qa=1 once and keeps them for that
  * browser; ?qa=0 turns them off again. Nothing is deleted, so a re-test round
  * costs one query parameter.
+ *
+ * Development builds only (owner 2026-11-25: no tester shortcuts for
+ * customers). A production build always answers false, whatever a browser
+ * has stored.
  */
 export function qaUnlocked(): boolean {
+  if (process.env.NODE_ENV === "production") return false;
   try {
     return localStorage.getItem("explorers:qa") === "1";
   } catch {

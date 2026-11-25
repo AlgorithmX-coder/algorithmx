@@ -293,7 +293,7 @@ export default function MissionRuntime({ manifest, devStartBeat, onExit, onNextC
   // Fast test mode (?fast=1): reuse the reduced-motion path to skip the narrator
   // wait / anti-skip so the owner can click through quickly. Real users never set
   // it, so the anti-skip stays on for them.
-  const fast = typeof window !== "undefined" && new URLSearchParams(window.location.search).get("fast") === "1";
+  const fast = process.env.NODE_ENV !== "production" && typeof window !== "undefined" && new URLSearchParams(window.location.search).get("fast") === "1"; // tester speed-up, dev builds only
   const reduced = useReducedMotion() || fast;
   // Per-case visual identity (accent + backdrop + device skin). Each case in a
   // block gets a different one so no two cases look alike; learning is unchanged.

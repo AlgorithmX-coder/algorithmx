@@ -2139,8 +2139,10 @@ function LessonPlayerInner({ userName, moduleId, childName }: { userName: string
     }
   }, []);
   const [screen, setScreen] = useState(0);
-  // Dev: jump to a specific case via ?case=N (post-hydration so SSR matches)
+  // Dev: jump to a specific case via ?case=N (post-hydration so SSR matches).
+  // Development builds only: on production a child could skip to any screen.
   useEffect(() => {
+    if (process.env.NODE_ENV === "production") return;
     const c = new URLSearchParams(window.location.search).get("case");
     const n = c ? parseInt(c, 10) : NaN;
     if (Number.isFinite(n)) setScreen(n);
