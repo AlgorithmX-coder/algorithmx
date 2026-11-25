@@ -35,8 +35,9 @@ import PlaySignatureOnMount from "@/app/components/lesson/PlaySignatureOnMount";
 import PlayHubAmbientOnMount from "@/app/components/PlayHubAmbientOnMount";
 import PixIcon from "@/app/components/lesson/PixIcon";
 import PupilSignOut from "@/app/components/PupilSignOut";
+import CourseSignOut from "@/app/components/CourseSignOut";
 import CarryOn from "@/app/components/cyberhq/CarryOn";
-import HeroesShell, { CertIcon, Icon, KidChip } from "@/app/components/heroes-portal/HeroesShell";
+import HeroesShell, { CertIcon, Icon, KidChip, OutIcon } from "@/app/components/heroes-portal/HeroesShell";
 import { prisma } from "@/app/lib/prisma";
 import { resolveActiveChildProfileId } from "@/app/lib/progressService";
 import { getAge } from "@/app/lib/entitlements";
@@ -126,6 +127,9 @@ export default async function CyberHQPage() {
         <>
           {child && kid ? <KidChip name={child.name} age={getAge(child.dateOfBirth)} hex={kid.hex} ink={inkOn(kid.hex)} /> : null}
           {!pupil ? <Link className="hlm-pill acc" href="/dashboard"><Icon name="back" /><span className="t">Back to dashboard</span></Link> : null}
+          {/* Everyone signed in can leave from here: a family's child back to
+              the Cyber Heroes sign-in, a school pupil to the school door. */}
+          <CourseSignOut course="cyber-heroes" className="hlm-pill"><OutIcon /><span className="t">Sign out</span></CourseSignOut>
         </>
       }
     >

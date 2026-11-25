@@ -351,3 +351,6 @@ from{transform:scaleX(0)}}
 .hb6 .hb6-draw.real{max-width:100%}
 /* phones: the chrome holds the mark, the page's own link and Pause; the wordmark gives way */
 @media (max-width:420px){.hb6 .hb6-lockup .lk-col{display:none}.hb6 .hb6-chrome-r{gap:8px}.hb6 .hb6-pillbtn{padding:0 14px;font-size:14px}}
+
+/* The header Sign out is a <button> in a form (CourseSignOut): same pill as the links. */
+.hb6 button.hb6-pillbtn{cursor:pointer}

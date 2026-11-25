@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import NightHomeShell, { ByCube, NightHomePause } from "@/app/components/course-home/NightHomeShell";
+import CourseSignOut from "@/app/components/CourseSignOut";
 import PartPreview, { PREVIEW_CSS, type PreviewKind } from "../PartPreview";
 import { doneIn, useDone } from "../learn/progress";
 import type { ModuleManifest } from "../learn/types";
@@ -112,6 +113,7 @@ export default function CourseHome() {
           </div>
           <div className="hb6-chrome-r">
             <Link className="hb6-pillbtn" href="/desk-ready">About the course</Link>
+            <CourseSignOut course="desk-ready" className="hb6-pillbtn">Sign out</CourseSignOut>
             <NightHomePause />
           </div>
         </div>
