@@ -5,8 +5,10 @@ import { fulfilPlacesSession } from "@/app/lib/learnerPlaces";
 import { CONSUMER_PRODUCT, fulfilConsumerSession } from "@/app/lib/consumerCheckout";
 import { stripe } from "@/app/lib/stripe";
 import { opsAlert } from "@/app/lib/opsAlert";
+import { applyChargeRefund } from "@/app/lib/refundEffects";
 
-/* POST /api/stripe/webhook: Stripe tells us a checkout completed. The
+/* POST /api/stripe/webhook: Stripe tells us a checkout completed, a charge
+ * was refunded, or a payment was disputed. The
  * signature is checked against STRIPE_WEBHOOK_SECRET on the raw body;
  * anything unsigned is refused. Fulfilment is idempotent, so a repeated
  * delivery creates nothing twice. Always answers 200 once verified so
@@ -58,5 +60,42 @@ export async function POST(req: NextRequest) {
       return Response.json({ error: "Fulfilment failed; will retry." }, { status: 500 });
     }
   }
+
+  /* A refund, from /admin or from the Stripe dashboard: both end here, and
+   * both end in the same state (app/lib/refundEffects.ts works from the
+   * charge's running total, so a second arrival changes nothing). */
+  if (event.type === "charge.refunded") {
+    const charge = event.data.object as Stripe.Charge;
+    try {
+      const result = await applyChargeRefund(charge);
+      console.log("[stripe/webhook]", event.type, JSON.stringify(result));
+      if ("skipped" in result) {
+        await opsAlert({ what: "A Stripe refund matched no purchase here", detail: { reason: result.skipped, chargeId: charge.id, paymentIntent: typeof charge.payment_intent === "string" ? charge.payment_intent : charge.payment_intent?.id ?? "", refundedPence: charge.amount_refunded, email: charge.billing_details?.email ?? charge.receipt_email ?? "" } });
+      }
+    } catch (err) {
+      console.error("[stripe/webhook] refund failed", err instanceof Error ? err.message : err);
+      await opsAlert({ what: "Applying a Stripe refund threw; Stripe will retry", detail: { chargeId: charge.id, refundedPence: charge.amount_refunded }, error: err });
+      return Response.json({ error: "Refund not applied; will retry." }, { status: 500 });
+    }
+  }
+
+  /* A chargeback. Nothing changes on its own: a person answers it in the
+   * Stripe dashboard before the deadline, so they are told at once. */
+  if (event.type === "charge.dispute.created") {
+    const dispute = event.data.object as Stripe.Dispute;
+    await opsAlert({
+      what: "A payment has been disputed (chargeback)",
+      detail: {
+        disputeId: dispute.id,
+        chargeId: typeof dispute.charge === "string" ? dispute.charge : dispute.charge?.id ?? "",
+        amount: `${(dispute.amount / 100).toFixed(2)} ${dispute.currency.toUpperCase()}`,
+        reason: dispute.reason,
+        status: dispute.status,
+        respondBy: dispute.evidence_details?.due_by ? new Date(dispute.evidence_details.due_by * 1000).toISOString() : "",
+        fix: "Answer it in the Stripe dashboard (Payments, Disputes) before the deadline. Access is unchanged until then.",
+      },
+    });
+  }
+
   return Response.json({ received: true });
 }

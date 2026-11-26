@@ -7,6 +7,8 @@ import { IndividualsIcon } from "../../icons";
 import { courseColor } from "../../courseColors";
 import RevokeEntitlementButton from "./RevokeEntitlementButton";
 import GrantCourseButton from "./GrantCourseButton";
+import RefundButton from "../../RefundButton";
+import { consumerCourse } from "@/app/lib/consumerCatalogue";
 
 /* /admin/individuals/[id]: one person - their courses, how they got
  * each one, and any family children on their account. Styling in
@@ -29,6 +31,15 @@ export default async function AdminIndividualPage({ params }: { params: Promise<
   ).filter((p) => !held.has(p.slug));
 
   const day = (iso: string | null) => (iso ? new Date(iso).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" }) : "—");
+
+  /* Card purchases of a course, newest first. Each can be refunded once, in
+     full: the course is then removed (app/lib/refundEffects.ts). */
+  const purchases = await prisma.consumerPurchase.findMany({
+    where: { userId: person.id },
+    orderBy: { purchasedAt: "desc" },
+    select: { id: true, slug: true, amountPence: true, currency: true, refundedPence: true, refundedAt: true, purchasedAt: true, waiverConsentAt: true, buyerEmail: true },
+  });
+  const money = (pence: number, currency: string) => new Intl.NumberFormat("en-GB", { style: "currency", currency: currency.toUpperCase() }).format(pence / 100);
 
   return (
     <div>
@@ -54,6 +65,29 @@ export default async function AdminIndividualPage({ params }: { params: Promise<
               </tr>
             ))}
             {person.products.length === 0 && <tr><td colSpan={4} className="ad-empty">No courses.</td></tr>}
+          </tbody>
+        </table>
+      </div>
+
+      <div className="ad-card ad-table-wrap">
+        <table className="ad-table">
+          <thead>
+            <tr><th>Purchase</th><th>Paid</th><th>Bought</th><th>Started at once</th><th>Refund</th></tr>
+          </thead>
+          <tbody>
+            {purchases.map((p) => {
+              const name = consumerCourse(p.slug)?.name ?? p.slug;
+              return (
+                <tr key={p.id}>
+                  <td><b>{name}</b>{p.buyerEmail && p.buyerEmail !== person.email.toLowerCase() ? <> &middot; paid by {p.buyerEmail}</> : null}</td>
+                  <td>{money(p.amountPence, p.currency)}{p.refundedPence > 0 ? <> &middot; {money(p.refundedPence, p.currency)} refunded</> : null}</td>
+                  <td>{day(p.purchasedAt.toISOString())}</td>
+                  <td>{p.waiverConsentAt ? `Ticked ${day(p.waiverConsentAt.toISOString())}` : "No"}</td>
+                  <td>{p.refundedAt ? <>Refunded {day(p.refundedAt.toISOString())}</> : <RefundButton kind="consumer" purchaseId={p.id} remainingPence={p.amountPence - p.refundedPence} currency={p.currency} what={name} />}</td>
+                </tr>
+              );
+            })}
+            {purchases.length === 0 && <tr><td colSpan={5} className="ad-empty">No card purchases.</td></tr>}
           </tbody>
         </table>
       </div>

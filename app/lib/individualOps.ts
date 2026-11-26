@@ -63,7 +63,9 @@ export async function listIndividuals(): Promise<IndividualRow[]> {
     where: {
       role: { notIn: ["staff", "pupil"] },
       email: { not: { endsWith: SMOKE_DOMAIN } },
-      entitlements: { some: {} },
+      /* Someone refunded in full holds no course any more but is still a
+         customer with a purchase on record, so they stay listed. */
+      OR: [{ entitlements: { some: {} } }, { consumerPurchases: { some: {} } }],
     },
     orderBy: { createdAt: "desc" },
     select: {

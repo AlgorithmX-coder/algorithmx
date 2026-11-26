@@ -11,6 +11,8 @@ import RevokeButton from "./schools/[slug]/RevokeButton";
 import DeleteOrgButton from "./DeleteOrgButton";
 import PlacesControl from "./PlacesControl";
 import CreditPlaces from "./CreditPlaces";
+import RefundButton from "./RefundButton";
+import { getPurchaseAmount } from "@/app/lib/refund";
 
 /**
  * One school, or one organisation: its classes, pupil counts and status.
@@ -53,9 +55,21 @@ export default async function LearnerOrgDetail({
      back when it was a mistake, and until now that meant editing the
      database by hand. */
   const creditable = await listCreditablePlaces(org.id);
+
+  /* Places bought by card, each refundable from here. What was paid and
+     what is already refunded come from Stripe, as on the firm page; a
+     refund takes the paid-back share of the places off the licence, never
+     below the places already spent (app/lib/refundEffects.ts). */
+  const placePurchases = await Promise.all(
+    (await prisma.placePurchase.findMany({ where: { orgId: org.id }, orderBy: { createdAt: "desc" } })).map(async (p) => {
+      const paid = await getPurchaseAmount(p.stripeCheckoutSessionId).catch(() => null);
+      return { ...p, paid };
+    }),
+  );
   const pupilsUsed = classes.reduce((a, c) => a + c._count.pupils, 0);
   const status = trialStatus(org.trialExpiresAt);
   const day = (d: Date | null) => (d ? d.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" }) : "—");
+  const money = (pence: number, currency: string) => new Intl.NumberFormat("en-GB", { style: "currency", currency: currency.toUpperCase() }).format(pence / 100);
 
   /* Counts only. Nothing here reaches a named child or their progress:
      see the note on getOrgStats. */
@@ -160,6 +174,26 @@ export default async function LearnerOrgDetail({
         learners={w.learners}
         places={creditable.map((p) => ({ id: p.id, spentOn: day(p.redeemedAt) }))}
       />
+
+      {placePurchases.length > 0 && (
+        <div className="ad-card ad-table-wrap">
+          <table className="ad-table">
+            <thead>
+              <tr><th>Card purchase</th><th>Bought</th><th>Paid</th><th>Refund</th></tr>
+            </thead>
+            <tbody>
+              {placePurchases.map((p) => (
+                <tr key={p.id}>
+                  <td><b>{p.places} places</b>{p.refundedPlaces > 0 ? <> &middot; {p.refundedPlaces} refunded</> : null}</td>
+                  <td>{day(p.createdAt)}</td>
+                  <td>{p.paid ? `${money(p.paid.amountPence, p.paid.currency)}${p.paid.refundedPence > 0 ? `, ${money(p.paid.refundedPence, p.paid.currency)} refunded` : ""}` : "Stripe did not answer"}</td>
+                  <td>{p.paid ? <RefundButton kind="place" purchaseId={p.id} remainingPence={p.paid.amountPence - p.paid.refundedPence} currency={p.paid.currency} what={`${p.places} places`} /> : null}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
 
       <div className="ad-card ad-table-wrap">
         <table className="ad-table">
