@@ -164,13 +164,15 @@ export const COURSE_AUTH_CONTENT: Record<CourseAuthKey, CourseAuthCopy> = {
  * Same words on every course. The forgot row goes to the course's own
  * forgot-password page (base + path). */
 export const SHARED = {
-  labels: { name: "Your name", email: "Email", password: "Password", confirm: "Confirm password" },
+  labels: { name: "Your name", email: "Email", password: "Password", confirm: "Confirm password", dob: "Date of birth", parentEmail: "A parent's email" },
   placeholders: {
     name: "Your full name",
     email: "you@example.com",
     passwordLogin: "Enter your password",
     passwordSignup: "Create a strong password",
     confirm: "Type your password again",
+    dob: "",
+    parentEmail: "grown-up@example.com",
   },
   toggle: { show: "SHOW", hide: "HIDE", ariaShow: "Show password", ariaHide: "Hide password" },
   forgot: { text: "Forgot password?", path: "/forgot-password" },
@@ -180,6 +182,8 @@ export const SHARED = {
     login: { lead: "New here?", link: "Create an account" },
     signup: { lead: "Already have an account?", link: "Log in" },
   },
+  /* Under 13 on Cyber Explorers or Cyber Ops: shown under the parent field. */
+  parentNote: "You are under 13, so we will email a parent or carer to say yes before you start.",
   errors: {
     empty: "Fill in every field to continue.",
     short: "Your password needs at least 8 characters.",
@@ -187,6 +191,9 @@ export const SHARED = {
     noMatch: "Those details don't match an account.",
     network: "Something went wrong. Check your connection and try again.",
     fallback: "That didn't work. Try again.",
+    dob: "Enter your date of birth.",
+    parentEmail: "Under 13? Add a parent's email so a grown-up can say yes.",
+    sameEmail: "Use a parent's own email, not yours.",
   },
 } as const;
 

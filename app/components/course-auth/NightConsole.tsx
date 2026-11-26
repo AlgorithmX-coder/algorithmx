@@ -19,7 +19,7 @@ type Vars = CSSProperties & Record<`--${string}`, string | number>;
 
 export default function NightConsole({ course, mode }: { course: CourseAuthKey; mode: AuthMode }) {
   const auth = useCourseAuth(course, mode);
-  const { t, isLogin, justRegistered, field, showPw, toggleShowPw, error, busy, invalid, submit } = auth;
+  const { t, isLogin, justRegistered, field, showPw, toggleShowPw, error, busy, invalid, submit, asksAge, under13 } = auth;
   const C = t.copy;
   const lightRef = useRef<NightLight | null>(null);
 
@@ -91,8 +91,13 @@ export default function NightConsole({ course, mode }: { course: CourseAuthKey; 
         {isLogin ? (
           <div className="na1-row"><Link className="na1-forgot" href={`${t.base}${SHARED.forgot.path}`}>{SHARED.forgot.text}</Link></div>
         ) : (
-          renderField({ id: "ca-confirm", k: "confirm", type: pwType, auto: "new-password", i: 3, last: true })
+          renderField({ id: "ca-confirm", k: "confirm", type: pwType, auto: "new-password", i: 3, last: !asksAge })
         )}
+        {/* Cyber Explorers and Cyber Ops only: a date of birth, and under 13 a
+            parent's email, so a grown-up can say yes first (UK GDPR). */}
+        {asksAge && renderField({ id: "ca-dob", k: "dob", type: "date", auto: "bday", i: 4, last: !under13 })}
+        {under13 && renderField({ id: "ca-parent", k: "parentEmail", type: "email", auto: "off", i: 5, last: true })}
+        {under13 && <p className="na1-hint" style={{ margin: "-12px 0 18px", textAlign: "left" }}>{SHARED.parentNote}</p>}
         <button className="na1-btn" type="submit" disabled={busy} aria-busy={busy}>
           <span className="na1-btn-label">
             {busy ? <>{SHARED.busy}<span className="na1-dots" aria-hidden="true"><i /><i /><i /></span></> : submitLabel}

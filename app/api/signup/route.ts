@@ -7,6 +7,8 @@ import { TESTER_FREE_ACCESS } from "@/app/lib/launchSwitch";
 import { emailTaken, normaliseEmail } from "@/app/lib/emailIdentity";
 
 import { passwordProblem } from "@/app/lib/passwordPolicy";
+import { asksDateOfBirth, looksLikeEmail, needsParentConsent, parseDateOfBirth } from "@/app/lib/ageCheck";
+import { sendParentConsentEmail } from "@/app/lib/parentConsent";
 
 /* Launch policy: a fresh account signing up through a course's own
  * themed auth page gets that course for free, there and then, so they
@@ -36,7 +38,7 @@ export async function POST(request: Request) {
   if (!limited.ok) return tooManyResponse(limited);
 
   try {
-    const { name, email: rawEmail, password, course } = await request.json();
+    const { name, email: rawEmail, password, course, dob: rawDob, parentEmail: rawParentEmail } = await request.json();
     /* Stored trimmed and lowercased, and refused if any account already
        holds the address in any case (app/lib/emailIdentity.ts says why). */
     const email = normaliseEmail(rawEmail);
@@ -61,18 +63,52 @@ export async function POST(request: Request) {
       );
     }
 
+    /* UNDER-13s (UK GDPR Article 8). The Cyber Explorers and Cyber Ops
+       sign-ups ask for a date of birth; only the year is kept. Under 13, a
+       parent's email is required too, and the account waits for that
+       parent's consent before any course opens (app/lib/parentConsent.ts). */
+    let birthYear: number | null = null;
+    let parentEmail: string | null = null;
+    if (typeof course === "string" && asksDateOfBirth(course)) {
+      const dob = parseDateOfBirth(rawDob);
+      if (!dob) {
+        return NextResponse.json({ error: "Enter your date of birth." }, { status: 400 });
+      }
+      birthYear = dob.getUTCFullYear();
+      if (needsParentConsent(dob)) {
+        parentEmail = typeof rawParentEmail === "string" ? normaliseEmail(rawParentEmail) : "";
+        if (!parentEmail || !looksLikeEmail(parentEmail)) {
+          return NextResponse.json({ error: "Under 13? Add a parent's email so a grown-up can say yes." }, { status: 400 });
+        }
+        if (parentEmail === email) {
+          return NextResponse.json({ error: "Use a parent's own email, not yours." }, { status: 400 });
+        }
+      }
+    }
+    const awaitingParent = parentEmail !== null;
+
     const hashedPassword = await bcrypt.hash(password, 12);
 
     const user = await prisma.user.create({
-      data: { name, email, hashedPassword },
+      data: { name, email, hashedPassword, birthYear, needsParentConsent: awaitingParent, parentEmail },
     });
+
+    if (awaitingParent && typeof course === "string") {
+      const proto = request.headers.get("x-forwarded-proto") ?? "https";
+      const host = request.headers.get("x-forwarded-host") ?? request.headers.get("host") ?? "www.algorithmx.co.uk";
+      /* Best effort: the waiting page can send it again. */
+      await sendParentConsentEmail({ userId: user.id, courseSlug: course, origin: `${proto}://${host}` }).catch((err) =>
+        console.error("Signup parent email failed:", err),
+      );
+    }
 
     /* Free course access on signup (see FREE_ON_SIGNUP note above).
      * Best-effort: the account is already created, so a failed grant
      * must not fail the signup — we log it and let the user land in the
      * catalogue rather than erroring. `grantEntitlement` itself verifies
      * the Product exists, so an unknown slug can't mint a bogus row. */
-    if (TESTER_FREE_ACCESS && typeof course === "string" && FREE_ON_SIGNUP.has(course)) {
+    /* Not for a child awaiting a parent: nothing is granted before consent. */
+    if (TESTER_FREE_ACCESS && !awaitingParent && typeof course === "string" && FREE_ON_SIGNUP.has(course)) {
       try {
         await grantEntitlement(user.id, course, "MANUAL");
       } catch (grantError) {
@@ -81,7 +117,7 @@ export async function POST(request: Request) {
     }
 
     return NextResponse.json(
-      { message: "Account created", userId: user.id },
+      { message: "Account created", userId: user.id, awaitingParent },
       { status: 201 }
     );
   } catch (error) {
