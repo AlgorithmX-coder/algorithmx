@@ -14,6 +14,7 @@ const m = vi.hoisted(() => ({
   grantEntitlement: vi.fn(),
   findFirst: vi.fn(),
   free: false,
+  open: false,
 }));
 vi.mock("next/navigation", () => ({ redirect: m.redirect }));
 vi.mock("@/app/lib/auth", () => ({ auth: m.auth }));
@@ -21,6 +22,9 @@ vi.mock("@/app/lib/entitlements", () => ({ hasEntitlement: m.hasEntitlement, gra
 vi.mock("@/app/lib/launchSwitch", () => ({
   get TESTER_FREE_ACCESS() {
     return m.free;
+  },
+  get CONSUMER_CHECKOUT_OPEN() {
+    return m.open;
   },
 }));
 vi.mock("@/app/lib/prisma", () => ({ prisma: { childProfile: { findFirst: m.findFirst } } }));
@@ -33,6 +37,7 @@ describe("requireCourse (launch switch off: nothing is free)", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     m.free = false;
+    m.open = false;
     m.auth.mockResolvedValue({ user: { id: "u1" } });
     m.hasEntitlement.mockResolvedValue(false);
     m.findFirst.mockResolvedValue(null);
@@ -55,6 +60,12 @@ describe("requireCourse (launch switch off: nothing is free)", () => {
     it(`${slug}: owning a different course does not open it`, async () => {
       m.hasEntitlement.mockImplementation(async (_u: string, s: string) => s !== slug);
       await expect(requireCourse(slug, "/x")).rejects.toThrow(`REDIRECT ${CONSUMER_COURSES[slug].landing}`);
+    });
+
+    it(`${slug}: once checkout is open, a non-owner goes to that course's buy page`, async () => {
+      m.open = true;
+      await expect(requireCourse(slug, "/x")).rejects.toThrow(`REDIRECT /purchase/${slug}`);
+      m.open = false;
     });
   }
 

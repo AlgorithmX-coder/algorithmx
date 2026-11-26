@@ -12,6 +12,7 @@ import { sectionMark, sectionMarkBare } from "@/app/components/sectionMark";
 import DeskHeroSim from "./DeskHeroSim";
 import PartPreview, { PREVIEW_CSS, type PreviewKind } from "./PartPreview";
 import { FINAL, PARTS } from "./syllabus";
+import { enrolHref } from "@/app/lib/consumerCatalogue";
 
 /**
  * The Desk Ready landing, built on the AlgorithmX landing system (owner
@@ -30,7 +31,9 @@ import { FINAL, PARTS } from "./syllabus";
  * invented figures (the one statistic is sourced on the page).
  */
 
-const SIGNUP = "/desk-ready/signup";
+/* Every Purchase button: sign-up until checkout opens, then the buy page
+ * (CONSUMER_CHECKOUT_OPEN in app/lib/launchSwitch.ts). */
+const SIGNUP = enrolHref("desk-ready");
 
 const h2: CSSProperties = {
   margin: "14px 0 0",

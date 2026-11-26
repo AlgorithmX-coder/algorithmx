@@ -3,6 +3,12 @@
  * landing-lab content file heroes-content.js, 2026-11-22. Every visible
  * string on the Saturday Morning page comes from here. Do not add copy. */
 
+import { enrolHref } from "@/app/lib/consumerCatalogue";
+
+/* Every Enrol button: sign-up until checkout opens, then the buy page
+ * (CONSUMER_CHECKOUT_OPEN in app/lib/launchSwitch.ts). */
+const ENROL = enrolHref("cyber-heroes");
+
 export const AXH = {
   nav: {
     ariaLabel: "Primary",
@@ -14,7 +20,7 @@ export const AXH = {
       { id: "unlock", label: "Pricing" },
     ],
     login: { label: "Log In", href: "/cyberheroes/login" },
-    enrol: { label: "Enrol · £99", href: "/cyberheroes/signup" },
+    enrol: { label: "Enrol · £99", href: ENROL },
     burger: { ariaLabelClosed: "Menu", ariaLabelOpen: "Close menu" },
     mobileSheet: { ariaLabel: "Menu", login: "Log In", enrol: "Enrol Now · £99" },
   },
@@ -32,7 +38,7 @@ export const AXH = {
     ncsc: { text: "Aligned with UK’s National Cyber Security Centre", logo: "/logos/ncsc.svg", logoAlt: "National Cyber Security Centre" },
     honestLine: { check: "✓", text: "Built by parents, for parents. UK-based." },
     ctas: [
-      { label: "Enrol Now · £99", href: "/cyberheroes/signup" },
+      { label: "Enrol Now · £99", href: ENROL },
       { label: "See How It Works", href: "#how" },
     ],
     counters: [
@@ -76,7 +82,7 @@ export const AXH = {
         "Parent progress dashboard",
         "One-time payment, no subscriptions",
       ],
-      cta: { label: "Enrol Now to Unlock · £99", arrow: "→", href: "/cyberheroes/signup" },
+      cta: { label: "Enrol Now to Unlock · £99", arrow: "→", href: ENROL },
     },
   },
 
@@ -161,7 +167,7 @@ export const AXH = {
     h2Accent: "Cyber Hero",
     h2Tail: "?",
     sub: "Join families across the UK giving their children the online safety skills they'll carry for life.",
-    button: { label: "Enrol Now · £99", href: "/cyberheroes/signup" },
+    button: { label: "Enrol Now · £99", href: ENROL },
     fine: "One-time payment · Instant access · Lifetime updates",
   },
 

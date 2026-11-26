@@ -47,6 +47,7 @@ model User {
   deskProgress        DeskProgress[]
   deskOffices         DeskOffice[]
   teacherInvites      TeacherInvite[]
+  consumerPurchases   ConsumerPurchase[]
 }
 
 model Account {
@@ -1069,4 +1070,36 @@ model RateLimit {
 
   @@id([key, windowStart])
   @@index([windowStart])
+}
+
+// ---------------------------------------------------------------------------
+// One person buying one course for themselves (owner, 2026-11-26).
+//
+// Written by the Stripe webhook when a "consumer-course" checkout is paid,
+// in the same breath as the PURCHASE entitlement it pays for. The session id
+// is unique, so a webhook Stripe delivers twice makes one row and one grant.
+// Amounts are what Stripe charged, VAT included, in pence.
+// ---------------------------------------------------------------------------
+model ConsumerPurchase {
+  id              String    @id @default(cuid())
+  /// The account the course was bought FOR (it holds the entitlement).
+  userId          String
+  /// The Product slug of the one course bought.
+  slug            String
+  amountPence     Int
+  currency        String    @default("gbp")
+  stripeSessionId String    @unique
+  paymentIntentId String?   @unique
+  /// The address the receipt went to, as given at checkout.
+  buyerEmail      String
+  /// When the buyer ticked "Start my course now. I understand I lose my
+  /// 14-day right to cancel once I start." (Consumer Contracts Regulations
+  /// 2013, reg. 37: express consent to digital content starting at once.)
+  waiverConsentAt DateTime?
+  purchasedAt     DateTime  @default(now())
+  refundedAt      DateTime?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }

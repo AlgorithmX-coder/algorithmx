@@ -67,3 +67,17 @@ export function liveTrackNames(): string {
   const names = SECURED_TRACKS.filter((t) => t.live).map((t) => t.name);
   return names.length > 1 ? `${names.slice(0, -1).join(", ")} and ${names[names.length - 1]}` : names[0] ?? "";
 }
+
+/* The organisation an INDIVIDUAL buyer of AI Cleared, AI Fluent or Cyber
+ * Awareness is enrolled under (owner, 2026-11-26: one person can now buy
+ * one of these for themselves). Every enrolment on these courses belongs to
+ * an organisation, so individuals share this one house record. It is not a
+ * firm: it holds no seats and no members, FIRM_ORG (aiCleared.ts) leaves it
+ * out, and the admin console does not list it. Its name stands in for "your
+ * firm" in the lessons, so it is written to read inside a sentence. */
+export const INDIVIDUAL_LEARNERS_ORG_SLUG = "algorithmx-individual-learners";
+export const INDIVIDUAL_LEARNERS_ORG_NAME = "your workplace";
+
+export function isIndividualLearnersOrg(org: { slug: string } | null | undefined): boolean {
+  return org?.slug === INDIVIDUAL_LEARNERS_ORG_SLUG;
+}

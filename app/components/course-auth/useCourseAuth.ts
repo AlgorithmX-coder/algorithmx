@@ -32,10 +32,8 @@ export function useCourseAuth(course: CourseAuthKey, mode: AuthMode) {
    * course's own home via the shared course-intent helper (or the pack's
    * own home, for the firm tracks that helper does not map). */
   const callbackRaw = searchParams.get("callbackUrl");
-  const destination =
-    callbackRaw && callbackRaw.startsWith("/") && !callbackRaw.startsWith("//")
-      ? callbackRaw
-      : t.home ?? courseHomeFor(safeCourseSlug(t.slug));
+  const callback = callbackRaw && callbackRaw.startsWith("/") && !callbackRaw.startsWith("//") ? callbackRaw : null;
+  const destination = callback ?? t.home ?? courseHomeFor(safeCourseSlug(t.slug));
   const justRegistered = searchParams.get("registered") === "true";
 
   const [name, setName] = useState("");
@@ -119,7 +117,8 @@ export function useCourseAuth(course: CourseAuthKey, mode: AuthMode) {
           setBusy(false);
           return;
         }
-        router.push(`${t.base}/login?registered=true`);
+        /* A callback (the buy page, say) survives the hop to sign-in. */
+        router.push(`${t.base}/login?registered=true${callback ? `&callbackUrl=${encodeURIComponent(callback)}` : ""}`);
       }
     } catch {
       setError(SHARED.errors.network);

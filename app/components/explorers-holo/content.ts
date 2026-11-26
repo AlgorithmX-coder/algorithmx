@@ -6,6 +6,12 @@
  * rendered, so none of it is here. En-dashes are the copy's own; there are
  * no em-dashes. */
 
+import { enrolHref } from "@/app/lib/consumerCatalogue";
+
+/* Every Enroll button: sign-up until checkout opens, then the buy page
+ * (CONSUMER_CHECKOUT_OPEN in app/lib/launchSwitch.ts). */
+const ENROL = enrolHref("cyberexplorers");
+
 export const AXE = {
   nav: {
     logo: { href: "/", ariaLabel: "Cyber Explorers by AlgorithmX, home", wordmark: "CYBER EXPLORERS", bylineBy: "BY", bylineBrand: "ALGORITHMX" },
@@ -14,7 +20,7 @@ export const AXE = {
       { id: "parents", label: "FOR PARENTS", href: "#parents" },
     ],
     login: { label: "LOG IN", href: "/cyberexplorers/login" },
-    enrol: { label: "ENROLL · £99", href: "/cyberexplorers/signup" },
+    enrol: { label: "ENROLL · £99", href: ENROL },
     menu: { open: "Open menu", close: "Close menu", ariaLabel: "Page" },
   },
 
@@ -29,7 +35,7 @@ export const AXE = {
       text: "Aligned with UK’s National Cyber Security Centre",
       logo: { src: "/logos/ncsc.svg", alt: "National Cyber Security Centre" },
     },
-    ctaPrimary: { label: "ENROLL NOW · £99", href: "/cyberexplorers/signup" },
+    ctaPrimary: { label: "ENROLL NOW · £99", href: ENROL },
     ctaSecondary: { label: "SEE WHAT’S INCLUDED ↓", href: "#course" },
     finePrint: "One payment. Lifetime access. Every future update included.",
     ticks: ["ICO CHILDREN’S CODE–ALIGNED", "NO ADS, NO LOOT BOXES", "SESSIONS END ON PURPOSE"],
@@ -134,7 +140,7 @@ export const AXE = {
       "One payment. No subscription, no in-app purchases, ever",
       "Save-and-resume in any modern browser, nothing to install",
     ],
-    primary: { label: "ENROLL NOW · £99", href: "/cyberexplorers/signup" },
+    primary: { label: "ENROLL NOW · £99", href: ENROL },
     secondary: { label: "ALREADY ENROLLED? LOG IN", href: "/cyberexplorers/login" },
   },
 

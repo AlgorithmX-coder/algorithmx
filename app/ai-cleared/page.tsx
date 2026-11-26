@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { redirect } from "next/navigation";
 import { auth } from "@/app/lib/auth";
 import { prisma } from "@/app/lib/prisma";
@@ -6,11 +5,12 @@ import { hasEntitlement } from "@/app/lib/entitlements";
 import { AI_CLEARED_SLUG, DB_TO_TRACK, FIRM_ORG, firstNameOf, getEnrolments } from "@/app/lib/aiCleared";
 import { isStaffUser } from "@/app/lib/aiClearedStaff";
 import { MODULE_LIST } from "./manifests";
-import Frame from "./Frame";
 import ConsoleHome from "./ConsoleHome";
+import IndividualOffer from "./IndividualOffer";
+import { isIndividualLearnersOrg } from "@/app/lib/cyberSecured";
 
 /* /ai-cleared: the console home. Gated by the entitlement; a signed-in
- * user without a seat is told how to get one. */
+ * user without a seat or a purchase is offered the course. */
 export const dynamic = "force-dynamic";
 
 export default async function AiClearedHome() {
@@ -29,22 +29,8 @@ export default async function AiClearedHome() {
   if (staff && !enrolment) redirect("/ai-cleared/ops");
   if (adminRow && !enrolment) redirect("/cyber-secured/admin");
   /* Anyone at a firm without this enrolment yet: the portal enrols them. */
-  if ((!entitled || !enrolment) && fluent) redirect("/cyber-secured");
-  if (!entitled || !enrolment) {
-    return (
-      <Frame meta={<span className="cf-meta">{session.user.email}</span>}>
-        <span className="cf-eyebrow">No seat yet</span>
-        <h1 className="cf-h1">Your firm reserves your seat. Then you are <span className="cf-grad">in</span>.</h1>
-        <p className="cf-lead">
-          AI Cleared comes with a Cyber Secured seat, licensed by firms, not bought by individuals. Your admin sends an invite link that claims your seat; open that link while signed in as {session.user.email}.
-        </p>
-        <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
-          <Link href="/corporate" className="cf-btn cf-btn-pri">About Cyber Secured for firms</Link>
-          <a href="mailto:admissions@algorithmx.co.uk" className="cf-btn">Email admissions</a>
-        </div>
-      </Frame>
-    );
-  }
+  if ((!entitled || !enrolment) && fluent && !isIndividualLearnersOrg(fluent.org)) redirect("/cyber-secured");
+  if (!entitled || !enrolment) return <IndividualOffer course="ai-cleared" email={session.user.email ?? ""} />;
 
   const progress = new Map(enrolment.modules.map((m) => [m.module, m]));
   const modules = MODULE_LIST.map((m) => {

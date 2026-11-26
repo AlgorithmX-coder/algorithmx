@@ -1,11 +1,10 @@
-import Link from "next/link";
 import { redirect } from "next/navigation";
 import { auth } from "@/app/lib/auth";
 import { hasEntitlement } from "@/app/lib/entitlements";
 import { CYBER_AWARENESS_SLUG, DB_TO_TRACK, firstNameOf, getEnrolment } from "@/app/lib/aiCleared";
 import { AWARENESS_MODULE_LIST } from "./manifests";
-import Frame from "@/app/ai-cleared/Frame";
 import ConsoleHome from "@/app/ai-cleared/ConsoleHome";
+import IndividualOffer from "@/app/ai-cleared/IndividualOffer";
 
 /* /cyber-awareness: the Cyber Awareness course home. Gated by the
  * entitlement, same as AI Cleared and AI Fluent. Modules ship one at a
@@ -19,21 +18,7 @@ export default async function CyberAwarenessHome() {
 
   const [entitled, enrolment] = await Promise.all([hasEntitlement(userId, CYBER_AWARENESS_SLUG), getEnrolment(userId, "cyber-awareness")]);
 
-  if (!entitled || !enrolment) {
-    return (
-      <Frame course="cyber-awareness" meta={<span className="cf-meta">{session.user.email}</span>}>
-        <span className="cf-eyebrow">No seat yet</span>
-        <h1 className="cf-h1">Your firm reserves your seat. Then you are <span className="cf-grad">in</span>.</h1>
-        <p className="cf-lead">
-          Cyber Awareness is licensed by firms, not bought by individuals. Your admin sends an invite link that claims your seat; open that link while signed in as {session.user.email}.
-        </p>
-        <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
-          <Link href="/corporate" className="cf-btn cf-btn-pri">About Cyber Secured for firms</Link>
-          <a href="mailto:admissions@algorithmx.co.uk" className="cf-btn">Email admissions</a>
-        </div>
-      </Frame>
-    );
-  }
+  if (!entitled || !enrolment) return <IndividualOffer course="cyber-awareness" email={session.user.email ?? ""} />;
 
   const progress = new Map(enrolment.modules.map((m) => [m.module, m]));
   const modules = AWARENESS_MODULE_LIST.map((m) => {

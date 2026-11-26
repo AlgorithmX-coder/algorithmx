@@ -6,9 +6,11 @@ import { AI_FLUENT_SLUG, DB_TO_TRACK, FIRM_ORG, firstNameOf, getEnrolments } fro
 import { isStaffUser } from "@/app/lib/aiClearedStaff";
 import { FLUENT_MODULE_LIST } from "./manifests";
 import ConsoleHome from "@/app/ai-cleared/ConsoleHome";
+import IndividualOffer from "@/app/ai-cleared/IndividualOffer";
+import { isIndividualLearnersOrg } from "@/app/lib/cyberSecured";
 
 /* /ai-fluent: the AI Fluent course home. Gated by the entitlement; a
- * person with only a Cleared seat is told how Fluent seats work. */
+ * person with no seat and no purchase is offered the course. */
 export const dynamic = "force-dynamic";
 
 export default async function AiFluentHome() {
@@ -28,10 +30,12 @@ export default async function AiFluentHome() {
     /* One seat opens every course. Someone at a firm who is not on Fluent
        yet (they claimed before it was part of their seat) is enrolled by
        the portal; an admin without a seat goes to their team page. */
-    if (cleared) redirect("/cyber-secured");
+    if (cleared && !isIndividualLearnersOrg(cleared.org)) redirect("/cyber-secured");
     if (adminRow) redirect("/cyber-secured/admin");
     if (staff) redirect("/admin/firms");
-    redirect("/ai-cleared");
+    /* Anyone else, including someone who bought AI Cleared for themselves:
+       AI Fluent is theirs to buy too. */
+    return <IndividualOffer course="ai-fluent" email={session.user.email ?? ""} />;
   }
 
   const [progress, playbookCount] = await Promise.all([
