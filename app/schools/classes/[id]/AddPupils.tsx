@@ -15,7 +15,20 @@ import type { SchoolWords } from "../../words";
  * First names only, said out loud in the label and meant: a surname is not
  * needed to run the lesson and we would rather not hold one.
  */
-export default function AddPupils({ classId, placesLeft, w }: { classId: string; placesLeft: number; /* groups of young people, not classes of pupils */ w: SchoolWords }) {
+export default function AddPupils({
+  classId,
+  placesLeft,
+  w,
+  askLine,
+}: {
+  classId: string;
+  placesLeft: number;
+  /* groups of young people, not classes of pupils */
+  w: SchoolWords;
+  /** Who to ask for more places, as a sentence: the lead, for a teacher;
+   *  us, for the lead. See whoAddsPlaces. */
+  askLine?: string;
+}) {
   const [pending, start] = useTransition();
   const [said, setSaid] = useState<{ ok: boolean; text: string } | null>(null);
   const [count, setCount] = useState(0);
@@ -34,6 +47,10 @@ export default function AddPupils({ classId, placesLeft, w }: { classId: string;
   };
 
   const over = count > placesLeft;
+  /* Every teacher draws on one shared pool, so an empty pool is the lead's
+     to refill, and a teacher is told who that is rather than handed our
+     address. */
+  const whoToAsk = askLine ?? "Email admissions@algorithmx.co.uk to add places.";
 
   return (
     <div className="share">
@@ -55,13 +72,15 @@ export default function AddPupils({ classId, placesLeft, w }: { classId: string;
           />
         </label>
         <div className="sharerow" style={{ marginTop: 10 }}>
-          <button type="submit" disabled={pending || count === 0 || over}>
+          <button type="submit" disabled={pending || count === 0 || over || placesLeft <= 0}>
             {pending ? "Adding…" : count === 0 ? `Add ${w.people}` : `Add ${count} ${count === 1 ? w.person : w.people}`}
           </button>
           <span className="pupilcount">
-            {over
-              ? `That is ${count - placesLeft} over your licence. You have ${placesLeft} place${placesLeft === 1 ? "" : "s"} left.`
-              : `${placesLeft} place${placesLeft === 1 ? "" : "s"} left on your licence.`}
+            {placesLeft <= 0
+              ? `Every place in the ${w.noun}'s shared pool is used. ${whoToAsk}`
+              : over
+                ? `That is ${count - placesLeft} more than the ${placesLeft} place${placesLeft === 1 ? "" : "s"} left in the ${w.noun}'s shared pool. ${whoToAsk}`
+                : `${placesLeft} place${placesLeft === 1 ? "" : "s"} left in the ${w.noun}'s shared pool.`}
           </span>
         </div>
       </form>

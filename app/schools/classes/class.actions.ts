@@ -15,6 +15,7 @@ import {
   type ClassFailure,
 } from "@/app/lib/schoolClasses";
 import { resetPupilPictures } from "@/app/lib/pupilAuth";
+import { whoAddsPlaces } from "@/app/lib/schoolHead";
 import { SCHOOL_WORDS, wordsFor, type SchoolWords } from "@/app/schools/words";
 
 /**
@@ -94,11 +95,15 @@ export async function addPupilsAction(formData: FormData): Promise<ActionResult>
   if (!res.ok) {
     if (res.error === "seats_full") {
       const left = Number(res.detail ?? 0);
+      /* One shared pool for every teacher (owner, 2026-11-26), so a teacher
+         who runs it dry is pointed at the lead who holds the licence, and
+         only the lead is pointed at us. */
+      const { ask } = await whoAddsPlaces(school.orgId, session.user.id, w.noun);
       return {
         ok: false,
         error: left > 0
-          ? `That would go over your licence. You have ${left} place${left === 1 ? "" : "s"} left.`
-          : "Your licence is full. Email admissions@algorithmx.co.uk to add places.",
+          ? `That is more than the ${left} place${left === 1 ? "" : "s"} left in the ${w.noun}'s shared pool. ${ask}`
+          : `Every place in the ${w.noun}'s shared pool is used, so nobody can be added. ${ask}`,
       };
     }
     if (res.error === "bad_pupil_name") return { ok: false, error: `“${res.detail}” is too long for a first name.` };
