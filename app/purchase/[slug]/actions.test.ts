@@ -1,9 +1,10 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-/* The stub checkout grants a free entitlement to whatever ACTIVE product
- * it is asked for. Firm courses must never come through it: they are
- * licensed per seat by a firm. Session, database and grant are stubbed;
- * redirect throws, as Next's does, so the test sees where it went. */
+/* The checkout action must never grant a course. Until real payment lands
+ * it sends the buyer back to the purchase page ("Buying opens soon"), or to
+ * the success view when they already own the course. Firm courses go to
+ * /corporate. Session and database are stubbed; redirect throws, as Next's
+ * does, so the test sees where it went. */
 
 const m = vi.hoisted(() => ({
   redirect: vi.fn((to: string) => {
@@ -38,10 +39,22 @@ describe("startCheckoutAction", () => {
     });
   }
 
-  for (const slug of ["cyber-heroes", "cyberexplorers", "cyberstart-pro", "desk-ready"]) {
-    it(`still grants the consumer course ${slug}`, async () => {
-      await expect(startCheckoutAction(slug)).rejects.toThrow(`REDIRECT /purchase/${slug}?status=success`);
-      expect(m.grantEntitlement).toHaveBeenCalledWith("u1", slug, "PURCHASE");
+  for (const slug of ["cyber-heroes", "cyberexplorers", "cyberstart", "cyberstart-pro", "desk-ready"]) {
+    it(`never grants the consumer course ${slug} for free`, async () => {
+      await expect(startCheckoutAction(slug)).rejects.toThrow(`REDIRECT /purchase/${slug}`);
+      expect(m.grantEntitlement).not.toHaveBeenCalled();
     });
   }
+
+  it("sends an owner to the success view without granting again", async () => {
+    m.hasEntitlement.mockResolvedValue(true);
+    await expect(startCheckoutAction("cyber-heroes")).rejects.toThrow("REDIRECT /purchase/cyber-heroes?status=success");
+    expect(m.grantEntitlement).not.toHaveBeenCalled();
+  });
+
+  it("sends a signed-out visitor to sign in and grants nothing", async () => {
+    m.auth.mockResolvedValue(null);
+    await expect(startCheckoutAction("cyber-heroes")).rejects.toThrow("REDIRECT /login");
+    expect(m.grantEntitlement).not.toHaveBeenCalled();
+  });
 });

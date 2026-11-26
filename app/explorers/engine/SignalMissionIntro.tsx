@@ -38,7 +38,7 @@ export default function SignalMissionIntro({ data, onBegin }: { data: MissionInt
   const [label, setLabel] = useState("Play the briefing");
   const [, setTick] = useState(0);
   const reduce = typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
-  const fast = typeof window !== "undefined" && new URLSearchParams(window.location.search).get("fast") === "1";
+  const fast = process.env.NODE_ENV !== "production" && typeof window !== "undefined" && new URLSearchParams(window.location.search).get("fast") === "1"; // tester speed-up, dev builds only
   const fmt = (s: number) => { s = Math.max(0, s | 0); return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`; };
 
   useEffect(() => {

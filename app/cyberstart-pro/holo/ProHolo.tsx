@@ -31,8 +31,8 @@ import "./pro.css";
 const ENROL_ANCHOR = "#enrol";
 
 /* Whether the paid checkout is live. The consumer Stripe flow for Cyber Pro
- * is not wired yet (app/purchase/[slug]/actions.ts still grants the
- * entitlement for free as a stub), so while this is false the course shows
+ * is not wired yet (app/purchase/[slug] shows "Buying opens soon" and
+ * grants nothing), so while this is false the course shows
  * as live but every buy action routes to the enrol-band waitlist instead of
  * /purchase. Flip to true in the same change that lands real Stripe checkout. */
 const PURCHASE_OPEN = false;
@@ -287,6 +287,7 @@ export default function ProHolo({ product }: { product: Product }) {
             {FO.links.map((l) => <a key={l.href} href={l.href} className={l.current ? "cur" : undefined} aria-current={l.current ? "page" : undefined}>{l.label}</a>)}
           </nav>
         </div>
+        <p className="wrap legal">{FO.legal}</p>
       </footer>
     </div>
   );

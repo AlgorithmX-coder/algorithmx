@@ -46,12 +46,11 @@ export const AXS = {
   },
 
   proof: {
-    eyebrow: "// Accredited, certified and backed",
+    eyebrow: "// Certified, aligned and backed",
     marks: [
       { name: "Cyber Essentials certified", copy: "The UK government backed standard for cyber security practice.", src: "/logos/cyber-essentials.png", alt: "Cyber Essentials", width: 96, plate: "light" },
       { name: "Aligned with the NCSC", copy: "Course content follows National Cyber Security Centre guidance.", src: "/logos/ncsc.svg", alt: "National Cyber Security Centre", width: 132, plate: "dark" },
       { name: "Collaborating with Microsoft", copy: "AlgorithmX is part of the Microsoft for Startups programme.", src: "/logos/microsoft-for-startups.webp", alt: "Microsoft for Startups", width: 140, plate: "light" },
-      { name: "ASDAN accredited courses", copy: "Courses carry accreditation that schools already recognise.", src: "/logos/asdan.jpg", alt: "ASDAN", width: 96, plate: "light" },
     ],
   },
 
@@ -139,7 +138,6 @@ export const AXS = {
         { id: "explorers", ages: "Ages 10 to 13", accent: "#0a6675" },
         { id: "ops", ages: "Ages 14 to 17", accent: "#5744c9" },
       ] as ReadonlyArray<{ id: "heroes" | "explorers" | "ops"; ages: string; accent: string }>,
-      accreditation: { logo: "/logos/asdan.jpg", alt: "ASDAN", strong: "ASDAN", line: "Accreditation aligned" },
     },
   },
 
@@ -214,6 +212,8 @@ export const AXS = {
           { name: "For Schools", href: "/schools" },
           { name: "Corporate training", href: "/corporate" },
           { name: "Contact", href: "mailto:support@algorithmx.co.uk" },
+          { name: "Terms", href: "/terms" },
+          { name: "Privacy", href: "/privacy" },
         ],
         note: "",
       },

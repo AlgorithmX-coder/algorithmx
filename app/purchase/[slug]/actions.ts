@@ -4,42 +4,38 @@ import { CATALOGUE } from "@/app/lib/courseIntent";
 import { redirect } from "next/navigation";
 import { auth } from "@/app/lib/auth";
 import { prisma } from "@/app/lib/prisma";
-import { grantEntitlement, hasEntitlement } from "@/app/lib/entitlements";
+import { hasEntitlement } from "@/app/lib/entitlements";
 import { FIRM_BUY_PATH, isFirmProduct } from "@/app/lib/cyberSecured";
 
 /**
- * Server action invoked by the PaymentButton.
+ * The checkout seam for a consumer course.
  *
- * What it does TODAY (stub flow):
- *   - Refuses firm products (Cyber Secured and its tracks): those are
- *     licensed by firms, so it sends the buyer to /corporate instead.
- *   - Verifies the session server-side (never trust the client about
- *     who is buying).
- *   - Confirms the slug resolves to an ACTIVE Product.
- *   - Refuses to charge for something the user already owns.
- *   - Skips payment processing entirely (the STRIPE SEAM below).
- *   - Calls grantEntitlement(...) with source=PURCHASE.
- *   - Redirects to /purchase/<slug>?status=success.
+ * It NEVER grants anything. Until 2026-11-25 this action skipped payment
+ * and wrote a PURCHASE entitlement inline, which meant any signed-in
+ * account could open /purchase/<slug> and take any course for free. The
+ * owner's rule: one person pays for one course, and at launch nothing is
+ * free. So the grant is gone and buying shows "opens soon" instead.
  *
- * What it does LATER (real flow): the STRIPE SEAM block creates a
- * Checkout Session and returns/redirects to its URL. The webhook
- * handler — not this action — then calls grantEntitlement on the
- * `checkout.session.completed` event. The success-state page stays
- * unchanged because the entitlement is already written by the time
- * the user lands back.
+ * When the real checkout lands, this is where a Stripe Checkout Session is
+ * created and the buyer is redirected to it. The entitlement is then
+ * written by the Stripe webhook on `checkout.session.completed`, through
+ * grantEntitlement(userId, slug, "PURCHASE"), and never by this action.
+ *
+ * Today, after the same checks the real flow will need, it sends the buyer
+ * back to the purchase page: to the success view if they already own the
+ * course, otherwise to the "Buying opens soon" state. A hand-crafted call
+ * therefore cannot mint access.
  */
 export async function startCheckoutAction(slug: string): Promise<void> {
   if (!slug || typeof slug !== "string") {
     throw new Error("startCheckoutAction: slug required");
   }
 
-  // Firm courses are licensed per seat by a firm, never granted here, so
-  // even a hand-crafted call for one gets no entitlement.
+  // Firm courses are licensed per seat by a firm, never bought here.
   if (isFirmProduct(slug)) redirect(FIRM_BUY_PATH);
 
   const session = await auth();
   if (!session?.user?.id) {
-    // Bounce through the login flow so we come back here after auth.
     redirect(`/login?callbackUrl=${encodeURIComponent(`/purchase/${slug}`)}`);
   }
 
@@ -48,45 +44,13 @@ export async function startCheckoutAction(slug: string): Promise<void> {
     select: { id: true, slug: true, status: true },
   });
   if (!product) redirect(CATALOGUE);
-
-  // COMING_SOON tracks are listed for waitlist sign-ups only; rejecting
-  // here means even a hand-crafted POST can't smuggle one through.
   if (product.status !== "ACTIVE") redirect(CATALOGUE);
 
-  // Idempotency belt-and-braces: if they already own it (eg double-
-  // submit), skip the grant and head straight to the success view.
   if (await hasEntitlement(session.user.id, product.slug)) {
     redirect(`/purchase/${product.slug}?status=success`);
   }
 
-  // ─────────────────────────── STRIPE SEAM ───────────────────────────
-  // ▼ Replace this block when Stripe is reintroduced. ▼
-  //
-  //   Today:    we skip payment entirely and grant the entitlement
-  //             inline. Test mode only.
-  //
-  //   Tomorrow: create a Stripe Checkout Session and redirect the
-  //             user to session.url. Do NOT call grantEntitlement
-  //             here — let the webhook fire it on
-  //             `checkout.session.completed`. The webhook handler
-  //             must call the SAME grantEntitlement(userId, slug,
-  //             "PURCHASE") so the success page below works
-  //             identically for stub + real payments.
-  //
-  //   Example (sketch only — do not uncomment until Stripe is back):
-  //     const checkout = await stripe.checkout.sessions.create({
-  //       mode: "payment",
-  //       customer_email: session.user.email,
-  //       line_items: [{ price: priceIdForSlug(slug), quantity: 1 }],
-  //       metadata: { userId: session.user.id, productSlug: slug },
-  //       success_url: `${origin}/purchase/${slug}?status=success`,
-  //       cancel_url: `${origin}/purchase/${slug}`,
-  //     });
-  //     redirect(checkout.url!);
-  //
-  await grantEntitlement(session.user.id, product.slug, "PURCHASE");
-  // ▲ End of STRIPE SEAM ▲
-  // ───────────────────────────────────────────────────────────────────
-
-  redirect(`/purchase/${product.slug}?status=success`);
+  // STRIPE SEAM: create the Checkout Session here and redirect to it.
+  // Until then there is nothing to buy with, so no access is granted.
+  redirect(`/purchase/${product.slug}`);
 }

@@ -270,6 +270,7 @@ export default function ExplorersHolo() {
             {FO.links.map((l) => (l.href.startsWith("/") ? <Link key={l.label} href={l.href}>{l.label}</Link> : <a key={l.label} href={l.href}>{l.label}</a>))}
           </nav>
         </div>
+        <p className="wrap legal">{FO.legal}</p>
       </footer>
     </div>
   );

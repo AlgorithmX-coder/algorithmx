@@ -228,12 +228,15 @@ export const AXP = {
 
   footer: {
     copyright: "© 2026 AlgorithmX",
-    linksAriaLabel: "Courses",
+    legal: "AlgorithmX Limited. Company 17266946, registered in England and Wales. Registered office: 301b Uppingham Road, Leicester LE5 4DG.",
+    linksAriaLabel: "Footer",
     links: [
       { label: "Cyber Heroes", href: "/cyberheroes", current: false },
       { label: "Cyber Explorers", href: "/cyberexplorers", current: false },
       { label: "Cyber Ops", href: "/ops", current: false },
       { label: "Cyber Pro", href: "/pro", current: true },
+      { label: "Terms", href: "/terms", current: false },
+      { label: "Privacy", href: "/privacy", current: false },
     ],
   },
 } as const;

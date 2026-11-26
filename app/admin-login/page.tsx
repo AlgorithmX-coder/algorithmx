@@ -2,6 +2,7 @@
 
 import { Suspense, useState } from "react";
 import { signIn } from "next-auth/react";
+import { LOGIN_LIMITED_CODE, TOO_MANY } from "@/app/lib/rateLimitWords";
 import { useRouter, useSearchParams } from "next/navigation";
 import BrandCube from "@/app/components/BrandCube";
 import Wordmark from "@/app/admin/Wordmark";
@@ -42,7 +43,7 @@ function AdminLoginInner() {
     setBusy(true);
     const res = await signIn("credentials", { email, password, redirect: false });
     if (res?.error) {
-      setError("Those details don't match an account.");
+      setError(res.code === LOGIN_LIMITED_CODE ? TOO_MANY : "Those details don't match an account.");
       setBusy(false);
       return;
     }

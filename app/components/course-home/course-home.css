@@ -398,3 +398,6 @@ to{transform:translateY(240px)}}
  * (an animated transform would make it the containing block of the fixed button) */
 .ch6 .ch6-chrome[data-rise]{animation-name:ch6-fadeIn}
 @keyframes ch6-fadeIn{from{opacity:0}}
+
+/* The header Sign out is a <button> in a form (CourseSignOut): same look as the links. */
+.ch6 button.ch6-link{background:none;border:0;cursor:pointer;font:inherit;font-family:var(--mono);font-size:11.5px;font-weight:700}

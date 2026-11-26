@@ -91,7 +91,7 @@ type Dock =
 
 export default function WarRoomRuntime({ warCase, onExit, onNextCase, autostart, onOpenWatchlist }: { warCase: WarCase; onExit?: () => void; onNextCase?: () => void; autostart?: boolean; onOpenWatchlist?: () => void }) {
   useArrowAdvance(); // ArrowRight: fast-forward through narration for UAT
-  const fast = typeof window !== "undefined" && new URLSearchParams(window.location.search).get("fast") === "1";
+  const fast = process.env.NODE_ENV !== "production" && typeof window !== "undefined" && new URLSearchParams(window.location.search).get("fast") === "1"; // tester speed-up, dev builds only
   const [phase, setPhase] = useState<"boot" | "play" | "test" | "debrief">("boot");
   const [board, setBoard] = useState<string>("CASE BOARD");
   const [items, setItems] = useState<Item[]>([]);

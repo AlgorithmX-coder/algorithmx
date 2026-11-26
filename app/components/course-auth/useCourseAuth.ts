@@ -15,7 +15,9 @@
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { signIn } from "next-auth/react";
+import { LOGIN_LIMITED_CODE, TOO_MANY } from "@/app/lib/rateLimitWords";
 import { courseHomeFor, safeCourseSlug } from "@/app/lib/courseIntent";
+import { passwordProblem } from "@/app/lib/passwordPolicy";
 import { COURSE_AUTH_CONTENT, SHARED, type CourseAuthKey } from "./content";
 
 export type AuthMode = "login" | "signup";
@@ -79,8 +81,11 @@ export function useCourseAuth(course: CourseAuthKey, mode: AuthMode) {
         setInvalid(["name"]);
         return;
       }
-      if (password.length < 8) {
-        setError(SHARED.errors.short);
+      /* The server's own rule, so the form never lets through a password
+         the signup route will refuse. */
+      const weak = passwordProblem(password);
+      if (weak) {
+        setError(password.length < 8 ? SHARED.errors.short : `${weak}.`);
         setInvalid(["password"]);
         return;
       }
@@ -97,7 +102,7 @@ export function useCourseAuth(course: CourseAuthKey, mode: AuthMode) {
       if (isLogin) {
         const res = await signIn("credentials", { email, password, redirect: false });
         if (res?.error) {
-          setError(SHARED.errors.noMatch);
+          setError(res.code === LOGIN_LIMITED_CODE ? TOO_MANY : SHARED.errors.noMatch);
           setBusy(false);
           return;
         }

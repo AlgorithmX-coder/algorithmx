@@ -45,16 +45,27 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
+  /* Resolves every relative metadata URL (Open Graph and Twitter images,
+   * canonicals) against the live domain, on every route. Without it Next
+   * falls back to localhost or the deployment URL. */
+  metadataBase: new URL("https://algorithmx.io"),
   title: "AlgorithmX - Cyber and AI Skills for Every Age",
-  description: "Cyber and AI skills for people, schools and firms. Interactive cybersecurity courses from age 6 to adult, plus AI training for every member of staff. UK-based and accreditation aligned.",
+  description: "Cyber and AI skills for people, schools and firms. Interactive cybersecurity courses from age 6 to adult, plus AI training for every member of staff. UK-based and aligned with NCSC guidance.",
   icons: {
     icon: "/favicon.svg",
   },
   openGraph: {
     title: "AlgorithmX - Cyber and AI Skills for Every Age",
-    description: "Cyber and AI skills for people, schools and firms. Interactive cybersecurity courses from age 6 to adult, plus AI training for every member of staff. UK-based and accreditation aligned.",
+    description: "Cyber and AI skills for people, schools and firms. Interactive cybersecurity courses from age 6 to adult, plus AI training for every member of staff. UK-based and aligned with NCSC guidance.",
     type: "website",
     url: "https://algorithmx.io",
+    siteName: "AlgorithmX",
+    locale: "en_GB",
+  },
+  /* The image comes from app/opengraph-image.tsx; Next copies the Open
+   * Graph title, description and image into the Twitter card. */
+  twitter: {
+    card: "summary_large_image",
   },
 };
 
@@ -72,7 +83,8 @@ export default function RootLayout({
         {/* The App Router does not server-render styled-jsx without this.
             Everything that uses it goes inside; the scripts below do not. */}
         <StyledJsxRegistry>{children}</StyledJsxRegistry>
-        <Analytics />
+        {/* Only on Vercel: off it, /_vercel/insights is absent and the nosniff header makes the browser refuse the placeholder. */}
+        {process.env.VERCEL ? <Analytics /> : null}
         <PlausibleScript />
         <DevFpsCounter />
       </body>

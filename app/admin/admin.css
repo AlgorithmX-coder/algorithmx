@@ -373,8 +373,76 @@
 .admin-ui .ad-course-list { display: flex; flex-wrap: wrap; gap: 6px; }
 .admin-ui .ad-course { display: inline-flex; align-items: center; font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: 0.02em; color: var(--c); background: color-mix(in srgb, var(--c) 14%, transparent); border: 1px solid color-mix(in srgb, var(--c) 35%, transparent); border-radius: var(--r-full); padding: 3px 10px; white-space: nowrap; }
 
+/* ── One account at a glance ────────────────────────────────────
+   A tile grid that wraps rather than a fixed column count, so the seven
+   tiles a busy school shows and the five a new one shows both sit evenly
+   at any width, down to one column on a phone. */
+.admin-ui .ad-stats {
+  display: grid; gap: var(--sp-md); margin: var(--sp-lg) 0;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+.admin-ui .ad-stat {
+  display: flex; flex-direction: column; gap: 4px; min-width: 0;
+  padding: 14px 16px; border: 1px solid var(--line); border-radius: var(--r-md);
+  background: var(--panel); box-shadow: var(--shadow);
+}
+.admin-ui .ad-stat-label { font-family: var(--mono); font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--faint); }
+.admin-ui .ad-stat-value { font-family: var(--display); font-size: 24px; font-weight: 800; letter-spacing: -0.02em; color: var(--ink); line-height: 1.15; }
+.admin-ui .ad-stat-value.is-text { font-size: 16px; letter-spacing: -0.005em; margin-top: 2px; }
+.admin-ui .ad-stat-sub { font-size: 12px; color: var(--muted); overflow-wrap: anywhere; }
+
+/* ── The paid tick ──────────────────────────────────────────────
+   A switch, not a chip: staff set it, so it has to look pressable and
+   carry its own state. Ticked goes green and says so in words, because
+   colour alone is not an answer to "have they paid?". */
+.admin-ui .ad-paid {
+  display: inline-flex; align-items: center; gap: 8px;
+  appearance: none; border: 0; background: none; cursor: pointer; padding: 4px 6px;
+  margin: -4px -6px; border-radius: 9px;
+  font-family: inherit; font-size: 12.5px; font-weight: 600; color: var(--muted);
+  transition: color 180ms var(--ease), background-color 180ms var(--ease);
+}
+.admin-ui .ad-paid:hover { color: var(--ink); background: var(--panel-2); }
+.admin-ui .ad-paid:disabled { cursor: default; opacity: 0.6; }
+.admin-ui .ad-paid-box {
+  display: grid; place-items: center; width: 18px; height: 18px; flex-shrink: 0;
+  border: 1.5px solid var(--line-2); border-radius: 5px; background: var(--panel);
+  color: #fff; transition: background-color 180ms var(--ease), border-color 180ms var(--ease);
+}
+.admin-ui .ad-paid-box svg { width: 13px; height: 13px; }
+.admin-ui .ad-paid[aria-checked="true"] { color: var(--ok); }
+.admin-ui .ad-paid[aria-checked="true"] .ad-paid-box { background: var(--ok); border-color: var(--ok); }
+/* Stripe set this one, so there is nothing to press. */
+.admin-ui .ad-paid.is-card { color: var(--ok); cursor: default; font-weight: 700; }
+.admin-ui .ad-paid-err { display: block; margin-top: 4px; font-size: 11.5px; color: var(--danger); }
+
 /* ── Forms, buttons, notices ────────────────────────────────────── */
 .admin-ui .ad-form { padding: 22px 24px 24px; display: flex; flex-direction: column; gap: var(--sp-md); max-width: 680px; }
+
+/* A form card that holds more than one form, one tab each. The card loses
+   its own padding and gap: the chosen panel supplies both, so the tab strip
+   can sit flush against the card's top edge. */
+.admin-ui .ad-tabbed { padding: 0; gap: 0; }
+.admin-ui .ad-tabs { display: flex; gap: 4px; padding: 8px 8px 0; border-bottom: 1px solid var(--line); }
+.admin-ui .ad-tab {
+  appearance: none; border: 0; background: none; cursor: pointer; position: relative;
+  font-family: inherit; font-size: 14px; font-weight: 700; color: var(--muted);
+  padding: 10px 14px; border-radius: 10px 10px 0 0;
+  transition: color 180ms var(--ease), background-color 180ms var(--ease);
+}
+.admin-ui .ad-tab:hover { color: var(--ink); background: var(--panel-2); }
+.admin-ui .ad-tab[aria-selected="true"] { color: var(--ink); }
+/* The underline sits on the strip's own border, so the chosen tab reads as
+   joined to the panel below it. */
+.admin-ui .ad-tab[aria-selected="true"]::after {
+  content: ""; position: absolute; left: 10px; right: 10px; bottom: -1px; height: 2px;
+  border-radius: 2px; background: var(--accent);
+}
+.admin-ui .ad-tabbed [role="tabpanel"] { display: flex; flex-direction: column; gap: var(--sp-md); padding: 22px 24px 24px; }
+/* Needed explicitly: the rule above would otherwise beat the browser's own
+   [hidden] { display: none }, and both panels would show at once. */
+.admin-ui .ad-tabbed [role="tabpanel"][hidden] { display: none; }
+
 .admin-ui .ad-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--sp-md); }
 .admin-ui .ad-row.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .admin-ui .ad-form label, .admin-ui .al-card label { display: flex; flex-direction: column; gap: 6px; font-family: var(--mono); font-size: 10.5px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }

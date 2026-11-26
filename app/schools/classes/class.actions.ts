@@ -98,7 +98,7 @@ export async function addPupilsAction(formData: FormData): Promise<ActionResult>
         ok: false,
         error: left > 0
           ? `That would go over your licence. You have ${left} place${left === 1 ? "" : "s"} left.`
-          : "Your licence is full. Email schools@algorithmx.co.uk to add places.",
+          : "Your licence is full. Email admissions@algorithmx.co.uk to add places.",
       };
     }
     if (res.error === "bad_pupil_name") return { ok: false, error: `“${res.detail}” is too long for a first name.` };

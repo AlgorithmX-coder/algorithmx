@@ -117,7 +117,7 @@ const WREN_HEADER: Header = { who: "WREN", sub: "in your ear" };
 
 export default function ConsoleRuntime({ consoleCase, onExit, onNextCase, autostart }: { consoleCase: ConsoleCase; onExit?: () => void; onNextCase?: () => void; autostart?: boolean }) {
   useArrowAdvance(); // ArrowRight: fast-forward through narration for UAT
-  const fast = typeof window !== "undefined" && new URLSearchParams(window.location.search).get("fast") === "1";
+  const fast = process.env.NODE_ENV !== "production" && typeof window !== "undefined" && new URLSearchParams(window.location.search).get("fast") === "1"; // tester speed-up, dev builds only
   const [phase, setPhase] = useState<"boot" | "play" | "test" | "debrief">("boot");
   const [panel, setPanel] = useState<string>("ARC SYSTEMS");
   const [items, setItems] = useState<Item[]>([]);

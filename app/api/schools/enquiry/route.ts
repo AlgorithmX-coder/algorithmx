@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { sendEmail } from "@/app/lib/resend";
+import { RULES, clientIp, hit, rateKey, tooManyResponse } from "@/app/lib/rateLimit";
 import { prisma } from "@/app/lib/prisma";
 import { opsAlert } from "@/app/lib/opsAlert";
 import { PHASE_LABELS, roleLabel, sizeLabel } from "@/app/lib/schoolEnquiries";
@@ -41,6 +42,11 @@ function esc(s: string): string {
 }
 
 export async function POST(req: Request) {
+  /* This form sends email, so a script must not be able to use it as a
+     mail cannon. Counted per IP, before anything else. */
+  const limited = await hit(rateKey("schools-enquiry-ip", clientIp(req)), RULES.publicFormIp);
+  if (!limited.ok) return tooManyResponse(limited);
+
   let raw: unknown;
   try {
     raw = await req.json();
@@ -118,7 +124,7 @@ export async function POST(req: Request) {
     });
   }
 
-  const to = process.env.SCHOOLS_ENQUIRY_TO ?? "support@algorithmx.co.uk";
+  const to = process.env.SCHOOLS_ENQUIRY_TO ?? "admissions@algorithmx.co.uk";
   const subject = `School enquiry: ${school} (${record.phase})`;
   const rows: Array<[string, string]> = [
     ["Name", name],

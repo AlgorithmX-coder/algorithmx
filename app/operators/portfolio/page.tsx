@@ -6,6 +6,7 @@ import { HIGHEST_BUILT_MODULE } from "@/app/operators/range/modules";
 import { CURRICULUM, PHASE_ORDER, PHASE_COLOR } from "@/app/operators/range/curriculum";
 import { OPS_RANKS } from "@/app/lib/opsRank";
 import CourseHomeShell, { CourseHomePause } from "@/app/components/course-home/CourseHomeShell";
+import CourseSignOut from "@/app/components/CourseSignOut";
 import { CourseHomeLockup, OpsMark } from "@/app/components/course-home/marks";
 
 export const metadata: Metadata = {
@@ -69,6 +70,7 @@ export default async function OperatorsPortfolioPage() {
         <CourseHomeLockup mark={<OpsMark />} lead="CYBER" accent="OPS" label="Cyber Ops by AlgorithmX" />
         <div className="ch6-chrome-r">
           {callsign ? <span className="ch6-who"><i className="dot" aria-hidden="true" /><b>{callsign}</b><span className="hide">&nbsp;· {rankName}</span></span> : <span className="ch6-who"><i className="dot" aria-hidden="true" /><b>{rankName}</b></span>}
+          <CourseSignOut course="cyberstart" className="ch6-link">Sign out</CourseSignOut>
           <CourseHomePause />
         </div>
       </header>

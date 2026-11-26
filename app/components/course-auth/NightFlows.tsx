@@ -22,10 +22,12 @@
  */
 
 import Link from "next/link";
+import { TOO_MANY } from "@/app/lib/rateLimitWords";
 import { useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { COURSE_AUTH_CONTENT, FLOW, SHARED, type CourseAuthKey } from "./content";
 import NightShell, { TICK, type NightLight } from "./NightShell";
+import { passwordProblem, passwordRules } from "@/app/lib/passwordPolicy";
 
 type Vars = CSSProperties & Record<`--${string}`, string | number>;
 
@@ -114,11 +116,18 @@ export function NightForgot({ course }: { course: CourseAuthKey }) {
     try {
       // Always succeeds from the UI's point of view: the API never reveals
       // whether the email matched an account (anti-enumeration).
-      await fetch("/api/forgot-password", {
+      const res = await fetch("/api/forgot-password", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, course: t.slug }),
       });
+      /* The one answer that is not "sent": too many requests. */
+      if (res.status === 429) {
+        const data = await res.json().catch(() => null);
+        setError(typeof data?.error === "string" ? data.error : TOO_MANY);
+        setPhase("idle");
+        return;
+      }
     } catch {
       /* swallow: same posture; the email itself is the retry path */
     }
@@ -184,10 +193,9 @@ export function NightReset({ course }: { course: CourseAuthKey }) {
   const [error, setError] = useState("");
   const [phase, setPhase] = useState<"idle" | "loading" | "done">("idle");
 
-  const ruleLength = password.length >= 8;
-  const ruleUpper = /[A-Z]/.test(password);
-  const ruleSpecial = /[^A-Za-z0-9]/.test(password);
-  const passwordOk = ruleLength && ruleUpper && ruleSpecial;
+  /* The same rule the server enforces (app/lib/passwordPolicy.ts). */
+  const { length: ruleLength, upper: ruleUpper, special: ruleSpecial } = passwordRules(password);
+  const passwordOk = passwordProblem(password) === null;
   const confirmOk = confirm.length > 0 && password === confirm;
   const allReady = passwordOk && confirmOk;
   const done = phase === "done";

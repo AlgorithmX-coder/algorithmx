@@ -4,6 +4,7 @@ import { opsAlert } from "@/app/lib/opsAlert";
 import { newInviteToken } from "@/app/lib/aiClearedAdmin";
 import { createClass } from "@/app/lib/schoolClasses";
 import { placesUsed } from "@/app/lib/schoolPlaces";
+import { normaliseEmail } from "@/app/lib/emailIdentity";
 import type { LearnerOrgKind } from "@prisma/client";
 
 /* The AlgorithmX side of schools and the other organisations that teach
@@ -30,6 +31,9 @@ export interface SchoolRow {
   trialExpiresAt: string | null;
   revokedAt: string | null;
   paidVia: "stripe" | "manual";
+  /** Set by staff when a manual deal’s money arrived. See paidState.ts. */
+  paidAt: string | null;
+  stripeCustomerId: string | null;
 }
 
 /**
@@ -69,6 +73,8 @@ export async function listLearnerOrgs(kind: LearnerOrgKind): Promise<SchoolRow[]
       trialExpiresAt: o.trialExpiresAt ? o.trialExpiresAt.toISOString() : null,
       revokedAt: o.revokedAt ? o.revokedAt.toISOString() : null,
       paidVia: o.stripeCustomerId ? "stripe" : "manual",
+      paidAt: o.paidAt ? o.paidAt.toISOString() : null,
+      stripeCustomerId: o.stripeCustomerId,
     };
   });
 }
@@ -139,7 +145,7 @@ export async function createSchool(args: {
     },
   });
   const token = newInviteToken(slug.slice(0, 6));
-  await prisma.teacherInvite.create({ data: { orgId: org.id, email: args.teacherEmail.trim().toLowerCase(), inviteToken: token, role: "ADMIN" } });
+  await prisma.teacherInvite.create({ data: { orgId: org.id, email: normaliseEmail(args.teacherEmail), inviteToken: token, role: "ADMIN" } });
   let emailed = true;
   try {
     await sendTeacherInvite({ to: args.teacherEmail, token, schoolName: org.name, kind: args.kind ?? "SCHOOL", seats: args.seatsPurchased, trialDays: args.trialDays ?? null, origin: args.origin });
@@ -275,7 +281,7 @@ function esc(s: string): string {
 /** Where a school writes in. Never a person: staff change, an address does
  *  not, and a teacher should not be replying to whoever happened to set
  *  their school up. */
-export const SCHOOLS_EMAIL = "schools@algorithmx.co.uk";
+export const SCHOOLS_EMAIL = "admissions@algorithmx.co.uk";
 
 /**
  * The first teacher's invite.

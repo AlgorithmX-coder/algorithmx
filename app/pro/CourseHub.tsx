@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import NightHomeShell, { ByCube, NightHomePause } from "@/app/components/course-home/NightHomeShell";
+import CourseSignOut from "@/app/components/CourseSignOut";
 
 /* The Cyber Pro course hub: every module, grouped into the four acts, with a
  * clear route into the ones that are built.
@@ -168,6 +169,7 @@ export default function CourseHub() {
           </div>
           <div className="hb6-chrome-r">
             <span className="hb6-tag">0 to hired &middot; 18+</span>
+            <CourseSignOut course="cyberstart-pro" className="hb6-pillbtn">Sign out</CourseSignOut>
             <NightHomePause />
           </div>
         </div>

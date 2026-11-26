@@ -23,7 +23,7 @@ const SAID: Record<InviteFailure, string> = {
   bad_email: "That does not look like an email address.",
   already_staff: "They already have access.",
   already_invited: "They have an invite open already. It is in the list below.",
-  not_sent: "We could not send that. Try again, or email schools@algorithmx.co.uk.",
+  not_sent: "We could not send that. Try again, or email admissions@algorithmx.co.uk.",
 };
 
 export async function inviteStaffAction(formData: FormData): Promise<InviteResult> {

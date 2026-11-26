@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { sendEmail } from "@/app/lib/resend";
+import { RULES, clientIp, hit, rateKey, tooManyResponse } from "@/app/lib/rateLimit";
 
 /**
  * POST /api/corporate/enquiry - the /corporate contact form.
@@ -44,6 +45,11 @@ function esc(s: string): string {
 }
 
 export async function POST(req: Request) {
+  /* This form sends email, so a script must not be able to use it as a
+     mail cannon. Counted per IP, before anything else. */
+  const limited = await hit(rateKey("corporate-enquiry-ip", clientIp(req)), RULES.publicFormIp);
+  if (!limited.ok) return tooManyResponse(limited);
+
   let raw: unknown;
   try {
     raw = await req.json();
@@ -90,7 +96,7 @@ export async function POST(req: Request) {
   console.log("[corporate-enquiry]", JSON.stringify(record));
 
   const to =
-    process.env.CORPORATE_ENQUIRY_TO ?? process.env.SCHOOLS_ENQUIRY_TO ?? "support@algorithmx.co.uk";
+    process.env.CORPORATE_ENQUIRY_TO ?? process.env.SCHOOLS_ENQUIRY_TO ?? "admissions@algorithmx.co.uk";
   const subject = `AI Cleared enquiry: ${company} (${record.size})`;
   const rows: Array<[string, string]> = [
     ["Name", name],

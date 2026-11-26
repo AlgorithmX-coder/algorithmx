@@ -201,7 +201,7 @@ export const INVENTORY_ITEMS: InventoryItem[] = [
     screen: 17,
     icon: "🎓",
     name: "Academy Pin",
-    didYouKnow: "You finished Week 1. The Cyber Heroes Academy is yours to keep.",
+    didYouKnow: "You finished Week 1. This Cyber Heroes pin is yours to keep.",
     speaker: "layla",
     accent: "#00e5ff",
   },

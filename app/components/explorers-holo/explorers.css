@@ -220,6 +220,7 @@
 .ev1 footer .links{display:flex;gap:6px}
 .ev1 footer .links a{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;color:var(--body);padding:8px 12px;border-radius:999px;border:1px solid var(--line2);background:rgba(255,255,255,.7);transition:border-color .25s,color .25s}
 .ev1 footer .links a:hover{border-color:var(--cInk);color:var(--cInk)}
+.ev1 footer .legal{position:relative;margin-top:-18px;padding-bottom:30px;font-family:var(--mono);font-size:11px;line-height:1.7;letter-spacing:.04em;color:var(--muted)}
 /* breakpoints */
 @media (max-width:1100px){.ev1 .chips,.ev1 .nav .login{display:none}.ev1 .nav .burger{display:inline-grid}.ev1 .nav .capsule[data-open] .sheet{display:grid}}
 @media (max-width:980px){.ev1 .hgrid{grid-template-columns:1fr;padding-top:110px;min-height:0}.ev1 .stage{max-width:620px}.ev1 .stats{grid-template-columns:1fr 1fr}.ev1 .cards3,.ev1 .gcards,.ev1 .ba,.ev1 .pts{grid-template-columns:1fr}.ev1 .power{padding-top:100px}}

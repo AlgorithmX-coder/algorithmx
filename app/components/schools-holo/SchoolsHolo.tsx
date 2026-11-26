@@ -281,7 +281,6 @@ export default function SchoolsHolo() {
           <div className="marksBand glass" data-reveal>
             <span className="lab">{CL.marks.label}</span>
             {CL.marks.courses.map((c) => <a className="cmark" key={c.id} href={COURSE_HREF[c.id]} style={{ "--c": c.accent } as React.CSSProperties}><CourseLockup id={c.id} size={0.78} tone="sand" /><span className="ages">{c.ages}</span></a>)}
-            <span className="asdan"><span className="plate"><img src={CL.marks.accreditation.logo} alt={CL.marks.accreditation.alt} /></span><span><b>{CL.marks.accreditation.strong}</b><span>{CL.marks.accreditation.line}</span></span></span>
           </div>
         </section>
 

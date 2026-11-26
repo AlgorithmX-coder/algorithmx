@@ -25,6 +25,9 @@ model User {
   /// bcrypt hash for the credentials provider. Null for users
   /// who only signed in via OAuth.
   hashedPassword String?
+  /// When the password was last set by a reset or change. Sessions that
+  /// signed in before this are refused (app/lib/sessionValidity.ts).
+  passwordChangedAt DateTime?
   role           String    @default("learner")
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
@@ -493,6 +496,21 @@ model Organisation {
   /// seatsPurchased / stripeCustomerId as elsewhere. Cleared back to null
   /// once staff convert the org to a real paid or manual deal.
   trialExpiresAt  DateTime?
+  /// Set by staff when the money for a manual deal has actually arrived.
+  /// Deliberately separate from seatsPurchased and plan, which only record
+  /// what was AGREED: a school can hold its licence and its pupil places
+  /// for weeks before the invoice is settled, and before this field the
+  /// console called that school "Paid (manual)" on the strength of having
+  /// a licence at all. A Stripe customer has paid by definition, so this
+  /// is read alongside stripeCustomerId, never instead of it - the rule
+  /// lives in one place, paidState() in app/lib/paidState.ts.
+  paidAt          DateTime?
+  /// The staff user who ticked it, so a disputed invoice has someone to
+  /// ask. A plain id rather than a relation: nothing joins on it, and a
+  /// back-relation on User would make every staff member carry a list of
+  /// organisations they had ticked.
+  paidById        String?
+
   /// Set by staff to close an org's access immediately - independent of
   /// trial/paid status. It closes the adults' screens AND the learners:
   /// a child at a closed school cannot find their class to sign in, and a
@@ -1032,4 +1050,23 @@ model DeskOffice {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, jobId])
+}
+
+// ---------------------------------------------------------------------------
+// RATE LIMITING
+// ---------------------------------------------------------------------------
+
+/// Fixed-window counters for app/lib/rateLimit.ts. One row per key per
+/// window; `key` is a bucket name plus a SHA-256 of the subject (an email,
+/// an IP, a pupil), never the raw value. Rows older than two days are
+/// pruned as the limiter runs, so the table stays small. A lock row (a
+/// pupil after too many wrong pictures) is the same shape with
+/// windowStart set to the moment the lock began.
+model RateLimit {
+  key         String
+  windowStart DateTime
+  count       Int      @default(0)
+
+  @@id([key, windowStart])
+  @@index([windowStart])
 }

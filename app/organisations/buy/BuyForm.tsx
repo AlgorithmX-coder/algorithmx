@@ -130,7 +130,7 @@ export default function BuyForm({ blocks0, vatPercent, intro, after }: { blocks0
               expire. A place is one young person on one course: it follows them, so moving them between
               groups on that course costs nothing, and starting them on a second course uses another
               place. Need an invoice instead, or buying for a school? Write to{" "}
-              <a href="mailto:schools@algorithmx.co.uk">schools@algorithmx.co.uk</a>.
+              <a href="mailto:admissions@algorithmx.co.uk">admissions@algorithmx.co.uk</a>.
             </p>
           </section>
         </form>
@@ -174,7 +174,7 @@ export default function BuyForm({ blocks0, vatPercent, intro, after }: { blocks0
             <div><dt>Every further fifty</dt><dd>{money(BLOCK_FURTHER_PENCE)}</dd></div>
           </dl>
           <p className="odk-note">
-            Places never expire.{vatPercent > 0 ? ` VAT at ${vatPercent}% is added at checkout and shown on your invoice.` : ""} More than {(MAX_BLOCKS * PLACES_PER_BLOCK).toLocaleString("en-GB")} places? Write to <a href="mailto:schools@algorithmx.co.uk">schools@algorithmx.co.uk</a> and we will quote you.
+            Places never expire.{vatPercent > 0 ? ` VAT at ${vatPercent}% is added at checkout and shown on your invoice.` : ""} More than {(MAX_BLOCKS * PLACES_PER_BLOCK).toLocaleString("en-GB")} places? Write to <a href="mailto:admissions@algorithmx.co.uk">admissions@algorithmx.co.uk</a> and we will quote you.
           </p>
         </section>
 

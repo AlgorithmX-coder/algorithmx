@@ -5,6 +5,7 @@ import { courseName } from "@/app/lib/schoolPlaces";
 import { pickSchool, SCHOOL_CHOICE_COOKIE, type SchoolChoice } from "@/app/lib/schoolChoice";
 import { trialStatus } from "@/app/lib/orgTrial";
 import { newInviteToken } from "@/app/lib/aiClearedAdmin";
+import { emailEquals, normaliseEmail } from "@/app/lib/emailIdentity";
 import { sendTeacherInvite } from "@/app/lib/schoolOps";
 
 /**
@@ -290,7 +291,7 @@ export async function inviteStaff(args: {
   email: string;
   origin: string;
 }): Promise<{ ok: true; link: string; emailed: boolean } | { ok: false; error: InviteFailure }> {
-  const email = args.email.trim().toLowerCase();
+  const email = normaliseEmail(args.email);
   /* Deliberately loose. The strictest thing worth asking of an address is
      that a human typed something that could be one; anything tighter
      rejects a real school address eventually, and the invite only works if
@@ -300,7 +301,7 @@ export async function inviteStaff(args: {
   }
 
   const already = await prisma.orgMember.findFirst({
-    where: { orgId: args.orgId, user: { email }, role: { in: ["ADMIN", "MANAGER"] } },
+    where: { orgId: args.orgId, user: { email: emailEquals(email) }, role: { in: ["ADMIN", "MANAGER"] } },
     select: { id: true },
   });
   if (already) return { ok: false, error: "already_staff" };

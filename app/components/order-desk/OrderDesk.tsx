@@ -138,6 +138,7 @@ export default function OrderDesk({
       <main className={`odk-main odk-wrap${thanks ? " odk-thanks" : ""}`}>{children}</main>
       <footer className="odk-foot odk-wrap">
         <span>{footLeft}</span>
+        <span className="odk-legal"><a href="/terms">Terms</a> · <a href="/privacy">Privacy</a></span>
         <span>{footRight}</span>
         <button className="odk-pause" type="button" aria-pressed={paused} onClick={toggle}><i /><span>{paused ? "Play motion" : "Pause motion"}</span></button>
       </footer>

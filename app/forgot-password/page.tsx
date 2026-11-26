@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { TOO_MANY } from "@/app/lib/rateLimitWords";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import AuthBackdrop from "@/app/components/auth/AuthBackdrop";
 import CubeMark from "@/app/components/CubeMark";
@@ -65,11 +66,18 @@ export default function ForgotPasswordPage() {
     try {
       // Always succeeds from the UI's point of view — the API never reveals
       // whether the email matched an account (anti-enumeration).
-      await fetch("/api/forgot-password", {
+      const res = await fetch("/api/forgot-password", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),
       });
+      /* The one answer that is not "sent": too many requests. */
+      if (res.status === 429) {
+        const data = await res.json().catch(() => null);
+        setError(typeof data?.error === "string" ? data.error : TOO_MANY);
+        setPhase("idle");
+        return;
+      }
     } catch {
       /* swallow — same posture; the email itself is the retry path */
     }

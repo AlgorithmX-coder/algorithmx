@@ -189,7 +189,7 @@ export const AXC = {
     }
   },
   proof: {
-    eyebrow: "// Accredited, certified and backed",
+    eyebrow: "// Certified, aligned and backed",
     ariaLabel: "Accreditations",
     marks: [
       {
@@ -779,6 +779,10 @@ export const AXC = {
           {
             name: "Free AI use policy",
             href: "/corporate#policy"
+          },
+          {
+            name: "Terms",
+            href: "/terms"
           },
           {
             name: "Privacy",

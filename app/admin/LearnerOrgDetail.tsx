@@ -4,6 +4,8 @@ import { prisma } from "@/app/lib/prisma";
 import { listClasses } from "@/app/lib/schoolClasses";
 import { trialStatus } from "@/app/lib/orgTrial";
 import { courseName, listCreditablePlaces, placesUsed } from "@/app/lib/schoolPlaces";
+import { getOrgStats } from "@/app/lib/orgStats";
+import { paidState, paidLabel } from "@/app/lib/paidState";
 import { SchoolIcon, OrganisationIcon } from "./icons";
 import RevokeButton from "./schools/[slug]/RevokeButton";
 import DeleteOrgButton from "./DeleteOrgButton";
@@ -55,16 +57,61 @@ export default async function LearnerOrgDetail({
   const status = trialStatus(org.trialExpiresAt);
   const day = (d: Date | null) => (d ? d.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" }) : "—");
 
+  /* Counts only. Nothing here reaches a named child or their progress:
+     see the note on getOrgStats. */
+  const stats = await getOrgStats(org.id);
+  const paid = paidState(org);
+  const term = org.revokedAt
+    ? "Access closed"
+    : status === "active"
+      ? `Trial, to ${day(org.trialExpiresAt)}`
+      : status === "expired"
+        ? `Trial ended ${day(org.trialExpiresAt)}`
+        : "Licence";
+
+  const tiles: { label: string; value: string; sub?: string }[] = [
+    { label: "Places licensed", value: String(stats.placesLicensed), sub: `${stats.placesSpent} spent · ${stats.placesLeft} left` },
+    {
+      label: `${w.learners ? "Pupils" : "Learners"} added`,
+      value: String(stats.pupilsInLiveClasses),
+      sub: `${stats.pupilsStarted} have started a lesson`,
+    },
+    {
+      label: w.groups.charAt(0).toUpperCase() + w.groups.slice(1),
+      value: String(stats.classesLive),
+      sub: stats.classesArchived > 0 ? `${stats.classesArchived} archived` : "none archived",
+    },
+    {
+      label: "Courses in use",
+      value: String(stats.courses.length),
+      sub: stats.courses.length ? stats.courses.join(", ") : "none yet",
+    },
+    { label: "Term", value: term, sub: paidLabel(paid) },
+    {
+      label: "Last activity",
+      value: stats.lastActivity ? day(stats.lastActivity) : "None",
+      sub: stats.lastActivity ? "a pupil was in a lesson" : "nobody has started yet",
+    },
+  ];
+  if (stats.placesHeldByLeavers > 0) {
+    tiles.splice(1, 0, {
+      label: "Held by leavers",
+      value: String(stats.placesHeldByLeavers),
+      sub: "places spent on pupils since removed",
+    });
+  }
+
   return (
     <div>
       <p className="ad-back"><Link href={w.back}>{w.backLabel}</Link></p>
       <span className={`ad-eyebrow ${w.eyebrow}`}>{isSchool ? <SchoolIcon /> : <OrganisationIcon />} {w.Noun}</span>
       <h1 className="ad-h1">{org.name}</h1>
+      {/* Who they are. Every number that used to be crammed in here - places
+          spent, pupils, the trial, paid or not - is a tile below, where it
+          can be read at a glance instead of picked out of a sentence. */}
       <p className="ad-note">
         {org.sector ?? "sector not set"}
-        {org.country ? ` · ${org.country}` : ""} &middot; contact {org.contactName ?? "not set"}{org.contactRole ? `, ${org.contactRole}` : ""} &middot; {org.stripeCustomerId ? "paid through Stripe" : "manual deal"} &middot; {spent} of {org.seatsPurchased} {w.learners ? `${w.learners} ` : ""}places spent, {pupilsUsed} sitting in live {w.groups} &middot; created {day(org.createdAt)}
-        {status === "active" && <> &middot; <span className="ad-chip trial">Trial, expires {day(org.trialExpiresAt)}</span></>}
-        {status === "expired" && <> &middot; <span className="ad-chip expired">Trial ended {day(org.trialExpiresAt)}</span></>}
+        {org.country ? ` · ${org.country}` : ""} &middot; contact {org.contactName ?? "not set"}{org.contactRole ? `, ${org.contactRole}` : ""} &middot; created {day(org.createdAt)}
         {org.revokedAt && <> &middot; <span className="ad-chip expired">Access closed</span></>}
       </p>
       {org.school?.safeguardingContact && (
@@ -73,6 +120,21 @@ export default async function LearnerOrgDetail({
           {org.school.childLineNumber ? ` · ${org.school.childLineNumber}` : ""}
         </p>
       )}
+
+      {/* The account at a glance, so staff stop having to read the run-on
+          sentence above or count rows in the table below. Counts only. */}
+      <div className="ad-stats">
+        {tiles.map((t) => (
+          <div key={t.label} className="ad-stat">
+            <span className="ad-stat-label">{t.label}</span>
+            {/* A count gets the big numeral; a phrase like "Trial, to 24 Nov
+                2026" does not, or it wraps to three lines and drags its tile
+                taller than every other one in the row. */}
+            <b className={`ad-stat-value${/^\d+$/.test(t.value) ? "" : " is-text"}`}>{t.value}</b>
+            {t.sub && <small className="ad-stat-sub">{t.sub}</small>}
+          </div>
+        ))}
+      </div>
 
       <div className="ad-actions">
         <RevokeButton orgId={org.id} revoked={!!org.revokedAt} />
