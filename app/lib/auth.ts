@@ -6,6 +6,7 @@ import { sessionStillValid } from "./sessionValidity";
 import bcrypt from "bcryptjs";
 import { authorisePupil } from "./pupilAuth";
 import { findUserByEmail } from "./emailIdentity";
+import { stampSignIn } from "./signInStamp";
 
 /* A refusal the sign-in form can tell apart from a wrong password: NextAuth
    returns `code` from signIn() to the browser. */
@@ -110,6 +111,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         /* When this session signed in, so a later password reset can end
            it (app/lib/sessionValidity.ts). */
         token.authAt = Date.now();
+        /* When they last signed in, for the retention policy. */
+        await stampSignIn(user.id);
         return token;
       }
       /* A session that signed in before the password last changed is over:
