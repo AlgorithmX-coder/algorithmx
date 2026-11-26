@@ -199,11 +199,14 @@ function esc(s: string): string {
  *
  * Deliberately the same number the console prints as "N invited", so a
  * refusal agrees with what the admin is looking at.
+ *
+ * A person the lead removed no longer counts: removing someone gives the
+ * seat back, which is the point of removing them.
  */
 export async function seatsLeft(orgId: string): Promise<{ licensed: number; used: number; left: number }> {
   const [org, people] = await Promise.all([
     prisma.organisation.findUnique({ where: { id: orgId }, select: { seatsPurchased: true } }),
-    prisma.seat.findMany({ where: { orgId }, select: { email: true }, distinct: ["email"] }),
+    prisma.seat.findMany({ where: { orgId, removedAt: null }, select: { email: true }, distinct: ["email"] }),
   ]);
   const licensed = org?.seatsPurchased ?? 0;
   const used = people.length;
@@ -220,8 +223,11 @@ export type InviteSeatsResult =
  * with reply-to set to them. Refused outright once the seats are taken. */
 export async function inviteSeats(args: { orgId: string; orgSlug: string; firmName: string; emails: string[]; team?: string | null; track?: Track | null; role?: OrgRole; origin: string; adminName: string; adminEmail: string | null; staff?: boolean }): Promise<InviteSeatsResult> {
   const clean = Array.from(new Set(args.emails.map((e) => normaliseEmail(e)).filter((e) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e))));
-  const existing = await prisma.seat.findMany({ where: { orgId: args.orgId, email: { in: clean } }, select: { email: true } });
-  const have = new Set(existing.map((e) => e.email));
+  const existing = await prisma.seat.findMany({ where: { orgId: args.orgId, email: { in: clean } }, select: { id: true, email: true, course: true, removedAt: true } });
+  /* A removed person's address is free to invite again: the invite brings
+     their old seat row back rather than adding a second one. */
+  const have = new Set(existing.filter((e) => !e.removedAt).map((e) => e.email));
+  const removedSeat = new Map(existing.filter((e) => e.removedAt && e.course === "CYBER_SECURED").map((e) => [e.email, e.id]));
   const wanted = clean.filter((e) => !have.has(e));
 
   /* The licence, enforced. Until this check a firm that bought ten seats
@@ -249,7 +255,15 @@ export async function inviteSeats(args: { orgId: string; orgSlug: string; firmNa
   const failed: string[] = [];
   for (const email of wanted) {
     const t = token(args.orgSlug.slice(0, 6));
-    await prisma.seat.create({ data: { orgId: args.orgId, email, inviteToken: t, team: args.team ?? null, trackHint: args.track ? TRACK_TO_DB[args.track] : null, role: args.role ?? "LEARNER", course: "CYBER_SECURED" } });
+    const data = { inviteToken: t, team: args.team ?? null, trackHint: args.track ? TRACK_TO_DB[args.track] : null, role: args.role ?? "LEARNER" };
+    const back = removedSeat.get(email);
+    if (back) {
+      /* Unclaimed again, with a fresh link: the person opens it, picks a
+         desk and has their courses and their old progress back. */
+      await prisma.seat.update({ where: { id: back }, data: { ...data, removedAt: null, claimedAt: null, invitedAt: new Date() } });
+    } else {
+      await prisma.seat.create({ data: { orgId: args.orgId, email, course: "CYBER_SECURED", ...data } });
+    }
     created.push({ email, token: t });
     try {
       await sendInvite({ to: email, token: t, firmName: args.firmName, origin: args.origin, adminName: args.adminName, adminEmail: args.adminEmail });

@@ -10,6 +10,7 @@ import { COURSES, courseByKey, corporateCourse, courseOfSerial, type CourseSlug 
 import type { OrgPlan } from "@prisma/client";
 import { DEFAULT_FIRM } from "@/app/ai-cleared/engine/types";
 import { emailEquals, normaliseEmail } from "@/app/lib/emailIdentity";
+import { defaultTeamDomain, newTeamToken } from "@/app/lib/teamLink";
 
 /* The AlgorithmX side of Cyber Secured: every firm at a glance with its
  * seats and how far its people have got on each track, the totals,
@@ -141,6 +142,10 @@ export async function createFirm(args: {
       contactRole: args.contactRole?.trim() || null,
       plan: args.plan,
       seatsPurchased: args.seatsPurchased,
+      /* The one link the lead forwards to their staff, locked to the
+         lead's own domain unless that is a free provider. */
+      teamToken: newTeamToken(),
+      teamDomain: defaultTeamDomain(args.adminEmail),
     },
   });
   if (args.approvedTool) {
