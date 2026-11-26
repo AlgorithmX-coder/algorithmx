@@ -4,6 +4,7 @@ import { notFound, redirect } from "next/navigation";
 import { auth } from "@/app/lib/auth";
 import { isStaffUser } from "@/app/lib/aiClearedStaff";
 import { getAdminContext, getTeam, seatsLeft } from "@/app/lib/aiClearedAdmin";
+import { teamLinkView } from "@/app/lib/firmTeamLink";
 import { firstNameOf } from "@/app/lib/aiCleared";
 import { prisma } from "@/app/lib/prisma";
 import { getPurchaseAmount } from "@/app/lib/refund";
@@ -29,7 +30,7 @@ export default async function OpsFirmPage({ params }: { params: Promise<{ slug: 
   const ctx = await getAdminContext(session.user.id, slug);
   if (!ctx) notFound();
 
-  const { tracks, rows } = await getTeam(ctx.orgId);
+  const [{ tracks, rows }, teamLink] = await Promise.all([getTeam(ctx.orgId), teamLinkView(ctx.orgId)]);
   const calls = await modelCallsLastDay(ctx.orgId);
   /* The people holding a seat, counted as the invite cap counts them: the
      floor the seat editor will not go below. */
@@ -84,7 +85,7 @@ export default async function OpsFirmPage({ params }: { params: Promise<{ slug: 
       <SeatsControl orgId={ctx.orgId} seats={ctx.org.seatsPurchased} held={standing.used} />
       <span className="cf-eyebrow">Purchases</span>
       <PurchasesPanel purchases={purchases} />
-      <TeamPanel firmName={ctx.org.name} role="ADMIN" seatsPurchased={ctx.org.seatsPurchased} tracks={tracks} rows={rows} profile={profile} orgId={ctx.orgId} />
+      <TeamPanel firmName={ctx.org.name} role="ADMIN" seatsPurchased={ctx.org.seatsPurchased} tracks={tracks} rows={rows} profile={profile} orgId={ctx.orgId} teamLink={teamLink} />
     </Frame>
   );
 }

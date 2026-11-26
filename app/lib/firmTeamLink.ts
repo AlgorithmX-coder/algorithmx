@@ -2,9 +2,10 @@ import { prisma } from "@/app/lib/prisma";
 import { sendEmail } from "@/app/lib/resend";
 import { enrolOnEveryTrack } from "@/app/lib/aiCleared";
 import { newInviteToken } from "@/app/lib/aiClearedAdmin";
-import { CYBER_SECURED_BRAND, CYBER_SECURED_NAME, SECURED_TRACK_SLUGS } from "@/app/lib/cyberSecured";
+import { CYBER_SECURED_BRAND, CYBER_SECURED_NAME, SECURED_TRACK_SLUGS, liveTrackNames } from "@/app/lib/cyberSecured";
+import { hit, peek, rateKey } from "@/app/lib/rateLimit";
 import { emailEquals, normaliseEmail } from "@/app/lib/emailIdentity";
-import { defaultTeamDomain, newTeamToken, seatsTakenLine, teamJoinDecision, type TeamJoinDecision, type TeamJoinRefusal } from "@/app/lib/teamLink";
+import { defaultTeamDomain, domainAllows, newTeamToken, seatsTakenLine, teamJoinDecision, type TeamJoinDecision, type TeamJoinRefusal } from "@/app/lib/teamLink";
 import type { Track } from "@/app/ai-cleared/engine/types";
 
 /* A firm's one team join link, server side: finding the firm a link
@@ -186,4 +187,119 @@ export async function notifySeatsFull(args: { orgId: string; origin: string; now
     console.error("[team-link] seats-full email failed", err instanceof Error ? err.message : err);
     return false;
   }
+}
+
+/* "Make a new link": the old one stops working the moment this returns,
+ * because a token is looked up by exact match and the old string is gone.
+ * Seats already taken through it are untouched. */
+export async function rotateTeamLink(orgId: string): Promise<string> {
+  const existing = await prisma.organisation.findUnique({ where: { id: orgId }, select: { teamToken: true } });
+  if (!existing?.teamToken) {
+    const made = await ensureTeamLink(orgId);
+    if (made) return made.token;
+  }
+  const token = newTeamToken();
+  await prisma.organisation.update({ where: { id: orgId }, data: { teamToken: token } });
+  return token;
+}
+
+/* The firm-domain check, on or off. On means the lead's own domain; a
+ * lead on a free provider has none to lock to, so switching on is refused
+ * with the reason rather than locking the link to everyone at Gmail. */
+export async function setTeamDomainLock(orgId: string, on: boolean): Promise<{ ok: true; domain: string | null } | { ok: false; message: string }> {
+  await ensureTeamLink(orgId);
+  if (!on) {
+    await prisma.organisation.update({ where: { id: orgId }, data: { teamDomain: null } });
+    return { ok: true, domain: null };
+  }
+  const lead = await leadOf(orgId);
+  const domain = defaultTeamDomain(lead.email);
+  if (!domain) return { ok: false, message: "Your lead's address is on a free email provider, so there is no firm domain to lock the link to. It stays open to anyone who has it." };
+  await prisma.organisation.update({ where: { id: orgId }, data: { teamDomain: domain } });
+  return { ok: true, domain };
+}
+
+/* The numbers for reminders. One a day per address, so pressing the button
+ * twice, or two admins pressing it, never doubles anyone's inbox; and a
+ * ceiling per firm per day, so a pasted list of thousands cannot be used
+ * to send mail in bulk under our name. */
+export const REMIND_RULES = {
+  perAddress: { limit: 1, windowSec: 24 * 60 * 60 },
+  perFirm: { limit: 300, windowSec: 24 * 60 * 60 },
+} as const;
+
+export type RemindResult =
+  | { ok: true; sent: string[]; joined: string[]; removed: string[]; recent: string[]; offDomain: string[]; invalid: string[]; failed: string[]; overLimit: string[] }
+  | { ok: false; message: string };
+
+/**
+ * Email the team link to the addresses on a pasted staff list that have
+ * not joined yet, under the admin's name with replies going to them.
+ *
+ * Someone already in is skipped, as is an address the link would refuse
+ * (outside the firm's domain): reminding them would send a link that does
+ * not work for them. The result says which addresses fell where, so the
+ * portal can tell the admin in a line.
+ */
+export async function remindNotJoined(args: { orgId: string; firmName: string; emails: string[]; origin: string; adminName: string; adminEmail: string | null }): Promise<RemindResult> {
+  const link = await ensureTeamLink(args.orgId);
+  if (!link) return { ok: false, message: "That firm does not exist." };
+  const raw = Array.from(new Set(args.emails.map((e) => normaliseEmail(e)).filter(Boolean)));
+  const invalid = raw.filter((e) => !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e));
+  const valid = raw.filter((e) => !invalid.includes(e));
+  const theirs = await prisma.seat.findMany({ where: { orgId: args.orgId, email: { in: valid } }, select: { email: true, claimedAt: true, removedAt: true } });
+  const joinedSet = new Set(theirs.filter((s) => !s.removedAt && s.claimedAt).map((s) => s.email));
+  const activeSet = new Set(theirs.filter((s) => !s.removedAt).map((s) => s.email));
+  /* Someone the lead removed is not reminded: the link would turn them away. */
+  const removedSet = new Set(theirs.filter((s) => s.removedAt && !activeSet.has(s.email)).map((s) => s.email));
+  const joined = valid.filter((e) => joinedSet.has(e));
+  const removed = valid.filter((e) => removedSet.has(e));
+  const waiting = valid.filter((e) => !joinedSet.has(e) && !removedSet.has(e));
+  const offDomain = waiting.filter((e) => !activeSet.has(e) && !domainAllows(link.domain, e));
+  const targets = waiting.filter((e) => !offDomain.includes(e));
+
+  const url = teamJoinUrl(args.origin, link.token);
+  const sent: string[] = [];
+  const recent: string[] = [];
+  const failed: string[] = [];
+  const overLimit: string[] = [];
+  for (const to of targets) {
+    const mine = await peek(rateKey("team-remind", `${args.orgId}:${to}`), REMIND_RULES.perAddress);
+    if (!mine.ok) {
+      recent.push(to);
+      continue;
+    }
+    const firm = await hit(rateKey("team-remind-firm", args.orgId), REMIND_RULES.perFirm);
+    if (!firm.ok) {
+      overLimit.push(to);
+      continue;
+    }
+    await hit(rateKey("team-remind", `${args.orgId}:${to}`), REMIND_RULES.perAddress);
+    const mail = teamEmail({
+      heading: `${args.adminName} has saved you a seat on ${CYBER_SECURED_NAME}.`,
+      paras: [
+        `${args.firmName} has given everyone a seat on ${CYBER_SECURED_NAME}, and yours is still waiting. It opens ${liveTrackNames()}, and you can stop and resume whenever suits.`,
+        "Open the link, create an account with this address (or sign in), answer one question about your job and you are in.",
+      ],
+      button: "Join my team",
+      link: url,
+      foot: `${args.adminName}, ${args.firmName}`,
+    });
+    try {
+      await sendEmail({ to, subject: `${args.adminName}: your seat on ${CYBER_SECURED_NAME} is waiting`, html: mail.html, text: mail.text, replyTo: args.adminEmail ?? undefined });
+      sent.push(to);
+    } catch (err) {
+      console.error("[team-link] reminder failed", to, err instanceof Error ? err.message : err);
+      failed.push(to);
+    }
+  }
+  return { ok: true, sent, joined, removed, recent, offDomain, invalid, failed, overLimit };
+}
+
+/* What the portal's team link card needs: the link, the domain it is
+ * locked to, and the domain switching the check on would use. */
+export async function teamLinkView(orgId: string): Promise<{ token: string; domain: string | null; lockable: string | null } | null> {
+  const [link, lead] = await Promise.all([ensureTeamLink(orgId), leadOf(orgId)]);
+  if (!link) return null;
+  return { token: link.token, domain: link.domain, lockable: defaultTeamDomain(lead.email) };
 }

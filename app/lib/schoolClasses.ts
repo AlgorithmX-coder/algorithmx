@@ -313,7 +313,9 @@ export async function addPupils(args: {
 
   let added = 0;
   for (const firstName of names) {
-    const tag = randomInt(2 ** 48).toString(36) + Date.now().toString(36);
+    /* randomInt refuses a max above 2^48 - 1 (ERR_OUT_OF_RANGE), and at
+       exactly 2 ** 48 every add threw before a single pupil was made. */
+    const tag = randomInt(2 ** 48 - 1).toString(36) + Date.now().toString(36);
     await prisma.$transaction(async (tx) => {
       const user = await tx.user.create({
         data: {

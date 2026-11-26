@@ -4,7 +4,7 @@ import { sendEmail } from "@/app/lib/resend";
 import { DB_TO_TRACK, FIRM_ORG, TRACK_TO_DB } from "@/app/lib/aiCleared";
 import { moduleListFor } from "@/app/lib/courseModules";
 import type { CourseSlug } from "@/app/ai-cleared/engine/courses";
-import { CYBER_SECURED_BRAND, CYBER_SECURED_NAME, SECURED_TRACKS, liveTrackNames, onePerPerson, type SecuredTrackSlug } from "@/app/lib/cyberSecured";
+import { CYBER_SECURED_BRAND, CYBER_SECURED_NAME, SECURED_TRACKS, SECURED_TRACK_SLUGS, liveTrackNames, onePerPerson, type SecuredTrackSlug } from "@/app/lib/cyberSecured";
 import { opsAlert } from "@/app/lib/opsAlert";
 import { TRACK_LABEL, type Track } from "@/app/ai-cleared/engine/types";
 import { isStaffUser } from "@/app/lib/aiClearedStaff";
@@ -98,11 +98,21 @@ export interface PersonRow {
   lastActivity: string | null;
   inviteToken: string;
   invitedAt: string;
+  /* When they took the seat, and when the lead removed them (the row stays,
+   * marked, so the lead can see who had a seat and when it came back). */
+  claimedAt: string | null;
+  removedAt: string | null;
 }
 
-/* Every person holding a seat at the firm, once each (see onePerPerson). */
+/* Every person holding a seat at the firm, once each (see onePerPerson).
+ * A removed seat shows only for someone with no seat left at the firm, so
+ * a person removed and then invited again appears once, as they are now. */
 async function seatsByPerson(orgId: string) {
-  return onePerPerson(await prisma.seat.findMany({ where: { orgId }, include: { user: { select: { name: true } } } }));
+  const all = await prisma.seat.findMany({ where: { orgId }, include: { user: { select: { name: true } } } });
+  const active = all.filter((s) => !s.removedAt);
+  const held = new Set(active.flatMap((s) => [s.email, ...(s.userId ? [s.userId] : [])]));
+  const gone = onePerPerson(all.filter((s) => s.removedAt && !held.has(s.email) && !(s.userId && held.has(s.userId))));
+  return [...onePerPerson(active), ...gone];
 }
 
 /* The tracks a register shows: live, and with a Product row behind them. */
@@ -149,6 +159,8 @@ export async function getTeam(orgId: string): Promise<{ tracks: TeamTrack[]; row
       lastActivity: stamps.length ? new Date(Math.max(...stamps)).toISOString() : null,
       inviteToken: s.inviteToken,
       invitedAt: s.invitedAt.toISOString(),
+      claimedAt: s.claimedAt ? s.claimedAt.toISOString() : null,
+      removedAt: s.removedAt ? s.removedAt.toISOString() : null,
     };
   });
   return { tracks, rows };
@@ -156,6 +168,7 @@ export async function getTeam(orgId: string): Promise<{ tracks: TeamTrack[]; row
 
 /* What a person's cell says for one track, in the register and the CSV. */
 export function progressWord(row: PersonRow, slug: SecuredTrackSlug): string {
+  if (row.removedAt) return "Removed";
   if (!row.claimed) return "Invited";
   const p = row.progress[slug];
   if (p?.complete) return "Finished";
@@ -166,7 +179,7 @@ export function progressWord(row: PersonRow, slug: SecuredTrackSlug): string {
 export function teamCsv(team: { tracks: TeamTrack[]; rows: PersonRow[] }, firmName: string): string {
   const esc = (v: string | number | null) => (v === null ? "" : `"${String(v).replace(/"/g, '""')}"`);
   const head = ["Firm", "Email", "Name", "Team", "Desk", "Seat", ...team.tracks.map((t) => t.name), "Last activity", "Invited"];
-  const lines = team.rows.map((r) => [firmName, r.email, r.name, r.team, r.desk ? TRACK_LABEL[r.desk] : null, r.claimed ? "claimed" : "invited", ...team.tracks.map((t) => progressWord(r, t.slug)), r.lastActivity?.slice(0, 10) ?? null, r.invitedAt.slice(0, 10)].map(esc).join(","));
+  const lines = team.rows.map((r) => [firmName, r.email, r.name, r.team, r.desk ? TRACK_LABEL[r.desk] : null, r.removedAt ? "removed" : r.claimed ? "claimed" : "invited", ...team.tracks.map((t) => progressWord(r, t.slug)), r.lastActivity?.slice(0, 10) ?? null, r.invitedAt.slice(0, 10)].map(esc).join(","));
   return [head.map(esc).join(","), ...lines].join("\r\n");
 }
 
@@ -369,7 +382,7 @@ export async function sendSeatsAdded(args: { to: string; firmName: string; seats
  * their own request, are left alone. */
 export async function nudge(args: { orgId: string; firmName: string; origin: string; adminName: string; adminEmail: string | null }) {
   const { tracks, rows } = await getTeam(args.orgId);
-  const targets = rows.filter((r) => r.role !== "ADMIN" && !r.email.endsWith("@removed.invalid") && (!r.claimed || r.finished < tracks.length));
+  const targets = rows.filter((r) => r.role !== "ADMIN" && !r.removedAt && !r.email.endsWith("@removed.invalid") && (!r.claimed || r.finished < tracks.length));
   let sent = 0;
   const failed: string[] = [];
   for (const r of targets) {
@@ -394,6 +407,59 @@ export async function nudge(args: { orgId: string; firmName: string; origin: str
     }
   }
   return { sent, failed, eligible: targets.length };
+}
+
+export type RemovePersonResult = { ok: true; deleted: boolean } | { ok: false; status: number; error: string };
+
+/**
+ * The lead removes someone from the firm's seats.
+ *
+ * An invite nobody has opened is simply deleted, as it always was: there is
+ * no record worth keeping. Someone who took their seat is marked removed
+ * instead, so the register still shows who had one and when it came back:
+ * - the seat stops counting against the licence (seatsLeft skips it),
+ * - their personal invite link is replaced, so an old email cannot reclaim it,
+ * - they leave the firm (their OrgMember row goes), so the portal stops
+ *   enrolling them, and
+ * - the courses close: the BUNDLE entitlements a seat grants are taken
+ *   away, unless they still hold a seat at another firm.
+ * Their enrolments and progress are kept. Inviting the address again
+ * brings the seat back (inviteSeats), and they pick up where they were.
+ *
+ * Nobody removes themselves, a manager cannot remove an admin, and the
+ * firm's last admin cannot be removed: someone has to be left to run it.
+ */
+export async function removePerson(args: { orgId: string; seatId: string; actor: { email: string; role: OrgRole; staff: boolean } }): Promise<RemovePersonResult> {
+  const seat = await prisma.seat.findFirst({ where: { id: args.seatId, orgId: args.orgId } });
+  if (!seat) return { ok: false, status: 404, error: "No such seat." };
+  if (seat.removedAt) return { ok: true, deleted: false };
+  if (!seat.claimedAt && !seat.userId) {
+    await prisma.seat.delete({ where: { id: seat.id } });
+    return { ok: true, deleted: true };
+  }
+  const user = seat.userId ? await prisma.user.findUnique({ where: { id: seat.userId }, select: { email: true } }) : null;
+  const mine = [seat.email, user?.email].filter(Boolean).map((e) => normaliseEmail(e));
+  if (!args.actor.staff && mine.includes(normaliseEmail(args.actor.email))) return { ok: false, status: 409, error: "You cannot remove your own seat. Ask admissions@algorithmx.co.uk if you are handing the firm over." };
+  const member = seat.userId ? await prisma.orgMember.findUnique({ where: { orgId_userId: { orgId: args.orgId, userId: seat.userId } }, select: { role: true } }) : null;
+  const isAdmin = seat.role === "ADMIN" || member?.role === "ADMIN";
+  if (isAdmin && args.actor.role !== "ADMIN") return { ok: false, status: 403, error: "Only an admin can remove another admin." };
+  if (isAdmin && seat.userId) {
+    const others = await prisma.orgMember.count({ where: { orgId: args.orgId, role: "ADMIN", NOT: { userId: seat.userId } } });
+    if (others === 0) return { ok: false, status: 409, error: "That person is the firm's only admin. Make someone else an admin first." };
+  }
+
+  const now = new Date();
+  /* Every seat this person holds here: sent to their address, or claimed by their account. */
+  const theirs = await prisma.seat.findMany({ where: { orgId: args.orgId, removedAt: null, OR: [{ id: seat.id }, { email: seat.email }, ...(seat.userId ? [{ userId: seat.userId }] : [])] }, select: { id: true } });
+  await prisma.$transaction(async (tx) => {
+    for (const s of theirs) await tx.seat.update({ where: { id: s.id }, data: { removedAt: now, inviteToken: newInviteToken("removed") } });
+    if (seat.userId) {
+      await tx.orgMember.deleteMany({ where: { orgId: args.orgId, userId: seat.userId } });
+      const elsewhere = await tx.seat.count({ where: { userId: seat.userId, removedAt: null, claimedAt: { not: null }, NOT: { orgId: args.orgId } } });
+      if (!elsewhere) await tx.entitlement.deleteMany({ where: { userId: seat.userId, source: "BUNDLE", product: { slug: { in: [...SECURED_TRACK_SLUGS] } } } });
+    }
+  });
+  return { ok: true, deleted: false };
 }
 
 export interface ProfileInput {

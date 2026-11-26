@@ -31,10 +31,12 @@ export async function POST(req: NextRequest) {
   const result = await claimSeat({ token: parsed.data.token, userId: session.user.id, track: parsed.data.track });
   if (!result.ok && result.reason === "not-found") return claimByTeamLink(req, parsed.data.token, session.user.id, parsed.data.track);
   if (!result.ok) {
-    const status = result.reason === "taken" || result.reason === "closed" ? 409 : 500;
+    const status = result.reason === "taken" || result.reason === "closed" || result.reason === "removed" ? 409 : 500;
     const message =
       result.reason === "taken"
         ? "That seat has already been claimed by someone else."
+        : result.reason === "removed"
+          ? "That seat has been handed back. Ask your admin if you need it again."
         : result.reason === "closed"
           ? "Your firm's access to these courses is closed. Your admin can reopen it with us at admissions@algorithmx.co.uk."
           : "The courses are not set up yet. Ask your admin.";

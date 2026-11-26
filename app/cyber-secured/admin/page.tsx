@@ -2,6 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { auth } from "@/app/lib/auth";
 import { getAdminContext, getTeam } from "@/app/lib/aiClearedAdmin";
+import { teamLinkView } from "@/app/lib/firmTeamLink";
 import { firstNameOf } from "@/app/lib/aiCleared";
 import { trialStatus } from "@/app/lib/orgTrial";
 import { CYBER_SECURED_BRAND } from "@/app/lib/cyberSecured";
@@ -58,7 +59,7 @@ export default async function TeamPage() {
     );
   }
 
-  const { tracks, rows } = await getTeam(ctx.orgId);
+  const [{ tracks, rows }, teamLink] = await Promise.all([getTeam(ctx.orgId), teamLinkView(ctx.orgId)]);
   const p = ctx.org.profile;
   const profile = {
     approvedTools: p?.approvedTools ?? [],
@@ -75,7 +76,7 @@ export default async function TeamPage() {
 
   return (
     <Frame brand={BRAND} firmName={ctx.org.name} meta={meta}>
-      <TeamPanel firmName={ctx.org.name} role={ctx.role} seatsPurchased={ctx.org.seatsPurchased} tracks={tracks} rows={rows} profile={profile} profileSet={!!p} />
+      <TeamPanel firmName={ctx.org.name} role={ctx.role} seatsPurchased={ctx.org.seatsPurchased} tracks={tracks} rows={rows} profile={profile} profileSet={!!p} teamLink={teamLink} selfEmail={ctx.user.email} />
     </Frame>
   );
 }
