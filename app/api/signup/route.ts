@@ -3,6 +3,7 @@ import { RULES, clientIp, hit, rateKey, tooManyResponse } from "@/app/lib/rateLi
 import bcrypt from "bcryptjs";
 import { prisma } from "@/app/lib/prisma";
 import { grantEntitlement } from "@/app/lib/entitlements";
+import { TESTER_FREE_ACCESS } from "@/app/lib/launchSwitch";
 import { emailTaken, normaliseEmail } from "@/app/lib/emailIdentity";
 
 import { passwordProblem } from "@/app/lib/passwordPolicy";
@@ -18,6 +19,8 @@ import { passwordProblem } from "@/app/lib/passwordPolicy";
  * tests the moment they sign up.
  * ⚠️ Flip cyberstart-pro and desk-ready back OUT (and let the purchase
  * flow be the only grant) once the £99 Stripe buy is live. */
+/* Governed by the one launch switch (app/lib/launchSwitch.ts): flip
+ * TESTER_FREE_ACCESS to false at launch and no signup grants anything. */
 const FREE_ON_SIGNUP: ReadonlySet<string> = new Set([
   "cyber-heroes",
   "cyberexplorers",
@@ -69,7 +72,7 @@ export async function POST(request: Request) {
      * must not fail the signup — we log it and let the user land in the
      * catalogue rather than erroring. `grantEntitlement` itself verifies
      * the Product exists, so an unknown slug can't mint a bogus row. */
-    if (typeof course === "string" && FREE_ON_SIGNUP.has(course)) {
+    if (TESTER_FREE_ACCESS && typeof course === "string" && FREE_ON_SIGNUP.has(course)) {
       try {
         await grantEntitlement(user.id, course, "MANUAL");
       } catch (grantError) {

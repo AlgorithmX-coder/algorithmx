@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import CourseHub from "../CourseHub";
+import { requireCourse } from "@/app/lib/courseAccess";
 
 /**
  * /pro/course — the course hub: all 21 modules across the four acts,
@@ -11,6 +12,7 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-export default function ProCoursePage() {
+export default async function ProCoursePage() {
+  await requireCourse("cyberstart-pro", "/pro/course");
   return <CourseHub />;
 }

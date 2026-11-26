@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import WeekPlayer from "../learn/WeekPlayer";
 import module14 from "../lessons/module14";
-import { enforceProAccess } from "../proAccessGate";
+import { requireCourse } from "@/app/lib/courseAccess";
 
 /**
  * /pro/module14 - Module 14: Logs & the SIEM (5 topics).
@@ -16,6 +16,6 @@ export const metadata: Metadata = {
 };
 
 export default async function ProModule14Page() {
-  await enforceProAccess("/pro/module14");
+  await requireCourse("cyberstart-pro", "/pro/module14");
   return <WeekPlayer week={module14} />;
 }

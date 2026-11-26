@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import WeekPlayer from "../learn/WeekPlayer";
 import module17 from "../lessons/module17";
-import { enforceProAccess } from "../proAccessGate";
+import { requireCourse } from "@/app/lib/courseAccess";
 
 /**
  * /pro/module17 - Module 17: Governance, risk & compliance (GRC).
@@ -15,6 +15,6 @@ export const metadata: Metadata = {
 };
 
 export default async function ProModule17Page() {
-  await enforceProAccess("/pro/module17");
+  await requireCourse("cyberstart-pro", "/pro/module17");
   return <WeekPlayer week={module17} />;
 }

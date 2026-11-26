@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import WeekPlayer from "../learn/WeekPlayer";
 import module09 from "../lessons/module09";
-import { enforceProAccess } from "../proAccessGate";
+import { requireCourse } from "@/app/lib/courseAccess";
 
 /**
  * /pro/module09 - Module 9: Web attacks & the OWASP Top 10.
@@ -17,6 +17,6 @@ export const metadata: Metadata = {
 };
 
 export default async function ProModule09Page() {
-  await enforceProAccess("/pro/module09");
+  await requireCourse("cyberstart-pro", "/pro/module09");
   return <WeekPlayer week={module09} />;
 }

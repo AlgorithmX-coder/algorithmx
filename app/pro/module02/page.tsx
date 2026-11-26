@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import WeekPlayer from "../learn/WeekPlayer";
 import module02 from "../lessons/module02";
+import { requireCourse } from "@/app/lib/courseAccess";
 
 /**
  * /pro/module02 - Module 2: How the internet actually works (5 topics).
@@ -14,6 +15,7 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-export default function ProModule02Page() {
+export default async function ProModule02Page() {
+  await requireCourse("cyberstart-pro", "/pro/module02");
   return <WeekPlayer week={module02} />;
 }

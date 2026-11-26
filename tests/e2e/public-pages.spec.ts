@@ -185,10 +185,27 @@ bare.describe("No launch gate", () => {
   }
 
   // Member areas still require the account login: a bare visitor is redirected
-  // to their own sign-in, never to a /password launch gate.
-  bare("/dashboard redirects to the account login", async ({ page }) => {
+  // to that course's own sign-in (requireCourse), never to a /password launch
+  // gate, with a callback back to where they were going.
+  bare("/dashboard redirects to the Cyber Heroes sign-in", async ({ page }) => {
     await page.goto("/dashboard");
-    const dest = new URL(page.url()).pathname;
-    expect(dest, "went to the account login").toBe("/login");
+    const url = new URL(page.url());
+    expect(url.pathname, "went to the course sign-in").toBe("/cyberheroes/login");
+    expect(url.searchParams.get("callbackUrl"), "comes back to the dashboard").toBe("/dashboard");
   });
+
+  // Every consumer course checks the licence on the server, so a bare visitor
+  // never sees course content: they land on that course's own sign-in.
+  for (const [path, signIn] of [
+    ["/explorers", "/cyberexplorers/login"],
+    ["/operators/portfolio", "/ops/login"],
+    ["/pro/module01", "/pro/login"],
+    ["/desk-ready/course", "/desk-ready/login"],
+    ["/cyberhq", "/cyberheroes/login"],
+  ] as const) {
+    bare(`${path} sends a signed-out visitor to ${signIn}`, async ({ page }) => {
+      await page.goto(path);
+      expect(new URL(page.url()).pathname).toBe(signIn);
+    });
+  }
 });

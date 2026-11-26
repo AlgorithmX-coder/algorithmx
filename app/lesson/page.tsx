@@ -1,21 +1,14 @@
-import { CATALOGUE } from "@/app/lib/courseIntent";
 import { Nunito } from "next/font/google";
-import { auth } from "@/app/lib/auth";
+import { requireCourse } from "@/app/lib/courseAccess";
 import { prisma } from "@/app/lib/prisma";
-import { redirect } from "next/navigation";
 import LessonGate from "./LessonGate";
-import { hasEntitlement } from "@/app/lib/entitlements";
 import { resolveActiveChildProfileId } from "@/app/lib/progressService";
 
 const nunito = Nunito({ subsets: ["latin"] });
 
 export default async function LessonPage() {
   // Gate: must be signed in AND entitled to the cyber-heroes product.
-  const session = await auth();
-  if (!session?.user?.id) redirect("/login");
-
-  const ok = await hasEntitlement(session.user.id, "cyber-heroes");
-  if (!ok) redirect(CATALOGUE);
+  const { session } = await requireCourse("cyber-heroes", "/lesson");
 
   // Fetch the cyber-heroes week-1 CourseContent. We resolve via the
   // product slug so we never hard-code productIds in the page layer.

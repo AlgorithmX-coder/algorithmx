@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import CodeLab from "./CodeLab";
+import { requireCourse } from "@/app/lib/courseAccess";
 
 /**
  * /pro/code - the Code Lab: a free, in-browser JavaScript playground with
@@ -11,6 +12,7 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-export default function ProCodePage() {
+export default async function ProCodePage() {
+  await requireCourse("cyberstart-pro", "/pro/code");
   return <CodeLab />;
 }

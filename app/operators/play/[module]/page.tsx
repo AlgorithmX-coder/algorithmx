@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import { auth } from "@/app/lib/auth";
-import { redirect } from "next/navigation";
+import { requireCourse } from "@/app/lib/courseAccess";
 import PlayClient from "@/app/operators/range/PlayClient";
 import { getOpsResume } from "@/app/lib/opsPortfolio.actions";
 
@@ -20,17 +19,16 @@ export const metadata: Metadata = {
  * off on, from any device) and hands it to the client module so there's no
  * flash of the intro before it jumps to where they were.
  *
- * No entitlement gate yet — Cyber Ops is pre-launch and opened for testing
- * behind the site password, matching how the hub's TEST_ENTER opens the other
- * unlaunched tiers. The purchase/entitlement gate lands with the launch phase.
+ * Gated on the Cyber Ops entitlement ("cyberstart" in the catalogue) via
+ * requireCourse: signed out goes to the Ops sign-in, signed in without the
+ * course goes to the Ops landing page.
  */
 export default async function OperatorsPlayPage({ params }: { params: Promise<{ module: string }> }) {
   const { module } = await params;
   const n = Number(module);
   const moduleNo = Number.isInteger(n) && n > 0 ? n : 1;
 
-  const session = await auth();
-  if (!session?.user?.id) redirect(`/login?callbackUrl=/operators/play/${moduleNo}`);
+  await requireCourse("cyberstart", `/operators/play/${moduleNo}`);
 
   const resume = await getOpsResume(moduleNo);
   return <PlayClient module={moduleNo} initialBeat={resume?.beat} initialCallsign={resume?.callsign ?? undefined} />;

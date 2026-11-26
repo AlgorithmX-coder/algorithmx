@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import ModuleNine from "./ModuleNine";
+import { requireCourse } from "@/app/lib/courseAccess";
 
 /**
  * /desk-ready/m9 - Module 9: Files and sharing (5 lessons in the office's
@@ -12,6 +13,7 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-export default function DeskModuleNinePage() {
+export default async function DeskModuleNinePage() {
+  await requireCourse("desk-ready", "/desk-ready/m9");
   return <ModuleNine />;
 }

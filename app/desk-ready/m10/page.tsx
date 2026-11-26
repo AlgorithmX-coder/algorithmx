@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import ModuleTen from "./ModuleTen";
+import { requireCourse } from "@/app/lib/courseAccess";
 
 /**
  * /desk-ready/m10 - Module 10: Admin in practice (5 lessons, then four office
@@ -11,6 +12,7 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-export default function DeskModuleTenPage() {
+export default async function DeskModuleTenPage() {
+  await requireCourse("desk-ready", "/desk-ready/m10");
   return <ModuleTen />;
 }
