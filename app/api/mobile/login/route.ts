@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { signMobileToken } from "@/app/lib/mobileAuth";
 import { findUserByEmail, normaliseEmail } from "@/app/lib/emailIdentity";
+import { stampSignIn } from "@/app/lib/signInStamp";
 
 /**
  * POST /api/mobile/login — credentials login for the native app.
@@ -43,6 +44,8 @@ export async function POST(request: Request) {
         { status: 401 },
       );
     }
+
+    await stampSignIn(user.id);
 
     const token = await signMobileToken({
       sub: user.id,

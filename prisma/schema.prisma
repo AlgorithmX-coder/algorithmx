@@ -28,6 +28,14 @@ model User {
   /// When the password was last set by a reset or change. Sessions that
   /// signed in before this are refused (app/lib/sessionValidity.ts).
   passwordChangedAt DateTime?
+  /// Stamped on every successful sign-in (app/lib/auth.ts, and the mobile
+  /// login). The retention policy deletes an individual account two years
+  /// after this; see app/lib/retentionRule.ts. Null for anybody who has not
+  /// signed in since the column was added, who are counted from that day.
+  lastSignInAt      DateTime?
+  /// When the 30-day retention warning email went out. Deletion needs one
+  /// sent at least 30 days earlier and not answered by a sign-in.
+  retentionWarnedAt DateTime?
   role           String    @default("learner")
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
