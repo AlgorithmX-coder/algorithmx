@@ -35,6 +35,9 @@ export default function StaffLink({
   const [copied, setCopied] = useState(false);
   const [asking, setAsking] = useState(false);
   const [said, setSaid] = useState<{ ok: boolean; text: string } | null>(null);
+  /* The box moves the moment it is pressed, and moves back only if the
+     server refuses. Waiting for the round trip made it look broken. */
+  const [locked, setLocked] = useState(lockedTo !== null);
 
   const copy = async () => {
     setSaid(null);
@@ -54,12 +57,17 @@ export default function StaffLink({
       setSaid(res.ok ? { ok: true, text: "New link made. The old one no longer works." } : { ok: false, text: res.error });
     });
 
-  const lock = (on: boolean) =>
+  const lock = (on: boolean) => {
+    setLocked(on);
+    setSaid(null);
     start(async () => {
-      setSaid(null);
       const res = await setStaffLinkLockAction(on);
-      if (!res.ok) setSaid({ ok: false, text: res.error });
+      if (!res.ok) {
+        setLocked(!on);
+        setSaid({ ok: false, text: res.error });
+      }
     });
+  };
 
   return (
     <div className="sxh-stafflink">
@@ -90,7 +98,7 @@ export default function StaffLink({
         <label className="sxh-check">
           <input
             type="checkbox"
-            checked={lockedTo !== null}
+            checked={locked}
             onChange={(e) => lock(e.target.checked)}
             disabled={pending}
           />
@@ -106,7 +114,7 @@ export default function StaffLink({
         </p>
       )}
       <p className="sxh-note">
-        Forward it to your {staffs}. Anyone who opens it and signs in{lockedTo ? ` with an @${lockedTo} address` : ""}{" "}
+        Forward it to your {staffs}. Anyone who opens it and signs in{locked && leadDomain ? ` with an @${leadDomain} address` : ""}{" "}
         joins as a {staff}: their own {groups}, drawing on the same pool of places as
         everyone else. They do not see this screen.
       </p>
