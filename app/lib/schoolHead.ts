@@ -6,7 +6,7 @@ import { pickSchool, SCHOOL_CHOICE_COOKIE, type SchoolChoice } from "@/app/lib/s
 import { trialStatus } from "@/app/lib/orgTrial";
 import { newInviteToken } from "@/app/lib/aiClearedAdmin";
 import { emailEquals, normaliseEmail } from "@/app/lib/emailIdentity";
-import { sendTeacherInvite } from "@/app/lib/schoolOps";
+import { SCHOOLS_EMAIL, sendTeacherInvite } from "@/app/lib/schoolOps";
 
 /**
  * The head's side of the school platform.
@@ -350,4 +350,161 @@ export async function inviteStaff(args: {
     console.error("[schools/overview] staff invite email failed", err instanceof Error ? err.message : err);
   }
   return { ok: true, link, emailed };
+}
+
+export interface PlacesByClass {
+  classId: string;
+  name: string;
+  teacherId: string;
+  teacherName: string;
+  archived: boolean;
+  /** Places held by the pupils in this class now, on any course. */
+  places: number;
+  pupils: number;
+}
+
+export interface PlacesByTeacher {
+  userId: string;
+  name: string;
+  /** Live classes they own. */
+  classes: number;
+  /** Places held by pupils in every class they own, live or archived. */
+  places: number;
+}
+
+export interface PlacesSplit {
+  byClass: PlacesByClass[];
+  byTeacher: PlacesByTeacher[];
+  /** Spent places that no class can be credited with: the pupil has left. */
+  unattributed: number;
+}
+
+/**
+ * Where the shared pool went, by class and by the teacher who owns it.
+ *
+ * Owner, 2026-11-26: every teacher draws from ONE pool. Nothing is set aside
+ * for a class or a teacher, and classes are the only split there is, so the
+ * lead needs to see who has been using it. This is reporting, not an
+ * allocation: nothing here limits anybody.
+ *
+ * A place is credited to the class its pupil sits in today, because that is
+ * the only place the pupil is. A pupil who moved up a course carries both
+ * their places into the new class, which is right: both are spent on them.
+ * Places spent on pupils who have since left have no class, and are counted
+ * once, apart, so the columns still add up to what was spent.
+ */
+export async function placesSplit(orgId: string): Promise<PlacesSplit> {
+  const [ledger, classes, members] = await Promise.all([
+    prisma.placeRedemption.findMany({
+      where: { orgId, creditedBackAt: null },
+      select: { child: { select: { classId: true } } },
+    }),
+    prisma.class.findMany({
+      where: { orgId },
+      orderBy: [{ archivedAt: { sort: "asc", nulls: "first" } }, { yearGroup: "asc" }, { name: "asc" }],
+      select: {
+        id: true,
+        name: true,
+        archivedAt: true,
+        teacher: { select: { id: true, name: true, email: true } },
+        _count: { select: { pupils: true } },
+      },
+    }),
+    prisma.orgMember.findMany({
+      where: { orgId, role: { in: ["ADMIN", "MANAGER"] } },
+      orderBy: { createdAt: "asc" },
+      select: { user: { select: { id: true, name: true, email: true } } },
+    }),
+  ]);
+
+  const perClass = new Map<string, number>();
+  let unattributed = 0;
+  for (const row of ledger) {
+    const classId = row.child?.classId;
+    if (!classId) {
+      unattributed += 1;
+      continue;
+    }
+    perClass.set(classId, (perClass.get(classId) ?? 0) + 1);
+  }
+
+  const nameOf = (u: { name: string | null; email: string | null }) => u.name?.trim() || u.email || "Unnamed";
+
+  const byClass: PlacesByClass[] = classes.map((k) => ({
+    classId: k.id,
+    name: k.name,
+    teacherId: k.teacher.id,
+    teacherName: nameOf(k.teacher),
+    archived: k.archivedAt !== null,
+    places: perClass.get(k.id) ?? 0,
+    pupils: k._count.pupils,
+  }));
+  /* A pupil whose class was deleted outright has nowhere to be counted. */
+  const known = new Set(classes.map((k) => k.id));
+  for (const [classId, n] of perClass) if (!known.has(classId)) unattributed += n;
+
+  /* Every member of staff gets a row, including the ones who have spent
+     nothing, then anybody who owns a class without being staff any more
+     (a teacher who left), so no class's places drop out of the total. */
+  const teachers = new Map<string, PlacesByTeacher>();
+  for (const m of members) teachers.set(m.user.id, { userId: m.user.id, name: nameOf(m.user), classes: 0, places: 0 });
+  for (const k of byClass) {
+    const t = teachers.get(k.teacherId) ?? { userId: k.teacherId, name: k.teacherName, classes: 0, places: 0 };
+    if (!k.archived) t.classes += 1;
+    t.places += k.places;
+    teachers.set(k.teacherId, t);
+  }
+
+  return {
+    byClass: byClass.filter((k) => !k.archived || k.places > 0),
+    byTeacher: [...teachers.values()].sort((a, b) => b.places - a.places || a.name.localeCompare(b.name)),
+    unattributed,
+  };
+}
+
+/**
+ * Whoever holds the licence: the earliest ADMIN at the school, or, before
+ * they have claimed their invite, the address the ADMIN invite went to. The
+ * person a teacher is pointed at when the places run out.
+ */
+export async function licenceHolder(orgId: string): Promise<{ name: string | null; email: string | null } | null> {
+  const m = await prisma.orgMember.findFirst({
+    where: { orgId, role: "ADMIN" },
+    orderBy: { createdAt: "asc" },
+    select: { user: { select: { name: true, email: true } } },
+  });
+  if (m) return { name: m.user.name?.trim() || null, email: m.user.email };
+  const invite = await prisma.teacherInvite.findFirst({
+    where: { orgId, role: "ADMIN" },
+    orderBy: { invitedAt: "asc" },
+    select: { email: true },
+  });
+  return invite ? { name: null, email: invite.email } : null;
+}
+
+/**
+ * Who a member of staff should ask when the places run out, in one line.
+ *
+ * Owner, 2026-11-26: a teacher who hits an empty pool is pointed at the lead,
+ * not at us. Buying places is the lead's conversation with us; a teacher
+ * writing to us directly only adds a step. The lead themselves is pointed at
+ * us, since there is nobody above them to ask.
+ */
+export async function whoAddsPlaces(
+  orgId: string,
+  userId: string,
+  noun = "school",
+): Promise<{ isHead: boolean; holder: string | null; ask: string }> {
+  const [mine, holder] = await Promise.all([
+    prisma.orgMember.findUnique({ where: { orgId_userId: { orgId, userId } }, select: { role: true } }),
+    licenceHolder(orgId),
+  ]);
+  const label = holder ? (holder.name && holder.email ? `${holder.name} (${holder.email})` : holder.name ?? holder.email) : null;
+  const isHead = mine?.role === "ADMIN";
+  const ask = isHead
+    ? `Email ${SCHOOLS_EMAIL} to add places.`
+    : label
+      ? `Ask ${label}, who holds the licence, for more places.`
+      : `Ask whoever holds your ${noun}'s licence for more places.`;
+  return { isHead, holder: label, ask };
 }

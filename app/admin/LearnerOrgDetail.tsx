@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { headers } from "next/headers";
 import { notFound } from "next/navigation";
 import { prisma } from "@/app/lib/prisma";
 import { listClasses } from "@/app/lib/schoolClasses";
@@ -11,6 +12,8 @@ import RevokeButton from "./schools/[slug]/RevokeButton";
 import DeleteOrgButton from "./DeleteOrgButton";
 import PlacesControl from "./PlacesControl";
 import CreditPlaces from "./CreditPlaces";
+import StaffLinkCard from "./StaffLinkCard";
+import { ensureStaffLink } from "@/app/lib/staffLink";
 
 /**
  * One school, or one organisation: its classes, pupil counts and status.
@@ -60,6 +63,14 @@ export default async function LearnerOrgDetail({
   /* Counts only. Nothing here reaches a named child or their progress:
      see the note on getOrgStats. */
   const stats = await getOrgStats(org.id);
+
+  /* The school's one staff join link, so staff can hand it over when a
+     lead asks how colleagues get in. Made here if the lead has not opened
+     their overview yet, exactly as it would be there. */
+  const staffLink = await ensureStaffLink(org.id);
+  const h = await headers();
+  const host = h.get("x-forwarded-host") ?? h.get("host") ?? "algorithmx.io";
+  const proto = h.get("x-forwarded-proto") ?? (host.startsWith("localhost") ? "http" : "https");
   const paid = paidState(org);
   const term = org.revokedAt
     ? "Access closed"
@@ -150,6 +161,14 @@ export default async function LearnerOrgDetail({
           classes={classes.length}
         />
       </div>
+
+      {staffLink && (
+        <StaffLinkCard
+          link={`${proto}://${host}/schools/join/${staffLink.token}`}
+          lockedTo={staffLink.lockedTo}
+          staffs={isSchool ? "teachers" : "leaders"}
+        />
+      )}
 
       <PlacesControl orgId={org.id} places={org.seatsPurchased} spent={spent} learners={w.learners} />
 

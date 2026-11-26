@@ -1,8 +1,10 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
+import { headers } from "next/headers";
 import { auth } from "@/app/lib/auth";
-import { getHeadContext, listClassRollUps, listStaff, listPendingInvites } from "@/app/lib/schoolHead";
+import { getHeadContext, listClassRollUps, listStaff, listPendingInvites, placesSplit } from "@/app/lib/schoolHead";
+import { ensureStaffLink } from "@/app/lib/staffLink";
 import { getSchoolContext } from "@/app/lib/schoolClasses";
 import { placesSummary } from "@/app/lib/schoolPlaces";
 import { trialStatus } from "@/app/lib/orgTrial";
@@ -11,6 +13,7 @@ import Locked from "../teach/Locked";
 import TrialEnded from "../TrialEnded";
 import AccessClosed from "../AccessClosed";
 import InviteStaff from "./InviteStaff";
+import StaffLink from "./StaffLink";
 import SignOut from "../SignOut";
 import { SCHOOLS_EMAIL } from "@/app/lib/schoolOps";
 import "./head.css";
@@ -32,7 +35,8 @@ import "./head.css";
  * question four is the one that decides whether they renew. It has to be
  * answerable in a glance in week three, not discovered in July.
  *
- * It is READ ONLY but for one write: adding a member of staff. A head
+ * It is READ ONLY but for adding staff: the one staff join link (copy it,
+ * replace it, lock it to the school domain) and per-email invites. A head
  * cannot see more about a child than that child's own teacher can, cannot
  * change anybody's progress, and cannot buy places from here. Buying more
  * is a conversation with us, so it is an email address, not a button that
@@ -89,12 +93,23 @@ export default async function SchoolOverviewPage() {
     return <TrialEnded orgName={head.orgName} trialExpiresAt={head.trialExpiresAt!} schools={head.schools} currentOrgId={head.orgId} />;
   }
 
-  const [places, classes, staff, invites] = await Promise.all([
+  const [places, classes, staff, invites, split, staffLink] = await Promise.all([
     placesSummary(head.orgId, head.kind),
     listClassRollUps(head.orgId),
     listStaff(head.orgId),
     listPendingInvites(head.orgId),
+    placesSplit(head.orgId),
+    /* Made the first time a lead opens this page, so every school that
+       already exists gets one without a backfill. */
+    ensureStaffLink(head.orgId),
   ]);
+
+  /* The host as the browser asked for it, so the link the lead copies is
+     the one the school actually uses rather than a domain in a config. */
+  const h = await headers();
+  const host = h.get("x-forwarded-host") ?? h.get("host") ?? "algorithmx.io";
+  const proto = h.get("x-forwarded-proto") ?? (host.startsWith("localhost") ? "http" : "https");
+  const staffLinkUrl = staffLink ? `${proto}://${host}/schools/join/${staffLink.token}` : null;
 
   const w = wordsFor(head.kind);
   const onTrial = trialStatus(head.trialExpiresAt) === "active";
@@ -247,6 +262,68 @@ export default async function SchoolOverviewPage() {
           )}
         </section>
 
+        {/* ── 1b. WHO USED THEM ──────────────────────────────────────
+            One shared pool, so this is reporting, not an allocation:
+            nothing is set aside for a class or a teacher, and the split a
+            lead can see is the only split there is. */}
+        {places.redeemed > 0 && (
+          <section className="sxh-sec" aria-labelledby="sxh-split-h">
+            <div className="sxh-sechead">
+              <h2 id="sxh-split-h" className="sxh-h2">Who used them</h2>
+              <p className="sxh-sechint">
+                {places.redeemed} used &middot; {places.available} left in one shared pool
+              </p>
+            </div>
+            <p className="sxh-lede">
+              Every {w.staff} draws on the same places. Nothing is set aside for a {w.group} or a{" "}
+              {w.staff}, so when the pool is empty nobody can add a {w.person} until there are more.
+            </p>
+            <div className="sxh-split">
+              <div className="sxh-splitcol">
+                <h3 className="sxh-h3">By {w.group}</h3>
+                <ul className="sxh-splitlist">
+                  {split.byClass.map((k) => (
+                    <li key={k.classId}>
+                      <span className="sxh-splitname">
+                        {k.archived ? k.name : <Link href={`/schools/classes/${k.classId}`}>{k.name}</Link>}
+                        <span className="sxh-sub">
+                          {k.teacherName}
+                          {k.archived ? " · archived" : ""}
+                        </span>
+                      </span>
+                      <b className="sxh-splitnum">{k.places}</b>
+                    </li>
+                  ))}
+                  {split.unattributed > 0 && (
+                    <li>
+                      <span className="sxh-splitname">
+                        <span className="sxh-dim">{w.people.charAt(0).toUpperCase() + w.people.slice(1)} who have left</span>
+                      </span>
+                      <b className="sxh-splitnum">{split.unattributed}</b>
+                    </li>
+                  )}
+                </ul>
+              </div>
+              <div className="sxh-splitcol">
+                <h3 className="sxh-h3">By {w.staff}</h3>
+                <ul className="sxh-splitlist">
+                  {split.byTeacher.map((t) => (
+                    <li key={t.userId}>
+                      <span className="sxh-splitname">
+                        {t.name}
+                        <span className="sxh-sub">
+                          {t.classes} {t.classes === 1 ? w.group : w.groups}
+                        </span>
+                      </span>
+                      <b className="sxh-splitnum">{t.places}</b>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </section>
+        )}
+
         {/* ── 2. IS IT BEING USED ────────────────────────────────── */}
         <section className="sxh-sec" aria-labelledby="sxh-use-h">
           <div className="sxh-sechead">
@@ -398,7 +475,22 @@ export default async function SchoolOverviewPage() {
             </table>
           </div>
 
-          <h3 className="sxh-h3">Add a {w.staff}</h3>
+          {staffLink && staffLinkUrl && (
+            <>
+              <h3 className="sxh-h3">Add {w.staffs} with one link</h3>
+              <StaffLink
+                link={staffLinkUrl}
+                lockedTo={staffLink.lockedTo}
+                leadDomain={staffLink.leadDomain}
+                staff={w.staff}
+                staffs={w.staffs}
+                noun={w.noun}
+                groups={w.groups}
+              />
+            </>
+          )}
+
+          <h3 className="sxh-h3">Or invite one {w.staff} by email</h3>
           <InviteStaff staffWord={w.staff} />
         </section>
 
