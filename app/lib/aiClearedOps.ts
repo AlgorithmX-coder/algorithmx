@@ -11,6 +11,7 @@ import type { OrgPlan } from "@prisma/client";
 import { DEFAULT_FIRM } from "@/app/ai-cleared/engine/types";
 import { emailEquals, normaliseEmail } from "@/app/lib/emailIdentity";
 import { defaultTeamDomain, newTeamToken } from "@/app/lib/teamLink";
+import { teamJoinUrl } from "@/app/lib/firmTeamLink";
 
 /* The AlgorithmX side of Cyber Secured: every firm at a glance with its
  * seats and how far its people have got on each track, the totals,
@@ -40,6 +41,8 @@ export interface FirmRow {
   paidVia: "stripe" | "manual";
   trialExpiresAt: string | null;
   revokedAt: string | null;
+  /* The firm's team join link token, null until its console first opens. */
+  teamToken: string | null;
 }
 
 export async function listFirms(): Promise<FirmRow[]> {
@@ -86,6 +89,7 @@ export async function listFirms(): Promise<FirmRow[]> {
       paidVia: o.stripeCustomerId ? "stripe" : "manual",
       trialExpiresAt: o.trialExpiresAt ? o.trialExpiresAt.toISOString() : null,
       revokedAt: o.revokedAt ? o.revokedAt.toISOString() : null,
+      teamToken: o.teamToken,
     };
   });
 }
@@ -162,15 +166,16 @@ export async function createFirm(args: {
   }
   const token = newInviteToken(slug.slice(0, 6));
   await prisma.seat.create({ data: { orgId: org.id, email: normaliseEmail(args.adminEmail), inviteToken: token, team: "Admin", role: "ADMIN", course: "CYBER_SECURED" } });
+  const teamLink = org.teamToken ? teamJoinUrl(args.origin, org.teamToken) : null;
   let emailed = true;
   try {
-    await sendAdminWelcome({ to: args.adminEmail, token, firmName: org.name, seats: args.seatsPurchased, origin: args.origin, staffName: args.staffName, staffEmail: args.staffEmail });
+    await sendAdminWelcome({ to: args.adminEmail, token, firmName: org.name, seats: args.seatsPurchased, origin: args.origin, staffName: args.staffName, staffEmail: args.staffEmail, teamLink });
   } catch (err) {
     emailed = false;
     console.error("[ai-cleared/ops] admin invite email failed", err instanceof Error ? err.message : err);
-    await opsAlert({ what: "An admin welcome email did not send", detail: { firm: org.name, slug, adminEmail: args.adminEmail, link: `${args.origin}/ai-cleared/join/${token}` }, error: err });
+    await opsAlert({ what: "An admin welcome email did not send", detail: { firm: org.name, slug, adminEmail: args.adminEmail, link: `${args.origin}/ai-cleared/join/${token}`, teamLink }, error: err });
   }
-  return { org, token, link: `${args.origin}/ai-cleared/join/${token}`, emailed };
+  return { org, token, link: `${args.origin}/ai-cleared/join/${token}`, teamLink, emailed };
 }
 
 /* Staff change a firm's Cyber Secured seat count after it was created: an

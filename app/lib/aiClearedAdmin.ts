@@ -307,42 +307,60 @@ export async function sendInvite(args: { to: string; token: string; firmName: st
 /* The welcome to a firm's first admin, after a purchase or a hand set-up.
  * Different from a staff invite: this person runs the course for the
  * firm, so the email says what they can do and where. */
-export async function sendAdminWelcome(args: { to: string; token: string; firmName: string; seats: number; origin: string; staffName: string; staffEmail: string | null }) {
+export async function sendAdminWelcome(args: { to: string; token: string; firmName: string; seats: number; origin: string; staffName: string; staffEmail: string | null; teamLink?: string | null }) {
   const link = `${args.origin}/ai-cleared/join/${args.token}`;
   const seatLine = `${args.seats} ${CYBER_SECURED_NAME} ${args.seats === 1 ? "seat" : "seats"}`;
   const items = trackItems();
+  const team = args.teamLink ? teamLinkBlock(args.teamLink) : null;
   const html = `
     <div style="font-family:Inter,Segoe UI,Helvetica,Arial,sans-serif;color:#14161d;max-width:560px;margin:0 auto;padding:24px">
       <p style="font-family:ui-monospace,Consolas,monospace;font-size:11px;letter-spacing:.2em;color:#0a7085;margin:0 0 16px">${CYBER_SECURED_BRAND}</p>
       <h1 style="font-size:22px;margin:0 0 12px">${seatLine} ${args.seats === 1 ? "is" : "are"} ready for ${esc(args.firmName)}.</h1>
-      <p style="font-size:15px;line-height:1.55;margin:0 0 12px">You are the admin for ${esc(args.firmName)}. Set up your account from the link below, then invite your staff from the admin console: paste their email addresses and each person gets their own invite. One seat is one person, and it opens every course:</p>
+      <p style="font-size:15px;line-height:1.55;margin:0 0 12px">You are the lead for ${esc(args.firmName)}. ${team ? "There are two links in this email: one to set up your own account, and one to share with your staff." : "Set up your account from the link below, then invite your staff from the admin console."} One seat is one person, and it opens every course:</p>
       ${items.html}
-      <p style="font-size:15px;line-height:1.55;margin:0 0 12px">The same console shows how far everyone has got. Your own seat is included, so you can take the courses too.</p>
-      <p style="margin:18px 0 10px"><a href="${link}" style="display:inline-block;background:#0a7085;color:#fff;text-decoration:none;padding:11px 18px;border-radius:8px;font-weight:600">Set up my admin account</a></p>
+      <p style="font-size:15px;line-height:1.55;margin:0 0 12px"><b>1. Your account.</b> Your own seat is included, so you can take the courses too. Your team page shows who has joined and how far everyone has got.</p>
+      <p style="margin:12px 0 10px"><a href="${link}" style="display:inline-block;background:#0a7085;color:#fff;text-decoration:none;padding:11px 18px;border-radius:8px;font-weight:600">Set up my account</a></p>
       <p style="font-size:13.5px;color:#5b6572;line-height:1.5;margin:0">Or copy this link: <a href="${link}" style="color:#0a7085">${link}</a></p>
+      ${team ? team.html : ""}
       <p style="font-size:13.5px;color:#5b6572;line-height:1.5;margin:14px 0 0">Questions go to ${esc(args.staffName)}${args.staffEmail ? ` (${esc(args.staffEmail)})` : ""}.</p>
     </div>`;
-  const text = `${seatLine} ${args.seats === 1 ? "is" : "are"} ready for ${args.firmName}.\n\nYou are the admin. Set up your account, then invite your staff from the admin console. One seat is one person, and it opens every course:\n${items.text}\n\nThe same console shows how far everyone has got. Your own seat is included.\n\nSet up your admin account: ${link}\n`;
+  const text = `${seatLine} ${args.seats === 1 ? "is" : "are"} ready for ${args.firmName}.\n\nYou are the lead. One seat is one person, and it opens every course:\n${items.text}\n\n1. Your account. Your own seat is included, and your team page shows who has joined and how far everyone has got.\nSet up my account: ${link}\n${team ? `\n${team.text}` : ""}`;
   return sendEmail({ to: args.to, subject: `${CYBER_SECURED_NAME} is ready for ${args.firmName}: ${seatLine}`, html, text, replyTo: args.staffEmail ?? undefined });
+}
+
+/* The team link, as a section of an email to the lead: what it is, the
+ * link in full so it can be copied, and how to forward it. */
+function teamLinkBlock(teamLink: string): { html: string; text: string } {
+  const say = "Forward this one link to your staff by email or Teams. Each person opens it, creates an account and is straight into the courses. One person only ever takes one seat, and your team page can make a new link at any time if this one ends up somewhere it should not.";
+  return {
+    html: `
+      <div style="margin:22px 0 0;padding:16px 18px;border:1px solid #d9d2c4;border-radius:12px;background:#faf7f1">
+        <p style="font-size:15px;line-height:1.55;margin:0 0 8px"><b>2. Your team link.</b> ${esc(say)}</p>
+        <p style="font-family:ui-monospace,Consolas,monospace;font-size:13.5px;line-height:1.5;margin:0;word-break:break-all"><a href="${teamLink}" style="color:#0a7085">${teamLink}</a></p>
+      </div>`,
+    text: `2. Your team link. ${say}\n${teamLink}\n`,
+  };
 }
 
 /* Seats bought by card by an admin who already runs a firm: no new firm,
  * no new invite, just the count going up and a note saying so. */
-export async function sendSeatsAdded(args: { to: string; firmName: string; seats: number; total?: number; origin: string; staffName: string; staffEmail: string | null }) {
+export async function sendSeatsAdded(args: { to: string; firmName: string; seats: number; total?: number; origin: string; staffName: string; staffEmail: string | null; teamLink?: string | null }) {
   const link = `${args.origin}/cyber-secured/admin`;
   const seatLine = `${args.seats} ${CYBER_SECURED_NAME} ${args.seats === 1 ? "seat" : "seats"}`;
   const totalLine = args.total ? `Your firm now has ${args.total} ${args.total === 1 ? "seat" : "seats"} in all. ` : "";
-  const claim = "Each person you invite gets their own link, claims their seat on first sign-in, and has every course from then on.";
+  const claim = args.teamLink
+    ? `Anyone new can join through your team link, which still works as before: ${args.teamLink}`
+    : "Each person you invite gets their own link, claims their seat on first sign-in, and has every course from then on.";
   const html = `
     <div style="font-family:Inter,Segoe UI,Helvetica,Arial,sans-serif;color:#14161d;max-width:560px;margin:0 auto;padding:24px">
       <p style="font-family:ui-monospace,Consolas,monospace;font-size:11px;letter-spacing:.2em;color:#0a7085;margin:0 0 16px">${CYBER_SECURED_BRAND}</p>
       <h1 style="font-size:22px;margin:0 0 12px">${seatLine} added to ${esc(args.firmName)}.</h1>
-      <p style="font-size:15px;line-height:1.55;margin:0 0 12px">Thank you. ${totalLine}The seats are on your firm's account now and the admin console shows them. Invite staff from there: paste their email addresses and each person gets their own invite. ${claim}</p>
-      <p style="margin:18px 0 10px"><a href="${link}" style="display:inline-block;background:#0a7085;color:#fff;text-decoration:none;padding:11px 18px;border-radius:8px;font-weight:600">Open the admin console</a></p>
+      <p style="font-size:15px;line-height:1.55;margin:0 0 12px">Thank you. ${totalLine}The seats are on your firm's account now and your team page shows them. ${esc(claim)}</p>
+      <p style="margin:18px 0 10px"><a href="${link}" style="display:inline-block;background:#0a7085;color:#fff;text-decoration:none;padding:11px 18px;border-radius:8px;font-weight:600">Open my team page</a></p>
       <p style="font-size:13.5px;color:#5b6572;line-height:1.5;margin:0">Or copy this link: <a href="${link}" style="color:#0a7085">${link}</a></p>
       <p style="font-size:13.5px;color:#5b6572;line-height:1.5;margin:14px 0 0">Your VAT invoice comes separately from Stripe. Questions go to ${esc(args.staffName)}${args.staffEmail ? ` (${esc(args.staffEmail)})` : ""}.</p>
     </div>`;
-  const text = `${seatLine} added to ${args.firmName}.\n\n${totalLine}The seats are on your firm's account now and the admin console shows them. Invite staff from there. ${claim}\n\nAdmin console: ${link}\n`;
+  const text = `${seatLine} added to ${args.firmName}.\n\n${totalLine}The seats are on your firm's account now and your team page shows them. ${claim}\n\nYour team page: ${link}\n`;
   return sendEmail({ to: args.to, subject: `${seatLine} added to ${args.firmName}`, html, text, replyTo: args.staffEmail ?? undefined });
 }
 
