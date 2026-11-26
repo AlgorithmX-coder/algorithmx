@@ -11,6 +11,17 @@ const m = vi.hoisted(() => ({
 }));
 vi.mock("@/app/lib/prisma", () => ({ prisma: { user: { findUnique: m.findUnique, create: m.create } } }));
 vi.mock("@/app/lib/entitlements", () => ({ grantEntitlement: m.grantEntitlement }));
+vi.mock("@/app/lib/rateLimit", () => ({
+  RULES: { signupIp: {} },
+  clientIp: () => "127.0.0.1",
+  rateKey: (...p: string[]) => p.join(":"),
+  hit: vi.fn(async () => ({ ok: true })),
+  tooManyResponse: vi.fn(),
+}));
+vi.mock("@/app/lib/emailIdentity", () => ({
+  normaliseEmail: (e: string) => e.trim().toLowerCase(),
+  emailTaken: vi.fn(async () => false),
+}));
 vi.mock("bcryptjs", () => ({ default: { hash: vi.fn(async () => "hashed") } }));
 vi.mock("@/app/lib/launchSwitch", () => ({
   get TESTER_FREE_ACCESS() {
