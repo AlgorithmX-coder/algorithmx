@@ -528,6 +528,21 @@ model Organisation {
   /// every pupil, seat and piece of progress exactly as it was.
   revokedAt       DateTime?
 
+  /// The firm's one team join link: whoever opens /ai-cleared/join/<this>
+  /// and signs in takes a seat, one per person, until the seats run out.
+  /// Stored as the plain random string, like every Seat.inviteToken,
+  /// because the lead and staff copy it back out of their consoles; a hash
+  /// could only be shown once. Replacing it kills the old link at once.
+  /// Null for schools, and for a firm until its console first opens.
+  teamToken          String?   @unique
+  /// Only addresses at this domain (or a subdomain of it) may use the team
+  /// link. Set from the lead's address, null when that is a free provider
+  /// or when the lead has switched the check off.
+  teamDomain         String?
+  /// When the lead was last told the team link turned someone away because
+  /// every seat was taken: at most one such email a day.
+  teamFullNotifiedAt DateTime?
+
   members        OrgMember[]
   seats          Seat[]
   profile        FirmProfile?
@@ -606,6 +621,11 @@ model Seat {
   course      CourseKey     @default(CYBER_SECURED)
   invitedAt   DateTime      @default(now())
   claimedAt   DateTime?
+  /// Set when the firm's lead removes the person: the seat stops counting
+  /// against the licence and the courses close for them, but the row and
+  /// their progress stay, shown as removed. Inviting the same address
+  /// again clears it.
+  removedAt   DateTime?
 
   org  Organisation @relation(fields: [orgId], references: [id], onDelete: Cascade)
   user User?        @relation(fields: [userId], references: [id], onDelete: SetNull)
