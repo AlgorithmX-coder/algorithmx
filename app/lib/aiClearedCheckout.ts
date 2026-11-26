@@ -2,6 +2,7 @@ import type Stripe from "stripe";
 import { prisma } from "@/app/lib/prisma";
 import { createFirm } from "@/app/lib/aiClearedOps";
 import { sendSeatsAdded } from "@/app/lib/aiClearedAdmin";
+import { ensureTeamLink, teamJoinUrl } from "@/app/lib/firmTeamLink";
 import { opsAlert } from "@/app/lib/opsAlert";
 import { planForSeats, stripe, stripeConfigured, vatMode, vatTaxRateId } from "@/app/lib/stripe";
 import { approvedToolLabel } from "@/app/lib/corporateProducts";
@@ -129,9 +130,13 @@ export async function fulfilCheckoutSession(session: Stripe.Checkout.Session, or
       ...purchaseRows(admin.org.id),
     ]);
     const total = seatsAfterTopUp(admin.org.seatsPurchased, people);
+    /* The team link in the note too, so the lead has it to hand for the
+       people the new seats are for. Best effort: the seats are already in. */
+    const team = await ensureTeamLink(admin.org.id).catch(() => null);
+    const teamLink = team ? teamJoinUrl(origin, team.token) : null;
     let emailed = true;
     try {
-      await sendSeatsAdded({ to: adminEmail, firmName: admin.org.name, seats: people, total, origin, staffName, staffEmail });
+      await sendSeatsAdded({ to: adminEmail, firmName: admin.org.name, seats: people, total, origin, staffName, staffEmail, teamLink });
     } catch (err) {
       emailed = false;
       console.error("[corporate/checkout] seats-added email failed", err instanceof Error ? err.message : err);

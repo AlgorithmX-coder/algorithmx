@@ -15,9 +15,9 @@ export default function AdminFirmsPanel() {
   const [trial, setTrial] = useState(false);
   const [trialDays, setTrialDays] = useState<"1" | "2">("2");
   const [busy, setBusy] = useState(false);
-  const [made, setMade] = useState<{ name: string; slug: string; link: string; emailed: boolean; trialDays?: number } | null>(null);
+  const [made, setMade] = useState<{ name: string; slug: string; link: string; teamLink: string | null; emailed: boolean; trialDays?: number } | null>(null);
   const [err, setErr] = useState<string | null>(null);
-  const [copied, setCopied] = useState(false);
+  const [copied, setCopied] = useState<string | null>(null);
 
   const set = (k: keyof typeof f, v: string) => setF({ ...f, [k]: v });
 
@@ -38,7 +38,7 @@ export default function AdminFirmsPanel() {
         const tRes = await fetch("/api/admin/trial", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ slug: j.slug, days: Number(trialDays) }) });
         if (tRes.ok) grantedDays = Number(trialDays);
       }
-      setMade({ name: j.name as string, slug: j.slug as string, link: j.link as string, emailed: !!j.emailed, trialDays: grantedDays });
+      setMade({ name: j.name as string, slug: j.slug as string, link: j.link as string, teamLink: (j.teamLink as string | null) ?? null, emailed: !!j.emailed, trialDays: grantedDays });
       setF({ name: "", sector: "", contactName: "", contactRole: "", plan: "TEAM", seatsPurchased: "10", adminEmail: "" });
       router.refresh();
     } catch (e) {
@@ -51,8 +51,8 @@ export default function AdminFirmsPanel() {
   const copy = async (text: string) => {
     try {
       await navigator.clipboard.writeText(text);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 1600);
+      setCopied(text);
+      setTimeout(() => setCopied(null), 1600);
     } catch {
       setErr(`Copy this link: ${text}`);
     }
@@ -85,10 +85,17 @@ export default function AdminFirmsPanel() {
       <button type="button" className="ad-btn ad-btn-pri" onClick={create} disabled={busy || !f.name.trim() || !f.adminEmail.trim()}>{busy ? "Creating…" : trial ? "Create trial firm and invite" : "Create firm and admin invite"}</button>
       {made && (
         <div className="ad-made">
-          <b>{made.name} is set up{made.trialDays ? `, on a ${made.trialDays}-day trial` : ""}.</b> Invite link{made.emailed ? ", also emailed" : " (email not sent, copy it)"}:
+          <b>{made.name} is set up{made.trialDays ? `, on a ${made.trialDays}-day trial` : ""}.</b> The lead&rsquo;s own invite link{made.emailed ? ", also emailed" : " (email not sent, copy it)"}:
           <code>{made.link}</code>
+          {made.teamLink && (
+            <>
+              Team link for their staff{made.emailed ? ", in the same email" : ""}:
+              <code>{made.teamLink}</code>
+            </>
+          )}
           <span>
-            <button type="button" className="ad-btn" onClick={() => copy(made.link)}>{copied ? "Copied" : "Copy link"}</button>
+            <button type="button" className="ad-btn" onClick={() => copy(made.link)}>{copied === made.link ? "Copied" : "Copy invite link"}</button>
+            {made.teamLink && <button type="button" className="ad-btn" onClick={() => copy(made.teamLink!)}>{copied === made.teamLink ? "Copied" : "Copy team link"}</button>}
             <a className="ad-btn" href={`/ai-cleared/ops/${made.slug}`}>Open the firm</a>
           </span>
         </div>

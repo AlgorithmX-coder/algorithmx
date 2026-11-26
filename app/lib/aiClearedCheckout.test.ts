@@ -31,6 +31,7 @@ vi.mock("@/app/lib/prisma", () => ({
 }));
 vi.mock("@/app/lib/aiClearedOps", () => ({ createFirm: h.createFirm }));
 vi.mock("@/app/lib/aiClearedAdmin", () => ({ sendSeatsAdded: h.sendSeatsAdded }));
+vi.mock("@/app/lib/firmTeamLink", () => ({ ensureTeamLink: async () => ({ token: "team-abc", domain: "kestrel.example" }), teamJoinUrl: (o: string, t: string) => `${o}/ai-cleared/join/${t}` }));
 vi.mock("@/app/lib/opsAlert", () => ({ opsAlert: h.opsAlert }));
 vi.mock("@/app/lib/stripe", async (orig) => ({
   ...(await orig<typeof import("@/app/lib/stripe")>()),
@@ -136,7 +137,7 @@ describe("fulfilCheckoutSession", () => {
     expect(h.createFirm).not.toHaveBeenCalled();
     expect(ops()[0]).toMatchObject({ op: "org.update", where: { id: "org_1" }, data: { seatsPurchased: { increment: 10 } } });
     expect(ops()[1]).toMatchObject({ data: { orgId: "org_1", course: "CYBER_SECURED", seats: 10 } });
-    expect(h.sendSeatsAdded).toHaveBeenCalledWith(expect.objectContaining({ to: "amara@kestrel.example", seats: 10, total: 70 }));
+    expect(h.sendSeatsAdded).toHaveBeenCalledWith(expect.objectContaining({ to: "amara@kestrel.example", seats: 10, total: 70, teamLink: "https://algorithmx.io/ai-cleared/join/team-abc" }));
   });
 
   it("an old Cleared + Fluent session paid after the deploy still fulfils, people counted once", async () => {

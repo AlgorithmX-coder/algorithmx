@@ -33,7 +33,7 @@ export async function POST(req: NextRequest) {
     staffName: session.user.name?.trim() || firstNameOf(session.user.name, session.user.email),
     staffEmail: session.user.email ?? null,
   });
-  return Response.json({ ok: true, slug: result.org.slug, name: result.org.name, link: result.link, emailed: result.emailed });
+  return Response.json({ ok: true, slug: result.org.slug, name: result.org.name, link: result.link, teamLink: result.teamLink, emailed: result.emailed });
 }
 
 /* PATCH /api/ops/firms: staff change a firm's seat count after it was
