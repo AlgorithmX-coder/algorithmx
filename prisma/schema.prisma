@@ -29,6 +29,17 @@ model User {
   /// signed in before this are refused (app/lib/sessionValidity.ts).
   passwordChangedAt DateTime?
   role           String    @default("learner")
+  /// UNDER-13s (UK GDPR Article 8). Asked at the Cyber Explorers and Cyber Ops
+  /// sign-ups only; only the year is kept. Null for everyone else.
+  birthYear          Int?
+  /// True when the account was made by a child under 13. Until a parent says
+  /// yes (parentConsentAt) every course sends them to /waiting-for-grown-up
+  /// (app/lib/parentConsent.ts). Never cleared, so the history stays readable.
+  needsParentConsent Boolean   @default(false)
+  /// The parent's address the child gave, where the consent link and, if the
+  /// parent buys the course, the receipt go.
+  parentEmail        String?
+  parentConsentAt    DateTime?
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
 
@@ -48,6 +59,7 @@ model User {
   deskOffices         DeskOffice[]
   teacherInvites      TeacherInvite[]
   consumerPurchases   ConsumerPurchase[]
+  parentConsentTokens ParentConsentToken[]
 }
 
 model Account {
@@ -1098,6 +1110,28 @@ model ConsumerPurchase {
   waiverConsentAt DateTime?
   purchasedAt     DateTime  @default(now())
   refundedAt      DateTime?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+// ---------------------------------------------------------------------------
+// A parent's consent link for an under-13's account (app/lib/parentConsent.ts).
+// Only a SHA-256 hash of the token is stored. Seven days; asking again ends
+// every older link, so only the newest email works.
+// ---------------------------------------------------------------------------
+model ParentConsentToken {
+  id         String    @id @default(cuid())
+  userId     String
+  /// The course the child signed up through, so the parent's page can say
+  /// what it is and sell that one course.
+  courseSlug String
+  tokenHash  String    @unique
+  expiresAt  DateTime
+  /// When the parent gave consent through this link.
+  usedAt     DateTime?
+  createdAt  DateTime  @default(now())
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 

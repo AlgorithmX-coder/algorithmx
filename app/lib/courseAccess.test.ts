@@ -15,6 +15,7 @@ const m = vi.hoisted(() => ({
   findFirst: vi.fn(),
   free: false,
   open: false,
+  awaiting: vi.fn(),
 }));
 vi.mock("next/navigation", () => ({ redirect: m.redirect }));
 vi.mock("@/app/lib/auth", () => ({ auth: m.auth }));
@@ -28,6 +29,7 @@ vi.mock("@/app/lib/launchSwitch", () => ({
   },
 }));
 vi.mock("@/app/lib/prisma", () => ({ prisma: { childProfile: { findFirst: m.findFirst } } }));
+vi.mock("@/app/lib/parentConsent", () => ({ WAITING_FOR_PARENT_PATH: "/waiting-for-grown-up", isAwaitingParent: m.awaiting }));
 
 import { CONSUMER_COURSES, PUPIL_NO_COURSE, requireCourse, type ConsumerCourseSlug } from "./courseAccess";
 
@@ -38,6 +40,7 @@ describe("requireCourse (launch switch off: nothing is free)", () => {
     vi.clearAllMocks();
     m.free = false;
     m.open = false;
+    m.awaiting.mockResolvedValue(false);
     m.auth.mockResolvedValue({ user: { id: "u1" } });
     m.hasEntitlement.mockResolvedValue(false);
     m.findFirst.mockResolvedValue(null);
@@ -95,6 +98,7 @@ describe("requireCourse (launch switch on: testers stay open)", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     m.free = true;
+    m.awaiting.mockResolvedValue(false);
     m.auth.mockResolvedValue({ user: { id: "u1" } });
     m.hasEntitlement.mockResolvedValue(false);
     m.findFirst.mockResolvedValue(null);
@@ -138,5 +142,34 @@ describe("requireCourse (launch switch on: testers stay open)", () => {
     const err = vi.spyOn(console, "error").mockImplementation(() => {});
     await expect(requireCourse("desk-ready", "/x")).rejects.toThrow(`REDIRECT ${CONSUMER_COURSES["desk-ready"].landing}`);
     err.mockRestore();
+  });
+});
+
+describe("requireCourse (a child under 13 waiting for a parent)", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    m.auth.mockResolvedValue({ user: { id: "kid" } });
+    m.awaiting.mockResolvedValue(true);
+    m.findFirst.mockResolvedValue(null);
+  });
+
+  it("goes to the waiting page even when they hold the course", async () => {
+    m.free = false;
+    m.hasEntitlement.mockResolvedValue(true);
+    await expect(requireCourse("cyberexplorers", "/explorers")).rejects.toThrow("REDIRECT /waiting-for-grown-up");
+  });
+
+  it("is not let in by the tester switch, and is granted nothing", async () => {
+    m.free = true;
+    m.hasEntitlement.mockResolvedValue(false);
+    await expect(requireCourse("cyberstart", "/x")).rejects.toThrow("REDIRECT /waiting-for-grown-up");
+    expect(m.grantEntitlement).not.toHaveBeenCalled();
+    m.free = false;
+  });
+
+  it("is let in once the parent has said yes", async () => {
+    m.awaiting.mockResolvedValue(false);
+    m.hasEntitlement.mockResolvedValue(true);
+    await expect(requireCourse("cyberexplorers", "/x")).resolves.toMatchObject({ userId: "kid" });
   });
 });

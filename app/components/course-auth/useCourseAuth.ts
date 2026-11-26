@@ -18,10 +18,11 @@ import { signIn } from "next-auth/react";
 import { LOGIN_LIMITED_CODE, TOO_MANY } from "@/app/lib/rateLimitWords";
 import { courseHomeFor, safeCourseSlug } from "@/app/lib/courseIntent";
 import { passwordProblem } from "@/app/lib/passwordPolicy";
+import { asksDateOfBirth, looksLikeEmail, needsParentConsent, parseDateOfBirth } from "@/app/lib/ageCheck";
 import { COURSE_AUTH_CONTENT, SHARED, type CourseAuthKey } from "./content";
 
 export type AuthMode = "login" | "signup";
-export type FieldKey = "name" | "email" | "password" | "confirm";
+export type FieldKey = "name" | "email" | "password" | "confirm" | "dob" | "parentEmail";
 
 export function useCourseAuth(course: CourseAuthKey, mode: AuthMode) {
   const t = COURSE_AUTH_CONTENT[course];
@@ -40,15 +41,23 @@ export function useCourseAuth(course: CourseAuthKey, mode: AuthMode) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
+  /* Asked on the Cyber Explorers and Cyber Ops sign-ups only (ageCheck.ts). */
+  const [dob, setDob] = useState("");
+  const [parentEmail, setParentEmail] = useState("");
   const [showPw, setShowPw] = useState(false);
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
   const [invalid, setInvalid] = useState<FieldKey[]>([]);
 
   const isLogin = mode === "login";
+  /* UK GDPR: an under-13 needs a parent to say yes, so these two sign-ups ask
+     for a date of birth and, under 13, a parent's email. */
+  const asksAge = !isLogin && asksDateOfBirth(t.slug);
+  const dobDate = asksAge ? parseDateOfBirth(dob) : null;
+  const under13 = Boolean(dobDate && needsParentConsent(dobDate));
 
-  const setters: Record<FieldKey, (v: string) => void> = { name: setName, email: setEmail, password: setPassword, confirm: setConfirm };
-  const values: Record<FieldKey, string> = { name, email, password, confirm };
+  const setters: Record<FieldKey, (v: string) => void> = { name: setName, email: setEmail, password: setPassword, confirm: setConfirm, dob: setDob, parentEmail: setParentEmail };
+  const values: Record<FieldKey, string> = { name, email, password, confirm, dob, parentEmail };
   /** value + onChange for one input; typing in a marked field clears its mark. */
   const field = (key: FieldKey) => ({
     value: values[key],
@@ -92,6 +101,24 @@ export function useCourseAuth(course: CourseAuthKey, mode: AuthMode) {
         setInvalid(["confirm"]);
         return;
       }
+      if (asksAge && !dobDate) {
+        setError(SHARED.errors.dob);
+        setInvalid(["dob"]);
+        return;
+      }
+      if (under13) {
+        const pe = parentEmail.trim().toLowerCase();
+        if (!looksLikeEmail(pe)) {
+          setError(SHARED.errors.parentEmail);
+          setInvalid(["parentEmail"]);
+          return;
+        }
+        if (pe === email.trim().toLowerCase()) {
+          setError(SHARED.errors.sameEmail);
+          setInvalid(["parentEmail"]);
+          return;
+        }
+      }
     }
 
     setBusy(true);
@@ -109,7 +136,14 @@ export function useCourseAuth(course: CourseAuthKey, mode: AuthMode) {
         const res = await fetch("/api/signup", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ name: name.trim(), email: email.trim(), password, course: t.slug }),
+          body: JSON.stringify({
+            name: name.trim(),
+            email: email.trim(),
+            password,
+            course: t.slug,
+            ...(asksAge ? { dob } : {}),
+            ...(under13 ? { parentEmail: parentEmail.trim() } : {}),
+          }),
         });
         if (!res.ok) {
           const data = await res.json().catch(() => null);
@@ -137,5 +171,7 @@ export function useCourseAuth(course: CourseAuthKey, mode: AuthMode) {
     busy,
     invalid,
     submit,
+    asksAge,
+    under13,
   };
 }

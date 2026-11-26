@@ -5,6 +5,7 @@ import { prisma } from "@/app/lib/prisma";
 import { grantEntitlement, hasEntitlement } from "@/app/lib/entitlements";
 import { CONSUMER_CHECKOUT_OPEN, TESTER_FREE_ACCESS } from "@/app/lib/launchSwitch";
 import { purchasePath } from "@/app/lib/consumerCatalogue";
+import { WAITING_FOR_PARENT_PATH, isAwaitingParent } from "@/app/lib/parentConsent";
 import { pupilCourseHomeFor } from "@/app/lib/courseIntent";
 import { COURSE_LANDING_ROUTES } from "@/app/lib/courseLandings";
 
@@ -106,6 +107,10 @@ export async function requireCourse(
   const session = await auth();
   const userId = session?.user?.id;
   if (!session || !userId) redirect(courseSignInUrl(slug, here));
+  /* A child under 13 whose parent has not said yes yet goes nowhere else,
+     whatever they hold and whatever the tester switch says (UK GDPR
+     Article 8; app/lib/parentConsent.ts). */
+  if (await isAwaitingParent(userId)) redirect(WAITING_FOR_PARENT_PATH);
   if (await hasEntitlement(userId, slug)) return { userId, session: session as SignedInSession };
 
   const pupil = await findPupil(userId);
