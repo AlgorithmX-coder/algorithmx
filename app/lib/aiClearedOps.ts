@@ -51,7 +51,7 @@ export async function listFirms(): Promise<FirmRow[]> {
     where: FIRM_ORG,
     orderBy: { createdAt: "desc" },
     include: {
-      seats: { select: { email: true, claimedAt: true } },
+      seats: { where: { removedAt: null }, select: { email: true, claimedAt: true } },
       enrolments: { select: { completedAt: true, startedAt: true, modules: { select: { updatedAt: true } }, product: { select: { slug: true } } } },
       _count: { select: { certificates: true } },
     },

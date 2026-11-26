@@ -96,10 +96,10 @@ export default async function CyberSecuredHome() {
   let teamLine: string | null = null;
   if (isAdmin) {
     const [seats, claimed] = await Promise.all([
-      prisma.seat.findMany({ where: { orgId: member.orgId }, select: { email: true }, distinct: ["email"] }),
-      prisma.seat.findMany({ where: { orgId: member.orgId, claimedAt: { not: null } }, select: { email: true }, distinct: ["email"] }),
+      prisma.seat.findMany({ where: { orgId: member.orgId, removedAt: null }, select: { email: true }, distinct: ["email"] }),
+      prisma.seat.findMany({ where: { orgId: member.orgId, removedAt: null, claimedAt: { not: null } }, select: { email: true }, distinct: ["email"] }),
     ]);
-    teamLine = `${seats.length} of ${org.seatsPurchased} seats given out, ${claimed.length} signed in.`;
+    teamLine = `${seats.length} of ${org.seatsPurchased} seats used, ${claimed.length} signed in.`;
   }
 
   return (
@@ -126,7 +126,7 @@ export default async function CyberSecuredHome() {
             <Link href="/cyber-secured/admin" className="cf-card cs-team">
               <div className="cf-label">Your team</div>
               <p className="cf-note" style={{ margin: "0 0 8px" }}>{teamLine}</p>
-              <span className="cs-go">See who has started, and invite people &rarr;</span>
+              <span className="cs-go">Your team link, who has joined and who has started &rarr;</span>
             </Link>
           )}
         </>
