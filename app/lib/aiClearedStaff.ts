@@ -31,5 +31,11 @@ export async function isStaffUser(userId: string): Promise<boolean> {
     where: { id: { not: userId }, email: emailEquals(user.email), createdAt: { lte: user.createdAt } },
     select: { id: true },
   });
-  return !older;
+  if (older) return false;
+  /* Lock it in: the first time a listed address passes, record role
+     "staff" on the account, so staff access no longer depends on the env
+     list (or, later, on that address being verified). Removing someone
+     from staff now means clearing their role as well as the list. */
+  await prisma.user.update({ where: { id: userId }, data: { role: "staff" } }).catch(() => {});
+  return true;
 }

@@ -7,10 +7,11 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 const h = vi.hoisted(() => ({
   findUnique: vi.fn(),
   findFirst: vi.fn(),
+  update: vi.fn(),
 }));
 
 vi.mock("@/app/lib/prisma", () => ({
-  prisma: { user: { findUnique: h.findUnique, findFirst: h.findFirst } },
+  prisma: { user: { findUnique: h.findUnique, findFirst: h.findFirst, update: h.update } },
 }));
 
 import { emailEquals, emailTaken, findUserByEmail, normaliseEmail } from "./emailIdentity";
@@ -19,6 +20,8 @@ import { isStaffUser, staffEmails } from "./aiClearedStaff";
 beforeEach(() => {
   h.findUnique.mockReset();
   h.findFirst.mockReset();
+  h.update.mockReset();
+  h.update.mockResolvedValue({});
   process.env.PLATFORM_STAFF_EMAILS = "owner@example.com, Second@Example.com";
 });
 
@@ -82,11 +85,13 @@ describe("isStaffUser", () => {
     h.findUnique.mockResolvedValue({ role: "learner", email: "owner@example.com", createdAt: created });
     h.findFirst.mockResolvedValue(null);
     expect(await isStaffUser("u1")).toBe(true);
+    expect(h.update).toHaveBeenCalledWith({ where: { id: "u1" }, data: { role: "staff" } });
   });
   it("refuses a mixed-case copy of a listed address when an older account holds it", async () => {
     h.findUnique.mockResolvedValue({ role: "learner", email: "OWNER@example.com", createdAt: new Date("2026-06-01T00:00:00Z") });
     h.findFirst.mockResolvedValue({ id: "real-owner" });
     expect(await isStaffUser("intruder")).toBe(false);
+    expect(h.update).not.toHaveBeenCalled();
     expect(h.findFirst).toHaveBeenCalledWith({
       where: { id: { not: "intruder" }, email: { equals: "owner@example.com", mode: "insensitive" }, createdAt: { lte: new Date("2026-06-01T00:00:00Z") } },
       select: { id: true },
