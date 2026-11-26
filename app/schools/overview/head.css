@@ -691,8 +691,137 @@
   border-radius: 6px;
 }
 
+/* ── The staff join link ─────────────────────────────────────────── */
+.sxh .sxh-stafflink {
+  max-width: 720px;
+  margin-bottom: 8px;
+}
+.sxh .sxh-linkbox {
+  margin: 0;
+  padding: 12px 14px;
+  font-family: var(--mono);
+  font-size: 13px;
+  word-break: break-all;
+  color: var(--cyan);
+  background: rgba(5, 6, 15, 0.6);
+  border: 1px solid var(--hair-hi);
+  border-radius: 12px;
+  user-select: all;
+}
+.sxh .sxh-linkrow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-top: 12px;
+}
+.sxh .sxh-btn-quiet {
+  color: var(--ink);
+  background: var(--glass-hi);
+  border: 1px solid var(--hair-hi);
+}
+.sxh .sxh-btn-quiet:hover {
+  border-color: var(--cyan);
+}
+.sxh .sxh-confirm {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  font-size: 13.5px;
+  color: var(--warn-ink);
+}
+.sxh .sxh-textbtn {
+  font: inherit;
+  font-size: 13.5px;
+  color: var(--ink-soft);
+  background: none;
+  border: 0;
+  padding: 6px 4px;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.sxh .sxh-check {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-top: 14px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--ink-soft);
+  cursor: pointer;
+}
+.sxh .sxh-check input {
+  flex: 0 0 auto;
+  width: 18px;
+  height: 18px;
+  margin: 2px 0 0;
+  accent-color: var(--cyan);
+}
+.sxh .sxh-check b {
+  color: var(--ink);
+  font-family: var(--mono);
+  font-weight: 600;
+}
+
+/* ── Who used the places ─────────────────────────────────────────── */
+.sxh .sxh-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  margin-top: 8px;
+}
+.sxh .sxh-splitcol {
+  min-width: 0;
+  padding: 4px 16px 10px;
+  border: 1px solid var(--hair);
+  border-radius: 14px;
+  background: rgba(5, 6, 15, 0.4);
+}
+.sxh .sxh-splitlist {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.sxh .sxh-splitlist li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 0;
+  border-top: 1px solid var(--hair);
+  font-size: 14px;
+}
+.sxh .sxh-splitlist li:first-child {
+  border-top: 0;
+}
+.sxh .sxh-splitname {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.sxh .sxh-splitname a {
+  color: var(--ink);
+  font-weight: 700;
+  text-decoration: none;
+}
+.sxh .sxh-splitname a:hover {
+  color: var(--cyan);
+}
+.sxh .sxh-splitname .sxh-sub {
+  display: block;
+  margin-top: 3px;
+}
+.sxh .sxh-splitnum {
+  font-family: var(--display);
+  font-size: 18px;
+  font-variant-numeric: tabular-nums;
+}
+
 /* ── Phone ───────────────────────────────────────────────────────── */
 @media (max-width: 720px) {
+  .sxh .sxh-split {
+    grid-template-columns: 1fr;
+  }
   .sxh .sxh-topin {
     align-items: flex-start;
     flex-direction: column;

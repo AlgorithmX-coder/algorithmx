@@ -816,6 +816,19 @@ model SchoolProfile {
   /// ship a table of them: a wrong number in a safeguarding lesson is worse
   /// than none. The school fills it in once and it prints on the pack.
   childLineNumber     String?
+  /// The one staff join link the lead forwards to colleagues
+  /// (/schools/join/[token]). Anybody who opens it and signs in joins as a
+  /// teacher (MANAGER), the same as a per-email TeacherInvite. Null until
+  /// the link is first shown; replaced, which kills the old one, when the
+  /// lead makes a new one. See app/lib/staffLink.ts.
+  staffLinkToken      String?  @unique
+  /// When set, only an address at this domain (or a subdomain of it) can
+  /// join through the link. Taken from the lead's own address, and left
+  /// null when that is a free provider such as gmail.com, because a lock
+  /// on gmail.com would let in everyone with a Gmail account.
+  staffLinkDomain     String?
+  /// When the current link was made.
+  staffLinkMadeAt     DateTime?
   updatedAt DateTime @updatedAt
 
   org Organisation @relation(fields: [orgId], references: [id], onDelete: Cascade)

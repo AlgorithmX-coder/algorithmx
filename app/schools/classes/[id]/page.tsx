@@ -4,6 +4,7 @@ import { notFound, redirect } from "next/navigation";
 import { headers } from "next/headers";
 import { auth } from "@/app/lib/auth";
 import { getSchoolContext, listClasses, planWholeClassMove } from "@/app/lib/schoolClasses";
+import { whoAddsPlaces } from "@/app/lib/schoolHead";
 import { getClassProgress } from "@/app/lib/classProgress";
 import MoveWholeClass from "./MoveWholeClass";
 import Locked from "../../teach/Locked";
@@ -93,6 +94,9 @@ export default async function ClassPage({
      one the school actually uses rather than a domain in a config file. */
   const host = (await headers()).get("x-forwarded-host") ?? (await headers()).get("host") ?? "algorithmx.io";
   const left = school.seatsPurchased - school.seatsUsed;
+  /* Who to ask when the shared pool runs dry: the lead, for a teacher; us,
+     for the lead. Fetched only when it could be needed. */
+  const asker = left <= 5 ? await whoAddsPlaces(school.orgId, session.user.id, wordsFor(school.kind).noun) : null;
   /* An archived class is last year's. Both pupil sign-in gates filter it
      out, so the code on the cards no longer works and nobody in it can get
      in. Everything below that depends on the class being live is hidden
@@ -270,7 +274,7 @@ export default async function ClassPage({
           </div>
         )}
 
-        {!archived && <AddPupils classId={id} placesLeft={left} w={w} />}
+        {!archived && <AddPupils classId={id} placesLeft={left} w={w} askLine={asker?.ask} />}
 
         {klass.pupils.length === 0 ? (
           <div className="sheet">

@@ -4,6 +4,7 @@ import { headers } from "next/headers";
 import { revalidatePath } from "next/cache";
 import { auth } from "@/app/lib/auth";
 import { getHeadContext, inviteStaff, type InviteFailure } from "@/app/lib/schoolHead";
+import { renewStaffLink, setStaffLinkLock } from "@/app/lib/staffLink";
 
 /**
  * Inviting a member of staff.
@@ -51,4 +52,44 @@ export async function inviteStaffAction(formData: FormData): Promise<InviteResul
 
   revalidatePath("/schools/overview");
   return { ok: true, email: email.trim().toLowerCase(), link: done.link, emailed: done.emailed };
+}
+
+/* ── The one staff join link ─────────────────────────────────────────
+   The same gate as the invite above: the signed-in person must hold the
+   licence at the school they are looking at, checked here and not trusted
+   from the page. */
+
+export type StaffLinkResult = { ok: true } | { ok: false; error: string };
+
+export async function renewStaffLinkAction(): Promise<StaffLinkResult> {
+  const session = await auth();
+  if (!session?.user?.id) return { ok: false, error: "Sign in again." };
+  const head = await getHeadContext(session.user.id);
+  if (!head) return { ok: false, error: "Only whoever holds the licence can change the link." };
+  if (head.revokedAt) return { ok: false, error: "This account is closed." };
+
+  const link = await renewStaffLink(head.orgId);
+  if (!link) return { ok: false, error: "We could not make a new link. Try again in a moment." };
+  revalidatePath("/schools/overview");
+  return { ok: true };
+}
+
+export async function setStaffLinkLockAction(locked: boolean): Promise<StaffLinkResult> {
+  const session = await auth();
+  if (!session?.user?.id) return { ok: false, error: "Sign in again." };
+  const head = await getHeadContext(session.user.id);
+  if (!head) return { ok: false, error: "Only whoever holds the licence can change the link." };
+  if (head.revokedAt) return { ok: false, error: "This account is closed." };
+
+  const done = await setStaffLinkLock(head.orgId, locked === true);
+  if (!done.ok) {
+    return {
+      ok: false,
+      error: done.error === "no_domain"
+        ? "Your own address is at a free email provider, so there is no school domain to limit the link to."
+        : "We could not change the link. Try again in a moment.",
+    };
+  }
+  revalidatePath("/schools/overview");
+  return { ok: true };
 }
