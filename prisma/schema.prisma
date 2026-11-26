@@ -544,6 +544,13 @@ model SeatPurchase {
   course                  CourseKey
   seats                   Int
   stripeCheckoutSessionId String    @unique
+  /// Refunds, from Stripe's running total on the charge (app/lib/refundEffects.ts).
+  /// refundedSeats is the share of the seats the refund paid back; the firm's
+  /// licence came down by that many, or as far as it could without going
+  /// below the people already holding a seat.
+  refundedPence           Int       @default(0)
+  refundedSeats           Int       @default(0)
+  refundedAt              DateTime?
   createdAt               DateTime  @default(now())
 
   org Organisation @relation(fields: [orgId], references: [id], onDelete: Cascade)
@@ -940,6 +947,13 @@ model PlacePurchase {
   /// somebody has to be able to look into afterwards.
   leadEmail String
   stripeCheckoutSessionId String @unique
+  /// Refunds, from Stripe's running total on the charge (app/lib/refundEffects.ts).
+  /// refundedPlaces is the share of the places the refund paid back; the
+  /// organisation's licence came down by that many, or as far as it could
+  /// without going below the places already spent.
+  refundedPence  Int       @default(0)
+  refundedPlaces Int       @default(0)
+  refundedAt     DateTime?
   createdAt DateTime @default(now())
 
   org Organisation @relation(fields: [orgId], references: [id], onDelete: Cascade)
@@ -1098,6 +1112,9 @@ model ConsumerPurchase {
   waiverConsentAt DateTime?
   purchasedAt     DateTime  @default(now())
   refundedAt      DateTime?
+  /// The running total refunded, from Stripe (charge.amount_refunded). Access
+  /// is removed only once the whole payment is back (refundedAt is set then).
+  refundedPence   Int       @default(0)
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 

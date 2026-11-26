@@ -1,7 +1,8 @@
 import Stripe from "stripe";
 import { stripe } from "@/app/lib/stripe";
 
-/* Refunding a real corporate purchase. SeatPurchase only stores the
+/* Refunding a real purchase: a firm's seats, an organisation's places or
+ * one person's course. SeatPurchase only stores the
  * Checkout Session id (set by the webhook); the amount paid and the
  * payment intent behind it are looked up live from Stripe rather than
  * duplicated into our own schema - Stripe stays the one source of
@@ -34,4 +35,15 @@ export async function refundPurchase(args: { stripeCheckoutSessionId: string; am
   } catch (err) {
     return { ok: false, error: err instanceof Error ? err.message : "The refund did not go through." };
   }
+}
+
+/* After a refund: the charge it came off, with Stripe's running totals, so
+ * the caller can apply it straight away (refundEffects.ts) instead of
+ * waiting for the webhook. The webhook arriving later then changes nothing. */
+export async function chargeAfterRefund(refundId: string): Promise<Stripe.Charge | null> {
+  const s = stripe();
+  const refund = await s.refunds.retrieve(refundId);
+  const charge = refund.charge;
+  if (!charge) return null;
+  return typeof charge === "string" ? s.charges.retrieve(charge) : charge;
 }
