@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { claimTeamLink, ensureTeamLink, notifySeatsFull } from "./firmTeamLink";
+import { claimTeamLink, ensureTeamLink, notifySeatsFull, remindNotJoined, rotateTeamLink, setTeamDomainLock } from "./firmTeamLink";
 
 /* The team link claim and the seats-full email, with the database, the
  * mail and the enrolment mocked out. The rules themselves are pinned in
@@ -19,6 +19,9 @@ const h = vi.hoisted(() => ({
   queryRaw: vi.fn(),
   enrol: vi.fn(),
   sendEmail: vi.fn(),
+  orgUpdate: vi.fn(),
+  peek: vi.fn(),
+  hit: vi.fn(),
 }));
 
 const tx = {
@@ -29,7 +32,7 @@ const tx = {
 
 vi.mock("@/app/lib/prisma", () => ({
   prisma: {
-    organisation: { findUnique: h.orgFindUnique, updateMany: h.orgUpdateMany },
+    organisation: { findUnique: h.orgFindUnique, updateMany: h.orgUpdateMany, update: h.orgUpdate },
     product: { count: h.productCount },
     user: { findUnique: h.userFindUnique },
     seat: { findMany: h.seatFindMany, findFirst: h.seatFindFirst },
@@ -39,6 +42,7 @@ vi.mock("@/app/lib/prisma", () => ({
 vi.mock("@/app/lib/aiCleared", () => ({ enrolOnEveryTrack: h.enrol }));
 vi.mock("@/app/lib/aiClearedAdmin", () => ({ newInviteToken: (p: string) => `${p}-newtoken` }));
 vi.mock("@/app/lib/resend", () => ({ sendEmail: h.sendEmail }));
+vi.mock("@/app/lib/rateLimit", () => ({ peek: h.peek, hit: h.hit, rateKey: (b: string, s: string) => `${b}:${s}` }));
 
 const ORG = { id: "org1", name: "Kestrel Mutual", slug: "kestrel-mutual", seatsPurchased: 50, revokedAt: null, teamDomain: "kestrel.co.uk" };
 const at = new Date("2026-11-20T10:00:00Z");
@@ -150,5 +154,72 @@ describe("ensureTeamLink", () => {
     h.orgUpdateMany.mockResolvedValue({ count: 1 });
     expect(await ensureTeamLink("org1")).toEqual({ token: "team-new", domain: "kestrel.co.uk" });
     expect(h.orgUpdateMany).toHaveBeenCalledWith({ where: { id: "org1", teamToken: null }, data: { teamToken: expect.stringMatching(/^team-/), teamDomain: "kestrel.co.uk" } });
+  });
+});
+
+describe("rotateTeamLink", () => {
+  it("replaces the token, so the old link stops working", async () => {
+    h.orgFindUnique.mockResolvedValue({ teamToken: "team-old" });
+    const t = await rotateTeamLink("org1");
+    expect(t).toMatch(/^team-/);
+    expect(t).not.toBe("team-old");
+    expect(h.orgUpdate).toHaveBeenCalledWith({ where: { id: "org1" }, data: { teamToken: t } });
+  });
+});
+
+describe("setTeamDomainLock", () => {
+  beforeEach(() => {
+    h.orgFindUnique.mockImplementation((args: { select?: Record<string, boolean> }) => Promise.resolve(args.select?.contactName ? { contactName: null } : { teamToken: "team-abc", teamDomain: null }));
+  });
+  it("locks to the lead's domain", async () => {
+    h.seatFindFirst.mockResolvedValue({ email: "amara@kestrel.co.uk", user: null });
+    expect(await setTeamDomainLock("org1", true)).toEqual({ ok: true, domain: "kestrel.co.uk" });
+  });
+  it("refuses to lock a free-provider lead's link to everyone at Gmail", async () => {
+    h.seatFindFirst.mockResolvedValue({ email: "amara@gmail.com", user: null });
+    const r = await setTeamDomainLock("org1", true);
+    expect(r.ok).toBe(false);
+    expect(h.orgUpdate).not.toHaveBeenCalled();
+  });
+  it("switches off", async () => {
+    expect(await setTeamDomainLock("org1", false)).toEqual({ ok: true, domain: null });
+    expect(h.orgUpdate).toHaveBeenCalledWith({ where: { id: "org1" }, data: { teamDomain: null } });
+  });
+});
+
+describe("remindNotJoined", () => {
+  const args = { orgId: "org1", firmName: "Kestrel Mutual", origin: "https://algorithmx.io", adminName: "Amara Osei", adminEmail: "amara@kestrel.co.uk" };
+  beforeEach(() => {
+    h.orgFindUnique.mockResolvedValue({ teamToken: "team-abc", teamDomain: "kestrel.co.uk" });
+    h.seatFindMany.mockResolvedValue([
+      { email: "in@kestrel.co.uk", claimedAt: at, removedAt: null },
+      { email: "gone@kestrel.co.uk", claimedAt: at, removedAt: at },
+    ]);
+    h.peek.mockResolvedValue({ ok: true });
+    h.hit.mockResolvedValue({ ok: true });
+  });
+
+  it("reminds only the people still to join, with the team link, under the admin's name", async () => {
+    const r = await remindNotJoined({ ...args, emails: ["In@kestrel.co.uk", "gone@kestrel.co.uk", "tom@kestrel.co.uk", "sam@gmail.com", "not an address"] });
+    expect(r).toEqual({ ok: true, sent: ["tom@kestrel.co.uk"], joined: ["in@kestrel.co.uk"], removed: ["gone@kestrel.co.uk"], recent: [], offDomain: ["sam@gmail.com"], invalid: ["not an address"], failed: [], overLimit: [] });
+    expect(h.sendEmail).toHaveBeenCalledTimes(1);
+    const mail = h.sendEmail.mock.calls[0][0];
+    expect(mail.to).toBe("tom@kestrel.co.uk");
+    expect(mail.replyTo).toBe("amara@kestrel.co.uk");
+    expect(mail.text).toContain("https://algorithmx.io/ai-cleared/join/team-abc");
+  });
+
+  it("sends nobody a second reminder the same day", async () => {
+    h.peek.mockResolvedValue({ ok: false });
+    const r = await remindNotJoined({ ...args, emails: ["tom@kestrel.co.uk"] });
+    expect(r.ok && r.recent).toEqual(["tom@kestrel.co.uk"]);
+    expect(h.sendEmail).not.toHaveBeenCalled();
+  });
+
+  it("stops at the firm's daily ceiling", async () => {
+    h.hit.mockResolvedValue({ ok: false });
+    const r = await remindNotJoined({ ...args, emails: ["tom@kestrel.co.uk"] });
+    expect(r.ok && r.overLimit).toEqual(["tom@kestrel.co.uk"]);
+    expect(h.sendEmail).not.toHaveBeenCalled();
   });
 });
