@@ -13,7 +13,7 @@ import GrantCourseButton from "./GrantCourseButton";
  * ../../admin.css. */
 export const dynamic = "force-dynamic";
 
-const SOURCE_LABEL: Record<string, string> = { PURCHASE: "Bought (no payment taken yet)", MANUAL: "Free / staff-granted", BUNDLE: "Bundle" };
+const SOURCE_LABEL: Record<string, string> = { PURCHASE: "Bought", MANUAL: "Free / staff-granted", BUNDLE: "Bundle" };
 
 export default async function AdminIndividualPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;

@@ -11,7 +11,7 @@ import {
   type Verdict,
 } from "@/app/ai-cleared/engine/types";
 import { COURSES, isCourseSlug, type CourseSlug } from "@/app/ai-cleared/engine/courses";
-import { SECURED_TRACK_SLUGS, type SecuredTrackSlug } from "@/app/lib/cyberSecured";
+import { INDIVIDUAL_LEARNERS_ORG_SLUG, SECURED_TRACK_SLUGS, type SecuredTrackSlug } from "@/app/lib/cyberSecured";
 import { moduleListFor } from "@/app/lib/courseModules";
 
 /* Server-side helpers for the corporate courses, AI Cleared and AI Fluent.
@@ -60,8 +60,11 @@ const FLUENT_RANK: Record<FluentVerdict, number> = { FLUENT: 0, NEARLY: 1, NOT_Y
  * filtered the other way with `school: { isNot: null }`; this is the mirror
  * the firm side was missing, and without it "is this user an admin of
  * anything" answered yes for a head teacher.
+ *
+ * The house record individual buyers are enrolled under is not a firm
+ * either (INDIVIDUAL_LEARNERS_ORG_SLUG in cyberSecured.ts).
  */
-export const FIRM_ORG = { school: { is: null } } as const;
+export const FIRM_ORG = { school: { is: null }, slug: { not: INDIVIDUAL_LEARNERS_ORG_SLUG } } as const;
 
 /* The learner's enrolment on a course with everything a module page needs. */
 export async function getEnrolment(userId: string, course: CourseSlug = "ai-cleared") {

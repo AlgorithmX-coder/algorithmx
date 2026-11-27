@@ -2,6 +2,7 @@ import { NextRequest } from "next/server";
 import type Stripe from "stripe";
 import { fulfilCheckoutSession } from "@/app/lib/aiClearedCheckout";
 import { fulfilPlacesSession } from "@/app/lib/learnerPlaces";
+import { CONSUMER_PRODUCT, fulfilConsumerSession } from "@/app/lib/consumerCheckout";
 import { stripe } from "@/app/lib/stripe";
 import { opsAlert } from "@/app/lib/opsAlert";
 
@@ -34,18 +35,22 @@ export async function POST(req: NextRequest) {
     const session = event.data.object as Stripe.Checkout.Session;
     try {
       /* Which lane paid. A firm buys seats on a corporate course; an
-         educational organisation buys pupil places. Both arrive on this
-         one endpoint because Stripe sends every event to one place, so
-         the metadata written at checkout is what tells them apart. */
+         educational organisation buys pupil places; one person buys one
+         course for themselves. All arrive on this one endpoint because
+         Stripe sends every event to one place, so the metadata written at
+         checkout is what tells them apart. */
+      const lane = session.metadata?.product;
       const result =
-        session.metadata?.product === "learner-places"
-          ? await fulfilPlacesSession(session, `${proto}://${host}`)
-          : await fulfilCheckoutSession(session, `${proto}://${host}`);
+        lane === CONSUMER_PRODUCT
+          ? await fulfilConsumerSession(session)
+          : lane === "learner-places"
+            ? await fulfilPlacesSession(session, `${proto}://${host}`)
+            : await fulfilCheckoutSession(session, `${proto}://${host}`);
       console.log("[stripe/webhook]", event.type, JSON.stringify(result));
       /* A paid session that set nothing up is a customer waiting for an
        * email that is not coming. */
       if ("skipped" in result && session.payment_status === "paid") {
-        await opsAlert({ what: "A paid Stripe session was not fulfilled", detail: { reason: result.skipped, sessionId: session.id, email: session.customer_details?.email ?? session.customer_email ?? "", firm: session.metadata?.firmName ?? "", org: session.metadata?.orgName ?? "", course: session.metadata?.course ?? "", seats: session.metadata?.seats ?? "", places: session.metadata?.places ?? "" } });
+        await opsAlert({ what: "A paid Stripe session was not fulfilled", detail: { reason: result.skipped, sessionId: session.id, email: session.customer_details?.email ?? session.customer_email ?? "", firm: session.metadata?.firmName ?? "", org: session.metadata?.orgName ?? "", course: session.metadata?.course ?? "", seats: session.metadata?.seats ?? "", places: session.metadata?.places ?? "", slug: session.metadata?.slug ?? "", userId: session.metadata?.userId ?? "" } });
       }
     } catch (err) {
       console.error("[stripe/webhook] fulfilment failed", err instanceof Error ? err.message : err);

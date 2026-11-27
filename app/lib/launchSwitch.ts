@@ -16,3 +16,19 @@
  * only way into a course.
  */
 export const TESTER_FREE_ACCESS: boolean = true;
+
+/**
+ * THE CHECKOUT SWITCH. Whether the public can buy a course for themselves.
+ *
+ * While false, /purchase/<slug> tells everyone "Buying opens soon" and
+ * creates nothing, EXCEPT staff (isStaffUser), who get the real Stripe
+ * checkout so the owner can try it end to end on the sandbox keys. The
+ * landing pages keep their sign-up buttons while it is false.
+ *
+ * Flip to true at launch, in the same change that sets TESTER_FREE_ACCESS
+ * to false: the landing buttons then go to /purchase/<slug>, and a
+ * signed-in adult who opens a course they do not hold is sent there too.
+ *
+ * Client-safe: plain constants, no imports.
+ */
+export const CONSUMER_CHECKOUT_OPEN: boolean = false;

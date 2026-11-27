@@ -6,6 +6,7 @@ import type { Product } from "@prisma/client";
 import CodeRainBg from "@/app/pro/CodeRainBg";
 import WaitlistForm from "@/app/components/WaitlistForm";
 import CubeMark from "@/app/components/CubeMark";
+import { CONSUMER_CHECKOUT_OPEN } from "@/app/lib/launchSwitch";
 
 /* Cyber Pro landing (marketing / sales page for /pro).
  *
@@ -46,12 +47,11 @@ const MONO = "var(--font-pro-mono), ui-monospace, 'Cascadia Code', Consolas, mon
 
 const ENROL_ANCHOR = "#enrol";
 
-/* Whether the paid checkout is live. The consumer Stripe flow for Cyber Pro
- * is not wired yet (app/purchase/[slug] shows "Buying opens soon" and
- * grants nothing), so while this is false the course shows
- * as live but every buy action routes to the enrol-band waitlist instead of
- * /purchase. Flip to true in the same change that lands real Stripe checkout. */
-const PURCHASE_OPEN = false;
+/* Whether the paid checkout is open to the public: the one launch switch,
+ * CONSUMER_CHECKOUT_OPEN in app/lib/launchSwitch.ts. While it is false the
+ * course shows as live but every buy action routes to the enrol-band
+ * waitlist; once true, to /purchase/cyberstart-pro. */
+const PURCHASE_OPEN = CONSUMER_CHECKOUT_OPEN;
 
 /* The code-bracket shield mark, the Cyber Pro logo used on the auth pages. */
 function Mark({ size = 19 }: { size?: number }) {

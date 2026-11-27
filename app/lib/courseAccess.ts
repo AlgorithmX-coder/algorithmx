@@ -3,7 +3,8 @@ import type { Session } from "next-auth";
 import { auth } from "@/app/lib/auth";
 import { prisma } from "@/app/lib/prisma";
 import { grantEntitlement, hasEntitlement } from "@/app/lib/entitlements";
-import { TESTER_FREE_ACCESS } from "@/app/lib/launchSwitch";
+import { CONSUMER_CHECKOUT_OPEN, TESTER_FREE_ACCESS } from "@/app/lib/launchSwitch";
+import { purchasePath } from "@/app/lib/consumerCatalogue";
 import { pupilCourseHomeFor } from "@/app/lib/courseIntent";
 import { COURSE_LANDING_ROUTES } from "@/app/lib/courseLandings";
 
@@ -22,7 +23,8 @@ import { COURSE_LANDING_ROUTES } from "@/app/lib/courseLandings";
  *   - Signed in and holding the entitlement for THIS course: allowed.
  *     hasEntitlement already honours school BUNDLE grants and switches
  *     them off when the school's access is closed.
- *   - Signed in without it: that course's landing (buy) page. Until launch
+ *   - Signed in without it: that course's buy page (/purchase/<slug>)
+ *     once CONSUMER_CHECKOUT_OPEN is on, its landing page until then. Until launch
  *     (TESTER_FREE_ACCESS in app/lib/launchSwitch.ts) an adult is instead
  *     granted the course and let in, so testers stay fully open.
  *   - A school pupil without it is never sent to a sales page. If their
@@ -82,7 +84,9 @@ export async function deniedDestination(
   pupilRow?: PupilRow,
 ): Promise<string> {
   const pupil = pupilRow === undefined ? await findPupil(userId) : pupilRow;
-  if (!pupil) return CONSUMER_COURSES[slug].landing;
+  /* An adult without the course: its buy page once checkout is open
+     (app/lib/launchSwitch.ts), its landing until then. */
+  if (!pupil) return CONSUMER_CHECKOUT_OPEN ? purchasePath(slug) : CONSUMER_COURSES[slug].landing;
 
   const own = pupil.class?.product.slug;
   if (own && own !== slug && (await hasEntitlement(userId, own))) return pupilCourseHomeFor(own);

@@ -4,8 +4,8 @@
  * payment for that one course. Owner, 2026-11-26: 29 pounds.
  *
  * The one place this figure lives. The course sign-in and sign-up doors
- * show it; the consumer checkout (held PR, consumerCatalogue.ts) should
- * charge it from here too, so the page and the charge never drift apart.
+ * show it; the consumer checkout (consumerCatalogue.ts) charges
+ * it from here too, so the page and the charge never drift apart.
  *
  * Firms buy these courses per seat instead (cyberSecuredPricing.ts); this
  * figure has nothing to do with seat pricing.

@@ -1,5 +1,6 @@
 import { prisma } from "@/app/lib/prisma";
 import { listSchoolEnquiries } from "@/app/lib/schoolEnquiries";
+import { INDIVIDUAL_LEARNERS_ORG_SLUG } from "@/app/lib/cyberSecured";
 
 /* Everything the overview shows, in a handful of cheap queries. Counts
  * are direct (not the full listX() functions, which pull nested relations
@@ -75,6 +76,8 @@ export async function getOverview(): Promise<Overview> {
 
   const [orgs, people, enquiries, endingSoon, endedLately, closed] = await Promise.all([
     prisma.organisation.findMany({
+      /* The house record individual buyers are enrolled under is not a customer. */
+      where: { slug: { not: INDIVIDUAL_LEARNERS_ORG_SLUG } },
       select: { id: true, name: true, slug: true, sector: true, createdAt: true, school: { select: { kind: true } } },
       orderBy: { createdAt: "desc" },
     }),

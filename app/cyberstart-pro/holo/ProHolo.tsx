@@ -11,6 +11,7 @@ import PasswordLab from "./PasswordLab";
 import ProRain from "./ProRain";
 import HoloWaitlist from "./HoloWaitlist";
 import "./pro.css";
+import { CONSUMER_CHECKOUT_OPEN } from "@/app/lib/launchSwitch";
 
 /* Hologram, the /pro page (owner's pick from the landing lab round 4,
  * 2026-11-22, concept p01: "push them live"). The house Hologram language
@@ -30,12 +31,11 @@ import "./pro.css";
 
 const ENROL_ANCHOR = "#enrol";
 
-/* Whether the paid checkout is live. The consumer Stripe flow for Cyber Pro
- * is not wired yet (app/purchase/[slug] shows "Buying opens soon" and
- * grants nothing), so while this is false the course shows
- * as live but every buy action routes to the enrol-band waitlist instead of
- * /purchase. Flip to true in the same change that lands real Stripe checkout. */
-const PURCHASE_OPEN = false;
+/* Whether the paid checkout is open to the public: the one launch switch,
+ * CONSUMER_CHECKOUT_OPEN in app/lib/launchSwitch.ts. While it is false the
+ * course shows as live but every buy action routes to the enrol-band
+ * waitlist; once true, to /purchase/cyberstart-pro. */
+const PURCHASE_OPEN = CONSUMER_CHECKOUT_OPEN;
 
 const ARROW = <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>;
 const ARROW_SM = <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>;

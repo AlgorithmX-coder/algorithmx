@@ -70,3 +70,30 @@ export async function vatTaxRateId(): Promise<string> {
   vatRateId = rate.id;
   return rate.id;
 }
+
+/* The same UK rate as an INCLUSIVE tax rate, for the consumer checkout:
+ * £99 is the whole price and the receipt shows the VAT already inside it,
+ * where the firm lane adds VAT on top. A separate Stripe object because a
+ * tax rate's inclusive flag cannot be changed after it is made. */
+let vatInclusiveRateId: string | null = null;
+export async function vatInclusiveTaxRateId(): Promise<string> {
+  if (vatInclusiveRateId) return vatInclusiveRateId;
+  const s = stripe();
+  const tag = `uk-vat-${VAT_PERCENT}-inclusive`;
+  const existing = await s.taxRates.list({ active: true, limit: 100 });
+  const found = existing.data.find((r) => r.metadata?.algorithmx === tag);
+  const rate =
+    found ??
+    (await s.taxRates.create({
+      display_name: "VAT",
+      percentage: VAT_PERCENT,
+      inclusive: true,
+      country: "GB",
+      tax_type: "vat",
+      jurisdiction: "GB",
+      description: `UK VAT at ${VAT_PERCENT}%, included in the price`,
+      metadata: { algorithmx: tag },
+    }));
+  vatInclusiveRateId = rate.id;
+  return rate.id;
+}

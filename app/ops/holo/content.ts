@@ -4,6 +4,12 @@
  * three empty rank cells carry no text (the old page printed a placeholder
  * em-dash there; the design draws a hairline instead). */
 
+import { enrolHref } from "@/app/lib/consumerCatalogue";
+
+/* The primary Sign up buttons: sign-up until checkout opens, then the buy
+ * page (CONSUMER_CHECKOUT_OPEN in app/lib/launchSwitch.ts). */
+const ENROL = enrolHref("cyberstart");
+
 export const AXO = {
   nav: {
     brand: { wordmark: "CYBER OPS", href: "#top", ariaLabel: "Cyber Ops by AlgorithmX" },
@@ -16,7 +22,7 @@ export const AXO = {
     ],
     chipsAriaLabel: "Page",
     signIn: { label: "Sign in", href: "/ops/login" },
-    cta: { label: "Sign up", href: "/ops/signup" },
+    cta: { label: "Sign up", href: ENROL },
   },
 
   hero: {
@@ -30,7 +36,7 @@ export const AXO = {
     lead:
       "Cyber Ops hires you as a junior security operator. Break into real targets, defend against real attacks, and write up real findings - inside a walled range where nothing can actually go wrong. You leave with a portfolio, not a certificate.",
     buttons: [
-      { label: "Sign up", href: "/ops/signup", style: "primary" },
+      { label: "Sign up", href: ENROL, style: "primary" },
       { label: "See the 20 modules →", href: "#curriculum", style: "ghost" },
     ],
     note: "The top tier of AlgorithmX - after Cyber Heroes and Cyber Explorers.",
@@ -161,7 +167,7 @@ export const AXO = {
     h2: "The range is open.",
     lead: "Create an operator account and take the first engagement today. Twenty modules, one payment, a portfolio at the end.",
     buttons: [
-      { label: "Sign up", href: "/ops/signup", style: "primary" },
+      { label: "Sign up", href: ENROL, style: "primary" },
       { label: "Sign in", href: "/ops/login", style: "ghost" },
     ],
   },
