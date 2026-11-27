@@ -8,9 +8,10 @@
  * where the first Tom to sign in claimed whichever account he tapped.
  *
  * So the teacher gives a family name and sees it. A child never does: the
- * pick list and the login cards show a first name, plus an initial only when
- * two children in the class share that first name. The family name itself is
- * never sent to a child's screen or printed on a card.
+ * pick list and the login cards show a first name, plus the start of the
+ * family name (one letter, or as few as tell them apart) only when two
+ * children in the class share that first name. No more of the family name
+ * than that is ever sent to a child's screen or printed on a card.
  *
  * Pure on purpose, so both rules are tested without a database.
  */
@@ -71,28 +72,55 @@ export function fullName(p: { name: string; familyName?: string | null }): strin
 /**
  * What a child sees, per pupil.
  *
- * The first name, or the first name and the family name's initial ("Tom B",
- * no full stop) when at least two pupils in the list share that first name,
- * case-insensitively, and this one has a family name to take an initial
- * from. Pass the WHOLE class: a sheet of only the new cards must still mark
- * the Tom who joined in January apart from the Tom who was already there.
+ * The first name, alone, unless at least two pupils in the list share it
+ * (case-insensitively). Then each of those with a family name gets the
+ * shortest start of it that sets them apart from the others of that first
+ * name: "Tom B" and "Tom R", or "Tom Ba" and "Tom Br" when the initials
+ * match too. One letter at a time, never beyond the full family name, no
+ * full stop. A pupil with no family name stays a bare first name and is
+ * left out of the comparison.
  *
- * Never returns the family name itself.
+ * Pass the WHOLE class: a sheet of only the new cards must still mark the
+ * Tom who joined in January apart from the Tom who was already there.
+ *
+ * Never more of the family name than it takes to tell two children apart.
  */
 export function shownNames(
   pupils: readonly { id: string; name: string; familyName?: string | null }[],
 ): Map<string, string> {
-  const counts = new Map<string, number>();
+  const low = (v: string) => v.toLocaleLowerCase("en-GB");
+  const groups = new Map<string, number>();
   for (const p of pupils) {
-    const key = p.name.trim().toLocaleLowerCase("en-GB");
-    counts.set(key, (counts.get(key) ?? 0) + 1);
+    const key = low(p.name.trim());
+    groups.set(key, (groups.get(key) ?? 0) + 1);
   }
+  /* The family names of each shared first name, for comparing prefixes. */
+  const families = new Map<string, string[]>();
+  for (const p of pupils) {
+    const fam = p.familyName?.trim();
+    const key = low(p.name.trim());
+    if (!fam || (groups.get(key) ?? 0) < 2) continue;
+    families.set(key, [...(families.get(key) ?? []), low(fam)]);
+  }
+
   const out = new Map<string, string>();
   for (const p of pupils) {
     const first = p.name.trim();
-    const shared = (counts.get(first.toLocaleLowerCase("en-GB")) ?? 0) > 1;
-    const initial = p.familyName?.trim().charAt(0).toLocaleUpperCase("en-GB") ?? "";
-    out.set(p.id, shared && initial ? `${first} ${initial}` : first);
+    const key = low(first);
+    const fam = p.familyName?.trim() ?? "";
+    if (!fam || (groups.get(key) ?? 0) < 2) {
+      out.set(p.id, first);
+      continue;
+    }
+    /* Everyone else of this first name with a family name. Only one of a
+       pair of identical family names is removed, so two Tom Bakers both
+       run to the full name, which is as far as it can go. */
+    const others = [...(families.get(key) ?? [])];
+    others.splice(others.indexOf(low(fam)), 1);
+    let k = 1;
+    while (k < fam.length && others.some((o) => o.slice(0, k) === low(fam).slice(0, k))) k++;
+    const part = fam.slice(0, k);
+    out.set(p.id, `${first} ${part.charAt(0).toLocaleUpperCase("en-GB")}${part.slice(1)}`);
   }
   return out;
 }

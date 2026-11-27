@@ -241,7 +241,7 @@ model ChildProfile {
   /// The child's family name. Set for school pupils when the teacher gives
   /// one, so two children called Tom in one class can be told apart; never
   /// asked of a family account. Shown to the teacher only: a child sees a
-  /// first name, plus an initial when two in a class share it (pupilName.ts).
+  /// first name, plus the start of the family name when two in a class share it (pupilName.ts).
   familyName      String?
   /// Optional since the school spine: a school never hands us a child's
   /// birthday. A family profile still has one; a school pupil has a year

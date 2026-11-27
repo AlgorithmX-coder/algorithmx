@@ -21,10 +21,10 @@ import "./cards.css";
  * a class machine, and this removes it for everybody else: the address is on
  * the card, in the child's hand, with their own name at the top of it.
  *
- * NOTHING SECRET IS PRINTED. A card carries a first name, plus a family-name
- * initial only when two children in the class share that first name, so the
- * two Toms get two different cards. Never the family name itself. Then the
- * class address and what to tap. It does not carry the picture password,
+ * NOTHING SECRET IS PRINTED. A card carries a first name, plus the start of
+ * the family name (a letter, or as few as tell them apart) only when two
+ * children in the class share that first name, so the two Toms get two
+ * different cards. Then the class address and what to tap. It does not carry the picture password,
  * cannot be made to carry it, and does not hint at it: the pictures are
  * stored hashed and the child chooses them on first sign-in. A sheet of these
  * left on a desk gives away a first name and a code that was on the board

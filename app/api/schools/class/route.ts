@@ -8,8 +8,8 @@ import { PUPIL_TOO_MANY, RULES, clientIp, hit, peek, rateKey, tooManyResponse } 
  * Deliberately unauthenticated: the child typing it has no account yet, and
  * the code IS the credential for this step. It returns first names, a colour
  * each, and whether each child has signed in before. Nothing else: no
- * family name (a family-name initial appears only to tell two children of the
- * same first name apart), no email, no school name, no class id that would
+ * family name (the start of the family name, a letter or as few as it takes, appears only to tell
+ * two children of the same first name apart), no email, no school name, no class id that would
  * let anything be written.
  *
  * A code that does not exist, a class that has been archived and a code of
