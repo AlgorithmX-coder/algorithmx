@@ -69,7 +69,6 @@
 .lt-lockup .lk-name b{font-weight:inherit;color:var(--acc2)}
 .lt-lockup .lk-by{font-family:var(--lt-mono);font-weight:500;font-size:8.5px;letter-spacing:.24em;text-transform:uppercase;display:inline-flex;align-items:center;white-space:nowrap;color:var(--ink)}
 .lt-lockup .lk-by .dim{opacity:.7}
-.lt-lockup .lk-by svg{display:inline-block;margin:0 3px;filter:drop-shadow(0 0 4px rgba(95,141,255,.7))}
 .lt-sep{width:1px;height:16px;background:var(--line2)}
 .lt-firm{font-weight:600;font-size:13.5px;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .lt-back{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 14px 0 12px;border-radius:999px;border:1px solid var(--line2);background:var(--panel);backdrop-filter:blur(12px);

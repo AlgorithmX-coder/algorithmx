@@ -1,11 +1,6 @@
 /* Course marks for the Night Console course homes: the Explorers reticle, the
- * Ops scope and the "by AlgorithmX" byline cube (as the course auth pages). */
-
-export function ByCube() {
-  return (
-    <svg width="12" height="12" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="#5f8dff" strokeWidth="1.6" strokeLinejoin="round"><path d="M12 2.5 21 7.25v9.5L12 21.5 3 16.75v-9.5z" /><path d="M3 7.25 12 12l9-4.75M12 12v9.5" /></g><text x="12" y="10.4" textAnchor="middle" fontFamily="ui-monospace,Menlo,monospace" fontSize="5.2" fontWeight="700" fill="#5f8dff">&lt;/&gt;</text></svg>
-  );
-}
+ * Ops scope, and the course-home lockup with its "by AlgorithmX" byline. */
+import ByAlgorithmX from "@/app/components/ByAlgorithmX";
 
 export function ExplorersMark({ size = 22 }: { size?: number }) {
   return (
@@ -32,7 +27,7 @@ export function CourseHomeLockup({ mark, lead, accent, label }: { mark: React.Re
   return (
     <span className="ch6-lockup" role="img" aria-label={label}>
       {mark}
-      <span className="lk-col" aria-hidden="true"><span className="lk-name">{lead} <b>{accent}</b></span><span className="lk-by"><span className="dim">by</span><ByCube /><span className="dim">AlgorithmX</span></span></span>
+      <span className="lk-col" aria-hidden="true"><span className="lk-name">{lead} <b>{accent}</b></span><span className="lk-by"><ByAlgorithmX wordClassName="dim" /></span></span>
     </span>
   );
 }

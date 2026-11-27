@@ -12,6 +12,7 @@
  */
 
 import Link from "next/link";
+import ByAlgorithmX from "@/app/components/ByAlgorithmX";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Fredoka, JetBrains_Mono, Nunito } from "next/font/google";
 import { nightSky, rise } from "./heroesFx";
@@ -70,9 +71,7 @@ function Lockup() {
       <span style={{ display: "flex", flexDirection: "column", gap: 2, lineHeight: 1 }}>
         <span style={{ fontFamily: "var(--hlm-disp)", fontWeight: 700, fontSize: "1.2rem", letterSpacing: ".02em", color: "#eaf6ff", whiteSpace: "nowrap" }}>CYBER <span style={{ color: "#ffb347" }}>HEROES</span></span>
         <span style={{ fontFamily: "var(--hlm-mono)", fontWeight: 500, fontSize: 9, letterSpacing: ".24em", textTransform: "uppercase", color: "#eaf6ff", display: "inline-flex", alignItems: "center", whiteSpace: "nowrap" }}>
-          <span style={{ opacity: 0.6 }}>by</span>
-          <svg width="13" height="13" viewBox="0 0 24 24" aria-hidden="true" style={{ display: "inline-block", margin: "0 3px", filter: "drop-shadow(0 0 4px rgba(95,141,255,.7))" }}><g fill="none" stroke="#5f8dff" strokeWidth="1.6" strokeLinejoin="round"><path d="M12 2.5 21 7.25v9.5L12 21.5 3 16.75v-9.5z" /><path d="M3 7.25 12 12l9-4.75M12 12v9.5" /></g></svg>
-          <span style={{ opacity: 0.6 }}>AlgorithmX</span>
+          <ByAlgorithmX wordStyle={{ opacity: 0.6 }} />
         </span>
       </span>
     </>

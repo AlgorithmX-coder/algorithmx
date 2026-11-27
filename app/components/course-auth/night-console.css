@@ -197,7 +197,6 @@
 .na1-lockup .lk-name b{font-weight:inherit;color:var(--na1-acc)}
 .na1-lockup .lk-by{font-family:var(--na1-mono);font-weight:500;font-size:8.5px;letter-spacing:.24em;text-transform:uppercase;display:inline-flex;align-items:center;white-space:nowrap;color:var(--na1-ink)}
 .na1-lockup .lk-by .dim{opacity:.62}
-.na1-lockup .lk-by svg{display:inline-block;margin:0 3px;filter:drop-shadow(0 0 4px rgba(95,141,255,.7))}
 .na1[data-course="cyberheroes"] .na1-lockup{--na1-lk-font:var(--na1-fredoka),Fredoka,var(--na1-sans);--na1-lk-fs:1.15rem;--na1-lk-ls:.02em;gap:10px}
 .na1[data-course="cyberheroes"] .na1-lockup .lk-col{gap:2px}
 .na1[data-course="cyberheroes"] .na1-lockup>svg{transform:rotate(-7deg);filter:drop-shadow(0 0 8px rgba(255,179,71,.35))}

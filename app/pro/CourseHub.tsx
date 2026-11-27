@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import NightHomeShell, { ByCube, NightHomePause } from "@/app/components/course-home/NightHomeShell";
+import NightHomeShell, { NightHomePause } from "@/app/components/course-home/NightHomeShell";
+import ByAlgorithmX from "@/app/components/ByAlgorithmX";
 import CourseSignOut from "@/app/components/CourseSignOut";
 
 /* The Cyber Pro course hub: every module, grouped into the four acts, with a
@@ -163,7 +164,7 @@ export default function CourseHub() {
           <div className="hb6-chrome-l">
             <span className="hb6-lockup" role="img" aria-label="Cyber Pro by AlgorithmX">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ff7a3d" strokeWidth="2" aria-hidden="true" style={{ flexShrink: 0, filter: "drop-shadow(0 0 9px rgba(255,122,61,.35))" }}><path d="M4 4 H14.5 L20 9.5 V20 H4 Z" strokeLinejoin="round" /><path d="M8 9.5 L11.2 12.5 L8 15.5" strokeLinecap="round" strokeLinejoin="round" /><path d="M13 15.5 H16.2" strokeLinecap="round" /></svg>
-              <span className="lk-col" aria-hidden="true"><span className="lk-name">CYBER <b>PRO</b></span><span className="lk-by"><span className="dim">by</span><ByCube /><span className="dim">AlgorithmX</span></span></span>
+              <span className="lk-col" aria-hidden="true"><span className="lk-name">CYBER <b>PRO</b></span><span className="lk-by"><ByAlgorithmX wordClassName="dim" /></span></span>
             </span>
             <span className="hb6-trail">The course</span>
           </div>

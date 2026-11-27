@@ -47,7 +47,6 @@
 .pv1 .lockup .lk-name{font-family:var(--chakra);font-weight:700;font-size:14px;letter-spacing:.07em;white-space:nowrap}
 .pv1 .lockup .lk-by{font-family:var(--mono);font-weight:500;font-size:8.5px;letter-spacing:.24em;text-transform:uppercase;display:inline-flex;align-items:center;white-space:nowrap}
 .pv1 .lockup .lk-by .dim{opacity:.6}
-.pv1 .lockup .lk-by svg{display:inline-block;margin:0 3px;filter:drop-shadow(0 0 4px rgba(95,141,255,.7))}
 .pv1 .nav .lockup{padding-right:12px;border-right:1px solid var(--line)}
 .pv1 .chips{display:flex;gap:2px;padding:3px;border-radius:999px;background:#eef1f6;border:1px solid var(--line)}
 .pv1 .chips a{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--body);padding:8px 12px;border-radius:999px;transition:color .25s,background .25s,box-shadow .25s;white-space:nowrap}

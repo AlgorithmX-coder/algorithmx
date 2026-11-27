@@ -1,0 +1,18 @@
+/* "by AlgorithmX" + the Bracket core cube (landing lab r9, design 3; owner
+   2026-11-27). Port of the lab's shared .cb cube and its .c3 rules, sized to
+   1em of the byline and placed after the words. Selectors carry element
+   names so a lockup's own "byline svg" or "byline span" rules never win. */
+span.axby{display:inline-flex;align-items:center;white-space:nowrap;vertical-align:baseline}
+span.axby > span.axby-cube{position:relative;display:inline-block;flex:0 0 auto;box-sizing:content-box;width:1em;height:1em;margin:0 0 0 .5em;padding:0;perspective:5em;vertical-align:-.12em;opacity:1;filter:drop-shadow(0 0 2px rgba(95,141,255,.8))}
+span.axby-cube > span.axby-rot{position:relative;display:block;width:100%;height:100%;opacity:1;transform-style:preserve-3d;transform:rotateX(-26deg) rotateY(-35deg);animation:axby-spin 7s linear infinite}
+span.axby-rot > span.axby-f{position:absolute;inset:0;display:block;box-sizing:border-box;opacity:1;border:1.2px solid #5f8dff;background:rgba(95,141,255,.07)}
+span.axby-rot > span.axby-f:nth-child(1){transform:translateZ(.5em)}
+span.axby-rot > span.axby-f:nth-child(2){transform:rotateY(180deg) translateZ(.5em)}
+span.axby-rot > span.axby-f:nth-child(3){transform:rotateY(90deg) translateZ(.5em)}
+span.axby-rot > span.axby-f:nth-child(4){transform:rotateY(-90deg) translateZ(.5em)}
+span.axby-rot > span.axby-f:nth-child(5){transform:rotateX(90deg) translateZ(.5em)}
+span.axby-rot > span.axby-f:nth-child(6){transform:rotateX(-90deg) translateZ(.5em)}
+span.axby-cube > svg.axby-code{position:absolute;left:50%;top:50%;display:block;width:.66em;height:.42em;margin:0;padding:0;overflow:visible;filter:none;transform:translate(-50%,-50%);animation:axby-pulse 2.4s ease-in-out infinite}
+@keyframes axby-spin{from{transform:rotateX(-26deg) rotateY(0)}to{transform:rotateX(-26deg) rotateY(360deg)}}
+@keyframes axby-pulse{50%{opacity:.45;transform:translate(-50%,-50%) scale(.86)}}
+@media (prefers-reduced-motion:reduce){span.axby-cube > span.axby-rot,span.axby-cube > svg.axby-code{animation:none}}

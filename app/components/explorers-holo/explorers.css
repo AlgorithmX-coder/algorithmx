@@ -42,7 +42,6 @@
 .ev1 .nav .lockup > span:first-child > span{font-size:12.5px!important}
 .ev1 .nav .lk-by{font-family:var(--mono);font-weight:500;font-size:8.5px;letter-spacing:.24em;text-transform:uppercase;display:inline-flex;align-items:center;white-space:nowrap;padding-left:30px;color:#14161d}
 .ev1 .nav .lk-by .dim{opacity:.6}
-.ev1 .nav .lk-by svg{display:inline-block;margin:0 3px;filter:drop-shadow(0 0 4px rgba(95,141,255,.7))}
 .ev1 .chips{display:flex;gap:2px;padding:3px;border-radius:999px;background:#eef1f6;border:1px solid var(--line)}
 .ev1 .chips a{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--body);padding:8px 12px;border-radius:999px;transition:color .25s,background .25s,box-shadow .25s;white-space:nowrap}
 .ev1 .chips a:hover{color:var(--cInk)}

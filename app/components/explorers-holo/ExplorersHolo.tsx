@@ -4,7 +4,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import CourseLockup from "@/app/components/CourseLockup";
-import CubeMark from "@/app/components/CubeMark";
+import ByAlgorithmX from "@/app/components/ByAlgorithmX";
 import { AXE } from "./content";
 import { countOnView, countUp, powerWires, reduced, reveal, spy } from "./fx";
 import HoloHeadline from "./HoloHeadline";
@@ -78,7 +78,7 @@ function Nav() {
       <div className="capsule" ref={capRef} data-open={open ? "" : undefined}>
         <Link className="lockup" href={N.logo.href} aria-label={N.logo.ariaLabel}>
           <CourseLockup id="explorers" size={0.8} tone="sand" />
-          <span className="lk-by" aria-hidden="true"><span className="dim">{N.logo.bylineBy}</span><CubeMark size={12} color="#5f8dff" code /><span className="dim">{N.logo.bylineBrand}</span></span>
+          <span className="lk-by" aria-hidden="true"><ByAlgorithmX by={N.logo.bylineBy} brand={N.logo.bylineBrand} wordClassName="dim" /></span>
         </Link>
         <nav className="chips" aria-label={N.menu.ariaLabel}>
           {N.links.map((l) => <a key={l.id} href={l.href} className={on === l.id ? "on" : undefined} aria-current={on === l.id ? "location" : undefined}>{l.label}</a>)}

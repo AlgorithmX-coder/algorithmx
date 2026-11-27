@@ -3,7 +3,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import CourseLockup, { OpsMark } from "@/app/components/CourseLockup";
-import CubeMark from "@/app/components/CubeMark";
+import ByAlgorithmX from "@/app/components/ByAlgorithmX";
 import { AXO, type SafetyIcon } from "./content";
 import { powerWires, reduced, reveal } from "./fx";
 import OpsHeadline from "./OpsHeadline";
@@ -39,12 +39,12 @@ const Pill = ({ children }: { children: React.ReactNode }) => <span className="p
 
 /* The Ops lockup: the real CourseLockup (sand tone, the bracketed scope
    mark in #5744c9 and Chakra Petch "CYBER OPS") with the stacked
-   "by [blue cube] AlgorithmX" byline the live nav shows under the name. */
+   "by AlgorithmX [cube]" byline the live nav shows under the name. */
 function Lockup({ href }: { href: string }) {
   return (
     <a className="lockup" href={href} aria-label={AXO.nav.brand.ariaLabel}>
       <CourseLockup id="ops" tone="sand" size={0.85} />
-      <span className="lk-by" aria-hidden="true"><span className="dim">by</span><CubeMark size={12} color="#5f8dff" strokeWidth={1.6} code /><span className="dim">AlgorithmX</span></span>
+      <span className="lk-by" aria-hidden="true"><ByAlgorithmX wordClassName="dim" /></span>
     </a>
   );
 }

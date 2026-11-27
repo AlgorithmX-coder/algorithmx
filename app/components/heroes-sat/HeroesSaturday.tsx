@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import CourseLockup from "@/app/components/CourseLockup";
+import ByAlgorithmX from "@/app/components/ByAlgorithmX";
 import CubeMark from "@/app/components/CubeMark";
 import { WEEK_THEMES } from "@/app/lesson/weekContent/weekThemes";
 import { weekArtPosition, weekArtSrc } from "@/app/lesson/weekContent/weekArt";
@@ -86,7 +87,7 @@ function Nav() {
           <Link className="brand" href={N.logo.href} aria-label={N.logo.ariaLabel}>
             <span className="stack">
               <CourseLockup id="heroes" tone="sand" size={1.05} />
-              <span className="by" aria-hidden="true"><span>by</span><CubeMark size={13} color="#5f8dff" code /><span>AlgorithmX</span></span>
+              <span className="by" aria-hidden="true"><ByAlgorithmX wordClassName="dim" /></span>
             </span>
           </Link>
           <nav className="links" aria-label={N.ariaLabel}>

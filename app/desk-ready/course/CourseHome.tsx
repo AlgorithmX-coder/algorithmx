@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
-import NightHomeShell, { ByCube, NightHomePause } from "@/app/components/course-home/NightHomeShell";
+import NightHomeShell, { NightHomePause } from "@/app/components/course-home/NightHomeShell";
+import ByAlgorithmX from "@/app/components/ByAlgorithmX";
 import CourseSignOut from "@/app/components/CourseSignOut";
 import PartPreview, { PREVIEW_CSS, type PreviewKind } from "../PartPreview";
 import { doneIn, useDone } from "../learn/progress";
@@ -107,7 +108,7 @@ export default function CourseHome() {
           <div className="hb6-chrome-l">
             <Link className="hb6-lockup" href="/desk-ready/course" aria-label="Desk Ready: your desk">
               <svg width="30" height="30" viewBox="0 0 24 24" fill="none" aria-hidden="true" style={{ flexShrink: 0, filter: "drop-shadow(0 0 6px rgba(95,141,255,.55))" }}><rect x="3" y="4" width="18" height="12" rx="2" fill="rgba(95,141,255,0.14)" stroke="#5f8dff" strokeWidth="1.8" /><path d="M9 20 H15 M12 16 V20" stroke="#5f8dff" strokeWidth="1.8" strokeLinecap="round" /><path d="M7.5 10 L10.2 12.6 L15.8 7.4" stroke="#8fd3ff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
-              <span className="lk-col" aria-hidden="true"><span className="lk-name">DESK <b>READY</b></span><span className="lk-by"><span className="dim">by</span><ByCube /><span className="dim">AlgorithmX</span></span></span>
+              <span className="lk-col" aria-hidden="true"><span className="lk-name">DESK <b>READY</b></span><span className="lk-by"><ByAlgorithmX wordClassName="dim" /></span></span>
             </Link>
             <span className="hb6-trail">Your desk</span>
           </div>
