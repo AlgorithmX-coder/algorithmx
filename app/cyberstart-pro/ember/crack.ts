@@ -1,11 +1,16 @@
-/* The password lab's maths and strings, moved verbatim from
- * CyberStartProLanding.tsx (the live page's crackEstimate). Pool sizes
- * 26/26/10/33, 1e10 guesses per second, the twenty-word wordlist, the eleven
- * verdicts and the three detail lines. Pure, so it can be unit-driven. */
+/* The password lab's maths and strings, moved verbatim from the Hologram
+ * page (app/cyberstart-pro/holo/crack.ts, itself the live page's
+ * crackEstimate). Pool sizes 26/26/10/33, 1e10 guesses per second, the
+ * twenty-word wordlist, the eleven verdicts and the three detail lines.
+ * poolSize is split out so the lab's Charset readout shows the same number
+ * the estimate uses. Pure, so it can be unit-driven. */
 
 import { PRO_GREEN, PRO_RED, PRO_YELLOW, PRO_ACCENT } from "./content";
 
 const AMBER = PRO_ACCENT;
+
+/* The colour of the empty state, before anything is typed. */
+export const EMPTY_COLOUR = "rgba(255,255,255,0.4)";
 
 export const WORDLIST: ReadonlySet<string> = new Set([
   "password", "password1", "password123", "123456", "12345678", "123456789",
@@ -15,15 +20,21 @@ export const WORDLIST: ReadonlySet<string> = new Set([
 
 export interface Crack { verdict: string; detail: string; colour: string; pct: number }
 
-export function crackEstimate(pw: string): Crack {
-  if (!pw) return { verdict: "Type a password above", detail: "and watch how long it would take to crack.", colour: "rgba(255,255,255,0.4)", pct: 0 };
-  if (WORDLIST.has(pw.toLowerCase())) return { verdict: "Cracked instantly", detail: "It is on every attacker's wordlist. The length does not matter.", colour: PRO_RED, pct: 4 };
-
-  const pool =
+/* How many characters an attacker has to try per position. */
+export function poolSize(pw: string): number {
+  return (
     (/[a-z]/.test(pw) ? 26 : 0) +
     (/[A-Z]/.test(pw) ? 26 : 0) +
     (/[0-9]/.test(pw) ? 10 : 0) +
-    (/[^A-Za-z0-9]/.test(pw) ? 33 : 0);
+    (/[^A-Za-z0-9]/.test(pw) ? 33 : 0)
+  );
+}
+
+export function crackEstimate(pw: string): Crack {
+  if (!pw) return { verdict: "Type a password above", detail: "and watch how long it would take to crack.", colour: EMPTY_COLOUR, pct: 0 };
+  if (WORDLIST.has(pw.toLowerCase())) return { verdict: "Cracked instantly", detail: "It is on every attacker's wordlist. The length does not matter.", colour: PRO_RED, pct: 4 };
+
+  const pool = poolSize(pw);
   const rate = 1e10; // 10 billion guesses/sec, a realistic offline fast-hash rig
   const log10Guesses = pw.length * Math.log10(Math.max(pool, 1));
   const log10Seconds = log10Guesses - Math.log10(rate);
