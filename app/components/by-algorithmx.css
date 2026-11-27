@@ -10,11 +10,14 @@
    The wire cube inside it is tilted and turning, so it draws taller than its
    edge: measured in Edge over a full turn, an edge of 0.68cap draws one cap
    height on average (within 3% either way), and its perspective pulls it a
-   little low, so it is lifted 0.036cap to sit centred on the capitals. */
+   little low, so it is lifted 0.036cap to sit centred on the capitals.
+   Owner, same day: "a little bit bigger". The wire cube is now 0.85cap
+   (1.25x the cap height), still centred on the capitals, so it stands out
+   evenly above their top and below the baseline. */
 span.axby{display:inline-flex;align-items:baseline;white-space:nowrap;vertical-align:baseline}
-span.axby > span.axby-cube{--axby-s:.48em;position:relative;display:inline-block;flex:0 0 auto;box-sizing:content-box;width:.7em;height:.7em;margin:0 0 0 .5em;padding:0;perspective:calc(var(--axby-s) * 5);vertical-align:baseline;opacity:1;filter:drop-shadow(0 0 2px rgba(95,141,255,.8))}
+span.axby > span.axby-cube{--axby-s:.6em;position:relative;display:inline-block;flex:0 0 auto;box-sizing:content-box;width:.88em;height:.7em;margin:0 0 0 .4em;padding:0;perspective:calc(var(--axby-s) * 5);vertical-align:baseline;opacity:1;filter:drop-shadow(0 0 2px rgba(95,141,255,.8))}
 @supports (height:1cap){
-  span.axby > span.axby-cube{--axby-s:calc(1cap * .68);width:1cap;height:1cap}
+  span.axby > span.axby-cube{--axby-s:calc(1cap * .85);width:1.25cap;height:1cap}
 }
 span.axby-cube > span.axby-rot{position:absolute;left:50%;top:calc(50% - var(--axby-s) * .053);display:block;width:var(--axby-s);height:var(--axby-s);margin:calc(var(--axby-s) / -2) 0 0 calc(var(--axby-s) / -2);opacity:1;transform-style:preserve-3d;transform:rotateX(-26deg) rotateY(-35deg);animation:axby-spin 7s linear infinite}
 span.axby-rot > span.axby-f{position:absolute;inset:0;display:block;box-sizing:border-box;opacity:1;border:1.2px solid #5f8dff;background:rgba(95,141,255,.07)}
