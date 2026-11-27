@@ -16,6 +16,7 @@
  */
 import { VAT_PERCENT } from "@/app/lib/corporateProducts";
 import { CONSUMER_CHECKOUT_OPEN } from "@/app/lib/launchSwitch";
+import { INDIVIDUAL_WORKPLACE_COURSE_PENCE } from "@/app/lib/individualCoursePrice";
 
 export interface ConsumerCourse {
   /** The Product slug in the database. */
@@ -47,9 +48,9 @@ export const CONSUMER_CATALOGUE: readonly ConsumerCourse[] = [
   { slug: "cyberstart", name: "Cyber Ops", pence: 9900, landing: "/ops", signUp: "/ops/signup", signIn: "/ops/login", home: "/operators/portfolio", line: "Hands-on cyber security operations for teenagers.", workplace: false },
   { slug: "cyberstart-pro", name: "Cyber Pro", pence: 9900, landing: "/pro", signUp: "/pro/signup", signIn: "/pro/login", home: "/pro/course", line: "The adult cyber security course, from first principles to the real tools.", workplace: false },
   { slug: "desk-ready", name: "Desk Ready", pence: 2500, landing: "/desk-ready", signUp: "/desk-ready/signup", signIn: "/desk-ready/login", home: "/desk-ready/course", line: "The everyday computer skills every office job expects.", workplace: false },
-  { slug: "ai-cleared", name: "AI Cleared", pence: 2900, landing: "/ai-cleared", signUp: "/ai-cleared/signup", signIn: "/ai-cleared/login", home: "/ai-cleared", line: "Use AI tools at work safely and with confidence.", workplace: true },
-  { slug: "ai-fluent", name: "AI Fluent", pence: 2900, landing: "/ai-fluent", signUp: "/ai-fluent/signup", signIn: "/ai-fluent/login", home: "/ai-fluent", line: "Get real, checked work out of AI on your own desk.", workplace: true },
-  { slug: "cyber-awareness", name: "Cyber Awareness", pence: 2900, landing: "/cyber-awareness", signUp: "/cyber-awareness/signup", signIn: "/cyber-awareness/login", home: "/cyber-awareness", line: "Spot the scams and attacks aimed at people at work.", workplace: true },
+  { slug: "ai-cleared", name: "AI Cleared", pence: INDIVIDUAL_WORKPLACE_COURSE_PENCE, landing: "/ai-cleared", signUp: "/ai-cleared/signup", signIn: "/ai-cleared/login", home: "/ai-cleared", line: "Use AI tools at work safely and with confidence.", workplace: true },
+  { slug: "ai-fluent", name: "AI Fluent", pence: INDIVIDUAL_WORKPLACE_COURSE_PENCE, landing: "/ai-fluent", signUp: "/ai-fluent/signup", signIn: "/ai-fluent/login", home: "/ai-fluent", line: "Get real, checked work out of AI on your own desk.", workplace: true },
+  { slug: "cyber-awareness", name: "Cyber Awareness", pence: INDIVIDUAL_WORKPLACE_COURSE_PENCE, landing: "/cyber-awareness", signUp: "/cyber-awareness/signup", signIn: "/cyber-awareness/login", home: "/cyber-awareness", line: "Spot the scams and attacks aimed at people at work.", workplace: true },
 ];
 
 const BY_SLUG = new Map(CONSUMER_CATALOGUE.map((c) => [c.slug, c]));

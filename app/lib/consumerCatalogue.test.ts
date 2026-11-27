@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { CONSUMER_CATALOGUE, consumerCourse, enrolHref, formatPence, isConsumerCourseSlug, vatIncludedPence } from "./consumerCatalogue";
+import { INDIVIDUAL_WORKPLACE_COURSE_PENCE, INDIVIDUAL_WORKPLACE_COURSE_SLUGS } from "./individualCoursePrice";
 
 /* The owner's price list, 2026-11-26. VAT included, one-off, one course
  * per purchase. If one of these changes, it changes here on purpose. */
@@ -17,6 +18,12 @@ const OWNER_PRICES: Record<string, number> = {
 describe("consumer catalogue", () => {
   it("charges exactly the owner's prices, and sells nothing else", () => {
     expect(Object.fromEntries(CONSUMER_CATALOGUE.map((c) => [c.slug, c.pence]))).toEqual(OWNER_PRICES);
+  });
+
+  it("charges the workplace courses the same figure the sign-in doors show", () => {
+    for (const slug of INDIVIDUAL_WORKPLACE_COURSE_SLUGS) {
+      expect(consumerCourse(slug)?.pence).toBe(INDIVIDUAL_WORKPLACE_COURSE_PENCE);
+    }
   });
 
   it("has one row per slug, every price a positive whole number of pence", () => {
