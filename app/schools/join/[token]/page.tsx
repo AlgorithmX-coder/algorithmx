@@ -8,12 +8,14 @@ import TeacherJoinButton from "./TeacherJoinButton";
 import { findStaffLink, judgeStaffLink } from "@/app/lib/staffLink";
 import { wordsFor } from "@/app/schools/words";
 import SignOut from "@/app/schools/SignOut";
+import DeadEnd, { R8_ICON } from "@/app/components/dead-end/DeadEnd";
 
 /* /schools/join/[token]: the teacher invite landing. Signed out, it
  * explains and links to sign-in with a return path; signed in, one
  * button claims the invite. Mirrors /ai-cleared/join/[token], without
  * the job-title picker a teacher has no use for. The look is the round 6
- * Campus Console; the lookups and branches are unchanged. */
+ * Campus Console; the lookups and branches are unchanged. A link that
+ * cannot be used is the round 8 light dead end (Trouble). */
 export const dynamic = "force-dynamic";
 
 const WARN = (
@@ -37,14 +39,31 @@ function Room({ meta, children }: { meta?: ReactNode; children: ReactNode }) {
   );
 }
 
-function Trouble({ head, body, back }: { head: string; body: string; back: boolean }) {
+/* A link that cannot be used: the round 8 dead end (landing lab
+ * r8-state.html?s=school-join) in the light house. The words are this
+ * page's own; `ask` adds the design's mailto for the two cases whose words
+ * already say to ask AlgorithmX. */
+function Trouble({ eyebrow, head, body, back, ask = false }: { eyebrow: string; head: string; body: string; back: boolean; ask?: boolean }) {
   return (
-    <Room>
-      <p className="r6-msg err" role="alert" aria-live="polite" {...rise(0)}>{WARN}<span>{head}</span></p>
-      <h1 className="r6-title" id="r6-title" {...rise(1)}>{head}</h1>
-      <p className="r6-sub" {...rise(2)}>{body}</p>
-      {back && <div className="r6-actions" {...rise(3)}><Link className="r6-btn ghost" href="/schools"><span className="lbl">Back to schools</span></Link></div>}
-    </Room>
+    <DeadEnd
+      tone="school"
+      lockup="school"
+      back={{ href: "/schools", label: "AlgorithmX for Schools" }}
+      err
+      eyebrow={eyebrow}
+      title={head}
+      glyph="unlink"
+      actions={
+        ask || back ? (
+          <>
+            {ask && <a className="r8-btn" href="mailto:admissions@algorithmx.co.uk">Ask for a new link{R8_ICON.arrow}</a>}
+            {back && <Link className="r8-btn" data-kind="ghost" href="/schools">Back to schools</Link>}
+          </>
+        ) : undefined
+      }
+    >
+      <p>{body}</p>
+    </DeadEnd>
   );
 }
 
@@ -64,7 +83,7 @@ export default async function SchoolJoinPage({
     return <StaffLinkLanding token={token} confirm={typeof raw === "string" ? raw : undefined} />;
   }
 
-  if (!invite) return <Trouble head="That invite link is not valid" body="Ask AlgorithmX for a fresh one." back />;
+  if (!invite) return <Trouble eyebrow="Teacher invite" head="That invite link is not valid" body="Ask AlgorithmX for a fresh one." back ask />;
 
   const session = await auth();
   const here = `/schools/join/${encodeURIComponent(token)}`;
@@ -84,7 +103,7 @@ export default async function SchoolJoinPage({
   }
 
   if (invite.userId && invite.userId !== session.user.id) {
-    return <Trouble head="That invite has already been claimed" body="Ask AlgorithmX for your own invite link." back />;
+    return <Trouble eyebrow="Teacher invite" head="That invite has already been claimed" body="Ask AlgorithmX for your own invite link." back ask />;
   }
 
   return (
@@ -113,7 +132,7 @@ function GoArrow() {
 async function StaffLinkLanding({ token, confirm }: { token: string; confirm?: string }) {
   const target = await findStaffLink(token);
   if (!target) {
-    return <Trouble head="That link is not valid any more" body="It may have been replaced by a newer one. Ask whoever sent it for the new link." back />;
+    return <Trouble eyebrow="Teacher invite" head="That link is not valid any more" body="It may have been replaced by a newer one. Ask whoever sent it for the new link." back />;
   }
   const w = wordsFor(target.kind);
   const here = `/schools/join/${encodeURIComponent(token)}${confirm ? `?confirm=${encodeURIComponent(confirm)}` : ""}`;
@@ -142,10 +161,10 @@ async function StaffLinkLanding({ token, confirm }: { token: string; confirm?: s
 
   if (verdict.state === "refused") {
     if (verdict.why === "closed") {
-      return <Trouble head={`Access for ${target.orgName} is closed`} body="Ask whoever sent you the link." back />;
+      return <Trouble eyebrow={`${w.Staff} link`} head={`Access for ${target.orgName} is closed`} body="Ask whoever sent you the link." back />;
     }
     if (verdict.why === "pupil") {
-      return <Trouble head={`A ${w.person} account cannot join as a ${w.staff}`} body="Sign out, then open the link again and sign in with your own account." back />;
+      return <Trouble eyebrow={`${w.Staff} link`} head={`A ${w.person} account cannot join as a ${w.staff}`} body="Sign out, then open the link again and sign in with your own account." back />;
     }
     if (verdict.why === "wrong_domain") {
       return (
@@ -160,7 +179,7 @@ async function StaffLinkLanding({ token, confirm }: { token: string; confirm?: s
         </Room>
       );
     }
-    return <Trouble head="That link is not valid any more" body="Ask whoever sent it for the new link." back />;
+    return <Trouble eyebrow={`${w.Staff} link`} head="That link is not valid any more" body="Ask whoever sent it for the new link." back />;
   }
 
   if (verdict.state === "already") {

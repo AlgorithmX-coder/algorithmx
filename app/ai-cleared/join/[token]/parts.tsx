@@ -2,6 +2,7 @@ import type { CSSProperties, ReactNode } from "react";
 import { moduleListFor } from "@/app/lib/courseModules";
 import CampusShell, { BackLink } from "@/app/components/campus-console/CampusShell";
 import CorporateBrand from "@/app/corporate/CorporateBrand";
+import DeadEnd from "@/app/components/dead-end/DeadEnd";
 import { COURSES, type CourseSlug } from "../../engine/courses";
 import SimPreview from "../../SimPreview";
 
@@ -42,6 +43,33 @@ export function Room({ firmName, meta, two, children }: { firmName?: string; met
     >
       {children}
     </CampusShell>
+  );
+}
+
+/* A seat link that cannot be used: the round 8 dead end (landing lab
+ * r8-state.html?s=firm-join) in the light house, with the Room's two footer
+ * lines. The words and the way forward are the caller's own. */
+export function DeadLink({ eyebrow, head, body, actions }: { eyebrow: string; head: string; body: string; actions?: ReactNode }) {
+  return (
+    <DeadEnd
+      tone="secured"
+      lockup="secured"
+      back={{ href: "/corporate", label: "Cyber Secured" }}
+      err
+      eyebrow={eyebrow}
+      title={head}
+      glyph="unlink"
+      actions={actions}
+      foot={
+        <>
+          Nothing in the course is real data, and practice chats are never stored.
+          <br />
+          Questions about your seat: <a href="mailto:admissions@algorithmx.co.uk">admissions@algorithmx.co.uk</a>
+        </>
+      }
+    >
+      <p>{body}</p>
+    </DeadEnd>
   );
 }
 

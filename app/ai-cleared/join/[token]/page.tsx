@@ -8,7 +8,8 @@ import { CYBER_SECURED_NAME, SECURED_TRACKS } from "@/app/lib/cyberSecured";
 import { findTeamOrg } from "@/app/lib/firmTeamLink";
 import { COURSES } from "../../engine/courses";
 import JoinForm from "../../JoinForm";
-import { Aside, GO, Room, rise } from "./parts";
+import { Aside, DeadLink, GO, Room, rise } from "./parts";
+import { R8_ICON } from "@/app/components/dead-end/DeadEnd";
 import TeamJoin from "./TeamJoin";
 
 /* /ai-cleared/join/[token]: the invite landing for a Cyber Secured seat.
@@ -16,7 +17,9 @@ import TeamJoin from "./TeamJoin";
  * in, it shows the job-title picker and claims the seat, which opens every
  * track at once. No track waits on another. The look is the round 6 Campus
  * Console (firm family: the corporate graphite with the office pulse); the
- * lookups, branches and redirects are unchanged.
+ * lookups, branches and redirects are unchanged. A link that cannot be
+ * used (an unknown token, a seat someone else claimed) is the round 8
+ * light dead end, DeadLink.
  *
  * The same address serves a firm's team link: a token that is not a seat's
  * is looked up as a firm's teamToken, and TeamJoin takes over. */
@@ -30,14 +33,12 @@ export default async function JoinPage({ params }: { params: Promise<{ token: st
     const teamOrg = await findTeamOrg(token);
     if (teamOrg) return <TeamJoin org={teamOrg} token={token} />;
     return (
-      <Room>
-        <p className="r6-eyebrow pill" {...rise(0)}>Invite link</p>
-        <h1 className="r6-title" id="r6-title" {...rise(1)}>That link is not working any more.</h1>
-        <p className="r6-sub" {...rise(2)}>It may have been replaced with a new one. Ask whoever sent it to you for the latest link. If you already have a seat, go straight to your courses.</p>
-        <div className="r6-actions" {...rise(3)}>
-          <Link href="/ai-cleared" className="r6-btn pri"><span className="lbl">Go to my courses</span>{GO}</Link>
-        </div>
-      </Room>
+      <DeadLink
+        eyebrow="Invite link"
+        head="That link is not working any more."
+        body="It may have been replaced with a new one. Ask whoever sent it to you for the latest link. If you already have a seat, go straight to your courses."
+        actions={<Link href="/ai-cleared" className="r8-btn">Go to my courses{R8_ICON.arrow}</Link>}
+      />
     );
   }
 
@@ -76,13 +77,7 @@ export default async function JoinPage({ params }: { params: Promise<{ token: st
   }
 
   if (seat.userId && seat.userId !== session.user.id) {
-    return (
-      <Room firmName={seat.org.name}>
-        <p className="r6-eyebrow pill" {...rise(0)}>Invite link</p>
-        <h1 className="r6-title" id="r6-title" {...rise(1)}>That seat has already been claimed.</h1>
-        <p className="r6-sub" {...rise(2)}>Ask your firm&rsquo;s admin for your own invite link.</p>
-      </Room>
-    );
+    return <DeadLink eyebrow="Invite link" head="That seat has already been claimed." body="Ask your firm’s admin for your own invite link." />;
   }
 
   if (seat.userId === session.user.id && seat.claimedAt) redirect("/cyber-secured");
