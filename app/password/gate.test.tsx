@@ -73,11 +73,11 @@ describe("the gate page", () => {
   });
 
   it("keeps the password field's id and label, with no name attribute", () => {
-    expect(html).toMatch(/<label for="gate-password">Access password<\/label>/);
+    expect(html).toContain(`<label for="gate-password">Access password</label>`);
     const input = html.match(/<input[^>]*id="gate-password"[^>]*>/)?.[0] ?? "";
     expect(input).toContain('type="password"');
     expect(input).toContain('autoComplete="current-password"');
-    expect(input).not.toMatch(/\sname=/);
+    expect(input).not.toContain(" name=");
   });
 
   it("keeps the submit button disabled until something is typed", () => {
