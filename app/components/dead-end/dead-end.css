@@ -117,6 +117,22 @@
 .r8-end .asked code { font: inherit; overflow: hidden; text-overflow: ellipsis; }
 .r8-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
 .r8-actions form { margin: 0; display: inline-flex; }
+/* words that keep their case inside an upper-case label: an email address,
+ * a school name exactly as staff typed it */
+.r8 [data-case="keep"] { text-transform: none; letter-spacing: 0.03em; overflow-wrap: anywhere; }
+.r8 .r8-btn[data-case="keep"] { padding-top: 10px; padding-bottom: 10px; line-height: 1.35; }
+.r8 .r8-btn:disabled { cursor: progress; opacity: 0.85; transform: none; }
+/* a reply beside an action: the join button's error or "check your inbox" */
+.r8-msg { flex: 1 1 100%; display: flex; gap: 10px; align-items: flex-start; margin: 0; padding: 11px 14px; border-radius: 12px; font-size: 14px; font-weight: 600; line-height: 1.45; }
+.r8-msg[hidden] { display: none; }
+.r8-msg[data-tone="err"] { color: var(--err); background: rgba(180, 35, 24, 0.05); border: 1px solid rgba(180, 35, 24, 0.28); }
+.r8-msg[data-tone="ok"] { color: var(--acc2); background: rgba(var(--acc-rgb), 0.06); border: 1px solid rgba(var(--acc-rgb), 0.28); }
+.r8-msg svg { flex: none; margin-top: 2px; }
+.r8-dots { display: inline-flex; gap: 4px; margin-left: 8px; }
+.r8-dots i { width: 4px; height: 4px; border-radius: 50%; background: currentColor; opacity: 0.4; animation: r8dot 1.1s ease-in-out infinite; }
+.r8-dots i:nth-child(2) { animation-delay: 0.15s; }
+.r8-dots i:nth-child(3) { animation-delay: 0.3s; }
+@keyframes r8dot { 50% { opacity: 1; } }
 .r8-glyph { position: relative; aspect-ratio: 1; max-width: 250px; justify-self: end; width: 100%; display: grid; place-items: center; }
 .r8-glyph .orbit { position: absolute; inset: 0; border-radius: 50%; border: 1px dashed rgba(var(--acc-rgb), 0.35); animation: r8spin 60s linear infinite; }
 .r8-glyph .orbit.b { inset: 13%; border-style: solid; border-color: rgba(var(--acc-rgb), 0.14); animation: none; background: radial-gradient(closest-side, rgba(var(--glow), 0.16), transparent); }

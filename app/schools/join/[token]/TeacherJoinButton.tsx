@@ -5,7 +5,10 @@ import { useRouter } from "next/navigation";
 
 /* The one action on the teacher invite landing: no job-title picker,
  * since a teacher enrols on nothing. The request, the redirect and the
- * error text are unchanged; the look is the Campus Console's.
+ * error text are unchanged; the look is the round 8 light house's (r8-btn,
+ * r8-msg in dead-end.css), as the page is drawn by DeadEnd and this sits
+ * in its actions row. The label keeps its case (data-case="keep"): it
+ * carries the school name, shown exactly as staff typed it.
  *
  * Also the button on a school's staff join link. There it may carry the
  * `confirm` signature from the emailed link, and on a link locked to the
@@ -51,7 +54,7 @@ export default function TeacherJoinButton({
 
   if (sentTo) {
     return (
-      <p className="r6-msg ok" role="status" aria-live="polite" style={{ marginTop: 16 }}>
+      <p className="r8-msg" data-tone="ok" role="status" aria-live="polite">
         <span>
           We have emailed <b>{sentTo}</b>. Open the link in that email to finish joining {orgName}. It works for 24 hours.
         </span>
@@ -60,18 +63,14 @@ export default function TeacherJoinButton({
   }
 
   return (
-    <div>
-      <p className="r6-msg err" role="alert" aria-live="polite" hidden={!error} style={{ marginTop: 16 }}>
+    <>
+      <p className="r8-msg" data-tone="err" role="alert" aria-live="polite" hidden={!error}>
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9" /><path d="M12 8v5M12 16h.01" /></svg>
         <span>{error}</span>
       </p>
-      <div className="r6-actions">
-        <button type="button" className="r6-btn pri wide" onClick={claim} disabled={busy} aria-busy={busy}>
-          <span className="lbl">
-            {busy ? <>Setting up…<span className="r6-dots" aria-hidden="true"><i /><i /><i /></span></> : label ?? `Set up my teacher account at ${orgName}`}
-          </span>
-        </button>
-      </div>
-    </div>
+      <button type="button" className="r8-btn" data-case="keep" onClick={claim} disabled={busy} aria-busy={busy}>
+        {busy ? <>Setting up…<span className="r8-dots" aria-hidden="true"><i /><i /><i /></span></> : label ?? `Set up my teacher account at ${orgName}`}
+      </button>
+    </>
   );
 }
