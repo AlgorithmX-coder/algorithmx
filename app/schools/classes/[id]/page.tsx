@@ -279,7 +279,7 @@ export default async function ClassPage({
         {klass.pupils.length === 0 ? (
           <div className="sheet">
             <p className="lede" style={{ margin: 0 }}>
-              Nobody in this {w.group} yet. Paste your register above, one first name per line.
+              Nobody in this {w.group} yet. Paste your register above, one {w.person} per line.
             </p>
           </div>
         ) : (
@@ -291,7 +291,7 @@ export default async function ClassPage({
             {klass.pupils.map((p) => (
               <div key={p.id} className="row prow">
                 <div className="rb">
-                  {p.name}
+                  {p.fullName}
                   <small className={p.signedIn ? "s-say" : "s-ask"}>
                     {!p.signedIn
                       ? "not signed in yet"
@@ -359,7 +359,7 @@ export default async function ClassPage({
                       <select
                         name="toClassId"
                         defaultValue=""
-                        aria-label={`Move ${p.name} to another ${w.group}`}
+                        aria-label={`Move ${p.fullName} to another ${w.group}`}
                       >
                         <option value="" disabled>
                           Move to&hellip;

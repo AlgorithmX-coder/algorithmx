@@ -1,5 +1,6 @@
 import { prisma } from "@/app/lib/prisma";
 import { courseName } from "@/app/lib/schoolPlaces";
+import { fullName } from "@/app/lib/pupilName";
 
 /**
  * How a class is getting on.
@@ -31,7 +32,13 @@ export type PupilState = "not_started" | "in_progress" | "done";
 
 export interface PupilProgress {
   id: string;
+  /** First name. What a child is called on their own screens. */
   name: string;
+  /** Family name, when the teacher gave one. Teacher-facing only: never
+   *  send it to a child's screen or print it on a card (pupilName.ts). */
+  familyName: string | null;
+  /** First name and family name, for the teacher's own screens. */
+  fullName: string;
   /** Null until the child has chosen their pictures. */
   signedIn: boolean;
   weeksComplete: number;
@@ -104,10 +111,10 @@ export async function getClassProgress(orgId: string, classId: string): Promise<
       name: true, yearGroup: true, code: true, archivedAt: true, createdAt: true,
       product: { select: { id: true, slug: true, name: true, weeksCount: true } },
       pupils: {
-        orderBy: { name: "asc" },
+        orderBy: [{ name: "asc" }, { familyName: { sort: "asc", nulls: "first" } }],
         /* The user id as well as the hash, because Cyber Pro keys its
            progress on the user rather than the profile. */
-        select: { id: true, name: true, user: { select: { id: true, hashedPassword: true } } },
+        select: { id: true, name: true, familyName: true, user: { select: { id: true, hashedPassword: true } } },
       },
     },
   });
@@ -183,6 +190,8 @@ export async function getClassProgress(orgId: string, classId: string): Promise<
     return {
       id: p.id,
       name: p.name,
+      familyName: p.familyName,
+      fullName: fullName(p),
       signedIn: Boolean(p.user.hashedPassword),
       weeksComplete,
       totalStars,
@@ -214,7 +223,7 @@ export async function getClassProgress(orgId: string, classId: string): Promise<
      child who has done least. */
   const rank = (p: PupilProgress) =>
     !p.signedIn ? 0 : !started(p) ? 1 : !finishedAll(p) ? 2 : 3;
-  pupils.sort((a, b) => rank(a) - rank(b) || amountDone(a) - amountDone(b) || a.name.localeCompare(b.name));
+  pupils.sort((a, b) => rank(a) - rank(b) || amountDone(a) - amountDone(b) || a.fullName.localeCompare(b.fullName));
 
   return {
     className: klass.name,

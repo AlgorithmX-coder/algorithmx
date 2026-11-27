@@ -1,9 +1,12 @@
 "use server";
 
+import { randomUUID } from "crypto";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import * as Sentry from "@sentry/nextjs";
 import { auth } from "@/app/lib/auth";
 import {
+  AddPupilsFailed,
   addPupils,
   archiveClass,
   createClass,
@@ -16,6 +19,7 @@ import {
 } from "@/app/lib/schoolClasses";
 import { resetPupilPictures } from "@/app/lib/pupilAuth";
 import { whoAddsPlaces } from "@/app/lib/schoolHead";
+import { fullName, splitPupilList } from "@/app/lib/pupilName";
 import { SCHOOL_WORDS, wordsFor, type SchoolWords } from "@/app/schools/words";
 
 /**
@@ -29,6 +33,31 @@ import { SCHOOL_WORDS, wordsFor, type SchoolWords } from "@/app/schools/words";
  */
 
 export type ActionResult = { ok: true; message?: string } | { ok: false; error: string };
+
+/**
+ * A refused save, turned into something both people can use.
+ *
+ * The teacher gets a short reference they can quote. We get the same
+ * reference as a Sentry tag, so the thing they read off the screen can
+ * actually be searched for, which the crash screen's digest could not be.
+ *
+ * The reference starts with the database's own code (P2024 is "could not
+ * get a connection", P2002 is "already exists", P1001 is "cannot reach the
+ * server"), so the first half of the diagnosis is on the screen before
+ * anyone opens Sentry. Those codes describe the fault, never the data, so
+ * no child and no school is named by showing one.
+ */
+function reportSaveFailure(e: unknown, action: string, extra: Record<string, string>): string {
+  const raw = (e as { code?: unknown })?.code;
+  const cause = (e as { cause?: { code?: unknown } })?.cause?.code;
+  const pick = [raw, cause].find((c) => typeof c === "string" && /^P\d{4}$/.test(c));
+  const code = typeof pick === "string" ? pick : "ERR";
+  const ref = `${code}-${randomUUID().slice(0, 6).toUpperCase()}`;
+  Sentry.captureException(e, { tags: { area: "schools", action, saveRef: ref, dbCode: code }, extra });
+  /* Also in the server log, so it is findable without Sentry at all. */
+  console.error(`[schools] ${action} refused, ref ${ref}`, e);
+  return ref;
+}
 
 /** One sentence per failure, in words the person can act on. A raw enum
  *  name in front of a teacher is a support call, and so is a youth
@@ -85,13 +114,46 @@ export async function addPupilsAction(formData: FormData): Promise<ActionResult>
 
   const classId = String(formData.get("classId") ?? "");
   /* One per line, or commas: a teacher pastes from wherever the register
-     already lives and should not have to reformat it first. */
-  const names = String(formData.get("names") ?? "")
-    .split(/[\n,;]+/)
-    .map((n) => n.trim())
-    .filter(Boolean);
+     already lives and should not have to reformat it first. Each one is
+     "first name, then family name", split at the first space. */
+  const names = splitPupilList(String(formData.get("names") ?? ""));
 
-  const res = await addPupils({ orgId: school.orgId, classId, firstNames: names });
+  let res: Awaited<ReturnType<typeof addPupils>>;
+  try {
+    res = await addPupils({ orgId: school.orgId, classId, pupils: names });
+  } catch (e) {
+    /* A refused save must never become the crash screen. It did on
+       2026-11-27: the owner pressed Add pupils on prod, the write threw, and
+       the error boundary replaced the whole class page, whose only way out
+       was the public homepage. A teacher mid-lesson gets a sentence and
+       keeps their page. */
+    const failed = e instanceof AddPupilsFailed ? e : null;
+    const ref = reportSaveFailure(e, "addPupils", {
+      orgId: school.orgId,
+      classId,
+      asked: String(names.length),
+      made: String(failed?.added ?? 0),
+    });
+    revalidatePath(`/schools/classes/${classId}`);
+    const made = failed?.added ?? 0;
+    if (made === 0) {
+      return {
+        ok: false,
+        error: `That did not save, and nobody was added, so no places have been used. Try once more. If it happens again, send AlgorithmX this reference: ${ref}.`,
+      };
+    }
+    /* Name the ones that landed. A teacher who is only told a number
+       retypes the whole register, and every name that was already saved
+       takes a SECOND place out of the licence the school paid for. The
+       list is capped so a pasted year group does not fill the screen. */
+    const saved = names.slice(0, made).map(fullName);
+    const shown = saved.slice(0, 10).join(", ");
+    const list = saved.length > 10 ? `${shown} and ${saved.length - 10} more` : shown;
+    return {
+      ok: false,
+      error: `It stopped part way. ${made} of ${names.length} saved: ${list}. ${made === 1 ? "That one is" : "Those are"} in the ${w.group} already, so add only the ones missing. Adding a name that saved spends a second place. Reference ${ref}.`,
+    };
+  }
   if (!res.ok) {
     if (res.error === "seats_full") {
       const left = Number(res.detail ?? 0);
@@ -106,7 +168,12 @@ export async function addPupilsAction(formData: FormData): Promise<ActionResult>
           : `Every place in the ${w.noun}'s shared pool is used, so nobody can be added. ${ask}`,
       };
     }
-    if (res.error === "bad_pupil_name") return { ok: false, error: `“${res.detail}” is too long for a first name.` };
+    if (res.error === "bad_pupil_name") {
+      return {
+        ok: false,
+        error: `“${res.detail}” is too long for a ${res.part === "family" ? "family name" : "first name"}. Each part of a name can be up to 30 characters.`,
+      };
+    }
     return { ok: false, error: saidFor(w)[res.error] };
   }
 

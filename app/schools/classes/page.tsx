@@ -26,7 +26,7 @@ export const metadata: Metadata = {
      school or a youth organisation, and two queries for a browser tab is
      not a trade worth making. Saying neither is true for both. */
   title: "Classes | AlgorithmX",
-  /* a list of children's first names is never indexed */
+  /* a list of children's names is never indexed */
   robots: { index: false, follow: false, nocache: true },
 };
 
@@ -84,7 +84,7 @@ export default async function ClassesPage() {
         </header>
 
         <p className="whatis">
-          <b>Make a {w.group}, then add your {w.people} by first name.</b> Each {w.person} gets their
+          <b>Make a {w.group}, then add your {w.people} by name.</b> Each {w.person} gets their
           own login card with the {w.group} code on it. They pick their name from the list and tap a
           picture password, so nobody has to remember an email address or type one.
         </p>
@@ -153,8 +153,9 @@ export default async function ClassesPage() {
         )}
 
         <footer className="note">
-          An account holds a first name, a colour and a {w.group}. No surname, no date of birth, no
-          email address, and nothing they have to remember except which picture comes first.
+          An account holds a {w.person}&rsquo;s name, a colour and a {w.group}. No date of birth, no
+          email address, no photo, and nothing they have to remember except which picture comes
+          first.
         </footer>
       </div>
     </div>

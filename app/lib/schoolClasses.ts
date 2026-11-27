@@ -6,6 +6,7 @@ import { isSchoolCourse, placesUsed } from "@/app/lib/schoolPlaces";
 import { moveSpendsAPlace, placesNeededForWholeClass } from "@/app/lib/placeRule";
 import { pickSchool, SCHOOL_CHOICE_COOKIE, type SchoolChoice } from "@/app/lib/schoolChoice";
 import { trialStatus } from "@/app/lib/orgTrial";
+import { tooLongPart, type SplitName } from "@/app/lib/pupilName";
 import type { LearnerOrgKind } from "@prisma/client";
 
 /**
@@ -19,9 +20,12 @@ import type { LearnerOrgKind } from "@prisma/client";
  * forever.
  *
  * What we store about somebody else's child is deliberately almost nothing:
- * a first name, a colour they pick, and which class they are in. No surname,
- * no date of birth, no email, no contact details. The class carries a year
- * group, which is all the age signal the course needs.
+ * a name, a colour they pick, and which class they are in. The name is a
+ * first name and, when the teacher gives one, a family name, so two children
+ * called Tom can be told apart; the family name is shown to the teacher and
+ * never to a child (see pupilName.ts). No date of birth, no email, no contact
+ * details. The class carries a year group, which is all the age signal the
+ * course needs.
  */
 
 /* Unambiguous alphabet: no O/0, no I/1/l, no S/5. A seven year old types
@@ -269,7 +273,29 @@ export async function createClass(args: {
 const COLOURS = ["cyan", "violet", "lime", "amber", "rose", "teal"] as const;
 
 /**
- * Add pupils to a class, by first name.
+ * The database refused while pupils were being created.
+ *
+ * It carries how many children were made before it failed, because each one
+ * is its own transaction and the earlier ones are real. A teacher who is
+ * told "nothing happened" when four of six landed will add those four again,
+ * and a school pays for the duplicates out of its own licence.
+ */
+export class AddPupilsFailed extends Error {
+  /** Children created, and kept, before the failure. */
+  readonly added: number;
+  /** How many names were asked for in total. */
+  readonly asked: number;
+  constructor(added: number, asked: number, cause: unknown) {
+    super(`adding pupils failed after ${added} of ${asked}`, { cause });
+    this.name = "AddPupilsFailed";
+    this.added = added;
+    this.asked = asked;
+  }
+}
+
+/**
+ * Add pupils to a class, by name: a first name, and a family name when the
+ * teacher gives one (split by splitPupilList in pupilName.ts).
  *
  * Each one gets an account they own. The address is synthetic and on a
  * reserved domain that can never receive mail, so a child's record can never
@@ -285,18 +311,23 @@ const COLOURS = ["cyan", "violet", "lime", "amber", "rose", "teal"] as const;
 export async function addPupils(args: {
   orgId: string;
   classId: string;
-  firstNames: readonly string[];
-}): Promise<{ ok: true; added: number } | { ok: false; error: ClassFailure; detail?: string }> {
+  pupils: readonly SplitName[];
+}): Promise<
+  | { ok: true; added: number }
+  | { ok: false; error: ClassFailure; detail?: string; part?: "first" | "family" }
+> {
   const klass = await prisma.class.findFirst({
     where: { id: args.classId, orgId: args.orgId, archivedAt: null },
     select: { id: true, productId: true },
   });
   if (!klass) return { ok: false, error: "class_not_found" };
 
-  const names = args.firstNames.map((n) => n.trim()).filter(Boolean);
+  const names = args.pupils
+    .map((p) => ({ name: p.name.trim(), familyName: p.familyName?.trim() || null }))
+    .filter((p) => p.name);
   if (!names.length) return { ok: false, error: "no_pupils" };
-  const tooLong = names.find((n) => n.length > 30);
-  if (tooLong) return { ok: false, error: "bad_pupil_name", detail: tooLong };
+  const tooLong = tooLongPart(names);
+  if (tooLong) return { ok: false, error: "bad_pupil_name", detail: tooLong.text, part: tooLong.part };
 
   /* The place cap, enforced. `seatsPurchased` has existed since AI Cleared and
      has never been checked anywhere: a firm can invite more people than it
@@ -312,49 +343,61 @@ export async function addPupils(args: {
   }
 
   let added = 0;
-  for (const firstName of names) {
+  for (const { name: firstName, familyName } of names) {
     /* randomInt refuses a max above 2^48 - 1 (ERR_OUT_OF_RANGE), and at
        exactly 2 ** 48 every add threw before a single pupil was made. */
     const tag = randomInt(2 ** 48 - 1).toString(36) + Date.now().toString(36);
-    await prisma.$transaction(async (tx) => {
-      const user = await tx.user.create({
-        data: {
-          name: firstName,
-          email: `pupil.${tag}@pupils.algorithmx.invalid`,
-          role: "pupil",
-        },
-        select: { id: true },
-      });
-      const child = await tx.childProfile.create({
-        data: {
-          userId: user.id,
-          name: firstName,
-          favouriteColour: COLOURS[randomInt(COLOURS.length)],
-          classId: args.classId,
-        },
-        select: { id: true },
-      });
+    try {
+      await prisma.$transaction(async (tx) => {
+        const user = await tx.user.create({
+          data: {
+            name: firstName,
+            email: `pupil.${tag}@pupils.algorithmx.invalid`,
+            role: "pupil",
+          },
+          select: { id: true },
+        });
+        const child = await tx.childProfile.create({
+          data: {
+            userId: user.id,
+            name: firstName,
+            familyName,
+            favouriteColour: COLOURS[randomInt(COLOURS.length)],
+            classId: args.classId,
+          },
+          select: { id: true },
+        });
 
-      /* The place, spent, ON THIS CLASS'S COURSE. Kept for good: see
-         schoolPlaces. The course is recorded because a place is good for
-         one course only, so the ledger has to know which, or moving this
-         child up next September could not be told apart from moving them
-         between two classes of the course they are already on. */
-      await tx.placeRedemption.create({
-        data: { orgId: args.orgId, childProfileId: child.id, productId: klass.productId },
-      });
+        /* The place, spent, ON THIS CLASS'S COURSE. Kept for good: see
+           schoolPlaces. The course is recorded because a place is good for
+           one course only, so the ledger has to know which, or moving this
+           child up next September could not be told apart from moving them
+           between two classes of the course they are already on. */
+        await tx.placeRedemption.create({
+          data: { orgId: args.orgId, childProfileId: child.id, productId: klass.productId },
+        });
 
-      /* The course, granted. Without this a pupil signs in, lands on their
-         HQ and is bounced off the first lesson they tap, because
-         `/lesson/[week]` checks for an entitlement that nothing was creating.
-         Written with `tx` rather than through `grantEntitlement` so the
-         account, the place and the access are one atomic unit: a pupil who
-         exists without a place would be free, and a pupil who exists without
-         this cannot play. */
-      await tx.entitlement.create({
-        data: { userId: user.id, productId: klass.productId, source: "BUNDLE" },
+        /* The course, granted. Without this a pupil signs in, lands on their
+           HQ and is bounced off the first lesson they tap, because
+           `/lesson/[week]` checks for an entitlement that nothing was creating.
+           Written with `tx` rather than through `grantEntitlement` so the
+           account, the place and the access are one atomic unit: a pupil who
+           exists without a place would be free, and a pupil who exists without
+           this cannot play. */
+        await tx.entitlement.create({
+          data: { userId: user.id, productId: klass.productId, source: "BUNDLE" },
+        });
       });
-    });
+    } catch (cause) {
+      /* The database refused. Each child is its own transaction, so the ones
+         already created are real and keep their places; only this one and the
+         names after it did not happen. Throwing on through would have taken
+         the teacher to the crash screen with the whole class page gone, which
+         is what happened to the owner on 2026-11-27: pressing Add pupils threw
+         them out of the portal with nothing said and nothing saved. The caller
+         turns this into a sentence and reports the cause. */
+      throw new AddPupilsFailed(added, names.length, cause);
+    }
     added++;
   }
   return { ok: true, added };
@@ -366,7 +409,7 @@ export async function listPupils(orgId: string, classId: string) {
     where: { classId, class: { orgId } },
     orderBy: { name: "asc" },
     select: {
-      id: true, name: true, favouriteColour: true, createdAt: true,
+      id: true, name: true, familyName: true, favouriteColour: true, createdAt: true,
       user: { select: { id: true, hashedPassword: true } },
     },
   });

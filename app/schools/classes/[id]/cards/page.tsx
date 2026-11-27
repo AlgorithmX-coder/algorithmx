@@ -5,6 +5,7 @@ import { headers } from "next/headers";
 import { auth } from "@/app/lib/auth";
 import { getSchoolContext } from "@/app/lib/schoolClasses";
 import { getClassProgress } from "@/app/lib/classProgress";
+import { shownNames } from "@/app/lib/pupilName";
 import Locked from "../../../teach/Locked";
 import { wordsFor } from "../../../words";
 import CardSheet from "./CardSheet";
@@ -20,11 +21,14 @@ import "./cards.css";
  * a class machine, and this removes it for everybody else: the address is on
  * the card, in the child's hand, with their own name at the top of it.
  *
- * NOTHING SECRET IS PRINTED. A card carries a first name, the class address
- * and what to tap. It does not carry the picture password, cannot be made to
- * carry it, and does not hint at it: the pictures are stored hashed and the
- * child chooses them on first sign-in. A sheet of these left on a desk gives
- * away a first name and a code that was on the board all lesson.
+ * NOTHING SECRET IS PRINTED. A card carries a first name, plus a family-name
+ * initial only when two children in the class share that first name, so the
+ * two Toms get two different cards. Never the family name itself. Then the
+ * class address and what to tap. It does not carry the picture password,
+ * cannot be made to carry it, and does not hint at it: the pictures are
+ * stored hashed and the child chooses them on first sign-in. A sheet of these
+ * left on a desk gives away a first name and a code that was on the board
+ * all lesson.
  *
  * It is a page rather than a PDF on purpose. Every school machine can print
  * a web page, the browser's own dialog is the one teachers already know, and
@@ -53,8 +57,8 @@ export default async function LoginCardsPage({
 
   // GATE
   /* The same gate as the class page itself, re-checked here rather than
-     assumed. This is a list of children's first names: the page that drew
-     the link to it is not a gate on it. */
+     assumed. This is a list of children's names: the page that drew the
+     link to it is not a gate on it. */
   const session = await auth();
   if (!session?.user?.id) {
     redirect(`/schools/login?callbackUrl=${encodeURIComponent(`/schools/classes/${id}/cards`)}`);
@@ -73,11 +77,15 @@ export default async function LoginCardsPage({
   const archived = klass.archivedAt !== null;
 
   const everyone = klass.pupils;
+  /* What each child is called on their card, worked out over the WHOLE
+     class even when only the new cards are printed: the Tom who joined in
+     January still has to be told apart from the Tom already there. */
+  const label = shownNames(everyone);
   /* Alphabetical here, unlike the class page. That page is a list of who to
      go and stand next to; this is a stack of cards to hand out down a
      register, and a register is in name order. */
   const shown = [...(onlyNew ? everyone.filter((p) => !p.signedIn) : everyone)].sort((a, b) =>
-    a.name.localeCompare(b.name),
+    a.fullName.localeCompare(b.fullName),
   );
   const waiting = everyone.filter((p) => !p.signedIn).length;
   const link = `${host}/c/${klass.code}`;
@@ -162,7 +170,7 @@ export default async function LoginCardsPage({
               </p>
             ) : (
               <CardSheet
-                pupils={shown.map((p) => ({ id: p.id, name: p.name }))}
+                pupils={shown.map((p) => ({ id: p.id, name: label.get(p.id) ?? p.name }))}
                 link={link}
                 className={klass.className}
                 courseName={klass.courseName}

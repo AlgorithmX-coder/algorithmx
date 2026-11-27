@@ -5,15 +5,17 @@ import { addPupilsAction } from "../class.actions";
 import type { SchoolWords } from "../../words";
 
 /**
- * Put children in a class, by first name.
+ * Put children in a class, by name: first name then family name.
  *
  * A textarea rather than a row of fields, because the register already exists
  * somewhere and the fastest thing a teacher can do is paste it. Commas,
  * semicolons and line breaks all split, so whatever they paste works without
  * being reformatted first.
  *
- * First names only, said out loud in the label and meant: a surname is not
- * needed to run the lesson and we would rather not hold one.
+ * The family name is there so a teacher can tell two children called Tom
+ * apart (owner, 2026-11-27). It is shown to the teacher only: a child sees
+ * a first name, plus an initial when two in the class share it. See
+ * app/lib/pupilName.ts.
  */
 export default function AddPupils({
   classId,
@@ -56,8 +58,8 @@ export default function AddPupils({
     <div className="share">
       <h3>Add {w.people}</h3>
       <p className="sharelede">
-        One first name per line. Paste your register straight in: commas and line breaks both
-        work. <b>First names only</b>, no surnames.
+        One pupil per line, first name then family name, like Tom Baker. Paste your register
+        straight in: commas and line breaks both work.
       </p>
 
       <form ref={form} action={submit}>
@@ -67,7 +69,7 @@ export default function AddPupils({
           <textarea
             name="names"
             rows={6}
-            placeholder={"Ada\nSam\nPriya\nTom"}
+            placeholder={"Ada Okafor\nSam Reid\nPriya Nair\nTom Baker"}
             onChange={(e) => recount(e.target.value)}
           />
         </label>
