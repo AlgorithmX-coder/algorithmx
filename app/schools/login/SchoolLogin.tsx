@@ -19,7 +19,8 @@ import PicturePassword from "./PicturePassword";
  *    the server from the profile id alone.
  *
  * The look is the round 6 Campus Console (campus-console.css): both doors sit
- * inside one glass console on the campus night, and they are deliberately
+ * inside one glass console, in daylight since round 8 (the globe a pale
+ * print behind it), and they are deliberately
  * different temperatures, cool and warm, so a child can tell which half is
  * theirs from across a classroom before reading a word.
  */
@@ -131,6 +132,7 @@ export default function SchoolLogin({ initialCode = null }: { initialCode?: stri
     <CampusShell
       family="schools"
       page="login"
+      daylight
       lockup={<span className="r6-brand"><SchoolBrand /></span>}
       lockupHref="/schools"
       lockupLabel="Cyber School by AlgorithmX"

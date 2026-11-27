@@ -39,6 +39,7 @@ export default function CampusShell({
   width,
   foot,
   stageClass = "",
+  daylight = false,
   children,
 }: {
   family: "schools" | "firm";
@@ -50,6 +51,8 @@ export default function CampusShell({
   width?: number;
   foot?: ReactNode;
   stageClass?: string;
+  /** The light Hologram house (round 8): the school login only. The other pages keep the night. */
+  daylight?: boolean;
   children: ReactNode;
 }) {
   const backRef = useRef<HTMLDivElement>(null);
@@ -86,6 +89,7 @@ export default function CampusShell({
       className={`r6c ${inter.variable} ${jet.variable}`}
       data-family={family}
       data-page={page}
+      data-v={daylight ? "front" : undefined}
       data-in={shown ? "" : undefined}
       data-paused={paused ? "" : undefined}
     >
