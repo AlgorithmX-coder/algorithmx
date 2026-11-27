@@ -1,19 +1,14 @@
 import type { Metadata } from "next";
-import { JetBrains_Mono } from "next/font/google";
-import ExplorersHolo from "@/app/components/explorers-holo/ExplorersHolo";
+import ExplorersFieldUnit from "@/app/components/explorers-field/ExplorersFieldUnit";
 
 /**
- * /cyberexplorers — product page for the ages 10–13 tier ("Signal
- * Room"). Server wrapper for SEO metadata; the page itself is a client
- * component. Replaced the pre-design-session landing (12 weeks / ages 11–14
- * / code-rain) on 2026-07-12 — canon lives in
- * docs/explorers/algorithmx-explorers-art-direction.md.
+ * /cyberexplorers, the product page for the ages 10 to 13 course. Server
+ * wrapper for SEO metadata; the page itself is a client component.
  *
- * 2026-11-22: the Hologram design (landing lab round 4, concept e01, the
- * owner's pick) replaces the dark teal page. Copy, sections, order, every
- * href and the hero trailer's behaviour are unchanged; everything visual
- * lives in app/components/explorers-holo. The previous composition
- * (CyberExplorersLanding, IntroVideo, LiveBackground) is kept on disk.
+ * 2026-11-27: the "Field Unit" design (landing lab round 9, owner: "push it
+ * live") replaces the Hologram page. Same section order, the design's
+ * shortened copy, the live links, metadata, price and footer. Everything
+ * lives in app/components/explorers-field (fonts load there).
  */
 
 export const metadata: Metadata = {
@@ -29,15 +24,6 @@ export const metadata: Metadata = {
   },
 };
 
-/* The concept's label face. Loaded here so only this page carries it; the
-   display and body faces (Space Grotesk, Inter) and Geist Mono for the
-   lockup come from the root layout. */
-const jetbrains = JetBrains_Mono({ variable: "--font-jetbrains", weight: ["400", "500", "600", "700"], subsets: ["latin"], display: "swap" });
-
 export default function CyberExplorersPage() {
-  return (
-    <div className={jetbrains.variable} style={{ display: "contents" }}>
-      <ExplorersHolo />
-    </div>
-  );
+  return <ExplorersFieldUnit />;
 }
