@@ -19,9 +19,9 @@ import { PUPIL_LOCK_SEC, RULES, clear, hit, lock, lockedFor, peek, rateKey } fro
  * a list of logins.
  *
  * WHAT A CLASS CODE DOES EXPOSE is the first names of the children in that
- * class (with a family-name initial only where two share a first name, and
- * never the family name itself), which is deliberate: the code is printed on cards handed out in the
- * room, and a child has to see their own name to pick it. It is why the code
+ * class (with the start of the family name, a letter or as few as tell them apart, only where two
+ * share a first name), which is deliberate: the code is printed on cards
+ * handed out in the room, and a child has to see their own name to pick it. It is why the code
  * is generated rather than chosen, and why it is 7 characters from a 29
  * letter alphabet rather than the school's name.
  */
@@ -81,8 +81,9 @@ export async function lookupClass(rawCode: string): Promise<ClassLookup | null> 
   });
   if (!klass) return null;
 
-  /* A first name, or "Tom B" when two children in this class share one.
-     The family name is read only to take that initial and is never sent:
+  /* A first name, or "Tom B" (or "Tom Ba" beside a "Tom Br") when two
+     children in this class share one. The family name is read only to take
+     that much of it and is never sent whole unless that is what it takes:
      this answer goes to whoever holds the code. */
   const shown = shownNames(klass.pupils);
 

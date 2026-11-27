@@ -14,7 +14,7 @@ import type { SchoolWords } from "../../words";
  *
  * The family name is there so a teacher can tell two children called Tom
  * apart (owner, 2026-11-27). It is shown to the teacher only: a child sees
- * a first name, plus an initial when two in the class share it. See
+ * a first name, plus the start of the family name when two in the class share it. See
  * app/lib/pupilName.ts.
  */
 export default function AddPupils({

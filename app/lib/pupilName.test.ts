@@ -113,4 +113,50 @@ describe("shownNames", () => {
     }
     expect(shown.get("1")).toBe("Lily V");
   });
+
+  it("extends the prefix one letter at a time when the initials match too", () => {
+    const shown = shownNames([
+      { id: "1", name: "Tom", familyName: "Baker" },
+      { id: "2", name: "Tom", familyName: "Brown" },
+    ]);
+    expect(shown.get("1")).toBe("Tom Ba");
+    expect(shown.get("2")).toBe("Tom Br");
+  });
+
+  it("gives each pupil in a three-way tie only as much as they need", () => {
+    const shown = shownNames([
+      { id: "1", name: "Tom", familyName: "Baker" },
+      { id: "2", name: "Tom", familyName: "Brown" },
+      { id: "3", name: "Tom", familyName: "Reid" },
+    ]);
+    expect([shown.get("1"), shown.get("2"), shown.get("3")]).toEqual(["Tom Ba", "Tom Br", "Tom R"]);
+  });
+
+  it("runs a three-way tie on to the third letter, and leaves a bare name bare", () => {
+    const shown = shownNames([
+      { id: "1", name: "Sam", familyName: "Barker" },
+      { id: "2", name: "Sam", familyName: "Barnes" },
+      { id: "3", name: "Sam", familyName: "Bates" },
+      { id: "4", name: "Sam", familyName: null },
+    ]);
+    expect([shown.get("1"), shown.get("2"), shown.get("3"), shown.get("4")]).toEqual([
+      "Sam Bark",
+      "Sam Barn",
+      "Sam Bat",
+      "Sam",
+    ]);
+  });
+
+  it("never goes beyond the full family name", () => {
+    const shown = shownNames([
+      { id: "1", name: "Tom", familyName: "Li" },
+      { id: "2", name: "Tom", familyName: "Lin" },
+      { id: "3", name: "Ada", familyName: "Baker" },
+      { id: "4", name: "Ada", familyName: "baker" },
+    ]);
+    expect(shown.get("1")).toBe("Tom Li");
+    expect(shown.get("2")).toBe("Tom Lin");
+    expect(shown.get("3")).toBe("Ada Baker");
+    expect(shown.get("4")).toBe("Ada Baker");
+  });
 });
