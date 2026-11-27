@@ -114,6 +114,20 @@
 .r8d .m-awr .lens::after{content:"";position:absolute;right:-9px;bottom:-7px;width:13px;height:2.5px;border-radius:2px;background:var(--acc);transform:rotate(42deg)}
 @keyframes r8d-lens{0%{transform:translate(0,6px)}22%{transform:translate(-30px,10px)}44%,86%{transform:translate(10px,46px)}100%{transform:translate(0,6px)}}
 
+/* secured: one seat, three courses */
+.r8d .r8-tracks{display:grid;gap:9px;margin:0;padding:0;list-style:none}
+.r8d .r8-track{--t:10,112,133;display:flex;align-items:center;gap:13px;padding:12px 14px;border-radius:14px;background:#fff;border:1px solid var(--line);position:relative;overflow:hidden}
+.r8d .r8-track::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:rgb(var(--t))}
+.r8d .r8-track::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(var(--t),.1),transparent 60%);opacity:0;animation:r8d-lit 9s var(--ease) calc(var(--n)*1.6s) infinite}
+@keyframes r8d-lit{0%,4%{opacity:0}10%,30%{opacity:1}40%,100%{opacity:0}}
+.r8d .r8-track .ic{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;color:rgb(var(--t));background:rgba(var(--t),.09);border:1px solid rgba(var(--t),.25);flex:none;position:relative;z-index:1}
+.r8d .r8-track .ic svg{width:18px;height:18px;display:block}
+.r8d .r8-track div{position:relative;z-index:1;flex:1;min-width:0}
+.r8d .r8-track b{display:block;font:700 15.5px var(--disp);color:var(--ink);letter-spacing:-.01em}
+.r8d .r8-track div span{display:block;font-size:12.5px;color:var(--muted)}
+.r8d .r8-track small{position:relative;z-index:1;font:600 9.5px var(--mono);letter-spacing:.13em;text-transform:uppercase;color:var(--faint);white-space:nowrap}
+.r8d .r8-note{margin:auto 0 0;font-size:13.5px;line-height:1.5;color:var(--muted);padding-top:4px}
+
 /* the form */
 .r8d .r8-form{padding:32px 38px 28px;display:flex;flex-direction:column}
 .r8d .r8-tabs{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;border-radius:999px;background:#eef1f6;border:1px solid var(--line);margin-bottom:22px}
@@ -182,6 +196,7 @@
   .r8d .r8-side{border-right:0;border-bottom:1px solid var(--line);padding:22px 20px 18px;gap:12px}
   .r8d .r8-side h1{font-size:32px}.r8d .r8-side .tag{font-size:15px}
   .r8d .r8-motif,.r8d .r8-facts{display:none}
+  .r8d .r8-track{padding:9px 12px}.r8d .r8-track div span{display:none}
   .r8d .r8-price{margin-top:0;padding:10px 14px}.r8d .r8-price .amt{font-size:30px}
   .r8d .r8-form{padding:22px 20px 22px}.r8d .r8-fields.two{grid-template-columns:1fr}
   .r8d .r8-back span{display:none}.r8d .r8-stage{align-items:flex-start;padding-top:18px}

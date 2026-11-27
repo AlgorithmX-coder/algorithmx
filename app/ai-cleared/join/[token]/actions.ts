@@ -9,5 +9,5 @@ import { signOut } from "@/app/lib/auth";
 export async function switchToWorkAddress(formData: FormData): Promise<void> {
   const token = String(formData.get("token") ?? "").slice(0, 120);
   const back = `/ai-cleared/join/${encodeURIComponent(token)}`;
-  await signOut({ redirectTo: `/login?callbackUrl=${encodeURIComponent(back)}` });
+  await signOut({ redirectTo: `/cyber-secured/login?callbackUrl=${encodeURIComponent(back)}` });
 }

@@ -55,3 +55,19 @@ export default function CourseAuthPage({ course, mode }: { course: CourseAuthKey
     </Suspense>
   );
 }
+
+/**
+ * The Cyber Secured firm door (/cyber-secured/login, /forgot-password,
+ * /reset-password; round 8, owner 2026-11-26): the daylight door with the
+ * firm's side panel, sign in only. A firm's people land on /cyber-secured
+ * unless a callbackUrl says otherwise.
+ */
+export function FirmAuthPage({ mode }: { mode: "login" | "forgot" | "reset" }) {
+  return (
+    <Suspense fallback={<div style={{ minHeight: "100vh", background: "#f7f8fb" }} />}>
+      {mode === "forgot" ? <DoorForgot course="secured" />
+        : mode === "reset" ? <DoorReset course="secured" />
+        : <DoorConsole course="secured" mode="login" />}
+    </Suspense>
+  );
+}

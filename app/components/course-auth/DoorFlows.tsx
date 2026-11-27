@@ -24,8 +24,8 @@ import { useState, type ReactNode } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { TOO_MANY } from "@/app/lib/rateLimitWords";
 import { passwordProblem, passwordRules } from "@/app/lib/passwordPolicy";
-import { COURSE_AUTH_CONTENT, FLOW, SHARED } from "./content";
-import type { DoorCourse } from "./doorContent";
+import { FLOW, SHARED, authPack } from "./content";
+import type { DoorKey } from "./doorContent";
 import DoorShell, { DOOR_ICON } from "./DoorShell";
 
 /* the live forgot page's check */
@@ -77,8 +77,8 @@ function FlowField({
 }
 
 /* ════════ FORGOT PASSWORD ════════ */
-export function DoorForgot({ course }: { course: DoorCourse }) {
-  const t = COURSE_AUTH_CONTENT[course];
+export function DoorForgot({ course }: { course: DoorKey }) {
+  const t = authPack(course);
   const F = FLOW.forgot;
 
   const [email, setEmail] = useState("");
@@ -163,8 +163,8 @@ export function DoorForgot({ course }: { course: DoorCourse }) {
 }
 
 /* ════════ RESET PASSWORD ════════ */
-export function DoorReset({ course }: { course: DoorCourse }) {
-  const t = COURSE_AUTH_CONTENT[course];
+export function DoorReset({ course }: { course: DoorKey }) {
+  const t = authPack(course);
   const F = FLOW.reset;
   const router = useRouter();
   const params = useSearchParams();

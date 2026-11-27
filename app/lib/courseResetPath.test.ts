@@ -1,10 +1,10 @@
 import { describe, it, expect } from "vitest";
 import { resetPathFor, GENERIC_RESET_PATH } from "./courseResetPath";
-import { COURSE_AUTH_CONTENT } from "@/app/components/course-auth/content";
+import { COURSE_AUTH_CONTENT, SECURED_AUTH } from "@/app/components/course-auth/content";
 
 describe("resetPathFor", () => {
   it("sends every course auth pack's slug to that course's own reset page", () => {
-    for (const pack of Object.values(COURSE_AUTH_CONTENT)) {
+    for (const pack of [...Object.values(COURSE_AUTH_CONTENT), SECURED_AUTH]) {
       expect(resetPathFor(pack.slug)).toBe(`${pack.base}/reset-password`);
     }
   });

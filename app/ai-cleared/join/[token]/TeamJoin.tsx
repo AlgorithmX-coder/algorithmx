@@ -63,7 +63,7 @@ export default async function TeamJoin({ org, token }: { org: TeamOrg; token: st
         <p className="r6-sub" {...rise(2)}>{askLine(lead.name, "for more.")}{signedIn ? "" : " If you already have a seat, sign in and you will go straight to your courses."}</p>
         {!signedIn && (
           <div className="r6-actions" {...rise(3)}>
-            <Link href={`/login?callbackUrl=${encodeURIComponent(here)}`} className="r6-btn ghost"><span className="lbl">I already have a seat</span></Link>
+            <Link href={`/cyber-secured/login?callbackUrl=${encodeURIComponent(here)}`} className="r6-btn ghost"><span className="lbl">I already have a seat</span></Link>
           </div>
         )}
       </Room>
@@ -99,7 +99,7 @@ export default async function TeamJoin({ org, token }: { org: TeamOrg; token: st
             </ul>
             <div className="r6-actions" data-rise="" style={{ "--i": 3, marginTop: 4 } as CSSProperties}>
               <Link href={`/signup?callbackUrl=${encodeURIComponent(here)}`} className="r6-btn pri"><span className="lbl">Create an account</span>{GO}</Link>
-              <Link href={`/login?callbackUrl=${encodeURIComponent(here)}`} className="r6-btn ghost"><span className="lbl">I already have one</span></Link>
+              <Link href={`/cyber-secured/login?callbackUrl=${encodeURIComponent(here)}`} className="r6-btn ghost"><span className="lbl">I already have one</span></Link>
             </div>
             <p className="r6-note" {...rise(4)}>
               {atDomain

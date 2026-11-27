@@ -65,7 +65,7 @@ export default async function JoinPage({ params }: { params: Promise<{ token: st
             </ul>
             <div className="r6-actions" data-rise="" style={{ "--i": 3, marginTop: 4 } as CSSProperties}>
               <Link href={`/signup?callbackUrl=${encodeURIComponent(here)}`} className="r6-btn pri"><span className="lbl">Create an account</span>{GO}</Link>
-              <Link href={`/login?callbackUrl=${encodeURIComponent(here)}`} className="r6-btn ghost"><span className="lbl">I already have one</span></Link>
+              <Link href={`/cyber-secured/login?callbackUrl=${encodeURIComponent(here)}`} className="r6-btn ghost"><span className="lbl">I already have one</span></Link>
             </div>
             <p className="r6-note" {...rise(4)}>Use your work email, so your firm&rsquo;s admin can see your progress against your name.</p>
           </div>

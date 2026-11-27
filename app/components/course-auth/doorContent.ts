@@ -68,3 +68,33 @@ export const DOOR_UI = {
   pauseAria: "Pause motion",
   playAria: "Play motion",
 } as const;
+
+/** Every door: the three courses, plus the Cyber Secured firm door. */
+export type DoorKey = DoorCourse | "secured";
+
+/* The firm door (r8-door.html?c=secured): one seat, three courses, sign in
+ * only, no price. The tracks are the lab's words; the module counts match
+ * the course manifests. */
+export const SECURED_SIDE = {
+  word: ["Cyber", "Secured"] as [string, string],
+  who: "For firms",
+  tag: "One sign-in for your firm. Your seat opens all three courses.",
+  tracks: [
+    { key: "cleared", name: "AI Cleared", line: "The rules for AI at work, practised in a sandbox", count: "5 modules", rgb: "10,112,133" },
+    { key: "fluent", name: "AI Fluent", line: "Real work done with AI, start to finish", count: "9 modules", rgb: "87,68,201" },
+    { key: "awareness", name: "Cyber Awareness", line: "Spot the attacks aimed at staff", count: "8 modules", rgb: "165,17,127" },
+  ] as const,
+  note: "Take them in any order. Your firm's admin sees which modules you have finished, never your practice chats.",
+} as const;
+
+/** The firm door's own words on the form side and around it. */
+export const SECURED_FORM = {
+  emailLabel: "Work email",
+  emailPlaceholder: "you@yourfirm.co.uk",
+  invited: "Been invited? Open the link in your invite email first.",
+  buyLead: "Buying for your firm?",
+  buyLink: "See Cyber Secured",
+  buyHref: "/corporate/buy",
+  back: "AlgorithmX for firms",
+  trust: ["Encrypted", "UK hosted", "Practice chats never stored"],
+} as const;

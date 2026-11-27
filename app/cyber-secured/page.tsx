@@ -21,7 +21,7 @@ const BRAND = { word: CYBER_SECURED_BRAND, href: "/cyber-secured" };
 
 export default async function CyberSecuredHome() {
   const session = await auth();
-  if (!session?.user?.id) redirect("/login?callbackUrl=%2Fcyber-secured");
+  if (!session?.user?.id) redirect("/cyber-secured/login?callbackUrl=%2Fcyber-secured");
   const userId = session.user.id;
 
   const [member, staff] = await Promise.all([
