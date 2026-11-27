@@ -1,61 +1,80 @@
 "use client";
 
-import { useState } from "react";
-import { TOO_MANY } from "@/app/lib/rateLimitWords";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { useRouter } from "next/navigation";
-import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
-import AuthBackdrop from "@/app/components/auth/AuthBackdrop";
-import { AuthReactorScene, type AuthMachinePhase, type AuthMachineState } from "@/app/components/auth-reactor";
-import AuthField from "@/app/components/auth/AuthField";
-import AuthButton, { type AuthButtonState } from "@/app/components/auth/AuthButton";
-import AccessGrantedOverlay from "@/app/components/auth/AccessGrantedOverlay";
-import { useIsDesktop } from "@/app/components/auth/useIsDesktop";
-import CubeMark from "@/app/components/CubeMark";
-import { ACCESS, ACCESS_FONT, ACCESS_GRAD, rgba } from "@/app/components/auth/accessTokens";
-import { IconCredentials, IconKey, IconHub, IconEye, IconEyeOff } from "@/app/components/auth/icons";
+import { Geist_Mono, Inter, Space_Grotesk } from "next/font/google";
+import { TOO_MANY } from "@/app/lib/rateLimitWords";
+import GateLock from "./GateLock";
+import { seatedArcs, type GateState } from "./lockRules";
+import "./gate.css";
+
+/**
+ * The launch gate, in daylight (owner-approved landing lab round 8,
+ * r8-gate.html): the light Hologram ground, the lockup and the "Invited
+ * guests only" chip, the words and form on the left and the aperture lock on
+ * the right. Each pair of characters typed seats one of six course-colour
+ * arcs, capped at five; only the server accepting the password seats the
+ * sixth, spins the rings up and opens the core, then the redirect runs. A
+ * wrong password turns the seated arcs red and shakes the form.
+ *
+ * The POST, the cookie (set by /api/password), the redirect and every
+ * message are unchanged from the dark gate this replaces.
+ *
+ * Styles: gate.css, every rule under .agt. State lives in data attributes on
+ * the root: data-gate (sealed | typing | checking | wrong | open), data-err
+ * (a message is showing) and data-still (Pause pressed).
+ */
+
+const disp = Space_Grotesk({ subsets: ["latin"], weight: ["500", "600", "700"], variable: "--agt-disp", display: "swap" });
+const sans = Inter({ subsets: ["latin"], weight: ["400", "500", "600", "700"], variable: "--agt-sans", display: "swap" });
+const mono = Geist_Mono({ subsets: ["latin"], weight: ["600", "700"], variable: "--agt-mono", display: "swap" });
+
+const rise = (i: number) => ({ "data-rise": "", style: { "--i": i } as CSSProperties });
+
+const WRONG_MS = 1600;
 
 export default function PasswordGatePage() {
   const router = useRouter();
-  const isDesktop = useIsDesktop(1200);
-  const isTabletUp = useIsDesktop(768);
-  const coreQuality = isDesktop ? "high" : isTabletUp ? "medium" : "low";
-  const reduced = !!useReducedMotion();
 
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [focusField, setFocusField] = useState<AuthMachineState["focus"]>(null);
   const [error, setError] = useState("");
   const [phase, setPhase] = useState<"idle" | "loading" | "success">("idle");
+  const [wrong, setWrong] = useState(false);
+  const [still, setStill] = useState(false);
+  const wrongTimer = useRef<number | undefined>(undefined);
+
+  useEffect(() => () => window.clearTimeout(wrongTimer.current), []);
 
   const present = password.length > 0;
   const granted = phase === "success";
 
-  const portalEnergy = granted ? 1 : phase === "loading" ? 0.96 : present ? 1 : 0;
-
-  const machinePhase: AuthMachinePhase = granted
-    ? "success"
+  const gate: GateState = granted
+    ? "open"
     : phase === "loading"
-      ? "submitting"
-      : error
-        ? "error"
+      ? "checking"
+      : wrong
+        ? "wrong"
         : present
-          ? "armed"
-          : "idle";
-  const machineState: AuthMachineState = {
-    modulesOnline: granted ? 6 : present ? 4 : 0,
-    focus: focusField,
-    phase: machinePhase,
-    reducedMotion: reduced,
-    quality: coreQuality,
-  };
+          ? "typing"
+          : "sealed";
 
-  const buttonState: AuthButtonState =
-    phase === "loading" ? "loading" : granted ? "success" : present ? "idle" : "disabled";
+  const hint = error || (granted ? "Gate open. Entering AlgorithmX" : !present ? "Enter the password to continue." : "");
+  const buttonLabel = granted ? "Welcome" : phase === "loading" ? "Unlocking…" : "Open the gate";
+  const locked = !present || phase !== "idle";
+
+  const flashWrong = () => {
+    window.clearTimeout(wrongTimer.current);
+    setWrong(true);
+    wrongTimer.current = window.setTimeout(() => setWrong(false), WRONG_MS);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
     if (!present) return;
+    window.clearTimeout(wrongTimer.current);
+    setWrong(false);
     setPhase("loading");
     try {
       const res = await fetch("/api/password", {
@@ -76,6 +95,7 @@ export default function PasswordGatePage() {
       } else {
         setError("Hmm, that doesn't unlock the gate. Try again?");
         setPhase("idle");
+        flashWrong();
       }
     } catch {
       setError("Something went wrong. Please try again.");
@@ -83,149 +103,125 @@ export default function PasswordGatePage() {
     }
   };
 
-  const passwordToggle = (
-    <button
-      type="button"
-      onClick={() => setShowPassword((v) => !v)}
-      aria-label={showPassword ? "Hide password" : "Show password"}
-      style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: 30, height: 30, borderRadius: 8, background: "transparent", border: "none", color: ACCESS.textSoft, cursor: "pointer" }}
-    >
-      {showPassword ? <IconEyeOff size={18} /> : <IconEye size={18} />}
-    </button>
-  );
-
   return (
-    <div className="min-h-screen relative" style={{ background: ACCESS_GRAD.page, color: ACCESS.textBright, overflowX: "hidden" }}>
-      <AuthBackdrop energy={portalEnergy} submitting={phase === "loading"} success={granted} />
-
-      {!isDesktop && (
-        <div className="absolute inset-0" style={{ zIndex: 0, pointerEvents: "none" }}>
-          <AuthReactorScene state={machineState} />
-        </div>
-      )}
-
-      <div
-        className="relative mx-auto min-h-screen w-full items-center gap-8 px-6"
-        style={{
-          zIndex: 2,
-          maxWidth: 1440,
-          display: isDesktop ? "grid" : "block",
-          gridTemplateColumns: isDesktop ? "minmax(0, 460px) minmax(0, 1fr)" : undefined,
-          gridTemplateRows: isDesktop ? "minmax(100vh, auto)" : undefined,
-        }}
-      >
-        <div className="flex flex-col justify-center py-14">
-          <div className="w-full" style={{ maxWidth: 452 }}>
-            <div className="mb-6">
-              <span className="inline-flex items-center gap-2.5">
-                <span className="flex items-center justify-center" style={{ width: 38, height: 38, borderRadius: 11, background: ACCESS_GRAD.brand, boxShadow: `0 0 20px ${rgba(ACCESS.cyan, 0.32)}` }}>
-                  <CubeMark size={22} color="#06080f" code />
-                </span>
-                <span style={{ color: ACCESS.textBright, fontFamily: ACCESS_FONT.display, fontWeight: 800, fontSize: 19, letterSpacing: "-0.01em" }}>
-                  Algorithm<span style={{ background: ACCESS_GRAD.brand, WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent" }}>X</span>
-                </span>
-              </span>
-            </div>
-
-            <div
-              style={{
-                position: "relative",
-                borderRadius: 24,
-                padding: "30px 32px 28px",
-                background: `linear-gradient(177deg, ${rgba(ACCESS.indigo, 0.55)} 0%, ${rgba(ACCESS.abyss, 0.8)} 100%)`,
-                backdropFilter: "blur(18px) saturate(135%)",
-                WebkitBackdropFilter: "blur(18px) saturate(135%)",
-                border: `1px solid ${rgba(ACCESS.cyan, 0.16)}`,
-                boxShadow: `0 36px 90px -40px rgba(0,0,0,0.9), inset 0 1px 0 ${rgba(ACCESS.cyanSoft, 0.13)}`,
-              }}
-            >
-              <div
-                className="inline-flex items-center gap-1.5 mb-5"
-                style={{ padding: "4px 12px", borderRadius: 999, fontFamily: ACCESS_FONT.mono, fontSize: 10.5, fontWeight: 700, letterSpacing: 1.6, textTransform: "uppercase", color: ACCESS.cyanSoft, background: rgba(ACCESS.cyan, 0.08), border: `1px solid ${rgba(ACCESS.cyan, 0.35)}` }}
-              >
-                <IconKey size={12} /> Invited guests only
-              </div>
-
-              <h1 className="mb-2.5" style={{ fontFamily: ACCESS_FONT.display, fontSize: "clamp(2.2rem, 3.2vw, 2.9rem)", fontWeight: 800, color: ACCESS.textBright, letterSpacing: "-0.03em", lineHeight: 1.02 }}>
-                The gate is{" "}
-                <span style={{ background: ACCESS_GRAD.brand, WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent" }}>sealed</span>
-              </h1>
-              <p className="mb-7" style={{ color: ACCESS.textSoft, fontSize: 15, fontWeight: 500, lineHeight: 1.55, maxWidth: 360 }}>
-                AlgorithmX is still being built. Enter your access password to step inside.
-              </p>
-
-              <AnimatePresence>
-                {error && (
-                  <motion.div
-                    key="err"
-                    role="alert"
-                    aria-live="polite"
-                    initial={reduced ? { opacity: 0 } : { opacity: 0, y: -8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={reduced ? { opacity: 0 } : { opacity: 0, y: -8 }}
-                    transition={{ duration: 0.2 }}
-                    className="mb-4"
-                    style={{ padding: "12px 14px", borderRadius: 12, fontSize: 13.5, fontWeight: 600, background: rgba(ACCESS.warn, 0.1), border: `1px solid ${rgba(ACCESS.warn, 0.5)}`, color: ACCESS.warnSoft }}
-                  >
-                    {error}
-                  </motion.div>
-                )}
-              </AnimatePresence>
-
-              <form method="post" onSubmit={handleSubmit} className="space-y-1" noValidate>
-                <AuthField
-                  id="gate-password"
-                  label="Access password"
-                  type={showPassword ? "text" : "password"}
-                  value={password}
-                  onChange={setPassword}
-                  onFocus={() => setFocusField("password")}
-                  onBlur={() => setFocusField(null)}
-                  state={present ? "valid" : "idle"}
-                  error={null}
-                  autoComplete="current-password"
-                  placeholder="Enter the password"
-                  rightSlot={passwordToggle}
-                  // eslint-disable-next-line jsx-a11y/no-autofocus
-                  autoFocus
-                  required
-                />
-                <div className="pt-1">
-                  <AuthButton
-                    state={buttonState}
-                    idleLabel="Open the gate"
-                    loadingLabel="Unlocking…"
-                    successLabel="Welcome"
-                    disabledHint={!present ? "Enter the password to continue." : undefined}
-                  />
-                </div>
-              </form>
-            </div>
-
-            <div className="flex items-center justify-center gap-x-3.5 gap-y-2 mt-7 flex-wrap" style={{ fontFamily: ACCESS_FONT.mono, fontSize: 10.5, fontWeight: 700, letterSpacing: 1.4, color: ACCESS.textMuted }}>
-              <span>SIX STREAMS &middot; ONE KEY</span>
-              <span aria-hidden style={{ opacity: 0.35 }}>|</span>
-              <span className="inline-flex items-center gap-1.5"><IconCredentials size={13} /> ENCRYPTED</span>
-              <span className="inline-flex items-center gap-1.5"><IconHub size={13} /> UNDER CONSTRUCTION</span>
-            </div>
-            <p className="text-center mt-5" style={{ fontSize: 12.5 }}>
-              <a href="mailto:support@algorithmx.co.uk" className="transition hover:opacity-80" style={{ color: ACCESS.cyanSoft, fontWeight: 600 }}>
-                Need help? support@algorithmx.co.uk
-              </a>
-            </p>
-          </div>
-        </div>
-
-        {isDesktop && (
-          <div className="relative self-stretch">
-            <div className="absolute inset-0">
-              <AuthReactorScene state={machineState} />
-            </div>
-          </div>
-        )}
+    <div
+      className={`agt ${disp.variable} ${sans.variable} ${mono.variable}`}
+      data-gate={gate}
+      data-err={error ? "" : undefined}
+      data-still={still ? "" : undefined}
+    >
+      <div className="agt-ground" aria-hidden="true">
+        <span className="grid" />
+        <span className="pool a" />
+        <span className="pool b" />
+        <span className="st" style={{ left: "7%", "--s": "255,150,60", "--d": "11s" } as CSSProperties} />
+        <span className="st" style={{ left: "94%", "--s": "139,123,255", "--d": "10s", "--o": "-5s" } as CSSProperties} />
       </div>
 
-      {!isDesktop && <AccessGrantedOverlay show={granted} title="Gate open" subtitle="Entering AlgorithmX" />}
+      <header className="agt-top">
+        <span className="agt-brand">
+          <span className="mark">
+            {/* eslint-disable-next-line @next/next/no-img-element -- a static 32px mark */}
+            <img src="/favicon.svg" alt="" width={22} height={22} />
+          </span>
+          <span className="name">
+            Algorithm<em>X</em>
+          </span>
+        </span>
+        <span className="agt-chip">
+          <i />
+          Invited guests only
+        </span>
+      </header>
+
+      <main className="agt-stage">
+        <section className="agt-copy">
+          <h1 {...rise(0)}>
+            The gate is <em>{granted ? "open" : "sealed"}</em>
+          </h1>
+          <p className="lead" {...rise(1)}>
+            AlgorithmX is still being built. Enter your access password to step inside.
+          </p>
+          {/* The rise-in sits on a wrapper so the wrong-password shake never replaces it. */}
+          <div {...rise(2)}>
+            <form className="agt-form" method="post" onSubmit={handleSubmit} noValidate>
+              <div className="agt-field">
+                <label htmlFor="gate-password">Access password</label>
+                <div className="in">
+                  <input
+                    id="gate-password"
+                    type={showPassword ? "text" : "password"}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="Enter the password"
+                    autoComplete="current-password"
+                    aria-invalid={error ? true : undefined}
+                    aria-describedby="gate-hint"
+                    // eslint-disable-next-line jsx-a11y/no-autofocus
+                    autoFocus
+                    required
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword((v) => !v)}
+                    aria-label={showPassword ? "Hide password" : "Show password"}
+                  >
+                    {showPassword ? "HIDE" : "SHOW"}
+                  </button>
+                </div>
+              </div>
+              <button className="agt-btn" type="submit" disabled={locked} aria-busy={phase === "loading" || undefined}>
+                {buttonLabel}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="M5 12h14 M13 6l6 6-6 6" />
+                </svg>
+              </button>
+              <p className="agt-hint" id="gate-hint" role="status" aria-live="polite">
+                {hint}
+              </p>
+            </form>
+          </div>
+          <div className="agt-meta" {...rise(3)}>
+            <span>Six streams &middot; one key</span>
+            <span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M6 11h12v9H6z M8.5 11V8a3.5 3.5 0 017 0v3" />
+              </svg>
+              Encrypted
+            </span>
+            <span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M12 3l9 5-9 5-9-5 9-5z M3 13l9 5 9-5" />
+              </svg>
+              Under construction
+            </span>
+          </div>
+          <p className="agt-help" {...rise(4)}>
+            Need help? <a href="mailto:support@algorithmx.co.uk">support@algorithmx.co.uk</a>
+          </p>
+        </section>
+
+        <GateLock seated={seatedArcs(password.length, granted)} open={granted} />
+      </main>
+
+      <button
+        className="agt-pause"
+        type="button"
+        onClick={() => setStill((v) => !v)}
+        aria-pressed={still}
+        aria-label={still ? "Play motion" : "Pause motion"}
+      >
+        {still ? (
+          <svg viewBox="0 0 12 12" fill="currentColor" aria-hidden="true">
+            <path d="M3 1.5v9l7.5-4.5z" />
+          </svg>
+        ) : (
+          <svg viewBox="0 0 12 12" fill="currentColor" aria-hidden="true">
+            <rect x="2" y="1.5" width="3" height="9" rx="1" />
+            <rect x="7" y="1.5" width="3" height="9" rx="1" />
+          </svg>
+        )}
+      </button>
     </div>
   );
 }
