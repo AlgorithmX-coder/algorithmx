@@ -1,11 +1,13 @@
 import Link from "next/link";
+import type { CSSProperties } from "react";
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { auth } from "@/app/lib/auth";
 import { getSchoolContext, listArchivedClasses, listClasses } from "@/app/lib/schoolClasses";
 import { getHeadContext } from "@/app/lib/schoolHead";
-import { listSchoolCourses } from "@/app/lib/schoolPlaces";
+import { courseName, listSchoolCourses } from "@/app/lib/schoolPlaces";
 import { trialStatus } from "@/app/lib/orgTrial";
+import PortalShell from "@/app/components/school-portal/PortalShell";
 import Locked from "../teach/Locked";
 import TrialEnded from "../TrialEnded";
 import AccessClosed from "../AccessClosed";
@@ -16,8 +18,12 @@ import { wordsFor } from "../words";
 /**
  * A teacher's classes.
  *
- * The first screen of the school platform: make a class, see how many places
- * the licence has left, and go into one to add children.
+ * The first screen of the school platform. The list comes first, because
+ * going into a class is what a teacher does here nearly every time; making
+ * one is a once-a-year job and sits underneath. A class with nobody in it
+ * says so on its card, because adding pupils is the next job.
+ *
+ * Drawn in the light house (PortalShell, school-portal.css).
  */
 export const dynamic = "force-dynamic";
 
@@ -60,104 +66,136 @@ export default async function ClassesPage() {
   const trialEnds = school.trialExpiresAt
     ? new Date(school.trialExpiresAt).toLocaleDateString("en-GB", { day: "numeric", month: "long" })
     : null;
+  const full = left <= 0;
+  const usedPct = school.seatsPurchased > 0
+    ? Math.min(100, Math.round((school.seatsUsed / school.seatsPurchased) * 100))
+    : 100;
+  /* Nothing at all yet: the make-a-class panel is the page. */
+  const first = classes.length === 0 && archived.length === 0;
+  const count = (n: number) => `${n} ${n === 1 ? w.person : w.people}`;
 
   return (
-    <div className="axtp">
-      <div className="wrap">
-        <header className="top">
-          <div>
-            <div className="brand">{school.orgName} &middot; <i>{w.Groups}</i></div>
-            <div className="sub">
-              {onTrial
-                ? `Trial · ends ${trialEnds} · ${school.seatsUsed} of ${school.seatsPurchased} places used`
-                : `${school.seatsUsed} of ${school.seatsPurchased} places used`}
-              {left <= 0
-                ? onTrial ? " · no places left" : " · your licence is full"
-                : left <= 5 ? ` · ${left} left` : ""}
-            </div>
+    <PortalShell
+      nav={
+        <>
+          {head && <Link href="/schools/overview" className="sp-nav-a">{w.Noun} overview</Link>}
+          <Link href="/schools/teach" className="sp-nav-a">{w.Staff} packs</Link>
+          <SignOut className="sp-nav-a" />
+        </>
+      }
+    >
+      <header className="sp-head">
+        <div className="copy">
+          {/* The stored name exactly as the school gave it: never
+              title-cased, never upper-cased. */}
+          <span className="sp-eyebrow">
+            <i />
+            <span>{school.orgName}</span> &middot; <b>{w.Groups}</b>
+            {onTrial && <b>&nbsp;&middot; Trial &middot; ends {trialEnds}</b>}
+          </span>
+          <h1>Your {w.groups}</h1>
+        </div>
+        <div className="sp-licence">
+          <div className="big">
+            {school.seatsUsed} of {school.seatsPurchased}
           </div>
-          <div className="modes" role="group" aria-label="Elsewhere">
-            {head && <Link href="/schools/overview" className="axbtn">{w.Noun} overview</Link>}
-            <Link href="/schools/teach" className="axbtn">{w.Staff} packs</Link>
-            <SignOut />
+          <div className="lab">{onTrial ? "trial places" : "places used"}</div>
+          <div className="sp-bar" data-full={full ? "" : undefined} aria-hidden="true">
+            <i style={{ width: `${usedPct}%` } as CSSProperties} />
           </div>
-        </header>
+          <small data-full={full ? "" : undefined}>
+            {full ? (onTrial ? "no places left" : "your licence is full") : `${left} left`}
+          </small>
+        </div>
+      </header>
 
-        <p className="whatis">
-          <b>Make a {w.group}, then add your {w.people} by name.</b> Each {w.person} gets their
-          own login card with the {w.group} code on it. They pick their name from the list and tap a
-          picture password, so nobody has to remember an email address or type one.
-        </p>
-
-        <NewClass placesLeft={left} courses={courses} onTrial={onTrial} trialEnds={trialEnds} w={w} />
-
-        {classes.length === 0 ? (
-          <div className="sheet">
-            <p className="lede" style={{ margin: 0 }}>
-              No {w.groups} yet. Make the first one above, and you can add the {w.people} straight after.
-            </p>
-          </div>
-        ) : (
-          <div className="sheet">
-            <div className="phase">Your {w.groups}</div>
-            {classes.map((c) => (
-              <div key={c.id} className="row">
-                <span className="rn">{c.yearGroup ?? ""}</span>
-                <div className="rb">
-                  <Link href={`/schools/classes/${c.id}`}>{c.name}</Link>
-                  <small className="s-say">
-                    {c.product.name} &middot; {c._count.pupils}{" "}
-                    {c._count.pupils === 1 ? w.person : w.people}
-                  </small>
+      {classes.length > 0 && (
+        <section className="sp-grid" aria-label={`Your ${w.groups}`}>
+          {classes.map((c) => {
+            const n = c._count.pupils;
+            return (
+              <article key={c.id} className="sp-card" data-empty={n === 0 ? "" : undefined}>
+                <Link href={`/schools/classes/${c.id}`} className="cname">
+                  {c.name}
+                </Link>
+                <div className="sp-chips">
+                  <span className="sp-chip">{courseName(c.product.slug, c.product.name)}</span>
+                  {c.yearGroup ? <span className="sp-chip">{w.yearLabel} {c.yearGroup}</span> : null}
                 </div>
-                <div className="rs">
-                  <p>{w.Group} code <code className="axcode">{c.code}</code></p>
+                <div className="low">
+                  <span className="meta"><b>{count(n)}</b></span>
+                  <span className="sp-chip" data-kind="code">{c.code}</span>
                 </div>
-              </div>
-            ))}
-          </div>
-        )}
+                {n === 0 && (
+                  <div>
+                    <Link href={`/schools/classes/${c.id}#add`} className="sp-pill">
+                      Add {w.people}
+                    </Link>
+                  </div>
+                )}
+              </article>
+            );
+          })}
+        </section>
+      )}
 
-        {archived.length > 0 && (
-          <div className="sheet">
-            <div className="phase">Last year</div>
+      {archived.length > 0 && (
+        <>
+          <h2 className="sp-section-h">Last year</h2>
+          <section className="sp-grid" aria-label="Last year">
             {archived.map((c) => (
-              <div key={c.id} className="row">
-                <span className="rn">{c.yearGroup ?? ""}</span>
-                <div className="rb">
-                  <Link href={`/schools/classes/${c.id}`}>{c.name}</Link>
-                  <small className="s-say">
-                    {c.product.name} &middot; {c._count.pupils}{" "}
-                    {c._count.pupils === 1 ? w.person : w.people}
-                  </small>
+              <article key={c.id} className="sp-card" data-ended="">
+                <Link href={`/schools/classes/${c.id}`} className="cname">
+                  {c.name}
+                </Link>
+                <div className="sp-chips">
+                  <span className="sp-chip">{courseName(c.product.slug, c.product.name)}</span>
+                  {c.yearGroup ? <span className="sp-chip">{w.yearLabel} {c.yearGroup}</span> : null}
+                  <span className="sp-chip">{count(c._count.pupils)}</span>
                 </div>
-                <div className="rs">
-                  <p>
-                    Year ended{" "}
-                    {c.archivedAt
-                      ? new Date(c.archivedAt).toLocaleDateString("en-GB", {
-                          day: "numeric",
-                          month: "short",
-                          year: "numeric",
-                        })
-                      : ""}
-                  </p>
-                </div>
-              </div>
+                <span className="meta">
+                  Year ended{" "}
+                  {c.archivedAt
+                    ? new Date(c.archivedAt).toLocaleDateString("en-GB", {
+                        day: "numeric",
+                        month: "long",
+                        year: "numeric",
+                      })
+                    : ""}
+                </span>
+              </article>
             ))}
-            <p className="legend">
-              Nobody in these can sign in. Open one to read the work, to move a {w.person} into a
-              live {w.group}, or to put the {w.group} back.
-            </p>
-          </div>
-        )}
+          </section>
+          <p className="sp-small">
+            Nobody in these can sign in. Open one to read the work, to move a {w.person} into a
+            live {w.group}, or to put the {w.group} back.
+          </p>
+        </>
+      )}
 
-        <footer className="note">
-          An account holds a {w.person}&rsquo;s name, a colour and a {w.group}. No date of birth, no
-          email address, no photo, and nothing they have to remember except which picture comes
-          first.
-        </footer>
-      </div>
-    </div>
+      <section className="sp-panel">
+        <NewClass
+          placesLeft={left}
+          courses={courses}
+          onTrial={onTrial}
+          trialEnds={trialEnds}
+          w={w}
+          first={first}
+          foot={
+            <>
+              Each {w.person} gets their own login card with the {w.group} code on it. They pick
+              their name from the list and tap a picture password, so nobody has to remember an
+              email address or type one.
+            </>
+          }
+        />
+      </section>
+
+      <p className="sp-small">
+        An account holds a {w.person}&rsquo;s name, a colour and a {w.group}. No date of birth, no
+        email address, no photo, and nothing they have to remember except which picture comes
+        first.
+      </p>
+    </PortalShell>
   );
 }

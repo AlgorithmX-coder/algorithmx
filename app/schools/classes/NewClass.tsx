@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useTransition } from "react";
+import { useRef, useState, useTransition, type ReactNode } from "react";
 import { createClassAction } from "./class.actions";
 import type { SchoolWords } from "../words";
 
@@ -30,6 +30,8 @@ export default function NewClass({
   onTrial = false,
   trialEnds = null,
   w,
+  first = false,
+  foot,
 }: {
   placesLeft: number;
   courses: readonly CourseChoice[];
@@ -37,6 +39,10 @@ export default function NewClass({
   trialEnds?: string | null;
   /* A youth project runs groups of young people, not classes of pupils. */
   w: SchoolWords;
+  /** No classes yet: this panel is the whole page, and says so. */
+  first?: boolean;
+  /** One line under the form: what happens next, for the children. */
+  foot?: ReactNode;
 }) {
   const [pending, start] = useTransition();
   const [said, setSaid] = useState<{ ok: boolean; text: string } | null>(null);
@@ -53,8 +59,9 @@ export default function NewClass({
 
   return (
     <div className="share">
-      <h3>Make a {w.group}</h3>
+      <h3>{first ? `Make your first ${w.group}` : `Make a ${w.group}`}</h3>
       <p className="sharelede">
+        {first && `You add the ${w.people} straight after, by pasting your register. `}
         {placesLeft > 0
           ? onTrial
             ? `Your trial has ${placesLeft} place${placesLeft === 1 ? "" : "s"} to try with${trialEnds ? `, until ${trialEnds}` : ""}.`
@@ -89,6 +96,7 @@ export default function NewClass({
       {said && (
         <p className={said.ok ? "sharedone" : "shareerr"}>{said.text}</p>
       )}
+      {foot && <p className="foot">{foot}</p>}
     </div>
   );
 }
