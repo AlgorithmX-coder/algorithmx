@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import ReadingRoom, { DocSection as Section } from "@/app/components/reading-room/ReadingRoom";
 
 export const metadata: Metadata = {
   title: "Terms of Service | AlgorithmX",
@@ -8,46 +8,11 @@ export const metadata: Metadata = {
 };
 
 export default function TermsPage() {
+  /* The round 7 reading room (landing lab r7-misc-terms.html). Only the
+     layout changed: the title, the date line and every section below are
+     word for word as they were. */
   return (
-    <main
-      style={{
-        /* Owner 2026-09-24: joins the light brand. This page has no art
-           direction of its own, so whatever the brand is, it is this. */
-        minHeight: "100vh",
-        background:
-          "radial-gradient(ellipse at 50% 70%, #fbf7f0 0%, #f6f1e7 35%, #f3ede4 70%, #efe8dc 100%)",
-        color: "#14161d",
-        padding: "80px 24px",
-        fontFamily: "'Nunito', system-ui, sans-serif",
-      }}
-    >
-      <article style={{ maxWidth: 760, margin: "0 auto" }}>
-        <Link
-          href="/cyberheroes"
-          style={{ color: "#0a7085", fontSize: 13, textDecoration: "none" }}
-        >
-          ← Back to Cyber Heroes
-        </Link>
-        <h1
-          style={{
-            fontFamily: "'Space Grotesk', system-ui, sans-serif",
-            fontSize: 40,
-            fontWeight: 900,
-            marginTop: 18,
-            marginBottom: 8,
-            background:
-              "linear-gradient(135deg, #8a5400 0%, #a63a08 35%, #a5117f 70%, #5744c9 100%)",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-            backgroundClip: "text",
-            letterSpacing: "-0.02em",
-          }}
-        >
-          Terms of Service
-        </h1>
-        <p style={{ color: "rgba(17,22,38,0.62)", fontSize: 13, marginBottom: 36 }}>
-          Last updated: April 2026
-        </p>
+    <ReadingRoom variant="plain" route="/terms" title="Terms of Service" updated="Last updated: April 2026">
 
         <Section title="Your account">
           <p>
@@ -99,38 +64,13 @@ export default function TermsPage() {
             Questions about anything on this page? Email <ContactEmail />.
           </p>
         </Section>
-      </article>
-    </main>
-  );
-}
-
-function Section({ title, children }: { title: string; children: React.ReactNode }) {
-  return (
-    <section style={{ marginBottom: 28 }}>
-      <h2
-        style={{
-          fontFamily: "'Space Grotesk', system-ui, sans-serif",
-          fontSize: 18,
-          fontWeight: 800,
-          color: "#0a7085",
-          textTransform: "uppercase",
-          letterSpacing: "0.12em",
-          marginBottom: 10,
-        }}
-      >
-        {title}
-      </h2>
-      <div style={{ color: "rgba(17,22,38,0.84)", fontSize: 15, lineHeight: 1.7 }}>{children}</div>
-    </section>
+    </ReadingRoom>
   );
 }
 
 function ContactEmail() {
   return (
-    <a
-      href="mailto:support@algorithmx.co.uk"
-      style={{ color: "#a5117f", textDecoration: "underline" }}
-    >
+    <a href="mailto:support@algorithmx.co.uk">
       support@algorithmx.co.uk
     </a>
   );
