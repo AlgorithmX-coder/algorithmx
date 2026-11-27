@@ -1,0 +1,235 @@
+/* The front door: /login, /signup, /forgot-password and /reset-password in
+ * the light house ("Daylight Console", landing lab round 7, r7-front-*.html,
+ * owner ruling 25 Nov: the generic sign-in pages are BRIGHT). Ported from the
+ * lab's a03.css + r6-auth.css with r7-front.css part A folded in, so every
+ * value here is the daylight one. Scoped under .fra; the course Night Console
+ * (course-auth, .na1) is a separate sheet and does not read this one.
+ * Fonts are next/font variables set by FrontShell.tsx on the root:
+ * --fra-disp (Space Grotesk), --fra-sans (Inter), --fra-jet (JetBrains Mono),
+ * and the root layout's --font-geist-mono. State lives in data attributes. */
+
+.fra{
+  --fra-ease:cubic-bezier(.16,1,.3,1);
+  --fra-sans-f:var(--fra-sans),Inter,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --fra-mono-f:var(--fra-jet),"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+  --fra-gmono-f:var(--font-geist-mono),"Geist Mono",var(--fra-mono-f);
+  --fra-disp-f:var(--fra-disp),"Space Grotesk",var(--fra-sans-f);
+  --fra-bg:#f7f8fb;
+  --fra-acc:#0a7085;--fra-acc2:#0a6273;--fra-acc-rgb:0,200,230;--fra-keyw:10,112,133;
+  --fra-ink:#0b0d12;--fra-body:#2a3140;--fra-label:#4b5565;--fra-dim:#5f6878;--fra-ph:#69727f;
+  --fra-link:#0a7085;--fra-teal:#0a7085;--fra-indigo:#4f46e5;--fra-violet:#5744c9;--fra-magenta:#a5117f;
+  --fra-panel:rgba(255,255,255,.9);--fra-panel2:rgba(255,255,255,.84);
+  --fra-field:#ffffff;--fra-line:#dfe4ec;--fra-line2:#cfd6e2;
+  --fra-shadow:0 30px 70px -30px rgba(20,30,60,.26),0 2px 6px rgba(20,30,60,.05);
+  --fra-r:20px;--fra-fr:12px;--fra-br:999px;
+  --fra-field-h:50px;--fra-btn-h:52px;
+  --fra-title-fs:31px;
+  --fra-err:#b42318;--fra-err-rgb:217,45,32;--fra-ok:#0e7a45;--fra-ok-rgb:14,122,69;
+
+  position:relative;min-height:100vh;min-height:100dvh;margin:0;color:var(--fra-body);font-family:var(--fra-sans-f);font-size:15px;line-height:1.55;
+  background:var(--fra-bg);display:flex;flex-direction:column;overflow-x:clip;color-scheme:light;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+}
+/* resets at zero specificity so the component classes always win */
+:where(.fra) *,:where(.fra) *::before,:where(.fra) *::after{box-sizing:border-box}
+:where(.fra) a{color:inherit;text-decoration:none}
+:where(.fra) button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+:where(.fra) h1,:where(.fra) p{margin:0}
+.fra :focus-visible{outline:2px solid var(--fra-teal);outline-offset:3px;border-radius:6px}
+
+/* ── layers: the grid and the two pools (0) · the six streams (1) · chrome and console (3) ── */
+.fra-idle{position:fixed;inset:0;z-index:1;pointer-events:none;overflow:hidden}
+.fra-idle canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.fra-key{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+/* the cyan pool top left (it leans with the key light) and the violet pool bottom right */
+.fra-key i{position:absolute;left:-22vw;top:-46vh;width:70vw;height:92vh;border-radius:50%;filter:blur(40px);
+  background:radial-gradient(closest-side,rgba(0,229,255,.24),rgba(0,229,255,.08) 45%,transparent 72%);
+  transform:translate(var(--fra-kx,0px),var(--fra-ky,0px));opacity:0;animation:fra-keyin 1.4s var(--fra-ease) .05s forwards}
+.fra-key i.breath{animation:fra-keyin 1.4s var(--fra-ease) .05s forwards,fra-breathe 12s ease-in-out 1.5s infinite alternate}
+.fra-key i.b{left:auto;right:-20vw;top:42vh;width:58vw;height:80vh;filter:blur(50px);transform:none;animation-delay:.3s;
+  background:radial-gradient(closest-side,rgba(139,123,255,.2),rgba(139,123,255,.06) 50%,transparent 75%)}
+@keyframes fra-keyin{to{opacity:1}}
+@keyframes fra-breathe{from{filter:blur(40px) saturate(1)}to{filter:blur(48px) saturate(1.25)}}
+/* the homepage's 64px hairline grid, masked to the centre */
+.fra-grid{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.75;
+  background-image:linear-gradient(var(--fra-line) 1px,transparent 1px),linear-gradient(90deg,var(--fra-line) 1px,transparent 1px);background-size:64px 64px;background-position:center top;
+  -webkit-mask-image:radial-gradient(ellipse 85% 75% at 50% 42%,#000 25%,transparent 100%);mask-image:radial-gradient(ellipse 85% 75% at 50% 42%,#000 25%,transparent 100%)}
+
+/* ── top chrome: the lockup on a white capsule, as the homepage nav ── */
+.fra-chrome{position:relative;z-index:3;display:flex;align-items:center;justify-content:space-between;gap:16px;width:min(1240px,100% - 48px);margin:0 auto;padding-top:22px;
+  opacity:0;animation:fra-rise .9s var(--fra-ease) .1s forwards}
+.fra-lockup{--lv2-word-mark:#04050d;--lv2-word-flash:rgba(20,22,29,.32);--lv2-cyan-soft:#7df0ff;
+  display:inline-flex;align-items:center;gap:10px;line-height:1;color:var(--fra-ink);margin:-8px -6px;padding:7px 16px 7px 12px;border-radius:999px;
+  background:rgba(255,255,255,.82);border:1px solid var(--fra-line2);box-shadow:0 10px 34px -16px rgba(20,30,60,.3),inset 0 1px 0 #fff;
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.fra-lockup .lv2-cube-wrap{margin:4px 6px 4px 4px;border-radius:7px;box-shadow:0 0 0 6px #e4fbff,0 0 0 7px rgba(0,229,255,.35),0 6px 16px -6px rgba(0,180,216,.5)}
+.fra-word{display:inline-flex;align-items:baseline;font-family:var(--fra-gmono-f);font-size:13.5px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;line-height:1}
+.fra-word .main{color:var(--lv2-word-mark);background-image:linear-gradient(110deg,var(--lv2-word-mark) 0%,var(--lv2-word-mark) 42%,var(--lv2-word-flash) 48%,var(--lv2-cyan-soft) 51%,var(--lv2-word-mark) 58%,var(--lv2-word-mark) 100%);
+  background-size:260% 100%;background-position:100% 0;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  animation:fra-wordboot .7s ease-out 1 both,fra-wordshimmer 8s ease-in-out 1.2s infinite}
+.fra-word .x{margin-left:.04em;background-image:linear-gradient(150deg,var(--lv2-cyan-soft),#00b4d8);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 0 10px rgba(0,180,216,.8));animation:fra-wordboot .7s ease-out .08s 1 both}
+@keyframes fra-wordshimmer{0%,70%{background-position:100% 0}100%{background-position:-40% 0}}
+@keyframes fra-wordboot{0%{opacity:0}30%{opacity:.4}45%{opacity:.15}70%{opacity:.9}100%{opacity:1}}
+.fra-back{display:inline-flex;align-items:center;gap:8px;font-family:var(--fra-mono-f);font-size:11.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--fra-teal);white-space:nowrap;
+  min-height:44px;padding:8px 10px;margin:-13px -10px;border-radius:8px;transition:color .2s}
+.fra-back svg{display:block;flex-shrink:0;transition:transform .35s var(--fra-ease)}
+.fra-back:hover{color:var(--fra-ink)}
+.fra-back:hover svg{transform:translateX(-3px)}
+
+/* ── stage + console: white glass, a lit cyan seam on top, a soft lift ── */
+.fra-stage{position:relative;z-index:3;flex:1;display:grid;place-items:center;padding:22px 16px 64px}
+.fra-wrap{display:flex;flex-direction:column;align-items:center;width:100%}
+.fra-console{position:relative;width:min(444px,100%);--lx:12%;--ly:-30%;isolation:isolate;
+  background:linear-gradient(180deg,var(--fra-panel),var(--fra-panel2));
+  backdrop-filter:blur(20px) saturate(1.4);-webkit-backdrop-filter:blur(20px) saturate(1.4);
+  border:1px solid var(--fra-line2);border-radius:var(--fra-r);padding:32px 32px 28px;
+  box-shadow:inset 0 1px 0 #fff,var(--fra-shadow),0 0 0 6px rgba(255,255,255,.45),0 0 120px -40px rgba(0,229,255,.35);
+  opacity:0;transform:translateY(14px);animation:fra-rise 1s var(--fra-ease) .18s forwards}
+.fra-console::before{content:"";position:absolute;inset:0;border-radius:inherit;z-index:-1;pointer-events:none;
+  background:linear-gradient(90deg,transparent 8%,rgba(0,229,255,.9) 38%,rgba(139,123,255,.75) 66%,transparent 92%) top/100% 1.5px no-repeat,
+    radial-gradient(620px circle at var(--lx) var(--ly),rgba(0,229,255,.07),transparent 60%)}
+.fra-console::after{content:"";position:absolute;inset:-1px;border-radius:inherit;padding:1px;pointer-events:none;z-index:2;
+  background:radial-gradient(760px circle at var(--lx) var(--ly),rgba(0,229,255,.75),rgba(0,200,230,.25) 34%,rgba(139,123,255,.12) 60%,transparent 82%);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;opacity:.5;transition:opacity .4s}
+
+.fra-head{margin-bottom:22px}
+.fra[data-mode="forgot"] .fra-head,.fra[data-mode="reset"] .fra-head{margin-bottom:20px}
+.fra-title{font-family:var(--fra-disp-f);font-weight:700;font-size:var(--fra-title-fs);line-height:1.12;letter-spacing:-.02em;color:var(--fra-ink);text-wrap:balance;
+  opacity:0;animation:fra-rise .9s var(--fra-ease) .3s forwards}
+.fra-sub{margin-top:9px;font-size:14.5px;line-height:1.55;color:var(--fra-body);opacity:0;animation:fra-rise .9s var(--fra-ease) .38s forwards}
+
+/* notices sit above the form, as live; both are in the DOM from load */
+.fra-msg{margin:0 0 16px;padding:11px 13px;border-radius:calc(var(--fra-fr) - 1px);font-size:13.5px;font-weight:600;line-height:1.45;display:flex;gap:10px;align-items:flex-start;font-feature-settings:"calt" 0}
+.fra-msg[hidden]{display:none}
+.fra-msg svg{flex:0 0 auto;margin-top:2px;display:block}
+.fra-msg.err{background:#fdf1f0;border:1px solid rgba(var(--fra-err-rgb),.35);color:var(--fra-err)}
+.fra-msg.ok{background:#eefaf3;border:1px solid rgba(var(--fra-ok-rgb),.35);color:var(--fra-ok)}
+.fra-msg:not([hidden]){animation:fra-msgin .45s var(--fra-ease)}
+@keyframes fra-msgin{from{opacity:0;transform:translateY(-6px)}}
+
+/* ── fields: white wells, teal focus ── */
+.fra-form{display:block}
+.fra-field{margin-bottom:15px;opacity:0;animation:fra-rise .9s var(--fra-ease) forwards;animation-delay:calc(.42s + var(--i,0)*70ms)}
+.fra-label{display:block;font-family:var(--fra-gmono-f);font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--fra-label);margin:0 0 7px;transition:color .25s}
+.fra-field:focus-within .fra-label{color:var(--fra-ink)}
+.fra-box{position:relative;border-radius:var(--fra-fr)}
+.fra-input{width:100%;height:var(--fra-field-h);padding:0 15px;border-radius:var(--fra-fr);border:1px solid var(--fra-line2);background:var(--fra-field);color:var(--fra-ink);font-family:var(--fra-sans-f);font-size:15.5px;outline:none;margin:0;
+  box-shadow:inset 0 1px 2px rgba(20,30,60,.06);transition:border-color .25s,box-shadow .25s,background .25s;appearance:none;-webkit-appearance:none}
+.fra-input::placeholder{color:var(--fra-ph);opacity:1}
+.fra-input:hover{border-color:#b9c3d3}
+.fra-input:focus,.fra-input:focus-visible{outline:none;border-color:var(--fra-teal);background:#fff;box-shadow:inset 0 1px 2px rgba(20,30,60,.05),0 0 0 4px rgba(0,229,255,.2)}
+.fra-input.has-toggle{padding-right:70px}
+/* SHOW/HIDE is the toggle; Edge would add its own eye beside it */
+.fra-input::-ms-reveal,.fra-input::-ms-clear{display:none}
+/* the 1px lit hairline along the top of the focused field */
+.fra-hair{position:absolute;left:12px;right:12px;top:0;height:1px;pointer-events:none;border-radius:1px;opacity:0;transform:scaleX(.6);transform-origin:var(--hx,20%) 50%;
+  background:linear-gradient(90deg,transparent,rgba(0,229,255,.95) 35%,rgba(139,123,255,.85) 65%,transparent);transition:opacity .35s,transform .6s var(--fra-ease)}
+.fra-field:focus-within .fra-hair{opacity:1;transform:scaleX(1)}
+.fra-field[data-invalid] .fra-input{border-color:rgba(var(--fra-err-rgb),.7)}
+.fra-field[data-invalid] .fra-input:focus{box-shadow:0 0 0 4px rgba(var(--fra-err-rgb),.14)}
+.fra-toggle{position:absolute;right:2px;top:50%;transform:translateY(-50%);height:calc(var(--fra-field-h) - 4px);min-width:44px;padding:0 12px;border-radius:calc(var(--fra-fr) - 4px);font-family:var(--fra-mono-f);font-size:11px;font-weight:700;letter-spacing:.12em;color:var(--fra-label);transition:color .2s,background .2s}
+.fra-toggle:hover{color:var(--fra-ink);background:#f1f4f8}
+.fra-toggle[aria-pressed="true"]{color:var(--fra-teal)}
+.fra-row{display:flex;justify-content:flex-end;margin:-6px 0 18px;opacity:0;animation:fra-rise .9s var(--fra-ease) .6s forwards}
+.fra-forgot{font-size:12.5px;font-weight:600;color:var(--fra-teal);padding:4px 2px;border-radius:6px;transition:color .2s}
+.fra-forgot:hover{color:var(--fra-ink)}
+.fra-field.last{margin-bottom:22px}
+.fra-fielderr{margin:7px 0 0;font-size:12.5px;font-weight:600;line-height:1.4;color:var(--fra-err)}
+.fra-fielderr[hidden]{display:none}
+/* rule chips under the new-password field (the live RuleChip) */
+.fra-rules{display:flex;flex-wrap:wrap;gap:6px;margin:9px 0 0}
+.fra-rule{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:8px;font-family:var(--fra-gmono-f);font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;line-height:1;border:1px solid var(--fra-line2);color:var(--fra-label);background:#f4f6fa;transition:background .24s,border-color .24s,color .24s}
+.fra-rule i{width:5px;height:5px;border-radius:50%;background:currentColor;opacity:.8}
+.fra-rule svg{display:none}
+.fra-rule[data-pass="true"]{background:#e6f7fa;border-color:rgba(10,112,133,.45);color:#0a6273}
+.fra-rule[data-pass="true"] i{display:none}
+.fra-rule[data-pass="true"] svg{display:block}
+
+/* ── the button: the homepage pill, teal with white ink; held back = quiet grey until armed ── */
+.fra-btn{position:relative;width:100%;height:var(--fra-btn-h);border-radius:var(--fra-br);background:linear-gradient(90deg,#0a7085,#0b7b92);color:#fff;font-family:var(--fra-mono-f);font-size:12.5px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;overflow:hidden;
+  box-shadow:0 0 0 1px rgba(10,112,133,.4),0 14px 34px -12px rgba(10,112,133,.55),0 0 26px rgba(0,229,255,.22);transition:transform .25s var(--fra-ease),box-shadow .3s,filter .2s;
+  opacity:0;animation:fra-rise .9s var(--fra-ease) .66s forwards}
+.fra-btn:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 0 0 1px rgba(10,112,133,.6),0 18px 40px -12px rgba(10,112,133,.6),0 0 36px rgba(0,229,255,.36)}
+.fra-btn:active:not(:disabled){transform:translateY(0) scale(.99)}
+.fra-btn:disabled{cursor:wait}
+.fra-btn[aria-busy="true"]::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent 20%,rgba(255,255,255,.35) 50%,transparent 80%);transform:translateX(-120%);animation:fra-sweep 1.4s ease-in-out infinite}
+@keyframes fra-sweep{to{transform:translateX(120%)}}
+.fra-btn[data-state="done"]{cursor:default}
+.fra-btn[aria-disabled="true"]{background:#e8edf3;color:#3e4858;box-shadow:inset 0 0 0 1px var(--fra-line2);cursor:default}
+.fra-btn[aria-disabled="true"]:hover{transform:none;box-shadow:inset 0 0 0 1px var(--fra-line2)}
+.fra-btn-label{display:inline-flex;align-items:center;justify-content:center;gap:10px}
+.fra-btn .fra-dots{display:inline-flex;gap:4px;margin-left:-2px;vertical-align:middle}
+.fra-btn .fra-dots i{width:4px;height:4px;border-radius:50%;background:currentColor;opacity:.4;animation:fra-dot 1.1s ease-in-out infinite}
+.fra-btn .fra-dots i:nth-child(2){animation-delay:.18s}.fra-btn .fra-dots i:nth-child(3){animation-delay:.36s}
+@keyframes fra-dot{40%{opacity:1;transform:translateY(-2px)}}
+/* a link that looks like the button (Request a new link) */
+.fra-linkbtn{display:inline-flex;align-items:center;justify-content:center;gap:10px;text-decoration:none;animation-delay:.44s}
+.fra-linkbtn svg{display:block;flex-shrink:0}
+.fra-hint{margin:10px 0 0;text-align:center;font-size:12.5px;font-weight:500;color:var(--fra-label);opacity:0;animation:fra-rise .9s var(--fra-ease) .7s forwards}
+.fra-hint[hidden]{display:none}
+
+/* the status card: sent / all set */
+.fra-card{margin:0;padding:16px 16px 15px;border-radius:calc(var(--fra-fr) + 1px);background:#effafc;border:1px solid rgba(10,112,133,.3);opacity:0;animation:fra-rise .9s var(--fra-ease) .44s forwards}
+.fra-card b{display:flex;align-items:center;gap:8px;font-weight:800;font-size:15px;color:var(--fra-ink);margin:0 0 6px}
+.fra-card b svg{display:block;color:var(--fra-teal)}
+.fra-card p{margin:0;font-size:13.5px;line-height:1.55;color:var(--fra-body)}
+.fra-card em{font-style:normal;font-weight:700;color:var(--fra-teal);overflow-wrap:anywhere}
+
+.fra-switch{text-align:center;margin:20px 0 0;font-size:13.5px;font-weight:500;color:var(--fra-body);opacity:0;animation:fra-rise .9s var(--fra-ease) .74s forwards}
+.fra-switch a{color:var(--fra-teal);font-weight:700;padding:2px 3px;border-radius:5px;text-decoration:underline;text-decoration-color:transparent;text-underline-offset:3px;transition:text-decoration-color .2s}
+.fra-switch a:hover{text-decoration-color:currentColor}
+.fra-legal{text-align:center;margin:12px 0 0;font-size:12px;color:var(--fra-body);opacity:0;animation:fra-rise .9s var(--fra-ease) .78s forwards}
+.fra-legal a{color:inherit;text-decoration:underline;text-underline-offset:3px}
+
+/* the trust line under the console */
+.fra-trust{position:relative;z-index:3;display:flex;flex-wrap:wrap;justify-content:center;gap:6px 16px;margin:18px auto 0;font-family:var(--fra-gmono-f);font-size:10.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--fra-label);
+  opacity:0;animation:fra-rise .9s var(--fra-ease) .85s forwards}
+.fra-trust span{display:inline-flex;align-items:center;gap:6px}
+.fra-trust svg{display:block;color:var(--fra-teal)}
+.fra-trust .sep{opacity:.45}
+
+/* ── motion control ── */
+.fra-motion{position:fixed;left:18px;bottom:18px;z-index:5;width:36px;height:36px;border-radius:50%;border:1px solid var(--fra-line2);background:rgba(255,255,255,.88);color:var(--fra-label);display:grid;place-items:center;
+  box-shadow:0 6px 18px -8px rgba(20,30,60,.3);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);transition:color .2s,border-color .2s}
+.fra-motion:hover{color:var(--fra-ink);border-color:rgba(10,112,133,.45)}
+.fra-motion svg{width:12px;height:12px;display:block}
+.fra-motion .pl{display:none}
+.fra[data-paused] .fra-motion .pl{display:block}.fra[data-paused] .fra-motion .pa{display:none}
+.fra[data-paused] .fra-key i.breath,.fra[data-paused] .fra-word .main{animation-play-state:paused!important}
+
+@keyframes fra-rise{to{opacity:1;transform:none}}
+
+/* signup: four fields, so the console widens and the fields pair up */
+@media (min-width:760px){
+  .fra[data-mode="signup"] .fra-console{width:min(680px,100%)}
+  .fra[data-mode="signup"] .fra-form{display:grid;grid-template-columns:1fr 1fr;column-gap:16px;align-items:start}
+  .fra[data-mode="signup"] .fra-form>.fra-btn,.fra[data-mode="signup"] .fra-form>.fra-hint{grid-column:1/-1}
+  .fra[data-mode="signup"] .fra-field.last{margin-bottom:15px}
+  .fra[data-mode="signup"] .fra-form>.fra-btn{margin-top:4px}
+}
+
+/* ── responsive ── */
+@media (min-width:1600px){.fra-console{width:min(464px,100%);padding:36px 36px 30px}.fra-chrome{padding-top:28px}}
+@media (max-height:740px){.fra-stage{padding-top:14px}.fra-console{padding:26px 28px 24px}.fra-head{margin-bottom:16px}}
+@media (max-width:640px){
+  .fra{--fra-field-h:48px;--fra-btn-h:50px}
+  .fra-chrome{width:calc(100% - 32px);padding-top:16px}
+  .fra-lockup{padding:6px 12px 6px 6px}
+  .fra-word{font-size:12px;letter-spacing:.24em}
+  .fra-back{font-size:10.5px;letter-spacing:.12em}
+  .fra-stage{padding:16px 16px 70px;align-items:start}
+  .fra-console{padding:24px 20px 22px}
+  .fra-title{font-size:calc(var(--fra-title-fs) - 3px)}
+  .fra-key i{left:-50vw;top:-24vh;width:150vw;height:60vh}
+  .fra-rule{padding:6px 9px}
+  .fra-trust{padding:0 16px;margin-top:14px}
+  .fra-trust .sep{display:none}
+}
+
+/* ── reduced motion: everything is simply there ── */
+@media (prefers-reduced-motion:reduce){
+  .fra-chrome,.fra-console,.fra-title,.fra-sub,.fra-field,.fra-row,.fra-btn,.fra-switch,.fra-legal,.fra-key i,.fra-msg,.fra-hint,.fra-card,.fra-linkbtn,.fra-trust{animation:none!important;opacity:1!important;transform:none!important}
+  .fra-word .main,.fra-word .x{animation:none}
+  .fra-motion{display:none}
+}

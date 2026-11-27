@@ -159,6 +159,36 @@ export const COURSE_AUTH_CONTENT: Record<CourseAuthKey, CourseAuthCopy> = {
   },
 };
 
+/* Cyber Secured: the firm door (landing lab round 8, r8-door.html?c=secured,
+ * owner 2026-11-26). Not a course of its own: one seat opens AI Cleared, AI
+ * Fluent and Cyber Awareness, and the person lands on /cyber-secured, the
+ * firm portal. Sign in only (a seat is claimed through the invite link,
+ * which has its own way to create an account), so the signup words are
+ * never shown; they are here because every pack carries them. */
+export const SECURED_AUTH: CourseAuthCopy = {
+  slug: "cyber-secured",
+  base: "/cyber-secured",
+  landing: "/corporate",
+  home: "/cyber-secured",
+  courseName: "Cyber Secured",
+  copy: {
+    loginTitle: "Sign in to your firm",
+    loginSub: "Use the work email your firm invited.",
+    signupTitle: "Create your account",
+    signupSub: "Use the work email your firm invited.",
+    registeredNotice: "Account created. Sign in to open your courses.",
+    submitLogin: "Sign in",
+    submitSignup: "Create account",
+  },
+};
+
+/** Every auth pack: the courses, plus the Cyber Secured firm door. */
+export type AuthPackKey = CourseAuthKey | "secured";
+
+export function authPack(key: AuthPackKey): CourseAuthCopy {
+  return key === "secured" ? SECURED_AUTH : COURSE_AUTH_CONTENT[key];
+}
+
 /* The strings every course shares: labels, placeholders, the toggle, the
  * forgot row, the switch lines, the busy label and the client error text.
  * Same words on every course. The forgot row goes to the course's own

@@ -35,6 +35,19 @@ function statusChip(r: FirmRow) {
 
 export default function FirmsTable({ rows }: { rows: FirmRow[] }) {
   const [q, setQ] = useState("");
+  const [copied, setCopied] = useState<string | null>(null);
+  /* A firm's team link, copied for staff to pass on. A firm whose console
+     has never opened has none yet; opening the firm makes it. */
+  const copyTeam = async (token: string) => {
+    const url = `${window.location.origin}/ai-cleared/join/${token}`;
+    try {
+      await navigator.clipboard.writeText(url);
+      setCopied(token);
+      setTimeout(() => setCopied(null), 1600);
+    } catch {
+      window.prompt("Copy the team link", url);
+    }
+  };
   const [status, setStatus] = useState<StatusFilter>("all");
   const [sort, setSort] = useState<SortKey>("activity-desc");
 
@@ -90,7 +103,7 @@ export default function FirmsTable({ rows }: { rows: FirmRow[] }) {
 
       <table className="ad-table">
         <thead>
-          <tr><th>Firm</th><th>Plan</th><th>Seats</th><th>Claimed</th><th>Cleared</th><th>Fluent</th><th>Certs</th><th>Status</th><th>Last activity</th></tr>
+          <tr><th>Firm</th><th>Plan</th><th>Seats</th><th>Claimed</th><th>Cleared</th><th>Fluent</th><th>Certs</th><th>Status</th><th>Last activity</th><th>Team link</th></tr>
         </thead>
         <tbody>
           {filtered.map((r) => (
@@ -104,9 +117,14 @@ export default function FirmsTable({ rows }: { rows: FirmRow[] }) {
               <td>{r.certificates}</td>
               <td>{statusChip(r)}</td>
               <td>{day(r.lastActivity)}</td>
+              <td>
+                {r.teamToken
+                  ? <button type="button" className="ad-link-btn" onClick={() => copyTeam(r.teamToken!)}>{copied === r.teamToken ? "Copied" : "Copy"}</button>
+                  : <Link href={`/ai-cleared/ops/${r.slug}`} className="ad-link-btn" title="Opening the firm makes its team link">Make one</Link>}
+              </td>
             </tr>
           ))}
-          {filtered.length === 0 && <tr><td colSpan={9} className="ad-empty">{rows.length === 0 ? "No firms yet. Create one below." : "Nothing matches that search."}</td></tr>}
+          {filtered.length === 0 && <tr><td colSpan={10} className="ad-empty">{rows.length === 0 ? "No firms yet. Create one below." : "Nothing matches that search."}</td></tr>}
         </tbody>
       </table>
     </div>

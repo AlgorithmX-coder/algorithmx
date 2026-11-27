@@ -18,13 +18,13 @@ import { signIn } from "next-auth/react";
 import { LOGIN_LIMITED_CODE, TOO_MANY } from "@/app/lib/rateLimitWords";
 import { courseHomeFor, safeCourseSlug } from "@/app/lib/courseIntent";
 import { passwordProblem } from "@/app/lib/passwordPolicy";
-import { COURSE_AUTH_CONTENT, SHARED, type CourseAuthKey } from "./content";
+import { SHARED, authPack, type AuthPackKey } from "./content";
 
 export type AuthMode = "login" | "signup";
 export type FieldKey = "name" | "email" | "password" | "confirm";
 
-export function useCourseAuth(course: CourseAuthKey, mode: AuthMode) {
-  const t = COURSE_AUTH_CONTENT[course];
+export function useCourseAuth(course: AuthPackKey, mode: AuthMode) {
+  const t = authPack(course);
   const router = useRouter();
   const searchParams = useSearchParams();
 

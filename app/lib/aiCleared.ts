@@ -165,6 +165,9 @@ export async function claimSeat(args: { token: string; userId: string; track: Tr
   const seat = await prisma.seat.findUnique({ where: { inviteToken: args.token }, include: { org: true } });
   if (!seat) return { ok: false as const, reason: "not-found" as const };
   if (seat.userId && seat.userId !== args.userId) return { ok: false as const, reason: "taken" as const };
+  /* The lead removed this person. Removal also replaces the token, so this
+     only catches a race; inviting them again is the way back. */
+  if (seat.removedAt) return { ok: false as const, reason: "removed" as const };
   /* A closed firm hands out nothing further. The seat and the invite stay
      exactly as they are, so unrevoking makes the link work again. */
   if (seat.org.revokedAt) return { ok: false as const, reason: "closed" as const };

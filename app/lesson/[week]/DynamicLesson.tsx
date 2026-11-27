@@ -702,13 +702,15 @@ function VideoScreen({
               border: "2px solid rgba(59,130,246,0.4)",
               aspectRatio: "16 / 9",
               background: "#000",
-              marginBottom: 22,
+              // Room only for the Continue button a failed load shows.
+              marginBottom: failed ? 22 : 0,
             }}
           >
             {!failed ? (
               <video
                 ref={videoRef}
                 src={videoSrc}
+                aria-label={caption}
                 playsInline
                 onPlay={(e) => {
                   // Video plays its own soundtrack; the lesson BGM bed is
@@ -755,7 +757,8 @@ function VideoScreen({
             )}
 
           </div>
-          <p style={{ color: "#9ca3af", fontSize: 14, marginBottom: 18 }}>{caption}</p>
+          {/* No visible caption under the film: the week's name is already in
+              the header (owner 2026-11-27). It stays as the video's label. */}
           {/* No skip: children watch the clip, which auto-advances when it ends
               (owner 2026-09-09). A Continue appears ONLY if the video can't load,
               so a missing/broken file never traps them. */}
@@ -1422,9 +1425,6 @@ function DynamicLessonInner({
                     ▶
                   </button>
                 </div>
-                <p style={{ color: "#9ca3af", fontSize: 14, marginBottom: 18 }}>
-                  {def.videoPlaceholder}
-                </p>
                 <OrangeButton onClick={finishVideo}>Skip video →</OrangeButton>
               </div>
             </Card>

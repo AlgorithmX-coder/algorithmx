@@ -4,7 +4,7 @@ import { sendEmail } from "@/app/lib/resend";
 import { DB_TO_TRACK, FIRM_ORG, TRACK_TO_DB } from "@/app/lib/aiCleared";
 import { moduleListFor } from "@/app/lib/courseModules";
 import type { CourseSlug } from "@/app/ai-cleared/engine/courses";
-import { CYBER_SECURED_BRAND, CYBER_SECURED_NAME, SECURED_TRACKS, liveTrackNames, onePerPerson, type SecuredTrackSlug } from "@/app/lib/cyberSecured";
+import { CYBER_SECURED_BRAND, CYBER_SECURED_NAME, SECURED_TRACKS, SECURED_TRACK_SLUGS, liveTrackNames, onePerPerson, type SecuredTrackSlug } from "@/app/lib/cyberSecured";
 import { opsAlert } from "@/app/lib/opsAlert";
 import { TRACK_LABEL, type Track } from "@/app/ai-cleared/engine/types";
 import { isStaffUser } from "@/app/lib/aiClearedStaff";
@@ -98,11 +98,21 @@ export interface PersonRow {
   lastActivity: string | null;
   inviteToken: string;
   invitedAt: string;
+  /* When they took the seat, and when the lead removed them (the row stays,
+   * marked, so the lead can see who had a seat and when it came back). */
+  claimedAt: string | null;
+  removedAt: string | null;
 }
 
-/* Every person holding a seat at the firm, once each (see onePerPerson). */
+/* Every person holding a seat at the firm, once each (see onePerPerson).
+ * A removed seat shows only for someone with no seat left at the firm, so
+ * a person removed and then invited again appears once, as they are now. */
 async function seatsByPerson(orgId: string) {
-  return onePerPerson(await prisma.seat.findMany({ where: { orgId }, include: { user: { select: { name: true } } } }));
+  const all = await prisma.seat.findMany({ where: { orgId }, include: { user: { select: { name: true } } } });
+  const active = all.filter((s) => !s.removedAt);
+  const held = new Set(active.flatMap((s) => [s.email, ...(s.userId ? [s.userId] : [])]));
+  const gone = onePerPerson(all.filter((s) => s.removedAt && !held.has(s.email) && !(s.userId && held.has(s.userId))));
+  return [...onePerPerson(active), ...gone];
 }
 
 /* The tracks a register shows: live, and with a Product row behind them. */
@@ -149,6 +159,8 @@ export async function getTeam(orgId: string): Promise<{ tracks: TeamTrack[]; row
       lastActivity: stamps.length ? new Date(Math.max(...stamps)).toISOString() : null,
       inviteToken: s.inviteToken,
       invitedAt: s.invitedAt.toISOString(),
+      claimedAt: s.claimedAt ? s.claimedAt.toISOString() : null,
+      removedAt: s.removedAt ? s.removedAt.toISOString() : null,
     };
   });
   return { tracks, rows };
@@ -156,6 +168,7 @@ export async function getTeam(orgId: string): Promise<{ tracks: TeamTrack[]; row
 
 /* What a person's cell says for one track, in the register and the CSV. */
 export function progressWord(row: PersonRow, slug: SecuredTrackSlug): string {
+  if (row.removedAt) return "Removed";
   if (!row.claimed) return "Invited";
   const p = row.progress[slug];
   if (p?.complete) return "Finished";
@@ -166,7 +179,7 @@ export function progressWord(row: PersonRow, slug: SecuredTrackSlug): string {
 export function teamCsv(team: { tracks: TeamTrack[]; rows: PersonRow[] }, firmName: string): string {
   const esc = (v: string | number | null) => (v === null ? "" : `"${String(v).replace(/"/g, '""')}"`);
   const head = ["Firm", "Email", "Name", "Team", "Desk", "Seat", ...team.tracks.map((t) => t.name), "Last activity", "Invited"];
-  const lines = team.rows.map((r) => [firmName, r.email, r.name, r.team, r.desk ? TRACK_LABEL[r.desk] : null, r.claimed ? "claimed" : "invited", ...team.tracks.map((t) => progressWord(r, t.slug)), r.lastActivity?.slice(0, 10) ?? null, r.invitedAt.slice(0, 10)].map(esc).join(","));
+  const lines = team.rows.map((r) => [firmName, r.email, r.name, r.team, r.desk ? TRACK_LABEL[r.desk] : null, r.removedAt ? "removed" : r.claimed ? "claimed" : "invited", ...team.tracks.map((t) => progressWord(r, t.slug)), r.lastActivity?.slice(0, 10) ?? null, r.invitedAt.slice(0, 10)].map(esc).join(","));
   return [head.map(esc).join(","), ...lines].join("\r\n");
 }
 
@@ -199,11 +212,14 @@ function esc(s: string): string {
  *
  * Deliberately the same number the console prints as "N invited", so a
  * refusal agrees with what the admin is looking at.
+ *
+ * A person the lead removed no longer counts: removing someone gives the
+ * seat back, which is the point of removing them.
  */
 export async function seatsLeft(orgId: string): Promise<{ licensed: number; used: number; left: number }> {
   const [org, people] = await Promise.all([
     prisma.organisation.findUnique({ where: { id: orgId }, select: { seatsPurchased: true } }),
-    prisma.seat.findMany({ where: { orgId }, select: { email: true }, distinct: ["email"] }),
+    prisma.seat.findMany({ where: { orgId, removedAt: null }, select: { email: true }, distinct: ["email"] }),
   ]);
   const licensed = org?.seatsPurchased ?? 0;
   const used = people.length;
@@ -220,8 +236,11 @@ export type InviteSeatsResult =
  * with reply-to set to them. Refused outright once the seats are taken. */
 export async function inviteSeats(args: { orgId: string; orgSlug: string; firmName: string; emails: string[]; team?: string | null; track?: Track | null; role?: OrgRole; origin: string; adminName: string; adminEmail: string | null; staff?: boolean }): Promise<InviteSeatsResult> {
   const clean = Array.from(new Set(args.emails.map((e) => normaliseEmail(e)).filter((e) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e))));
-  const existing = await prisma.seat.findMany({ where: { orgId: args.orgId, email: { in: clean } }, select: { email: true } });
-  const have = new Set(existing.map((e) => e.email));
+  const existing = await prisma.seat.findMany({ where: { orgId: args.orgId, email: { in: clean } }, select: { id: true, email: true, course: true, removedAt: true } });
+  /* A removed person's address is free to invite again: the invite brings
+     their old seat row back rather than adding a second one. */
+  const have = new Set(existing.filter((e) => !e.removedAt).map((e) => e.email));
+  const removedSeat = new Map(existing.filter((e) => e.removedAt && e.course === "CYBER_SECURED").map((e) => [e.email, e.id]));
   const wanted = clean.filter((e) => !have.has(e));
 
   /* The licence, enforced. Until this check a firm that bought ten seats
@@ -249,7 +268,15 @@ export async function inviteSeats(args: { orgId: string; orgSlug: string; firmNa
   const failed: string[] = [];
   for (const email of wanted) {
     const t = token(args.orgSlug.slice(0, 6));
-    await prisma.seat.create({ data: { orgId: args.orgId, email, inviteToken: t, team: args.team ?? null, trackHint: args.track ? TRACK_TO_DB[args.track] : null, role: args.role ?? "LEARNER", course: "CYBER_SECURED" } });
+    const data = { inviteToken: t, team: args.team ?? null, trackHint: args.track ? TRACK_TO_DB[args.track] : null, role: args.role ?? "LEARNER" };
+    const back = removedSeat.get(email);
+    if (back) {
+      /* Unclaimed again, with a fresh link: the person opens it, picks a
+         desk and has their courses and their old progress back. */
+      await prisma.seat.update({ where: { id: back }, data: { ...data, removedAt: null, claimedAt: null, invitedAt: new Date() } });
+    } else {
+      await prisma.seat.create({ data: { orgId: args.orgId, email, course: "CYBER_SECURED", ...data } });
+    }
     created.push({ email, token: t });
     try {
       await sendInvite({ to: email, token: t, firmName: args.firmName, origin: args.origin, adminName: args.adminName, adminEmail: args.adminEmail });
@@ -293,42 +320,60 @@ export async function sendInvite(args: { to: string; token: string; firmName: st
 /* The welcome to a firm's first admin, after a purchase or a hand set-up.
  * Different from a staff invite: this person runs the course for the
  * firm, so the email says what they can do and where. */
-export async function sendAdminWelcome(args: { to: string; token: string; firmName: string; seats: number; origin: string; staffName: string; staffEmail: string | null }) {
+export async function sendAdminWelcome(args: { to: string; token: string; firmName: string; seats: number; origin: string; staffName: string; staffEmail: string | null; teamLink?: string | null }) {
   const link = `${args.origin}/ai-cleared/join/${args.token}`;
   const seatLine = `${args.seats} ${CYBER_SECURED_NAME} ${args.seats === 1 ? "seat" : "seats"}`;
   const items = trackItems();
+  const team = args.teamLink ? teamLinkBlock(args.teamLink) : null;
   const html = `
     <div style="font-family:Inter,Segoe UI,Helvetica,Arial,sans-serif;color:#14161d;max-width:560px;margin:0 auto;padding:24px">
       <p style="font-family:ui-monospace,Consolas,monospace;font-size:11px;letter-spacing:.2em;color:#0a7085;margin:0 0 16px">${CYBER_SECURED_BRAND}</p>
       <h1 style="font-size:22px;margin:0 0 12px">${seatLine} ${args.seats === 1 ? "is" : "are"} ready for ${esc(args.firmName)}.</h1>
-      <p style="font-size:15px;line-height:1.55;margin:0 0 12px">You are the admin for ${esc(args.firmName)}. Set up your account from the link below, then invite your staff from the admin console: paste their email addresses and each person gets their own invite. One seat is one person, and it opens every course:</p>
+      <p style="font-size:15px;line-height:1.55;margin:0 0 12px">You are the lead for ${esc(args.firmName)}. ${team ? "There are two links in this email: one to set up your own account, and one to share with your staff." : "Set up your account from the link below, then invite your staff from the admin console."} One seat is one person, and it opens every course:</p>
       ${items.html}
-      <p style="font-size:15px;line-height:1.55;margin:0 0 12px">The same console shows how far everyone has got. Your own seat is included, so you can take the courses too.</p>
-      <p style="margin:18px 0 10px"><a href="${link}" style="display:inline-block;background:#0a7085;color:#fff;text-decoration:none;padding:11px 18px;border-radius:8px;font-weight:600">Set up my admin account</a></p>
+      <p style="font-size:15px;line-height:1.55;margin:0 0 12px"><b>1. Your account.</b> Your own seat is included, so you can take the courses too. Your team page shows who has joined and how far everyone has got.</p>
+      <p style="margin:12px 0 10px"><a href="${link}" style="display:inline-block;background:#0a7085;color:#fff;text-decoration:none;padding:11px 18px;border-radius:8px;font-weight:600">Set up my account</a></p>
       <p style="font-size:13.5px;color:#5b6572;line-height:1.5;margin:0">Or copy this link: <a href="${link}" style="color:#0a7085">${link}</a></p>
+      ${team ? team.html : ""}
       <p style="font-size:13.5px;color:#5b6572;line-height:1.5;margin:14px 0 0">Questions go to ${esc(args.staffName)}${args.staffEmail ? ` (${esc(args.staffEmail)})` : ""}.</p>
     </div>`;
-  const text = `${seatLine} ${args.seats === 1 ? "is" : "are"} ready for ${args.firmName}.\n\nYou are the admin. Set up your account, then invite your staff from the admin console. One seat is one person, and it opens every course:\n${items.text}\n\nThe same console shows how far everyone has got. Your own seat is included.\n\nSet up your admin account: ${link}\n`;
+  const text = `${seatLine} ${args.seats === 1 ? "is" : "are"} ready for ${args.firmName}.\n\nYou are the lead. One seat is one person, and it opens every course:\n${items.text}\n\n1. Your account. Your own seat is included, and your team page shows who has joined and how far everyone has got.\nSet up my account: ${link}\n${team ? `\n${team.text}` : ""}`;
   return sendEmail({ to: args.to, subject: `${CYBER_SECURED_NAME} is ready for ${args.firmName}: ${seatLine}`, html, text, replyTo: args.staffEmail ?? undefined });
+}
+
+/* The team link, as a section of an email to the lead: what it is, the
+ * link in full so it can be copied, and how to forward it. */
+function teamLinkBlock(teamLink: string): { html: string; text: string } {
+  const say = "Forward this one link to your staff by email or Teams. Each person opens it, creates an account and is straight into the courses. One person only ever takes one seat, and your team page can make a new link at any time if this one ends up somewhere it should not.";
+  return {
+    html: `
+      <div style="margin:22px 0 0;padding:16px 18px;border:1px solid #d9d2c4;border-radius:12px;background:#faf7f1">
+        <p style="font-size:15px;line-height:1.55;margin:0 0 8px"><b>2. Your team link.</b> ${esc(say)}</p>
+        <p style="font-family:ui-monospace,Consolas,monospace;font-size:13.5px;line-height:1.5;margin:0;word-break:break-all"><a href="${teamLink}" style="color:#0a7085">${teamLink}</a></p>
+      </div>`,
+    text: `2. Your team link. ${say}\n${teamLink}\n`,
+  };
 }
 
 /* Seats bought by card by an admin who already runs a firm: no new firm,
  * no new invite, just the count going up and a note saying so. */
-export async function sendSeatsAdded(args: { to: string; firmName: string; seats: number; total?: number; origin: string; staffName: string; staffEmail: string | null }) {
+export async function sendSeatsAdded(args: { to: string; firmName: string; seats: number; total?: number; origin: string; staffName: string; staffEmail: string | null; teamLink?: string | null }) {
   const link = `${args.origin}/cyber-secured/admin`;
   const seatLine = `${args.seats} ${CYBER_SECURED_NAME} ${args.seats === 1 ? "seat" : "seats"}`;
   const totalLine = args.total ? `Your firm now has ${args.total} ${args.total === 1 ? "seat" : "seats"} in all. ` : "";
-  const claim = "Each person you invite gets their own link, claims their seat on first sign-in, and has every course from then on.";
+  const claim = args.teamLink
+    ? `Anyone new can join through your team link, which still works as before: ${args.teamLink}`
+    : "Each person you invite gets their own link, claims their seat on first sign-in, and has every course from then on.";
   const html = `
     <div style="font-family:Inter,Segoe UI,Helvetica,Arial,sans-serif;color:#14161d;max-width:560px;margin:0 auto;padding:24px">
       <p style="font-family:ui-monospace,Consolas,monospace;font-size:11px;letter-spacing:.2em;color:#0a7085;margin:0 0 16px">${CYBER_SECURED_BRAND}</p>
       <h1 style="font-size:22px;margin:0 0 12px">${seatLine} added to ${esc(args.firmName)}.</h1>
-      <p style="font-size:15px;line-height:1.55;margin:0 0 12px">Thank you. ${totalLine}The seats are on your firm's account now and the admin console shows them. Invite staff from there: paste their email addresses and each person gets their own invite. ${claim}</p>
-      <p style="margin:18px 0 10px"><a href="${link}" style="display:inline-block;background:#0a7085;color:#fff;text-decoration:none;padding:11px 18px;border-radius:8px;font-weight:600">Open the admin console</a></p>
+      <p style="font-size:15px;line-height:1.55;margin:0 0 12px">Thank you. ${totalLine}The seats are on your firm's account now and your team page shows them. ${esc(claim)}</p>
+      <p style="margin:18px 0 10px"><a href="${link}" style="display:inline-block;background:#0a7085;color:#fff;text-decoration:none;padding:11px 18px;border-radius:8px;font-weight:600">Open my team page</a></p>
       <p style="font-size:13.5px;color:#5b6572;line-height:1.5;margin:0">Or copy this link: <a href="${link}" style="color:#0a7085">${link}</a></p>
       <p style="font-size:13.5px;color:#5b6572;line-height:1.5;margin:14px 0 0">Your VAT invoice comes separately from Stripe. Questions go to ${esc(args.staffName)}${args.staffEmail ? ` (${esc(args.staffEmail)})` : ""}.</p>
     </div>`;
-  const text = `${seatLine} added to ${args.firmName}.\n\n${totalLine}The seats are on your firm's account now and the admin console shows them. Invite staff from there. ${claim}\n\nAdmin console: ${link}\n`;
+  const text = `${seatLine} added to ${args.firmName}.\n\n${totalLine}The seats are on your firm's account now and your team page shows them. ${claim}\n\nYour team page: ${link}\n`;
   return sendEmail({ to: args.to, subject: `${seatLine} added to ${args.firmName}`, html, text, replyTo: args.staffEmail ?? undefined });
 }
 
@@ -337,7 +382,7 @@ export async function sendSeatsAdded(args: { to: string; firmName: string; seats
  * their own request, are left alone. */
 export async function nudge(args: { orgId: string; firmName: string; origin: string; adminName: string; adminEmail: string | null }) {
   const { tracks, rows } = await getTeam(args.orgId);
-  const targets = rows.filter((r) => r.role !== "ADMIN" && !r.email.endsWith("@removed.invalid") && (!r.claimed || r.finished < tracks.length));
+  const targets = rows.filter((r) => r.role !== "ADMIN" && !r.removedAt && !r.email.endsWith("@removed.invalid") && (!r.claimed || r.finished < tracks.length));
   let sent = 0;
   const failed: string[] = [];
   for (const r of targets) {
@@ -362,6 +407,59 @@ export async function nudge(args: { orgId: string; firmName: string; origin: str
     }
   }
   return { sent, failed, eligible: targets.length };
+}
+
+export type RemovePersonResult = { ok: true; deleted: boolean } | { ok: false; status: number; error: string };
+
+/**
+ * The lead removes someone from the firm's seats.
+ *
+ * An invite nobody has opened is simply deleted, as it always was: there is
+ * no record worth keeping. Someone who took their seat is marked removed
+ * instead, so the register still shows who had one and when it came back:
+ * - the seat stops counting against the licence (seatsLeft skips it),
+ * - their personal invite link is replaced, so an old email cannot reclaim it,
+ * - they leave the firm (their OrgMember row goes), so the portal stops
+ *   enrolling them, and
+ * - the courses close: the BUNDLE entitlements a seat grants are taken
+ *   away, unless they still hold a seat at another firm.
+ * Their enrolments and progress are kept. Inviting the address again
+ * brings the seat back (inviteSeats), and they pick up where they were.
+ *
+ * Nobody removes themselves, a manager cannot remove an admin, and the
+ * firm's last admin cannot be removed: someone has to be left to run it.
+ */
+export async function removePerson(args: { orgId: string; seatId: string; actor: { email: string; role: OrgRole; staff: boolean } }): Promise<RemovePersonResult> {
+  const seat = await prisma.seat.findFirst({ where: { id: args.seatId, orgId: args.orgId } });
+  if (!seat) return { ok: false, status: 404, error: "No such seat." };
+  if (seat.removedAt) return { ok: true, deleted: false };
+  if (!seat.claimedAt && !seat.userId) {
+    await prisma.seat.delete({ where: { id: seat.id } });
+    return { ok: true, deleted: true };
+  }
+  const user = seat.userId ? await prisma.user.findUnique({ where: { id: seat.userId }, select: { email: true } }) : null;
+  const mine = [seat.email, user?.email].filter(Boolean).map((e) => normaliseEmail(e));
+  if (!args.actor.staff && mine.includes(normaliseEmail(args.actor.email))) return { ok: false, status: 409, error: "You cannot remove your own seat. Ask admissions@algorithmx.co.uk if you are handing the firm over." };
+  const member = seat.userId ? await prisma.orgMember.findUnique({ where: { orgId_userId: { orgId: args.orgId, userId: seat.userId } }, select: { role: true } }) : null;
+  const isAdmin = seat.role === "ADMIN" || member?.role === "ADMIN";
+  if (isAdmin && args.actor.role !== "ADMIN") return { ok: false, status: 403, error: "Only an admin can remove another admin." };
+  if (isAdmin && seat.userId) {
+    const others = await prisma.orgMember.count({ where: { orgId: args.orgId, role: "ADMIN", NOT: { userId: seat.userId } } });
+    if (others === 0) return { ok: false, status: 409, error: "That person is the firm's only admin. Make someone else an admin first." };
+  }
+
+  const now = new Date();
+  /* Every seat this person holds here: sent to their address, or claimed by their account. */
+  const theirs = await prisma.seat.findMany({ where: { orgId: args.orgId, removedAt: null, OR: [{ id: seat.id }, { email: seat.email }, ...(seat.userId ? [{ userId: seat.userId }] : [])] }, select: { id: true } });
+  await prisma.$transaction(async (tx) => {
+    for (const s of theirs) await tx.seat.update({ where: { id: s.id }, data: { removedAt: now, inviteToken: newInviteToken("removed") } });
+    if (seat.userId) {
+      await tx.orgMember.deleteMany({ where: { orgId: args.orgId, userId: seat.userId } });
+      const elsewhere = await tx.seat.count({ where: { userId: seat.userId, removedAt: null, claimedAt: { not: null }, NOT: { orgId: args.orgId } } });
+      if (!elsewhere) await tx.entitlement.deleteMany({ where: { userId: seat.userId, source: "BUNDLE", product: { slug: { in: [...SECURED_TRACK_SLUGS] } } } });
+    }
+  });
+  return { ok: true, deleted: false };
 }
 
 export interface ProfileInput {
