@@ -6,6 +6,7 @@ import { auth } from "@/app/lib/auth";
 import { getSchoolContext, listClasses, planWholeClassMove } from "@/app/lib/schoolClasses";
 import { whoAddsPlaces } from "@/app/lib/schoolHead";
 import { getClassProgress } from "@/app/lib/classProgress";
+import PortalShell, { SP_BACK } from "@/app/components/school-portal/PortalShell";
 import MoveWholeClass from "./MoveWholeClass";
 import Locked from "../../teach/Locked";
 import AddPupils from "./AddPupils";
@@ -22,6 +23,11 @@ import { archiveClassAction, movePupilAction, removePupilAction, resetPicturesAc
  *
  * Ordered by who needs the teacher rather than alphabetically. A register is
  * in name order; this is a list of who to go and stand next to.
+ *
+ * Drawn in the light house (PortalShell, school-portal.css). How children
+ * get in is said ONCE, in the Getting in panel: it used to be said four
+ * times, by the board card, the code slab, the Add pupils lede and the
+ * empty state.
  */
 export const dynamic = "force-dynamic";
 
@@ -106,193 +112,213 @@ export default async function ClassPage({
     ? new Date(klass.archivedAt).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })
     : null;
   const waiting = klass.pupils.filter((p) => !p.signedIn).length;
+  const someone = klass.pupils.length > 0;
   /* Cyber Heroes only: the milestones are its weeks, and a certificate
      saying "of 20 weeks" on an Explorers class would be a lie. */
   const certificateWeekFor = (done: number): number | null =>
     klass.courseSlug === "cyber-heroes" ? CERT_WEEKS.find((wk) => done >= wk) ?? null : null;
 
+  const anyBanner = Boolean(move === "full" || move === "spent" || movedHere || bulk === "full" || bulk === "failed" || move === "failed");
+
   return (
-    <div className="axtp">
-      <div className="wrap">
-        <header className="top">
-          <div>
-            <div className="brand">
-              {school.orgName} &middot; <i>{klass.className}</i>
-            </div>
-            <div className="sub">
-              {klass.courseName}
-              {klass.yearGroup ? ` · ${w.yearLabel.toLowerCase()} ${klass.yearGroup}` : ""}
-              {` · ${klass.pupils.length} ${klass.pupils.length === 1 ? w.person : w.people}`}
-            </div>
+    <PortalShell
+      nav={
+        <>
+          {/* The sheet to hand upwards. Offered even on an empty class,
+              because the page it leads to says so itself, and offered on
+              an archived one on purpose: the week after a year ends is
+              exactly when somebody asks what the children did. */}
+          <Link href={`/schools/classes/${id}/report`} className="sp-nav-a">Report</Link>
+          {someone && !archived && (
+            <Link href={`/schools/classes/${id}/cards`} className="sp-nav-a">Login cards</Link>
+          )}
+          <Link href="/schools/teach" className="sp-nav-a">{w.Staff} packs</Link>
+          <SignOut className="sp-nav-a" />
+        </>
+      }
+    >
+      <header className="sp-head">
+        <div className="copy">
+          <Link href="/schools/classes" className="sp-back">
+            {SP_BACK}
+            <span>All {w.groups}</span>
+          </Link>
+          <span className="sp-eyebrow">
+            <i />
+            <span>{school.orgName}</span> &middot; <b>{klass.courseName}</b>
+          </span>
+          <h1>{klass.className}</h1>
+          <div className="sp-chips">
+            {klass.yearGroup ? <span className="sp-chip">{w.yearLabel} {klass.yearGroup}</span> : null}
+            <span className="sp-chip">
+              {klass.pupils.length} {klass.pupils.length === 1 ? w.person : w.people}
+            </span>
+            {archived && <span className="sp-chip" data-kind="ended">Year ended</span>}
           </div>
-          <div className="modes" role="group" aria-label="Elsewhere">
-            {/* The sheet to hand upwards. Offered even on an empty class,
-                because the page it leads to says so itself, and offered on
-                an archived one on purpose: the week after a year ends is
-                exactly when somebody asks what the children did. */}
-            <Link href={`/schools/classes/${id}/report`} className="axbtn">Report</Link>
-            <Link href="/schools/classes" className="axbtn">All {w.groups}</Link>
-            <Link href="/schools/teach" className="axbtn">{w.Staff} packs</Link>
-            <SignOut />
-          </div>
-        </header>
+        </div>
+      </header>
 
-        {move === "full" && (
-          <p className="ended" role="alert">
-            <b>That move needs another place and you have {placesLeftAfterRefusal ?? 0} left.</b>{" "}
-            Moving a {w.person}{" "}
-            to a {w.group} on a different course spends a place, because a place is one {w.person}{" "}
-            on one course. Moving between {w.groups} on the same course is still free. To buy more,
-            write to <a href="mailto:admissions@algorithmx.co.uk">admissions@algorithmx.co.uk</a>.
-          </p>
-        )}
-        {move === "spent" && (
-          <p className="ended" role="status">
-            <b>Moved, and that used another place.</b> The new {w.group} runs a different course,
-            and a place is one {w.person} on one course. They keep the course they were on as well.
-          </p>
-        )}
-
-        {/* The whole-class move, landing on the class the children arrived
-            in. Nothing else on this screen proves thirty moves happened, and
-            a teacher who has just spent thirty places should be told so in
-            the same breath. */}
-        {movedHere && (
-          <p className="ended" role="status">
-            <b>
-              {movedHere} {Number(movedHere) === 1 ? w.person : w.people} moved into this {w.group}.
-            </b>{" "}
-            {Number(placesSpentMoving) > 0
-              ? `That used ${placesSpentMoving} more place${placesSpentMoving === "1" ? "" : "s"}, because this ${w.group} runs a different course and a place is one ${w.person} on one course. They keep the course they were on as well.`
-              : `No extra places: this ${w.group} runs the same course they were already on.`}{" "}
-            Their old {w.group} is empty now, so end its year when you are ready.
-          </p>
-        )}
-        {bulk === "full" && (
-          <p className="ended" role="alert">
-            <b>
-              Moving this whole {w.group} needs more places than you have left (
-              {placesLeftAfterRefusal ?? 0}).
-            </b>{" "}
-            Nobody was moved: it is all or nothing, so you cannot end up with half the {w.group} on
-            a course you have not paid for. To buy more places, write to{" "}
-            <a href="mailto:admissions@algorithmx.co.uk">admissions@algorithmx.co.uk</a>.
-          </p>
-        )}
-        {bulk === "failed" && (
-          <p className="ended" role="alert">
-            <b>That {w.group} could not be moved.</b> The {w.group} you picked may have had its year
-            ended since this page loaded. Try again.
-          </p>
-        )}
-        {move === "failed" && (
-          <p className="ended" role="alert">
-            <b>That {w.person} could not be moved.</b> The {w.group} you picked may have had its
-            year ended since this page loaded. Try again.
-          </p>
-        )}
-
-        {archived ? (
-          /* The board link and the code are hidden rather than greyed out,
-             because neither works any more: both pupil gates filter an
-             archived class, so the link opens on nothing and the code is
-             refused. A dead link on a classroom board is worse than no
-             link. */
-          <div className="ended">
-            <p style={{ margin: "0 0 9px" }}>
-              <b>This {w.group}&rsquo;s year ended on {endedOn}.</b> Nobody in it can sign in any
-              more and the {w.group} code has stopped working, which is what ending a year means.
-              Nothing has been deleted: the names, the pictures they chose and every week they
-              finished are all still here, and the places stay spent. You can still move a{" "}
-              {w.person} into a live {w.group} below.
+      {anyBanner && (
+        <div className="sp-banners">
+          {move === "full" && (
+            <p className="sp-banner" data-tone="err" role="alert">
+              <b>That move needs another place and you have {placesLeftAfterRefusal ?? 0} left.</b>{" "}
+              Moving a {w.person}{" "}
+              to a {w.group} on a different course spends a place, because a place is one {w.person}{" "}
+              on one course. Moving between {w.groups} on the same course is still free. To buy more,
+              write to <a href="mailto:admissions@algorithmx.co.uk">admissions@algorithmx.co.uk</a>.
             </p>
-            <form action={unarchiveClassAction}>
-              <input type="hidden" name="classId" value={id} />
-              <button type="submit" className="axbtn">Put this {w.group} back</button>
-            </form>
-          </div>
-        ) : (
-          <>
-            <div className="classboard">
-              <div className="boardsay">
-                <h3>Put this on the board</h3>
-                <p>
-                  It opens straight on the list of names, so nobody has to type the {w.group} code.
-                  Write it up, bookmark it once on the {w.group} machines, or send it home.
-                </p>
-              </div>
+          )}
+          {move === "spent" && (
+            <p className="sp-banner" data-tone="ok" role="status">
+              <b>Moved, and that used another place.</b> The new {w.group} runs a different course,
+              and a place is one {w.person} on one course. They keep the course they were on as well.
+            </p>
+          )}
+
+          {/* The whole-class move, landing on the class the children arrived
+              in. Nothing else on this screen proves thirty moves happened, and
+              a teacher who has just spent thirty places should be told so in
+              the same breath. */}
+          {movedHere && (
+            <p className="sp-banner" data-tone="ok" role="status">
+              <b>
+                {movedHere} {Number(movedHere) === 1 ? w.person : w.people} moved into this {w.group}.
+              </b>{" "}
+              {Number(placesSpentMoving) > 0
+                ? `That used ${placesSpentMoving} more place${placesSpentMoving === "1" ? "" : "s"}, because this ${w.group} runs a different course and a place is one ${w.person} on one course. They keep the course they were on as well.`
+                : `No extra places: this ${w.group} runs the same course they were already on.`}{" "}
+              Their old {w.group} is empty now, so end its year when you are ready.
+            </p>
+          )}
+          {bulk === "full" && (
+            <p className="sp-banner" data-tone="err" role="alert">
+              <b>
+                Moving this whole {w.group} needs more places than you have left (
+                {placesLeftAfterRefusal ?? 0}).
+              </b>{" "}
+              Nobody was moved: it is all or nothing, so you cannot end up with half the {w.group} on
+              a course you have not paid for. To buy more places, write to{" "}
+              <a href="mailto:admissions@algorithmx.co.uk">admissions@algorithmx.co.uk</a>.
+            </p>
+          )}
+          {bulk === "failed" && (
+            <p className="sp-banner" data-tone="err" role="alert">
+              <b>That {w.group} could not be moved.</b> The {w.group} you picked may have had its year
+              ended since this page loaded. Try again.
+            </p>
+          )}
+          {move === "failed" && (
+            <p className="sp-banner" data-tone="err" role="alert">
+              <b>That {w.person} could not be moved.</b> The {w.group} you picked may have had its
+              year ended since this page loaded. Try again.
+            </p>
+          )}
+        </div>
+      )}
+
+      {archived ? (
+        /* The board link and the code are hidden rather than greyed out,
+           because neither works any more: both pupil gates filter an
+           archived class, so the link opens on nothing and the code is
+           refused. A dead link on a classroom board is worse than no
+           link. */
+        <section className="sp-panel">
+          <p style={{ margin: "0 0 14px" }}>
+            <b>This {w.group}&rsquo;s year ended on {endedOn}.</b> Nobody in it can sign in any
+            more and the {w.group} code has stopped working, which is what ending a year means.
+            Nothing has been deleted: the names, the pictures they chose and every week they
+            finished are all still here, and the places stay spent. You can still move a{" "}
+            {w.person} into a live {w.group} below.
+          </p>
+          <form action={unarchiveClassAction}>
+            <input type="hidden" name="classId" value={id} />
+            <button type="submit" className="axbtn">Put this {w.group} back</button>
+          </form>
+        </section>
+      ) : (
+        <section className="sp-panel" aria-labelledby="sp-in-h">
+          <h2 id="sp-in-h" className="sp-section-h" style={{ margin: "0 0 16px" }}>Getting in</h2>
+          <div className="sp-in">
+            <div>
+              <h3>Put this on the board</h3>
+              <p className="lede">
+                It opens straight on the list of names, so nobody has to type the {w.group} code.
+                Write it up, bookmark it once on the {w.group} machines, or send it home.
+              </p>
               <ClassLink host={host} code={klass.code} />
             </div>
-
-            <p className="whatis">
-              <b>The {w.group} code is <code className="axcode">{klass.code}</code>.</b> Children
-              who arrive any other way type this, pick their name, and tap their picture password.
-              The first time they sign in they choose that password, so there is nothing for you to
-              set up beforehand.{" "}
-              {/* The way out of reading a seven character code aloud to
-                  thirty children. Offered here rather than buried in the
-                  header, next to the code it replaces. */}
-              {klass.pupils.length > 0 && (
-                <>
-                  Or{" "}
-                  <Link href={`/schools/classes/${id}/cards`}>
-                    print a login card for each {w.person}
-                  </Link>{" "}
-                  and hand them out.
-                </>
-              )}
+            <div>
+              <h3>Or they type the code</h3>
+              <code className="bigcode">{klass.code}</code>
+            </div>
+          </div>
+          <div className="sp-in-foot">
+            <p>
+              Children pick their name and tap their three pictures. The first time in they choose
+              the pictures, so there is nothing to set up.
             </p>
-          </>
-        )}
-
-        {klass.pupils.length > 0 && (
-          <div className="run">
-            <div className={"leg" + (klass.notStarted ? " now" : "")}>
-              <h5>Not started</h5>
-              <div className="bignum">{klass.notStarted}</div>
-            </div>
-            <div className="leg play">
-              <b>{klass.inProgress} part way through</b>
-              <span>
-                Sorted below by who needs you, not by name.<br />
-                {waiting > 0
-                  ? `${waiting} have not signed in yet.`
-                  : "Everybody has signed in."}
-              </span>
-            </div>
-            {/* Cyber Pro cannot say who has finished. Working that out needs
-                the list of topics in each module, which lives in the Pro
-                lesson manifests, and those import client components so a
-                server page cannot read them. A box reading 0 for ever is
-                worse than no box. */}
-            {klass.tracksWeeks && (
-              <div className="leg">
-                <h5>All {klass.weeksCount} weeks</h5>
-                <div className="bignum">{klass.finished}</div>
-              </div>
+            {/* The way out of reading a seven character code aloud to
+                thirty children. */}
+            {someone && (
+              <Link href={`/schools/classes/${id}/cards`} className="sp-btn" data-kind="ghost">
+                Print login cards
+              </Link>
             )}
           </div>
-        )}
+        </section>
+      )}
 
-        {!archived && <AddPupils classId={id} placesLeft={left} w={w} askLine={asker?.ask} />}
-
-        {klass.pupils.length === 0 ? (
-          <div className="sheet">
-            <p className="lede" style={{ margin: 0 }}>
-              Nobody in this {w.group} yet. Paste your register above, one {w.person} per line.
-            </p>
+      {someone && (
+        <div className="sp-stats" data-two={klass.tracksWeeks ? undefined : ""}>
+          <div className="sp-stat" data-now={klass.notStarted ? "" : undefined}>
+            <h4>Not started</h4>
+            <div className="n">{klass.notStarted}</div>
           </div>
-        ) : (
-          <div className="sheet">
-            <div className="phase">
-              The {w.group} &middot; {klass.pupils.length}{" "}
-              {klass.pupils.length === 1 ? w.person : w.people}
+          <div className="sp-stat">
+            <h4>Part way through</h4>
+            <div className="n">{klass.inProgress}</div>
+            <small>
+              Sorted below by who needs you, not by name.{" "}
+              {waiting > 0
+                ? `${waiting} have not signed in yet.`
+                : "Everybody has signed in."}
+            </small>
+          </div>
+          {/* Cyber Pro cannot say who has finished. Working that out needs
+              the list of topics in each module, which lives in the Pro
+              lesson manifests, and those import client components so a
+              server page cannot read them. A box reading 0 for ever is
+              worse than no box. */}
+          {klass.tracksWeeks && (
+            <div className="sp-stat">
+              <h4>All {klass.weeksCount} weeks</h4>
+              <div className="n">{klass.finished}</div>
             </div>
+          )}
+        </div>
+      )}
+
+      {!archived && (
+        <section className="sp-panel" id="add">
+          <AddPupils classId={id} placesLeft={left} w={w} askLine={asker?.ask} />
+        </section>
+      )}
+
+      <section className="sp-panel sp-list" aria-labelledby="sp-list-h">
+        <h2 id="sp-list-h">
+          The {w.group} &middot; {klass.pupils.length}{" "}
+          {klass.pupils.length === 1 ? w.person : w.people}
+        </h2>
+        {!someone ? (
+          <p className="sp-none">Nobody here yet.{archived ? "" : " Paste your register above."}</p>
+        ) : (
+          <>
             {klass.pupils.map((p) => (
-              <div key={p.id} className="row prow">
-                <div className="rb">
-                  {p.fullName}
-                  <small className={p.signedIn ? "s-say" : "s-ask"}>
+              <div key={p.id} className="sp-row">
+                <div className="who">
+                  <b>{p.fullName}</b>
+                  <small data-tone={p.signedIn ? "say" : "ask"}>
                     {!p.signedIn
                       ? "not signed in yet"
                       : p.pro
@@ -304,19 +330,19 @@ export default async function ClassPage({
                           : `${p.weeksComplete} of ${klass.weeksCount} weeks · ${p.totalStars} stars`}
                   </small>
                 </div>
-                <div className="rs">
+                <div className="where">
                   {/* Pips are weeks, and Cyber Pro has none: it records a row
                       per topic completed instead. Drawing the strip for a Pro
                       group gave twenty empty pips that never filled, which
                       read as a broken product rather than as a different
                       shape of course. */}
                   {klass.tracksWeeks && <ClassStrip pupil={p} weeksCount={klass.weeksCount} />}
-                  <small className="dim">
+                  <small>
                     {klass.tracksWeeks && p.currentWeek !== null ? `Week ${p.currentWeek}` : ""}
                     {p.lastSeen ? `${klass.tracksWeeks && p.currentWeek !== null ? " · " : ""}last worked ${WHEN(p.lastSeen)}` : ""}
                   </small>
                 </div>
-                <div className="rs pupilacts">
+                <div className="acts">
                   {/* The certificate this one has actually earned, if any.
                       /schools promises a school "certificates for every
                       pupil" and until now there was no way for a teacher to
@@ -384,7 +410,7 @@ export default async function ClassPage({
                     <form action={removePupilAction}>
                       <input type="hidden" name="childProfileId" value={p.id} />
                       <input type="hidden" name="classId" value={id} />
-                      <button type="submit" className="revoke">Remove</button>
+                      <button type="submit" className="sp-text-err">Remove</button>
                     </form>
                   )}
                 </div>
@@ -402,42 +428,51 @@ export default async function ClassPage({
                 this {w.group} shows topics and modules instead of a row of weeks.
               </p>
             )}
-          </div>
+          </>
         )}
+      </section>
 
-        {/* SEPTEMBER. One decision about a whole year group, priced before
-            it is made. Offered on an archived {w.group} too, because the
-            ordinary case is a {w.group} whose year was ended in July and
-            whose children are moving up now. */}
-        {plan && <MoveWholeClass classId={id} plan={plan} w={w} />}
+      {/* SEPTEMBER. One decision about a whole year group, priced before
+          it is made. Offered on an archived {w.group} too, because the
+          ordinary case is a {w.group} whose year was ended in July and
+          whose children are moving up now. */}
+      {plan && plan.pupils > 0 && plan.options.length > 0 && (
+        <section className="sp-panel">
+          <MoveWholeClass classId={id} plan={plan} w={w} />
+        </section>
+      )}
 
-        {!archived && (
-          <div className="endyear">
-            <h4>End this {w.group}&rsquo;s year</h4>
-            <p>
-              Do this in July, once the {w.people} have moved up. It stops everybody in this{" "}
-              {w.group} signing in and retires the {w.group} code, so move anyone carrying on into
-              their new {w.group} first. Nothing is deleted and no place comes back: the work stays
-              here to look at, and you can put the {w.group} back if you do it by mistake.
-            </p>
-            <form action={archiveClassAction}>
-              <input type="hidden" name="classId" value={id} />
-              <button type="submit" className="revoke">End the year for this {w.group}</button>
-            </form>
-          </div>
-        )}
+      {!archived && (
+        <section className="sp-panel" data-tone="err">
+          <h2>End this {w.group}&rsquo;s year</h2>
+          <p className="lede" style={{ marginBottom: 16 }}>
+            Do this in July, once the {w.people} have moved up. It stops everybody in this{" "}
+            {w.group} signing in and retires the {w.group} code, so move anyone carrying on into
+            their new {w.group} first. Nothing is deleted and no place comes back: the work stays
+            here to look at, and you can put the {w.group} back if you do it by mistake.
+          </p>
+          <form action={archiveClassAction}>
+            <input type="hidden" name="classId" value={id} />
+            <button type="submit" className="sp-btn" data-kind="ghost" style={{ color: "var(--err)" }}>
+              End the year for this {w.group}
+            </button>
+          </form>
+        </section>
+      )}
 
-        <footer className="note">
+      <footer className="sp-small">
+        <p>
           You can see how a {w.person} is getting on. You cannot change it: progress is written by
           them playing the week. Removing a {w.person} deletes their account and their progress
           with it, and <b>the place stays used</b>, so do it when somebody leaves the {w.noun}, not
           when they change {w.group} or when a name is spelled wrong.
-          <br />
+        </p>
+        <p style={{ marginTop: 6 }}>
           A place is one {w.person} on one course. Moving them to another {w.group} on{" "}
           <b>this</b> course is free. Moving them to a {w.group} on a <b>different</b> course uses
           another place, and they keep the course they were on as well.
-        </footer>
-      </div>
-    </div>
+        </p>
+      </footer>
+    </PortalShell>
   );
 }

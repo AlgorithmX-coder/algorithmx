@@ -68,12 +68,12 @@ export default function AddPupils({
           <span>Names</span>
           <textarea
             name="names"
-            rows={6}
+            rows={4}
             placeholder={"Ada Okafor\nSam Reid\nPriya Nair\nTom Baker"}
             onChange={(e) => recount(e.target.value)}
           />
         </label>
-        <div className="sharerow" style={{ marginTop: 10 }}>
+        <div className="sharerow" style={{ marginTop: 12 }}>
           <button type="submit" disabled={pending || count === 0 || over || placesLeft <= 0}>
             {pending ? "Adding…" : count === 0 ? `Add ${w.people}` : `Add ${count} ${count === 1 ? w.person : w.people}`}
           </button>
