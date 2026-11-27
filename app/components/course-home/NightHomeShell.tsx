@@ -20,13 +20,6 @@ const jet = JetBrains_Mono({ weight: ["400", "500", "600", "700", "800"], subset
 type Course = "pro" | "desk";
 const PauseCtx = createContext<{ paused: boolean; toggle: () => void }>({ paused: false, toggle: () => {} });
 
-/* the "by AlgorithmX" byline cube of the course lockups */
-export function ByCube() {
-  return (
-    <svg width="12" height="12" viewBox="0 0 24 24" aria-hidden="true"><g fill="none" stroke="#5f8dff" strokeWidth="1.6" strokeLinejoin="round"><path d="M12 2.5 21 7.25v9.5L12 21.5 3 16.75v-9.5z" /><path d="M3 7.25 12 12l9-4.75M12 12v9.5" /></g><text x="12" y="10.4" textAnchor="middle" fontFamily="ui-monospace,Menlo,monospace" fontSize="5.2" fontWeight="700" fill="#5f8dff">&lt;/&gt;</text></svg>
-  );
-}
-
 export function NightHomePause() {
   const { paused, toggle } = useContext(PauseCtx);
   return (

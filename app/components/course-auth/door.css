@@ -50,7 +50,6 @@
 .r8d .r8-lock .name{font:700 12.5px var(--mono);letter-spacing:.19em;text-transform:uppercase;white-space:nowrap;color:var(--ink)}
 .r8d .r8-lock .name em{font-style:normal;color:var(--acc)}
 .r8d .r8-lock .by{font:600 8px var(--mono);letter-spacing:.24em;text-transform:uppercase;color:var(--faint);display:inline-flex;align-items:center;gap:4px}
-.r8d .r8-lock .by svg{width:9px;height:9px;display:block}
 .r8d .r8-back{font:700 11px var(--mono);letter-spacing:.17em;text-transform:uppercase;color:var(--acc);text-decoration:none;display:inline-flex;align-items:center;gap:8px;min-height:44px}
 .r8d .r8-back:hover{color:var(--ink)}
 .r8d .r8-back svg{width:14px;height:14px;display:block}

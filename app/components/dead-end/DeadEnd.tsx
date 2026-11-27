@@ -1,6 +1,7 @@
 import type { CSSProperties, ReactNode } from "react";
 import Link from "next/link";
 import { Fredoka, Geist_Mono, Inter, Space_Grotesk } from "next/font/google";
+import ByAlgorithmX from "@/app/components/ByAlgorithmX";
 import DeadEndPause from "./DeadEndPause";
 import "./dead-end.css";
 
@@ -74,12 +75,7 @@ function Lockup({ kind, link }: { kind: R8Lockup; link: boolean }) {
       <span className="mark">{school ? R8_ICON.cap : R8_ICON.shield}</span>
       <span className="col">
         <span className="name">Cyber <em>{school ? "School" : "Secured"}</em></span>
-        <span className="by">
-          by
-          {/* eslint-disable-next-line @next/next/no-img-element -- a 9px static mark */}
-          <img src="/favicon.svg" alt="" width={9} height={9} />
-          AlgorithmX
-        </span>
+        <span className="by"><ByAlgorithmX /></span>
       </span>
     </>
   );

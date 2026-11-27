@@ -15,6 +15,7 @@
  */
 
 import Link from "next/link";
+import ByAlgorithmX from "@/app/components/ByAlgorithmX";
 import { useEffect, useState } from "react";
 import { Fraunces, Inter, JetBrains_Mono } from "next/font/google";
 import type { CertifiedCourseSlug } from "../engine/courses";
@@ -57,12 +58,6 @@ const MARK: Record<CertifiedCourseSlug, React.ReactNode> = {
   "ai-cleared": I(<path d="M12 2l8 3v6c0 5-3.5 8-8 11-4.5-3-8-6-8-11V5l8-3z M9 12l2 2 4-4" />, 23, 1.8),
   "ai-fluent": I(<path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z" />, 22, 1.8),
 };
-const BY_CUBE = (
-  <svg width="12" height="12" viewBox="0 0 24 24" aria-hidden="true">
-    <g fill="none" stroke="#5f8dff" strokeWidth="1.6" strokeLinejoin="round"><path d="M12 2.5 21 7.25v9.5L12 21.5 3 16.75v-9.5z" /><path d="M3 7.25 12 12l9-4.75M12 12v9.5" /></g>
-    <text x="12" y="10.4" textAnchor="middle" fontFamily="ui-monospace,Menlo,monospace" fontSize="5.2" fontWeight="700" fill="#5f8dff">&lt;/&gt;</text>
-  </svg>
-);
 /* the AlgorithmX cube as a solid blue mark, for paper */
 const CUBE = (
   <svg viewBox="0 0 32 32" aria-hidden="true">
@@ -156,7 +151,7 @@ export default function LightTable(p: LightTableProps) {
             {MARK[p.course]}
             <span className="lk-col">
               <span className="lk-name">{brandPlain} <b>{brandAcc}</b></span>
-              <span className="lk-by"><span className="dim">by</span>{BY_CUBE}<span className="dim">AlgorithmX</span></span>
+              <span className="lk-by"><ByAlgorithmX wordClassName="dim" /></span>
             </span>
           </Link>
           <span className="lt-sep" aria-hidden="true" />

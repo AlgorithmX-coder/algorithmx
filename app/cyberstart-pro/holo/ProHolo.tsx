@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import type { Product } from "@prisma/client";
-import CubeMark from "@/app/components/CubeMark";
+import ByAlgorithmX from "@/app/components/ByAlgorithmX";
 import { AXP, splitHeadline } from "./content";
 import { powerWires, reveal, reduced } from "./fx";
 import HoloAccent from "./HoloAccent";
@@ -79,7 +79,7 @@ function Nav({ ctaLabel, ctaHref }: { ctaLabel: string; ctaHref: string }) {
           <ProMark size={22} />
           <span className="lk-col">
             <span className="lk-name">{N.logo.wordmark}</span>
-            <span className="lk-by"><span className="dim">{N.logo.by}</span><CubeMark size={12} color="#5f8dff" code /><span className="dim">{N.logo.brand}</span></span>
+            <span className="lk-by"><ByAlgorithmX by={N.logo.by} brand={N.logo.brand} wordClassName="dim" /></span>
           </span>
         </Link>
         <nav className="chips" aria-label={N.chipsAriaLabel}>

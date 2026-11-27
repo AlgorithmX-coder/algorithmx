@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { Chakra_Petch, IBM_Plex_Mono, Inter } from "next/font/google";
 import CourseLockup from "@/app/components/CourseLockup";
-import CubeMark from "@/app/components/CubeMark";
+import ByAlgorithmX from "@/app/components/ByAlgorithmX";
 import { reduced, reveal } from "@/app/components/home-holo/fx";
 import { AXO, moduleArc, stepLabel, type SafetyIcon } from "./content";
 import "./ops-console.css";
@@ -49,7 +49,7 @@ function Lockup() {
   return (
     <a className="op9-lockup" href={N.brand.href} aria-label={N.brand.ariaLabel}>
       <CourseLockup id="ops" tone="sand" size={0.85} />
-      <span className="lk-by" aria-hidden="true"><span className="dim">by</span><CubeMark size={12} color="#5f8dff" strokeWidth={1.6} code /><span className="dim">AlgorithmX</span></span>
+      <span className="lk-by" aria-hidden="true"><ByAlgorithmX wordClassName="dim" /></span>
     </a>
   );
 }

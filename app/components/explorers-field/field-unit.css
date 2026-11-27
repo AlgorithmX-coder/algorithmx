@@ -52,7 +52,6 @@ html:has(.cx9){scroll-behavior:smooth}
 .cx9 .cx9-lock > span:first-child > span{font-size:12.5px!important}
 .cx9 .cx9-lock .lk-by{font-family:var(--mono);font-weight:500;font-size:8.5px;letter-spacing:.24em;text-transform:uppercase;display:inline-flex;align-items:center;white-space:nowrap;padding-left:30px;color:#14161d}
 .cx9 .cx9-lock .lk-by .dim{opacity:.6}
-.cx9 .cx9-lock .lk-by svg{display:inline-block;margin:0 3px;filter:drop-shadow(0 0 4px rgba(95,141,255,.7))}
 .cx9 .cx9-nav a.l{font:700 11px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--body);text-decoration:none;padding:10px 8px}
 .cx9 .cx9-nav a.l:hover{color:var(--teal)}
 .cx9 .cx9-nav .btn{min-height:42px;padding:0 18px;font-size:13px}

@@ -18,7 +18,7 @@
 import Link from "next/link";
 import { useEffect, useRef, useState, type MutableRefObject, type ReactNode } from "react";
 import { Chakra_Petch, Fredoka, Inter, JetBrains_Mono } from "next/font/google";
-import CubeMark from "@/app/components/CubeMark";
+import ByAlgorithmX from "@/app/components/ByAlgorithmX";
 import { COURSE_AUTH_CONTENT, SHARED, type CourseAuthKey } from "./content";
 import { awarenessIdle, clearedIdle, deskIdle, explorersIdle, fluentIdle, heroesIdle, keyLight, opsIdle, proIdle, reduced, type Idle } from "./nightFx";
 import "./night-console.css";
@@ -33,7 +33,7 @@ export type NightLight = { flash: () => void };
 
 /* ── lockups: the canonical course marks (CourseLockup.tsx glyphs; the four
    adult courses use the homepage card icons) with the stacked
-   "by [cube] AlgorithmX" byline the landings carry ── */
+   "by AlgorithmX [cube]" byline the landings carry ── */
 const ico = (d: string, size: number, color: string, sw = 1.8) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth={sw} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d={d} /></svg>
 );
@@ -200,7 +200,7 @@ export default function NightShell({
           {MARK[course]}
           <span className="lk-col">
             <span className="lk-name">{wordPlain}{wordAcc ? <b>{wordAcc}</b> : null}</span>
-            <span className="lk-by"><span className="dim">by</span><CubeMark size={12} color="#5f8dff" code /><span className="dim">AlgorithmX</span></span>
+            <span className="lk-by"><ByAlgorithmX wordClassName="dim" /></span>
           </span>
         </Link>
         <Link className="na1-back" href={landing}>{ARROW}<span>{SHARED.back} {t.courseName}</span></Link>

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import CubeMark from "@/app/components/CubeMark";
+import ByAlgorithmX from "@/app/components/ByAlgorithmX";
 import { D } from "./tokens";
 
 /* The course's top bar: the same DESK READY lockup as the landing, a trail
@@ -18,9 +18,7 @@ export function DeskWordmark() {
           DESK <span style={{ color: "#5f8dff" }}>READY</span>
         </span>
         <span style={{ fontFamily: D.mono, fontWeight: 500, fontSize: 8.5, letterSpacing: "0.24em", textTransform: "uppercase", color: D.ink, display: "inline-flex", alignItems: "center" }}>
-          <span style={{ opacity: 0.6 }}>by</span>
-          <CubeMark size={12} color="#5f8dff" code style={{ display: "inline-block", margin: "0 3px", filter: "drop-shadow(0 0 4px rgba(95,141,255,0.7))" }} />
-          <span style={{ opacity: 0.6 }}>AlgorithmX</span>
+          <ByAlgorithmX wordStyle={{ opacity: 0.6 }} />
         </span>
       </span>
     </span>

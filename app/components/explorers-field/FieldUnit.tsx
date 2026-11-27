@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState, type CSSProperties } from "re
 import Image from "next/image";
 import Link from "next/link";
 import CourseLockup from "@/app/components/CourseLockup";
-import CubeMark from "@/app/components/CubeMark";
+import ByAlgorithmX from "@/app/components/ByAlgorithmX";
 import { CX, ENROL, LOGIN, PRICE_FIGURE } from "./content";
 import { demoStatus, findTell, isDone, remainingTells, TELLS, TELL_COUNT } from "./demo";
 import "./field-unit.css";
@@ -46,7 +46,7 @@ function Nav() {
             page (owner: the logo never changes) */}
         <Link className="cx9-lock" href={N.home.href} aria-label={N.home.ariaLabel}>
           <CourseLockup id="explorers" size={0.8} tone="sand" />
-          <span className="lk-by" aria-hidden="true"><span className="dim">{N.bylineBy}</span><CubeMark size={12} color="#5f8dff" code /><span className="dim">{N.bylineBrand}</span></span>
+          <span className="lk-by" aria-hidden="true"><ByAlgorithmX by={N.bylineBy} brand={N.bylineBrand} wordClassName="dim" /></span>
         </Link>
         {N.links.map((l) =>
           l.href.startsWith("#")

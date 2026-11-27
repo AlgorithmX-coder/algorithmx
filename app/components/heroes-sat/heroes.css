@@ -62,8 +62,7 @@
 .hv4sat .brand .stack{display:flex;flex-direction:column;gap:2px;line-height:1}
 /* the byline sits under the wordmark, clear of the shield (21px mark + 8px gap) */
 .hv4sat .brand .by{font-family:var(--mono);font-weight:500;font-size:8.9px;letter-spacing:.24em;text-transform:uppercase;color:#14161d;display:inline-flex;align-items:center;white-space:nowrap;padding-left:29px}
-.hv4sat .brand .by span{opacity:.6}
-.hv4sat .brand .by svg{display:inline-block;margin:0 3px;filter:drop-shadow(0 0 4px rgba(95,141,255,.7))}
+.hv4sat .brand .by .dim{opacity:.6}
 .hv4sat .links{display:none;gap:4px;margin-left:auto}
 @media (min-width:1024px){.hv4sat .links{display:flex}}
 .hv4sat .links a{font:600 15px var(--display);padding:10px 13px;border-radius:999px;color:var(--body);transition:.25s;position:relative}

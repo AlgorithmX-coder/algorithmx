@@ -18,7 +18,7 @@
 import Link from "next/link";
 import { useState, type CSSProperties, type ReactNode } from "react";
 import { Geist_Mono, Inter, Space_Grotesk } from "next/font/google";
-import CubeMark from "@/app/components/CubeMark";
+import ByAlgorithmX from "@/app/components/ByAlgorithmX";
 import { INDIVIDUAL_WORKPLACE_COURSE_PENCE, poundsFigure } from "@/app/lib/individualCoursePrice";
 import { SHARED, authPack } from "./content";
 import { DOOR_PRICE, DOOR_SIDE, DOOR_UI, SECURED_FORM, SECURED_SIDE, type DoorCourse, type DoorKey } from "./doorContent";
@@ -188,7 +188,7 @@ export default function DoorShell({
           <span className="mark">{MARK[course]}</span>
           <span className="col">
             <span className="name">{plain} <em>{acc}</em></span>
-            <span className="by">by <CubeMark size={9} strokeWidth={2} /> AlgorithmX</span>
+            <span className="by"><ByAlgorithmX /></span>
           </span>
         </Link>
         <Link className="r8-back" href={landing} aria-label={backLabel}>{DOOR_ICON.back}<span>{backLabel}</span></Link>

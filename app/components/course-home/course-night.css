@@ -77,7 +77,6 @@ to{filter:blur(20px) brightness(1.14)}}
 .hb6 .hb6-lockup .lk-name b{font-weight:inherit;color:var(--hb6-acc-text)}
 .hb6 .hb6-lockup .lk-by{font-family:var(--hb6-mono);font-weight:500;font-size:8.5px;letter-spacing:.24em;text-transform:uppercase;display:inline-flex;align-items:center;white-space:nowrap;color:var(--hb6-ink)}
 .hb6 .hb6-lockup .lk-by .dim{opacity:.72}
-.hb6 .hb6-lockup .lk-by svg{display:inline-block;margin:0 3px;filter:drop-shadow(0 0 4px rgba(95,141,255,.7))}
 .hb6 .hb6-trail{font-family:var(--hb6-label-font);font-size:11.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--hb6-muted);white-space:nowrap;padding-left:18px;border-left:1px solid var(--hb6-line2)}
 .hb6 .hb6-tag{font-family:var(--hb6-mono);font-size:11px;font-weight:600;letter-spacing:.08em;color:var(--hb6-muted);white-space:nowrap}
 .hb6 .hb6-pillbtn{flex-shrink:0;display:inline-flex;align-items:center;min-height:44px;padding:0 18px;border-radius:999px;border:1px solid var(--hb6-line2);background:var(--hb6-raise);color:var(--hb6-ink);font-family:var(--hb6-disp);font-size:15px;font-weight:600;white-space:nowrap;transition:border-color .2s,background .2s}

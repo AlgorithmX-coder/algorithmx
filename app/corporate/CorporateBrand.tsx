@@ -1,6 +1,6 @@
 "use client";
 
-import CubeMark from "@/app/components/CubeMark";
+import ByAlgorithmX from "@/app/components/ByAlgorithmX";
 
 /* The /corporate header mark: the shield (glowing cyan-to-violet edge,
  * bright check). The nav flips night<->sand on scroll, so the wordmark uses the
@@ -26,9 +26,7 @@ export default function CorporateBrand() {
           CYBER <span className="corp-wm-secured" style={{ color: "#5f8dff" }}>SECURED</span>
         </span>
         <span className="corp-wm-by" style={{ fontFamily: "var(--lv2-font-mono)", fontWeight: 500, fontSize: 8.5, letterSpacing: "0.24em", textTransform: "uppercase", color: "var(--lv2-word-mark, #eaf1ff)", display: "inline-flex", alignItems: "center" }}>
-          <span style={{ opacity: 0.6 }}>by</span>
-          <CubeMark size={12} color="#5f8dff" code style={{ display: "inline-block", margin: "0 3px", filter: "drop-shadow(0 0 4px rgba(95,141,255,0.7))" }} />
-          <span style={{ opacity: 0.6 }}>AlgorithmX</span>
+          <ByAlgorithmX wordStyle={{ opacity: 0.6 }} />
         </span>
       </span>
     </>

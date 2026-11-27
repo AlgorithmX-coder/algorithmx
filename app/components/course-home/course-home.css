@@ -79,7 +79,6 @@ to{transform:rotate(360deg)}}
 .ch6 .ch6-lockup .lk-name b{font-weight:inherit;color:var(--acc-text)}
 .ch6 .ch6-lockup .lk-by{font-family:var(--mono);font-weight:500;font-size:8.5px;letter-spacing:.24em;text-transform:uppercase;display:inline-flex;align-items:center;white-space:nowrap;color:var(--ink)}
 .ch6 .ch6-lockup .lk-by .dim{opacity:.72}
-.ch6 .ch6-lockup .lk-by svg{display:inline-block;margin:0 3px;filter:drop-shadow(0 0 4px rgba(95,141,255,.7))}
 .ch6[data-course="explorers"] .ch6-lockup{--lk-font:var(--font-geist-mono),"Geist Mono",var(--mono);--lk-fs:12.5px;--lk-ls:.12em}
 .ch6[data-course="ops"] .ch6-lockup{--lk-font:var(--font-chakra),"Chakra Petch",var(--sans);--lk-fs:15px;--lk-ls:.16em}
 .ch6 .ch6-chrome-r{display:flex;align-items:center;gap:10px}
