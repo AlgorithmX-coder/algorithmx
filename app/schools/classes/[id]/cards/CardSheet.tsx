@@ -6,14 +6,17 @@
  * at, on screen and on paper, and keeping it props-in means it can be
  * rendered with made-up names and checked without a database behind it.
  *
- * It holds no secret. A card carries a first name, the address that opens
- * the list of names, and what to tap. The picture password is chosen by the
+ * It holds no secret. A card carries a first name (plus a family-name
+ * initial only when two children in the class share that first name, worked
+ * out by shownNames in pupilName.ts and never the family name itself), the
+ * address that opens the list of names, and what to tap. The picture password is chosen by the
  * child on first sign-in, stored hashed, and never printed or hinted at
  * here: a sheet of these left on a desk gives away a first name and a code
  * that was on the board all lesson.
  */
 export interface CardPupil {
   id: string;
+  /** The name as a child is shown it: shownNames, never the full name. */
   name: string;
 }
 

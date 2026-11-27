@@ -99,7 +99,7 @@ const SECTIONS: ReadonlyArray<readonly [id: string, label: string, cta?: boolean
 
 const STEPS = [
   { n: "01", colour: "#0a7085", title: "We create your licence", text: "We set up the school licence and your teacher logins. There is nothing to install: it runs in the browser your school already has." },
-  { n: "02", colour: "#5744c9", title: "You build your classes", text: "Make a class, add your pupils by first name, and assign the course that class will take. Pupils sign in with a class code and a picture password." },
+  { n: "02", colour: "#5744c9", title: "You build your classes", text: "Make a class, add your pupils by name, and assign the course that class will take. Pupils sign in with a class code and a picture password." },
   { n: "03", colour: "#0e7a45", title: "Run the lessons", text: "Twenty weeks of lessons, one a week, about 50 minutes each. That leaves time either side to log in and log out inside a one-hour slot. Progress saves on every screen, so each pupil picks up exactly where they left off." },
   { n: "04", colour: "#8a5400", title: "Get the class report", text: "A detailed breakdown of the class and feedback on every pupil: who finished, what they found hard, and a certificate each to take home." },
 ];
@@ -138,7 +138,7 @@ const PILLARS = [
     icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d="M12 3l7 3v6c0 4.4-3 7.6-7 9-4-1.4-7-4.6-7-9V6z" /><path d="M9 12l2 2 4-4" /></svg>,
     /* Four points each, so the three cards carry the same weight. The
        two data lines read better as one anyway. */
-    points: ["Cyber Essentials certified, the NCSC-backed security standard", "A closed environment: pupils only ever interact with the lesson", "Pupil data is never sent to AI services", "First name, class and progress only, deleted whenever you ask"],
+    points: ["Cyber Essentials certified, the NCSC-backed security standard", "A closed environment: pupils only ever interact with the lesson", "Pupil data is never sent to AI services", "A pupil's name, class and progress only, deleted whenever you ask"],
   },
   {
     title: "Matched to the curriculum",
@@ -160,7 +160,7 @@ const FAQS = [
   { q: "What do we need in the room?", a: "Any computer with a modern browser. Headphones help, and captions cover the rest. It runs entirely in the browser, so your network team has nothing to set up." },
   { q: "How long is a lesson?", a: "About 50 minutes, which fits an hour slot with time to log in and log out. Progress saves on every screen, so if the bell goes, the pupil picks up exactly where they left off next week." },
   { q: "Who teaches it?", a: "The class teacher, whatever their confidence with computing. The narrator carries every instruction, the games mark themselves, and the teacher view shows who needs a nudge." },
-  { q: "What pupil data do you hold?", a: "First name, class and progress, and that is all. Pupil activity stays within the platform and is never sent to an AI service, and we delete a school's data in full whenever you ask." },
+  { q: "What pupil data do you hold?", a: "A pupil's name, their class and their progress, and that is all. No date of birth, no email address, no photo. Pupil activity stays within the platform and is never sent to an AI service, and we delete a school's data in full whenever you ask." },
   { q: "Is it safe?", a: "Yes. AlgorithmX is Cyber Essentials certified, the NCSC-backed standard for defending against common cyber attacks. Pupils only ever interact with the lesson itself, inside a closed environment built for schools, and every reward is personal to the pupil." },
   { q: "How does a school get started?", a: "Get in touch and we'll walk you through the onboarding process: the agreement, your licence, building your classes and the first lesson. Most schools start with a walkthrough so they can see the lessons before they commit." },
 ];

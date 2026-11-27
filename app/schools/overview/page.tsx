@@ -343,7 +343,7 @@ export default async function SchoolOverviewPage() {
               <h3>No {w.groups} yet</h3>
               <p>
                 Nothing has started, which at this stage is normal. One of your {w.staffs} makes a{" "}
-                {w.group}, picks its course, and types in first names. Each child gets a login card
+                {w.group}, picks its course, and types in names. Each child gets a login card
                 with the {w.group} code on it.
               </p>
               <p className="sxh-emptyrow">

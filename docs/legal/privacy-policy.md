@@ -64,7 +64,7 @@ service like ours.
 - If you join a wait-list for an upcoming course: your email address
 
 **Child (entered by the parent when a course is started)**
-- Child's first name
+- Child's name (first name, and family name where a school provides it)
 - Child's date of birth (we use this to determine the child's age; we store the date of
   birth as the source of truth)
 - Child's favourite colour (used to personalise the experience)

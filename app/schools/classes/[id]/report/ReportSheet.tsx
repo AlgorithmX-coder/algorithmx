@@ -50,7 +50,7 @@ export default function ReportSheet({
   /* Register order. The class page sorts by who needs the teacher, which is
      right for a lesson and wrong for a document: a head reads down a list
      of names. */
-  const pupils = [...klass.pupils].sort((a, b) => a.name.localeCompare(b.name));
+  const pupils = [...klass.pupils].sort((a, b) => a.fullName.localeCompare(b.fullName));
 
   const lastWorked = pupils.reduce<Date | null>(
     (latest, p) => (p.lastSeen && (!latest || p.lastSeen > latest) ? p.lastSeen : latest),
@@ -153,7 +153,7 @@ export default function ReportSheet({
             <tbody>
               {pupils.map((p) => (
                 <tr key={p.id}>
-                  <td className="name">{p.name}</td>
+                  <td className="name">{p.fullName}</td>
                   <td className="n">{p.pro?.topics ?? 0}</td>
                   <td className="n">{p.pro?.modules ?? 0}</td>
                   <td className="n dim">{SHORT(p.lastSeen)}</td>
@@ -175,7 +175,7 @@ export default function ReportSheet({
             <tbody>
               {pupils.map((p) => (
                 <tr key={p.id}>
-                  <td className="name">{p.name}</td>
+                  <td className="name">{p.fullName}</td>
                   <td className="n">
                     {p.weeksComplete} of {klass.weeksCount}
                   </td>

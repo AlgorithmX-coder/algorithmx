@@ -19,6 +19,7 @@ import {
 } from "@/app/lib/schoolClasses";
 import { resetPupilPictures } from "@/app/lib/pupilAuth";
 import { whoAddsPlaces } from "@/app/lib/schoolHead";
+import { fullName, splitPupilList } from "@/app/lib/pupilName";
 import { SCHOOL_WORDS, wordsFor, type SchoolWords } from "@/app/schools/words";
 
 /**
@@ -113,15 +114,13 @@ export async function addPupilsAction(formData: FormData): Promise<ActionResult>
 
   const classId = String(formData.get("classId") ?? "");
   /* One per line, or commas: a teacher pastes from wherever the register
-     already lives and should not have to reformat it first. */
-  const names = String(formData.get("names") ?? "")
-    .split(/[\n,;]+/)
-    .map((n) => n.trim())
-    .filter(Boolean);
+     already lives and should not have to reformat it first. Each one is
+     "first name, then family name", split at the first space. */
+  const names = splitPupilList(String(formData.get("names") ?? ""));
 
   let res: Awaited<ReturnType<typeof addPupils>>;
   try {
-    res = await addPupils({ orgId: school.orgId, classId, firstNames: names });
+    res = await addPupils({ orgId: school.orgId, classId, pupils: names });
   } catch (e) {
     /* A refused save must never become the crash screen. It did on
        2026-11-27: the owner pressed Add pupils on prod, the write threw, and
@@ -147,7 +146,7 @@ export async function addPupilsAction(formData: FormData): Promise<ActionResult>
        retypes the whole register, and every name that was already saved
        takes a SECOND place out of the licence the school paid for. The
        list is capped so a pasted year group does not fill the screen. */
-    const saved = names.slice(0, made);
+    const saved = names.slice(0, made).map(fullName);
     const shown = saved.slice(0, 10).join(", ");
     const list = saved.length > 10 ? `${shown} and ${saved.length - 10} more` : shown;
     return {
@@ -169,7 +168,12 @@ export async function addPupilsAction(formData: FormData): Promise<ActionResult>
           : `Every place in the ${w.noun}'s shared pool is used, so nobody can be added. ${ask}`,
       };
     }
-    if (res.error === "bad_pupil_name") return { ok: false, error: `“${res.detail}” is too long for a first name.` };
+    if (res.error === "bad_pupil_name") {
+      return {
+        ok: false,
+        error: `“${res.detail}” is too long for a ${res.part === "family" ? "family name" : "first name"}. Each part of a name can be up to 30 characters.`,
+      };
+    }
     return { ok: false, error: saidFor(w)[res.error] };
   }
 

@@ -6,6 +6,7 @@ import { isSchoolCourse, placesUsed } from "@/app/lib/schoolPlaces";
 import { moveSpendsAPlace, placesNeededForWholeClass } from "@/app/lib/placeRule";
 import { pickSchool, SCHOOL_CHOICE_COOKIE, type SchoolChoice } from "@/app/lib/schoolChoice";
 import { trialStatus } from "@/app/lib/orgTrial";
+import { tooLongPart, type SplitName } from "@/app/lib/pupilName";
 import type { LearnerOrgKind } from "@prisma/client";
 
 /**
@@ -19,9 +20,12 @@ import type { LearnerOrgKind } from "@prisma/client";
  * forever.
  *
  * What we store about somebody else's child is deliberately almost nothing:
- * a first name, a colour they pick, and which class they are in. No surname,
- * no date of birth, no email, no contact details. The class carries a year
- * group, which is all the age signal the course needs.
+ * a name, a colour they pick, and which class they are in. The name is a
+ * first name and, when the teacher gives one, a family name, so two children
+ * called Tom can be told apart; the family name is shown to the teacher and
+ * never to a child (see pupilName.ts). No date of birth, no email, no contact
+ * details. The class carries a year group, which is all the age signal the
+ * course needs.
  */
 
 /* Unambiguous alphabet: no O/0, no I/1/l, no S/5. A seven year old types
@@ -290,7 +294,8 @@ export class AddPupilsFailed extends Error {
 }
 
 /**
- * Add pupils to a class, by first name.
+ * Add pupils to a class, by name: a first name, and a family name when the
+ * teacher gives one (split by splitPupilList in pupilName.ts).
  *
  * Each one gets an account they own. The address is synthetic and on a
  * reserved domain that can never receive mail, so a child's record can never
@@ -306,18 +311,23 @@ export class AddPupilsFailed extends Error {
 export async function addPupils(args: {
   orgId: string;
   classId: string;
-  firstNames: readonly string[];
-}): Promise<{ ok: true; added: number } | { ok: false; error: ClassFailure; detail?: string }> {
+  pupils: readonly SplitName[];
+}): Promise<
+  | { ok: true; added: number }
+  | { ok: false; error: ClassFailure; detail?: string; part?: "first" | "family" }
+> {
   const klass = await prisma.class.findFirst({
     where: { id: args.classId, orgId: args.orgId, archivedAt: null },
     select: { id: true, productId: true },
   });
   if (!klass) return { ok: false, error: "class_not_found" };
 
-  const names = args.firstNames.map((n) => n.trim()).filter(Boolean);
+  const names = args.pupils
+    .map((p) => ({ name: p.name.trim(), familyName: p.familyName?.trim() || null }))
+    .filter((p) => p.name);
   if (!names.length) return { ok: false, error: "no_pupils" };
-  const tooLong = names.find((n) => n.length > 30);
-  if (tooLong) return { ok: false, error: "bad_pupil_name", detail: tooLong };
+  const tooLong = tooLongPart(names);
+  if (tooLong) return { ok: false, error: "bad_pupil_name", detail: tooLong.text, part: tooLong.part };
 
   /* The place cap, enforced. `seatsPurchased` has existed since AI Cleared and
      has never been checked anywhere: a firm can invite more people than it
@@ -333,7 +343,7 @@ export async function addPupils(args: {
   }
 
   let added = 0;
-  for (const firstName of names) {
+  for (const { name: firstName, familyName } of names) {
     /* randomInt refuses a max above 2^48 - 1 (ERR_OUT_OF_RANGE), and at
        exactly 2 ** 48 every add threw before a single pupil was made. */
     const tag = randomInt(2 ** 48 - 1).toString(36) + Date.now().toString(36);
@@ -351,6 +361,7 @@ export async function addPupils(args: {
           data: {
             userId: user.id,
             name: firstName,
+            familyName,
             favouriteColour: COLOURS[randomInt(COLOURS.length)],
             classId: args.classId,
           },
@@ -398,7 +409,7 @@ export async function listPupils(orgId: string, classId: string) {
     where: { classId, class: { orgId } },
     orderBy: { name: "asc" },
     select: {
-      id: true, name: true, favouriteColour: true, createdAt: true,
+      id: true, name: true, familyName: true, favouriteColour: true, createdAt: true,
       user: { select: { id: true, hashedPassword: true } },
     },
   });

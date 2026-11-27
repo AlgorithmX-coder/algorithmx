@@ -10,7 +10,7 @@ import type { PupilProgress } from "@/app/lib/classProgress";
  */
 export default function ClassStrip({ pupil, weeksCount }: { pupil: PupilProgress; weeksCount: number }) {
   return (
-    <div className="strip" aria-label={`${pupil.name}: ${pupil.weeksComplete} of ${weeksCount} weeks complete`}>
+    <div className="strip" aria-label={`${pupil.fullName}: ${pupil.weeksComplete} of ${weeksCount} weeks complete`}>
       {pupil.weeks.map((w) => (
         <span
           key={w.week}
