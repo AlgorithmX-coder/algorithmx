@@ -1,4 +1,6 @@
 import Link from "next/link";
+import DeadEnd, { R8_ICON } from "@/app/components/dead-end/DeadEnd";
+import SignOut from "../SignOut";
 
 /**
  * What somebody sees when they are signed in but their school has no licence.
@@ -12,36 +14,41 @@ import Link from "next/link";
  * overview as well as the packs, and a licence buys places that a school
  * spends on whichever of the school courses it likes. Saying "a Cyber Heroes
  * licence" here was wrong for every school that bought something else.
+ *
+ * The look is the round 8 dead end (landing lab r8-state.html?s=not-teacher):
+ * the light house, a lock, and a "Signed in as" strip with the school
+ * portal's own Sign out, so somebody on the wrong account can switch.
  */
 export default function Locked({ email }: { email?: string | null }) {
   return (
-    <div className="axtp">
-      <div className="wrap">
-        <header className="top">
-          <div>
-            <div className="brand">Algorithm<span>X</span> &middot; <i>For schools</i></div>
-            <div className="sub">{email ?? "Signed in"}</div>
-          </div>
-        </header>
-
-        <div className="brief">
-          <h4>This is for schools with a licence</h4>
-          <p>
-            Behind here are your classes, your pupils&rsquo; progress, and the teacher packs that
-            carry the whole lesson: the script, the answers, and on some weeks a safeguarding
-            briefing written for an adult. They open for staff at a school that holds a licence.
-          </p>
-          <p>
-            If your school has one and you cannot get in, your account is not on it yet. Ask
-            whoever set the licence up to add you, or email{" "}
-            <a href="mailto:admissions@algorithmx.co.uk">admissions@algorithmx.co.uk</a> and we will sort
-            it out.
-          </p>
-          <p className="line">
-            <Link href="/schools">See what a school licence includes</Link>
-          </p>
-        </div>
-      </div>
-    </div>
+    <DeadEnd
+      tone="school"
+      lockup="school"
+      back={{ href: "/schools", label: "AlgorithmX for Schools" }}
+      eyebrow="For schools"
+      title="This is for schools with a licence"
+      glyph="lock"
+      actions={
+        <Link className="r8-btn" href="/schools">
+          See what a school licence includes{R8_ICON.arrow}
+        </Link>
+      }
+      who={{
+        label: email ? <>Signed in as <b>{email}</b></> : "Signed in",
+        signOut: <SignOut className="r8-signout" />,
+      }}
+    >
+      <p>
+        Behind here are your classes, your pupils&rsquo; progress, and the teacher packs that
+        carry the whole lesson: the script, the answers, and on some weeks a safeguarding
+        briefing written for an adult. They open for staff at a school that holds a licence.
+      </p>
+      <p>
+        If your school has one and you cannot get in, your account is not on it yet. Ask
+        whoever set the licence up to add you, or email{" "}
+        <a href="mailto:admissions@algorithmx.co.uk">admissions@algorithmx.co.uk</a> and we will sort
+        it out.
+      </p>
+    </DeadEnd>
   );
 }
