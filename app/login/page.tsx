@@ -91,7 +91,7 @@ function LoginPageInner() {
       mode="login"
       title={forCourse ? "Sign in to your course" : "Welcome back"}
       sub={null}
-      notice={justRegistered && !formError ? "Account created — log in to power on." : ""}
+      notice={justRegistered && !formError ? "Account created. Log in to power on." : ""}
       error={formError}
       trust={trust}
       fxRef={fxRef}

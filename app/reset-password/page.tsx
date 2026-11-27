@@ -123,7 +123,7 @@ function ResetPasswordInner() {
     <FrontShell
       mode="reset"
       title="Choose a new password"
-      sub="Make it strong — this protects your family's account."
+      sub="Make it strong: this protects your family's account."
       error={error}
       trust={TRUST}
       fxRef={fxRef}

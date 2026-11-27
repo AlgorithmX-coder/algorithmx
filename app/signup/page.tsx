@@ -89,7 +89,7 @@ function SignupPageInner() {
       const data = await res.json();
 
       if (!res.ok) {
-        setFormError(data.error || "Couldn't create your account just yet — try again?");
+        setFormError(data.error || "Couldn't create your account just yet. Try again?");
         setPhase("idle");
         return;
       }
