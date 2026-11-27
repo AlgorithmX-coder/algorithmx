@@ -9,9 +9,9 @@ const OWNER_PRICES: Record<string, number> = {
   cyberstart: 9900,
   "cyberstart-pro": 9900,
   "desk-ready": 2500,
-  "ai-cleared": 4200,
-  "ai-fluent": 4200,
-  "cyber-awareness": 4200,
+  "ai-cleared": 2900,
+  "ai-fluent": 2900,
+  "cyber-awareness": 2900,
 };
 
 describe("consumer catalogue", () => {
@@ -42,12 +42,12 @@ describe("consumer catalogue", () => {
   it("formats prices the way the pages print them", () => {
     expect(formatPence(9900)).toBe("£99");
     expect(formatPence(2500)).toBe("£25");
-    expect(formatPence(4250)).toBe("£42.50");
+    expect(formatPence(2950)).toBe("£29.50");
   });
 
   it("works out the VAT already inside each price", () => {
     expect(vatIncludedPence(9900)).toBe(1650);
-    expect(vatIncludedPence(4200)).toBe(700);
+    expect(vatIncludedPence(2900)).toBe(483);
     expect(vatIncludedPence(2500)).toBe(417);
     expect(vatIncludedPence(0)).toBe(0);
   });

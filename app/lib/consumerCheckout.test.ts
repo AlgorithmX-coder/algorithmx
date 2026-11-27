@@ -43,7 +43,7 @@ describe("consumerSessionParams", () => {
     expect(p.line_items).toHaveLength(1);
     const li = p.line_items![0];
     expect(li.quantity).toBe(1);
-    expect(li.price_data?.unit_amount).toBe(4200);
+    expect(li.price_data?.unit_amount).toBe(2900);
     expect(li.price_data?.currency).toBe("gbp");
     expect(li.tax_rates).toEqual(["txr_incl"]);
     expect(p.customer_email).toBe("me@example.test");
@@ -118,7 +118,7 @@ describe("fulfilConsumerSession", () => {
   });
 
   it("gives an individual buyer of a workplace course their own enrolment", async () => {
-    const r = await fulfilConsumerSession(paid({ amount_total: 4200 }, { slug: "ai-cleared" }));
+    const r = await fulfilConsumerSession(paid({ amount_total: 2900 }, { slug: "ai-cleared" }));
     expect(r).toMatchObject({ granted: true, slug: "ai-cleared" });
     expect(db.enrolment.createMany).toHaveBeenCalledWith({
       data: [{ userId: "u1", productId: "p-ai-cleared", orgId: "org-house", track: "GENERAL" }],
