@@ -269,6 +269,27 @@ export async function createClass(args: {
 const COLOURS = ["cyan", "violet", "lime", "amber", "rose", "teal"] as const;
 
 /**
+ * The database refused while pupils were being created.
+ *
+ * It carries how many children were made before it failed, because each one
+ * is its own transaction and the earlier ones are real. A teacher who is
+ * told "nothing happened" when four of six landed will add those four again,
+ * and a school pays for the duplicates out of its own licence.
+ */
+export class AddPupilsFailed extends Error {
+  /** Children created, and kept, before the failure. */
+  readonly added: number;
+  /** How many names were asked for in total. */
+  readonly asked: number;
+  constructor(added: number, asked: number, cause: unknown) {
+    super(`adding pupils failed after ${added} of ${asked}`, { cause });
+    this.name = "AddPupilsFailed";
+    this.added = added;
+    this.asked = asked;
+  }
+}
+
+/**
  * Add pupils to a class, by first name.
  *
  * Each one gets an account they own. The address is synthetic and on a
@@ -316,45 +337,56 @@ export async function addPupils(args: {
     /* randomInt refuses a max above 2^48 - 1 (ERR_OUT_OF_RANGE), and at
        exactly 2 ** 48 every add threw before a single pupil was made. */
     const tag = randomInt(2 ** 48 - 1).toString(36) + Date.now().toString(36);
-    await prisma.$transaction(async (tx) => {
-      const user = await tx.user.create({
-        data: {
-          name: firstName,
-          email: `pupil.${tag}@pupils.algorithmx.invalid`,
-          role: "pupil",
-        },
-        select: { id: true },
-      });
-      const child = await tx.childProfile.create({
-        data: {
-          userId: user.id,
-          name: firstName,
-          favouriteColour: COLOURS[randomInt(COLOURS.length)],
-          classId: args.classId,
-        },
-        select: { id: true },
-      });
+    try {
+      await prisma.$transaction(async (tx) => {
+        const user = await tx.user.create({
+          data: {
+            name: firstName,
+            email: `pupil.${tag}@pupils.algorithmx.invalid`,
+            role: "pupil",
+          },
+          select: { id: true },
+        });
+        const child = await tx.childProfile.create({
+          data: {
+            userId: user.id,
+            name: firstName,
+            favouriteColour: COLOURS[randomInt(COLOURS.length)],
+            classId: args.classId,
+          },
+          select: { id: true },
+        });
 
-      /* The place, spent, ON THIS CLASS'S COURSE. Kept for good: see
-         schoolPlaces. The course is recorded because a place is good for
-         one course only, so the ledger has to know which, or moving this
-         child up next September could not be told apart from moving them
-         between two classes of the course they are already on. */
-      await tx.placeRedemption.create({
-        data: { orgId: args.orgId, childProfileId: child.id, productId: klass.productId },
-      });
+        /* The place, spent, ON THIS CLASS'S COURSE. Kept for good: see
+           schoolPlaces. The course is recorded because a place is good for
+           one course only, so the ledger has to know which, or moving this
+           child up next September could not be told apart from moving them
+           between two classes of the course they are already on. */
+        await tx.placeRedemption.create({
+          data: { orgId: args.orgId, childProfileId: child.id, productId: klass.productId },
+        });
 
-      /* The course, granted. Without this a pupil signs in, lands on their
-         HQ and is bounced off the first lesson they tap, because
-         `/lesson/[week]` checks for an entitlement that nothing was creating.
-         Written with `tx` rather than through `grantEntitlement` so the
-         account, the place and the access are one atomic unit: a pupil who
-         exists without a place would be free, and a pupil who exists without
-         this cannot play. */
-      await tx.entitlement.create({
-        data: { userId: user.id, productId: klass.productId, source: "BUNDLE" },
+        /* The course, granted. Without this a pupil signs in, lands on their
+           HQ and is bounced off the first lesson they tap, because
+           `/lesson/[week]` checks for an entitlement that nothing was creating.
+           Written with `tx` rather than through `grantEntitlement` so the
+           account, the place and the access are one atomic unit: a pupil who
+           exists without a place would be free, and a pupil who exists without
+           this cannot play. */
+        await tx.entitlement.create({
+          data: { userId: user.id, productId: klass.productId, source: "BUNDLE" },
+        });
       });
-    });
+    } catch (cause) {
+      /* The database refused. Each child is its own transaction, so the ones
+         already created are real and keep their places; only this one and the
+         names after it did not happen. Throwing on through would have taken
+         the teacher to the crash screen with the whole class page gone, which
+         is what happened to the owner on 2026-11-27: pressing Add pupils threw
+         them out of the portal with nothing said and nothing saved. The caller
+         turns this into a sentence and reports the cause. */
+      throw new AddPupilsFailed(added, names.length, cause);
+    }
     added++;
   }
   return { ok: true, added };
