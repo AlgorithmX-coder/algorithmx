@@ -20,8 +20,8 @@ import { useState, type CSSProperties, type ReactNode } from "react";
 import { Geist_Mono, Inter, Space_Grotesk } from "next/font/google";
 import CubeMark from "@/app/components/CubeMark";
 import { INDIVIDUAL_WORKPLACE_COURSE_PENCE, poundsFigure } from "@/app/lib/individualCoursePrice";
-import { COURSE_AUTH_CONTENT, SHARED } from "./content";
-import { DOOR_PRICE, DOOR_SIDE, DOOR_UI, type DoorCourse } from "./doorContent";
+import { SHARED, authPack } from "./content";
+import { DOOR_PRICE, DOOR_SIDE, DOOR_UI, SECURED_FORM, SECURED_SIDE, type DoorCourse, type DoorKey } from "./doorContent";
 import type { NightMode } from "./NightShell";
 import "./door.css";
 
@@ -46,7 +46,8 @@ export const DOOR_ICON = {
   key: svg("M8 11a4 4 0 100 8 4 4 0 000-8z M11 12l9-9 M16 5l3 3 M13 8l3 3", 2.2),
 } as const;
 
-const MARK: Record<DoorCourse, ReactNode> = { cleared: DOOR_ICON.shield, fluent: DOOR_ICON.bolt, awareness: DOOR_ICON.lens };
+const MARK: Record<DoorKey, ReactNode> = { cleared: DOOR_ICON.shield, fluent: DOOR_ICON.bolt, awareness: DOOR_ICON.lens, secured: DOOR_ICON.shield };
+const TRACK_ICON = { cleared: DOOR_ICON.shield, fluent: DOOR_ICON.bolt, awareness: DOOR_ICON.lens } as const;
 
 const rise = (i: number) => ({ "data-rise": "", style: { "--i": i } as Vars });
 
@@ -105,6 +106,43 @@ export function DoorPause({ paused, onToggle }: { paused: boolean; onToggle: () 
   );
 }
 
+/* A course door, under the title: the motif, the facts and the price. */
+function CourseSide({ course }: { course: DoorCourse }) {
+  const side = DOOR_SIDE[course];
+  return (
+    <>
+      <p className="tag" {...rise(2)}>{side.tag}</p>
+      <div {...rise(3)}><Motif course={course} caption={side.caption} /></div>
+      <ul className="r8-facts" {...rise(4)}>
+        {side.facts.map(([b, s]) => <li key={s}><b>{b}</b><span>{s}</span></li>)}
+      </ul>
+      <div className="r8-price" {...rise(5)}>
+        <span className="amt"><sup>£</sup>{poundsFigure(INDIVIDUAL_WORKPLACE_COURSE_PENCE)}</span>
+        <p><b>{DOOR_PRICE.lead}</b><br />{DOOR_PRICE.rest}</p>
+      </div>
+    </>
+  );
+}
+
+/* The firm door, under the title: one seat, the three courses it opens, no price. */
+function SecuredSide() {
+  return (
+    <>
+      <p className="tag" {...rise(2)}>{SECURED_SIDE.tag}</p>
+      <ul className="r8-tracks" {...rise(3)}>
+        {SECURED_SIDE.tracks.map((tr, n) => (
+          <li key={tr.key} className="r8-track" style={{ "--t": tr.rgb, "--n": n } as Vars}>
+            <span className="ic">{TRACK_ICON[tr.key]}</span>
+            <div><b>{tr.name}</b><span>{tr.line}</span></div>
+            <small>{tr.count}</small>
+          </li>
+        ))}
+      </ul>
+      <p className="r8-note" {...rise(4)}>{SECURED_SIDE.note}</p>
+    </>
+  );
+}
+
 export const DOOR_FONTS = `${disp.variable} ${sans.variable} ${mono.variable}`;
 
 export default function DoorShell({
@@ -117,7 +155,7 @@ export default function DoorShell({
   children,
   foot,
 }: {
-  course: DoorCourse;
+  course: DoorKey;
   mode: NightMode;
   title: string;
   /** null drops the sub line (the reset page's done state has none). */
@@ -130,14 +168,16 @@ export default function DoorShell({
   /** The switch line under the form ("New here? Create an account"). */
   foot: ReactNode;
 }) {
-  const t = COURSE_AUTH_CONTENT[course];
-  const side = DOOR_SIDE[course];
+  const t = authPack(course);
+  const firm = course === "secured";
   const [paused, setPaused] = useState(false);
   const landing = t.landing ?? t.base;
-  const [plain, acc] = side.word;
+  const [plain, acc] = firm ? SECURED_SIDE.word : DOOR_SIDE[course].word;
   /* Sign in and Create account are the two tabs; the password pages sit
-     under neither, so they show none. */
-  const tabs = mode === "login" || mode === "signup";
+     under neither, so they show none. The firm door is sign in only. */
+  const tabs = !firm && (mode === "login" || mode === "signup");
+  const backLabel = firm ? SECURED_FORM.back : `${SHARED.back} ${t.courseName}`;
+  const trust = firm ? SECURED_FORM.trust : DOOR_UI.trust;
 
   return (
     <div className={`r8d ${DOOR_FONTS}`} data-c={course} data-mode={mode} data-still={paused ? "" : undefined}>
@@ -151,23 +191,15 @@ export default function DoorShell({
             <span className="by">by <CubeMark size={9} strokeWidth={2} /> AlgorithmX</span>
           </span>
         </Link>
-        <Link className="r8-back" href={landing} aria-label={`${SHARED.back} ${t.courseName}`}>{DOOR_ICON.back}<span>{SHARED.back} {t.courseName}</span></Link>
+        <Link className="r8-back" href={landing} aria-label={backLabel}>{DOOR_ICON.back}<span>{backLabel}</span></Link>
       </header>
 
       <main className="r8-stage">
         <div className="r8-door">
           <section className="r8-side" aria-labelledby="r8-course">
-            <span className="r8-eyebrow" {...rise(0)}><i />{side.who}</span>
+            <span className="r8-eyebrow" {...rise(0)}><i />{firm ? SECURED_SIDE.who : DOOR_SIDE[course].who}</span>
             <h1 id="r8-course" {...rise(1)}>{plain} <em>{acc}</em></h1>
-            <p className="tag" {...rise(2)}>{side.tag}</p>
-            <div {...rise(3)}><Motif course={course} caption={side.caption} /></div>
-            <ul className="r8-facts" {...rise(4)}>
-              {side.facts.map(([b, s]) => <li key={s}><b>{b}</b><span>{s}</span></li>)}
-            </ul>
-            <div className="r8-price" {...rise(5)}>
-              <span className="amt"><sup>£</sup>{poundsFigure(INDIVIDUAL_WORKPLACE_COURSE_PENCE)}</span>
-              <p><b>{DOOR_PRICE.lead}</b><br />{DOOR_PRICE.rest}</p>
-            </div>
+            {firm ? <SecuredSide /> : <CourseSide course={course} />}
           </section>
 
           <section className="r8-form" aria-labelledby="r8-title" {...rise(2)}>
@@ -191,9 +223,9 @@ export default function DoorShell({
             {foot}
 
             <div className="r8-trust">
-              <span>{DOOR_ICON.lock}{DOOR_UI.trust[0]}</span>
-              <span>{DOOR_ICON.shield}{DOOR_UI.trust[1]}</span>
-              <span>{DOOR_UI.trust[2]}</span>
+              <span>{DOOR_ICON.lock}{trust[0]}</span>
+              <span>{DOOR_ICON.shield}{trust[1]}</span>
+              <span>{trust[2]}</span>
             </div>
             <p className="r8-legal"><Link href="/terms">Terms</Link><span aria-hidden="true"> · </span><Link href="/privacy">Privacy</Link></p>
           </section>

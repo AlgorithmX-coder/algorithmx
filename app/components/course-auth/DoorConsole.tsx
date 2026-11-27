@@ -14,15 +14,18 @@
 
 import Link from "next/link";
 import { FLOW, SHARED } from "./content";
-import type { DoorCourse } from "./doorContent";
+import { SECURED_FORM, type DoorKey } from "./doorContent";
 import { passwordRules } from "@/app/lib/passwordPolicy";
 import { useCourseAuth, type AuthMode, type FieldKey } from "./useCourseAuth";
 import DoorShell, { DOOR_ICON } from "./DoorShell";
 
-export default function DoorConsole({ course, mode }: { course: DoorCourse; mode: AuthMode }) {
+export default function DoorConsole({ course, mode }: { course: DoorKey; mode: AuthMode }) {
   const auth = useCourseAuth(course, mode);
   const { t, isLogin, justRegistered, field, showPw, toggleShowPw, error, busy, invalid, submit } = auth;
   const C = t.copy;
+  /* The firm door asks for the work email and offers no sign-up: a seat is
+     claimed through the invite link, which has its own way in. */
+  const firm = course === "secured";
 
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -36,10 +39,13 @@ export default function DoorConsole({ course, mode }: { course: DoorCourse; mode
 
   /* a plain render helper, not a component: the inputs must keep their identity across keystrokes */
   const renderField = ({ id, k, type, auto, toggle }: { id: string; k: FieldKey; type: string; auto: string; toggle?: boolean }) => {
-    const ph = k === "password" ? (isLogin ? SHARED.placeholders.passwordLogin : SHARED.placeholders.passwordSignup) : SHARED.placeholders[k];
+    const ph = k === "password" ? (isLogin ? SHARED.placeholders.passwordLogin : SHARED.placeholders.passwordSignup)
+      : firm && k === "email" ? SECURED_FORM.emailPlaceholder
+      : SHARED.placeholders[k];
+    const label = firm && k === "email" ? SECURED_FORM.emailLabel : SHARED.labels[k];
     return (
       <div key={id} className="r8-field" data-invalid={invalid.includes(k) ? "" : undefined}>
-        <label htmlFor={id}>{SHARED.labels[k]}</label>
+        <label htmlFor={id}>{label}</label>
         <div className="in">
           <input
             className={toggle ? "has-toggle" : undefined}
@@ -80,7 +86,12 @@ export default function DoorConsole({ course, mode }: { course: DoorCourse; mode
       sub={isLogin ? C.loginSub : C.signupSub}
       notice={showNotice ? C.registeredNotice : ""}
       error={error}
-      foot={<p className="r8-alt">{sw.lead} <Link href={sibling}>{sw.link}</Link></p>}
+      foot={firm ? (
+        <>
+          <p className="r8-alt">{SECURED_FORM.invited}</p>
+          <p className="r8-alt" style={{ marginTop: 6 }}>{SECURED_FORM.buyLead} <Link href={SECURED_FORM.buyHref}>{SECURED_FORM.buyLink}</Link></p>
+        </>
+      ) : <p className="r8-alt">{sw.lead} <Link href={sibling}>{sw.link}</Link></p>}
     >
       <form method="post" onSubmit={onSubmit} noValidate>
         {isLogin ? (

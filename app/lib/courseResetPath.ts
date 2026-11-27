@@ -8,7 +8,7 @@
  * else, including no course at all, gets the generic page as before. The
  * token, its hash, its expiry and the email itself are the same either way.
  *
- * Keep in step with COURSE_AUTH_CONTENT (app/components/course-auth/content.ts):
+ * Keep in step with COURSE_AUTH_CONTENT and SECURED_AUTH (app/components/course-auth/content.ts):
  * courseResetPath.test.ts checks every course auth pack has its entry here.
  */
 
@@ -23,6 +23,7 @@ const COURSE_RESET_PATH: Readonly<Record<string, string>> = {
   "ai-cleared": "/ai-cleared/reset-password",
   "ai-fluent": "/ai-fluent/reset-password",
   "cyber-awareness": "/cyber-awareness/reset-password",
+  "cyber-secured": "/cyber-secured/reset-password",
 };
 
 export function resetPathFor(course: unknown): string {
