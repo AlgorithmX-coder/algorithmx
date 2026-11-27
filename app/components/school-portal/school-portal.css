@@ -182,6 +182,8 @@
 .sp .share .sharelede { color: var(--muted); margin: 0 0 16px; max-width: 70ch; }
 .sp .share form { margin: 0; }
 .sp .share form.sharerow { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 12px; }
+/* The button stands on the same line as the fields: same height, same bottom edge. */
+.sp .share form.sharerow > button[type="submit"] { min-height: 50px; align-self: flex-end; }
 .sp .share .sharerow { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
 .sp .share label { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
 .sp .share label.grow { flex: 1 1 220px; }

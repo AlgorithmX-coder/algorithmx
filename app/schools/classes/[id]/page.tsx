@@ -113,6 +113,9 @@ export default async function ClassPage({
     : null;
   const waiting = klass.pupils.filter((p) => !p.signedIn).length;
   const someone = klass.pupils.length > 0;
+  /* Who picks their name, in this organisation's words: "Children" for a
+     school, as the brief wrote it, "Young people" for a youth project. */
+  const Who = school.kind === "SCHOOL" ? "Children" : w.people.charAt(0).toUpperCase() + w.people.slice(1);
   /* Cyber Heroes only: the milestones are its weeks, and a certificate
      saying "of 20 weeks" on an Explorers class would be a lie. */
   const certificateWeekFor = (done: number): number | null =>
@@ -255,7 +258,7 @@ export default async function ClassPage({
           </div>
           <div className="sp-in-foot">
             <p>
-              Children pick their name and tap their three pictures. The first time in they choose
+              {Who} pick their name and tap their three pictures. The first time in they choose
               the pictures, so there is nothing to set up.
             </p>
             {/* The way out of reading a seven character code aloud to
