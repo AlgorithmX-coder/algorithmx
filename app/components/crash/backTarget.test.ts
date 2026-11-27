@@ -31,7 +31,6 @@ describe("backTarget", () => {
   });
 
   it("prefers the longest prefix", () => {
-    expect(backTarget("/schools/overview").href).toBe("/");
     expect(backTarget("/schools/overview/x").label).toBe("Back to your school");
     expect(backTarget("/schools/overviewing").label).toBe("Back to your classes");
     expect(backTarget("/admin-login").href).toBe("/admin");
@@ -43,8 +42,13 @@ describe("backTarget", () => {
     expect(backTarget("/pro/courses")).toEqual(HOME);
   });
 
+  it("falls back one level when the area's home is what crashed", () => {
+    expect(backTarget("/schools/overview")).toEqual({ href: "/schools/classes", label: "Back to your classes" });
+    expect(backTarget("/schools/overview/")).toEqual({ href: "/schools/classes", label: "Back to your classes" });
+  });
+
   it("never sends the visitor straight back into the page that crashed", () => {
-    for (const p of ["/schools/classes", "/schools/overview", "/admin", "/cyberhq", "/explorers", "/operators/portfolio", "/pro/course", "/desk-ready/course", "/ai-cleared", "/dashboard", "/dashboard/"]) {
+    for (const p of ["/schools/classes", "/admin", "/cyberhq", "/explorers", "/operators/portfolio", "/pro/course", "/desk-ready/course", "/ai-cleared", "/dashboard", "/dashboard/"]) {
       expect(backTarget(p)).toEqual(HOME);
     }
   });

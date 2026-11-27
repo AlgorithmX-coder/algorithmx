@@ -9,7 +9,9 @@
  * wins, so "/schools/overview" beats "/schools".
  *
  * If the home is the very page that crashed, the button would lead straight
- * back into the same crash, so it falls back to the public homepage.
+ * back into the same crash, so it falls back one level to the next shorter
+ * matching row (a crash on /schools/overview goes to your classes), and to
+ * the public homepage when there is none.
  */
 
 export type BackTarget = { href: string; label: string };
@@ -65,9 +67,10 @@ function tidy(pathname: string): string {
 
 export function backTarget(pathname: string): BackTarget {
   const path = tidy(pathname);
-  const rule = RULES.find((r) => matches(path, r));
-  if (!rule) return HOME;
-  const href = rule.href ?? `/${path.split("/")[1]}`;
-  if (href === path) return HOME;
-  return { href, label: rule.label };
+  for (const rule of RULES) {
+    if (!matches(path, rule)) continue;
+    const href = rule.href ?? `/${path.split("/")[1]}`;
+    if (href !== path) return { href, label: rule.label };
+  }
+  return HOME;
 }

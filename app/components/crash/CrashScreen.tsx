@@ -20,8 +20,9 @@ import "./crash.css";
  * reference shown is the error's digest (the id Next puts on a server
  * error, which matches the server logs) or, for an error thrown in the
  * browser, the id of the Sentry event just sent. The digest and the path
- * go to Sentry as tags (and to the server log) so a quoted reference can be
- * searched for.
+ * go to Sentry as tags so a quoted reference can be searched for. The
+ * server already logs the digest for a server error; the "[crash]" console
+ * line runs in the browser and is for the visitor's own devtools.
  *
  * The second button leads back into the area the visitor crashed in (their
  * classes, the console, the course) rather than the public homepage; see
