@@ -138,6 +138,8 @@
 .r8d .r8-form form{display:flex;flex-direction:column;margin:0}
 .r8d .r8-fields{display:grid;gap:14px}
 .r8d .r8-fields.two{grid-template-columns:1fr 1fr}
+/* passwords get a full row each: in a half column the placeholder and SHOW toggle collide */
+.r8d .r8-fields.two>.r8-field:nth-child(n+3){grid-column:1/-1}
 .r8d .r8-field{min-width:0}
 .r8d .r8-field label{display:block;font:700 10px var(--mono);letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:7px}
 .r8d .r8-field .in{position:relative}
