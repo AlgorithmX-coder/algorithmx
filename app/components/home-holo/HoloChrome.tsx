@@ -1,7 +1,7 @@
 "use client";
 /* eslint-disable @next/next/no-img-element */
 
-import { useRef } from "react";
+import { useRef, type CSSProperties } from "react";
 import Link from "next/link";
 import BrandCube from "@/app/components/BrandCube";
 import { AX } from "./content";
@@ -33,15 +33,19 @@ export function HoloNav({ streamsHref, streamsCurrent = false }: { streamsHref?:
   );
 }
 
-export function HoloFooter() {
+/* `extra` adds one more link column after the house columns (the reading
+ * room's TRUST column); `current` marks the link for the page you are on.
+ * Without it the footer is exactly the homepage's. */
+export function HoloFooter({ extra }: { extra?: { title: string; links: [string, string][]; current?: string } } = {}) {
   const Fo = AX.footer;
   return (
     <footer>
       <div className="bigcube" aria-hidden="true"><svg width="520" height="520" viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth=".6" strokeLinejoin="round"><polygon points="16,2 28.12,9 28.12,23 16,30 3.88,23 3.88,9" /><path d="M16 16 L28.12 9 M16 16 L3.88 9 M16 16 L16 30" /></svg></div>
       <div className="wrap">
-        <div className="grid">
+        <div className="grid" style={extra ? ({ "--cols": Fo.cols.length + 1 } as CSSProperties) : undefined}>
           <div><Link className="ax-brand" href="/" aria-label="AlgorithmX"><BrandCube size={24} /><span className="lv2-wordmark"><span className="lv2-wordmark-main">ALGORITHM</span><span className="lv2-wordmark-x">X</span></span></Link><p className="tag">{Fo.tagline}</p></div>
           {Fo.cols.map((c) => <div key={c.title}><h4>{c.title}</h4><ul>{c.links.map((l) => <li key={l[0]}><a href={l[1]}>{l[0]}</a></li>)}</ul>{"note" in c && c.note ? <div className="note">{c.note}</div> : null}</div>)}
+          {extra && <div><h4>{extra.title}</h4><ul>{extra.links.map(([t, h]) => <li key={h}><a href={h} aria-current={h === extra.current ? "page" : undefined}>{t}</a></li>)}</ul></div>}
         </div>
         <div className="legal"><a href={`mailto:${Fo.email}`}>{Fo.email}</a><span>{Fo.legal}</span></div>
       </div>
