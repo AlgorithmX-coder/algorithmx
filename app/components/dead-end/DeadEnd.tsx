@@ -116,7 +116,8 @@ export default function DeadEnd({
   /** False keeps the lockup from being a link (the pupil page). */
   lockupLink?: boolean;
   back?: { href: string; label: string };
-  eyebrow: string;
+  /** Words, or words with a part that keeps its case (data-case="keep"). */
+  eyebrow: ReactNode;
   /** A failure (bad link, 404): the eyebrow turns red. */
   err?: boolean;
   title: ReactNode;
