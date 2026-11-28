@@ -33,7 +33,7 @@ import { PUPIL_LOCK_SEC, RULES, clear, hit, lock, lockedFor, peek, rateKey } fro
  * The alphabet has no O/0, I/1/l or S/5 in it for the same reason.
  */
 export function tidyCode(raw: string): string {
-  const c = (raw ?? "").trim().toUpperCase().replace(/[s_]+/g, "");
+  const c = (raw ?? "").trim().toUpperCase().replace(/[\s_]+/g, "");
   return !c.includes("-") && c.length === 7 ? `${c.slice(0, 4)}-${c.slice(4)}` : c;
 }
 
