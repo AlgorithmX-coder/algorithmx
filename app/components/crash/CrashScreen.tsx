@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import * as Sentry from "@sentry/nextjs";
 import { Geist_Mono, Inter, Space_Grotesk } from "next/font/google";
 import BrandCube from "@/app/components/BrandCube";
+import { backTarget, type BackTarget } from "./backTarget";
 import "./crash.css";
 
 /**
@@ -18,7 +19,15 @@ import "./crash.css";
  * Every crash is reported to Sentry once, when the screen mounts. The
  * reference shown is the error's digest (the id Next puts on a server
  * error, which matches the server logs) or, for an error thrown in the
- * browser, the id of the Sentry event just sent.
+ * browser, the id of the Sentry event just sent. The digest and the path
+ * go to Sentry as tags so a quoted reference can be searched for. The
+ * server already logs the digest for a server error; the "[crash]" console
+ * line runs in the browser and is for the visitor's own devtools.
+ *
+ * The second button leads back into the area the visitor crashed in (their
+ * classes, the console, the course) rather than the public homepage; see
+ * backTarget.ts. The server render has no window, so it starts as Back to
+ * home and the mount effect swaps in the real target.
  *
  * "page" renders inside the root layout; "global" replaces the root layout
  * (global-error), so it uses system fonts, draws no pools and leaves the
@@ -81,14 +90,21 @@ export default function CrashScreen({
   const [when, setWhen] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [back, setBack] = useState<BackTarget>({ href: "/", label: "Back to home" });
 
   /* Report once per error. Set in an effect so the server render and the
      first client render agree (no clock or event id on the server). */
   useEffect(() => {
-    const id = Sentry.captureException(error, { tags: { boundary: variant === "global" ? "global-error" : "error" } });
+    const path = window.location.pathname;
+    const digest = error.digest ?? "none";
+    const id = Sentry.captureException(error, {
+      tags: { boundary: variant === "global" ? "global-error" : "error", digest, path },
+    });
+    console.error("[crash]", { digest, path });
     // eslint-disable-next-line react-hooks/set-state-in-effect -- the event id only exists once Sentry has been told, which is this effect's job
     setEventId(id ?? null);
     setWhen(stamp(new Date()));
+    setBack(backTarget(path));
   }, [error, variant]);
 
   const ref = error.digest ?? eventId;
@@ -154,10 +170,10 @@ export default function CrashScreen({
                 {RETRY}
                 <span>{busy ? `${c.busy}…` : c.retry}</span>
               </button>
-              {/* eslint-disable-next-line @next/next/no-html-link-for-pages -- a full load is the surest way out of a broken page */}
-              <a className="axcrash-btn" data-kind="ghost" href="/">
+              {/* A plain anchor on purpose: a full load is the surest way out of a broken page. */}
+              <a className="axcrash-btn" data-kind="ghost" href={back.href}>
                 {HOME}
-                <span>Back to home</span>
+                <span>{back.label}</span>
               </a>
             </div>
 
