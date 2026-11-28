@@ -241,11 +241,14 @@
   animation: axcrash-rise 0.9s var(--ax-ease) 0.38s forwards;
 }
 
-/* The actions: Try again (the house pill) and Back to home (the ghost pill). */
+/* The actions: Try again (the house pill) and the way back (the ghost pill,
+   whose label depends on where the crash happened; see backTarget.ts). Each
+   pill is at least as wide as its label; two that fit share the row
+   equally, two that do not wrap onto a line each. */
 .axcrash-actions {
   position: relative;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
+  flex-wrap: wrap;
   gap: 10px;
 }
 .axcrash-btn {
@@ -254,7 +257,8 @@
   align-items: center;
   justify-content: center;
   gap: 9px;
-  width: 100%;
+  flex: 1 1 0;
+  min-width: max-content;
   height: 52px;
   padding: 0 14px;
   border: 0;
@@ -492,7 +496,11 @@
     height: 50px;
   }
   .axcrash-actions {
-    grid-template-columns: 1fr;
+    flex-direction: column;
+  }
+  .axcrash-btn {
+    flex: none;
+    width: 100%;
   }
   .axcrash-ref code {
     white-space: normal;
